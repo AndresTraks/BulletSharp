@@ -11,10 +11,29 @@ void DynamicsWorld::AddAction(ActionInterface^ actionInterface)
 {
 	UnmanagedPointer->addAction(actionInterface->UnmanagedPointer);
 }
+
+void DynamicsWorld::AddConstraint(TypedConstraint^ constraint,
+	bool disableCollisionsBetweenLinkedBodies)
+{
+	UnmanagedPointer->addConstraint(constraint->UnmanagedPointer,
+		disableCollisionsBetweenLinkedBodies);
+}
+
+void DynamicsWorld::AddConstraint(TypedConstraint^ constraint)
+{
+	UnmanagedPointer->addConstraint(constraint->UnmanagedPointer);
+}
+
+void DynamicsWorld::RemoveConstraint(TypedConstraint^ constraint)
+{
+	UnmanagedPointer->removeConstraint(constraint->UnmanagedPointer);
+}
+
 void DynamicsWorld::StepSimulation(btScalar timeStep)
 {
 	UnmanagedPointer->stepSimulation(timeStep);
 }
+
 void DynamicsWorld::DebugDrawWorld()
 {
 	UnmanagedPointer->debugDrawWorld();

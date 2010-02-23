@@ -7,6 +7,8 @@
 
 namespace BulletSharp
 {
+	ref class TypedConstraint;
+
 	public ref class RigidBody : BulletSharp::CollisionObject
 	{
 		private:

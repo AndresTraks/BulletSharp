@@ -448,6 +448,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\HingeConstraint.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Math.cpp"
 				>
 			</File>
@@ -461,6 +465,10 @@
 			</File>
 			<File
 				RelativePath=".\src\OverlappingPairCallback.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Point2PointConstraint.cpp"
 				>
 			</File>
 			<File
@@ -745,6 +753,14 @@
 					>
 					<File
 						RelativePath=".\src\ConstraintSolver.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\HingeConstraint.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\Point2PointConstraint.h"
 						>
 					</File>
 					<File
