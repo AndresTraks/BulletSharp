@@ -488,6 +488,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\SimplexSolverInterface.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SphereShape.cpp"
 				>
 			</File>
@@ -533,6 +537,10 @@
 			</File>
 			<File
 				RelativePath=".\src\VehicleRaycaster.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\VoronoiSimplexSolver.cpp"
 				>
 			</File>
 			<File
@@ -689,6 +697,18 @@
 					>
 					<File
 						RelativePath=".\src\GImpactShape.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="NarrowPhaseCollision"
+					>
+					<File
+						RelativePath=".\src\SimplexSolverInterface.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\VoronoiSimplexSolver.h"
 						>
 					</File>
 				</Filter>
