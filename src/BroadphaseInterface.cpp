@@ -2,6 +2,30 @@
 
 #include "BroadphaseInterface.h"
 
+BroadphaseAabbCallback::BroadphaseAabbCallback(btBroadphaseAabbCallback* callback)
+{
+	_aabbCallback = callback;
+}
+
+bool BroadphaseAabbCallback::Process(BroadphaseProxy^ proxy)
+{
+	return UnmanagedPointer->process(proxy->UnmanagedPointer);
+}
+
+btBroadphaseAabbCallback* BroadphaseAabbCallback::UnmanagedPointer::get()
+{
+	return _aabbCallback;
+}
+void BroadphaseAabbCallback::UnmanagedPointer::set(btBroadphaseAabbCallback* value)
+{
+	_aabbCallback = value;
+}
+
+btBroadphaseRayCallback* BroadphaseRayCallback::UnmanagedPointer::get()
+{
+	return (btBroadphaseRayCallback*)BroadphaseAabbCallback::UnmanagedPointer;;
+}
+
 BroadphaseInterface::BroadphaseInterface(btBroadphaseInterface* broadphase)
 {
 	_broadphase = broadphase;
@@ -27,6 +51,11 @@ BroadphaseInterface::!BroadphaseInterface()
 bool BroadphaseInterface::IsDisposed::get()
 {
 	return (_broadphase == NULL);
+}
+
+void BroadphaseInterface::AabbTest(Vector3 aabbMin, Vector3 aabbMax, BroadphaseAabbCallback^ callback)
+{
+	_broadphase->aabbTest(*Math::Vector3ToBtVec3(aabbMin), *Math::Vector3ToBtVec3(aabbMin), *callback->UnmanagedPointer);
 }
 
 void BroadphaseInterface::CalculateOverlappingPairs(IDispatcher^ dispatcher)
@@ -78,11 +107,35 @@ void BroadphaseInterface::PrintStats()
 }
 
 #pragma managed(push, off)
+void BroadphaseInterface_RayTest(btBroadphaseInterface* broadphase, btVector3* rayFrom, btVector3* rayTo, btBroadphaseRayCallback* rayCallback,
+	btVector3* aabbMin, btVector3* aabbMax)
+{
+	broadphase->rayTest(*rayFrom, *rayTo, *rayCallback, *aabbMin, *aabbMax);
+}
+void BroadphaseInterface_RayTest(btBroadphaseInterface* broadphase, btVector3* rayFrom, btVector3* rayTo, btBroadphaseRayCallback* rayCallback,
+	btVector3* aabbMin)
+{
+	broadphase->rayTest(*rayFrom, *rayTo, *rayCallback, *aabbMin);
+}
 void BroadphaseInterface_RayTest(btBroadphaseInterface* broadphase, btVector3* rayFrom, btVector3* rayTo, btBroadphaseRayCallback* rayCallback)
 {
 	broadphase->rayTest(*rayFrom, *rayTo, *rayCallback);
 }
 #pragma managed(pop)
+
+void BroadphaseInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback^ rayCallback,
+	Vector3 aabbMin, Vector3 aabbMax)
+{
+	BroadphaseInterface_RayTest(_broadphase, Math::Vector3ToBtVec3(rayFrom), Math::Vector3ToBtVec3(rayTo),
+		rayCallback->UnmanagedPointer, Math::Vector3ToBtVec3(aabbMin), Math::Vector3ToBtVec3(aabbMax));
+}
+
+void BroadphaseInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback^ rayCallback,
+	Vector3 aabbMin)
+{
+	BroadphaseInterface_RayTest(_broadphase, Math::Vector3ToBtVec3(rayFrom), Math::Vector3ToBtVec3(rayTo),
+		rayCallback->UnmanagedPointer, Math::Vector3ToBtVec3(aabbMin));
+}
 
 void BroadphaseInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback^ rayCallback)
 {
@@ -103,15 +156,6 @@ void BroadphaseInterface::SetAabb(BroadphaseProxy^ proxy, Vector3 aabbMin, Vecto
 OverlappingPairCache^ BroadphaseInterface::OverlappingPairCache::get()
 {
 	return _pairCache;
-}
-
-btBroadphaseRayCallback* BroadphaseRayCallback::UnmanagedPointer::get()
-{
-	return _rayCallback;
-}
-void BroadphaseRayCallback::UnmanagedPointer::set(btBroadphaseRayCallback* value)
-{
-	_rayCallback = value;
 }
 
 btBroadphaseInterface* BroadphaseInterface::UnmanagedPointer::get()
