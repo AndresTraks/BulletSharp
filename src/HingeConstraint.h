@@ -24,5 +24,13 @@ namespace BulletSharp
 			Matrix rbAFrame, Matrix rbBFrame);
 		HingeConstraint(RigidBody^ rbA,	Matrix rbAFrame, bool useReferenceFrameA);
 		HingeConstraint(RigidBody^ rbA, Matrix rbAFrame);
+
+		void EnableAngularMotor(bool enableMotor,
+			btScalar targetVelocity, btScalar maxMotorImpulse);
+
+		property btHingeConstraint* UnmanagedPointer
+		{
+			btHingeConstraint* get() new;
+		}
 	};
 };

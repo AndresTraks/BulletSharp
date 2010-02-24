@@ -10,14 +10,20 @@ btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfo
 
 RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, MotionState^ motionState, CollisionShape^ collisionShape)
 {
-	_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, collisionShape->UnmanagedPointer);
+	if (collisionShape != nullptr)
+		_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, collisionShape->UnmanagedPointer);
+	else
+		_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, nullptr);
 	_collisionShape = collisionShape;
 	_motionState = motionState;
 }
 
 RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, MotionState^ motionState, CollisionShape^ collisionShape, Vector3 localInertia)
 {
-	_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, collisionShape->UnmanagedPointer, Math::Vector3ToBtVec3(localInertia));
+	if (collisionShape != nullptr)
+		_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, collisionShape->UnmanagedPointer, Math::Vector3ToBtVec3(localInertia));
+	else
+		_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, nullptr, Math::Vector3ToBtVec3(localInertia));
 	_collisionShape = collisionShape;
 	_motionState = motionState;
 }

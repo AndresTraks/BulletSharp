@@ -68,3 +68,14 @@ HingeConstraint::HingeConstraint(RigidBody^ rbA, Matrix rbAFrame)
 {
 	this->RigidBodyA = rbA;
 }
+
+void HingeConstraint::EnableAngularMotor(bool enableMotor,
+	btScalar targetVelocity, btScalar maxMotorImpulse)
+{
+	UnmanagedPointer->enableAngularMotor(enableMotor, targetVelocity, maxMotorImpulse);
+}
+
+btHingeConstraint* HingeConstraint::UnmanagedPointer::get()
+{
+	return (btHingeConstraint*)TypedConstraint::UnmanagedPointer;
+}

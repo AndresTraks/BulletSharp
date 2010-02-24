@@ -15,6 +15,10 @@ btVector3* BulletSharp::Math::Vector3ToBtVec3(Vector3 vector)
 {
 	return new btVector3(vector.X, vector.Y, vector.Z);
 }
+void BulletSharp::Math::Vector3ToBtVec3(Vector3 vector, btVector3* vectorOut)
+{
+	vectorOut = new btVector3(vector.X, vector.Y, vector.Z);
+}
 
 Quaternion BulletSharp::Math::BtQuatToQuaternion(const btQuaternion* quat)
 {

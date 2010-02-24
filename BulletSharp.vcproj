@@ -444,6 +444,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Generic6DofConstraint.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\GImpactShape.cpp"
 				>
 			</File>
@@ -753,6 +757,10 @@
 					>
 					<File
 						RelativePath=".\src\ConstraintSolver.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\Generic6DofConstraint.h"
 						>
 					</File>
 					<File
