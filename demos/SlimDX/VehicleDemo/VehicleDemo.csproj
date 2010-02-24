@@ -44,10 +44,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Release SlimDX\BulletSharp.dll</HintPath>
     </Reference>
-    <Reference Include="DemoFramework, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\DemoFramework.dll</HintPath>
-    </Reference>
     <Reference Include="SlimDX, Version=2.0.9.42, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -57,5 +53,11 @@
     <Compile Include="Physics.cs" />
     <Compile Include="VehicleDemo.cs" />
     <Compile Include="Program.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DemoFramework\DemoFramework.csproj">
+      <Project>{300EA042-EAD4-4C63-8FCC-7AE5A3A792D1}</Project>
+      <Name>DemoFramework</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

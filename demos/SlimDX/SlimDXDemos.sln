@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C# Express 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicDemo", "BasicDemo\BasicDemo.csproj", "{AAB2F362-D601-4C01-BAB7-50EA465C7305}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConstraintDemo", "ConstraintDemo\ConstraintDemo.csproj", "{C71271FB-0B71-4A41-B13D-03BA09193D4A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{300EA042-EAD4-4C63-8FCC-7AE5A3A792D1} = {300EA042-EAD4-4C63-8FCC-7AE5A3A792D1}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoFramework", "DemoFramework\DemoFramework.csproj", "{300EA042-EAD4-4C63-8FCC-7AE5A3A792D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleDemo", "VehicleDemo\VehicleDemo.csproj", "{5716A1AC-602A-4A25-867A-90418B4D5EE2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{300EA042-EAD4-4C63-8FCC-7AE5A3A792D1} = {300EA042-EAD4-4C63-8FCC-7AE5A3A792D1}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AAB2F362-D601-4C01-BAB7-50EA465C7305}.Debug|x86.ActiveCfg = Debug|x86
+		{AAB2F362-D601-4C01-BAB7-50EA465C7305}.Debug|x86.Build.0 = Debug|x86
+		{AAB2F362-D601-4C01-BAB7-50EA465C7305}.Release|x86.ActiveCfg = Release|x86
+		{AAB2F362-D601-4C01-BAB7-50EA465C7305}.Release|x86.Build.0 = Release|x86
+		{C71271FB-0B71-4A41-B13D-03BA09193D4A}.Debug|x86.ActiveCfg = Debug|x86
+		{C71271FB-0B71-4A41-B13D-03BA09193D4A}.Debug|x86.Build.0 = Debug|x86
+		{C71271FB-0B71-4A41-B13D-03BA09193D4A}.Release|x86.ActiveCfg = Release|x86
+		{C71271FB-0B71-4A41-B13D-03BA09193D4A}.Release|x86.Build.0 = Release|x86
+		{300EA042-EAD4-4C63-8FCC-7AE5A3A792D1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{300EA042-EAD4-4C63-8FCC-7AE5A3A792D1}.Debug|x86.Build.0 = Debug|Any CPU
+		{300EA042-EAD4-4C63-8FCC-7AE5A3A792D1}.Release|x86.ActiveCfg = Release|Any CPU
+		{300EA042-EAD4-4C63-8FCC-7AE5A3A792D1}.Release|x86.Build.0 = Release|Any CPU
+		{5716A1AC-602A-4A25-867A-90418B4D5EE2}.Debug|x86.ActiveCfg = Debug|x86
+		{5716A1AC-602A-4A25-867A-90418B4D5EE2}.Debug|x86.Build.0 = Debug|x86
+		{5716A1AC-602A-4A25-867A-90418B4D5EE2}.Release|x86.ActiveCfg = Release|x86
+		{5716A1AC-602A-4A25-867A-90418B4D5EE2}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
