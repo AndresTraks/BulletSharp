@@ -5,6 +5,40 @@
 
 namespace BulletSharp
 {
+	public ref class ConstraintSetting
+	{
+	private:
+		btConstraintSetting* _setting;
+	internal:
+		ConstraintSetting(btConstraintSetting* setting);
+	public:
+		ConstraintSetting();
+
+		property btScalar Damping
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property btScalar ImpulseClamp
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property btScalar Tau
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property btConstraintSetting* UnmanagedPointer
+		{
+			virtual btConstraintSetting* get();
+			void set(btConstraintSetting* value);
+		}
+	};
+
 	public ref class Point2PointConstraint : TypedConstraint
 	{
 	public:
@@ -29,6 +63,12 @@ namespace BulletSharp
 		{
 			Vector3 get();
 			void set(Vector3 value);
+		}
+
+		property ConstraintSetting^ Setting
+		{
+			ConstraintSetting^ get();
+			void set(ConstraintSetting^ value);
 		}
 
 		property btPoint2PointConstraint* UnmanagedPointer

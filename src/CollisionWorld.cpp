@@ -2,6 +2,74 @@
 
 #include "CollisionWorld.h"
 
+CollisionWorld::RayResultCallback::RayResultCallback(btCollisionWorld::RayResultCallback* callback)
+{
+	_callback = callback;
+}
+
+CollisionWorld::RayResultCallback::~RayResultCallback()
+{
+	this->!RayResultCallback();
+}
+
+CollisionWorld::RayResultCallback::!RayResultCallback()
+{
+	if( this->IsDisposed == true )
+		return;
+	
+	OnDisposing( this, nullptr );
+	
+	_callback = NULL;
+	
+	OnDisposed( this, nullptr );
+}
+
+BulletSharp::CollisionObject^ CollisionWorld::RayResultCallback::CollisionObject::get()
+{
+	return gcnew BulletSharp::CollisionObject(_callback->m_collisionObject);
+}
+
+bool CollisionWorld::RayResultCallback::HasHit::get()
+{
+	return _callback->hasHit();
+}
+
+bool CollisionWorld::RayResultCallback::IsDisposed::get()
+{
+	return (_callback == NULL);
+}
+
+btCollisionWorld::RayResultCallback* CollisionWorld::RayResultCallback::UnmanagedPointer::get()
+{
+	return _callback;
+}
+void CollisionWorld::RayResultCallback::UnmanagedPointer::set(btCollisionWorld::RayResultCallback* value)
+{
+	_callback = value;
+}
+
+
+CollisionWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld)
+: RayResultCallback(new btCollisionWorld::ClosestRayResultCallback(
+	*Math::Vector3ToBtVec3(rayFromWorld), *Math::Vector3ToBtVec3(rayToWorld)))
+{
+}
+
+Vector3 CollisionWorld::ClosestRayResultCallback::HitPointWorld::get()
+{
+	return Math::BtVec3ToVector3(&UnmanagedPointer->m_hitPointWorld);
+}
+void CollisionWorld::ClosestRayResultCallback::HitPointWorld::set(Vector3 value)
+{
+	Math::Vector3ToBtVec3(value, &UnmanagedPointer->m_hitPointWorld);
+}
+
+btCollisionWorld::ClosestRayResultCallback* CollisionWorld::ClosestRayResultCallback::UnmanagedPointer::get()
+{
+	return (btCollisionWorld::ClosestRayResultCallback*)RayResultCallback::UnmanagedPointer;
+}
+
+
 CollisionWorld::CollisionWorld(btCollisionWorld* world)
 {
 	_world = world;
@@ -37,14 +105,20 @@ bool CollisionWorld::IsDisposed::get()
 }
 
 void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject,
-	short int collisionFilterGroup, short int collisionFilterMask)
+	CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
 {
-	_world->addCollisionObject(collisionObject->UnmanagedPointer, collisionFilterGroup, collisionFilterMask);
+	_world->addCollisionObject(collisionObject->UnmanagedPointer, (short int)collisionFilterGroup, (short int)collisionFilterMask);
 }
 
 void CollisionWorld::PerformDiscreteCollisionDetection()
 {
 	_world->performDiscreteCollisionDetection();
+}
+
+void CollisionWorld::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResultCallback^ resultCallback)
+{
+	_world->rayTest(*Math::Vector3ToBtVec3(rayFromWorld), *Math::Vector3ToBtVec3(rayToWorld),
+		*resultCallback->UnmanagedPointer);
 }
 
 void CollisionWorld::RemoveCollisionObject(CollisionObject^ collisionObject)

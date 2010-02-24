@@ -2,6 +2,50 @@
 
 #include "DynamicsWorld.h"
 
+DynamicsWorld::RayResultCallback::RayResultCallback(btDynamicsWorld::RayResultCallback* callback)
+{
+	_callback = callback;
+}
+
+DynamicsWorld::RayResultCallback::~RayResultCallback()
+{
+	this->!RayResultCallback();
+}
+
+DynamicsWorld::RayResultCallback::!RayResultCallback()
+{
+	if( this->IsDisposed == true )
+		return;
+	
+	OnDisposing( this, nullptr );
+	
+	_callback = NULL;
+	
+	OnDisposed( this, nullptr );
+}
+
+bool DynamicsWorld::RayResultCallback::IsDisposed::get()
+{
+	return (_callback == NULL);
+}
+
+btDynamicsWorld::RayResultCallback* DynamicsWorld::RayResultCallback::UnmanagedPointer::get()
+{
+	return _callback;
+}
+void DynamicsWorld::RayResultCallback::UnmanagedPointer::set(btDynamicsWorld::RayResultCallback* value)
+{
+	_callback = value;
+}
+
+
+DynamicsWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld)
+: RayResultCallback(new btDynamicsWorld::ClosestRayResultCallback(
+	*Math::Vector3ToBtVec3(rayFromWorld), *Math::Vector3ToBtVec3(rayToWorld)))
+{
+}
+
+
 void DynamicsWorld::AddRigidBody(RigidBody^ rigidBody)
 {
 	UnmanagedPointer->addRigidBody(rigidBody->UnmanagedPointer);

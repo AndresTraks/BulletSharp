@@ -23,6 +23,14 @@ namespace BulletSharp
 		AllFilter = btBroadphaseProxy::AllFilter
 	};
 
+	public enum class ConstraintParams
+	{
+		Erp = BT_CONSTRAINT_ERP,
+		StopErp = BT_CONSTRAINT_STOP_ERP,
+		Cfm = BT_CONSTRAINT_CFM,
+		StopCfm = BT_CONSTRAINT_STOP_CFM
+	};
+
 	[Flags]
 	public enum class DebugDrawModes
 	{

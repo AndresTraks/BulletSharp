@@ -16,6 +16,7 @@ namespace VehicleDemo
         Vector3 eye = new Vector3(10, 30, 10);
         bool DrawDebugLines = true;
         int ViewMode = 1, DrawMode = 1;
+        float FieldOfView = (float)Math.PI / 4;
 
         Matrix Projection;
         Input input;
@@ -115,7 +116,7 @@ namespace VehicleDemo
             Device.EnableLight(0, true);
             Device.SetRenderState(RenderState.Ambient, new Color4(0.5f, 0.5f, 0.5f).ToArgb());
 
-            Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4, (float)Device.Viewport.Width / (float)Device.Viewport.Height, 0.1f, 400.0f);
+            Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 400.0f);
 
             Device.SetTransform(TransformState.Projection, Projection);
 
@@ -219,16 +220,13 @@ namespace VehicleDemo
                     wheel.DrawSubset(0);
                 }
             }
-            if (DrawMode == 2 || DrawMode == 3)
+            if (DrawDebugLines && (DrawMode == 2 || DrawMode == 3))
             {
-                if (DrawDebugLines)
-                {
-                    Device.SetRenderState(RenderState.Lighting, false);
-                    Device.SetTransform(TransformState.World, Matrix.Identity);
-                    Device.VertexFormat = PositionColored.FVF;
-                    physics.world.DebugDrawWorld();
-                    Device.SetRenderState(RenderState.Lighting, true);
-                }
+                Device.SetRenderState(RenderState.Lighting, false);
+                Device.SetTransform(TransformState.World, Matrix.Identity);
+                Device.VertexFormat = PositionColored.FVF;
+                physics.world.DebugDrawWorld();
+                Device.SetRenderState(RenderState.Lighting, true);
             }
 
             fps.OnRender(FramesPerSecond);

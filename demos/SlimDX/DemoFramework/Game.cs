@@ -1,17 +1,25 @@
-﻿using SlimDX.Direct3D9;
+﻿using BulletSharp;
+using SlimDX;
+using SlimDX.Direct3D9;
 using SlimDX.Windows;
 using System;
+using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 
 namespace DemoFramework
 {
-    public class Game : IDisposable
+    public class Game : System.IDisposable
     {
         public RenderForm Form
         {
             get;
             private set;
+        }
+
+        public float AspectRatio
+        {
+            get { return (float)Form.ClientSize.Width / (float)Form.ClientSize.Height; }
         }
 
         public Device Device9
@@ -36,8 +44,15 @@ namespace DemoFramework
         private float frameAccumulator;
         private int frameCount;
         private FormWindowState currentFormWindowState;
-        private IDisposable apiContext;
+        private System.IDisposable apiContext;
         private int tempWindowWidth, tempWindowHeight;
+
+        private bool ortho = false;
+        private float cameraDistance = 15.0f;
+        private RigidBody pickedBody;
+        private bool use6Dof = false;
+        private TypedConstraint pickConstraint;
+        private float mousePickClamping = 30;
 
         /// <summary>
         /// Disposes of object resources.
@@ -83,6 +98,157 @@ namespace DemoFramework
         private void Update() {
             FrameDelta = clock.Update();
             OnUpdate();
+        }
+
+        protected void MouseUpdate(Input input, Vector3 eye, Vector3 target, float fov, DynamicsWorld world)
+        {
+            if (input.MouseDown == MouseButtons.Right || input.MouseUp == MouseButtons.Right)
+            {
+                Vector3 rayTo = GetRayTo(input.MousePoint, eye, target, fov);
+
+                if (input.MouseDown == MouseButtons.Right)
+                {
+                    if (world != null)
+                    {
+                        Vector3 rayFrom;
+                        if (ortho)
+                        {
+                            rayFrom = rayTo;
+                            rayFrom.Z = -100;
+                        }
+                        else
+                        {
+                            rayFrom = eye;
+                        }
+
+                        CollisionWorld.ClosestRayResultCallback rayCallback = new CollisionWorld.ClosestRayResultCallback(rayFrom, rayTo);
+                        world.RayTest(rayFrom, rayTo, rayCallback);
+                        if (rayCallback.HasHit)
+                        {
+                            RigidBody body = RigidBody.Upcast(rayCallback.CollisionObject);
+                            if (body != null)
+                            {
+                                if (!(body.IsStaticObject() || body.IsKinematicObject()))
+                                {
+                                    pickedBody = body;
+                                    pickedBody.ActivationState = ActivationState.DisableDeactivation;
+
+                                    Vector3 pickPos = rayCallback.HitPointWorld;
+                                    Vector3 localPivot = Vector3.TransformCoordinate(pickPos, Matrix.Invert(body.CenterOfMassTransform));
+
+                                    if (use6Dof)
+                                    {
+                                        Generic6DofConstraint dof6 = new Generic6DofConstraint(body, Matrix.Translation(localPivot), false);
+                                        dof6.SetLinearLowerLimit(Vector3.Zero);
+                                        dof6.SetLinearUpperLimit(Vector3.Zero);
+                                        dof6.SetAngularLowerLimit(Vector3.Zero);
+                                        dof6.SetAngularUpperLimit(Vector3.Zero);
+
+                                        world.AddConstraint(dof6);
+                                        pickConstraint = dof6;
+
+                                        dof6.SetParam(ConstraintParams.StopCfm, 0.8f, 0);
+                                        dof6.SetParam(ConstraintParams.StopCfm, 0.8f, 1);
+                                        dof6.SetParam(ConstraintParams.StopCfm, 0.8f, 2);
+                                        dof6.SetParam(ConstraintParams.StopCfm, 0.8f, 3);
+                                        dof6.SetParam(ConstraintParams.StopCfm, 0.8f, 4);
+                                        dof6.SetParam(ConstraintParams.StopCfm, 0.8f, 5);
+
+                                        dof6.SetParam(ConstraintParams.StopErp, 0.1f, 0);
+                                        dof6.SetParam(ConstraintParams.StopErp, 0.1f, 1);
+                                        dof6.SetParam(ConstraintParams.StopErp, 0.1f, 2);
+                                        dof6.SetParam(ConstraintParams.StopErp, 0.1f, 3);
+                                        dof6.SetParam(ConstraintParams.StopErp, 0.1f, 4);
+                                        dof6.SetParam(ConstraintParams.StopErp, 0.1f, 5);
+                                    }
+                                    else
+                                    {
+                                        Point2PointConstraint p2p = new Point2PointConstraint(body, localPivot);
+                                        world.AddConstraint(p2p);
+                                        pickConstraint = p2p;
+                                        p2p.Setting.ImpulseClamp = mousePickClamping;
+                                        //very weak constraint for picking
+                                        p2p.Setting.Tau = 0.001f;
+                                        /*
+                                        p2p.SetParam(ConstraintParams.Cfm, 0.8f, 0);
+                                        p2p.SetParam(ConstraintParams.Cfm, 0.8f, 1);
+                                        p2p.SetParam(ConstraintParams.Cfm, 0.8f, 2);
+                                        p2p.SetParam(ConstraintParams.Erp, 0.1f, 0);
+                                        p2p.SetParam(ConstraintParams.Erp, 0.1f, 1);
+                                        p2p.SetParam(ConstraintParams.Erp, 0.1f, 2);
+                                        */
+                                    }
+                                    use6Dof = !use6Dof;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        Vector3	GetRayTo(Point point, Vector3 eye, Vector3 target, float fov)
+        {
+            float aspect;
+
+            if (ortho)
+            {
+	            Vector3 extents;
+                if (Form.ClientSize.Width > Form.ClientSize.Height) 
+	            {
+		            extents = new Vector3(AspectRatio, 1, 0);
+	            } else 
+	            {
+                    aspect = (float)Form.ClientSize.Height / (float)Form.ClientSize.Width;
+		            extents = new Vector3(1, aspect, 0);
+	            }
+            	
+	            extents *= cameraDistance;
+	            Vector3 lower = target - extents;
+	            Vector3 upper = target + extents;
+
+                float u = (float)point.X / (float)Form.ClientSize.Width;
+                float v = (Form.ClientSize.Height - point.Y) / (float)Form.ClientSize.Width;
+            	
+	            Vector3 p = new Vector3((1.0f - u) * lower.X + u * upper.X, (1.0f - v) * lower.Y + v * upper.Y, target.Z);
+	            return p;
+            }
+
+            Vector3 rayFrom = eye;
+            Vector3 rayForward = target - eye;
+            rayForward.Normalize();
+            float farPlane = 10000.0f;
+            rayForward *= farPlane;
+
+            Vector3 vertical = Vector3.UnitY;
+
+            Vector3 hor = Vector3.Cross(rayForward, vertical);
+            hor.Normalize();
+            vertical = Vector3.Cross(hor, rayForward);
+            vertical.Normalize();
+
+            float tanFov = (float)Math.Tan(fov/2);
+            hor *= 2.0f * farPlane * tanFov;
+            vertical *= 2.0f * farPlane * tanFov;
+
+            if (Form.ClientSize.Width > Form.ClientSize.Height)
+            {
+                aspect = (float)Form.ClientSize.Width / (float)Form.ClientSize.Height;
+	            hor *= aspect;
+            } else 
+            {
+                aspect = (float)Form.ClientSize.Height / (float)Form.ClientSize.Width;
+	            vertical *= aspect;
+            }
+
+            Vector3 rayToCenter = rayFrom + rayForward;
+            Vector3 dHor = hor / (float)Form.ClientSize.Width;
+            Vector3 dVert = vertical / (float)Form.ClientSize.Height;
+
+            Vector3 rayTo = rayToCenter - 0.5f * hor + 0.5f * vertical;
+            rayTo += (Form.ClientSize.Width - point.X) * dHor;
+            rayTo -= point.Y * dVert;
+            return rayTo;
         }
 
         /// <summary>

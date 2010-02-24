@@ -46,46 +46,48 @@ namespace DemoFramework
         {
             mouseController.Update(input);
 
-            if (input.KeyboardState == null ||
-                input.KeyboardState.PressedKeys.Count == 0)
-            {
-                Target = Eye - mouseController.Vector;
-                Recalculate();
+            if ((input.KeyboardState == null ||
+                input.KeyboardState.PressedKeys.Count == 0) &&
+                input.MouseButtons == System.Windows.Forms.MouseButtons.None)
                 return;
-            }
 
-            Vector3 translation = Vector3.Zero;
-            Vector3 sideways = Vector3.Zero;
-            bool hasSideways = false;
-            Vector3 direction = Vector3.Normalize(-mouseController.Vector);
+            //Vector3 direction = Vector3.Normalize(-mouseController.Vector);
+            Vector3 direction = -mouseController.Vector;
             direction *= frameDelta;
 
-            float flySpeed = (input.KeyboardState.IsPressed(Key.LeftShift)) ? 10 : 2;
-
-            if (input.KeyboardState.IsPressed(Key.W))
-                translation = flySpeed * direction;
-            if (input.KeyboardState.IsPressed(Key.S))
-                translation -= flySpeed * direction;
-
-            if (input.KeyboardState.IsPressed(Key.A))
+            if (input.KeyboardState.PressedKeys.Count > 0)
             {
-                sideways = Vector3.TransformCoordinate(direction, Matrix.RotationY((float)-Math.PI / 2));
-                hasSideways = true;
-            }
-            if (input.KeyboardState.IsPressed(Key.D))
-            {
-                sideways += Vector3.TransformCoordinate(direction, Matrix.RotationY((float)Math.PI / 2));
-                hasSideways = true;
-            }
-            
-            // Sideways movement should not affect up-down movement(y=0)
-            if (hasSideways)
-            {
-                sideways.Y = 0;
-                translation += sideways;
-            }
+                Vector3 translation = Vector3.Zero;
+                Vector3 sideways = Vector3.Zero;
+                bool hasSideways = false;
 
-            Eye += translation;
+                float flySpeed = (input.KeyboardState.IsPressed(Key.LeftShift)) ? 10 : 2;
+
+                if (input.KeyboardState.IsPressed(Key.W))
+                    translation = flySpeed * direction;
+                if (input.KeyboardState.IsPressed(Key.S))
+                    translation -= flySpeed * direction;
+
+                if (input.KeyboardState.IsPressed(Key.A))
+                {
+                    sideways = Vector3.TransformCoordinate(direction, Matrix.RotationY((float)-Math.PI / 2));
+                    hasSideways = true;
+                }
+                if (input.KeyboardState.IsPressed(Key.D))
+                {
+                    sideways += Vector3.TransformCoordinate(direction, Matrix.RotationY((float)Math.PI / 2));
+                    hasSideways = true;
+                }
+
+                // Sideways movement should not affect up-down movement(y=0)
+                if (hasSideways)
+                {
+                    sideways.Y = 0;
+                    translation += sideways;
+                }
+                
+                Eye += translation;
+            }
             Target = Eye + direction;
 
             Recalculate();

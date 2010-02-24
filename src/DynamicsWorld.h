@@ -2,12 +2,49 @@
 
 #include "ActionInterface.h"
 #include "CollisionWorld.h"
+#include "IDisposable.h"
 #include "RigidBody.h"
 
 namespace BulletSharp
 {
 	public ref class DynamicsWorld abstract : BulletSharp::CollisionWorld
 	{
+	public:
+		ref class RayResultCallback abstract : BulletSharp::IDisposable
+		{
+		public:
+			virtual event EventHandler^ OnDisposing;
+			virtual event EventHandler^ OnDisposed;
+
+		private:
+			btDynamicsWorld::RayResultCallback* _callback;
+
+		protected:
+			RayResultCallback(btDynamicsWorld::RayResultCallback* callback);
+		public:
+			!RayResultCallback();
+		protected:
+			~RayResultCallback();
+		public:
+			property bool IsDisposed
+			{
+				virtual bool get();
+			}
+
+		internal:
+			property btDynamicsWorld::RayResultCallback* UnmanagedPointer
+			{
+				virtual btDynamicsWorld::RayResultCallback* get();
+				void set(btDynamicsWorld::RayResultCallback* value);
+			}
+		};
+
+		ref class ClosestRayResultCallback : RayResultCallback
+		{
+		public:
+			ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld);
+		};
+
 	protected:
 		DynamicsWorld(btDynamicsWorld* world) : CollisionWorld(world) {}
 

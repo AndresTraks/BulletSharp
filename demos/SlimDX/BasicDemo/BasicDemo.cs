@@ -11,12 +11,13 @@ namespace BasicDemo
 {
     class BasicDemo : Game
     {
-        int Width = 800, Height = 600;
+        int Width = 1024, Height = 768;
         Color ambient = Color.Gray;
         Vector3 eye = new Vector3(30, 20, 10);
-        bool DrawDebugLines = false;
+        bool DrawDebugLines = true;
+        float FieldOfView = (float)Math.PI / 4;
 
-        Matrix Projection, View;
+        Matrix Projection;
         Input input;
         FreeLook freelook;
         FpsDisplay fps;
@@ -101,7 +102,8 @@ namespace BasicDemo
 
             debugDraw = new PhysicsDebugDraw(Device);
             physics.world.DebugDrawer = debugDraw;
-            debugDraw.SetDebugMode(DebugDrawModes.DrawWireframe);
+            debugDraw.SetDebugMode(DebugDrawModes.DrawWireframe |
+                DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits);
         }
 
         protected override void OnResourceLoad()
@@ -112,8 +114,7 @@ namespace BasicDemo
             Device.EnableLight(0, true);
             Device.SetRenderState(RenderState.Ambient, new Color4(0.5f, 0.5f, 0.5f).ToArgb());
 
-            Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4, (float)Device.Viewport.Width / (float)Device.Viewport.Height, 0.1f, 150.0f);
-            View = freelook.View;
+            Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 150.0f);
 
             Device.SetTransform(TransformState.Projection, Projection);
 
@@ -133,7 +134,7 @@ namespace BasicDemo
             if (input.MousePoint != Point.Empty)
             {
                 freelook.Update(FrameDelta, input);
-                View = freelook.View;
+                MouseUpdate(input, freelook.Eye, freelook.Target, FieldOfView, physics.world);
             }
 
             // Handle keyboard events
@@ -155,7 +156,7 @@ namespace BasicDemo
             Device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.LightGray, 1.0f, 0);
             Device.BeginScene();
 
-            Device.SetTransform(TransformState.View, View);
+            Device.SetTransform(TransformState.View, freelook.View);
 
             Device.Material = groundMaterial;
             Device.SetTransform(TransformState.World, Matrix.Translation(-Vector3.UnitY * 50));

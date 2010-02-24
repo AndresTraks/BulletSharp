@@ -24,10 +24,10 @@ namespace BulletSharp
 		// Not a property to avoid crashing when feedback is not enabled
 		btScalar GetAppliedImpulse();
 
-		btScalar GetParam(int num, int axis);
-		btScalar GetParam(int num);
-		void SetParam(int num, btScalar value, int axis);
-		void SetParam(int num, btScalar value);
+		btScalar GetParam(ConstraintParams num, int axis);
+		btScalar GetParam(ConstraintParams num);
+		void SetParam(ConstraintParams num, btScalar value, int axis);
+		void SetParam(ConstraintParams num, btScalar value);
 
 		property TypedConstraintType ConstraintType
 		{
