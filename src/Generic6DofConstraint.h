@@ -249,6 +249,8 @@ namespace BulletSharp
 
 	public ref class Generic6DofConstraint : TypedConstraint
 	{
+	internal:
+		Generic6DofConstraint(btGeneric6DofConstraint* constraint);
 	public:
 		Generic6DofConstraint(RigidBody^ rbA, RigidBody^ rbB,
 			Matrix frameInA, Matrix frameInB, bool useReferenceFrameA);

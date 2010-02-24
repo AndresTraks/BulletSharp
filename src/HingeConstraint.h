@@ -28,6 +28,14 @@ namespace BulletSharp
 		void EnableAngularMotor(bool enableMotor,
 			btScalar targetVelocity, btScalar maxMotorImpulse);
 
+		void SetLimit(btScalar low, btScalar high,
+			btScalar _softness, btScalar _biasFactor, btScalar _relaxationFactor);
+		void SetLimit(btScalar low, btScalar high,
+			btScalar _softness, btScalar _biasFactor);
+		void SetLimit(btScalar low, btScalar high,
+			btScalar _softness);
+		void SetLimit(btScalar low, btScalar high);
+
 		property btHingeConstraint* UnmanagedPointer
 		{
 			btHingeConstraint* get() new;

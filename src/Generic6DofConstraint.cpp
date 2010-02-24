@@ -403,6 +403,11 @@ btTranslationalLimitMotor* TranslationalLimitMotor::UnmanagedPointer::get()
 }
 
 
+Generic6DofConstraint::Generic6DofConstraint(btGeneric6DofConstraint* constraint)
+: TypedConstraint(constraint)
+{
+}
+
 Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rbA, RigidBody^ rbB,
 	Matrix frameInA, Matrix frameInB, bool useReferenceFrameA)
 : TypedConstraint(new btGeneric6DofConstraint(*rbA->UnmanagedPointer,

@@ -75,6 +75,28 @@ void HingeConstraint::EnableAngularMotor(bool enableMotor,
 	UnmanagedPointer->enableAngularMotor(enableMotor, targetVelocity, maxMotorImpulse);
 }
 
+void HingeConstraint::SetLimit(btScalar low, btScalar high,
+	btScalar _softness, btScalar _biasFactor, btScalar _relaxationFactor)
+{
+	UnmanagedPointer->setLimit(low, high, _softness, _biasFactor, _relaxationFactor);
+}
+
+void HingeConstraint::SetLimit(btScalar low, btScalar high,
+	btScalar _softness, btScalar _biasFactor)
+{
+	UnmanagedPointer->setLimit(low, high, _softness, _biasFactor);
+}
+
+void HingeConstraint::SetLimit(btScalar low, btScalar high, btScalar _softness)
+{
+	UnmanagedPointer->setLimit(low, high, _softness);
+}
+
+void HingeConstraint::SetLimit(btScalar low, btScalar high)
+{
+	UnmanagedPointer->setLimit(low, high);
+}
+
 btHingeConstraint* HingeConstraint::UnmanagedPointer::get()
 {
 	return (btHingeConstraint*)TypedConstraint::UnmanagedPointer;

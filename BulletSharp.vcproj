@@ -396,6 +396,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ConeTwistConstraint.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ConstraintSolver.cpp"
 				>
 			</File>
@@ -448,7 +452,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Generic6DofSpringConstraint.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\GImpactShape.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Hinge2Constraint.cpp"
 				>
 			</File>
 			<File
@@ -545,6 +557,10 @@
 			</File>
 			<File
 				RelativePath=".\src\TypedConstraint.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\UniversalConstraint.cpp"
 				>
 			</File>
 			<File
@@ -756,11 +772,23 @@
 					Name="ConstraintSolver"
 					>
 					<File
+						RelativePath=".\src\ConeTwistConstraint.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\ConstraintSolver.h"
 						>
 					</File>
 					<File
 						RelativePath=".\src\Generic6DofConstraint.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\Generic6DofSpringConstraint.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\Hinge2Constraint.h"
 						>
 					</File>
 					<File
@@ -777,6 +805,10 @@
 					</File>
 					<File
 						RelativePath=".\src\TypedConstraint.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\UniversalConstraint.h"
 						>
 					</File>
 				</Filter>
