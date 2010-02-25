@@ -16,5 +16,6 @@ namespace BulletSharp
 
 			static Matrix BtTransformToMatrix(const btTransform*);
 			static btTransform* MatrixToBtTransform(Matrix);
+			static void MatrixToBtTransform(Matrix, btTransform*);
 	};
 };

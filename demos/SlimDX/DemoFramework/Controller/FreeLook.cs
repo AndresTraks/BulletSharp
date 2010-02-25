@@ -51,9 +51,7 @@ namespace DemoFramework
                 input.MouseButtons == System.Windows.Forms.MouseButtons.None)
                 return;
 
-            //Vector3 direction = Vector3.Normalize(-mouseController.Vector);
-            Vector3 direction = -mouseController.Vector;
-            direction *= frameDelta;
+            Vector3 direction = frameDelta * Vector3.Normalize(-mouseController.Vector);
 
             if (input.KeyboardState.PressedKeys.Count > 0)
             {
@@ -61,7 +59,7 @@ namespace DemoFramework
                 Vector3 sideways = Vector3.Zero;
                 bool hasSideways = false;
 
-                float flySpeed = (input.KeyboardState.IsPressed(Key.LeftShift)) ? 10 : 2;
+                float flySpeed = (input.KeyboardState.IsPressed(Key.LeftShift)) ? 15 : 5;
 
                 if (input.KeyboardState.IsPressed(Key.W))
                     translation = flySpeed * direction;

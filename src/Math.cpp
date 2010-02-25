@@ -83,3 +83,27 @@ btTransform* BulletSharp::Math::MatrixToBtTransform(Matrix matrix)
 
 	return t;
 }
+
+void BulletSharp::Math::MatrixToBtTransform(Matrix matrix, btTransform* t)
+{
+	btScalar m[15];
+
+	m[0] = matrix.M11;
+	m[1] = matrix.M12;
+	m[2] = matrix.M13;
+	m[3] = 0;
+	m[4] = matrix.M21;
+	m[5] = matrix.M22;
+	m[6] = matrix.M23;
+	m[7] = 0;
+	m[8] = matrix.M31;
+	m[9] = matrix.M32;
+	m[10] = matrix.M33;
+	m[11] = 0;
+	m[12] = matrix.M41;
+	m[13] = matrix.M42;
+	m[14] = matrix.M43;
+	m[15] = 1;
+
+	t->setFromOpenGLMatrix(m);
+}

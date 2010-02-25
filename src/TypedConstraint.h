@@ -1,16 +1,30 @@
 #pragma once
 
 #include "Enums.h"
+#include "IDisposable.h"
 #include "RigidBody.h"
 
 namespace BulletSharp
 {
 	ref class RigidBody;
 
-	public ref class TypedConstraint abstract
+	public ref class TypedConstraint abstract : BulletSharp::IDisposable
 	{
+	public:
+		virtual event EventHandler^ OnDisposing;
+		virtual event EventHandler^ OnDisposed;
+
 	private:
 		btTypedConstraint* _typedConstraint;
+	public:
+		!TypedConstraint();
+	protected:
+		~TypedConstraint();
+	public:
+		property bool IsDisposed
+		{
+			virtual bool get();
+		}
 
 	protected:
 		TypedConstraint(btTypedConstraint* typedConstraint);

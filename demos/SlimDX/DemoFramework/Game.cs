@@ -53,6 +53,7 @@ namespace DemoFramework
         private bool use6Dof = false;
         private TypedConstraint pickConstraint;
         private float mousePickClamping = 30;
+        private float oldPickingDist;
 
         /// <summary>
         /// Disposes of object resources.
@@ -179,9 +180,93 @@ namespace DemoFramework
                                         */
                                     }
                                     use6Dof = !use6Dof;
+
+                                    oldPickingDist = (pickPos - rayFrom).Length();
                                 }
                             }
                         }
+                    }
+                }
+                else if (input.MouseUp == MouseButtons.Right)
+                {
+                    if (pickConstraint != null && world != null)
+                    {
+                        world.RemoveConstraint(pickConstraint);
+                        pickConstraint.Dispose();
+                        pickConstraint = null;
+                        pickedBody.ForceActivationState(ActivationState.ActiveTag);
+                        pickedBody.DeactivationTime = 0;
+                        pickedBody = null;
+                    }
+                }
+            }
+
+            // Mouse movement
+            if (input.MouseButtons == MouseButtons.Right)
+            {
+                if (pickConstraint != null)
+                {
+                    Vector3 newRayTo = GetRayTo(input.MousePoint, eye, target, fov);
+
+                    if (pickConstraint.ConstraintType == TypedConstraintType.D6)
+                    {
+                        Generic6DofConstraint pickCon = (Generic6DofConstraint)pickConstraint;
+
+                        //keep it at the same picking distance
+                        Vector3 rayFrom;
+                        Vector3 scale;
+                        Quaternion rotation;
+                        Vector3 oldPivotInB;
+                        pickCon.FrameOffsetA.Decompose(out scale, out rotation, out oldPivotInB);
+
+                        Vector3 newPivotB;
+                        if (ortho)
+                        {
+                            newPivotB = oldPivotInB;
+                            newPivotB.X = newRayTo.X;
+                            newPivotB.Y = newRayTo.Y;
+                        }
+                        else
+                        {
+                            rayFrom = eye;
+                            Vector3 dir = newRayTo - rayFrom;
+                            dir.Normalize();
+                            dir *= oldPickingDist;
+
+                            newPivotB = rayFrom + dir;
+                        }
+                        Matrix tempFrameOffsetA = pickCon.FrameOffsetA;
+                        Vector4 transRow = tempFrameOffsetA.get_Rows(3);
+                        transRow.X = newPivotB.X;
+                        transRow.Y = newPivotB.Y;
+                        transRow.Z = newPivotB.Z;
+                        tempFrameOffsetA.set_Rows(3, transRow);
+                        pickCon.FrameOffsetA = tempFrameOffsetA;
+                    }
+                    else
+                    {
+                        Point2PointConstraint pickCon = (Point2PointConstraint)pickConstraint;
+
+                        //keep it at the same picking distance
+                        Vector3 rayFrom;
+                        Vector3 oldPivotInB = pickCon.PivotInB;
+                        Vector3 newPivotB;
+                        if (ortho)
+                        {
+                            newPivotB = oldPivotInB;
+                            newPivotB.X = newRayTo.X;
+                            newPivotB.Y = newRayTo.Y;
+                        }
+                        else
+                        {
+                            rayFrom = eye;
+                            Vector3 dir = newRayTo - rayFrom;
+                            dir.Normalize();
+                            dir *= oldPickingDist;
+
+                            newPivotB = rayFrom + dir;
+                        }
+                        pickCon.PivotInB = newPivotB;
                     }
                 }
             }

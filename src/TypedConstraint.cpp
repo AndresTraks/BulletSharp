@@ -7,6 +7,28 @@ TypedConstraint::TypedConstraint(btTypedConstraint* typedConstraint)
 	_typedConstraint = typedConstraint;
 }
 
+TypedConstraint::~TypedConstraint()
+{
+	this->!TypedConstraint();
+}
+
+TypedConstraint::!TypedConstraint()
+{
+	if( this->IsDisposed == true )
+		return;
+	
+	OnDisposing( this, nullptr );
+	
+	_typedConstraint = NULL;
+	
+	OnDisposed( this, nullptr );
+}
+
+bool TypedConstraint::IsDisposed::get()
+{
+	return (_typedConstraint == NULL);
+}
+
 int TypedConstraint::CalculateSerializeBufferSize()
 {
 	return _typedConstraint->calculateSerializeBufferSize();

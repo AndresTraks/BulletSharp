@@ -74,7 +74,7 @@ bool VoronoiSimplexSolver::ClosestPtPointTetrahedron(Vector3 p,
 	[Out] SubSimplexClosestResult^% finalResult)
 {
 	btSubSimplexClosestResult* tempResult = new btSubSimplexClosestResult;
-	int ret = UnmanagedPointer->closestPtPointTetrahedron(*Math::Vector3ToBtVec3(p),
+	bool ret = UnmanagedPointer->closestPtPointTetrahedron(*Math::Vector3ToBtVec3(p),
 		*Math::Vector3ToBtVec3(a), *Math::Vector3ToBtVec3(b),
 		*Math::Vector3ToBtVec3(c), *Math::Vector3ToBtVec3(c),
 		*tempResult
@@ -88,7 +88,7 @@ bool VoronoiSimplexSolver::ClosestPtPointTriangle(Vector3 p,
 	[Out] SubSimplexClosestResult^% result)
 {
 	btSubSimplexClosestResult* tempResult = new btSubSimplexClosestResult;
-	int ret = UnmanagedPointer->closestPtPointTriangle(*Math::Vector3ToBtVec3(p),
+	bool ret = UnmanagedPointer->closestPtPointTriangle(*Math::Vector3ToBtVec3(p),
 		*Math::Vector3ToBtVec3(a), *Math::Vector3ToBtVec3(b),
 		*Math::Vector3ToBtVec3(c), *tempResult
 	);
