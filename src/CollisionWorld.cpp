@@ -75,7 +75,7 @@ CollisionWorld::CollisionWorld(btCollisionWorld* world)
 	_world = world;
 }
 
-CollisionWorld::CollisionWorld(BulletSharp::IDispatcher^ dispatcher, BroadphaseInterface^ pairCache, CollisionConfiguration^ collisionConfiguration)
+CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, CollisionConfiguration^ collisionConfiguration)
 {
 	_world = new btCollisionWorld(dispatcher->UnmanagedPointer, pairCache->UnmanagedPointer, collisionConfiguration->UnmanagedPointer);
 	_dispatcher = dispatcher;
@@ -167,7 +167,7 @@ void CollisionWorld::DebugDrawer::set(DebugDraw^ value)
 	_world->setDebugDrawer(_debugDraw->_debugWrapper);
 }
 
-BulletSharp::IDispatcher^ CollisionWorld::IDispatcher::get()
+BulletSharp::Dispatcher^ CollisionWorld::Dispatcher::get()
 {
 	return _dispatcher;
 }

@@ -6,7 +6,7 @@
 #include "CollisionObject.h"
 #include "DebugDraw.h"
 #include "Enums.h"
-#include "IDispatcher.h"
+#include "Dispatcher.h"
 #include "IDisposable.h"
 
 using namespace System::Drawing;
@@ -80,7 +80,7 @@ namespace BulletSharp
 	private:
 		btCollisionWorld* _world;
 	protected:
-		IDispatcher^ _dispatcher;
+		Dispatcher^ _dispatcher;
 		BroadphaseInterface^ _broadphase;
 		DebugDraw^ _debugDraw;
 		OverlappingPairCache^ _pairCache;
@@ -89,7 +89,7 @@ namespace BulletSharp
 	protected:
 		CollisionWorld(btCollisionWorld* world);
 	public:
-		CollisionWorld(BulletSharp::IDispatcher^ dispatcher, BroadphaseInterface^ pairCache, CollisionConfiguration^ collisionConfiguration);
+		CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, CollisionConfiguration^ collisionConfiguration);
 	public:
 		!CollisionWorld();
 	protected:
@@ -127,9 +127,9 @@ namespace BulletSharp
 			void set(DebugDraw^ value);
 		}
 
-		property BulletSharp::IDispatcher^ IDispatcher
+		property BulletSharp::Dispatcher^ Dispatcher
 		{
-			BulletSharp::IDispatcher^ get();
+			BulletSharp::Dispatcher^ get();
 		}
 
 		//property BulletSharp::DispatcherInfo^ DispatchInfo

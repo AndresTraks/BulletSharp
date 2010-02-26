@@ -4,7 +4,7 @@
 
 #include "BroadphaseProxy.h"
 #include "IDisposable.h"
-#include "IDispatcher.h"
+#include "Dispatcher.h"
 #include "OverlappingPairCache.h"
 
 namespace BulletSharp
@@ -64,11 +64,11 @@ namespace BulletSharp
 
 	public:
 		void AabbTest(Vector3 aabbMin, Vector3 aabbMax, BroadphaseAabbCallback^ callback);
-		void CalculateOverlappingPairs(IDispatcher^ dispatcher);
+		void CalculateOverlappingPairs(Dispatcher^ dispatcher);
 		BroadphaseProxy^ CreateProxy(Vector3 aabbMin, Vector3 aabbMax,
 			int shapeType, IntPtr userPtr, short int collisionFilterGroup,
-			short int collisionFilterMask, IDispatcher^ dispatcher, IntPtr multiSapProxy);
-		void DestroyProxy(BroadphaseProxy^ proxy, IDispatcher^ dispatcher);
+			short int collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy);
+		void DestroyProxy(BroadphaseProxy^ proxy, Dispatcher^ dispatcher);
 		void GetAabb(BroadphaseProxy^ proxy, [Out] Vector3% aabbMin, [Out] Vector3% AabbMax);
 		void GetBroadphaseAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		void PrintStats();
@@ -77,8 +77,8 @@ namespace BulletSharp
 		void RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback^ rayCallback,
 			Vector3 aabbMin);
 		void RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback^ rayCallback);
-		void ResetPool(IDispatcher^ dispatcher);
-		void SetAabb(BroadphaseProxy^ proxy, Vector3 aabbMin, Vector3 aabbMax, IDispatcher^ dispatcher);
+		void ResetPool(Dispatcher^ dispatcher);
+		void SetAabb(BroadphaseProxy^ proxy, Vector3 aabbMin, Vector3 aabbMax, Dispatcher^ dispatcher);
 
 		property BulletSharp::OverlappingPairCache^ OverlappingPairCache
 		{

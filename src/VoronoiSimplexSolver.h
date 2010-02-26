@@ -41,6 +41,8 @@ namespace BulletSharp
 #ifdef NO_VIRTUAL_INTERFACE
 	private:
 		btVoronoiSimplexSolver* _solver;
+	public:
+		VoronoiSimplexSolver();
 #endif
 	public:
 		void AddVertex(Vector3 w, Vector3 p, Vector3 q);

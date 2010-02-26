@@ -58,14 +58,14 @@ void BroadphaseInterface::AabbTest(Vector3 aabbMin, Vector3 aabbMax, BroadphaseA
 	_broadphase->aabbTest(*Math::Vector3ToBtVec3(aabbMin), *Math::Vector3ToBtVec3(aabbMin), *callback->UnmanagedPointer);
 }
 
-void BroadphaseInterface::CalculateOverlappingPairs(IDispatcher^ dispatcher)
+void BroadphaseInterface::CalculateOverlappingPairs(Dispatcher^ dispatcher)
 {
 	_broadphase->calculateOverlappingPairs(dispatcher->UnmanagedPointer);
 }
 
 BroadphaseProxy^ BroadphaseInterface::CreateProxy(Vector3 aabbMin, Vector3 aabbMax,
 	int shapeType, IntPtr userPtr, short int collisionFilterGroup,
-	short int collisionFilterMask, IDispatcher^ dispatcher, IntPtr multiSapProxy)
+	short int collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
 {
 	btBroadphaseProxy* proxy = new btBroadphaseProxy;
 	proxy = _broadphase->createProxy(*Math::Vector3ToBtVec3(aabbMin), *Math::Vector3ToBtVec3(aabbMax),
@@ -74,7 +74,7 @@ BroadphaseProxy^ BroadphaseInterface::CreateProxy(Vector3 aabbMin, Vector3 aabbM
 	return gcnew BroadphaseProxy(proxy);
 }
 
-void BroadphaseInterface::DestroyProxy(BroadphaseProxy^ proxy, IDispatcher^ dispatcher)
+void BroadphaseInterface::DestroyProxy(BroadphaseProxy^ proxy, Dispatcher^ dispatcher)
 {
 	_broadphase->destroyProxy(proxy->UnmanagedPointer, dispatcher->UnmanagedPointer);
 }
@@ -143,12 +143,12 @@ void BroadphaseInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayC
 		rayCallback->UnmanagedPointer);
 }
 
-void BroadphaseInterface::ResetPool(IDispatcher^ dispatcher)
+void BroadphaseInterface::ResetPool(Dispatcher^ dispatcher)
 {
 	_broadphase->resetPool(dispatcher->UnmanagedPointer);
 }
 
-void BroadphaseInterface::SetAabb(BroadphaseProxy^ proxy, Vector3 aabbMin, Vector3 aabbMax, IDispatcher^ dispatcher)
+void BroadphaseInterface::SetAabb(BroadphaseProxy^ proxy, Vector3 aabbMin, Vector3 aabbMax, Dispatcher^ dispatcher)
 {
 	_broadphase->setAabb(proxy->UnmanagedPointer, *Math::Vector3ToBtVec3(aabbMin), *Math::Vector3ToBtVec3(aabbMax), dispatcher->UnmanagedPointer);
 }

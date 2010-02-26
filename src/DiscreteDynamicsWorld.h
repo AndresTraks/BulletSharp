@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ConstraintSolver.h"
-#include "IDispatcher.h"
+#include "Dispatcher.h"
 #include "DynamicsWorld.h"
 
 namespace BulletSharp
@@ -9,7 +9,7 @@ namespace BulletSharp
 	public ref class DiscreteDynamicsWorld : BulletSharp::DynamicsWorld
 	{
 		public:
-			DiscreteDynamicsWorld(BulletSharp::IDispatcher^ dispatcher, BroadphaseInterface^ pairCache, ConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration);
+			DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, ConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration);
 
 			void SetGravity(btScalar x, btScalar y, btScalar z);
 

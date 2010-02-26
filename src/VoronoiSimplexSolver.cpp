@@ -53,6 +53,11 @@ void SubSimplexClosestResult::UnmanagedPointer::set(btSubSimplexClosestResult* v
 }
 
 
+VoronoiSimplexSolver::VoronoiSimplexSolver()
+{
+	_solver = new btVoronoiSimplexSolver();
+}
+
 void VoronoiSimplexSolver::AddVertex(Vector3 w, Vector3 p, Vector3 q)
 {
 	UnmanagedPointer->addVertex(*Math::Vector3ToBtVec3(w),

@@ -11,6 +11,46 @@ namespace BulletSharp
 		DisableSimulation = DISABLE_SIMULATION
 	};
 
+	public enum class BroadphaseNativeTypes {
+		BoxShape = BOX_SHAPE_PROXYTYPE,
+		TriangleShape = TRIANGLE_SHAPE_PROXYTYPE,
+		TetrahedralShape = TETRAHEDRAL_SHAPE_PROXYTYPE,
+		ConvexTriangleMeshShape = CONVEX_TRIANGLEMESH_SHAPE_PROXYTYPE,
+		ConvexHullShape = CONVEX_HULL_SHAPE_PROXYTYPE,
+		ConvexPointCloudShape = CONVEX_POINT_CLOUD_SHAPE_PROXYTYPE,
+		CustomPolyhedralShape = CUSTOM_POLYHEDRAL_SHAPE_TYPE,
+		ImplicitConvexShapesStartHere = IMPLICIT_CONVEX_SHAPES_START_HERE,
+		SphereShape = SPHERE_SHAPE_PROXYTYPE,
+		MultiSphereShape = MULTI_SPHERE_SHAPE_PROXYTYPE,
+		CapsuleShape = CAPSULE_SHAPE_PROXYTYPE,
+		ConeShape = CONE_SHAPE_PROXYTYPE,
+		ConvexShape = CONVEX_SHAPE_PROXYTYPE,
+		CylinderShape = CYLINDER_SHAPE_PROXYTYPE,
+		UniformScalingShape = UNIFORM_SCALING_SHAPE_PROXYTYPE,
+		MinkowskiSumShape = MINKOWSKI_SUM_SHAPE_PROXYTYPE,
+		MinkowskiDifferenceShape = MINKOWSKI_DIFFERENCE_SHAPE_PROXYTYPE,
+		Box2dShape = BOX_2D_SHAPE_PROXYTYPE,
+		Convex2dShape = CONVEX_2D_SHAPE_PROXYTYPE,
+		CustomConvexShape = CUSTOM_CONVEX_SHAPE_TYPE,
+		ConcaveShapesStartHere = CONCAVE_SHAPES_START_HERE,
+		TriangleMeshShape = TRIANGLE_MESH_SHAPE_PROXYTYPE,
+		ScaledTriangleMeshShape = SCALED_TRIANGLE_MESH_SHAPE_PROXYTYPE,
+		FastConcaveMesh = FAST_CONCAVE_MESH_PROXYTYPE,
+		TerrainShape = TERRAIN_SHAPE_PROXYTYPE,
+		GImpactShape = GIMPACT_SHAPE_PROXYTYPE, 
+		MultiMaterialTriangleMesh = MULTIMATERIAL_TRIANGLE_MESH_PROXYTYPE,
+		EmptyShape = EMPTY_SHAPE_PROXYTYPE,
+		StaticPlane = STATIC_PLANE_PROXYTYPE,
+		CustomConcaveShape = CUSTOM_CONCAVE_SHAPE_TYPE,
+		ConcaveShapesEndHere = CONCAVE_SHAPES_END_HERE,
+		CompoundShape = COMPOUND_SHAPE_PROXYTYPE,
+		SoftBodyShape = SOFTBODY_SHAPE_PROXYTYPE,
+		HfFluidShape = HFFLUID_SHAPE_PROXYTYPE,
+		HfFluidBuoyantConvexShape = HFFLUID_BUOYANT_CONVEX_SHAPE_PROXYTYPE,
+		InvalidShape = INVALID_SHAPE_PROXYTYPE,
+		MaxBroadphaseCollisionTypes = MAX_BROADPHASE_COLLISION_TYPES
+	};
+
 	[Flags]
 	public enum class CollisionFilterGroups
 	{

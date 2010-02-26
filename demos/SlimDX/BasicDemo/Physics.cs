@@ -19,9 +19,6 @@ namespace BasicDemo
         float StartPosY = -5;
         float StartPosZ = -3;
 
-        //maximum number of objects (and allow user to shoot additional boxes)
-        int MaxProxies;
-
         CollisionDispatcher dispatcher;
         BroadphaseInterface broadphase;
         ConstraintSolver solver;
@@ -30,8 +27,6 @@ namespace BasicDemo
 
         public Physics()
         {
-            MaxProxies = ArraySizeX * ArraySizeY * ArraySizeZ + 1024;
-
             CollisionConfiguration collisionConf;
 
             // collision configuration contains default setup for memory, collision setup

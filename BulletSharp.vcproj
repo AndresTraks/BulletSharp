@@ -352,6 +352,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Box2dBox2dCollisionAlgorithm.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\BoxShape.cpp"
 				>
 			</File>
@@ -368,7 +372,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\CollisionAlgorithm.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\CollisionConfiguration.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\CollisionCreateFunc.cpp"
 				>
 			</File>
 			<File
@@ -404,11 +416,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Convex2dConvex2dAlgorithm.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Convex2dShape.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ConvexInternalAabbCachingShape.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\ConvexInternalShape.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ConvexPenetrationDepthSolver.cpp"
 				>
 			</File>
 			<File
@@ -444,6 +468,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Dispatcher.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\DynamicsWorld.cpp"
 				>
 			</File>
@@ -469,6 +497,10 @@
 			</File>
 			<File
 				RelativePath=".\src\Math.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MinkowskiPenetrationDepthSolver.cpp"
 				>
 			</File>
 			<File
@@ -628,6 +660,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\Convex2dShape.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\ConvexInternalAabbCachingShape.h"
 						>
 					</File>
@@ -668,7 +704,15 @@
 					Name="CollisionDispatch"
 					>
 					<File
+						RelativePath=".\src\Box2dBox2dCollisionAlgorithm.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\CollisionConfiguration.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\CollisionCreateFunc.h"
 						>
 					</File>
 					<File
@@ -681,6 +725,10 @@
 					</File>
 					<File
 						RelativePath=".\src\CollisionWorld.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\Convex2dConvex2dAlgorithm.h"
 						>
 					</File>
 					<File
@@ -704,11 +752,15 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\CollisionAlgorithm.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\DbvtBroadphase.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\IDispatcher.h"
+						RelativePath=".\src\Dispatcher.h"
 						>
 					</File>
 					<File
@@ -731,6 +783,14 @@
 				<Filter
 					Name="NarrowPhaseCollision"
 					>
+					<File
+						RelativePath=".\src\ConvexPenetrationDepthSolver.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\MinkowskiPenetrationDepthSolver.h"
+						>
+					</File>
 					<File
 						RelativePath=".\src\SimplexSolverInterface.h"
 						>

@@ -17,7 +17,7 @@ void DbvtBroadphase::Benchmark(BroadphaseInterface^ broadphase)
 	btDbvtBroadphase::benchmark(broadphase->UnmanagedPointer);
 }
 
-void DbvtBroadphase::Collide(IDispatcher^ dispatcher)
+void DbvtBroadphase::Collide(Dispatcher^ dispatcher)
 {
 	UnmanagedPointer->collide(dispatcher->UnmanagedPointer);
 }
@@ -27,7 +27,7 @@ void DbvtBroadphase::Optimize()
 	UnmanagedPointer->optimize();
 }
 
-void DbvtBroadphase::PerformDeferredRemoval(IDispatcher^ dispatcher)
+void DbvtBroadphase::PerformDeferredRemoval(Dispatcher^ dispatcher)
 {
 	UnmanagedPointer->performDeferredRemoval(dispatcher->UnmanagedPointer);
 }

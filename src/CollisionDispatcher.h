@@ -1,19 +1,22 @@
 #pragma once
 
+#include "CollisionCreateFunc.h"
+
 namespace BulletSharp
 {
-	public ref class CollisionDispatcher : IDispatcher
+	public ref class CollisionDispatcher : Dispatcher
 	{
-		private:
-			btCollisionDispatcher* _dispatcher;
-
 		public:
 			CollisionDispatcher(CollisionConfiguration^ collisionConfiguration);
 			CollisionDispatcher();
 
-			property btDispatcher* UnmanagedPointer
+			void RegisterCollisionCreateFunc(BroadphaseNativeTypes proxyType0,
+				BroadphaseNativeTypes proxyType1,
+				CollisionAlgorithmCreateFunc^ createFunc);
+
+			property btCollisionDispatcher* UnmanagedPointer
 			{
-				virtual btDispatcher* get();
+				virtual btCollisionDispatcher* get() new;
 			}
 	};
 };

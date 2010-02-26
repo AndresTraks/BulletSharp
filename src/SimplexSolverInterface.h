@@ -15,33 +15,33 @@ namespace BulletSharp
 {
 	public ref class SimplexSolverInterface abstract : BulletSharp::IDisposable
 	{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
+	public:
+		virtual event EventHandler^ OnDisposing;
+		virtual event EventHandler^ OnDisposed;
 
-		private:
-			btSimplexSolverInterface* _simplexSolver;
+	private:
+		btSimplexSolverInterface* _simplexSolver;
 
-		protected:
-			SimplexSolverInterface(btSimplexSolverInterface* simplexSolver);
-		public:
-			!SimplexSolverInterface();
-		protected:
-			~SimplexSolverInterface();
-		public:
-			property bool IsDisposed
-			{
-				virtual bool get();
-			}
+	protected:
+		SimplexSolverInterface(btSimplexSolverInterface* simplexSolver);
+	public:
+		!SimplexSolverInterface();
+	protected:
+		~SimplexSolverInterface();
+	public:
+		property bool IsDisposed
+		{
+			virtual bool get();
+		}
 
-		public:
+	public:
 
-		internal:
-			property btSimplexSolverInterface* UnmanagedPointer
-			{
-				virtual btSimplexSolverInterface* get();
-				void set(btSimplexSolverInterface* value);
-			}
+	internal:
+		property btSimplexSolverInterface* UnmanagedPointer
+		{
+			virtual btSimplexSolverInterface* get();
+			void set(btSimplexSolverInterface* value);
+		}
 	};
 };
 #endif

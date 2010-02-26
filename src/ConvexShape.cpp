@@ -4,6 +4,12 @@
 
 using namespace BulletSharp;
 
-ConvexShape::ConvexShape(btConvexShape* convexShape) : BulletSharp::CollisionShape(convexShape)
+ConvexShape::ConvexShape(btConvexShape* convexShape)
+: CollisionShape(convexShape)
 {
+}
+
+btConvexShape* ConvexShape::UnmanagedPointer::get()
+{
+	return (btConvexShape*)CollisionShape::UnmanagedPointer;
 }

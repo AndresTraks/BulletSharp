@@ -1,7 +1,7 @@
 #pragma once
 
 #include "BroadphaseInterface.h"
-#include "IDispatcher.h"
+#include "Dispatcher.h"
 #include "OverlappingPairCache.h"
 
 namespace BulletSharp
@@ -14,9 +14,9 @@ namespace BulletSharp
 
 			static void Benchmark(BroadphaseInterface^ broadphase);
 
-			void Collide(IDispatcher^ dispatcher);
+			void Collide(Dispatcher^ dispatcher);
 			void Optimize();
-			void PerformDeferredRemoval(IDispatcher^ dispatcher);
+			void PerformDeferredRemoval(Dispatcher^ dispatcher);
 
 			property btScalar VelocityPrediction
 			{
