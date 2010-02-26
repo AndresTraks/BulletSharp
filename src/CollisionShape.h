@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Enums.h"
 #include "IDisposable.h"
 
 using namespace System::Runtime::InteropServices;
@@ -94,9 +95,9 @@ namespace BulletSharp
 			String^ get();
 		}
 
-		property int ShapeType
+		property BroadphaseNativeTypes ShapeType
 		{
-			int get();
+			BroadphaseNativeTypes get();
 		}
 
 		property IntPtr UserPointer

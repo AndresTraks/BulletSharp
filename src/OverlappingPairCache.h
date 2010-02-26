@@ -6,13 +6,13 @@ namespace BulletSharp
 {
 	public ref class OverlappingPairCache abstract : BulletSharp::OverlappingPairCallback
 	{
-		public:
-			OverlappingPairCache(btOverlappingPairCache* pairCache);
+	public:
+		OverlappingPairCache(btOverlappingPairCache* pairCache);
 
-		internal:
-			property btOverlappingPairCache* UnmanagedPointer
-			{
-				btOverlappingPairCache* get() new;
-			}
+	internal:
+		property btOverlappingPairCache* UnmanagedPointer
+		{
+			btOverlappingPairCache* get() new;
+		}
 	};
 };

@@ -4,10 +4,13 @@
 
 namespace BulletSharp
 {
-	public ref class ConvexShape abstract : BulletSharp::CollisionShape
+	public ref class ConvexShape : CollisionShape
 	{
 	internal:
 		ConvexShape(btConvexShape* convexShape);
+
+	public:
+		static ConvexShape^ Upcast(CollisionShape^ shape);
 
 	internal:
 		property btConvexShape* UnmanagedPointer

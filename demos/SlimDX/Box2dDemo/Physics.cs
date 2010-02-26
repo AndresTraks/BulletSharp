@@ -60,9 +60,15 @@ namespace Box2dDemo
             float u = Scaling - 0.04f;
 
             Vector3[] points = {new Vector3(0, u, 0), new Vector3(-u, -u, 0), new Vector3(u,-u,0)};
-            ConvexShape colShape = new Convex2dShape(new BoxShape(new Vector3(Scaling, Scaling, 0.04f)));
+            ConvexShape colShape = new Convex2dShape(new BoxShape(Scaling, Scaling, 0.04f));
+            ConvexShape colShape2 = new Convex2dShape(new ConvexHullShape(points));
+            ConvexShape colShape3 = new Convex2dShape(new CylinderShapeZ(Scaling, Scaling, 0.04f));
+
             colShape.Margin = 0.03f;
             collisionShapes.PushBack(colShape);
+            collisionShapes.PushBack(colShape2);
+            collisionShapes.PushBack(colShape3);
+            
             float mass = 1.0f;
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
@@ -83,7 +89,20 @@ namespace Box2dDemo
 
                     //using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
                     DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
-                    RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
+
+                    RigidBodyConstructionInfo rbInfo;
+                    switch(j%3)
+                    {
+                        case 0:
+                            rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
+                            break;
+                        case 1:
+                            rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, colShape3, localInertia);
+                            break;
+                        default:
+                            rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, colShape2, localInertia);
+                            break;
+                    }
                     RigidBody body = new RigidBody(rbInfo);
                     //body.ActivationState = ActivationState.IslandSleeping;
                     body.LinearFactor = new Vector3(1, 1, 0);

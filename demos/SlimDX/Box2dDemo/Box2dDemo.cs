@@ -21,7 +21,7 @@ namespace Box2dDemo
         Input input;
         FreeLook freelook;
         FpsDisplay fps;
-        Mesh box, groundBox;
+        Mesh box, triangle, cylinder, groundBox;
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
         
@@ -40,9 +40,55 @@ namespace Box2dDemo
             {
                 input.Dispose();
                 box.Dispose();
+                triangle.Dispose();
+                cylinder.Dispose();
                 groundBox.Dispose();
                 fps.Dispose();
             }
+        }
+
+        Mesh ConstructTriangleMesh(float scaling)
+        {
+            float u = scaling + 0.02f;// -0.04f;
+            Vector3[] points = { new Vector3(0, u, 0), new Vector3(-u, -u, 0), new Vector3(u, -u, 0) };
+            Vector3 depth = new Vector3(0, 0, 0.04f);
+            Mesh triangle = new Mesh(Device, 8, 6, MeshFlags.Managed, VertexFormat.Position | VertexFormat.Normal);
+
+            SlimDX.DataStream ds = triangle.LockVertexBuffer(LockFlags.None);
+            
+            // Front
+            ds.Write(points[0] + depth);
+            ds.Write(Vector3.UnitZ);
+            ds.Write(points[1] + depth);
+            ds.Write(Vector3.UnitZ);
+            ds.Write(points[2] + depth);
+            ds.Write(Vector3.UnitZ);
+
+            // Back
+            ds.Write(points[0] - depth);
+            ds.Write(-Vector3.UnitZ);
+            ds.Write(points[1] - depth);
+            ds.Write(-Vector3.UnitZ);
+            ds.Write(points[2] - depth);
+            ds.Write(-Vector3.UnitZ);
+
+            triangle.VertexBuffer.Unlock();
+
+            short[] indices = new short[] {
+                0, 1, 2, 3, 4, 5,
+                0, 1, 3, 1, 3, 4,
+                1, 2, 4, 2, 4, 5,
+                2, 0, 5, 0, 5, 3
+            };
+            
+            ds = triangle.LockIndexBuffer(LockFlags.None);
+            foreach (short index in indices)
+            {
+                ds.Write(index);
+            }
+            triangle.IndexBuffer.Unlock();
+
+            return triangle;
         }
 
         protected override void OnInitialize()
@@ -71,7 +117,9 @@ namespace Box2dDemo
 
             physics = new Physics();
 
-            box = Mesh.CreateBox(Device, physics.Scaling * 2, physics.Scaling * 2, physics.Scaling * 2);
+            box = Mesh.CreateBox(Device, physics.Scaling * 2, physics.Scaling * 2, 0.08f);
+            triangle = ConstructTriangleMesh(physics.Scaling);
+            cylinder = Mesh.CreateCylinder(Device, physics.Scaling, physics.Scaling, 0.08f, 32, 1);
             groundBox = Mesh.CreateBox(Device, 100, 100, 100);
 
             light = new Light();
@@ -102,8 +150,7 @@ namespace Box2dDemo
 
             debugDraw = new PhysicsDebugDraw(Device);
             physics.world.DebugDrawer = debugDraw;
-            debugDraw.SetDebugMode(DebugDrawModes.DrawWireframe |
-                DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits);
+            //debugDraw.SetDebugMode(DebugDrawModes.DrawWireframe);
         }
 
         protected override void OnResourceLoad()
@@ -117,6 +164,7 @@ namespace Box2dDemo
             Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 150.0f);
 
             Device.SetTransform(TransformState.Projection, Projection);
+            Device.SetRenderState(RenderState.CullMode, Cull.None);
 
             fps.OnResourceLoad();
         }
@@ -188,7 +236,24 @@ namespace Box2dDemo
                 else
                     Device.Material = passiveMaterial;
 
-                box.DrawSubset(0);
+                if (colObj.CollisionShape.ShapeType == BroadphaseNativeTypes.BoxShape)
+                    box.DrawSubset(0);
+                else if(colObj.CollisionShape.ShapeType == BroadphaseNativeTypes.Convex2dShape)
+                {
+                    Convex2dShape shape = Convex2dShape.Upcast2d(colObj.CollisionShape);
+                    switch (shape.ChildShape.ShapeType)
+                    {
+                        case BroadphaseNativeTypes.BoxShape:
+                            box.DrawSubset(0);
+                            break;
+                        case BroadphaseNativeTypes.ConvexHullShape:
+                            triangle.DrawSubset(0);
+                            break;
+                        case BroadphaseNativeTypes.CylinderShape:
+                            cylinder.DrawSubset(0);
+                            break;
+                    }
+                }
             }
 
             if (DrawDebugLines)

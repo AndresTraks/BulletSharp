@@ -7,10 +7,12 @@ CollisionShape::CollisionShape(btCollisionShape* collisionShape)
 {
 	_collisionShape = collisionShape;
 }
+
 CollisionShape::~CollisionShape()
 {
 	this->!CollisionShape();
 }
+
 CollisionShape::!CollisionShape()
 {
 	if( this->IsDisposed == true )
@@ -22,6 +24,7 @@ CollisionShape::!CollisionShape()
 
 	OnDisposed( this, nullptr );
 }
+
 bool CollisionShape::IsDisposed::get()
 {
 	return ( _collisionShape == NULL );
@@ -153,9 +156,9 @@ String^ CollisionShape::Name::get()
 	return StringConv::UnmanagedToManaged(_collisionShape->getName());
 }
 
-int CollisionShape::ShapeType::get()
+BulletSharp::BroadphaseNativeTypes CollisionShape::ShapeType::get()
 {
-	return _collisionShape->getShapeType();
+	return (BulletSharp::BroadphaseNativeTypes)_collisionShape->getShapeType();
 }
 
 IntPtr CollisionShape::UserPointer::get()

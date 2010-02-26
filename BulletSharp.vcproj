@@ -424,6 +424,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ConvexHullShape.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ConvexInternalAabbCachingShape.cpp"
 				>
 			</File>
@@ -661,6 +665,10 @@
 					</File>
 					<File
 						RelativePath=".\src\Convex2dShape.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\ConvexHullShape.h"
 						>
 					</File>
 					<File

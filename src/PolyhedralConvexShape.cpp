@@ -7,3 +7,8 @@ using namespace BulletSharp;
 PolyhedralConvexShape::PolyhedralConvexShape(btPolyhedralConvexShape* polyhedralConvexShape) : BulletSharp::ConvexInternalShape(polyhedralConvexShape)
 {
 }
+
+PolyhedralConvexAabbCachingShape::PolyhedralConvexAabbCachingShape(btPolyhedralConvexAabbCachingShape *shape)
+: PolyhedralConvexShape(shape)
+{
+}
