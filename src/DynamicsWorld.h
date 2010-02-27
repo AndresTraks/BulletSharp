@@ -1,13 +1,16 @@
 #pragma once
 
-#include "ActionInterface.h"
 #include "CollisionWorld.h"
 #include "IDisposable.h"
-#include "RigidBody.h"
 
 namespace BulletSharp
 {
-	public ref class DynamicsWorld abstract : BulletSharp::CollisionWorld
+	ref class ActionInterface;
+	ref struct ContactSolverInfo;
+	ref class RigidBody;
+	ref class TypedConstraint;
+
+	public ref class DynamicsWorld abstract : CollisionWorld
 	{
 	public:
 		ref class RayResultCallback abstract : BulletSharp::IDisposable
@@ -62,6 +65,11 @@ namespace BulletSharp
 		{
 			Vector3 get();
 			void set(Vector3 value);
+		}
+
+		property ContactSolverInfo^ SolverInfo
+		{
+			ContactSolverInfo^ get();
 		}
 
 	internal:

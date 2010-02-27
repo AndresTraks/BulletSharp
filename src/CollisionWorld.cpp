@@ -1,6 +1,12 @@
 #include "StdAfx.h"
 
+#include "AlignedObjectArray.h"
+#include "BroadphaseInterface.h"
+#include "CollisionConfiguration.h"
+#include "CollisionObject.h"
 #include "CollisionWorld.h"
+#include "DebugDraw.h"
+#include "Dispatcher.h"
 
 CollisionWorld::RayResultCallback::RayResultCallback(btCollisionWorld::RayResultCallback* callback)
 {
@@ -170,6 +176,11 @@ void CollisionWorld::DebugDrawer::set(DebugDraw^ value)
 BulletSharp::Dispatcher^ CollisionWorld::Dispatcher::get()
 {
 	return _dispatcher;
+}
+
+DispatcherInfo^ CollisionWorld::DispatchInfo::get()
+{
+	return gcnew DispatcherInfo(&_world->getDispatchInfo());;
 }
 
 int CollisionWorld::NumCollisionObjects::get()

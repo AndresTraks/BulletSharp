@@ -1,22 +1,23 @@
 #pragma once
 
-#include "ConstraintSolver.h"
-#include "Dispatcher.h"
 #include "DynamicsWorld.h"
 
 namespace BulletSharp
 {
-	public ref class DiscreteDynamicsWorld : BulletSharp::DynamicsWorld
+	ref class ConstraintSolver;
+	ref class Dispatcher;
+
+	public ref class DiscreteDynamicsWorld : DynamicsWorld
 	{
-		public:
-			DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, ConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration);
+	public:
+		DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, ConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration);
 
-			void SetGravity(btScalar x, btScalar y, btScalar z);
+		void SetGravity(btScalar x, btScalar y, btScalar z);
 
-		internal:
-			property btDiscreteDynamicsWorld* UnmanagedPointer
-			{
-				btDiscreteDynamicsWorld* get() new;
-			}
+	internal:
+		property btDiscreteDynamicsWorld* UnmanagedPointer
+		{
+			btDiscreteDynamicsWorld* get() new;
+		}
 	};
 };

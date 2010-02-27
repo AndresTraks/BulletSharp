@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #include "Generic6DofConstraint.h"
+#include "RigidBody.h"
 
 RotationalLimitMotor::RotationalLimitMotor()
 {

@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #include "CollisionObject.h"
+#include "CollisionShape.h"
 
 // Managed functions to let us use the unmanaged btVector3 and btTransform
 #pragma managed(push, off)
@@ -33,6 +34,11 @@ void CollisionObject_GetWorldTransform(btCollisionObject* collisionObject, btTra
 CollisionObject::CollisionObject(btCollisionObject* collisionObject)
 {
 	_collisionObject = collisionObject;
+}
+
+CollisionObject::CollisionObject(IntPtr collisionObject)
+{
+	_collisionObject = (btCollisionObject*)collisionObject.ToPointer();
 }
 
 CollisionObject::~CollisionObject()
@@ -122,13 +128,13 @@ void CollisionObject::CcdSweptSphereRadius::set(btScalar value)
 	_collisionObject->setCcdSweptSphereRadius(value);
 }
 
-int CollisionObject::CollisionFlags::get()
+CollisionFlags CollisionObject::CollisionFlags::get()
 {
-	return _collisionObject->getCollisionFlags();
+	return (BulletSharp::CollisionFlags)_collisionObject->getCollisionFlags();
 }
-void CollisionObject::CollisionFlags::set(int value)
+void CollisionObject::CollisionFlags::set(BulletSharp::CollisionFlags value)
 {
-	_collisionObject->setCollisionFlags(value);
+	_collisionObject->setCollisionFlags((int)value);
 }
 
 CollisionShape^ CollisionObject::CollisionShape::get()

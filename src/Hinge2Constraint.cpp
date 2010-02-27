@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #include "Hinge2Constraint.h"
+#include "RigidBody.h"
 
 Hinge2Constraint::Hinge2Constraint(RigidBody^ rbA, RigidBody^ rbB,
 	Vector3 anchor, Vector3 axis1, Vector3 axis2)

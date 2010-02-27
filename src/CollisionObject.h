@@ -1,11 +1,12 @@
 #pragma once
 
-#include "IDisposable.h"
-#include "CollisionShape.h"
 #include "Enums.h"
+#include "IDisposable.h"
 
 namespace BulletSharp
 {
+	ref class CollisionShape;
+
 	public ref class CollisionObject : BulletSharp::IDisposable
 	{
 	public:
@@ -19,6 +20,8 @@ namespace BulletSharp
 		CollisionShape^ _collisionShape;
 		CollisionShape^ _rootCollisionShape;
 
+	public:
+		CollisionObject(IntPtr collisionObject);
 	internal:
 		CollisionObject(btCollisionObject* collisionObject);
 	public:
@@ -77,10 +80,10 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property int CollisionFlags
+		property CollisionFlags CollisionFlags
 		{
-			int get();
-			void set(int value);
+			BulletSharp::CollisionFlags get();
+			void set(BulletSharp::CollisionFlags value);
 		}
 
 		property BulletSharp::CollisionShape^ CollisionShape

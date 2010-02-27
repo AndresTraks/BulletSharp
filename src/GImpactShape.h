@@ -5,19 +5,20 @@
 #pragma managed(pop)
 
 #include "ConcaveShape.h"
-#include "StridingMeshInterface.h"
 
 namespace BulletSharp
 {
-	public ref class GImpactShapeInterface abstract : BulletSharp::ConcaveShape
+	ref class StridingMeshInterface;
+
+	public ref class GImpactShapeInterface abstract : ConcaveShape
 	{
-		internal:
-			GImpactShapeInterface(btGImpactShapeInterface* shapeInterface);
+	internal:
+		GImpactShapeInterface(btGImpactShapeInterface* shapeInterface);
 	};
 
-	public ref class GImpactMeshShape : BulletSharp::GImpactShapeInterface
+	public ref class GImpactMeshShape : GImpactShapeInterface
 	{
-		public:
-			GImpactMeshShape(StridingMeshInterface^ meshInterface);
+	public:
+		GImpactMeshShape(StridingMeshInterface^ meshInterface);
 	};
 };

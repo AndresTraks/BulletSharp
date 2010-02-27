@@ -4,10 +4,10 @@
 
 namespace BulletSharp
 {
-	public ref class BoxShape : BulletSharp::PolyhedralConvexShape
+	public ref class BoxShape : PolyhedralConvexShape
 	{
-		public:
-			BoxShape(Vector3 boxHalfExtents);
-			BoxShape(float boxHalfExtentsX, float boxHalfExtentsY, float boxHalfExtentsZ);
+	public:
+		BoxShape(Vector3 boxHalfExtents);
+		BoxShape(float boxHalfExtentsX, float boxHalfExtentsY, float boxHalfExtentsZ);
 	};
 };

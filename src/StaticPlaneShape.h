@@ -4,15 +4,15 @@
 
 namespace BulletSharp
 {
-	public ref class StaticPlaneShape : BulletSharp::ConcaveShape
+	public ref class StaticPlaneShape : ConcaveShape
 	{
-		public:
-			StaticPlaneShape(Vector3 planeNormal, btScalar planeConstant);
+	public:
+		StaticPlaneShape(Vector3 planeNormal, btScalar planeConstant);
 
-		internal:
-			property btStaticPlaneShape* UnmanagedPointer
-			{
-				btStaticPlaneShape* get();
-			}
+	internal:
+		property btStaticPlaneShape* UnmanagedPointer
+		{
+			btStaticPlaneShape* get();
+		}
 	};
 };

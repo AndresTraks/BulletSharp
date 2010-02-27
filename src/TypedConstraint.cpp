@@ -44,22 +44,22 @@ btScalar TypedConstraint::GetAppliedImpulse()
 	return _typedConstraint->getAppliedImpulse();
 }
 
-btScalar TypedConstraint::GetParam(ConstraintParams num, int axis)
+btScalar TypedConstraint::GetParam(ConstraintParam num, int axis)
 {
 	return UnmanagedPointer->getParam((int)num, axis);
 }
 
-btScalar TypedConstraint::GetParam(ConstraintParams num)
+btScalar TypedConstraint::GetParam(ConstraintParam num)
 {
 	return UnmanagedPointer->getParam((int)num);
 }
 
-void TypedConstraint::SetParam(ConstraintParams num, btScalar value, int axis)
+void TypedConstraint::SetParam(ConstraintParam num, btScalar value, int axis)
 {
 	UnmanagedPointer->setParam((int)num, value, axis);
 }
 
-void TypedConstraint::SetParam(ConstraintParams num, btScalar value)
+void TypedConstraint::SetParam(ConstraintParam num, btScalar value)
 {
 	UnmanagedPointer->setParam((int)num, value);
 }

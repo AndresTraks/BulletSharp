@@ -4,9 +4,9 @@
 
 namespace BulletSharp
 {
-	public ref class ConvexInternalAabbCachingShape abstract : BulletSharp::ConvexInternalShape
+	public ref class ConvexInternalAabbCachingShape abstract : ConvexInternalShape
 	{
-		internal:
-			ConvexInternalAabbCachingShape(btConvexInternalAabbCachingShape* convexInternalAabbCachingShape);
+	internal:
+		ConvexInternalAabbCachingShape(btConvexInternalAabbCachingShape* convexInternalAabbCachingShape);
 	};
 };

@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 
+#include "RigidBody.h"
 #include "UniversalConstraint.h"
 
 UniversalConstraint::UniversalConstraint(RigidBody^ rbA, RigidBody^ rbB,

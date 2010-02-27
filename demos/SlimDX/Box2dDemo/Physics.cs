@@ -37,10 +37,10 @@ namespace Box2dDemo
 
             Convex2dConvex2dAlgorithm.CreateFunc convexAlgo2d = new Convex2dConvex2dAlgorithm.CreateFunc(simplex, pdSolver);
 
-            dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeTypes.Convex2dShape, BroadphaseNativeTypes.Convex2dShape, convexAlgo2d);
-            dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeTypes.Box2dShape, BroadphaseNativeTypes.Convex2dShape, convexAlgo2d);
-            dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeTypes.Convex2dShape, BroadphaseNativeTypes.Box2dShape, convexAlgo2d);
-            dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeTypes.Box2dShape, BroadphaseNativeTypes.Box2dShape, new Box2dBox2dCollisionAlgorithm.CreateFunc());
+            dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2dShape, BroadphaseNativeType.Convex2dShape, convexAlgo2d);
+            dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Box2dShape, BroadphaseNativeType.Convex2dShape, convexAlgo2d);
+            dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2dShape, BroadphaseNativeType.Box2dShape, convexAlgo2d);
+            dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Box2dShape, BroadphaseNativeType.Box2dShape, new Box2dBox2dCollisionAlgorithm.CreateFunc());
 
             broadphase = new DbvtBroadphase();
 
@@ -90,17 +90,17 @@ namespace Box2dDemo
                     //using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
                     DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
 
-                    RigidBodyConstructionInfo rbInfo;
+                    RigidBody.RigidBodyConstructionInfo rbInfo;
                     switch(j%3)
                     {
                         case 0:
-                            rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
+                            rbInfo = new RigidBody.RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
                             break;
                         case 1:
-                            rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, colShape3, localInertia);
+                            rbInfo = new RigidBody.RigidBodyConstructionInfo(mass, myMotionState, colShape3, localInertia);
                             break;
                         default:
-                            rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, colShape2, localInertia);
+                            rbInfo = new RigidBody.RigidBodyConstructionInfo(mass, myMotionState, colShape2, localInertia);
                             break;
                     }
                     RigidBody body = new RigidBody(rbInfo);
@@ -133,7 +133,7 @@ namespace Box2dDemo
 
             DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
 
-            RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
+            RigidBody.RigidBodyConstructionInfo rbInfo = new RigidBody.RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
             RigidBody body = new RigidBody(rbInfo);
 
             world.AddRigidBody(body);

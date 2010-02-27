@@ -2,13 +2,14 @@
 
 // Fully implemented as of 24 Feb 2010
 
-#include "BroadphaseProxy.h"
 #include "IDisposable.h"
-#include "Dispatcher.h"
-#include "OverlappingPairCache.h"
 
 namespace BulletSharp
 {
+	ref class BroadphaseProxy;
+	ref class Dispatcher;
+	ref class OverlappingPairCache;
+
 	public ref class BroadphaseAabbCallback
 	{
 	protected:

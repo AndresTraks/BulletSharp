@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #include "ConeTwistConstraint.h"
+#include "RigidBody.h"
 
 ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rbA, RigidBody^ rbB,
 	Matrix rbAFrame, Matrix rbBFrame)

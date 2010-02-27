@@ -1,10 +1,11 @@
 #pragma once
 
-#include "RigidBody.h"
 #include "TypedConstraint.h"
 
 namespace BulletSharp
 {
+	ref class RigidBody;
+
 	public ref class HingeConstraint : TypedConstraint
 	{
 	public:

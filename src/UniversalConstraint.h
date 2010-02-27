@@ -1,10 +1,11 @@
 #pragma once
 
-#include "RigidBody.h"
 #include "Generic6DofConstraint.h"
 
 namespace BulletSharp
 {
+	ref class RigidBody;
+
 	public ref class UniversalConstraint : Generic6DofConstraint
 	{
 	public:

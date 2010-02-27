@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #include "AxisSweep3.h"
+#include "OverlappingPairCache.h"
 
 AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles, BulletSharp::OverlappingPairCache^ pairCache, bool disableRaycastAccelerator)
 : BroadphaseInterface(new btAxisSweep3(

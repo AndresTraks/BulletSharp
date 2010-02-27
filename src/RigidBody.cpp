@@ -1,6 +1,9 @@
 #include "StdAfx.h"
 
+#include "CollisionShape.h"
+#include "MotionState.h"
 #include "RigidBody.h"
+#include "TypedConstraint.h"
 
 RigidBody::RigidBody(RigidBodyConstructionInfo^ info)
 : CollisionObject(new btRigidBody(*info->UnmanagedPointer))
@@ -236,4 +239,45 @@ void RigidBody::MotionState::set(BulletSharp::MotionState^ value)
 btRigidBody* RigidBody::UnmanagedPointer::get()
 {
 	return (btRigidBody*)CollisionObject::UnmanagedPointer;
+}
+
+
+btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfo(
+	btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape, btVector3* localInertia = new btVector3())
+{
+	return new btRigidBody::btRigidBodyConstructionInfo(mass, motionState, collisionShape, *localInertia);
+}
+
+RigidBody::RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape)
+{
+	if (collisionShape != nullptr)
+		_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, collisionShape->UnmanagedPointer);
+	else
+		_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, nullptr);
+	_collisionShape = collisionShape;
+	_motionState = motionState;
+}
+
+RigidBody::RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape, Vector3 localInertia)
+{
+	if (collisionShape != nullptr)
+		_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, collisionShape->UnmanagedPointer, Math::Vector3ToBtVec3(localInertia));
+	else
+		_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, nullptr, Math::Vector3ToBtVec3(localInertia));
+	_collisionShape = collisionShape;
+	_motionState = motionState;
+}
+
+btScalar RigidBody::RigidBodyConstructionInfo::Mass::get()
+{
+	return _info->m_mass;
+}
+void RigidBody::RigidBodyConstructionInfo::Mass::set(btScalar mass)
+{
+	_info->m_mass = mass;
+}
+
+btRigidBody::btRigidBodyConstructionInfo* RigidBody::RigidBodyConstructionInfo::UnmanagedPointer::get()
+{
+	return _info;
 }

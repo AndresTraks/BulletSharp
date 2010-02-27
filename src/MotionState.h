@@ -4,27 +4,27 @@ namespace BulletSharp
 {
 	public ref class MotionState
 	{
-		private:
-			btMotionState* _motionState;
+	private:
+		btMotionState* _motionState;
 
-		internal:
-			MotionState(btMotionState* motionState);
+	internal:
+		MotionState(btMotionState* motionState);
 
-		protected:
-			~MotionState();
+	protected:
+		~MotionState();
 
-		public:
-			property Matrix WorldTransform
-			{
-				virtual Matrix get();
-				void set(Matrix value);
-			}
+	public:
+		property Matrix WorldTransform
+		{
+			virtual Matrix get();
+			void set(Matrix value);
+		}
 
-		internal:
-			property btMotionState* UnmanagedPointer
-			{
-				virtual btMotionState* get();
-				void set( btMotionState* value );
-			}
+	internal:
+		property btMotionState* UnmanagedPointer
+		{
+			virtual btMotionState* get();
+			void set( btMotionState* value );
+		}
 	};
 };

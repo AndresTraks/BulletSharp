@@ -1,6 +1,10 @@
 #include "StdAfx.h"
 
+#include "ActionInterface.h"
+#include "ContactSolverInfo.h"
 #include "DynamicsWorld.h"
+#include "RigidBody.h"
+#include "TypedConstraint.h"
 
 DynamicsWorld::RayResultCallback::RayResultCallback(btDynamicsWorld::RayResultCallback* callback)
 {
@@ -100,6 +104,11 @@ void DynamicsWorld::Gravity::set(Vector3 value)
 	btVector3* gravity = new btVector3(value.X,value.Y,value.Z);
 	UnmanagedPointer->setGravity(*gravity);
 	delete gravity;
+}
+
+ContactSolverInfo^ DynamicsWorld::SolverInfo::get()
+{
+	return gcnew ContactSolverInfo(&UnmanagedPointer->getSolverInfo());
 }
 
 btDynamicsWorld* DynamicsWorld::UnmanagedPointer::get()

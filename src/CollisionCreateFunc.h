@@ -2,13 +2,14 @@
 
 // Fully implemented as of 26 Feb 2010
 
-#include "CollisionAlgorithm.h"
-#include "CollisionObject.h"
 #include "IDisposable.h"
-#include "Dispatcher.h"
 
 namespace BulletSharp
 {
+	ref class CollisionAlgorithm;
+	ref class CollisionAlgorithmConstructionInfo;
+	ref class CollisionObject;
+
 	public ref class CollisionAlgorithmCreateFunc : BulletSharp::IDisposable
 	{
 	public:

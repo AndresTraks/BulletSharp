@@ -74,7 +74,7 @@ namespace BasicDemo
 
                         //using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
                         DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
-                        RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
+                        RigidBody.RigidBodyConstructionInfo rbInfo = new RigidBody.RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
                         RigidBody body = new RigidBody(rbInfo);
 
                         world.AddRigidBody(body);
@@ -101,7 +101,7 @@ namespace BasicDemo
 
             DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
 
-            RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
+            RigidBody.RigidBodyConstructionInfo rbInfo = new RigidBody.RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
             RigidBody body = new RigidBody(rbInfo);
 
             world.AddRigidBody(body);

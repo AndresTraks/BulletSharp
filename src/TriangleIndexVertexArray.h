@@ -1,174 +1,176 @@
 #pragma once
 
-#include "AlignedObjectArray.h"
-#include "DataStream.h"
+#include "Enums.h"
 #include "StridingMeshInterface.h"
 
 namespace BulletSharp
 {
+	ref class AlignedObjectArray;
+	ref class DataStream;
+
 	public ref class IndexedMesh
 	{
-		private:
-			btIndexedMesh* _indexedMesh;
+	private:
+		btIndexedMesh* _indexedMesh;
 
-		internal:
-			IndexedMesh(btIndexedMesh* indexedMesh);
+	internal:
+		IndexedMesh(btIndexedMesh* indexedMesh);
 
-		public:
-			IndexedMesh();
+	public:
+		IndexedMesh();
 
-			void Allocate(int numVerts, int vertexStride, int numIndices, int indexStride);
-			void AllocateVerts(int num, int stride);
-			void AllocateIndices(int num, int stride);
+		void Allocate(int numVerts, int vertexStride, int numIndices, int indexStride);
+		void AllocateVerts(int num, int stride);
+		void AllocateIndices(int num, int stride);
 
-			DataStream^ LockVerts();
-			DataStream^ LockIndices();
+		DataStream^ LockVerts();
+		DataStream^ LockIndices();
 
-			property int NumTriangles
-			{
-				int get();
-			}
+		property int NumTriangles
+		{
+			int get();
+		}
 
-			property int NumVertices
-			{
-				int get();
-			}
+		property int NumVertices
+		{
+			int get();
+		}
 
-		internal:
-			property btIndexedMesh* UnmanagedPointer
-			{
-				virtual btIndexedMesh* get();
-				void set(btIndexedMesh* value);
-			}
+	internal:
+		property btIndexedMesh* UnmanagedPointer
+		{
+			virtual btIndexedMesh* get();
+			void set(btIndexedMesh* value);
+		}
 	};
 
 
 	public ref class BtIndexedMeshArray : BulletSharp::IDisposable
 	{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
+	public:
+		virtual event EventHandler^ OnDisposing;
+		virtual event EventHandler^ OnDisposed;
 
-		private:
-			btAlignedObjectArray<btIndexedMesh>* _alignedObjectArray;
+	private:
+		btAlignedObjectArray<btIndexedMesh>* _alignedObjectArray;
 
-		internal:
-			BtIndexedMeshArray(IndexedMeshArray* indexedMeshArray)
+	internal:
+		BtIndexedMeshArray(IndexedMeshArray* indexedMeshArray)
+		{
+			_alignedObjectArray = indexedMeshArray;
+		}
+
+	public:
+		BtIndexedMeshArray()
+		{
+			_alignedObjectArray = new btAlignedObjectArray<btIndexedMesh>();
+		}
+		
+		!BtIndexedMeshArray()
+		{
+			if( this->IsDisposed == true )
+				return;
+
+			OnDisposing( this, nullptr );
+
+			_alignedObjectArray = NULL;
+
+			OnDisposed( this, nullptr );
+		}
+
+	protected:
+		~BtIndexedMeshArray()
+		{
+			this->!BtIndexedMeshArray();
+		}
+
+	public:
+		property bool IsDisposed
+		{
+			virtual bool get()
 			{
-				_alignedObjectArray = indexedMeshArray;
+				return (_alignedObjectArray == NULL);
 			}
+		}
 
-		public:
-			BtIndexedMeshArray()
+		void Clear()
+		{
+			_alignedObjectArray->clear();
+		}
+
+		void PopBack()
+		{
+			_alignedObjectArray->pop_back();
+		}
+
+		void PushBack(IndexedMesh^ indexedMesh)
+		{
+			_alignedObjectArray->push_back(*indexedMesh->UnmanagedPointer);
+		}
+
+		property int Size
+		{
+			int get()
 			{
-				_alignedObjectArray = new btAlignedObjectArray<btIndexedMesh>();
+				return _alignedObjectArray->size();
 			}
-			
-			!BtIndexedMeshArray()
+		}
+
+		property int Capacity
+		{
+			int get()
 			{
-				if( this->IsDisposed == true )
-					return;
-	
-				OnDisposing( this, nullptr );
-
-				_alignedObjectArray = NULL;
-	
-				OnDisposed( this, nullptr );
+				return _alignedObjectArray->capacity();
 			}
+		}
 
-		protected:
-			~BtIndexedMeshArray()
+		property IndexedMesh^ default [int]
+		{
+			IndexedMesh^ get (int index)
 			{
-				this->!BtIndexedMeshArray();
-			}
+				if (index >= Capacity)
+					return nullptr;
 
-		public:
-			property bool IsDisposed
+				btIndexedMesh* obj = &((*_alignedObjectArray)[index]);
+				if (obj != nullptr)
+					return gcnew IndexedMesh(obj);
+				else
+					return nullptr;
+			}
+		}
+
+	internal:
+		property btAlignedObjectArray<btIndexedMesh>* UnmanagedPointer
+		{
+			virtual btAlignedObjectArray<btIndexedMesh>* get()
 			{
-				virtual bool get()
-				{
-					return (_alignedObjectArray == NULL);
-				}
+				return _alignedObjectArray;
 			}
-
-			void Clear()
+			void set( btAlignedObjectArray<btIndexedMesh>* value )
 			{
-				_alignedObjectArray->clear();
+				_alignedObjectArray = value;
 			}
-
-			void PopBack()
-			{
-				_alignedObjectArray->pop_back();
-			}
-
-			void PushBack(IndexedMesh^ indexedMesh)
-			{
-				_alignedObjectArray->push_back(*indexedMesh->UnmanagedPointer);
-			}
-
-			property int Size
-			{
-				int get()
-				{
-					return _alignedObjectArray->size();
-				}
-			}
-
-			property int Capacity
-			{
-				int get()
-				{
-					return _alignedObjectArray->capacity();
-				}
-			}
-
-			property IndexedMesh^ default [int]
-			{
-				IndexedMesh^ get (int index)
-				{
-					if (index >= Capacity)
-						return nullptr;
-
-					btIndexedMesh* obj = &((*_alignedObjectArray)[index]);
-					if (obj != nullptr)
-						return gcnew IndexedMesh(obj);
-					else
-						return nullptr;
-				}
-			}
-
-		internal:
-			property btAlignedObjectArray<btIndexedMesh>* UnmanagedPointer
-			{
-				virtual btAlignedObjectArray<btIndexedMesh>* get()
-				{
-					return _alignedObjectArray;
-				}
-				void set( btAlignedObjectArray<btIndexedMesh>* value )
-				{
-					_alignedObjectArray = value;
-				}
-			}
+		}
 	};
 
 
-	public ref class TriangleIndexVertexArray : BulletSharp::StridingMeshInterface
+	public ref class TriangleIndexVertexArray : StridingMeshInterface
 	{
-		public:
-			TriangleIndexVertexArray();
+	public:
+		TriangleIndexVertexArray();
 
-			void AddIndexedMesh(IndexedMesh^ mesh);
-			void AddIndexedMesh(IndexedMesh^ mesh, PhyScalarType indexType);
+		void AddIndexedMesh(IndexedMesh^ mesh);
+		void AddIndexedMesh(IndexedMesh^ mesh, PhyScalarType indexType);
 
-			property BtIndexedMeshArray^ IndexedMeshArray
-			{
-				BtIndexedMeshArray^ get();
-			}
+		property BtIndexedMeshArray^ IndexedMeshArray
+		{
+			BtIndexedMeshArray^ get();
+		}
 
-		internal:
-			property btTriangleIndexVertexArray* UnmanagedPointer
-			{
-				btTriangleIndexVertexArray* get();
-			}
+	internal:
+		property btTriangleIndexVertexArray* UnmanagedPointer
+		{
+			btTriangleIndexVertexArray* get();
+		}
 	};
 };

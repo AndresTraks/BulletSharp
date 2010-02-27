@@ -5,8 +5,6 @@
 #pragma managed(pop)
 
 #include "CollisionCreateFunc.h"
-#include "ConvexPenetrationDepthSolver.h"
-#include "SimplexSolverInterface.h"
 
 namespace BulletSharp
 {

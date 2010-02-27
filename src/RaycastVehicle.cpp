@@ -1,6 +1,9 @@
 #include "StdAfx.h"
 
 #include "RaycastVehicle.h"
+#include "RigidBody.h"
+#include "VehicleRaycaster.h"
+#include "WheelInfo.h"
 
 #pragma managed(push, off)
 void RaycastVehicle_GetForwardVector(btRaycastVehicle* vehicle, btVector3* forward)

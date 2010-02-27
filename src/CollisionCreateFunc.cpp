@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 
+#include "CollisionAlgorithm.h"
 #include "CollisionCreateFunc.h"
+#include "CollisionObject.h"
 
 CollisionAlgorithmCreateFunc::CollisionAlgorithmCreateFunc()
 {

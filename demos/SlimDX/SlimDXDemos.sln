@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleDemo", "VehicleDemo\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Box2dDemo", "Box2dDemo\Box2dDemo.csproj", "{85D6063A-E3BF-4D49-ADDD-4DD9CD02D062}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CcdPhysicsDemo", "CcdPhysicsDemo\CcdPhysicsDemo.csproj", "{5386330C-4A02-4365-95A1-145467C2CEB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,16 @@ Global
 		{85D6063A-E3BF-4D49-ADDD-4DD9CD02D062}.Release|Mixed Platforms.Build.0 = Release|x86
 		{85D6063A-E3BF-4D49-ADDD-4DD9CD02D062}.Release|x86.ActiveCfg = Release|x86
 		{85D6063A-E3BF-4D49-ADDD-4DD9CD02D062}.Release|x86.Build.0 = Release|x86
+		{5386330C-4A02-4365-95A1-145467C2CEB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5386330C-4A02-4365-95A1-145467C2CEB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5386330C-4A02-4365-95A1-145467C2CEB9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5386330C-4A02-4365-95A1-145467C2CEB9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5386330C-4A02-4365-95A1-145467C2CEB9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5386330C-4A02-4365-95A1-145467C2CEB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5386330C-4A02-4365-95A1-145467C2CEB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5386330C-4A02-4365-95A1-145467C2CEB9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5386330C-4A02-4365-95A1-145467C2CEB9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5386330C-4A02-4365-95A1-145467C2CEB9}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

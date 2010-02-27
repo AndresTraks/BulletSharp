@@ -1,13 +1,14 @@
 #pragma once
 
-#include "DynamicsWorld.h"
 #include "VehicleRaycaster.h"
 
 namespace BulletSharp
 {
-	public ref class DefaultVehicleRaycaster : BulletSharp::VehicleRaycaster
+	ref class DynamicsWorld;
+
+	public ref class DefaultVehicleRaycaster : VehicleRaycaster
 	{
-		public:
-			DefaultVehicleRaycaster(DynamicsWorld^ world);
+	public:
+		DefaultVehicleRaycaster(DynamicsWorld^ world);
 	};
 };

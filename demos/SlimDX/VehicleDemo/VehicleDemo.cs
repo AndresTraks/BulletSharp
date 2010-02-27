@@ -99,7 +99,7 @@ namespace VehicleDemo
             groundMaterial.Emissive = Color.Green;
 
             fps = new FpsDisplay(Device);
-            fps.Text = "F2 - Toggle view mode\r\n" +
+            fps.Text = "F2 - Toggle view mode: Tracking\r\n" +
                 "F3 - Toggle draw mode\r\n" +
                 "F11 - Toggle fullscreen";
 
@@ -152,6 +152,23 @@ namespace VehicleDemo
                 {
                     ViewMode++;
                     if (ViewMode > 3) ViewMode = 1;
+
+                    string viewMode = "";
+                    switch (ViewMode)
+                    {
+                        case 1:
+                            viewMode = "Tracking";
+                            break;
+                        case 2:
+                            viewMode = "Following";
+                            break;
+                        case 3:
+                            viewMode = "Freelook (WASD + mouse)";
+                            break;
+                    }
+                    fps.Text = "F2 - Toggle view mode: " + viewMode + "\r\n" +
+                    "F3 - Toggle draw mode\r\n" +
+                    "F11 - Toggle fullscreen";
                 }
 
                 if (input.KeyboardDown.Contains(Key.F3))
@@ -188,8 +205,7 @@ namespace VehicleDemo
             }
             else if (ViewMode == 2)
             {
-                freelook.SetEyeTarget(new Vector3(30, 10, 0),
-                    pos2 + Vector3.UnitY * 2.5f);
+                freelook.SetEyeTarget(pos2 + new Vector3(30, 10, 0), pos2);
                 Device.SetTransform(TransformState.View, freelook.View);
             }
             else if (ViewMode == 3)

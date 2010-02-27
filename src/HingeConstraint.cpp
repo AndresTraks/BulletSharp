@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #include "HingeConstraint.h"
+#include "RigidBody.h"
 
 HingeConstraint::HingeConstraint(RigidBody^ rbA, RigidBody^ rbB,
 	Vector3 pivotInA, Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB, bool useReferenceFrameA)

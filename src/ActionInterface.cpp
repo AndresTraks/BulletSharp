@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 
 #include "ActionInterface.h"
+#include "CollisionWorld.h"
+#include "DebugDraw.h"
 
 ActionInterface::ActionInterface(btActionInterface* actionInterface)
 {

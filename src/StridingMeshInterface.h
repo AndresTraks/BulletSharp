@@ -6,34 +6,34 @@ namespace BulletSharp
 {
 	public ref class StridingMeshInterface abstract : BulletSharp::IDisposable
 	{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
+	public:
+		virtual event EventHandler^ OnDisposing;
+		virtual event EventHandler^ OnDisposed;
 
-		private:
-			btStridingMeshInterface* _stridingMesh;
+	private:
+		btStridingMeshInterface* _stridingMesh;
 
-		protected:
-			StridingMeshInterface(btStridingMeshInterface* stridingMesh);
+	protected:
+		StridingMeshInterface(btStridingMeshInterface* stridingMesh);
 
-		public:
-			!StridingMeshInterface();
-		protected:
-			~StridingMeshInterface();
+	public:
+		!StridingMeshInterface();
+	protected:
+		~StridingMeshInterface();
 
-		public:
-			property bool IsDisposed
-			{
-				virtual bool get();
-			}
+	public:
+		property bool IsDisposed
+		{
+			virtual bool get();
+		}
 
-		public:
-			void StridingMeshInterface::CalculateAabbBruteForce([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
+	public:
+		void StridingMeshInterface::CalculateAabbBruteForce([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 
-		internal:
-			property btStridingMeshInterface* UnmanagedPointer
-			{
-				btStridingMeshInterface* get();
-			}
+	internal:
+		property btStridingMeshInterface* UnmanagedPointer
+		{
+			btStridingMeshInterface* get();
+		}
 	};
 };

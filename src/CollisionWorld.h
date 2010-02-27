@@ -1,18 +1,21 @@
 #pragma once
 
-#include "AlignedObjectArray.h"
-#include "BroadphaseInterface.h"
-#include "CollisionConfiguration.h"
-#include "CollisionObject.h"
-#include "DebugDraw.h"
 #include "Enums.h"
-#include "Dispatcher.h"
 #include "IDisposable.h"
 
 using namespace System::Drawing;
 
 namespace BulletSharp
 {
+	ref class BroadphaseInterface;
+	ref class CollisionConfiguration;
+	ref class CollisionObject;
+	ref class CollisionObjectArray;
+	ref class DebugDraw;
+	ref class Dispatcher;
+	ref class DispatcherInfo;
+	ref class OverlappingPairCache;
+
 	public ref class CollisionWorld : BulletSharp::IDisposable
 	{
 	public:
@@ -132,11 +135,10 @@ namespace BulletSharp
 			BulletSharp::Dispatcher^ get();
 		}
 
-		//property BulletSharp::DispatcherInfo^ DispatchInfo
-		//{
-		//	BulletSharp::DispatcherInfo^ get();
-		//	void set(BulletSharp::DispatcherInfo^ value);
-		//}
+		property DispatcherInfo^ DispatchInfo
+		{
+			DispatcherInfo^ get();
+		}
 
 		property int NumCollisionObjects
 		{

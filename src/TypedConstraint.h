@@ -2,7 +2,6 @@
 
 #include "Enums.h"
 #include "IDisposable.h"
-#include "RigidBody.h"
 
 namespace BulletSharp
 {
@@ -38,10 +37,10 @@ namespace BulletSharp
 		// Not a property to avoid crashing when feedback is not enabled
 		btScalar GetAppliedImpulse();
 
-		btScalar GetParam(ConstraintParams num, int axis);
-		btScalar GetParam(ConstraintParams num);
-		void SetParam(ConstraintParams num, btScalar value, int axis);
-		void SetParam(ConstraintParams num, btScalar value);
+		btScalar GetParam(ConstraintParam num, int axis);
+		btScalar GetParam(ConstraintParam num);
+		void SetParam(ConstraintParam num, btScalar value, int axis);
+		void SetParam(ConstraintParam num, btScalar value);
 
 		property TypedConstraintType ConstraintType
 		{

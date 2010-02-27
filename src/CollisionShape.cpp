@@ -156,9 +156,9 @@ String^ CollisionShape::Name::get()
 	return StringConv::UnmanagedToManaged(_collisionShape->getName());
 }
 
-BulletSharp::BroadphaseNativeTypes CollisionShape::ShapeType::get()
+BroadphaseNativeType CollisionShape::ShapeType::get()
 {
-	return (BulletSharp::BroadphaseNativeTypes)_collisionShape->getShapeType();
+	return (BroadphaseNativeType)_collisionShape->getShapeType();
 }
 
 IntPtr CollisionShape::UserPointer::get()

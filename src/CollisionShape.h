@@ -95,9 +95,9 @@ namespace BulletSharp
 			String^ get();
 		}
 
-		property BroadphaseNativeTypes ShapeType
+		property BroadphaseNativeType ShapeType
 		{
-			BroadphaseNativeTypes get();
+			BroadphaseNativeType get();
 		}
 
 		property IntPtr UserPointer

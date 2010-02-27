@@ -1,214 +1,188 @@
 #pragma once
 
-#include "AlignedObjectArray.h"
 #include "CollisionObject.h"
-#include "CollisionShape.h"
 #include "IDisposable.h"
-#include "TriangleIndexVertexArray.h"
 
 namespace BulletSharp
 {
+	ref class CollisionShape;
+	ref class TriangleIndexVertexArray;
+
 	generic <class T>
 	where T: CollisionShape
 	public ref class AlignedObjectArray : BulletSharp::IDisposable
 	{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
+	public:
+		virtual event EventHandler^ OnDisposing;
+		virtual event EventHandler^ OnDisposed;
 
-		private:
-			btAlignedObjectArray<btCollisionShape*>* _alignedObjectArray;
+	private:
+		btAlignedObjectArray<btCollisionShape*>* _alignedObjectArray;
 
-		public:
-			AlignedObjectArray<T>()
+	public:
+		AlignedObjectArray<T>();
+		!AlignedObjectArray();
+	protected:
+		~AlignedObjectArray();
+
+	public:
+		property bool IsDisposed
+		{
+			virtual bool get()
 			{
-				_alignedObjectArray = new btAlignedObjectArray<btCollisionShape*>();
+				return (_alignedObjectArray == NULL);
 			}
-			
-			!AlignedObjectArray()
-			{
-				if( this->IsDisposed == true )
-					return;
-	
-				OnDisposing( this, nullptr );
+		}
 
-				_alignedObjectArray = NULL;
-	
-				OnDisposed( this, nullptr );
-			}
+		void Clear()
+		{
+			_alignedObjectArray->clear();
+		}
 
-		protected:
-			~AlignedObjectArray()
-			{
-				this->!AlignedObjectArray();
-			}
+		void PopBack()
+		{
+			_alignedObjectArray->pop_back();
+		}
 
-		public:
-			property bool IsDisposed
-			{
-				virtual bool get()
-				{
-					return (_alignedObjectArray == NULL);
-				}
-			}
+		void PushBack(CollisionShape^ collisionShape);
 
-			void Clear()
+		property int Size
+		{
+			int get()
 			{
-				_alignedObjectArray->clear();
+				return _alignedObjectArray->size();
 			}
+		}
 
-			void PopBack()
+		property int Capacity
+		{
+			int get()
 			{
-				_alignedObjectArray->pop_back();
+				return _alignedObjectArray->capacity();
 			}
+		}
 
-			void PushBack(CollisionShape^ collisionShape)
-			{
-				_alignedObjectArray->push_back(collisionShape->UnmanagedPointer);
-			}
+		property CollisionShape^ default [int]
+		{
+			CollisionShape^ get (int index);
+			void set(int index, CollisionShape^);
+		}
 
-			property int Size
+	internal:
+		property btAlignedObjectArray<btCollisionShape*>* UnmanagedPointer
+		{
+			virtual btAlignedObjectArray<btCollisionShape*>* get()
 			{
-				int get()
-				{
-					return _alignedObjectArray->size();
-				}
+				return _alignedObjectArray;
 			}
-
-			property int Capacity
+			void set( btAlignedObjectArray<btCollisionShape*>* value )
 			{
-				int get()
-				{
-					return _alignedObjectArray->capacity();
-				}
+				_alignedObjectArray = value;
 			}
-
-			property CollisionShape^ default [int]
-			{
-				CollisionShape^ get (int index)
-				{
-					return gcnew CollisionShape((*_alignedObjectArray)[index]);
-				}
-			}
-
-		internal:
-			property btAlignedObjectArray<btCollisionShape*>* UnmanagedPointer
-			{
-				virtual btAlignedObjectArray<btCollisionShape*>* get()
-				{
-					return _alignedObjectArray;
-				}
-				void set( btAlignedObjectArray<btCollisionShape*>* value )
-				{
-					_alignedObjectArray = value;
-				}
-			}
+		}
 	};
 
 
 	public ref class CollisionObjectArray : BulletSharp::IDisposable
 	{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
+	public:
+		virtual event EventHandler^ OnDisposing;
+		virtual event EventHandler^ OnDisposed;
 
-		private:
-			btAlignedObjectArray<btCollisionObject*>* _alignedObjectArray;
+	private:
+		btAlignedObjectArray<btCollisionObject*>* _alignedObjectArray;
 
-		internal:
-			CollisionObjectArray(btCollisionObjectArray* collisionObjectArray)
+	internal:
+		CollisionObjectArray(btCollisionObjectArray* collisionObjectArray)
+		{
+			_alignedObjectArray = collisionObjectArray;
+		}
+
+
+	public:
+		CollisionObjectArray()
+		{
+			_alignedObjectArray = new btAlignedObjectArray<btCollisionObject*>();
+		}
+		
+		!CollisionObjectArray()
+		{
+			if( this->IsDisposed == true )
+				return;
+
+			OnDisposing( this, nullptr );
+
+			_alignedObjectArray = NULL;
+
+			OnDisposed( this, nullptr );
+		}
+
+	protected:
+		~CollisionObjectArray()
+		{
+			this->!CollisionObjectArray();
+		}
+
+	public:
+		property bool IsDisposed
+		{
+			virtual bool get()
 			{
-				_alignedObjectArray = collisionObjectArray;
+				return (_alignedObjectArray == NULL);
 			}
+		}
 
+		void Clear()
+		{
+			_alignedObjectArray->clear();
+		}
 
-		public:
-			CollisionObjectArray()
+		void PopBack()
+		{
+			_alignedObjectArray->pop_back();
+		}
+
+		void PushBack(CollisionObject^ collisionObject);
+
+		property int Size
+		{
+			int get()
 			{
-				_alignedObjectArray = new btAlignedObjectArray<btCollisionObject*>();
+				return _alignedObjectArray->size();
 			}
-			
-			!CollisionObjectArray()
-			{
-				if( this->IsDisposed == true )
-					return;
-	
-				OnDisposing( this, nullptr );
+		}
 
-				_alignedObjectArray = NULL;
-	
-				OnDisposed( this, nullptr );
-			}
-
-		protected:
-			~CollisionObjectArray()
+		property int Capacity
+		{
+			int get()
 			{
-				this->!CollisionObjectArray();
+				return _alignedObjectArray->capacity();
 			}
+		}
 
-		public:
-			property bool IsDisposed
+		property CollisionObject^ default [int]
+		{
+			CollisionObject^ get (int index)
 			{
-				virtual bool get()
-				{
-					return (_alignedObjectArray == NULL);
-				}
+				btCollisionObject* obj = (*_alignedObjectArray)[index];
+				if (obj != nullptr)
+					return gcnew CollisionObject(obj);
+				else
+					return nullptr;
 			}
+		}
 
-			void Clear()
+	internal:
+		property btAlignedObjectArray<btCollisionObject*>* UnmanagedPointer
+		{
+			virtual btAlignedObjectArray<btCollisionObject*>* get()
 			{
-				_alignedObjectArray->clear();
+				return _alignedObjectArray;
 			}
-
-			void PopBack()
+			void set( btAlignedObjectArray<btCollisionObject*>* value )
 			{
-				_alignedObjectArray->pop_back();
+				_alignedObjectArray = value;
 			}
-
-			void PushBack(CollisionObject^ collisionObject)
-			{
-				_alignedObjectArray->push_back(collisionObject->UnmanagedPointer);
-			}
-
-			property int Size
-			{
-				int get()
-				{
-					return _alignedObjectArray->size();
-				}
-			}
-
-			property int Capacity
-			{
-				int get()
-				{
-					return _alignedObjectArray->capacity();
-				}
-			}
-
-			property CollisionObject^ default [int]
-			{
-				CollisionObject^ get (int index)
-				{
-					btCollisionObject* obj = (*_alignedObjectArray)[index];
-					if (obj != nullptr)
-						return gcnew CollisionObject(obj);
-					else
-						return nullptr;
-				}
-			}
-
-		internal:
-			property btAlignedObjectArray<btCollisionObject*>* UnmanagedPointer
-			{
-				virtual btAlignedObjectArray<btCollisionObject*>* get()
-				{
-					return _alignedObjectArray;
-				}
-				void set( btAlignedObjectArray<btCollisionObject*>* value )
-				{
-					_alignedObjectArray = value;
-				}
-			}
+		}
 	};
 };

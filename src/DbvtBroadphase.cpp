@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 
 #include "DbvtBroadphase.h"
+#include "Dispatcher.h"
+#include "OverlappingPairCache.h"
 
 DbvtBroadphase::DbvtBroadphase()
 : BroadphaseInterface(new btDbvtBroadphase())

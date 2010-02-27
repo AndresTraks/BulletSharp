@@ -3,10 +3,11 @@
 // Fully implemented as of 24 Feb 2010
 
 #include "BroadphaseInterface.h"
-#include "OverlappingPairCache.h"
 
 namespace BulletSharp
 {
+	ref class OverlappingPairCache;
+
 	public ref class AxisSweep3 : BulletSharp::BroadphaseInterface
 	{
 	public:

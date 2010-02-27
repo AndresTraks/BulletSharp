@@ -4,9 +4,9 @@
 
 namespace BulletSharp
 {
-	public ref class SphereShape : BulletSharp::ConvexInternalShape
+	public ref class SphereShape : ConvexInternalShape
 	{
-		public:
-			SphereShape(btScalar radius);
+	public:
+		SphereShape(btScalar radius);
 	};
 };

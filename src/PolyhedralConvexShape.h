@@ -4,7 +4,7 @@
 
 namespace BulletSharp
 {
-	public ref class PolyhedralConvexShape abstract : BulletSharp::ConvexInternalShape
+	public ref class PolyhedralConvexShape abstract : ConvexInternalShape
 	{
 	internal:
 		PolyhedralConvexShape(btPolyhedralConvexShape* polyhedralConvexShape);

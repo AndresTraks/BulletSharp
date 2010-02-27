@@ -148,19 +148,19 @@ namespace DemoFramework
                                         world.AddConstraint(dof6);
                                         pickConstraint = dof6;
 
-                                        dof6.SetParam(ConstraintParams.StopCfm, 0.8f, 0);
-                                        dof6.SetParam(ConstraintParams.StopCfm, 0.8f, 1);
-                                        dof6.SetParam(ConstraintParams.StopCfm, 0.8f, 2);
-                                        dof6.SetParam(ConstraintParams.StopCfm, 0.8f, 3);
-                                        dof6.SetParam(ConstraintParams.StopCfm, 0.8f, 4);
-                                        dof6.SetParam(ConstraintParams.StopCfm, 0.8f, 5);
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 0);
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 1);
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 2);
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 3);
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 4);
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 5);
 
-                                        dof6.SetParam(ConstraintParams.StopErp, 0.1f, 0);
-                                        dof6.SetParam(ConstraintParams.StopErp, 0.1f, 1);
-                                        dof6.SetParam(ConstraintParams.StopErp, 0.1f, 2);
-                                        dof6.SetParam(ConstraintParams.StopErp, 0.1f, 3);
-                                        dof6.SetParam(ConstraintParams.StopErp, 0.1f, 4);
-                                        dof6.SetParam(ConstraintParams.StopErp, 0.1f, 5);
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 0);
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 1);
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 2);
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 3);
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 4);
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 5);
                                     }
                                     else
                                     {

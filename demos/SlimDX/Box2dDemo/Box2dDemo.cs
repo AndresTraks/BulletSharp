@@ -236,20 +236,20 @@ namespace Box2dDemo
                 else
                     Device.Material = passiveMaterial;
 
-                if (colObj.CollisionShape.ShapeType == BroadphaseNativeTypes.BoxShape)
+                if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.BoxShape)
                     box.DrawSubset(0);
-                else if(colObj.CollisionShape.ShapeType == BroadphaseNativeTypes.Convex2dShape)
+                else if(colObj.CollisionShape.ShapeType == BroadphaseNativeType.Convex2dShape)
                 {
                     Convex2dShape shape = Convex2dShape.Upcast2d(colObj.CollisionShape);
                     switch (shape.ChildShape.ShapeType)
                     {
-                        case BroadphaseNativeTypes.BoxShape:
+                        case BroadphaseNativeType.BoxShape:
                             box.DrawSubset(0);
                             break;
-                        case BroadphaseNativeTypes.ConvexHullShape:
+                        case BroadphaseNativeType.ConvexHullShape:
                             triangle.DrawSubset(0);
                             break;
-                        case BroadphaseNativeTypes.CylinderShape:
+                        case BroadphaseNativeType.CylinderShape:
                             cylinder.DrawSubset(0);
                             break;
                     }

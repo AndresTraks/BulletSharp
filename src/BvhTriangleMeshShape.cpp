@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #include "BvhTriangleMeshShape.h"
+#include "StridingMeshInterface.h"
 
 BvhTriangleMeshShape::BvhTriangleMeshShape()
 : ConcaveShape(new btBvhTriangleMeshShape())

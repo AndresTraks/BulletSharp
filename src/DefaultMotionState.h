@@ -6,14 +6,14 @@ namespace BulletSharp
 {
 	public ref class DefaultMotionState : BulletSharp::MotionState
 	{
-		public:
-			DefaultMotionState();
-			DefaultMotionState(Matrix startTrans);
+	public:
+		DefaultMotionState();
+		DefaultMotionState(Matrix startTrans);
 
-		internal:
-			property btDefaultMotionState* UnmanagedPointer
-			{
-				btDefaultMotionState* get() new;
-			}
+	internal:
+		property btDefaultMotionState* UnmanagedPointer
+		{
+			btDefaultMotionState* get() new;
+		}
 	};
 };

@@ -1,33 +1,34 @@
 #pragma once
 
 #include "BroadphaseInterface.h"
-#include "Dispatcher.h"
-#include "OverlappingPairCache.h"
 
 namespace BulletSharp
 {
+	ref class Dispatcher;
+	ref class OverlappingPairCache;
+
 	public ref class DbvtBroadphase : BulletSharp::BroadphaseInterface
 	{
-		public:
-			DbvtBroadphase(BulletSharp::OverlappingPairCache^ pairCache);
-			DbvtBroadphase();
+	public:
+		DbvtBroadphase(BulletSharp::OverlappingPairCache^ pairCache);
+		DbvtBroadphase();
 
-			static void Benchmark(BroadphaseInterface^ broadphase);
+		static void Benchmark(BroadphaseInterface^ broadphase);
 
-			void Collide(Dispatcher^ dispatcher);
-			void Optimize();
-			void PerformDeferredRemoval(Dispatcher^ dispatcher);
+		void Collide(Dispatcher^ dispatcher);
+		void Optimize();
+		void PerformDeferredRemoval(Dispatcher^ dispatcher);
 
-			property btScalar VelocityPrediction
-			{
-				btScalar get();
-				void set(btScalar prediction);
-			}
+		property btScalar VelocityPrediction
+		{
+			btScalar get();
+			void set(btScalar prediction);
+		}
 
-		internal:
-			property btDbvtBroadphase* UnmanagedPointer
-			{
-				btDbvtBroadphase* get() new;
-			}
+	internal:
+		property btDbvtBroadphase* UnmanagedPointer
+		{
+			btDbvtBroadphase* get() new;
+		}
 	};
 };

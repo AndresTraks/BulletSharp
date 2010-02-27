@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 
+#include "DataStream.h"
 #include "TriangleIndexVertexArray.h"
 
 IndexedMesh::IndexedMesh(btIndexedMesh* indexedMesh)

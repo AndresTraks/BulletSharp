@@ -1,6 +1,9 @@
 #include "StdAfx.h"
 
 #include "CollisionAlgorithm.h"
+#include "CollisionObject.h"
+#include "Dispatcher.h"
+#include "ManifoldResult.h"
 
 CollisionAlgorithmConstructionInfo::CollisionAlgorithmConstructionInfo()
 {
@@ -53,6 +56,20 @@ CollisionAlgorithm::!CollisionAlgorithm()
 	_algorithm = NULL;
 	
 	OnDisposed( this, nullptr );
+}
+
+btScalar CollisionAlgorithm::CalculateTimeOfImpact(CollisionObject^ body0,
+	CollisionObject^ body1, DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
+{
+	return _algorithm->calculateTimeOfImpact(body0->UnmanagedPointer, body1->UnmanagedPointer,
+		*dispatchInfo->UnmanagedPointer, resultOut->UnmanagedPointer);
+}
+
+void CollisionAlgorithm::ProcessCollision(CollisionObject^ body0, CollisionObject^ body1,
+	DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
+{
+	_algorithm->processCollision(body0->UnmanagedPointer, body1->UnmanagedPointer,
+		*dispatchInfo->UnmanagedPointer, resultOut->UnmanagedPointer);
 }
 
 bool CollisionAlgorithm::IsDisposed::get()

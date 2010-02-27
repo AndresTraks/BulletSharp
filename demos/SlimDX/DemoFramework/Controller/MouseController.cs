@@ -27,12 +27,12 @@ namespace DemoFramework
         }
 
         Vector3 vector;
-        float sensitivity = 0.01f;
+        double sensitivity = 0.01f;
 
         bool IsLeftDragging = false, IsRightDragging = false;
         Point MouseOrigin;
-        Vector2 AngleOrigin;
-        Vector2 AngleDelta;
+        double AngleOriginX, AngleOriginY;
+        double AngleDeltaX, AngleDeltaY;
         int RightDragX, RightDragY;
         int RightDragDeltaX, RightDragDeltaY;
 
@@ -43,14 +43,14 @@ namespace DemoFramework
 
         // HorizontalAngle - left-right movement (parallel to XZ-plane)
         // VerticalAngle - up-down movement (angle between Vector and Y-axis)
-        public void SetByAngles(float horizontalAngle, float verticalAngle)
+        public void SetByAngles(double horizontalAngle, double verticalAngle)
         {
-            vector.X = (float)Math.Cos(horizontalAngle) * (float)Math.Cos(verticalAngle);
-            vector.Z = (float)Math.Sin(horizontalAngle) * (float)Math.Cos(verticalAngle);
+            vector.X = (float)(Math.Cos(horizontalAngle) * Math.Cos(verticalAngle));
+            vector.Z = (float)(Math.Sin(horizontalAngle) * Math.Cos(verticalAngle));
             vector.Y = (float)Math.Sin(verticalAngle);
         }
 
-        public void Update(Input input)
+        public bool Update(Input input)
         {
             if (input.MouseDown != MouseButtons.None)
             {
@@ -67,8 +67,8 @@ namespace DemoFramework
                         Vector3 Norm = Vector3.Normalize(Vector);
 
                         // Calculate angles from the vector
-                        AngleOrigin.X = (float)Math.Atan2(Norm.Z, Norm.X);
-                        AngleOrigin.Y = (float)Math.Asin(Norm.Y);
+                        AngleOriginX = Math.Atan2(Norm.Z, Norm.X);
+                        AngleOriginY = Math.Asin(Norm.Y);
                     }
                     else if ((input.MouseDown & MouseButtons.Right) == MouseButtons.Right)
                     {
@@ -81,8 +81,8 @@ namespace DemoFramework
             if (IsLeftDragging == true)
             {
                 // Calculate how much to change the angles
-                AngleDelta.X = -(input.MousePoint.X - MouseOrigin.X) * sensitivity;
-                AngleDelta.Y = (input.MousePoint.Y - MouseOrigin.Y) * sensitivity;
+                AngleDeltaX = -(input.MousePoint.X - MouseOrigin.X) * sensitivity;
+                AngleDeltaY = (input.MousePoint.Y - MouseOrigin.Y) * sensitivity;
 
                 if ((input.MouseUp & MouseButtons.Left) == MouseButtons.Left)
                 {
@@ -92,9 +92,7 @@ namespace DemoFramework
                 else
                 {
                     // Button still pressed, update Vector
-                    float MovementHor = AngleOrigin.X + AngleDelta.X;
-                    float MovementVert = AngleOrigin.Y + AngleDelta.Y;
-                    SetByAngles(MovementHor, MovementVert);
+                    SetByAngles(AngleOriginX + AngleDeltaX, AngleOriginY + AngleDeltaY);
                 }
             }
             else if (IsRightDragging == true)
@@ -113,6 +111,11 @@ namespace DemoFramework
                         RightDragDeltaY + RightDragY);
                 }
             }
+            else
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

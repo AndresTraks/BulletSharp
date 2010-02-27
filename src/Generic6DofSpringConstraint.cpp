@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #include "Generic6DofSpringConstraint.h"
+#include "RigidBody.h"
 
 Generic6DofSpringConstraint::Generic6DofSpringConstraint(btGeneric6DofSpringConstraint* constraint)
 : Generic6DofConstraint(constraint)

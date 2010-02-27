@@ -17,7 +17,14 @@ namespace DemoFramework
             get;
             private set;
         }
+
         public Matrix View
+        {
+            get;
+            private set;
+        }
+
+        public Vector3 UpVector
         {
             get;
             private set;
@@ -29,6 +36,7 @@ namespace DemoFramework
         public FreeLook()
         {
             Target = Vector3.UnitX;
+            UpVector = Vector3.UnitY;
             mouseController = new MouseController();
             mouseController.Sensitivity = 0.005f;
             Recalculate();
@@ -44,47 +52,57 @@ namespace DemoFramework
 
         public void Update(float frameDelta, Input input)
         {
-            mouseController.Update(input);
+            bool changed = mouseController.Update(input);
 
-            if ((input.KeyboardState == null ||
-                input.KeyboardState.PressedKeys.Count == 0) &&
-                input.MouseButtons == System.Windows.Forms.MouseButtons.None)
+            if (changed == false && (input.KeyboardState == null ||
+                input.KeyboardState.PressedKeys.Count == 0))
                 return;
 
-            Vector3 direction = frameDelta * Vector3.Normalize(-mouseController.Vector);
+            Vector3 direction = Vector3.Normalize(-mouseController.Vector);
 
-            if (input.KeyboardState.PressedKeys.Count > 0)
+            if (input.KeyboardState.PressedKeys.Count != 0)
             {
+                Vector3 relDirection = frameDelta * direction;
+
                 Vector3 translation = Vector3.Zero;
                 Vector3 sideways = Vector3.Zero;
+                bool hasForward = false;
                 bool hasSideways = false;
 
                 float flySpeed = (input.KeyboardState.IsPressed(Key.LeftShift)) ? 15 : 5;
 
                 if (input.KeyboardState.IsPressed(Key.W))
-                    translation = flySpeed * direction;
+                {
+                    translation = flySpeed * relDirection;
+                    hasForward = true;
+                }
                 if (input.KeyboardState.IsPressed(Key.S))
-                    translation -= flySpeed * direction;
+                {
+                    translation -= flySpeed * relDirection;
+                    hasForward = true;
+                }
 
                 if (input.KeyboardState.IsPressed(Key.A))
                 {
-                    sideways = Vector3.TransformCoordinate(direction, Matrix.RotationY((float)-Math.PI / 2));
+                    sideways = Vector3.TransformCoordinate(relDirection, Matrix.RotationY((float)-Math.PI / 2));
                     hasSideways = true;
                 }
                 if (input.KeyboardState.IsPressed(Key.D))
                 {
-                    sideways += Vector3.TransformCoordinate(direction, Matrix.RotationY((float)Math.PI / 2));
+                    sideways += Vector3.TransformCoordinate(relDirection, Matrix.RotationY((float)Math.PI / 2));
                     hasSideways = true;
                 }
 
-                // Sideways movement should not affect up-down movement(y=0)
-                if (hasSideways)
+                if (hasForward || hasSideways)
                 {
-                    sideways.Y = 0;
-                    translation += sideways;
+                    if (hasSideways)
+                    {
+                        // Sideways movement should not affect up-down movement(y=0)
+                        sideways.Y = 0;
+                        translation += sideways;
+                    }
+                    Eye += translation;
                 }
-                
-                Eye += translation;
             }
             Target = Eye + direction;
 
@@ -93,7 +111,7 @@ namespace DemoFramework
 
         void Recalculate()
         {
-            View = Matrix.LookAtLH(Eye, Target, upVector);
+            View = Matrix.LookAtLH(Eye, Target, UpVector);
         }
     }
 }

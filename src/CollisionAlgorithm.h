@@ -1,10 +1,14 @@
 #pragma once
 
 #include "IDisposable.h"
-#include "Dispatcher.h"
 
 namespace BulletSharp
 {
+	ref class Dispatcher;
+	ref class DispatcherInfo;
+	ref class CollisionObject;
+	ref class ManifoldResult;
+
 	public ref class CollisionAlgorithmConstructionInfo
 	{
 	private:
@@ -43,12 +47,17 @@ namespace BulletSharp
 	protected:
 		~CollisionAlgorithm();
 	public:
+		btScalar CalculateTimeOfImpact(CollisionObject^ body0, CollisionObject^ body1,
+			DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut);
+		void ProcessCollision(CollisionObject^ body0, CollisionObject^ body1,
+			DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut);
+
 		property bool IsDisposed
 		{
 			virtual bool get();
 		}
 
-	public:
+	internal:
 		property btCollisionAlgorithm* UnmanagedPointer
 		{
 			virtual btCollisionAlgorithm* get();

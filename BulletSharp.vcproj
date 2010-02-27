@@ -416,6 +416,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ContactSolverInfo.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Convex2dConvex2dAlgorithm.cpp"
 				>
 			</File>
@@ -468,6 +472,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\DiscreteCollisionDetectorInterface.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\DiscreteDynamicsWorld.cpp"
 				>
 			</File>
@@ -497,6 +505,10 @@
 			</File>
 			<File
 				RelativePath=".\src\HingeConstraint.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ManifoldResult.cpp"
 				>
 			</File>
 			<File
@@ -537,10 +549,6 @@
 			</File>
 			<File
 				RelativePath=".\src\RigidBody.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\RigidBodyConstructionInfo.cpp"
 				>
 			</File>
 			<File
@@ -743,6 +751,10 @@
 						RelativePath=".\src\DefaultCollisionConfiguration.h"
 						>
 					</File>
+					<File
+						RelativePath=".\src\ManifoldResult.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="BroadphaseCollision"
@@ -796,6 +808,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\DiscreteCollisionDetectorInterface.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\MinkowskiPenetrationDepthSolver.h"
 						>
 					</File>
@@ -831,10 +847,6 @@
 						RelativePath=".\src\RigidBody.h"
 						>
 					</File>
-					<File
-						RelativePath=".\src\RigidBodyConstructionInfo.h"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name="ConstraintSolver"
@@ -845,6 +857,10 @@
 					</File>
 					<File
 						RelativePath=".\src\ConstraintSolver.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\ContactSolverInfo.h"
 						>
 					</File>
 					<File

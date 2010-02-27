@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #include "Point2PointConstraint.h"
+#include "RigidBody.h"
 
 ConstraintSetting::ConstraintSetting()
 {

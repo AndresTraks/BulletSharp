@@ -4,17 +4,17 @@
 
 namespace BulletSharp
 {
-	public ref class ConcaveShape abstract : BulletSharp::CollisionShape
+	public ref class ConcaveShape abstract : CollisionShape
 	{
-		public:
-			//void ProcessAllTriangles(TriangleCallback^ callback,Vector3 aabbMin, Vector3 aabbMax);
+	public:
+		//void ProcessAllTriangles(TriangleCallback^ callback,Vector3 aabbMin, Vector3 aabbMax);
 
-		internal:
-			ConcaveShape(btConcaveShape* concaveShape);
+	internal:
+		ConcaveShape(btConcaveShape* concaveShape);
 
-			property btConcaveShape* UnmanagedPointer
-			{
-				btConcaveShape* get();
-			}
+		property btConcaveShape* UnmanagedPointer
+		{
+			btConcaveShape* get();
+		}
 	};
 };

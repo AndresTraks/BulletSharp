@@ -6,6 +6,8 @@
 
 namespace BulletSharp
 {
+	ref class CollisionAlgorithm;
+
 	public ref class BroadphaseProxy
 	{
 	private:
@@ -79,6 +81,43 @@ namespace BulletSharp
 		{
 			virtual btBroadphaseProxy* get();
 			void set(btBroadphaseProxy* value);
+		}
+	};
+
+	public ref class BroadphasePair
+	{
+	private:
+		btBroadphasePair* _pair;
+		BroadphaseProxy^ _proxy0;
+		BroadphaseProxy^ _proxy1;
+	public:
+		BroadphasePair();
+		BroadphasePair(BroadphasePair^ pair);
+		BroadphasePair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy);
+
+		property CollisionAlgorithm^ Algorithm
+		{
+			CollisionAlgorithm^ get();
+			void set(CollisionAlgorithm^ value);
+		}
+
+		property BroadphaseProxy^ Proxy0
+		{
+			BroadphaseProxy^ get();
+			void set(BroadphaseProxy^ value);
+		}
+
+		property BroadphaseProxy^ Proxy1
+		{
+			BroadphaseProxy^ get();
+			void set(BroadphaseProxy^ value);
+		}
+
+	internal:
+		property btBroadphasePair* UnmanagedPointer
+		{
+			virtual btBroadphasePair* get();
+			void set(btBroadphasePair* value);
 		}
 	};
 }

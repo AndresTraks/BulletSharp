@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 
+#include "BroadphaseProxy.h"
 #include "BroadphaseInterface.h"
+#include "Dispatcher.h"
 
 BroadphaseAabbCallback::BroadphaseAabbCallback(btBroadphaseAabbCallback* callback)
 {

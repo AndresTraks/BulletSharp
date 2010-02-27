@@ -1,6 +1,10 @@
 #include "StdAfx.h"
 
+#include "BroadphaseInterface.h"
+#include "CollisionConfiguration.h"
+#include "ConstraintSolver.h"
 #include "DiscreteDynamicsWorld.h"
+#include "Dispatcher.h"
 
 DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, ConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration)
 : DynamicsWorld(new btDiscreteDynamicsWorld(dispatcher->UnmanagedPointer,

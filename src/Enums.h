@@ -11,7 +11,8 @@ namespace BulletSharp
 		DisableSimulation = DISABLE_SIMULATION
 	};
 
-	public enum class BroadphaseNativeTypes {
+	public enum class BroadphaseNativeType
+	{
 		BoxShape = BOX_SHAPE_PROXYTYPE,
 		TriangleShape = TRIANGLE_SHAPE_PROXYTYPE,
 		TetrahedralShape = TETRAHEDRAL_SHAPE_PROXYTYPE,
@@ -48,7 +49,27 @@ namespace BulletSharp
 		HfFluidShape = HFFLUID_SHAPE_PROXYTYPE,
 		HfFluidBuoyantConvexShape = HFFLUID_BUOYANT_CONVEX_SHAPE_PROXYTYPE,
 		InvalidShape = INVALID_SHAPE_PROXYTYPE,
-		MaxBroadphaseCollisionTypes = MAX_BROADPHASE_COLLISION_TYPES
+		MaxBroadphaseCollisionType = MAX_BROADPHASE_COLLISION_TYPES
+	};
+
+	[Flags]
+	public enum class CollisionFlags
+	{
+		StaticObject = btCollisionObject::CF_STATIC_OBJECT,
+		KinematicObject = btCollisionObject::CF_KINEMATIC_OBJECT,
+		NoContactResponse = btCollisionObject::CF_NO_CONTACT_RESPONSE,
+		CustomMaterialCallback = btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK,
+		CharacterObject = btCollisionObject::CF_CHARACTER_OBJECT,
+		DisableVisualizeObject = btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT
+	};
+
+	public enum CollisionObjectType
+	{
+		CollisionObjectType = btCollisionObject::CO_COLLISION_OBJECT,
+		RigidBodyType = btCollisionObject::CO_RIGID_BODY,
+		GhostObjectType = btCollisionObject::CO_GHOST_OBJECT,
+		SoftBodyType = btCollisionObject::CO_SOFT_BODY,
+		HfFluidType = btCollisionObject::CO_HF_FLUID
 	};
 
 	[Flags]
@@ -63,7 +84,7 @@ namespace BulletSharp
 		AllFilter = btBroadphaseProxy::AllFilter
 	};
 
-	public enum class ConstraintParams
+	public enum class ConstraintParam
 	{
 		Erp = BT_CONSTRAINT_ERP,
 		StopErp = BT_CONSTRAINT_STOP_ERP,
@@ -100,6 +121,21 @@ namespace BulletSharp
 		PhyShort = PHY_SHORT,
 		PhyFixedPoint88 = PHY_FIXEDPOINT88,
 		PhyUChar = PHY_UCHAR
+	};
+
+	[Flags]
+	public enum class SolverModes
+	{
+		RandomizeOrder = SOLVER_RANDMIZE_ORDER,
+		FrictionSeparate = SOLVER_FRICTION_SEPARATE,
+		UseWarmStarting = SOLVER_USE_WARMSTARTING,
+		UseFrictionWarmStarting = SOLVER_USE_FRICTION_WARMSTARTING,
+		Use2FrictionDirections = SOLVER_USE_2_FRICTION_DIRECTIONS,
+		EnableFrictionDirectionCaching = SOLVER_ENABLE_FRICTION_DIRECTION_CACHING,
+		DisableVelocityDependentFrictionDirection = SOLVER_DISABLE_VELOCITY_DEPENDENT_FRICTION_DIRECTION,
+		CacheFriendly = SOLVER_CACHE_FRIENDLY,
+		Simd = SOLVER_SIMD,
+		Cuda = SOLVER_CUDA
 	};
 
 	public enum class TypedConstraintType

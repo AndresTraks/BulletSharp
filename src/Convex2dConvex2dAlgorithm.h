@@ -5,11 +5,12 @@
 #pragma managed(pop)
 
 #include "CollisionCreateFunc.h"
-#include "ConvexPenetrationDepthSolver.h"
 #include "SimplexSolverInterface.h"
 
 namespace BulletSharp
 {
+	ref class ConvexPenetrationDepthSolver;
+
 	public ref class Convex2dConvex2dAlgorithm
 	{
 	public:

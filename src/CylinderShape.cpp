@@ -2,32 +2,49 @@
 
 #include "CylinderShape.h"
 
-CylinderShape::CylinderShape(Vector3 boxHalfExtents)
-: ConvexInternalShape(new btCylinderShape(*Math::Vector3ToBtVec3(boxHalfExtents)))
+CylinderShape::CylinderShape(Vector3 halfExtents)
+: ConvexInternalShape(new btCylinderShape(*Math::Vector3ToBtVec3(halfExtents)))
 {
 }
 
-CylinderShape::CylinderShape(float boxHalfExtentsX, float boxHalfExtentsY, float boxHalfExtentsZ)
-: ConvexInternalShape(new btCylinderShape(*(new btVector3(boxHalfExtentsX,boxHalfExtentsY,boxHalfExtentsZ))))
+CylinderShape::CylinderShape(float halfExtentsX, float halfExtentsY, float halfExtentsZ)
+: ConvexInternalShape(new btCylinderShape(*(new btVector3(halfExtentsX,halfExtentsY,halfExtentsZ))))
 {
 }
 
-CylinderShapeX::CylinderShapeX(Vector3 boxHalfExtents)
-: ConvexInternalShape(new btCylinderShapeX(*Math::Vector3ToBtVec3(boxHalfExtents)))
+CylinderShape::CylinderShape(float halfExtents)
+: ConvexInternalShape(new btCylinderShape(*(new btVector3(halfExtents,halfExtents,halfExtents))))
 {
 }
 
-CylinderShapeX::CylinderShapeX(float boxHalfExtentsX, float boxHalfExtentsY, float boxHalfExtentsZ)
-: ConvexInternalShape(new btCylinderShapeX(*(new btVector3(boxHalfExtentsX,boxHalfExtentsY,boxHalfExtentsZ))))
+
+CylinderShapeX::CylinderShapeX(Vector3 halfExtents)
+: ConvexInternalShape(new btCylinderShapeX(*Math::Vector3ToBtVec3(halfExtents)))
 {
 }
 
-CylinderShapeZ::CylinderShapeZ(Vector3 boxHalfExtents)
-: ConvexInternalShape(new btCylinderShapeZ(*Math::Vector3ToBtVec3(boxHalfExtents)))
+CylinderShapeX::CylinderShapeX(float halfExtentsX, float halfExtentsY, float halfExtentsZ)
+: ConvexInternalShape(new btCylinderShapeX(*(new btVector3(halfExtentsX,halfExtentsY,halfExtentsZ))))
 {
 }
 
-CylinderShapeZ::CylinderShapeZ(float boxHalfExtentsX, float boxHalfExtentsY, float boxHalfExtentsZ)
-: ConvexInternalShape(new btCylinderShapeZ(*(new btVector3(boxHalfExtentsX,boxHalfExtentsY,boxHalfExtentsZ))))
+CylinderShapeX::CylinderShapeX(float halfExtents)
+: ConvexInternalShape(new btCylinderShapeX(*(new btVector3(halfExtents,halfExtents,halfExtents))))
+{
+}
+
+
+CylinderShapeZ::CylinderShapeZ(Vector3 halfExtents)
+: ConvexInternalShape(new btCylinderShapeZ(*Math::Vector3ToBtVec3(halfExtents)))
+{
+}
+
+CylinderShapeZ::CylinderShapeZ(float halfExtentsX, float halfExtentsY, float halfExtentsZ)
+: ConvexInternalShape(new btCylinderShapeZ(*(new btVector3(halfExtentsX,halfExtentsY,halfExtentsZ))))
+{
+}
+
+CylinderShapeZ::CylinderShapeZ(float halfExtents)
+: ConvexInternalShape(new btCylinderShapeZ(*(new btVector3(halfExtents,halfExtents,halfExtents))))
 {
 }
