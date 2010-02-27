@@ -46,7 +46,7 @@
 				PreprocessorDefinitions="GRAPHICS_SLIMDX;WIN32;_DEBUG"
 				RuntimeLibrary="3"
 				EnableEnhancedInstructionSet="0"
-				FloatingPointModel="2"
+				FloatingPointModel="0"
 				UsePrecompiledHeader="1"
 				WarningLevel="3"
 				DebugInformationFormat="3"
@@ -122,7 +122,7 @@
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
 				EnableEnhancedInstructionSet="0"
-				FloatingPointModel="2"
+				FloatingPointModel="0"
 				UsePrecompiledHeader="2"
 				WarningLevel="1"
 				DebugInformationFormat="0"
@@ -197,7 +197,7 @@
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
 				EnableEnhancedInstructionSet="0"
-				FloatingPointModel="2"
+				FloatingPointModel="0"
 				UsePrecompiledHeader="2"
 				WarningLevel="1"
 				DebugInformationFormat="0"
@@ -271,7 +271,7 @@
 				PreprocessorDefinitions="GRAPHICS_SLIMDX;WIN32;_DEBUG"
 				RuntimeLibrary="3"
 				EnableEnhancedInstructionSet="0"
-				FloatingPointModel="2"
+				FloatingPointModel="0"
 				UsePrecompiledHeader="1"
 				WarningLevel="3"
 				DebugInformationFormat="3"
@@ -532,6 +532,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\PersistentManifold.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Point2PointConstraint.cpp"
 				>
 			</File>
@@ -549,6 +553,10 @@
 			</File>
 			<File
 				RelativePath=".\src\RigidBody.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Scalar.cpp"
 				>
 			</File>
 			<File
@@ -816,6 +824,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\PersistentManifold.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\SimplexSolverInterface.h"
 						>
 					</File>
@@ -934,6 +946,10 @@
 				</File>
 				<File
 					RelativePath=".\src\MotionState.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\Scalar.h"
 					>
 				</File>
 			</Filter>

@@ -6,7 +6,7 @@ namespace BulletSharp
 {
 	ref class RigidBody;
 	ref class VehicleRaycaster;
-	ref struct WheelInfo;
+	ref class WheelInfo;
 
 	public ref class RaycastVehicle : ActionInterface
 	{

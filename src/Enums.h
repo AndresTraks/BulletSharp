@@ -92,6 +92,12 @@ namespace BulletSharp
 		StopCfm = BT_CONSTRAINT_STOP_CFM
 	};
 
+	public enum class ContactManifoldType
+	{
+		PersistentManifold = BT_PERSISTENT_MANIFOLD_TYPE,
+		MaxContactManifold = MAX_CONTACT_MANIFOLD_TYPE
+	};
+
 	[Flags]
 	public enum class DebugDrawModes
 	{
@@ -111,6 +117,19 @@ namespace BulletSharp
 		DrawConstraintLimits = btIDebugDraw::DBG_DrawConstraintLimits,
 		FastWireframe = btIDebugDraw::DBG_FastWireframe,
 		MaxDebugDrawMode = btIDebugDraw::DBG_MAX_DEBUG_DRAW_MODE
+	};
+
+	// Mix of ContactManifoldType and TypedConstraintType
+	public enum class ObjectType
+	{
+		PersistentManifold = BT_PERSISTENT_MANIFOLD_TYPE,
+		MaxContactManifold = MAX_CONTACT_MANIFOLD_TYPE,
+		Point2Point = POINT2POINT_CONSTRAINT_TYPE,
+		Hinge = HINGE_CONSTRAINT_TYPE,
+		ConeTwist = CONETWIST_CONSTRAINT_TYPE,
+		D6 = D6_CONSTRAINT_TYPE,
+		Slider = SLIDER_CONSTRAINT_TYPE,
+		Contact = CONTACT_CONSTRAINT_TYPE
 	};
 
 	public enum class PhyScalarType

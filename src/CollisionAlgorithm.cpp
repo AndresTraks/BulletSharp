@@ -1,9 +1,11 @@
 #include "StdAfx.h"
 
+#include "AlignedObjectArray.h"
 #include "CollisionAlgorithm.h"
 #include "CollisionObject.h"
 #include "Dispatcher.h"
 #include "ManifoldResult.h"
+#include "PersistentManifold.h"
 
 CollisionAlgorithmConstructionInfo::CollisionAlgorithmConstructionInfo()
 {
@@ -16,25 +18,33 @@ CollisionAlgorithmConstructionInfo::CollisionAlgorithmConstructionInfo(
 	_info = new btCollisionAlgorithmConstructionInfo(dispatcher->UnmanagedPointer, temp);
 }
 
+BulletSharp::Dispatcher^ CollisionAlgorithmConstructionInfo::Dispatcher::get()
+{
+	return gcnew BulletSharp::Dispatcher(_info->m_dispatcher1);
+}
+void CollisionAlgorithmConstructionInfo::Dispatcher::set(BulletSharp::Dispatcher^ value)
+{
+	_info->m_dispatcher1 = value->UnmanagedPointer;
+}
+
+PersistentManifold^ CollisionAlgorithmConstructionInfo::Manifold::get()
+{
+	return gcnew PersistentManifold(_info->m_manifold);
+}
+void CollisionAlgorithmConstructionInfo::Manifold::set(PersistentManifold^ value)
+{
+	_info->m_manifold = value->UnmanagedPointer;
+}
+
 btCollisionAlgorithmConstructionInfo* CollisionAlgorithmConstructionInfo::UnmanagedPointer::get()
 {
 	return _info;
 }
-
 void CollisionAlgorithmConstructionInfo::UnmanagedPointer::set(btCollisionAlgorithmConstructionInfo* value)
 {
 	_info = value;
 }
 
-BulletSharp::Dispatcher^ CollisionAlgorithmConstructionInfo::Dispatcher::get()
-{
-	return gcnew BulletSharp::Dispatcher(_info->m_dispatcher1);
-}
-
-void CollisionAlgorithmConstructionInfo::Dispatcher::set(BulletSharp::Dispatcher^ value)
-{
-	_info->m_dispatcher1 = value->UnmanagedPointer;
-}
 
 CollisionAlgorithm::CollisionAlgorithm(btCollisionAlgorithm* algorithm)
 {
@@ -63,6 +73,11 @@ btScalar CollisionAlgorithm::CalculateTimeOfImpact(CollisionObject^ body0,
 {
 	return _algorithm->calculateTimeOfImpact(body0->UnmanagedPointer, body1->UnmanagedPointer,
 		*dispatchInfo->UnmanagedPointer, resultOut->UnmanagedPointer);
+}
+
+void CollisionAlgorithm::GetAllContactManifolds(ManifoldArray^ manifoldArray)
+{
+	_algorithm->getAllContactManifolds(*manifoldArray->UnmanagedPointer);
 }
 
 void CollisionAlgorithm::ProcessCollision(CollisionObject^ body0, CollisionObject^ body1,

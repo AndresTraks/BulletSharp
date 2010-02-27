@@ -2,7 +2,7 @@
 
 namespace BulletSharp
 {
-	public ref struct WheelInfo
+	public ref class WheelInfo
 	{
 	private:
 		btWheelInfo* _wheelInfo;

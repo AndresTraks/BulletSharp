@@ -6,7 +6,7 @@
 
 namespace BulletSharp
 {
-	public ref struct ContactSolverInfoData
+	public ref class ContactSolverInfoData
 	{
 	private:
 		btContactSolverInfoData* _infoData;
@@ -124,7 +124,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref struct ContactSolverInfo : ContactSolverInfoData
+	public ref class ContactSolverInfo : ContactSolverInfoData
 	{
 	internal:
 		ContactSolverInfo(btContactSolverInfo* info);

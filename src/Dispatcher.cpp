@@ -116,11 +116,11 @@ void DispatcherInfo::UseContinuous::set(bool value)
 
 bool DispatcherInfo::UseConvexConservativeDistanceUtil::get()
 {
-	return _info->m_convexConservativeDistanceThreshold;
+	return _info->m_useConvexConservativeDistanceUtil;
 }
 void DispatcherInfo::UseConvexConservativeDistanceUtil::set(bool value)
 {
-	_info->m_convexConservativeDistanceThreshold = value;
+	_info->m_useConvexConservativeDistanceUtil = value;
 }
 
 bool DispatcherInfo::UseEpa::get()

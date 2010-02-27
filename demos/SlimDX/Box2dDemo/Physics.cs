@@ -19,7 +19,7 @@ namespace Box2dDemo
         CollisionDispatcher dispatcher;
         BroadphaseInterface broadphase;
         ConstraintSolver solver;
-        AlignedObjectArray<CollisionShape> collisionShapes = new AlignedObjectArray<CollisionShape>();
+        CollisionShapeArray collisionShapes = new CollisionShapeArray();
         public DynamicsWorld world;
 
         public Physics()
@@ -51,7 +51,7 @@ namespace Box2dDemo
             world.Gravity = new Vector3(0, -10, 0);
 
             // create a few basic rigid bodies
-            CollisionShape groundShape = new BoxShape(150, 50, 150);
+            CollisionShape groundShape = new BoxShape(75, 50, 75);
             collisionShapes.PushBack(groundShape);
             LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
 

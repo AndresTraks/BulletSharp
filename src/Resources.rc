@@ -60,15 +60,14 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "Comments", ".Net Wrapper for Bullet Physics library 2.75"
-            VALUE "CompanyName", "Paradev"
+            VALUE "Comments", ".Net Wrapper for Bullet Physics library"
             VALUE "FileDescription", "BulletSharp"
-            VALUE "FileVersion", "0.1.0.0"
+            VALUE "FileVersion", "0.2"
             VALUE "InternalName", "BulletSharp"
-            VALUE "LegalCopyright", "Copyright (C) 2009"
+            VALUE "LegalCopyright", "Copyright (C) Andres Traks 2009-2010"
             VALUE "OriginalFilename", "BulletSharp.dll"
             VALUE "ProductName", "BulletSharp"
-            VALUE "ProductVersion", "1.0.0.0"
+            VALUE "ProductVersion", "0.2"
         END
     END
     BLOCK "VarFileInfo"

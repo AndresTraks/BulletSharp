@@ -21,7 +21,7 @@ namespace BulletSharp
 		DebugDraw();
 
 #if GRAPHICS_XNA31
-		virtual void DrawLine(Vector3 from, Vector3 to, Microsoft::Xna::Framework::Graphics::Color color) abstract {};
+		virtual void DrawLine(Vector3 from, Vector3 to, Microsoft::Xna::Framework::Graphics::Color color) {};
 		virtual void DrawBox(Vector3 bbMin, Vector3 bbMax, Matrix trans, Microsoft::Xna::Framework::Graphics::Color color) {};
 		virtual void DrawTriangle(Vector3 v0, Vector3 v1, Microsoft::Xna::Framework::Graphics::Color color) {};
 #elif GRAPHICS_SLIMDX

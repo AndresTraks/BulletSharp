@@ -18,7 +18,7 @@ namespace ConstraintDemo
         CollisionDispatcher dispatcher;
         BroadphaseInterface broadphase;
         ConstraintSolver solver;
-        AlignedObjectArray<CollisionShape> collisionShapes = new AlignedObjectArray<CollisionShape>();
+        CollisionShapeArray collisionShapes = new CollisionShapeArray();
 
         public DynamicsWorld world;
         public RigidBody d6body0;

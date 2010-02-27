@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 27 Feb 2010
+
 #include "IDisposable.h"
 
 namespace BulletSharp
@@ -8,6 +10,8 @@ namespace BulletSharp
 	ref class DispatcherInfo;
 	ref class CollisionObject;
 	ref class ManifoldResult;
+	ref class ManifoldArray;
+	ref class PersistentManifold;
 
 	public ref class CollisionAlgorithmConstructionInfo
 	{
@@ -24,6 +28,13 @@ namespace BulletSharp
 			void set(BulletSharp::Dispatcher^ value);
 		}
 
+		property PersistentManifold^ Manifold
+		{
+			PersistentManifold^ get();
+			void set(PersistentManifold^ value);
+		}
+
+	internal:
 		property btCollisionAlgorithmConstructionInfo* UnmanagedPointer
 		{
 			virtual btCollisionAlgorithmConstructionInfo* get();
@@ -49,6 +60,7 @@ namespace BulletSharp
 	public:
 		btScalar CalculateTimeOfImpact(CollisionObject^ body0, CollisionObject^ body1,
 			DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut);
+		void GetAllContactManifolds(ManifoldArray^ manifoldArray);
 		void ProcessCollision(CollisionObject^ body0, CollisionObject^ body1,
 			DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut);
 

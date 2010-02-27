@@ -6,7 +6,7 @@
 namespace BulletSharp
 {
 	ref class ActionInterface;
-	ref struct ContactSolverInfo;
+	ref class ContactSolverInfo;
 	ref class RigidBody;
 	ref class TypedConstraint;
 

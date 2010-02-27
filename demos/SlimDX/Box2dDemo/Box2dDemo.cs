@@ -120,13 +120,12 @@ namespace Box2dDemo
             box = Mesh.CreateBox(Device, physics.Scaling * 2, physics.Scaling * 2, 0.08f);
             triangle = ConstructTriangleMesh(physics.Scaling);
             cylinder = Mesh.CreateCylinder(Device, physics.Scaling, physics.Scaling, 0.08f, 32, 1);
-            groundBox = Mesh.CreateBox(Device, 100, 100, 100);
+            groundBox = Mesh.CreateBox(Device, 150, 100, 150);
 
             light = new Light();
             light.Type = LightType.Point;
-            light.Range = 70;
+            light.Range = 100;
             light.Position = new Vector3(10, 25, 10);
-            light.Falloff = 1.0f;
             light.Diffuse = Color.LemonChiffon;
 
             //light.Type = LightType.Directional;
