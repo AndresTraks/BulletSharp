@@ -1,5 +1,9 @@
 #include "StdAfx.h"
 
+#pragma managed(push, off)
+#include <BulletCollision/CollisionShapes/btConvex2dShape.h>
+#pragma managed(pop)
+
 #include "Convex2dShape.h"
 
 using namespace BulletSharp;

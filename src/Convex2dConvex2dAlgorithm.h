@@ -1,9 +1,5 @@
 #pragma once
 
-#pragma managed(push, off)
-#include <BulletCollision/CollisionDispatch/btConvex2dConvex2dAlgorithm.h>
-#pragma managed(pop)
-
 #include "CollisionCreateFunc.h"
 #include "SimplexSolverInterface.h"
 

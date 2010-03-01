@@ -1,5 +1,9 @@
 #include "StdAfx.h"
 
+#pragma managed(push, off)
+#include <BulletCollision/NarrowPhaseCollision/btVoronoiSimplexSolver.h>
+#pragma managed(pop)
+
 #include "VoronoiSimplexSolver.h"
 
 SubSimplexClosestResult::SubSimplexClosestResult(btSubSimplexClosestResult* result)

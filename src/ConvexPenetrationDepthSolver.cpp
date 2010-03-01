@@ -1,5 +1,9 @@
 #include "StdAfx.h"
 
+#pragma managed(push, off)
+#include <BulletCollision/NarrowPhaseCollision/btConvexPenetrationDepthSolver.h>
+#pragma managed(pop)
+
 #include "ConvexPenetrationDepthSolver.h"
 
 ConvexPenetrationDepthSolver::ConvexPenetrationDepthSolver(btConvexPenetrationDepthSolver* depthSolver)

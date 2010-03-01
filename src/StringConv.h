@@ -1,3 +1,5 @@
+#pragma once
+
 namespace BulletSharp
 {
 	private ref class StringConv

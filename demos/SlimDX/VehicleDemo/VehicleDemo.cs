@@ -11,9 +11,9 @@ namespace VehicleDemo
 {
     class VehicleDemo : Game
     {
-        int Width = 800, Height = 600;
+        int Width = 1024, Height = 768;
         Color ambient = Color.Gray;
-        Vector3 eye = new Vector3(10, 30, 10);
+        Vector3 eye = new Vector3(5, 15, 5);
         bool DrawDebugLines = true;
         int ViewMode = 1, DrawMode = 1;
         float FieldOfView = (float)Math.PI / 4;

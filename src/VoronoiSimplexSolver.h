@@ -1,9 +1,5 @@
 #pragma once
 
-#pragma managed(push, off)
-#include <BulletCollision/NarrowPhaseCollision/btVoronoiSimplexSolver.h>
-#pragma managed(pop)
-
 #include "SimplexSolverInterface.h"
 
 namespace BulletSharp

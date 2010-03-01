@@ -1,9 +1,5 @@
 #pragma once
 
-#pragma managed(push, off)
-#include <BulletCollision/NarrowPhaseCollision/btConvexPenetrationDepthSolver.h>
-#pragma managed(pop)
-
 #include "IDisposable.h"
 
 namespace BulletSharp

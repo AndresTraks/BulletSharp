@@ -1,5 +1,9 @@
 #include "StdAfx.h"
 
+#pragma managed(push, off)
+#include <BulletCollision/CollisionDispatch/btConvex2dConvex2dAlgorithm.h>
+#pragma managed(pop)
+
 #include "Convex2dConvex2dAlgorithm.h"
 #include "ConvexPenetrationDepthSolver.h"
 #include "SimplexSolverInterface.h"

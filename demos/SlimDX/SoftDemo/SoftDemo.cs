@@ -7,14 +7,13 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ConstraintDemo
+namespace BasicDemo
 {
-    class ConstraintDemo : Game
+    class BasicDemo : Game
     {
         int Width = 1024, Height = 768;
         Color ambient = Color.Gray;
-        Vector3 eye = new Vector3(35, 10, 35);
-        Vector3 target = new Vector3(0, 5, 0);
+        Vector3 eye = new Vector3(30, 20, 10);
         bool DrawDebugLines = true;
         float FieldOfView = (float)Math.PI / 4;
 
@@ -49,7 +48,7 @@ namespace ConstraintDemo
         protected override void OnInitialize()
         {
             Form.ClientSize = new Size(Width, Height);
-            Form.Text = "BulletSharp - Constraints Demo";
+            Form.Text = "BulletSharp - SoftBody Demo";
 
             DeviceSettings9 settings = new DeviceSettings9();
             settings.CreationFlags = CreateFlags.HardwareVertexProcessing;
@@ -68,12 +67,11 @@ namespace ConstraintDemo
 
             input = new Input(Form);
             freelook = new FreeLook();
-            freelook.SetEyeTarget(eye, target);
+            freelook.SetEyeTarget(eye, Vector3.Zero);
 
             physics = new Physics();
 
-            float size = physics.CubeHalfExtents * 2;
-            box = Mesh.CreateBox(Device, size, size, size);
+            box = Mesh.CreateBox(Device, physics.Scaling * 2, physics.Scaling * 2, physics.Scaling * 2);
             groundBox = Mesh.CreateBox(Device, 100, 100, 100);
 
             light = new Light();
@@ -104,7 +102,8 @@ namespace ConstraintDemo
 
             debugDraw = new PhysicsDebugDraw(Device);
             physics.world.DebugDrawer = debugDraw;
-            debugDraw.SetDebugMode(DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits);
+            debugDraw.SetDebugMode(DebugDrawModes.DrawWireframe |
+                DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits);
         }
 
         protected override void OnResourceLoad()
@@ -160,7 +159,7 @@ namespace ConstraintDemo
             Device.SetTransform(TransformState.View, freelook.View);
 
             Device.Material = groundMaterial;
-            Device.SetTransform(TransformState.World, Matrix.Translation(-Vector3.UnitY * 66));
+            Device.SetTransform(TransformState.World, Matrix.Translation(-Vector3.UnitY * 50));
             groundBox.DrawSubset(0);
 
             int i;

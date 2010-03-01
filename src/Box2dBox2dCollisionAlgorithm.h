@@ -1,9 +1,5 @@
 #pragma once
 
-#pragma managed(push, off)
-#include <BulletCollision/CollisionDispatch/btBox2dBox2dCollisionAlgorithm.h>
-#pragma managed(pop)
-
 #include "CollisionCreateFunc.h"
 
 namespace BulletSharp
