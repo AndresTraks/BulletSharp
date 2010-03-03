@@ -26,6 +26,7 @@ SoftBody^ SoftBodyHelpers::CreateFromConvexHull(BulletSharp::SoftBodyWorldInfo ^
 	btVector3* btVertices = new btVector3[vertices->Length];
 	for(int i=0; i<vertices->Length; i++)
 		Math::Vector3ToBtVec3(vertices[i], &btVertices[i]);
+
 	return gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->UnmanagedPointer,
 		btVertices, vertices->Length, randomizeConstraints));
 }
@@ -36,6 +37,7 @@ SoftBody^ SoftBodyHelpers::CreateFromConvexHull(BulletSharp::SoftBodyWorldInfo ^
 	btVector3* btVertices = new btVector3[vertices->Length];
 	for(int i=0; i<vertices->Length; i++)
 		Math::Vector3ToBtVec3(vertices[i], &btVertices[i]);
+
 	return gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->UnmanagedPointer,
 		btVertices, vertices->Length));
 }

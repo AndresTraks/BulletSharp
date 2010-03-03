@@ -6,21 +6,6 @@
 #include "Dispatcher.h"
 #include "OverlappingPairCache.h"
 
-DbvtNode::DbvtNode(btDbvtNode* node)
-{
-	_node = node;
-}
-
-btDbvtNode* DbvtNode::UnmanagedPointer::get()
-{
-	return _node;
-}
-void DbvtNode::UnmanagedPointer::set(btDbvtNode* value)
-{
-	_node = value;
-}
-
-
 DbvtProxy::DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr,
 	CollisionFilterGroups collisionFilterGroup,
 	CollisionFilterGroups collisionFilterMask)

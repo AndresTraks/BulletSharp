@@ -11,21 +11,6 @@ namespace BulletSharp
 	ref class Dbvt;
 	ref class OverlappingPairCache;
 
-	public ref class DbvtNode
-	{
-	private:
-		btDbvtNode* _node;
-	internal:
-		DbvtNode(btDbvtNode* node);
-
-	internal:
-		property btDbvtNode* UnmanagedPointer
-		{
-			virtual btDbvtNode* get();
-			void set(btDbvtNode* value);
-		}
-	};
-
 	public ref class DbvtProxy : BroadphaseProxy
 	{
 	internal:

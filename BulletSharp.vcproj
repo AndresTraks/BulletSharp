@@ -43,6 +43,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="D:\src\bullet\src"
+				AdditionalUsingDirectories="&quot;C:\Program Files\SlimDX SDK (February 2010)\Bin\$(Platform)&quot;;&quot;C:\Program Files (x86)\SlimDX SDK (February 2010)\Bin\x86&quot;"
 				PreprocessorDefinitions="GRAPHICS_SLIMDX;WIN32;_DEBUG"
 				RuntimeLibrary="3"
 				EnableEnhancedInstructionSet="0"
@@ -118,6 +119,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="D:\src\bullet\src"
+				AdditionalUsingDirectories="&quot;C:\Program Files\SlimDX SDK (February 2010)\Bin\x86&quot;;&quot;C:\Program Files (x86)\SlimDX SDK (February 2010)\Bin\x86&quot;"
 				PreprocessorDefinitions="GRAPHICS_SLIMDX;WIN32;NDEBUG"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
@@ -193,6 +195,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="D:\src\bullet\src"
+				AdditionalUsingDirectories="&quot;C:\Program Files\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;;&quot;C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;"
 				PreprocessorDefinitions="GRAPHICS_XNA31;WIN32;NDEBUG"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
@@ -268,6 +271,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="D:\src\bullet\src"
+				AdditionalUsingDirectories="&quot;C:\Program Files\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;;&quot;C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;"
 				PreprocessorDefinitions="GRAPHICS_XNA31;WIN32;_DEBUG"
 				RuntimeLibrary="3"
 				EnableEnhancedInstructionSet="0"

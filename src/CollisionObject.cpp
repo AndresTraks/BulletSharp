@@ -3,7 +3,7 @@
 #include "CollisionObject.h"
 #include "CollisionShape.h"
 
-// Managed functions to let us use the unmanaged btVector3 and btTransform
+// Unmanaged functions to let us use the unmanaged btVector3 and btTransform
 #pragma managed(push, off)
 void CollisionObject_GetAnisotropicFriction(btCollisionObject* collisionObject, btVector3* friction)
 {

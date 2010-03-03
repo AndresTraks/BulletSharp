@@ -5,13 +5,9 @@
 #pragma once
 
 #if GRAPHICS_XNA31
-	#using <C:\Program Files\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\Microsoft.Xna.Framework.dll>
+	#using <Microsoft.Xna.Framework.dll>
 #elif GRAPHICS_SLIMDX
-	#if WIN32
-		#using <C:\Program Files\SlimDX SDK (February 2010)\Bin\x86\SlimDX.dll>
-	#elif WIN64
-		#using <C:\Program Files\SlimDX SDK (February 2010)\Bin\x64\SlimDX.dll>
-	#endif
+	#using <SlimDX.dll>
 #else
 	#error No Graphics Target Specified
 #endif
