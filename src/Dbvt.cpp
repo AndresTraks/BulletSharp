@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 
+#include "AlignedObjectArray.h"
 #include "Dbvt.h"
 #include "DbvtBroadphase.h"
 
@@ -271,6 +272,31 @@ Dbvt::ICollide::!ICollide()
 	OnDisposed( this, nullptr );
 }
 
+bool Dbvt::ICollide::AllLeaves(DbvtNode^ n)
+{
+	return _iCollide->AllLeaves(n->UnmanagedPointer);
+}
+
+bool Dbvt::ICollide::Descent(DbvtNode^ n)
+{
+	return _iCollide->Descent(n->UnmanagedPointer);
+}
+
+void Dbvt::ICollide::Process(DbvtNode^ n, btScalar s)
+{
+	_iCollide->Process(n->UnmanagedPointer, s);
+}
+
+void Dbvt::ICollide::Process(DbvtNode^ n)
+{
+	_iCollide->Process(n->UnmanagedPointer);
+}
+
+void Dbvt::ICollide::Process(DbvtNode^ na, DbvtNode^ nb)
+{
+	_iCollide->Process(na->UnmanagedPointer, na->UnmanagedPointer);
+}
+
 bool Dbvt::ICollide::IsDisposed::get()
 {
 	return (_iCollide == NULL);
@@ -283,6 +309,58 @@ btDbvt::ICollide* Dbvt::ICollide::UnmanagedPointer::get()
 void Dbvt::ICollide::UnmanagedPointer::set(btDbvt::ICollide* value)
 {
 	_iCollide = value;
+}
+
+
+Dbvt::IWriter::IWriter(btDbvt::IWriter* iWriter)
+{
+	_iWriter = iWriter;
+}
+
+Dbvt::IWriter::~IWriter()
+{
+	this->!IWriter();
+}
+
+Dbvt::IWriter::!IWriter()
+{
+	if( this->IsDisposed == true )
+		return;
+	
+	OnDisposing( this, nullptr );
+	
+	_iWriter = NULL;
+	
+	OnDisposed( this, nullptr );
+}
+
+void Dbvt::IWriter::Prepare(DbvtNode^ root, int numnodes)
+{
+	_iWriter->Prepare(root->UnmanagedPointer, numnodes);
+}
+
+void Dbvt::IWriter::WriteLeaf(DbvtNode^ n, int index, int parent)
+{
+	_iWriter->WriteLeaf(n->UnmanagedPointer, index, parent);
+}
+
+void Dbvt::IWriter::WriteNode(DbvtNode^ n, int index, int parent, int child0, int child1)
+{
+	_iWriter->WriteNode(n->UnmanagedPointer, index, parent, child0, child1);
+}
+
+bool Dbvt::IWriter::IsDisposed::get()
+{
+	return (_iWriter == NULL);
+}
+
+btDbvt::IWriter* Dbvt::IWriter::UnmanagedPointer::get()
+{
+	return _iWriter;
+}
+void Dbvt::IWriter::UnmanagedPointer::set(btDbvt::IWriter* value)
+{
+	_iWriter = value;
 }
 
 
@@ -308,6 +386,11 @@ Dbvt::IClone::!IClone()
 	OnDisposed( this, nullptr );
 }
 
+void Dbvt::IClone::CloneLeaf(DbvtNode^ n)
+{
+	_iClone->CloneLeaf(n->UnmanagedPointer);
+}
+
 bool Dbvt::IClone::IsDisposed::get()
 {
 	return (_iClone == NULL);
@@ -323,6 +406,21 @@ void Dbvt::IClone::UnmanagedPointer::set(btDbvt::IClone* value)
 }
 
 
+Dbvt::StkNn::StkNn(btDbvt::sStkNN* stkNn)
+{
+	_stkNn = stkNn;
+}
+
+Dbvt::StkNn::StkNn()
+{
+	_stkNn = new btDbvt::sStkNN();
+}
+
+Dbvt::StkNn::StkNn(DbvtNode^ na, DbvtNode^ nb)
+{
+	_stkNn = new btDbvt::sStkNN(na->UnmanagedPointer, nb->UnmanagedPointer);
+}
+
 btDbvt::sStkNN* Dbvt::StkNn::UnmanagedPointer::get()
 {
 	return _stkNn;
@@ -332,6 +430,16 @@ void Dbvt::StkNn::UnmanagedPointer::set(btDbvt::sStkNN* value)
 	_stkNn = value;
 }
 
+
+Dbvt::StkNp::StkNp(btDbvt::sStkNP* stkNp)
+{
+	_stkNp = stkNp;
+}
+
+Dbvt::StkNp::StkNp(DbvtNode^ n, unsigned m)
+{
+	_stkNp = new btDbvt::sStkNP(n->UnmanagedPointer, m);
+}
 
 btDbvt::sStkNP* Dbvt::StkNp::UnmanagedPointer::get()
 {
@@ -343,6 +451,21 @@ void Dbvt::StkNp::UnmanagedPointer::set(btDbvt::sStkNP* value)
 }
 
 
+Dbvt::StkNps::StkNps(btDbvt::sStkNPS* stkNps)
+{
+	_stkNps = stkNps;
+}
+
+Dbvt::StkNps::StkNps()
+{
+	_stkNps = new btDbvt::sStkNPS();
+}
+
+Dbvt::StkNps::StkNps(DbvtNode^ n, unsigned m, btScalar v)
+{
+	_stkNps = new btDbvt::sStkNPS(n->UnmanagedPointer, m, v);
+}
+
 btDbvt::sStkNPS* Dbvt::StkNps::UnmanagedPointer::get()
 {
 	return _stkNps;
@@ -352,6 +475,16 @@ void Dbvt::StkNps::UnmanagedPointer::set(btDbvt::sStkNPS* value)
 	_stkNps = value;
 }
 
+
+Dbvt::StkCln::StkCln(btDbvt::sStkCLN* stkCln)
+{
+	_stkCln = stkCln;
+}
+
+Dbvt::StkCln::StkCln(DbvtNode^ na, DbvtNode^ nb)
+{
+	_stkCln = new btDbvt::sStkCLN(na->UnmanagedPointer, nb->UnmanagedPointer);
+}
 
 btDbvt::sStkCLN* Dbvt::StkCln::UnmanagedPointer::get()
 {
@@ -390,17 +523,9 @@ Dbvt::!Dbvt()
 	OnDisposed( this, nullptr );
 }
 
-int Dbvt::Allocate(array<int>^ ifree, array<StkNps^>^ stock, StkNps^ value)
+int Dbvt::Allocate(IntArray^ ifree, StkNpsArray^ stock, StkNps^ value)
 {
-	btAlignedObjectArray<int> btIFree = btAlignedObjectArray<int>();
-	btAlignedObjectArray<btDbvt::sStkNPS> btStock = btAlignedObjectArray<btDbvt::sStkNPS>();
-	for each(int ifree_v in ifree)
-		btIFree.push_back(ifree_v);
-	for each(StkNps^ stock_v in stock)
-		btStock.push_back(*stock_v->UnmanagedPointer);
-
-
-	return btDbvt::allocate(btIFree, btStock, *value->UnmanagedPointer);
+	return btDbvt::allocate(*ifree->UnmanagedPointer, *stock->UnmanagedPointer, *value->UnmanagedPointer);
 }
 
 void Dbvt::Benchmark()
@@ -482,6 +607,192 @@ void Dbvt::CollideTTPersistentStack(DbvtNode^ root0, DbvtNode^ root1, ICollide^ 
 void Dbvt::CollideTU(DbvtNode^ root, ICollide^ policy)
 {
 	btDbvt::collideTU(root->UnmanagedPointer, *policy->UnmanagedPointer);
+}
+
+void Dbvt::CollideTV(DbvtNode^ root, DbvtVolume^ volume, ICollide^ policy)
+{
+	_dbvt->collideTV(root->UnmanagedPointer, *volume->UnmanagedPointer, *policy->UnmanagedPointer);
+}
+
+int Dbvt::CountLeaves(DbvtNode^ node)
+{
+	return btDbvt::countLeaves(node->UnmanagedPointer);
+}
+
+bool Dbvt::Empty()
+{
+	return _dbvt->empty();
+}
+
+void Dbvt::EnumLeaves(DbvtNode^ root, ICollide^ policy)
+{
+	btDbvt::enumLeaves(root->UnmanagedPointer, *policy->UnmanagedPointer);
+}
+
+void Dbvt::EnumNodes(DbvtNode^ root, ICollide^ policy)
+{
+	btDbvt::enumNodes(root->UnmanagedPointer, *policy->UnmanagedPointer);
+}
+
+void Dbvt::ExtractLeaves(DbvtNode^ node, DbvtNodeArray^ leaves)
+{
+	btDbvt::extractLeaves(node->UnmanagedPointer, *leaves->UnmanagedPointer);
+}
+
+DbvtNode^ Dbvt::Insert(DbvtVolume^ box, IntPtr data)
+{
+	return gcnew DbvtNode(_dbvt->insert(*box->UnmanagedPointer, data.ToPointer()));
+}
+
+int Dbvt::MaxDepth(DbvtNode^ node)
+{
+	return btDbvt::maxdepth(node->UnmanagedPointer);
+}
+
+int Dbvt::Nearest(array<int>^ i, StkNps^ a, btScalar v, int l, int h)
+{
+	int* bti = new int[i->Length];
+	int j;
+	for (j=0; j<i->Length; j++)
+		bti[j] = i[j];
+	return btDbvt::nearest(bti, a->UnmanagedPointer, v, l, h);
+}
+
+void Dbvt::OptimizeBottomUp()
+{
+	_dbvt->optimizeBottomUp();
+}
+
+void Dbvt::OptimizeIncremental(int passes)
+{
+	_dbvt->optimizeIncremental(passes);
+}
+
+void Dbvt::OptimizeTopDown(int bu_treshold)
+{
+	_dbvt->optimizeTopDown(bu_treshold);
+}
+
+void Dbvt::OptimizeTopDown()
+{
+	_dbvt->optimizeTopDown();
+}
+
+void Dbvt::RayTest(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, ICollide^ policy)
+{
+	btDbvt::rayTest(root->UnmanagedPointer, *Math::Vector3ToBtVec3(rayFrom),
+		*Math::Vector3ToBtVec3(rayTo), *policy->UnmanagedPointer);
+}
+
+void Dbvt::RayTestInternal(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo,
+	Vector3 rayDirectionInverse, array<unsigned int>^ signs,
+	btScalar lambda_max, Vector3 aabbMin, Vector3 aabbMax, ICollide^ policy)
+{
+	unsigned int* btSigns = new unsigned int[3];
+	btSigns[0] = signs[0];
+	btSigns[1] = signs[1];
+	btSigns[2] = signs[2];
+	_dbvt->rayTestInternal(root->UnmanagedPointer, *Math::Vector3ToBtVec3(rayFrom),
+		*Math::Vector3ToBtVec3(rayTo), *Math::Vector3ToBtVec3(rayDirectionInverse),
+		btSigns, lambda_max, *Math::Vector3ToBtVec3(aabbMin), *Math::Vector3ToBtVec3(aabbMax),
+		*policy->UnmanagedPointer
+	);
+}
+
+void Dbvt::Remove(DbvtNode^ leaf)
+{
+	_dbvt->remove(leaf->UnmanagedPointer);
+}
+
+bool Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume, btScalar margin)
+{
+	return _dbvt->update(leaf->UnmanagedPointer, *volume->UnmanagedPointer, margin);
+}
+
+bool Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume, Vector3 velocity)
+{
+	return _dbvt->update(leaf->UnmanagedPointer, *volume->UnmanagedPointer, *Math::Vector3ToBtVec3(velocity));
+}
+
+bool Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume, Vector3 velocity, btScalar margin)
+{
+	return _dbvt->update(leaf->UnmanagedPointer, *volume->UnmanagedPointer,
+		*Math::Vector3ToBtVec3(velocity), margin);
+}
+
+void Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume)
+{
+	_dbvt->update(leaf->UnmanagedPointer, *volume->UnmanagedPointer);
+}
+
+void Dbvt::Update(DbvtNode^ leaf, int lookahead)
+{
+	_dbvt->update(leaf->UnmanagedPointer, lookahead);
+}
+
+void Dbvt::Update(DbvtNode^ leaf)
+{
+	_dbvt->update(leaf->UnmanagedPointer);
+}
+
+void Dbvt::Write(IWriter^ iwriter)
+{
+	_dbvt->write(iwriter->UnmanagedPointer);
+}
+
+DbvtNode^ Dbvt::Free::get()
+{
+	return gcnew DbvtNode(_dbvt->m_free);
+}
+void Dbvt::Free::set(DbvtNode^ value)
+{
+	_dbvt->m_free = value->UnmanagedPointer;
+}
+
+int Dbvt::Leaves::get()
+{
+	return _dbvt->m_leaves;
+}
+void Dbvt::Leaves::set(int value)
+{
+	_dbvt->m_leaves = value;
+}
+
+int Dbvt::Lkhd::get()
+{
+	return _dbvt->m_lkhd;
+}
+void Dbvt::Lkhd::set(int value)
+{
+	_dbvt->m_lkhd = value;
+}
+
+unsigned Dbvt::Opath::get()
+{
+	return _dbvt->m_opath;
+}
+void Dbvt::Opath::set(unsigned value)
+{
+	_dbvt->m_opath = value;
+}
+
+DbvtNode^ Dbvt::Root::get()
+{
+	return gcnew DbvtNode(_dbvt->m_root);
+}
+void Dbvt::Root::set(DbvtNode^ value)
+{
+	_dbvt->m_root = value->UnmanagedPointer;
+}
+
+StkNnArray^ Dbvt::Stack::get()
+{
+	return gcnew StkNnArray(&_dbvt->m_stkStack);
+}
+
+void Dbvt::Stack::set(StkNnArray^ value)
+{
+	_dbvt->m_stkStack = *value->UnmanagedPointer;
 }
 
 bool Dbvt::IsDisposed::get()

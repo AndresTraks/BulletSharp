@@ -28,6 +28,11 @@ void Generic6DofSpringConstraint::SetDamping(int index, btScalar damping)
 	UnmanagedPointer->setDamping(index, damping);
 }
 
+void Generic6DofSpringConstraint::SetEquilibriumPoint(int index, btScalar val)
+{
+	UnmanagedPointer->setEquilibriumPoint(index, val);
+}
+
 void Generic6DofSpringConstraint::SetEquilibriumPoint(int index)
 {
 	UnmanagedPointer->setEquilibriumPoint(index);

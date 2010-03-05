@@ -7,7 +7,11 @@
 #if GRAPHICS_XNA31
 	#using <Microsoft.Xna.Framework.dll>
 #elif GRAPHICS_SLIMDX
-	#using <SlimDX.dll>
+#if WIN32
+	#using <x86/SlimDX.dll>
+#elif WIN64
+	#using <x64/SlimDX.dll>
+#endif
 #else
 	#error No Graphics Target Specified
 #endif

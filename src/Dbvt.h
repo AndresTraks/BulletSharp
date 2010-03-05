@@ -1,10 +1,16 @@
 #pragma once
 
+// Fully implemented as of 05 Mar 2010
+
 #include "IDisposable.h"
 
 namespace BulletSharp
 {
 	ref class DbvtNode;
+	ref class DbvtNodeArray;
+	ref class IntArray;
+	ref class StkNnArray;
+	ref class StkNpsArray;
 
 	public ref class DbvtAabbMm
 	{
@@ -107,13 +113,16 @@ namespace BulletSharp
 	public ref class Dbvt : BulletSharp::IDisposable
 	{
 	public:
-
 		ref class StkNn
 		{
 		private:
 			btDbvt::sStkNN* _stkNn;
-//			StkNn();
-//			StkNn(DbvtNode^ na, DbvtNode^ nb);
+
+		internal:
+			StkNn(btDbvt::sStkNN* stkNn);
+		public:
+			StkNn();
+			StkNn(DbvtNode^ na, DbvtNode^ nb);
 
 		internal:
 			property btDbvt::sStkNN* UnmanagedPointer
@@ -127,8 +136,11 @@ namespace BulletSharp
 		{
 		private:
 			btDbvt::sStkNP* _stkNp;
-//			StkNp();
-//			StkNp(DbvtNode^ na, DbvtNode^ nb);
+
+		internal:
+			StkNp(btDbvt::sStkNP* stkNp);
+		public:
+			StkNp(DbvtNode^ n, unsigned m);
 
 		internal:
 			property btDbvt::sStkNP* UnmanagedPointer
@@ -142,8 +154,12 @@ namespace BulletSharp
 		{
 		private:
 			btDbvt::sStkNPS* _stkNps;
-//			StkNps();
-//			StkNps(DbvtNode^ na, DbvtNode^ nb);
+
+		internal:
+			StkNps(btDbvt::sStkNPS* stkNps);
+		public:
+			StkNps();
+			StkNps(DbvtNode^ n, unsigned m, btScalar v);
 
 		internal:
 			property btDbvt::sStkNPS* UnmanagedPointer
@@ -157,8 +173,11 @@ namespace BulletSharp
 		{
 		private:
 			btDbvt::sStkCLN* _stkCln;
-//			StkCln();
-//			StkCln(DbvtNode^ na, DbvtNode^ nb);
+		
+		internal:
+			StkCln(btDbvt::sStkCLN* stkCln);
+		public:
+			StkCln(DbvtNode^ na, DbvtNode^ nb);
 
 		internal:
 			property btDbvt::sStkCLN* UnmanagedPointer
@@ -185,15 +204,56 @@ namespace BulletSharp
 			~ICollide();
 
 		public:
+			bool AllLeaves(DbvtNode^ n);
+			bool Descent(DbvtNode^ n);
+			void Process(DbvtNode^ n, btScalar s);
+			void Process(DbvtNode^ n);
+			void Process(DbvtNode^ na, DbvtNode^ nb);
+
 			property bool IsDisposed
 			{
 				virtual bool get();
 			}
+
 		internal:
 			property btDbvt::ICollide* UnmanagedPointer
 			{
 				virtual btDbvt::ICollide* get();
 				void set(btDbvt::ICollide* value);
+			}
+		};
+
+		ref class IWriter : BulletSharp::IDisposable
+		{
+		private:
+			btDbvt::IWriter* _iWriter;
+
+		public:
+			virtual event EventHandler^ OnDisposing;
+			virtual event EventHandler^ OnDisposed;
+
+		internal:
+			IWriter(btDbvt::IWriter* iWriter);
+		public:
+			!IWriter();
+		protected:
+			~IWriter();
+
+		public:
+			void Prepare(DbvtNode^ root, int numnodes);
+			void WriteLeaf(DbvtNode^ n, int index, int parent);
+			void WriteNode(DbvtNode^ n, int index, int parent, int child0, int child1);
+
+			property bool IsDisposed
+			{
+				virtual bool get();
+			}
+
+		internal:
+			property btDbvt::IWriter* UnmanagedPointer
+			{
+				virtual btDbvt::IWriter* get();
+				void set(btDbvt::IWriter* value);
 			}
 		};
 
@@ -214,6 +274,8 @@ namespace BulletSharp
 			~IClone();
 
 		public:
+			void CloneLeaf(DbvtNode^ n);
+
 			property bool IsDisposed
 			{
 				virtual bool get();
@@ -244,7 +306,7 @@ namespace BulletSharp
 	protected:
 		~Dbvt();
 	public:
-		static int Allocate(array<int>^ ifree, array<StkNps^>^ stock, StkNps^ value);
+		static int Allocate(IntArray^ ifree, StkNpsArray^ stock, StkNps^ value);
 		static void Benchmark();
 		void Clear();
 		void Clone(Dbvt^ dest, IClone^ iclone);
@@ -260,10 +322,71 @@ namespace BulletSharp
 		void CollideTT(DbvtNode^ root0, DbvtNode^ root1, ICollide^ policy);
 		void CollideTTPersistentStack(DbvtNode^ root0, DbvtNode^ root1, ICollide^ policy);
 		static void CollideTU(DbvtNode^ root, ICollide^ policy);
+		void CollideTV(DbvtNode^ root, DbvtVolume^ volume, ICollide^ policy);
+		static int CountLeaves(DbvtNode^ node);
+		bool Empty();
+		static void EnumLeaves(DbvtNode^ root, ICollide^ policy);
+		static void EnumNodes(DbvtNode^ root, ICollide^ policy);
+		static void ExtractLeaves(DbvtNode^ node, DbvtNodeArray^ leaves);
+		DbvtNode^ Insert(DbvtVolume^ box, IntPtr data);
+		static int MaxDepth(DbvtNode^ node);
+		static int Nearest(array<int>^ i, StkNps^ a, btScalar v, int l, int h);
+		void OptimizeBottomUp();
+		void OptimizeIncremental(int passes);
+		void OptimizeTopDown(int bu_treshold);
+		void OptimizeTopDown();
+		static void RayTest(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo,	ICollide^ policy);
+		void RayTestInternal(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo,
+			Vector3 rayDirectionInverse, array<unsigned int>^ signs,
+			btScalar lambda_max, Vector3 aabbMin, Vector3 aabbMax, ICollide^ policy);
+		void Remove(DbvtNode^ leaf);
+		bool Update(DbvtNode^ leaf, DbvtVolume^ volume, btScalar margin);
+		bool Update(DbvtNode^ leaf, DbvtVolume^ volume, Vector3 velocity);
+		bool Update(DbvtNode^ leaf, DbvtVolume^ volume, Vector3 velocity, btScalar margin);
+		void Update(DbvtNode^ leaf, DbvtVolume^ volume);
+		void Update(DbvtNode^ leaf, int lookahead);
+		void Update(DbvtNode^ leaf);
+		void Write(IWriter^ iwriter);
+
+		property DbvtNode^ Free
+		{
+			DbvtNode^ get();
+			void set(DbvtNode^ value);
+		}
 
 		property bool IsDisposed
 		{
 			virtual bool get();
+		}
+
+		property int Leaves
+		{
+			int get();
+			void set(int value);
+		}
+
+		property int Lkhd
+		{
+			int get();
+			void set(int value);
+		}
+
+		property unsigned Opath
+		{
+			unsigned get();
+			void set(unsigned value);
+		}
+
+		property DbvtNode^ Root
+		{
+			DbvtNode^ get();
+			void set(DbvtNode^ value);
+		}
+
+		property StkNnArray^ Stack
+		{
+			StkNnArray^ get();
+			void set(StkNnArray^ value);
 		}
 
 	internal:

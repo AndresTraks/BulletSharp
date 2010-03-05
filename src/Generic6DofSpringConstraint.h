@@ -14,6 +14,7 @@ namespace BulletSharp
 
 		void EnableSpring(int index, bool onOff);
 		void SetDamping(int index, btScalar damping);
+		void SetEquilibriumPoint(int index, btScalar val);
 		void SetEquilibriumPoint(int index);
 		void SetEquilibriumPoint();
 		void SetStiffness(int index, btScalar stiffness);
