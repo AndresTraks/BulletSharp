@@ -742,6 +742,8 @@ void Dbvt::Write(IWriter^ iwriter)
 
 DbvtNode^ Dbvt::Free::get()
 {
+	if (_dbvt->m_free == nullptr)
+		return nullptr;
 	return gcnew DbvtNode(_dbvt->m_free);
 }
 void Dbvt::Free::set(DbvtNode^ value)
@@ -778,6 +780,8 @@ void Dbvt::Opath::set(unsigned value)
 
 DbvtNode^ Dbvt::Root::get()
 {
+	if (_dbvt->m_root == nullptr)
+		return nullptr;
 	return gcnew DbvtNode(_dbvt->m_root);
 }
 void Dbvt::Root::set(DbvtNode^ value)

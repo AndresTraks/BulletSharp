@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 05 Mar 2010
+
 #include "BroadphaseInterface.h"
 #include "BroadphaseProxy.h"
 #include "Enums.h"
@@ -26,6 +28,18 @@ namespace BulletSharp
 			void set(DbvtNode^ value);
 		}
 
+		property array<DbvtProxy^>^ Links
+		{
+			array<DbvtProxy^>^ get();
+			void set(array<DbvtProxy^>^ value);
+		}
+
+		property int Stage
+		{
+			int get();
+			void set(int value);
+		}
+
 		property btDbvtProxy* UnmanagedPointer
 		{
 			btDbvtProxy* get() new;
@@ -39,22 +53,104 @@ namespace BulletSharp
 		static int FixedSet = btDbvtBroadphase::FIXED_SET;
 		static int StageCount = btDbvtBroadphase::STAGECOUNT;
 
-	public:
 		DbvtBroadphase(BulletSharp::OverlappingPairCache^ pairCache);
 		DbvtBroadphase();
 
 		static void Benchmark(BroadphaseInterface^ broadphase);
-
 		void Collide(Dispatcher^ dispatcher);
 		void Optimize();
 		void PerformDeferredRemoval(Dispatcher^ dispatcher);
 		void SetAabbForceUpdate(BroadphaseProxy^ absproxy,
 			Vector3 aabbMin, Vector3 aabbMax, Dispatcher^ dispatcher);
 
+		property int CUpdates
+		{
+			int get();
+			void set(int value);
+		}
+
+		property int DUpdates
+		{
+			int get();
+			void set(int value);
+		}
+		
+		property int FixedLeft
+		{
+			int get();
+			void set(int value);
+		}
+
+		property int FUpdates
+		{
+			int get();
+			void set(int value);
+		}
+
+		property int NewPairs
+		{
+			int get();
+			void set(int value);
+		}
+
+		property BulletSharp::OverlappingPairCache^ PairCache
+		{
+			BulletSharp::OverlappingPairCache^ get();
+			void set(BulletSharp::OverlappingPairCache^ value);
+		}
+
+		property int CId
+		{
+			int get();
+			void set(int value);
+		}
+
+		property bool DeferredCollide
+		{
+			bool get();
+			void set(bool value);
+		}
+
+		property int GId
+		{
+			int get();
+			void set(int value);
+		}
+
+		property bool NeedCleanup
+		{
+			bool get();
+			void set(bool value);
+		}
+
+		property int PId
+		{
+			int get();
+			void set(int value);
+		}
+
+		property btScalar Prediction
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property bool ReleasePairCache
+		{
+			bool get();
+			void set(bool value);
+		}
+
 		property array<Dbvt^>^ Sets
 		{
 			array<Dbvt^>^ get();
 			void set(array<Dbvt^>^ value);
+		}
+
+		property int StageCurrent
+		{
+			int get();
+			void set(int value);
 		}
 
 		property array<DbvtProxy^>^ StageRoots
@@ -63,10 +159,28 @@ namespace BulletSharp
 			void set(array<DbvtProxy^>^ value);
 		}
 
+		property unsigned int UpdatesCall
+		{
+			unsigned int get();
+			void set(unsigned int value);
+		}
+
+		property unsigned int UpdatesDone
+		{
+			unsigned int get();
+			void set(unsigned int value);
+		}
+
+		property btScalar UpdatesRatio
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
 		property btScalar VelocityPrediction
 		{
 			btScalar get();
-			void set(btScalar prediction);
+			void set(btScalar value);
 		}
 
 	internal:
