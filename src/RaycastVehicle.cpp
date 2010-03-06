@@ -37,9 +37,9 @@ WheelInfo^ RaycastVehicle::AddWheel(Vector3 connectionPointCS0, Vector3 wheelDir
 	VehicleTuning^ tuning, bool isFrontWheel)
 {
 	btWheelInfo* wheelInfo = &UnmanagedPointer->addWheel(
-		*Math::Vector3ToBtVec3(connectionPointCS0),
-		*Math::Vector3ToBtVec3(wheelDirectionCS0),
-		*Math::Vector3ToBtVec3(wheelAxleCS),
+		*Math::Vector3ToBtVector3(connectionPointCS0),
+		*Math::Vector3ToBtVector3(wheelDirectionCS0),
+		*Math::Vector3ToBtVector3(wheelAxleCS),
 		suspensionRestLength, wheelRadius, *tuning->UnmanagedPointer, isFrontWheel);
 	return gcnew WheelInfo(wheelInfo);
 }
@@ -85,7 +85,7 @@ void RaycastVehicle::SetCoordinateSystem(int rightIndex, int upIndex, int forwar
 /*
 void RaycastVehicle::SetRaycastWheelInfo(int wheelIndex, bool isInContact, Vector3 hitPoint, Vector3 hitNormal, btScalar depth)
 {
-	UnmanagedPointer->setRaycastWheelInfo(wheelIndex, isInContact, *Math::Vector3ToBtVec3(hitPoint), *Math::Vector3ToBtVec3(hitNormal), depth);
+	UnmanagedPointer->setRaycastWheelInfo(wheelIndex, isInContact, *Math::Vector3ToBtVector3(hitPoint), *Math::Vector3ToBtVector3(hitNormal), depth);
 }
 */
 void RaycastVehicle::UpdateFriction(btScalar timeStep)
@@ -132,7 +132,7 @@ Vector3 RaycastVehicle::ForwardVector::get()
 {
 	btVector3* forward = new btVector3;
 	RaycastVehicle_GetForwardVector(UnmanagedPointer, forward);
-	Vector3 v = Math::BtVec3ToVector3(forward);
+	Vector3 v = Math::BtVector3ToVector3(forward);
 	delete forward;
 	return v;
 }

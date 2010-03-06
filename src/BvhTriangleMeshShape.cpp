@@ -19,13 +19,13 @@ BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface,
 }
 
 BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression, Vector3 bvhAabbMin, Vector3 bvhAabbMax, bool buildBvh)
-: ConcaveShape(new btBvhTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression, *Math::Vector3ToBtVec3(bvhAabbMin), *Math::Vector3ToBtVec3(bvhAabbMax), buildBvh))
+: ConcaveShape(new btBvhTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression, *Math::Vector3ToBtVector3(bvhAabbMin), *Math::Vector3ToBtVector3(bvhAabbMax), buildBvh))
 {
 }
 
 void BvhTriangleMeshShape::PartialRefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 {
-	UnmanagedPointer->partialRefitTree(*Math::Vector3ToBtVec3(bvhAabbMin), *Math::Vector3ToBtVec3(bvhAabbMax));
+	UnmanagedPointer->partialRefitTree(*Math::Vector3ToBtVector3(bvhAabbMin), *Math::Vector3ToBtVector3(bvhAabbMax));
 }
 
 void BvhTriangleMeshShape::RecalcLocalAabb()

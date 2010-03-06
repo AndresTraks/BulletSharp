@@ -96,13 +96,13 @@ Vector3 CollisionObject::AnisotropicFriction::get()
 {
 	btVector3* friction = new btVector3;
 	CollisionObject_GetAnisotropicFriction(_collisionObject, friction);
-	Vector3 v = Math::BtVec3ToVector3(friction);
+	Vector3 v = Math::BtVector3ToVector3(friction);
 	delete friction;
 	return v;
 }
 void CollisionObject::AnisotropicFriction::set(Vector3 value)
 {
-	_collisionObject->setAnisotropicFriction(*Math::Vector3ToBtVec3(value));
+	_collisionObject->setAnisotropicFriction(*Math::Vector3ToBtVector3(value));
 }
 
 btScalar CollisionObject::CcdMotionThreshold::get()
@@ -202,22 +202,22 @@ Vector3 CollisionObject::InterpolationAngularVelocity::get()
 {
 	btVector3* velocity = new btVector3;
 	CollisionObject_GetInterpolationAngularVelocity(_collisionObject, velocity);
-	return Math::BtVec3ToVector3(velocity);
+	return Math::BtVector3ToVector3(velocity);
 }
 void CollisionObject::InterpolationAngularVelocity::set(Vector3 value)
 {
-	_collisionObject->setInterpolationAngularVelocity(*Math::Vector3ToBtVec3(value));
+	_collisionObject->setInterpolationAngularVelocity(*Math::Vector3ToBtVector3(value));
 }
 
 Vector3 CollisionObject::InterpolationLinearVelocity::get()
 {
 	btVector3* velocity = new btVector3;
 	CollisionObject_GetInterpolationLinearVelocity(_collisionObject, velocity);
-	return Math::BtVec3ToVector3(velocity);
+	return Math::BtVector3ToVector3(velocity);
 }
 void CollisionObject::InterpolationLinearVelocity::set(Vector3 value)
 {
-	_collisionObject->setInterpolationLinearVelocity(*Math::Vector3ToBtVec3(value));
+	_collisionObject->setInterpolationLinearVelocity(*Math::Vector3ToBtVector3(value));
 }
 
 Matrix CollisionObject::InterpolationWorldTransform::get()

@@ -6,7 +6,7 @@
 Hinge2Constraint::Hinge2Constraint(RigidBody^ rbA, RigidBody^ rbB,
 	Vector3 anchor, Vector3 axis1, Vector3 axis2)
 	: Generic6DofSpringConstraint(new btHinge2Constraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
-	*Math::Vector3ToBtVec3(anchor), *Math::Vector3ToBtVec3(axis1), *Math::Vector3ToBtVec3(axis2)))
+	*Math::Vector3ToBtVector3(anchor), *Math::Vector3ToBtVector3(axis1), *Math::Vector3ToBtVector3(axis2)))
 {
 	this->RigidBodyA = rbA;
 	this->RigidBodyA = rbB;
@@ -25,12 +25,12 @@ void Hinge2Constraint::SetUpperLimit(btScalar ang1max)
 
 Vector3 Hinge2Constraint::Anchor::get()
 {
-	return Math::BtVec3ToVector3(&UnmanagedPointer->getAnchor());
+	return Math::BtVector3ToVector3(&UnmanagedPointer->getAnchor());
 }
 
 Vector3 Hinge2Constraint::Anchor2::get()
 {
-	return Math::BtVec3ToVector3(&UnmanagedPointer->getAnchor2());
+	return Math::BtVector3ToVector3(&UnmanagedPointer->getAnchor2());
 }
 
 btScalar Hinge2Constraint::Angle1::get()
@@ -45,12 +45,12 @@ btScalar Hinge2Constraint::Angle2::get()
 
 Vector3 Hinge2Constraint::Axis1::get()
 {
-	return Math::BtVec3ToVector3(&UnmanagedPointer->getAxis1());
+	return Math::BtVector3ToVector3(&UnmanagedPointer->getAxis1());
 }
 
 Vector3 Hinge2Constraint::Axis2::get()
 {
-	return Math::BtVec3ToVector3(&UnmanagedPointer->getAxis2());
+	return Math::BtVector3ToVector3(&UnmanagedPointer->getAxis2());
 }
 
 btHinge2Constraint* Hinge2Constraint::UnmanagedPointer::get()

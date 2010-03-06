@@ -9,8 +9,8 @@
 DbvtProxy::DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr,
 	CollisionFilterGroups collisionFilterGroup,
 	CollisionFilterGroups collisionFilterMask)
-: BroadphaseProxy(new btDbvtProxy(*Math::Vector3ToBtVec3(aabbMin),
-	*Math::Vector3ToBtVec3(aabbMax), userPtr.ToPointer(),
+: BroadphaseProxy(new btDbvtProxy(*Math::Vector3ToBtVector3(aabbMin),
+	*Math::Vector3ToBtVector3(aabbMax), userPtr.ToPointer(),
 	(short int)collisionFilterGroup, (short int)collisionFilterMask))
 {
 }
@@ -147,7 +147,7 @@ void DbvtBroadphase::SetAabbForceUpdate(BroadphaseProxy^ absproxy,
 	Vector3 aabbMin, Vector3 aabbMax, Dispatcher^ dispatcher)
 {
 	UnmanagedPointer->setAabbForceUpdate(absproxy->UnmanagedPointer,
-		*Math::Vector3ToBtVec3(aabbMin), *Math::Vector3ToBtVec3(aabbMax),
+		*Math::Vector3ToBtVector3(aabbMin), *Math::Vector3ToBtVector3(aabbMax),
 		dispatcher->UnmanagedPointer
 	);
 }

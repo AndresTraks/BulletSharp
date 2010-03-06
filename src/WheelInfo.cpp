@@ -9,7 +9,7 @@ WheelInfo::WheelInfo(btWheelInfo* wheelInfo)
 
 Vector3 WheelInfo::AxleCS::get()
 {
-	return  Math::BtVec3ToVector3(&_wheelInfo->m_wheelAxleCS);
+	return  Math::BtVector3ToVector3(&_wheelInfo->m_wheelAxleCS);
 }
 void WheelInfo::AxleCS::set(Vector3 value)
 {
@@ -30,7 +30,7 @@ void WheelInfo::Brake::set(btScalar value)
 
 Vector3 WheelInfo::ChassisConnectionPointCS::get()
 {
-	return  Math::BtVec3ToVector3(&_wheelInfo->m_chassisConnectionPointCS);
+	return  Math::BtVector3ToVector3(&_wheelInfo->m_chassisConnectionPointCS);
 }
 void WheelInfo::ChassisConnectionPointCS::set(Vector3 value)
 {
@@ -87,7 +87,7 @@ void WheelInfo::DampingRelaxation::set(btScalar value)
 
 Vector3 WheelInfo::DirectionCS::get()
 {
-	return  Math::BtVec3ToVector3(&_wheelInfo->m_wheelDirectionCS);
+	return  Math::BtVector3ToVector3(&_wheelInfo->m_wheelDirectionCS);
 }
 void WheelInfo::DirectionCS::set(Vector3 value)
 {

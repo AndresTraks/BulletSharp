@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_SOFTBODY
+
 #pragma managed(push, off)
 #include <BulletSoftBody/btSoftBodyHelpers.h>
 #pragma managed(pop)
@@ -19,7 +21,7 @@ SoftBody^ SoftBodyHelpers::CreateEllipsoid(SoftBodyWorldInfo^ worldInfo,
 	Vector3 center, Vector3 radius, int res)
 {
 	return gcnew SoftBody(btSoftBodyHelpers::CreateEllipsoid(*worldInfo->UnmanagedPointer,
-		*Math::Vector3ToBtVec3(center), *Math::Vector3ToBtVec3(radius), res));
+		*Math::Vector3ToBtVector3(center), *Math::Vector3ToBtVector3(radius), res));
 }
 
 SoftBody^ SoftBodyHelpers::CreateFromConvexHull(BulletSharp::SoftBodyWorldInfo ^worldInfo,
@@ -27,7 +29,7 @@ SoftBody^ SoftBodyHelpers::CreateFromConvexHull(BulletSharp::SoftBodyWorldInfo ^
 {
 	btVector3* btVertices = new btVector3[vertices->Length];
 	for(int i=0; i<vertices->Length; i++)
-		Math::Vector3ToBtVec3(vertices[i], &btVertices[i]);
+		Math::Vector3ToBtVector3(vertices[i], &btVertices[i]);
 
 	return gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->UnmanagedPointer,
 		btVertices, vertices->Length, randomizeConstraints));
@@ -38,7 +40,7 @@ SoftBody^ SoftBodyHelpers::CreateFromConvexHull(BulletSharp::SoftBodyWorldInfo ^
 {
 	btVector3* btVertices = new btVector3[vertices->Length];
 	for(int i=0; i<vertices->Length; i++)
-		Math::Vector3ToBtVec3(vertices[i], &btVertices[i]);
+		Math::Vector3ToBtVector3(vertices[i], &btVertices[i]);
 
 	return gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->UnmanagedPointer,
 		btVertices, vertices->Length));
@@ -151,3 +153,15 @@ SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyWorldInfo^ worldInfo, St
 
 	return softBody;
 }
+
+SoftBody^ SoftBodyHelpers::CreatePatch(SoftBodyWorldInfo^ worldInfo,
+	Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11,
+	int resx, int resy, int fixeds, bool gendiags)
+{
+	return gcnew SoftBody(btSoftBodyHelpers::CreatePatch(*worldInfo->UnmanagedPointer,
+		*Math::Vector3ToBtVector3(corner00), *Math::Vector3ToBtVector3(corner10),
+		*Math::Vector3ToBtVector3(corner01), *Math::Vector3ToBtVector3(corner11),
+		resx, resy, fixeds, gendiags));
+}
+
+#endif

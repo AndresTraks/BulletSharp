@@ -34,7 +34,7 @@ void CollisionShape::CalculateLocalInertia(btScalar mass, Vector3% inertia)
 {
 	btVector3* vector = new btVector3;
 	_collisionShape->calculateLocalInertia(mass, *vector);
-	inertia = Math::BtVec3ToVector3(vector);
+	inertia = Math::BtVector3ToVector3(vector);
 	delete vector;
 }
 
@@ -42,7 +42,7 @@ Vector3 CollisionShape::CalculateLocalInertia(btScalar mass)
 {
 	btVector3* vector = new btVector3;
 	_collisionShape->calculateLocalInertia(mass, *vector);
-	return Math::BtVec3ToVector3(vector);
+	return Math::BtVector3ToVector3(vector);
 }
 
 void CollisionShape::CalculateTemporalAabb(Matrix curTrans,
@@ -54,15 +54,15 @@ void CollisionShape::CalculateTemporalAabb(Matrix curTrans,
 	
 	_collisionShape->calculateTemporalAabb(
 		*Math::MatrixToBtTransform(curTrans),
-		*Math::Vector3ToBtVec3(linvel),
-		*Math::Vector3ToBtVec3(angvel),
+		*Math::Vector3ToBtVector3(linvel),
+		*Math::Vector3ToBtVector3(angvel),
 		timeStep,
 		*tmpTemporalAabbMin,
 		*tmpTemporalAabbMax
 	);
 
-	temporalAabbMin = Math::BtVec3ToVector3(tmpTemporalAabbMin);
-	temporalAabbMax = Math::BtVec3ToVector3(tmpTemporalAabbMax);
+	temporalAabbMin = Math::BtVector3ToVector3(tmpTemporalAabbMin);
+	temporalAabbMax = Math::BtVector3ToVector3(tmpTemporalAabbMax);
 }
 
 void CollisionShape::GetAabb(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
@@ -72,8 +72,8 @@ void CollisionShape::GetAabb(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
 	
 	_collisionShape->getAabb(*Math::MatrixToBtTransform(t), *tmpAabbMin, *tmpAabbMax);
 
-	aabbMin = Math::BtVec3ToVector3(tmpAabbMin);
-	aabbMax = Math::BtVec3ToVector3(tmpAabbMax);
+	aabbMin = Math::BtVector3ToVector3(tmpAabbMin);
+	aabbMax = Math::BtVector3ToVector3(tmpAabbMax);
 }
 
 void CollisionShape::GetBoundingSphere(Vector3% center, btScalar% radius)
@@ -83,7 +83,7 @@ void CollisionShape::GetBoundingSphere(Vector3% center, btScalar% radius)
 	
 	_collisionShape->getBoundingSphere(*tmpCenter, tmpRadius);
 	
-	center = Math::BtVec3ToVector3(tmpCenter);
+	center = Math::BtVector3ToVector3(tmpCenter);
 	radius = tmpRadius;
 }
 
@@ -135,11 +135,11 @@ bool CollisionShape::IsSoftBody::get()
 
 Vector3 CollisionShape::LocalScaling::get()
 {
-	return Math::BtVec3ToVector3(&_collisionShape->getLocalScaling());
+	return Math::BtVector3ToVector3(&_collisionShape->getLocalScaling());
 }
 void CollisionShape::LocalScaling::set(Vector3 value)
 {
-	_collisionShape->setLocalScaling(*Math::Vector3ToBtVec3(value));
+	_collisionShape->setLocalScaling(*Math::Vector3ToBtVector3(value));
 }
 
 btScalar CollisionShape::Margin::get()

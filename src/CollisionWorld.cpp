@@ -57,17 +57,17 @@ void CollisionWorld::RayResultCallback::UnmanagedPointer::set(btCollisionWorld::
 
 CollisionWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld)
 : RayResultCallback(new btCollisionWorld::ClosestRayResultCallback(
-	*Math::Vector3ToBtVec3(rayFromWorld), *Math::Vector3ToBtVec3(rayToWorld)))
+	*Math::Vector3ToBtVector3(rayFromWorld), *Math::Vector3ToBtVector3(rayToWorld)))
 {
 }
 
 Vector3 CollisionWorld::ClosestRayResultCallback::HitPointWorld::get()
 {
-	return Math::BtVec3ToVector3(&UnmanagedPointer->m_hitPointWorld);
+	return Math::BtVector3ToVector3(&UnmanagedPointer->m_hitPointWorld);
 }
 void CollisionWorld::ClosestRayResultCallback::HitPointWorld::set(Vector3 value)
 {
-	Math::Vector3ToBtVec3(value, &UnmanagedPointer->m_hitPointWorld);
+	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_hitPointWorld);
 }
 
 btCollisionWorld::ClosestRayResultCallback* CollisionWorld::ClosestRayResultCallback::UnmanagedPointer::get()
@@ -123,7 +123,7 @@ void CollisionWorld::PerformDiscreteCollisionDetection()
 
 void CollisionWorld::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResultCallback^ resultCallback)
 {
-	_world->rayTest(*Math::Vector3ToBtVec3(rayFromWorld), *Math::Vector3ToBtVec3(rayToWorld),
+	_world->rayTest(*Math::Vector3ToBtVector3(rayFromWorld), *Math::Vector3ToBtVector3(rayToWorld),
 		*resultCallback->UnmanagedPointer);
 }
 

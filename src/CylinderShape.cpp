@@ -3,7 +3,7 @@
 #include "CylinderShape.h"
 
 CylinderShape::CylinderShape(Vector3 halfExtents)
-: ConvexInternalShape(new btCylinderShape(*Math::Vector3ToBtVec3(halfExtents)))
+: ConvexInternalShape(new btCylinderShape(*Math::Vector3ToBtVector3(halfExtents)))
 {
 }
 
@@ -19,7 +19,7 @@ CylinderShape::CylinderShape(float halfExtents)
 
 
 CylinderShapeX::CylinderShapeX(Vector3 halfExtents)
-: ConvexInternalShape(new btCylinderShapeX(*Math::Vector3ToBtVec3(halfExtents)))
+: ConvexInternalShape(new btCylinderShapeX(*Math::Vector3ToBtVector3(halfExtents)))
 {
 }
 
@@ -35,7 +35,7 @@ CylinderShapeX::CylinderShapeX(float halfExtents)
 
 
 CylinderShapeZ::CylinderShapeZ(Vector3 halfExtents)
-: ConvexInternalShape(new btCylinderShapeZ(*Math::Vector3ToBtVec3(halfExtents)))
+: ConvexInternalShape(new btCylinderShapeZ(*Math::Vector3ToBtVector3(halfExtents)))
 {
 }
 

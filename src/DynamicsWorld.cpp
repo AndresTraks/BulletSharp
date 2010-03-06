@@ -45,7 +45,7 @@ void DynamicsWorld::RayResultCallback::UnmanagedPointer::set(btDynamicsWorld::Ra
 
 DynamicsWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld)
 : RayResultCallback(new btDynamicsWorld::ClosestRayResultCallback(
-	*Math::Vector3ToBtVec3(rayFromWorld), *Math::Vector3ToBtVec3(rayToWorld)))
+	*Math::Vector3ToBtVector3(rayFromWorld), *Math::Vector3ToBtVector3(rayToWorld)))
 {
 }
 
@@ -96,7 +96,7 @@ btVector3* World_GetGravity(btDynamicsWorld* world)
 
 Vector3 DynamicsWorld::Gravity::get()
 {
-	return Math::BtVec3ToVector3(World_GetGravity(UnmanagedPointer));
+	return Math::BtVector3ToVector3(World_GetGravity(UnmanagedPointer));
 }
 
 void DynamicsWorld::Gravity::set(Vector3 value)

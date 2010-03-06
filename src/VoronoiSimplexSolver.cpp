@@ -64,18 +64,18 @@ VoronoiSimplexSolver::VoronoiSimplexSolver()
 
 void VoronoiSimplexSolver::AddVertex(Vector3 w, Vector3 p, Vector3 q)
 {
-	UnmanagedPointer->addVertex(*Math::Vector3ToBtVec3(w),
-		*Math::Vector3ToBtVec3(p), *Math::Vector3ToBtVec3(q));
+	UnmanagedPointer->addVertex(*Math::Vector3ToBtVector3(w),
+		*Math::Vector3ToBtVector3(p), *Math::Vector3ToBtVector3(q));
 }
 
 void VoronoiSimplexSolver::BackupClosest(Vector3 v)
 {
-	UnmanagedPointer->backup_closest(*Math::Vector3ToBtVec3(v));
+	UnmanagedPointer->backup_closest(*Math::Vector3ToBtVector3(v));
 }
 
 bool VoronoiSimplexSolver::Closest(Vector3 v)
 {
-	return UnmanagedPointer->closest(*Math::Vector3ToBtVec3(v));
+	return UnmanagedPointer->closest(*Math::Vector3ToBtVector3(v));
 }
 
 bool VoronoiSimplexSolver::ClosestPtPointTetrahedron(Vector3 p,
@@ -83,9 +83,9 @@ bool VoronoiSimplexSolver::ClosestPtPointTetrahedron(Vector3 p,
 	[Out] SubSimplexClosestResult^% finalResult)
 {
 	btSubSimplexClosestResult* tempResult = new btSubSimplexClosestResult;
-	bool ret = UnmanagedPointer->closestPtPointTetrahedron(*Math::Vector3ToBtVec3(p),
-		*Math::Vector3ToBtVec3(a), *Math::Vector3ToBtVec3(b),
-		*Math::Vector3ToBtVec3(c), *Math::Vector3ToBtVec3(c),
+	bool ret = UnmanagedPointer->closestPtPointTetrahedron(*Math::Vector3ToBtVector3(p),
+		*Math::Vector3ToBtVector3(a), *Math::Vector3ToBtVector3(b),
+		*Math::Vector3ToBtVector3(c), *Math::Vector3ToBtVector3(c),
 		*tempResult
 	);
 	finalResult = gcnew SubSimplexClosestResult(tempResult);
@@ -97,9 +97,9 @@ bool VoronoiSimplexSolver::ClosestPtPointTriangle(Vector3 p,
 	[Out] SubSimplexClosestResult^% result)
 {
 	btSubSimplexClosestResult* tempResult = new btSubSimplexClosestResult;
-	bool ret = UnmanagedPointer->closestPtPointTriangle(*Math::Vector3ToBtVec3(p),
-		*Math::Vector3ToBtVec3(a), *Math::Vector3ToBtVec3(b),
-		*Math::Vector3ToBtVec3(c), *tempResult
+	bool ret = UnmanagedPointer->closestPtPointTriangle(*Math::Vector3ToBtVector3(p),
+		*Math::Vector3ToBtVector3(a), *Math::Vector3ToBtVector3(b),
+		*Math::Vector3ToBtVector3(c), *tempResult
 	);
 	result = gcnew SubSimplexClosestResult(tempResult);
 	return ret;
@@ -107,7 +107,7 @@ bool VoronoiSimplexSolver::ClosestPtPointTriangle(Vector3 p,
 
 void VoronoiSimplexSolver::ComputePoints(Vector3 p1, Vector3 p2)
 {
-	UnmanagedPointer->compute_points(*Math::Vector3ToBtVec3(p1), *Math::Vector3ToBtVec3(p2));
+	UnmanagedPointer->compute_points(*Math::Vector3ToBtVector3(p1), *Math::Vector3ToBtVector3(p2));
 }
 
 bool VoronoiSimplexSolver::EmptySimplex()
@@ -136,9 +136,9 @@ int VoronoiSimplexSolver::GetSimplex([Out] array<Vector3>^% pBuf,
 	int j;
 	for (j=0; j<i; j++)
 	{
-		pBuf[j] = Math::BtVec3ToVector3(&pBufTemp[j]);
-		qBuf[j] = Math::BtVec3ToVector3(&qBufTemp[j]);
-		yBuf[j] = Math::BtVec3ToVector3(&yBufTemp[j]);
+		pBuf[j] = Math::BtVector3ToVector3(&pBufTemp[j]);
+		qBuf[j] = Math::BtVector3ToVector3(&qBufTemp[j]);
+		yBuf[j] = Math::BtVector3ToVector3(&yBufTemp[j]);
 	}
 
 	delete[] pBufTemp;
@@ -150,7 +150,7 @@ int VoronoiSimplexSolver::GetSimplex([Out] array<Vector3>^% pBuf,
 
 bool VoronoiSimplexSolver::InSimplex(Vector3 w)
 {
-	return UnmanagedPointer->inSimplex(*Math::Vector3ToBtVec3(w));
+	return UnmanagedPointer->inSimplex(*Math::Vector3ToBtVector3(w));
 }
 
 btScalar VoronoiSimplexSolver::MaxVertex()
@@ -161,9 +161,9 @@ btScalar VoronoiSimplexSolver::MaxVertex()
 int VoronoiSimplexSolver::PointOutsideOfPlane(Vector3 p,
 	Vector3 a, Vector3 b, Vector3 c, Vector3 d)
 {
-	return UnmanagedPointer->pointOutsideOfPlane(*Math::Vector3ToBtVec3(p),
-		*Math::Vector3ToBtVec3(a), *Math::Vector3ToBtVec3(b),
-		*Math::Vector3ToBtVec3(c), *Math::Vector3ToBtVec3(d)
+	return UnmanagedPointer->pointOutsideOfPlane(*Math::Vector3ToBtVector3(p),
+		*Math::Vector3ToBtVector3(a), *Math::Vector3ToBtVector3(b),
+		*Math::Vector3ToBtVector3(c), *Math::Vector3ToBtVector3(d)
 	);
 }
 

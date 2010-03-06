@@ -1,12 +1,12 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <BulletSoftBody/btSoftBody.h>
-#pragma managed(pop)
+#ifndef DISABLE_SOFTBODY
 
+#include "AlignedObjectArray.h"
 #include "BroadphaseInterface.h"
 #include "Dispatcher.h"
 #include "SoftBody.h"
+#include "SparseSdf.h"
 
 #pragma managed(push, off)
 btSoftBodyWorldInfo* SoftBodyWorldInfo_New()
@@ -55,11 +55,20 @@ void SoftBodyWorldInfo::Dispatcher::set(BulletSharp::Dispatcher^ value)
 
 Vector3 SoftBodyWorldInfo::Gravity::get()
 {
-	return Math::BtVec3ToVector3(&_info->m_gravity);
+	return Math::BtVector3ToVector3(&_info->m_gravity);
 }
 void SoftBodyWorldInfo::Gravity::set(Vector3 value)
 {
-	Math::Vector3ToBtVec3(value, &_info->m_gravity);
+	Math::Vector3ToBtVector3(value, &_info->m_gravity);
+}
+
+SparseSdf^ SoftBodyWorldInfo::SparseSdf::get()
+{
+	return gcnew BulletSharp::SparseSdf(&_info->m_sparsesdf);
+}
+void SoftBodyWorldInfo::SparseSdf::set(BulletSharp::SparseSdf^ value)
+{
+	_info->m_sparsesdf = *value->UnmanagedPointer;
 }
 
 btScalar SoftBodyWorldInfo::WaterDensity::get()
@@ -73,11 +82,11 @@ void SoftBodyWorldInfo::WaterDensity::set(btScalar value)
 
 Vector3 SoftBodyWorldInfo::WaterNormal::get()
 {
-	return Math::BtVec3ToVector3(&_info->water_normal);
+	return Math::BtVector3ToVector3(&_info->water_normal);
 }
 void SoftBodyWorldInfo::WaterNormal::set(Vector3 value)
 {
-	Math::Vector3ToBtVec3(value, &_info->water_normal);
+	Math::Vector3ToBtVector3(value, &_info->water_normal);
 }
 
 btScalar SoftBodyWorldInfo::WaterOffset::get()
@@ -104,13 +113,31 @@ SoftBody::Config::Config(btSoftBody::Config* config)
 	_config = config;
 }
 
-SoftBody::Config^ SoftBody::Cfg::get()
+SoftBody::AeroModel SoftBody::Config::AeroModel::get()
 {
-	return gcnew Config(&UnmanagedPointer->m_cfg);
+	return (SoftBody::AeroModel)_config->aeromodel;
 }
-void SoftBody::Cfg::set(SoftBody::Config^ value)
+void SoftBody::Config::AeroModel::set(SoftBody::AeroModel value)
 {
-	UnmanagedPointer->m_cfg = *value->UnmanagedPointer;
+	_config->aeromodel = (btSoftBody::eAeroModel::_)value;
+}
+
+btScalar SoftBody::Config::DG::get()
+{
+	return _config->kDG;
+}
+void SoftBody::Config::DG::set(btScalar value)
+{
+	_config->kDG = value;
+}
+
+btScalar SoftBody::Config::LF::get()
+{
+	return _config->kLF;
+}
+void SoftBody::Config::LF::set(btScalar value)
+{
+	_config->kLF = value;
 }
 
 SoftBody::FCollisions SoftBody::Config::Collisions::get()
@@ -141,14 +168,168 @@ void SoftBody::Config::UnmanagedPointer::set(btSoftBody::Config* value)
 }
 
 
+SoftBody::Element::Element(btSoftBody::Element* element)
+{
+	_element = element;
+}
+
+btSoftBody::Element* SoftBody::Element::UnmanagedPointer::get()
+{
+	return _element;
+}
+void SoftBody::Element::UnmanagedPointer::set(btSoftBody::Element* element)
+{
+	_element = element;
+}
+
+
+SoftBody::Feature::Feature(btSoftBody::Feature* feature)
+: Element(feature)
+{
+}
+
+btSoftBody::Feature* SoftBody::Feature::UnmanagedPointer::get()
+{
+	return (btSoftBody::Feature*)Element::UnmanagedPointer;
+}
+
+
+SoftBody::Face::Face(btSoftBody::Face* face)
+: Feature(face)
+{
+}
+
+array<SoftBody::Node^>^ SoftBody::Face::n::get()
+{
+	array<SoftBody::Node^>^ nodeArray = gcnew array<Node^>(3);
+	nodeArray[0] = gcnew SoftBody::Node(UnmanagedPointer->m_n[0]);
+	nodeArray[1] = gcnew SoftBody::Node(UnmanagedPointer->m_n[1]);
+	nodeArray[2] = gcnew SoftBody::Node(UnmanagedPointer->m_n[2]);
+	return nodeArray;
+}
+void SoftBody::Face::n::set(array<SoftBody::Node^>^ value)
+{
+	UnmanagedPointer->m_n[0] = value[0]->UnmanagedPointer;
+	UnmanagedPointer->m_n[1] = value[1]->UnmanagedPointer;
+	UnmanagedPointer->m_n[2] = value[2]->UnmanagedPointer;
+}
+
+Vector3 SoftBody::Face::Normal::get()
+{
+	return Math::BtVector3ToVector3(&UnmanagedPointer->m_normal);
+}
+void SoftBody::Face::Normal::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_normal);
+}
+
+btSoftBody::Face* SoftBody::Face::UnmanagedPointer::get()
+{
+	return (btSoftBody::Face*)Feature::UnmanagedPointer;
+}
+
+
+SoftBody::Link::Link(btSoftBody::Link* link)
+: Feature(link)
+{
+}
+
+
+SoftBody::Material::Material(btSoftBody::Material* material)
+: Element(material)
+{
+}
+
+SoftBody::FMaterial SoftBody::Material::Flags::get()
+{
+	return (FMaterial)UnmanagedPointer->m_flags;
+}
+void SoftBody::Material::Flags::set(FMaterial value)
+{
+	UnmanagedPointer->m_flags = (int)value;
+}
+
+btSoftBody::Material* SoftBody::Material::UnmanagedPointer::get()
+{
+	return (btSoftBody::Material*)Element::UnmanagedPointer;
+}
+
+
+SoftBody::Node::Node(btSoftBody::Node* node)
+: Feature(node)
+{
+}
+
+Vector3 SoftBody::Node::x::get()
+{
+	return Math::BtVector3ToVector3(&UnmanagedPointer->m_x);
+}
+void SoftBody::Node::x::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_x);
+}
+
+btSoftBody::Node* SoftBody::Node::UnmanagedPointer::get()
+{
+	return (btSoftBody::Node*)Feature::UnmanagedPointer;
+}
+
+
+SoftBody::Note::Note(btSoftBody::Note* note)
+: Element(note)
+{
+}
+
+
+SoftBody::Tetra::Tetra(btSoftBody::Tetra* tetra)
+: Feature(tetra)
+{
+}
+
+
 SoftBody::SoftBody(btSoftBody* body)
 : CollisionObject(body)
 {
 }
 
 SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, int node_count, Vector3 x, btScalar m)
-: CollisionObject(new btSoftBody(worldInfo->UnmanagedPointer, node_count, Math::Vector3ToBtVec3(x), &m))
+: CollisionObject(new btSoftBody(worldInfo->UnmanagedPointer, node_count, Math::Vector3ToBtVector3(x), &m))
 {
+}
+
+SoftBody::Material^ SoftBody::AppendMaterial()
+{
+	return gcnew Material(UnmanagedPointer->appendMaterial());
+}
+
+void SoftBody::AddForce(Vector3 force, int node)
+{
+	UnmanagedPointer->addForce(*Math::Vector3ToBtVector3(force), node);
+}
+
+void SoftBody::AddForce(Vector3 force)
+{
+	UnmanagedPointer->addForce(*Math::Vector3ToBtVector3(force));
+}
+
+void SoftBody::AddVelocity(Vector3 velocity, int node)
+{
+	UnmanagedPointer->addVelocity(*Math::Vector3ToBtVector3(velocity), node);
+}
+
+void SoftBody::AddVelocity(Vector3 velocity)
+{
+	UnmanagedPointer->addVelocity(*Math::Vector3ToBtVector3(velocity));
+}
+
+int SoftBody::GenerateBendingConstraints(int distance, SoftBody::Material^ mat)
+{
+	return UnmanagedPointer->generateBendingConstraints(distance, mat->UnmanagedPointer);
+}
+
+int SoftBody::GenerateBendingConstraints(int distance)
+{
+	return UnmanagedPointer->generateBendingConstraints(distance);
 }
 
 int SoftBody::GenerateClusters(int k, int maxIterations)
@@ -163,7 +344,7 @@ int SoftBody::GenerateClusters(int k)
 
 void SoftBody::Scale(Vector3 scale)
 {
-	UnmanagedPointer->scale(*Math::Vector3ToBtVec3(scale));
+	UnmanagedPointer->scale(*Math::Vector3ToBtVector3(scale));
 }
 
 void SoftBody::SetVolumeMass(btScalar mass)
@@ -171,9 +352,19 @@ void SoftBody::SetVolumeMass(btScalar mass)
 	UnmanagedPointer->setVolumeMass(mass);
 }
 
+void SoftBody::StaticSolve(int iterations)
+{
+	UnmanagedPointer->staticSolve(iterations);
+}
+
+void SoftBody::Transform(Matrix transform)
+{
+	UnmanagedPointer->transform(*Math::MatrixToBtTransform(transform));
+}
+
 void SoftBody::Translate(Vector3 translation)
 {
-	UnmanagedPointer->translate(*Math::Vector3ToBtVec3(translation));
+	UnmanagedPointer->translate(*Math::Vector3ToBtVector3(translation));
 }
 
 void SoftBody::Translate(btScalar x, btScalar y, btScalar z)
@@ -181,7 +372,53 @@ void SoftBody::Translate(btScalar x, btScalar y, btScalar z)
 	Translate(Vector3(x,y,z));
 }
 
+SoftBody^ SoftBody::Upcast(CollisionObject^ colObj)
+{
+	btSoftBody* body = btSoftBody::upcast(colObj->UnmanagedPointer);
+	if (body == nullptr)
+		return nullptr;
+	return gcnew SoftBody(body);
+}
+
+SoftBody::Config^ SoftBody::Cfg::get()
+{
+	return gcnew Config(&UnmanagedPointer->m_cfg);
+}
+void SoftBody::Cfg::set(SoftBody::Config^ value)
+{
+	UnmanagedPointer->m_cfg = *value->UnmanagedPointer;
+}
+
+BulletSharp::FaceArray^ SoftBody::Faces::get()
+{
+	return gcnew FaceArray(&UnmanagedPointer->m_faces);
+}
+void SoftBody::Faces::set(BulletSharp::FaceArray^ value)
+{
+	UnmanagedPointer->m_faces = *value->UnmanagedPointer;
+}
+
+BulletSharp::NodeArray^ SoftBody::Nodes::get()
+{
+	return gcnew NodeArray(&UnmanagedPointer->m_nodes);
+}
+void SoftBody::Nodes::set(BulletSharp::NodeArray^ value)
+{
+	UnmanagedPointer->m_nodes = *value->UnmanagedPointer;
+}
+
+btScalar SoftBody::TotalMass::get()
+{
+	return UnmanagedPointer->getTotalMass();
+}
+void SoftBody::TotalMass::set(btScalar value)
+{
+	UnmanagedPointer->setTotalMass(value);
+}
+
 btSoftBody* SoftBody::UnmanagedPointer::get()
 {
 	return (btSoftBody*)CollisionObject::UnmanagedPointer;
 }
+
+#endif

@@ -13,8 +13,9 @@ namespace BasicDemo
     {
         int Width = 1024, Height = 768;
         Color ambient = Color.Gray;
-        Vector3 eye = new Vector3(20, 10, 10);
-        bool DrawDebugLines = true;
+        Vector3 eye = new Vector3(70, 20, 40);
+        Vector3 target = new Vector3(0, 0, 10);
+        bool DrawDebugLines = false;
         float FieldOfView = (float)Math.PI / 4;
 
         Matrix Projection;
@@ -67,7 +68,7 @@ namespace BasicDemo
 
             input = new Input(Form);
             freelook = new FreeLook();
-            freelook.SetEyeTarget(eye, Vector3.Zero);
+            freelook.SetEyeTarget(eye, target);
 
             physics = new Physics();
 
@@ -76,8 +77,8 @@ namespace BasicDemo
 
             light = new Light();
             light.Type = LightType.Point;
-            light.Range = 70;
-            light.Position = new Vector3(10, 25, 10);
+            light.Range = 75;
+            light.Position = new Vector3(10, 25, 0);
             light.Falloff = 1.0f;
             light.Diffuse = Color.LemonChiffon;
 
@@ -168,26 +169,49 @@ namespace BasicDemo
                 MotionState ms = null;
                 
                 CollisionObject colObj = physics.world.CollisionObjectArray[i];
-                RigidBody body = RigidBody.Upcast(colObj);
 
-                if (body != null)
+                if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
                 {
-                    ms = body.MotionState;
+                    SoftBody softBody = SoftBody.Upcast(colObj);
+
+                    Mesh mesh = new Mesh(Device, softBody.Faces.Size, softBody.Faces.Size * 3, MeshFlags.SystemMemory | MeshFlags.Use32Bit, VertexFormat.Position);
+                    SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.None);
+                    SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.None);
+
+                    int j;
+                    for (j = 0; j < softBody.Faces.Size; j++)
+                    {
+                        SoftBody.Face face = softBody.Faces[j];
+                        verts.Write(face.n[0].x);
+                        verts.Write(face.n[1].x);
+                        verts.Write(face.n[2].x);
+
+                        indices.Write(j*3);
+                        indices.Write(j*3+1);
+                        indices.Write(j*3+2);
+                    }
+                    NodeArray nodes = softBody.Nodes;
+                    mesh.UnlockVertexBuffer();
+                    mesh.UnlockIndexBuffer();
+
+                    Device.SetTransform(TransformState.World, Matrix.Identity);
+                    Device.SetRenderState(RenderState.CullMode, Cull.None);
+
+                    mesh.DrawSubset(0);
+                    mesh.Dispose();
                 }
-
-                if (body != null && ms != null)
-                    trans = ms.WorldTransform;
                 else
-                    trans = colObj.WorldTransform;
+                {
+                    RigidBody body = RigidBody.Upcast(colObj);
+                    Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
 
-                Device.SetTransform(TransformState.World, trans);
+                    if (colObj.ActivationState == ActivationState.ActiveTag)
+                        Device.Material = activeMaterial;
+                    else
+                        Device.Material = passiveMaterial;
 
-                if (colObj.ActivationState == ActivationState.ActiveTag)
-                    Device.Material = activeMaterial;
-                else
-                    Device.Material = passiveMaterial;
-
-                box.DrawSubset(0);
+                    box.DrawSubset(0);
+                }
             }
 
             if (DrawDebugLines)

@@ -6,16 +6,16 @@ UsingFrameworkNamespace
 
 using namespace BulletSharp;
 
-Vector3 BulletSharp::Math::BtVec3ToVector3(const btVector3* vector)
+Vector3 BulletSharp::Math::BtVector3ToVector3(const btVector3* vector)
 {
 	return Vector3(vector->m_floats[0], vector->m_floats[1], vector->m_floats[2]);
 	//return Vector3(vector->getX(), vector->getY(), vector->getZ());
 }
-btVector3* BulletSharp::Math::Vector3ToBtVec3(Vector3 vector)
+btVector3* BulletSharp::Math::Vector3ToBtVector3(Vector3 vector)
 {
 	return new btVector3(vector.X, vector.Y, vector.Z);
 }
-void BulletSharp::Math::Vector3ToBtVec3(Vector3 vector, btVector3* vectorOut)
+void BulletSharp::Math::Vector3ToBtVector3(Vector3 vector, btVector3* vectorOut)
 {
 	vectorOut->setX(vector.X);
 	vectorOut->setY(vector.Y);

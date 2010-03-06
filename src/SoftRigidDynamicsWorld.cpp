@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_SOFTBODY
+
 #pragma managed(push, off)
 #include <BulletSoftBody/btSoftRigidDynamicsWorld.h>
 #pragma managed(pop)
@@ -45,3 +47,5 @@ btSoftRigidDynamicsWorld* SoftRigidDynamicsWorld::UnmanagedPointer::get()
 {
 	return (btSoftRigidDynamicsWorld*)DiscreteDynamicsWorld::UnmanagedPointer;
 }
+
+#endif

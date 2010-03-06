@@ -3,7 +3,7 @@
 #include "StaticPlaneShape.h"
 
 StaticPlaneShape::StaticPlaneShape(Vector3 planeNormal, btScalar planeConstant)
-: BulletSharp::ConcaveShape(new btStaticPlaneShape(*Math::Vector3ToBtVec3(planeNormal), planeConstant))
+: BulletSharp::ConcaveShape(new btStaticPlaneShape(*Math::Vector3ToBtVector3(planeNormal), planeConstant))
 {
 }
 

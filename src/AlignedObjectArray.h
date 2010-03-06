@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Dbvt.h"
+#include "SoftBody.h"
 #include "IDisposable.h"
 
 namespace BulletSharp
@@ -147,6 +148,45 @@ namespace BulletSharp
 		}
 	};
 
+#ifndef DISABLE_SOFTBODY
+	public ref class FaceArray : AlignedObjectArray
+	{
+	internal:
+		FaceArray(btAlignedObjectArray<btSoftBody::Face>* nodeArray);
+
+	public:
+		FaceArray();
+
+		void Clear();
+		void PopBack();
+		void PushBack(SoftBody::Face^ node);
+		void Remove(SoftBody::Face^ node);
+		void Swap(int index0, int index1);
+
+		property int Size
+		{
+			int get();
+		}
+
+		property int Capacity
+		{
+			int get();
+		}
+
+		property SoftBody::Face^ default [int]
+		{
+			SoftBody::Face^ get (int index);
+			void set(int index, SoftBody::Face^);
+		}
+
+	internal:
+		property btAlignedObjectArray<btSoftBody::Face>* UnmanagedPointer
+		{
+			virtual btAlignedObjectArray<btSoftBody::Face>* get() new;
+		}
+	};
+#endif
+
 	public ref class IntArray : AlignedObjectArray
 	{
 	internal:
@@ -220,6 +260,45 @@ namespace BulletSharp
 			virtual btManifoldArray* get() new;
 		}
 	};
+
+#ifndef DISABLE_SOFTBODY
+	public ref class NodeArray : AlignedObjectArray
+	{
+	internal:
+		NodeArray(btAlignedObjectArray<btSoftBody::Node>* nodeArray);
+
+	public:
+		NodeArray();
+
+		void Clear();
+		void PopBack();
+		void PushBack(SoftBody::Node^ node);
+		void Remove(SoftBody::Node^ node);
+		void Swap(int index0, int index1);
+
+		property int Size
+		{
+			int get();
+		}
+
+		property int Capacity
+		{
+			int get();
+		}
+
+		property SoftBody::Node^ default [int]
+		{
+			SoftBody::Node^ get (int index);
+			void set(int index, SoftBody::Node^);
+		}
+
+	internal:
+		property btAlignedObjectArray<btSoftBody::Node>* UnmanagedPointer
+		{
+			virtual btAlignedObjectArray<btSoftBody::Node>* get() new;
+		}
+	};
+#endif
 
 	public ref class StkNnArray : AlignedObjectArray
 	{

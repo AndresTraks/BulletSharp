@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_SOFTBODY
+
 #pragma managed(push, off)
 #include <BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.h>
 #pragma managed(pop)
@@ -15,3 +17,5 @@ btSoftBodyRigidBodyCollisionConfiguration* SoftBodyRigidBodyCollisionConfigurati
 {
 	return (btSoftBodyRigidBodyCollisionConfiguration*)DefaultCollisionConfiguration::UnmanagedPointer;
 }
+
+#endif

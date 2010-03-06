@@ -1,12 +1,18 @@
 #pragma once
 
+#pragma managed(push, off)
+#include <BulletSoftBody/btSoftBody.h>
+#pragma managed(pop)
+
 #include "CollisionObject.h"
 
 namespace BulletSharp
 {
 	ref class BroadphaseInterface;
 	ref class Dispatcher;
-	//ref class SparseSdf;
+	ref class FaceArray;
+	ref class NodeArray;
+	ref class SparseSdf;
 
 	public ref class SoftBodyWorldInfo
 	{
@@ -39,11 +45,11 @@ namespace BulletSharp
 			void set(Vector3 value);
 		}
 
-		//property BulletSharp::SparseSdf^ SparseSdf
-		//{
-		//	BulletSharp::SparseSdf^ get();
-		//	void set(BulletSharp::SparseSdf^ value);
-		//}
+		property BulletSharp::SparseSdf^ SparseSdf
+		{
+			BulletSharp::SparseSdf^ get();
+			void set(BulletSharp::SparseSdf^ value);
+		}
 
 		property btScalar WaterDensity
 		{
@@ -74,6 +80,16 @@ namespace BulletSharp
 	public ref class SoftBody : CollisionObject
 	{
 	public:
+		enum class AeroModel
+		{
+			VPoint = btSoftBody::eAeroModel::V_Point,
+			VTwoSided = btSoftBody::eAeroModel::V_TwoSided,
+			VOneSided = btSoftBody::eAeroModel::V_OneSided,
+			FTwoSided = btSoftBody::eAeroModel::F_TwoSided,
+			FOneSided = btSoftBody::eAeroModel::F_OneSided,
+			End = btSoftBody::eAeroModel::END
+		};
+
 		[Flags]
 		enum class FCollisions
 		{
@@ -88,6 +104,14 @@ namespace BulletSharp
 			End = btSoftBody::fCollision::END
 		};
 
+		[Flags]
+		enum class FMaterial
+		{
+			DebugDraw = btSoftBody::fMaterial::DebugDraw,
+			Default = btSoftBody::fMaterial::Default,
+			End = btSoftBody::fMaterial::END
+		};
+
 		ref class Config
 		{
 		private:
@@ -95,10 +119,28 @@ namespace BulletSharp
 		internal:
 			Config(btSoftBody::Config* config);
 		public:
+			property AeroModel AeroModel
+			{
+				SoftBody::AeroModel get();
+				void set(SoftBody::AeroModel value);
+			}
+
+			property btScalar DG
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
 			property FCollisions Collisions
 			{
 				FCollisions get();
 				void set(FCollisions value);
+			}
+
+			property btScalar LF
+			{
+				btScalar get();
+				void set(btScalar value);
 			}
 
 			property int PIterations
@@ -114,23 +156,156 @@ namespace BulletSharp
 			};
 		};
 
+		ref class Element
+		{
+		internal:
+			btSoftBody::Element* _element;
+			Element(btSoftBody::Element* element);
+
+			property btSoftBody::Element* UnmanagedPointer
+			{
+				btSoftBody::Element* get();
+				void set(btSoftBody::Element* value);
+			};
+		};
+
+		ref class Feature : Element
+		{
+		internal:
+			Feature(btSoftBody::Feature* feature);
+
+			property btSoftBody::Feature* UnmanagedPointer
+			{
+				btSoftBody::Feature* get() new;
+			}
+		};
+
+		ref class Link : Feature
+		{
+		internal:
+			Link(btSoftBody::Link* link);
+		};
+
+		ref class Material : Element
+		{
+		internal:
+			Material(btSoftBody::Material* material);
+		public:
+			property FMaterial Flags
+			{
+				FMaterial get();
+				void set(FMaterial value);
+			}
+
+		internal:
+			property btSoftBody::Material* UnmanagedPointer
+			{
+				btSoftBody::Material* get() new;
+			}
+		};
+
+		ref class Node : Feature
+		{
+		internal:
+			Node(btSoftBody::Node* node);
+
+		public:
+			property Vector3 x
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+		internal:
+			property btSoftBody::Node* UnmanagedPointer
+			{
+				btSoftBody::Node* get() new;
+			}
+		};
+
+		ref class Face : Feature
+		{
+		internal:
+			Face(btSoftBody::Face* face);
+
+		public:
+			property array<Node^>^ n
+			{
+				array<Node^>^ get();
+				void set(array<Node^>^ value);
+			}
+
+			property Vector3 Normal
+			{
+				Vector3 get();
+				void set(Vector3 set);
+			}
+
+		internal:
+			property btSoftBody::Face* UnmanagedPointer
+			{
+				btSoftBody::Face* get() new;
+			}
+		};
+
+		ref class Note : Element
+		{
+		internal:
+			Note(btSoftBody::Note* note);
+		};
+
+		ref class Tetra : Feature
+		{
+		internal:
+			Tetra(btSoftBody::Tetra* tetra);
+		};
+
 	internal:
 		SoftBody(btSoftBody* body);
 	public:
 		SoftBody(SoftBodyWorldInfo^ worldInfo,
 			int node_count, Vector3 x, btScalar m);
 
+		void AddForce(Vector3 force, int node);
+		void AddForce(Vector3 force);
+		void AddVelocity(Vector3 velocity, int node);
+		void AddVelocity(Vector3 velocity);
+		Material^ AppendMaterial();
+		int GenerateBendingConstraints(int distance, Material^ mat);
+		int GenerateBendingConstraints(int distance);
 		int GenerateClusters(int k, int maxIterations);
 		int GenerateClusters(int k);
 		void Scale(Vector3 scale);
 		void SetVolumeMass(btScalar mass);
+		void StaticSolve(int iterations);
+		void Transform(Matrix transform);
 		void Translate(Vector3 translation);
 		void Translate(btScalar x, btScalar y, btScalar z); // helper
+
+		static SoftBody^ Upcast(CollisionObject^ colObj);
 
 		property Config^ Cfg
 		{
 			Config^ get();
 			void set(Config^ value);
+		}
+
+		property FaceArray^ Faces
+		{
+			FaceArray^ get();
+			void set(FaceArray^ value);
+		}
+
+		property NodeArray^ Nodes
+		{
+			NodeArray^ get();
+			void set(NodeArray^ value);
+		}
+
+		property btScalar TotalMass
+		{
+			btScalar get();
+			void set(btScalar value);
 		}
 
 	internal:

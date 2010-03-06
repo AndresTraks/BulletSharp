@@ -25,12 +25,12 @@ void RigidBody::AddConstraintRef(TypedConstraint^ c)
 
 void RigidBody::ApplyCentralForce(Vector3 force)
 {
-	UnmanagedPointer->applyCentralForce(*Math::Vector3ToBtVec3(force));
+	UnmanagedPointer->applyCentralForce(*Math::Vector3ToBtVector3(force));
 }
 
 void RigidBody::ApplyCentralImpulse(Vector3 impulse)
 {
-	UnmanagedPointer->applyCentralImpulse(*Math::Vector3ToBtVec3(impulse));
+	UnmanagedPointer->applyCentralImpulse(*Math::Vector3ToBtVector3(impulse));
 }
 
 void RigidBody::ApplyDamping(btScalar timeStep)
@@ -40,7 +40,7 @@ void RigidBody::ApplyDamping(btScalar timeStep)
 
 void RigidBody::ApplyForce(Vector3 force, Vector3 rel_pos)
 {
-	UnmanagedPointer->applyForce(*Math::Vector3ToBtVec3(force), *Math::Vector3ToBtVec3(rel_pos));
+	UnmanagedPointer->applyForce(*Math::Vector3ToBtVector3(force), *Math::Vector3ToBtVector3(rel_pos));
 }
 
 void RigidBody::ApplyGravity()
@@ -50,17 +50,17 @@ void RigidBody::ApplyGravity()
 
 void RigidBody::ApplyImpulse(Vector3 impulse, Vector3 rel_pos)
 {
-	UnmanagedPointer->applyImpulse(*Math::Vector3ToBtVec3(impulse), *Math::Vector3ToBtVec3(rel_pos));
+	UnmanagedPointer->applyImpulse(*Math::Vector3ToBtVector3(impulse), *Math::Vector3ToBtVector3(rel_pos));
 }
 
 void RigidBody::ApplyTorque(Vector3 torque)
 {
-	UnmanagedPointer->applyTorque(*Math::Vector3ToBtVec3(torque));
+	UnmanagedPointer->applyTorque(*Math::Vector3ToBtVector3(torque));
 }
 
 void RigidBody::ApplyTorqueImpulse(Vector3 torque)
 {
-	UnmanagedPointer->applyTorqueImpulse(*Math::Vector3ToBtVec3(torque));
+	UnmanagedPointer->applyTorqueImpulse(*Math::Vector3ToBtVector3(torque));
 }
 
 bool RigidBody::CheckCollideWithOverride(CollisionObject^ collisionObject)
@@ -75,12 +75,12 @@ void RigidBody::ClearForces()
 
 btScalar RigidBody::ComputeAngularImpulseDenominator(Vector3 axis)
 {
-	return UnmanagedPointer->computeAngularImpulseDenominator(*Math::Vector3ToBtVec3(axis));
+	return UnmanagedPointer->computeAngularImpulseDenominator(*Math::Vector3ToBtVector3(axis));
 }
 
 btScalar RigidBody::ComputeImpulseDenominator(Vector3 pos, Vector3 normal)
 {
-	return UnmanagedPointer->computeImpulseDenominator(*Math::Vector3ToBtVec3(pos), *Math::Vector3ToBtVec3(normal));
+	return UnmanagedPointer->computeImpulseDenominator(*Math::Vector3ToBtVector3(pos), *Math::Vector3ToBtVector3(normal));
 }
 
 void RigidBody::GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
@@ -90,8 +90,8 @@ void RigidBody::GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
 	
 	UnmanagedPointer->getAabb(*tmpAabbMin, *tmpAabbMax);
 
-	aabbMin = Math::BtVec3ToVector3(tmpAabbMin);
-	aabbMax = Math::BtVec3ToVector3(tmpAabbMax);
+	aabbMin = Math::BtVector3ToVector3(tmpAabbMin);
+	aabbMax = Math::BtVector3ToVector3(tmpAabbMax);
 
 	delete tmpAabbMin;
 	delete tmpAabbMax;
@@ -104,7 +104,7 @@ void RigidBody::SetDamping(btScalar lin_damping, btScalar ang_damping)
 
 void RigidBody::SetMassProps(btScalar mass, Vector3 inertia)
 {
-	UnmanagedPointer->setMassProps(mass, *Math::Vector3ToBtVec3(inertia));
+	UnmanagedPointer->setMassProps(mass, *Math::Vector3ToBtVector3(inertia));
 }
 
 void RigidBody::SetSleepingThresholds(btScalar inertia, btScalar angular)
@@ -114,7 +114,7 @@ void RigidBody::SetSleepingThresholds(btScalar inertia, btScalar angular)
 
 void RigidBody::Translate(Vector3 v)
 {
-	UnmanagedPointer->translate(*Math::Vector3ToBtVec3(v));
+	UnmanagedPointer->translate(*Math::Vector3ToBtVector3(v));
 }
 
 void RigidBody::UpdateDeactivation(btScalar timeStep)
@@ -132,7 +132,6 @@ bool RigidBody::WantsSleeping()
 	return UnmanagedPointer->wantsSleeping();
 }
 
-
 RigidBody^ RigidBody::Upcast(CollisionObject^ colObj)
 {
 	btRigidBody* body = btRigidBody::upcast(colObj->UnmanagedPointer);
@@ -149,11 +148,11 @@ btScalar RigidBody::AngularDamping::get()
 
 Vector3 RigidBody::AngularFactor::get()
 {
-	return Math::BtVec3ToVector3(&UnmanagedPointer->getAngularFactor());
+	return Math::BtVector3ToVector3(&UnmanagedPointer->getAngularFactor());
 }
 void RigidBody::AngularFactor::set(Vector3 value)
 {
-	UnmanagedPointer->setAngularFactor(*Math::Vector3ToBtVec3(value));
+	UnmanagedPointer->setAngularFactor(*Math::Vector3ToBtVector3(value));
 }
 
 btScalar RigidBody::AngularSleepingThreshold::get()
@@ -163,16 +162,16 @@ btScalar RigidBody::AngularSleepingThreshold::get()
 
 Vector3 RigidBody::AngularVelocity::get()
 {
-	return Math::BtVec3ToVector3(&UnmanagedPointer->getAngularVelocity());
+	return Math::BtVector3ToVector3(&UnmanagedPointer->getAngularVelocity());
 }
 void RigidBody::AngularVelocity::set(Vector3 value)
 {
-	UnmanagedPointer->setAngularVelocity(*Math::Vector3ToBtVec3(value));
+	UnmanagedPointer->setAngularVelocity(*Math::Vector3ToBtVector3(value));
 }
 
 Vector3 RigidBody::CenterOfMassPosition::get()
 {
-	return Math::BtVec3ToVector3(&UnmanagedPointer->getCenterOfMassPosition());
+	return Math::BtVector3ToVector3(&UnmanagedPointer->getCenterOfMassPosition());
 }
 
 Matrix RigidBody::CenterOfMassTransform::get()
@@ -186,17 +185,17 @@ void RigidBody::CenterOfMassTransform::set(Matrix value)
 
 Vector3 RigidBody::Gravity::get()
 {
-	return Math::BtVec3ToVector3(&UnmanagedPointer->getGravity());
+	return Math::BtVector3ToVector3(&UnmanagedPointer->getGravity());
 }
 void RigidBody::Gravity::set(Vector3 value)
 {
-	btVector3* gravity = Math::Vector3ToBtVec3(value);
+	btVector3* gravity = Math::Vector3ToBtVector3(value);
 	UnmanagedPointer->setGravity(*gravity);
 }
 
 Vector3 RigidBody::InvInertiaDiagLocal::get()
 {
-	return Math::BtVec3ToVector3(&UnmanagedPointer->getInvInertiaDiagLocal());
+	return Math::BtVector3ToVector3(&UnmanagedPointer->getInvInertiaDiagLocal());
 }
 void RigidBody::InvInertiaDiagLocal::set(Vector3 value)
 {
@@ -207,20 +206,20 @@ void RigidBody::InvInertiaDiagLocal::set(Vector3 value)
 
 Vector3 RigidBody::LinearFactor::get()
 {
-	return Math::BtVec3ToVector3(&UnmanagedPointer->getLinearFactor());
+	return Math::BtVector3ToVector3(&UnmanagedPointer->getLinearFactor());
 }
 void RigidBody::LinearFactor::set(Vector3 value)
 {
-	UnmanagedPointer->setLinearFactor(*Math::Vector3ToBtVec3(value));
+	UnmanagedPointer->setLinearFactor(*Math::Vector3ToBtVector3(value));
 }
 
 Vector3 RigidBody::LinearVelocity::get()
 {
-	return Math::BtVec3ToVector3(&UnmanagedPointer->getLinearVelocity());
+	return Math::BtVector3ToVector3(&UnmanagedPointer->getLinearVelocity());
 }
 void RigidBody::LinearVelocity::set(Vector3 value)
 {
-	UnmanagedPointer->setLinearVelocity(*Math::Vector3ToBtVec3(value));
+	UnmanagedPointer->setLinearVelocity(*Math::Vector3ToBtVector3(value));
 }
 
 BulletSharp::MotionState^ RigidBody::MotionState::get()
@@ -264,9 +263,9 @@ RigidBody::RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, B
 RigidBody::RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape, Vector3 localInertia)
 {
 	if (collisionShape != nullptr)
-		_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, collisionShape->UnmanagedPointer, Math::Vector3ToBtVec3(localInertia));
+		_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, collisionShape->UnmanagedPointer, Math::Vector3ToBtVector3(localInertia));
 	else
-		_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, nullptr, Math::Vector3ToBtVec3(localInertia));
+		_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, nullptr, Math::Vector3ToBtVector3(localInertia));
 	_collisionShape = collisionShape;
 	_motionState = motionState;
 }

@@ -592,6 +592,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\SparseSdf.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SphereShape.cpp"
 				>
 			</File>
@@ -998,6 +1002,10 @@
 				</File>
 				<File
 					RelativePath=".\src\SoftRigidDynamicsWorld.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\SparseSdf.h"
 					>
 				</File>
 			</Filter>

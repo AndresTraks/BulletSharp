@@ -33,8 +33,8 @@ void StridingMeshInterface::CalculateAabbBruteForce(Vector3% aabbMin, Vector3% a
 	
 	_stridingMesh->calculateAabbBruteForce(*tmpAabbMin, *tmpAabbMax);
 	
-	aabbMin = Math::BtVec3ToVector3(tmpAabbMin);
-	aabbMax = Math::BtVec3ToVector3(tmpAabbMax);
+	aabbMin = Math::BtVector3ToVector3(tmpAabbMin);
+	aabbMax = Math::BtVector3ToVector3(tmpAabbMax);
 
 	delete tmpAabbMin;
 	delete tmpAabbMax;

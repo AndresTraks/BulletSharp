@@ -57,7 +57,7 @@ bool BroadphaseInterface::IsDisposed::get()
 
 void BroadphaseInterface::AabbTest(Vector3 aabbMin, Vector3 aabbMax, BroadphaseAabbCallback^ callback)
 {
-	_broadphase->aabbTest(*Math::Vector3ToBtVec3(aabbMin), *Math::Vector3ToBtVec3(aabbMin), *callback->UnmanagedPointer);
+	_broadphase->aabbTest(*Math::Vector3ToBtVector3(aabbMin), *Math::Vector3ToBtVector3(aabbMin), *callback->UnmanagedPointer);
 }
 
 void BroadphaseInterface::CalculateOverlappingPairs(Dispatcher^ dispatcher)
@@ -70,7 +70,7 @@ BroadphaseProxy^ BroadphaseInterface::CreateProxy(Vector3 aabbMin, Vector3 aabbM
 	short int collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
 {
 	btBroadphaseProxy* proxy = new btBroadphaseProxy;
-	proxy = _broadphase->createProxy(*Math::Vector3ToBtVec3(aabbMin), *Math::Vector3ToBtVec3(aabbMax),
+	proxy = _broadphase->createProxy(*Math::Vector3ToBtVector3(aabbMin), *Math::Vector3ToBtVector3(aabbMax),
 		shapeType, userPtr.ToPointer(), collisionFilterGroup, collisionFilterMask,
 		dispatcher->UnmanagedPointer, multiSapProxy.ToPointer());
 	return gcnew BroadphaseProxy(proxy);
@@ -88,8 +88,8 @@ void BroadphaseInterface::GetAabb(BroadphaseProxy^ proxy, Vector3% aabbMin, Vect
 	
 	_broadphase->getAabb(proxy->UnmanagedPointer, *tmpAabbMin, *tmpAabbMax);
 
-	aabbMin = Math::BtVec3ToVector3(tmpAabbMin);
-	aabbMax = Math::BtVec3ToVector3(tmpAabbMax);
+	aabbMin = Math::BtVector3ToVector3(tmpAabbMin);
+	aabbMax = Math::BtVector3ToVector3(tmpAabbMax);
 }
 
 void BroadphaseInterface::GetBroadphaseAabb(Vector3% aabbMin, Vector3% aabbMax)
@@ -99,8 +99,8 @@ void BroadphaseInterface::GetBroadphaseAabb(Vector3% aabbMin, Vector3% aabbMax)
 	
 	_broadphase->getBroadphaseAabb(*tmpAabbMin, *tmpAabbMax);
 
-	aabbMin = Math::BtVec3ToVector3(tmpAabbMin);
-	aabbMax = Math::BtVec3ToVector3(tmpAabbMax);
+	aabbMin = Math::BtVector3ToVector3(tmpAabbMin);
+	aabbMax = Math::BtVector3ToVector3(tmpAabbMax);
 }
 
 void BroadphaseInterface::PrintStats()
@@ -128,20 +128,20 @@ void BroadphaseInterface_RayTest(btBroadphaseInterface* broadphase, btVector3* r
 void BroadphaseInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback^ rayCallback,
 	Vector3 aabbMin, Vector3 aabbMax)
 {
-	BroadphaseInterface_RayTest(_broadphase, Math::Vector3ToBtVec3(rayFrom), Math::Vector3ToBtVec3(rayTo),
-		rayCallback->UnmanagedPointer, Math::Vector3ToBtVec3(aabbMin), Math::Vector3ToBtVec3(aabbMax));
+	BroadphaseInterface_RayTest(_broadphase, Math::Vector3ToBtVector3(rayFrom), Math::Vector3ToBtVector3(rayTo),
+		rayCallback->UnmanagedPointer, Math::Vector3ToBtVector3(aabbMin), Math::Vector3ToBtVector3(aabbMax));
 }
 
 void BroadphaseInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback^ rayCallback,
 	Vector3 aabbMin)
 {
-	BroadphaseInterface_RayTest(_broadphase, Math::Vector3ToBtVec3(rayFrom), Math::Vector3ToBtVec3(rayTo),
-		rayCallback->UnmanagedPointer, Math::Vector3ToBtVec3(aabbMin));
+	BroadphaseInterface_RayTest(_broadphase, Math::Vector3ToBtVector3(rayFrom), Math::Vector3ToBtVector3(rayTo),
+		rayCallback->UnmanagedPointer, Math::Vector3ToBtVector3(aabbMin));
 }
 
 void BroadphaseInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback^ rayCallback)
 {
-	BroadphaseInterface_RayTest(_broadphase, Math::Vector3ToBtVec3(rayFrom), Math::Vector3ToBtVec3(rayTo),
+	BroadphaseInterface_RayTest(_broadphase, Math::Vector3ToBtVector3(rayFrom), Math::Vector3ToBtVector3(rayTo),
 		rayCallback->UnmanagedPointer);
 }
 
@@ -152,7 +152,7 @@ void BroadphaseInterface::ResetPool(Dispatcher^ dispatcher)
 
 void BroadphaseInterface::SetAabb(BroadphaseProxy^ proxy, Vector3 aabbMin, Vector3 aabbMax, Dispatcher^ dispatcher)
 {
-	_broadphase->setAabb(proxy->UnmanagedPointer, *Math::Vector3ToBtVec3(aabbMin), *Math::Vector3ToBtVec3(aabbMax), dispatcher->UnmanagedPointer);
+	_broadphase->setAabb(proxy->UnmanagedPointer, *Math::Vector3ToBtVector3(aabbMin), *Math::Vector3ToBtVector3(aabbMax), dispatcher->UnmanagedPointer);
 }
 
 OverlappingPairCache^ BroadphaseInterface::OverlappingPairCache::get()

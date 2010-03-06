@@ -21,7 +21,7 @@ RotationalLimitMotor::RotationalLimitMotor(btRotationalLimitMotor* motor)
 btScalar RotationalLimitMotor::SolveAngularLimits(btScalar timeStep, Vector3 axis,
 	btScalar jacDiagABInv, RigidBody^ body0, RigidBody^ body1)
 {
-	return motor->solveAngularLimits(timeStep, *Math::Vector3ToBtVec3(axis),
+	return motor->solveAngularLimits(timeStep, *Math::Vector3ToBtVector3(axis),
 		jacDiagABInv, body0->UnmanagedPointer, body1->UnmanagedPointer);
 }
 
@@ -226,10 +226,10 @@ btScalar TranslationalLimitMotor::SolveLinearAxis(btScalar timeStep, btScalar ja
 			int limit_index, Vector3 axis_normal_on_a, Vector3 anchorPos)
 {
 	return motor->solveLinearAxis(timeStep, jacDiagABInv,
-		*body1->UnmanagedPointer, *Math::Vector3ToBtVec3(pointInA),
-		*body2->UnmanagedPointer, *Math::Vector3ToBtVec3(pointInB),
-		limit_index, *Math::Vector3ToBtVec3(axis_normal_on_a),
-		*Math::Vector3ToBtVec3(anchorPos)
+		*body1->UnmanagedPointer, *Math::Vector3ToBtVector3(pointInA),
+		*body2->UnmanagedPointer, *Math::Vector3ToBtVector3(pointInB),
+		limit_index, *Math::Vector3ToBtVector3(axis_normal_on_a),
+		*Math::Vector3ToBtVector3(anchorPos)
 	);
 }
 
@@ -250,12 +250,12 @@ bool TranslationalLimitMotor::NeedApplyForce(int limitIndex)
 
 Vector3 TranslationalLimitMotor::AccumulatedImpulse::get()
 {
-	return Math::BtVec3ToVector3(&motor->m_accumulatedImpulse);
+	return Math::BtVector3ToVector3(&motor->m_accumulatedImpulse);
 }
 
 void TranslationalLimitMotor::AccumulatedImpulse::set(Vector3 value)
 {
-	Math::Vector3ToBtVec3(value, &motor->m_accumulatedImpulse);
+	Math::Vector3ToBtVector3(value, &motor->m_accumulatedImpulse);
 }
 
 int TranslationalLimitMotor::CurrentLimit::get(int index)
@@ -270,22 +270,22 @@ void TranslationalLimitMotor::CurrentLimit::set(int index, int value)
 
 Vector3 TranslationalLimitMotor::CurrentLimitError::get()
 {
-	return Math::BtVec3ToVector3(&motor->m_currentLimitError);
+	return Math::BtVector3ToVector3(&motor->m_currentLimitError);
 }
 
 void TranslationalLimitMotor::CurrentLimitError::set(Vector3 value)
 {
-	Math::Vector3ToBtVec3(value, &motor->m_currentLimitError);
+	Math::Vector3ToBtVector3(value, &motor->m_currentLimitError);
 }
 
 Vector3 TranslationalLimitMotor::CurrentLinearDiff::get()
 {
-	return Math::BtVec3ToVector3(&motor->m_currentLinearDiff);
+	return Math::BtVector3ToVector3(&motor->m_currentLinearDiff);
 }
 
 void TranslationalLimitMotor::CurrentLinearDiff::set(Vector3 value)
 {
-	Math::Vector3ToBtVec3(value, &motor->m_currentLinearDiff);
+	Math::Vector3ToBtVector3(value, &motor->m_currentLinearDiff);
 }
 
 btScalar TranslationalLimitMotor::Damping::get()
@@ -320,32 +320,32 @@ void TranslationalLimitMotor::LimitSoftness::set(btScalar value)
 
 Vector3 TranslationalLimitMotor::LowerLimit::get()
 {
-	return Math::BtVec3ToVector3(&motor->m_lowerLimit);
+	return Math::BtVector3ToVector3(&motor->m_lowerLimit);
 }
 
 void TranslationalLimitMotor::LowerLimit::set(Vector3 value)
 {
-	Math::Vector3ToBtVec3(value, &motor->m_lowerLimit);
+	Math::Vector3ToBtVector3(value, &motor->m_lowerLimit);
 }
 
 Vector3 TranslationalLimitMotor::MaxMotorForce::get()
 {
-	return Math::BtVec3ToVector3(&motor->m_maxMotorForce);
+	return Math::BtVector3ToVector3(&motor->m_maxMotorForce);
 }
 
 void TranslationalLimitMotor::MaxMotorForce::set(Vector3 value)
 {
-	Math::Vector3ToBtVec3(value, &motor->m_maxMotorForce);
+	Math::Vector3ToBtVector3(value, &motor->m_maxMotorForce);
 }
 
 Vector3 TranslationalLimitMotor::NormalCFM::get()
 {
-	return Math::BtVec3ToVector3(&motor->m_normalCFM);
+	return Math::BtVector3ToVector3(&motor->m_normalCFM);
 }
 
 void TranslationalLimitMotor::NormalCFM::set(Vector3 value)
 {
-	Math::Vector3ToBtVec3(value, &motor->m_normalCFM);
+	Math::Vector3ToBtVector3(value, &motor->m_normalCFM);
 }
 
 btScalar TranslationalLimitMotor::Resitution::get()
@@ -360,42 +360,42 @@ void TranslationalLimitMotor::Resitution::set(btScalar value)
 
 Vector3 TranslationalLimitMotor::StopCFM::get()
 {
-	return Math::BtVec3ToVector3(&motor->m_stopCFM);
+	return Math::BtVector3ToVector3(&motor->m_stopCFM);
 }
 
 void TranslationalLimitMotor::StopCFM::set(Vector3 value)
 {
-	Math::Vector3ToBtVec3(value, &motor->m_stopCFM);
+	Math::Vector3ToBtVector3(value, &motor->m_stopCFM);
 }
 
 Vector3 TranslationalLimitMotor::StopERP::get()
 {
-	return Math::BtVec3ToVector3(&motor->m_stopERP);
+	return Math::BtVector3ToVector3(&motor->m_stopERP);
 }
 
 void TranslationalLimitMotor::StopERP::set(Vector3 value)
 {
-	Math::Vector3ToBtVec3(value, &motor->m_stopERP);
+	Math::Vector3ToBtVector3(value, &motor->m_stopERP);
 }
 
 Vector3 TranslationalLimitMotor::TargetVelocity::get()
 {
-	return Math::BtVec3ToVector3(&motor->m_targetVelocity);
+	return Math::BtVector3ToVector3(&motor->m_targetVelocity);
 }
 
 void TranslationalLimitMotor::TargetVelocity::set(Vector3 value)
 {
-	Math::Vector3ToBtVec3(value, &motor->m_targetVelocity);
+	Math::Vector3ToBtVector3(value, &motor->m_targetVelocity);
 }
 
 Vector3 TranslationalLimitMotor::UpperLimit::get()
 {
-	return Math::BtVec3ToVector3(&motor->m_upperLimit);
+	return Math::BtVector3ToVector3(&motor->m_upperLimit);
 }
 
 void TranslationalLimitMotor::UpperLimit::set(Vector3 value)
 {
-	Math::Vector3ToBtVec3(value, &motor->m_upperLimit);
+	Math::Vector3ToBtVector3(value, &motor->m_upperLimit);
 }
 
 btTranslationalLimitMotor* TranslationalLimitMotor::UnmanagedPointer::get()
@@ -457,7 +457,7 @@ btVector3* Generic6DofConstraint_GetAxis(btGeneric6DofConstraint* constraint, in
 
 Vector3 Generic6DofConstraint::GetAxis(int axis_index)
 {
-	return Math::BtVec3ToVector3(Generic6DofConstraint_GetAxis(UnmanagedPointer, axis_index));
+	return Math::BtVector3ToVector3(Generic6DofConstraint_GetAxis(UnmanagedPointer, axis_index));
 }
 
 btScalar Generic6DofConstraint::GetRelativePivotPosition(int axis_index)
@@ -477,12 +477,12 @@ bool Generic6DofConstraint::IsLimited(int limitIndex)
 
 void Generic6DofConstraint::SetAngularLowerLimit(Vector3 value)
 {
-	UnmanagedPointer->setAngularLowerLimit(*Math::Vector3ToBtVec3(value));
+	UnmanagedPointer->setAngularLowerLimit(*Math::Vector3ToBtVector3(value));
 }
 
 void Generic6DofConstraint::SetAngularUpperLimit(Vector3 value)
 {
-	UnmanagedPointer->setAngularUpperLimit(*Math::Vector3ToBtVec3(value));
+	UnmanagedPointer->setAngularUpperLimit(*Math::Vector3ToBtVector3(value));
 }
 
 void Generic6DofConstraint::SetLimit(int axis, btScalar lo, btScalar hi)
@@ -492,12 +492,12 @@ void Generic6DofConstraint::SetLimit(int axis, btScalar lo, btScalar hi)
 
 void Generic6DofConstraint::SetLinearLowerLimit(Vector3 linearLower)
 {
-	UnmanagedPointer->setLinearLowerLimit(*Math::Vector3ToBtVec3(linearLower));
+	UnmanagedPointer->setLinearLowerLimit(*Math::Vector3ToBtVector3(linearLower));
 }
 
 void Generic6DofConstraint::SetLinearUpperLimit(Vector3 linearUpper)
 {
-	UnmanagedPointer->setLinearUpperLimit(*Math::Vector3ToBtVec3(linearUpper));
+	UnmanagedPointer->setLinearUpperLimit(*Math::Vector3ToBtVector3(linearUpper));
 }
 
 bool Generic6DofConstraint::TestAngularLimitMotor(int axis_index)

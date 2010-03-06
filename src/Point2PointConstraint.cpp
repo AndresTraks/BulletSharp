@@ -53,14 +53,14 @@ void ConstraintSetting::UnmanagedPointer::set(btConstraintSetting* setting)
 
 Point2PointConstraint::Point2PointConstraint(RigidBody^ rbA, RigidBody^ rbB, Vector3 pivotInA, Vector3 pivotInB)
 : TypedConstraint(new btPoint2PointConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
-	*Math::Vector3ToBtVec3(pivotInA), *Math::Vector3ToBtVec3(pivotInB)))
+	*Math::Vector3ToBtVector3(pivotInA), *Math::Vector3ToBtVector3(pivotInB)))
 {
 	this->RigidBodyA = rbA;
 	this->RigidBodyB = rbB;
 }
 
 Point2PointConstraint::Point2PointConstraint(RigidBody^ rbA, Vector3 pivotInA)
-: TypedConstraint(new btPoint2PointConstraint(*rbA->UnmanagedPointer, *Math::Vector3ToBtVec3(pivotInA)))
+: TypedConstraint(new btPoint2PointConstraint(*rbA->UnmanagedPointer, *Math::Vector3ToBtVector3(pivotInA)))
 {
 	this->RigidBodyA = rbA;
 }
@@ -92,22 +92,22 @@ void Point2PointConstraint::SetParam(int num, btScalar value)
 
 Vector3 Point2PointConstraint::PivotInA::get()
 {
-	return Math::BtVec3ToVector3(&UnmanagedPointer->getPivotInA());
+	return Math::BtVector3ToVector3(&UnmanagedPointer->getPivotInA());
 }
 
 void Point2PointConstraint::PivotInA::set(Vector3 value)
 {
-	UnmanagedPointer->setPivotA(*Math::Vector3ToBtVec3(value));
+	UnmanagedPointer->setPivotA(*Math::Vector3ToBtVector3(value));
 }
 
 Vector3 Point2PointConstraint::PivotInB::get()
 {
-	return Math::BtVec3ToVector3(&UnmanagedPointer->getPivotInB());
+	return Math::BtVector3ToVector3(&UnmanagedPointer->getPivotInB());
 }
 
 void Point2PointConstraint::PivotInB::set(Vector3 value)
 {
-	UnmanagedPointer->setPivotB(*Math::Vector3ToBtVec3(value));
+	UnmanagedPointer->setPivotB(*Math::Vector3ToBtVector3(value));
 }
 
 ConstraintSetting^ Point2PointConstraint::Setting::get()

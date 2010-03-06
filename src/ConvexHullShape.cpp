@@ -17,7 +17,7 @@ ConvexHullShape::ConvexHullShape(array<Vector3>^ points)
 {
 	for each (Vector3 point in points)
 	{
-		UnmanagedPointer->addPoint(*Math::Vector3ToBtVec3(point));
+		UnmanagedPointer->addPoint(*Math::Vector3ToBtVector3(point));
 	}
 }
 

@@ -14,8 +14,8 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPt
 	IntPtr multiSapParentProxy)
 {
 	_proxy = new btBroadphaseProxy(
-		*Math::Vector3ToBtVec3(aabbMin),
-		*Math::Vector3ToBtVec3(aabbMax),
+		*Math::Vector3ToBtVector3(aabbMin),
+		*Math::Vector3ToBtVector3(aabbMax),
 		userPtr.ToPointer(),
 		(short int)collisionFilterGroup,
 		(short int)collisionFilterMask,
@@ -28,8 +28,8 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPt
 	BulletSharp::CollisionFilterGroups collisionFilterMask)
 {
 	_proxy = new btBroadphaseProxy(
-		*Math::Vector3ToBtVec3(aabbMin),
-		*Math::Vector3ToBtVec3(aabbMax),
+		*Math::Vector3ToBtVector3(aabbMin),
+		*Math::Vector3ToBtVector3(aabbMax),
 		userPtr.ToPointer(),
 		(short int)collisionFilterGroup,
 		(short int)collisionFilterMask
@@ -43,20 +43,20 @@ BroadphaseProxy::BroadphaseProxy(btBroadphaseProxy* proxy)
 
 Vector3 BroadphaseProxy::AabbMin::get()
 {
-	return Math::BtVec3ToVector3(&_proxy->m_aabbMin);
+	return Math::BtVector3ToVector3(&_proxy->m_aabbMin);
 }
 void BroadphaseProxy::AabbMin::set(Vector3 value)
 {
-	Math::Vector3ToBtVec3(value, &_proxy->m_aabbMin);
+	Math::Vector3ToBtVector3(value, &_proxy->m_aabbMin);
 }
 
 Vector3 BroadphaseProxy::AabbMax::get()
 {
-	return Math::BtVec3ToVector3(&_proxy->m_aabbMax);
+	return Math::BtVector3ToVector3(&_proxy->m_aabbMax);
 }
 void BroadphaseProxy::AabbMax::set(Vector3 value)
 {
-	Math::Vector3ToBtVec3(value, &_proxy->m_aabbMax);
+	Math::Vector3ToBtVector3(value, &_proxy->m_aabbMax);
 }
 
 IntPtr BroadphaseProxy::ClientObject::get()

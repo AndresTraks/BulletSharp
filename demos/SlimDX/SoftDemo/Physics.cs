@@ -46,6 +46,45 @@ namespace BasicDemo
             }
         }
 
+        Vector3 GetRandomVector(Random random)
+        {
+            return new Vector3((float)random.NextDouble(),
+                    (float)random.NextDouble(), (float)random.NextDouble());
+        }
+
+        // Aerodynamic forces, 50x1g flyers
+        void Init_Aero()
+        {
+	        const float s=2;
+	        const int segments=6;
+	        const int count=50;
+            Random random = new Random();
+	        for(int i=0;i<count;++i)
+	        {
+		        SoftBody psb = SoftBodyHelpers.CreatePatch(softBodyWorldInfo,
+                    new Vector3(-s,0,-s), new Vector3(+s,0,-s),
+			        new Vector3(-s,0,+s), new Vector3(+s,0,+s),
+			        segments,segments, 0,true);
+                SoftBody.Material pm = psb.AppendMaterial();
+                pm.Flags -=	SoftBody.FMaterial.DebugDraw;
+                psb.GenerateBendingConstraints(2, pm);
+                psb.Cfg.LF = 0.004f;
+                psb.Cfg.DG = 0.0003f;
+                psb.Cfg.AeroModel = SoftBody.AeroModel.VTwoSided;
+                Matrix trans = Matrix.Identity;
+                Vector3 ra = 0.1f * GetRandomVector(random);
+                Vector3 rp = 75 * GetRandomVector(random) + new Vector3(-50, 15, 0);
+                Quaternion rot = Quaternion.RotationYawPitchRoll(
+                    (float)Math.PI/8+ra.X, (float)-Math.PI/7+ra.Y, ra.Z);
+                trans *= Matrix.RotationQuaternion(rot);
+                trans *= Matrix.Translation(rp);
+                psb.Transform(trans);
+                psb.TotalMass = 0.1f;
+                psb.AddForce(new Vector3(0,(float)random.NextDouble(),0),0);
+                world.AddSoftBody(psb);
+	        }
+        }
+
         void Init_TetraCube()
         {
             SoftBody psb = SoftBodyHelpers.CreateFromTetGenFile(softBodyWorldInfo,
@@ -65,10 +104,10 @@ namespace BasicDemo
             //psb.CollisionShape.Margin = 0.5f;
 
 	        psb.CollisionShape.Margin = 0.01f;
-            psb.Cfg.Collisions = SoftBody.FCollisions.ClSs | SoftBody.FCollisions.ClRs |
-                SoftBody.FCollisions.ClSelf;
+            psb.Cfg.Collisions = SoftBody.FCollisions.ClSs | SoftBody.FCollisions.ClRs;
+                // | SoftBody.FCollisions.ClSelf;
 	        //psb->m_materials[0]->m_kLST=0.8;
-	        cutting=true;	
+	        cutting=true;
         }
 
         public Physics()
@@ -93,16 +132,23 @@ namespace BasicDemo
             softBodyWorldInfo.Gravity = new Vector3(0, -10, 0);
             softBodyWorldInfo.Dispatcher = dispatcher;
             softBodyWorldInfo.Broadphase = broadphase;
+            softBodyWorldInfo.SparseSdf.Initialize();
 
             world = new SoftRigidDynamicsWorld(dispatcher, broadphase, solver, collisionConf);
             world.Gravity = new Vector3(0, -10, 0);
+            world.DispatchInfo.EnableSpu = true;
 
-            // create a few basic rigid bodies
             CollisionShape groundShape = new BoxShape(50, 50, 50);
             collisionShapes.PushBack(groundShape);
             LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
 
-            Init_TetraCube();
+            CollisionShape boxShape = new BoxShape(1, 1, 1);
+            collisionShapes.PushBack(boxShape);
+            LocalCreateRigidBody(1.0f, Matrix.Translation(0, 1, 0), boxShape);
+
+            softBodyWorldInfo.SparseSdf.Reset();
+            Init_Aero();
+            //Init_TetraCube();
 
             world.Broadphase.ResetPool(dispatcher);
             solver.Reset();
@@ -111,6 +157,7 @@ namespace BasicDemo
         public void Update(float elapsedTime)
         {
             world.StepSimulation(elapsedTime);
+            softBodyWorldInfo.SparseSdf.GarbageCollect();
         }
 
         public RigidBody LocalCreateRigidBody(float mass, Matrix startTransform, CollisionShape shape)

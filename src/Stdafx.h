@@ -4,6 +4,8 @@
 
 #pragma once
 
+//#define DISABLE_SOFTBODY
+
 #if GRAPHICS_XNA31
 	#using <Microsoft.Xna.Framework.dll>
 #elif GRAPHICS_SLIMDX

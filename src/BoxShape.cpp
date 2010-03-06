@@ -3,7 +3,7 @@
 #include "BoxShape.h"
 
 BoxShape::BoxShape(Vector3 boxHalfExtents)
-: PolyhedralConvexShape(new btBoxShape(*Math::Vector3ToBtVec3(boxHalfExtents)))
+: PolyhedralConvexShape(new btBoxShape(*Math::Vector3ToBtVector3(boxHalfExtents)))
 {
 }
 
