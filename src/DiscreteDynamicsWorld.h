@@ -9,8 +9,12 @@ namespace BulletSharp
 
 	public ref class DiscreteDynamicsWorld : DynamicsWorld
 	{
+	internal:
+		DiscreteDynamicsWorld(btDiscreteDynamicsWorld* world);
 	public:
-		DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, ConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration);
+		DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher,
+			BroadphaseInterface^ pairCache, ConstraintSolver^ constraintSolver,
+			CollisionConfiguration^ collisionConfiguration);
 
 		void SetGravity(btScalar x, btScalar y, btScalar z);
 

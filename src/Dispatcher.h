@@ -18,8 +18,8 @@ namespace BulletSharp
 	public:
 		enum class DispatchFunc
 		{
-			Discrete = 1,
-			Continuous
+			Discrete = btDispatcherInfo::DISPATCH_DISCRETE,
+			Continuous = btDispatcherInfo::DISPATCH_CONTINUOUS
 		};
 
 	private:

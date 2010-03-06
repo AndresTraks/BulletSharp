@@ -18,8 +18,8 @@ namespace BulletSharp
 		static SoftBody^ CreateFromTetGenData(SoftBodyWorldInfo^ worldInfo,
 			String^ ele, String^ face, String^ node,
 			bool bfacelinks, bool btetralinks, bool bfacesfromtetras);
-		//static SoftBody^ CreateFromTetGenFile(SoftBodyWorldInfo^ worldInfo,
-		//	String^ ele, String^ face, String^ node,
-		//	bool bfacelinks, bool btetralinks, bool bfacesfromtetras);
+		static SoftBody^ CreateFromTetGenFile(SoftBodyWorldInfo^ worldInfo,
+			String^ ele, String^ face, String^ node,
+			bool bfacelinks, bool btetralinks, bool bfacesfromtetras);
 	};
 };

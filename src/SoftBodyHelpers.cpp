@@ -4,6 +4,8 @@
 #include <BulletSoftBody/btSoftBodyHelpers.h>
 #pragma managed(pop)
 
+#include <stdio.h>
+
 #include "SoftBody.h"
 #include "SoftBodyHelpers.h"
 #include "StringConv.h"
@@ -51,13 +53,101 @@ SoftBody^ SoftBodyHelpers::CreateFromTetGenData(SoftBodyWorldInfo^ worldInfo, St
 	);
 }
 
-/*
 SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyWorldInfo^ worldInfo, String^ ele,
 	String^ face, String^ node, bool bfacelinks, bool btetralinks, bool bfacesfromtetras)
 {
-	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTetGenFile(*worldInfo->UnmanagedPointer,
-		StringConv::ManagedToUnmanaged(ele), StringConv::ManagedToUnmanaged(face),
-		StringConv::ManagedToUnmanaged(node), bfacelinks, btetralinks, bfacesfromtetras)
+	FILE* f_read;
+	long fileSize;
+	char* elementStr;
+	char* faceStr;
+	char* nodeStr;
+
+	// Read elements file
+	if (ele != nullptr)
+	{
+		if (fopen_s(&f_read, StringConv::ManagedToUnmanaged(ele), "rb"))
+			return nullptr;
+		fseek(f_read, 0, SEEK_END);
+		fileSize = ftell(f_read);
+		elementStr = (char*) malloc(fileSize+1);
+		if (!elementStr)
+		{
+			fclose(f_read);
+			return nullptr;
+		}
+		fseek(f_read, 0, SEEK_SET);
+		fread(elementStr, 1, fileSize, f_read);
+		elementStr[fileSize] = 0;
+		fclose(f_read);
+	}
+	else
+	{
+		elementStr = 0;
+	}
+
+	if (face != nullptr)
+	{
+		// Read faces file
+		if (fopen_s(&f_read, StringConv::ManagedToUnmanaged(face), "rb"))
+		{
+			if (elementStr)
+				free(elementStr);
+			return nullptr;
+		}
+		fseek(f_read, 0, SEEK_END);
+		fileSize = ftell(f_read);
+		faceStr = (char*) malloc(fileSize+1);
+		if (!faceStr)
+		{
+			fclose(f_read);
+			if (elementStr)
+				free(elementStr);
+			return nullptr;
+		}
+		fseek(f_read, 0, SEEK_SET);
+		fread(faceStr, 1, fileSize, f_read);
+		faceStr[fileSize] = 0;
+		fclose(f_read);
+	}
+	else
+	{
+		faceStr = 0;
+	}
+
+	// Read nodes file
+	if (fopen_s(&f_read, StringConv::ManagedToUnmanaged(node), "rb"))
+	{
+		if (elementStr)
+			free(elementStr);
+		if (faceStr)
+			free(faceStr);
+		return nullptr;
+	}
+	fseek(f_read, 0, SEEK_END);
+	fileSize = ftell(f_read);
+	nodeStr = (char*) malloc(fileSize+1);
+	if (!nodeStr)
+	{
+		fclose(f_read);
+		if (elementStr)
+			free(elementStr);
+		if (faceStr)
+			free(faceStr);
+		return nullptr;
+	}
+	fseek(f_read, 0, SEEK_SET);
+	fread(nodeStr, 1, fileSize, f_read);
+	nodeStr[fileSize] = 0;
+	fclose(f_read);
+
+	SoftBody^ softBody = gcnew SoftBody(btSoftBodyHelpers::CreateFromTetGenData(
+		*worldInfo->UnmanagedPointer, elementStr, faceStr, nodeStr,
+		bfacelinks, btetralinks, bfacesfromtetras)
 	);
+
+	free(elementStr);
+	free(faceStr);
+	free(nodeStr);
+
+	return softBody;
 }
-*/

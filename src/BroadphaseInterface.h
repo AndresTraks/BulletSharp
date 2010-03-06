@@ -40,7 +40,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class BroadphaseInterface abstract : BulletSharp::IDisposable
+	public ref class BroadphaseInterface : BulletSharp::IDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
@@ -51,7 +51,7 @@ namespace BulletSharp
 	protected:
 		OverlappingPairCache^ _pairCache;
 
-	protected:
+	internal:
 		BroadphaseInterface(btBroadphaseInterface* broadphase);
 	public:
 		!BroadphaseInterface();

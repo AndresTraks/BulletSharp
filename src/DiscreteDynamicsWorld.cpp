@@ -6,7 +6,14 @@
 #include "DiscreteDynamicsWorld.h"
 #include "Dispatcher.h"
 
-DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, ConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration)
+DiscreteDynamicsWorld::DiscreteDynamicsWorld(btDiscreteDynamicsWorld* world)
+: DynamicsWorld(world)
+{
+}
+
+DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher,
+	BroadphaseInterface^ pairCache, ConstraintSolver^ constraintSolver,
+	CollisionConfiguration^ collisionConfiguration)
 : DynamicsWorld(new btDiscreteDynamicsWorld(dispatcher->UnmanagedPointer,
 		pairCache->UnmanagedPointer, constraintSolver->UnmanagedPointer,
 		collisionConfiguration->UnmanagedPointer))

@@ -1,9 +1,13 @@
 #pragma once
 
+#include "CollisionConfiguration.h"
+
 namespace BulletSharp
 {
-	public ref class DefaultCollisionConfiguration : BulletSharp::CollisionConfiguration
+	public ref class DefaultCollisionConfiguration : CollisionConfiguration
 	{
+	internal:
+		DefaultCollisionConfiguration(btDefaultCollisionConfiguration* conf);
 	public:
 		DefaultCollisionConfiguration();
 		void SetConvexConvexMultipointIterations(int numPerturbationIterations);

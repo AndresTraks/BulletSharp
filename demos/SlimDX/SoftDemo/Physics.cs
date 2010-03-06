@@ -21,10 +21,11 @@ namespace BasicDemo
         BroadphaseInterface broadphase;
         ConstraintSolver solver;
         CollisionShapeArray collisionShapes = new CollisionShapeArray();
-        public DynamicsWorld world;
+        public SoftRigidDynamicsWorld world;
         SoftBodyWorldInfo softBodyWorldInfo;
 
         bool cutting;
+        const int maxProxies = 32766;
 
         void CreateStack(CollisionShape boxShape, float halfCubeSize, int size, float zPos)
         {
@@ -45,30 +46,29 @@ namespace BasicDemo
             }
         }
 
-        static void	Init_TetraCube()
+        void Init_TetraCube()
         {
-            //SoftBody psb = SoftBodyHelpers.CreateFromTetGenData(softBodyWorldInfo,
-			//    "cube.ele", null, "cube.node", false,true,true);
-	        //softDynamicsWorld.AddSoftBody(psb);
-	        //psb.Scale( new Vector3(4,4,4));
-	        //psb.Translate(new Vector3(0,5,0));
-	        //psb.VolumeMass = 300;
+            SoftBody psb = SoftBodyHelpers.CreateFromTetGenFile(softBodyWorldInfo,
+			    "data\\cube.ele", null, "data\\cube.node", false,true,true);
+	        world.AddSoftBody(psb);
+	        psb.Scale(new Vector3(4,4,4));
+	        psb.Translate(0,5,0);
+	        psb.SetVolumeMass(300);
         	
 	        ///fix one vertex
 	        //psb->setMass(0,0);
 	        //psb->setMass(10,0);
 	        //psb->setMass(20,0);
-	        //psb.Cfg.piterations=1;
-	        //psb->generateClusters(128);
-	        //psb.GenerateClusters(16);
-	        //psb->getCollisionShape()->setMargin(0.5);
+	        psb.Cfg.PIterations=1;
+	        //psb.GenerateClusters(128);
+	        psb.GenerateClusters(16);
+            //psb.CollisionShape.Margin = 0.5f;
 
-	        //psb.CollisionShape.Margin = 0.01f;
-	        //psb->m_cfg.collisions = SoftBody.fCollision.CL_SS | SoftBody.fCollision.CL_RS
-		        //+ SoftBody.fCollision.CL_SELF
-		        ;
+	        psb.CollisionShape.Margin = 0.01f;
+            psb.Cfg.Collisions = SoftBody.FCollisions.ClSs | SoftBody.FCollisions.ClRs |
+                SoftBody.FCollisions.ClSelf;
 	        //psb->m_materials[0]->m_kLST=0.8;
-	        //cutting=true;	
+	        cutting=true;	
         }
 
         public Physics()
@@ -76,15 +76,25 @@ namespace BasicDemo
             CollisionConfiguration collisionConf;
 
             // collision configuration contains default setup for memory, collision setup
-            collisionConf = new DefaultCollisionConfiguration();
+            collisionConf = new SoftBodyRigidBodyCollisionConfiguration();
             dispatcher = new CollisionDispatcher(collisionConf);
 
-            broadphase = new DbvtBroadphase();
+            broadphase = new AxisSweep3(new Vector3(-1000, -1000, -1000),
+                new Vector3(1000, 1000, 1000), maxProxies);
 
             // the default constraint solver.
             solver = new SequentialImpulseConstraintSolver();
 
-            world = new DiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConf);
+            softBodyWorldInfo = new SoftBodyWorldInfo();
+            softBodyWorldInfo.AirDensity = 1.2f;
+            softBodyWorldInfo.WaterDensity = 0;
+            softBodyWorldInfo.WaterOffset = 0;
+            softBodyWorldInfo.WaterNormal = Vector3.Zero;
+            softBodyWorldInfo.Gravity = new Vector3(0, -10, 0);
+            softBodyWorldInfo.Dispatcher = dispatcher;
+            softBodyWorldInfo.Broadphase = broadphase;
+
+            world = new SoftRigidDynamicsWorld(dispatcher, broadphase, solver, collisionConf);
             world.Gravity = new Vector3(0, -10, 0);
 
             // create a few basic rigid bodies
@@ -92,9 +102,7 @@ namespace BasicDemo
             collisionShapes.PushBack(groundShape);
             LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
 
-            // create a few dynamic rigidbodies
-            float mass = 1.0f;
-
+            Init_TetraCube();
 
             world.Broadphase.ResetPool(dispatcher);
             solver.Reset();

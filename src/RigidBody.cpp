@@ -135,7 +135,10 @@ bool RigidBody::WantsSleeping()
 
 RigidBody^ RigidBody::Upcast(CollisionObject^ colObj)
 {
-	return gcnew RigidBody(btRigidBody::upcast(colObj->UnmanagedPointer));
+	btRigidBody* body = btRigidBody::upcast(colObj->UnmanagedPointer);
+	if (body == nullptr)
+		return nullptr;
+	return gcnew RigidBody(body);
 }
 
 

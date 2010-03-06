@@ -3,19 +3,27 @@
 #include "CollisionConfiguration.h"
 #include "DefaultCollisionConfiguration.h"
 
-DefaultCollisionConfiguration::DefaultCollisionConfiguration()
-: CollisionConfiguration( new btDefaultCollisionConfiguration() )
+DefaultCollisionConfiguration::DefaultCollisionConfiguration(btDefaultCollisionConfiguration* conf)
+: CollisionConfiguration(conf)
 {
 }
 
-void DefaultCollisionConfiguration::SetConvexConvexMultipointIterations(int numPerturbationIterations)
+DefaultCollisionConfiguration::DefaultCollisionConfiguration()
+: CollisionConfiguration(new btDefaultCollisionConfiguration())
+{
+}
+
+void DefaultCollisionConfiguration::SetConvexConvexMultipointIterations(
+	int numPerturbationIterations)
 {
 	UnmanagedPointer->setConvexConvexMultipointIterations(numPerturbationIterations);
 }
 
-void DefaultCollisionConfiguration::SetConvexConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold)
+void DefaultCollisionConfiguration::SetConvexConvexMultipointIterations(
+	int numPerturbationIterations, int minimumPointsPerturbationThreshold)
 {
-	UnmanagedPointer->setConvexConvexMultipointIterations(numPerturbationIterations, minimumPointsPerturbationThreshold);
+	UnmanagedPointer->setConvexConvexMultipointIterations(
+		numPerturbationIterations, minimumPointsPerturbationThreshold);
 }
 
 btDefaultCollisionConfiguration* DefaultCollisionConfiguration::UnmanagedPointer::get()

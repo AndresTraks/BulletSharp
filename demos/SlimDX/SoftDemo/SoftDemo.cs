@@ -13,7 +13,7 @@ namespace BasicDemo
     {
         int Width = 1024, Height = 768;
         Color ambient = Color.Gray;
-        Vector3 eye = new Vector3(30, 20, 10);
+        Vector3 eye = new Vector3(20, 10, 10);
         bool DrawDebugLines = true;
         float FieldOfView = (float)Math.PI / 4;
 
@@ -102,8 +102,7 @@ namespace BasicDemo
 
             debugDraw = new PhysicsDebugDraw(Device);
             physics.world.DebugDrawer = debugDraw;
-            debugDraw.SetDebugMode(DebugDrawModes.DrawWireframe |
-                DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits);
+            debugDraw.SetDebugMode(DebugDrawModes.DrawWireframe);
         }
 
         protected override void OnResourceLoad()

@@ -584,6 +584,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\SoftBodyRigidBodyCollisionConfiguration.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\SoftRigidDynamicsWorld.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SphereShape.cpp"
 				>
 			</File>
@@ -982,6 +990,14 @@
 				</File>
 				<File
 					RelativePath=".\src\SoftBodyHelpers.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\SoftBodyRigidBodyCollisionConfiguration.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\SoftRigidDynamicsWorld.h"
 					>
 				</File>
 			</Filter>
