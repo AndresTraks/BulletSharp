@@ -6,6 +6,7 @@
 
 namespace BulletSharp
 {
+	ref class BroadphasePair;
 	ref class CollisionObject;
 	ref class CollisionShape;
 	ref class PersistentManifold;
@@ -37,6 +38,43 @@ namespace BulletSharp
 		{
 			virtual void* get();
 			void set(void* value);
+		}
+	};
+
+	public ref class BroadphasePairArray : AlignedObjectArray
+	{
+	internal:
+		BroadphasePairArray(btBroadphasePairArray* stkNnArray);
+
+	public:
+		BroadphasePairArray();
+
+		void Clear();
+		void PopBack();
+		void PushBack(BroadphasePair^ pair);
+		void Remove(BroadphasePair^ pair);
+		void Swap(int index0, int index1);
+
+		property int Size
+		{
+			int get();
+		}
+
+		property int Capacity
+		{
+			int get();
+		}
+
+		property BroadphasePair^ default [int]
+		{
+			BroadphasePair^ get (int index);
+			void set(int index, BroadphasePair^);
+		}
+
+	internal:
+		property btBroadphasePairArray* UnmanagedPointer
+		{
+			virtual btBroadphasePairArray* get() new;
 		}
 	};
 

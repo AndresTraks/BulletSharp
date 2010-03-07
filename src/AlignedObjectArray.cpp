@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #include "AlignedObjectArray.h"
+#include "BroadphaseProxy.h"
 #include "CollisionObject.h"
 #include "CollisionShape.h"
 #include "Dbvt.h"
@@ -40,6 +41,73 @@ void* AlignedObjectArray::UnmanagedPointer::get()
 void AlignedObjectArray::UnmanagedPointer::set(void* value)
 {
 	_alignedObjectArray = value;
+}
+
+
+BroadphasePairArray::BroadphasePairArray(btBroadphasePairArray* stkNnArray)
+: AlignedObjectArray(stkNnArray)
+{
+}
+
+BroadphasePairArray::BroadphasePairArray()
+: AlignedObjectArray(new btBroadphasePairArray)
+{
+}
+
+void BroadphasePairArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+void BroadphasePairArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+void BroadphasePairArray::PushBack(BroadphasePair^ pair)
+{
+	UnmanagedPointer->push_back(*pair->UnmanagedPointer);
+}
+
+void BroadphasePairArray::Remove(BroadphasePair^ pair)
+{
+	UnmanagedPointer->remove(*pair->UnmanagedPointer);
+}
+
+int BroadphasePairArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int BroadphasePairArray::Size::get()
+{
+	return UnmanagedPointer->size();
+}
+
+void BroadphasePairArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+BroadphasePair^ BroadphasePairArray::default::get(int index)
+{
+	return gcnew BroadphasePair(&(*UnmanagedPointer)[index]);
+}
+#pragma managed(push, off)
+void BroadphasePairArray_SetDefault(btBroadphasePairArray* pairArray,
+	int index, btBroadphasePair* pair)
+{
+	(*pairArray)[index] = *pair;
+}
+#pragma managed(pop)
+void BroadphasePairArray::default::set(int index, BroadphasePair^ value)
+{
+	BroadphasePairArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+}
+
+btBroadphasePairArray* BroadphasePairArray::UnmanagedPointer::get()
+{
+	return (btBroadphasePairArray*)AlignedObjectArray::UnmanagedPointer;
 }
 
 

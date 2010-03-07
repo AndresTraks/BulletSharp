@@ -3,6 +3,9 @@
 #include "CollisionAlgorithm.h"
 #include "DebugDraw.h"
 #include "Dispatcher.h"
+#include "OverlappingPairCache.h"
+#include "PersistentManifold.h"
+#include "StackAlloc.h"
 
 DispatcherInfo::DispatcherInfo(btDispatcherInfo* info)
 {
@@ -67,17 +70,7 @@ void DispatcherInfo::EnableSpu::set(bool value)
 	_info->m_enableSPU = value;
 }
 
-btScalar DispatcherInfo::TimeOfImpact::get()
-{
-	return _info->m_timeOfImpact;
-}
-void DispatcherInfo::TimeOfImpact::set(btScalar value)
-{
-	_info->m_timeOfImpact = value;
-}
-
-/*
-int DispatcherInfo::StackAllocator::get()
+StackAlloc^ DispatcherInfo::StackAllocator::get()
 {
 	return gcnew StackAlloc(_info->m_stackAllocator);
 }
@@ -85,7 +78,6 @@ void DispatcherInfo::StackAllocator::set(StackAlloc^ value)
 {
 	_info->m_stackAllocator = value->UnmanagedPointer;
 }
-*/
 
 int DispatcherInfo::StepCount::get()
 {
@@ -94,6 +86,15 @@ int DispatcherInfo::StepCount::get()
 void DispatcherInfo::StepCount::set(int value)
 {
 	_info->m_stepCount = value;
+}
+
+btScalar DispatcherInfo::TimeOfImpact::get()
+{
+	return _info->m_timeOfImpact;
+}
+void DispatcherInfo::TimeOfImpact::set(btScalar value)
+{
+	_info->m_timeOfImpact = value;
 }
 
 btScalar DispatcherInfo::TimeStep::get()
@@ -164,14 +165,69 @@ Dispatcher::!Dispatcher()
 	OnDisposed( this, nullptr );
 }
 
+IntPtr Dispatcher::AllocateCollisionAlgorithm(int size)
+{
+	return IntPtr(_dispatcher->allocateCollisionAlgorithm(size));
+}
+
+void Dispatcher::ClearManifold(PersistentManifold^ manifold)
+{
+	_dispatcher->clearManifold(manifold->UnmanagedPointer);
+}
+
+void Dispatcher::DispatchAllCollisionPairs(OverlappingPairCache^ pairCache,
+	DispatcherInfo^ dispatchInfo, Dispatcher^ dispatcher)
+{
+	_dispatcher->dispatchAllCollisionPairs(pairCache->UnmanagedPointer,
+		*dispatchInfo->UnmanagedPointer, dispatcher->UnmanagedPointer);
+}
+
 CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObject^ body0, CollisionObject^ body1)
 {
 	return gcnew CollisionAlgorithm(_dispatcher->findAlgorithm(body0->UnmanagedPointer, body1->UnmanagedPointer));
 }
 
+CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObject^ body0,
+	CollisionObject^ body1, PersistentManifold^ sharedManifold)
+{
+	return gcnew CollisionAlgorithm(_dispatcher->findAlgorithm(
+		body0->UnmanagedPointer, body1->UnmanagedPointer, sharedManifold->UnmanagedPointer));
+}
+
+void Dispatcher::FreeCollisionAlgorithm(IntPtr ptr)
+{
+	_dispatcher->freeCollisionAlgorithm(ptr.ToPointer());
+}
+
+PersistentManifold^ Dispatcher::GetManifoldByIndexInternal(int index)
+{
+	return gcnew PersistentManifold(_dispatcher->getManifoldByIndexInternal(index));
+}
+
+PersistentManifold^ Dispatcher::GetNewManifold(IntPtr body0, IntPtr body1)
+{
+	return gcnew PersistentManifold(_dispatcher->getNewManifold(
+		body0.ToPointer(), body1.ToPointer()));
+}
+
 bool Dispatcher::NeedsCollision(CollisionObject^ body0, CollisionObject^ body1)
 {
 	return _dispatcher->needsCollision(body0->UnmanagedPointer, body1->UnmanagedPointer);
+}
+
+bool Dispatcher::NeedsResponse(CollisionObject^ body0, CollisionObject^ body1)
+{
+	return _dispatcher->needsResponse(body0->UnmanagedPointer, body1->UnmanagedPointer);
+}
+
+void Dispatcher::ReleaseManifold(PersistentManifold^ manifold)
+{
+	_dispatcher->releaseManifold(manifold->UnmanagedPointer);
+}
+
+int Dispatcher::NumManifolds::get()
+{
+	return _dispatcher->getNumManifolds();
 }
 
 bool Dispatcher::IsDisposed::get()

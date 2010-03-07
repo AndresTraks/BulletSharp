@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 07 Mar 2010
+
 #include "CollisionObject.h"
 #include "IDisposable.h"
 
@@ -11,7 +13,9 @@ namespace BulletSharp
 	ref class CollisionDispatcher;
 	ref class DebugDraw;
 	ref class DispatcherInfo;
-	//ref class StackAlloc;
+	ref class OverlappingPairCache;
+	ref class PersistentManifold;
+	ref class StackAlloc;
 
 	public ref class DispatcherInfo
 	{
@@ -63,11 +67,11 @@ namespace BulletSharp
 			void set(bool value);
 		}
 
-		//property StackAlloc^ StackAllocator
-		//{
-		//	int get();
-		//	void set(int value);
-		//}
+		property StackAlloc^ StackAllocator
+		{
+			StackAlloc^ get();
+			void set(StackAlloc^ value);
+		}
 
 		property int StepCount
 		{
@@ -129,12 +133,26 @@ namespace BulletSharp
 	protected:
 		~Dispatcher();
 	public:
+		IntPtr AllocateCollisionAlgorithm(int size);
+		void ClearManifold(PersistentManifold^ manifold);
+		void DispatchAllCollisionPairs(OverlappingPairCache^ pairCache,
+			DispatcherInfo^ dispatchInfo, Dispatcher^ dispatcher);
+		CollisionAlgorithm^ FindAlgorithm(CollisionObject^ body0,
+			CollisionObject^ body1, PersistentManifold^ sharedManifold);
 		CollisionAlgorithm^ FindAlgorithm(CollisionObject^ body0,
 			CollisionObject^ body1);
-		//CollisionAlgorithm^ FindAlgorithm(CollisionObject^ body0,
-		//	CollisionObject^ body1, PersistentManifold^ sharedManifold);
-
+		void FreeCollisionAlgorithm(IntPtr ptr);
+		//array<PersistentManifold^>^ GetInternalManifoldPointer();
+		PersistentManifold^ GetManifoldByIndexInternal(int index);
+		PersistentManifold^ GetNewManifold(IntPtr body0, IntPtr body1);
 		bool NeedsCollision(CollisionObject^ body0, CollisionObject^ body1);
+		bool NeedsResponse(CollisionObject^ body0, CollisionObject^ body1);
+		void ReleaseManifold(PersistentManifold^ manifold);
+
+		property int NumManifolds
+		{
+			int get();
+		}
 
 		property bool IsDisposed
 		{

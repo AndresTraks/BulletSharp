@@ -33,7 +33,7 @@ namespace CcdPhysicsDemo
         CollisionDispatcher dispatcher;
         BroadphaseInterface broadphase;
         ConstraintSolver solver;
-        AlignedObjectArray<CollisionShape> collisionShapes = new CollisionShapeArray();
+        CollisionShapeArray collisionShapes = new CollisionShapeArray();
         public DynamicsWorld world;
 
         void CreateStack(CollisionShape boxShape, float halfCubeSize, int size, float zPos)

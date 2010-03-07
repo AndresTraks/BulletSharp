@@ -600,6 +600,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\StackAlloc.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\StaticPlaneShape.cpp"
 				>
 			</File>
@@ -982,6 +986,10 @@
 				</File>
 				<File
 					RelativePath=".\src\Scalar.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\StackAlloc.h"
 					>
 				</File>
 			</Filter>

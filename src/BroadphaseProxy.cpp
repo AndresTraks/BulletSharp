@@ -149,6 +149,11 @@ void BroadphaseProxy::UnmanagedPointer::set(btBroadphaseProxy* value)
 }
 
 
+BroadphasePair::BroadphasePair(btBroadphasePair* pair)
+{
+	_pair = pair;
+}
+
 BroadphasePair::BroadphasePair()
 {
 	_pair = new btBroadphasePair();
