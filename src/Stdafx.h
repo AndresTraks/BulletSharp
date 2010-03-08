@@ -14,8 +14,6 @@
 #elif WIN64
 	#using <x64/SlimDX.dll>
 #endif
-#else
-	#error No Graphics Target Specified
 #endif
 
 #if GRAPHICS_XNA31
@@ -24,6 +22,9 @@
 #elif GRAPHICS_SLIMDX
 	#define UsingFrameworkNamespace using namespace SlimDX;
 	#define UsingGraphicsNamespace using namespace SlimDX::Direct3D9;
+#elif GRAPHICS_NONE
+	#define UsingFrameworkNamespace
+	#define UsingGraphicsNamespace
 #endif
 
 #pragma managed(push, off)

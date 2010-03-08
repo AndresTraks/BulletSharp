@@ -7,6 +7,7 @@
 UsingFrameworkNamespace
 UsingGraphicsNamespace
 using namespace msclr;
+using namespace System::Drawing;
 
 namespace BulletSharp
 {
@@ -28,6 +29,10 @@ namespace BulletSharp
 		virtual void DrawLine(Vector3 from, Vector3 to, Color4 color) {};
 		virtual void DrawBox(Vector3 bbMin, Vector3 bbMax, Matrix trans, Color4 color) {};
 		virtual void DrawTriangle(Vector3 v0, Vector3 v1, Color4 color) {};
+#elif GRAPHICS_NONE
+		virtual void DrawLine(Vector3 from, Vector3 to, Color color) {};
+		virtual void DrawBox(Vector3 bbMin, Vector3 bbMax, Matrix trans, Color color) {};
+		virtual void DrawTriangle(Vector3 v0, Vector3 v1, Color color) {};
 #endif
 
 		void SetDebugMode(DebugDrawModes debugMode);
@@ -61,6 +66,8 @@ namespace BulletSharp
 				Microsoft::Xna::Framework::Graphics::Color(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_SLIMDX
 				Color4(color.getX(),color.getY(),color.getZ())
+#elif GRAPHICS_NONE
+				Color::FromArgb(255, color.getX()*255, color.getY()*255, color.getY()*255)
 #endif
 			);
 		}
@@ -75,6 +82,8 @@ namespace BulletSharp
 				Microsoft::Xna::Framework::Graphics::Color(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_SLIMDX
 				Color4(color.getX(),color.getY(),color.getZ())
+#elif GRAPHICS_NONE
+				Color::FromArgb(255, color.getX()*255, color.getY()*255, color.getY()*255)
 #endif
 			);
 		}

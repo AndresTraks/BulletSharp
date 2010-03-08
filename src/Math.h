@@ -2,6 +2,12 @@
 
 UsingFrameworkNamespace
 
+#if GRAPHICS_NONE
+#include "Matrix.h"
+#include "Quaternion.h"
+#include "Vector3.h"
+#endif
+
 namespace BulletSharp
 {
 	private ref class Math
