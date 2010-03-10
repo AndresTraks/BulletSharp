@@ -30,5 +30,10 @@ namespace BulletSharp
 		static SoftBody^ CreatePatch(SoftBodyWorldInfo^ worldInfo,
 			Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11,
 			int resx, int resy, int fixeds, bool gendiags);
+		//static SoftBody^ CreatePatchUV(SoftBodyWorldInfo^ worldInfo,
+		//	Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11,
+		//	int resx, int resy, int fixeds, bool gendiags, array<float> texCoords);
+		static SoftBody^ CreateRope(SoftBodyWorldInfo^ worldInfo,
+			Vector3 from, Vector3 to, int res, int fixeds);
 	};
 };

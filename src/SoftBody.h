@@ -12,6 +12,7 @@ namespace BulletSharp
 	ref class Dispatcher;
 	ref class FaceArray;
 	ref class NodeArray;
+	ref class RigidBody;
 	ref class SparseSdf;
 
 	public ref class SoftBodyWorldInfo
@@ -270,6 +271,8 @@ namespace BulletSharp
 		void AddForce(Vector3 force);
 		void AddVelocity(Vector3 velocity, int node);
 		void AddVelocity(Vector3 velocity);
+		void AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies);
+		void AppendAnchor(int node, RigidBody^ body);
 		Material^ AppendMaterial();
 		int GenerateBendingConstraints(int distance, Material^ mat);
 		int GenerateBendingConstraints(int distance);

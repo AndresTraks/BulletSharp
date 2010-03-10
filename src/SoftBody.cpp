@@ -5,6 +5,7 @@
 #include "AlignedObjectArray.h"
 #include "BroadphaseInterface.h"
 #include "Dispatcher.h"
+#include "RigidBody.h"
 #include "SoftBody.h"
 #include "SparseSdf.h"
 
@@ -320,6 +321,16 @@ void SoftBody::AddVelocity(Vector3 velocity, int node)
 void SoftBody::AddVelocity(Vector3 velocity)
 {
 	UnmanagedPointer->addVelocity(*Math::Vector3ToBtVector3(velocity));
+}
+
+void SoftBody::AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies)
+{
+	UnmanagedPointer->appendAnchor(node, body->UnmanagedPointer, disableCollisionBetweenLinkedBodies);
+}
+
+void SoftBody::AppendAnchor(int node, RigidBody^ body)
+{
+	UnmanagedPointer->appendAnchor(node, body->UnmanagedPointer);
 }
 
 int SoftBody::GenerateBendingConstraints(int distance, SoftBody::Material^ mat)

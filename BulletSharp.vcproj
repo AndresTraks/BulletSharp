@@ -724,6 +724,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\SimpleBroadphase.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SimplexSolverInterface.cpp"
 				>
 			</File>
@@ -993,6 +997,10 @@
 					</File>
 					<File
 						RelativePath=".\src\OverlappingPairCallback.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\SimpleBroadphase.h"
 						>
 					</File>
 				</Filter>

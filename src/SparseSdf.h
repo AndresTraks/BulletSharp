@@ -5,6 +5,8 @@
 
 namespace BulletSharp
 {
+	ref class CollisionShape;
+
 	public ref class SparseSdf
 	{
 	internal:
@@ -16,6 +18,7 @@ namespace BulletSharp
 		void GarbageCollect();
 		void Initialize(int hashSize);
 		void Initialize();
+		int RemoveReferences(CollisionShape^ pcs);
 		void Reset();
 
 	internal:

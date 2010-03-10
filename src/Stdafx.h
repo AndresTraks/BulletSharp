@@ -14,6 +14,9 @@
 #elif WIN64
 	#using <x64/SlimDX.dll>
 #endif
+#elif GRAPHICS_NONE
+#else
+	#define GRAPHICS_NONE
 #endif
 
 #if GRAPHICS_XNA31

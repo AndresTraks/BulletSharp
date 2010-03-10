@@ -189,4 +189,4 @@ namespace BulletSharp
 			btDbvtBroadphase* get() new;
 		}
 	};
-};
+}

@@ -164,4 +164,11 @@ SoftBody^ SoftBodyHelpers::CreatePatch(SoftBodyWorldInfo^ worldInfo,
 		resx, resy, fixeds, gendiags));
 }
 
+SoftBody^ SoftBodyHelpers::CreateRope(SoftBodyWorldInfo^ worldInfo,
+	Vector3 from, Vector3 to, int res, int fixeds)
+{
+	return gcnew SoftBody(btSoftBodyHelpers::CreateRope(*worldInfo->UnmanagedPointer,
+		*Math::Vector3ToBtVector3(from), *Math::Vector3ToBtVector3(to), res, fixeds));
+}
+
 #endif

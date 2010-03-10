@@ -4,6 +4,7 @@
 #include <BulletSoftBody/btSparseSdf.h>
 #pragma managed(pop)
 
+#include "CollisionShape.h"
 #include "SparseSdf.h"
 
 SparseSdf::SparseSdf(btSparseSdf<3>* sdf)
@@ -29,6 +30,14 @@ void SparseSdf::Initialize(int hashSize)
 void SparseSdf::Initialize()
 {
 	_sdf->Initialize();
+}
+
+int SparseSdf::RemoveReferences(CollisionShape^ pcs)
+{
+	if (pcs == nullptr)
+		return _sdf->RemoveReferences(0);
+	else
+		return _sdf->RemoveReferences(pcs->UnmanagedPointer);
 }
 
 void SparseSdf::Reset()
