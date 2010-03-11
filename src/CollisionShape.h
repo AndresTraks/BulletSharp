@@ -100,10 +100,11 @@ namespace BulletSharp
 			BroadphaseNativeType get();
 		}
 
-		property IntPtr UserPointer
+		// UserPointer implemented as UserObject
+		property Object^ UserObject
 		{
-			IntPtr get();
-			void set(IntPtr value);
+			Object^ get();
+			void set(Object^ value);
 		}
 
 	internal:

@@ -53,7 +53,8 @@ namespace Box2dDemo
             // create a few basic rigid bodies
             CollisionShape groundShape = new BoxShape(75, 50, 75);
             collisionShapes.PushBack(groundShape);
-            LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
+            RigidBody ground = LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
+            ground.UserObject = "Ground";
 
             // create a few dynamic rigidbodies
             // Re-using the same collision is better for memory usage and performance

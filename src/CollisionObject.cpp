@@ -3,6 +3,11 @@
 #include "CollisionObject.h"
 #include "CollisionShape.h"
 
+#include <msclr/auto_gcroot.h>
+
+#define __GCHANDLE_TO_VOIDPTR(x) ((GCHandle::operator System::IntPtr(x)).ToPointer())
+#define __VOIDPTR_TO_GCHANDLE(x) (GCHandle::operator GCHandle(System::IntPtr(x)))
+
 // Unmanaged functions to let us use the unmanaged btVector3 and btTransform
 #pragma managed(push, off)
 void CollisionObject_GetAnisotropicFriction(btCollisionObject* collisionObject, btVector3* friction)
@@ -256,13 +261,21 @@ CollisionShape^ CollisionObject::RootCollisionShape::get()
 	return _rootCollisionShape;
 }
 
-IntPtr CollisionObject::UserPointer::get()
+Object^ CollisionObject::UserObject::get()
 {
-	return IntPtr(_collisionObject->getUserPointer());
+	void* obj = _collisionObject->getUserPointer();
+	if (obj == nullptr)
+		return nullptr;
+	return static_cast<Object^>(__VOIDPTR_TO_GCHANDLE(obj).Target);
 }
-void CollisionObject::UserPointer::set(IntPtr value)
+void CollisionObject::UserObject::set(Object^ value)
 {
-	_collisionObject->setUserPointer(value.ToPointer());
+	void* obj = _collisionObject->getUserPointer();
+	if (obj != nullptr)
+		__VOIDPTR_TO_GCHANDLE(obj).Free();
+
+	GCHandle handle = GCHandle::Alloc(value);
+	_collisionObject->setUserPointer(__GCHANDLE_TO_VOIDPTR(handle));
 }
 
 Matrix CollisionObject::WorldTransform::get()

@@ -14,7 +14,7 @@ namespace BasicDemo
         int Width = 1024, Height = 768;
         Color ambient = Color.Gray;
         Vector3 eye = new Vector3(30, 20, 10);
-        bool DrawDebugLines = true;
+        bool DrawDebugLines = false;
         float FieldOfView = (float)Math.PI / 4;
 
         Matrix Projection;
@@ -71,7 +71,7 @@ namespace BasicDemo
 
             physics = new Physics();
 
-            box = Mesh.CreateBox(Device, physics.Scaling * 2, physics.Scaling * 2, physics.Scaling * 2);
+            box = Mesh.CreateBox(Device, 2, 2, 2);
             groundBox = Mesh.CreateBox(Device, 100, 100, 100);
 
             light = new Light();
@@ -158,37 +158,25 @@ namespace BasicDemo
 
             Device.SetTransform(TransformState.View, freelook.View);
 
-            Device.Material = groundMaterial;
-            Device.SetTransform(TransformState.World, Matrix.Translation(-Vector3.UnitY * 50));
-            groundBox.DrawSubset(0);
-
-            int i;
-            for (i = 0; i < physics.world.NumCollisionObjects; i++)
+            foreach (CollisionObject colObj in physics.world.CollisionObjectArray)
             {
-                Matrix trans;
-                MotionState ms = null;
-                
-                CollisionObject colObj = physics.world.CollisionObjectArray[i];
                 RigidBody body = RigidBody.Upcast(colObj);
+                Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
 
-                if (body != null)
+                if ((string)colObj.UserObject == "Ground")
                 {
-                    ms = body.MotionState;
+                    Device.Material = groundMaterial;
+                    groundBox.DrawSubset(0);
                 }
-
-                if (body != null && ms != null)
-                    trans = ms.WorldTransform;
                 else
-                    trans = colObj.WorldTransform;
+                {
+                    if (colObj.ActivationState == ActivationState.ActiveTag)
+                        Device.Material = activeMaterial;
+                    else
+                        Device.Material = passiveMaterial;
 
-                Device.SetTransform(TransformState.World, trans);
-
-                if (colObj.ActivationState == ActivationState.ActiveTag)
-                    Device.Material = activeMaterial;
-                else
-                    Device.Material = passiveMaterial;
-
-                box.DrawSubset(0);
+                    box.DrawSubset(0);
+                }
             }
 
             if (DrawDebugLines)
@@ -204,24 +192,6 @@ namespace BasicDemo
 
             Device.EndScene();
             Device.Present();
-        }
-
-        class PhysicsDebugDraw : DebugDraw
-        {
-            SlimDX.Direct3D9.Device device;
-
-            public PhysicsDebugDraw(SlimDX.Direct3D9.Device device)
-            {
-                this.device = device;
-            }
-
-            public override void DrawLine(Vector3 from, Vector3 to, Color4 color)
-            {
-                PositionColored[] vertices = new PositionColored[2];
-                vertices[0] = new PositionColored(from, color.ToArgb());
-                vertices[1] = new PositionColored(to, color.ToArgb());
-                device.DrawUserPrimitives(PrimitiveType.LineList, 1, vertices);
-            }
         }
     }
 }

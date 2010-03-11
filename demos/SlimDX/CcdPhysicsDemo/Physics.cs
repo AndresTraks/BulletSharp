@@ -79,7 +79,8 @@ namespace CcdPhysicsDemo
 			        {
 				        //discrete collision detection query
 				        collisionPair.Algorithm.ProcessCollision(colObj0, colObj1, dispatchInfo, contactPointResult);
-			        } else
+			        }
+                    else
 			        {
 				        //continuous collision detection query, time of impact (toi)
 				        float toi = collisionPair.Algorithm.CalculateTimeOfImpact(colObj0, colObj1, dispatchInfo, contactPointResult);
@@ -93,6 +94,8 @@ namespace CcdPhysicsDemo
 
         public Physics()
         {
+            int i;
+
             useCompound = CenterOfMassShift;
 
             collisionShapes.PushBack(new BoxShape(200, CubeHalfExtents, 200));
@@ -133,16 +136,9 @@ namespace CcdPhysicsDemo
 
             world.DispatchInfo.EnableSpu = true;
 
-            int i;
-            for (i = 0; i < numObjects; i++)
-            {
-                if (i > 0)
-                {
+            shapeIndex[0] = 0;
+            for (i = 1; i < numObjects; i++)
                     shapeIndex[i] = 1;//sphere
-                }
-                else
-                    shapeIndex[i] = 0;
-            }
 
             if (useCompound)
 	        {
@@ -169,8 +165,7 @@ namespace CcdPhysicsDemo
                     CollisionShape shape = collisionShapes[shapeIndex[i]];
                     shape.Margin = collisionMargin;
 
-                    bool isDyna = i > 0;
-
+                    RigidBody body;
                     Matrix trans;
                     if (i > 0)
                     {
@@ -180,7 +175,6 @@ namespace CcdPhysicsDemo
                         int row2 = row;
                         int col = (i) % (colsize) - colsize / 2;
 
-
                         if (col > 3)
                         {
                             col = 11;
@@ -189,22 +183,16 @@ namespace CcdPhysicsDemo
 
                         trans = Matrix.Translation(col * 2 * CubeHalfExtents + (row2 % 2) * CubeHalfExtents,
                             row * 2 * CubeHalfExtents + CubeHalfExtents + ExtraHeight, 0);
+                        
+                        body = LocalCreateRigidBody(1, trans, shape);
                     }
                     else
                     {
                         trans = Matrix.Translation(0, ExtraHeight - CubeHalfExtents, 0);
-                    }
+                        body = LocalCreateRigidBody(0, trans, shape);
+                        body.UserObject = "Ground";
 
-                    float mass = 1.0f;
-
-                    if (!isDyna)
-                        mass = 0;
-
-                    RigidBody body = LocalCreateRigidBody(mass, trans, shape);
-
-                    if (UseKinematicGround)
-                    {
-                        if (mass == 0)
+                        if (UseKinematicGround)
                         {
                             body.CollisionFlags = body.CollisionFlags | CollisionFlags.KinematicObject;
                             body.ActivationState = ActivationState.DisableDeactivation;
@@ -225,7 +213,7 @@ namespace CcdPhysicsDemo
 
 	            int numWalls = 15;
 	            int wallHeight = 15;
-	           float wallDistance = 3;
+	            float wallDistance = 3;
 
 
 	            for (i=0;i<numWalls;i++)
@@ -233,9 +221,9 @@ namespace CcdPhysicsDemo
 		            float zPos = (i-numWalls/2) * wallDistance;
 		            CreateStack(collisionShapes[shapeIndex[1]],CubeHalfExtents,wallHeight,zPos);
 	            }
-                // CreateStack(m_collisionShapes[shapeIndex[1]],halfExtends,20,10);
+                // CreateStack(collisionShapes[shapeIndex[1]],halfExtends,20,10);
 
-                // CreateStack(m_collisionShapes[shapeIndex[1]],halfExtends,20,20);
+                // CreateStack(collisionShapes[shapeIndex[1]],halfExtends,20,20);
 
 
                 // Destroyer ball

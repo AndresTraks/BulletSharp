@@ -45,7 +45,8 @@ namespace ConstraintDemo
             CollisionShape groundShape = new BoxShape(50, 40, 50);
             //CollisionShape groundShape = new StaticPlaneShape(Vector3.UnitY, 40);
             collisionShapes.PushBack(groundShape);
-            LocalCreateRigidBody(0, Matrix.Translation(0, -56, 0), groundShape);
+            RigidBody body = LocalCreateRigidBody(0, Matrix.Translation(0, -56, 0), groundShape);
+            body.UserObject = "Ground";
 
             CollisionShape shape = new BoxShape(new Vector3(CubeHalfExtents));
             collisionShapes.PushBack(shape);

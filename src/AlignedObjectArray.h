@@ -4,6 +4,8 @@
 #include "SoftBody.h"
 #include "IDisposable.h"
 
+using namespace System::Collections;
+
 namespace BulletSharp
 {
 	ref class BroadphasePair;
@@ -112,13 +114,15 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class CollisionObjectArray : AlignedObjectArray
+	public ref class CollisionObjectArray : AlignedObjectArray, IEnumerable
 	{
 	internal:
 		CollisionObjectArray(btCollisionObjectArray* collisionObjectArray);
 
 	public:
 		CollisionObjectArray();
+
+		virtual IEnumerator^ GetEnumerator();
 
 		void Clear();
 		void PopBack();
@@ -147,6 +151,24 @@ namespace BulletSharp
 		{
 			virtual btCollisionObjectArray* get() new;
 		}
+	};
+
+	public ref class CollisionObjectEnumerator : IEnumerator
+	{
+	private:
+		CollisionObjectArray^ _objArray;
+		int i;
+
+	public:
+		CollisionObjectEnumerator(CollisionObjectArray^ objArray);
+
+		property Object^ Current
+		{
+			virtual Object^ get();
+		}
+
+		virtual bool MoveNext();
+		virtual void Reset();
 	};
 
 	public ref class DbvtNodeArray : AlignedObjectArray

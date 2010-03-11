@@ -22,7 +22,7 @@ namespace BasicDemo
         Input input;
         FreeLook freelook;
         FpsDisplay fps;
-        Mesh box, groundBox;
+        Mesh box, largeBox, groundBox, cylinder, sphere;
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
         
@@ -41,6 +41,9 @@ namespace BasicDemo
             {
                 input.Dispose();
                 box.Dispose();
+                largeBox.Dispose();
+                cylinder.Dispose();
+                sphere.Dispose();
                 groundBox.Dispose();
                 fps.Dispose();
             }
@@ -73,7 +76,10 @@ namespace BasicDemo
             physics = new Physics();
 
             box = Mesh.CreateBox(Device, physics.Scaling * 2, physics.Scaling * 2, physics.Scaling * 2);
+            largeBox = Mesh.CreateBox(Device, physics.Scaling * 8, physics.Scaling * 2, physics.Scaling * 6);
             groundBox = Mesh.CreateBox(Device, 100, 100, 100);
+            cylinder = Mesh.CreateCylinder(Device, 1, 1, 4, 8, 1);
+            sphere = Mesh.CreateSphere(Device, 1.5f, 12, 12);
 
             light = new Light();
             light.Type = LightType.Point;
@@ -158,17 +164,12 @@ namespace BasicDemo
 
             Device.SetTransform(TransformState.View, freelook.View);
 
-            Device.Material = groundMaterial;
-            Device.SetTransform(TransformState.World, Matrix.Translation(-Vector3.UnitY * 50));
-            groundBox.DrawSubset(0);
-
-            int i;
-            for (i = 0; i < physics.world.NumCollisionObjects; i++)
+            foreach (CollisionObject colObj in physics.world.CollisionObjectArray)
             {
-                Matrix trans;
-                MotionState ms = null;
-                
-                CollisionObject colObj = physics.world.CollisionObjectArray[i];
+                if (colObj.ActivationState == ActivationState.ActiveTag)
+                    Device.Material = activeMaterial;
+                else
+                    Device.Material = passiveMaterial;
 
                 if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
                 {
@@ -200,17 +201,35 @@ namespace BasicDemo
                     mesh.DrawSubset(0);
                     mesh.Dispose();
                 }
-                else
+                else if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.BoxShape)
                 {
                     RigidBody body = RigidBody.Upcast(colObj);
                     Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
 
-                    if (colObj.ActivationState == ActivationState.ActiveTag)
-                        Device.Material = activeMaterial;
+                    if ((string)body.UserObject == "Ground")
+                    {
+                        Device.Material = groundMaterial;
+                        groundBox.DrawSubset(0);
+                    }
                     else
-                        Device.Material = passiveMaterial;
-
-                    box.DrawSubset(0);
+                    {
+                        if ((string)body.UserObject == "LargeBox")
+                            largeBox.DrawSubset(0);
+                        else
+                            box.DrawSubset(0);
+                    }
+                }
+                else if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SphereShape)
+                {
+                    RigidBody body = RigidBody.Upcast(colObj);
+                    Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
+                    sphere.DrawSubset(0);
+                }
+                else if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.CompoundShape)
+                {
+                    RigidBody body = RigidBody.Upcast(colObj);
+                    Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
+                    cylinder.DrawSubset(0);
                 }
             }
 
@@ -227,24 +246,6 @@ namespace BasicDemo
 
             Device.EndScene();
             Device.Present();
-        }
-
-        class PhysicsDebugDraw : DebugDraw
-        {
-            SlimDX.Direct3D9.Device device;
-
-            public PhysicsDebugDraw(SlimDX.Direct3D9.Device device)
-            {
-                this.device = device;
-            }
-
-            public override void DrawLine(Vector3 from, Vector3 to, Color4 color)
-            {
-                PositionColored[] vertices = new PositionColored[2];
-                vertices[0] = new PositionColored(from, color.ToArgb());
-                vertices[1] = new PositionColored(to, color.ToArgb());
-                device.DrawUserPrimitives(PrimitiveType.LineList, 1, vertices);
-            }
         }
     }
 }

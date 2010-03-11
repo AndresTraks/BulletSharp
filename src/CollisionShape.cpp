@@ -3,6 +3,9 @@
 #include "CollisionShape.h"
 #include "StringConv.h"
 
+#define __GCHANDLE_TO_VOIDPTR(x) ((GCHandle::operator System::IntPtr(x)).ToPointer())
+#define __VOIDPTR_TO_GCHANDLE(x) (GCHandle::operator GCHandle(System::IntPtr(x)))
+
 CollisionShape::CollisionShape(btCollisionShape* collisionShape)
 {
 	_collisionShape = collisionShape;
@@ -161,14 +164,22 @@ BroadphaseNativeType CollisionShape::ShapeType::get()
 	return (BroadphaseNativeType)_collisionShape->getShapeType();
 }
 
-IntPtr CollisionShape::UserPointer::get()
+Object^ CollisionShape::UserObject::get()
 {
-	return IntPtr(_collisionShape->getUserPointer());
+	void* obj = _collisionShape->getUserPointer();
+	if (obj == nullptr)
+		return nullptr;
+	return static_cast<Object^>(__VOIDPTR_TO_GCHANDLE(obj).Target);
 }
 
-void CollisionShape::UserPointer::set(IntPtr userPtr)
+void CollisionShape::UserObject::set(Object^ value)
 {
-	_collisionShape->setUserPointer(userPtr.ToPointer());
+	void* obj = _collisionShape->getUserPointer();
+	if (obj != nullptr)
+		__VOIDPTR_TO_GCHANDLE(obj).Free();
+
+	GCHandle handle = GCHandle::Alloc(value);
+	_collisionShape->setUserPointer(__GCHANDLE_TO_VOIDPTR(handle));
 }
 
 btCollisionShape* CollisionShape::UnmanagedPointer::get()

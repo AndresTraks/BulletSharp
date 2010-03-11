@@ -174,6 +174,11 @@ CollisionObjectArray::CollisionObjectArray(btCollisionObjectArray* objectArray)
 {
 }
 
+IEnumerator^ CollisionObjectArray::GetEnumerator()
+{
+	return gcnew CollisionObjectEnumerator(this);
+}
+
 CollisionObjectArray::CollisionObjectArray()
 : AlignedObjectArray(new btCollisionObjectArray())
 {
@@ -230,6 +235,30 @@ btCollisionObjectArray* CollisionObjectArray::UnmanagedPointer::get()
 {
 	return (btCollisionObjectArray*)AlignedObjectArray::UnmanagedPointer;
 }
+
+
+CollisionObjectEnumerator::CollisionObjectEnumerator(CollisionObjectArray^ objArray)
+{
+	_objArray = objArray;
+	i=-1;
+}
+
+Object^ CollisionObjectEnumerator::Current::get()
+{
+	return gcnew CollisionObject((*_objArray->UnmanagedPointer)[i]);
+}
+
+bool CollisionObjectEnumerator::MoveNext()
+{
+	i++;
+	return (i < _objArray->UnmanagedPointer->size());
+}
+
+void CollisionObjectEnumerator::Reset()
+{
+	i=-1;
+}
+
 
 
 DbvtNodeArray::DbvtNodeArray(btAlignedObjectArray<const btDbvtNode*>* nodeArray)

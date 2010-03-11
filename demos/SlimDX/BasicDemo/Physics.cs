@@ -14,7 +14,6 @@ namespace BasicDemo
         int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
 
         ///scaling of the objects (0.1 = 20 centimeter boxes )
-        public float Scaling = 1;
         float StartPosX = -5;
         float StartPosY = -5;
         float StartPosZ = -3;
@@ -44,12 +43,13 @@ namespace BasicDemo
             // create a few basic rigid bodies
             CollisionShape groundShape = new BoxShape(50, 50, 50);
             collisionShapes.PushBack(groundShape);
-            LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
+            CollisionObject ground = LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
+            ground.UserObject = (string)"Ground";
 
             // create a few dynamic rigidbodies
             float mass = 1.0f;
 
-            CollisionShape colShape = new BoxShape(Scaling, Scaling, Scaling);
+            CollisionShape colShape = new BoxShape(1);
             collisionShapes.PushBack(colShape);
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
@@ -65,7 +65,7 @@ namespace BasicDemo
                     for (j = 0; j < ArraySizeZ; j++)
                     {
                         Matrix startTransform = Matrix.Translation(
-                            Scaling * new Vector3(
+                            new Vector3(
                                 2 * i + start_x,
                                 20 + 2 * k + start_y,
                                 2 * j + start_z

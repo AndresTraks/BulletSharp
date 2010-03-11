@@ -79,7 +79,7 @@ namespace CcdPhysicsDemo
             box = Mesh.CreateBox(Device, physics.Scaling, physics.Scaling, physics.Scaling);
             cylinder = Mesh.CreateCylinder(Device, physics.Scaling / 2, physics.Scaling /2, physics.Scaling, 16, 1);
             sphere = Mesh.CreateSphere(Device, 1.8f, 16, 16);
-            groundBox = Mesh.CreateBox(Device, 400, 100, 400);
+            groundBox = Mesh.CreateBox(Device, 400, 1, 400);
 
             light = new Light();
             light.Type = LightType.Point;
@@ -164,46 +164,39 @@ namespace CcdPhysicsDemo
 
             Device.SetTransform(TransformState.View, freelook.View);
 
-            int i;
-            for (i = 0; i < physics.world.NumCollisionObjects; i++)
+            foreach (CollisionObject colObj in physics.world.CollisionObjectArray)
             {
-                if (i == 0)
-                {
-                    Device.Material = groundMaterial;
-                    Device.SetTransform(TransformState.World, Matrix.Translation(-Vector3.UnitY * 60));
-                    groundBox.DrawSubset(0);
-                    continue;
-                }
-
-                Matrix trans = Matrix.RotationX((float)Math.PI / 2);
-                MotionState ms = null;
-                
-                CollisionObject colObj = physics.world.CollisionObjectArray[i];
                 RigidBody body = RigidBody.Upcast(colObj);
-
-                if (body != null)
+                if ((string)body.UserObject == "Ground")
                 {
-                    ms = body.MotionState;
+                    Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
+                    Device.Material = groundMaterial;
+                    groundBox.DrawSubset(0);
                 }
-
-                if (body != null && ms != null)
-                    trans *= ms.WorldTransform;
                 else
-                    trans *= colObj.WorldTransform;
+                {
+                    Matrix trans = Matrix.RotationX((float)Math.PI / 2);
+                    trans *= body.MotionState.WorldTransform;
+                    Device.SetTransform(TransformState.World, trans);
 
-                Device.SetTransform(TransformState.World, trans);
+                    if (colObj.ActivationState == ActivationState.ActiveTag)
+                        Device.Material = activeMaterial;
+                    else
+                        Device.Material = passiveMaterial;
 
-                if (colObj.ActivationState == ActivationState.ActiveTag)
-                    Device.Material = activeMaterial;
-                else
-                    Device.Material = passiveMaterial;
-
-                if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.CylinderShape)
-                    cylinder.DrawSubset(0);
-                else if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.BoxShape)
-                    box.DrawSubset(0);
-                else if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SphereShape)
-                    sphere.DrawSubset(0);
+                    switch (colObj.CollisionShape.ShapeType)
+                    {
+                        case BroadphaseNativeType.CylinderShape:
+                            cylinder.DrawSubset(0);
+                            break;
+                        case BroadphaseNativeType.Box2dShape:
+                            box.DrawSubset(0);
+                            break;
+                        case BroadphaseNativeType.SphereShape:
+                            sphere.DrawSubset(0);
+                            break;
+                    }
+                }
             }
 
             if (DrawDebugLines)
@@ -219,24 +212,6 @@ namespace CcdPhysicsDemo
 
             Device.EndScene();
             Device.Present();
-        }
-
-        class PhysicsDebugDraw : DebugDraw
-        {
-            SlimDX.Direct3D9.Device device;
-
-            public PhysicsDebugDraw(SlimDX.Direct3D9.Device device)
-            {
-                this.device = device;
-            }
-
-            public override void DrawLine(Vector3 from, Vector3 to, Color4 color)
-            {
-                PositionColored[] vertices = new PositionColored[2];
-                vertices[0] = new PositionColored(from, color.ToArgb());
-                vertices[1] = new PositionColored(to, color.ToArgb());
-                device.DrawUserPrimitives(PrimitiveType.LineList, 1, vertices);
-            }
         }
     }
 }

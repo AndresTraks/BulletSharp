@@ -157,10 +157,11 @@ namespace BulletSharp
 			BulletSharp::CollisionShape^ get();
 		}
 
-		property IntPtr UserPointer
+		// UserPointer implemented as UserObject
+		property Object^ UserObject
 		{
-			IntPtr get();
-			void set(IntPtr value);
+			Object^ get();
+			void set(Object^ value);
 		}
 
 		property Matrix WorldTransform

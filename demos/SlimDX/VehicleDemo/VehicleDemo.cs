@@ -250,23 +250,5 @@ namespace VehicleDemo
             Device.EndScene();
             Device.Present();
         }
-
-        class PhysicsDebugDraw : DebugDraw
-        {
-            SlimDX.Direct3D9.Device device;
-
-            public PhysicsDebugDraw(SlimDX.Direct3D9.Device device)
-            {
-                this.device = device;
-            }
-
-            public override void DrawLine(Vector3 from, Vector3 to, Color4 color)
-            {
-                PositionColored[] vertices = new PositionColored[2];
-                vertices[0] = new PositionColored(from, color.ToArgb());
-                vertices[1] = new PositionColored(to, color.ToArgb());
-                device.DrawUserPrimitives(PrimitiveType.LineList, 1, vertices);
-            }
-        }
     }
 }
