@@ -5,7 +5,6 @@ using SlimDX.Direct3D9;
 using SlimDX.DirectInput;
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace BasicDemo
 {
@@ -15,19 +14,12 @@ namespace BasicDemo
         Color ambient = Color.Gray;
         Vector3 eye = new Vector3(70, 20, 40);
         Vector3 target = new Vector3(0, 0, 10);
-        bool DrawDebugLines = false;
-        float FieldOfView = (float)Math.PI / 4;
 
-        Matrix Projection;
-        Input input;
-        FreeLook freelook;
-        FpsDisplay fps;
         Mesh box, largeBox, groundBox, cylinder, sphere;
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
         
         Physics physics;
-        PhysicsDebugDraw debugDraw;
 
         public SlimDX.Direct3D9.Device Device
         {
@@ -39,13 +31,11 @@ namespace BasicDemo
             base.Dispose(disposing);
             if (disposing)
             {
-                input.Dispose();
                 box.Dispose();
                 largeBox.Dispose();
                 cylinder.Dispose();
                 sphere.Dispose();
                 groundBox.Dispose();
-                fps.Dispose();
             }
         }
 
@@ -69,14 +59,13 @@ namespace BasicDemo
                 InitializeDevice(settings);
             }
 
-            input = new Input(Form);
-            freelook = new FreeLook();
-            freelook.SetEyeTarget(eye, target);
+            base.OnInitialize();
 
             physics = new Physics();
 
-            box = Mesh.CreateBox(Device, physics.Scaling * 2, physics.Scaling * 2, physics.Scaling * 2);
-            largeBox = Mesh.CreateBox(Device, physics.Scaling * 8, physics.Scaling * 2, physics.Scaling * 6);
+            float size = physics.Scaling * 2;
+            box = Mesh.CreateBox(Device, size, size, size);
+            largeBox = Mesh.CreateBox(Device, 4 * size, size, 3 * size);
             groundBox = Mesh.CreateBox(Device, 100, 100, 100);
             cylinder = Mesh.CreateCylinder(Device, 1, 1, 4, 8, 1);
             sphere = Mesh.CreateSphere(Device, 1.5f, 12, 12);
@@ -87,9 +76,6 @@ namespace BasicDemo
             light.Position = new Vector3(10, 25, 0);
             light.Falloff = 1.0f;
             light.Diffuse = Color.LemonChiffon;
-
-            //light.Type = LightType.Directional;
-            //light.Direction = new Vector3(-1, -1, -1);
 
             activeMaterial = new Material();
             activeMaterial.Diffuse = Color.Orange;
@@ -103,57 +89,39 @@ namespace BasicDemo
             groundMaterial.Diffuse = Color.Green;
             groundMaterial.Ambient = ambient;
 
-            fps = new FpsDisplay(Device);
-            fps.Text = "Move using mouse and WASD\r\n" +
+            Fps.Text = "Move using mouse and WASD+shift\n" +
+                "F3 - Toggle debug\n" +
                 "F11 - Toggle fullscreen";
 
-            debugDraw = new PhysicsDebugDraw(Device);
-            physics.world.DebugDrawer = debugDraw;
-            debugDraw.SetDebugMode(DebugDrawModes.DrawWireframe);
+            Freelook.SetEyeTarget(eye, target);
         }
 
         protected override void OnResourceLoad()
         {
-            input.OnResetDevice();
+            base.OnResourceLoad();
 
             Device.SetLight(0, light);
             Device.EnableLight(0, true);
-            Device.SetRenderState(RenderState.Ambient, new Color4(0.5f, 0.5f, 0.5f).ToArgb());
+            Device.SetRenderState(RenderState.Ambient, ambient.ToArgb());
 
             Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 150.0f);
 
             Device.SetTransform(TransformState.Projection, Projection);
-
-            fps.OnResourceLoad();
-        }
-
-        protected override void OnResourceUnload()
-        {
-            fps.OnResourceUnload();
         }
 
         protected override void OnUpdate()
         {
-             input.GetCurrentState();
+            base.OnUpdate();
 
-            // Handle mouse events
-            if (input.MousePoint != Point.Empty)
+            if (Input.KeyboardDown.Contains(Key.F3))
             {
-                freelook.Update(FrameDelta, input);
-                MouseUpdate(input, freelook.Eye, freelook.Target, FieldOfView, physics.world);
+                if (physics.IsDebugDrawEnabled == false)
+                    physics.SetDebugDraw(Device, DebugDrawModes.DrawWireframe);
+                else
+                    physics.SetDebugDraw(Device, 0);
             }
 
-            // Handle keyboard events
-            if (input.KeyboardState != null)
-            {
-                // Exit
-                if (input.KeyboardState.IsPressed(Key.Escape))
-                    Quit();
-
-                if (input.KeyboardDown.Contains(Key.F11))
-                    ToggleFullScreen();
-            }
-
+            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics.World);
             physics.Update(FrameDelta);
         }
 
@@ -162,9 +130,9 @@ namespace BasicDemo
             Device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.LightGray, 1.0f, 0);
             Device.BeginScene();
 
-            Device.SetTransform(TransformState.View, freelook.View);
+            Device.SetTransform(TransformState.View, Freelook.View);
 
-            foreach (CollisionObject colObj in physics.world.CollisionObjectArray)
+            foreach (CollisionObject colObj in physics.World.CollisionObjectArray)
             {
                 if (colObj.ActivationState == ActivationState.ActiveTag)
                     Device.Material = activeMaterial;
@@ -175,7 +143,8 @@ namespace BasicDemo
                 {
                     SoftBody softBody = SoftBody.Upcast(colObj);
 
-                    Mesh mesh = new Mesh(Device, softBody.Faces.Size, softBody.Faces.Size * 3, MeshFlags.SystemMemory | MeshFlags.Use32Bit, VertexFormat.Position);
+                    Mesh mesh = new Mesh(Device, softBody.Faces.Size, softBody.Faces.Size * 3,
+                        MeshFlags.SystemMemory | MeshFlags.Use32Bit, VertexFormat.Position);
                     SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.None);
                     SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.None);
 
@@ -233,16 +202,9 @@ namespace BasicDemo
                 }
             }
 
-            if (DrawDebugLines)
-            {
-                Device.SetRenderState(RenderState.Lighting, false);
-                Device.SetTransform(TransformState.World, Matrix.Identity);
-                Device.VertexFormat = PositionColored.FVF;
-                physics.world.DebugDrawWorld();
-                Device.SetRenderState(RenderState.Lighting, true);
-            }
+            physics.DebugDrawWorld();
 
-            fps.OnRender(FramesPerSecond);
+            Fps.OnRender(FramesPerSecond);
 
             Device.EndScene();
             Device.Present();

@@ -1,14 +1,11 @@
 ﻿using BulletSharp;
 using DemoFramework;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 using SlimDX;
-using SlimDX.Direct3D9;
+using System;
 
 namespace BasicDemo
 {
-    class Physics
+    class Physics : PhysicsContext
     {
         int numObjects = 1;
         public float Scaling = 1;
@@ -17,15 +14,15 @@ namespace BasicDemo
         float CubeHalfExtents = 1.5f;
         float extraHeight = -10.0f;
 
-        CollisionDispatcher dispatcher;
-        BroadphaseInterface broadphase;
-        ConstraintSolver solver;
-        CollisionShapeArray collisionShapes = new CollisionShapeArray();
-        public SoftRigidDynamicsWorld world;
         SoftBodyWorldInfo softBodyWorldInfo;
 
         bool cutting;
         const int maxProxies = 32766;
+
+        SoftRigidDynamicsWorld SoftWorld
+        {
+            get { return (SoftRigidDynamicsWorld)World; }
+        }
 
         static Vector3 GetRandomVector(Random random)
         {
@@ -67,7 +64,7 @@ namespace BasicDemo
 	        SoftBody psb = SoftBodyHelpers.CreateFromConvexHull(softBodyWorldInfo,c);
 	        psb.GenerateBendingConstraints(2);
             psb.Translate(p);
-            world.AddSoftBody(psb);
+            SoftWorld.AddSoftBody(psb);
 
 	        return(psb);
         }
@@ -82,7 +79,7 @@ namespace BasicDemo
             SoftBody psb = SoftBodyHelpers.CreateFromConvexHull(softBodyWorldInfo, pts);
 	        psb.GenerateBendingConstraints(2);
             psb.Translate(p);
-	        world.AddSoftBody(psb);
+            SoftWorld.AddSoftBody(psb);
 
 	        return(psb);
         }
@@ -120,7 +117,7 @@ namespace BasicDemo
                 psb.Cfg.PIterations = 4;
 		        //psb->m_materials[0]->m_kLST	=	0.1+(i/(btScalar)(n-1))*0.9;
 		        psb.TotalMass = 20;
-                world.AddSoftBody(psb);
+                SoftWorld.AddSoftBody(psb);
 	        }
         }
 
@@ -128,7 +125,7 @@ namespace BasicDemo
         {
             SoftBody psb = SoftBodyHelpers.CreateRope(softBodyWorldInfo,p,p+new Vector3(10,0,0),8,1);
 	        psb.TotalMass = 50;
-	        world.AddSoftBody(psb);
+            SoftWorld.AddSoftBody(psb);
 	        return(psb);
         }
 
@@ -151,7 +148,7 @@ namespace BasicDemo
 		        new Vector3(+s,h,-s),
 		        new Vector3(-s,h,+s),
 		        new Vector3(+s,h,+s),r,r,4+8,true);
-	        world.AddSoftBody(psb);
+            SoftWorld.AddSoftBody(psb);
 
 	        RigidBody body = LocalCreateRigidBody(20,Matrix.Translation(0,h,-(s+3.5f)),new BoxShape(s,1,3));
 	        psb.AppendAnchor(0,body);
@@ -202,7 +199,7 @@ namespace BasicDemo
                 psb.Transform(trans);
                 psb.TotalMass = 0.1f;
                 psb.AddForce(new Vector3(0,(float)random.NextDouble(),0),0);
-                world.AddSoftBody(psb);
+                SoftWorld.AddSoftBody(psb);
 	        }
         }
 
@@ -210,7 +207,7 @@ namespace BasicDemo
         {
             SoftBody psb = SoftBodyHelpers.CreateFromTetGenFile(softBodyWorldInfo,
 			    "data\\cube.ele", null, "data\\cube.node", false,true,true);
-	        world.AddSoftBody(psb);
+            SoftWorld.AddSoftBody(psb);
 	        psb.Scale(new Vector3(4,4,4));
 	        psb.Translate(0,5,0);
 	        psb.SetVolumeMass(300);
@@ -237,13 +234,13 @@ namespace BasicDemo
 
             // collision configuration contains default setup for memory, collision setup
             collisionConf = new SoftBodyRigidBodyCollisionConfiguration();
-            dispatcher = new CollisionDispatcher(collisionConf);
+            Dispatcher = new CollisionDispatcher(collisionConf);
 
-            broadphase = new AxisSweep3(new Vector3(-1000, -1000, -1000),
+            Broadphase = new AxisSweep3(new Vector3(-1000, -1000, -1000),
                 new Vector3(1000, 1000, 1000), maxProxies);
 
             // the default constraint solver.
-            solver = new SequentialImpulseConstraintSolver();
+            Solver = new SequentialImpulseConstraintSolver();
 
             softBodyWorldInfo = new SoftBodyWorldInfo();
             softBodyWorldInfo.AirDensity = 1.2f;
@@ -251,21 +248,21 @@ namespace BasicDemo
             softBodyWorldInfo.WaterOffset = 0;
             softBodyWorldInfo.WaterNormal = Vector3.Zero;
             softBodyWorldInfo.Gravity = new Vector3(0, -10, 0);
-            softBodyWorldInfo.Dispatcher = dispatcher;
-            softBodyWorldInfo.Broadphase = broadphase;
+            softBodyWorldInfo.Dispatcher = Dispatcher;
+            softBodyWorldInfo.Broadphase = Broadphase;
             softBodyWorldInfo.SparseSdf.Initialize();
 
-            world = new SoftRigidDynamicsWorld(dispatcher, broadphase, solver, collisionConf);
-            world.Gravity = new Vector3(0, -10, 0);
-            world.DispatchInfo.EnableSpu = true;
+            World = new SoftRigidDynamicsWorld(Dispatcher, Broadphase, Solver, collisionConf);
+            World.Gravity = new Vector3(0, -10, 0);
+            World.DispatchInfo.EnableSpu = true;
 
             CollisionShape groundShape = new BoxShape(50, 50, 50);
-            collisionShapes.PushBack(groundShape);
+            CollisionShapes.PushBack(groundShape);
             RigidBody body = LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
             body.UserObject = "Ground";
 
             CollisionShape boxShape = new BoxShape(1, 1, 1);
-            collisionShapes.PushBack(boxShape);
+            CollisionShapes.PushBack(boxShape);
             LocalCreateRigidBody(1.0f, Matrix.Translation(0, 1, 0), boxShape);
 
             softBodyWorldInfo.SparseSdf.Reset();
@@ -274,33 +271,12 @@ namespace BasicDemo
             //Init_RbUpStack(5);
             //Init_LinearStair(8);
             Init_ClothAttach();
-
-            world.Broadphase.ResetPool(dispatcher);
-            solver.Reset();
         }
 
-        public void Update(float elapsedTime)
+        public override void Update(float elapsedTime)
         {
-            world.StepSimulation(elapsedTime);
+            base.Update(elapsedTime);
             softBodyWorldInfo.SparseSdf.GarbageCollect();
-        }
-
-        public RigidBody LocalCreateRigidBody(float mass, Matrix startTransform, CollisionShape shape)
-        {
-            bool isDynamic = (mass != 0.0f);
-
-            Vector3 localInertia = new Vector3(0, 0, 0);
-            if (isDynamic)
-                shape.CalculateLocalInertia(mass, out localInertia);
-
-            DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
-
-            RigidBody.RigidBodyConstructionInfo rbInfo = new RigidBody.RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
-            RigidBody body = new RigidBody(rbInfo);
-
-            world.AddRigidBody(body);
-
-            return body;
         }
     }
 }

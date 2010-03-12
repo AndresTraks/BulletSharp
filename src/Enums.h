@@ -55,6 +55,7 @@ namespace BulletSharp
 	[Flags]
 	public enum class CollisionFlags
 	{
+		None = 0,
 		StaticObject = btCollisionObject::CF_STATIC_OBJECT,
 		KinematicObject = btCollisionObject::CF_KINEMATIC_OBJECT,
 		NoContactResponse = btCollisionObject::CF_NO_CONTACT_RESPONSE,
@@ -75,6 +76,7 @@ namespace BulletSharp
 	[Flags]
 	public enum class CollisionFilterGroups
 	{
+		None = 0,
 		DefaultFilter = btBroadphaseProxy::DefaultFilter,
 		StaticFilter = btBroadphaseProxy::StaticFilter,
 		KinematicFilter = btBroadphaseProxy::KinematicFilter,
@@ -101,6 +103,7 @@ namespace BulletSharp
 	[Flags]
 	public enum class DebugDrawModes
 	{
+		None = 0,
 		NoDebug = btIDebugDraw::DBG_NoDebug,
 		DrawWireframe = btIDebugDraw::DBG_DrawWireframe,
 		DrawAabb = btIDebugDraw::DBG_DrawAabb,
@@ -145,6 +148,7 @@ namespace BulletSharp
 	[Flags]
 	public enum class SolverModes
 	{
+		None = 0,
 		RandomizeOrder = SOLVER_RANDMIZE_ORDER,
 		FrictionSeparate = SOLVER_FRICTION_SEPARATE,
 		UseWarmStarting = SOLVER_USE_WARMSTARTING,

@@ -1,6 +1,7 @@
 ﻿using BulletSharp;
 using SlimDX;
 using SlimDX.Direct3D9;
+using SlimDX.DirectInput;
 using SlimDX.Windows;
 using System;
 using System.Drawing;
@@ -22,15 +23,23 @@ namespace DemoFramework
             get { return (float)Form.ClientSize.Width / (float)Form.ClientSize.Height; }
         }
 
-        public Device Device9
+        public float FieldOfView;
+
+        public SlimDX.Direct3D9.Device Device9
         {
             get { return Context9.Device; }
         }
+
+        protected Matrix Projection;
+        protected FreeLook Freelook;
+        protected FpsDisplay Fps;
 
         /// <summary>
         /// Represents a Direct3D9 Context, only valid after calling InitializeDevice(DeviceSettings9)
         /// </summary>
         public DeviceContext9 Context9 { get; private set; }
+
+        public Input Input { get; private set; }
 
         /// <summary>
         /// Gets the number of seconds passed since the last frame.
@@ -47,8 +56,6 @@ namespace DemoFramework
         private System.IDisposable apiContext;
         private int tempWindowWidth, tempWindowHeight;
 
-        private bool ortho = false;
-        private float cameraDistance = 15.0f;
         private RigidBody pickedBody;
         private bool use6Dof = false;
         private TypedConstraint pickConstraint;
@@ -73,8 +80,10 @@ namespace DemoFramework
         {
             if (disposeManagedResources)
             {
+                Input.Dispose();
                 apiContext.Dispose();
                 Form.Dispose();
+                Fps.Dispose();
             }
         }
 
@@ -101,26 +110,35 @@ namespace DemoFramework
             OnUpdate();
         }
 
-        protected void MouseUpdate(Input input, Vector3 eye, Vector3 target, float fov, DynamicsWorld world)
+        protected void InputUpdate(Input input, Vector3 eye, Vector3 target, DynamicsWorld world)
         {
+            if (input == null)
+                return;
+
+            if (input.KeyboardDown.Count > 0)
+            {
+                if (input.KeyboardDown.Contains(Key.Escape))
+                {
+                    Quit();
+                    return;
+                }
+
+                if (input.KeyboardDown.Contains(Key.F11))
+                    ToggleFullScreen();
+            }
+
+            if (input.MousePoint.IsEmpty)
+                return;
+
             if (input.MouseDown == MouseButtons.Right || input.MouseUp == MouseButtons.Right)
             {
-                Vector3 rayTo = GetRayTo(input.MousePoint, eye, target, fov);
+                Vector3 rayTo = GetRayTo(input.MousePoint, eye, target, FieldOfView);
 
                 if (input.MouseDown == MouseButtons.Right)
                 {
                     if (world != null)
                     {
-                        Vector3 rayFrom;
-                        if (ortho)
-                        {
-                            rayFrom = rayTo;
-                            rayFrom.Z = -100;
-                        }
-                        else
-                        {
-                            rayFrom = eye;
-                        }
+                        Vector3 rayFrom = eye;
 
                         CollisionWorld.ClosestRayResultCallback rayCallback = new CollisionWorld.ClosestRayResultCallback(rayFrom, rayTo);
                         world.RayTest(rayFrom, rayTo, rayCallback);
@@ -206,35 +224,24 @@ namespace DemoFramework
             {
                 if (pickConstraint != null)
                 {
-                    Vector3 newRayTo = GetRayTo(input.MousePoint, eye, target, fov);
+                    Vector3 newRayTo = GetRayTo(input.MousePoint, eye, target, FieldOfView);
 
                     if (pickConstraint.ConstraintType == TypedConstraintType.D6)
                     {
                         Generic6DofConstraint pickCon = (Generic6DofConstraint)pickConstraint;
 
                         //keep it at the same picking distance
-                        Vector3 rayFrom;
+                        Vector3 rayFrom = eye;
                         Vector3 scale;
                         Quaternion rotation;
                         Vector3 oldPivotInB;
                         pickCon.FrameOffsetA.Decompose(out scale, out rotation, out oldPivotInB);
 
-                        Vector3 newPivotB;
-                        if (ortho)
-                        {
-                            newPivotB = oldPivotInB;
-                            newPivotB.X = newRayTo.X;
-                            newPivotB.Y = newRayTo.Y;
-                        }
-                        else
-                        {
-                            rayFrom = eye;
-                            Vector3 dir = newRayTo - rayFrom;
-                            dir.Normalize();
-                            dir *= oldPickingDist;
+                        Vector3 dir = newRayTo - rayFrom;
+                        dir.Normalize();
+                        dir *= oldPickingDist;
+                        Vector3 newPivotB = rayFrom + dir;
 
-                            newPivotB = rayFrom + dir;
-                        }
                         Matrix tempFrameOffsetA = pickCon.FrameOffsetA;
                         Vector4 transRow = tempFrameOffsetA.get_Rows(3);
                         transRow.X = newPivotB.X;
@@ -248,24 +255,14 @@ namespace DemoFramework
                         Point2PointConstraint pickCon = (Point2PointConstraint)pickConstraint;
 
                         //keep it at the same picking distance
-                        Vector3 rayFrom;
+                        Vector3 rayFrom = eye;
                         Vector3 oldPivotInB = pickCon.PivotInB;
-                        Vector3 newPivotB;
-                        if (ortho)
-                        {
-                            newPivotB = oldPivotInB;
-                            newPivotB.X = newRayTo.X;
-                            newPivotB.Y = newRayTo.Y;
-                        }
-                        else
-                        {
-                            rayFrom = eye;
-                            Vector3 dir = newRayTo - rayFrom;
-                            dir.Normalize();
-                            dir *= oldPickingDist;
 
-                            newPivotB = rayFrom + dir;
-                        }
+                        Vector3 dir = newRayTo - rayFrom;
+                        dir.Normalize();
+                        dir *= oldPickingDist;
+                        Vector3 newPivotB = rayFrom + dir;
+
                         pickCon.PivotInB = newPivotB;
                     }
                 }
@@ -275,29 +272,6 @@ namespace DemoFramework
         Vector3	GetRayTo(Point point, Vector3 eye, Vector3 target, float fov)
         {
             float aspect;
-
-            if (ortho)
-            {
-	            Vector3 extents;
-                if (Form.ClientSize.Width > Form.ClientSize.Height) 
-	            {
-		            extents = new Vector3(AspectRatio, 1, 0);
-	            } else 
-	            {
-                    aspect = (float)Form.ClientSize.Height / (float)Form.ClientSize.Width;
-		            extents = new Vector3(1, aspect, 0);
-	            }
-            	
-	            extents *= cameraDistance;
-	            Vector3 lower = target - extents;
-	            Vector3 upper = target + extents;
-
-                float u = (float)point.X / (float)Form.ClientSize.Width;
-                float v = (Form.ClientSize.Height - point.Y) / (float)Form.ClientSize.Width;
-            	
-	            Vector3 p = new Vector3((1.0f - u) * lower.X + u * upper.X, (1.0f - v) * lower.Y + v * upper.Y, target.Z);
-	            return p;
-            }
 
             Vector3 rayFrom = eye;
             Vector3 rayForward = target - eye;
@@ -435,18 +409,33 @@ namespace DemoFramework
         }
 
         /// <summary>
-        /// In a derived class, implements logic to initialize the sample.
+        /// Implements logic to initialize the sample.
         /// </summary>
-        protected virtual void OnInitialize() { }
+        protected virtual void OnInitialize()
+        {
+            FieldOfView = (float)Math.PI / 4;
+            Input = new Input(Form);
+            Freelook = new FreeLook();
+            Fps = new FpsDisplay(Device9);
+        }
 
-        protected virtual void OnResourceLoad() { }
+        protected virtual void OnResourceLoad()
+        {
+            Fps.OnResourceLoad();
+            Input.OnResetDevice();
+        }
 
         protected virtual void OnResourceUnload() { }
 
         /// <summary>
-        /// In a derived class, implements logic to update any relevant sample state.
+        /// Implements logic to update any relevant sample state.
         /// </summary>
-        protected virtual void OnUpdate() { }
+        protected virtual void OnUpdate()
+        {
+            Freelook.Update(FrameDelta, Input);
+            Fps.OnResourceUnload();
+            Input.GetCurrentState();
+        }
 
         /// <summary>
         /// In a derived class, implements logic to render the sample.
@@ -520,24 +509,6 @@ namespace DemoFramework
                 Device9.Reset(Context9.PresentParameters);
                 OnResourceLoad();
             }
-        }
-    }
-
-    public class PhysicsDebugDraw : DebugDraw
-    {
-        SlimDX.Direct3D9.Device device;
-
-        public PhysicsDebugDraw(SlimDX.Direct3D9.Device device)
-        {
-            this.device = device;
-        }
-
-        public override void DrawLine(Vector3 from, Vector3 to, Color4 color)
-        {
-            PositionColored[] vertices = new PositionColored[2];
-            vertices[0] = new PositionColored(from, color.ToArgb());
-            vertices[1] = new PositionColored(to, color.ToArgb());
-            device.DrawUserPrimitives(PrimitiveType.LineList, 1, vertices);
         }
     }
 }

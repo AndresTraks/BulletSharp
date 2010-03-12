@@ -1,14 +1,10 @@
 ﻿using BulletSharp;
 using DemoFramework;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 using SlimDX;
-using SlimDX.Direct3D9;
 
 namespace CcdPhysicsDemo
 {
-    class Physics
+    class Physics : PhysicsContext
     {
         // Enable just one, DoBenchmarkPyramids or DoWall
         public bool DoBenchmarkPyramids = false;
@@ -16,27 +12,18 @@ namespace CcdPhysicsDemo
 
         // Note: some of those settings need 'DoWall' demo
         bool UseKinematicGround = false;
-        bool UseCustomNearCallback = false;
         bool CenterOfMassShift = false;
         bool useCompound;
 
-        public float Scaling = 1;
-        float CubeHalfExtents = 0.5f;
+        public float CubeHalfExtents = 0.5f;
         float numObjects = 120;
         Vector3 comOffsetVec = new Vector3(0,2,0);
         float collisionMargin = 0.05f;
-        float ExtraHeight = -10;
 
         const int maxNumObjects = 32760;
         int[] shapeIndex = new int[maxNumObjects];
 
-        CollisionDispatcher dispatcher;
-        BroadphaseInterface broadphase;
-        ConstraintSolver solver;
-        CollisionShapeArray collisionShapes = new CollisionShapeArray();
-        public DynamicsWorld world;
-
-        void CreateStack(CollisionShape boxShape, float halfCubeSize, int size, float zPos)
+        void CreateStack(CollisionShape boxShape, int size, float zPos)
         {
 	        Matrix trans;
             float mass = 1.0f;
@@ -48,46 +35,12 @@ namespace CcdPhysicsDemo
 		        for(int j=0; j< rowSize; j++)
 		        {
 			        trans = Matrix.Translation(
-				        -rowSize * halfCubeSize + halfCubeSize + j * 2.0f * halfCubeSize,
-				        halfCubeSize + i * halfCubeSize * 2.0f,
+                        -rowSize * CubeHalfExtents + CubeHalfExtents + j * 2.0f * CubeHalfExtents,
+                        CubeHalfExtents + i * CubeHalfExtents * 2.0f,
 				        zPos);
 
 			        RigidBody body = LocalCreateRigidBody(mass,trans,boxShape);
-		        }
-	        }
-        }
-
-        //by default, Bullet will use its own nearcallback, but you can override it using dispatcher->setNearCallback()
-        void CustomNearCallback(BroadphasePair collisionPair, CollisionDispatcher dispatcher, DispatcherInfo dispatchInfo)
-        {
-	        CollisionObject colObj0 = new CollisionObject(collisionPair.Proxy0.ClientObject);
-            CollisionObject colObj1 = new CollisionObject(collisionPair.Proxy1.ClientObject);
-
-	        if (dispatcher.NeedsCollision(colObj0, colObj1))
-	        {
-		        //dispatcher will keep algorithms persistent in the collision pair
-		        if (collisionPair.Algorithm == null)
-		        {
-			        collisionPair.Algorithm = dispatcher.FindAlgorithm(colObj0, colObj1);
-		        }
-
-		        if (collisionPair.Algorithm != null)
-		        {
-			        ManifoldResult contactPointResult = new ManifoldResult(colObj0, colObj1);
-
-			        if (dispatchInfo.DispatchFunction == DispatcherInfo.DispatchFunc.Discrete)
-			        {
-				        //discrete collision detection query
-				        collisionPair.Algorithm.ProcessCollision(colObj0, colObj1, dispatchInfo, contactPointResult);
-			        }
-                    else
-			        {
-				        //continuous collision detection query, time of impact (toi)
-				        float toi = collisionPair.Algorithm.CalculateTimeOfImpact(colObj0, colObj1, dispatchInfo, contactPointResult);
-				        if (dispatchInfo.TimeOfImpact > toi)
-					        dispatchInfo.TimeOfImpact = toi;
-
-			        }
+                    body.ActivationState = ActivationState.IslandSleeping;
 		        }
 	        }
         }
@@ -98,43 +51,40 @@ namespace CcdPhysicsDemo
 
             useCompound = CenterOfMassShift;
 
-            collisionShapes.PushBack(new BoxShape(200, CubeHalfExtents, 200));
+            CollisionShapes.PushBack(new BoxShape(200, 1, 200));
 
             if (DoBenchmarkPyramids)
             {
-                collisionShapes.PushBack(new BoxShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents));
+                CollisionShapes.PushBack(new BoxShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents));
             }
             else
             {
-                //collisionShapes.PushBack(new BoxShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents));
-                collisionShapes.PushBack(new CylinderShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents));
+                //CollisionShapes.PushBack(new BoxShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents));
+                CollisionShapes.PushBack(new CylinderShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents));
             }
 
             CollisionConfiguration collisionConf;
 
             // collision configuration contains default setup for memory, collision setup
             collisionConf = new DefaultCollisionConfiguration();
-            dispatcher = new CollisionDispatcher(collisionConf);
+            Dispatcher = new CollisionDispatcher(collisionConf);
 
-            if (UseCustomNearCallback)
-                dispatcher.NearCallback = new NearCallback(CustomNearCallback);
-
-            broadphase = new DbvtBroadphase();
+            Broadphase = new DbvtBroadphase();
 
 
             // the default constraint solver.
-            solver = new SequentialImpulseConstraintSolver();
+            Solver = new SequentialImpulseConstraintSolver();
 
-            world = new DiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConf);
-            world.Gravity = new Vector3(0, -10, 0);
+            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, collisionConf);
+            World.Gravity = new Vector3(0, -10, 0);
 
             // RandomizeOrder makes cylinder stacking a bit more stable
-            world.SolverInfo.SolverMode |= SolverModes.RandomizeOrder;
+            World.SolverInfo.SolverMode |= SolverModes.RandomizeOrder;
 
             if (DoBenchmarkPyramids)
-                world.SolverInfo.NumIterations = 4;
+                World.SolverInfo.NumIterations = 4;
 
-            world.DispatchInfo.EnableSpu = true;
+            World.DispatchInfo.EnableSpu = true;
 
             shapeIndex[0] = 0;
             for (i = 1; i < numObjects; i++)
@@ -143,8 +93,8 @@ namespace CcdPhysicsDemo
             if (useCompound)
 	        {
 		        CompoundShape compoundShape = new CompoundShape();
-		        CollisionShape oldShape = collisionShapes[1];
-		        collisionShapes[1] = compoundShape;
+		        CollisionShape oldShape = CollisionShapes[1];
+		        CollisionShapes[1] = compoundShape;
 		        Vector3 sphereOffset = new Vector3(0,0,2);
 
                 if (CenterOfMassShift)
@@ -162,7 +112,7 @@ namespace CcdPhysicsDemo
             {
                 for (i = 0; i < numObjects; i++)
                 {
-                    CollisionShape shape = collisionShapes[shapeIndex[i]];
+                    CollisionShape shape = CollisionShapes[shapeIndex[i]];
                     shape.Margin = collisionMargin;
 
                     RigidBody body;
@@ -182,14 +132,13 @@ namespace CcdPhysicsDemo
                         }
 
                         trans = Matrix.Translation(col * 2 * CubeHalfExtents + (row2 % 2) * CubeHalfExtents,
-                            row * 2 * CubeHalfExtents + CubeHalfExtents + ExtraHeight, 0);
+                            row * 2 * CubeHalfExtents + CubeHalfExtents + 1, 0);
                         
                         body = LocalCreateRigidBody(1, trans, shape);
                     }
                     else
                     {
-                        trans = Matrix.Translation(0, ExtraHeight - CubeHalfExtents, 0);
-                        body = LocalCreateRigidBody(0, trans, shape);
+                        body = LocalCreateRigidBody(0, Matrix.Identity, shape);
                         body.UserObject = "Ground";
 
                         if (UseKinematicGround)
@@ -209,52 +158,26 @@ namespace CcdPhysicsDemo
 
             if (DoBenchmarkPyramids)
             {
-    	        LocalCreateRigidBody(0,Matrix.Translation(0,-CubeHalfExtents,0), collisionShapes[shapeIndex[0]]);
+    	        RigidBody ground = LocalCreateRigidBody(0, Matrix.Translation(new Vector3(0,-1,0)),
+                    CollisionShapes[shapeIndex[0]]);
+                ground.UserObject = "Ground";
 
 	            int numWalls = 15;
 	            int wallHeight = 15;
 	            float wallDistance = 3;
 
-
 	            for (i=0;i<numWalls;i++)
 	            {
 		            float zPos = (i-numWalls/2) * wallDistance;
-		            CreateStack(collisionShapes[shapeIndex[1]],CubeHalfExtents,wallHeight,zPos);
-	            }
-                // CreateStack(collisionShapes[shapeIndex[1]],halfExtends,20,10);
-
-                // CreateStack(collisionShapes[shapeIndex[1]],halfExtends,20,20);
-
+		            CreateStack(CollisionShapes[shapeIndex[1]], wallHeight, zPos);
+                }
 
                 // Destroyer ball
-	            SphereShape ball = new SphereShape(2);
-	            collisionShapes.PushBack(ball);
-	            RigidBody ballBody = LocalCreateRigidBody(10000,Matrix.Translation(0,2,40),ball);
+	            SphereShape ballShape = new SphereShape(2);
+	            CollisionShapes.PushBack(ballShape);
+	            RigidBody ballBody = LocalCreateRigidBody(10000, Matrix.Translation(0,2,40), ballShape);
 	            ballBody.LinearVelocity = new Vector3(0,0,-10);
             }
-        }
-
-        public void Update(float elapsedTime)
-        {
-            world.StepSimulation(elapsedTime);
-        }
-
-        public RigidBody LocalCreateRigidBody(float mass, Matrix startTransform, CollisionShape shape)
-        {
-            bool isDynamic = (mass != 0.0f);
-
-            Vector3 localInertia = new Vector3(0, 0, 0);
-            if (isDynamic)
-                shape.CalculateLocalInertia(mass, out localInertia);
-
-            DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
-
-            RigidBody.RigidBodyConstructionInfo rbInfo = new RigidBody.RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
-            RigidBody body = new RigidBody(rbInfo);
-
-            world.AddRigidBody(body);
-
-            return body;
         }
     }
 }

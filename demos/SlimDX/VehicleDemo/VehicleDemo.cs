@@ -5,7 +5,6 @@ using SlimDX.Direct3D9;
 using SlimDX.DirectInput;
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace VehicleDemo
 {
@@ -14,18 +13,12 @@ namespace VehicleDemo
         int Width = 1024, Height = 768;
         Color ambient = Color.Gray;
         Vector3 eye = new Vector3(5, 15, 5);
-        bool DrawDebugLines = true;
-        int ViewMode = 1, DrawMode = 1;
-        float FieldOfView = (float)Math.PI / 4;
+        Vector3 target = Vector3.Zero;
+        int ViewMode = 1;
 
-        Matrix Projection;
-        Input input;
-        FreeLook freelook;
-        FpsDisplay fps;
         Mesh wheel, chassis;
         Light light;
         Material wheelMaterial, bodyMaterial, groundMaterial;
-        PhysicsDebugDraw debugDraw;
         public Mesh ground;
 
         Physics physics;
@@ -38,11 +31,12 @@ namespace VehicleDemo
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-            input.Dispose();
-            wheel.Dispose();
-            chassis.Dispose();
-            ground.Dispose();
-            fps.Dispose();
+            if (disposing)
+            {
+                wheel.Dispose();
+                chassis.Dispose();
+                ground.Dispose();
+            }
         }
 
         protected override void OnInitialize()
@@ -65,9 +59,7 @@ namespace VehicleDemo
                 InitializeDevice(settings);
             }
 
-            input = new Input(Form);
-            freelook = new FreeLook();
-            freelook.SetEyeTarget(new Vector3(30, 10, 0), Vector3.Zero);
+            base.OnInitialize();
 
             physics = new Physics(this);
 
@@ -98,94 +90,64 @@ namespace VehicleDemo
             groundMaterial.Ambient = ambient;
             groundMaterial.Emissive = Color.Green;
 
-            fps = new FpsDisplay(Device);
-            fps.Text = "F2 - Toggle view mode: Tracking\r\n" +
-                "F3 - Toggle draw mode\r\n" +
+            Fps.Text = "F2 - Toggle view mode: Tracking\n" +
+                "F3 - Toggle debug\n" +
                 "F11 - Toggle fullscreen";
 
-            debugDraw = new PhysicsDebugDraw(Device);
-            physics.world.DebugDrawer = debugDraw;
-            debugDraw.SetDebugMode(DebugDrawModes.DrawWireframe);
+            Freelook.SetEyeTarget(new Vector3(30, 10, 0), target);
         }
 
         protected override void OnResourceLoad()
         {
-            input.OnResetDevice();
+            base.OnResourceLoad();
 
             Device.SetLight(0, light);
             Device.EnableLight(0, true);
-            Device.SetRenderState(RenderState.Ambient, new Color4(0.5f, 0.5f, 0.5f).ToArgb());
+            Device.SetRenderState(RenderState.Ambient, ambient.ToArgb());
 
             Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 400.0f);
 
             Device.SetTransform(TransformState.Projection, Projection);
-
-            fps.OnResourceLoad();
-        }
-
-        protected override void OnResourceUnload()
-        {
-            fps.OnResourceUnload();
         }
 
         protected override void OnUpdate()
         {
-            input.GetCurrentState();
+            base.OnUpdate();
 
-            // Handle mouse events
-            if (input.MousePoint != Point.Empty)
+            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics.World);
+
+            if (Input.KeyboardDown.Contains(Key.F2))
             {
-                freelook.Update(FrameDelta, input);
-            }
+                ViewMode++;
+                if (ViewMode > 3) ViewMode = 1;
 
-            // Handle keyboard events
-            if (input.KeyboardState != null)
-            {
-                // Exit
-                if (input.KeyboardState.IsPressed(Key.Escape))
-                    Quit();
-
-                if (input.KeyboardDown.Contains(Key.F11))
-                    ToggleFullScreen();
-
-                if (input.KeyboardDown.Contains(Key.F2))
+                string viewMode = "";
+                switch (ViewMode)
                 {
-                    ViewMode++;
-                    if (ViewMode > 3) ViewMode = 1;
-
-                    string viewMode = "";
-                    switch (ViewMode)
-                    {
-                        case 1:
-                            viewMode = "Tracking";
-                            break;
-                        case 2:
-                            viewMode = "Following";
-                            break;
-                        case 3:
-                            viewMode = "Freelook (WASD + mouse)";
-                            break;
-                    }
-                    fps.Text = "F2 - Toggle view mode: " + viewMode + "\r\n" +
-                    "F3 - Toggle draw mode\r\n" +
+                    case 1:
+                        viewMode = "Tracking";
+                        break;
+                    case 2:
+                        viewMode = "Following";
+                        break;
+                    case 3:
+                        viewMode = "Freelook (WASD + mouse)";
+                        break;
+                }
+                Fps.Text = "F2 - Toggle view mode: " + viewMode + "\n" +
+                    "F3 - Toggle debug\n" +
                     "F11 - Toggle fullscreen";
-                }
-
-                if (input.KeyboardDown.Contains(Key.F3))
-                {
-                    DrawMode++;
-                    if (DrawDebugLines)
-                    {
-                        if (DrawMode > 3) DrawMode = 1;
-                    }
-                    else
-                    {
-                        if (DrawMode > 2) DrawMode = 1;
-                    }
-                }
-
-                physics.HandleKeys(input, FrameDelta);
             }
+
+            if (Input.KeyboardDown.Contains(Key.F3))
+            {
+                if (physics.IsDebugDrawEnabled == false)
+                    physics.SetDebugDraw(Device, DebugDrawModes.DrawWireframe);
+                else
+                    physics.SetDebugDraw(Device, 0);
+            }
+
+            physics.HandleKeys(Input, FrameDelta);
 
             physics.Update(FrameDelta);
         }
@@ -198,6 +160,8 @@ namespace VehicleDemo
             Matrix trans = Matrix.Translation(new Vector3(0, 1, 0)) * physics.vehicle.ChassisWorldTransform;
             Vector4 pos = physics.vehicle.ChassisWorldTransform.get_Rows(3);
             Vector3 pos2 = new Vector3(pos.X, pos.Y, pos.Z);
+            
+            // Set View matrix based on view mode
             if (ViewMode == 1)
             {
                 Matrix view = Matrix.LookAtLH(new Vector3(30, 20, 30), pos2, Vector3.UnitY);
@@ -205,47 +169,38 @@ namespace VehicleDemo
             }
             else if (ViewMode == 2)
             {
-                freelook.SetEyeTarget(pos2 + new Vector3(30, 10, 0), pos2);
-                Device.SetTransform(TransformState.View, freelook.View);
+                Freelook.SetEyeTarget(pos2 + new Vector3(30, 10, 0), pos2);
+                Device.SetTransform(TransformState.View, Freelook.View);
             }
             else if (ViewMode == 3)
             {
-                Device.SetTransform(TransformState.View, freelook.View);
+                Device.SetTransform(TransformState.View, Freelook.View);
             }
 
-            if (DrawMode == 1 || DrawMode == 2)
-            {
-                Device.Material = groundMaterial;
-                Device.SetTransform(TransformState.World, Matrix.Translation(0, -4.5f, 0));
-                ground.DrawSubset(0);
+            Device.Material = groundMaterial;
+            Device.SetTransform(TransformState.World, Matrix.Translation(0, -4.5f, 0));
+            ground.DrawSubset(0);
 
-                Device.Material = bodyMaterial;
+            Device.Material = bodyMaterial;
+            Device.SetTransform(TransformState.World, trans);
+            chassis.DrawSubset(0);
+
+            Device.Material = wheelMaterial;
+            int i;
+            for (i = 0; i < physics.vehicle.NumWheels; i++)
+            {
+                //synchronize the wheels with the (interpolated) chassis worldtransform
+                physics.vehicle.UpdateWheelTransform(i, true);
+                //draw wheels (cylinders)
+                trans = Matrix.RotationY((float)Math.PI / 2);
+                trans *= physics.vehicle.GetWheelInfo(i).WorldTransform;
                 Device.SetTransform(TransformState.World, trans);
-                chassis.DrawSubset(0);
-
-                Device.Material = wheelMaterial;
-                int i;
-                for (i = 0; i < physics.vehicle.NumWheels; i++)
-                {
-                    //synchronize the wheels with the (interpolated) chassis worldtransform
-                    physics.vehicle.UpdateWheelTransform(i, true);
-                    //draw wheels (cylinders)
-                    trans = Matrix.RotationY((float)Math.PI / 2);
-                    trans *= physics.vehicle.GetWheelInfo(i).WorldTransform;
-                    Device.SetTransform(TransformState.World, trans);
-                    wheel.DrawSubset(0);
-                }
+                wheel.DrawSubset(0);
             }
-            if (DrawDebugLines && (DrawMode == 2 || DrawMode == 3))
-            {
-                Device.SetRenderState(RenderState.Lighting, false);
-                Device.SetTransform(TransformState.World, Matrix.Identity);
-                Device.VertexFormat = PositionColored.FVF;
-                physics.world.DebugDrawWorld();
-                Device.SetRenderState(RenderState.Lighting, true);
-            }
+            
+            physics.DebugDrawWorld();
 
-            fps.OnRender(FramesPerSecond);
+            Fps.OnRender(FramesPerSecond);
 
             Device.EndScene();
             Device.Present();

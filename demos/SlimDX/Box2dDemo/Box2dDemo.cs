@@ -5,7 +5,6 @@ using SlimDX.Direct3D9;
 using SlimDX.DirectInput;
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace Box2dDemo
 {
@@ -14,19 +13,13 @@ namespace Box2dDemo
         int Width = 1024, Height = 768;
         Color ambient = Color.Gray;
         Vector3 eye = new Vector3(10, 20, 30);
-        bool DrawDebugLines = true;
-        float FieldOfView = (float)Math.PI / 4;
+        Vector3 target = new Vector3(7, 7, 0);
 
-        Matrix Projection;
-        Input input;
-        FreeLook freelook;
-        FpsDisplay fps;
         Mesh box, triangle, cylinder, groundBox;
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
         
         Physics physics;
-        PhysicsDebugDraw debugDraw;
 
         public SlimDX.Direct3D9.Device Device
         {
@@ -38,20 +31,18 @@ namespace Box2dDemo
             base.Dispose(disposing);
             if (disposing)
             {
-                input.Dispose();
                 box.Dispose();
                 triangle.Dispose();
                 cylinder.Dispose();
                 groundBox.Dispose();
-                fps.Dispose();
             }
         }
 
-        Mesh ConstructTriangleMesh(float scaling)
+        Mesh ConstructTriangleMesh()
         {
-            float u = scaling + 0.02f;// -0.04f;
+            float u = 1.02f;
             Vector3[] points = { new Vector3(0, u, 0), new Vector3(-u, -u, 0), new Vector3(u, -u, 0) };
-            Vector3 depth = new Vector3(0, 0, 0.04f);
+            Vector3 depth = new Vector3(0, 0, physics.Depth);
             Mesh triangle = new Mesh(Device, 8, 6, MeshFlags.Managed, VertexFormat.Position | VertexFormat.Normal);
 
             SlimDX.DataStream ds = triangle.LockVertexBuffer(LockFlags.None);
@@ -111,25 +102,21 @@ namespace Box2dDemo
                 InitializeDevice(settings);
             }
 
-            input = new Input(Form);
-            freelook = new FreeLook();
-            freelook.SetEyeTarget(eye, new Vector3(5,10,0));
+            base.OnInitialize();
 
             physics = new Physics();
 
-            box = Mesh.CreateBox(Device, physics.Scaling * 2, physics.Scaling * 2, 0.08f);
-            triangle = ConstructTriangleMesh(physics.Scaling);
-            cylinder = Mesh.CreateCylinder(Device, physics.Scaling, physics.Scaling, 0.08f, 32, 1);
-            groundBox = Mesh.CreateBox(Device, 150, 100, 150);
+            // Create the shapes to be drawn
+            box = Mesh.CreateBox(Device, 2, 2, physics.Depth * 2);
+            triangle = ConstructTriangleMesh();
+            cylinder = Mesh.CreateCylinder(Device, 1.0f, 1.0f, physics.Depth*2, 32, 1);
+            groundBox = Mesh.CreateBox(Device, 150, 2, 150);
 
             light = new Light();
             light.Type = LightType.Point;
             light.Range = 100;
             light.Position = new Vector3(10, 25, 10);
             light.Diffuse = Color.LemonChiffon;
-
-            //light.Type = LightType.Directional;
-            //light.Direction = new Vector3(-1, -1, -1);
 
             activeMaterial = new Material();
             activeMaterial.Diffuse = Color.Orange;
@@ -143,18 +130,16 @@ namespace Box2dDemo
             groundMaterial.Diffuse = Color.Green;
             groundMaterial.Ambient = ambient;
 
-            fps = new FpsDisplay(Device);
-            fps.Text = "Move using mouse and WASD\r\n" +
-                "F11 - Toggle fullscreen";
+            Freelook.SetEyeTarget(eye, target);
 
-            debugDraw = new PhysicsDebugDraw(Device);
-            physics.world.DebugDrawer = debugDraw;
-            //debugDraw.SetDebugMode(DebugDrawModes.DrawWireframe);
+            Fps.Text = "Move using mouse and WASD+shift\n" +
+                "F3 - Toggle debug\n" +
+                "F11 - Toggle fullscreen";
         }
 
         protected override void OnResourceLoad()
         {
-            input.OnResetDevice();
+            base.OnResourceLoad();
 
             Device.SetLight(0, light);
             Device.EnableLight(0, true);
@@ -164,37 +149,21 @@ namespace Box2dDemo
 
             Device.SetTransform(TransformState.Projection, Projection);
             Device.SetRenderState(RenderState.CullMode, Cull.None);
-
-            fps.OnResourceLoad();
-        }
-
-        protected override void OnResourceUnload()
-        {
-            fps.OnResourceUnload();
         }
 
         protected override void OnUpdate()
         {
-             input.GetCurrentState();
+            base.OnUpdate();
 
-            // Handle mouse events
-            if (input.MousePoint != Point.Empty)
+            if (Input.KeyboardDown.Contains(Key.F3))
             {
-                freelook.Update(FrameDelta, input);
-                MouseUpdate(input, freelook.Eye, freelook.Target, FieldOfView, physics.world);
+                if (physics.IsDebugDrawEnabled == false)
+                    physics.SetDebugDraw(Device, DebugDrawModes.DrawWireframe);
+                else
+                    physics.SetDebugDraw(Device, DebugDrawModes.None);
             }
 
-            // Handle keyboard events
-            if (input.KeyboardState != null)
-            {
-                // Exit
-                if (input.KeyboardState.IsPressed(Key.Escape))
-                    Quit();
-
-                if (input.KeyboardDown.Contains(Key.F11))
-                    ToggleFullScreen();
-            }
-
+            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics.World);
             physics.Update(FrameDelta);
         }
 
@@ -203,9 +172,9 @@ namespace Box2dDemo
             Device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.LightGray, 1.0f, 0);
             Device.BeginScene();
 
-            Device.SetTransform(TransformState.View, freelook.View);
+            Device.SetTransform(TransformState.View, Freelook.View);
 
-            foreach (CollisionObject colObj in physics.world.CollisionObjectArray)
+            foreach (CollisionObject colObj in physics.World.CollisionObjectArray)
             {
                 RigidBody body = RigidBody.Upcast(colObj);
                 Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
@@ -214,47 +183,39 @@ namespace Box2dDemo
                 {
                     Device.Material = groundMaterial;
                     groundBox.DrawSubset(0);
+                    continue;
                 }
+
+                if (colObj.ActivationState == ActivationState.ActiveTag)
+                    Device.Material = activeMaterial;
                 else
-                {
-                    if (colObj.ActivationState == ActivationState.ActiveTag)
-                        Device.Material = activeMaterial;
-                    else
-                        Device.Material = passiveMaterial;
+                    Device.Material = passiveMaterial;
 
-                    if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.BoxShape)
+                if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.BoxShape)
+                {
+                    box.DrawSubset(0);
+                }
+                else if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.Convex2dShape)
+                {
+                    Convex2dShape shape = Convex2dShape.Upcast2d(colObj.CollisionShape);
+                    switch (shape.ChildShape.ShapeType)
                     {
-                        box.DrawSubset(0);
-                    }
-                    else if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.Convex2dShape)
-                    {
-                        Convex2dShape shape = Convex2dShape.Upcast2d(colObj.CollisionShape);
-                        switch (shape.ChildShape.ShapeType)
-                        {
-                            case BroadphaseNativeType.BoxShape:
-                                box.DrawSubset(0);
-                                break;
-                            case BroadphaseNativeType.ConvexHullShape:
-                                triangle.DrawSubset(0);
-                                break;
-                            case BroadphaseNativeType.CylinderShape:
-                                cylinder.DrawSubset(0);
-                                break;
-                        }
+                        case BroadphaseNativeType.BoxShape:
+                            box.DrawSubset(0);
+                            break;
+                        case BroadphaseNativeType.ConvexHullShape:
+                            triangle.DrawSubset(0);
+                            break;
+                        case BroadphaseNativeType.CylinderShape:
+                            cylinder.DrawSubset(0);
+                            break;
                     }
                 }
             }
 
-            if (DrawDebugLines)
-            {
-                Device.SetRenderState(RenderState.Lighting, false);
-                Device.SetTransform(TransformState.World, Matrix.Identity);
-                Device.VertexFormat = PositionColored.FVF;
-                physics.world.DebugDrawWorld();
-                Device.SetRenderState(RenderState.Lighting, true);
-            }
+            physics.DebugDrawWorld();
 
-            fps.OnRender(FramesPerSecond);
+            Fps.OnRender(FramesPerSecond);
 
             Device.EndScene();
             Device.Present();

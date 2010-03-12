@@ -52,6 +52,12 @@ namespace DemoFramework
 
         public bool Update(Input input)
         {
+            if (input == null)
+                return false;
+
+            if (input.MousePoint.IsEmpty)
+                return false;
+
             if (input.MouseDown != MouseButtons.None)
             {
                 // Don't allow both actions at once

@@ -9,7 +9,7 @@ using SlimDX.DirectInput;
 
 namespace VehicleDemo
 {
-    class Physics
+    class Physics : PhysicsContext
     {
         int rightIndex = 0;
         int upIndex = 1;
@@ -45,12 +45,6 @@ namespace VehicleDemo
 
         float timeCounter = 0.0f;
 
-
-        CollisionDispatcher dispatcher;
-        BroadphaseInterface broadphase;
-        ConstraintSolver solver;
-        CollisionShapeArray collisionShapes = new CollisionShapeArray();
-        public DynamicsWorld world;
         public RaycastVehicle vehicle;
 
         public Physics(VehicleDemo game)
@@ -58,18 +52,18 @@ namespace VehicleDemo
             CollisionConfiguration collisionConf;
 
             CollisionShape groundShape = new BoxShape(50, 3, 50);
-            collisionShapes.PushBack(groundShape);
+            CollisionShapes.PushBack(groundShape);
 
             collisionConf = new DefaultCollisionConfiguration();
-            dispatcher = new CollisionDispatcher(collisionConf);
-            solver = new SequentialImpulseConstraintSolver();
+            Dispatcher = new CollisionDispatcher(collisionConf);
+            Solver = new SequentialImpulseConstraintSolver();
 
             Vector3 worldMin = new Vector3(-10000, -10000, -10000);
             Vector3 worldMax = new Vector3(10000, 10000, 10000);
-            broadphase = new AxisSweep3(worldMin, worldMax);
+            Broadphase = new AxisSweep3(worldMin, worldMax);
             //broadphase = new DbvtBroadphase();
 
-            world = new DiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConf);
+            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, collisionConf);
 
 
             int i;
@@ -143,17 +137,17 @@ namespace VehicleDemo
 
             vertexArray.AddIndexedMesh(mesh);
             groundShape = new BvhTriangleMeshShape(vertexArray, true);
-            collisionShapes.PushBack(groundShape);
+            CollisionShapes.PushBack(groundShape);
 
             //create ground object
             LocalCreateRigidBody(0, Matrix.Translation(0, -4.5f, 0), groundShape);
 
 
             CollisionShape chassisShape = new BoxShape(1.0f, 0.5f, 2.0f);
-            collisionShapes.PushBack(chassisShape);
+            CollisionShapes.PushBack(chassisShape);
 
             CompoundShape compound = new CompoundShape();
-            collisionShapes.PushBack(compound);
+            CollisionShapes.PushBack(compound);
 
             compound.AddChildShape(Matrix.Translation(Vector3.UnitY), chassisShape);
             RigidBody carChassis = LocalCreateRigidBody(800, Matrix.Identity, compound);
@@ -166,11 +160,11 @@ namespace VehicleDemo
 
 	        // create vehicle
             RaycastVehicle.VehicleTuning tuning = new RaycastVehicle.VehicleTuning();
-		    VehicleRaycaster vehicleRayCaster = new DefaultVehicleRaycaster(world);
+		    VehicleRaycaster vehicleRayCaster = new DefaultVehicleRaycaster(World);
             vehicle = new RaycastVehicle(tuning, carChassis, vehicleRayCaster);
 
             carChassis.ActivationState = ActivationState.DisableDeactivation;
-            world.AddAction(vehicle);
+            World.AddAction(vehicle);
 
 
             float connectionHeight = 1.2f;
@@ -204,7 +198,7 @@ namespace VehicleDemo
             }
         }
 
-        public void Update(float elapsedTime)
+        public override void Update(float elapsedTime)
         {
             // Use 1/60 update step like StepSimulation does
             timeCounter += elapsedTime;
@@ -224,11 +218,14 @@ namespace VehicleDemo
                 timeCounter = 0.0f;
             }
 
-            world.StepSimulation(elapsedTime);
+            base.Update(elapsedTime);
         }
 
         public void HandleKeys(Input input, float ElapsedTime)
         {
+            if (input.KeyboardState == null)
+                return;
+
             if (input.KeyboardState.IsPressed(Key.RightArrow))
             {
                 gVehicleSteering += steeringIncrement;
@@ -254,24 +251,6 @@ namespace VehicleDemo
                 gEngineForce = 0.0f;
                 gBreakingForce = maxBreakingForce;
             }
-        }
-
-        public RigidBody LocalCreateRigidBody(float mass, Matrix startTransform, CollisionShape shape)
-        {
-            bool isDynamic = (mass != 0.0f);
-
-            Vector3 localInertia = new Vector3(0, 0, 0);
-            if (isDynamic)
-                shape.CalculateLocalInertia(mass, out localInertia);
-
-            DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
-
-            RigidBody.RigidBodyConstructionInfo rbInfo = new RigidBody.RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
-            RigidBody body = new RigidBody(rbInfo);
-
-            world.AddRigidBody(body);
-
-            return body;
         }
     }
 }

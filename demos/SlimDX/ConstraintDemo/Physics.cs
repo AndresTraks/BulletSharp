@@ -1,26 +1,17 @@
 ﻿using BulletSharp;
 using DemoFramework;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 using SlimDX;
-using SlimDX.Direct3D9;
+using System;
 
 namespace ConstraintDemo
 {
-    class Physics
+    class Physics : PhysicsContext
     {
         public float CubeHalfExtents = 1.0f;
         bool P2P = false;
         Vector3 lowerSliderLimit = new Vector3(-10, 0, 0);
         Vector3 hiSliderLimit = new Vector3(10, 0, 0);
 
-        CollisionDispatcher dispatcher;
-        BroadphaseInterface broadphase;
-        ConstraintSolver solver;
-        CollisionShapeArray collisionShapes = new CollisionShapeArray();
-
-        public DynamicsWorld world;
         public RigidBody d6body0;
         Generic6DofConstraint spSlider6Dof;
         HingeConstraint spDoorHinge;
@@ -31,30 +22,30 @@ namespace ConstraintDemo
         {
             CollisionConfiguration collisionConf;
             collisionConf = new DefaultCollisionConfiguration();
-            dispatcher = new CollisionDispatcher(collisionConf);
-            broadphase = new DbvtBroadphase();
-            solver = new SequentialImpulseConstraintSolver();
-            world = new DiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConf);
-            world.Gravity = new Vector3(0, -10, 0);
+            Dispatcher = new CollisionDispatcher(collisionConf);
+            Broadphase = new DbvtBroadphase();
+            Solver = new SequentialImpulseConstraintSolver();
+            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, collisionConf);
+            World.Gravity = new Vector3(0, -10, 0);
         }
 
         public Physics()
         {
             SetupEmptyDynamicsWorld();
 
-            CollisionShape groundShape = new BoxShape(50, 40, 50);
+            CollisionShape groundShape = new BoxShape(50, 1, 50);
             //CollisionShape groundShape = new StaticPlaneShape(Vector3.UnitY, 40);
-            collisionShapes.PushBack(groundShape);
-            RigidBody body = LocalCreateRigidBody(0, Matrix.Translation(0, -56, 0), groundShape);
+            CollisionShapes.PushBack(groundShape);
+            RigidBody body = LocalCreateRigidBody(0, Matrix.Translation(0, -16, 0), groundShape);
             body.UserObject = "Ground";
 
             CollisionShape shape = new BoxShape(new Vector3(CubeHalfExtents));
-            collisionShapes.PushBack(shape);
+            CollisionShapes.PushBack(shape);
 
 
             float mass = 1.0f;
 
-            RigidBody body0 = LocalCreateRigidBody( mass, Matrix.Translation(0,20,0),shape);
+            RigidBody body0 = LocalCreateRigidBody( mass, Matrix.Translation(0,20,0), shape);
 
 	        RigidBody body1 = null;//LocalCreateRigidBody(mass, Matrix.Translation(2*CUBE_HALF_EXTENTS,20,0), shape);
         	//RigidBody body1 = LocalCreateRigidBody(0, Matrix.Translation(2*CUBE_HALF_EXTENTS,20,0), null);
@@ -91,7 +82,7 @@ namespace ConstraintDemo
                 TypedConstraint p2p = new Point2PointConstraint(body0, pivotInA);
                 //TypedConstraint p2p = new Point2PointConstraint(body0,body1,pivotInA,pivotInB);
                 //TypedConstraint hinge = new HingeConstraint(body0,body1,pivotInA,pivotInB,axisInA,axisInB);
-                world.AddConstraint(p2p);
+                World.AddConstraint(p2p);
                 p2p.DebugDrawSize = 5;
             }
             else
@@ -104,7 +95,7 @@ namespace ConstraintDemo
                 float targetVelocity = 1.0f;
                 float maxMotorImpulse = 1.0f;
                 hinge.EnableAngularMotor(true, targetVelocity, maxMotorImpulse);
-                world.AddConstraint(hinge);
+                World.AddConstraint(hinge);
                 hinge.DebugDrawSize = 5;
             }
 
@@ -119,7 +110,7 @@ namespace ConstraintDemo
             d6body0.ActivationState = ActivationState.DisableDeactivation;
 	        
 	        RigidBody fixedBody1 = LocalCreateRigidBody(0, trans, null);
-	        world.AddRigidBody(fixedBody1);
+	        World.AddRigidBody(fixedBody1);
 
 	        Matrix frameInA = Matrix.Translation(0, 5, 0);
 	        Matrix frameInB = Matrix.Translation(0, 5, 0);
@@ -142,7 +133,7 @@ namespace ConstraintDemo
 	        spSlider6Dof.TranslationalLimitMotor.TargetVelocity = new Vector3(-5.0f, 0, 0);
 	        spSlider6Dof.TranslationalLimitMotor.MaxMotorForce = new Vector3(0.1f, 0, 0);
 
-	        world.AddConstraint(spSlider6Dof);
+	        World.AddConstraint(spSlider6Dof);
             spSlider6Dof.DebugDrawSize = 5;
 
 
@@ -150,7 +141,7 @@ namespace ConstraintDemo
             // create a door using hinge constraint attached to the world
 
             CollisionShape pDoorShape = new BoxShape(2.0f, 5.0f, 0.2f);
-            collisionShapes.PushBack(pDoorShape);
+            CollisionShapes.PushBack(pDoorShape);
             RigidBody pDoorBody = LocalCreateRigidBody(1.0f, Matrix.Translation(-5.0f, -2.0f, 0.0f), pDoorShape);
             pDoorBody.ActivationState = ActivationState.DisableDeactivation;
             Vector3 btPivotA = new Vector3(10.0f +  2.1f, -2.0f, 0.0f ); // right next to the door slightly outside
@@ -168,7 +159,7 @@ namespace ConstraintDemo
             //spDoorHinge.SetLimit(-(float)Math.PI * 0.8f, (float)Math.PI, 0.9f, 0.01f, 0.0f); // "sticky limits"
             spDoorHinge.SetLimit(-(float)Math.PI * 0.25f, (float)Math.PI * 0.25f);
             //spDoorHinge.SetLimit(0, 0);
-            world.AddConstraint(spDoorHinge);
+            World.AddConstraint(spDoorHinge);
             spDoorHinge.DebugDrawSize = 5;
 
             RigidBody pDropBody = LocalCreateRigidBody(10.0f, Matrix.Translation(-5.0f, 2.0f, 0.0f), shape);
@@ -243,7 +234,7 @@ namespace ConstraintDemo
             //coneTwist.SetLimit((float)Math.PI / 4, (float)Math.PI / 4, (float)Math.PI * 0.8f);
             //coneTwist.SetLimit((((float)Math.PI / 4) * 0.6f), (float)Math.PI / 4, (float)Math.PI * 0.8f, 1.0f); // soft limit == hard limit
             coneTwist.SetLimit((((float)Math.PI / 4) * 0.6f), (float)Math.PI / 4, (float)Math.PI * 0.8f, 0.5f);
-            world.AddConstraint(coneTwist, true);
+            World.AddConstraint(coneTwist, true);
             coneTwist.DebugDrawSize = 5;
 
 
@@ -258,7 +249,7 @@ namespace ConstraintDemo
             HingeConstraint pHinge = new HingeConstraint(pBody, btPivotA, btAxisA );
             //pHinge.EnableAngularMotor(true, -1.0f, 0.165f); // use for the old solver
             pHinge.EnableAngularMotor(true, -1.0f, 1.65f); // use for the new SIMD solver
-            world.AddConstraint(pHinge);
+            World.AddConstraint(pHinge);
             pHinge.DebugDrawSize = 5;
 
 
@@ -280,11 +271,11 @@ namespace ConstraintDemo
             pUniv.SetLowerLimit(-(float)Math.PI /4, -(float)Math.PI / 4);
             pUniv.SetUpperLimit((float)Math.PI / 4, (float)Math.PI / 4);
             // add constraint to world
-            world.AddConstraint(pUniv, true);
+            World.AddConstraint(pUniv, true);
             // draw constraint frames and limits for debugging
             pUniv.DebugDrawSize = 5;
 
-            world.AddConstraint(pGen6DOF, true);
+            World.AddConstraint(pGen6DOF, true);
             pGen6DOF.DebugDrawSize = 5;
 
             
@@ -307,7 +298,7 @@ namespace ConstraintDemo
             pGen6DOFSpring.SetAngularLowerLimit(new Vector3(0, 0, -1.5f));
             pGen6DOFSpring.SetAngularUpperLimit(new Vector3(0, 0, 1.5f));
 
-            world.AddConstraint(pGen6DOFSpring, true);
+            World.AddConstraint(pGen6DOFSpring, true);
             pGen6DOFSpring.DebugDrawSize = 5;
 
             pGen6DOFSpring.EnableSpring(0, true);
@@ -336,7 +327,7 @@ namespace ConstraintDemo
             pHinge2.SetLowerLimit(-(float)Math.PI / 4);
             pHinge2.SetUpperLimit((float)Math.PI / 4);
             // add constraint to world
-            world.AddConstraint(pHinge2, true);
+            World.AddConstraint(pHinge2, true);
             // draw constraint frames and limits for debugging
             pHinge2.DebugDrawSize = 5;
 
@@ -358,37 +349,9 @@ namespace ConstraintDemo
             spHingeDynAB = new HingeConstraint(pBodyA, pBodyB, pivotA, pivotB, axisA, axisB);
             spHingeDynAB.SetLimit(-(float)Math.PI / 4, (float)Math.PI / 4);
             // add constraint to world
-            world.AddConstraint(spHingeDynAB, true);
+            World.AddConstraint(spHingeDynAB, true);
             // draw constraint frames and limits for debugging
             spHingeDynAB.DebugDrawSize = 5;
-
-
-
-            world.Broadphase.ResetPool(dispatcher);
-            solver.Reset();
-        }
-
-        public void Update(float elapsedTime)
-        {
-            world.StepSimulation(elapsedTime);
-        }
-
-        public RigidBody LocalCreateRigidBody(float mass, Matrix startTransform, CollisionShape shape)
-        {
-            bool isDynamic = (mass != 0.0f);
-
-            Vector3 localInertia = new Vector3(0, 0, 0);
-            if (isDynamic)
-                shape.CalculateLocalInertia(mass, out localInertia);
-
-            DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
-
-            RigidBody.RigidBodyConstructionInfo rbInfo = new RigidBody.RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
-            RigidBody body = new RigidBody(rbInfo);
-
-            world.AddRigidBody(body);
-
-            return body;
         }
     }
 }
