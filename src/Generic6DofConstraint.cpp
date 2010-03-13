@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_CONSTRAINTS
+
 #include "Generic6DofConstraint.h"
 #include "RigidBody.h"
 
@@ -563,3 +565,5 @@ btGeneric6DofConstraint* Generic6DofConstraint::UnmanagedPointer::get()
 {
 	return (btGeneric6DofConstraint*)TypedConstraint::UnmanagedPointer;
 }
+
+#endif

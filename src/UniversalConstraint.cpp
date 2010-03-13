@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_CONSTRAINTS
+
 #include "RigidBody.h"
 #include "UniversalConstraint.h"
 
@@ -56,3 +58,5 @@ btUniversalConstraint* UniversalConstraint::UnmanagedPointer::get()
 {
 	return (btUniversalConstraint*)TypedConstraint::UnmanagedPointer;
 }
+
+#endif

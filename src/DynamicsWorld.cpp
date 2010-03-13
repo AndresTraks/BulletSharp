@@ -4,7 +4,9 @@
 #include "ContactSolverInfo.h"
 #include "DynamicsWorld.h"
 #include "RigidBody.h"
+#ifndef DISABLE_CONSTRAINTS
 #include "TypedConstraint.h"
+#endif
 
 DynamicsWorld::RayResultCallback::RayResultCallback(btDynamicsWorld::RayResultCallback* callback)
 {
@@ -60,6 +62,7 @@ void DynamicsWorld::AddAction(ActionInterface^ actionInterface)
 	UnmanagedPointer->addAction(actionInterface->UnmanagedPointer);
 }
 
+#ifndef DISABLE_CONSTRAINTS
 void DynamicsWorld::AddConstraint(TypedConstraint^ constraint,
 	bool disableCollisionsBetweenLinkedBodies)
 {
@@ -76,6 +79,7 @@ void DynamicsWorld::RemoveConstraint(TypedConstraint^ constraint)
 {
 	UnmanagedPointer->removeConstraint(constraint->UnmanagedPointer);
 }
+#endif
 
 void DynamicsWorld::StepSimulation(btScalar timeStep)
 {

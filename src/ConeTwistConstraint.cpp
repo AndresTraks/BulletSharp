@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_CONSTRAINTS
+
 #include "ConeTwistConstraint.h"
 #include "RigidBody.h"
 
@@ -56,3 +58,5 @@ btConeTwistConstraint* ConeTwistConstraint::UnmanagedPointer::get()
 {
 	return (btConeTwistConstraint*)TypedConstraint::UnmanagedPointer;
 }
+
+#endif

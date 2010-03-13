@@ -11,6 +11,8 @@ namespace BulletSharp
 	public:
 		SequentialImpulseConstraintSolver();
 
+#ifndef DISABLE_CONSTRAINTS
+
 		unsigned long Rand2();
 		int RandInt2(int n);
 
@@ -24,5 +26,6 @@ namespace BulletSharp
 		{
 			btSequentialImpulseConstraintSolver* get() new;
 		}
+#endif
 	};
 };

@@ -1,8 +1,13 @@
 #pragma once
 
-#include "Dbvt.h"
-#include "SoftBody.h"
 #include "IDisposable.h"
+
+#ifndef DISABLE_DBVT
+#include "Dbvt.h"
+#endif
+#ifndef DISABLE_SOFTBODY
+#include "SoftBody.h"
+#endif
 
 using namespace System::Collections;
 
@@ -171,6 +176,7 @@ namespace BulletSharp
 		virtual void Reset();
 	};
 
+#ifndef DISABLE_DBVT
 	public ref class DbvtNodeArray : AlignedObjectArray
 	{
 	internal:
@@ -207,6 +213,81 @@ namespace BulletSharp
 			virtual btAlignedObjectArray<const btDbvtNode*>* get() new;
 		}
 	};
+
+	public ref class StkNnArray : AlignedObjectArray
+	{
+	internal:
+		StkNnArray(btAlignedObjectArray<btDbvt::sStkNN>* stkNnArray);
+
+	public:
+		StkNnArray();
+
+		void Clear();
+		void PopBack();
+		void PushBack(Dbvt::StkNn^ stkNps);
+		void Remove(Dbvt::StkNn^ stkNps);
+		void Swap(int index0, int index1);
+
+		property int Size
+		{
+			int get();
+		}
+
+		property int Capacity
+		{
+			int get();
+		}
+
+		property Dbvt::StkNn^ default [int]
+		{
+			Dbvt::StkNn^ get (int index);
+			void set(int index, Dbvt::StkNn^);
+		}
+
+	internal:
+		property btAlignedObjectArray<btDbvt::sStkNN>* UnmanagedPointer
+		{
+			virtual btAlignedObjectArray<btDbvt::sStkNN>* get() new;
+		}
+	};
+
+	public ref class StkNpsArray : AlignedObjectArray
+	{
+	internal:
+		StkNpsArray(btAlignedObjectArray<btDbvt::sStkNPS>* stkNpsArray);
+
+	public:
+		StkNpsArray();
+
+		void Clear();
+		void PopBack();
+		void PushBack(Dbvt::StkNps^ stkNps);
+		void Remove(Dbvt::StkNps^ stkNps);
+		void Swap(int index0, int index1);
+
+		property int Size
+		{
+			int get();
+		}
+
+		property int Capacity
+		{
+			int get();
+		}
+
+		property Dbvt::StkNps^ default [int]
+		{
+			Dbvt::StkNps^ get (int index);
+			void set(int index, Dbvt::StkNps^);
+		}
+
+	internal:
+		property btAlignedObjectArray<btDbvt::sStkNPS>* UnmanagedPointer
+		{
+			virtual btAlignedObjectArray<btDbvt::sStkNPS>* get() new;
+		}
+	};
+#endif
 
 #ifndef DISABLE_SOFTBODY
 	public ref class FaceArray : AlignedObjectArray
@@ -359,78 +440,4 @@ namespace BulletSharp
 		}
 	};
 #endif
-
-	public ref class StkNnArray : AlignedObjectArray
-	{
-	internal:
-		StkNnArray(btAlignedObjectArray<btDbvt::sStkNN>* stkNnArray);
-
-	public:
-		StkNnArray();
-
-		void Clear();
-		void PopBack();
-		void PushBack(Dbvt::StkNn^ stkNps);
-		void Remove(Dbvt::StkNn^ stkNps);
-		void Swap(int index0, int index1);
-
-		property int Size
-		{
-			int get();
-		}
-
-		property int Capacity
-		{
-			int get();
-		}
-
-		property Dbvt::StkNn^ default [int]
-		{
-			Dbvt::StkNn^ get (int index);
-			void set(int index, Dbvt::StkNn^);
-		}
-
-	internal:
-		property btAlignedObjectArray<btDbvt::sStkNN>* UnmanagedPointer
-		{
-			virtual btAlignedObjectArray<btDbvt::sStkNN>* get() new;
-		}
-	};
-
-	public ref class StkNpsArray : AlignedObjectArray
-	{
-	internal:
-		StkNpsArray(btAlignedObjectArray<btDbvt::sStkNPS>* stkNpsArray);
-
-	public:
-		StkNpsArray();
-
-		void Clear();
-		void PopBack();
-		void PushBack(Dbvt::StkNps^ stkNps);
-		void Remove(Dbvt::StkNps^ stkNps);
-		void Swap(int index0, int index1);
-
-		property int Size
-		{
-			int get();
-		}
-
-		property int Capacity
-		{
-			int get();
-		}
-
-		property Dbvt::StkNps^ default [int]
-		{
-			Dbvt::StkNps^ get (int index);
-			void set(int index, Dbvt::StkNps^);
-		}
-
-	internal:
-		property btAlignedObjectArray<btDbvt::sStkNPS>* UnmanagedPointer
-		{
-			virtual btAlignedObjectArray<btDbvt::sStkNPS>* get() new;
-		}
-	};
 };

@@ -49,7 +49,9 @@ namespace BulletSharp
 	public:
 		RigidBody(RigidBodyConstructionInfo^ info);
 
+#ifndef DISABLE_CONSTRAINTS
 		void AddConstraintRef(TypedConstraint^ c);
+#endif
 		void ApplyCentralForce(Vector3 force);
 		void ApplyCentralImpulse(Vector3 force);
 		void ApplyDamping(btScalar timeStep);

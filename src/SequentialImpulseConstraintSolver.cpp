@@ -7,6 +7,8 @@ SequentialImpulseConstraintSolver::SequentialImpulseConstraintSolver()
 {
 }
 
+#ifndef DISABLE_CONSTRAINTS
+
 unsigned long SequentialImpulseConstraintSolver::Rand2()
 {
 	return UnmanagedPointer->btRand2();
@@ -31,3 +33,5 @@ btSequentialImpulseConstraintSolver* SequentialImpulseConstraintSolver::Unmanage
 {
 	return (btSequentialImpulseConstraintSolver*)ConstraintSolver::UnmanagedPointer;
 }
+
+#endif

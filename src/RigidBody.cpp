@@ -3,7 +3,9 @@
 #include "CollisionShape.h"
 #include "MotionState.h"
 #include "RigidBody.h"
+#ifndef DISABLE_CONSTRAINTS
 #include "TypedConstraint.h"
+#endif
 
 RigidBody::RigidBody(RigidBodyConstructionInfo^ info)
 : CollisionObject(new btRigidBody(*info->UnmanagedPointer))
@@ -18,10 +20,12 @@ RigidBody::RigidBody(btRigidBody* body)
 {
 }
 
+#ifndef DISABLE_CONSTRAINTS
 void RigidBody::AddConstraintRef(TypedConstraint^ c)
 {
 	UnmanagedPointer->addConstraintRef(c->UnmanagedPointer);
 }
+#endif
 
 void RigidBody::ApplyCentralForce(Vector3 force)
 {

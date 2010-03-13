@@ -4,8 +4,10 @@
 #include "BroadphaseProxy.h"
 #include "CollisionObject.h"
 #include "CollisionShape.h"
-#include "Dbvt.h"
 #include "PersistentManifold.h"
+#ifndef DISABLE_DBVT
+#include "Dbvt.h"
+#endif
 
 AlignedObjectArray::AlignedObjectArray(void* alignedObjectArray)
 {
@@ -260,7 +262,7 @@ void CollisionObjectEnumerator::Reset()
 }
 
 
-
+#ifndef DISABLE_DBVT
 DbvtNodeArray::DbvtNodeArray(btAlignedObjectArray<const btDbvtNode*>* nodeArray)
 : AlignedObjectArray(nodeArray)
 {
@@ -322,6 +324,151 @@ btAlignedObjectArray<const btDbvtNode*>* DbvtNodeArray::UnmanagedPointer::get()
 {
 	return (btAlignedObjectArray<const btDbvtNode*>*)AlignedObjectArray::UnmanagedPointer;
 }
+
+
+StkNnArray::StkNnArray(btAlignedObjectArray<btDbvt::sStkNN>* stkNnArray)
+: AlignedObjectArray(stkNnArray)
+{
+}
+
+StkNnArray::StkNnArray()
+: AlignedObjectArray(new btAlignedObjectArray<btDbvt::sStkNN>)
+{
+}
+
+void StkNnArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+void StkNnArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+void StkNnArray::PushBack(Dbvt::StkNn^ stkNn)
+{
+	UnmanagedPointer->push_back(*stkNn->UnmanagedPointer);
+}
+
+void StkNnArray::Remove(Dbvt::StkNn^ stkNn)
+{
+	// FIXME
+	//UnmanagedPointer->remove(*stkNn->UnmanagedPointer);
+}
+
+int StkNnArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int StkNnArray::Size::get()
+{
+	return UnmanagedPointer->size();
+}
+
+void StkNnArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+#pragma managed(push, off)
+void StkNnArray_GetDefault(btAlignedObjectArray<btDbvt::sStkNN>* stkNpsArray,
+	int index, btDbvt::sStkNN* obj)
+{
+	*obj = (*stkNpsArray)[index];
+}
+#pragma managed(pop)
+
+Dbvt::StkNn^ StkNnArray::default::get(int index)
+{
+	btDbvt::sStkNN* obj = new btDbvt::sStkNN;
+	StkNnArray_GetDefault(UnmanagedPointer, index, obj);
+	return gcnew Dbvt::StkNn(obj);
+}
+
+void StkNnArray::default::set(int index, Dbvt::StkNn^ value)
+{
+	(*UnmanagedPointer)[index] = *value->UnmanagedPointer;
+}
+
+btAlignedObjectArray<btDbvt::sStkNN>* StkNnArray::UnmanagedPointer::get()
+{
+	return (btAlignedObjectArray<btDbvt::sStkNN>*)AlignedObjectArray::UnmanagedPointer;
+}
+
+
+StkNpsArray::StkNpsArray(btAlignedObjectArray<btDbvt::sStkNPS>* stkNpsArray)
+: AlignedObjectArray(stkNpsArray)
+{
+}
+
+StkNpsArray::StkNpsArray()
+: AlignedObjectArray(new btAlignedObjectArray<btDbvt::sStkNPS>)
+{
+}
+
+void StkNpsArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+void StkNpsArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+void StkNpsArray::PushBack(Dbvt::StkNps^ stkNps)
+{
+	UnmanagedPointer->push_back(*stkNps->UnmanagedPointer);
+}
+
+void StkNpsArray::Remove(Dbvt::StkNps^ stkNps)
+{
+	// FIXME
+	//UnmanagedPointer->remove(*stkNps->UnmanagedPointer);
+}
+
+int StkNpsArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int StkNpsArray::Size::get()
+{
+	return UnmanagedPointer->size();
+}
+
+void StkNpsArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+#pragma managed(push, off)
+void StkNpsArray_GetDefault(btAlignedObjectArray<btDbvt::sStkNPS>* stkNpsArray,
+	int index, btDbvt::sStkNPS* obj)
+{
+	*obj = (*stkNpsArray)[index];
+}
+#pragma managed(pop)
+
+Dbvt::StkNps^ StkNpsArray::default::get(int index)
+{
+	btDbvt::sStkNPS* obj = new btDbvt::sStkNPS;
+	StkNpsArray_GetDefault(UnmanagedPointer, index, obj);
+	return gcnew Dbvt::StkNps(obj);
+}
+
+void StkNpsArray::default::set(int index, Dbvt::StkNps^ value)
+{
+	(*UnmanagedPointer)[index] = *value->UnmanagedPointer;
+}
+
+btAlignedObjectArray<btDbvt::sStkNPS>* StkNpsArray::UnmanagedPointer::get()
+{
+	return (btAlignedObjectArray<btDbvt::sStkNPS>*)AlignedObjectArray::UnmanagedPointer;
+}
+#endif
 
 
 #ifndef DISABLE_SOFTBODY
@@ -587,147 +734,3 @@ btAlignedObjectArray<btSoftBody::Node>* BulletSharp::NodeArray::UnmanagedPointer
 	return (btAlignedObjectArray<btSoftBody::Node>*)AlignedObjectArray::UnmanagedPointer;
 }
 #endif
-
-
-StkNnArray::StkNnArray(btAlignedObjectArray<btDbvt::sStkNN>* stkNnArray)
-: AlignedObjectArray(stkNnArray)
-{
-}
-
-StkNnArray::StkNnArray()
-: AlignedObjectArray(new btAlignedObjectArray<btDbvt::sStkNN>)
-{
-}
-
-void StkNnArray::Clear()
-{
-	UnmanagedPointer->clear();
-}
-
-void StkNnArray::PopBack()
-{
-	UnmanagedPointer->pop_back();
-}
-
-void StkNnArray::PushBack(Dbvt::StkNn^ stkNn)
-{
-	UnmanagedPointer->push_back(*stkNn->UnmanagedPointer);
-}
-
-void StkNnArray::Remove(Dbvt::StkNn^ stkNn)
-{
-	// FIXME
-	//UnmanagedPointer->remove(*stkNn->UnmanagedPointer);
-}
-
-int StkNnArray::Capacity::get()
-{
-	return UnmanagedPointer->capacity();
-}
-
-int StkNnArray::Size::get()
-{
-	return UnmanagedPointer->size();
-}
-
-void StkNnArray::Swap(int index0, int index1)
-{
-	UnmanagedPointer->swap(index0, index1);
-}
-
-#pragma managed(push, off)
-void StkNnArray_GetDefault(btAlignedObjectArray<btDbvt::sStkNN>* stkNpsArray,
-	int index, btDbvt::sStkNN* obj)
-{
-	*obj = (*stkNpsArray)[index];
-}
-#pragma managed(pop)
-
-Dbvt::StkNn^ StkNnArray::default::get(int index)
-{
-	btDbvt::sStkNN* obj = new btDbvt::sStkNN;
-	StkNnArray_GetDefault(UnmanagedPointer, index, obj);
-	return gcnew Dbvt::StkNn(obj);
-}
-
-void StkNnArray::default::set(int index, Dbvt::StkNn^ value)
-{
-	(*UnmanagedPointer)[index] = *value->UnmanagedPointer;
-}
-
-btAlignedObjectArray<btDbvt::sStkNN>* StkNnArray::UnmanagedPointer::get()
-{
-	return (btAlignedObjectArray<btDbvt::sStkNN>*)AlignedObjectArray::UnmanagedPointer;
-}
-
-
-StkNpsArray::StkNpsArray(btAlignedObjectArray<btDbvt::sStkNPS>* stkNpsArray)
-: AlignedObjectArray(stkNpsArray)
-{
-}
-
-StkNpsArray::StkNpsArray()
-: AlignedObjectArray(new btAlignedObjectArray<btDbvt::sStkNPS>)
-{
-}
-
-void StkNpsArray::Clear()
-{
-	UnmanagedPointer->clear();
-}
-
-void StkNpsArray::PopBack()
-{
-	UnmanagedPointer->pop_back();
-}
-
-void StkNpsArray::PushBack(Dbvt::StkNps^ stkNps)
-{
-	UnmanagedPointer->push_back(*stkNps->UnmanagedPointer);
-}
-
-void StkNpsArray::Remove(Dbvt::StkNps^ stkNps)
-{
-	// FIXME
-	//UnmanagedPointer->remove(*stkNps->UnmanagedPointer);
-}
-
-int StkNpsArray::Capacity::get()
-{
-	return UnmanagedPointer->capacity();
-}
-
-int StkNpsArray::Size::get()
-{
-	return UnmanagedPointer->size();
-}
-
-void StkNpsArray::Swap(int index0, int index1)
-{
-	UnmanagedPointer->swap(index0, index1);
-}
-
-#pragma managed(push, off)
-void StkNpsArray_GetDefault(btAlignedObjectArray<btDbvt::sStkNPS>* stkNpsArray,
-	int index, btDbvt::sStkNPS* obj)
-{
-	*obj = (*stkNpsArray)[index];
-}
-#pragma managed(pop)
-
-Dbvt::StkNps^ StkNpsArray::default::get(int index)
-{
-	btDbvt::sStkNPS* obj = new btDbvt::sStkNPS;
-	StkNpsArray_GetDefault(UnmanagedPointer, index, obj);
-	return gcnew Dbvt::StkNps(obj);
-}
-
-void StkNpsArray::default::set(int index, Dbvt::StkNps^ value)
-{
-	(*UnmanagedPointer)[index] = *value->UnmanagedPointer;
-}
-
-btAlignedObjectArray<btDbvt::sStkNPS>* StkNpsArray::UnmanagedPointer::get()
-{
-	return (btAlignedObjectArray<btDbvt::sStkNPS>*)AlignedObjectArray::UnmanagedPointer;
-}

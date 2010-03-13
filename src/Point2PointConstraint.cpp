@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_CONSTRAINTS
+
 #include "Point2PointConstraint.h"
 #include "RigidBody.h"
 
@@ -129,3 +131,5 @@ btPoint2PointConstraint* Point2PointConstraint::UnmanagedPointer::get()
 {
 	return (btPoint2PointConstraint*)TypedConstraint::UnmanagedPointer;
 }
+
+#endif

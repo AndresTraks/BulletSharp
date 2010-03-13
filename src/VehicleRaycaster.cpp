@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_VEHICLE
+
 #include "VehicleRaycaster.h"
 
 VehicleRaycaster::VehicleRaycaster(btVehicleRaycaster* vehicleRaycaster)
@@ -15,3 +17,5 @@ void VehicleRaycaster::UnmanagedPointer::set(btVehicleRaycaster* value)
 {
 	_vehicleRaycaster = value;
 }
+
+#endif

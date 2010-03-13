@@ -4,7 +4,10 @@
 
 #pragma once
 
+//#define DISABLE_CONSTRAINTS
+#define DISABLE_DBVT
 //#define DISABLE_SOFTBODY
+//#define DISABLE_VEHICLE
 
 #if GRAPHICS_XNA31
 	#using <Microsoft.Xna.Framework.dll>

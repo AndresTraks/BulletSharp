@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_CONSTRAINTS
+
 #include "Generic6DofSpringConstraint.h"
 #include "RigidBody.h"
 
@@ -52,3 +54,5 @@ btGeneric6DofSpringConstraint* Generic6DofSpringConstraint::UnmanagedPointer::ge
 {
 	return (btGeneric6DofSpringConstraint*)Generic6DofConstraint::UnmanagedPointer;
 }
+
+#endif

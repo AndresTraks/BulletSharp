@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_CONSTRAINTS
+
 #include "Hinge2Constraint.h"
 #include "RigidBody.h"
 
@@ -57,3 +59,5 @@ btHinge2Constraint* Hinge2Constraint::UnmanagedPointer::get()
 {
 	return (btHinge2Constraint*)Generic6DofSpringConstraint::UnmanagedPointer;
 }
+
+#endif

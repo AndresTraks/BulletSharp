@@ -53,10 +53,13 @@ namespace BulletSharp
 
 	public:
 		void AddAction(ActionInterface^ actionInterface);
+
+#ifndef DISABLE_CONSTRAINTS
 		void AddConstraint(TypedConstraint^ constraint,
 			bool disableCollisionsBetweenLinkedBodies);
 		void AddConstraint(TypedConstraint^ constraint);
 		void RemoveConstraint(TypedConstraint^ constraint);
+#endif
 		void AddRigidBody(RigidBody^ rigidBody);
 		void StepSimulation(btScalar timeStep);
 

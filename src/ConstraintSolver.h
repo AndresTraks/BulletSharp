@@ -24,7 +24,7 @@ namespace BulletSharp
 		{
 			virtual bool get();
 		}
-
+#ifndef DISABLE_CONSTRAINTS
 		//void AllSolved(ContactSolverInfo^, DebugDraw^, StackAlloc^);
 		//virtual void PrepareSolve(int, int);
 		void Reset();
@@ -46,5 +46,6 @@ namespace BulletSharp
 			virtual btConstraintSolver* get();
 			void set(btConstraintSolver* value);
 		}
+#endif
 	};
 };

@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+//#ifndef DISABLE_CONSTRAINTS
+
 #include "ContactSolverInfo.h"
 
 ContactSolverInfoData::ContactSolverInfoData(btContactSolverInfoData* infoData)
@@ -184,3 +186,5 @@ ContactSolverInfo::ContactSolverInfo()
 : ContactSolverInfoData(new btContactSolverInfo())
 {
 }
+
+//#endif

@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_DBVT
+
 #include "AlignedObjectArray.h"
 #include "Dbvt.h"
 #include "DbvtBroadphase.h"
@@ -812,3 +814,5 @@ void Dbvt::UnmanagedPointer::set(btDbvt* value)
 {
 	_dbvt = value;
 }
+
+#endif

@@ -114,9 +114,9 @@ namespace BasicDemo
                 else
                     physics.SetDebugDraw(Device, DebugDrawModes.None);
             }
-            physics.Update(FrameDelta);
+
             InputUpdate(Input, Freelook.Eye, Freelook.Target, physics);
-            //physics.Update(FrameDelta);
+            physics.Update(FrameDelta);
         }
 
         protected override void OnRender()

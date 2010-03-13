@@ -12,9 +12,15 @@ namespace BulletSharp
 	internal:
 		DiscreteDynamicsWorld(btDiscreteDynamicsWorld* world);
 	public:
+#ifndef DISABLE_CONSTRAINTS
 		DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher,
 			BroadphaseInterface^ pairCache, ConstraintSolver^ constraintSolver,
 			CollisionConfiguration^ collisionConfiguration);
+#else
+		DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher,
+			BroadphaseInterface^ pairCache,
+			CollisionConfiguration^ collisionConfiguration);
+#endif
 
 		void SetGravity(btScalar x, btScalar y, btScalar z);
 

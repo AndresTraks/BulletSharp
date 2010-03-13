@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_VEHICLE
+
 #include "WheelInfo.h"
 
 WheelInfo::WheelInfo(btWheelInfo* wheelInfo)
@@ -241,3 +243,5 @@ void WheelInfo::WorldTransform::set(Matrix value)
 
 	_wheelInfo->m_worldTransform.setFromOpenGLMatrix(m);
 }
+
+#endif

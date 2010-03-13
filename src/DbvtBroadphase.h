@@ -10,9 +10,9 @@ namespace BulletSharp
 {
 	ref class BroadphaseProxy;
 	ref class Dispatcher;
-	ref class Dbvt;
 	ref class OverlappingPairCache;
 
+#ifndef DISABLE_DBVT
 	public ref class DbvtProxy : BroadphaseProxy
 	{
 	internal:
@@ -45,17 +45,22 @@ namespace BulletSharp
 			btDbvtProxy* get() new;
 		}
 	};
+#endif
 
 	public ref class DbvtBroadphase : BroadphaseInterface
 	{
+#ifndef DISABLE_DBVT
 	public:
 		static int DynamicSet = btDbvtBroadphase::DYNAMIC_SET;
 		static int FixedSet = btDbvtBroadphase::FIXED_SET;
 		static int StageCount = btDbvtBroadphase::STAGECOUNT;
+#endif
 
+	public:
 		DbvtBroadphase(BulletSharp::OverlappingPairCache^ pairCache);
 		DbvtBroadphase();
 
+#ifndef DISABLE_DBVT
 		static void Benchmark(BroadphaseInterface^ broadphase);
 		void Collide(Dispatcher^ dispatcher);
 		void Optimize();
@@ -188,5 +193,6 @@ namespace BulletSharp
 		{
 			btDbvtBroadphase* get() new;
 		}
+#endif
 	};
 }

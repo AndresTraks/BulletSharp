@@ -29,6 +29,8 @@ bool ConstraintSolver::IsDisposed::get()
 	return (_solver == NULL);
 }
 
+#ifndef DISABLE_CONSTRAINTS
+
 void ConstraintSolver::Reset()
 {
 	UnmanagedPointer->reset();
@@ -42,3 +44,5 @@ void ConstraintSolver::UnmanagedPointer::set(btConstraintSolver* value)
 {
 	_solver = value;
 }
+
+#endif

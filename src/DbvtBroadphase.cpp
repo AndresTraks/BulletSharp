@@ -1,10 +1,16 @@
 #include "StdAfx.h"
 
 #include "BroadphaseProxy.h"
-#include "Dbvt.h"
 #include "DbvtBroadphase.h"
 #include "Dispatcher.h"
 #include "OverlappingPairCache.h"
+
+#ifndef DISABLE_DBVT
+#include "Dbvt.h"
+#endif
+
+
+#ifndef DISABLE_DBVT
 
 DbvtProxy::DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr,
 	CollisionFilterGroups collisionFilterGroup,
@@ -67,6 +73,8 @@ btDbvtProxy* DbvtProxy::UnmanagedPointer::get()
 	return (btDbvtProxy*)BroadphaseProxy::UnmanagedPointer;
 }
 
+#endif
+
 
 DbvtBroadphase::DbvtBroadphase()
 : BroadphaseInterface(new btDbvtBroadphase())
@@ -77,6 +85,8 @@ DbvtBroadphase::DbvtBroadphase(BulletSharp::OverlappingPairCache^ pairCache)
 : BroadphaseInterface(new btDbvtBroadphase(pairCache->UnmanagedPointer))
 {
 }
+
+#ifndef DISABLE_DBVT
 
 void DbvtBroadphase::Benchmark(BroadphaseInterface^ broadphase)
 {
@@ -306,3 +316,5 @@ btDbvtBroadphase* DbvtBroadphase::UnmanagedPointer::get()
 {
 	return (btDbvtBroadphase*)BroadphaseInterface::UnmanagedPointer;
 }
+
+#endif

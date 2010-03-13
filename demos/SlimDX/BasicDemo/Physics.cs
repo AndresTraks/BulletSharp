@@ -24,10 +24,7 @@ namespace BasicDemo
 
             Broadphase = new DbvtBroadphase();
 
-            // the default constraint solver
-            Solver = new SequentialImpulseConstraintSolver();
-
-            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, collisionConf);
+            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, null, collisionConf);
             World.Gravity = new Vector3(0, -10, 0);
 
             // create the ground

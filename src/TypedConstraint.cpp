@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_CONSTRAINTS
+
 #include "TypedConstraint.h"
 
 TypedConstraint::TypedConstraint(btTypedConstraint* typedConstraint)
@@ -107,3 +109,5 @@ void TypedConstraint::UnmanagedPointer::set(btTypedConstraint* value)
 {
 	_typedConstraint = value;
 }
+
+#endif

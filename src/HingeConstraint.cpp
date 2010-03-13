@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_CONSTRAINTS
+
 #include "HingeConstraint.h"
 #include "RigidBody.h"
 
@@ -102,3 +104,5 @@ btHingeConstraint* HingeConstraint::UnmanagedPointer::get()
 {
 	return (btHingeConstraint*)TypedConstraint::UnmanagedPointer;
 }
+
+#endif

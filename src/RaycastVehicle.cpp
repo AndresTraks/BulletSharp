@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_VEHICLE
+
 #include "RaycastVehicle.h"
 #include "RigidBody.h"
 #include "VehicleRaycaster.h"
@@ -166,3 +168,5 @@ btRaycastVehicle* RaycastVehicle::UnmanagedPointer::get()
 {
 	return (btRaycastVehicle*)ActionInterface::UnmanagedPointer;
 }
+
+#endif

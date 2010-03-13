@@ -428,7 +428,10 @@ namespace DemoFramework
             Input.OnResetDevice();
         }
 
-        protected virtual void OnResourceUnload() { }
+        protected virtual void OnResourceUnload()
+        {
+            Fps.OnResourceUnload();
+        }
 
         /// <summary>
         /// Implements logic to update any relevant sample state.
