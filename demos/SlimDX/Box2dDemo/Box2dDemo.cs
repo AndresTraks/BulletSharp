@@ -82,7 +82,7 @@ namespace Box2dDemo
             return triangle;
         }
 
-        protected override void OnInitialize()
+        protected override void OnInitializeDevice()
         {
             Form.ClientSize = new Size(Width, Height);
             Form.Text = "BulletSharp - Box2d Demo";
@@ -101,9 +101,10 @@ namespace Box2dDemo
                 settings.MultisampleType = MultisampleType.None;
                 InitializeDevice(settings);
             }
-
-            base.OnInitialize();
-
+        }
+        
+        protected override void OnInitialize()
+        {
             physics = new Physics();
 
             // Create the shapes to be drawn
@@ -163,7 +164,7 @@ namespace Box2dDemo
                     physics.SetDebugDraw(Device, DebugDrawModes.None);
             }
 
-            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics.World);
+            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics);
             physics.Update(FrameDelta);
         }
 

@@ -37,7 +37,7 @@ namespace CcdPhysicsDemo
             }
         }
 
-        protected override void OnInitialize()
+        protected override void OnInitializeDevice()
         {
             Form.ClientSize = new Size(Width, Height);
             Form.Text = "BulletSharp - Continuous Collision Detection Demo";
@@ -56,9 +56,10 @@ namespace CcdPhysicsDemo
                 settings.MultisampleType = MultisampleType.None;
                 InitializeDevice(settings);
             }
+        }
 
-            base.OnInitialize();
-
+        protected override void OnInitialize()
+        {
             physics = new Physics();
 
             float size = physics.CubeHalfExtents;
@@ -120,7 +121,7 @@ namespace CcdPhysicsDemo
                     physics.SetDebugDraw(Device, DebugDrawModes.None);
             }
 
-            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics.World);
+            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics);
             physics.Update(FrameDelta);
         }
 

@@ -116,6 +116,11 @@ void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject,
 	_world->addCollisionObject(collisionObject->UnmanagedPointer, (short int)collisionFilterGroup, (short int)collisionFilterMask);
 }
 
+void CollisionWorld::DebugDrawWorld()
+{
+	UnmanagedPointer->debugDrawWorld();
+}
+
 void CollisionWorld::PerformDiscreteCollisionDetection()
 {
 	_world->performDiscreteCollisionDetection();
@@ -169,8 +174,10 @@ DebugDraw^ CollisionWorld::DebugDrawer::get()
 }
 void CollisionWorld::DebugDrawer::set(DebugDraw^ value)
 {
-	_debugDraw = value;
-	_world->setDebugDrawer(_debugDraw->_debugWrapper);
+	if (value == nullptr)
+		_world->setDebugDrawer(0);
+	else
+		_world->setDebugDrawer(value->_debugWrapper);
 }
 
 BulletSharp::Dispatcher^ CollisionWorld::Dispatcher::get()

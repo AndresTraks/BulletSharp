@@ -36,7 +36,7 @@ namespace BasicDemo
             }
         }
 
-        protected override void OnInitialize()
+        protected override void OnInitializeDevice()
         {
             Form.ClientSize = new Size(Width, Height);
             Form.Text = "BulletSharp - Basic Demo";
@@ -55,10 +55,10 @@ namespace BasicDemo
                 settings.MultisampleType = MultisampleType.None;
                 InitializeDevice(settings);
             }
+        }
 
-            // Call base class when device created
-            base.OnInitialize();
-
+        protected override void  OnInitialize()
+        {
             // Create meshes to draw
             box = Mesh.CreateBox(Device, 2, 2, 2);
             groundBox = Mesh.CreateBox(Device, 100, 2, 100);
@@ -114,9 +114,9 @@ namespace BasicDemo
                 else
                     physics.SetDebugDraw(Device, DebugDrawModes.None);
             }
-
-            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics.World);
             physics.Update(FrameDelta);
+            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics);
+            //physics.Update(FrameDelta);
         }
 
         protected override void OnRender()
@@ -135,16 +135,15 @@ namespace BasicDemo
                 {
                     Device.Material = groundMaterial;
                     groundBox.DrawSubset(0);
+                    continue;
                 }
-                else
-                {
-                    if (colObj.ActivationState == ActivationState.ActiveTag)
-                        Device.Material = activeMaterial;
-                    else
-                        Device.Material = passiveMaterial;
 
-                    box.DrawSubset(0);
-                }
+                if (colObj.ActivationState == ActivationState.ActiveTag)
+                    Device.Material = activeMaterial;
+                else
+                    Device.Material = passiveMaterial;
+
+                box.DrawSubset(0);
             }
 
             physics.DebugDrawWorld();

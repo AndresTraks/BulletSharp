@@ -39,7 +39,7 @@ namespace VehicleDemo
             }
         }
 
-        protected override void OnInitialize()
+        protected override void OnInitializeDevice()
         {
             Form.ClientSize = new Size(Width, Height);
             Form.Text = "BulletSharp - Vehicle Demo";
@@ -58,9 +58,10 @@ namespace VehicleDemo
                 settings.MultisampleType = MultisampleType.None;
                 InitializeDevice(settings);
             }
+        }
 
-            base.OnInitialize();
-
+        protected override void OnInitialize()
+        {
             physics = new Physics(this);
 
             wheel = Mesh.CreateCylinder(Device, physics.wheelRadius, physics.wheelRadius, physics.wheelWidth, 10, 10);
@@ -114,7 +115,7 @@ namespace VehicleDemo
         {
             base.OnUpdate();
 
-            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics.World);
+            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics);
 
             if (Input.KeyboardDown.Contains(Key.F2))
             {

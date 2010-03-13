@@ -39,7 +39,7 @@ namespace BasicDemo
             }
         }
 
-        protected override void OnInitialize()
+        protected override void OnInitializeDevice()
         {
             Form.ClientSize = new Size(Width, Height);
             Form.Text = "BulletSharp - SoftBody Demo";
@@ -58,9 +58,10 @@ namespace BasicDemo
                 settings.MultisampleType = MultisampleType.None;
                 InitializeDevice(settings);
             }
+        }
 
-            base.OnInitialize();
-
+        protected override void OnInitialize()
+        {
             physics = new Physics();
 
             float size = physics.Scaling * 2;
@@ -121,7 +122,7 @@ namespace BasicDemo
                     physics.SetDebugDraw(Device, 0);
             }
 
-            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics.World);
+            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics);
             physics.Update(FrameDelta);
         }
 

@@ -18,21 +18,10 @@ namespace DemoFramework
             private set;
         }
 
-        public float AspectRatio
-        {
-            get { return (float)Form.ClientSize.Width / (float)Form.ClientSize.Height; }
-        }
-
-        public float FieldOfView;
-
         public SlimDX.Direct3D9.Device Device9
         {
             get { return Context9.Device; }
         }
-
-        protected Matrix Projection;
-        protected FreeLook Freelook;
-        protected FpsDisplay Fps;
 
         /// <summary>
         /// Represents a Direct3D9 Context, only valid after calling InitializeDevice(DeviceSettings9)
@@ -45,22 +34,32 @@ namespace DemoFramework
         /// Gets the number of seconds passed since the last frame.
         /// </summary>
         public float FrameDelta { get; private set; }
-
         public float FramesPerSecond { get; private set; }
 
-        private readonly Clock clock = new Clock();
-        private bool deviceLost = false;
-        private float frameAccumulator;
-        private int frameCount;
-        private FormWindowState currentFormWindowState;
-        private System.IDisposable apiContext;
-        private int tempWindowWidth, tempWindowHeight;
+        public float AspectRatio
+        {
+            get { return (float)Form.ClientSize.Width / (float)Form.ClientSize.Height; }
+        }
 
-        private RigidBody pickedBody;
-        private bool use6Dof = false;
-        private TypedConstraint pickConstraint;
-        private float mousePickClamping = 30;
-        private float oldPickingDist;
+        protected float FieldOfView;
+        protected Matrix Projection;
+        protected FreeLook Freelook;
+        protected FpsDisplay Fps;
+        
+
+        readonly Clock clock = new Clock();
+        bool deviceLost = false;
+        float frameAccumulator;
+        int frameCount;
+        System.IDisposable apiContext;
+        FormWindowState currentFormWindowState;
+        int tempWindowWidth, tempWindowHeight;
+
+        RigidBody pickedBody;
+        bool use6Dof = false;
+        TypedConstraint pickConstraint;
+        float oldPickingDist;
+
 
         /// <summary>
         /// Disposes of object resources.
@@ -110,7 +109,7 @@ namespace DemoFramework
             OnUpdate();
         }
 
-        protected void InputUpdate(Input input, Vector3 eye, Vector3 target, DynamicsWorld world)
+        protected void InputUpdate(Input input, Vector3 eye, Vector3 target, PhysicsContext physics)
         {
             if (input == null)
                 return;
@@ -125,6 +124,10 @@ namespace DemoFramework
 
                 if (input.KeyboardDown.Contains(Key.F11))
                     ToggleFullScreen();
+
+                // FIXME: this seems to mess up the collision object array
+                //if (input.KeyboardDown.Contains(Key.Space))
+                //    physics.ShootBox(Freelook.Eye, GetRayTo(input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView));
             }
 
             if (input.MousePoint.IsEmpty)
@@ -136,12 +139,12 @@ namespace DemoFramework
 
                 if (input.MouseDown == MouseButtons.Right)
                 {
-                    if (world != null)
+                    if (physics.World != null)
                     {
                         Vector3 rayFrom = eye;
 
                         CollisionWorld.ClosestRayResultCallback rayCallback = new CollisionWorld.ClosestRayResultCallback(rayFrom, rayTo);
-                        world.RayTest(rayFrom, rayTo, rayCallback);
+                        physics.World.RayTest(rayFrom, rayTo, rayCallback);
                         if (rayCallback.HasHit)
                         {
                             RigidBody body = RigidBody.Upcast(rayCallback.CollisionObject);
@@ -163,7 +166,7 @@ namespace DemoFramework
                                         dof6.SetAngularLowerLimit(Vector3.Zero);
                                         dof6.SetAngularUpperLimit(Vector3.Zero);
 
-                                        world.AddConstraint(dof6);
+                                        physics.World.AddConstraint(dof6);
                                         pickConstraint = dof6;
 
                                         dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 0);
@@ -183,9 +186,9 @@ namespace DemoFramework
                                     else
                                     {
                                         Point2PointConstraint p2p = new Point2PointConstraint(body, localPivot);
-                                        world.AddConstraint(p2p);
+                                        physics.World.AddConstraint(p2p);
                                         pickConstraint = p2p;
-                                        p2p.Setting.ImpulseClamp = mousePickClamping;
+                                        p2p.Setting.ImpulseClamp = 30;
                                         //very weak constraint for picking
                                         p2p.Setting.Tau = 0.001f;
                                         /*
@@ -207,9 +210,9 @@ namespace DemoFramework
                 }
                 else if (input.MouseUp == MouseButtons.Right)
                 {
-                    if (pickConstraint != null && world != null)
+                    if (pickConstraint != null && physics.World != null)
                     {
-                        world.RemoveConstraint(pickConstraint);
+                        physics.World.RemoveConstraint(pickConstraint);
                         pickConstraint.Dispose();
                         pickConstraint = null;
                         pickedBody.ForceActivationState(ActivationState.ActiveTag);
@@ -390,6 +393,13 @@ namespace DemoFramework
 
             Form.Closed += (o, args) => { isFormClosed = true; };
 
+            OnInitializeDevice();
+
+            FieldOfView = (float)Math.PI / 4;
+            Input = new Input(Form);
+            Freelook = new FreeLook();
+            Fps = new FpsDisplay(Device9);
+
             OnInitialize();
             OnResourceLoad();
 
@@ -408,16 +418,9 @@ namespace DemoFramework
             OnResourceUnload();
         }
 
-        /// <summary>
-        /// Implements logic to initialize the sample.
-        /// </summary>
-        protected virtual void OnInitialize()
-        {
-            FieldOfView = (float)Math.PI / 4;
-            Input = new Input(Form);
-            Freelook = new FreeLook();
-            Fps = new FpsDisplay(Device9);
-        }
+        protected virtual void OnInitializeDevice() { }
+
+        protected virtual void OnInitialize() { }
 
         protected virtual void OnResourceLoad()
         {

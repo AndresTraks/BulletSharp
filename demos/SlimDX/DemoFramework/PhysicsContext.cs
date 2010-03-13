@@ -15,6 +15,7 @@ namespace DemoFramework
         protected CollisionShapeArray CollisionShapes;
 
         PhysicsDebugDraw DebugDrawer;
+        BoxShape shootBoxShape;
 
         public PhysicsContext()
         {
@@ -44,6 +45,21 @@ namespace DemoFramework
             }
         }
 
+        public void SetDebugDraw(PhysicsDebugDraw debugDraw)
+        {
+            if (World == null)
+                throw new System.Exception("Physics world not initialized.");
+
+            World.DebugDrawer = debugDraw;
+            IsDebugDrawEnabled = (debugDraw != null);
+        }
+
+        public void SetDebugDraw(PhysicsDebugDraw debugDraw, DebugDrawModes modes)
+        {
+            debugDraw.SetDebugMode(modes);
+            SetDebugDraw(debugDraw);
+        }
+
         public void DebugDrawWorld()
         {
             if (IsDebugDrawEnabled)
@@ -59,7 +75,7 @@ namespace DemoFramework
         {
             bool isDynamic = (mass != 0.0f);
 
-            Vector3 localInertia = new Vector3(0, 0, 0);
+            Vector3 localInertia = Vector3.Zero;
             if (isDynamic)
                 shape.CalculateLocalInertia(mass, out localInertia);
 
@@ -71,6 +87,31 @@ namespace DemoFramework
             World.AddRigidBody(body);
 
             return body;
+        }
+
+        public void ShootBox(Vector3 camPos, Vector3 destination)
+        {
+	        if (World == null)
+                return;
+	        
+            float mass = 1.0f;
+            float speed = 10;
+
+            if (shootBoxShape == null)
+                shootBoxShape = new BoxShape(0.5f);
+
+	        RigidBody body = LocalCreateRigidBody(mass, Matrix.Translation(camPos), shootBoxShape);
+            body.LinearFactor = new Vector3(1,1,1);
+            //body.Restitution = 1;
+
+	        Vector3 linVel = destination - camPos;
+	        linVel.Normalize();
+
+            body.LinearVelocity = linVel * speed;
+            body.CcdMotionThreshold = 1;
+            body.CcdSweptSphereRadius = 0.2f;
+
+            Broadphase.ResetPool(Dispatcher);
         }
     };
 

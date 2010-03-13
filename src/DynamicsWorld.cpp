@@ -82,11 +82,6 @@ void DynamicsWorld::StepSimulation(btScalar timeStep)
 	UnmanagedPointer->stepSimulation(timeStep);
 }
 
-void DynamicsWorld::DebugDrawWorld()
-{
-	UnmanagedPointer->debugDrawWorld();
-}
-
 #pragma managed(push, off)
 btVector3* World_GetGravity(btDynamicsWorld* world)
 {

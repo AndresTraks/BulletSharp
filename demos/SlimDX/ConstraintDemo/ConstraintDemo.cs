@@ -37,7 +37,7 @@ namespace ConstraintDemo
             }
         }
 
-        protected override void OnInitialize()
+        protected override void OnInitializeDevice()
         {
             Form.ClientSize = new Size(Width, Height);
             Form.Text = "BulletSharp - Constraints Demo";
@@ -56,9 +56,10 @@ namespace ConstraintDemo
                 settings.MultisampleType = MultisampleType.None;
                 InitializeDevice(settings);
             }
+        }
 
-            base.OnInitialize();
-
+        protected override void OnInitialize()
+        {
             physics = new Physics();
             physics.SetDebugDraw(Device, DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits);
 
@@ -116,7 +117,7 @@ namespace ConstraintDemo
                     physics.SetDebugDraw(Device, 0);
             }
 
-            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics.World);
+            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics);
             physics.Update(FrameDelta);
         }
 

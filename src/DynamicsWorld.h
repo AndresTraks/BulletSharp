@@ -48,7 +48,7 @@ namespace BulletSharp
 			ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld);
 		};
 
-	protected:
+	internal:
 		DynamicsWorld(btDynamicsWorld* world) : CollisionWorld(world) {}
 
 	public:
@@ -59,7 +59,6 @@ namespace BulletSharp
 		void RemoveConstraint(TypedConstraint^ constraint);
 		void AddRigidBody(RigidBody^ rigidBody);
 		void StepSimulation(btScalar timeStep);
-		void DebugDrawWorld();
 
 		virtual property Vector3 Gravity
 		{

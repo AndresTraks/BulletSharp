@@ -106,6 +106,7 @@ namespace BulletSharp
 		void AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask);
 		//void ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback, btScalar allowedCcdPenetration);
 		//void ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback);
+		void DebugDrawWorld();
 		void PerformDiscreteCollisionDetection();
 		void RayTest(Vector3 rayFromWorld, Vector3 rayToWorld,
 			RayResultCallback^ resultCallback);
