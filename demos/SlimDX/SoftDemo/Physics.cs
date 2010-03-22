@@ -224,7 +224,7 @@ namespace BasicDemo
 	        psb.CollisionShape.Margin = 0.01f;
             psb.Cfg.Collisions = SoftBody.FCollisions.ClSs | SoftBody.FCollisions.ClRs;
                 // | SoftBody.FCollisions.ClSelf;
-	        //psb->m_materials[0]->m_kLST=0.8;
+            //psb.Materials[0].Lst == 0.8f;
 	        cutting=true;
         }
 
@@ -260,17 +260,19 @@ namespace BasicDemo
             CollisionShapes.PushBack(groundShape);
             RigidBody body = LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
             body.UserObject = "Ground";
-
+            
             CollisionShape boxShape = new BoxShape(1, 1, 1);
             CollisionShapes.PushBack(boxShape);
             LocalCreateRigidBody(1.0f, Matrix.Translation(0, 1, 0), boxShape);
-
+            
             softBodyWorldInfo.SparseSdf.Reset();
-            //Init_Aero();
+            Init_Aero();
             //Init_TetraCube();
             //Init_RbUpStack(5);
             //Init_LinearStair(8);
-            Init_ClothAttach();
+            //Init_ClothAttach();
+            //Init_Ropes();
+            //Init_RopeAttach();
         }
 
         public override void Update(float elapsedTime)

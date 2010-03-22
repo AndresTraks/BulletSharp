@@ -31,8 +31,11 @@ SoftBody^ SoftBodyHelpers::CreateFromConvexHull(BulletSharp::SoftBodyWorldInfo ^
 	for(int i=0; i<vertices->Length; i++)
 		Math::Vector3ToBtVector3(vertices[i], &btVertices[i]);
 
-	return gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->UnmanagedPointer,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->UnmanagedPointer,
 		btVertices, vertices->Length, randomizeConstraints));
+
+	delete[] btVertices;
+	return body;
 }
 
 SoftBody^ SoftBodyHelpers::CreateFromConvexHull(BulletSharp::SoftBodyWorldInfo ^worldInfo,
@@ -42,8 +45,11 @@ SoftBody^ SoftBodyHelpers::CreateFromConvexHull(BulletSharp::SoftBodyWorldInfo ^
 	for(int i=0; i<vertices->Length; i++)
 		Math::Vector3ToBtVector3(vertices[i], &btVertices[i]);
 
-	return gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->UnmanagedPointer,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->UnmanagedPointer,
 		btVertices, vertices->Length));
+	
+	delete[] btVertices;
+	return body;
 }
 
 SoftBody^ SoftBodyHelpers::CreateFromTetGenData(SoftBodyWorldInfo^ worldInfo, String^ ele,

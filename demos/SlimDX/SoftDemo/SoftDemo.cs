@@ -144,6 +144,9 @@ namespace BasicDemo
                 {
                     SoftBody softBody = SoftBody.Upcast(colObj);
 
+                    if (softBody.Faces.Size == 0)
+                        continue;
+
                     Mesh mesh = new Mesh(Device, softBody.Faces.Size, softBody.Faces.Size * 3,
                         MeshFlags.SystemMemory | MeshFlags.Use32Bit, VertexFormat.Position);
                     SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.None);

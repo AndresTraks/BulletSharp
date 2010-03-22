@@ -1,0 +1,52 @@
+BulletSharp wrapper progress
+
+
+x fully implemented
+0 incomplete
+- not implemented
+
+
+
+Collision/BroadphaseCollision
+
+x AxisSweep3
+x BroadphaseInterface
+x BroadphaseProxy
+x CollisionAlgorithm
+x Dbvt
+x DbvtBroadphase
+x Dispatcher
+- MultiSapBroadphase (experimental, won't implement)
+x OverlappingPairCache
+- QuantizedBvh
+x SimpleBroadphase
+
+
+
+Collision/CollisionDispatch
+
+- ActivatingCollisionAlgorithm
+0 Box2dBox2dCollisionAlgorithm
+- BoxBoxCollisionAlgorithm
+- BoxBoxDetector
+0 CollisionConfiguration
+x CollisionCreateFunc
+0 CollisionDispatcher
+0 CollisionObject
+0 CollisionWorld
+- CompoundCollisionAlgorithm
+0 Convex2dConvex2dAlgorithm
+- ConvexConcaveCollisionAlgorithm
+- ConvexConvexAlgorithm
+- ConvexPlaneCollisionAlgorithm
+0 DefaultCollisionConfiguration
+- EmptyCollisionAlgorithm
+- GhostObject
+- InternalEdgeUtility
+0 ManifoldResult
+- SimulationIslandManager
+- SphereBoxCollisionAlgorithm
+- SphereSphereCollisionAlgorithm
+- SphereTriangleCollisionAlgorithm
+- SphereTriangleDetector
+- UnionFind
