@@ -12,8 +12,8 @@ namespace BulletSharp
 		BoxShape(btBoxShape* shape);
 	public:
 		BoxShape(Vector3 boxHalfExtents);
-		BoxShape(float boxHalfExtentsX, float boxHalfExtentsY, float boxHalfExtentsZ);
-		BoxShape(float boxHalfExtent); // cube helper
+		BoxShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ);
+		BoxShape(btScalar boxHalfExtent); // cube helper
 
 		static BoxShape^ Upcast(CollisionShape^ shape);
 

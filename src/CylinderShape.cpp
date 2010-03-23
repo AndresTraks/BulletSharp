@@ -7,12 +7,12 @@ CylinderShape::CylinderShape(Vector3 halfExtents)
 {
 }
 
-CylinderShape::CylinderShape(float halfExtentsX, float halfExtentsY, float halfExtentsZ)
+CylinderShape::CylinderShape(btScalar halfExtentsX, btScalar halfExtentsY, btScalar halfExtentsZ)
 : ConvexInternalShape(new btCylinderShape(*(new btVector3(halfExtentsX,halfExtentsY,halfExtentsZ))))
 {
 }
 
-CylinderShape::CylinderShape(float halfExtents)
+CylinderShape::CylinderShape(btScalar halfExtents)
 : ConvexInternalShape(new btCylinderShape(*(new btVector3(halfExtents,halfExtents,halfExtents))))
 {
 }
@@ -23,12 +23,12 @@ CylinderShapeX::CylinderShapeX(Vector3 halfExtents)
 {
 }
 
-CylinderShapeX::CylinderShapeX(float halfExtentsX, float halfExtentsY, float halfExtentsZ)
+CylinderShapeX::CylinderShapeX(btScalar halfExtentsX, btScalar halfExtentsY, btScalar halfExtentsZ)
 : ConvexInternalShape(new btCylinderShapeX(*(new btVector3(halfExtentsX,halfExtentsY,halfExtentsZ))))
 {
 }
 
-CylinderShapeX::CylinderShapeX(float halfExtents)
+CylinderShapeX::CylinderShapeX(btScalar halfExtents)
 : ConvexInternalShape(new btCylinderShapeX(*(new btVector3(halfExtents,halfExtents,halfExtents))))
 {
 }
@@ -39,12 +39,12 @@ CylinderShapeZ::CylinderShapeZ(Vector3 halfExtents)
 {
 }
 
-CylinderShapeZ::CylinderShapeZ(float halfExtentsX, float halfExtentsY, float halfExtentsZ)
+CylinderShapeZ::CylinderShapeZ(btScalar halfExtentsX, btScalar halfExtentsY, btScalar halfExtentsZ)
 : ConvexInternalShape(new btCylinderShapeZ(*(new btVector3(halfExtentsX,halfExtentsY,halfExtentsZ))))
 {
 }
 
-CylinderShapeZ::CylinderShapeZ(float halfExtents)
+CylinderShapeZ::CylinderShapeZ(btScalar halfExtents)
 : ConvexInternalShape(new btCylinderShapeZ(*(new btVector3(halfExtents,halfExtents,halfExtents))))
 {
 }

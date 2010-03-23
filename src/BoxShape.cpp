@@ -12,12 +12,12 @@ BoxShape::BoxShape(Vector3 boxHalfExtents)
 {
 }
 
-BoxShape::BoxShape(float boxHalfExtentsX, float boxHalfExtentsY, float boxHalfExtentsZ)
+BoxShape::BoxShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ)
 : PolyhedralConvexShape(new btBoxShape(*(new btVector3(boxHalfExtentsX,boxHalfExtentsY,boxHalfExtentsZ))))
 {
 }
 
-BoxShape::BoxShape(float boxHalfExtents)
+BoxShape::BoxShape(btScalar boxHalfExtents)
 : PolyhedralConvexShape(new btBoxShape(*(new btVector3(boxHalfExtents,boxHalfExtents,boxHalfExtents))))
 {
 }

@@ -8,23 +8,23 @@ namespace BulletSharp
 	{
 	public:
 		CylinderShape(Vector3 halfExtents);
-		CylinderShape(float halfExtentsX, float halfExtentsY, float halfExtentsZ);
-		CylinderShape(float halfExtents);
+		CylinderShape(btScalar halfExtentsX, btScalar halfExtentsY, btScalar halfExtentsZ);
+		CylinderShape(btScalar halfExtents);
 	};
 
 	public ref class CylinderShapeX : ConvexInternalShape
 	{
 	public:
 		CylinderShapeX(Vector3 halfExtents);
-		CylinderShapeX(float halfExtentsX, float halfExtentsY, float halfExtentsZ);
-		CylinderShapeX(float halfExtents);
+		CylinderShapeX(btScalar halfExtentsX, btScalar halfExtentsY, btScalar halfExtentsZ);
+		CylinderShapeX(btScalar halfExtents);
 	};
 
 	public ref class CylinderShapeZ : ConvexInternalShape
 	{
 	public:
 		CylinderShapeZ(Vector3 halfExtents);
-		CylinderShapeZ(float halfExtentsX, float halfExtentsY, float halfExtentsZ);
-		CylinderShapeZ(float halfExtents);
+		CylinderShapeZ(btScalar halfExtentsX, btScalar halfExtentsY, btScalar halfExtentsZ);
+		CylinderShapeZ(btScalar halfExtents);
 	};
 };

@@ -27,10 +27,10 @@ namespace BulletSharp
 				BulletSharp::CollisionShape^ collisionShape, Vector3 localInertia);
 
 		public:
-			property float Mass
+			property btScalar Mass
 			{
-				float get();
-				void set( float value );
+				btScalar get();
+				void set(btScalar value );
 			}
 
 		internal:
