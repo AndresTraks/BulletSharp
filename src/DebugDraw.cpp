@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_DEBUGDRAW
+
 #include "DebugDraw.h"
 
 DebugDraw::DebugDraw()
@@ -28,3 +30,5 @@ void DebugDraw::UnmanagedPointer::set(DebugWrapper* value)
 {
 	_debugWrapper = value;
 }
+
+#endif

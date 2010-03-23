@@ -1,11 +1,13 @@
 #include "StdAfx.h"
 
 #include "CollisionAlgorithm.h"
-#include "DebugDraw.h"
 #include "Dispatcher.h"
 #include "OverlappingPairCache.h"
 #include "PersistentManifold.h"
 #include "StackAlloc.h"
+#ifndef DISABLE_DEBUGDRAW
+#include "DebugDraw.h"
+#endif
 
 DispatcherInfo::DispatcherInfo(btDispatcherInfo* info)
 {
@@ -30,6 +32,7 @@ void DispatcherInfo::ConvexConservativeDistanceThreshold::set(btScalar value)
 	_info->m_convexConservativeDistanceThreshold = value;
 }
 
+#ifndef DISABLE_DEBUGDRAW
 DebugDraw^ DispatcherInfo::DebugDraw::get()
 {
 	if (_info->m_debugDraw == nullptr)
@@ -42,6 +45,7 @@ void DispatcherInfo::DebugDraw::set(BulletSharp::DebugDraw^ value)
 {
 	_info->m_debugDraw = value->UnmanagedPointer;
 }
+#endif
 
 DispatcherInfo::DispatchFunc DispatcherInfo::DispatchFunction::get()
 {

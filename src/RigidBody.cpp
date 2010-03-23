@@ -256,20 +256,24 @@ btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfo
 
 RigidBody::RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape)
 {
-	if (collisionShape != nullptr)
-		_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, collisionShape->UnmanagedPointer);
-	else
-		_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, nullptr);
+	btCollisionShape* btColShape = (collisionShape != nullptr) ?
+		collisionShape->UnmanagedPointer : nullptr;
+	btMotionState* btMotState = (motionState != nullptr) ?
+		motionState->UnmanagedPointer : nullptr;
+
+	_info = RigidBody_GetUnmanagedConstructionInfo(mass, btMotState, btColShape);
 	_collisionShape = collisionShape;
 	_motionState = motionState;
 }
 
 RigidBody::RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape, Vector3 localInertia)
 {
-	if (collisionShape != nullptr)
-		_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, collisionShape->UnmanagedPointer, Math::Vector3ToBtVector3(localInertia));
-	else
-		_info = RigidBody_GetUnmanagedConstructionInfo(mass, motionState->UnmanagedPointer, nullptr, Math::Vector3ToBtVector3(localInertia));
+	btCollisionShape* btColShape = (collisionShape != nullptr) ?
+		collisionShape->UnmanagedPointer : nullptr;
+	btMotionState* btMotState = (motionState != nullptr) ?
+		motionState->UnmanagedPointer : nullptr;
+
+	_info = RigidBody_GetUnmanagedConstructionInfo(mass, btMotState, btColShape, Math::Vector3ToBtVector3(localInertia));
 	_collisionShape = collisionShape;
 	_motionState = motionState;
 }

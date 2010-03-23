@@ -2,17 +2,21 @@
 
 #include "ActionInterface.h"
 #include "CollisionWorld.h"
+#ifndef DISABLE_DEBUGDRAW
 #include "DebugDraw.h"
+#endif
 
 ActionInterface::ActionInterface(btActionInterface* actionInterface)
 {
 	_actionInterface = actionInterface;
 }
 
+#ifndef DISABLE_DEBUGDRAW
 void ActionInterface::DebugDraw(BulletSharp::DebugDraw^ debugDrawer)
 {
 	_actionInterface->debugDraw(debugDrawer->_debugWrapper);
 }
+#endif
 
 void ActionInterface::UpdateAction(CollisionWorld^ collisionWorld, btScalar deltaTimeStep)
 {

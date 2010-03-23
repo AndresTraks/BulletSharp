@@ -5,8 +5,10 @@
 #include "CollisionConfiguration.h"
 #include "CollisionObject.h"
 #include "CollisionWorld.h"
-#include "DebugDraw.h"
 #include "Dispatcher.h"
+#ifndef DISABLE_DEBUGDRAW
+#include "DebugDraw.h"
+#endif
 
 CollisionWorld::RayResultCallback::RayResultCallback(btCollisionWorld::RayResultCallback* callback)
 {
@@ -116,10 +118,12 @@ void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject,
 	_world->addCollisionObject(collisionObject->UnmanagedPointer, (short int)collisionFilterGroup, (short int)collisionFilterMask);
 }
 
+#ifndef DISABLE_DEBUGDRAW
 void CollisionWorld::DebugDrawWorld()
 {
 	UnmanagedPointer->debugDrawWorld();
 }
+#endif
 
 void CollisionWorld::PerformDiscreteCollisionDetection()
 {
@@ -168,6 +172,7 @@ BulletSharp::CollisionObjectArray^ CollisionWorld::CollisionObjectArray::get()
 	return _collisionObjects;
 }
 
+#ifndef DISABLE_DEBUGDRAW
 DebugDraw^ CollisionWorld::DebugDrawer::get()
 {
 	return _debugDraw;
@@ -179,6 +184,7 @@ void CollisionWorld::DebugDrawer::set(DebugDraw^ value)
 	else
 		_world->setDebugDrawer(value->_debugWrapper);
 }
+#endif
 
 BulletSharp::Dispatcher^ CollisionWorld::Dispatcher::get()
 {

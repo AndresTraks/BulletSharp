@@ -7,7 +7,6 @@ namespace BulletSharp
 	ref class CollisionWorld;
 	ref class DebugDraw;
 
-
 	public ref class ActionInterface abstract
 	{
 	private:
@@ -17,7 +16,9 @@ namespace BulletSharp
 		ActionInterface(btActionInterface* actionInterface);
 
 	public:
+#ifndef DISABLE_DEBUGDRAW
 		void DebugDraw(DebugDraw^ debugDrawer);
+#endif
 		void UpdateAction(CollisionWorld^ collisionWorld, btScalar deltaTimeStep);
 
 	internal:

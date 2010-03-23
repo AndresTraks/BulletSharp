@@ -42,13 +42,13 @@ namespace BulletSharp
 			btScalar get();
 			void set(btScalar value);
 		}
-
+#ifndef DISABLE_DEBUGDRAW
 		property BulletSharp::DebugDraw^ DebugDraw
 		{
 			BulletSharp::DebugDraw^ get();
 			void set(BulletSharp::DebugDraw^ value);
 		}
-
+#endif
 		property DispatchFunc DispatchFunction
 		{
 			DispatchFunc get();

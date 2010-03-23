@@ -100,6 +100,7 @@ namespace BulletSharp
 		MaxContactManifold = MAX_CONTACT_MANIFOLD_TYPE
 	};
 
+#ifndef DISABLE_DEBUGDRAW
 	[Flags]
 	public enum class DebugDrawModes
 	{
@@ -121,6 +122,7 @@ namespace BulletSharp
 		FastWireframe = btIDebugDraw::DBG_FastWireframe,
 		MaxDebugDrawMode = btIDebugDraw::DBG_MAX_DEBUG_DRAW_MODE
 	};
+#endif
 
 	// Mix of ContactManifoldType and TypedConstraintType
 	public enum class ObjectType

@@ -6,6 +6,7 @@
 
 //#define DISABLE_CONSTRAINTS
 #define DISABLE_DBVT
+//#define DISABLE_DEBUGDRAW
 //#define DISABLE_SOFTBODY
 //#define DISABLE_VEHICLE
 

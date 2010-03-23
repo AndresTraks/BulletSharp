@@ -85,7 +85,9 @@ namespace BulletSharp
 	protected:
 		Dispatcher^ _dispatcher;
 		BroadphaseInterface^ _broadphase;
+#ifndef DISABLE_DEBUGDRAW
 		DebugDraw^ _debugDraw;
+#endif
 		OverlappingPairCache^ _pairCache;
 		CollisionObjectArray^ _collisionObjects;
 
@@ -106,7 +108,9 @@ namespace BulletSharp
 		void AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask);
 		//void ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback, btScalar allowedCcdPenetration);
 		//void ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback);
+#ifndef DISABLE_DEBUGDRAW
 		void DebugDrawWorld();
+#endif
 		void PerformDiscreteCollisionDetection();
 		void RayTest(Vector3 rayFromWorld, Vector3 rayToWorld,
 			RayResultCallback^ resultCallback);
@@ -124,13 +128,13 @@ namespace BulletSharp
 		{
 			BulletSharp::CollisionObjectArray^ get();
 		}
-
+#ifndef DISABLE_DEBUGDRAW
 		property DebugDraw^ DebugDrawer
 		{
 			DebugDraw^ get();
 			void set(DebugDraw^ value);
 		}
-
+#endif
 		property BulletSharp::Dispatcher^ Dispatcher
 		{
 			BulletSharp::Dispatcher^ get();
