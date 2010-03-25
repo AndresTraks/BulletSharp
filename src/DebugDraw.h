@@ -15,8 +15,9 @@ namespace BulletSharp
 
 	public ref class DebugDraw
 	{
+	private:
+		DebugWrapper* _debugDraw;
 	internal:
-		DebugWrapper* _debugWrapper;
 		DebugDraw(DebugWrapper* debugDraw);
 	public:
 		DebugDraw();

@@ -4,6 +4,13 @@
 
 using namespace BulletSharp;
 
+MotionState::MotionState()
+{
+	MotionStateWrapper* state = new MotionStateWrapper();
+	state->_motionState = this;
+	_motionState = state;
+}
+
 MotionState::MotionState(btMotionState* motionState)
 {
 	_motionState = motionState;

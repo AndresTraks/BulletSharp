@@ -1,6 +1,62 @@
 #include "StdAfx.h"
 
+#include "DebugDraw.h"
 #include "DiscreteCollisionDetectorInterface.h"
+#include "StackAlloc.h"
+
+DiscreteCollisionDetectorInterface::ClosestPointInput::ClosestPointInput()
+{
+	_input = new btDiscreteCollisionDetectorInterface::ClosestPointInput;
+}
+
+Matrix DiscreteCollisionDetectorInterface::ClosestPointInput::TransformA::get()
+{
+	return Math::BtTransformToMatrix(&UnmanagedPointer->m_transformA);
+}
+void DiscreteCollisionDetectorInterface::ClosestPointInput::TransformA::set(Matrix value)
+{
+	Math::MatrixToBtTransform(value, &UnmanagedPointer->m_transformA);
+}
+
+Matrix DiscreteCollisionDetectorInterface::ClosestPointInput::TransformB::get()
+{
+	return Math::BtTransformToMatrix(&UnmanagedPointer->m_transformB);
+}
+void DiscreteCollisionDetectorInterface::ClosestPointInput::TransformB::set(Matrix value)
+{
+	Math::MatrixToBtTransform(value, &UnmanagedPointer->m_transformB);
+}
+
+btScalar DiscreteCollisionDetectorInterface::ClosestPointInput::MaximumDistanceSquared::get()
+{
+	return UnmanagedPointer->m_maximumDistanceSquared;
+}
+void DiscreteCollisionDetectorInterface::ClosestPointInput::MaximumDistanceSquared::set(btScalar value)
+{
+	UnmanagedPointer->m_maximumDistanceSquared = value;
+}
+
+StackAlloc^ DiscreteCollisionDetectorInterface::ClosestPointInput::StackAlloc::get()
+{
+	if (UnmanagedPointer->m_stackAlloc == nullptr)
+		return nullptr;
+	return gcnew BulletSharp::StackAlloc(UnmanagedPointer->m_stackAlloc);
+}
+void DiscreteCollisionDetectorInterface::ClosestPointInput::StackAlloc::set(BulletSharp::StackAlloc^ value)
+{
+	UnmanagedPointer->m_stackAlloc = value->UnmanagedPointer;
+}
+
+btDiscreteCollisionDetectorInterface::ClosestPointInput*
+DiscreteCollisionDetectorInterface::ClosestPointInput::UnmanagedPointer::get()
+{
+	return _input;
+}
+void DiscreteCollisionDetectorInterface::ClosestPointInput::UnmanagedPointer::set(
+	btDiscreteCollisionDetectorInterface::ClosestPointInput* value)
+{
+	_input = value;
+}
 
 DiscreteCollisionDetectorInterface::Result::Result(
 	btDiscreteCollisionDetectorInterface::Result* result)
@@ -40,6 +96,12 @@ void DiscreteCollisionDetectorInterface::Result::UnmanagedPointer::set(btDiscret
 }
 
 
+DiscreteCollisionDetectorInterface::StorageResult::StorageResult(btStorageResult* result)
+: DiscreteCollisionDetectorInterface::Result(result)
+{
+}
+
+
 DiscreteCollisionDetectorInterface::DiscreteCollisionDetectorInterface(
 	btDiscreteCollisionDetectorInterface* detectorInterface)
 {
@@ -63,6 +125,19 @@ DiscreteCollisionDetectorInterface::!DiscreteCollisionDetectorInterface()
 	OnDisposed( this, nullptr );
 }
 
+void DiscreteCollisionDetectorInterface::GetClosestPoints(
+	ClosestPointInput^ input, Result^ output, DebugDraw^ debugDraw)
+{
+	btDiscreteCollisionDetectorInterface::Result* btResult = output->UnmanagedPointer;
+	UnmanagedPointer->getClosestPoints(*input->UnmanagedPointer, *btResult,
+		(debugDraw != nullptr) ? debugDraw->UnmanagedPointer : 0);
+}
+/*
+void DiscreteCollisionDetectorInterface::GetClosestPoints(
+	ClosestPointInput^ input, Result^ output, DebugDraw^ debugDraw, bool swapResults)
+{
+}
+*/
 bool DiscreteCollisionDetectorInterface::IsDisposed::get()
 {
 	return (_detectorInterface == NULL);

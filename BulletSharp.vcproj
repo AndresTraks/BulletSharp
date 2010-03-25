@@ -512,6 +512,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\BoxBoxDetector.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\BoxShape.cpp"
 				>
 			</File>
@@ -657,6 +661,10 @@
 			</File>
 			<File
 				RelativePath=".\src\GImpactShape.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\GjkPairDetector.cpp"
 				>
 			</File>
 			<File
@@ -928,6 +936,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\BoxBoxDetector.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\CollisionConfiguration.h"
 						>
 					</File>
@@ -1021,6 +1033,10 @@
 					</File>
 					<File
 						RelativePath=".\src\DiscreteCollisionDetectorInterface.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\GjkPairDetector.h"
 						>
 					</File>
 					<File

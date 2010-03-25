@@ -182,7 +182,7 @@ void CollisionWorld::DebugDrawer::set(DebugDraw^ value)
 	if (value == nullptr)
 		_world->setDebugDrawer(0);
 	else
-		_world->setDebugDrawer(value->_debugWrapper);
+		_world->setDebugDrawer(value->UnmanagedPointer);
 }
 #endif
 

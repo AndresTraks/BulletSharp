@@ -14,7 +14,7 @@ ActionInterface::ActionInterface(btActionInterface* actionInterface)
 #ifndef DISABLE_DEBUGDRAW
 void ActionInterface::DebugDraw(BulletSharp::DebugDraw^ debugDrawer)
 {
-	_actionInterface->debugDraw(debugDrawer->_debugWrapper);
+	_actionInterface->debugDraw(debugDrawer->UnmanagedPointer);
 }
 #endif
 

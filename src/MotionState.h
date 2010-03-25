@@ -1,15 +1,21 @@
 #pragma once
 
+#include <msclr/auto_gcroot.h>
+
+using namespace msclr;
+
 namespace BulletSharp
 {
+	class MotionStateWrapper;
+
 	public ref class MotionState
 	{
 	private:
 		btMotionState* _motionState;
-
+	public:
+		MotionState();
 	internal:
 		MotionState(btMotionState* motionState);
-
 	protected:
 		~MotionState();
 
@@ -17,14 +23,30 @@ namespace BulletSharp
 		property Matrix WorldTransform
 		{
 			virtual Matrix get();
-			void set(Matrix value);
+			virtual void set(Matrix value);
 		}
 
 	internal:
 		property btMotionState* UnmanagedPointer
 		{
 			virtual btMotionState* get();
-			void set( btMotionState* value );
+			void set(btMotionState* value);
+		}
+	};
+
+	class MotionStateWrapper : public btMotionState
+	{
+	public:
+		auto_gcroot<MotionState^> _motionState;
+		
+		virtual void getWorldTransform(btTransform& worldTrans) const
+		{
+			Math::MatrixToBtTransform(_motionState->WorldTransform, &worldTrans);
+		}
+
+		virtual void setWorldTransform(const btTransform& worldTrans)
+		{
+			_motionState->WorldTransform = Math::BtTransformToMatrix(&worldTrans);
 		}
 	};
 };

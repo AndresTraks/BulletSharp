@@ -6,29 +6,29 @@
 
 DebugDraw::DebugDraw()
 {
-	_debugWrapper = new DebugWrapper();
-	_debugWrapper->_debugDraw = this;
-	_debugWrapper->setDebugMode(0);
+	_debugDraw = new DebugWrapper();
+	_debugDraw->_debugDraw = this;
+	_debugDraw->setDebugMode(0);
 }
 
 DebugDraw::DebugDraw(DebugWrapper* debugDraw)
 {
-	_debugWrapper = debugDraw;
+	_debugDraw = debugDraw;
 }
 
 void DebugDraw::SetDebugMode(DebugDrawModes debugMode)
 {
-	_debugWrapper->setDebugMode((int)debugMode);
+	_debugDraw->setDebugMode((int)debugMode);
 }
 
 DebugWrapper* DebugDraw::UnmanagedPointer::get()
 {
-	return _debugWrapper;
+	return _debugDraw;
 }
 
 void DebugDraw::UnmanagedPointer::set(DebugWrapper* value)
 {
-	_debugWrapper = value;
+	_debugDraw = value;
 }
 
 #endif
