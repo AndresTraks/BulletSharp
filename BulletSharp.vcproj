@@ -708,6 +708,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\PointCollector.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\PolyhedralConvexShape.cpp"
 				>
 			</File>
@@ -1045,6 +1049,10 @@
 					</File>
 					<File
 						RelativePath=".\src\PersistentManifold.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\PointCollector.h"
 						>
 					</File>
 					<File

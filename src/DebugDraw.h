@@ -61,8 +61,7 @@ namespace BulletSharp
 		virtual void drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
 		{
 			_debugDraw->DrawLine(
-				Vector3(from.getX(),from.getY(),from.getZ()),
-				Vector3(to.getX(),to.getY(),to.getZ()),
+				Math::BtVector3ToVector3(&from), Math::BtVector3ToVector3(&to),
 #if GRAPHICS_XNA31
 				Microsoft::Xna::Framework::Graphics::Color(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_SLIMDX
@@ -76,9 +75,7 @@ namespace BulletSharp
 		virtual void drawBox(const btVector3& bbMin, const btVector3& bbMax, const btTransform& trans, const btVector3& color)
 		{
 			_debugDraw->DrawBox(
-				Vector3(bbMin.getX(),bbMin.getY(),bbMin.getZ()),
-				Vector3(bbMax.getX(),bbMax.getY(),bbMax.getZ()),
-				Math::BtTransformToMatrix(&trans),
+				Math::BtVector3ToVector3(&bbMin), Math::BtVector3ToVector3(&bbMax),	Math::BtTransformToMatrix(&trans),
 #if GRAPHICS_XNA31
 				Microsoft::Xna::Framework::Graphics::Color(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_SLIMDX

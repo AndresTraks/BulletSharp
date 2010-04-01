@@ -126,9 +126,10 @@ namespace DemoFramework
 
         public override void DrawLine(Vector3 from, Vector3 to, Color4 color)
         {
+            int intColor = color.ToArgb();
             PositionColored[] vertices = new PositionColored[2];
-            vertices[0] = new PositionColored(from, color.ToArgb());
-            vertices[1] = new PositionColored(to, color.ToArgb());
+            vertices[0] = new PositionColored(from, intColor);
+            vertices[1] = new PositionColored(to, intColor);
             device.DrawUserPrimitives(PrimitiveType.LineList, 1, vertices);
         }
 
