@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ConvexInternalAabbCachingShape.h"
+#include "ConvexInternalShape.h"
 
 namespace BulletSharp
 {

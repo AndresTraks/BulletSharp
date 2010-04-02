@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 26 Feb 2010
+
 #include "ConvexShape.h"
 
 namespace BulletSharp

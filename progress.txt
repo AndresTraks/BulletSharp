@@ -61,6 +61,10 @@ Collision/CollisionShapes
 x CapsuleShape
 x CollisionShape
 0 CompoundShape
-0 ConcaveShape
+x ConcaveShape
 x ConeShape
-0 Convex2dShape
+x Convex2dShape
+0 ConvexHullShape
+x ConvexInternalShape
+0 ConvexPointCloudShape
+0 ConvexShape

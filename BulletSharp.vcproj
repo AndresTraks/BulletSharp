@@ -616,15 +616,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\ConvexInternalAabbCachingShape.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\ConvexInternalShape.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\ConvexPenetrationDepthSolver.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ConvexPointCloudShape.cpp"
 				>
 			</File>
 			<File
@@ -932,11 +932,11 @@
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexInternalAabbCachingShape.h"
+						RelativePath=".\src\ConvexInternalShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexInternalShape.h"
+						RelativePath=".\src\ConvexPointCloudShape.h"
 						>
 					</File>
 					<File
