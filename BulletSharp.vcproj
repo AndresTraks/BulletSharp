@@ -496,6 +496,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ActivatingCollisionAlgorithm.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\AlignedObjectArray.cpp"
 				>
 			</File>
@@ -935,6 +939,10 @@
 				<Filter
 					Name="CollisionDispatch"
 					>
+					<File
+						RelativePath=".\src\ActivatingCollisionAlgorithm.h"
+						>
+					</File>
 					<File
 						RelativePath=".\src\Box2dBox2dCollisionAlgorithm.h"
 						>

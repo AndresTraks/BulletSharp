@@ -25,8 +25,8 @@ x SimpleBroadphase
 
 Collision/CollisionDispatch
 
-- ActivatingCollisionAlgorithm
-0 Box2dBox2dCollisionAlgorithm
+0 ActivatingCollisionAlgorithm
+x Box2dBox2dCollisionAlgorithm
 - BoxBoxCollisionAlgorithm
 - BoxBoxDetector
 0 CollisionConfiguration
