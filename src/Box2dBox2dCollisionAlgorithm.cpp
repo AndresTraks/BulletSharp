@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_COLLISION_ALGORITHMS
+
 #pragma managed(push, off)
 #include <BulletCollision/CollisionDispatch/btBox2dBox2dCollisionAlgorithm.h>
 #pragma managed(pop)
@@ -24,3 +26,5 @@ Box2dBox2dCollisionAlgorithm::Box2dBox2dCollisionAlgorithm(PersistentManifold^ m
 	body0->UnmanagedPointer, body1->UnmanagedPointer))
 {
 }
+
+#endif

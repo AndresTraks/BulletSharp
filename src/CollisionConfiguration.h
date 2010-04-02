@@ -8,7 +8,7 @@ namespace BulletSharp
 	ref class CollisionAlgorithmCreateFunc;
 	ref class StackAlloc;
 
-	public ref class CollisionConfiguration abstract : BulletSharp::IDisposable
+	public ref class CollisionConfiguration : BulletSharp::IDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
@@ -17,7 +17,7 @@ namespace BulletSharp
 	private:
 		btCollisionConfiguration* _collisionConfiguration;
 
-	protected:
+	internal:
 		CollisionConfiguration( btCollisionConfiguration* collisionConfiguration );
 	public:
 		!CollisionConfiguration();

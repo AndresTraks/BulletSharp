@@ -4,6 +4,7 @@
 
 #pragma once
 
+//#define DISABLE_COLLISION_ALGORITHMS
 //#define DISABLE_CONSTRAINTS
 #define DISABLE_DBVT
 //#define DISABLE_DEBUGDRAW
