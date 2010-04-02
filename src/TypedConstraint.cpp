@@ -31,10 +31,12 @@ bool TypedConstraint::IsDisposed::get()
 	return (_typedConstraint == NULL);
 }
 
+#ifndef DISABLE_SERIALIZE
 int TypedConstraint::CalculateSerializeBufferSize()
 {
 	return _typedConstraint->calculateSerializeBufferSize();
 }
+#endif
 
 void TypedConstraint::EnableFeedback(bool needsFeedback)
 {

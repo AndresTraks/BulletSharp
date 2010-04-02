@@ -39,7 +39,9 @@ namespace BulletSharp
 
 		void Activate();
 		void Activate(bool forceActivation);
+#ifndef DISABLE_SERIALIZE
 		int CalculateSerializeBufferSize();
+#endif
 		bool CheckCollideWith(CollisionObject^ collisionObject);
 		void ForceActivationState(BulletSharp::ActivationState newState);
 

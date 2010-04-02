@@ -31,12 +31,11 @@ namespace BulletSharp
 		RigidBody^ rigidBodyB;
 
 	public:
+#ifndef DISABLE_SERIALIZE
 		int CalculateSerializeBufferSize();
+#endif
 		void EnableFeedback(bool needsFeedback);
-		
-		// Not a property to avoid crashing when feedback is not enabled
-		btScalar GetAppliedImpulse();
-
+		btScalar GetAppliedImpulse(); // Not a property to avoid crashing when feedback is not enabled
 		btScalar GetParam(ConstraintParam num, int axis);
 		btScalar GetParam(ConstraintParam num);
 		void SetParam(ConstraintParam num, btScalar value, int axis);

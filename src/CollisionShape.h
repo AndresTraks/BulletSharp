@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 02 Apr 2010
+
 #include "Enums.h"
 #include "IDisposable.h"
 
@@ -31,6 +33,9 @@ namespace BulletSharp
 	public:
 		void CalculateLocalInertia(btScalar mass, [Out] Vector3% inertia);
 		Vector3 CalculateLocalInertia(btScalar mass);
+#ifndef DISABLE_SERIALIZE
+		int CalculateSerializeBufferSize();
+#endif
 		void CalculateTemporalAabb(Matrix curTrans,
 			Vector3 linvel,	Vector3 angvel, btScalar timeStep,
 			[Out] Vector3% temporalAabbMin, [Out] Vector3% temporalAabbMax);

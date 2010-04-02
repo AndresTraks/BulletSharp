@@ -47,7 +47,9 @@ namespace BulletSharp
 			Vector3 pivotInA, Vector3 pivotInB);
 		Point2PointConstraint(RigidBody^ rbA, Vector3 pivotInA);
 
+#ifndef DISABLE_SERIALIZE
 		int CalculateSerializeBufferSize();
+#endif
 		btScalar GetParam(int num, int axis);
 		btScalar GetParam(int num);
 		void SetParam(int num, btScalar value, int axis);

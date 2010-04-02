@@ -51,10 +51,12 @@ void CollisionObject::Activate(bool forceActivation)
 	_collisionObject->activate(forceActivation);
 }
 
+#ifndef DISABLE_SERIALIZE
 int CollisionObject::CalculateSerializeBufferSize()
 {
 	return _collisionObject->calculateSerializeBufferSize();
 }
+#endif
 
 bool CollisionObject::CheckCollideWith(CollisionObject^ collisionObject)
 {

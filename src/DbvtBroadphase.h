@@ -9,6 +9,8 @@
 namespace BulletSharp
 {
 	ref class BroadphaseProxy;
+	ref class Dbvt;
+	ref class DbvtNode;
 	ref class Dispatcher;
 	ref class OverlappingPairCache;
 

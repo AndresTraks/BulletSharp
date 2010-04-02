@@ -59,3 +59,8 @@ Collision/CollisionShapes
 0 BoxShape
 0 BvhTriangleMeshShape
 x CapsuleShape
+x CollisionShape
+0 CompoundShape
+0 ConcaveShape
+x ConeShape
+0 Convex2dShape

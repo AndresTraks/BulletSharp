@@ -588,6 +588,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ConeShape.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ConeTwistConstraint.cpp"
 				>
 			</File>
@@ -913,6 +917,10 @@
 					</File>
 					<File
 						RelativePath=".\src\ConcaveShape.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\ConeShape.h"
 						>
 					</File>
 					<File

@@ -48,6 +48,13 @@ Vector3 CollisionShape::CalculateLocalInertia(btScalar mass)
 	return Math::BtVector3ToVector3(vector);
 }
 
+#ifndef DISABLE_SERIALIZE
+int CollisionShape::CalculateSerializeBufferSize()
+{
+	return UnmanagedPointer->calculateSerializeBufferSize();
+}
+#endif
+
 void CollisionShape::CalculateTemporalAabb(Matrix curTrans,
 	Vector3 linvel,	Vector3 angvel, btScalar timeStep,
 	Vector3% temporalAabbMin, Vector3% temporalAabbMax)
