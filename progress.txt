@@ -27,14 +27,14 @@ Collision/CollisionDispatch
 
 0 ActivatingCollisionAlgorithm
 x Box2dBox2dCollisionAlgorithm
-- BoxBoxCollisionAlgorithm
-- BoxBoxDetector
+x BoxBoxCollisionAlgorithm
+x BoxBoxDetector
 0 CollisionConfiguration
 x CollisionCreateFunc
 0 CollisionDispatcher
 0 CollisionObject
 0 CollisionWorld
-- CompoundCollisionAlgorithm
+x CompoundCollisionAlgorithm
 0 Convex2dConvex2dAlgorithm
 - ConvexConcaveCollisionAlgorithm
 - ConvexConvexAlgorithm

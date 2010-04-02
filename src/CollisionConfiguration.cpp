@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 
 #include "CollisionConfiguration.h"
+#include "CollisionCreateFunc.h"
+#include "StackAlloc.h"
 
 CollisionConfiguration::CollisionConfiguration(btCollisionConfiguration* collisionConfiguration)
 {
@@ -24,9 +26,19 @@ CollisionConfiguration::!CollisionConfiguration()
 	OnDisposed( this, nullptr );
 }
 
+CollisionAlgorithmCreateFunc^ CollisionConfiguration::GetCollisionAlgorithmCreateFunc(BroadphaseNativeType proxyType0, BroadphaseNativeType proxyType1)
+{
+	return gcnew CollisionAlgorithmCreateFunc(_collisionConfiguration->getCollisionAlgorithmCreateFunc((int)proxyType0, (int)proxyType1));
+}
+
 bool CollisionConfiguration::IsDisposed::get()
 {
 	return (_collisionConfiguration == NULL);
+}
+
+StackAlloc^ CollisionConfiguration::StackAllocator::get()
+{
+	return gcnew StackAlloc(_collisionConfiguration->getStackAllocator());
 }
 
 btCollisionConfiguration* CollisionConfiguration::UnmanagedPointer::get()

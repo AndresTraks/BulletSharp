@@ -516,6 +516,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\BoxBoxCollisionAlgorithm.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\BoxBoxDetector.cpp"
 				>
 			</File>
@@ -561,6 +565,10 @@
 			</File>
 			<File
 				RelativePath=".\src\CollisionWorld.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\CompoundCollisionAlgorithm.cpp"
 				>
 			</File>
 			<File
@@ -948,6 +956,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\BoxBoxCollisionAlgorithm.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\BoxBoxDetector.h"
 						>
 					</File>
@@ -969,6 +981,10 @@
 					</File>
 					<File
 						RelativePath=".\src\CollisionWorld.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\CompoundCollisionAlgorithm.h"
 						>
 					</File>
 					<File

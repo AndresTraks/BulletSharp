@@ -21,7 +21,7 @@ namespace BulletSharp
 
 	public:
 		CollisionAlgorithmCreateFunc();
-	protected:
+	internal:
 		CollisionAlgorithmCreateFunc(btCollisionAlgorithmCreateFunc* solver);
 	public:
 		!CollisionAlgorithmCreateFunc();

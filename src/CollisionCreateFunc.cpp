@@ -6,7 +6,7 @@
 
 CollisionAlgorithmCreateFunc::CollisionAlgorithmCreateFunc()
 {
-	_createFunc = 	new btCollisionAlgorithmCreateFunc();
+	_createFunc = new btCollisionAlgorithmCreateFunc();
 }
 
 CollisionAlgorithmCreateFunc::CollisionAlgorithmCreateFunc(btCollisionAlgorithmCreateFunc* createFunc)
@@ -47,7 +47,6 @@ bool CollisionAlgorithmCreateFunc::Swapped::get()
 {
 	return _createFunc->m_swapped;
 }
-
 void CollisionAlgorithmCreateFunc::Swapped::set(bool value)
 {
 	_createFunc->m_swapped = value;
