@@ -32,10 +32,10 @@ x BoxBoxDetector
 0 CollisionConfiguration
 x CollisionCreateFunc
 0 CollisionDispatcher
-0 CollisionObject
+x CollisionObject
 0 CollisionWorld
 x CompoundCollisionAlgorithm
-0 Convex2dConvex2dAlgorithm
+x Convex2dConvex2dAlgorithm
 - ConvexConcaveCollisionAlgorithm
 - ConvexConvexAlgorithm
 - ConvexPlaneCollisionAlgorithm

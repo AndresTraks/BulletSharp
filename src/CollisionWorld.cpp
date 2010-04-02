@@ -4,11 +4,49 @@
 #include "BroadphaseInterface.h"
 #include "CollisionConfiguration.h"
 #include "CollisionObject.h"
+#include "CollisionShape.h"
 #include "CollisionWorld.h"
 #include "Dispatcher.h"
 #ifndef DISABLE_DEBUGDRAW
 #include "DebugDraw.h"
 #endif
+
+CollisionWorld::ContactResultCallback::ContactResultCallback(btCollisionWorld::ContactResultCallback* callback)
+{
+	_callback = callback;
+}
+
+CollisionWorld::ContactResultCallback::~ContactResultCallback()
+{
+	this->!ContactResultCallback();
+}
+
+CollisionWorld::ContactResultCallback::!ContactResultCallback()
+{
+	if( this->IsDisposed == true )
+		return;
+	
+	OnDisposing( this, nullptr );
+	
+	_callback = NULL;
+	
+	OnDisposed( this, nullptr );
+}
+
+bool CollisionWorld::ContactResultCallback::IsDisposed::get()
+{
+	return (_callback == NULL);
+}
+
+btCollisionWorld::ContactResultCallback* CollisionWorld::ContactResultCallback::UnmanagedPointer::get()
+{
+	return _callback;
+}
+void CollisionWorld::ContactResultCallback::UnmanagedPointer::set(btCollisionWorld::ContactResultCallback* value)
+{
+	_callback = value;
+}
+
 
 CollisionWorld::RayResultCallback::RayResultCallback(btCollisionWorld::RayResultCallback* callback)
 {
@@ -118,6 +156,27 @@ void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject,
 	_world->addCollisionObject(collisionObject->UnmanagedPointer, (short int)collisionFilterGroup, (short int)collisionFilterMask);
 }
 
+void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject,
+	CollisionFilterGroups collisionFilterGroup)
+{
+	_world->addCollisionObject(collisionObject->UnmanagedPointer, (short int)collisionFilterGroup);
+}
+
+void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject)
+{
+	_world->addCollisionObject(collisionObject->UnmanagedPointer);
+}
+
+void CollisionWorld::ContactPairTest(CollisionObject^ colObjA, CollisionObject^ colObjB, ContactResultCallback^ resultCallback)
+{
+	_world->contactPairTest(colObjA->UnmanagedPointer, colObjB->UnmanagedPointer, *resultCallback->UnmanagedPointer);
+}
+
+void CollisionWorld::ContactTest(CollisionObject^ colObj, ContactResultCallback^ resultCallback)
+{
+	_world->contactTest(colObj->UnmanagedPointer, *resultCallback->UnmanagedPointer);
+}
+
 #ifndef DISABLE_DEBUGDRAW
 void CollisionWorld::DebugDrawWorld()
 {
@@ -134,6 +193,14 @@ void CollisionWorld::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResult
 {
 	_world->rayTest(*Math::Vector3ToBtVector3(rayFromWorld), *Math::Vector3ToBtVector3(rayToWorld),
 		*resultCallback->UnmanagedPointer);
+}
+
+void CollisionWorld::RayTestSingle(Matrix rayFromTrans, Matrix rayToTrans, CollisionObject^ collisionObject,
+	CollisionShape^ collisionShape, Matrix colObjWorldTransform, RayResultCallback^ resultCallback)
+{
+	_world->rayTestSingle(*Math::MatrixToBtTransform(rayFromTrans), *Math::MatrixToBtTransform(rayToTrans),
+		collisionObject->UnmanagedPointer, collisionShape->UnmanagedPointer,
+		*Math::MatrixToBtTransform(colObjWorldTransform), *resultCallback->UnmanagedPointer);
 }
 
 void CollisionWorld::RemoveCollisionObject(CollisionObject^ collisionObject)
@@ -194,6 +261,15 @@ BulletSharp::Dispatcher^ CollisionWorld::Dispatcher::get()
 DispatcherInfo^ CollisionWorld::DispatchInfo::get()
 {
 	return gcnew DispatcherInfo(&_world->getDispatchInfo());;
+}
+
+bool CollisionWorld::ForceUpdateAllAabbs::get()
+{
+	return _world->getForceUpdateAllAabbs();
+}
+void CollisionWorld::ForceUpdateAllAabbs::set(bool value)
+{
+	_world->setForceUpdateAllAabbs(value);
 }
 
 int CollisionWorld::NumCollisionObjects::get()

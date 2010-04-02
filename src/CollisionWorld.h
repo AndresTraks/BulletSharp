@@ -11,6 +11,7 @@ namespace BulletSharp
 	ref class CollisionConfiguration;
 	ref class CollisionObject;
 	ref class CollisionObjectArray;
+	ref class CollisionShape;
 	ref class DebugDraw;
 	ref class Dispatcher;
 	ref class DispatcherInfo;
@@ -19,6 +20,35 @@ namespace BulletSharp
 	public ref class CollisionWorld : BulletSharp::IDisposable
 	{
 	public:
+		ref class ContactResultCallback : BulletSharp::IDisposable
+		{
+		public:
+			virtual event EventHandler^ OnDisposing;
+			virtual event EventHandler^ OnDisposed;
+
+		private:
+			btCollisionWorld::ContactResultCallback* _callback;
+		
+		protected:
+			ContactResultCallback(btCollisionWorld::ContactResultCallback* callback);
+		public:
+			!ContactResultCallback();
+		protected:
+			~ContactResultCallback();
+		public:
+			property bool IsDisposed
+			{
+				virtual bool get();
+			}
+
+		internal:
+			property btCollisionWorld::ContactResultCallback* UnmanagedPointer
+			{
+				virtual btCollisionWorld::ContactResultCallback* get();
+				void set(btCollisionWorld::ContactResultCallback* value);
+			}
+		};
+
 		ref class RayResultCallback abstract : BulletSharp::IDisposable
 		{
 		public:
@@ -106,6 +136,10 @@ namespace BulletSharp
 		}
 
 		void AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask);
+		void AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup);
+		void AddCollisionObject(CollisionObject^ collisionObject);
+		void ContactPairTest(CollisionObject^ colObjA, CollisionObject^ colObjB, ContactResultCallback^ resultCallback);
+		void ContactTest(CollisionObject^ colObj, ContactResultCallback^ resultCallback);
 		//void ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback, btScalar allowedCcdPenetration);
 		//void ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback);
 #ifndef DISABLE_DEBUGDRAW
@@ -114,6 +148,9 @@ namespace BulletSharp
 		void PerformDiscreteCollisionDetection();
 		void RayTest(Vector3 rayFromWorld, Vector3 rayToWorld,
 			RayResultCallback^ resultCallback);
+		void RayTestSingle(Matrix rayFromTrans, Matrix rayToTrans,
+			CollisionObject^ collisionObject, CollisionShape^ collisionShape,
+			Matrix colObjWorldTransform, RayResultCallback^ resultCallback);
 		void RemoveCollisionObject(CollisionObject^ collisionObject);
 		void UpdateAabbs();
 		void UpdateSingleAabb(CollisionObject^ colObj);
@@ -143,6 +180,12 @@ namespace BulletSharp
 		property DispatcherInfo^ DispatchInfo
 		{
 			DispatcherInfo^ get();
+		}
+
+		property bool ForceUpdateAllAabbs
+		{
+			bool get();
+			void set(bool value);
 		}
 
 		property int NumCollisionObjects
