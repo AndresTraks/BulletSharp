@@ -150,7 +150,7 @@ namespace DemoFramework
                             RigidBody body = RigidBody.Upcast(rayCallback.CollisionObject);
                             if (body != null)
                             {
-                                if (!(body.IsStaticObject() || body.IsKinematicObject()))
+                                if (!(body.IsStaticObject || body.IsKinematicObject))
                                 {
                                     pickedBody = body;
                                     pickedBody.ActivationState = ActivationState.DisableDeactivation;

@@ -1,10 +1,13 @@
 #pragma once
 
+// Fully implemented as of 02 Apr 2010
+
 #include "Enums.h"
 #include "IDisposable.h"
 
 namespace BulletSharp
 {
+	ref class BroadphaseProxy;
 	ref class CollisionShape;
 
 	public ref class CollisionObject : BulletSharp::IDisposable
@@ -34,22 +37,11 @@ namespace BulletSharp
 			virtual bool get();
 		}
 
-	public:
 		void Activate();
 		void Activate(bool forceActivation);
+		int CalculateSerializeBufferSize();
 		bool CheckCollideWith(CollisionObject^ collisionObject);
-		virtual bool CheckCollideWithOverride(CollisionObject^ collisionObject)
-		{
-			return true;
-		}
 		void ForceActivationState(BulletSharp::ActivationState newState);
-		bool HasAnisotropicFriction();
-		bool HasContactResponse();
-		bool IsActive();
-		bool IsKinematicObject();
-		bool IsStaticObject();
-		bool IsStaticOrKinematicObject();
-		bool mergesSimulationIslands();
 
 		property BulletSharp::ActivationState ActivationState
 		{
@@ -61,6 +53,11 @@ namespace BulletSharp
 		{
 			Vector3 get();
 			void set(Vector3 value);
+		}
+
+		property BroadphaseProxy^ BroadphaseHandle
+		{
+			BroadphaseProxy^ get();
 		}
 
 		property btScalar CcdMotionThreshold
@@ -92,6 +89,12 @@ namespace BulletSharp
 			void set(BulletSharp::CollisionShape^ value);
 		}
 
+		property int CompanionId
+		{
+			int get();
+			void set(int value);
+		}
+
 		property btScalar ContactProcessingThreshold
 		{
 			btScalar get();
@@ -104,16 +107,20 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property int CompanionId
-		{
-			int get();
-			void set(int value);
-		}
-
 		property btScalar Friction
 		{
 			btScalar get();
 			void set(btScalar value);
+		}
+
+		property bool HasAnisotropicFriction
+		{
+			bool get();
+		}
+
+		property bool HasContactResponse
+		{
+			bool get();
 		}
 
 		property btScalar HitFraction
@@ -140,16 +147,41 @@ namespace BulletSharp
 			void set(Matrix value);
 		}
 
-		property btScalar Restitution
+		property bool IsActive
 		{
-			btScalar get();
-			void set(btScalar value);
+			bool get();
+		}
+
+		property bool IsKinematicObject
+		{
+			bool get();
 		}
 
 		property int IslandTag
 		{
 			int get();
 			void set(int value);
+		}
+
+		property bool IsStaticObject
+		{
+			bool get();
+		}
+
+		property bool IsStaticOrKinematicObject
+		{
+			bool get();
+		}
+
+		property bool MergesSimulationIslands
+		{
+			bool get();
+		}
+
+		property btScalar Restitution
+		{
+			btScalar get();
+			void set(btScalar value);
 		}
 
 		property BulletSharp::CollisionShape^ RootCollisionShape

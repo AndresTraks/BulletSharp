@@ -67,11 +67,6 @@ void RigidBody::ApplyTorqueImpulse(Vector3 torque)
 	UnmanagedPointer->applyTorqueImpulse(*Math::Vector3ToBtVector3(torque));
 }
 
-bool RigidBody::CheckCollideWithOverride(CollisionObject^ collisionObject)
-{
-	return UnmanagedPointer->checkCollideWithOverride(collisionObject->UnmanagedPointer);
-}
-
 void RigidBody::ClearForces()
 {
 	UnmanagedPointer->clearForces();

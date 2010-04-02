@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 
+#include "BroadphaseProxy.h"
 #include "CollisionObject.h"
 #include "CollisionShape.h"
 
@@ -7,34 +8,6 @@
 
 #define __GCHANDLE_TO_VOIDPTR(x) ((GCHandle::operator System::IntPtr(x)).ToPointer())
 #define __VOIDPTR_TO_GCHANDLE(x) (GCHandle::operator GCHandle(System::IntPtr(x)))
-
-// Unmanaged functions to let us use the unmanaged btVector3 and btTransform
-#pragma managed(push, off)
-void CollisionObject_GetAnisotropicFriction(btCollisionObject* collisionObject, btVector3* friction)
-{
-	*friction = collisionObject->getAnisotropicFriction();
-}
-
-void CollisionObject_GetInterpolationAngularVelocity(btCollisionObject* collisionObject, btVector3* velocity)
-{
-	*velocity = collisionObject->getInterpolationAngularVelocity();
-}
-
-void CollisionObject_GetInterpolationLinearVelocity(btCollisionObject* collisionObject, btVector3* velocity)
-{
-	*velocity = collisionObject->getInterpolationLinearVelocity();
-}
-
-void CollisionObject_GetInterpolationWorldTransform(btCollisionObject* collisionObject, btTransform* transform)
-{
-	*transform = collisionObject->getInterpolationWorldTransform();
-}
-
-void CollisionObject_GetWorldTransform(btCollisionObject* collisionObject, btTransform* transform)
-{
-	*transform = collisionObject->getWorldTransform();
-}
-#pragma managed(pop)
 
 CollisionObject::CollisionObject(btCollisionObject* collisionObject)
 {
@@ -78,6 +51,11 @@ void CollisionObject::Activate(bool forceActivation)
 	_collisionObject->activate(forceActivation);
 }
 
+int CollisionObject::CalculateSerializeBufferSize()
+{
+	return _collisionObject->calculateSerializeBufferSize();
+}
+
 bool CollisionObject::CheckCollideWith(CollisionObject^ collisionObject)
 {
 	return _collisionObject->checkCollideWith(collisionObject->UnmanagedPointer);
@@ -87,6 +65,7 @@ void CollisionObject::ForceActivationState(BulletSharp::ActivationState newState
 {
 	_collisionObject->forceActivationState((int)newState);
 }
+
 
 BulletSharp::ActivationState CollisionObject::ActivationState::get()
 {
@@ -99,15 +78,16 @@ void CollisionObject::ActivationState::set(BulletSharp::ActivationState value)
 
 Vector3 CollisionObject::AnisotropicFriction::get()
 {
-	btVector3* friction = new btVector3;
-	CollisionObject_GetAnisotropicFriction(_collisionObject, friction);
-	Vector3 v = Math::BtVector3ToVector3(friction);
-	delete friction;
-	return v;
+	return Math::BtVector3ToVector3(&_collisionObject->getAnisotropicFriction());
 }
 void CollisionObject::AnisotropicFriction::set(Vector3 value)
 {
 	_collisionObject->setAnisotropicFriction(*Math::Vector3ToBtVector3(value));
+}
+
+BroadphaseProxy^ CollisionObject::BroadphaseHandle::get()
+{
+	return gcnew BroadphaseProxy(_collisionObject->getBroadphaseHandle());
 }
 
 btScalar CollisionObject::CcdMotionThreshold::get()
@@ -194,6 +174,16 @@ void CollisionObject::Friction::set(btScalar value)
 	_collisionObject->setFriction(value);
 }
 
+bool CollisionObject::HasAnisotropicFriction::get()
+{
+	return _collisionObject->hasAnisotropicFriction();
+}
+
+bool CollisionObject::HasContactResponse::get()
+{
+	return _collisionObject->hasContactResponse();
+}
+
 btScalar CollisionObject::HitFraction::get()
 {
 	return _collisionObject->getHitFraction();
@@ -205,9 +195,7 @@ void CollisionObject::HitFraction::set(btScalar value)
 
 Vector3 CollisionObject::InterpolationAngularVelocity::get()
 {
-	btVector3* velocity = new btVector3;
-	CollisionObject_GetInterpolationAngularVelocity(_collisionObject, velocity);
-	return Math::BtVector3ToVector3(velocity);
+	return Math::BtVector3ToVector3(&_collisionObject->getInterpolationAngularVelocity());
 }
 void CollisionObject::InterpolationAngularVelocity::set(Vector3 value)
 {
@@ -216,9 +204,7 @@ void CollisionObject::InterpolationAngularVelocity::set(Vector3 value)
 
 Vector3 CollisionObject::InterpolationLinearVelocity::get()
 {
-	btVector3* velocity = new btVector3;
-	CollisionObject_GetInterpolationLinearVelocity(_collisionObject, velocity);
-	return Math::BtVector3ToVector3(velocity);
+	return Math::BtVector3ToVector3(&_collisionObject->getInterpolationLinearVelocity());
 }
 void CollisionObject::InterpolationLinearVelocity::set(Vector3 value)
 {
@@ -227,15 +213,21 @@ void CollisionObject::InterpolationLinearVelocity::set(Vector3 value)
 
 Matrix CollisionObject::InterpolationWorldTransform::get()
 {
-	btTransform* transform = new btTransform;
-	CollisionObject_GetInterpolationWorldTransform(UnmanagedPointer, transform);
-	Matrix m = Math::BtTransformToMatrix(transform);
-	delete transform;
-	return m;
+	return Math::BtTransformToMatrix(&_collisionObject->getInterpolationWorldTransform());
 }
 void CollisionObject::InterpolationWorldTransform::set(Matrix value)
 {
 	_collisionObject->setInterpolationWorldTransform(*Math::MatrixToBtTransform(value));
+}
+
+bool CollisionObject::IsActive::get()
+{
+	return _collisionObject->isActive();
+}
+
+bool CollisionObject::IsKinematicObject::get()
+{
+	return _collisionObject->isKinematicObject();
 }
 
 int CollisionObject::IslandTag::get()
@@ -245,6 +237,21 @@ int CollisionObject::IslandTag::get()
 void CollisionObject::IslandTag::set(int value)
 {
 	_collisionObject->setIslandTag(value);
+}
+
+bool CollisionObject::IsStaticObject::get()
+{
+	return _collisionObject->isStaticObject();
+}
+
+bool CollisionObject::IsStaticOrKinematicObject::get()
+{
+	return _collisionObject->isStaticOrKinematicObject();
+}
+
+bool CollisionObject::MergesSimulationIslands::get()
+{
+	return _collisionObject->mergesSimulationIslands();
 }
 
 btScalar CollisionObject::Restitution::get()
@@ -280,50 +287,11 @@ void CollisionObject::UserObject::set(Object^ value)
 
 Matrix CollisionObject::WorldTransform::get()
 {
-	btTransform* transform = new btTransform;
-	CollisionObject_GetWorldTransform(_collisionObject, transform);
-	Matrix m = Math::BtTransformToMatrix(transform);
-	delete transform;
-	return m;
+	return Math::BtTransformToMatrix(&_collisionObject->getWorldTransform());
 }
 void CollisionObject::WorldTransform::set(Matrix value)
 {
 	_collisionObject->setWorldTransform(*Math::MatrixToBtTransform(value));
-}
-
-bool CollisionObject::HasAnisotropicFriction()
-{
-	return _collisionObject->hasAnisotropicFriction();
-}
-
-bool CollisionObject::HasContactResponse()
-{
-	return _collisionObject->hasContactResponse();
-}
-
-bool CollisionObject::IsActive()
-{
-	return _collisionObject->isActive();
-}
-
-bool CollisionObject::IsKinematicObject()
-{
-	return _collisionObject->isKinematicObject();
-}
-
-bool CollisionObject::IsStaticObject()
-{
-	return _collisionObject->isStaticObject();
-}
-
-bool CollisionObject::IsStaticOrKinematicObject()
-{
-	return _collisionObject->isStaticOrKinematicObject();
-}
-
-bool CollisionObject::mergesSimulationIslands()
-{
-	return _collisionObject->mergesSimulationIslands();
 }
 
 btCollisionObject* CollisionObject::UnmanagedPointer::get()

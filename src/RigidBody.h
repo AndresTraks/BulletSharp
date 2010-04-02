@@ -60,7 +60,6 @@ namespace BulletSharp
 		void ApplyImpulse(Vector3 impulse, Vector3 rel_pos);
 		void ApplyTorque(Vector3 torque);
 		void ApplyTorqueImpulse(Vector3 torque);
-		virtual bool CheckCollideWithOverride(CollisionObject^ collisionObject) override;
 		void ClearForces();
 		btScalar ComputeAngularImpulseDenominator(Vector3 axis);
 		btScalar ComputeImpulseDenominator(Vector3 pos, Vector3 normal);
