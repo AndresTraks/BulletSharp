@@ -50,3 +50,12 @@ x Convex2dConvex2dAlgorithm
 - SphereTriangleCollisionAlgorithm
 - SphereTriangleDetector
 - UnionFind
+
+
+
+Collision/CollisionShapes
+
+0 Box2dShape
+0 BoxShape
+0 BvhTriangleMeshShape
+x CapsuleShape

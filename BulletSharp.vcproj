@@ -516,6 +516,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Box2dShape.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\BoxBoxCollisionAlgorithm.cpp"
 				>
 			</File>
@@ -537,6 +541,10 @@
 			</File>
 			<File
 				RelativePath=".\src\BvhTriangleMeshShape.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\CapsuleShape.cpp"
 				>
 			</File>
 			<File
@@ -880,11 +888,19 @@
 					Name="CollisionShapes"
 					>
 					<File
+						RelativePath=".\src\Box2dShape.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\BoxShape.h"
 						>
 					</File>
 					<File
 						RelativePath=".\src\BvhTriangleMeshShape.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\CapsuleShape.h"
 						>
 					</File>
 					<File

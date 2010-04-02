@@ -29,12 +29,6 @@ btVector3* BoxShape_GetHalfExtentsWithMargin(btBoxShape* shape)
 	*extents = shape->getHalfExtentsWithMargin();
 	return extents;
 }
-btVector3* BoxShape_GetHalfExtentsWithoutMargin(btBoxShape* shape)
-{
-	btVector3* extents = new btVector3;
-	*extents = shape->getHalfExtentsWithoutMargin();
-	return extents;
-}
 #pragma managed(pop)
 
 Vector3 BoxShape::HalfExtentsWithMargin::get()
@@ -44,7 +38,7 @@ Vector3 BoxShape::HalfExtentsWithMargin::get()
 
 Vector3 BoxShape::HalfExtentsWithoutMargin::get()
 {
-	return Math::BtVector3ToVector3(BoxShape_GetHalfExtentsWithoutMargin(UnmanagedPointer));
+	return Math::BtVector3ToVector3(&UnmanagedPointer->getHalfExtentsWithoutMargin());
 }
 
 BoxShape^ BoxShape::Upcast(CollisionShape^ shape)

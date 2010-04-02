@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 10 Mar 2010
-
 #include "PolyhedralConvexShape.h"
 
 namespace BulletSharp
@@ -16,6 +14,8 @@ namespace BulletSharp
 		BoxShape(btScalar boxHalfExtent); // cube helper
 
 		static BoxShape^ Upcast(CollisionShape^ shape);
+
+		// Vector4 GetPlaneEquation(int i);
 
 		property Vector3 HalfExtentsWithMargin
 		{
