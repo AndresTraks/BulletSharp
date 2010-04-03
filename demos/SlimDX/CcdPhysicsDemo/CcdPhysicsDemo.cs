@@ -121,7 +121,7 @@ namespace CcdPhysicsDemo
                     physics.SetDebugDraw(Device, DebugDrawModes.None);
             }
 
-            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics);
+            InputUpdate(Freelook.Eye, Freelook.Target, physics);
             physics.Update(FrameDelta);
         }
 

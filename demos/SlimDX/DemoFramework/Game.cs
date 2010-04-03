@@ -109,20 +109,20 @@ namespace DemoFramework
             OnUpdate();
         }
 
-        protected void InputUpdate(Input input, Vector3 eye, Vector3 target, PhysicsContext physics)
+        protected void InputUpdate(Vector3 eye, Vector3 target, PhysicsContext physics)
         {
-            if (input == null)
+            if (Input == null)
                 return;
 
-            if (input.KeyboardDown.Count > 0)
+            if (Input.KeyboardDown.Count > 0)
             {
-                if (input.KeyboardDown.Contains(Key.Escape))
+                if (Input.KeyboardDown.Contains(Key.Escape))
                 {
                     Quit();
                     return;
                 }
 
-                if (input.KeyboardDown.Contains(Key.F11))
+                if (Input.KeyboardDown.Contains(Key.F11))
                     ToggleFullScreen();
 
                 // FIXME: this seems to mess up the collision object array
@@ -130,14 +130,14 @@ namespace DemoFramework
                 //    physics.ShootBox(Freelook.Eye, GetRayTo(input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView));
             }
 
-            if (input.MousePoint.IsEmpty)
+            if (Input.MousePoint.IsEmpty)
                 return;
 
-            if (input.MouseDown == MouseButtons.Right || input.MouseUp == MouseButtons.Right)
+            if (Input.MouseDown == MouseButtons.Right || Input.MouseUp == MouseButtons.Right)
             {
-                Vector3 rayTo = GetRayTo(input.MousePoint, eye, target, FieldOfView);
+                Vector3 rayTo = GetRayTo(Input.MousePoint, eye, target, FieldOfView);
 
-                if (input.MouseDown == MouseButtons.Right)
+                if (Input.MouseDown == MouseButtons.Right)
                 {
                     if (physics.World != null)
                     {
@@ -208,7 +208,7 @@ namespace DemoFramework
                         }
                     }
                 }
-                else if (input.MouseUp == MouseButtons.Right)
+                else if (Input.MouseUp == MouseButtons.Right)
                 {
                     if (pickConstraint != null && physics.World != null)
                     {
@@ -223,11 +223,11 @@ namespace DemoFramework
             }
 
             // Mouse movement
-            if (input.MouseButtons == MouseButtons.Right)
+            if (Input.MouseButtons == MouseButtons.Right)
             {
                 if (pickConstraint != null)
                 {
-                    Vector3 newRayTo = GetRayTo(input.MousePoint, eye, target, FieldOfView);
+                    Vector3 newRayTo = GetRayTo(Input.MousePoint, eye, target, FieldOfView);
 
                     if (pickConstraint.ConstraintType == TypedConstraintType.D6)
                     {

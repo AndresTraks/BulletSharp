@@ -122,7 +122,7 @@ namespace BasicDemo
                     physics.SetDebugDraw(Device, 0);
             }
 
-            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics);
+            InputUpdate(Freelook.Eye, Freelook.Target, physics);
             physics.Update(FrameDelta);
         }
 

@@ -115,7 +115,7 @@ namespace VehicleDemo
         {
             base.OnUpdate();
 
-            InputUpdate(Input, Freelook.Eye, Freelook.Target, physics);
+            InputUpdate(Freelook.Eye, Freelook.Target, physics);
 
             if (Input.KeyboardDown.Contains(Key.F2))
             {
