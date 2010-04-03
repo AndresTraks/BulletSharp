@@ -67,7 +67,7 @@ namespace BulletSharp
 #elif GRAPHICS_SLIMDX
 				Color4(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_NONE
-				Color::FromArgb(255, color.getX()*255, color.getY()*255, color.getY()*255)
+				Color::FromArgb(255, (int)(color.getX()*255), (int)(color.getY()*255), (int)(color.getY()*255))
 #endif
 			);
 		}
@@ -81,7 +81,7 @@ namespace BulletSharp
 #elif GRAPHICS_SLIMDX
 				Color4(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_NONE
-				Color::FromArgb(255, color.getX()*255, color.getY()*255, color.getY()*255)
+				Color::FromArgb(255, (int)(color.getX()*255), (int)(color.getY()*255), (int)(color.getY()*255))
 #endif
 			);
 		}

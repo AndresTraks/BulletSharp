@@ -676,6 +676,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\EmptyShape.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Generic6DofConstraint.cpp"
 				>
 			</File>
@@ -945,6 +949,10 @@
 					</File>
 					<File
 						RelativePath=".\src\CylinderShape.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\EmptyShape.h"
 						>
 					</File>
 					<File

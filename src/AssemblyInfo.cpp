@@ -10,7 +10,7 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyProductAttribute("BulletSharp")];
 [assembly:AssemblyCopyrightAttribute("Copyright (c) Andres Traks 2009-2010")];
 
-[assembly:AssemblyVersionAttribute("0.3")];
+[assembly:AssemblyVersionAttribute("0.4")];
 
 [assembly:ComVisible(false)];
 [assembly:CLSCompliantAttribute(true)];
