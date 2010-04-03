@@ -20,9 +20,11 @@
 #elif WIN64
 	#using <x64/SlimDX.dll>
 #endif
+#elif GRAPHICS_MOGRE
+	#using <Mogre.dll>
 #elif GRAPHICS_NONE
 #else
-	#define GRAPHICS_NONE
+	#define GRAPHICS_NONE 1
 #endif
 
 #if GRAPHICS_XNA31
@@ -31,6 +33,9 @@
 #elif GRAPHICS_SLIMDX
 	#define UsingFrameworkNamespace using namespace SlimDX;
 	#define UsingGraphicsNamespace using namespace SlimDX::Direct3D9;
+#elif GRAPHICS_MOGRE
+	#define UsingFrameworkNamespace using namespace Mogre;
+	#define UsingGraphicsNamespace
 #elif GRAPHICS_NONE
 	#define UsingFrameworkNamespace
 	#define UsingGraphicsNamespace

@@ -6,6 +6,8 @@ UsingFrameworkNamespace
 #include "Matrix.h"
 #include "Quaternion.h"
 #include "Vector3.h"
+#elif GRAPHICS_MOGRE
+#define Matrix Matrix4^
 #endif
 
 namespace BulletSharp

@@ -100,9 +100,7 @@ Vector3 DynamicsWorld::Gravity::get()
 
 void DynamicsWorld::Gravity::set(Vector3 value)
 {
-	btVector3* gravity = new btVector3(value.X,value.Y,value.Z);
-	UnmanagedPointer->setGravity(*gravity);
-	delete gravity;
+	UnmanagedPointer->setGravity(*Math::Vector3ToBtVector3(value));
 }
 
 ContactSolverInfo^ DynamicsWorld::SolverInfo::get()

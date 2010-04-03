@@ -30,6 +30,10 @@ namespace BulletSharp
 		virtual void DrawLine(Vector3 from, Vector3 to, Color4 color) {};
 		virtual void DrawBox(Vector3 bbMin, Vector3 bbMax, Matrix trans, Color4 color) {};
 		virtual void DrawTriangle(Vector3 v0, Vector3 v1, Color4 color) {};
+#elif GRAPHICS_MOGRE
+		virtual void DrawLine(Vector3 from, Vector3 to, Mogre::ColourValue color) {};
+		virtual void DrawBox(Vector3 bbMin, Vector3 bbMax, Matrix trans, Mogre::ColourValue color) {};
+		virtual void DrawTriangle(Vector3 v0, Vector3 v1, Mogre::ColourValue color) {};
 #elif GRAPHICS_NONE
 		virtual void DrawLine(Vector3 from, Vector3 to, Color color) {};
 		virtual void DrawBox(Vector3 bbMin, Vector3 bbMax, Matrix trans, Color color) {};
@@ -66,6 +70,8 @@ namespace BulletSharp
 				Microsoft::Xna::Framework::Graphics::Color(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_SLIMDX
 				Color4(color.getX(),color.getY(),color.getZ())
+#elif GRAPHICS_MOGRE
+				Mogre::ColourValue(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_NONE
 				Color::FromArgb(255, (int)(color.getX()*255), (int)(color.getY()*255), (int)(color.getY()*255))
 #endif
@@ -80,6 +86,8 @@ namespace BulletSharp
 				Microsoft::Xna::Framework::Graphics::Color(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_SLIMDX
 				Color4(color.getX(),color.getY(),color.getZ())
+#elif GRAPHICS_MOGRE
+				Mogre::ColourValue(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_NONE
 				Color::FromArgb(255, (int)(color.getX()*255), (int)(color.getY()*255), (int)(color.getY()*255))
 #endif

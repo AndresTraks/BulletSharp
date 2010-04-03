@@ -15,10 +15,7 @@ Vector3 WheelInfo::AxleCS::get()
 }
 void WheelInfo::AxleCS::set(Vector3 value)
 {
-	_wheelInfo->m_wheelAxleCS.m_floats[0] = value.X;
-	_wheelInfo->m_wheelAxleCS.m_floats[1] = value.Y;
-	_wheelInfo->m_wheelAxleCS.m_floats[2] = value.Z;
-	_wheelInfo->m_wheelAxleCS.m_floats[3] = 0;
+	Math::Vector3ToBtVector3(value, &_wheelInfo->m_wheelAxleCS);
 }
 
 btScalar WheelInfo::Brake::get()
@@ -36,10 +33,7 @@ Vector3 WheelInfo::ChassisConnectionPointCS::get()
 }
 void WheelInfo::ChassisConnectionPointCS::set(Vector3 value)
 {
-	_wheelInfo->m_chassisConnectionPointCS.m_floats[0] = value.X;
-	_wheelInfo->m_chassisConnectionPointCS.m_floats[1] = value.Y;
-	_wheelInfo->m_chassisConnectionPointCS.m_floats[2] = value.Z;
-	_wheelInfo->m_chassisConnectionPointCS.m_floats[3] = 0;
+	Math::Vector3ToBtVector3(value, &_wheelInfo->m_chassisConnectionPointCS);
 }
 
 IntPtr WheelInfo::ClientInfo::get()
@@ -93,10 +87,7 @@ Vector3 WheelInfo::DirectionCS::get()
 }
 void WheelInfo::DirectionCS::set(Vector3 value)
 {
-	_wheelInfo->m_wheelDirectionCS.m_floats[0] = value.X;
-	_wheelInfo->m_wheelDirectionCS.m_floats[1] = value.Y;
-	_wheelInfo->m_wheelDirectionCS.m_floats[2] = value.Z;
-	_wheelInfo->m_wheelDirectionCS.m_floats[3] = 0;
+	Math::Vector3ToBtVector3(value, &_wheelInfo->m_wheelDirectionCS);
 }
 
 btScalar WheelInfo::EngineForce::get()
@@ -222,26 +213,7 @@ Matrix WheelInfo::WorldTransform::get()
 }
 void WheelInfo::WorldTransform::set(Matrix value)
 {
-	btScalar m[15];
-
-	m[0] = value.M11;
-	m[1] = value.M12;
-	m[2] = value.M13;
-	m[3] = 0;
-	m[4] = value.M21;
-	m[5] = value.M22;
-	m[6] = value.M23;
-	m[7] = 0;
-	m[8] = value.M31;
-	m[9] = value.M32;
-	m[10] = value.M33;
-	m[11] = 0;
-	m[12] = value.M41;
-	m[13] = value.M42;
-	m[14] = value.M43;
-	m[15] = 1;
-
-	_wheelInfo->m_worldTransform.setFromOpenGLMatrix(m);
+	Math::MatrixToBtTransform(value, &_wheelInfo->m_worldTransform);
 }
 
 #endif

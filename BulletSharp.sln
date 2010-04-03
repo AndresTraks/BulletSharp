@@ -5,20 +5,26 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletSharp", "BulletSharp.
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Mogre|Win32 = Debug Mogre|Win32
 		Debug NoGfx|Win32 = Debug NoGfx|Win32
 		Debug SlimDX|Win32 = Debug SlimDX|Win32
 		Debug XNA 3.1|Win32 = Debug XNA 3.1|Win32
+		Release Mogre|Win32 = Release Mogre|Win32
 		Release NoGfx|Win32 = Release NoGfx|Win32
 		Release SlimDX|Win32 = Release SlimDX|Win32
 		Release XNA 3.1|Win32 = Release XNA 3.1|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Mogre|Win32.ActiveCfg = Debug Mogre|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Mogre|Win32.Build.0 = Debug Mogre|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug NoGfx|Win32.ActiveCfg = Debug NoGfx|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug NoGfx|Win32.Build.0 = Debug NoGfx|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimDX|Win32.ActiveCfg = Debug SlimDX|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimDX|Win32.Build.0 = Debug SlimDX|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug XNA 3.1|Win32.ActiveCfg = Debug XNA 3.1|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug XNA 3.1|Win32.Build.0 = Debug XNA 3.1|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Mogre|Win32.ActiveCfg = Release Mogre|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Mogre|Win32.Build.0 = Release Mogre|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release NoGfx|Win32.ActiveCfg = Release NoGfx|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release NoGfx|Win32.Build.0 = Release NoGfx|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimDX|Win32.ActiveCfg = Release SlimDX|Win32

@@ -198,9 +198,7 @@ Vector3 RigidBody::InvInertiaDiagLocal::get()
 }
 void RigidBody::InvInertiaDiagLocal::set(Vector3 value)
 {
-	btVector3* diagInvInertia = new btVector3(value.X,value.Y,value.Z);
-	UnmanagedPointer->setInvInertiaDiagLocal(*diagInvInertia);
-	delete diagInvInertia;
+	UnmanagedPointer->setInvInertiaDiagLocal(*Math::Vector3ToBtVector3(value));
 }
 
 Vector3 RigidBody::LinearFactor::get()
