@@ -55,20 +55,20 @@ Matrix BulletSharp::Math::BtTransformToMatrix(const btTransform* transform)
 	Matrix t = gcnew Mogre::Matrix4();
 	
 	t->m00 = m[0];
-	t->m01 = m[1];
-	t->m02 = m[2];
-	t->m03 = 0;
-	t->m10 = m[4];
+	t->m10 = m[1];
+	t->m20 = m[2];
+	t->m30 = 0;
+	t->m01 = m[4];
 	t->m11 = m[5];
-	t->m12 = m[6];
-	t->m13 = 0;
-	t->m20 = m[8];
-	t->m21 = m[9];
+	t->m21 = m[6];
+	t->m31 = 0;
+	t->m02 = m[8];
+	t->m12 = m[9];
 	t->m22 = m[10];
-	t->m23 = 0;
-	t->m30 = m[12];
-	t->m31 = m[13];
-	t->m32 = m[14];
+	t->m32 = 0;
+	t->m03 = m[12];
+	t->m13 = m[13];
+	t->m23 = m[14];
 	t->m33 = 1;
 
 	return t;
@@ -103,20 +103,20 @@ btTransform* BulletSharp::Math::MatrixToBtTransform(Matrix matrix)
 
 #ifdef GRAPHICS_MOGRE
 	m[0] = matrix->m00;
-	m[1] = matrix->m01;
-	m[2] = matrix->m02;
+	m[1] = matrix->m10;
+	m[2] = matrix->m20;
 	m[3] = 0;
-	m[4] = matrix->m10;
+	m[4] = matrix->m01;
 	m[5] = matrix->m11;
-	m[6] = matrix->m12;
+	m[6] = matrix->m21;
 	m[7] = 0;
-	m[8] = matrix->m20;
-	m[9] = matrix->m21;
+	m[8] = matrix->m02;
+	m[9] = matrix->m12;
 	m[10] = matrix->m22;
 	m[11] = 0;
-	m[12] = matrix->m30;
-	m[13] = matrix->m31;
-	m[14] = matrix->m32;
+	m[12] = matrix->m03;
+	m[13] = matrix->m13;
+	m[14] = matrix->m23;
 	m[15] = 1;
 #else
 	m[0] = matrix.M11;
@@ -148,20 +148,20 @@ void BulletSharp::Math::MatrixToBtTransform(Matrix matrix, btTransform* t)
 
 #ifdef GRAPHICS_MOGRE
 	m[0] = matrix->m00;
-	m[1] = matrix->m01;
-	m[2] = matrix->m02;
+	m[1] = matrix->m10;
+	m[2] = matrix->m20;
 	m[3] = 0;
-	m[4] = matrix->m10;
+	m[4] = matrix->m01;
 	m[5] = matrix->m11;
-	m[6] = matrix->m12;
+	m[6] = matrix->m21;
 	m[7] = 0;
-	m[8] = matrix->m20;
-	m[9] = matrix->m21;
+	m[8] = matrix->m02;
+	m[9] = matrix->m12;
 	m[10] = matrix->m22;
 	m[11] = 0;
-	m[12] = matrix->m30;
-	m[13] = matrix->m31;
-	m[14] = matrix->m32;
+	m[12] = matrix->m03;
+	m[13] = matrix->m13;
+	m[14] = matrix->m23;
 	m[15] = 1;
 #else
 	m[0] = matrix.M11;

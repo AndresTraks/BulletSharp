@@ -1,6 +1,5 @@
 ﻿using BulletSharp;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Mogre;
 
 namespace BasicDemo
 {
@@ -10,11 +9,10 @@ namespace BasicDemo
 
         CollisionDispatcher Dispatcher;
         BroadphaseInterface Broadphase;
-        //ConstraintSolver Solver;
-        CollisionShapeArray CollisionShapes;
+        CollisionShapeArray CollisionShapes = new CollisionShapeArray();
 
         ///create 125 (5x5x5) dynamic objects
-        int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
+        public int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
 
         ///scaling of the objects (0.1 = 20 centimeter boxes )
         float StartPosX = -5;
@@ -34,12 +32,10 @@ namespace BasicDemo
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, null, collisionConf);
             World.Gravity = new Vector3(0, -10, 0);
 
-            CollisionShapes = new CollisionShapeArray();
-
             // create the ground
             CollisionShape groundShape = new BoxShape(50, 1, 50);
             CollisionShapes.PushBack(groundShape);
-            CollisionObject ground = LocalCreateRigidBody(0, Matrix.Identity, groundShape);
+            CollisionObject ground = LocalCreateRigidBody(0, Matrix4.IDENTITY, groundShape);
             ground.UserObject = "Ground";
 
             // create a few dynamic rigidbodies
@@ -60,7 +56,8 @@ namespace BasicDemo
                 {
                     for (j = 0; j < ArraySizeZ; j++)
                     {
-                        Matrix startTransform = Matrix.CreateTranslation(
+                        Matrix4 startTransform = new Matrix4();
+                        startTransform.MakeTrans(
                             new Vector3(
                                 2*i + start_x,
                                 2*k + start_y,
@@ -89,11 +86,11 @@ namespace BasicDemo
             World.StepSimulation(elapsedTime);
         }
 
-        public RigidBody LocalCreateRigidBody(float mass, Matrix startTransform, CollisionShape shape)
+        public RigidBody LocalCreateRigidBody(float mass, Matrix4 startTransform, CollisionShape shape)
         {
             bool isDynamic = (mass != 0.0f);
 
-            Vector3 localInertia = Vector3.Zero;
+            Vector3 localInertia = Vector3.ZERO;
             if (isDynamic)
                 shape.CalculateLocalInertia(mass, out localInertia);
 
@@ -105,32 +102,6 @@ namespace BasicDemo
             World.AddRigidBody(body);
 
             return body;
-        }
-
-        public class PhysicsDebugDraw : DebugDraw
-        {
-            GraphicsDevice device;
-            VertexDeclaration vertexDeclaration;
-
-            public PhysicsDebugDraw(GraphicsDevice device, BasicEffect effect)
-            {
-                this.device = device;
-                vertexDeclaration = new VertexDeclaration(device, VertexPositionColor.VertexElements);
-            }
-
-            public override void DrawLine(Vector3 from, Vector3 to, Color color)
-            {
-                VertexPositionColor[] vertices = new VertexPositionColor[2];
-                vertices[0] = new VertexPositionColor(from, color);
-                vertices[1] = new VertexPositionColor(to, color);
-                device.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.LineList, vertices, 0, 1);
-            }
-
-            public void DrawDebugWorld(DynamicsWorld world)
-            {
-                device.VertexDeclaration = vertexDeclaration;
-                world.DebugDrawWorld();
-            }
         }
     }
 }
