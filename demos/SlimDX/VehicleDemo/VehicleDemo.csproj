@@ -60,4 +60,9 @@
       <Name>DemoFramework</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="heightfield128x128.raw">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

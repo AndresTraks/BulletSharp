@@ -11,7 +11,7 @@ namespace VehicleDemo
     class VehicleDemo : Game
     {
         int Width = 1024, Height = 768;
-        Color ambient = Color.Gray;
+        Color ambient = Color.Black;
         Vector3 eye = new Vector3(5, 15, 5);
         Vector3 target = Vector3.Zero;
         int ViewMode = 1;
@@ -70,13 +70,10 @@ namespace VehicleDemo
 
             light = new Light();
             light.Type = LightType.Point;
-            light.Range = 200;
+            light.Range = 300;
             light.Position = new Vector3(10, 25, 10);
             light.Diffuse = Color.LemonChiffon;
-            light.Attenuation1 = 0.03f;
-
-            //light.Type = LightType.Directional;
-            //light.Direction = new Vector3(-1, -1, -1);
+            light.Attenuation0 = 0.5f;
 
             wheelMaterial = new Material();
             wheelMaterial.Diffuse = Color.Black;
@@ -109,6 +106,7 @@ namespace VehicleDemo
             Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 400.0f);
 
             Device.SetTransform(TransformState.Projection, Projection);
+            Device.SetRenderState(RenderState.CullMode, Cull.None);
         }
 
         protected override void OnUpdate()
@@ -179,8 +177,16 @@ namespace VehicleDemo
             }
 
             Device.Material = groundMaterial;
-            Device.SetTransform(TransformState.World, Matrix.Translation(0, -4.5f, 0));
+            Device.SetTransform(TransformState.World, Matrix.Identity);
             ground.DrawSubset(0);
+
+            // Draw wireframe
+            Device.SetRenderState(RenderState.Lighting, false);
+            Device.SetRenderState(RenderState.FillMode, FillMode.Wireframe);
+            ground.DrawSubset(0);
+            Device.SetRenderState(RenderState.Lighting, true);
+            Device.SetRenderState(RenderState.FillMode, FillMode.Solid);
+
 
             Device.Material = bodyMaterial;
             Device.SetTransform(TransformState.World, trans);

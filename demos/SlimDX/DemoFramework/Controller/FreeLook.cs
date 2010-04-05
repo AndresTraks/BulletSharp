@@ -30,7 +30,6 @@ namespace DemoFramework
             private set;
         }
 
-        Vector3 upVector = Vector3.UnitY;
         MouseController mouseController;
 
         public FreeLook()

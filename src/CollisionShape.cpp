@@ -193,3 +193,7 @@ btCollisionShape* CollisionShape::UnmanagedPointer::get()
 {
 	return _collisionShape;
 }
+void CollisionShape::UnmanagedPointer::set(btCollisionShape* value)
+{
+	_collisionShape = value;
+}

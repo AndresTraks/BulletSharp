@@ -848,6 +848,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\HeightfieldTerrainShape.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Hinge2Constraint.cpp"
 				>
 			</File>
@@ -1113,6 +1117,10 @@
 					</File>
 					<File
 						RelativePath=".\src\EmptyShape.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\HeightfieldTerrainShape.h"
 						>
 					</File>
 					<File

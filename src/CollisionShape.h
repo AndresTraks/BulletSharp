@@ -116,6 +116,7 @@ namespace BulletSharp
 		property btCollisionShape* UnmanagedPointer
 		{
 			btCollisionShape* get();
+			void set(btCollisionShape* value);
 		}
 	};
 };

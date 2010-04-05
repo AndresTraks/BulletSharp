@@ -48,7 +48,7 @@ namespace DemoFramework
             }
         }
 
-        public void OnRender(float frameDelta)
+        public void OnRender(float framesPerSecond)
         {
             if (IsEnabled == false)
                 return;
@@ -56,7 +56,7 @@ namespace DemoFramework
             fontSprite.Begin(SlimDX.Direct3D9.SpriteFlags.AlphaBlend);
 
             fontSprite.Transform = Matrix.Translation(0, 0, 0.5f);
-            font.DrawString(fontSprite, "FPS: " + frameDelta.ToString("0.00", CultureInfo.InvariantCulture), 0, 0, Color.Red.ToArgb());
+            font.DrawString(fontSprite, "FPS: " + framesPerSecond.ToString("0.00", CultureInfo.InvariantCulture), 0, 0, Color.Red.ToArgb());
 
             if (Text.Length > 0)
                 font.DrawString(fontSprite, Text, 0, 20, Color.Red.ToArgb());

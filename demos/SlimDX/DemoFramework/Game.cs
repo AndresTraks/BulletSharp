@@ -486,35 +486,35 @@ namespace DemoFramework
 
         public void ToggleFullScreen()
         {
-            if (Context9 != null)
-            {
-                OnResourceUnload();
+            if (Context9 == null)
+                return;
 
-                if (Context9.PresentParameters.Windowed)
-                {
-                    tempWindowWidth = Form.ClientSize.Width;
-                    tempWindowHeight = Form.ClientSize.Height;
-                    Context9.PresentParameters.BackBufferWidth = System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width;
-                    Context9.PresentParameters.BackBufferHeight = System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Height;
-                    Form.ClientSize = new System.Drawing.Size(
-                        Context9.PresentParameters.BackBufferWidth,
-                        Context9.PresentParameters.BackBufferHeight
-                        );
-                }
-                else
-                {
-                    if (tempWindowWidth > 0 && tempWindowHeight > 0)
-                    {
-                        Context9.PresentParameters.BackBufferWidth = tempWindowWidth;
-                        Context9.PresentParameters.BackBufferHeight = tempWindowHeight;
-                        Form.ClientSize = new System.Drawing.Size(
-                            tempWindowWidth, tempWindowHeight);
-                    }
-                }
-                Context9.PresentParameters.Windowed = !Context9.PresentParameters.Windowed;
-                Device9.Reset(Context9.PresentParameters);
-                OnResourceLoad();
+            OnResourceUnload();
+
+            if (Context9.PresentParameters.Windowed)
+            {
+                tempWindowWidth = Form.ClientSize.Width;
+                tempWindowHeight = Form.ClientSize.Height;
+                Context9.PresentParameters.BackBufferWidth = System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width;
+                Context9.PresentParameters.BackBufferHeight = System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Height;
+                Form.ClientSize = new System.Drawing.Size(
+                    Context9.PresentParameters.BackBufferWidth,
+                    Context9.PresentParameters.BackBufferHeight
+                    );
             }
+            else
+            {
+                if (tempWindowWidth > 0 && tempWindowHeight > 0)
+                {
+                    Context9.PresentParameters.BackBufferWidth = tempWindowWidth;
+                    Context9.PresentParameters.BackBufferHeight = tempWindowHeight;
+                    Form.ClientSize = new System.Drawing.Size(
+                        tempWindowWidth, tempWindowHeight);
+                }
+            }
+            Context9.PresentParameters.Windowed = !Context9.PresentParameters.Windowed;
+            Device9.Reset(Context9.PresentParameters);
+            OnResourceLoad();
         }
     }
 }
