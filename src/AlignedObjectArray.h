@@ -403,6 +403,43 @@ namespace BulletSharp
 	};
 
 #ifndef DISABLE_SOFTBODY
+	public ref class MaterialArray : AlignedObjectArray
+	{
+	internal:
+		MaterialArray(btSoftBody::tMaterialArray* materialArray);
+
+	public:
+		MaterialArray();
+
+		void Clear();
+		void PopBack();
+		void PushBack(SoftBody::Material^ material);
+		void Remove(SoftBody::Material^ material);
+		void Swap(int index0, int index1);
+
+		property int Size
+		{
+			int get();
+		}
+
+		property int Capacity
+		{
+			int get();
+		}
+
+		property SoftBody::Material^ default [int]
+		{
+			SoftBody::Material^ get (int index);
+			void set(int index, SoftBody::Material^);
+		}
+
+	internal:
+		property btSoftBody::tMaterialArray* UnmanagedPointer
+		{
+			virtual btSoftBody::tMaterialArray* get() new;
+		}
+	};
+
 	public ref class NodeArray : AlignedObjectArray
 	{
 	internal:

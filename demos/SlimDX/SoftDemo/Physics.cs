@@ -7,12 +7,12 @@ namespace BasicDemo
 {
     class Physics : PhysicsContext
     {
-        int numObjects = 1;
+        //int numObjects = 1;
         public float Scaling = 1;
-        float waveHeight = 5;
-        float triangleHeight=8;
-        float CubeHalfExtents = 1.5f;
-        float extraHeight = -10.0f;
+        //float waveHeight = 5;
+        //float triangleHeight=8;
+        //float CubeHalfExtents = 1.5f;
+        //float extraHeight = -10.0f;
 
         SoftBodyWorldInfo softBodyWorldInfo;
 
@@ -109,13 +109,14 @@ namespace BasicDemo
 
         void Init_Ropes()
         {
-	        for(int i=0; i<15; i++)
+            const int n = 15;
+            for (int i = 0; i < n; i++)
 	        {
                 SoftBody psb = SoftBodyHelpers.CreateRope(softBodyWorldInfo,
                     new Vector3(-10, 0, i * 0.25f),
 			        new Vector3(10, 0, i*0.25f), 16, 1+2);
                 psb.Cfg.PIterations = 4;
-		        //psb->m_materials[0]->m_kLST	=	0.1+(i/(btScalar)(n-1))*0.9;
+		        psb.Materials[0].Lst = 0.1f + (i/(float)(n-1)) * 0.9f;
 		        psb.TotalMass = 20;
                 SoftWorld.AddSoftBody(psb);
 	        }
@@ -224,7 +225,7 @@ namespace BasicDemo
 	        psb.CollisionShape.Margin = 0.01f;
             psb.Cfg.Collisions = SoftBody.FCollisions.ClSs | SoftBody.FCollisions.ClRs;
                 // | SoftBody.FCollisions.ClSelf;
-            //psb.Materials[0].Lst == 0.8f;
+            psb.Materials[0].Lst = 0.8f;
 	        cutting=true;
         }
 
@@ -271,7 +272,7 @@ namespace BasicDemo
             //Init_RbUpStack(5);
             //Init_LinearStair(8);
             //Init_ClothAttach();
-            //Init_Ropes();
+            Init_Ropes();
             //Init_RopeAttach();
         }
 

@@ -666,6 +666,74 @@ btManifoldArray* ManifoldArray::UnmanagedPointer::get()
 
 
 #ifndef DISABLE_SOFTBODY
+BulletSharp::MaterialArray::MaterialArray(btSoftBody::tMaterialArray* materialArray)
+: AlignedObjectArray(materialArray)
+{
+}
+
+BulletSharp::MaterialArray::MaterialArray()
+: AlignedObjectArray(new btAlignedObjectArray<btSoftBody::Material>)
+{
+}
+
+void BulletSharp::MaterialArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+void BulletSharp::MaterialArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+void BulletSharp::MaterialArray::PushBack(SoftBody::Material^ material)
+{
+	UnmanagedPointer->push_back(material->UnmanagedPointer);
+}
+
+void BulletSharp::MaterialArray::Remove(SoftBody::Material^ material)
+{
+	UnmanagedPointer->remove(&(*material->UnmanagedPointer));
+}
+
+int BulletSharp::MaterialArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int BulletSharp::MaterialArray::Size::get()
+{
+	return UnmanagedPointer->size();
+}
+
+void BulletSharp::MaterialArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+SoftBody::Material^ BulletSharp::MaterialArray::default::get(int index)
+{
+	return gcnew SoftBody::Material((*UnmanagedPointer)[index]);
+}
+
+#pragma managed(push, off)
+void MaterialArray_GetDefault(btSoftBody::tMaterialArray* materialArray,
+	int index, btSoftBody::Material* material)
+{
+	(*materialArray)[index] = material;
+}
+#pragma managed(pop)
+void BulletSharp::MaterialArray::default::set(int index, SoftBody::Material^ value)
+{
+	MaterialArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+}
+
+btSoftBody::tMaterialArray* BulletSharp::MaterialArray::UnmanagedPointer::get()
+{
+	return (btSoftBody::tMaterialArray*)AlignedObjectArray::UnmanagedPointer;
+}
+
+
 BulletSharp::NodeArray::NodeArray(btAlignedObjectArray<btSoftBody::Node>* nodeArray)
 : AlignedObjectArray(nodeArray)
 {

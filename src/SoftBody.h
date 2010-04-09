@@ -11,6 +11,7 @@ namespace BulletSharp
 	ref class BroadphaseInterface;
 	ref class Dispatcher;
 	ref class FaceArray;
+	ref class MaterialArray;
 	ref class NodeArray;
 	ref class RigidBody;
 	ref class SparseSdf;
@@ -192,10 +193,28 @@ namespace BulletSharp
 		internal:
 			Material(btSoftBody::Material* material);
 		public:
+			property btScalar Ast
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
 			property FMaterial Flags
 			{
 				FMaterial get();
 				void set(FMaterial value);
+			}
+
+			property btScalar Lst
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar Vst
+			{
+				btScalar get();
+				void set(btScalar value);
 			}
 
 		internal:
@@ -297,6 +316,12 @@ namespace BulletSharp
 		{
 			FaceArray^ get();
 			void set(FaceArray^ value);
+		}
+
+		property MaterialArray^ Materials
+		{
+			MaterialArray^ get();
+			void set(MaterialArray^ value);
 		}
 
 		property NodeArray^ Nodes

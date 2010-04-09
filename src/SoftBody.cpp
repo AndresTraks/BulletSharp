@@ -241,6 +241,15 @@ SoftBody::Material::Material(btSoftBody::Material* material)
 {
 }
 
+btScalar SoftBody::Material::Ast::get()
+{
+	return UnmanagedPointer->m_kAST;
+}
+void SoftBody::Material::Ast::set(btScalar value)
+{
+	UnmanagedPointer->m_kAST = value;
+}
+
 SoftBody::FMaterial SoftBody::Material::Flags::get()
 {
 	return (FMaterial)UnmanagedPointer->m_flags;
@@ -248,6 +257,24 @@ SoftBody::FMaterial SoftBody::Material::Flags::get()
 void SoftBody::Material::Flags::set(FMaterial value)
 {
 	UnmanagedPointer->m_flags = (int)value;
+}
+
+btScalar SoftBody::Material::Lst::get()
+{
+	return UnmanagedPointer->m_kLST;
+}
+void SoftBody::Material::Lst::set(btScalar value)
+{
+	UnmanagedPointer->m_kAST = value;
+}
+
+btScalar SoftBody::Material::Vst::get()
+{
+	return UnmanagedPointer->m_kVST;
+}
+void SoftBody::Material::Vst::set(btScalar value)
+{
+	UnmanagedPointer->m_kVST = value;
 }
 
 btSoftBody::Material* SoftBody::Material::UnmanagedPointer::get()
@@ -407,6 +434,15 @@ BulletSharp::FaceArray^ SoftBody::Faces::get()
 void SoftBody::Faces::set(BulletSharp::FaceArray^ value)
 {
 	UnmanagedPointer->m_faces = *value->UnmanagedPointer;
+}
+
+BulletSharp::MaterialArray^ SoftBody::Materials::get()
+{
+	return gcnew MaterialArray(&UnmanagedPointer->m_materials);
+}
+void SoftBody::Materials::set(BulletSharp::MaterialArray^ value)
+{
+	UnmanagedPointer->m_materials = *value->UnmanagedPointer;
 }
 
 BulletSharp::NodeArray^ SoftBody::Nodes::get()

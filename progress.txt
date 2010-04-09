@@ -80,7 +80,7 @@ x HeightfieldTerrainShape
 0 PolyhedralConvexShape
 - ScaledBvhTriangleMeshShape
 - ShapeHull
-0 SphereShape
+x SphereShape
 0 StaticPlaneShape
 0 StridingMeshInterface
 - TetrahedronShape
