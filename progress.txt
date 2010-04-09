@@ -25,7 +25,7 @@ x SimpleBroadphase
 
 Collision/CollisionDispatch
 
-0 ActivatingCollisionAlgorithm
+x ActivatingCollisionAlgorithm
 x Box2dBox2dCollisionAlgorithm
 x BoxBoxCollisionAlgorithm
 x BoxBoxDetector
@@ -68,3 +68,27 @@ x Convex2dShape
 x ConvexInternalShape
 0 ConvexPointCloudShape
 0 ConvexShape
+- ConvexTriangleMeshShape
+x CylinderShape
+x EmptyShape
+x HeightfieldTerrainShape
+- Material
+- MinkowskiSumShape
+- MultiMaterialTriangleMeshShape
+- MultiSphereShape
+- OptimizedBvh
+0 PolyhedralConvexShape
+- ScaledBvhTriangleMeshShape
+- ShapeHull
+0 SphereShape
+0 StaticPlaneShape
+0 StridingMeshInterface
+- TetrahedronShape
+- TriangleBuffer
+- TriangleCallback
+0 TriangleIndexVertexArray
+- TriangleInfoMap
+- TriangleMesh
+- TriangleMeshShape
+- TriangleShape
+- UniformScalingShape

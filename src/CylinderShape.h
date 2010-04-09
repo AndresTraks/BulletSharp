@@ -1,18 +1,38 @@
 #pragma once
 
+// Fully implemented as of 10 Apr 2010
+
 #include "ConvexInternalShape.h"
 
 namespace BulletSharp
 {
 	public ref class CylinderShape : ConvexInternalShape
 	{
+	internal:
+		CylinderShape(btCylinderShape* shape);
 	public:
 		CylinderShape(Vector3 halfExtents);
 		CylinderShape(btScalar halfExtentsX, btScalar halfExtentsY, btScalar halfExtentsZ);
 		CylinderShape(btScalar halfExtents);
+
+		property Vector3 HalfExtentsWithMargin
+		{
+			Vector3 get();
+		}
+
+		property Vector3 HalfExtentsWithoutMargin
+		{
+			Vector3 get();
+		}
+
+	internal:
+		property btCylinderShape* UnmanagedPointer
+		{
+			btCylinderShape* get() new;
+		}
 	};
 
-	public ref class CylinderShapeX : ConvexInternalShape
+	public ref class CylinderShapeX : CylinderShape
 	{
 	public:
 		CylinderShapeX(Vector3 halfExtents);
@@ -20,7 +40,7 @@ namespace BulletSharp
 		CylinderShapeX(btScalar halfExtents);
 	};
 
-	public ref class CylinderShapeZ : ConvexInternalShape
+	public ref class CylinderShapeZ : CylinderShape
 	{
 	public:
 		CylinderShapeZ(Vector3 halfExtents);
