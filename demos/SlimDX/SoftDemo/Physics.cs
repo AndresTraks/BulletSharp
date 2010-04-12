@@ -272,7 +272,7 @@ namespace BasicDemo
             //Init_RbUpStack(5);
             //Init_LinearStair(8);
             //Init_ClothAttach();
-            Init_Ropes();
+            //Init_Ropes();
             //Init_RopeAttach();
         }
 

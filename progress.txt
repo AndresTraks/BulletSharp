@@ -81,7 +81,7 @@ x HeightfieldTerrainShape
 - ScaledBvhTriangleMeshShape
 - ShapeHull
 x SphereShape
-0 StaticPlaneShape
+x StaticPlaneShape
 0 StridingMeshInterface
 - TetrahedronShape
 - TriangleBuffer

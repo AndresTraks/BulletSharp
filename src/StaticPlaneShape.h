@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 12 Apr 2010
+
 #include "ConcaveShape.h"
 
 namespace BulletSharp
@@ -8,6 +10,16 @@ namespace BulletSharp
 	{
 	public:
 		StaticPlaneShape(Vector3 planeNormal, btScalar planeConstant);
+
+		property btScalar PlaneConstant
+		{
+			btScalar get();
+		}
+
+		property Vector3 PlaneNormal
+		{
+			Vector3 get();
+		}
 
 	internal:
 		property btStaticPlaneShape* UnmanagedPointer
