@@ -21,7 +21,7 @@ HeightfieldTerrainShape::HeightfieldTerrainShape(int heightStickWidth, int heigh
 		typeSize = 2;
 		break;
 	case PhyScalarType::PhyFloat:
-		typeSize = 3;
+		typeSize = 4;
 		break;
 	default:
 		throw gcnew Exception("Bad height data type");
