@@ -65,7 +65,7 @@ namespace VehicleDemo
             Vector3 worldMin = new Vector3(-10000, -10000, -10000);
             Vector3 worldMax = new Vector3(10000, 10000, 10000);
             Broadphase = new AxisSweep3(worldMin, worldMax);
-            //broadphase = new DbvtBroadphase();
+            //Broadphase = new DbvtBroadphase();
 
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, collisionConf);
 
@@ -153,25 +153,39 @@ namespace VehicleDemo
 
                 int width = 40, length = 40;
                 //int width = 128, length = 128; // Debugging is too slow for this
-                float scale = 15.0f;
-                float maxHeight = 20.0f;
-                float heightScale = maxHeight / 500f;
-                bool flipQuadEdges = false;
+                float maxHeight = 10.0f;
+                float heightScale = maxHeight / 256.0f;
+                Vector3 scale = new Vector3(20.0f, maxHeight, 20.0f);
 
-                FileStream file = new FileStream(heightfieldFile, FileMode.Open, FileAccess.Read);
-                HeightfieldTerrainShape heightterrainShape = new HeightfieldTerrainShape(width, length, file, heightScale, 0, maxHeight, upIndex, PhyScalarType.PhyUChar, flipQuadEdges);
+                //PhyScalarType scalarType = PhyScalarType.PhyUChar;
+                //FileStream file = new FileStream(heightfieldFile, FileMode.Open, FileAccess.Read);
+                
+                // Use float data
+                PhyScalarType scalarType = PhyScalarType.PhyFloat;
+                byte[] terr = new byte[width*length*4];
+                MemoryStream file = new MemoryStream(terr);
+                BinaryWriter writer = new BinaryWriter(file);
+                for (i = 0; i < width; i++ )
+                    for (int j = 0; j < length; j++)
+                        writer.Write((float)((maxHeight / 2) + 4 * Math.Sin(j * 0.5f) * Math.Cos(i)));
+                writer.Flush();
+                file.Position = 0;
+                
+                HeightfieldTerrainShape heightterrainShape = new HeightfieldTerrainShape(width, length,
+                    file, heightScale, 0, maxHeight, upIndex, scalarType, false);
                 heightterrainShape.SetUseDiamondSubdivision(true);
 
                 groundShape = heightterrainShape;
-                groundShape.LocalScaling = new Vector3(scale, 1, scale);
+                groundShape.LocalScaling = new Vector3(scale.X, 1, scale.Z);
 
-                tr = Matrix.Translation(-scale / 2, 10, -scale / 2);
-                vehicleTr = Matrix.Translation(new Vector3(0,3,0));
+                tr = Matrix.Translation(new Vector3(-scale.X / 2, scale.Y / 2, -scale.Z / 2));
+                vehicleTr = Matrix.Translation(new Vector3(20,3,-3));
 
                 
                 // Create graphics object
 
                 file.Position = 0;
+                BinaryReader reader = new BinaryReader(file);
 
                 int totalTriangles = (width - 1) * (length - 1) * 2;
                 int totalVerts = width * length;
@@ -182,11 +196,24 @@ namespace VehicleDemo
                 {
                     for (int j = 0; j < length; j++)
                     {
-                        float height = heightScale * file.ReadByte();
+                        float height;
+                        if (scalarType == PhyScalarType.PhyFloat)
+                        {
+                            // heightScale isn't applied internally for float data
+                            height = reader.ReadSingle();
+                        }
+                        else if (scalarType == PhyScalarType.PhyUChar)
+                        {
+                            height = file.ReadByte() * heightScale;
+                        }
+                        else
+                        {
+                            height = 0.0f;
+                        }
 
-                        data.Write((j - length * 0.5f) * scale);
+                        data.Write((j - length * 0.5f) * scale.X);
                         data.Write(height);
-                        data.Write((i - width * 0.5f) * scale);
+                        data.Write((i - width * 0.5f) * scale.Z);
 
                         // Normals will be calculated later
                         data.Write(0.0f);
@@ -215,6 +242,7 @@ namespace VehicleDemo
             }
 
             CollisionShapes.PushBack(groundShape);
+
 
             //create ground object
             LocalCreateRigidBody(0, tr, groundShape);
