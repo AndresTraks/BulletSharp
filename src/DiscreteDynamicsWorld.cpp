@@ -16,7 +16,7 @@ DiscreteDynamicsWorld::DiscreteDynamicsWorld(btDiscreteDynamicsWorld* world)
 #ifndef DISABLE_CONSTRAINTS
 
 DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher,
-	BroadphaseInterface^ pairCache, ConstraintSolver^ constraintSolver,
+	BroadphaseInterface^ pairCache, BulletSharp::ConstraintSolver^ constraintSolver,
 	CollisionConfiguration^ collisionConfiguration)
 : DynamicsWorld(new btDiscreteDynamicsWorld(dispatcher->UnmanagedPointer,
 		pairCache->UnmanagedPointer,

@@ -14,10 +14,18 @@
 #include "SoftBody.h"
 
 SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatcher,
-	BroadphaseInterface^ pairCache, ConstraintSolver^ constraintSolver,
+	BroadphaseInterface^ pairCache,
+#ifndef DISABLE_CONSTRAINTS
+	BulletSharp::ConstraintSolver^ constraintSolver,
+#endif
 	CollisionConfiguration^ collisionConfiguration)
 : DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->UnmanagedPointer,
-		pairCache->UnmanagedPointer, constraintSolver->UnmanagedPointer,
+		pairCache->UnmanagedPointer,
+#ifndef DISABLE_CONSTRAINTS
+		(constraintSolver != nullptr) ? constraintSolver->UnmanagedPointer : 0,
+#else
+		nullptr,
+#endif
 		collisionConfiguration->UnmanagedPointer))
 {
 	_dispatcher = dispatcher;

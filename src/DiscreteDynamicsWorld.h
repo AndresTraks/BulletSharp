@@ -14,7 +14,7 @@ namespace BulletSharp
 	public:
 #ifndef DISABLE_CONSTRAINTS
 		DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher,
-			BroadphaseInterface^ pairCache, ConstraintSolver^ constraintSolver,
+			BroadphaseInterface^ pairCache, BulletSharp::ConstraintSolver^ constraintSolver,
 			CollisionConfiguration^ collisionConfiguration);
 #else
 		DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher,

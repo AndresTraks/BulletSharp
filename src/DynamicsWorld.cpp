@@ -1,12 +1,16 @@
 #include "StdAfx.h"
 
 #include "ActionInterface.h"
+#include "ConstraintSOlver.h"
 #include "ContactSolverInfo.h"
 #include "DynamicsWorld.h"
 #include "RigidBody.h"
 #ifndef DISABLE_CONSTRAINTS
 #include "TypedConstraint.h"
 #endif
+
+#define __GCHANDLE_TO_VOIDPTR(x) ((GCHandle::operator System::IntPtr(x)).ToPointer())
+#define __VOIDPTR_TO_GCHANDLE(x) (GCHandle::operator GCHandle(System::IntPtr(x)))
 
 DynamicsWorld::RayResultCallback::RayResultCallback(btDynamicsWorld::RayResultCallback* callback)
 {
@@ -52,14 +56,19 @@ DynamicsWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3 rayFro
 }
 
 
-void DynamicsWorld::AddRigidBody(RigidBody^ rigidBody)
+DynamicsWorld::DynamicsWorld(btDynamicsWorld* world)
+: CollisionWorld(world)
 {
-	UnmanagedPointer->addRigidBody(rigidBody->UnmanagedPointer);
 }
 
 void DynamicsWorld::AddAction(ActionInterface^ actionInterface)
 {
 	UnmanagedPointer->addAction(actionInterface->UnmanagedPointer);
+}
+
+void DynamicsWorld::AddRigidBody(RigidBody^ rigidBody)
+{
+	UnmanagedPointer->addRigidBody(rigidBody->UnmanagedPointer);
 }
 
 #ifndef DISABLE_CONSTRAINTS
@@ -79,12 +88,68 @@ void DynamicsWorld::RemoveConstraint(TypedConstraint^ constraint)
 {
 	UnmanagedPointer->removeConstraint(constraint->UnmanagedPointer);
 }
+
+TypedConstraint^ DynamicsWorld::GetConstraint(int index)
+{
+	return gcnew TypedConstraint(UnmanagedPointer->getConstraint(index));
+}
 #endif
+
+void DynamicsWorld::ClearForces()
+{
+	UnmanagedPointer->clearForces();
+}
+
+void DynamicsWorld::RemoveAction(ActionInterface^ actionInterface)
+{
+	UnmanagedPointer->removeAction(actionInterface->UnmanagedPointer);
+}
+
+void DynamicsWorld::RemoveRigidBody(RigidBody^ rigidBody)
+{
+	UnmanagedPointer->removeRigidBody(rigidBody->UnmanagedPointer);
+}
+
+void DynamicsWorld::StepSimulation(btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep)
+{
+	UnmanagedPointer->stepSimulation(timeStep, maxSubSteps, fixedTimeStep);
+}
+
+void DynamicsWorld::StepSimulation(btScalar timeStep, int maxSubSteps)
+{
+	UnmanagedPointer->stepSimulation(timeStep, maxSubSteps);
+}
 
 void DynamicsWorld::StepSimulation(btScalar timeStep)
 {
 	UnmanagedPointer->stepSimulation(timeStep);
 }
+
+void DynamicsWorld::SynchronizeMotionStates()
+{
+	UnmanagedPointer->synchronizeMotionStates();
+}
+
+#ifndef DISABLE_CONSTRAINTS
+ConstraintSolver^ DynamicsWorld::ConstraintSolver::get()
+{
+	return gcnew BulletSharp::ConstraintSolver(UnmanagedPointer->getConstraintSolver());
+}
+void DynamicsWorld::ConstraintSolver::set(BulletSharp::ConstraintSolver^ value)
+{
+	UnmanagedPointer->setConstraintSolver(value->UnmanagedPointer);
+}
+
+int DynamicsWorld::NumConstraints::get()
+{
+	return UnmanagedPointer->getNumConstraints();
+}
+
+ContactSolverInfo^ DynamicsWorld::SolverInfo::get()
+{
+	return gcnew ContactSolverInfo(&UnmanagedPointer->getSolverInfo());
+}
+#endif
 
 #pragma managed(push, off)
 btVector3* World_GetGravity(btDynamicsWorld* world)
@@ -103,9 +168,27 @@ void DynamicsWorld::Gravity::set(Vector3 value)
 	UnmanagedPointer->setGravity(*Math::Vector3ToBtVector3(value));
 }
 
-ContactSolverInfo^ DynamicsWorld::SolverInfo::get()
+Object^ DynamicsWorld::WorldUserInfo::get()
 {
-	return gcnew ContactSolverInfo(&UnmanagedPointer->getSolverInfo());
+	void* obj = UnmanagedPointer->getWorldUserInfo();
+	if (obj == nullptr)
+		return nullptr;
+	return static_cast<Object^>(__VOIDPTR_TO_GCHANDLE(obj).Target);
+}
+
+void DynamicsWorld::WorldUserInfo::set(Object^ value)
+{
+	void* obj = UnmanagedPointer->getWorldUserInfo();
+	if (obj != nullptr)
+		__VOIDPTR_TO_GCHANDLE(obj).Free();
+
+	GCHandle handle = GCHandle::Alloc(value);
+	UnmanagedPointer->setWorldUserInfo(__GCHANDLE_TO_VOIDPTR(handle));
+}
+
+DynamicsWorldType DynamicsWorld::WorldType::get()
+{
+	return (DynamicsWorldType) UnmanagedPointer->getWorldType();
 }
 
 btDynamicsWorld* DynamicsWorld::UnmanagedPointer::get()

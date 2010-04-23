@@ -4,7 +4,7 @@
 
 namespace BulletSharp
 {
-	public ref class ConstraintSolver abstract : BulletSharp::IDisposable
+	public ref class ConstraintSolver : BulletSharp::IDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
@@ -13,7 +13,7 @@ namespace BulletSharp
 	private:
 		btConstraintSolver* _solver;
 
-	protected:
+	internal:
 		ConstraintSolver(btConstraintSolver* solver);
 	public:
 		!ConstraintSolver();

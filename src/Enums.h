@@ -134,6 +134,13 @@ namespace BulletSharp
 	};
 	#pragma warning(pop)
 
+	public enum class DynamicsWorldType
+	{
+		Simple = BT_SIMPLE_DYNAMICS_WORLD,
+		Discrete = BT_DISCRETE_DYNAMICS_WORLD,
+		Continuous = BT_CONTINUOUS_DYNAMICS_WORLD
+	};
+
 	// Mix of ContactManifoldType and TypedConstraintType
 	public enum class ObjectType
 	{

@@ -13,7 +13,10 @@ namespace BulletSharp
 	{
 	public:
 		SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatcher,
-			BroadphaseInterface^ pairCache, ConstraintSolver^ constraintSolver,
+			BroadphaseInterface^ pairCache,
+#ifndef DISABLE_CONSTRAINTS
+			BulletSharp::ConstraintSolver^ constraintSolver,
+#endif
 			CollisionConfiguration^ collisionConfiguration);
 
 		void AddSoftBody(SoftBody^ body,

@@ -1,11 +1,13 @@
 #pragma once
 
 #include "CollisionWorld.h"
+#include "Enums.h"
 #include "IDisposable.h"
 
 namespace BulletSharp
 {
 	ref class ActionInterface;
+	ref class ConstraintSolver;
 	ref class ContactSolverInfo;
 	ref class RigidBody;
 	ref class TypedConstraint;
@@ -49,19 +51,46 @@ namespace BulletSharp
 		};
 
 	internal:
-		DynamicsWorld(btDynamicsWorld* world) : CollisionWorld(world) {}
+		DynamicsWorld(btDynamicsWorld* world);
 
 	public:
 		void AddAction(ActionInterface^ actionInterface);
 
 #ifndef DISABLE_CONSTRAINTS
-		void AddConstraint(TypedConstraint^ constraint,
-			bool disableCollisionsBetweenLinkedBodies);
+		void AddConstraint(TypedConstraint^ constraint,	bool disableCollisionsBetweenLinkedBodies);
 		void AddConstraint(TypedConstraint^ constraint);
 		void RemoveConstraint(TypedConstraint^ constraint);
+		TypedConstraint^ GetConstraint(int index);
 #endif
 		void AddRigidBody(RigidBody^ rigidBody);
+		void ClearForces();
+		void RemoveAction(ActionInterface^ actionInterface);
+		void RemoveRigidBody(RigidBody^ rigidBody);
+		//void SetInternalTickCallback(InternalTickCallback cb, Object^ worldUserInfo, bool isPreTick);
+		//void SetInternalTickCallback(InternalTickCallback cb, Object^ worldUserInfo);
+		//void SetInternalTickCallback(InternalTickCallback cb);
+		void StepSimulation(btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep);
+		void StepSimulation(btScalar timeStep, int maxSubSteps);
 		void StepSimulation(btScalar timeStep);
+		void SynchronizeMotionStates();
+
+#ifndef DISABLE_CONSTRAINTS
+		property ConstraintSolver^ ConstraintSolver
+		{
+			BulletSharp::ConstraintSolver^ get();
+			void set(BulletSharp::ConstraintSolver^ value);
+		}
+
+		property ContactSolverInfo^ SolverInfo
+		{
+			ContactSolverInfo^ get();
+		}
+
+		property int NumConstraints
+		{
+			int get();
+		}
+#endif
 
 		virtual property Vector3 Gravity
 		{
@@ -69,9 +98,15 @@ namespace BulletSharp
 			void set(Vector3 value);
 		}
 
-		property ContactSolverInfo^ SolverInfo
+		property DynamicsWorldType WorldType
 		{
-			ContactSolverInfo^ get();
+			DynamicsWorldType get();
+		}
+
+		property Object^ WorldUserInfo
+		{
+			Object^ get();
+			void set(Object^ value);
 		}
 
 	internal:

@@ -7,12 +7,18 @@ namespace BulletSharp
 {
 	ref class RigidBody;
 
-	public ref class TypedConstraint abstract : BulletSharp::IDisposable
+	public ref class TypedConstraint : BulletSharp::IDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
+	protected:
+		RigidBody^ rigidBodyA;
+		RigidBody^ rigidBodyB;
+
+	internal:
+		TypedConstraint(btTypedConstraint* typedConstraint);
 	private:
 		btTypedConstraint* _typedConstraint;
 	public:
@@ -24,11 +30,6 @@ namespace BulletSharp
 		{
 			virtual bool get();
 		}
-
-	protected:
-		TypedConstraint(btTypedConstraint* typedConstraint);
-		RigidBody^ rigidBodyA;
-		RigidBody^ rigidBodyB;
 
 	public:
 #ifndef DISABLE_SERIALIZE
