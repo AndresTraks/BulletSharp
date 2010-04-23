@@ -900,6 +900,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\PoolAllocator.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\RaycastVehicle.cpp"
 				>
 			</File>
@@ -1398,6 +1402,10 @@
 				</File>
 				<File
 					RelativePath=".\src\MotionState.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\PoolAllocator.h"
 					>
 				</File>
 				<File

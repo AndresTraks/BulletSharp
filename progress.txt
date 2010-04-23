@@ -29,7 +29,7 @@ x ActivatingCollisionAlgorithm
 x Box2dBox2dCollisionAlgorithm
 x BoxBoxCollisionAlgorithm
 x BoxBoxDetector
-0 CollisionConfiguration
+x CollisionConfiguration
 x CollisionCreateFunc
 0 CollisionDispatcher
 x CollisionObject
