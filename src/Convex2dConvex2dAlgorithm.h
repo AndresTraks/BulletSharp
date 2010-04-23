@@ -11,7 +11,7 @@ namespace BulletSharp
 	ref class ConvexPenetrationDepthSolver;
 	ref class PersistentManifold;
 
-	public ref class Convex2dConvex2dAlgorithm :ActivatingCollisionAlgorithm
+	public ref class Convex2dConvex2dAlgorithm : ActivatingCollisionAlgorithm
 	{
 	public:
 		ref class CreateFunc : CollisionAlgorithmCreateFunc

@@ -22,23 +22,9 @@ namespace BulletSharp
 	public:
 		DebugDraw();
 
-#if GRAPHICS_XNA31
-		virtual void DrawLine(Vector3 from, Vector3 to, Microsoft::Xna::Framework::Graphics::Color color) {};
-		virtual void DrawBox(Vector3 bbMin, Vector3 bbMax, Matrix trans, Microsoft::Xna::Framework::Graphics::Color color) {};
-		virtual void DrawTriangle(Vector3 v0, Vector3 v1, Microsoft::Xna::Framework::Graphics::Color color) {};
-#elif GRAPHICS_SLIMDX
-		virtual void DrawLine(Vector3 from, Vector3 to, Color4 color) {};
-		virtual void DrawBox(Vector3 bbMin, Vector3 bbMax, Matrix trans, Color4 color) {};
-		virtual void DrawTriangle(Vector3 v0, Vector3 v1, Color4 color) {};
-#elif GRAPHICS_MOGRE
-		virtual void DrawLine(Vector3 from, Vector3 to, Mogre::ColourValue color) {};
-		virtual void DrawBox(Vector3 bbMin, Vector3 bbMax, Matrix trans, Mogre::ColourValue color) {};
-		virtual void DrawTriangle(Vector3 v0, Vector3 v1, Mogre::ColourValue color) {};
-#elif GRAPHICS_NONE
-		virtual void DrawLine(Vector3 from, Vector3 to, Color color) {};
-		virtual void DrawBox(Vector3 bbMin, Vector3 bbMax, Matrix trans, Color color) {};
-		virtual void DrawTriangle(Vector3 v0, Vector3 v1, Color color) {};
-#endif
+		virtual void DrawLine(Vector3 from, Vector3 to, BtColor color) {};
+		virtual void DrawBox(Vector3 bbMin, Vector3 bbMax, Matrix trans, BtColor color) {};
+		virtual void DrawTriangle(Vector3 v0, Vector3 v1, BtColor color) {};
 
 		void SetDebugMode(DebugDrawModes debugMode);
 

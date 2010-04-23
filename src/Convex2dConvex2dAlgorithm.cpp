@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_COLLISION_ALGORITHMS
+
 #pragma managed(push, off)
 #include <BulletCollision/CollisionDispatch/btConvex2dConvex2dAlgorithm.h>
 #pragma managed(pop)
@@ -36,3 +38,5 @@ btConvex2dConvex2dAlgorithm* Convex2dConvex2dAlgorithm::UnmanagedPointer::get()
 {
 	return (btConvex2dConvex2dAlgorithm*) CollisionAlgorithm::UnmanagedPointer;
 }
+
+#endif
