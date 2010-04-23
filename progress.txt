@@ -33,7 +33,7 @@ x CollisionConfiguration
 x CollisionCreateFunc
 0 CollisionDispatcher
 x CollisionObject
-0 CollisionWorld
+x CollisionWorld
 x CompoundCollisionAlgorithm
 x Convex2dConvex2dAlgorithm
 - ConvexConcaveCollisionAlgorithm

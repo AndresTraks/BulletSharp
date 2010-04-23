@@ -860,6 +860,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ManifoldPoint.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ManifoldResult.cpp"
 				>
 			</File>
@@ -1269,6 +1273,10 @@
 					</File>
 					<File
 						RelativePath=".\src\GjkPairDetector.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\ManifoldPoint.h"
 						>
 					</File>
 					<File

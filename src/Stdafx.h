@@ -30,15 +30,31 @@
 #if GRAPHICS_XNA31
 	#define UsingFrameworkNamespace using namespace Microsoft::Xna::Framework;
 	#define UsingGraphicsNamespace using namespace Microsoft::Xna::Framework::Graphics;
+
+	#define BtColor Microsoft::Xna::Framework::Graphics::Color
+	#define BtColorToBtVector(color) *new btVector3(color.R, color.G, color.B)
+	#define BtVectorToBtColor(color) Microsoft::Xna::Framework::Graphics::Color(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_SLIMDX
 	#define UsingFrameworkNamespace using namespace SlimDX;
 	#define UsingGraphicsNamespace using namespace SlimDX::Direct3D9;
+
+	#define BtColor Color4
+	#define BtColorToBtVector(color) *new btVector3(color.Red, color.Green, color.Blue)
+	#define BtVectorToBtColor(color) Color4(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_MOGRE
 	#define UsingFrameworkNamespace using namespace Mogre;
 	#define UsingGraphicsNamespace
+
+	#define BtColor Mogre::ColourValue
+	#define BtColorToBtVector(color) *new btVector3(color.r, color.g, color.b)
+	#define BtVectorToBtColor(color) Mogre::ColourValue(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_NONE
 	#define UsingFrameworkNamespace
 	#define UsingGraphicsNamespace
+
+	#define BtColor Color
+	#define BtColorToBtVector(color) *new btVector3(color.R, color.G, color.B)
+	#define BtVectorToBtColor(color) Color::FromArgb(255, (int)(color.getX()*255), (int)(color.getY()*255), (int)(color.getY()*255))
 #endif
 
 #pragma managed(push, off)

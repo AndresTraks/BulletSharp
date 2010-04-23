@@ -65,33 +65,13 @@ namespace BulletSharp
 		virtual void drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
 		{
 			_debugDraw->DrawLine(
-				Math::BtVector3ToVector3(&from), Math::BtVector3ToVector3(&to),
-#if GRAPHICS_XNA31
-				Microsoft::Xna::Framework::Graphics::Color(color.getX(),color.getY(),color.getZ())
-#elif GRAPHICS_SLIMDX
-				Color4(color.getX(),color.getY(),color.getZ())
-#elif GRAPHICS_MOGRE
-				Mogre::ColourValue(color.getX(),color.getY(),color.getZ())
-#elif GRAPHICS_NONE
-				Color::FromArgb(255, (int)(color.getX()*255), (int)(color.getY()*255), (int)(color.getY()*255))
-#endif
-			);
+				Math::BtVector3ToVector3(&from), Math::BtVector3ToVector3(&to), BtVectorToBtColor(color));
 		}
 
 		virtual void drawBox(const btVector3& bbMin, const btVector3& bbMax, const btTransform& trans, const btVector3& color)
 		{
 			_debugDraw->DrawBox(
-				Math::BtVector3ToVector3(&bbMin), Math::BtVector3ToVector3(&bbMax),	Math::BtTransformToMatrix(&trans),
-#if GRAPHICS_XNA31
-				Microsoft::Xna::Framework::Graphics::Color(color.getX(),color.getY(),color.getZ())
-#elif GRAPHICS_SLIMDX
-				Color4(color.getX(),color.getY(),color.getZ())
-#elif GRAPHICS_MOGRE
-				Mogre::ColourValue(color.getX(),color.getY(),color.getZ())
-#elif GRAPHICS_NONE
-				Color::FromArgb(255, (int)(color.getX()*255), (int)(color.getY()*255), (int)(color.getY()*255))
-#endif
-			);
+				Math::BtVector3ToVector3(&bbMin), Math::BtVector3ToVector3(&bbMax),	Math::BtTransformToMatrix(&trans), BtVectorToBtColor(color));
 		}
 
 		virtual void reportErrorWarning(const char* warningString)
