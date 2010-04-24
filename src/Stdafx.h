@@ -24,6 +24,8 @@
 	#using <Mogre.dll>
 #elif GRAPHICS_OPENTK
 	#using <OpenTK.dll>
+#elif GRAPHICS_AXIOM
+	#using <Axiom.dll>
 #elif GRAPHICS_NONE
 #else
 	#define GRAPHICS_NONE 1
@@ -57,6 +59,13 @@
 	#define BtColor OpenTK::Graphics::Color4
 	#define BtColorToBtVector(color) *new btVector3(color.R, color.G, color.B)
 	#define BtVectorToBtColor(color) BtColor(color.getX(),color.getY(),color.getZ(),1)
+#elif GRAPHICS_AXIOM
+	#define UsingFrameworkNamespace using namespace Axiom::Math;
+	#define UsingGraphicsNamespace
+
+	#define BtColor Axiom::Core::ColorEx
+	#define BtColorToBtVector(color) *new btVector3(color.r, color.g, color.b)
+	#define BtVectorToBtColor(color) BtColor(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_NONE
 	#define UsingFrameworkNamespace
 	#define UsingGraphicsNamespace

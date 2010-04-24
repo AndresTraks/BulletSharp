@@ -14,6 +14,8 @@ UsingFrameworkNamespace
 #else
 #define Matrix Matrix4
 #endif
+#elif GRAPHICS_AXIOM
+#define Matrix Matrix4^
 #endif
 
 namespace BulletSharp
