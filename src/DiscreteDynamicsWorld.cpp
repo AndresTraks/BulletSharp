@@ -2,8 +2,11 @@
 
 #include "BroadphaseInterface.h"
 #include "CollisionConfiguration.h"
+#include "CollisionWorld.h"
 #include "DiscreteDynamicsWorld.h"
 #include "Dispatcher.h"
+#include "RigidBody.h"
+#include "TypedConstraint.h"
 #ifndef DISABLE_CONSTRAINTS
 #include "ConstraintSolver.h"
 #endif
@@ -13,32 +16,39 @@ DiscreteDynamicsWorld::DiscreteDynamicsWorld(btDiscreteDynamicsWorld* world)
 {
 }
 
-#ifndef DISABLE_CONSTRAINTS
-
 DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher,
-	BroadphaseInterface^ pairCache, BulletSharp::ConstraintSolver^ constraintSolver,
+	BroadphaseInterface^ pairCache,
+	#ifndef DISABLE_CONSTRAINTS
+	BulletSharp::ConstraintSolver^ constraintSolver,
+	#endif
 	CollisionConfiguration^ collisionConfiguration)
 : DynamicsWorld(new btDiscreteDynamicsWorld(dispatcher->UnmanagedPointer,
-		pairCache->UnmanagedPointer,
-		(constraintSolver != nullptr) ? constraintSolver->UnmanagedPointer : 0,
-		collisionConfiguration->UnmanagedPointer))
+	pairCache->UnmanagedPointer,
+	#ifndef DISABLE_CONSTRAINTS
+	(constraintSolver != nullptr) ? constraintSolver->UnmanagedPointer : 0,
+	#else
+	0,
+	#endif
+	collisionConfiguration->UnmanagedPointer))
 {
 	_dispatcher = dispatcher;
 	_broadphase = pairCache;
 }
 
-#else
-
-DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher,
-	BroadphaseInterface^ pairCache,	CollisionConfiguration^ collisionConfiguration)
-: DynamicsWorld(new btDiscreteDynamicsWorld(dispatcher->UnmanagedPointer,
-		pairCache->UnmanagedPointer, 0, collisionConfiguration->UnmanagedPointer))
+void DiscreteDynamicsWorld::AddRigidBody(RigidBody^ body, CollisionFilterGroups group, CollisionFilterGroups mask)
 {
-	_dispatcher = dispatcher;
-	_broadphase = pairCache;
+	UnmanagedPointer->addRigidBody(body->UnmanagedPointer, (short)group, (short)mask);
 }
 
-#endif
+void DiscreteDynamicsWorld::ApplyGravity()
+{
+	UnmanagedPointer->applyGravity();
+}
+
+void DiscreteDynamicsWorld::DebugDrawConstraint(TypedConstraint^ constraint)
+{
+	UnmanagedPointer->debugDrawConstraint(constraint->UnmanagedPointer);
+}
 
 // Set gravity by components
 void DiscreteDynamicsWorld::SetGravity(btScalar x, btScalar y, btScalar z)
@@ -46,6 +56,11 @@ void DiscreteDynamicsWorld::SetGravity(btScalar x, btScalar y, btScalar z)
 	btVector3* gravity = new btVector3(x,y,z);
 	UnmanagedPointer->setGravity(*gravity);
 	delete gravity;
+}
+
+CollisionWorld^ DiscreteDynamicsWorld::CollisionWorld::get()
+{
+	return gcnew BulletSharp::CollisionWorld(this->UnmanagedPointer->getCollisionWorld());
 }
 
 btDiscreteDynamicsWorld* DiscreteDynamicsWorld::UnmanagedPointer::get()

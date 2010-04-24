@@ -12,7 +12,7 @@ namespace BulletSharp
 	ref class RigidBody;
 	ref class TypedConstraint;
 
-	public ref class DynamicsWorld abstract : CollisionWorld
+	public ref class DynamicsWorld : CollisionWorld
 	{
 	public:
 		ref class RayResultCallback abstract : BulletSharp::IDisposable

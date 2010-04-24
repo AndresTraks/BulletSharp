@@ -397,7 +397,7 @@ namespace BulletSharp
 		OverlappingPairCache^ _pairCache;
 		CollisionObjectArray^ _collisionObjects;
 
-	protected:
+	internal:
 		CollisionWorld(btCollisionWorld* world);
 	public:
 		!CollisionWorld();
