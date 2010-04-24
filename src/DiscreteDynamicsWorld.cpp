@@ -6,6 +6,7 @@
 #include "DiscreteDynamicsWorld.h"
 #include "Dispatcher.h"
 #include "RigidBody.h"
+#include "SimulationIslandManager.h"
 #include "TypedConstraint.h"
 #ifndef DISABLE_CONSTRAINTS
 #include "ConstraintSolver.h"
@@ -50,17 +51,33 @@ void DiscreteDynamicsWorld::DebugDrawConstraint(TypedConstraint^ constraint)
 	UnmanagedPointer->debugDrawConstraint(constraint->UnmanagedPointer);
 }
 
-// Set gravity by components
-void DiscreteDynamicsWorld::SetGravity(btScalar x, btScalar y, btScalar z)
-{
-	btVector3* gravity = new btVector3(x,y,z);
-	UnmanagedPointer->setGravity(*gravity);
-	delete gravity;
-}
-
 CollisionWorld^ DiscreteDynamicsWorld::CollisionWorld::get()
 {
 	return gcnew BulletSharp::CollisionWorld(this->UnmanagedPointer->getCollisionWorld());
+}
+
+SimulationIslandManager^ DiscreteDynamicsWorld::SimulationIslandManager::get()
+{
+	return gcnew BulletSharp::SimulationIslandManager(UnmanagedPointer->getSimulationIslandManager());
+}
+
+void DiscreteDynamicsWorld::SetNumTasks (int numTasks)
+{
+	UnmanagedPointer->setNumTasks(numTasks);
+}
+
+bool DiscreteDynamicsWorld::SynchronizeAllMotionStates::get()
+{
+	return UnmanagedPointer->getSynchronizeAllMotionStates();
+}
+void DiscreteDynamicsWorld::SynchronizeAllMotionStates::set(bool value)
+{
+	return UnmanagedPointer->setSynchronizeAllMotionStates(value);
+}
+
+void DiscreteDynamicsWorld::SynchronizeSingleMotionState(RigidBody^ body)
+{
+	UnmanagedPointer->synchronizeSingleMotionState(body->UnmanagedPointer);
 }
 
 btDiscreteDynamicsWorld* DiscreteDynamicsWorld::UnmanagedPointer::get()

@@ -1088,6 +1088,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\SimulationIslandManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SoftBody.cpp"
 				>
 			</File>
@@ -1365,6 +1369,10 @@
 					</File>
 					<File
 						RelativePath=".\src\ManifoldResult.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\SimulationIslandManager.h"
 						>
 					</File>
 				</Filter>

@@ -44,8 +44,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,5,0,0
- PRODUCTVERSION 0,5,0,0
+ FILEVERSION 0,6,0,0
+ PRODUCTVERSION 0,6,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -62,12 +62,12 @@ BEGIN
         BEGIN
             VALUE "Comments", ".Net Wrapper for Bullet Physics library"
             VALUE "FileDescription", "BulletSharp"
-            VALUE "FileVersion", "0.5"
+            VALUE "FileVersion", "0.6"
             VALUE "InternalName", "BulletSharp"
             VALUE "LegalCopyright", "Copyright (C) Andres Traks 2009-2010"
             VALUE "OriginalFilename", "BulletSharp.dll"
             VALUE "ProductName", "BulletSharp"
-            VALUE "ProductVersion", "0.5"
+            VALUE "ProductVersion", "0.6"
         END
     END
     BLOCK "VarFileInfo"

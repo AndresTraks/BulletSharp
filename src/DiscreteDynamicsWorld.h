@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 24 apr 2010
+
 #include "DynamicsWorld.h"
 #include "Enums.h"
 
@@ -9,6 +11,7 @@ namespace BulletSharp
 	ref class ConstraintSolver;
 	ref class Dispatcher;
 	ref class RigidBody;
+	ref class SimulationIslandManager;
 	ref class TypedConstraint;
 
 	public ref class DiscreteDynamicsWorld : DynamicsWorld
@@ -26,12 +29,23 @@ namespace BulletSharp
 		void AddRigidBody(RigidBody^ body, CollisionFilterGroups group, CollisionFilterGroups mask);
 		void ApplyGravity();
 		void DebugDrawConstraint(TypedConstraint^ constraint);
-
-		void SetGravity(btScalar x, btScalar y, btScalar z);
+		void SetNumTasks (int numTasks);
+		void SynchronizeSingleMotionState(RigidBody^ body);
 
 		property CollisionWorld^ CollisionWorld
 		{
 			BulletSharp::CollisionWorld^ get();
+		}
+
+		property SimulationIslandManager^ SimulationIslandManager
+		{
+			BulletSharp::SimulationIslandManager^ get();
+		}
+
+		property bool SynchronizeAllMotionStates
+		{
+			bool get();
+			void set(bool value);
 		}
 
 	internal:
