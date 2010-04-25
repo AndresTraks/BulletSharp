@@ -1112,10 +1112,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\DefaultVehicleRaycaster.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\DiscreteCollisionDetectorInterface.cpp"
 				>
 			</File>
@@ -1703,10 +1699,6 @@
 				<Filter
 					Name="Vehicle"
 					>
-					<File
-						RelativePath=".\src\DefaultVehicleRaycaster.h"
-						>
-					</File>
 					<File
 						RelativePath=".\src\RaycastVehicle.h"
 						>

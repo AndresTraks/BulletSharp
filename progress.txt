@@ -1,7 +1,5 @@
 BulletSharp wrapper progress
 
-
-x fully implemented
 0 incomplete
 - not implemented
 
@@ -9,33 +7,14 @@ x fully implemented
 
 Collision/BroadphaseCollision
 
-x AxisSweep3
-x BroadphaseInterface
-x BroadphaseProxy
-x CollisionAlgorithm
-x Dbvt
-x DbvtBroadphase
-x Dispatcher
 - MultiSapBroadphase (experimental, won't implement)
-x OverlappingPairCache
 - QuantizedBvh
-x SimpleBroadphase
 
 
 
 Collision/CollisionDispatch
 
-x ActivatingCollisionAlgorithm
-x Box2dBox2dCollisionAlgorithm
-x BoxBoxCollisionAlgorithm
-x BoxBoxDetector
-x CollisionConfiguration
-x CollisionCreateFunc
 0 CollisionDispatcher
-x CollisionObject
-x CollisionWorld
-x CompoundCollisionAlgorithm
-x Convex2dConvex2dAlgorithm
 - ConvexConcaveCollisionAlgorithm
 - ConvexConvexAlgorithm
 - ConvexPlaneCollisionAlgorithm
@@ -58,20 +37,11 @@ Collision/CollisionShapes
 0 Box2dShape
 0 BoxShape
 0 BvhTriangleMeshShape
-x CapsuleShape
-x CollisionShape
 0 CompoundShape
-x ConcaveShape
-x ConeShape
-x Convex2dShape
 0 ConvexHullShape
-x ConvexInternalShape
 0 ConvexPointCloudShape
 0 ConvexShape
 - ConvexTriangleMeshShape
-x CylinderShape
-x EmptyShape
-x HeightfieldTerrainShape
 - Material
 - MinkowskiSumShape
 - MultiMaterialTriangleMeshShape
@@ -80,8 +50,6 @@ x HeightfieldTerrainShape
 0 PolyhedralConvexShape
 - ScaledBvhTriangleMeshShape
 - ShapeHull
-x SphereShape
-x StaticPlaneShape
 0 StridingMeshInterface
 - TetrahedronShape
 - TriangleBuffer
@@ -92,3 +60,62 @@ x StaticPlaneShape
 - TriangleMeshShape
 - TriangleShape
 - UniformScalingShape
+
+
+
+Collision/NarrowPhaseCollision
+
+- ContinuousConvexCollision
+- ConvexCast
+0 ConvexPenetrationDepthSolver
+0 DiscreteCollisionDetectorInterface
+- GjkConvexCast
+- GjkEpa2
+- GjkEpaPenetrationDepthSolver
+0 GjkPairDetector
+0 ManifoldPoint
+0 MinkowskiPenetrationDepthSolver
+0 PersistentManifold
+- RaycastCallback
+0 SimplexSolverInterface
+- SubSimplexConvexCast
+0 VoronoiSimplexSolver
+
+
+
+Dynamics/Character
+
+- CharacterControllerInterface
+- KinematicCharacterController
+
+
+
+Dynamics/ConstraintSolver
+
+0 ConeTwistConstraint
+0 ConstraintSolver
+- ContactConstraint
+0 Generic6DofConstraint
+0 Generic6DofSpringConstraint
+0 Hinge2Constraint
+0 HingeConstraint
+- JacobianEntry
+0 Point2PointConstraint
+0 SequentialImpulseConstraintSolver
+- SliderConstraint
+- Solve2LinearConstraint
+- SolverBody
+- SolverConstraint
+0 TypedConstraint
+0 UniversalConstraint
+
+
+
+Dynamics/Dynamics
+
+0 ActionInterface
+- ContinuousDynamicsWorld (Under construction, won't implement)
+0 DynamicsWorld
+0 RigidBody
+- SimpleDynamicsWorld
+

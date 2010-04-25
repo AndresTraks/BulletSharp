@@ -43,7 +43,7 @@ namespace BulletSharp
 	private:
 		MotionState^ _motionState;
 
-	private:
+	internal:
 		RigidBody(btRigidBody* body);
 
 	public:

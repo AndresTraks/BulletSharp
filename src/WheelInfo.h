@@ -1,9 +1,166 @@
 #pragma once
 
+// Fully implemented as of 25 apr 2010
+
 namespace BulletSharp
 {
+	ref class RigidBody;
+
+	public ref class WheelInfoConstructionInfo
+	{
+	private:
+		btWheelInfoConstructionInfo* _info;
+	public:
+		WheelInfoConstructionInfo();
+
+		property Vector3 ChassisConnectionCS
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property btScalar FrictionSlip
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property bool IsFrontWheel
+		{
+			bool get();
+			void set(bool value);
+		}
+
+		property btScalar MaxSuspensionForce
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property btScalar MaxSuspensionTravelCm
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property btScalar SuspensionRestLength
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property btScalar SuspensionStiffness
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property Vector3 WheelAxleCS
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property btScalar WheelDampingCompression
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property btScalar WheelDampingRelaxation
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property Vector3 WheelDirectionCS
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property btScalar WheelRadius
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+	internal:
+		property btWheelInfoConstructionInfo* UnmanagedPointer
+		{
+			virtual btWheelInfoConstructionInfo* get();
+			void set(btWheelInfoConstructionInfo* value);
+		}
+	};
+
 	public ref class WheelInfo
 	{
+	public:
+		ref class RaycastInfo
+		{
+		private:
+			btWheelInfo::RaycastInfo* _info;
+		internal:
+			RaycastInfo(btWheelInfo::RaycastInfo* info);
+		public:
+			RaycastInfo();
+
+			property Vector3 ContactNormalWS
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property Vector3 ContactPointWS
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+			
+			property Object^ GroundObject
+			{
+				Object^ get();
+				void set(Object^ value);
+			}
+
+			property Vector3 HardPointWS
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property bool IsInContact
+			{
+				bool get();
+				void set(bool value);
+			}
+
+			property btScalar SuspensionLength
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property Vector3 WheelAxleWS
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property Vector3 WheelDirectionWS
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+		internal:
+			property btWheelInfo::RaycastInfo* UnmanagedPointer
+			{
+				virtual btWheelInfo::RaycastInfo* get();
+				void set(btWheelInfo::RaycastInfo* value);
+			}
+		};
+
 	private:
 		btWheelInfo* _wheelInfo;
 
@@ -11,15 +168,9 @@ namespace BulletSharp
 		WheelInfo(btWheelInfo* wheelInfo);
 
 	public:
-		//WheelInfo(WheelInfoConstructionInfo^ ci);
+		WheelInfo(WheelInfoConstructionInfo^ ci);
 
-		// UpdateWheel(RigidBody^ chassis, RaycastInfo^ raycastInfo);
-
-		property Vector3 AxleCS
-		{
-			Vector3 get();
-			void set(Vector3 value);
-		}
+		void UpdateWheel(RigidBody^ chassis, RaycastInfo^ raycastInfo);
 
 		property btScalar Brake
 		{
@@ -33,25 +184,13 @@ namespace BulletSharp
 			void set(Vector3 value);
 		}
 
-		property IntPtr ClientInfo
+		property Object^ ClientInfo
 		{
-			IntPtr get();
-			void set(IntPtr value);
+			Object^ get();
+			void set(Object^ value);
 		}
 
 		property btScalar ClippedInvContactDotSuspension
-		{
-			btScalar get();
-			void set(btScalar value);
-		}
-
-		property btScalar DampingCompression
-		{
-			btScalar get();
-			void set(btScalar value);
-		}
-
-		property btScalar DampingRelaxation
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -61,12 +200,6 @@ namespace BulletSharp
 		{
 			btScalar get();
 			void set(btScalar value);
-		}
-
-		property Vector3 DirectionCS
-		{
-			Vector3 get();
-			void set(Vector3 value);
 		}
 
 		property btScalar EngineForce
@@ -87,23 +220,23 @@ namespace BulletSharp
 			void set(bool value);
 		}
 
+		property btScalar MaxSuspensionForce
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
 		property btScalar MaxSuspensionTravelCm
 		{
 			btScalar get();
 			void set(btScalar value);
 		}
 
-		property btScalar Radius
+		property RaycastInfo^ RaycastInfo_
 		{
-			btScalar get();
-			void set(btScalar value);
+			RaycastInfo^ get();
+			void set(RaycastInfo^ value);
 		}
-
-		//property BulletSharp::RaycastInfo^ RaycastInfo
-		//{
-		//	BulletSharp::RaycastInfo^ get();
-		//	void set(BulletSharp::RaycastInfo^ value);
-		//}
 
 		property btScalar RollInfluence
 		{
@@ -129,12 +262,6 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property btScalar SuspensionForce
-		{
-			btScalar get();
-			void set(btScalar value);
-		}
-
 		property btScalar SuspensionRelativeVelocity
 		{
 			btScalar get();
@@ -142,6 +269,11 @@ namespace BulletSharp
 		}
 
 		property btScalar SuspensionRestLength
+		{
+			btScalar get();
+		}
+
+		property btScalar SuspensionRestLength1
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -153,10 +285,52 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
+		property Vector3 WheelAxleCS
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property btScalar WheelDampingCompression
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property btScalar WheelDampingRelaxation
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property Vector3 WheelDirectionCS
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property btScalar WheelRadius
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property btScalar WheelSuspensionForce
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
 		property Matrix WorldTransform
 		{
 			Matrix get();
 			void set(Matrix value);
+		}
+
+		property btWheelInfo* UnmanagedPointer
+		{
+			virtual btWheelInfo* get();
+			void set(btWheelInfo* value);
 		}
 	};
 }

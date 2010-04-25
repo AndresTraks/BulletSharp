@@ -2,6 +2,8 @@
 
 #ifndef DISABLE_VEHICLE
 
+#include "AlignedObjectArray.h"
+#include "DynamicsWorld.h"
 #include "RaycastVehicle.h"
 #include "RigidBody.h"
 #include "VehicleRaycaster.h"
@@ -25,6 +27,60 @@ RaycastVehicle::VehicleTuning::VehicleTuning()
 	_vehicleTuning = new btRaycastVehicle::btVehicleTuning();
 }
 
+btScalar RaycastVehicle::VehicleTuning::FrictionSlip::get()
+{
+	return UnmanagedPointer->m_frictionSlip;
+}
+void RaycastVehicle::VehicleTuning::FrictionSlip::set(btScalar value)
+{
+	UnmanagedPointer->m_frictionSlip = value;
+}
+
+btScalar RaycastVehicle::VehicleTuning::MaxSuspensionForce::get()
+{
+	return UnmanagedPointer->m_maxSuspensionForce;
+}
+void RaycastVehicle::VehicleTuning::MaxSuspensionForce::set(btScalar value)
+{
+	UnmanagedPointer->m_maxSuspensionForce = value;
+}
+
+btScalar RaycastVehicle::VehicleTuning::MaxSuspensionTravelCm::get()
+{
+	return UnmanagedPointer->m_maxSuspensionTravelCm;
+}
+void RaycastVehicle::VehicleTuning::MaxSuspensionTravelCm::set(btScalar value)
+{
+	UnmanagedPointer->m_maxSuspensionTravelCm = value;
+}
+
+btScalar RaycastVehicle::VehicleTuning::SuspensionCompression::get()
+{
+	return UnmanagedPointer->m_suspensionCompression;
+}
+void RaycastVehicle::VehicleTuning::SuspensionCompression::set(btScalar value)
+{
+	UnmanagedPointer->m_suspensionCompression = value;
+}
+
+btScalar RaycastVehicle::VehicleTuning::SuspensionDamping::get()
+{
+	return UnmanagedPointer->m_suspensionDamping;
+}
+void RaycastVehicle::VehicleTuning::SuspensionDamping::set(btScalar value)
+{
+	UnmanagedPointer->m_suspensionDamping = value;
+}
+
+btScalar RaycastVehicle::VehicleTuning::SuspensionStiffness::get()
+{
+	return UnmanagedPointer->m_suspensionStiffness;
+}
+void RaycastVehicle::VehicleTuning::SuspensionStiffness::set(btScalar value)
+{
+	UnmanagedPointer->m_suspensionStiffness = value;
+}
+
 btRaycastVehicle::btVehicleTuning* RaycastVehicle::VehicleTuning::UnmanagedPointer::get()
 {
 	return _vehicleTuning;
@@ -43,7 +99,7 @@ WheelInfo^ RaycastVehicle::AddWheel(Vector3 connectionPointCS0, Vector3 wheelDir
 		*Math::Vector3ToBtVector3(wheelDirectionCS0),
 		*Math::Vector3ToBtVector3(wheelAxleCS),
 		suspensionRestLength, wheelRadius, *tuning->UnmanagedPointer, isFrontWheel);
-	return gcnew WheelInfo(wheelInfo);
+	return gcnew BulletSharp::WheelInfo(wheelInfo);
 }
 
 void RaycastVehicle::ApplyEngineForce(btScalar force, int wheel)
@@ -53,7 +109,7 @@ void RaycastVehicle::ApplyEngineForce(btScalar force, int wheel)
 
 WheelInfo^ RaycastVehicle::GetWheelInfo(int index)
 {
-	return gcnew WheelInfo(&UnmanagedPointer->getWheelInfo(index));
+	return gcnew BulletSharp::WheelInfo(&UnmanagedPointer->getWheelInfo(index));
 }
 
 btScalar RaycastVehicle::GetSteeringValue(int wheel)
@@ -68,6 +124,11 @@ void RaycastVehicle::SetSteeringValue(btScalar steering, int wheel)
 Matrix RaycastVehicle::GetWheelTransformWS(int wheelIndex)
 {
 	return Math::BtTransformToMatrix(&UnmanagedPointer->getWheelTransformWS(wheelIndex));
+}
+
+btScalar RaycastVehicle::RayCast(BulletSharp::WheelInfo^ wheel)
+{
+	return UnmanagedPointer->rayCast(*wheel->UnmanagedPointer);
 }
 
 void RaycastVehicle::ResetSuspension()
@@ -105,14 +166,24 @@ void RaycastVehicle::UpdateVehicle(btScalar step)
 	UnmanagedPointer->updateVehicle(step);
 }
 
+void RaycastVehicle::UpdateWheelTransform(int wheelIndex, bool interpolatedTransform)
+{
+	UnmanagedPointer->updateWheelTransform(wheelIndex, interpolatedTransform);
+}
+
 void RaycastVehicle::UpdateWheelTransform(int wheelIndex)
 {
 	UnmanagedPointer->updateWheelTransform(wheelIndex);
 }
 
-void RaycastVehicle::UpdateWheelTransform(int wheelIndex, bool interpolatedTransform)
+void RaycastVehicle::UpdateWheelTransformsWS(BulletSharp::WheelInfo^ wheelIndex, bool interpolatedTransform)
 {
-	UnmanagedPointer->updateWheelTransform(wheelIndex, interpolatedTransform);
+	UnmanagedPointer->updateWheelTransformsWS(*wheelIndex->UnmanagedPointer, interpolatedTransform);
+}
+
+void RaycastVehicle::UpdateWheelTransformsWS(BulletSharp::WheelInfo^ wheelIndex)
+{
+	UnmanagedPointer->updateWheelTransformsWS(*wheelIndex->UnmanagedPointer);
 }
 
 Matrix RaycastVehicle::ChassisWorldTransform::get()
@@ -164,9 +235,24 @@ int RaycastVehicle::UpAxis::get()
 	return UnmanagedPointer->getUpAxis();
 }
 
+WheelInfoArray^ RaycastVehicle::WheelInfo::get()
+{
+	return gcnew WheelInfoArray(&UnmanagedPointer->m_wheelInfo);
+}
+void RaycastVehicle::WheelInfo::set(WheelInfoArray^ value)
+{
+	UnmanagedPointer->m_wheelInfo = *value->UnmanagedPointer;
+}
+
 btRaycastVehicle* RaycastVehicle::UnmanagedPointer::get()
 {
 	return (btRaycastVehicle*)ActionInterface::UnmanagedPointer;
+}
+
+
+DefaultVehicleRaycaster::DefaultVehicleRaycaster(DynamicsWorld^ world)
+: VehicleRaycaster(new btDefaultVehicleRaycaster(world->UnmanagedPointer))
+{
 }
 
 #endif

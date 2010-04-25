@@ -8,6 +8,9 @@
 #ifndef DISABLE_SOFTBODY
 #include "SoftBody.h"
 #endif
+#ifndef DISABLE_VEHICLE
+#include "WheelInfo.h"
+#endif
 
 using namespace System::Collections;
 
@@ -474,6 +477,45 @@ namespace BulletSharp
 		property btAlignedObjectArray<btSoftBody::Node>* UnmanagedPointer
 		{
 			virtual btAlignedObjectArray<btSoftBody::Node>* get() new;
+		}
+	};
+#endif
+
+#ifndef DISABLE_VEHICLE
+	public ref class WheelInfoArray : AlignedObjectArray
+	{
+	internal:
+		WheelInfoArray(btAlignedObjectArray<btWheelInfo>* wheelInfoArray);
+
+	public:
+		WheelInfoArray();
+
+		void Clear();
+		void PopBack();
+		void PushBack(WheelInfo^ node);
+		void Remove(WheelInfo^ node);
+		void Swap(int index0, int index1);
+
+		property int Size
+		{
+			int get();
+		}
+
+		property int Capacity
+		{
+			int get();
+		}
+
+		property WheelInfo^ default [int]
+		{
+			WheelInfo^ get (int index);
+			void set(int index, WheelInfo^);
+		}
+
+	internal:
+		property btAlignedObjectArray<btWheelInfo>* UnmanagedPointer
+		{
+			virtual btAlignedObjectArray<btWheelInfo>* get() new;
 		}
 	};
 #endif

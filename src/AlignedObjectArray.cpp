@@ -802,3 +802,73 @@ btAlignedObjectArray<btSoftBody::Node>* BulletSharp::NodeArray::UnmanagedPointer
 	return (btAlignedObjectArray<btSoftBody::Node>*)AlignedObjectArray::UnmanagedPointer;
 }
 #endif
+
+#ifndef DISABLE_VEHICLE
+BulletSharp::WheelInfoArray::WheelInfoArray(btAlignedObjectArray<btWheelInfo>* wheelInfoArray)
+: AlignedObjectArray(wheelInfoArray)
+{
+}
+
+BulletSharp::WheelInfoArray::WheelInfoArray()
+: AlignedObjectArray(new btAlignedObjectArray<btWheelInfo>)
+{
+}
+
+void BulletSharp::WheelInfoArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+void BulletSharp::WheelInfoArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+void BulletSharp::WheelInfoArray::PushBack(WheelInfo^ node)
+{
+	UnmanagedPointer->push_back(*node->UnmanagedPointer);
+}
+
+void BulletSharp::WheelInfoArray::Remove(WheelInfo^ node)
+{
+	// FIXME
+	//UnmanagedPointer->remove(*node->UnmanagedPointer);
+}
+
+int BulletSharp::WheelInfoArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int BulletSharp::WheelInfoArray::Size::get()
+{
+	return UnmanagedPointer->size();
+}
+
+void BulletSharp::WheelInfoArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+WheelInfo^ BulletSharp::WheelInfoArray::default::get(int index)
+{
+	return gcnew WheelInfo(&(*UnmanagedPointer)[index]);
+}
+
+#pragma managed(push, off)
+void WheelInfoArray_GetDefault(btAlignedObjectArray<btWheelInfo>* nodeArray,
+	int index, btWheelInfo* node)
+{
+	(*nodeArray)[index] = *node;
+}
+#pragma managed(pop)
+void BulletSharp::WheelInfoArray::default::set(int index, WheelInfo^ value)
+{
+	WheelInfoArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+}
+
+btAlignedObjectArray<btWheelInfo>* BulletSharp::WheelInfoArray::UnmanagedPointer::get()
+{
+	return (btAlignedObjectArray<btWheelInfo>*)AlignedObjectArray::UnmanagedPointer;
+}
+#endif
