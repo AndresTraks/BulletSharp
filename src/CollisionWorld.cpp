@@ -585,7 +585,13 @@ void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix
 #ifndef DISABLE_DEBUGDRAW
 void CollisionWorld::DebugDrawObject(Matrix worldTransform, CollisionShape^ shape, BtColor color)
 {
-	_world->debugDrawObject(*Math::MatrixToBtTransform(worldTransform), shape->UnmanagedPointer, BtColorToBtVector(color));
+	btTransform* worldTransformTemp = Math::MatrixToBtTransform(worldTransform);
+	btVector3* colorTemp = BtColorToBtVector(color);
+	
+	_world->debugDrawObject(*worldTransformTemp, shape->UnmanagedPointer, *colorTemp);
+	
+	delete worldTransformTemp;
+	delete colorTemp;
 }
 
 void CollisionWorld::DebugDrawWorld()
@@ -665,6 +671,8 @@ DebugDraw^ CollisionWorld::DebugDrawer::get()
 }
 void CollisionWorld::DebugDrawer::set(DebugDraw^ value)
 {
+	_debugDraw = value;
+
 	if (value == nullptr)
 		_world->setDebugDrawer(0);
 	else

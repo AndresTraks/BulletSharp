@@ -21,3 +21,17 @@ GjkPairDetector::GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB,
 	(penetrationDepthSolver != nullptr) ? penetrationDepthSolver->UnmanagedPointer : 0))
 {
 }
+
+Vector3 GjkPairDetector::CachedSeparatingAxis::get()
+{
+	return Math::BtVector3ToVector3(&UnmanagedPointer->getCachedSeparatingAxis());
+}
+void GjkPairDetector::CachedSeparatingAxis::set(Vector3 value)
+{
+	UnmanagedPointer->setCachedSeperatingAxis(*Math::Vector3ToBtVector3(value));
+}
+
+btGjkPairDetector* GjkPairDetector::UnmanagedPointer::get()
+{
+	return (btGjkPairDetector*)DiscreteCollisionDetectorInterface::UnmanagedPointer;
+}

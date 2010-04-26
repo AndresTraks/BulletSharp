@@ -30,7 +30,7 @@ namespace DemoFramework
             if (modes == 0)
             {
                 if (DebugDrawer != null)
-                    DebugDrawer.SetDebugMode(0);
+                    DebugDrawer.DebugMode = DebugDrawModes.None;
                 IsDebugDrawEnabled = false;
             }
             else
@@ -40,7 +40,7 @@ namespace DemoFramework
                     DebugDrawer = new PhysicsDebugDraw(device);
                     World.DebugDrawer = DebugDrawer;
                 }
-                DebugDrawer.SetDebugMode(modes);
+                DebugDrawer.DebugMode = modes;
                 IsDebugDrawEnabled = true;
             }
         }
@@ -56,7 +56,7 @@ namespace DemoFramework
 
         public void SetDebugDraw(PhysicsDebugDraw debugDraw, DebugDrawModes modes)
         {
-            debugDraw.SetDebugMode(modes);
+            debugDraw.DebugMode = modes;
             SetDebugDraw(debugDraw);
         }
 
@@ -122,6 +122,14 @@ namespace DemoFramework
         public PhysicsDebugDraw(SlimDX.Direct3D9.Device device)
         {
             this.device = device;
+        }
+
+        public override void DrawLine(Vector3 from, Vector3 to, Color4 fromColor, Color4 toColor)
+        {
+            PositionColored[] vertices = new PositionColored[2];
+            vertices[0] = new PositionColored(from, fromColor.ToArgb());
+            vertices[1] = new PositionColored(to, toColor.ToArgb());
+            device.DrawUserPrimitives(PrimitiveType.LineList, 1, vertices);
         }
 
         public override void DrawLine(Vector3 from, Vector3 to, Color4 color)

@@ -34,6 +34,7 @@ namespace CcdPhysicsDemo
                 box.Dispose();
                 cylinder.Dispose();
                 groundBox.Dispose();
+                sphere.Dispose();
             }
         }
 

@@ -12,9 +12,9 @@ namespace DistanceDemo
         Matrix rotBodyPosition = Matrix.Translation(0, 10, 0);
         Matrix body2Position = Matrix.Translation(0, 5, 0);
         RigidBody rotBody, body2;
-        BoxShape colShape;
+        ConvexShape colShape0, colShape1;
 
-        //VoronoiSimplexSolver sGjkSimplexSolver;
+        VoronoiSimplexSolver sGjkSimplexSolver = new VoronoiSimplexSolver();
 
         float rotation = 0;
 
@@ -35,12 +35,21 @@ namespace DistanceDemo
             ground.UserObject = "Ground";
 
             // Objects
-            colShape = new BoxShape(1);
-            CollisionShapes.PushBack(colShape);
+            //colShape = new BoxShape(1);
+            Vector3[] points0 = new Vector3[] {
+                new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1)
+            };
+            Vector3[] points1 = new Vector3[] {
+                new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1), new Vector3(0,0,-1), new Vector3(-1,-1,0)
+            };
+            colShape0 = new ConvexHullShape(points0);
+            colShape1 = new ConvexHullShape(points1);
+            CollisionShapes.PushBack(colShape0);
+            CollisionShapes.PushBack(colShape1);
 
-            body2 = LocalCreateRigidBody(0, body2Position, colShape);
+            body2 = LocalCreateRigidBody(0, body2Position, colShape1);
 
-            rotBody = LocalCreateRigidBody(0, rotBodyPosition, colShape);
+            rotBody = LocalCreateRigidBody(0, rotBodyPosition, colShape0);
             rotBody.CollisionFlags |= CollisionFlags.KinematicObject;
             rotBody.ActivationState = ActivationState.DisableDeactivation;
         }
@@ -51,9 +60,10 @@ namespace DistanceDemo
             rotation += elapsedTime;
             rotBody.CenterOfMassTransform = Matrix.RotationX(rotation) * rotBodyPosition;
 
-            BoxBoxDetector detector = new BoxBoxDetector(colShape, colShape);
+            GjkPairDetector detector = new GjkPairDetector(colShape0, colShape1, sGjkSimplexSolver, null);
+            detector.CachedSeparatingAxis = new Vector3(0.00000000f, 0.059727669f, 0.29259586f);
 
-            DiscreteCollisionDetectorInterface.ClosestPointInput input = new DiscreteCollisionDetectorInterface.ClosestPointInput();
+            GjkPairDetector.ClosestPointInput input = new DiscreteCollisionDetectorInterface.ClosestPointInput();
             input.TransformA = rotBody.CenterOfMassTransform;
             input.TransformB = body2Position;
 

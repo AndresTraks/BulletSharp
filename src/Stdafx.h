@@ -36,42 +36,42 @@
 	#define UsingGraphicsNamespace using namespace Microsoft::Xna::Framework::Graphics;
 
 	#define BtColor Microsoft::Xna::Framework::Graphics::Color
-	#define BtColorToBtVector(color) *new btVector3(color.R, color.G, color.B)
+	#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
 	#define BtVectorToBtColor(color) BtColor(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_SLIMDX
 	#define UsingFrameworkNamespace using namespace SlimDX;
 	#define UsingGraphicsNamespace using namespace SlimDX::Direct3D9;
 
 	#define BtColor Color4
-	#define BtColorToBtVector(color) *new btVector3(color.Red, color.Green, color.Blue)
+	#define BtColorToBtVector(color) new btVector3(color.Red, color.Green, color.Blue)
 	#define BtVectorToBtColor(color) BtColor(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_MOGRE
 	#define UsingFrameworkNamespace using namespace Mogre;
 	#define UsingGraphicsNamespace
 
 	#define BtColor Mogre::ColourValue
-	#define BtColorToBtVector(color) *new btVector3(color.r, color.g, color.b)
+	#define BtColorToBtVector(color) new btVector3(color.r, color.g, color.b)
 	#define BtVectorToBtColor(color) BtColor(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_OPENTK
 	#define UsingFrameworkNamespace using namespace OpenTK;
 	#define UsingGraphicsNamespace using namespace OpenTK::Graphics;
 
 	#define BtColor OpenTK::Graphics::Color4
-	#define BtColorToBtVector(color) *new btVector3(color.R, color.G, color.B)
+	#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
 	#define BtVectorToBtColor(color) BtColor(color.getX(),color.getY(),color.getZ(),1)
 #elif GRAPHICS_AXIOM
 	#define UsingFrameworkNamespace using namespace Axiom::Math;
 	#define UsingGraphicsNamespace
 
 	#define BtColor Axiom::Core::ColorEx
-	#define BtColorToBtVector(color) *new btVector3(color.r, color.g, color.b)
+	#define BtColorToBtVector(color) new btVector3(color.r, color.g, color.b)
 	#define BtVectorToBtColor(color) BtColor(color.getX(),color.getY(),color.getZ())
 #elif GRAPHICS_NONE
 	#define UsingFrameworkNamespace
 	#define UsingGraphicsNamespace
 
 	#define BtColor Color
-	#define BtColorToBtVector(color) *new btVector3(color.R, color.G, color.B)
+	#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
 	#define BtVectorToBtColor(color) Color::FromArgb(255, (int)(color.getX()*255), (int)(color.getY()*255), (int)(color.getY()*255))
 #endif
 

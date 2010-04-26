@@ -63,7 +63,7 @@ namespace Box2dDemo
             ds.Write(points[2] - depth);
             ds.Write(-Vector3.UnitZ);
 
-            triangle.VertexBuffer.Unlock();
+            triangle.UnlockVertexBuffer();
 
             short[] indices = new short[] {
                 0, 1, 2, 3, 4, 5,
@@ -77,7 +77,7 @@ namespace Box2dDemo
             {
                 ds.Write(index);
             }
-            triangle.IndexBuffer.Unlock();
+            triangle.UnlockIndexBuffer();
 
             return triangle;
         }
