@@ -12,18 +12,27 @@ Box2dShape::Box2dShape(btBox2dShape* shape)
 }
 
 Box2dShape::Box2dShape(Vector3 boxHalfExtents)
-: PolyhedralConvexShape(new btBox2dShape(*Math::Vector3ToBtVector3(boxHalfExtents)))
+: PolyhedralConvexShape(0)
 {
+	btVector3* boxHalfExtentsTemp = Math::Vector3ToBtVector3(boxHalfExtents);
+	UnmanagedPointer = new btBox2dShape(*boxHalfExtentsTemp);
+	delete boxHalfExtentsTemp;
 }
 
 Box2dShape::Box2dShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ)
-: PolyhedralConvexShape(new btBox2dShape(*(new btVector3(boxHalfExtentsX,boxHalfExtentsY,boxHalfExtentsZ))))
+: PolyhedralConvexShape(0)
 {
+	btVector3* boxHalfExtentsTemp = new btVector3(boxHalfExtentsX, boxHalfExtentsY, boxHalfExtentsZ);
+	UnmanagedPointer = new btBox2dShape(*boxHalfExtentsTemp);
+	delete boxHalfExtentsTemp;
 }
 
 Box2dShape::Box2dShape(btScalar boxHalfExtents)
-: PolyhedralConvexShape(new btBox2dShape(*(new btVector3(boxHalfExtents,boxHalfExtents,boxHalfExtents))))
+: PolyhedralConvexShape(0)
 {
+	btVector3* boxHalfExtentsTemp = new btVector3(boxHalfExtents, boxHalfExtents, boxHalfExtents);
+	UnmanagedPointer = new btBox2dShape(*boxHalfExtentsTemp);
+	delete boxHalfExtentsTemp;
 }
 
 Vector3 Box2dShape::Centroid::get()
@@ -42,7 +51,10 @@ btVector3* Box2dShape_GetHalfExtentsWithMargin(btBox2dShape* shape)
 
 Vector3 Box2dShape::HalfExtentsWithMargin::get()
 {
-	return Math::BtVector3ToVector3(Box2dShape_GetHalfExtentsWithMargin(UnmanagedPointer));
+	btVector3* extentsTemp = Box2dShape_GetHalfExtentsWithMargin(UnmanagedPointer);
+	Vector3 extents = Math::BtVector3ToVector3(extentsTemp);
+	delete extentsTemp;
+	return extents;
 }
 
 Vector3 Box2dShape::HalfExtentsWithoutMargin::get()
@@ -79,9 +91,11 @@ array<Vector3>^ Box2dShape::Vertices::get()
 
 Vector3 Box2dShape::GetVertex(int i)
 {
-	btVector3* vertex = new btVector3;
-	UnmanagedPointer->getVertex(i, *vertex);
-	return Math::BtVector3ToVector3(vertex);
+	btVector3* vertexTemp = new btVector3;
+	UnmanagedPointer->getVertex(i, *vertexTemp);
+	Vector3 vertex = Math::BtVector3ToVector3(vertexTemp);
+	delete vertexTemp;
+	return vertex;
 }
 
 Box2dShape^ Box2dShape::Upcast(CollisionShape^ shape)

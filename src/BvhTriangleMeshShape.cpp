@@ -19,13 +19,27 @@ BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface,
 }
 
 BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression, Vector3 bvhAabbMin, Vector3 bvhAabbMax, bool buildBvh)
-: ConcaveShape(new btBvhTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression, *Math::Vector3ToBtVector3(bvhAabbMin), *Math::Vector3ToBtVector3(bvhAabbMax), buildBvh))
+: ConcaveShape(0)
 {
+	btVector3* bvhAabbMinTemp = Math::Vector3ToBtVector3(bvhAabbMin);
+	btVector3* bvhAabbMaxTemp = Math::Vector3ToBtVector3(bvhAabbMax);
+
+	UnmanagedPointer = new btBvhTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression, *bvhAabbMinTemp, *bvhAabbMaxTemp, buildBvh);
+
+	delete bvhAabbMinTemp;
+	delete bvhAabbMaxTemp;
 }
 
 BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression, Vector3 bvhAabbMin, Vector3 bvhAabbMax)
-: ConcaveShape(new btBvhTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression, *Math::Vector3ToBtVector3(bvhAabbMin), *Math::Vector3ToBtVector3(bvhAabbMax)))
+: ConcaveShape(0)
 {
+	btVector3* bvhAabbMinTemp = Math::Vector3ToBtVector3(bvhAabbMin);
+	btVector3* bvhAabbMaxTemp = Math::Vector3ToBtVector3(bvhAabbMax);
+
+	UnmanagedPointer = new btBvhTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression, *bvhAabbMinTemp, *bvhAabbMaxTemp);
+
+	delete bvhAabbMinTemp;
+	delete bvhAabbMaxTemp;
 }
 
 void BvhTriangleMeshShape::BuildOptimizedBvh()
@@ -35,7 +49,13 @@ void BvhTriangleMeshShape::BuildOptimizedBvh()
 
 void BvhTriangleMeshShape::PartialRefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 {
-	UnmanagedPointer->partialRefitTree(*Math::Vector3ToBtVector3(bvhAabbMin), *Math::Vector3ToBtVector3(bvhAabbMax));
+	btVector3* bvhAabbMinTemp = Math::Vector3ToBtVector3(bvhAabbMin);
+	btVector3* bvhAabbMaxTemp = Math::Vector3ToBtVector3(bvhAabbMax);
+
+	UnmanagedPointer->partialRefitTree(*bvhAabbMinTemp, *bvhAabbMaxTemp);
+
+	delete bvhAabbMinTemp;
+	delete bvhAabbMaxTemp;
 }
 
 void BvhTriangleMeshShape::RecalcLocalAabb()
@@ -45,7 +65,13 @@ void BvhTriangleMeshShape::RecalcLocalAabb()
 
 void BvhTriangleMeshShape::RefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 {
-	UnmanagedPointer->refitTree(*Math::Vector3ToBtVector3(bvhAabbMin), *Math::Vector3ToBtVector3(bvhAabbMax));
+	btVector3* bvhAabbMinTemp = Math::Vector3ToBtVector3(bvhAabbMin);
+	btVector3* bvhAabbMaxTemp = Math::Vector3ToBtVector3(bvhAabbMax);
+
+	UnmanagedPointer->refitTree(*bvhAabbMinTemp, *bvhAabbMaxTemp);
+
+	delete bvhAabbMinTemp;
+	delete bvhAabbMaxTemp;
 }
 
 bool BvhTriangleMeshShape::OwnsBvh::get()

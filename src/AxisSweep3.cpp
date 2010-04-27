@@ -4,40 +4,55 @@
 #include "OverlappingPairCache.h"
 
 AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles, BulletSharp::OverlappingPairCache^ pairCache, bool disableRaycastAccelerator)
-: BroadphaseInterface(new btAxisSweep3(
-	*Math::Vector3ToBtVector3(worldAabbMin),
-	*Math::Vector3ToBtVector3(worldAabbMax),
-	maxHandles,
-	pairCache->UnmanagedPointer,
-	disableRaycastAccelerator))
+: BroadphaseInterface(0)
 {
+	btVector3* worldAabbMinTemp = Math::Vector3ToBtVector3(worldAabbMin);
+	btVector3* worldAabbMaxTemp = Math::Vector3ToBtVector3(worldAabbMax);
+
+	UnmanagedPointer = new btAxisSweep3(*worldAabbMinTemp, *worldAabbMaxTemp, maxHandles, pairCache->UnmanagedPointer, disableRaycastAccelerator);
+
+	delete worldAabbMinTemp;
+	delete worldAabbMaxTemp;
+
 	_pairCache = pairCache;
 }
 
 AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles, BulletSharp::OverlappingPairCache^ pairCache)
-: BroadphaseInterface(new btAxisSweep3(
-	*Math::Vector3ToBtVector3(worldAabbMin),
-	*Math::Vector3ToBtVector3(worldAabbMax),
-	maxHandles,
-	pairCache->UnmanagedPointer))
+: BroadphaseInterface(0)
 {
+	btVector3* worldAabbMinTemp = Math::Vector3ToBtVector3(worldAabbMin);
+	btVector3* worldAabbMaxTemp = Math::Vector3ToBtVector3(worldAabbMax);
+
+	UnmanagedPointer = new btAxisSweep3(*worldAabbMinTemp, *worldAabbMaxTemp, maxHandles, pairCache->UnmanagedPointer);
+
+	delete worldAabbMinTemp;
+	delete worldAabbMaxTemp;
+
 	_pairCache = pairCache;
 }
 
 AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles)
-: BroadphaseInterface(new btAxisSweep3(
-	*Math::Vector3ToBtVector3(worldAabbMin),
-	*Math::Vector3ToBtVector3(worldAabbMax),
-	maxHandles))
+: BroadphaseInterface(0)
 {
+	btVector3* worldAabbMinTemp = Math::Vector3ToBtVector3(worldAabbMin);
+	btVector3* worldAabbMaxTemp = Math::Vector3ToBtVector3(worldAabbMax);
+
+	UnmanagedPointer = new btAxisSweep3(*worldAabbMinTemp, *worldAabbMaxTemp, maxHandles);
+
+	delete worldAabbMinTemp;
+	delete worldAabbMaxTemp;
 }
 
 AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax)
-: BroadphaseInterface(new btAxisSweep3(
-	*Math::Vector3ToBtVector3(worldAabbMin),
-	*Math::Vector3ToBtVector3(worldAabbMax)
-	))
+: BroadphaseInterface(0)
 {
+	btVector3* worldAabbMinTemp = Math::Vector3ToBtVector3(worldAabbMin);
+	btVector3* worldAabbMaxTemp = Math::Vector3ToBtVector3(worldAabbMax);
+
+	UnmanagedPointer = new btAxisSweep3(*worldAabbMinTemp, *worldAabbMaxTemp);
+
+	delete worldAabbMinTemp;
+	delete worldAabbMaxTemp;
 }
 
 btAxisSweep3* AxisSweep3::UnmanagedPointer::get()
@@ -47,40 +62,55 @@ btAxisSweep3* AxisSweep3::UnmanagedPointer::get()
 
 
 AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles, BulletSharp::OverlappingPairCache^ pairCache, bool disableRaycastAccelerator)
-: BroadphaseInterface(new bt32BitAxisSweep3(
-	*Math::Vector3ToBtVector3(worldAabbMin),
-	*Math::Vector3ToBtVector3(worldAabbMax),
-	maxHandles,
-	pairCache->UnmanagedPointer,
-	disableRaycastAccelerator))
+: BroadphaseInterface(0)
 {
+	btVector3* worldAabbMinTemp = Math::Vector3ToBtVector3(worldAabbMin);
+	btVector3* worldAabbMaxTemp = Math::Vector3ToBtVector3(worldAabbMax);
+
+	UnmanagedPointer = new bt32BitAxisSweep3(*worldAabbMinTemp, *worldAabbMaxTemp, maxHandles, pairCache->UnmanagedPointer, disableRaycastAccelerator);
+
+	delete worldAabbMinTemp;
+	delete worldAabbMaxTemp;
+
 	_pairCache = pairCache;
 }
 
 AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles, BulletSharp::OverlappingPairCache^ pairCache)
-: BroadphaseInterface(new bt32BitAxisSweep3(
-	*Math::Vector3ToBtVector3(worldAabbMin),
-	*Math::Vector3ToBtVector3(worldAabbMax),
-	maxHandles,
-	pairCache->UnmanagedPointer))
+: BroadphaseInterface(0)
 {
+	btVector3* worldAabbMinTemp = Math::Vector3ToBtVector3(worldAabbMin);
+	btVector3* worldAabbMaxTemp = Math::Vector3ToBtVector3(worldAabbMax);
+
+	UnmanagedPointer = new bt32BitAxisSweep3(*worldAabbMinTemp, *worldAabbMaxTemp, maxHandles, pairCache->UnmanagedPointer);
+
+	delete worldAabbMinTemp;
+	delete worldAabbMaxTemp;
+
 	_pairCache = pairCache;
 }
 
 AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles)
-: BroadphaseInterface(new bt32BitAxisSweep3(
-	*Math::Vector3ToBtVector3(worldAabbMin),
-	*Math::Vector3ToBtVector3(worldAabbMax),
-	maxHandles))
+: BroadphaseInterface(0)
 {
+	btVector3* worldAabbMinTemp = Math::Vector3ToBtVector3(worldAabbMin);
+	btVector3* worldAabbMaxTemp = Math::Vector3ToBtVector3(worldAabbMax);
+
+	UnmanagedPointer = new bt32BitAxisSweep3(*worldAabbMinTemp, *worldAabbMaxTemp, maxHandles);
+
+	delete worldAabbMinTemp;
+	delete worldAabbMaxTemp;
 }
 
 AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax)
-: BroadphaseInterface(new bt32BitAxisSweep3(
-	*Math::Vector3ToBtVector3(worldAabbMin),
-	*Math::Vector3ToBtVector3(worldAabbMax)
-	))
+: BroadphaseInterface(0)
 {
+	btVector3* worldAabbMinTemp = Math::Vector3ToBtVector3(worldAabbMin);
+	btVector3* worldAabbMaxTemp = Math::Vector3ToBtVector3(worldAabbMax);
+
+	UnmanagedPointer = new bt32BitAxisSweep3(*worldAabbMinTemp, *worldAabbMaxTemp);
+
+	delete worldAabbMinTemp;
+	delete worldAabbMaxTemp;
 }
 
 bt32BitAxisSweep3* AxisSweep3_32Bit::UnmanagedPointer::get()

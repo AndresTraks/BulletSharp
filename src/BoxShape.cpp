@@ -33,7 +33,10 @@ btVector3* BoxShape_GetHalfExtentsWithMargin(btBoxShape* shape)
 
 Vector3 BoxShape::HalfExtentsWithMargin::get()
 {
-	return Math::BtVector3ToVector3(BoxShape_GetHalfExtentsWithMargin(UnmanagedPointer));
+	btVector3* extentsTemp = BoxShape_GetHalfExtentsWithMargin(UnmanagedPointer);
+	Vector3 extents = Math::BtVector3ToVector3(extentsTemp);
+	delete extentsTemp;
+	return extents;
 }
 
 Vector3 BoxShape::HalfExtentsWithoutMargin::get()

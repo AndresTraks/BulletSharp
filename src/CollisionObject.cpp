@@ -84,7 +84,9 @@ Vector3 CollisionObject::AnisotropicFriction::get()
 }
 void CollisionObject::AnisotropicFriction::set(Vector3 value)
 {
-	_collisionObject->setAnisotropicFriction(*Math::Vector3ToBtVector3(value));
+	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
+	_collisionObject->setAnisotropicFriction(*valueTemp);
+	delete valueTemp;
 }
 
 BroadphaseProxy^ CollisionObject::BroadphaseHandle::get()
@@ -201,7 +203,9 @@ Vector3 CollisionObject::InterpolationAngularVelocity::get()
 }
 void CollisionObject::InterpolationAngularVelocity::set(Vector3 value)
 {
-	_collisionObject->setInterpolationAngularVelocity(*Math::Vector3ToBtVector3(value));
+	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
+	_collisionObject->setInterpolationAngularVelocity(*valueTemp);
+	delete valueTemp;
 }
 
 Vector3 CollisionObject::InterpolationLinearVelocity::get()
@@ -210,7 +214,9 @@ Vector3 CollisionObject::InterpolationLinearVelocity::get()
 }
 void CollisionObject::InterpolationLinearVelocity::set(Vector3 value)
 {
-	_collisionObject->setInterpolationLinearVelocity(*Math::Vector3ToBtVector3(value));
+	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
+	_collisionObject->setInterpolationLinearVelocity(*valueTemp);
+	delete valueTemp;
 }
 
 Matrix CollisionObject::InterpolationWorldTransform::get()
@@ -219,7 +225,9 @@ Matrix CollisionObject::InterpolationWorldTransform::get()
 }
 void CollisionObject::InterpolationWorldTransform::set(Matrix value)
 {
-	_collisionObject->setInterpolationWorldTransform(*Math::MatrixToBtTransform(value));
+	btTransform* valueTemp = Math::MatrixToBtTransform(value);
+	_collisionObject->setInterpolationWorldTransform(*valueTemp);
+	delete valueTemp;
 }
 
 bool CollisionObject::IsActive::get()
@@ -293,7 +301,9 @@ Matrix CollisionObject::WorldTransform::get()
 }
 void CollisionObject::WorldTransform::set(Matrix value)
 {
-	_collisionObject->setWorldTransform(*Math::MatrixToBtTransform(value));
+	btTransform* valueTemp = Math::MatrixToBtTransform(value);
+	_collisionObject->setWorldTransform(*valueTemp);
+	delete valueTemp;
 }
 
 btCollisionObject* CollisionObject::UnmanagedPointer::get()

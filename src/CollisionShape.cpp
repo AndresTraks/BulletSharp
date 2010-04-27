@@ -35,17 +35,19 @@ bool CollisionShape::IsDisposed::get()
 
 void CollisionShape::CalculateLocalInertia(btScalar mass, Vector3% inertia)
 {
-	btVector3* vector = new btVector3;
-	_collisionShape->calculateLocalInertia(mass, *vector);
-	inertia = Math::BtVector3ToVector3(vector);
-	delete vector;
+	btVector3* inertiaTemp = new btVector3;
+	_collisionShape->calculateLocalInertia(mass, *inertiaTemp);
+	inertia = Math::BtVector3ToVector3(inertiaTemp);
+	delete inertiaTemp;
 }
 
 Vector3 CollisionShape::CalculateLocalInertia(btScalar mass)
 {
-	btVector3* vector = new btVector3;
-	_collisionShape->calculateLocalInertia(mass, *vector);
-	return Math::BtVector3ToVector3(vector);
+	btVector3* inertiaTemp = new btVector3;
+	_collisionShape->calculateLocalInertia(mass, *inertiaTemp);
+	Vector3 inertia = Math::BtVector3ToVector3(inertiaTemp);
+	delete inertiaTemp;
+	return inertia;
 }
 
 #ifndef DISABLE_SERIALIZE
@@ -59,42 +61,49 @@ void CollisionShape::CalculateTemporalAabb(Matrix curTrans,
 	Vector3 linvel,	Vector3 angvel, btScalar timeStep,
 	Vector3% temporalAabbMin, Vector3% temporalAabbMax)
 {
-	btVector3* tmpTemporalAabbMin = new btVector3;
-	btVector3* tmpTemporalAabbMax = new btVector3;
-	
-	_collisionShape->calculateTemporalAabb(
-		*Math::MatrixToBtTransform(curTrans),
-		*Math::Vector3ToBtVector3(linvel),
-		*Math::Vector3ToBtVector3(angvel),
-		timeStep,
-		*tmpTemporalAabbMin,
-		*tmpTemporalAabbMax
+	btTransform* curTransTemp = Math::MatrixToBtTransform(curTrans);
+	btVector3* temporalAabbMinTemp = new btVector3;
+	btVector3* temporalAabbMaxTemp = new btVector3;
+	btVector3* linvelTemp = Math::Vector3ToBtVector3(linvel);
+	btVector3* angvelTemp = Math::Vector3ToBtVector3(angvel);
+
+	_collisionShape->calculateTemporalAabb(*curTransTemp, *linvelTemp, *angvelTemp,
+		timeStep, *temporalAabbMinTemp,	*temporalAabbMaxTemp
 	);
 
-	temporalAabbMin = Math::BtVector3ToVector3(tmpTemporalAabbMin);
-	temporalAabbMax = Math::BtVector3ToVector3(tmpTemporalAabbMax);
+	temporalAabbMin = Math::BtVector3ToVector3(temporalAabbMaxTemp);
+	temporalAabbMax = Math::BtVector3ToVector3(temporalAabbMaxTemp);
+
+	delete curTransTemp;
+	delete temporalAabbMinTemp;
+	delete temporalAabbMaxTemp;
+	delete linvelTemp;
+	delete angvelTemp;
 }
 
 void CollisionShape::GetAabb(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
 {
-	btVector3* tmpAabbMin = new btVector3;
-	btVector3* tmpAabbMax = new btVector3;
+	btVector3* aabbMinTemp = new btVector3;
+	btVector3* aabbMaxTemp = new btVector3;
 	
-	_collisionShape->getAabb(*Math::MatrixToBtTransform(t), *tmpAabbMin, *tmpAabbMax);
+	_collisionShape->getAabb(*Math::MatrixToBtTransform(t), *aabbMinTemp, *aabbMaxTemp);
 
-	aabbMin = Math::BtVector3ToVector3(tmpAabbMin);
-	aabbMax = Math::BtVector3ToVector3(tmpAabbMax);
+	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
+	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
+
+	delete aabbMinTemp;
+	delete aabbMaxTemp;
 }
 
 void CollisionShape::GetBoundingSphere(Vector3% center, btScalar% radius)
 {
-	btVector3* tmpCenter = new btVector3;
-	btScalar tmpRadius;
+	btVector3* centerTemp = new btVector3;
+	btScalar radiusTemp;
 	
-	_collisionShape->getBoundingSphere(*tmpCenter, tmpRadius);
+	_collisionShape->getBoundingSphere(*centerTemp, radiusTemp);
 	
-	center = Math::BtVector3ToVector3(tmpCenter);
-	radius = tmpRadius;
+	center = Math::BtVector3ToVector3(centerTemp);
+	radius = radiusTemp;
 }
 
 btScalar CollisionShape::GetContactBreakingThreshold(btScalar defaultContactThreshold)
@@ -149,7 +158,9 @@ Vector3 CollisionShape::LocalScaling::get()
 }
 void CollisionShape::LocalScaling::set(Vector3 value)
 {
-	_collisionShape->setLocalScaling(*Math::Vector3ToBtVector3(value));
+	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
+	_collisionShape->setLocalScaling(*valueTemp);
+	delete valueTemp;
 }
 
 btScalar CollisionShape::Margin::get()
