@@ -8,18 +8,27 @@ BoxShape::BoxShape(btBoxShape* shape)
 }
 
 BoxShape::BoxShape(Vector3 boxHalfExtents)
-: PolyhedralConvexShape(new btBoxShape(*Math::Vector3ToBtVector3(boxHalfExtents)))
+: PolyhedralConvexShape(0)
 {
+	btVector3* boxHalfExtentsTemp = Math::Vector3ToBtVector3(boxHalfExtents);
+	UnmanagedPointer = new btBoxShape(*boxHalfExtentsTemp);
+	delete boxHalfExtentsTemp;
 }
 
 BoxShape::BoxShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ)
-: PolyhedralConvexShape(new btBoxShape(*(new btVector3(boxHalfExtentsX,boxHalfExtentsY,boxHalfExtentsZ))))
+: PolyhedralConvexShape(0)
 {
+	btVector3* boxHalfExtentsTemp = new btVector3(boxHalfExtentsX,boxHalfExtentsY,boxHalfExtentsZ);
+	UnmanagedPointer = new btBoxShape(*boxHalfExtentsTemp);
+	delete boxHalfExtentsTemp;
 }
 
 BoxShape::BoxShape(btScalar boxHalfExtents)
-: PolyhedralConvexShape(new btBoxShape(*(new btVector3(boxHalfExtents,boxHalfExtents,boxHalfExtents))))
+: PolyhedralConvexShape(0)
 {
+	btVector3* boxHalfExtentsTemp = new btVector3(boxHalfExtents,boxHalfExtents,boxHalfExtents);
+	UnmanagedPointer = new btBoxShape(*boxHalfExtentsTemp);
+	delete boxHalfExtentsTemp;
 }
 
 #pragma managed(push, off)

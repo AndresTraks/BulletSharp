@@ -7,17 +7,30 @@
 
 ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rbA, RigidBody^ rbB,
 	Matrix rbAFrame, Matrix rbBFrame)
-: TypedConstraint(new btConeTwistConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
-	*Math::MatrixToBtTransform(rbAFrame), *Math::MatrixToBtTransform(rbBFrame)))
+: TypedConstraint(0)
 {
 	this->RigidBodyA = rbA;
 	this->RigidBodyB = rbB;
+
+	btTransform* rbAFrameTemp = Math::MatrixToBtTransform(rbAFrame);
+	btTransform* rbBFrameTemp = Math::MatrixToBtTransform(rbBFrame);
+
+	UnmanagedPointer = new btConeTwistConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer, *rbAFrameTemp, *rbBFrameTemp);
+
+	delete rbAFrameTemp;
+	delete rbBFrameTemp;
 }
 
 ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rbA, Matrix rbAFrame)
-: TypedConstraint(new btConeTwistConstraint(*rbA->UnmanagedPointer,	*Math::MatrixToBtTransform(rbAFrame)))
+: TypedConstraint(0)
 {
 	this->RigidBodyA = rbA;
+
+	btTransform* rbAFrameTemp = Math::MatrixToBtTransform(rbAFrame);
+
+	UnmanagedPointer = new btConeTwistConstraint(*rbA->UnmanagedPointer, *rbAFrameTemp);
+
+	delete rbAFrameTemp;
 }
 
 void ConeTwistConstraint::CalcAngleInfo()

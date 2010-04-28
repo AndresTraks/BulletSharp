@@ -36,8 +36,14 @@ void CollisionWorld::LocalShapeInfo::TriangleIndex::set(int value)
 CollisionWorld::LocalConvexResult::LocalConvexResult(BulletSharp::CollisionObject^ collisionObject, CollisionWorld::LocalShapeInfo^ localShapeInfo,
 	Vector3 hitNormalLocal, Vector3 hitPointLocal, btScalar hitFraction)
 {
+	btVector3* hitNormalLocalTemp = Math::Vector3ToBtVector3(hitNormalLocal);
+	btVector3* hitPointLocalTemp = Math::Vector3ToBtVector3(hitPointLocal);
+
 	_result = new btCollisionWorld::LocalConvexResult(collisionObject->UnmanagedPointer, localShapeInfo->UnmanagedPointer,
-		*Math::Vector3ToBtVector3(hitNormalLocal), *Math::Vector3ToBtVector3(hitPointLocal), hitFraction);
+		*hitNormalLocalTemp, *hitPointLocalTemp, hitFraction);
+
+	delete hitNormalLocalTemp;
+	delete hitPointLocalTemp;
 }
 
 BulletSharp::CollisionObject^ CollisionWorld::LocalConvexResult::CollisionObject::get()
@@ -171,9 +177,15 @@ CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(btColli
 }
 
 CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3 convexFromWorld, Vector3 convexToWorld)
-: ConvexResultCallback(new btCollisionWorld::ClosestConvexResultCallback(
-	*Math::Vector3ToBtVector3(convexFromWorld), *Math::Vector3ToBtVector3(convexToWorld)))
+: ConvexResultCallback(0)
 {
+	btVector3* convexFromWorldTemp = Math::Vector3ToBtVector3(convexFromWorld);
+	btVector3* convexToWorldTemp = Math::Vector3ToBtVector3(convexToWorld);
+
+	UnmanagedPointer = new btCollisionWorld::ClosestConvexResultCallback(*convexFromWorldTemp, *convexToWorldTemp);
+
+	delete convexFromWorldTemp;
+	delete convexToWorldTemp;
 }
 
 BulletSharp::CollisionObject^ CollisionWorld::ClosestConvexResultCallback::CollisionObject::get()
@@ -314,8 +326,12 @@ void CollisionWorld::LocalShapeInfo::UnmanagedPointer::set(btCollisionWorld::Loc
 CollisionWorld::LocalRayResult::LocalRayResult(BulletSharp::CollisionObject^ collisionObject, CollisionWorld::LocalShapeInfo^ localShapeInfo,
 	Vector3 hitNormalLocal, btScalar hitFraction)
 {
+	btVector3* hitNormalLocalTemp = Math::Vector3ToBtVector3(hitNormalLocal);
+
 	_result = new btCollisionWorld::LocalRayResult(collisionObject->UnmanagedPointer, localShapeInfo->UnmanagedPointer,
-		*Math::Vector3ToBtVector3(hitNormalLocal), hitFraction);
+		*hitNormalLocalTemp, hitFraction);
+
+	delete hitNormalLocalTemp;
 }
 
 BulletSharp::CollisionObject^ CollisionWorld::LocalRayResult::CollisionObject::get()
@@ -462,9 +478,15 @@ void CollisionWorld::RayResultCallback::UnmanagedPointer::set(btCollisionWorld::
 
 
 CollisionWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld)
-: RayResultCallback(new btCollisionWorld::ClosestRayResultCallback(
-	*Math::Vector3ToBtVector3(rayFromWorld), *Math::Vector3ToBtVector3(rayToWorld)))
+: RayResultCallback(0)
 {
+	btVector3* rayFromWorldTemp = Math::Vector3ToBtVector3(rayFromWorld);
+	btVector3* rayToWorldTemp = Math::Vector3ToBtVector3(rayToWorld);
+
+	UnmanagedPointer = new btCollisionWorld::ClosestRayResultCallback(*rayFromWorldTemp, *rayToWorldTemp);
+
+	delete rayFromWorldTemp;
+	delete rayToWorldTemp;
 }
 
 Vector3 CollisionWorld::ClosestRayResultCallback::HitNormalWorld::get()
@@ -616,16 +638,29 @@ void CollisionWorld::PerformDiscreteCollisionDetection()
 
 void CollisionWorld::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResultCallback^ resultCallback)
 {
-	_world->rayTest(*Math::Vector3ToBtVector3(rayFromWorld), *Math::Vector3ToBtVector3(rayToWorld),
-		*resultCallback->UnmanagedPointer);
+	btVector3* rayFromWorldTemp = Math::Vector3ToBtVector3(rayFromWorld);
+	btVector3* rayToWorldTemp = Math::Vector3ToBtVector3(rayToWorld);
+
+	_world->rayTest(*rayFromWorldTemp, *rayToWorldTemp, *resultCallback->UnmanagedPointer);
+
+	delete rayFromWorldTemp;
+	delete rayToWorldTemp;
 }
 
 void CollisionWorld::RayTestSingle(Matrix rayFromTrans, Matrix rayToTrans, CollisionObject^ collisionObject,
 	CollisionShape^ collisionShape, Matrix colObjWorldTransform, RayResultCallback^ resultCallback)
 {
-	btCollisionWorld::rayTestSingle(*Math::MatrixToBtTransform(rayFromTrans), *Math::MatrixToBtTransform(rayToTrans),
+	btTransform* rayFromTransTemp = Math::MatrixToBtTransform(rayFromTrans);
+	btTransform* rayToTransTemp = Math::MatrixToBtTransform(rayToTrans);
+	btTransform* colObjWorldTransformTemp = Math::MatrixToBtTransform(colObjWorldTransform);
+
+	btCollisionWorld::rayTestSingle(*rayFromTransTemp, *rayToTransTemp,
 		collisionObject->UnmanagedPointer, collisionShape->UnmanagedPointer,
-		*Math::MatrixToBtTransform(colObjWorldTransform), *resultCallback->UnmanagedPointer);
+		*colObjWorldTransformTemp, *resultCallback->UnmanagedPointer);
+
+	delete rayFromTransTemp;
+	delete rayToTransTemp;
+	delete colObjWorldTransformTemp;
 }
 
 void CollisionWorld::RemoveCollisionObject(CollisionObject^ collisionObject)
@@ -658,7 +693,7 @@ BulletSharp::CollisionObjectArray^ CollisionWorld::CollisionObjectArray::get()
 	if (_collisionObjects == nullptr)
 	{
 		btCollisionObjectArray* objArray = new btCollisionObjectArray;
-		*objArray = _world->getCollisionObjectArray();;
+		*objArray = _world->getCollisionObjectArray();
 		_collisionObjects = gcnew BulletSharp::CollisionObjectArray(objArray);
 	}
 	return _collisionObjects;

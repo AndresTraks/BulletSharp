@@ -69,7 +69,9 @@ CompoundShape::CompoundShape(bool enableDynamicAabbTree)
 
 void CompoundShape::AddChildShape(Matrix localTransform, CollisionShape^ shape)
 {
-	UnmanagedPointer->addChildShape(*Math::MatrixToBtTransform(localTransform), shape->UnmanagedPointer);
+	btTransform* localTransformTemp = Math::MatrixToBtTransform(localTransform);
+	UnmanagedPointer->addChildShape(*localTransformTemp, shape->UnmanagedPointer);
+	delete localTransformTemp;
 }
 
 CollisionShape^ CompoundShape::GetChildShape(int index)
@@ -99,7 +101,9 @@ void CompoundShape::RemoveChildShapeByIndex(int childShapeindex)
 
 void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransform)
 {
-	UnmanagedPointer->updateChildTransform(childIndex, *Math::MatrixToBtTransform(newChildTransform));
+	btTransform* newChildTransformTemp = Math::MatrixToBtTransform(newChildTransform);
+	UnmanagedPointer->updateChildTransform(childIndex, *newChildTransformTemp);
+	delete newChildTransformTemp;
 }
 
 #ifndef DISABLE_DBVT

@@ -8,18 +8,27 @@ CylinderShape::CylinderShape(btCylinderShape* shape)
 }
 
 CylinderShape::CylinderShape(Vector3 halfExtents)
-: ConvexInternalShape(new btCylinderShape(*Math::Vector3ToBtVector3(halfExtents)))
+: ConvexInternalShape(0)
 {
+	btVector3* halfExtentsTemp = Math::Vector3ToBtVector3(halfExtents);
+	UnmanagedPointer = new btCylinderShape(*halfExtentsTemp);
+	delete halfExtentsTemp;
 }
 
 CylinderShape::CylinderShape(btScalar halfExtentsX, btScalar halfExtentsY, btScalar halfExtentsZ)
-: ConvexInternalShape(new btCylinderShape(*(new btVector3(halfExtentsX,halfExtentsY,halfExtentsZ))))
+: ConvexInternalShape(0)
 {
+	btVector3* halfExtentsTemp = new btVector3(halfExtentsX,halfExtentsY,halfExtentsZ);
+	UnmanagedPointer = new btCylinderShape(*halfExtentsTemp);
+	delete halfExtentsTemp;
 }
 
 CylinderShape::CylinderShape(btScalar halfExtents)
-: ConvexInternalShape(new btCylinderShape(*(new btVector3(halfExtents,halfExtents,halfExtents))))
+: ConvexInternalShape(0)
 {
+	btVector3* halfExtentsTemp = new btVector3(halfExtents,halfExtents,halfExtents);
+	UnmanagedPointer = new btCylinderShape(*halfExtentsTemp);
+	delete halfExtentsTemp;
 }
 
 #pragma managed(push, off)

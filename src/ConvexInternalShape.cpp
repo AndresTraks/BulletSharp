@@ -15,7 +15,9 @@ Vector3 ConvexInternalShape::ImplicitShapeDimensions::get()
 }
 void ConvexInternalShape::ImplicitShapeDimensions::set(Vector3 value)
 {
-	UnmanagedPointer->setImplicitShapeDimensions(*Math::Vector3ToBtVector3(value));
+	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
+	UnmanagedPointer->setImplicitShapeDimensions(*valueTemp);
+	delete valueTemp;
 }
 
 Vector3 ConvexInternalShape::LocalScalingNV::get()
