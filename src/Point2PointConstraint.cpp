@@ -54,17 +54,31 @@ void ConstraintSetting::UnmanagedPointer::set(btConstraintSetting* setting)
 
 
 Point2PointConstraint::Point2PointConstraint(RigidBody^ rbA, RigidBody^ rbB, Vector3 pivotInA, Vector3 pivotInB)
-: TypedConstraint(new btPoint2PointConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
-	*Math::Vector3ToBtVector3(pivotInA), *Math::Vector3ToBtVector3(pivotInB)))
+: TypedConstraint(0)
 {
 	this->RigidBodyA = rbA;
 	this->RigidBodyB = rbB;
+
+	btVector3* pivotInATemp = Math::Vector3ToBtVector3(pivotInA);
+	btVector3* pivotInBTemp = Math::Vector3ToBtVector3(pivotInB);
+
+	UnmanagedPointer = new btPoint2PointConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
+	*pivotInATemp, *pivotInBTemp);
+
+	delete pivotInATemp;
+	delete pivotInBTemp;
 }
 
 Point2PointConstraint::Point2PointConstraint(RigidBody^ rbA, Vector3 pivotInA)
-: TypedConstraint(new btPoint2PointConstraint(*rbA->UnmanagedPointer, *Math::Vector3ToBtVector3(pivotInA)))
+: TypedConstraint(0)
 {
 	this->RigidBodyA = rbA;
+
+	btVector3* pivotInATemp = Math::Vector3ToBtVector3(pivotInA);
+
+	UnmanagedPointer = new btPoint2PointConstraint(*rbA->UnmanagedPointer, *pivotInATemp);
+
+	delete pivotInATemp;
 }
 
 #ifndef DISABLE_SERIALIZE
@@ -101,7 +115,9 @@ Vector3 Point2PointConstraint::PivotInA::get()
 
 void Point2PointConstraint::PivotInA::set(Vector3 value)
 {
-	UnmanagedPointer->setPivotA(*Math::Vector3ToBtVector3(value));
+	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
+	UnmanagedPointer->setPivotA(*valueTemp);
+	delete valueTemp;
 }
 
 Vector3 Point2PointConstraint::PivotInB::get()
@@ -111,7 +127,9 @@ Vector3 Point2PointConstraint::PivotInB::get()
 
 void Point2PointConstraint::PivotInB::set(Vector3 value)
 {
-	UnmanagedPointer->setPivotB(*Math::Vector3ToBtVector3(value));
+	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
+	UnmanagedPointer->setPivotB(*valueTemp);
+	delete valueTemp;
 }
 
 ConstraintSetting^ Point2PointConstraint::Setting::get()

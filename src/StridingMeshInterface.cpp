@@ -28,16 +28,16 @@ bool StridingMeshInterface::IsDisposed::get()
 
 void StridingMeshInterface::CalculateAabbBruteForce(Vector3% aabbMin, Vector3% aabbMax)
 {
-	btVector3* tmpAabbMin = new btVector3;
-	btVector3* tmpAabbMax = new btVector3;
+	btVector3* aabbMinTemp = new btVector3;
+	btVector3* aabbMaxTemp = new btVector3;
 	
-	_stridingMesh->calculateAabbBruteForce(*tmpAabbMin, *tmpAabbMax);
+	_stridingMesh->calculateAabbBruteForce(*aabbMinTemp, *aabbMaxTemp);
 	
-	aabbMin = Math::BtVector3ToVector3(tmpAabbMin);
-	aabbMax = Math::BtVector3ToVector3(tmpAabbMax);
+	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
+	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
 
-	delete tmpAabbMin;
-	delete tmpAabbMax;
+	delete aabbMinTemp;
+	delete aabbMaxTemp;
 }
 
 btStridingMeshInterface* StridingMeshInterface::UnmanagedPointer::get()

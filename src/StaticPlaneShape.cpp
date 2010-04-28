@@ -3,8 +3,11 @@
 #include "StaticPlaneShape.h"
 
 StaticPlaneShape::StaticPlaneShape(Vector3 planeNormal, btScalar planeConstant)
-: BulletSharp::ConcaveShape(new btStaticPlaneShape(*Math::Vector3ToBtVector3(planeNormal), planeConstant))
+: BulletSharp::ConcaveShape(0)
 {
+	btVector3* planeNormalTemp = Math::Vector3ToBtVector3(planeNormal);
+	UnmanagedPointer = new btStaticPlaneShape(*planeNormalTemp, planeConstant);
+	delete planeNormalTemp;
 }
 
 btScalar StaticPlaneShape::PlaneConstant::get()

@@ -32,7 +32,9 @@ Matrix MotionState::WorldTransform::get()
 
 void MotionState::WorldTransform::set(Matrix worldTransform)
 {
-	_motionState->setWorldTransform(*Math::MatrixToBtTransform(worldTransform));
+	btTransform* worldTransformTemp = Math::MatrixToBtTransform(worldTransform);
+	_motionState->setWorldTransform(*worldTransformTemp);
+	delete worldTransformTemp;
 }
 
 btMotionState* MotionState::UnmanagedPointer::get()

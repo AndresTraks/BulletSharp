@@ -54,8 +54,13 @@ VehicleRaycaster::VehicleRaycaster(btVehicleRaycaster* vehicleRaycaster)
 
 Object^ VehicleRaycaster::CastRay(Vector3 from, Vector3 to, VehicleRaycasterResult^ result)
 {
-	void* ret = _vehicleRaycaster->castRay(*Math::Vector3ToBtVector3(to), *Math::Vector3ToBtVector3(to),
-		*result->UnmanagedPointer);
+	btVector3* fromTemp = Math::Vector3ToBtVector3(from);
+	btVector3* toTemp = Math::Vector3ToBtVector3(to);
+
+	void* ret = _vehicleRaycaster->castRay(*fromTemp, *toTemp, *result->UnmanagedPointer);
+
+	delete fromTemp;
+	delete toTemp;
 
 	if (ret = 0)
 		return nullptr;

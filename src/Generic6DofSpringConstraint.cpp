@@ -12,12 +12,19 @@ Generic6DofSpringConstraint::Generic6DofSpringConstraint(btGeneric6DofSpringCons
 
 Generic6DofSpringConstraint::Generic6DofSpringConstraint(RigidBody^ rbA, RigidBody^ rbB,
 	Matrix frameInA, Matrix frameInB, bool useReferenceFrameA)
-: Generic6DofConstraint(new btGeneric6DofSpringConstraint(*rbA->UnmanagedPointer,
-	*rbB->UnmanagedPointer, *Math::MatrixToBtTransform(frameInA),
-	*Math::MatrixToBtTransform(frameInB), useReferenceFrameA))
+: Generic6DofConstraint(0)
 {
 	this->RigidBodyA = rbA;
 	this->RigidBodyB = rbB;
+
+	btTransform* frameInATemp = Math::MatrixToBtTransform(frameInA);
+	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
+
+	UnmanagedPointer = new btGeneric6DofSpringConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
+		*frameInATemp, *frameInBTemp, useReferenceFrameA);
+
+	delete frameInATemp;
+	delete frameInBTemp;
 }
 
 void Generic6DofSpringConstraint::EnableSpring(int index, bool onOff)

@@ -179,7 +179,9 @@ Matrix RigidBody::CenterOfMassTransform::get()
 }
 void RigidBody::CenterOfMassTransform::set(Matrix value)
 {
-	UnmanagedPointer->setCenterOfMassTransform(*Math::MatrixToBtTransform(value));
+	btTransform* valueTemp = Math::MatrixToBtTransform(value);
+	UnmanagedPointer->setCenterOfMassTransform(*valueTemp);
+	delete valueTemp;
 }
 
 Vector3 RigidBody::Gravity::get()
@@ -188,8 +190,9 @@ Vector3 RigidBody::Gravity::get()
 }
 void RigidBody::Gravity::set(Vector3 value)
 {
-	btVector3* gravity = Math::Vector3ToBtVector3(value);
-	UnmanagedPointer->setGravity(*gravity);
+	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
+	UnmanagedPointer->setGravity(*valueTemp);
+	delete valueTemp;
 }
 
 Vector3 RigidBody::InvInertiaDiagLocal::get()
@@ -198,7 +201,9 @@ Vector3 RigidBody::InvInertiaDiagLocal::get()
 }
 void RigidBody::InvInertiaDiagLocal::set(Vector3 value)
 {
-	UnmanagedPointer->setInvInertiaDiagLocal(*Math::Vector3ToBtVector3(value));
+	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
+	UnmanagedPointer->setInvInertiaDiagLocal(*valueTemp);
+	delete valueTemp;
 }
 
 Vector3 RigidBody::LinearFactor::get()
@@ -207,7 +212,9 @@ Vector3 RigidBody::LinearFactor::get()
 }
 void RigidBody::LinearFactor::set(Vector3 value)
 {
-	UnmanagedPointer->setLinearFactor(*Math::Vector3ToBtVector3(value));
+	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
+	UnmanagedPointer->setLinearFactor(*valueTemp);
+	delete valueTemp;
 }
 
 Vector3 RigidBody::LinearVelocity::get()
@@ -216,7 +223,9 @@ Vector3 RigidBody::LinearVelocity::get()
 }
 void RigidBody::LinearVelocity::set(Vector3 value)
 {
-	UnmanagedPointer->setLinearVelocity(*Math::Vector3ToBtVector3(value));
+	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
+	UnmanagedPointer->setLinearVelocity(*valueTemp);
+	delete valueTemp;
 }
 
 BulletSharp::MotionState^ RigidBody::MotionState::get()
@@ -244,7 +253,10 @@ btRigidBody* RigidBody::UnmanagedPointer::get()
 btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfo(
 	btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape, btVector3* localInertia = new btVector3())
 {
-	return new btRigidBody::btRigidBodyConstructionInfo(mass, motionState, collisionShape, *localInertia);
+	btRigidBody::btRigidBodyConstructionInfo* ret =
+		new btRigidBody::btRigidBodyConstructionInfo(mass, motionState, collisionShape, *localInertia);
+	delete localInertia;
+	return ret;
 }
 
 RigidBody::RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape)

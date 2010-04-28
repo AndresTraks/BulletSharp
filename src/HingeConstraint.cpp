@@ -7,32 +7,59 @@
 
 HingeConstraint::HingeConstraint(RigidBody^ rbA, RigidBody^ rbB,
 	Vector3 pivotInA, Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB, bool useReferenceFrameA)
-: TypedConstraint(new btHingeConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
-	*Math::Vector3ToBtVector3(pivotInA), *Math::Vector3ToBtVector3(pivotInB),
-	*Math::Vector3ToBtVector3(axisInA), *Math::Vector3ToBtVector3(axisInB),
-	useReferenceFrameA))
+: TypedConstraint(0)
 {
 	this->RigidBodyA = rbA;
 	this->RigidBodyB = rbB;
+
+	btVector3* pivotInATemp = Math::Vector3ToBtVector3(pivotInA);
+	btVector3* pivotInBTemp = Math::Vector3ToBtVector3(pivotInB);
+	btVector3* axisInATemp = Math::Vector3ToBtVector3(axisInA);
+	btVector3* axisInBTemp = Math::Vector3ToBtVector3(axisInB);
+
+	UnmanagedPointer = new btHingeConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
+		*pivotInATemp, *pivotInBTemp, *axisInATemp, *axisInBTemp, useReferenceFrameA);
+
+	delete pivotInATemp;
+	delete pivotInBTemp;
+	delete axisInATemp;
+	delete axisInBTemp;
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rbA, RigidBody^ rbB,
 	Vector3 pivotInA, Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB)
-: TypedConstraint(new btHingeConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
-	*Math::Vector3ToBtVector3(pivotInA), *Math::Vector3ToBtVector3(pivotInB),
-	*Math::Vector3ToBtVector3(axisInA), *Math::Vector3ToBtVector3(axisInB)))
+: TypedConstraint(0)
 {
 	this->RigidBodyA = rbA;
 	this->RigidBodyB = rbB;
+
+	btVector3* pivotInATemp = Math::Vector3ToBtVector3(pivotInA);
+	btVector3* pivotInBTemp = Math::Vector3ToBtVector3(pivotInB);
+	btVector3* axisInATemp = Math::Vector3ToBtVector3(axisInA);
+	btVector3* axisInBTemp = Math::Vector3ToBtVector3(axisInB);
+
+	UnmanagedPointer = new btHingeConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
+		*pivotInATemp, *pivotInBTemp, *axisInATemp, *axisInBTemp);
+
+	delete pivotInATemp;
+	delete pivotInBTemp;
+	delete axisInATemp;
+	delete axisInBTemp;
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rbA, Vector3 pivotInA, Vector3 axisInA,
 	bool useReferenceFrameA)
-: TypedConstraint(new btHingeConstraint(*rbA->UnmanagedPointer,
-	*Math::Vector3ToBtVector3(pivotInA), *Math::Vector3ToBtVector3(axisInA),
-	useReferenceFrameA))
+: TypedConstraint(0)
 {
 	this->RigidBodyA = rbA;
+
+	btVector3* pivotInATemp = Math::Vector3ToBtVector3(pivotInA);
+	btVector3* axisInATemp = Math::Vector3ToBtVector3(axisInA);
+
+	UnmanagedPointer = new btHingeConstraint(*rbA->UnmanagedPointer, *pivotInATemp, *axisInATemp, useReferenceFrameA);
+
+	delete pivotInATemp;
+	delete axisInATemp;
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rbA, Vector3 pivotInA, Vector3 axisInA)
@@ -40,36 +67,71 @@ HingeConstraint::HingeConstraint(RigidBody^ rbA, Vector3 pivotInA, Vector3 axisI
 	*Math::Vector3ToBtVector3(pivotInA), *Math::Vector3ToBtVector3(axisInA)))
 {
 	this->RigidBodyA = rbA;
+
+	btVector3* pivotInATemp = Math::Vector3ToBtVector3(pivotInA);
+	btVector3* axisInATemp = Math::Vector3ToBtVector3(axisInA);
+
+	UnmanagedPointer = new btHingeConstraint(*rbA->UnmanagedPointer, *pivotInATemp, *axisInATemp);
+
+	delete pivotInATemp;
+	delete axisInATemp;
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rbA, RigidBody^ rbB,
 	Matrix rbAFrame, Matrix rbBFrame, bool useReferenceFrameA)
-: TypedConstraint(new btHingeConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
-	*Math::MatrixToBtTransform(rbAFrame), *Math::MatrixToBtTransform(rbBFrame), useReferenceFrameA))
+: TypedConstraint(0)
 {
 	this->RigidBodyA = rbA;
 	this->RigidBodyB = rbB;
+
+	btTransform* rbAFrameTemp = Math::MatrixToBtTransform(rbAFrame);
+	btTransform* rbBFrameTemp = Math::MatrixToBtTransform(rbBFrame);
+
+	UnmanagedPointer = new btHingeConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
+		*rbAFrameTemp, *rbBFrameTemp, useReferenceFrameA);
+
+	delete rbAFrameTemp;
+	delete rbBFrameTemp;
 }
 
-HingeConstraint::HingeConstraint(RigidBody^ rbA, RigidBody^ rbB,
-	Matrix rbAFrame, Matrix rbBFrame)
-: TypedConstraint(new btHingeConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
-	*Math::MatrixToBtTransform(rbAFrame), *Math::MatrixToBtTransform(rbBFrame)))
+HingeConstraint::HingeConstraint(RigidBody^ rbA, RigidBody^ rbB, Matrix rbAFrame, Matrix rbBFrame)
+: TypedConstraint(0)
 {
 	this->RigidBodyA = rbA;
 	this->RigidBodyB = rbB;
+
+	btTransform* rbAFrameTemp = Math::MatrixToBtTransform(rbAFrame);
+	btTransform* rbBFrameTemp = Math::MatrixToBtTransform(rbBFrame);
+
+	UnmanagedPointer = new btHingeConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
+		*rbAFrameTemp, *rbBFrameTemp);
+
+	delete rbAFrameTemp;
+	delete rbBFrameTemp;
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rbA, Matrix rbAFrame, bool useReferenceFrameA)
-: TypedConstraint(new btHingeConstraint(*rbA->UnmanagedPointer,	*Math::MatrixToBtTransform(rbAFrame), useReferenceFrameA))
+: TypedConstraint(0)
 {
 	this->RigidBodyA = rbA;
+
+	btTransform* rbAFrameTemp = Math::MatrixToBtTransform(rbAFrame);
+
+	UnmanagedPointer = new btHingeConstraint(*rbA->UnmanagedPointer, *rbAFrameTemp, useReferenceFrameA);
+
+	delete rbAFrameTemp;
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rbA, Matrix rbAFrame)
-: TypedConstraint(new btHingeConstraint(*rbA->UnmanagedPointer, *Math::MatrixToBtTransform(rbAFrame)))
+: TypedConstraint(0)
 {
 	this->RigidBodyA = rbA;
+
+	btTransform* rbAFrameTemp = Math::MatrixToBtTransform(rbAFrame);
+
+	UnmanagedPointer = new btHingeConstraint(*rbA->UnmanagedPointer, *rbAFrameTemp);
+
+	delete rbAFrameTemp;
 }
 
 void HingeConstraint::EnableAngularMotor(bool enableMotor,

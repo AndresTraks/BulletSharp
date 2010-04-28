@@ -170,7 +170,10 @@ void WheelInfo::RaycastInfo::GroundObject::set(Object^ value)
 {
 	RigidBody^ body = static_cast<RigidBody^>(value);
 	if (body == nullptr)
+	{
 		_info->m_groundObject = 0;
+		return;
+	}
 	
 	_info->m_groundObject = body->UnmanagedPointer;
 }

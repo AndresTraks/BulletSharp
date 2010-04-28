@@ -20,8 +20,16 @@ float SoftBodyHelpers::CalculateUV(int resx, int resy, int ix, int iy, int id)
 SoftBody^ SoftBodyHelpers::CreateEllipsoid(SoftBodyWorldInfo^ worldInfo,
 	Vector3 center, Vector3 radius, int res)
 {
-	return gcnew SoftBody(btSoftBodyHelpers::CreateEllipsoid(*worldInfo->UnmanagedPointer,
-		*Math::Vector3ToBtVector3(center), *Math::Vector3ToBtVector3(radius), res));
+	btVector3* centerTemp = Math::Vector3ToBtVector3(center);
+	btVector3* radiusTemp = Math::Vector3ToBtVector3(radius);
+
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateEllipsoid(*worldInfo->UnmanagedPointer,
+		*centerTemp, *radiusTemp, res));
+
+	delete centerTemp;
+	delete radiusTemp;
+
+	return body;
 }
 
 SoftBody^ SoftBodyHelpers::CreateFromConvexHull(BulletSharp::SoftBodyWorldInfo ^worldInfo,
@@ -55,10 +63,17 @@ SoftBody^ SoftBodyHelpers::CreateFromConvexHull(BulletSharp::SoftBodyWorldInfo ^
 SoftBody^ SoftBodyHelpers::CreateFromTetGenData(SoftBodyWorldInfo^ worldInfo, String^ ele,
 	String^ face, String^ node, bool bfacelinks, bool btetralinks, bool bfacesfromtetras)
 {
+	const char* eleTemp = StringConv::ManagedToUnmanaged(ele);
+	const char* faceTemp = StringConv::ManagedToUnmanaged(face);
+	const char* nodeTemp = StringConv::ManagedToUnmanaged(node);
+
 	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTetGenData(*worldInfo->UnmanagedPointer,
-		StringConv::ManagedToUnmanaged(ele), StringConv::ManagedToUnmanaged(face),
-		StringConv::ManagedToUnmanaged(node), bfacelinks, btetralinks, bfacesfromtetras)
+		eleTemp, faceTemp, nodeTemp, bfacelinks, btetralinks, bfacesfromtetras)
 	);
+
+	StringConv::FreeUnmanagedString(eleTemp);
+	StringConv::FreeUnmanagedString(faceTemp);
+	StringConv::FreeUnmanagedString(nodeTemp);
 }
 
 SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyWorldInfo^ worldInfo, String^ ele,
@@ -73,7 +88,10 @@ SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyWorldInfo^ worldInfo, St
 	// Read elements file
 	if (ele != nullptr)
 	{
-		if (fopen_s(&f_read, StringConv::ManagedToUnmanaged(ele), "rb"))
+		const char* elementFileStr = StringConv::ManagedToUnmanaged(ele);
+		errno_t ret = fopen_s(&f_read, elementFileStr, "rb");
+		StringConv::FreeUnmanagedString(elementFileStr);
+		if (ret != 0)
 			return nullptr;
 		fseek(f_read, 0, SEEK_END);
 		fileSize = ftell(f_read);
@@ -96,7 +114,10 @@ SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyWorldInfo^ worldInfo, St
 	if (face != nullptr)
 	{
 		// Read faces file
-		if (fopen_s(&f_read, StringConv::ManagedToUnmanaged(face), "rb"))
+		const char* faceFileStr = StringConv::ManagedToUnmanaged(face);
+		errno_t ret = fopen_s(&f_read, faceFileStr, "rb");
+		StringConv::FreeUnmanagedString(faceFileStr);
+		if (ret != 0)
 		{
 			if (elementStr)
 				free(elementStr);
@@ -123,7 +144,10 @@ SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyWorldInfo^ worldInfo, St
 	}
 
 	// Read nodes file
-	if (fopen_s(&f_read, StringConv::ManagedToUnmanaged(node), "rb"))
+	const char* nodeFileStr = StringConv::ManagedToUnmanaged(node);
+	errno_t ret = fopen_s(&f_read, nodeFileStr, "rb");
+	StringConv::FreeUnmanagedString(nodeFileStr);
+	if (ret != 0)
 	{
 		if (elementStr)
 			free(elementStr);
@@ -148,7 +172,7 @@ SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyWorldInfo^ worldInfo, St
 	nodeStr[fileSize] = 0;
 	fclose(f_read);
 
-	SoftBody^ softBody = gcnew SoftBody(btSoftBodyHelpers::CreateFromTetGenData(
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromTetGenData(
 		*worldInfo->UnmanagedPointer, elementStr, faceStr, nodeStr,
 		bfacelinks, btetralinks, bfacesfromtetras)
 	);
@@ -157,24 +181,42 @@ SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyWorldInfo^ worldInfo, St
 	free(faceStr);
 	free(nodeStr);
 
-	return softBody;
+	return body;
 }
 
 SoftBody^ SoftBodyHelpers::CreatePatch(SoftBodyWorldInfo^ worldInfo,
 	Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11,
 	int resx, int resy, int fixeds, bool gendiags)
 {
-	return gcnew SoftBody(btSoftBodyHelpers::CreatePatch(*worldInfo->UnmanagedPointer,
-		*Math::Vector3ToBtVector3(corner00), *Math::Vector3ToBtVector3(corner10),
-		*Math::Vector3ToBtVector3(corner01), *Math::Vector3ToBtVector3(corner11),
-		resx, resy, fixeds, gendiags));
+	btVector3* corner00Temp = Math::Vector3ToBtVector3(corner00);
+	btVector3* corner10Temp = Math::Vector3ToBtVector3(corner10);
+	btVector3* corner01Temp = Math::Vector3ToBtVector3(corner01);
+	btVector3* corner11Temp = Math::Vector3ToBtVector3(corner11);
+
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatch(*worldInfo->UnmanagedPointer,
+		*corner00Temp, *corner10Temp, *corner01Temp, *corner11Temp, resx, resy, fixeds, gendiags));
+
+	delete corner00Temp;
+	delete corner10Temp;
+	delete corner01Temp;
+	delete corner11Temp;
+
+	return body;
 }
 
 SoftBody^ SoftBodyHelpers::CreateRope(SoftBodyWorldInfo^ worldInfo,
 	Vector3 from, Vector3 to, int res, int fixeds)
 {
-	return gcnew SoftBody(btSoftBodyHelpers::CreateRope(*worldInfo->UnmanagedPointer,
-		*Math::Vector3ToBtVector3(from), *Math::Vector3ToBtVector3(to), res, fixeds));
+	btVector3* fromTemp = Math::Vector3ToBtVector3(from);
+	btVector3* toTemp = Math::Vector3ToBtVector3(to);
+
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateRope(
+		*worldInfo->UnmanagedPointer, *fromTemp, *toTemp, res, fixeds));
+
+	delete fromTemp;
+	delete toTemp;
+
+	return body;
 }
 
 #endif

@@ -321,8 +321,11 @@ SoftBody::SoftBody(btSoftBody* body)
 }
 
 SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, int node_count, Vector3 x, btScalar m)
-: CollisionObject(new btSoftBody(worldInfo->UnmanagedPointer, node_count, Math::Vector3ToBtVector3(x), &m))
+: CollisionObject(0)
 {
+	btVector3* xTemp = Math::Vector3ToBtVector3(x);
+	UnmanagedPointer = new btSoftBody(worldInfo->UnmanagedPointer, node_count, xTemp, &m);
+	delete xTemp;
 }
 
 SoftBody::Material^ SoftBody::AppendMaterial()
@@ -332,7 +335,9 @@ SoftBody::Material^ SoftBody::AppendMaterial()
 
 void SoftBody::AddForce(Vector3 force, int node)
 {
-	UnmanagedPointer->addForce(*Math::Vector3ToBtVector3(force), node);
+	btVector3* forceTemp = Math::Vector3ToBtVector3(force);
+	UnmanagedPointer->addForce(*forceTemp, node);
+	delete forceTemp;
 }
 
 void SoftBody::AddForce(Vector3 force)
@@ -342,7 +347,9 @@ void SoftBody::AddForce(Vector3 force)
 
 void SoftBody::AddVelocity(Vector3 velocity, int node)
 {
-	UnmanagedPointer->addVelocity(*Math::Vector3ToBtVector3(velocity), node);
+	btVector3* velocityTemp = Math::Vector3ToBtVector3(velocity);
+	UnmanagedPointer->addVelocity(*velocityTemp, node);
+	delete velocityTemp;
 }
 
 void SoftBody::AddVelocity(Vector3 velocity)
@@ -382,7 +389,9 @@ int SoftBody::GenerateClusters(int k)
 
 void SoftBody::Scale(Vector3 scale)
 {
-	UnmanagedPointer->scale(*Math::Vector3ToBtVector3(scale));
+	btVector3* scaleTemp = Math::Vector3ToBtVector3(scale);
+	UnmanagedPointer->scale(*scaleTemp);
+	delete scaleTemp;
 }
 
 void SoftBody::SetVolumeMass(btScalar mass)
@@ -397,12 +406,16 @@ void SoftBody::StaticSolve(int iterations)
 
 void SoftBody::Transform(Matrix transform)
 {
-	UnmanagedPointer->transform(*Math::MatrixToBtTransform(transform));
+	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
+	UnmanagedPointer->transform(*transformTemp);
+	delete transformTemp;
 }
 
 void SoftBody::Translate(Vector3 translation)
 {
-	UnmanagedPointer->translate(*Math::Vector3ToBtVector3(translation));
+	btVector3* translationTemp = Math::Vector3ToBtVector3(translation);
+	UnmanagedPointer->translate(*translationTemp);
+	delete translationTemp;
 }
 
 void SoftBody::Translate(btScalar x, btScalar y, btScalar z)

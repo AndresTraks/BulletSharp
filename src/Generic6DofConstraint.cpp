@@ -23,8 +23,12 @@ RotationalLimitMotor::RotationalLimitMotor(btRotationalLimitMotor* motor)
 btScalar RotationalLimitMotor::SolveAngularLimits(btScalar timeStep, Vector3 axis,
 	btScalar jacDiagABInv, RigidBody^ body0, RigidBody^ body1)
 {
-	return motor->solveAngularLimits(timeStep, *Math::Vector3ToBtVector3(axis),
+	btVector3* axisTemp = Math::Vector3ToBtVector3(axis);
+	
+	return motor->solveAngularLimits(timeStep, *axisTemp,
 		jacDiagABInv, body0->UnmanagedPointer, body1->UnmanagedPointer);
+
+	delete axisTemp;
 }
 
 int RotationalLimitMotor::TestLimitValue(btScalar test_value)
@@ -227,12 +231,23 @@ btScalar TranslationalLimitMotor::SolveLinearAxis(btScalar timeStep, btScalar ja
 			RigidBody^ body1, Vector3 pointInA, RigidBody^ body2, Vector3 pointInB,
 			int limit_index, Vector3 axis_normal_on_a, Vector3 anchorPos)
 {
-	return motor->solveLinearAxis(timeStep, jacDiagABInv,
-		*body1->UnmanagedPointer, *Math::Vector3ToBtVector3(pointInA),
-		*body2->UnmanagedPointer, *Math::Vector3ToBtVector3(pointInB),
-		limit_index, *Math::Vector3ToBtVector3(axis_normal_on_a),
-		*Math::Vector3ToBtVector3(anchorPos)
+	btVector3* pointInATemp = Math::Vector3ToBtVector3(pointInA);
+	btVector3* pointInBTemp = Math::Vector3ToBtVector3(pointInB);
+	btVector3* axis_normal_on_aTemp = Math::Vector3ToBtVector3(axis_normal_on_a);
+	btVector3* anchorPosTemp = Math::Vector3ToBtVector3(anchorPos);
+
+	btScalar ret =  motor->solveLinearAxis(timeStep, jacDiagABInv,
+		*body1->UnmanagedPointer, *pointInATemp,
+		*body2->UnmanagedPointer, *pointInBTemp,
+		limit_index, *axis_normal_on_aTemp, *anchorPosTemp
 	);
+
+	delete pointInATemp;
+	delete pointInBTemp;
+	delete axis_normal_on_aTemp;
+	delete anchorPosTemp;
+
+	return ret;
 }
 
 int TranslationalLimitMotor::TestLimitValue(int limitIndex, btScalar test_value)
@@ -413,12 +428,19 @@ Generic6DofConstraint::Generic6DofConstraint(btGeneric6DofConstraint* constraint
 
 Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rbA, RigidBody^ rbB,
 	Matrix frameInA, Matrix frameInB, bool useReferenceFrameA)
-: TypedConstraint(new btGeneric6DofConstraint(*rbA->UnmanagedPointer,
-	*rbB->UnmanagedPointer, *Math::MatrixToBtTransform(frameInA),
-	*Math::MatrixToBtTransform(frameInB), useReferenceFrameA))
+: TypedConstraint(0)
 {
 	this->RigidBodyA = rbA;
 	this->RigidBodyB = rbB;
+
+	btTransform* frameInATemp = Math::MatrixToBtTransform(frameInA);
+	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
+
+	UnmanagedPointer = new btGeneric6DofConstraint(*rbA->UnmanagedPointer,
+		*rbB->UnmanagedPointer, *frameInATemp, *frameInBTemp, useReferenceFrameA);
+
+	delete frameInATemp;
+	delete frameInBTemp;
 }
 
 Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rbB, Matrix frameInB,
@@ -427,6 +449,12 @@ Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rbB, Matrix frameInB,
 	*Math::MatrixToBtTransform(frameInB), useReferenceFrameA))
 {
 	this->RigidBodyB = rbB;
+
+	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
+
+	UnmanagedPointer = new btGeneric6DofConstraint(*rbB->UnmanagedPointer, *frameInBTemp, useReferenceFrameA);
+
+	delete frameInBTemp;
 }
 
 void Generic6DofConstraint::CalcAnchorPos()
@@ -441,8 +469,13 @@ void Generic6DofConstraint::CalculateTransforms()
 
 void Generic6DofConstraint::CalculateTransforms(Matrix transA, Matrix transB)
 {
-	UnmanagedPointer->calculateTransforms(*Math::MatrixToBtTransform(transA),
-		*Math::MatrixToBtTransform(transB));
+	btTransform* transATemp = Math::MatrixToBtTransform(transA);
+	btTransform* transBTemp = Math::MatrixToBtTransform(transB);
+
+	UnmanagedPointer->calculateTransforms(*transATemp, *transBTemp);
+	
+	delete transATemp;
+	delete transBTemp;
 }
 
 btScalar Generic6DofConstraint::GetAngle(int axis_index)
@@ -479,12 +512,16 @@ bool Generic6DofConstraint::IsLimited(int limitIndex)
 
 void Generic6DofConstraint::SetAngularLowerLimit(Vector3 value)
 {
-	UnmanagedPointer->setAngularLowerLimit(*Math::Vector3ToBtVector3(value));
+	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
+	UnmanagedPointer->setAngularLowerLimit(*valueTemp);
+	delete valueTemp;
 }
 
 void Generic6DofConstraint::SetAngularUpperLimit(Vector3 value)
 {
-	UnmanagedPointer->setAngularUpperLimit(*Math::Vector3ToBtVector3(value));
+	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
+	UnmanagedPointer->setAngularUpperLimit(*valueTemp);
+	delete valueTemp;
 }
 
 void Generic6DofConstraint::SetLimit(int axis, btScalar lo, btScalar hi)
@@ -494,12 +531,16 @@ void Generic6DofConstraint::SetLimit(int axis, btScalar lo, btScalar hi)
 
 void Generic6DofConstraint::SetLinearLowerLimit(Vector3 linearLower)
 {
-	UnmanagedPointer->setLinearLowerLimit(*Math::Vector3ToBtVector3(linearLower));
+	btVector3* linearLowerTemp = Math::Vector3ToBtVector3(linearLower);
+	UnmanagedPointer->setLinearLowerLimit(*linearLowerTemp);
+	delete linearLowerTemp;
 }
 
 void Generic6DofConstraint::SetLinearUpperLimit(Vector3 linearUpper)
 {
-	UnmanagedPointer->setLinearUpperLimit(*Math::Vector3ToBtVector3(linearUpper));
+	btVector3* linearUpperTemp = Math::Vector3ToBtVector3(linearUpper);
+	UnmanagedPointer->setLinearUpperLimit(*linearUpperTemp);
+	delete linearUpperTemp;
 }
 
 bool Generic6DofConstraint::TestAngularLimitMotor(int axis_index)
@@ -532,6 +573,7 @@ void Generic6DofConstraint::FrameOffsetA::set(Matrix value)
 	btTransform* a = Math::MatrixToBtTransform(value);
 	a->getOpenGLMatrix(m);
 	UnmanagedPointer->getFrameOffsetA().setFromOpenGLMatrix(m);
+	delete a;
 }
 
 Matrix Generic6DofConstraint::FrameOffsetB::get()
@@ -544,6 +586,7 @@ void Generic6DofConstraint::FrameOffsetB::set(Matrix value)
 	btTransform* a = Math::MatrixToBtTransform(value);
 	a->getOpenGLMatrix(m);
 	UnmanagedPointer->getFrameOffsetB().setFromOpenGLMatrix(m);
+	delete a;
 }
 
 BulletSharp::TranslationalLimitMotor^ Generic6DofConstraint::TranslationalLimitMotor::get()

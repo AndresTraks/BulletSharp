@@ -13,12 +13,17 @@
 #ifndef DISABLE_DBVT
 
 DbvtProxy::DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr,
-	CollisionFilterGroups collisionFilterGroup,
-	CollisionFilterGroups collisionFilterMask)
-: BroadphaseProxy(new btDbvtProxy(*Math::Vector3ToBtVector3(aabbMin),
-	*Math::Vector3ToBtVector3(aabbMax), userPtr.ToPointer(),
-	(short int)collisionFilterGroup, (short int)collisionFilterMask))
+	CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
+: BroadphaseProxy(0)
 {
+	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
+	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
+
+	UnmanagedPointer = new btDbvtProxy(*aabbMinTemp, *aabbMaxTemp, userPtr.ToPointer(),
+		(short int)collisionFilterGroup, (short int)collisionFilterMask);
+
+	delete aabbMinTemp;
+	delete aabbMaxTemp;
 }
 
 DbvtProxy::DbvtProxy(btDbvtProxy* proxy)
@@ -156,10 +161,14 @@ void DbvtBroadphase::PerformDeferredRemoval(Dispatcher^ dispatcher)
 void DbvtBroadphase::SetAabbForceUpdate(BroadphaseProxy^ absproxy,
 	Vector3 aabbMin, Vector3 aabbMax, Dispatcher^ dispatcher)
 {
+	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
+	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
+
 	UnmanagedPointer->setAabbForceUpdate(absproxy->UnmanagedPointer,
-		*Math::Vector3ToBtVector3(aabbMin), *Math::Vector3ToBtVector3(aabbMax),
-		dispatcher->UnmanagedPointer
-	);
+		*aabbMinTemp, *aabbMaxTemp, dispatcher->UnmanagedPointer);
+
+	delete aabbMinTemp;
+	delete aabbMaxTemp;
 }
 
 BulletSharp::OverlappingPairCache^ DbvtBroadphase::PairCache::get()

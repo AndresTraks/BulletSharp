@@ -25,7 +25,7 @@ void DebugDraw::Draw3dText(Vector3 location, String^ textString)
 	_debugDraw->baseDraw3dText(*locationTemp, textStringTemp);
 	
 	delete locationTemp;
-	delete textStringTemp;
+	StringConv::FreeUnmanagedString(textStringTemp);
 */
 }
 
@@ -234,7 +234,7 @@ void DebugDraw::ReportErrorWarning(String^ warningString)
 
 	_debugDraw->baseReportErrorWarning(warningStringTemp);
 
-	delete warningStringTemp;
+	StringConv::FreeUnmanagedString(warningStringTemp);
 */
 }
 

@@ -64,50 +64,83 @@ VoronoiSimplexSolver::VoronoiSimplexSolver()
 
 void VoronoiSimplexSolver::AddVertex(Vector3 w, Vector3 p, Vector3 q)
 {
-	UnmanagedPointer->addVertex(*Math::Vector3ToBtVector3(w),
-		*Math::Vector3ToBtVector3(p), *Math::Vector3ToBtVector3(q));
+	btVector3* wTemp = Math::Vector3ToBtVector3(w);
+	btVector3* pTemp = Math::Vector3ToBtVector3(p);
+	btVector3* qTemp = Math::Vector3ToBtVector3(q);
+
+	UnmanagedPointer->addVertex(*wTemp, *pTemp, *qTemp);
+
+	delete wTemp;
+	delete pTemp;
+	delete qTemp;
 }
 
 void VoronoiSimplexSolver::BackupClosest(Vector3 v)
 {
-	UnmanagedPointer->backup_closest(*Math::Vector3ToBtVector3(v));
+	btVector3* vTemp = Math::Vector3ToBtVector3(v);
+	UnmanagedPointer->backup_closest(*vTemp);
+	delete vTemp;
 }
 
 bool VoronoiSimplexSolver::Closest(Vector3 v)
 {
-	return UnmanagedPointer->closest(*Math::Vector3ToBtVector3(v));
+	btVector3* vTemp = Math::Vector3ToBtVector3(v);
+	bool ret = UnmanagedPointer->closest(*vTemp);
+	delete vTemp;
+	return ret;
 }
 
 bool VoronoiSimplexSolver::ClosestPtPointTetrahedron(Vector3 p,
-	Vector3 a, Vector3 b, Vector3 c, Vector3 d,
-	[Out] SubSimplexClosestResult^% finalResult)
+	Vector3 a, Vector3 b, Vector3 c, Vector3 d, [Out] SubSimplexClosestResult^% finalResult)
 {
+	btVector3* aTemp = Math::Vector3ToBtVector3(a);
+	btVector3* bTemp = Math::Vector3ToBtVector3(b);
+	btVector3* cTemp = Math::Vector3ToBtVector3(c);
+	btVector3* dTemp = Math::Vector3ToBtVector3(d);
+
 	btSubSimplexClosestResult* tempResult = new btSubSimplexClosestResult;
+
 	bool ret = UnmanagedPointer->closestPtPointTetrahedron(*Math::Vector3ToBtVector3(p),
-		*Math::Vector3ToBtVector3(a), *Math::Vector3ToBtVector3(b),
-		*Math::Vector3ToBtVector3(c), *Math::Vector3ToBtVector3(c),
-		*tempResult
-	);
+		*aTemp, *bTemp, *cTemp, *dTemp, *tempResult);
+
+	delete aTemp;
+	delete bTemp;
+	delete cTemp;
+	delete dTemp;
+
 	finalResult = gcnew SubSimplexClosestResult(tempResult);
 	return ret;
 }
 
 bool VoronoiSimplexSolver::ClosestPtPointTriangle(Vector3 p,
-	Vector3 a, Vector3 b, Vector3 c,
-	[Out] SubSimplexClosestResult^% result)
+	Vector3 a, Vector3 b, Vector3 c, [Out] SubSimplexClosestResult^% result)
 {
+	btVector3* pTemp = Math::Vector3ToBtVector3(p);
+	btVector3* aTemp = Math::Vector3ToBtVector3(a);
+	btVector3* bTemp = Math::Vector3ToBtVector3(b);
+	btVector3* cTemp = Math::Vector3ToBtVector3(c);
+
 	btSubSimplexClosestResult* tempResult = new btSubSimplexClosestResult;
-	bool ret = UnmanagedPointer->closestPtPointTriangle(*Math::Vector3ToBtVector3(p),
-		*Math::Vector3ToBtVector3(a), *Math::Vector3ToBtVector3(b),
-		*Math::Vector3ToBtVector3(c), *tempResult
-	);
+	bool ret = UnmanagedPointer->closestPtPointTriangle(*pTemp, *aTemp, *bTemp, *cTemp, *tempResult);
+	
+	delete pTemp;
+	delete aTemp;
+	delete bTemp;
+	delete cTemp;
+
 	result = gcnew SubSimplexClosestResult(tempResult);
 	return ret;
 }
 
 void VoronoiSimplexSolver::ComputePoints(Vector3 p1, Vector3 p2)
 {
-	UnmanagedPointer->compute_points(*Math::Vector3ToBtVector3(p1), *Math::Vector3ToBtVector3(p2));
+	btVector3* p1Temp = Math::Vector3ToBtVector3(p1);
+	btVector3* p2Temp = Math::Vector3ToBtVector3(p2);
+
+	UnmanagedPointer->compute_points(*p1Temp, *p2Temp);
+
+	delete p1Temp;
+	delete p2Temp;
 }
 
 bool VoronoiSimplexSolver::EmptySimplex()
@@ -161,10 +194,22 @@ btScalar VoronoiSimplexSolver::MaxVertex()
 int VoronoiSimplexSolver::PointOutsideOfPlane(Vector3 p,
 	Vector3 a, Vector3 b, Vector3 c, Vector3 d)
 {
-	return UnmanagedPointer->pointOutsideOfPlane(*Math::Vector3ToBtVector3(p),
-		*Math::Vector3ToBtVector3(a), *Math::Vector3ToBtVector3(b),
-		*Math::Vector3ToBtVector3(c), *Math::Vector3ToBtVector3(d)
-	);
+	btVector3* pTemp = Math::Vector3ToBtVector3(p);
+	btVector3* aTemp = Math::Vector3ToBtVector3(a);
+	btVector3* bTemp = Math::Vector3ToBtVector3(b);
+	btVector3* cTemp = Math::Vector3ToBtVector3(c);
+	btVector3* dTemp = Math::Vector3ToBtVector3(d);
+
+	int ret = UnmanagedPointer->pointOutsideOfPlane(*pTemp,
+		*aTemp, *bTemp, *cTemp, *dTemp);
+
+	delete pTemp;
+	delete aTemp;
+	delete bTemp;
+	delete cTemp;
+	delete dTemp;
+
+	return ret;
 }
 
 //void VoronoiSimplexSolver::ReduceVertices(UsageBitfield^ UsedVerts)

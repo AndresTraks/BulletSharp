@@ -7,11 +7,21 @@
 
 UniversalConstraint::UniversalConstraint(RigidBody^ rbA, RigidBody^ rbB,
 	Vector3 anchor, Vector3 axis1, Vector3 axis2)
-	: Generic6DofConstraint(new btUniversalConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
-	*Math::Vector3ToBtVector3(anchor), *Math::Vector3ToBtVector3(axis1), *Math::Vector3ToBtVector3(axis2)))
+: Generic6DofConstraint(0)
 {
 	this->RigidBodyA = rbA;
 	this->RigidBodyA = rbB;
+
+	btVector3* anchorTemp = Math::Vector3ToBtVector3(anchor);
+	btVector3* axis1Temp = Math::Vector3ToBtVector3(axis1);
+	btVector3* axis2Temp = Math::Vector3ToBtVector3(axis2);
+
+	UnmanagedPointer = new btUniversalConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
+		*anchorTemp, *axis1Temp, *axis2Temp);
+
+	delete anchorTemp;
+	delete axis1Temp;
+	delete axis2Temp;
 }
 
 void UniversalConstraint::SetLowerLimit(btScalar ang1min, btScalar ang2min)

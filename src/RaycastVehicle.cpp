@@ -94,11 +94,18 @@ WheelInfo^ RaycastVehicle::AddWheel(Vector3 connectionPointCS0, Vector3 wheelDir
 	Vector3 wheelAxleCS, btScalar suspensionRestLength,	btScalar wheelRadius,
 	VehicleTuning^ tuning, bool isFrontWheel)
 {
-	btWheelInfo* wheelInfo = &UnmanagedPointer->addWheel(
-		*Math::Vector3ToBtVector3(connectionPointCS0),
-		*Math::Vector3ToBtVector3(wheelDirectionCS0),
-		*Math::Vector3ToBtVector3(wheelAxleCS),
-		suspensionRestLength, wheelRadius, *tuning->UnmanagedPointer, isFrontWheel);
+	btVector3* connectionPointCS0Temp = Math::Vector3ToBtVector3(connectionPointCS0);
+	btVector3* wheelDirectionCS0Temp = Math::Vector3ToBtVector3(wheelDirectionCS0);
+	btVector3* wheelAxleCSTemp = Math::Vector3ToBtVector3(wheelAxleCS);
+
+	btWheelInfo* wheelInfo = &UnmanagedPointer->addWheel(*connectionPointCS0Temp,
+		*wheelDirectionCS0Temp,	*wheelAxleCSTemp, suspensionRestLength, wheelRadius,
+		*tuning->UnmanagedPointer, isFrontWheel);
+	
+	delete connectionPointCS0Temp;
+	delete wheelDirectionCS0Temp;
+	delete wheelAxleCSTemp;
+
 	return gcnew BulletSharp::WheelInfo(wheelInfo);
 }
 
@@ -148,7 +155,13 @@ void RaycastVehicle::SetCoordinateSystem(int rightIndex, int upIndex, int forwar
 /*
 void RaycastVehicle::SetRaycastWheelInfo(int wheelIndex, bool isInContact, Vector3 hitPoint, Vector3 hitNormal, btScalar depth)
 {
-	UnmanagedPointer->setRaycastWheelInfo(wheelIndex, isInContact, *Math::Vector3ToBtVector3(hitPoint), *Math::Vector3ToBtVector3(hitNormal), depth);
+	btVector3* hitPointTemp = Math::Vector3ToBtVector3(hitPoint);
+	btVector3* hitNormalTemp = Math::Vector3ToBtVector3(hitNormal);
+
+	UnmanagedPointer->setRaycastWheelInfo(wheelIndex, isInContact, *hitPointTemp, *hitNormalTemp, depth);
+
+	delete hitPointTemp;
+	delete hitNormalTemp;
 }
 */
 void RaycastVehicle::UpdateFriction(btScalar timeStep)
@@ -203,11 +216,11 @@ int RaycastVehicle::ForwardAxis::get()
 
 Vector3 RaycastVehicle::ForwardVector::get()
 {
-	btVector3* forward = new btVector3;
-	RaycastVehicle_GetForwardVector(UnmanagedPointer, forward);
-	Vector3 v = Math::BtVector3ToVector3(forward);
-	delete forward;
-	return v;
+	btVector3* vectorTemp = new btVector3;
+	RaycastVehicle_GetForwardVector(UnmanagedPointer, vectorTemp);
+	Vector3 vector = Math::BtVector3ToVector3(vectorTemp);
+	delete vectorTemp;
+	return vector;
 }
 
 int RaycastVehicle::NumWheels::get()
