@@ -98,7 +98,11 @@ namespace BulletSharp
 	protected:
 		~DiscreteCollisionDetectorInterface();
 	public:
+#ifndef DISABLE_DEBUGDRAW
 		void GetClosestPoints(ClosestPointInput^ input, Result^ output, DebugDraw^ debugDraw);
+#else
+		void GetClosestPoints(ClosestPointInput^ input, Result^ output);
+#endif
 		//void GetClosestPoints(ClosestPointInput^ input, [Out] Result^ %output, DebugDraw^ debugDraw);
 		//void GetClosestPoints(ClosestPointInput^ input, Result^ output, DebugDraw^ debugDraw, bool swapResults);
 

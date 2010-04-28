@@ -28,7 +28,9 @@ namespace BulletSharp
 
 		void AddRigidBody(RigidBody^ body, CollisionFilterGroups group, CollisionFilterGroups mask);
 		void ApplyGravity();
+#if !defined(DISABLE_CONSTRAINTS) && !defined (DISABLE_DEBUGDRAW)
 		void DebugDrawConstraint(TypedConstraint^ constraint);
+#endif
 		void SetNumTasks (int numTasks);
 		void SynchronizeSingleMotionState(RigidBody^ body);
 

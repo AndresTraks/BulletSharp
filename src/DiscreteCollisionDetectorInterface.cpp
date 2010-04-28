@@ -1,8 +1,10 @@
 #include "StdAfx.h"
 
-#include "DebugDraw.h"
 #include "DiscreteCollisionDetectorInterface.h"
 #include "StackAlloc.h"
+#ifndef DISABLE_DEBUGDRAW
+#include "DebugDraw.h"
+#endif
 
 DiscreteCollisionDetectorInterface::ClosestPointInput::ClosestPointInput()
 {
@@ -125,6 +127,7 @@ DiscreteCollisionDetectorInterface::!DiscreteCollisionDetectorInterface()
 	OnDisposed( this, nullptr );
 }
 
+#ifndef DISABLE_DEBUGDRAW
 void DiscreteCollisionDetectorInterface::GetClosestPoints(
 	ClosestPointInput^ input, Result^ output, DebugDraw^ debugDraw)
 {
@@ -132,6 +135,14 @@ void DiscreteCollisionDetectorInterface::GetClosestPoints(
 	UnmanagedPointer->getClosestPoints(*input->UnmanagedPointer, *btResult,
 		(debugDraw != nullptr) ? debugDraw->UnmanagedPointer : 0);
 }
+#else
+void DiscreteCollisionDetectorInterface::GetClosestPoints(
+	ClosestPointInput^ input, Result^ output)
+{
+	btDiscreteCollisionDetectorInterface::Result* btResult = output->UnmanagedPointer;
+	UnmanagedPointer->getClosestPoints(*input->UnmanagedPointer, *btResult, 0);
+}
+#endif
 /*
 void DiscreteCollisionDetectorInterface::GetClosestPoints(
 	ClosestPointInput^ input, Result^ output, DebugDraw^ debugDraw, bool swapResults)

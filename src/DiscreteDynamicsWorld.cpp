@@ -7,8 +7,8 @@
 #include "Dispatcher.h"
 #include "RigidBody.h"
 #include "SimulationIslandManager.h"
-#include "TypedConstraint.h"
 #ifndef DISABLE_CONSTRAINTS
+#include "TypedConstraint.h"
 #include "ConstraintSolver.h"
 #endif
 
@@ -46,10 +46,12 @@ void DiscreteDynamicsWorld::ApplyGravity()
 	UnmanagedPointer->applyGravity();
 }
 
+#if !defined(DISABLE_CONSTRAINTS) && !defined (DISABLE_DEBUGDRAW)
 void DiscreteDynamicsWorld::DebugDrawConstraint(TypedConstraint^ constraint)
 {
 	UnmanagedPointer->debugDrawConstraint(constraint->UnmanagedPointer);
 }
+#endif
 
 CollisionWorld^ DiscreteDynamicsWorld::CollisionWorld::get()
 {

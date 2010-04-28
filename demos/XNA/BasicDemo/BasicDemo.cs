@@ -90,12 +90,12 @@ namespace BasicDemo
                     f3KeyPressed = true;
                     if (IsDebugDrawEnabled == false)
                     {
-                        DebugDrawer.SetDebugMode(DebugDrawModes.DrawAabb);
+                        DebugDrawer.DebugMode = DebugDrawModes.DrawAabb;
                         IsDebugDrawEnabled = true;
                     }
                     else
                     {
-                        DebugDrawer.SetDebugMode(DebugDrawModes.None);
+                        DebugDrawer.DebugMode = DebugDrawModes.None;
                         IsDebugDrawEnabled = false;
                     }
                 }
