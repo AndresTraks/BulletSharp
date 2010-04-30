@@ -74,6 +74,18 @@ void CompoundShape::AddChildShape(Matrix localTransform, CollisionShape^ shape)
 	delete localTransformTemp;
 }
 
+void CompoundShape::CalculatePrincipalAxisTransform(array<btScalar>^ masses, Matrix principal, Vector3 inertia)
+{
+	pin_ptr<btScalar> massesPtr = &masses[0];
+	btTransform* principalTemp = Math::MatrixToBtTransform(principal);
+	btVector3* inertiaTemp = Math::Vector3ToBtVector3(inertia);
+	
+	UnmanagedPointer->calculatePrincipalAxisTransform(massesPtr, *principalTemp, *inertiaTemp);
+	
+	delete principalTemp;
+	delete inertiaTemp;
+}
+
 CollisionShape^ CompoundShape::GetChildShape(int index)
 {
 	return gcnew CollisionShape(UnmanagedPointer->getChildShape(index));

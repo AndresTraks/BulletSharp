@@ -1228,6 +1228,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Serializer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SimpleBroadphase.cpp"
 				>
 			</File>
@@ -1738,6 +1742,10 @@
 				</File>
 				<File
 					RelativePath=".\src\Scalar.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\Serializer.h"
 					>
 				</File>
 				<File

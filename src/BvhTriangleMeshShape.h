@@ -26,6 +26,11 @@ namespace BulletSharp
 		void RefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbMax);
 		//void SetOptimizedBvh(BulletSharp::OptimizedBvh^ bvh, Vector3 localScaling);
 
+#ifndef DISABLE_SERIALIZE
+		void SerializeSingleBvh(Serializer^ serializer);
+		void SerializeSingleTriangleInfoMap(Serializer^ serializer);
+#endif
+
 		//property BulletSharp::OptimizedBvh^ OptimizedBvh
 		//{
 		//	BulletSharp::OptimizedBvh^ get();

@@ -2,6 +2,9 @@
 
 #include "CollisionShape.h"
 #include "StringConv.h"
+#ifndef DISABLE_SERIALIZE
+#include "Serializer.h"
+#endif
 
 #define __GCHANDLE_TO_VOIDPTR(x) ((GCHandle::operator System::IntPtr(x)).ToPointer())
 #define __VOIDPTR_TO_GCHANDLE(x) (GCHandle::operator GCHandle(System::IntPtr(x)))
@@ -49,13 +52,6 @@ Vector3 CollisionShape::CalculateLocalInertia(btScalar mass)
 	delete inertiaTemp;
 	return inertia;
 }
-
-#ifndef DISABLE_SERIALIZE
-int CollisionShape::CalculateSerializeBufferSize()
-{
-	return UnmanagedPointer->calculateSerializeBufferSize();
-}
-#endif
 
 void CollisionShape::CalculateTemporalAabb(Matrix curTrans,
 	Vector3 linvel,	Vector3 angvel, btScalar timeStep,
@@ -111,6 +107,23 @@ btScalar CollisionShape::GetContactBreakingThreshold(btScalar defaultContactThre
 	return _collisionShape->getContactBreakingThreshold(defaultContactThreshold);
 }
 
+#ifndef DISABLE_SERIALIZE
+int CollisionShape::CalculateSerializeBufferSize()
+{
+	return UnmanagedPointer->calculateSerializeBufferSize();
+}
+
+String^ CollisionShape::Serialize(IntPtr dataBuffer, Serializer^ serializer)
+{
+	const char* name = UnmanagedPointer->serialize(dataBuffer.ToPointer(), serializer->UnmanagedPointer);
+	return gcnew String(name);
+}
+
+void CollisionShape::SerializeSingleShape(Serializer^ serializer)
+{
+	UnmanagedPointer->serializeSingleShape(serializer->UnmanagedPointer);
+}
+#endif
 
 btScalar CollisionShape::AngularMotionDisc::get()
 {

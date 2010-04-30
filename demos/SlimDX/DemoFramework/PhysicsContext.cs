@@ -173,7 +173,7 @@ namespace DemoFramework
 
             device.DrawUserPrimitives(PrimitiveType.LineList, 12, vertices);
         }
-        
+
         public override void DrawBox(Vector3 bbMin, Vector3 bbMax, Matrix trans, Color4 color)
         {
             var p1 = Vector3.TransformCoordinate(bbMin, trans);
@@ -205,7 +205,7 @@ namespace DemoFramework
 
             device.DrawUserPrimitives(PrimitiveType.LineList, 12, vertices);
         }
-        
+
         public override void DrawTriangle(Vector3 v0, Vector3 v1, Vector3 v2, Color4 color, float __unnamed004)
         {
             int intColor = color.ToArgb();
@@ -240,31 +240,30 @@ namespace DemoFramework
         public override void DrawArc(Vector3 center, Vector3 normal, Vector3 axis, float radiusA, float radiusB, float minAngle, float maxAngle, Color4 color, bool drawSect, float stepDegrees)
         {
             Vector3 vx = axis;
-	        Vector3 vy = Vector3.Cross(normal, axis);
-	        float step = stepDegrees * ((float)Math.PI / 180.0f);
-	        int nSteps = (int)((maxAngle - minAngle) / step);
-	        if(nSteps == 0)
+            Vector3 vy = Vector3.Cross(normal, axis);
+            float step = stepDegrees * ((float)Math.PI / 180.0f);
+            int nSteps = (int)((maxAngle - minAngle) / step);
+            if (nSteps == 0)
                 nSteps = 1;
-	        
-            Vector3 prev = center + radiusA * vx * (float)Math.Cos(minAngle) + radiusB * vy * (float)Math.Sin(minAngle);
-	        
-            if(drawSect)
-		        DrawLine(center, prev, color);
-            
+
+            Vector3 next = center + radiusA * vx * (float)Math.Cos(minAngle) + radiusB * vy * (float)Math.Sin(minAngle);
+
+            if (drawSect)
+                DrawLine(center, next, color);
+
             int intColor = color.ToArgb();
-            PositionColored[] vertices = new PositionColored[nSteps+1];
-            vertices[0] = new PositionColored(prev, intColor);
-	        for(int i = 1; i <= nSteps; i++)
-	        {
-		        float angle = minAngle + (maxAngle - minAngle) * (float)i / (float)nSteps;
-                Vector3 next = center + radiusA * vx * (float)Math.Cos(angle) + radiusB * vy * (float)Math.Sin(angle);
+            PositionColored[] vertices = new PositionColored[nSteps + 1];
+            vertices[0] = new PositionColored(next, intColor);
+            for (int i = 1; i <= nSteps; i++)
+            {
+                float angle = minAngle + (maxAngle - minAngle) * (float)i / (float)nSteps;
+                next = center + radiusA * vx * (float)Math.Cos(angle) + radiusB * vy * (float)Math.Sin(angle);
                 vertices[i] = new PositionColored(next, intColor);
-		        prev = next;
-	        }
+            }
             device.DrawUserPrimitives(PrimitiveType.LineStrip, nSteps, vertices);
-	        
-            if(drawSect)
-		        DrawLine(center, prev, color);
+
+            if (drawSect)
+                DrawLine(center, next, color);
         }
 
         public void DrawDebugWorld(DynamicsWorld world)

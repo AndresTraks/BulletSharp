@@ -21,6 +21,7 @@ namespace BulletSharp
 	ref class DispatcherInfo;
 	ref class ManifoldPoint;
 	ref class OverlappingPairCache;
+	ref class Serializer;
 
 	public ref class CollisionWorld : BulletSharp::IDisposable
 	{
@@ -431,6 +432,10 @@ namespace BulletSharp
 		void RemoveCollisionObject(CollisionObject^ collisionObject);
 		void UpdateAabbs();
 		void UpdateSingleAabb(CollisionObject^ colObj);
+
+#ifndef DISABLE_SERIALIZE
+		void Serialize(Serializer^ serializer);
+#endif
 
 		property bool IsDisposed
 		{

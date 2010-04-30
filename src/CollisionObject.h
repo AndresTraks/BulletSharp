@@ -9,6 +9,7 @@ namespace BulletSharp
 {
 	ref class BroadphaseProxy;
 	ref class CollisionShape;
+	ref class Serializer;
 
 	public ref class CollisionObject : BulletSharp::IDisposable
 	{
@@ -39,11 +40,14 @@ namespace BulletSharp
 
 		void Activate();
 		void Activate(bool forceActivation);
-#ifndef DISABLE_SERIALIZE
-		int CalculateSerializeBufferSize();
-#endif
 		bool CheckCollideWith(CollisionObject^ collisionObject);
 		void ForceActivationState(BulletSharp::ActivationState newState);
+
+#ifndef DISABLE_SERIALIZE
+		int CalculateSerializeBufferSize();
+		String^ Serialize(IntPtr dataBuffer, Serializer^ serializer);
+		void SerializeSingleObject(Serializer^ serializer);
+#endif
 
 		property BulletSharp::ActivationState ActivationState
 		{

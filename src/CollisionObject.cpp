@@ -3,6 +3,9 @@
 #include "BroadphaseProxy.h"
 #include "CollisionObject.h"
 #include "CollisionShape.h"
+#ifndef DISABLE_SERIALIZE
+#include "Serializer.h"
+#endif
 
 #include <msclr/auto_gcroot.h>
 
@@ -51,13 +54,6 @@ void CollisionObject::Activate(bool forceActivation)
 	_collisionObject->activate(forceActivation);
 }
 
-#ifndef DISABLE_SERIALIZE
-int CollisionObject::CalculateSerializeBufferSize()
-{
-	return _collisionObject->calculateSerializeBufferSize();
-}
-#endif
-
 bool CollisionObject::CheckCollideWith(CollisionObject^ collisionObject)
 {
 	return _collisionObject->checkCollideWith(collisionObject->UnmanagedPointer);
@@ -68,6 +64,23 @@ void CollisionObject::ForceActivationState(BulletSharp::ActivationState newState
 	_collisionObject->forceActivationState((int)newState);
 }
 
+#ifndef DISABLE_SERIALIZE
+int CollisionObject::CalculateSerializeBufferSize()
+{
+	return _collisionObject->calculateSerializeBufferSize();
+}
+
+String^ CollisionObject::Serialize(IntPtr dataBuffer, Serializer^ serializer)
+{
+	const char* name = UnmanagedPointer->serialize(dataBuffer.ToPointer(), serializer->UnmanagedPointer);
+	return gcnew String(name);
+}
+
+void CollisionObject::SerializeSingleObject(Serializer^ serializer)
+{
+	UnmanagedPointer->serializeSingleObject(serializer->UnmanagedPointer);
+}
+#endif
 
 BulletSharp::ActivationState CollisionObject::ActivationState::get()
 {

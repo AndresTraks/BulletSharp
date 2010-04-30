@@ -13,6 +13,9 @@
 #ifndef DISABLE_DEBUGDRAW
 #include "DebugDraw.h"
 #endif
+#ifndef DISABLE_SERIALIZE
+#include "Serializer.h"
+#endif
 
 int CollisionWorld::LocalShapeInfo::ShapePart::get()
 {
@@ -677,6 +680,13 @@ void CollisionWorld::UpdateSingleAabb(CollisionObject^ colObj)
 {
 	_world->updateSingleAabb(colObj->UnmanagedPointer);
 }
+
+#ifndef DISABLE_SERIALIZE
+void CollisionWorld::Serialize(Serializer^ serializer)
+{
+	_world->serialize(serializer->UnmanagedPointer);
+}
+#endif
 
 BroadphaseInterface^ CollisionWorld::Broadphase::get()
 {

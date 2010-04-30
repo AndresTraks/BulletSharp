@@ -9,6 +9,8 @@ using namespace System::Runtime::InteropServices;
 
 namespace BulletSharp
 {
+	ref class Serializer;
+
 	public ref class CollisionShape : BulletSharp::IDisposable
 	{
 	public:
@@ -33,15 +35,18 @@ namespace BulletSharp
 	public:
 		void CalculateLocalInertia(btScalar mass, [Out] Vector3% inertia);
 		Vector3 CalculateLocalInertia(btScalar mass);
-#ifndef DISABLE_SERIALIZE
-		int CalculateSerializeBufferSize();
-#endif
 		void CalculateTemporalAabb(Matrix curTrans,
 			Vector3 linvel,	Vector3 angvel, btScalar timeStep,
 			[Out] Vector3% temporalAabbMin, [Out] Vector3% temporalAabbMax);
 		void GetAabb(Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		void GetBoundingSphere([Out] Vector3% center, [Out] btScalar% radius);
 		btScalar GetContactBreakingThreshold(btScalar defaultContactThreshold);
+
+#ifndef DISABLE_SERIALIZE
+		int CalculateSerializeBufferSize();
+		String^ Serialize(IntPtr dataBuffer, Serializer^ serializer);
+		void SerializeSingleShape(Serializer^ serializer);
+#endif
 
 		property btScalar AngularMotionDisc
 		{

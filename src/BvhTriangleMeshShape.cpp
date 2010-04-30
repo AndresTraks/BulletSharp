@@ -2,6 +2,9 @@
 
 #include "BvhTriangleMeshShape.h"
 #include "StridingMeshInterface.h"
+#ifndef DISABLE_SERIALIZE
+#include "Serializer.h"
+#endif
 
 BvhTriangleMeshShape::BvhTriangleMeshShape()
 : ConcaveShape(new btBvhTriangleMeshShape())
@@ -73,6 +76,18 @@ void BvhTriangleMeshShape::RefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 	delete bvhAabbMinTemp;
 	delete bvhAabbMaxTemp;
 }
+
+#ifndef DISABLE_SERIALIZE
+void BvhTriangleMeshShape::SerializeSingleBvh(Serializer^ serializer)
+{
+	UnmanagedPointer->serializeSingleBvh(serializer->UnmanagedPointer);
+}
+
+void BvhTriangleMeshShape::SerializeSingleTriangleInfoMap(Serializer^ serializer)
+{
+	UnmanagedPointer->serializeSingleTriangleInfoMap(serializer->UnmanagedPointer);
+}
+#endif
 
 bool BvhTriangleMeshShape::OwnsBvh::get()
 {
