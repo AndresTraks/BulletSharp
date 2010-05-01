@@ -1140,6 +1140,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\GImpactCollisionAlgorithm.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\GImpactShape.cpp"
 				>
 			</File>
@@ -1583,6 +1587,10 @@
 				<Filter
 					Name="GImpact"
 					>
+					<File
+						RelativePath=".\src\GImpactCollisionAlgorithm.h"
+						>
+					</File>
 					<File
 						RelativePath=".\src\GImpactShape.h"
 						>

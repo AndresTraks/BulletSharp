@@ -49,6 +49,15 @@ BulletSharp::DataStream^ IndexedMesh::LockIndices()
 		_indexedMesh->m_numTriangles * _indexedMesh->m_triangleIndexStride, true, true, false);
 }
 
+PhyScalarType IndexedMesh::IndexType::get()
+{
+	return (PhyScalarType)_indexedMesh->m_indexType;
+}
+void IndexedMesh::IndexType::set(PhyScalarType value)
+{
+	_indexedMesh->m_indexType = (PHY_ScalarType)value;
+}
+
 int IndexedMesh::NumTriangles::get()
 {
 	return _indexedMesh->m_numTriangles;
@@ -59,6 +68,14 @@ int IndexedMesh::NumVertices::get()
 	return _indexedMesh->m_numVertices;
 }
 
+PhyScalarType IndexedMesh::VertexType::get()
+{
+	return (PhyScalarType)_indexedMesh->m_vertexType;
+}
+void IndexedMesh::VertexType::set(PhyScalarType value)
+{
+	_indexedMesh->m_vertexType = (PHY_ScalarType)value;
+}
 
 btIndexedMesh* IndexedMesh::UnmanagedPointer::get()
 {

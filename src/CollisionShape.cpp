@@ -59,74 +59,72 @@ bool CollisionShape::IsDisposed::get()
 	return ( _collisionShape == NULL );
 }
 
-CollisionShape^ CollisionShape::UpcastDetect(CollisionShape^ shape)
+CollisionShape^ CollisionShape::UpcastDetect()
 {
-	void* ptr = shape->UnmanagedPointer;
-
-	switch(shape->ShapeType)
+	switch(ShapeType)
 	{
 	case BroadphaseNativeType::Box2dShape:
-		return gcnew Box2dShape((btBox2dShape*) ptr);
+		return gcnew Box2dShape((btBox2dShape*) _collisionShape);
 	case BroadphaseNativeType::BoxShape:
-		return gcnew BoxShape((btBoxShape*) ptr);
+		return gcnew BoxShape((btBoxShape*) _collisionShape);
 	case BroadphaseNativeType::CapsuleShape:
-		return gcnew CapsuleShape((btCapsuleShape*) ptr);
+		return gcnew CapsuleShape((btCapsuleShape*) _collisionShape);
 	case BroadphaseNativeType::CompoundShape:
-		return gcnew CompoundShape((btCompoundShape*) ptr);
+		return gcnew CompoundShape((btCompoundShape*) _collisionShape);
 	case BroadphaseNativeType::ConeShape:
-		return gcnew ConeShape((btConeShape*) ptr);
+		return gcnew ConeShape((btConeShape*) _collisionShape);
 	case BroadphaseNativeType::Convex2dShape:
-		return gcnew Convex2dShape((btConvex2dShape*) ptr);
+		return gcnew Convex2dShape((btConvex2dShape*) _collisionShape);
 	case BroadphaseNativeType::ConvexHullShape:
-		return gcnew ConvexHullShape((btConvexHullShape*) ptr);
+		return gcnew ConvexHullShape((btConvexHullShape*) _collisionShape);
 	case BroadphaseNativeType::ConvexPointCloudShape:
-		return gcnew ConvexPointCloudShape((btConvexPointCloudShape*) ptr);
+		return gcnew ConvexPointCloudShape((btConvexPointCloudShape*) _collisionShape);
 	case BroadphaseNativeType::ConvexShape:
-		return gcnew ConvexShape((btConvexShape*) ptr);
+		return gcnew ConvexShape((btConvexShape*) _collisionShape);
 	//case BroadphaseNativeType::ConvexTriangleMeshShape:
-	//	return gcnew ConvexTriangleMeshShape((btConvexTriangleMeshShape*) ptr);
+	//	return gcnew ConvexTriangleMeshShape((btConvexTriangleMeshShape*) _collisionShape);
 	//case BroadphaseNativeType::CustomConcaveShape:
-	//	return gcnew CustomConcaveShape((btCustomConcaveShape*) ptr);
+	//	return gcnew CustomConcaveShape((btCustomConcaveShape*) _collisionShape);
 	//case BroadphaseNativeType::CustomPolyhedralShape:
-	//	return gcnew CustomPolyhedralShape((btCustomPolyhedralShape*) ptr);
+	//	return gcnew CustomPolyhedralShape((btCustomPolyhedralShape*) _collisionShape);
 	case BroadphaseNativeType::CylinderShape:
-		return gcnew CylinderShape((btCylinderShape*) ptr);
+		return gcnew CylinderShape((btCylinderShape*) _collisionShape);
 	case BroadphaseNativeType::EmptyShape:
-		return gcnew EmptyShape((btEmptyShape*) ptr);
+		return gcnew EmptyShape((btEmptyShape*) _collisionShape);
 	//case BroadphaseNativeType::FastConcaveMesh:
-	//	return gcnew FastConcaveMesh((btFastConcaveMesh*) ptr);
+	//	return gcnew FastConcaveMesh((btFastConcaveMesh*) _collisionShape);
 	case BroadphaseNativeType::GImpactShape:
-		return gcnew GImpactMeshShape((btGImpactMeshShape*) ptr);
+		return gcnew GImpactMeshShape((btGImpactMeshShape*) _collisionShape);
 	//case BroadphaseNativeType::HfFluidBuoyantConvexShape:
-	//	return gcnew HfFluidBuoyantConvexShape((btHfFluidBuoyantConvexShape*) ptr);
+	//	return gcnew HfFluidBuoyantConvexShape((btHfFluidBuoyantConvexShape*) _collisionShape);
 	//case BroadphaseNativeType::HfFluidShape:
-	//	return gcnew HfFluidShape((btHfFluidShape*) ptr);
+	//	return gcnew HfFluidShape((btHfFluidShape*) _collisionShape);
 	//case BroadphaseNativeType::MinkowskiDifferenceShape:
-	//	return gcnew MinkowskiDifferenceShape((btMinkowskiDifferenceShape*) ptr);
+	//	return gcnew MinkowskiDifferenceShape((btMinkowskiDifferenceShape*) _collisionShape);
 	//case BroadphaseNativeType::MinkowskiSumShape:
-	//	return gcnew MinkowskiSumShape((btMinkowskiSumShape*) ptr);
+	//	return gcnew MinkowskiSumShape((btMinkowskiSumShape*) _collisionShape);
 	//case BroadphaseNativeType::MultiMaterialTriangleMesh:
-	//	return gcnew MultiMaterialTriangleMesh((btMultiMaterialTriangleMesh*) ptr);
+	//	return gcnew MultiMaterialTriangleMesh((btMultiMaterialTriangleMesh*) _collisionShape);
 	//case BroadphaseNativeType::MultiSphereShape:
-	//	return gcnew MultiSphereShape((btMultiSphereShape*) ptr);
+	//	return gcnew MultiSphereShape((btMultiSphereShape*) _collisionShape);
 	//case BroadphaseNativeType::ScaledTriangleMeshShape:
-	//	return gcnew ScaledTriangleMeshShape((btScaledTriangleMeshShape*) ptr);
+	//	return gcnew ScaledTriangleMeshShape((btScaledTriangleMeshShape*) _collisionShape);
 	case BroadphaseNativeType::StaticPlane:
-		return gcnew StaticPlaneShape((btStaticPlaneShape*) ptr);
+		return gcnew StaticPlaneShape((btStaticPlaneShape*) _collisionShape);
 	//case BroadphaseNativeType::SoftBodyShape:
-	//	return gcnew SoftBody((btSoftBody*) ptr);
+	//	return gcnew SoftBody((btSoftBody*) _collisionShape);
 	//case BroadphaseNativeType::TerrainShape:
-	//	return gcnew TerrainShape((btTerrainShape*) ptr);
+	//	return gcnew TerrainShape((btTerrainShape*) _collisionShape);
 	//case BroadphaseNativeType::TetrahedralShape:
-	//	return gcnew TetrahedralShape((btTetrahedralShape*) ptr);
+	//	return gcnew TetrahedralShape((btTetrahedralShape*) _collisionShape);
 	//case BroadphaseNativeType::TriangleMeshShape:
-	//	return gcnew TriangleMeshShape((btTriangleMeshShape*) ptr);
+	//	return gcnew TriangleMeshShape((btTriangleMeshShape*) _collisionShape);
 	//case BroadphaseNativeType::TriangleShape:
-	//	return gcnew TriangleShape((btTriangleShape*) ptr);
+	//	return gcnew TriangleShape((btTriangleShape*) _collisionShape);
 	//case BroadphaseNativeType::UniformScalingShape:
-	//	return gcnew UniformScalingShape((btUniformScalingShape*) ptr);
+	//	return gcnew UniformScalingShape((btUniformScalingShape*) _collisionShape);
 	default:
-		return shape;
+		return this;
 	}
 }
 

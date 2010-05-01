@@ -10,10 +10,19 @@ namespace BulletSharp
 {
 	ref class StridingMeshInterface;
 
-	public ref class GImpactShapeInterface abstract : ConcaveShape
+	public ref class GImpactShapeInterface : ConcaveShape
 	{
 	internal:
 		GImpactShapeInterface(btGImpactShapeInterface* shapeInterface);
+
+	public:
+		void UpdateBound();
+
+	internal:
+		property btGImpactShapeInterface* UnmanagedPointer
+		{
+			btGImpactShapeInterface* get();
+		}
 	};
 
 	public ref class GImpactMeshShape : GImpactShapeInterface

@@ -26,6 +26,12 @@ namespace BulletSharp
 		DataStream^ LockVerts();
 		DataStream^ LockIndices();
 
+		property PhyScalarType IndexType
+		{
+			PhyScalarType get();
+			void set(PhyScalarType value);
+		}
+
 		property int NumTriangles
 		{
 			int get();
@@ -34,6 +40,12 @@ namespace BulletSharp
 		property int NumVertices
 		{
 			int get();
+		}
+
+		property PhyScalarType VertexType
+		{
+			PhyScalarType get();
+			void set(PhyScalarType value);
 		}
 
 	internal:

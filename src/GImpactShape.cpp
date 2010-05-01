@@ -8,6 +8,16 @@ GImpactShapeInterface::GImpactShapeInterface(btGImpactShapeInterface* shapeInter
 {
 }
 
+void GImpactShapeInterface::UpdateBound()
+{
+	UnmanagedPointer->updateBound();
+}
+
+btGImpactShapeInterface* GImpactShapeInterface::UnmanagedPointer::get()
+{
+	return (btGImpactShapeInterface*)ConcaveShape::UnmanagedPointer;
+}
+
 
 GImpactMeshShape::GImpactMeshShape(btGImpactMeshShape* shape)
 : GImpactShapeInterface(shape)
