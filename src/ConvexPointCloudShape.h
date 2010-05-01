@@ -1,11 +1,17 @@
 #pragma once
 
+#pragma managed(push, off)
+#include <BulletCollision/CollisionShapes/btConvexPointCloudShape.h>
+#pragma managed(pop)
+
 #include "PolyhedralConvexShape.h"
 
 namespace BulletSharp
 {
 	public ref class ConvexPointCloudShape : PolyhedralConvexAabbCachingShape
 	{
+	internal:
+		ConvexPointCloudShape(btConvexPointCloudShape* shape);
 	public:
 		ConvexPointCloudShape();
 		ConvexPointCloudShape(array<Vector3>^ points, Vector3 localScaling, bool computeAabb);

@@ -144,13 +144,13 @@ namespace DemoFramework
 
         public override void DrawBox(Vector3 bbMin, Vector3 bbMax, Color4 color)
         {
-            var p1 = new Vector3(bbMin.X, bbMin.Y, bbMin.Z);
+            var p1 = bbMin;
             var p2 = new Vector3(bbMax.X, bbMin.Y, bbMin.Z);
             var p3 = new Vector3(bbMax.X, bbMax.Y, bbMin.Z);
             var p4 = new Vector3(bbMin.X, bbMax.Y, bbMin.Z);
             var p5 = new Vector3(bbMin.X, bbMin.Y, bbMax.Z);
             var p6 = new Vector3(bbMax.X, bbMin.Y, bbMax.Z);
-            var p7 = new Vector3(bbMax.X, bbMax.Y, bbMax.Z);
+            var p7 = bbMax;
             var p8 = new Vector3(bbMin.X, bbMax.Y, bbMax.Z);
 
             int intColor = color.ToArgb();

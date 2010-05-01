@@ -1,10 +1,11 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <BulletCollision/CollisionShapes/btConvexPointCloudShape.h>
-#pragma managed(pop)
-
 #include "ConvexPointCloudShape.h"
+
+ConvexPointCloudShape::ConvexPointCloudShape(btConvexPointCloudShape* shape)
+: PolyhedralConvexAabbCachingShape(shape)
+{
+}
 
 ConvexPointCloudShape::ConvexPointCloudShape()
 : PolyhedralConvexAabbCachingShape(new btConvexPointCloudShape())

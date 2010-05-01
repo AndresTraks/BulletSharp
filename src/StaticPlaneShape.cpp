@@ -2,6 +2,11 @@
 
 #include "StaticPlaneShape.h"
 
+StaticPlaneShape::StaticPlaneShape(btStaticPlaneShape* shape)
+: BulletSharp::ConcaveShape(shape)
+{
+}
+
 StaticPlaneShape::StaticPlaneShape(Vector3 planeNormal, btScalar planeConstant)
 : BulletSharp::ConcaveShape(0)
 {

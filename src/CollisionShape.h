@@ -33,6 +33,8 @@ namespace BulletSharp
 		}
 
 	public:
+		static CollisionShape^ UpcastDetect(CollisionShape^ shape);
+
 		void CalculateLocalInertia(btScalar mass, [Out] Vector3% inertia);
 		Vector3 CalculateLocalInertia(btScalar mass);
 		void CalculateTemporalAabb(Matrix curTrans,

@@ -1,9 +1,5 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <BulletCollision/CollisionShapes/btBox2dShape.h>
-#pragma managed(pop)
-
 #include "Box2dShape.h"
 
 Box2dShape::Box2dShape(btBox2dShape* shape)
