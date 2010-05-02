@@ -116,3 +116,18 @@ GImpactMeshShape::GImpactMeshShape(StridingMeshInterface^ meshInterface)
 : GImpactShapeInterface(new btGImpactMeshShape(meshInterface->UnmanagedPointer))
 {
 }
+
+StridingMeshInterface^ GImpactMeshShape::MeshInterface::get()
+{
+	return gcnew StridingMeshInterface(UnmanagedPointer->getMeshInterface());
+}
+
+int GImpactMeshShape::MeshPartCount::get()
+{
+	return UnmanagedPointer->getMeshPartCount();
+}
+
+btGImpactMeshShape* GImpactMeshShape::UnmanagedPointer::get()
+{
+	return (btGImpactMeshShape*)GImpactShapeInterface::UnmanagedPointer;
+}

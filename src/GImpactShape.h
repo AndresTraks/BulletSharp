@@ -94,5 +94,23 @@ namespace BulletSharp
 		GImpactMeshShape(btGImpactMeshShape* shape);
 	public:
 		GImpactMeshShape(StridingMeshInterface^ meshInterface);
+
+		//GImpactMeshShapePart^ GetMeshPart(int index);
+
+		property StridingMeshInterface^ MeshInterface
+		{
+			StridingMeshInterface^ get();
+		}
+
+		property int MeshPartCount
+		{
+			int get();
+		}
+
+	internal:
+		property btGImpactMeshShape* UnmanagedPointer
+		{
+			btGImpactMeshShape* get();
+		}
 	};
 };

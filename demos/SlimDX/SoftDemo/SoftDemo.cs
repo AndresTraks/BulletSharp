@@ -63,6 +63,7 @@ namespace BasicDemo
         protected override void OnInitialize()
         {
             physics = new Physics();
+            physics.SetDebugDrawer(new PhysicsDebugDrawLineGathering(Device));
 
             float size = physics.Scaling * 2;
             box = Mesh.CreateBox(Device, size, size, size);
@@ -117,9 +118,9 @@ namespace BasicDemo
             if (Input.KeyboardDown.Contains(Key.F3))
             {
                 if (physics.IsDebugDrawEnabled == false)
-                    physics.SetDebugDraw(Device, DebugDrawModes.DrawWireframe);
+                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawWireframe);
                 else
-                    physics.SetDebugDraw(Device, 0);
+                    physics.SetDebugDrawMode(Device, 0);
             }
 
             InputUpdate(Freelook.Eye, Freelook.Target, physics);

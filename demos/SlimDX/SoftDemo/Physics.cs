@@ -267,8 +267,8 @@ namespace BasicDemo
             LocalCreateRigidBody(1.0f, Matrix.Translation(0, 1, 0), boxShape);
             
             softBodyWorldInfo.SparseSdf.Reset();
-            Init_Aero();
-            //Init_TetraCube();
+            //Init_Aero();
+            Init_TetraCube();
             //Init_RbUpStack(5);
             //Init_LinearStair(8);
             //Init_ClothAttach();

@@ -110,9 +110,9 @@ namespace BasicDemo
             if (Input.KeyboardDown.Contains(Key.F3))
             {
                 if (physics.IsDebugDrawEnabled == false)
-                    physics.SetDebugDraw(Device, DebugDrawModes.DrawAabb);
+                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawAabb);
                 else
-                    physics.SetDebugDraw(Device, DebugDrawModes.None);
+                    physics.SetDebugDrawMode(Device, DebugDrawModes.None);
             }
 
             InputUpdate(Freelook.Eye, Freelook.Target, physics);

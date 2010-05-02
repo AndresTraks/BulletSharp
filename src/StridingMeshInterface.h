@@ -4,7 +4,7 @@
 
 namespace BulletSharp
 {
-	public ref class StridingMeshInterface abstract : BulletSharp::IDisposable
+	public ref class StridingMeshInterface : BulletSharp::IDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
@@ -13,7 +13,7 @@ namespace BulletSharp
 	private:
 		btStridingMeshInterface* _stridingMesh;
 
-	protected:
+	internal:
 		StridingMeshInterface(btStridingMeshInterface* stridingMesh);
 
 	public:

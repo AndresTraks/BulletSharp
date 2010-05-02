@@ -72,7 +72,7 @@
 
 	#define BtColor Color
 	#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
-	#define BtVectorToBtColor(color) Color::FromArgb(255, (int)(color.getX()*255), (int)(color.getY()*255), (int)(color.getY()*255))
+	#define BtVectorToBtColor(color) Color::FromArgb((int)color.getX(), (int)color.getY(), (int)color.getY())
 #endif
 
 #pragma managed(push, off)

@@ -61,7 +61,7 @@ namespace ConstraintDemo
         protected override void OnInitialize()
         {
             physics = new Physics();
-            physics.SetDebugDraw(Device, DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits);
+            physics.SetDebugDrawMode(Device, DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits);
 
             float size = physics.CubeHalfExtents * 2;
             box = Mesh.CreateBox(Device, size, size, size);
@@ -112,9 +112,9 @@ namespace ConstraintDemo
             if (Input.KeyboardDown.Contains(Key.F3))
             {
                 if (physics.IsDebugDrawEnabled == false)
-                    physics.SetDebugDraw(Device, DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits);
+                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits);
                 else
-                    physics.SetDebugDraw(Device, 0);
+                    physics.SetDebugDrawMode(Device, 0);
             }
 
             InputUpdate(Freelook.Eye, Freelook.Target, physics);

@@ -63,6 +63,8 @@ namespace VehicleDemo
         protected override void OnInitialize()
         {
             physics = new Physics(this);
+            physics.SetDebugDrawer(new PhysicsDebugDrawLineGathering(Device));
+            physics.SetDebugDrawMode(Device, 0);
 
             wheel = Mesh.CreateCylinder(Device, physics.wheelRadius, physics.wheelRadius, physics.wheelWidth, 10, 10);
             chassis = Mesh.CreateBox(Device, 2.0f, 1.0f, 4.0f);
@@ -141,9 +143,9 @@ namespace VehicleDemo
             if (Input.KeyboardDown.Contains(Key.F3))
             {
                 if (physics.IsDebugDrawEnabled == false)
-                    physics.SetDebugDraw(Device, DebugDrawModes.DrawWireframe);
+                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawWireframe);
                 else
-                    physics.SetDebugDraw(Device, 0);
+                    physics.SetDebugDrawMode(Device, 0);
             }
 
             physics.HandleKeys(Input, FrameDelta);
