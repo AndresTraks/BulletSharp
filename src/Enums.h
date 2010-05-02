@@ -180,6 +180,7 @@ namespace BulletSharp
 		Cuda = SOLVER_CUDA
 	};
 
+#ifndef DISABLE_CONSTRAINTS
 	public enum class TypedConstraintType
 	{
 		Point2Point = POINT2POINT_CONSTRAINT_TYPE,
@@ -189,4 +190,6 @@ namespace BulletSharp
 		Slider = SLIDER_CONSTRAINT_TYPE,
 		Contact = CONTACT_CONSTRAINT_TYPE
 	};
+#endif
+
 };
