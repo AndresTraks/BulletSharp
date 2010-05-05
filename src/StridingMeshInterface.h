@@ -22,6 +22,8 @@ namespace BulletSharp
 		~StridingMeshInterface();
 
 	public:
+		StridingMeshInterface^ UpcastDetect();
+
 		property bool IsDisposed
 		{
 			virtual bool get();

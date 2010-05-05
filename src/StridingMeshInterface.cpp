@@ -1,15 +1,32 @@
 #include "StdAfx.h"
 
 #include "StridingMeshInterface.h"
+#include "TriangleIndexVertexArray.h"
 
 StridingMeshInterface::StridingMeshInterface(btStridingMeshInterface* stridingMesh)
 {
 	_stridingMesh = stridingMesh;
 }
+
+StridingMeshInterface^ StridingMeshInterface::UpcastDetect()
+{
+	if (_stridingMesh == nullptr)
+		return nullptr;
+
+	void* ptr;
+
+	ptr = static_cast<btTriangleIndexVertexArray*>(_stridingMesh);
+	if (ptr != 0)
+		return gcnew TriangleIndexVertexArray((btTriangleIndexVertexArray*)ptr);
+
+	return this;
+}
+
 StridingMeshInterface::~StridingMeshInterface()
 {
 	this->!StridingMeshInterface();
 }
+
 StridingMeshInterface::!StridingMeshInterface()
 {
 	if( this->IsDisposed == true )
@@ -21,6 +38,7 @@ StridingMeshInterface::!StridingMeshInterface()
 
 	OnDisposed( this, nullptr );
 }
+
 bool StridingMeshInterface::IsDisposed::get()
 {
 	return ( _stridingMesh == NULL );

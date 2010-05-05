@@ -168,6 +168,8 @@ namespace BulletSharp
 
 	public ref class TriangleIndexVertexArray : StridingMeshInterface
 	{
+	internal:
+		TriangleIndexVertexArray(btTriangleIndexVertexArray* vertexArray);
 	public:
 		TriangleIndexVertexArray();
 

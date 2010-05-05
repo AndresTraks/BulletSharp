@@ -87,6 +87,11 @@ void IndexedMesh::UnmanagedPointer::set(btIndexedMesh* value)
 }
 
 
+TriangleIndexVertexArray::TriangleIndexVertexArray(btTriangleIndexVertexArray* vertexArray)
+: StridingMeshInterface(vertexArray)
+{
+}
+
 TriangleIndexVertexArray::TriangleIndexVertexArray()
 : StridingMeshInterface(new btTriangleIndexVertexArray())
 {
