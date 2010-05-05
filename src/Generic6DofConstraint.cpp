@@ -573,7 +573,6 @@ void Generic6DofConstraint::FrameOffsetA::set(Matrix value)
 	btTransform* a = Math::MatrixToBtTransform(value);
 	a->getOpenGLMatrix(m);
 	UnmanagedPointer->getFrameOffsetA().setFromOpenGLMatrix(m);
-	delete a;
 }
 
 Matrix Generic6DofConstraint::FrameOffsetB::get()
@@ -586,7 +585,6 @@ void Generic6DofConstraint::FrameOffsetB::set(Matrix value)
 	btTransform* a = Math::MatrixToBtTransform(value);
 	a->getOpenGLMatrix(m);
 	UnmanagedPointer->getFrameOffsetB().setFromOpenGLMatrix(m);
-	delete a;
 }
 
 BulletSharp::TranslationalLimitMotor^ Generic6DofConstraint::TranslationalLimitMotor::get()
