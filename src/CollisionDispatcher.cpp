@@ -8,20 +8,44 @@
 #include "Enums.h"
 #include "OverlappingPairCache.h"
 
+#define __GCHANDLE_TO_VOIDPTR(x) ((GCHandle::operator System::IntPtr(x)).ToPointer())
+#define __VOIDPTR_TO_GCHANDLE(x) (GCHandle::operator GCHandle(System::IntPtr(x)))
+
+void NearCallbackWrapper::nearCallback (btBroadphasePair& collisionPair, btCollisionDispatcherWrapper& dispatcher, const btDispatcherInfo& dispatchInfo)
+{
+	void* callback = dispatcher._nearCallback;
+	if (callback == nullptr)
+		return;
+	BulletSharp::NearCallback^ callbackManaged = static_cast<BulletSharp::NearCallback^>(__VOIDPTR_TO_GCHANDLE(callback).Target);
+	callbackManaged(gcnew BroadphasePair(&collisionPair), gcnew CollisionDispatcher(&dispatcher), gcnew DispatcherInfo((btDispatcherInfo*)&dispatchInfo));
+}
+
+
+btCollisionDispatcherWrapper::btCollisionDispatcherWrapper(btCollisionConfiguration* collisionConfiguration)
+: btCollisionDispatcher(collisionConfiguration)
+{
+}
+
+
+CollisionDispatcher::CollisionDispatcher(btCollisionDispatcherWrapper* dispatcher)
+: Dispatcher(dispatcher)
+{
+}
+
 CollisionDispatcher::CollisionDispatcher(BulletSharp::CollisionConfiguration^ collisionConfiguration)
-: Dispatcher(new btCollisionDispatcher(collisionConfiguration->UnmanagedPointer))
+: Dispatcher(new btCollisionDispatcherWrapper(collisionConfiguration->UnmanagedPointer))
 {
 }
 
 CollisionDispatcher::CollisionDispatcher()
-: Dispatcher(new btCollisionDispatcher(new btDefaultCollisionConfiguration()))
+: Dispatcher(new btCollisionDispatcherWrapper(new btDefaultCollisionConfiguration()))
 {
 }
 
 void CollisionDispatcher::DefaultNearCallback(BroadphasePair^ collisionPair,
 	CollisionDispatcher^ dispatcher, DispatcherInfo^ dispatchInfo)
 {
-	btCollisionDispatcher::defaultNearCallback(*collisionPair->UnmanagedPointer,
+	btCollisionDispatcherWrapper::defaultNearCallback(*collisionPair->UnmanagedPointer,
 		*dispatcher->UnmanagedPointer, *dispatchInfo->UnmanagedPointer);
 }
 
@@ -56,18 +80,39 @@ void CollisionDispatcher::DispatcherFlags::set(BulletSharp::DispatcherFlags valu
 	UnmanagedPointer->setDispatcherFlags((int)value);
 }
 
-/*
 BulletSharp::NearCallback^ CollisionDispatcher::NearCallback::get()
 {
-	return _nearCallback;
+	void* callback = UnmanagedPointer->_nearCallback;
+	if (callback == nullptr)
+		return nullptr;
+	
+	return static_cast<BulletSharp::NearCallback^>(__VOIDPTR_TO_GCHANDLE(callback).Target);
 }
 void CollisionDispatcher::NearCallback::set(BulletSharp::NearCallback^ value)
 {
-	_nearCallback = value;
-	UnmanagedPointer->setNearCallback(value->UnmanagedPointer);
+	if (value == nullptr)
+	{
+		// Don't actually set the callback to 0 as this would crash,
+		// just revert to the original internal callback.
+		UnmanagedPointer->_nearCallback = nullptr;
+		UnmanagedPointer->setNearCallback(originalCallback);
+		return;
+	}
+
+	void* current = UnmanagedPointer->_nearCallback;
+	if (current != nullptr)
+		__VOIDPTR_TO_GCHANDLE(current).Free();
+
+	GCHandle handle = GCHandle::Alloc(value);
+	UnmanagedPointer->_nearCallback = __GCHANDLE_TO_VOIDPTR(handle);
+
+	if (originalCallback == nullptr)
+		originalCallback = UnmanagedPointer->getNearCallback();
+	
+	UnmanagedPointer->setNearCallback((btNearCallback)&NearCallbackWrapper::nearCallback);
 }
-*/
-btCollisionDispatcher* CollisionDispatcher::UnmanagedPointer::get()
+
+btCollisionDispatcherWrapper* CollisionDispatcher::UnmanagedPointer::get()
 {
-	return (btCollisionDispatcher*)Dispatcher::UnmanagedPointer;
+	return (btCollisionDispatcherWrapper*)Dispatcher::UnmanagedPointer;
 }

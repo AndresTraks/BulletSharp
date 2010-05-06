@@ -186,22 +186,40 @@ void BroadphasePair::Algorithm::set(CollisionAlgorithm^ value)
 
 BroadphaseProxy^ BroadphasePair::Proxy0::get()
 {
+	if (_proxy0 == nullptr)
+	{
+		if (UnmanagedPointer->m_pProxy0 != nullptr)
+			_proxy0 = gcnew BroadphaseProxy(UnmanagedPointer->m_pProxy0);
+	}
 	return _proxy0;
 }
 void BroadphasePair::Proxy0::set(BroadphaseProxy^ value)
 {
 	_proxy0 = value;
-	_pair->m_pProxy0 = _proxy0->UnmanagedPointer;
+	
+	if (_proxy0 == nullptr)
+		_pair->m_pProxy0 = nullptr;
+	else
+		_pair->m_pProxy0 = _proxy0->UnmanagedPointer;
 }
 
 BroadphaseProxy^ BroadphasePair::Proxy1::get()
 {
+	if (_proxy1 == nullptr)
+	{
+		if (UnmanagedPointer->m_pProxy1 != nullptr)
+			_proxy1 = gcnew BroadphaseProxy(UnmanagedPointer->m_pProxy1);
+	}
 	return _proxy1;
 }
 void BroadphasePair::Proxy1::set(BroadphaseProxy^ value)
 {
 	_proxy1 = value;
-	_pair->m_pProxy1 = _proxy1->UnmanagedPointer;
+	
+	if (_proxy1 == nullptr)
+		_pair->m_pProxy1 = nullptr;
+	else
+		_pair->m_pProxy1 = _proxy0->UnmanagedPointer;
 }
 
 btBroadphasePair* BroadphasePair::UnmanagedPointer::get()
