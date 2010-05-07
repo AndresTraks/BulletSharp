@@ -12,8 +12,10 @@ namespace BulletSharp
 	public:
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
+	
 	private:
 		btSimulationIslandManager* _manager;
+	
 	internal:
 		SimulationIslandManager(btSimulationIslandManager* manager);
 

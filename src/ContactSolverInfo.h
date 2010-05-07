@@ -10,8 +10,10 @@ namespace BulletSharp
 	{
 	private:
 		btContactSolverInfoData* _infoData;
+	
 	internal:
 		ContactSolverInfoData(btContactSolverInfoData* infoData);
+	
 	public:
 		ContactSolverInfoData();
 
@@ -128,6 +130,7 @@ namespace BulletSharp
 	{
 	internal:
 		ContactSolverInfo(btContactSolverInfo* info);
+	
 	public:
 		ContactSolverInfo();
 	};

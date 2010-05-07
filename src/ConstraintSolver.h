@@ -15,10 +15,12 @@ namespace BulletSharp
 
 	internal:
 		ConstraintSolver(btConstraintSolver* solver);
+	
 	public:
 		!ConstraintSolver();
 	protected:
 		~ConstraintSolver();
+	
 	public:
 		property bool IsDisposed
 		{

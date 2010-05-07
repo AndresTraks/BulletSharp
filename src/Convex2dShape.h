@@ -14,12 +14,13 @@ namespace BulletSharp
 	{
 	private:
 		ConvexShape^ childShape;
-	public:
-		Convex2dShape(ConvexShape^ convexChildShape);
+	
 	internal:
 		Convex2dShape(btConvex2dShape* shape);
 
 	public:
+		Convex2dShape(ConvexShape^ convexChildShape);
+
 		static Convex2dShape^ Upcast2d(CollisionShape^ shape);
 
 		property ConvexShape^ ChildShape

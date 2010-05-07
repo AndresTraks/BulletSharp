@@ -152,6 +152,11 @@ btOverlappingPairCache* OverlappingPairCache::UnmanagedPointer::get()
 }
 
 
+HashedOverlappingPairCache::HashedOverlappingPairCache(btHashedOverlappingPairCache* pairCache)
+: OverlappingPairCache(pairCache)
+{
+}
+
 HashedOverlappingPairCache::HashedOverlappingPairCache()
 : OverlappingPairCache(new btHashedOverlappingPairCache)
 {

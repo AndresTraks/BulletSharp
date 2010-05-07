@@ -17,11 +17,6 @@ CollisionObject::CollisionObject(btCollisionObject* collisionObject)
 	_collisionObject = collisionObject;
 }
 
-CollisionObject::CollisionObject(IntPtr collisionObject)
-{
-	_collisionObject = (btCollisionObject*)collisionObject.ToPointer();
-}
-
 CollisionObject::~CollisionObject()
 {
 	this->!CollisionObject();

@@ -5,8 +5,6 @@
 #include "Enums.h"
 #include "IDisposable.h"
 
-using namespace System::Runtime::InteropServices;
-
 namespace BulletSharp
 {
 	ref class Serializer;
@@ -22,10 +20,12 @@ namespace BulletSharp
 
 	internal:
 		CollisionShape(btCollisionShape* collisionShape);
+	
 	public:
 		!CollisionShape();
 	protected:
 		~CollisionShape();
+	
 	public:
 		property bool IsDisposed
 		{

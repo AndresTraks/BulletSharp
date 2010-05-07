@@ -10,6 +10,7 @@ namespace BulletSharp
 	{
 	internal:
 		CapsuleShape(btCapsuleShape* shape);
+	
 	public:
 		CapsuleShape(btScalar radius, btScalar height);
 

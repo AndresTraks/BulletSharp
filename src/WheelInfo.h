@@ -10,6 +10,7 @@ namespace BulletSharp
 	{
 	private:
 		btWheelInfoConstructionInfo* _info;
+	
 	public:
 		WheelInfoConstructionInfo();
 
@@ -100,8 +101,10 @@ namespace BulletSharp
 		{
 		private:
 			btWheelInfo::RaycastInfo* _info;
+		
 		internal:
 			RaycastInfo(btWheelInfo::RaycastInfo* info);
+		
 		public:
 			RaycastInfo();
 

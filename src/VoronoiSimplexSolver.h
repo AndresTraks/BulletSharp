@@ -11,6 +11,7 @@ namespace BulletSharp
 
 	internal:
 		SubSimplexClosestResult(btSubSimplexClosestResult* result);
+	
 	public:
 		bool IsValid();
 		void Reset();
@@ -37,6 +38,7 @@ namespace BulletSharp
 #ifdef NO_VIRTUAL_INTERFACE
 	private:
 		btVoronoiSimplexSolver* _solver;
+	
 	public:
 		VoronoiSimplexSolver();
 #endif

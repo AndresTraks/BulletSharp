@@ -18,8 +18,10 @@ namespace BulletSharp
 	{
 	private:
 		DebugWrapper* _debugDraw;
+	
 	internal:
 		DebugDraw(DebugWrapper* debugDraw);
+	
 	public:
 		DebugDraw();
 

@@ -8,6 +8,7 @@ namespace BulletSharp
 	{
 	internal:
 		BoxShape(btBoxShape* shape);
+	
 	public:
 		BoxShape(Vector3 boxHalfExtents);
 		BoxShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ);

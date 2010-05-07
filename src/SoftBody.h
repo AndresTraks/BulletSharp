@@ -18,11 +18,12 @@ namespace BulletSharp
 
 	public ref class SoftBodyWorldInfo
 	{
-	public:
-		SoftBodyWorldInfo();
 	private:
 		btSoftBodyWorldInfo* _info;
+
 	public:
+		SoftBodyWorldInfo();
+
 		property btScalar AirDensity
 		{
 			btScalar get();
@@ -118,8 +119,10 @@ namespace BulletSharp
 		{
 		private:
 			btSoftBody::Config* _config;
+		
 		internal:
 			Config(btSoftBody::Config* config);
+		
 		public:
 			property AeroModel AeroModel
 			{
@@ -192,6 +195,7 @@ namespace BulletSharp
 		{
 		internal:
 			Material(btSoftBody::Material* material);
+		
 		public:
 			property btScalar Ast
 			{
@@ -282,6 +286,7 @@ namespace BulletSharp
 
 	internal:
 		SoftBody(btSoftBody* body);
+	
 	public:
 		SoftBody(SoftBodyWorldInfo^ worldInfo,
 			int node_count, Vector3 x, btScalar m);

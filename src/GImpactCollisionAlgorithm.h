@@ -14,6 +14,7 @@ namespace BulletSharp
 	{
 	internal:
 		GImpactCollisionAlgorithm(btGImpactCollisionAlgorithm* algorithm);
+	
 	public:
 		static void RegisterAlgorithm(CollisionDispatcher^ dispatcher);
 	};

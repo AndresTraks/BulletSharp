@@ -17,14 +17,17 @@ namespace BulletSharp
 		RigidBody^ rigidBodyA;
 		RigidBody^ rigidBodyB;
 
-	internal:
-		TypedConstraint(btTypedConstraint* typedConstraint);
 	private:
 		btTypedConstraint* _typedConstraint;
+
+	internal:
+		TypedConstraint(btTypedConstraint* typedConstraint);
+	
 	public:
 		!TypedConstraint();
 	protected:
 		~TypedConstraint();
+
 	public:
 		property bool IsDisposed
 		{

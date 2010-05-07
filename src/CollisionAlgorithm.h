@@ -53,10 +53,12 @@ namespace BulletSharp
 
 	internal:
 		CollisionAlgorithm(btCollisionAlgorithm* algorithm);
+	
 	public:
 		!CollisionAlgorithm();
 	protected:
 		~CollisionAlgorithm();
+	
 	public:
 		btScalar CalculateTimeOfImpact(CollisionObject^ body0, CollisionObject^ body1,
 			DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut);

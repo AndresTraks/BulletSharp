@@ -16,10 +16,12 @@ namespace BulletSharp
 
 	private:
 		btOverlapCallback* _callback;
+	
 	public:
 		!OverlapCallback();
 	protected:
 		~OverlapCallback();
+	
 	public:
 		bool ProcessOverlap(BroadphasePair^ pair);
 
@@ -42,14 +44,17 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
+	private:
+		btOverlapFilterCallback* _callback;
+
 	internal:
 		OverlapFilterCallback(btOverlapFilterCallback* callback);
+	
 	public:
 		!OverlapFilterCallback();
 	protected:
 		~OverlapFilterCallback();
-	private:
-		btOverlapFilterCallback* _callback;
+	
 	public:
 		bool NeedBroadphaseCollision(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1);
 
@@ -104,6 +109,9 @@ namespace BulletSharp
 
 	public ref class HashedOverlappingPairCache : OverlappingPairCache
 	{
+	internal:
+		HashedOverlappingPairCache(btHashedOverlappingPairCache* pairCache);
+	
 	public:
 		HashedOverlappingPairCache();
 

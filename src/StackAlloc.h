@@ -6,6 +6,7 @@ namespace BulletSharp
 	{
 	private:
 		btStackAlloc* _alloc;
+	
 	internal:
 		StackAlloc(btStackAlloc* alloc);
 

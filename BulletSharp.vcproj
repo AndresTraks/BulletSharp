@@ -1140,6 +1140,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\GhostObject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\GImpactCollisionAlgorithm.cpp"
 				>
 			</File>
@@ -1529,6 +1533,10 @@
 					</File>
 					<File
 						RelativePath=".\src\DefaultCollisionConfiguration.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\GhostObject.h"
 						>
 					</File>
 					<File

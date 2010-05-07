@@ -21,10 +21,12 @@ namespace BulletSharp
 
 	internal:
 		OverlappingPairCallback(btOverlappingPairCallback* pairCallback);
+	
 	public:
 		!OverlappingPairCallback();
 	protected:
 		~OverlappingPairCallback();
+	
 	public:
 		BroadphasePair^ AddOverlappingPair(BroadphaseProxy^ proxy0,
 			BroadphaseProxy^ proxy1);

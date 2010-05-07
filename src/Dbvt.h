@@ -59,9 +59,11 @@ namespace BulletSharp
 	{
 	private:
 		btDbvtNode* _node;
+	
 	internal:
 		DbvtNode(btDbvtNode* node);
 
+	public:
 		property array<DbvtNode^>^ Childs
 		{
 			array<DbvtNode^>^ get();
@@ -120,6 +122,7 @@ namespace BulletSharp
 
 		internal:
 			StkNn(btDbvt::sStkNN* stkNn);
+		
 		public:
 			StkNn();
 			StkNn(DbvtNode^ na, DbvtNode^ nb);
@@ -139,6 +142,7 @@ namespace BulletSharp
 
 		internal:
 			StkNp(btDbvt::sStkNP* stkNp);
+		
 		public:
 			StkNp(DbvtNode^ n, unsigned m);
 
@@ -157,6 +161,7 @@ namespace BulletSharp
 
 		internal:
 			StkNps(btDbvt::sStkNPS* stkNps);
+		
 		public:
 			StkNps();
 			StkNps(DbvtNode^ n, unsigned m, btScalar v);
@@ -176,6 +181,7 @@ namespace BulletSharp
 		
 		internal:
 			StkCln(btDbvt::sStkCLN* stkCln);
+		
 		public:
 			StkCln(DbvtNode^ na, DbvtNode^ nb);
 
@@ -198,6 +204,7 @@ namespace BulletSharp
 
 		internal:
 			ICollide(btDbvt::ICollide* iCollide);
+		
 		public:
 			!ICollide();
 		protected:
@@ -234,6 +241,7 @@ namespace BulletSharp
 
 		internal:
 			IWriter(btDbvt::IWriter* iWriter);
+		
 		public:
 			!IWriter();
 		protected:
@@ -268,6 +276,7 @@ namespace BulletSharp
 
 		internal:
 			IClone(btDbvt::IClone* iCollide);
+		
 		public:
 			!IClone();
 		protected:
@@ -296,16 +305,17 @@ namespace BulletSharp
 	private:
 		btDbvt* _dbvt;
 
-	public:
-		Dbvt();
-
 	internal:
 		Dbvt(btDbvt* dbvt);
+	
 	public:
 		!Dbvt();
 	protected:
 		~Dbvt();
+	
 	public:
+		Dbvt();
+
 		static int Allocate(IntArray^ ifree, StkNpsArray^ stock, StkNps^ value);
 		static void Benchmark();
 		void Clear();

@@ -26,10 +26,12 @@ namespace BulletSharp
 
 		protected:
 			RayResultCallback(btDynamicsWorld::RayResultCallback* callback);
+		
 		public:
 			!RayResultCallback();
 		protected:
 			~RayResultCallback();
+		
 		public:
 			property bool IsDisposed
 			{

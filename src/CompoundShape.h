@@ -13,6 +13,7 @@ namespace BulletSharp
 	{
 	private:
 		btCompoundShapeChild* _child;
+	
 	public:
 		CompoundShapeChild();
 

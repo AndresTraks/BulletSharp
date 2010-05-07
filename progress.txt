@@ -19,7 +19,6 @@ Collision/CollisionDispatch
 - ConvexPlaneCollisionAlgorithm
 0 DefaultCollisionConfiguration
 - EmptyCollisionAlgorithm
-- GhostObject
 - InternalEdgeUtility
 0 ManifoldResult
 - SimulationIslandManager

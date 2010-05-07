@@ -24,14 +24,14 @@ namespace BulletSharp
 		CollisionShape^ _collisionShape;
 		CollisionShape^ _rootCollisionShape;
 
-	public:
-		CollisionObject(IntPtr collisionObject);
 	internal:
 		CollisionObject(btCollisionObject* collisionObject);
+	
 	public:
 		!CollisionObject();
 	protected:
 		~CollisionObject();
+	
 	public:
 		property bool IsDisposed
 		{

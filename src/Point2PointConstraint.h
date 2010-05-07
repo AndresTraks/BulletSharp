@@ -10,8 +10,10 @@ namespace BulletSharp
 	{
 	private:
 		btConstraintSetting* _setting;
+	
 	internal:
 		ConstraintSetting(btConstraintSetting* setting);
+	
 	public:
 		ConstraintSetting();
 
@@ -33,6 +35,7 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
+	internal:
 		property btConstraintSetting* UnmanagedPointer
 		{
 			virtual btConstraintSetting* get();
@@ -74,6 +77,7 @@ namespace BulletSharp
 			void set(ConstraintSetting^ value);
 		}
 
+	internal:
 		property btPoint2PointConstraint* UnmanagedPointer
 		{
 			btPoint2PointConstraint* get() new;

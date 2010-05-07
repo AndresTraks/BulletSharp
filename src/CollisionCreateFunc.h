@@ -19,15 +19,17 @@ namespace BulletSharp
 	private:
 		btCollisionAlgorithmCreateFunc* _createFunc;
 
-	public:
-		CollisionAlgorithmCreateFunc();
 	internal:
 		CollisionAlgorithmCreateFunc(btCollisionAlgorithmCreateFunc* solver);
+
 	public:
 		!CollisionAlgorithmCreateFunc();
 	protected:
 		~CollisionAlgorithmCreateFunc();
+
 	public:
+		CollisionAlgorithmCreateFunc();
+
 		CollisionAlgorithm^ CreateCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ info,
 			CollisionObject^ body0, CollisionObject^ body1);
 

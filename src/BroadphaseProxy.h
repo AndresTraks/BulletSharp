@@ -13,6 +13,9 @@ namespace BulletSharp
 	private:
 		btBroadphaseProxy* _proxy;
 
+	internal:
+		BroadphaseProxy(btBroadphaseProxy* proxy);
+
 	public:
 		BroadphaseProxy();
 		BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr,
@@ -22,8 +25,6 @@ namespace BulletSharp
 		BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr,
 			CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask);
-	internal:
-		BroadphaseProxy(btBroadphaseProxy* proxy);
 
 	public:
 		property Vector3 AabbMin
@@ -90,12 +91,14 @@ namespace BulletSharp
 		btBroadphasePair* _pair;
 		BroadphaseProxy^ _proxy0;
 		BroadphaseProxy^ _proxy1;
+	
 	internal:
 		BroadphasePair(btBroadphasePair* pair);
+	
 	public:
-		BroadphasePair();
-		BroadphasePair(BroadphasePair^ pair);
 		BroadphasePair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy);
+		BroadphasePair(BroadphasePair^ pair);
+		BroadphasePair();
 
 		property CollisionAlgorithm^ Algorithm
 		{

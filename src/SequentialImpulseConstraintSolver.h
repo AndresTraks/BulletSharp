@@ -22,6 +22,7 @@ namespace BulletSharp
 			void set(unsigned long value);
 		}
 
+	internal:
 		property btSequentialImpulseConstraintSolver* UnmanagedPointer
 		{
 			btSequentialImpulseConstraintSolver* get() new;

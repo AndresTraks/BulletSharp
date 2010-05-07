@@ -17,7 +17,7 @@ namespace BulletSharp
 
 	internal:
 		BroadphaseAabbCallback(btBroadphaseAabbCallback* callback);
-		BroadphaseAabbCallback() {};
+
 	public:
 		bool Process(BroadphaseProxy^ proxy);
 
@@ -32,7 +32,7 @@ namespace BulletSharp
 	public ref class BroadphaseRayCallback : BroadphaseAabbCallback
 	{
 	internal:
-		BroadphaseRayCallback() {};
+		BroadphaseRayCallback(btBroadphaseRayCallback* callback);
 
 		property btBroadphaseRayCallback* UnmanagedPointer
 		{

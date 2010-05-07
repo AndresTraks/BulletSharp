@@ -12,10 +12,11 @@ namespace BulletSharp
 	{
 	internal:
 		ConvexPointCloudShape(btConvexPointCloudShape* shape);
+	
 	public:
-		ConvexPointCloudShape();
 		ConvexPointCloudShape(array<Vector3>^ points, Vector3 localScaling, bool computeAabb);
 		ConvexPointCloudShape(array<Vector3>^ points, Vector3 localScaling);
+		ConvexPointCloudShape();
 
 		void SetPoints(array<Vector3>^ points, bool computeAabb, Vector3 localScaling);
 		//void SetPoints(array<Vector3>^ points, bool computeAabb);

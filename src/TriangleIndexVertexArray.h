@@ -170,6 +170,7 @@ namespace BulletSharp
 	{
 	internal:
 		TriangleIndexVertexArray(btTriangleIndexVertexArray* vertexArray);
+	
 	public:
 		TriangleIndexVertexArray();
 

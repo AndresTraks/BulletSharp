@@ -8,6 +8,7 @@ namespace BulletSharp
 	{
 	internal:
 		Generic6DofSpringConstraint(btGeneric6DofSpringConstraint* constraint);
+	
 	public:
 		Generic6DofSpringConstraint(RigidBody^ rbA, RigidBody^ rbB,
 			Matrix frameInA, Matrix frameInB, bool useReferenceFrameA);
@@ -19,6 +20,7 @@ namespace BulletSharp
 		void SetEquilibriumPoint();
 		void SetStiffness(int index, btScalar stiffness);
 
+	internal:
 		property btGeneric6DofSpringConstraint* UnmanagedPointer
 		{
 			btGeneric6DofSpringConstraint* get() new;

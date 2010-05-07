@@ -8,6 +8,7 @@ namespace BulletSharp
 	{
 	internal:
 		ConeShape(btConeShape* shape);
+	
 	public:
 		ConeShape(btScalar radius, btScalar height);
 

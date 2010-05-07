@@ -23,6 +23,12 @@ void BroadphaseAabbCallback::UnmanagedPointer::set(btBroadphaseAabbCallback* val
 	_aabbCallback = value;
 }
 
+
+BroadphaseRayCallback::BroadphaseRayCallback(btBroadphaseRayCallback* callback)
+: BroadphaseAabbCallback(callback)
+{
+}
+
 btBroadphaseRayCallback* BroadphaseRayCallback::UnmanagedPointer::get()
 {
 	return (btBroadphaseRayCallback*)BroadphaseAabbCallback::UnmanagedPointer;;

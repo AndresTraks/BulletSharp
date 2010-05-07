@@ -11,6 +11,7 @@ namespace BulletSharp
 		{
 		private:
 			btVehicleRaycaster::btVehicleRaycasterResult* _result;
+		
 		public:
 			VehicleRaycasterResult();
 
@@ -43,7 +44,7 @@ namespace BulletSharp
 	private:
 		btVehicleRaycaster* _vehicleRaycaster;
 
-	protected:
+	internal:
 		VehicleRaycaster(btVehicleRaycaster* vehicleRaycaster);
 
 	public:

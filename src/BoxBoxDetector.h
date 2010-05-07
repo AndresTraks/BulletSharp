@@ -12,6 +12,7 @@ namespace BulletSharp
 	{
 	internal:
 		BoxBoxDetector(btBoxBoxDetector* detector);
+	
 	public:
 		BoxBoxDetector(BoxShape^ box1, BoxShape^ box2);
 

@@ -10,11 +10,13 @@ namespace BulletSharp
 	{
 	private:
 		btRotationalLimitMotor* motor;
+	
 	internal:
 		RotationalLimitMotor(btRotationalLimitMotor* motor);
+	
 	public:
-		RotationalLimitMotor();
 		RotationalLimitMotor(RotationalLimitMotor^ motor);
+		RotationalLimitMotor();
 
 		btScalar SolveAngularLimits(btScalar timeStep, Vector3 axis,
 			btScalar jacDiagABInv, RigidBody^ body0, RigidBody^ body1);
@@ -137,12 +139,13 @@ namespace BulletSharp
 	{
 	private:
 		btTranslationalLimitMotor* motor;
+	
 	internal:
 		TranslationalLimitMotor(btTranslationalLimitMotor* motor);
+	
 	public:
-		TranslationalLimitMotor();
 		TranslationalLimitMotor(TranslationalLimitMotor^ motor);
-
+		TranslationalLimitMotor();
 
 		bool IsLimited(int limitIndex);
 		bool NeedApplyForce(int limitIndex);
@@ -252,6 +255,7 @@ namespace BulletSharp
 	{
 	internal:
 		Generic6DofConstraint(btGeneric6DofConstraint* constraint);
+	
 	public:
 		Generic6DofConstraint(RigidBody^ rbA, RigidBody^ rbB,
 			Matrix frameInA, Matrix frameInB, bool useReferenceFrameA);
@@ -307,6 +311,7 @@ namespace BulletSharp
 			void set(bool value);
 		}
 
+	internal:
 		property btGeneric6DofConstraint* UnmanagedPointer
 		{
 			btGeneric6DofConstraint* get() new;

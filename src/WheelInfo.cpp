@@ -5,9 +5,6 @@
 #include "RigidBody.h"
 #include "WheelInfo.h"
 
-#define __GCHANDLE_TO_VOIDPTR(x) ((GCHandle::operator System::IntPtr(x)).ToPointer())
-#define __VOIDPTR_TO_GCHANDLE(x) (GCHandle::operator GCHandle(System::IntPtr(x)))
-
 WheelInfoConstructionInfo::WheelInfoConstructionInfo()
 {
 	_info = new btWheelInfoConstructionInfo();

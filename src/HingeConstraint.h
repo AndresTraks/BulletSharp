@@ -37,6 +37,7 @@ namespace BulletSharp
 			btScalar _softness);
 		void SetLimit(btScalar low, btScalar high);
 
+	internal:
 		property btHingeConstraint* UnmanagedPointer
 		{
 			btHingeConstraint* get() new;

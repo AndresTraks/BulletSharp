@@ -6,6 +6,7 @@ namespace BulletSharp
 	{
 	private:
 		btManifoldPoint* _point;
+	
 	public:
 		ManifoldPoint();
 

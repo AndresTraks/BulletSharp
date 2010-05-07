@@ -108,4 +108,7 @@ using namespace System::IO;
 using namespace System::Diagnostics;
 using namespace System::Runtime::InteropServices;
 
+#define __GCHANDLE_TO_VOIDPTR(x) ((GCHandle::operator System::IntPtr(x)).ToPointer())
+#define __VOIDPTR_TO_GCHANDLE(x) (GCHandle::operator GCHandle(System::IntPtr(x)))
+
 using namespace BulletSharp;

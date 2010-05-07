@@ -30,6 +30,7 @@ namespace BulletSharp
 		{
 		private:
 			btCollisionWorld::LocalShapeInfo* _info;
+		
 		internal:
 			LocalShapeInfo(btCollisionWorld::LocalShapeInfo* info);
 
@@ -106,10 +107,12 @@ namespace BulletSharp
 		
 		protected:
 			ConvexResultCallback(btCollisionWorld::ConvexResultCallback* callback);
+		
 		public:
 			!ConvexResultCallback();
 		protected:
 			~ConvexResultCallback();
+		
 		public:
 			btScalar AddSingleResult(LocalConvexResult^ convexResult, bool normalInWorldSpace);
 			bool NeedsCollision(BroadphaseProxy^ proxy0);
@@ -205,10 +208,12 @@ namespace BulletSharp
 		
 		internal:
 			ContactResultCallback(btCollisionWorld::ContactResultCallback* callback);
+		
 		public:
 			!ContactResultCallback();
 		protected:
 			~ContactResultCallback();
+		
 		public:
 			btScalar AddSingleResult(ManifoldPoint^ cp, CollisionObject^ colObj0, int partId0, int index0,
 				CollisionObject^ colObj1, int partId1, int index1);
@@ -291,10 +296,12 @@ namespace BulletSharp
 
 		protected:
 			RayResultCallback(btCollisionWorld::RayResultCallback* callback);
+		
 		public:
 			!RayResultCallback();
 		protected:
 			~RayResultCallback();
+		
 		public:
 			btScalar AddSingleResult(LocalRayResult^ rayResult, bool normalInWorldSpace);
 			bool NeedsCollision(BroadphaseProxy^ proxy0);
@@ -389,6 +396,7 @@ namespace BulletSharp
 
 	private:
 		btCollisionWorld* _world;
+	
 	protected:
 		Dispatcher^ _dispatcher;
 		BroadphaseInterface^ _broadphase;
@@ -400,10 +408,12 @@ namespace BulletSharp
 
 	internal:
 		CollisionWorld(btCollisionWorld* world);
+	
 	public:
 		!CollisionWorld();
 	protected:
 		~CollisionWorld();
+	
 	public:
 		CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, CollisionConfiguration^ collisionConfiguration);
 

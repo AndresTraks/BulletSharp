@@ -14,6 +14,7 @@ namespace BulletSharp
 	{
 	internal:
 		Box2dShape(btBox2dShape* shape);
+	
 	public:
 		Box2dShape(Vector3 boxHalfExtents);
 		Box2dShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ);
