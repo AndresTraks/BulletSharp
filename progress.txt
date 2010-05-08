@@ -17,7 +17,6 @@ Collision/CollisionDispatch
 - ConvexConcaveCollisionAlgorithm
 - ConvexConvexAlgorithm
 - ConvexPlaneCollisionAlgorithm
-0 DefaultCollisionConfiguration
 - EmptyCollisionAlgorithm
 - InternalEdgeUtility
 0 ManifoldResult
@@ -127,3 +126,9 @@ Dynamics/Dynamics
 0 RigidBody
 - SimpleDynamicsWorld
 
+
+
+Dynamics/Character
+
+- KinematicCharacterController
+- CharacterControllerInterface
