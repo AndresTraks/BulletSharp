@@ -1,15 +1,52 @@
 #pragma once
 
+// Fully implemented as of 09 May 2010
+
+#pragma managed(push, off)
+#include <BulletCollision/CollisionDispatch/btSimulationIslandManager.h>
+#pragma managed(pop)
+
 #include "IDisposable.h"
 
 namespace BulletSharp
 {
 	ref class CollisionWorld;
 	ref class Dispatcher;
+	ref class UnionFind;
 
 	public ref class SimulationIslandManager : BulletSharp::IDisposable
 	{
 	public:
+		ref class IslandCallback : BulletSharp::IDisposable
+		{
+		public:
+			virtual event EventHandler^ OnDisposing;
+			virtual event EventHandler^ OnDisposed;
+
+		private:
+			btSimulationIslandManager::IslandCallback* _islandCallback;
+
+		public:
+			!IslandCallback();
+		protected:
+			~IslandCallback();
+
+		public:
+			void ProcessIsland(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifolds, int islandId);
+
+			property bool IsDisposed
+			{
+				virtual bool get();
+			}
+
+		internal:
+			property btSimulationIslandManager::IslandCallback* UnmanagedPointer
+			{
+				virtual btSimulationIslandManager::IslandCallback* get();
+				void set(btSimulationIslandManager::IslandCallback* value);
+			}
+		};
+
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 	
@@ -27,7 +64,7 @@ namespace BulletSharp
 	public:
 		SimulationIslandManager();
 
-		//void BuildAndProcessIslands(Dispatcher^ dispatcher, CollisionWorld^ collisionWorld, IslandCallback^ callback);
+		void BuildAndProcessIslands(Dispatcher^ dispatcher, CollisionWorld^ collisionWorld, IslandCallback^ callback);
 		void BuildIslands(Dispatcher^ dispatcher, CollisionWorld^ colWorld);
 		void FindUnions(Dispatcher^ dispatcher, CollisionWorld^ colWorld);
 		void InitUnionFind(int n);
@@ -45,10 +82,10 @@ namespace BulletSharp
 			void set(bool value);
 		}
 
-		//property UnionFind^ UnionFind
-		//{
-		//	BulletSharp::UnionFind^ get();
-		//}
+		property UnionFind^ UnionFind
+		{
+			BulletSharp::UnionFind^ get();
+		}
 
 	internal:
 		property btSimulationIslandManager* UnmanagedPointer

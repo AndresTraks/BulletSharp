@@ -1,12 +1,64 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <BulletCollision/CollisionDispatch/btSimulationIslandManager.h>
-#pragma managed(pop)
-
 #include "Dispatcher.h"
 #include "CollisionWorld.h"
+#include "PersistentManifold.h"
 #include "SimulationIslandManager.h"
+#include "UnionFind.h"
+
+void SimulationIslandManager::IslandCallback::ProcessIsland(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifolds, int islandId)
+{
+	int numBodies = bodies->Length;
+	int numManifolds = manifolds->Length;
+	int i;
+
+	btCollisionObject** bodiesTemp = new btCollisionObject*[numBodies];
+	btPersistentManifold** manifoldsTemp = new btPersistentManifold*[numManifolds];
+
+	for(i=0; i<numBodies; i++)
+		bodiesTemp[i] = bodies[i]->UnmanagedPointer;
+
+	for(i=0; i<numManifolds; i++)
+		manifoldsTemp[i] = manifolds[i]->UnmanagedPointer;
+
+
+	UnmanagedPointer->ProcessIsland(bodiesTemp, numBodies, manifoldsTemp, numManifolds, islandId);
+
+	delete[] bodiesTemp;
+	delete[] manifoldsTemp;
+}
+
+btSimulationIslandManager::IslandCallback* SimulationIslandManager::IslandCallback::UnmanagedPointer::get()
+{
+	return _islandCallback;
+}
+void SimulationIslandManager::IslandCallback::UnmanagedPointer::set(btSimulationIslandManager::IslandCallback* value)
+{
+	_islandCallback = value;
+}
+
+SimulationIslandManager::IslandCallback::~IslandCallback()
+{
+	this->!IslandCallback();
+}
+
+SimulationIslandManager::IslandCallback::!IslandCallback()
+{
+	if( this->IsDisposed == true )
+		return;
+	
+	OnDisposing( this, nullptr );
+	
+	_islandCallback = NULL;
+	
+	OnDisposed( this, nullptr );
+}
+
+bool SimulationIslandManager::IslandCallback::IsDisposed::get()
+{
+	return (_islandCallback == NULL);
+}
+
 
 SimulationIslandManager::SimulationIslandManager()
 {
@@ -35,10 +87,10 @@ SimulationIslandManager::!SimulationIslandManager()
 	OnDisposed( this, nullptr );
 }
 
-//void SimulationIslandManager::BuildAndProcessIslands(Dispatcher^ dispatcher, CollisionWorld^ collisionWorld, IslandCallback^ callback)
-//{
-//	UnmanagedPointer->buildAndProcessIslands(dispatcher->UnmanagedPointer, collisionWorld->UnmanagedPointer, callback->UnmanagedPointer);
-//}
+void SimulationIslandManager::BuildAndProcessIslands(Dispatcher^ dispatcher, CollisionWorld^ collisionWorld, IslandCallback^ callback)
+{
+	UnmanagedPointer->buildAndProcessIslands(dispatcher->UnmanagedPointer, collisionWorld->UnmanagedPointer, callback->UnmanagedPointer);
+}
 
 void SimulationIslandManager::BuildIslands(Dispatcher^ dispatcher, CollisionWorld^ colWorld)
 {
@@ -77,6 +129,11 @@ bool SimulationIslandManager::SplitIslands::get()
 void SimulationIslandManager::SplitIslands::set(bool value)
 {
 	UnmanagedPointer->setSplitIslands(value);
+}
+
+UnionFind^ SimulationIslandManager::UnionFind::get()
+{
+	return gcnew BulletSharp::UnionFind(&UnmanagedPointer->getUnionFind());
 }
 
 btSimulationIslandManager* SimulationIslandManager::UnmanagedPointer::get()
