@@ -23,7 +23,7 @@
 #include "StaticPlaneShape.h"
 #include "StringConv.h"
 //#include "TriangleMeshShape.h"
-//#include "TriangleShape.h"
+#include "TriangleShape.h"
 //#include "UniformScalingShape.h"
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
@@ -119,8 +119,8 @@ CollisionShape^ CollisionShape::UpcastDetect()
 	//	return gcnew TetrahedralShape((btTetrahedralShape*) _collisionShape);
 	//case BroadphaseNativeType::TriangleMeshShape:
 	//	return gcnew TriangleMeshShape((btTriangleMeshShape*) _collisionShape);
-	//case BroadphaseNativeType::TriangleShape:
-	//	return gcnew TriangleShape((btTriangleShape*) _collisionShape);
+	case BroadphaseNativeType::TriangleShape:
+		return gcnew TriangleShape((btTriangleShape*) _collisionShape);
 	//case BroadphaseNativeType::UniformScalingShape:
 	//	return gcnew UniformScalingShape((btUniformScalingShape*) _collisionShape);
 	default:

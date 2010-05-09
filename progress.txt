@@ -15,8 +15,6 @@ Collision/BroadphaseCollision
 Collision/CollisionDispatch
 
 - InternalEdgeUtility
-- SphereTriangleCollisionAlgorithm
-- SphereTriangleDetector
 
 
 
@@ -46,7 +44,6 @@ Collision/CollisionShapes
 - TriangleInfoMap
 - TriangleMesh
 - TriangleMeshShape
-- TriangleShape
 - UniformScalingShape
 
 

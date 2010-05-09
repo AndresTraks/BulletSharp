@@ -1308,6 +1308,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\SphereTriangleCollisionAlgorithm.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\SphereTriangleDetector.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\StackAlloc.cpp"
 				>
 			</File>
@@ -1377,6 +1385,10 @@
 			</File>
 			<File
 				RelativePath=".\src\TriangleIndexVertexArray.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TriangleShape.cpp"
 				>
 			</File>
 			<File
@@ -1519,6 +1531,10 @@
 						RelativePath=".\src\TriangleIndexVertexArray.h"
 						>
 					</File>
+					<File
+						RelativePath=".\src\TriangleShape.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="CollisionDispatch"
@@ -1605,6 +1621,14 @@
 					</File>
 					<File
 						RelativePath=".\src\SphereSphereCollisionAlgorithm.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\SphereTriangleCollisionAlgorithm.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\SphereTriangleDetector.h"
 						>
 					</File>
 					<File
