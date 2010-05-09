@@ -1296,7 +1296,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\SphereBoxCollisionAlgorithm.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SphereShape.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\SphereSphereCollisionAlgorithm.cpp"
 				>
 			</File>
 			<File
@@ -1589,6 +1597,14 @@
 					</File>
 					<File
 						RelativePath=".\src\SimulationIslandManager.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\SphereBoxCollisionAlgorithm.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\SphereSphereCollisionAlgorithm.h"
 						>
 					</File>
 					<File

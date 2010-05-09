@@ -15,8 +15,6 @@ Collision/BroadphaseCollision
 Collision/CollisionDispatch
 
 - InternalEdgeUtility
-- SphereBoxCollisionAlgorithm
-- SphereSphereCollisionAlgorithm
 - SphereTriangleCollisionAlgorithm
 - SphereTriangleDetector
 
