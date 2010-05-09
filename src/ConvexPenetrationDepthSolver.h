@@ -13,7 +13,7 @@ namespace BulletSharp
 	private:
 		btConvexPenetrationDepthSolver* _depthSolver;
 
-	protected:
+	internal:
 		ConvexPenetrationDepthSolver(btConvexPenetrationDepthSolver* depthSolver);
 	
 	public:

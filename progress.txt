@@ -14,8 +14,6 @@ Collision/BroadphaseCollision
 
 Collision/CollisionDispatch
 
-- ConvexConcaveCollisionAlgorithm
-- ConvexConvexAlgorithm
 - ConvexPlaneCollisionAlgorithm
 - EmptyCollisionAlgorithm
 - InternalEdgeUtility

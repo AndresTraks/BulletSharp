@@ -6,8 +6,8 @@
 #include <BulletCollision/CollisionDispatch/btCompoundCollisionAlgorithm.h>
 #pragma managed(pop)
 
-#include "CompoundCollisionAlgorithm.h"
 #include "CollisionObject.h"
+#include "CompoundCollisionAlgorithm.h"
 #include "PersistentManifold.h"
 
 CompoundCollisionAlgorithm::CreateFunc::CreateFunc()

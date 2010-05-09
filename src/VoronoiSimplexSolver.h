@@ -30,19 +30,36 @@ namespace BulletSharp
 	};
 
 #ifdef NO_VIRTUAL_INTERFACE
-	public ref class VoronoiSimplexSolver
+	public ref class VoronoiSimplexSolver : BulletSharp::IDisposable
 #else
 	public ref class VoronoiSimplexSolver : SimplexSolverInterface
 #endif
 	{
+	internal:
+		VoronoiSimplexSolver(btVoronoiSimplexSolver* solver);
+
 #ifdef NO_VIRTUAL_INTERFACE
+	public:
+		virtual event EventHandler^ OnDisposing;
+		virtual event EventHandler^ OnDisposed;
+
 	private:
 		btVoronoiSimplexSolver* _solver;
+
+	public:
+		!VoronoiSimplexSolver();
+	protected:
+		~VoronoiSimplexSolver();
 	
 	public:
-		VoronoiSimplexSolver();
+		property bool IsDisposed
+		{
+			virtual bool get();
+		}
 #endif
 	public:
+		VoronoiSimplexSolver();
+
 		void AddVertex(Vector3 w, Vector3 p, Vector3 q);
 		void BackupClosest(Vector3 v);
 		bool Closest(Vector3 v);

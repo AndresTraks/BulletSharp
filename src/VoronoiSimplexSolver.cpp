@@ -56,11 +56,49 @@ void SubSimplexClosestResult::UnmanagedPointer::set(btSubSimplexClosestResult* v
 	_result = value;
 }
 
+#ifdef NO_VIRTUAL_INTERFACE
+VoronoiSimplexSolver::VoronoiSimplexSolver(btVoronoiSimplexSolver* solver)
+{
+	_solver = solver;
+}
 
 VoronoiSimplexSolver::VoronoiSimplexSolver()
 {
 	_solver = new btVoronoiSimplexSolver();
 }
+
+VoronoiSimplexSolver::~VoronoiSimplexSolver()
+{
+	this->!SimplexSolverInterface();
+}
+
+VoronoiSimplexSolver::!VoronoiSimplexSolver()
+{
+	if( this->IsDisposed == true )
+		return;
+	
+	OnDisposing( this, nullptr );
+	
+	_solver = NULL;
+	
+	OnDisposed( this, nullptr );
+}
+
+bool VoronoiSimplexSolver::IsDisposed::get()
+{
+	return (_solver == NULL);
+}
+#else
+VoronoiSimplexSolver::VoronoiSimplexSolver(btVoronoiSimplexSolver* solver)
+: SimplexSolverInterface(solver)
+{
+}
+
+VoronoiSimplexSolver::VoronoiSimplexSolver()
+: SimplexSolverInterface(new btVoronoiSimplexSolver())
+{
+}
+#endif
 
 void VoronoiSimplexSolver::AddVertex(Vector3 w, Vector3 p, Vector3 q)
 {

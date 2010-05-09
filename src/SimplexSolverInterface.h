@@ -13,7 +13,7 @@
 
 namespace BulletSharp
 {
-	public ref class SimplexSolverInterface abstract : BulletSharp::IDisposable
+	public ref class SimplexSolverInterface : BulletSharp::IDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;

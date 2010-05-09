@@ -1072,6 +1072,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ConvexConcaveCollisionAlgorithm.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ConvexConvexAlgorithm.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ConvexHullShape.cpp"
 				>
 			</File>
@@ -1537,6 +1545,14 @@
 					</File>
 					<File
 						RelativePath=".\src\Convex2dConvex2dAlgorithm.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\ConvexConcaveCollisionAlgorithm.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\ConvexConvexAlgorithm.h"
 						>
 					</File>
 					<File
