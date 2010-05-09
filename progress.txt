@@ -14,8 +14,6 @@ Collision/BroadphaseCollision
 
 Collision/CollisionDispatch
 
-- ConvexPlaneCollisionAlgorithm
-- EmptyCollisionAlgorithm
 - InternalEdgeUtility
 0 ManifoldResult
 - SimulationIslandManager

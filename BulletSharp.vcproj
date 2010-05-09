@@ -1092,6 +1092,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ConvexPlaneCollisionAlgorithm.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ConvexPointCloudShape.cpp"
 				>
 			</File>
@@ -1137,6 +1141,10 @@
 			</File>
 			<File
 				RelativePath=".\src\DynamicsWorld.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\EmptyCollisionAlgorithm.cpp"
 				>
 			</File>
 			<File
@@ -1556,7 +1564,15 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\ConvexPlaneCollisionAlgorithm.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\DefaultCollisionConfiguration.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\EmptyCollisionAlgorithm.h"
 						>
 					</File>
 					<File
