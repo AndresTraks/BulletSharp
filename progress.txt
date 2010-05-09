@@ -90,13 +90,6 @@ Collision/NarrowPhaseCollision
 
 
 
-Dynamics/Character
-
-- CharacterControllerInterface
-- KinematicCharacterController
-
-
-
 Dynamics/ConstraintSolver
 
 0 ConeTwistConstraint
@@ -125,10 +118,3 @@ Dynamics/Dynamics
 0 DynamicsWorld
 0 RigidBody
 - SimpleDynamicsWorld
-
-
-
-Dynamics/Character
-
-- KinematicCharacterController
-- CharacterControllerInterface

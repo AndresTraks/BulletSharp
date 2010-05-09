@@ -1,9 +1,5 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <BulletCollision/CollisionDispatch/btGhostObject.h>
-#pragma managed(pop)
-
 #include "AlignedObjectArray.h"
 #include "BroadphaseProxy.h"
 #include "CollisionWorld.h"

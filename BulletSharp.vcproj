@@ -1004,6 +1004,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\CharacterControllerInterface.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\CollisionAlgorithm.cpp"
 				>
 			</File>
@@ -1165,6 +1169,10 @@
 			</File>
 			<File
 				RelativePath=".\src\HingeConstraint.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\KinematicCharacterController.cpp"
 				>
 			</File>
 			<File
@@ -1729,6 +1737,18 @@
 					</File>
 					<File
 						RelativePath=".\src\WheelInfo.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Character"
+					>
+					<File
+						RelativePath=".\src\CharacterControllerInterface.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\KinematicCharacterController.h"
 						>
 					</File>
 				</Filter>
