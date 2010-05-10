@@ -1,9 +1,15 @@
 #include "StdAfx.h"
 
+#include "AlignedObjectArray.h"
 #include "CompoundShape.h"
 #ifndef DISABLE_DBVT
 #include "Dbvt.h"
 #endif
+
+CompoundShapeChild::CompoundShapeChild(btCompoundShapeChild* compoundShapeChild)
+{
+	_child = compoundShapeChild;
+}
 
 CompoundShapeChild::CompoundShapeChild()
 {
@@ -56,6 +62,16 @@ void CompoundShapeChild::Transform::set(Matrix value)
 {
 	Math::MatrixToBtTransform(value, &_child->m_transform);
 }
+
+btCompoundShapeChild* CompoundShapeChild::UnmanagedPointer::get()
+{
+	return _child;
+}
+void CompoundShapeChild::UnmanagedPointer::set(btCompoundShapeChild* value)
+{
+	_child = value;
+}
+
 
 CompoundShape::CompoundShape()
 : CollisionShape(new btCompoundShape())
@@ -116,6 +132,11 @@ void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransfor
 	btTransform* newChildTransformTemp = Math::MatrixToBtTransform(newChildTransform);
 	UnmanagedPointer->updateChildTransform(childIndex, *newChildTransformTemp);
 	delete newChildTransformTemp;
+}
+
+CompoundShapeChildArray^ CompoundShape::ChildList::get()
+{
+	return gcnew CompoundShapeChildArray((btAlignedObjectArray<btCompoundShapeChild>*)UnmanagedPointer->getChildList());
 }
 
 #ifndef DISABLE_DBVT

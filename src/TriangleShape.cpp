@@ -51,10 +51,12 @@ void TriangleShape::GetPlaneEquation(int i, [Out] Vector3% planeNormal, [Out] Ve
 	delete planeNormalTemp;
 }
 
+#pragma managed(push, off)
 void TriangleShape_GetVertexPtr(btTriangleShape* shape, int index, btVector3* vertex)
 {
 	*vertex = shape->getVertexPtr(index);
 }
+#pragma managed(pop)
 Vector3 TriangleShape::GetVertexPtr(int index)
 {
 	btVector3* vertexTemp = new btVector3();

@@ -19,6 +19,7 @@ namespace BulletSharp
 	ref class BroadphasePair;
 	ref class CollisionObject;
 	ref class CollisionShape;
+	ref class CompoundShapeChild;
 	ref class PersistentManifold;
 
 	public ref class AlignedObjectArray : BulletSharp::IDisposable
@@ -180,6 +181,43 @@ namespace BulletSharp
 		virtual void Reset();
 	};
 
+	public ref class CompoundShapeChildArray : AlignedObjectArray
+	{
+	internal:
+		CompoundShapeChildArray(btAlignedObjectArray<btCompoundShapeChild>* compundShapeChildArray);
+
+	public:
+		CompoundShapeChildArray();
+
+		void Clear();
+		void PopBack();
+		void PushBack(CompoundShapeChild^ compundShapeChild);
+		void Remove(CompoundShapeChild^ compundShapeChild);
+		void Swap(int index0, int index1);
+
+		property int Size
+		{
+			int get();
+		}
+
+		property int Capacity
+		{
+			int get();
+		}
+
+		property CompoundShapeChild^ default [int]
+		{
+			CompoundShapeChild^ get (int index);
+			void set(int index, CompoundShapeChild^);
+		}
+
+	internal:
+		property btAlignedObjectArray<btCompoundShapeChild>* UnmanagedPointer
+		{
+			virtual btAlignedObjectArray<btCompoundShapeChild>* get() new;
+		}
+	};
+
 #ifndef DISABLE_DBVT
 	public ref class DbvtNodeArray : AlignedObjectArray
 	{
@@ -304,8 +342,8 @@ namespace BulletSharp
 
 		void Clear();
 		void PopBack();
-		void PushBack(SoftBody::Face^ node);
-		void Remove(SoftBody::Face^ node);
+		void PushBack(SoftBody::Face^ face);
+		void Remove(SoftBody::Face^ face);
 		void Swap(int index0, int index1);
 
 		property int Size
@@ -342,8 +380,8 @@ namespace BulletSharp
 
 		void Clear();
 		void PopBack();
-		void PushBack(int manifold);
-		void Remove(int manifold);
+		void PushBack(int intValue);
+		void Remove(int intValue);
 		void Swap(int index0, int index1);
 
 		property int Size
@@ -493,8 +531,8 @@ namespace BulletSharp
 
 		void Clear();
 		void PopBack();
-		void PushBack(WheelInfo^ node);
-		void Remove(WheelInfo^ node);
+		void PushBack(WheelInfo^ wheelInfo);
+		void Remove(WheelInfo^ wheelInfo);
 		void Swap(int index0, int index1);
 
 		property int Size

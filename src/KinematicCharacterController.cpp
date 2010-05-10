@@ -38,7 +38,7 @@ void KinematicCharacterController::SetMaxJumpHeight(btScalar maxJumpHeight)
 	UnmanagedPointer->setMaxJumpHeight(maxJumpHeight);
 }
 
-void KinematicCharacterController::SetUpAxis(btScalar axis)
+void KinematicCharacterController::SetUpAxis(int axis)
 {
 	UnmanagedPointer->setUpAxis(axis);
 }

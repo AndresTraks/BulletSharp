@@ -21,7 +21,7 @@ namespace BulletSharp
 		void SetFallSpeed(btScalar fallSpeed);
 		void SetJumpSpeed(btScalar jumpSpeed);
 		void SetMaxJumpHeight(btScalar maxJumpHeight);
-		void SetUpAxis(btScalar axis);
+		void SetUpAxis(int axis);
 		void SetUseGhostSweepTest(bool useGhostObjectSweepTest);
 
 		property BulletSharp::GhostObject^ GhostObject
