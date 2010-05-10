@@ -8,7 +8,7 @@ BulletSharp wrapper progress
 Collision/BroadphaseCollision
 
 - MultiSapBroadphase (experimental, won't implement)
-- QuantizedBvh
+0 QuantizedBvh
 
 
 
@@ -20,8 +20,6 @@ Collision/CollisionDispatch
 
 Collision/CollisionShapes
 
-0 BoxShape
-0 BvhTriangleMeshShape
 0 CompoundShape
 0 ConvexHullShape
 0 ConvexPointCloudShape
@@ -31,14 +29,13 @@ Collision/CollisionShapes
 - MinkowskiSumShape
 - MultiMaterialTriangleMeshShape
 - MultiSphereShape
-- OptimizedBvh
+0 OptimizedBvh
 0 PolyhedralConvexShape
 - ScaledBvhTriangleMeshShape
 - ShapeHull
 0 StridingMeshInterface
 - TetrahedronShape
 - TriangleBuffer
-- TriangleCallback
 0 TriangleIndexVertexArray
 - TriangleInfoMap
 - TriangleMesh

@@ -31,6 +31,15 @@ BoxShape::BoxShape(btScalar boxHalfExtents)
 	delete boxHalfExtentsTemp;
 }
 
+Vector4 BoxShape::GetPlaneEquation(int i)
+{
+	btVector4* equationTemp = new btVector4;
+	UnmanagedPointer->getPlaneEquation(*equationTemp, i);
+	Vector4 equation = Math::BtVector4ToVector4(equationTemp);
+	delete equationTemp;
+	return equation;
+}
+
 #pragma managed(push, off)
 btVector3* BoxShape_GetHalfExtentsWithMargin(btBoxShape* shape)
 {

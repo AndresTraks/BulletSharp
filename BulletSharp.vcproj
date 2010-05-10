@@ -1212,6 +1212,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\OptimizedBvh.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\OverlappingPairCache.cpp"
 				>
 			</File>
@@ -1237,6 +1241,10 @@
 			</File>
 			<File
 				RelativePath=".\src\PoolAllocator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\QuantizedBvh.cpp"
 				>
 			</File>
 			<File
@@ -1384,6 +1392,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TriangleCallback.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\TriangleIndexVertexArray.cpp"
 				>
 			</File>
@@ -1512,6 +1524,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\OptimizedBvh.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\PolyhedralConvexShape.h"
 						>
 					</File>
@@ -1525,6 +1541,10 @@
 					</File>
 					<File
 						RelativePath=".\src\StridingMeshInterface.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\TriangleCallback.h"
 						>
 					</File>
 					<File
@@ -1673,6 +1693,10 @@
 					</File>
 					<File
 						RelativePath=".\src\OverlappingPairCallback.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\QuantizedBvh.h"
 						>
 					</File>
 					<File

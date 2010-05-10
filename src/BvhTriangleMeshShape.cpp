@@ -1,7 +1,9 @@
 #include "StdAfx.h"
 
 #include "BvhTriangleMeshShape.h"
+#include "OptimizedBvh.h"
 #include "StridingMeshInterface.h"
+#include "TriangleCallback.h"
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
 #endif
@@ -61,6 +63,43 @@ void BvhTriangleMeshShape::PartialRefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbM
 	delete bvhAabbMaxTemp;
 }
 
+void BvhTriangleMeshShape::PerformConvexcast(TriangleCallback^ callback, Vector3 boxSource, Vector3 boxTarget, Vector3 boxMin, Vector3 boxMax)
+{
+	btVector3* boxSourceTemp = Math::Vector3ToBtVector3(boxSource);
+	btVector3* boxTargetTemp = Math::Vector3ToBtVector3(boxTarget);
+	btVector3* boxMinTemp = Math::Vector3ToBtVector3(boxMin);
+	btVector3* boxMaxTemp = Math::Vector3ToBtVector3(boxMax);
+
+	UnmanagedPointer->performConvexcast(callback->UnmanagedPointer, *boxSourceTemp, *boxTargetTemp, *boxMinTemp, *boxMaxTemp);
+
+	delete boxSourceTemp;
+	delete boxTargetTemp;
+	delete boxMinTemp;
+	delete boxMaxTemp;
+}
+
+void BvhTriangleMeshShape::PerformRaycast(TriangleCallback^ callback, Vector3 raySource, Vector3 rayTarget)
+{
+	btVector3* raySourceTemp = Math::Vector3ToBtVector3(raySource);
+	btVector3* rayTargetTemp = Math::Vector3ToBtVector3(rayTarget);
+
+	UnmanagedPointer->performRaycast(callback->UnmanagedPointer, *rayTargetTemp, *rayTargetTemp);
+
+	delete raySourceTemp;
+	delete rayTargetTemp;
+}
+
+void BvhTriangleMeshShape::ProcessAllTriangles(TriangleCallback^ callback, Vector3 aabbMin, Vector3 aabbMax)
+{
+	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
+	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
+
+	UnmanagedPointer->processAllTriangles(callback->UnmanagedPointer, *aabbMinTemp, *aabbMaxTemp);
+
+	delete aabbMinTemp;
+	delete aabbMaxTemp;
+}
+
 void BvhTriangleMeshShape::RecalcLocalAabb()
 {
 	UnmanagedPointer->recalcLocalAabb();
@@ -77,6 +116,13 @@ void BvhTriangleMeshShape::RefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 	delete bvhAabbMaxTemp;
 }
 
+void BvhTriangleMeshShape::SetOptimizedBvh(BulletSharp::OptimizedBvh^ bvh, Vector3 localScaling)
+{
+	btVector3* localScalingTemp = Math::Vector3ToBtVector3(localScaling);
+	UnmanagedPointer->setOptimizedBvh(bvh->UnmanagedPointer, *localScalingTemp);
+	delete localScalingTemp;
+}
+
 #ifndef DISABLE_SERIALIZE
 void BvhTriangleMeshShape::SerializeSingleBvh(Serializer^ serializer)
 {
@@ -88,6 +134,21 @@ void BvhTriangleMeshShape::SerializeSingleTriangleInfoMap(Serializer^ serializer
 	UnmanagedPointer->serializeSingleTriangleInfoMap(serializer->UnmanagedPointer);
 }
 #endif
+
+#pragma managed(push, off)
+void BvhTriangleMeshShape_SetOptimizedBvh(btBvhTriangleMeshShape* shape, btOptimizedBvh* bvh)
+{
+	shape->setOptimizedBvh(bvh);
+}
+#pragma managed(pop)
+OptimizedBvh^ BvhTriangleMeshShape::OptimizedBvh::get()
+{
+	return gcnew BulletSharp::OptimizedBvh(UnmanagedPointer->getOptimizedBvh());
+}
+void BvhTriangleMeshShape::OptimizedBvh::set(BulletSharp::OptimizedBvh^ value)
+{
+	BvhTriangleMeshShape_SetOptimizedBvh(UnmanagedPointer, value->UnmanagedPointer);
+}
 
 bool BvhTriangleMeshShape::OwnsBvh::get()
 {

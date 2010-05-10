@@ -31,6 +31,24 @@ Box2dShape::Box2dShape(btScalar boxHalfExtents)
 	delete boxHalfExtentsTemp;
 }
 
+Vector3 Box2dShape::GetVertex(int i)
+{
+	btVector3* vertexTemp = new btVector3;
+	UnmanagedPointer->getVertex(i, *vertexTemp);
+	Vector3 vertex = Math::BtVector3ToVector3(vertexTemp);
+	delete vertexTemp;
+	return vertex;
+}
+
+Vector4 Box2dShape::GetPlaneEquation(int i)
+{
+	btVector4* equationTemp = new btVector4;
+	UnmanagedPointer->getPlaneEquation(*equationTemp, i);
+	Vector4 equation = Math::BtVector4ToVector4(equationTemp);
+	delete equationTemp;
+	return equation;
+}
+
 Vector3 Box2dShape::Centroid::get()
 {
 	return Math::BtVector3ToVector3(&UnmanagedPointer->getCentroid());
@@ -83,24 +101,6 @@ array<Vector3>^ Box2dShape::Vertices::get()
 	vertices[2] = Math::BtVector3ToVector3(&btVertices[2]);
 	vertices[3] = Math::BtVector3ToVector3(&btVertices[3]);
 	return vertices;
-}
-
-Vector3 Box2dShape::GetVertex(int i)
-{
-	btVector3* vertexTemp = new btVector3;
-	UnmanagedPointer->getVertex(i, *vertexTemp);
-	Vector3 vertex = Math::BtVector3ToVector3(vertexTemp);
-	delete vertexTemp;
-	return vertex;
-}
-
-Vector4 Box2dShape::GetPlaneEquation(int i)
-{
-	btVector4* equationTemp = new btVector4;
-	UnmanagedPointer->getPlaneEquation(*equationTemp, i);
-	Vector4 equation = Math::BtVector4ToVector4(equationTemp);
-	delete equationTemp;
-	return equation;
 }
 
 Box2dShape^ Box2dShape::Upcast(CollisionShape^ shape)
