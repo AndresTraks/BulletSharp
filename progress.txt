@@ -72,7 +72,6 @@ Collision/NarrowPhaseCollision
 
 Dynamics/ConstraintSolver
 
-0 ConeTwistConstraint
 0 ConstraintSolver
 - ContactConstraint
 0 Generic6DofConstraint
