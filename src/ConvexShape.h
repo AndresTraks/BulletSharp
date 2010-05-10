@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 11 May 2010
+
 #include "CollisionShape.h"
 
 namespace BulletSharp
@@ -12,7 +14,7 @@ namespace BulletSharp
 	public:
 		static ConvexShape^ Upcast(CollisionShape^ shape);
 
-		//void BatchedUnitVectorGetSupportingVertexWithoutMargin(array<Vector3> vectors, array<Vector3> supportVerticesOut);
+		void BatchedUnitVectorGetSupportingVertexWithoutMargin(array<Vector3>^ vectors, [Out] array<Vector3>^% supportVerticesOut);
 		void GetAabbNonVirtual(Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		void GetAabbSlow(Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		void GetPreferredPenetrationDirection(int index, [Out] Vector3% penetrationVector);

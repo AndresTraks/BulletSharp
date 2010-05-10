@@ -48,6 +48,18 @@ Vector3 ConvexHullShape::GetScaledPoint(int i)
 	return point;
 }
 
+array<Vector3>^ ConvexHullShape::GetUnscaledPoints()
+{
+	btVector3* pointsTemp = UnmanagedPointer->getUnscaledPoints();
+	array<Vector3>^ points = gcnew array<Vector3>(NumPoints);
+
+	int i;
+	for (i=0; i<points->Length; i++)
+		points[i] = Math::BtVector3ToVector3(&pointsTemp[i]);
+
+	return points;
+}
+
 int ConvexHullShape::NumPoints::get()
 {
 	return UnmanagedPointer->getNumPoints();

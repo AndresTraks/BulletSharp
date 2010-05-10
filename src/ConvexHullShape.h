@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 11 May 2010
+
 #include "PolyhedralConvexShape.h"
 
 namespace BulletSharp
@@ -15,7 +17,7 @@ namespace BulletSharp
 
 		void AddPoint(Vector3 point);
 		Vector3 GetScaledPoint(int i);
-		//array<Vector3>^ GetUnscaledPoints();
+		array<Vector3>^ GetUnscaledPoints();
 
 		property int NumPoints
 		{

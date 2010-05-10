@@ -9,6 +9,23 @@ ConvexShape::ConvexShape(btConvexShape* convexShape)
 {
 }
 
+void ConvexShape::BatchedUnitVectorGetSupportingVertexWithoutMargin(array<Vector3>^ vectors, [Out] array<Vector3>^% supportVerticesOut)
+{
+	int i;
+	int numVertices = vectors->Length;
+	btVector3* supportVerticesOutTemp = new btVector3[numVertices];
+
+	btVector3* vectorsTemp = new btVector3[numVertices];
+	for (i=0; i<numVertices; i++)
+		Math::Vector3ToBtVector3(vectors[i], &vectorsTemp[i]);
+
+	UnmanagedPointer->batchedUnitVectorGetSupportingVertexWithoutMargin(vectorsTemp, supportVerticesOutTemp, numVertices);
+
+	supportVerticesOut = gcnew array<Vector3>(numVertices);
+	for (i=0; i<numVertices; i++)
+		supportVerticesOut[i] = Math::BtVector3ToVector3(&supportVerticesOutTemp[i]);
+}
+
 void ConvexShape::GetAabbNonVirtual(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
 {
 	btVector3* aabbMinTemp = new btVector3;

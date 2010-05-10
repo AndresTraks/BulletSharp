@@ -20,9 +20,6 @@ Collision/CollisionDispatch
 
 Collision/CollisionShapes
 
-0 ConvexHullShape
-0 ConvexPointCloudShape
-0 ConvexShape
 - ConvexTriangleMeshShape
 - Material
 - MinkowskiSumShape
