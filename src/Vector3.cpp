@@ -407,28 +407,149 @@ namespace BulletSharp
 		result.Normalize();
 	}
 	
+	Vector4 Vector3::Transform( Vector3 vector, Matrix transform )
+	{
+		Vector4 result;
+
+		result.X = (((vector.X * transform.M11) + (vector.Y * transform.M21)) + (vector.Z * transform.M31)) + transform.M41;
+		result.Y = (((vector.X * transform.M12) + (vector.Y * transform.M22)) + (vector.Z * transform.M32)) + transform.M42;
+		result.Z = (((vector.X * transform.M13) + (vector.Y * transform.M23)) + (vector.Z * transform.M33)) + transform.M43;
+		result.W = (((vector.X * transform.M14) + (vector.Y * transform.M24)) + (vector.Z * transform.M34)) + transform.M44;
+
+		return result;
+	}
+	
+	void Vector3::Transform( Vector3% vector, Matrix% transform, [Out] Vector4% result )
+	{
+		result = Vector4();
+		result.X = (((vector.X * transform.M11) + (vector.Y * transform.M21)) + (vector.Z * transform.M31)) + transform.M41;
+		result.Y = (((vector.X * transform.M12) + (vector.Y * transform.M22)) + (vector.Z * transform.M32)) + transform.M42;
+		result.Z = (((vector.X * transform.M13) + (vector.Y * transform.M23)) + (vector.Z * transform.M33)) + transform.M43;
+		result.W = (((vector.X * transform.M14) + (vector.Y * transform.M24)) + (vector.Z * transform.M34)) + transform.M44;
+	}
+
+	array<Vector4>^ Vector3::Transform( array<Vector3>^ vectors, Matrix% transform )
+	{
+		int count = vectors->Length;
+		array<Vector4>^ results = gcnew array<Vector4>( count );
+
+		for( int i = 0; i < count; i++ )
+		{
+			Vector4 r;
+			r.X = (((vectors[i].X * transform.M11) + (vectors[i].Y * transform.M21)) + (vectors[i].Z * transform.M31)) + transform.M41;
+			r.Y = (((vectors[i].X * transform.M12) + (vectors[i].Y * transform.M22)) + (vectors[i].Z * transform.M32)) + transform.M42;
+			r.Z = (((vectors[i].X * transform.M13) + (vectors[i].Y * transform.M23)) + (vectors[i].Z * transform.M33)) + transform.M43;
+			r.W = (((vectors[i].X * transform.M14) + (vectors[i].Y * transform.M24)) + (vectors[i].Z * transform.M34)) + transform.M44;
+		
+			results[i] = r;
+		}
+		
+		return results;
+	}
+	
+	Vector4 Vector3::Transform( Vector3 value, Quaternion rotation )
+	{
+		Vector4 vector;
+		btScalar x = rotation.X + rotation.X;
+		btScalar y = rotation.Y + rotation.Y;
+		btScalar z = rotation.Z + rotation.Z;
+		btScalar wx = rotation.W * x;
+		btScalar wy = rotation.W * y;
+		btScalar wz = rotation.W * z;
+		btScalar xx = rotation.X * x;
+		btScalar xy = rotation.X * y;
+		btScalar xz = rotation.X * z;
+		btScalar yy = rotation.Y * y;
+		btScalar yz = rotation.Y * z;
+		btScalar zz = rotation.Z * z;
+
+		vector.X = ((value.X * ((1.0f - yy) - zz)) + (value.Y * (xy - wz))) + (value.Z * (xz + wy));
+		vector.Y = ((value.X * (xy + wz)) + (value.Y * ((1.0f - xx) - zz))) + (value.Z * (yz - wx));
+		vector.Z = ((value.X * (xz - wy)) + (value.Y * (yz + wx))) + (value.Z * ((1.0f - xx) - yy));
+		vector.W = 1.0f;
+
+		return vector;
+	}
+	
+	void Vector3::Transform( Vector3% value, Quaternion% rotation, [Out] Vector4% result )
+	{
+		btScalar x = rotation.X + rotation.X;
+		btScalar y = rotation.Y + rotation.Y;
+		btScalar z = rotation.Z + rotation.Z;
+		btScalar wx = rotation.W * x;
+		btScalar wy = rotation.W * y;
+		btScalar wz = rotation.W * z;
+		btScalar xx = rotation.X * x;
+		btScalar xy = rotation.X * y;
+		btScalar xz = rotation.X * z;
+		btScalar yy = rotation.Y * y;
+		btScalar yz = rotation.Y * z;
+		btScalar zz = rotation.Z * z;
+
+		result = Vector4();
+		result.X = ((value.X * ((1.0f - yy) - zz)) + (value.Y * (xy - wz))) + (value.Z * (xz + wy));
+		result.Y = ((value.X * (xy + wz)) + (value.Y * ((1.0f - xx) - zz))) + (value.Z * (yz - wx));
+		result.Z = ((value.X * (xz - wy)) + (value.Y * (yz + wx))) + (value.Z * ((1.0f - xx) - yy));
+		result.W = 1.0f;
+	}
+	
+	array<Vector4>^ Vector3::Transform( array<Vector3>^ vectors, Quaternion% rotation )
+	{
+		if( vectors == nullptr )
+			throw gcnew ArgumentNullException( "vectors" );
+
+		int count = vectors->Length;
+		array<Vector4>^ results = gcnew array<Vector4>( count );
+
+		btScalar x = rotation.X + rotation.X;
+		btScalar y = rotation.Y + rotation.Y;
+		btScalar z = rotation.Z + rotation.Z;
+		btScalar wx = rotation.W * x;
+		btScalar wy = rotation.W * y;
+		btScalar wz = rotation.W * z;
+		btScalar xx = rotation.X * x;
+		btScalar xy = rotation.X * y;
+		btScalar xz = rotation.X * z;
+		btScalar yy = rotation.Y * y;
+		btScalar yz = rotation.Y * z;
+		btScalar zz = rotation.Z * z;
+
+		for( int i = 0; i < count; i++ )
+		{
+			Vector4 r;
+			r.X = ((vectors[i].X * ((1.0f - yy) - zz)) + (vectors[i].Y * (xy - wz))) + (vectors[i].Z * (xz + wy));
+			r.Y = ((vectors[i].X * (xy + wz)) + (vectors[i].Y * ((1.0f - xx) - zz))) + (vectors[i].Z * (yz - wx));
+			r.Z = ((vectors[i].X * (xz - wy)) + (vectors[i].Y * (yz + wx))) + (vectors[i].Z * ((1.0f - xx) - yy));
+			r.W = 1.0f;
+
+			results[i] = r;
+		}
+
+		return results;
+	}
+	
 	Vector3 Vector3::TransformCoordinate( Vector3 coord, Matrix transform )
 	{
-		Vector3 vector;
+		Vector4 vector;
 
 		vector.X = (((coord.X * transform.M11) + (coord.Y * transform.M21)) + (coord.Z * transform.M31)) + transform.M41;
 		vector.Y = (((coord.X * transform.M12) + (coord.Y * transform.M22)) + (coord.Z * transform.M32)) + transform.M42;
 		vector.Z = (((coord.X * transform.M13) + (coord.Y * transform.M23)) + (coord.Z * transform.M33)) + transform.M43;
-		btScalar W = 1 / ((((coord.X * transform.M14) + (coord.Y * transform.M24)) + (coord.Z * transform.M34)) + transform.M44);
+		vector.W = 1 / ((((coord.X * transform.M14) + (coord.Y * transform.M24)) + (coord.Z * transform.M34)) + transform.M44);
 
-		return Vector3( vector.X * W, vector.Y * W, vector.Z * W );
+		return Vector3( vector.X * vector.W, vector.Y * vector.W, vector.Z * vector.W );
 	}
 	
 	void Vector3::TransformCoordinate( Vector3% coord, Matrix% transform, [Out] Vector3% result )
 	{
-		Vector3 vector;
+		Vector4 vector;
 
 		vector.X = (((coord.X * transform.M11) + (coord.Y * transform.M21)) + (coord.Z * transform.M31)) + transform.M41;
 		vector.Y = (((coord.X * transform.M12) + (coord.Y * transform.M22)) + (coord.Z * transform.M32)) + transform.M42;
 		vector.Z = (((coord.X * transform.M13) + (coord.Y * transform.M23)) + (coord.Z * transform.M33)) + transform.M43;
-		btScalar W = 1 / ((((coord.X * transform.M14) + (coord.Y * transform.M24)) + (coord.Z * transform.M34)) + transform.M44);
+		vector.W = 1 / ((((coord.X * transform.M14) + (coord.Y * transform.M24)) + (coord.Z * transform.M34)) + transform.M44);
 
-		result = Vector3( vector.X * W, vector.Y * W, vector.Z * W );
+		result = Vector3( vector.X * vector.W, vector.Y * vector.W, vector.Z * vector.W );
 	}
 	
 	Vector3 Vector3::TransformNormal( Vector3 normal, Matrix transform )

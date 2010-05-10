@@ -27,6 +27,7 @@ namespace BulletSharp
 {
 	value class Quaternion;
 	value class Vector3;
+	value class Vector4;
 	
 	/// <summary>
 	/// Defines a 4x4 matrix.
@@ -122,6 +123,20 @@ namespace BulletSharp
 		{
 			btScalar get( int row, int column );
 			void set( int row, int column, btScalar value );
+		}
+
+		[System::ComponentModel::Browsable(false)]
+		property Vector4 Rows[int]
+		{
+			Vector4 get( int row );
+			void set( int row, Vector4 value );
+		}
+
+		[System::ComponentModel::Browsable(false)]
+		property Vector4 Columns[int]
+		{
+			Vector4 get( int column );
+			void set( int column, Vector4 value );
 		}
 		
 		/// <summary>

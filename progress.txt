@@ -20,7 +20,6 @@ Collision/CollisionDispatch
 
 Collision/CollisionShapes
 
-0 Box2dShape
 0 BoxShape
 0 BvhTriangleMeshShape
 0 CompoundShape

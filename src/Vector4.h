@@ -21,21 +21,21 @@
 */
 #pragma once
 
-#include "Vector4.h"
-
 using System::Runtime::InteropServices::OutAttribute;
 
 namespace BulletSharp
 {
 	value class Matrix;
+	value class Quaternion;
+	value class Vector3;
 	
 	/// <summary>
-	/// Defines a three component vector.
+	/// Defines a four component vector.
 	/// </summary>
-	/// <unmanaged>D3DXVECTOR3</unmanaged>
+	/// <unmanaged>D3DXVECTOR4</unmanaged>
 	[System::Serializable]
 	[System::Runtime::InteropServices::StructLayout( System::Runtime::InteropServices::LayoutKind::Sequential, Pack = 4 )]
-	public value class Vector3 : System::IEquatable<Vector3>
+	public value class Vector4 : System::IEquatable<Vector4>
 	{
 	public:
 		/// <summary>
@@ -55,6 +55,12 @@ namespace BulletSharp
 		/// </summary>
 		/// <value>The Z component of the vector.</value>
 		btScalar Z;
+
+		/// <summary>
+		/// Gets or sets the W component of the vector.
+		/// </summary>
+		/// <value>The W component of the vector.</value>
+		btScalar W;
 		
 		property btScalar default[int]
 		{
@@ -63,47 +69,61 @@ namespace BulletSharp
 		}
 		
 		/// <summary>
-		/// Gets a <see cref="Vector3"/> with all of its components set to zero.
+		/// Gets a <see cref="Vector4"/> with all of its components set to zero.
 		/// </summary>
-		/// <value>A <see cref="Vector3"/> that has all of its components set to zero.</value>
-		static property Vector3 Zero { Vector3 get() { return Vector3(0, 0, 0); } }
+		/// <value>A <see cref="Vector4"/> that has all of its components set to zero.</value>
+		static property Vector4 Zero { Vector4 get() { return Vector4(0, 0, 0, 0); } }
 
 		/// <summary>
-		/// Gets the X unit <see cref="Vector3"/> (1, 0, 0).
+		/// Gets the X unit <see cref="Vector4"/> (1, 0, 0, 0).
 		/// </summary>
-		/// <value>A <see cref="Vector3"/> that has a value of (1, 0, 0).</value>
-		static property Vector3 UnitX { Vector3 get() { return Vector3(1, 0, 0); } }
+		/// <value>A <see cref="Vector4"/> that has a value of (1, 0, 0, 0).</value>
+		static property Vector4 UnitX { Vector4 get() { return Vector4(1, 0, 0, 0); } }
 
 		/// <summary>
-		/// Gets the Y unit <see cref="Vector3"/> (0, 1, 0).
+		/// Gets the Y unit <see cref="Vector4"/> (0, 1, 0, 0).
 		/// </summary>
-		/// <value>A <see cref="Vector3"/> that has a value of (0, 1, 0).</value>
-		static property Vector3 UnitY { Vector3 get() { return Vector3(0, 1, 0); } }
+		/// <value>A <see cref="Vector4"/> that has a value of (0, 1, 0, 0).</value>
+		static property Vector4 UnitY { Vector4 get() { return Vector4(0, 1, 0, 0); } }
 
 		/// <summary>
-		/// Gets the Z unit <see cref="Vector3"/> (0, 0, 1).
+		/// Gets the Z unit <see cref="Vector4"/> (0, 0, 1, 0).
 		/// </summary>
-		/// <value>A <see cref="Vector3"/> that has a value of (0, 0, 1).</value>
-		static property Vector3 UnitZ { Vector3 get() { return Vector3(0, 0, 1); } }
+		/// <value>A <see cref="Vector4"/> that has a value of (0, 0, 1, 0).</value>
+		static property Vector4 UnitZ { Vector4 get() { return Vector4(0, 0, 1, 0); } }
 
 		/// <summary>
-		/// Gets the size of the <see cref="Vector3"/> type, in bytes.
+		/// Gets the W unit <see cref="Vector4"/> (0, 0, 0, 1).
 		/// </summary>
-		static property int SizeInBytes { int get() { return System::Runtime::InteropServices::Marshal::SizeOf(Vector3::typeid); } }
+		/// <value>A <see cref="Vector4"/> that has a value of (0, 0, 0, 1).</value>
+		static property Vector4 UnitW { Vector4 get() { return Vector4(0, 0, 0, 1); } }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Vector3"/> class.
+		/// Gets the size of the <see cref="Vector4"/> type, in bytes.
+		/// </summary>
+		static property int SizeInBytes { int get() { return System::Runtime::InteropServices::Marshal::SizeOf(Vector4::typeid); } }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Vector4"/> class.
 		/// </summary>
 		/// <param name="value">The value that will be assigned to all components.</param>
-		Vector3( btScalar value );		
+		Vector4( btScalar value );	
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Vector3"/> class.
+		/// Initializes a new instance of the <see cref="Vector4"/> class.
+		/// </summary>
+		/// <param name="value">A vector containing the values with which to initialize the X, Y, and Z components</param>
+		/// <param name="w">Initial value for the W component of the vector.</param>
+		Vector4( Vector3 value, btScalar w );
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Vector4"/> class.
 		/// </summary>
 		/// <param name="x">Initial value for the X component of the vector.</param>
 		/// <param name="y">Initial value for the Y component of the vector.</param>
 		/// <param name="z">Initial value for the Z component of the vector.</param>
-		Vector3( btScalar x, btScalar y, btScalar z );	
+		/// <param name="w">Initial value for the W component of the vector.</param>
+		Vector4( btScalar x, btScalar y, btScalar z, btScalar w );	
 
 		/// <summary>
 		/// Calculates the length of the vector.
@@ -115,8 +135,8 @@ namespace BulletSharp
 		/// Calculates the squared length of the vector.
 		/// </summary>
 		/// <returns>The squared length of the vector.</returns>
-		btScalar LengthSquared();	
-		
+		btScalar LengthSquared();		
+
 		/// <summary>
 		/// Converts the vector into a unit vector.
 		/// </summary>
@@ -128,7 +148,7 @@ namespace BulletSharp
 		/// <param name="left">The first vector to add.</param>
 		/// <param name="right">The second vector to add.</param>
 		/// <returns>The sum of the two vectors.</returns>
-		static Vector3 Add( Vector3 left, Vector3 right );
+		static Vector4 Add( Vector4 left, Vector4 right );
 
 		/// <summary>
 		/// Adds two vectors.
@@ -136,7 +156,7 @@ namespace BulletSharp
 		/// <param name="left">The first vector to add.</param>
 		/// <param name="right">The second vector to add.</param>
 		/// <param name="result">When the method completes, contains the sum of the two vectors.</param>
-		static void Add( Vector3% left, Vector3% right, [Out] Vector3% result );
+		static void Add( Vector4% left, Vector4% right, [Out] Vector4% result );
 		
 		/// <summary>
 		/// Subtracts two vectors.
@@ -144,7 +164,7 @@ namespace BulletSharp
 		/// <param name="left">The first vector to subtract.</param>
 		/// <param name="right">The second vector to subtract.</param>
 		/// <returns>The difference of the two vectors.</returns>
-		static Vector3 Subtract( Vector3 left, Vector3 right );		
+		static Vector4 Subtract( Vector4 left, Vector4 right );		
 
 		/// <summary>
 		/// Subtracts two vectors.
@@ -152,7 +172,7 @@ namespace BulletSharp
 		/// <param name="left">The first vector to subtract.</param>
 		/// <param name="right">The second vector to subtract.</param>
 		/// <param name="result">When the method completes, contains the difference of the two vectors.</param>
-		static void Subtract( Vector3% left, Vector3% right, [Out] Vector3% result );
+		static void Subtract( Vector4% left, Vector4% right, [Out] Vector4% result );
 		
 		/// <summary>
 		/// Scales a vector by the given value.
@@ -160,7 +180,7 @@ namespace BulletSharp
 		/// <param name="value">The vector to scale.</param>
 		/// <param name="scale">The amount by which to scale the vector.</param>
 		/// <returns>The scaled vector.</returns>
-		static Vector3 Multiply( Vector3 value, btScalar scale );	
+		static Vector4 Multiply( Vector4 value, btScalar scale );		
 
 		/// <summary>
 		/// Scales a vector by the given value.
@@ -168,7 +188,7 @@ namespace BulletSharp
 		/// <param name="vector">The vector to scale.</param>
 		/// <param name="scale">The amount by which to scale the vector.</param>
 		/// <param name="result">When the method completes, contains the scaled vector.</param>
-		static void Multiply( Vector3% vector, btScalar scale, [Out] Vector3% result );
+		static void Multiply( Vector4% vector, btScalar scale, [Out] Vector4% result );
 		
 		/// <summary>
 		/// Modulates a vector by another.
@@ -176,7 +196,7 @@ namespace BulletSharp
 		/// <param name="left">The first vector to modulate.</param>
 		/// <param name="right">The second vector to modulate.</param>
 		/// <returns>The modulated vector.</returns>
-		static Vector3 Modulate( Vector3 left, Vector3 right );		
+		static Vector4 Modulate( Vector4 left, Vector4 right );		
 
 		/// <summary>
 		/// Modulates a vector by another.
@@ -184,15 +204,15 @@ namespace BulletSharp
 		/// <param name="left">The first vector to modulate.</param>
 		/// <param name="right">The second vector to modulate.</param>
 		/// <param name="result">When the moethod completes, contains the modulated vector.</param>
-		static void Modulate( Vector3% left, Vector3% right, [Out] Vector3% result );
-
+		static void Modulate( Vector4% left, Vector4% right, [Out] Vector4% result );
+		
 		/// <summary>
 		/// Scales a vector by the given value.
 		/// </summary>
 		/// <param name="value">The vector to scale.</param>
 		/// <param name="scale">The amount by which to scale the vector.</param>
 		/// <returns>The scaled vector.</returns>
-		static Vector3 Divide( Vector3 value, btScalar scale );		
+		static Vector4 Divide( Vector4 value, btScalar scale );	
 
 		/// <summary>
 		/// Scales a vector by the given value.
@@ -200,43 +220,43 @@ namespace BulletSharp
 		/// <param name="vector">The vector to scale.</param>
 		/// <param name="scale">The amount by which to scale the vector.</param>
 		/// <param name="result">When the method completes, contains the scaled vector.</param>
-		static void Divide( Vector3% vector, btScalar scale, [Out] Vector3% result );
+		static void Divide( Vector4% vector, btScalar scale, [Out] Vector4% result );
 		
 		/// <summary>
 		/// Reverses the direction of a given vector.
 		/// </summary>
 		/// <param name="value">The vector to negate.</param>
 		/// <returns>A vector facing in the opposite direction.</returns>
-		static Vector3 Negate( Vector3 value );
+		static Vector4 Negate( Vector4 value );		
 
 		/// <summary>
 		/// Reverses the direction of a given vector.
 		/// </summary>
 		/// <param name="value">The vector to negate.</param>
 		/// <param name="result">When the method completes, contains a vector facing in the opposite direction.</param>
-		static void Negate( Vector3% value, [Out] Vector3% result );
-
+		static void Negate( Vector4% value, [Out] Vector4% result );
+		
 		/// <summary>
-		/// Returns a <see cref="Vector3"/> containing the 3D Cartesian coordinates of a point specified in Barycentric coordinates relative to a 3D triangle.
+		/// Returns a <see cref="Vector4"/> containing the 4D Cartesian coordinates of a point specified in Barycentric coordinates relative to a 4D triangle.
 		/// </summary>
-		/// <param name="value1">A <see cref="Vector3"/> containing the 3D Cartesian coordinates of vertex 1 of the triangle.</param>
-		/// <param name="value2">A <see cref="Vector3"/> containing the 3D Cartesian coordinates of vertex 2 of the triangle.</param>
-		/// <param name="value3">A <see cref="Vector3"/> containing the 3D Cartesian coordinates of vertex 3 of the triangle.</param>
+		/// <param name="value1">A <see cref="Vector4"/> containing the 4D Cartesian coordinates of vertex 1 of the triangle.</param>
+		/// <param name="value2">A <see cref="Vector4"/> containing the 4D Cartesian coordinates of vertex 2 of the triangle.</param>
+		/// <param name="value3">A <see cref="Vector4"/> containing the 4D Cartesian coordinates of vertex 3 of the triangle.</param>
 		/// <param name="amount1">Barycentric coordinate b2, which expresses the weighting factor toward vertex 2 (specified in <paramref name="value2"/>).</param>
 		/// <param name="amount2">Barycentric coordinate b3, which expresses the weighting factor toward vertex 3 (specified in <paramref name="value3"/>).</param>
-		/// <returns>A new <see cref="Vector3"/> containing the 3D Cartesian coordinates of the specified point.</returns>
-		static Vector3 Barycentric( Vector3 value1, Vector3 value2, Vector3 value3, btScalar amount1, btScalar amount2 );		
+		/// <returns>A new <see cref="Vector4"/> containing the 4D Cartesian coordinates of the specified point.</returns>
+		static Vector4 Barycentric( Vector4 value1, Vector4 value2, Vector4 value3, btScalar amount1, btScalar amount2 );		
 
 		/// <summary>
-		/// Returns a <see cref="Vector3"/> containing the 3D Cartesian coordinates of a point specified in Barycentric coordinates relative to a 3D triangle.
+		/// Returns a <see cref="Vector4"/> containing the 4D Cartesian coordinates of a point specified in Barycentric coordinates relative to a 4D triangle.
 		/// </summary>
-		/// <param name="value1">A <see cref="Vector3"/> containing the 3D Cartesian coordinates of vertex 1 of the triangle.</param>
-		/// <param name="value2">A <see cref="Vector3"/> containing the 3D Cartesian coordinates of vertex 2 of the triangle.</param>
-		/// <param name="value3">A <see cref="Vector3"/> containing the 3D Cartesian coordinates of vertex 3 of the triangle.</param>
+		/// <param name="value1">A <see cref="Vector4"/> containing the 4D Cartesian coordinates of vertex 1 of the triangle.</param>
+		/// <param name="value2">A <see cref="Vector4"/> containing the 4D Cartesian coordinates of vertex 2 of the triangle.</param>
+		/// <param name="value3">A <see cref="Vector4"/> containing the 4D Cartesian coordinates of vertex 3 of the triangle.</param>
 		/// <param name="amount1">Barycentric coordinate b2, which expresses the weighting factor toward vertex 2 (specified in <paramref name="value2"/>).</param>
 		/// <param name="amount2">Barycentric coordinate b3, which expresses the weighting factor toward vertex 3 (specified in <paramref name="value3"/>).</param>
-		/// <param name="result">When the method completes, contains the 3D Cartesian coordinates of the specified point.</param>
-		static void Barycentric( Vector3% value1, Vector3% value2, Vector3% value3, btScalar amount1, btScalar amount2, [Out] Vector3% result );
+		/// <param name="result">When the method completes, contains the 4D Cartesian coordinates of the specified point.</param>
+		static void Barycentric( Vector4% value1, Vector4% value2, Vector4% value3, btScalar amount1, btScalar amount2, [Out] Vector4% result );
 		
 		/// <summary>
 		/// Performs a Catmull-Rom interpolation using the specified positions.
@@ -247,7 +267,7 @@ namespace BulletSharp
 		/// <param name="value4">The fourth position in the interpolation.</param>
 		/// <param name="amount">Weighting factor.</param>
 		/// <returns>A vector that is the result of the Catmull-Rom interpolation.</returns>
-		static Vector3 CatmullRom( Vector3 value1, Vector3 value2, Vector3 value3, Vector3 value4, btScalar amount );
+		static Vector4 CatmullRom( Vector4 value1, Vector4 value2, Vector4 value3, Vector4 value4, btScalar amount );		
 
 		/// <summary>
 		/// Performs a Catmull-Rom interpolation using the specified positions.
@@ -258,7 +278,7 @@ namespace BulletSharp
 		/// <param name="value4">The fourth position in the interpolation.</param>
 		/// <param name="amount">Weighting factor.</param>
 		/// <param name="result">When the method completes, contains the result of the Catmull-Rom interpolation.</param>
-		static void CatmullRom( Vector3% value1, Vector3% value2, Vector3% value3, Vector3% value4, btScalar amount, [Out] Vector3% result );
+		static void CatmullRom( Vector4% value1, Vector4% value2, Vector4% value3, Vector4% value4, btScalar amount, [Out] Vector4% result );
 		
 		/// <summary>
 		/// Restricts a value to be within a specified range.
@@ -267,7 +287,7 @@ namespace BulletSharp
 		/// <param name="min">The minimum value.</param>
 		/// <param name="max">The maximum value.</param>
 		/// <returns>The clamped value.</returns>
-		static Vector3 Clamp( Vector3 value, Vector3 min, Vector3 max );	
+		static Vector4 Clamp( Vector4 value, Vector4 min, Vector4 max );	
 
 		/// <summary>
 		/// Restricts a value to be within a specified range.
@@ -276,7 +296,7 @@ namespace BulletSharp
 		/// <param name="min">The minimum value.</param>
 		/// <param name="max">The maximum value.</param>
 		/// <param name="result">When the method completes, contains the clamped value.</param>
-		static void Clamp( Vector3% value, Vector3% min, Vector3% max, [Out] Vector3% result );		
+		static void Clamp( Vector4% value, Vector4% min, Vector4% max, [Out] Vector4% result );		
 		
 		/// <summary>
 		/// Performs a Hermite spline interpolation.
@@ -287,8 +307,8 @@ namespace BulletSharp
 		/// <param name="tangent2">Second source tangent vector.</param>
 		/// <param name="amount">Weighting factor.</param>
 		/// <returns>The result of the Hermite spline interpolation.</returns>
-		static Vector3 Hermite( Vector3 value1, Vector3 tangent1, Vector3 value2, Vector3 tangent2, btScalar amount );	
-		
+		static Vector4 Hermite( Vector4 value1, Vector4 tangent1, Vector4 value2, Vector4 tangent2, btScalar amount );	
+
 		/// <summary>
 		/// Performs a Hermite spline interpolation.
 		/// </summary>
@@ -298,7 +318,7 @@ namespace BulletSharp
 		/// <param name="tangent2">Second source tangent vector.</param>
 		/// <param name="amount">Weighting factor.</param>
 		/// <param name="result">When the method completes, contains the result of the Hermite spline interpolation.</param>
-		static void Hermite( Vector3% value1, Vector3% tangent1, Vector3% value2, Vector3% tangent2, btScalar amount, [Out] Vector3% result );
+		static void Hermite( Vector4% value1, Vector4% tangent1, Vector4% value2, Vector4% tangent2, btScalar amount, [Out] Vector4% result );
 		
 		/// <summary>
 		/// Performs a linear interpolation between two vectors.
@@ -312,7 +332,7 @@ namespace BulletSharp
 		/// <code>start + (end - start) * amount</code>
 		/// Passing <paramref name="amount"/> a value of 0 will cause <paramref name="start"/> to be returned; a value of 1 will cause <paramref name="end"/> to be returned. 
 		/// </remarks>
-		static Vector3 Lerp( Vector3 start, Vector3 end, btScalar amount );	
+		static Vector4 Lerp( Vector4 start, Vector4 end, btScalar amount );		
 
 		/// <summary>
 		/// Performs a linear interpolation between two vectors.
@@ -326,7 +346,7 @@ namespace BulletSharp
 		/// <code>start + (end - start) * amount</code>
 		/// Passing <paramref name="amount"/> a value of 0 will cause <paramref name="start"/> to be returned; a value of 1 will cause <paramref name="end"/> to be returned. 
 		/// </remarks>
-		static void Lerp( Vector3% start, Vector3% end, btScalar amount, [Out] Vector3% result );		
+		static void Lerp( Vector4% start, Vector4% end, btScalar amount, [Out] Vector4% result );		
 		
 		/// <summary>
 		/// Performs a cubic interpolation between two vectors.
@@ -335,7 +355,7 @@ namespace BulletSharp
 		/// <param name="end">End vector.</param>
 		/// <param name="amount">Value between 0 and 1 indicating the weight of <paramref name="end"/>.</param>
 		/// <returns>The cubic interpolation of the two vectors.</returns>
-		static Vector3 SmoothStep( Vector3 start, Vector3 end, btScalar amount );		
+		static Vector4 SmoothStep( Vector4 start, Vector4 end, btScalar amount );		
 
 		/// <summary>
 		/// Performs a cubic interpolation between two vectors.
@@ -344,7 +364,7 @@ namespace BulletSharp
 		/// <param name="end">End vector.</param>
 		/// <param name="amount">Value between 0 and 1 indicating the weight of <paramref name="end"/>.</param>
 		/// <param name="result">When the method completes, contains the cubic interpolation of the two vectors.</param>
-		static void SmoothStep( Vector3% start, Vector3% end, btScalar amount, [Out] Vector3% result );
+		static void SmoothStep( Vector4% start, Vector4% end, btScalar amount, [Out] Vector4% result );
 		
 		/// <summary>
 		/// Calculates the distance between two vectors.
@@ -352,7 +372,7 @@ namespace BulletSharp
 		/// <param name="value1">The first vector.</param>
 		/// <param name="value2">The second vector.</param>
 		/// <returns>The distance between the two vectors.</returns>
-		static btScalar Distance( Vector3 value1, Vector3 value2 );
+		static btScalar Distance( Vector4 value1, Vector4 value2 );
 
 		/// <summary>
 		/// Calculates the squared distance between two vectors.
@@ -367,7 +387,7 @@ namespace BulletSharp
 		/// involves two square roots, which are computationally expensive. However, using distance squared 
 		/// provides the same information and avoids calculating two square roots.
 		/// </remarks>
-		static btScalar DistanceSquared( Vector3 value1, Vector3 value2 );
+		static btScalar DistanceSquared( Vector4 value1, Vector4 value2 );
 
 		/// <summary>
 		/// Calculates the dot product of two vectors.
@@ -375,173 +395,77 @@ namespace BulletSharp
 		/// <param name="left">First source vector.</param>
 		/// <param name="right">Second source vector.</param>
 		/// <returns>The dot product of the two vectors.</returns>
-		static btScalar Dot( Vector3 left, Vector3 right );
-		
-		/// <summary>
-		/// Calculates the cross product of two vectors.
-		/// </summary>
-		/// <param name="left">First source vector.</param>
-		/// <param name="right">Second source vector.</param>
-		/// <returns>The cross product of the two vectors.</returns>
-		static Vector3 Cross( Vector3 left, Vector3 right );		
-
-		/// <summary>
-		/// Calculates the cross product of two vectors.
-		/// </summary>
-		/// <param name="left">First source vector.</param>
-		/// <param name="right">Second source vector.</param>
-		/// <param name="result">The cross product of the two vectors.</param>
-		static void Cross( Vector3% left, Vector3% right, [Out] Vector3% result );
-
-		/// <summary>
-		/// Returns the reflection of a vector off a surface that has the specified normal. 
-		/// </summary>
-		/// <param name="vector">The source vector.</param>
-		/// <param name="normal">Normal of the surface.</param>
-		/// <returns>The reflected vector.</returns>
-		/// <remarks>Reflect only gives the direction of a reflection off a surface, it does not determine 
-		/// whether the original vector was close enough to the surface to hit it.</remarks>
-		static Vector3 Reflect( Vector3 vector, Vector3 normal );
-
-		/// <summary>
-		/// Returns the reflection of a vector off a surface that has the specified normal. 
-		/// </summary>
-		/// <param name="vector">The source vector.</param>
-		/// <param name="normal">Normal of the surface.</param>
-		/// <param name="result">When the method completes, contains the reflected vector.</param>
-		/// <remarks>Reflect only gives the direction of a reflection off a surface, it does not determine 
-		/// whether the original vector was close enough to the surface to hit it.</remarks>
-		static void Reflect( Vector3% vector, Vector3% normal, [Out] Vector3% result );
+		static btScalar Dot( Vector4 left, Vector4 right );
 
 		/// <summary>
 		/// Converts the vector into a unit vector.
 		/// </summary>
 		/// <param name="vector">The vector to normalize.</param>
 		/// <returns>The normalized vector.</returns>
-		static Vector3 Normalize( Vector3 vector );
+		static Vector4 Normalize( Vector4 vector );
 
 		/// <summary>
 		/// Converts the vector into a unit vector.
 		/// </summary>
 		/// <param name="vector">The vector to normalize.</param>
 		/// <param name="result">When the method completes, contains the normalized vector.</param>
-		static void Normalize( Vector3% vector, [Out] Vector3% result );
+		static void Normalize( Vector4% vector, [Out] Vector4% result );
 
 		/// <summary>
-		/// Transforms a 3D vector by the given <see cref="SlimDX::Matrix"/>.
+		/// Transforms a 4D vector by the given <see cref="SlimDX::Matrix"/>.
 		/// </summary>
 		/// <param name="vector">The source vector.</param>
 		/// <param name="transformation">The transformation <see cref="SlimDX::Matrix"/>.</param>
-		/// <returns>The transformed <see cref="SlimDX::Vector4"/>.</returns>
-		static Vector4 Transform( Vector3 vector, Matrix transformation );
+		/// <returns>The transformed <see cref="Vector4"/>.</returns>
+		static Vector4 Transform( Vector4 vector, Matrix transformation );
 
 		/// <summary>
-		/// Transforms a 3D vector by the given <see cref="SlimDX::Matrix"/>.
+		/// Transforms a 4D vector by the given <see cref="SlimDX::Matrix"/>.
 		/// </summary>
 		/// <param name="vector">The source vector.</param>
 		/// <param name="transformation">The transformation <see cref="SlimDX::Matrix"/>.</param>
-		/// <param name="result">When the method completes, contains the transformed <see cref="SlimDX::Vector4"/>.</param>
-		static void Transform( Vector3% vector, Matrix% transformation, [Out] Vector4% result );
+		/// <param name="result">When the method completes, contains the transformed <see cref="Vector4"/>.</param>
+		static void Transform( Vector4% vector, Matrix% transformation, [Out] Vector4% result );
 
 		/// <summary>
-		/// Transforms an array of 3D vectors by the given <see cref="SlimDX::Matrix"/>.
+		/// Transforms an array of 4D vectors by the given <see cref="SlimDX::Matrix"/>.
 		/// </summary>
 		/// <param name="vectors">The source vectors.</param>
 		/// <param name="transformation">The transformation <see cref="SlimDX::Matrix"/>.</param>
-		/// <returns>The transformed <see cref="SlimDX::Vector4"/>s.</returns>
-		static array<Vector4>^ Transform( array<Vector3>^ vectors, Matrix% transformation );
+		/// <returns>The transformed <see cref="Vector4"/>s.</returns>
+		static array<Vector4>^ Transform( array<Vector4>^ vectors, Matrix% transformation );
 
 		/// <summary>
-		/// Transforms a 3D vector by the given <see cref="SlimDX::Quaternion"/> rotation.
+		/// Transforms a 4D vector by the given <see cref="SlimDX::Quaternion"/> rotation.
 		/// </summary>
 		/// <param name="vector">The vector to rotate.</param>
 		/// <param name="rotation">The <see cref="SlimDX::Quaternion"/> rotation to apply.</param>
-		/// <returns>The transformed <see cref="SlimDX::Vector4"/>.</returns>
-		static Vector4 Transform( Vector3 vector, Quaternion rotation );
+		/// <returns>The transformed <see cref="Vector4"/>.</returns>
+		static Vector4 Transform( Vector4 vector, Quaternion rotation );
 
 		/// <summary>
-		/// Transforms a 3D vector by the given <see cref="SlimDX::Quaternion"/> rotation.
+		/// Transforms a 4D vector by the given <see cref="SlimDX::Quaternion"/> rotation.
 		/// </summary>
 		/// <param name="vector">The vector to rotate.</param>
 		/// <param name="rotation">The <see cref="SlimDX::Quaternion"/> rotation to apply.</param>
-		/// <param name="result">When the method completes, contains the transformed <see cref="SlimDX::Vector4"/>.</param>
-		static void Transform( Vector3% vector, Quaternion% rotation, [Out] Vector4% result );
+		/// <param name="result">When the method completes, contains the transformed <see cref="Vector4"/>.</param>
+		static void Transform( Vector4% vector, Quaternion% rotation, [Out] Vector4% result );
 
 		/// <summary>
-		/// Transforms an array of 3D vectors by the given <see cref="SlimDX::Quaternion"/> rotation.
+		/// Transforms an array of 4D vectors by the given <see cref="SlimDX::Quaternion"/> rotation.
 		/// </summary>
 		/// <param name="vectors">The vectors to rotate.</param>
 		/// <param name="rotation">The <see cref="SlimDX::Quaternion"/> rotation to apply.</param>
-		/// <returns>The transformed <see cref="SlimDX::Vector4"/>.</returns>
-		static array<Vector4>^ Transform( array<Vector3>^ vectors, Quaternion% rotation );
+		/// <returns>The transformed <see cref="Vector4"/>.</returns>
+		static array<Vector4>^ Transform( array<Vector4>^ vectors, Quaternion% rotation );
 
-		/// <summary>
-		/// Performs a coordinate transformation using the given <see cref="SlimDX::Matrix"/>.
-		/// </summary>
-		/// <param name="coordinate">The coordinate vector to transform.</param>
-		/// <param name="transformation">The transformation <see cref="SlimDX::Matrix"/>.</param>
-		/// <returns>The transformed coordinates.</returns>
-		static Vector3 TransformCoordinate( Vector3 coordinate, Matrix transformation );
-
-		/// <summary>
-		/// Performs a coordinate transformation using the given <see cref="SlimDX::Matrix"/>.
-		/// </summary>
-		/// <param name="coordinate">The coordinate vector to transform.</param>
-		/// <param name="transformation">The transformation <see cref="SlimDX::Matrix"/>.</param>
-		/// <param name="result">When the method completes, contains the transformed coordinates.</param>
-		static void TransformCoordinate( Vector3% coordinate, Matrix% transformation, [Out] Vector3% result );
-
-		/// <summary>
-		/// Performs a normal transformation using the given <see cref="SlimDX::Matrix"/>.
-		/// </summary>
-		/// <param name="normal">The normal vector to transform.</param>
-		/// <param name="transformation">The transformation <see cref="SlimDX::Matrix"/>.</param>
-		/// <returns>The transformed normal.</returns>
-		static Vector3 TransformNormal( Vector3 normal, Matrix transformation );
-
-		/// <summary>
-		/// Performs a normal transformation using the given <see cref="SlimDX::Matrix"/>.
-		/// </summary>
-		/// <param name="normal">The normal vector to transform.</param>
-		/// <param name="transformation">The transformation <see cref="SlimDX::Matrix"/>.</param>
-		/// <param name="result">When the method completes, contains the transformed normal.</param>
-		static void TransformNormal( Vector3% normal, Matrix% transformation, [Out] Vector3% result );
-
-		/// <summary>
-		/// Projects a 3D vector from object space into screen space. 
-		/// </summary>
-		/// <param name="vector">The vector to project.</param>
-		/// <param name="x">The X position of the viewport.</param>
-		/// <param name="y">The Y position of the viewport.</param>
-		/// <param name="width">The width of the viewport.</param>
-		/// <param name="height">The height of the viewport.</param>
-		/// <param name="minZ">The minimum depth of the viewport.</param>
-		/// <param name="maxZ">The maximum depth of the viewport.</param>
-		/// <param name="worldViewProjection">The combined world-view-projection matrix.</param>
-		/// <returns>The vector in screen space.</returns>
-		static Vector3 Project( Vector3 vector, btScalar x, btScalar y, btScalar width, btScalar height, btScalar minZ, btScalar maxZ, Matrix worldViewProjection );
-		
-		/// <summary>
-		/// Projects a 3D vector from object space into screen space. 
-		/// </summary>
-		/// <param name="vector">The vector to project.</param>
-		/// <param name="x">The X position of the viewport.</param>
-		/// <param name="y">The Y position of the viewport.</param>
-		/// <param name="width">The width of the viewport.</param>
-		/// <param name="height">The height of the viewport.</param>
-		/// <param name="minZ">The minimum depth of the viewport.</param>
-		/// <param name="maxZ">The maximum depth of the viewport.</param>
-		/// <param name="worldViewProjection">The combined world-view-projection matrix.</param>
-		/// <param name="result">When the method completes, contains the vector in screen space.</param>
-		static void Project( Vector3% vector, btScalar x, btScalar y, btScalar width, btScalar height, btScalar minZ, btScalar maxZ, Matrix% worldViewProjection, [Out] Vector3% result );
-
-		/// <summary>
+			/// <summary>
 		/// Returns a vector containing the smallest components of the specified vectors.
 		/// </summary>
 		/// <param name="value1">The first source vector.</param>
 		/// <param name="value2">The second source vector.</param>
 		/// <returns>A vector containing the smallest components of the source vectors.</returns>
-		static Vector3 Minimize( Vector3 value1, Vector3 value2 );
+		static Vector4 Minimize( Vector4 value1, Vector4 value2 );
 
 		/// <summary>
 		/// Returns a vector containing the smallest components of the specified vectors.
@@ -549,15 +473,15 @@ namespace BulletSharp
 		/// <param name="value1">The first source vector.</param>
 		/// <param name="value2">The second source vector.</param>
 		/// <param name="result">When the method completes, contains an new vector composed of the smallest components of the source vectors.</param>
-		static void Minimize( Vector3% value1, Vector3% value2, [Out] Vector3% result );
+		static void Minimize( Vector4% value1, Vector4% value2, [Out] Vector4% result );
 		
-		/// <summary>
+			/// <summary>
 		/// Returns a vector containing the largest components of the specified vectors.
 		/// </summary>
 		/// <param name="value1">The first source vector.</param>
 		/// <param name="value2">The second source vector.</param>
 		/// <returns>A vector containing the largest components of the source vectors.</returns>
-		static Vector3 Maximize( Vector3 value1, Vector3 value2 );
+		static Vector4 Maximize( Vector4 value1, Vector4 value2 );
 
 		/// <summary>
 		/// Returns a vector containing the smallest components of the specified vectors.
@@ -565,15 +489,15 @@ namespace BulletSharp
 		/// <param name="value1">The first source vector.</param>
 		/// <param name="value2">The second source vector.</param>
 		/// <param name="result">When the method completes, contains an new vector composed of the largest components of the source vectors.</param>
-		static void Maximize( Vector3% value1, Vector3% value2, [Out] Vector3% result );
+		static void Maximize( Vector4% value1, Vector4% value2, [Out] Vector4% result );
 
-		/// <summary>
+			/// <summary>
 		/// Adds two vectors.
 		/// </summary>
 		/// <param name="left">The first vector to add.</param>
 		/// <param name="right">The second vector to add.</param>
 		/// <returns>The sum of the two vectors.</returns>
-		static Vector3 operator + ( Vector3 left, Vector3 right );
+		static Vector4 operator + ( Vector4 left, Vector4 right );
 
 		/// <summary>
 		/// Subtracts two vectors.
@@ -581,30 +505,14 @@ namespace BulletSharp
 		/// <param name="left">The first vector to subtract.</param>
 		/// <param name="right">The second vector to subtract.</param>
 		/// <returns>The difference of the two vectors.</returns>
-		static Vector3 operator - ( Vector3 left, Vector3 right );
+		static Vector4 operator - ( Vector4 left, Vector4 right );
 
 		/// <summary>
 		/// Reverses the direction of a given vector.
 		/// </summary>
 		/// <param name="value">The vector to negate.</param>
 		/// <returns>A vector facing in the opposite direction.</returns>
-		static Vector3 operator - ( Vector3 value );
-		
-		/// <summary>
-		/// Scales a vector by the given value.
-		/// </summary>
-		/// <param name="vector">The vector to scale.</param>
-		/// <param name="scale">The amount by which to scale the vector.</param>
-		/// <returns>The scaled vector.</returns>
-		static Vector3 operator * ( Vector3 vector, btScalar scale );
-		
-		/// <summary>
-		/// Scales a vector by the given value.
-		/// </summary>
-		/// <param name="vector">The vector to scale.</param>
-		/// <param name="scale">The amount by which to scale the vector.</param>
-		/// <returns>The scaled vector.</returns>
-		static Vector3 operator * ( btScalar scale, Vector3 vector );
+		static Vector4 operator - ( Vector4 value );
 
 		/// <summary>
 		/// Scales a vector by the given value.
@@ -612,7 +520,23 @@ namespace BulletSharp
 		/// <param name="vector">The vector to scale.</param>
 		/// <param name="scale">The amount by which to scale the vector.</param>
 		/// <returns>The scaled vector.</returns>
-		static Vector3 operator / ( Vector3 vector, btScalar scale );
+		static Vector4 operator * ( Vector4 vector, btScalar scale );
+
+		/// <summary>
+		/// Scales a vector by the given value.
+		/// </summary>
+		/// <param name="vector">The vector to scale.</param>
+		/// <param name="scale">The amount by which to scale the vector.</param>
+		/// <returns>The scaled vector.</returns>
+		static Vector4 operator * ( btScalar scale, Vector4 vector );
+
+		/// <summary>
+		/// Scales a vector by the given value.
+		/// </summary>
+		/// <param name="vector">The vector to scale.</param>
+		/// <param name="scale">The amount by which to scale the vector.</param>
+		/// <returns>The scaled vector.</returns>
+		static Vector4 operator / ( Vector4 vector, btScalar scale );
 
 		/// <summary>
 		/// Tests for equality between two objects.
@@ -620,7 +544,7 @@ namespace BulletSharp
 		/// <param name="left">The first value to compare.</param>
 		/// <param name="right">The second value to compare.</param>
 		/// <returns><c>true</c> if <paramref name="left"/> has the same value as <paramref name="right"/>; otherwise, <c>false</c>.</returns>
-		static bool operator == ( Vector3 left, Vector3 right );
+		static bool operator == ( Vector4 left, Vector4 right );
 
 		/// <summary>
 		/// Tests for inequality between two objects.
@@ -628,7 +552,7 @@ namespace BulletSharp
 		/// <param name="left">The first value to compare.</param>
 		/// <param name="right">The second value to compare.</param>
 		/// <returns><c>true</c> if <paramref name="left"/> has a different value than <paramref name="right"/>; otherwise, <c>false</c>.</returns>
-		static bool operator != ( Vector3 left, Vector3 right );
+		static bool operator != ( Vector4 left, Vector4 right );
 
 		/// <summary>
 		/// Converts the value of the object to its equivalent string representation.
@@ -654,7 +578,7 @@ namespace BulletSharp
 		/// </summary>
 		/// <param name="other">Object to make the comparison with.</param>
 		/// <returns><c>true</c> if the current instance is equal to the specified object; <c>false</c> otherwise.</returns>
-		virtual bool Equals( Vector3 other );
+		virtual bool Equals( Vector4 other );
 
 		/// <summary>
 		/// Determines whether the specified object instances are considered equal. 
@@ -663,6 +587,6 @@ namespace BulletSharp
 		/// <param name="value2">The second value to compare.</param>
 		/// <returns><c>true</c> if <paramref name="value1"/> is the same instance as <paramref name="value2"/> or 
 		/// if both are <c>null</c> references or if <c>value1.Equals(value2)</c> returns <c>true</c>; otherwise, <c>false</c>.</returns>
-		static bool Equals( Vector3% value1, Vector3% value2 );
+		static bool Equals( Vector4% value1, Vector4% value2 );
 	};
 }

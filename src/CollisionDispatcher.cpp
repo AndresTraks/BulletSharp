@@ -70,7 +70,9 @@ void CollisionDispatcher::CollisionConfiguration::set(BulletSharp::CollisionConf
 
 DispatcherFlags CollisionDispatcher::DispatcherFlags::get()
 {
-	return (BulletSharp::DispatcherFlags)UnmanagedPointer->getDispatcherFlags();
+	// FIXME: Change when bug 372 in Bullet is fixed.
+	//return (BulletSharp::DispatcherFlags)UnmanagedPointer->getDispatcherFlags();
+	return (BulletSharp::DispatcherFlags)UnmanagedPointer->getDispatherFlags();
 }
 void CollisionDispatcher::DispatcherFlags::set(BulletSharp::DispatcherFlags value)
 {

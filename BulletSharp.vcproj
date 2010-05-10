@@ -1937,6 +1937,14 @@
 				RelativePath=".\src\Vector3.h"
 				>
 			</File>
+			<File
+				RelativePath=".\src\Vector4.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Vector4.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

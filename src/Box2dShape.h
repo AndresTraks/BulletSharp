@@ -1,6 +1,6 @@
 #pragma once
 
-// Fully implemented as of 10 Mar 2010
+// Fully implemented as of 10 May 2010
 
 #pragma managed(push, off)
 #include <BulletCollision/CollisionShapes/btBox2dShape.h>
@@ -22,7 +22,7 @@ namespace BulletSharp
 
 		static Box2dShape^ Upcast(CollisionShape^ shape);
 
-		// Vector4 GetPlaneEquation(int i);
+		Vector4 GetPlaneEquation(int i);
 		Vector3 GetVertex(int i);
 
 		property Vector3 Centroid

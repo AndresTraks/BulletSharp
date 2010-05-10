@@ -32,6 +32,36 @@ void BulletSharp::Math::Vector3ToBtVector3(Vector3 vector, btVector3* vectorOut)
 #endif
 }
 
+
+Vector4 BulletSharp::Math::BtVector4ToVector4(const btVector4* vector)
+{
+	return Vector4(vector->m_floats[0], vector->m_floats[1], vector->m_floats[2], vector->m_floats[3]);
+	//return Vector4(vector->getX(), vector->getY(), vector->getZ(), vector->getW());
+}
+btVector4* BulletSharp::Math::Vector4ToBtVector4(Vector4 vector)
+{
+#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+	return new btVector4(vector.x, vector.y, vector.z, vector.w);
+#else
+	return new btVector4(vector.X, vector.Y, vector.Z, vector.W);
+#endif
+}
+void BulletSharp::Math::Vector4ToBtVector4(Vector4 vector, btVector4* vectorOut)
+{
+#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+	vectorOut->setX(vector.x);
+	vectorOut->setY(vector.y);
+	vectorOut->setZ(vector.z);
+	vectorOut->setW(vector.w);
+#else
+	vectorOut->setX(vector.X);
+	vectorOut->setY(vector.Y);
+	vectorOut->setZ(vector.Z);
+	vectorOut->setW(vector.W);
+#endif
+}
+
+
 Quaternion BulletSharp::Math::BtQuatToQuaternion(const btQuaternion* quat)
 {
 	return Quaternion(quat->getX(), quat->getY(), quat->getZ(), quat->getW());
@@ -45,6 +75,7 @@ btQuaternion* BulletSharp::Math::QuaternionToBtQuat(Quaternion quat)
 	return new btQuaternion(quat.X, quat.Y, quat.Z, quat.W);
 #endif
 }
+
 
 Matrix BulletSharp::Math::BtTransformToMatrix(const btTransform* transform)
 {

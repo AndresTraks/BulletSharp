@@ -94,6 +94,32 @@ namespace BulletSharp
 		}
 	}
 
+	Vector4 Matrix::Rows::get( int row )
+	{
+		return Vector4( default[row, 0], default[row, 1], default[row, 2], default[row, 3] );
+	}
+
+	void Matrix::Rows::set( int row, Vector4 value )
+	{
+		default[row, 0] = value.X;
+		default[row, 1] = value.Y;
+		default[row, 2] = value.Z;
+		default[row, 3] = value.W;
+	}
+
+	Vector4 Matrix::Columns::get( int column )
+	{
+		return Vector4( default[0, column], default[1, column], default[2, column], default[3, column] );
+	}
+
+	void Matrix::Columns::set( int column, Vector4 value )
+	{
+		default[0, column] = value.X;
+		default[1, column] = value.Y;
+		default[2, column] = value.Z;
+		default[3, column] = value.W;
+	}
+
 	Matrix Matrix::Identity::get()
 	{
 		Matrix result;
