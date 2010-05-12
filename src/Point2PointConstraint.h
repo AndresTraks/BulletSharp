@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 12 May 2010
+
 #include "TypedConstraint.h"
 
 namespace BulletSharp
@@ -46,13 +48,9 @@ namespace BulletSharp
 	public ref class Point2PointConstraint : TypedConstraint
 	{
 	public:
-		Point2PointConstraint(RigidBody^ rbA, RigidBody^ rbB,
-			Vector3 pivotInA, Vector3 pivotInB);
+		Point2PointConstraint(RigidBody^ rbA, RigidBody^ rbB, Vector3 pivotInA, Vector3 pivotInB);
 		Point2PointConstraint(RigidBody^ rbA, Vector3 pivotInA);
 
-#ifndef DISABLE_SERIALIZE
-		int CalculateSerializeBufferSize();
-#endif
 		btScalar GetParam(int num, int axis);
 		btScalar GetParam(int num);
 		void SetParam(int num, btScalar value, int axis);

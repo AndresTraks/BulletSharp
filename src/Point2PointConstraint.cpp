@@ -81,13 +81,6 @@ Point2PointConstraint::Point2PointConstraint(RigidBody^ rbA, Vector3 pivotInA)
 	delete pivotInATemp;
 }
 
-#ifndef DISABLE_SERIALIZE
-int Point2PointConstraint::CalculateSerializeBufferSize()
-{
-	return UnmanagedPointer->calculateSerializeBufferSize();
-}
-#endif
-
 btScalar Point2PointConstraint::GetParam(int num, int axis)
 {
 	return UnmanagedPointer->getParam(num, axis);

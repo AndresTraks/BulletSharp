@@ -73,10 +73,7 @@ Collision/NarrowPhaseCollision
 Dynamics/ConstraintSolver
 
 0 ContactConstraint
-- JacobianEntry
-0 Point2PointConstraint
-0 SequentialImpulseConstraintSolver
-- SliderConstraint
+- JacobianEntry (internal class, won't implement)
 - Solve2LinearConstraint
 - SolverBody
 - SolverConstraint
@@ -88,7 +85,7 @@ Dynamics/ConstraintSolver
 Dynamics/Dynamics
 
 0 ActionInterface
-- ContinuousDynamicsWorld (Under construction, won't implement)
+- ContinuousDynamicsWorld (under construction, won't implement)
 0 DynamicsWorld
 0 RigidBody
 - SimpleDynamicsWorld
