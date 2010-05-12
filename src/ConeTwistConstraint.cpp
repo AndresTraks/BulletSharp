@@ -8,9 +8,6 @@
 ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rbA, RigidBody^ rbB, Matrix rbAFrame, Matrix rbBFrame)
 : TypedConstraint(0)
 {
-	this->RigidBodyA = rbA;
-	this->RigidBodyB = rbB;
-
 	btTransform* rbAFrameTemp = Math::MatrixToBtTransform(rbAFrame);
 	btTransform* rbBFrameTemp = Math::MatrixToBtTransform(rbBFrame);
 
@@ -23,8 +20,6 @@ ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rbA, RigidBody^ rbB, Matrix 
 ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rbA, Matrix rbAFrame)
 : TypedConstraint(0)
 {
-	this->RigidBodyA = rbA;
-
 	btTransform* rbAFrameTemp = Math::MatrixToBtTransform(rbAFrame);
 
 	UnmanagedPointer = new btConeTwistConstraint(*rbA->UnmanagedPointer, *rbAFrameTemp);

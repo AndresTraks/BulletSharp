@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 12 May 2010
+
 #include "Enums.h"
 #include "IDisposable.h"
 
@@ -12,10 +14,6 @@ namespace BulletSharp
 	public:
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
-
-	protected:
-		RigidBody^ rigidBodyA;
-		RigidBody^ rigidBodyB;
 
 	private:
 		btTypedConstraint* _typedConstraint;
@@ -39,11 +37,15 @@ namespace BulletSharp
 		int CalculateSerializeBufferSize();
 #endif
 		void EnableFeedback(bool needsFeedback);
-		btScalar GetAppliedImpulse(); // Not a property to avoid crashing when feedback is not enabled
 		btScalar GetParam(ConstraintParam num, int axis);
 		btScalar GetParam(ConstraintParam num);
 		void SetParam(ConstraintParam num, btScalar value, int axis);
 		void SetParam(ConstraintParam num, btScalar value);
+
+		property btScalar AppliedImpulse
+		{
+			btScalar get();
+		}
 
 		property TypedConstraintType ConstraintType
 		{
@@ -56,18 +58,36 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
+		property bool NeedsFeedback
+		{
+			bool get();
+		}
+
 		property RigidBody^ RigidBodyA
 		{
 			RigidBody^ get();
-		internal:
-			void set(RigidBody^ value);
 		}
 
 		property RigidBody^ RigidBodyB
 		{
 			RigidBody^ get();
-		internal:
-			void set(RigidBody^ value);
+		}
+
+		property int Uid
+		{
+			int get();
+		}
+
+		property int UserConstraintId
+		{
+			int get();
+			void set(int value);
+		}
+
+		property int UserConstraintType
+		{
+			int get();
+			void set(int value);
 		}
 
 	internal:

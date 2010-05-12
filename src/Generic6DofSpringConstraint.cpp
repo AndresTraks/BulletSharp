@@ -14,9 +14,6 @@ Generic6DofSpringConstraint::Generic6DofSpringConstraint(RigidBody^ rbA, RigidBo
 	Matrix frameInA, Matrix frameInB, bool useReferenceFrameA)
 : Generic6DofConstraint(0)
 {
-	this->RigidBodyA = rbA;
-	this->RigidBodyB = rbB;
-
 	btTransform* frameInATemp = Math::MatrixToBtTransform(frameInA);
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 

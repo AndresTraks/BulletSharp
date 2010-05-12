@@ -2,6 +2,7 @@
 
 #ifndef DISABLE_CONSTRAINTS
 
+#include "RigidBody.h"
 #include "TypedConstraint.h"
 
 TypedConstraint::TypedConstraint(btTypedConstraint* typedConstraint)
@@ -43,11 +44,6 @@ void TypedConstraint::EnableFeedback(bool needsFeedback)
 	_typedConstraint->enableFeedback(needsFeedback);
 }
 
-btScalar TypedConstraint::GetAppliedImpulse()
-{
-	return _typedConstraint->getAppliedImpulse();
-}
-
 btScalar TypedConstraint::GetParam(ConstraintParam num, int axis)
 {
 	return UnmanagedPointer->getParam((int)num, axis);
@@ -68,6 +64,14 @@ void TypedConstraint::SetParam(ConstraintParam num, btScalar value)
 	UnmanagedPointer->setParam((int)num, value);
 }
 
+btScalar TypedConstraint::AppliedImpulse::get()
+{
+	if (NeedsFeedback == false)
+		return 0;
+
+	return _typedConstraint->getAppliedImpulse();
+}
+
 TypedConstraintType TypedConstraint::ConstraintType::get()
 {
 	return (TypedConstraintType)_typedConstraint->getConstraintType();
@@ -77,30 +81,47 @@ btScalar TypedConstraint::DebugDrawSize::get()
 {
 	return _typedConstraint->getDbgDrawSize();
 }
-
 void TypedConstraint::DebugDrawSize::set(btScalar value)
 {
 	_typedConstraint->setDbgDrawSize(value);
 }
 
+bool TypedConstraint::NeedsFeedback::get()
+{
+	return UnmanagedPointer->needsFeedback();
+}
+
 RigidBody^ TypedConstraint::RigidBodyA::get()
 {
-	return rigidBodyA;
+	return gcnew RigidBody(&UnmanagedPointer->getRigidBodyA());
 }
 
 RigidBody^ TypedConstraint::RigidBodyB::get()
 {
-	return rigidBodyB;
+	return gcnew RigidBody(&UnmanagedPointer->getRigidBodyB());
 }
 
-void TypedConstraint::RigidBodyA::set(RigidBody^ value)
+int TypedConstraint::Uid::get()
 {
-	rigidBodyA = value;
+	return UnmanagedPointer->getUid();
 }
 
-void TypedConstraint::RigidBodyB::set(RigidBody^ value)
+int TypedConstraint::UserConstraintId::get()
 {
-	rigidBodyB = value;
+	return UnmanagedPointer->getUserConstraintId();
+}
+void TypedConstraint::UserConstraintId::set(int value)
+{
+	return UnmanagedPointer->setUserConstraintId(value);
+}
+
+int TypedConstraint::UserConstraintType::get()
+{
+	return UnmanagedPointer->getUserConstraintType();
+}
+void TypedConstraint::UserConstraintType::set(int value)
+{
+	return UnmanagedPointer->setUserConstraintType(value);
 }
 
 btTypedConstraint* TypedConstraint::UnmanagedPointer::get()

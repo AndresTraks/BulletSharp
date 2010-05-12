@@ -74,11 +74,8 @@ Dynamics/ConstraintSolver
 
 0 ContactConstraint
 - JacobianEntry (internal class, won't implement)
-- Solve2LinearConstraint
-- SolverBody
-- SolverConstraint
-0 TypedConstraint
-0 UniversalConstraint
+- SolverBody (obsolete class, won't implement)
+- SolverConstraint (internal class, won't implement)
 
 
 

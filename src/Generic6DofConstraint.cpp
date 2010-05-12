@@ -446,9 +446,6 @@ Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rbA, RigidBody^ rbB,
 	Matrix frameInA, Matrix frameInB, bool useReferenceFrameA)
 : TypedConstraint(0)
 {
-	this->RigidBodyA = rbA;
-	this->RigidBodyB = rbB;
-
 	btTransform* frameInATemp = Math::MatrixToBtTransform(frameInA);
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 
@@ -464,8 +461,6 @@ Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rbB, Matrix frameInB,
 : TypedConstraint(new btGeneric6DofConstraint(*rbB->UnmanagedPointer,
 	*Math::MatrixToBtTransform(frameInB), useReferenceFrameA))
 {
-	this->RigidBodyB = rbB;
-
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 
 	UnmanagedPointer = new btGeneric6DofConstraint(*rbB->UnmanagedPointer, *frameInBTemp, useReferenceFrameA);

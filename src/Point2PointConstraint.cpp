@@ -56,9 +56,6 @@ void ConstraintSetting::UnmanagedPointer::set(btConstraintSetting* setting)
 Point2PointConstraint::Point2PointConstraint(RigidBody^ rbA, RigidBody^ rbB, Vector3 pivotInA, Vector3 pivotInB)
 : TypedConstraint(0)
 {
-	this->RigidBodyA = rbA;
-	this->RigidBodyB = rbB;
-
 	btVector3* pivotInATemp = Math::Vector3ToBtVector3(pivotInA);
 	btVector3* pivotInBTemp = Math::Vector3ToBtVector3(pivotInB);
 
@@ -72,8 +69,6 @@ Point2PointConstraint::Point2PointConstraint(RigidBody^ rbA, RigidBody^ rbB, Vec
 Point2PointConstraint::Point2PointConstraint(RigidBody^ rbA, Vector3 pivotInA)
 : TypedConstraint(0)
 {
-	this->RigidBodyA = rbA;
-
 	btVector3* pivotInATemp = Math::Vector3ToBtVector3(pivotInA);
 
 	UnmanagedPointer = new btPoint2PointConstraint(*rbA->UnmanagedPointer, *pivotInATemp);

@@ -1308,6 +1308,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Solve2LinearConstraint.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SparseSdf.cpp"
 				>
 			</File>
@@ -1833,6 +1837,10 @@
 					</File>
 					<File
 						RelativePath=".\src\SliderConstraint.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\Solve2LinearConstraint.h"
 						>
 					</File>
 					<File
