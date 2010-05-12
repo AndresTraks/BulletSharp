@@ -259,7 +259,6 @@ bool TranslationalLimitMotor::IsLimited(int limitIndex)
 {
 	return motor->isLimited(limitIndex);
 }
-
 bool TranslationalLimitMotor::NeedApplyForce(int limitIndex)
 {
 	return motor->needApplyForce(limitIndex);
@@ -269,7 +268,6 @@ Vector3 TranslationalLimitMotor::AccumulatedImpulse::get()
 {
 	return Math::BtVector3ToVector3(&motor->m_accumulatedImpulse);
 }
-
 void TranslationalLimitMotor::AccumulatedImpulse::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &motor->m_accumulatedImpulse);
@@ -279,17 +277,31 @@ int TranslationalLimitMotor::CurrentLimit::get(int index)
 {
 	return motor->m_currentLimit[index];
 }
-
 void TranslationalLimitMotor::CurrentLimit::set(int index, int value)
 {
 	motor->m_currentLimit[index] = value;
 }
+/*
+array<int>^ TranslationalLimitMotor::CurrentLimit::get()
+{
+	array<int>^ limits = gcnew array<int>(3);
+	limits[0] = motor->m_currentLimit[0];
+	limits[1] = motor->m_currentLimit[1];
+	limits[2] = motor->m_currentLimit[2];
+	return limits;
+}
+void TranslationalLimitMotor::CurrentLimit::set(array<int>^ value)
+{
+	motor->m_currentLimit[0] = value[0];
+	motor->m_currentLimit[1] = value[1];
+	motor->m_currentLimit[2] = value[2];
+}
+*/
 
 Vector3 TranslationalLimitMotor::CurrentLimitError::get()
 {
 	return Math::BtVector3ToVector3(&motor->m_currentLimitError);
 }
-
 void TranslationalLimitMotor::CurrentLimitError::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &motor->m_currentLimitError);
@@ -299,7 +311,6 @@ Vector3 TranslationalLimitMotor::CurrentLinearDiff::get()
 {
 	return Math::BtVector3ToVector3(&motor->m_currentLinearDiff);
 }
-
 void TranslationalLimitMotor::CurrentLinearDiff::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &motor->m_currentLinearDiff);
@@ -309,7 +320,6 @@ btScalar TranslationalLimitMotor::Damping::get()
 {
 	return motor->m_damping;
 }
-
 void TranslationalLimitMotor::Damping::set(btScalar value)
 {
 	motor->m_damping = value;;
@@ -319,17 +329,31 @@ bool TranslationalLimitMotor::EnableMotor::get(int index)
 {
 	return motor->m_enableMotor[index];
 }
-
 void TranslationalLimitMotor::EnableMotor::set(int index, bool value)
 {
 	motor->m_enableMotor[index] = value;;
 }
+/*
+array<bool>^ TranslationalLimitMotor::EnableMotor::get()
+{
+	array<bool>^ enableMotor = gcnew array<bool>(3);
+	enableMotor[0] = motor->m_enableMotor[0];
+	enableMotor[1] = motor->m_enableMotor[1];
+	enableMotor[2] = motor->m_enableMotor[2];
+	return enableMotor;
+}
+void TranslationalLimitMotor::EnableMotor::set(array<bool>^ value)
+{
+	motor->m_enableMotor[0] = value[0];
+	motor->m_enableMotor[1] = value[1];
+	motor->m_enableMotor[2] = value[2];
+}
+*/
 
 btScalar TranslationalLimitMotor::LimitSoftness::get()
 {
 	return motor->m_limitSoftness;
 }
-
 void TranslationalLimitMotor::LimitSoftness::set(btScalar value)
 {
 	motor->m_limitSoftness = value;;
@@ -339,7 +363,6 @@ Vector3 TranslationalLimitMotor::LowerLimit::get()
 {
 	return Math::BtVector3ToVector3(&motor->m_lowerLimit);
 }
-
 void TranslationalLimitMotor::LowerLimit::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &motor->m_lowerLimit);
@@ -349,7 +372,6 @@ Vector3 TranslationalLimitMotor::MaxMotorForce::get()
 {
 	return Math::BtVector3ToVector3(&motor->m_maxMotorForce);
 }
-
 void TranslationalLimitMotor::MaxMotorForce::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &motor->m_maxMotorForce);
@@ -359,7 +381,6 @@ Vector3 TranslationalLimitMotor::NormalCFM::get()
 {
 	return Math::BtVector3ToVector3(&motor->m_normalCFM);
 }
-
 void TranslationalLimitMotor::NormalCFM::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &motor->m_normalCFM);
@@ -369,7 +390,6 @@ btScalar TranslationalLimitMotor::Resitution::get()
 {
 	return motor->m_restitution;
 }
-
 void TranslationalLimitMotor::Resitution::set(btScalar value)
 {
 	motor->m_restitution = value;;
@@ -379,7 +399,6 @@ Vector3 TranslationalLimitMotor::StopCFM::get()
 {
 	return Math::BtVector3ToVector3(&motor->m_stopCFM);
 }
-
 void TranslationalLimitMotor::StopCFM::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &motor->m_stopCFM);
@@ -389,7 +408,6 @@ Vector3 TranslationalLimitMotor::StopERP::get()
 {
 	return Math::BtVector3ToVector3(&motor->m_stopERP);
 }
-
 void TranslationalLimitMotor::StopERP::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &motor->m_stopERP);
@@ -399,7 +417,6 @@ Vector3 TranslationalLimitMotor::TargetVelocity::get()
 {
 	return Math::BtVector3ToVector3(&motor->m_targetVelocity);
 }
-
 void TranslationalLimitMotor::TargetVelocity::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &motor->m_targetVelocity);
@@ -409,7 +426,6 @@ Vector3 TranslationalLimitMotor::UpperLimit::get()
 {
 	return Math::BtVector3ToVector3(&motor->m_upperLimit);
 }
-
 void TranslationalLimitMotor::UpperLimit::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &motor->m_upperLimit);
@@ -596,7 +612,6 @@ bool Generic6DofConstraint::UseFrameOffset::get()
 {
 	return UnmanagedPointer->getUseFrameOffset();
 }
-
 void Generic6DofConstraint::UseFrameOffset::set(bool value)
 {
 	UnmanagedPointer->setUseFrameOffset(value);

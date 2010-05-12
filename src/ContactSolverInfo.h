@@ -124,6 +124,13 @@ namespace BulletSharp
 			btScalar get();
 			void set(btScalar value);
 		}
+
+	internal:
+		property btContactSolverInfoData* UnmanagedPointer
+		{
+			virtual btContactSolverInfoData* get();
+			void set(btContactSolverInfoData* value);
+		}
 	};
 
 	public ref class ContactSolverInfo : ContactSolverInfoData
@@ -133,5 +140,11 @@ namespace BulletSharp
 	
 	public:
 		ContactSolverInfo();
+
+	internal:
+		property btContactSolverInfo* UnmanagedPointer
+		{
+			btContactSolverInfo* get() new;
+		}
 	};
 };

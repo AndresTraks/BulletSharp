@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 12 May 2010
+
 #include "Generic6DofConstraint.h"
 
 namespace BulletSharp

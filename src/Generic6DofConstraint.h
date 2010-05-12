@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 12 May 2010
+
 #include "TypedConstraint.h"
 
 namespace BulletSharp
@@ -160,11 +162,20 @@ namespace BulletSharp
 			void set(Vector3 value);
 		}
 
+		// Indexed properties like these aren't directly supported in C#,
+		// but can still be used like get_CurrentLimit()/set_CurrentLimit().
 		property int CurrentLimit[int]
 		{
 			int get(int index);
 			void set(int index, int value);
 		}
+		/*
+		property array<int>^ CurrentLimit
+		{
+			array<int>^ get();
+			void set(array<int>^ value);
+		}
+		*/
 
 		property Vector3 CurrentLimitError
 		{
@@ -189,6 +200,13 @@ namespace BulletSharp
 			bool get(int index);
 			void set(int index, bool value);
 		}
+		/*
+		property array<bool>^ EnableMotor
+		{
+			array<bool>^ get();
+			void set(array<bool>^ value);
+		}
+		*/
 
 		property btScalar LimitSoftness
 		{

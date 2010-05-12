@@ -1,9 +1,19 @@
 #pragma once
 
+// Fully implemented as of 11 May 2010
+
 #include "IDisposable.h"
 
 namespace BulletSharp
 {
+	ref class CollisionObject;
+	ref class ContactSolverInfo;
+	ref class DebugDraw;
+	ref class Dispatcher;
+	ref class PersistentManifold;
+	ref class StackAlloc;
+	ref class TypedConstraint;
+
 	public ref class ConstraintSolver : BulletSharp::IDisposable
 	{
 	public:
@@ -22,27 +32,20 @@ namespace BulletSharp
 		~ConstraintSolver();
 	
 	public:
+#ifndef DISABLE_CONSTRAINTS
+		void AllSolved(ContactSolverInfo^ info, DebugDraw^ debugDrawer, StackAlloc^ stackAlloc);
+		void PrepareSolve(int numBodies, int numManifolds);
+		void Reset();
+		btScalar SolveGroup(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifold,
+			array<TypedConstraint^>^ constraints, ContactSolverInfo^ info, DebugDraw^ debugDrawer,
+			StackAlloc^ stackAlloc, Dispatcher^ dispatcher);
+
 		property bool IsDisposed
 		{
 			virtual bool get();
 		}
-#ifndef DISABLE_CONSTRAINTS
-		//void AllSolved(ContactSolverInfo^, DebugDraw^, StackAlloc^);
-		//virtual void PrepareSolve(int, int);
-		void Reset();
-		//btScalar SolveGroup(CollisionObject^ bodies,
-		//	int	numBodies,
-		//	PersistentManifold^	manifold,
-		//	int	numManifolds,
-		//	TypedConstraint^ constraints,
-		//	int	numConstraints,
-		//	ContactSolverInfo^ info,
-		//	DebugDraw^ debugDrawer,
-		//	StackAlloc^ stackAlloc,
-		//	IDispatcher^ dispatcher
-		//);
 
-	public:
+	internal:
 		property btConstraintSolver* UnmanagedPointer
 		{
 			virtual btConstraintSolver* get();

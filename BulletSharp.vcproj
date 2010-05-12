@@ -1060,6 +1060,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ContactConstraint.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ContactSolverInfo.cpp"
 				>
 			</File>
@@ -1789,6 +1793,10 @@
 					</File>
 					<File
 						RelativePath=".\src\ConstraintSolver.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\ContactConstraint.h"
 						>
 					</File>
 					<File

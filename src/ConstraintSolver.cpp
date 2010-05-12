@@ -1,6 +1,12 @@
 #include "StdAfx.h"
 
+#include "CollisionObject.h"
 #include "ConstraintSolver.h"
+#include "ContactSolverInfo.h"
+#include "DebugDraw.h"
+#include "Dispatcher.h"
+#include "StackAlloc.h"
+#include "TypedConstraint.h"
 
 ConstraintSolver::ConstraintSolver(btConstraintSolver* solver)
 {
@@ -24,16 +30,52 @@ ConstraintSolver::!ConstraintSolver()
 	OnDisposed( this, nullptr );
 }
 
-bool ConstraintSolver::IsDisposed::get()
+#ifndef DISABLE_CONSTRAINTS
+
+void ConstraintSolver::AllSolved(ContactSolverInfo^ info, DebugDraw^ debugDrawer, StackAlloc^ stackAlloc)
 {
-	return (_solver == NULL);
+	_solver->allSolved(*info->UnmanagedPointer, debugDrawer->UnmanagedPointer, stackAlloc->UnmanagedPointer);
 }
 
-#ifndef DISABLE_CONSTRAINTS
+void ConstraintSolver::PrepareSolve(int numBodies, int numManifolds)
+{
+	_solver->prepareSolve(numBodies, numManifolds);
+}
 
 void ConstraintSolver::Reset()
 {
 	UnmanagedPointer->reset();
+}
+
+btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifold,
+	array<TypedConstraint^>^ constraints, ContactSolverInfo^ info, DebugDraw^ debugDrawer,
+	StackAlloc^ stackAlloc, Dispatcher^ dispatcher)
+{
+	int i;
+	int numBodies = bodies->Length;
+	int numManifolds = bodies->Length;
+	int numConstraints = bodies->Length;
+
+	btCollisionObject** bodiesTemp = new btCollisionObject*[numBodies];
+	btPersistentManifold** manifoldsTemp = new btPersistentManifold*[numManifolds];
+	btTypedConstraint** constraintsTemp = new btTypedConstraint*[numConstraints];
+
+	for (i=0; i<numBodies; i++)
+		bodiesTemp[i] = bodies[i]->UnmanagedPointer;
+
+	btScalar ret = _solver->solveGroup(bodiesTemp, numBodies, manifoldsTemp, numManifolds, constraintsTemp, numConstraints,
+		*info->UnmanagedPointer, debugDrawer->UnmanagedPointer, stackAlloc->UnmanagedPointer, dispatcher->UnmanagedPointer);
+
+	delete bodiesTemp;
+	delete manifoldsTemp;
+	delete constraintsTemp;
+
+	return ret;
+}
+
+bool ConstraintSolver::IsDisposed::get()
+{
+	return (_solver == NULL);
 }
 
 btConstraintSolver* ConstraintSolver::UnmanagedPointer::get()

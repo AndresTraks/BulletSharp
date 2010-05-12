@@ -176,6 +176,14 @@ void ContactSolverInfoData::WarmstartingFactor::set(btScalar value)
 	_infoData->m_warmstartingFactor = value;
 }
 
+btContactSolverInfoData* ContactSolverInfoData::UnmanagedPointer::get()
+{
+	return _infoData;
+}
+void ContactSolverInfoData::UnmanagedPointer::set(btContactSolverInfoData* value)
+{
+	_infoData = value;
+}
 
 ContactSolverInfo::ContactSolverInfo(btContactSolverInfo *info)
 : ContactSolverInfoData(info)
@@ -185,6 +193,11 @@ ContactSolverInfo::ContactSolverInfo(btContactSolverInfo *info)
 ContactSolverInfo::ContactSolverInfo()
 : ContactSolverInfoData(new btContactSolverInfo())
 {
+}
+
+btContactSolverInfo* ContactSolverInfo::UnmanagedPointer::get()
+{
+	return (btContactSolverInfo*)ContactSolverInfoData::UnmanagedPointer;
 }
 
 //#endif

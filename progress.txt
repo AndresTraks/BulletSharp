@@ -72,12 +72,7 @@ Collision/NarrowPhaseCollision
 
 Dynamics/ConstraintSolver
 
-0 ConstraintSolver
-- ContactConstraint
-0 Generic6DofConstraint
-0 Generic6DofSpringConstraint
-0 Hinge2Constraint
-0 HingeConstraint
+0 ContactConstraint
 - JacobianEntry
 0 Point2PointConstraint
 0 SequentialImpulseConstraintSolver

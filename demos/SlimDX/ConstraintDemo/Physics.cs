@@ -228,7 +228,7 @@ namespace ConstraintDemo
             frameInA = Matrix.RotationYawPitchRoll(0, 0, (float)Math.PI / 2);
             frameInA *= Matrix.Translation(0, -5, 0);
             frameInB = Matrix.RotationYawPitchRoll(0, 0, (float)Math.PI / 2);
-            frameInA *= Matrix.Translation(0, 5, 0);
+            frameInB *= Matrix.Translation(0, 5, 0);
 
             coneTwist = new ConeTwistConstraint(pBodyA, pBodyB, frameInA, frameInB);
             //coneTwist.SetLimit((float)Math.PI / 4, (float)Math.PI / 4, (float)Math.PI * 0.8f);
