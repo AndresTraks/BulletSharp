@@ -332,41 +332,44 @@ namespace BulletSharp
 #endif
 
 #ifndef DISABLE_SOFTBODY
-	public ref class FaceArray : AlignedObjectArray
+	namespace SoftBody
 	{
-	internal:
-		FaceArray(btAlignedObjectArray<btSoftBody::Face>* nodeArray);
-
-	public:
-		FaceArray();
-
-		void Clear();
-		void PopBack();
-		void PushBack(SoftBody::Face^ face);
-		void Remove(SoftBody::Face^ face);
-		void Swap(int index0, int index1);
-
-		property int Size
+		public ref class FaceArray : AlignedObjectArray
 		{
-			int get();
-		}
+		internal:
+			FaceArray(btAlignedObjectArray<btSoftBody::Face>* faceArray);
 
-		property int Capacity
-		{
-			int get();
-		}
+		public:
+			FaceArray();
 
-		property SoftBody::Face^ default [int]
-		{
-			SoftBody::Face^ get (int index);
-			void set(int index, SoftBody::Face^);
-		}
+			void Clear();
+			void PopBack();
+			void PushBack(Face^ face);
+			void Remove(Face^ face);
+			void Swap(int index0, int index1);
 
-	internal:
-		property btAlignedObjectArray<btSoftBody::Face>* UnmanagedPointer
-		{
-			virtual btAlignedObjectArray<btSoftBody::Face>* get() new;
-		}
+			property int Size
+			{
+				int get();
+			}
+
+			property int Capacity
+			{
+				int get();
+			}
+
+			property Face^ default [int]
+			{
+				Face^ get (int index);
+				void set(int index, Face^);
+			}
+
+		internal:
+			property btAlignedObjectArray<btSoftBody::Face>* UnmanagedPointer
+			{
+				virtual btAlignedObjectArray<btSoftBody::Face>* get() new;
+			}
+		};
 	};
 #endif
 
@@ -445,78 +448,81 @@ namespace BulletSharp
 	};
 
 #ifndef DISABLE_SOFTBODY
-	public ref class MaterialArray : AlignedObjectArray
+	namespace SoftBody
 	{
-	internal:
-		MaterialArray(btSoftBody::tMaterialArray* materialArray);
-
-	public:
-		MaterialArray();
-
-		void Clear();
-		void PopBack();
-		void PushBack(SoftBody::Material^ material);
-		void Remove(SoftBody::Material^ material);
-		void Swap(int index0, int index1);
-
-		property int Size
+		public ref class MaterialArray : AlignedObjectArray
 		{
-			int get();
-		}
+		internal:
+			MaterialArray(btSoftBody::tMaterialArray* materialArray);
 
-		property int Capacity
+		public:
+			MaterialArray();
+
+			void Clear();
+			void PopBack();
+			void PushBack(Material^ material);
+			void Remove(Material^ material);
+			void Swap(int index0, int index1);
+
+			property int Size
+			{
+				int get();
+			}
+
+			property int Capacity
+			{
+				int get();
+			}
+
+			property Material^ default [int]
+			{
+				Material^ get (int index);
+				void set(int index, Material^);
+			}
+
+		internal:
+			property btSoftBody::tMaterialArray* UnmanagedPointer
+			{
+				virtual btSoftBody::tMaterialArray* get() new;
+			}
+		};
+
+		public ref class NodeArray : AlignedObjectArray
 		{
-			int get();
-		}
+		internal:
+			NodeArray(btAlignedObjectArray<btSoftBody::Node>* nodeArray);
 
-		property SoftBody::Material^ default [int]
-		{
-			SoftBody::Material^ get (int index);
-			void set(int index, SoftBody::Material^);
-		}
+		public:
+			NodeArray();
 
-	internal:
-		property btSoftBody::tMaterialArray* UnmanagedPointer
-		{
-			virtual btSoftBody::tMaterialArray* get() new;
-		}
-	};
+			void Clear();
+			void PopBack();
+			void PushBack(Node^ node);
+			void Remove(Node^ node);
+			void Swap(int index0, int index1);
 
-	public ref class NodeArray : AlignedObjectArray
-	{
-	internal:
-		NodeArray(btAlignedObjectArray<btSoftBody::Node>* nodeArray);
+			property int Size
+			{
+				int get();
+			}
 
-	public:
-		NodeArray();
+			property int Capacity
+			{
+				int get();
+			}
 
-		void Clear();
-		void PopBack();
-		void PushBack(SoftBody::Node^ node);
-		void Remove(SoftBody::Node^ node);
-		void Swap(int index0, int index1);
+			property Node^ default [int]
+			{
+				Node^ get (int index);
+				void set(int index, Node^);
+			}
 
-		property int Size
-		{
-			int get();
-		}
-
-		property int Capacity
-		{
-			int get();
-		}
-
-		property SoftBody::Node^ default [int]
-		{
-			SoftBody::Node^ get (int index);
-			void set(int index, SoftBody::Node^);
-		}
-
-	internal:
-		property btAlignedObjectArray<btSoftBody::Node>* UnmanagedPointer
-		{
-			virtual btAlignedObjectArray<btSoftBody::Node>* get() new;
-		}
+		internal:
+			property btAlignedObjectArray<btSoftBody::Node>* UnmanagedPointer
+			{
+				virtual btAlignedObjectArray<btSoftBody::Node>* get() new;
+			}
+		};
 	};
 #endif
 

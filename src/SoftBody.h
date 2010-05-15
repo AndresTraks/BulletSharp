@@ -10,80 +10,80 @@ namespace BulletSharp
 {
 	ref class BroadphaseInterface;
 	ref class Dispatcher;
-	ref class FaceArray;
-	ref class MaterialArray;
-	ref class NodeArray;
 	ref class RigidBody;
 	ref class SparseSdf;
 
-	public ref class SoftBodyWorldInfo
+	namespace SoftBody
 	{
-	private:
-		btSoftBodyWorldInfo* _info;
+		ref class FaceArray;
+		ref class MaterialArray;
+		ref class NodeArray;
 
-	public:
-		SoftBodyWorldInfo();
-
-		property btScalar AirDensity
+		public ref class SoftBodyWorldInfo
 		{
-			btScalar get();
-			void set(btScalar value);
-		}
+		private:
+			btSoftBodyWorldInfo* _info;
 
-		property BroadphaseInterface^ Broadphase
-		{
-			BroadphaseInterface^ get();
-			void set(BroadphaseInterface^ value);
-		}
+		public:
+			SoftBodyWorldInfo();
 
-		property BulletSharp::Dispatcher^ Dispatcher
-		{
-			BulletSharp::Dispatcher^ get();
-			void set(BulletSharp::Dispatcher^ value);
-		}
+			property btScalar AirDensity
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
 
-		property Vector3 Gravity
-		{
-			Vector3 get();
-			void set(Vector3 value);
-		}
+			property BroadphaseInterface^ Broadphase
+			{
+				BroadphaseInterface^ get();
+				void set(BroadphaseInterface^ value);
+			}
 
-		property BulletSharp::SparseSdf^ SparseSdf
-		{
-			BulletSharp::SparseSdf^ get();
-			void set(BulletSharp::SparseSdf^ value);
-		}
+			property BulletSharp::Dispatcher^ Dispatcher
+			{
+				BulletSharp::Dispatcher^ get();
+				void set(BulletSharp::Dispatcher^ value);
+			}
 
-		property btScalar WaterDensity
-		{
-			btScalar get();
-			void set(btScalar value);
-		}
+			property Vector3 Gravity
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
 
-		property Vector3 WaterNormal
-		{
-			Vector3 get();
-			void set(Vector3 value);
-		}
+			property BulletSharp::SparseSdf^ SparseSdf
+			{
+				BulletSharp::SparseSdf^ get();
+				void set(BulletSharp::SparseSdf^ value);
+			}
 
-		property btScalar WaterOffset
-		{
-			btScalar get();
-			void set(btScalar value);
-		}
+			property btScalar WaterDensity
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
 
-	internal:
-		property btSoftBodyWorldInfo* UnmanagedPointer
-		{
-			btSoftBodyWorldInfo* get();
-			void set(btSoftBodyWorldInfo* value);
+			property Vector3 WaterNormal
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property btScalar WaterOffset
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+		internal:
+			property btSoftBodyWorldInfo* UnmanagedPointer
+			{
+				btSoftBodyWorldInfo* get();
+				void set(btSoftBodyWorldInfo* value);
+			};
 		};
-	};
 
-	public ref class SoftBody : CollisionObject
-	{
-	public:
-		enum class AeroModel
+		public enum class AeroModel
 		{
 			VPoint = btSoftBody::eAeroModel::V_Point,
 			VTwoSided = btSoftBody::eAeroModel::V_TwoSided,
@@ -94,7 +94,7 @@ namespace BulletSharp
 		};
 
 		[Flags]
-		enum class FCollisions
+		public enum class FCollisions
 		{
 			RvsMask = btSoftBody::fCollision::RVSmask,
 			SdfRs = btSoftBody::fCollision::SDF_RS,
@@ -108,14 +108,14 @@ namespace BulletSharp
 		};
 
 		[Flags]
-		enum class FMaterial
+		public enum class FMaterial
 		{
 			DebugDraw = btSoftBody::fMaterial::DebugDraw,
 			Default = btSoftBody::fMaterial::Default,
 			End = btSoftBody::fMaterial::END
 		};
 
-		ref class Config
+		public ref class Config
 		{
 		private:
 			btSoftBody::Config* _config;
@@ -126,8 +126,8 @@ namespace BulletSharp
 		public:
 			property AeroModel AeroModel
 			{
-				SoftBody::AeroModel get();
-				void set(SoftBody::AeroModel value);
+				BulletSharp::SoftBody::AeroModel get();
+				void set(BulletSharp::SoftBody::AeroModel value);
 			}
 
 			property btScalar DG
@@ -161,7 +161,7 @@ namespace BulletSharp
 			};
 		};
 
-		ref class Element
+		public ref class Element
 		{
 		internal:
 			btSoftBody::Element* _element;
@@ -174,7 +174,7 @@ namespace BulletSharp
 			};
 		};
 
-		ref class Feature : Element
+		public ref class Feature : Element
 		{
 		internal:
 			Feature(btSoftBody::Feature* feature);
@@ -185,13 +185,13 @@ namespace BulletSharp
 			}
 		};
 
-		ref class Link : Feature
+		public ref class Link : Feature
 		{
 		internal:
 			Link(btSoftBody::Link* link);
 		};
 
-		ref class Material : Element
+		public ref class Material : Element
 		{
 		internal:
 			Material(btSoftBody::Material* material);
@@ -228,7 +228,7 @@ namespace BulletSharp
 			}
 		};
 
-		ref class Node : Feature
+		public ref class Node : Feature
 		{
 		internal:
 			Node(btSoftBody::Node* node);
@@ -247,7 +247,7 @@ namespace BulletSharp
 			}
 		};
 
-		ref class Face : Feature
+		public ref class Face : Feature
 		{
 		internal:
 			Face(btSoftBody::Face* face);
@@ -272,79 +272,82 @@ namespace BulletSharp
 			}
 		};
 
-		ref class Note : Element
+		public ref class Note : Element
 		{
 		internal:
 			Note(btSoftBody::Note* note);
 		};
 
-		ref class Tetra : Feature
+		public ref class Tetra : Feature
 		{
 		internal:
 			Tetra(btSoftBody::Tetra* tetra);
 		};
 
-	internal:
-		SoftBody(btSoftBody* body);
-	
-	public:
-		SoftBody(SoftBodyWorldInfo^ worldInfo,
-			int node_count, Vector3 x, btScalar m);
-
-		void AddForce(Vector3 force, int node);
-		void AddForce(Vector3 force);
-		void AddVelocity(Vector3 velocity, int node);
-		void AddVelocity(Vector3 velocity);
-		void AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies);
-		void AppendAnchor(int node, RigidBody^ body);
-		Material^ AppendMaterial();
-		int GenerateBendingConstraints(int distance, Material^ mat);
-		int GenerateBendingConstraints(int distance);
-		int GenerateClusters(int k, int maxIterations);
-		int GenerateClusters(int k);
-		void Scale(Vector3 scale);
-		void SetVolumeMass(btScalar mass);
-		void StaticSolve(int iterations);
-		void Transform(Matrix transform);
-		void Translate(Vector3 translation);
-		void Translate(btScalar x, btScalar y, btScalar z); // helper
-
-		static SoftBody^ Upcast(CollisionObject^ colObj);
-
-		property Config^ Cfg
+		public ref class SoftBody : CollisionObject
 		{
-			Config^ get();
-			void set(Config^ value);
-		}
+		internal:
+			SoftBody(btSoftBody* body);
+		
+		public:
+			SoftBody(SoftBodyWorldInfo^ worldInfo,
+				int node_count, Vector3 x, btScalar m);
 
-		property FaceArray^ Faces
-		{
-			FaceArray^ get();
-			void set(FaceArray^ value);
-		}
+			void AddForce(Vector3 force, int node);
+			void AddForce(Vector3 force);
+			void AddVelocity(Vector3 velocity, int node);
+			void AddVelocity(Vector3 velocity);
+			void AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies);
+			void AppendAnchor(int node, RigidBody^ body);
+			Material^ AppendMaterial();
+			int GenerateBendingConstraints(int distance, Material^ mat);
+			int GenerateBendingConstraints(int distance);
+			int GenerateClusters(int k, int maxIterations);
+			int GenerateClusters(int k);
+			void Scale(Vector3 scale);
+			void SetVolumeMass(btScalar mass);
+			void StaticSolve(int iterations);
+			void Transform(Matrix transform);
+			void Translate(Vector3 translation);
+			void Translate(btScalar x, btScalar y, btScalar z); // helper
 
-		property MaterialArray^ Materials
-		{
-			MaterialArray^ get();
-			void set(MaterialArray^ value);
-		}
+			static SoftBody^ Upcast(CollisionObject^ colObj);
 
-		property NodeArray^ Nodes
-		{
-			NodeArray^ get();
-			void set(NodeArray^ value);
-		}
+			property Config^ Cfg
+			{
+				Config^ get();
+				void set(Config^ value);
+			}
 
-		property btScalar TotalMass
-		{
-			btScalar get();
-			void set(btScalar value);
-		}
+			property FaceArray^ Faces
+			{
+				FaceArray^ get();
+				void set(FaceArray^ value);
+			}
 
-	internal:
-		property btSoftBody* UnmanagedPointer
-		{
-			btSoftBody* get() new;
-		}
+			property MaterialArray^ Materials
+			{
+				MaterialArray^ get();
+				void set(MaterialArray^ value);
+			}
+
+			property NodeArray^ Nodes
+			{
+				NodeArray^ get();
+				void set(NodeArray^ value);
+			}
+
+			property btScalar TotalMass
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+		internal:
+			property btSoftBody* UnmanagedPointer
+			{
+				btSoftBody* get() new;
+			}
+		};
 	};
 };

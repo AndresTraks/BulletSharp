@@ -1,4 +1,5 @@
 ﻿using BulletSharp;
+using BulletSharp.SoftBody;
 using DemoFramework;
 using SlimDX;
 using System;
@@ -184,12 +185,12 @@ namespace BasicDemo
                     new Vector3(-s,0,-s), new Vector3(+s,0,-s),
 			        new Vector3(-s,0,+s), new Vector3(+s,0,+s),
 			        segments,segments, 0,true);
-                SoftBody.Material pm = psb.AppendMaterial();
-                pm.Flags -=	SoftBody.FMaterial.DebugDraw;
+                Material pm = psb.AppendMaterial();
+                pm.Flags -=	FMaterial.DebugDraw;
                 psb.GenerateBendingConstraints(2, pm);
                 psb.Cfg.LF = 0.004f;
                 psb.Cfg.DG = 0.0003f;
-                psb.Cfg.AeroModel = SoftBody.AeroModel.VTwoSided;
+                psb.Cfg.AeroModel = AeroModel.VTwoSided;
                 Matrix trans = Matrix.Identity;
                 Vector3 ra = 0.1f * GetRandomVector(random);
                 Vector3 rp = 75 * GetRandomVector(random) + new Vector3(-50, 15, 0);
@@ -223,7 +224,7 @@ namespace BasicDemo
             //psb.CollisionShape.Margin = 0.5f;
 
 	        psb.CollisionShape.Margin = 0.01f;
-            psb.Cfg.Collisions = SoftBody.FCollisions.ClSs | SoftBody.FCollisions.ClRs;
+            psb.Cfg.Collisions = FCollisions.ClSs | FCollisions.ClRs;
                 // | SoftBody.FCollisions.ClSelf;
             psb.Materials[0].Lst = 0.8f;
 	        cutting=true;
@@ -273,7 +274,42 @@ namespace BasicDemo
             //Init_LinearStair(8);
             //Init_ClothAttach();
             //Init_Ropes();
-            //Init_RopeAttach();
+            Init_RopeAttach();
+        }
+
+        public static SlimDX.Direct3D9.Mesh GetMeshFromSoftBody(SlimDX.Direct3D9.Device device, CollisionObject obj)
+        {
+            SoftBody softBody = SoftBody.Upcast(obj);
+            
+            if (softBody == null)
+                return null;
+
+            if (softBody.Faces.Size == 0)
+                return null;
+
+            SlimDX.Direct3D9.Mesh mesh =
+                new SlimDX.Direct3D9.Mesh(device, softBody.Faces.Size, softBody.Faces.Size * 3,
+                SlimDX.Direct3D9.MeshFlags.SystemMemory | SlimDX.Direct3D9.MeshFlags.Use32Bit,
+                SlimDX.Direct3D9.VertexFormat.Position);
+            SlimDX.DataStream verts = mesh.LockVertexBuffer(SlimDX.Direct3D9.LockFlags.None);
+            SlimDX.DataStream indices = mesh.LockIndexBuffer(SlimDX.Direct3D9.LockFlags.None);
+
+            int j;
+            for (j = 0; j < softBody.Faces.Size; j++)
+            {
+                BulletSharp.SoftBody.Face face = softBody.Faces[j];
+                verts.Write(face.n[0].x);
+                verts.Write(face.n[1].x);
+                verts.Write(face.n[2].x);
+
+                indices.Write(j * 3);
+                indices.Write(j * 3 + 1);
+                indices.Write(j * 3 + 2);
+            }
+            mesh.UnlockVertexBuffer();
+            mesh.UnlockIndexBuffer();
+
+            return mesh;
         }
 
         public override void Update(float elapsedTime)

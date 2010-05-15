@@ -9,6 +9,8 @@
 #include "SoftBody.h"
 #include "SparseSdf.h"
 
+using namespace BulletSharp::SoftBody;
+
 #pragma managed(push, off)
 btSoftBodyWorldInfo* SoftBodyWorldInfo_New()
 {
@@ -109,218 +111,218 @@ void SoftBodyWorldInfo::UnmanagedPointer::set(btSoftBodyWorldInfo* value)
 }
 
 
-SoftBody::Config::Config(btSoftBody::Config* config)
+Config::Config(btSoftBody::Config* config)
 {
 	_config = config;
 }
 
-SoftBody::AeroModel SoftBody::Config::AeroModel::get()
+AeroModel Config::AeroModel::get()
 {
-	return (SoftBody::AeroModel)_config->aeromodel;
+	return (BulletSharp::SoftBody::AeroModel)_config->aeromodel;
 }
-void SoftBody::Config::AeroModel::set(SoftBody::AeroModel value)
+void Config::AeroModel::set(BulletSharp::SoftBody::AeroModel value)
 {
 	_config->aeromodel = (btSoftBody::eAeroModel::_)value;
 }
 
-btScalar SoftBody::Config::DG::get()
+btScalar Config::DG::get()
 {
 	return _config->kDG;
 }
-void SoftBody::Config::DG::set(btScalar value)
+void Config::DG::set(btScalar value)
 {
 	_config->kDG = value;
 }
 
-btScalar SoftBody::Config::LF::get()
+btScalar Config::LF::get()
 {
 	return _config->kLF;
 }
-void SoftBody::Config::LF::set(btScalar value)
+void Config::LF::set(btScalar value)
 {
 	_config->kLF = value;
 }
 
-SoftBody::FCollisions SoftBody::Config::Collisions::get()
+FCollisions Config::Collisions::get()
 {
 	return (FCollisions)UnmanagedPointer->collisions;
 }
-void SoftBody::Config::Collisions::set(SoftBody::FCollisions value)
+void Config::Collisions::set(FCollisions value)
 {
 	UnmanagedPointer->collisions = (int)value;
 }
 
-int SoftBody::Config::PIterations::get()
+int Config::PIterations::get()
 {
 	return UnmanagedPointer->piterations;
 }
-void SoftBody::Config::PIterations::set(int value)
+void Config::PIterations::set(int value)
 {
 	UnmanagedPointer->piterations = value;
 }
 
-btSoftBody::Config* SoftBody::Config::UnmanagedPointer::get()
+btSoftBody::Config* Config::UnmanagedPointer::get()
 {
 	return _config;
 }
-void SoftBody::Config::UnmanagedPointer::set(btSoftBody::Config* value)
+void Config::UnmanagedPointer::set(btSoftBody::Config* value)
 {
 	_config = value;
 }
 
 
-SoftBody::Element::Element(btSoftBody::Element* element)
+Element::Element(btSoftBody::Element* element)
 {
 	_element = element;
 }
 
-btSoftBody::Element* SoftBody::Element::UnmanagedPointer::get()
+btSoftBody::Element* Element::UnmanagedPointer::get()
 {
 	return _element;
 }
-void SoftBody::Element::UnmanagedPointer::set(btSoftBody::Element* element)
+void Element::UnmanagedPointer::set(btSoftBody::Element* element)
 {
 	_element = element;
 }
 
 
-SoftBody::Feature::Feature(btSoftBody::Feature* feature)
+Feature::Feature(btSoftBody::Feature* feature)
 : Element(feature)
 {
 }
 
-btSoftBody::Feature* SoftBody::Feature::UnmanagedPointer::get()
+btSoftBody::Feature* Feature::UnmanagedPointer::get()
 {
 	return (btSoftBody::Feature*)Element::UnmanagedPointer;
 }
 
 
-SoftBody::Face::Face(btSoftBody::Face* face)
+Face::Face(btSoftBody::Face* face)
 : Feature(face)
 {
 }
 
-array<SoftBody::Node^>^ SoftBody::Face::n::get()
+array<Node^>^ Face::n::get()
 {
-	array<SoftBody::Node^>^ nodeArray = gcnew array<Node^>(3);
-	nodeArray[0] = gcnew SoftBody::Node(UnmanagedPointer->m_n[0]);
-	nodeArray[1] = gcnew SoftBody::Node(UnmanagedPointer->m_n[1]);
-	nodeArray[2] = gcnew SoftBody::Node(UnmanagedPointer->m_n[2]);
+	array<Node^>^ nodeArray = gcnew array<Node^>(3);
+	nodeArray[0] = gcnew Node(UnmanagedPointer->m_n[0]);
+	nodeArray[1] = gcnew Node(UnmanagedPointer->m_n[1]);
+	nodeArray[2] = gcnew Node(UnmanagedPointer->m_n[2]);
 	return nodeArray;
 }
-void SoftBody::Face::n::set(array<SoftBody::Node^>^ value)
+void Face::n::set(array<Node^>^ value)
 {
 	UnmanagedPointer->m_n[0] = value[0]->UnmanagedPointer;
 	UnmanagedPointer->m_n[1] = value[1]->UnmanagedPointer;
 	UnmanagedPointer->m_n[2] = value[2]->UnmanagedPointer;
 }
 
-Vector3 SoftBody::Face::Normal::get()
+Vector3 Face::Normal::get()
 {
 	return Math::BtVector3ToVector3(&UnmanagedPointer->m_normal);
 }
-void SoftBody::Face::Normal::set(Vector3 value)
+void Face::Normal::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_normal);
 }
 
-btSoftBody::Face* SoftBody::Face::UnmanagedPointer::get()
+btSoftBody::Face* Face::UnmanagedPointer::get()
 {
 	return (btSoftBody::Face*)Feature::UnmanagedPointer;
 }
 
 
-SoftBody::Link::Link(btSoftBody::Link* link)
+Link::Link(btSoftBody::Link* link)
 : Feature(link)
 {
 }
 
 
-SoftBody::Material::Material(btSoftBody::Material* material)
+Material::Material(btSoftBody::Material* material)
 : Element(material)
 {
 }
 
-btScalar SoftBody::Material::Ast::get()
+btScalar Material::Ast::get()
 {
 	return UnmanagedPointer->m_kAST;
 }
-void SoftBody::Material::Ast::set(btScalar value)
+void Material::Ast::set(btScalar value)
 {
 	UnmanagedPointer->m_kAST = value;
 }
 
-SoftBody::FMaterial SoftBody::Material::Flags::get()
+FMaterial Material::Flags::get()
 {
 	return (FMaterial)UnmanagedPointer->m_flags;
 }
-void SoftBody::Material::Flags::set(FMaterial value)
+void Material::Flags::set(FMaterial value)
 {
 	UnmanagedPointer->m_flags = (int)value;
 }
 
-btScalar SoftBody::Material::Lst::get()
+btScalar Material::Lst::get()
 {
 	return UnmanagedPointer->m_kLST;
 }
-void SoftBody::Material::Lst::set(btScalar value)
+void Material::Lst::set(btScalar value)
 {
 	UnmanagedPointer->m_kAST = value;
 }
 
-btScalar SoftBody::Material::Vst::get()
+btScalar Material::Vst::get()
 {
 	return UnmanagedPointer->m_kVST;
 }
-void SoftBody::Material::Vst::set(btScalar value)
+void Material::Vst::set(btScalar value)
 {
 	UnmanagedPointer->m_kVST = value;
 }
 
-btSoftBody::Material* SoftBody::Material::UnmanagedPointer::get()
+btSoftBody::Material* Material::UnmanagedPointer::get()
 {
 	return (btSoftBody::Material*)Element::UnmanagedPointer;
 }
 
 
-SoftBody::Node::Node(btSoftBody::Node* node)
+Node::Node(btSoftBody::Node* node)
 : Feature(node)
 {
 }
 
-Vector3 SoftBody::Node::x::get()
+Vector3 Node::x::get()
 {
 	return Math::BtVector3ToVector3(&UnmanagedPointer->m_x);
 }
-void SoftBody::Node::x::set(Vector3 value)
+void Node::x::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_x);
 }
 
-btSoftBody::Node* SoftBody::Node::UnmanagedPointer::get()
+btSoftBody::Node* Node::UnmanagedPointer::get()
 {
 	return (btSoftBody::Node*)Feature::UnmanagedPointer;
 }
 
 
-SoftBody::Note::Note(btSoftBody::Note* note)
+Note::Note(btSoftBody::Note* note)
 : Element(note)
 {
 }
 
 
-SoftBody::Tetra::Tetra(btSoftBody::Tetra* tetra)
+Tetra::Tetra(btSoftBody::Tetra* tetra)
 : Feature(tetra)
 {
 }
 
 
-SoftBody::SoftBody(btSoftBody* body)
+BulletSharp::SoftBody::SoftBody::SoftBody(btSoftBody* body)
 : CollisionObject(body)
 {
 }
 
-SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, int node_count, Vector3 x, btScalar m)
+BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, int node_count, Vector3 x, btScalar m)
 : CollisionObject(0)
 {
 	btVector3* xTemp = Math::Vector3ToBtVector3(x);
@@ -328,102 +330,102 @@ SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, int node_count, Vector3 x, btSc
 	delete xTemp;
 }
 
-SoftBody::Material^ SoftBody::AppendMaterial()
+BulletSharp::SoftBody::Material^ BulletSharp::SoftBody::SoftBody::AppendMaterial()
 {
 	return gcnew Material(UnmanagedPointer->appendMaterial());
 }
 
-void SoftBody::AddForce(Vector3 force, int node)
+void BulletSharp::SoftBody::SoftBody::AddForce(Vector3 force, int node)
 {
 	btVector3* forceTemp = Math::Vector3ToBtVector3(force);
 	UnmanagedPointer->addForce(*forceTemp, node);
 	delete forceTemp;
 }
 
-void SoftBody::AddForce(Vector3 force)
+void BulletSharp::SoftBody::SoftBody::AddForce(Vector3 force)
 {
 	UnmanagedPointer->addForce(*Math::Vector3ToBtVector3(force));
 }
 
-void SoftBody::AddVelocity(Vector3 velocity, int node)
+void BulletSharp::SoftBody::SoftBody::AddVelocity(Vector3 velocity, int node)
 {
 	btVector3* velocityTemp = Math::Vector3ToBtVector3(velocity);
 	UnmanagedPointer->addVelocity(*velocityTemp, node);
 	delete velocityTemp;
 }
 
-void SoftBody::AddVelocity(Vector3 velocity)
+void BulletSharp::SoftBody::SoftBody::AddVelocity(Vector3 velocity)
 {
 	UnmanagedPointer->addVelocity(*Math::Vector3ToBtVector3(velocity));
 }
 
-void SoftBody::AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies)
+void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies)
 {
 	UnmanagedPointer->appendAnchor(node, body->UnmanagedPointer, disableCollisionBetweenLinkedBodies);
 }
 
-void SoftBody::AppendAnchor(int node, RigidBody^ body)
+void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body)
 {
 	UnmanagedPointer->appendAnchor(node, body->UnmanagedPointer);
 }
 
-int SoftBody::GenerateBendingConstraints(int distance, SoftBody::Material^ mat)
+int BulletSharp::SoftBody::SoftBody::GenerateBendingConstraints(int distance, Material^ mat)
 {
 	return UnmanagedPointer->generateBendingConstraints(distance, mat->UnmanagedPointer);
 }
 
-int SoftBody::GenerateBendingConstraints(int distance)
+int BulletSharp::SoftBody::SoftBody::GenerateBendingConstraints(int distance)
 {
 	return UnmanagedPointer->generateBendingConstraints(distance);
 }
 
-int SoftBody::GenerateClusters(int k, int maxIterations)
+int BulletSharp::SoftBody::SoftBody::GenerateClusters(int k, int maxIterations)
 {
 	return UnmanagedPointer->generateClusters(k, maxIterations);
 }
 
-int SoftBody::GenerateClusters(int k)
+int BulletSharp::SoftBody::SoftBody::GenerateClusters(int k)
 {
 	return UnmanagedPointer->generateClusters(k);
 }
 
-void SoftBody::Scale(Vector3 scale)
+void BulletSharp::SoftBody::SoftBody::Scale(Vector3 scale)
 {
 	btVector3* scaleTemp = Math::Vector3ToBtVector3(scale);
 	UnmanagedPointer->scale(*scaleTemp);
 	delete scaleTemp;
 }
 
-void SoftBody::SetVolumeMass(btScalar mass)
+void BulletSharp::SoftBody::SoftBody::SetVolumeMass(btScalar mass)
 {
 	UnmanagedPointer->setVolumeMass(mass);
 }
 
-void SoftBody::StaticSolve(int iterations)
+void BulletSharp::SoftBody::SoftBody::StaticSolve(int iterations)
 {
 	UnmanagedPointer->staticSolve(iterations);
 }
 
-void SoftBody::Transform(Matrix transform)
+void BulletSharp::SoftBody::SoftBody::Transform(Matrix transform)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	UnmanagedPointer->transform(*transformTemp);
 	delete transformTemp;
 }
 
-void SoftBody::Translate(Vector3 translation)
+void BulletSharp::SoftBody::SoftBody::Translate(Vector3 translation)
 {
 	btVector3* translationTemp = Math::Vector3ToBtVector3(translation);
 	UnmanagedPointer->translate(*translationTemp);
 	delete translationTemp;
 }
 
-void SoftBody::Translate(btScalar x, btScalar y, btScalar z)
+void BulletSharp::SoftBody::SoftBody::Translate(btScalar x, btScalar y, btScalar z)
 {
 	Translate(Vector3(x,y,z));
 }
 
-SoftBody^ SoftBody::Upcast(CollisionObject^ colObj)
+BulletSharp::SoftBody::SoftBody^ BulletSharp::SoftBody::SoftBody::Upcast(CollisionObject^ colObj)
 {
 	btSoftBody* body = btSoftBody::upcast(colObj->UnmanagedPointer);
 	if (body == nullptr)
@@ -431,52 +433,52 @@ SoftBody^ SoftBody::Upcast(CollisionObject^ colObj)
 	return gcnew SoftBody(body);
 }
 
-SoftBody::Config^ SoftBody::Cfg::get()
+Config^ BulletSharp::SoftBody::SoftBody::Cfg::get()
 {
 	return gcnew Config(&UnmanagedPointer->m_cfg);
 }
-void SoftBody::Cfg::set(SoftBody::Config^ value)
+void BulletSharp::SoftBody::SoftBody::Cfg::set(Config^ value)
 {
 	UnmanagedPointer->m_cfg = *value->UnmanagedPointer;
 }
 
-BulletSharp::FaceArray^ SoftBody::Faces::get()
+FaceArray^ BulletSharp::SoftBody::SoftBody::Faces::get()
 {
 	return gcnew FaceArray(&UnmanagedPointer->m_faces);
 }
-void SoftBody::Faces::set(BulletSharp::FaceArray^ value)
+void BulletSharp::SoftBody::SoftBody::Faces::set(FaceArray^ value)
 {
 	UnmanagedPointer->m_faces = *value->UnmanagedPointer;
 }
 
-BulletSharp::MaterialArray^ SoftBody::Materials::get()
+MaterialArray^ BulletSharp::SoftBody::SoftBody::Materials::get()
 {
 	return gcnew MaterialArray(&UnmanagedPointer->m_materials);
 }
-void SoftBody::Materials::set(BulletSharp::MaterialArray^ value)
+void BulletSharp::SoftBody::SoftBody::Materials::set(MaterialArray^ value)
 {
 	UnmanagedPointer->m_materials = *value->UnmanagedPointer;
 }
 
-BulletSharp::NodeArray^ SoftBody::Nodes::get()
+BulletSharp::SoftBody::NodeArray^ BulletSharp::SoftBody::SoftBody::Nodes::get()
 {
 	return gcnew NodeArray(&UnmanagedPointer->m_nodes);
 }
-void SoftBody::Nodes::set(BulletSharp::NodeArray^ value)
+void BulletSharp::SoftBody::SoftBody::Nodes::set(NodeArray^ value)
 {
 	UnmanagedPointer->m_nodes = *value->UnmanagedPointer;
 }
 
-btScalar SoftBody::TotalMass::get()
+btScalar BulletSharp::SoftBody::SoftBody::TotalMass::get()
 {
 	return UnmanagedPointer->getTotalMass();
 }
-void SoftBody::TotalMass::set(btScalar value)
+void BulletSharp::SoftBody::SoftBody::TotalMass::set(btScalar value)
 {
 	UnmanagedPointer->setTotalMass(value);
 }
 
-btSoftBody* SoftBody::UnmanagedPointer::get()
+btSoftBody* BulletSharp::SoftBody::SoftBody::UnmanagedPointer::get()
 {
 	return (btSoftBody*)CollisionObject::UnmanagedPointer;
 }

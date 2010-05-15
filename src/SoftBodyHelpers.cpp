@@ -12,12 +12,14 @@
 #include "SoftBodyHelpers.h"
 #include "StringConv.h"
 
+using namespace BulletSharp::SoftBody;
+
 float SoftBodyHelpers::CalculateUV(int resx, int resy, int ix, int iy, int id)
 {
 	return btSoftBodyHelpers::CalculateUV(resx, resy, ix, iy, id);
 }
 
-SoftBody^ SoftBodyHelpers::CreateEllipsoid(SoftBodyWorldInfo^ worldInfo,
+BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateEllipsoid(SoftBodyWorldInfo^ worldInfo,
 	Vector3 center, Vector3 radius, int res)
 {
 	btVector3* centerTemp = Math::Vector3ToBtVector3(center);
@@ -32,7 +34,7 @@ SoftBody^ SoftBodyHelpers::CreateEllipsoid(SoftBodyWorldInfo^ worldInfo,
 	return body;
 }
 
-SoftBody^ SoftBodyHelpers::CreateFromConvexHull(BulletSharp::SoftBodyWorldInfo ^worldInfo,
+BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromConvexHull(SoftBodyWorldInfo ^worldInfo,
 	array<Vector3>^ vertices, bool randomizeConstraints)
 {
 	btVector3* btVertices = new btVector3[vertices->Length];
@@ -46,7 +48,7 @@ SoftBody^ SoftBodyHelpers::CreateFromConvexHull(BulletSharp::SoftBodyWorldInfo ^
 	return body;
 }
 
-SoftBody^ SoftBodyHelpers::CreateFromConvexHull(BulletSharp::SoftBodyWorldInfo ^worldInfo,
+BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromConvexHull(SoftBodyWorldInfo ^worldInfo,
 	array<Vector3>^ vertices)
 {
 	btVector3* btVertices = new btVector3[vertices->Length];
@@ -60,7 +62,7 @@ SoftBody^ SoftBodyHelpers::CreateFromConvexHull(BulletSharp::SoftBodyWorldInfo ^
 	return body;
 }
 
-SoftBody^ SoftBodyHelpers::CreateFromTetGenData(SoftBodyWorldInfo^ worldInfo, String^ ele,
+BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTetGenData(SoftBodyWorldInfo^ worldInfo, String^ ele,
 	String^ face, String^ node, bool bfacelinks, bool btetralinks, bool bfacesfromtetras)
 {
 	const char* eleTemp = StringConv::ManagedToUnmanaged(ele);
@@ -76,7 +78,7 @@ SoftBody^ SoftBodyHelpers::CreateFromTetGenData(SoftBodyWorldInfo^ worldInfo, St
 	StringConv::FreeUnmanagedString(nodeTemp);
 }
 
-SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyWorldInfo^ worldInfo, String^ ele,
+BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyWorldInfo^ worldInfo, String^ ele,
 	String^ face, String^ node, bool bfacelinks, bool btetralinks, bool bfacesfromtetras)
 {
 	FILE* f_read;
@@ -184,7 +186,7 @@ SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyWorldInfo^ worldInfo, St
 	return body;
 }
 
-SoftBody^ SoftBodyHelpers::CreatePatch(SoftBodyWorldInfo^ worldInfo,
+BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatch(SoftBodyWorldInfo^ worldInfo,
 	Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11,
 	int resx, int resy, int fixeds, bool gendiags)
 {
@@ -204,7 +206,7 @@ SoftBody^ SoftBodyHelpers::CreatePatch(SoftBodyWorldInfo^ worldInfo,
 	return body;
 }
 
-SoftBody^ SoftBodyHelpers::CreateRope(SoftBodyWorldInfo^ worldInfo,
+BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateRope(SoftBodyWorldInfo^ worldInfo,
 	Vector3 from, Vector3 to, int res, int fixeds)
 {
 	btVector3* fromTemp = Math::Vector3ToBtVector3(from);

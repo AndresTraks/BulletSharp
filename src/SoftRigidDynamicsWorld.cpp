@@ -13,6 +13,8 @@
 #include "SoftRigidDynamicsWorld.h"
 #include "SoftBody.h"
 
+using namespace BulletSharp::SoftBody;
+
 SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatcher,
 	BroadphaseInterface^ pairCache,
 #ifndef DISABLE_CONSTRAINTS
@@ -32,21 +34,21 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 	_broadphase = pairCache;
 }
 
-void SoftRigidDynamicsWorld::AddSoftBody(SoftBody^ body,
+void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body,
 	CollisionFilterGroups collisionFilterGroup,	CollisionFilterGroups collisionFilterMask)
 {
 	UnmanagedPointer->addSoftBody(body->UnmanagedPointer,
 		(short int)collisionFilterGroup, (short int)collisionFilterMask);
 }
 
-void SoftRigidDynamicsWorld::AddSoftBody(SoftBody^ body,
+void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body,
 	CollisionFilterGroups collisionFilterGroup)
 {
 	UnmanagedPointer->addSoftBody(body->UnmanagedPointer,
 		(short int)collisionFilterGroup);
 }
 
-void SoftRigidDynamicsWorld::AddSoftBody(SoftBody^ body)
+void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body)
 {
 	UnmanagedPointer->addSoftBody(body->UnmanagedPointer);
 }

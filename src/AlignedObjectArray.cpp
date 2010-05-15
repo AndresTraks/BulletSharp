@@ -10,6 +10,10 @@
 #include "Dbvt.h"
 #endif
 
+#ifndef DISABLE_SOFTBODY
+using namespace BulletSharp::SoftBody;
+#endif
+
 AlignedObjectArray::AlignedObjectArray(void* alignedObjectArray)
 {
 	_alignedObjectArray = alignedObjectArray;
@@ -541,8 +545,8 @@ btAlignedObjectArray<btDbvt::sStkNPS>* StkNpsArray::UnmanagedPointer::get()
 
 
 #ifndef DISABLE_SOFTBODY
-FaceArray::FaceArray(btAlignedObjectArray<btSoftBody::Face>* nodeArray)
-: AlignedObjectArray(nodeArray)
+FaceArray::FaceArray(btAlignedObjectArray<btSoftBody::Face>* faceArray)
+: AlignedObjectArray(faceArray)
 {
 }
 
@@ -561,12 +565,12 @@ void FaceArray::PopBack()
 	UnmanagedPointer->pop_back();
 }
 
-void FaceArray::PushBack(SoftBody::Face^ face)
+void FaceArray::PushBack(Face^ face)
 {
 	UnmanagedPointer->push_back(*face->UnmanagedPointer);
 }
 
-void FaceArray::Remove(SoftBody::Face^ face)
+void FaceArray::Remove(Face^ face)
 {
 	// FIXME
 	//UnmanagedPointer->remove(*face->UnmanagedPointer);
@@ -587,9 +591,9 @@ void FaceArray::Swap(int index0, int index1)
 	UnmanagedPointer->swap(index0, index1);
 }
 
-SoftBody::Face^ FaceArray::default::get(int index)
+Face^ FaceArray::default::get(int index)
 {
-	return gcnew SoftBody::Face(&(*UnmanagedPointer)[index]);
+	return gcnew Face(&(*UnmanagedPointer)[index]);
 }
 
 #pragma managed(push, off)
@@ -599,7 +603,7 @@ void FaceArray_GetDefault(btAlignedObjectArray<btSoftBody::Face>* nodeArray,
 	(*nodeArray)[index] = *node;
 }
 #pragma managed(pop)
-void FaceArray::default::set(int index, SoftBody::Face^ value)
+void FaceArray::default::set(int index, Face^ value)
 {
 	FaceArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
 }
@@ -755,12 +759,12 @@ void MaterialArray::PopBack()
 	UnmanagedPointer->pop_back();
 }
 
-void MaterialArray::PushBack(SoftBody::Material^ material)
+void MaterialArray::PushBack(Material^ material)
 {
 	UnmanagedPointer->push_back(material->UnmanagedPointer);
 }
 
-void MaterialArray::Remove(SoftBody::Material^ material)
+void MaterialArray::Remove(Material^ material)
 {
 	UnmanagedPointer->remove(&(*material->UnmanagedPointer));
 }
@@ -780,9 +784,9 @@ void MaterialArray::Swap(int index0, int index1)
 	UnmanagedPointer->swap(index0, index1);
 }
 
-SoftBody::Material^ MaterialArray::default::get(int index)
+Material^ MaterialArray::default::get(int index)
 {
-	return gcnew SoftBody::Material((*UnmanagedPointer)[index]);
+	return gcnew Material((*UnmanagedPointer)[index]);
 }
 
 #pragma managed(push, off)
@@ -792,7 +796,7 @@ void MaterialArray_GetDefault(btSoftBody::tMaterialArray* materialArray,
 	(*materialArray)[index] = material;
 }
 #pragma managed(pop)
-void MaterialArray::default::set(int index, SoftBody::Material^ value)
+void MaterialArray::default::set(int index, Material^ value)
 {
 	MaterialArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
 }
@@ -803,55 +807,55 @@ btSoftBody::tMaterialArray* MaterialArray::UnmanagedPointer::get()
 }
 
 
-BulletSharp::NodeArray::NodeArray(btAlignedObjectArray<btSoftBody::Node>* nodeArray)
+BulletSharp::SoftBody::NodeArray::NodeArray(btAlignedObjectArray<btSoftBody::Node>* nodeArray)
 : AlignedObjectArray(nodeArray)
 {
 }
 
-BulletSharp::NodeArray::NodeArray()
+BulletSharp::SoftBody::NodeArray::NodeArray()
 : AlignedObjectArray(new btAlignedObjectArray<btSoftBody::Node>)
 {
 }
 
-void BulletSharp::NodeArray::Clear()
+void BulletSharp::SoftBody::NodeArray::Clear()
 {
 	UnmanagedPointer->clear();
 }
 
-void BulletSharp::NodeArray::PopBack()
+void BulletSharp::SoftBody::NodeArray::PopBack()
 {
 	UnmanagedPointer->pop_back();
 }
 
-void BulletSharp::NodeArray::PushBack(SoftBody::Node^ node)
+void BulletSharp::SoftBody::NodeArray::PushBack(Node^ node)
 {
 	UnmanagedPointer->push_back(*node->UnmanagedPointer);
 }
 
-void BulletSharp::NodeArray::Remove(SoftBody::Node^ node)
+void BulletSharp::SoftBody::NodeArray::Remove(Node^ node)
 {
 	// FIXME
 	//UnmanagedPointer->remove(*node->UnmanagedPointer);
 }
 
-int BulletSharp::NodeArray::Capacity::get()
+int BulletSharp::SoftBody::NodeArray::Capacity::get()
 {
 	return UnmanagedPointer->capacity();
 }
 
-int BulletSharp::NodeArray::Size::get()
+int BulletSharp::SoftBody::NodeArray::Size::get()
 {
 	return UnmanagedPointer->size();
 }
 
-void BulletSharp::NodeArray::Swap(int index0, int index1)
+void BulletSharp::SoftBody::NodeArray::Swap(int index0, int index1)
 {
 	UnmanagedPointer->swap(index0, index1);
 }
 
-SoftBody::Node^ BulletSharp::NodeArray::default::get(int index)
+Node^ BulletSharp::SoftBody::NodeArray::default::get(int index)
 {
-	return gcnew SoftBody::Node(&(*UnmanagedPointer)[index]);
+	return gcnew Node(&(*UnmanagedPointer)[index]);
 }
 
 #pragma managed(push, off)
@@ -861,12 +865,12 @@ void NodeArray_GetDefault(btAlignedObjectArray<btSoftBody::Node>* nodeArray,
 	(*nodeArray)[index] = *node;
 }
 #pragma managed(pop)
-void BulletSharp::NodeArray::default::set(int index, SoftBody::Node^ value)
+void BulletSharp::SoftBody::NodeArray::default::set(int index, Node^ value)
 {
 	NodeArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
 }
 
-btAlignedObjectArray<btSoftBody::Node>* BulletSharp::NodeArray::UnmanagedPointer::get()
+btAlignedObjectArray<btSoftBody::Node>* BulletSharp::SoftBody::NodeArray::UnmanagedPointer::get()
 {
 	return (btAlignedObjectArray<btSoftBody::Node>*)AlignedObjectArray::UnmanagedPointer;
 }

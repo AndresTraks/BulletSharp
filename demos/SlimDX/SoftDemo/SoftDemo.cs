@@ -143,31 +143,10 @@ namespace BasicDemo
 
                 if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
                 {
-                    SoftBody softBody = SoftBody.Upcast(colObj);
+                    Mesh mesh = Physics.GetMeshFromSoftBody(Device, colObj);
 
-                    if (softBody.Faces.Size == 0)
+                    if (mesh == null)
                         continue;
-
-                    Mesh mesh = new Mesh(Device, softBody.Faces.Size, softBody.Faces.Size * 3,
-                        MeshFlags.SystemMemory | MeshFlags.Use32Bit, VertexFormat.Position);
-                    SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.None);
-                    SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.None);
-
-                    int j;
-                    for (j = 0; j < softBody.Faces.Size; j++)
-                    {
-                        SoftBody.Face face = softBody.Faces[j];
-                        verts.Write(face.n[0].x);
-                        verts.Write(face.n[1].x);
-                        verts.Write(face.n[2].x);
-
-                        indices.Write(j*3);
-                        indices.Write(j*3+1);
-                        indices.Write(j*3+2);
-                    }
-                    NodeArray nodes = softBody.Nodes;
-                    mesh.UnlockVertexBuffer();
-                    mesh.UnlockIndexBuffer();
 
                     Device.SetTransform(TransformState.World, Matrix.Identity);
                     Device.SetRenderState(RenderState.CullMode, Cull.None);
