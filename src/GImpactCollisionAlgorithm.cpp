@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_COLLISION_ALGORITHMS
+
 #include "CollisionDispatcher.h"
 #include "GImpactCollisionAlgorithm.h"
 
@@ -12,3 +14,5 @@ void GImpactCollisionAlgorithm::RegisterAlgorithm(CollisionDispatcher^ dispatche
 {
 	btGImpactCollisionAlgorithm::registerAlgorithm(dispatcher->UnmanagedPointer);
 }
+
+#endif

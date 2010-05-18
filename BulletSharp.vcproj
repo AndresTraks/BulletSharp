@@ -63,9 +63,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib"
 				LinkIncremental="0"
-				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug"
+				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
@@ -140,9 +140,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib"
 				LinkIncremental="0"
-				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel"
+				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
 			/>
@@ -216,9 +216,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib"
 				LinkIncremental="0"
-				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel"
+				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
 			/>
@@ -291,9 +291,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib"
 				LinkIncremental="0"
-				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug"
+				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
@@ -368,9 +368,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib"
 				LinkIncremental="0"
-				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel"
+				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
 			/>
@@ -443,9 +443,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib"
 				LinkIncremental="0"
-				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug"
+				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
@@ -520,9 +520,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib"
 				LinkIncremental="0"
-				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel"
+				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
 			/>
@@ -595,9 +595,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib"
 				LinkIncremental="0"
-				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug"
+				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
@@ -672,9 +672,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib"
 				LinkIncremental="0"
-				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel"
+				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
 			/>
@@ -747,9 +747,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib"
 				LinkIncremental="0"
-				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug"
+				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
@@ -824,9 +824,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib"
 				LinkIncremental="0"
-				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel"
+				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
 			/>
@@ -899,9 +899,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib"
 				LinkIncremental="0"
-				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug"
+				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
@@ -993,6 +993,10 @@
 			</File>
 			<File
 				RelativePath=".\src\BroadphaseProxy.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\BulletWorldImporter.cpp"
 				>
 			</File>
 			<File
@@ -1940,6 +1944,18 @@
 					RelativePath=".\src\SparseSdf.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="Extras"
+				>
+				<Filter
+					Name="Serialize"
+					>
+					<File
+						RelativePath=".\src\BulletWorldImporter.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
