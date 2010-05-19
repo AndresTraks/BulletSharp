@@ -38,8 +38,8 @@ DebugDraw^ DispatcherInfo::DebugDraw::get()
 	if (_info->m_debugDraw == nullptr)
 		return nullptr;
 
-	// Instances of btIDebugDraw can only be of type DebugWrapper.
-	return gcnew BulletSharp::DebugDraw((DebugWrapper*)_info->m_debugDraw);
+	// Instances of btIDebugDraw can only be of type DebugDrawWrapper.
+	return gcnew BulletSharp::DebugDraw((DebugDrawWrapper*)_info->m_debugDraw);
 }
 void DispatcherInfo::DebugDraw::set(BulletSharp::DebugDraw^ value)
 {

@@ -12,15 +12,15 @@ using namespace System::Drawing;
 
 namespace BulletSharp
 {
-	class DebugWrapper;
+	class DebugDrawWrapper;
 
 	public ref class DebugDraw
 	{
 	private:
-		DebugWrapper* _debugDraw;
+		DebugDrawWrapper* _debugDraw;
 	
 	internal:
-		DebugDraw(DebugWrapper* debugDraw);
+		DebugDraw(DebugDrawWrapper* debugDraw);
 	
 	public:
 		DebugDraw();
@@ -55,24 +55,25 @@ namespace BulletSharp
 		}
 
 	internal:
-		property DebugWrapper* UnmanagedPointer
+		property DebugDrawWrapper* UnmanagedPointer
 		{
-			DebugWrapper* get();
-			void set(DebugWrapper* value);
+			DebugDrawWrapper* get();
+			void set(DebugDrawWrapper* value);
 		}
 	};
 
-	// Each DebugDraw instance has an unmanaged DebugWrapper instance
+	// Each DebugDraw instance has an unmanaged DebugDrawWrapper instance
 	// that receives the drawing commands from Bullet and passes them on
 	// to DebugDraw itself.
 
-	class DebugWrapper : public btIDebugDraw
+	class DebugDrawWrapper : public btIDebugDraw
 	{
 	private:
+		auto_gcroot<DebugDraw^> _debugDraw;
 		int m_debugMode;
 
 	public:
-		auto_gcroot<DebugDraw^> _debugDraw;
+		DebugDrawWrapper(DebugDraw^ debugDraw);
 
 		virtual void draw3dText(const btVector3& location, const char* textString);
 		virtual void drawAabb(const btVector3& from, const btVector3& to, const btVector3& color);

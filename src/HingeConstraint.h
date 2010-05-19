@@ -10,6 +10,9 @@ namespace BulletSharp
 
 	public ref class HingeConstraint : TypedConstraint
 	{
+	internal:
+		HingeConstraint(btHingeConstraint* constraint);
+
 	public:
 		HingeConstraint(RigidBody^ rbA, RigidBody^ rbB, Vector3 pivotInA, Vector3 pivotInB,
 			Vector3 axisInA, Vector3 axisInB, bool useReferenceFrameA);

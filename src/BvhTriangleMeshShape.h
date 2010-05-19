@@ -13,6 +13,9 @@ namespace BulletSharp
 
 	public ref class BvhTriangleMeshShape : ConcaveShape
 	{
+	internal:
+		BvhTriangleMeshShape(btBvhTriangleMeshShape* shape);
+
 	public:
 		BvhTriangleMeshShape();
 		BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression);

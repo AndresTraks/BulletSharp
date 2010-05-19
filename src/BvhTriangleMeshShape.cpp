@@ -8,6 +8,11 @@
 #include "Serializer.h"
 #endif
 
+BvhTriangleMeshShape::BvhTriangleMeshShape(btBvhTriangleMeshShape* shape)
+: ConcaveShape(shape)
+{
+}
+
 BvhTriangleMeshShape::BvhTriangleMeshShape()
 : ConcaveShape(new btBvhTriangleMeshShape())
 {

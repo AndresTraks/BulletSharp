@@ -5,6 +5,11 @@
 #include "ConeTwistConstraint.h"
 #include "RigidBody.h"
 
+ConeTwistConstraint::ConeTwistConstraint(btConeTwistConstraint* constraint)
+: TypedConstraint(constraint)
+{
+}
+
 ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rbA, RigidBody^ rbB, Matrix rbAFrame, Matrix rbBFrame)
 : TypedConstraint(0)
 {

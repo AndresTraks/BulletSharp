@@ -5,6 +5,11 @@
 #include "HingeConstraint.h"
 #include "RigidBody.h"
 
+HingeConstraint::HingeConstraint(btHingeConstraint* constraint)
+: TypedConstraint(constraint)
+{
+}
+
 HingeConstraint::HingeConstraint(RigidBody^ rbA, RigidBody^ rbB,
 	Vector3 pivotInA, Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB, bool useReferenceFrameA)
 : TypedConstraint(0)

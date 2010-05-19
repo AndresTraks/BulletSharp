@@ -47,6 +47,9 @@ namespace BulletSharp
 
 	public ref class Point2PointConstraint : TypedConstraint
 	{
+	internal:
+		Point2PointConstraint(btPoint2PointConstraint* constraint);
+
 	public:
 		Point2PointConstraint(RigidBody^ rbA, RigidBody^ rbB, Vector3 pivotInA, Vector3 pivotInB);
 		Point2PointConstraint(RigidBody^ rbA, Vector3 pivotInA);

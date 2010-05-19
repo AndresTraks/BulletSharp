@@ -6,12 +6,11 @@
 
 DebugDraw::DebugDraw()
 {
-	_debugDraw = new DebugWrapper();
-	_debugDraw->_debugDraw = this;
+	_debugDraw = new DebugDrawWrapper(this);
 	_debugDraw->setDebugMode(0);
 }
 
-DebugDraw::DebugDraw(DebugWrapper* debugDraw)
+DebugDraw::DebugDraw(DebugDrawWrapper* debugDraw)
 {
 	_debugDraw = debugDraw;
 }
@@ -247,28 +246,33 @@ void DebugDraw::DebugMode::set(DebugDrawModes value)
 	_debugDraw->setDebugMode((int)value);
 }
 
-DebugWrapper* DebugDraw::UnmanagedPointer::get()
+DebugDrawWrapper* DebugDraw::UnmanagedPointer::get()
 {
 	return _debugDraw;
 }
-void DebugDraw::UnmanagedPointer::set(DebugWrapper* value)
+void DebugDraw::UnmanagedPointer::set(DebugDrawWrapper* value)
 {
 	_debugDraw = value;
 }
 
 
-void DebugWrapper::draw3dText(const btVector3& location, const char* textString)
+DebugDrawWrapper::DebugDrawWrapper(DebugDraw^ debugDraw)
+{
+	_debugDraw = debugDraw;
+}
+
+void DebugDrawWrapper::draw3dText(const btVector3& location, const char* textString)
 {
 	_debugDraw->Draw3dText(Math::BtVector3ToVector3(&location), StringConv::UnmanagedToManaged(textString));
 }
 
-void DebugWrapper::drawAabb(const btVector3& from, const btVector3& to, const btVector3& color)
+void DebugDrawWrapper::drawAabb(const btVector3& from, const btVector3& to, const btVector3& color)
 {
 	_debugDraw->DrawAabb(
 		Math::BtVector3ToVector3(&from), Math::BtVector3ToVector3(&to), BtVectorToBtColor(color));
 }
 
-void DebugWrapper::drawArc(const btVector3& center, const btVector3& normal, const btVector3& axis,
+void DebugDrawWrapper::drawArc(const btVector3& center, const btVector3& normal, const btVector3& axis,
 	btScalar radiusA, btScalar radiusB, btScalar minAngle, btScalar maxAngle,
 	const btVector3& color, bool drawSect, btScalar stepDegrees)
 {
@@ -276,7 +280,7 @@ void DebugWrapper::drawArc(const btVector3& center, const btVector3& normal, con
 		radiusA, radiusB, minAngle, maxAngle, BtVectorToBtColor(color), drawSect, stepDegrees);
 }
 
-void DebugWrapper::drawArc(const btVector3& center, const btVector3& normal, const btVector3& axis,
+void DebugDrawWrapper::drawArc(const btVector3& center, const btVector3& normal, const btVector3& axis,
 	btScalar radiusA, btScalar radiusB, btScalar minAngle, btScalar maxAngle,
 	const btVector3& color, bool drawSect)
 {
@@ -284,72 +288,72 @@ void DebugWrapper::drawArc(const btVector3& center, const btVector3& normal, con
 		radiusA, radiusB, minAngle, maxAngle, BtVectorToBtColor(color), drawSect);
 }
 
-void DebugWrapper::drawBox(const btVector3& bbMin, const btVector3& bbMax, const btTransform& trans, const btVector3& color)
+void DebugDrawWrapper::drawBox(const btVector3& bbMin, const btVector3& bbMax, const btTransform& trans, const btVector3& color)
 {
 	_debugDraw->DrawBox(
 		Math::BtVector3ToVector3(&bbMin), Math::BtVector3ToVector3(&bbMax),	Math::BtTransformToMatrix(&trans), BtVectorToBtColor(color));
 }
 
-void DebugWrapper::drawBox(const btVector3& bbMin, const btVector3& bbMax, const btVector3& color)
+void DebugDrawWrapper::drawBox(const btVector3& bbMin, const btVector3& bbMax, const btVector3& color)
 {
 	_debugDraw->DrawBox(
 		Math::BtVector3ToVector3(&bbMin), Math::BtVector3ToVector3(&bbMax),	BtVectorToBtColor(color));
 }
 
-void DebugWrapper::drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color)
+void DebugDrawWrapper::drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color)
 {
 	_debugDraw->DrawContactPoint(Math::BtVector3ToVector3(&PointOnB), Math::BtVector3ToVector3(&normalOnB),
 		distance, lifeTime, BtVectorToBtColor(color));
 }
 
-void DebugWrapper::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
+void DebugDrawWrapper::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
 {
 	_debugDraw->DrawLine(
 		Math::BtVector3ToVector3(&from), Math::BtVector3ToVector3(&to), BtVectorToBtColor(color));
 }
 
-void DebugWrapper::drawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor)
+void DebugDrawWrapper::drawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor)
 {
 	_debugDraw->DrawLine(
 		Math::BtVector3ToVector3(&from), Math::BtVector3ToVector3(&to), BtVectorToBtColor(fromColor), BtVectorToBtColor(toColor));
 }
 
-void DebugWrapper::drawSphere(const btVector3& p, btScalar radius, const btVector3& color)
+void DebugDrawWrapper::drawSphere(const btVector3& p, btScalar radius, const btVector3& color)
 {
 	_debugDraw->DrawSphere(Math::BtVector3ToVector3(&p), radius, BtVectorToBtColor(color));
 }
 
-void DebugWrapper::drawSphere(btScalar radius, const btTransform& transform, const btVector3& color)
+void DebugDrawWrapper::drawSphere(btScalar radius, const btTransform& transform, const btVector3& color)
 {
 	_debugDraw->DrawSphere(radius, Math::BtTransformToMatrix(&transform), BtVectorToBtColor(color));
 }
 
-void DebugWrapper::drawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
+void DebugDrawWrapper::drawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
 	btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color, btScalar stepDegrees)
 {
 	_debugDraw->DrawSpherePatch(Math::BtVector3ToVector3(&center), Math::BtVector3ToVector3(&up), Math::BtVector3ToVector3(&axis),
 		radius, minTh, maxTh, minPs, maxPs, BtVectorToBtColor(color), stepDegrees);
 }
 
-void DebugWrapper::drawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
+void DebugDrawWrapper::drawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
 	btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color)
 {
 	_debugDraw->DrawSpherePatch(Math::BtVector3ToVector3(&center), Math::BtVector3ToVector3(&up), Math::BtVector3ToVector3(&axis),
 		radius, minTh, maxTh, minPs, maxPs, BtVectorToBtColor(color));
 }
 
-void DebugWrapper::drawTransform(const btTransform& transform, btScalar orthoLen)
+void DebugDrawWrapper::drawTransform(const btTransform& transform, btScalar orthoLen)
 {
 	_debugDraw->DrawTransform(Math::BtTransformToMatrix(&transform), orthoLen);
 }
 
-void DebugWrapper::drawTriangle(const btVector3& v0, const btVector3& v1, const btVector3& v2, const btVector3& color, btScalar)
+void DebugDrawWrapper::drawTriangle(const btVector3& v0, const btVector3& v1, const btVector3& v2, const btVector3& color, btScalar)
 {
 	_debugDraw->DrawTriangle(Math::BtVector3ToVector3(&v0), Math::BtVector3ToVector3(&v1), Math::BtVector3ToVector3(&v2),
 		BtVectorToBtColor(color), 0);
 }
 
-void DebugWrapper::drawTriangle(const btVector3& v0, const btVector3& v1, const btVector3& v2,
+void DebugDrawWrapper::drawTriangle(const btVector3& v0, const btVector3& v1, const btVector3& v2,
 	const btVector3& n0, const btVector3& n1, const btVector3& n2, const btVector3& color, btScalar alpha)
 {
 	_debugDraw->DrawTriangle(Math::BtVector3ToVector3(&v0), Math::BtVector3ToVector3(&v1), Math::BtVector3ToVector3(&v2),
@@ -357,98 +361,98 @@ void DebugWrapper::drawTriangle(const btVector3& v0, const btVector3& v1, const 
 }
 
 /*
-void DebugWrapper::baseDraw3dText(const btVector3& location,const char* textString)
+void DebugDrawWrapper::baseDraw3dText(const btVector3& location,const char* textString)
 {
 	btIDebugDraw::draw3dText(location, textString);
 }
 */
 
-void DebugWrapper::baseDrawAabb(const btVector3& from, const btVector3& to, const btVector3& color)
+void DebugDrawWrapper::baseDrawAabb(const btVector3& from, const btVector3& to, const btVector3& color)
 {
 	btIDebugDraw::drawAabb(from, to, color);
 }
 
-void DebugWrapper::baseDrawArc(const btVector3& center, const btVector3& normal, const btVector3& axis,
+void DebugDrawWrapper::baseDrawArc(const btVector3& center, const btVector3& normal, const btVector3& axis,
 	btScalar radiusA, btScalar radiusB, btScalar minAngle, btScalar maxAngle,
 	const btVector3& color, bool drawSect, btScalar stepDegrees)
 {
 	btIDebugDraw::drawArc(center, normal, axis, radiusA, radiusB, minAngle, maxAngle, color, drawSect, stepDegrees);
 }
 
-void DebugWrapper::baseDrawArc(const btVector3& center, const btVector3& normal, const btVector3& axis,
+void DebugDrawWrapper::baseDrawArc(const btVector3& center, const btVector3& normal, const btVector3& axis,
 	btScalar radiusA, btScalar radiusB, btScalar minAngle, btScalar maxAngle,
 	const btVector3& color, bool drawSect)
 {
 	btIDebugDraw::drawArc(center, normal, axis, radiusA, radiusB, minAngle, maxAngle, color, drawSect);
 }
 
-void DebugWrapper::baseDrawBox(const btVector3& bbMin, const btVector3& bbMax, const btTransform& trans, const btVector3& color)
+void DebugDrawWrapper::baseDrawBox(const btVector3& bbMin, const btVector3& bbMax, const btTransform& trans, const btVector3& color)
 {
 	btIDebugDraw::drawBox(bbMin, bbMax, trans, color);
 }
 
-void DebugWrapper::baseDrawBox(const btVector3& bbMin, const btVector3& bbMax, const btVector3& color)
+void DebugDrawWrapper::baseDrawBox(const btVector3& bbMin, const btVector3& bbMax, const btVector3& color)
 {
 	btIDebugDraw::drawBox(bbMin, bbMax, color);
 }
 
 /*
-void DebugWrapper::baseDrawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color)
+void DebugDrawWrapper::baseDrawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color)
 {
 	btIDebugDraw::drawContactPoint(PointOnB, normalOnB, distance, lifeTime, color);
 }
 */
 
-void DebugWrapper::baseDrawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor)
+void DebugDrawWrapper::baseDrawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor)
 {
 	btIDebugDraw::drawLine(from, to, fromColor, toColor);
 }
 
-void DebugWrapper::baseDrawSphere(const btVector3& p, btScalar radius, const btVector3& color)
+void DebugDrawWrapper::baseDrawSphere(const btVector3& p, btScalar radius, const btVector3& color)
 {
 	btIDebugDraw::drawSphere(p, radius, color);
 }
 
-void DebugWrapper::baseDrawSphere(btScalar radius, const btTransform& transform, const btVector3& color)
+void DebugDrawWrapper::baseDrawSphere(btScalar radius, const btTransform& transform, const btVector3& color)
 {
 	btIDebugDraw::drawSphere(radius, transform, color);
 }
 
-void DebugWrapper::baseDrawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
+void DebugDrawWrapper::baseDrawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
 	btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color, btScalar stepDegrees)
 {
 	btIDebugDraw::drawSpherePatch(center, up, axis, radius, minTh, maxTh, minPs, maxPs, color, stepDegrees);
 }
 
-void DebugWrapper::baseDrawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
+void DebugDrawWrapper::baseDrawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
 	btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color)
 {
 	btIDebugDraw::drawSpherePatch(center, up, axis, radius, minTh, maxTh, minPs, maxPs, color);
 }
 
-void DebugWrapper::baseDrawTransform(const btTransform& transform, btScalar orthoLen)
+void DebugDrawWrapper::baseDrawTransform(const btTransform& transform, btScalar orthoLen)
 {
 	btIDebugDraw::drawTransform(transform, orthoLen);
 }
 
-void DebugWrapper::baseDrawTriangle(const btVector3& v0, const btVector3& v1, const btVector3& v2, const btVector3& color, btScalar)
+void DebugDrawWrapper::baseDrawTriangle(const btVector3& v0, const btVector3& v1, const btVector3& v2, const btVector3& color, btScalar)
 {
 	btIDebugDraw::drawTriangle(v0, v1, v2, color, 0);
 }
 
-void DebugWrapper::baseDrawTriangle(const btVector3& v0, const btVector3& v1, const btVector3& v2,
+void DebugDrawWrapper::baseDrawTriangle(const btVector3& v0, const btVector3& v1, const btVector3& v2,
 	const btVector3& n0, const btVector3& n1, const btVector3& n2, const btVector3& color, btScalar alpha)
 {
 	btIDebugDraw::drawTriangle(v0, v1, v2, n0, n1, n2, color, alpha);
 }
 
-void DebugWrapper::reportErrorWarning(const char* warningString)
+void DebugDrawWrapper::reportErrorWarning(const char* warningString)
 {
 	_debugDraw->ReportErrorWarning(StringConv::UnmanagedToManaged(warningString));
 }
 
 /*
-void DebugWrapper::baseReportErrorWarning(const char* warningString)
+void DebugDrawWrapper::baseReportErrorWarning(const char* warningString)
 {
 	btIDebugDraw::reportErrorWarning(warningString);
 }

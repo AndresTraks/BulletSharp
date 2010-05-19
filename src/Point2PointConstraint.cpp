@@ -53,6 +53,11 @@ void ConstraintSetting::UnmanagedPointer::set(btConstraintSetting* setting)
 }
 
 
+Point2PointConstraint::Point2PointConstraint(btPoint2PointConstraint* constraint)
+: TypedConstraint(constraint)
+{
+}
+
 Point2PointConstraint::Point2PointConstraint(RigidBody^ rbA, RigidBody^ rbB, Vector3 pivotInA, Vector3 pivotInB)
 : TypedConstraint(0)
 {
