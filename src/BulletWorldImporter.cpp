@@ -48,7 +48,7 @@ CollisionObject^ Serialize::BulletWorldImporter::CreateCollisionObject(Matrix st
 		_importer->baseCreateCollisionObject(*startTransformTemp, shape->UnmanagedPointer, bodyNameTemp));
 	
 	delete startTransformTemp;
-	delete bodyNameTemp;
+	StringConv::UnmanagedToManaged(bodyNameTemp);
 
 	return ret;
 }
@@ -62,7 +62,7 @@ RigidBody^ Serialize::BulletWorldImporter::CreateRigidBody(bool isDynamic, btSca
 		_importer->baseCreateRigidBody(isDynamic, mass, *startTransformTemp, shape->UnmanagedPointer, bodyNameTemp));
 	
 	delete startTransformTemp;
-	delete bodyNameTemp;
+	StringConv::UnmanagedToManaged(bodyNameTemp);
 
 	return ret;
 }
@@ -359,7 +359,7 @@ CollisionShape^ Serialize::BulletWorldImporter::GetCollisionShapeByName(String^ 
 	
 	CollisionShape^ ret = gcnew CollisionShape(_importer->getCollisionShapeByName(nameTemp));
 	
-	delete nameTemp;
+	StringConv::UnmanagedToManaged(nameTemp);
 	return ret;
 }
 
@@ -369,7 +369,7 @@ RigidBody^ Serialize::BulletWorldImporter::GetRigidBodyByName(String^ name)
 	
 	RigidBody^ ret = gcnew RigidBody(_importer->getRigidBodyByName(nameTemp));
 	
-	delete nameTemp;
+	StringConv::UnmanagedToManaged(nameTemp);
 	return ret;
 }
 
@@ -379,7 +379,7 @@ TypedConstraint^ Serialize::BulletWorldImporter::GetConstraintByName(String^ nam
 	
 	TypedConstraint^ ret = gcnew TypedConstraint(_importer->getConstraintByName(nameTemp));
 	
-	delete nameTemp;
+	StringConv::UnmanagedToManaged(nameTemp);
 	return ret;
 }
 

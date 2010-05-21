@@ -3,8 +3,11 @@
 #ifndef DISABLE_SERIALIZE
 
 #include "CollisionObject.h"
+#include "CollisionShape.h"
+#include "DataStream.h"
 #include "Serializer.h"
 #include "StringConv.h"
+#include "TypedConstraint.h"
 
 Serializer::Serializer(btSerializer *serializer)
 {
@@ -28,9 +31,10 @@ void Serializer::StartSerialization()
 	_serializer->startSerialization();
 }
 
-IntPtr Serializer::BufferPointer::get()
+BulletSharp::DataStream^ Serializer::LockBuffer()
 {
-	return IntPtr((void*)_serializer->getBufferPointer());
+	return gcnew DataStream((void*)_serializer->getBufferPointer(),
+		_serializer->getCurrentBufferSize(), true, false, false);
 }
 
 int Serializer::CurrentBufferSize::get()
@@ -42,9 +46,26 @@ void Serializer::RegisterNameForObject(Object^ obj, String^ name)
 {
 	const char* nameTemp = StringConv::ManagedToUnmanaged(name);
 
-	CollisionObject^ objCast = static_cast<CollisionObject^>(obj);
+	CollisionShape^ shapeCast = dynamic_cast<CollisionShape^>(obj);
+	if (shapeCast != nullptr)
+	{
+		_serializer->registerNameForPointer(shapeCast->UnmanagedPointer, nameTemp);
+		return;
+	}
+
+	CollisionObject^ objCast = dynamic_cast<CollisionObject^>(obj);
 	if (objCast != nullptr)
+	{
 		_serializer->registerNameForPointer(objCast->UnmanagedPointer, nameTemp);
+		return;
+	}
+
+	TypedConstraint^ constraintCast = dynamic_cast<TypedConstraint^>(obj);
+	if (constraintCast != nullptr)
+	{
+		_serializer->registerNameForPointer(constraintCast->UnmanagedPointer, nameTemp);
+		return;
+	}
 
 	StringConv::FreeUnmanagedString(nameTemp);
 }

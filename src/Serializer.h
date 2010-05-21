@@ -2,6 +2,8 @@
 
 namespace BulletSharp
 {
+	ref class DataStream;
+
 	public ref class Serializer
 	{
 	private:
@@ -19,10 +21,7 @@ namespace BulletSharp
 		void SerializeName(String^ name);
 		void StartSerialization();
 
-		property IntPtr BufferPointer
-		{
-			IntPtr get();
-		}
+		DataStream^ Serializer::LockBuffer();
 
 		property int CurrentBufferSize
 		{

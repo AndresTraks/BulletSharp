@@ -16,6 +16,9 @@ namespace SerializeDemo
         {
             RigidBody body = base.CreateRigidBody(isDynamic, mass, startTransform, shape, bodyName);
 
+            if (bodyName != null && bodyName.Equals("GroundName"))
+                body.UserObject = "Ground";
+
             if (shape.ShapeType == BroadphaseNativeType.StaticPlane)
                 body.UserObject = "Ground";
 
@@ -54,7 +57,7 @@ namespace SerializeDemo
             {
                 CollisionShape groundShape = new BoxShape(50);
                 CollisionShapes.PushBack(groundShape);
-                CollisionObject ground = LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
+                RigidBody ground = LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
                 ground.UserObject = "Ground";
 
                 // create a few dynamic rigidbodies
@@ -104,16 +107,20 @@ namespace SerializeDemo
                 for (i = 0; i < CollisionShapes.Size; i++)
                     serializer.RegisterNameForObject(CollisionShapes[i], "name" + i.ToString());
 
-                Point2PointConstraint p2p = new Point2PointConstraint((RigidBody)World.CollisionObjectArray[2], new Vector3(0, 1, 0));
+                Point2PointConstraint p2p = new Point2PointConstraint(RigidBody.Upcast(World.CollisionObjectArray[2]), new Vector3(0, 1, 0));
                 World.AddConstraint(p2p);
 
                 serializer.RegisterNameForObject(p2p, "constraintje");
 
                 World.Serialize(serializer);
 
-                //FileStream file = new FileStream("testFile.bullet", FileMode.CreateNew);
-                //file.Write(serializer.BufferPointer, 0, serializer.CurrentBufferSize);
-                //file.Close();
+                BulletSharp.DataStream data = serializer.LockBuffer();
+                byte[] dataBytes = new byte[data.Length];
+                data.Read(dataBytes, 0, dataBytes.Length);
+
+                FileStream file = new FileStream("testFile.bullet", FileMode.Create);
+                file.Write(dataBytes, 0, dataBytes.Length);
+                file.Close();
             }
         }
     }

@@ -53,7 +53,7 @@
     <Compile Include="VertexHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="BulletSharp, Version=0.1.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="BulletSharp, Version=0.7.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Release SlimDX\BulletSharp.dll</HintPath>
     </Reference>
