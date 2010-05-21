@@ -29,6 +29,23 @@ QuantizedBvh::!QuantizedBvh()
 	OnDisposed( this, nullptr );
 }
 
+void QuantizedBvh::BuildInternal()
+{
+	_bvh->buildInternal();
+}
+
+#ifndef DISABLE_SERIALIZE
+unsigned int QuantizedBvh::CalculateSerializeBufferSize()
+{
+	return _bvh->calculateSerializeBufferSize();
+}
+
+unsigned int QuantizedBvh::AlignmentSerializationPadding::get()
+{
+	return btQuantizedBvh::getAlignmentSerializationPadding();
+}
+#endif
+
 bool QuantizedBvh::IsDisposed::get()
 {
 	return (_bvh == NULL);

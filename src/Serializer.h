@@ -15,7 +15,7 @@ namespace BulletSharp
 		//String^ FindNameForPointer(Object^ obj);
 		//Object^ FindObject(Object^ oldPtr);
 		void FinishSerialization();
-		//void RegisterNameForObject(Object^ obj, String^ name);
+		void RegisterNameForObject(Object^ obj, String^ name);
 		void SerializeName(String^ name);
 		void StartSerialization();
 

@@ -52,12 +52,10 @@ namespace BasicDemo
                     for (j = 0; j < ArraySizeZ; j++)
                     {
                         Matrix startTransform = Matrix.Translation(
-                            new Vector3(
-                                2*i + start_x,
-                                2*k + start_y,
-                                2*j + start_z
-                                )
-                            );
+                            2*i + start_x,
+                            2*k + start_y,
+                            2*j + start_z
+                        );
 
                         // using motionstate is recommended, it provides interpolation capabilities
                         // and only synchronizes 'active' objects

@@ -112,29 +112,29 @@ namespace BulletSharp
 				virtual bool get();
 			}
 
-			property bool NumBvhs
+			property int NumBvhs
 			{
-				bool get();
+				int get();
 			}
 
-			property bool NumCollisionShapes
+			property int NumCollisionShapes
 			{
-				bool get();
+				int get();
 			}
 
-			property bool NumConstraints
+			property int NumConstraints
 			{
-				bool get();
+				int get();
 			}
 
-			property bool NumRigidBodies
+			property int NumRigidBodies
 			{
-				bool get();
+				int get();
 			}
 
-			property bool NumTriangleInfoMaps
+			property int NumTriangleInfoMaps
 			{
-				bool get();
+				int get();
 			}
 
 			property bool VerboseMode
@@ -150,7 +150,7 @@ namespace BulletSharp
 			auto_gcroot<BulletWorldImporter^> _importer;
 
 		public:
-			BulletWorldImporterWrapper(btDynamicsWorld* world);
+			BulletWorldImporterWrapper(btDynamicsWorld* world, BulletWorldImporter^ importer);
 
 			// bodies
 			virtual btCollisionObject* createCollisionObject(const btTransform& startTransform,

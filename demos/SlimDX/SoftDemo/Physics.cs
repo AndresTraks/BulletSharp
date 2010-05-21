@@ -4,7 +4,7 @@ using DemoFramework;
 using SlimDX;
 using System;
 
-namespace BasicDemo
+namespace SoftDemo
 {
     class Physics : PhysicsContext
     {

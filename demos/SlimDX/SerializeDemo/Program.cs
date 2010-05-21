@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace SoftDemo
+namespace SerializeDemo
 {
     static class Program
     {
@@ -30,7 +30,7 @@ namespace SoftDemo
                 return;
             }
 
-            SoftDemo game = new SoftDemo();
+            SerializeDemo game = new SerializeDemo();
             game.Run();
             game.Dispose();
         }

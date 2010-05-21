@@ -180,6 +180,13 @@ namespace BulletSharp
 		Cuda = SOLVER_CUDA
 	};
 
+	public enum class TraversalMode
+	{
+		Recursive = btQuantizedBvh::TRAVERSAL_RECURSIVE,
+		Stackless = ::btQuantizedBvh::TRAVERSAL_STACKLESS,
+		StacklessCacheFriendly = btQuantizedBvh::TRAVERSAL_STACKLESS_CACHE_FRIENDLY
+	};
+
 #ifndef DISABLE_CONSTRAINTS
 	public enum class TypedConstraintType
 	{

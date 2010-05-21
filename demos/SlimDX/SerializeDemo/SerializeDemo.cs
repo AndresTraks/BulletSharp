@@ -6,16 +6,16 @@ using SlimDX.DirectInput;
 using System;
 using System.Drawing;
 
-namespace SoftDemo
+namespace SerializeDemo
 {
-    class SoftDemo : Game
+    class SerializeDemo : Game
     {
         int Width = 1024, Height = 768;
         Color ambient = Color.Gray;
-        Vector3 eye = new Vector3(70, 20, 40);
-        Vector3 target = new Vector3(0, 0, 10);
+        Vector3 eye = new Vector3(30, 20, 10);
+        Vector3 target = new Vector3(0, 5, 0);
 
-        Mesh box, largeBox, groundBox, cylinder, sphere;
+        Mesh box, groundBox, sphere;
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
         
@@ -32,17 +32,15 @@ namespace SoftDemo
             if (disposing)
             {
                 box.Dispose();
-                largeBox.Dispose();
-                cylinder.Dispose();
-                sphere.Dispose();
                 groundBox.Dispose();
+                sphere.Dispose();
             }
         }
 
         protected override void OnInitializeDevice()
         {
             Form.ClientSize = new Size(Width, Height);
-            Form.Text = "BulletSharp - SoftBody Demo";
+            Form.Text = "BulletSharp - Serialize Demo";
 
             DeviceSettings9 settings = new DeviceSettings9();
             settings.CreationFlags = CreateFlags.HardwareVertexProcessing;
@@ -60,23 +58,18 @@ namespace SoftDemo
             }
         }
 
-        protected override void OnInitialize()
+        protected override void  OnInitialize()
         {
-            physics = new Physics();
-            physics.SetDebugDrawer(new PhysicsDebugDrawLineGathering(Device));
-
-            float size = physics.Scaling * 2;
-            box = Mesh.CreateBox(Device, size, size, size);
-            largeBox = Mesh.CreateBox(Device, 4 * size, size, 3 * size);
+            // Create meshes to draw
+            box = Mesh.CreateBox(Device, 2, 2, 2);
             groundBox = Mesh.CreateBox(Device, 100, 100, 100);
-            cylinder = Mesh.CreateCylinder(Device, 1, 1, 4, 8, 1);
-            sphere = Mesh.CreateSphere(Device, 1.5f, 12, 12);
+            //sphere = Mesh.CreateSphere(Device, 1, 4, 2);
+            sphere = Mesh.CreateSphere(Device, 1, 12, 12);
 
             light = new Light();
             light.Type = LightType.Point;
-            light.Range = 75;
-            light.Position = new Vector3(10, 25, 0);
-            light.Falloff = 1.0f;
+            light.Range = 70;
+            light.Position = new Vector3(10, 25, 10);
             light.Diffuse = Color.LemonChiffon;
 
             activeMaterial = new Material();
@@ -91,11 +84,15 @@ namespace SoftDemo
             groundMaterial.Diffuse = Color.Green;
             groundMaterial.Ambient = ambient;
 
+            Freelook.SetEyeTarget(eye, target);
+
             Fps.Text = "Move using mouse and WASD+shift\n" +
                 "F3 - Toggle debug\n" +
                 "F11 - Toggle fullscreen";
 
-            Freelook.SetEyeTarget(eye, target);
+            physics = new Physics();
+            physics.SetDebugDrawMode(Device, DebugDrawModes.DrawWireframe |
+                DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits);
         }
 
         protected override void OnResourceLoad()
@@ -118,9 +115,9 @@ namespace SoftDemo
             if (Input.KeyboardDown.Contains(Key.F3))
             {
                 if (physics.IsDebugDrawEnabled == false)
-                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawWireframe);
+                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawAabb);
                 else
-                    physics.SetDebugDrawMode(Device, 0);
+                    physics.SetDebugDrawMode(Device, DebugDrawModes.None);
             }
 
             InputUpdate(Freelook.Eye, Freelook.Target, physics);
@@ -136,54 +133,31 @@ namespace SoftDemo
 
             foreach (CollisionObject colObj in physics.World.CollisionObjectArray)
             {
+                RigidBody body = RigidBody.Upcast(colObj);
+                Device.SetTransform(TransformState.World, body.WorldTransform);
+
+                if ((string)colObj.UserObject == "Ground")
+                {
+                    if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.StaticPlane)
+                        Device.SetTransform(TransformState.World, Matrix.Translation(0, -50, 0) * body.WorldTransform);
+
+                    Device.Material = groundMaterial;
+                    groundBox.DrawSubset(0);
+                    continue;
+                }
+
                 if (colObj.ActivationState == ActivationState.ActiveTag)
                     Device.Material = activeMaterial;
                 else
                     Device.Material = passiveMaterial;
 
-                if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
+                if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SphereShape)
                 {
-                    Mesh mesh = Physics.GetMeshFromSoftBody(Device, colObj);
-
-                    if (mesh == null)
-                        continue;
-
-                    Device.SetTransform(TransformState.World, Matrix.Identity);
-                    Device.SetRenderState(RenderState.CullMode, Cull.None);
-
-                    mesh.DrawSubset(0);
-                    mesh.Dispose();
-                }
-                else if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.BoxShape)
-                {
-                    RigidBody body = RigidBody.Upcast(colObj);
-                    Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
-
-                    if ((string)body.UserObject == "Ground")
-                    {
-                        Device.Material = groundMaterial;
-                        groundBox.DrawSubset(0);
-                    }
-                    else
-                    {
-                        if ((string)body.UserObject == "LargeBox")
-                            largeBox.DrawSubset(0);
-                        else
-                            box.DrawSubset(0);
-                    }
-                }
-                else if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SphereShape)
-                {
-                    RigidBody body = RigidBody.Upcast(colObj);
-                    Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
                     sphere.DrawSubset(0);
+                    continue;
                 }
-                else if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.CompoundShape)
-                {
-                    RigidBody body = RigidBody.Upcast(colObj);
-                    Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
-                    cylinder.DrawSubset(0);
-                }
+
+                box.DrawSubset(0);
             }
 
             physics.DebugDrawWorld();

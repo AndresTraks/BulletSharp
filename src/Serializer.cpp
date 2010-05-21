@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 
 #ifndef DISABLE_SERIALIZE
+
+#include "CollisionObject.h"
 #include "Serializer.h"
 #include "StringConv.h"
 
@@ -34,6 +36,17 @@ IntPtr Serializer::BufferPointer::get()
 int Serializer::CurrentBufferSize::get()
 {
 	return _serializer->getCurrentBufferSize();
+}
+
+void Serializer::RegisterNameForObject(Object^ obj, String^ name)
+{
+	const char* nameTemp = StringConv::ManagedToUnmanaged(name);
+
+	CollisionObject^ objCast = static_cast<CollisionObject^>(obj);
+	if (objCast != nullptr)
+		_serializer->registerNameForPointer(objCast->UnmanagedPointer, nameTemp);
+
+	StringConv::FreeUnmanagedString(nameTemp);
 }
 
 btSerializer* Serializer::UnmanagedPointer::get()
