@@ -1112,6 +1112,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ConvexTriangleMeshShape.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\CylinderShape.cpp"
 				>
 			</File>
@@ -1525,6 +1529,10 @@
 					</File>
 					<File
 						RelativePath=".\src\ConvexShape.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\ConvexTriangleMeshShape.h"
 						>
 					</File>
 					<File

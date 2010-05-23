@@ -20,7 +20,6 @@ Collision/CollisionDispatch
 
 Collision/CollisionShapes
 
-- ConvexTriangleMeshShape
 - Material
 - MinkowskiSumShape
 - MultiMaterialTriangleMeshShape

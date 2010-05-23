@@ -389,9 +389,11 @@ String^	Serialize::BulletWorldImporter::GetNameForObject(Object^ obj)
 	if (shape != nullptr)
 		return StringConv::UnmanagedToManaged(_importer->getNameForPointer(shape->UnmanagedPointer));
 
+#ifndef DISABLE_CONSTRAINTS
 	TypedConstraint^ constraint = static_cast<TypedConstraint^>(obj);
 	if (constraint != nullptr)
 		return StringConv::UnmanagedToManaged(_importer->getNameForPointer(constraint->UnmanagedPointer));
+#endif
 
 	CollisionObject^ body = static_cast<RigidBody^>(obj);
 	if (body != nullptr)

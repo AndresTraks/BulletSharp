@@ -7,7 +7,9 @@
 #include "DataStream.h"
 #include "Serializer.h"
 #include "StringConv.h"
+#ifndef DISABLE_CONSTRAINTS
 #include "TypedConstraint.h"
+#endif
 
 Serializer::Serializer(btSerializer *serializer)
 {
@@ -60,12 +62,14 @@ void Serializer::RegisterNameForObject(Object^ obj, String^ name)
 		return;
 	}
 
+#ifndef DISABLE_CONSTRAINTS
 	TypedConstraint^ constraintCast = dynamic_cast<TypedConstraint^>(obj);
 	if (constraintCast != nullptr)
 	{
 		_serializer->registerNameForPointer(constraintCast->UnmanagedPointer, nameTemp);
 		return;
 	}
+#endif
 
 	StringConv::FreeUnmanagedString(nameTemp);
 }
