@@ -68,9 +68,11 @@ namespace BulletSharp
 		void ClearForces();
 		void RemoveAction(ActionInterface^ actionInterface);
 		void RemoveRigidBody(RigidBody^ rigidBody);
+#ifndef DISABLE_INTERNAL
 		//void SetInternalTickCallback(InternalTickCallback cb, Object^ worldUserInfo, bool isPreTick);
 		//void SetInternalTickCallback(InternalTickCallback cb, Object^ worldUserInfo);
 		//void SetInternalTickCallback(InternalTickCallback cb);
+#endif
 		void StepSimulation(btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep);
 		void StepSimulation(btScalar timeStep, int maxSubSteps);
 		void StepSimulation(btScalar timeStep);

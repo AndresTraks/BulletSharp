@@ -81,7 +81,9 @@ namespace BulletSharp
 		void CleanProxyFromPairs(BroadphaseProxy^ proxy, Dispatcher^ dispatcher);
 		BroadphasePair^ FindPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1);
 		void ProcessAllOverlappingPairs(array<OverlapCallback^>^ callback, Dispatcher^ dispatcher);
+#ifndef DISABLE_INTERNAL
 		void SetInternalGhostPairCallback(OverlappingPairCallback^ ghostPairCallback);
+#endif
 		void SetOverlapFilterCallback(OverlapFilterCallback^ callback);
 		void SortOverlappingPairs(Dispatcher^ dispatcher);
 

@@ -45,7 +45,7 @@ void TriangleCallback::UnmanagedPointer::set(btTriangleCallback* value)
 	_callback = value;
 }
 
-
+#ifndef DISABLE_INTERNAL
 InternalTriangleIndexCallback::InternalTriangleIndexCallback(btInternalTriangleIndexCallback* callback)
 {
 	_callback = callback;
@@ -88,3 +88,4 @@ void InternalTriangleIndexCallback::UnmanagedPointer::set(btInternalTriangleInde
 {
 	_callback = value;
 }
+#endif

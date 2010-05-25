@@ -203,10 +203,12 @@ void Dispatcher::FreeCollisionAlgorithm(IntPtr ptr)
 	_dispatcher->freeCollisionAlgorithm(ptr.ToPointer());
 }
 
+#ifndef DISABLE_INTERNAL
 PersistentManifold^ Dispatcher::GetManifoldByIndexInternal(int index)
 {
 	return gcnew PersistentManifold(_dispatcher->getManifoldByIndexInternal(index));
 }
+#endif
 
 PersistentManifold^ Dispatcher::GetNewManifold(IntPtr body0, IntPtr body1)
 {

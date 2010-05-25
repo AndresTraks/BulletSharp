@@ -115,11 +115,13 @@ void OverlappingPairCache::ProcessAllOverlappingPairs(array<OverlapCallback^>^ c
 	delete[] btCallbacks;
 }
 
+#ifndef DISABLE_INTERNAL
 void OverlappingPairCache::SetInternalGhostPairCallback(
 	OverlappingPairCallback^ ghostPairCallback)
 {
 	UnmanagedPointer->setInternalGhostPairCallback(ghostPairCallback->UnmanagedPointer);
 }
+#endif
 
 void OverlappingPairCache::SetOverlapFilterCallback(OverlapFilterCallback^ callback)
 {

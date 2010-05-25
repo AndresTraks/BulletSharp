@@ -39,6 +39,7 @@ namespace BulletSharp
 		}
 	};
 
+#ifndef DISABLE_INTERNAL
 	public ref class InternalTriangleIndexCallback : BulletSharp::IDisposable
 	{
 	public:
@@ -71,4 +72,5 @@ namespace BulletSharp
 			void set(btInternalTriangleIndexCallback* value);
 		}
 	};
+#endif
 };

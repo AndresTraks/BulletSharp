@@ -346,9 +346,13 @@ namespace BulletSharp
 		void OptimizeTopDown(int bu_treshold);
 		void OptimizeTopDown();
 		static void RayTest(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo,	ICollide^ policy);
+
+#ifndef DISABLE_INTERNAL
 		void RayTestInternal(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo,
 			Vector3 rayDirectionInverse, array<unsigned int>^ signs,
 			btScalar lambda_max, Vector3 aabbMin, Vector3 aabbMax, ICollide^ policy);
+#endif
+
 		void Remove(DbvtNode^ leaf);
 		bool Update(DbvtNode^ leaf, DbvtVolume^ volume, btScalar margin);
 		bool Update(DbvtNode^ leaf, DbvtVolume^ volume, Vector3 velocity);

@@ -1304,6 +1304,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ShapeHull.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SimpleBroadphase.cpp"
 				>
 			</File>
@@ -1593,6 +1597,10 @@
 					</File>
 					<File
 						RelativePath=".\src\ScaledBvhTriangleMeshShape.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\ShapeHull.h"
 						>
 					</File>
 					<File

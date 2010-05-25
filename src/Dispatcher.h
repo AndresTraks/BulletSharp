@@ -146,8 +146,10 @@ namespace BulletSharp
 		CollisionAlgorithm^ FindAlgorithm(CollisionObject^ body0,
 			CollisionObject^ body1);
 		void FreeCollisionAlgorithm(IntPtr ptr);
+#ifndef DISABLE_INTERNAL
 		//array<PersistentManifold^>^ GetInternalManifoldPointer();
 		PersistentManifold^ GetManifoldByIndexInternal(int index);
+#endif
 		PersistentManifold^ GetNewManifold(IntPtr body0, IntPtr body1);
 		bool NeedsCollision(CollisionObject^ body0, CollisionObject^ body1);
 		bool NeedsResponse(CollisionObject^ body0, CollisionObject^ body1);

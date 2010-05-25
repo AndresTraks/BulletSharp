@@ -20,8 +20,6 @@ Collision/CollisionDispatch
 
 Collision/CollisionShapes
 
-- ShapeHull
-0 StridingMeshInterface
 - TetrahedronShape
 - TriangleBuffer
 0 TriangleIndexVertexArray

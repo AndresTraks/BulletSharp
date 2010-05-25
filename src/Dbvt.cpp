@@ -722,6 +722,7 @@ void Dbvt::RayTest(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, ICollide^ pol
 	delete rayToTemp;
 }
 
+#ifndef DISABLE_INTERNAL
 void Dbvt::RayTestInternal(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo,
 	Vector3 rayDirectionInverse, array<unsigned int>^ signs,
 	btScalar lambda_max, Vector3 aabbMin, Vector3 aabbMax, ICollide^ policy)
@@ -747,6 +748,7 @@ void Dbvt::RayTestInternal(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo,
 	delete aabbMinTemp;
 	delete aabbMaxTemp;
 }
+#endif
 
 void Dbvt::Remove(DbvtNode^ leaf)
 {
