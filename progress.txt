@@ -20,8 +20,6 @@ Collision/CollisionDispatch
 
 Collision/CollisionShapes
 
-- MinkowskiSumShape
-- MultiSphereShape
 0 OptimizedBvh
 0 PolyhedralConvexShape
 - ScaledBvhTriangleMeshShape

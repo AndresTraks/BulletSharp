@@ -63,8 +63,17 @@ namespace SerializeDemo
                 // create a few dynamic rigidbodies
                 float mass = 1.0f;
 
-                CollisionShape colShape = new BoxShape(1);
+                //Vector3[] positions = new Vector3[2] { new Vector3(0.1f, 0.2f, 0.3f), new Vector3(0.4f, 0.5f, 0.6f) };
+                //float[] radi = new float[2] { 0.3f, 0.4f };
+                
+                //CollisionShape colShape = new MultiSphereShape(positions, radi);
+
+                //CollisionShape colShape = new CapsuleShapeZ(1, 1);
+                //CollisionShape colShape = new CylinderShapeZ(1, 1, 1);
+                //CollisionShape colShape = new BoxShape(1);
+                CollisionShape colShape = new SphereShape(1);
                 CollisionShapes.PushBack(colShape);
+
                 Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
                 float start_x = StartPosX - ArraySizeX / 2;

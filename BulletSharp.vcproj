@@ -1224,11 +1224,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MinkowskiSumShape.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MotionState.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\MultiMaterialTriangleMeshShape.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MultiSphereShape.cpp"
 				>
 			</File>
 			<File
@@ -1560,7 +1568,15 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\MinkowskiSumShape.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\MultiMaterialTriangleMeshShape.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\MultiSphereShape.h"
 						>
 					</File>
 					<File
