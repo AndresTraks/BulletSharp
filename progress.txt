@@ -20,7 +20,6 @@ Collision/CollisionDispatch
 
 Collision/CollisionShapes
 
-- TetrahedronShape
 - TriangleBuffer
 0 TriangleIndexVertexArray
 - TriangleInfoMap

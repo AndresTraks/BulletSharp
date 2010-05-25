@@ -1436,6 +1436,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TetrahedronShape.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\TriangleCallback.cpp"
 				>
 			</File>
@@ -1613,6 +1617,10 @@
 					</File>
 					<File
 						RelativePath=".\src\StridingMeshInterface.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\TetrahedronShape.h"
 						>
 					</File>
 					<File
