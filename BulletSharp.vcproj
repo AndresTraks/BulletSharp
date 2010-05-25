@@ -996,6 +996,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\BulletMaterial.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\BulletWorldImporter.cpp"
 				>
 			</File>
@@ -1221,6 +1225,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MotionState.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MultiMaterialTriangleMeshShape.cpp"
 				>
 			</File>
 			<File
@@ -1488,6 +1496,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\BulletMaterial.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\BvhTriangleMeshShape.h"
 						>
 					</File>
@@ -1545,6 +1557,10 @@
 					</File>
 					<File
 						RelativePath=".\src\HeightfieldTerrainShape.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\MultiMaterialTriangleMeshShape.h"
 						>
 					</File>
 					<File

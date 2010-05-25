@@ -18,6 +18,7 @@
 //#include "HfFluidBuoyantConvexShape.h"
 //#include "HfFluidShape.h"
 //#include "MinkowskiSumShape.h"
+#include "MultiMaterialTriangleMeshShape.h"
 //#include "MultiSphereShape.h"
 //#include "MultiSphereShape.h"
 #include "StaticPlaneShape.h"
@@ -103,8 +104,8 @@ CollisionShape^ CollisionShape::UpcastDetect()
 	//	return gcnew MinkowskiDifferenceShape((btMinkowskiDifferenceShape*) _collisionShape);
 	//case BroadphaseNativeType::MinkowskiSumShape:
 	//	return gcnew MinkowskiSumShape((btMinkowskiSumShape*) _collisionShape);
-	//case BroadphaseNativeType::MultiMaterialTriangleMesh:
-	//	return gcnew MultiMaterialTriangleMesh((btMultiMaterialTriangleMesh*) _collisionShape);
+	case BroadphaseNativeType::MultiMaterialTriangleMesh:
+		return gcnew MultiMaterialTriangleMeshShape((btMultimaterialTriangleMeshShape*) _collisionShape);
 	//case BroadphaseNativeType::MultiSphereShape:
 	//	return gcnew MultiSphereShape((btMultiSphereShape*) _collisionShape);
 	//case BroadphaseNativeType::ScaledTriangleMeshShape:
