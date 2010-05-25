@@ -1292,6 +1292,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ScaledBvhTriangleMeshShape.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SequentialImpulseConstraintSolver.cpp"
 				>
 			</File>
@@ -1585,6 +1589,10 @@
 					</File>
 					<File
 						RelativePath=".\src\PolyhedralConvexShape.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\ScaledBvhTriangleMeshShape.h"
 						>
 					</File>
 					<File
