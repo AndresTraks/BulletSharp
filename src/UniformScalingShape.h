@@ -19,6 +19,11 @@ namespace BulletSharp
 			ConvexShape^ get();
 		}
 
+		property btScalar UniformScalingFactor
+		{
+			btScalar get();
+		}
+
 	internal:
 		property btUniformScalingShape* UnmanagedPointer
 		{

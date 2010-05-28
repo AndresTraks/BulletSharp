@@ -17,6 +17,11 @@ ConvexShape^ UniformScalingShape::ChildShape::get()
 	return gcnew ConvexShape(UnmanagedPointer->getChildShape());
 }
 
+btScalar UniformScalingShape::UniformScalingFactor::get()
+{
+	return UnmanagedPointer->getUniformScalingFactor();
+}
+
 btUniformScalingShape* UniformScalingShape::UnmanagedPointer::get()
 {
 	return (btUniformScalingShape*)ConvexShape::UnmanagedPointer;
