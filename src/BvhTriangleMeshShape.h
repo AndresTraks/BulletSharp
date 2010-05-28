@@ -3,7 +3,6 @@
 // Fully implemented as of 10 May 2010
 
 #include "ConcaveShape.h"
-#include "OptimizedBvh.h"
 
 namespace BulletSharp
 {
@@ -30,18 +29,22 @@ namespace BulletSharp
 		void ProcessAllTriangles(TriangleCallback^ callback, Vector3 aabbMin, Vector3 aabbMax);
 		void RecalcLocalAabb();
 		void RefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbMax);
+#ifndef DISABLE_BVH
 		void SetOptimizedBvh(BulletSharp::OptimizedBvh^ bvh, Vector3 localScaling);
+#endif
 
 #ifndef DISABLE_SERIALIZE
 		void SerializeSingleBvh(Serializer^ serializer);
 		void SerializeSingleTriangleInfoMap(Serializer^ serializer);
 #endif
 
+#ifndef DISABLE_BVH
 		property BulletSharp::OptimizedBvh^ OptimizedBvh
 		{
 			BulletSharp::OptimizedBvh^ get();
 			void set(BulletSharp::OptimizedBvh^ value);
 		}
+#endif
 
 		property bool OwnsBvh
 		{

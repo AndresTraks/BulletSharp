@@ -8,6 +8,9 @@
 
 #include "BulletWorldImporter.h"
 #include "StringConv.h"
+#ifndef DISABLE_BVH
+#include "OptimizedBvh.h"
+#endif
 
 Serialize::BulletWorldImporter::BulletWorldImporter(DynamicsWorld^ world)
 {
@@ -124,10 +127,12 @@ TriangleIndexVertexArray^ Serialize::BulletWorldImporter::CreateTriangleMeshCont
 	return gcnew TriangleIndexVertexArray(_importer->baseCreateTriangleMeshContainer());
 }
 
+#ifndef DISABLE_BVH
 BvhTriangleMeshShape^ Serialize::BulletWorldImporter::CreateBvhTriangleMeshShape(StridingMeshInterface^ trimesh, OptimizedBvh^ bvh)
 {
 	return gcnew BvhTriangleMeshShape(_importer->baseCreateBvhTriangleMeshShape(trimesh->UnmanagedPointer, bvh->UnmanagedPointer));
 }
+#endif
 
 CollisionShape^ Serialize::BulletWorldImporter::CreateConvexTriangleMeshShape(StridingMeshInterface^ trimesh)
 {
@@ -149,10 +154,12 @@ CompoundShape^ Serialize::BulletWorldImporter::CreateCompoundShape()
 	return gcnew CompoundShape(_importer->baseCreateCompoundShape());
 }
 
+#ifndef DISABLE_BVH
 OptimizedBvh^ Serialize::BulletWorldImporter::CreateOptimizedBvh()
 {
 	return gcnew OptimizedBvh(_importer->baseCreateOptimizedBvh());
 }
+#endif
 
 //TriangleInfoMap^ Serialize::BulletWorldImporter::CreateTriangleInfoMap()
 //{
@@ -343,10 +350,12 @@ TypedConstraint^ Serialize::BulletWorldImporter::GetConstraintByIndex(int index)
 	return gcnew TypedConstraint(_importer->getConstraintByIndex(index));
 }
 
+#ifndef DISABLE_BVH
 OptimizedBvh^ Serialize::BulletWorldImporter::GetBvhByIndex(int index)
 {
 	return gcnew OptimizedBvh(_importer->getBvhByIndex(index));
 }
+#endif
 
 //TriangleInfoMap^ Serialize::BulletWorldImporter::GetTriangleInfoMapByIndex(int index)
 //{
@@ -516,10 +525,12 @@ class btTriangleIndexVertexArray* Serialize::BulletWorldImporterWrapper::createT
 	return _importer->CreateTriangleMeshContainer()->UnmanagedPointer;
 }
 
+#ifndef DISABLE_BVH
 btBvhTriangleMeshShape* Serialize::BulletWorldImporterWrapper::createBvhTriangleMeshShape(btStridingMeshInterface* trimesh, btOptimizedBvh* bvh)
 {
 	return _importer->CreateBvhTriangleMeshShape(gcnew StridingMeshInterface(trimesh), gcnew OptimizedBvh(bvh))->UnmanagedPointer;
 }
+#endif
 
 btCollisionShape* Serialize::BulletWorldImporterWrapper::createConvexTriangleMeshShape(btStridingMeshInterface* trimesh)
 {
@@ -541,10 +552,12 @@ class btCompoundShape* Serialize::BulletWorldImporterWrapper::createCompoundShap
 	return _importer->CreateCompoundShape()->UnmanagedPointer;
 }
 
+#ifndef DISABLE_BVH
 btOptimizedBvh* Serialize::BulletWorldImporterWrapper::createOptimizedBvh()
 {
 	return _importer->CreateOptimizedBvh()->UnmanagedPointer;
 }
+#endif
 
 btTriangleInfoMap* Serialize::BulletWorldImporterWrapper::createTriangleInfoMap()
 {
@@ -694,10 +707,12 @@ class btTriangleIndexVertexArray* Serialize::BulletWorldImporterWrapper::baseCre
 	return btBulletWorldImporter::createTriangleMeshContainer();
 }
 
+#ifndef DISABLE_BVH
 btBvhTriangleMeshShape* Serialize::BulletWorldImporterWrapper::baseCreateBvhTriangleMeshShape(btStridingMeshInterface* trimesh, btOptimizedBvh* bvh)
 {
 	return btBulletWorldImporter::createBvhTriangleMeshShape(trimesh, bvh);
 }
+#endif
 
 btCollisionShape* Serialize::BulletWorldImporterWrapper::baseCreateConvexTriangleMeshShape(btStridingMeshInterface* trimesh)
 {
@@ -719,10 +734,12 @@ class btCompoundShape* Serialize::BulletWorldImporterWrapper::baseCreateCompound
 	return btBulletWorldImporter::createCompoundShape();
 }
 
+#ifndef DISABLE_BVH
 btOptimizedBvh* Serialize::BulletWorldImporterWrapper::baseCreateOptimizedBvh()
 {
 	return btBulletWorldImporter::createOptimizedBvh();
 }
+#endif
 
 btTriangleInfoMap* Serialize::BulletWorldImporterWrapper::baseCreateTriangleInfoMap()
 {

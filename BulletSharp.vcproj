@@ -1456,6 +1456,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\UniformScalingShape.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\UnionFind.cpp"
 				>
 			</File>
@@ -1633,6 +1637,10 @@
 					</File>
 					<File
 						RelativePath=".\src\TriangleShape.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\UniformScalingShape.h"
 						>
 					</File>
 				</Filter>

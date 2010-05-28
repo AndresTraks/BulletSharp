@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_BVH
+
 #include "OptimizedBvh.h"
 #include "StridingMeshInterface.h"
 
@@ -55,3 +57,5 @@ btOptimizedBvh* OptimizedBvh::UnmanagedPointer::get()
 {
 	return (btOptimizedBvh*)QuantizedBvh::UnmanagedPointer;
 }
+
+#endif

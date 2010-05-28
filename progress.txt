@@ -25,7 +25,6 @@ Collision/CollisionShapes
 - TriangleInfoMap
 - TriangleMesh
 - TriangleMeshShape
-- UniformScalingShape
 
 
 

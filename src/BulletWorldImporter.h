@@ -62,14 +62,18 @@ namespace BulletSharp
 			virtual CollisionShape^ CreateCylinderShapeY(btScalar radius, btScalar height);
 			virtual CollisionShape^ CreateCylinderShapeZ(btScalar radius, btScalar height);
 			virtual TriangleIndexVertexArray^ CreateTriangleMeshContainer();
+#ifndef DISABLE_BVH
 			virtual BvhTriangleMeshShape^ CreateBvhTriangleMeshShape(StridingMeshInterface^ trimesh, OptimizedBvh^ bvh);
+#endif
 			virtual CollisionShape^ CreateConvexTriangleMeshShape(StridingMeshInterface^ trimesh);
 			virtual GImpactMeshShape^ CreateGimpactShape(StridingMeshInterface^ trimesh);
 			virtual ConvexHullShape^ CreateConvexHullShape();
 			virtual CompoundShape^ CreateCompoundShape();
 
 			// acceleration and connectivity structures
+#ifndef DISABLE_BVH
 			virtual OptimizedBvh^ CreateOptimizedBvh();
+#endif
 			//virtual TriangleInfoMap^ CreateTriangleInfoMap();
 
 #ifndef DISABLE_CONSTRAINTS
@@ -98,7 +102,9 @@ namespace BulletSharp
 			CollisionShape^ GetCollisionShapeByIndex(int index);
 			CollisionObject^ GetRigidBodyByIndex(int index);
 			TypedConstraint^ GetConstraintByIndex(int index);
+#ifndef DISABLE_BVH
 			OptimizedBvh^ GetBvhByIndex(int index);
+#endif
 			//TriangleInfoMap^ GetTriangleInfoMapByIndex(int index);
 			
 			// queries involving named objects
@@ -170,14 +176,18 @@ namespace BulletSharp
 			virtual btCollisionShape* createCylinderShapeY(btScalar radius, btScalar height);
 			virtual btCollisionShape* createCylinderShapeZ(btScalar radius, btScalar height);
 			virtual class btTriangleIndexVertexArray* createTriangleMeshContainer();
+#ifndef DISABLE_BVH
 			virtual	btBvhTriangleMeshShape* createBvhTriangleMeshShape(btStridingMeshInterface* trimesh, btOptimizedBvh* bvh);
+#endif
 			virtual btCollisionShape* createConvexTriangleMeshShape(btStridingMeshInterface* trimesh);
 			virtual btGImpactMeshShape* createGimpactShape(btStridingMeshInterface* trimesh);
 			virtual class btConvexHullShape* createConvexHullShape();
 			virtual class btCompoundShape* createCompoundShape();
 
 			// acceleration and connectivity structures
+#ifndef DISABLE_BVH
 			virtual btOptimizedBvh* createOptimizedBvh();
+#endif
 			virtual btTriangleInfoMap* createTriangleInfoMap();
 
 #ifndef DISABLE_CONSTRAINTS
@@ -223,14 +233,18 @@ namespace BulletSharp
 			virtual btCollisionShape* baseCreateCylinderShapeY(btScalar radius, btScalar height);
 			virtual btCollisionShape* baseCreateCylinderShapeZ(btScalar radius, btScalar height);
 			virtual class btTriangleIndexVertexArray* baseCreateTriangleMeshContainer();
+#ifndef DISABLE_BVH
 			virtual	btBvhTriangleMeshShape* baseCreateBvhTriangleMeshShape(btStridingMeshInterface* trimesh, btOptimizedBvh* bvh);
+#endif
 			virtual btCollisionShape* baseCreateConvexTriangleMeshShape(btStridingMeshInterface* trimesh);
 			virtual btGImpactMeshShape* baseCreateGimpactShape(btStridingMeshInterface* trimesh);
 			virtual class btConvexHullShape* baseCreateConvexHullShape();
 			virtual class btCompoundShape* baseCreateCompoundShape();
 
 			// acceleration and connectivity structures
+#ifndef DISABLE_BVH
 			virtual btOptimizedBvh* baseCreateOptimizedBvh();
+#endif
 			virtual btTriangleInfoMap* baseCreateTriangleInfoMap();
 
 #ifndef DISABLE_CONSTRAINTS

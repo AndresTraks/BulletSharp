@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_BVH
+
 #include "QuantizedBvh.h"
 
 QuantizedBvh::QuantizedBvh(btQuantizedBvh* bvh)
@@ -59,3 +61,5 @@ void QuantizedBvh::UnmanagedPointer::set(btQuantizedBvh* value)
 {
 	_bvh = value;
 }
+
+#endif

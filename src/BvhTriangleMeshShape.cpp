@@ -1,9 +1,11 @@
 #include "StdAfx.h"
 
 #include "BvhTriangleMeshShape.h"
-#include "OptimizedBvh.h"
 #include "StridingMeshInterface.h"
 #include "TriangleCallback.h"
+#ifndef DISABLE_BVH
+#include "OptimizedBvh.h"
+#endif
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
 #endif
@@ -121,12 +123,14 @@ void BvhTriangleMeshShape::RefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 	delete bvhAabbMaxTemp;
 }
 
+#ifndef DISABLE_BVH
 void BvhTriangleMeshShape::SetOptimizedBvh(BulletSharp::OptimizedBvh^ bvh, Vector3 localScaling)
 {
 	btVector3* localScalingTemp = Math::Vector3ToBtVector3(localScaling);
 	UnmanagedPointer->setOptimizedBvh(bvh->UnmanagedPointer, *localScalingTemp);
 	delete localScalingTemp;
 }
+#endif
 
 #ifndef DISABLE_SERIALIZE
 void BvhTriangleMeshShape::SerializeSingleBvh(Serializer^ serializer)
@@ -140,6 +144,7 @@ void BvhTriangleMeshShape::SerializeSingleTriangleInfoMap(Serializer^ serializer
 }
 #endif
 
+#ifndef DISABLE_BVH
 #pragma managed(push, off)
 void BvhTriangleMeshShape_SetOptimizedBvh(btBvhTriangleMeshShape* shape, btOptimizedBvh* bvh)
 {
@@ -154,6 +159,7 @@ void BvhTriangleMeshShape::OptimizedBvh::set(BulletSharp::OptimizedBvh^ value)
 {
 	BvhTriangleMeshShape_SetOptimizedBvh(UnmanagedPointer, value->UnmanagedPointer);
 }
+#endif
 
 bool BvhTriangleMeshShape::OwnsBvh::get()
 {
