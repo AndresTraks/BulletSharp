@@ -82,37 +82,57 @@ void ConvexShape_LocalGetSupportVertexWithoutMarginNonVirtual(btConvexShape* sha
 #pragma managed(pop)
 Vector3 ConvexShape::LocalGetSupportingVertex(Vector3 vec)
 {
-	btVector3* vecTemp = new btVector3;
-	ConvexShape_LocalGetSupportingVertex(UnmanagedPointer, Math::Vector3ToBtVector3(vec), vecTemp);
-	Vector3 vertex = Math::BtVector3ToVector3(vecTemp);
+	btVector3* vecTemp = Math::Vector3ToBtVector3(vec);
+	btVector3* vecOut = new btVector3;
+	
+	ConvexShape_LocalGetSupportingVertex(UnmanagedPointer, vecTemp, vecOut);
+	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
+	
 	delete vecTemp;
+	delete vecOut;
+	
 	return vertex;
 }
 
 Vector3 ConvexShape::LocalGetSupportingVertexWithoutMargin(Vector3 vec)
 {
-	btVector3* vecTemp = new btVector3;
-	ConvexShape_LocalGetSupportingVertexWithoutMargin(UnmanagedPointer, Math::Vector3ToBtVector3(vec), vecTemp);
-	Vector3 vertex = Math::BtVector3ToVector3(vecTemp);
+	btVector3* vecTemp = Math::Vector3ToBtVector3(vec);
+	btVector3* vecOut = new btVector3;
+	
+	ConvexShape_LocalGetSupportingVertexWithoutMargin(UnmanagedPointer, vecTemp, vecOut);
+	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
+	
 	delete vecTemp;
+	delete vecOut;
+	
 	return vertex;
 }
 
 Vector3 ConvexShape::LocalGetSupportVertexNonVirtual(Vector3 vec)
 {
-	btVector3* vecTemp = new btVector3;
-	ConvexShape_LocalGetSupportVertexNonVirtual(UnmanagedPointer, Math::Vector3ToBtVector3(vec), vecTemp);
-	Vector3 vertex = Math::BtVector3ToVector3(vecTemp);
+	btVector3* vecTemp = Math::Vector3ToBtVector3(vec);
+	btVector3* vecOut = new btVector3;
+	
+	ConvexShape_LocalGetSupportVertexNonVirtual(UnmanagedPointer, vecTemp, vecOut);
+	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
+	
 	delete vecTemp;
+	delete vecOut;
+	
 	return vertex;
 }
 
 Vector3 ConvexShape::LocalGetSupportVertexWithoutMarginNonVirtual(Vector3 vec)
 {
-	btVector3* vecTemp = new btVector3;
-	ConvexShape_LocalGetSupportVertexWithoutMarginNonVirtual(UnmanagedPointer, Math::Vector3ToBtVector3(vec), vecTemp);
-	Vector3 vertex = Math::BtVector3ToVector3(vecTemp);
+	btVector3* vecTemp = Math::Vector3ToBtVector3(vec);
+	btVector3* vecOut = new btVector3;
+	
+	ConvexShape_LocalGetSupportVertexWithoutMarginNonVirtual(UnmanagedPointer, vecTemp, vecOut);
+	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
+	
 	delete vecTemp;
+	delete vecOut;
+	
 	return vertex;
 }
 

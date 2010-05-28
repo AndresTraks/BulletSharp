@@ -2,12 +2,13 @@ BulletSharp wrapper progress
 
 0 incomplete
 - not implemented
+x won't implement
 
 
 
 Collision/BroadphaseCollision
 
-- MultiSapBroadphase (experimental, won't implement)
+x MultiSapBroadphase (experimental)
 0 QuantizedBvh
 
 
@@ -22,9 +23,8 @@ Collision/CollisionShapes
 
 - TriangleBuffer
 0 TriangleIndexVertexArray
+- TriangleIndexVertexMaterialArray
 - TriangleInfoMap
-- TriangleMesh
-- TriangleMeshShape
 
 
 
@@ -61,16 +61,16 @@ Collision/NarrowPhaseCollision
 Dynamics/ConstraintSolver
 
 0 ContactConstraint
-- JacobianEntry (internal class, won't implement)
-- SolverBody (obsolete class, won't implement)
-- SolverConstraint (internal class, won't implement)
+x JacobianEntry (internal)
+x SolverBody (obsolete)
+x SolverConstraint (internal)
 
 
 
 Dynamics/Dynamics
 
 0 ActionInterface
-- ContinuousDynamicsWorld (under construction, won't implement)
+x ContinuousDynamicsWorld (under construction)
 0 DynamicsWorld
 0 RigidBody
 - SimpleDynamicsWorld

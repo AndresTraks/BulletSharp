@@ -11,27 +11,27 @@
 #endif
 
 BvhTriangleMeshShape::BvhTriangleMeshShape(btBvhTriangleMeshShape* shape)
-: ConcaveShape(shape)
+: TriangleMeshShape(shape)
 {
 }
 
 BvhTriangleMeshShape::BvhTriangleMeshShape()
-: ConcaveShape(new btBvhTriangleMeshShape())
+: TriangleMeshShape(new btBvhTriangleMeshShape())
 {
 }
 
 BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression)
-: ConcaveShape(new btBvhTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression))
+: TriangleMeshShape(new btBvhTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression))
 {
 }
 
 BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression, bool buildBvh)
-: ConcaveShape(new btBvhTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression, buildBvh))
+: TriangleMeshShape(new btBvhTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression, buildBvh))
 {
 }
 
 BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression, Vector3 bvhAabbMin, Vector3 bvhAabbMax, bool buildBvh)
-: ConcaveShape(0)
+: TriangleMeshShape(0)
 {
 	btVector3* bvhAabbMinTemp = Math::Vector3ToBtVector3(bvhAabbMin);
 	btVector3* bvhAabbMaxTemp = Math::Vector3ToBtVector3(bvhAabbMax);
@@ -43,7 +43,7 @@ BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface,
 }
 
 BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression, Vector3 bvhAabbMin, Vector3 bvhAabbMax)
-: ConcaveShape(0)
+: TriangleMeshShape(0)
 {
 	btVector3* bvhAabbMinTemp = Math::Vector3ToBtVector3(bvhAabbMin);
 	btVector3* bvhAabbMaxTemp = Math::Vector3ToBtVector3(bvhAabbMax);

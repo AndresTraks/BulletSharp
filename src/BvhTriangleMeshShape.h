@@ -2,7 +2,7 @@
 
 // Fully implemented as of 10 May 2010
 
-#include "ConcaveShape.h"
+#include "TriangleMeshShape.h"
 
 namespace BulletSharp
 {
@@ -10,7 +10,7 @@ namespace BulletSharp
 	ref class StridingMeshInterface;
 	ref class TriangleCallback;
 
-	public ref class BvhTriangleMeshShape : ConcaveShape
+	public ref class BvhTriangleMeshShape : TriangleMeshShape
 	{
 	internal:
 		BvhTriangleMeshShape(btBvhTriangleMeshShape* shape);

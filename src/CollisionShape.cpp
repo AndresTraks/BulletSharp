@@ -22,9 +22,9 @@
 #include "MultiSphereShape.h"
 #include "StaticPlaneShape.h"
 #include "StringConv.h"
-//#include "TriangleMeshShape.h"
+#include "TriangleMeshShape.h"
 #include "TriangleShape.h"
-//#include "UniformScalingShape.h"
+#include "UniformScalingShape.h"
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
 #endif
@@ -117,12 +117,12 @@ CollisionShape^ CollisionShape::UpcastDetect()
 	//	return gcnew TerrainShape((btTerrainShape*) _collisionShape);
 	//case BroadphaseNativeType::TetrahedralShape:
 	//	return gcnew TetrahedralShape((btTetrahedralShape*) _collisionShape);
-	//case BroadphaseNativeType::TriangleMeshShape:
-	//	return gcnew TriangleMeshShape((btTriangleMeshShape*) _collisionShape);
+	case BroadphaseNativeType::TriangleMeshShape:
+		return gcnew TriangleMeshShape((btTriangleMeshShape*) _collisionShape);
 	case BroadphaseNativeType::TriangleShape:
 		return gcnew TriangleShape((btTriangleShape*) _collisionShape);
-	//case BroadphaseNativeType::UniformScalingShape:
-	//	return gcnew UniformScalingShape((btUniformScalingShape*) _collisionShape);
+	case BroadphaseNativeType::UniformScalingShape:
+		return gcnew UniformScalingShape((btUniformScalingShape*) _collisionShape);
 	default:
 		return this;
 	}

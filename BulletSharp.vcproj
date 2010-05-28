@@ -1448,6 +1448,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TriangleMesh.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TriangleMeshShape.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\TriangleShape.cpp"
 				>
 			</File>
@@ -1633,6 +1641,14 @@
 					</File>
 					<File
 						RelativePath=".\src\TriangleIndexVertexArray.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\TriangleMesh.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\TriangleMeshShape.h"
 						>
 					</File>
 					<File
