@@ -1440,6 +1440,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TriangleBuffer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\TriangleCallback.cpp"
 				>
 			</File>
@@ -1633,6 +1637,10 @@
 					</File>
 					<File
 						RelativePath=".\src\TetrahedronShape.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\TriangleBuffer.h"
 						>
 					</File>
 					<File

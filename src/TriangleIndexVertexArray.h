@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 29 May 2010
+
 #include "Enums.h"
 #include "StridingMeshInterface.h"
 
@@ -173,6 +175,9 @@ namespace BulletSharp
 	
 	public:
 		TriangleIndexVertexArray();
+		TriangleIndexVertexArray(int numTriangles, IntPtr triangleIndexBase, int triangleIndexStride,
+			int numVertices, IntPtr vertexBase, int vertexStride);
+		TriangleIndexVertexArray(array<int>^ indices, array<Vector3>^ vertices);
 
 		void AddIndexedMesh(IndexedMesh^ mesh);
 		void AddIndexedMesh(IndexedMesh^ mesh, PhyScalarType indexType);

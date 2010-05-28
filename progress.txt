@@ -21,8 +21,6 @@ Collision/CollisionDispatch
 
 Collision/CollisionShapes
 
-- TriangleBuffer
-0 TriangleIndexVertexArray
 - TriangleIndexVertexMaterialArray
 - TriangleInfoMap
 

@@ -86,6 +86,7 @@ namespace BulletSharp
 		property btStridingMeshInterface* UnmanagedPointer
 		{
 			btStridingMeshInterface* get();
+			void set(btStridingMeshInterface* value);
 		}
 	};
 };

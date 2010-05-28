@@ -271,3 +271,7 @@ btStridingMeshInterface* StridingMeshInterface::UnmanagedPointer::get()
 {
 	return _stridingMesh;
 }
+void StridingMeshInterface::UnmanagedPointer::set(btStridingMeshInterface* value)
+{
+	_stridingMesh = value;
+}
