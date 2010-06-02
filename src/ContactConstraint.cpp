@@ -5,6 +5,7 @@
 
 #include "ContactConstraint.h"
 #include "PersistentManifold.h"
+#include "RigidBody.h"
 
 ContactConstraint::ContactConstraint(btContactConstraint* constraint)
 : TypedConstraint(constraint)
@@ -12,7 +13,7 @@ ContactConstraint::ContactConstraint(btContactConstraint* constraint)
 }
 
 ContactConstraint::ContactConstraint(PersistentManifold^ contactManifold, RigidBody^ rbA, RigidBody^ rbB)
-: TypedConstraint(new btContactConstraint(contactManifold->UnmanagedPointer, rbA->UnmanagedPointer, rbB->UnmanagedPointer))
+: TypedConstraint(new btContactConstraint(contactManifold->UnmanagedPointer, *rbA->UnmanagedPointer, *rbB->UnmanagedPointer))
 {
 }
 

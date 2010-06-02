@@ -130,7 +130,25 @@ namespace BulletSharp
 				void set(BulletSharp::SoftBody::AeroModel value);
 			}
 
+			property btScalar CHR
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar DF
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
 			property btScalar DG
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar DP
 			{
 				btScalar get();
 				void set(btScalar value);
@@ -152,6 +170,18 @@ namespace BulletSharp
 			{
 				int get();
 				void set(int value);
+			}
+
+			property btScalar PR
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar VC
+			{
+				btScalar get();
+				void set(btScalar value);
 			}
 
 			property btSoftBody::Config* UnmanagedPointer
@@ -290,8 +320,7 @@ namespace BulletSharp
 			SoftBody(btSoftBody* body);
 		
 		public:
-			SoftBody(SoftBodyWorldInfo^ worldInfo,
-				int node_count, Vector3 x, btScalar m);
+			SoftBody(SoftBodyWorldInfo^ worldInfo, array<Vector3>^ x, array<btScalar>^ m);
 
 			void AddForce(Vector3 force, int node);
 			void AddForce(Vector3 force);
@@ -299,12 +328,18 @@ namespace BulletSharp
 			void AddVelocity(Vector3 velocity);
 			void AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies);
 			void AppendAnchor(int node, RigidBody^ body);
+			void AppendLink(int node0, int node1, Material^ mat, bool bcheckexist);
+			void AppendLink(int node0, int node1, Material^ mat);
+			void AppendLink(int node0, int node1);
 			Material^ AppendMaterial();
 			int GenerateBendingConstraints(int distance, Material^ mat);
 			int GenerateBendingConstraints(int distance);
 			int GenerateClusters(int k, int maxIterations);
 			int GenerateClusters(int k);
 			void Scale(Vector3 scale);
+			void SetPose(bool bvolume, bool bframe);
+			void SetTotalMass(btScalar mass, bool fromFaces);
+			void SetTotalMass(btScalar mass);
 			void SetVolumeMass(btScalar mass);
 			void StaticSolve(int iterations);
 			void Transform(Matrix transform);

@@ -125,6 +125,24 @@ void Config::AeroModel::set(BulletSharp::SoftBody::AeroModel value)
 	_config->aeromodel = (btSoftBody::eAeroModel::_)value;
 }
 
+btScalar Config::CHR::get()
+{
+	return _config->kCHR;
+}
+void Config::CHR::set(btScalar value)
+{
+	_config->kCHR = value;
+}
+
+btScalar Config::DF::get()
+{
+	return _config->kDF;
+}
+void Config::DF::set(btScalar value)
+{
+	_config->kDF = value;
+}
+
 btScalar Config::DG::get()
 {
 	return _config->kDG;
@@ -132,6 +150,15 @@ btScalar Config::DG::get()
 void Config::DG::set(btScalar value)
 {
 	_config->kDG = value;
+}
+
+btScalar Config::DP::get()
+{
+	return _config->kDP;
+}
+void Config::DP::set(btScalar value)
+{
+	_config->kDP = value;
 }
 
 btScalar Config::LF::get()
@@ -159,6 +186,24 @@ int Config::PIterations::get()
 void Config::PIterations::set(int value)
 {
 	UnmanagedPointer->piterations = value;
+}
+
+btScalar Config::PR::get()
+{
+	return _config->kPR;
+}
+void Config::PR::set(btScalar value)
+{
+	_config->kPR = value;
+}
+
+btScalar Config::VC::get()
+{
+	return _config->kVC;
+}
+void Config::VC::set(btScalar value)
+{
+	_config->kVC = value;
 }
 
 btSoftBody::Config* Config::UnmanagedPointer::get()
@@ -322,12 +367,21 @@ BulletSharp::SoftBody::SoftBody::SoftBody(btSoftBody* body)
 {
 }
 
-BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, int node_count, Vector3 x, btScalar m)
+BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, array<Vector3>^ x, array<btScalar>^ m)
 : CollisionObject(0)
 {
-	btVector3* xTemp = Math::Vector3ToBtVector3(x);
-	UnmanagedPointer = new btSoftBody(worldInfo->UnmanagedPointer, node_count, xTemp, &m);
-	delete xTemp;
+	int node_count = (x->Length < m->Length) ? x->Length : m->Length;
+
+	pin_ptr<btScalar> m_ptr = &m[0];
+
+	btVector3* x_ptr = new btVector3[node_count];
+
+	for(int i=0; i<node_count; i++)
+		Math::Vector3ToBtVector3(x[i], &x_ptr[i]);
+
+	UnmanagedPointer = new btSoftBody(worldInfo->UnmanagedPointer, node_count, x_ptr, m_ptr);
+	
+	delete[] x_ptr;
 }
 
 BulletSharp::SoftBody::Material^ BulletSharp::SoftBody::SoftBody::AppendMaterial()
@@ -369,6 +423,21 @@ void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body)
 	UnmanagedPointer->appendAnchor(node, body->UnmanagedPointer);
 }
 
+void BulletSharp::SoftBody::SoftBody::AppendLink(int node0, int node1, Material^ mat, bool bcheckexist)
+{
+	UnmanagedPointer->appendLink(node0, node1, mat->UnmanagedPointer, bcheckexist);
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendLink(int node0, int node1, Material^ mat)
+{
+	UnmanagedPointer->appendLink(node0, node1, mat->UnmanagedPointer);
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendLink(int node0, int node1)
+{
+	UnmanagedPointer->appendLink(node0, node1);
+}
+
 int BulletSharp::SoftBody::SoftBody::GenerateBendingConstraints(int distance, Material^ mat)
 {
 	return UnmanagedPointer->generateBendingConstraints(distance, mat->UnmanagedPointer);
@@ -394,6 +463,21 @@ void BulletSharp::SoftBody::SoftBody::Scale(Vector3 scale)
 	btVector3* scaleTemp = Math::Vector3ToBtVector3(scale);
 	UnmanagedPointer->scale(*scaleTemp);
 	delete scaleTemp;
+}
+
+void BulletSharp::SoftBody::SoftBody::SetPose(bool bvolume, bool bframe)
+{
+	UnmanagedPointer->setPose(bvolume, bframe);
+}
+
+void BulletSharp::SoftBody::SoftBody::SetTotalMass(btScalar mass, bool fromFaces)
+{
+	UnmanagedPointer->setTotalMass(mass, fromFaces);
+}
+
+void BulletSharp::SoftBody::SoftBody::SetTotalMass(btScalar mass)
+{
+	UnmanagedPointer->setTotalMass(mass);
 }
 
 void BulletSharp::SoftBody::SoftBody::SetVolumeMass(btScalar mass)

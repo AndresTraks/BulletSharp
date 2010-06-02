@@ -12,7 +12,7 @@ namespace SoftDemo
     {
         int Width = 1024, Height = 768;
         Color ambient = Color.Gray;
-        Vector3 eye = new Vector3(70, 20, 40);
+        Vector3 eye = new Vector3(60, 20, 30);
         Vector3 target = new Vector3(0, 0, 10);
 
         Mesh box, largeBox, groundBox, cylinder, sphere;

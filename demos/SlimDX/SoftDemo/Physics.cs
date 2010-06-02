@@ -108,6 +108,28 @@ namespace SoftDemo
             LocalCreateRigidBody(10.0f, Matrix.Translation(position), new SphereShape(1.5f));
         }
 
+        void Create_BigPlate()
+        {
+            Vector3 position = new Vector3(0,4,0.5f);
+            RigidBody body = LocalCreateRigidBody(15.0f, Matrix.Translation(position), new BoxShape(5,1,5));
+            body.Friction = 1;
+        }
+
+        void Init_Pressure()
+        {
+            SoftBody psb = SoftBodyHelpers.CreateEllipsoid(softBodyWorldInfo, new Vector3(35,25,0),
+		        new Vector3(3,3,3), 512);
+            psb.Materials[0].Lst = 0.1f;
+            psb.Cfg.DF = 1;
+            psb.Cfg.DP = 0.001f; // fun factor...
+            psb.Cfg.PR = 2500;
+            psb.SetTotalMass(30, true);
+            SoftWorld.AddSoftBody(psb);
+
+            Create_BigPlate();
+            Create_LinearStair(10, Vector3.Zero, new Vector3(2,1,5));
+        }
+
         void Init_Ropes()
         {
             const int n = 15;
@@ -159,17 +181,59 @@ namespace SoftDemo
 	        cutting=true;
         }
 
-        void Init_LinearStair(int count)
+        void Create_LinearStair(int count, Vector3 origin, Vector3 sizes)
         {
-            Vector3 origin = new Vector3(2, 1, 0);
-
-            BoxShape shape = new BoxShape(1,1,1);
+            BoxShape shape = new BoxShape(sizes);
             for(int i=0; i<count; i++)
             {
 	            RigidBody body = LocalCreateRigidBody(0,
-                    Matrix.Translation(origin + new Vector3(2 * i, 2 * i, 0)), shape);
+                    Matrix.Translation(origin + new Vector3(sizes.X * 2 * i, sizes.Y * 2 * i, 0)), shape);
                 body.Friction = 1;
             }
+        }
+
+        void Init_Impact()
+        {
+        	SoftBody psb = SoftBodyHelpers.CreateRope(softBodyWorldInfo,
+                Vector3.Zero, new Vector3(0,-1,0), 0, 1);
+	        SoftWorld.AddSoftBody(psb);
+	        psb.Cfg.CHR = 0.5f;
+	        LocalCreateRigidBody(10, Matrix.Translation(0,20,0), new BoxShape(2));
+        }
+
+        void Init_Collide3()
+        {
+            {
+		        const float s = 8;
+	            SoftBody psb = SoftBodyHelpers.CreatePatch(softBodyWorldInfo, new Vector3(-s,0,-s),
+		        new Vector3(+s,0,-s),
+		        new Vector3(-s,0,+s),
+		        new Vector3(+s,0,+s),
+		        15,15,1+2+4+8,true);
+	            psb.Materials[0].Lst = 0.4f;
+	            psb.Cfg.Collisions |= FCollisions.VfSs;
+	            psb.TotalMass = 150;
+	            SoftWorld.AddSoftBody(psb);
+            }
+            {
+                const float s = 4;
+		        Vector3 o = new Vector3(5,10,0);
+		        SoftBody psb = SoftBodyHelpers.CreatePatch(softBodyWorldInfo,
+			    new Vector3(-s,0,-s)+o,
+			    new Vector3(+s,0,-s)+o,
+			    new Vector3(-s,0,+s)+o,
+			    new Vector3(+s,0,+s)+o,
+			    7,7,0,true);
+		        Material pm = psb.AppendMaterial();
+		        pm.Lst = 0.1f;
+		        pm.Flags -= FMaterial.DebugDraw;
+		        psb.GenerateBendingConstraints(2,pm);
+		        psb.Materials[0].Lst = 0.5f;
+		        psb.Cfg.Collisions |= FCollisions.VfSs;
+		        psb.TotalMass = 150;
+		        SoftWorld.AddSoftBody(psb);
+		        cutting=true;
+	        }
         }
 
         // Aerodynamic forces, 50x1g flyers
@@ -205,6 +269,19 @@ namespace SoftDemo
 	        }
         }
 
+        void Init_Friction()
+        {
+	        const float bs = 2;
+	        const float ts = bs+bs/4;
+	        for(int i=0,ni=20;i<ni;++i)
+	        {
+                Vector3 p = new Vector3(-ni * ts / 2 + i * ts, bs, 40);
+                SoftBody psb = Create_SoftBox(p, new Vector3(bs, bs, bs));
+		        psb.Cfg.DF = 0.1f * ((i+1)/(float)ni);
+		        psb.AddVelocity(new Vector3(0,0,-10));
+	        }
+        }
+
         void Init_TetraCube()
         {
             SoftBody psb = SoftBodyHelpers.CreateFromTetGenFile(softBodyWorldInfo,
@@ -228,6 +305,70 @@ namespace SoftDemo
                 // | SoftBody.FCollisions.ClSelf;
             psb.Materials[0].Lst = 0.8f;
 	        cutting=true;
+        }
+
+        void Init_Volume()
+        {
+	        SoftBody psb = SoftBodyHelpers.CreateEllipsoid(softBodyWorldInfo, new Vector3(35,25,0),
+		        new Vector3(1,1,1)*3, 512);
+	        psb.Materials[0].Lst = 0.45f;
+	        psb.Cfg.VC = 20;
+	        psb.SetTotalMass(50, true);
+	        psb.SetPose(true, false);
+	        SoftWorld.AddSoftBody(psb);
+
+	        Create_BigPlate();
+	        Create_LinearStair(10, Vector3.Zero, new Vector3(2,1,5));
+        }
+
+        void Init_Sticks()
+        {
+	        const int n = 16;
+	        const int sg = 4;
+	        const float sz = 5;
+	        const float hg = 4;
+	        const float inf = 1/(float)(n-1);
+	        for(int y=0;y<n;++y)
+	        {
+		        for(int x=0;x<n;++x)
+		        {
+                    Vector3 org = new Vector3(-sz + sz * 2 * x * inf,
+                        0, -sz + sz * 2 * y * inf);
+
+                    SoftBody psb = SoftBodyHelpers.CreateRope(softBodyWorldInfo, org,
+                        org + new Vector3(hg * 0.001f, hg, 0), sg, 1);
+			        
+                    psb.Cfg.DP = 0.005f;
+			        psb.Cfg.CHR = 0.1f;
+			        for(int i=0;i<3;++i)
+			        {
+				        psb.GenerateBendingConstraints(2+i);
+			        }
+			        //psb.SetMass(1, 0);
+			        psb.SetTotalMass(0.01f);
+			        SoftWorld.AddSoftBody(psb);
+
+		        }
+	        }
+	        Create_BigBall(new Vector3(0,13,0));
+        }
+
+        void Init_Bending()
+        {
+            const float s = 4;
+            Vector3[] x = new Vector3[]{new Vector3(-s,0,-s),
+		        new Vector3(+s,0,-s),
+		        new Vector3(+s,0,+s),
+		        new Vector3(-s,0,+s)};
+            float[] m = new float[] { 0, 0, 0, 1 };
+            SoftBody psb = new SoftBody(softBodyWorldInfo, x, m);
+            psb.AppendLink(0, 1);
+            psb.AppendLink(1, 2);
+            psb.AppendLink(2, 3);
+            psb.AppendLink(3, 0);
+            psb.AppendLink(0, 2);
+
+	        SoftWorld.AddSoftBody(psb);
         }
 
         public Physics()
@@ -271,10 +412,17 @@ namespace SoftDemo
             //Init_Aero();
             Init_TetraCube();
             //Init_RbUpStack(5);
-            //Init_LinearStair(8);
+            //Init_LinearStair(8, new Vector3(2, 1, 0), new Vector3(1, 1, 1));
             //Init_ClothAttach();
             //Init_Ropes();
             Init_RopeAttach();
+            //Init_Pressure();
+            //Init_Impact();
+            //Init_Collide3();
+            //Init_Friction();
+            //Init_Volume();
+            //Init_Sticks();
+            //Init_Bending();
         }
 
         public static SlimDX.Direct3D9.Mesh GetMeshFromSoftBody(SlimDX.Direct3D9.Device device, CollisionObject obj)

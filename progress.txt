@@ -21,7 +21,7 @@ Collision/CollisionDispatch
 
 Collision/CollisionShapes
 
-- TriangleIndexVertexMaterialArray
+0 TriangleIndexVertexMaterialArray
 - TriangleInfoMap
 
 
@@ -58,7 +58,7 @@ Collision/NarrowPhaseCollision
 
 Dynamics/ConstraintSolver
 
-0 ContactConstraint
+0 ContactConstraint (abstract?)
 x JacobianEntry (internal)
 x SolverBody (obsolete)
 x SolverConstraint (internal)
@@ -67,7 +67,6 @@ x SolverConstraint (internal)
 
 Dynamics/Dynamics
 
-0 ActionInterface
 x ContinuousDynamicsWorld (under construction)
 0 DynamicsWorld
 0 RigidBody
