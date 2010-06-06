@@ -52,7 +52,6 @@
   <ItemGroup>
     <Compile Include="ConstraintDemo.cs" />
     <Compile Include="Physics.cs" />
-    <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DemoFramework\DemoFramework.csproj">

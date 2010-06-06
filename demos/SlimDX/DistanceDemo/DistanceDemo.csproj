@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="DistanceDemo.cs" />
     <Compile Include="Physics.cs" />
-    <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BulletSharp, Version=0.3.0.0, Culture=neutral, processorArchitecture=x86">

@@ -194,4 +194,19 @@ namespace SoftDemo
             Device.Present();
         }
     }
+
+    static class Program
+    {
+        [STAThread]
+        static void Main()
+        {
+            SoftDemo game = new SoftDemo();
+
+            if (game.TestLibraries() == false)
+                return;
+
+            game.Run();
+            game.Dispose();
+        }
+    }
 }

@@ -14,6 +14,8 @@ namespace SerializeDemo
         Color ambient = Color.Gray;
         Vector3 eye = new Vector3(30, 20, 10);
         Vector3 target = new Vector3(0, 5, 0);
+        DebugDrawModes debugMode = DebugDrawModes.DrawWireframe |
+            DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits;
 
         Mesh box, groundBox, sphere;
         Light light;
@@ -91,8 +93,7 @@ namespace SerializeDemo
                 "F11 - Toggle fullscreen";
 
             physics = new Physics();
-            physics.SetDebugDrawMode(Device, DebugDrawModes.DrawWireframe |
-                DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits);
+            physics.SetDebugDrawMode(Device, debugMode);
         }
 
         protected override void OnResourceLoad()
@@ -115,7 +116,7 @@ namespace SerializeDemo
             if (Input.KeyboardDown.Contains(Key.F3))
             {
                 if (physics.IsDebugDrawEnabled == false)
-                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawAabb);
+                    physics.SetDebugDrawMode(Device, debugMode);
                 else
                     physics.SetDebugDrawMode(Device, DebugDrawModes.None);
             }
@@ -166,6 +167,21 @@ namespace SerializeDemo
 
             Device.EndScene();
             Device.Present();
+        }
+    }
+
+    static class Program
+    {
+        [STAThread]
+        static void Main()
+        {
+            SerializeDemo game = new SerializeDemo();
+
+            if (game.TestLibraries() == false)
+                return;
+
+            game.Run();
+            game.Dispose();
         }
     }
 }

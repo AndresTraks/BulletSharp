@@ -222,4 +222,19 @@ namespace Box2dDemo
             Device.Present();
         }
     }
+
+    static class Program
+    {
+        [STAThread]
+        static void Main()
+        {
+            Box2dDemo game = new Box2dDemo();
+
+            if (game.TestLibraries() == false)
+                return;
+
+            game.Run();
+            game.Dispose();
+        }
+    }
 }

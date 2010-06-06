@@ -175,4 +175,19 @@ namespace CcdPhysicsDemo
             Device.Present();
         }
     }
+
+    static class Program
+    {
+        [STAThread]
+        static void Main()
+        {
+            CcdPhysicsDemo game = new CcdPhysicsDemo();
+
+            if (game.TestLibraries() == false)
+                return;
+
+            game.Run();
+            game.Dispose();
+        }
+    }
 }

@@ -156,4 +156,19 @@ namespace ConstraintDemo
             Device.Present();
         }
     }
+
+    static class Program
+    {
+        [STAThread]
+        static void Main()
+        {
+            ConstraintDemo game = new ConstraintDemo();
+
+            if (game.TestLibraries() == false)
+                return;
+
+            game.Run();
+            game.Dispose();
+        }
+    }
 }

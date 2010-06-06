@@ -44,7 +44,6 @@
     <Compile Include="Physics.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BulletSharp, Version=0.1.0.0, Culture=neutral, processorArchitecture=x86">

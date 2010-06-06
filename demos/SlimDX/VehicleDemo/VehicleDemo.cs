@@ -215,4 +215,19 @@ namespace VehicleDemo
             Device.Present();
         }
     }
+    
+    static class Program
+    {
+        [STAThread]
+        static void Main()
+        {
+            VehicleDemo game = new VehicleDemo();
+
+            if (game.TestLibraries() == false)
+                return;
+
+            game.Run();
+            game.Dispose();
+        }
+    }
 }

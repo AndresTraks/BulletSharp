@@ -41,7 +41,6 @@
   -->
   <ItemGroup>
     <Compile Include="Physics.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="SoftDemo.cs" />
   </ItemGroup>
   <ItemGroup>

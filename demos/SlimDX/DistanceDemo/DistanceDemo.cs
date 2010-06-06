@@ -154,4 +154,19 @@ namespace DistanceDemo
             Device.Present();
         }
     }
+
+    static class Program
+    {
+        [STAThread]
+        static void Main()
+        {
+            DistanceDemo game = new DistanceDemo();
+
+            if (game.TestLibraries() == false)
+                return;
+
+            game.Run();
+            game.Dispose();
+        }
+    }
 }
