@@ -11,40 +11,40 @@
 #include "TypedConstraint.h"
 #endif
 
-Serializer::Serializer(btSerializer *serializer)
+BulletSharp::Serializer::Serializer(btSerializer *serializer)
 {
 	_serializer = serializer;
 }
 
-void Serializer::FinishSerialization()
+void BulletSharp::Serializer::FinishSerialization()
 {
 	_serializer->finishSerialization();
 }
 
-void Serializer::SerializeName(String^ name)
+void BulletSharp::Serializer::SerializeName(String^ name)
 {
 	const char* nameTemp = StringConv::ManagedToUnmanaged(name);
 	_serializer->serializeName(nameTemp);
 	StringConv::FreeUnmanagedString(nameTemp);
 }
 
-void Serializer::StartSerialization()
+void BulletSharp::Serializer::StartSerialization()
 {
 	_serializer->startSerialization();
 }
 
-BulletSharp::DataStream^ Serializer::LockBuffer()
+BulletSharp::DataStream^ BulletSharp::Serializer::LockBuffer()
 {
 	return gcnew DataStream((void*)_serializer->getBufferPointer(),
 		_serializer->getCurrentBufferSize(), true, false, false);
 }
 
-int Serializer::CurrentBufferSize::get()
+int BulletSharp::Serializer::CurrentBufferSize::get()
 {
 	return _serializer->getCurrentBufferSize();
 }
 
-void Serializer::RegisterNameForObject(Object^ obj, String^ name)
+void BulletSharp::Serializer::RegisterNameForObject(Object^ obj, String^ name)
 {
 	const char* nameTemp = StringConv::ManagedToUnmanaged(name);
 
@@ -74,11 +74,11 @@ void Serializer::RegisterNameForObject(Object^ obj, String^ name)
 	StringConv::FreeUnmanagedString(nameTemp);
 }
 
-btSerializer* Serializer::UnmanagedPointer::get()
+btSerializer* BulletSharp::Serializer::UnmanagedPointer::get()
 {
 	return _serializer;
 }
-void Serializer::UnmanagedPointer::set(btSerializer* value)
+void BulletSharp::Serializer::UnmanagedPointer::set(btSerializer* value)
 {
 	_serializer = value;
 }

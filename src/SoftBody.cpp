@@ -247,7 +247,7 @@ Face::Face(btSoftBody::Face* face)
 {
 }
 
-array<Node^>^ Face::n::get()
+array<BulletSharp::SoftBody::Node^>^ Face::n::get()
 {
 	array<Node^>^ nodeArray = gcnew array<Node^>(3);
 	nodeArray[0] = gcnew Node(UnmanagedPointer->m_n[0]);
@@ -255,7 +255,7 @@ array<Node^>^ Face::n::get()
 	nodeArray[2] = gcnew Node(UnmanagedPointer->m_n[2]);
 	return nodeArray;
 }
-void Face::n::set(array<Node^>^ value)
+void Face::n::set(array<BulletSharp::SoftBody::Node^>^ value)
 {
 	UnmanagedPointer->m_n[0] = value[0]->UnmanagedPointer;
 	UnmanagedPointer->m_n[1] = value[1]->UnmanagedPointer;
@@ -283,68 +283,68 @@ Link::Link(btSoftBody::Link* link)
 }
 
 
-Material::Material(btSoftBody::Material* material)
+BulletSharp::SoftBody::Material::Material(btSoftBody::Material* material)
 : Element(material)
 {
 }
 
-btScalar Material::Ast::get()
+btScalar BulletSharp::SoftBody::Material::Ast::get()
 {
 	return UnmanagedPointer->m_kAST;
 }
-void Material::Ast::set(btScalar value)
+void BulletSharp::SoftBody::Material::Ast::set(btScalar value)
 {
 	UnmanagedPointer->m_kAST = value;
 }
 
-FMaterial Material::Flags::get()
+FMaterial BulletSharp::SoftBody::Material::Flags::get()
 {
 	return (FMaterial)UnmanagedPointer->m_flags;
 }
-void Material::Flags::set(FMaterial value)
+void BulletSharp::SoftBody::Material::Flags::set(FMaterial value)
 {
 	UnmanagedPointer->m_flags = (int)value;
 }
 
-btScalar Material::Lst::get()
+btScalar BulletSharp::SoftBody::Material::Lst::get()
 {
 	return UnmanagedPointer->m_kLST;
 }
-void Material::Lst::set(btScalar value)
+void BulletSharp::SoftBody::Material::Lst::set(btScalar value)
 {
 	UnmanagedPointer->m_kAST = value;
 }
 
-btScalar Material::Vst::get()
+btScalar BulletSharp::SoftBody::Material::Vst::get()
 {
 	return UnmanagedPointer->m_kVST;
 }
-void Material::Vst::set(btScalar value)
+void BulletSharp::SoftBody::Material::Vst::set(btScalar value)
 {
 	UnmanagedPointer->m_kVST = value;
 }
 
-btSoftBody::Material* Material::UnmanagedPointer::get()
+btSoftBody::Material* BulletSharp::SoftBody::Material::UnmanagedPointer::get()
 {
 	return (btSoftBody::Material*)Element::UnmanagedPointer;
 }
 
 
-Node::Node(btSoftBody::Node* node)
+BulletSharp::SoftBody::Node::Node(btSoftBody::Node* node)
 : Feature(node)
 {
 }
 
-Vector3 Node::x::get()
+Vector3 BulletSharp::SoftBody::Node::x::get()
 {
 	return Math::BtVector3ToVector3(&UnmanagedPointer->m_x);
 }
-void Node::x::set(Vector3 value)
+void BulletSharp::SoftBody::Node::x::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_x);
 }
 
-btSoftBody::Node* Node::UnmanagedPointer::get()
+btSoftBody::Node* BulletSharp::SoftBody::Node::UnmanagedPointer::get()
 {
 	return (btSoftBody::Node*)Feature::UnmanagedPointer;
 }

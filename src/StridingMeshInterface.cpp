@@ -69,7 +69,7 @@ int StridingMeshInterface::CalculateSerializeBufferSize()
 	return _stridingMesh->calculateSerializeBufferSize();
 }
 
-String^ StridingMeshInterface::Serialize(IntPtr dataBuffer, Serializer^ serializer)
+String^ StridingMeshInterface::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
 {
 	const char* name = _stridingMesh->serialize(dataBuffer.ToPointer(), serializer->UnmanagedPointer);
 	if (name == 0)

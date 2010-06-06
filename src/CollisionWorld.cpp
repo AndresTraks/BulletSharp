@@ -682,7 +682,7 @@ void CollisionWorld::UpdateSingleAabb(CollisionObject^ colObj)
 }
 
 #ifndef DISABLE_SERIALIZE
-void CollisionWorld::Serialize(Serializer^ serializer)
+void CollisionWorld::Serialize(BulletSharp::Serializer^ serializer)
 {
 	_world->serialize(serializer->UnmanagedPointer);
 }

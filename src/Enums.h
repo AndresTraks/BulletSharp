@@ -165,6 +165,12 @@ namespace BulletSharp
 	};
 
 	[Flags]
+	public enum class RigidBodyFlags
+	{
+		DisableWorldGravity = BT_DISABLE_WORLD_GRAVITY
+	};
+
+	[Flags]
 	public enum class SolverModes
 	{
 		None = 0,

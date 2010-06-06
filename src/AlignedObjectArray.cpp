@@ -759,12 +759,12 @@ void MaterialArray::PopBack()
 	UnmanagedPointer->pop_back();
 }
 
-void MaterialArray::PushBack(Material^ material)
+void MaterialArray::PushBack(BulletSharp::SoftBody::Material^ material)
 {
 	UnmanagedPointer->push_back(material->UnmanagedPointer);
 }
 
-void MaterialArray::Remove(Material^ material)
+void MaterialArray::Remove(BulletSharp::SoftBody::Material^ material)
 {
 	UnmanagedPointer->remove(&(*material->UnmanagedPointer));
 }
@@ -784,7 +784,7 @@ void MaterialArray::Swap(int index0, int index1)
 	UnmanagedPointer->swap(index0, index1);
 }
 
-Material^ MaterialArray::default::get(int index)
+BulletSharp::SoftBody::Material^ MaterialArray::default::get(int index)
 {
 	return gcnew Material((*UnmanagedPointer)[index]);
 }
@@ -796,7 +796,7 @@ void MaterialArray_GetDefault(btSoftBody::tMaterialArray* materialArray,
 	(*materialArray)[index] = material;
 }
 #pragma managed(pop)
-void MaterialArray::default::set(int index, Material^ value)
+void MaterialArray::default::set(int index, BulletSharp::SoftBody::Material^ value)
 {
 	MaterialArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
 }
@@ -853,7 +853,7 @@ void BulletSharp::SoftBody::NodeArray::Swap(int index0, int index1)
 	UnmanagedPointer->swap(index0, index1);
 }
 
-Node^ BulletSharp::SoftBody::NodeArray::default::get(int index)
+BulletSharp::SoftBody::Node^ BulletSharp::SoftBody::NodeArray::default::get(int index)
 {
 	return gcnew Node(&(*UnmanagedPointer)[index]);
 }

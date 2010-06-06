@@ -1,0 +1,738 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug Axiom|Win32">
+      <Configuration>Debug Axiom</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug Mogre|Win32">
+      <Configuration>Debug Mogre</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug NoGfx|Win32">
+      <Configuration>Debug NoGfx</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug OpenTK|Win32">
+      <Configuration>Debug OpenTK</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug SlimDX|Win32">
+      <Configuration>Debug SlimDX</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug XNA 3.1|Win32">
+      <Configuration>Debug XNA 3.1</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Axiom|Win32">
+      <Configuration>Release Axiom</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Mogre|Win32">
+      <Configuration>Release Mogre</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release NoGfx|Win32">
+      <Configuration>Release NoGfx</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release OpenTK|Win32">
+      <Configuration>Release OpenTK</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release SlimDX|Win32">
+      <Configuration>Release SlimDX</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release XNA 3.1|Win32">
+      <Configuration>Release XNA 3.1</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}</ProjectGuid>
+    <RootNamespace>BulletSharp</RootNamespace>
+    <Keyword>ManagedCProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Axiom|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Axiom|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug OpenTK|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release OpenTK|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Mogre|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Mogre|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoGfx|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release NoGfx|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug XNA 3.1|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release XNA 3.1|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release SlimDX|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug SlimDX|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Axiom|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Axiom|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug OpenTK|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release OpenTK|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Mogre|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Mogre|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoGfx|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release NoGfx|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug XNA 3.1|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release XNA 3.1|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release SlimDX|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug SlimDX|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug SlimDX|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug SlimDX|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug SlimDX|Win32'" />
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release SlimDX|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release SlimDX|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release SlimDX|Win32'" />
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release XNA 3.1|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release XNA 3.1|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release XNA 3.1|Win32'" />
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug XNA 3.1|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug XNA 3.1|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug XNA 3.1|Win32'" />
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release NoGfx|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release NoGfx|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release NoGfx|Win32'" />
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug NoGfx|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug NoGfx|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug NoGfx|Win32'" />
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release Mogre|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release Mogre|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release Mogre|Win32'" />
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug Mogre|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug Mogre|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug Mogre|Win32'" />
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release OpenTK|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release OpenTK|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release OpenTK|Win32'" />
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug OpenTK|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug OpenTK|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug OpenTK|Win32'" />
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release Axiom|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release Axiom|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release Axiom|Win32'" />
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug Axiom|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug Axiom|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug Axiom|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug Axiom|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug Axiom|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug Axiom|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug Mogre|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug Mogre|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug Mogre|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug NoGfx|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug NoGfx|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug NoGfx|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug OpenTK|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug OpenTK|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug OpenTK|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug SlimDX|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug SlimDX|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug SlimDX|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug XNA 3.1|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug XNA 3.1|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug XNA 3.1|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release Axiom|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release Axiom|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release Axiom|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release Mogre|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release Mogre|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release Mogre|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release NoGfx|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release NoGfx|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release NoGfx|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release OpenTK|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release OpenTK|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release OpenTK|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release SlimDX|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release SlimDX|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release SlimDX|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release XNA 3.1|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release XNA 3.1|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release XNA 3.1|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug SlimDX|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>C:\Program Files\SlimDX SDK (February 2010)\Bin\;C:\Program Files (x86)\SlimDX SDK (February 2010)\Bin\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>GRAPHICS_SLIMDX;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AssemblyDebug>true</AssemblyDebug>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release SlimDX|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>C:\Program Files\SlimDX SDK (February 2010)\Bin\;C:\Program Files (x86)\SlimDX SDK (February 2010)\Bin\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>GRAPHICS_SLIMDX;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level1</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release XNA 3.1|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>C:\Program Files\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\;C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>GRAPHICS_XNA31;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level1</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug XNA 3.1|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>C:\Program Files\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\;C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>GRAPHICS_XNA31;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AssemblyDebug>true</AssemblyDebug>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release NoGfx|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>GRAPHICS_NONE;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level1</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoGfx|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>GRAPHICS_NONE;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AssemblyDebug>true</AssemblyDebug>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Mogre|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>C:\MogreSDK\bin\Release;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>GRAPHICS_MOGRE;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level1</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Mogre|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>C:\MogreSDK\bin\Debug;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>GRAPHICS_MOGRE;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AssemblyDebug>true</AssemblyDebug>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release OpenTK|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>C:\Program Files\OpenTK\1.0\Binaries\OpenTK\Release;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>GRAPHICS_OPENTK;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level1</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug OpenTK|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>C:\Program Files\OpenTK\1.0\Binaries\OpenTK\Debug;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>GRAPHICS_OPENTK;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AssemblyDebug>true</AssemblyDebug>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Axiom|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>D:\src\Axiom-0.8.0.0-B2\bin\release;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>GRAPHICS_AXIOM;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level1</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Axiom|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>D:\src\Axiom-0.8.0.0-B2\bin\debug;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>GRAPHICS_AXIOM;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AssemblyDebug>true</AssemblyDebug>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ActionInterface.cpp" />
+    <ClCompile Include="src\ActivatingCollisionAlgorithm.cpp" />
+    <ClCompile Include="src\AlignedObjectArray.cpp" />
+    <ClCompile Include="src\AssemblyInfo.cpp" />
+    <ClCompile Include="src\AxisSweep3.cpp" />
+    <ClCompile Include="src\Box2dBox2dCollisionAlgorithm.cpp" />
+    <ClCompile Include="src\Box2dShape.cpp" />
+    <ClCompile Include="src\BoxBoxCollisionAlgorithm.cpp" />
+    <ClCompile Include="src\BoxBoxDetector.cpp" />
+    <ClCompile Include="src\BoxShape.cpp" />
+    <ClCompile Include="src\BroadphaseInterface.cpp" />
+    <ClCompile Include="src\BroadphaseProxy.cpp" />
+    <ClCompile Include="src\BulletMaterial.cpp" />
+    <ClCompile Include="src\BvhTriangleMeshShape.cpp" />
+    <ClCompile Include="src\CapsuleShape.cpp" />
+    <ClCompile Include="src\CharacterControllerInterface.cpp" />
+    <ClCompile Include="src\CollisionAlgorithm.cpp" />
+    <ClCompile Include="src\CollisionConfiguration.cpp" />
+    <ClCompile Include="src\CollisionCreateFunc.cpp" />
+    <ClCompile Include="src\CollisionDispatcher.cpp" />
+    <ClCompile Include="src\CollisionObject.cpp" />
+    <ClCompile Include="src\CollisionShape.cpp" />
+    <ClCompile Include="src\CollisionWorld.cpp" />
+    <ClCompile Include="src\CompoundCollisionAlgorithm.cpp" />
+    <ClCompile Include="src\CompoundShape.cpp" />
+    <ClCompile Include="src\ConcaveShape.cpp" />
+    <ClCompile Include="src\ConeShape.cpp" />
+    <ClCompile Include="src\ConeTwistConstraint.cpp" />
+    <ClCompile Include="src\ConstraintSolver.cpp" />
+    <ClCompile Include="src\ContactSolverInfo.cpp" />
+    <ClCompile Include="src\Convex2dConvex2dAlgorithm.cpp" />
+    <ClCompile Include="src\Convex2dShape.cpp" />
+    <ClCompile Include="src\ConvexHullShape.cpp" />
+    <ClCompile Include="src\ConvexInternalShape.cpp" />
+    <ClCompile Include="src\ConvexPenetrationDepthSolver.cpp" />
+    <ClCompile Include="src\ConvexPointCloudShape.cpp" />
+    <ClCompile Include="src\ConvexShape.cpp" />
+    <ClCompile Include="src\ConvexTriangleMeshShape.cpp" />
+    <ClCompile Include="src\CylinderShape.cpp" />
+    <ClCompile Include="src\Dbvt.cpp" />
+    <ClCompile Include="src\DbvtBroadphase.cpp" />
+    <ClCompile Include="src\DebugDraw.cpp" />
+    <ClCompile Include="src\DefaultCollisionConfiguration.cpp" />
+    <ClCompile Include="src\DefaultMotionState.cpp" />
+    <ClCompile Include="src\DiscreteCollisionDetectorInterface.cpp" />
+    <ClCompile Include="src\DiscreteDynamicsWorld.cpp" />
+    <ClCompile Include="src\Dispatcher.cpp" />
+    <ClCompile Include="src\DynamicsWorld.cpp" />
+    <ClCompile Include="src\EmptyShape.cpp" />
+    <ClCompile Include="src\Generic6DofConstraint.cpp" />
+    <ClCompile Include="src\Generic6DofSpringConstraint.cpp" />
+    <ClCompile Include="src\GhostObject.cpp" />
+    <ClCompile Include="src\GImpactShape.cpp" />
+    <ClCompile Include="src\GjkPairDetector.cpp" />
+    <ClCompile Include="src\HeightfieldTerrainShape.cpp" />
+    <ClCompile Include="src\Hinge2Constraint.cpp" />
+    <ClCompile Include="src\HingeConstraint.cpp" />
+    <ClCompile Include="src\KinematicCharacterController.cpp" />
+    <ClCompile Include="src\ManifoldPoint.cpp" />
+    <ClCompile Include="src\ManifoldResult.cpp" />
+    <ClCompile Include="src\Math.cpp" />
+    <ClCompile Include="src\MinkowskiPenetrationDepthSolver.cpp" />
+    <ClCompile Include="src\MinkowskiSumShape.cpp" />
+    <ClCompile Include="src\MotionState.cpp" />
+    <ClCompile Include="src\MultiMaterialTriangleMeshShape.cpp" />
+    <ClCompile Include="src\MultiSphereShape.cpp" />
+    <ClCompile Include="src\OverlappingPairCache.cpp" />
+    <ClCompile Include="src\OverlappingPairCallback.cpp" />
+    <ClCompile Include="src\PersistentManifold.cpp" />
+    <ClCompile Include="src\Point2PointConstraint.cpp" />
+    <ClCompile Include="src\PointCollector.cpp" />
+    <ClCompile Include="src\PolyhedralConvexShape.cpp" />
+    <ClCompile Include="src\PoolAllocator.cpp" />
+    <ClCompile Include="src\RaycastVehicle.cpp" />
+    <ClCompile Include="src\RigidBody.cpp" />
+    <ClCompile Include="src\Scalar.cpp" />
+    <ClCompile Include="src\SequentialImpulseConstraintSolver.cpp" />
+    <ClCompile Include="src\Serializer.cpp" />
+    <ClCompile Include="src\SimpleBroadphase.cpp" />
+    <ClCompile Include="src\SimplexSolverInterface.cpp" />
+    <ClCompile Include="src\SimulationIslandManager.cpp" />
+    <ClCompile Include="src\SoftBody.cpp" />
+    <ClCompile Include="src\SoftBodyHelpers.cpp" />
+    <ClCompile Include="src\SoftBodyRigidBodyCollisionConfiguration.cpp" />
+    <ClCompile Include="src\SoftRigidDynamicsWorld.cpp" />
+    <ClCompile Include="src\SparseSdf.cpp" />
+    <ClCompile Include="src\SphereShape.cpp" />
+    <ClCompile Include="src\StackAlloc.cpp" />
+    <ClCompile Include="src\StaticPlaneShape.cpp" />
+    <ClCompile Include="src\Stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Axiom|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Mogre|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release NoGfx|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release OpenTK|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release SlimDX|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release XNA 3.1|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\StridingMeshInterface.cpp" />
+    <ClCompile Include="src\StringConv.cpp" />
+    <ClCompile Include="src\TriangleCallback.cpp" />
+    <ClCompile Include="src\TriangleIndexVertexArray.cpp" />
+    <ClCompile Include="src\TriangleMeshShape.cpp" />
+    <ClCompile Include="src\TriangleShape.cpp" />
+    <ClCompile Include="src\TypedConstraint.cpp" />
+    <ClCompile Include="src\UniformScalingShape.cpp" />
+    <ClCompile Include="src\UnionFind.cpp" />
+    <ClCompile Include="src\UniversalConstraint.cpp" />
+    <ClCompile Include="src\Vector4.cpp" />
+    <ClCompile Include="src\VehicleRaycaster.cpp" />
+    <ClCompile Include="src\VoronoiSimplexSolver.cpp" />
+    <ClCompile Include="src\WheelInfo.cpp" />
+    <ClCompile Include="src\DataStream.cpp" />
+    <ClCompile Include="src\Matrix.cpp" />
+    <ClCompile Include="src\Quaternion.cpp" />
+    <ClCompile Include="src\Utilities.cpp" />
+    <ClCompile Include="src\Vector3.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\Resources.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\BulletMaterial.h" />
+    <ClInclude Include="src\CharacterControllerInterface.h" />
+    <ClInclude Include="src\ConvexTriangleMeshShape.h" />
+    <ClInclude Include="src\Enums.h" />
+    <ClInclude Include="src\IDisposable.h" />
+    <ClInclude Include="src\Math.h" />
+    <ClInclude Include="src\MinkowskiSumShape.h" />
+    <ClInclude Include="src\MultiMaterialTriangleMeshShape.h" />
+    <ClInclude Include="src\MultiSphereShape.h" />
+    <ClInclude Include="src\Serializer.h" />
+    <ClInclude Include="src\Stdafx.h" />
+    <ClInclude Include="src\StringConv.h" />
+    <ClInclude Include="src\Box2dShape.h" />
+    <ClInclude Include="src\BoxShape.h" />
+    <ClInclude Include="src\BvhTriangleMeshShape.h" />
+    <ClInclude Include="src\CapsuleShape.h" />
+    <ClInclude Include="src\CollisionShape.h" />
+    <ClInclude Include="src\CompoundShape.h" />
+    <ClInclude Include="src\ConcaveShape.h" />
+    <ClInclude Include="src\ConeShape.h" />
+    <ClInclude Include="src\Convex2dShape.h" />
+    <ClInclude Include="src\ConvexHullShape.h" />
+    <ClInclude Include="src\ConvexInternalShape.h" />
+    <ClInclude Include="src\ConvexPointCloudShape.h" />
+    <ClInclude Include="src\ConvexShape.h" />
+    <ClInclude Include="src\CylinderShape.h" />
+    <ClInclude Include="src\EmptyShape.h" />
+    <ClInclude Include="src\HeightfieldTerrainShape.h" />
+    <ClInclude Include="src\PolyhedralConvexShape.h" />
+    <ClInclude Include="src\SphereShape.h" />
+    <ClInclude Include="src\StaticPlaneShape.h" />
+    <ClInclude Include="src\StridingMeshInterface.h" />
+    <ClInclude Include="src\TriangleCallback.h" />
+    <ClInclude Include="src\TriangleIndexVertexArray.h" />
+    <ClInclude Include="src\ActivatingCollisionAlgorithm.h" />
+    <ClInclude Include="src\Box2dBox2dCollisionAlgorithm.h" />
+    <ClInclude Include="src\BoxBoxCollisionAlgorithm.h" />
+    <ClInclude Include="src\BoxBoxDetector.h" />
+    <ClInclude Include="src\CollisionConfiguration.h" />
+    <ClInclude Include="src\CollisionCreateFunc.h" />
+    <ClInclude Include="src\CollisionDispatcher.h" />
+    <ClInclude Include="src\CollisionObject.h" />
+    <ClInclude Include="src\CollisionWorld.h" />
+    <ClInclude Include="src\CompoundCollisionAlgorithm.h" />
+    <ClInclude Include="src\Convex2dConvex2dAlgorithm.h" />
+    <ClInclude Include="src\DefaultCollisionConfiguration.h" />
+    <ClInclude Include="src\ManifoldResult.h" />
+    <ClInclude Include="src\SimulationIslandManager.h" />
+    <ClInclude Include="src\AxisSweep3.h" />
+    <ClInclude Include="src\BroadphaseInterface.h" />
+    <ClInclude Include="src\BroadphaseProxy.h" />
+    <ClInclude Include="src\CollisionAlgorithm.h" />
+    <ClInclude Include="src\Dbvt.h" />
+    <ClInclude Include="src\DbvtBroadphase.h" />
+    <ClInclude Include="src\Dispatcher.h" />
+    <ClInclude Include="src\OverlappingPairCache.h" />
+    <ClInclude Include="src\OverlappingPairCallback.h" />
+    <ClInclude Include="src\SimpleBroadphase.h" />
+    <ClInclude Include="src\GImpactShape.h" />
+    <ClInclude Include="src\ConvexPenetrationDepthSolver.h" />
+    <ClInclude Include="src\DiscreteCollisionDetectorInterface.h" />
+    <ClInclude Include="src\GjkPairDetector.h" />
+    <ClInclude Include="src\ManifoldPoint.h" />
+    <ClInclude Include="src\MinkowskiPenetrationDepthSolver.h" />
+    <ClInclude Include="src\PersistentManifold.h" />
+    <ClInclude Include="src\PointCollector.h" />
+    <ClInclude Include="src\SimplexSolverInterface.h" />
+    <ClInclude Include="src\TriangleMeshShape.h" />
+    <ClInclude Include="src\TriangleShape.h" />
+    <ClInclude Include="src\UniformScalingShape.h" />
+    <ClInclude Include="src\UnionFind.h" />
+    <ClInclude Include="src\Vector4.h" />
+    <ClInclude Include="src\VoronoiSimplexSolver.h" />
+    <ClInclude Include="src\ActionInterface.h" />
+    <ClInclude Include="src\DiscreteDynamicsWorld.h" />
+    <ClInclude Include="src\DynamicsWorld.h" />
+    <ClInclude Include="src\GhostObject.h" />
+    <ClInclude Include="src\KinematicCharacterController.h" />
+    <ClInclude Include="src\RigidBody.h" />
+    <ClInclude Include="src\ConeTwistConstraint.h" />
+    <ClInclude Include="src\ConstraintSolver.h" />
+    <ClInclude Include="src\ContactSolverInfo.h" />
+    <ClInclude Include="src\Generic6DofConstraint.h" />
+    <ClInclude Include="src\Generic6DofSpringConstraint.h" />
+    <ClInclude Include="src\Hinge2Constraint.h" />
+    <ClInclude Include="src\HingeConstraint.h" />
+    <ClInclude Include="src\Point2PointConstraint.h" />
+    <ClInclude Include="src\SequentialImpulseConstraintSolver.h" />
+    <ClInclude Include="src\TypedConstraint.h" />
+    <ClInclude Include="src\UniversalConstraint.h" />
+    <ClInclude Include="src\RaycastVehicle.h" />
+    <ClInclude Include="src\VehicleRaycaster.h" />
+    <ClInclude Include="src\WheelInfo.h" />
+    <ClInclude Include="src\AlignedObjectArray.h" />
+    <ClInclude Include="src\DebugDraw.h" />
+    <ClInclude Include="src\DefaultMotionState.h" />
+    <ClInclude Include="src\MotionState.h" />
+    <ClInclude Include="src\PoolAllocator.h" />
+    <ClInclude Include="src\Scalar.h" />
+    <ClInclude Include="src\StackAlloc.h" />
+    <ClInclude Include="src\SoftBody.h" />
+    <ClInclude Include="src\SoftBodyHelpers.h" />
+    <ClInclude Include="src\SoftBodyRigidBodyCollisionConfiguration.h" />
+    <ClInclude Include="src\SoftRigidDynamicsWorld.h" />
+    <ClInclude Include="src\SparseSdf.h" />
+    <ClInclude Include="src\DataStream.h" />
+    <ClInclude Include="src\Matrix.h" />
+    <ClInclude Include="src\Quaternion.h" />
+    <ClInclude Include="src\Utilities.h" />
+    <ClInclude Include="src\Vector3.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

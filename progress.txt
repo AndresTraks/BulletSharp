@@ -67,7 +67,6 @@ Dynamics/Dynamics
 
 x ContinuousDynamicsWorld (under construction)
 0 DynamicsWorld
-0 RigidBody
 - SimpleDynamicsWorld
 
 

@@ -12,17 +12,30 @@ namespace BulletSharp
 	[System::Runtime::InteropServices::StructLayout( System::Runtime::InteropServices::LayoutKind::Sequential)]
 	public value class BulletMaterial
 	{
-	public:
-		btScalar Friction;
-		btScalar Restitution;
 	private:
+		btScalar friction;
+		btScalar restitution;
 		int pad1;
 		int pad2;
 
-	public:
+	internal:
 		BulletMaterial(btMaterial* material);
+
+	public:
 		BulletMaterial(btScalar fric, btScalar rest);
 
 		static property int SizeInBytes { int get() { return System::Runtime::InteropServices::Marshal::SizeOf(BulletMaterial::typeid); } }
+
+		property btScalar Friction
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property btScalar Restitution
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
 	};
 };

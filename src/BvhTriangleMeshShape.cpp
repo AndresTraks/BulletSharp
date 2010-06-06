@@ -133,12 +133,12 @@ void BvhTriangleMeshShape::SetOptimizedBvh(BulletSharp::OptimizedBvh^ bvh, Vecto
 #endif
 
 #ifndef DISABLE_SERIALIZE
-void BvhTriangleMeshShape::SerializeSingleBvh(Serializer^ serializer)
+void BvhTriangleMeshShape::SerializeSingleBvh(BulletSharp::Serializer^ serializer)
 {
 	UnmanagedPointer->serializeSingleBvh(serializer->UnmanagedPointer);
 }
 
-void BvhTriangleMeshShape::SerializeSingleTriangleInfoMap(Serializer^ serializer)
+void BvhTriangleMeshShape::SerializeSingleTriangleInfoMap(BulletSharp::Serializer^ serializer)
 {
 	UnmanagedPointer->serializeSingleTriangleInfoMap(serializer->UnmanagedPointer);
 }

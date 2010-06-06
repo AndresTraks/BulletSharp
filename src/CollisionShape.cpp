@@ -207,13 +207,13 @@ int CollisionShape::CalculateSerializeBufferSize()
 	return UnmanagedPointer->calculateSerializeBufferSize();
 }
 
-String^ CollisionShape::Serialize(IntPtr dataBuffer, Serializer^ serializer)
+String^ CollisionShape::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
 {
 	const char* name = UnmanagedPointer->serialize(dataBuffer.ToPointer(), serializer->UnmanagedPointer);
 	return gcnew String(name);
 }
 
-void CollisionShape::SerializeSingleShape(Serializer^ serializer)
+void CollisionShape::SerializeSingleShape(BulletSharp::Serializer^ serializer)
 {
 	UnmanagedPointer->serializeSingleShape(serializer->UnmanagedPointer);
 }
