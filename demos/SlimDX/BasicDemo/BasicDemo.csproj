@@ -67,7 +67,6 @@
   <ItemGroup>
     <Compile Include="BasicDemo.cs" />
     <Compile Include="Physics.cs" />
-    <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

@@ -4,6 +4,7 @@
 #include <BulletCollision/CollisionShapes/btTriangleIndexVertexMaterialArray.h>
 #pragma managed(pop)
 
+#include "BulletMaterial.h"
 #include "Enums.h"
 #include "TriangleIndexVertexArray.h"
 
@@ -20,5 +21,7 @@ namespace BulletSharp
 			int triangleIndexStride, int numVertices, IntPtr vertexBase, int vertexStride,
 			int numMaterials, IntPtr materialBase, int materialStride, IntPtr triangleMaterialsBase,
 			int materialIndexStride);
+		TriangleIndexVertexMaterialArray(array<int>^ indices, array<Vector3>^ vertices,
+			array<BulletMaterial>^ materials, array<int>^ materialIndices);
 	};
 };

@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplestDemo", "SimplestDem
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerializeDemo", "SerializeDemo\SerializeDemo.csproj", "{05FD0407-950C-45FA-93FA-7B8A4A6C9655}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiMaterialDemo", "MultiMaterialDemo\MultiMaterialDemo.csproj", "{71CA2FEC-4035-4D5B-B4B4-B6DB7AD8FAD5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -73,6 +75,10 @@ Global
 		{05FD0407-950C-45FA-93FA-7B8A4A6C9655}.Debug|x86.Build.0 = Debug|x86
 		{05FD0407-950C-45FA-93FA-7B8A4A6C9655}.Release|x86.ActiveCfg = Release|x86
 		{05FD0407-950C-45FA-93FA-7B8A4A6C9655}.Release|x86.Build.0 = Release|x86
+		{71CA2FEC-4035-4D5B-B4B4-B6DB7AD8FAD5}.Debug|x86.ActiveCfg = Debug|x86
+		{71CA2FEC-4035-4D5B-B4B4-B6DB7AD8FAD5}.Debug|x86.Build.0 = Debug|x86
+		{71CA2FEC-4035-4D5B-B4B4-B6DB7AD8FAD5}.Release|x86.ActiveCfg = Release|x86
+		{71CA2FEC-4035-4D5B-B4B4-B6DB7AD8FAD5}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,30 +1,30 @@
 #include "StdAfx.h"
 
 #include "BulletMaterial.h"
-#include "MultiMaterialTriangleMeshShape.h"
+#include "MultimaterialTriangleMeshShape.h"
 #include "StridingMeshInterface.h"
 
-MultiMaterialTriangleMeshShape::MultiMaterialTriangleMeshShape(btMultimaterialTriangleMeshShape* meshShape)
+MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(btMultimaterialTriangleMeshShape* meshShape)
 : BvhTriangleMeshShape(meshShape)
 {
 }
 
-MultiMaterialTriangleMeshShape::MultiMaterialTriangleMeshShape()
+MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape()
 : BvhTriangleMeshShape(new btMultimaterialTriangleMeshShape())
 {
 }
 
-MultiMaterialTriangleMeshShape::MultiMaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression, bool buildBvh)
+MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression, bool buildBvh)
 : BvhTriangleMeshShape(new btMultimaterialTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression, buildBvh))
 {
 }
 
-MultiMaterialTriangleMeshShape::MultiMaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression)
+MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression)
 : BvhTriangleMeshShape(new btMultimaterialTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression))
 {
 }
 
-MultiMaterialTriangleMeshShape::MultiMaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
+MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
 	Vector3 bvhAabbMin, Vector3 bvhAabbMax, bool buildBvh)
 : BvhTriangleMeshShape(0)
 {
@@ -38,7 +38,7 @@ MultiMaterialTriangleMeshShape::MultiMaterialTriangleMeshShape(StridingMeshInter
 	delete bvhAabbMaxTemp;
 }
 
-MultiMaterialTriangleMeshShape::MultiMaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
+MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
 	Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 : BvhTriangleMeshShape(0)
 {
@@ -52,12 +52,12 @@ MultiMaterialTriangleMeshShape::MultiMaterialTriangleMeshShape(StridingMeshInter
 	delete bvhAabbMaxTemp;
 }
 
-BulletMaterial^ MultiMaterialTriangleMeshShape::GetMaterialProperties(int partID, int triIndex)
+BulletMaterial MultimaterialTriangleMeshShape::GetMaterialProperties(int partID, int triIndex)
 {
-	return gcnew BulletMaterial((btMaterial*)UnmanagedPointer->getMaterialProperties(partID, triIndex));
+	return BulletMaterial((btMaterial*)UnmanagedPointer->getMaterialProperties(partID, triIndex));
 }
 
-btMultimaterialTriangleMeshShape* MultiMaterialTriangleMeshShape::UnmanagedPointer::get()
+btMultimaterialTriangleMeshShape* MultimaterialTriangleMeshShape::UnmanagedPointer::get()
 {
 	return (btMultimaterialTriangleMeshShape*)BvhTriangleMeshShape::UnmanagedPointer;
 }

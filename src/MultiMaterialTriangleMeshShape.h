@@ -3,31 +3,31 @@
 // Fully implemented as of 25 May 2010
 
 #pragma managed(push, off)
-#include <BulletCollision/CollisionShapes/btMultiMaterialTriangleMeshShape.h>
+#include <BulletCollision/CollisionShapes/btMultimaterialTriangleMeshShape.h>
 #pragma managed(pop)
 
 #include "BvhTriangleMeshShape.h"
 
 namespace BulletSharp
 {
-	ref class BulletMaterial;
+	value class BulletMaterial;
 	ref class StridingMeshInterface;
 
-	public ref class MultiMaterialTriangleMeshShape : BvhTriangleMeshShape
+	public ref class MultimaterialTriangleMeshShape : BvhTriangleMeshShape
 	{
 	internal:
-		MultiMaterialTriangleMeshShape(btMultimaterialTriangleMeshShape* meshShape);
+		MultimaterialTriangleMeshShape(btMultimaterialTriangleMeshShape* meshShape);
 
 	public:
-		MultiMaterialTriangleMeshShape();
-		MultiMaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression, bool buildBvh);
-		MultiMaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression);
-		MultiMaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
+		MultimaterialTriangleMeshShape();
+		MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression, bool buildBvh);
+		MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression);
+		MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
 			Vector3 bvhAabbMin, Vector3 bvhAabbMax, bool buildBvh);
-		MultiMaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
+		MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
 			Vector3 bvhAabbMin, Vector3 bvhAabbMax);
 
-		BulletMaterial^ GetMaterialProperties(int partID, int triIndex);
+		BulletMaterial GetMaterialProperties(int partID, int triIndex);
 
 	internal:
 		property btMultimaterialTriangleMeshShape* UnmanagedPointer

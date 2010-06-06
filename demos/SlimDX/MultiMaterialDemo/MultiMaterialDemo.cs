@@ -6,9 +6,20 @@ using SlimDX.DirectInput;
 using System;
 using System.Drawing;
 
-namespace BasicDemo
+namespace MultiMaterialDemo
 {
-    class BasicDemo : Game
+    static class Program
+    {
+        [STAThread]
+        static void Main()
+        {
+            MultiMaterialDemo game = new MultiMaterialDemo();
+            game.Run();
+            game.Dispose();
+        }
+    }
+
+    class MultiMaterialDemo : Game
     {
         int Width = 1024, Height = 768;
         Color ambient = Color.Gray;
@@ -39,7 +50,7 @@ namespace BasicDemo
         protected override void OnInitializeDevice()
         {
             Form.ClientSize = new Size(Width, Height);
-            Form.Text = "BulletSharp - Basic Demo";
+            Form.Text = "BulletSharp - Multimaterial Mesh Demo";
 
             DeviceSettings9 settings = new DeviceSettings9();
             settings.CreationFlags = CreateFlags.HardwareVertexProcessing;
@@ -60,7 +71,7 @@ namespace BasicDemo
         protected override void  OnInitialize()
         {
             // Create meshes to draw
-            box = Mesh.CreateBox(Device, 2, 2, 2);
+            box = Mesh.CreateBox(Device, 1, 1, 1);
             groundBox = Mesh.CreateBox(Device, 100, 2, 100);
 
             light = new Light();
@@ -88,6 +99,7 @@ namespace BasicDemo
                 "F11 - Toggle fullscreen";
 
             physics = new Physics();
+            physics.SetDebugDrawMode(Device, DebugDrawModes.DrawAabb | DebugDrawModes.DrawWireframe);
         }
 
         protected override void OnResourceLoad()
@@ -110,7 +122,7 @@ namespace BasicDemo
             if (Input.KeyboardDown.Contains(Key.F3))
             {
                 if (physics.IsDebugDrawEnabled == false)
-                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawAabb);
+                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawAabb | DebugDrawModes.DrawWireframe);
                 else
                     physics.SetDebugDrawMode(Device, DebugDrawModes.None);
             }
@@ -133,8 +145,8 @@ namespace BasicDemo
 
                 if ((string)colObj.UserObject == "Ground")
                 {
-                    Device.Material = groundMaterial;
-                    groundBox.DrawSubset(0);
+                    //Device.Material = groundMaterial;
+                    //groundBox.DrawSubset(0);
                     continue;
                 }
 
@@ -152,21 +164,6 @@ namespace BasicDemo
 
             Device.EndScene();
             Device.Present();
-        }
-    }
-
-    static class Program
-    {
-        [STAThread]
-        static void Main()
-        {
-            BasicDemo game = new BasicDemo();
-
-            if (game.TestLibraries() == false)
-                return;
-
-            game.Run();
-            game.Dispose();
         }
     }
 }
