@@ -15,13 +15,13 @@ x MultiSapBroadphase (experimental)
 
 Collision/CollisionDispatch
 
-- InternalEdgeUtility (internal)
+x InternalEdgeUtility (internal)
 
 
 
 Collision/CollisionShapes
 
-- TriangleInfoMap (internal)
+x TriangleInfoMap (internal)
 
 
 
@@ -67,7 +67,7 @@ Dynamics/Dynamics
 
 x ContinuousDynamicsWorld (under construction)
 0 DynamicsWorld
-- SimpleDynamicsWorld
+x SimpleDynamicsWorld (for unit-testing)
 
 
 
