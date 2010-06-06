@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 
+#include "DataStream.h"
 #include "StridingMeshInterface.h"
 #include "TriangleCallback.h"
 #include "TriangleIndexVertexArray.h"

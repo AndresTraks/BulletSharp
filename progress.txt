@@ -15,14 +15,13 @@ x MultiSapBroadphase (experimental)
 
 Collision/CollisionDispatch
 
-- InternalEdgeUtility
+- InternalEdgeUtility (internal)
 
 
 
 Collision/CollisionShapes
 
-0 TriangleIndexVertexMaterialArray
-- TriangleInfoMap
+- TriangleInfoMap (internal)
 
 
 
@@ -70,3 +69,16 @@ x ContinuousDynamicsWorld (under construction)
 0 DynamicsWorld
 0 RigidBody
 - SimpleDynamicsWorld
+
+
+
+SoftBody
+0 SoftBody
+- SoftBodyConcaveCollisionAlgorithm
+0 SoftBodyHelpers
+- SoftBodyInternals (internal)
+0 SoftBodyRigidBodyCollisionAlgorithm
+0 SoftBodyRigidDynamicsWorld
+- SoftRigidCollisionAlgorithm
+- SoftSoftCollisionAlgorithm
+0 SparseSdf

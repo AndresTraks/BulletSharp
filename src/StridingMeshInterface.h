@@ -2,12 +2,12 @@
 
 // Fully implemented as of 25 May 2010
 
-#include "DataStream.h"
 #include "Enums.h"
 #include "IDisposable.h"
 
 namespace BulletSharp
 {
+	ref class DataStream;
 	ref class InternalTriangleIndexCallback;
 	ref class Serializer;
 

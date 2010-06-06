@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 06 Jun 2010
+
 #pragma managed(push, off)
 #include <BulletCollision/CollisionShapes/btTriangleIndexVertexMaterialArray.h>
 #pragma managed(pop)
@@ -10,6 +12,71 @@
 
 namespace BulletSharp
 {
+	ref class DataStream;
+
+	public ref class MaterialProperties
+	{
+	private:
+		btMaterialProperties* _properties;
+
+	public:
+		MaterialProperties();
+
+		property IntPtr MaterialBase
+		{
+			IntPtr get();
+			void set(IntPtr value);
+		}
+
+		property int MaterialStride
+		{
+			int get();
+			void set(int value);
+		}
+
+		property PhyScalarType MaterialType
+		{
+			PhyScalarType get();
+			void set(PhyScalarType value);
+		}
+
+		property int NumMaterials
+		{
+			int get();
+			void set(int value);
+		}
+
+		property int NumTriangles
+		{
+			int get();
+			void set(int value);
+		}
+
+		property IntPtr TriangleMaterialsBase
+		{
+			IntPtr get();
+			void set(IntPtr value);
+		}
+
+		property int TriangleMaterialStride
+		{
+			int get();
+			void set(int value);
+		}
+
+		property PhyScalarType TriangleType
+		{
+			PhyScalarType get();
+			void set(PhyScalarType value);
+		}
+
+	internal:
+		property btMaterialProperties* UnmanagedPointer
+		{
+			btMaterialProperties* get();
+		}
+	};
+
 	public ref class TriangleIndexVertexMaterialArray : TriangleIndexVertexArray
 	{
 	internal:
@@ -23,5 +90,33 @@ namespace BulletSharp
 			int materialIndexStride);
 		TriangleIndexVertexMaterialArray(array<int>^ indices, array<Vector3>^ vertices,
 			array<BulletMaterial>^ materials, array<int>^ materialIndices);
+
+		void AddMaterialProperties(MaterialProperties^ mat, PhyScalarType triangleType);
+
+		void GetLockedMaterialData([Out] DataStream^% materialData, [Out] int% numMaterials,
+			[Out] PhyScalarType% materialType, [Out] int% materialStride,
+			[Out] DataStream^% triangleMaterialData, [Out] int% numTriangles,
+			[Out] int% triangleMaterialStride, [Out] PhyScalarType% triangleType,
+			int subpart);
+		void GetLockedMaterialData([Out] DataStream^% materialData, [Out] int% numMaterials,
+			[Out] PhyScalarType% materialType, [Out] int% materialStride,
+			[Out] DataStream^% triangleMaterialData, [Out] int% numTriangles,
+			[Out] int% triangleMaterialStride, [Out] PhyScalarType% triangleType);
+
+		void GetLockedReadOnlyMaterialData([Out] DataStream^% materialData, [Out] int% numMaterials,
+			[Out] PhyScalarType% materialType, [Out] int% materialStride,
+			[Out] DataStream^% triangleMaterialData, [Out] int% numTriangles,
+			[Out] int% triangleMaterialStride, [Out] PhyScalarType% triangleType,
+			int subpart);
+		void GetLockedReadOnlyMaterialData([Out] DataStream^% materialData, [Out] int% numMaterials,
+			[Out] PhyScalarType% materialType, [Out] int% materialStride,
+			[Out] DataStream^% triangleMaterialData, [Out] int% numTriangles,
+			[Out] int% triangleMaterialStride, [Out] PhyScalarType% triangleType);
+
+	internal:
+		property btTriangleIndexVertexMaterialArray* UnmanagedPointer
+		{
+			btTriangleIndexVertexMaterialArray* get() new;
+		}
 	};
 };
