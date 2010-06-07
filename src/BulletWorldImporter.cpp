@@ -3,6 +3,7 @@
 #ifndef DISABLE_SERIALIZE
 
 #pragma managed(push, off)
+#include <BulletCollision/GImpact/btGImpactShape.h>
 #include <..\Extras\Serialize\BulletWorldImporter\btBulletWorldImporter.h>
 #pragma managed(pop)
 
@@ -139,10 +140,12 @@ CollisionShape^ Serialize::BulletWorldImporter::CreateConvexTriangleMeshShape(St
 	return gcnew CollisionShape(_importer->baseCreateConvexTriangleMeshShape(trimesh->UnmanagedPointer));
 }
 
+#ifndef DISABLE_GIMPACT
 GImpactMeshShape^ Serialize::BulletWorldImporter::CreateGimpactShape(StridingMeshInterface^ trimesh)
 {
 	return gcnew GImpactMeshShape(_importer->baseCreateGimpactShape(trimesh->UnmanagedPointer));
 }
+#endif
 
 ConvexHullShape^ Serialize::BulletWorldImporter::CreateConvexHullShape()
 {
@@ -537,10 +540,12 @@ btCollisionShape* Serialize::BulletWorldImporterWrapper::createConvexTriangleMes
 	return _importer->CreateConvexTriangleMeshShape(gcnew StridingMeshInterface(trimesh))->UnmanagedPointer;
 }
 
+#ifndef DISABLE_GIMPACT
 btGImpactMeshShape* Serialize::BulletWorldImporterWrapper::createGimpactShape(btStridingMeshInterface* trimesh)
 {
 	return _importer->CreateGimpactShape(gcnew StridingMeshInterface(trimesh))->UnmanagedPointer;
 }
+#endif
 
 class btConvexHullShape* Serialize::BulletWorldImporterWrapper::createConvexHullShape()
 {
@@ -719,10 +724,12 @@ btCollisionShape* Serialize::BulletWorldImporterWrapper::baseCreateConvexTriangl
 	return btBulletWorldImporter::createConvexTriangleMeshShape(trimesh);
 }
 
+#ifndef DISABLE_GIMPACT
 btGImpactMeshShape* Serialize::BulletWorldImporterWrapper::baseCreateGimpactShape(btStridingMeshInterface* trimesh)
 {
 	return btBulletWorldImporter::createGimpactShape(trimesh);
 }
+#endif
 
 class btConvexHullShape* Serialize::BulletWorldImporterWrapper::baseCreateConvexHullShape()
 {

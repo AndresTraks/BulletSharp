@@ -14,7 +14,6 @@
 #include "CylinderShape.h"
 #include "ConvexShape.h"
 #include "EmptyShape.h"
-#include "GImpactShape.h"
 //#include "HfFluidBuoyantConvexShape.h"
 //#include "HfFluidShape.h"
 #include "MinkowskiSumShape.h"
@@ -25,6 +24,9 @@
 #include "TriangleMeshShape.h"
 #include "TriangleShape.h"
 #include "UniformScalingShape.h"
+#ifndef DISABLE_GIMPACT
+#include "GImpactShape.h"
+#endif
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
 #endif
@@ -93,8 +95,6 @@ CollisionShape^ CollisionShape::UpcastDetect()
 		return gcnew EmptyShape((btEmptyShape*) _collisionShape);
 	//case BroadphaseNativeType::FastConcaveMesh:
 	//	return gcnew FastConcaveMesh((btFastConcaveMesh*) _collisionShape);
-	case BroadphaseNativeType::GImpactShape:
-		return gcnew GImpactMeshShape((btGImpactMeshShape*) _collisionShape);
 	//case BroadphaseNativeType::HfFluidBuoyantConvexShape:
 	//	return gcnew HfFluidBuoyantConvexShape((btHfFluidBuoyantConvexShape*) _collisionShape);
 	//case BroadphaseNativeType::HfFluidShape:
@@ -119,6 +119,15 @@ CollisionShape^ CollisionShape::UpcastDetect()
 		return gcnew TriangleShape((btTriangleShape*) _collisionShape);
 	case BroadphaseNativeType::UniformScalingShape:
 		return gcnew UniformScalingShape((btUniformScalingShape*) _collisionShape);
+
+	case BroadphaseNativeType::GImpactShape:
+	{
+#ifndef DISABLE_GIMPACT
+		return gcnew GImpactMeshShape((btGImpactMeshShape*) _collisionShape);
+#else
+		return this;
+#endif
+	}
 
 	case BroadphaseNativeType::MultiMaterialTriangleMesh:
 		return gcnew MultimaterialTriangleMeshShape((btMultimaterialTriangleMeshShape*) _collisionShape);

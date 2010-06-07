@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_GIMPACT
 #ifndef DISABLE_BVH
 
 #include "BoxCollision.h"
@@ -14,4 +15,5 @@ btAABB* Aabb::UnmanagedPointer::get()
 	return _aabb;
 }
 
+#endif
 #endif

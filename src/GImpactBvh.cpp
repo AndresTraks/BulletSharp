@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_GIMPACT
 #ifndef DISABLE_BVH
 
 #include "AlignedObjectArray.h"
@@ -119,4 +120,5 @@ int GImpactBvh::NodeCount::get()
 	return _bvh->getNodeCount();
 }
 
+#endif
 #endif

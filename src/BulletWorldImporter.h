@@ -6,10 +6,12 @@
 #include "CompoundShape.h"
 #include "DynamicsWorld.h"
 #include "IDisposable.h"
-#include "GImpactShape.h"
 #include "RigidBody.h"
 #include "StridingMeshInterface.h"
 #include "TriangleIndexVertexArray.h"
+#ifndef DISABLE_GIMPACT
+#include "GImpactShape.h"
+#endif
 #ifndef DISABLE_CONSTRAINTS
 #include "ConeTwistConstraint.h"
 #include "Generic6DofConstraint.h"
@@ -66,7 +68,9 @@ namespace BulletSharp
 			virtual BvhTriangleMeshShape^ CreateBvhTriangleMeshShape(StridingMeshInterface^ trimesh, OptimizedBvh^ bvh);
 #endif
 			virtual CollisionShape^ CreateConvexTriangleMeshShape(StridingMeshInterface^ trimesh);
+#ifndef DISABLE_GIMPACT
 			virtual GImpactMeshShape^ CreateGimpactShape(StridingMeshInterface^ trimesh);
+#endif
 			virtual ConvexHullShape^ CreateConvexHullShape();
 			virtual CompoundShape^ CreateCompoundShape();
 
@@ -180,7 +184,9 @@ namespace BulletSharp
 			virtual	btBvhTriangleMeshShape* createBvhTriangleMeshShape(btStridingMeshInterface* trimesh, btOptimizedBvh* bvh);
 #endif
 			virtual btCollisionShape* createConvexTriangleMeshShape(btStridingMeshInterface* trimesh);
+#ifndef DISABLE_GIMPACT
 			virtual btGImpactMeshShape* createGimpactShape(btStridingMeshInterface* trimesh);
+#endif
 			virtual class btConvexHullShape* createConvexHullShape();
 			virtual class btCompoundShape* createCompoundShape();
 
@@ -237,7 +243,9 @@ namespace BulletSharp
 			virtual	btBvhTriangleMeshShape* baseCreateBvhTriangleMeshShape(btStridingMeshInterface* trimesh, btOptimizedBvh* bvh);
 #endif
 			virtual btCollisionShape* baseCreateConvexTriangleMeshShape(btStridingMeshInterface* trimesh);
+#ifndef DISABLE_GIMPACT
 			virtual btGImpactMeshShape* baseCreateGimpactShape(btStridingMeshInterface* trimesh);
+#endif
 			virtual class btConvexHullShape* baseCreateConvexHullShape();
 			virtual class btCompoundShape* baseCreateCompoundShape();
 

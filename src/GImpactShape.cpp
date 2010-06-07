@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_GIMPACT
+
 #include "GImpactShape.h"
 #include "StridingMeshInterface.h"
 
@@ -131,3 +133,5 @@ btGImpactMeshShape* GImpactMeshShape::UnmanagedPointer::get()
 {
 	return (btGImpactMeshShape*)GImpactShapeInterface::UnmanagedPointer;
 }
+
+#endif

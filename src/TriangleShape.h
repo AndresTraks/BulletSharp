@@ -2,6 +2,10 @@
 
 // Fully implemented as of 10 May 2010
 
+#pragma managed(push, off)
+#include <BulletCollision/CollisionShapes/btTriangleShape.h>
+#pragma managed(pop)
+
 #include "PolyhedralConvexShape.h"
 
 namespace BulletSharp
