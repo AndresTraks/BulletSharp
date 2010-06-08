@@ -73,9 +73,9 @@ namespace BulletSharp
 		//void SetInternalTickCallback(InternalTickCallback cb, Object^ worldUserInfo);
 		//void SetInternalTickCallback(InternalTickCallback cb);
 #endif
-		void StepSimulation(btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep);
-		void StepSimulation(btScalar timeStep, int maxSubSteps);
-		void StepSimulation(btScalar timeStep);
+		int StepSimulation(btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep);
+		int StepSimulation(btScalar timeStep, int maxSubSteps);
+		int StepSimulation(btScalar timeStep);
 		void SynchronizeMotionStates();
 
 #ifndef DISABLE_CONSTRAINTS

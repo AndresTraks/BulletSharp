@@ -113,19 +113,19 @@ void DynamicsWorld::RemoveRigidBody(RigidBody^ rigidBody)
 	UnmanagedPointer->removeRigidBody(rigidBody->UnmanagedPointer);
 }
 
-void DynamicsWorld::StepSimulation(btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep)
+int DynamicsWorld::StepSimulation(btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep)
 {
-	UnmanagedPointer->stepSimulation(timeStep, maxSubSteps, fixedTimeStep);
+	return UnmanagedPointer->stepSimulation(timeStep, maxSubSteps, fixedTimeStep);
 }
 
-void DynamicsWorld::StepSimulation(btScalar timeStep, int maxSubSteps)
+int DynamicsWorld::StepSimulation(btScalar timeStep, int maxSubSteps)
 {
-	UnmanagedPointer->stepSimulation(timeStep, maxSubSteps);
+	return UnmanagedPointer->stepSimulation(timeStep, maxSubSteps);
 }
 
-void DynamicsWorld::StepSimulation(btScalar timeStep)
+int DynamicsWorld::StepSimulation(btScalar timeStep)
 {
-	UnmanagedPointer->stepSimulation(timeStep);
+	return UnmanagedPointer->stepSimulation(timeStep);
 }
 
 void DynamicsWorld::SynchronizeMotionStates()
