@@ -1,7 +1,8 @@
 ﻿using BulletSharp;
 using SlimDX;
 using SlimDX.Direct3D9;
-using SlimDX.DirectInput;
+using SlimDX.Multimedia;
+using SlimDX.RawInput;
 using SlimDX.Windows;
 using System;
 using System.Drawing;
@@ -107,7 +108,6 @@ namespace DemoFramework
         {
             if (disposeManagedResources)
             {
-                Input.Dispose();
                 apiContext.Dispose();
                 Form.Dispose();
                 Fps.Dispose();
@@ -139,33 +139,25 @@ namespace DemoFramework
 
         protected void InputUpdate(Vector3 eye, Vector3 target, PhysicsContext physics)
         {
-            if (Input == null)
-                return;
-
-            if (Input.KeyboardDown.Count > 0)
+            if (Input.KeysPressed.Contains(Keys.Escape))
             {
-                if (Input.KeyboardDown.Contains(Key.Escape))
-                {
-                    Quit();
-                    return;
-                }
-
-                if (Input.KeyboardDown.Contains(Key.F11))
-                    ToggleFullScreen();
-
-                // FIXME: this seems to mess up the collision object array
-                //if (input.KeyboardDown.Contains(Key.Space))
-                //    physics.ShootBox(Freelook.Eye, GetRayTo(input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView));
+                Quit();
+                return;
             }
 
-            if (Input.MousePoint.IsEmpty)
-                return;
+            if (Input.KeysPressed.Contains(Keys.F11))
+                ToggleFullScreen();
 
-            if (Input.MouseDown == MouseButtons.Right || Input.MouseUp == MouseButtons.Right)
+            // FIXME: this seems to mess up the collision object array
+            //if (Input.KeysPressed.Contains(Keys.Space))
+            //  physics.ShootBox(Freelook.Eye, GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView));
+
+
+            if (Input.MousePressed != MouseButtonFlags.None)
             {
                 Vector3 rayTo = GetRayTo(Input.MousePoint, eye, target, FieldOfView);
 
-                if (Input.MouseDown == MouseButtons.Right)
+                if (Input.MousePressed == MouseButtonFlags.RightDown)
                 {
                     if (physics.World != null)
                     {
@@ -236,7 +228,7 @@ namespace DemoFramework
                         }
                     }
                 }
-                else if (Input.MouseUp == MouseButtons.Right)
+                else if (Input.MousePressed == MouseButtonFlags.RightUp)
                 {
                     if (pickConstraint != null && physics.World != null)
                     {
@@ -251,7 +243,7 @@ namespace DemoFramework
             }
 
             // Mouse movement
-            if (Input.MouseButtons == MouseButtons.Right)
+            if (Input.MouseDown == MouseButtonFlags.RightDown)
             {
                 if (pickConstraint != null)
                 {
@@ -421,10 +413,17 @@ namespace DemoFramework
 
             Form.Closed += (o, args) => { isFormClosed = true; };
 
+            SlimDX.RawInput.Device.RegisterDevice(UsagePage.Generic, UsageId.Keyboard, DeviceFlags.None);
+            SlimDX.RawInput.Device.RegisterDevice(UsagePage.Generic, UsageId.Mouse, DeviceFlags.None);
+
+            Input = new Input(Form);
+
+            SlimDX.RawInput.Device.KeyboardInput += Device_KeyboardInput;
+            SlimDX.RawInput.Device.MouseInput += Device_MouseInput;
+
             OnInitializeDevice();
 
             FieldOfView = (float)Math.PI / 4;
-            Input = new Input(Form);
             Freelook = new FreeLook();
             Fps = new FpsDisplay(Device9);
 
@@ -435,6 +434,7 @@ namespace DemoFramework
             MessagePump.Run(Form, () =>
             {
                 Update();
+                Input.ClearKeyCache();
 
                 if (isFormClosed)
                     return;
@@ -446,6 +446,16 @@ namespace DemoFramework
             OnResourceUnload();
         }
 
+        private void Device_MouseInput(object sender, MouseInputEventArgs e)
+        {
+            Input.Device_MouseInput(e);
+        }
+
+        private void Device_KeyboardInput(object sender, KeyboardInputEventArgs e)
+        {
+            Input.Device_KeyboardInput(e);
+        }
+
         protected virtual void OnInitializeDevice() { }
 
         protected virtual void OnInitialize() { }
@@ -453,7 +463,6 @@ namespace DemoFramework
         protected virtual void OnResourceLoad()
         {
             Fps.OnResourceLoad();
-            Input.OnResetDevice();
         }
 
         protected virtual void OnResourceUnload()
@@ -468,7 +477,6 @@ namespace DemoFramework
         {
             Freelook.Update(FrameDelta, Input);
             Fps.OnResourceUnload();
-            Input.GetCurrentState();
         }
 
         /// <summary>

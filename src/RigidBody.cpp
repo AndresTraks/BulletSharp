@@ -197,11 +197,6 @@ void RigidBody::UpdateInertiaTensor()
 	UnmanagedPointer->updateInertiaTensor();
 }
 
-bool RigidBody::WantsSleeping()
-{
-	return UnmanagedPointer->wantsSleeping();
-}
-
 RigidBody^ RigidBody::Upcast(CollisionObject^ colObj)
 {
 	btRigidBody* body = btRigidBody::upcast(colObj->UnmanagedPointer);
@@ -445,6 +440,11 @@ Vector3 RigidBody::TotalForce::get()
 Vector3 RigidBody::TotalTorque::get()
 {
 	return Math::BtVector3ToVector3(&UnmanagedPointer->getTotalTorque());
+}
+
+bool RigidBody::WantsSleeping::get()
+{
+	return UnmanagedPointer->wantsSleeping();
 }
 
 btRigidBody* RigidBody::UnmanagedPointer::get()

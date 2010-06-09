@@ -8,9 +8,9 @@ namespace DemoFramework
 {
     public class PhysicsDebugDraw : DebugDraw
     {
-        protected SlimDX.Direct3D9.Device device;
+        protected Device device;
 
-        public PhysicsDebugDraw(SlimDX.Direct3D9.Device device)
+        public PhysicsDebugDraw(Device device)
         {
             this.device = device;
         }
@@ -172,7 +172,7 @@ namespace DemoFramework
     {
         List<PositionColored> lineBuffer = new List<PositionColored>();
 
-        public PhysicsDebugDrawLineGathering(SlimDX.Direct3D9.Device device)
+        public PhysicsDebugDrawLineGathering(Device device)
             : base(device)
         {
             this.DebugMode = DebugDrawModes.DrawWireframe;

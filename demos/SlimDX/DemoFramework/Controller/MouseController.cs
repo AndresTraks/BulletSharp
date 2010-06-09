@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using SlimDX;
-using SlimDX.DirectInput;
+using SlimDX.RawInput;
 
 namespace DemoFramework
 {
@@ -29,7 +29,6 @@ namespace DemoFramework
         Vector3 vector;
         double sensitivity = 0.01f;
 
-        bool IsLeftDragging = false, IsRightDragging = false;
         Point MouseOrigin;
         double AngleOriginX, AngleOriginY;
         double AngleDeltaX, AngleDeltaY;
@@ -52,70 +51,48 @@ namespace DemoFramework
 
         public bool Update(Input input)
         {
-            if (input == null)
-                return false;
-
-            if (input.MousePoint.IsEmpty)
-                return false;
-
-            if (input.MouseDown != MouseButtons.None)
+            // Don't allow both actions at once
+            if ((input.MouseDown & (MouseButtonFlags.LeftDown | MouseButtonFlags.RightDown))
+                != (MouseButtonFlags.LeftDown | MouseButtonFlags.RightDown))
             {
-                // Don't allow both actions at once
-                if (IsLeftDragging == false && IsRightDragging == false)
+                // When mouse button is clicked, store cursor position and angles
+                if ((input.MousePressed & MouseButtonFlags.LeftDown) == MouseButtonFlags.LeftDown)
                 {
-                    // When mouse button is clicked, store cursor position and angles
-                    if ((input.MouseDown & MouseButtons.Left) == MouseButtons.Left)
-                    {
-                        IsLeftDragging = true;
-                        MouseOrigin = input.MousePoint;
+                    MouseOrigin = input.MousePoint;
 
-                        // Get normalized Vector
-                        Vector3 Norm = Vector3.Normalize(Vector);
+                    // Get normalized Vector
+                    Vector3 Norm = Vector3.Normalize(Vector);
 
-                        // Calculate angles from the vector
-                        AngleOriginX = Math.Atan2(Norm.Z, Norm.X);
-                        AngleOriginY = Math.Asin(Norm.Y);
-                    }
-                    else if ((input.MouseDown & MouseButtons.Right) == MouseButtons.Right)
-                    {
-                        IsRightDragging = true;
-                        MouseOrigin = input.MousePoint;
-                    }
+                    // Calculate angles from the vector
+                    AngleOriginX = Math.Atan2(Norm.Z, Norm.X);
+                    AngleOriginY = Math.Asin(Norm.Y);
+                }
+                else if ((input.MousePressed & MouseButtonFlags.RightDown) == MouseButtonFlags.RightDown)
+                {
+                    MouseOrigin = input.MousePoint;
                 }
             }
 
-            if (IsLeftDragging == true)
+            if ((input.MousePressed & MouseButtonFlags.RightUp) == MouseButtonFlags.RightUp)
+            {
+                RightDragX += RightDragDeltaX;
+                RightDragY += RightDragDeltaY;
+            }
+
+            if ((input.MouseDown & MouseButtonFlags.LeftDown) == MouseButtonFlags.LeftDown)
             {
                 // Calculate how much to change the angles
                 AngleDeltaX = -(input.MousePoint.X - MouseOrigin.X) * sensitivity;
                 AngleDeltaY = (input.MousePoint.Y - MouseOrigin.Y) * sensitivity;
 
-                if ((input.MouseUp & MouseButtons.Left) == MouseButtons.Left)
-                {
-                    // Mouse button released
-                    IsLeftDragging = false;
-                }
-                else
-                {
-                    // Button still pressed, update Vector
-                    SetByAngles(AngleOriginX + AngleDeltaX, AngleOriginY + AngleDeltaY);
-                }
+                SetByAngles(AngleOriginX + AngleDeltaX, AngleOriginY + AngleDeltaY);
             }
-            else if (IsRightDragging == true)
+            else if ((input.MouseDown & MouseButtonFlags.RightDown) == MouseButtonFlags.RightDown)
             {
-                if ((input.MouseUp & MouseButtons.Right) == MouseButtons.Right)
-                {
-                    IsRightDragging = false;
-                    RightDragX += RightDragDeltaX;
-                    RightDragY += RightDragDeltaY;
-                }
-                else
-                {
-                    RightDragDeltaX = (input.MousePoint.X - MouseOrigin.X);
-                    RightDragDeltaY = (input.MousePoint.Y - MouseOrigin.Y);
-                    DragPoint = new Vector2(RightDragDeltaX + RightDragX,
-                        RightDragDeltaY + RightDragY);
-                }
+                RightDragDeltaX = (input.MousePoint.X - MouseOrigin.X);
+                RightDragDeltaY = (input.MousePoint.Y - MouseOrigin.Y);
+                DragPoint = new Vector2(RightDragDeltaX + RightDragX,
+                    RightDragDeltaY + RightDragY);
             }
             else
             {

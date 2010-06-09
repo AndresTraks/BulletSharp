@@ -59,7 +59,6 @@ namespace BulletSharp
 		void Translate(Vector3 v);
 		void UpdateDeactivation(btScalar timeStep);
 		void UpdateInertiaTensor();
-		bool WantsSleeping();
 
 #ifndef DISABLE_INTERNAL
 		void InternalApplyImpulse(Vector3 linearComponent, Vector3 angularComponent, btScalar impulseMagnitude);
@@ -213,6 +212,11 @@ namespace BulletSharp
 		property Vector3 TotalTorque
 		{
 			Vector3 get();
+		}
+
+		property bool WantsSleeping
+		{
+			bool get();
 		}
 
 	internal:

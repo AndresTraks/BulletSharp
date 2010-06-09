@@ -2,9 +2,9 @@
 using DemoFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
-using SlimDX.DirectInput;
 using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace BasicDemo
 {
@@ -21,7 +21,7 @@ namespace BasicDemo
         
         Physics physics;
 
-        public SlimDX.Direct3D9.Device Device
+        public Device Device
         {
             get { return Device9; }
         }
@@ -107,7 +107,7 @@ namespace BasicDemo
         {
             base.OnUpdate();
 
-            if (Input.KeyboardDown.Contains(Key.F3))
+            if (Input.KeysPressed.Contains(Keys.F3))
             {
                 if (physics.IsDebugDrawEnabled == false)
                     physics.SetDebugDrawMode(Device, DebugDrawModes.DrawAabb);

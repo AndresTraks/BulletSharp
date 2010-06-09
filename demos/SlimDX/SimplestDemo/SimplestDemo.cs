@@ -68,7 +68,7 @@ namespace SimplestDemo
             };
 
             direct3D = new Direct3D();
-            Device = new SlimDX.Direct3D9.Device(direct3D, 0, DeviceType.Hardware, Form.Handle, CreateFlags.HardwareVertexProcessing, pp);
+            Device = new Device(direct3D, 0, DeviceType.Hardware, Form.Handle, CreateFlags.HardwareVertexProcessing, pp);
         }
 
         void Initialize()

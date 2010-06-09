@@ -6,7 +6,6 @@ using System.IO;
 using System.Windows.Forms;
 using SlimDX;
 using SlimDX.Direct3D9;
-using SlimDX.DirectInput;
 
 namespace VehicleDemo
 {
@@ -330,30 +329,27 @@ namespace VehicleDemo
 
         public void HandleKeys(Input input, float ElapsedTime)
         {
-            if (input.KeyboardState == null)
-                return;
-
-            if (input.KeyboardState.IsPressed(Key.RightArrow))
+            if (input.KeysDown.Contains(Keys.Right))
             {
                 gVehicleSteering += steeringIncrement;
                 if (gVehicleSteering > steeringClamp)
                     gVehicleSteering = steeringClamp;
             }
 
-            if (input.KeyboardState.IsPressed(Key.LeftArrow))
+            if (input.KeysDown.Contains(Keys.Left))
             {
                 gVehicleSteering -= steeringIncrement;
                 if (gVehicleSteering < -steeringClamp)
                     gVehicleSteering = -steeringClamp;
             }
 
-            if (input.KeyboardState.IsPressed(Key.UpArrow))
+            if (input.KeysDown.Contains(Keys.Up))
             {
                 gEngineForce = maxEngineForce;
                 gBreakingForce = 0.0f;
             }
 
-            if (input.KeyboardState.IsPressed(Key.DownArrow))
+            if (input.KeysDown.Contains(Keys.Down))
             {
                 gEngineForce = 0.0f;
                 gBreakingForce = maxBreakingForce;

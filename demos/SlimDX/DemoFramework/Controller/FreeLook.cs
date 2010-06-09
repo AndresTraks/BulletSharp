@@ -1,6 +1,7 @@
 ﻿using SlimDX;
-using SlimDX.DirectInput;
+using SlimDX.RawInput;
 using System;
+using System.Windows.Forms;
 
 namespace DemoFramework
 {
@@ -53,13 +54,12 @@ namespace DemoFramework
         {
             bool changed = mouseController.Update(input);
 
-            if (changed == false && (input.KeyboardState == null ||
-                input.KeyboardState.PressedKeys.Count == 0))
+            if (changed == false && input.KeysDown.Count == 0)
                 return;
 
             Vector3 direction = Vector3.Normalize(-mouseController.Vector);
 
-            if (input.KeyboardState.PressedKeys.Count != 0)
+            if (input.KeysDown.Count != 0)
             {
                 Vector3 relDirection = frameDelta * direction;
 
@@ -68,25 +68,25 @@ namespace DemoFramework
                 bool hasForward = false;
                 bool hasSideways = false;
 
-                float flySpeed = (input.KeyboardState.IsPressed(Key.LeftShift)) ? 15 : 5;
+                float flySpeed = (input.KeysDown.Contains(Keys.ShiftKey)) ? 15 : 5;
 
-                if (input.KeyboardState.IsPressed(Key.W))
+                if (input.KeysDown.Contains(Keys.W))
                 {
                     translation = flySpeed * relDirection;
                     hasForward = true;
                 }
-                if (input.KeyboardState.IsPressed(Key.S))
+                if (input.KeysDown.Contains(Keys.S))
                 {
                     translation -= flySpeed * relDirection;
                     hasForward = true;
                 }
 
-                if (input.KeyboardState.IsPressed(Key.A))
+                if (input.KeysDown.Contains(Keys.A))
                 {
                     sideways = Vector3.TransformCoordinate(relDirection, Matrix.RotationY((float)-Math.PI / 2));
                     hasSideways = true;
                 }
-                if (input.KeyboardState.IsPressed(Key.D))
+                if (input.KeysDown.Contains(Keys.D))
                 {
                     sideways += Vector3.TransformCoordinate(relDirection, Matrix.RotationY((float)Math.PI / 2));
                     hasSideways = true;
