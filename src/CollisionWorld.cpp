@@ -266,7 +266,7 @@ CollisionWorld::ContactResultCallback::!ContactResultCallback()
 
 CollisionWorld::ContactResultCallback::ContactResultCallback()
 {
-	_callback = new ContactResultCallbackWrapper();
+	_callback = new ContactResultCallbackWrapper(this);
 }
 
 bool CollisionWorld::ContactResultCallback::NeedsCollision(BroadphaseProxy^ proxy0)
@@ -759,6 +759,11 @@ void CollisionWorld::UnmanagedPointer::set(btCollisionWorld* value)
 	_world = value;
 }
 
+
+ContactResultCallbackWrapper::ContactResultCallbackWrapper(CollisionWorld::ContactResultCallback^ callback)
+{
+	_callback = callback;
+}
 
 bool ContactResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) const
 {

@@ -516,6 +516,8 @@ namespace BulletSharp
 		auto_gcroot<CollisionWorld::ContactResultCallback^> _callback;
 
 	public:
+		ContactResultCallbackWrapper(CollisionWorld::ContactResultCallback^ callback);
+
 		virtual bool needsCollision(btBroadphaseProxy* proxy0) const;
 		virtual btScalar addSingleResult(btManifoldPoint& cp,
 			const btCollisionObject* colObj0, int partId0, int index0,
