@@ -460,10 +460,13 @@ namespace SoftDemo
             return mesh;
         }
 
-        public override void Update(float elapsedTime)
+        public override int Update(float elapsedTime)
         {
-            base.Update(elapsedTime);
+            int subSteps = base.Update(elapsedTime);
+            
             softBodyWorldInfo.SparseSdf.GarbageCollect();
+            
+            return subSteps;
         }
     }
 }

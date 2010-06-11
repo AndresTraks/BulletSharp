@@ -242,7 +242,7 @@ btCollisionWorld::ClosestConvexResultCallback* CollisionWorld::ClosestConvexResu
 }
 
 
-CollisionWorld::ContactResultCallback::ContactResultCallback(btCollisionWorld::ContactResultCallback* callback)
+CollisionWorld::ContactResultCallback::ContactResultCallback(ContactResultCallbackWrapper* callback)
 {
 	_callback = callback;
 }
@@ -264,18 +264,14 @@ CollisionWorld::ContactResultCallback::!ContactResultCallback()
 	OnDisposed( this, nullptr );
 }
 
-btScalar CollisionWorld::ContactResultCallback::AddSingleResult(ManifoldPoint^ cp,
-	CollisionObject^ colObj0, int partId0, int index0,
-	CollisionObject^ colObj1, int partId1, int index1)
+CollisionWorld::ContactResultCallback::ContactResultCallback()
 {
-	return _callback->addSingleResult(*cp->UnmanagedPointer,
-		colObj0->UnmanagedPointer, partId0, index0,
-		colObj1->UnmanagedPointer, partId1, index1);
+	_callback = new ContactResultCallbackWrapper();
 }
 
 bool CollisionWorld::ContactResultCallback::NeedsCollision(BroadphaseProxy^ proxy0)
 {
-	return _callback->needsCollision(proxy0->UnmanagedPointer);
+	return _callback->baseNeedsCollision(proxy0->UnmanagedPointer);
 }
 
 CollisionFilterGroups CollisionWorld::ContactResultCallback::CollisionFilterGroup::get()
@@ -301,11 +297,11 @@ bool CollisionWorld::ContactResultCallback::IsDisposed::get()
 	return (_callback == NULL);
 }
 
-btCollisionWorld::ContactResultCallback* CollisionWorld::ContactResultCallback::UnmanagedPointer::get()
+ContactResultCallbackWrapper* CollisionWorld::ContactResultCallback::UnmanagedPointer::get()
 {
 	return _callback;
 }
-void CollisionWorld::ContactResultCallback::UnmanagedPointer::set(btCollisionWorld::ContactResultCallback* value)
+void CollisionWorld::ContactResultCallback::UnmanagedPointer::set(ContactResultCallbackWrapper* value)
 {
 	_callback = value;
 }
@@ -761,4 +757,24 @@ btCollisionWorld* CollisionWorld::UnmanagedPointer::get()
 void CollisionWorld::UnmanagedPointer::set(btCollisionWorld* value)
 {
 	_world = value;
+}
+
+
+bool ContactResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) const
+{
+	return _callback->NeedsCollision(gcnew BroadphaseProxy(proxy0));
+}
+
+btScalar ContactResultCallbackWrapper::addSingleResult(btManifoldPoint& cp,
+	const btCollisionObject* colObj0, int partId0, int index0,
+	const btCollisionObject* colObj1, int partId1, int index1)
+{
+	return _callback->AddSingleResult(gcnew ManifoldPoint(&cp),
+		gcnew CollisionObject((btCollisionObject*)colObj0), partId0, index0,
+		gcnew CollisionObject((btCollisionObject*)colObj1), partId1, index1);
+}
+
+bool ContactResultCallbackWrapper::baseNeedsCollision(btBroadphaseProxy* proxy0) const
+{
+	return btCollisionWorld::ContactResultCallback::needsCollision(proxy0);
 }

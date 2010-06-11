@@ -2,6 +2,11 @@
 
 #include "ManifoldPoint.h"
 
+ManifoldPoint::ManifoldPoint(btManifoldPoint* point)
+{
+	_point = point;
+}
+
 ManifoldPoint::ManifoldPoint()
 {
 	_point = new btManifoldPoint();

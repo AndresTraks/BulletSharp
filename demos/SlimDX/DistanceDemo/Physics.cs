@@ -54,9 +54,10 @@ namespace DistanceDemo
             rotBody.ActivationState = ActivationState.DisableDeactivation;
         }
 
-        public override void Update(float elapsedTime)
+        public override int Update(float elapsedTime)
         {
-            base.Update(elapsedTime);
+            int subSteps = base.Update(elapsedTime);
+
             rotation += elapsedTime;
             rotBody.CenterOfMassTransform = Matrix.RotationX(rotation) * rotBodyPosition;
 
@@ -80,6 +81,8 @@ namespace DistanceDemo
             {
                 HasDistanceResult = false;
             }
+
+            return subSteps;
         }
     }
 }

@@ -5,6 +5,9 @@
 #include "Enums.h"
 #include "IDisposable.h"
 
+#include <msclr/auto_gcroot.h>
+
+using namespace msclr;
 using namespace System::Drawing;
 
 namespace BulletSharp
@@ -22,6 +25,8 @@ namespace BulletSharp
 	ref class ManifoldPoint;
 	ref class OverlappingPairCache;
 	ref class Serializer;
+
+	class ContactResultCallbackWrapper;
 
 	public ref class CollisionWorld : BulletSharp::IDisposable
 	{
@@ -204,10 +209,10 @@ namespace BulletSharp
 			virtual event EventHandler^ OnDisposed;
 
 		private:
-			btCollisionWorld::ContactResultCallback* _callback;
+			ContactResultCallbackWrapper* _callback;
 		
 		internal:
-			ContactResultCallback(btCollisionWorld::ContactResultCallback* callback);
+			ContactResultCallback(ContactResultCallbackWrapper* callback);
 		
 		public:
 			!ContactResultCallback();
@@ -215,9 +220,11 @@ namespace BulletSharp
 			~ContactResultCallback();
 		
 		public:
-			btScalar AddSingleResult(ManifoldPoint^ cp, CollisionObject^ colObj0, int partId0, int index0,
-				CollisionObject^ colObj1, int partId1, int index1);
-			bool NeedsCollision(BroadphaseProxy^ proxy0);
+			ContactResultCallback();
+
+			virtual btScalar AddSingleResult(ManifoldPoint^ cp, CollisionObject^ colObj0, int partId0, int index0,
+				CollisionObject^ colObj1, int partId1, int index1) = 0;
+			virtual bool NeedsCollision(BroadphaseProxy^ proxy0);
 
 			property CollisionFilterGroups CollisionFilterGroup
 			{
@@ -237,10 +244,10 @@ namespace BulletSharp
 			}
 
 		internal:
-			property btCollisionWorld::ContactResultCallback* UnmanagedPointer
+			property ContactResultCallbackWrapper* UnmanagedPointer
 			{
-				virtual btCollisionWorld::ContactResultCallback* get();
-				void set(btCollisionWorld::ContactResultCallback* value);
+				virtual ContactResultCallbackWrapper* get();
+				void set(ContactResultCallbackWrapper* value);
 			}
 		};
 
@@ -501,5 +508,19 @@ namespace BulletSharp
 			virtual btCollisionWorld* get();
 			void set(btCollisionWorld* value);
 		}
+	};
+
+	class ContactResultCallbackWrapper : public btCollisionWorld::ContactResultCallback
+	{
+	private:
+		auto_gcroot<CollisionWorld::ContactResultCallback^> _callback;
+
+	public:
+		virtual bool needsCollision(btBroadphaseProxy* proxy0) const;
+		virtual btScalar addSingleResult(btManifoldPoint& cp,
+			const btCollisionObject* colObj0, int partId0, int index0,
+			const btCollisionObject* colObj1, int partId1, int index1);
+		
+		virtual bool baseNeedsCollision(btBroadphaseProxy* proxy0) const;
 	};
 };

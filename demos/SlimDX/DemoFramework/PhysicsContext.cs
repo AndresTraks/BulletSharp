@@ -71,9 +71,9 @@ namespace DemoFramework
                 DebugDrawer.DrawDebugWorld(World);
         }
 
-        public virtual void Update(float elapsedTime)
+        public virtual int Update(float elapsedTime)
         {
-            World.StepSimulation(elapsedTime);
+            return World.StepSimulation(elapsedTime);
         }
 
         public RigidBody LocalCreateRigidBody(float mass, Matrix startTransform, CollisionShape shape)

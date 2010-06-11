@@ -16,6 +16,8 @@ namespace DemoFramework
         public MouseButtonFlags MousePressed { get; private set; }
         public MouseButtonFlags MouseDown { get; private set; }
         public Point MousePoint { get; private set; }
+        public Point MouseDelta { get; private set; }
+        public int MouseWheelDelta { get; private set; }
 
         Form form;
 
@@ -27,6 +29,8 @@ namespace DemoFramework
             KeysPressed = new List<Keys>();
             KeysReleased = new List<Keys>();
             MousePoint = form.PointToClient(Cursor.Position);
+            MouseWheelDelta = 0;
+            MouseDelta = Point.Empty;
         }
 
         public void ClearKeyCache()
@@ -34,6 +38,8 @@ namespace DemoFramework
             KeysPressed.Clear();
             KeysReleased.Clear();
             MousePressed = MouseButtonFlags.None;
+            MouseWheelDelta = 0;
+            MouseDelta = Point.Empty;
         }
 
         public void Device_KeyboardInput(KeyboardInputEventArgs e)
@@ -56,6 +62,8 @@ namespace DemoFramework
         public void Device_MouseInput(MouseInputEventArgs e)
         {
             MousePoint = form.PointToClient(Cursor.Position);
+            MouseDelta = new Point(e.X, e.Y);
+            MouseWheelDelta = e.WheelDelta;
 
             if (e.ButtonFlags != MouseButtonFlags.None)
             {
@@ -152,12 +160,14 @@ namespace DemoFramework
                 case Keys.Space: return ' ';
                 case Keys.Oemcomma: return ',';
                 case Keys.OemPeriod: return '.';
+                case Keys.OemQuestion: return '?';
             }
             isChar = false;
             switch (key)
             {
                 case Keys.Tab: return '\t';
                 case Keys.Return: return '\r';
+                case Keys.Back: return '\b';
                 case Keys.Escape: return '\x1B';  //VK_ESCAPE
                 case Keys.PageUp: return '\x21';  //VK_PRIOR
                 case Keys.PageDown: return '\x22';  //VK_NEXT

@@ -9,6 +9,9 @@ namespace BulletSharp
 	private:
 		btManifoldPoint* _point;
 	
+	internal:
+		ManifoldPoint(btManifoldPoint* point);
+
 	public:
 		ManifoldPoint();
 		ManifoldPoint(Vector3 pointA, Vector3 pointB, Vector3 normal, btScalar distance);

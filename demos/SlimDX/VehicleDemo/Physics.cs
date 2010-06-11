@@ -46,8 +46,6 @@ namespace VehicleDemo
         float suspensionRestLength = 0.6f;
         float CUBE_HALF_EXTENTS = 1;
 
-        float timeCounter = 0.0f;
-
         public RaycastVehicle vehicle;
 
         public Physics(VehicleDemo game)
@@ -304,27 +302,25 @@ namespace VehicleDemo
             vehicle.RigidBody.WorldTransform = vehicleTr;
         }
 
-        public override void Update(float elapsedTime)
+        public override int Update(float elapsedTime)
         {
-            // Use 1/60 update step like StepSimulation does
-            timeCounter += elapsedTime;
-            if (timeCounter >= 1 / 60)
+            vehicle.ApplyEngineForce(gEngineForce, 2);
+            vehicle.SetBrake(gBreakingForce, 2);
+            vehicle.ApplyEngineForce(gEngineForce, 3);
+            vehicle.SetBrake(gBreakingForce, 3);
+
+            vehicle.SetSteeringValue(gVehicleSteering, 0);
+            vehicle.SetSteeringValue(gVehicleSteering, 1);
+
+            int subSteps = base.Update(elapsedTime);
+
+            for (int i = 0; i < subSteps; i++)
             {
-                vehicle.ApplyEngineForce(gEngineForce, 2);
-                vehicle.SetBrake(gBreakingForce, 2);
-                vehicle.ApplyEngineForce(gEngineForce, 3);
-                vehicle.SetBrake(gBreakingForce, 3);
-
-                vehicle.SetSteeringValue(gVehicleSteering, 0);
-                vehicle.SetSteeringValue(gVehicleSteering, 1);
-
                 gEngineForce *= 0.99f;
                 gVehicleSteering *= 0.99f;
-
-                timeCounter = 0.0f;
             }
 
-            base.Update(elapsedTime);
+            return subSteps;
         }
 
         public void HandleKeys(Input input, float ElapsedTime)
