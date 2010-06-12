@@ -75,7 +75,7 @@ namespace BulletSharp
 		{
 			Vector3 get();
 		}
-		
+
 		property Vector3 InternalDeltaLinearVelocity
 		{
 			Vector3 get();
@@ -90,7 +90,7 @@ namespace BulletSharp
 		{
 			Vector3 get();
 		}
-		
+
 		property Vector3 InternalTurnVelocity
 		{
 			Vector3 get();
@@ -154,7 +154,7 @@ namespace BulletSharp
 			Vector3 get();
 			void set(Vector3 value);
 		}
-		
+
 		property Vector3 InvInertiaDiagLocal
 		{
 			Vector3 get();

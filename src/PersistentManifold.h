@@ -8,7 +8,7 @@ namespace BulletSharp
 	{
 	internal:
 		PersistentManifold(btPersistentManifold* manifold);
-	
+
 	public:
 		PersistentManifold();
 

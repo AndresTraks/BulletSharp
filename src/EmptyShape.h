@@ -10,7 +10,7 @@ namespace BulletSharp
 	{
 	internal:
 		EmptyShape(btEmptyShape* shape);
-	
+
 	public:
 		EmptyShape();
 	};

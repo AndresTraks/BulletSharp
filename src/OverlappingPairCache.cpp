@@ -14,11 +14,11 @@ OverlapCallback::!OverlapCallback()
 {
 	if( this->IsDisposed == true )
 		return;
-	
+
 	OnDisposing( this, nullptr );
-	
+
 	_callback = NULL;
-	
+
 	OnDisposed( this, nullptr );
 }
 
@@ -52,11 +52,11 @@ OverlapFilterCallback::!OverlapFilterCallback()
 {
 	if( this->IsDisposed == true )
 		return;
-	
+
 	OnDisposing( this, nullptr );
-	
+
 	_callback = NULL;
-	
+
 	OnDisposed( this, nullptr );
 }
 

@@ -17,7 +17,7 @@ namespace BulletSharp
 	{
 	internal:
 		SphereTriangleDetector(::SphereTriangleDetector* detector);
-	
+
 	public:
 		SphereTriangleDetector(SphereShape^ sphere, TriangleShape^ triangle, btScalar contactBreakingThreshold);
 

@@ -20,7 +20,7 @@ namespace BulletSharp
 
 	internal:
 		TypedConstraint(btTypedConstraint* typedConstraint);
-	
+
 	public:
 		!TypedConstraint();
 	protected:

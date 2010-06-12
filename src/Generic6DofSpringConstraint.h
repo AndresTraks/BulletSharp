@@ -10,7 +10,7 @@ namespace BulletSharp
 	{
 	internal:
 		Generic6DofSpringConstraint(btGeneric6DofSpringConstraint* constraint);
-	
+
 	public:
 		Generic6DofSpringConstraint(RigidBody^ rbA, RigidBody^ rbB,
 			Matrix frameInA, Matrix frameInB, bool useReferenceFrameA);

@@ -282,11 +282,11 @@ Dbvt::ICollide::!ICollide()
 {
 	if( this->IsDisposed == true )
 		return;
-	
+
 	OnDisposing( this, nullptr );
-	
+
 	_iCollide = NULL;
-	
+
 	OnDisposed( this, nullptr );
 }
 
@@ -344,11 +344,11 @@ Dbvt::IWriter::!IWriter()
 {
 	if( this->IsDisposed == true )
 		return;
-	
+
 	OnDisposing( this, nullptr );
-	
+
 	_iWriter = NULL;
-	
+
 	OnDisposed( this, nullptr );
 }
 
@@ -396,11 +396,11 @@ Dbvt::IClone::!IClone()
 {
 	if( this->IsDisposed == true )
 		return;
-	
+
 	OnDisposing( this, nullptr );
-	
+
 	_iClone = NULL;
-	
+
 	OnDisposed( this, nullptr );
 }
 
@@ -533,11 +533,11 @@ Dbvt::!Dbvt()
 {
 	if( this->IsDisposed == true )
 		return;
-	
+
 	OnDisposing( this, nullptr );
-	
+
 	_dbvt = NULL;
-	
+
 	OnDisposed( this, nullptr );
 }
 
@@ -740,7 +740,7 @@ void Dbvt::RayTestInternal(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo,
 
 	_dbvt->rayTestInternal(root->UnmanagedPointer, *rayFromTemp, *rayToTemp, *rayDirectionInverseTemp,
 		btSigns, lambda_max, *aabbMinTemp, *aabbMaxTemp, *policy->UnmanagedPointer
-	);
+		);
 
 	delete rayFromTemp;
 	delete rayToTemp;

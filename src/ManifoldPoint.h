@@ -8,7 +8,7 @@ namespace BulletSharp
 	{
 	private:
 		btManifoldPoint* _point;
-	
+
 	internal:
 		ManifoldPoint(btManifoldPoint* point);
 
@@ -51,7 +51,7 @@ namespace BulletSharp
 			btScalar get();
 			void set(btScalar value);
 		}
-		
+
 		property btScalar ContactMotion2
 		{
 			btScalar get();

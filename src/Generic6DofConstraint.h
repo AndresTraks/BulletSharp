@@ -12,10 +12,10 @@ namespace BulletSharp
 	{
 	private:
 		btRotationalLimitMotor* motor;
-	
+
 	internal:
 		RotationalLimitMotor(btRotationalLimitMotor* motor);
-	
+
 	public:
 		RotationalLimitMotor(RotationalLimitMotor^ motor);
 		RotationalLimitMotor();
@@ -141,10 +141,10 @@ namespace BulletSharp
 	{
 	private:
 		btTranslationalLimitMotor* motor;
-	
+
 	internal:
 		TranslationalLimitMotor(btTranslationalLimitMotor* motor);
-	
+
 	public:
 		TranslationalLimitMotor(TranslationalLimitMotor^ motor);
 		TranslationalLimitMotor();
@@ -273,7 +273,7 @@ namespace BulletSharp
 	{
 	internal:
 		Generic6DofConstraint(btGeneric6DofConstraint* constraint);
-	
+
 	public:
 		Generic6DofConstraint(RigidBody^ rbA, RigidBody^ rbB,
 			Matrix frameInA, Matrix frameInB, bool useReferenceFrameA);

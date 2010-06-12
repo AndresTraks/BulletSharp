@@ -19,7 +19,7 @@ namespace BulletSharp
 	{
 	internal:
 		DbvtProxy(btDbvtProxy* proxy);
-	
+
 	public:
 		DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr,
 			CollisionFilterGroups collisionFilterGroup,
@@ -82,7 +82,7 @@ namespace BulletSharp
 			int get();
 			void set(int value);
 		}
-		
+
 		property int FixedLeft
 		{
 			int get();

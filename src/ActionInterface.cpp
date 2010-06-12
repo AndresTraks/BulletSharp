@@ -20,7 +20,7 @@ ActionInterface::!ActionInterface()
 {
 	if( this->IsDisposed == true )
 		return;
-	
+
 	OnDisposing( this, nullptr );
 
 	_actionInterface = NULL;

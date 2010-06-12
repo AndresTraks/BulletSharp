@@ -380,7 +380,7 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, array<Ve
 		Math::Vector3ToBtVector3(x[i], &x_ptr[i]);
 
 	UnmanagedPointer = new btSoftBody(worldInfo->UnmanagedPointer, node_count, x_ptr, m_ptr);
-	
+
 	delete[] x_ptr;
 }
 

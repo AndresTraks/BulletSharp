@@ -24,12 +24,12 @@ namespace BulletSharp
 
 	internal:
 		SimplexSolverInterface(btSimplexSolverInterface* simplexSolver);
-	
+
 	public:
 		!SimplexSolverInterface();
 	protected:
 		~SimplexSolverInterface();
-	
+
 	public:
 		property bool IsDisposed
 		{

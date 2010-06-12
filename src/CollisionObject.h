@@ -26,12 +26,12 @@ namespace BulletSharp
 
 	internal:
 		CollisionObject(btCollisionObject* collisionObject);
-	
+
 	public:
 		!CollisionObject();
 	protected:
 		~CollisionObject();
-	
+
 	public:
 		property bool IsDisposed
 		{

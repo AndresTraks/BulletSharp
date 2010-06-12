@@ -16,7 +16,7 @@ namespace BulletSharp
 	{
 	private:
 		btCompoundShapeChild* _child;
-	
+
 	internal:
 		CompoundShapeChild(btCompoundShapeChild* compoundShapeChild);
 

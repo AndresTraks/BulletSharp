@@ -35,7 +35,7 @@ namespace BulletSharp
 		{
 		private:
 			btCollisionWorld::LocalShapeInfo* _info;
-		
+
 		internal:
 			LocalShapeInfo(btCollisionWorld::LocalShapeInfo* info);
 
@@ -109,15 +109,15 @@ namespace BulletSharp
 
 		private:
 			btCollisionWorld::ConvexResultCallback* _callback;
-		
+
 		protected:
 			ConvexResultCallback(btCollisionWorld::ConvexResultCallback* callback);
-		
+
 		public:
 			!ConvexResultCallback();
 		protected:
 			~ConvexResultCallback();
-		
+
 		public:
 			btScalar AddSingleResult(LocalConvexResult^ convexResult, bool normalInWorldSpace);
 			bool NeedsCollision(BroadphaseProxy^ proxy0);
@@ -177,7 +177,7 @@ namespace BulletSharp
 				Vector3 get();
 				void set(Vector3 value);
 			}
-			
+
 			property Vector3 ConvexToWorld
 			{
 				Vector3 get();
@@ -189,7 +189,7 @@ namespace BulletSharp
 				Vector3 get();
 				void set(Vector3 value);
 			}
-			
+
 			property Vector3 HitPointWorld
 			{
 				Vector3 get();
@@ -210,15 +210,15 @@ namespace BulletSharp
 
 		private:
 			ContactResultCallbackWrapper* _callback;
-		
+
 		internal:
 			ContactResultCallback(ContactResultCallbackWrapper* callback);
-		
+
 		public:
 			!ContactResultCallback();
 		protected:
 			~ContactResultCallback();
-		
+
 		public:
 			ContactResultCallback();
 
@@ -303,12 +303,12 @@ namespace BulletSharp
 
 		protected:
 			RayResultCallback(btCollisionWorld::RayResultCallback* callback);
-		
+
 		public:
 			!RayResultCallback();
 		protected:
 			~RayResultCallback();
-		
+
 		public:
 			btScalar AddSingleResult(LocalRayResult^ rayResult, bool normalInWorldSpace);
 			bool NeedsCollision(BroadphaseProxy^ proxy0);
@@ -371,7 +371,7 @@ namespace BulletSharp
 				Vector3 get();
 				void set(Vector3 value);
 			}
-			
+
 			property Vector3 HitPointWorld
 			{
 				Vector3 get();
@@ -383,13 +383,13 @@ namespace BulletSharp
 				Vector3 get();
 				void set(Vector3 value);
 			}
-			
+
 			property Vector3 RayToWorld
 			{
 				Vector3 get();
 				void set(Vector3 value);
 			}
-		
+
 		internal:
 			property btCollisionWorld::ClosestRayResultCallback* UnmanagedPointer
 			{
@@ -403,7 +403,7 @@ namespace BulletSharp
 
 	private:
 		btCollisionWorld* _world;
-	
+
 	protected:
 		Dispatcher^ _dispatcher;
 		BroadphaseInterface^ _broadphase;
@@ -415,12 +415,12 @@ namespace BulletSharp
 
 	internal:
 		CollisionWorld(btCollisionWorld* world);
-	
+
 	public:
 		!CollisionWorld();
 	protected:
 		~CollisionWorld();
-	
+
 	public:
 		CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, CollisionConfiguration^ collisionConfiguration);
 
@@ -522,7 +522,7 @@ namespace BulletSharp
 		virtual btScalar addSingleResult(btManifoldPoint& cp,
 			const btCollisionObject* colObj0, int partId0, int index0,
 			const btCollisionObject* colObj1, int partId1, int index1);
-		
+
 		virtual bool baseNeedsCollision(btBroadphaseProxy* proxy0) const;
 	};
 };

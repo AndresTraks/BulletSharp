@@ -18,11 +18,11 @@ SimplexSolverInterface::!SimplexSolverInterface()
 {
 	if( this->IsDisposed == true )
 		return;
-	
+
 	OnDisposing( this, nullptr );
-	
+
 	_simplexSolver = NULL;
-	
+
 	OnDisposed( this, nullptr );
 }
 

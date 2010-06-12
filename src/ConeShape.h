@@ -10,7 +10,7 @@ namespace BulletSharp
 	{
 	internal:
 		ConeShape(btConeShape* shape);
-	
+
 	public:
 		ConeShape(btScalar radius, btScalar height);
 
@@ -24,7 +24,7 @@ namespace BulletSharp
 		{
 			btScalar get();
 		}
-		
+
 		property btScalar Radius
 		{
 			btScalar get();

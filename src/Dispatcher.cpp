@@ -161,11 +161,11 @@ Dispatcher::!Dispatcher()
 {
 	if( this->IsDisposed == true )
 		return;
-	
+
 	OnDisposing( this, nullptr );
-	
+
 	_dispatcher = NULL;
-	
+
 	OnDisposed( this, nullptr );
 }
 
@@ -191,8 +191,8 @@ CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObject^ body0, CollisionO
 	return gcnew CollisionAlgorithm(_dispatcher->findAlgorithm(body0->UnmanagedPointer, body1->UnmanagedPointer));
 }
 
-CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObject^ body0,
-	CollisionObject^ body1, PersistentManifold^ sharedManifold)
+CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObject^ body0, CollisionObject^ body1,
+	PersistentManifold^ sharedManifold)
 {
 	return gcnew CollisionAlgorithm(_dispatcher->findAlgorithm(
 		body0->UnmanagedPointer, body1->UnmanagedPointer, sharedManifold->UnmanagedPointer));

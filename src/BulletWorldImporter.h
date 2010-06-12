@@ -59,7 +59,7 @@ namespace BulletSharp
 			virtual CollisionShape^ CreateCapsuleShapeX(btScalar radius, btScalar height);
 			virtual CollisionShape^ CreateCapsuleShapeY(btScalar radius, btScalar height);
 			virtual CollisionShape^ CreateCapsuleShapeZ(btScalar radius, btScalar height);
-			
+
 			virtual CollisionShape^ CreateCylinderShapeX(btScalar radius, btScalar height);
 			virtual CollisionShape^ CreateCylinderShapeY(btScalar radius, btScalar height);
 			virtual CollisionShape^ CreateCylinderShapeZ(btScalar radius, btScalar height);
@@ -101,7 +101,7 @@ namespace BulletSharp
 			//bool LoadFileFromMemory(MemoryStream^ memoryBuffer, int len);
 			//bool LoadFileFromMemory(Parse::BulletFile^ file);
 			//bool ConvertAllObjects(Parse::BulletFile^ file);
-			
+
 			// query for data
 			CollisionShape^ GetCollisionShapeByIndex(int index);
 			CollisionObject^ GetRigidBodyByIndex(int index);
@@ -110,7 +110,7 @@ namespace BulletSharp
 			OptimizedBvh^ GetBvhByIndex(int index);
 #endif
 			//TriangleInfoMap^ GetTriangleInfoMapByIndex(int index);
-			
+
 			// queries involving named objects
 			CollisionShape^ GetCollisionShapeByName(String^ name);
 			RigidBody^ GetRigidBodyByName(String^ name);
@@ -175,7 +175,7 @@ namespace BulletSharp
 			virtual btCollisionShape* createCapsuleShapeX(btScalar radius, btScalar height);
 			virtual btCollisionShape* createCapsuleShapeY(btScalar radius, btScalar height);
 			virtual btCollisionShape* createCapsuleShapeZ(btScalar radius, btScalar height);
-			
+
 			virtual btCollisionShape* createCylinderShapeX(btScalar radius, btScalar height);
 			virtual btCollisionShape* createCylinderShapeY(btScalar radius, btScalar height);
 			virtual btCollisionShape* createCylinderShapeZ(btScalar radius, btScalar height);
@@ -234,7 +234,7 @@ namespace BulletSharp
 			virtual btCollisionShape* baseCreateCapsuleShapeX(btScalar radius, btScalar height);
 			virtual btCollisionShape* baseCreateCapsuleShapeY(btScalar radius, btScalar height);
 			virtual btCollisionShape* baseCreateCapsuleShapeZ(btScalar radius, btScalar height);
-			
+
 			virtual btCollisionShape* baseCreateCylinderShapeX(btScalar radius, btScalar height);
 			virtual btCollisionShape* baseCreateCylinderShapeY(btScalar radius, btScalar height);
 			virtual btCollisionShape* baseCreateCylinderShapeZ(btScalar radius, btScalar height);

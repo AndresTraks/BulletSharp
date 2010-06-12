@@ -28,7 +28,7 @@ namespace BulletSharp
 
 	private:
 		btDispatcherInfo* _info;
-	
+
 	internal:
 		DispatcherInfo(btDispatcherInfo* info);
 
@@ -130,12 +130,12 @@ namespace BulletSharp
 
 	internal:
 		Dispatcher(btDispatcher* dispatcher);
-	
+
 	public:
 		!Dispatcher();
 	protected:
 		~Dispatcher();
-	
+
 	public:
 		IntPtr AllocateCollisionAlgorithm(int size);
 		void ClearManifold(PersistentManifold^ manifold);

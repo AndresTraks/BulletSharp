@@ -18,11 +18,11 @@ OverlappingPairCallback::!OverlappingPairCallback()
 {
 	if( this->IsDisposed == true )
 		return;
-	
+
 	OnDisposing( this, nullptr );
-	
+
 	_pairCallback = NULL;
-	
+
 	OnDisposed( this, nullptr );
 }
 

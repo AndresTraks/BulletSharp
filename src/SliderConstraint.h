@@ -12,7 +12,7 @@ namespace BulletSharp
 	{
 	internal:
 		SliderConstraint(btSliderConstraint* constraint);
-	
+
 	public:
 		SliderConstraint(RigidBody^ rbA, RigidBody^ rbB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA);
 		SliderConstraint(RigidBody^ rbB, Matrix frameInB, bool useLinearReferenceFrameA);

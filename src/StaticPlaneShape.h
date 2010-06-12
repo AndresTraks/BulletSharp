@@ -10,7 +10,7 @@ namespace BulletSharp
 	{
 	internal:
 		StaticPlaneShape(btStaticPlaneShape* shape);
-	
+
 	public:
 		StaticPlaneShape(Vector3 planeNormal, btScalar planeConstant);
 

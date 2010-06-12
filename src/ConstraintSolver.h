@@ -25,12 +25,12 @@ namespace BulletSharp
 
 	internal:
 		ConstraintSolver(btConstraintSolver* solver);
-	
+
 	public:
 		!ConstraintSolver();
 	protected:
 		~ConstraintSolver();
-	
+
 	public:
 #ifndef DISABLE_CONSTRAINTS
 		void AllSolved(ContactSolverInfo^ info, DebugDraw^ debugDrawer, StackAlloc^ stackAlloc);

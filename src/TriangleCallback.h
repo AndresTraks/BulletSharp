@@ -22,7 +22,7 @@ namespace BulletSharp
 		!TriangleCallback();
 	protected:
 		~TriangleCallback();
-	
+
 	public:
 		void ProcessTriangle(Vector3 triangle, int partId, int triangleIndex);
 
@@ -56,7 +56,7 @@ namespace BulletSharp
 		!InternalTriangleIndexCallback();
 	protected:
 		~InternalTriangleIndexCallback();
-	
+
 	public:
 		void InternalProcessTriangleIndex(Vector3 triangle, int partId, int triangleIndex);
 

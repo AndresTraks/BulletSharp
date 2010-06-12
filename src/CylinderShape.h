@@ -10,7 +10,7 @@ namespace BulletSharp
 	{
 	internal:
 		CylinderShape(btCylinderShape* shape);
-	
+
 	public:
 		CylinderShape(Vector3 halfExtents);
 		CylinderShape(btScalar halfExtentsX, btScalar halfExtentsY, btScalar halfExtentsZ);

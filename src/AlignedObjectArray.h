@@ -33,7 +33,7 @@ namespace BulletSharp
 
 	internal:
 		AlignedObjectArray(void* alignedObjectArray);
-	
+
 	public:
 		!AlignedObjectArray();
 	protected:

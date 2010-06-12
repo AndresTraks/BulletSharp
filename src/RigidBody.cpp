@@ -108,7 +108,7 @@ void RigidBody::GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
 {
 	btVector3* aabbMinTemp = new btVector3;
 	btVector3* aabbMaxTemp = new btVector3;
-	
+
 	UnmanagedPointer->getAabb(*aabbMinTemp, *aabbMaxTemp);
 
 	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
@@ -128,13 +128,13 @@ Vector3 RigidBody::GetVelocityInLocalPoint(Vector3 rel_pos)
 {
 	btVector3* rel_posTemp = Math::Vector3ToBtVector3(rel_pos);
 	btVector3* velocityTemp = new btVector3;
-	
+
 	RigidBody_GetVelocityInLocalPoint(UnmanagedPointer, velocityTemp, rel_posTemp);
 	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
-	
+
 	delete rel_posTemp;
 	delete velocityTemp;
-	
+
 	return velocity;
 }
 

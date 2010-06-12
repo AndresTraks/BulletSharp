@@ -8,7 +8,7 @@ namespace BulletSharp
 	{
 	private:
 		btTypedObject* _typedObject;
-	
+
 	internal:
 		TypedObject(btTypedObject* typedObject);
 

@@ -12,10 +12,10 @@ namespace BulletSharp
 	{
 	private:
 		btConstraintSetting* _setting;
-	
+
 	internal:
 		ConstraintSetting(btConstraintSetting* setting);
-	
+
 	public:
 		ConstraintSetting();
 

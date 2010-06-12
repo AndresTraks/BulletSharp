@@ -25,11 +25,11 @@ PoolAllocator::!PoolAllocator()
 {
 	if( this->IsDisposed == true )
 		return;
-	
+
 	OnDisposing( this, nullptr );
-	
+
 	_allocator = NULL;
-	
+
 	OnDisposed( this, nullptr );
 }
 

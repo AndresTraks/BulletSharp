@@ -14,7 +14,7 @@ namespace BulletSharp
 	{
 	private:
 		ConvexShape^ childShape;
-	
+
 	internal:
 		Convex2dShape(btConvex2dShape* shape);
 

@@ -119,10 +119,10 @@ namespace BulletSharp
 		{
 		private:
 			btSoftBody::Config* _config;
-		
+
 		internal:
 			Config(btSoftBody::Config* config);
-		
+
 		public:
 			property AeroModel AeroModel
 			{
@@ -225,7 +225,7 @@ namespace BulletSharp
 		{
 		internal:
 			Material(btSoftBody::Material* material);
-		
+
 		public:
 			property btScalar Ast
 			{
@@ -318,7 +318,7 @@ namespace BulletSharp
 		{
 		internal:
 			SoftBody(btSoftBody* body);
-		
+
 		public:
 			SoftBody(SoftBodyWorldInfo^ worldInfo, array<Vector3>^ x, array<btScalar>^ m);
 

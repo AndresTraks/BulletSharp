@@ -19,7 +19,7 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPt
 	_proxy = new btBroadphaseProxy(*aabbMinTemp, *aabbMaxTemp, userPtr.ToPointer(),
 		(short int)collisionFilterGroup, (short int)collisionFilterMask,
 		multiSapParentProxy.ToPointer()
-	);
+		);
 
 	delete aabbMinTemp;
 	delete aabbMaxTemp;
@@ -34,7 +34,7 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPt
 
 	_proxy = new btBroadphaseProxy(*aabbMinTemp, *aabbMaxTemp, userPtr.ToPointer(),
 		(short int)collisionFilterGroup, (short int)collisionFilterMask
-	);
+		);
 
 	delete aabbMinTemp;
 	delete aabbMaxTemp;
@@ -196,7 +196,7 @@ BroadphaseProxy^ BroadphasePair::Proxy0::get()
 void BroadphasePair::Proxy0::set(BroadphaseProxy^ value)
 {
 	_proxy0 = value;
-	
+
 	if (_proxy0 == nullptr)
 		_pair->m_pProxy0 = nullptr;
 	else
@@ -215,7 +215,7 @@ BroadphaseProxy^ BroadphasePair::Proxy1::get()
 void BroadphasePair::Proxy1::set(BroadphaseProxy^ value)
 {
 	_proxy1 = value;
-	
+
 	if (_proxy1 == nullptr)
 		_pair->m_pProxy1 = nullptr;
 	else

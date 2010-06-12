@@ -16,7 +16,7 @@ namespace BulletSharp
 	{
 	public:
 		void* _nearCallback;
-	
+
 	public:
 		btCollisionDispatcherWrapper (btCollisionConfiguration* collisionConfiguration);
 	};
@@ -31,10 +31,10 @@ namespace BulletSharp
 	{
 	private:
 		btNearCallback originalCallback;
-	
+
 	internal:
 		CollisionDispatcher(btCollisionDispatcherWrapper* dispatcher);
-	
+
 	public:
 		CollisionDispatcher(CollisionConfiguration^ collisionConfiguration);
 		CollisionDispatcher();

@@ -19,7 +19,7 @@ namespace BulletSharp
 		{
 			Vector3 get();
 		}
-		
+
 		property Vector3 Anchor2
 		{
 			Vector3 get();
@@ -39,7 +39,7 @@ namespace BulletSharp
 		{
 			Vector3 get();
 		}
-		
+
 		property Vector3 Axis2
 		{
 			Vector3 get();

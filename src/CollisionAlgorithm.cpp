@@ -60,11 +60,11 @@ CollisionAlgorithm::!CollisionAlgorithm()
 {
 	if( this->IsDisposed == true )
 		return;
-	
+
 	OnDisposing( this, nullptr );
-	
+
 	_algorithm = NULL;
-	
+
 	OnDisposed( this, nullptr );
 }
 

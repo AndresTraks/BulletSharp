@@ -11,7 +11,7 @@ namespace BulletSharp
 
 	internal:
 		SubSimplexClosestResult(btSubSimplexClosestResult* result);
-	
+
 	public:
 		bool IsValid();
 		void Reset();
@@ -50,7 +50,7 @@ namespace BulletSharp
 		!VoronoiSimplexSolver();
 	protected:
 		~VoronoiSimplexSolver();
-	
+
 	public:
 		property bool IsDisposed
 		{

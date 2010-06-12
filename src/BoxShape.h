@@ -8,7 +8,7 @@ namespace BulletSharp
 	{
 	internal:
 		BoxShape(btBoxShape* shape);
-	
+
 	public:
 		BoxShape(Vector3 boxHalfExtents);
 		BoxShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ);
@@ -16,7 +16,7 @@ namespace BulletSharp
 
 		static BoxShape^ Upcast(CollisionShape^ shape);
 
-		 Vector4 GetPlaneEquation(int i);
+		Vector4 GetPlaneEquation(int i);
 
 		property Vector3 HalfExtentsWithMargin
 		{

@@ -23,11 +23,11 @@ QuantizedBvh::!QuantizedBvh()
 {
 	if( this->IsDisposed == true )
 		return;
-	
+
 	OnDisposing( this, nullptr );
-	
+
 	_bvh = NULL;
-	
+
 	OnDisposed( this, nullptr );
 }
 

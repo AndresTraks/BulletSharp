@@ -22,12 +22,12 @@ namespace BulletSharp
 
 	internal:
 		CollisionConfiguration(btCollisionConfiguration* collisionConfiguration);
-	
+
 	public:
 		!CollisionConfiguration();
 	protected:
 		~CollisionConfiguration();
-	
+
 	public:
 		CollisionAlgorithmCreateFunc^ GetCollisionAlgorithmCreateFunc(BroadphaseNativeType proxyType0, BroadphaseNativeType proxyType1);
 

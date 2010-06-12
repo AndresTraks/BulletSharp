@@ -9,7 +9,7 @@ namespace BulletSharp
 	public:
 		event EventHandler^ OnDisposing;
 		event EventHandler^ OnDisposed;
-			
+
 		property bool IsDisposed
 		{
 			bool get();

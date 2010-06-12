@@ -79,7 +79,7 @@ namespace BulletSharp
 		{
 			_alignedObjectArray = new btAlignedObjectArray<btIndexedMesh>();
 		}
-		
+
 		!BtIndexedMeshArray()
 		{
 			if( this->IsDisposed == true )
@@ -172,7 +172,7 @@ namespace BulletSharp
 	{
 	internal:
 		TriangleIndexVertexArray(btTriangleIndexVertexArray* vertexArray);
-	
+
 	public:
 		TriangleIndexVertexArray();
 		TriangleIndexVertexArray(int numTriangles, IntPtr triangleIndexBase, int triangleIndexStride,

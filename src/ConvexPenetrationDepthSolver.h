@@ -15,12 +15,12 @@ namespace BulletSharp
 
 	internal:
 		ConvexPenetrationDepthSolver(btConvexPenetrationDepthSolver* depthSolver);
-	
+
 	public:
 		!ConvexPenetrationDepthSolver();
 	protected:
 		~ConvexPenetrationDepthSolver();
-	
+
 	public:
 		property bool IsDisposed
 		{

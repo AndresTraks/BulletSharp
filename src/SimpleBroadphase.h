@@ -14,7 +14,7 @@ namespace BulletSharp
 	{
 	internal:
 		SimpleBroadphaseProxy(btSimpleBroadphaseProxy* proxy);
-	
+
 	public:
 		SimpleBroadphaseProxy();
 		SimpleBroadphaseProxy(Vector3 minpt, Vector3 maxpt,

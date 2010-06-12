@@ -15,18 +15,18 @@ namespace BulletSharp
 	public:
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
-	
+
 	private:
 		btOverlappingPairCallback* _pairCallback;
 
 	internal:
 		OverlappingPairCallback(btOverlappingPairCallback* pairCallback);
-	
+
 	public:
 		!OverlappingPairCallback();
 	protected:
 		~OverlappingPairCallback();
-	
+
 	public:
 		BroadphasePair^ AddOverlappingPair(BroadphaseProxy^ proxy0,
 			BroadphaseProxy^ proxy1);

@@ -14,7 +14,7 @@ namespace BulletSharp
 		{
 		private:
 			btDiscreteCollisionDetectorInterface::ClosestPointInput* _input;
-		
+
 		public:
 			ClosestPointInput();
 
@@ -61,12 +61,12 @@ namespace BulletSharp
 
 		internal:
 			Result(btDiscreteCollisionDetectorInterface::Result* result);
-		
+
 		public:
 			!Result();
 		protected:
 			~Result();
-		
+
 		public:
 			property bool IsDisposed
 			{

@@ -12,7 +12,7 @@ namespace BulletSharp
 	{
 	internal:
 		GjkPairDetector(btGjkPairDetector* detector);
-	
+
 	public:
 		GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB,
 			SimplexSolverInterface^ simplexSolver,

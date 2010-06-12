@@ -91,10 +91,10 @@ namespace BulletSharp
 		btBroadphasePair* _pair;
 		BroadphaseProxy^ _proxy0;
 		BroadphaseProxy^ _proxy1;
-	
+
 	internal:
 		BroadphasePair(btBroadphasePair* pair);
-	
+
 	public:
 		BroadphasePair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy);
 		BroadphasePair(BroadphasePair^ pair);

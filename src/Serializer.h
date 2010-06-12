@@ -8,10 +8,10 @@ namespace BulletSharp
 	{
 	private:
 		btSerializer* _serializer;
-	
+
 	internal:
 		Serializer(btSerializer* serializer);
-	
+
 	public:
 		//void FinalizeChunk(Chunk^ chunk, String^, int chunkCode, IntPtr oldPtr);
 		//String^ FindNameForPointer(Object^ obj);

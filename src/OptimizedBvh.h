@@ -12,7 +12,7 @@ namespace BulletSharp
 	{
 	internal:
 		OptimizedBvh(btOptimizedBvh* bvh);
-	
+
 	public:
 		OptimizedBvh();
 

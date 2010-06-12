@@ -20,11 +20,11 @@ ConvexPenetrationDepthSolver::!ConvexPenetrationDepthSolver()
 {
 	if( this->IsDisposed == true )
 		return;
-	
+
 	OnDisposing( this, nullptr );
-	
+
 	_depthSolver = NULL;
-	
+
 	OnDisposed( this, nullptr );
 }
 

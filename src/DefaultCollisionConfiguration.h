@@ -74,7 +74,7 @@ namespace BulletSharp
 	{
 	internal:
 		DefaultCollisionConfiguration(btDefaultCollisionConfiguration* conf);
-	
+
 	public:
 		DefaultCollisionConfiguration(DefaultCollisionConstructionInfo^ constructionInfo);
 		DefaultCollisionConfiguration();

@@ -23,11 +23,11 @@ DynamicsWorld::RayResultCallback::!RayResultCallback()
 {
 	if( this->IsDisposed == true )
 		return;
-	
+
 	OnDisposing( this, nullptr );
-	
+
 	_callback = NULL;
-	
+
 	OnDisposed( this, nullptr );
 }
 

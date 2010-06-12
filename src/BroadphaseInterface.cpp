@@ -48,11 +48,11 @@ BroadphaseInterface::!BroadphaseInterface()
 {
 	if( this->IsDisposed == true )
 		return;
-	
+
 	OnDisposing( this, nullptr );
-	
+
 	_broadphase = NULL;
-	
+
 	OnDisposed( this, nullptr );
 }
 
@@ -65,7 +65,7 @@ void BroadphaseInterface::AabbTest(Vector3 aabbMin, Vector3 aabbMax, BroadphaseA
 {
 	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
 	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
-	
+
 	_broadphase->aabbTest(*aabbMinTemp, *aabbMaxTemp, *callback->UnmanagedPointer);
 
 	delete aabbMinTemp;
@@ -85,7 +85,7 @@ BroadphaseProxy^ BroadphaseInterface::CreateProxy(Vector3 aabbMin, Vector3 aabbM
 
 	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
 	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
-	
+
 	proxy = _broadphase->createProxy(*aabbMinTemp, *aabbMaxTemp,
 		shapeType, userPtr.ToPointer(), collisionFilterGroup, collisionFilterMask,
 		dispatcher->UnmanagedPointer, multiSapProxy.ToPointer());
@@ -105,7 +105,7 @@ void BroadphaseInterface::GetAabb(BroadphaseProxy^ proxy, Vector3% aabbMin, Vect
 {
 	btVector3* aabbMinTemp = new btVector3;
 	btVector3* aabbMaxTemp = new btVector3;
-	
+
 	_broadphase->getAabb(proxy->UnmanagedPointer, *aabbMinTemp, *aabbMaxTemp);
 
 	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
@@ -119,7 +119,7 @@ void BroadphaseInterface::GetBroadphaseAabb(Vector3% aabbMin, Vector3% aabbMax)
 {
 	btVector3* aabbMinTemp = new btVector3;
 	btVector3* aabbMaxTemp = new btVector3;
-	
+
 	_broadphase->getBroadphaseAabb(*aabbMinTemp, *aabbMaxTemp);
 
 	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
@@ -135,19 +135,20 @@ void BroadphaseInterface::PrintStats()
 }
 
 #pragma managed(push, off)
-void BroadphaseInterface_RayTest(btBroadphaseInterface* broadphase, btVector3* rayFrom, btVector3* rayTo, btBroadphaseRayCallback* rayCallback,
-	btVector3* aabbMin)
+void BroadphaseInterface_RayTest(btBroadphaseInterface* broadphase, btVector3* rayFrom, btVector3* rayTo,
+	btBroadphaseRayCallback* rayCallback, btVector3* aabbMin)
 {
 	broadphase->rayTest(*rayFrom, *rayTo, *rayCallback, *aabbMin);
 }
-void BroadphaseInterface_RayTest(btBroadphaseInterface* broadphase, btVector3* rayFrom, btVector3* rayTo, btBroadphaseRayCallback* rayCallback)
+void BroadphaseInterface_RayTest(btBroadphaseInterface* broadphase, btVector3* rayFrom, btVector3* rayTo,
+	btBroadphaseRayCallback* rayCallback)
 {
 	broadphase->rayTest(*rayFrom, *rayTo, *rayCallback);
 }
 #pragma managed(pop)
 
 void BroadphaseInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback^ rayCallback,
-	Vector3 aabbMin, Vector3 aabbMax)
+								  Vector3 aabbMin, Vector3 aabbMax)
 {
 	btVector3* rayFromTemp = Math::Vector3ToBtVector3(rayFrom);
 	btVector3* rayToTemp = Math::Vector3ToBtVector3(rayTo);

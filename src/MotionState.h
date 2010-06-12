@@ -12,10 +12,10 @@ namespace BulletSharp
 	{
 	private:
 		btMotionState* _motionState;
-	
+
 	internal:
 		MotionState(btMotionState* motionState);
-	
+
 	protected:
 		~MotionState();
 
@@ -40,7 +40,7 @@ namespace BulletSharp
 	{
 	public:
 		auto_gcroot<MotionState^> _motionState;
-		
+
 		virtual void getWorldTransform(btTransform& worldTrans) const
 		{
 			Math::MatrixToBtTransform(_motionState->WorldTransform, &worldTrans);

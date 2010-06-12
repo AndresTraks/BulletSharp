@@ -124,15 +124,15 @@ namespace BulletSharp
 	};
 #endif
 
-	#pragma warning(push)
-	#pragma warning(disable : 4482)
+#pragma warning(push)
+#pragma warning(disable : 4482)
 	[Flags]
 	public enum class DispatcherFlags
 	{
 		StaticStaticReported = btCollisionDispatcher::DispatcherFlags::CD_STATIC_STATIC_REPORTED,
 		UseRelativeContactBreakingThreshold = btCollisionDispatcher::DispatcherFlags::CD_USE_RELATIVE_CONTACT_BREAKING_THRESHOLD
 	};
-	#pragma warning(pop)
+#pragma warning(pop)
 
 	public enum class DynamicsWorldType
 	{

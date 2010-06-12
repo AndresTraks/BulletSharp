@@ -88,7 +88,7 @@ Matrix BulletSharp::Math::BtTransformToMatrix(const btTransform* transform)
 #else
 	Matrix t = gcnew Axiom::Math::Matrix4();
 #endif
-	
+
 	t->m00 = m[0];
 	t->m10 = m[1];
 	t->m20 = m[2];
@@ -232,7 +232,7 @@ Matrix BulletSharp::Math::BtMatrix3x3ToMatrix(const btMatrix3x3* matrix)
 #else
 	Matrix t = gcnew Axiom::Math::Matrix4();
 #endif
-	
+
 	t->m00 = m[0];
 	t->m10 = m[1];
 	t->m20 = m[2];

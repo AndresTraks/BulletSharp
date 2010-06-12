@@ -10,7 +10,7 @@ namespace BulletSharp
 	{
 	internal:
 		CapsuleShape(btCapsuleShape* shape);
-	
+
 	public:
 		CapsuleShape(btScalar radius, btScalar height);
 
@@ -18,7 +18,7 @@ namespace BulletSharp
 		{
 			btScalar get();
 		}
-		
+
 		property btScalar Radius
 		{
 			btScalar get();

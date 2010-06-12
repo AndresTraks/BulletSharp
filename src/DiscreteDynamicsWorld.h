@@ -18,7 +18,7 @@ namespace BulletSharp
 	{
 	internal:
 		DiscreteDynamicsWorld(btDiscreteDynamicsWorld* world);
-	
+
 	public:
 		DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher,
 			BroadphaseInterface^ pairCache,

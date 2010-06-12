@@ -17,7 +17,7 @@ namespace BulletSharp
 
 	internal:
 		Solve2LinearConstraint(btSolve2LinearConstraint* constraint);
-	
+
 	public:
 		Solve2LinearConstraint(btScalar tau, btScalar damping);
 
