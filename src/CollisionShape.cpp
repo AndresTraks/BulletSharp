@@ -31,9 +31,6 @@
 #include "Serializer.h"
 #endif
 
-#define __GCHANDLE_TO_VOIDPTR(x) ((GCHandle::operator System::IntPtr(x)).ToPointer())
-#define __VOIDPTR_TO_GCHANDLE(x) (GCHandle::operator GCHandle(System::IntPtr(x)))
-
 CollisionShape::CollisionShape(btCollisionShape* collisionShape)
 {
 	_collisionShape = collisionShape;
@@ -303,17 +300,17 @@ Object^ CollisionShape::UserObject::get()
 	void* obj = _collisionShape->getUserPointer();
 	if (obj == nullptr)
 		return nullptr;
-	return static_cast<Object^>(__VOIDPTR_TO_GCHANDLE(obj).Target);
+	return static_cast<Object^>(VoidPtrToGCHandle(obj).Target);
 }
 
 void CollisionShape::UserObject::set(Object^ value)
 {
 	void* obj = _collisionShape->getUserPointer();
 	if (obj != nullptr)
-		__VOIDPTR_TO_GCHANDLE(obj).Free();
+		VoidPtrToGCHandle(obj).Free();
 
 	GCHandle handle = GCHandle::Alloc(value);
-	_collisionShape->setUserPointer(__GCHANDLE_TO_VOIDPTR(handle));
+	_collisionShape->setUserPointer(GCHandleToVoidPtr(handle));
 }
 
 btCollisionShape* CollisionShape::UnmanagedPointer::get()

@@ -9,9 +9,6 @@
 
 #include <msclr/auto_gcroot.h>
 
-#define __GCHANDLE_TO_VOIDPTR(x) ((GCHandle::operator System::IntPtr(x)).ToPointer())
-#define __VOIDPTR_TO_GCHANDLE(x) (GCHandle::operator GCHandle(System::IntPtr(x)))
-
 CollisionObject::CollisionObject(btCollisionObject* collisionObject)
 {
 	_collisionObject = collisionObject;
@@ -291,16 +288,16 @@ Object^ CollisionObject::UserObject::get()
 	void* obj = _collisionObject->getUserPointer();
 	if (obj == nullptr)
 		return nullptr;
-	return static_cast<Object^>(__VOIDPTR_TO_GCHANDLE(obj).Target);
+	return static_cast<Object^>(VoidPtrToGCHandle(obj).Target);
 }
 void CollisionObject::UserObject::set(Object^ value)
 {
 	void* obj = _collisionObject->getUserPointer();
 	if (obj != nullptr)
-		__VOIDPTR_TO_GCHANDLE(obj).Free();
+		VoidPtrToGCHandle(obj).Free();
 
 	GCHandle handle = GCHandle::Alloc(value);
-	_collisionObject->setUserPointer(__GCHANDLE_TO_VOIDPTR(handle));
+	_collisionObject->setUserPointer(GCHandleToVoidPtr(handle));
 }
 
 Matrix CollisionObject::WorldTransform::get()

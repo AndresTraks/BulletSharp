@@ -13,7 +13,7 @@ void NearCallbackWrapper::nearCallback (btBroadphasePair& collisionPair, btColli
 	void* callback = dispatcher._nearCallback;
 	if (callback == nullptr)
 		return;
-	BulletSharp::NearCallback^ callbackManaged = static_cast<BulletSharp::NearCallback^>(__VOIDPTR_TO_GCHANDLE(callback).Target);
+	BulletSharp::NearCallback^ callbackManaged = static_cast<BulletSharp::NearCallback^>(VoidPtrToGCHandle(callback).Target);
 	callbackManaged(gcnew BroadphasePair(&collisionPair), gcnew CollisionDispatcher(&dispatcher), gcnew DispatcherInfo((btDispatcherInfo*)&dispatchInfo));
 }
 
@@ -85,7 +85,7 @@ BulletSharp::NearCallback^ CollisionDispatcher::NearCallback::get()
 	if (callback == nullptr)
 		return nullptr;
 	
-	return static_cast<BulletSharp::NearCallback^>(__VOIDPTR_TO_GCHANDLE(callback).Target);
+	return static_cast<BulletSharp::NearCallback^>(VoidPtrToGCHandle(callback).Target);
 }
 void CollisionDispatcher::NearCallback::set(BulletSharp::NearCallback^ value)
 {
@@ -100,10 +100,10 @@ void CollisionDispatcher::NearCallback::set(BulletSharp::NearCallback^ value)
 
 	void* current = UnmanagedPointer->_nearCallback;
 	if (current != nullptr)
-		__VOIDPTR_TO_GCHANDLE(current).Free();
+		VoidPtrToGCHandle(current).Free();
 
 	GCHandle handle = GCHandle::Alloc(value);
-	UnmanagedPointer->_nearCallback = __GCHANDLE_TO_VOIDPTR(handle);
+	UnmanagedPointer->_nearCallback = GCHandleToVoidPtr(handle);
 
 	if (originalCallback == nullptr)
 		originalCallback = UnmanagedPointer->getNearCallback();

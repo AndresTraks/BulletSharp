@@ -228,16 +228,16 @@ Object^ ManifoldPoint::UserPersistentData::get()
 	void* obj = _point->m_userPersistentData;
 	if (obj == nullptr)
 		return nullptr;
-	return static_cast<Object^>(__VOIDPTR_TO_GCHANDLE(obj).Target);
+	return static_cast<Object^>(VoidPtrToGCHandle(obj).Target);
 }
 void ManifoldPoint::UserPersistentData::set(Object^ value)
 {
 	void* obj = _point->m_userPersistentData;
 	if (obj != nullptr)
-		__VOIDPTR_TO_GCHANDLE(obj).Free();
+		VoidPtrToGCHandle(obj).Free();
 
 	GCHandle handle = GCHandle::Alloc(value);
-	_point->m_userPersistentData = __GCHANDLE_TO_VOIDPTR(handle);
+	_point->m_userPersistentData = GCHandleToVoidPtr(handle);
 }
 
 btManifoldPoint* ManifoldPoint::UnmanagedPointer::get()

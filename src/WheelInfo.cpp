@@ -268,16 +268,16 @@ Object^ WheelInfo::ClientInfo::get()
 	void* obj = _wheelInfo->m_clientInfo;
 	if (obj == nullptr)
 		return nullptr;
-	return static_cast<Object^>(__VOIDPTR_TO_GCHANDLE(obj).Target);
+	return static_cast<Object^>(VoidPtrToGCHandle(obj).Target);
 }
 void WheelInfo::ClientInfo::set(Object^ value)
 {
 	void* obj = _wheelInfo->m_clientInfo;
 	if (obj != nullptr)
-		__VOIDPTR_TO_GCHANDLE(obj).Free();
+		VoidPtrToGCHandle(obj).Free();
 
 	GCHandle handle = GCHandle::Alloc(value);
-	_wheelInfo->m_clientInfo = __GCHANDLE_TO_VOIDPTR(handle);
+	_wheelInfo->m_clientInfo = GCHandleToVoidPtr(handle);
 }
 
 btScalar WheelInfo::ClippedInvContactDotSuspension::get()

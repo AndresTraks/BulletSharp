@@ -9,9 +9,6 @@
 #include "TypedConstraint.h"
 #endif
 
-#define __GCHANDLE_TO_VOIDPTR(x) ((GCHandle::operator System::IntPtr(x)).ToPointer())
-#define __VOIDPTR_TO_GCHANDLE(x) (GCHandle::operator GCHandle(System::IntPtr(x)))
-
 DynamicsWorld::RayResultCallback::RayResultCallback(btDynamicsWorld::RayResultCallback* callback)
 {
 	_callback = callback;
@@ -181,17 +178,17 @@ Object^ DynamicsWorld::WorldUserInfo::get()
 	void* obj = UnmanagedPointer->getWorldUserInfo();
 	if (obj == nullptr)
 		return nullptr;
-	return static_cast<Object^>(__VOIDPTR_TO_GCHANDLE(obj).Target);
+	return static_cast<Object^>(VoidPtrToGCHandle(obj).Target);
 }
 
 void DynamicsWorld::WorldUserInfo::set(Object^ value)
 {
 	void* obj = UnmanagedPointer->getWorldUserInfo();
 	if (obj != nullptr)
-		__VOIDPTR_TO_GCHANDLE(obj).Free();
+		VoidPtrToGCHandle(obj).Free();
 
 	GCHandle handle = GCHandle::Alloc(value);
-	UnmanagedPointer->setWorldUserInfo(__GCHANDLE_TO_VOIDPTR(handle));
+	UnmanagedPointer->setWorldUserInfo(GCHandleToVoidPtr(handle));
 }
 
 DynamicsWorldType DynamicsWorld::WorldType::get()
