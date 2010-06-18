@@ -71,6 +71,7 @@ namespace BulletSharp
 
 		void AddChildShape(Matrix localTransform, CollisionShape^ shape);
 		void CalculatePrincipalAxisTransform(array<btScalar>^ masses, Matrix principal, Vector3 inertia);
+		void CreateAabbTreeFromChildren();
 		CollisionShape^ GetChildShape(int index);
 		Matrix GetChildTransform(int index);
 		void RecalculateLocalAabb();

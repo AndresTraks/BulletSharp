@@ -102,6 +102,11 @@ void CompoundShape::CalculatePrincipalAxisTransform(array<btScalar>^ masses, Mat
 	delete inertiaTemp;
 }
 
+void CompoundShape::CreateAabbTreeFromChildren()
+{
+	UnmanagedPointer->createAabbTreeFromChildren();
+}
+
 CollisionShape^ CompoundShape::GetChildShape(int index)
 {
 	return gcnew CollisionShape(UnmanagedPointer->getChildShape(index));

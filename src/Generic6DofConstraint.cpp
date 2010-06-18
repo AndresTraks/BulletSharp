@@ -228,8 +228,8 @@ TranslationalLimitMotor::TranslationalLimitMotor(btTranslationalLimitMotor* moto
 }
 
 btScalar TranslationalLimitMotor::SolveLinearAxis(btScalar timeStep, btScalar jacDiagABInv,
-			RigidBody^ body1, Vector3 pointInA, RigidBody^ body2, Vector3 pointInB,
-			int limit_index, Vector3 axis_normal_on_a, Vector3 anchorPos)
+	RigidBody^ body1, Vector3 pointInA, RigidBody^ body2, Vector3 pointInB,
+	int limit_index, Vector3 axis_normal_on_a, Vector3 anchorPos)
 {
 	btVector3* pointInATemp = Math::Vector3ToBtVector3(pointInA);
 	btVector3* pointInBTemp = Math::Vector3ToBtVector3(pointInB);
