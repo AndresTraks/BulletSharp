@@ -1342,6 +1342,10 @@
 					Name="NarrowPhaseCollision"
 					>
 					<File
+						RelativePath=".\src\ConvexCast.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\src\ConvexPenetrationDepthSolver.cpp"
 						>
 					</File>
@@ -1915,6 +1919,10 @@
 				<Filter
 					Name="NarrowPhaseCollision"
 					>
+					<File
+						RelativePath=".\src\ConvexCast.h"
+						>
+					</File>
 					<File
 						RelativePath=".\src\ConvexPenetrationDepthSolver.h"
 						>

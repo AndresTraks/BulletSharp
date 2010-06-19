@@ -533,6 +533,7 @@
     <ClCompile Include="src\ContactSolverInfo.cpp" />
     <ClCompile Include="src\Convex2dConvex2dAlgorithm.cpp" />
     <ClCompile Include="src\Convex2dShape.cpp" />
+    <ClCompile Include="src\ConvexCast.cpp" />
     <ClCompile Include="src\ConvexHullShape.cpp" />
     <ClCompile Include="src\ConvexInternalShape.cpp" />
     <ClCompile Include="src\ConvexPenetrationDepthSolver.cpp" />
@@ -626,6 +627,7 @@
     <ClInclude Include="src\BoxCollision.h" />
     <ClInclude Include="src\BulletMaterial.h" />
     <ClInclude Include="src\CharacterControllerInterface.h" />
+    <ClInclude Include="src\ConvexCast.h" />
     <ClInclude Include="src\ConvexTriangleMeshShape.h" />
     <ClInclude Include="src\Enums.h" />
     <ClInclude Include="src\GImpactBvh.h" />

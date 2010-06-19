@@ -27,8 +27,6 @@ namespace BulletSharp
 			virtual bool get();
 		}
 
-	public:
-
 	internal:
 		property btConvexPenetrationDepthSolver* UnmanagedPointer
 		{
