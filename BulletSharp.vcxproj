@@ -602,6 +602,7 @@
     </ClCompile>
     <ClCompile Include="src\StridingMeshInterface.cpp" />
     <ClCompile Include="src\StringConv.cpp" />
+    <ClCompile Include="src\TransformUtil.cpp" />
     <ClCompile Include="src\TriangleCallback.cpp" />
     <ClCompile Include="src\TriangleIndexVertexArray.cpp" />
     <ClCompile Include="src\TriangleMeshShape.cpp" />
@@ -659,6 +660,7 @@
     <ClInclude Include="src\SphereShape.h" />
     <ClInclude Include="src\StaticPlaneShape.h" />
     <ClInclude Include="src\StridingMeshInterface.h" />
+    <ClInclude Include="src\TransformUtil.h" />
     <ClInclude Include="src\TriangleCallback.h" />
     <ClInclude Include="src\TriangleIndexVertexArray.h" />
     <ClInclude Include="src\ActivatingCollisionAlgorithm.h" />

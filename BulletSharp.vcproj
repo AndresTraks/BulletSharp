@@ -1542,6 +1542,10 @@
 					RelativePath=".\src\StackAlloc.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\src\TransformUtil.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="SoftBody"
@@ -2106,6 +2110,10 @@
 				</File>
 				<File
 					RelativePath=".\src\StackAlloc.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\TransformUtil.h"
 					>
 				</File>
 			</Filter>
