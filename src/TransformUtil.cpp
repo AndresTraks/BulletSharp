@@ -17,7 +17,7 @@ void TransformUtil::CalculateDiffAxisAngle(Matrix transform0, Matrix transform1,
 
 	axis = Math::BtVector3ToVector3(axisTemp);
 	delete axisTemp;
-	
+
 	angle = angleTemp;
 }
 
@@ -36,7 +36,7 @@ void TransformUtil::CalculateDiffAxisAngleQuaternion(Quaternion orn0, Quaternion
 
 	axis = Math::BtVector3ToVector3(axisTemp);
 	delete axisTemp;
-	
+
 	angle = angleTemp;
 }
 
@@ -101,4 +101,38 @@ void TransformUtil::IntegrateTransform(Matrix curTrans, Vector3 linvel, Vector3 
 
 	predictedTransform = Math::BtTransformToMatrix(predictedTransformTemp);
 	delete predictedTransformTemp;
+}
+
+ConvexSeparatingDistanceUtil::ConvexSeparatingDistanceUtil(btScalar boundingRadiusA, btScalar boundingRadiusB)
+{
+	_util = new btConvexSeparatingDistanceUtil(boundingRadiusA, boundingRadiusB);
+}
+
+void ConvexSeparatingDistanceUtil::InitSeparatingDistance(Vector3 separatingVector, btScalar separatingDistance, Matrix transA, Matrix transB)
+{
+	btVector3* separatingVectorTemp = Math::Vector3ToBtVector3(separatingVector);
+	btTransform* transATemp = Math::MatrixToBtTransform(transA);
+	btTransform* transBTemp = Math::MatrixToBtTransform(transB);
+
+	_util->initSeparatingDistance(*separatingVectorTemp, separatingDistance, *transATemp, *transBTemp);
+
+	delete separatingVectorTemp;
+	delete transATemp;
+	delete transBTemp;
+}
+
+void ConvexSeparatingDistanceUtil::UpdateSeparatingDistance(Matrix transA, Matrix transB)
+{
+	btTransform* transATemp = Math::MatrixToBtTransform(transA);
+	btTransform* transBTemp = Math::MatrixToBtTransform(transB);
+
+	_util->updateSeparatingDistance(*transATemp, *transBTemp);
+
+	delete transATemp;
+	delete transBTemp;
+}
+
+btScalar ConvexSeparatingDistanceUtil::ConservativeSeparatingDistance::get()
+{
+	return _util->getConservativeSeparatingDistance();
 }
