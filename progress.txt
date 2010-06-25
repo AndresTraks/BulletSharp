@@ -38,10 +38,8 @@ BulletCollision/Gimpact
 
 Collision/NarrowPhaseCollision
 
-- ContinuousConvexCollision
 0 ConvexPenetrationDepthSolver
 0 DiscreteCollisionDetectorInterface
-- GjkConvexCast
 - GjkEpa2
 - GjkEpaPenetrationDepthSolver
 0 GjkPairDetector

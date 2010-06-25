@@ -1,9 +1,5 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <BulletCollision/NarrowPhaseCollision/btConvexCast.h>
-#pragma managed(pop)
-
 #include "ConvexCast.h"
 #ifndef DISABLE_DEBUGDRAW
 #include "DebugDraw.h"

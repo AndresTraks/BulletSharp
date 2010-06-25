@@ -86,9 +86,9 @@ namespace BulletSharp
 			btScalar get();
 		}
 
-		property btScalar SolveLimit
+		property int SolveLimit
 		{
-			btScalar get();
+			int get();
 		}
 
 		property bool UseFrameOffset

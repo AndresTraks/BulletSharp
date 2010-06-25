@@ -2,6 +2,10 @@
 
 // Fully implemented as of 19 Jun 2010
 
+#pragma managed(push, off)
+#include <BulletCollision/NarrowPhaseCollision/btConvexCast.h>
+#pragma managed(pop)
+
 #include "IDisposable.h"
 
 #include <msclr/auto_gcroot.h>

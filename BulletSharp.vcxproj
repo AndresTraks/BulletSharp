@@ -531,6 +531,7 @@
     <ClCompile Include="src\ConeTwistConstraint.cpp" />
     <ClCompile Include="src\ConstraintSolver.cpp" />
     <ClCompile Include="src\ContactSolverInfo.cpp" />
+    <ClCompile Include="src\ContinuousConvexCollision.cpp" />
     <ClCompile Include="src\Convex2dConvex2dAlgorithm.cpp" />
     <ClCompile Include="src\Convex2dShape.cpp" />
     <ClCompile Include="src\ConvexCast.cpp" />
@@ -556,6 +557,7 @@
     <ClCompile Include="src\GhostObject.cpp" />
     <ClCompile Include="src\GImpactBvh.cpp" />
     <ClCompile Include="src\GImpactShape.cpp" />
+    <ClCompile Include="src\GjkConvexCast.cpp" />
     <ClCompile Include="src\GjkPairDetector.cpp" />
     <ClCompile Include="src\HeightfieldTerrainShape.cpp" />
     <ClCompile Include="src\Hinge2Constraint.cpp" />
@@ -628,10 +630,12 @@
     <ClInclude Include="src\BoxCollision.h" />
     <ClInclude Include="src\BulletMaterial.h" />
     <ClInclude Include="src\CharacterControllerInterface.h" />
+    <ClInclude Include="src\ContinuousConvexCollision.h" />
     <ClInclude Include="src\ConvexCast.h" />
     <ClInclude Include="src\ConvexTriangleMeshShape.h" />
     <ClInclude Include="src\Enums.h" />
     <ClInclude Include="src\GImpactBvh.h" />
+    <ClInclude Include="src\GjkConvexCast.h" />
     <ClInclude Include="src\IDisposable.h" />
     <ClInclude Include="src\Math.h" />
     <ClInclude Include="src\MinkowskiSumShape.h" />

@@ -256,7 +256,7 @@ btScalar HingeConstraint::MotorTargetVelocity::get()
 	return UnmanagedPointer->getMotorTargetVelosity();
 }
 
-btScalar HingeConstraint::SolveLimit::get()
+int HingeConstraint::SolveLimit::get()
 {
 	return UnmanagedPointer->getSolveLimit();
 }

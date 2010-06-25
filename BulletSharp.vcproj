@@ -1342,6 +1342,10 @@
 					Name="NarrowPhaseCollision"
 					>
 					<File
+						RelativePath=".\src\ContinuousConvexCollision.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\src\ConvexCast.cpp"
 						>
 					</File>
@@ -1351,6 +1355,10 @@
 					</File>
 					<File
 						RelativePath=".\src\DiscreteCollisionDetectorInterface.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\GjkConvexCast.cpp"
 						>
 					</File>
 					<File
@@ -1924,6 +1932,10 @@
 					Name="NarrowPhaseCollision"
 					>
 					<File
+						RelativePath=".\src\ContinuousConvexCollision.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\ConvexCast.h"
 						>
 					</File>
@@ -1933,6 +1945,10 @@
 					</File>
 					<File
 						RelativePath=".\src\DiscreteCollisionDetectorInterface.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\GjkConvexCast.h"
 						>
 					</File>
 					<File
