@@ -35,11 +35,11 @@ Serialize::BulletWorldImporter::!BulletWorldImporter()
 {
 	if( this->IsDisposed == true )
 		return;
-	
+
 	OnDisposing( this, nullptr );
-	
+
 	_importer = NULL;
-	
+
 	OnDisposed( this, nullptr );
 }
 
@@ -50,7 +50,7 @@ CollisionObject^ Serialize::BulletWorldImporter::CreateCollisionObject(Matrix st
 
 	CollisionObject^ ret = gcnew CollisionObject(
 		_importer->baseCreateCollisionObject(*startTransformTemp, shape->UnmanagedPointer, bodyNameTemp));
-	
+
 	delete startTransformTemp;
 	StringConv::UnmanagedToManaged(bodyNameTemp);
 
@@ -64,7 +64,7 @@ RigidBody^ Serialize::BulletWorldImporter::CreateRigidBody(bool isDynamic, btSca
 
 	RigidBody^ ret = gcnew RigidBody(
 		_importer->baseCreateRigidBody(isDynamic, mass, *startTransformTemp, shape->UnmanagedPointer, bodyNameTemp));
-	
+
 	delete startTransformTemp;
 	StringConv::UnmanagedToManaged(bodyNameTemp);
 
@@ -204,7 +204,7 @@ HingeConstraint^ Serialize::BulletWorldImporter::CreateHingeConstraint(RigidBody
 
 	HingeConstraint^ ret = gcnew HingeConstraint(_importer->baseCreateHingeConstraint(
 		*rbA->UnmanagedPointer, *rbB->UnmanagedPointer, *rbAFrameTemp, *rbBFrameTemp, useReferenceFrameA));
-	
+
 	delete rbAFrameTemp;
 	delete rbBFrameTemp;
 
@@ -218,7 +218,7 @@ HingeConstraint^ Serialize::BulletWorldImporter::CreateHingeConstraint(RigidBody
 
 	HingeConstraint^ ret = gcnew HingeConstraint(_importer->baseCreateHingeConstraint(
 		*rbA->UnmanagedPointer, *rbB->UnmanagedPointer, *rbAFrameTemp, *rbBFrameTemp));
-	
+
 	delete rbAFrameTemp;
 	delete rbBFrameTemp;
 
@@ -231,7 +231,7 @@ HingeConstraint^ Serialize::BulletWorldImporter::CreateHingeConstraint(RigidBody
 
 	HingeConstraint^ ret = gcnew HingeConstraint(_importer->baseCreateHingeConstraint(
 		*rbA->UnmanagedPointer, *rbAFrameTemp, useReferenceFrameA));
-	
+
 	delete rbAFrameTemp;
 	return ret;
 }
@@ -242,7 +242,7 @@ HingeConstraint^ Serialize::BulletWorldImporter::CreateHingeConstraint(RigidBody
 
 	HingeConstraint^ ret = gcnew HingeConstraint(_importer->baseCreateHingeConstraint(
 		*rbA->UnmanagedPointer, *rbAFrameTemp));
-	
+
 	delete rbAFrameTemp;
 	return ret;
 }
@@ -254,7 +254,7 @@ ConeTwistConstraint^ Serialize::BulletWorldImporter::CreateConeTwistConstraint(R
 
 	ConeTwistConstraint^ ret = gcnew ConeTwistConstraint(_importer->baseCreateConeTwistConstraint(
 		*rbA->UnmanagedPointer, *rbB->UnmanagedPointer, *rbAFrameTemp, *rbBFrameTemp));
-	
+
 	delete rbAFrameTemp;
 	delete rbBFrameTemp;
 
@@ -267,7 +267,7 @@ ConeTwistConstraint^ Serialize::BulletWorldImporter::CreateConeTwistConstraint(R
 
 	ConeTwistConstraint^ ret = gcnew ConeTwistConstraint(_importer->baseCreateConeTwistConstraint(
 		*rbA->UnmanagedPointer, *rbAFrameTemp));
-	
+
 	delete rbAFrameTemp;
 	return ret;
 }
@@ -279,7 +279,7 @@ Generic6DofConstraint^ Serialize::BulletWorldImporter::CreateGeneric6DofConstrai
 
 	Generic6DofConstraint^ ret = gcnew Generic6DofConstraint(_importer->baseCreateGeneric6DofConstraint(
 		*rbA->UnmanagedPointer, *rbB->UnmanagedPointer, *frameInATemp, *frameInBTemp, useLinearReferenceFrameA));
-	
+
 	delete frameInATemp;
 	delete frameInBTemp;
 
@@ -292,7 +292,7 @@ Generic6DofConstraint^ Serialize::BulletWorldImporter::CreateGeneric6DofConstrai
 
 	Generic6DofConstraint^ ret = gcnew Generic6DofConstraint(_importer->baseCreateGeneric6DofConstraint(
 		*rbB->UnmanagedPointer, *frameInBTemp, useLinearReferenceFrameB));
-	
+
 	delete frameInBTemp;
 	return ret;
 }
@@ -304,7 +304,7 @@ SliderConstraint^ Serialize::BulletWorldImporter::CreateSliderConstraint(RigidBo
 
 	SliderConstraint^ ret = gcnew SliderConstraint(_importer->baseCreateSliderConstraint(
 		*rbA->UnmanagedPointer, *rbB->UnmanagedPointer, *frameInATemp, *frameInBTemp, useLinearReferenceFrameA));
-	
+
 	delete frameInATemp;
 	delete frameInBTemp;
 
@@ -340,23 +340,27 @@ bool Serialize::BulletWorldImporter::LoadFile(String^ filename)
 
 CollisionShape^ Serialize::BulletWorldImporter::GetCollisionShapeByIndex(int index)
 {
-	return gcnew CollisionShape(_importer->getCollisionShapeByIndex(index));
+	btCollisionShape* shape = _importer->getCollisionShapeByIndex(index);
+	return shape ? gcnew CollisionShape(shape) : nullptr;
 }
 
 CollisionObject^ Serialize::BulletWorldImporter::GetRigidBodyByIndex(int index)
 {
-	return gcnew CollisionObject(_importer->getRigidBodyByIndex(index));
+	btCollisionObject* body = _importer->getRigidBodyByIndex(index);
+	return body ? gcnew CollisionObject(body) : nullptr;
 }
 
 TypedConstraint^ Serialize::BulletWorldImporter::GetConstraintByIndex(int index)
 {
-	return gcnew TypedConstraint(_importer->getConstraintByIndex(index));
+	btTypedConstraint* constraint = _importer->getConstraintByIndex(index);
+	return constraint ? gcnew TypedConstraint(constraint) : nullptr;
 }
 
 #ifndef DISABLE_BVH
 OptimizedBvh^ Serialize::BulletWorldImporter::GetBvhByIndex(int index)
 {
-	return gcnew OptimizedBvh(_importer->getBvhByIndex(index));
+	btOptimizedBvh* bvh = _importer->getBvhByIndex(index);
+	return bvh ? gcnew OptimizedBvh(bvh) : nullptr;
 }
 #endif
 
@@ -367,55 +371,78 @@ OptimizedBvh^ Serialize::BulletWorldImporter::GetBvhByIndex(int index)
 
 CollisionShape^ Serialize::BulletWorldImporter::GetCollisionShapeByName(String^ name)
 {
+	btCollisionShape* shape;
+	CollisionShape^ ret;
+
 	const char* nameTemp = StringConv::ManagedToUnmanaged(name);
-	
-	CollisionShape^ ret = gcnew CollisionShape(_importer->getCollisionShapeByName(nameTemp));
-	
+
+	shape = _importer->getCollisionShapeByName(nameTemp);
+	ret = shape ? gcnew CollisionShape(shape) : nullptr;
+
 	StringConv::UnmanagedToManaged(nameTemp);
 	return ret;
 }
 
 RigidBody^ Serialize::BulletWorldImporter::GetRigidBodyByName(String^ name)
 {
+	btRigidBody* body;
+	RigidBody^ ret;
+
 	const char* nameTemp = StringConv::ManagedToUnmanaged(name);
-	
-	RigidBody^ ret = gcnew RigidBody(_importer->getRigidBodyByName(nameTemp));
-	
+
+	body = _importer->getRigidBodyByName(nameTemp);
+	ret = body ? gcnew RigidBody(body) : nullptr;
+
 	StringConv::UnmanagedToManaged(nameTemp);
 	return ret;
 }
 
 TypedConstraint^ Serialize::BulletWorldImporter::GetConstraintByName(String^ name)
 {
+	btTypedConstraint* constraint;
+	TypedConstraint^ ret;
+
 	const char* nameTemp = StringConv::ManagedToUnmanaged(name);
-	
-	TypedConstraint^ ret = gcnew TypedConstraint(_importer->getConstraintByName(nameTemp));
-	
+
+	constraint = _importer->getConstraintByName(nameTemp);
+	ret = constraint ? gcnew TypedConstraint(constraint) : nullptr;
+
 	StringConv::UnmanagedToManaged(nameTemp);
 	return ret;
 }
 
 String^	Serialize::BulletWorldImporter::GetNameForObject(Object^ obj)
 {
+	const void* pointer = 0;
+
 	CollisionShape^ shape = static_cast<CollisionShape^>(obj);
 	if (shape != nullptr)
-		return StringConv::UnmanagedToManaged(_importer->getNameForPointer(shape->UnmanagedPointer));
+	{
+		pointer = shape->UnmanagedPointer;
+		goto returnName;
+	}
+
+	CollisionObject^ body = static_cast<CollisionObject^>(obj);
+	if (body != nullptr)
+	{
+		pointer = body->UnmanagedPointer;
+		goto returnName;
+	}
 
 #ifndef DISABLE_CONSTRAINTS
 	TypedConstraint^ constraint = static_cast<TypedConstraint^>(obj);
 	if (constraint != nullptr)
-		return StringConv::UnmanagedToManaged(_importer->getNameForPointer(constraint->UnmanagedPointer));
+	{
+		pointer = constraint->UnmanagedPointer;
+		goto returnName;
+	}
 #endif
 
-	CollisionObject^ body = static_cast<RigidBody^>(obj);
-	if (body != nullptr)
-		return StringConv::UnmanagedToManaged(_importer->getNameForPointer(body->UnmanagedPointer));
-
-	body = static_cast<CollisionObject^>(obj);
-	if (body != nullptr)
-		return StringConv::UnmanagedToManaged(_importer->getNameForPointer(body->UnmanagedPointer));
-
 	return nullptr;
+
+returnName:
+	const char* name = _importer->getNameForPointer(pointer);
+	return name ? StringConv::UnmanagedToManaged(name) : nullptr;
 }
 
 bool Serialize::BulletWorldImporter::IsDisposed::get()
