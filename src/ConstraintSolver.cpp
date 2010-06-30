@@ -3,10 +3,12 @@
 #include "CollisionObject.h"
 #include "ConstraintSolver.h"
 #include "ContactSolverInfo.h"
-#include "DebugDraw.h"
 #include "Dispatcher.h"
 #include "StackAlloc.h"
 #include "TypedConstraint.h"
+#ifndef DISABLE_DEBUGDRAW
+#include "DebugDraw.h"
+#endif
 
 ConstraintSolver::ConstraintSolver(btConstraintSolver* solver)
 {
@@ -32,9 +34,19 @@ ConstraintSolver::!ConstraintSolver()
 
 #ifndef DISABLE_CONSTRAINTS
 
-void ConstraintSolver::AllSolved(ContactSolverInfo^ info, DebugDraw^ debugDrawer, StackAlloc^ stackAlloc)
+void ConstraintSolver::AllSolved(ContactSolverInfo^ info,
+#ifndef DISABLE_DEBUGDRAW
+	DebugDraw^ debugDrawer,
+#endif
+	StackAlloc^ stackAlloc)
 {
-	_solver->allSolved(*info->UnmanagedPointer, debugDrawer->UnmanagedPointer, stackAlloc->UnmanagedPointer);
+	_solver->allSolved(*info->UnmanagedPointer,
+#ifndef DISABLE_DEBUGDRAW
+		(debugDrawer != nullptr) ? debugDrawer->UnmanagedPointer : 0,
+#else
+		0,
+#endif
+		stackAlloc->UnmanagedPointer);
 }
 
 void ConstraintSolver::PrepareSolve(int numBodies, int numManifolds)
@@ -48,7 +60,10 @@ void ConstraintSolver::Reset()
 }
 
 btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifold,
-	array<TypedConstraint^>^ constraints, ContactSolverInfo^ info, DebugDraw^ debugDrawer,
+	array<TypedConstraint^>^ constraints, ContactSolverInfo^ info,
+#ifndef DISABLE_DEBUGDRAW
+	DebugDraw^ debugDrawer,
+#endif
 	StackAlloc^ stackAlloc, Dispatcher^ dispatcher)
 {
 	int i;
@@ -63,8 +78,14 @@ btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<Per
 	for (i=0; i<numBodies; i++)
 		bodiesTemp[i] = bodies[i]->UnmanagedPointer;
 
-	btScalar ret = _solver->solveGroup(bodiesTemp, numBodies, manifoldsTemp, numManifolds, constraintsTemp, numConstraints,
-		*info->UnmanagedPointer, debugDrawer->UnmanagedPointer, stackAlloc->UnmanagedPointer, dispatcher->UnmanagedPointer);
+	btScalar ret = _solver->solveGroup(bodiesTemp, numBodies, manifoldsTemp, numManifolds,
+		constraintsTemp, numConstraints, *info->UnmanagedPointer,
+#ifndef DISABLE_DEBUGDRAW
+		(debugDrawer != nullptr) ? debugDrawer->UnmanagedPointer : 0,
+#else
+		0,
+#endif
+		stackAlloc->UnmanagedPointer, dispatcher->UnmanagedPointer);
 
 	delete bodiesTemp;
 	delete manifoldsTemp;

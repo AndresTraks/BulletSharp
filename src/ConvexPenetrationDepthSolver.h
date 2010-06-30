@@ -1,9 +1,17 @@
 #pragma once
 
+// Fully implemented as of 30 Jun 2010
+
 #include "IDisposable.h"
+#include "SimplexSolverInterface.h"
 
 namespace BulletSharp
 {
+	ref class ConvexShape;
+	ref class DebugDraw;
+	ref class SimplexSolverInterface;
+	ref class StackAlloc;
+
 	public ref class ConvexPenetrationDepthSolver : BulletSharp::IDisposable
 	{
 	public:
@@ -22,6 +30,14 @@ namespace BulletSharp
 		~ConvexPenetrationDepthSolver();
 
 	public:
+		bool CalcPenDepth(SimplexSolverInterface^ simplexSolver,
+			ConvexShape^ convexA, ConvexShape^ convexB, Matrix transA, Matrix transB,
+			Vector3 v, Vector3 pa, Vector3 pb,
+#ifndef DISABLE_DEBUGDRAW
+			DebugDraw^ debugDraw,
+#endif
+			StackAlloc^ stackAlloc);
+
 		property bool IsDisposed
 		{
 			virtual bool get();

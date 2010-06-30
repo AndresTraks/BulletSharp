@@ -33,11 +33,18 @@ namespace BulletSharp
 
 	public:
 #ifndef DISABLE_CONSTRAINTS
-		void AllSolved(ContactSolverInfo^ info, DebugDraw^ debugDrawer, StackAlloc^ stackAlloc);
+		void AllSolved(ContactSolverInfo^ info,
+#ifndef DISABLE_DEBUGDRAW
+			DebugDraw^ debugDrawer,
+#endif
+			StackAlloc^ stackAlloc);
 		void PrepareSolve(int numBodies, int numManifolds);
 		void Reset();
 		btScalar SolveGroup(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifold,
-			array<TypedConstraint^>^ constraints, ContactSolverInfo^ info, DebugDraw^ debugDrawer,
+			array<TypedConstraint^>^ constraints, ContactSolverInfo^ info,
+#ifndef DISABLE_DEBUGDRAW
+			DebugDraw^ debugDrawer,
+#endif
 			StackAlloc^ stackAlloc, Dispatcher^ dispatcher);
 
 		property bool IsDisposed
