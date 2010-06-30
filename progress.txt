@@ -40,7 +40,6 @@ Collision/NarrowPhaseCollision
 
 0 DiscreteCollisionDetectorInterface
 x GjkEpa2 (internal)
-0 GjkPairDetector
 0 MinkowskiPenetrationDepthSolver
 0 PersistentManifold
 - RaycastCallback
