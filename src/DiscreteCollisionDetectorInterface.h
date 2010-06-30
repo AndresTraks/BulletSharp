@@ -2,6 +2,10 @@
 
 #include "IDisposable.h"
 
+#include <msclr/auto_gcroot.h>
+
+using namespace msclr;
+
 namespace BulletSharp
 {
 	ref class DebugDraw;
@@ -18,18 +22,6 @@ namespace BulletSharp
 		public:
 			ClosestPointInput();
 
-			property Matrix TransformA
-			{
-				Matrix get();
-				void set(Matrix value);
-			}
-
-			property Matrix TransformB
-			{
-				Matrix get();
-				void set(Matrix value);
-			}
-
 			property btScalar MaximumDistanceSquared
 			{
 				btScalar get();
@@ -40,6 +32,18 @@ namespace BulletSharp
 			{
 				BulletSharp::StackAlloc^ get();
 				void set(BulletSharp::StackAlloc^ value);
+			}
+
+			property Matrix TransformA
+			{
+				Matrix get();
+				void set(Matrix value);
+			}
+
+			property Matrix TransformB
+			{
+				Matrix get();
+				void set(Matrix value);
 			}
 
 		internal:
@@ -68,6 +72,10 @@ namespace BulletSharp
 			~Result();
 
 		public:
+			virtual void AddContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld, btScalar depth);
+			virtual void SetShapeIdentifiersA(int partId0, int index0);
+			virtual void SetShapeIdentifiersB(int partId1, int index1);
+
 			property bool IsDisposed
 			{
 				virtual bool get();
@@ -79,12 +87,6 @@ namespace BulletSharp
 				btDiscreteCollisionDetectorInterface::Result* get();
 				void set(btDiscreteCollisionDetectorInterface::Result* value);
 			}
-		};
-
-		ref class StorageResult : Result
-		{
-		internal:
-			StorageResult(btStorageResult* result);
 		};
 
 	public:
@@ -103,11 +105,11 @@ namespace BulletSharp
 	public:
 #ifndef DISABLE_DEBUGDRAW
 		void GetClosestPoints(ClosestPointInput^ input, Result^ output, DebugDraw^ debugDraw);
+		void GetClosestPoints(ClosestPointInput^ input, Result^ output, DebugDraw^ debugDraw, bool swapResults);
 #else
 		void GetClosestPoints(ClosestPointInput^ input, Result^ output);
+		void GetClosestPoints(ClosestPointInput^ input, Result^ output, bool swapResults);
 #endif
-		//void GetClosestPoints(ClosestPointInput^ input, [Out] Result^ %output, DebugDraw^ debugDraw);
-		//void GetClosestPoints(ClosestPointInput^ input, Result^ output, DebugDraw^ debugDraw, bool swapResults);
 
 		property bool IsDisposed
 		{
@@ -120,5 +122,57 @@ namespace BulletSharp
 			btDiscreteCollisionDetectorInterface* get();
 			void set(btDiscreteCollisionDetectorInterface* value);
 		}
+	};
+
+	class btStorageResultWrapper;
+
+	//public
+	ref class StorageResult : DiscreteCollisionDetectorInterface::Result
+	{
+	internal:
+		StorageResult(btStorageResultWrapper* result);
+
+	public:
+		StorageResult();
+
+		//virtual void AddContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld, btScalar depth);
+		virtual void SetShapeIdentifiersA(int partId0, int index0) new;
+		virtual void SetShapeIdentifiersB(int partId1, int index1) new;
+
+		property Vector3 ClosestPointInB
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property btScalar Distance
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property Vector3 NormalOnSurfaceB
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+	internal:
+		property btStorageResultWrapper* UnmanagedPointer
+		{
+			btStorageResultWrapper* get() new;
+		}
+	};
+
+	class btStorageResultWrapper : public btStorageResult
+	{
+	private:
+		auto_gcroot<StorageResult^> _storageResult;
+
+	public:
+//		btStorageResultWrapper(StorageResult^ storageResult);
+
+		virtual void setShapeIdentifiersA(int partId0, int index0);
+		virtual void setShapeIdentifiersB(int partId1, int index1);
 	};
 };

@@ -564,6 +564,7 @@
     <ClCompile Include="src\GImpactCollisionAlgorithm.cpp" />
     <ClCompile Include="src\GImpactShape.cpp" />
     <ClCompile Include="src\GjkConvexCast.cpp" />
+    <ClCompile Include="src\GjkEpaPenetrationDepthSolver.cpp" />
     <ClCompile Include="src\GjkPairDetector.cpp" />
     <ClCompile Include="src\HeightfieldTerrainShape.cpp" />
     <ClCompile Include="src\Hinge2Constraint.cpp" />
@@ -662,6 +663,7 @@
     <ClInclude Include="src\GImpactBvh.h" />
     <ClInclude Include="src\GImpactCollisionAlgorithm.h" />
     <ClInclude Include="src\GjkConvexCast.h" />
+    <ClInclude Include="src\GjkEpaPenetrationDepthSolver.h" />
     <ClInclude Include="src\IDisposable.h" />
     <ClInclude Include="src\Math.h" />
     <ClInclude Include="src\MinkowskiSumShape.h" />

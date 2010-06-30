@@ -39,8 +39,7 @@ BulletCollision/Gimpact
 Collision/NarrowPhaseCollision
 
 0 DiscreteCollisionDetectorInterface
-- GjkEpa2
-- GjkEpaPenetrationDepthSolver
+x GjkEpa2 (internal)
 0 GjkPairDetector
 0 MinkowskiPenetrationDepthSolver
 0 PersistentManifold
