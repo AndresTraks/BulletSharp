@@ -43,7 +43,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="D:\src\bullet\src"
-				AdditionalUsingDirectories="&quot;C:\Program Files\SlimDX SDK (February 2010)\Bin\&quot;;&quot;C:\Program Files (x86)\SlimDX SDK (February 2010)\Bin\&quot;"
+				AdditionalUsingDirectories="&quot;C:\Program Files\SlimDX SDK (June 2010)\Bin\net20\&quot;;&quot;C:\Program Files (x86)\SlimDX SDK (June 2010)\Bin\net20\&quot;"
 				PreprocessorDefinitions="GRAPHICS_SLIMDX;WIN32;_DEBUG"
 				RuntimeLibrary="3"
 				EnableEnhancedInstructionSet="0"
@@ -119,7 +119,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="D:\src\bullet\src"
-				AdditionalUsingDirectories="&quot;C:\Program Files\SlimDX SDK (February 2010)\Bin\&quot;;&quot;C:\Program Files (x86)\SlimDX SDK (February 2010)\Bin\&quot;"
+				AdditionalUsingDirectories="&quot;C:\Program Files\SlimDX SDK (June 2010)\Bin\net20\&quot;;&quot;C:\Program Files (x86)\SlimDX SDK (June 2010)\Bin\net20\&quot;"
 				PreprocessorDefinitions="GRAPHICS_SLIMDX;WIN32;NDEBUG"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
