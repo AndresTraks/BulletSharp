@@ -241,7 +241,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>C:\Program Files\SlimDX SDK (June 2010)\Bin\;C:\Program Files (x86)\SlimDX SDK (June 2010)\Bin\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>C:\Program Files\SlimDX SDK (June 2010)\Bin\net40;C:\Program Files (x86)\SlimDX SDK (June 2010)\Bin\net40;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_SLIMDX;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
@@ -261,7 +261,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release SlimDX|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>C:\Program Files\SlimDX SDK (June 2010)\Bin\;C:\Program Files (x86)\SlimDX SDK (June 2010)\Bin\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>C:\Program Files\SlimDX SDK (June 2010)\Bin\net40;C:\Program Files (x86)\SlimDX SDK (June 2010)\Bin\net40;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_SLIMDX;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
