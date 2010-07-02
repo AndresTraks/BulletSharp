@@ -9,6 +9,7 @@ namespace DemoFramework
             get;
             set;
         }
+
         public CreateFlags CreationFlags
         {
             get;

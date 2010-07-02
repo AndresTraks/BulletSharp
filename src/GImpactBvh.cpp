@@ -6,10 +6,70 @@
 #include "AlignedObjectArray.h"
 #include "BoxCollision.h"
 #include "GImpactBvh.h"
+//#include "TriangleShapeEx.h"
+
+PrimitiveManagerBase::PrimitiveManagerBase(btPrimitiveManagerBase* primitiveManager)
+{
+	_primitiveManager = primitiveManager;
+}
+
+PrimitiveManagerBase::~PrimitiveManagerBase()
+{
+	this->!PrimitiveManagerBase();
+}
+
+PrimitiveManagerBase::!PrimitiveManagerBase()
+{
+	if( this->IsDisposed == true )
+		return;
+
+	OnDisposing( this, nullptr );
+
+	_primitiveManager = NULL;
+
+	OnDisposed( this, nullptr );
+}
+
+void PrimitiveManagerBase::GetPrimitiveBox(int prim_index, [Out] Aabb^% primbox)
+{
+	btAABB* primboxTemp = new btAABB;
+	_primitiveManager->get_primitive_box(prim_index, *primboxTemp);
+	primbox = gcnew Aabb(primboxTemp);
+}
+
+bool PrimitiveManagerBase::IsTriMesh::get()
+{
+	return _primitiveManager->is_trimesh();
+}
+
+int PrimitiveManagerBase::PrimitiveCount::get()
+{
+	return _primitiveManager->get_primitive_count();
+}
+
+bool PrimitiveManagerBase::IsDisposed::get()
+{
+	return (_primitiveManager == NULL);
+}
+
+btPrimitiveManagerBase* PrimitiveManagerBase::UnmanagedPointer::get()
+{
+	return _primitiveManager;
+}
+void PrimitiveManagerBase::UnmanagedPointer::set(btPrimitiveManagerBase* value)
+{
+	_primitiveManager = value;
+}
+
 
 GImpactBvh::GImpactBvh(btGImpactBvh* bvh)
 {
 	_bvh = bvh;
+}
+
+GImpactBvh::GImpactBvh(PrimitiveManagerBase^ primitive_manager)
+{
+	_bvh = new btGImpactBvh(primitive_manager->UnmanagedPointer);
 }
 
 GImpactBvh::GImpactBvh()
@@ -118,6 +178,15 @@ bool GImpactBvh::IsTrimesh::get()
 int GImpactBvh::NodeCount::get()
 {
 	return _bvh->getNodeCount();
+}
+
+PrimitiveManagerBase^ GImpactBvh::PrimitiveManager::get()
+{
+	return gcnew PrimitiveManagerBase(_bvh->getPrimitiveManager());
+}
+void GImpactBvh::PrimitiveManager::set(PrimitiveManagerBase^ value)
+{
+	_bvh->setPrimitiveManager(value->UnmanagedPointer);
 }
 
 #endif

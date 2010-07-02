@@ -4,10 +4,57 @@
 #include <BulletCollision/Gimpact/btGImpactBvh.h>
 #pragma managed(pop)
 
+#include "IDisposable.h"
+
 namespace BulletSharp
 {
 	ref class Aabb;
 	ref class IntArray;
+	ref class PrimitiveTriangle;
+
+	public ref class PrimitiveManagerBase : BulletSharp::IDisposable
+	{
+	public:
+		virtual event EventHandler^ OnDisposing;
+		virtual event EventHandler^ OnDisposed;
+
+	private:
+		btPrimitiveManagerBase* _primitiveManager;
+
+	internal:
+		PrimitiveManagerBase(btPrimitiveManagerBase* primitiveManager);
+
+	public:
+		!PrimitiveManagerBase();
+	protected:
+		~PrimitiveManagerBase();
+
+	public:
+		void GetPrimitiveBox(int prim_index, [Out] Aabb^% primbox);
+//		void GetPrimitiveTriangle(int prim_index, PrimitiveTriangle^ triangle);
+
+		property bool IsTriMesh
+		{
+			bool get();
+		}
+
+		property int PrimitiveCount
+		{
+			int get();
+		}
+
+		property bool IsDisposed
+		{
+			virtual bool get();
+		}
+
+	internal:
+		property btPrimitiveManagerBase* UnmanagedPointer
+		{
+			virtual btPrimitiveManagerBase* get();
+			void set(btPrimitiveManagerBase* value);
+		}
+	};
 
 	public ref class GImpactBvh
 	{
@@ -19,7 +66,7 @@ namespace BulletSharp
 
 	public:
 		GImpactBvh();
-		//GImpactBvh(PrimitiveManagerBase^ primitive_manager);
+		GImpactBvh(PrimitiveManagerBase^ primitive_manager);
 
 		bool BoxQuery(Aabb^ box, [Out] IntArray^% collided_results);
 		bool BoxQuery(Aabb^ box, Matrix transform, [Out] IntArray^% collided_results);
@@ -58,10 +105,10 @@ namespace BulletSharp
 			int get();
 		}
 
-		//property PrimitiveManager^ PrimitiveManager
-		//{
-		//	PrimitiveManager^ get();
-		//	void set(PrimitiveManager^ value);
-		//}
+		property PrimitiveManagerBase^ PrimitiveManager
+		{
+			PrimitiveManagerBase^ get();
+			void set(PrimitiveManagerBase^ value);
+		}
 	};
 };
