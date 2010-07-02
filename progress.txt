@@ -32,7 +32,6 @@ BulletCollision/Gimpact
 0 GImpactCollisionAlgorithm
 - GImpactQuantizedBvh
 0 GImpactShape
-- TriangleShapeEx
 
 
 

@@ -78,7 +78,7 @@ namespace BulletSharp
 		int GetLeftNode(int nodeIndex);
 		void GetNodeBound(int nodeIndex, [Out] Aabb^% bound);
 		int GetNodeData(int nodeIndex);
-		//void GetNodeTriangle(int nodeindex, [Out] PrimitiveTriangle^% triangle);
+		void GetNodeTriangle(int nodeIndex, [Out] PrimitiveTriangle^% triangle);
 		int GetRightNode(int nodeIndex);
 		bool IsLeafNode(int nodeIndex);
 		bool RayQuery(Vector3 ray_dir, Vector3 ray_origin, [Out] IntArray^% collided_results);

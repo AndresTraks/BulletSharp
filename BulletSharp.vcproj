@@ -1185,6 +1185,10 @@
 						RelativePath=".\src\GImpactShape.cpp"
 						>
 					</File>
+					<File
+						RelativePath=".\src\TriangleShapeEx.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="CollisionShapes"
@@ -1929,6 +1933,10 @@
 					</File>
 					<File
 						RelativePath=".\src\GImpactShape.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\TriangleShapeEx.h"
 						>
 					</File>
 				</Filter>

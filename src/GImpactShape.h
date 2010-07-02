@@ -9,7 +9,11 @@
 
 namespace BulletSharp
 {
+	ref class Aabb;
+	ref class PrimitiveManagerBase;
+	ref class PrimitiveTriangle;
 	ref class StridingMeshInterface;
+	ref class TriangleShapeEx;
 
 	public enum class GImpactShapeType
 	{
@@ -25,10 +29,10 @@ namespace BulletSharp
 
 	public:
 		//void GetBulletTetrahedron(int prim_index, [Out] TetrahedronShapeEx^% tetrahedron);
-		//void GetBulletTriangle(int prim_index, [Out] TriangleShapeEx^% triangle);
+		void GetBulletTriangle(int prim_index, [Out] TriangleShapeEx^% triangle);
 		CollisionShape^ GetChildShape(int index);
 		Matrix GetChildTransform(int index);
-		//void GetPrimitiveTriangle(int prim_index, [Out] PrimitiveTriangle^% triangle);
+		void GetPrimitiveTriangle(int prim_index, [Out] PrimitiveTriangle^% triangle);
 		void LockChildShapes();
 		void PostUpdate();
 		void RayTest(Vector3 rayFrom, Vector3 rayTo, CollisionWorld::RayResultCallback^ resultCallback);
@@ -56,10 +60,10 @@ namespace BulletSharp
 			bool get();
 		}
 
-		//property Aabb^ LocalBox
-		//{
-		//	Aabb get();
-		//}
+		property Aabb^ LocalBox
+		{
+			Aabb^ get();
+		}
 
 		property bool NeedsRetrieveTetrahedrons
 		{
@@ -76,10 +80,12 @@ namespace BulletSharp
 			int get();
 		}
 
-		//property PrimitiveManagerBase^ PrimitiveManager
-		//{
-		//	PrimitiveManagerBase^ get();
-		//}
+#ifndef DISABLE_BVH
+		property PrimitiveManagerBase^ PrimitiveManager
+		{
+			PrimitiveManagerBase^ get();
+		}
+#endif
 
 	internal:
 		property btGImpactShapeInterface* UnmanagedPointer

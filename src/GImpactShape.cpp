@@ -2,12 +2,24 @@
 
 #ifndef DISABLE_GIMPACT
 
+#include "BoxCollision.h"
 #include "GImpactShape.h"
 #include "StridingMeshInterface.h"
+#include "TriangleShapeEx.h"
+#ifndef DISABLE_BVH
+#include "GImpactBvh.h"
+#endif
 
 GImpactShapeInterface::GImpactShapeInterface(btGImpactShapeInterface* shapeInterface)
 : ConcaveShape(shapeInterface)
 {
+}
+
+void GImpactShapeInterface::GetBulletTriangle(int prim_index, [Out] TriangleShapeEx^% triangle)
+{
+	btTriangleShapeEx* triangleTemp = new btTriangleShapeEx;
+	UnmanagedPointer->getBulletTriangle(prim_index, *triangleTemp);
+	triangle = gcnew TriangleShapeEx(triangleTemp);
 }
 
 CollisionShape^ GImpactShapeInterface::GetChildShape(int index)
@@ -28,6 +40,13 @@ Matrix GImpactShapeInterface::GetChildTransform(int index)
 	btTransform* transformTemp = GImpactShapeInterface_GetChildTransform(UnmanagedPointer, index);
 	Matrix transform = Math::BtTransformToMatrix(transformTemp);
 	return transform;
+}
+
+void GImpactShapeInterface::GetPrimitiveTriangle(int prim_index, [Out] PrimitiveTriangle^% triangle)
+{
+	btPrimitiveTriangle* triangleTemp = new btPrimitiveTriangle;
+	UnmanagedPointer->getPrimitiveTriangle(prim_index, *triangleTemp);
+	triangle = gcnew PrimitiveTriangle(triangleTemp);
 }
 
 void GImpactShapeInterface::LockChildShapes()
@@ -88,6 +107,19 @@ bool GImpactShapeInterface::HasBoxSet::get()
 	return UnmanagedPointer->hasBoxSet();
 }
 
+#pragma managed(push, off)
+void GImpactShapeInterface_GetLocalBox(btGImpactShapeInterface* shape, btAABB* aabb)
+{
+	*aabb = shape->getLocalBox();
+}
+#pragma managed(pop)
+Aabb^ GImpactShapeInterface::LocalBox::get()
+{
+	btAABB* boxTemp = new btAABB();
+	GImpactShapeInterface_GetLocalBox(UnmanagedPointer, boxTemp);
+	return gcnew Aabb(boxTemp);
+}
+
 bool GImpactShapeInterface::NeedsRetrieveTetrahedrons::get()
 {
 	return UnmanagedPointer->needsRetrieveTetrahedrons();
@@ -102,6 +134,13 @@ int GImpactShapeInterface::NumChildShapes::get()
 {
 	return UnmanagedPointer->getNumChildShapes();
 }
+
+#ifndef DISABLE_BVH
+PrimitiveManagerBase^ GImpactShapeInterface::PrimitiveManager::get()
+{
+	return gcnew PrimitiveManagerBase((btPrimitiveManagerBase*)UnmanagedPointer->getPrimitiveManager());
+}
+#endif
 
 btGImpactShapeInterface* GImpactShapeInterface::UnmanagedPointer::get()
 {

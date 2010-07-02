@@ -6,7 +6,7 @@
 #include "AlignedObjectArray.h"
 #include "BoxCollision.h"
 #include "GImpactBvh.h"
-//#include "TriangleShapeEx.h"
+#include "TriangleShapeEx.h"
 
 PrimitiveManagerBase::PrimitiveManagerBase(btPrimitiveManagerBase* primitiveManager)
 {
@@ -115,6 +115,13 @@ void GImpactBvh::GetNodeBound(int nodeIndex, [Out] Aabb^% bound)
 int GImpactBvh::GetNodeData(int nodeIndex)
 {
 	return _bvh->getNodeData(nodeIndex);
+}
+
+void GImpactBvh::GetNodeTriangle(int nodeIndex, [Out] PrimitiveTriangle^% triangle)
+{
+	btPrimitiveTriangle* triangleTemp = new btPrimitiveTriangle;
+	_bvh->getNodeTriangle(nodeIndex, *triangleTemp);
+	triangle = gcnew PrimitiveTriangle(triangleTemp);
 }
 
 int GImpactBvh::GetRightNode(int nodeIndex)
