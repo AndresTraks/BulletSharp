@@ -696,13 +696,7 @@ void CollisionWorld::Broadphase::set(BroadphaseInterface^ value)
 
 BulletSharp::CollisionObjectArray^ CollisionWorld::CollisionObjectArray::get()
 {
-	if (_collisionObjects == nullptr)
-	{
-		btCollisionObjectArray* objArray = new btCollisionObjectArray;
-		*objArray = _world->getCollisionObjectArray();
-		_collisionObjects = gcnew BulletSharp::CollisionObjectArray(objArray);
-	}
-	return _collisionObjects;
+	return gcnew BulletSharp::CollisionObjectArray(&_world->getCollisionObjectArray());
 }
 
 #ifndef DISABLE_DEBUGDRAW

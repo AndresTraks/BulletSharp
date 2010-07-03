@@ -411,7 +411,6 @@ namespace BulletSharp
 		DebugDraw^ _debugDraw;
 #endif
 		OverlappingPairCache^ _pairCache;
-		CollisionObjectArray^ _collisionObjects;
 
 	internal:
 		CollisionWorld(btCollisionWorld* world);

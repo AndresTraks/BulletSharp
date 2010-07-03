@@ -100,10 +100,10 @@ namespace DemoFramework
                 return;
 	        
             float mass = 1.0f;
-            float speed = 10;
+            float speed = 40;
 
             if (shootBoxShape == null)
-                shootBoxShape = new BoxShape(0.5f);
+                shootBoxShape = new BoxShape(1.0f);
 
 	        RigidBody body = LocalCreateRigidBody(mass, Matrix.Translation(camPos), shootBoxShape);
             body.LinearFactor = new Vector3(1,1,1);

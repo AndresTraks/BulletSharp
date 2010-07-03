@@ -67,11 +67,11 @@ namespace DemoFramework
         {
             try
             {
-                Assembly.Load("SlimDX, Version=2.0.9.42, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9");
+                Assembly.Load("SlimDX, Version=2.0.10.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9");
             }
             catch
             {
-                MessageBox.Show("SlimDX(v2.0.9.42) not installed." +
+                MessageBox.Show("SlimDX(v2.0.10.43) not installed." +
                     "Please download it from http://slimdx.org.", "Error!");
                 return false;
             }
@@ -149,8 +149,8 @@ namespace DemoFramework
                 ToggleFullScreen();
 
             // FIXME: this seems to mess up the collision object array
-            //if (Input.KeysPressed.Contains(Keys.Space))
-            //  physics.ShootBox(Freelook.Eye, GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView));
+            if (Input.KeysPressed.Contains(Keys.Space))
+              physics.ShootBox(Freelook.Eye, GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView));
 
 
             if (Input.MousePressed != MouseButtonFlags.None)
