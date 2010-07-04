@@ -15,9 +15,9 @@ namespace ConstraintDemo
         Vector3 eye = new Vector3(35, 10, 35);
         Vector3 target = new Vector3(0, 5, 0);
 
-        Mesh box, groundBox;
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
+        GraphicObjectFactory mesh;
         
         Physics physics;
 
@@ -31,8 +31,7 @@ namespace ConstraintDemo
             base.Dispose(disposing);
             if (disposing)
             {
-                box.Dispose();
-                groundBox.Dispose();
+                mesh.Dispose();
             }
         }
 
@@ -62,9 +61,7 @@ namespace ConstraintDemo
             physics = new Physics();
             physics.SetDebugDrawMode(Device, DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits);
 
-            float size = physics.CubeHalfExtents * 2;
-            box = Mesh.CreateBox(Device, size, size, size);
-            groundBox = Mesh.CreateBox(Device, 100, 2, 100);
+            mesh = new GraphicObjectFactory(Device);
 
             light = new Light();
             light.Type = LightType.Point;
@@ -88,7 +85,8 @@ namespace ConstraintDemo
 
             Fps.Text = "Move using mouse and WASD+shift\n" +
                 "F3 - Toggle debug\n" +
-                "F11 - Toggle fullscreen";
+                "F11 - Toggle fullscreen\n" +
+                "Space - Shoot box";
         }
 
         protected override void OnResourceLoad()
@@ -135,7 +133,7 @@ namespace ConstraintDemo
                 if ((string)body.UserObject == "Ground")
                 {
                     Device.Material = groundMaterial;
-                    groundBox.DrawSubset(0);
+                    mesh.Render(body);
                     continue;
                 }
 
@@ -144,7 +142,7 @@ namespace ConstraintDemo
                 else
                     Device.Material = passiveMaterial;
 
-                box.DrawSubset(0);
+                mesh.Render(body);
             }
 
             physics.DebugDrawWorld();

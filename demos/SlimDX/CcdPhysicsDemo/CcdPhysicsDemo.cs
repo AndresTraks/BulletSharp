@@ -15,9 +15,9 @@ namespace CcdPhysicsDemo
         Vector3 eye = new Vector3(0, 10, 40);
         Vector3 target = Vector3.Zero;
 
-        Mesh box, cylinder, sphere, groundBox;
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
+        GraphicObjectFactory mesh;
         
         Physics physics;
 
@@ -31,10 +31,7 @@ namespace CcdPhysicsDemo
             base.Dispose(disposing);
             if (disposing)
             {
-                box.Dispose();
-                cylinder.Dispose();
-                groundBox.Dispose();
-                sphere.Dispose();
+                mesh.Dispose();
             }
         }
 
@@ -63,11 +60,7 @@ namespace CcdPhysicsDemo
         {
             physics = new Physics();
 
-            float size = physics.CubeHalfExtents;
-            box = Mesh.CreateBox(Device, size * 2, size * 2, size * 2);
-            cylinder = Mesh.CreateCylinder(Device, size, size, size * 2, 16, 1);
-            sphere = Mesh.CreateSphere(Device, 1.8f, 16, 16);
-            groundBox = Mesh.CreateBox(Device, 400, 2, 400);
+            mesh = new GraphicObjectFactory(Device);
 
             light = new Light();
             light.Type = LightType.Point;
@@ -89,7 +82,8 @@ namespace CcdPhysicsDemo
 
             Fps.Text = "Move using mouse and WASD+shift\n" +
                 "F3 - Toggle debug\n" +
-                "F11 - Toggle fullscreen";
+                "F11 - Toggle fullscreen\n" +
+                "Space - Shoot box";
 
             if (physics.DoBenchmarkPyramids)
                 Freelook.SetEyeTarget(new Vector3(40, 40, 40), Vector3.Zero);
@@ -140,7 +134,7 @@ namespace CcdPhysicsDemo
                 {
                     Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
                     Device.Material = groundMaterial;
-                    groundBox.DrawSubset(0);
+                    mesh.Render(body);
                     continue;
                 }
 
@@ -153,18 +147,7 @@ namespace CcdPhysicsDemo
                 else
                     Device.Material = passiveMaterial;
 
-                switch (colObj.CollisionShape.ShapeType)
-                {
-                    case BroadphaseNativeType.CylinderShape:
-                        cylinder.DrawSubset(0);
-                        break;
-                    case BroadphaseNativeType.BoxShape:
-                        box.DrawSubset(0);
-                        break;
-                    case BroadphaseNativeType.SphereShape:
-                        sphere.DrawSubset(0);
-                        break;
-                }
+                mesh.Render(body);
             }
 
             physics.DebugDrawWorld();

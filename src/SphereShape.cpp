@@ -2,6 +2,11 @@
 
 #include "SphereShape.h"
 
+SphereShape::SphereShape(btSphereShape* shape)
+: ConvexInternalShape(shape)
+{
+}
+
 SphereShape::SphereShape(btScalar radius)
 : ConvexInternalShape(new btSphereShape(radius))
 {

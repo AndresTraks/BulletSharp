@@ -277,6 +277,11 @@ CompoundShapeChildArray::CompoundShapeChildArray()
 {
 }
 
+IEnumerator^ CompoundShapeChildArray::GetEnumerator()
+{
+	return gcnew CompoundShapeChildEnumerator(this);
+}
+
 void CompoundShapeChildArray::Clear()
 {
 	UnmanagedPointer->clear();
@@ -332,6 +337,29 @@ void CompoundShapeChildArray::default::set(int index, CompoundShapeChild^ value)
 btAlignedObjectArray<btCompoundShapeChild>* CompoundShapeChildArray::UnmanagedPointer::get()
 {
 	return (btAlignedObjectArray<btCompoundShapeChild>*)AlignedObjectArray::UnmanagedPointer;
+}
+
+
+CompoundShapeChildEnumerator::CompoundShapeChildEnumerator(CompoundShapeChildArray^ shapeArray)
+{
+	shapeArray = shapeArray;
+	i=-1;
+}
+
+Object^ CompoundShapeChildEnumerator::Current::get()
+{
+	return gcnew CompoundShapeChild(&(*_shapeArray->UnmanagedPointer)[i]);
+}
+
+bool CompoundShapeChildEnumerator::MoveNext()
+{
+	i++;
+	return (i < _shapeArray->UnmanagedPointer->size());
+}
+
+void CompoundShapeChildEnumerator::Reset()
+{
+	i=-1;
 }
 
 

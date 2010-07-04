@@ -15,9 +15,10 @@ namespace Box2dDemo
         Vector3 eye = new Vector3(10, 20, 30);
         Vector3 target = new Vector3(7, 7, 0);
 
-        Mesh box, triangle, cylinder, groundBox;
+        Mesh triangle;
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
+        GraphicObjectFactory mesh;
         
         Physics physics;
 
@@ -31,10 +32,8 @@ namespace Box2dDemo
             base.Dispose(disposing);
             if (disposing)
             {
-                box.Dispose();
+                mesh.Dispose();
                 triangle.Dispose();
-                cylinder.Dispose();
-                groundBox.Dispose();
             }
         }
 
@@ -107,11 +106,10 @@ namespace Box2dDemo
         {
             physics = new Physics();
 
+            mesh = new GraphicObjectFactory(Device);
+
             // Create the shapes to be drawn
-            box = Mesh.CreateBox(Device, 2, 2, physics.Depth * 2);
             triangle = ConstructTriangleMesh();
-            cylinder = Mesh.CreateCylinder(Device, 1.0f, 1.0f, physics.Depth*2, 32, 1);
-            groundBox = Mesh.CreateBox(Device, 150, 2, 150);
 
             light = new Light();
             light.Type = LightType.Point;
@@ -135,7 +133,8 @@ namespace Box2dDemo
 
             Fps.Text = "Move using mouse and WASD+shift\n" +
                 "F3 - Toggle debug\n" +
-                "F11 - Toggle fullscreen";
+                "F11 - Toggle fullscreen\n" +
+                "Space - Shoot box";
         }
 
         protected override void OnResourceLoad()
@@ -183,7 +182,7 @@ namespace Box2dDemo
                 if ((string)body.UserObject == "Ground")
                 {
                     Device.Material = groundMaterial;
-                    groundBox.DrawSubset(0);
+                    mesh.Render(body);
                     continue;
                 }
 
@@ -194,21 +193,18 @@ namespace Box2dDemo
 
                 if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.BoxShape)
                 {
-                    box.DrawSubset(0);
+                    mesh.Render(body);
                 }
                 else if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.Convex2dShape)
                 {
                     Convex2dShape shape = Convex2dShape.Upcast2d(colObj.CollisionShape);
                     switch (shape.ChildShape.ShapeType)
                     {
-                        case BroadphaseNativeType.BoxShape:
-                            box.DrawSubset(0);
-                            break;
                         case BroadphaseNativeType.ConvexHullShape:
                             triangle.DrawSubset(0);
                             break;
-                        case BroadphaseNativeType.CylinderShape:
-                            cylinder.DrawSubset(0);
+                        default:
+                            mesh.Render(body);
                             break;
                     }
                 }

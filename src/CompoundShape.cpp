@@ -141,7 +141,12 @@ void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransfor
 
 CompoundShapeChildArray^ CompoundShape::ChildList::get()
 {
-	return gcnew CompoundShapeChildArray((btAlignedObjectArray<btCompoundShapeChild>*)UnmanagedPointer->getChildList());
+	btAlignedObjectArray<btCompoundShapeChild>* childList =
+		(btAlignedObjectArray<btCompoundShapeChild>*)UnmanagedPointer->getChildList();
+	if (childList == 0)
+		return nullptr;
+
+	return gcnew CompoundShapeChildArray(childList);
 }
 
 #ifndef DISABLE_DBVT

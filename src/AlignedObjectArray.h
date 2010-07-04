@@ -189,6 +189,8 @@ namespace BulletSharp
 	public:
 		CompoundShapeChildArray();
 
+		virtual IEnumerator^ GetEnumerator();
+
 		void Clear();
 		void PopBack();
 		void PushBack(CompoundShapeChild^ compundShapeChild);
@@ -216,6 +218,24 @@ namespace BulletSharp
 		{
 			virtual btAlignedObjectArray<btCompoundShapeChild>* get() new;
 		}
+	};
+
+	public ref class CompoundShapeChildEnumerator : IEnumerator
+	{
+	private:
+		CompoundShapeChildArray^ _shapeArray;
+		int i;
+
+	public:
+		CompoundShapeChildEnumerator(CompoundShapeChildArray^ shapeArray);
+
+		property Object^ Current
+		{
+			virtual Object^ get();
+		}
+
+		virtual bool MoveNext();
+		virtual void Reset();
 	};
 
 #ifndef DISABLE_DBVT

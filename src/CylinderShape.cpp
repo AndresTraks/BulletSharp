@@ -50,6 +50,16 @@ Vector3 CylinderShape::HalfExtentsWithoutMargin::get()
 	return Math::BtVector3ToVector3(&UnmanagedPointer->getHalfExtentsWithoutMargin());
 }
 
+btScalar CylinderShape::Radius::get()
+{
+	return UnmanagedPointer->getRadius();
+}
+
+int CylinderShape::UpAxis::get()
+{
+	return UnmanagedPointer->getUpAxis();
+}
+
 btCylinderShape* CylinderShape::UnmanagedPointer::get()
 {
 	return (btCylinderShape*)ConvexInternalShape::UnmanagedPointer;

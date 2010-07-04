@@ -15,7 +15,7 @@ namespace CcdPhysicsDemo
         bool CenterOfMassShift = false;
         bool useCompound;
 
-        public float CubeHalfExtents = 0.5f;
+        float CubeHalfExtents = 0.5f;
         float numObjects = 120;
         Vector3 comOffsetVec = new Vector3(0,2,0);
         float collisionMargin = 0.05f;

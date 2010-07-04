@@ -26,9 +26,9 @@ namespace MultiMaterialDemo
         Vector3 eye = new Vector3(30, 20, 10);
         Vector3 target = new Vector3(0, 5, 0);
 
-        Mesh box, groundBox;
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
+        GraphicObjectFactory mesh;
         
         Physics physics;
 
@@ -42,8 +42,7 @@ namespace MultiMaterialDemo
             base.Dispose(disposing);
             if (disposing)
             {
-                box.Dispose();
-                groundBox.Dispose();
+                mesh.Dispose();
             }
         }
 
@@ -70,9 +69,7 @@ namespace MultiMaterialDemo
 
         protected override void  OnInitialize()
         {
-            // Create meshes to draw
-            box = Mesh.CreateBox(Device, 1, 1, 1);
-            groundBox = Mesh.CreateBox(Device, 100, 2, 100);
+            mesh = new GraphicObjectFactory(Device);
 
             light = new Light();
             light.Type = LightType.Point;
@@ -96,7 +93,8 @@ namespace MultiMaterialDemo
 
             Fps.Text = "Move using mouse and WASD+shift\n" +
                 "F3 - Toggle debug\n" +
-                "F11 - Toggle fullscreen";
+                "F11 - Toggle fullscreen\n" +
+                "Space - Shoot box";
 
             physics = new Physics();
             physics.SetDebugDrawMode(Device, DebugDrawModes.DrawAabb | DebugDrawModes.DrawWireframe);
@@ -146,7 +144,7 @@ namespace MultiMaterialDemo
                 if ((string)colObj.UserObject == "Ground")
                 {
                     //Device.Material = groundMaterial;
-                    //groundBox.DrawSubset(0);
+                    //mesh.Render(body);
                     continue;
                 }
 
@@ -155,7 +153,7 @@ namespace MultiMaterialDemo
                 else
                     Device.Material = passiveMaterial;
 
-                box.DrawSubset(0);
+                mesh.Render(body);
             }
 
             physics.DebugDrawWorld();

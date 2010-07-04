@@ -17,9 +17,10 @@ namespace SerializeDemo
         DebugDrawModes debugMode = DebugDrawModes.DrawWireframe |
             DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits;
 
-        Mesh box, groundBox, sphere;
+        Mesh groundBox;
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
+        GraphicObjectFactory mesh;
         
         Physics physics;
 
@@ -33,9 +34,8 @@ namespace SerializeDemo
             base.Dispose(disposing);
             if (disposing)
             {
-                box.Dispose();
+                mesh.Dispose();
                 groundBox.Dispose();
-                sphere.Dispose();
             }
         }
 
@@ -62,11 +62,8 @@ namespace SerializeDemo
 
         protected override void  OnInitialize()
         {
-            // Create meshes to draw
-            box = Mesh.CreateBox(Device, 2, 2, 2);
+            mesh = new GraphicObjectFactory(Device);
             groundBox = Mesh.CreateBox(Device, 100, 100, 100);
-            //sphere = Mesh.CreateSphere(Device, 1, 4, 2);
-            sphere = Mesh.CreateSphere(Device, 1, 12, 12);
 
             light = new Light();
             light.Type = LightType.Point;
@@ -90,7 +87,8 @@ namespace SerializeDemo
 
             Fps.Text = "Move using mouse and WASD+shift\n" +
                 "F3 - Toggle debug\n" +
-                "F11 - Toggle fullscreen";
+                "F11 - Toggle fullscreen\n" +
+                "Space - Shoot box";
 
             physics = new Physics();
             physics.SetDebugDrawMode(Device, debugMode);
@@ -152,13 +150,7 @@ namespace SerializeDemo
                 else
                     Device.Material = passiveMaterial;
 
-                if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SphereShape)
-                {
-                    sphere.DrawSubset(0);
-                    continue;
-                }
-
-                box.DrawSubset(0);
+                mesh.Render(body);
             }
 
             physics.DebugDrawWorld();

@@ -48,6 +48,7 @@
     <Compile Include="DeviceSettings9.cs" />
     <Compile Include="FpsDisplay.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="GraphicObjectFactory.cs" />
     <Compile Include="PhysicsContext.cs" />
     <Compile Include="PhysicsDebugDraw.cs" />
     <Compile Include="VertexHelper.cs" />

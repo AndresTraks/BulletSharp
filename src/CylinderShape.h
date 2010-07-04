@@ -26,6 +26,16 @@ namespace BulletSharp
 			Vector3 get();
 		}
 
+		property btScalar Radius
+		{
+			btScalar get();
+		}
+
+		property int UpAxis
+		{
+			int get();
+		}
+
 	internal:
 		property btCylinderShape* UnmanagedPointer
 		{

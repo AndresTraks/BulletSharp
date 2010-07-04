@@ -9,7 +9,7 @@ namespace SoftDemo
     class Physics : PhysicsContext
     {
         //int numObjects = 1;
-        public float Scaling = 1;
+        float Scaling = 1;
         //float waveHeight = 5;
         //float triangleHeight=8;
         //float CubeHalfExtents = 1.5f;
@@ -412,7 +412,6 @@ namespace SoftDemo
             //Init_Aero();
             Init_TetraCube();
             //Init_RbUpStack(5);
-            //Init_LinearStair(8, new Vector3(2, 1, 0), new Vector3(1, 1, 1));
             //Init_ClothAttach();
             //Init_Ropes();
             Init_RopeAttach();
@@ -423,41 +422,6 @@ namespace SoftDemo
             //Init_Volume();
             //Init_Sticks();
             //Init_Bending();
-        }
-
-        public static SlimDX.Direct3D9.Mesh GetMeshFromSoftBody(SlimDX.Direct3D9.Device device, CollisionObject obj)
-        {
-            SoftBody softBody = SoftBody.Upcast(obj);
-            
-            if (softBody == null)
-                return null;
-
-            if (softBody.Faces.Size == 0)
-                return null;
-
-            SlimDX.Direct3D9.Mesh mesh =
-                new SlimDX.Direct3D9.Mesh(device, softBody.Faces.Size, softBody.Faces.Size * 3,
-                SlimDX.Direct3D9.MeshFlags.SystemMemory | SlimDX.Direct3D9.MeshFlags.Use32Bit,
-                SlimDX.Direct3D9.VertexFormat.Position);
-            SlimDX.DataStream verts = mesh.LockVertexBuffer(SlimDX.Direct3D9.LockFlags.None);
-            SlimDX.DataStream indices = mesh.LockIndexBuffer(SlimDX.Direct3D9.LockFlags.None);
-
-            int j;
-            for (j = 0; j < softBody.Faces.Size; j++)
-            {
-                BulletSharp.SoftBody.Face face = softBody.Faces[j];
-                verts.Write(face.n[0].x);
-                verts.Write(face.n[1].x);
-                verts.Write(face.n[2].x);
-
-                indices.Write(j * 3);
-                indices.Write(j * 3 + 1);
-                indices.Write(j * 3 + 2);
-            }
-            mesh.UnlockVertexBuffer();
-            mesh.UnlockIndexBuffer();
-
-            return mesh;
         }
 
         public override int Update(float elapsedTime)

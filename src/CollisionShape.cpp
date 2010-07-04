@@ -19,6 +19,7 @@
 #include "MinkowskiSumShape.h"
 #include "MultimaterialTriangleMeshShape.h"
 #include "MultiSphereShape.h"
+#include "SphereShape.h"
 #include "StaticPlaneShape.h"
 #include "StringConv.h"
 #include "TriangleMeshShape.h"
@@ -104,6 +105,8 @@ CollisionShape^ CollisionShape::UpcastDetect()
 		return gcnew MultiSphereShape((btMultiSphereShape*) _collisionShape);
 	//case BroadphaseNativeType::ScaledTriangleMeshShape:
 	//	return gcnew ScaledTriangleMeshShape((btScaledTriangleMeshShape*) _collisionShape);
+	case BroadphaseNativeType::SphereShape:
+		return gcnew SphereShape((btSphereShape*) _collisionShape);
 	case BroadphaseNativeType::StaticPlane:
 		return gcnew StaticPlaneShape((btStaticPlaneShape*) _collisionShape);
 	//case BroadphaseNativeType::SoftBodyShape:
