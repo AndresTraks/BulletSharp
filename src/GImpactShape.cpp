@@ -10,9 +10,47 @@
 #include "GImpactBvh.h"
 #endif
 
+TetrahedronShapeEx::TetrahedronShapeEx(btTetrahedronShapeEx* shape)
+: BU_Simplex1to4(shape)
+{
+}
+
+TetrahedronShapeEx::TetrahedronShapeEx()
+: BU_Simplex1to4(new btTetrahedronShapeEx())
+{
+}
+
+void TetrahedronShapeEx::SetVertices(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 v3)
+{
+	btVector3* v0Temp = Math::Vector3ToBtVector3(v0);
+	btVector3* v1Temp = Math::Vector3ToBtVector3(v1);
+	btVector3* v2Temp = Math::Vector3ToBtVector3(v2);
+	btVector3* v3Temp = Math::Vector3ToBtVector3(v3);
+
+	UnmanagedPointer->setVertices(*v0Temp, *v1Temp, *v2Temp, *v3Temp);
+
+	delete v0Temp;
+	delete v1Temp;
+	delete v2Temp;
+	delete v3Temp;
+}
+
+btTetrahedronShapeEx* TetrahedronShapeEx::UnmanagedPointer::get()
+{
+	return (btTetrahedronShapeEx*)BU_Simplex1to4::UnmanagedPointer;
+}
+
+
 GImpactShapeInterface::GImpactShapeInterface(btGImpactShapeInterface* shapeInterface)
 : ConcaveShape(shapeInterface)
 {
+}
+
+void GImpactShapeInterface::GetBulletTetrahedron(int prim_index, [Out] TetrahedronShapeEx^% tetrahedron)
+{
+	btTetrahedronShapeEx* tetrahedronTemp = new btTetrahedronShapeEx;
+	UnmanagedPointer->getBulletTetrahedron(prim_index, *tetrahedronTemp);
+	tetrahedron = gcnew TetrahedronShapeEx(tetrahedronTemp);
 }
 
 void GImpactShapeInterface::GetBulletTriangle(int prim_index, [Out] TriangleShapeEx^% triangle)
@@ -145,6 +183,41 @@ PrimitiveManagerBase^ GImpactShapeInterface::PrimitiveManager::get()
 btGImpactShapeInterface* GImpactShapeInterface::UnmanagedPointer::get()
 {
 	return (btGImpactShapeInterface*)ConcaveShape::UnmanagedPointer;
+}
+
+
+GImpactCompoundShape::GImpactCompoundShape(bool childrenHasTransform)
+: GImpactShapeInterface(new btGImpactCompoundShape(childrenHasTransform))
+{
+}
+
+GImpactCompoundShape::GImpactCompoundShape()
+: GImpactShapeInterface(new btGImpactCompoundShape())
+{
+}
+
+void GImpactCompoundShape::AddChildShape(CollisionShape^ shape)
+{
+	UnmanagedPointer->addChildShape(shape->UnmanagedPointer);
+}
+
+void GImpactCompoundShape::AddChildShape(Matrix localTransform, CollisionShape^ shape)
+{
+	btTransform* localTransformTemp = Math::MatrixToBtTransform(localTransform);
+	UnmanagedPointer->addChildShape(*localTransformTemp, shape->UnmanagedPointer);
+	delete localTransformTemp;
+}
+
+#ifndef DISABLE_BVH
+CompoundPrimitiveManager^ GImpactCompoundShape::CompoundPrimitiveManager::get()
+{
+	return gcnew BulletSharp::CompoundPrimitiveManager(UnmanagedPointer->getCompoundPrimitiveManager());
+}
+#endif
+
+btGImpactCompoundShape* GImpactCompoundShape::UnmanagedPointer::get()
+{
+	return (btGImpactCompoundShape*)GImpactShapeInterface::UnmanagedPointer;
 }
 
 

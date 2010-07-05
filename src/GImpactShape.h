@@ -6,6 +6,7 @@
 
 #include "CollisionWorld.h"
 #include "ConcaveShape.h"
+#include "TetrahedronShape.h"
 
 namespace BulletSharp
 {
@@ -22,13 +23,30 @@ namespace BulletSharp
 		TrimeshShape = CONST_GIMPACT_TRIMESH_SHAPE
 	};
 
+	public ref class TetrahedronShapeEx : BU_Simplex1to4
+	{
+	internal:
+		TetrahedronShapeEx(btTetrahedronShapeEx* shape);
+
+	public:
+		TetrahedronShapeEx();
+
+		void SetVertices(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 v3);
+
+	internal:
+		property btTetrahedronShapeEx* UnmanagedPointer
+		{
+			btTetrahedronShapeEx* get() new;
+		}
+	};
+
 	public ref class GImpactShapeInterface : ConcaveShape
 	{
 	internal:
 		GImpactShapeInterface(btGImpactShapeInterface* shapeInterface);
 
 	public:
-		//void GetBulletTetrahedron(int prim_index, [Out] TetrahedronShapeEx^% tetrahedron);
+		void GetBulletTetrahedron(int prim_index, [Out] TetrahedronShapeEx^% tetrahedron);
 		void GetBulletTriangle(int prim_index, [Out] TriangleShapeEx^% triangle);
 		CollisionShape^ GetChildShape(int index);
 		Matrix GetChildTransform(int index);
@@ -90,7 +108,36 @@ namespace BulletSharp
 	internal:
 		property btGImpactShapeInterface* UnmanagedPointer
 		{
-			btGImpactShapeInterface* get();
+			btGImpactShapeInterface* get() new;
+		}
+	};
+
+	public ref class GImpactCompoundShape : GImpactShapeInterface
+	{
+	public:
+#ifndef DISABLE_BVH
+		ref class CompoundPrimitiveManager : PrimitiveManagerBase
+		{
+		};
+#endif
+
+		GImpactCompoundShape(bool childrenHasTransform);
+		GImpactCompoundShape();
+
+		void AddChildShape(CollisionShape^ shape);
+		void AddChildShape(Matrix localTransform, CollisionShape^ shape);
+
+#ifndef DISABLE_BVH
+		property BulletSharp::CompoundPrimitiveManager^ CompoundPrimitiveManager
+		{
+			BulletSharp::CompoundPrimitiveManager^ get();
+		}
+#endif
+
+	internal:
+		property btGImpactCompoundShape* UnmanagedPointer
+		{
+			btGImpactCompoundShape* get() new;
 		}
 	};
 
@@ -116,7 +163,7 @@ namespace BulletSharp
 	internal:
 		property btGImpactMeshShape* UnmanagedPointer
 		{
-			btGImpactMeshShape* get();
+			btGImpactMeshShape* get() new;
 		}
 	};
 };
