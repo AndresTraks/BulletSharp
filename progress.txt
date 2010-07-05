@@ -28,9 +28,7 @@ x TriangleInfoMap (internal)
 BulletCollision/Gimpact
 
 0 BoxCollision
-0 GImpactBvh
 0 GImpactCollisionAlgorithm
-0 GImpactQuantizedBvh
 
 
 

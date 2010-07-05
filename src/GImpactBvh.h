@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 06 Jul 2010
+
 #pragma managed(push, off)
 #include <BulletCollision/Gimpact/btGImpactBvh.h>
 #pragma managed(pop)
@@ -11,6 +13,53 @@ namespace BulletSharp
 	ref class Aabb;
 	ref class IntArray;
 	ref class PrimitiveTriangle;
+
+	public ref class PairSet // : GimPairArray
+	{
+	private:
+		btPairSet* _pairSet;
+
+	public:
+		PairSet();
+		PairSet(btPairSet* pairSet);
+
+		void PushPair(int index1, int index2);
+		void PushPairInv(int index1, int index2);
+	};
+
+	public ref class GimBvhTreeNode
+	{
+	internal:
+		GIM_BVH_TREE_NODE* _node;
+
+	public:
+		GimBvhTreeNode();
+		GimBvhTreeNode(GIM_BVH_TREE_NODE* node);
+		GimBvhTreeNode(const GIM_BVH_TREE_NODE* node);
+
+		property Aabb^ Bound
+		{
+			Aabb^ get();
+			void set(Aabb^ value);
+		}
+
+		property int DataIndex
+		{
+			int get();
+			void set(int value);
+		}
+
+		property int EscapeIndex
+		{
+			int get();
+			void set(int value);
+		}
+
+		property bool IsLeafNode
+		{
+			bool get();
+		}
+	};
 
 	public ref class PrimitiveManagerBase : BulletSharp::IDisposable
 	{
@@ -31,7 +80,7 @@ namespace BulletSharp
 
 	public:
 		void GetPrimitiveBox(int prim_index, [Out] Aabb^% primbox);
-//		void GetPrimitiveTriangle(int prim_index, PrimitiveTriangle^ triangle);
+		void GetPrimitiveTriangle(int prim_index, [Out] PrimitiveTriangle^% triangle);
 
 		property bool IsTriMesh
 		{
@@ -69,21 +118,26 @@ namespace BulletSharp
 		GImpactBvh(PrimitiveManagerBase^ primitive_manager);
 
 		bool BoxQuery(Aabb^ box, [Out] IntArray^% collided_results);
-		bool BoxQuery(Aabb^ box, Matrix transform, [Out] IntArray^% collided_results);
+		bool BoxQueryTrans(Aabb^ box, Matrix transform, [Out] IntArray^% collided_results);
 		void BuildSet();
-		//static void FindCollision(GImpactBvh^ boxset1, Matrix trans1, GImpactBvh^ boxset2, Matrix trans2, [Out] PairSet^% collision_pairs);
-		//GimBvhTreeNode^ GetNodePointer(int index);
-		//GimBvhTreeNode^ GetNodePointer();
+		static void FindCollision(GImpactBvh^ boxset1, Matrix trans1, GImpactBvh^ boxset2, Matrix trans2, [Out] PairSet^% collision_pairs);
 		int GetEscapeNodeIndex(int nodeIndex);
 		int GetLeftNode(int nodeIndex);
 		void GetNodeBound(int nodeIndex, [Out] Aabb^% bound);
 		int GetNodeData(int nodeIndex);
+		GimBvhTreeNode^ GetNodePointer(int index);
+		GimBvhTreeNode^ GetNodePointer();
 		void GetNodeTriangle(int nodeIndex, [Out] PrimitiveTriangle^% triangle);
 		int GetRightNode(int nodeIndex);
 		bool IsLeafNode(int nodeIndex);
 		bool RayQuery(Vector3 ray_dir, Vector3 ray_origin, [Out] IntArray^% collided_results);
 		void SetNodeBound(int nodeIndex, Aabb^ bound);
 		void Update();
+
+		//property float AverageTreeCollisionTime
+		//{
+		//	static float get();
+		//}
 
 		property Aabb^ GlobalBox
 		{
@@ -109,6 +163,13 @@ namespace BulletSharp
 		{
 			PrimitiveManagerBase^ get();
 			void set(PrimitiveManagerBase^ value);
+		}
+
+	internal:
+		property btGImpactBvh* UnmanagedPointer
+		{
+			virtual btGImpactBvh* get();
+			void set(btGImpactBvh* value);
 		}
 	};
 };

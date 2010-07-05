@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 05 Jul 2010
+
 #pragma managed(push, off)
 #include <BulletCollision/Gimpact/btGImpactShape.h>
 #pragma managed(pop)

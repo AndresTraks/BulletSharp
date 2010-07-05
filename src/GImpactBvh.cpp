@@ -8,6 +8,81 @@
 #include "GImpactBvh.h"
 #include "TriangleShapeEx.h"
 
+PairSet::PairSet()
+{
+	_pairSet = new btPairSet();
+}
+
+PairSet::PairSet(btPairSet* pairSet)
+{
+	_pairSet = pairSet;
+}
+
+void PairSet::PushPair(int index1, int index2)
+{
+	_pairSet->push_pair(index1, index2);
+}
+
+void PairSet::PushPairInv(int index1, int index2)
+{
+	_pairSet->push_pair_inv(index1, index2);
+}
+
+
+GimBvhTreeNode::GimBvhTreeNode()
+{
+	_node = new GIM_BVH_TREE_NODE();
+}
+
+GimBvhTreeNode::GimBvhTreeNode(GIM_BVH_TREE_NODE* node)
+{
+	_node = node;
+}
+
+GimBvhTreeNode::GimBvhTreeNode(const GIM_BVH_TREE_NODE* node)
+{
+	_node = (GIM_BVH_TREE_NODE*)node;
+}
+
+#pragma managed(push, off)
+void GImpactQuantizedBvh_SetBound(GIM_BVH_TREE_NODE* node, btAABB* aabb)
+{
+	node->m_bound = *aabb;
+}
+#pragma managed(pop)
+Aabb^ GimBvhTreeNode::Bound::get()
+{
+	return gcnew Aabb(&_node->m_bound);
+}
+void GimBvhTreeNode::Bound::set(Aabb^ value)
+{
+	GImpactQuantizedBvh_SetBound(_node, value->UnmanagedPointer);
+}
+
+int GimBvhTreeNode::DataIndex::get()
+{
+	return _node->getDataIndex();
+}
+void GimBvhTreeNode::DataIndex::set(int value)
+{
+	_node->setDataIndex(value);
+}
+
+int GimBvhTreeNode::EscapeIndex::get()
+{
+	return _node->getEscapeIndex();
+}
+void GimBvhTreeNode::EscapeIndex::set(int value)
+{
+	_node->setEscapeIndex(value);
+}
+
+bool GimBvhTreeNode::IsLeafNode::get()
+{
+	return _node->isLeafNode();
+}
+
+
 PrimitiveManagerBase::PrimitiveManagerBase(btPrimitiveManagerBase* primitiveManager)
 {
 	_primitiveManager = primitiveManager;
@@ -35,6 +110,13 @@ void PrimitiveManagerBase::GetPrimitiveBox(int prim_index, [Out] Aabb^% primbox)
 	btAABB* primboxTemp = new btAABB;
 	_primitiveManager->get_primitive_box(prim_index, *primboxTemp);
 	primbox = gcnew Aabb(primboxTemp);
+}
+
+void PrimitiveManagerBase::GetPrimitiveTriangle(int prim_index, [Out] PrimitiveTriangle^% triangle)
+{
+	btPrimitiveTriangle* triangleTemp = new btPrimitiveTriangle;
+	_primitiveManager->get_primitive_triangle(prim_index, *triangleTemp);
+	triangle = gcnew PrimitiveTriangle(triangleTemp);
 }
 
 bool PrimitiveManagerBase::IsTriMesh::get()
@@ -82,7 +164,7 @@ bool GImpactBvh::BoxQuery(Aabb^ box, [Out] IntArray^% collided_results)
 	return _bvh->boxQuery(*box->UnmanagedPointer, *collided_results->UnmanagedPointer);
 }
 
-bool GImpactBvh::BoxQuery(Aabb^ box, Matrix transform, [Out] IntArray^% collided_results)
+bool GImpactBvh::BoxQueryTrans(Aabb^ box, Matrix transform, [Out] IntArray^% collided_results)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	bool ret = _bvh->boxQueryTrans(*box->UnmanagedPointer, *transformTemp, *collided_results->UnmanagedPointer);
@@ -93,6 +175,19 @@ bool GImpactBvh::BoxQuery(Aabb^ box, Matrix transform, [Out] IntArray^% collided
 void GImpactBvh::BuildSet()
 {
 	_bvh->buildSet();
+}
+
+void GImpactBvh::FindCollision(GImpactBvh^ boxset1, Matrix trans1, GImpactBvh^ boxset2, Matrix trans2, [Out] PairSet^% collision_pairs)
+{
+	btTransform* trans1Temp = Math::MatrixToBtTransform(trans1);
+	btTransform* trans2Temp = Math::MatrixToBtTransform(trans2);
+	btPairSet* collision_pairsTemp = new btPairSet();
+
+	btGImpactBvh::find_collision(boxset1->UnmanagedPointer, *trans1Temp, boxset2->UnmanagedPointer, *trans2Temp, *collision_pairsTemp);
+	collision_pairs = gcnew PairSet(collision_pairsTemp);
+
+	delete trans1Temp;
+	delete trans2Temp;
 }
 
 int GImpactBvh::GetEscapeNodeIndex(int nodeIndex)
@@ -115,6 +210,16 @@ void GImpactBvh::GetNodeBound(int nodeIndex, [Out] Aabb^% bound)
 int GImpactBvh::GetNodeData(int nodeIndex)
 {
 	return _bvh->getNodeData(nodeIndex);
+}
+
+GimBvhTreeNode^ GImpactBvh::GetNodePointer(int index)
+{
+	return gcnew GimBvhTreeNode(_bvh->get_node_pointer(index));
+}
+
+GimBvhTreeNode^ GImpactBvh::GetNodePointer()
+{
+	return gcnew GimBvhTreeNode(_bvh->get_node_pointer());
 }
 
 void GImpactBvh::GetNodeTriangle(int nodeIndex, [Out] PrimitiveTriangle^% triangle)
@@ -159,6 +264,11 @@ void GImpactBvh::Update()
 	_bvh->update();
 }
 
+//float GImpactBvh::AverageTreeCollisionTime::get()
+//{
+//	return btGImpactBvh::getAverageTreeCollisionTime();
+//}
+
 #pragma managed(push, off)
 void GImpactBvh_GlobalBox(btGImpactBvh* bvh, btAABB* aabb)
 {
@@ -194,6 +304,15 @@ PrimitiveManagerBase^ GImpactBvh::PrimitiveManager::get()
 void GImpactBvh::PrimitiveManager::set(PrimitiveManagerBase^ value)
 {
 	_bvh->setPrimitiveManager(value->UnmanagedPointer);
+}
+
+btGImpactBvh* GImpactBvh::UnmanagedPointer::get()
+{
+	return _bvh;
+}
+void GImpactBvh::UnmanagedPointer::set(btGImpactBvh* value)
+{
+	_bvh = value;
 }
 
 #endif
