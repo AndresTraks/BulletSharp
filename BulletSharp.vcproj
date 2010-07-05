@@ -1182,6 +1182,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\GImpactQuantizedBvh.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\src\GImpactShape.cpp"
 						>
 					</File>
@@ -1929,6 +1933,10 @@
 					</File>
 					<File
 						RelativePath=".\src\GImpactCollisionAlgorithm.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\GImpactQuantizedBvh.h"
 						>
 					</File>
 					<File

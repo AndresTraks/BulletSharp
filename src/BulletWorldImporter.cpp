@@ -350,11 +350,13 @@ CollisionObject^ Serialize::BulletWorldImporter::GetRigidBodyByIndex(int index)
 	return body ? gcnew CollisionObject(body) : nullptr;
 }
 
+#ifndef DISABLE_CONSTRAINTS
 TypedConstraint^ Serialize::BulletWorldImporter::GetConstraintByIndex(int index)
 {
 	btTypedConstraint* constraint = _importer->getConstraintByIndex(index);
 	return constraint ? gcnew TypedConstraint(constraint) : nullptr;
 }
+#endif
 
 #ifndef DISABLE_BVH
 OptimizedBvh^ Serialize::BulletWorldImporter::GetBvhByIndex(int index)
@@ -397,6 +399,7 @@ RigidBody^ Serialize::BulletWorldImporter::GetRigidBodyByName(String^ name)
 	return ret;
 }
 
+#ifndef DISABLE_CONSTRAINTS
 TypedConstraint^ Serialize::BulletWorldImporter::GetConstraintByName(String^ name)
 {
 	btTypedConstraint* constraint;
@@ -410,6 +413,7 @@ TypedConstraint^ Serialize::BulletWorldImporter::GetConstraintByName(String^ nam
 	StringConv::UnmanagedToManaged(nameTemp);
 	return ret;
 }
+#endif
 
 String^	Serialize::BulletWorldImporter::GetNameForObject(Object^ obj)
 {

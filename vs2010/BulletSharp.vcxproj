@@ -564,6 +564,7 @@
     <ClCompile Include="..\src\GhostObject.cpp" />
     <ClCompile Include="..\src\GImpactBvh.cpp" />
     <ClCompile Include="..\src\GImpactCollisionAlgorithm.cpp" />
+    <ClCompile Include="..\src\GImpactQuantizedBvh.cpp" />
     <ClCompile Include="..\src\GImpactShape.cpp" />
     <ClCompile Include="..\src\GjkConvexCast.cpp" />
     <ClCompile Include="..\src\GjkEpaPenetrationDepthSolver.cpp" />
@@ -704,6 +705,7 @@
     <ClInclude Include="..\src\GhostObject.h" />
     <ClInclude Include="..\src\GImpactBvh.h" />
     <ClInclude Include="..\src\GImpactCollisionAlgorithm.h" />
+    <ClInclude Include="..\src\GImpactQuantizedBvh.h" />
     <ClInclude Include="..\src\GImpactShape.h" />
     <ClInclude Include="..\src\GjkConvexCast.h" />
     <ClInclude Include="..\src\GjkEpaPenetrationDepthSolver.h" />

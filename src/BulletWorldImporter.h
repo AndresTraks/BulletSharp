@@ -105,7 +105,9 @@ namespace BulletSharp
 			// query for data
 			CollisionShape^ GetCollisionShapeByIndex(int index);
 			CollisionObject^ GetRigidBodyByIndex(int index);
+#ifndef DISABLE_CONSTRAINTS
 			TypedConstraint^ GetConstraintByIndex(int index);
+#endif
 #ifndef DISABLE_BVH
 			OptimizedBvh^ GetBvhByIndex(int index);
 #endif
@@ -114,7 +116,9 @@ namespace BulletSharp
 			// queries involving named objects
 			CollisionShape^ GetCollisionShapeByName(String^ name);
 			RigidBody^ GetRigidBodyByName(String^ name);
+#ifndef DISABLE_CONSTRAINTS
 			TypedConstraint^ GetConstraintByName(String^ name);
+#endif
 			String^	GetNameForObject(Object^ obj);
 
 			property bool IsDisposed

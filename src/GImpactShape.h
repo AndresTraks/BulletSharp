@@ -6,7 +6,12 @@
 
 #include "CollisionWorld.h"
 #include "ConcaveShape.h"
+#include "Enums.h"
 #include "TetrahedronShape.h"
+#ifndef DISABLE_BVH
+#include "GImpactBvh.h"
+#include "GImpactQuantizedBvh.h"
+#endif
 
 namespace BulletSharp
 {
@@ -58,10 +63,12 @@ namespace BulletSharp
 		void UnlockChildShapes();
 		void UpdateBound();
 
-		//property GImpactBoxSet^ BoxSet
-		//{
-		//	GImpactBoxSet^ get();
-		//}
+#ifndef DISABLE_BVH
+		property GImpactQuantizedBvh^ BoxSet
+		{
+			GImpactQuantizedBvh^ get();
+		}
+#endif
 
 		property bool ChildrenHasTransform
 		{
@@ -118,6 +125,24 @@ namespace BulletSharp
 #ifndef DISABLE_BVH
 		ref class CompoundPrimitiveManager : PrimitiveManagerBase
 		{
+		internal:
+			CompoundPrimitiveManager(btGImpactCompoundShape::CompoundPrimitiveManager* compound);
+
+		public:
+			CompoundPrimitiveManager(CompoundPrimitiveManager^ compound);
+			CompoundPrimitiveManager(GImpactCompoundShape^ compoundShape);
+			CompoundPrimitiveManager();
+
+			property GImpactCompoundShape^ CompoundShape
+			{
+				GImpactCompoundShape^ get();
+			}
+
+		internal:
+			property btGImpactCompoundShape::CompoundPrimitiveManager* UnmanagedPointer
+			{
+				btGImpactCompoundShape::CompoundPrimitiveManager* get() new;
+			}
 		};
 #endif
 
@@ -128,9 +153,9 @@ namespace BulletSharp
 		void AddChildShape(Matrix localTransform, CollisionShape^ shape);
 
 #ifndef DISABLE_BVH
-		property BulletSharp::CompoundPrimitiveManager^ CompoundPrimitiveManager
+		property CompoundPrimitiveManager^ GImpactCompoundPrimitiveManager
 		{
-			BulletSharp::CompoundPrimitiveManager^ get();
+			CompoundPrimitiveManager^ get();
 		}
 #endif
 
@@ -141,14 +166,153 @@ namespace BulletSharp
 		}
 	};
 
+	public ref class GImpactMeshShapePart : GImpactShapeInterface
+	{
+	public:
+#ifndef DISABLE_BVH
+		ref class TrimeshPrimitiveManager : PrimitiveManagerBase
+		{
+		internal:
+			TrimeshPrimitiveManager(btGImpactMeshShapePart::TrimeshPrimitiveManager* manager);
+
+		public:
+			TrimeshPrimitiveManager();
+			TrimeshPrimitiveManager(TrimeshPrimitiveManager^ manager);
+			TrimeshPrimitiveManager(StridingMeshInterface^ meshInterface, int part);
+
+			void GetBulletTriangle(int prim_index, [Out] TriangleShapeEx^% triangle);
+			void GetIndices(int face_index, int% i0, int% i1, int% i2);
+			void Lock();
+			void Unlock();
+
+			property IntPtr IndexBase
+			{
+				IntPtr get();
+				void set(IntPtr value);
+			}
+
+			property int IndexStride
+			{
+				int get();
+				void set(int value);
+			}
+
+			property PhyScalarType IndicesType
+			{
+				PhyScalarType get();
+				void set(PhyScalarType value);
+			}
+
+			property int LockCount
+			{
+				int get();
+				void set(int value);
+			}
+
+			property btScalar Margin
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property StridingMeshInterface^ MeshInterface
+			{
+				StridingMeshInterface^ get();
+				void set(StridingMeshInterface^ value);
+			}
+
+			property int NumFaces
+			{
+				int get();
+				void set(int value);
+			}
+
+			property int NumVerts
+			{
+				int get();
+				void set(int value);
+			}
+
+			property int Part
+			{
+				int get();
+				void set(int value);
+			}
+
+			property Vector3 Scale
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property int Stride
+			{
+				int get();
+				void set(int value);
+			}
+
+			property PhyScalarType Type
+			{
+				PhyScalarType get();
+				void set(PhyScalarType value);
+			}
+
+			property IntPtr VertexBase
+			{
+				IntPtr get();
+				void set(IntPtr value);
+			}
+
+		internal:
+			property btGImpactMeshShapePart::TrimeshPrimitiveManager* UnmanagedPointer
+			{
+				btGImpactMeshShapePart::TrimeshPrimitiveManager* get() new;
+			}
+		};
+#endif
+
+	internal:
+		GImpactMeshShapePart(btGImpactMeshShapePart* shape);
+
+	public:
+		GImpactMeshShapePart();
+		GImpactMeshShapePart(StridingMeshInterface^ meshInterface, int part);
+
+		void GetVertex(int vertex_index, Vector3% vertex);
+
+		property int Part
+		{
+			int get();
+		}
+
+		property int VertexCount
+		{
+			int get();
+		}
+
+#ifndef DISABLE_BVH
+		property TrimeshPrimitiveManager^ GImpactTrimeshPrimitiveManager
+		{
+			TrimeshPrimitiveManager^ get();
+		}
+#endif
+
+	internal:
+		property btGImpactMeshShapePart* UnmanagedPointer
+		{
+			btGImpactMeshShapePart* get() new;
+		}
+	};
+
 	public ref class GImpactMeshShape : GImpactShapeInterface
 	{
 	internal:
 		GImpactMeshShape(btGImpactMeshShape* shape);
+
 	public:
 		GImpactMeshShape(StridingMeshInterface^ meshInterface);
 
-		//GImpactMeshShapePart^ GetMeshPart(int index);
+		GImpactMeshShapePart^ GetMeshPart(int index);
 
 		property StridingMeshInterface^ MeshInterface
 		{

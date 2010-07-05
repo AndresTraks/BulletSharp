@@ -32,6 +32,11 @@ namespace BulletSharp
 		~ConstraintSolver();
 
 	public:
+		property bool IsDisposed
+		{
+			virtual bool get();
+		}
+
 #ifndef DISABLE_CONSTRAINTS
 		void AllSolved(ContactSolverInfo^ info,
 #ifndef DISABLE_DEBUGDRAW
@@ -46,11 +51,6 @@ namespace BulletSharp
 			DebugDraw^ debugDrawer,
 #endif
 			StackAlloc^ stackAlloc, Dispatcher^ dispatcher);
-
-		property bool IsDisposed
-		{
-			virtual bool get();
-		}
 
 	internal:
 		property btConstraintSolver* UnmanagedPointer

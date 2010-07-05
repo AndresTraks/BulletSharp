@@ -30,8 +30,7 @@ BulletCollision/Gimpact
 0 BoxCollision
 0 GImpactBvh
 0 GImpactCollisionAlgorithm
-- GImpactQuantizedBvh
-0 GImpactShape
+0 GImpactQuantizedBvh
 
 
 

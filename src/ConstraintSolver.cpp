@@ -5,7 +5,9 @@
 #include "ContactSolverInfo.h"
 #include "Dispatcher.h"
 #include "StackAlloc.h"
+#ifndef DISABLE_CONSTRAINTS
 #include "TypedConstraint.h"
+#endif
 #ifndef DISABLE_DEBUGDRAW
 #include "DebugDraw.h"
 #endif
@@ -30,6 +32,11 @@ ConstraintSolver::!ConstraintSolver()
 	_solver = NULL;
 	
 	OnDisposed( this, nullptr );
+}
+
+bool ConstraintSolver::IsDisposed::get()
+{
+	return (_solver == NULL);
 }
 
 #ifndef DISABLE_CONSTRAINTS
@@ -92,11 +99,6 @@ btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<Per
 	delete constraintsTemp;
 
 	return ret;
-}
-
-bool ConstraintSolver::IsDisposed::get()
-{
-	return (_solver == NULL);
 }
 
 btConstraintSolver* ConstraintSolver::UnmanagedPointer::get()
