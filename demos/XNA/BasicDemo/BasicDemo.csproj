@@ -87,12 +87,6 @@
     <Content Include="Game.ico" />
   </ItemGroup>
   <ItemGroup>
-    <NestedContentProject Include="Content\Content.contentproj">
-      <Project>0ed64eac-2aea-446c-ab1f-b96cee58656c</Project>
-      <Visible>False</Visible>
-    </NestedContentProject>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework Client Profile</ProductName>

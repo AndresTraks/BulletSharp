@@ -65,7 +65,7 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <CLRSupport>true</CLRSupport>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug OpenTK|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -76,7 +76,7 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <CLRSupport>true</CLRSupport>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Mogre|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -87,7 +87,7 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <CLRSupport>true</CLRSupport>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoGfx|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -98,7 +98,7 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <CLRSupport>true</CLRSupport>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug XNA 3.1|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -109,13 +109,13 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <CLRSupport>true</CLRSupport>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release SlimDX|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <CLRSupport>true</CLRSupport>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug SlimDX|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -249,6 +249,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -267,10 +268,11 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <FloatingPointModel>Precise</FloatingPointModel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level1</WarningLevel>
       <DebugInformationFormat>
       </DebugInformationFormat>
+      <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -288,10 +290,11 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <FloatingPointModel>Precise</FloatingPointModel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level1</WarningLevel>
       <DebugInformationFormat>
       </DebugInformationFormat>
+      <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -312,6 +315,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -330,10 +334,11 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <FloatingPointModel>Precise</FloatingPointModel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level1</WarningLevel>
       <DebugInformationFormat>
       </DebugInformationFormat>
+      <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -354,6 +359,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -372,10 +378,11 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <FloatingPointModel>Precise</FloatingPointModel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level1</WarningLevel>
       <DebugInformationFormat>
       </DebugInformationFormat>
+      <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -396,6 +403,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -414,10 +422,11 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <FloatingPointModel>Precise</FloatingPointModel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level1</WarningLevel>
       <DebugInformationFormat>
       </DebugInformationFormat>
+      <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -438,6 +447,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -456,10 +466,11 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <FloatingPointModel>Precise</FloatingPointModel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level1</WarningLevel>
       <DebugInformationFormat>
       </DebugInformationFormat>
+      <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -480,6 +491,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
