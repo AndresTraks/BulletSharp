@@ -24,7 +24,7 @@ btCollisionDispatcherWrapper::btCollisionDispatcherWrapper(btCollisionConfigurat
 }
 
 
-CollisionDispatcher::CollisionDispatcher(btCollisionDispatcherWrapper* dispatcher)
+CollisionDispatcher::CollisionDispatcher(btCollisionDispatcher* dispatcher)
 : Dispatcher(dispatcher)
 {
 }

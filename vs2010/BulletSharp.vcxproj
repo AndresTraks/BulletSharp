@@ -252,8 +252,8 @@
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug;D:\src\bullet\msvc\2008\src\BulletMultiThreaded\Debug</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
@@ -275,8 +275,8 @@
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletMultiThreaded\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
@@ -297,8 +297,8 @@
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletMultiThreaded\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
@@ -318,8 +318,8 @@
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug;D:\src\bullet\msvc\2008\src\BulletMultiThreaded\Debug</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
@@ -341,8 +341,8 @@
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletMultiThreaded\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
@@ -362,8 +362,8 @@
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug;D:\src\bullet\msvc\2008\src\BulletMultiThreaded\Debug</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
@@ -385,8 +385,8 @@
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletMultiThreaded\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
@@ -406,8 +406,8 @@
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug;D:\src\bullet\msvc\2008\src\BulletMultiThreaded\Debug</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
@@ -429,8 +429,8 @@
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletMultiThreaded\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
@@ -450,8 +450,8 @@
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug;D:\src\bullet\msvc\2008\src\BulletMultiThreaded\Debug</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
@@ -473,8 +473,8 @@
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletDynamics\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletCollision\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletSoftBody\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\MinSizeRel;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\MinSizeRel;D:\src\bullet\msvc\2008\src\BulletMultiThreaded\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
@@ -494,8 +494,8 @@
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\src\bullet\msvc\2008\src\LinearMath\Debug;D:\src\bullet\msvc\2008\src\BulletDynamics\Debug;D:\src\bullet\msvc\2008\src\BulletCollision\Debug;D:\src\bullet\msvc\2008\src\BulletSoftBody\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletWorldImporter\Debug;D:\src\bullet\msvc\2008\Extras\Serialize\BulletFileLoader\Debug;D:\src\bullet\msvc\2008\src\BulletMultiThreaded\Debug</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
@@ -626,12 +626,14 @@
     <ClCompile Include="..\src\SphereSphereCollisionAlgorithm.cpp" />
     <ClCompile Include="..\src\SphereTriangleCollisionAlgorithm.cpp" />
     <ClCompile Include="..\src\SphereTriangleDetector.cpp" />
+    <ClCompile Include="..\src\SpuGatheringCollisionDispatcher.cpp" />
     <ClCompile Include="..\src\StackAlloc.cpp" />
     <ClCompile Include="..\src\StaticPlaneShape.cpp" />
     <ClCompile Include="..\src\Stdafx.cpp" />
     <ClCompile Include="..\src\StridingMeshInterface.cpp" />
     <ClCompile Include="..\src\StringConv.cpp" />
     <ClCompile Include="..\src\TetrahedronShape.cpp" />
+    <ClCompile Include="..\src\ThreadSupportInterface.cpp" />
     <ClCompile Include="..\src\TransformUtil.cpp" />
     <ClCompile Include="..\src\TriangleBuffer.cpp" />
     <ClCompile Include="..\src\TriangleCallback.cpp" />
@@ -651,6 +653,7 @@
     <ClCompile Include="..\src\VehicleRaycaster.cpp" />
     <ClCompile Include="..\src\VoronoiSimplexSolver.cpp" />
     <ClCompile Include="..\src\WheelInfo.cpp" />
+    <ClCompile Include="..\src\Win32ThreadSupport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\ActionInterface.h" />
@@ -768,12 +771,14 @@
     <ClInclude Include="..\src\SphereSphereCollisionAlgorithm.h" />
     <ClInclude Include="..\src\SphereTriangleCollisionAlgorithm.h" />
     <ClInclude Include="..\src\SphereTriangleDetector.h" />
+    <ClInclude Include="..\src\SpuGatheringCollisionDispatcher.h" />
     <ClInclude Include="..\src\StackAlloc.h" />
     <ClInclude Include="..\src\StaticPlaneShape.h" />
     <ClInclude Include="..\src\Stdafx.h" />
     <ClInclude Include="..\src\StridingMeshInterface.h" />
     <ClInclude Include="..\src\StringConv.h" />
     <ClInclude Include="..\src\TetrahedronShape.h" />
+    <ClInclude Include="..\src\ThreadSupportInterface.h" />
     <ClInclude Include="..\src\TransformUtil.h" />
     <ClInclude Include="..\src\TriangleBuffer.h" />
     <ClInclude Include="..\src\TriangleCallback.h" />
@@ -793,6 +798,7 @@
     <ClInclude Include="..\src\VehicleRaycaster.h" />
     <ClInclude Include="..\src\VoronoiSimplexSolver.h" />
     <ClInclude Include="..\src\WheelInfo.h" />
+    <ClInclude Include="..\src\Win32ThreadSupport.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\Resources.rc" />

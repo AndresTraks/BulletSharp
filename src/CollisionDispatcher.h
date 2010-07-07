@@ -33,7 +33,7 @@ namespace BulletSharp
 		btNearCallback originalCallback;
 
 	internal:
-		CollisionDispatcher(btCollisionDispatcherWrapper* dispatcher);
+		CollisionDispatcher(btCollisionDispatcher* dispatcher);
 
 	public:
 		CollisionDispatcher(CollisionConfiguration^ collisionConfiguration);

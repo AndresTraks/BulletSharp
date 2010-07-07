@@ -1,4 +1,5 @@
 ﻿using BulletSharp;
+using BulletSharp.MultiThreaded;
 using DemoFramework;
 using SlimDX;
 
@@ -15,10 +16,14 @@ namespace CcdPhysicsDemo
         bool CenterOfMassShift = false;
         bool useCompound;
 
+        bool UseThreading = false;
+        Win32ThreadSupport threadSupportCollision;
+
         float CubeHalfExtents = 0.5f;
         float numObjects = 120;
         Vector3 comOffsetVec = new Vector3(0,2,0);
         float collisionMargin = 0.05f;
+        float ExtraHeight = -10.0f;
 
         const int maxNumObjects = 32760;
         int[] shapeIndex = new int[maxNumObjects];
@@ -51,7 +56,7 @@ namespace CcdPhysicsDemo
 
             useCompound = CenterOfMassShift;
 
-            CollisionShapes.PushBack(new BoxShape(200, 1, 200));
+            CollisionShapes.PushBack(new BoxShape(200, CubeHalfExtents, 200));
 
             if (DoBenchmarkPyramids)
             {
@@ -63,11 +68,25 @@ namespace CcdPhysicsDemo
                 CollisionShapes.PushBack(new CylinderShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents));
             }
 
-            CollisionConfiguration collisionConf;
-
             // collision configuration contains default setup for memory, collision setup
-            collisionConf = new DefaultCollisionConfiguration();
-            Dispatcher = new CollisionDispatcher(collisionConf);
+            CollisionConfiguration collisionConf = new DefaultCollisionConfiguration();
+
+            if (UseThreading)
+            {
+                int maxNumOutstandingTasks = 4;
+
+                Win32ThreadSupport.Win32ThreadConstructionInfo info = new Win32ThreadSupport.Win32ThreadConstructionInfo("collision",
+                    Win32ThreadSupport.Win32ThreadFunc.ProcessCollisionTask,
+                    Win32ThreadSupport.Win32lsMemorySetupFunc.CreateCollisionLocalStoreMemory,
+                    maxNumOutstandingTasks);
+                
+                threadSupportCollision = new Win32ThreadSupport(info);
+                Dispatcher = new SpuGatheringCollisionDispatcher(threadSupportCollision, maxNumOutstandingTasks, collisionConf);
+            }
+            else
+            {
+                Dispatcher = new CollisionDispatcher(collisionConf);
+            }
 
             Broadphase = new DbvtBroadphase();
 
@@ -117,7 +136,19 @@ namespace CcdPhysicsDemo
 
                     RigidBody body;
                     Matrix trans;
-                    if (i > 0)
+
+                    if (i == 0)
+                    {
+                        body = LocalCreateRigidBody(0, Matrix.Translation(0, ExtraHeight, 0), shape);
+                        body.UserObject = "Ground";
+
+                        if (UseKinematicGround)
+                        {
+                            body.CollisionFlags = body.CollisionFlags | CollisionFlags.KinematicObject;
+                            body.ActivationState = ActivationState.DisableDeactivation;
+                        }
+                    }
+                    else
                     {
                         //stack them
                         int colsize = 10;
@@ -132,20 +163,9 @@ namespace CcdPhysicsDemo
                         }
 
                         trans = Matrix.Translation(col * 2 * CubeHalfExtents + (row2 % 2) * CubeHalfExtents,
-                            row * 2 * CubeHalfExtents + CubeHalfExtents + 1, 0);
+                            (row + 1) * 2 * CubeHalfExtents + ExtraHeight, 0);
                         
                         body = LocalCreateRigidBody(1, trans, shape);
-                    }
-                    else
-                    {
-                        body = LocalCreateRigidBody(0, Matrix.Identity, shape);
-                        body.UserObject = "Ground";
-
-                        if (UseKinematicGround)
-                        {
-                            body.CollisionFlags = body.CollisionFlags | CollisionFlags.KinematicObject;
-                            body.ActivationState = ActivationState.DisableDeactivation;
-                        }
                     }
 
                     // Only do CCD if  motion in one timestep (1.f/60.f) exceeds CubeHalfExtents
@@ -158,7 +178,7 @@ namespace CcdPhysicsDemo
 
             if (DoBenchmarkPyramids)
             {
-    	        RigidBody ground = LocalCreateRigidBody(0, Matrix.Translation(new Vector3(0,-1,0)),
+                RigidBody ground = LocalCreateRigidBody(0, Matrix.Translation(new Vector3(0, -CubeHalfExtents, 0)),
                     CollisionShapes[shapeIndex[0]]);
                 ground.UserObject = "Ground";
 
