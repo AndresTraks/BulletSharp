@@ -8,6 +8,9 @@ namespace BulletSharp
 {
 	public ref class SequentialImpulseConstraintSolver : ConstraintSolver
 	{
+	internal:
+		SequentialImpulseConstraintSolver(btSequentialImpulseConstraintSolver* solver);
+
 	public:
 		SequentialImpulseConstraintSolver();
 

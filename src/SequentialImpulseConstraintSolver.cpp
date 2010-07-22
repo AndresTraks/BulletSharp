@@ -2,6 +2,11 @@
 
 #include "SequentialImpulseConstraintSolver.h"
 
+SequentialImpulseConstraintSolver::SequentialImpulseConstraintSolver(btSequentialImpulseConstraintSolver* solver)
+: ConstraintSolver(solver)
+{
+}
+
 SequentialImpulseConstraintSolver::SequentialImpulseConstraintSolver()
 : ConstraintSolver(new btSequentialImpulseConstraintSolver())
 {

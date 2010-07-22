@@ -202,7 +202,7 @@ namespace BulletSharp
 			}
 		};
 
-		ref class ContactResultCallback : BulletSharp::IDisposable
+		ref class ContactResultCallback abstract : BulletSharp::IDisposable
 		{
 		public:
 			virtual event EventHandler^ OnDisposing;
