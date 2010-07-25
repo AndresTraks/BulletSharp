@@ -23,6 +23,12 @@
 //#define DISABLE_VEHICLE
 
 
+// When using CMake to compile Bullet and double precision is specified,
+// then this setting isn't applied to BulletSharp automatically.
+// In this case, uncomment this line:
+//#define BT_USE_DOUBLE_PRECISION
+
+
 #if GRAPHICS_XNA31
 	#using <Microsoft.Xna.Framework.dll>
 #elif GRAPHICS_SLIMDX
