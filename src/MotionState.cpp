@@ -29,7 +29,6 @@ Matrix MotionState::WorldTransform::get()
 	delete transform;
 	return m;
 }
-
 void MotionState::WorldTransform::set(Matrix worldTransform)
 {
 	btTransform* worldTransformTemp = Math::MatrixToBtTransform(worldTransform);

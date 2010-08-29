@@ -17,11 +17,10 @@ namespace BulletSharp
 		MotionState(btMotionState* motionState);
 
 	protected:
+		MotionState();
 		~MotionState();
 
 	public:
-		MotionState();
-
 		property Matrix WorldTransform
 		{
 			virtual Matrix get();

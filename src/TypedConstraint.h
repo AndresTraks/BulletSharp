@@ -78,10 +78,11 @@ namespace BulletSharp
 			int get();
 		}
 
-		property int UserConstraintId
+		// UserConstraintId/UserConstraintPtr implemented as UserConstraint object
+		property Object^ UserConstraint
 		{
-			int get();
-			void set(int value);
+			Object^ get();
+			void set(Object^ value);
 		}
 
 		property int UserConstraintType

@@ -44,6 +44,13 @@ namespace BulletSharp
 			btScalar get();
 			void set(btScalar value);
 		}
+
+		property bool ConvexMaxDistanceUseCpt
+		{
+			bool get();
+			void set(bool value);
+		}
+
 #ifndef DISABLE_DEBUGDRAW
 		property BulletSharp::DebugDraw^ DebugDraw
 		{
@@ -51,6 +58,7 @@ namespace BulletSharp
 			void set(BulletSharp::DebugDraw^ value);
 		}
 #endif
+
 		property DispatchFunc DispatchFunction
 		{
 			DispatchFunc get();

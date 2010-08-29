@@ -64,13 +64,16 @@ namespace BulletSharp
 		DisableVisualizeObject = btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT
 	};
 
-	public enum CollisionObjectType
+	[Flags]
+	public enum class CollisionObjectType
 	{
+		None = 0,
 		CollisionObjectType = btCollisionObject::CO_COLLISION_OBJECT,
 		RigidBodyType = btCollisionObject::CO_RIGID_BODY,
 		GhostObjectType = btCollisionObject::CO_GHOST_OBJECT,
 		SoftBodyType = btCollisionObject::CO_SOFT_BODY,
-		HfFluidType = btCollisionObject::CO_HF_FLUID
+		HfFluidType = btCollisionObject::CO_HF_FLUID,
+		UserType = btCollisionObject::CO_USER_TYPE
 	};
 
 	[Flags]

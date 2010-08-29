@@ -106,13 +106,21 @@ int TypedConstraint::Uid::get()
 	return UnmanagedPointer->getUid();
 }
 
-int TypedConstraint::UserConstraintId::get()
+Object^ TypedConstraint::UserConstraint::get()
 {
-	return UnmanagedPointer->getUserConstraintId();
+	void* obj = UnmanagedPointer->getUserConstraintPtr();
+	if (obj == nullptr)
+		return nullptr;
+	return static_cast<Object^>(VoidPtrToGCHandle(obj).Target);
 }
-void TypedConstraint::UserConstraintId::set(int value)
+void TypedConstraint::UserConstraint::set(Object^ value)
 {
-	return UnmanagedPointer->setUserConstraintId(value);
+	void* obj = UnmanagedPointer->getUserConstraintPtr();
+	if (obj != nullptr)
+		VoidPtrToGCHandle(obj).Free();
+
+	GCHandle handle = GCHandle::Alloc(value);
+	UnmanagedPointer->setUserConstraintPtr(GCHandleToVoidPtr(handle));
 }
 
 int TypedConstraint::UserConstraintType::get()
