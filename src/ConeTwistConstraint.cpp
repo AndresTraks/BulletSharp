@@ -10,26 +10,26 @@ ConeTwistConstraint::ConeTwistConstraint(btConeTwistConstraint* constraint)
 {
 }
 
-ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rbA, RigidBody^ rbB, Matrix rbAFrame, Matrix rbBFrame)
+ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame, Matrix rigidBodyBFrame)
 : TypedConstraint(0)
 {
-	btTransform* rbAFrameTemp = Math::MatrixToBtTransform(rbAFrame);
-	btTransform* rbBFrameTemp = Math::MatrixToBtTransform(rbBFrame);
+	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
+	btTransform* rigidBodyBFrameTemp = Math::MatrixToBtTransform(rigidBodyBFrame);
 
-	UnmanagedPointer = new btConeTwistConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer, *rbAFrameTemp, *rbBFrameTemp);
+	UnmanagedPointer = new btConeTwistConstraint(*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer, *rigidBodyAFrameTemp, *rigidBodyBFrameTemp);
 
-	delete rbAFrameTemp;
-	delete rbBFrameTemp;
+	delete rigidBodyAFrameTemp;
+	delete rigidBodyBFrameTemp;
 }
 
-ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rbA, Matrix rbAFrame)
+ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame)
 : TypedConstraint(0)
 {
-	btTransform* rbAFrameTemp = Math::MatrixToBtTransform(rbAFrame);
+	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
 
-	UnmanagedPointer = new btConeTwistConstraint(*rbA->UnmanagedPointer, *rbAFrameTemp);
+	UnmanagedPointer = new btConeTwistConstraint(*rigidBodyA->UnmanagedPointer, *rigidBodyAFrameTemp);
 
-	delete rbAFrameTemp;
+	delete rigidBodyAFrameTemp;
 }
 
 void ConeTwistConstraint::CalcAngleInfo()

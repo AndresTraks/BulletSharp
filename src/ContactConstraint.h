@@ -13,6 +13,6 @@ namespace BulletSharp
 		ContactConstraint(btContactConstraint* constraint);
 
 	public:
-		ContactConstraint(PersistentManifold^ contactManifold, RigidBody^ rbA, RigidBody^ rbB);
+		ContactConstraint(PersistentManifold^ contactManifold, RigidBody^ rigidBodyA, RigidBody^ rigidBodyB);
 	};
 };

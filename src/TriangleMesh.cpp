@@ -28,13 +28,13 @@ void TriangleMesh::AddIndex(int index)
 	UnmanagedPointer->addIndex(index);
 }
 
-void TriangleMesh::FindOrAddVertex(Vector3 vertex, bool removeDuplicateVertices)
+int TriangleMesh::FindOrAddVertex(Vector3 vertex, bool removeDuplicateVertices)
 {
 	btVector3* vertexTemp = Math::Vector3ToBtVector3(vertex);
-
-	UnmanagedPointer->findOrAddVertex(*vertexTemp, removeDuplicateVertices);
+	int ret = UnmanagedPointer->findOrAddVertex(*vertexTemp, removeDuplicateVertices);
 
 	delete vertexTemp;
+	return ret;
 }
 #endif
 

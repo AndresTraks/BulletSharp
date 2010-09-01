@@ -442,28 +442,28 @@ Generic6DofConstraint::Generic6DofConstraint(btGeneric6DofConstraint* constraint
 {
 }
 
-Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rbA, RigidBody^ rbB,
+Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	Matrix frameInA, Matrix frameInB, bool useReferenceFrameA)
 : TypedConstraint(0)
 {
 	btTransform* frameInATemp = Math::MatrixToBtTransform(frameInA);
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 
-	UnmanagedPointer = new btGeneric6DofConstraint(*rbA->UnmanagedPointer,
-		*rbB->UnmanagedPointer, *frameInATemp, *frameInBTemp, useReferenceFrameA);
+	UnmanagedPointer = new btGeneric6DofConstraint(*rigidBodyA->UnmanagedPointer,
+		*rigidBodyB->UnmanagedPointer, *frameInATemp, *frameInBTemp, useReferenceFrameA);
 
 	delete frameInATemp;
 	delete frameInBTemp;
 }
 
-Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rbB, Matrix frameInB,
+Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frameInB,
 	bool useReferenceFrameA)
-: TypedConstraint(new btGeneric6DofConstraint(*rbB->UnmanagedPointer,
+: TypedConstraint(new btGeneric6DofConstraint(*rigidBodyB->UnmanagedPointer,
 	*Math::MatrixToBtTransform(frameInB), useReferenceFrameA))
 {
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 
-	UnmanagedPointer = new btGeneric6DofConstraint(*rbB->UnmanagedPointer, *frameInBTemp, useReferenceFrameA);
+	UnmanagedPointer = new btGeneric6DofConstraint(*rigidBodyB->UnmanagedPointer, *frameInBTemp, useReferenceFrameA);
 
 	delete frameInBTemp;
 }

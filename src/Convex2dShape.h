@@ -10,18 +10,18 @@
 
 namespace BulletSharp
 {
-	public ref class Convex2dShape : ConvexShape
+	public ref class Convex2DShape : ConvexShape
 	{
 	private:
 		ConvexShape^ childShape;
 
 	internal:
-		Convex2dShape(btConvex2dShape* shape);
+		Convex2DShape(btConvex2dShape* shape);
 
 	public:
-		Convex2dShape(ConvexShape^ convexChildShape);
+		Convex2DShape(ConvexShape^ convexChildShape);
 
-		static Convex2dShape^ Upcast2d(CollisionShape^ shape);
+		static Convex2DShape^ Upcast2d(CollisionShape^ shape);
 
 		property ConvexShape^ ChildShape
 		{

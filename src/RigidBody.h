@@ -25,11 +25,11 @@ namespace BulletSharp
 		RigidBody(RigidBodyConstructionInfo^ info);
 
 #ifndef DISABLE_CONSTRAINTS
-		void AddConstraintRef(TypedConstraint^ c);
+		void AddConstraintRef(TypedConstraint^ constraint);
 		TypedConstraint^ GetConstraintRef(int index);
-		void RemoveConstraintRef(TypedConstraint^ c);
+		void RemoveConstraintRef(TypedConstraint^ constraint);
 
-		property int NumConstraintRefs
+		property int ConstraintRefCount
 		{
 			int get();
 		}
@@ -37,9 +37,9 @@ namespace BulletSharp
 		void ApplyCentralForce(Vector3 force);
 		void ApplyCentralImpulse(Vector3 force);
 		void ApplyDamping(btScalar timeStep);
-		void ApplyForce(Vector3 force, Vector3 rel_pos);
+		void ApplyForce(Vector3 force, Vector3 relativePosition);
 		void ApplyGravity();
-		void ApplyImpulse(Vector3 impulse, Vector3 rel_pos);
+		void ApplyImpulse(Vector3 impulse, Vector3 relativePosition);
 		void ApplyTorque(Vector3 torque);
 		void ApplyTorqueImpulse(Vector3 torque);
 		bool CheckCollideWithOverride(CollisionObject^ co);
@@ -47,16 +47,16 @@ namespace BulletSharp
 		btScalar ComputeAngularImpulseDenominator(Vector3 axis);
 		btScalar ComputeImpulseDenominator(Vector3 pos, Vector3 normal);
 		void GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
-		Vector3 GetVelocityInLocalPoint(Vector3 rel_pos);
+		Vector3 GetVelocityInLocalPoint(Vector3 relativePosition);
 		void IntegrateVelocities(btScalar step);
 		bool IsInWorld();
 		void PredictIntegratedTransform(btScalar step, Matrix predictedTransform);
 		void ProceedToTransform(Matrix newTransform);
 		void SaveKinematicState(btScalar step);
-		void SetDamping(btScalar lin_damping, btScalar ang_damping);
+		void SetDamping(btScalar linearDamping, btScalar angularDamping);
 		void SetMassProps(btScalar mass, Vector3 inertia);
 		void SetSleepingThresholds(btScalar linear, btScalar angular);
-		void Translate(Vector3 v);
+		void Translate(Vector3 vector);
 		void UpdateDeactivation(btScalar timeStep);
 		void UpdateInertiaTensor();
 

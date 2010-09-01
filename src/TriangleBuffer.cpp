@@ -47,7 +47,7 @@ BulletTriangle^ TriangleBuffer::GetTriangle(int index)
 	return gcnew BulletTriangle(triangle);
 }
 
-int TriangleBuffer::NumTriangles::get()
+int TriangleBuffer::TriangleCount::get()
 {
 	return UnmanagedPointer->getNumTriangles();
 }

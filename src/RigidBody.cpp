@@ -23,9 +23,9 @@ RigidBody::RigidBody(btRigidBody* body)
 }
 
 #ifndef DISABLE_CONSTRAINTS
-void RigidBody::AddConstraintRef(TypedConstraint^ c)
+void RigidBody::AddConstraintRef(TypedConstraint^ constraint)
 {
-	UnmanagedPointer->addConstraintRef(c->UnmanagedPointer);
+	UnmanagedPointer->addConstraintRef(constraint->UnmanagedPointer);
 }
 
 TypedConstraint^ RigidBody::GetConstraintRef(int index)
@@ -33,12 +33,12 @@ TypedConstraint^ RigidBody::GetConstraintRef(int index)
 	return gcnew TypedConstraint(UnmanagedPointer->getConstraintRef(index));
 }
 
-void RigidBody::RemoveConstraintRef(TypedConstraint^ c)
+void RigidBody::RemoveConstraintRef(TypedConstraint^ constraint)
 {
-	UnmanagedPointer->removeConstraintRef(c->UnmanagedPointer);
+	UnmanagedPointer->removeConstraintRef(constraint->UnmanagedPointer);
 }
 
-int RigidBody::NumConstraintRefs::get()
+int RigidBody::ConstraintRefCount::get()
 {
 	return UnmanagedPointer->getNumConstraintRefs();
 }
@@ -59,9 +59,9 @@ void RigidBody::ApplyDamping(btScalar timeStep)
 	UnmanagedPointer->applyDamping(timeStep);
 }
 
-void RigidBody::ApplyForce(Vector3 force, Vector3 rel_pos)
+void RigidBody::ApplyForce(Vector3 force, Vector3 relativePosition)
 {
-	UnmanagedPointer->applyForce(*Math::Vector3ToBtVector3(force), *Math::Vector3ToBtVector3(rel_pos));
+	UnmanagedPointer->applyForce(*Math::Vector3ToBtVector3(force), *Math::Vector3ToBtVector3(relativePosition));
 }
 
 void RigidBody::ApplyGravity()
@@ -69,9 +69,9 @@ void RigidBody::ApplyGravity()
 	UnmanagedPointer->applyGravity();
 }
 
-void RigidBody::ApplyImpulse(Vector3 impulse, Vector3 rel_pos)
+void RigidBody::ApplyImpulse(Vector3 impulse, Vector3 relativePosition)
 {
-	UnmanagedPointer->applyImpulse(*Math::Vector3ToBtVector3(impulse), *Math::Vector3ToBtVector3(rel_pos));
+	UnmanagedPointer->applyImpulse(*Math::Vector3ToBtVector3(impulse), *Math::Vector3ToBtVector3(relativePosition));
 }
 
 void RigidBody::ApplyTorque(Vector3 torque)
@@ -124,15 +124,15 @@ void RigidBody_GetVelocityInLocalPoint(btRigidBody* body, btVector3* velocity, b
 	*velocity = body->getVelocityInLocalPoint(*rel_pos);
 }
 #pragma managed(pop)
-Vector3 RigidBody::GetVelocityInLocalPoint(Vector3 rel_pos)
+Vector3 RigidBody::GetVelocityInLocalPoint(Vector3 relativePosition)
 {
-	btVector3* rel_posTemp = Math::Vector3ToBtVector3(rel_pos);
+	btVector3* relativePositionTemp = Math::Vector3ToBtVector3(relativePosition);
 	btVector3* velocityTemp = new btVector3;
 
-	RigidBody_GetVelocityInLocalPoint(UnmanagedPointer, velocityTemp, rel_posTemp);
+	RigidBody_GetVelocityInLocalPoint(UnmanagedPointer, velocityTemp, relativePositionTemp);
 	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
 
-	delete rel_posTemp;
+	delete relativePositionTemp;
 	delete velocityTemp;
 
 	return velocity;
@@ -167,9 +167,9 @@ void RigidBody::SaveKinematicState(btScalar step)
 	UnmanagedPointer->saveKinematicState(step);
 }
 
-void RigidBody::SetDamping(btScalar lin_damping, btScalar ang_damping)
+void RigidBody::SetDamping(btScalar linearDamping, btScalar angularDamping)
 {
-	UnmanagedPointer->setDamping(lin_damping, ang_damping);
+	UnmanagedPointer->setDamping(linearDamping, angularDamping);
 }
 
 void RigidBody::SetMassProps(btScalar mass, Vector3 inertia)
@@ -182,9 +182,9 @@ void RigidBody::SetSleepingThresholds(btScalar inertia, btScalar angular)
 	UnmanagedPointer->setSleepingThresholds(inertia, angular);
 }
 
-void RigidBody::Translate(Vector3 v)
+void RigidBody::Translate(Vector3 vector)
 {
-	UnmanagedPointer->translate(*Math::Vector3ToBtVector3(v));
+	UnmanagedPointer->translate(*Math::Vector3ToBtVector3(vector));
 }
 
 void RigidBody::UpdateDeactivation(btScalar timeStep)

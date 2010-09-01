@@ -51,8 +51,8 @@ namespace BulletSharp
 		Point2PointConstraint(btPoint2PointConstraint* constraint);
 
 	public:
-		Point2PointConstraint(RigidBody^ rbA, RigidBody^ rbB, Vector3 pivotInA, Vector3 pivotInB);
-		Point2PointConstraint(RigidBody^ rbA, Vector3 pivotInA);
+		Point2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA, Vector3 pivotInB);
+		Point2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA);
 
 		btScalar GetParam(int num, int axis);
 		btScalar GetParam(int num);

@@ -5,7 +5,7 @@
 #include "Hinge2Constraint.h"
 #include "RigidBody.h"
 
-Hinge2Constraint::Hinge2Constraint(RigidBody^ rbA, RigidBody^ rbB,
+Hinge2Constraint::Hinge2Constraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	Vector3 anchor, Vector3 axis1, Vector3 axis2)
 : Generic6DofSpringConstraint(0)
 {
@@ -13,7 +13,7 @@ Hinge2Constraint::Hinge2Constraint(RigidBody^ rbA, RigidBody^ rbB,
 	btVector3* axis1Temp = Math::Vector3ToBtVector3(axis1);
 	btVector3* axis2Temp = Math::Vector3ToBtVector3(axis2);
 
-	UnmanagedPointer = new btHinge2Constraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
+	UnmanagedPointer = new btHinge2Constraint(*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer,
 		*anchorTemp, *axis1Temp, *axis2Temp);
 
 	delete anchorTemp;

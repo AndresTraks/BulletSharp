@@ -94,11 +94,11 @@ PrimitiveTriangle::PrimitiveTriangle(btPrimitiveTriangle* triangle)
 	_triangle = triangle;
 }
 
-void PrimitiveTriangle::ApplyTransform(Matrix t)
+void PrimitiveTriangle::ApplyTransform(Matrix transform)
 {
-	btTransform* tTemp = Math::MatrixToBtTransform(t);
-	_triangle->applyTransform(*tTemp);
-	delete tTemp;
+	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
+	_triangle->applyTransform(*transformTemp);
+	delete transformTemp;
 }
 
 void PrimitiveTriangle::BuildTriPlane()
@@ -219,11 +219,11 @@ TriangleShapeEx::TriangleShapeEx(TriangleShapeEx^ other)
 {
 }
 
-void TriangleShapeEx::ApplyTransform(Matrix t)
+void TriangleShapeEx::ApplyTransform(Matrix transform)
 {
-	btTransform* tTemp = Math::MatrixToBtTransform(t);
-	UnmanagedPointer->applyTransform(*tTemp);
-	delete tTemp;
+	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
+	UnmanagedPointer->applyTransform(*transformTemp);
+	delete transformTemp;
 }
 
 void TriangleShapeEx::BuildTriPlane(Vector4 plane)

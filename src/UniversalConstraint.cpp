@@ -5,7 +5,7 @@
 #include "RigidBody.h"
 #include "UniversalConstraint.h"
 
-UniversalConstraint::UniversalConstraint(RigidBody^ rbA, RigidBody^ rbB,
+UniversalConstraint::UniversalConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	Vector3 anchor, Vector3 axis1, Vector3 axis2)
 : Generic6DofConstraint(0)
 {
@@ -13,7 +13,7 @@ UniversalConstraint::UniversalConstraint(RigidBody^ rbA, RigidBody^ rbB,
 	btVector3* axis1Temp = Math::Vector3ToBtVector3(axis1);
 	btVector3* axis2Temp = Math::Vector3ToBtVector3(axis2);
 
-	UnmanagedPointer = new btUniversalConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
+	UnmanagedPointer = new btUniversalConstraint(*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer,
 		*anchorTemp, *axis1Temp, *axis2Temp);
 
 	delete anchorTemp;

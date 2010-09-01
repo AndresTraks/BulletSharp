@@ -26,11 +26,11 @@ void ConvexPlaneCollisionAlgorithm::CreateFunc::MinimumPointsPerturbationThresho
 	UnmanagedPointer->m_minimumPointsPerturbationThreshold = value;
 }
 
-int ConvexPlaneCollisionAlgorithm::CreateFunc::NumPerturbationIterations::get()
+int ConvexPlaneCollisionAlgorithm::CreateFunc::PerturbationIterationsCount::get()
 {
 	return UnmanagedPointer->m_numPerturbationIterations;
 }
-void ConvexPlaneCollisionAlgorithm::CreateFunc::NumPerturbationIterations::set(int value)
+void ConvexPlaneCollisionAlgorithm::CreateFunc::PerturbationIterationsCount::set(int value)
 {
 	UnmanagedPointer->m_numPerturbationIterations = value;
 }

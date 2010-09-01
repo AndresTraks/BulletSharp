@@ -14,16 +14,16 @@ namespace BulletSharp
 		HingeConstraint(btHingeConstraint* constraint);
 
 	public:
-		HingeConstraint(RigidBody^ rbA, RigidBody^ rbB, Vector3 pivotInA, Vector3 pivotInB,
+		HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA, Vector3 pivotInB,
 			Vector3 axisInA, Vector3 axisInB, bool useReferenceFrameA);
-		HingeConstraint(RigidBody^ rbA, RigidBody^ rbB, Vector3 pivotInA, Vector3 pivotInB,
+		HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA, Vector3 pivotInB,
 			Vector3 axisInA, Vector3 axisInB);
-		HingeConstraint(RigidBody^ rbA,	Vector3 pivotInA, Vector3 axisInA, bool useReferenceFrameA);
-		HingeConstraint(RigidBody^ rbA,	Vector3 pivotInA, Vector3 axisInA);
-		HingeConstraint(RigidBody^ rbA, RigidBody^ rbB, Matrix rbAFrame, Matrix rbBFrame, bool useReferenceFrameA);
-		HingeConstraint(RigidBody^ rbA, RigidBody^ rbB,	Matrix rbAFrame, Matrix rbBFrame);
-		HingeConstraint(RigidBody^ rbA,	Matrix rbAFrame, bool useReferenceFrameA);
-		HingeConstraint(RigidBody^ rbA, Matrix rbAFrame);
+		HingeConstraint(RigidBody^ rigidBodyA,	Vector3 pivotInA, Vector3 axisInA, bool useReferenceFrameA);
+		HingeConstraint(RigidBody^ rigidBodyA,	Vector3 pivotInA, Vector3 axisInA);
+		HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame, Matrix rigidBodyBFrame, bool useReferenceFrameA);
+		HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,	Matrix rigidBodyAFrame, Matrix rigidBodyBFrame);
+		HingeConstraint(RigidBody^ rigidBodyA,	Matrix rigidBodyAFrame, bool useReferenceFrameA);
+		HingeConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame);
 
 		void EnableAngularMotor(bool enableMotor, btScalar targetVelocity, btScalar maxMotorImpulse);
 		btScalar GetHingeAngle(Matrix transA, Matrix transB);

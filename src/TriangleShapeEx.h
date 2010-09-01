@@ -65,7 +65,7 @@ namespace BulletSharp
 	public:
 		PrimitiveTriangle();
 
-		void ApplyTransform(Matrix t);
+		void ApplyTransform(Matrix transform);
 		void BuildTriPlane();
 		int ClipTriangle(PrimitiveTriangle^ other, array<Vector3>^ clippedPoints);
 		bool FindTriangleCollisionClipMethod(PrimitiveTriangle^ other, GimTriangleContact^ contacts);
@@ -114,7 +114,7 @@ namespace BulletSharp
 		TriangleShapeEx(Vector3 p0, Vector3 p1, Vector3 p2);
 		TriangleShapeEx(TriangleShapeEx^ other);
 
-		void ApplyTransform(Matrix t);
+		void ApplyTransform(Matrix transform);
 		void BuildTriPlane(Vector4 plane);
 		bool OverlapTestConservative(TriangleShapeEx^ other);
 

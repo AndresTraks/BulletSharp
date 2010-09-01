@@ -6,7 +6,7 @@
 #include "CollisionShape.h"
 #include "CompoundShape.h"
 #include "ConeShape.h"
-#include "Convex2dShape.h"
+#include "Convex2DShape.h"
 #include "ConvexHullShape.h"
 #include "ConvexPointCloudShape.h"
 #include "ConvexShape.h"
@@ -73,8 +73,8 @@ CollisionShape^ CollisionShape::UpcastDetect()
 		return gcnew CompoundShape((btCompoundShape*) _collisionShape);
 	case BroadphaseNativeType::ConeShape:
 		return gcnew ConeShape((btConeShape*) _collisionShape);
-	case BroadphaseNativeType::Convex2dShape:
-		return gcnew Convex2dShape((btConvex2dShape*) _collisionShape);
+	case BroadphaseNativeType::Convex2DShape:
+		return gcnew Convex2DShape((btConvex2dShape*) _collisionShape);
 	case BroadphaseNativeType::ConvexHullShape:
 		return gcnew ConvexHullShape((btConvexHullShape*) _collisionShape);
 	case BroadphaseNativeType::ConvexPointCloudShape:

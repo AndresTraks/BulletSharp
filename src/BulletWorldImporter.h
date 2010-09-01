@@ -69,7 +69,7 @@ namespace BulletSharp
 #endif
 			virtual CollisionShape^ CreateConvexTriangleMeshShape(StridingMeshInterface^ trimesh);
 #ifndef DISABLE_GIMPACT
-			virtual GImpactMeshShape^ CreateGimpactShape(StridingMeshInterface^ trimesh);
+			virtual GImpactMeshShape^ CreateGImpactShape(StridingMeshInterface^ trimesh);
 #endif
 			virtual ConvexHullShape^ CreateConvexHullShape();
 			virtual CompoundShape^ CreateCompoundShape();
@@ -82,18 +82,18 @@ namespace BulletSharp
 
 #ifndef DISABLE_CONSTRAINTS
 			// constraints
-			virtual Point2PointConstraint^ CreatePoint2PointConstraint(RigidBody^ rbA, RigidBody^ rbB, Vector3 pivotInA, Vector3 pivotInB);
-			virtual Point2PointConstraint^ CreatePoint2PointConstraint(RigidBody^ rbA, Vector3 pivotInA);
-			virtual HingeConstraint^ CreateHingeConstraint(RigidBody^ rbA, RigidBody^ rbB, Matrix rbAFrame, Matrix rbBFrame, bool useReferenceFrameA);
-			virtual HingeConstraint^ CreateHingeConstraint(RigidBody^ rbA, RigidBody^ rbB, Matrix rbAFrame, Matrix rbBFrame);
-			virtual HingeConstraint^ CreateHingeConstraint(RigidBody^ rbA, Matrix rbAFrame, bool useReferenceFrameA);
-			virtual HingeConstraint^ CreateHingeConstraint(RigidBody^ rbA, Matrix rbAFrame);
-			virtual ConeTwistConstraint^ CreateConeTwistConstraint(RigidBody^ rbA, RigidBody^ rbB, Matrix rbAFrame, Matrix rbBFrame);
-			virtual ConeTwistConstraint^ CreateConeTwistConstraint(RigidBody^ rbA, Matrix rbAFrame);
-			virtual Generic6DofConstraint^ CreateGeneric6DofConstraint(RigidBody^ rbA, RigidBody^ rbB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA);
-			virtual Generic6DofConstraint^ CreateGeneric6DofConstraint(RigidBody^ rbB, Matrix frameInB, bool useLinearReferenceFrameB);
-			virtual SliderConstraint^ CreateSliderConstraint(RigidBody^ rbA, RigidBody^ rbB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA);
-			virtual SliderConstraint^ CreateSliderConstraint(RigidBody^ rbB, Matrix frameInB, bool useLinearReferenceFrameA);
+			virtual Point2PointConstraint^ CreatePoint2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA, Vector3 pivotInB);
+			virtual Point2PointConstraint^ CreatePoint2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA);
+			virtual HingeConstraint^ CreateHingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame, Matrix rigidBodyBFrame, bool useReferenceFrameA);
+			virtual HingeConstraint^ CreateHingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame, Matrix rigidBodyBFrame);
+			virtual HingeConstraint^ CreateHingeConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame, bool useReferenceFrameA);
+			virtual HingeConstraint^ CreateHingeConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame);
+			virtual ConeTwistConstraint^ CreateConeTwistConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame, Matrix rigidBodyBFrame);
+			virtual ConeTwistConstraint^ CreateConeTwistConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame);
+			virtual Generic6DofConstraint^ CreateGeneric6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA);
+			virtual Generic6DofConstraint^ CreateGeneric6DofConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameB);
+			virtual SliderConstraint^ CreateSliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA);
+			virtual SliderConstraint^ CreateSliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameA);
 #endif
 
 			void DeleteAllData();
@@ -126,27 +126,27 @@ namespace BulletSharp
 				virtual bool get();
 			}
 
-			property int NumBvhs
+			property int BvhCount
 			{
 				int get();
 			}
 
-			property int NumCollisionShapes
+			property int CollisionShapeCount
 			{
 				int get();
 			}
 
-			property int NumConstraints
+			property int ConstraintCount
 			{
 				int get();
 			}
 
-			property int NumRigidBodies
+			property int RigidBodyCount
 			{
 				int get();
 			}
 
-			property int NumTriangleInfoMaps
+			property int TriangleInfoMapCount
 			{
 				int get();
 			}
@@ -202,25 +202,25 @@ namespace BulletSharp
 
 #ifndef DISABLE_CONSTRAINTS
 			// constraints
-			virtual btPoint2PointConstraint* createPoint2PointConstraint(btRigidBody& rbA, btRigidBody& rbB,
+			virtual btPoint2PointConstraint* createPoint2PointConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
 				const btVector3& pivotInA, const btVector3& pivotInB);
-			virtual btPoint2PointConstraint* createPoint2PointConstraint(btRigidBody& rbA, const btVector3& pivotInA);
-			virtual btHingeConstraint* createHingeConstraint(btRigidBody& rbA,btRigidBody& rbB,
-				const btTransform& rbAFrame, const btTransform& rbBFrame, bool useReferenceFrameA);
-			virtual btHingeConstraint* createHingeConstraint(btRigidBody& rbA,btRigidBody& rbB,
-				const btTransform& rbAFrame, const btTransform& rbBFrame);
-			virtual btHingeConstraint* createHingeConstraint(btRigidBody& rbA, const btTransform& rbAFrame, bool useReferenceFrameA);
-			virtual btHingeConstraint* createHingeConstraint(btRigidBody& rbA, const btTransform& rbAFrame);
-			virtual btConeTwistConstraint* createConeTwistConstraint(btRigidBody& rbA,btRigidBody& rbB,
-				const btTransform& rbAFrame, const btTransform& rbBFrame);
-			virtual btConeTwistConstraint* createConeTwistConstraint(btRigidBody& rbA, const btTransform& rbAFrame);
-			virtual btGeneric6DofConstraint* createGeneric6DofConstraint(btRigidBody& rbA, btRigidBody& rbB,
+			virtual btPoint2PointConstraint* createPoint2PointConstraint(btRigidBody& rigidBodyA, const btVector3& pivotInA);
+			virtual btHingeConstraint* createHingeConstraint(btRigidBody& rigidBodyA,btRigidBody& rigidBodyB,
+				const btTransform& rigidBodyAFrame, const btTransform& rigidBodyBFrame, bool useReferenceFrameA);
+			virtual btHingeConstraint* createHingeConstraint(btRigidBody& rigidBodyA,btRigidBody& rigidBodyB,
+				const btTransform& rigidBodyAFrame, const btTransform& rigidBodyBFrame);
+			virtual btHingeConstraint* createHingeConstraint(btRigidBody& rigidBodyA, const btTransform& rigidBodyAFrame, bool useReferenceFrameA);
+			virtual btHingeConstraint* createHingeConstraint(btRigidBody& rigidBodyA, const btTransform& rigidBodyAFrame);
+			virtual btConeTwistConstraint* createConeTwistConstraint(btRigidBody& rigidBodyA,btRigidBody& rigidBodyB,
+				const btTransform& rigidBodyAFrame, const btTransform& rigidBodyBFrame);
+			virtual btConeTwistConstraint* createConeTwistConstraint(btRigidBody& rigidBodyA, const btTransform& rigidBodyAFrame);
+			virtual btGeneric6DofConstraint* createGeneric6DofConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
 				const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA);
-			virtual btGeneric6DofConstraint* createGeneric6DofConstraint(btRigidBody& rbB,
+			virtual btGeneric6DofConstraint* createGeneric6DofConstraint(btRigidBody& rigidBodyB,
 				const btTransform& frameInB, bool useLinearReferenceFrameB);
-			virtual btSliderConstraint* createSliderConstraint(btRigidBody& rbA, btRigidBody& rbB,
+			virtual btSliderConstraint* createSliderConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
 				const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA);
-			virtual btSliderConstraint* createSliderConstraint(btRigidBody& rbB,
+			virtual btSliderConstraint* createSliderConstraint(btRigidBody& rigidBodyB,
 				const btTransform& frameInB, bool useLinearReferenceFrameA);
 #endif
 
@@ -261,25 +261,25 @@ namespace BulletSharp
 
 #ifndef DISABLE_CONSTRAINTS
 			// constraints
-			virtual btPoint2PointConstraint* baseCreatePoint2PointConstraint(btRigidBody& rbA, btRigidBody& rbB,
+			virtual btPoint2PointConstraint* baseCreatePoint2PointConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
 				const btVector3& pivotInA, const btVector3& pivotInB);
-			virtual btPoint2PointConstraint* baseCreatePoint2PointConstraint(btRigidBody& rbA, const btVector3& pivotInA);
-			virtual btHingeConstraint* baseCreateHingeConstraint(btRigidBody& rbA,btRigidBody& rbB,
-				const btTransform& rbAFrame, const btTransform& rbBFrame, bool useReferenceFrameA);
-			virtual btHingeConstraint* baseCreateHingeConstraint(btRigidBody& rbA,btRigidBody& rbB,
-				const btTransform& rbAFrame, const btTransform& rbBFrame);
-			virtual btHingeConstraint* baseCreateHingeConstraint(btRigidBody& rbA, const btTransform& rbAFrame, bool useReferenceFrameA);
-			virtual btHingeConstraint* baseCreateHingeConstraint(btRigidBody& rbA, const btTransform& rbAFrame);
-			virtual btConeTwistConstraint* baseCreateConeTwistConstraint(btRigidBody& rbA, btRigidBody& rbB,
-				const btTransform& rbAFrame, const btTransform& rbBFrame);
-			virtual btConeTwistConstraint* baseCreateConeTwistConstraint(btRigidBody& rbA, const btTransform& rbAFrame);
-			virtual btGeneric6DofConstraint* baseCreateGeneric6DofConstraint(btRigidBody& rbA, btRigidBody& rbB,
+			virtual btPoint2PointConstraint* baseCreatePoint2PointConstraint(btRigidBody& rigidBodyA, const btVector3& pivotInA);
+			virtual btHingeConstraint* baseCreateHingeConstraint(btRigidBody& rigidBodyA,btRigidBody& rigidBodyB,
+				const btTransform& rigidBodyAFrame, const btTransform& rigidBodyBFrame, bool useReferenceFrameA);
+			virtual btHingeConstraint* baseCreateHingeConstraint(btRigidBody& rigidBodyA,btRigidBody& rigidBodyB,
+				const btTransform& rigidBodyAFrame, const btTransform& rigidBodyBFrame);
+			virtual btHingeConstraint* baseCreateHingeConstraint(btRigidBody& rigidBodyA, const btTransform& rigidBodyAFrame, bool useReferenceFrameA);
+			virtual btHingeConstraint* baseCreateHingeConstraint(btRigidBody& rigidBodyA, const btTransform& rigidBodyAFrame);
+			virtual btConeTwistConstraint* baseCreateConeTwistConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
+				const btTransform& rigidBodyAFrame, const btTransform& rigidBodyBFrame);
+			virtual btConeTwistConstraint* baseCreateConeTwistConstraint(btRigidBody& rigidBodyA, const btTransform& rigidBodyAFrame);
+			virtual btGeneric6DofConstraint* baseCreateGeneric6DofConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
 				const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA);
-			virtual btGeneric6DofConstraint* baseCreateGeneric6DofConstraint(btRigidBody& rbB,
+			virtual btGeneric6DofConstraint* baseCreateGeneric6DofConstraint(btRigidBody& rigidBodyB,
 				const btTransform& frameInB, bool useLinearReferenceFrameB);
-			virtual btSliderConstraint* baseCreateSliderConstraint(btRigidBody& rbA, btRigidBody& rbB,
+			virtual btSliderConstraint* baseCreateSliderConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
 				const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA);
-			virtual btSliderConstraint* baseCreateSliderConstraint(btRigidBody& rbB,
+			virtual btSliderConstraint* baseCreateSliderConstraint(btRigidBody& rigidBodyB,
 				const btTransform& frameInB, bool useLinearReferenceFrameA);
 #endif
 		};

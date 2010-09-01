@@ -23,7 +23,7 @@ namespace BulletSharp
 				void set(int value);
 			}
 
-			property int NumPerturbationIterations
+			property int PerturbationIterationsCount
 			{
 				int get();
 				void set(int value);

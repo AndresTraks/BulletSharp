@@ -58,25 +58,25 @@ Point2PointConstraint::Point2PointConstraint(btPoint2PointConstraint* constraint
 {
 }
 
-Point2PointConstraint::Point2PointConstraint(RigidBody^ rbA, RigidBody^ rbB, Vector3 pivotInA, Vector3 pivotInB)
+Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA, Vector3 pivotInB)
 : TypedConstraint(0)
 {
 	btVector3* pivotInATemp = Math::Vector3ToBtVector3(pivotInA);
 	btVector3* pivotInBTemp = Math::Vector3ToBtVector3(pivotInB);
 
-	UnmanagedPointer = new btPoint2PointConstraint(*rbA->UnmanagedPointer, *rbB->UnmanagedPointer,
+	UnmanagedPointer = new btPoint2PointConstraint(*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer,
 	*pivotInATemp, *pivotInBTemp);
 
 	delete pivotInATemp;
 	delete pivotInBTemp;
 }
 
-Point2PointConstraint::Point2PointConstraint(RigidBody^ rbA, Vector3 pivotInA)
+Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA)
 : TypedConstraint(0)
 {
 	btVector3* pivotInATemp = Math::Vector3ToBtVector3(pivotInA);
 
-	UnmanagedPointer = new btPoint2PointConstraint(*rbA->UnmanagedPointer, *pivotInATemp);
+	UnmanagedPointer = new btPoint2PointConstraint(*rigidBodyA->UnmanagedPointer, *pivotInATemp);
 
 	delete pivotInATemp;
 }

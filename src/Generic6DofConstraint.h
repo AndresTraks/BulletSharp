@@ -275,9 +275,9 @@ namespace BulletSharp
 		Generic6DofConstraint(btGeneric6DofConstraint* constraint);
 
 	public:
-		Generic6DofConstraint(RigidBody^ rbA, RigidBody^ rbB,
+		Generic6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 			Matrix frameInA, Matrix frameInB, bool useReferenceFrameA);
-		Generic6DofConstraint(RigidBody^ rbB, Matrix frameInB,
+		Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frameInB,
 			bool useReferenceFrameA);
 
 		void CalcAnchorPos();

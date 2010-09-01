@@ -236,6 +236,15 @@ Feature::Feature(btSoftBody::Feature* feature)
 {
 }
 
+BulletSharp::SoftBody::Material^ Feature::Material::get()
+{
+	return gcnew BulletSharp::SoftBody::Material(UnmanagedPointer->m_material);
+}
+void Feature::Material::set(BulletSharp::SoftBody::Material^ value)
+{
+	UnmanagedPointer->m_material = value->UnmanagedPointer;
+}
+
 btSoftBody::Feature* Feature::UnmanagedPointer::get()
 {
 	return (btSoftBody::Feature*)Element::UnmanagedPointer;
@@ -335,13 +344,22 @@ BulletSharp::SoftBody::Node::Node(btSoftBody::Node* node)
 {
 }
 
-Vector3 BulletSharp::SoftBody::Node::x::get()
+Vector3 BulletSharp::SoftBody::Node::X::get()
 {
 	return Math::BtVector3ToVector3(&UnmanagedPointer->m_x);
 }
-void BulletSharp::SoftBody::Node::x::set(Vector3 value)
+void BulletSharp::SoftBody::Node::X::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_x);
+}
+
+Vector3 BulletSharp::SoftBody::Node::Q::get()
+{
+	return Math::BtVector3ToVector3(&UnmanagedPointer->m_q);
+}
+void BulletSharp::SoftBody::Node::Q::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_q);
 }
 
 btSoftBody::Node* BulletSharp::SoftBody::Node::UnmanagedPointer::get()
@@ -524,6 +542,15 @@ Config^ BulletSharp::SoftBody::SoftBody::Cfg::get()
 void BulletSharp::SoftBody::SoftBody::Cfg::set(Config^ value)
 {
 	UnmanagedPointer->m_cfg = *value->UnmanagedPointer;
+}
+
+CollisionObjectArray^ BulletSharp::SoftBody::SoftBody::CollisionDisabledObjects::get()
+{
+	return gcnew CollisionObjectArray(&UnmanagedPointer->m_collisionDisabledObjects);
+}
+void BulletSharp::SoftBody::SoftBody::CollisionDisabledObjects::set(CollisionObjectArray^ value)
+{
+	UnmanagedPointer->m_collisionDisabledObjects = *value->UnmanagedPointer;
 }
 
 FaceArray^ BulletSharp::SoftBody::SoftBody::Faces::get()

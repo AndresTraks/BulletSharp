@@ -9,6 +9,7 @@
 namespace BulletSharp
 {
 	ref class BroadphaseInterface;
+	ref class CollisionObjectArray;
 	ref class Dispatcher;
 	ref class RigidBody;
 	ref class SparseSdf;
@@ -16,6 +17,7 @@ namespace BulletSharp
 	namespace SoftBody
 	{
 		ref class FaceArray;
+		ref class Material;
 		ref class MaterialArray;
 		ref class NodeArray;
 
@@ -209,6 +211,12 @@ namespace BulletSharp
 		internal:
 			Feature(btSoftBody::Feature* feature);
 
+			property BulletSharp::SoftBody::Material^ Material
+			{
+				BulletSharp::SoftBody::Material^ get();
+				void set(BulletSharp::SoftBody::Material^ value);
+			}
+
 			property btSoftBody::Feature* UnmanagedPointer
 			{
 				btSoftBody::Feature* get() new;
@@ -264,7 +272,13 @@ namespace BulletSharp
 			Node(btSoftBody::Node* node);
 
 		public:
-			property Vector3 x
+			property Vector3 X
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property Vector3 Q
 			{
 				Vector3 get();
 				void set(Vector3 value);
@@ -352,6 +366,12 @@ namespace BulletSharp
 			{
 				Config^ get();
 				void set(Config^ value);
+			}
+
+			property CollisionObjectArray^ CollisionDisabledObjects
+			{
+				CollisionObjectArray^ get();
+				void set(CollisionObjectArray^ value);
 			}
 
 			property FaceArray^ Faces

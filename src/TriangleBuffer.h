@@ -30,7 +30,7 @@ namespace BulletSharp
 		void ClearBuffer();
 		BulletTriangle^ GetTriangle(int index);
 
-		property int NumTriangles
+		property int TriangleCount
 		{
 			int get();
 		}

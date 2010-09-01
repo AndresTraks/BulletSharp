@@ -3,6 +3,7 @@
 #ifndef DISABLE_SOFTBODY
 
 #pragma managed(push, off)
+#include <BulletSoftBody/btSoftBodySolvers.h>
 #include <BulletSoftBody/btSoftRigidDynamicsWorld.h>
 #pragma managed(pop)
 

@@ -1,26 +1,26 @@
 #include "StdAfx.h"
 
-#include "Convex2dShape.h"
+#include "Convex2DShape.h"
 
 using namespace BulletSharp;
 
-Convex2dShape::Convex2dShape(ConvexShape^ convexChildShape)
+Convex2DShape::Convex2DShape(ConvexShape^ convexChildShape)
 : ConvexShape(new btConvex2dShape(convexChildShape->UnmanagedPointer))
 {
 	childShape = convexChildShape;
 }
 
-Convex2dShape::Convex2dShape(btConvex2dShape* shape)
+Convex2DShape::Convex2DShape(btConvex2dShape* shape)
 : ConvexShape(shape)
 {
 }
 
-Convex2dShape^ Convex2dShape::Upcast2d(CollisionShape^ shape)
+Convex2DShape^ Convex2DShape::Upcast2d(CollisionShape^ shape)
 {
-	return gcnew Convex2dShape((btConvex2dShape*)shape->UnmanagedPointer);
+	return gcnew Convex2DShape((btConvex2dShape*)shape->UnmanagedPointer);
 }
 
-ConvexShape^ Convex2dShape::ChildShape::get()
+ConvexShape^ Convex2DShape::ChildShape::get()
 {
 	if (childShape == nullptr)
 	{
@@ -29,7 +29,7 @@ ConvexShape^ Convex2dShape::ChildShape::get()
 	return childShape;
 }
 
-btConvex2dShape* Convex2dShape::UnmanagedPointer::get()
+btConvex2dShape* Convex2DShape::UnmanagedPointer::get()
 {
 	return (btConvex2dShape*)ConvexShape::UnmanagedPointer;
 }
