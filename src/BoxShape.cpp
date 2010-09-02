@@ -31,10 +31,10 @@ BoxShape::BoxShape(btScalar boxHalfExtents)
 	delete boxHalfExtentsTemp;
 }
 
-Vector4 BoxShape::GetPlaneEquation(int i)
+Vector4 BoxShape::GetPlaneEquation(int index)
 {
 	btVector4* equationTemp = new btVector4;
-	UnmanagedPointer->getPlaneEquation(*equationTemp, i);
+	UnmanagedPointer->getPlaneEquation(*equationTemp, index);
 	Vector4 equation = Math::BtVector4ToVector4(equationTemp);
 	delete equationTemp;
 	return equation;

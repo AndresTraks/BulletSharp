@@ -16,7 +16,7 @@ namespace BulletSharp
 
 		static BoxShape^ Upcast(CollisionShape^ shape);
 
-		Vector4 GetPlaneEquation(int i);
+		Vector4 GetPlaneEquation(int index);
 
 		property Vector3 HalfExtentsWithMargin
 		{

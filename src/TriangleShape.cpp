@@ -16,12 +16,12 @@ TriangleShape::TriangleShape()
 {
 }
 
-TriangleShape::TriangleShape(Vector3 p0, Vector3 p1, Vector3 p2)
+TriangleShape::TriangleShape(Vector3 point0, Vector3 point1, Vector3 point2)
 : PolyhedralConvexShape(0)
 {
-	btVector3* p0Temp = Math::Vector3ToBtVector3(p0);
-	btVector3* p1Temp = Math::Vector3ToBtVector3(p1);
-	btVector3* p2Temp = Math::Vector3ToBtVector3(p1);
+	btVector3* p0Temp = Math::Vector3ToBtVector3(point0);
+	btVector3* p1Temp = Math::Vector3ToBtVector3(point1);
+	btVector3* p2Temp = Math::Vector3ToBtVector3(point2);
 
 	UnmanagedPointer = new btTriangleShape(*p0Temp, *p1Temp, *p2Temp);
 
@@ -38,12 +38,12 @@ void TriangleShape::CalcNormal([Out] Vector3% normal)
 	delete normalTemp;
 }
 
-void TriangleShape::GetPlaneEquation(int i, [Out] Vector3% planeNormal, [Out] Vector3% planeSupport)
+void TriangleShape::GetPlaneEquation(int index, [Out] Vector3% planeNormal, [Out] Vector3% planeSupport)
 {
 	btVector3* planeNormalTemp = new btVector3();
 	btVector3* planeSupportTemp = new btVector3();
 
-	UnmanagedPointer->getPlaneEquation(i, *planeNormalTemp, *planeSupportTemp);
+	UnmanagedPointer->getPlaneEquation(index, *planeNormalTemp, *planeSupportTemp);
 	
 	planeNormal = Math::BtVector3ToVector3(planeNormalTemp);
 	planeSupport = Math::BtVector3ToVector3(planeSupportTemp);

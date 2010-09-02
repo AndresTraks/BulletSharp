@@ -9,26 +9,26 @@ PolyhedralConvexShape::PolyhedralConvexShape(btPolyhedralConvexShape* polyhedral
 {
 }
 
-void PolyhedralConvexShape::GetEdge(int i, [Out] Vector3% pa, [Out] Vector3% pb)
+void PolyhedralConvexShape::GetEdge(int index, [Out] Vector3% pointA, [Out] Vector3% pointB)
 {
 	btVector3* paTemp = new btVector3();
 	btVector3* pbTemp = new btVector3();
 
-	UnmanagedPointer->getEdge(i, *paTemp, *pbTemp);
+	UnmanagedPointer->getEdge(index, *paTemp, *pbTemp);
 
-	pa = Math::BtVector3ToVector3(paTemp);
-	pb = Math::BtVector3ToVector3(pbTemp);
+	pointA = Math::BtVector3ToVector3(paTemp);
+	pointB = Math::BtVector3ToVector3(pbTemp);
 
 	delete paTemp;
 	delete pbTemp;
 }
 
-void PolyhedralConvexShape::GetPlane([Out] Vector3% planeNormal, [Out] Vector3% planeSupport, int i)
+void PolyhedralConvexShape::GetPlane([Out] Vector3% planeNormal, [Out] Vector3% planeSupport, int index)
 {
 	btVector3* planeNormalTemp = new btVector3();
 	btVector3* planeSupportTemp = new btVector3();
 
-	UnmanagedPointer->getPlane(*planeNormalTemp, *planeSupportTemp, i);
+	UnmanagedPointer->getPlane(*planeNormalTemp, *planeSupportTemp, index);
 
 	planeNormal = Math::BtVector3ToVector3(planeNormalTemp);
 	planeSupport = Math::BtVector3ToVector3(planeSupportTemp);
@@ -37,19 +37,19 @@ void PolyhedralConvexShape::GetPlane([Out] Vector3% planeNormal, [Out] Vector3% 
 	delete planeSupportTemp;
 }
 
-void PolyhedralConvexShape::GetVertex(int i, [Out] Vector3% vtx)
+void PolyhedralConvexShape::GetVertex(int index, [Out] Vector3% vertex)
 {
 	btVector3* vtxTemp = new btVector3();
 
-	UnmanagedPointer->getVertex(i, *vtxTemp);
+	UnmanagedPointer->getVertex(index, *vtxTemp);
 
-	vtx = Math::BtVector3ToVector3(vtxTemp);
+	vertex = Math::BtVector3ToVector3(vtxTemp);
 	delete vtxTemp;
 }
 
-bool PolyhedralConvexShape::IsInside(Vector3 pt, btScalar tolerance)
+bool PolyhedralConvexShape::IsInside(Vector3 point, btScalar tolerance)
 {
-	btVector3* ptTemp = Math::Vector3ToBtVector3(pt);
+	btVector3* ptTemp = Math::Vector3ToBtVector3(point);
 
 	bool ret = UnmanagedPointer->isInside(*ptTemp, tolerance);
 
@@ -57,17 +57,17 @@ bool PolyhedralConvexShape::IsInside(Vector3 pt, btScalar tolerance)
 	return ret;
 }
 
-int PolyhedralConvexShape::NumEdges::get()
+int PolyhedralConvexShape::EdgeCount::get()
 {
 	return UnmanagedPointer->getNumEdges();
 }
 
-int PolyhedralConvexShape::NumPlanes::get()
+int PolyhedralConvexShape::PlaneCount::get()
 {
 	return UnmanagedPointer->getNumPlanes();
 }
 
-int PolyhedralConvexShape::NumVertices::get()
+int PolyhedralConvexShape::VertexCount::get()
 {
 	return UnmanagedPointer->getNumVertices();
 }

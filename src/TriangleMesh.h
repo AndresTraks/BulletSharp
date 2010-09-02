@@ -10,8 +10,8 @@ namespace BulletSharp
 		TriangleMesh(btTriangleMesh* mesh);
 
 	public:
-		TriangleMesh(bool use32bitIndices, bool use4componentVertices);
-		TriangleMesh(bool use32bitIndices);
+		TriangleMesh(bool use32BitIndexes, bool use4ComponentVertices);
+		TriangleMesh(bool use32BitIndexes);
 		TriangleMesh();
 
 #ifndef DISABLE_INTERNAL
@@ -20,20 +20,20 @@ namespace BulletSharp
 #endif
 		void AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2, bool removeDuplicateVertices);
 		void AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2);
-		void PreallocateIndices(int numIndices);
-		void PreallocateVertices(int numVertices);
+		void PreallocateIndexes(int indexCount);
+		void PreallocateVertices(int vertexCount);
 
-		property int NumTriangles
+		property int TriangleCount
 		{
 			int get();
 		}
 
-		property int Use32bitIndices
+		property int Use32BitIndexes
 		{
 			int get();
 		}
 
-		property int Use4componentVertices
+		property int Use4ComponentVertices
 		{
 			int get();
 		}

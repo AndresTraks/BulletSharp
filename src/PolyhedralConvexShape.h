@@ -12,22 +12,22 @@ namespace BulletSharp
 		PolyhedralConvexShape(btPolyhedralConvexShape* polyhedralConvexShape);
 
 	public:
-		void GetEdge(int i, [Out] Vector3% pa, [Out] Vector3% pb);
-		void GetPlane([Out] Vector3% planeNormal, [Out] Vector3% planeSupport, int i);
-		void GetVertex(int i, [Out] Vector3% vtx);
-		bool IsInside(Vector3 pt, btScalar tolerance);
+		void GetEdge(int index, [Out] Vector3% pointA, [Out] Vector3% pointB);
+		void GetPlane([Out] Vector3% planeNormal, [Out] Vector3% planeSupport, int index);
+		void GetVertex(int index, [Out] Vector3% vertex);
+		bool IsInside(Vector3 point, btScalar tolerance);
 
-		property int NumEdges
+		property int EdgeCount
 		{
 			int get();
 		}
 
-		property int NumPlanes
+		property int PlaneCount
 		{
 			int get();
 		}
 
-		property int NumVertices
+		property int VertexCount
 		{
 			int get();
 		}

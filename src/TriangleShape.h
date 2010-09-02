@@ -17,10 +17,10 @@ namespace BulletSharp
 
 	public:
 		TriangleShape();
-		TriangleShape(Vector3 p0, Vector3 p1, Vector3 p2);
+		TriangleShape(Vector3 point0, Vector3 point1, Vector3 point2);
 
 		void CalcNormal([Out] Vector3% normal);
-		void GetPlaneEquation(int i, [Out] Vector3% planeNormal, [Out] Vector3% planeSupport);
+		void GetPlaneEquation(int index, [Out] Vector3% planeNormal, [Out] Vector3% planeSupport);
 		Vector3 GetVertexPtr(int index);
 
 		property array<Vector3>^ Vertices

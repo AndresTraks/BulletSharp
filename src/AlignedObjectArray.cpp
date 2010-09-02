@@ -250,9 +250,14 @@ CollisionObjectEnumerator::CollisionObjectEnumerator(CollisionObjectArray^ objAr
 	i=-1;
 }
 
-Object^ CollisionObjectEnumerator::Current::get()
+CollisionObject^ CollisionObjectEnumerator::Current::get()
 {
 	return gcnew CollisionObject((*_objArray->UnmanagedPointer)[i]);
+}
+
+Object^ CollisionObjectEnumerator::CurrentBase::get()
+{
+	return Current;
 }
 
 bool CollisionObjectEnumerator::MoveNext()

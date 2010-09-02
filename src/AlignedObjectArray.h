@@ -172,10 +172,14 @@ namespace BulletSharp
 	public:
 		CollisionObjectEnumerator(CollisionObjectArray^ objArray);
 
-		property Object^ Current
+		property CollisionObject^ Current
 		{
-			virtual Object^ get();
+			virtual CollisionObject^ get();
 		}
+
+		property Object^ CurrentBase { 
+            virtual Object^ get() sealed = IEnumerator::Current::get;
+        };
 
 		virtual bool MoveNext();
 		virtual void Reset();

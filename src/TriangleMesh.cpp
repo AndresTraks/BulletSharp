@@ -7,13 +7,13 @@ TriangleMesh::TriangleMesh(btTriangleMesh* mesh)
 {
 }
 
-TriangleMesh::TriangleMesh(bool use32bitIndices, bool use4componentVertices)
-: TriangleIndexVertexArray(new btTriangleMesh(use32bitIndices, use4componentVertices))
+TriangleMesh::TriangleMesh(bool use32BitIndexes, bool use4ComponentVertices)
+: TriangleIndexVertexArray(new btTriangleMesh(use32BitIndexes, use4ComponentVertices))
 {
 }
 
-TriangleMesh::TriangleMesh(bool use32bitIndices)
-: TriangleIndexVertexArray(new btTriangleMesh(use32bitIndices))
+TriangleMesh::TriangleMesh(bool use32BitIndexes)
+: TriangleIndexVertexArray(new btTriangleMesh(use32BitIndexes))
 {
 }
 
@@ -64,27 +64,27 @@ void TriangleMesh::AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2
 	delete vertex2Temp;
 }
 
-void TriangleMesh::PreallocateIndices(int numIndices)
+void TriangleMesh::PreallocateIndexes(int indexCount)
 {
-	UnmanagedPointer->preallocateIndices(numIndices);
+	UnmanagedPointer->preallocateIndices(indexCount);
 }
 
-void TriangleMesh::PreallocateVertices(int numVertices)
+void TriangleMesh::PreallocateVertices(int vertexCount)
 {
-	UnmanagedPointer->preallocateVertices(numVertices);
+	UnmanagedPointer->preallocateVertices(vertexCount);
 }
 
-int TriangleMesh::NumTriangles::get()
+int TriangleMesh::TriangleCount::get()
 {
 	return UnmanagedPointer->getNumTriangles();
 }
 
-int TriangleMesh::Use32bitIndices::get()
+int TriangleMesh::Use32BitIndexes::get()
 {
 	return UnmanagedPointer->getUse32bitIndices();
 }
 
-int TriangleMesh::Use4componentVertices::get()
+int TriangleMesh::Use4ComponentVertices::get()
 {
 	return UnmanagedPointer->getUse4componentVertices();
 }

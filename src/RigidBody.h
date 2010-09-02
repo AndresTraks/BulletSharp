@@ -8,13 +8,11 @@ namespace BulletSharp
 {
 	ref class CollisionShape;
 	ref class MotionState;
+	ref class RigidBodyConstructionInfo;
 	ref class TypedConstraint;
 
 	public ref class RigidBody : CollisionObject
 	{
-	public:
-		ref class RigidBodyConstructionInfo;
-
 	private:
 		MotionState^ _motionState;
 
@@ -224,124 +222,123 @@ namespace BulletSharp
 		{
 			btRigidBody* get() new;
 		}
+	};
+
+	public ref class RigidBodyConstructionInfo
+	{
+	private:
+		btRigidBody::btRigidBodyConstructionInfo* _info;
+
+	internal:
+		BulletSharp::CollisionShape^ _collisionShape;
+		BulletSharp::MotionState^ _motionState;
 
 	public:
-		ref class RigidBodyConstructionInfo
+		RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState,
+			BulletSharp::CollisionShape^ collisionShape);
+		RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState,
+			BulletSharp::CollisionShape^ collisionShape, Vector3 localInertia);
+
+		property btScalar AdditionalAngularDampingFactor
 		{
-		private:
-			btRigidBody::btRigidBodyConstructionInfo* _info;
+			btScalar get();
+			void set(btScalar value);
+		}
 
-		internal:
-			BulletSharp::CollisionShape^ _collisionShape;
-			BulletSharp::MotionState^ _motionState;
+		property btScalar AdditionalAngularDampingThresholdSqr
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
 
-		public:
-			RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState,
-				BulletSharp::CollisionShape^ collisionShape);
-			RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState,
-				BulletSharp::CollisionShape^ collisionShape, Vector3 localInertia);
+		property bool AdditionalDamping
+		{
+			bool get();
+			void set(bool value);
+		}
 
-			property btScalar AdditionalAngularDampingFactor
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
+		property btScalar AdditionalDampingFactor
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
 
-			property btScalar AdditionalAngularDampingThresholdSqr
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
+		property btScalar AdditionalLinearDampingThresholdSqr
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
 
-			property bool AdditionalDamping
-			{
-				bool get();
-				void set(bool value);
-			}
+		property btScalar AngularDamping
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
 
-			property btScalar AdditionalDampingFactor
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
+		property btScalar AngularSleepingThreshold
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
 
-			property btScalar AdditionalLinearDampingThresholdSqr
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
+		property BulletSharp::CollisionShape^ CollisionShape
+		{
+			BulletSharp::CollisionShape^ get();
+			void set(BulletSharp::CollisionShape^ value);
+		}
 
-			property btScalar AngularDamping
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
+		property btScalar Friction
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
 
-			property btScalar AngularSleepingThreshold
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
+		property btScalar LinearDamping
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
 
-			property BulletSharp::CollisionShape^ CollisionShape
-			{
-				BulletSharp::CollisionShape^ get();
-				void set(BulletSharp::CollisionShape^ value);
-			}
+		property btScalar LinearSleepingThreshold
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
 
-			property btScalar Friction
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
+		property Vector3 LocalInertia
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
 
-			property btScalar LinearDamping
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
+		property btScalar Mass
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
 
-			property btScalar LinearSleepingThreshold
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
+		property BulletSharp::MotionState^ MotionState
+		{
+			BulletSharp::MotionState^ get();
+			void set(BulletSharp::MotionState^ value);
+		}
 
-			property Vector3 LocalInertia
-			{
-				Vector3 get();
-				void set(Vector3 value);
-			}
+		property btScalar Restitution
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
 
-			property btScalar Mass
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
+		property Matrix StartWorldTransform
+		{
+			Matrix get();
+			void set(Matrix value);
+		}
 
-			property BulletSharp::MotionState^ MotionState
-			{
-				BulletSharp::MotionState^ get();
-				void set(BulletSharp::MotionState^ value);
-			}
-
-			property btScalar Restitution
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
-
-			property Matrix StartWorldTransform
-			{
-				Matrix get();
-				void set(Matrix value);
-			}
-
-		internal:
-			property btRigidBody::btRigidBodyConstructionInfo* UnmanagedPointer
-			{
-				btRigidBody::btRigidBodyConstructionInfo* get();
-			}
-		};
+	internal:
+		property btRigidBody::btRigidBodyConstructionInfo* UnmanagedPointer
+		{
+			btRigidBody::btRigidBodyConstructionInfo* get();
+		}
 	};
 };

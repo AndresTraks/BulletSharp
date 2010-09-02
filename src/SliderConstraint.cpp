@@ -44,7 +44,7 @@ void SliderConstraint::CalculateTransforms(Matrix transA, Matrix transB)
 	delete transBTemp;
 }
 
-void SliderConstraint::TestAngLimits()
+void SliderConstraint::TestAngularLimits()
 {
 	UnmanagedPointer->testAngLimits();
 }
@@ -88,7 +88,7 @@ Vector3 SliderConstraint::AnchorInB::get()
 	return anchor;
 }
 
-btScalar SliderConstraint::AngDepth::get()
+btScalar SliderConstraint::AngularDepth::get()
 {
 	return UnmanagedPointer->getAngDepth();
 }
@@ -103,11 +103,11 @@ Matrix SliderConstraint::CalculatedTransformB::get()
 	return Math::BtTransformToMatrix(&UnmanagedPointer->getCalculatedTransformB());
 }
 
-btScalar SliderConstraint::DampingDirAng::get()
+btScalar SliderConstraint::DampingDirAngular::get()
 {
 	return UnmanagedPointer->getDampingDirAng();
 }
-void SliderConstraint::DampingDirAng::set(btScalar value)
+void SliderConstraint::DampingDirAngular::set(btScalar value)
 {
 	UnmanagedPointer->setDampingDirAng(value);
 }
@@ -121,11 +121,11 @@ void SliderConstraint::DampingDirLin::set(btScalar value)
 	UnmanagedPointer->setDampingDirLin(value);
 }
 
-btScalar SliderConstraint::DampingLimAng::get()
+btScalar SliderConstraint::DampingLimAngular::get()
 {
 	return UnmanagedPointer->getDampingLimAng();
 }
-void SliderConstraint::DampingLimAng::set(btScalar value)
+void SliderConstraint::DampingLimAngular::set(btScalar value)
 {
 	UnmanagedPointer->setDampingLimAng(value);
 }
@@ -139,11 +139,11 @@ void SliderConstraint::DampingLimLin::set(btScalar value)
 	UnmanagedPointer->setDampingLimLin(value);
 }
 
-btScalar SliderConstraint::DampingOrthoAng::get()
+btScalar SliderConstraint::DampingOrthoAngular::get()
 {
 	return UnmanagedPointer->getDampingOrthoAng();
 }
-void SliderConstraint::DampingOrthoAng::set(btScalar value)
+void SliderConstraint::DampingOrthoAngular::set(btScalar value)
 {
 	UnmanagedPointer->setDampingOrthoAng(value);
 }
@@ -177,11 +177,11 @@ btScalar SliderConstraint::LinearPos::get()
 	return UnmanagedPointer->getLinearPos();
 }
 
-btScalar SliderConstraint::LowerAngLimit::get()
+btScalar SliderConstraint::LowerAngularLimit::get()
 {
 	return UnmanagedPointer->getLowerAngLimit();
 }
-void SliderConstraint::LowerAngLimit::set(btScalar value)
+void SliderConstraint::LowerAngularLimit::set(btScalar value)
 {
 	UnmanagedPointer->setLowerAngLimit(value);
 }
@@ -195,11 +195,11 @@ void SliderConstraint::LowerLinLimit::set(btScalar value)
 	UnmanagedPointer->setLowerLinLimit(value);
 }
 
-btScalar SliderConstraint::MaxAngMotorForce::get()
+btScalar SliderConstraint::MaxAngularMotorForce::get()
 {
 	return UnmanagedPointer->getMaxAngMotorForce();
 }
-void SliderConstraint::MaxAngMotorForce::set(btScalar value)
+void SliderConstraint::MaxAngularMotorForce::set(btScalar value)
 {
 	UnmanagedPointer->setMaxAngMotorForce(value);
 }
@@ -213,11 +213,11 @@ void SliderConstraint::MaxLinMotorForce::set(btScalar value)
 	UnmanagedPointer->setMaxLinMotorForce(value);
 }
 
-bool SliderConstraint::PoweredAngMotor::get()
+bool SliderConstraint::PoweredAngularMotor::get()
 {
 	return UnmanagedPointer->getPoweredAngMotor();
 }
-void SliderConstraint::PoweredAngMotor::set(bool value)
+void SliderConstraint::PoweredAngularMotor::set(bool value)
 {
 	UnmanagedPointer->setPoweredAngMotor(value);
 }
@@ -231,11 +231,11 @@ void SliderConstraint::PoweredLinMotor::set(bool value)
 	UnmanagedPointer->setPoweredLinMotor(value);
 }
 
-btScalar SliderConstraint::RestitutionDirAng::get()
+btScalar SliderConstraint::RestitutionDirAngular::get()
 {
 	return UnmanagedPointer->getRestitutionDirAng();
 }
-void SliderConstraint::RestitutionDirAng::set(btScalar value)
+void SliderConstraint::RestitutionDirAngular::set(btScalar value)
 {
 	UnmanagedPointer->setRestitutionDirAng(value);
 }
@@ -249,11 +249,11 @@ void SliderConstraint::RestitutionDirLin::set(btScalar value)
 	UnmanagedPointer->setRestitutionDirLin(value);
 }
 
-btScalar SliderConstraint::RestitutionLimAng::get()
+btScalar SliderConstraint::RestitutionLimAngular::get()
 {
 	return UnmanagedPointer->getRestitutionLimAng();
 }
-void SliderConstraint::RestitutionLimAng::set(btScalar value)
+void SliderConstraint::RestitutionLimAngular::set(btScalar value)
 {
 	UnmanagedPointer->setRestitutionLimAng(value);
 }
@@ -267,11 +267,11 @@ void SliderConstraint::RestitutionLimLin::set(btScalar value)
 	UnmanagedPointer->setRestitutionLimLin(value);
 }
 
-btScalar SliderConstraint::RestitutionOrthoAng::get()
+btScalar SliderConstraint::RestitutionOrthoAngular::get()
 {
 	return UnmanagedPointer->getRestitutionOrthoAng();
 }
-void SliderConstraint::RestitutionOrthoAng::set(btScalar value)
+void SliderConstraint::RestitutionOrthoAngular::set(btScalar value)
 {
 	UnmanagedPointer->setRestitutionOrthoAng(value);
 }
@@ -285,11 +285,11 @@ void SliderConstraint::RestitutionOrthoLin::set(btScalar value)
 	UnmanagedPointer->setRestitutionOrthoLin(value);
 }
 
-btScalar SliderConstraint::SoftnessDirAng::get()
+btScalar SliderConstraint::SoftnessDirAngular::get()
 {
 	return UnmanagedPointer->getSoftnessDirAng();
 }
-void SliderConstraint::SoftnessDirAng::set(btScalar value)
+void SliderConstraint::SoftnessDirAngular::set(btScalar value)
 {
 	UnmanagedPointer->setSoftnessDirAng(value);
 }
@@ -303,11 +303,11 @@ void SliderConstraint::SoftnessDirLin::set(btScalar value)
 	UnmanagedPointer->setSoftnessDirLin(value);
 }
 
-btScalar SliderConstraint::SoftnessLimAng::get()
+btScalar SliderConstraint::SoftnessLimAngular::get()
 {
 	return UnmanagedPointer->getSoftnessLimAng();
 }
-void SliderConstraint::SoftnessLimAng::set(btScalar value)
+void SliderConstraint::SoftnessLimAngular::set(btScalar value)
 {
 	UnmanagedPointer->setSoftnessLimAng(value);
 }
@@ -321,11 +321,11 @@ void SliderConstraint::SoftnessLimLin::set(btScalar value)
 	UnmanagedPointer->setSoftnessLimLin(value);
 }
 
-btScalar SliderConstraint::SoftnessOrthoAng::get()
+btScalar SliderConstraint::SoftnessOrthoAngular::get()
 {
 	return UnmanagedPointer->getSoftnessOrthoAng();
 }
-void SliderConstraint::SoftnessOrthoAng::set(btScalar value)
+void SliderConstraint::SoftnessOrthoAngular::set(btScalar value)
 {
 	UnmanagedPointer->setSoftnessOrthoAng(value);
 }
@@ -339,7 +339,7 @@ void SliderConstraint::SoftnessOrthoLin::set(btScalar value)
 	UnmanagedPointer->setSoftnessOrthoLin(value);
 }
 
-bool SliderConstraint::SolveAngLimit::get()
+bool SliderConstraint::SolveAngularLimit::get()
 {
 	return UnmanagedPointer->getSolveAngLimit();
 }
@@ -349,11 +349,11 @@ bool SliderConstraint::SolveLinLimit::get()
 	return UnmanagedPointer->getSolveLinLimit();
 }
 
-btScalar SliderConstraint::TargetAngMotorVelocity::get()
+btScalar SliderConstraint::TargetAngularMotorVelocity::get()
 {
 	return UnmanagedPointer->getTargetAngMotorVelocity();
 }
-void SliderConstraint::TargetAngMotorVelocity::set(btScalar value)
+void SliderConstraint::TargetAngularMotorVelocity::set(btScalar value)
 {
 	UnmanagedPointer->setTargetAngMotorVelocity(value);
 }
@@ -367,11 +367,11 @@ void SliderConstraint::TargetLinMotorVelocity::set(btScalar value)
 	UnmanagedPointer->setTargetLinMotorVelocity(value);
 }
 
-btScalar SliderConstraint::UpperAngLimit::get()
+btScalar SliderConstraint::UpperAngularLimit::get()
 {
 	return UnmanagedPointer->getUpperAngLimit();
 }
-void SliderConstraint::UpperAngLimit::set(btScalar value)
+void SliderConstraint::UpperAngularLimit::set(btScalar value)
 {
 	UnmanagedPointer->setUpperAngLimit(value);
 }

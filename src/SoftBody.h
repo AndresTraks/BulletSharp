@@ -132,7 +132,7 @@ namespace BulletSharp
 				void set(BulletSharp::SoftBody::AeroModel value);
 			}
 
-			property btScalar CHR
+			property btScalar Chr
 			{
 				btScalar get();
 				void set(btScalar value);
@@ -297,7 +297,7 @@ namespace BulletSharp
 			Face(btSoftBody::Face* face);
 
 		public:
-			property array<Node^>^ n
+			property array<Node^>^ N
 			{
 				array<Node^>^ get();
 				void set(array<Node^>^ value);
@@ -342,16 +342,16 @@ namespace BulletSharp
 			void AddVelocity(Vector3 velocity);
 			void AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies);
 			void AppendAnchor(int node, RigidBody^ body);
-			void AppendLink(int node0, int node1, Material^ mat, bool bcheckexist);
-			void AppendLink(int node0, int node1, Material^ mat);
+			void AppendLink(int node0, int node1, Material^ material, bool bCheckExist);
+			void AppendLink(int node0, int node1, Material^ material);
 			void AppendLink(int node0, int node1);
 			Material^ AppendMaterial();
-			int GenerateBendingConstraints(int distance, Material^ mat);
+			int GenerateBendingConstraints(int distance, Material^ material);
 			int GenerateBendingConstraints(int distance);
 			int GenerateClusters(int k, int maxIterations);
 			int GenerateClusters(int k);
 			void Scale(Vector3 scale);
-			void SetPose(bool bvolume, bool bframe);
+			void SetPose(bool bVolume, bool bFrame);
 			void SetTotalMass(btScalar mass, bool fromFaces);
 			void SetTotalMass(btScalar mass);
 			void SetVolumeMass(btScalar mass);

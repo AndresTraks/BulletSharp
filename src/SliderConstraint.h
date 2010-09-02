@@ -18,7 +18,7 @@ namespace BulletSharp
 		SliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameA);
 
 		void CalculateTransforms(Matrix transA, Matrix transB);
-		void TestAngLimits();
+		void TestAngularLimits();
 		void TestLinLimits();
 
 		property Vector3 AnchorInA
@@ -31,7 +31,7 @@ namespace BulletSharp
 			Vector3 get();
 		}
 
-		property btScalar AngDepth
+		property btScalar AngularDepth
 		{
 			btScalar get();
 		}
@@ -46,7 +46,7 @@ namespace BulletSharp
 			Matrix get();
 		}
 
-		property btScalar DampingDirAng
+		property btScalar DampingDirAngular
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -58,7 +58,7 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property btScalar DampingLimAng
+		property btScalar DampingLimAngular
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -70,7 +70,7 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property btScalar DampingOrthoAng
+		property btScalar DampingOrthoAngular
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -102,7 +102,7 @@ namespace BulletSharp
 			btScalar get();
 		}
 
-		property btScalar LowerAngLimit
+		property btScalar LowerAngularLimit
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -114,7 +114,7 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property btScalar MaxAngMotorForce
+		property btScalar MaxAngularMotorForce
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -126,7 +126,7 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property bool PoweredAngMotor
+		property bool PoweredAngularMotor
 		{
 			bool get();
 			void set(bool value);
@@ -138,7 +138,7 @@ namespace BulletSharp
 			void set(bool value);
 		}
 
-		property btScalar RestitutionDirAng
+		property btScalar RestitutionDirAngular
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -150,7 +150,7 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property btScalar RestitutionLimAng
+		property btScalar RestitutionLimAngular
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -162,7 +162,7 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property btScalar RestitutionOrthoAng
+		property btScalar RestitutionOrthoAngular
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -174,7 +174,7 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property btScalar SoftnessDirAng
+		property btScalar SoftnessDirAngular
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -186,7 +186,7 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property btScalar SoftnessLimAng
+		property btScalar SoftnessLimAngular
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -198,7 +198,7 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property btScalar SoftnessOrthoAng
+		property btScalar SoftnessOrthoAngular
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -210,7 +210,7 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property bool SolveAngLimit
+		property bool SolveAngularLimit
 		{
 			bool get();
 		}
@@ -220,7 +220,7 @@ namespace BulletSharp
 			bool get();
 		}
 
-		property btScalar TargetAngMotorVelocity
+		property btScalar TargetAngularMotorVelocity
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -232,7 +232,7 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property btScalar UpperAngLimit
+		property btScalar UpperAngularLimit
 		{
 			btScalar get();
 			void set(btScalar value);

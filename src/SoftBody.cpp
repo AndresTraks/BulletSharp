@@ -125,11 +125,11 @@ void Config::AeroModel::set(BulletSharp::SoftBody::AeroModel value)
 	_config->aeromodel = (btSoftBody::eAeroModel::_)value;
 }
 
-btScalar Config::CHR::get()
+btScalar Config::Chr::get()
 {
 	return _config->kCHR;
 }
-void Config::CHR::set(btScalar value)
+void Config::Chr::set(btScalar value)
 {
 	_config->kCHR = value;
 }
@@ -256,7 +256,7 @@ Face::Face(btSoftBody::Face* face)
 {
 }
 
-array<BulletSharp::SoftBody::Node^>^ Face::n::get()
+array<BulletSharp::SoftBody::Node^>^ Face::N::get()
 {
 	array<Node^>^ nodeArray = gcnew array<Node^>(3);
 	nodeArray[0] = gcnew Node(UnmanagedPointer->m_n[0]);
@@ -264,7 +264,7 @@ array<BulletSharp::SoftBody::Node^>^ Face::n::get()
 	nodeArray[2] = gcnew Node(UnmanagedPointer->m_n[2]);
 	return nodeArray;
 }
-void Face::n::set(array<BulletSharp::SoftBody::Node^>^ value)
+void Face::N::set(array<BulletSharp::SoftBody::Node^>^ value)
 {
 	UnmanagedPointer->m_n[0] = value[0]->UnmanagedPointer;
 	UnmanagedPointer->m_n[1] = value[1]->UnmanagedPointer;
@@ -441,14 +441,14 @@ void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body)
 	UnmanagedPointer->appendAnchor(node, body->UnmanagedPointer);
 }
 
-void BulletSharp::SoftBody::SoftBody::AppendLink(int node0, int node1, Material^ mat, bool bcheckexist)
+void BulletSharp::SoftBody::SoftBody::AppendLink(int node0, int node1, Material^ material, bool bCheckExist)
 {
-	UnmanagedPointer->appendLink(node0, node1, mat->UnmanagedPointer, bcheckexist);
+	UnmanagedPointer->appendLink(node0, node1, material->UnmanagedPointer, bCheckExist);
 }
 
-void BulletSharp::SoftBody::SoftBody::AppendLink(int node0, int node1, Material^ mat)
+void BulletSharp::SoftBody::SoftBody::AppendLink(int node0, int node1, Material^ material)
 {
-	UnmanagedPointer->appendLink(node0, node1, mat->UnmanagedPointer);
+	UnmanagedPointer->appendLink(node0, node1, material->UnmanagedPointer);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendLink(int node0, int node1)
@@ -456,9 +456,9 @@ void BulletSharp::SoftBody::SoftBody::AppendLink(int node0, int node1)
 	UnmanagedPointer->appendLink(node0, node1);
 }
 
-int BulletSharp::SoftBody::SoftBody::GenerateBendingConstraints(int distance, Material^ mat)
+int BulletSharp::SoftBody::SoftBody::GenerateBendingConstraints(int distance, Material^ material)
 {
-	return UnmanagedPointer->generateBendingConstraints(distance, mat->UnmanagedPointer);
+	return UnmanagedPointer->generateBendingConstraints(distance, material->UnmanagedPointer);
 }
 
 int BulletSharp::SoftBody::SoftBody::GenerateBendingConstraints(int distance)
@@ -483,9 +483,9 @@ void BulletSharp::SoftBody::SoftBody::Scale(Vector3 scale)
 	delete scaleTemp;
 }
 
-void BulletSharp::SoftBody::SoftBody::SetPose(bool bvolume, bool bframe)
+void BulletSharp::SoftBody::SoftBody::SetPose(bool bVolume, bool bFrame)
 {
-	UnmanagedPointer->setPose(bvolume, bframe);
+	UnmanagedPointer->setPose(bVolume, bFrame);
 }
 
 void BulletSharp::SoftBody::SoftBody::SetTotalMass(btScalar mass, bool fromFaces)
