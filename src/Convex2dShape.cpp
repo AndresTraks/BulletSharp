@@ -15,7 +15,7 @@ Convex2DShape::Convex2DShape(btConvex2dShape* shape)
 {
 }
 
-Convex2DShape^ Convex2DShape::Upcast2d(CollisionShape^ shape)
+Convex2DShape^ Convex2DShape::Upcast2D(CollisionShape^ shape)
 {
 	return gcnew Convex2DShape((btConvex2dShape*)shape->UnmanagedPointer);
 }

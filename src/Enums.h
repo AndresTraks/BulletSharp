@@ -208,4 +208,16 @@ namespace BulletSharp
 	};
 #endif
 
+#ifndef DISABLE_MULTITHREADED
+	public enum class Win32ThreadFunc
+	{
+		ProcessCollisionTask
+	};
+
+	public enum class Win32LSMemorySetupFunc
+	{
+		CreateCollisionLocalStoreMemory
+	};
+#endif
+
 };

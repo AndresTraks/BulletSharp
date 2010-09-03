@@ -10,8 +10,8 @@
 #include "StringConv.h"
 #include "Win32ThreadSupport.h"
 
-MultiThreaded::Win32ThreadSupport::Win32ThreadConstructionInfo::Win32ThreadConstructionInfo(String^ uniqueName,
-	Win32ThreadFunc userThreadFunc, Win32lsMemorySetupFunc lsMemoryFunc)
+MultiThreaded::Win32ThreadConstructionInfo::Win32ThreadConstructionInfo(String^ uniqueName,
+	BulletSharp::Win32ThreadFunc userThreadFunc, BulletSharp::Win32LSMemorySetupFunc lsMemoryFunc)
 {
 	const char* uniqueNameTemp = StringConv::ManagedToUnmanaged(uniqueName);
 	::Win32ThreadFunc threadFunc;
@@ -25,7 +25,7 @@ MultiThreaded::Win32ThreadSupport::Win32ThreadConstructionInfo::Win32ThreadConst
 
 	switch(lsMemoryFunc)
 	{
-	case Win32lsMemorySetupFunc::CreateCollisionLocalStoreMemory:
+	case Win32LSMemorySetupFunc::CreateCollisionLocalStoreMemory:
 		memorySetupFunc = createCollisionLocalStoreMemory;
 	}
 
@@ -34,8 +34,8 @@ MultiThreaded::Win32ThreadSupport::Win32ThreadConstructionInfo::Win32ThreadConst
 	StringConv::FreeUnmanagedString(uniqueNameTemp);
 }
 
-MultiThreaded::Win32ThreadSupport::Win32ThreadConstructionInfo::Win32ThreadConstructionInfo(String^ uniqueName,
-	Win32ThreadFunc userThreadFunc, Win32lsMemorySetupFunc lsMemoryFunc, int numThreads)
+MultiThreaded::Win32ThreadConstructionInfo::Win32ThreadConstructionInfo(String^ uniqueName,
+	BulletSharp::Win32ThreadFunc userThreadFunc, BulletSharp::Win32LSMemorySetupFunc lsMemoryFunc, int threadCount)
 {
 	const char* uniqueNameTemp = StringConv::ManagedToUnmanaged(uniqueName);
 	::Win32ThreadFunc threadFunc = 0;
@@ -49,16 +49,16 @@ MultiThreaded::Win32ThreadSupport::Win32ThreadConstructionInfo::Win32ThreadConst
 
 	switch(lsMemoryFunc)
 	{
-	case Win32lsMemorySetupFunc::CreateCollisionLocalStoreMemory:
+	case Win32LSMemorySetupFunc::CreateCollisionLocalStoreMemory:
 		memorySetupFunc = createCollisionLocalStoreMemory;
 	}
 
-	_info = new ::Win32ThreadSupport::Win32ThreadConstructionInfo((char*)uniqueNameTemp, threadFunc, memorySetupFunc, numThreads);
+	_info = new ::Win32ThreadSupport::Win32ThreadConstructionInfo((char*)uniqueNameTemp, threadFunc, memorySetupFunc, threadCount);
 
 	StringConv::FreeUnmanagedString(uniqueNameTemp);
 }
 
-::Win32ThreadSupport::Win32ThreadConstructionInfo* MultiThreaded::Win32ThreadSupport::Win32ThreadConstructionInfo::UnmanagedPointer::get()
+::Win32ThreadSupport::Win32ThreadConstructionInfo* MultiThreaded::Win32ThreadConstructionInfo::UnmanagedPointer::get()
 {
 	return _info;
 }

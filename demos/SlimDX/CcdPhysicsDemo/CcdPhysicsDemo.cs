@@ -67,6 +67,7 @@ namespace CcdPhysicsDemo
             light.Range = 400;
             light.Position = new Vector3(10, 25, 10);
             light.Diffuse = Color.LemonChiffon;
+            light.Attenuation0 = 1.0f;
 
             activeMaterial = new Material();
             activeMaterial.Diffuse = Color.Orange;

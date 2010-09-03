@@ -75,9 +75,8 @@ namespace CcdPhysicsDemo
             {
                 int maxNumOutstandingTasks = 4;
 
-                Win32ThreadSupport.Win32ThreadConstructionInfo info = new Win32ThreadSupport.Win32ThreadConstructionInfo("collision",
-                    Win32ThreadSupport.Win32ThreadFunc.ProcessCollisionTask,
-                    Win32ThreadSupport.Win32lsMemorySetupFunc.CreateCollisionLocalStoreMemory,
+                Win32ThreadConstructionInfo info = new Win32ThreadConstructionInfo("collision",
+                    Win32ThreadFunc.ProcessCollisionTask, Win32LSMemorySetupFunc.CreateCollisionLocalStoreMemory,
                     maxNumOutstandingTasks);
                 
                 threadSupportCollision = new Win32ThreadSupport(info);

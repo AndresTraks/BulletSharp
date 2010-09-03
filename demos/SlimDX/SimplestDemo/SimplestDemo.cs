@@ -86,6 +86,7 @@ namespace SimplestDemo
             light.Range = 70;
             light.Position = new Vector3(10, 25, 10);
             light.Diffuse = Color.LemonChiffon;
+            light.Attenuation0 = 1.0f;
 
             boxMaterial = new Material();
             boxMaterial.Diffuse = Color.Orange;

@@ -67,8 +67,8 @@ namespace SoftDemo
             light.Type = LightType.Point;
             light.Range = 75;
             light.Position = new Vector3(10, 25, 0);
-            light.Falloff = 1.0f;
             light.Diffuse = Color.LemonChiffon;
+            light.Attenuation0 = 1.0f;
 
             activeMaterial = new Material();
             activeMaterial.Diffuse = Color.Orange;
