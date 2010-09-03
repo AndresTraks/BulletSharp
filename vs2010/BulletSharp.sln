@@ -11,12 +11,14 @@ Global
 		Debug OpenTK|Win32 = Debug OpenTK|Win32
 		Debug SlimDX|Win32 = Debug SlimDX|Win32
 		Debug XNA 3.1|Win32 = Debug XNA 3.1|Win32
+		Debug XNA 4.0|Win32 = Debug XNA 4.0|Win32
 		Release Axiom|Win32 = Release Axiom|Win32
 		Release Mogre|Win32 = Release Mogre|Win32
 		Release NoGfx|Win32 = Release NoGfx|Win32
 		Release OpenTK|Win32 = Release OpenTK|Win32
 		Release SlimDX|Win32 = Release SlimDX|Win32
 		Release XNA 3.1|Win32 = Release XNA 3.1|Win32
+		Release XNA 4.0|Win32 = Release XNA 4.0|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Axiom|Win32.ActiveCfg = Debug Axiom|Win32
@@ -31,6 +33,8 @@ Global
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimDX|Win32.Build.0 = Debug SlimDX|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug XNA 3.1|Win32.ActiveCfg = Debug XNA 3.1|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug XNA 3.1|Win32.Build.0 = Debug XNA 3.1|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug XNA 4.0|Win32.ActiveCfg = Debug XNA 4.0|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug XNA 4.0|Win32.Build.0 = Debug XNA 4.0|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Axiom|Win32.ActiveCfg = Release Axiom|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Axiom|Win32.Build.0 = Release Axiom|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Mogre|Win32.ActiveCfg = Release Mogre|Win32
@@ -43,6 +47,8 @@ Global
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimDX|Win32.Build.0 = Release SlimDX|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release XNA 3.1|Win32.ActiveCfg = Release XNA 3.1|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release XNA 3.1|Win32.Build.0 = Release XNA 3.1|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release XNA 4.0|Win32.ActiveCfg = Release XNA 4.0|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release XNA 4.0|Win32.Build.0 = Release XNA 4.0|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

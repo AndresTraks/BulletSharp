@@ -31,6 +31,8 @@
 
 #if GRAPHICS_XNA31
 	#using <Microsoft.Xna.Framework.dll>
+#elif GRAPHICS_XNA40
+	#using <Microsoft.Xna.Framework.dll>
 #elif GRAPHICS_SLIMDX
 #if WIN32
 	#using <x86/SlimDX.dll>
@@ -49,6 +51,9 @@
 #endif
 
 #if GRAPHICS_XNA31
+	#define UsingFrameworkNamespace using namespace Microsoft::Xna::Framework;
+	#define UsingGraphicsNamespace using namespace Microsoft::Xna::Framework::Graphics;
+#elif GRAPHICS_XNA40
 	#define UsingFrameworkNamespace using namespace Microsoft::Xna::Framework;
 	#define UsingGraphicsNamespace using namespace Microsoft::Xna::Framework::Graphics;
 #elif GRAPHICS_SLIMDX
@@ -74,6 +79,10 @@
 	#define BtVectorToBtColor(color) (((int)(color.getX()*255) << 16) + ((int)(color.getY()*255) << 8) + (int)(color.getZ()*255))
 #elif GRAPHICS_XNA31
 	#define BtColor Microsoft::Xna::Framework::Graphics::Color
+	#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
+	#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
+#elif GRAPHICS_XNA40
+	#define BtColor Microsoft::Xna::Framework::Color
 	#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
 	#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
 #elif GRAPHICS_SLIMDX
