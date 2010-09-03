@@ -48,7 +48,7 @@
 				RuntimeLibrary="3"
 				EnableEnhancedInstructionSet="0"
 				FloatingPointModel="0"
-				UsePrecompiledHeader="1"
+				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -276,7 +276,7 @@
 				RuntimeLibrary="3"
 				EnableEnhancedInstructionSet="0"
 				FloatingPointModel="0"
-				UsePrecompiledHeader="1"
+				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -428,7 +428,7 @@
 				RuntimeLibrary="3"
 				EnableEnhancedInstructionSet="0"
 				FloatingPointModel="0"
-				UsePrecompiledHeader="1"
+				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -580,7 +580,7 @@
 				RuntimeLibrary="3"
 				EnableEnhancedInstructionSet="0"
 				FloatingPointModel="0"
-				UsePrecompiledHeader="1"
+				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -732,7 +732,7 @@
 				RuntimeLibrary="3"
 				EnableEnhancedInstructionSet="0"
 				FloatingPointModel="0"
-				UsePrecompiledHeader="1"
+				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -884,7 +884,7 @@
 				RuntimeLibrary="3"
 				EnableEnhancedInstructionSet="0"
 				FloatingPointModel="0"
-				UsePrecompiledHeader="1"
+				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -963,6 +963,14 @@
 				RelativePath=".\src\Stdafx.cpp"
 				>
 				<FileConfiguration
+					Name="Debug SlimDX|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Release SlimDX|Win32"
 					>
 					<Tool
@@ -979,7 +987,23 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
+					Name="Debug XNA 3.1|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Release NoGfx|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug NoGfx|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -995,6 +1019,14 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
+					Name="Debug Mogre|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Release OpenTK|Win32"
 					>
 					<Tool
@@ -1003,7 +1035,23 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
+					Name="Debug OpenTK|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Release Axiom|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug Axiom|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"

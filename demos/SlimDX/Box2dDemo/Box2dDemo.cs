@@ -195,9 +195,9 @@ namespace Box2dDemo
                 {
                     mesh.Render(body);
                 }
-                else if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.Convex2dShape)
+                else if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.Convex2DShape)
                 {
-                    Convex2dShape shape = Convex2dShape.Upcast2d(colObj.CollisionShape);
+                    Convex2DShape shape = Convex2DShape.Upcast2d(colObj.CollisionShape);
                     switch (shape.ChildShape.ShapeType)
                     {
                         case BroadphaseNativeType.ConvexHullShape:

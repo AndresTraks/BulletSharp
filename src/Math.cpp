@@ -6,11 +6,6 @@ UsingFrameworkNamespace
 
 using namespace BulletSharp;
 
-Vector3 BulletSharp::Math::BtVector3ToVector3(const btVector3* vector)
-{
-	return Vector3(vector->m_floats[0], vector->m_floats[1], vector->m_floats[2]);
-	//return Vector3(vector->getX(), vector->getY(), vector->getZ());
-}
 btVector3* BulletSharp::Math::Vector3ToBtVector3(Vector3 vector)
 {
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
@@ -32,12 +27,6 @@ void BulletSharp::Math::Vector3ToBtVector3(Vector3 vector, btVector3* vectorOut)
 #endif
 }
 
-
-Vector4 BulletSharp::Math::BtVector4ToVector4(const btVector4* vector)
-{
-	return Vector4(vector->m_floats[0], vector->m_floats[1], vector->m_floats[2], vector->m_floats[3]);
-	//return Vector4(vector->getX(), vector->getY(), vector->getZ(), vector->getW());
-}
 btVector4* BulletSharp::Math::Vector4ToBtVector4(Vector4 vector)
 {
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
@@ -178,10 +167,19 @@ btTransform* BulletSharp::Math::MatrixToBtTransform(Matrix matrix)
 
 void BulletSharp::Math::MatrixToBtTransform(Matrix matrix, btTransform* t)
 {
-	btScalar m[15];
-	t = new btTransform;
+	btMatrix3x3* basis;
+	btVector3* vector;
 
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+	basis = new btMatrix3x3();
+
+	btScalar m[12];
+
+	m[0] = matrix->m03;
+	m[1] = matrix->m13;
+	m[2] = matrix->m23;
+	vector = new btVector3(m[0], m[1], m[2]);
+
 	m[0] = matrix->m00;
 	m[1] = matrix->m10;
 	m[2] = matrix->m20;
@@ -194,30 +192,20 @@ void BulletSharp::Math::MatrixToBtTransform(Matrix matrix, btTransform* t)
 	m[9] = matrix->m12;
 	m[10] = matrix->m22;
 	m[11] = 0;
-	m[12] = matrix->m03;
-	m[13] = matrix->m13;
-	m[14] = matrix->m23;
-	m[15] = 1;
+	basis->setFromOpenGLSubMatrix(m);
 #else
-	m[0] = matrix.M11;
-	m[1] = matrix.M12;
-	m[2] = matrix.M13;
-	m[3] = 0;
-	m[4] = matrix.M21;
-	m[5] = matrix.M22;
-	m[6] = matrix.M23;
-	m[7] = 0;
-	m[8] = matrix.M31;
-	m[9] = matrix.M32;
-	m[10] = matrix.M33;
-	m[11] = 0;
-	m[12] = matrix.M41;
-	m[13] = matrix.M42;
-	m[14] = matrix.M43;
-	m[15] = 1;
+	basis = new btMatrix3x3(
+		matrix.M11, matrix.M12, matrix.M13,
+		matrix.M21, matrix.M22, matrix.M23,
+		matrix.M31, matrix.M32, matrix.M33);
+	vector = new btVector3(matrix.M41, matrix.M42, matrix.M43);
 #endif
 
-	t->setFromOpenGLMatrix(m);
+	t->setBasis(*basis);
+	delete basis;
+
+	t->setOrigin(*vector);
+	delete vector;
 }
 
 

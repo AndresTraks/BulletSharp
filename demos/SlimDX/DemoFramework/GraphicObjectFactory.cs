@@ -71,8 +71,8 @@ namespace DemoFramework
                 case BroadphaseNativeType.ConeShape:
                     RenderCone((ConeShape)shape);
                     return true;
-                case BroadphaseNativeType.Convex2dShape:
-                    return RenderConvex2dShape((Convex2dShape)shape);
+                case BroadphaseNativeType.Convex2DShape:
+                    return RenderConvex2dShape((Convex2DShape)shape);
                 case BroadphaseNativeType.CylinderShape:
                     RenderCylinder((CylinderShape)shape);
                     return true;
@@ -145,7 +145,7 @@ namespace DemoFramework
             sphereMesh.DrawSubset(0);
         }
 
-        public bool RenderConvex2dShape(Convex2dShape shape)
+        public bool RenderConvex2dShape(Convex2DShape shape)
         {
             CollisionShape childShape = shape.ChildShape.UpcastDetect();
 
@@ -189,9 +189,9 @@ namespace DemoFramework
             for (j = 0; j < softBody.Faces.Size; j++)
             {
                 BulletSharp.SoftBody.Face face = softBody.Faces[j];
-                verts.Write(face.n[0].x);
-                verts.Write(face.n[1].x);
-                verts.Write(face.n[2].x);
+                verts.Write(face.N[0].X);
+                verts.Write(face.N[1].X);
+                verts.Write(face.N[2].X);
 
                 indices.Write(j * 3);
                 indices.Write(j * 3 + 1);

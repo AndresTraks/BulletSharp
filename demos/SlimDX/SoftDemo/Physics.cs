@@ -197,7 +197,7 @@ namespace SoftDemo
         	SoftBody psb = SoftBodyHelpers.CreateRope(softBodyWorldInfo,
                 Vector3.Zero, new Vector3(0,-1,0), 0, 1);
 	        SoftWorld.AddSoftBody(psb);
-	        psb.Cfg.CHR = 0.5f;
+	        psb.Cfg.Chr = 0.5f;
 	        LocalCreateRigidBody(10, Matrix.Translation(0,20,0), new BoxShape(2));
         }
 
@@ -339,7 +339,7 @@ namespace SoftDemo
                         org + new Vector3(hg * 0.001f, hg, 0), sg, 1);
 			        
                     psb.Cfg.DP = 0.005f;
-			        psb.Cfg.CHR = 0.1f;
+			        psb.Cfg.Chr = 0.1f;
 			        for(int i=0;i<3;++i)
 			        {
 				        psb.GenerateBendingConstraints(2+i);

@@ -8,7 +8,7 @@
 
 DiscreteCollisionDetectorInterface::ClosestPointInput::ClosestPointInput()
 {
-	_input = new btDiscreteCollisionDetectorInterface::ClosestPointInput;
+	_input = new btDiscreteCollisionDetectorInterface::ClosestPointInput();
 }
 
 btScalar DiscreteCollisionDetectorInterface::ClosestPointInput::MaximumDistanceSquared::get()

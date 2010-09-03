@@ -8,6 +8,7 @@ namespace DistanceDemo
     {
         public bool HasDistanceResult;
         public Vector3 distanceFrom, distanceTo;
+        public float distance;
 
         Matrix rotBodyPosition = Matrix.Translation(0, 10, 0);
         Matrix body2Position = Matrix.Translation(0, 5, 0);
@@ -64,7 +65,9 @@ namespace DistanceDemo
             GjkPairDetector detector = new GjkPairDetector(colShape0, colShape1, sGjkSimplexSolver, null);
             detector.CachedSeparatingAxis = new Vector3(0.00000000f, 0.059727669f, 0.29259586f);
 
-            GjkPairDetector.ClosestPointInput input = new DiscreteCollisionDetectorInterface.ClosestPointInput();
+            GjkPairDetector.ClosestPointInput input = new GjkPairDetector.ClosestPointInput();
+            Matrix a = input.TransformA;
+            a.ToString();
             input.TransformA = rotBody.CenterOfMassTransform;
             input.TransformB = body2Position;
 
@@ -76,6 +79,7 @@ namespace DistanceDemo
                 HasDistanceResult = true;
                 distanceFrom = result.PointInWorld;
                 distanceTo = result.PointInWorld + result.NormalOnBInWorld * result.Distance;
+                distance = result.Distance;
             }
             else
             {

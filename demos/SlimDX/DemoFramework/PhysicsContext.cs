@@ -86,7 +86,7 @@ namespace DemoFramework
 
             DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
 
-            RigidBody.RigidBodyConstructionInfo rbInfo = new RigidBody.RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
+            RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
             RigidBody body = new RigidBody(rbInfo);
 
             World.AddRigidBody(body);

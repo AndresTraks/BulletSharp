@@ -249,6 +249,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -271,6 +272,7 @@
       <DebugInformationFormat>
       </DebugInformationFormat>
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -292,6 +294,7 @@
       <DebugInformationFormat>
       </DebugInformationFormat>
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -312,6 +315,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -334,6 +338,7 @@
       <DebugInformationFormat>
       </DebugInformationFormat>
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -354,6 +359,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -376,6 +382,7 @@
       <DebugInformationFormat>
       </DebugInformationFormat>
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -396,6 +403,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -418,6 +426,7 @@
       <DebugInformationFormat>
       </DebugInformationFormat>
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -438,6 +447,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -460,6 +470,7 @@
       <DebugInformationFormat>
       </DebugInformationFormat>
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -480,6 +491,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4793</DisableSpecificWarnings>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath.lib;BulletDynamics.lib;BulletCollision.lib;BulletSoftBody.lib;BulletWorldImporter.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -618,7 +630,10 @@
     <ClCompile Include="..\src\SpuGatheringCollisionDispatcher.cpp" />
     <ClCompile Include="..\src\StackAlloc.cpp" />
     <ClCompile Include="..\src\StaticPlaneShape.cpp" />
-    <ClCompile Include="..\src\Stdafx.cpp" />
+    <ClCompile Include="..\src\Stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release SlimDX|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release NoGfx|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\src\StridingMeshInterface.cpp" />
     <ClCompile Include="..\src\StringConv.cpp" />
     <ClCompile Include="..\src\TetrahedronShape.cpp" />

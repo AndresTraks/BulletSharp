@@ -25,9 +25,9 @@ namespace Box2dDemo
 
             Convex2dConvex2dAlgorithm.CreateFunc convexAlgo2d = new Convex2dConvex2dAlgorithm.CreateFunc(simplex, pdSolver);
 
-            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2dShape, BroadphaseNativeType.Convex2dShape, convexAlgo2d);
-            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Box2dShape, BroadphaseNativeType.Convex2dShape, convexAlgo2d);
-            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2dShape, BroadphaseNativeType.Box2dShape, convexAlgo2d);
+            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2DShape, BroadphaseNativeType.Convex2DShape, convexAlgo2d);
+            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Box2dShape, BroadphaseNativeType.Convex2DShape, convexAlgo2d);
+            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2DShape, BroadphaseNativeType.Box2dShape, convexAlgo2d);
             Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Box2dShape, BroadphaseNativeType.Box2dShape, new Box2dBox2dCollisionAlgorithm.CreateFunc());
 
             Broadphase = new DbvtBroadphase();
@@ -48,9 +48,9 @@ namespace Box2dDemo
             // Re-using the same collision is better for memory usage and performance
             float u = 0.96f;
             Vector3[] points = { new Vector3(0, u, 0), new Vector3(-u, -u, 0), new Vector3(u, -u, 0) };
-            ConvexShape colShape = new Convex2dShape(new BoxShape(1, 1, Depth));
-            ConvexShape colShape2 = new Convex2dShape(new ConvexHullShape(points));
-            ConvexShape colShape3 = new Convex2dShape(new CylinderShapeZ(1, 1, Depth));
+            ConvexShape colShape = new Convex2DShape(new BoxShape(1, 1, Depth));
+            ConvexShape colShape2 = new Convex2DShape(new ConvexHullShape(points));
+            ConvexShape colShape3 = new Convex2DShape(new CylinderShapeZ(1, 1, Depth));
 
             colShape.Margin = 0.03f;
             CollisionShapes.PushBack(colShape);
@@ -78,17 +78,17 @@ namespace Box2dDemo
                     //using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
                     DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
 
-                    RigidBody.RigidBodyConstructionInfo rbInfo;
+                    RigidBodyConstructionInfo rbInfo;
                     switch(j%3)
                     {
                         case 0:
-                            rbInfo = new RigidBody.RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
+                            rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
                             break;
                         case 1:
-                            rbInfo = new RigidBody.RigidBodyConstructionInfo(mass, myMotionState, colShape3, localInertia);
+                            rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, colShape3, localInertia);
                             break;
                         default:
-                            rbInfo = new RigidBody.RigidBodyConstructionInfo(mass, myMotionState, colShape2, localInertia);
+                            rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, colShape2, localInertia);
                             break;
                     }
                     RigidBody body = new RigidBody(rbInfo);

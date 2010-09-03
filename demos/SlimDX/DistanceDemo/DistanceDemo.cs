@@ -144,6 +144,15 @@ namespace DistanceDemo
                     Device.Material = passiveMaterial;
 
                 box.DrawSubset(0);
+
+                if (physics.HasDistanceResult)
+                {
+                    Device.SetTransform(TransformState.World, Matrix.Identity);
+                    PositionColored[] vertices = new PositionColored[2];
+                    vertices[0] = new PositionColored(physics.distanceFrom, -1);
+                    vertices[1] = new PositionColored(physics.distanceTo, -1);
+                    Device.DrawUserPrimitives(PrimitiveType.LineList, 1, vertices);
+                }
             }
 
             physics.DebugDrawWorld();

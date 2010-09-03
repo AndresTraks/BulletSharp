@@ -24,11 +24,17 @@ namespace BulletSharp
 	private ref class Math
 	{
 	public:
-		static Vector3 BtVector3ToVector3(const btVector3*);
+		static inline Vector3 BtVector3ToVector3(const btVector3* vector)
+		{
+			return Vector3(vector->m_floats[0], vector->m_floats[1], vector->m_floats[2]);
+		}
 		static btVector3* Vector3ToBtVector3(Vector3);
 		static void Vector3ToBtVector3(Vector3, btVector3*);
 
-		static Vector4 BtVector4ToVector4(const btVector4*);
+		static inline Vector4 BtVector4ToVector4(const btVector4* vector)
+		{
+			return Vector4(vector->m_floats[0], vector->m_floats[1], vector->m_floats[2], vector->m_floats[3]);
+		}
 		static btVector4* Vector4ToBtVector4(Vector4);
 		static void Vector4ToBtVector4(Vector4, btVector4*);
 

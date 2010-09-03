@@ -96,8 +96,8 @@ namespace SerializeDemo
                             // using motionstate is recommended, it provides interpolation capabilities
                             // and only synchronizes 'active' objects
                             DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
-                            RigidBody.RigidBodyConstructionInfo rbInfo =
-                                new RigidBody.RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
+                            RigidBodyConstructionInfo rbInfo =
+                                new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
                             RigidBody body = new RigidBody(rbInfo);
 
                             // make it drop from a height
