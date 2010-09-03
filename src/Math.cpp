@@ -195,9 +195,9 @@ void BulletSharp::Math::MatrixToBtTransform(Matrix matrix, btTransform* t)
 	basis->setFromOpenGLSubMatrix(m);
 #else
 	basis = new btMatrix3x3(
-		matrix.M11, matrix.M12, matrix.M13,
-		matrix.M21, matrix.M22, matrix.M23,
-		matrix.M31, matrix.M32, matrix.M33);
+		matrix.M11, matrix.M21, matrix.M31,
+		matrix.M12, matrix.M22, matrix.M32,
+		matrix.M13, matrix.M23, matrix.M33);
 	vector = new btVector3(matrix.M41, matrix.M42, matrix.M43);
 #endif
 

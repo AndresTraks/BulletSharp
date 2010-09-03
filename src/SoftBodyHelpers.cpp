@@ -57,29 +57,29 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromConvexHull(SoftBodyW
 
 	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->UnmanagedPointer,
 		btVertices, vertices->Length));
-	
+
 	delete[] btVertices;
 	return body;
 }
 
 BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTetGenData(SoftBodyWorldInfo^ worldInfo, String^ ele,
-	String^ face, String^ node, bool bfacelinks, bool btetralinks, bool bfacesfromtetras)
+	String^ face, String^ node, bool faceLinks, bool tetraLinks, bool facesfromtetras)
 {
 	const char* eleTemp = StringConv::ManagedToUnmanaged(ele);
 	const char* faceTemp = StringConv::ManagedToUnmanaged(face);
 	const char* nodeTemp = StringConv::ManagedToUnmanaged(node);
 
 	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTetGenData(*worldInfo->UnmanagedPointer,
-		eleTemp, faceTemp, nodeTemp, bfacelinks, btetralinks, bfacesfromtetras)
-	);
+		eleTemp, faceTemp, nodeTemp, faceLinks, tetraLinks, facesfromtetras)
+		);
 
 	StringConv::FreeUnmanagedString(eleTemp);
 	StringConv::FreeUnmanagedString(faceTemp);
 	StringConv::FreeUnmanagedString(nodeTemp);
 }
 
-BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyWorldInfo^ worldInfo, String^ ele,
-	String^ face, String^ node, bool bfacelinks, bool btetralinks, bool bfacesfromtetras)
+BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyWorldInfo^ worldInfo, String^ elementFilename,
+	String^ faceFilename, String^ nodeFilename, bool faceLinks, bool tetraLinks, bool facesfromtetras)
 {
 	FILE* f_read;
 	long fileSize;
@@ -88,13 +88,14 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyW
 	char* nodeStr;
 
 	// Read elements file
-	if (ele != nullptr)
+	if (elementFilename != nullptr)
 	{
-		const char* elementFileStr = StringConv::ManagedToUnmanaged(ele);
+		const char* elementFileStr = StringConv::ManagedToUnmanaged(elementFilename);
 		errno_t ret = fopen_s(&f_read, elementFileStr, "rb");
 		StringConv::FreeUnmanagedString(elementFileStr);
 		if (ret != 0)
 			return nullptr;
+
 		fseek(f_read, 0, SEEK_END);
 		fileSize = ftell(f_read);
 		elementStr = (char*) malloc(fileSize+1);
@@ -103,20 +104,24 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyW
 			fclose(f_read);
 			return nullptr;
 		}
+
 		fseek(f_read, 0, SEEK_SET);
-		fread(elementStr, 1, fileSize, f_read);
-		elementStr[fileSize] = 0;
+		ret = fread(elementStr, 1, fileSize, f_read);
 		fclose(f_read);
+		if (ret != fileSize)
+			return nullptr;
+
+		elementStr[fileSize] = 0;
 	}
 	else
 	{
 		elementStr = 0;
 	}
 
-	if (face != nullptr)
+	if (faceFilename != nullptr)
 	{
 		// Read faces file
-		const char* faceFileStr = StringConv::ManagedToUnmanaged(face);
+		const char* faceFileStr = StringConv::ManagedToUnmanaged(faceFilename);
 		errno_t ret = fopen_s(&f_read, faceFileStr, "rb");
 		StringConv::FreeUnmanagedString(faceFileStr);
 		if (ret != 0)
@@ -125,6 +130,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyW
 				free(elementStr);
 			return nullptr;
 		}
+
 		fseek(f_read, 0, SEEK_END);
 		fileSize = ftell(f_read);
 		faceStr = (char*) malloc(fileSize+1);
@@ -135,10 +141,18 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyW
 				free(elementStr);
 			return nullptr;
 		}
+
 		fseek(f_read, 0, SEEK_SET);
-		fread(faceStr, 1, fileSize, f_read);
-		faceStr[fileSize] = 0;
+		ret = fread(faceStr, 1, fileSize, f_read);
 		fclose(f_read);
+		if (ret != fileSize)
+		{
+			if (elementStr)
+				free(elementStr);
+			return nullptr;
+		}
+
+		faceStr[fileSize] = 0;
 	}
 	else
 	{
@@ -146,7 +160,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyW
 	}
 
 	// Read nodes file
-	const char* nodeFileStr = StringConv::ManagedToUnmanaged(node);
+	const char* nodeFileStr = StringConv::ManagedToUnmanaged(nodeFilename);
 	errno_t ret = fopen_s(&f_read, nodeFileStr, "rb");
 	StringConv::FreeUnmanagedString(nodeFileStr);
 	if (ret != 0)
@@ -157,6 +171,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyW
 			free(faceStr);
 		return nullptr;
 	}
+
 	fseek(f_read, 0, SEEK_END);
 	fileSize = ftell(f_read);
 	nodeStr = (char*) malloc(fileSize+1);
@@ -169,15 +184,26 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyW
 			free(faceStr);
 		return nullptr;
 	}
+
 	fseek(f_read, 0, SEEK_SET);
-	fread(nodeStr, 1, fileSize, f_read);
-	nodeStr[fileSize] = 0;
+	ret = fread(nodeStr, 1, fileSize, f_read);
 	fclose(f_read);
+	if (ret != fileSize)
+	{
+		if (elementStr)
+			free(elementStr);
+		if (faceStr)
+			free(faceStr);
+		free(nodeStr);
+		return nullptr;
+	}
+
+	nodeStr[fileSize] = 0;
 
 	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromTetGenData(
 		*worldInfo->UnmanagedPointer, elementStr, faceStr, nodeStr,
-		bfacelinks, btetralinks, bfacesfromtetras)
-	);
+		faceLinks, tetraLinks, facesfromtetras)
+		);
 
 	free(elementStr);
 	free(faceStr);

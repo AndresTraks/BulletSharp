@@ -12,13 +12,13 @@ namespace DistanceDemo
     {
         int Width = 1024, Height = 768;
         Color ambient = Color.Gray;
-        Vector3 eye = new Vector3(30, 20, 10);
-        Vector3 target = new Vector3(0, 5, 0);
+        Vector3 eye = new Vector3(10, 10, 5);
+        Vector3 target = new Vector3(0, 8, 0);
 
         Mesh box, groundBox;
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
-        
+
         Physics physics;
 
         public Device Device
@@ -39,7 +39,7 @@ namespace DistanceDemo
         protected override void OnInitializeDevice()
         {
             Form.ClientSize = new Size(Width, Height);
-            Form.Text = "BulletSharp - Basic Demo";
+            Form.Text = "BulletSharp - Convex Hull Distance Demo";
 
             DeviceSettings9 settings = new DeviceSettings9();
             settings.CreationFlags = CreateFlags.HardwareVertexProcessing;
@@ -57,7 +57,7 @@ namespace DistanceDemo
             }
         }
 
-        protected override void  OnInitialize()
+        protected override void OnInitialize()
         {
             // Create meshes to draw
             box = Mesh.CreateBox(Device, 2, 2, 2);
@@ -83,11 +83,8 @@ namespace DistanceDemo
 
             Freelook.SetEyeTarget(eye, target);
 
-            Fps.Text = "Move using mouse and WASD+shift\n" +
-                "F3 - Toggle debug\n" +
-                "F11 - Toggle fullscreen";
-
             physics = new Physics();
+            physics.SetDebugDrawMode(Device, DebugDrawModes.DrawWireframe);
         }
 
         protected override void OnResourceLoad()
@@ -110,7 +107,7 @@ namespace DistanceDemo
             if (Input.KeysPressed.Contains(Keys.F3))
             {
                 if (physics.IsDebugDrawEnabled == false)
-                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawAabb);
+                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawWireframe);
                 else
                     physics.SetDebugDrawMode(Device, DebugDrawModes.None);
             }
@@ -138,15 +135,18 @@ namespace DistanceDemo
                     continue;
                 }
 
+                /*
                 if (colObj.ActivationState == ActivationState.ActiveTag)
                     Device.Material = activeMaterial;
                 else
                     Device.Material = passiveMaterial;
 
                 box.DrawSubset(0);
+                */
 
                 if (physics.HasDistanceResult)
                 {
+                    Device.Material = activeMaterial;
                     Device.SetTransform(TransformState.World, Matrix.Identity);
                     PositionColored[] vertices = new PositionColored[2];
                     vertices[0] = new PositionColored(physics.distanceFrom, -1);
@@ -157,6 +157,10 @@ namespace DistanceDemo
 
             physics.DebugDrawWorld();
 
+            Fps.Text = "Move using mouse and WASD+shift\n" +
+                "F3 - Toggle debug\n" +
+                "F11 - Toggle fullscreen\n";
+            Fps.Text += "Distance: " + physics.distance.ToString("0.00");
             Fps.OnRender(FramesPerSecond);
 
             Device.EndScene();

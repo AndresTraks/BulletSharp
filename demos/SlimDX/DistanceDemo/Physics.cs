@@ -66,8 +66,6 @@ namespace DistanceDemo
             detector.CachedSeparatingAxis = new Vector3(0.00000000f, 0.059727669f, 0.29259586f);
 
             GjkPairDetector.ClosestPointInput input = new GjkPairDetector.ClosestPointInput();
-            Matrix a = input.TransformA;
-            a.ToString();
             input.TransformA = rotBody.CenterOfMassTransform;
             input.TransformB = body2Position;
 

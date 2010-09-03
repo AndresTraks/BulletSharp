@@ -7,8 +7,10 @@ namespace BulletSharp
 		ref class SoftBody;
 		ref class SoftBodyWorldInfo;
 
-		public ref class SoftBodyHelpers
+		public ref class SoftBodyHelpers sealed
 		{
+		private:
+			SoftBodyHelpers() {};
 		public:
 			static float CalculateUV(int resx, int resy, int ix, int iy, int id);
 			static SoftBody^ CreateEllipsoid(SoftBodyWorldInfo^ worldInfo,
@@ -19,10 +21,10 @@ namespace BulletSharp
 				array<Vector3>^ vertices);
 			static SoftBody^ CreateFromTetGenData(SoftBodyWorldInfo^ worldInfo,
 				String^ ele, String^ face, String^ node,
-				bool bfacelinks, bool btetralinks, bool bfacesfromtetras);
+				bool faceLinks, bool tetraLinks, bool facesFromTetras);
 			static SoftBody^ CreateFromTetGenFile(SoftBodyWorldInfo^ worldInfo,
-				String^ ele, String^ face, String^ node,
-				bool bfacelinks, bool btetralinks, bool bfacesfromtetras);
+				String^ elementFilename, String^ faceFilename, String^ nodeFilename,
+				bool faceLinks, bool tetraLinks, bool facesFromTetras);
 			//static SoftBody^ CreateFromTriMesh(SoftBodyWorldInfo^ worldInfo,
 			//	array<btScalar> vertices, array<int> triangles, int ntriangles,
 			//	bool randomizeConstraints);

@@ -99,12 +99,12 @@ namespace BulletSharp
 		public enum class FCollisions
 		{
 			RvsMask = btSoftBody::fCollision::RVSmask,
-			SdfRs = btSoftBody::fCollision::SDF_RS,
-			ClRs = btSoftBody::fCollision::CL_RS,
+			SdfRS = btSoftBody::fCollision::SDF_RS,
+			CLRS = btSoftBody::fCollision::CL_RS,
 			SvsMask = btSoftBody::fCollision::SVSmask,
-			VfSs = btSoftBody::fCollision::VF_SS,
-			ClSs = btSoftBody::fCollision::CL_SS,
-			ClSelf = btSoftBody::fCollision::CL_SELF,
+			VFSS = btSoftBody::fCollision::VF_SS,
+			CLSS = btSoftBody::fCollision::CL_SS,
+			CLSelf = btSoftBody::fCollision::CL_SELF,
 			Default = btSoftBody::fCollision::Default,
 			End = btSoftBody::fCollision::END
 		};

@@ -211,7 +211,7 @@ namespace SoftDemo
 		        new Vector3(+s,0,+s),
 		        15,15,1+2+4+8,true);
 	            psb.Materials[0].Lst = 0.4f;
-	            psb.Cfg.Collisions |= FCollisions.VfSs;
+	            psb.Cfg.Collisions |= FCollisions.VFSS;
 	            psb.TotalMass = 150;
 	            SoftWorld.AddSoftBody(psb);
             }
@@ -229,7 +229,7 @@ namespace SoftDemo
 		        pm.Flags -= FMaterial.DebugDraw;
 		        psb.GenerateBendingConstraints(2,pm);
 		        psb.Materials[0].Lst = 0.5f;
-		        psb.Cfg.Collisions |= FCollisions.VfSs;
+		        psb.Cfg.Collisions |= FCollisions.VFSS;
 		        psb.TotalMass = 150;
 		        SoftWorld.AddSoftBody(psb);
 		        cutting=true;
@@ -301,8 +301,8 @@ namespace SoftDemo
             //psb.CollisionShape.Margin = 0.5f;
 
 	        psb.CollisionShape.Margin = 0.01f;
-            psb.Cfg.Collisions = FCollisions.ClSs | FCollisions.ClRs;
-                // | SoftBody.FCollisions.ClSelf;
+            psb.Cfg.Collisions = FCollisions.CLSS | FCollisions.CLRS;
+                 // | SoftBody.FCollisions.CLSelf;
             psb.Materials[0].Lst = 0.8f;
 	        cutting=true;
         }
