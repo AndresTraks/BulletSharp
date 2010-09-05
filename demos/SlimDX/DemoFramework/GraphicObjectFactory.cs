@@ -176,22 +176,24 @@ namespace DemoFramework
 
         public void RenderSoftBody(SoftBody softBody)
         {
-            if (softBody.Faces.Size == 0)
+            FaceArray faces = softBody.Faces;
+
+            if (faces.Size == 0)
                 return;
 
-            Mesh mesh = new Mesh(device, softBody.Faces.Size, softBody.Faces.Size * 3,
+            Mesh mesh = new Mesh(device, faces.Size, faces.Size * 3,
                 MeshFlags.SystemMemory | MeshFlags.Use32Bit, VertexFormat.Position);
 
             SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.None);
             SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.None);
 
             int j;
-            for (j = 0; j < softBody.Faces.Size; j++)
+            for (j = 0; j < faces.Size; j++)
             {
-                BulletSharp.SoftBody.Face face = softBody.Faces[j];
-                verts.Write(face.N[0].X);
-                verts.Write(face.N[1].X);
-                verts.Write(face.N[2].X);
+                Node[] nodes = faces[j].N;
+                verts.Write(nodes[0].X);
+                verts.Write(nodes[1].X);
+                verts.Write(nodes[2].X);
 
                 indices.Write(j * 3);
                 indices.Write(j * 3 + 1);

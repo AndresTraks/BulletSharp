@@ -8,6 +8,9 @@
 #include "RigidBody.h"
 #include "SoftBody.h"
 #include "SparseSdf.h"
+#ifndef DISABLE_DBVT
+#include "Dbvt.h"
+#endif
 
 using namespace BulletSharp::SoftBody;
 
@@ -256,6 +259,18 @@ Face::Face(btSoftBody::Face* face)
 {
 }
 
+
+#ifndef DISABLE_DBVT
+DbvtNode^ Face::Leaf::get()
+{
+	return gcnew DbvtNode(UnmanagedPointer->m_leaf);
+}
+void Face::Leaf::set(DbvtNode^ value)
+{
+	UnmanagedPointer->m_leaf = value->UnmanagedPointer;
+}
+#endif
+
 array<BulletSharp::SoftBody::Node^>^ Face::N::get()
 {
 	array<Node^>^ nodeArray = gcnew array<Node^>(3);
@@ -280,6 +295,15 @@ void Face::Normal::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_normal);
 }
 
+btScalar Face::RestArea::get()
+{
+	return UnmanagedPointer->m_ra;
+}
+void Face::RestArea::set(btScalar value)
+{
+	UnmanagedPointer->m_ra = value;
+}
+
 btSoftBody::Face* Face::UnmanagedPointer::get()
 {
 	return (btSoftBody::Face*)Feature::UnmanagedPointer;
@@ -289,6 +313,78 @@ btSoftBody::Face* Face::UnmanagedPointer::get()
 Link::Link(btSoftBody::Link* link)
 : Feature(link)
 {
+}
+
+btScalar Link::C0::get()
+{
+	return UnmanagedPointer->m_c0;
+}
+void Link::C0::set(btScalar value)
+{
+	UnmanagedPointer->m_c0 = value;
+}
+
+btScalar Link::C1::get()
+{
+	return UnmanagedPointer->m_c1;
+}
+void Link::C1::set(btScalar value)
+{
+	UnmanagedPointer->m_c1 = value;
+}
+
+btScalar Link::C2::get()
+{
+	return UnmanagedPointer->m_c2;
+}
+void Link::C2::set(btScalar value)
+{
+	UnmanagedPointer->m_c2 = value;
+}
+
+Vector3 Link::C3::get()
+{
+	return Math::BtVector3ToVector3(&UnmanagedPointer->m_c3);
+}
+void Link::C3::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_c3);
+}
+
+bool Link::IsBending::get()
+{
+	return UnmanagedPointer->m_bbending;
+}
+void Link::IsBending::set(bool value)
+{
+	UnmanagedPointer->m_bbending = value;
+}
+
+array<BulletSharp::SoftBody::Node^>^ Link::N::get()
+{
+	array<Node^>^ nodeArray = gcnew array<Node^>(2);
+	nodeArray[0] = gcnew Node(UnmanagedPointer->m_n[0]);
+	nodeArray[1] = gcnew Node(UnmanagedPointer->m_n[1]);
+	return nodeArray;
+}
+void Link::N::set(array<BulletSharp::SoftBody::Node^>^ value)
+{
+	UnmanagedPointer->m_n[0] = value[0]->UnmanagedPointer;
+	UnmanagedPointer->m_n[1] = value[1]->UnmanagedPointer;
+}
+
+btScalar Link::RestLength::get()
+{
+	return UnmanagedPointer->m_rl;
+}
+void Link::RestLength::set(btScalar value)
+{
+	UnmanagedPointer->m_rl = value;
+}
+
+btSoftBody::Link* Link::UnmanagedPointer::get()
+{
+	return (btSoftBody::Link*)Feature::UnmanagedPointer;
 }
 
 
@@ -344,13 +440,60 @@ BulletSharp::SoftBody::Node::Node(btSoftBody::Node* node)
 {
 }
 
-Vector3 BulletSharp::SoftBody::Node::X::get()
+btScalar BulletSharp::SoftBody::Node::Area::get()
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->m_x);
+	return UnmanagedPointer->m_area;
 }
-void BulletSharp::SoftBody::Node::X::set(Vector3 value)
+void BulletSharp::SoftBody::Node::Area::set(btScalar value)
 {
-	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_x);
+	UnmanagedPointer->m_area = value;
+}
+
+Vector3 BulletSharp::SoftBody::Node::Force::get()
+{
+	return Math::BtVector3ToVector3(&UnmanagedPointer->m_f);
+}
+void BulletSharp::SoftBody::Node::Force::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_f);
+}
+
+btScalar BulletSharp::SoftBody::Node::InverseMass::get()
+{
+	return UnmanagedPointer->m_im;
+}
+void BulletSharp::SoftBody::Node::InverseMass::set(btScalar value)
+{
+	UnmanagedPointer->m_im = value;
+}
+
+bool BulletSharp::SoftBody::Node::IsAttached::get()
+{
+	return UnmanagedPointer->m_battach;
+}
+void BulletSharp::SoftBody::Node::IsAttached::set(bool value)
+{
+	UnmanagedPointer->m_battach = value;
+}
+
+#ifndef DISABLE_DBVT
+DbvtNode^ BulletSharp::SoftBody::Node::Leaf::get()
+{
+	return gcnew DbvtNode(UnmanagedPointer->m_leaf);
+}
+void BulletSharp::SoftBody::Node::Leaf::set(DbvtNode^ value)
+{
+	UnmanagedPointer->m_leaf = value->UnmanagedPointer;
+}
+#endif
+
+Vector3 BulletSharp::SoftBody::Node::Normal::get()
+{
+	return Math::BtVector3ToVector3(&UnmanagedPointer->m_n);
+}
+void BulletSharp::SoftBody::Node::Normal::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_n);
 }
 
 Vector3 BulletSharp::SoftBody::Node::Q::get()
@@ -360,6 +503,24 @@ Vector3 BulletSharp::SoftBody::Node::Q::get()
 void BulletSharp::SoftBody::Node::Q::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_q);
+}
+
+Vector3 BulletSharp::SoftBody::Node::Velocity::get()
+{
+	return Math::BtVector3ToVector3(&UnmanagedPointer->m_v);
+}
+void BulletSharp::SoftBody::Node::Velocity::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_v);
+}
+
+Vector3 BulletSharp::SoftBody::Node::X::get()
+{
+	return Math::BtVector3ToVector3(&UnmanagedPointer->m_x);
+}
+void BulletSharp::SoftBody::Node::X::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_x);
 }
 
 btSoftBody::Node* BulletSharp::SoftBody::Node::UnmanagedPointer::get()
@@ -560,6 +721,15 @@ FaceArray^ BulletSharp::SoftBody::SoftBody::Faces::get()
 void BulletSharp::SoftBody::SoftBody::Faces::set(FaceArray^ value)
 {
 	UnmanagedPointer->m_faces = *value->UnmanagedPointer;
+}
+
+LinkArray^ BulletSharp::SoftBody::SoftBody::Links::get()
+{
+	return gcnew LinkArray(&UnmanagedPointer->m_links);
+}
+void BulletSharp::SoftBody::SoftBody::Links::set(LinkArray^ value)
+{
+	UnmanagedPointer->m_links = *value->UnmanagedPointer;
 }
 
 MaterialArray^ BulletSharp::SoftBody::SoftBody::Materials::get()

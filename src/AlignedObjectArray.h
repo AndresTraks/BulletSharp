@@ -80,7 +80,7 @@ namespace BulletSharp
 		property BroadphasePair^ default [int]
 		{
 			BroadphasePair^ get (int index);
-			void set(int index, BroadphasePair^);
+			void set(int index, BroadphasePair^ value);
 		}
 
 	internal:
@@ -114,7 +114,7 @@ namespace BulletSharp
 		property CollisionShape^ default [int]
 		{
 			CollisionShape^ get (int index);
-			void set(int index, CollisionShape^);
+			void set(int index, CollisionShape^ value);
 		}
 
 	internal:
@@ -153,7 +153,7 @@ namespace BulletSharp
 		property CollisionObject^ default [int]
 		{
 			CollisionObject^ get (int index);
-			void set(int index, CollisionObject^);
+			void set(int index, CollisionObject^ value);
 		}
 
 	internal:
@@ -214,7 +214,7 @@ namespace BulletSharp
 		property CompoundShapeChild^ default [int]
 		{
 			CompoundShapeChild^ get (int index);
-			void set(int index, CompoundShapeChild^);
+			void set(int index, CompoundShapeChild^ value);
 		}
 
 	internal:
@@ -270,7 +270,7 @@ namespace BulletSharp
 		property DbvtNode^ default [int]
 		{
 			DbvtNode^ get (int index);
-			void set(int index, DbvtNode^);
+			void set(int index, DbvtNode^ value);
 		}
 
 	internal:
@@ -307,7 +307,7 @@ namespace BulletSharp
 		property Dbvt::StkNn^ default [int]
 		{
 			Dbvt::StkNn^ get (int index);
-			void set(int index, Dbvt::StkNn^);
+			void set(int index, Dbvt::StkNn^ value);
 		}
 
 	internal:
@@ -344,7 +344,7 @@ namespace BulletSharp
 		property Dbvt::StkNps^ default [int]
 		{
 			Dbvt::StkNps^ get (int index);
-			void set(int index, Dbvt::StkNps^);
+			void set(int index, Dbvt::StkNps^ value);
 		}
 
 	internal:
@@ -385,7 +385,7 @@ namespace BulletSharp
 			property Face^ default [int]
 			{
 				Face^ get (int index);
-				void set(int index, Face^);
+				void set(int index, Face^ value);
 			}
 
 		internal:
@@ -424,7 +424,7 @@ namespace BulletSharp
 		property int default [int]
 		{
 			int get (int index);
-			void set(int index, int);
+			void set(int index, int value);
 		}
 
 	internal:
@@ -461,7 +461,7 @@ namespace BulletSharp
 		property PersistentManifold^ default [int]
 		{
 			PersistentManifold^ get (int index);
-			void set(int index, PersistentManifold^);
+			void set(int index, PersistentManifold^ value);
 		}
 
 	internal:
@@ -474,6 +474,43 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
+		public ref class LinkArray : AlignedObjectArray
+		{
+		internal:
+			LinkArray(btSoftBody::tLinkArray* linkArray);
+
+		public:
+			LinkArray();
+
+			void Clear();
+			void PopBack();
+			void PushBack(Link^ link);
+			void Remove(Link^ link);
+			void Swap(int index0, int index1);
+
+			property int Size
+			{
+				int get();
+			}
+
+			property int Capacity
+			{
+				int get();
+			}
+
+			property Link^ default [int]
+			{
+				Link^ get (int index);
+				void set(int index, Link^ value);
+			}
+
+		internal:
+			property btSoftBody::tLinkArray* UnmanagedPointer
+			{
+				virtual btSoftBody::tLinkArray* get() new;
+			}
+		};
+
 		public ref class MaterialArray : AlignedObjectArray
 		{
 		internal:
@@ -501,7 +538,7 @@ namespace BulletSharp
 			property Material^ default [int]
 			{
 				Material^ get (int index);
-				void set(int index, Material^);
+				void set(int index, Material^ value);
 			}
 
 		internal:
@@ -538,7 +575,7 @@ namespace BulletSharp
 			property Node^ default [int]
 			{
 				Node^ get (int index);
-				void set(int index, Node^);
+				void set(int index, Node^ value);
 			}
 
 		internal:
@@ -578,7 +615,7 @@ namespace BulletSharp
 		property WheelInfo^ default [int]
 		{
 			WheelInfo^ get (int index);
-			void set(int index, WheelInfo^);
+			void set(int index, WheelInfo^ value);
 		}
 
 	internal:

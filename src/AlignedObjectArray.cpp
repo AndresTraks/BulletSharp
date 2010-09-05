@@ -772,13 +772,82 @@ btManifoldArray* ManifoldArray::UnmanagedPointer::get()
 
 
 #ifndef DISABLE_SOFTBODY
+LinkArray::LinkArray(btSoftBody::tLinkArray* linkArray)
+: AlignedObjectArray(linkArray)
+{
+}
+
+LinkArray::LinkArray()
+: AlignedObjectArray(new btSoftBody::tLinkArray())
+{
+}
+
+void LinkArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+void LinkArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+void LinkArray::PushBack(BulletSharp::SoftBody::Link^ link)
+{
+	UnmanagedPointer->push_back(*link->UnmanagedPointer);
+}
+
+void LinkArray::Remove(BulletSharp::SoftBody::Link^ link)
+{
+	// FIXME
+	//UnmanagedPointer->remove((*link->UnmanagedPointer));
+}
+
+int LinkArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int LinkArray::Size::get()
+{
+	return UnmanagedPointer->size();
+}
+
+void LinkArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+BulletSharp::SoftBody::Link^ LinkArray::default::get(int index)
+{
+	return gcnew Link(&(*UnmanagedPointer)[index]);
+}
+
+#pragma managed(push, off)
+void LinkArray_GetDefault(btSoftBody::tLinkArray* linkArray,
+	int index, btSoftBody::Link* link)
+{
+	(*linkArray)[index] = *link;
+}
+#pragma managed(pop)
+void LinkArray::default::set(int index, BulletSharp::SoftBody::Link^ value)
+{
+	LinkArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+}
+
+btSoftBody::tLinkArray* LinkArray::UnmanagedPointer::get()
+{
+	return (btSoftBody::tLinkArray*)AlignedObjectArray::UnmanagedPointer;
+}
+
+
 MaterialArray::MaterialArray(btSoftBody::tMaterialArray* materialArray)
 : AlignedObjectArray(materialArray)
 {
 }
 
 MaterialArray::MaterialArray()
-: AlignedObjectArray(new btAlignedObjectArray<btSoftBody::Material>)
+: AlignedObjectArray(new btSoftBody::tMaterialArray())
 {
 }
 

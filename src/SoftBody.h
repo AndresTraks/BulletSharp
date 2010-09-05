@@ -10,6 +10,7 @@ namespace BulletSharp
 {
 	ref class BroadphaseInterface;
 	ref class CollisionObjectArray;
+	ref class DbvtNode;
 	ref class Dispatcher;
 	ref class RigidBody;
 	ref class SparseSdf;
@@ -17,7 +18,9 @@ namespace BulletSharp
 	namespace SoftBody
 	{
 		ref class FaceArray;
+		ref class LinkArray;
 		ref class Material;
+		ref class Node;
 		ref class MaterialArray;
 		ref class NodeArray;
 
@@ -211,12 +214,14 @@ namespace BulletSharp
 		internal:
 			Feature(btSoftBody::Feature* feature);
 
+		public:
 			property BulletSharp::SoftBody::Material^ Material
 			{
 				BulletSharp::SoftBody::Material^ get();
 				void set(BulletSharp::SoftBody::Material^ value);
 			}
 
+		internal:
 			property btSoftBody::Feature* UnmanagedPointer
 			{
 				btSoftBody::Feature* get() new;
@@ -227,6 +232,55 @@ namespace BulletSharp
 		{
 		internal:
 			Link(btSoftBody::Link* link);
+
+		public:
+			property btScalar C0
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar C1
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar C2
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property Vector3 C3
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property bool IsBending
+			{
+				bool get();
+				void set(bool value);
+			}
+
+			property array<Node^>^ N
+			{
+				array<Node^>^ get();
+				void set(array<Node^>^ value);
+			}
+
+			property btScalar RestLength
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+		internal:
+			property btSoftBody::Link* UnmanagedPointer
+			{
+				btSoftBody::Link* get() new;
+			}
 		};
 
 		public ref class Material : Element
@@ -272,13 +326,57 @@ namespace BulletSharp
 			Node(btSoftBody::Node* node);
 
 		public:
-			property Vector3 X
+			property btScalar Area
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property Vector3 Force
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property btScalar InverseMass
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property bool IsAttached
+			{
+				bool get();
+				void set(bool value);
+			}
+
+#ifndef DISABLE_DBVT
+			property DbvtNode^ Leaf
+			{
+				DbvtNode^ get();
+				void set(DbvtNode^ value);
+			}
+#endif
+
+			property Vector3 Normal
 			{
 				Vector3 get();
 				void set(Vector3 value);
 			}
 
 			property Vector3 Q
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property Vector3 Velocity
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property Vector3 X
 			{
 				Vector3 get();
 				void set(Vector3 value);
@@ -297,6 +395,13 @@ namespace BulletSharp
 			Face(btSoftBody::Face* face);
 
 		public:
+#ifndef DISABLE_DBVT
+			property DbvtNode^ Leaf
+			{
+				DbvtNode^ get();
+				void set(DbvtNode^ value);
+			}
+#endif
 			property array<Node^>^ N
 			{
 				array<Node^>^ get();
@@ -307,6 +412,12 @@ namespace BulletSharp
 			{
 				Vector3 get();
 				void set(Vector3 set);
+			}
+
+			property btScalar RestArea
+			{
+				btScalar get();
+				void set(btScalar value);
 			}
 
 		internal:
@@ -378,6 +489,12 @@ namespace BulletSharp
 			{
 				FaceArray^ get();
 				void set(FaceArray^ value);
+			}
+
+			property LinkArray^ Links
+			{
+				LinkArray^ get();
+				void set(LinkArray^ value);
 			}
 
 			property MaterialArray^ Materials
