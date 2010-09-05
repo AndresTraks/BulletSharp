@@ -23,6 +23,11 @@ btSoftBodyWorldInfo* SoftBodyWorldInfo_New()
 }
 #pragma managed(pop)
 
+SoftBodyWorldInfo::SoftBodyWorldInfo(btSoftBodyWorldInfo* info)
+{
+	_info = info;
+}
+
 SoftBodyWorldInfo::SoftBodyWorldInfo()
 {
 	_info = SoftBodyWorldInfo_New();
@@ -535,6 +540,108 @@ Note::Note(btSoftBody::Note* note)
 }
 
 
+Pose::Pose(btSoftBody::Pose* pose)
+{
+	_pose = pose;
+}
+
+bool Pose::IsFrameValid::get()
+{
+	return _pose->m_bframe;
+}
+void Pose::IsFrameValid::set(bool value)
+{
+	_pose->m_bframe = value;
+}
+
+bool Pose::IsVolumeValid::get()
+{
+	return _pose->m_bvolume;
+}
+void Pose::IsVolumeValid::set(bool value)
+{
+	_pose->m_bvolume = value;
+}
+
+btScalar Pose::Volume::get()
+{
+	return _pose->m_volume;
+}
+void Pose::Volume::set(btScalar value)
+{
+	_pose->m_volume = value;
+}
+
+btSoftBody::Pose* Pose::UnmanagedPointer::get()
+{
+	return _pose;
+}
+void Pose::UnmanagedPointer::set(btSoftBody::Pose* pose)
+{
+	_pose = pose;
+}
+
+
+SolverState::SolverState(btSoftBody::SolverState* solverState)
+{
+	_solverState = solverState;
+}
+
+btScalar SolverState::InverseSdt::get()
+{
+	return _solverState->isdt;
+}
+void SolverState::InverseSdt::set(btScalar value)
+{
+	_solverState->isdt = value;
+}
+
+btScalar SolverState::RadialMargin::get()
+{
+	return _solverState->radmrg;
+}
+void SolverState::RadialMargin::set(btScalar value)
+{
+	_solverState->radmrg = value;
+}
+
+btScalar SolverState::Sdt::get()
+{
+	return _solverState->sdt;
+}
+void SolverState::Sdt::set(btScalar value)
+{
+	_solverState->sdt = value;
+}
+
+btScalar SolverState::VelocityMargin::get()
+{
+	return _solverState->velmrg;
+}
+void SolverState::VelocityMargin::set(btScalar value)
+{
+	_solverState->velmrg = value;
+}
+
+btScalar SolverState::UpdateMargin::get()
+{
+	return _solverState->updmrg;
+}
+void SolverState::UpdateMargin::set(btScalar value)
+{
+	_solverState->updmrg = value;
+}
+
+btSoftBody::SolverState* SolverState::UnmanagedPointer::get()
+{
+	return _solverState;
+}
+void SolverState::UnmanagedPointer::set(btSoftBody::SolverState* solverState)
+{
+	_solverState = solverState;
+}
+
+
 Tetra::Tetra(btSoftBody::Tetra* tetra)
 : Feature(tetra)
 {
@@ -617,6 +724,16 @@ void BulletSharp::SoftBody::SoftBody::AppendLink(int node0, int node1)
 	UnmanagedPointer->appendLink(node0, node1);
 }
 
+bool BulletSharp::SoftBody::SoftBody::CheckFace(int node0, int node1, int node2)
+{
+	return UnmanagedPointer->checkFace(node0, node1, node2);
+}
+
+bool BulletSharp::SoftBody::SoftBody::CheckLink(int node0, int node1)
+{
+	return UnmanagedPointer->checkLink(node0, node1);
+}
+
 int BulletSharp::SoftBody::SoftBody::GenerateBendingConstraints(int distance, Material^ material)
 {
 	return UnmanagedPointer->generateBendingConstraints(distance, material->UnmanagedPointer);
@@ -696,6 +813,19 @@ BulletSharp::SoftBody::SoftBody^ BulletSharp::SoftBody::SoftBody::Upcast(Collisi
 	return gcnew SoftBody(body);
 }
 
+array<Vector3>^ BulletSharp::SoftBody::SoftBody::Bounds::get()
+{
+	array<Vector3>^ boundsArray = gcnew array<Vector3>(2);
+	boundsArray[0] = Math::BtVector3ToVector3(&UnmanagedPointer->m_bounds[0]);
+	boundsArray[1] = Math::BtVector3ToVector3(&UnmanagedPointer->m_bounds[1]);
+	return boundsArray;
+}
+void BulletSharp::SoftBody::SoftBody::Bounds::set(array<Vector3>^ value)
+{
+	Math::Vector3ToBtVector3(value[0], &UnmanagedPointer->m_bounds[0]);
+	Math::Vector3ToBtVector3(value[1], &UnmanagedPointer->m_bounds[1]);
+}
+
 Config^ BulletSharp::SoftBody::SoftBody::Cfg::get()
 {
 	return gcnew Config(&UnmanagedPointer->m_cfg);
@@ -732,6 +862,15 @@ void BulletSharp::SoftBody::SoftBody::Links::set(LinkArray^ value)
 	UnmanagedPointer->m_links = *value->UnmanagedPointer;
 }
 
+Matrix BulletSharp::SoftBody::SoftBody::InitialWorldTransform::get()
+{
+	return Math::BtTransformToMatrix(&UnmanagedPointer->m_initialWorldTransform);
+}
+void BulletSharp::SoftBody::SoftBody::InitialWorldTransform::set(Matrix value)
+{
+	return Math::MatrixToBtTransform(value, &UnmanagedPointer->m_initialWorldTransform);
+}
+
 MaterialArray^ BulletSharp::SoftBody::SoftBody::Materials::get()
 {
 	return gcnew MaterialArray(&UnmanagedPointer->m_materials);
@@ -750,6 +889,39 @@ void BulletSharp::SoftBody::SoftBody::Nodes::set(NodeArray^ value)
 	UnmanagedPointer->m_nodes = *value->UnmanagedPointer;
 }
 
+Pose^ BulletSharp::SoftBody::SoftBody::Pose::get()
+{
+	return gcnew BulletSharp::SoftBody::Pose(&UnmanagedPointer->m_pose);
+}
+#pragma managed(push, off)
+void SoftBody_SetPose(btSoftBody* body, btSoftBody::Pose* pose)
+{
+	body->m_pose = *pose;
+}
+#pragma managed(pop)
+void BulletSharp::SoftBody::SoftBody::Pose::set(BulletSharp::SoftBody::Pose^ value)
+{
+	SoftBody_SetPose(UnmanagedPointer, value->UnmanagedPointer);
+}
+
+SolverState^ BulletSharp::SoftBody::SoftBody::SolverState::get()
+{
+	return gcnew BulletSharp::SoftBody::SolverState(&UnmanagedPointer->m_sst);
+}
+void BulletSharp::SoftBody::SoftBody::SolverState::set(BulletSharp::SoftBody::SolverState^ value)
+{
+	UnmanagedPointer->m_sst = *value->UnmanagedPointer;
+}
+
+btScalar BulletSharp::SoftBody::SoftBody::TimeAccumulator::get()
+{
+	return UnmanagedPointer->m_timeacc;
+}
+void BulletSharp::SoftBody::SoftBody::TimeAccumulator::set(btScalar value)
+{
+	UnmanagedPointer->m_timeacc = value;
+}
+
 btScalar BulletSharp::SoftBody::SoftBody::TotalMass::get()
 {
 	return UnmanagedPointer->getTotalMass();
@@ -758,6 +930,73 @@ void BulletSharp::SoftBody::SoftBody::TotalMass::set(btScalar value)
 {
 	UnmanagedPointer->setTotalMass(value);
 }
+
+bool BulletSharp::SoftBody::SoftBody::UpdateRuntimeConstants::get()
+{
+	return UnmanagedPointer->m_bUpdateRtCst;
+}
+void BulletSharp::SoftBody::SoftBody::UpdateRuntimeConstants::set(bool value)
+{
+	UnmanagedPointer->m_bUpdateRtCst = value;
+}
+
+IntArray^ BulletSharp::SoftBody::SoftBody::UserIndexMapping::get()
+{
+	return gcnew IntArray(&UnmanagedPointer->m_userIndexMapping);
+}
+void BulletSharp::SoftBody::SoftBody::UserIndexMapping::set(IntArray^ value)
+{
+	UnmanagedPointer->m_userIndexMapping = *value->UnmanagedPointer;
+}
+
+Vector3 BulletSharp::SoftBody::SoftBody::WindVelocity::get()
+{
+	return Math::BtVector3ToVector3(&UnmanagedPointer->getWindVelocity());
+}
+void BulletSharp::SoftBody::SoftBody::WindVelocity::set(Vector3 value)
+{
+	btVector3* tempWindVelocity = Math::Vector3ToBtVector3(value);
+	UnmanagedPointer->setWindVelocity(*tempWindVelocity);
+	delete tempWindVelocity;
+}
+
+SoftBodyWorldInfo^ BulletSharp::SoftBody::SoftBody::WorldInfo::get()
+{
+	return gcnew SoftBodyWorldInfo(UnmanagedPointer->getWorldInfo());
+}
+void BulletSharp::SoftBody::SoftBody::WorldInfo::set(SoftBodyWorldInfo^ value)
+{
+	UnmanagedPointer->m_worldInfo = value->UnmanagedPointer;
+}
+
+#ifndef DISABLE_DBVT
+Dbvt^ BulletSharp::SoftBody::SoftBody::ClusterDbvt::get()
+{
+	return gcnew Dbvt(&UnmanagedPointer->m_cdbvt);
+}
+void BulletSharp::SoftBody::SoftBody::ClusterDbvt::set(Dbvt^ value)
+{
+	UnmanagedPointer->m_cdbvt = *value->UnmanagedPointer;
+}
+
+Dbvt^ BulletSharp::SoftBody::SoftBody::FaceDbvt::get()
+{
+	return gcnew Dbvt(&UnmanagedPointer->m_fdbvt);
+}
+void BulletSharp::SoftBody::SoftBody::FaceDbvt::set(Dbvt^ value)
+{
+	UnmanagedPointer->m_fdbvt = *value->UnmanagedPointer;
+}
+
+Dbvt^ BulletSharp::SoftBody::SoftBody::NodeDbvt::get()
+{
+	return gcnew Dbvt(&UnmanagedPointer->m_ndbvt);
+}
+void BulletSharp::SoftBody::SoftBody::NodeDbvt::set(Dbvt^ value)
+{
+	UnmanagedPointer->m_ndbvt = *value->UnmanagedPointer;
+}
+#endif
 
 btSoftBody* BulletSharp::SoftBody::SoftBody::UnmanagedPointer::get()
 {

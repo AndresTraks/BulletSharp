@@ -10,8 +10,10 @@ namespace BulletSharp
 {
 	ref class BroadphaseInterface;
 	ref class CollisionObjectArray;
+	ref class Dbvt;
 	ref class DbvtNode;
 	ref class Dispatcher;
+	ref class IntArray;
 	ref class RigidBody;
 	ref class SparseSdf;
 
@@ -28,6 +30,9 @@ namespace BulletSharp
 		{
 		private:
 			btSoftBodyWorldInfo* _info;
+
+		internal:
+			SoftBodyWorldInfo(btSoftBodyWorldInfo* info);
 
 		public:
 			SoftBodyWorldInfo();
@@ -433,6 +438,88 @@ namespace BulletSharp
 			Note(btSoftBody::Note* note);
 		};
 
+		public ref class Pose
+		{
+		private:
+			btSoftBody::Pose* _pose;
+
+		internal:
+			Pose(btSoftBody::Pose* pose);
+
+		public:
+			property bool IsFrameValid
+			{
+				bool get();
+				void set(bool value);
+			}
+
+			property bool IsVolumeValid
+			{
+				bool get();
+				void set(bool value);
+			}
+
+			property btScalar Volume
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+		internal:
+			property btSoftBody::Pose* UnmanagedPointer
+			{
+				btSoftBody::Pose* get();
+				void set(btSoftBody::Pose* value);
+			};
+		};
+
+		public ref class SolverState
+		{
+		private:
+			btSoftBody::SolverState* _solverState;
+
+		internal:
+			SolverState(btSoftBody::SolverState* solverState);
+
+		public:
+			property btScalar InverseSdt
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar RadialMargin
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar Sdt
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar UpdateMargin
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar VelocityMargin
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+		internal:
+			property btSoftBody::SolverState* UnmanagedPointer
+			{
+				btSoftBody::SolverState* get();
+				void set(btSoftBody::SolverState* value);
+			};
+		};
+
 		public ref class Tetra : Feature
 		{
 		internal:
@@ -457,6 +544,8 @@ namespace BulletSharp
 			void AppendLink(int node0, int node1, Material^ material);
 			void AppendLink(int node0, int node1);
 			Material^ AppendMaterial();
+			bool CheckFace(int node0, int node1, int node2);
+			bool CheckLink(int node0, int node1);
 			int GenerateBendingConstraints(int distance, Material^ material);
 			int GenerateBendingConstraints(int distance);
 			int GenerateClusters(int k, int maxIterations);
@@ -472,6 +561,12 @@ namespace BulletSharp
 			void Translate(btScalar x, btScalar y, btScalar z); // helper
 
 			static SoftBody^ Upcast(CollisionObject^ colObj);
+
+			property array<Vector3>^ Bounds
+			{
+				array<Vector3>^ get();
+				void set(array<Vector3>^ value);
+			}
 
 			property Config^ Cfg
 			{
@@ -489,6 +584,12 @@ namespace BulletSharp
 			{
 				FaceArray^ get();
 				void set(FaceArray^ value);
+			}
+
+			property Matrix InitialWorldTransform
+			{
+				Matrix get();
+				void set(Matrix value);
 			}
 
 			property LinkArray^ Links
@@ -509,11 +610,73 @@ namespace BulletSharp
 				void set(NodeArray^ value);
 			}
 
+			property Pose^ Pose
+			{
+				BulletSharp::SoftBody::Pose^ get();
+				void set(BulletSharp::SoftBody::Pose^ value);
+			}
+
+			property SolverState^ SolverState
+			{
+				BulletSharp::SoftBody::SolverState^ get();
+				void set(BulletSharp::SoftBody::SolverState^ value);
+			}
+
+			property btScalar TimeAccumulator
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
 			property btScalar TotalMass
 			{
 				btScalar get();
 				void set(btScalar value);
 			}
+
+			property bool UpdateRuntimeConstants
+			{
+				bool get();
+				void set(bool value);
+			}
+
+			property IntArray^ UserIndexMapping
+			{
+				IntArray^ get();
+				void set(IntArray^ value);
+			}
+
+			property Vector3 WindVelocity
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property SoftBodyWorldInfo^ WorldInfo
+			{
+				SoftBodyWorldInfo^ get();
+				void set(SoftBodyWorldInfo^ value);
+			}
+
+#ifndef DISABLE_DBVT
+			property Dbvt^ ClusterDbvt
+			{
+				Dbvt^ get();
+				void set(Dbvt^ value);
+			}
+
+			property Dbvt^ FaceDbvt
+			{
+				Dbvt^ get();
+				void set(Dbvt^ value);
+			}
+
+			property Dbvt^ NodeDbvt
+			{
+				Dbvt^ get();
+				void set(Dbvt^ value);
+			}
+#endif
 
 		internal:
 			property btSoftBody* UnmanagedPointer
