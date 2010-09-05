@@ -278,7 +278,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>C:\Program Files\SlimDX SDK (June 2010)\Bin\net40;C:\Program Files (x86)\SlimDX SDK (June 2010)\Bin\net40;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(PROGRAMFILES)\SlimDX SDK (June 2010)\Bin\net40;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_SLIMDX;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
@@ -299,7 +299,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release SlimDX|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>C:\Program Files\SlimDX SDK (June 2010)\Bin\net40;C:\Program Files (x86)\SlimDX SDK (June 2010)\Bin\net40;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(ProgramFiles)\SlimDX SDK (June 2010)\Bin\net40;$(ProgramFiles(x86))\SlimDX SDK (June 2010)\Bin\net40;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_SLIMDX;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -321,7 +321,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release XNA 3.1|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>C:\Program Files\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\;C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(ProgramFiles)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\;$(ProgramFiles(x86))\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_XNA31;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -343,7 +343,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release XNA 4.0|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>C:\Program Files\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\;C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(ProgramFiles)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\;$(ProgramFiles(x86))\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_XNA40;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -366,7 +366,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>C:\Program Files\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\;C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(PROGRAMFILES)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\;$(PROGRAMFILES(x86))\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_XNA31;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
@@ -388,7 +388,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>C:\Program Files\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\;C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(ProgramFiles)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\;$(ProgramFiles(x86))\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_XNA40;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
@@ -497,7 +497,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release OpenTK|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>C:\Program Files\OpenTK\1.0\Binaries\OpenTK\Release;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(PROGRAMFILES)\OpenTK\1.0\Binaries\OpenTK\Release;$(USERPROFILE)\My Documents\OpenTK\1.0\Binaries\OpenTK\Release;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_OPENTK;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -520,7 +520,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>D:\src\bullet\src;</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>C:\Program Files\OpenTK\1.0\Binaries\OpenTK\Debug;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(PROGRAMFILES)\OpenTK\1.0\Binaries\OpenTK\Debug;$(USERPROFILE)\My Documents\OpenTK\1.0\Binaries\OpenTK\Debug;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_OPENTK;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>

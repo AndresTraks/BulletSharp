@@ -40,7 +40,11 @@
 	#using <x64/SlimDX.dll>
 #endif
 #elif GRAPHICS_MOGRE
+	#if _DEBUG
+	#using <Mogre_d.dll>
+	#else
 	#using <Mogre.dll>
+#endif
 #elif GRAPHICS_OPENTK
 	#using <OpenTK.dll>
 #elif GRAPHICS_AXIOM

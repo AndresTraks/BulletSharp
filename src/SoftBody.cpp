@@ -540,43 +540,43 @@ Note::Note(btSoftBody::Note* note)
 }
 
 
-Pose::Pose(btSoftBody::Pose* pose)
+BulletSharp::SoftBody::Pose::Pose(btSoftBody::Pose* pose)
 {
 	_pose = pose;
 }
 
-bool Pose::IsFrameValid::get()
+bool BulletSharp::SoftBody::Pose::IsFrameValid::get()
 {
 	return _pose->m_bframe;
 }
-void Pose::IsFrameValid::set(bool value)
+void BulletSharp::SoftBody::Pose::IsFrameValid::set(bool value)
 {
 	_pose->m_bframe = value;
 }
 
-bool Pose::IsVolumeValid::get()
+bool BulletSharp::SoftBody::Pose::IsVolumeValid::get()
 {
 	return _pose->m_bvolume;
 }
-void Pose::IsVolumeValid::set(bool value)
+void BulletSharp::SoftBody::Pose::IsVolumeValid::set(bool value)
 {
 	_pose->m_bvolume = value;
 }
 
-btScalar Pose::Volume::get()
+btScalar BulletSharp::SoftBody::Pose::Volume::get()
 {
 	return _pose->m_volume;
 }
-void Pose::Volume::set(btScalar value)
+void BulletSharp::SoftBody::Pose::Volume::set(btScalar value)
 {
 	_pose->m_volume = value;
 }
 
-btSoftBody::Pose* Pose::UnmanagedPointer::get()
+btSoftBody::Pose* BulletSharp::SoftBody::Pose::UnmanagedPointer::get()
 {
 	return _pose;
 }
-void Pose::UnmanagedPointer::set(btSoftBody::Pose* pose)
+void BulletSharp::SoftBody::Pose::UnmanagedPointer::set(btSoftBody::Pose* pose)
 {
 	_pose = pose;
 }
@@ -889,7 +889,7 @@ void BulletSharp::SoftBody::SoftBody::Nodes::set(NodeArray^ value)
 	UnmanagedPointer->m_nodes = *value->UnmanagedPointer;
 }
 
-Pose^ BulletSharp::SoftBody::SoftBody::Pose::get()
+BulletSharp::SoftBody::Pose^ BulletSharp::SoftBody::SoftBody::Pose::get()
 {
 	return gcnew BulletSharp::SoftBody::Pose(&UnmanagedPointer->m_pose);
 }
