@@ -545,6 +545,24 @@ BulletSharp::SoftBody::Pose::Pose(btSoftBody::Pose* pose)
 	_pose = pose;
 }
 
+Matrix BulletSharp::SoftBody::Pose::Aqq::get()
+{
+	return Math::BtMatrix3x3ToMatrix(&UnmanagedPointer->m_aqq);
+}
+void BulletSharp::SoftBody::Pose::Aqq::set(Matrix value)
+{
+	Math::MatrixToBtMatrix3x3(value, &UnmanagedPointer->m_aqq);
+}
+
+Vector3 BulletSharp::SoftBody::Pose::Com::get()
+{
+	return Math::BtVector3ToVector3(&UnmanagedPointer->m_com);
+}
+void BulletSharp::SoftBody::Pose::Com::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_com);
+}
+
 bool BulletSharp::SoftBody::Pose::IsFrameValid::get()
 {
 	return _pose->m_bframe;
@@ -563,6 +581,33 @@ void BulletSharp::SoftBody::Pose::IsVolumeValid::set(bool value)
 	_pose->m_bvolume = value;
 }
 
+Vector3Array^ BulletSharp::SoftBody::Pose::Positions::get()
+{
+	return gcnew Vector3Array(&_pose->m_pos);
+}
+void BulletSharp::SoftBody::Pose::Positions::set(Vector3Array^ value)
+{
+	_pose->m_pos = *value->UnmanagedPointer;
+}
+
+Matrix BulletSharp::SoftBody::Pose::Rotation::get()
+{
+	return Math::BtMatrix3x3ToMatrix(&UnmanagedPointer->m_rot);
+}
+void BulletSharp::SoftBody::Pose::Rotation::set(Matrix value)
+{
+	Math::MatrixToBtMatrix3x3(value, &UnmanagedPointer->m_rot);
+}
+
+Matrix BulletSharp::SoftBody::Pose::Scale::get()
+{
+	return Math::BtMatrix3x3ToMatrix(&UnmanagedPointer->m_scl);
+}
+void BulletSharp::SoftBody::Pose::Scale::set(Matrix value)
+{
+	Math::MatrixToBtMatrix3x3(value, &UnmanagedPointer->m_scl);
+}
+
 btScalar BulletSharp::SoftBody::Pose::Volume::get()
 {
 	return _pose->m_volume;
@@ -570,6 +615,15 @@ btScalar BulletSharp::SoftBody::Pose::Volume::get()
 void BulletSharp::SoftBody::Pose::Volume::set(btScalar value)
 {
 	_pose->m_volume = value;
+}
+
+ScalarArray^ BulletSharp::SoftBody::Pose::Weights::get()
+{
+	return gcnew ScalarArray(&_pose->m_wgh);
+}
+void BulletSharp::SoftBody::Pose::Weights::set(ScalarArray^ value)
+{
+	_pose->m_wgh = *value->UnmanagedPointer;
 }
 
 btSoftBody::Pose* BulletSharp::SoftBody::Pose::UnmanagedPointer::get()

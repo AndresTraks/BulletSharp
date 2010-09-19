@@ -178,8 +178,8 @@ namespace BulletSharp
 		}
 
 		property Object^ CurrentBase { 
-            virtual Object^ get() sealed = IEnumerator::Current::get;
-        };
+			virtual Object^ get() sealed = IEnumerator::Current::get;
+		};
 
 		virtual bool MoveNext();
 		virtual void Reset();
@@ -586,6 +586,80 @@ namespace BulletSharp
 		};
 	};
 #endif
+
+	public ref class ScalarArray : AlignedObjectArray
+	{
+	internal:
+		ScalarArray(btAlignedObjectArray<btScalar>* btScalarArray);
+
+	public:
+		ScalarArray();
+
+		void Clear();
+		void PopBack();
+		void PushBack(btScalar intValue);
+		void Remove(btScalar intValue);
+		void Swap(int index0, int index1);
+
+		property int Size
+		{
+			int get();
+		}
+
+		property int Capacity
+		{
+			int get();
+		}
+
+		property btScalar default [int]
+		{
+			btScalar get (int index);
+			void set(int index, btScalar value);
+		}
+
+	internal:
+		property btAlignedObjectArray<btScalar>* UnmanagedPointer
+		{
+			virtual btAlignedObjectArray<btScalar>* get() new;
+		}
+	};
+
+	public ref class Vector3Array : AlignedObjectArray
+	{
+	internal:
+		Vector3Array(btAlignedObjectArray<btVector3>* vector3Array);
+
+	public:
+		Vector3Array();
+
+		void Clear();
+		void PopBack();
+		void PushBack(Vector3 vector3Value);
+		void Remove(Vector3 vector3Value);
+		void Swap(int index0, int index1);
+
+		property int Size
+		{
+			int get();
+		}
+
+		property int Capacity
+		{
+			int get();
+		}
+
+		property Vector3 default [int]
+		{
+			Vector3 get (int index);
+			void set(int index, Vector3 value);
+		}
+
+	internal:
+		property btAlignedObjectArray<btVector3>* UnmanagedPointer
+		{
+			virtual btAlignedObjectArray<btVector3>* get() new;
+		}
+	};
 
 #ifndef DISABLE_VEHICLE
 	public ref class WheelInfoArray : AlignedObjectArray

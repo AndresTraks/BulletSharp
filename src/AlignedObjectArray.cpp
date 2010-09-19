@@ -978,6 +978,130 @@ btAlignedObjectArray<btSoftBody::Node>* BulletSharp::SoftBody::NodeArray::Unmana
 }
 #endif
 
+
+ScalarArray::ScalarArray(btAlignedObjectArray<btScalar>* btScalarArray)
+: AlignedObjectArray(btScalarArray)
+{
+}
+
+ScalarArray::ScalarArray()
+: AlignedObjectArray(new btAlignedObjectArray<btScalar>)
+{
+}
+
+void ScalarArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+void ScalarArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+void ScalarArray::PushBack(btScalar intValue)
+{
+	UnmanagedPointer->push_back(intValue);
+}
+
+void ScalarArray::Remove(btScalar intValue)
+{
+	UnmanagedPointer->remove(intValue);
+}
+
+int ScalarArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int ScalarArray::Size::get()
+{
+	return UnmanagedPointer->size();
+}
+
+void ScalarArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+btScalar ScalarArray::default::get(int index)
+{
+	return (*UnmanagedPointer)[index];
+}
+void ScalarArray::default::set(int index, btScalar value)
+{
+	(*UnmanagedPointer)[index] = value;
+}
+
+btAlignedObjectArray<btScalar>* ScalarArray::UnmanagedPointer::get()
+{
+	return (btAlignedObjectArray<btScalar>*)AlignedObjectArray::UnmanagedPointer;
+}
+
+
+Vector3Array::Vector3Array(btAlignedObjectArray<btVector3>* vector3Array)
+: AlignedObjectArray(vector3Array)
+{
+}
+
+Vector3Array::Vector3Array()
+: AlignedObjectArray(new btAlignedObjectArray<btVector3>)
+{
+}
+
+void Vector3Array::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+void Vector3Array::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+void Vector3Array::PushBack(Vector3 vector3Value)
+{
+	btVector3* tempVector3Value = Math::Vector3ToBtVector3(vector3Value);
+	UnmanagedPointer->push_back(*tempVector3Value);
+	delete tempVector3Value;
+}
+
+void Vector3Array::Remove(Vector3 vector3Value)
+{
+	btVector3* tempVector3Value = Math::Vector3ToBtVector3(vector3Value);
+	UnmanagedPointer->remove(*tempVector3Value);
+	delete tempVector3Value;
+}
+
+int Vector3Array::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int Vector3Array::Size::get()
+{
+	return UnmanagedPointer->size();
+}
+
+void Vector3Array::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+Vector3 Vector3Array::default::get(int index)
+{
+	return Math::BtVector3ToVector3(&(*UnmanagedPointer)[index]);
+}
+void Vector3Array::default::set(int index, Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &(*UnmanagedPointer)[index]);
+}
+
+btAlignedObjectArray<btVector3>* Vector3Array::UnmanagedPointer::get()
+{
+	return (btAlignedObjectArray<btVector3>*)AlignedObjectArray::UnmanagedPointer;
+}
+
 #ifndef DISABLE_VEHICLE
 WheelInfoArray::WheelInfoArray(btAlignedObjectArray<btWheelInfo>* wheelInfoArray)
 : AlignedObjectArray(wheelInfoArray)

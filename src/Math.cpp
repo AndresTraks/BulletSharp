@@ -289,7 +289,36 @@ btMatrix3x3* BulletSharp::Math::MatrixToBtMatrix3x3(Matrix matrix)
 	m[9] = matrix.M32;
 	m[10] = matrix.M33;
 #endif
-	t->setFromOpenGLSubMatrix(m);
 
+	t->setFromOpenGLSubMatrix(m);
 	return t;
+}
+
+void BulletSharp::Math::MatrixToBtMatrix3x3(Matrix matrix, btMatrix3x3* t)
+{
+	btScalar m[12];
+
+#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+	m[0] = matrix->m00;
+	m[1] = matrix->m10;
+	m[2] = matrix->m20;
+	m[4] = matrix->m01;
+	m[5] = matrix->m11;
+	m[6] = matrix->m21;
+	m[8] = matrix->m02;
+	m[9] = matrix->m12;
+	m[10] = matrix->m22;
+#else
+	m[0] = matrix.M11;
+	m[1] = matrix.M12;
+	m[2] = matrix.M13;
+	m[4] = matrix.M21;
+	m[5] = matrix.M22;
+	m[6] = matrix.M23;
+	m[8] = matrix.M31;
+	m[9] = matrix.M32;
+	m[10] = matrix.M33;
+#endif
+
+	t->setFromOpenGLSubMatrix(m);
 }

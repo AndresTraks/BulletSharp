@@ -15,7 +15,9 @@ namespace BulletSharp
 	ref class Dispatcher;
 	ref class IntArray;
 	ref class RigidBody;
+	ref class ScalarArray;
 	ref class SparseSdf;
+	ref class Vector3Array;
 
 	namespace SoftBody
 	{
@@ -102,7 +104,17 @@ namespace BulletSharp
 			FOneSided = btSoftBody::eAeroModel::F_OneSided,
 			End = btSoftBody::eAeroModel::END
 		};
-
+/*
+		[Flags]
+		public enum class EFeature
+		{
+			None = btSoftBody::eFeature::None,
+			Node = btSoftBody::eFeature::Node,
+			Link = btSoftBody::eFeature::Link,
+			Face = btSoftBody::eFeature::Face,
+			End = btSoftBody::eFeature::END
+		};
+*/
 		[Flags]
 		public enum class FCollisions
 		{
@@ -124,7 +136,33 @@ namespace BulletSharp
 			Default = btSoftBody::fMaterial::Default,
 			End = btSoftBody::fMaterial::END
 		};
+/*
+		[Flags]
+		public enum class PSolver
+		{
+			Linear = btSoftBody::ePSolver::Linear,
+			Anchors = btSoftBody::ePSolver::Anchors,
+			RigidContacts = btSoftBody::ePSolver::RContacts,
+			SoftContacts = btSoftBody::ePSolver::SContacts,
+			End = btSoftBody::ePSolver::END
+		};
 
+		[Flags]
+		public enum class SolverPresets
+		{
+			Positions = btSoftBody::eSolverPresets::Positions,
+			Velocities = btSoftBody::eSolverPresets::Velocities,
+			Default = btSoftBody::eSolverPresets::Default,
+			End = btSoftBody::eSolverPresets::END
+		};
+
+		[Flags]
+		public enum class VSolver
+		{
+			Linear = btSoftBody::eVSolver::Linear,
+			End = btSoftBody::eVSolver::END
+		};
+*/
 		public ref class Config
 		{
 		private:
@@ -447,6 +485,18 @@ namespace BulletSharp
 			Pose(btSoftBody::Pose* pose);
 
 		public:
+			property Matrix Aqq
+			{
+				Matrix get();
+				void set(Matrix value);
+			}
+
+			property Vector3 Com
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
 			property bool IsFrameValid
 			{
 				bool get();
@@ -459,10 +509,34 @@ namespace BulletSharp
 				void set(bool value);
 			}
 
+			property Vector3Array^ Positions
+			{
+				Vector3Array^ get();
+				void set(Vector3Array^ value);
+			}
+
+			property Matrix Rotation
+			{
+				Matrix get();
+				void set(Matrix value);
+			}
+
+			property Matrix Scale
+			{
+				Matrix get();
+				void set(Matrix value);
+			}
+
 			property btScalar Volume
 			{
 				btScalar get();
 				void set(btScalar value);
+			}
+
+			property ScalarArray^ Weights
+			{
+				ScalarArray^ get();
+				void set(ScalarArray^ value);
 			}
 
 		internal:
