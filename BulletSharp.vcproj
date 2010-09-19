@@ -1599,6 +1599,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\QuickProf.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\Scalar.cpp"
 					>
 				</File>
@@ -2210,6 +2214,10 @@
 				</File>
 				<File
 					RelativePath=".\src\PoolAllocator.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\QuickProf.h"
 					>
 				</File>
 				<File

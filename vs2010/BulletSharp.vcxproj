@@ -686,6 +686,7 @@
     <ClCompile Include="..\src\PoolAllocator.cpp" />
     <ClCompile Include="..\src\QuantizedBvh.cpp" />
     <ClCompile Include="..\src\Quaternion.cpp" />
+    <ClCompile Include="..\src\QuickProf.cpp" />
     <ClCompile Include="..\src\RaycastVehicle.cpp" />
     <ClCompile Include="..\src\RigidBody.cpp" />
     <ClCompile Include="..\src\Scalar.cpp" />
@@ -847,6 +848,7 @@
     <ClInclude Include="..\src\PoolAllocator.h" />
     <ClInclude Include="..\src\QuantizedBvh.h" />
     <ClInclude Include="..\src\Quaternion.h" />
+    <ClInclude Include="..\src\QuickProf.h" />
     <ClInclude Include="..\src\RaycastVehicle.h" />
     <ClInclude Include="..\src\RigidBody.h" />
     <ClInclude Include="..\src\Scalar.h" />
