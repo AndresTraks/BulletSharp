@@ -8,6 +8,7 @@
 #include "RigidBody.h"
 #include "SoftBody.h"
 #include "SparseSdf.h"
+#include "StringConv.h"
 #ifndef DISABLE_DBVT
 #include "Dbvt.h"
 #endif
@@ -724,11 +725,6 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, array<Ve
 	delete[] x_ptr;
 }
 
-BulletSharp::SoftBody::Material^ BulletSharp::SoftBody::SoftBody::AppendMaterial()
-{
-	return gcnew Material(UnmanagedPointer->appendMaterial());
-}
-
 void BulletSharp::SoftBody::SoftBody::AddForce(Vector3 force, int node)
 {
 	btVector3* forceTemp = Math::Vector3ToBtVector3(force);
@@ -763,6 +759,31 @@ void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body)
 	UnmanagedPointer->appendAnchor(node, body->UnmanagedPointer);
 }
 
+void BulletSharp::SoftBody::SoftBody::AppendFace(int node0, int node1, int node2, Material^ material)
+{
+	UnmanagedPointer->appendFace(node0, node1, node2, material->UnmanagedPointer);
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendFace(int node0, int node1, int node2)
+{
+	UnmanagedPointer->appendFace(node0, node1, node2);
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendFace(int model, Material^ material)
+{
+	UnmanagedPointer->appendFace(model, material->UnmanagedPointer);
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendFace(int model)
+{
+	UnmanagedPointer->appendFace(model);
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendFace()
+{
+	UnmanagedPointer->appendFace();
+}
+
 void BulletSharp::SoftBody::SoftBody::AppendLink(int node0, int node1, Material^ material, bool bCheckExist)
 {
 	UnmanagedPointer->appendLink(node0, node1, material->UnmanagedPointer, bCheckExist);
@@ -778,6 +799,177 @@ void BulletSharp::SoftBody::SoftBody::AppendLink(int node0, int node1)
 	UnmanagedPointer->appendLink(node0, node1);
 }
 
+void BulletSharp::SoftBody::SoftBody::AppendLink(Node^ node0, Node^ node1, Material^ material, bool bCheckExist)
+{
+	UnmanagedPointer->appendLink(node0->UnmanagedPointer, node1->UnmanagedPointer, material->UnmanagedPointer, bCheckExist);
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendLink(Node^ node0, Node^ node1, Material^ material)
+{
+	UnmanagedPointer->appendLink(node0->UnmanagedPointer, node1->UnmanagedPointer, material->UnmanagedPointer);
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendLink(Node^ node0, Node^ node1)
+{
+	UnmanagedPointer->appendLink(node0->UnmanagedPointer, node1->UnmanagedPointer);
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendLink(int model, Material^ material)
+{
+	UnmanagedPointer->appendLink(model, material->UnmanagedPointer);
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendLink(int model)
+{
+	UnmanagedPointer->appendLink(model);
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendLink()
+{
+	UnmanagedPointer->appendLink();
+}
+
+BulletSharp::SoftBody::Material^ BulletSharp::SoftBody::SoftBody::AppendMaterial()
+{
+	return gcnew Material(UnmanagedPointer->appendMaterial());
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Vector4 c, Node^ n0, Node^ n1, Node^ n2, Node^ n3)
+{
+	const char* textTemp = StringConv::ManagedToUnmanaged(text);
+	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+	btVector4* cTemp = Math::Vector4ToBtVector4(c);
+
+	UnmanagedPointer->appendNote(textTemp, *oTemp, *cTemp, n0->UnmanagedPointer, n1->UnmanagedPointer, n2->UnmanagedPointer, n3->UnmanagedPointer);
+
+	StringConv::FreeUnmanagedString(textTemp);
+	delete oTemp;
+	delete cTemp;
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Vector4 c, Node^ n0, Node^ n1, Node^ n2)
+{
+	const char* textTemp = StringConv::ManagedToUnmanaged(text);
+	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+	btVector4* cTemp = Math::Vector4ToBtVector4(c);
+
+	UnmanagedPointer->appendNote(textTemp, *oTemp, *cTemp, n0->UnmanagedPointer, n1->UnmanagedPointer, n2->UnmanagedPointer);
+
+	StringConv::FreeUnmanagedString(textTemp);
+	delete oTemp;
+	delete cTemp;
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Vector4 c, Node^ n0, Node^ n1)
+{
+	const char* textTemp = StringConv::ManagedToUnmanaged(text);
+	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+	btVector4* cTemp = Math::Vector4ToBtVector4(c);
+
+	UnmanagedPointer->appendNote(textTemp, *oTemp, *cTemp, n0->UnmanagedPointer, n1->UnmanagedPointer);
+
+	StringConv::FreeUnmanagedString(textTemp);
+	delete oTemp;
+	delete cTemp;
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Vector4 c, Node^ n0)
+{
+	const char* textTemp = StringConv::ManagedToUnmanaged(text);
+	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+	btVector4* cTemp = Math::Vector4ToBtVector4(c);
+
+	UnmanagedPointer->appendNote(textTemp, *oTemp, *cTemp, n0->UnmanagedPointer);
+
+	StringConv::FreeUnmanagedString(textTemp);
+	delete oTemp;
+	delete cTemp;
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Vector4 c)
+{
+	const char* textTemp = StringConv::ManagedToUnmanaged(text);
+	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+	btVector4* cTemp = Math::Vector4ToBtVector4(c);
+
+	UnmanagedPointer->appendNote(textTemp, *oTemp, *cTemp);
+
+	StringConv::FreeUnmanagedString(textTemp);
+	delete oTemp;
+	delete cTemp;
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendNode(Vector3 x, btScalar m)
+{
+	btVector3* xTemp = Math::Vector3ToBtVector3(x);
+	UnmanagedPointer->appendNode(*xTemp, m);
+	delete xTemp;
+}
+
+void SoftBody_AppendNote(btSoftBody* body, const char* text, btVector3* c)
+{
+	body->appendNote(text, *c);
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o)
+{
+	const char* textTemp = StringConv::ManagedToUnmanaged(text);
+	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+
+	SoftBody_AppendNote(UnmanagedPointer, textTemp, oTemp);
+
+	StringConv::FreeUnmanagedString(textTemp);
+	delete oTemp;
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Node^ feature)
+{
+	const char* textTemp = StringConv::ManagedToUnmanaged(text);
+	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+
+	UnmanagedPointer->appendNote(textTemp, *oTemp, feature->UnmanagedPointer);
+
+	StringConv::FreeUnmanagedString(textTemp);
+	delete oTemp;
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Link^ feature)
+{
+	const char* textTemp = StringConv::ManagedToUnmanaged(text);
+	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+
+	UnmanagedPointer->appendNote(textTemp, *oTemp, feature->UnmanagedPointer);
+
+	StringConv::FreeUnmanagedString(textTemp);
+	delete oTemp;
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Face^ feature)
+{
+	const char* textTemp = StringConv::ManagedToUnmanaged(text);
+	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+
+	UnmanagedPointer->appendNote(textTemp, *oTemp, feature->UnmanagedPointer);
+
+	StringConv::FreeUnmanagedString(textTemp);
+	delete oTemp;
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendTetra(int model, Material^ material)
+{
+	UnmanagedPointer->appendTetra(model, material->UnmanagedPointer);
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendTetra(int node0, int node1, int node2, int node3, Material^ material)
+{
+	UnmanagedPointer->appendTetra(node0, node1, node2, node3, material->UnmanagedPointer);
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendTetra(int node0, int node1, int node2, int node3)
+{
+	UnmanagedPointer->appendTetra(node0, node1, node2, node3);
+}
+
 bool BulletSharp::SoftBody::SoftBody::CheckFace(int node0, int node1, int node2)
 {
 	return UnmanagedPointer->checkFace(node0, node1, node2);
@@ -786,6 +978,11 @@ bool BulletSharp::SoftBody::SoftBody::CheckFace(int node0, int node1, int node2)
 bool BulletSharp::SoftBody::SoftBody::CheckLink(int node0, int node1)
 {
 	return UnmanagedPointer->checkLink(node0, node1);
+}
+
+bool BulletSharp::SoftBody::SoftBody::CheckLink(Node^ node0, Node^ node1)
+{
+	return UnmanagedPointer->checkLink(node0->UnmanagedPointer, node1->UnmanagedPointer);
 }
 
 int BulletSharp::SoftBody::SoftBody::GenerateBendingConstraints(int distance, Material^ material)
