@@ -163,6 +163,38 @@ namespace BulletSharp
 			End = btSoftBody::eVSolver::END
 		};
 */
+		public ref class Body
+		{
+		private:
+			btSoftBody::Body* _body;
+
+		public:
+			Body();
+
+		internal:
+			property btSoftBody::Body* UnmanagedPointer
+			{
+				btSoftBody::Body* get();
+				void set(btSoftBody::Body* value);
+			};
+		};
+
+		public ref class Cluster
+		{
+		private:
+			btSoftBody::Cluster* _cluster;
+
+		public:
+			Cluster();
+
+		internal:
+			property btSoftBody::Cluster* UnmanagedPointer
+			{
+				btSoftBody::Cluster* get();
+				void set(btSoftBody::Cluster* value);
+			};
+		};
+
 		public ref class Config
 		{
 		private:
@@ -232,6 +264,7 @@ namespace BulletSharp
 				void set(btScalar value);
 			}
 
+		internal:
 			property btSoftBody::Config* UnmanagedPointer
 			{
 				btSoftBody::Config* get();
@@ -241,8 +274,10 @@ namespace BulletSharp
 
 		public ref class Element
 		{
-		internal:
+		private:
 			btSoftBody::Element* _element;
+
+		internal:
 			Element(btSoftBody::Element* element);
 
 			property btSoftBody::Element* UnmanagedPointer
@@ -269,6 +304,74 @@ namespace BulletSharp
 			{
 				btSoftBody::Feature* get() new;
 			}
+		};
+
+		public ref class Impulse
+		{
+		private:
+			btSoftBody::Impulse* _impulse;
+
+		public:
+			Impulse();
+
+		internal:
+			property btSoftBody::Impulse* UnmanagedPointer
+			{
+				btSoftBody::Impulse* get();
+				void set(btSoftBody::Impulse* value);
+			};
+		};
+
+		public ref class Joint
+		{
+		public:
+			ref class Specs
+			{
+			private:
+				btSoftBody::Joint::Specs* _specs;
+
+			internal:
+				property btSoftBody::Joint::Specs* UnmanagedPointer
+				{
+					btSoftBody::Joint::Specs* get();
+					void set(btSoftBody::Joint::Specs* value);
+				};
+			};
+
+		private:
+			btSoftBody::Joint* _joint;
+		};
+
+		public ref class LJoint : Joint
+		{
+		public:
+			ref class Specs : Joint::Specs
+			{
+			public:
+				Specs();
+
+			internal:
+				property btSoftBody::LJoint::Specs* UnmanagedPointer
+				{
+					btSoftBody::LJoint::Specs* get() new;
+				};
+			};
+		};
+
+		public ref class AJoint : Joint
+		{
+		public:
+			ref class Specs : Joint::Specs
+			{
+			public:
+				Specs();
+
+			internal:
+				property btSoftBody::AJoint::Specs* UnmanagedPointer
+				{
+					btSoftBody::AJoint::Specs* get() new;
+				};
+			};
 		};
 
 		public ref class Link : Feature
@@ -619,6 +722,12 @@ namespace BulletSharp
 			void AppendFace(int model, Material^ material);
 			void AppendFace(int model);
 			void AppendFace();
+			void AppendLinearJoint(LJoint::Specs^ specs, Cluster^ body0, Body^ body1);
+			void AppendLinearJoint(LJoint::Specs^ specs, Body^ body1);
+			void AppendLinearJoint(LJoint::Specs^ specs, SoftBody^ body1);
+			void AppendAngularJoint(AJoint::Specs^ specs, Cluster^ body0, Body^ body1);
+			void AppendAngularJoint(AJoint::Specs^ specs, Body^ body1);
+			void AppendAngularJoint(AJoint::Specs^ specs, SoftBody^ body1);
 			void AppendLink(int node0, int node1, Material^ material, bool bCheckExist);
 			void AppendLink(int node0, int node1, Material^ material);
 			void AppendLink(int node0, int node1);
@@ -645,14 +754,33 @@ namespace BulletSharp
 			bool CheckFace(int node0, int node1, int node2);
 			bool CheckLink(int node0, int node1);
 			bool CheckLink(Node^ node0, Node^ node1);
+			static Vector3 ClusterCom(Cluster^ cluster);
+			Vector3 ClusterCom(int cluster);
+			static Vector3 ClusterVelocity(Cluster^ cluster, Vector3 rpos);
+			static void ClusterVImpulse(Cluster^ cluster, Vector3 rpos, Vector3 impulse);
+			static void ClusterDImpulse(Cluster^ cluster, Vector3 rpos, Vector3 impulse);
+			static void ClusterImpulse(Cluster^ cluster, Vector3 rpos, Impulse^ impulse);
+			static void ClusterVAImpulse(Cluster^ cluster, Vector3 impulse);
+			static void ClusterDAImpulse(Cluster^ cluster, Vector3 impulse);
+			static void ClusterAImpulse(Cluster^ cluster, Impulse^ impulse);
+			static void ClusterDCImpulse(Cluster^ cluster, Vector3 impulse);
 			int GenerateBendingConstraints(int distance, Material^ material);
 			int GenerateBendingConstraints(int distance);
 			int GenerateClusters(int k, int maxIterations);
 			int GenerateClusters(int k);
+			btScalar GetMass(int node);
+			void RandomizeConstraints();
+			void ReleaseCluster(int index);
+			void ReleaseClusters();
+			void Rotate(Quaternion rotation);
 			void Scale(Vector3 scale);
+			void SetMass(int node, btScalar mass);
 			void SetPose(bool bVolume, bool bFrame);
+			void SetTotalDensity(btScalar density);
 			void SetTotalMass(btScalar mass, bool fromFaces);
 			void SetTotalMass(btScalar mass);
+			void SetVelocity(Vector3 velocity);
+			void SetVolumeDensity(btScalar density);
 			void SetVolumeMass(btScalar mass);
 			void StaticSolve(int iterations);
 			void Transform(Matrix transform);
@@ -671,6 +799,11 @@ namespace BulletSharp
 			{
 				Config^ get();
 				void set(Config^ value);
+			}
+
+			property int ClusterCount
+			{
+				int get();
 			}
 
 			property CollisionObjectArray^ CollisionDisabledObjects
@@ -743,6 +876,11 @@ namespace BulletSharp
 			{
 				IntArray^ get();
 				void set(IntArray^ value);
+			}
+
+			property btScalar Volume
+			{
+				btScalar get();
 			}
 
 			property Vector3 WindVelocity
