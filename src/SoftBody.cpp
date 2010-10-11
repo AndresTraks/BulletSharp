@@ -145,6 +145,11 @@ Config::Config(btSoftBody::Config* config)
 	_config = config;
 }
 
+Config::Config()
+{
+	_config = new btSoftBody::Config();
+}
+
 AeroModel Config::AeroModel::get()
 {
 	return (BulletSharp::SoftBody::AeroModel)_config->aeromodel;
@@ -256,9 +261,32 @@ Cluster::Cluster()
 	_cluster = new btSoftBody::Cluster();
 }
 
+
 Element::Element(btSoftBody::Element* element)
 {
 	_element = element;
+}
+
+Element::Element()
+{
+	_element = new btSoftBody::Element();
+}
+
+Object^ Element::Tag::get()
+{
+	void* obj = _element->m_tag;
+	if (obj == nullptr)
+		return nullptr;
+	return static_cast<Object^>(VoidPtrToGCHandle(obj).Target);
+}
+void Element::Tag::set(Object^ value)
+{
+	void* obj = _element->m_tag;
+	if (obj != nullptr)
+		VoidPtrToGCHandle(obj).Free();
+
+	GCHandle handle = GCHandle::Alloc(value);
+	_element->m_tag = GCHandleToVoidPtr(handle);
 }
 
 btSoftBody::Element* Element::UnmanagedPointer::get()
@@ -276,8 +304,15 @@ Feature::Feature(btSoftBody::Feature* feature)
 {
 }
 
+Feature::Feature()
+: Element(new btSoftBody::Feature())
+{
+}
+
 BulletSharp::SoftBody::Material^ Feature::Material::get()
 {
+	if (UnmanagedPointer->m_material == 0)
+		return nullptr;
 	return gcnew BulletSharp::SoftBody::Material(UnmanagedPointer->m_material);
 }
 void Feature::Material::set(BulletSharp::SoftBody::Material^ value)
@@ -311,9 +346,9 @@ void Face::Leaf::set(DbvtNode^ value)
 array<BulletSharp::SoftBody::Node^>^ Face::N::get()
 {
 	array<Node^>^ nodeArray = gcnew array<Node^>(3);
-	nodeArray[0] = gcnew Node(UnmanagedPointer->m_n[0]);
-	nodeArray[1] = gcnew Node(UnmanagedPointer->m_n[1]);
-	nodeArray[2] = gcnew Node(UnmanagedPointer->m_n[2]);
+	nodeArray[0] = UnmanagedPointer->m_n[0] ? gcnew Node(UnmanagedPointer->m_n[0]) : nullptr;
+	nodeArray[1] = UnmanagedPointer->m_n[1] ? gcnew Node(UnmanagedPointer->m_n[1]) : nullptr;
+	nodeArray[2] = UnmanagedPointer->m_n[2] ? gcnew Node(UnmanagedPointer->m_n[2]) : nullptr;
 	return nodeArray;
 }
 void Face::N::set(array<BulletSharp::SoftBody::Node^>^ value)
@@ -399,6 +434,11 @@ Link::Link(btSoftBody::Link* link)
 {
 }
 
+Link::Link()
+: Feature(new btSoftBody::Link())
+{
+}
+
 btScalar Link::C0::get()
 {
 	return UnmanagedPointer->m_c0;
@@ -447,8 +487,8 @@ void Link::IsBending::set(bool value)
 array<BulletSharp::SoftBody::Node^>^ Link::N::get()
 {
 	array<Node^>^ nodeArray = gcnew array<Node^>(2);
-	nodeArray[0] = gcnew Node(UnmanagedPointer->m_n[0]);
-	nodeArray[1] = gcnew Node(UnmanagedPointer->m_n[1]);
+	nodeArray[0] = UnmanagedPointer->m_n[0] ? gcnew Node(UnmanagedPointer->m_n[0]) : nullptr;
+	nodeArray[1] = UnmanagedPointer->m_n[1] ? gcnew Node(UnmanagedPointer->m_n[1]) : nullptr;
 	return nodeArray;
 }
 void Link::N::set(array<BulletSharp::SoftBody::Node^>^ value)
@@ -775,9 +815,145 @@ void SolverState::UnmanagedPointer::set(btSoftBody::SolverState* solverState)
 }
 
 
+SRayCast::SRayCast(btSoftBody::sRayCast* rayCast)
+{
+	_rayCast = rayCast;
+}
+
+SRayCast::SRayCast()
+{
+	_rayCast = new btSoftBody::sRayCast();
+}
+
+BulletSharp::SoftBody::SoftBody^ SRayCast::Body::get()
+{
+	if (_rayCast->body == 0)
+		return nullptr;
+	return gcnew SoftBody(_rayCast->body);
+}
+void SRayCast::Body::set(BulletSharp::SoftBody::SoftBody^ value)
+{
+	_rayCast->body = value->UnmanagedPointer;
+}
+
+EFeature SRayCast::Feature::get()
+{
+	return (EFeature)_rayCast->feature;
+}
+void SRayCast::Feature::set(EFeature value)
+{
+	_rayCast->feature = (btSoftBody::eFeature::_)value;
+}
+
+btScalar SRayCast::Fraction::get()
+{
+	return _rayCast->fraction;
+}
+void SRayCast::Fraction::set(btScalar value)
+{
+	_rayCast->fraction = value;
+}
+
+int SRayCast::Index::get()
+{
+	return _rayCast->index;
+}
+void SRayCast::Index::set(int value)
+{
+	_rayCast->index = value;
+}
+
+btSoftBody::sRayCast* SRayCast::UnmanagedPointer::get()
+{
+	return _rayCast;
+}
+
+
 Tetra::Tetra(btSoftBody::Tetra* tetra)
 : Feature(tetra)
 {
+}
+
+Tetra::Tetra()
+: Feature(new btSoftBody::Tetra())
+{
+}
+
+array<Vector3>^ Tetra::C0::get()
+{
+	array<Vector3>^ c0Array = gcnew array<Vector3>(4);
+	c0Array[0] = Math::BtVector3ToVector3(&UnmanagedPointer->m_c0[0]);
+	c0Array[1] = Math::BtVector3ToVector3(&UnmanagedPointer->m_c0[1]);
+	c0Array[2] = Math::BtVector3ToVector3(&UnmanagedPointer->m_c0[2]);
+	c0Array[3] = Math::BtVector3ToVector3(&UnmanagedPointer->m_c0[3]);
+	return c0Array;
+}
+void Tetra::C0::set(array<Vector3>^ value)
+{
+	Math::Vector3ToBtVector3(value[0], &UnmanagedPointer->m_c0[0]);
+	Math::Vector3ToBtVector3(value[1], &UnmanagedPointer->m_c0[1]);
+	Math::Vector3ToBtVector3(value[2], &UnmanagedPointer->m_c0[2]);
+	Math::Vector3ToBtVector3(value[3], &UnmanagedPointer->m_c0[3]);
+}
+
+btScalar Tetra::C1::get()
+{
+	return UnmanagedPointer->m_c1;
+}
+void Tetra::C1::set(btScalar value)
+{
+	UnmanagedPointer->m_c1 = value;
+}
+
+btScalar Tetra::C2::get()
+{
+	return UnmanagedPointer->m_c2;
+}
+void Tetra::C2::set(btScalar value)
+{
+	UnmanagedPointer->m_c2 = value;
+}
+
+array<BulletSharp::SoftBody::Node^>^ Tetra::N::get()
+{
+	array<Node^>^ nodeArray = gcnew array<Node^>(4);
+	nodeArray[0] = UnmanagedPointer->m_n[0] ? gcnew Node(UnmanagedPointer->m_n[0]) : nullptr;
+	nodeArray[1] = UnmanagedPointer->m_n[1] ? gcnew Node(UnmanagedPointer->m_n[1]) : nullptr;
+	nodeArray[2] = UnmanagedPointer->m_n[2] ? gcnew Node(UnmanagedPointer->m_n[2]) : nullptr;
+	nodeArray[3] = UnmanagedPointer->m_n[3] ? gcnew Node(UnmanagedPointer->m_n[3]) : nullptr;
+	return nodeArray;
+}
+void Tetra::N::set(array<BulletSharp::SoftBody::Node^>^ value)
+{
+	UnmanagedPointer->m_n[0] = value[0]->UnmanagedPointer;
+	UnmanagedPointer->m_n[1] = value[1]->UnmanagedPointer;
+	UnmanagedPointer->m_n[2] = value[2]->UnmanagedPointer;
+	UnmanagedPointer->m_n[3] = value[3]->UnmanagedPointer;
+}
+
+#ifndef DISABLE_DBVT
+DbvtNode^ Tetra::Leaf::get()
+{
+	return gcnew DbvtNode(UnmanagedPointer->m_leaf);
+}
+void Tetra::Leaf::set(DbvtNode^ value)
+{
+	UnmanagedPointer->m_leaf = value->UnmanagedPointer;
+}
+#endif
+
+btScalar Tetra::RestVolume::get()
+{
+	return UnmanagedPointer->m_rv;
+}
+void Tetra::RestVolume::set(btScalar value)
+{
+	UnmanagedPointer->m_rv = value;
+}
+
+btSoftBody::Tetra* Tetra::UnmanagedPointer::get()
+{
+	return (btSoftBody::Tetra*) Feature::UnmanagedPointer;
 }
 
 
@@ -1185,6 +1361,26 @@ void BulletSharp::SoftBody::SoftBody::ClusterDCImpulse(Cluster^ cluster, Vector3
 	delete tempImpulse;
 }
 
+bool BulletSharp::SoftBody::SoftBody::CutLink(int node0, int node1, btScalar position)
+{
+	return UnmanagedPointer->cutLink(node0, node1, position);
+}
+
+bool BulletSharp::SoftBody::SoftBody::CutLink(Node^ node0, Node^ node1, btScalar position)
+{
+	return UnmanagedPointer->cutLink(node0->UnmanagedPointer, node1->UnmanagedPointer, position);
+}
+
+void BulletSharp::SoftBody::SoftBody::DefaultCollisionHandler(CollisionObject^ pco)
+{
+	UnmanagedPointer->defaultCollisionHandler(pco->UnmanagedPointer);
+}
+
+void BulletSharp::SoftBody::SoftBody::DefaultCollisionHandler(SoftBody^ psb)
+{
+	UnmanagedPointer->defaultCollisionHandler(psb->UnmanagedPointer);
+}
+
 int BulletSharp::SoftBody::SoftBody::GenerateBendingConstraints(int distance, Material^ material)
 {
 	return UnmanagedPointer->generateBendingConstraints(distance, material->UnmanagedPointer);
@@ -1205,6 +1401,20 @@ int BulletSharp::SoftBody::SoftBody::GenerateClusters(int k)
 	return UnmanagedPointer->generateClusters(k);
 }
 
+void BulletSharp::SoftBody::SoftBody::GetAabb(Vector3% aabbMin, Vector3% aabbMax)
+{
+	btVector3* aabbMinTemp = new btVector3;
+	btVector3* aabbMaxTemp = new btVector3;
+
+	UnmanagedPointer->getAabb(*aabbMinTemp, *aabbMaxTemp);
+
+	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
+	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
+
+	delete aabbMinTemp;
+	delete aabbMaxTemp;
+}
+
 btScalar BulletSharp::SoftBody::SoftBody::GetMass(int node)
 {
 	return UnmanagedPointer->getMass(node);
@@ -1213,6 +1423,28 @@ btScalar BulletSharp::SoftBody::SoftBody::GetMass(int node)
 void BulletSharp::SoftBody::SoftBody::RandomizeConstraints()
 {
 	UnmanagedPointer->randomizeConstraints();
+}
+
+void BulletSharp::SoftBody::SoftBody::IntegrateMotion()
+{
+	UnmanagedPointer->integrateMotion();
+}
+
+void BulletSharp::SoftBody::SoftBody::PredictMotion(btScalar dt)
+{
+	UnmanagedPointer->predictMotion(dt);
+}
+
+bool BulletSharp::SoftBody::SoftBody::RayTest(Vector3 rayFrom, Vector3 rayTo, SRayCast^ results)
+{
+	btVector3* rayFromTemp = Math::Vector3ToBtVector3(rayFrom);
+	btVector3* rayToTemp = Math::Vector3ToBtVector3(rayTo);
+
+	bool ret = UnmanagedPointer->rayTest(*rayFromTemp, *rayToTemp, *results->UnmanagedPointer);
+
+	delete rayFromTemp;
+	delete rayToTemp;
+	return ret;
 }
 
 void BulletSharp::SoftBody::SoftBody::ReleaseCluster(int index)
@@ -1249,6 +1481,11 @@ void BulletSharp::SoftBody::SoftBody::SetPose(bool bVolume, bool bFrame)
 	UnmanagedPointer->setPose(bVolume, bFrame);
 }
 
+void BulletSharp::SoftBody::SoftBody::SetSolver(ESolverPresets preset)
+{
+	UnmanagedPointer->setSolver((btSoftBody::eSolverPresets::_)preset);
+}
+
 void BulletSharp::SoftBody::SoftBody::SetTotalDensity(btScalar density)
 {
 	UnmanagedPointer->setTotalDensity(density);
@@ -1279,6 +1516,30 @@ void BulletSharp::SoftBody::SoftBody::SetVolumeDensity(btScalar density)
 void BulletSharp::SoftBody::SoftBody::SetVolumeMass(btScalar mass)
 {
 	UnmanagedPointer->setVolumeMass(mass);
+}
+
+void BulletSharp::SoftBody::SoftBody::SolveClusters(SoftBodyArray^ bodies)
+{
+	btSoftBody::solveClusters(*bodies->UnmanagedPointer);
+}
+
+void BulletSharp::SoftBody::SoftBody::SolveCommonConstraints(array<SoftBody^>^ bodies, int iterations)
+{
+	int len = bodies->Length;
+	btSoftBody** bodiesTemp = new btSoftBody*[len];
+	
+	int i;
+	for (i=0; i<len; i++)
+		bodiesTemp[i] = bodies[i]->UnmanagedPointer;
+	
+	btSoftBody::solveCommonConstraints(bodiesTemp, len, iterations);
+	
+	delete[] bodiesTemp;
+}
+
+void BulletSharp::SoftBody::SoftBody::SolveConstraints()
+{
+	UnmanagedPointer->solveConstraints();
 }
 
 void BulletSharp::SoftBody::SoftBody::StaticSolve(int iterations)

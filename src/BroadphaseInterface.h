@@ -70,7 +70,7 @@ namespace BulletSharp
 			int shapeType, IntPtr userPtr, short int collisionFilterGroup,
 			short int collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy);
 		void DestroyProxy(BroadphaseProxy^ proxy, Dispatcher^ dispatcher);
-		void GetAabb(BroadphaseProxy^ proxy, [Out] Vector3% aabbMin, [Out] Vector3% AabbMax);
+		void GetAabb(BroadphaseProxy^ proxy, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		void GetBroadphaseAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		void PrintStats();
 		void RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback^ rayCallback,

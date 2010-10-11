@@ -27,6 +27,8 @@ namespace BulletSharp
 		ref class Node;
 		ref class MaterialArray;
 		ref class NodeArray;
+		ref class SoftBody;
+		ref class SoftBodyArray;
 
 		public ref class SoftBodyWorldInfo
 		{
@@ -104,7 +106,7 @@ namespace BulletSharp
 			FOneSided = btSoftBody::eAeroModel::F_OneSided,
 			End = btSoftBody::eAeroModel::END
 		};
-/*
+
 		[Flags]
 		public enum class EFeature
 		{
@@ -114,7 +116,7 @@ namespace BulletSharp
 			Face = btSoftBody::eFeature::Face,
 			End = btSoftBody::eFeature::END
 		};
-*/
+
 		[Flags]
 		public enum class FCollisions
 		{
@@ -136,33 +138,33 @@ namespace BulletSharp
 			Default = btSoftBody::fMaterial::Default,
 			End = btSoftBody::fMaterial::END
 		};
-/*
+		/*
 		[Flags]
 		public enum class PSolver
 		{
-			Linear = btSoftBody::ePSolver::Linear,
-			Anchors = btSoftBody::ePSolver::Anchors,
-			RigidContacts = btSoftBody::ePSolver::RContacts,
-			SoftContacts = btSoftBody::ePSolver::SContacts,
-			End = btSoftBody::ePSolver::END
+		Linear = btSoftBody::ePSolver::Linear,
+		Anchors = btSoftBody::ePSolver::Anchors,
+		RigidContacts = btSoftBody::ePSolver::RContacts,
+		SoftContacts = btSoftBody::ePSolver::SContacts,
+		End = btSoftBody::ePSolver::END
 		};
-
+		*/
 		[Flags]
-		public enum class SolverPresets
+		public enum class ESolverPresets
 		{
 			Positions = btSoftBody::eSolverPresets::Positions,
 			Velocities = btSoftBody::eSolverPresets::Velocities,
 			Default = btSoftBody::eSolverPresets::Default,
 			End = btSoftBody::eSolverPresets::END
 		};
-
+		/*
 		[Flags]
 		public enum class VSolver
 		{
-			Linear = btSoftBody::eVSolver::Linear,
-			End = btSoftBody::eVSolver::END
+		Linear = btSoftBody::eVSolver::Linear,
+		End = btSoftBody::eVSolver::END
 		};
-*/
+		*/
 		public ref class Body
 		{
 		private:
@@ -204,6 +206,8 @@ namespace BulletSharp
 			Config(btSoftBody::Config* config);
 
 		public:
+			Config();
+
 			property AeroModel AeroModel
 			{
 				BulletSharp::SoftBody::AeroModel get();
@@ -280,6 +284,16 @@ namespace BulletSharp
 		internal:
 			Element(btSoftBody::Element* element);
 
+		public:
+			Element();
+
+			property Object^ Tag
+			{
+				Object^ get();
+				void set(Object^ value);
+			}
+
+		internal:
 			property btSoftBody::Element* UnmanagedPointer
 			{
 				btSoftBody::Element* get();
@@ -293,6 +307,8 @@ namespace BulletSharp
 			Feature(btSoftBody::Feature* feature);
 
 		public:
+			Feature();
+
 			property BulletSharp::SoftBody::Material^ Material
 			{
 				BulletSharp::SoftBody::Material^ get();
@@ -380,6 +396,8 @@ namespace BulletSharp
 			Link(btSoftBody::Link* link);
 
 		public:
+			Link();
+
 			property btScalar C0
 			{
 				btScalar get();
@@ -697,10 +715,99 @@ namespace BulletSharp
 			};
 		};
 
+		public ref class SRayCast
+		{
+		private:
+			btSoftBody::sRayCast* _rayCast;
+
+		internal:
+			SRayCast(btSoftBody::sRayCast* rayCast);
+
+		public:
+			SRayCast();
+
+			property BulletSharp::SoftBody::SoftBody^ Body
+			{
+				SoftBody^ get();
+				void set(SoftBody^ value);
+			}
+
+			property EFeature Feature
+			{
+				EFeature get();
+				void set(EFeature value);
+			}
+
+			property btScalar Fraction
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property int Index
+			{
+				int get();
+				void set(int value);
+			}
+
+		internal:
+			property btSoftBody::sRayCast* UnmanagedPointer
+			{
+				btSoftBody::sRayCast* get();
+			}
+		};
+
 		public ref class Tetra : Feature
 		{
 		internal:
 			Tetra(btSoftBody::Tetra* tetra);
+
+		public:
+			Tetra();
+
+			property array<Vector3>^ C0
+			{
+				array<Vector3>^ get();
+				void set(array<Vector3>^ value);
+			}
+
+			property btScalar C1
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar C2
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+#ifndef DISABLE_DBVT
+			property DbvtNode^ Leaf
+			{
+				DbvtNode^ get();
+				void set(DbvtNode^ value);
+			}
+#endif
+
+			property array<Node^>^ N
+			{
+				array<Node^>^ get();
+				void set(array<Node^>^ value);
+			}
+
+			property btScalar RestVolume
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+		internal:
+			property btSoftBody::Tetra* UnmanagedPointer
+			{
+				btSoftBody::Tetra* get() new;
+			}
 		};
 
 		public ref class SoftBody : CollisionObject
@@ -764,24 +871,37 @@ namespace BulletSharp
 			static void ClusterDAImpulse(Cluster^ cluster, Vector3 impulse);
 			static void ClusterAImpulse(Cluster^ cluster, Impulse^ impulse);
 			static void ClusterDCImpulse(Cluster^ cluster, Vector3 impulse);
+			bool CutLink(int node0, int node1, btScalar position);
+			bool CutLink(Node^ node0, Node^ node1, btScalar position);
+			void DefaultCollisionHandler(CollisionObject^ pco);
+			void DefaultCollisionHandler(SoftBody^ psb);
 			int GenerateBendingConstraints(int distance, Material^ material);
 			int GenerateBendingConstraints(int distance);
 			int GenerateClusters(int k, int maxIterations);
 			int GenerateClusters(int k);
+			void GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 			btScalar GetMass(int node);
+			void IntegrateMotion();
+			void PredictMotion(btScalar dt);
 			void RandomizeConstraints();
+			bool RayTest(Vector3 rayFrom, Vector3 rayTo, SRayCast^ results);
+			//void Refine(ImplicitFn^ ifn, btScalar accurary, bool cut);
 			void ReleaseCluster(int index);
 			void ReleaseClusters();
 			void Rotate(Quaternion rotation);
 			void Scale(Vector3 scale);
 			void SetMass(int node, btScalar mass);
 			void SetPose(bool bVolume, bool bFrame);
+			void SetSolver(ESolverPresets preset);
 			void SetTotalDensity(btScalar density);
 			void SetTotalMass(btScalar mass, bool fromFaces);
 			void SetTotalMass(btScalar mass);
 			void SetVelocity(Vector3 velocity);
 			void SetVolumeDensity(btScalar density);
 			void SetVolumeMass(btScalar mass);
+			static void SolveClusters(SoftBodyArray^ bodies);
+			static void SolveCommonConstraints(array<SoftBody^>^ bodies, int iterations);
+			void SolveConstraints();
 			void StaticSolve(int iterations);
 			void Transform(Matrix transform);
 			void Translate(Vector3 translation);

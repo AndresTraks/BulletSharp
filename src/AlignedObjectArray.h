@@ -474,13 +474,15 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
-		public ref class LinkArray : AlignedObjectArray
+		public ref class LinkArray : AlignedObjectArray, IEnumerable
 		{
 		internal:
 			LinkArray(btSoftBody::tLinkArray* linkArray);
 
 		public:
 			LinkArray();
+
+			virtual IEnumerator^ GetEnumerator();
 
 			void Clear();
 			void PopBack();
@@ -509,6 +511,24 @@ namespace BulletSharp
 			{
 				virtual btSoftBody::tLinkArray* get() new;
 			}
+		};
+
+		public ref class LinkEnumerator : IEnumerator
+		{
+		private:
+			LinkArray^ _linkArray;
+			int i;
+
+		public:
+			LinkEnumerator(LinkArray^ linkArray);
+
+			property Object^ Current
+			{
+				virtual Object^ get();
+			}
+
+			virtual bool MoveNext();
+			virtual void Reset();
 		};
 
 		public ref class MaterialArray : AlignedObjectArray
@@ -551,7 +571,7 @@ namespace BulletSharp
 		public ref class NodeArray : AlignedObjectArray
 		{
 		internal:
-			NodeArray(btAlignedObjectArray<btSoftBody::Node>* nodeArray);
+			NodeArray(btSoftBody::tNodeArray* nodeArray);
 
 		public:
 			NodeArray();
@@ -579,9 +599,9 @@ namespace BulletSharp
 			}
 
 		internal:
-			property btAlignedObjectArray<btSoftBody::Node>* UnmanagedPointer
+			property btSoftBody::tNodeArray* UnmanagedPointer
 			{
-				virtual btAlignedObjectArray<btSoftBody::Node>* get() new;
+				virtual btSoftBody::tNodeArray* get() new;
 			}
 		};
 	};
@@ -623,6 +643,48 @@ namespace BulletSharp
 			virtual btAlignedObjectArray<btScalar>* get() new;
 		}
 	};
+
+#ifndef DISABLE_SOFTBODY
+	namespace SoftBody
+	{
+		public ref class SoftBodyArray : AlignedObjectArray
+		{
+		internal:
+			SoftBodyArray(btSoftBody::tSoftBodyArray* softBodyArray);
+
+		public:
+			SoftBodyArray();
+
+			void Clear();
+			void PopBack();
+			void PushBack(SoftBody^ node);
+			void Remove(SoftBody^ node);
+			void Swap(int index0, int index1);
+
+			property int Size
+			{
+				int get();
+			}
+
+			property int Capacity
+			{
+				int get();
+			}
+
+			property SoftBody^ default [int]
+			{
+				SoftBody^ get (int index);
+				void set(int index, SoftBody^ value);
+			}
+
+		internal:
+			property btSoftBody::tSoftBodyArray* UnmanagedPointer
+			{
+				virtual btSoftBody::tSoftBodyArray* get() new;
+			}
+		};
+	};
+#endif
 
 	public ref class Vector3Array : AlignedObjectArray
 	{
