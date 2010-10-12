@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace BasicDemo
 {
+    /// <summary>
+    /// This is the main type for your game
+    /// </summary>
     public class BasicDemo : Microsoft.Xna.Framework.Game
     {
         Color activeColor = Color.Orange;
@@ -41,6 +44,12 @@ namespace BasicDemo
                 MathHelper.PiOver4, device.Viewport.AspectRatio, 1.0f, 200.0f);
         }
 
+        /// <summary>
+        /// Allows the game to perform any initialization it needs to before starting to run.
+        /// This is where it can query for any required services and load any non-graphic
+        /// related content.  Calling base.Initialize will enumerate through any components
+        /// and initialize them as well.
+        /// </summary>
         protected override void Initialize()
         {
             physics = new Physics();
@@ -51,10 +60,14 @@ namespace BasicDemo
             base.Initialize();
         }
 
+        /// <summary>
+        /// LoadContent will be called once per game and is the place to load
+        /// all of your content.
+        /// </summary>
         protected override void LoadContent()
         {
             device = graphics.GraphicsDevice;
-            basicEffect = new BasicEffect(device, null);
+            basicEffect = new BasicEffect(device);
 
             basicEffect.Projection = Matrix.CreatePerspectiveFieldOfView(
                 MathHelper.PiOver4, device.Viewport.AspectRatio, 1.0f, 200.0f);
@@ -64,14 +77,23 @@ namespace BasicDemo
             basicEffect.DirectionalLight0.Enabled = true;
             basicEffect.DirectionalLight0.DiffuseColor = Color.LemonChiffon.ToVector3();
 
-            box = VertexHelper.CreateBox(device, new Vector3(1,1,1));
+            box = VertexHelper.CreateBox(device, new Vector3(1, 1, 1));
             groundBox = VertexHelper.CreateBox(device, new Vector3(50, 1, 50));
         }
 
+        /// <summary>
+        /// UnloadContent will be called once per game and is the place to unload
+        /// all content.
+        /// </summary>
         protected override void UnloadContent()
         {
         }
 
+        /// <summary>
+        /// Allows the game to run logic such as updating the world,
+        /// checking for collisions, gathering input, and playing audio.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             KeyboardState ns = Keyboard.GetState();
@@ -79,7 +101,7 @@ namespace BasicDemo
             {
                 Exit();
             }
-            
+
             // Toggle debug
             if (ns.IsKeyDown(Keys.F3))
             {
@@ -111,12 +133,15 @@ namespace BasicDemo
             base.Update(gameTime);
         }
 
+        /// <summary>
+        /// This is called when the game should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             basicEffect.View = viewMatrix;
-            basicEffect.Begin();
 
 
             // Debug draw
@@ -124,9 +149,8 @@ namespace BasicDemo
             basicEffect.LightingEnabled = false;
 
             basicEffect.World = Matrix.Identity;
-            basicEffect.CurrentTechnique.Passes[0].Begin();
+            basicEffect.CurrentTechnique.Passes[0].Apply();
             DebugDrawer.DrawDebugWorld(physics.World);
-            basicEffect.CurrentTechnique.Passes[0].End();
 
 
             // Draw shapes
@@ -141,9 +165,8 @@ namespace BasicDemo
                 if ((string)colObj.UserObject == "Ground")
                 {
                     basicEffect.DiffuseColor = groundColor.ToVector3();
-                    basicEffect.CurrentTechnique.Passes[0].Begin();
+                    basicEffect.CurrentTechnique.Passes[0].Apply();
                     VertexHelper.DrawBox(device, groundBox);
-                    basicEffect.CurrentTechnique.Passes[0].End();
                     continue;
                 }
 
@@ -152,12 +175,9 @@ namespace BasicDemo
                 else
                     basicEffect.DiffuseColor = passiveColor.ToVector3();
 
-                basicEffect.CurrentTechnique.Passes[0].Begin();
+                basicEffect.CurrentTechnique.Passes[0].Apply();
                 VertexHelper.DrawBox(device, box);
-                basicEffect.CurrentTechnique.Passes[0].End();
             }
-
-            basicEffect.End();
 
             base.Draw(gameTime);
         }
