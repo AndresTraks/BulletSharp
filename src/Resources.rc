@@ -1,4 +1,5 @@
 #include "windows.h"
+#include "Version.h"
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -44,8 +45,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,10,0,0
- PRODUCTVERSION 0,10,0,0
+ FILEVERSION BULLETSHARP_VERSION_MAJOR,BULLETSHARP_VERSION_MINOR,0,0
+ PRODUCTVERSION BULLETSHARP_VERSION_MAJOR,BULLETSHARP_VERSION_MINOR,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -62,12 +63,12 @@ BEGIN
         BEGIN
             VALUE "Comments", ".Net Wrapper for Bullet Physics library"
             VALUE "FileDescription", "BulletSharp"
-            VALUE "FileVersion", "0.10"
+            VALUE "FileVersion", BULLETSHARP_VERSION_STRING
             VALUE "InternalName", "BulletSharp"
             VALUE "LegalCopyright", "Copyright (C) Andres Traks 2009-2010"
             VALUE "OriginalFilename", "BulletSharp.dll"
             VALUE "ProductName", "BulletSharp"
-            VALUE "ProductVersion", "0.10"
+            VALUE "ProductVersion", BULLETSHARP_VERSION_STRING
         END
     END
     BLOCK "VarFileInfo"

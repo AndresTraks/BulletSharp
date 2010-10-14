@@ -1693,6 +1693,10 @@
 				RelativePath=".\src\StringConv.h"
 				>
 			</File>
+			<File
+				RelativePath=".\src\Version.h"
+				>
+			</File>
 			<Filter
 				Name="Collision"
 				>

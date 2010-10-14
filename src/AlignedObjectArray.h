@@ -90,6 +90,68 @@ namespace BulletSharp
 		}
 	};
 
+#ifndef DISABLE_SOFTBODY
+	namespace SoftBody
+	{
+		public ref class ClusterArray : AlignedObjectArray, IEnumerable
+		{
+		internal:
+			ClusterArray(btSoftBody::tClusterArray* clusterArray);
+
+		public:
+			ClusterArray();
+
+			virtual IEnumerator^ GetEnumerator();
+
+			void Clear();
+			void PopBack();
+			void PushBack(Cluster^ cluster);
+			void Remove(Cluster^ cluster);
+			void Swap(int index0, int index1);
+
+			property int Size
+			{
+				int get();
+			}
+
+			property int Capacity
+			{
+				int get();
+			}
+
+			property Cluster^ default [int]
+			{
+				Cluster^ get (int index);
+				void set(int index, Cluster^ value);
+			}
+
+		internal:
+			property btSoftBody::tClusterArray* UnmanagedPointer
+			{
+				virtual btSoftBody::tClusterArray* get() new;
+			}
+		};
+	};
+
+	public ref class ClusterEnumerator : IEnumerator
+	{
+	private:
+		BulletSharp::SoftBody::ClusterArray^ _clusterArray;
+		int i;
+
+	public:
+		ClusterEnumerator(BulletSharp::SoftBody::ClusterArray^ clusterArray);
+
+		property Object^ Current
+		{
+			virtual Object^ get();
+		}
+
+		virtual bool MoveNext();
+		virtual void Reset();
+	};
+#endif
+
 	public ref class CollisionShapeArray : AlignedObjectArray
 	{
 	public:
@@ -602,6 +664,80 @@ namespace BulletSharp
 			property btSoftBody::tNodeArray* UnmanagedPointer
 			{
 				virtual btSoftBody::tNodeArray* get() new;
+			}
+		};
+
+		public ref class NodePtrArray : AlignedObjectArray
+		{
+		internal:
+			NodePtrArray(btAlignedObjectArray<btSoftBody::Node*>* nodeArray);
+
+		public:
+			NodePtrArray();
+
+			void Clear();
+			void PopBack();
+			void PushBack(Node^ node);
+			void Remove(Node^ node);
+			void Swap(int index0, int index1);
+
+			property int Size
+			{
+				int get();
+			}
+
+			property int Capacity
+			{
+				int get();
+			}
+
+			property Node^ default [int]
+			{
+				Node^ get (int index);
+				void set(int index, Node^ value);
+			}
+
+		internal:
+			property btAlignedObjectArray<btSoftBody::Node*>* UnmanagedPointer
+			{
+				virtual btAlignedObjectArray<btSoftBody::Node*>* get() new;
+			}
+		};
+
+		public ref class NoteArray : AlignedObjectArray
+		{
+		internal:
+			NoteArray(btSoftBody::tNoteArray* noteArray);
+
+		public:
+			NoteArray();
+
+			void Clear();
+			void PopBack();
+			void PushBack(Note^ note);
+			void Remove(Note^ note);
+			void Swap(int index0, int index1);
+
+			property int Size
+			{
+				int get();
+			}
+
+			property int Capacity
+			{
+				int get();
+			}
+
+			property Note^ default [int]
+			{
+				Note^ get (int index);
+				void set(int index, Note^ value);
+			}
+
+		internal:
+			property btSoftBody::tNoteArray* UnmanagedPointer
+			{
+				virtual btSoftBody::tNoteArray* get() new;
 			}
 		};
 	};

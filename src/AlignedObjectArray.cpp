@@ -118,6 +118,96 @@ btBroadphasePairArray* BroadphasePairArray::UnmanagedPointer::get()
 }
 
 
+#ifndef DISABLE_SOFTBODY
+BulletSharp::SoftBody::ClusterArray::ClusterArray(btSoftBody::tClusterArray* clusterArray)
+: AlignedObjectArray(clusterArray)
+{
+}
+
+BulletSharp::SoftBody::ClusterArray::ClusterArray()
+: AlignedObjectArray(new btSoftBody::tClusterArray())
+{
+}
+
+IEnumerator^ ClusterArray::GetEnumerator()
+{
+	return gcnew ClusterEnumerator(this);
+}
+
+void BulletSharp::SoftBody::ClusterArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+void BulletSharp::SoftBody::ClusterArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+void BulletSharp::SoftBody::ClusterArray::PushBack(Cluster^ cluster)
+{
+	UnmanagedPointer->push_back(cluster->UnmanagedPointer);
+}
+
+void BulletSharp::SoftBody::ClusterArray::Remove(Cluster^ cluster)
+{
+	UnmanagedPointer->remove(cluster->UnmanagedPointer);
+}
+
+int BulletSharp::SoftBody::ClusterArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int BulletSharp::SoftBody::ClusterArray::Size::get()
+{
+	return UnmanagedPointer->size();
+}
+
+void BulletSharp::SoftBody::ClusterArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+BulletSharp::SoftBody::Cluster^ BulletSharp::SoftBody::ClusterArray::default::get(int index)
+{
+	return gcnew Cluster((*UnmanagedPointer)[index]);
+}
+void BulletSharp::SoftBody::ClusterArray::default::set(int index, Cluster^ value)
+{
+	(*UnmanagedPointer)[index] = value->UnmanagedPointer;
+}
+
+btSoftBody::tClusterArray* BulletSharp::SoftBody::ClusterArray::UnmanagedPointer::get()
+{
+	return (btSoftBody::tClusterArray*)AlignedObjectArray::UnmanagedPointer;
+}
+
+
+ClusterEnumerator::ClusterEnumerator(ClusterArray^ clusterArray)
+{
+	_clusterArray = clusterArray;
+	i=-1;
+}
+
+Object^ ClusterEnumerator::Current::get()
+{
+	return gcnew Cluster((*_clusterArray->UnmanagedPointer)[i]);
+}
+
+bool ClusterEnumerator::MoveNext()
+{
+	i++;
+	return (i < _clusterArray->UnmanagedPointer->size());
+}
+
+void ClusterEnumerator::Reset()
+{
+	i=-1;
+}
+#endif
+
+
 CollisionShapeArray::CollisionShapeArray()
 : AlignedObjectArray(new btAlignedObjectArray<btCollisionShape*>())
 {
@@ -1002,6 +1092,134 @@ void BulletSharp::SoftBody::NodeArray::default::set(int index, Node^ value)
 btSoftBody::tNodeArray* BulletSharp::SoftBody::NodeArray::UnmanagedPointer::get()
 {
 	return (btSoftBody::tNodeArray*)AlignedObjectArray::UnmanagedPointer;
+}
+
+
+BulletSharp::SoftBody::NodePtrArray::NodePtrArray(btAlignedObjectArray<btSoftBody::Node*>* nodeArray)
+: AlignedObjectArray(nodeArray)
+{
+}
+
+BulletSharp::SoftBody::NodePtrArray::NodePtrArray()
+: AlignedObjectArray(new btAlignedObjectArray<btSoftBody::Node*>())
+{
+}
+
+void BulletSharp::SoftBody::NodePtrArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+void BulletSharp::SoftBody::NodePtrArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+void BulletSharp::SoftBody::NodePtrArray::PushBack(Node^ node)
+{
+	UnmanagedPointer->push_back(node->UnmanagedPointer);
+}
+
+void BulletSharp::SoftBody::NodePtrArray::Remove(Node^ node)
+{
+	UnmanagedPointer->remove(node->UnmanagedPointer);
+}
+
+int BulletSharp::SoftBody::NodePtrArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int BulletSharp::SoftBody::NodePtrArray::Size::get()
+{
+	return UnmanagedPointer->size();
+}
+
+void BulletSharp::SoftBody::NodePtrArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+BulletSharp::SoftBody::Node^ BulletSharp::SoftBody::NodePtrArray::default::get(int index)
+{
+	return gcnew Node((*UnmanagedPointer)[index]);
+}
+void BulletSharp::SoftBody::NodePtrArray::default::set(int index, Node^ value)
+{
+	(*UnmanagedPointer)[index] = value->UnmanagedPointer;
+}
+
+btAlignedObjectArray<btSoftBody::Node*>* BulletSharp::SoftBody::NodePtrArray::UnmanagedPointer::get()
+{
+	return (btAlignedObjectArray<btSoftBody::Node*>*)AlignedObjectArray::UnmanagedPointer;
+}
+
+
+BulletSharp::SoftBody::NoteArray::NoteArray(btSoftBody::tNoteArray* noteArray)
+: AlignedObjectArray(noteArray)
+{
+}
+
+BulletSharp::SoftBody::NoteArray::NoteArray()
+: AlignedObjectArray(new btSoftBody::tNoteArray())
+{
+}
+
+void BulletSharp::SoftBody::NoteArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+void BulletSharp::SoftBody::NoteArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+void BulletSharp::SoftBody::NoteArray::PushBack(Note^ note)
+{
+	UnmanagedPointer->push_back(*note->UnmanagedPointer);
+}
+
+void BulletSharp::SoftBody::NoteArray::Remove(Note^ note)
+{
+	// FIXME
+	//UnmanagedPointer->remove(*note->UnmanagedPointer);
+}
+
+int BulletSharp::SoftBody::NoteArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int BulletSharp::SoftBody::NoteArray::Size::get()
+{
+	return UnmanagedPointer->size();
+}
+
+void BulletSharp::SoftBody::NoteArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+BulletSharp::SoftBody::Note^ BulletSharp::SoftBody::NoteArray::default::get(int index)
+{
+	return gcnew Note(&(*UnmanagedPointer)[index]);
+}
+
+#pragma managed(push, off)
+void NoteArray_GetDefault(btSoftBody::tNoteArray* noteArray, int index, btSoftBody::Note* note)
+{
+	(*noteArray)[index] = *note;
+}
+#pragma managed(pop)
+void BulletSharp::SoftBody::NoteArray::default::set(int index, Note^ value)
+{
+	NoteArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+}
+
+btSoftBody::tNoteArray* BulletSharp::SoftBody::NoteArray::UnmanagedPointer::get()
+{
+	return (btSoftBody::tNoteArray*)AlignedObjectArray::UnmanagedPointer;
 }
 #endif
 

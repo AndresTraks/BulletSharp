@@ -120,6 +120,164 @@ void SoftBodyWorldInfo::UnmanagedPointer::set(btSoftBodyWorldInfo* value)
 }
 
 
+Body::Body()
+{
+	_body = new btSoftBody::Body();
+}
+
+Body::Body(Cluster^ p)
+{
+	_body = new btSoftBody::Body(p->UnmanagedPointer);
+}
+
+Body::Body(BulletSharp::CollisionObject^ colObj)
+{
+	_body = new btSoftBody::Body(colObj->UnmanagedPointer);
+}
+
+void Body::Activate()
+{
+	_body->activate();
+}
+
+void Body::ApplyDImpulse(Vector3 impulse, Vector3 rPos)
+{
+	btVector3* impulseTemp = Math::Vector3ToBtVector3(impulse);
+	btVector3* rPosTemp = Math::Vector3ToBtVector3(rPos);
+	_body->applyDImpulse(*impulseTemp, *rPosTemp);
+	delete impulseTemp;
+	delete rPosTemp;
+}
+
+void Body::ApplyImpulse(Impulse^ impulse, Vector3 rPos)
+{
+	btVector3* rPosTemp = Math::Vector3ToBtVector3(rPos);
+	_body->applyImpulse(*impulse->UnmanagedPointer, *rPosTemp);
+	delete rPosTemp;
+}
+
+void Body::ApplyVAImpulse(Vector3 impulse)
+{
+	btVector3* impulseTemp = Math::Vector3ToBtVector3(impulse);
+	_body->applyVAImpulse(*impulseTemp);
+	delete impulseTemp;
+}
+
+void Body::ApplyDAImpulse(Vector3 impulse)
+{
+	btVector3* impulseTemp = Math::Vector3ToBtVector3(impulse);
+	_body->applyDAImpulse(*impulseTemp);
+	delete impulseTemp;
+}
+
+void Body::ApplyAImpulse(Impulse^ impulse)
+{
+	_body->applyAImpulse(*impulse->UnmanagedPointer);
+}
+
+void Body::ApplyDCImpulse(Vector3 impulse)
+{
+	btVector3* impulseTemp = Math::Vector3ToBtVector3(impulse);
+	_body->applyDCImpulse(*impulseTemp);
+	delete impulseTemp;
+}
+
+void Body_GetAngularVelocity(btSoftBody::Body* body, btVector3* rpos, btVector3* velocity)
+{
+	*velocity = body->angularVelocity(*rpos);
+}
+Vector3 Body::GetAngularVelocity(Vector3 rPos)
+{
+	btVector3* rposTemp = Math::Vector3ToBtVector3(rPos);
+	btVector3* velocityTemp = new btVector3();
+	Body_GetAngularVelocity(_body, rposTemp, velocityTemp);
+	delete rposTemp;
+	return Math::BtVector3ToVector3(velocityTemp);
+}
+
+void Body_GetVelocity(btSoftBody::Body* body, btVector3* rpos, btVector3* velocity)
+{
+	*velocity = body->velocity(*rpos);
+}
+Vector3 Body::Velocity(Vector3 rPos)
+{
+	btVector3* rposTemp = Math::Vector3ToBtVector3(rPos);
+	btVector3* velocityTemp = new btVector3();
+	Body_GetVelocity(_body, rposTemp, velocityTemp);
+	delete rposTemp;
+	return Math::BtVector3ToVector3(velocityTemp);
+}
+
+void Body_GetAngularVelocity(btSoftBody::Body* body, btVector3* velocity)
+{
+	*velocity = body->angularVelocity();
+}
+Vector3 Body::AngularVelocity::get()
+{
+	btVector3* velocityTemp = new btVector3();
+	Body_GetAngularVelocity(_body, velocityTemp);
+	return Math::BtVector3ToVector3(velocityTemp);
+}
+
+CollisionObject^ Body::CollisionObject::get()
+{
+	if (_body->m_collisionObject == 0)
+		return nullptr;
+	return gcnew BulletSharp::CollisionObject(_body->m_collisionObject);
+}
+void Body::CollisionObject::set(BulletSharp::CollisionObject^ value)
+{
+	_body->m_collisionObject = value->UnmanagedPointer;
+}
+
+btScalar Body::InvMass::get()
+{
+	return _body->invMass();
+}
+
+Matrix Body::InvWorldInertia::get()
+{
+	return Math::BtMatrix3x3ToMatrix(&_body->invWorldInertia());
+}
+
+void Body_GetLinearVelocity(btSoftBody::Body* body, btVector3* velocity)
+{
+	*velocity = body->linearVelocity();
+}
+Vector3 Body::LinearVelocity::get()
+{
+	btVector3* velocityTemp = new btVector3();
+	Body_GetLinearVelocity(_body, velocityTemp);
+	return Math::BtVector3ToVector3(velocityTemp);
+}
+
+RigidBody^ Body::Rigid::get()
+{
+	if (_body->m_rigid == 0)
+		return nullptr;
+	return gcnew RigidBody(_body->m_rigid);
+}
+void Body::Rigid::set(RigidBody^ value)
+{
+	_body->m_rigid = value->UnmanagedPointer;
+}
+
+Cluster^ Body::Soft::get()
+{
+	if (_body->m_soft == 0)
+		return nullptr;
+	return gcnew Cluster(_body->m_soft);
+}
+void Body::Soft::set(Cluster^ value)
+{
+	_body->m_soft = value->UnmanagedPointer;
+}
+
+Matrix Body::XForm::get()
+{
+	return Math::BtTransformToMatrix(&_body->xform());
+}
+
 btSoftBody::Body* Body::UnmanagedPointer::get()
 {
 	return _body;
@@ -129,6 +287,97 @@ void Body::UnmanagedPointer::set(btSoftBody::Body* value)
 	_body = value;
 }
 
+
+Cluster::Cluster(btSoftBody::Cluster* cluster)
+{
+	_cluster = cluster;
+}
+
+Cluster::Cluster()
+{
+	_cluster = new btSoftBody::Cluster();
+}
+
+Vector3 Cluster::Com::get()
+{
+	return Math::BtVector3ToVector3(&_cluster->m_com);
+}
+void Cluster::Com::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_cluster->m_com);
+}
+
+Vector3Array^ Cluster::FrameRefs::get()
+{
+	return gcnew Vector3Array(&_cluster->m_framerefs);
+}
+void Cluster::FrameRefs::set(Vector3Array^ value)
+{
+	_cluster->m_framerefs = *value->UnmanagedPointer;
+}
+
+Matrix Cluster::FrameXForm::get()
+{
+	return Math::BtTransformToMatrix(&_cluster->m_framexform);
+}
+void Cluster::FrameXForm::set(Matrix value)
+{
+	Math::MatrixToBtTransform(value, &_cluster->m_framexform);
+}
+
+btScalar Cluster::IDMass::get()
+{
+	return _cluster->m_idmass;
+}
+void Cluster::IDMass::set(btScalar value)
+{
+	_cluster->m_idmass = value;
+}
+
+btScalar Cluster::IMass::get()
+{
+	return _cluster->m_imass;
+}
+void Cluster::IMass::set(btScalar value)
+{
+	_cluster->m_imass = value;
+}
+
+Matrix Cluster::InvWI::get()
+{
+	return Math::BtMatrix3x3ToMatrix(&_cluster->m_invwi);
+}
+void Cluster::InvWI::set(Matrix value)
+{
+	Math::MatrixToBtMatrix3x3(value, &_cluster->m_invwi);
+}
+
+Matrix Cluster::Locii::get()
+{
+	return Math::BtMatrix3x3ToMatrix(&_cluster->m_locii);
+}
+void Cluster::Locii::set(Matrix value)
+{
+	Math::MatrixToBtMatrix3x3(value, &_cluster->m_locii);
+}
+
+ScalarArray^ Cluster::Masses::get()
+{
+	return gcnew ScalarArray(&_cluster->m_masses);
+}
+void Cluster::Masses::set(ScalarArray^ value)
+{
+	_cluster->m_masses = *value->UnmanagedPointer;
+}
+
+NodePtrArray^ Cluster::Nodes::get()
+{
+	return gcnew NodePtrArray(&_cluster->m_nodes);
+}
+void Cluster::Nodes::set(NodePtrArray^ value)
+{
+	_cluster->m_nodes = *value->UnmanagedPointer;
+}
 
 btSoftBody::Cluster* Cluster::UnmanagedPointer::get()
 {
@@ -247,18 +496,6 @@ btSoftBody::Config* Config::UnmanagedPointer::get()
 void Config::UnmanagedPointer::set(btSoftBody::Config* value)
 {
 	_config = value;
-}
-
-
-Body::Body()
-{
-	_body = new btSoftBody::Body();
-}
-
-
-Cluster::Cluster()
-{
-	_cluster = new btSoftBody::Cluster();
 }
 
 
@@ -382,9 +619,72 @@ btSoftBody::Face* Face::UnmanagedPointer::get()
 }
 
 
+Impulse::Impulse(btSoftBody::Impulse* impulse)
+{
+	_impulse = impulse;
+}
+
 Impulse::Impulse()
 {
 	_impulse = new btSoftBody::Impulse();
+}
+
+bool Impulse::AsDrift::get()
+{
+	return _impulse->m_asDrift;
+}
+void Impulse::AsDrift::set(bool value)
+{
+	_impulse->m_asDrift = value;
+}
+
+bool Impulse::AsVelocity::get()
+{
+	return _impulse->m_asVelocity;
+}
+void Impulse::AsVelocity::set(bool value)
+{
+	_impulse->m_asVelocity = value;
+}
+
+Vector3 Impulse::Drift::get()
+{
+	return Math::BtVector3ToVector3(&_impulse->m_drift);
+}
+void Impulse::Drift::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_impulse->m_drift);
+}
+
+Vector3 Impulse::Velocity::get()
+{
+	return Math::BtVector3ToVector3(&_impulse->m_velocity);
+}
+void Impulse::Velocity::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_impulse->m_velocity);
+}
+
+btSoftBody::Impulse* Impulse_Negative(btSoftBody::Impulse* impulse)
+{
+	btSoftBody::Impulse* impulseNew = new btSoftBody::Impulse();
+	*impulseNew = -*impulse;
+	return impulseNew;
+}
+Impulse^ Impulse::operator-(Impulse^ i)
+{
+	return gcnew Impulse(Impulse_Negative(i->UnmanagedPointer));
+}
+
+btSoftBody::Impulse* Impulse_Multiply(btSoftBody::Impulse* impulse, btScalar x)
+{
+	btSoftBody::Impulse* impulseNew = new btSoftBody::Impulse();
+	*impulseNew = (*impulse) * x;
+	return impulseNew;
+}
+Impulse^ Impulse::operator*(Impulse^ i, btScalar x)
+{
+	return gcnew Impulse(Impulse_Multiply(i->UnmanagedPointer, x));
 }
 
 btSoftBody::Impulse* BulletSharp::SoftBody::Impulse::UnmanagedPointer::get()
@@ -658,7 +958,18 @@ Note::Note(btSoftBody::Note* note)
 {
 }
 
+Note::Note()
+: Element(new btSoftBody::Note())
+{
+}
 
+btSoftBody::Note* BulletSharp::SoftBody::Note::UnmanagedPointer::get()
+{
+	return (btSoftBody::Note*)Element::UnmanagedPointer;
+}
+
+
+// Keep "BulletSharp::SoftBody::" so that we wouldn't conflict with Mogre::Pose.
 BulletSharp::SoftBody::Pose::Pose(btSoftBody::Pose* pose)
 {
 	_pose = pose;
@@ -1587,6 +1898,15 @@ void BulletSharp::SoftBody::SoftBody::Bounds::set(array<Vector3>^ value)
 	Math::Vector3ToBtVector3(value[1], &UnmanagedPointer->m_bounds[1]);
 }
 
+ClusterArray^ BulletSharp::SoftBody::SoftBody::Clusters::get()
+{
+	return gcnew ClusterArray(&UnmanagedPointer->m_clusters);
+}
+void BulletSharp::SoftBody::SoftBody::Clusters::set(ClusterArray^ value)
+{
+	UnmanagedPointer->m_clusters = *value->UnmanagedPointer;
+}
+
 Config^ BulletSharp::SoftBody::SoftBody::Cfg::get()
 {
 	return gcnew Config(&UnmanagedPointer->m_cfg);
@@ -1655,6 +1975,15 @@ void BulletSharp::SoftBody::SoftBody::Nodes::set(NodeArray^ value)
 	UnmanagedPointer->m_nodes = *value->UnmanagedPointer;
 }
 
+BulletSharp::SoftBody::NoteArray^ BulletSharp::SoftBody::SoftBody::Notes::get()
+{
+	return gcnew NoteArray(&UnmanagedPointer->m_notes);
+}
+void BulletSharp::SoftBody::SoftBody::Notes::set(NoteArray^ value)
+{
+	UnmanagedPointer->m_notes = *value->UnmanagedPointer;
+}
+
 BulletSharp::SoftBody::Pose^ BulletSharp::SoftBody::SoftBody::Pose::get()
 {
 	return gcnew BulletSharp::SoftBody::Pose(&UnmanagedPointer->m_pose);
@@ -1677,6 +2006,23 @@ SolverState^ BulletSharp::SoftBody::SoftBody::SolverState::get()
 void BulletSharp::SoftBody::SoftBody::SolverState::set(BulletSharp::SoftBody::SolverState^ value)
 {
 	UnmanagedPointer->m_sst = *value->UnmanagedPointer;
+}
+
+Object^ BulletSharp::SoftBody::SoftBody::Tag::get()
+{
+	void* obj = UnmanagedPointer->m_tag;
+	if (obj == nullptr)
+		return nullptr;
+	return static_cast<Object^>(VoidPtrToGCHandle(obj).Target);
+}
+void BulletSharp::SoftBody::SoftBody::Tag::set(Object^ value)
+{
+	void* obj = UnmanagedPointer->m_tag;
+	if (obj != nullptr)
+		VoidPtrToGCHandle(obj).Free();
+
+	GCHandle handle = GCHandle::Alloc(value);
+	UnmanagedPointer->m_tag = GCHandleToVoidPtr(handle);
 }
 
 btScalar BulletSharp::SoftBody::SoftBody::TimeAccumulator::get()

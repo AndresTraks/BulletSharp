@@ -1,4 +1,5 @@
-#include "stdafx.h"
+#include "StdAfx.h"
+#include "Version.h"
 
 using namespace System;
 using namespace System::Reflection;
@@ -10,7 +11,7 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyProductAttribute("BulletSharp")];
 [assembly:AssemblyCopyrightAttribute("Copyright (c) Andres Traks 2009-2010")];
 
-[assembly:AssemblyVersionAttribute("0.10")];
+[assembly:AssemblyVersionAttribute(BULLETSHARP_VERSION_STRING)];
 
 [assembly:ComVisible(false)];
 [assembly:CLSCompliantAttribute(true)];

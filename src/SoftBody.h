@@ -21,12 +21,17 @@ namespace BulletSharp
 
 	namespace SoftBody
 	{
+		ref class Cluster;
+		ref class ClusterArray;
 		ref class FaceArray;
+		ref class Impulse;
 		ref class LinkArray;
 		ref class Material;
 		ref class Node;
+		ref class NoteArray;
 		ref class MaterialArray;
 		ref class NodeArray;
+		ref class NodePtrArray;
 		ref class SoftBody;
 		ref class SoftBodyArray;
 
@@ -172,6 +177,61 @@ namespace BulletSharp
 
 		public:
 			Body();
+			Body(Cluster^ p);
+			Body(CollisionObject^ colObj);
+
+			void Activate();
+			void ApplyDImpulse(Vector3 impulse, Vector3 rPos);
+			void ApplyImpulse(Impulse^ impulse, Vector3 rPos);
+			void ApplyVAImpulse(Vector3 impulse);
+			void ApplyDAImpulse(Vector3 impulse);
+			void ApplyAImpulse(Impulse^ impulse);
+			void ApplyDCImpulse(Vector3 impulse);
+			Vector3 GetAngularVelocity(Vector3 rPos);
+			Vector3 Velocity(Vector3 rPos);
+
+			property Vector3 AngularVelocity
+			{
+				Vector3 get();
+			}
+
+			property BulletSharp::CollisionObject^ CollisionObject
+			{
+				BulletSharp::CollisionObject^ get();
+				void set(BulletSharp::CollisionObject^ value);
+			}
+
+			property btScalar InvMass
+			{
+				btScalar get();
+			}
+
+			property Matrix InvWorldInertia
+			{
+				Matrix get();
+			}
+
+			property Vector3 LinearVelocity
+			{
+				Vector3 get();
+			}
+
+			property RigidBody^ Rigid
+			{
+				RigidBody^ get();
+				void set(RigidBody^ value);
+			}
+
+			property Cluster^ Soft
+			{
+				Cluster^ get();
+				void set(Cluster^ value);
+			}
+
+			property Matrix XForm
+			{
+				Matrix get();
+			}
 
 		internal:
 			property btSoftBody::Body* UnmanagedPointer
@@ -186,8 +246,65 @@ namespace BulletSharp
 		private:
 			btSoftBody::Cluster* _cluster;
 
+		internal:
+			Cluster(btSoftBody::Cluster* cluster);
+
 		public:
 			Cluster();
+
+			property Vector3 Com
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property Vector3Array^ FrameRefs
+			{
+				Vector3Array^ get();
+				void set(Vector3Array^ value);
+			}
+
+			property Matrix FrameXForm
+			{
+				Matrix get();
+				void set(Matrix value);
+			}
+
+			property btScalar IDMass
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar IMass
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property Matrix InvWI
+			{
+				Matrix get();
+				void set(Matrix value);
+			}
+
+			property Matrix Locii
+			{
+				Matrix get();
+				void set(Matrix value);
+			}
+
+			property ScalarArray^ Masses
+			{
+				ScalarArray^ get();
+				void set(ScalarArray^ value);
+			}
+
+			property NodePtrArray^ Nodes
+			{
+				NodePtrArray^ get();
+				void set(NodePtrArray^ value);
+			}
 
 		internal:
 			property btSoftBody::Cluster* UnmanagedPointer
@@ -327,8 +444,38 @@ namespace BulletSharp
 		private:
 			btSoftBody::Impulse* _impulse;
 
+		internal:
+			Impulse(btSoftBody::Impulse* impulse);
+
 		public:
 			Impulse();
+
+			property bool AsDrift
+			{
+				bool get();
+				void set(bool value);
+			}
+
+			property bool AsVelocity
+			{
+				bool get();
+				void set(bool value);
+			}
+
+			property Vector3 Drift
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property Vector3 Velocity
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			static Impulse^ operator-(Impulse^ i);
+			static Impulse^ operator*(Impulse^ i, btScalar x);
 
 		internal:
 			property btSoftBody::Impulse* UnmanagedPointer
@@ -595,6 +742,15 @@ namespace BulletSharp
 		{
 		internal:
 			Note(btSoftBody::Note* note);
+
+		public:
+			Note();
+
+		internal:
+			property btSoftBody::Note* UnmanagedPointer
+			{
+				btSoftBody::Note* get() new;
+			}
 		};
 
 		public ref class Pose
@@ -915,6 +1071,12 @@ namespace BulletSharp
 				void set(array<Vector3>^ value);
 			}
 
+			property ClusterArray^ Clusters
+			{
+				ClusterArray^ get();
+				void set(ClusterArray^ value);
+			}
+
 			property Config^ Cfg
 			{
 				Config^ get();
@@ -962,6 +1124,12 @@ namespace BulletSharp
 				void set(NodeArray^ value);
 			}
 
+			property NoteArray^ Notes
+			{
+				NoteArray^ get();
+				void set(NoteArray^ value);
+			}
+
 			property Pose^ Pose
 			{
 				BulletSharp::SoftBody::Pose^ get();
@@ -972,6 +1140,12 @@ namespace BulletSharp
 			{
 				BulletSharp::SoftBody::SolverState^ get();
 				void set(BulletSharp::SoftBody::SolverState^ value);
+			}
+
+			property Object^ Tag
+			{
+				Object^ get();
+				void set(Object^ value);
 			}
 
 			property btScalar TimeAccumulator
