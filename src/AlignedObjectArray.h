@@ -13,6 +13,7 @@
 #endif
 
 using namespace System::Collections;
+using namespace System::Diagnostics;
 
 namespace BulletSharp
 {
@@ -53,6 +54,7 @@ namespace BulletSharp
 		}
 	};
 
+	[DebuggerDisplay("Size = {Size}")]
 	public ref class BroadphasePairArray : AlignedObjectArray
 	{
 	internal:
@@ -93,6 +95,7 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
+		[DebuggerDisplay("Size = {Size}")]
 		public ref class ClusterArray : AlignedObjectArray, IEnumerable
 		{
 		internal:
@@ -152,6 +155,7 @@ namespace BulletSharp
 	};
 #endif
 
+	[DebuggerDisplay("Size = {Size}")]
 	public ref class CollisionShapeArray : AlignedObjectArray
 	{
 	public:
@@ -186,6 +190,7 @@ namespace BulletSharp
 		}
 	};
 
+	[DebuggerDisplay("Size = {Size}")]
 	public ref class CollisionObjectArray : AlignedObjectArray, IEnumerable
 	{
 	internal:
@@ -247,6 +252,7 @@ namespace BulletSharp
 		virtual void Reset();
 	};
 
+	[DebuggerDisplay("Size = {Size}")]
 	public ref class CompoundShapeChildArray : AlignedObjectArray
 	{
 	internal:
@@ -286,6 +292,7 @@ namespace BulletSharp
 		}
 	};
 
+	[DebuggerDisplay("Size = {Size}")]
 	public ref class CompoundShapeChildEnumerator : IEnumerator
 	{
 	private:
@@ -305,6 +312,7 @@ namespace BulletSharp
 	};
 
 #ifndef DISABLE_DBVT
+	[DebuggerDisplay("Size = {Size}")]
 	public ref class DbvtNodeArray : AlignedObjectArray
 	{
 	internal:
@@ -342,6 +350,7 @@ namespace BulletSharp
 		}
 	};
 
+	[DebuggerDisplay("Size = {Size}")]
 	public ref class StkNnArray : AlignedObjectArray
 	{
 	internal:
@@ -379,6 +388,7 @@ namespace BulletSharp
 		}
 	};
 
+	[DebuggerDisplay("Size = {Size}")]
 	public ref class StkNpsArray : AlignedObjectArray
 	{
 	internal:
@@ -420,6 +430,7 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
+		[DebuggerDisplay("Size = {Size}")]
 		public ref class FaceArray : AlignedObjectArray
 		{
 		internal:
@@ -459,6 +470,7 @@ namespace BulletSharp
 	};
 #endif
 
+	[DebuggerDisplay("Size = {Size}")]
 	public ref class IntArray : AlignedObjectArray
 	{
 	internal:
@@ -496,6 +508,7 @@ namespace BulletSharp
 		}
 	};
 
+	[DebuggerDisplay("Size = {Size}")]
 	public ref class ManifoldArray : AlignedObjectArray
 	{
 	internal:
@@ -536,6 +549,7 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
+		[DebuggerDisplay("Size = {Size}")]
 		public ref class LinkArray : AlignedObjectArray, IEnumerable
 		{
 		internal:
@@ -593,6 +607,7 @@ namespace BulletSharp
 			virtual void Reset();
 		};
 
+		[DebuggerDisplay("Size = {Size}")]
 		public ref class MaterialArray : AlignedObjectArray
 		{
 		internal:
@@ -630,6 +645,7 @@ namespace BulletSharp
 			}
 		};
 
+		[DebuggerDisplay("Size = {Size}")]
 		public ref class NodeArray : AlignedObjectArray
 		{
 		internal:
@@ -667,6 +683,7 @@ namespace BulletSharp
 			}
 		};
 
+		[DebuggerDisplay("Size = {Size}")]
 		public ref class NodePtrArray : AlignedObjectArray
 		{
 		internal:
@@ -704,6 +721,7 @@ namespace BulletSharp
 			}
 		};
 
+		[DebuggerDisplay("Size = {Size}")]
 		public ref class NoteArray : AlignedObjectArray
 		{
 		internal:
@@ -743,6 +761,7 @@ namespace BulletSharp
 	};
 #endif
 
+	[DebuggerDisplay("Size = {Size}")]
 	public ref class ScalarArray : AlignedObjectArray
 	{
 	internal:
@@ -783,6 +802,7 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
+		[DebuggerDisplay("Size = {Size}")]
 		public ref class SoftBodyArray : AlignedObjectArray
 		{
 		internal:
@@ -822,6 +842,7 @@ namespace BulletSharp
 	};
 #endif
 
+	[DebuggerDisplay("Size = {Size}")]
 	public ref class Vector3Array : AlignedObjectArray
 	{
 	internal:
@@ -860,6 +881,7 @@ namespace BulletSharp
 	};
 
 #ifndef DISABLE_VEHICLE
+	[DebuggerDisplay("Size = {Size}")]
 	public ref class WheelInfoArray : AlignedObjectArray
 	{
 	internal:

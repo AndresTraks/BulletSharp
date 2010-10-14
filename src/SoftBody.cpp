@@ -4,6 +4,7 @@
 
 #include "AlignedObjectArray.h"
 #include "BroadphaseInterface.h"
+#include "Collections.h"
 #include "Dispatcher.h"
 #include "RigidBody.h"
 #include "SoftBody.h"
@@ -1885,17 +1886,9 @@ BulletSharp::SoftBody::SoftBody^ BulletSharp::SoftBody::SoftBody::Upcast(Collisi
 	return gcnew SoftBody(body);
 }
 
-array<Vector3>^ BulletSharp::SoftBody::SoftBody::Bounds::get()
+Vector3Collection^ BulletSharp::SoftBody::SoftBody::Bounds::get()
 {
-	array<Vector3>^ boundsArray = gcnew array<Vector3>(2);
-	boundsArray[0] = Math::BtVector3ToVector3(&UnmanagedPointer->m_bounds[0]);
-	boundsArray[1] = Math::BtVector3ToVector3(&UnmanagedPointer->m_bounds[1]);
-	return boundsArray;
-}
-void BulletSharp::SoftBody::SoftBody::Bounds::set(array<Vector3>^ value)
-{
-	Math::Vector3ToBtVector3(value[0], &UnmanagedPointer->m_bounds[0]);
-	Math::Vector3ToBtVector3(value[1], &UnmanagedPointer->m_bounds[1]);
+	return gcnew Vector3Collection(UnmanagedPointer->m_bounds, 2);
 }
 
 ClusterArray^ BulletSharp::SoftBody::SoftBody::Clusters::get()
