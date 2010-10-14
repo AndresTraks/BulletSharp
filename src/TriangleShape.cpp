@@ -4,6 +4,7 @@
 #include <BulletCollision/CollisionShapes/btTriangleShape.h>
 #pragma managed(pop)
 
+#include "Collections.h"
 #include "TriangleShape.h"
 
 TriangleShape::TriangleShape(btTriangleShape* triangleShape)
@@ -66,19 +67,9 @@ Vector3 TriangleShape::GetVertexPtr(int index)
 	return vertex;
 }
 
-array<Vector3>^ TriangleShape::Vertices::get()
+Vector3List^ TriangleShape::Vertices::get()
 {
-	array<Vector3>^ vertices = gcnew array<Vector3>(3);
-	vertices[0] = Math::BtVector3ToVector3(&UnmanagedPointer->m_vertices1[0]);
-	vertices[1] = Math::BtVector3ToVector3(&UnmanagedPointer->m_vertices1[1]);
-	vertices[2] = Math::BtVector3ToVector3(&UnmanagedPointer->m_vertices1[2]);
-	return vertices;
-}
-void TriangleShape::Vertices::set(array<Vector3>^ value)
-{
-	Math::Vector3ToBtVector3(value[0], &UnmanagedPointer->m_vertices1[0]);
-	Math::Vector3ToBtVector3(value[1], &UnmanagedPointer->m_vertices1[1]);
-	Math::Vector3ToBtVector3(value[2], &UnmanagedPointer->m_vertices1[2]);
+	return gcnew Vector3List(UnmanagedPointer->m_vertices1, 3);
 }
 
 btTriangleShape* TriangleShape::UnmanagedPointer::get()

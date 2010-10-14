@@ -18,7 +18,7 @@ namespace BulletSharp
 	ref class ScalarArray;
 	ref class SparseSdf;
 	ref class Vector3Array;
-	ref class Vector3Collection;
+	ref class Vector3List;
 
 	namespace SoftBody
 	{
@@ -922,10 +922,9 @@ namespace BulletSharp
 		public:
 			Tetra();
 
-			property array<Vector3>^ C0
+			property Vector3List^ C0
 			{
-				array<Vector3>^ get();
-				void set(array<Vector3>^ value);
+				Vector3List^ get();
 			}
 
 			property btScalar C1
@@ -1066,9 +1065,9 @@ namespace BulletSharp
 
 			static SoftBody^ Upcast(CollisionObject^ colObj);
 
-			property Vector3Collection^ Bounds
+			property Vector3List^ Bounds
 			{
-				Vector3Collection^ get();
+				Vector3List^ get();
 			}
 
 			property ClusterArray^ Clusters

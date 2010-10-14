@@ -1,23 +1,44 @@
 #include "StdAfx.h"
 #include "Collections.h"
 
-Vector3Collection::Vector3Collection(btVector3* vector3Array, int length)
+Vector3ListDebugView::Vector3ListDebugView(Vector3List^ list)
+{
+	_list = list;
+}
+
+array<Vector3>^ Vector3ListDebugView::Items::get()
+{
+	array<Vector3>^ arr = gcnew array<Vector3>(_list->Count);
+	_list->CopyTo(arr, 0);
+	return arr;
+}
+
+
+Vector3List::Vector3List(btVector3* vector3Array, int length)
 {
 	_vector3Array = vector3Array;
 	_length = length;
+	isReadOnly = false;
 }
 
-void Vector3Collection::Add(Vector3 item)
+Vector3List::Vector3List(const btVector3* vector3Array, int length)
 {
-	throw gcnew System::NotSupportedException("Cannot resize collection.");
+	_vector3Array = (btVector3*)vector3Array;
+	_length = length;
+	isReadOnly = true;
 }
 
-void Vector3Collection::Clear()
+void Vector3List::Add(Vector3 item)
 {
-	throw gcnew System::NotSupportedException("Cannot resize collection.");
+	throw gcnew System::NotSupportedException("Cannot resize list.");
 }
 
-bool Vector3Collection::Contains(Vector3 item)
+void Vector3List::Clear()
+{
+	throw gcnew System::NotSupportedException("Cannot resize list.");
+}
+
+bool Vector3List::Contains(Vector3 item)
 {
 	int i;
 	for (i=0; i<_length; i++)
@@ -32,7 +53,7 @@ bool Vector3Collection::Contains(Vector3 item)
 	return false;
 }
 
-void Vector3Collection::CopyTo(array<Vector3>^ array, int arrayIndex)
+void Vector3List::CopyTo(array<Vector3>^ array, int arrayIndex)
 {
 	if (array == nullptr)
 		throw gcnew ArgumentNullException("array");
@@ -50,44 +71,71 @@ void Vector3Collection::CopyTo(array<Vector3>^ array, int arrayIndex)
 	}
 }
 
-IEnumerator^ Vector3Collection::GetEnumerator()
+IEnumerator^ Vector3List::GetEnumerator()
 {
 	return gcnew Vector3Enumerator(this);
 }
 
-Generic::IEnumerator<Vector3>^ Vector3Collection::GetSpecializedEnumerator()
+Generic::IEnumerator<Vector3>^ Vector3List::GetSpecializedEnumerator()
 {
 	return gcnew Vector3Enumerator(this);
 }
 
-bool Vector3Collection::Remove(Vector3 item)
+int Vector3List::IndexOf(Vector3 item)
+{
+	int i;
+	for (i=0; i<_length; i++)
+	{
+		if (item.X == _vector3Array[i].m_floats[0] &&
+			item.Y == _vector3Array[i].m_floats[1] &&
+			item.Z == _vector3Array[i].m_floats[2])
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+void Vector3List::Insert(int index, Vector3 item)
 {
 	throw gcnew System::NotSupportedException("Cannot resize collection.");
 }
 
-Vector3 Vector3Collection::default::get(int index)
+bool Vector3List::Remove(Vector3 item)
+{
+	throw gcnew System::NotSupportedException("Cannot resize list.");
+}
+
+void Vector3List::RemoveAt(int index)
+{
+	throw gcnew System::NotSupportedException("Cannot resize list.");
+}
+
+Vector3 Vector3List::default::get(int index)
 {
 	return Math::BtVector3ToVector3(&_vector3Array[index]);
 }
-void Vector3Collection::default::set(int index, Vector3 value)
+void Vector3List::default::set(int index, Vector3 value)
 {
+	if (IsReadOnly)
+		throw gcnew InvalidOperationException("List is read-only.");
 	Math::Vector3ToBtVector3(value, &UnmanagedPointer[index]);
 }
 
-bool Vector3Collection::IsReadOnly::get()
+bool Vector3List::IsReadOnly::get()
 {
-	return false;
+	return isReadOnly;
 }
 
 
-Vector3Enumerator::Vector3Enumerator(Vector3Collection^ vector3Collection)
+Vector3Enumerator::Vector3Enumerator(Vector3List^ vector3List)
 {
-	_vector3Collection = vector3Collection;
+	_vector3List = vector3List;
 }
 
 Vector3 Vector3Enumerator::GenericCurrent::get()
 {
-	return _vector3Collection[i];
+	return _vector3List[i];
 }
 
 Object^ Vector3Enumerator::Current::get()
@@ -98,7 +146,7 @@ Object^ Vector3Enumerator::Current::get()
 bool Vector3Enumerator::MoveNext()
 {
 	i++;
-	return (i < _vector3Collection->Count);
+	return (i < _vector3List->Count);
 }
 
 void Vector3Enumerator::Reset()

@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 
+#include "Collections.h"
 #include "TriangleShapeEx.h"
 
 GimTriangleContact::GimTriangleContact()
@@ -50,19 +51,9 @@ void GimTriangleContact::PointCount::set(int value)
 	_contact->m_point_count = value;
 }
 
-array<Vector3>^ GimTriangleContact::Points::get()
+Vector3List^ GimTriangleContact::Points::get()
 {
-	array<Vector3>^ vectors = gcnew array<Vector3>(16);
-	int i;
-	for (i=0; i<16; i++)
-		vectors[i] = Math::BtVector3ToVector3(&_contact->m_points[i]);
-	return vectors;
-}
-void GimTriangleContact::Points::set(array<Vector3>^ value)
-{
-	int i;
-	for (i=0; i<16; i++)
-		Math::Vector3ToBtVector3(value[i], &_contact->m_points[i]);
+	return gcnew Vector3List(_contact->m_points, 16);
 }
 
 Vector4 GimTriangleContact::SeparatingNormal::get()
@@ -165,19 +156,9 @@ void PrimitiveTriangle::Plane::set(Vector4 value)
 	Math::Vector4ToBtVector4(value, &_triangle->m_plane);
 }
 
-array<Vector3>^ PrimitiveTriangle::Vectors::get()
+Vector3List^ PrimitiveTriangle::Vectors::get()
 {
-	array<Vector3>^ vectors = gcnew array<Vector3>(3);
-	vectors[0] = Math::BtVector3ToVector3(&_triangle->m_vertices[0]);
-	vectors[1] = Math::BtVector3ToVector3(&_triangle->m_vertices[1]);
-	vectors[2] = Math::BtVector3ToVector3(&_triangle->m_vertices[2]);
-	return vectors;
-}
-void PrimitiveTriangle::Vectors::set(array<Vector3>^ value)
-{
-	Math::Vector3ToBtVector3(value[0], &_triangle->m_vertices[0]);
-	Math::Vector3ToBtVector3(value[1], &_triangle->m_vertices[1]);
-	Math::Vector3ToBtVector3(value[2], &_triangle->m_vertices[2]);
+	return gcnew Vector3List(_triangle->m_vertices, 3);
 }
 
 btPrimitiveTriangle* PrimitiveTriangle::UnmanagedPointer::get()

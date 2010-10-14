@@ -1191,21 +1191,9 @@ Tetra::Tetra()
 {
 }
 
-array<Vector3>^ Tetra::C0::get()
+Vector3List^ Tetra::C0::get()
 {
-	array<Vector3>^ c0Array = gcnew array<Vector3>(4);
-	c0Array[0] = Math::BtVector3ToVector3(&UnmanagedPointer->m_c0[0]);
-	c0Array[1] = Math::BtVector3ToVector3(&UnmanagedPointer->m_c0[1]);
-	c0Array[2] = Math::BtVector3ToVector3(&UnmanagedPointer->m_c0[2]);
-	c0Array[3] = Math::BtVector3ToVector3(&UnmanagedPointer->m_c0[3]);
-	return c0Array;
-}
-void Tetra::C0::set(array<Vector3>^ value)
-{
-	Math::Vector3ToBtVector3(value[0], &UnmanagedPointer->m_c0[0]);
-	Math::Vector3ToBtVector3(value[1], &UnmanagedPointer->m_c0[1]);
-	Math::Vector3ToBtVector3(value[2], &UnmanagedPointer->m_c0[2]);
-	Math::Vector3ToBtVector3(value[3], &UnmanagedPointer->m_c0[3]);
+	return gcnew Vector3List(UnmanagedPointer->m_c0, 4);
 }
 
 btScalar Tetra::C1::get()
@@ -1886,9 +1874,9 @@ BulletSharp::SoftBody::SoftBody^ BulletSharp::SoftBody::SoftBody::Upcast(Collisi
 	return gcnew SoftBody(body);
 }
 
-Vector3Collection^ BulletSharp::SoftBody::SoftBody::Bounds::get()
+Vector3List^ BulletSharp::SoftBody::SoftBody::Bounds::get()
 {
-	return gcnew Vector3Collection(UnmanagedPointer->m_bounds, 2);
+	return gcnew Vector3List(UnmanagedPointer->m_bounds, 2);
 }
 
 ClusterArray^ BulletSharp::SoftBody::SoftBody::Clusters::get()

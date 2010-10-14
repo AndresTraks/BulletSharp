@@ -5,23 +5,46 @@ using namespace System::Diagnostics;
 
 namespace BulletSharp
 {
+	ref class Vector3List;
+	ref class Vector3ListDebugView
+	{
+	private:
+		Vector3List^ _list;
+
+	public:
+		Vector3ListDebugView(Vector3List^ collection);
+
+		[DebuggerBrowsable(DebuggerBrowsableState::RootHidden)]
+		property array<Vector3>^ Items
+		{
+			array<Vector3>^ get();
+		}
+	};
+
 	[DebuggerDisplay("Count = {Count}")]
-	public ref class Vector3Collection : public Generic::ICollection<Vector3>
+	[DebuggerTypeProxy(Vector3ListDebugView::typeid)]
+	public ref class Vector3List : public Generic::IList<Vector3>
 	{
 	private:
 		btVector3* _vector3Array;
 		int _length;
+		bool isReadOnly;
+
+	internal:
+		Vector3List(btVector3* vector3Array, int length);
+		Vector3List(const btVector3* vector3Array, int length);
 
 	public:
-		Vector3Collection(btVector3* vector3Array, int length);
-
 		virtual void Add(Vector3 item);
 		virtual void Clear();
 		virtual bool Contains(Vector3 item);
 		virtual void CopyTo(array<Vector3>^ array, int arrayIndex);
 		virtual IEnumerator^ GetEnumerator() = System::Collections::IEnumerable::GetEnumerator;
 		virtual Generic::IEnumerator<Vector3>^ GetSpecializedEnumerator() = Generic::IEnumerable<Vector3>::GetEnumerator;
+		virtual int IndexOf(Vector3 item);
+		virtual void Insert(int index, Vector3 item);
 		virtual bool Remove(Vector3 item);
+		virtual void RemoveAt(int index);
 
 		property int Count
 		{
@@ -33,8 +56,8 @@ namespace BulletSharp
 
 		property Vector3 default[int]
 		{
-			Vector3 get(int i);
-			void set(int index, Vector3 value);
+			virtual Vector3 get(int i);
+			virtual void set(int index, Vector3 value);
 		}
 
 		property bool IsReadOnly
@@ -55,11 +78,11 @@ namespace BulletSharp
 	public ref class Vector3Enumerator : IEnumerator, Generic::IEnumerator<Vector3>
 	{
 	private:
-		Vector3Collection^ _vector3Collection;
+		Vector3List^ _vector3List;
 		int i;
 
 	public:
-		Vector3Enumerator(Vector3Collection^ vector3Collection);
+		Vector3Enumerator(Vector3List^ vector3List);
 		~Vector3Enumerator(){}
 
 		property Vector3 GenericCurrent

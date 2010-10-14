@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #include "Box2dShape.h"
+#include "Collections.h"
 
 Box2dShape::Box2dShape(btBox2dShape* shape)
 : PolyhedralConvexShape(shape)
@@ -76,15 +77,9 @@ Vector3 Box2dShape::HalfExtentsWithoutMargin::get()
 	return Math::BtVector3ToVector3(&UnmanagedPointer->getHalfExtentsWithoutMargin());
 }
 
-array<Vector3>^ Box2dShape::Normals::get()
+Vector3List^ Box2dShape::Normals::get()
 {
-	const btVector3* btNormals = UnmanagedPointer->getNormals();
-	array<Vector3>^ normals = gcnew array<Vector3>(4);
-	normals[0] = Math::BtVector3ToVector3(&btNormals[0]);
-	normals[1] = Math::BtVector3ToVector3(&btNormals[1]);
-	normals[2] = Math::BtVector3ToVector3(&btNormals[2]);
-	normals[3] = Math::BtVector3ToVector3(&btNormals[3]);
-	return normals;
+	return gcnew Vector3List(UnmanagedPointer->getNormals(), 4);
 }
 
 int Box2dShape::VertexCount::get()
@@ -92,15 +87,9 @@ int Box2dShape::VertexCount::get()
 	return UnmanagedPointer->getVertexCount();
 }
 
-array<Vector3>^ Box2dShape::Vertices::get()
+Vector3List^ Box2dShape::Vertices::get()
 {
-	const btVector3* btVertices = UnmanagedPointer->getVertices();
-	array<Vector3>^ vertices = gcnew array<Vector3>(4);
-	vertices[0] = Math::BtVector3ToVector3(&btVertices[0]);
-	vertices[1] = Math::BtVector3ToVector3(&btVertices[1]);
-	vertices[2] = Math::BtVector3ToVector3(&btVertices[2]);
-	vertices[3] = Math::BtVector3ToVector3(&btVertices[3]);
-	return vertices;
+	return gcnew Vector3List(UnmanagedPointer->getVertices(), 4);
 }
 
 Box2dShape^ Box2dShape::Upcast(CollisionShape^ shape)

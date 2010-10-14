@@ -10,6 +10,8 @@
 
 namespace BulletSharp
 {
+	ref class Vector3List;
+
 	public ref class GimTriangleContact
 	{
 	private:
@@ -34,10 +36,9 @@ namespace BulletSharp
 			void set(int value);
 		}
 
-		property array<Vector3>^ Points
+		property Vector3List^ Points
 		{
-			array<Vector3>^ get();
-			void set(array<Vector3>^ value);
+			Vector3List^ get();
 		}
 
 		property Vector4 SeparatingNormal
@@ -90,10 +91,9 @@ namespace BulletSharp
 			void set(Vector4 value);
 		}
 
-		property array<Vector3>^ Vectors
+		property Vector3List^ Vectors
 		{
-			array<Vector3>^ get();
-			void set(array<Vector3>^ value);
+			Vector3List^ get();
 		}
 
 	internal:
