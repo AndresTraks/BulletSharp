@@ -119,91 +119,122 @@ btBroadphasePairArray* BroadphasePairArray::UnmanagedPointer::get()
 
 
 #ifndef DISABLE_SOFTBODY
-BulletSharp::SoftBody::ClusterArray::ClusterArray(btSoftBody::tClusterArray* clusterArray)
+ClusterArray::ClusterArray(btSoftBody::tClusterArray* clusterArray)
 : AlignedObjectArray(clusterArray)
 {
 }
 
-BulletSharp::SoftBody::ClusterArray::ClusterArray()
+ClusterArray::ClusterArray()
 : AlignedObjectArray(new btSoftBody::tClusterArray())
 {
 }
 
-IEnumerator^ ClusterArray::GetEnumerator()
-{
-	return gcnew ClusterEnumerator(this);
-}
-
-void BulletSharp::SoftBody::ClusterArray::Clear()
-{
-	UnmanagedPointer->clear();
-}
-
-void BulletSharp::SoftBody::ClusterArray::PopBack()
-{
-	UnmanagedPointer->pop_back();
-}
-
-void BulletSharp::SoftBody::ClusterArray::PushBack(Cluster^ cluster)
+void ClusterArray::Add(Cluster^ cluster)
 {
 	UnmanagedPointer->push_back(cluster->UnmanagedPointer);
 }
 
-void BulletSharp::SoftBody::ClusterArray::Remove(Cluster^ cluster)
+void ClusterArray::Clear()
 {
+	UnmanagedPointer->clear();
+}
+
+bool ClusterArray::Contains(Cluster^ item)
+{
+	return UnmanagedPointer->findLinearSearch(item->UnmanagedPointer) != UnmanagedPointer->size();
+}
+
+void ClusterArray::CopyTo(array<Cluster^>^ array, int arrayIndex)
+{
+	if (array == nullptr)
+		throw gcnew ArgumentNullException("array");
+
+	if (arrayIndex < 0)
+		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+
+	int size = UnmanagedPointer->size();
+	if (arrayIndex + size > array->Length)
+		throw gcnew ArgumentException("Array too small.");
+
+	int i;
+	for (i=0; i<size; i++)
+	{
+		array[arrayIndex+i] = gcnew Cluster((*UnmanagedPointer)[i]);
+	}
+}
+
+IEnumerator^ ClusterArray::GetEnumerator()
+{
+	return gcnew ListEnumerator<Cluster^>(this);
+}
+
+Generic::IEnumerator<Cluster^>^ ClusterArray::GetSpecializedEnumerator()
+{
+	return gcnew ListEnumerator<Cluster^>(this);
+}
+
+int ClusterArray::IndexOf(Cluster^ item)
+{
+	int i = UnmanagedPointer->findLinearSearch(item->UnmanagedPointer);
+	if (i == UnmanagedPointer->size())
+		return -1;
+	return i;
+}
+
+void ClusterArray::Insert(int index, Cluster^ item)
+{
+	throw gcnew System::NotSupportedException("Cannot resize collection.");
+}
+
+void ClusterArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+bool ClusterArray::Remove(Cluster^ cluster)
+{
+	int sizeBefore = UnmanagedPointer->size();
 	UnmanagedPointer->remove(cluster->UnmanagedPointer);
+	return sizeBefore != UnmanagedPointer->size();
 }
 
-int BulletSharp::SoftBody::ClusterArray::Capacity::get()
+void ClusterArray::RemoveAt(int index)
 {
-	return UnmanagedPointer->capacity();
+	throw gcnew System::NotSupportedException("Cannot resize list.");
 }
 
-int BulletSharp::SoftBody::ClusterArray::Size::get()
-{
-	return UnmanagedPointer->size();
-}
-
-void BulletSharp::SoftBody::ClusterArray::Swap(int index0, int index1)
+void ClusterArray::Swap(int index0, int index1)
 {
 	UnmanagedPointer->swap(index0, index1);
 }
 
-BulletSharp::SoftBody::Cluster^ BulletSharp::SoftBody::ClusterArray::default::get(int index)
+int ClusterArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int ClusterArray::Count::get()
+{
+	return UnmanagedPointer->size();
+}
+
+BulletSharp::SoftBody::Cluster^ ClusterArray::default::get(int index)
 {
 	return gcnew Cluster((*UnmanagedPointer)[index]);
 }
-void BulletSharp::SoftBody::ClusterArray::default::set(int index, Cluster^ value)
+void ClusterArray::default::set(int index, Cluster^ value)
 {
 	(*UnmanagedPointer)[index] = value->UnmanagedPointer;
+}
+
+bool ClusterArray::IsReadOnly::get()
+{
+	return false;
 }
 
 btSoftBody::tClusterArray* BulletSharp::SoftBody::ClusterArray::UnmanagedPointer::get()
 {
 	return (btSoftBody::tClusterArray*)AlignedObjectArray::UnmanagedPointer;
-}
-
-
-ClusterEnumerator::ClusterEnumerator(ClusterArray^ clusterArray)
-{
-	_clusterArray = clusterArray;
-	i=-1;
-}
-
-Object^ ClusterEnumerator::Current::get()
-{
-	return gcnew Cluster((*_clusterArray->UnmanagedPointer)[i]);
-}
-
-bool ClusterEnumerator::MoveNext()
-{
-	i++;
-	return (i < _clusterArray->UnmanagedPointer->size());
-}
-
-void ClusterEnumerator::Reset()
-{
-	i=-1;
 }
 #endif
 
@@ -678,9 +709,48 @@ FaceArray::FaceArray()
 {
 }
 
+void FaceArray::Add(Face^ face)
+{
+	UnmanagedPointer->push_back(*face->UnmanagedPointer);
+}
+
 void FaceArray::Clear()
 {
 	UnmanagedPointer->clear();
+}
+
+bool FaceArray::Contains(Face^ item)
+{
+	throw gcnew NotSupportedException();
+	//return UnmanagedPointer->findLinearSearch(*item->UnmanagedPointer) != UnmanagedPointer->size();
+}
+
+void FaceArray::CopyTo(array<Face^>^ array, int arrayIndex)
+{
+	if (array == nullptr)
+		throw gcnew ArgumentNullException("array");
+
+	if (arrayIndex < 0)
+		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+
+	int size = UnmanagedPointer->size();
+	if (arrayIndex + size > array->Length)
+		throw gcnew ArgumentException("Array too small.");
+
+	int i;
+	for (i=0; i<size; i++)
+	{
+		array[arrayIndex+i] = gcnew Face(&(*UnmanagedPointer)[i]);
+	}
+}
+
+int FaceArray::IndexOf(Face^ item)
+{
+	throw gcnew NotSupportedException();
+	//int i = UnmanagedPointer->findLinearSearch(*item->UnmanagedPointer);
+	//if (i == UnmanagedPointer->size())
+	//	return -1;
+	//return i;
 }
 
 void FaceArray::PopBack()
@@ -688,15 +758,36 @@ void FaceArray::PopBack()
 	UnmanagedPointer->pop_back();
 }
 
-void FaceArray::PushBack(Face^ face)
-{
-	UnmanagedPointer->push_back(*face->UnmanagedPointer);
-}
-
-void FaceArray::Remove(Face^ face)
+bool FaceArray::Remove(Face^ face)
 {
 	// FIXME
 	//UnmanagedPointer->remove(*face->UnmanagedPointer);
+	throw gcnew NotSupportedException();
+}
+
+void FaceArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+IEnumerator^ FaceArray::GetEnumerator()
+{
+	return gcnew ListEnumerator<Face^>(this);
+}
+
+Generic::IEnumerator<Face^>^ FaceArray::GetSpecializedEnumerator()
+{
+	return gcnew ListEnumerator<Face^>(this);
+}
+
+void FaceArray::Insert(int index, Face^ item)
+{
+	throw gcnew System::NotSupportedException();
+}
+
+void FaceArray::RemoveAt(int index)
+{
+	throw gcnew System::NotSupportedException();
 }
 
 int FaceArray::Capacity::get()
@@ -704,14 +795,14 @@ int FaceArray::Capacity::get()
 	return UnmanagedPointer->capacity();
 }
 
-int FaceArray::Size::get()
+int FaceArray::Count::get()
 {
 	return UnmanagedPointer->size();
 }
 
-void FaceArray::Swap(int index0, int index1)
+bool FaceArray::IsReadOnly::get()
 {
-	UnmanagedPointer->swap(index0, index1);
+	return false;
 }
 
 Face^ FaceArray::default::get(int index)

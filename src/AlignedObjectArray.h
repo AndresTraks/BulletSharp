@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Collections.h"
 #include "IDisposable.h"
 
 #ifndef DISABLE_DBVT
@@ -95,8 +96,9 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
-		[DebuggerDisplay("Size = {Size}")]
-		public ref class ClusterArray : AlignedObjectArray, IEnumerable
+		[DebuggerDisplay("Count = {Count}")]
+		[DebuggerTypeProxy(ListDebugView::typeid)]
+		public ref class ClusterArray : AlignedObjectArray, Generic::IList<Cluster^>
 		{
 		internal:
 			ClusterArray(btSoftBody::tClusterArray* clusterArray);
@@ -104,17 +106,22 @@ namespace BulletSharp
 		public:
 			ClusterArray();
 
-			virtual IEnumerator^ GetEnumerator();
-
-			void Clear();
+			virtual void Add(Cluster^ cluster);
+			virtual void Clear();
+			virtual bool Contains(Cluster^ item);
+			virtual void CopyTo(array<Cluster^>^ array, int arrayIndex);
+			virtual IEnumerator^ GetEnumerator() = IEnumerable::GetEnumerator;
+			virtual Generic::IEnumerator<Cluster^>^ GetSpecializedEnumerator() = Generic::IEnumerable<Cluster^>::GetEnumerator;
+			virtual int IndexOf(Cluster^ item);
+			virtual void Insert(int index, Cluster^ item);
 			void PopBack();
-			void PushBack(Cluster^ cluster);
-			void Remove(Cluster^ cluster);
+			virtual bool Remove(Cluster^ cluster);
+			virtual void RemoveAt(int index);
 			void Swap(int index0, int index1);
 
-			property int Size
+			property int Count
 			{
-				int get();
+				virtual int get();
 			}
 
 			property int Capacity
@@ -124,8 +131,13 @@ namespace BulletSharp
 
 			property Cluster^ default [int]
 			{
-				Cluster^ get (int index);
-				void set(int index, Cluster^ value);
+				virtual Cluster^ get (int index);
+				virtual void set(int index, Cluster^ value);
+			}
+
+			property bool IsReadOnly
+			{
+				virtual bool get();
 			}
 
 		internal:
@@ -134,24 +146,6 @@ namespace BulletSharp
 				virtual btSoftBody::tClusterArray* get() new;
 			}
 		};
-	};
-
-	public ref class ClusterEnumerator : IEnumerator
-	{
-	private:
-		BulletSharp::SoftBody::ClusterArray^ _clusterArray;
-		int i;
-
-	public:
-		ClusterEnumerator(BulletSharp::SoftBody::ClusterArray^ clusterArray);
-
-		property Object^ Current
-		{
-			virtual Object^ get();
-		}
-
-		virtual bool MoveNext();
-		virtual void Reset();
 	};
 #endif
 
@@ -430,8 +424,9 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
-		[DebuggerDisplay("Size = {Size}")]
-		public ref class FaceArray : AlignedObjectArray
+		[DebuggerDisplay("Count = {Count}")]
+		[DebuggerTypeProxy(ListDebugView::typeid)]
+		public ref class FaceArray : AlignedObjectArray, Generic::IList<Face^>
 		{
 		internal:
 			FaceArray(btAlignedObjectArray<btSoftBody::Face>* faceArray);
@@ -439,15 +434,22 @@ namespace BulletSharp
 		public:
 			FaceArray();
 
-			void Clear();
+			virtual void Add(Face^ face);
+			virtual void Clear();
+			virtual bool Contains(Face^ item);
+			virtual void CopyTo(array<Face^>^ array, int arrayIndex);
+			virtual IEnumerator^ GetEnumerator() = IEnumerable::GetEnumerator;
+			virtual Generic::IEnumerator<Face^>^ GetSpecializedEnumerator() = Generic::IEnumerable<Face^>::GetEnumerator;
+			virtual int IndexOf(Face^ item);
+			virtual void Insert(int index, Face^ item);
 			void PopBack();
-			void PushBack(Face^ face);
-			void Remove(Face^ face);
+			virtual bool Remove(Face^ face);
+			virtual void RemoveAt(int index);
 			void Swap(int index0, int index1);
 
-			property int Size
+			property int Count
 			{
-				int get();
+				virtual int get();
 			}
 
 			property int Capacity
@@ -457,8 +459,13 @@ namespace BulletSharp
 
 			property Face^ default [int]
 			{
-				Face^ get (int index);
-				void set(int index, Face^ value);
+				virtual Face^ get (int index);
+				virtual void set(int index, Face^ value);
+			}
+
+			property bool IsReadOnly
+			{
+				virtual bool get();
 			}
 
 		internal:

@@ -1,16 +1,53 @@
 #include "StdAfx.h"
 #include "Collections.h"
 
-Vector3ListDebugView::Vector3ListDebugView(Vector3List^ list)
+ListDebugView::ListDebugView(IEnumerable^ list)
 {
 	_list = list;
 }
 
-array<Vector3>^ Vector3ListDebugView::Items::get()
+array<Object^>^ ListDebugView::Items::get()
 {
-	array<Vector3>^ arr = gcnew array<Vector3>(_list->Count);
-	_list->CopyTo(arr, 0);
+	ArrayList^ list = gcnew ArrayList();
+	for each(Object^ o in _list)
+	{
+		list->Add(o);
+	}
+	array<Object^>^ arr = gcnew array<Object^>(list->Count);
+	list->CopyTo(arr, 0);
 	return arr;
+}
+
+
+generic<class T>
+ListEnumerator<T>::ListEnumerator(Generic::IList<T>^ list)
+{
+	_list = list;
+}
+
+generic<class T>
+T ListEnumerator<T>::GenericCurrent::get()
+{
+	return _list[i];
+}
+
+generic<class T>
+Object^ ListEnumerator<T>::Current::get()
+{
+	return GenericCurrent::get();
+}
+
+generic<class T>
+bool ListEnumerator<T>::MoveNext()
+{
+	i++;
+	return (i < _list->Count);
+}
+
+generic<class T>
+void ListEnumerator<T>::Reset()
+{
+	i=-1;
 }
 
 
@@ -40,16 +77,20 @@ void Vector3List::Clear()
 
 bool Vector3List::Contains(Vector3 item)
 {
+	btVector3* itemTemp = Math::Vector3ToBtVector3(item);
+
 	int i;
 	for (i=0; i<_length; i++)
 	{
-		if (item.X == _vector3Array[i].m_floats[0] &&
-			item.Y == _vector3Array[i].m_floats[1] &&
-			item.Z == _vector3Array[i].m_floats[2])
+		if (itemTemp->m_floats[0] == _vector3Array[i].m_floats[0] &&
+			itemTemp->m_floats[1] == _vector3Array[i].m_floats[1] &&
+			itemTemp->m_floats[2] == _vector3Array[i].m_floats[2])
 		{
+			delete itemTemp;
 			return true;
 		}
 	}
+	delete itemTemp;
 	return false;
 }
 
@@ -73,22 +114,24 @@ void Vector3List::CopyTo(array<Vector3>^ array, int arrayIndex)
 
 IEnumerator^ Vector3List::GetEnumerator()
 {
-	return gcnew Vector3Enumerator(this);
+	return gcnew ListEnumerator<Vector3>(this);
 }
 
 Generic::IEnumerator<Vector3>^ Vector3List::GetSpecializedEnumerator()
 {
-	return gcnew Vector3Enumerator(this);
+	return gcnew ListEnumerator<Vector3>(this);
 }
 
 int Vector3List::IndexOf(Vector3 item)
 {
+	btVector3* itemTemp = Math::Vector3ToBtVector3(item);
+
 	int i;
 	for (i=0; i<_length; i++)
 	{
-		if (item.X == _vector3Array[i].m_floats[0] &&
-			item.Y == _vector3Array[i].m_floats[1] &&
-			item.Z == _vector3Array[i].m_floats[2])
+		if (itemTemp->m_floats[0] == _vector3Array[i].m_floats[0] &&
+			itemTemp->m_floats[1] == _vector3Array[i].m_floats[1] &&
+			itemTemp->m_floats[2] == _vector3Array[i].m_floats[2])
 		{
 			return i;
 		}
@@ -128,28 +171,14 @@ bool Vector3List::IsReadOnly::get()
 }
 
 
-Vector3Enumerator::Vector3Enumerator(Vector3List^ vector3List)
+Vector3List::Vector3ListDebugView::Vector3ListDebugView(Vector3List^ list)
 {
-	_vector3List = vector3List;
+	_list = list;
 }
 
-Vector3 Vector3Enumerator::GenericCurrent::get()
+array<Vector3>^ Vector3List::Vector3ListDebugView::Items::get()
 {
-	return _vector3List[i];
-}
-
-Object^ Vector3Enumerator::Current::get()
-{
-	return GenericCurrent::get();
-}
-
-bool Vector3Enumerator::MoveNext()
-{
-	i++;
-	return (i < _vector3List->Count);
-}
-
-void Vector3Enumerator::Reset()
-{
-	i=-1;
+	array<Vector3>^ arr = gcnew array<Vector3>(_list->Count);
+	_list->CopyTo(arr, 0);
+	return arr;
 }

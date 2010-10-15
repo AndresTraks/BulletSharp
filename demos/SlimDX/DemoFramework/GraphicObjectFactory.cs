@@ -49,17 +49,16 @@ namespace DemoFramework
             cones.Clear();
         }
 
-        public bool Render(CollisionObject body)
+        public void Render(CollisionObject body)
         {
             if (body.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
             {
                 RenderSoftBody(SoftBody.Upcast(body));
-                return true;
             }
-            return Render(body.CollisionShape);
+            Render(body.CollisionShape);
         }
 
-        public bool Render(CollisionShape shape)
+        public void Render(CollisionShape shape)
         {
             shape = shape.UpcastDetect();
 
@@ -67,24 +66,25 @@ namespace DemoFramework
             {
                 case BroadphaseNativeType.BoxShape:
                     RenderBox((BoxShape)shape);
-                    return true;
+                    return;
                 case BroadphaseNativeType.ConeShape:
                     RenderCone((ConeShape)shape);
-                    return true;
+                    return;
                 case BroadphaseNativeType.Convex2DShape:
-                    return RenderConvex2dShape((Convex2DShape)shape);
+                    RenderConvex2dShape((Convex2DShape)shape);
+                    return;
                 case BroadphaseNativeType.CylinderShape:
                     RenderCylinder((CylinderShape)shape);
-                    return true;
+                    return;
                 case BroadphaseNativeType.SphereShape:
                     RenderSphere((SphereShape)shape);
-                    return true;
+                    return;
                 case BroadphaseNativeType.CompoundShape:
                     RenderCompoundShape((CompoundShape)shape);
-                    return true;
+                    return;
             }
 
-            return false;
+            //throw new NotImplementedException();
         }
 
         public void RenderBox(BoxShape shape)
@@ -178,17 +178,17 @@ namespace DemoFramework
         {
             FaceArray faces = softBody.Faces;
 
-            if (faces.Size == 0)
+            if (faces.Count == 0)
                 return;
 
-            Mesh mesh = new Mesh(device, faces.Size, faces.Size * 3,
+            Mesh mesh = new Mesh(device, faces.Count, faces.Count * 3,
                 MeshFlags.SystemMemory | MeshFlags.Use32Bit, VertexFormat.Position);
 
             SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.None);
             SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.None);
 
             int j;
-            for (j = 0; j < faces.Size; j++)
+            for (j = 0; j < faces.Count; j++)
             {
                 Node[] nodes = faces[j].N;
                 verts.Write(nodes[0].X);
