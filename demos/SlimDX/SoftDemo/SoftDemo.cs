@@ -18,7 +18,7 @@ namespace SoftDemo
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
         GraphicObjectFactory mesh;
-        
+
         Physics physics;
 
         public Device Device

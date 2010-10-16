@@ -45,8 +45,24 @@ namespace BulletSharp
 		virtual void Reset();
 	};
 
+	ref class Vector3List;
+	private ref class Vector3ListDebugView
+	{
+	private:
+		Vector3List^ _list;
+
+	public:
+		Vector3ListDebugView(Vector3List^ list);
+
+		[DebuggerBrowsable(DebuggerBrowsableState::RootHidden)]
+		property array<Vector3>^ Items
+		{
+			array<Vector3>^ get();
+		}
+	};
+
 	[DebuggerDisplay("Count = {Count}")]
-	[DebuggerTypeProxy(Vector3List::Vector3ListDebugView::typeid)]
+	[DebuggerTypeProxy(Vector3ListDebugView::typeid)]
 	public ref class Vector3List : public Generic::IList<Vector3>
 	{
 	private:
@@ -97,21 +113,5 @@ namespace BulletSharp
 				return _vector3Array;
 			}
 		}
-
-	private:
-		ref class Vector3ListDebugView
-		{
-		private:
-			Vector3List^ _list;
-
-		public:
-			Vector3ListDebugView(Vector3List^ list);
-
-			[DebuggerBrowsable(DebuggerBrowsableState::RootHidden)]
-			property array<Vector3>^ Items
-			{
-				array<Vector3>^ get();
-			}
-		};
 	};
 };

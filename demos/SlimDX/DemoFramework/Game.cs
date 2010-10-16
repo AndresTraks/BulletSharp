@@ -148,7 +148,6 @@ namespace DemoFramework
             if (Input.KeysPressed.Contains(Keys.F11))
                 ToggleFullScreen();
 
-            // FIXME: this seems to mess up the collision object array
             if (Input.KeysPressed.Contains(Keys.Space))
               physics.ShootBox(Freelook.Eye, GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView));
 

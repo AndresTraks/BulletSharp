@@ -56,16 +56,16 @@ namespace Box2dDemo
             CollisionShapes.Add(colShape);
             CollisionShapes.Add(colShape2);
             CollisionShapes.Add(colShape3);
-            
+
             float mass = 1.0f;
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
             Matrix startTransform;
 
             Vector3 x = new Vector3(-ArraySizeX, 8, -20);
-		    Vector3 y = Vector3.Zero;
-		    Vector3 deltaX = new Vector3(1, 2, 0);
-		    Vector3 deltaY = new Vector3(2, 0, 0);
+            Vector3 y = Vector3.Zero;
+            Vector3 deltaX = new Vector3(1, 2, 0);
+            Vector3 deltaY = new Vector3(2, 0, 0);
 
             int i, j;
             for (i = 0; i < ArraySizeY; i++)
@@ -79,7 +79,7 @@ namespace Box2dDemo
                     DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
 
                     RigidBodyConstructionInfo rbInfo;
-                    switch(j%3)
+                    switch (j % 3)
                     {
                         case 0:
                             rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);

@@ -24,7 +24,7 @@ namespace SimplestDemo
             {
                 Assembly.Load("BulletSharp");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 MessageBox.Show(e.ToString(), "BulletSharp Error!");
                 return;

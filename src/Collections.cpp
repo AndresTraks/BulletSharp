@@ -172,12 +172,12 @@ bool Vector3List::IsReadOnly::get()
 }
 
 
-Vector3List::Vector3ListDebugView::Vector3ListDebugView(Vector3List^ list)
+Vector3ListDebugView::Vector3ListDebugView(Vector3List^ list)
 {
 	_list = list;
 }
 
-array<Vector3>^ Vector3List::Vector3ListDebugView::Items::get()
+array<Vector3>^ Vector3ListDebugView::Items::get()
 {
 	array<Vector3>^ arr = gcnew array<Vector3>(_list->Count);
 	_list->CopyTo(arr, 0);

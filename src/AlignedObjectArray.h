@@ -551,6 +551,7 @@ namespace BulletSharp
 	namespace SoftBody
 	{
 		[DebuggerDisplay("Count = {Count}")]
+		[DebuggerTypeProxy(ListDebugView::typeid)]
 		public ref class LinkArray : AlignedObjectArray<Link^>, IEnumerable
 		{
 		internal:
@@ -589,6 +590,7 @@ namespace BulletSharp
 		};
 
 		[DebuggerDisplay("Count = {Count}")]
+		[DebuggerTypeProxy(ListDebugView::typeid)]
 		public ref class MaterialArray : AlignedObjectArray<Material^>
 		{
 		internal:
@@ -630,6 +632,7 @@ namespace BulletSharp
 		};
 
 		[DebuggerDisplay("Count = {Count}")]
+		[DebuggerTypeProxy(ListDebugView::typeid)]
 		public ref class NodeArray : AlignedObjectArray<Node^>
 		{
 		internal:
@@ -668,6 +671,7 @@ namespace BulletSharp
 		};
 
 		[DebuggerDisplay("Count = {Count}")]
+		[DebuggerTypeProxy(ListDebugView::typeid)]
 		public ref class NodePtrArray : AlignedObjectArray<Node^>
 		{
 		internal:
@@ -709,6 +713,7 @@ namespace BulletSharp
 		};
 
 		[DebuggerDisplay("Count = {Count}")]
+		[DebuggerTypeProxy(ListDebugView::typeid)]
 		public ref class NoteArray : AlignedObjectArray<Note^>
 		{
 		internal:
@@ -749,6 +754,7 @@ namespace BulletSharp
 #endif
 
 	[DebuggerDisplay("Count = {Count}")]
+	[DebuggerTypeProxy(ListDebugView::typeid)]
 	public ref class ScalarArray : AlignedObjectArray<btScalar>
 	{
 	internal:
@@ -793,6 +799,7 @@ namespace BulletSharp
 	namespace SoftBody
 	{
 		[DebuggerDisplay("Count = {Count}")]
+		[DebuggerTypeProxy(ListDebugView::typeid)]
 		public ref class SoftBodyArray : AlignedObjectArray<SoftBody^>
 		{
 		internal:
@@ -836,6 +843,7 @@ namespace BulletSharp
 #endif
 
 	[DebuggerDisplay("Count = {Count}")]
+	[DebuggerTypeProxy(Vector3ListDebugView::typeid)]
 	public ref class Vector3Array : AlignedObjectArray<Vector3>
 	{
 	internal:
@@ -878,6 +886,7 @@ namespace BulletSharp
 
 #ifndef DISABLE_VEHICLE
 	[DebuggerDisplay("Count = {Count}")]
+	[DebuggerTypeProxy(ListDebugView::typeid)]
 	public ref class WheelInfoArray : AlignedObjectArray<WheelInfo^>
 	{
 	internal:

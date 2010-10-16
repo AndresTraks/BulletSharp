@@ -21,7 +21,7 @@ namespace CcdPhysicsDemo
 
         float CubeHalfExtents = 0.5f;
         float numObjects = 120;
-        Vector3 comOffsetVec = new Vector3(0,2,0);
+        Vector3 comOffsetVec = new Vector3(0, 2, 0);
         float collisionMargin = 0.05f;
         float ExtraHeight = -10.0f;
 
@@ -30,24 +30,24 @@ namespace CcdPhysicsDemo
 
         void CreateStack(CollisionShape boxShape, int size, float zPos)
         {
-	        Matrix trans;
+            Matrix trans;
             float mass = 1.0f;
 
-	        for(int i=0; i<size; i++)
-	        {
-		        // This constructs a row, from left to right
-		        int rowSize = size - i;
-		        for(int j=0; j< rowSize; j++)
-		        {
-			        trans = Matrix.Translation(
+            for (int i = 0; i < size; i++)
+            {
+                // This constructs a row, from left to right
+                int rowSize = size - i;
+                for (int j = 0; j < rowSize; j++)
+                {
+                    trans = Matrix.Translation(
                         -rowSize * CubeHalfExtents + CubeHalfExtents + j * 2.0f * CubeHalfExtents,
                         CubeHalfExtents + i * CubeHalfExtents * 2.0f,
-				        zPos);
+                        zPos);
 
-			        RigidBody body = LocalCreateRigidBody(mass,trans,boxShape);
+                    RigidBody body = LocalCreateRigidBody(mass, trans, boxShape);
                     body.ActivationState = ActivationState.IslandSleeping;
-		        }
-	        }
+                }
+            }
         }
 
         public Physics()
@@ -78,7 +78,7 @@ namespace CcdPhysicsDemo
                 Win32ThreadConstructionInfo info = new Win32ThreadConstructionInfo("collision",
                     Win32ThreadFunc.ProcessCollisionTask, Win32LSMemorySetupFunc.CreateCollisionLocalStoreMemory,
                     maxNumOutstandingTasks);
-                
+
                 threadSupportCollision = new Win32ThreadSupport(info);
                 Dispatcher = new SpuGatheringCollisionDispatcher(threadSupportCollision, maxNumOutstandingTasks, collisionConf);
             }
@@ -106,14 +106,14 @@ namespace CcdPhysicsDemo
 
             shapeIndex[0] = 0;
             for (i = 1; i < numObjects; i++)
-                    shapeIndex[i] = 1;//sphere
+                shapeIndex[i] = 1;//sphere
 
             if (useCompound)
-	        {
-		        CompoundShape compoundShape = new CompoundShape();
-		        CollisionShape oldShape = CollisionShapes[1];
-		        CollisionShapes[1] = compoundShape;
-		        Vector3 sphereOffset = new Vector3(0,0,2);
+            {
+                CompoundShape compoundShape = new CompoundShape();
+                CollisionShape oldShape = CollisionShapes[1];
+                CollisionShapes[1] = compoundShape;
+                Vector3 sphereOffset = new Vector3(0, 0, 2);
 
                 if (CenterOfMassShift)
                 {
@@ -121,10 +121,10 @@ namespace CcdPhysicsDemo
                 }
                 else
                 {
-	                compoundShape.AddChildShape(Matrix.Identity, oldShape);
+                    compoundShape.AddChildShape(Matrix.Identity, oldShape);
                     compoundShape.AddChildShape(Matrix.Translation(sphereOffset), new SphereShape(0.9f));
                 }
-	        }
+            }
 
             if (DoWall)
             {
@@ -163,7 +163,7 @@ namespace CcdPhysicsDemo
 
                         trans = Matrix.Translation(col * 2 * CubeHalfExtents + (row2 % 2) * CubeHalfExtents,
                             (row + 1) * 2 * CubeHalfExtents + ExtraHeight, 0);
-                        
+
                         body = LocalCreateRigidBody(1, trans, shape);
                     }
 
@@ -181,21 +181,21 @@ namespace CcdPhysicsDemo
                     CollisionShapes[shapeIndex[0]]);
                 ground.UserObject = "Ground";
 
-	            int numWalls = 15;
-	            int wallHeight = 15;
-	            float wallDistance = 3;
+                int numWalls = 15;
+                int wallHeight = 15;
+                float wallDistance = 3;
 
-	            for (i=0;i<numWalls;i++)
-	            {
-		            float zPos = (i-numWalls/2) * wallDistance;
-		            CreateStack(CollisionShapes[shapeIndex[1]], wallHeight, zPos);
+                for (i = 0; i < numWalls; i++)
+                {
+                    float zPos = (i - numWalls / 2) * wallDistance;
+                    CreateStack(CollisionShapes[shapeIndex[1]], wallHeight, zPos);
                 }
 
                 // Destroyer ball
-	            SphereShape ballShape = new SphereShape(2);
-	            CollisionShapes.Add(ballShape);
-	            RigidBody ballBody = LocalCreateRigidBody(10000, Matrix.Translation(0,2,40), ballShape);
-	            ballBody.LinearVelocity = new Vector3(0,0,-10);
+                SphereShape ballShape = new SphereShape(2);
+                CollisionShapes.Add(ballShape);
+                RigidBody ballBody = LocalCreateRigidBody(10000, Matrix.Translation(0, 2, 40), ballShape);
+                ballBody.LinearVelocity = new Vector3(0, 0, -10);
             }
         }
     }

@@ -29,7 +29,7 @@ namespace MultiMaterialDemo
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
         GraphicObjectFactory mesh;
-        
+
         Physics physics;
 
         public Device Device
@@ -67,7 +67,7 @@ namespace MultiMaterialDemo
             }
         }
 
-        protected override void  OnInitialize()
+        protected override void OnInitialize()
         {
             mesh = new GraphicObjectFactory(Device);
 

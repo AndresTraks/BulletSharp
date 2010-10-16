@@ -20,6 +20,7 @@ namespace VehicleDemo
         Light light;
         Material wheelMaterial, bodyMaterial, groundMaterial;
         public Mesh ground;
+        GraphicObjectFactory mesh;
 
         Physics physics;
 
@@ -36,6 +37,7 @@ namespace VehicleDemo
                 wheel.Dispose();
                 chassis.Dispose();
                 ground.Dispose();
+                mesh.Dispose();
             }
         }
 
@@ -70,15 +72,18 @@ namespace VehicleDemo
             chassis = Mesh.CreateBox(Device, 2.0f, 1.0f, 4.0f);
             ground.ComputeNormals();
 
+            mesh = new GraphicObjectFactory(Device);
+
             light = new Light();
             light.Type = LightType.Point;
-            light.Range = 300;
-            light.Position = new Vector3(10, 25, 10);
-            light.Diffuse = Color.LemonChiffon;
-            light.Attenuation0 = 0.5f;
+            light.Range = 500;
+            light.Position = new Vector3(0, 100, 0);
+            light.Direction = -Vector3.UnitY;
+            light.Diffuse = Color.White;
+            light.Attenuation0 = 0.75f;
 
             wheelMaterial = new Material();
-            wheelMaterial.Diffuse = Color.Black;
+            wheelMaterial.Diffuse = Color.Red;
             wheelMaterial.Ambient = ambient;
 
             bodyMaterial = new Material();
@@ -88,7 +93,6 @@ namespace VehicleDemo
             groundMaterial = new Material();
             groundMaterial.Diffuse = Color.Green;
             groundMaterial.Ambient = ambient;
-            groundMaterial.Emissive = Color.Green;
 
             Fps.Text = "F2 - Toggle view mode: Tracking\n" +
                 "F3 - Toggle debug\n" +
@@ -114,6 +118,15 @@ namespace VehicleDemo
         protected override void OnUpdate()
         {
             base.OnUpdate();
+
+            // Can only shoot boxes in FreeLook mode
+            if (Input.KeysPressed.Contains(Keys.Space))
+            {
+                if (ViewMode != 3)
+                {
+                    Input.KeysPressed.Remove(Keys.Space);
+                }
+            }
 
             InputUpdate(Freelook.Eye, Freelook.Target, physics);
 
@@ -142,14 +155,13 @@ namespace VehicleDemo
 
             if (Input.KeysPressed.Contains(Keys.F3))
             {
-                if (physics.IsDebugDrawEnabled == false)
-                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawWireframe);
-                else
+                if (physics.IsDebugDrawEnabled)
                     physics.SetDebugDrawMode(Device, 0);
+                else
+                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawWireframe);
             }
 
             physics.HandleKeys(Input, FrameDelta);
-
             physics.Update(FrameDelta);
         }
 
@@ -161,7 +173,7 @@ namespace VehicleDemo
             Matrix trans = Matrix.Translation(new Vector3(0, 1, 0)) * physics.vehicle.ChassisWorldTransform;
             Vector4 pos = physics.vehicle.ChassisWorldTransform.get_Rows(3);
             Vector3 pos2 = new Vector3(pos.X, pos.Y, pos.Z);
-            
+
             // Set View matrix based on view mode
             if (ViewMode == 1)
             {
@@ -182,12 +194,15 @@ namespace VehicleDemo
             Device.SetTransform(TransformState.World, Matrix.Identity);
             ground.DrawSubset(0);
 
-            // Draw wireframe
-            Device.SetRenderState(RenderState.Lighting, false);
-            Device.SetRenderState(RenderState.FillMode, FillMode.Wireframe);
-            ground.DrawSubset(0);
-            Device.SetRenderState(RenderState.Lighting, true);
-            Device.SetRenderState(RenderState.FillMode, FillMode.Solid);
+            if (physics.IsDebugDrawEnabled == false)
+            {
+                // Draw wireframe
+                Device.SetRenderState(RenderState.Lighting, false);
+                Device.SetRenderState(RenderState.FillMode, FillMode.Wireframe);
+                ground.DrawSubset(0);
+                Device.SetRenderState(RenderState.Lighting, true);
+                Device.SetRenderState(RenderState.FillMode, FillMode.Solid);
+            }
 
 
             Device.Material = bodyMaterial;
@@ -199,15 +214,22 @@ namespace VehicleDemo
             for (i = 0; i < physics.vehicle.NumWheels; i++)
             {
                 //synchronize the wheels with the (interpolated) chassis worldtransform
-                physics.vehicle.UpdateWheelTransform(i, true);
+                //physics.vehicle.UpdateWheelTransform(i, true);
                 //draw wheels (cylinders)
                 trans = Matrix.RotationY((float)Math.PI / 2);
                 trans *= physics.vehicle.GetWheelInfo(i).WorldTransform;
                 Device.SetTransform(TransformState.World, trans);
                 wheel.DrawSubset(0);
             }
-            
+
             physics.DebugDrawWorld();
+
+            foreach (CollisionObject colObj in physics.World.CollisionObjectArray)
+            {
+                RigidBody body = RigidBody.Upcast(colObj);
+                Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
+                mesh.Render(colObj);
+            }
 
             Fps.OnRender(FramesPerSecond);
 
@@ -215,7 +237,7 @@ namespace VehicleDemo
             Device.Present();
         }
     }
-    
+
     static class Program
     {
         [STAThread]

@@ -842,7 +842,7 @@ btScalar BulletSharp::SoftBody::Material::Lst::get()
 }
 void BulletSharp::SoftBody::Material::Lst::set(btScalar value)
 {
-	UnmanagedPointer->m_kAST = value;
+	UnmanagedPointer->m_kLST = value;
 }
 
 btScalar BulletSharp::SoftBody::Material::Vst::get()

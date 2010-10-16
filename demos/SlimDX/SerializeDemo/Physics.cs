@@ -8,7 +8,8 @@ namespace SerializeDemo
 {
     class CustomBulletWorldImporter : BulletWorldImporter
     {
-        public CustomBulletWorldImporter(DynamicsWorld world) : base(world)
+        public CustomBulletWorldImporter(DynamicsWorld world)
+            : base(world)
         {
         }
 
@@ -65,7 +66,7 @@ namespace SerializeDemo
 
                 //Vector3[] positions = new Vector3[2] { new Vector3(0.1f, 0.2f, 0.3f), new Vector3(0.4f, 0.5f, 0.6f) };
                 //float[] radi = new float[2] { 0.3f, 0.4f };
-                
+
                 //CollisionShape colShape = new MultiSphereShape(positions, radi);
 
                 //CollisionShape colShape = new CapsuleShapeZ(1, 1);

@@ -29,11 +29,11 @@ namespace VehicleDemo
         float gEngineForce = 0.0f;
         float gBreakingForce = 0.0f;
 
-        float maxEngineForce = 1500.0f;//this should be engine/velocity dependent
+        float maxEngineForce = 2000.0f;//this should be engine/velocity dependent
         float maxBreakingForce = 100.0f;
 
         float gVehicleSteering = 0.0f;
-        float steeringIncrement = 0.005f;
+        float steeringIncrement = 1.0f;
         float steeringClamp = 0.3f;
         public float wheelRadius = 0.7f;
         public float wheelWidth = 0.4f;
@@ -87,7 +87,8 @@ namespace VehicleDemo
                 IndexedMesh mesh = new IndexedMesh();
                 mesh.Allocate(totalVerts, vertStride, totalTriangles, indexStride);
 
-                game.ground = new Mesh(game.Device, totalTriangles, totalVerts, MeshFlags.SystemMemory | MeshFlags.Use32Bit, VertexFormat.Position | VertexFormat.Normal);
+                game.ground = new Mesh(game.Device, totalTriangles, totalVerts,
+                    MeshFlags.SystemMemory | MeshFlags.Use32Bit, VertexFormat.Position | VertexFormat.Normal);
                 SlimDX.DataStream data2 = game.ground.LockVertexBuffer(LockFlags.None);
                 BulletSharp.DataStream data = mesh.LockVerts();
                 for (i = 0; i < NUM_VERTS_X; i++)
@@ -156,18 +157,18 @@ namespace VehicleDemo
 
                 //PhyScalarType scalarType = PhyScalarType.PhyUChar;
                 //FileStream file = new FileStream(heightfieldFile, FileMode.Open, FileAccess.Read);
-                
+
                 // Use float data
                 PhyScalarType scalarType = PhyScalarType.PhyFloat;
-                byte[] terr = new byte[width*length*4];
+                byte[] terr = new byte[width * length * 4];
                 MemoryStream file = new MemoryStream(terr);
                 BinaryWriter writer = new BinaryWriter(file);
-                for (i = 0; i < width; i++ )
+                for (i = 0; i < width; i++)
                     for (int j = 0; j < length; j++)
                         writer.Write((float)((maxHeight / 2) + 4 * Math.Sin(j * 0.5f) * Math.Cos(i)));
                 writer.Flush();
                 file.Position = 0;
-                
+
                 HeightfieldTerrainShape heightterrainShape = new HeightfieldTerrainShape(width, length,
                     file, heightScale, 0, maxHeight, upIndex, scalarType, false);
                 heightterrainShape.SetUseDiamondSubdivision(true);
@@ -176,9 +177,9 @@ namespace VehicleDemo
                 groundShape.LocalScaling = new Vector3(scale.X, 1, scale.Z);
 
                 tr = Matrix.Translation(new Vector3(-scale.X / 2, scale.Y / 2, -scale.Z / 2));
-                vehicleTr = Matrix.Translation(new Vector3(20,3,-3));
+                vehicleTr = Matrix.Translation(new Vector3(20, 3, -3));
 
-                
+
                 // Create graphics object
 
                 file.Position = 0;
@@ -187,7 +188,8 @@ namespace VehicleDemo
                 int totalTriangles = (width - 1) * (length - 1) * 2;
                 int totalVerts = width * length;
 
-                game.ground = new Mesh(game.Device, totalTriangles, totalVerts, MeshFlags.SystemMemory | MeshFlags.Use32Bit, VertexFormat.Position | VertexFormat.Normal);
+                game.ground = new Mesh(game.Device, totalTriangles, totalVerts,
+                    MeshFlags.SystemMemory | MeshFlags.Use32Bit, VertexFormat.Position | VertexFormat.Normal);
                 SlimDX.DataStream data = game.ground.LockVertexBuffer(LockFlags.None);
                 for (i = 0; i < width; i++)
                 {
@@ -226,12 +228,12 @@ namespace VehicleDemo
                 {
                     for (int j = 0; j < length - 1; j++)
                     {
-                        data.Write(j * width + i);
                         data.Write(j * width + i + 1);
+                        data.Write(j * width + i);
                         data.Write((j + 1) * width + i + 1);
 
-                        data.Write(j * width + i);
                         data.Write((j + 1) * width + i + 1);
+                        data.Write(j * width + i);
                         data.Write((j + 1) * width + i);
                     }
                 }
@@ -260,9 +262,9 @@ namespace VehicleDemo
 
             // clientResetScene();
 
-	        // create vehicle
+            // create vehicle
             RaycastVehicle.VehicleTuning tuning = new RaycastVehicle.VehicleTuning();
-		    VehicleRaycaster vehicleRayCaster = new DefaultVehicleRaycaster(World);
+            VehicleRaycaster vehicleRayCaster = new DefaultVehicleRaycaster(World);
             vehicle = new RaycastVehicle(tuning, carChassis, vehicleRayCaster);
 
             carChassis.ActivationState = ActivationState.DisableDeactivation;
@@ -275,7 +277,7 @@ namespace VehicleDemo
             // choose coordinate system
             vehicle.SetCoordinateSystem(rightIndex, upIndex, forwardIndex);
 
-            Vector3 connectionPointCS0 = new Vector3(CUBE_HALF_EXTENTS-(0.3f*wheelWidth),connectionHeight,2*CUBE_HALF_EXTENTS-wheelRadius);
+            Vector3 connectionPointCS0 = new Vector3(CUBE_HALF_EXTENTS - (0.3f * wheelWidth), connectionHeight, 2 * CUBE_HALF_EXTENTS - wheelRadius);
             WheelInfo a = vehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, tuning, isFrontWheel);
 
             connectionPointCS0 = new Vector3(-CUBE_HALF_EXTENTS + (0.3f * wheelWidth), connectionHeight, 2 * CUBE_HALF_EXTENTS - wheelRadius);
@@ -304,51 +306,62 @@ namespace VehicleDemo
 
         public override int Update(float elapsedTime)
         {
+            gEngineForce *= (1.0f - elapsedTime);
+
             vehicle.ApplyEngineForce(gEngineForce, 2);
-            vehicle.SetBrake(gBreakingForce, 2);
+            vehicle.SetBrake(gBreakingForce, 0);
             vehicle.ApplyEngineForce(gEngineForce, 3);
-            vehicle.SetBrake(gBreakingForce, 3);
+            vehicle.SetBrake(gBreakingForce, 1);
 
             vehicle.SetSteeringValue(gVehicleSteering, 0);
             vehicle.SetSteeringValue(gVehicleSteering, 1);
 
-            int subSteps = base.Update(elapsedTime);
 
-            for (int i = 0; i < subSteps; i++)
-            {
-                gEngineForce *= 0.99f;
-                gVehicleSteering *= 0.99f;
-            }
-
-            return subSteps;
+            return base.Update(elapsedTime);
         }
 
-        public void HandleKeys(Input input, float ElapsedTime)
+        public void HandleKeys(Input input, float elapsedTime)
         {
             if (input.KeysDown.Contains(Keys.Right))
             {
-                gVehicleSteering += steeringIncrement;
+                gVehicleSteering += elapsedTime * steeringIncrement;
                 if (gVehicleSteering > steeringClamp)
                     gVehicleSteering = steeringClamp;
+            }
+            else if ((gVehicleSteering - float.Epsilon) > 0)
+            {
+                gVehicleSteering -= elapsedTime * steeringIncrement;
             }
 
             if (input.KeysDown.Contains(Keys.Left))
             {
-                gVehicleSteering -= steeringIncrement;
+                gVehicleSteering -= elapsedTime * steeringIncrement;
                 if (gVehicleSteering < -steeringClamp)
                     gVehicleSteering = -steeringClamp;
+            }
+            else if ((gVehicleSteering + float.Epsilon) < 0)
+            {
+                gVehicleSteering += elapsedTime * steeringIncrement;
             }
 
             if (input.KeysDown.Contains(Keys.Up))
             {
                 gEngineForce = maxEngineForce;
-                gBreakingForce = 0.0f;
             }
 
             if (input.KeysDown.Contains(Keys.Down))
             {
-                gEngineForce = 0.0f;
+                gEngineForce = -maxEngineForce;
+            }
+
+            if (input.KeysDown.Contains(Keys.Space))
+            {
                 gBreakingForce = maxBreakingForce;
+            }
+
+            if (input.KeysReleased.Contains(Keys.Space))
+            {
+                gBreakingForce = 0;
             }
         }
     }

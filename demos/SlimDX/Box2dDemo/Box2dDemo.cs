@@ -19,7 +19,7 @@ namespace Box2dDemo
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
         GraphicObjectFactory mesh;
-        
+
         Physics physics;
 
         public Device Device
@@ -45,7 +45,7 @@ namespace Box2dDemo
             Mesh triangle = new Mesh(Device, 8, 6, MeshFlags.Managed, VertexFormat.Position | VertexFormat.Normal);
 
             SlimDX.DataStream ds = triangle.LockVertexBuffer(LockFlags.None);
-            
+
             // Front
             ds.Write(points[0] + depth);
             ds.Write(Vector3.UnitZ);
@@ -70,7 +70,7 @@ namespace Box2dDemo
                 1, 2, 4, 2, 4, 5,
                 2, 0, 5, 0, 5, 3
             };
-            
+
             ds = triangle.LockIndexBuffer(LockFlags.None);
             foreach (short index in indices)
             {
@@ -101,7 +101,7 @@ namespace Box2dDemo
                 InitializeDevice(settings);
             }
         }
-        
+
         protected override void OnInitialize()
         {
             physics = new Physics();

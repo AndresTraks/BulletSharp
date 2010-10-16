@@ -52,9 +52,9 @@ namespace BasicDemo
                     for (j = 0; j < ArraySizeZ; j++)
                     {
                         Matrix startTransform = Matrix.Translation(
-                            2*i + start_x,
-                            2*k + start_y,
-                            2*j + start_z
+                            2 * i + start_x,
+                            2 * k + start_y,
+                            2 * j + start_z
                         );
 
                         // using motionstate is recommended, it provides interpolation capabilities
@@ -63,7 +63,7 @@ namespace BasicDemo
                         RigidBodyConstructionInfo rbInfo =
                             new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
                         RigidBody body = new RigidBody(rbInfo);
-                        
+
                         // make it drop from a height
                         body.Translate(new Vector3(0, 20, 0));
 

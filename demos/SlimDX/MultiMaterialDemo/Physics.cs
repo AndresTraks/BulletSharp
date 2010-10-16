@@ -22,7 +22,7 @@ namespace MultiMaterialDemo
         {
             float friction = friction0 * friction1;
 
-            const float MAX_FRICTION  = 10;
+            const float MAX_FRICTION = 10;
             if (friction < -MAX_FRICTION)
                 friction = -MAX_FRICTION;
             if (friction > MAX_FRICTION)
@@ -44,7 +44,7 @@ namespace MultiMaterialDemo
             if (colObj0.CollisionShape.ShapeType == BroadphaseNativeType.TriangleShape)
             {
                 CollisionShape parent0 = colObj0.RootCollisionShape;
-                if(parent0 != null && parent0.ShapeType == BroadphaseNativeType.MultiMaterialTriangleMesh)
+                if (parent0 != null && parent0.ShapeType == BroadphaseNativeType.MultiMaterialTriangleMesh)
                 {
                     MultimaterialTriangleMeshShape shape = (MultimaterialTriangleMeshShape)parent0.UpcastDetect();
                     BulletMaterial props = shape.GetMaterialProperties(partId0, index0);
@@ -55,7 +55,7 @@ namespace MultiMaterialDemo
             else if (colObj1.CollisionShape.ShapeType == BroadphaseNativeType.TriangleShape)
             {
                 CollisionShape parent1 = colObj1.RootCollisionShape;
-                if(parent1 != null && parent1.ShapeType == BroadphaseNativeType.MultiMaterialTriangleMesh)
+                if (parent1 != null && parent1.ShapeType == BroadphaseNativeType.MultiMaterialTriangleMesh)
                 {
                     MultimaterialTriangleMeshShape shape = (MultimaterialTriangleMeshShape)parent1.UpcastDetect();
                     BulletMaterial props = shape.GetMaterialProperties(partId1, index1);
@@ -164,13 +164,13 @@ namespace MultiMaterialDemo
             CollisionShape colShape = new BoxShape(0.5f);
             CollisionShapes.Add(colShape);
 
-            for (i=0;i<12;i++)
+            for (i = 0; i < 12; i++)
             {
-                RigidBody body = LocalCreateRigidBody(1, Matrix.Translation(10-i,10,-20+i*3), colShape);
+                RigidBody body = LocalCreateRigidBody(1, Matrix.Translation(10 - i, 10, -20 + i * 3), colShape);
                 body.CollisionFlags |= CollisionFlags.CustomMaterialCallback;
                 body.Friction = 0.9f;
-                body.Gravity = new Vector3(0,-20,0);
-                body.ApplyCentralImpulse(new Vector3(-7.7f,0,0));
+                body.Gravity = new Vector3(0, -20, 0);
+                body.ApplyCentralImpulse(new Vector3(-7.7f, 0, 0));
             }
         }
     }

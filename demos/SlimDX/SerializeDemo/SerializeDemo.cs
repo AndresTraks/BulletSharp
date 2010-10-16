@@ -21,7 +21,7 @@ namespace SerializeDemo
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
         GraphicObjectFactory mesh;
-        
+
         Physics physics;
 
         public Device Device
@@ -60,7 +60,7 @@ namespace SerializeDemo
             }
         }
 
-        protected override void  OnInitialize()
+        protected override void OnInitialize()
         {
             mesh = new GraphicObjectFactory(Device);
             groundBox = Mesh.CreateBox(Device, 100, 100, 100);

@@ -632,6 +632,7 @@ namespace BulletSharp
 			}
 		};
 
+		[DebuggerDisplay("{X}")]
 		public ref class Node : Feature
 		{
 		internal:

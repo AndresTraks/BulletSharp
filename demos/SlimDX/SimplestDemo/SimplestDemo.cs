@@ -18,7 +18,7 @@ namespace SimplestDemo
         Mesh box, groundBox;
         Light light;
         Material boxMaterial, groundMaterial;
-        
+
         Physics physics;
         RenderForm Form;
         Device Device;
@@ -38,7 +38,7 @@ namespace SimplestDemo
             OnResourceLoad();
 
             Timer timer = new Timer(1.0f / 60.0f);
-            timer.Elapsed += (o, args) => {physics.Update(1.0f/60.0f); };
+            timer.Elapsed += (o, args) => { physics.Update(1.0f / 60.0f); };
             timer.Enabled = true;
 
             MessagePump.Run(Form, () =>

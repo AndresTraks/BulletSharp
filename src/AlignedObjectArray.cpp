@@ -1223,6 +1223,7 @@ btSoftBody::tLinkArray* LinkArray::UnmanagedPointer::get()
 	return (btSoftBody::tLinkArray*)AlignedObjectArray::UnmanagedPointer;
 }
 
+
 MaterialArray::MaterialArray(btSoftBody::tMaterialArray* materialArray)
 : AlignedObjectArray(materialArray)
 {
