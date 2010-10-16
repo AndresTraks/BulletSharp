@@ -9,32 +9,34 @@
 namespace BulletSharp
 {
 	ref class BroadphaseInterface;
-	ref class CollisionObjectArray;
+	ref class AlignedCollisionObjectArray;
 	ref class Dbvt;
 	ref class DbvtNode;
 	ref class Dispatcher;
-	ref class IntArray;
+	ref class AlignedIntArray;
 	ref class RigidBody;
-	ref class ScalarArray;
+	ref class AlignedScalarArray;
 	ref class SparseSdf;
+	ref class AlignedVector3Array;
 	ref class Vector3Array;
-	ref class Vector3List;
 
 	namespace SoftBody
 	{
+		ref class AlignedClusterArray;
+		ref class AlignedFaceArray;
+		ref class AlignedLinkArray;
+		ref class AlignedMaterialArray;
+		ref class AlignedNodeArray;
+		ref class AlignedNodePtrArray;
+		ref class AlignedNoteArray;
+		ref class AlignedSoftBodyArray;
 		ref class Cluster;
-		ref class ClusterArray;
-		ref class FaceArray;
+		ref class Feature;
 		ref class Impulse;
-		ref class LinkArray;
 		ref class Material;
 		ref class Node;
-		ref class NoteArray;
-		ref class MaterialArray;
-		ref class NodeArray;
 		ref class NodePtrArray;
 		ref class SoftBody;
-		ref class SoftBodyArray;
 
 		public ref class SoftBodyWorldInfo
 		{
@@ -259,10 +261,10 @@ namespace BulletSharp
 				void set(Vector3 value);
 			}
 
-			property Vector3Array^ FrameRefs
+			property AlignedVector3Array^ FrameRefs
 			{
-				Vector3Array^ get();
-				void set(Vector3Array^ value);
+				AlignedVector3Array^ get();
+				void set(AlignedVector3Array^ value);
 			}
 
 			property Matrix FrameXForm
@@ -295,16 +297,16 @@ namespace BulletSharp
 				void set(Matrix value);
 			}
 
-			property ScalarArray^ Masses
+			property AlignedScalarArray^ Masses
 			{
-				ScalarArray^ get();
-				void set(ScalarArray^ value);
+				AlignedScalarArray^ get();
+				void set(AlignedScalarArray^ value);
 			}
 
-			property NodePtrArray^ Nodes
+			property AlignedNodePtrArray^ Nodes
 			{
-				NodePtrArray^ get();
-				void set(NodePtrArray^ value);
+				AlignedNodePtrArray^ get();
+				void set(AlignedNodePtrArray^ value);
 			}
 
 		internal:
@@ -437,6 +439,43 @@ namespace BulletSharp
 			property btSoftBody::Feature* UnmanagedPointer
 			{
 				btSoftBody::Feature* get() new;
+			}
+		};
+
+		public ref class Face : Feature
+		{
+		internal:
+			Face(btSoftBody::Face* face);
+
+		public:
+#ifndef DISABLE_DBVT
+			property DbvtNode^ Leaf
+			{
+				DbvtNode^ get();
+				void set(DbvtNode^ value);
+			}
+#endif
+			property NodePtrArray^ N
+			{
+				NodePtrArray^ get();
+			}
+
+			property Vector3 Normal
+			{
+				Vector3 get();
+				void set(Vector3 set);
+			}
+
+			property btScalar RestArea
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+		internal:
+			property btSoftBody::Face* UnmanagedPointer
+			{
+				btSoftBody::Face* get() new;
 			}
 		};
 
@@ -575,13 +614,12 @@ namespace BulletSharp
 				bool get();
 				void set(bool value);
 			}
-
-			property array<Node^>^ N
+/*
+			property AlignedNodeArray^ N
 			{
-				array<Node^>^ get();
-				void set(array<Node^>^ value);
+				AlignedNodeArray^ get();
 			}
-
+*/
 			property btScalar RestLength
 			{
 				btScalar get();
@@ -702,44 +740,6 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class Face : Feature
-		{
-		internal:
-			Face(btSoftBody::Face* face);
-
-		public:
-#ifndef DISABLE_DBVT
-			property DbvtNode^ Leaf
-			{
-				DbvtNode^ get();
-				void set(DbvtNode^ value);
-			}
-#endif
-			property array<Node^>^ N
-			{
-				array<Node^>^ get();
-				void set(array<Node^>^ value);
-			}
-
-			property Vector3 Normal
-			{
-				Vector3 get();
-				void set(Vector3 set);
-			}
-
-			property btScalar RestArea
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
-
-		internal:
-			property btSoftBody::Face* UnmanagedPointer
-			{
-				btSoftBody::Face* get() new;
-			}
-		};
-
 		public ref class Note : Element
 		{
 		internal:
@@ -788,10 +788,10 @@ namespace BulletSharp
 				void set(bool value);
 			}
 
-			property Vector3Array^ Positions
+			property AlignedVector3Array^ Positions
 			{
-				Vector3Array^ get();
-				void set(Vector3Array^ value);
+				AlignedVector3Array^ get();
+				void set(AlignedVector3Array^ value);
 			}
 
 			property Matrix Rotation
@@ -812,10 +812,10 @@ namespace BulletSharp
 				void set(btScalar value);
 			}
 
-			property ScalarArray^ Weights
+			property AlignedScalarArray^ Weights
 			{
-				ScalarArray^ get();
-				void set(ScalarArray^ value);
+				AlignedScalarArray^ get();
+				void set(AlignedScalarArray^ value);
 			}
 
 		internal:
@@ -923,9 +923,9 @@ namespace BulletSharp
 		public:
 			Tetra();
 
-			property Vector3List^ C0
+			property Vector3Array^ C0
 			{
-				Vector3List^ get();
+				Vector3Array^ get();
 			}
 
 			property btScalar C1
@@ -948,10 +948,9 @@ namespace BulletSharp
 			}
 #endif
 
-			property array<Node^>^ N
+			property NodePtrArray^ N
 			{
-				array<Node^>^ get();
-				void set(array<Node^>^ value);
+				NodePtrArray^ get();
 			}
 
 			property btScalar RestVolume
@@ -1056,7 +1055,7 @@ namespace BulletSharp
 			void SetVelocity(Vector3 velocity);
 			void SetVolumeDensity(btScalar density);
 			void SetVolumeMass(btScalar mass);
-			static void SolveClusters(SoftBodyArray^ bodies);
+			static void SolveClusters(AlignedSoftBodyArray^ bodies);
 			static void SolveCommonConstraints(array<SoftBody^>^ bodies, int iterations);
 			void SolveConstraints();
 			void StaticSolve(int iterations);
@@ -1066,15 +1065,15 @@ namespace BulletSharp
 
 			static SoftBody^ Upcast(CollisionObject^ colObj);
 
-			property Vector3List^ Bounds
+			property Vector3Array^ Bounds
 			{
-				Vector3List^ get();
+				Vector3Array^ get();
 			}
 
-			property ClusterArray^ Clusters
+			property AlignedClusterArray^ Clusters
 			{
-				ClusterArray^ get();
-				void set(ClusterArray^ value);
+				AlignedClusterArray^ get();
+				void set(AlignedClusterArray^ value);
 			}
 
 			property Config^ Cfg
@@ -1088,16 +1087,16 @@ namespace BulletSharp
 				int get();
 			}
 
-			property CollisionObjectArray^ CollisionDisabledObjects
+			property AlignedCollisionObjectArray^ CollisionDisabledObjects
 			{
-				CollisionObjectArray^ get();
-				void set(CollisionObjectArray^ value);
+				AlignedCollisionObjectArray^ get();
+				void set(AlignedCollisionObjectArray^ value);
 			}
 
-			property FaceArray^ Faces
+			property AlignedFaceArray^ Faces
 			{
-				FaceArray^ get();
-				void set(FaceArray^ value);
+				AlignedFaceArray^ get();
+				void set(AlignedFaceArray^ value);
 			}
 
 			property Matrix InitialWorldTransform
@@ -1106,28 +1105,28 @@ namespace BulletSharp
 				void set(Matrix value);
 			}
 
-			property LinkArray^ Links
+			property AlignedLinkArray^ Links
 			{
-				LinkArray^ get();
-				void set(LinkArray^ value);
+				AlignedLinkArray^ get();
+				void set(AlignedLinkArray^ value);
 			}
 
-			property MaterialArray^ Materials
+			property AlignedMaterialArray^ Materials
 			{
-				MaterialArray^ get();
-				void set(MaterialArray^ value);
+				AlignedMaterialArray^ get();
+				void set(AlignedMaterialArray^ value);
 			}
 
-			property NodeArray^ Nodes
+			property AlignedNodeArray^ Nodes
 			{
-				NodeArray^ get();
-				void set(NodeArray^ value);
+				AlignedNodeArray^ get();
+				void set(AlignedNodeArray^ value);
 			}
 
-			property NoteArray^ Notes
+			property AlignedNoteArray^ Notes
 			{
-				NoteArray^ get();
-				void set(NoteArray^ value);
+				AlignedNoteArray^ get();
+				void set(AlignedNoteArray^ value);
 			}
 
 			property Pose^ Pose
@@ -1166,10 +1165,10 @@ namespace BulletSharp
 				void set(bool value);
 			}
 
-			property IntArray^ UserIndexMapping
+			property AlignedIntArray^ UserIndexMapping
 			{
-				IntArray^ get();
-				void set(IntArray^ value);
+				AlignedIntArray^ get();
+				void set(AlignedIntArray^ value);
 			}
 
 			property btScalar Volume

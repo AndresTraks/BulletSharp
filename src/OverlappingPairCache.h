@@ -6,7 +6,7 @@
 
 namespace BulletSharp
 {
-	ref class BroadphasePairArray;
+	ref class AlignedBroadphasePairArray;
 
 	public ref class OverlapCallback : BulletSharp::IDisposable
 	{
@@ -97,9 +97,9 @@ namespace BulletSharp
 			int get();
 		}
 
-		property BroadphasePairArray^ OverlappingPairArray
+		property AlignedBroadphasePairArray^ OverlappingPairArray
 		{
-			BroadphasePairArray^ get();
+			AlignedBroadphasePairArray^ get();
 		}
 
 	internal:

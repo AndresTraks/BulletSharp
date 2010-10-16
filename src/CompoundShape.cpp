@@ -46,11 +46,13 @@ void CompoundShapeChild::ChildShapeType::set(int value)
 #ifndef DISABLE_DBVT
 DbvtNode^ CompoundShapeChild::Node::get()
 {
+	if (_child->m_node == 0)
+		return nullptr;
 	return gcnew DbvtNode(_child->m_node);
 }
 void CompoundShapeChild::Node::set(DbvtNode^ value)
 {
-	_child->m_node = value->UnmanagedPointer;
+	_child->m_node = value != nullptr ? value->UnmanagedPointer : 0;
 }
 #endif
 
@@ -139,14 +141,14 @@ void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransfor
 	delete newChildTransformTemp;
 }
 
-CompoundShapeChildArray^ CompoundShape::ChildList::get()
+AlignedCompoundShapeChildArray^ CompoundShape::ChildList::get()
 {
 	btAlignedObjectArray<btCompoundShapeChild>* childList =
 		(btAlignedObjectArray<btCompoundShapeChild>*)UnmanagedPointer->getChildList();
 	if (childList == 0)
 		return nullptr;
 
-	return gcnew CompoundShapeChildArray(childList);
+	return gcnew AlignedCompoundShapeChildArray(childList);
 }
 
 #ifndef DISABLE_DBVT

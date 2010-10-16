@@ -143,9 +143,9 @@ int OverlappingPairCache::NumOverlappingPairs::get()
 	return UnmanagedPointer->getNumOverlappingPairs();
 }
 
-BroadphasePairArray^ OverlappingPairCache::OverlappingPairArray::get()
+AlignedBroadphasePairArray^ OverlappingPairCache::OverlappingPairArray::get()
 {
-	return gcnew BroadphasePairArray(&UnmanagedPointer->getOverlappingPairArray());
+	return gcnew AlignedBroadphasePairArray(&UnmanagedPointer->getOverlappingPairArray());
 }
 
 btOverlappingPairCache* OverlappingPairCache::UnmanagedPointer::get()

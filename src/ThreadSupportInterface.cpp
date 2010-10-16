@@ -2,6 +2,7 @@
 
 #ifndef DISABLE_MULTITHREADED
 
+#include "Collections.h"
 #include "ThreadSupportInterface.h"
 
 using namespace BulletSharp::MultiThreaded;
@@ -70,21 +71,9 @@ MultiThreaded::CriticalSection::!CriticalSection()
 	OnDisposed( this, nullptr );
 }
 
-array<unsigned int>^ MultiThreaded::CriticalSection::CommonBuff::get()
+UIntArray^ MultiThreaded::CriticalSection::CommonBuff::get()
 {
-	array<unsigned int>^ commonBuffTemp = gcnew array<unsigned int>(32);
-
-	int i;
-	for (i=0; i<32; i++)
-		commonBuffTemp[i] = _criticalSection->mCommonBuff[i];
-
-	return commonBuffTemp;
-}
-void MultiThreaded::CriticalSection::CommonBuff::set(array<unsigned int>^ value)
-{
-	int i;
-	for (i=0; i<32; i++)
-		_criticalSection->mCommonBuff[i] = value[i];
+	return gcnew UIntArray(_criticalSection->mCommonBuff, 32);
 }
 
 unsigned int MultiThreaded::CriticalSection::GetSharedParam(int i)

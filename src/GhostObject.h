@@ -12,7 +12,7 @@
 namespace BulletSharp
 {
 	ref class BroadphaseProxy;
-	ref class CollisionObjectArray;
+	ref class AlignedCollisionObjectArray;
 	ref class HashedOverlappingPairCache;
 
 	public ref class GhostObject : CollisionObject
@@ -47,9 +47,9 @@ namespace BulletSharp
 			int get();
 		}
 
-		property CollisionObjectArray^ OverlappingPairs
+		property AlignedCollisionObjectArray^ OverlappingPairs
 		{
-			CollisionObjectArray^ get();
+			AlignedCollisionObjectArray^ get();
 		}
 
 	internal:

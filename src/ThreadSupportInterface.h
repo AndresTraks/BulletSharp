@@ -10,6 +10,8 @@
 
 namespace BulletSharp
 {
+	ref class UIntArray;
+
 	namespace MultiThreaded
 	{
 		public ref class Barrier : BulletSharp::IDisposable
@@ -67,10 +69,9 @@ namespace BulletSharp
 			void Lock();
 			void Unlock();
 
-			property array<unsigned int>^ CommonBuff
+			property UIntArray^ CommonBuff
 			{
-				array<unsigned int>^ get();
-				void set(array<unsigned int>^ value);
+				UIntArray^ get();
 			}
 
 			property bool IsDisposed

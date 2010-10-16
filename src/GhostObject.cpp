@@ -73,9 +73,9 @@ int GhostObject::NumOverlappingObjects::get()
 	return UnmanagedPointer->getNumOverlappingObjects();
 }
 
-CollisionObjectArray^ GhostObject::OverlappingPairs::get()
+AlignedCollisionObjectArray^ GhostObject::OverlappingPairs::get()
 {
-	return gcnew CollisionObjectArray(&UnmanagedPointer->getOverlappingPairs());
+	return gcnew AlignedCollisionObjectArray(&UnmanagedPointer->getOverlappingPairs());
 }
 
 btGhostObject* GhostObject::UnmanagedPointer::get()

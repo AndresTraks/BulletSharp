@@ -77,9 +77,9 @@ Vector3 Box2dShape::HalfExtentsWithoutMargin::get()
 	return Math::BtVector3ToVector3(&UnmanagedPointer->getHalfExtentsWithoutMargin());
 }
 
-Vector3List^ Box2dShape::Normals::get()
+Vector3Array^ Box2dShape::Normals::get()
 {
-	return gcnew Vector3List(UnmanagedPointer->getNormals(), 4);
+	return gcnew Vector3Array(UnmanagedPointer->getNormals(), 4);
 }
 
 int Box2dShape::VertexCount::get()
@@ -87,9 +87,9 @@ int Box2dShape::VertexCount::get()
 	return UnmanagedPointer->getVertexCount();
 }
 
-Vector3List^ Box2dShape::Vertices::get()
+Vector3Array^ Box2dShape::Vertices::get()
 {
-	return gcnew Vector3List(UnmanagedPointer->getVertices(), 4);
+	return gcnew Vector3Array(UnmanagedPointer->getVertices(), 4);
 }
 
 Box2dShape^ Box2dShape::Upcast(CollisionShape^ shape)

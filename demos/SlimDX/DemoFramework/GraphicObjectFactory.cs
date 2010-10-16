@@ -164,7 +164,7 @@ namespace DemoFramework
 
         public void RenderCompoundShape(CompoundShape shape)
         {
-            CompoundShapeChildArray childShapes = shape.ChildList;
+            AlignedCompoundShapeChildArray childShapes = shape.ChildList;
             if (childShapes != null)
             {
                 foreach (CompoundShapeChild child in childShapes)
@@ -176,7 +176,7 @@ namespace DemoFramework
 
         public void RenderSoftBody(SoftBody softBody)
         {
-            FaceArray faces = softBody.Faces;
+            AlignedFaceArray faces = softBody.Faces;
 
             if (faces.Count == 0)
                 return;
@@ -190,7 +190,7 @@ namespace DemoFramework
             int j;
             for (j = 0; j < faces.Count; j++)
             {
-                Node[] nodes = faces[j].N;
+                NodePtrArray nodes = faces[j].N;
                 verts.Write(nodes[0].X);
                 verts.Write(nodes[1].X);
                 verts.Write(nodes[2].X);

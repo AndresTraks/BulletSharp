@@ -10,7 +10,7 @@ namespace BulletSharp
 	ref class DispatcherInfo;
 	ref class CollisionObject;
 	ref class ManifoldResult;
-	ref class ManifoldArray;
+	ref class AlignedManifoldArray;
 	ref class PersistentManifold;
 
 	public ref class CollisionAlgorithmConstructionInfo
@@ -62,7 +62,7 @@ namespace BulletSharp
 	public:
 		btScalar CalculateTimeOfImpact(CollisionObject^ body0, CollisionObject^ body1,
 			DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut);
-		void GetAllContactManifolds(ManifoldArray^ manifoldArray);
+		void GetAllContactManifolds(AlignedManifoldArray^ manifoldArray);
 		void ProcessCollision(CollisionObject^ body0, CollisionObject^ body1,
 			DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut);
 

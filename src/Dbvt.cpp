@@ -199,17 +199,9 @@ DbvtNode::DbvtNode(btDbvtNode* node)
 	_node = node;
 }
 
-array<DbvtNode^>^ DbvtNode::Childs::get()
+DbvtNodePtrArray^ DbvtNode::Childs::get()
 {
-	array<DbvtNode^>^ childs = gcnew array<DbvtNode^>(2);
-	childs[0] = gcnew DbvtNode(_node->childs[0]);
-	childs[1] = gcnew DbvtNode(_node->childs[1]);
-	return childs;
-}
-void DbvtNode::Childs::set(array<DbvtNode^>^ value)
-{
-	_node->childs[0] = value[0]->UnmanagedPointer;
-	_node->childs[1] = value[1]->UnmanagedPointer;
+	return gcnew DbvtNodePtrArray(_node->childs, 2);
 }
 
 IntPtr DbvtNode::Data::get()
@@ -232,11 +224,13 @@ void DbvtNode::DataAsInt::set(int value)
 
 DbvtNode^ DbvtNode::Parent::get()
 {
+	if (_node->parent != 0)
+		return nullptr;
 	return gcnew DbvtNode(_node->parent);
 }
 void DbvtNode::Parent::set(DbvtNode^ value)
 {
-	_node->parent = value->UnmanagedPointer;
+	_node->parent = value != nullptr ? value->UnmanagedPointer : 0;
 }
 
 DbvtVolume^ DbvtNode::Volume::get()
@@ -541,7 +535,7 @@ Dbvt::!Dbvt()
 	OnDisposed( this, nullptr );
 }
 
-int Dbvt::Allocate(IntArray^ ifree, StkNpsArray^ stock, StkNps^ value)
+int Dbvt::Allocate(AlignedIntArray^ ifree, AlignedStkNpsArray^ stock, StkNps^ value)
 {
 	return btDbvt::allocate(*ifree->UnmanagedPointer, *stock->UnmanagedPointer, *value->UnmanagedPointer);
 }
@@ -667,7 +661,7 @@ void Dbvt::EnumNodes(DbvtNode^ root, ICollide^ policy)
 	btDbvt::enumNodes(root->UnmanagedPointer, *policy->UnmanagedPointer);
 }
 
-void Dbvt::ExtractLeaves(DbvtNode^ node, DbvtNodeArray^ leaves)
+void Dbvt::ExtractLeaves(DbvtNode^ node, AlignedDbvtNodeArray^ leaves)
 {
 	btDbvt::extractLeaves(node->UnmanagedPointer, *leaves->UnmanagedPointer);
 }
@@ -799,7 +793,7 @@ DbvtNode^ Dbvt::Free::get()
 }
 void Dbvt::Free::set(DbvtNode^ value)
 {
-	_dbvt->m_free = value->UnmanagedPointer;
+	_dbvt->m_free = value != nullptr ? value->UnmanagedPointer : 0;
 }
 
 int Dbvt::Leaves::get()
@@ -837,15 +831,15 @@ DbvtNode^ Dbvt::Root::get()
 }
 void Dbvt::Root::set(DbvtNode^ value)
 {
-	_dbvt->m_root = value->UnmanagedPointer;
+	_dbvt->m_root = value != nullptr ? value->UnmanagedPointer : 0;
 }
 
-StkNnArray^ Dbvt::Stack::get()
+AlignedStkNnArray^ Dbvt::Stack::get()
 {
-	return gcnew StkNnArray(&_dbvt->m_stkStack);
+	return gcnew AlignedStkNnArray(&_dbvt->m_stkStack);
 }
 
-void Dbvt::Stack::set(StkNnArray^ value)
+void Dbvt::Stack::set(AlignedStkNnArray^ value)
 {
 	_dbvt->m_stkStack = *value->UnmanagedPointer;
 }

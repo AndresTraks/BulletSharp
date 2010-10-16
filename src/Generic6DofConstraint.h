@@ -6,6 +6,8 @@
 
 namespace BulletSharp
 {
+	ref class BoolArray;
+	ref class IntArray;
 	ref class RigidBody;
 
 	public ref class RotationalLimitMotor
@@ -162,20 +164,10 @@ namespace BulletSharp
 			void set(Vector3 value);
 		}
 
-		// Indexed properties like these aren't directly supported in C#,
-		// but can still be used like get_CurrentLimit()/set_CurrentLimit().
-		property int CurrentLimit[int]
+		property IntArray^ CurrentLimit
 		{
-			int get(int index);
-			void set(int index, int value);
+			IntArray^ get();
 		}
-		/*
-		property array<int>^ CurrentLimit
-		{
-			array<int>^ get();
-			void set(array<int>^ value);
-		}
-		*/
 
 		property Vector3 CurrentLimitError
 		{
@@ -195,18 +187,10 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property bool EnableMotor[int]
+		property BoolArray^ EnableMotor
 		{
-			bool get(int index);
-			void set(int index, bool value);
+			BoolArray^ get();
 		}
-		/*
-		property array<bool>^ EnableMotor
-		{
-			array<bool>^ get();
-			void set(array<bool>^ value);
-		}
-		*/
 
 		property btScalar LimitSoftness
 		{

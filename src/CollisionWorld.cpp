@@ -694,9 +694,9 @@ void CollisionWorld::Broadphase::set(BroadphaseInterface^ value)
 	_broadphase = value;
 }
 
-BulletSharp::CollisionObjectArray^ CollisionWorld::CollisionObjectArray::get()
+BulletSharp::AlignedCollisionObjectArray^ CollisionWorld::CollisionObjectArray::get()
 {
-	return gcnew BulletSharp::CollisionObjectArray(&_world->getCollisionObjectArray());
+	return gcnew BulletSharp::AlignedCollisionObjectArray(&_world->getCollisionObjectArray());
 }
 
 #ifndef DISABLE_DEBUGDRAW

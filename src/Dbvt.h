@@ -7,10 +7,11 @@
 namespace BulletSharp
 {
 	ref class DbvtNode;
-	ref class DbvtNodeArray;
-	ref class IntArray;
-	ref class StkNnArray;
-	ref class StkNpsArray;
+	ref class DbvtNodePtrArray;
+	ref class AlignedDbvtNodeArray;
+	ref class AlignedIntArray;
+	ref class AlignedStkNnArray;
+	ref class AlignedStkNpsArray;
 
 	public ref class DbvtAabbMm
 	{
@@ -64,10 +65,9 @@ namespace BulletSharp
 		DbvtNode(btDbvtNode* node);
 
 	public:
-		property array<DbvtNode^>^ Childs
+		property DbvtNodePtrArray^ Childs
 		{
-			array<DbvtNode^>^ get();
-			void set(array<DbvtNode^>^ value);
+			DbvtNodePtrArray^ get();
 		}
 
 		property IntPtr Data
@@ -316,7 +316,7 @@ namespace BulletSharp
 	public:
 		Dbvt();
 
-		static int Allocate(IntArray^ ifree, StkNpsArray^ stock, StkNps^ value);
+		static int Allocate(AlignedIntArray^ ifree, AlignedStkNpsArray^ stock, StkNps^ value);
 		static void Benchmark();
 		void Clear();
 		void Clone(Dbvt^ dest, IClone^ iclone);
@@ -337,7 +337,7 @@ namespace BulletSharp
 		bool Empty();
 		static void EnumLeaves(DbvtNode^ root, ICollide^ policy);
 		static void EnumNodes(DbvtNode^ root, ICollide^ policy);
-		static void ExtractLeaves(DbvtNode^ node, DbvtNodeArray^ leaves);
+		static void ExtractLeaves(DbvtNode^ node, AlignedDbvtNodeArray^ leaves);
 		DbvtNode^ Insert(DbvtVolume^ box, IntPtr data);
 		static int MaxDepth(DbvtNode^ node);
 		static int Nearest(array<int>^ i, StkNps^ a, btScalar v, int l, int h);
@@ -397,10 +397,10 @@ namespace BulletSharp
 			void set(DbvtNode^ value);
 		}
 
-		property StkNnArray^ Stack
+		property AlignedStkNnArray^ Stack
 		{
-			StkNnArray^ get();
-			void set(StkNnArray^ value);
+			AlignedStkNnArray^ get();
+			void set(AlignedStkNnArray^ value);
 		}
 
 	internal:

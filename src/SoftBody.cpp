@@ -308,11 +308,11 @@ void Cluster::Com::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &_cluster->m_com);
 }
 
-Vector3Array^ Cluster::FrameRefs::get()
+AlignedVector3Array^ Cluster::FrameRefs::get()
 {
-	return gcnew Vector3Array(&_cluster->m_framerefs);
+	return gcnew AlignedVector3Array(&_cluster->m_framerefs);
 }
-void Cluster::FrameRefs::set(Vector3Array^ value)
+void Cluster::FrameRefs::set(AlignedVector3Array^ value)
 {
 	_cluster->m_framerefs = *value->UnmanagedPointer;
 }
@@ -362,20 +362,20 @@ void Cluster::Locii::set(Matrix value)
 	Math::MatrixToBtMatrix3x3(value, &_cluster->m_locii);
 }
 
-ScalarArray^ Cluster::Masses::get()
+AlignedScalarArray^ Cluster::Masses::get()
 {
-	return gcnew ScalarArray(&_cluster->m_masses);
+	return gcnew AlignedScalarArray(&_cluster->m_masses);
 }
-void Cluster::Masses::set(ScalarArray^ value)
+void Cluster::Masses::set(AlignedScalarArray^ value)
 {
 	_cluster->m_masses = *value->UnmanagedPointer;
 }
 
-NodePtrArray^ Cluster::Nodes::get()
+AlignedNodePtrArray^ Cluster::Nodes::get()
 {
-	return gcnew NodePtrArray(&_cluster->m_nodes);
+	return gcnew AlignedNodePtrArray(&_cluster->m_nodes);
 }
-void Cluster::Nodes::set(NodePtrArray^ value)
+void Cluster::Nodes::set(AlignedNodePtrArray^ value)
 {
 	_cluster->m_nodes = *value->UnmanagedPointer;
 }
@@ -573,27 +573,19 @@ Face::Face(btSoftBody::Face* face)
 #ifndef DISABLE_DBVT
 DbvtNode^ Face::Leaf::get()
 {
+	if (UnmanagedPointer->m_leaf == 0)
+		return nullptr;
 	return gcnew DbvtNode(UnmanagedPointer->m_leaf);
 }
 void Face::Leaf::set(DbvtNode^ value)
 {
-	UnmanagedPointer->m_leaf = value->UnmanagedPointer;
+	UnmanagedPointer->m_leaf = value != nullptr ? value->UnmanagedPointer : 0;
 }
 #endif
 
-array<BulletSharp::SoftBody::Node^>^ Face::N::get()
+NodePtrArray^ Face::N::get()
 {
-	array<Node^>^ nodeArray = gcnew array<Node^>(3);
-	nodeArray[0] = UnmanagedPointer->m_n[0] ? gcnew Node(UnmanagedPointer->m_n[0]) : nullptr;
-	nodeArray[1] = UnmanagedPointer->m_n[1] ? gcnew Node(UnmanagedPointer->m_n[1]) : nullptr;
-	nodeArray[2] = UnmanagedPointer->m_n[2] ? gcnew Node(UnmanagedPointer->m_n[2]) : nullptr;
-	return nodeArray;
-}
-void Face::N::set(array<BulletSharp::SoftBody::Node^>^ value)
-{
-	UnmanagedPointer->m_n[0] = value[0]->UnmanagedPointer;
-	UnmanagedPointer->m_n[1] = value[1]->UnmanagedPointer;
-	UnmanagedPointer->m_n[2] = value[2]->UnmanagedPointer;
+	return gcnew NodePtrArray(UnmanagedPointer->m_n, 3);
 }
 
 Vector3 Face::Normal::get()
@@ -785,18 +777,15 @@ void Link::IsBending::set(bool value)
 	UnmanagedPointer->m_bbending = value;
 }
 
-array<BulletSharp::SoftBody::Node^>^ Link::N::get()
+/*
+AlignedNodeArray^ Link::N::get()
 {
-	array<Node^>^ nodeArray = gcnew array<Node^>(2);
-	nodeArray[0] = UnmanagedPointer->m_n[0] ? gcnew Node(UnmanagedPointer->m_n[0]) : nullptr;
-	nodeArray[1] = UnmanagedPointer->m_n[1] ? gcnew Node(UnmanagedPointer->m_n[1]) : nullptr;
-	return nodeArray;
+	array<Node^>^ AlignedNodeArray = gcnew array<Node^>(2);
+	AlignedNodeArray[0] = UnmanagedPointer->m_n[0] ? gcnew Node(UnmanagedPointer->m_n[0]) : nullptr;
+	AlignedNodeArray[1] = UnmanagedPointer->m_n[1] ? gcnew Node(UnmanagedPointer->m_n[1]) : nullptr;
+	return AlignedNodeArray;
 }
-void Link::N::set(array<BulletSharp::SoftBody::Node^>^ value)
-{
-	UnmanagedPointer->m_n[0] = value[0]->UnmanagedPointer;
-	UnmanagedPointer->m_n[1] = value[1]->UnmanagedPointer;
-}
+*/
 
 btScalar Link::RestLength::get()
 {
@@ -904,11 +893,13 @@ void BulletSharp::SoftBody::Node::IsAttached::set(bool value)
 #ifndef DISABLE_DBVT
 DbvtNode^ BulletSharp::SoftBody::Node::Leaf::get()
 {
+	if (UnmanagedPointer->m_leaf == 0)
+		return nullptr;
 	return gcnew DbvtNode(UnmanagedPointer->m_leaf);
 }
 void BulletSharp::SoftBody::Node::Leaf::set(DbvtNode^ value)
 {
-	UnmanagedPointer->m_leaf = value->UnmanagedPointer;
+	UnmanagedPointer->m_leaf = value != nullptr ? value->UnmanagedPointer : 0;
 }
 #endif
 
@@ -1012,11 +1003,11 @@ void BulletSharp::SoftBody::Pose::IsVolumeValid::set(bool value)
 	_pose->m_bvolume = value;
 }
 
-Vector3Array^ BulletSharp::SoftBody::Pose::Positions::get()
+AlignedVector3Array^ BulletSharp::SoftBody::Pose::Positions::get()
 {
-	return gcnew Vector3Array(&_pose->m_pos);
+	return gcnew AlignedVector3Array(&_pose->m_pos);
 }
-void BulletSharp::SoftBody::Pose::Positions::set(Vector3Array^ value)
+void BulletSharp::SoftBody::Pose::Positions::set(AlignedVector3Array^ value)
 {
 	_pose->m_pos = *value->UnmanagedPointer;
 }
@@ -1048,11 +1039,11 @@ void BulletSharp::SoftBody::Pose::Volume::set(btScalar value)
 	_pose->m_volume = value;
 }
 
-ScalarArray^ BulletSharp::SoftBody::Pose::Weights::get()
+AlignedScalarArray^ BulletSharp::SoftBody::Pose::Weights::get()
 {
-	return gcnew ScalarArray(&_pose->m_wgh);
+	return gcnew AlignedScalarArray(&_pose->m_wgh);
 }
-void BulletSharp::SoftBody::Pose::Weights::set(ScalarArray^ value)
+void BulletSharp::SoftBody::Pose::Weights::set(AlignedScalarArray^ value)
 {
 	_pose->m_wgh = *value->UnmanagedPointer;
 }
@@ -1191,9 +1182,9 @@ Tetra::Tetra()
 {
 }
 
-Vector3List^ Tetra::C0::get()
+Vector3Array^ Tetra::C0::get()
 {
-	return gcnew Vector3List(UnmanagedPointer->m_c0, 4);
+	return gcnew Vector3Array(UnmanagedPointer->m_c0, 4);
 }
 
 btScalar Tetra::C1::get()
@@ -1214,31 +1205,21 @@ void Tetra::C2::set(btScalar value)
 	UnmanagedPointer->m_c2 = value;
 }
 
-array<BulletSharp::SoftBody::Node^>^ Tetra::N::get()
+NodePtrArray^ Tetra::N::get()
 {
-	array<Node^>^ nodeArray = gcnew array<Node^>(4);
-	nodeArray[0] = UnmanagedPointer->m_n[0] ? gcnew Node(UnmanagedPointer->m_n[0]) : nullptr;
-	nodeArray[1] = UnmanagedPointer->m_n[1] ? gcnew Node(UnmanagedPointer->m_n[1]) : nullptr;
-	nodeArray[2] = UnmanagedPointer->m_n[2] ? gcnew Node(UnmanagedPointer->m_n[2]) : nullptr;
-	nodeArray[3] = UnmanagedPointer->m_n[3] ? gcnew Node(UnmanagedPointer->m_n[3]) : nullptr;
-	return nodeArray;
-}
-void Tetra::N::set(array<BulletSharp::SoftBody::Node^>^ value)
-{
-	UnmanagedPointer->m_n[0] = value[0]->UnmanagedPointer;
-	UnmanagedPointer->m_n[1] = value[1]->UnmanagedPointer;
-	UnmanagedPointer->m_n[2] = value[2]->UnmanagedPointer;
-	UnmanagedPointer->m_n[3] = value[3]->UnmanagedPointer;
+	return gcnew NodePtrArray(UnmanagedPointer->m_n, 4);
 }
 
 #ifndef DISABLE_DBVT
 DbvtNode^ Tetra::Leaf::get()
 {
+	if (UnmanagedPointer->m_leaf == 0)
+		return nullptr;
 	return gcnew DbvtNode(UnmanagedPointer->m_leaf);
 }
 void Tetra::Leaf::set(DbvtNode^ value)
 {
-	UnmanagedPointer->m_leaf = value->UnmanagedPointer;
+	UnmanagedPointer->m_leaf = value != nullptr ? value->UnmanagedPointer : nullptr;
 }
 #endif
 
@@ -1818,7 +1799,7 @@ void BulletSharp::SoftBody::SoftBody::SetVolumeMass(btScalar mass)
 	UnmanagedPointer->setVolumeMass(mass);
 }
 
-void BulletSharp::SoftBody::SoftBody::SolveClusters(SoftBodyArray^ bodies)
+void BulletSharp::SoftBody::SoftBody::SolveClusters(AlignedSoftBodyArray^ bodies)
 {
 	btSoftBody::solveClusters(*bodies->UnmanagedPointer);
 }
@@ -1874,16 +1855,16 @@ BulletSharp::SoftBody::SoftBody^ BulletSharp::SoftBody::SoftBody::Upcast(Collisi
 	return gcnew SoftBody(body);
 }
 
-Vector3List^ BulletSharp::SoftBody::SoftBody::Bounds::get()
+Vector3Array^ BulletSharp::SoftBody::SoftBody::Bounds::get()
 {
-	return gcnew Vector3List(UnmanagedPointer->m_bounds, 2);
+	return gcnew Vector3Array(UnmanagedPointer->m_bounds, 2);
 }
 
-ClusterArray^ BulletSharp::SoftBody::SoftBody::Clusters::get()
+AlignedClusterArray^ BulletSharp::SoftBody::SoftBody::Clusters::get()
 {
-	return gcnew ClusterArray(&UnmanagedPointer->m_clusters);
+	return gcnew AlignedClusterArray(&UnmanagedPointer->m_clusters);
 }
-void BulletSharp::SoftBody::SoftBody::Clusters::set(ClusterArray^ value)
+void BulletSharp::SoftBody::SoftBody::Clusters::set(AlignedClusterArray^ value)
 {
 	UnmanagedPointer->m_clusters = *value->UnmanagedPointer;
 }
@@ -1902,29 +1883,29 @@ int BulletSharp::SoftBody::SoftBody::ClusterCount::get()
 	return UnmanagedPointer->clusterCount();
 }
 
-CollisionObjectArray^ BulletSharp::SoftBody::SoftBody::CollisionDisabledObjects::get()
+AlignedCollisionObjectArray^ BulletSharp::SoftBody::SoftBody::CollisionDisabledObjects::get()
 {
-	return gcnew CollisionObjectArray(&UnmanagedPointer->m_collisionDisabledObjects);
+	return gcnew AlignedCollisionObjectArray(&UnmanagedPointer->m_collisionDisabledObjects);
 }
-void BulletSharp::SoftBody::SoftBody::CollisionDisabledObjects::set(CollisionObjectArray^ value)
+void BulletSharp::SoftBody::SoftBody::CollisionDisabledObjects::set(AlignedCollisionObjectArray^ value)
 {
 	UnmanagedPointer->m_collisionDisabledObjects = *value->UnmanagedPointer;
 }
 
-FaceArray^ BulletSharp::SoftBody::SoftBody::Faces::get()
+AlignedFaceArray^ BulletSharp::SoftBody::SoftBody::Faces::get()
 {
-	return gcnew FaceArray(&UnmanagedPointer->m_faces);
+	return gcnew AlignedFaceArray(&UnmanagedPointer->m_faces);
 }
-void BulletSharp::SoftBody::SoftBody::Faces::set(FaceArray^ value)
+void BulletSharp::SoftBody::SoftBody::Faces::set(AlignedFaceArray^ value)
 {
 	UnmanagedPointer->m_faces = *value->UnmanagedPointer;
 }
 
-LinkArray^ BulletSharp::SoftBody::SoftBody::Links::get()
+AlignedLinkArray^ BulletSharp::SoftBody::SoftBody::Links::get()
 {
-	return gcnew LinkArray(&UnmanagedPointer->m_links);
+	return gcnew AlignedLinkArray(&UnmanagedPointer->m_links);
 }
-void BulletSharp::SoftBody::SoftBody::Links::set(LinkArray^ value)
+void BulletSharp::SoftBody::SoftBody::Links::set(AlignedLinkArray^ value)
 {
 	UnmanagedPointer->m_links = *value->UnmanagedPointer;
 }
@@ -1938,29 +1919,29 @@ void BulletSharp::SoftBody::SoftBody::InitialWorldTransform::set(Matrix value)
 	return Math::MatrixToBtTransform(value, &UnmanagedPointer->m_initialWorldTransform);
 }
 
-MaterialArray^ BulletSharp::SoftBody::SoftBody::Materials::get()
+AlignedMaterialArray^ BulletSharp::SoftBody::SoftBody::Materials::get()
 {
-	return gcnew MaterialArray(&UnmanagedPointer->m_materials);
+	return gcnew AlignedMaterialArray(&UnmanagedPointer->m_materials);
 }
-void BulletSharp::SoftBody::SoftBody::Materials::set(MaterialArray^ value)
+void BulletSharp::SoftBody::SoftBody::Materials::set(AlignedMaterialArray^ value)
 {
 	UnmanagedPointer->m_materials = *value->UnmanagedPointer;
 }
 
-BulletSharp::SoftBody::NodeArray^ BulletSharp::SoftBody::SoftBody::Nodes::get()
+BulletSharp::SoftBody::AlignedNodeArray^ BulletSharp::SoftBody::SoftBody::Nodes::get()
 {
-	return gcnew NodeArray(&UnmanagedPointer->m_nodes);
+	return gcnew AlignedNodeArray(&UnmanagedPointer->m_nodes);
 }
-void BulletSharp::SoftBody::SoftBody::Nodes::set(NodeArray^ value)
+void BulletSharp::SoftBody::SoftBody::Nodes::set(AlignedNodeArray^ value)
 {
 	UnmanagedPointer->m_nodes = *value->UnmanagedPointer;
 }
 
-BulletSharp::SoftBody::NoteArray^ BulletSharp::SoftBody::SoftBody::Notes::get()
+BulletSharp::SoftBody::AlignedNoteArray^ BulletSharp::SoftBody::SoftBody::Notes::get()
 {
-	return gcnew NoteArray(&UnmanagedPointer->m_notes);
+	return gcnew AlignedNoteArray(&UnmanagedPointer->m_notes);
 }
-void BulletSharp::SoftBody::SoftBody::Notes::set(NoteArray^ value)
+void BulletSharp::SoftBody::SoftBody::Notes::set(AlignedNoteArray^ value)
 {
 	UnmanagedPointer->m_notes = *value->UnmanagedPointer;
 }
@@ -2033,11 +2014,11 @@ void BulletSharp::SoftBody::SoftBody::UpdateRuntimeConstants::set(bool value)
 	UnmanagedPointer->m_bUpdateRtCst = value;
 }
 
-IntArray^ BulletSharp::SoftBody::SoftBody::UserIndexMapping::get()
+AlignedIntArray^ BulletSharp::SoftBody::SoftBody::UserIndexMapping::get()
 {
-	return gcnew IntArray(&UnmanagedPointer->m_userIndexMapping);
+	return gcnew AlignedIntArray(&UnmanagedPointer->m_userIndexMapping);
 }
-void BulletSharp::SoftBody::SoftBody::UserIndexMapping::set(IntArray^ value)
+void BulletSharp::SoftBody::SoftBody::UserIndexMapping::set(AlignedIntArray^ value)
 {
 	UnmanagedPointer->m_userIndexMapping = *value->UnmanagedPointer;
 }

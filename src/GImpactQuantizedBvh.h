@@ -9,9 +9,10 @@
 namespace BulletSharp
 {
 	ref class Aabb;
-	ref class IntArray;
+	ref class AlignedIntArray;
 	ref class PrimitiveManagerBase;
 	ref class PrimitiveTriangle;
+	ref class UShortArray;
 
 	public ref class QuantizedBvhNode
 	{
@@ -48,16 +49,14 @@ namespace BulletSharp
 			bool get();
 		}
 
-		property array<unsigned short>^ QuantizedAabbMin
+		property UShortArray^ QuantizedAabbMin
 		{
-			array<unsigned short>^ get();
-			void set(array<unsigned short>^ value);
+			UShortArray^ get();
 		}
 
-		property array<unsigned short>^ QuantizedAabbMax
+		property UShortArray^ QuantizedAabbMax
 		{
-			array<unsigned short>^ get();
-			void set(array<unsigned short>^ value);
+			UShortArray^ get();
 		}
 	};
 
@@ -73,8 +72,8 @@ namespace BulletSharp
 		GImpactQuantizedBvh();
 		GImpactQuantizedBvh(PrimitiveManagerBase^ primitiveManager);
 
-		bool BoxQuery(Aabb^ box, [Out] IntArray^% collided_results);
-		bool BoxQueryTrans(Aabb^ box, Matrix transform, [Out] IntArray^% collided_results);
+		bool BoxQuery(Aabb^ box, [Out] AlignedIntArray^% collided_results);
+		bool BoxQueryTrans(Aabb^ box, Matrix transform, [Out] AlignedIntArray^% collided_results);
 		void BuildSet();
 		static void FindCollision(GImpactBvh^ boxset1, Matrix trans1, GImpactBvh^ boxset2, Matrix trans2, [Out] PairSet^% collision_pairs);
 		int GetEscapeNodeIndex(int nodeIndex);
@@ -86,7 +85,7 @@ namespace BulletSharp
 		void GetNodeTriangle(int nodeIndex, [Out] PrimitiveTriangle^% triangle);
 		int GetRightNode(int nodeIndex);
 		bool IsLeafNode(int nodeIndex);
-		bool RayQuery(Vector3 ray_dir, Vector3 ray_origin, [Out] IntArray^% collided_results);
+		bool RayQuery(Vector3 ray_dir, Vector3 ray_origin, [Out] AlignedIntArray^% collided_results);
 		void SetNodeBound(int nodeIndex, Aabb^ bound);
 		void Update();
 

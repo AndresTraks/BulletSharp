@@ -87,13 +87,13 @@ namespace BulletSharp
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class BroadphasePairArray : AlignedObjectArray<BroadphasePair^>
+	public ref class AlignedBroadphasePairArray : AlignedObjectArray<BroadphasePair^>
 	{
 	internal:
-		BroadphasePairArray(btBroadphasePairArray* pairArray);
+		AlignedBroadphasePairArray(btBroadphasePairArray* pairArray);
 
 	public:
-		BroadphasePairArray();
+		AlignedBroadphasePairArray();
 
 		virtual void Add(BroadphasePair^ pair) override;
 		virtual void Clear() override;
@@ -132,13 +132,13 @@ namespace BulletSharp
 	{
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
-		public ref class ClusterArray : AlignedObjectArray<Cluster^>
+		public ref class AlignedClusterArray : AlignedObjectArray<Cluster^>
 		{
 		internal:
-			ClusterArray(btSoftBody::tClusterArray* clusterArray);
+			AlignedClusterArray(btSoftBody::tClusterArray* clusterArray);
 
 		public:
-			ClusterArray();
+			AlignedClusterArray();
 
 			virtual void Add(Cluster^ cluster) override;
 			virtual void Clear() override;
@@ -176,10 +176,10 @@ namespace BulletSharp
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class CollisionShapeArray : AlignedObjectArray<CollisionShape^>
+	public ref class AlignedCollisionShapeArray : AlignedObjectArray<CollisionShape^>
 	{
 	public:
-		CollisionShapeArray();
+		AlignedCollisionShapeArray();
 
 		virtual void Add(CollisionShape^ shape) override;
 		virtual void Clear() override;
@@ -215,13 +215,13 @@ namespace BulletSharp
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class CollisionObjectArray : AlignedObjectArray<CollisionObject^>, IEnumerable
+	public ref class AlignedCollisionObjectArray : AlignedObjectArray<CollisionObject^>, IEnumerable
 	{
 	internal:
-		CollisionObjectArray(btCollisionObjectArray* collisionObjectArray);
+		AlignedCollisionObjectArray(btCollisionObjectArray* collisionObjectArray);
 
 	public:
-		CollisionObjectArray();
+		AlignedCollisionObjectArray();
 
 		virtual void Add(CollisionObject^ obj) override;
 		virtual void Clear() override;
@@ -257,13 +257,13 @@ namespace BulletSharp
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class CompoundShapeChildArray : AlignedObjectArray<CompoundShapeChild^>
+	public ref class AlignedCompoundShapeChildArray : AlignedObjectArray<CompoundShapeChild^>
 	{
 	internal:
-		CompoundShapeChildArray(btAlignedObjectArray<btCompoundShapeChild>* compundShapeChildArray);
+		AlignedCompoundShapeChildArray(btAlignedObjectArray<btCompoundShapeChild>* compundShapeChildArray);
 
 	public:
-		CompoundShapeChildArray();
+		AlignedCompoundShapeChildArray();
 
 		virtual void Add(CompoundShapeChild^ child) override;
 		virtual void Clear() override;
@@ -300,13 +300,13 @@ namespace BulletSharp
 #ifndef DISABLE_DBVT
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class DbvtNodeArray : AlignedObjectArray<DbvtNode^>
+	public ref class AlignedDbvtNodeArray : AlignedObjectArray<DbvtNode^>
 	{
 	internal:
-		DbvtNodeArray(btAlignedObjectArray<const btDbvtNode*>* nodeArray);
+		AlignedDbvtNodeArray(btAlignedObjectArray<const btDbvtNode*>* AlignedNodeArray);
 
 	public:
-		DbvtNodeArray();
+		AlignedDbvtNodeArray();
 
 		virtual void Add(DbvtNode^ stkNps) override;
 		virtual void Clear() override;
@@ -342,13 +342,13 @@ namespace BulletSharp
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class StkNnArray : AlignedObjectArray<Dbvt::StkNn^>
+	public ref class AlignedStkNnArray : AlignedObjectArray<Dbvt::StkNn^>
 	{
 	internal:
-		StkNnArray(btAlignedObjectArray<btDbvt::sStkNN>* stkNnArray);
+		AlignedStkNnArray(btAlignedObjectArray<btDbvt::sStkNN>* stkNnArray);
 
 	public:
-		StkNnArray();
+		AlignedStkNnArray();
 
 		virtual void Add(Dbvt::StkNn^ stkNn) override;
 		virtual void Clear() override;
@@ -381,13 +381,13 @@ namespace BulletSharp
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class StkNpsArray : AlignedObjectArray<Dbvt::StkNps^>
+	public ref class AlignedStkNpsArray : AlignedObjectArray<Dbvt::StkNps^>
 	{
 	internal:
-		StkNpsArray(btAlignedObjectArray<btDbvt::sStkNPS>* stkNpsArray);
+		AlignedStkNpsArray(btAlignedObjectArray<btDbvt::sStkNPS>* stkNpsArray);
 
 	public:
-		StkNpsArray();
+		AlignedStkNpsArray();
 
 		virtual void Add(Dbvt::StkNps^ stkNps) override;
 		virtual void Clear() override;
@@ -424,13 +424,13 @@ namespace BulletSharp
 	{
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
-		public ref class FaceArray : AlignedObjectArray<Face^>, Generic::IList<Face^>
+		public ref class AlignedFaceArray : AlignedObjectArray<Face^>, Generic::IList<Face^>
 		{
 		internal:
-			FaceArray(btAlignedObjectArray<btSoftBody::Face>* faceArray);
+			AlignedFaceArray(btAlignedObjectArray<btSoftBody::Face>* faceArray);
 
 		public:
-			FaceArray();
+			AlignedFaceArray();
 
 			virtual void Add(Face^ face) override;
 			virtual void Clear() override;
@@ -465,13 +465,13 @@ namespace BulletSharp
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class IntArray : AlignedObjectArray<int>
+	public ref class AlignedIntArray : AlignedObjectArray<int>
 	{
 	internal:
-		IntArray(btAlignedObjectArray<int>* intArray);
+		AlignedIntArray(btAlignedObjectArray<int>* intArray);
 
 	public:
-		IntArray();
+		AlignedIntArray();
 
 		virtual void Add(int integer) override;
 		virtual void Clear() override;
@@ -507,13 +507,13 @@ namespace BulletSharp
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class ManifoldArray : AlignedObjectArray<PersistentManifold^>
+	public ref class AlignedManifoldArray : AlignedObjectArray<PersistentManifold^>
 	{
 	internal:
-		ManifoldArray(btManifoldArray* manifoldArray);
+		AlignedManifoldArray(btManifoldArray* manifoldArray);
 
 	public:
-		ManifoldArray();
+		AlignedManifoldArray();
 
 		virtual void Add(PersistentManifold^ manifold) override;
 		virtual void Clear() override;
@@ -552,13 +552,13 @@ namespace BulletSharp
 	{
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
-		public ref class LinkArray : AlignedObjectArray<Link^>, IEnumerable
+		public ref class AlignedLinkArray : AlignedObjectArray<Link^>, IEnumerable
 		{
 		internal:
-			LinkArray(btSoftBody::tLinkArray* linkArray);
+			AlignedLinkArray(btSoftBody::tLinkArray* linkArray);
 
 		public:
-			LinkArray();
+			AlignedLinkArray();
 
 			virtual void Add(Link^ link) override;
 			virtual void Clear() override;
@@ -591,13 +591,13 @@ namespace BulletSharp
 
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
-		public ref class MaterialArray : AlignedObjectArray<Material^>
+		public ref class AlignedMaterialArray : AlignedObjectArray<Material^>
 		{
 		internal:
-			MaterialArray(btSoftBody::tMaterialArray* materialArray);
+			AlignedMaterialArray(btSoftBody::tMaterialArray* materialArray);
 
 		public:
-			MaterialArray();
+			AlignedMaterialArray();
 
 			virtual void Add(Material^ material) override;
 			virtual void Clear() override;
@@ -633,13 +633,13 @@ namespace BulletSharp
 
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
-		public ref class NodeArray : AlignedObjectArray<Node^>
+		public ref class AlignedNodeArray : AlignedObjectArray<Node^>
 		{
 		internal:
-			NodeArray(btSoftBody::tNodeArray* nodeArray);
+			AlignedNodeArray(btSoftBody::tNodeArray* AlignedNodeArray);
 
 		public:
-			NodeArray();
+			AlignedNodeArray();
 
 			virtual void Add(Node^ node) override;
 			virtual void Clear() override;
@@ -672,13 +672,13 @@ namespace BulletSharp
 
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
-		public ref class NodePtrArray : AlignedObjectArray<Node^>
+		public ref class AlignedNodePtrArray : AlignedObjectArray<Node^>
 		{
 		internal:
-			NodePtrArray(btAlignedObjectArray<btSoftBody::Node*>* nodeArray);
+			AlignedNodePtrArray(btAlignedObjectArray<btSoftBody::Node*>* AlignedNodeArray);
 
 		public:
-			NodePtrArray();
+			AlignedNodePtrArray();
 
 			virtual void Add(Node^ node) override;
 			virtual void Clear() override;
@@ -714,13 +714,13 @@ namespace BulletSharp
 
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
-		public ref class NoteArray : AlignedObjectArray<Note^>
+		public ref class AlignedNoteArray : AlignedObjectArray<Note^>
 		{
 		internal:
-			NoteArray(btSoftBody::tNoteArray* noteArray);
+			AlignedNoteArray(btSoftBody::tNoteArray* noteArray);
 
 		public:
-			NoteArray();
+			AlignedNoteArray();
 
 			virtual void Add(Note^ note) override;
 			virtual void Clear() override;
@@ -755,13 +755,13 @@ namespace BulletSharp
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class ScalarArray : AlignedObjectArray<btScalar>
+	public ref class AlignedScalarArray : AlignedObjectArray<btScalar>
 	{
 	internal:
-		ScalarArray(btAlignedObjectArray<btScalar>* btScalarArray);
+		AlignedScalarArray(btAlignedObjectArray<btScalar>* btScalarArray);
 
 	public:
-		ScalarArray();
+		AlignedScalarArray();
 
 		virtual void Add(btScalar scalar) override;
 		virtual void Clear() override;
@@ -800,13 +800,13 @@ namespace BulletSharp
 	{
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
-		public ref class SoftBodyArray : AlignedObjectArray<SoftBody^>
+		public ref class AlignedSoftBodyArray : AlignedObjectArray<SoftBody^>
 		{
 		internal:
-			SoftBodyArray(btSoftBody::tSoftBodyArray* softBodyArray);
+			AlignedSoftBodyArray(btSoftBody::tSoftBodyArray* softBodyArray);
 
 		public:
-			SoftBodyArray();
+			AlignedSoftBodyArray();
 
 			virtual void Add(SoftBody^ softBody) override;
 			virtual void Clear() override;
@@ -844,13 +844,13 @@ namespace BulletSharp
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(Vector3ListDebugView::typeid)]
-	public ref class Vector3Array : AlignedObjectArray<Vector3>
+	public ref class AlignedVector3Array : AlignedObjectArray<Vector3>
 	{
 	internal:
-		Vector3Array(btAlignedObjectArray<btVector3>* vector3Array);
+		AlignedVector3Array(btAlignedObjectArray<btVector3>* vector3Array);
 
 	public:
-		Vector3Array();
+		AlignedVector3Array();
 
 		virtual void Add(Vector3 vector) override;
 		virtual void Clear() override;
@@ -887,13 +887,13 @@ namespace BulletSharp
 #ifndef DISABLE_VEHICLE
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class WheelInfoArray : AlignedObjectArray<WheelInfo^>
+	public ref class AlignedWheelInfoArray : AlignedObjectArray<WheelInfo^>
 	{
 	internal:
-		WheelInfoArray(btAlignedObjectArray<btWheelInfo>* wheelInfoArray);
+		AlignedWheelInfoArray(btAlignedObjectArray<btWheelInfo>* wheelInfoArray);
 
 	public:
-		WheelInfoArray();
+		AlignedWheelInfoArray();
 
 		virtual void Add(WheelInfo^ wheelInfo) override;
 		virtual void Clear() override;

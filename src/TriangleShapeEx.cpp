@@ -51,9 +51,9 @@ void GimTriangleContact::PointCount::set(int value)
 	_contact->m_point_count = value;
 }
 
-Vector3List^ GimTriangleContact::Points::get()
+Vector3Array^ GimTriangleContact::Points::get()
 {
-	return gcnew Vector3List(_contact->m_points, 16);
+	return gcnew Vector3Array(_contact->m_points, 16);
 }
 
 Vector4 GimTriangleContact::SeparatingNormal::get()
@@ -156,9 +156,9 @@ void PrimitiveTriangle::Plane::set(Vector4 value)
 	Math::Vector4ToBtVector4(value, &_triangle->m_plane);
 }
 
-Vector3List^ PrimitiveTriangle::Vectors::get()
+Vector3Array^ PrimitiveTriangle::Vectors::get()
 {
-	return gcnew Vector3List(_triangle->m_vertices, 3);
+	return gcnew Vector3Array(_triangle->m_vertices, 3);
 }
 
 btPrimitiveTriangle* PrimitiveTriangle::UnmanagedPointer::get()

@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #include "BroadphaseProxy.h"
+#include "Collections.h"
 #include "DbvtBroadphase.h"
 #include "Dispatcher.h"
 #include "OverlappingPairCache.h"
@@ -39,29 +40,12 @@ DbvtNode^ DbvtProxy::Leaf::get()
 }
 void DbvtProxy::Leaf::set(DbvtNode^ value)
 {
-	UnmanagedPointer->leaf = value->UnmanagedPointer;
+	UnmanagedPointer->leaf = value != nullptr ? value->UnmanagedPointer : 0;
 }
 
-array<DbvtProxy^>^ DbvtProxy::Links::get()
+DbvtProxyPtrArray^ DbvtProxy::Links::get()
 {
-	array<DbvtProxy^>^ links = gcnew array<DbvtProxy^>(2);
-	
-	if (UnmanagedPointer->links[0] == nullptr)
-		links[0] = nullptr;
-	else
-		links[0] = gcnew DbvtProxy(UnmanagedPointer->links[0]);
-	
-	if (UnmanagedPointer->links[1] == nullptr)
-		links[1] = nullptr;
-	else
-		links[1] = gcnew DbvtProxy(UnmanagedPointer->links[1]);
-	
-	return links;
-}
-void DbvtProxy::Links::set(array<DbvtProxy^>^ value)
-{
-	UnmanagedPointer->links[0] = value[0]->UnmanagedPointer;
-	UnmanagedPointer->links[1] = value[1]->UnmanagedPointer;
+	return gcnew DbvtProxyPtrArray(UnmanagedPointer->links, 2);
 }
 
 int DbvtProxy::Stage::get()
@@ -243,17 +227,9 @@ void DbvtBroadphase::ReleasePairCache::set(bool value)
 	UnmanagedPointer->m_releasepaircache = value;
 }
 
-array<Dbvt^>^ DbvtBroadphase::Sets::get()
+DbvtArray^ DbvtBroadphase::Sets::get()
 {
-	array<Dbvt^>^ sets = gcnew array<Dbvt^>(2);
-	sets[0] = gcnew Dbvt(&UnmanagedPointer->m_sets[0]);
-	sets[1] = gcnew Dbvt(&UnmanagedPointer->m_sets[1]);
-	return sets;
-}
-void DbvtBroadphase::Sets::set(array<Dbvt^>^ value)
-{
-	UnmanagedPointer->m_sets[0] = *value[0]->UnmanagedPointer;
-	UnmanagedPointer->m_sets[1] = *value[1]->UnmanagedPointer;
+	return gcnew DbvtArray(UnmanagedPointer->m_sets, 2);
 }
 
 int DbvtBroadphase::StageCurrent::get()
@@ -265,24 +241,9 @@ void DbvtBroadphase::StageCurrent::set(int value)
 	UnmanagedPointer->m_stageCurrent = value;
 }
 
-array<DbvtProxy^>^ DbvtBroadphase::StageRoots::get()
+DbvtProxyPtrArray^ DbvtBroadphase::StageRoots::get()
 {
-	array<DbvtProxy^>^ stageRoots = gcnew array<DbvtProxy^>(StageCount+1);
-	int i;
-	for (i=0; i<StageCount+1; i++)
-	{
-		if (UnmanagedPointer->m_stageRoots[i] == 0)
-			stageRoots[i] = nullptr;
-		else
-			stageRoots[i] = gcnew DbvtProxy(UnmanagedPointer->m_stageRoots[i]);
-	}
-	return stageRoots;
-}
-void DbvtBroadphase::StageRoots::set(array<DbvtProxy^>^ value)
-{
-	int i;
-	for (i=0; i<StageCount+1; i++)
-		UnmanagedPointer->m_stageRoots[i] = value[i]->UnmanagedPointer;
+	return gcnew DbvtProxyPtrArray(UnmanagedPointer->m_stageRoots, StageCount+1);
 }
 
 unsigned int DbvtBroadphase::UpdatesCall::get()

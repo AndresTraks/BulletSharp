@@ -2,6 +2,7 @@
 
 #ifndef DISABLE_CONSTRAINTS
 
+#include "Collections.h"
 #include "Generic6DofConstraint.h"
 #include "RigidBody.h"
 
@@ -273,30 +274,10 @@ void TranslationalLimitMotor::AccumulatedImpulse::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &motor->m_accumulatedImpulse);
 }
 
-int TranslationalLimitMotor::CurrentLimit::get(int index)
+IntArray^ TranslationalLimitMotor::CurrentLimit::get()
 {
-	return motor->m_currentLimit[index];
+	return gcnew IntArray(motor->m_currentLimit, 3);
 }
-void TranslationalLimitMotor::CurrentLimit::set(int index, int value)
-{
-	motor->m_currentLimit[index] = value;
-}
-/*
-array<int>^ TranslationalLimitMotor::CurrentLimit::get()
-{
-	array<int>^ limits = gcnew array<int>(3);
-	limits[0] = motor->m_currentLimit[0];
-	limits[1] = motor->m_currentLimit[1];
-	limits[2] = motor->m_currentLimit[2];
-	return limits;
-}
-void TranslationalLimitMotor::CurrentLimit::set(array<int>^ value)
-{
-	motor->m_currentLimit[0] = value[0];
-	motor->m_currentLimit[1] = value[1];
-	motor->m_currentLimit[2] = value[2];
-}
-*/
 
 Vector3 TranslationalLimitMotor::CurrentLimitError::get()
 {
@@ -325,30 +306,10 @@ void TranslationalLimitMotor::Damping::set(btScalar value)
 	motor->m_damping = value;;
 }
 
-bool TranslationalLimitMotor::EnableMotor::get(int index)
+BoolArray^ TranslationalLimitMotor::EnableMotor::get()
 {
-	return motor->m_enableMotor[index];
+	return gcnew BoolArray(motor->m_enableMotor, 3);
 }
-void TranslationalLimitMotor::EnableMotor::set(int index, bool value)
-{
-	motor->m_enableMotor[index] = value;;
-}
-/*
-array<bool>^ TranslationalLimitMotor::EnableMotor::get()
-{
-	array<bool>^ enableMotor = gcnew array<bool>(3);
-	enableMotor[0] = motor->m_enableMotor[0];
-	enableMotor[1] = motor->m_enableMotor[1];
-	enableMotor[2] = motor->m_enableMotor[2];
-	return enableMotor;
-}
-void TranslationalLimitMotor::EnableMotor::set(array<bool>^ value)
-{
-	motor->m_enableMotor[0] = value[0];
-	motor->m_enableMotor[1] = value[1];
-	motor->m_enableMotor[2] = value[2];
-}
-*/
 
 btScalar TranslationalLimitMotor::LimitSoftness::get()
 {

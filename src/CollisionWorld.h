@@ -16,7 +16,7 @@ namespace BulletSharp
 	ref class BroadphaseProxy;
 	ref class CollisionConfiguration;
 	ref class CollisionObject;
-	ref class CollisionObjectArray;
+	ref class AlignedCollisionObjectArray;
 	ref class CollisionShape;
 	ref class ConvexShape;
 	ref class DebugDraw;
@@ -464,9 +464,9 @@ namespace BulletSharp
 			void set(BroadphaseInterface^ value);
 		}
 
-		property BulletSharp::CollisionObjectArray^ CollisionObjectArray
+		property BulletSharp::AlignedCollisionObjectArray^ CollisionObjectArray
 		{
-			BulletSharp::CollisionObjectArray^ get();
+			BulletSharp::AlignedCollisionObjectArray^ get();
 		}
 #ifndef DISABLE_DEBUGDRAW
 		property DebugDraw^ DebugDrawer

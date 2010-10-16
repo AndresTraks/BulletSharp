@@ -4,6 +4,7 @@
 
 #include "AlignedObjectArray.h"
 #include "BoxCollision.h"
+#include "Collections.h"
 #include "GImpactBvh.h"
 #include "GImpactQuantizedBvh.h"
 #include "TriangleShapeEx.h"
@@ -60,34 +61,14 @@ void QuantizedBvhNode::EscapeIndexOrDataIndex::set(int value)
 	_node->m_escapeIndexOrDataIndex = value;
 }
 
-array<unsigned short>^ QuantizedBvhNode::QuantizedAabbMin::get()
+UShortArray^ QuantizedBvhNode::QuantizedAabbMin::get()
 {
-	array<unsigned short>^ aabbMinTemp = gcnew array<unsigned short>(3);
-	aabbMinTemp[0] = _node->m_quantizedAabbMin[0];
-	aabbMinTemp[1] = _node->m_quantizedAabbMin[1];
-	aabbMinTemp[2] = _node->m_quantizedAabbMin[2];
-	return aabbMinTemp;
-}
-void QuantizedBvhNode::QuantizedAabbMin::set(array<unsigned short>^ value)
-{
-	_node->m_quantizedAabbMin[0] = value[0];
-	_node->m_quantizedAabbMin[1] = value[1];
-	_node->m_quantizedAabbMin[2] = value[2];
+	return gcnew UShortArray(_node->m_quantizedAabbMin, 3);
 }
 
-array<unsigned short>^ QuantizedBvhNode::QuantizedAabbMax::get()
+UShortArray^ QuantizedBvhNode::QuantizedAabbMax::get()
 {
-	array<unsigned short>^ aabbMaxTemp = gcnew array<unsigned short>(3);
-	aabbMaxTemp[0] = _node->m_quantizedAabbMax[0];
-	aabbMaxTemp[1] = _node->m_quantizedAabbMax[1];
-	aabbMaxTemp[2] = _node->m_quantizedAabbMax[2];
-	return aabbMaxTemp;
-}
-void QuantizedBvhNode::QuantizedAabbMax::set(array<unsigned short>^ value)
-{
-	_node->m_quantizedAabbMax[0] = value[0];
-	_node->m_quantizedAabbMax[1] = value[1];
-	_node->m_quantizedAabbMax[2] = value[2];
+	return gcnew UShortArray(_node->m_quantizedAabbMax, 3);
 }
 
 bool QuantizedBvhNode::IsLeafNode::get()
@@ -111,12 +92,12 @@ GImpactQuantizedBvh::GImpactQuantizedBvh(PrimitiveManagerBase^ primitiveManager)
 	_bvh = new btGImpactQuantizedBvh(primitiveManager->UnmanagedPointer);
 }
 
-bool GImpactQuantizedBvh::BoxQuery(Aabb^ box, [Out] IntArray^% collided_results)
+bool GImpactQuantizedBvh::BoxQuery(Aabb^ box, [Out] AlignedIntArray^% collided_results)
 {
 	return _bvh->boxQuery(*box->UnmanagedPointer, *collided_results->UnmanagedPointer);
 }
 
-bool GImpactQuantizedBvh::BoxQueryTrans(Aabb^ box, Matrix transform, [Out] IntArray^% collided_results)
+bool GImpactQuantizedBvh::BoxQueryTrans(Aabb^ box, Matrix transform, [Out] AlignedIntArray^% collided_results)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	bool ret = _bvh->boxQueryTrans(*box->UnmanagedPointer, *transformTemp, *collided_results->UnmanagedPointer);
@@ -191,14 +172,14 @@ bool GImpactQuantizedBvh::IsLeafNode(int nodeIndex)
 	return _bvh->isLeafNode(nodeIndex);
 }
 
-bool GImpactQuantizedBvh::RayQuery(Vector3 ray_dir, Vector3 ray_origin, [Out] IntArray^% collided_results)
+bool GImpactQuantizedBvh::RayQuery(Vector3 ray_dir, Vector3 ray_origin, [Out] AlignedIntArray^% collided_results)
 {
 	btVector3* ray_dirTemp = Math::Vector3ToBtVector3(ray_dir);
 	btVector3* ray_originTemp = Math::Vector3ToBtVector3(ray_origin);
 	btAlignedObjectArray<int>* collided_resultsTemp = new btAlignedObjectArray<int>();
 
 	bool ret = _bvh->rayQuery(*ray_dirTemp, *ray_originTemp, *collided_resultsTemp);
-	collided_results = gcnew IntArray(collided_resultsTemp);
+	collided_results = gcnew AlignedIntArray(collided_resultsTemp);
 
 	delete ray_dirTemp;
 	delete ray_originTemp;

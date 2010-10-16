@@ -6,7 +6,7 @@ namespace SimplestDemo
     class Physics
     {
         public DiscreteDynamicsWorld World { get; private set; }
-        CollisionShapeArray collisionShapes = new CollisionShapeArray();
+        AlignedCollisionShapeArray collisionShapes = new AlignedCollisionShapeArray();
 
         public Physics()
         {

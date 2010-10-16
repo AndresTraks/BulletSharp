@@ -10,7 +10,7 @@
 
 namespace BulletSharp
 {
-	ref class Vector3List;
+	ref class Vector3Array;
 
 	public ref class TriangleShape : PolyhedralConvexShape
 	{
@@ -25,9 +25,9 @@ namespace BulletSharp
 		void GetPlaneEquation(int index, [Out] Vector3% planeNormal, [Out] Vector3% planeSupport);
 		Vector3 GetVertexPtr(int index);
 
-		property Vector3List^ Vertices
+		property Vector3Array^ Vertices
 		{
-			Vector3List^ get();
+			Vector3Array^ get();
 		}
 
 	internal:

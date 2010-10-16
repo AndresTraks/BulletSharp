@@ -248,11 +248,11 @@ int RaycastVehicle::UpAxis::get()
 	return UnmanagedPointer->getUpAxis();
 }
 
-WheelInfoArray^ RaycastVehicle::WheelInfo::get()
+AlignedWheelInfoArray^ RaycastVehicle::WheelInfo::get()
 {
-	return gcnew WheelInfoArray(&UnmanagedPointer->m_wheelInfo);
+	return gcnew AlignedWheelInfoArray(&UnmanagedPointer->m_wheelInfo);
 }
-void RaycastVehicle::WheelInfo::set(WheelInfoArray^ value)
+void RaycastVehicle::WheelInfo::set(AlignedWheelInfoArray^ value)
 {
 	UnmanagedPointer->m_wheelInfo = *value->UnmanagedPointer;
 }

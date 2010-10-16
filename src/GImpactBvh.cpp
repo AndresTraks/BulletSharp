@@ -159,12 +159,12 @@ GImpactBvh::GImpactBvh()
 	_bvh = new btGImpactBvh();
 }
 
-bool GImpactBvh::BoxQuery(Aabb^ box, [Out] IntArray^% collided_results)
+bool GImpactBvh::BoxQuery(Aabb^ box, [Out] AlignedIntArray^% collided_results)
 {
 	return _bvh->boxQuery(*box->UnmanagedPointer, *collided_results->UnmanagedPointer);
 }
 
-bool GImpactBvh::BoxQueryTrans(Aabb^ box, Matrix transform, [Out] IntArray^% collided_results)
+bool GImpactBvh::BoxQueryTrans(Aabb^ box, Matrix transform, [Out] AlignedIntArray^% collided_results)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	bool ret = _bvh->boxQueryTrans(*box->UnmanagedPointer, *transformTemp, *collided_results->UnmanagedPointer);
@@ -239,14 +239,14 @@ bool GImpactBvh::IsLeafNode(int nodeIndex)
 	return _bvh->isLeafNode(nodeIndex);
 }
 
-bool GImpactBvh::RayQuery(Vector3 ray_dir, Vector3 ray_origin, [Out] IntArray^% collided_results)
+bool GImpactBvh::RayQuery(Vector3 ray_dir, Vector3 ray_origin, [Out] AlignedIntArray^% collided_results)
 {
 	btVector3* ray_dirTemp = Math::Vector3ToBtVector3(ray_dir);
 	btVector3* ray_originTemp = Math::Vector3ToBtVector3(ray_origin);
 	btAlignedObjectArray<int>* collided_resultsTemp = new btAlignedObjectArray<int>();
 
 	bool ret = _bvh->rayQuery(*ray_dirTemp, *ray_originTemp, *collided_resultsTemp);
-	collided_results = gcnew IntArray(collided_resultsTemp);
+	collided_results = gcnew AlignedIntArray(collided_resultsTemp);
 
 	delete ray_dirTemp;
 	delete ray_originTemp;

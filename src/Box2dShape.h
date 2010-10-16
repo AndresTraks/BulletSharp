@@ -10,7 +10,7 @@
 
 namespace BulletSharp
 {
-	ref class Vector3List;
+	ref class Vector3Array;
 
 	public ref class Box2dShape : PolyhedralConvexShape
 	{
@@ -42,9 +42,9 @@ namespace BulletSharp
 			Vector3 get();
 		}
 
-		property Vector3List^ Normals
+		property Vector3Array^ Normals
 		{
-			Vector3List^ get();
+			Vector3Array^ get();
 		}
 
 		property int VertexCount
@@ -52,9 +52,9 @@ namespace BulletSharp
 			int get();
 		}
 
-		property Vector3List^ Vertices
+		property Vector3Array^ Vertices
 		{
-			Vector3List^ get();
+			Vector3Array^ get();
 		}
 
 	internal:

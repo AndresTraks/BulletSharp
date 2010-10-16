@@ -10,7 +10,9 @@ namespace BulletSharp
 {
 	ref class BroadphaseProxy;
 	ref class Dbvt;
+	ref class DbvtArray;
 	ref class DbvtNode;
+	ref class DbvtProxyPtrArray;
 	ref class Dispatcher;
 	ref class OverlappingPairCache;
 
@@ -31,10 +33,9 @@ namespace BulletSharp
 			void set(DbvtNode^ value);
 		}
 
-		property array<DbvtProxy^>^ Links
+		property DbvtProxyPtrArray^ Links
 		{
-			array<DbvtProxy^>^ get();
-			void set(array<DbvtProxy^>^ value);
+			DbvtProxyPtrArray^ get();
 		}
 
 		property int Stage
@@ -149,10 +150,9 @@ namespace BulletSharp
 			void set(bool value);
 		}
 
-		property array<Dbvt^>^ Sets
+		property DbvtArray^ Sets
 		{
-			array<Dbvt^>^ get();
-			void set(array<Dbvt^>^ value);
+			DbvtArray^ get();
 		}
 
 		property int StageCurrent
@@ -161,10 +161,9 @@ namespace BulletSharp
 			void set(int value);
 		}
 
-		property array<DbvtProxy^>^ StageRoots
+		property DbvtProxyPtrArray^ StageRoots
 		{
-			array<DbvtProxy^>^ get();
-			void set(array<DbvtProxy^>^ value);
+			DbvtProxyPtrArray^ get();
 		}
 
 		property unsigned int UpdatesCall

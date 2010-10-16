@@ -129,7 +129,7 @@ namespace ConstraintDemo
             spSlider6Dof.SetAngularLowerLimit(new Vector3((float)-Math.PI, 0, 0));
             spSlider6Dof.SetAngularUpperLimit(new Vector3(1.5f, 0, 0));
 
-            spSlider6Dof.TranslationalLimitMotor.set_EnableMotor(0, true);
+            spSlider6Dof.TranslationalLimitMotor.EnableMotor[0] = true;
             spSlider6Dof.TranslationalLimitMotor.TargetVelocity = new Vector3(-5.0f, 0, 0);
             spSlider6Dof.TranslationalLimitMotor.MaxMotorForce = new Vector3(0.1f, 0, 0);
 

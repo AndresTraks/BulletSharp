@@ -67,9 +67,9 @@ Vector3 TriangleShape::GetVertexPtr(int index)
 	return vertex;
 }
 
-Vector3List^ TriangleShape::Vertices::get()
+Vector3Array^ TriangleShape::Vertices::get()
 {
-	return gcnew Vector3List(UnmanagedPointer->m_vertices1, 3);
+	return gcnew Vector3Array(UnmanagedPointer->m_vertices1, 3);
 }
 
 btTriangleShape* TriangleShape::UnmanagedPointer::get()

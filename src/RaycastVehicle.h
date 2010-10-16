@@ -11,7 +11,7 @@ namespace BulletSharp
 	ref class RigidBody;
 	ref class VehicleRaycaster;
 	ref class WheelInfo;
-	ref class WheelInfoArray;
+	ref class AlignedWheelInfoArray;
 
 	public ref class RaycastVehicle : ActionInterface
 	{
@@ -139,10 +139,10 @@ namespace BulletSharp
 			int get();
 		}
 
-		property WheelInfoArray^ WheelInfo
+		property AlignedWheelInfoArray^ WheelInfo
 		{
-			WheelInfoArray^ get();
-			void set(WheelInfoArray^ value);
+			AlignedWheelInfoArray^ get();
+			void set(AlignedWheelInfoArray^ value);
 		}
 
 	internal:

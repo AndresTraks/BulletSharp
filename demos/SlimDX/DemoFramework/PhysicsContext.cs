@@ -13,7 +13,7 @@ namespace DemoFramework
         protected CollisionDispatcher Dispatcher;
         protected BroadphaseInterface Broadphase;
         protected ConstraintSolver Solver;
-        protected CollisionShapeArray CollisionShapes;
+        protected AlignedCollisionShapeArray CollisionShapes = new AlignedCollisionShapeArray();
 
         public PhysicsDebugDraw DebugDrawer
         {
@@ -24,7 +24,6 @@ namespace DemoFramework
 
         public PhysicsContext()
         {
-            CollisionShapes = new CollisionShapeArray();
         }
 
         public void SetDebugDrawMode(Device device, DebugDrawModes modes)
