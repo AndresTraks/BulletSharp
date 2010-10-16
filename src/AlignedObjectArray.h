@@ -24,7 +24,8 @@ namespace BulletSharp
 	ref class CompoundShapeChild;
 	ref class PersistentManifold;
 
-	public ref class AlignedObjectArray : BulletSharp::IDisposable
+	generic<class T>
+	public ref class AlignedObjectArray abstract : Generic::IList<T>, BulletSharp::IDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
@@ -42,7 +43,36 @@ namespace BulletSharp
 		~AlignedObjectArray();
 
 	public:
+		virtual void Add(T item) = 0;
+		virtual void Clear() = 0;
+		virtual bool Contains(T item);
+		virtual void CopyTo(array<T>^ array, int arrayIndex) = 0;
+		virtual IEnumerator^ GetEnumerator() = IEnumerable::GetEnumerator;
+		virtual Generic::IEnumerator<T>^ GetSpecializedEnumerator() = Generic::IEnumerable<T>::GetEnumerator;
+		virtual int IndexOf(T item);
+		virtual void Insert(int index, T item);
+		virtual void PopBack() = 0;
+		virtual bool Remove(T item);
+		virtual void RemoveAt(int index);
+		virtual void Swap(int index0, int index1) = 0;
+
+		property int Count
+		{
+			virtual int get() = 0;
+		}
+
+		property T default [int]
+		{
+			virtual T get (int index) = 0;
+			virtual void set(int index, T value) = 0;
+		}
+
 		property bool IsDisposed
+		{
+			virtual bool get();
+		}
+
+		property bool IsReadOnly
 		{
 			virtual bool get();
 		}
@@ -55,35 +85,39 @@ namespace BulletSharp
 		}
 	};
 
-	[DebuggerDisplay("Size = {Size}")]
-	public ref class BroadphasePairArray : AlignedObjectArray
+	[DebuggerDisplay("Count = {Count}")]
+	[DebuggerTypeProxy(ListDebugView::typeid)]
+	public ref class BroadphasePairArray : AlignedObjectArray<BroadphasePair^>
 	{
 	internal:
-		BroadphasePairArray(btBroadphasePairArray* stkNnArray);
+		BroadphasePairArray(btBroadphasePairArray* pairArray);
 
 	public:
 		BroadphasePairArray();
 
-		void Clear();
-		void PopBack();
-		void PushBack(BroadphasePair^ pair);
-		void Remove(BroadphasePair^ pair);
-		void Swap(int index0, int index1);
-
-		property int Size
-		{
-			int get();
-		}
+		virtual void Add(BroadphasePair^ pair) override;
+		virtual void Clear() override;
+		virtual bool Contains(BroadphasePair^ pair) override;
+		virtual void CopyTo(array<BroadphasePair^>^ array, int arrayIndex) override;
+		virtual int IndexOf(BroadphasePair^ pair) override;
+		virtual void PopBack() override;
+		virtual bool Remove(BroadphasePair^ pair) override;
+		virtual void Swap(int index0, int index1) override;
 
 		property int Capacity
 		{
 			int get();
 		}
 
+		property int Count
+		{
+			virtual int get() override;
+		}
+
 		property BroadphasePair^ default [int]
 		{
-			BroadphasePair^ get (int index);
-			void set(int index, BroadphasePair^ value);
+			virtual BroadphasePair^ get (int index) override;
+			virtual void set(int index, BroadphasePair^ value) override;
 		}
 
 	internal:
@@ -98,7 +132,7 @@ namespace BulletSharp
 	{
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
-		public ref class ClusterArray : AlignedObjectArray, Generic::IList<Cluster^>
+		public ref class ClusterArray : AlignedObjectArray<Cluster^>
 		{
 		internal:
 			ClusterArray(btSoftBody::tClusterArray* clusterArray);
@@ -106,22 +140,18 @@ namespace BulletSharp
 		public:
 			ClusterArray();
 
-			virtual void Add(Cluster^ cluster);
-			virtual void Clear();
-			virtual bool Contains(Cluster^ item);
-			virtual void CopyTo(array<Cluster^>^ array, int arrayIndex);
-			virtual IEnumerator^ GetEnumerator() = IEnumerable::GetEnumerator;
-			virtual Generic::IEnumerator<Cluster^>^ GetSpecializedEnumerator() = Generic::IEnumerable<Cluster^>::GetEnumerator;
-			virtual int IndexOf(Cluster^ item);
-			virtual void Insert(int index, Cluster^ item);
-			void PopBack();
-			virtual bool Remove(Cluster^ cluster);
-			virtual void RemoveAt(int index);
-			void Swap(int index0, int index1);
+			virtual void Add(Cluster^ cluster) override;
+			virtual void Clear() override;
+			virtual bool Contains(Cluster^ item) override;
+			virtual void CopyTo(array<Cluster^>^ array, int arrayIndex) override;
+			virtual int IndexOf(Cluster^ item) override;
+			virtual void PopBack() override;
+			virtual bool Remove(Cluster^ cluster) override;
+			virtual void Swap(int index0, int index1) override;
 
 			property int Count
 			{
-				virtual int get();
+				virtual int get() override;
 			}
 
 			property int Capacity
@@ -131,13 +161,8 @@ namespace BulletSharp
 
 			property Cluster^ default [int]
 			{
-				virtual Cluster^ get (int index);
-				virtual void set(int index, Cluster^ value);
-			}
-
-			property bool IsReadOnly
-			{
-				virtual bool get();
+				virtual Cluster^ get (int index) override;
+				virtual void set(int index, Cluster^ value) override;
 			}
 
 		internal:
@@ -149,32 +174,36 @@ namespace BulletSharp
 	};
 #endif
 
-	[DebuggerDisplay("Size = {Size}")]
-	public ref class CollisionShapeArray : AlignedObjectArray
+	[DebuggerDisplay("Count = {Count}")]
+	[DebuggerTypeProxy(ListDebugView::typeid)]
+	public ref class CollisionShapeArray : AlignedObjectArray<CollisionShape^>
 	{
 	public:
 		CollisionShapeArray();
 
-		void Clear();
-		void PopBack();
-		void PushBack(CollisionShape^ collisionShape);
-		void Remove(CollisionShape^ collisionShape);
-		void Swap(int index0, int index1);
+		virtual void Add(CollisionShape^ shape) override;
+		virtual void Clear() override;
+		virtual bool Contains(CollisionShape^ shape) override;
+		virtual void CopyTo(array<CollisionShape^>^ array, int arrayIndex) override;
+		virtual int IndexOf(CollisionShape^ shape) override;
+		virtual void PopBack() override;
+		virtual bool Remove(CollisionShape^ shape) override;
+		virtual void Swap(int index0, int index1) override;
 
 		property int Capacity
 		{
 			int get();
 		}
 
-		property int Size
+		property int Count
 		{
-			int get();
+			virtual int get() override;
 		}
 
 		property CollisionShape^ default [int]
 		{
-			CollisionShape^ get (int index);
-			void set(int index, CollisionShape^ value);
+			virtual CollisionShape^ get (int index) override;
+			virtual void set(int index, CollisionShape^ value) override;
 		}
 
 	internal:
@@ -184,8 +213,9 @@ namespace BulletSharp
 		}
 	};
 
-	[DebuggerDisplay("Size = {Size}")]
-	public ref class CollisionObjectArray : AlignedObjectArray, IEnumerable
+	[DebuggerDisplay("Count = {Count}")]
+	[DebuggerTypeProxy(ListDebugView::typeid)]
+	public ref class CollisionObjectArray : AlignedObjectArray<CollisionObject^>, IEnumerable
 	{
 	internal:
 		CollisionObjectArray(btCollisionObjectArray* collisionObjectArray);
@@ -193,28 +223,29 @@ namespace BulletSharp
 	public:
 		CollisionObjectArray();
 
-		virtual IEnumerator^ GetEnumerator();
-
-		void Clear();
-		void PopBack();
-		void PushBack(CollisionObject^ collisionObject);
-		void Remove(CollisionObject^ collisionObject);
-		void Swap(int index0, int index1);
-
-		property int Size
-		{
-			int get();
-		}
+		virtual void Add(CollisionObject^ obj) override;
+		virtual void Clear() override;
+		virtual bool Contains(CollisionObject^ obj) override;
+		virtual void CopyTo(array<CollisionObject^>^ array, int arrayIndex) override;
+		virtual int IndexOf(CollisionObject^ obj) override;
+		virtual void PopBack() override;
+		virtual bool Remove(CollisionObject^ obj) override;
+		virtual void Swap(int index0, int index1) override;
 
 		property int Capacity
 		{
 			int get();
 		}
 
+		property int Count
+		{
+			virtual int get() override;
+		}
+
 		property CollisionObject^ default [int]
 		{
-			CollisionObject^ get (int index);
-			void set(int index, CollisionObject^ value);
+			virtual CollisionObject^ get (int index) override;
+			virtual void set(int index, CollisionObject^ value) override;
 		}
 
 	internal:
@@ -224,30 +255,9 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class CollisionObjectEnumerator : IEnumerator
-	{
-	private:
-		CollisionObjectArray^ _objArray;
-		int i;
-
-	public:
-		CollisionObjectEnumerator(CollisionObjectArray^ objArray);
-
-		property CollisionObject^ Current
-		{
-			virtual CollisionObject^ get();
-		}
-
-		property Object^ CurrentBase { 
-			virtual Object^ get() sealed = IEnumerator::Current::get;
-		};
-
-		virtual bool MoveNext();
-		virtual void Reset();
-	};
-
-	[DebuggerDisplay("Size = {Size}")]
-	public ref class CompoundShapeChildArray : AlignedObjectArray
+	[DebuggerDisplay("Count = {Count}")]
+	[DebuggerTypeProxy(ListDebugView::typeid)]
+	public ref class CompoundShapeChildArray : AlignedObjectArray<CompoundShapeChild^>
 	{
 	internal:
 		CompoundShapeChildArray(btAlignedObjectArray<btCompoundShapeChild>* compundShapeChildArray);
@@ -255,28 +265,29 @@ namespace BulletSharp
 	public:
 		CompoundShapeChildArray();
 
-		virtual IEnumerator^ GetEnumerator();
-
-		void Clear();
-		void PopBack();
-		void PushBack(CompoundShapeChild^ compundShapeChild);
-		void Remove(CompoundShapeChild^ compundShapeChild);
-		void Swap(int index0, int index1);
-
-		property int Size
-		{
-			int get();
-		}
+		virtual void Add(CompoundShapeChild^ child) override;
+		virtual void Clear() override;
+		virtual bool Contains(CompoundShapeChild^ child) override;
+		virtual void CopyTo(array<CompoundShapeChild^>^ array, int arrayIndex) override;
+		virtual int IndexOf(CompoundShapeChild^ child) override;
+		virtual void PopBack() override;
+		virtual bool Remove(CompoundShapeChild^ child) override;
+		virtual void Swap(int index0, int index1) override;
 
 		property int Capacity
 		{
 			int get();
 		}
 
+		property int Count
+		{
+			virtual int get() override;
+		}
+
 		property CompoundShapeChild^ default [int]
 		{
-			CompoundShapeChild^ get (int index);
-			void set(int index, CompoundShapeChild^ value);
+			virtual CompoundShapeChild^ get (int index) override;
+			virtual void set(int index, CompoundShapeChild^ value) override;
 		}
 
 	internal:
@@ -286,28 +297,10 @@ namespace BulletSharp
 		}
 	};
 
-	[DebuggerDisplay("Size = {Size}")]
-	public ref class CompoundShapeChildEnumerator : IEnumerator
-	{
-	private:
-		CompoundShapeChildArray^ _shapeArray;
-		int i;
-
-	public:
-		CompoundShapeChildEnumerator(CompoundShapeChildArray^ shapeArray);
-
-		property Object^ Current
-		{
-			virtual Object^ get();
-		}
-
-		virtual bool MoveNext();
-		virtual void Reset();
-	};
-
 #ifndef DISABLE_DBVT
-	[DebuggerDisplay("Size = {Size}")]
-	public ref class DbvtNodeArray : AlignedObjectArray
+	[DebuggerDisplay("Count = {Count}")]
+	[DebuggerTypeProxy(ListDebugView::typeid)]
+	public ref class DbvtNodeArray : AlignedObjectArray<DbvtNode^>
 	{
 	internal:
 		DbvtNodeArray(btAlignedObjectArray<const btDbvtNode*>* nodeArray);
@@ -315,26 +308,29 @@ namespace BulletSharp
 	public:
 		DbvtNodeArray();
 
-		void Clear();
-		void PopBack();
-		void PushBack(DbvtNode^ stkNps);
-		void Remove(DbvtNode^ stkNps);
-		void Swap(int index0, int index1);
-
-		property int Size
-		{
-			int get();
-		}
+		virtual void Add(DbvtNode^ stkNps) override;
+		virtual void Clear() override;
+		virtual bool Contains(DbvtNode^ stkNps) override;
+		virtual void CopyTo(array<DbvtNode^>^ array, int arrayIndex) override;
+		virtual int IndexOf(DbvtNode^ stkNps) override;
+		virtual void PopBack() override;
+		virtual bool Remove(DbvtNode^ stkNps) override;
+		virtual void Swap(int index0, int index1) override;
 
 		property int Capacity
 		{
 			int get();
 		}
 
+		property int Count
+		{
+			virtual int get() override;
+		}
+
 		property DbvtNode^ default [int]
 		{
-			DbvtNode^ get (int index);
-			void set(int index, DbvtNode^ value);
+			virtual DbvtNode^ get (int index) override;
+			virtual void set(int index, DbvtNode^ value) override;
 		}
 
 	internal:
@@ -344,8 +340,9 @@ namespace BulletSharp
 		}
 	};
 
-	[DebuggerDisplay("Size = {Size}")]
-	public ref class StkNnArray : AlignedObjectArray
+	[DebuggerDisplay("Count = {Count}")]
+	[DebuggerTypeProxy(ListDebugView::typeid)]
+	public ref class StkNnArray : AlignedObjectArray<Dbvt::StkNn^>
 	{
 	internal:
 		StkNnArray(btAlignedObjectArray<btDbvt::sStkNN>* stkNnArray);
@@ -353,26 +350,26 @@ namespace BulletSharp
 	public:
 		StkNnArray();
 
-		void Clear();
-		void PopBack();
-		void PushBack(Dbvt::StkNn^ stkNps);
-		void Remove(Dbvt::StkNn^ stkNps);
-		void Swap(int index0, int index1);
-
-		property int Size
-		{
-			int get();
-		}
+		virtual void Add(Dbvt::StkNn^ stkNn) override;
+		virtual void Clear() override;
+		virtual void CopyTo(array<Dbvt::StkNn^>^ array, int arrayIndex) override;
+		virtual void PopBack() override;
+		virtual void Swap(int index0, int index1) override;
 
 		property int Capacity
 		{
 			int get();
 		}
 
+		property int Count
+		{
+			virtual int get() override;
+		}
+
 		property Dbvt::StkNn^ default [int]
 		{
-			Dbvt::StkNn^ get (int index);
-			void set(int index, Dbvt::StkNn^ value);
+			virtual Dbvt::StkNn^ get (int index) override;
+			virtual void set(int index, Dbvt::StkNn^ value) override;
 		}
 
 	internal:
@@ -382,8 +379,9 @@ namespace BulletSharp
 		}
 	};
 
-	[DebuggerDisplay("Size = {Size}")]
-	public ref class StkNpsArray : AlignedObjectArray
+	[DebuggerDisplay("Count = {Count}")]
+	[DebuggerTypeProxy(ListDebugView::typeid)]
+	public ref class StkNpsArray : AlignedObjectArray<Dbvt::StkNps^>
 	{
 	internal:
 		StkNpsArray(btAlignedObjectArray<btDbvt::sStkNPS>* stkNpsArray);
@@ -391,26 +389,26 @@ namespace BulletSharp
 	public:
 		StkNpsArray();
 
-		void Clear();
-		void PopBack();
-		void PushBack(Dbvt::StkNps^ stkNps);
-		void Remove(Dbvt::StkNps^ stkNps);
-		void Swap(int index0, int index1);
-
-		property int Size
-		{
-			int get();
-		}
+		virtual void Add(Dbvt::StkNps^ stkNps) override;
+		virtual void Clear() override;
+		virtual void CopyTo(array<Dbvt::StkNps^>^ array, int arrayIndex) override;
+		virtual void PopBack() override;
+		virtual void Swap(int index0, int index1) override;
 
 		property int Capacity
 		{
 			int get();
 		}
 
+		property int Count
+		{
+			virtual int get() override;
+		}
+
 		property Dbvt::StkNps^ default [int]
 		{
-			Dbvt::StkNps^ get (int index);
-			void set(int index, Dbvt::StkNps^ value);
+			virtual Dbvt::StkNps^ get (int index) override;
+			virtual void set(int index, Dbvt::StkNps^ value) override;
 		}
 
 	internal:
@@ -426,7 +424,7 @@ namespace BulletSharp
 	{
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
-		public ref class FaceArray : AlignedObjectArray, Generic::IList<Face^>
+		public ref class FaceArray : AlignedObjectArray<Face^>, Generic::IList<Face^>
 		{
 		internal:
 			FaceArray(btAlignedObjectArray<btSoftBody::Face>* faceArray);
@@ -434,38 +432,26 @@ namespace BulletSharp
 		public:
 			FaceArray();
 
-			virtual void Add(Face^ face);
-			virtual void Clear();
-			virtual bool Contains(Face^ item);
-			virtual void CopyTo(array<Face^>^ array, int arrayIndex);
-			virtual IEnumerator^ GetEnumerator() = IEnumerable::GetEnumerator;
-			virtual Generic::IEnumerator<Face^>^ GetSpecializedEnumerator() = Generic::IEnumerable<Face^>::GetEnumerator;
-			virtual int IndexOf(Face^ item);
-			virtual void Insert(int index, Face^ item);
-			void PopBack();
-			virtual bool Remove(Face^ face);
-			virtual void RemoveAt(int index);
-			void Swap(int index0, int index1);
-
-			property int Count
-			{
-				virtual int get();
-			}
+			virtual void Add(Face^ face) override;
+			virtual void Clear() override;
+			virtual void CopyTo(array<Face^>^ array, int arrayIndex) override;
+			virtual void PopBack() override;
+			virtual void Swap(int index0, int index1) override;
 
 			property int Capacity
 			{
 				int get();
 			}
 
-			property Face^ default [int]
+			property int Count
 			{
-				virtual Face^ get (int index);
-				virtual void set(int index, Face^ value);
+				virtual int get() override;
 			}
 
-			property bool IsReadOnly
+			property Face^ default [int]
 			{
-				virtual bool get();
+				virtual Face^ get (int index) override;
+				virtual void set(int index, Face^ value) override;
 			}
 
 		internal:
@@ -477,8 +463,9 @@ namespace BulletSharp
 	};
 #endif
 
-	[DebuggerDisplay("Size = {Size}")]
-	public ref class IntArray : AlignedObjectArray
+	[DebuggerDisplay("Count = {Count}")]
+	[DebuggerTypeProxy(ListDebugView::typeid)]
+	public ref class IntArray : AlignedObjectArray<int>
 	{
 	internal:
 		IntArray(btAlignedObjectArray<int>* intArray);
@@ -486,26 +473,29 @@ namespace BulletSharp
 	public:
 		IntArray();
 
-		void Clear();
-		void PopBack();
-		void PushBack(int intValue);
-		void Remove(int intValue);
-		void Swap(int index0, int index1);
-
-		property int Size
-		{
-			int get();
-		}
+		virtual void Add(int integer) override;
+		virtual void Clear() override;
+		virtual bool Contains(int integer) override;
+		virtual void CopyTo(array<int>^ array, int arrayIndex) override;
+		virtual int IndexOf(int integer) override;
+		virtual void PopBack() override;
+		virtual bool Remove(int integer) override;
+		virtual void Swap(int index0, int index1) override;
 
 		property int Capacity
 		{
 			int get();
 		}
 
+		property int Count
+		{
+			virtual int get() override;
+		}
+
 		property int default [int]
 		{
-			int get (int index);
-			void set(int index, int value);
+			virtual int get (int index) override;
+			virtual void set(int index, int value) override;
 		}
 
 	internal:
@@ -515,8 +505,9 @@ namespace BulletSharp
 		}
 	};
 
-	[DebuggerDisplay("Size = {Size}")]
-	public ref class ManifoldArray : AlignedObjectArray
+	[DebuggerDisplay("Count = {Count}")]
+	[DebuggerTypeProxy(ListDebugView::typeid)]
+	public ref class ManifoldArray : AlignedObjectArray<PersistentManifold^>
 	{
 	internal:
 		ManifoldArray(btManifoldArray* manifoldArray);
@@ -524,26 +515,29 @@ namespace BulletSharp
 	public:
 		ManifoldArray();
 
-		void Clear();
-		void PopBack();
-		void PushBack(PersistentManifold^ manifold);
-		void Remove(PersistentManifold^ manifold);
-		void Swap(int index0, int index1);
-
-		property int Size
-		{
-			int get();
-		}
+		virtual void Add(PersistentManifold^ manifold) override;
+		virtual void Clear() override;
+		virtual bool Contains(PersistentManifold^ manifold) override;
+		virtual void CopyTo(array<PersistentManifold^>^ array, int arrayIndex) override;
+		virtual int IndexOf(PersistentManifold^ manifold) override;
+		virtual void PopBack() override;
+		virtual bool Remove(PersistentManifold^ manifold) override;
+		virtual void Swap(int index0, int index1) override;
 
 		property int Capacity
 		{
 			int get();
 		}
 
+		property int Count
+		{
+			virtual int get() override;
+		}
+
 		property PersistentManifold^ default [int]
 		{
-			PersistentManifold^ get (int index);
-			void set(int index, PersistentManifold^ value);
+			virtual PersistentManifold^ get (int index) override;
+			virtual void set(int index, PersistentManifold^ value) override;
 		}
 
 	internal:
@@ -556,8 +550,8 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
-		[DebuggerDisplay("Size = {Size}")]
-		public ref class LinkArray : AlignedObjectArray, IEnumerable
+		[DebuggerDisplay("Count = {Count}")]
+		public ref class LinkArray : AlignedObjectArray<Link^>, IEnumerable
 		{
 		internal:
 			LinkArray(btSoftBody::tLinkArray* linkArray);
@@ -565,28 +559,26 @@ namespace BulletSharp
 		public:
 			LinkArray();
 
-			virtual IEnumerator^ GetEnumerator();
-
-			void Clear();
-			void PopBack();
-			void PushBack(Link^ link);
-			void Remove(Link^ link);
-			void Swap(int index0, int index1);
-
-			property int Size
-			{
-				int get();
-			}
+			virtual void Add(Link^ link) override;
+			virtual void Clear() override;
+			virtual void CopyTo(array<Link^>^ array, int arrayIndex) override;
+			virtual void PopBack() override;
+			virtual void Swap(int index0, int index1) override;
 
 			property int Capacity
 			{
 				int get();
 			}
 
+			property int Count
+			{
+				virtual int get() override;
+			}
+
 			property Link^ default [int]
 			{
-				Link^ get (int index);
-				void set(int index, Link^ value);
+				virtual Link^ get (int index) override;
+				virtual void set(int index, Link^ value) override;
 			}
 
 		internal:
@@ -596,26 +588,8 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class LinkEnumerator : IEnumerator
-		{
-		private:
-			LinkArray^ _linkArray;
-			int i;
-
-		public:
-			LinkEnumerator(LinkArray^ linkArray);
-
-			property Object^ Current
-			{
-				virtual Object^ get();
-			}
-
-			virtual bool MoveNext();
-			virtual void Reset();
-		};
-
-		[DebuggerDisplay("Size = {Size}")]
-		public ref class MaterialArray : AlignedObjectArray
+		[DebuggerDisplay("Count = {Count}")]
+		public ref class MaterialArray : AlignedObjectArray<Material^>
 		{
 		internal:
 			MaterialArray(btSoftBody::tMaterialArray* materialArray);
@@ -623,26 +597,29 @@ namespace BulletSharp
 		public:
 			MaterialArray();
 
-			void Clear();
-			void PopBack();
-			void PushBack(Material^ material);
-			void Remove(Material^ material);
-			void Swap(int index0, int index1);
-
-			property int Size
-			{
-				int get();
-			}
+			virtual void Add(Material^ material) override;
+			virtual void Clear() override;
+			virtual bool Contains(Material^ material) override;
+			virtual void CopyTo(array<Material^>^ array, int arrayIndex) override;
+			virtual int IndexOf(Material^ material) override;
+			virtual void PopBack() override;
+			virtual bool Remove(Material^ material) override;
+			virtual void Swap(int index0, int index1) override;
 
 			property int Capacity
 			{
 				int get();
 			}
 
+			property int Count
+			{
+				virtual int get() override;
+			}
+
 			property Material^ default [int]
 			{
-				Material^ get (int index);
-				void set(int index, Material^ value);
+				virtual Material^ get (int index) override;
+				virtual void set(int index, Material^ value) override;
 			}
 
 		internal:
@@ -652,8 +629,8 @@ namespace BulletSharp
 			}
 		};
 
-		[DebuggerDisplay("Size = {Size}")]
-		public ref class NodeArray : AlignedObjectArray
+		[DebuggerDisplay("Count = {Count}")]
+		public ref class NodeArray : AlignedObjectArray<Node^>
 		{
 		internal:
 			NodeArray(btSoftBody::tNodeArray* nodeArray);
@@ -661,26 +638,26 @@ namespace BulletSharp
 		public:
 			NodeArray();
 
-			void Clear();
-			void PopBack();
-			void PushBack(Node^ node);
-			void Remove(Node^ node);
-			void Swap(int index0, int index1);
-
-			property int Size
-			{
-				int get();
-			}
+			virtual void Add(Node^ node) override;
+			virtual void Clear() override;
+			virtual void CopyTo(array<Node^>^ array, int arrayIndex) override;
+			virtual void PopBack() override;
+			virtual void Swap(int index0, int index1) override;
 
 			property int Capacity
 			{
 				int get();
 			}
 
+			property int Count
+			{
+				virtual int get() override;
+			}
+
 			property Node^ default [int]
 			{
-				Node^ get (int index);
-				void set(int index, Node^ value);
+				virtual Node^ get (int index) override;
+				virtual void set(int index, Node^ value) override;
 			}
 
 		internal:
@@ -690,8 +667,8 @@ namespace BulletSharp
 			}
 		};
 
-		[DebuggerDisplay("Size = {Size}")]
-		public ref class NodePtrArray : AlignedObjectArray
+		[DebuggerDisplay("Count = {Count}")]
+		public ref class NodePtrArray : AlignedObjectArray<Node^>
 		{
 		internal:
 			NodePtrArray(btAlignedObjectArray<btSoftBody::Node*>* nodeArray);
@@ -699,26 +676,29 @@ namespace BulletSharp
 		public:
 			NodePtrArray();
 
-			void Clear();
-			void PopBack();
-			void PushBack(Node^ node);
-			void Remove(Node^ node);
-			void Swap(int index0, int index1);
-
-			property int Size
-			{
-				int get();
-			}
+			virtual void Add(Node^ node) override;
+			virtual void Clear() override;
+			virtual bool Contains(Node^ node) override;
+			virtual void CopyTo(array<Node^>^ array, int arrayIndex) override;
+			virtual int IndexOf(Node^ node) override;
+			virtual void PopBack() override;
+			virtual bool Remove(Node^ node) override;
+			virtual void Swap(int index0, int index1) override;
 
 			property int Capacity
 			{
 				int get();
 			}
 
+			property int Count
+			{
+				virtual int get() override;
+			}
+
 			property Node^ default [int]
 			{
-				Node^ get (int index);
-				void set(int index, Node^ value);
+				virtual Node^ get (int index) override;
+				virtual void set(int index, Node^ value) override;
 			}
 
 		internal:
@@ -728,8 +708,8 @@ namespace BulletSharp
 			}
 		};
 
-		[DebuggerDisplay("Size = {Size}")]
-		public ref class NoteArray : AlignedObjectArray
+		[DebuggerDisplay("Count = {Count}")]
+		public ref class NoteArray : AlignedObjectArray<Note^>
 		{
 		internal:
 			NoteArray(btSoftBody::tNoteArray* noteArray);
@@ -737,26 +717,26 @@ namespace BulletSharp
 		public:
 			NoteArray();
 
-			void Clear();
-			void PopBack();
-			void PushBack(Note^ note);
-			void Remove(Note^ note);
-			void Swap(int index0, int index1);
-
-			property int Size
-			{
-				int get();
-			}
+			virtual void Add(Note^ note) override;
+			virtual void Clear() override;
+			virtual void CopyTo(array<Note^>^ array, int arrayIndex) override;
+			virtual void PopBack() override;
+			virtual void Swap(int index0, int index1) override;
 
 			property int Capacity
 			{
 				int get();
 			}
 
+			property int Count
+			{
+				virtual int get() override;
+			}
+
 			property Note^ default [int]
 			{
-				Note^ get (int index);
-				void set(int index, Note^ value);
+				virtual Note^ get (int index) override;
+				virtual void set(int index, Note^ value) override;
 			}
 
 		internal:
@@ -768,8 +748,8 @@ namespace BulletSharp
 	};
 #endif
 
-	[DebuggerDisplay("Size = {Size}")]
-	public ref class ScalarArray : AlignedObjectArray
+	[DebuggerDisplay("Count = {Count}")]
+	public ref class ScalarArray : AlignedObjectArray<btScalar>
 	{
 	internal:
 		ScalarArray(btAlignedObjectArray<btScalar>* btScalarArray);
@@ -777,26 +757,29 @@ namespace BulletSharp
 	public:
 		ScalarArray();
 
-		void Clear();
-		void PopBack();
-		void PushBack(btScalar intValue);
-		void Remove(btScalar intValue);
-		void Swap(int index0, int index1);
-
-		property int Size
-		{
-			int get();
-		}
+		virtual void Add(btScalar scalar) override;
+		virtual void Clear() override;
+		virtual bool Contains(btScalar scalar) override;
+		virtual void CopyTo(array<btScalar>^ array, int arrayIndex) override;
+		virtual int IndexOf(btScalar scalar) override;
+		virtual void PopBack() override;
+		virtual bool Remove(btScalar scalar) override;
+		virtual void Swap(int index0, int index1) override;
 
 		property int Capacity
 		{
 			int get();
 		}
 
+		property int Count
+		{
+			virtual int get() override;
+		}
+
 		property btScalar default [int]
 		{
-			btScalar get (int index);
-			void set(int index, btScalar value);
+			virtual btScalar get (int index) override;
+			virtual void set(int index, btScalar value) override;
 		}
 
 	internal:
@@ -809,8 +792,8 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
-		[DebuggerDisplay("Size = {Size}")]
-		public ref class SoftBodyArray : AlignedObjectArray
+		[DebuggerDisplay("Count = {Count}")]
+		public ref class SoftBodyArray : AlignedObjectArray<SoftBody^>
 		{
 		internal:
 			SoftBodyArray(btSoftBody::tSoftBodyArray* softBodyArray);
@@ -818,26 +801,29 @@ namespace BulletSharp
 		public:
 			SoftBodyArray();
 
-			void Clear();
-			void PopBack();
-			void PushBack(SoftBody^ node);
-			void Remove(SoftBody^ node);
-			void Swap(int index0, int index1);
-
-			property int Size
-			{
-				int get();
-			}
+			virtual void Add(SoftBody^ softBody) override;
+			virtual void Clear() override;
+			virtual bool Contains(SoftBody^ softBody) override;
+			virtual void CopyTo(array<SoftBody^>^ array, int arrayIndex) override;
+			virtual int IndexOf(SoftBody^ softBody) override;
+			virtual void PopBack() override;
+			virtual bool Remove(SoftBody^ softBody) override;
+			virtual void Swap(int index0, int index1) override;
 
 			property int Capacity
 			{
 				int get();
 			}
 
+			property int Count
+			{
+				virtual int get() override;
+			}
+
 			property SoftBody^ default [int]
 			{
-				SoftBody^ get (int index);
-				void set(int index, SoftBody^ value);
+				virtual SoftBody^ get (int index) override;
+				virtual void set(int index, SoftBody^ value) override;
 			}
 
 		internal:
@@ -849,8 +835,8 @@ namespace BulletSharp
 	};
 #endif
 
-	[DebuggerDisplay("Size = {Size}")]
-	public ref class Vector3Array : AlignedObjectArray
+	[DebuggerDisplay("Count = {Count}")]
+	public ref class Vector3Array : AlignedObjectArray<Vector3>
 	{
 	internal:
 		Vector3Array(btAlignedObjectArray<btVector3>* vector3Array);
@@ -858,26 +844,29 @@ namespace BulletSharp
 	public:
 		Vector3Array();
 
-		void Clear();
-		void PopBack();
-		void PushBack(Vector3 vector3Value);
-		void Remove(Vector3 vector3Value);
-		void Swap(int index0, int index1);
-
-		property int Size
-		{
-			int get();
-		}
+		virtual void Add(Vector3 vector) override;
+		virtual void Clear() override;
+		virtual bool Contains(Vector3 vector) override;
+		virtual void CopyTo(array<Vector3>^ array, int arrayIndex) override;
+		virtual int IndexOf(Vector3 vector) override;
+		virtual void PopBack() override;
+		virtual bool Remove(Vector3 vector) override;
+		virtual void Swap(int index0, int index1) override;
 
 		property int Capacity
 		{
 			int get();
 		}
 
+		property int Count
+		{
+			virtual int get() override;
+		}
+
 		property Vector3 default [int]
 		{
-			Vector3 get (int index);
-			void set(int index, Vector3 value);
+			virtual Vector3 get (int index) override;
+			virtual void set(int index, Vector3 value) override;
 		}
 
 	internal:
@@ -888,8 +877,8 @@ namespace BulletSharp
 	};
 
 #ifndef DISABLE_VEHICLE
-	[DebuggerDisplay("Size = {Size}")]
-	public ref class WheelInfoArray : AlignedObjectArray
+	[DebuggerDisplay("Count = {Count}")]
+	public ref class WheelInfoArray : AlignedObjectArray<WheelInfo^>
 	{
 	internal:
 		WheelInfoArray(btAlignedObjectArray<btWheelInfo>* wheelInfoArray);
@@ -897,26 +886,26 @@ namespace BulletSharp
 	public:
 		WheelInfoArray();
 
-		void Clear();
-		void PopBack();
-		void PushBack(WheelInfo^ wheelInfo);
-		void Remove(WheelInfo^ wheelInfo);
-		void Swap(int index0, int index1);
-
-		property int Size
-		{
-			int get();
-		}
+		virtual void Add(WheelInfo^ wheelInfo) override;
+		virtual void Clear() override;
+		virtual void CopyTo(array<WheelInfo^>^ array, int arrayIndex) override;
+		virtual void PopBack() override;
+		virtual void Swap(int index0, int index1) override;
 
 		property int Capacity
 		{
 			int get();
 		}
 
+		property int Count
+		{
+			virtual int get() override;
+		}
+
 		property WheelInfo^ default [int]
 		{
-			WheelInfo^ get (int index);
-			void set(int index, WheelInfo^ value);
+			virtual WheelInfo^ get (int index) override;
+			virtual void set(int index, WheelInfo^ value) override;
 		}
 
 	internal:

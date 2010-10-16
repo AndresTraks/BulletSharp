@@ -33,7 +33,7 @@ namespace SimplestDemo
 
         public RigidBody LocalCreateRigidBody(float mass, Matrix startTransform, CollisionShape shape)
         {
-            collisionShapes.PushBack(shape);
+            collisionShapes.Add(shape);
 
             bool isDynamic = (mass != 0.0f);
 

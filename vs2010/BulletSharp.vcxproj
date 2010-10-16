@@ -611,6 +611,7 @@
     <ClCompile Include="..\src\BvhTriangleMeshShape.cpp" />
     <ClCompile Include="..\src\CapsuleShape.cpp" />
     <ClCompile Include="..\src\CharacterControllerInterface.cpp" />
+    <ClCompile Include="..\src\Collections.cpp" />
     <ClCompile Include="..\src\CollisionAlgorithm.cpp" />
     <ClCompile Include="..\src\CollisionConfiguration.cpp" />
     <ClCompile Include="..\src\CollisionCreateFunc.cpp" />
@@ -771,6 +772,7 @@
     <ClInclude Include="..\src\BvhTriangleMeshShape.h" />
     <ClInclude Include="..\src\CapsuleShape.h" />
     <ClInclude Include="..\src\CharacterControllerInterface.h" />
+    <ClInclude Include="..\src\Collections.h" />
     <ClInclude Include="..\src\CollisionAlgorithm.h" />
     <ClInclude Include="..\src\CollisionConfiguration.h" />
     <ClInclude Include="..\src\CollisionCreateFunc.h" />

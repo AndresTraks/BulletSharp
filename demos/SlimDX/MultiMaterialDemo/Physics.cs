@@ -150,7 +150,7 @@ namespace MultiMaterialDemo
 
             // Create the multimaterial mesh shape
             trimeshShape = new MultimaterialTriangleMeshShape(indexVertexArrays, true);
-            CollisionShapes.PushBack(trimeshShape);
+            CollisionShapes.Add(trimeshShape);
 
             // create the ground
             //CollisionShape groundShape = new BoxShape(50, 1, 50);
@@ -162,7 +162,7 @@ namespace MultiMaterialDemo
 
 
             CollisionShape colShape = new BoxShape(0.5f);
-            CollisionShapes.PushBack(colShape);
+            CollisionShapes.Add(colShape);
 
             for (i=0;i<12;i++)
             {

@@ -31,7 +31,7 @@ namespace DistanceDemo
 
             // ground
             CollisionShape groundShape = new BoxShape(50, 1, 50);
-            CollisionShapes.PushBack(groundShape);
+            CollisionShapes.Add(groundShape);
             CollisionObject ground = LocalCreateRigidBody(0, Matrix.Identity, groundShape);
             ground.UserObject = "Ground";
 
@@ -45,8 +45,8 @@ namespace DistanceDemo
             };
             colShape0 = new ConvexHullShape(points0);
             colShape1 = new ConvexHullShape(points1);
-            CollisionShapes.PushBack(colShape0);
-            CollisionShapes.PushBack(colShape1);
+            CollisionShapes.Add(colShape0);
+            CollisionShapes.Add(colShape1);
 
             body2 = LocalCreateRigidBody(0, body2Position, colShape1);
 

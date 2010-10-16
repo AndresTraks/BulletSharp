@@ -53,7 +53,7 @@ namespace VehicleDemo
             CollisionConfiguration collisionConf;
 
             CollisionShape groundShape = new BoxShape(50, 3, 50);
-            CollisionShapes.PushBack(groundShape);
+            CollisionShapes.Add(groundShape);
 
             collisionConf = new DefaultCollisionConfiguration();
             Dispatcher = new CollisionDispatcher(collisionConf);
@@ -238,7 +238,7 @@ namespace VehicleDemo
                 game.ground.UnlockIndexBuffer();
             }
 
-            CollisionShapes.PushBack(groundShape);
+            CollisionShapes.Add(groundShape);
 
 
             //create ground object
@@ -246,10 +246,10 @@ namespace VehicleDemo
 
 
             CollisionShape chassisShape = new BoxShape(1.0f, 0.5f, 2.0f);
-            CollisionShapes.PushBack(chassisShape);
+            CollisionShapes.Add(chassisShape);
 
             CompoundShape compound = new CompoundShape();
-            CollisionShapes.PushBack(compound);
+            CollisionShapes.Add(compound);
 
             compound.AddChildShape(Matrix.Translation(Vector3.UnitY), chassisShape);
             RigidBody carChassis = LocalCreateRigidBody(800, Matrix.Identity, compound);

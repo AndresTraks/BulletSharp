@@ -159,8 +159,8 @@ namespace SoftDemo
 	        RigidBody body = LocalCreateRigidBody(50, Matrix.Translation(12,8,0),new BoxShape(2,6,2));
             SoftBody psb0 = Create_Rope(new Vector3(0, 8, -1));
             SoftBody psb1 = Create_Rope(new Vector3(0, 8, +1));
-	        psb0.AppendAnchor(psb0.Nodes.Size-1,body);
-	        psb1.AppendAnchor(psb1.Nodes.Size-1,body);
+	        psb0.AppendAnchor(psb0.Nodes.Count-1,body);
+	        psb1.AppendAnchor(psb1.Nodes.Count-1,body);
         }
 
         void Init_ClothAttach()
@@ -400,12 +400,12 @@ namespace SoftDemo
             World.DispatchInfo.EnableSpu = true;
 
             CollisionShape groundShape = new BoxShape(50, 50, 50);
-            CollisionShapes.PushBack(groundShape);
+            CollisionShapes.Add(groundShape);
             RigidBody body = LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
             body.UserObject = "Ground";
             
             CollisionShape boxShape = new BoxShape(1, 1, 1);
-            CollisionShapes.PushBack(boxShape);
+            CollisionShapes.Add(boxShape);
             LocalCreateRigidBody(1.0f, Matrix.Translation(0, 1, 0), boxShape);
             
             softBodyWorldInfo.SparseSdf.Reset();

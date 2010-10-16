@@ -56,16 +56,16 @@ namespace CcdPhysicsDemo
 
             useCompound = CenterOfMassShift;
 
-            CollisionShapes.PushBack(new BoxShape(200, CubeHalfExtents, 200));
+            CollisionShapes.Add(new BoxShape(200, CubeHalfExtents, 200));
 
             if (DoBenchmarkPyramids)
             {
-                CollisionShapes.PushBack(new BoxShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents));
+                CollisionShapes.Add(new BoxShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents));
             }
             else
             {
                 //CollisionShapes.PushBack(new BoxShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents));
-                CollisionShapes.PushBack(new CylinderShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents));
+                CollisionShapes.Add(new CylinderShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents));
             }
 
             // collision configuration contains default setup for memory, collision setup
@@ -193,7 +193,7 @@ namespace CcdPhysicsDemo
 
                 // Destroyer ball
 	            SphereShape ballShape = new SphereShape(2);
-	            CollisionShapes.PushBack(ballShape);
+	            CollisionShapes.Add(ballShape);
 	            RigidBody ballBody = LocalCreateRigidBody(10000, Matrix.Translation(0,2,40), ballShape);
 	            ballBody.LinearVelocity = new Vector3(0,0,-10);
             }

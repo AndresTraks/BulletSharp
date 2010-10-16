@@ -38,7 +38,7 @@ namespace BasicDemo
 
             // create the ground
             CollisionShape groundShape = new BoxShape(50, 1, 50);
-            CollisionShapes.PushBack(groundShape);
+            CollisionShapes.Add(groundShape);
             CollisionObject ground = LocalCreateRigidBody(0, Matrix.Identity, groundShape);
             ground.UserObject = "Ground";
 
@@ -46,7 +46,7 @@ namespace BasicDemo
             float mass = 1.0f;
 
             CollisionShape colShape = new BoxShape(1);
-            CollisionShapes.PushBack(colShape);
+            CollisionShapes.Add(colShape);
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
             float start_x = StartPosX - ArraySizeX / 2;

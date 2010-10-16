@@ -56,7 +56,7 @@ namespace SerializeDemo
             if (!fileLoader.LoadFile("testFile.bullet"))
             {
                 CollisionShape groundShape = new BoxShape(50);
-                CollisionShapes.PushBack(groundShape);
+                CollisionShapes.Add(groundShape);
                 RigidBody ground = LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
                 ground.UserObject = "Ground";
 
@@ -72,7 +72,7 @@ namespace SerializeDemo
                 //CollisionShape colShape = new CylinderShapeZ(1, 1, 1);
                 //CollisionShape colShape = new BoxShape(1);
                 CollisionShape colShape = new SphereShape(1);
-                CollisionShapes.PushBack(colShape);
+                CollisionShapes.Add(colShape);
 
                 Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
@@ -113,7 +113,7 @@ namespace SerializeDemo
 
                 serializer.RegisterNameForObject(ground, "GroundName");
 
-                for (i = 0; i < CollisionShapes.Size; i++)
+                for (i = 0; i < CollisionShapes.Count; i++)
                     serializer.RegisterNameForObject(CollisionShapes[i], "name" + i.ToString());
 
                 Point2PointConstraint p2p = new Point2PointConstraint(RigidBody.Upcast(World.CollisionObjectArray[2]), new Vector3(0, 1, 0));

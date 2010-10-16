@@ -35,12 +35,12 @@ namespace ConstraintDemo
 
             CollisionShape groundShape = new BoxShape(50, 1, 50);
             //CollisionShape groundShape = new StaticPlaneShape(Vector3.UnitY, 40);
-            CollisionShapes.PushBack(groundShape);
+            CollisionShapes.Add(groundShape);
             RigidBody body = LocalCreateRigidBody(0, Matrix.Translation(0, -16, 0), groundShape);
             body.UserObject = "Ground";
 
             CollisionShape shape = new BoxShape(new Vector3(CubeHalfExtents));
-            CollisionShapes.PushBack(shape);
+            CollisionShapes.Add(shape);
 
 
             float mass = 1.0f;
@@ -141,7 +141,7 @@ namespace ConstraintDemo
             // create a door using hinge constraint attached to the world
 
             CollisionShape pDoorShape = new BoxShape(2.0f, 5.0f, 0.2f);
-            CollisionShapes.PushBack(pDoorShape);
+            CollisionShapes.Add(pDoorShape);
             RigidBody pDoorBody = LocalCreateRigidBody(1.0f, Matrix.Translation(-5.0f, -2.0f, 0.0f), pDoorShape);
             pDoorBody.ActivationState = ActivationState.DisableDeactivation;
             Vector3 btPivotA = new Vector3(10.0f +  2.1f, -2.0f, 0.0f ); // right next to the door slightly outside

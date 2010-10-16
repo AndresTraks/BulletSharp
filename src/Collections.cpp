@@ -23,6 +23,7 @@ generic<class T>
 ListEnumerator<T>::ListEnumerator(Generic::IList<T>^ list)
 {
 	_list = list;
+	i=-1;
 }
 
 generic<class T>

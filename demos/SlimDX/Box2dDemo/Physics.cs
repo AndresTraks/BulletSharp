@@ -40,7 +40,7 @@ namespace Box2dDemo
 
             // create a few basic rigid bodies
             CollisionShape groundShape = new BoxShape(75, 1, 75);
-            CollisionShapes.PushBack(groundShape);
+            CollisionShapes.Add(groundShape);
             RigidBody ground = LocalCreateRigidBody(0, Matrix.Identity, groundShape);
             ground.UserObject = "Ground";
 
@@ -53,9 +53,9 @@ namespace Box2dDemo
             ConvexShape colShape3 = new Convex2DShape(new CylinderShapeZ(1, 1, Depth));
 
             colShape.Margin = 0.03f;
-            CollisionShapes.PushBack(colShape);
-            CollisionShapes.PushBack(colShape2);
-            CollisionShapes.PushBack(colShape3);
+            CollisionShapes.Add(colShape);
+            CollisionShapes.Add(colShape2);
+            CollisionShapes.Add(colShape3);
             
             float mass = 1.0f;
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
