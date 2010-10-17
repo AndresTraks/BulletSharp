@@ -167,6 +167,21 @@ namespace BulletSharp
 		PhyUChar = PHY_UCHAR
 	};
 
+#ifndef DISABLE_SOFTBODY
+	namespace SoftBody
+	{
+		[Flags]
+		public enum class PSolver
+		{
+			Linear = btSoftBody::ePSolver::Linear,
+			Anchors = btSoftBody::ePSolver::Anchors,
+			RigidContacts = btSoftBody::ePSolver::RContacts,
+			SoftContacts = btSoftBody::ePSolver::SContacts,
+			End = btSoftBody::ePSolver::END
+		};
+	};
+#endif
+
 	[Flags]
 	public enum class RigidBodyFlags
 	{
@@ -205,6 +220,18 @@ namespace BulletSharp
 		D6 = D6_CONSTRAINT_TYPE,
 		Slider = SLIDER_CONSTRAINT_TYPE,
 		Contact = CONTACT_CONSTRAINT_TYPE
+	};
+#endif
+
+#ifndef DISABLE_SOFTBODY
+	namespace SoftBody
+	{
+		[Flags]
+		public enum class VSolver
+		{
+			Linear = btSoftBody::eVSolver::Linear,
+			End = btSoftBody::eVSolver::END
+		};
 	};
 #endif
 

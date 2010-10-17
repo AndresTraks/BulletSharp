@@ -6,12 +6,12 @@
 #include "CollisionShape.h"
 #include "CompoundShape.h"
 #include "PersistentManifold.h"
-#ifndef DISABLE_DBVT
-#include "Dbvt.h"
-#endif
-
 #ifndef DISABLE_SOFTBODY
+#include "SoftBody.h"
 using namespace BulletSharp::SoftBody;
+#endif
+#ifndef DISABLE_VEHICLE
+#include "WheelInfo.h"
 #endif
 
 generic<class T>
@@ -1644,6 +1644,104 @@ btSoftBody::tNoteArray* AlignedNoteArray::UnmanagedPointer::get()
 #endif
 
 
+#ifndef DISABLE_SOFTBODY
+AlignedPSolverArray::AlignedPSolverArray(btSoftBody::tPSolverArray* pSolverArray)
+: AlignedObjectArray(pSolverArray)
+{
+}
+
+AlignedPSolverArray::AlignedPSolverArray()
+: AlignedObjectArray(new btSoftBody::tPSolverArray())
+{
+}
+
+void AlignedPSolverArray::Add(PSolver solver)
+{
+	UnmanagedPointer->push_back((btSoftBody::ePSolver::_)solver);
+}
+
+void AlignedPSolverArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+bool AlignedPSolverArray::Contains(PSolver solver)
+{
+	return UnmanagedPointer->findLinearSearch((btSoftBody::ePSolver::_)solver) != UnmanagedPointer->size();
+}
+
+void AlignedPSolverArray::CopyTo(array<PSolver>^ array, int arrayIndex)
+{
+	if (array == nullptr)
+		throw gcnew ArgumentNullException("array");
+
+	if (arrayIndex < 0)
+		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+
+	int size = UnmanagedPointer->size();
+	if (arrayIndex + size > array->Length)
+		throw gcnew ArgumentException("Array too small.", "array");
+
+	int i;
+	for (i=0; i<size; i++)
+	{
+		array[arrayIndex+i] = (PSolver)(*UnmanagedPointer)[i];
+	}
+}
+
+int AlignedPSolverArray::IndexOf(PSolver solver)
+{
+	int i = UnmanagedPointer->findLinearSearch((btSoftBody::ePSolver::_)solver);
+	return i != UnmanagedPointer->size() ? i : -1;
+}
+
+void AlignedPSolverArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+bool AlignedPSolverArray::Remove(PSolver solver)
+{
+	int sizeBefore = UnmanagedPointer->size();
+	UnmanagedPointer->remove((btSoftBody::ePSolver::_)solver);
+	return sizeBefore != UnmanagedPointer->size();
+}
+
+int AlignedPSolverArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int AlignedPSolverArray::Count::get()
+{
+	return UnmanagedPointer->size();
+}
+
+void AlignedPSolverArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+PSolver AlignedPSolverArray::default::get(int index)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	return (PSolver)(*UnmanagedPointer)[index];
+}
+void AlignedPSolverArray::default::set(int index, PSolver value)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	(*UnmanagedPointer)[index] = (btSoftBody::ePSolver::_)value;
+}
+
+btSoftBody::tPSolverArray* AlignedPSolverArray::UnmanagedPointer::get()
+{
+	return (btSoftBody::tPSolverArray*)AlignedObjectArray::UnmanagedPointer;
+}
+#endif
+
+
 AlignedScalarArray::AlignedScalarArray(btAlignedObjectArray<btScalar>* btScalarArray)
 : AlignedObjectArray(btScalarArray)
 {
@@ -1842,6 +1940,92 @@ btSoftBody::tSoftBodyArray* BulletSharp::SoftBody::AlignedSoftBodyArray::Unmanag
 {
 	return (btSoftBody::tSoftBodyArray*)AlignedObjectArray::UnmanagedPointer;
 }
+
+
+AlignedTetraArray::AlignedTetraArray(btAlignedObjectArray<btSoftBody::Tetra>* tetraArray)
+: AlignedObjectArray(tetraArray)
+{
+}
+
+AlignedTetraArray::AlignedTetraArray()
+: AlignedObjectArray(new btAlignedObjectArray<btSoftBody::Tetra>)
+{
+}
+
+void AlignedTetraArray::Add(Tetra^ tetra)
+{
+	UnmanagedPointer->push_back(*tetra->UnmanagedPointer);
+}
+
+void AlignedTetraArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+void AlignedTetraArray::CopyTo(array<Tetra^>^ array, int arrayIndex)
+{
+	if (array == nullptr)
+		throw gcnew ArgumentNullException("array");
+
+	if (arrayIndex < 0)
+		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+
+	int size = UnmanagedPointer->size();
+	if (arrayIndex + size > array->Length)
+		throw gcnew ArgumentException("Array too small.", "array");
+
+	int i;
+	for (i=0; i<size; i++)
+	{
+		array[arrayIndex+i] = gcnew Tetra(&(*UnmanagedPointer)[i]);
+	}
+}
+
+void AlignedTetraArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+void AlignedTetraArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+int AlignedTetraArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int AlignedTetraArray::Count::get()
+{
+	return UnmanagedPointer->size();
+}
+
+Tetra^ AlignedTetraArray::default::get(int index)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	return gcnew Tetra(&(*UnmanagedPointer)[index]);
+}
+
+#pragma managed(push, off)
+void TetraArray_GetDefault(btAlignedObjectArray<btSoftBody::Tetra>* tetraArray,
+	int index, btSoftBody::Tetra* node)
+{
+	(*tetraArray)[index] = *node;
+}
+#pragma managed(pop)
+void AlignedTetraArray::default::set(int index, Tetra^ value)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	TetraArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+}
+
+btAlignedObjectArray<btSoftBody::Tetra>* AlignedTetraArray::UnmanagedPointer::get()
+{
+	return (btAlignedObjectArray<btSoftBody::Tetra>*)AlignedObjectArray::UnmanagedPointer;
+}
 #endif
 
 
@@ -1948,6 +2132,105 @@ btAlignedObjectArray<btVector3>* AlignedVector3Array::UnmanagedPointer::get()
 {
 	return (btAlignedObjectArray<btVector3>*)AlignedObjectArray::UnmanagedPointer;
 }
+
+
+#ifndef DISABLE_SOFTBODY
+AlignedVSolverArray::AlignedVSolverArray(btSoftBody::tVSolverArray* vSolverArray)
+: AlignedObjectArray(vSolverArray)
+{
+}
+
+AlignedVSolverArray::AlignedVSolverArray()
+: AlignedObjectArray(new btSoftBody::tVSolverArray())
+{
+}
+
+void AlignedVSolverArray::Add(VSolver solver)
+{
+	UnmanagedPointer->push_back((btSoftBody::eVSolver::_)solver);
+}
+
+void AlignedVSolverArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+bool AlignedVSolverArray::Contains(VSolver solver)
+{
+	return UnmanagedPointer->findLinearSearch((btSoftBody::eVSolver::_)solver) != UnmanagedPointer->size();
+}
+
+void AlignedVSolverArray::CopyTo(array<VSolver>^ array, int arrayIndex)
+{
+	if (array == nullptr)
+		throw gcnew ArgumentNullException("array");
+
+	if (arrayIndex < 0)
+		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+
+	int size = UnmanagedPointer->size();
+	if (arrayIndex + size > array->Length)
+		throw gcnew ArgumentException("Array too small.", "array");
+
+	int i;
+	for (i=0; i<size; i++)
+	{
+		array[arrayIndex+i] = (VSolver)(*UnmanagedPointer)[i];
+	}
+}
+
+int AlignedVSolverArray::IndexOf(VSolver solver)
+{
+	int i = UnmanagedPointer->findLinearSearch((btSoftBody::eVSolver::_)solver);
+	return i != UnmanagedPointer->size() ? i : -1;
+}
+
+void AlignedVSolverArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+bool AlignedVSolverArray::Remove(VSolver solver)
+{
+	int sizeBefore = UnmanagedPointer->size();
+	UnmanagedPointer->remove((btSoftBody::eVSolver::_)solver);
+	return sizeBefore != UnmanagedPointer->size();
+}
+
+int AlignedVSolverArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int AlignedVSolverArray::Count::get()
+{
+	return UnmanagedPointer->size();
+}
+
+void AlignedVSolverArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+VSolver AlignedVSolverArray::default::get(int index)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	return (VSolver)(*UnmanagedPointer)[index];
+}
+void AlignedVSolverArray::default::set(int index, VSolver value)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	(*UnmanagedPointer)[index] = (btSoftBody::eVSolver::_)value;
+}
+
+btSoftBody::tVSolverArray* AlignedVSolverArray::UnmanagedPointer::get()
+{
+	return (btSoftBody::tVSolverArray*)AlignedObjectArray::UnmanagedPointer;
+}
+#endif
+
 
 #ifndef DISABLE_VEHICLE
 AlignedWheelInfoArray::AlignedWheelInfoArray(btAlignedObjectArray<btWheelInfo>* wheelInfoArray)

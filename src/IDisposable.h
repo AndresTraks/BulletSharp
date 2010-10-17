@@ -1,7 +1,5 @@
 #pragma once
 
-using namespace System;
-
 namespace BulletSharp
 {
 	public interface class IDisposable : System::IDisposable

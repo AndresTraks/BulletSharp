@@ -126,6 +126,12 @@
 
 #include "Math.h"
 
+#ifndef DISABLE_SOFTBODY
+#pragma managed(push, off)
+#include <BulletSoftBody/btSoftBody.h>
+#pragma managed(pop)
+#endif
+
 using namespace System;
 using namespace System::IO;
 using namespace System::Diagnostics;

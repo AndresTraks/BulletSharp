@@ -299,6 +299,42 @@ Cluster::Cluster()
 	_cluster = new btSoftBody::Cluster();
 }
 
+btScalar Cluster::AngularDamping::get()
+{
+	return _cluster->m_adamping;
+}
+void Cluster::AngularDamping::set(btScalar value)
+{
+	_cluster->m_adamping = value;
+}
+
+Vector3 Cluster::AV::get()
+{
+	return Math::BtVector3ToVector3(&_cluster->m_av);
+}
+void Cluster::AV::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_cluster->m_av);
+}
+
+int Cluster::ClusterIndex::get()
+{
+	return _cluster->m_clusterIndex;
+}
+void Cluster::ClusterIndex::set(int value)
+{
+	_cluster->m_clusterIndex = value;
+}
+
+bool Cluster::Collide::get()
+{
+	return _cluster->m_collide;
+}
+void Cluster::Collide::set(bool value)
+{
+	_cluster->m_collide = value;
+}
+
 Vector3 Cluster::Com::get()
 {
 	return Math::BtVector3ToVector3(&_cluster->m_com);
@@ -306,6 +342,20 @@ Vector3 Cluster::Com::get()
 void Cluster::Com::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_cluster->m_com);
+}
+
+bool Cluster::ContainsAnchor::get()
+{
+	return _cluster->m_containsAnchor;
+}
+void Cluster::ContainsAnchor::set(bool value)
+{
+	_cluster->m_containsAnchor = value;
+}
+
+Vector3Array^ Cluster::DImpulses::get()
+{
+	return gcnew Vector3Array(_cluster->m_dimpulses, 2);
 }
 
 AlignedVector3Array^ Cluster::FrameRefs::get()
@@ -353,6 +403,28 @@ void Cluster::InvWI::set(Matrix value)
 	Math::MatrixToBtMatrix3x3(value, &_cluster->m_invwi);
 }
 
+#ifndef DISABLE_DBVT
+DbvtNode^ Cluster::Leaf::get()
+{
+	if (_cluster->m_leaf == 0)
+		return nullptr;
+	return gcnew DbvtNode(_cluster->m_leaf);
+}
+void Cluster::Leaf::set(DbvtNode^ value)
+{
+	_cluster->m_leaf = value != nullptr ? value->UnmanagedPointer : 0;
+}
+#endif
+
+btScalar Cluster::LinearDamping::get()
+{
+	return _cluster->m_ldamping;
+}
+void Cluster::LinearDamping::set(btScalar value)
+{
+	_cluster->m_ldamping = value;
+}
+
 Matrix Cluster::Locii::get()
 {
 	return Math::BtMatrix3x3ToMatrix(&_cluster->m_locii);
@@ -360,6 +432,15 @@ Matrix Cluster::Locii::get()
 void Cluster::Locii::set(Matrix value)
 {
 	Math::MatrixToBtMatrix3x3(value, &_cluster->m_locii);
+}
+
+Vector3 Cluster::LV::get()
+{
+	return Math::BtVector3ToVector3(&_cluster->m_lv);
+}
+void Cluster::LV::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_cluster->m_lv);
 }
 
 AlignedScalarArray^ Cluster::Masses::get()
@@ -371,6 +452,38 @@ void Cluster::Masses::set(AlignedScalarArray^ value)
 	_cluster->m_masses = *value->UnmanagedPointer;
 }
 
+btScalar Cluster::Matching::get()
+{
+	return _cluster->m_matching;
+}
+void Cluster::Matching::set(btScalar value)
+{
+	_cluster->m_matching = value;
+}
+
+btScalar Cluster::MaxSelfCollisionImpulse::get()
+{
+	return _cluster->m_maxSelfCollisionImpulse;
+}
+void Cluster::MaxSelfCollisionImpulse::set(btScalar value)
+{
+	_cluster->m_maxSelfCollisionImpulse = value;
+}
+
+int Cluster::NDImpulses::get()
+{
+	return _cluster->m_ndimpulses;
+}
+
+btScalar Cluster::NodeDamping::get()
+{
+	return _cluster->m_ndamping;
+}
+void Cluster::NodeDamping::set(btScalar value)
+{
+	_cluster->m_ndamping = value;
+}
+
 AlignedNodePtrArray^ Cluster::Nodes::get()
 {
 	return gcnew AlignedNodePtrArray(&_cluster->m_nodes);
@@ -378,6 +491,25 @@ AlignedNodePtrArray^ Cluster::Nodes::get()
 void Cluster::Nodes::set(AlignedNodePtrArray^ value)
 {
 	_cluster->m_nodes = *value->UnmanagedPointer;
+}
+
+int Cluster::NVImpulses::get()
+{
+	return _cluster->m_nvimpulses;
+}
+
+btScalar Cluster::SelfCollisionImpulseFactor::get()
+{
+	return _cluster->m_selfCollisionImpulseFactor;
+}
+void Cluster::SelfCollisionImpulseFactor::set(btScalar value)
+{
+	_cluster->m_selfCollisionImpulseFactor = value;
+}
+
+Vector3Array^ Cluster::VImpulses::get()
+{
+	return gcnew Vector3Array(_cluster->m_vimpulses, 2);
 }
 
 btSoftBody::Cluster* Cluster::UnmanagedPointer::get()
@@ -409,6 +541,15 @@ void Config::AeroModel::set(BulletSharp::SoftBody::AeroModel value)
 	_config->aeromodel = (btSoftBody::eAeroModel::_)value;
 }
 
+btScalar Config::Ahr::get()
+{
+	return _config->kAHR;
+}
+void Config::Ahr::set(btScalar value)
+{
+	_config->kAHR = value;
+}
+
 btScalar Config::Chr::get()
 {
 	return _config->kCHR;
@@ -416,6 +557,24 @@ btScalar Config::Chr::get()
 void Config::Chr::set(btScalar value)
 {
 	_config->kCHR = value;
+}
+
+int Config::CIterations::get()
+{
+	return _config->citerations;
+}
+void Config::CIterations::set(int value)
+{
+	_config->citerations = value;
+}
+
+FCollisions Config::Collisions::get()
+{
+	return (FCollisions)UnmanagedPointer->collisions;
+}
+void Config::Collisions::set(FCollisions value)
+{
+	UnmanagedPointer->collisions = (int)value;
 }
 
 btScalar Config::DF::get()
@@ -436,6 +595,15 @@ void Config::DG::set(btScalar value)
 	_config->kDG = value;
 }
 
+int Config::DIterations::get()
+{
+	return _config->diterations;
+}
+void Config::DIterations::set(int value)
+{
+	_config->diterations = value;
+}
+
 btScalar Config::DP::get()
 {
 	return _config->kDP;
@@ -443,6 +611,15 @@ btScalar Config::DP::get()
 void Config::DP::set(btScalar value)
 {
 	_config->kDP = value;
+}
+
+btScalar Config::Khr::get()
+{
+	return _config->kKHR;
+}
+void Config::Khr::set(btScalar value)
+{
+	_config->kKHR = value;
 }
 
 btScalar Config::LF::get()
@@ -454,13 +631,22 @@ void Config::LF::set(btScalar value)
 	_config->kLF = value;
 }
 
-FCollisions Config::Collisions::get()
+btScalar Config::MaxVolume::get()
 {
-	return (FCollisions)UnmanagedPointer->collisions;
+	return _config->maxvolume;
 }
-void Config::Collisions::set(FCollisions value)
+void Config::MaxVolume::set(btScalar value)
 {
-	UnmanagedPointer->collisions = (int)value;
+	_config->maxvolume = value;
+}
+
+btScalar Config::MT::get()
+{
+	return _config->kMT;
+}
+void Config::MT::set(btScalar value)
+{
+	_config->kMT = value;
 }
 
 int Config::PIterations::get()
@@ -481,6 +667,56 @@ void Config::PR::set(btScalar value)
 	_config->kPR = value;
 }
 
+AlignedPSolverArray^ Config::PSequence::get()
+{
+	return gcnew AlignedPSolverArray(&_config->m_psequence);
+}
+
+btScalar Config::Shr::get()
+{
+	return _config->kSHR;
+}
+void Config::Shr::set(btScalar value)
+{
+	_config->kSHR = value;
+}
+
+btScalar Config::SkhrCl::get()
+{
+	return _config->kSKHR_CL;
+}
+void Config::SkhrCl::set(btScalar value)
+{
+	_config->kSKHR_CL = value;
+}
+
+btScalar Config::SrhrCl::get()
+{
+	return _config->kSRHR_CL;
+}
+void Config::SrhrCl::set(btScalar value)
+{
+	_config->kSRHR_CL = value;
+}
+
+btScalar Config::SshrCl::get()
+{
+	return _config->kSSHR_CL;
+}
+void Config::SshrCl::set(btScalar value)
+{
+	_config->kSSHR_CL = value;
+}
+
+btScalar Config::TimeScale::get()
+{
+	return _config->timescale;
+}
+void Config::TimeScale::set(btScalar value)
+{
+	_config->timescale = value;
+}
+
 btScalar Config::VC::get()
 {
 	return _config->kVC;
@@ -488,6 +724,29 @@ btScalar Config::VC::get()
 void Config::VC::set(btScalar value)
 {
 	_config->kVC = value;
+}
+
+btScalar Config::VCF::get()
+{
+	return _config->kVCF;
+}
+void Config::VCF::set(btScalar value)
+{
+	_config->kVCF = value;
+}
+
+int Config::VIterations::get()
+{
+	return _config->viterations;
+}
+void Config::VIterations::set(int value)
+{
+	_config->viterations = value;
+}
+
+AlignedVSolverArray^ Config::VSequence::get()
+{
+	return gcnew AlignedVSolverArray(&_config->m_vsequence);
 }
 
 btSoftBody::Config* Config::UnmanagedPointer::get()
@@ -568,7 +827,6 @@ Face::Face(btSoftBody::Face* face)
 : Feature(face)
 {
 }
-
 
 #ifndef DISABLE_DBVT
 DbvtNode^ Face::Leaf::get()
@@ -777,15 +1035,10 @@ void Link::IsBending::set(bool value)
 	UnmanagedPointer->m_bbending = value;
 }
 
-/*
-AlignedNodeArray^ Link::N::get()
+NodePtrArray^ Link::Nodes::get()
 {
-	array<Node^>^ AlignedNodeArray = gcnew array<Node^>(2);
-	AlignedNodeArray[0] = UnmanagedPointer->m_n[0] ? gcnew Node(UnmanagedPointer->m_n[0]) : nullptr;
-	AlignedNodeArray[1] = UnmanagedPointer->m_n[1] ? gcnew Node(UnmanagedPointer->m_n[1]) : nullptr;
-	return AlignedNodeArray;
+	return gcnew NodePtrArray(UnmanagedPointer->m_n, 2);
 }
-*/
 
 btScalar Link::RestLength::get()
 {
@@ -1205,7 +1458,7 @@ void Tetra::C2::set(btScalar value)
 	UnmanagedPointer->m_c2 = value;
 }
 
-NodePtrArray^ Tetra::N::get()
+NodePtrArray^ Tetra::Nodes::get()
 {
 	return gcnew NodePtrArray(UnmanagedPointer->m_n, 4);
 }
@@ -1808,13 +2061,13 @@ void BulletSharp::SoftBody::SoftBody::SolveCommonConstraints(array<SoftBody^>^ b
 {
 	int len = bodies->Length;
 	btSoftBody** bodiesTemp = new btSoftBody*[len];
-	
+
 	int i;
 	for (i=0; i<len; i++)
 		bodiesTemp[i] = bodies[i]->UnmanagedPointer;
-	
+
 	btSoftBody::solveCommonConstraints(bodiesTemp, len, iterations);
-	
+
 	delete[] bodiesTemp;
 }
 
@@ -1985,6 +2238,11 @@ void BulletSharp::SoftBody::SoftBody::Tag::set(Object^ value)
 
 	GCHandle handle = GCHandle::Alloc(value);
 	UnmanagedPointer->m_tag = GCHandleToVoidPtr(handle);
+}
+
+BulletSharp::SoftBody::AlignedTetraArray^ BulletSharp::SoftBody::SoftBody::Tetras::get()
+{
+	return gcnew AlignedTetraArray(&UnmanagedPointer->m_tetras);
 }
 
 btScalar BulletSharp::SoftBody::SoftBody::TimeAccumulator::get()

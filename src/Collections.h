@@ -1,13 +1,6 @@
 #pragma once
 
-#ifndef DISABLE_SOFTBODY
-#pragma managed(push, off)
-#include <BulletSoftBody/btSoftBody.h>
-#pragma managed(pop)
-#endif
-
 using namespace System::Collections;
-using namespace System::Diagnostics;
 
 namespace BulletSharp
 {

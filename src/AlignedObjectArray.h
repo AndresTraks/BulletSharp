@@ -2,19 +2,14 @@
 
 #include "Collections.h"
 #include "IDisposable.h"
-
 #ifndef DISABLE_DBVT
 #include "Dbvt.h"
 #endif
 #ifndef DISABLE_SOFTBODY
-#include "SoftBody.h"
-#endif
-#ifndef DISABLE_VEHICLE
-#include "WheelInfo.h"
+#include "Enums.h"
 #endif
 
 using namespace System::Collections;
-using namespace System::Diagnostics;
 
 namespace BulletSharp
 {
@@ -23,6 +18,7 @@ namespace BulletSharp
 	ref class CollisionShape;
 	ref class CompoundShapeChild;
 	ref class PersistentManifold;
+	ref class WheelInfo;
 
 	generic<class T>
 	public ref class AlignedObjectArray abstract : Generic::IList<T>, BulletSharp::IDisposable
@@ -130,6 +126,8 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
+		ref class Cluster;
+
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
 		public ref class AlignedClusterArray : AlignedObjectArray<Cluster^>
@@ -422,6 +420,8 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
+		ref class Face;
+
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
 		public ref class AlignedFaceArray : AlignedObjectArray<Face^>, Generic::IList<Face^>
@@ -550,6 +550,8 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
+		ref class Link;
+
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
 		public ref class AlignedLinkArray : AlignedObjectArray<Link^>, IEnumerable
@@ -588,6 +590,8 @@ namespace BulletSharp
 				virtual btSoftBody::tLinkArray* get() new;
 			}
 		};
+
+		ref class Material;
 
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
@@ -712,6 +716,8 @@ namespace BulletSharp
 			}
 		};
 
+		ref class Note;
+
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
 		public ref class AlignedNoteArray : AlignedObjectArray<Note^>
@@ -748,6 +754,53 @@ namespace BulletSharp
 			property btSoftBody::tNoteArray* UnmanagedPointer
 			{
 				virtual btSoftBody::tNoteArray* get() new;
+			}
+		};
+	};
+#endif
+
+#ifndef DISABLE_SOFTBODY
+	namespace SoftBody
+	{
+		[DebuggerDisplay("Count = {Count}")]
+		[DebuggerTypeProxy(ListDebugView::typeid)]
+		public ref class AlignedPSolverArray : AlignedObjectArray<PSolver>
+		{
+		internal:
+			AlignedPSolverArray(btSoftBody::tPSolverArray* pSolverArray);
+
+		public:
+			AlignedPSolverArray();
+
+			virtual void Add(PSolver solver) override;
+			virtual void Clear() override;
+			virtual bool Contains(PSolver solver) override;
+			virtual void CopyTo(array<PSolver>^ array, int arrayIndex) override;
+			virtual int IndexOf(PSolver solver) override;
+			virtual void PopBack() override;
+			virtual bool Remove(PSolver solver) override;
+			virtual void Swap(int index0, int index1) override;
+
+			property int Capacity
+			{
+				int get();
+			}
+
+			property int Count
+			{
+				virtual int get() override;
+			}
+
+			property PSolver default [int]
+			{
+				virtual PSolver get (int index) override;
+				virtual void set(int index, PSolver value) override;
+			}
+
+		internal:
+			property btSoftBody::tPSolverArray* UnmanagedPointer
+			{
+				virtual btSoftBody::tPSolverArray* get() new;
 			}
 		};
 	};
@@ -798,6 +851,8 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
+		ref class SoftBody;
+
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
 		public ref class AlignedSoftBodyArray : AlignedObjectArray<SoftBody^>
@@ -837,6 +892,50 @@ namespace BulletSharp
 			property btSoftBody::tSoftBodyArray* UnmanagedPointer
 			{
 				virtual btSoftBody::tSoftBodyArray* get() new;
+			}
+		};
+	};
+
+	namespace SoftBody
+	{
+		ref class Tetra;
+
+		[DebuggerDisplay("Count = {Count}")]
+		[DebuggerTypeProxy(ListDebugView::typeid)]
+		public ref class AlignedTetraArray : AlignedObjectArray<Tetra^>, Generic::IList<Tetra^>
+		{
+		internal:
+			AlignedTetraArray(btAlignedObjectArray<btSoftBody::Tetra>* tetraArray);
+
+		public:
+			AlignedTetraArray();
+
+			virtual void Add(Tetra^ tetra) override;
+			virtual void Clear() override;
+			virtual void CopyTo(array<Tetra^>^ array, int tetraIndex) override;
+			virtual void PopBack() override;
+			virtual void Swap(int index0, int index1) override;
+
+			property int Capacity
+			{
+				int get();
+			}
+
+			property int Count
+			{
+				virtual int get() override;
+			}
+
+			property Tetra^ default [int]
+			{
+				virtual Tetra^ get (int index) override;
+				virtual void set(int index, Tetra^ value) override;
+			}
+
+		internal:
+			property btAlignedObjectArray<btSoftBody::Tetra>* UnmanagedPointer
+			{
+				virtual btAlignedObjectArray<btSoftBody::Tetra>* get() new;
 			}
 		};
 	};
@@ -883,6 +982,53 @@ namespace BulletSharp
 			virtual btAlignedObjectArray<btVector3>* get() new;
 		}
 	};
+
+#ifndef DISABLE_SOFTBODY
+	namespace SoftBody
+	{
+		[DebuggerDisplay("Count = {Count}")]
+		[DebuggerTypeProxy(ListDebugView::typeid)]
+		public ref class AlignedVSolverArray : AlignedObjectArray<VSolver>
+		{
+		internal:
+			AlignedVSolverArray(btSoftBody::tVSolverArray* vSolverArray);
+
+		public:
+			AlignedVSolverArray();
+
+			virtual void Add(VSolver solver) override;
+			virtual void Clear() override;
+			virtual bool Contains(VSolver solver) override;
+			virtual void CopyTo(array<VSolver>^ array, int arrayIndex) override;
+			virtual int IndexOf(VSolver solver) override;
+			virtual void PopBack() override;
+			virtual bool Remove(VSolver solver) override;
+			virtual void Swap(int index0, int index1) override;
+
+			property int Capacity
+			{
+				int get();
+			}
+
+			property int Count
+			{
+				virtual int get() override;
+			}
+
+			property VSolver default [int]
+			{
+				virtual VSolver get (int index) override;
+				virtual void set(int index, VSolver value) override;
+			}
+
+		internal:
+			property btSoftBody::tVSolverArray* UnmanagedPointer
+			{
+				virtual btSoftBody::tVSolverArray* get() new;
+			}
+		};
+	};
+#endif
 
 #ifndef DISABLE_VEHICLE
 	[DebuggerDisplay("Count = {Count}")]

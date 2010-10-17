@@ -1,9 +1,5 @@
 #pragma once
 
-#pragma managed(push, off)
-#include <BulletSoftBody/btSoftBody.h>
-#pragma managed(pop)
-
 #include "CollisionObject.h"
 
 namespace BulletSharp
@@ -30,6 +26,9 @@ namespace BulletSharp
 		ref class AlignedNodePtrArray;
 		ref class AlignedNoteArray;
 		ref class AlignedSoftBodyArray;
+		ref class AlignedTetraArray;
+		ref class AlignedPSolverArray;
+		ref class AlignedVSolverArray;
 		ref class Cluster;
 		ref class Feature;
 		ref class Impulse;
@@ -146,17 +145,7 @@ namespace BulletSharp
 			Default = btSoftBody::fMaterial::Default,
 			End = btSoftBody::fMaterial::END
 		};
-		/*
-		[Flags]
-		public enum class PSolver
-		{
-		Linear = btSoftBody::ePSolver::Linear,
-		Anchors = btSoftBody::ePSolver::Anchors,
-		RigidContacts = btSoftBody::ePSolver::RContacts,
-		SoftContacts = btSoftBody::ePSolver::SContacts,
-		End = btSoftBody::ePSolver::END
-		};
-		*/
+
 		[Flags]
 		public enum class ESolverPresets
 		{
@@ -165,14 +154,7 @@ namespace BulletSharp
 			Default = btSoftBody::eSolverPresets::Default,
 			End = btSoftBody::eSolverPresets::END
 		};
-		/*
-		[Flags]
-		public enum class VSolver
-		{
-		Linear = btSoftBody::eVSolver::Linear,
-		End = btSoftBody::eVSolver::END
-		};
-		*/
+
 		public ref class Body
 		{
 		private:
@@ -244,6 +226,7 @@ namespace BulletSharp
 			};
 		};
 
+		[DebuggerDisplay("ClusterIndex = {ClusterIndex}")]
 		public ref class Cluster
 		{
 		private:
@@ -255,10 +238,45 @@ namespace BulletSharp
 		public:
 			Cluster();
 
+			property btScalar AngularDamping
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property Vector3 AV
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property int ClusterIndex
+			{
+				int get();
+				void set(int value);
+			}
+
+			property bool Collide
+			{
+				bool get();
+				void set(bool value);
+			}
+
 			property Vector3 Com
 			{
 				Vector3 get();
 				void set(Vector3 value);
+			}
+
+			property bool ContainsAnchor
+			{
+				bool get();
+				void set(bool value);
+			}
+
+			property Vector3Array^ DImpulses
+			{
+				Vector3Array^ get();
 			}
 
 			property AlignedVector3Array^ FrameRefs
@@ -291,10 +309,30 @@ namespace BulletSharp
 				void set(Matrix value);
 			}
 
+#ifndef DISABLE_DBVT
+			property DbvtNode^ Leaf
+			{
+				DbvtNode^ get();
+				void set(DbvtNode^ value);
+			}
+#endif
+
+			property btScalar LinearDamping
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
 			property Matrix Locii
 			{
 				Matrix get();
 				void set(Matrix value);
+			}
+
+			property Vector3 LV
+			{
+				Vector3 get();
+				void set(Vector3 value);
 			}
 
 			property AlignedScalarArray^ Masses
@@ -303,10 +341,49 @@ namespace BulletSharp
 				void set(AlignedScalarArray^ value);
 			}
 
+			property btScalar Matching
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar MaxSelfCollisionImpulse
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property int NDImpulses
+			{
+				int get();
+			}
+
+			property btScalar NodeDamping
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
 			property AlignedNodePtrArray^ Nodes
 			{
 				AlignedNodePtrArray^ get();
 				void set(AlignedNodePtrArray^ value);
+			}
+
+			property int NVImpulses
+			{
+				int get();
+			}
+
+			property btScalar SelfCollisionImpulseFactor
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property Vector3Array^ VImpulses
+			{
+				Vector3Array^ get();
 			}
 
 		internal:
@@ -334,10 +411,28 @@ namespace BulletSharp
 				void set(BulletSharp::SoftBody::AeroModel value);
 			}
 
+			property btScalar Ahr
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
 			property btScalar Chr
 			{
 				btScalar get();
 				void set(btScalar value);
+			}
+
+			property int CIterations
+			{
+				int get();
+				void set(int value);
+			}
+
+			property FCollisions Collisions
+			{
+				FCollisions get();
+				void set(FCollisions value);
 			}
 
 			property btScalar DF
@@ -352,19 +447,37 @@ namespace BulletSharp
 				void set(btScalar value);
 			}
 
+			property int DIterations
+			{
+				int get();
+				void set(int value);
+			}
+
 			property btScalar DP
 			{
 				btScalar get();
 				void set(btScalar value);
 			}
 
-			property FCollisions Collisions
+			property btScalar Khr
 			{
-				FCollisions get();
-				void set(FCollisions value);
+				btScalar get();
+				void set(btScalar value);
 			}
 
 			property btScalar LF
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar MaxVolume
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar MT
 			{
 				btScalar get();
 				void set(btScalar value);
@@ -382,10 +495,62 @@ namespace BulletSharp
 				void set(btScalar value);
 			}
 
+			property AlignedPSolverArray^ PSequence
+			{
+				AlignedPSolverArray^ get();
+			}
+
+			property btScalar Shr
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar SkhrCl
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar SrhrCl
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar SshrCl
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar TimeScale
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
 			property btScalar VC
 			{
 				btScalar get();
 				void set(btScalar value);
+			}
+
+			property int VIterations
+			{
+				int get();
+				void set(int value);
+			}
+
+			property btScalar VCF
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property AlignedVSolverArray^ VSequence
+			{
+				AlignedVSolverArray^ get();
 			}
 
 		internal:
@@ -614,12 +779,12 @@ namespace BulletSharp
 				bool get();
 				void set(bool value);
 			}
-/*
-			property AlignedNodeArray^ N
+
+			property NodePtrArray^ Nodes
 			{
-				AlignedNodeArray^ get();
+				NodePtrArray^ get();
 			}
-*/
+
 			property btScalar RestLength
 			{
 				btScalar get();
@@ -948,7 +1113,7 @@ namespace BulletSharp
 			}
 #endif
 
-			property NodePtrArray^ N
+			property NodePtrArray^ Nodes
 			{
 				NodePtrArray^ get();
 			}
@@ -1145,6 +1310,11 @@ namespace BulletSharp
 			{
 				Object^ get();
 				void set(Object^ value);
+			}
+
+			property AlignedTetraArray^ Tetras
+			{
+				AlignedTetraArray^ get();
 			}
 
 			property btScalar TimeAccumulator
