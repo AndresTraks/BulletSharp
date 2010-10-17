@@ -40,18 +40,9 @@ Vector4 BoxShape::GetPlaneEquation(int index)
 	return equation;
 }
 
-#pragma managed(push, off)
-btVector3* BoxShape_GetHalfExtentsWithMargin(btBoxShape* shape)
-{
-	btVector3* extents = new btVector3;
-	*extents = shape->getHalfExtentsWithMargin();
-	return extents;
-}
-#pragma managed(pop)
-
 Vector3 BoxShape::HalfExtentsWithMargin::get()
 {
-	btVector3* extentsTemp = BoxShape_GetHalfExtentsWithMargin(UnmanagedPointer);
+	btVector3* extentsTemp = new btVector3(UnmanagedPointer->getHalfExtentsWithMargin());
 	Vector3 extents = Math::BtVector3ToVector3(extentsTemp);
 	delete extentsTemp;
 	return extents;

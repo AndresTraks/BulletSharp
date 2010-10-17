@@ -18,6 +18,7 @@ namespace BulletSharp
 
 	namespace SoftBody
 	{
+		ref class AlignedAnchorArray;
 		ref class AlignedClusterArray;
 		ref class AlignedFaceArray;
 		ref class AlignedLinkArray;
@@ -153,6 +154,61 @@ namespace BulletSharp
 			Velocities = btSoftBody::eSolverPresets::Velocities,
 			Default = btSoftBody::eSolverPresets::Default,
 			End = btSoftBody::eSolverPresets::END
+		};
+
+		public ref class Anchor
+		{
+		private:
+			btSoftBody::Anchor* _anchor;
+
+		internal:
+			Anchor(btSoftBody::Anchor* anchor);
+
+		public:
+			Anchor();
+
+			property RigidBody^ Body
+			{
+				RigidBody^ get();
+				void set(RigidBody^ value);
+			}
+
+			property Matrix C0
+			{
+				Matrix get();
+				void set(Matrix value);
+			}
+
+			property Vector3 C1
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property btScalar C2
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property BulletSharp::SoftBody::Node^ Node
+			{
+				BulletSharp::SoftBody::Node^ get();
+				void set(BulletSharp::SoftBody::Node^ value);
+			}
+
+			property Vector3 Local
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+		internal:
+			property btSoftBody::Anchor* UnmanagedPointer
+			{
+				btSoftBody::Anchor* get();
+				void set(btSoftBody::Anchor* value);
+			};
 		};
 
 		public ref class Body
@@ -1229,6 +1285,12 @@ namespace BulletSharp
 			void Translate(btScalar x, btScalar y, btScalar z); // helper
 
 			static SoftBody^ Upcast(CollisionObject^ colObj);
+
+			property AlignedAnchorArray^ Anchors
+			{
+				AlignedAnchorArray^ get();
+				void set(AlignedAnchorArray^ value);
+			}
 
 			property Vector3Array^ Bounds
 			{

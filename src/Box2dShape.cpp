@@ -55,18 +55,9 @@ Vector3 Box2dShape::Centroid::get()
 	return Math::BtVector3ToVector3(&UnmanagedPointer->getCentroid());
 }
 
-#pragma managed(push, off)
-btVector3* Box2dShape_GetHalfExtentsWithMargin(btBox2dShape* shape)
-{
-	btVector3* extents = new btVector3;
-	*extents = shape->getHalfExtentsWithMargin();
-	return extents;
-}
-#pragma managed(pop)
-
 Vector3 Box2dShape::HalfExtentsWithMargin::get()
 {
-	btVector3* extentsTemp = Box2dShape_GetHalfExtentsWithMargin(UnmanagedPointer);
+	btVector3* extentsTemp = new btVector3(UnmanagedPointer->getHalfExtentsWithMargin());
 	Vector3 extents = Math::BtVector3ToVector3(extentsTemp);
 	delete extentsTemp;
 	return extents;

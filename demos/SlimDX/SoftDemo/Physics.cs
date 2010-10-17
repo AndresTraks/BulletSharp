@@ -15,6 +15,9 @@ namespace SoftDemo
         //float CubeHalfExtents = 1.5f;
         //float extraHeight = -10.0f;
 
+        int demo = 0;
+        int numDemos = 12;
+
         SoftBodyWorldInfo softBodyWorldInfo;
 
         bool cutting;
@@ -23,6 +26,107 @@ namespace SoftDemo
         SoftRigidDynamicsWorld SoftWorld
         {
             get { return (SoftRigidDynamicsWorld)World; }
+        }
+
+        public void NextDemo()
+        {
+            demo++;
+            if (demo >= numDemos)
+                demo = 0;
+
+            ResetScene();
+            InitializeDemo();
+        }
+
+        public void PreviousDemo()
+        {
+            demo--;
+            if (demo < 0)
+                demo = numDemos - 1;
+
+            ResetScene();
+            InitializeDemo();
+        }
+
+        void ResetScene()
+        {
+            // Don't foreach here, it'll fail.
+            while (World.CollisionObjectArray.Count > 0)
+            {
+                CollisionObject obj = World.CollisionObjectArray[0];
+
+                RigidBody body = RigidBody.Upcast(obj);
+                if (body != null && body.MotionState != null)
+                    body.MotionState.Dispose();
+
+                SoftBody softBody = SoftBody.Upcast(obj);
+                if (softBody != null)
+                {
+                    SoftWorld.RemoveSoftBody(softBody);
+                    softBody.Dispose();
+                }
+                else
+                {
+                    if (body != null)
+                        World.RemoveRigidBody(body);
+                    else
+                        World.RemoveCollisionObject(obj);
+                }
+            }
+
+            while (World.NumConstraints > 0)
+            {
+                TypedConstraint pc = World.GetConstraint(0);
+                World.RemoveConstraint(pc);
+                pc.Dispose();
+            }
+        }
+
+        void InitializeDemo()
+        {
+            softBodyWorldInfo.SparseSdf.Reset();
+
+            CollisionShape groundShape = new BoxShape(50, 50, 50);
+            CollisionShapes.Add(groundShape);
+            RigidBody body = LocalCreateRigidBody(0, Matrix.Translation(0, -62, 0), groundShape);
+            body.UserObject = "Ground";
+
+            /*
+            CollisionShape boxShape = new BoxShape(1, 1, 1);
+            CollisionShapes.Add(boxShape);
+            LocalCreateRigidBody(1.0f, Matrix.Translation(0, 1, 0), boxShape);
+            */
+
+            softBodyWorldInfo.AirDensity = 1.2f;
+            softBodyWorldInfo.WaterDensity = 0;
+            softBodyWorldInfo.WaterOffset = 0;
+            softBodyWorldInfo.WaterNormal = Vector3.Zero;
+            softBodyWorldInfo.Gravity = new Vector3(0, -10, 0);
+
+            if (demo == 0)
+                Init_Cloth();
+            else if (demo == 1)
+                Init_Pressure();
+            else if (demo == 2)
+                Init_Volume();
+            else if (demo == 3)
+                Init_Ropes();
+            else if (demo == 4)
+                Init_RopeAttach();
+            else if (demo == 5)
+                Init_ClothAttach();
+            else if (demo == 6)
+                Init_Sticks();
+            else if (demo == 7)
+                Init_Collide3();
+            else if (demo == 8)
+                Init_Impact();
+            else if (demo == 9)
+                Init_Aero();
+            else if (demo == 10)
+                Init_Friction();
+            else if (demo == 11)
+                Init_TetraCube();
         }
 
         static Vector3 GetRandomVector(Random random)
@@ -85,7 +189,7 @@ namespace SoftDemo
             return (psb);
         }
 
-        void Init_RbUpStack(int count)
+        void Create_RbUpStack(int count)
         {
             float mass = 10.0f;
 
@@ -93,14 +197,17 @@ namespace SoftDemo
             CollisionShape cylinderShape = new CylinderShapeX(4, 1, 1);
             CollisionShape boxShape = new BoxShape(4, 1, 1);
             cylinderCompound.AddChildShape(Matrix.Identity, boxShape);
-            Quaternion orn = new Quaternion((float)Math.PI / 2.0f, 0.0f, 0.0f, 1.0f);
+            Quaternion orn = Quaternion.RotationYawPitchRoll((float)Math.PI / 2.0f, 0.0f, 0.0f);
             Matrix localTransform = Matrix.RotationQuaternion(orn);
             //localTransform *= Matrix.Translation(new Vector3(1,1,1));
             cylinderCompound.AddChildShape(localTransform, cylinderShape);
 
-            LocalCreateRigidBody(mass, Matrix.Translation(0, 2, 0), cylinderCompound);
-            LocalCreateRigidBody(mass, Matrix.Translation(0, 8, 0), new BoxShape(1, 1, 1));
-            LocalCreateRigidBody(mass, Matrix.Translation(0, 14, 0), new SphereShape(1.5f));
+            CollisionShape[] shape = new CollisionShape[]{cylinderCompound,
+		        new BoxShape(new Vector3(1,1,1)),
+		        new SphereShape(1.5f)};
+
+            for (int i = 0; i < count; ++i)
+                LocalCreateRigidBody(mass, Matrix.Translation(0, 2 + 6 * i, 0), shape[i % shape.Length]);
         }
 
         void Create_BigBall(Vector3 position)
@@ -333,7 +440,7 @@ namespace SoftDemo
                 for (int x = 0; x < n; ++x)
                 {
                     Vector3 org = new Vector3(-sz + sz * 2 * x * inf,
-                        0, -sz + sz * 2 * y * inf);
+                        -10, -sz + sz * 2 * y * inf);
 
                     SoftBody psb = SoftBodyHelpers.CreateRope(softBodyWorldInfo, org,
                         org + new Vector3(hg * 0.001f, hg, 0), sg, 1);
@@ -344,7 +451,7 @@ namespace SoftDemo
                     {
                         psb.GenerateBendingConstraints(2 + i);
                     }
-                    //psb.SetMass(1, 0);
+                    psb.SetMass(1, 0);
                     psb.SetTotalMass(0.01f);
                     SoftWorld.AddSoftBody(psb);
 
@@ -369,6 +476,29 @@ namespace SoftDemo
             psb.AppendLink(0, 2);
 
             SoftWorld.AddSoftBody(psb);
+        }
+
+        void Init_Cloth()
+        {
+            float s = 8;
+            SoftBody psb = SoftBodyHelpers.CreatePatch(softBodyWorldInfo, new Vector3(-s, 0, -s),
+                new Vector3(+s, 0, -s),
+                new Vector3(-s, 0, +s),
+                new Vector3(+s, 0, +s),
+                31, 31,
+                //		31,31,
+                1 + 2 + 4 + 8, true);
+
+            psb.CollisionShape.Margin = 0.5f;
+            Material pm = psb.AppendMaterial();
+            pm.Lst = 0.4f;
+            pm.Flags -= FMaterial.DebugDraw;
+            psb.GenerateBendingConstraints(2, pm);
+            psb.TotalMass = 150;
+            SoftWorld.AddSoftBody(psb);
+
+            Create_RbUpStack(10);
+            cutting = true;
         }
 
         public Physics()
@@ -399,29 +529,7 @@ namespace SoftDemo
             World.Gravity = new Vector3(0, -10, 0);
             World.DispatchInfo.EnableSpu = true;
 
-            CollisionShape groundShape = new BoxShape(50, 50, 50);
-            CollisionShapes.Add(groundShape);
-            RigidBody body = LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
-            body.UserObject = "Ground";
-
-            CollisionShape boxShape = new BoxShape(1, 1, 1);
-            CollisionShapes.Add(boxShape);
-            LocalCreateRigidBody(1.0f, Matrix.Translation(0, 1, 0), boxShape);
-
-            softBodyWorldInfo.SparseSdf.Reset();
-            //Init_Aero();
-            Init_TetraCube();
-            //Init_RbUpStack(5);
-            //Init_ClothAttach();
-            //Init_Ropes();
-            Init_RopeAttach();
-            //Init_Pressure();
-            //Init_Impact();
-            //Init_Collide3();
-            //Init_Friction();
-            //Init_Volume();
-            //Init_Sticks();
-            //Init_Bending();
+            InitializeDemo();
         }
 
         public override int Update(float elapsedTime)

@@ -12,11 +12,11 @@ namespace SoftDemo
     {
         int Width = 1024, Height = 768;
         Color ambient = Color.Gray;
-        Vector3 eye = new Vector3(60, 20, 30);
+        Vector3 eye = new Vector3(20, 20, 80);
         Vector3 target = new Vector3(0, 0, 10);
 
         Light light;
-        Material activeMaterial, passiveMaterial, groundMaterial;
+        Material activeMaterial, passiveMaterial, groundMaterial, softBodyMaterial;
         GraphicObjectFactory mesh;
 
         Physics physics;
@@ -60,6 +60,7 @@ namespace SoftDemo
         {
             physics = new Physics();
             physics.SetDebugDrawer(new PhysicsDebugDrawLineGathering(Device));
+            //physics.SetDebugDrawMode(Device, DebugDrawModes.None);
 
             mesh = new GraphicObjectFactory(Device);
 
@@ -82,10 +83,16 @@ namespace SoftDemo
             groundMaterial.Diffuse = Color.Green;
             groundMaterial.Ambient = ambient;
 
+            softBodyMaterial = new Material();
+            softBodyMaterial.Diffuse = Color.White;
+            softBodyMaterial.Ambient = ambient;
+
             Fps.Text = "Move using mouse and WASD+shift\n" +
                 "F3 - Toggle debug\n" +
                 "F11 - Toggle fullscreen\n" +
-                "Space - Shoot box";
+                "Space - Shoot box\n\n" +
+                "B - Previous Demo\n" +
+                "N - Next Demo";
 
             Freelook.SetEyeTarget(eye, target);
         }
@@ -100,6 +107,7 @@ namespace SoftDemo
 
             Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 150.0f);
 
+            Device.SetRenderState(RenderState.CullMode, Cull.None);
             Device.SetTransform(TransformState.Projection, Projection);
         }
 
@@ -113,6 +121,16 @@ namespace SoftDemo
                     physics.SetDebugDrawMode(Device, DebugDrawModes.DrawWireframe);
                 else
                     physics.SetDebugDrawMode(Device, 0);
+            }
+
+            if (Input.KeysPressed.Contains(Keys.B))
+            {
+                physics.PreviousDemo();
+            }
+
+            if (Input.KeysPressed.Contains(Keys.N))
+            {
+                physics.NextDemo();
             }
 
             InputUpdate(Freelook.Eye, Freelook.Target, physics);
@@ -130,7 +148,10 @@ namespace SoftDemo
             {
                 if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
                 {
-                    Device.SetRenderState(RenderState.CullMode, Cull.None);
+                    if (physics.IsDebugDrawEnabled)
+                        continue;
+
+                    Device.Material = softBodyMaterial;
                     Device.SetTransform(TransformState.World, Matrix.Identity);
                 }
                 else

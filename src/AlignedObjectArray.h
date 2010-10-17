@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Collections.h"
 #include "IDisposable.h"
 #ifndef DISABLE_DBVT
 #include "Dbvt.h"
@@ -17,8 +16,25 @@ namespace BulletSharp
 	ref class CollisionObject;
 	ref class CollisionShape;
 	ref class CompoundShapeChild;
+	ref class ListDebugView;
 	ref class PersistentManifold;
+	ref class Vector3ListDebugView;
 	ref class WheelInfo;
+
+#ifndef DISABLE_SOFTBODY
+	namespace SoftBody
+	{
+		ref class Anchor;
+		ref class Cluster;
+		ref class Face;
+		ref class Link;
+		ref class Material;
+		ref class Node;
+		ref class Note;
+		ref class SoftBody;
+		ref class Tetra;
+	};
+#endif
 
 	generic<class T>
 	public ref class AlignedObjectArray abstract : Generic::IList<T>, BulletSharp::IDisposable
@@ -81,6 +97,50 @@ namespace BulletSharp
 		}
 	};
 
+#ifndef DISABLE_SOFTBODY
+	namespace SoftBody
+	{
+		[DebuggerDisplay("Count = {Count}")]
+		[DebuggerTypeProxy(ListDebugView::typeid)]
+		public ref class AlignedAnchorArray : AlignedObjectArray<Anchor^>
+		{
+		internal:
+			AlignedAnchorArray(btSoftBody::tAnchorArray* anchorArray);
+
+		public:
+			AlignedAnchorArray();
+
+			virtual void Add(Anchor^ anchor) override;
+			virtual void Clear() override;
+			virtual void CopyTo(array<Anchor^>^ array, int arrayIndex) override;
+			virtual void PopBack() override;
+			virtual void Swap(int index0, int index1) override;
+
+			property int Count
+			{
+				virtual int get() override;
+			}
+
+			property int Capacity
+			{
+				int get();
+			}
+
+			property Anchor^ default [int]
+			{
+				virtual Anchor^ get (int index) override;
+				virtual void set(int index, Anchor^ value) override;
+			}
+
+		internal:
+			property btSoftBody::tAnchorArray* UnmanagedPointer
+			{
+				virtual btSoftBody::tAnchorArray* get() new;
+			}
+		};
+	};
+#endif
+
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
 	public ref class AlignedBroadphasePairArray : AlignedObjectArray<BroadphasePair^>
@@ -126,8 +186,6 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
-		ref class Cluster;
-
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
 		public ref class AlignedClusterArray : AlignedObjectArray<Cluster^>
@@ -140,9 +198,9 @@ namespace BulletSharp
 
 			virtual void Add(Cluster^ cluster) override;
 			virtual void Clear() override;
-			virtual bool Contains(Cluster^ item) override;
+			virtual bool Contains(Cluster^ cluster) override;
 			virtual void CopyTo(array<Cluster^>^ array, int arrayIndex) override;
-			virtual int IndexOf(Cluster^ item) override;
+			virtual int IndexOf(Cluster^ cluster) override;
 			virtual void PopBack() override;
 			virtual bool Remove(Cluster^ cluster) override;
 			virtual void Swap(int index0, int index1) override;
@@ -250,48 +308,6 @@ namespace BulletSharp
 		property btCollisionObjectArray* UnmanagedPointer
 		{
 			virtual btCollisionObjectArray* get() new;
-		}
-	};
-
-	[DebuggerDisplay("Count = {Count}")]
-	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class AlignedCompoundShapeChildArray : AlignedObjectArray<CompoundShapeChild^>
-	{
-	internal:
-		AlignedCompoundShapeChildArray(btAlignedObjectArray<btCompoundShapeChild>* compundShapeChildArray);
-
-	public:
-		AlignedCompoundShapeChildArray();
-
-		virtual void Add(CompoundShapeChild^ child) override;
-		virtual void Clear() override;
-		virtual bool Contains(CompoundShapeChild^ child) override;
-		virtual void CopyTo(array<CompoundShapeChild^>^ array, int arrayIndex) override;
-		virtual int IndexOf(CompoundShapeChild^ child) override;
-		virtual void PopBack() override;
-		virtual bool Remove(CompoundShapeChild^ child) override;
-		virtual void Swap(int index0, int index1) override;
-
-		property int Capacity
-		{
-			int get();
-		}
-
-		property int Count
-		{
-			virtual int get() override;
-		}
-
-		property CompoundShapeChild^ default [int]
-		{
-			virtual CompoundShapeChild^ get (int index) override;
-			virtual void set(int index, CompoundShapeChild^ value) override;
-		}
-
-	internal:
-		property btAlignedObjectArray<btCompoundShapeChild>* UnmanagedPointer
-		{
-			virtual btAlignedObjectArray<btCompoundShapeChild>* get() new;
 		}
 	};
 
@@ -420,8 +436,6 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
-		ref class Face;
-
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
 		public ref class AlignedFaceArray : AlignedObjectArray<Face^>, Generic::IList<Face^>
@@ -550,8 +564,6 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
-		ref class Link;
-
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
 		public ref class AlignedLinkArray : AlignedObjectArray<Link^>, IEnumerable
@@ -590,8 +602,6 @@ namespace BulletSharp
 				virtual btSoftBody::tLinkArray* get() new;
 			}
 		};
-
-		ref class Material;
 
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
@@ -715,8 +725,6 @@ namespace BulletSharp
 				virtual btAlignedObjectArray<btSoftBody::Node*>* get() new;
 			}
 		};
-
-		ref class Note;
 
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
@@ -851,8 +859,6 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
-		ref class SoftBody;
-
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
 		public ref class AlignedSoftBodyArray : AlignedObjectArray<SoftBody^>
@@ -898,8 +904,6 @@ namespace BulletSharp
 
 	namespace SoftBody
 	{
-		ref class Tetra;
-
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
 		public ref class AlignedTetraArray : AlignedObjectArray<Tetra^>, Generic::IList<Tetra^>

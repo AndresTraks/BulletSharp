@@ -4,6 +4,7 @@ using namespace System::Collections;
 
 namespace BulletSharp
 {
+	ref class CompoundShapeChild;
 	ref class Dbvt;
 	ref class DbvtNode;
 	ref class DbvtProxy;
@@ -134,6 +135,30 @@ namespace BulletSharp
 		property bool* UnmanagedPointer
 		{
 			bool* get() new;
+		}
+	};
+
+	[DebuggerDisplay("Count = {Count}")]
+	[DebuggerTypeProxy(ListDebugView::typeid)]
+	public ref class CompoundShapeChildArray : GenericList<CompoundShapeChild^>
+	{
+	internal:
+		CompoundShapeChildArray(btCompoundShapeChild* shapeArray, int length);
+		CompoundShapeChildArray(const btCompoundShapeChild* shapeArray, int length);
+
+	public:
+		virtual void CopyTo(array<CompoundShapeChild^>^ array, int arrayIndex) override;
+
+		property CompoundShapeChild^ default[int]
+		{
+			virtual CompoundShapeChild^ get(int index) override;
+			virtual void set(int index, CompoundShapeChild^ value) override;
+		}
+
+	internal:
+		property btCompoundShapeChild* UnmanagedPointer
+		{
+			btCompoundShapeChild* get() new;
 		}
 	};
 

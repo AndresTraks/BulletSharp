@@ -8,7 +8,7 @@ UsingFrameworkNamespace
 
 namespace BulletSharp
 {
-	ref class AlignedCompoundShapeChildArray;
+	ref class CompoundShapeChildArray;
 	ref class Dbvt;
 	ref class DbvtNode;
 
@@ -79,9 +79,9 @@ namespace BulletSharp
 		void RemoveChildShapeByIndex(int childShapeindex);
 		void UpdateChildTransform(int childIndex, Matrix newChildTransform);
 
-		property AlignedCompoundShapeChildArray^ ChildList
+		property CompoundShapeChildArray^ ChildList
 		{
-			AlignedCompoundShapeChildArray^ get();
+			CompoundShapeChildArray^ get();
 		}
 
 #ifndef DISABLE_DBVT

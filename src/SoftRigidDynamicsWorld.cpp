@@ -54,6 +54,11 @@ void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body)
 	UnmanagedPointer->addSoftBody(body->UnmanagedPointer);
 }
 
+void SoftRigidDynamicsWorld::RemoveSoftBody(BulletSharp::SoftBody::SoftBody^ body)
+{
+	UnmanagedPointer->removeSoftBody(body->UnmanagedPointer);
+}
+
 btSoftRigidDynamicsWorld* SoftRigidDynamicsWorld::UnmanagedPointer::get()
 {
 	return (btSoftRigidDynamicsWorld*)DiscreteDynamicsWorld::UnmanagedPointer;

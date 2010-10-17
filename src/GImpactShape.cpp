@@ -74,12 +74,13 @@ Matrix GImpactShapeInterface::GetChildTransform(int index)
 {
 	btTransform* transformTemp = GImpactShapeInterface_GetChildTransform(UnmanagedPointer, index);
 	Matrix transform = Math::BtTransformToMatrix(transformTemp);
+	delete transformTemp;
 	return transform;
 }
 
 void GImpactShapeInterface::GetPrimitiveTriangle(int prim_index, [Out] PrimitiveTriangle^% triangle)
 {
-	btPrimitiveTriangle* triangleTemp = new btPrimitiveTriangle;
+	btPrimitiveTriangle* triangleTemp = new btPrimitiveTriangle();
 	UnmanagedPointer->getPrimitiveTriangle(prim_index, *triangleTemp);
 	triangle = gcnew PrimitiveTriangle(triangleTemp);
 }

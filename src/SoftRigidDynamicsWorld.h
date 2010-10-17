@@ -27,6 +27,7 @@ namespace BulletSharp
 			void AddSoftBody(SoftBody^ body,
 				CollisionFilterGroups collisionFilterGroup);
 			void AddSoftBody(SoftBody^ body);
+			void RemoveSoftBody(SoftBody^ body);
 
 		internal:
 			property btSoftRigidDynamicsWorld* UnmanagedPointer

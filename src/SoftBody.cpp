@@ -121,6 +121,80 @@ void SoftBodyWorldInfo::UnmanagedPointer::set(btSoftBodyWorldInfo* value)
 }
 
 
+Anchor::Anchor(btSoftBody::Anchor* anchor)
+{
+	_anchor = anchor;
+}
+
+Anchor::Anchor()
+{
+	_anchor = new btSoftBody::Anchor();
+}
+
+RigidBody^ Anchor::Body::get()
+{
+	return gcnew RigidBody(_anchor->m_body);
+}
+void Anchor::Body::set(RigidBody^ value)
+{
+	_anchor->m_body = value->UnmanagedPointer;
+}
+
+Matrix Anchor::C0::get()
+{
+	return Math::BtMatrix3x3ToMatrix(&_anchor->m_c0);
+}
+void Anchor::C0::set(Matrix value)
+{
+	Math::MatrixToBtMatrix3x3(value, &_anchor->m_c0);
+}
+
+Vector3 Anchor::C1::get()
+{
+	return Math::BtVector3ToVector3(&_anchor->m_c1);
+}
+void Anchor::C1::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_anchor->m_c1);
+}
+
+btScalar Anchor::C2::get()
+{
+	return _anchor->m_c2;
+}
+void Anchor::C2::set(btScalar value)
+{
+	_anchor->m_c2 = value;
+}
+
+Vector3 Anchor::Local::get()
+{
+	return Math::BtVector3ToVector3(&_anchor->m_local);
+}
+void Anchor::Local::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_anchor->m_local);
+}
+
+Node^ Anchor::Node::get()
+{
+	return gcnew BulletSharp::SoftBody::Node(_anchor->m_node);
+}
+void Anchor::Node::set(BulletSharp::SoftBody::Node^ value)
+{
+	_anchor->m_node = value->UnmanagedPointer;
+}
+
+btSoftBody::Anchor* Anchor::UnmanagedPointer::get()
+{
+	return _anchor;
+}
+void Anchor::UnmanagedPointer::set(btSoftBody::Anchor* value)
+{
+	_anchor = value;
+}
+
+
 Body::Body()
 {
 	_body = new btSoftBody::Body();
@@ -2108,6 +2182,15 @@ BulletSharp::SoftBody::SoftBody^ BulletSharp::SoftBody::SoftBody::Upcast(Collisi
 	return gcnew SoftBody(body);
 }
 
+AlignedAnchorArray^ BulletSharp::SoftBody::SoftBody::Anchors::get()
+{
+	return gcnew AlignedAnchorArray(&UnmanagedPointer->m_anchors);
+}
+void BulletSharp::SoftBody::SoftBody::Anchors::set(AlignedAnchorArray^ value)
+{
+	UnmanagedPointer->m_anchors = *value->UnmanagedPointer;
+}
+
 Vector3Array^ BulletSharp::SoftBody::SoftBody::Bounds::get()
 {
 	return gcnew Vector3Array(UnmanagedPointer->m_bounds, 2);
@@ -2203,12 +2286,11 @@ BulletSharp::SoftBody::Pose^ BulletSharp::SoftBody::SoftBody::Pose::get()
 {
 	return gcnew BulletSharp::SoftBody::Pose(&UnmanagedPointer->m_pose);
 }
-#pragma managed(push, off)
+
 void SoftBody_SetPose(btSoftBody* body, btSoftBody::Pose* pose)
 {
 	body->m_pose = *pose;
 }
-#pragma managed(pop)
 void BulletSharp::SoftBody::SoftBody::Pose::set(BulletSharp::SoftBody::Pose^ value)
 {
 	SoftBody_SetPose(UnmanagedPointer, value->UnmanagedPointer);

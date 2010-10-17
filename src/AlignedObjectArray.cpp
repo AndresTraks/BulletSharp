@@ -2,6 +2,7 @@
 
 #include "AlignedObjectArray.h"
 #include "BroadphaseProxy.h"
+#include "Collections.h"
 #include "CollisionObject.h"
 #include "CollisionShape.h"
 #include "CompoundShape.h"
@@ -125,6 +126,92 @@ void AlignedObjectArray<T>::UnmanagedPointer::set(void* value)
 }
 
 
+#ifndef DISABLE_SOFTBODY
+AlignedAnchorArray::AlignedAnchorArray(btSoftBody::tAnchorArray* anchorArray)
+: AlignedObjectArray(anchorArray)
+{
+}
+
+AlignedAnchorArray::AlignedAnchorArray()
+: AlignedObjectArray(new btSoftBody::tAnchorArray())
+{
+}
+
+void AlignedAnchorArray::Add(Anchor^ anchor)
+{
+	UnmanagedPointer->push_back(*anchor->UnmanagedPointer);
+}
+
+void AlignedAnchorArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+void AlignedAnchorArray::CopyTo(array<Anchor^>^ array, int arrayIndex)
+{
+	if (array == nullptr)
+		throw gcnew ArgumentNullException("array");
+
+	if (arrayIndex < 0)
+		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+
+	int size = UnmanagedPointer->size();
+	if (arrayIndex + size > array->Length)
+		throw gcnew ArgumentException("Array too small.", "array");
+
+	int i;
+	for (i=0; i<size; i++)
+	{
+		array[arrayIndex+i] = gcnew Anchor(&(*UnmanagedPointer)[i]);
+	}
+}
+
+void AlignedAnchorArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+void AlignedAnchorArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+int AlignedAnchorArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int AlignedAnchorArray::Count::get()
+{
+	return UnmanagedPointer->size();
+}
+
+BulletSharp::SoftBody::Anchor^ AlignedAnchorArray::default::get(int index)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	return gcnew Anchor(&(*UnmanagedPointer)[index]);
+}
+
+void AlignedAnchorArray_SetDefault(btSoftBody::tAnchorArray* anchorArray,
+	int index, btSoftBody::Anchor* anchor)
+{
+	(*anchorArray)[index] = *anchor;
+}
+void AlignedAnchorArray::default::set(int index, Anchor^ value)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	AlignedAnchorArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+}
+
+btSoftBody::tAnchorArray* BulletSharp::SoftBody::AlignedAnchorArray::UnmanagedPointer::get()
+{
+	return (btSoftBody::tAnchorArray*)AlignedObjectArray::UnmanagedPointer;
+}
+#endif
+
+
 AlignedBroadphasePairArray::AlignedBroadphasePairArray(btBroadphasePairArray* pairArray)
 : AlignedObjectArray(pairArray)
 {
@@ -208,13 +295,12 @@ BroadphasePair^ AlignedBroadphasePairArray::default::get(int index)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew BroadphasePair(&(*UnmanagedPointer)[index]);
 }
-#pragma managed(push, off)
+
 void BroadphasePairList_SetDefault(btBroadphasePairArray* pairArray,
 	int index, btBroadphasePair* pair)
 {
 	(*pairArray)[index] = *pair;
 }
-#pragma managed(pop)
 void AlignedBroadphasePairArray::default::set(int index, BroadphasePair^ value)
 {
 	if (index < 0 || index >= Count)
@@ -519,110 +605,6 @@ btCollisionObjectArray* AlignedCollisionObjectArray::UnmanagedPointer::get()
 }
 
 
-AlignedCompoundShapeChildArray::AlignedCompoundShapeChildArray(btAlignedObjectArray<btCompoundShapeChild>* compundShapeChildArray)
-: AlignedObjectArray(compundShapeChildArray)
-{
-}
-
-AlignedCompoundShapeChildArray::AlignedCompoundShapeChildArray()
-: AlignedObjectArray(new btAlignedObjectArray<btCompoundShapeChild>)
-{
-}
-
-void AlignedCompoundShapeChildArray::Add(CompoundShapeChild^ compoundShapeChild)
-{
-	UnmanagedPointer->push_back(*compoundShapeChild->UnmanagedPointer);
-}
-
-void AlignedCompoundShapeChildArray::Clear()
-{
-	UnmanagedPointer->clear();
-}
-
-bool AlignedCompoundShapeChildArray::Contains(CompoundShapeChild^ child)
-{
-	return UnmanagedPointer->findLinearSearch(*child->UnmanagedPointer) != UnmanagedPointer->size();
-}
-
-void AlignedCompoundShapeChildArray::CopyTo(array<CompoundShapeChild^>^ array, int arrayIndex)
-{
-	if (array == nullptr)
-		throw gcnew ArgumentNullException("array");
-
-	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
-
-	int size = UnmanagedPointer->size();
-	if (arrayIndex + size > array->Length)
-		throw gcnew ArgumentException("Array too small.", "array");
-
-	int i;
-	for (i=0; i<size; i++)
-	{
-		array[arrayIndex+i] = gcnew CompoundShapeChild(&(*UnmanagedPointer)[i]);
-	}
-}
-
-int AlignedCompoundShapeChildArray::IndexOf(CompoundShapeChild^ child)
-{
-	int i = UnmanagedPointer->findLinearSearch(*child->UnmanagedPointer);
-	return i != UnmanagedPointer->size() ? i : -1;
-}
-
-void AlignedCompoundShapeChildArray::PopBack()
-{
-	UnmanagedPointer->pop_back();
-}
-
-bool AlignedCompoundShapeChildArray::Remove(CompoundShapeChild^ compoundShapeChild)
-{
-	int sizeBefore = UnmanagedPointer->size();
-	UnmanagedPointer->remove(*compoundShapeChild->UnmanagedPointer);
-	return sizeBefore != UnmanagedPointer->size();
-}
-
-int AlignedCompoundShapeChildArray::Capacity::get()
-{
-	return UnmanagedPointer->capacity();
-}
-
-int AlignedCompoundShapeChildArray::Count::get()
-{
-	return UnmanagedPointer->size();
-}
-
-void AlignedCompoundShapeChildArray::Swap(int index0, int index1)
-{
-	UnmanagedPointer->swap(index0, index1);
-}
-
-CompoundShapeChild^ AlignedCompoundShapeChildArray::default::get(int index)
-{
-	if (index < 0 || index >= Count)
-		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew CompoundShapeChild(&(*UnmanagedPointer)[index]);
-}
-
-#pragma managed(push, off)
-void CompoundShapeChildArray_GetDefault(btAlignedObjectArray<btCompoundShapeChild>* shapeArray,
-	int index, btCompoundShapeChild* node)
-{
-	(*shapeArray)[index] = *node;
-}
-#pragma managed(pop)
-void AlignedCompoundShapeChildArray::default::set(int index, CompoundShapeChild^ value)
-{
-	if (index < 0 || index >= Count)
-		throw gcnew ArgumentOutOfRangeException("index");
-	CompoundShapeChildArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
-}
-
-btAlignedObjectArray<btCompoundShapeChild>* AlignedCompoundShapeChildArray::UnmanagedPointer::get()
-{
-	return (btAlignedObjectArray<btCompoundShapeChild>*)AlignedObjectArray::UnmanagedPointer;
-}
-
-
 #ifndef DISABLE_DBVT
 AlignedDbvtNodeArray::AlignedDbvtNodeArray(btAlignedObjectArray<const btDbvtNode*>* AlignedNodeArray)
 : AlignedObjectArray(AlignedNodeArray)
@@ -782,14 +764,11 @@ int AlignedStkNnArray::Count::get()
 	return UnmanagedPointer->size();
 }
 
-#pragma managed(push, off)
 void StkNnArray_GetDefault(btAlignedObjectArray<btDbvt::sStkNN>* stkNnArray,
 	int index, btDbvt::sStkNN* obj)
 {
 	*obj = (*stkNnArray)[index];
 }
-#pragma managed(pop)
-
 Dbvt::StkNn^ AlignedStkNnArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
@@ -871,14 +850,11 @@ int AlignedStkNpsArray::Count::get()
 	return UnmanagedPointer->size();
 }
 
-#pragma managed(push, off)
 void StkNpsArray_GetDefault(btAlignedObjectArray<btDbvt::sStkNPS>* stkNpsArray,
 	int index, btDbvt::sStkNPS* obj)
 {
 	*obj = (*stkNpsArray)[index];
 }
-#pragma managed(pop)
-
 Dbvt::StkNps^ AlignedStkNpsArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
@@ -969,18 +945,16 @@ Face^ AlignedFaceArray::default::get(int index)
 	return gcnew Face(&(*UnmanagedPointer)[index]);
 }
 
-#pragma managed(push, off)
-void FaceArray_GetDefault(btAlignedObjectArray<btSoftBody::Face>* faceArray,
+void FaceArray_SetDefault(btAlignedObjectArray<btSoftBody::Face>* faceArray,
 	int index, btSoftBody::Face* node)
 {
 	(*faceArray)[index] = *node;
 }
-#pragma managed(pop)
 void AlignedFaceArray::default::set(int index, Face^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	FaceArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+	FaceArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
 }
 
 btAlignedObjectArray<btSoftBody::Face>* AlignedFaceArray::UnmanagedPointer::get()
@@ -1252,18 +1226,16 @@ BulletSharp::SoftBody::Link^ AlignedLinkArray::default::get(int index)
 	return gcnew Link(&(*UnmanagedPointer)[index]);
 }
 
-#pragma managed(push, off)
-void LinkArray_GetDefault(btSoftBody::tLinkArray* linkArray,
+void LinkArray_SetDefault(btSoftBody::tLinkArray* linkArray,
 	int index, btSoftBody::Link* link)
 {
 	(*linkArray)[index] = *link;
 }
-#pragma managed(pop)
 void AlignedLinkArray::default::set(int index, BulletSharp::SoftBody::Link^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	LinkArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+	LinkArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
 }
 
 btSoftBody::tLinkArray* AlignedLinkArray::UnmanagedPointer::get()
@@ -1355,19 +1327,11 @@ BulletSharp::SoftBody::Material^ AlignedMaterialArray::default::get(int index)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew Material((*UnmanagedPointer)[index]);
 }
-
-#pragma managed(push, off)
-void MaterialArray_GetDefault(btSoftBody::tMaterialArray* materialArray,
-	int index, btSoftBody::Material* material)
-{
-	(*materialArray)[index] = material;
-}
-#pragma managed(pop)
 void AlignedMaterialArray::default::set(int index, BulletSharp::SoftBody::Material^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	MaterialArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+	(*UnmanagedPointer)[index] = value->UnmanagedPointer;
 }
 
 btSoftBody::tMaterialArray* AlignedMaterialArray::UnmanagedPointer::get()
@@ -1443,17 +1407,15 @@ BulletSharp::SoftBody::Node^ BulletSharp::SoftBody::AlignedNodeArray::default::g
 	return gcnew Node(&(*UnmanagedPointer)[index]);
 }
 
-#pragma managed(push, off)
-void NodeArray_GetDefault(btSoftBody::tNodeArray* AlignedNodeArray, int index, btSoftBody::Node* node)
+void NodeArray_SetDefault(btSoftBody::tNodeArray* AlignedNodeArray, int index, btSoftBody::Node* node)
 {
 	(*AlignedNodeArray)[index] = *node;
 }
-#pragma managed(pop)
 void BulletSharp::SoftBody::AlignedNodeArray::default::set(int index, Node^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	NodeArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+	NodeArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
 }
 
 btSoftBody::tNodeArray* BulletSharp::SoftBody::AlignedNodeArray::UnmanagedPointer::get()
@@ -1624,17 +1586,15 @@ BulletSharp::SoftBody::Note^ AlignedNoteArray::default::get(int index)
 	return gcnew Note(&(*UnmanagedPointer)[index]);
 }
 
-#pragma managed(push, off)
-void NoteArray_GetDefault(btSoftBody::tNoteArray* noteArray, int index, btSoftBody::Note* note)
+void NoteArray_SetDefault(btSoftBody::tNoteArray* noteArray, int index, btSoftBody::Note* note)
 {
 	(*noteArray)[index] = *note;
 }
-#pragma managed(pop)
 void AlignedNoteArray::default::set(int index, Note^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	NoteArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+	NoteArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
 }
 
 btSoftBody::tNoteArray* AlignedNoteArray::UnmanagedPointer::get()
@@ -1922,18 +1882,11 @@ BulletSharp::SoftBody::SoftBody^ BulletSharp::SoftBody::AlignedSoftBodyArray::de
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew SoftBody((*UnmanagedPointer)[index]);
 }
-
-#pragma managed(push, off)
-void SoftBodyArray_GetDefault(btSoftBody::tSoftBodyArray* softBodyArray, int index, btSoftBody* softBody)
-{
-	(*softBodyArray)[index] = softBody;
-}
-#pragma managed(pop)
 void BulletSharp::SoftBody::AlignedSoftBodyArray::default::set(int index, SoftBody^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	SoftBodyArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+	(*UnmanagedPointer)[index] = value->UnmanagedPointer;
 }
 
 btSoftBody::tSoftBodyArray* BulletSharp::SoftBody::AlignedSoftBodyArray::UnmanagedPointer::get()
@@ -2008,18 +1961,16 @@ Tetra^ AlignedTetraArray::default::get(int index)
 	return gcnew Tetra(&(*UnmanagedPointer)[index]);
 }
 
-#pragma managed(push, off)
-void TetraArray_GetDefault(btAlignedObjectArray<btSoftBody::Tetra>* tetraArray,
+void TetraArray_SetDefault(btAlignedObjectArray<btSoftBody::Tetra>* tetraArray,
 	int index, btSoftBody::Tetra* node)
 {
 	(*tetraArray)[index] = *node;
 }
-#pragma managed(pop)
 void AlignedTetraArray::default::set(int index, Tetra^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	TetraArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+	TetraArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
 }
 
 btAlignedObjectArray<btSoftBody::Tetra>* AlignedTetraArray::UnmanagedPointer::get()
@@ -2299,18 +2250,16 @@ WheelInfo^ AlignedWheelInfoArray::default::get(int index)
 	return gcnew WheelInfo(&(*UnmanagedPointer)[index]);
 }
 
-#pragma managed(push, off)
-void WheelInfoArray_GetDefault(btAlignedObjectArray<btWheelInfo>* wheelInfoArray,
+void WheelInfoArray_SetDefault(btAlignedObjectArray<btWheelInfo>* wheelInfoArray,
 	int index, btWheelInfo* node)
 {
 	(*wheelInfoArray)[index] = *node;
 }
-#pragma managed(pop)
 void AlignedWheelInfoArray::default::set(int index, WheelInfo^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	WheelInfoArray_GetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+	WheelInfoArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
 }
 
 btAlignedObjectArray<btWheelInfo>* AlignedWheelInfoArray::UnmanagedPointer::get()

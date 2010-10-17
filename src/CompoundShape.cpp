@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 
-#include "AlignedObjectArray.h"
+#include "Collections.h"
 #include "CompoundShape.h"
 #ifndef DISABLE_DBVT
 #include "Dbvt.h"
@@ -141,14 +141,12 @@ void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransfor
 	delete newChildTransformTemp;
 }
 
-AlignedCompoundShapeChildArray^ CompoundShape::ChildList::get()
+CompoundShapeChildArray^ CompoundShape::ChildList::get()
 {
-	btAlignedObjectArray<btCompoundShapeChild>* childList =
-		(btAlignedObjectArray<btCompoundShapeChild>*)UnmanagedPointer->getChildList();
+	btCompoundShapeChild* childList = UnmanagedPointer->getChildList();
 	if (childList == 0)
 		return nullptr;
-
-	return gcnew AlignedCompoundShapeChildArray(childList);
+	return gcnew CompoundShapeChildArray(childList, UnmanagedPointer->getNumChildShapes());
 }
 
 #ifndef DISABLE_DBVT

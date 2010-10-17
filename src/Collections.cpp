@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "Collections.h"
+#include "CompoundShape.h"
 
 #ifndef DISABLE_DBVT
 #include "Dbvt.h"
@@ -249,6 +250,62 @@ void BoolArray::default::set(int index, bool value)
 bool* BoolArray::UnmanagedPointer::get()
 {
 	return (bool*) GenericList::UnmanagedPointer;
+}
+
+
+CompoundShapeChildArray::CompoundShapeChildArray(btCompoundShapeChild* shapeArray, int length)
+: GenericList<CompoundShapeChild^>(shapeArray, length)
+{
+}
+
+CompoundShapeChildArray::CompoundShapeChildArray(const btCompoundShapeChild* shapeArray, int length)
+: GenericList<CompoundShapeChild^>(shapeArray, length)
+{
+}
+
+void CompoundShapeChildArray::CopyTo(array<CompoundShapeChild^>^ array, int arrayIndex)
+{
+	if (array == nullptr)
+		throw gcnew ArgumentNullException("array");
+
+	if (arrayIndex < 0)
+		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+
+	int length = Count;
+	if (arrayIndex + length > array->Length)
+		throw gcnew ArgumentException("Array too small.");
+
+	int i;
+	for (i=0; i<length; i++)
+	{
+		array[arrayIndex+i] = gcnew CompoundShapeChild(&UnmanagedPointer[i]);
+	}
+}
+
+CompoundShapeChild^ CompoundShapeChildArray::default::get(int index)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	return gcnew CompoundShapeChild(&UnmanagedPointer[index]);
+}
+
+void CompoundShapeChildArray_SetDefault(btCompoundShapeChild* shapeArray,
+	int index, btCompoundShapeChild* shape)
+{
+	shapeArray[index] = *shape;
+}
+void CompoundShapeChildArray::default::set(int index, CompoundShapeChild^ value)
+{
+	if (IsReadOnly)
+		throw gcnew InvalidOperationException("List is read-only.");
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	CompoundShapeChildArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+}
+
+btCompoundShapeChild* CompoundShapeChildArray::UnmanagedPointer::get()
+{
+	return (btCompoundShapeChild*) GenericList::UnmanagedPointer;
 }
 
 
