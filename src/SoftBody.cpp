@@ -176,7 +176,7 @@ void Anchor::Local::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &_anchor->m_local);
 }
 
-Node^ Anchor::Node::get()
+BulletSharp::SoftBody::Node^ Anchor::Node::get()
 {
 	return gcnew BulletSharp::SoftBody::Node(_anchor->m_node);
 }
