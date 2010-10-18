@@ -13,6 +13,7 @@ namespace DemoFramework
         Device device;
 
         Dictionary<Vector3, Mesh> boxes = new Dictionary<Vector3, Mesh>();
+        Dictionary<Vector3, Mesh> capsules = new Dictionary<Vector3, Mesh>();
         Dictionary<Vector2, Mesh> cones = new Dictionary<Vector2, Mesh>();
         Dictionary<Vector3, Mesh> cylinders = new Dictionary<Vector3, Mesh>();
         Dictionary<float, Mesh> spheres = new Dictionary<float, Mesh>();
@@ -29,6 +30,12 @@ namespace DemoFramework
                 mesh.Dispose();
             }
             boxes.Clear();
+
+            foreach (Mesh mesh in capsules.Values)
+            {
+                mesh.Dispose();
+            }
+            capsules.Clear();
 
             foreach (Mesh mesh in cylinders.Values)
             {
@@ -82,6 +89,9 @@ namespace DemoFramework
                 case BroadphaseNativeType.CompoundShape:
                     RenderCompoundShape((CompoundShape)shape);
                     return;
+                case BroadphaseNativeType.CapsuleShape:
+                    RenderCapsuleShape((CapsuleShape)shape);
+                    return;
             }
 
             //throw new NotImplementedException();
@@ -99,6 +109,20 @@ namespace DemoFramework
             }
 
             boxMesh.DrawSubset(0);
+        }
+
+        public void RenderCapsuleShape(CapsuleShape shape)
+        {
+            Mesh capsuleMesh;
+            Vector3 size = shape.ImplicitShapeDimensions * 2;
+
+            if (capsules.TryGetValue(size, out capsuleMesh) == false)
+            {
+                capsuleMesh = Mesh.CreateBox(device, size.X, size.Y, size.Z);
+                capsules.Add(size, capsuleMesh);
+            }
+
+            capsuleMesh.DrawSubset(0);
         }
 
         public void RenderCone(ConeShape shape)

@@ -14,6 +14,11 @@ CollisionObject::CollisionObject(btCollisionObject* collisionObject)
 	_collisionObject = collisionObject;
 }
 
+CollisionObject::CollisionObject()
+{
+	_collisionObject = new btCollisionObject();
+}
+
 CollisionObject::~CollisionObject()
 {
 	this->!CollisionObject();

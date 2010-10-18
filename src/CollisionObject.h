@@ -33,6 +33,8 @@ namespace BulletSharp
 		~CollisionObject();
 
 	public:
+		CollisionObject();
+
 		property bool IsDisposed
 		{
 			virtual bool get();
