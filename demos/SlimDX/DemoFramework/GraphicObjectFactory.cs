@@ -175,34 +175,44 @@ namespace DemoFramework
 
         public void RenderSoftBody(SoftBody softBody)
         {
-            if (softBody.Faces.Count > 0)
+            AlignedFaceArray faces = softBody.Faces;
+            int faceCount = faces.Count;
+
+            if (faceCount > 0)
             {
-                AlignedFaceArray faces = softBody.Faces;
-                
-                Mesh mesh = new Mesh(device, faces.Count, faces.Count * 6,
-                    MeshFlags.SystemMemory | MeshFlags.Use32Bit, VertexFormat.Position | VertexFormat.Normal);
+                int vertexCount = faceCount * 3;
 
-                SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.None);
-                SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.None);
+                bool index32 = vertexCount > 65536;
 
-                int j;
-                for (j = 0; j < faces.Count; j++)
+                Mesh mesh = new Mesh(device, faceCount, vertexCount,
+                    MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
+
+                SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.Discard);
+                int i;
+                if (index32)
                 {
-                    NodePtrArray nodes = faces[j].N;
-                    verts.Write(nodes[0].X);
-                    verts.Write(Vector3.Zero);
-                    verts.Write(nodes[1].X);
-                    verts.Write(Vector3.Zero);
-                    verts.Write(nodes[2].X);
-                    verts.Write(Vector3.Zero);
-
-                    indices.Write(j * 3);
-                    indices.Write(j * 3 + 1);
-                    indices.Write(j * 3 + 2);
+                    for (i = 0; i < vertexCount; i++)
+                        indices.Write(i);
                 }
-
-                mesh.UnlockVertexBuffer();
+                else
+                {
+                    for (i = 0; i < vertexCount; i++)
+                        indices.Write((short)i);
+                }
                 mesh.UnlockIndexBuffer();
+
+                SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.Discard);
+                foreach (Face face in faces)
+                {
+                    NodePtrArray nodes = face.N;
+                    verts.Write(nodes[0].X);
+                    verts.Position += 12;
+                    verts.Write(nodes[1].X);
+                    verts.Position += 12;
+                    verts.Write(nodes[2].X);
+                    verts.Position += 12;
+                }
+                mesh.UnlockVertexBuffer();
 
                 mesh.ComputeNormals();
                 mesh.DrawSubset(0);
@@ -211,55 +221,66 @@ namespace DemoFramework
             else
             {
                 AlignedTetraArray tetras = softBody.Tetras;
+                int tetraCount = tetras.Count;
 
-                if (tetras.Count > 0)
+                if (tetraCount > 0)
                 {
-                    Mesh mesh = new Mesh(device, tetras.Count * 4, tetras.Count * 24,
-                        MeshFlags.SystemMemory | MeshFlags.Use32Bit, VertexFormat.Position | VertexFormat.Normal);
+                    int vertexCount = tetraCount * 12;
+                    bool index32 = vertexCount > 65536;
 
-                    SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.None);
-                    SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.None);
+                    Mesh mesh = new Mesh(device, tetraCount * 4, vertexCount,
+                        MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
 
-                    int j;
-                    for (j = 0; j < tetras.Count; j++)
+
+                    SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.Discard);
+                    int i;
+                    if (index32)
                     {
-                        NodePtrArray nodes = tetras[j].Nodes;
-
-                        verts.Write(nodes[2].X);
-                        verts.Write(Vector3.Zero);
-                        verts.Write(nodes[1].X);
-                        verts.Write(Vector3.Zero);
-                        verts.Write(nodes[0].X);
-                        verts.Write(Vector3.Zero);
-
-                        verts.Write(nodes[0].X);
-                        verts.Write(Vector3.Zero);
-                        verts.Write(nodes[1].X);
-                        verts.Write(Vector3.Zero);
-                        verts.Write(nodes[3].X);
-                        verts.Write(Vector3.Zero);
-
-                        verts.Write(nodes[2].X);
-                        verts.Write(Vector3.Zero);
-                        verts.Write(nodes[3].X);
-                        verts.Write(Vector3.Zero);
-                        verts.Write(nodes[1].X);
-                        verts.Write(Vector3.Zero);
-
-                        verts.Write(nodes[2].X);
-                        verts.Write(Vector3.Zero);
-                        verts.Write(nodes[0].X);
-                        verts.Write(Vector3.Zero);
-                        verts.Write(nodes[3].X);
-                        verts.Write(Vector3.Zero);
-
-                        int k;
-                        for (k = j * 12; k < j * 12 + 12; k++)
-                            indices.Write(k);
+                        for (i = 0; i < vertexCount; i++)
+                            indices.Write(i);
                     }
-
-                    mesh.UnlockVertexBuffer();
+                    else
+                    {
+                        for (i = 0; i < vertexCount; i++)
+                            indices.Write((short)i);
+                    }
                     mesh.UnlockIndexBuffer();
+
+
+                    SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.Discard);
+                    foreach (Tetra t in tetras)
+                    {
+                        NodePtrArray nodes = t.Nodes;
+
+                        verts.Write(nodes[2].X);
+                        verts.Position += 12;
+                        verts.Write(nodes[1].X);
+                        verts.Position += 12;
+                        verts.Write(nodes[0].X);
+                        verts.Position += 12;
+
+                        verts.Write(nodes[0].X);
+                        verts.Position += 12;
+                        verts.Write(nodes[1].X);
+                        verts.Position += 12;
+                        verts.Write(nodes[3].X);
+                        verts.Position += 12;
+
+                        verts.Write(nodes[2].X);
+                        verts.Position += 12;
+                        verts.Write(nodes[3].X);
+                        verts.Position += 12;
+                        verts.Write(nodes[1].X);
+                        verts.Position += 12;
+
+                        verts.Write(nodes[2].X);
+                        verts.Position += 12;
+                        verts.Write(nodes[0].X);
+                        verts.Position += 12;
+                        verts.Write(nodes[3].X);
+                        verts.Position += 12;
+                    }
+                    mesh.UnlockVertexBuffer();
 
                     mesh.ComputeNormals();
                     mesh.DrawSubset(0);

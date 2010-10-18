@@ -107,9 +107,7 @@ namespace VehicleDemo
                         data2.Write((j - NUM_VERTS_Y * 0.5f) * scale);
 
                         // Normals will be calculated later
-                        data2.Write(0.0f);
-                        data2.Write(0.0f);
-                        data2.Write(0.0f);
+                        data2.Position += 12;
                     }
                 }
                 game.ground.UnlockVertexBuffer();
@@ -215,9 +213,7 @@ namespace VehicleDemo
                         data.Write((i - width * 0.5f) * scale.Z);
 
                         // Normals will be calculated later
-                        data.Write(0.0f);
-                        data.Write(0.0f);
-                        data.Write(0.0f);
+                        data.Position += 12;
                     }
                 }
                 game.ground.UnlockVertexBuffer();
