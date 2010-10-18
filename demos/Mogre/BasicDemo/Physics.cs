@@ -9,7 +9,7 @@ namespace BasicDemo
 
         CollisionDispatcher Dispatcher;
         BroadphaseInterface Broadphase;
-        CollisionShapeArray CollisionShapes = new CollisionShapeArray();
+        AlignedCollisionShapeArray CollisionShapes = new AlignedCollisionShapeArray();
 
         ///create 125 (5x5x5) dynamic objects
         public int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;

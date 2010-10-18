@@ -16,7 +16,7 @@ namespace BasicDemo
 
         public DiscreteDynamicsWorld World { get; set; }
         CollisionDispatcher dispatcher;
-        CollisionShapeArray collisionShapes = new CollisionShapeArray();
+        AlignedCollisionShapeArray collisionShapes = new AlignedCollisionShapeArray();
 
         public Physics()
         {

@@ -11,7 +11,7 @@ namespace BasicDemo
         CollisionDispatcher Dispatcher;
         BroadphaseInterface Broadphase;
         //ConstraintSolver Solver;
-        CollisionShapeArray CollisionShapes;
+        AlignedCollisionShapeArray CollisionShapes;
 
         ///create 125 (5x5x5) dynamic objects
         int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
@@ -34,7 +34,7 @@ namespace BasicDemo
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, null, collisionConf);
             World.Gravity = new Vector3(0, -10, 0);
 
-            CollisionShapes = new CollisionShapeArray();
+            CollisionShapes = new AlignedCollisionShapeArray();
 
             // create the ground
             CollisionShape groundShape = new BoxShape(50, 1, 50);
