@@ -90,7 +90,6 @@ namespace RagdollDemo
                 "Space - Shoot box";
 
             physics = new Physics();
-            physics.SetDebugDrawMode(Device, DebugDrawModes.DrawWireframe);
         }
 
         protected override void OnResourceLoad()

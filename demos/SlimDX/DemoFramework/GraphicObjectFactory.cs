@@ -113,16 +113,29 @@ namespace DemoFramework
 
         public void RenderCapsuleShape(CapsuleShape shape)
         {
-            Mesh capsuleMesh;
-            Vector3 size = shape.ImplicitShapeDimensions * 2;
+            Mesh compoundMesh;
+            Vector3 size = shape.ImplicitShapeDimensions;
 
-            if (capsules.TryGetValue(size, out capsuleMesh) == false)
+            if (capsules.TryGetValue(size, out compoundMesh) == false)
             {
-                capsuleMesh = Mesh.CreateBox(device, size.X, size.Y, size.Z);
-                capsules.Add(size, capsuleMesh);
+                // Combine a cylinder and two spheres.
+                Mesh cylinder = Mesh.CreateCylinder(device, size.X, size.X, size.Y * 2, 8, 1);
+                Mesh sphere = Mesh.CreateSphere(device, size.Z, 8, 4);
+                Mesh[] meshes = new Mesh[] { sphere, cylinder, sphere };
+                Matrix[] transforms = new Matrix[] {
+                    Matrix.Translation(0, -size.Y, 0),
+                    Matrix.RotationX((float)Math.PI / 2),
+                    Matrix.Translation(0, size.Y, 0)};
+                compoundMesh = Mesh.Concatenate(device, meshes, MeshFlags.Managed, transforms, null);
+                cylinder.Dispose();
+                sphere.Dispose();
+
+                capsules.Add(size, compoundMesh);
             }
 
-            capsuleMesh.DrawSubset(0);
+            compoundMesh.DrawSubset(0);
+            compoundMesh.DrawSubset(1);
+            compoundMesh.DrawSubset(2);
         }
 
         public void RenderCone(ConeShape shape)
