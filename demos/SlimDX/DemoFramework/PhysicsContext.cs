@@ -1,26 +1,34 @@
 ﻿using BulletSharp;
 using SlimDX;
 using SlimDX.Direct3D9;
-using System;
 
 namespace DemoFramework
 {
     public class PhysicsContext
     {
-        public DynamicsWorld World;
-        public bool IsDebugDrawEnabled { get; private set; }
+        public DynamicsWorld World { get; protected set; }
 
         protected CollisionDispatcher Dispatcher;
         protected BroadphaseInterface Broadphase;
         protected ConstraintSolver Solver;
         protected AlignedCollisionShapeArray CollisionShapes = new AlignedCollisionShapeArray();
 
+        BoxShape shootBoxShape;
+
+        public bool IsDebugDrawEnabled { get; set; }
+
         public PhysicsDebugDraw DebugDrawer
         {
             get { return (PhysicsDebugDraw)World.DebugDrawer; }
-            private set { World.DebugDrawer = value; }
+            set
+            {
+                if (World == null)
+                    throw new System.Exception("Physics world not initialized.");
+
+                World.DebugDrawer = value;
+                IsDebugDrawEnabled = (value != null);
+            }
         }
-        BoxShape shootBoxShape;
 
         public PhysicsContext()
         {
@@ -40,28 +48,10 @@ namespace DemoFramework
             else
             {
                 if (DebugDrawer == null)
-                {
                     DebugDrawer = new PhysicsDebugDraw(device);
-                    World.DebugDrawer = DebugDrawer;
-                }
                 DebugDrawer.DebugMode = modes;
                 IsDebugDrawEnabled = true;
             }
-        }
-
-        public void SetDebugDrawer(PhysicsDebugDraw debugDraw)
-        {
-            if (World == null)
-                throw new System.Exception("Physics world not initialized.");
-
-            DebugDrawer = debugDraw;
-            IsDebugDrawEnabled = (debugDraw != null);
-        }
-
-        public void SetDebugDraw(PhysicsDebugDraw debugDraw, DebugDrawModes modes)
-        {
-            debugDraw.DebugMode = modes;
-            SetDebugDrawer(debugDraw);
         }
 
         public void DebugDrawWorld()

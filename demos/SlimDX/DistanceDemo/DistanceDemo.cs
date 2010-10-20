@@ -1,40 +1,25 @@
-﻿using BulletSharp;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using BulletSharp;
 using DemoFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace DistanceDemo
 {
     class DistanceDemo : Game
     {
         int Width = 1024, Height = 768;
-        Color ambient = Color.Gray;
         Vector3 eye = new Vector3(10, 10, 5);
         Vector3 target = new Vector3(0, 8, 0);
+        Color ambient = Color.Gray;
+        DebugDrawModes debugMode = DebugDrawModes.DrawWireframe;
 
-        Mesh box, groundBox;
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
-
+        GraphicObjectFactory mesh;
         Physics physics;
-
-        public Device Device
-        {
-            get { return Device9; }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                box.Dispose();
-                groundBox.Dispose();
-            }
-        }
 
         protected override void OnInitializeDevice()
         {
@@ -59,15 +44,14 @@ namespace DistanceDemo
 
         protected override void OnInitialize()
         {
-            // Create meshes to draw
-            box = Mesh.CreateBox(Device, 2, 2, 2);
-            groundBox = Mesh.CreateBox(Device, 100, 2, 100);
+            mesh = new GraphicObjectFactory(Device);
 
             light = new Light();
             light.Type = LightType.Point;
             light.Range = 70;
             light.Position = new Vector3(10, 25, 10);
             light.Diffuse = Color.LemonChiffon;
+            light.Attenuation0 = 0.5f;
 
             activeMaterial = new Material();
             activeMaterial.Diffuse = Color.Orange;
@@ -84,7 +68,16 @@ namespace DistanceDemo
             Freelook.SetEyeTarget(eye, target);
 
             physics = new Physics();
-            physics.SetDebugDrawMode(Device, DebugDrawModes.DrawWireframe);
+            physics.SetDebugDrawMode(Device, debugMode);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                mesh.Dispose();
+            }
         }
 
         protected override void OnResourceLoad()
@@ -96,8 +89,9 @@ namespace DistanceDemo
             Device.SetRenderState(RenderState.Ambient, ambient.ToArgb());
 
             Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 150.0f);
-
             Device.SetTransform(TransformState.Projection, Projection);
+
+            //Device.SetRenderState(RenderState.CullMode, Cull.None);
         }
 
         protected override void OnUpdate()
@@ -129,20 +123,13 @@ namespace DistanceDemo
                 Device.SetTransform(TransformState.World, body.WorldTransform);
 
                 if ((string)colObj.UserObject == "Ground")
-                {
                     Device.Material = groundMaterial;
-                    groundBox.DrawSubset(0);
-                    continue;
-                }
-
-                /*
-                if (colObj.ActivationState == ActivationState.ActiveTag)
+                else if (colObj.ActivationState == ActivationState.ActiveTag)
                     Device.Material = activeMaterial;
                 else
                     Device.Material = passiveMaterial;
 
-                box.DrawSubset(0);
-                */
+                mesh.Render(body.CollisionShape, Matrix.Identity);
 
                 if (physics.HasDistanceResult)
                 {
@@ -165,6 +152,11 @@ namespace DistanceDemo
 
             Device.EndScene();
             Device.Present();
+        }
+
+        public Device Device
+        {
+            get { return Device9; }
         }
     }
 

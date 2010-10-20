@@ -1,39 +1,25 @@
-﻿using BulletSharp;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using BulletSharp;
 using DemoFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace CcdPhysicsDemo
 {
     class CcdPhysicsDemo : Game
     {
         int Width = 1024, Height = 768;
-        Color ambient = Color.Gray;
         Vector3 eye = new Vector3(0, 10, 40);
         Vector3 target = Vector3.Zero;
+        Color ambient = Color.Gray;
+        DebugDrawModes debugMode = DebugDrawModes.DrawWireframe;
 
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
         GraphicObjectFactory mesh;
-
         Physics physics;
-
-        public Device Device
-        {
-            get { return Device9; }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                mesh.Dispose();
-            }
-        }
 
         protected override void OnInitializeDevice()
         {
@@ -92,6 +78,15 @@ namespace CcdPhysicsDemo
                 Freelook.SetEyeTarget(eye, Vector3.Zero);
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                mesh.Dispose();
+            }
+        }
+
         protected override void OnResourceLoad()
         {
             base.OnResourceLoad();
@@ -101,7 +96,6 @@ namespace CcdPhysicsDemo
             Device.SetRenderState(RenderState.Ambient, ambient.ToArgb());
 
             Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 150.0f);
-
             Device.SetTransform(TransformState.Projection, Projection);
         }
 
@@ -112,7 +106,7 @@ namespace CcdPhysicsDemo
             if (Input.KeysPressed.Contains(Keys.F3))
             {
                 if (physics.IsDebugDrawEnabled == false)
-                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawWireframe);
+                    physics.SetDebugDrawMode(Device, debugMode);
                 else
                     physics.SetDebugDrawMode(Device, DebugDrawModes.None);
             }
@@ -131,24 +125,16 @@ namespace CcdPhysicsDemo
             foreach (CollisionObject colObj in physics.World.CollisionObjectArray)
             {
                 RigidBody body = RigidBody.Upcast(colObj);
+                Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
+
                 if ((string)body.UserObject == "Ground")
-                {
-                    Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
                     Device.Material = groundMaterial;
-                    mesh.Render(body);
-                    continue;
-                }
-
-                Matrix trans = Matrix.RotationX((float)Math.PI / 2);
-                trans *= body.MotionState.WorldTransform;
-                Device.SetTransform(TransformState.World, trans);
-
-                if (colObj.ActivationState == ActivationState.ActiveTag)
+                else if (colObj.ActivationState == ActivationState.ActiveTag)
                     Device.Material = activeMaterial;
                 else
                     Device.Material = passiveMaterial;
 
-                mesh.Render(body);
+                mesh.Render(body.CollisionShape, Matrix.Identity);
             }
 
             physics.DebugDrawWorld();
@@ -157,6 +143,11 @@ namespace CcdPhysicsDemo
 
             Device.EndScene();
             Device.Present();
+        }
+
+        public Device Device
+        {
+            get { return Device9; }
         }
     }
 

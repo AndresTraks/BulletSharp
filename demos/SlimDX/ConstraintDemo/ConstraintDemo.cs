@@ -1,39 +1,25 @@
-﻿using BulletSharp;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using BulletSharp;
 using DemoFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace ConstraintDemo
 {
     class ConstraintDemo : Game
     {
         int Width = 1024, Height = 768;
-        Color ambient = Color.Gray;
         Vector3 eye = new Vector3(35, 10, 35);
         Vector3 target = new Vector3(0, 5, 0);
+        Color ambient = Color.Gray;
+        DebugDrawModes debugMode = DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits;
 
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
         GraphicObjectFactory mesh;
-
         Physics physics;
-
-        public Device Device
-        {
-            get { return Device9; }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                mesh.Dispose();
-            }
-        }
 
         protected override void OnInitializeDevice()
         {
@@ -59,7 +45,7 @@ namespace ConstraintDemo
         protected override void OnInitialize()
         {
             physics = new Physics();
-            physics.SetDebugDrawMode(Device, DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits);
+            physics.SetDebugDrawMode(Device, debugMode);
 
             mesh = new GraphicObjectFactory(Device);
 
@@ -90,6 +76,15 @@ namespace ConstraintDemo
                 "Space - Shoot box";
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                mesh.Dispose();
+            }
+        }
+
         protected override void OnResourceLoad()
         {
             base.OnResourceLoad();
@@ -99,7 +94,6 @@ namespace ConstraintDemo
             Device.SetRenderState(RenderState.Ambient, ambient.ToArgb());
 
             Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 150.0f);
-
             Device.SetTransform(TransformState.Projection, Projection);
         }
 
@@ -110,7 +104,7 @@ namespace ConstraintDemo
             if (Input.KeysPressed.Contains(Keys.F3))
             {
                 if (physics.IsDebugDrawEnabled == false)
-                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits);
+                    physics.SetDebugDrawMode(Device, debugMode);
                 else
                     physics.SetDebugDrawMode(Device, 0);
             }
@@ -132,18 +126,13 @@ namespace ConstraintDemo
                 Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
 
                 if ((string)body.UserObject == "Ground")
-                {
                     Device.Material = groundMaterial;
-                    mesh.Render(body);
-                    continue;
-                }
-
-                if (colObj.ActivationState == ActivationState.ActiveTag)
+                else if (colObj.ActivationState == ActivationState.ActiveTag)
                     Device.Material = activeMaterial;
                 else
                     Device.Material = passiveMaterial;
 
-                mesh.Render(body);
+                mesh.Render(body.CollisionShape, Matrix.Identity);
             }
 
             physics.DebugDrawWorld();
@@ -152,6 +141,11 @@ namespace ConstraintDemo
 
             Device.EndScene();
             Device.Present();
+        }
+
+        public Device Device
+        {
+            get { return Device9; }
         }
     }
 

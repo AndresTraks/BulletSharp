@@ -39,7 +39,7 @@ namespace Box2dDemo
             World.Gravity = new Vector3(0, -10, 0);
 
             // create a few basic rigid bodies
-            CollisionShape groundShape = new BoxShape(75, 1, 75);
+            CollisionShape groundShape = new BoxShape(150, 7, 150);
             CollisionShapes.Add(groundShape);
             RigidBody ground = LocalCreateRigidBody(0, Matrix.Identity, groundShape);
             ground.UserObject = "Ground";
@@ -73,7 +73,7 @@ namespace Box2dDemo
                 y = x;
                 for (j = 0; j < ArraySizeX; j++)
                 {
-                    startTransform = Matrix.Translation(y - new Vector3(-5, 0, -15));
+                    startTransform = Matrix.Translation(y - new Vector3(-10, 0, 0));
 
                     //using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
                     DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
@@ -97,6 +97,7 @@ namespace Box2dDemo
                     body.AngularFactor = new Vector3(0, 0, 1);
 
                     World.AddRigidBody(body);
+
                     y += deltaY;
                 }
                 x += deltaX;

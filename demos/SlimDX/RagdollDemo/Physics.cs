@@ -26,23 +26,23 @@ namespace RagdollDemo
             //World.DispatchInfo.UseConvexConservativeDistanceUtil = true;
             //World.DispatchInfo.ConvexConservativeDistanceThreshold = 0.01f;
 
-            	// Setup a big ground box
-		    CollisionShape groundShape = new BoxShape(100, 10, 100);
+            // Setup a big ground box
+            CollisionShape groundShape = new BoxShape(100, 10, 100);
             CollisionShapes.Add(groundShape);
-		    Matrix groundTransform = Matrix.Translation(0, -10, 0);
+            Matrix groundTransform = Matrix.Translation(0, -10, 0);
 
-		    RigidBody ground = LocalCreateRigidBody(0, groundTransform, groundShape);
+            RigidBody ground = LocalCreateRigidBody(0, groundTransform, groundShape);
             ground.UserObject = "Ground";
 
-            	// Spawn one ragdoll
+            // Spawn one ragdoll
             SpawnRagdoll(new Vector3(1, 0.5f, 0));
             SpawnRagdoll(new Vector3(-1, 0.5f, 0));
         }
 
         void SpawnRagdoll(Vector3 startOffset)
         {
-	        Ragdoll ragdoll = new Ragdoll(World, startOffset);
+            Ragdoll ragdoll = new Ragdoll(World, startOffset);
             ragdolls.Add(ragdoll);
-        }	
+        }
     }
 }

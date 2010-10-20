@@ -75,6 +75,11 @@ void CompoundShapeChild::UnmanagedPointer::set(btCompoundShapeChild* value)
 }
 
 
+CompoundShape::CompoundShape(btCompoundShape* compoundShape)
+: CollisionShape(compoundShape)
+{
+}
+
 CompoundShape::CompoundShape()
 : CollisionShape(new btCompoundShape())
 {

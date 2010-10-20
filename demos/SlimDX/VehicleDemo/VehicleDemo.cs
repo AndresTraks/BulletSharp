@@ -1,45 +1,28 @@
-﻿using BulletSharp;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using BulletSharp;
 using DemoFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace VehicleDemo
 {
     class VehicleDemo : Game
     {
         int Width = 1024, Height = 768;
-        Color ambient = Color.Black;
         Vector3 eye = new Vector3(5, 15, 5);
         Vector3 target = Vector3.Zero;
+        Color ambient = Color.Black;
+        DebugDrawModes debug = DebugDrawModes.DrawWireframe;
         int ViewMode = 1;
 
-        Mesh wheel, chassis;
         Light light;
-        Material wheelMaterial, bodyMaterial, groundMaterial;
-        public Mesh ground;
+        Material activeMaterial, passiveMaterial, groundMaterial, bodyMaterial, wheelMaterial;
         GraphicObjectFactory mesh;
-
+        Mesh wheel;
+        public Mesh ground;
         Physics physics;
-
-        public Device Device
-        {
-            get { return Device9; }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                wheel.Dispose();
-                chassis.Dispose();
-                ground.Dispose();
-                mesh.Dispose();
-            }
-        }
 
         protected override void OnInitializeDevice()
         {
@@ -65,11 +48,10 @@ namespace VehicleDemo
         protected override void OnInitialize()
         {
             physics = new Physics(this);
-            physics.SetDebugDrawer(new PhysicsDebugDrawLineGathering(Device));
+            physics.DebugDrawer = new PhysicsDebugDrawLineGathering(Device);
             physics.SetDebugDrawMode(Device, 0);
 
             wheel = Mesh.CreateCylinder(Device, physics.wheelRadius, physics.wheelRadius, physics.wheelWidth, 10, 10);
-            chassis = Mesh.CreateBox(Device, 2.0f, 1.0f, 4.0f);
             ground.ComputeNormals();
 
             mesh = new GraphicObjectFactory(Device);
@@ -82,23 +64,42 @@ namespace VehicleDemo
             light.Diffuse = Color.White;
             light.Attenuation0 = 0.75f;
 
-            wheelMaterial = new Material();
-            wheelMaterial.Diffuse = Color.Red;
-            wheelMaterial.Ambient = ambient;
+            activeMaterial = new Material();
+            activeMaterial.Diffuse = Color.Orange;
+            activeMaterial.Ambient = ambient;
 
-            bodyMaterial = new Material();
-            bodyMaterial.Diffuse = Color.Orange;
-            bodyMaterial.Ambient = ambient;
+            passiveMaterial = new Material();
+            passiveMaterial.Diffuse = Color.Red;
+            passiveMaterial.Ambient = ambient;
 
             groundMaterial = new Material();
             groundMaterial.Diffuse = Color.Green;
             groundMaterial.Ambient = ambient;
+
+            bodyMaterial = new Material();
+            bodyMaterial.Diffuse = Color.Blue;
+            bodyMaterial.Ambient = ambient;
+
+            wheelMaterial = new Material();
+            wheelMaterial.Diffuse = Color.Red;
+            wheelMaterial.Ambient = ambient;
 
             Fps.Text = "F2 - Toggle view mode: Tracking\n" +
                 "F3 - Toggle debug\n" +
                 "F11 - Toggle fullscreen";
 
             Freelook.SetEyeTarget(new Vector3(30, 10, 0), target);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                wheel.Dispose();
+                ground.Dispose();
+                mesh.Dispose();
+            }
         }
 
         protected override void OnResourceLoad()
@@ -110,8 +111,8 @@ namespace VehicleDemo
             Device.SetRenderState(RenderState.Ambient, ambient.ToArgb());
 
             Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 400.0f);
-
             Device.SetTransform(TransformState.Projection, Projection);
+
             Device.SetRenderState(RenderState.CullMode, Cull.None);
         }
 
@@ -158,7 +159,7 @@ namespace VehicleDemo
                 if (physics.IsDebugDrawEnabled)
                     physics.SetDebugDrawMode(Device, 0);
                 else
-                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawWireframe);
+                    physics.SetDebugDrawMode(Device, debug);
             }
 
             physics.HandleKeys(Input, FrameDelta);
@@ -170,8 +171,8 @@ namespace VehicleDemo
             Device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.LightGray, 1.0f, 0);
             Device.BeginScene();
 
-            Matrix trans = Matrix.Translation(new Vector3(0, 1, 0)) * physics.vehicle.ChassisWorldTransform;
-            Vector4 pos = physics.vehicle.ChassisWorldTransform.get_Rows(3);
+            Matrix trans = physics.vehicle.ChassisWorldTransform;
+            Vector4 pos = trans.get_Rows(3);
             Vector3 pos2 = new Vector3(pos.X, pos.Y, pos.Z);
 
             // Set View matrix based on view mode
@@ -190,31 +191,23 @@ namespace VehicleDemo
                 Device.SetTransform(TransformState.View, Freelook.View);
             }
 
-            Device.Material = groundMaterial;
-            Device.SetTransform(TransformState.World, Matrix.Identity);
-            ground.DrawSubset(0);
-
             if (physics.IsDebugDrawEnabled == false)
             {
                 // Draw wireframe
                 Device.SetRenderState(RenderState.Lighting, false);
                 Device.SetRenderState(RenderState.FillMode, FillMode.Wireframe);
+                Device.SetTransform(TransformState.World, Matrix.Identity);
                 ground.DrawSubset(0);
                 Device.SetRenderState(RenderState.Lighting, true);
                 Device.SetRenderState(RenderState.FillMode, FillMode.Solid);
             }
-
-
-            Device.Material = bodyMaterial;
-            Device.SetTransform(TransformState.World, trans);
-            chassis.DrawSubset(0);
 
             Device.Material = wheelMaterial;
             int i;
             for (i = 0; i < physics.vehicle.NumWheels; i++)
             {
                 //synchronize the wheels with the (interpolated) chassis worldtransform
-                //physics.vehicle.UpdateWheelTransform(i, true);
+                physics.vehicle.UpdateWheelTransform(i, true);
                 //draw wheels (cylinders)
                 trans = Matrix.RotationY((float)Math.PI / 2);
                 trans *= physics.vehicle.GetWheelInfo(i).WorldTransform;
@@ -227,6 +220,19 @@ namespace VehicleDemo
             foreach (CollisionObject colObj in physics.World.CollisionObjectArray)
             {
                 RigidBody body = RigidBody.Upcast(colObj);
+                if ((string)body.UserObject == "Ground")
+                {
+                    Device.SetTransform(TransformState.World, Matrix.Identity);
+                    Device.Material = groundMaterial;
+                    ground.DrawSubset(0);
+                    continue;
+                }
+                else if ((string)body.UserObject == "Chassis")
+                    Device.Material = bodyMaterial;
+                else if (colObj.ActivationState == ActivationState.ActiveTag)
+                    Device.Material = activeMaterial;
+                else
+                    Device.Material = passiveMaterial;
                 Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
                 mesh.Render(colObj);
             }
@@ -235,6 +241,11 @@ namespace VehicleDemo
 
             Device.EndScene();
             Device.Present();
+        }
+
+        public Device Device
+        {
+            get { return Device9; }
         }
     }
 

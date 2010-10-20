@@ -1,43 +1,26 @@
-﻿using BulletSharp;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using BulletSharp;
 using DemoFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace SerializeDemo
 {
     class SerializeDemo : Game
     {
         int Width = 1024, Height = 768;
-        Color ambient = Color.Gray;
         Vector3 eye = new Vector3(30, 20, 10);
         Vector3 target = new Vector3(0, 5, 0);
+        Color ambient = Color.Gray;
         DebugDrawModes debugMode = DebugDrawModes.DrawWireframe |
             DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits;
 
-        Mesh groundBox;
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
         GraphicObjectFactory mesh;
-
         Physics physics;
-
-        public Device Device
-        {
-            get { return Device9; }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                mesh.Dispose();
-                groundBox.Dispose();
-            }
-        }
 
         protected override void OnInitializeDevice()
         {
@@ -63,7 +46,6 @@ namespace SerializeDemo
         protected override void OnInitialize()
         {
             mesh = new GraphicObjectFactory(Device);
-            groundBox = Mesh.CreateBox(Device, 100, 100, 100);
 
             light = new Light();
             light.Type = LightType.Point;
@@ -92,7 +74,15 @@ namespace SerializeDemo
                 "Space - Shoot box";
 
             physics = new Physics();
-            physics.SetDebugDrawMode(Device, debugMode);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                mesh.Dispose();
+            }
         }
 
         protected override void OnResourceLoad()
@@ -104,7 +94,6 @@ namespace SerializeDemo
             Device.SetRenderState(RenderState.Ambient, ambient.ToArgb());
 
             Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 150.0f);
-
             Device.SetTransform(TransformState.Projection, Projection);
         }
 
@@ -137,21 +126,13 @@ namespace SerializeDemo
                 Device.SetTransform(TransformState.World, body.WorldTransform);
 
                 if ((string)colObj.UserObject == "Ground")
-                {
-                    if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.StaticPlane)
-                        Device.SetTransform(TransformState.World, Matrix.Translation(0, -50, 0) * body.WorldTransform);
-
                     Device.Material = groundMaterial;
-                    groundBox.DrawSubset(0);
-                    continue;
-                }
-
-                if (colObj.ActivationState == ActivationState.ActiveTag)
+                else if (colObj.ActivationState == ActivationState.ActiveTag)
                     Device.Material = activeMaterial;
                 else
                     Device.Material = passiveMaterial;
 
-                mesh.Render(body);
+                mesh.Render(body.CollisionShape, Matrix.Identity);
             }
 
             physics.DebugDrawWorld();
@@ -160,6 +141,11 @@ namespace SerializeDemo
 
             Device.EndScene();
             Device.Present();
+        }
+
+        public Device Device
+        {
+            get { return Device9; }
         }
     }
 

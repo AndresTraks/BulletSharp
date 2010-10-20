@@ -1,14 +1,13 @@
-﻿using BulletSharp;
-using SlimDX;
-using SlimDX.Direct3D9;
-using SlimDX.Multimedia;
-using SlimDX.RawInput;
-using SlimDX.Windows;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using BulletSharp;
+using SlimDX;
+using SlimDX.Multimedia;
+using SlimDX.RawInput;
+using SlimDX.Windows;
 
 namespace DemoFramework
 {
@@ -47,7 +46,7 @@ namespace DemoFramework
         protected Matrix Projection;
         protected FreeLook Freelook;
         protected FpsDisplay Fps;
-        
+
 
         readonly Clock clock = new Clock();
         bool deviceLost = false;
@@ -62,7 +61,7 @@ namespace DemoFramework
         TypedConstraint pickConstraint;
         float oldPickingDist;
 
-        
+
         public bool TestLibraries()
         {
             try
@@ -114,11 +113,12 @@ namespace DemoFramework
             }
         }
 
-                /// <summary>
+        /// <summary>
         /// Performs object finalization.
         /// </summary>
-        ~Game() {
-            Dispose( false );
+        ~Game()
+        {
+            Dispose(false);
         }
 
         /// <summary>
@@ -132,7 +132,8 @@ namespace DemoFramework
         /// <summary>
         /// Updates sample state.
         /// </summary>
-        private void Update() {
+        private void Update()
+        {
             FrameDelta = clock.Update();
             OnUpdate();
         }
@@ -149,7 +150,7 @@ namespace DemoFramework
                 ToggleFullScreen();
 
             if (Input.KeysPressed.Contains(Keys.Space))
-              physics.ShootBox(Freelook.Eye, GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView));
+                physics.ShootBox(Freelook.Eye, GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView));
 
 
             if (Input.MousePressed != MouseButtonFlags.None)
@@ -291,7 +292,7 @@ namespace DemoFramework
             }
         }
 
-        Vector3	GetRayTo(Point point, Vector3 eye, Vector3 target, float fov)
+        Vector3 GetRayTo(Point point, Vector3 eye, Vector3 target, float fov)
         {
             float aspect;
 
@@ -308,18 +309,19 @@ namespace DemoFramework
             vertical = Vector3.Cross(hor, rayForward);
             vertical.Normalize();
 
-            float tanFov = (float)Math.Tan(fov/2);
+            float tanFov = (float)Math.Tan(fov / 2);
             hor *= 2.0f * farPlane * tanFov;
             vertical *= 2.0f * farPlane * tanFov;
 
             if (Form.ClientSize.Width > Form.ClientSize.Height)
             {
                 aspect = (float)Form.ClientSize.Width / (float)Form.ClientSize.Height;
-	            hor *= aspect;
-            } else 
+                hor *= aspect;
+            }
+            else
             {
                 aspect = (float)Form.ClientSize.Height / (float)Form.ClientSize.Width;
-	            vertical *= aspect;
+                vertical *= aspect;
             }
 
             Vector3 rayToCenter = rayFrom + rayForward;
@@ -437,7 +439,7 @@ namespace DemoFramework
 
                 if (isFormClosed)
                     return;
-                
+
                 if (!formIsResizing)
                     Render();
             });

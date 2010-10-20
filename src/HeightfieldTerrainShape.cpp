@@ -1,10 +1,11 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h>
-#pragma managed(pop)
-
 #include "HeightfieldTerrainShape.h"
+
+HeightfieldTerrainShape::HeightfieldTerrainShape(btHeightfieldTerrainShape* terrainShape)
+: ConcaveShape(terrainShape)
+{
+}
 
 HeightfieldTerrainShape::HeightfieldTerrainShape(int heightStickWidth, int heightStickLength, Stream^ heightfieldData,
 	btScalar heightScale, btScalar minHeight, btScalar maxHeight, int upAxis,
@@ -24,7 +25,7 @@ HeightfieldTerrainShape::HeightfieldTerrainShape(int heightStickWidth, int heigh
 		typeSize = 4;
 		break;
 	default:
-		throw gcnew Exception("Bad height data type");
+		throw gcnew ArgumentException("Data type can only be PhyUChar, PhyShort or PhyFloat.", "heightDataType");
 	}
 
 	int dataSize = heightStickWidth * heightStickLength * typeSize;

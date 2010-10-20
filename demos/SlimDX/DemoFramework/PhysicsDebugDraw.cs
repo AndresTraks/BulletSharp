@@ -1,8 +1,8 @@
-﻿using BulletSharp;
+﻿using System;
+using System.Collections.Generic;
+using BulletSharp;
 using SlimDX;
 using SlimDX.Direct3D9;
-using System;
-using System.Collections.Generic;
 
 namespace DemoFramework
 {

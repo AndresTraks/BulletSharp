@@ -1,8 +1,8 @@
-﻿using BulletSharp;
+﻿using System;
+using BulletSharp;
 using BulletSharp.SoftBody;
 using DemoFramework;
 using SlimDX;
-using System;
 
 namespace SoftDemo
 {

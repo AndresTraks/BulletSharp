@@ -9,6 +9,7 @@ namespace BulletSharp
 {
 	ref class Serializer;
 
+	[DebuggerDisplay("Type = {ShapeType}")]
 	public ref class CollisionShape : BulletSharp::IDisposable
 	{
 	public:
@@ -27,12 +28,9 @@ namespace BulletSharp
 		~CollisionShape();
 
 	public:
-		property bool IsDisposed
-		{
-			virtual bool get();
-		}
+		virtual bool Equals(Object^ obj) override;
+		virtual int GetHashCode() override;
 
-	public:
 		void CalculateLocalInertia(btScalar mass, [Out] Vector3% inertia);
 		Vector3 CalculateLocalInertia(btScalar mass);
 		void CalculateTemporalAabb(Matrix curTrans,
@@ -49,6 +47,11 @@ namespace BulletSharp
 #endif
 
 		CollisionShape^ UpcastDetect();
+
+		property bool IsDisposed
+		{
+			virtual bool get();
+		}
 
 		property btScalar AngularMotionDisc
 		{

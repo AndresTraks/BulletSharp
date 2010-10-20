@@ -1,85 +1,25 @@
-﻿using BulletSharp;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using BulletSharp;
 using DemoFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace Box2dDemo
 {
     class Box2dDemo : Game
     {
         int Width = 1024, Height = 768;
+        Vector3 eye = new Vector3(0, 15, 20);
+        Vector3 target = new Vector3(10, 10, 0);
         Color ambient = Color.Gray;
-        Vector3 eye = new Vector3(10, 20, 30);
-        Vector3 target = new Vector3(7, 7, 0);
+        DebugDrawModes debugMode = DebugDrawModes.DrawWireframe;
 
-        Mesh triangle;
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
         GraphicObjectFactory mesh;
-
         Physics physics;
-
-        public Device Device
-        {
-            get { return Device9; }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                mesh.Dispose();
-                triangle.Dispose();
-            }
-        }
-
-        Mesh ConstructTriangleMesh()
-        {
-            float u = 1.02f;
-            Vector3[] points = { new Vector3(0, u, 0), new Vector3(-u, -u, 0), new Vector3(u, -u, 0) };
-            Vector3 depth = new Vector3(0, 0, physics.Depth);
-            Mesh triangle = new Mesh(Device, 8, 6, MeshFlags.Managed, VertexFormat.Position | VertexFormat.Normal);
-
-            SlimDX.DataStream ds = triangle.LockVertexBuffer(LockFlags.None);
-
-            // Front
-            ds.Write(points[0] + depth);
-            ds.Write(Vector3.UnitZ);
-            ds.Write(points[1] + depth);
-            ds.Write(Vector3.UnitZ);
-            ds.Write(points[2] + depth);
-            ds.Write(Vector3.UnitZ);
-
-            // Back
-            ds.Write(points[0] - depth);
-            ds.Write(-Vector3.UnitZ);
-            ds.Write(points[1] - depth);
-            ds.Write(-Vector3.UnitZ);
-            ds.Write(points[2] - depth);
-            ds.Write(-Vector3.UnitZ);
-
-            triangle.UnlockVertexBuffer();
-
-            short[] indices = new short[] {
-                0, 1, 2, 3, 4, 5,
-                0, 1, 3, 1, 3, 4,
-                1, 2, 4, 2, 4, 5,
-                2, 0, 5, 0, 5, 3
-            };
-
-            ds = triangle.LockIndexBuffer(LockFlags.None);
-            foreach (short index in indices)
-            {
-                ds.Write(index);
-            }
-            triangle.UnlockIndexBuffer();
-
-            return triangle;
-        }
 
         protected override void OnInitializeDevice()
         {
@@ -108,12 +48,9 @@ namespace Box2dDemo
 
             mesh = new GraphicObjectFactory(Device);
 
-            // Create the shapes to be drawn
-            triangle = ConstructTriangleMesh();
-
             light = new Light();
             light.Type = LightType.Point;
-            light.Range = 100;
+            light.Range = 250;
             light.Position = new Vector3(10, 25, 10);
             light.Diffuse = Color.LemonChiffon;
             light.Attenuation0 = 1.0f;
@@ -138,17 +75,26 @@ namespace Box2dDemo
                 "Space - Shoot box";
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                mesh.Dispose();
+            }
+        }
+
         protected override void OnResourceLoad()
         {
             base.OnResourceLoad();
 
             Device.SetLight(0, light);
             Device.EnableLight(0, true);
-            Device.SetRenderState(RenderState.Ambient, new Color4(0.5f, 0.5f, 0.5f).ToArgb());
+            Device.SetRenderState(RenderState.Ambient, ambient.ToArgb());
 
-            Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 150.0f);
-
+            Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 400.0f);
             Device.SetTransform(TransformState.Projection, Projection);
+            
             Device.SetRenderState(RenderState.CullMode, Cull.None);
         }
 
@@ -159,7 +105,7 @@ namespace Box2dDemo
             if (Input.KeysPressed.Contains(Keys.F3))
             {
                 if (physics.IsDebugDrawEnabled == false)
-                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawWireframe);
+                    physics.SetDebugDrawMode(Device, debugMode);
                 else
                     physics.SetDebugDrawMode(Device, DebugDrawModes.None);
             }
@@ -181,34 +127,13 @@ namespace Box2dDemo
                 Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
 
                 if ((string)body.UserObject == "Ground")
-                {
                     Device.Material = groundMaterial;
-                    mesh.Render(body);
-                    continue;
-                }
-
-                if (colObj.ActivationState == ActivationState.ActiveTag)
+                else if (colObj.ActivationState == ActivationState.ActiveTag)
                     Device.Material = activeMaterial;
                 else
                     Device.Material = passiveMaterial;
 
-                if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.BoxShape)
-                {
-                    mesh.Render(body);
-                }
-                else if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.Convex2DShape)
-                {
-                    Convex2DShape shape = Convex2DShape.Upcast2D(colObj.CollisionShape);
-                    switch (shape.ChildShape.ShapeType)
-                    {
-                        case BroadphaseNativeType.ConvexHullShape:
-                            triangle.DrawSubset(0);
-                            break;
-                        default:
-                            mesh.Render(body);
-                            break;
-                    }
-                }
+                mesh.Render(body.CollisionShape, Matrix.Identity);
             }
 
             physics.DebugDrawWorld();
@@ -217,6 +142,11 @@ namespace Box2dDemo
 
             Device.EndScene();
             Device.Present();
+        }
+
+        public Device Device
+        {
+            get { return Device9; }
         }
     }
 

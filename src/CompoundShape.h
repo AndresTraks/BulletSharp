@@ -65,6 +65,9 @@ namespace BulletSharp
 
 	public ref class CompoundShape : CollisionShape
 	{
+	internal:
+		CompoundShape(btCompoundShape* compoundShape);
+
 	public:
 		CompoundShape();
 		CompoundShape(bool enableDynamicAabbTree);

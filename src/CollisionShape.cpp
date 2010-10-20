@@ -22,6 +22,7 @@
 #include "SphereShape.h"
 #include "StaticPlaneShape.h"
 #include "StringConv.h"
+#include "HeightfieldTerrainShape.h"
 #include "TriangleMeshShape.h"
 #include "TriangleShape.h"
 #include "UniformScalingShape.h"
@@ -54,6 +55,20 @@ CollisionShape::!CollisionShape()
 	OnDisposed( this, nullptr );
 }
 
+bool CollisionShape::Equals(Object^ obj)
+{
+	if (obj == nullptr || GetType() != obj->GetType() )
+		return false;
+	
+	CollisionShape^ p = dynamic_cast<CollisionShape^>(obj);
+	return (UnmanagedPointer == p->UnmanagedPointer);
+}
+
+int CollisionShape::GetHashCode()
+{
+	return (int)UnmanagedPointer;
+}
+
 bool CollisionShape::IsDisposed::get()
 {
 	return ( _collisionShape == NULL );
@@ -70,7 +85,7 @@ CollisionShape^ CollisionShape::UpcastDetect()
 	case BroadphaseNativeType::CapsuleShape:
 		return gcnew CapsuleShape((btCapsuleShape*) _collisionShape);
 	case BroadphaseNativeType::CompoundShape:
-		return gcnew CompoundShape((btCompoundShape*) _collisionShape);
+		return gcnew CompoundShape(dynamic_cast<btCompoundShape*>(_collisionShape));
 	case BroadphaseNativeType::ConeShape:
 		return gcnew ConeShape((btConeShape*) _collisionShape);
 	case BroadphaseNativeType::Convex2DShape:
@@ -111,8 +126,8 @@ CollisionShape^ CollisionShape::UpcastDetect()
 		return gcnew StaticPlaneShape((btStaticPlaneShape*) _collisionShape);
 	//case BroadphaseNativeType::SoftBodyShape:
 	//	return gcnew SoftBody((btSoftBody*) _collisionShape);
-	//case BroadphaseNativeType::TerrainShape:
-	//	return gcnew TerrainShape((btTerrainShape*) _collisionShape);
+	case BroadphaseNativeType::TerrainShape:
+		return gcnew HeightfieldTerrainShape((btHeightfieldTerrainShape*) _collisionShape);
 	//case BroadphaseNativeType::TetrahedralShape:
 	//	return gcnew TetrahedralShape((btTetrahedralShape*) _collisionShape);
 	case BroadphaseNativeType::TriangleShape:

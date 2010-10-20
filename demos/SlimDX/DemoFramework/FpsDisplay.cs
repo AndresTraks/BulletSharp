@@ -1,8 +1,8 @@
-﻿using SlimDX;
-using SlimDX.Direct3D9;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Globalization;
+using SlimDX;
+using SlimDX.Direct3D9;
 
 namespace DemoFramework
 {

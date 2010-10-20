@@ -1,39 +1,25 @@
-﻿using BulletSharp;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using BulletSharp;
 using DemoFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace BasicDemo
 {
     class BasicDemo : Game
     {
         int Width = 1024, Height = 768;
-        Color ambient = Color.Gray;
         Vector3 eye = new Vector3(30, 20, 10);
         Vector3 target = new Vector3(0, 5, -4);
+        Color ambient = Color.Gray;
+        DebugDrawModes debugMode = DebugDrawModes.DrawAabb;
 
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
         GraphicObjectFactory mesh;
-
         Physics physics;
-
-        public Device Device
-        {
-            get { return Device9; }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                mesh.Dispose();
-            }
-        }
 
         protected override void OnInitializeDevice()
         {
@@ -89,6 +75,15 @@ namespace BasicDemo
             physics = new Physics();
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                mesh.Dispose();
+            }
+        }
+
         protected override void OnResourceLoad()
         {
             base.OnResourceLoad();
@@ -98,7 +93,6 @@ namespace BasicDemo
             Device.SetRenderState(RenderState.Ambient, ambient.ToArgb());
 
             Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 150.0f);
-
             Device.SetTransform(TransformState.Projection, Projection);
         }
 
@@ -109,7 +103,7 @@ namespace BasicDemo
             if (Input.KeysPressed.Contains(Keys.F3))
             {
                 if (physics.IsDebugDrawEnabled == false)
-                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawAabb);
+                    physics.SetDebugDrawMode(Device, debugMode);
                 else
                     physics.SetDebugDrawMode(Device, DebugDrawModes.None);
             }
@@ -131,18 +125,13 @@ namespace BasicDemo
                 Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
 
                 if ((string)colObj.UserObject == "Ground")
-                {
                     Device.Material = groundMaterial;
-                    mesh.Render(body);
-                    continue;
-                }
-
-                if (colObj.ActivationState == ActivationState.ActiveTag)
+                else if (colObj.ActivationState == ActivationState.ActiveTag)
                     Device.Material = activeMaterial;
                 else
                     Device.Material = passiveMaterial;
 
-                mesh.Render(body);
+                mesh.Render(body.CollisionShape, Matrix.Identity);
             }
 
             physics.DebugDrawWorld();
@@ -151,6 +140,11 @@ namespace BasicDemo
 
             Device.EndScene();
             Device.Present();
+        }
+
+        public Device Device
+        {
+            get { return Device9; }
         }
     }
 

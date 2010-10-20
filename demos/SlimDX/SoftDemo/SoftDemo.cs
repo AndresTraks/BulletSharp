@@ -1,39 +1,25 @@
-﻿using BulletSharp;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using BulletSharp;
 using DemoFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace SoftDemo
 {
     class SoftDemo : Game
     {
         int Width = 1024, Height = 768;
-        Color ambient = Color.Gray;
         Vector3 eye = new Vector3(20, 20, 80);
         Vector3 target = new Vector3(0, 0, 10);
+        Color ambient = Color.Gray;
+        DebugDrawModes debugMode = DebugDrawModes.MaxDebugDrawMode;
 
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial, softBodyMaterial;
         GraphicObjectFactory mesh;
-
         Physics physics;
-
-        public Device Device
-        {
-            get { return Device9; }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                mesh.Dispose();
-            }
-        }
 
         protected override void OnInitializeDevice()
         {
@@ -59,8 +45,7 @@ namespace SoftDemo
         protected override void OnInitialize()
         {
             physics = new Physics();
-            physics.SetDebugDrawer(new PhysicsDebugDrawLineGathering(Device));
-            //physics.SetDebugDrawMode(Device, DebugDrawModes.None);
+            physics.DebugDrawer = new PhysicsDebugDrawLineGathering(Device);
 
             mesh = new GraphicObjectFactory(Device);
 
@@ -97,6 +82,15 @@ namespace SoftDemo
             Freelook.SetEyeTarget(eye, target);
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                mesh.Dispose();
+            }
+        }
+
         protected override void OnResourceLoad()
         {
             base.OnResourceLoad();
@@ -106,9 +100,9 @@ namespace SoftDemo
             Device.SetRenderState(RenderState.Ambient, ambient.ToArgb());
 
             Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 150.0f);
+            Device.SetTransform(TransformState.Projection, Projection);
 
             Device.SetRenderState(RenderState.CullMode, Cull.None);
-            Device.SetTransform(TransformState.Projection, Projection);
         }
 
         protected override void OnUpdate()
@@ -118,7 +112,7 @@ namespace SoftDemo
             if (Input.KeysPressed.Contains(Keys.F3))
             {
                 if (physics.IsDebugDrawEnabled == false)
-                    physics.SetDebugDrawMode(Device, DebugDrawModes.DrawWireframe);
+                    physics.SetDebugDrawMode(Device, debugMode);
                 else
                     physics.SetDebugDrawMode(Device, 0);
             }
@@ -153,27 +147,22 @@ namespace SoftDemo
 
                     Device.Material = softBodyMaterial;
                     Device.SetTransform(TransformState.World, Matrix.Identity);
+                    mesh.Render(colObj);
                 }
                 else
                 {
                     RigidBody body = RigidBody.Upcast(colObj);
-
                     Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
 
                     if ((string)body.UserObject == "Ground")
-                    {
                         Device.Material = groundMaterial;
-                        mesh.Render(body);
-                        continue;
-                    }
-
-                    if (colObj.ActivationState == ActivationState.ActiveTag)
+                    else if (colObj.ActivationState == ActivationState.ActiveTag)
                         Device.Material = activeMaterial;
                     else
                         Device.Material = passiveMaterial;
-                }
 
-                mesh.Render(colObj);
+                    mesh.Render(colObj.CollisionShape, Matrix.Identity);
+                }
             }
 
             physics.DebugDrawWorld();
@@ -182,6 +171,11 @@ namespace SoftDemo
 
             Device.EndScene();
             Device.Present();
+        }
+
+        public Device Device
+        {
+            get { return Device9; }
         }
     }
 

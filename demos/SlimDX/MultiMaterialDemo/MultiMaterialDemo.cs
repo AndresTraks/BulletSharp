@@ -1,50 +1,25 @@
-﻿using BulletSharp;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using BulletSharp;
 using DemoFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace MultiMaterialDemo
 {
-    static class Program
-    {
-        [STAThread]
-        static void Main()
-        {
-            MultiMaterialDemo game = new MultiMaterialDemo();
-            game.Run();
-            game.Dispose();
-        }
-    }
-
     class MultiMaterialDemo : Game
     {
         int Width = 1024, Height = 768;
-        Color ambient = Color.Gray;
         Vector3 eye = new Vector3(30, 20, 10);
         Vector3 target = new Vector3(0, 5, 0);
+        Color ambient = Color.Gray;
+        DebugDrawModes debugMode = DebugDrawModes.DrawAabb | DebugDrawModes.DrawWireframe;
 
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
         GraphicObjectFactory mesh;
-
         Physics physics;
-
-        public Device Device
-        {
-            get { return Device9; }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                mesh.Dispose();
-            }
-        }
 
         protected override void OnInitializeDevice()
         {
@@ -76,6 +51,7 @@ namespace MultiMaterialDemo
             light.Range = 70;
             light.Position = new Vector3(10, 25, 10);
             light.Diffuse = Color.LemonChiffon;
+            light.Attenuation0 = 1.0f;
 
             activeMaterial = new Material();
             activeMaterial.Diffuse = Color.Orange;
@@ -100,6 +76,15 @@ namespace MultiMaterialDemo
             physics.SetDebugDrawMode(Device, DebugDrawModes.DrawAabb | DebugDrawModes.DrawWireframe);
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                mesh.Dispose();
+            }
+        }
+
         protected override void OnResourceLoad()
         {
             base.OnResourceLoad();
@@ -109,7 +94,6 @@ namespace MultiMaterialDemo
             Device.SetRenderState(RenderState.Ambient, ambient.ToArgb());
 
             Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 150.0f);
-
             Device.SetTransform(TransformState.Projection, Projection);
         }
 
@@ -142,18 +126,13 @@ namespace MultiMaterialDemo
                 Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
 
                 if ((string)colObj.UserObject == "Ground")
-                {
-                    //Device.Material = groundMaterial;
-                    //mesh.Render(body);
-                    continue;
-                }
-
+                    Device.Material = groundMaterial;
                 if (colObj.ActivationState == ActivationState.ActiveTag)
                     Device.Material = activeMaterial;
                 else
                     Device.Material = passiveMaterial;
 
-                mesh.Render(body);
+                mesh.Render(body.CollisionShape, Matrix.Identity);
             }
 
             physics.DebugDrawWorld();
@@ -162,6 +141,22 @@ namespace MultiMaterialDemo
 
             Device.EndScene();
             Device.Present();
+        }
+
+        public Device Device
+        {
+            get { return Device9; }
+        }
+    }
+
+    static class Program
+    {
+        [STAThread]
+        static void Main()
+        {
+            MultiMaterialDemo game = new MultiMaterialDemo();
+            game.Run();
+            game.Dispose();
         }
     }
 }

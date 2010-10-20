@@ -14,29 +14,15 @@ namespace RagdollDemo
     class RagdollDemo : Game
     {
         int Width = 1024, Height = 768;
-        Color ambient = Color.Gray;
         Vector3 eye = new Vector3(1, 1, 10);
         Vector3 target = new Vector3(0, 1, 0);
+        Color ambient = Color.Gray;
+        DebugDrawModes debugMode = DebugDrawModes.DrawWireframe;
 
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
         GraphicObjectFactory mesh;
-
         Physics physics;
-
-        public Device Device
-        {
-            get { return Device9; }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                mesh.Dispose();
-            }
-        }
 
         protected override void OnInitializeDevice()
         {
@@ -92,6 +78,15 @@ namespace RagdollDemo
             physics = new Physics();
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                mesh.Dispose();
+            }
+        }
+
         protected override void OnResourceLoad()
         {
             base.OnResourceLoad();
@@ -134,18 +129,13 @@ namespace RagdollDemo
                 Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
 
                 if ((string)colObj.UserObject == "Ground")
-                {
                     Device.Material = groundMaterial;
-                    mesh.Render(body);
-                    continue;
-                }
-
-                if (colObj.ActivationState == ActivationState.ActiveTag)
+                else if (colObj.ActivationState == ActivationState.ActiveTag)
                     Device.Material = activeMaterial;
                 else
                     Device.Material = passiveMaterial;
 
-                mesh.Render(body);
+                mesh.Render(body.CollisionShape, Matrix.Identity);
             }
 
             physics.DebugDrawWorld();
@@ -154,6 +144,11 @@ namespace RagdollDemo
 
             Device.EndScene();
             Device.Present();
+        }
+
+        public Device Device
+        {
+            get { return Device9; }
         }
     }
 

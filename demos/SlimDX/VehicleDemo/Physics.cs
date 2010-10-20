@@ -1,9 +1,8 @@
-﻿using BulletSharp;
-using DemoFramework;
-using System;
-using System.Drawing;
+﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using BulletSharp;
+using DemoFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
 
@@ -240,7 +239,8 @@ namespace VehicleDemo
 
 
             //create ground object
-            LocalCreateRigidBody(0, tr, groundShape);
+            RigidBody ground = LocalCreateRigidBody(0, tr, groundShape);
+            ground.UserObject = "Ground";
 
 
             CollisionShape chassisShape = new BoxShape(1.0f, 0.5f, 2.0f);
@@ -249,11 +249,14 @@ namespace VehicleDemo
             CompoundShape compound = new CompoundShape();
             CollisionShapes.Add(compound);
 
-            compound.AddChildShape(Matrix.Translation(Vector3.UnitY), chassisShape);
+            //localTrans effectively shifts the center of mass with respect to the chassis
+            Matrix localTrans = Matrix.Translation(Vector3.UnitY);
+            compound.AddChildShape(localTrans, chassisShape);
             RigidBody carChassis = LocalCreateRigidBody(800, Matrix.Identity, compound);
+            carChassis.UserObject = "Chassis";
             //carChassis.SetDamping(0.2f, 0.2f);
 
-            CylinderShapeX wheelShape = new CylinderShapeX(wheelWidth, wheelRadius, wheelRadius);
+            //CylinderShapeX wheelShape = new CylinderShapeX(wheelWidth, wheelRadius, wheelRadius);
 
 
             // clientResetScene();

@@ -1,6 +1,6 @@
-﻿using SlimDX.Direct3D9;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using SlimDX.Direct3D9;
 
 namespace DemoFramework
 {

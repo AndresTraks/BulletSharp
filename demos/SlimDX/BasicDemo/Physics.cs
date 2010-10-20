@@ -6,10 +6,10 @@ namespace BasicDemo
 {
     class Physics : PhysicsContext
     {
-        ///create 125 (5x5x5) dynamic objects
+        // create 125 (5x5x5) dynamic objects
         int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
 
-        ///scaling of the objects (0.1 = 20 centimeter boxes )
+        // scaling of the objects (0.1 = 20 centimeter boxes )
         float StartPosX = -5;
         float StartPosY = -5;
         float StartPosZ = -3;

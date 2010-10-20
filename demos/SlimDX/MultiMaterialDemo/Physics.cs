@@ -1,7 +1,7 @@
-﻿using BulletSharp;
+﻿using System;
+using BulletSharp;
 using DemoFramework;
 using SlimDX;
-using System;
 
 namespace MultiMaterialDemo
 {
