@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiMaterialDemo", "MultiM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RagdollDemo", "RagdollDemo\RagdollDemo.csproj", "{4DC432E5-414B-4AA8-B67D-DFE432B505AC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCLClothDemo", "OpenCLClothDemo\OpenCLClothDemo.csproj", "{E05372D8-D2B7-4665-B670-9D81EBFF1D47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -85,6 +87,10 @@ Global
 		{4DC432E5-414B-4AA8-B67D-DFE432B505AC}.Debug|x86.Build.0 = Debug|x86
 		{4DC432E5-414B-4AA8-B67D-DFE432B505AC}.Release|x86.ActiveCfg = Release|x86
 		{4DC432E5-414B-4AA8-B67D-DFE432B505AC}.Release|x86.Build.0 = Release|x86
+		{E05372D8-D2B7-4665-B670-9D81EBFF1D47}.Debug|x86.ActiveCfg = Debug|x86
+		{E05372D8-D2B7-4665-B670-9D81EBFF1D47}.Debug|x86.Build.0 = Debug|x86
+		{E05372D8-D2B7-4665-B670-9D81EBFF1D47}.Release|x86.ActiveCfg = Release|x86
+		{E05372D8-D2B7-4665-B670-9D81EBFF1D47}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

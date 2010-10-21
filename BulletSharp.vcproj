@@ -63,12 +63,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
-				LinkIncremental="0"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
+				CLRUnmanagedCodeCheck="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -118,6 +119,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="2"
+				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="D:\src\bullet\src"
 				AdditionalUsingDirectories="&quot;$(PROGRAMFILES)\SlimDX SDK (June 2010)\Bin\net20\&quot;"
 				PreprocessorDefinitions="GRAPHICS_SLIMDX;WIN32;NDEBUG"
@@ -140,11 +143,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
-				LinkIncremental="0"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
+				CLRUnmanagedCodeCheck="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -194,6 +198,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="2"
+				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="D:\src\bullet\src"
 				AdditionalUsingDirectories="&quot;$(ProgramFiles)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;;&quot;$(ProgramFiles(x86))\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;"
 				PreprocessorDefinitions="GRAPHICS_XNA31;WIN32;NDEBUG"
@@ -216,11 +222,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
-				LinkIncremental="0"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
+				CLRUnmanagedCodeCheck="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -291,12 +298,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
-				LinkIncremental="0"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
+				CLRUnmanagedCodeCheck="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -346,6 +354,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="2"
+				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="D:\src\bullet\src"
 				AdditionalUsingDirectories=""
 				PreprocessorDefinitions="GRAPHICS_NONE;WIN32;NDEBUG"
@@ -368,11 +378,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
-				LinkIncremental="0"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
+				CLRUnmanagedCodeCheck="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -443,12 +454,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
-				LinkIncremental="0"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
+				CLRUnmanagedCodeCheck="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -498,6 +510,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="2"
+				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="D:\src\bullet\src"
 				AdditionalUsingDirectories="C:\MogreSDK\bin\Release"
 				PreprocessorDefinitions="GRAPHICS_MOGRE;WIN32;NDEBUG"
@@ -520,11 +534,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
-				LinkIncremental="0"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
+				CLRUnmanagedCodeCheck="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -595,12 +610,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
-				LinkIncremental="0"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
+				CLRUnmanagedCodeCheck="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -650,6 +666,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="2"
+				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="D:\src\bullet\src"
 				AdditionalUsingDirectories="&quot;$(ProgramFiles)\OpenTK\1.0\Binaries\OpenTK\Release&quot;;&quot;$(USERPROFILE)\My Documents\OpenTK\1.0\Binaries\OpenTK\Release&quot;;&quot;$(ProgramFiles(x86))\OpenTK\1.0\Binaries\OpenTK\Release&quot;"
 				PreprocessorDefinitions="GRAPHICS_OPENTK;WIN32;NDEBUG"
@@ -672,11 +690,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
-				LinkIncremental="0"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
+				CLRUnmanagedCodeCheck="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -747,12 +766,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
-				LinkIncremental="0"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
+				CLRUnmanagedCodeCheck="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -802,6 +822,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="2"
+				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="D:\src\bullet\src"
 				AdditionalUsingDirectories="D:\src\Axiom-0.8.0.0-B2\bin\release"
 				PreprocessorDefinitions="GRAPHICS_AXIOM;WIN32;NDEBUG"
@@ -824,11 +846,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
-				LinkIncremental="0"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
+				CLRUnmanagedCodeCheck="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -899,12 +922,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
-				LinkIncremental="0"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
+				CLRUnmanagedCodeCheck="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -1639,6 +1663,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\SoftBodySolver.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\SoftRigidDynamicsWorld.cpp"
 					>
 				</File>
@@ -1670,6 +1698,34 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="GpuSoftBodySolvers"
+					>
+					<Filter
+						Name="OpenCL"
+						>
+						<File
+							RelativePath=".\src\SoftBodySolverOpenCL.cpp"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="Cpu"
+						>
+						<File
+							RelativePath=".\src\SoftBodySolverCpu.cpp"
+							>
+						</File>
+					</Filter>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="VectorMath"
+				>
+				<File
+					RelativePath=".\src\VectorMathAos.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -2265,6 +2321,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\SoftBodySolver.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\SoftRigidDynamicsWorld.h"
 					>
 				</File>
@@ -2308,6 +2368,34 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="GpuSoftBodySolvers"
+					>
+					<Filter
+						Name="OpenCL"
+						>
+						<File
+							RelativePath=".\src\SoftBodySolverOpenCL.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="Cpu"
+						>
+						<File
+							RelativePath=".\src\SoftBodySolverCpu.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="VectorMath"
+				>
+				<File
+					RelativePath=".\src\VectorMathAos.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

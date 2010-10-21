@@ -129,6 +129,7 @@
 #ifndef DISABLE_SOFTBODY
 #pragma managed(push, off)
 #include <BulletSoftBody/btSoftBody.h>
+#include <BulletSoftBody/btSoftBodySolvers.h>
 #pragma managed(pop)
 #endif
 

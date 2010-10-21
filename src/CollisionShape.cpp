@@ -85,7 +85,7 @@ CollisionShape^ CollisionShape::UpcastDetect()
 	case BroadphaseNativeType::CapsuleShape:
 		return gcnew CapsuleShape((btCapsuleShape*) _collisionShape);
 	case BroadphaseNativeType::CompoundShape:
-		return gcnew CompoundShape(dynamic_cast<btCompoundShape*>(_collisionShape));
+		return gcnew CompoundShape((btCompoundShape*) _collisionShape);
 	case BroadphaseNativeType::ConeShape:
 		return gcnew ConeShape((btConeShape*) _collisionShape);
 	case BroadphaseNativeType::Convex2DShape:

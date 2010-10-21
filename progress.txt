@@ -69,6 +69,7 @@ SoftBody
 - SoftBodyInternals (internal)
 0 SoftBodyRigidBodyCollisionAlgorithm
 0 SoftBodyRigidDynamicsWorld
+0 SoftBodySolver
 - SoftRigidCollisionAlgorithm
 - SoftSoftCollisionAlgorithm
 0 SparseSdf

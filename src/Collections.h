@@ -354,6 +354,8 @@ namespace BulletSharp
 		Vector3Array(const btVector3* vector3Array, int length);
 
 	public:
+		Vector3Array(int length);
+
 		virtual bool Contains(Vector3 item) override;
 		virtual void CopyTo(array<Vector3>^ array, int arrayIndex) override;
 		virtual int IndexOf(Vector3 item) override;

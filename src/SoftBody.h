@@ -1194,6 +1194,7 @@ namespace BulletSharp
 
 		public:
 			SoftBody(SoftBodyWorldInfo^ worldInfo, array<Vector3>^ x, array<btScalar>^ m);
+			SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3Array^ x, array<btScalar>^ m);
 
 			void AddForce(Vector3 force, int node);
 			void AddForce(Vector3 force);

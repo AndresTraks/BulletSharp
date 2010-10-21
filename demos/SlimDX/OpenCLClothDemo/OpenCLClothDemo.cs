@@ -6,15 +6,15 @@ using DemoFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
 
-namespace MultiMaterialDemo
+namespace OpenCLClothDemo
 {
-    class MultiMaterialDemo : Game
+    class OpenCLClothDemo : Game
     {
         int Width = 1024, Height = 768;
         Vector3 eye = new Vector3(30, 20, 10);
-        Vector3 target = new Vector3(0, 5, 0);
+        Vector3 target = new Vector3(0, 5, -4);
         Color ambient = Color.Gray;
-        DebugDrawModes debugMode = DebugDrawModes.DrawAabb | DebugDrawModes.DrawWireframe;
+        DebugDrawModes debugMode = DebugDrawModes.DrawAabb;
 
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial;
@@ -24,7 +24,7 @@ namespace MultiMaterialDemo
         protected override void OnInitializeDevice()
         {
             Form.ClientSize = new Size(Width, Height);
-            Form.Text = "BulletSharp - Multimaterial Mesh Demo";
+            Form.Text = "BulletSharp - Basic Demo";
 
             DeviceSettings9 settings = new DeviceSettings9();
             settings.CreationFlags = CreateFlags.HardwareVertexProcessing;
@@ -73,7 +73,6 @@ namespace MultiMaterialDemo
                 "Space - Shoot box";
 
             physics = new Physics();
-            physics.SetDebugDrawMode(Device, debugMode);
         }
 
         protected override void Dispose(bool disposing)
@@ -127,7 +126,7 @@ namespace MultiMaterialDemo
 
                 if ((string)colObj.UserObject == "Ground")
                     Device.Material = groundMaterial;
-                if (colObj.ActivationState == ActivationState.ActiveTag)
+                else if (colObj.ActivationState == ActivationState.ActiveTag)
                     Device.Material = activeMaterial;
                 else
                     Device.Material = passiveMaterial;
@@ -154,7 +153,11 @@ namespace MultiMaterialDemo
         [STAThread]
         static void Main()
         {
-            MultiMaterialDemo game = new MultiMaterialDemo();
+            OpenCLClothDemo game = new OpenCLClothDemo();
+
+            if (game.TestLibraries() == false)
+                return;
+
             game.Run();
             game.Dispose();
         }

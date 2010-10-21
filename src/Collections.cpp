@@ -791,6 +791,11 @@ Vector3Array::Vector3Array(const btVector3* vector3Array, int length)
 {
 }
 
+Vector3Array::Vector3Array(int length)
+: GenericList<Vector3>(new btVector3[length * sizeof(btVector3)], length)
+{
+}
+
 bool Vector3Array::Contains(Vector3 item)
 {
 	btVector3* itemTemp = Math::Vector3ToBtVector3(item);

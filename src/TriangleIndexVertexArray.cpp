@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#include "AlignedObjectArray.h"
+#include "Collections.h"
 #include "DataStream.h"
 #include "TriangleIndexVertexArray.h"
 
@@ -62,10 +64,36 @@ int IndexedMesh::NumTriangles::get()
 {
 	return _indexedMesh->m_numTriangles;
 }
+void IndexedMesh::NumTriangles::set(int value)
+{
+	_indexedMesh->m_numTriangles = value;
+}
 
 int IndexedMesh::NumVertices::get()
 {
 	return _indexedMesh->m_numVertices;
+}
+void IndexedMesh::NumVertices::set(int value)
+{
+	_indexedMesh->m_numVertices = value;
+}
+
+int IndexedMesh::TriangleIndexStride::get()
+{
+	return _indexedMesh->m_triangleIndexStride;
+}
+void IndexedMesh::TriangleIndexStride::set(int value)
+{
+	_indexedMesh->m_triangleIndexStride = value;
+}
+
+Vector3Array^ IndexedMesh::VertexBase::get()
+{
+	return gcnew Vector3Array((btVector3*)_indexedMesh->m_vertexBase, _indexedMesh->m_numVertices);
+}
+void IndexedMesh::VertexBase::set(Vector3Array^ value)
+{
+	_indexedMesh->m_vertexBase = (unsigned char*)value->UnmanagedPointer;
 }
 
 PhyScalarType IndexedMesh::VertexType::get()
@@ -129,9 +157,9 @@ void TriangleIndexVertexArray::AddIndexedMesh(IndexedMesh^ mesh, PhyScalarType i
 	UnmanagedPointer->addIndexedMesh(*mesh->UnmanagedPointer, static_cast<PHY_ScalarType>(indexType));
 }
 
-BtIndexedMeshArray^ TriangleIndexVertexArray::IndexedMeshArray::get()
+AlignedIndexedMeshArray^ TriangleIndexVertexArray::IndexedMeshArray::get()
 {
-	return gcnew BtIndexedMeshArray(&UnmanagedPointer->getIndexedMeshArray());
+	return gcnew AlignedIndexedMeshArray(&UnmanagedPointer->getIndexedMeshArray());
 }
 
 btTriangleIndexVertexArray* TriangleIndexVertexArray::UnmanagedPointer::get()

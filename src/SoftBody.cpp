@@ -1573,18 +1573,41 @@ BulletSharp::SoftBody::SoftBody::SoftBody(btSoftBody* body)
 BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, array<Vector3>^ x, array<btScalar>^ m)
 : CollisionObject(0)
 {
-	int node_count = (x->Length < m->Length) ? x->Length : m->Length;
+	pin_ptr<btScalar> m_ptr;
 
-	pin_ptr<btScalar> m_ptr = &m[0];
+	if (m->Length != 0)
+	{
+		if (x->Length != m->Length)
+			throw gcnew InvalidOperationException("Arrays must have the same length.");
+		m_ptr = &m[0];
+	}
+	else
+	{
+		m_ptr = nullptr;
+	}
 
-	btVector3* x_ptr = new btVector3[node_count];
+	pin_ptr<Vector3> x_ptr = &x[0];
 
-	for(int i=0; i<node_count; i++)
-		Math::Vector3ToBtVector3(x[i], &x_ptr[i]);
+	UnmanagedPointer = new btSoftBody(worldInfo->UnmanagedPointer, x->Length, (btVector3*)x_ptr, m_ptr);
+}
 
-	UnmanagedPointer = new btSoftBody(worldInfo->UnmanagedPointer, node_count, x_ptr, m_ptr);
+BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3Array^ x, array<btScalar>^ m)
+: CollisionObject(0)
+{
+	pin_ptr<btScalar> m_ptr;
 
-	delete[] x_ptr;
+	if (m->Length != 0)
+	{
+		if (x->Count != m->Length)
+			throw gcnew InvalidOperationException("Arrays must have the same length.");
+		m_ptr = &m[0];
+	}
+	else
+	{
+		m_ptr = nullptr;
+	}
+
+	UnmanagedPointer = new btSoftBody(worldInfo->UnmanagedPointer, x->Count, x->UnmanagedPointer, m_ptr);
 }
 
 void BulletSharp::SoftBody::SoftBody::AddForce(Vector3 force, int node)

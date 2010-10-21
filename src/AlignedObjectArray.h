@@ -16,6 +16,7 @@ namespace BulletSharp
 	ref class CollisionObject;
 	ref class CollisionShape;
 	ref class CompoundShapeChild;
+	ref class IndexedMesh;
 	ref class ListDebugView;
 	ref class PersistentManifold;
 	ref class Vector3ListDebugView;
@@ -479,6 +480,45 @@ namespace BulletSharp
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
+	public ref class AlignedIndexedMeshArray : AlignedObjectArray<IndexedMesh^>
+	{
+	internal:
+		AlignedIndexedMeshArray(btAlignedObjectArray<btIndexedMesh>* indexedMeshArray);
+
+	public:
+		AlignedIndexedMeshArray();
+
+		virtual void Add(IndexedMesh^ indexedMesh) override;
+		virtual void Clear() override;
+		virtual void CopyTo(array<IndexedMesh^>^ array, int arrayIndex) override;
+		virtual void PopBack() override;
+		virtual void Swap(int index0, int index1) override;
+
+		property int Capacity
+		{
+			int get();
+		}
+
+		property int Count
+		{
+			virtual int get() override;
+		}
+
+		property IndexedMesh^ default [int]
+		{
+			virtual IndexedMesh^ get (int index) override;
+			virtual void set(int index, IndexedMesh^ value) override;
+		}
+
+	internal:
+		property btAlignedObjectArray<btIndexedMesh>* UnmanagedPointer
+		{
+			virtual btAlignedObjectArray<btIndexedMesh>* get() new;
+		}
+	};
+
+	[DebuggerDisplay("Count = {Count}")]
+	[DebuggerTypeProxy(ListDebugView::typeid)]
 	public ref class AlignedIntArray : AlignedObjectArray<int>
 	{
 	internal:
@@ -494,6 +534,7 @@ namespace BulletSharp
 		virtual int IndexOf(int integer) override;
 		virtual void PopBack() override;
 		virtual bool Remove(int integer) override;
+		void Resize(int newSize);
 		virtual void Swap(int index0, int index1) override;
 
 		property int Capacity

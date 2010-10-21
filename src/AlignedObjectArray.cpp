@@ -7,6 +7,7 @@
 #include "CollisionShape.h"
 #include "CompoundShape.h"
 #include "PersistentManifold.h"
+#include "TriangleIndexVertexArray.h"
 #ifndef DISABLE_SOFTBODY
 #include "SoftBody.h"
 using namespace BulletSharp::SoftBody;
@@ -974,9 +975,9 @@ AlignedIntArray::AlignedIntArray()
 {
 }
 
-void AlignedIntArray::Add(int intValue)
+void AlignedIntArray::Add(int integer)
 {
-	UnmanagedPointer->push_back(intValue);
+	UnmanagedPointer->push_back(integer);
 }
 
 void AlignedIntArray::Clear()
@@ -1019,11 +1020,21 @@ void AlignedIntArray::PopBack()
 	UnmanagedPointer->pop_back();
 }
 
-bool AlignedIntArray::Remove(int intValue)
+bool AlignedIntArray::Remove(int integer)
 {
 	int sizeBefore = UnmanagedPointer->size();
-	UnmanagedPointer->remove(intValue);
+	UnmanagedPointer->remove(integer);
 	return sizeBefore != UnmanagedPointer->size();
+}
+
+void AlignedIntArray::Resize(int newSize)
+{
+	UnmanagedPointer->resize(newSize);
+}
+
+void AlignedIntArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
 }
 
 int AlignedIntArray::Capacity::get()
@@ -1034,11 +1045,6 @@ int AlignedIntArray::Capacity::get()
 int AlignedIntArray::Count::get()
 {
 	return UnmanagedPointer->size();
-}
-
-void AlignedIntArray::Swap(int index0, int index1)
-{
-	UnmanagedPointer->swap(index0, index1);
 }
 
 int AlignedIntArray::default::get(int index)
@@ -1156,6 +1162,93 @@ void AlignedManifoldArray::default::set(int index, PersistentManifold^ value)
 btManifoldArray* AlignedManifoldArray::UnmanagedPointer::get()
 {
 	return (btManifoldArray*)AlignedObjectArray::UnmanagedPointer;
+}
+
+
+AlignedIndexedMeshArray::AlignedIndexedMeshArray(btAlignedObjectArray<btIndexedMesh>* indexedMeshArray)
+: AlignedObjectArray(indexedMeshArray)
+{
+}
+
+AlignedIndexedMeshArray::AlignedIndexedMeshArray()
+: AlignedObjectArray(new btAlignedObjectArray<btIndexedMesh>())
+{
+}
+
+void AlignedIndexedMeshArray::Add(IndexedMesh^ indexedMesh)
+{
+	UnmanagedPointer->push_back(*indexedMesh->UnmanagedPointer);
+}
+
+void AlignedIndexedMeshArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+void AlignedIndexedMeshArray::CopyTo(array<IndexedMesh^>^ array, int arrayIndex)
+{
+	if (array == nullptr)
+		throw gcnew ArgumentNullException("array");
+
+	if (arrayIndex < 0)
+		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+
+	int size = UnmanagedPointer->size();
+	if (arrayIndex + size > array->Length)
+		throw gcnew ArgumentException("Array too small.", "array");
+
+	int i;
+	for (i=0; i<size; i++)
+	{
+		array[arrayIndex+i] = gcnew IndexedMesh(&(*UnmanagedPointer)[i]);
+	}
+}
+
+void AlignedIndexedMeshArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+int AlignedIndexedMeshArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int AlignedIndexedMeshArray::Count::get()
+{
+	return UnmanagedPointer->size();
+}
+
+void AlignedIndexedMeshArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+IndexedMesh^ AlignedIndexedMeshArray::default::get(int index)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	btIndexedMesh* obj = &(*UnmanagedPointer)[index];
+	if (obj == nullptr)
+		return nullptr;
+	return gcnew IndexedMesh(obj);
+}
+
+void AlignedIndexedMeshArray_SetDefault(btAlignedObjectArray<btIndexedMesh>* indexedMeshArray,
+	int index, btIndexedMesh* mesh)
+{
+	(*indexedMeshArray)[index] = *mesh;
+}
+void AlignedIndexedMeshArray::default::set(int index, IndexedMesh^ value)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	AlignedIndexedMeshArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+}
+
+btAlignedObjectArray<btIndexedMesh>* AlignedIndexedMeshArray::UnmanagedPointer::get()
+{
+	return (btAlignedObjectArray<btIndexedMesh>*)AlignedObjectArray::UnmanagedPointer;
 }
 
 
