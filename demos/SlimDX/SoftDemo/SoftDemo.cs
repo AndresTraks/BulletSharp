@@ -14,7 +14,7 @@ namespace SoftDemo
         Vector3 eye = new Vector3(20, 20, 80);
         Vector3 target = new Vector3(0, 0, 10);
         Color ambient = Color.Gray;
-        DebugDrawModes debugMode = DebugDrawModes.MaxDebugDrawMode;
+        DebugDrawModes debugMode = DebugDrawModes.DrawWireframe;
 
         Light light;
         Material activeMaterial, passiveMaterial, groundMaterial, softBodyMaterial;

@@ -20,6 +20,7 @@
 //#define DISABLE_MULTITHREADED
 //#define DISABLE_SERIALIZE
 //#define DISABLE_SOFTBODY
+#define DISABLE_VECTORMATH_AOS
 //#define DISABLE_VEHICLE
 
 
@@ -130,6 +131,7 @@
 #pragma managed(push, off)
 #include <BulletSoftBody/btSoftBody.h>
 #include <BulletSoftBody/btSoftBodySolvers.h>
+#include <BulletSoftBody/btSoftBodySolverVertexBuffer.h>
 #pragma managed(pop)
 #endif
 

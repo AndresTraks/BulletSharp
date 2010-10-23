@@ -487,6 +487,89 @@ btDbvtProxy** DbvtProxyPtrArray::UnmanagedPointer::get()
 #endif
 
 
+FloatArray::FloatArray(float* floatArray, int length)
+: GenericList<float>(floatArray, length)
+{
+}
+
+FloatArray::FloatArray(const float* floatArray, int length)
+: GenericList<float>(floatArray, length)
+{
+}
+
+FloatArray::FloatArray(int length)
+: GenericList<float>(new float[length], length)
+{
+}
+
+bool FloatArray::Contains(float item)
+{
+	int i;
+	int length = Count;
+	for (i=Count; i<length; i++)
+	{
+		if (item == UnmanagedPointer[i])
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+void FloatArray::CopyTo(array<float>^ array, int arrayIndex)
+{
+	if (array == nullptr)
+		throw gcnew ArgumentNullException("array");
+
+	if (arrayIndex < 0)
+		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+
+	if (arrayIndex + Count > array->Length)
+		throw gcnew ArgumentException("Array too small.");
+
+	int i;
+	int length = Count;
+	for (i=0; i<length; i++)
+	{
+		array[arrayIndex+i] = UnmanagedPointer[i];
+	}
+}
+
+int FloatArray::IndexOf(float item)
+{
+	int i;
+	int length = Count;
+	for (i=0; i<length; i++)
+	{
+		if (item == UnmanagedPointer[i])
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+float FloatArray::default::get(int index)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	return UnmanagedPointer[index];
+}
+void FloatArray::default::set(int index, float value)
+{
+	if (IsReadOnly)
+		throw gcnew InvalidOperationException("List is read-only.");
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	UnmanagedPointer[index] = value;
+}
+
+float* FloatArray::UnmanagedPointer::get()
+{
+	return (float*) GenericList::UnmanagedPointer;
+}
+
+
 IntArray::IntArray(int* intArray, int length)
 : GenericList<int>(intArray, length)
 {
@@ -494,6 +577,11 @@ IntArray::IntArray(int* intArray, int length)
 
 IntArray::IntArray(const int* intArray, int length)
 : GenericList<int>(intArray, length)
+{
+}
+
+IntArray::IntArray(int length)
+: GenericList<int>(new int[length], length)
 {
 }
 
@@ -792,7 +880,7 @@ Vector3Array::Vector3Array(const btVector3* vector3Array, int length)
 }
 
 Vector3Array::Vector3Array(int length)
-: GenericList<Vector3>(new btVector3[length * sizeof(btVector3)], length)
+: GenericList<Vector3>(new btVector3[length], length)
 {
 }
 

@@ -3,6 +3,7 @@
 #ifndef DISABLE_DBVT
 
 #include "AlignedObjectArray.h"
+#include "Collections.h"
 #include "Dbvt.h"
 #include "DbvtBroadphase.h"
 

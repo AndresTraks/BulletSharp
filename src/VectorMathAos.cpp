@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_VECTORMATH_AOS
+
 #include "VectorMathAos.h"
 
 using namespace BulletSharp::VectorMath;
@@ -72,3 +74,5 @@ Vectormath::Aos::Vector3* Aos::VMVector3::UnmanagedPointer::get()
 {
 	return _vector;
 }
+
+#endif

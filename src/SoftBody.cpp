@@ -1573,41 +1573,61 @@ BulletSharp::SoftBody::SoftBody::SoftBody(btSoftBody* body)
 BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, array<Vector3>^ x, array<btScalar>^ m)
 : CollisionObject(0)
 {
+	pin_ptr<Vector3> x_ptr;
 	pin_ptr<btScalar> m_ptr;
+	int length;
 
-	if (m->Length != 0)
+	if (x->Length != 0 && m->Length != 0)
 	{
 		if (x->Length != m->Length)
 			throw gcnew InvalidOperationException("Arrays must have the same length.");
-		m_ptr = &m[0];
+		length = x->Length;
+	}
+	else if (x->Length == 0 && m->Length == 0)
+	{
+		length = 0;
 	}
 	else
 	{
-		m_ptr = nullptr;
+		length = (x->Length != 0) ? x->Length : m->Length;
 	}
 
-	pin_ptr<Vector3> x_ptr = &x[0];
-
-	UnmanagedPointer = new btSoftBody(worldInfo->UnmanagedPointer, x->Length, (btVector3*)x_ptr, m_ptr);
-}
-
-BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3Array^ x, array<btScalar>^ m)
-: CollisionObject(0)
-{
-	pin_ptr<btScalar> m_ptr;
+	if (x->Length != 0)
+		x_ptr = &x[0];
+	else
+		x_ptr = nullptr;
 
 	if (m->Length != 0)
-	{
-		if (x->Count != m->Length)
-			throw gcnew InvalidOperationException("Arrays must have the same length.");
 		m_ptr = &m[0];
+	else
+		m_ptr = nullptr;
+
+	UnmanagedPointer = new btSoftBody(worldInfo->UnmanagedPointer, length, (btVector3*)x_ptr, m_ptr);
+}
+
+BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3Array^ x, FloatArray^ m)
+: CollisionObject(0)
+{
+	int length;
+
+	if (x != nullptr && m != nullptr)
+	{
+		if (x->Count != m->Count)
+			throw gcnew InvalidOperationException("Arrays must have the same length.");
+		length = x->Count;
+	}
+	else if (x == nullptr && m == nullptr)
+	{
+		length = 0;
 	}
 	else
 	{
-		m_ptr = nullptr;
+		length = (x != nullptr) ? x->Count : m->Count;
 	}
 
-	UnmanagedPointer = new btSoftBody(worldInfo->UnmanagedPointer, x->Count, x->UnmanagedPointer, m_ptr);
+	UnmanagedPointer = new btSoftBody(worldInfo->UnmanagedPointer, length,
+		x != nullptr ? x->UnmanagedPointer : 0,
+		m != nullptr ? m->UnmanagedPointer : 0);
 }
 
 void BulletSharp::SoftBody::SoftBody::AddForce(Vector3 force, int node)

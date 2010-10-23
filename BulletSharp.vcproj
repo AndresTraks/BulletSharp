@@ -1667,6 +1667,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\SoftBodySolverVertexBuffer.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\SoftRigidDynamicsWorld.cpp"
 					>
 				</File>
@@ -2322,6 +2326,10 @@
 				</File>
 				<File
 					RelativePath=".\src\SoftBodySolver.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\SoftBodySolverVertexBuffer.h"
 					>
 				</File>
 				<File

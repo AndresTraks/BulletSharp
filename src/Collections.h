@@ -238,6 +238,34 @@ namespace BulletSharp
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
+	public ref class FloatArray : GenericList<float>
+	{
+	internal:
+		FloatArray(float* floatArray, int length);
+		FloatArray(const float* floatArray, int length);
+
+	public:
+		FloatArray(int length);
+
+		virtual bool Contains(float item) override;
+		virtual void CopyTo(array<float>^ array, int arrayIndex) override;
+		virtual int IndexOf(float item) override;
+
+		property float default[int]
+		{
+			virtual float get(int index) override;
+			virtual void set(int index, float value) override;
+		}
+
+	internal:
+		property float* UnmanagedPointer
+		{
+			float* get() new;
+		}
+	};
+
+	[DebuggerDisplay("Count = {Count}")]
+	[DebuggerTypeProxy(ListDebugView::typeid)]
 	public ref class IntArray : GenericList<int>
 	{
 	internal:
@@ -245,6 +273,8 @@ namespace BulletSharp
 		IntArray(const int* intArray, int length);
 
 	public:
+		IntArray(int length);
+
 		virtual bool Contains(int item) override;
 		virtual void CopyTo(array<int>^ array, int arrayIndex) override;
 		virtual int IndexOf(int item) override;

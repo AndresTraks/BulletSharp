@@ -5,6 +5,8 @@ namespace BulletSharp
 	namespace SoftBody
 	{
 		ref class AlignedSoftBodyArray;
+		ref class SoftBody;
+		ref class VertexBufferDescriptor;
 
 		public ref class SoftBodySolver
 		{
@@ -16,6 +18,7 @@ namespace BulletSharp
 
 		public:
 			void Optimize(AlignedSoftBodyArray^ softBodies);
+			void CopySoftBodyToVertexBuffer(SoftBody^ softBody, VertexBufferDescriptor^ vertexBuffer);
 
 			property int NumberOfPositionIterations
 			{

@@ -4,16 +4,17 @@
 
 namespace BulletSharp
 {
-	ref class BroadphaseInterface;
+	ref class AlignedIntArray;
+	ref class AlignedScalarArray;
+	ref class AlignedVector3Array;
 	ref class AlignedCollisionObjectArray;
+	ref class BroadphaseInterface;
 	ref class Dbvt;
 	ref class DbvtNode;
 	ref class Dispatcher;
-	ref class AlignedIntArray;
+	ref class FloatArray;
 	ref class RigidBody;
-	ref class AlignedScalarArray;
 	ref class SparseSdf;
-	ref class AlignedVector3Array;
 	ref class Vector3Array;
 
 	namespace SoftBody
@@ -1194,7 +1195,7 @@ namespace BulletSharp
 
 		public:
 			SoftBody(SoftBodyWorldInfo^ worldInfo, array<Vector3>^ x, array<btScalar>^ m);
-			SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3Array^ x, array<btScalar>^ m);
+			SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3Array^ x, FloatArray^ m);
 
 			void AddForce(Vector3 force, int node);
 			void AddForce(Vector3 force);

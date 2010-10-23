@@ -9,6 +9,7 @@ namespace BulletSharp
 {
 	ref class AlignedIndexedMeshArray;
 	ref class DataStream;
+	ref class IntArray;
 	ref class Vector3Array;
 
 	public ref class IndexedMesh
@@ -47,6 +48,12 @@ namespace BulletSharp
 			void set(int value);
 		}
 
+		property IntArray^ TriangleIndexBase
+		{
+			IntArray^ get();
+			void set(IntArray^ value);
+		}
+
 		property int TriangleIndexStride
 		{
 			int get();
@@ -57,6 +64,12 @@ namespace BulletSharp
 		{
 			Vector3Array^ get();
 			void set(Vector3Array^ value);
+		}
+
+		property int VertexStride
+		{
+			int get();
+			void set(int value);
 		}
 
 		property PhyScalarType VertexType

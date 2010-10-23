@@ -78,6 +78,15 @@ void IndexedMesh::NumVertices::set(int value)
 	_indexedMesh->m_numVertices = value;
 }
 
+IntArray^ IndexedMesh::TriangleIndexBase::get()
+{
+	return gcnew IntArray((int*)_indexedMesh->m_triangleIndexBase, _indexedMesh->m_numTriangles * _indexedMesh->m_triangleIndexStride / sizeof(int));
+}
+void IndexedMesh::TriangleIndexBase::set(IntArray^ value)
+{
+	_indexedMesh->m_triangleIndexBase = (unsigned char*)value->UnmanagedPointer;
+}
+
 int IndexedMesh::TriangleIndexStride::get()
 {
 	return _indexedMesh->m_triangleIndexStride;
@@ -94,6 +103,15 @@ Vector3Array^ IndexedMesh::VertexBase::get()
 void IndexedMesh::VertexBase::set(Vector3Array^ value)
 {
 	_indexedMesh->m_vertexBase = (unsigned char*)value->UnmanagedPointer;
+}
+
+int IndexedMesh::VertexStride::get()
+{
+	return _indexedMesh->m_vertexStride;
+}
+void IndexedMesh::VertexStride::set(int value)
+{
+	_indexedMesh->m_vertexStride = value;
 }
 
 PhyScalarType IndexedMesh::VertexType::get()

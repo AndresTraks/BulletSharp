@@ -1,8 +1,11 @@
 #include "StdAfx.h"
 
 #ifndef DISABLE_SOFTBODY
+
 #include "AlignedObjectArray.h"
+#include "SoftBody.h"
 #include "SoftBodySolver.h"
+#include "SoftBodySolverVertexBuffer.h"
 
 SoftBody::SoftBodySolver::SoftBodySolver(btSoftBodySolver* solver)
 {
@@ -12,6 +15,11 @@ SoftBody::SoftBodySolver::SoftBodySolver(btSoftBodySolver* solver)
 void SoftBody::SoftBodySolver::Optimize(AlignedSoftBodyArray^ softBodies)
 {
 	_solver->optimize(*softBodies->UnmanagedPointer);
+}
+
+void SoftBody::SoftBodySolver::CopySoftBodyToVertexBuffer(SoftBody^ softBody, VertexBufferDescriptor^ vertexBuffer)
+{
+	_solver->copySoftBodyToVertexBuffer(softBody->UnmanagedPointer, vertexBuffer->UnmanagedPointer);
 }
 
 int SoftBody::SoftBodySolver::NumberOfPositionIterations::get()

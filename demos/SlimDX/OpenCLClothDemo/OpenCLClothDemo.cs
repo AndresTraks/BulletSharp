@@ -11,20 +11,20 @@ namespace OpenCLClothDemo
     class OpenCLClothDemo : Game
     {
         int Width = 1024, Height = 768;
-        Vector3 eye = new Vector3(30, 20, 10);
+        Vector3 eye = new Vector3(10, 20, 30);
         Vector3 target = new Vector3(0, 5, -4);
         Color ambient = Color.Gray;
         DebugDrawModes debugMode = DebugDrawModes.DrawAabb;
 
         Light light;
-        Material activeMaterial, passiveMaterial, groundMaterial;
+        Material activeMaterial, passiveMaterial, groundMaterial, softBodyMaterial;
         GraphicObjectFactory mesh;
         Physics physics;
 
         protected override void OnInitializeDevice()
         {
             Form.ClientSize = new Size(Width, Height);
-            Form.Text = "BulletSharp - Basic Demo";
+            Form.Text = "BulletSharp - OpenCL Cloth Demo";
 
             DeviceSettings9 settings = new DeviceSettings9();
             settings.CreationFlags = CreateFlags.HardwareVertexProcessing;
@@ -65,6 +65,10 @@ namespace OpenCLClothDemo
             groundMaterial.Diffuse = Color.Green;
             groundMaterial.Ambient = ambient;
 
+            softBodyMaterial = new Material();
+            softBodyMaterial.Diffuse = Color.White;
+            softBodyMaterial.Ambient = ambient;
+
             Freelook.SetEyeTarget(eye, target);
 
             Fps.Text = "Move using mouse and WASD+shift\n" +
@@ -94,6 +98,8 @@ namespace OpenCLClothDemo
 
             Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 150.0f);
             Device.SetTransform(TransformState.Projection, Projection);
+
+            Device.SetRenderState(RenderState.CullMode, Cull.None);
         }
 
         protected override void OnUpdate()
@@ -121,6 +127,13 @@ namespace OpenCLClothDemo
 
             foreach (CollisionObject colObj in physics.World.CollisionObjectArray)
             {
+                if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
+                {
+                    Device.Material = softBodyMaterial;
+                    Device.SetTransform(TransformState.World, Matrix.Identity);
+                    mesh.Render(colObj);
+                    continue;
+                }
                 RigidBody body = RigidBody.Upcast(colObj);
                 Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
 
