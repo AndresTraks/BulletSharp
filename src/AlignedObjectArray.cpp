@@ -1032,6 +1032,11 @@ void AlignedIntArray::Resize(int newSize)
 	UnmanagedPointer->resize(newSize);
 }
 
+void AlignedIntArray::Resize(int newSize, int fillData)
+{
+	UnmanagedPointer->resize(newSize, fillData);
+}
+
 void AlignedIntArray::Swap(int index0, int index1)
 {
 	UnmanagedPointer->swap(index0, index1);

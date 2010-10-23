@@ -41,6 +41,9 @@
   -->
   <ItemGroup>
     <Compile Include="Cloth.cs" />
+    <Compile Include="CLStuff.cs" />
+    <Compile Include="OclCommon.cs" />
+    <Compile Include="OclUtils.cs" />
     <Compile Include="OpenCLClothDemo.cs" />
     <Compile Include="Physics.cs" />
   </ItemGroup>
@@ -59,5 +62,13 @@
       <Project>{300EA042-EAD4-4C63-8FCC-7AE5A3A792D1}</Project>
       <Name>DemoFramework</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="amdFlag.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="atiFlag.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

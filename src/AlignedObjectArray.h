@@ -535,6 +535,7 @@ namespace BulletSharp
 		virtual void PopBack() override;
 		virtual bool Remove(int integer) override;
 		void Resize(int newSize);
+		void Resize(int newSize, int fillData);
 		virtual void Swap(int index0, int index1) override;
 
 		property int Capacity

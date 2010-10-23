@@ -51,6 +51,7 @@
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="3"
+				DisableSpecificWarnings="4793"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -63,7 +64,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug"
 				GenerateDebugInformation="true"
@@ -131,6 +132,7 @@
 				UsePrecompiledHeader="2"
 				WarningLevel="1"
 				DebugInformationFormat="0"
+				DisableSpecificWarnings="4793"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -143,7 +145,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel"
 				GenerateDebugInformation="false"
@@ -210,6 +212,7 @@
 				UsePrecompiledHeader="2"
 				WarningLevel="1"
 				DebugInformationFormat="0"
+				DisableSpecificWarnings="4793"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -222,7 +225,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel"
 				GenerateDebugInformation="false"
@@ -286,6 +289,7 @@
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="3"
+				DisableSpecificWarnings="4793"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -298,7 +302,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug"
 				GenerateDebugInformation="true"
@@ -366,6 +370,7 @@
 				UsePrecompiledHeader="2"
 				WarningLevel="1"
 				DebugInformationFormat="0"
+				DisableSpecificWarnings="4793"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -378,7 +383,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel"
 				GenerateDebugInformation="false"
@@ -442,6 +447,7 @@
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="3"
+				DisableSpecificWarnings="4793"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -454,7 +460,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug"
 				GenerateDebugInformation="true"
@@ -522,6 +528,7 @@
 				UsePrecompiledHeader="2"
 				WarningLevel="1"
 				DebugInformationFormat="0"
+				DisableSpecificWarnings="4793"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -534,7 +541,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel"
 				GenerateDebugInformation="false"
@@ -598,6 +605,7 @@
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="3"
+				DisableSpecificWarnings="4793"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -610,7 +618,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug"
 				GenerateDebugInformation="true"
@@ -678,6 +686,7 @@
 				UsePrecompiledHeader="2"
 				WarningLevel="1"
 				DebugInformationFormat="0"
+				DisableSpecificWarnings="4793"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -690,7 +699,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel"
 				GenerateDebugInformation="false"
@@ -754,6 +763,7 @@
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="3"
+				DisableSpecificWarnings="4793"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -766,7 +776,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug"
 				GenerateDebugInformation="true"
@@ -834,6 +844,7 @@
 				UsePrecompiledHeader="2"
 				WarningLevel="1"
 				DebugInformationFormat="0"
+				DisableSpecificWarnings="4793"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -846,7 +857,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel"
 				GenerateDebugInformation="false"
@@ -910,6 +921,7 @@
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="3"
+				DisableSpecificWarnings="4793"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -922,7 +934,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug"
 				GenerateDebugInformation="true"
@@ -1731,6 +1743,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="MiniCL"
+				>
+				<File
+					RelativePath=".\src\MiniCL.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -2402,6 +2422,14 @@
 				>
 				<File
 					RelativePath=".\src\VectorMathAos.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="MiniCL"
+				>
+				<File
+					RelativePath=".\src\MiniCL.h"
 					>
 				</File>
 			</Filter>

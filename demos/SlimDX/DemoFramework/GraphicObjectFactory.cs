@@ -370,7 +370,6 @@ namespace DemoFramework
             if (faceCount > 0)
             {
                 int vertexCount = faceCount * 3;
-
                 bool index32 = vertexCount > 65536;
 
                 Mesh mesh = new Mesh(device, faceCount, vertexCount,
@@ -475,6 +474,51 @@ namespace DemoFramework
                     mesh.DrawSubset(0);
                     mesh.Dispose();
                 }
+            }
+        }
+
+        public void RenderSoftBodyTextured(SoftBody softBody)
+        {
+            if (!(softBody.UserObject is Array))
+                return;
+
+            object[] userObjArr = softBody.UserObject as object[];
+            FloatArray vertexBuffer = userObjArr[0] as FloatArray;
+            IntArray indexBuffer = userObjArr[1] as IntArray;
+
+            int vertexCount = (vertexBuffer.Count / 8) ;
+
+            if (vertexCount > 0)
+            {
+                int faceCount = indexBuffer.Count / 2;
+
+                bool index32 = vertexCount > 65536;
+
+                Mesh mesh = new Mesh(device, faceCount, vertexCount,
+                    MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0),
+                    VertexFormat.Position | VertexFormat.Normal | VertexFormat.Texture1);
+
+                SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.Discard);
+                if (index32)
+                {
+                    foreach (int i in indexBuffer)
+                        indices.Write(i);
+                }
+                else
+                {
+                    foreach (int i in indexBuffer)
+                        indices.Write((short)i);
+                }
+                mesh.UnlockIndexBuffer();
+
+                SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.Discard);
+                foreach (float f in vertexBuffer)
+                    verts.Write(f);
+                mesh.UnlockVertexBuffer();
+
+                mesh.ComputeNormals();
+                mesh.DrawSubset(0);
+                mesh.Dispose();
             }
         }
     }

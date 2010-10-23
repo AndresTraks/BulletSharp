@@ -30,6 +30,9 @@
 //#define BT_USE_DOUBLE_PRECISION
 
 
+#define USE_MINICL
+
+
 #if GRAPHICS_XNA31
 	#using <Microsoft.Xna.Framework.dll>
 #elif GRAPHICS_XNA40

@@ -10,16 +10,19 @@ namespace OpenCLClothDemo
 {
     class Physics : PhysicsContext
     {
+        bool UseGpuSolver = false;
+
         const int numFlags = 5;
-        const int clothWidth = 40;
-        const int clothHeight = 60;
+        const int clothWidth = 20;//40;
+        const int clothHeight = 30;//60;
         const float flagSpacing = 30;
         float _windAngle = 1.0f;//0.4f;
         float _windStrength = 15;
 
         AlignedSoftBodyArray flags;
         Cloth[] cloths;
-        CpuSoftBodySolver gSolver;
+        SoftBodySolver gSolver;
+        BulletSharp.Clock clock = new BulletSharp.Clock();
 
         SoftRigidDynamicsWorld SoftWorld
         {
@@ -28,13 +31,23 @@ namespace OpenCLClothDemo
 
         public Physics()
         {
-            gSolver = new CpuSoftBodySolver();
+            CLStuff.InitCL();
 
             cloths = new Cloth[numFlags];
             for (int flagIndex = 0; flagIndex < numFlags; ++flagIndex)
             {
                 cloths[flagIndex] = new Cloth();
                 cloths[flagIndex].CreateBuffers(clothWidth, clothHeight);
+            }
+
+
+            if (UseGpuSolver)
+            {
+                gSolver = new OpenCLSoftBodySolver(CLStuff.commandQueue, CLStuff.cxMainContext);
+            }
+            else
+            {
+                gSolver = new CpuSoftBodySolver();
             }
 
             // collision configuration contains default setup for memory, collision setup
@@ -50,8 +63,9 @@ namespace OpenCLClothDemo
             // create the ground
             CollisionShape groundShape = new BoxShape(50, 50, 50);
             CollisionShapes.Add(groundShape);
-            CollisionObject ground = LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
+            CollisionObject ground = LocalCreateRigidBody(0, Matrix.Translation(0, -60, 0), groundShape);
             ground.UserObject = "Ground";
+
 
             SoftWorld.WorldInfo.AirDensity = 1.2f;
             SoftWorld.WorldInfo.WaterDensity = 0;
@@ -59,7 +73,8 @@ namespace OpenCLClothDemo
             SoftWorld.WorldInfo.WaterNormal = Vector3.Zero;
             SoftWorld.WorldInfo.Gravity = new Vector3(0, -10, 0);
 
-            CreateFlag(gSolver, clothWidth, clothHeight, out flags);
+
+            CreateFlag(clothWidth, clothHeight, out flags);
 
             // Create output buffer descriptions for ecah flag
             // These describe where the simulation should send output data to
@@ -78,7 +93,7 @@ namespace OpenCLClothDemo
         }
 
         // Create a sequence of flag objects and add them to the world.
-        void CreateFlag(SoftBodySolver solver, int width, int height, out AlignedSoftBodyArray flags)
+        void CreateFlag(int width, int height, out AlignedSoftBodyArray flags)
         {
             flags = new AlignedSoftBodyArray();
 
@@ -99,7 +114,6 @@ namespace OpenCLClothDemo
 
 
             // Generate normalised object space vertex coordinates for a rectangular flag
-            float zCoordinate = 0.0f;
 
             Matrix defaultScale = Matrix.Scaling(5, 20, 1);
             for (int y = 0; y < height; ++y)
@@ -109,11 +123,7 @@ namespace OpenCLClothDemo
                 {
                     float xCoordinate = x * 2.0f / (float)width - 1.0f;
 
-                    //VMVector3 vertex = new VMVector3(xCoordinate, yCoordinate, zCoordinate);
-                    //VMVector3 transformedVertex = defaultScale * vertex;
-                    //vertexArray[y*width + x] = new Vector3(transformedVertex.X, transformedVertex.Y, transformedVertex.Z);
-
-                    Vector3 vertex = new Vector3(xCoordinate, yCoordinate, zCoordinate);
+                    Vector3 vertex = new Vector3(xCoordinate, yCoordinate, 0.0f);
                     vertexArray[y * width + x] = Vector3.TransformCoordinate(vertex, defaultScale);
                 }
             }
@@ -169,9 +179,9 @@ namespace OpenCLClothDemo
                 {
                     softBody.SetMass(j, 10.0f / mesh.NumVertices);
                 }
-                softBody.SetMass((height - i) * (width), 0);
-                softBody.SetMass((height - i) * (width) + width - 1, 0);
-                softBody.SetMass((height - i) * width + width / 2, 0);
+                softBody.SetMass((height - 1) * width, 0);
+                softBody.SetMass((height - 1) * width + width - 1, 0);
+                softBody.SetMass((height - 1) * width + width / 2, 0);
                 softBody.Cfg.Collisions = FCollisions.CLSS | FCollisions.CLRS;
 
 
@@ -210,7 +220,7 @@ namespace OpenCLClothDemo
             // -1 to start. Once a value is entered we know the "other" triangle
             // and can add a link across the link
             AlignedIntArray triangleForLinks = new AlignedIntArray();
-            triangleForLinks.Resize(numVertices * numVertices);
+            triangleForLinks.Resize(numVertices * numVertices, -1);
 
             for (int triangle = 0; triangle < numTriangles; ++triangle)
             {
@@ -241,9 +251,9 @@ namespace OpenCLClothDemo
                 // Test all links of the other triangle against this link. The one that's not part of it is what we want.
                 if (otherIndices[0] != vertex0 && otherIndices[0] != vertex1)
                     nodeA = otherIndices[0];
-                else if (otherIndices[1] != vertex0 && otherIndices[1] != vertex1)
+                if (otherIndices[1] != vertex0 && otherIndices[1] != vertex1)
                     nodeA = otherIndices[1];
-                else if (otherIndices[2] != vertex0 && otherIndices[2] != vertex1)
+                if (otherIndices[2] != vertex0 && otherIndices[2] != vertex1)
                     nodeA = otherIndices[2];
 
                 softBody.AppendLink(nodeA, nonLinkVertex, bendMaterial);
@@ -264,10 +274,21 @@ namespace OpenCLClothDemo
 
         static int counter = 0;
         static Random random = new Random();
+        static int frameCount = 0;
 
         public override int Update(float elapsedTime)
         {
-            int ret = base.Update(elapsedTime);
+            float dt = clock.TimeMicroseconds;
+	        clock.Reset();
+
+            int ret = World.StepSimulation(dt/1000000.0f);
+		    frameCount++;
+            if (frameCount == 100)
+            {
+                ret += World.StepSimulation(1.0f/60.0f,0);
+            }
+
+            //int ret = base.Update(elapsedTime);
 
             // Change wind velocity a bit based on a frame counter
             if ((counter % 400) == 0)
@@ -294,11 +315,10 @@ namespace OpenCLClothDemo
 
             counter++;
 
-
             for (int flagIndex = 0; flagIndex < flags.Count; ++flagIndex)
             {
                 gSolver.CopySoftBodyToVertexBuffer(flags[flagIndex], cloths[flagIndex].VertexBufferDescriptor);
-                //cloths[flagIndex].Draw();
+                flags[flagIndex].UserObject = new object[] { cloths[flagIndex].CpuBuffer, cloths[flagIndex].Indices };
             }
 
 

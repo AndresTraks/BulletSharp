@@ -52,6 +52,15 @@ namespace BulletSharp
 		MaxBroadphaseCollisionType = MAX_BROADPHASE_COLLISION_TYPES
 	};
 
+#ifndef DISABLE_SOFTBODY
+	public enum class BufferType
+	{
+		Cpu = btVertexBufferDescriptor::CPU_BUFFER,
+		DX11 = btVertexBufferDescriptor::DX11_BUFFER,
+		OpenGL = btVertexBufferDescriptor::OPENGL_BUFFER
+	};
+#endif
+
 	[Flags]
 	public enum class CollisionFlags
 	{

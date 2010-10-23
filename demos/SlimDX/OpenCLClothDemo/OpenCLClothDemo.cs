@@ -11,8 +11,8 @@ namespace OpenCLClothDemo
     class OpenCLClothDemo : Game
     {
         int Width = 1024, Height = 768;
-        Vector3 eye = new Vector3(10, 20, 30);
-        Vector3 target = new Vector3(0, 5, -4);
+        Vector3 eye = new Vector3(50, 20, 100);
+        Vector3 target = new Vector3(0, 20, 40);
         Color ambient = Color.Gray;
         DebugDrawModes debugMode = DebugDrawModes.DrawAabb;
 
@@ -20,6 +20,8 @@ namespace OpenCLClothDemo
         Material activeMaterial, passiveMaterial, groundMaterial, softBodyMaterial;
         GraphicObjectFactory mesh;
         Physics physics;
+        Texture amdFlag;
+        Texture atiFlag;
 
         protected override void OnInitializeDevice()
         {
@@ -48,8 +50,8 @@ namespace OpenCLClothDemo
 
             light = new Light();
             light.Type = LightType.Point;
-            light.Range = 70;
-            light.Position = new Vector3(10, 25, 10);
+            light.Range = 140;
+            light.Position = new Vector3(10, 30, 50);
             light.Diffuse = Color.LemonChiffon;
             light.Attenuation0 = 1.0f;
 
@@ -69,6 +71,9 @@ namespace OpenCLClothDemo
             softBodyMaterial.Diffuse = Color.White;
             softBodyMaterial.Ambient = ambient;
 
+            amdFlag = Texture.FromFile(Device, "amdFlag.png");
+            atiFlag = Texture.FromFile(Device, "atiFlag.png");
+
             Freelook.SetEyeTarget(eye, target);
 
             Fps.Text = "Move using mouse and WASD+shift\n" +
@@ -85,6 +90,8 @@ namespace OpenCLClothDemo
             if (disposing)
             {
                 mesh.Dispose();
+                amdFlag.Dispose();
+                atiFlag.Dispose();
             }
         }
 
@@ -96,10 +103,11 @@ namespace OpenCLClothDemo
             Device.EnableLight(0, true);
             Device.SetRenderState(RenderState.Ambient, ambient.ToArgb());
 
-            Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 150.0f);
+            Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 200.0f);
             Device.SetTransform(TransformState.Projection, Projection);
 
             Device.SetRenderState(RenderState.CullMode, Cull.None);
+            Device.SetSamplerState(0, SamplerState.MagFilter, TextureFilter.Linear);
         }
 
         protected override void OnUpdate()
@@ -129,9 +137,11 @@ namespace OpenCLClothDemo
             {
                 if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
                 {
+                    Device.SetTexture(0, atiFlag);
                     Device.Material = softBodyMaterial;
                     Device.SetTransform(TransformState.World, Matrix.Identity);
-                    mesh.Render(colObj);
+                    mesh.RenderSoftBodyTextured(BulletSharp.SoftBody.SoftBody.Upcast(colObj));
+                    Device.SetTexture(0, null);
                     continue;
                 }
                 RigidBody body = RigidBody.Upcast(colObj);
