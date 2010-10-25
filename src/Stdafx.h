@@ -31,6 +31,7 @@
 
 
 #define USE_MINICL
+//#define USE_AMD_OPENCL
 
 
 #if GRAPHICS_XNA31

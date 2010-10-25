@@ -10,7 +10,7 @@ namespace OpenCLClothDemo
 {
     class Physics : PhysicsContext
     {
-        bool UseGpuSolver = false;
+        bool UseGpuSolver = true;
 
         const int numFlags = 5;
         const int clothWidth = 20;//40;
