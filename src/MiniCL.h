@@ -77,7 +77,27 @@ namespace BulletSharp
 		Vendor = CL_DEVICE_VENDOR,
 		DriverVersion = CL_DRIVER_VERSION,
 		Extensions = CL_DEVICE_EXTENSIONS,
-		Platform = CL_DEVICE_PLATFORM
+		Platform = CL_DEVICE_PLATFORM,
+#ifdef USE_AMD_OPENCL
+		//DoubleFPConfig = CL_DEVICE_DOUBLE_FP_CONFIG,
+		//HalfFPConfig = CL_DEVICE_HALF_FP_CONFIG,
+		PreferredVectorWidthHalf = CL_DEVICE_PREFERRED_VECTOR_WIDTH_HALF,
+		HostUnifiedMemory = CL_DEVICE_HOST_UNIFIED_MEMORY,
+		NativeVectorWidthChar = CL_DEVICE_NATIVE_VECTOR_WIDTH_CHAR,
+		NativeVectorWidthShort = CL_DEVICE_NATIVE_VECTOR_WIDTH_SHORT,
+		NativeVectorWidthInt = CL_DEVICE_NATIVE_VECTOR_WIDTH_INT,
+		NativeVectorWidthLong = CL_DEVICE_NATIVE_VECTOR_WIDTH_LONG,
+		NativeVectorWidthFloat = CL_DEVICE_NATIVE_VECTOR_WIDTH_FLOAT,
+		NativeVectorWidthDouble = CL_DEVICE_NATIVE_VECTOR_WIDTH_DOUBLE,
+		NativeVectorWidthHalf = CL_DEVICE_NATIVE_VECTOR_WIDTH_HALF,
+		OpenCLCVersion = CL_DEVICE_OPENCL_C_VERSION,
+#endif
+	};
+
+	public enum class CLDeviceLocalMemoryType
+	{
+		Local = CL_LOCAL,
+		Global = CL_GLOBAL
 	};
 
 	[Flags]
@@ -111,9 +131,12 @@ namespace BulletSharp
 		static cl_int GetContextInfo(IntPtr clContext, CLContext param, [Out]array<IntPtr>^% paramValue);
 		static cl_int GetDeviceInfo(IntPtr device, CLDevice param, [Out]int% paramValue);
 		static cl_int GetDeviceInfo(IntPtr device, CLDevice param, [Out]bool% paramValue);
+		static cl_int GetDeviceInfo(IntPtr device, CLDevice param, [Out]unsigned long long% paramValue);
 		static cl_int GetDeviceInfo(IntPtr device, CLDevice param, [Out]String^% paramValue);
-		static cl_int GetDeviceInfo(IntPtr device, CLDevice param, [Out]CLDeviceType% paramValue);
 		static cl_int GetDeviceInfo(IntPtr device, CLDevice param, [Out]array<int>^% paramValue);
+		static cl_int GetDeviceInfo(IntPtr device, CLDevice param, [Out]CLCommandQueueProperties% paramValue);
+		static cl_int GetDeviceInfo(IntPtr device, CLDevice param, [Out]CLDeviceLocalMemoryType% paramValue);
+		static cl_int GetDeviceInfo(IntPtr device, CLDevice param, [Out]CLDeviceType% paramValue);
 		static cl_int GetPlatformIDs(cl_uint numEntries, array<IntPtr>^% platforms, [Out]cl_uint% numPlatforms);
 		static cl_int GetPlatformInfo(IntPtr platform, CLPlatform param, [Out]String^% paramValue);
 	};
