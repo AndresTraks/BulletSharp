@@ -16,7 +16,7 @@ namespace SoftDemo
         //float extraHeight = -10.0f;
 
         int demo = 0;
-        int numDemos = 12;
+        int numDemos = 13;
 
         SoftBodyWorldInfo softBodyWorldInfo;
 
@@ -127,6 +127,8 @@ namespace SoftDemo
                 Init_Friction();
             else if (demo == 11)
                 Init_TetraCube();
+            else if (demo == 12)
+                Init_TetraBunny();
         }
 
         static Vector3 GetRandomVector(Random random)
@@ -308,6 +310,25 @@ namespace SoftDemo
             LocalCreateRigidBody(10, Matrix.Translation(0, 20, 0), new BoxShape(2));
         }
 
+        void Init_Collide()
+        {
+	        for(int i=0;i<3;++i)
+	        {
+                SoftBody psb = null;// = SoftBodyHelpers.CreateFromTriMesh(softBodyWorldInfo, TorusMesh.Vertices,, TorusMesh.Indices);
+		        psb.GenerateBendingConstraints(2);
+		        psb.Cfg.PIterations = 2;
+		        psb.Cfg.Collisions |= FCollisions.VFSS;
+		        psb.RandomizeConstraints();
+                Matrix m = Matrix.RotationYawPitchRoll((float)Math.PI/2*(1-(i&1)), (float)Math.PI/2*(i&1), 0) *
+                    Matrix.Translation(3*i, 2, 0);
+		        psb.Transform(m);
+		        psb.Scale(new Vector3(2,2,2));
+		        psb.SetTotalMass(50,true);
+		        SoftWorld.AddSoftBody(psb);
+	        }
+	        cutting=true;
+        }
+
         void Init_Collide3()
         {
             {
@@ -387,6 +408,25 @@ namespace SoftDemo
                 psb.Cfg.DF = 0.1f * ((i + 1) / (float)ni);
                 psb.AddVelocity(new Vector3(0, 0, -10));
             }
+        }
+
+        void Init_TetraBunny()
+        {
+            SoftBody psb = SoftBodyHelpers.CreateFromTetGenData(softBodyWorldInfo,
+                Bunny.GetElements(), null, Bunny.GetNodes(), false, true, true);
+            SoftWorld.AddSoftBody(psb);
+            psb.Rotate(Quaternion.RotationYawPitchRoll((float)Math.PI / 2, 0, 0));
+            psb.SetVolumeMass(150);
+            psb.Cfg.PIterations = 2;
+            //psb.Cfg.PIterations = 1;
+            cutting = true;
+            //psb.CollisionShape.Margin = 0.01f;
+            psb.Cfg.Collisions = FCollisions.CLSS | FCollisions.CLRS; //| FCollisions.CLSelf;
+
+            ///pass zero in generateClusters to create  cluster for each tetrahedron or triangle
+            psb.GenerateClusters(0);
+            //psb.Materials[0].Lst = 0.2f;
+            psb.Cfg.DF = 10;
         }
 
         void Init_TetraCube()

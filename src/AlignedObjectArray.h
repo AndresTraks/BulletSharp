@@ -28,6 +28,7 @@ namespace BulletSharp
 		ref class Anchor;
 		ref class Cluster;
 		ref class Face;
+		ref class Joint;
 		ref class Link;
 		ref class Material;
 		ref class Node;
@@ -560,6 +561,53 @@ namespace BulletSharp
 			virtual btAlignedObjectArray<int>* get() new;
 		}
 	};
+
+#ifndef DISABLE_SOFTBODY
+	namespace SoftBody
+	{
+		[DebuggerDisplay("Count = {Count}")]
+		[DebuggerTypeProxy(ListDebugView::typeid)]
+		public ref class AlignedJointArray : AlignedObjectArray<Joint^>, IEnumerable
+		{
+		internal:
+			AlignedJointArray(btSoftBody::tJointArray* jointArray);
+
+		public:
+			AlignedJointArray();
+
+			virtual void Add(Joint^ joint) override;
+			virtual void Clear() override;
+			virtual bool Contains(Joint^ joint) override;
+			virtual void CopyTo(array<Joint^>^ array, int arrayIndex) override;
+			virtual int IndexOf(Joint^ joint) override;
+			virtual void PopBack() override;
+			virtual bool Remove(Joint^ joint) override;
+			virtual void Swap(int index0, int index1) override;
+
+			property int Capacity
+			{
+				int get();
+			}
+
+			property int Count
+			{
+				virtual int get() override;
+			}
+
+			property Joint^ default [int]
+			{
+				virtual Joint^ get (int index) override;
+				virtual void set(int index, Joint^ value) override;
+			}
+
+		internal:
+			property btSoftBody::tJointArray* UnmanagedPointer
+			{
+				virtual btSoftBody::tJointArray* get() new;
+			}
+		};
+	};
+#endif
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]

@@ -52,7 +52,7 @@ DbvtNode^ CompoundShapeChild::Node::get()
 }
 void CompoundShapeChild::Node::set(DbvtNode^ value)
 {
-	_child->m_node = value != nullptr ? value->UnmanagedPointer : 0;
+	_child->m_node = GetUnmanagedNullable(value);
 }
 #endif
 

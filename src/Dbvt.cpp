@@ -231,7 +231,7 @@ DbvtNode^ DbvtNode::Parent::get()
 }
 void DbvtNode::Parent::set(DbvtNode^ value)
 {
-	_node->parent = value != nullptr ? value->UnmanagedPointer : 0;
+	_node->parent = GetUnmanagedNullable(value);
 }
 
 DbvtVolume^ DbvtNode::Volume::get()
@@ -794,7 +794,7 @@ DbvtNode^ Dbvt::Free::get()
 }
 void Dbvt::Free::set(DbvtNode^ value)
 {
-	_dbvt->m_free = value != nullptr ? value->UnmanagedPointer : 0;
+	_dbvt->m_free = GetUnmanagedNullable(value);
 }
 
 int Dbvt::Leaves::get()
@@ -832,7 +832,7 @@ DbvtNode^ Dbvt::Root::get()
 }
 void Dbvt::Root::set(DbvtNode^ value)
 {
-	_dbvt->m_root = value != nullptr ? value->UnmanagedPointer : 0;
+	_dbvt->m_root = GetUnmanagedNullable(value);
 }
 
 AlignedStkNnArray^ Dbvt::Stack::get()

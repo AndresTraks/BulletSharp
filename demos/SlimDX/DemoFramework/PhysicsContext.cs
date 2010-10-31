@@ -19,14 +19,19 @@ namespace DemoFramework
 
         public PhysicsDebugDraw DebugDrawer
         {
-            get { return (PhysicsDebugDraw)World.DebugDrawer; }
+            get
+            {
+                if (World == null)
+                    throw new System.Exception("Physics world not initialized.");
+
+                return (PhysicsDebugDraw)World.DebugDrawer;
+            }
             set
             {
                 if (World == null)
                     throw new System.Exception("Physics world not initialized.");
 
                 World.DebugDrawer = value;
-                IsDebugDrawEnabled = (value != null);
             }
         }
 

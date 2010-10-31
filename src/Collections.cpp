@@ -408,14 +408,8 @@ void DbvtNodePtrArray::default::set(int index, DbvtNode^ value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	if (value != nullptr)
-	{
-		UnmanagedPointer[index] = value->UnmanagedPointer;
-	}
-	else
-	{
-		UnmanagedPointer[index] = 0;
-	}
+
+	UnmanagedPointer[index] = GetUnmanagedNullable(value);
 }
 
 btDbvtNode** DbvtNodePtrArray::UnmanagedPointer::get()
@@ -470,14 +464,8 @@ void DbvtProxyPtrArray::default::set(int index, DbvtProxy^ value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	if (value != nullptr)
-	{
-		UnmanagedPointer[index] = value->UnmanagedPointer;
-	}
-	else
-	{
-		UnmanagedPointer[index] = 0;
-	}
+
+	UnmanagedPointer[index] = GetUnmanagedNullable(value);
 }
 
 btDbvtProxy** DbvtProxyPtrArray::UnmanagedPointer::get()
@@ -696,14 +684,7 @@ void SoftBody::NodePtrArray::default::set(int index, Node^ value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	if (value != nullptr)
-	{
-		UnmanagedPointer[index] = value->UnmanagedPointer;
-	}
-	else
-	{
-		UnmanagedPointer[index] = 0;
-	}
+	UnmanagedPointer[index] = GetUnmanagedNullable(value);
 }
 
 btSoftBody::Node** SoftBody::NodePtrArray::UnmanagedPointer::get()

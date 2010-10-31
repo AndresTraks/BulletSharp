@@ -165,6 +165,16 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(array<int>^ indices, array<Ve
 	delete[] verticesBase;
 }
 
+TriangleIndexVertexArray::TriangleIndexVertexArray(array<int>^ indices, array<btScalar>^ vertices)
+: StridingMeshInterface(0)
+{
+	pin_ptr<int> indicesBase = &indices[0];
+	pin_ptr<btScalar> verticesBase = &vertices[0];
+
+	UnmanagedPointer = new btTriangleIndexVertexArray(indices->Length, indicesBase, sizeof(int),
+		vertices->Length / 3, verticesBase, sizeof(btVector3));
+}
+
 void TriangleIndexVertexArray::AddIndexedMesh(IndexedMesh^ mesh)
 {
 	UnmanagedPointer->addIndexedMesh(*mesh->UnmanagedPointer);

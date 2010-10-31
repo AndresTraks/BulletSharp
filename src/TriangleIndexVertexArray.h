@@ -96,6 +96,7 @@ namespace BulletSharp
 		TriangleIndexVertexArray(int numTriangles, IntPtr triangleIndexBase, int triangleIndexStride,
 			int numVertices, IntPtr vertexBase, int vertexStride);
 		TriangleIndexVertexArray(array<int>^ indices, array<Vector3>^ vertices);
+		TriangleIndexVertexArray(array<int>^ indices, array<btScalar>^ vertices);
 
 		void AddIndexedMesh(IndexedMesh^ mesh);
 		void AddIndexedMesh(IndexedMesh^ mesh, PhyScalarType indexType);

@@ -49,7 +49,6 @@ namespace VehicleDemo
         {
             physics = new Physics(this);
             physics.DebugDrawer = new PhysicsDebugDrawLineGathering(Device);
-            physics.SetDebugDrawMode(Device, 0);
 
             wheel = Mesh.CreateCylinder(Device, physics.wheelRadius, physics.wheelRadius, physics.wheelWidth, 10, 10);
             ground.ComputeNormals();
@@ -110,10 +109,16 @@ namespace VehicleDemo
             Device.EnableLight(0, true);
             Device.SetRenderState(RenderState.Ambient, ambient.ToArgb());
 
-            Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 400.0f);
+            Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 1.0f, 600.0f);
             Device.SetTransform(TransformState.Projection, Projection);
 
             Device.SetRenderState(RenderState.CullMode, Cull.None);
+
+            Device.SetRenderState(RenderState.FogEnable, true);
+            Device.SetRenderState(RenderState.FogStart, 125f);
+            Device.SetRenderState(RenderState.FogEnd, 400f);
+            Device.SetRenderState(RenderState.FogColor, Color.LightGray.ToArgb());
+            Device.SetRenderState(RenderState.FogTableMode, FogMode.Linear);
         }
 
         protected override void OnUpdate()

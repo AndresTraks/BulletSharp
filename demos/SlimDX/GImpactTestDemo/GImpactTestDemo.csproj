@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C4555EA4-3F8D-410B-B46A-228514BAEC7C}</ProjectGuid>
+    <ProjectGuid>{372FA23F-5F6C-4C2B-94C1-FB004D722B38}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SoftDemo</RootNamespace>
-    <AssemblyName>SoftDemo</AssemblyName>
+    <RootNamespace>GImpactTestDemo</RootNamespace>
+    <AssemblyName>GImpactTestDemo</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>
@@ -40,20 +40,10 @@
   </Target>
   -->
   <ItemGroup>
-    <Compile Include="Bunny.cs" />
+    <Compile Include="BunnyMesh.cs" />
+    <Compile Include="GImpactTestDemo.cs" />
     <Compile Include="Physics.cs" />
-    <Compile Include="SoftDemo.cs" />
     <Compile Include="TorusMesh.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="BulletSharp, Version=0.5.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Release SlimDX\BulletSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="SlimDX, Version=2.0.10.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86" />
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DemoFramework\DemoFramework.csproj">
@@ -62,11 +52,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\cube.ele">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="data\cube.node">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Reference Include="BulletSharp, Version=0.11.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Release SlimDX\BulletSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimDX, Version=2.0.10.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86" />
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 </Project>

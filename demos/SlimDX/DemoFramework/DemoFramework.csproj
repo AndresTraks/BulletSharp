@@ -63,4 +63,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="checker_shader.fx" />
+  </ItemGroup>
 </Project>

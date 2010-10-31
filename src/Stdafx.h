@@ -154,4 +154,6 @@ inline GCHandle VoidPtrToGCHandle(void* pointer)
 	return GCHandle::operator GCHandle(System::IntPtr(pointer));
 }
 
+#define GetUnmanagedNullable(value) (value != nullptr ? value->UnmanagedPointer : 0)
+
 using namespace BulletSharp;

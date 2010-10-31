@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using BulletSharp;
 using BulletSharp.SoftBody;
 using SlimDX;
@@ -15,10 +17,13 @@ namespace DemoFramework
         Dictionary<Vector3, Mesh> boxes = new Dictionary<Vector3, Mesh>();
         Dictionary<Vector3, Mesh> capsules = new Dictionary<Vector3, Mesh>();
         Dictionary<Vector2, Mesh> cones = new Dictionary<Vector2, Mesh>();
-        Dictionary<ConvexHullShape, Mesh> hullShapes = new Dictionary<ConvexHullShape, Mesh>();
         Dictionary<Vector3, Mesh> cylinders = new Dictionary<Vector3, Mesh>();
+        Dictionary<ConvexHullShape, Mesh> hullShapes = new Dictionary<ConvexHullShape, Mesh>();
+        Dictionary<StaticPlaneShape, Mesh> planes = new Dictionary<StaticPlaneShape, Mesh>();
         Dictionary<float, Mesh> spheres = new Dictionary<float, Mesh>();
         Dictionary<float, Dictionary<Vector3, Mesh>> positionedSpheres = new Dictionary<float, Dictionary<Vector3, Mesh>>();
+
+        Effect planeShader;
 
         public GraphicObjectFactory(Device device)
         {
@@ -57,6 +62,12 @@ namespace DemoFramework
             }
             hullShapes.Clear();
 
+            foreach (Mesh mesh in planes.Values)
+            {
+                mesh.Dispose();
+            }
+            planes.Clear();
+
             foreach (Mesh mesh in spheres.Values)
             {
                 mesh.Dispose();
@@ -70,6 +81,9 @@ namespace DemoFramework
                 positions.Clear();
             }
             positionedSpheres.Clear();
+
+            if (planeShader != null)
+                planeShader.Dispose();
         }
 
         // Local transforms are needed for CompoundShapes.
@@ -123,6 +137,9 @@ namespace DemoFramework
                     return;
                 case BroadphaseNativeType.MultiSphereShape:
                     RenderMultiSphereShape((MultiSphereShape)shape, localTransform);
+                    return;
+                case BroadphaseNativeType.StaticPlane:
+                    RenderStaticPlaneShape((StaticPlaneShape)shape, localTransform);
                     return;
             }
 
@@ -362,6 +379,103 @@ namespace DemoFramework
             }
         }
 
+        public void RenderStaticPlaneShape(StaticPlaneShape shape, Matrix localTransform)
+        {
+            if (localTransform.IsIdentity == false)
+                DoLocalTransform(localTransform);
+
+            Mesh planeMesh;
+
+            if (planes.TryGetValue(shape, out planeMesh) == false)
+            {
+                // Load shader
+                if (planes.Count == 0)
+                {
+                    Assembly assembly = Assembly.GetExecutingAssembly();
+                    Stream shaderStream = assembly.GetManifestResourceStream("DemoFramework.checker_shader.fx");
+
+                    planeShader = Effect.FromStream(device, shaderStream, ShaderFlags.None);
+                }
+
+
+                Vector3[] vertices = new Vector3[4 * 2];
+
+                planeMesh = new Mesh(device, 2, 4, MeshFlags.SystemMemory, VertexFormat.Position | VertexFormat.Normal);
+
+                Vector3 planeOrigin = shape.PlaneNormal * shape.PlaneConstant;
+                Vector3 vec0, vec1;
+                PlaneSpace1(shape.PlaneNormal, out vec0, out vec1);
+                float size = 1000;
+
+                Vector3[] verts = new Vector3[4]
+                {
+                    planeOrigin + vec0*size,
+                    planeOrigin - vec0*size,
+                    planeOrigin + vec1*size,
+                    planeOrigin - vec1*size
+                };
+                
+                SlimDX.DataStream vertexBuffer = planeMesh.LockVertexBuffer(LockFlags.Discard);
+                vertexBuffer.Write(verts[0]);
+                vertexBuffer.Position += 12;
+                vertexBuffer.Write(verts[1]);
+                vertexBuffer.Position += 12;
+                vertexBuffer.Write(verts[2]);
+                vertexBuffer.Position += 12;
+                vertexBuffer.Write(verts[3]);
+                vertexBuffer.Position += 12;
+                planeMesh.UnlockVertexBuffer();
+
+                SlimDX.DataStream indexBuffer = planeMesh.LockIndexBuffer(LockFlags.Discard);
+                indexBuffer.Write((short)1);
+                indexBuffer.Write((short)2);
+                indexBuffer.Write((short)0);
+                indexBuffer.Write((short)1);
+                indexBuffer.Write((short)3);
+                indexBuffer.Write((short)0);
+                planeMesh.UnlockIndexBuffer();
+                
+                planeMesh.ComputeNormals();
+
+                planes.Add(shape, planeMesh);
+            }
+
+            Cull cullMode = device.GetRenderState<Cull>(RenderState.CullMode);
+            device.SetRenderState(RenderState.CullMode, Cull.None);
+            planeShader.Begin();
+            Matrix matrix = device.GetTransform(TransformState.World);
+            planeShader.SetValue("World", matrix);
+            matrix = device.GetTransform(TransformState.View) * device.GetTransform(TransformState.Projection);
+            planeShader.SetValue("ViewProjection", matrix);
+            planeShader.BeginPass(0);
+            planeMesh.DrawSubset(0);
+            planeShader.EndPass();
+            planeShader.End();
+            device.SetRenderState(RenderState.CullMode, cullMode);
+        }
+
+        void PlaneSpace1(Vector3 n, out Vector3 p, out Vector3 q)
+        {
+            if (Math.Abs(n[2]) > (Math.Sqrt(2) / 2))
+            {
+                // choose p in y-z plane
+                float a = n[1] * n[1] + n[2] * n[2];
+                float k = 1.0f / (float)Math.Sqrt(a);
+                p = new Vector3(0, -n[2] * k, n[1] * k);
+                // set q = n x p
+                q = Vector3.Cross(n, p);
+            }
+            else
+            {
+                // choose p in x-y plane
+                float a = n[0] * n[0] + n[1] * n[1];
+                float k = 1.0f / (float)Math.Sqrt(a);
+                p = new Vector3(-n[1] * k, n[0] * k, 0);
+                // set q = n x p
+                q = Vector3.Cross(n, p);
+            }
+        }
+
         public void RenderSoftBody(SoftBody softBody)
         {
             AlignedFaceArray faces = softBody.Faces;
@@ -473,6 +587,28 @@ namespace DemoFramework
                     mesh.ComputeNormals();
                     mesh.DrawSubset(0);
                     mesh.Dispose();
+                }
+                else if (softBody.Links.Count > 0)
+                {
+                    AlignedLinkArray links = softBody.Links;
+                    int linkCount = links.Count;
+                    int linkColor = System.Drawing.Color.Black.ToArgb();
+
+                    device.SetRenderState(RenderState.Lighting, false);
+                    device.SetTransform(TransformState.World, Matrix.Identity);
+                    device.VertexFormat = PositionColored.FVF;
+
+                    PositionColored[] linkArray = new PositionColored[linkCount * 2];
+
+                    for (int i=0; i<linkCount; i++)
+                    {
+                        Link link = links[i];
+                        linkArray[i * 2] = new PositionColored(link.Nodes[0].X, linkColor);
+                        linkArray[i * 2 + 1] = new PositionColored(link.Nodes[1].X, linkColor);
+                    }
+                    device.DrawUserPrimitives(PrimitiveType.LineList, links.Count, linkArray);
+
+                    device.SetRenderState(RenderState.Lighting, true);
                 }
             }
         }

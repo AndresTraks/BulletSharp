@@ -40,7 +40,7 @@ DbvtNode^ DbvtProxy::Leaf::get()
 }
 void DbvtProxy::Leaf::set(DbvtNode^ value)
 {
-	UnmanagedPointer->leaf = value != nullptr ? value->UnmanagedPointer : 0;
+	UnmanagedPointer->leaf = GetUnmanagedNullable(value);
 }
 
 DbvtProxyPtrArray^ DbvtProxy::Links::get()

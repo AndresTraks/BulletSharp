@@ -80,7 +80,7 @@ namespace OpenCLClothDemo
             // These describe where the simulation should send output data to
             for (int flagIndex = 0; flagIndex < flags.Count; ++flagIndex)
             {
-                // m_flags[flagIndex]->setWindVelocity( Vectormath::Aos::Vector3( 0.f, 0.f, 15.f ) );
+                // flags[flagIndex].WindVelocity = new Vector3(0, 0, 15.0f);
 
                 // In this case we have a DX11 output buffer with a vertex at index 0, 8, 16 and so on as well as a normal at 3, 11, 19 etc.
                 // Copies will be performed GPU-side directly into the output buffer
@@ -90,6 +90,8 @@ namespace OpenCLClothDemo
             }
 
             gSolver.Optimize(SoftWorld.SoftBodyArray);
+
+            World.StepSimulation(1.0f / 60.0f, 0);
         }
 
         // Create a sequence of flag objects and add them to the world.
@@ -279,13 +281,13 @@ namespace OpenCLClothDemo
         public override int Update(float elapsedTime)
         {
             float dt = clock.TimeMicroseconds;
-	        clock.Reset();
+            clock.Reset();
 
-            int ret = World.StepSimulation(dt/1000000.0f);
-		    frameCount++;
+            int ret = World.StepSimulation(dt / 1000000.0f);
+            frameCount++;
             if (frameCount == 100)
             {
-                ret += World.StepSimulation(1.0f/60.0f,0);
+                ret += World.StepSimulation(1.0f / 60.0f, 0);
             }
 
             //int ret = base.Update(elapsedTime);

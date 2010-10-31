@@ -1071,6 +1071,110 @@ btAlignedObjectArray<int>* AlignedIntArray::UnmanagedPointer::get()
 }
 
 
+#ifndef DISABLE_SOFTBODY
+AlignedJointArray::AlignedJointArray(btSoftBody::tJointArray* jointArray)
+: AlignedObjectArray(jointArray)
+{
+}
+
+AlignedJointArray::AlignedJointArray()
+: AlignedObjectArray(new btSoftBody::tLinkArray())
+{
+}
+
+void AlignedJointArray::Add(BulletSharp::SoftBody::Joint^ joint)
+{
+	UnmanagedPointer->push_back(joint->UnmanagedPointer);
+}
+
+void AlignedJointArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+bool AlignedJointArray::Contains(Joint^ joint)
+{
+	return UnmanagedPointer->findLinearSearch(joint->UnmanagedPointer) != UnmanagedPointer->size();
+}
+
+void AlignedJointArray::CopyTo(array<Joint^>^ array, int arrayIndex)
+{
+	if (array == nullptr)
+		throw gcnew ArgumentNullException("array");
+
+	if (arrayIndex < 0)
+		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+
+	int size = UnmanagedPointer->size();
+	if (arrayIndex + size > array->Length)
+		throw gcnew ArgumentException("Array too small.", "array");
+
+	int i;
+	for (i=0; i<size; i++)
+	{
+		array[arrayIndex+i] = gcnew Joint((*UnmanagedPointer)[i]);
+	}
+}
+
+void AlignedJointArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+int AlignedJointArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int AlignedJointArray::Count::get()
+{
+	return UnmanagedPointer->size();
+}
+
+int AlignedJointArray::IndexOf(Joint^ joint)
+{
+	int i = UnmanagedPointer->findLinearSearch(joint->UnmanagedPointer);
+	return i != UnmanagedPointer->size() ? i : -1;
+}
+
+bool AlignedJointArray::Remove(Joint^ joint)
+{
+	int sizeBefore = UnmanagedPointer->size();
+	UnmanagedPointer->remove(joint->UnmanagedPointer);
+	return sizeBefore != UnmanagedPointer->size();
+}
+
+void AlignedJointArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+BulletSharp::SoftBody::Joint^ AlignedJointArray::default::get(int index)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	return gcnew Joint((*UnmanagedPointer)[index]);
+}
+
+void AlignedJointArray_SetDefault(btSoftBody::tJointArray* jointArray,
+	int index, btSoftBody::Joint* link)
+{
+	(*jointArray)[index] = link;
+}
+void AlignedJointArray::default::set(int index, BulletSharp::SoftBody::Joint^ value)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	AlignedJointArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+}
+
+btSoftBody::tJointArray* AlignedJointArray::UnmanagedPointer::get()
+{
+	return (btSoftBody::tJointArray*)AlignedObjectArray::UnmanagedPointer;
+}
+#endif
+
+
 AlignedManifoldArray::AlignedManifoldArray(btManifoldArray* manifoldArray)
 : AlignedObjectArray(manifoldArray)
 {
@@ -1324,7 +1428,7 @@ BulletSharp::SoftBody::Link^ AlignedLinkArray::default::get(int index)
 	return gcnew Link(&(*UnmanagedPointer)[index]);
 }
 
-void LinkArray_SetDefault(btSoftBody::tLinkArray* linkArray,
+void AlignedLinkArray_SetDefault(btSoftBody::tLinkArray* linkArray,
 	int index, btSoftBody::Link* link)
 {
 	(*linkArray)[index] = *link;
@@ -1333,7 +1437,7 @@ void AlignedLinkArray::default::set(int index, BulletSharp::SoftBody::Link^ valu
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	LinkArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+	AlignedLinkArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
 }
 
 btSoftBody::tLinkArray* AlignedLinkArray::UnmanagedPointer::get()

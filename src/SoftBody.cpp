@@ -52,7 +52,7 @@ BroadphaseInterface^ SoftBodyWorldInfo::Broadphase::get()
 }
 void SoftBodyWorldInfo::Broadphase::set(BroadphaseInterface^ value)
 {
-	_info->m_broadphase = value->UnmanagedPointer;
+	_info->m_broadphase = GetUnmanagedNullable(value);
 }
 
 Dispatcher^ SoftBodyWorldInfo::Dispatcher::get()
@@ -63,7 +63,7 @@ Dispatcher^ SoftBodyWorldInfo::Dispatcher::get()
 }
 void SoftBodyWorldInfo::Dispatcher::set(BulletSharp::Dispatcher^ value)
 {
-	_info->m_dispatcher = value->UnmanagedPointer;
+	_info->m_dispatcher = GetUnmanagedNullable(value);
 }
 
 Vector3 SoftBodyWorldInfo::Gravity::get()
@@ -133,11 +133,13 @@ Anchor::Anchor()
 
 RigidBody^ Anchor::Body::get()
 {
+	if (_anchor->m_body == nullptr)
+		return nullptr;
 	return gcnew RigidBody(_anchor->m_body);
 }
 void Anchor::Body::set(RigidBody^ value)
 {
-	_anchor->m_body = value->UnmanagedPointer;
+	_anchor->m_body = GetUnmanagedNullable(value);
 }
 
 Matrix Anchor::C0::get()
@@ -178,11 +180,13 @@ void Anchor::Local::set(Vector3 value)
 
 BulletSharp::SoftBody::Node^ Anchor::Node::get()
 {
+	if (_anchor->m_node == nullptr)
+		return nullptr;
 	return gcnew BulletSharp::SoftBody::Node(_anchor->m_node);
 }
 void Anchor::Node::set(BulletSharp::SoftBody::Node^ value)
 {
-	_anchor->m_node = value->UnmanagedPointer;
+	_anchor->m_node = GetUnmanagedNullable(value);
 }
 
 btSoftBody::Anchor* Anchor::UnmanagedPointer::get()
@@ -207,7 +211,7 @@ Body::Body(Cluster^ p)
 
 Body::Body(BulletSharp::CollisionObject^ colObj)
 {
-	_body = new btSoftBody::Body(colObj->UnmanagedPointer);
+	_body = new btSoftBody::Body(GetUnmanagedNullable(colObj));
 }
 
 void Body::Activate()
@@ -302,7 +306,7 @@ CollisionObject^ Body::CollisionObject::get()
 }
 void Body::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
-	_body->m_collisionObject = value->UnmanagedPointer;
+	_body->m_collisionObject = GetUnmanagedNullable(value);
 }
 
 btScalar Body::InvMass::get()
@@ -334,7 +338,7 @@ RigidBody^ Body::Rigid::get()
 }
 void Body::Rigid::set(RigidBody^ value)
 {
-	_body->m_rigid = value->UnmanagedPointer;
+	_body->m_rigid = GetUnmanagedNullable(value);
 }
 
 Cluster^ Body::Soft::get()
@@ -345,7 +349,7 @@ Cluster^ Body::Soft::get()
 }
 void Body::Soft::set(Cluster^ value)
 {
-	_body->m_soft = value->UnmanagedPointer;
+	_body->m_soft = GetUnmanagedNullable(value);
 }
 
 Matrix Body::XForm::get()
@@ -486,7 +490,7 @@ DbvtNode^ Cluster::Leaf::get()
 }
 void Cluster::Leaf::set(DbvtNode^ value)
 {
-	_cluster->m_leaf = value != nullptr ? value->UnmanagedPointer : 0;
+	_cluster->m_leaf = GetUnmanagedNullable(value);
 }
 #endif
 
@@ -888,7 +892,7 @@ BulletSharp::SoftBody::Material^ Feature::Material::get()
 }
 void Feature::Material::set(BulletSharp::SoftBody::Material^ value)
 {
-	UnmanagedPointer->m_material = value->UnmanagedPointer;
+	UnmanagedPointer->m_material = GetUnmanagedNullable(value);
 }
 
 btSoftBody::Feature* Feature::UnmanagedPointer::get()
@@ -911,7 +915,7 @@ DbvtNode^ Face::Leaf::get()
 }
 void Face::Leaf::set(DbvtNode^ value)
 {
-	UnmanagedPointer->m_leaf = value != nullptr ? value->UnmanagedPointer : 0;
+	UnmanagedPointer->m_leaf = GetUnmanagedNullable(value);
 }
 #endif
 
@@ -1022,6 +1026,23 @@ void BulletSharp::SoftBody::Impulse::UnmanagedPointer::set(btSoftBody::Impulse* 
 }
 
 
+BulletSharp::SoftBody::Joint::Joint(btSoftBody::Joint* joint)
+{
+	_joint = joint;
+}
+
+btSoftBody::Joint* Joint::UnmanagedPointer::get()
+{
+	return _joint;
+}
+
+void Joint::UnmanagedPointer::set(btSoftBody::Joint* value)
+{
+	_joint = value;
+}
+
+
+
 btSoftBody::Joint::Specs* BulletSharp::SoftBody::Joint::Specs::UnmanagedPointer::get()
 {
 	return _specs;
@@ -1029,6 +1050,17 @@ btSoftBody::Joint::Specs* BulletSharp::SoftBody::Joint::Specs::UnmanagedPointer:
 void BulletSharp::SoftBody::Joint::Specs::UnmanagedPointer::set(btSoftBody::Joint::Specs* value)
 {
 	_specs = value;
+}
+
+
+LJoint::LJoint(btSoftBody::LJoint* joint)
+: Joint(joint)
+{
+}
+
+BulletSharp::SoftBody::LJoint::LJoint()
+: Joint(new btSoftBody::LJoint())
+{
 }
 
 
@@ -1040,6 +1072,12 @@ BulletSharp::SoftBody::LJoint::Specs::Specs()
 btSoftBody::LJoint::Specs* BulletSharp::SoftBody::LJoint::Specs::UnmanagedPointer::get()
 {
 	return (btSoftBody::LJoint::Specs*)Joint::Specs::UnmanagedPointer;
+}
+
+
+AJoint::AJoint(btSoftBody::AJoint* joint)
+: Joint(joint)
+{
 }
 
 
@@ -1226,7 +1264,7 @@ DbvtNode^ BulletSharp::SoftBody::Node::Leaf::get()
 }
 void BulletSharp::SoftBody::Node::Leaf::set(DbvtNode^ value)
 {
-	UnmanagedPointer->m_leaf = value != nullptr ? value->UnmanagedPointer : 0;
+	UnmanagedPointer->m_leaf = GetUnmanagedNullable(value);
 }
 #endif
 
@@ -1546,7 +1584,7 @@ DbvtNode^ Tetra::Leaf::get()
 }
 void Tetra::Leaf::set(DbvtNode^ value)
 {
-	UnmanagedPointer->m_leaf = value != nullptr ? value->UnmanagedPointer : nullptr;
+	UnmanagedPointer->m_leaf = GetUnmanagedNullable(value);
 }
 #endif
 
@@ -1626,8 +1664,7 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3A
 	}
 
 	UnmanagedPointer = new btSoftBody(worldInfo->UnmanagedPointer, length,
-		x != nullptr ? x->UnmanagedPointer : 0,
-		m != nullptr ? m->UnmanagedPointer : 0);
+		GetUnmanagedNullable(x), GetUnmanagedNullable(m));
 }
 
 void BulletSharp::SoftBody::SoftBody::AddForce(Vector3 force, int node)
@@ -2278,6 +2315,15 @@ AlignedFaceArray^ BulletSharp::SoftBody::SoftBody::Faces::get()
 void BulletSharp::SoftBody::SoftBody::Faces::set(AlignedFaceArray^ value)
 {
 	UnmanagedPointer->m_faces = *value->UnmanagedPointer;
+}
+
+AlignedJointArray^ BulletSharp::SoftBody::SoftBody::Joints::get()
+{
+	return gcnew AlignedJointArray(&UnmanagedPointer->m_joints);
+}
+void BulletSharp::SoftBody::SoftBody::Joints::set(AlignedJointArray^ value)
+{
+	UnmanagedPointer->m_joints = *value->UnmanagedPointer;
 }
 
 AlignedLinkArray^ BulletSharp::SoftBody::SoftBody::Links::get()

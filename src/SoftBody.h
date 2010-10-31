@@ -22,6 +22,7 @@ namespace BulletSharp
 		ref class AlignedAnchorArray;
 		ref class AlignedClusterArray;
 		ref class AlignedFaceArray;
+		ref class AlignedJointArray;
 		ref class AlignedLinkArray;
 		ref class AlignedMaterialArray;
 		ref class AlignedNodeArray;
@@ -765,6 +766,16 @@ namespace BulletSharp
 
 		private:
 			btSoftBody::Joint* _joint;
+
+		public:
+			Joint(btSoftBody::Joint* joint);
+
+		internal:
+			property btSoftBody::Joint* UnmanagedPointer
+			{
+				btSoftBody::Joint* get();
+				void set(btSoftBody::Joint* value);
+			}
 		};
 
 		public ref class LJoint : Joint
@@ -781,6 +792,9 @@ namespace BulletSharp
 					btSoftBody::LJoint::Specs* get() new;
 				};
 			};
+
+			LJoint(btSoftBody::LJoint* joint);
+			LJoint();
 		};
 
 		public ref class AJoint : Joint
@@ -797,6 +811,8 @@ namespace BulletSharp
 					btSoftBody::AJoint::Specs* get() new;
 				};
 			};
+
+			AJoint(btSoftBody::AJoint* joint);
 		};
 
 		public ref class Link : Feature
@@ -1332,6 +1348,12 @@ namespace BulletSharp
 			{
 				Matrix get();
 				void set(Matrix value);
+			}
+
+			property AlignedJointArray^ Joints
+			{
+				AlignedJointArray^ get();
+				void set(AlignedJointArray^ value);
 			}
 
 			property AlignedLinkArray^ Links
