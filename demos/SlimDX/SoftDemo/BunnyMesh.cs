@@ -1,8 +1,8 @@
 using SlimDX;
 
-namespace SoftTestDemo
+namespace SoftDemo
 {
-    static class TetraBunny
+    static class BunnyMesh
     {
         public static float[] Vertices = new float[]
         {

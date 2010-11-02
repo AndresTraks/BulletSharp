@@ -41,6 +41,7 @@
   -->
   <ItemGroup>
     <Compile Include="Bunny.cs" />
+    <Compile Include="BunnyMesh.cs" />
     <Compile Include="Physics.cs" />
     <Compile Include="SoftDemo.cs" />
     <Compile Include="TorusMesh.cs" />

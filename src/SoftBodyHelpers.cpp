@@ -212,6 +212,52 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyW
 	return body;
 }
 
+BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorldInfo^ worldInfo,
+	array<btScalar>^ vertices, array<int>^ triangles, bool randomizeConstraints)
+{
+	pin_ptr<btScalar> verticesPtr = &vertices[0];
+	pin_ptr<int> trianglesPtr = &triangles[0];
+
+	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
+		verticesPtr, trianglesPtr, triangles->Length / 3, randomizeConstraints));
+}
+
+BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorldInfo^ worldInfo,
+	array<btScalar>^ vertices, array<int>^ triangles)
+{
+	pin_ptr<btScalar> verticesPtr = &vertices[0];
+	pin_ptr<int> trianglesPtr = &triangles[0];
+
+	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
+		verticesPtr, trianglesPtr, triangles->Length / 3));
+}
+
+BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorldInfo^ worldInfo,
+	array<Vector3>^ vertices, array<int>^ triangles, bool randomizeConstraints)
+{
+	pin_ptr<int> trianglesPtr = &triangles[0];
+
+	btVector3* verticesPtr = new btVector3[vertices->Length];
+	for(int i=0; i<vertices->Length; i++)
+		Math::Vector3ToBtVector3(vertices[i], &verticesPtr[i]);
+
+	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
+		verticesPtr[0], trianglesPtr, triangles->Length / 3, randomizeConstraints));
+}
+
+BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorldInfo^ worldInfo,
+	array<Vector3>^ vertices, array<int>^ triangles)
+{
+	pin_ptr<int> trianglesPtr = &triangles[0];
+
+	btVector3* verticesPtr = new btVector3[vertices->Length];
+	for(int i=0; i<vertices->Length; i++)
+		Math::Vector3ToBtVector3(vertices[i], &verticesPtr[i]);
+
+	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
+		verticesPtr[0], trianglesPtr, triangles->Length / 3));
+}
+
 BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatch(SoftBodyWorldInfo^ worldInfo,
 	Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11,
 	int resx, int resy, int fixeds, bool gendiags)

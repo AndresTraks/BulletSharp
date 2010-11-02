@@ -25,12 +25,14 @@ namespace BulletSharp
 			static SoftBody^ CreateFromTetGenFile(SoftBodyWorldInfo^ worldInfo,
 				String^ elementFilename, String^ faceFilename, String^ nodeFilename,
 				bool faceLinks, bool tetraLinks, bool facesFromTetras);
-			//static SoftBody^ CreateFromTriMesh(SoftBodyWorldInfo^ worldInfo,
-			//	array<btScalar> vertices, array<int> triangles, int ntriangles,
-			//	bool randomizeConstraints);
-			//static SoftBody^ CreateFromTriMesh(SoftBodyWorldInfo^ worldInfo,
-			//	array<btScalar> vertices, array<int> triangles, int ntriangles,
-			//	bool randomizeConstraints);
+			static SoftBody^ CreateFromTriMesh(SoftBodyWorldInfo^ worldInfo,
+				array<btScalar>^ vertices, array<int>^ triangles, bool randomizeConstraints);
+			static SoftBody^ CreateFromTriMesh(SoftBodyWorldInfo^ worldInfo,
+				array<btScalar>^ vertices, array<int>^ triangles);
+			static SoftBody^ CreateFromTriMesh(SoftBodyWorldInfo^ worldInfo,
+				array<Vector3>^ vertices, array<int>^ triangles, bool randomizeConstraints);
+			static SoftBody^ CreateFromTriMesh(SoftBodyWorldInfo^ worldInfo,
+				array<Vector3>^ vertices, array<int>^ triangles);
 			static SoftBody^ CreatePatch(SoftBodyWorldInfo^ worldInfo,
 				Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11,
 				int resx, int resy, int fixeds, bool gendiags);
