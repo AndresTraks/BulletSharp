@@ -153,26 +153,32 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(int numTriangles, IntPtr tria
 TriangleIndexVertexArray::TriangleIndexVertexArray(array<int>^ indices, array<Vector3>^ vertices)
 : StridingMeshInterface(0)
 {
-	pin_ptr<int> indicesBase = &indices[0];
+	pin_ptr<int> indicesPtr = &indices[0];
+	int* indicesBase = new int[indices->Length];
 	btVector3* verticesBase = new btVector3[vertices->Length];
-	
+
+	memcpy(indicesBase, indicesPtr, indices->Length * sizeof(int));
+
 	for(int i=0; i<vertices->Length; i++)
 		Math::Vector3ToBtVector3(vertices[i], &verticesBase[i]);
 
-	UnmanagedPointer = new btTriangleIndexVertexArray(indices->Length, indicesBase, sizeof(int),
+	UnmanagedPointer = new btTriangleIndexVertexArray(indices->Length / 3, indicesBase, 3 * sizeof(int),
 		vertices->Length, *verticesBase, sizeof(btVector3));
-
-	delete[] verticesBase;
 }
 
 TriangleIndexVertexArray::TriangleIndexVertexArray(array<int>^ indices, array<btScalar>^ vertices)
 : StridingMeshInterface(0)
 {
-	pin_ptr<int> indicesBase = &indices[0];
-	pin_ptr<btScalar> verticesBase = &vertices[0];
+	pin_ptr<int> indicesPtr = &indices[0];
+	pin_ptr<btScalar> verticesPtr = &vertices[0];
+	int* indicesBase = new int[indices->Length];
+	btScalar* verticesBase = new btScalar[vertices->Length];
 
-	UnmanagedPointer = new btTriangleIndexVertexArray(indices->Length, indicesBase, sizeof(int),
-		vertices->Length / 3, verticesBase, sizeof(btVector3));
+	memcpy(indicesBase, indicesPtr, indices->Length * sizeof(int));
+	memcpy(verticesBase, verticesPtr, vertices->Length * sizeof(btScalar));
+
+	UnmanagedPointer = new btTriangleIndexVertexArray(indices->Length / 3, indicesBase, 3 * sizeof(int),
+		vertices->Length / 3, verticesBase, 3 * sizeof(btScalar));
 }
 
 void TriangleIndexVertexArray::AddIndexedMesh(IndexedMesh^ mesh)

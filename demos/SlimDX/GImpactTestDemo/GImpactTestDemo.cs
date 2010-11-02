@@ -11,7 +11,7 @@ namespace GImpactTestDemo
     class GImpactTestDemo : Game
     {
         int Width = 1024, Height = 768;
-        Vector3 eye = new Vector3(0, 10, 0);
+        Vector3 eye = new Vector3(0, 10, 50);
         Vector3 target = new Vector3(0, 10, -4);
         Color ambient = Color.Gray;
         DebugDrawModes debugMode = DebugDrawModes.DrawAabb | DebugDrawModes.DrawWireframe;
@@ -71,7 +71,8 @@ namespace GImpactTestDemo
             Fps.Text = "Move using mouse and WASD+shift\n" +
                 "F3 - Toggle debug\n" +
                 "F11 - Toggle fullscreen\n" +
-                "Space - Shoot box";
+                "Space - Shoot box\n" +
+                ". - Shoot Bunny";
 
             physics = new Physics();
         }
@@ -107,6 +108,10 @@ namespace GImpactTestDemo
                     physics.SetDebugDrawMode(Device, debugMode);
                 else
                     physics.SetDebugDrawMode(Device, DebugDrawModes.None);
+            }
+            if (Input.KeysPressed.Contains(Keys.OemPeriod))
+            {
+                physics.ShootTrimesh(Freelook.Eye, Freelook.Eye - Freelook.Target);
             }
 
             InputUpdate(Freelook.Eye, Freelook.Target, physics);

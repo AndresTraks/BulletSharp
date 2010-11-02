@@ -14,14 +14,15 @@ namespace DemoFramework
     {
         Device device;
 
-        Dictionary<Vector3, Mesh> boxes = new Dictionary<Vector3, Mesh>();
-        Dictionary<Vector3, Mesh> capsules = new Dictionary<Vector3, Mesh>();
-        Dictionary<Vector2, Mesh> cones = new Dictionary<Vector2, Mesh>();
-        Dictionary<Vector3, Mesh> cylinders = new Dictionary<Vector3, Mesh>();
+        Dictionary<BoxShape, Mesh> boxes = new Dictionary<BoxShape, Mesh>();
+        Dictionary<CapsuleShape, Mesh> capsules = new Dictionary<CapsuleShape, Mesh>();
+        Dictionary<ConeShape, Mesh> cones = new Dictionary<ConeShape, Mesh>();
+        Dictionary<CylinderShape, Mesh> cylinders = new Dictionary<CylinderShape, Mesh>();
         Dictionary<ConvexHullShape, Mesh> hullShapes = new Dictionary<ConvexHullShape, Mesh>();
         Dictionary<StaticPlaneShape, Mesh> planes = new Dictionary<StaticPlaneShape, Mesh>();
-        Dictionary<float, Mesh> spheres = new Dictionary<float, Mesh>();
-        Dictionary<float, Dictionary<Vector3, Mesh>> positionedSpheres = new Dictionary<float, Dictionary<Vector3, Mesh>>();
+        Dictionary<GImpactMeshShape, Mesh> gImpactMeshShapes = new Dictionary<GImpactMeshShape, Mesh>();
+        Dictionary<SphereShape, Mesh> spheres = new Dictionary<SphereShape, Mesh>();
+        Dictionary<MultiSphereShape, Mesh> multiSpheres = new Dictionary<MultiSphereShape, Mesh>();
 
         Effect planeShader;
 
@@ -56,6 +57,12 @@ namespace DemoFramework
             }
             cylinders.Clear();
 
+            foreach (Mesh mesh in gImpactMeshShapes.Values)
+            {
+                mesh.Dispose();
+            }
+            gImpactMeshShapes.Clear();
+
             foreach (Mesh mesh in hullShapes.Values)
             {
                 mesh.Dispose();
@@ -74,13 +81,11 @@ namespace DemoFramework
             }
             spheres.Clear();
 
-            foreach (Dictionary<Vector3, Mesh> positions in positionedSpheres.Values)
+            foreach (Mesh mesh in multiSpheres.Values)
             {
-                foreach (Mesh mesh in positions.Values)
-                    mesh.Dispose();
-                positions.Clear();
+                mesh.Dispose();
             }
-            positionedSpheres.Clear();
+            multiSpheres.Clear();
 
             if (planeShader != null)
                 planeShader.Dispose();
@@ -141,6 +146,9 @@ namespace DemoFramework
                 case BroadphaseNativeType.StaticPlane:
                     RenderStaticPlaneShape((StaticPlaneShape)shape, localTransform);
                     return;
+                case BroadphaseNativeType.GImpactShape:
+                    RenderGImpactMeshShape((GImpactMeshShape)shape, localTransform);
+                    return;
             }
 
             //throw new NotImplementedException();
@@ -152,12 +160,12 @@ namespace DemoFramework
                 DoLocalTransform(localTransform);
 
             Mesh boxMesh;
-            Vector3 size = shape.HalfExtentsWithMargin;
 
-            if (boxes.TryGetValue(size, out boxMesh) == false)
+            if (boxes.TryGetValue(shape, out boxMesh) == false)
             {
+                Vector3 size = shape.HalfExtentsWithMargin;
                 boxMesh = Mesh.CreateBox(device, size.X * 2, size.Y * 2, size.Z * 2);
-                boxes.Add(size, boxMesh);
+                boxes.Add(shape, boxMesh);
             }
 
             boxMesh.DrawSubset(0);
@@ -169,11 +177,11 @@ namespace DemoFramework
                 DoLocalTransform(localTransform);
 
             Mesh compoundMesh;
-            Vector3 size = shape.ImplicitShapeDimensions;
 
-            if (capsules.TryGetValue(size, out compoundMesh) == false)
+            if (capsules.TryGetValue(shape, out compoundMesh) == false)
             {
                 // Combine a cylinder and two spheres.
+                Vector3 size = shape.ImplicitShapeDimensions;
                 Mesh cylinder = Mesh.CreateCylinder(device, size.X, size.X, size.Y * 2, 8, 1);
                 Mesh sphere = Mesh.CreateSphere(device, size.Z, 8, 4);
                 Mesh[] meshes = new Mesh[] { sphere, cylinder, sphere };
@@ -185,7 +193,7 @@ namespace DemoFramework
                 cylinder.Dispose();
                 sphere.Dispose();
 
-                capsules.Add(size, compoundMesh);
+                capsules.Add(shape, compoundMesh);
             }
 
             compoundMesh.DrawSubset(0);
@@ -199,14 +207,11 @@ namespace DemoFramework
                 DoLocalTransform(localTransform);
 
             Mesh coneMesh;
-            float radius = shape.Radius;
-            float height = shape.Height;
-            Vector2 dimensions = new Vector2(radius, height);
 
-            if (cones.TryGetValue(dimensions, out coneMesh) == false)
+            if (cones.TryGetValue(shape, out coneMesh) == false)
             {
-                coneMesh = Mesh.CreateCylinder(device, 0, radius, height, 16, 1);
-                cones.Add(dimensions, coneMesh);
+                coneMesh = Mesh.CreateCylinder(device, 0, shape.Radius, shape.Height, 16, 1);
+                cones.Add(shape, coneMesh);
             }
 
             coneMesh.DrawSubset(0);
@@ -217,15 +222,14 @@ namespace DemoFramework
             if (localTransform.IsIdentity == false)
                 DoLocalTransform(localTransform);
 
-            int upAxis = shape.UpAxis;
-            float radius = shape.Radius;
-            float halfHeight = shape.HalfExtentsWithoutMargin[upAxis] + shape.Margin;
-            Vector3 size = new Vector3(radius, halfHeight, upAxis);
-
             Mesh mesh;
 
-            if (cylinders.TryGetValue(size, out mesh) == false)
+            if (cylinders.TryGetValue(shape, out mesh) == false)
             {
+                int upAxis = shape.UpAxis;
+                float radius = shape.Radius;
+                float halfHeight = shape.HalfExtentsWithoutMargin[upAxis] + shape.Margin;
+                
                 mesh = Mesh.CreateCylinder(device, radius, radius, halfHeight * 2, 16, 1);
                 if (upAxis == 0)
                 {
@@ -241,7 +245,7 @@ namespace DemoFramework
                     mesh.Dispose();
                     mesh = cylinderMeshRot;
                 }
-                cylinders.Add(size, mesh);
+                cylinders.Add(shape, mesh);
             }
 
             mesh.DrawSubset(0);
@@ -253,12 +257,11 @@ namespace DemoFramework
                 DoLocalTransform(localTransform);
 
             Mesh sphereMesh;
-            float radius = shape.Radius;
 
-            if (spheres.TryGetValue(radius, out sphereMesh) == false)
+            if (spheres.TryGetValue(shape, out sphereMesh) == false)
             {
-                sphereMesh = Mesh.CreateSphere(device, radius, 16, 16);
-                spheres.Add(radius, sphereMesh);
+                sphereMesh = Mesh.CreateSphere(device, shape.Radius, 16, 16);
+                spheres.Add(shape, sphereMesh);
             }
 
             sphereMesh.DrawSubset(0);
@@ -339,44 +342,89 @@ namespace DemoFramework
             }
         }
 
+        public void RenderGImpactMeshShape(GImpactMeshShape shape, Matrix localTransform)
+        {
+            if (localTransform.IsIdentity == false)
+                DoLocalTransform(localTransform);
+
+            Mesh gImpactMesh;
+
+            if (gImpactMeshShapes.TryGetValue(shape, out gImpactMesh) == false)
+            {
+                BulletSharp.DataStream verts, indices;
+                int numVerts, numFaces;
+                PhyScalarType vertsType, indicesType;
+                int vertexStride, indexStride;
+                shape.MeshInterface.GetLockedReadOnlyVertexIndexData(out verts, out numVerts, out vertsType, out vertexStride,
+                    out indices, out indexStride, out numFaces, out indicesType);
+
+                bool index32 = numVerts > 65536;
+
+                gImpactMesh = new Mesh(device, numFaces, numVerts,
+                    MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
+
+                SlimDX.DataStream vertexBuffer = gImpactMesh.LockVertexBuffer(LockFlags.Discard);
+                while (vertexBuffer.Position < vertexBuffer.Length)
+                {
+                    vertexBuffer.Write(verts.Read<Vector3>());
+                    vertexBuffer.Position += 12;
+                }
+                gImpactMesh.UnlockVertexBuffer();
+
+                SlimDX.DataStream indexBuffer = gImpactMesh.LockIndexBuffer(LockFlags.Discard);
+                if (index32)
+                {
+                    while (indexBuffer.Position < indexBuffer.Length)
+                        indexBuffer.Write(indices.Read<int>());
+                }
+                else
+                {
+                    while (indexBuffer.Position < indexBuffer.Length)
+                        indexBuffer.Write((short)indices.Read<int>());
+                }
+                gImpactMesh.UnlockIndexBuffer();
+
+                gImpactMesh.ComputeNormals();
+            }
+
+            gImpactMesh.DrawSubset(0);
+        }
+
         public void RenderMultiSphereShape(MultiSphereShape shape, Matrix localTransform)
         {
             if (localTransform.IsIdentity == false)
                 DoLocalTransform(localTransform);
 
-            int i;
-            for (i = 0; i < shape.SphereCount; i++)
+            Mesh multiSphereMesh;
+            
+            if (multiSpheres.TryGetValue(shape, out multiSphereMesh) == false)
             {
-                Vector3 position = shape.GetSpherePosition(i);
-                float radius = shape.GetSphereRadius(i);
-
-                Dictionary<Vector3, Mesh> positions;
-                Mesh sphereMesh;
-
-                if (positionedSpheres.TryGetValue(radius, out positions) == false)
+                int i;
+                for (i = 0; i < shape.SphereCount; i++)
                 {
-                    positions = new Dictionary<Vector3, Mesh>();
-                    sphereMesh = Mesh.CreateSphere(device, radius, 12, 12);
-                    if (position != Vector3.Zero)
+                    Vector3 position = shape.GetSpherePosition(i);
+
+                    Mesh sphereMesh = Mesh.CreateSphere(device, shape.GetSphereRadius(i), 12, 12);
+                    if (i == 0)
                     {
                         Matrix[] transform = new Matrix[] { Matrix.Translation(position) };
-                        Mesh sphereMeshRot = Mesh.Concatenate(device, new Mesh[] { sphereMesh }, MeshFlags.Managed, transform, null);
-                        sphereMesh.Dispose();
-                        sphereMesh = sphereMeshRot;
+                        multiSphereMesh = Mesh.Concatenate(device, new Mesh[] { sphereMesh }, MeshFlags.Managed, transform, null);
                     }
-                    positions.Add(position, sphereMesh);
-                    positionedSpheres.Add(radius, positions);
-                }
-                else
-                {
-                    if (positions.TryGetValue(position, out sphereMesh) == false)
+                    else
                     {
-                        sphereMesh = Mesh.CreateSphere(device, radius, 12, 12);
-                        positions.Add(position, sphereMesh);
+                        Mesh multiSphereMeshNew;
+                        Matrix[] transform = new Matrix[] { Matrix.Identity, Matrix.Translation(position) };
+                        multiSphereMeshNew = Mesh.Concatenate(device, new Mesh[] { multiSphereMesh, sphereMesh }, MeshFlags.Managed, transform, null);
+                        multiSphereMesh.Dispose();
+                        multiSphereMesh = multiSphereMeshNew;
                     }
+                    sphereMesh.Dispose();
                 }
-                sphereMesh.DrawSubset(0);
+                multiSpheres.Add(shape, multiSphereMesh);
             }
+            
+            for (int i=0; i<shape.SphereCount; i++)
+                multiSphereMesh.DrawSubset(i);
         }
 
         public void RenderStaticPlaneShape(StaticPlaneShape shape, Matrix localTransform)

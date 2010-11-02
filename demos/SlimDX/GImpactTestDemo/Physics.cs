@@ -1,4 +1,7 @@
 ﻿#define TEST_GIMPACT_TORUS
+//#define BULLET_TRIANGLE_COLLISION
+#define BULLET_GIMPACT
+//#define BULLET_GIMPACT_CONVEX_DECOMPOSITION
 
 using System;
 using BulletSharp;
@@ -9,10 +12,6 @@ namespace GImpactTestDemo
 {
     class Physics : PhysicsContext
     {
-        const bool BulletTriangleCollision = true;
-        const bool BulletGImpact = true;
-        const bool BulletGImpactConvexDecomposition = true;
-
         CollisionShape trimeshShape;
         CollisionShape trimeshShape2;
 
@@ -20,8 +19,10 @@ namespace GImpactTestDemo
         TriangleIndexVertexArray indexVertexArrays2;
 
         Vector3 kinTorusTran;
-	    Quaternion kinTorusRot;
+        Quaternion kinTorusRot;
         RigidBody kinematicTorus;
+
+        const float ShootBoxInitialSpeed = 40.0f;
 
         public Physics()
         {
@@ -86,148 +87,158 @@ namespace GImpactTestDemo
 
 
             /// Create Static Torus
-	        float height = 28;
-	        float step = 2.5f;
-	        float massT = 1.0f;
+            float height = 28;
+            float step = 2.5f;
+            float massT = 1.0f;
 
             Matrix startTransform =
-                Matrix.RotationQuaternion(Quaternion.RotationYawPitchRoll((float)Math.PI*0.5f, 0, (float)Math.PI*0.5f)) *
+                Matrix.RotationQuaternion(Quaternion.RotationYawPitchRoll((float)Math.PI * 0.5f, 0, (float)Math.PI * 0.5f)) *
                 Matrix.Translation(0, height, -5);
 
-            if (BulletGImpact)
-            {
-                kinematicTorus = LocalCreateRigidBody(0, startTransform, trimeshShape);
-            }
-            else
-            {
+#if BULLET_GIMPACT
+            kinematicTorus = LocalCreateRigidBody(0, startTransform, trimeshShape);
+#else
                 //kinematicTorus = LocalCreateRigidBody(0, startTransform, CreateTorusShape());
-            }
+#endif
 
             //kinematicTorus.CollisionFlags = kinematicTorus.CollisionFlags | CollisionFlags.StaticObject;
-	        //kinematicTorus.ActivationState = ActivationState.IslandSleeping;
+            //kinematicTorus.ActivationState = ActivationState.IslandSleeping;
 
             kinematicTorus.CollisionFlags = kinematicTorus.CollisionFlags | CollisionFlags.KinematicObject;
             kinematicTorus.ActivationState = ActivationState.DisableDeactivation;
 
-	        // Kinematic
-	        kinTorusTran = new Vector3(-0.1f,0,0);
+            // Kinematic
+            kinTorusTran = new Vector3(-0.1f, 0, 0);
             kinTorusRot = Quaternion.RotationYawPitchRoll(0, (float)Math.PI * 0.01f, 0);
+
 
 #if TEST_GIMPACT_TORUS
 
-            if (BulletGImpact)
+#if BULLET_GIMPACT
+            // Create dynamic Torus
+            for (int i = 0; i < 6; i++)
             {
-                // Create dynamic Torus
-                for (int i = 0; i < 6; i++)
-                {
-                    height -= step;
-                    startTransform =
-                        Matrix.RotationQuaternion(Quaternion.RotationYawPitchRoll(0, 0, (float)Math.PI * 0.5f)) *
-                        Matrix.Translation(0, height, -5);
-                    //RigidBody bodyA = LocalCreateRigidBody(massT, startTransform, trimeshShape);
+                height -= step;
+                startTransform =
+                    Matrix.RotationQuaternion(Quaternion.RotationYawPitchRoll(0, 0, (float)Math.PI * 0.5f)) *
+                    Matrix.Translation(0, height, -5);
+                RigidBody bodyA = LocalCreateRigidBody(massT, startTransform, trimeshShape);
 
-                    height -= step;
-                    startTransform =
-                        Matrix.RotationQuaternion(Quaternion.RotationYawPitchRoll((float)Math.PI * 0.5f, 0, (float)Math.PI * 0.5f)) *
-                        Matrix.Translation(0, height, -5);
-                    //RigidBody bodyB = LocalCreateRigidBody(massT, startTransform, trimeshShape);
-                }
+                height -= step;
+                startTransform =
+                    Matrix.RotationQuaternion(Quaternion.RotationYawPitchRoll((float)Math.PI * 0.5f, 0, (float)Math.PI * 0.5f)) *
+                    Matrix.Translation(0, height, -5);
+                RigidBody bodyB = LocalCreateRigidBody(massT, startTransform, trimeshShape);
             }
-            else
+#else
+            /*
+            // Create dynamic Torus
+            for (int i = 0; i < 6; i++)
             {
-                /*
-                // Create dynamic Torus
-                for (int i = 0; i < 6; i++)
-                {
-                    height -= step;
-                    startTransform.setOrigin(btVector3(0, height, -5));
-                    startTransform.setRotation(btQuaternion(0, 0, 3.14159265 * 0.5));
+                height -= step;
+                startTransform.setOrigin(btVector3(0, height, -5));
+                startTransform.setRotation(btQuaternion(0, 0, 3.14159265 * 0.5));
 
-                    btRigidBody* bodyA = localCreateRigidBody(massT, startTransform, createTorusShape());
+                btRigidBody* bodyA = localCreateRigidBody(massT, startTransform, createTorusShape());
 
-                    height -= step;
-                    startTransform.setOrigin(btVector3(0, height, -5));
-                    startTransform.setRotation(btQuaternion(3.14159265 * 0.5, 0, 3.14159265 * 0.5));
-                    btRigidBody* bodyB = localCreateRigidBody(massT, startTransform, createTorusShape());
-                }
-                */
+                height -= step;
+                startTransform.setOrigin(btVector3(0, height, -5));
+                startTransform.setRotation(btQuaternion(3.14159265 * 0.5, 0, 3.14159265 * 0.5));
+                btRigidBody* bodyB = localCreateRigidBody(massT, startTransform, createTorusShape());
             }
+            */
 #endif
+#endif
+
+            // Create Dynamic Boxes
+            for (int i = 0; i < 8; i++)
+            {
+                CollisionShape boxShape = new BoxShape(new Vector3(1, 1, 1));
+                CollisionShapes.Add(boxShape);
+                LocalCreateRigidBody(1, Matrix.Translation(2 * i - 5, 2, -3), boxShape);
+            }
         }
 
         void InitGImpactCollision()
         {
-           	// Create Torus Shape
+            // Create Torus Shape
 
             indexVertexArrays = new TriangleIndexVertexArray(TorusMesh.Indices, TorusMesh.Vertices);
 
-            if (BulletGImpact)
-            {
-                if (BulletGImpactConvexDecomposition)
-                {
-                    //GImpactConvexDecompositionShape trimesh =
-                    //    new GImpactConvexDecompositionShape(indexVertexArrays, new Vector3(1), 0.01f);
-			        //trimesh.Margin = 0.07f;
-			        //trimesh.UpdateBound();
-                    //trimeshShape = trimesh;
-                }
-                else
-                {
-                    GImpactMeshShape trimesh = new GImpactMeshShape(indexVertexArrays);
-			        trimesh.LocalScaling = new Vector3(1);
-                    if (BulletTriangleCollision)
-                        trimesh.Margin = 0.07f; //?????
-                    else
-                        trimesh.Margin = 0;
-                    trimesh.UpdateBound();
-                    trimeshShape = trimesh;
-                }
-            }
-            else
-            {
-                //trimeshShape = new GImpactMeshData(indexVertexArrays);
-            }
+#if BULLET_GIMPACT
+#if BULLET_GIMPACT_CONVEX_DECOMPOSITION
+            //GImpactConvexDecompositionShape trimesh =
+            //    new GImpactConvexDecompositionShape(indexVertexArrays, new Vector3(1), 0.01f);
+	        //trimesh.Margin = 0.07f;
+	        //trimesh.UpdateBound();
+#else
+            GImpactMeshShape trimesh = new GImpactMeshShape(indexVertexArrays);
+            trimesh.LocalScaling = new Vector3(1);
+#if BULLET_TRIANGLE_COLLISION
+            trimesh.Margin = 0.07f; //?????
+#else
+            trimesh.Margin = 0;
+#endif
+            trimesh.UpdateBound();
+#endif
+            trimeshShape = trimesh;
+#else
+            //trimeshShape = new GImpactMeshData(indexVertexArrays);
+#endif
 
 
             /// Create Bunny Shape
-    		indexVertexArrays2 = new TriangleIndexVertexArray(BunnyMesh.Indices, BunnyMesh.Vertices);
+            indexVertexArrays2 = new TriangleIndexVertexArray(BunnyMesh.Indices, BunnyMesh.Vertices);
 
-            if (BulletGImpact)
-            {
-                if (BulletGImpactConvexDecomposition)
-                {
-                    //GImpactConvexDecompositionShape trimesh2 =
-                    //    new GImpactConvexDecompositionShape(indexVertexArrays, new Vector3(1), 0.01f);
-			        //trimesh.Margin = 0.07f;
-			        //trimesh.UpdateBound();
-                    //trimeshShape = trimesh2;
-                }
-                else
-                {
-                    GImpactMeshShape trimesh2 = new GImpactMeshShape(indexVertexArrays2);
-                    trimesh2.LocalScaling = new Vector3(1);
-                    if (BulletTriangleCollision)
-                        trimesh2.Margin = 0.07f; //?????
-                    else
-                        trimesh2.Margin = 0;
-                    trimesh2.UpdateBound();
-                    trimeshShape2 = trimesh2;
-                }
-            }
-            else
-            {
-                //trimeshShape2 = new GImpactMeshData(indexVertexArrays2);
-            }
+#if BULLET_GIMPACT
+#if BULLET_GIMPACT_CONVEX_DECOMPOSITION
+            //GImpactConvexDecompositionShape trimesh2 =
+            //    new GImpactConvexDecompositionShape(indexVertexArrays, new Vector3(1), 0.01f);
+	        //trimesh.Margin = 0.07f;
+	        //trimesh.UpdateBound();
+            //trimeshShape = trimesh2;
+#else
+            GImpactMeshShape trimesh2 = new GImpactMeshShape(indexVertexArrays2);
+            trimesh2.LocalScaling = new Vector3(1);
+#if BULLET_TRIANGLE_COLLISION
+            trimesh2.Margin = 0.07f; //?????
+#else
+            trimesh2.Margin = 0;
+#endif
+            trimesh2.UpdateBound();
+            trimeshShape2 = trimesh2;
+#endif
+#else
+            //trimeshShape2 = new GImpactMeshData(indexVertexArrays2);
+#endif
 
-            	//register GIMPACT algorithm
-            if (BulletGImpact)
-            {
-                GImpactCollisionAlgorithm.RegisterAlgorithm(Dispatcher);
-            }
-            else
-            {
-                //ConcaveConcaveCollisionAlgorithm.RegisterAlgorithm(Dispatcher);
-            }
+            //register GIMPACT algorithm
+#if BULLET_GIMPACT
+            GImpactCollisionAlgorithm.RegisterAlgorithm(Dispatcher);
+#else
+            //ConcaveConcaveCollisionAlgorithm.RegisterAlgorithm(Dispatcher);
+#endif
+        }
+
+        public void ShootTrimesh(Vector3 camPos, Vector3 destination)
+        {
+	        if (World != null)
+	        {
+		        float mass = 4.0f;
+                Matrix startTransform = Matrix.Translation(camPos);
+#if BULLET_GIMPACT
+		        RigidBody body = LocalCreateRigidBody(mass, startTransform, trimeshShape2);
+#else
+		        RigidBody body = LocalCreateRigidBody(mass, startTransform, CreateBunnyShape());
+#endif
+		        Vector3 linVel = new Vector3(destination[0]-camPos[0],destination[1]-camPos[1],destination[2]-camPos[2]);
+		        linVel.Normalize();
+		        linVel *= ShootBoxInitialSpeed*0.25f;
+
+                body.WorldTransform = startTransform;
+		        body.LinearVelocity = linVel;
+		        body.AngularVelocity = new Vector3(0,0,0);
+	        }
         }
     }
 }
