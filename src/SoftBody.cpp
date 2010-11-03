@@ -691,6 +691,11 @@ void Config::DP::set(btScalar value)
 	_config->kDP = value;
 }
 
+AlignedPSolverArray^ Config::DSequence::get()
+{
+	return gcnew AlignedPSolverArray(&_config->m_dsequence);
+}
+
 btScalar Config::Khr::get()
 {
 	return _config->kKHR;
@@ -784,6 +789,33 @@ btScalar Config::SshrCl::get()
 void Config::SshrCl::set(btScalar value)
 {
 	_config->kSSHR_CL = value;
+}
+
+btScalar Config::SKSplitCl::get()
+{
+	return _config->kSK_SPLT_CL;
+}
+void Config::SKSplitCl::set(btScalar value)
+{
+	_config->kSK_SPLT_CL = value;
+}
+
+btScalar Config::SRSplitCl::get()
+{
+	return _config->kSR_SPLT_CL;
+}
+void Config::SRSplitCl::set(btScalar value)
+{
+	_config->kSR_SPLT_CL = value;
+}
+
+btScalar Config::SSSplitCl::get()
+{
+	return _config->kSS_SPLT_CL;
+}
+void Config::SSSplitCl::set(btScalar value)
+{
+	_config->kSS_SPLT_CL = value;
 }
 
 btScalar Config::TimeScale::get()
@@ -1042,6 +1074,32 @@ void Joint::UnmanagedPointer::set(btSoftBody::Joint* value)
 }
 
 
+btScalar BulletSharp::SoftBody::Joint::Specs::Cfm::get()
+{
+	return UnmanagedPointer->cfm;
+}
+void BulletSharp::SoftBody::Joint::Specs::Cfm::set(btScalar value)
+{
+	UnmanagedPointer->cfm = value;
+}
+
+btScalar BulletSharp::SoftBody::Joint::Specs::Erp::get()
+{
+	return UnmanagedPointer->erp;
+}
+void BulletSharp::SoftBody::Joint::Specs::Erp::set(btScalar value)
+{
+	UnmanagedPointer->erp = value;
+}
+
+btScalar BulletSharp::SoftBody::Joint::Specs::Split::get()
+{
+	return UnmanagedPointer->split;
+}
+void BulletSharp::SoftBody::Joint::Specs::Split::set(btScalar value)
+{
+	UnmanagedPointer->split = value;
+}
 
 btSoftBody::Joint::Specs* BulletSharp::SoftBody::Joint::Specs::UnmanagedPointer::get()
 {
@@ -1069,6 +1127,15 @@ BulletSharp::SoftBody::LJoint::Specs::Specs()
 	UnmanagedPointer = new btSoftBody::LJoint::Specs();
 }
 
+Vector3 BulletSharp::SoftBody::LJoint::Specs::Position::get()
+{
+	return Math::BtVector3ToVector3(&UnmanagedPointer->position);
+}
+void BulletSharp::SoftBody::LJoint::Specs::Position::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &UnmanagedPointer->position);
+}
+
 btSoftBody::LJoint::Specs* BulletSharp::SoftBody::LJoint::Specs::UnmanagedPointer::get()
 {
 	return (btSoftBody::LJoint::Specs*)Joint::Specs::UnmanagedPointer;
@@ -1084,6 +1151,15 @@ AJoint::AJoint(btSoftBody::AJoint* joint)
 BulletSharp::SoftBody::AJoint::Specs::Specs()
 {
 	UnmanagedPointer = new btSoftBody::AJoint::Specs();
+}
+
+Vector3 BulletSharp::SoftBody::AJoint::Specs::Axis::get()
+{
+	return Math::BtVector3ToVector3(&UnmanagedPointer->axis);
+}
+void BulletSharp::SoftBody::AJoint::Specs::Axis::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &UnmanagedPointer->axis);
 }
 
 btSoftBody::AJoint::Specs* BulletSharp::SoftBody::AJoint::Specs::UnmanagedPointer::get()
@@ -1736,6 +1812,11 @@ void BulletSharp::SoftBody::SoftBody::AppendLinearJoint(LJoint::Specs^ specs, Bo
 	UnmanagedPointer->appendLinearJoint(*specs->UnmanagedPointer, *body1->UnmanagedPointer);
 }
 
+void BulletSharp::SoftBody::SoftBody::AppendLinearJoint(LJoint::Specs^ specs)
+{
+	UnmanagedPointer->appendLinearJoint(*specs->UnmanagedPointer);
+}
+
 void BulletSharp::SoftBody::SoftBody::AppendLinearJoint(LJoint::Specs^ specs, SoftBody^ body1)
 {
 	UnmanagedPointer->appendLinearJoint(*specs->UnmanagedPointer, body1->UnmanagedPointer);
@@ -1749,6 +1830,11 @@ void BulletSharp::SoftBody::SoftBody::AppendAngularJoint(AJoint::Specs^ specs, C
 void BulletSharp::SoftBody::SoftBody::AppendAngularJoint(AJoint::Specs^ specs, Body^ body1)
 {
 	UnmanagedPointer->appendAngularJoint(*specs->UnmanagedPointer, *body1->UnmanagedPointer);
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendAngularJoint(AJoint::Specs^ specs)
+{
+	UnmanagedPointer->appendAngularJoint(*specs->UnmanagedPointer);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendAngularJoint(AJoint::Specs^ specs, SoftBody^ body1)

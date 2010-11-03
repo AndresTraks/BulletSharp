@@ -517,6 +517,11 @@ namespace BulletSharp
 				void set(btScalar value);
 			}
 
+			property AlignedPSolverArray^ DSequence
+			{
+				AlignedPSolverArray^ get();
+			}
+
 			property btScalar Khr
 			{
 				btScalar get();
@@ -582,6 +587,24 @@ namespace BulletSharp
 				void set(btScalar value);
 			}
 
+			property btScalar SKSplitCl
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar SRSplitCl
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar SSSplitCl
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
 			property btScalar TimeScale
 			{
 				btScalar get();
@@ -594,16 +617,16 @@ namespace BulletSharp
 				void set(btScalar value);
 			}
 
-			property int VIterations
-			{
-				int get();
-				void set(int value);
-			}
-
 			property btScalar VCF
 			{
 				btScalar get();
 				void set(btScalar value);
+			}
+
+			property int VIterations
+			{
+				int get();
+				void set(int value);
 			}
 
 			property AlignedVSolverArray^ VSequence
@@ -756,6 +779,25 @@ namespace BulletSharp
 			private:
 				btSoftBody::Joint::Specs* _specs;
 
+			public:
+				property btScalar Cfm
+				{
+					btScalar get();
+					void set(btScalar value);
+				}
+
+				property btScalar Erp
+				{
+					btScalar get();
+					void set(btScalar value);
+				}
+
+				property btScalar Split
+				{
+					btScalar get();
+					void set(btScalar value);
+				}
+
 			internal:
 				property btSoftBody::Joint::Specs* UnmanagedPointer
 				{
@@ -786,6 +828,12 @@ namespace BulletSharp
 			public:
 				Specs();
 
+				property Vector3 Position
+				{
+					Vector3 get();
+					void set(Vector3 value);
+				}
+
 			internal:
 				property btSoftBody::LJoint::Specs* UnmanagedPointer
 				{
@@ -804,6 +852,12 @@ namespace BulletSharp
 			{
 			public:
 				Specs();
+
+				property Vector3 Axis
+				{
+					Vector3 get();
+					void set(Vector3 value);
+				}
 
 			internal:
 				property btSoftBody::AJoint::Specs* UnmanagedPointer
@@ -1226,9 +1280,11 @@ namespace BulletSharp
 			void AppendFace();
 			void AppendLinearJoint(LJoint::Specs^ specs, Cluster^ body0, Body^ body1);
 			void AppendLinearJoint(LJoint::Specs^ specs, Body^ body1);
+			void AppendLinearJoint(LJoint::Specs^ specs);
 			void AppendLinearJoint(LJoint::Specs^ specs, SoftBody^ body1);
 			void AppendAngularJoint(AJoint::Specs^ specs, Cluster^ body0, Body^ body1);
 			void AppendAngularJoint(AJoint::Specs^ specs, Body^ body1);
+			void AppendAngularJoint(AJoint::Specs^ specs);
 			void AppendAngularJoint(AJoint::Specs^ specs, SoftBody^ body1);
 			void AppendLink(int node0, int node1, Material^ material, bool bCheckExist);
 			void AppendLink(int node0, int node1, Material^ material);

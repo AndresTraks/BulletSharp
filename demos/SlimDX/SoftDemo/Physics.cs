@@ -16,7 +16,6 @@ namespace SoftDemo
         //float extraHeight = -10.0f;
 
         int demo = 0;
-        int numDemos = 20;
 
         SoftBodyWorldInfo softBodyWorldInfo;
 
@@ -28,10 +27,14 @@ namespace SoftDemo
             get { return (SoftRigidDynamicsWorld)World; }
         }
 
+        delegate void DemoConstructor();
+
+        DemoConstructor[] demos;
+
         public void NextDemo()
         {
             demo++;
-            if (demo >= numDemos)
+            if (demo >= demos.Length)
                 demo = 0;
 
             ResetScene();
@@ -42,7 +45,7 @@ namespace SoftDemo
         {
             demo--;
             if (demo < 0)
-                demo = numDemos - 1;
+                demo = demos.Length - 1;
 
             ResetScene();
             InitializeDemo();
@@ -91,58 +94,13 @@ namespace SoftDemo
             RigidBody body = LocalCreateRigidBody(0, Matrix.Translation(0, -62, 0), groundShape);
             body.UserObject = "Ground";
 
-            /*
-            CollisionShape boxShape = new BoxShape(1, 1, 1);
-            CollisionShapes.Add(boxShape);
-            LocalCreateRigidBody(1.0f, Matrix.Translation(0, 1, 0), boxShape);
-            */
-
             softBodyWorldInfo.AirDensity = 1.2f;
             softBodyWorldInfo.WaterDensity = 0;
             softBodyWorldInfo.WaterOffset = 0;
             softBodyWorldInfo.WaterNormal = Vector3.Zero;
             softBodyWorldInfo.Gravity = new Vector3(0, -10, 0);
 
-            if (demo == 0)
-                Init_Cloth();
-            else if (demo == 1)
-                Init_Pressure();
-            else if (demo == 2)
-                Init_Volume();
-            else if (demo == 3)
-                Init_Ropes();
-            else if (demo == 4)
-                Init_RopeAttach();
-            else if (demo == 5)
-                Init_ClothAttach();
-            else if (demo == 6)
-                Init_Sticks();
-            else if (demo == 7)
-                Init_Collide();
-            else if (demo == 8)
-                Init_Collide2();
-            else if (demo == 9)
-                Init_Collide3();
-            else if (demo == 10)
-                Init_Impact();
-            else if (demo == 11)
-                Init_Aero();
-            else if (demo == 12)
-                Init_Friction();
-            else if (demo == 13)
-                Init_Torus();
-            else if (demo == 14)
-                Init_TorusMatch();
-            else if (demo == 15)
-                Init_Bunny();
-            else if (demo == 16)
-                Init_BunnyMatch();
-            else if (demo == 17)
-                Init_Cutting1();
-            else if (demo == 18)
-                Init_TetraCube();
-            else if (demo == 19)
-                Init_TetraBunny();
+            demos[demo]();
         }
 
         static Vector3 GetRandomVector(Random random)
@@ -231,11 +189,16 @@ namespace SoftDemo
             LocalCreateRigidBody(10.0f, Matrix.Translation(position), new SphereShape(1.5f));
         }
 
-        void Create_BigPlate()
+        RigidBody Create_BigPlate(float mass, float height)
         {
-            Vector3 position = new Vector3(0, 4, 0.5f);
-            RigidBody body = LocalCreateRigidBody(15.0f, Matrix.Translation(position), new BoxShape(5, 1, 5));
+            RigidBody body = LocalCreateRigidBody(mass, Matrix.Translation(0, height, 0.5f), new BoxShape(5, 1, 5));
             body.Friction = 1;
+            return body;
+        }
+
+        RigidBody Create_BigPlate()
+        {
+            return Create_BigPlate(15, 4);
         }
 
         void Init_Pressure()
@@ -655,26 +618,324 @@ namespace SoftDemo
             cutting = true;
         }
 
-        void Create_Gear(Vector3 pos, float speed)
+        void CreateGear(Vector3 pos, float speed)
         {
-	        Matrix startTransform = Matrix.Translation(pos);
-	        CompoundShape shape = new CompoundShape();
+            Matrix startTransform = Matrix.Translation(pos);
+            CompoundShape shape = new CompoundShape();
 #if true
-	        shape.AddChildShape(Matrix.Identity, new BoxShape(5,1,6));
-	        shape.AddChildShape(Matrix.RotationZ((float)Math.PI), new BoxShape(5,1,6));
+            shape.AddChildShape(Matrix.Identity, new BoxShape(5, 1, 6));
+            shape.AddChildShape(Matrix.RotationZ((float)Math.PI), new BoxShape(5, 1, 6));
 #else
             shape.AddChildShape(Matrix.Identity, new CylinderShapeZ(5,1,7));
             shape.AddChildShape(Matrix.RotationZ((float)Math.PI), new BoxShape(4,1,8));
 #endif
             RigidBody body = LocalCreateRigidBody(10, startTransform, shape);
-	        body.Friction = 1;
-	        HingeConstraint hinge = new HingeConstraint(body, Matrix.Identity);
-	        if(speed!=0) hinge.EnableAngularMotor(true,speed,3);
-	        World.AddConstraint(hinge);
+            body.Friction = 1;
+            HingeConstraint hinge = new HingeConstraint(body, Matrix.Identity);
+            if (speed != 0) hinge.EnableAngularMotor(true, speed, 3);
+            World.AddConstraint(hinge);
+        }
+
+        SoftBody Create_ClusterBunny(Vector3 x, Vector3 a)
+        {
+            SoftBody psb = SoftBodyHelpers.CreateFromTriMesh(softBodyWorldInfo, BunnyMesh.Vertices, BunnyMesh.Indices);
+            Material pm = psb.AppendMaterial();
+            pm.Lst = 1;
+            pm.Flags -= FMaterial.DebugDraw;
+            psb.GenerateBendingConstraints(2, pm);
+            psb.Cfg.PIterations = 2;
+            psb.Cfg.DF = 1;
+            psb.Cfg.Collisions = FCollisions.CLSS | FCollisions.CLRS;
+            psb.RandomizeConstraints();
+            Matrix m = Matrix.RotationYawPitchRoll(a.X, a.Y, a.Z) * Matrix.Translation(x);
+            psb.Transform(m);
+            psb.Scale(new Vector3(8, 8, 8));
+            psb.SetTotalMass(150, true);
+            psb.GenerateClusters(1);
+            SoftWorld.AddSoftBody(psb);
+            return (psb);
+        }
+
+        SoftBody Create_ClusterTorus(Vector3 x, Vector3 a, Vector3 s)
+        {
+            SoftBody psb = SoftBodyHelpers.CreateFromTriMesh(softBodyWorldInfo, TorusMesh.Vertices, TorusMesh.Indices);
+            Material pm = psb.AppendMaterial();
+            pm.Lst = 1;
+            pm.Flags -= FMaterial.DebugDraw;
+            psb.GenerateBendingConstraints(2, pm);
+            psb.Cfg.PIterations = 2;
+            psb.Cfg.Collisions = FCollisions.CLSS | FCollisions.CLRS;
+            psb.RandomizeConstraints();
+            psb.Scale(s);
+            Matrix m = Matrix.RotationYawPitchRoll(a.X, a.Y, a.Z) * Matrix.Translation(x);
+            psb.Transform(m);
+            psb.SetTotalMass(50, true);
+            psb.GenerateClusters(64);
+            SoftWorld.AddSoftBody(psb);
+            return (psb);
+        }
+
+        SoftBody Create_ClusterTorus(Vector3 x, Vector3 a)
+        {
+            return Create_ClusterTorus(x, a, new Vector3(2));
+        }
+
+        void Init_ClusterDeform()
+        {
+            SoftBody psb = Create_ClusterTorus(Vector3.Zero, new Vector3((float)Math.PI / 2, 0, (float)Math.PI / 2));
+            psb.GenerateClusters(8);
+            psb.Cfg.DF = 1;
+        }
+
+        void Init_ClusterCollide1()
+        {
+            const float s = 8;
+            SoftBody psb = SoftBodyHelpers.CreatePatch(softBodyWorldInfo, new Vector3(-s, 0, -s),
+                new Vector3(+s, 0, -s),
+                new Vector3(-s, 0, +s),
+                new Vector3(+s, 0, +s),
+                17, 17,//9,9,//31,31,
+                1 + 2 + 4 + 8,
+                true);
+            Material pm = psb.AppendMaterial();
+            pm.Lst = 0.4f;
+            pm.Flags -= FMaterial.DebugDraw;
+            psb.Cfg.DF = 1;
+            psb.Cfg.SrhrCl = 1;
+            psb.Cfg.SRSplitCl = 0;
+            psb.Cfg.Collisions = FCollisions.CLSS | FCollisions.CLRS;
+            psb.GenerateBendingConstraints(2, pm);
+
+            psb.CollisionShape.Margin = 0.05f;
+            psb.SetTotalMass(50);
+
+            ///pass zero in generateClusters to create  cluster for each tetrahedron or triangle
+            psb.GenerateClusters(0);
+            //psb.GenerateClusters(64);
+
+            SoftWorld.AddSoftBody(psb);
+
+            Create_RbUpStack(10);
+        }
+
+        void Init_ClusterCollide2()
+        {
+            for (int i = 0; i < 3; ++i)
+            {
+                SoftBody psb = SoftBodyHelpers.CreateFromTriMesh(softBodyWorldInfo, TorusMesh.Vertices, TorusMesh.Indices);
+                Material pm = psb.AppendMaterial();
+                pm.Flags -= FMaterial.DebugDraw;
+                psb.GenerateBendingConstraints(2, pm);
+                psb.Cfg.PIterations = 2;
+                psb.Cfg.DF = 1;
+                psb.Cfg.SshrCl = 1;
+                psb.Cfg.SSSplitCl = 0;
+                psb.Cfg.SkhrCl = 0.1f;
+                psb.Cfg.SKSplitCl = 1;
+                psb.Cfg.Collisions = FCollisions.CLSS | FCollisions.CLRS;
+                psb.RandomizeConstraints();
+                Matrix m = Matrix.RotationYawPitchRoll((float)Math.PI / 2 * (1 - (i & 1)), (float)Math.PI / 2 * (i & 1), 0)
+                    * Matrix.Translation(3 * i, 2, 0);
+                psb.Transform(m);
+                psb.Scale(new Vector3(2, 2, 2));
+                psb.SetTotalMass(50, true);
+                psb.GenerateClusters(16);
+                SoftWorld.AddSoftBody(psb);
+            }
+        }
+
+        void Init_ClusterSocket()
+        {
+            SoftBody psb = Create_ClusterTorus(Vector3.Zero, new Vector3((float)Math.PI / 2, 0, (float)Math.PI / 2));
+            RigidBody prb = Create_BigPlate(50, 8);
+            psb.Cfg.DF = 1;
+            LJoint.Specs lj = new LJoint.Specs();
+            lj.Position = new Vector3(0, 5, 0);
+            psb.AppendLinearJoint(lj, new Body(prb));
+        }
+
+        void Init_ClusterHinge()
+        {
+            SoftBody psb = Create_ClusterTorus(Vector3.Zero, new Vector3((float)Math.PI / 2, 0, (float)Math.PI / 2));
+            RigidBody prb = Create_BigPlate(50, 8);
+            psb.Cfg.DF = 1;
+            AJoint.Specs aj = new AJoint.Specs();
+            aj.Axis = new Vector3(0, 0, 1);
+            psb.AppendAngularJoint(aj, new Body(prb));
+        }
+
+        void Init_ClusterCombine()
+        {
+            Vector3 sz = new Vector3(2, 4, 2);
+            SoftBody psb0 = Create_ClusterTorus(new Vector3(0, 8, 0), new Vector3((float)Math.PI / 2, 0, (float)Math.PI / 2), sz);
+            SoftBody psb1 = Create_ClusterTorus(new Vector3(0, 8, 10), new Vector3((float)Math.PI / 2, 0, (float)Math.PI / 2), sz);
+            SoftBody[] psbs = new SoftBody[] { psb0, psb1 };
+            for (int j = 0; j < 2; ++j)
+            {
+                psbs[j].Cfg.DF = 1;
+                psbs[j].Cfg.DP = 0;
+                psbs[j].Cfg.PIterations = 1;
+                psbs[j].Clusters[0].Matching = 0.05f;
+                psbs[j].Clusters[0].NodeDamping = 0.05f;
+            }
+            AJoint.Specs aj = new AJoint.Specs();
+            aj.Axis = new Vector3(0, 0, 1);
+            //aj.icontrol	= &motorcontrol;
+            psb0.AppendAngularJoint(aj, psb1);
+
+            LJoint.Specs lj = new LJoint.Specs();
+            lj.Position = new Vector3(0, 8, 5);
+            psb0.AppendLinearJoint(lj, psb1);
+        }
+
+        void Init_ClusterCar()
+        {
+            //SetAzi(180);
+            Vector3 origin = new Vector3(100, 80, 0);
+            Quaternion orientation = Quaternion.RotationYawPitchRoll(-(float)Math.PI / 2, 0, 0);
+            const float widthf = 8;
+            const float widthr = 9;
+            const float length = 8;
+            const float height = 4;
+            Vector3[] wheels = new Vector3[] {
+		        new Vector3(+widthf,-height,+length), // Front left
+		        new Vector3(-widthf,-height,+length), // Front right
+		        new Vector3(+widthr,-height,-length), // Rear left
+		        new Vector3(-widthr,-height,-length), // Rear right
+	        };
+            SoftBody pa = Create_ClusterBunny(Vector3.Zero, Vector3.Zero);
+            SoftBody pfl = Create_ClusterTorus(wheels[0], new Vector3(0, 0, (float)Math.PI / 2), new Vector3(2, 4, 2));
+            SoftBody pfr = Create_ClusterTorus(wheels[1], new Vector3(0, 0, (float)Math.PI / 2), new Vector3(2, 4, 2));
+            SoftBody prl = Create_ClusterTorus(wheels[2], new Vector3(0, 0, (float)Math.PI / 2), new Vector3(2, 5, 2));
+            SoftBody prr = Create_ClusterTorus(wheels[3], new Vector3(0, 0, (float)Math.PI / 2), new Vector3(2, 5, 2));
+
+            pfl.Cfg.DF =
+                pfr.Cfg.DF =
+                prl.Cfg.DF =
+                prr.Cfg.DF = 1;
+
+            LJoint.Specs lspecs = new LJoint.Specs();
+            lspecs.Cfm = 1;
+            lspecs.Erp = 1;
+            lspecs.Position = Vector3.Zero;
+
+            lspecs.Position = wheels[0]; pa.AppendLinearJoint(lspecs, pfl);
+            lspecs.Position = wheels[1]; pa.AppendLinearJoint(lspecs, pfr);
+            lspecs.Position = wheels[2]; pa.AppendLinearJoint(lspecs, prl);
+            lspecs.Position = wheels[3]; pa.AppendLinearJoint(lspecs, prr);
+
+            AJoint.Specs aspecs = new AJoint.Specs();
+            aspecs.Cfm = 1;
+            aspecs.Erp = 1;
+            aspecs.Axis = new Vector3(1, 0, 0);
+
+            //aspecs.icontrol = &steercontrol_f;
+            pa.AppendAngularJoint(aspecs, pfl);
+            pa.AppendAngularJoint(aspecs, pfr);
+
+            //aspecs.icontrol = &motorcontrol;
+            pa.AppendAngularJoint(aspecs, prl);
+            pa.AppendAngularJoint(aspecs, prr);
+
+            pa.Rotate(orientation);
+            pfl.Rotate(orientation);
+            pfr.Rotate(orientation);
+            prl.Rotate(orientation);
+            prr.Rotate(orientation);
+            pa.Translate(origin);
+            pfl.Translate(origin);
+            pfr.Translate(origin);
+            prl.Translate(origin);
+            prr.Translate(origin);
+            pfl.Cfg.PIterations =
+                pfr.Cfg.PIterations =
+                prl.Cfg.PIterations =
+                prr.Cfg.PIterations = 1;
+            pfl.Clusters[0].Matching =
+                pfr.Clusters[0].Matching =
+                prl.Clusters[0].Matching =
+                prr.Clusters[0].Matching = 0.05f;
+            pfl.Clusters[0].NodeDamping =
+                pfr.Clusters[0].NodeDamping =
+                prl.Clusters[0].NodeDamping =
+                prr.Clusters[0].NodeDamping = 0.05f;
+
+            Create_LinearStair(20, new Vector3(0, -8, 0), new Vector3(3, 2, 40));
+            Create_RbUpStack(50);
+            //autocam=true;
+        }
+
+        SoftBody Init_ClusterRobot_CreateBall(Vector3 pos)
+        {
+            SoftBody psb = SoftBodyHelpers.CreateEllipsoid(softBodyWorldInfo, pos, new Vector3(1,1,1)*3,512);
+	        psb.Materials[0].Lst = 0.45f;
+	        psb.Cfg.VC = 20;
+	        psb.SetTotalMass(50,true);
+	        psb.SetPose(true,false);
+	        psb.GenerateClusters(1);
+	        SoftWorld.AddSoftBody(psb);
+	        return(psb);
+        }
+
+        void Init_ClusterRobot()
+        {
+	        Vector3 basePos = new Vector3(0,25,8);
+	        SoftBody psb0 = Init_ClusterRobot_CreateBall(basePos+new Vector3(-8,0,0));
+	        SoftBody psb1 = Init_ClusterRobot_CreateBall(basePos+new Vector3(+8,0,0));
+	        SoftBody psb2 = Init_ClusterRobot_CreateBall(basePos+new Vector3(0,0,+8* (float)Math.Sqrt(2)));
+	        Vector3 ctr = (psb0.ClusterCom(0) + psb1.ClusterCom(0) + psb2.ClusterCom(0)) / 3;
+	        CylinderShape pshp = new CylinderShape(new Vector3(8,1,8));
+	        RigidBody prb = LocalCreateRigidBody(50, Matrix.Translation(ctr + new Vector3(0,5,0)), pshp);
+	        LJoint.Specs ls = new LJoint.Specs();
+	        ls.Erp=0.5f;
+            Body prbBody = new Body(prb);
+	        ls.Position = psb0.ClusterCom(0); psb0.AppendLinearJoint(ls,prbBody);
+	        ls.Position = psb1.ClusterCom(0); psb1.AppendLinearJoint(ls,prbBody);
+	        ls.Position = psb2.ClusterCom(0); psb2.AppendLinearJoint(ls,prbBody);
+
+	        BoxShape pbox = new BoxShape(20,1,40);
+	        RigidBody pgrn = LocalCreateRigidBody(0, Matrix.RotationZ(-(float)Math.PI / 4),pbox);
+
+	        //autocam=true;
+
+        }
+
+        void Init_ClusterStackSoft()
+        {
+            for (int i = 0; i < 10; ++i)
+            {
+                SoftBody psb = Create_ClusterTorus(new Vector3(0, -9 + 8.25f * i, 0), Vector3.Zero);
+                psb.Cfg.DF = 1;
+            }
+        }
+
+        //
+        void Init_ClusterStackMixed()
+        {
+            for (int i = 0; i < 10; ++i)
+            {
+                if (((i + 1) & 1) == 1)
+                {
+                    Create_BigPlate(50, -9 + 4.25f * i);
+                }
+                else
+                {
+                    SoftBody psb = Create_ClusterTorus(new Vector3(0, -9 + 4.25f * i, 0), Vector3.Zero);
+                    psb.Cfg.DF = 1;
+                }
+            }
         }
 
         public Physics()
         {
+            demos = new DemoConstructor[] { Init_Cloth, Init_Pressure, Init_Volume, Init_Ropes, Init_RopeAttach,
+                Init_ClothAttach, Init_Sticks, Init_Collide, Init_Collide2, Init_Collide3, Init_Impact, Init_Aero,
+                Init_Friction, Init_Torus, Init_TorusMatch, Init_Bunny, Init_BunnyMatch, Init_Cutting1,
+                Init_ClusterDeform, Init_ClusterCollide1, Init_ClusterCollide2, Init_ClusterSocket, Init_ClusterHinge,
+                Init_ClusterCombine, Init_ClusterCar, Init_ClusterRobot, Init_ClusterStackSoft, Init_ClusterStackMixed,
+                Init_TetraCube, Init_TetraBunny
+            };
+
             CollisionConfiguration collisionConf;
 
             // collision configuration contains default setup for memory, collision setup
