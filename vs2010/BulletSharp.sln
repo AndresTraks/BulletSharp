@@ -15,6 +15,8 @@ Global
 		Debug OpenTK|x64 = Debug OpenTK|x64
 		Debug SlimDX|Win32 = Debug SlimDX|Win32
 		Debug SlimDX|x64 = Debug SlimDX|x64
+		Debug SlimMath|Win32 = Debug SlimMath|Win32
+		Debug SlimMath|x64 = Debug SlimMath|x64
 		Debug XNA 3.1|Win32 = Debug XNA 3.1|Win32
 		Debug XNA 3.1|x64 = Debug XNA 3.1|x64
 		Debug XNA 4.0|Win32 = Debug XNA 4.0|Win32
@@ -29,6 +31,8 @@ Global
 		Release OpenTK|x64 = Release OpenTK|x64
 		Release SlimDX|Win32 = Release SlimDX|Win32
 		Release SlimDX|x64 = Release SlimDX|x64
+		Release SlimMath|Win32 = Release SlimMath|Win32
+		Release SlimMath|x64 = Release SlimMath|x64
 		Release XNA 3.1|Win32 = Release XNA 3.1|Win32
 		Release XNA 3.1|x64 = Release XNA 3.1|x64
 		Release XNA 4.0|Win32 = Release XNA 4.0|Win32
@@ -55,6 +59,10 @@ Global
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimDX|Win32.Build.0 = Debug SlimDX|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimDX|x64.ActiveCfg = Debug SlimDX|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimDX|x64.Build.0 = Debug SlimDX|x64
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimMath|Win32.ActiveCfg = Debug SlimMath|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimMath|Win32.Build.0 = Debug SlimMath|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimMath|x64.ActiveCfg = Debug SlimDX|x64
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimMath|x64.Build.0 = Debug SlimDX|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug XNA 3.1|Win32.ActiveCfg = Debug XNA 3.1|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug XNA 3.1|Win32.Build.0 = Debug XNA 3.1|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug XNA 3.1|x64.ActiveCfg = Debug XNA 3.1|x64
@@ -83,6 +91,10 @@ Global
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimDX|Win32.Build.0 = Release SlimDX|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimDX|x64.ActiveCfg = Release SlimDX|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimDX|x64.Build.0 = Release SlimDX|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimMath|Win32.ActiveCfg = Release SlimMath|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimMath|Win32.Build.0 = Release SlimMath|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimMath|x64.ActiveCfg = Release SlimMath|x64
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimMath|x64.Build.0 = Release SlimMath|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release XNA 3.1|Win32.ActiveCfg = Release XNA 3.1|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release XNA 3.1|Win32.Build.0 = Release XNA 3.1|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release XNA 3.1|x64.ActiveCfg = Release XNA 3.1|x64

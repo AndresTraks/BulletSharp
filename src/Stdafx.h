@@ -44,6 +44,8 @@
 #elif WIN64
 	#using <x64/SlimDX.dll>
 #endif
+#elif GRAPHICS_SLIMMATH
+	#using <SlimMath.dll>
 #elif GRAPHICS_MOGRE
 	#if _DEBUG
 	#using <Mogre_d.dll>
@@ -68,6 +70,9 @@
 #elif GRAPHICS_SLIMDX
 	#define UsingFrameworkNamespace using namespace SlimDX;
 	#define UsingGraphicsNamespace using namespace SlimDX::Direct3D9;
+#elif GRAPHICS_SLIMMATH
+	#define UsingFrameworkNamespace using namespace SlimMath;
+	#define UsingGraphicsNamespace
 #elif GRAPHICS_MOGRE
 	#define UsingFrameworkNamespace using namespace Mogre;
 	#define UsingGraphicsNamespace
@@ -96,6 +101,10 @@
 	#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
 #elif GRAPHICS_SLIMDX
 	#define BtColor Color4
+	#define BtColorToBtVector(color) new btVector3(color.Red, color.Green, color.Blue)
+	#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
+#elif GRAPHICS_SLIMMATH
+	#define BtColor Color3
 	#define BtColorToBtVector(color) new btVector3(color.Red, color.Green, color.Blue)
 	#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
 #elif GRAPHICS_MOGRE
