@@ -253,6 +253,59 @@ bool* BoolArray::UnmanagedPointer::get()
 }
 
 
+#ifndef DISABLE_SOFTBODY
+SoftBody::BodyArray::BodyArray(btSoftBody::Body* bodyArray, int length)
+: GenericList<Body^>(bodyArray, length)
+{
+}
+
+SoftBody::BodyArray::BodyArray(const btSoftBody::Body* bodyArray, int length)
+: GenericList<Body^>(bodyArray, length)
+{
+}
+
+void SoftBody::BodyArray::CopyTo(array<Body^>^ array, int arrayIndex)
+{
+	if (array == nullptr)
+		throw gcnew ArgumentNullException("array");
+
+	if (arrayIndex < 0)
+		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+
+	int length = Count;
+	if (arrayIndex + length > array->Length)
+		throw gcnew ArgumentException("Array too small.");
+
+	int i;
+	for (i=0; i<length; i++)
+	{
+		array[arrayIndex+i] = gcnew Body(&UnmanagedPointer[i]);
+	}
+}
+
+SoftBody::Body^ SoftBody::BodyArray::default::get(int index)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	return gcnew Body(&UnmanagedPointer[index]);
+}
+
+void SoftBody::BodyArray::default::set(int index, Body^ value)
+{
+	if (IsReadOnly)
+		throw gcnew InvalidOperationException("List is read-only.");
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	UnmanagedPointer[index] = *value->UnmanagedPointer;
+}
+
+btSoftBody::Body* SoftBody::BodyArray::UnmanagedPointer::get()
+{
+	return (btSoftBody::Body*) GenericList::UnmanagedPointer;
+}
+#endif
+
+
 CompoundShapeChildArray::CompoundShapeChildArray(btCompoundShapeChild* shapeArray, int length)
 : GenericList<CompoundShapeChild^>(shapeArray, length)
 {
@@ -692,6 +745,89 @@ btSoftBody::Node** SoftBody::NodePtrArray::UnmanagedPointer::get()
 	return (btSoftBody::Node**) GenericList::UnmanagedPointer;
 }
 #endif
+
+
+ScalarArray::ScalarArray(btScalar* scalarArray, int length)
+: GenericList<btScalar>(scalarArray, length)
+{
+}
+
+ScalarArray::ScalarArray(const btScalar* scalarArray, int length)
+: GenericList<btScalar>(scalarArray, length)
+{
+}
+
+ScalarArray::ScalarArray(int length)
+: GenericList<btScalar>(new btScalar[length], length)
+{
+}
+
+bool ScalarArray::Contains(btScalar item)
+{
+	int i;
+	int length = Count;
+	for (i=Count; i<length; i++)
+	{
+		if (item == UnmanagedPointer[i])
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+void ScalarArray::CopyTo(array<btScalar>^ array, int arrayIndex)
+{
+	if (array == nullptr)
+		throw gcnew ArgumentNullException("array");
+
+	if (arrayIndex < 0)
+		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+
+	if (arrayIndex + Count > array->Length)
+		throw gcnew ArgumentException("Array too small.");
+
+	int i;
+	int length = Count;
+	for (i=0; i<length; i++)
+	{
+		array[arrayIndex+i] = UnmanagedPointer[i];
+	}
+}
+
+int ScalarArray::IndexOf(btScalar item)
+{
+	int i;
+	int length = Count;
+	for (i=0; i<length; i++)
+	{
+		if (item == UnmanagedPointer[i])
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+btScalar ScalarArray::default::get(int index)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	return UnmanagedPointer[index];
+}
+void ScalarArray::default::set(int index, btScalar value)
+{
+	if (IsReadOnly)
+		throw gcnew InvalidOperationException("List is read-only.");
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	UnmanagedPointer[index] = value;
+}
+
+btScalar* ScalarArray::UnmanagedPointer::get()
+{
+	return (btScalar*) GenericList::UnmanagedPointer;
+}
 
 
 UIntArray::UIntArray(unsigned int* uintArray, int length)

@@ -138,6 +138,37 @@ namespace BulletSharp
 		}
 	};
 
+#ifndef DISABLE_SOFTBODY
+	namespace SoftBody
+	{
+		ref class Body;
+
+		[DebuggerDisplay("Count = {Count}")]
+		[DebuggerTypeProxy(ListDebugView::typeid)]
+		public ref class BodyArray : GenericList<Body^>
+		{
+		internal:
+			BodyArray(btSoftBody::Body* bodyArray, int length);
+			BodyArray(const btSoftBody::Body* bodyArray, int length);
+
+		public:
+			virtual void CopyTo(array<Body^>^ array, int arrayIndex) override;
+
+			property Body^ default[int]
+			{
+				virtual Body^ get(int index) override;
+				virtual void set(int index, Body^ value) override;
+			}
+
+		internal:
+			property btSoftBody::Body* UnmanagedPointer
+			{
+				btSoftBody::Body* get() new;
+			}
+		};
+	};
+#endif
+
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
 	public ref class CompoundShapeChildArray : GenericList<CompoundShapeChild^>
@@ -322,6 +353,34 @@ namespace BulletSharp
 		};
 	};
 #endif
+
+	[DebuggerDisplay("Count = {Count}")]
+	[DebuggerTypeProxy(ListDebugView::typeid)]
+	public ref class ScalarArray : GenericList<btScalar>
+	{
+	internal:
+		ScalarArray(btScalar* scalarArray, int length);
+		ScalarArray(const btScalar* scalarArray, int length);
+
+	public:
+		ScalarArray(int length);
+
+		virtual bool Contains(btScalar item) override;
+		virtual void CopyTo(array<btScalar>^ array, int arrayIndex) override;
+		virtual int IndexOf(btScalar item) override;
+
+		property float default[int]
+		{
+			virtual btScalar get(int index) override;
+			virtual void set(int index, btScalar value) override;
+		}
+
+	internal:
+		property btScalar* UnmanagedPointer
+		{
+			btScalar* get() new;
+		}
+	};
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]

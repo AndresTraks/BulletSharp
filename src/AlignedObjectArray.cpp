@@ -1112,7 +1112,7 @@ void AlignedJointArray::CopyTo(array<Joint^>^ array, int arrayIndex)
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew Joint((*UnmanagedPointer)[i]);
+		array[arrayIndex+i] = default[i];
 	}
 }
 
@@ -1153,7 +1153,17 @@ BulletSharp::SoftBody::Joint^ AlignedJointArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew Joint((*UnmanagedPointer)[index]);
+	btSoftBody::Joint* j = (*UnmanagedPointer)[index];
+	switch(j->Type())
+	{
+	case btSoftBody::Joint::eType::Linear:
+		return gcnew LJoint((btSoftBody::LJoint*)j);
+	case btSoftBody::Joint::eType::Angular:
+		return gcnew AJoint((btSoftBody::AJoint*)j);
+	case btSoftBody::Joint::eType::Contact:
+		return gcnew CJoint((btSoftBody::CJoint*)j);
+	};
+	return gcnew Joint(j);
 }
 
 void AlignedJointArray_SetDefault(btSoftBody::tJointArray* jointArray,
@@ -1901,6 +1911,90 @@ btSoftBody::tPSolverArray* AlignedPSolverArray::UnmanagedPointer::get()
 {
 	return (btSoftBody::tPSolverArray*)AlignedObjectArray::UnmanagedPointer;
 }
+
+
+AlignedRigidContactArray::AlignedRigidContactArray(btSoftBody::tRContactArray* rigidContactArray)
+: AlignedObjectArray(rigidContactArray)
+{
+}
+
+AlignedRigidContactArray::AlignedRigidContactArray()
+: AlignedObjectArray(new btSoftBody::tRContactArray())
+{
+}
+
+void AlignedRigidContactArray::Add(RigidContact^ rigidContact)
+{
+	UnmanagedPointer->push_back(*rigidContact->UnmanagedPointer);
+}
+
+void AlignedRigidContactArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+void AlignedRigidContactArray::CopyTo(array<RigidContact^>^ array, int arrayIndex)
+{
+	if (array == nullptr)
+		throw gcnew ArgumentNullException("array");
+
+	if (arrayIndex < 0)
+		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+
+	int size = UnmanagedPointer->size();
+	if (arrayIndex + size > array->Length)
+		throw gcnew ArgumentException("Array too small.", "array");
+
+	int i;
+	for (i=0; i<size; i++)
+	{
+		array[arrayIndex+i] = gcnew RigidContact(&(*UnmanagedPointer)[i]);
+	}
+}
+
+void AlignedRigidContactArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+void AlignedRigidContactArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+int AlignedRigidContactArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int AlignedRigidContactArray::Count::get()
+{
+	return UnmanagedPointer->size();
+}
+
+BulletSharp::SoftBody::RigidContact^ AlignedRigidContactArray::default::get(int index)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	return gcnew RigidContact(&(*UnmanagedPointer)[index]);
+}
+
+void AlignedRigidContactArray_SetDefault(btSoftBody::tRContactArray* rigidContactArray,
+	int index, btSoftBody::RContact* rigidContact)
+{
+	(*rigidContactArray)[index] = *rigidContact;
+}
+void AlignedRigidContactArray::default::set(int index, RigidContact^ value)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	AlignedRigidContactArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+}
+
+btSoftBody::tRContactArray* BulletSharp::SoftBody::AlignedRigidContactArray::UnmanagedPointer::get()
+{
+	return (btSoftBody::tRContactArray*)AlignedObjectArray::UnmanagedPointer;
+}
 #endif
 
 
@@ -2094,6 +2188,90 @@ void BulletSharp::SoftBody::AlignedSoftBodyArray::default::set(int index, SoftBo
 btSoftBody::tSoftBodyArray* BulletSharp::SoftBody::AlignedSoftBodyArray::UnmanagedPointer::get()
 {
 	return (btSoftBody::tSoftBodyArray*)AlignedObjectArray::UnmanagedPointer;
+}
+
+
+AlignedSoftContactArray::AlignedSoftContactArray(btSoftBody::tSContactArray* softContactArray)
+: AlignedObjectArray(softContactArray)
+{
+}
+
+AlignedSoftContactArray::AlignedSoftContactArray()
+: AlignedObjectArray(new btSoftBody::tSContactArray())
+{
+}
+
+void AlignedSoftContactArray::Add(SoftContact^ softContact)
+{
+	UnmanagedPointer->push_back(*softContact->UnmanagedPointer);
+}
+
+void AlignedSoftContactArray::Clear()
+{
+	UnmanagedPointer->clear();
+}
+
+void AlignedSoftContactArray::CopyTo(array<SoftContact^>^ array, int arrayIndex)
+{
+	if (array == nullptr)
+		throw gcnew ArgumentNullException("array");
+
+	if (arrayIndex < 0)
+		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+
+	int size = UnmanagedPointer->size();
+	if (arrayIndex + size > array->Length)
+		throw gcnew ArgumentException("Array too small.", "array");
+
+	int i;
+	for (i=0; i<size; i++)
+	{
+		array[arrayIndex+i] = gcnew SoftContact(&(*UnmanagedPointer)[i]);
+	}
+}
+
+void AlignedSoftContactArray::PopBack()
+{
+	UnmanagedPointer->pop_back();
+}
+
+void AlignedSoftContactArray::Swap(int index0, int index1)
+{
+	UnmanagedPointer->swap(index0, index1);
+}
+
+int AlignedSoftContactArray::Capacity::get()
+{
+	return UnmanagedPointer->capacity();
+}
+
+int AlignedSoftContactArray::Count::get()
+{
+	return UnmanagedPointer->size();
+}
+
+BulletSharp::SoftBody::SoftContact^ AlignedSoftContactArray::default::get(int index)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	return gcnew SoftContact(&(*UnmanagedPointer)[index]);
+}
+
+void AlignedSoftContactArray_SetDefault(btSoftBody::tSContactArray* softContactArray,
+	int index, btSoftBody::SContact* softContact)
+{
+	(*softContactArray)[index] = *softContact;
+}
+void AlignedSoftContactArray::default::set(int index, SoftContact^ value)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	AlignedSoftContactArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+}
+
+btSoftBody::tSContactArray* BulletSharp::SoftBody::AlignedSoftContactArray::UnmanagedPointer::get()
+{
+	return (btSoftBody::tSContactArray*)AlignedObjectArray::UnmanagedPointer;
 }
 
 

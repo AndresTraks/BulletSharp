@@ -33,7 +33,9 @@ namespace BulletSharp
 		ref class Material;
 		ref class Node;
 		ref class Note;
+		ref class RigidContact;
 		ref class SoftBody;
+		ref class SoftContact;
 		ref class Tetra;
 	};
 #endif
@@ -901,6 +903,45 @@ namespace BulletSharp
 				virtual btSoftBody::tPSolverArray* get() new;
 			}
 		};
+
+		[DebuggerDisplay("Count = {Count}")]
+		[DebuggerTypeProxy(ListDebugView::typeid)]
+		public ref class AlignedRigidContactArray : AlignedObjectArray<RigidContact^>
+		{
+		internal:
+			AlignedRigidContactArray(btSoftBody::tRContactArray* rigidContactArray);
+
+		public:
+			AlignedRigidContactArray();
+
+			virtual void Add(RigidContact^ rigidContact) override;
+			virtual void Clear() override;
+			virtual void CopyTo(array<RigidContact^>^ array, int arrayIndex) override;
+			virtual void PopBack() override;
+			virtual void Swap(int index0, int index1) override;
+
+			property int Count
+			{
+				virtual int get() override;
+			}
+
+			property int Capacity
+			{
+				int get();
+			}
+
+			property RigidContact^ default [int]
+			{
+				virtual RigidContact^ get (int index) override;
+				virtual void set(int index, RigidContact^ value) override;
+			}
+
+		internal:
+			property btSoftBody::tRContactArray* UnmanagedPointer
+			{
+				virtual btSoftBody::tRContactArray* get() new;
+			}
+		};
 	};
 #endif
 
@@ -990,10 +1031,46 @@ namespace BulletSharp
 				virtual btSoftBody::tSoftBodyArray* get() new;
 			}
 		};
-	};
 
-	namespace SoftBody
-	{
+		[DebuggerDisplay("Count = {Count}")]
+		[DebuggerTypeProxy(ListDebugView::typeid)]
+		public ref class AlignedSoftContactArray : AlignedObjectArray<SoftContact^>
+		{
+		internal:
+			AlignedSoftContactArray(btSoftBody::tSContactArray* softContactArray);
+
+		public:
+			AlignedSoftContactArray();
+
+			virtual void Add(SoftContact^ softContact) override;
+			virtual void Clear() override;
+			virtual void CopyTo(array<SoftContact^>^ array, int arrayIndex) override;
+			virtual void PopBack() override;
+			virtual void Swap(int index0, int index1) override;
+
+			property int Count
+			{
+				virtual int get() override;
+			}
+
+			property int Capacity
+			{
+				int get();
+			}
+
+			property SoftContact^ default [int]
+			{
+				virtual SoftContact^ get (int index) override;
+				virtual void set(int index, SoftContact^ value) override;
+			}
+
+		internal:
+			property btSoftBody::tSContactArray* UnmanagedPointer
+			{
+				virtual btSoftBody::tSContactArray* get() new;
+			}
+		};
+
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
 		public ref class AlignedTetraArray : AlignedObjectArray<Tetra^>, Generic::IList<Tetra^>

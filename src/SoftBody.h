@@ -12,7 +12,7 @@ namespace BulletSharp
 	ref class Dbvt;
 	ref class DbvtNode;
 	ref class Dispatcher;
-	ref class FloatArray;
+	ref class ScalarArray;
 	ref class RigidBody;
 	ref class SparseSdf;
 	ref class Vector3Array;
@@ -28,16 +28,20 @@ namespace BulletSharp
 		ref class AlignedNodeArray;
 		ref class AlignedNodePtrArray;
 		ref class AlignedNoteArray;
+		ref class AlignedRigidContactArray;
 		ref class AlignedSoftBodyArray;
+		ref class AlignedSoftContactArray;
 		ref class AlignedTetraArray;
 		ref class AlignedPSolverArray;
 		ref class AlignedVSolverArray;
+		ref class BodyArray;
 		ref class Cluster;
 		ref class Feature;
 		ref class Impulse;
 		ref class Material;
 		ref class Node;
 		ref class NodePtrArray;
+		ref class Scti;
 		ref class SoftBody;
 
 		public ref class SoftBodyWorldInfo
@@ -217,6 +221,9 @@ namespace BulletSharp
 		{
 		private:
 			btSoftBody::Body* _body;
+
+		internal:
+			Body(btSoftBody::Body* body);
 
 		public:
 			Body();
@@ -694,6 +701,8 @@ namespace BulletSharp
 			Face(btSoftBody::Face* face);
 
 		public:
+			Face();
+
 #ifndef DISABLE_DBVT
 			property DbvtNode^ Leaf
 			{
@@ -806,11 +815,77 @@ namespace BulletSharp
 				};
 			};
 
+			enum class JointType
+			{
+				Linear, Angular, Contact
+			};
+
 		private:
 			btSoftBody::Joint* _joint;
 
 		public:
 			Joint(btSoftBody::Joint* joint);
+
+			void Prepare(btScalar dt, int iterations);
+			void Solve(btScalar dt, btScalar sor);
+			void Terminate(btScalar dt);
+
+			property BodyArray^ Bodies
+			{
+				BodyArray^ get();
+			}
+
+			property btScalar Cfm
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property bool Delete
+			{
+				bool get();
+				void set(bool value);
+			}
+
+			property Vector3 Drift
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property btScalar Erp
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property Matrix MassMatrix
+			{
+				Matrix get();
+				void set(Matrix value);
+			}
+
+			property Vector3Array^ Refs
+			{
+				Vector3Array^ get();
+			}
+
+			property Vector3 SDrift
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property btScalar Split
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property JointType Type
+			{
+				JointType get();
+			}
 
 		internal:
 			property btSoftBody::Joint* UnmanagedPointer
@@ -823,6 +898,7 @@ namespace BulletSharp
 		public ref class LJoint : Joint
 		{
 		public:
+			[DebuggerDisplay("Position = {Position}")]
 			ref class Specs : Joint::Specs
 			{
 			public:
@@ -841,8 +917,22 @@ namespace BulletSharp
 				};
 			};
 
+		internal:
 			LJoint(btSoftBody::LJoint* joint);
+
+		public:
 			LJoint();
+
+			property Vector3Array^ RPos
+			{
+				Vector3Array^ get();
+			}
+
+		internal:
+			property btSoftBody::LJoint* UnmanagedPointer
+			{
+				btSoftBody::LJoint* get() new;
+			};
 		};
 
 		public ref class AJoint : Joint
@@ -866,7 +956,14 @@ namespace BulletSharp
 				};
 			};
 
+		internal:
 			AJoint(btSoftBody::AJoint* joint);
+		};
+
+		public ref class CJoint : Joint
+		{
+		public:
+			CJoint(btSoftBody::CJoint* joint);
 		};
 
 		public ref class Link : Feature
@@ -931,6 +1028,8 @@ namespace BulletSharp
 			Material(btSoftBody::Material* material);
 
 		public:
+			Material();
+
 			property btScalar Ast
 			{
 				btScalar get();
@@ -969,6 +1068,8 @@ namespace BulletSharp
 			Node(btSoftBody::Node* node);
 
 		public:
+			Node();
+
 			property btScalar Area
 			{
 				btScalar get();
@@ -1056,6 +1157,8 @@ namespace BulletSharp
 			Pose(btSoftBody::Pose* pose);
 
 		public:
+			Pose();
+
 			property Matrix Aqq
 			{
 				Matrix get();
@@ -1115,6 +1218,157 @@ namespace BulletSharp
 			{
 				btSoftBody::Pose* get();
 				void set(btSoftBody::Pose* value);
+			};
+		};
+
+		public ref class RigidContact
+		{
+		private:
+			btSoftBody::RContact* _rigidContact;
+
+		internal:
+			RigidContact(btSoftBody::RContact* rigidContact);
+
+		public:
+			RigidContact();
+
+			property Matrix C0
+			{
+				Matrix get();
+				void set(Matrix value);
+			}
+
+			property Vector3 C1
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property btScalar C2
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar C3
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar C4
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property Node^ Node
+			{
+				BulletSharp::SoftBody::Node^ get();
+				void set(BulletSharp::SoftBody::Node^ value);
+			}
+
+			property Scti^ Scti
+			{
+				BulletSharp::SoftBody::Scti^ get();
+			}
+
+		internal:
+			property btSoftBody::RContact* UnmanagedPointer
+			{
+				btSoftBody::RContact* get();
+				void set(btSoftBody::RContact* value);
+			};
+		};
+
+		public ref class Scti
+		{
+		private:
+			btSoftBody::sCti* _sCti;
+
+		internal:
+			Scti(btSoftBody::sCti* sCti);
+
+		public:
+			Scti();
+
+			property CollisionObject^ CollisionObject
+			{
+				BulletSharp::CollisionObject^ get();
+				void set(BulletSharp::CollisionObject^ value);
+			}
+
+			property Vector3 Normal
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property btScalar Offset
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+		internal:
+			property btSoftBody::sCti* UnmanagedPointer
+			{
+				btSoftBody::sCti* get();
+				void set(btSoftBody::sCti* value);
+			};
+		};
+
+		public ref class SoftContact
+		{
+		private:
+			btSoftBody::SContact* _softContact;
+
+		internal:
+			SoftContact(btSoftBody::SContact* softContact);
+
+		public:
+			SoftContact();
+
+			property ScalarArray^ Cfm
+			{
+				ScalarArray^ get();
+			}
+
+			property Face^ Face
+			{
+				BulletSharp::SoftBody::Face^ get();
+				void set(BulletSharp::SoftBody::Face^ value);
+			}
+
+			property btScalar Friction
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property Node^ Node
+			{
+				BulletSharp::SoftBody::Node^ get();
+				void set(BulletSharp::SoftBody::Node^ value);
+			}
+
+			property Vector3 Normal
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property Vector3 Weights
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+		internal:
+			property btSoftBody::SContact* UnmanagedPointer
+			{
+				btSoftBody::SContact* get();
+				void set(btSoftBody::SContact* value);
 			};
 		};
 
@@ -1265,7 +1519,7 @@ namespace BulletSharp
 
 		public:
 			SoftBody(SoftBodyWorldInfo^ worldInfo, array<Vector3>^ x, array<btScalar>^ m);
-			SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3Array^ x, FloatArray^ m);
+			SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3Array^ x, ScalarArray^ m);
 
 			void AddForce(Vector3 force, int node);
 			void AddForce(Vector3 force);
@@ -1440,6 +1694,16 @@ namespace BulletSharp
 			{
 				BulletSharp::SoftBody::Pose^ get();
 				void set(BulletSharp::SoftBody::Pose^ value);
+			}
+
+			property AlignedRigidContactArray^ RigidContacts
+			{
+				AlignedRigidContactArray^ get();
+			}
+
+			property AlignedSoftContactArray^ SoftContacts
+			{
+				AlignedSoftContactArray^ get();
 			}
 
 			property SolverState^ SolverState
