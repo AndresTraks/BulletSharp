@@ -13,17 +13,7 @@ namespace DemoFramework
     public class GraphicObjectFactory : System.IDisposable
     {
         Device device;
-
-        Dictionary<BoxShape, Mesh> boxes = new Dictionary<BoxShape, Mesh>();
-        Dictionary<CapsuleShape, Mesh> capsules = new Dictionary<CapsuleShape, Mesh>();
-        Dictionary<ConeShape, Mesh> cones = new Dictionary<ConeShape, Mesh>();
-        Dictionary<CylinderShape, Mesh> cylinders = new Dictionary<CylinderShape, Mesh>();
-        Dictionary<ConvexHullShape, Mesh> hullShapes = new Dictionary<ConvexHullShape, Mesh>();
-        Dictionary<StaticPlaneShape, Mesh> planes = new Dictionary<StaticPlaneShape, Mesh>();
-        Dictionary<GImpactMeshShape, Mesh> gImpactMeshShapes = new Dictionary<GImpactMeshShape, Mesh>();
-        Dictionary<SphereShape, Mesh> spheres = new Dictionary<SphereShape, Mesh>();
-        Dictionary<MultiSphereShape, Mesh> multiSpheres = new Dictionary<MultiSphereShape, Mesh>();
-
+        Dictionary<CollisionShape, Mesh> shapes = new Dictionary<CollisionShape, Mesh>();
         Effect planeShader;
 
         public GraphicObjectFactory(Device device)
@@ -33,62 +23,133 @@ namespace DemoFramework
 
         public void Dispose()
         {
-            foreach (Mesh mesh in boxes.Values)
+            foreach (Mesh mesh in shapes.Values)
             {
                 mesh.Dispose();
             }
-            boxes.Clear();
-
-            foreach (Mesh mesh in capsules.Values)
-            {
-                mesh.Dispose();
-            }
-            capsules.Clear();
-
-            foreach (Mesh mesh in cones.Values)
-            {
-                mesh.Dispose();
-            }
-            cones.Clear();
-
-            foreach (Mesh mesh in cylinders.Values)
-            {
-                mesh.Dispose();
-            }
-            cylinders.Clear();
-
-            foreach (Mesh mesh in gImpactMeshShapes.Values)
-            {
-                mesh.Dispose();
-            }
-            gImpactMeshShapes.Clear();
-
-            foreach (Mesh mesh in hullShapes.Values)
-            {
-                mesh.Dispose();
-            }
-            hullShapes.Clear();
-
-            foreach (Mesh mesh in planes.Values)
-            {
-                mesh.Dispose();
-            }
-            planes.Clear();
-
-            foreach (Mesh mesh in spheres.Values)
-            {
-                mesh.Dispose();
-            }
-            spheres.Clear();
-
-            foreach (Mesh mesh in multiSpheres.Values)
-            {
-                mesh.Dispose();
-            }
-            multiSpheres.Clear();
+            shapes.Clear();
 
             if (planeShader != null)
                 planeShader.Dispose();
+        }
+
+        Mesh CreateBoxShape(BoxShape shape)
+        {
+            Vector3 size = shape.HalfExtentsWithMargin;
+            Mesh mesh = Mesh.CreateBox(device, size.X * 2, size.Y * 2, size.Z * 2);
+            shapes.Add(shape, mesh);
+            return mesh;
+        }
+
+        Mesh CreateCylinderShape(CylinderShape shape)
+        {
+            int upAxis = shape.UpAxis;
+            float radius = shape.Radius;
+            float halfHeight = shape.HalfExtentsWithoutMargin[upAxis] + shape.Margin;
+
+            Mesh mesh = Mesh.CreateCylinder(device, radius, radius, halfHeight * 2, 16, 1);
+            if (upAxis == 0)
+            {
+                Matrix[] transform = new Matrix[] { Matrix.RotationY((float)Math.PI / 2) };
+                Mesh meshRotated = Mesh.Concatenate(device, new Mesh[] { mesh }, MeshFlags.Managed, transform, null);
+                mesh.Dispose();
+                mesh = meshRotated;
+            }
+            else if (upAxis == 1)
+            {
+                Matrix[] transform = new Matrix[] { Matrix.RotationX((float)Math.PI / 2) };
+                Mesh cylinderMeshRot = Mesh.Concatenate(device, new Mesh[] { mesh }, MeshFlags.Managed, transform, null);
+                mesh.Dispose();
+                mesh = cylinderMeshRot;
+            }
+            shapes.Add(shape, mesh);
+
+            return mesh;
+        }
+
+        Mesh CreateGImpactMeshShape(GImpactMeshShape shape)
+        {
+            BulletSharp.DataStream verts, indices;
+            int numVerts, numFaces;
+            PhyScalarType vertsType, indicesType;
+            int vertexStride, indexStride;
+            shape.MeshInterface.GetLockedReadOnlyVertexIndexData(out verts, out numVerts, out vertsType, out vertexStride,
+                out indices, out indexStride, out numFaces, out indicesType);
+
+            bool index32 = numVerts > 65536;
+
+            Mesh mesh = new Mesh(device, numFaces, numVerts,
+                MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
+
+            SlimDX.DataStream vertexBuffer = mesh.LockVertexBuffer(LockFlags.Discard);
+            while (vertexBuffer.Position < vertexBuffer.Length)
+            {
+                vertexBuffer.Write(verts.Read<Vector3>());
+                vertexBuffer.Position += 12;
+            }
+            mesh.UnlockVertexBuffer();
+
+            SlimDX.DataStream indexBuffer = mesh.LockIndexBuffer(LockFlags.Discard);
+            if (index32)
+            {
+                while (indexBuffer.Position < indexBuffer.Length)
+                    indexBuffer.Write(indices.Read<int>());
+            }
+            else
+            {
+                while (indexBuffer.Position < indexBuffer.Length)
+                    indexBuffer.Write((short)indices.Read<int>());
+            }
+            mesh.UnlockIndexBuffer();
+
+            mesh.ComputeNormals();
+            return mesh;
+        }
+
+        Mesh CreateConvexHullShape(ConvexHullShape shape)
+        {
+            int vertexCount = shape.NumPoints;
+            int faceCount = vertexCount / 3;
+            vertexCount = faceCount * 3; // must be 3 verts for every face
+
+            bool index32 = vertexCount > 65536;
+
+            Mesh mesh = new Mesh(device, faceCount, vertexCount,
+                MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
+
+
+            SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.Discard);
+            int i;
+            if (index32)
+            {
+                for (i = 0; i < vertexCount; i++)
+                    indices.Write(i);
+            }
+            else
+            {
+                for (i = 0; i < vertexCount; i++)
+                    indices.Write((short)i);
+            }
+            mesh.UnlockIndexBuffer();
+
+            SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.Discard);
+            Vector3Array points = shape.UnscaledPoints;
+            Vector3 scale = Vector3.Multiply(shape.LocalScaling, 1.0f + shape.Margin);
+            for (i = 0; i < vertexCount; )
+            {
+                verts.Write(Vector3.Modulate(points[i++], scale));
+                verts.Position += 12;
+                verts.Write(Vector3.Modulate(points[i++], scale));
+                verts.Position += 12;
+                verts.Write(Vector3.Modulate(points[i++], scale));
+                verts.Position += 12;
+            }
+            mesh.UnlockVertexBuffer();
+
+            mesh.ComputeNormals();
+            shapes.Add(shape, mesh);
+
+            return mesh;
         }
 
         // Local transforms are needed for CompoundShapes.
@@ -154,19 +215,46 @@ namespace DemoFramework
             //throw new NotImplementedException();
         }
 
+        public void RenderCollisionShape(CollisionShape shape, Matrix localTransform)
+        {
+            if (localTransform.IsIdentity == false)
+                DoLocalTransform(localTransform);
+
+            Mesh mesh;
+
+            if (shapes.TryGetValue(shape, out mesh) == false)
+            {
+                shape = shape.UpcastDetect();
+                switch (shape.ShapeType)
+                {
+                    case BroadphaseNativeType.BoxShape:
+                        mesh = CreateBoxShape((BoxShape)shape);
+                        break;
+                    case BroadphaseNativeType.CylinderShape:
+                        mesh = CreateCylinderShape((CylinderShape)shape);
+                        break;
+                    case BroadphaseNativeType.ConvexHullShape:
+                        mesh = CreateConvexHullShape((ConvexHullShape)shape);
+                        break;
+                    case BroadphaseNativeType.GImpactShape:
+                        mesh = CreateGImpactMeshShape((GImpactMeshShape)shape);
+                        break;
+                    default:
+                        return;
+                }
+            }
+
+            mesh.DrawSubset(0);
+        }
+
         public void RenderBox(BoxShape shape, Matrix localTransform)
         {
             if (localTransform.IsIdentity == false)
                 DoLocalTransform(localTransform);
 
             Mesh boxMesh;
-
-            if (boxes.TryGetValue(shape, out boxMesh) == false)
-            {
-                Vector3 size = shape.HalfExtentsWithMargin;
-                boxMesh = Mesh.CreateBox(device, size.X * 2, size.Y * 2, size.Z * 2);
-                boxes.Add(shape, boxMesh);
-            }
+            if (shapes.TryGetValue(shape, out boxMesh) == false)
+                boxMesh = CreateBoxShape(shape);
 
             boxMesh.DrawSubset(0);
         }
@@ -178,7 +266,7 @@ namespace DemoFramework
 
             Mesh compoundMesh;
 
-            if (capsules.TryGetValue(shape, out compoundMesh) == false)
+            if (shapes.TryGetValue(shape, out compoundMesh) == false)
             {
                 // Combine a cylinder and two spheres.
                 Vector3 size = shape.ImplicitShapeDimensions;
@@ -193,7 +281,7 @@ namespace DemoFramework
                 cylinder.Dispose();
                 sphere.Dispose();
 
-                capsules.Add(shape, compoundMesh);
+                shapes.Add(shape, compoundMesh);
             }
 
             compoundMesh.DrawSubset(0);
@@ -208,10 +296,10 @@ namespace DemoFramework
 
             Mesh coneMesh;
 
-            if (cones.TryGetValue(shape, out coneMesh) == false)
+            if (shapes.TryGetValue(shape, out coneMesh) == false)
             {
                 coneMesh = Mesh.CreateCylinder(device, 0, shape.Radius, shape.Height, 16, 1);
-                cones.Add(shape, coneMesh);
+                shapes.Add(shape, coneMesh);
             }
 
             coneMesh.DrawSubset(0);
@@ -223,30 +311,8 @@ namespace DemoFramework
                 DoLocalTransform(localTransform);
 
             Mesh mesh;
-
-            if (cylinders.TryGetValue(shape, out mesh) == false)
-            {
-                int upAxis = shape.UpAxis;
-                float radius = shape.Radius;
-                float halfHeight = shape.HalfExtentsWithoutMargin[upAxis] + shape.Margin;
-                
-                mesh = Mesh.CreateCylinder(device, radius, radius, halfHeight * 2, 16, 1);
-                if (upAxis == 0)
-                {
-                    Matrix[] transform = new Matrix[] { Matrix.RotationY((float)Math.PI / 2) };
-                    Mesh meshRotated = Mesh.Concatenate(device, new Mesh[] { mesh }, MeshFlags.Managed, transform, null);
-                    mesh.Dispose();
-                    mesh = meshRotated;
-                }
-                else if (upAxis == 1)
-                {
-                    Matrix[] transform = new Matrix[] { Matrix.RotationX((float)Math.PI / 2) };
-                    Mesh cylinderMeshRot = Mesh.Concatenate(device, new Mesh[] { mesh }, MeshFlags.Managed, transform, null);
-                    mesh.Dispose();
-                    mesh = cylinderMeshRot;
-                }
-                cylinders.Add(shape, mesh);
-            }
+            if (shapes.TryGetValue(shape, out mesh) == false)
+                mesh = CreateCylinderShape(shape);
 
             mesh.DrawSubset(0);
         }
@@ -258,10 +324,10 @@ namespace DemoFramework
 
             Mesh sphereMesh;
 
-            if (spheres.TryGetValue(shape, out sphereMesh) == false)
+            if (shapes.TryGetValue(shape, out sphereMesh) == false)
             {
                 sphereMesh = Mesh.CreateSphere(device, shape.Radius, 16, 16);
-                spheres.Add(shape, sphereMesh);
+                shapes.Add(shape, sphereMesh);
             }
 
             sphereMesh.DrawSubset(0);
@@ -281,49 +347,8 @@ namespace DemoFramework
                 DoLocalTransform(localTransform);
             
             Mesh hullMesh;
-            if (hullShapes.TryGetValue(shape, out hullMesh) == false)
-            {
-                int vertexCount = shape.NumPoints;
-                int faceCount = vertexCount / 3;
-                vertexCount = faceCount * 3; // must be 3 verts for every face
-
-                bool index32 = vertexCount > 65536;
-
-                hullMesh = new Mesh(device, faceCount, vertexCount,
-                    MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
-
-
-                SlimDX.DataStream indices = hullMesh.LockIndexBuffer(LockFlags.Discard);
-                int i;
-                if (index32)
-                {
-                    for (i = 0; i < vertexCount; i++)
-                        indices.Write(i);
-                }
-                else
-                {
-                    for (i = 0; i < vertexCount; i++)
-                        indices.Write((short)i);
-                }
-                hullMesh.UnlockIndexBuffer();
-
-                SlimDX.DataStream verts = hullMesh.LockVertexBuffer(LockFlags.Discard);
-                Vector3Array points = shape.UnscaledPoints;
-                Vector3 scale = Vector3.Multiply(shape.LocalScaling, 1.0f + shape.Margin);
-                for (i = 0; i < vertexCount; )
-                {
-                    verts.Write(Vector3.Modulate(points[i++], scale));
-                    verts.Position += 12;
-                    verts.Write(Vector3.Modulate(points[i++], scale));
-                    verts.Position += 12;
-                    verts.Write(Vector3.Modulate(points[i++], scale));
-                    verts.Position += 12;
-                }
-                hullMesh.UnlockVertexBuffer();
-
-                hullMesh.ComputeNormals();
-                hullShapes.Add(shape, hullMesh);
-            }
+            if (shapes.TryGetValue(shape, out hullMesh) == false)
+                hullMesh = CreateConvexHullShape(shape);
 
             hullMesh.DrawSubset(0);
         }
@@ -349,43 +374,8 @@ namespace DemoFramework
 
             Mesh gImpactMesh;
 
-            if (gImpactMeshShapes.TryGetValue(shape, out gImpactMesh) == false)
-            {
-                BulletSharp.DataStream verts, indices;
-                int numVerts, numFaces;
-                PhyScalarType vertsType, indicesType;
-                int vertexStride, indexStride;
-                shape.MeshInterface.GetLockedReadOnlyVertexIndexData(out verts, out numVerts, out vertsType, out vertexStride,
-                    out indices, out indexStride, out numFaces, out indicesType);
-
-                bool index32 = numVerts > 65536;
-
-                gImpactMesh = new Mesh(device, numFaces, numVerts,
-                    MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
-
-                SlimDX.DataStream vertexBuffer = gImpactMesh.LockVertexBuffer(LockFlags.Discard);
-                while (vertexBuffer.Position < vertexBuffer.Length)
-                {
-                    vertexBuffer.Write(verts.Read<Vector3>());
-                    vertexBuffer.Position += 12;
-                }
-                gImpactMesh.UnlockVertexBuffer();
-
-                SlimDX.DataStream indexBuffer = gImpactMesh.LockIndexBuffer(LockFlags.Discard);
-                if (index32)
-                {
-                    while (indexBuffer.Position < indexBuffer.Length)
-                        indexBuffer.Write(indices.Read<int>());
-                }
-                else
-                {
-                    while (indexBuffer.Position < indexBuffer.Length)
-                        indexBuffer.Write((short)indices.Read<int>());
-                }
-                gImpactMesh.UnlockIndexBuffer();
-
-                gImpactMesh.ComputeNormals();
-            }
+            if (shapes.TryGetValue(shape, out gImpactMesh) == false)
+                gImpactMesh = CreateGImpactMeshShape(shape);
 
             gImpactMesh.DrawSubset(0);
         }
@@ -396,8 +386,8 @@ namespace DemoFramework
                 DoLocalTransform(localTransform);
 
             Mesh multiSphereMesh;
-            
-            if (multiSpheres.TryGetValue(shape, out multiSphereMesh) == false)
+
+            if (shapes.TryGetValue(shape, out multiSphereMesh) == false)
             {
                 int i;
                 for (i = 0; i < shape.SphereCount; i++)
@@ -420,7 +410,7 @@ namespace DemoFramework
                     }
                     sphereMesh.Dispose();
                 }
-                multiSpheres.Add(shape, multiSphereMesh);
+                shapes.Add(shape, multiSphereMesh);
             }
             
             for (int i=0; i<shape.SphereCount; i++)
@@ -434,10 +424,10 @@ namespace DemoFramework
 
             Mesh planeMesh;
 
-            if (planes.TryGetValue(shape, out planeMesh) == false)
+            if (shapes.TryGetValue(shape, out planeMesh) == false)
             {
                 // Load shader
-                if (planes.Count == 0)
+                if (shapes.Count == 0)
                 {
                     Assembly assembly = Assembly.GetExecutingAssembly();
                     Stream shaderStream = assembly.GetManifestResourceStream("DemoFramework.checker_shader.fx");
@@ -485,7 +475,7 @@ namespace DemoFramework
                 
                 planeMesh.ComputeNormals();
 
-                planes.Add(shape, planeMesh);
+                shapes.Add(shape, planeMesh);
             }
 
             Cull cullMode = device.GetRenderState<Cull>(RenderState.CullMode);

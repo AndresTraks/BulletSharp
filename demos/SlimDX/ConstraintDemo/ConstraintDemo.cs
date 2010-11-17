@@ -132,7 +132,7 @@ namespace ConstraintDemo
                 else
                     Device.Material = passiveMaterial;
 
-                mesh.Render(body.CollisionShape, Matrix.Identity);
+                mesh.RenderCollisionShape(body.CollisionShape, Matrix.Identity);
             }
 
             physics.DebugDrawWorld();
