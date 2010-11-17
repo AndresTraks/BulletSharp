@@ -161,7 +161,7 @@ namespace SoftDemo
                     else
                         Device.Material = passiveMaterial;
 
-                    mesh.Render(colObj.CollisionShape, Matrix.Identity);
+                    mesh.Render(colObj.CollisionShape);
                 }
             }
 

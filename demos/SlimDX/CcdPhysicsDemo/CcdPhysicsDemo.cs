@@ -134,7 +134,7 @@ namespace CcdPhysicsDemo
                 else
                     Device.Material = passiveMaterial;
 
-                mesh.RenderCollisionShape(body.CollisionShape, Matrix.Identity);
+                mesh.Render(body.CollisionShape);
             }
 
             physics.DebugDrawWorld();

@@ -129,7 +129,7 @@ namespace DistanceDemo
                 else
                     Device.Material = passiveMaterial;
 
-                mesh.RenderCollisionShape(body.CollisionShape, Matrix.Identity);
+                mesh.Render(body.CollisionShape);
 
                 if (physics.HasDistanceResult)
                 {

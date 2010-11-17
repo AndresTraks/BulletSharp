@@ -154,7 +154,7 @@ namespace OpenCLClothDemo
                 else
                     Device.Material = passiveMaterial;
 
-                mesh.Render(body.CollisionShape, Matrix.Identity);
+                mesh.Render(body.CollisionShape);
             }
 
             physics.DebugDrawWorld();
