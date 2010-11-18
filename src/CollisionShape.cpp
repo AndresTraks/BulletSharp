@@ -57,11 +57,10 @@ CollisionShape::!CollisionShape()
 
 bool CollisionShape::Equals(Object^ obj)
 {
-	if (obj == nullptr || GetType() != obj->GetType() )
-		return false;
-	
 	CollisionShape^ p = dynamic_cast<CollisionShape^>(obj);
-	return (UnmanagedPointer == p->UnmanagedPointer);
+	if (p == nullptr)
+		return false;
+	return (_collisionShape == p->UnmanagedPointer);
 }
 
 int CollisionShape::GetHashCode()

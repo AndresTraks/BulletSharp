@@ -116,19 +116,18 @@ namespace SoftDemo
                 else
                     physics.SetDebugDrawMode(Device, 0);
             }
-
-            if (Input.KeysPressed.Contains(Keys.B))
+            else if (Input.KeysPressed.Contains(Keys.B))
             {
                 physics.PreviousDemo();
             }
-
-            if (Input.KeysPressed.Contains(Keys.N))
+            else if (Input.KeysPressed.Contains(Keys.N))
             {
                 physics.NextDemo();
             }
 
             InputUpdate(Freelook.Eye, Freelook.Target, physics);
             physics.Update(FrameDelta);
+            physics.HandleKeys(Input, FrameDelta);
         }
 
         protected override void OnRender()

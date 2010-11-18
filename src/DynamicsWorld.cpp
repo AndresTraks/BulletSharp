@@ -113,6 +113,77 @@ void DynamicsWorld::RemoveRigidBody(RigidBody^ rigidBody)
 	UnmanagedPointer->removeRigidBody(rigidBody->UnmanagedPointer);
 }
 
+void callback(btDynamicsWorld *world, btScalar timeStep)
+{
+	void* obj = world->getWorldUserInfo();
+	if (obj == nullptr)
+		return;
+	UserInfoWrapper^ userInfo = static_cast<UserInfoWrapper^>(VoidPtrToGCHandle(obj).Target);
+	if (userInfo == nullptr)
+		return;
+	userInfo->Callback(gcnew DynamicsWorld(world), timeStep);
+}
+
+void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo, bool isPreTick)
+{
+	UserInfoWrapper^ userInfo;
+
+	void* obj = UnmanagedPointer->getWorldUserInfo();
+	if (obj != nullptr)
+	{
+		userInfo = static_cast<UserInfoWrapper^>(VoidPtrToGCHandle(obj).Target);
+	}
+	else
+	{
+		userInfo = gcnew UserInfoWrapper(worldUserInfo);
+		GCHandle handle = GCHandle::Alloc(userInfo);
+		obj = GCHandleToVoidPtr(handle);
+	}
+	userInfo->Callback = cb;
+
+	UnmanagedPointer->setInternalTickCallback(callback, obj, isPreTick);
+}
+
+void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo)
+{
+	UserInfoWrapper^ userInfo;
+
+	void* obj = UnmanagedPointer->getWorldUserInfo();
+	if (obj != nullptr)
+	{
+		userInfo = static_cast<UserInfoWrapper^>(VoidPtrToGCHandle(obj).Target);
+	}
+	else
+	{
+		userInfo = gcnew UserInfoWrapper(worldUserInfo);
+		GCHandle handle = GCHandle::Alloc(userInfo);
+		obj = GCHandleToVoidPtr(handle);
+	}
+	userInfo->Callback = cb;
+
+	UnmanagedPointer->setInternalTickCallback(callback, obj);
+}
+
+void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb)
+{
+	UserInfoWrapper^ userInfo;
+
+	void* obj = UnmanagedPointer->getWorldUserInfo();
+	if (obj != nullptr)
+	{
+		userInfo = static_cast<UserInfoWrapper^>(VoidPtrToGCHandle(obj).Target);
+	}
+	else
+	{
+		userInfo = gcnew UserInfoWrapper();
+		GCHandle handle = GCHandle::Alloc(userInfo);
+		obj = GCHandleToVoidPtr(handle);
+	}
+	userInfo->Callback = cb;
+
+	UnmanagedPointer->setInternalTickCallback(callback);
+}
+
 int DynamicsWorld::StepSimulation(btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep)
 {
 	return UnmanagedPointer->stepSimulation(timeStep, maxSubSteps, fixedTimeStep);
@@ -178,17 +249,26 @@ Object^ DynamicsWorld::WorldUserInfo::get()
 	void* obj = UnmanagedPointer->getWorldUserInfo();
 	if (obj == nullptr)
 		return nullptr;
-	return static_cast<Object^>(VoidPtrToGCHandle(obj).Target);
+	return (static_cast<UserInfoWrapper^>(VoidPtrToGCHandle(obj).Target)->UserObject);
 }
 
 void DynamicsWorld::WorldUserInfo::set(Object^ value)
 {
+	UserInfoWrapper^ userInfo;
+
 	void* obj = UnmanagedPointer->getWorldUserInfo();
 	if (obj != nullptr)
-		VoidPtrToGCHandle(obj).Free();
+	{
+		userInfo = static_cast<UserInfoWrapper^>(VoidPtrToGCHandle(obj).Target);
+	}
+	else
+	{
+		userInfo = gcnew UserInfoWrapper(value);
+		GCHandle handle = GCHandle::Alloc(userInfo);
+		UnmanagedPointer->setWorldUserInfo(GCHandleToVoidPtr(handle));
+	}
 
-	GCHandle handle = GCHandle::Alloc(value);
-	UnmanagedPointer->setWorldUserInfo(GCHandleToVoidPtr(handle));
+	userInfo->UserObject = value;
 }
 
 DynamicsWorldType DynamicsWorld::WorldType::get()
@@ -199,4 +279,33 @@ DynamicsWorldType DynamicsWorld::WorldType::get()
 btDynamicsWorld* DynamicsWorld::UnmanagedPointer::get()
 {
 	return (btDynamicsWorld*)CollisionWorld::UnmanagedPointer;
+}
+
+
+UserInfoWrapper::UserInfoWrapper(Object^ userObject)
+{
+	_userObject = userObject;
+}
+
+UserInfoWrapper::UserInfoWrapper()
+{
+	_userObject = nullptr;
+}
+
+DynamicsWorld::InternalTickCallback^ UserInfoWrapper::Callback::get()
+{
+	return _callback;
+}
+void UserInfoWrapper::Callback::set(DynamicsWorld::InternalTickCallback^ value)
+{
+	_callback = value;
+}
+
+Object^ UserInfoWrapper::UserObject::get()
+{
+	return _userObject;
+}
+void UserInfoWrapper::UserObject::set(Object^ value)
+{
+	_userObject = value;
 }

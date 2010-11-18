@@ -1,6 +1,9 @@
 #pragma once
 
 #include "CollisionObject.h"
+#include <msclr/auto_gcroot.h>
+
+using namespace msclr;
 
 namespace BulletSharp
 {
@@ -19,6 +22,7 @@ namespace BulletSharp
 
 	namespace SoftBody
 	{
+		class AJointIControlWrapper;
 		ref class AlignedAnchorArray;
 		ref class AlignedClusterArray;
 		ref class AlignedFaceArray;
@@ -938,6 +942,32 @@ namespace BulletSharp
 		public ref class AJoint : Joint
 		{
 		public:
+			ref class IControl
+			{
+			private:
+				AJointIControlWrapper* _iControl;
+
+			internal:
+				IControl(AJointIControlWrapper* iControl);
+
+			public:
+				IControl();
+
+				virtual void Prepare(AJoint^ joint);
+				virtual btScalar Speed(AJoint^ joint, btScalar current);
+				//static property IControl^ Default
+				//{
+				//	IControl^ get();
+				//}
+
+			internal:
+				property AJointIControlWrapper* UnmanagedPointer
+				{
+					AJointIControlWrapper* get();
+					void set(AJointIControlWrapper* value);
+				}
+			};
+
 			ref class Specs : Joint::Specs
 			{
 			public:
@@ -949,6 +979,12 @@ namespace BulletSharp
 					void set(Vector3 value);
 				}
 
+				property IControl^ IControl
+				{
+					AJoint::IControl^ get();
+					void set(AJoint::IControl^ value);
+				}
+
 			internal:
 				property btSoftBody::AJoint::Specs* UnmanagedPointer
 				{
@@ -958,6 +994,26 @@ namespace BulletSharp
 
 		internal:
 			AJoint(btSoftBody::AJoint* joint);
+
+			property btSoftBody::AJoint* UnmanagedPointer
+			{
+				btSoftBody::AJoint* get() new;
+			};
+		};
+
+		class AJointIControlWrapper : public btSoftBody::AJoint::IControl
+		{
+		private:
+			auto_gcroot<AJoint::IControl^> _iControl;
+
+		public:
+			AJointIControlWrapper(AJoint::IControl^ iControl);
+
+			virtual void Prepare(btSoftBody::AJoint* joint);
+			virtual btScalar Speed(btSoftBody::AJoint* joint, btScalar current);
+
+			virtual void basePrepare(btSoftBody::AJoint* joint);
+			virtual btScalar baseSpeed(btSoftBody::AJoint* joint, btScalar current);
 		};
 
 		public ref class CJoint : Joint

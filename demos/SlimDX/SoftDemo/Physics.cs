@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 using BulletSharp;
 using BulletSharp.SoftBody;
 using DemoFramework;
@@ -21,6 +22,10 @@ namespace SoftDemo
 
         bool cutting;
         const int maxProxies = 32766;
+
+        static MotorControl motorControl = new MotorControl();
+        static SteerControl steerControlF = new SteerControl(1);
+        static SteerControl steerControlR = new SteerControl(-1);
 
         SoftRigidDynamicsWorld SoftWorld
         {
@@ -764,6 +769,56 @@ namespace SoftDemo
             psb.AppendAngularJoint(aj, new Body(prb));
         }
 
+        class MotorControl : AJoint.IControl
+        {
+            float goal = 0;
+            float maxTorque = 0;
+
+            public float Goal
+            {
+                get { return goal; }
+                set { goal = value; }
+            }
+
+            public float MaxTorque
+            {
+                get { return maxTorque; }
+                set { maxTorque = value; }
+            }
+
+            public override float Speed(AJoint joint, float current)
+            {
+                return current + Math.Min(maxTorque, Math.Max(-maxTorque, goal - current));
+            }
+        }
+
+        class SteerControl : AJoint.IControl
+        {
+            float angle = 0;
+            float sign;
+
+            public float Angle
+            {
+                get { return angle; }
+                set { angle = value; }
+            }
+
+            public SteerControl(float sign)
+            {
+                this.sign = sign;
+            }
+
+            public override void Prepare(AJoint joint)
+            {
+                joint.Refs[0] = new Vector3((float)Math.Cos(angle * sign), 0, (float)Math.Sin(angle * sign));
+            }
+
+            public override float Speed(AJoint joint, float current)
+            {
+                return motorControl.Speed(joint, current);
+            }
+        }
+
         void Init_ClusterCombine()
         {
             Vector3 sz = new Vector3(2, 4, 2);
@@ -780,7 +835,7 @@ namespace SoftDemo
             }
             AJoint.Specs aj = new AJoint.Specs();
             aj.Axis = new Vector3(0, 0, 1);
-            //aj.icontrol	= &motorcontrol;
+            aj.IControl = motorControl;
             psb0.AppendAngularJoint(aj, psb1);
 
             LJoint.Specs lj = new LJoint.Specs();
@@ -829,11 +884,11 @@ namespace SoftDemo
             aspecs.Erp = 1;
             aspecs.Axis = new Vector3(1, 0, 0);
 
-            //aspecs.icontrol = &steercontrol_f;
+            aspecs.IControl = steerControlF;
             pa.AppendAngularJoint(aspecs, pfl);
             pa.AppendAngularJoint(aspecs, pfr);
 
-            //aspecs.icontrol = &motorcontrol;
+            aspecs.IControl = motorControl;
             pa.AppendAngularJoint(aspecs, prl);
             pa.AppendAngularJoint(aspecs, prr);
 
@@ -972,6 +1027,36 @@ namespace SoftDemo
             softBodyWorldInfo.SparseSdf.GarbageCollect();
 
             return subSteps;
+        }
+
+        public void HandleKeys(Input input, float elapsedTime)
+        {
+            if (input.KeysDown.Count == 0)
+                return;
+
+            if (demos[demo] == Init_ClusterCombine || demos[demo] == Init_ClusterCar)
+            {
+                if (input.KeysDown.Contains(Keys.Up))
+                {
+                    motorControl.MaxTorque = 1;
+                    motorControl.Goal += elapsedTime * 2;
+                }
+                else if (input.KeysDown.Contains(Keys.Down))
+                {
+                    motorControl.MaxTorque = 1;
+                    motorControl.Goal -= elapsedTime * 2;
+                }
+                else if (input.KeysDown.Contains(Keys.Left))
+                {
+                    steerControlF.Angle += elapsedTime;
+                    steerControlR.Angle += elapsedTime;
+                }
+                else if (input.KeysDown.Contains(Keys.Right))
+                {
+                    steerControlF.Angle -= elapsedTime;
+                    steerControlR.Angle -= elapsedTime;
+                }
+            }
         }
     }
 }

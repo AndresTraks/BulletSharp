@@ -4,6 +4,9 @@
 #include "Enums.h"
 #include "IDisposable.h"
 
+#include <msclr/auto_gcroot.h>
+using namespace msclr;
+
 namespace BulletSharp
 {
 	ref class ActionInterface;
@@ -11,10 +14,13 @@ namespace BulletSharp
 	ref class ContactSolverInfo;
 	ref class RigidBody;
 	ref class TypedConstraint;
+	ref class UserInfoWrapper;
 
 	public ref class DynamicsWorld : CollisionWorld
 	{
 	public:
+		delegate void InternalTickCallback(DynamicsWorld^ world, btScalar timeStep);
+
 		ref class RayResultCallback abstract : BulletSharp::IDisposable
 		{
 		public:
@@ -68,11 +74,9 @@ namespace BulletSharp
 		void ClearForces();
 		void RemoveAction(ActionInterface^ actionInterface);
 		void RemoveRigidBody(RigidBody^ rigidBody);
-#ifndef DISABLE_INTERNAL
-		//void SetInternalTickCallback(InternalTickCallback cb, Object^ worldUserInfo, bool isPreTick);
-		//void SetInternalTickCallback(InternalTickCallback cb, Object^ worldUserInfo);
-		//void SetInternalTickCallback(InternalTickCallback cb);
-#endif
+		void SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo, bool isPreTick);
+		void SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo);
+		void SetInternalTickCallback(InternalTickCallback^ cb);
 		int StepSimulation(btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep);
 		int StepSimulation(btScalar timeStep, int maxSubSteps);
 		int StepSimulation(btScalar timeStep);
@@ -117,6 +121,30 @@ namespace BulletSharp
 		property btDynamicsWorld* UnmanagedPointer
 		{
 			btDynamicsWorld* get() new;
+		}
+	};
+
+	// Use the user info value to also store our own stuff.
+	ref class UserInfoWrapper
+	{
+	private:
+		Object^ _userObject;
+		DynamicsWorld::InternalTickCallback^ _callback;
+
+	public:
+		UserInfoWrapper(Object^ userObject);
+		UserInfoWrapper();
+
+		property DynamicsWorld::InternalTickCallback^ Callback
+		{
+			DynamicsWorld::InternalTickCallback^ get();
+			void set(DynamicsWorld::InternalTickCallback^ value);
+		}
+
+		property Object^ UserObject
+		{
+			Object^ get();
+			void set(Object^ value);
 		}
 	};
 };

@@ -1255,9 +1255,31 @@ btSoftBody::LJoint::Specs* BulletSharp::SoftBody::LJoint::Specs::UnmanagedPointe
 }
 
 
+BulletSharp::SoftBody::AJoint::IControl::IControl()
+{
+	_iControl = new AJointIControlWrapper(this);
+}
+
+BulletSharp::SoftBody::AJoint::IControl::IControl(AJointIControlWrapper* iControl)
+{
+	_iControl = iControl;
+}
+
+AJointIControlWrapper* BulletSharp::SoftBody::AJoint::IControl::UnmanagedPointer::get()
+{
+	return _iControl;
+}
+void BulletSharp::SoftBody::AJoint::IControl::UnmanagedPointer::set(AJointIControlWrapper* value)
+{
+	_iControl = value;
+}
+
+
 BulletSharp::SoftBody::AJoint::Specs::Specs()
 {
 	UnmanagedPointer = new btSoftBody::AJoint::Specs();
+	AJoint::IControl^ iControl = gcnew AJoint::IControl();
+	UnmanagedPointer->icontrol = iControl->UnmanagedPointer;
 }
 
 Vector3 BulletSharp::SoftBody::AJoint::Specs::Axis::get()
@@ -1269,15 +1291,66 @@ void BulletSharp::SoftBody::AJoint::Specs::Axis::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &UnmanagedPointer->axis);
 }
 
+AJoint::IControl^ BulletSharp::SoftBody::AJoint::Specs::IControl::get()
+{
+	return gcnew AJoint::IControl((AJointIControlWrapper*)UnmanagedPointer->icontrol);
+}
+void BulletSharp::SoftBody::AJoint::Specs::IControl::set(AJoint::IControl^ value)
+{
+	UnmanagedPointer->icontrol = value->UnmanagedPointer;
+}
+
 btSoftBody::AJoint::Specs* BulletSharp::SoftBody::AJoint::Specs::UnmanagedPointer::get()
 {
 	return (btSoftBody::AJoint::Specs*)Joint::Specs::UnmanagedPointer;
 }
 
 
+void BulletSharp::SoftBody::AJoint::IControl::Prepare(AJoint^ joint)
+{
+	_iControl->basePrepare(joint->UnmanagedPointer);
+}
+
+btScalar BulletSharp::SoftBody::AJoint::IControl::Speed(AJoint^ joint, btScalar current)
+{
+	return _iControl->baseSpeed(joint->UnmanagedPointer, current);
+}
+
+
+AJointIControlWrapper::AJointIControlWrapper(AJoint::IControl^ iControl)
+{
+	_iControl = iControl;
+}
+
+void AJointIControlWrapper::Prepare(btSoftBody::AJoint* joint)
+{
+	_iControl->Prepare(gcnew AJoint(joint));
+}
+
+btScalar AJointIControlWrapper::Speed(btSoftBody::AJoint* joint, btScalar current)
+{
+	return _iControl->Speed(gcnew AJoint(joint), current);
+}
+
+void AJointIControlWrapper::basePrepare(btSoftBody::AJoint* joint)
+{
+	IControl::Prepare(joint);
+}
+
+btScalar AJointIControlWrapper::baseSpeed(btSoftBody::AJoint* joint, btScalar current)
+{
+	return IControl::Speed(joint, current);
+}
+
+
 AJoint::AJoint(btSoftBody::AJoint* joint)
 : Joint(joint)
 {
+}
+
+btSoftBody::AJoint* BulletSharp::SoftBody::AJoint::UnmanagedPointer::get()
+{
+	return (btSoftBody::AJoint*)Joint::UnmanagedPointer;
 }
 
 
