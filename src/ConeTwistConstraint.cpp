@@ -76,7 +76,7 @@ void ConeTwistConstraint_GetPointForAngle(btConeTwistConstraint* constraint,
 #pragma managed(pop)
 Vector3 ConeTwistConstraint::GetPointForAngle(btScalar fAngleInRadians, btScalar fLength)
 {
-	btVector3* pointTemp = new btVector3();
+	btVector3* pointTemp = new btVector3;
 	ConeTwistConstraint_GetPointForAngle(UnmanagedPointer, fAngleInRadians, fLength, pointTemp);
 	Vector3 point = Math::BtVector3ToVector3(pointTemp);
 	delete pointTemp;
@@ -158,6 +158,16 @@ btScalar ConeTwistConstraint::FixThresh::get()
 void ConeTwistConstraint::FixThresh::set(btScalar value)
 {
 	UnmanagedPointer->setFixThresh(value);
+}
+
+Matrix ConeTwistConstraint::FrameOffsetA::get()
+{
+	return Math::BtTransformToMatrix(&UnmanagedPointer->getFrameOffsetA());
+}
+
+Matrix ConeTwistConstraint::FrameOffsetB::get()
+{
+	return Math::BtTransformToMatrix(&UnmanagedPointer->getFrameOffsetB());
 }
 
 bool ConeTwistConstraint::IsPastSwingLimit::get()

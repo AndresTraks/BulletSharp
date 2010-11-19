@@ -226,6 +226,16 @@ void HingeConstraint::EnableMotor::set(bool value)
 	UnmanagedPointer->enableMotor(value);
 }
 
+Matrix HingeConstraint::FrameOffsetA::get()
+{
+	return Math::BtTransformToMatrix(&UnmanagedPointer->getFrameOffsetA());
+}
+
+Matrix HingeConstraint::FrameOffsetB::get()
+{
+	return Math::BtTransformToMatrix(&UnmanagedPointer->getFrameOffsetB());
+}
+
 btScalar HingeConstraint::LimitSign::get()
 {
 	return UnmanagedPointer->getLimitSign();

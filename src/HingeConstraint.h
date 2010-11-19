@@ -1,6 +1,6 @@
 #pragma once
 
-// Fully implemented as of 12 May 2010
+// Fully implemented as of 19 nov 2010
 
 #include "TypedConstraint.h"
 
@@ -58,6 +58,16 @@ namespace BulletSharp
 		{
 			bool get();
 			void set(bool value);
+		}
+
+		property Matrix FrameOffsetA
+		{
+			Matrix get();
+		}
+
+		property Matrix FrameOffsetB
+		{
+			Matrix get();
 		}
 
 		property btScalar LimitSign

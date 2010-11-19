@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 18 nov 2010
+
 #include "CollisionWorld.h"
 #include "Enums.h"
 #include "IDisposable.h"

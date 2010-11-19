@@ -446,7 +446,7 @@ GImpactMeshShapePart::GImpactMeshShapePart(StridingMeshInterface^ meshInterface,
 
 void GImpactMeshShapePart::GetVertex(int vertex_index, Vector3% vertex)
 {
-	btVector3* vertexTemp = new btVector3();
+	btVector3* vertexTemp = new btVector3;
 	UnmanagedPointer->getVertex(vertex_index, *vertexTemp);
 	vertex = Math::BtVector3ToVector3(vertexTemp);
 	delete vertexTemp;

@@ -273,7 +273,7 @@ void Body_GetAngularVelocity(btSoftBody::Body* body, btVector3* rpos, btVector3*
 Vector3 Body::GetAngularVelocity(Vector3 rPos)
 {
 	btVector3* rposTemp = Math::Vector3ToBtVector3(rPos);
-	btVector3* velocityTemp = new btVector3();
+	btVector3* velocityTemp = new btVector3;
 	Body_GetAngularVelocity(_body, rposTemp, velocityTemp);
 	delete rposTemp;
 	return Math::BtVector3ToVector3(velocityTemp);
@@ -286,7 +286,7 @@ void Body_GetVelocity(btSoftBody::Body* body, btVector3* rpos, btVector3* veloci
 Vector3 Body::Velocity(Vector3 rPos)
 {
 	btVector3* rposTemp = Math::Vector3ToBtVector3(rPos);
-	btVector3* velocityTemp = new btVector3();
+	btVector3* velocityTemp = new btVector3;
 	Body_GetVelocity(_body, rposTemp, velocityTemp);
 	delete rposTemp;
 	return Math::BtVector3ToVector3(velocityTemp);
@@ -298,7 +298,7 @@ void Body_GetAngularVelocity(btSoftBody::Body* body, btVector3* velocity)
 }
 Vector3 Body::AngularVelocity::get()
 {
-	btVector3* velocityTemp = new btVector3();
+	btVector3* velocityTemp = new btVector3;
 	Body_GetAngularVelocity(_body, velocityTemp);
 	return Math::BtVector3ToVector3(velocityTemp);
 }
@@ -330,7 +330,7 @@ void Body_GetLinearVelocity(btSoftBody::Body* body, btVector3* velocity)
 }
 Vector3 Body::LinearVelocity::get()
 {
-	btVector3* velocityTemp = new btVector3();
+	btVector3* velocityTemp = new btVector3;
 	Body_GetLinearVelocity(_body, velocityTemp);
 	return Math::BtVector3ToVector3(velocityTemp);
 }
@@ -2460,7 +2460,7 @@ void SoftBody_ClusterCOM(btSoftBody::Cluster* cluster, btVector3* com)
 }
 Vector3 BulletSharp::SoftBody::SoftBody::ClusterCom(Cluster^ cluster)
 {
-	btVector3* tempClusterCom = new btVector3();
+	btVector3* tempClusterCom = new btVector3;
 	SoftBody_ClusterCOM(cluster->UnmanagedPointer, tempClusterCom);
 	Vector3 com = Math::BtVector3ToVector3(tempClusterCom);
 	delete tempClusterCom;
@@ -2473,7 +2473,7 @@ void SoftBody_ClusterCOM(btSoftBody* softBody, int cluster, btVector3* com)
 }
 Vector3 BulletSharp::SoftBody::SoftBody::ClusterCom(int cluster)
 {
-	btVector3* tempClusterCom = new btVector3();
+	btVector3* tempClusterCom = new btVector3;
 	SoftBody_ClusterCOM(UnmanagedPointer, cluster, tempClusterCom);
 	Vector3 com = Math::BtVector3ToVector3(tempClusterCom);
 	delete tempClusterCom;
@@ -2486,7 +2486,7 @@ void SoftBody_ClusterVelocity(btSoftBody::Cluster* cluster, btVector3* rpos, btV
 }
 Vector3 BulletSharp::SoftBody::SoftBody::ClusterVelocity(Cluster^ cluster, Vector3 rpos)
 {
-	btVector3* tempVelocity = new btVector3();
+	btVector3* tempVelocity = new btVector3;
 	btVector3* tempRpos = Math::Vector3ToBtVector3(rpos);
 	SoftBody_ClusterVelocity(cluster->UnmanagedPointer, tempRpos, tempVelocity);
 	Vector3 velocity = Math::BtVector3ToVector3(tempVelocity);

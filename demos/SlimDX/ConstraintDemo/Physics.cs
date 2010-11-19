@@ -118,16 +118,16 @@ namespace ConstraintDemo
             //bool useLinearReferenceFrameA = false;//use fixed frame B for linear llimits
             bool useLinearReferenceFrameA = true;//use fixed frame A for linear llimits
             spSlider6Dof = new Generic6DofConstraint(fixedBody1, d6body0, frameInA, frameInB, useLinearReferenceFrameA);
-            spSlider6Dof.SetLinearLowerLimit(lowerSliderLimit);
-            spSlider6Dof.SetLinearUpperLimit(hiSliderLimit);
+            spSlider6Dof.LinearLowerLimit = lowerSliderLimit;
+            spSlider6Dof.LinearUpperLimit = hiSliderLimit;
 
             //range should be small, otherwise singularities will 'explode' the constraint
-            //spSlider6Dof.SetAngularLowerLimit(new Vector3(-1.5f,0,0));
-            //spSlider6Dof.SetAngularUpperLimit(new Vector3(1.5f,0,0));
-            //spSlider6Dof.SetAngularLowerLimit(new Vector3(0,0,0));
-            //spSlider6Dof.SetAngularUpperLimit(new Vector3(0,0,0));
-            spSlider6Dof.SetAngularLowerLimit(new Vector3((float)-Math.PI, 0, 0));
-            spSlider6Dof.SetAngularUpperLimit(new Vector3(1.5f, 0, 0));
+            //spSlider6Dof.AngularLowerLimit = new Vector3(-1.5f,0,0);
+            //spSlider6Dof.AngularUpperLimit = new Vector3(1.5f,0,0);
+            //spSlider6Dof.AngularLowerLimit = new Vector3(0,0,0);
+            //spSlider6Dof.AngularUpperLimit = new Vector3(0,0,0);
+            spSlider6Dof.AngularLowerLimit = new Vector3((float)-Math.PI, 0, 0);
+            spSlider6Dof.AngularUpperLimit = new Vector3(1.5f, 0, 0);
 
             spSlider6Dof.TranslationalLimitMotor.EnableMotor[0] = true;
             spSlider6Dof.TranslationalLimitMotor.TargetVelocity = new Vector3(-5.0f, 0, 0);
@@ -182,37 +182,37 @@ namespace ConstraintDemo
 
             Generic6DofConstraint pGen6DOF = new Generic6DofConstraint(pBodyA, pBodyB, frameInA, frameInB, true);
             //Generic6DofConstraint pGen6DOF = new Generic6DofConstraint(pBodyA, pBodyB, frameInA, frameInB, false);
-            pGen6DOF.SetLinearLowerLimit(new Vector3(-10, -2, -1));
-            pGen6DOF.SetLinearUpperLimit(new Vector3(10, 2, 1));
-            //pGen6DOF.SetLinearLowerLimit(new Vector3(-10, 0, 0));
-            //pGen6DOF.SetLinearUpperLimit(new Vector3(10, 0, 0));
-            //pGen6DOF.SetLinearLowerLimit(new Vector3(0, 0, 0));
-            //pGen6DOF.SetLinearUpperLimit(new Vector3(0, 0, 0));
+            pGen6DOF.LinearLowerLimit = new Vector3(-10, -2, -1);
+            pGen6DOF.LinearUpperLimit = new Vector3(10, 2, 1);
+            //pGen6DOF.LinearLowerLimit = new Vector3(-10, 0, 0);
+            //pGen6DOF.LinearUpperLimit = new Vector3(10, 0, 0);
+            //pGen6DOF.LinearLowerLimit = new Vector3(0, 0, 0);
+            //pGen6DOF.LinearUpperLimit = new Vector3(0, 0, 0);
 
-            //pGen6DOF.TranslationalLimitMotor.set_EnableMotor(0, true);
+            //pGen6DOF.TranslationalLimitMotor.EnableMotor[0] = true;
             //pGen6DOF.TranslationalLimitMotor.TargetVelocity = new Vector3(5, 0, 0);
             //pGen6DOF.TranslationalLimitMotor.MaxMotorForce = new Vector3(0.1f, 0, 0);
 
-            //pGen6DOF.SetAngularLowerLimit(new Vector3(0, (float)Math.PI * 0.9f, 0));
-            //pGen6DOF.SetAngularUpperLimit(new Vector3(0, -(float)Math.PI * 0.9f, 0));
-            //pGen6DOF.SetAngularLowerLimit(new Vector3(0, 0, -(float)Math.PI));
-            //pGen6DOF.SetAngularUpperLimit(new Vector3(0, 0, (float)Math.PI));
+            //pGen6DOF.AngularLowerLimit = new Vector3(0, (float)Math.PI * 0.9f, 0);
+            //pGen6DOF.AngularUpperLimit = new Vector3(0, -(float)Math.PI * 0.9f, 0);
+            //pGen6DOF.AngularLowerLimit = new Vector3(0, 0, -(float)Math.PI);
+            //pGen6DOF.AngularUpperLimit = new Vector3(0, 0, (float)Math.PI);
 
-            pGen6DOF.SetAngularLowerLimit(new Vector3(-(float)Math.PI / 4, -0.75f, -(float)Math.PI * 0.4f));
-            pGen6DOF.SetAngularUpperLimit(new Vector3((float)Math.PI / 4, 0.75f, (float)Math.PI * 0.4f));
-            //pGen6DOF.SetAngularLowerLimit(new Vector3(0, -0.75f, (float)Math.PI * 0.8f));
-            //pGen6DOF.SetAngularUpperLimit(new Vector3(0, 0.75f, -(float)Math.PI * 0.8f));
-            //pGen6DOF.SetAngularLowerLimit(new Vector3(0, -(float)Math.PI * 0.8f, (float)Math.PI * 1.98f));
-            //pGen6DOF.SetAngularUpperLimit(new Vector3(0, (float)Math.PI * 0.8f, -(float)Math.PI * 1.98f));
+            pGen6DOF.AngularLowerLimit = new Vector3(-(float)Math.PI / 4, -0.75f, -(float)Math.PI * 0.4f);
+            pGen6DOF.AngularUpperLimit = new Vector3((float)Math.PI / 4, 0.75f, (float)Math.PI * 0.4f);
+            //pGen6DOF.AngularLowerLimit = new Vector3(0, -0.75f, (float)Math.PI * 0.8f);
+            //pGen6DOF.AngularUpperLimit = new Vector3(0, 0.75f, -(float)Math.PI * 0.8f);
+            //pGen6DOF.AngularLowerLimit = new Vector3(0, -(float)Math.PI * 0.8f, (float)Math.PI * 1.98f);
+            //pGen6DOF.AngularUpperLimit = new Vector3(0, (float)Math.PI * 0.8f, -(float)Math.PI * 1.98f);
 
-            //pGen6DOF.SetAngularLowerLimit(new Vector3(-0.75f, -0.5f, -0.5f));
-            //pGen6DOF.SetAngularUpperLimit(new Vector3(0.75f, 0.5f, 0.5f));
-            //pGen6DOF.SetAngularLowerLimit(new Vector3(-0.75f, 0, 0));
-            //pGen6DOF.SetAngularUpperLimit(new Vector3(0.75f, 0, 0));
-            //pGen6DOF.SetAngularLowerLimit(new Vector3(0, -0.7f, 0));
-            //pGen6DOF.SetAngularUpperLimit(new Vector3(0, 0.7f, 0));
-            //pGen6DOF.SetAngularLowerLimit(new Vector3(-1, 0, 0));
-            //pGen6DOF.SetAngularUpperLimit(new Vector3(1, 0, 0));
+            //pGen6DOF.AngularLowerLimit = new Vector3(-0.75f, -0.5f, -0.5f);
+            //pGen6DOF.AngularUpperLimit = new Vector3(0.75f, 0.5f, 0.5f);
+            //pGen6DOF.AngularLowerLimit = new Vector3(-0.75f, 0, 0);
+            //pGen6DOF.AngularUpperLimit = new Vector3(0.75f, 0, 0);
+            //pGen6DOF.AngularLowerLimit = new Vector3(0, -0.7f, 0);
+            //pGen6DOF.AngularUpperLimit = new Vector3(0, 0.7f, 0);
+            //pGen6DOF.AngularLowerLimit = new Vector3(-1, 0, 0);
+            //pGen6DOF.AngularUpperLimit = new Vector3(1, 0, 0);
 
 
 
@@ -292,11 +292,11 @@ namespace ConstraintDemo
             frameInB = Matrix.Identity;
 
             Generic6DofSpringConstraint pGen6DOFSpring = new Generic6DofSpringConstraint(pBodyA, pBodyB, frameInA, frameInB, true);
-            pGen6DOFSpring.SetLinearUpperLimit(new Vector3(5, 0, 0));
-            pGen6DOFSpring.SetLinearLowerLimit(new Vector3(-5, 0, 0));
+            pGen6DOFSpring.LinearUpperLimit = new Vector3(5, 0, 0);
+            pGen6DOFSpring.LinearLowerLimit = new Vector3(-5, 0, 0);
 
-            pGen6DOFSpring.SetAngularLowerLimit(new Vector3(0, 0, -1.5f));
-            pGen6DOFSpring.SetAngularUpperLimit(new Vector3(0, 0, 1.5f));
+            pGen6DOFSpring.AngularLowerLimit = new Vector3(0, 0, -1.5f);
+            pGen6DOFSpring.AngularUpperLimit = new Vector3(0, 0, 1.5f);
 
             World.AddConstraint(pGen6DOFSpring, true);
             pGen6DOFSpring.DebugDrawSize = 5;

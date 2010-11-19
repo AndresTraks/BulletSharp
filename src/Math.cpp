@@ -171,7 +171,7 @@ void BulletSharp::Math::MatrixToBtTransform(Matrix matrix, btTransform* t)
 	btVector3* vector;
 
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	basis = new btMatrix3x3();
+	basis = new btMatrix3x3;
 
 	btScalar m[12];
 

@@ -181,10 +181,10 @@ namespace DemoFramework
                                     if (use6Dof)
                                     {
                                         Generic6DofConstraint dof6 = new Generic6DofConstraint(body, Matrix.Translation(localPivot), false);
-                                        dof6.SetLinearLowerLimit(Vector3.Zero);
-                                        dof6.SetLinearUpperLimit(Vector3.Zero);
-                                        dof6.SetAngularLowerLimit(Vector3.Zero);
-                                        dof6.SetAngularUpperLimit(Vector3.Zero);
+                                        dof6.LinearLowerLimit = Vector3.Zero;
+                                        dof6.LinearUpperLimit = Vector3.Zero;
+                                        dof6.AngularLowerLimit = Vector3.Zero;
+                                        dof6.AngularUpperLimit = Vector3.Zero;
 
                                         physics.World.AddConstraint(dof6);
                                         pickConstraint = dof6;

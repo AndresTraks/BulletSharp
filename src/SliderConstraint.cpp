@@ -64,7 +64,7 @@ void SliderConstraint_GetAnchorInA(btSliderConstraint* constraint, btVector3* an
 #pragma managed(pop)
 Vector3 SliderConstraint::AnchorInA::get()
 {
-	btVector3* anchorInATemp = new btVector3();
+	btVector3* anchorInATemp = new btVector3;
 	SliderConstraint_GetAnchorInA(UnmanagedPointer, anchorInATemp);
 	Vector3 anchor = Math::BtVector3ToVector3(anchorInATemp);
 	delete anchorInATemp;
@@ -81,7 +81,7 @@ void SliderConstraint_GetAnchorInB(btSliderConstraint* constraint, btVector3* an
 #pragma managed(pop)
 Vector3 SliderConstraint::AnchorInB::get()
 {
-	btVector3* anchorInBTemp = new btVector3();
+	btVector3* anchorInBTemp = new btVector3;
 	SliderConstraint_GetAnchorInB(UnmanagedPointer, anchorInBTemp);
 	Vector3 anchor = Math::BtVector3ToVector3(anchorInBTemp);
 	delete anchorInBTemp;

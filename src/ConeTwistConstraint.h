@@ -1,6 +1,6 @@
 #pragma once
 
-// Fully implemented as of 11 May 2010
+// Fully implemented as of 19 nov 2010
 
 #include "TypedConstraint.h"
 
@@ -50,6 +50,16 @@ namespace BulletSharp
 		{
 			btScalar get();
 			void set(btScalar value);
+		}
+
+		property Matrix FrameOffsetA
+		{
+			Matrix get();
+		}
+
+		property Matrix FrameOffsetB
+		{
+			Matrix get();
 		}
 
 		property bool IsPastSwingLimit

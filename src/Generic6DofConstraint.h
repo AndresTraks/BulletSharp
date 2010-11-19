@@ -1,6 +1,6 @@
 #pragma once
 
-// Fully implemented as of 12 May 2010
+// Fully implemented as of 19 nov 2010
 
 #include "TypedConstraint.h"
 
@@ -272,13 +272,22 @@ namespace BulletSharp
 		btScalar GetRelativePivotPosition(int axis_index);
 		RotationalLimitMotor^ GetRotationalLimitMotor(int index);
 		bool IsLimited(int limitIndex);
-		void SetAngularLowerLimit(Vector3 value);
-		void SetAngularUpperLimit(Vector3 value);
+		void SetFrames(Matrix frameA, Matrix frameB);
 		void SetLimit(int axis, btScalar lo, btScalar hi);
-		void SetLinearLowerLimit(Vector3 linearLower);
-		void SetLinearUpperLimit(Vector3 linearUpper);
 		bool TestAngularLimitMotor(int axis_index);
 		void UpdateRHS(btScalar timeStep);
+
+		property Vector3 AngularLowerLimit
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property Vector3 AngularUpperLimit
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
 
 		property Matrix CalculatedTransformA
 		{
@@ -300,6 +309,18 @@ namespace BulletSharp
 		{
 			Matrix get();
 			void set(Matrix value);
+		}
+
+		property Vector3 LinearLowerLimit
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property Vector3 LinearUpperLimit
+		{
+			Vector3 get();
+			void set(Vector3 value);
 		}
 
 		property TranslationalLimitMotor^ TranslationalLimitMotor

@@ -33,7 +33,7 @@ TriangleShape::TriangleShape(Vector3 point0, Vector3 point1, Vector3 point2)
 
 void TriangleShape::CalcNormal([Out] Vector3% normal)
 {
-	btVector3* normalTemp = new btVector3();
+	btVector3* normalTemp = new btVector3;
 	UnmanagedPointer->calcNormal(*normalTemp);
 	normal = Math::BtVector3ToVector3(normalTemp);
 	delete normalTemp;
@@ -41,8 +41,8 @@ void TriangleShape::CalcNormal([Out] Vector3% normal)
 
 void TriangleShape::GetPlaneEquation(int index, [Out] Vector3% planeNormal, [Out] Vector3% planeSupport)
 {
-	btVector3* planeNormalTemp = new btVector3();
-	btVector3* planeSupportTemp = new btVector3();
+	btVector3* planeNormalTemp = new btVector3;
+	btVector3* planeSupportTemp = new btVector3;
 
 	UnmanagedPointer->getPlaneEquation(index, *planeNormalTemp, *planeSupportTemp);
 	
@@ -60,7 +60,7 @@ void TriangleShape_GetVertexPtr(btTriangleShape* shape, int index, btVector3* ve
 #pragma managed(pop)
 Vector3 TriangleShape::GetVertexPtr(int index)
 {
-	btVector3* vertexTemp = new btVector3();
+	btVector3* vertexTemp = new btVector3;
 	TriangleShape_GetVertexPtr(UnmanagedPointer, index, vertexTemp);
 	Vector3 vertex = Math::BtVector3ToVector3(vertexTemp);
 	delete vertexTemp;
