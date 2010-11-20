@@ -457,7 +457,7 @@ namespace SoftDemo
 
             psb.CollisionShape.Margin = 0.01f;
             psb.Cfg.Collisions = FCollisions.CLSS | FCollisions.CLRS;
-            // | SoftBody.FCollisions.CLSelf;
+            // | FCollisions.CLSelf;
             psb.Materials[0].Lst = 0.8f;
             cutting = true;
         }
@@ -925,36 +925,36 @@ namespace SoftDemo
 
         SoftBody Init_ClusterRobot_CreateBall(Vector3 pos)
         {
-            SoftBody psb = SoftBodyHelpers.CreateEllipsoid(softBodyWorldInfo, pos, new Vector3(1,1,1)*3,512);
-	        psb.Materials[0].Lst = 0.45f;
-	        psb.Cfg.VC = 20;
-	        psb.SetTotalMass(50,true);
-	        psb.SetPose(true,false);
-	        psb.GenerateClusters(1);
-	        SoftWorld.AddSoftBody(psb);
-	        return(psb);
+            SoftBody psb = SoftBodyHelpers.CreateEllipsoid(softBodyWorldInfo, pos, new Vector3(1, 1, 1) * 3, 512);
+            psb.Materials[0].Lst = 0.45f;
+            psb.Cfg.VC = 20;
+            psb.SetTotalMass(50, true);
+            psb.SetPose(true, false);
+            psb.GenerateClusters(1);
+            SoftWorld.AddSoftBody(psb);
+            return (psb);
         }
 
         void Init_ClusterRobot()
         {
-	        Vector3 basePos = new Vector3(0,25,8);
-	        SoftBody psb0 = Init_ClusterRobot_CreateBall(basePos+new Vector3(-8,0,0));
-	        SoftBody psb1 = Init_ClusterRobot_CreateBall(basePos+new Vector3(+8,0,0));
-	        SoftBody psb2 = Init_ClusterRobot_CreateBall(basePos+new Vector3(0,0,+8* (float)Math.Sqrt(2)));
-	        Vector3 ctr = (psb0.ClusterCom(0) + psb1.ClusterCom(0) + psb2.ClusterCom(0)) / 3;
-	        CylinderShape pshp = new CylinderShape(new Vector3(8,1,8));
-	        RigidBody prb = LocalCreateRigidBody(50, Matrix.Translation(ctr + new Vector3(0,5,0)), pshp);
-	        LJoint.Specs ls = new LJoint.Specs();
-	        ls.Erp=0.5f;
+            Vector3 basePos = new Vector3(0, 25, 8);
+            SoftBody psb0 = Init_ClusterRobot_CreateBall(basePos + new Vector3(-8, 0, 0));
+            SoftBody psb1 = Init_ClusterRobot_CreateBall(basePos + new Vector3(+8, 0, 0));
+            SoftBody psb2 = Init_ClusterRobot_CreateBall(basePos + new Vector3(0, 0, +8 * (float)Math.Sqrt(2)));
+            Vector3 ctr = (psb0.ClusterCom(0) + psb1.ClusterCom(0) + psb2.ClusterCom(0)) / 3;
+            CylinderShape pshp = new CylinderShape(new Vector3(8, 1, 8));
+            RigidBody prb = LocalCreateRigidBody(50, Matrix.Translation(ctr + new Vector3(0, 5, 0)), pshp);
+            LJoint.Specs ls = new LJoint.Specs();
+            ls.Erp = 0.5f;
             Body prbBody = new Body(prb);
-	        ls.Position = psb0.ClusterCom(0); psb0.AppendLinearJoint(ls,prbBody);
-	        ls.Position = psb1.ClusterCom(0); psb1.AppendLinearJoint(ls,prbBody);
-	        ls.Position = psb2.ClusterCom(0); psb2.AppendLinearJoint(ls,prbBody);
+            ls.Position = psb0.ClusterCom(0); psb0.AppendLinearJoint(ls, prbBody);
+            ls.Position = psb1.ClusterCom(0); psb1.AppendLinearJoint(ls, prbBody);
+            ls.Position = psb2.ClusterCom(0); psb2.AppendLinearJoint(ls, prbBody);
 
-	        BoxShape pbox = new BoxShape(20,1,40);
-	        RigidBody pgrn = LocalCreateRigidBody(0, Matrix.RotationZ(-(float)Math.PI / 4),pbox);
+            BoxShape pbox = new BoxShape(20, 1, 40);
+            RigidBody pgrn = LocalCreateRigidBody(0, Matrix.RotationZ(-(float)Math.PI / 4), pbox);
 
-	        //autocam=true;
+            //autocam=true;
 
         }
 

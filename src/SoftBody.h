@@ -1,5 +1,7 @@
 #pragma once
 
+// Fully implemented as of 20 nov 2010
+
 #include "CollisionObject.h"
 #include <msclr/auto_gcroot.h>
 
@@ -23,6 +25,7 @@ namespace BulletSharp
 	namespace SoftBody
 	{
 		class AJointIControlWrapper;
+		class ImplicitFnWrapper;
 		ref class AlignedAnchorArray;
 		ref class AlignedClusterArray;
 		ref class AlignedFaceArray;
@@ -782,6 +785,35 @@ namespace BulletSharp
 				btSoftBody::Impulse* get();
 				void set(btSoftBody::Impulse* value);
 			};
+		};
+
+		public ref class ImplicitFn
+		{
+		private:
+			ImplicitFnWrapper* _implicitFn;
+
+		public:
+			ImplicitFn();
+
+			virtual btScalar Eval(Vector3 x) = 0;
+
+		internal:
+			property ImplicitFnWrapper* UnmanagedPointer
+			{
+				ImplicitFnWrapper* get();
+				void set(ImplicitFnWrapper* value);
+			};
+		};
+
+		class ImplicitFnWrapper : public btSoftBody::ImplicitFn
+		{
+		private:
+			auto_gcroot<BulletSharp::SoftBody::ImplicitFn^> _implicitFn;
+
+		public:
+			ImplicitFnWrapper(BulletSharp::SoftBody::ImplicitFn^ implicitFn);
+
+			virtual btScalar Eval(const btVector3& x);
 		};
 
 		public ref class Joint
@@ -1722,7 +1754,7 @@ namespace BulletSharp
 			void PredictMotion(btScalar dt);
 			void RandomizeConstraints();
 			bool RayTest(Vector3 rayFrom, Vector3 rayTo, SRayCast^ results);
-			//void Refine(ImplicitFn^ ifn, btScalar accurary, bool cut);
+			void Refine(ImplicitFn^ ifn, btScalar accurary, bool cut);
 			void ReleaseCluster(int index);
 			void ReleaseClusters();
 			void Rotate(Quaternion rotation);

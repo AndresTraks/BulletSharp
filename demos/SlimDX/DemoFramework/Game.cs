@@ -327,7 +327,7 @@ namespace DemoFramework
 
             Form.Closed += (o, args) => { isFormClosed = true; };
 
-            
+
             // initialize input
             SlimDX.RawInput.Device.RegisterDevice(UsagePage.Generic, UsageId.Keyboard, DeviceFlags.None);
             SlimDX.RawInput.Device.RegisterDevice(UsagePage.Generic, UsageId.Mouse, DeviceFlags.None);

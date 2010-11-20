@@ -990,6 +990,32 @@ btSoftBody::Face* Face::UnmanagedPointer::get()
 }
 
 
+ImplicitFn::ImplicitFn()
+{
+	_implicitFn = new ImplicitFnWrapper(this);
+}
+
+ImplicitFnWrapper* ImplicitFn::UnmanagedPointer::get()
+{
+	return _implicitFn;
+}
+void ImplicitFn::UnmanagedPointer::set(ImplicitFnWrapper* value)
+{
+	_implicitFn = value;
+}
+
+
+ImplicitFnWrapper::ImplicitFnWrapper(BulletSharp::SoftBody::ImplicitFn^ implicitFn)
+{
+	_implicitFn = implicitFn;
+}
+
+btScalar ImplicitFnWrapper::Eval(const btVector3& x)
+{
+	return _implicitFn->Eval(Math::BtVector3ToVector3(&x));
+}
+
+
 Impulse::Impulse(btSoftBody::Impulse* impulse)
 {
 	_impulse = impulse;
@@ -2734,6 +2760,11 @@ bool BulletSharp::SoftBody::SoftBody::RayTest(Vector3 rayFrom, Vector3 rayTo, SR
 	delete rayFromTemp;
 	delete rayToTemp;
 	return ret;
+}
+
+void BulletSharp::SoftBody::SoftBody::Refine(ImplicitFn^ ifn, btScalar accurary, bool cut)
+{
+	UnmanagedPointer->refine(ifn->UnmanagedPointer, accurary, cut);
 }
 
 void BulletSharp::SoftBody::SoftBody::ReleaseCluster(int index)

@@ -75,6 +75,22 @@ namespace SoftDemo
             Device.SetRenderState(RenderState.CullMode, Cull.None);
         }
 
+        class ImplicitSphere : ImplicitFn
+        {
+            Vector3 center;
+            float sqradius;
+
+            public ImplicitSphere(Vector3 c, float r)
+            {
+                center = c;
+                sqradius = r * r;
+            }
+            public override float Eval(Vector3 x)
+            {
+                return ((x - center).LengthSquared() - sqradius);
+            }
+        };
+
         void PickingPreTickCallback(DynamicsWorld world, float timeStep)
         {
             if (drag)
@@ -161,13 +177,13 @@ namespace SoftDemo
             }
             else if (Input.MousePressed == MouseButtonFlags.RightUp)
             {
-                if((!drag)&&Physics.cutting&&(results.Fraction<1))
-			    {
-				    //ImplicitSphere isphere = new ImplicitSphere(impact,1);
-				    //results.Body.Refine(isphere,0.0001,true);
-			    }
-			    results.Fraction=1;
-			    drag=false;
+                if ((!drag) && Physics.cutting && (results.Fraction < 1))
+                {
+                    ImplicitSphere isphere = new ImplicitSphere(impact, 1);
+                    results.Body.Refine(isphere, 0.0001f, true);
+                }
+                results.Fraction = 1;
+                drag = false;
             }
 
             // Mouse movement
