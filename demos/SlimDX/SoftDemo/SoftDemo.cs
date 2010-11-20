@@ -2,9 +2,11 @@
 using System.Drawing;
 using System.Windows.Forms;
 using BulletSharp;
+using BulletSharp.SoftBody;
 using DemoFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
+using SlimDX.RawInput;
 
 namespace SoftDemo
 {
@@ -14,7 +16,14 @@ namespace SoftDemo
         Vector3 target = new Vector3(0, 0, 10);
 
         Light light;
-        Material softBodyMaterial;
+        SlimDX.Direct3D9.Material softBodyMaterial;
+
+        Point lastMousePos;
+        Vector3 impact;
+        SRayCast results = new SRayCast();
+        Node node;
+        Vector3 goal;
+        bool drag;
 
         Physics Physics
         {
@@ -31,6 +40,7 @@ namespace SoftDemo
         protected override void OnInitialize()
         {
             Physics = new Physics();
+            Physics.World.SetInternalTickCallback(PickingPreTickCallback, this, true);
 
             light = new Light();
             light.Type = LightType.Point;
@@ -39,7 +49,7 @@ namespace SoftDemo
             light.Diffuse = Color.LemonChiffon;
             light.Attenuation0 = 1.0f;
 
-            softBodyMaterial = new Material();
+            softBodyMaterial = new SlimDX.Direct3D9.Material();
             softBodyMaterial.Diffuse = Color.White;
             softBodyMaterial.Ambient = new Color4(Ambient);
 
@@ -65,20 +75,123 @@ namespace SoftDemo
             Device.SetRenderState(RenderState.CullMode, Cull.None);
         }
 
-        protected override void OnUpdate()
+        void PickingPreTickCallback(DynamicsWorld world, float timeStep)
         {
-            base.OnUpdate();
-
-            if (Input.KeysPressed.Contains(Keys.B))
+            if (drag)
             {
-                Physics.PreviousDemo();
+                Vector3 rayFrom = Freelook.Eye;
+                Vector3 rayTo = GetRayTo(lastMousePos, Freelook.Eye, Freelook.Target, FieldOfView);
+                Vector3 rayDir = (rayTo - rayFrom);
+                rayDir.Normalize();
+                Vector3 N = (Freelook.Target - Freelook.Eye);
+                N.Normalize();
+                float O = Vector3.Dot(impact, N);
+                float den = Vector3.Dot(N, rayDir);
+                if ((den * den) > 0)
+                {
+                    float num = O - Vector3.Dot(N, rayFrom);
+                    float hit = num / den;
+                    if ((hit > 0) && (hit < 1500))
+                    {
+                        goal = rayFrom + rayDir * hit;
+                    }
+                }
+                Vector3 delta = goal - node.X;
+                float maxdrag = 10;
+                if (delta.LengthSquared() > (maxdrag * maxdrag))
+                {
+                    delta.Normalize();
+                    delta *= maxdrag;
+                }
+                node.Velocity += delta / timeStep;
             }
-            else if (Input.KeysPressed.Contains(Keys.N))
+        }
+
+        protected override void OnHandleInput()
+        {
+            base.OnHandleInput();
+
+            if (Input.MousePressed == MouseButtonFlags.RightDown)
             {
-                Physics.NextDemo();
+                results.Fraction = 1;
+                if (pickConstraint == null)
+                {
+                    Vector3 rayFrom = Freelook.Eye;
+                    Vector3 rayTo = GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView);
+                    Vector3 rayDir = (rayTo - rayFrom);
+                    rayDir.Normalize();
+                    AlignedSoftBodyArray sbs = ((SoftRigidDynamicsWorld)Physics.World).SoftBodyArray;
+                    for (int ib = 0; ib < sbs.Count; ++ib)
+                    {
+                        SoftBody psb = sbs[ib];
+                        SRayCast res = new SRayCast();
+                        if (psb.RayTest(rayFrom, rayTo, res))
+                        {
+                            results = res;
+                        }
+                    }
+                    if (results.Fraction < 1)
+                    {
+                        impact = rayFrom + (rayTo - rayFrom) * results.Fraction;
+                        drag = false;
+                        lastMousePos = Input.MousePoint;
+                        node = null;
+                        switch (results.Feature)
+                        {
+                            case EFeature.Face:
+                                {
+                                    Face f = results.Body.Faces[results.Index];
+                                    node = f.N[0];
+                                    for (int i = 1; i < 3; ++i)
+                                    {
+                                        if ((node.X - impact).LengthSquared() >
+                                            (f.N[i].X - impact).LengthSquared())
+                                        {
+                                            node = f.N[i];
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+                        if (node != null)
+                            goal = node.X;
+                        //return;
+                    }
+                }
+            }
+            else if (Input.MousePressed == MouseButtonFlags.RightUp)
+            {
+                if((!drag)&&Physics.cutting&&(results.Fraction<1))
+			    {
+				    //ImplicitSphere isphere = new ImplicitSphere(impact,1);
+				    //results.Body.Refine(isphere,0.0001,true);
+			    }
+			    results.Fraction=1;
+			    drag=false;
             }
 
-            Physics.HandleKeys(Input, FrameDelta);
+            // Mouse movement
+            if (Input.MouseDown == MouseButtonFlags.RightDown)
+            {
+                if (node != null && (results.Fraction < 1))
+                {
+                    if (!drag)
+                    {
+                        int x = Input.MousePoint.X - lastMousePos.X;
+                        int y = Input.MousePoint.Y - lastMousePos.Y;
+                        if ((x * x) + (y * y) > 6)
+                        {
+                            drag = true;
+                        }
+                    }
+                    if (drag)
+                    {
+                        lastMousePos = Input.MousePoint;
+                    }
+                }
+            }
+
+            Physics.HandleInput(Input, FrameDelta);
         }
 
         protected override void OnRender()
@@ -123,7 +236,7 @@ namespace SoftDemo
             Device.Present();
         }
 
-        public Device Device
+        public SlimDX.Direct3D9.Device Device
         {
             get { return Device9; }
         }

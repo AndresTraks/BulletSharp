@@ -20,7 +20,7 @@ namespace SoftDemo
 
         SoftBodyWorldInfo softBodyWorldInfo;
 
-        bool cutting;
+        public bool cutting;
         const int maxProxies = 32766;
 
         static MotorControl motorControl = new MotorControl();
@@ -92,6 +92,9 @@ namespace SoftDemo
 
         void InitializeDemo()
         {
+            motorControl.Goal = 0;
+            motorControl.MaxTorque = 0;
+
             softBodyWorldInfo.SparseSdf.Reset();
 
             CollisionShape groundShape = new BoxShape(50, 50, 50);
@@ -1029,8 +1032,17 @@ namespace SoftDemo
             return subSteps;
         }
 
-        public void HandleKeys(Input input, float elapsedTime)
+        public void HandleInput(Input input, float elapsedTime)
         {
+            if (input.KeysPressed.Contains(Keys.B))
+            {
+                PreviousDemo();
+            }
+            else if (input.KeysPressed.Contains(Keys.N))
+            {
+                NextDemo();
+            }
+
             if (input.KeysDown.Count == 0)
                 return;
 

@@ -73,7 +73,7 @@ namespace DemoFramework
 
         RigidBody pickedBody;
         bool use6Dof = false;
-        TypedConstraint pickConstraint;
+        protected TypedConstraint pickConstraint;
         float oldPickingDist;
 
         public PhysicsContext PhysicsContext { get; set; }
@@ -204,7 +204,7 @@ namespace DemoFramework
             OnUpdate();
         }
 
-        Vector3 GetRayTo(Point point, Vector3 eye, Vector3 target, float fov)
+        protected Vector3 GetRayTo(Point point, Vector3 eye, Vector3 target, float fov)
         {
             float aspect;
 
