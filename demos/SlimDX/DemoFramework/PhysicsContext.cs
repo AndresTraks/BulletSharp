@@ -1,6 +1,5 @@
 ﻿using BulletSharp;
 using SlimDX;
-using SlimDX.Direct3D9;
 
 namespace DemoFramework
 {
@@ -15,54 +14,8 @@ namespace DemoFramework
 
         BoxShape shootBoxShape;
 
-        public bool IsDebugDrawEnabled { get; set; }
-
-        public PhysicsDebugDraw DebugDrawer
-        {
-            get
-            {
-                if (World == null)
-                    throw new System.Exception("Physics world not initialized.");
-
-                return (PhysicsDebugDraw)World.DebugDrawer;
-            }
-            set
-            {
-                if (World == null)
-                    throw new System.Exception("Physics world not initialized.");
-
-                World.DebugDrawer = value;
-            }
-        }
-
         public PhysicsContext()
         {
-        }
-
-        public void SetDebugDrawMode(Device device, DebugDrawModes modes)
-        {
-            if (World == null)
-                throw new System.Exception("Physics world not initialized.");
-
-            if (modes == 0)
-            {
-                if (DebugDrawer != null)
-                    DebugDrawer.DebugMode = DebugDrawModes.None;
-                IsDebugDrawEnabled = false;
-            }
-            else
-            {
-                if (DebugDrawer == null)
-                    DebugDrawer = new PhysicsDebugDraw(device);
-                DebugDrawer.DebugMode = modes;
-                IsDebugDrawEnabled = true;
-            }
-        }
-
-        public void DebugDrawWorld()
-        {
-            if (IsDebugDrawEnabled)
-                DebugDrawer.DrawDebugWorld(World);
         }
 
         public virtual int Update(float elapsedTime)

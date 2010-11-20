@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Globalization;
-using SlimDX;
 using SlimDX.Direct3D9;
 
 namespace DemoFramework
@@ -10,18 +9,12 @@ namespace DemoFramework
     {
         Sprite fontSprite;
         SlimDX.Direct3D9.Font font;
+        int color = Color.Red.ToArgb();
+        float fps = -1;
+        string fpsString = "";
 
-        public bool IsEnabled
-        {
-            get;
-            set;
-        }
-
-        public string Text
-        {
-            get;
-            set;
-        }
+        public bool IsEnabled { get; set; }
+        public string Text { get; set; }
 
         public FpsDisplay(Device device)
         {
@@ -55,11 +48,15 @@ namespace DemoFramework
 
             fontSprite.Begin(SlimDX.Direct3D9.SpriteFlags.AlphaBlend);
 
-            fontSprite.Transform = Matrix.Translation(0, 0, 0.5f);
-            font.DrawString(fontSprite, "FPS: " + framesPerSecond.ToString("0.00", CultureInfo.InvariantCulture), 0, 0, Color.Red.ToArgb());
+            if (fps != framesPerSecond)
+            {
+                fps = framesPerSecond;
+                fpsString = string.Format("FPS: {0}", fps.ToString("0.00", CultureInfo.InvariantCulture));
+            }
+            font.DrawString(fontSprite, fpsString, 0, 0, color);
 
             if (Text.Length > 0)
-                font.DrawString(fontSprite, Text, 0, 20, Color.Red.ToArgb());
+                font.DrawString(fontSprite, Text, 0, 20, color);
 
             fontSprite.End();
         }

@@ -10,44 +10,27 @@ namespace SoftDemo
 {
     class SoftDemo : Game
     {
-        int Width = 1024, Height = 768;
         Vector3 eye = new Vector3(20, 20, 80);
         Vector3 target = new Vector3(0, 0, 10);
-        Color ambient = Color.Gray;
-        DebugDrawModes debugMode = DebugDrawModes.DrawWireframe;
 
         Light light;
-        Material activeMaterial, passiveMaterial, groundMaterial, softBodyMaterial;
-        GraphicObjectFactory mesh;
-        Physics physics;
+        Material softBodyMaterial;
+
+        Physics Physics
+        {
+            get { return (Physics)PhysicsContext; }
+            set { PhysicsContext = value; }
+        }
 
         protected override void OnInitializeDevice()
         {
-            Form.ClientSize = new Size(Width, Height);
             Form.Text = "BulletSharp - SoftBody Demo";
-
-            DeviceSettings9 settings = new DeviceSettings9();
-            settings.CreationFlags = CreateFlags.HardwareVertexProcessing;
-            settings.Windowed = true;
-            settings.MultisampleType = MultisampleType.FourSamples;
-            try
-            {
-                InitializeDevice(settings);
-            }
-            catch
-            {
-                // Disable 4xAA if not supported
-                settings.MultisampleType = MultisampleType.None;
-                InitializeDevice(settings);
-            }
+            base.OnInitializeDevice();
         }
 
         protected override void OnInitialize()
         {
-            physics = new Physics();
-            physics.DebugDrawer = new PhysicsDebugDrawLineGathering(Device);
-
-            mesh = new GraphicObjectFactory(Device);
+            Physics = new Physics();
 
             light = new Light();
             light.Type = LightType.Point;
@@ -56,21 +39,9 @@ namespace SoftDemo
             light.Diffuse = Color.LemonChiffon;
             light.Attenuation0 = 1.0f;
 
-            activeMaterial = new Material();
-            activeMaterial.Diffuse = Color.Orange;
-            activeMaterial.Ambient = ambient;
-
-            passiveMaterial = new Material();
-            passiveMaterial.Diffuse = Color.Red;
-            passiveMaterial.Ambient = ambient;
-
-            groundMaterial = new Material();
-            groundMaterial.Diffuse = Color.Green;
-            groundMaterial.Ambient = ambient;
-
             softBodyMaterial = new Material();
             softBodyMaterial.Diffuse = Color.White;
-            softBodyMaterial.Ambient = ambient;
+            softBodyMaterial.Ambient = new Color4(Ambient);
 
             Fps.Text = "Move using mouse and WASD+shift\n" +
                 "F3 - Toggle debug\n" +
@@ -80,15 +51,8 @@ namespace SoftDemo
                 "N - Next Demo";
 
             Freelook.SetEyeTarget(eye, target);
-        }
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                mesh.Dispose();
-            }
+            base.OnInitialize();
         }
 
         protected override void OnResourceLoad()
@@ -97,10 +61,6 @@ namespace SoftDemo
 
             Device.SetLight(0, light);
             Device.EnableLight(0, true);
-            Device.SetRenderState(RenderState.Ambient, ambient.ToArgb());
-
-            Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 150.0f);
-            Device.SetTransform(TransformState.Projection, Projection);
 
             Device.SetRenderState(RenderState.CullMode, Cull.None);
         }
@@ -109,25 +69,16 @@ namespace SoftDemo
         {
             base.OnUpdate();
 
-            if (Input.KeysPressed.Contains(Keys.F3))
+            if (Input.KeysPressed.Contains(Keys.B))
             {
-                if (physics.IsDebugDrawEnabled == false)
-                    physics.SetDebugDrawMode(Device, debugMode);
-                else
-                    physics.SetDebugDrawMode(Device, 0);
-            }
-            else if (Input.KeysPressed.Contains(Keys.B))
-            {
-                physics.PreviousDemo();
+                Physics.PreviousDemo();
             }
             else if (Input.KeysPressed.Contains(Keys.N))
             {
-                physics.NextDemo();
+                Physics.NextDemo();
             }
 
-            InputUpdate(Freelook.Eye, Freelook.Target, physics);
-            physics.Update(FrameDelta);
-            physics.HandleKeys(Input, FrameDelta);
+            Physics.HandleKeys(Input, FrameDelta);
         }
 
         protected override void OnRender()
@@ -137,16 +88,16 @@ namespace SoftDemo
 
             Device.SetTransform(TransformState.View, Freelook.View);
 
-            foreach (CollisionObject colObj in physics.World.CollisionObjectArray)
+            foreach (CollisionObject colObj in Physics.World.CollisionObjectArray)
             {
                 if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
                 {
-                    if (physics.IsDebugDrawEnabled)
+                    if (IsDebugDrawEnabled)
                         continue;
 
                     Device.Material = softBodyMaterial;
                     Device.SetTransform(TransformState.World, Matrix.Identity);
-                    mesh.Render(colObj);
+                    MeshFactory.Render(colObj);
                 }
                 else
                 {
@@ -154,17 +105,17 @@ namespace SoftDemo
                     Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
 
                     if ((string)body.UserObject == "Ground")
-                        Device.Material = groundMaterial;
+                        Device.Material = GroundMaterial;
                     else if (colObj.ActivationState == ActivationState.ActiveTag)
-                        Device.Material = activeMaterial;
+                        Device.Material = ActiveMaterial;
                     else
-                        Device.Material = passiveMaterial;
+                        Device.Material = PassiveMaterial;
 
-                    mesh.Render(colObj.CollisionShape);
+                    MeshFactory.Render(colObj.CollisionShape);
                 }
             }
 
-            physics.DebugDrawWorld();
+            DebugDrawWorld();
 
             Fps.OnRender(FramesPerSecond);
 

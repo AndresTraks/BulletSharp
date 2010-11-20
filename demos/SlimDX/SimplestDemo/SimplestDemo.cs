@@ -1,10 +1,10 @@
-﻿using BulletSharp;
+﻿using System;
+using System.Drawing;
+using System.Timers;
+using BulletSharp;
 using SlimDX;
 using SlimDX.Direct3D9;
 using SlimDX.Windows;
-using System;
-using System.Drawing;
-using System.Timers;
 
 namespace SimplestDemo
 {

@@ -1265,6 +1265,13 @@ BulletSharp::SoftBody::AJoint::IControl::IControl(AJointIControlWrapper* iContro
 	_iControl = iControl;
 }
 
+AJoint::IControl^ BulletSharp::SoftBody::AJoint::IControl::Default::get()
+{
+	if (def == nullptr)
+		def = gcnew AJoint::IControl();
+	return def;
+}
+
 AJointIControlWrapper* BulletSharp::SoftBody::AJoint::IControl::UnmanagedPointer::get()
 {
 	return _iControl;
@@ -1348,6 +1355,20 @@ AJoint::AJoint(btSoftBody::AJoint* joint)
 {
 }
 
+Vector3Array^ AJoint::Axis::get()
+{
+	return gcnew Vector3Array(UnmanagedPointer->m_axis, 2);
+}
+
+AJoint::IControl^ AJoint::Control::get()
+{
+	return gcnew AJoint::IControl((AJointIControlWrapper*)UnmanagedPointer->m_icontrol);
+}
+void AJoint::Control::set(AJoint::IControl^ value)
+{
+	UnmanagedPointer->m_icontrol = value->UnmanagedPointer;
+}
+
 btSoftBody::AJoint* BulletSharp::SoftBody::AJoint::UnmanagedPointer::get()
 {
 	return (btSoftBody::AJoint*)Joint::UnmanagedPointer;
@@ -1357,6 +1378,52 @@ btSoftBody::AJoint* BulletSharp::SoftBody::AJoint::UnmanagedPointer::get()
 CJoint::CJoint(btSoftBody::CJoint* joint)
 : Joint(joint)
 {
+}
+
+btScalar CJoint::Friction::get()
+{
+	return UnmanagedPointer->m_friction;
+}
+void CJoint::Friction::set(btScalar value)
+{
+	UnmanagedPointer->m_friction = value;
+}
+
+int CJoint::Life::get()
+{
+	return UnmanagedPointer->m_life;
+}
+void CJoint::Life::set(int value)
+{
+	UnmanagedPointer->m_life = value;
+}
+
+int CJoint::MaxLife::get()
+{
+	return UnmanagedPointer->m_maxlife;
+}
+void CJoint::MaxLife::set(int value)
+{
+	UnmanagedPointer->m_maxlife = value;
+}
+
+Vector3 CJoint::Normal::get()
+{
+	return Math::BtVector3ToVector3(&UnmanagedPointer->m_normal);
+}
+void CJoint::Normal::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_normal);
+}
+
+Vector3Array^ CJoint::RPos::get()
+{
+	return gcnew Vector3Array(UnmanagedPointer->m_rpos, 2);
+}
+
+btSoftBody::CJoint* BulletSharp::SoftBody::CJoint::UnmanagedPointer::get()
+{
+	return (btSoftBody::CJoint*)Joint::UnmanagedPointer;
 }
 
 
@@ -1596,6 +1663,43 @@ Note::Note(btSoftBody::Note* note)
 Note::Note()
 : Element(new btSoftBody::Note())
 {
+}
+
+ScalarArray^ Note::Coords::get()
+{
+	return gcnew ScalarArray(&UnmanagedPointer->m_coords[0], 4);
+}
+
+NodePtrArray^ Note::Nodes::get()
+{
+	return gcnew NodePtrArray(&UnmanagedPointer->m_nodes[0], 4);
+}
+
+Vector3 Note::Offset::get()
+{
+	return Math::BtVector3ToVector3(&UnmanagedPointer->m_offset);
+}
+void Note::Offset::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_offset);
+}
+
+int Note::Rank::get()
+{
+	return UnmanagedPointer->m_rank;
+}
+void Note::Rank::set(int value)
+{
+	UnmanagedPointer->m_rank = value;
+}
+
+String^ Note::Text::get()
+{
+	return StringConv::UnmanagedToManaged(UnmanagedPointer->m_text);
+}
+void Note::Text::set(String^ value)
+{
+	UnmanagedPointer->m_text = StringConv::ManagedToUnmanaged(value);
 }
 
 btSoftBody::Note* BulletSharp::SoftBody::Note::UnmanagedPointer::get()

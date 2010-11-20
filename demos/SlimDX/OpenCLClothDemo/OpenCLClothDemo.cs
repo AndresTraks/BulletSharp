@@ -10,43 +10,25 @@ namespace OpenCLClothDemo
 {
     class OpenCLClothDemo : Game
     {
-        int Width = 1024, Height = 768;
         Vector3 eye = new Vector3(50, 20, 100);
         Vector3 target = new Vector3(0, 20, 40);
-        Color ambient = Color.Gray;
         DebugDrawModes debugMode = DebugDrawModes.DrawAabb;
 
         Light light;
-        Material activeMaterial, passiveMaterial, groundMaterial, softBodyMaterial;
-        GraphicObjectFactory mesh;
-        Physics physics;
+        Material softBodyMaterial;
         Texture amdFlag;
         Texture atiFlag;
 
         protected override void OnInitializeDevice()
         {
-            Form.ClientSize = new Size(Width, Height);
             Form.Text = "BulletSharp - OpenCL Cloth Demo";
-
-            DeviceSettings9 settings = new DeviceSettings9();
-            settings.CreationFlags = CreateFlags.HardwareVertexProcessing;
-            settings.Windowed = true;
-            settings.MultisampleType = MultisampleType.FourSamples;
-            try
-            {
-                InitializeDevice(settings);
-            }
-            catch
-            {
-                // Disable 4xAA if not supported
-                settings.MultisampleType = MultisampleType.None;
-                InitializeDevice(settings);
-            }
+            base.OnInitializeDevice();
         }
 
         protected override void OnInitialize()
         {
-            mesh = new GraphicObjectFactory(Device);
+            PhysicsContext = new Physics();
+            DebugDrawMode = debugMode;
 
             light = new Light();
             light.Type = LightType.Point;
@@ -55,25 +37,14 @@ namespace OpenCLClothDemo
             light.Diffuse = Color.LemonChiffon;
             light.Attenuation0 = 1.0f;
 
-            activeMaterial = new Material();
-            activeMaterial.Diffuse = Color.Orange;
-            activeMaterial.Ambient = ambient;
-
-            passiveMaterial = new Material();
-            passiveMaterial.Diffuse = Color.Red;
-            passiveMaterial.Ambient = ambient;
-
-            groundMaterial = new Material();
-            groundMaterial.Diffuse = Color.Green;
-            groundMaterial.Ambient = ambient;
-
             softBodyMaterial = new Material();
             softBodyMaterial.Diffuse = Color.White;
-            softBodyMaterial.Ambient = ambient;
+            softBodyMaterial.Ambient = new Color4(Ambient);
 
             amdFlag = Texture.FromFile(Device, "amdFlag.png");
             atiFlag = Texture.FromFile(Device, "atiFlag.png");
 
+            FarPlane = 200f;
             Freelook.SetEyeTarget(eye, target);
 
             Fps.Text = "Move using mouse and WASD+shift\n" +
@@ -81,7 +52,7 @@ namespace OpenCLClothDemo
                 "F11 - Toggle fullscreen\n" +
                 "Space - Shoot box";
 
-            physics = new Physics();
+            base.OnInitialize();
         }
 
         protected override void Dispose(bool disposing)
@@ -89,7 +60,6 @@ namespace OpenCLClothDemo
             base.Dispose(disposing);
             if (disposing)
             {
-                mesh.Dispose();
                 amdFlag.Dispose();
                 atiFlag.Dispose();
             }
@@ -101,29 +71,9 @@ namespace OpenCLClothDemo
 
             Device.SetLight(0, light);
             Device.EnableLight(0, true);
-            Device.SetRenderState(RenderState.Ambient, ambient.ToArgb());
-
-            Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 200.0f);
-            Device.SetTransform(TransformState.Projection, Projection);
 
             Device.SetRenderState(RenderState.CullMode, Cull.None);
             Device.SetSamplerState(0, SamplerState.MagFilter, TextureFilter.Linear);
-        }
-
-        protected override void OnUpdate()
-        {
-            base.OnUpdate();
-
-            if (Input.KeysPressed.Contains(Keys.F3))
-            {
-                if (physics.IsDebugDrawEnabled == false)
-                    physics.SetDebugDrawMode(Device, debugMode);
-                else
-                    physics.SetDebugDrawMode(Device, DebugDrawModes.None);
-            }
-
-            InputUpdate(Freelook.Eye, Freelook.Target, physics);
-            physics.Update(FrameDelta);
         }
 
         protected override void OnRender()
@@ -133,14 +83,14 @@ namespace OpenCLClothDemo
 
             Device.SetTransform(TransformState.View, Freelook.View);
 
-            foreach (CollisionObject colObj in physics.World.CollisionObjectArray)
+            foreach (CollisionObject colObj in PhysicsContext.World.CollisionObjectArray)
             {
                 if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
                 {
                     Device.SetTexture(0, atiFlag);
                     Device.Material = softBodyMaterial;
                     Device.SetTransform(TransformState.World, Matrix.Identity);
-                    mesh.RenderSoftBodyTextured(BulletSharp.SoftBody.SoftBody.Upcast(colObj));
+                    MeshFactory.RenderSoftBodyTextured(BulletSharp.SoftBody.SoftBody.Upcast(colObj));
                     Device.SetTexture(0, null);
                     continue;
                 }
@@ -148,16 +98,16 @@ namespace OpenCLClothDemo
                 Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
 
                 if ((string)colObj.UserObject == "Ground")
-                    Device.Material = groundMaterial;
+                    Device.Material = GroundMaterial;
                 else if (colObj.ActivationState == ActivationState.ActiveTag)
-                    Device.Material = activeMaterial;
+                    Device.Material = ActiveMaterial;
                 else
-                    Device.Material = passiveMaterial;
+                    Device.Material = PassiveMaterial;
 
-                mesh.Render(body.CollisionShape);
+                MeshFactory.Render(body.CollisionShape);
             }
 
-            physics.DebugDrawWorld();
+            DebugDrawWorld();
 
             Fps.OnRender(FramesPerSecond);
 

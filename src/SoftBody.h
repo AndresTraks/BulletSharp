@@ -946,6 +946,7 @@ namespace BulletSharp
 			{
 			private:
 				AJointIControlWrapper* _iControl;
+				static AJoint::IControl^ def = nullptr;
 
 			internal:
 				IControl(AJointIControlWrapper* iControl);
@@ -955,10 +956,11 @@ namespace BulletSharp
 
 				virtual void Prepare(AJoint^ joint);
 				virtual btScalar Speed(AJoint^ joint, btScalar current);
-				//static property IControl^ Default
-				//{
-				//	IControl^ get();
-				//}
+
+				static property IControl^ Default
+				{
+					IControl^ get();
+				}
 
 			internal:
 				property AJointIControlWrapper* UnmanagedPointer
@@ -995,6 +997,17 @@ namespace BulletSharp
 		internal:
 			AJoint(btSoftBody::AJoint* joint);
 
+			property Vector3Array^ Axis
+			{
+				Vector3Array^ get();
+			}
+
+			property IControl^ Control
+			{
+				AJoint::IControl^ get();
+				void set(AJoint::IControl^ value);
+			}
+
 			property btSoftBody::AJoint* UnmanagedPointer
 			{
 				btSoftBody::AJoint* get() new;
@@ -1020,6 +1033,41 @@ namespace BulletSharp
 		{
 		public:
 			CJoint(btSoftBody::CJoint* joint);
+
+			property btScalar Friction
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property int Life
+			{
+				int get();
+				void set(int value);
+			}
+
+			property int MaxLife
+			{
+				int get();
+				void set(int value);
+			}
+
+			property Vector3 Normal
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property Vector3Array^ RPos
+			{
+				Vector3Array^ get();
+			}
+
+		internal:
+			property btSoftBody::CJoint* UnmanagedPointer
+			{
+				btSoftBody::CJoint* get() new;
+			};
 		};
 
 		public ref class Link : Feature
@@ -1196,6 +1244,34 @@ namespace BulletSharp
 
 		public:
 			Note();
+
+			property ScalarArray^ Coords
+			{
+				ScalarArray^ get();
+			}
+
+			property NodePtrArray^ Nodes
+			{
+				NodePtrArray^ get();
+			}
+
+			property Vector3 Offset
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property int Rank
+			{
+				int get();
+				void set(int value);
+			}
+
+			property String^ Text
+			{
+				String^ get();
+				void set(String^ value);
+			}
 
 		internal:
 			property btSoftBody::Note* UnmanagedPointer

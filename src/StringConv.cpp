@@ -2,14 +2,14 @@
 
 #include "StringConv.h"
 
-String^ StringConv::UnmanagedToManaged( const char* string )
+String^ StringConv::UnmanagedToManaged(const char* string)
 {
-	return Marshal::PtrToStringAnsi( (IntPtr)(char*)string );
+	return Marshal::PtrToStringAnsi((IntPtr)(char*)string);
 }
 
-const char* StringConv::ManagedToUnmanaged( String^ string )
+const char* StringConv::ManagedToUnmanaged(String^ string)
 {
-	return (const char*)Marshal::StringToHGlobalAnsi( string ).ToPointer();
+	return (const char*)Marshal::StringToHGlobalAnsi(string).ToPointer();
 }
 
 void StringConv::FreeUnmanagedString(const char* string)

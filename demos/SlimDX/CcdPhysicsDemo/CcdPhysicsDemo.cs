@@ -10,43 +10,27 @@ namespace CcdPhysicsDemo
 {
     class CcdPhysicsDemo : Game
     {
-        int Width = 1024, Height = 768;
         Vector3 eye = new Vector3(0, 10, 40);
         Vector3 target = Vector3.Zero;
-        Color ambient = Color.Gray;
-        DebugDrawModes debugMode = DebugDrawModes.DrawWireframe;
 
         Light light;
-        Material activeMaterial, passiveMaterial, groundMaterial;
-        GraphicObjectFactory mesh;
-        Physics physics;
+
+        Physics Physics
+        {
+            get { return (Physics)PhysicsContext; }
+            set { PhysicsContext = value; }
+        }
 
         protected override void OnInitializeDevice()
         {
-            Form.ClientSize = new Size(Width, Height);
             Form.Text = "BulletSharp - Continuous Collision Detection Demo";
 
-            DeviceSettings9 settings = new DeviceSettings9();
-            settings.CreationFlags = CreateFlags.HardwareVertexProcessing;
-            settings.Windowed = true;
-            settings.MultisampleType = MultisampleType.FourSamples;
-            try
-            {
-                InitializeDevice(settings);
-            }
-            catch
-            {
-                // Disable 4xAA if not supported
-                settings.MultisampleType = MultisampleType.None;
-                InitializeDevice(settings);
-            }
+            base.OnInitializeDevice();
         }
 
         protected override void OnInitialize()
         {
-            physics = new Physics();
-
-            mesh = new GraphicObjectFactory(Device);
+            Physics = new Physics();
 
             light = new Light();
             light.Type = LightType.Point;
@@ -55,36 +39,17 @@ namespace CcdPhysicsDemo
             light.Diffuse = Color.LemonChiffon;
             light.Attenuation0 = 1.0f;
 
-            activeMaterial = new Material();
-            activeMaterial.Diffuse = Color.Orange;
-            activeMaterial.Ambient = ambient;
-
-            passiveMaterial = new Material();
-            passiveMaterial.Diffuse = Color.Red;
-            passiveMaterial.Ambient = ambient;
-
-            groundMaterial = new Material();
-            groundMaterial.Diffuse = Color.Green;
-            groundMaterial.Ambient = ambient;
-
             Fps.Text = "Move using mouse and WASD+shift\n" +
                 "F3 - Toggle debug\n" +
                 "F11 - Toggle fullscreen\n" +
                 "Space - Shoot box";
 
-            if (physics.DoBenchmarkPyramids)
+            if (Physics.DoBenchmarkPyramids)
                 Freelook.SetEyeTarget(new Vector3(40, 40, 40), Vector3.Zero);
             else
                 Freelook.SetEyeTarget(eye, Vector3.Zero);
-        }
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                mesh.Dispose();
-            }
+            base.OnInitialize();
         }
 
         protected override void OnResourceLoad()
@@ -93,26 +58,6 @@ namespace CcdPhysicsDemo
 
             Device.SetLight(0, light);
             Device.EnableLight(0, true);
-            Device.SetRenderState(RenderState.Ambient, ambient.ToArgb());
-
-            Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, 0.1f, 150.0f);
-            Device.SetTransform(TransformState.Projection, Projection);
-        }
-
-        protected override void OnUpdate()
-        {
-            base.OnUpdate();
-
-            if (Input.KeysPressed.Contains(Keys.F3))
-            {
-                if (physics.IsDebugDrawEnabled == false)
-                    physics.SetDebugDrawMode(Device, debugMode);
-                else
-                    physics.SetDebugDrawMode(Device, DebugDrawModes.None);
-            }
-
-            InputUpdate(Freelook.Eye, Freelook.Target, physics);
-            physics.Update(FrameDelta);
         }
 
         protected override void OnRender()
@@ -122,22 +67,22 @@ namespace CcdPhysicsDemo
 
             Device.SetTransform(TransformState.View, Freelook.View);
 
-            foreach (CollisionObject colObj in physics.World.CollisionObjectArray)
+            foreach (CollisionObject colObj in Physics.World.CollisionObjectArray)
             {
                 RigidBody body = RigidBody.Upcast(colObj);
                 Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
 
                 if ((string)body.UserObject == "Ground")
-                    Device.Material = groundMaterial;
+                    Device.Material = GroundMaterial;
                 else if (colObj.ActivationState == ActivationState.ActiveTag)
-                    Device.Material = activeMaterial;
+                    Device.Material = ActiveMaterial;
                 else
-                    Device.Material = passiveMaterial;
+                    Device.Material = PassiveMaterial;
 
-                mesh.Render(body.CollisionShape);
+                MeshFactory.Render(body.CollisionShape);
             }
 
-            physics.DebugDrawWorld();
+            DebugDrawWorld();
 
             Fps.OnRender(FramesPerSecond);
 

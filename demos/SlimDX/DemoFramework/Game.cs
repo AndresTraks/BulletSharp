@@ -8,6 +8,7 @@ using SlimDX;
 using SlimDX.Multimedia;
 using SlimDX.RawInput;
 using SlimDX.Windows;
+using SlimDX.Direct3D9;
 
 namespace DemoFramework
 {
@@ -29,7 +30,8 @@ namespace DemoFramework
         /// </summary>
         public DeviceContext9 Context9 { get; private set; }
 
-        public Input Input { get; private set; }
+        protected Input Input { get; private set; }
+        protected GraphicObjectFactory MeshFactory { get; private set; }
 
         /// <summary>
         /// Gets the number of seconds passed since the last frame.
@@ -37,16 +39,27 @@ namespace DemoFramework
         public float FrameDelta { get; private set; }
         public float FramesPerSecond { get; private set; }
 
-        public float AspectRatio
+
+        protected int Width { get; set; }
+        protected int Height { get; set; }
+        protected int FullScreenWidth { get; set; }
+        protected int FullScreenHeight { get; set; }
+
+        protected float AspectRatio
         {
-            get { return (float)Form.ClientSize.Width / (float)Form.ClientSize.Height; }
+            get { return (float)Context9.PresentParameters.BackBufferWidth / (float)Context9.PresentParameters.BackBufferHeight; }
         }
 
-        protected float FieldOfView;
-        protected Matrix Projection;
-        protected FreeLook Freelook;
-        protected FpsDisplay Fps;
+        protected float NearPlane { get; set; }
+        protected float FarPlane { get; set; }
+        protected float FieldOfView { get; set; }
+        protected FreeLook Freelook { get; set; }
+        protected FpsDisplay Fps { get; set; }
 
+        protected int Ambient { get; set; }
+        protected Material ActiveMaterial;
+        protected Material PassiveMaterial;
+        protected Material GroundMaterial;
 
         readonly Clock clock = new Clock();
         bool deviceLost = false;
@@ -54,13 +67,65 @@ namespace DemoFramework
         int frameCount;
         System.IDisposable apiContext;
         FormWindowState currentFormWindowState;
-        int tempWindowWidth, tempWindowHeight;
+        FormWindowState windowedFormWindowState;
+        FormBorderStyle windowedFormBorderStyle;
+        bool togglingFullScreen = false;
 
         RigidBody pickedBody;
         bool use6Dof = false;
         TypedConstraint pickConstraint;
         float oldPickingDist;
 
+        public PhysicsContext PhysicsContext { get; set; }
+
+        DebugDrawModes debugDrawMode = DebugDrawModes.DrawWireframe;
+        public DebugDrawModes DebugDrawMode
+        {
+            get
+            {
+                if (DebugDrawer == null)
+                    return debugDrawMode;
+                else
+                    return DebugDrawer.DebugMode;
+            }
+            set
+            {
+                if (DebugDrawer == null)
+                    debugDrawMode = value;
+                else
+                    DebugDrawer.DebugMode = value;
+            }
+        }
+
+        bool isDebugDrawEnabled = false;
+        public bool IsDebugDrawEnabled
+        {
+            get
+            {
+                return isDebugDrawEnabled;
+            }
+            set
+            {
+                if (DebugDrawer == null)
+                {
+                    DebugDrawer = new PhysicsDebugDrawLineGathering(Device9);
+                    DebugDrawer.DebugMode = debugDrawMode;
+                }
+                isDebugDrawEnabled = value;
+            }
+        }
+
+        public PhysicsDebugDraw DebugDrawer
+        {
+            get { return (PhysicsDebugDraw)PhysicsContext.World.DebugDrawer; }
+            set { PhysicsContext.World.DebugDrawer = value; }
+        }
+
+        public void DebugDrawWorld()
+        {
+            if (IsDebugDrawEnabled)
+                DebugDrawer.DrawDebugWorld(PhysicsContext.World);
+        }
 
         public bool TestLibraries()
         {
@@ -110,6 +175,7 @@ namespace DemoFramework
                 apiContext.Dispose();
                 Form.Dispose();
                 Fps.Dispose();
+                MeshFactory.Dispose();
             }
         }
 
@@ -136,160 +202,6 @@ namespace DemoFramework
         {
             FrameDelta = clock.Update();
             OnUpdate();
-        }
-
-        protected void InputUpdate(Vector3 eye, Vector3 target, PhysicsContext physics)
-        {
-            if (Input.KeysPressed.Contains(Keys.Escape))
-            {
-                Quit();
-                return;
-            }
-
-            if (Input.KeysPressed.Contains(Keys.F11))
-                ToggleFullScreen();
-
-            if (Input.KeysPressed.Contains(Keys.Space))
-                physics.ShootBox(Freelook.Eye, GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView));
-
-
-            if (Input.MousePressed != MouseButtonFlags.None)
-            {
-                Vector3 rayTo = GetRayTo(Input.MousePoint, eye, target, FieldOfView);
-
-                if (Input.MousePressed == MouseButtonFlags.RightDown)
-                {
-                    if (physics.World != null)
-                    {
-                        Vector3 rayFrom = eye;
-
-                        CollisionWorld.ClosestRayResultCallback rayCallback = new CollisionWorld.ClosestRayResultCallback(rayFrom, rayTo);
-                        physics.World.RayTest(rayFrom, rayTo, rayCallback);
-                        if (rayCallback.HasHit)
-                        {
-                            RigidBody body = RigidBody.Upcast(rayCallback.CollisionObject);
-                            if (body != null)
-                            {
-                                if (!(body.IsStaticObject || body.IsKinematicObject))
-                                {
-                                    pickedBody = body;
-                                    pickedBody.ActivationState = ActivationState.DisableDeactivation;
-
-                                    Vector3 pickPos = rayCallback.HitPointWorld;
-                                    Vector3 localPivot = Vector3.TransformCoordinate(pickPos, Matrix.Invert(body.CenterOfMassTransform));
-
-                                    if (use6Dof)
-                                    {
-                                        Generic6DofConstraint dof6 = new Generic6DofConstraint(body, Matrix.Translation(localPivot), false);
-                                        dof6.LinearLowerLimit = Vector3.Zero;
-                                        dof6.LinearUpperLimit = Vector3.Zero;
-                                        dof6.AngularLowerLimit = Vector3.Zero;
-                                        dof6.AngularUpperLimit = Vector3.Zero;
-
-                                        physics.World.AddConstraint(dof6);
-                                        pickConstraint = dof6;
-
-                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 0);
-                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 1);
-                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 2);
-                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 3);
-                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 4);
-                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 5);
-
-                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 0);
-                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 1);
-                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 2);
-                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 3);
-                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 4);
-                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 5);
-                                    }
-                                    else
-                                    {
-                                        Point2PointConstraint p2p = new Point2PointConstraint(body, localPivot);
-                                        physics.World.AddConstraint(p2p);
-                                        pickConstraint = p2p;
-                                        p2p.Setting.ImpulseClamp = 30;
-                                        //very weak constraint for picking
-                                        p2p.Setting.Tau = 0.001f;
-                                        /*
-                                        p2p.SetParam(ConstraintParams.Cfm, 0.8f, 0);
-                                        p2p.SetParam(ConstraintParams.Cfm, 0.8f, 1);
-                                        p2p.SetParam(ConstraintParams.Cfm, 0.8f, 2);
-                                        p2p.SetParam(ConstraintParams.Erp, 0.1f, 0);
-                                        p2p.SetParam(ConstraintParams.Erp, 0.1f, 1);
-                                        p2p.SetParam(ConstraintParams.Erp, 0.1f, 2);
-                                        */
-                                    }
-                                    use6Dof = !use6Dof;
-
-                                    oldPickingDist = (pickPos - rayFrom).Length();
-                                }
-                            }
-                        }
-                    }
-                }
-                else if (Input.MousePressed == MouseButtonFlags.RightUp)
-                {
-                    if (pickConstraint != null && physics.World != null)
-                    {
-                        physics.World.RemoveConstraint(pickConstraint);
-                        pickConstraint.Dispose();
-                        pickConstraint = null;
-                        pickedBody.ForceActivationState(ActivationState.ActiveTag);
-                        pickedBody.DeactivationTime = 0;
-                        pickedBody = null;
-                    }
-                }
-            }
-
-            // Mouse movement
-            if (Input.MouseDown == MouseButtonFlags.RightDown)
-            {
-                if (pickConstraint != null)
-                {
-                    Vector3 newRayTo = GetRayTo(Input.MousePoint, eye, target, FieldOfView);
-
-                    if (pickConstraint.ConstraintType == TypedConstraintType.D6)
-                    {
-                        Generic6DofConstraint pickCon = (Generic6DofConstraint)pickConstraint;
-
-                        //keep it at the same picking distance
-                        Vector3 rayFrom = eye;
-                        Vector3 scale;
-                        Quaternion rotation;
-                        Vector3 oldPivotInB;
-                        pickCon.FrameOffsetA.Decompose(out scale, out rotation, out oldPivotInB);
-
-                        Vector3 dir = newRayTo - rayFrom;
-                        dir.Normalize();
-                        dir *= oldPickingDist;
-                        Vector3 newPivotB = rayFrom + dir;
-
-                        Matrix tempFrameOffsetA = pickCon.FrameOffsetA;
-                        Vector4 transRow = tempFrameOffsetA.get_Rows(3);
-                        transRow.X = newPivotB.X;
-                        transRow.Y = newPivotB.Y;
-                        transRow.Z = newPivotB.Z;
-                        tempFrameOffsetA.set_Rows(3, transRow);
-                        pickCon.FrameOffsetA = tempFrameOffsetA;
-                    }
-                    else
-                    {
-                        Point2PointConstraint pickCon = (Point2PointConstraint)pickConstraint;
-
-                        //keep it at the same picking distance
-                        Vector3 rayFrom = eye;
-                        Vector3 oldPivotInB = pickCon.PivotInB;
-
-                        Vector3 dir = newRayTo - rayFrom;
-                        dir.Normalize();
-                        dir *= oldPickingDist;
-                        Vector3 newPivotB = rayFrom + dir;
-
-                        pickCon.PivotInB = newPivotB;
-                    }
-                }
-            }
         }
 
         Vector3 GetRayTo(Point point, Vector3 eye, Vector3 target, float fov)
@@ -399,7 +311,8 @@ namespace DemoFramework
             {
                 if (Form.WindowState != currentFormWindowState)
                 {
-                    HandleResize(o, args);
+                    if (togglingFullScreen == false)
+                        HandleResize(o, args);
                 }
 
                 currentFormWindowState = Form.WindowState;
@@ -414,6 +327,8 @@ namespace DemoFramework
 
             Form.Closed += (o, args) => { isFormClosed = true; };
 
+            
+            // initialize input
             SlimDX.RawInput.Device.RegisterDevice(UsagePage.Generic, UsageId.Keyboard, DeviceFlags.None);
             SlimDX.RawInput.Device.RegisterDevice(UsagePage.Generic, UsageId.Mouse, DeviceFlags.None);
 
@@ -422,11 +337,21 @@ namespace DemoFramework
             SlimDX.RawInput.Device.KeyboardInput += Device_KeyboardInput;
             SlimDX.RawInput.Device.MouseInput += Device_MouseInput;
 
-            OnInitializeDevice();
 
+            Width = 1024;
+            Height = 768;
+            FullScreenWidth = Screen.PrimaryScreen.Bounds.Width;
+            FullScreenHeight = Screen.PrimaryScreen.Bounds.Height;
+            NearPlane = 0.1f;
+            FarPlane = 200f;
             FieldOfView = (float)Math.PI / 4;
             Freelook = new FreeLook();
+            Ambient = Color.Gray.ToArgb();
+
+            OnInitializeDevice();
+
             Fps = new FpsDisplay(Device9);
+            MeshFactory = new GraphicObjectFactory(Device9);
 
             OnInitialize();
             OnResourceLoad();
@@ -434,6 +359,7 @@ namespace DemoFramework
             clock.Start();
             MessagePump.Run(Form, () =>
             {
+                OnHandleInput();
                 Update();
                 Input.ClearKeyCache();
 
@@ -457,13 +383,49 @@ namespace DemoFramework
             Input.Device_KeyboardInput(e);
         }
 
-        protected virtual void OnInitializeDevice() { }
+        protected virtual void OnInitializeDevice()
+        {
+            Form.ClientSize = new Size(Width, Height);
 
-        protected virtual void OnInitialize() { }
+            DeviceSettings9 settings = new DeviceSettings9();
+            settings.CreationFlags = CreateFlags.HardwareVertexProcessing;
+            settings.Windowed = true;
+            settings.MultisampleType = MultisampleType.FourSamples;
+            try
+            {
+                InitializeDevice(settings);
+            }
+            catch
+            {
+                // Disable 4xAA if not supported
+                settings.MultisampleType = MultisampleType.None;
+                InitializeDevice(settings);
+            }
+        }
+
+        protected virtual void OnInitialize()
+        {
+            ActiveMaterial = new Material();
+            ActiveMaterial.Diffuse = Color.Orange;
+            ActiveMaterial.Ambient = new Color4(Ambient);
+
+            PassiveMaterial = new Material();
+            PassiveMaterial.Diffuse = Color.Red;
+            PassiveMaterial.Ambient = new Color4(Ambient);
+
+            GroundMaterial = new Material();
+            GroundMaterial.Diffuse = Color.Green;
+            GroundMaterial.Ambient = new Color4(Ambient);
+        }
 
         protected virtual void OnResourceLoad()
         {
             Fps.OnResourceLoad();
+
+            Matrix projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, NearPlane, FarPlane);
+            Device9.SetTransform(TransformState.Projection, projection);
+
+            Device9.SetRenderState(RenderState.Ambient, Ambient);
         }
 
         protected virtual void OnResourceUnload()
@@ -477,7 +439,168 @@ namespace DemoFramework
         protected virtual void OnUpdate()
         {
             Freelook.Update(FrameDelta, Input);
-            Fps.OnResourceUnload();
+            PhysicsContext.Update(FrameDelta);
+        }
+
+        protected virtual void OnHandleInput()
+        {
+            if (Input.KeysPressed.Count != 0)
+            {
+                Keys key = Input.KeysPressed[0];
+                switch (key)
+                {
+                    case Keys.Escape:
+                        Quit();
+                        return;
+                    case Keys.F3:
+                        IsDebugDrawEnabled = !IsDebugDrawEnabled;
+                        break;
+                    case Keys.F11:
+                        ToggleFullScreen();
+                        break;
+                    case Keys.Space:
+                        PhysicsContext.ShootBox(Freelook.Eye, GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView));
+                        break;
+                }
+            }
+
+            if (Input.MousePressed != MouseButtonFlags.None)
+            {
+                Vector3 rayTo = GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView);
+
+                if (Input.MousePressed == MouseButtonFlags.RightDown)
+                {
+                    if (PhysicsContext.World != null)
+                    {
+                        Vector3 rayFrom = Freelook.Eye;
+
+                        CollisionWorld.ClosestRayResultCallback rayCallback = new CollisionWorld.ClosestRayResultCallback(rayFrom, rayTo);
+                        PhysicsContext.World.RayTest(rayFrom, rayTo, rayCallback);
+                        if (rayCallback.HasHit)
+                        {
+                            RigidBody body = RigidBody.Upcast(rayCallback.CollisionObject);
+                            if (body != null)
+                            {
+                                if (!(body.IsStaticObject || body.IsKinematicObject))
+                                {
+                                    pickedBody = body;
+                                    pickedBody.ActivationState = ActivationState.DisableDeactivation;
+
+                                    Vector3 pickPos = rayCallback.HitPointWorld;
+                                    Vector3 localPivot = Vector3.TransformCoordinate(pickPos, Matrix.Invert(body.CenterOfMassTransform));
+
+                                    if (use6Dof)
+                                    {
+                                        Generic6DofConstraint dof6 = new Generic6DofConstraint(body, Matrix.Translation(localPivot), false);
+                                        dof6.LinearLowerLimit = Vector3.Zero;
+                                        dof6.LinearUpperLimit = Vector3.Zero;
+                                        dof6.AngularLowerLimit = Vector3.Zero;
+                                        dof6.AngularUpperLimit = Vector3.Zero;
+
+                                        PhysicsContext.World.AddConstraint(dof6);
+                                        pickConstraint = dof6;
+
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 0);
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 1);
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 2);
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 3);
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 4);
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 5);
+
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 0);
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 1);
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 2);
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 3);
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 4);
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 5);
+                                    }
+                                    else
+                                    {
+                                        Point2PointConstraint p2p = new Point2PointConstraint(body, localPivot);
+                                        PhysicsContext.World.AddConstraint(p2p);
+                                        pickConstraint = p2p;
+                                        p2p.Setting.ImpulseClamp = 30;
+                                        //very weak constraint for picking
+                                        p2p.Setting.Tau = 0.001f;
+                                        /*
+                                        p2p.SetParam(ConstraintParams.Cfm, 0.8f, 0);
+                                        p2p.SetParam(ConstraintParams.Cfm, 0.8f, 1);
+                                        p2p.SetParam(ConstraintParams.Cfm, 0.8f, 2);
+                                        p2p.SetParam(ConstraintParams.Erp, 0.1f, 0);
+                                        p2p.SetParam(ConstraintParams.Erp, 0.1f, 1);
+                                        p2p.SetParam(ConstraintParams.Erp, 0.1f, 2);
+                                        */
+                                    }
+                                    use6Dof = !use6Dof;
+
+                                    oldPickingDist = (pickPos - rayFrom).Length();
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (Input.MousePressed == MouseButtonFlags.RightUp)
+                {
+                    if (pickConstraint != null && PhysicsContext.World != null)
+                    {
+                        PhysicsContext.World.RemoveConstraint(pickConstraint);
+                        pickConstraint.Dispose();
+                        pickConstraint = null;
+                        pickedBody.ForceActivationState(ActivationState.ActiveTag);
+                        pickedBody.DeactivationTime = 0;
+                        pickedBody = null;
+                    }
+                }
+            }
+
+            // Mouse movement
+            if (Input.MouseDown == MouseButtonFlags.RightDown)
+            {
+                if (pickConstraint != null)
+                {
+                    Vector3 newRayTo = GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView);
+
+                    if (pickConstraint.ConstraintType == TypedConstraintType.D6)
+                    {
+                        Generic6DofConstraint pickCon = (Generic6DofConstraint)pickConstraint;
+
+                        //keep it at the same picking distance
+                        Vector3 rayFrom = Freelook.Eye;
+                        Vector3 scale;
+                        Quaternion rotation;
+                        Vector3 oldPivotInB;
+                        pickCon.FrameOffsetA.Decompose(out scale, out rotation, out oldPivotInB);
+
+                        Vector3 dir = newRayTo - rayFrom;
+                        dir.Normalize();
+                        dir *= oldPickingDist;
+                        Vector3 newPivotB = rayFrom + dir;
+
+                        Matrix tempFrameOffsetA = pickCon.FrameOffsetA;
+                        Vector4 transRow = tempFrameOffsetA.get_Rows(3);
+                        transRow.X = newPivotB.X;
+                        transRow.Y = newPivotB.Y;
+                        transRow.Z = newPivotB.Z;
+                        tempFrameOffsetA.set_Rows(3, transRow);
+                        pickCon.FrameOffsetA = tempFrameOffsetA;
+                    }
+                    else
+                    {
+                        Point2PointConstraint pickCon = (Point2PointConstraint)pickConstraint;
+
+                        //keep it at the same picking distance
+                        Vector3 rayFrom = Freelook.Eye;
+                        Vector3 oldPivotInB = pickCon.PivotInB;
+
+                        Vector3 dir = newRayTo - rayFrom;
+                        dir.Normalize();
+                        dir *= oldPickingDist;
+                        Vector3 newPivotB = rayFrom + dir;
+
+                        pickCon.PivotInB = newPivotB;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -526,32 +649,44 @@ namespace DemoFramework
             if (Context9 == null)
                 return;
 
+            togglingFullScreen = true;
+
             OnResourceUnload();
 
             if (Context9.PresentParameters.Windowed)
             {
-                tempWindowWidth = Form.ClientSize.Width;
-                tempWindowHeight = Form.ClientSize.Height;
-                Context9.PresentParameters.BackBufferWidth = System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width;
-                Context9.PresentParameters.BackBufferHeight = System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Height;
-                Form.ClientSize = new System.Drawing.Size(
-                    Context9.PresentParameters.BackBufferWidth,
-                    Context9.PresentParameters.BackBufferHeight
-                    );
+                windowedFormWindowState = Form.WindowState;
+                windowedFormBorderStyle = Form.FormBorderStyle;
+
+                Width = Form.ClientSize.Width;
+                Height = Form.ClientSize.Height;
+
+                // Only normal window can be used in full screen.
+                if (Form.WindowState != FormWindowState.Normal)
+                    Form.WindowState = FormWindowState.Normal;
+
+                Context9.PresentParameters.BackBufferWidth = FullScreenWidth;
+                Context9.PresentParameters.BackBufferHeight = FullScreenHeight;
+                Form.FormBorderStyle = FormBorderStyle.None;
+
+                Context9.PresentParameters.Windowed = false;
             }
             else
             {
-                if (tempWindowWidth > 0 && tempWindowHeight > 0)
-                {
-                    Context9.PresentParameters.BackBufferWidth = tempWindowWidth;
-                    Context9.PresentParameters.BackBufferHeight = tempWindowHeight;
-                    Form.ClientSize = new System.Drawing.Size(
-                        tempWindowWidth, tempWindowHeight);
-                }
+                Context9.PresentParameters.BackBufferWidth = Width;
+                Context9.PresentParameters.BackBufferHeight = Height;
+                Form.FormBorderStyle = windowedFormBorderStyle;
+                Form.WindowState = windowedFormWindowState;
+                if (Form.WindowState == FormWindowState.Normal)
+                    Form.ClientSize = new System.Drawing.Size(Width, Height);
+
+                Context9.PresentParameters.Windowed = true;
             }
-            Context9.PresentParameters.Windowed = !Context9.PresentParameters.Windowed;
+
             Device9.Reset(Context9.PresentParameters);
             OnResourceLoad();
+
+            togglingFullScreen = false;
         }
     }
 }
