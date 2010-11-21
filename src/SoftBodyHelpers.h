@@ -1,11 +1,34 @@
 #pragma once
 
+// Fully implemented as of 21 Nov 2010
+
 namespace BulletSharp
 {
+	ref class DebugDraw;
+
 	namespace SoftBody
 	{
 		ref class SoftBody;
 		ref class SoftBodyWorldInfo;
+
+		public enum class DrawFlags
+		{
+			Nodes = fDrawFlags::Nodes,
+			Links = fDrawFlags::Links,
+			Faces = fDrawFlags::Faces,
+			Tetras = fDrawFlags::Tetras,
+			Normals = fDrawFlags::Normals,
+			Contacts = fDrawFlags::Contacts,
+			Anchors = fDrawFlags::Anchors,
+			Notes = fDrawFlags::Notes,
+			Clusters = fDrawFlags::Clusters,
+			NodeTree = fDrawFlags::NodeTree,
+			FaceTree = fDrawFlags::FaceTree,
+			ClusterTree = fDrawFlags::ClusterTree,
+			Joints = fDrawFlags::Joints,
+			Std = fDrawFlags::Std,
+			StdTetra = fDrawFlags::StdTetra
+		};
 
 		public ref class SoftBodyHelpers sealed
 		{
@@ -36,11 +59,29 @@ namespace BulletSharp
 			static SoftBody^ CreatePatch(SoftBodyWorldInfo^ worldInfo,
 				Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11,
 				int resx, int resy, int fixeds, bool gendiags);
-			//static SoftBody^ CreatePatchUV(SoftBodyWorldInfo^ worldInfo,
-			//	Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11,
-			//	int resx, int resy, int fixeds, bool gendiags, array<float> texCoords);
+			static SoftBody^ CreatePatchUV(SoftBodyWorldInfo^ worldInfo,
+				Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11,
+				int resx, int resy, int fixeds, bool gendiags, array<float>^ texCoords);
+			static SoftBody^ CreatePatchUV(SoftBodyWorldInfo^ worldInfo,
+				Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11,
+				int resx, int resy, int fixeds, bool gendiags);
 			static SoftBody^ CreateRope(SoftBodyWorldInfo^ worldInfo,
 				Vector3 from, Vector3 to, int res, int fixeds);
+#ifndef DISABLE_DEBUGDRAW
+			static void Draw(SoftBody^ psb, DebugDraw^ iDraw, DrawFlags drawFlags);
+			static void Draw(SoftBody^ psb, DebugDraw^ iDraw);
+			static void DrawInfos(SoftBody^ psb, DebugDraw^ iDraw, bool masses, bool areas, bool stress);
+			static void DrawNodeTree(SoftBody^ psb, DebugDraw^ iDraw, int minDepth, int maxDepth);
+			static void DrawNodeTree(SoftBody^ psb, DebugDraw^ iDraw, int minDepth);
+			static void DrawNodeTree(SoftBody^ psb, DebugDraw^ iDraw);
+			static void DrawFaceTree(SoftBody^ psb, DebugDraw^ iDraw, int minDepth, int maxDepth);
+			static void DrawFaceTree(SoftBody^ psb, DebugDraw^ iDraw, int minDepth);
+			static void DrawFaceTree(SoftBody^ psb, DebugDraw^ iDraw);
+			static void DrawClusterTree(SoftBody^ psb, DebugDraw^ iDraw, int minDepth, int maxDepth);
+			static void DrawClusterTree(SoftBody^ psb, DebugDraw^ iDraw, int minDepth);
+			static void DrawClusterTree(SoftBody^ psb, DebugDraw^ iDraw);
+			static void DrawFrame(SoftBody^ psb, DebugDraw^ iDraw);
+#endif
 		};
 	};
 };

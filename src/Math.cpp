@@ -27,6 +27,14 @@ void BulletSharp::Math::Vector3ToBtVector3(Vector3 vector, btVector3* vectorOut)
 #endif
 }
 
+btVector3* BulletSharp::Math::Vector3ArrayToUnmanaged(array<Vector3>^ v)
+{
+	btVector3* btVertices = new btVector3[v->Length];
+	for(int i=0; i<v->Length; i++)
+		Vector3ToBtVector3(v[i], &btVertices[i]);
+	return btVertices;
+}
+
 btVector4* BulletSharp::Math::Vector4ToBtVector4(Vector4 vector)
 {
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)

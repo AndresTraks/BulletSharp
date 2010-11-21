@@ -155,12 +155,9 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(array<int>^ indices, array<Ve
 {
 	pin_ptr<int> indicesPtr = &indices[0];
 	int* indicesBase = new int[indices->Length];
-	btVector3* verticesBase = new btVector3[vertices->Length];
+	btVector3* verticesBase = Math::Vector3ArrayToUnmanaged(vertices);
 
 	memcpy(indicesBase, indicesPtr, indices->Length * sizeof(int));
-
-	for(int i=0; i<vertices->Length; i++)
-		Math::Vector3ToBtVector3(vertices[i], &verticesBase[i]);
 
 	UnmanagedPointer = new btTriangleIndexVertexArray(indices->Length / 3, indicesBase, 3 * sizeof(int),
 		vertices->Length, *verticesBase, sizeof(btVector3));

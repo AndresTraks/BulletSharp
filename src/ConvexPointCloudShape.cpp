@@ -53,12 +53,8 @@ array<Vector3>^ ConvexPointCloudShape::GetUnscaledPoints()
 
 void ConvexPointCloudShape::SetPoints(array<Vector3>^ points, bool computeAabb, Vector3 localScaling)
 {
-	btVector3* btPoints = new btVector3[points->Length];
+	btVector3* btPoints = Math::Vector3ArrayToUnmanaged(points);
 	btVector3* localScalingTemp = Math::Vector3ToBtVector3(localScaling);
-	
-	int i;
-	for (i=0; i<points->Length; i++)
-		Math::Vector3ToBtVector3(points[i], &btPoints[i]);
 	
 	UnmanagedPointer->setPoints(btPoints, points->Length, computeAabb, *localScalingTemp);
 
@@ -74,11 +70,7 @@ void ConvexPointCloudShape_SetPoints(btConvexPointCloudShape* shape, btVector3* 
 #pragma managed(pop)
 void ConvexPointCloudShape::SetPoints(array<Vector3>^ points, bool computeAabb)
 {
-	btVector3* btPoints = new btVector3[points->Length];
-	
-	int i;
-	for (i=0; i<points->Length; i++)
-		Math::Vector3ToBtVector3(points[i], &btPoints[i]);
+	btVector3* btPoints = Math::Vector3ArrayToUnmanaged(points);
 	
 	ConvexPointCloudShape_SetPoints(UnmanagedPointer, btPoints, points->Length, computeAabb);
 }
@@ -91,11 +83,7 @@ void ConvexPointCloudShape_SetPoints(btConvexPointCloudShape* shape, btVector3* 
 #pragma managed(pop)
 void ConvexPointCloudShape::SetPoints(array<Vector3>^ points)
 {
-	btVector3* btPoints = new btVector3[points->Length];
-	
-	int i;
-	for (i=0; i<points->Length; i++)
-		Math::Vector3ToBtVector3(points[i], &btPoints[i]);
+	btVector3* btPoints = Math::Vector3ArrayToUnmanaged(points);
 	
 	ConvexPointCloudShape_SetPoints(UnmanagedPointer, btPoints, points->Length);
 }

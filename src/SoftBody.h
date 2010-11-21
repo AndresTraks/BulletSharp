@@ -1,6 +1,6 @@
 #pragma once
 
-// Fully implemented as of 20 nov 2010
+// Fully implemented as of 20 Nov 2010
 
 #include "CollisionObject.h"
 #include <msclr/auto_gcroot.h>

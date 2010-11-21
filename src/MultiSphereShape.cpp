@@ -12,20 +12,17 @@ MultiSphereShape::MultiSphereShape(array<Vector3>^ positions, array<btScalar>^ r
 {
 	int numSpheres = (positions->Length < radi->Length) ? positions->Length : radi->Length;
 
-	btVector3* positionsTemp = new btVector3[numSpheres];
+	btVector3* positionsTemp = Math::Vector3ArrayToUnmanaged(positions);
 	btScalar* radiTemp = new btScalar[numSpheres];
 	int i;
-
-	for(i=0; i<numSpheres; i++)
-		Math::Vector3ToBtVector3(positions[i], &positionsTemp[i]);
 
 	for(i=0; i<numSpheres; i++)
 		radiTemp[i] = radi[i];
 
 	UnmanagedPointer = new btMultiSphereShape(positionsTemp, radiTemp, numSpheres);
 
-	delete positionsTemp;
-	delete radiTemp;
+	delete[] positionsTemp;
+	delete[] radiTemp;
 }
 
 Vector3 MultiSphereShape::GetSpherePosition(int index)

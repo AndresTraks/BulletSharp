@@ -20,12 +20,8 @@ void GimTriangleContact::CopyFrom(GimTriangleContact^ other)
 
 void GimTriangleContact::MergePoints(Vector4 plane, btScalar margin, array<Vector3>^ points)
 {
-	btVector3* pointsTemp = new btVector3[points->Length];
+	btVector3* pointsTemp = Math::Vector3ArrayToUnmanaged(points);
 	btVector4* planeTemp = Math::Vector4ToBtVector4(plane);
-
-	int i;
-	for (i=0; i<points->Length; i++)
-		Math::Vector3ToBtVector3(points[i], &pointsTemp[i]);
 
 	_contact->merge_points(*planeTemp, margin, pointsTemp, points->Length);
 
@@ -99,14 +95,8 @@ void PrimitiveTriangle::BuildTriPlane()
 
 int PrimitiveTriangle::ClipTriangle(PrimitiveTriangle^ other, array<Vector3>^ clippedPoints)
 {
-	btVector3* clippedPointsTemp = new btVector3[clippedPoints->Length];
-
-	int i;
-	for (i=0; i<clippedPoints->Length; i++)
-		Math::Vector3ToBtVector3(clippedPoints[i], &clippedPointsTemp[i]);
-
+	btVector3* clippedPointsTemp = Math::Vector3ArrayToUnmanaged(clippedPoints);
 	int ret = _triangle->clip_triangle(*other->UnmanagedPointer, clippedPointsTemp);
-
 	delete[] clippedPointsTemp;
 	return ret;
 }

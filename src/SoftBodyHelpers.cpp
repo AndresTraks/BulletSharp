@@ -11,6 +11,9 @@
 #include "SoftBody.h"
 #include "SoftBodyHelpers.h"
 #include "StringConv.h"
+#ifndef DISABLE_DEBUGDRAW
+#include "DebugDraw.h"
+#endif
 
 using namespace BulletSharp::SoftBody;
 
@@ -37,9 +40,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateEllipsoid(SoftBodyWorldI
 BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromConvexHull(SoftBodyWorldInfo ^worldInfo,
 	array<Vector3>^ vertices, bool randomizeConstraints)
 {
-	btVector3* btVertices = new btVector3[vertices->Length];
-	for(int i=0; i<vertices->Length; i++)
-		Math::Vector3ToBtVector3(vertices[i], &btVertices[i]);
+	btVector3* btVertices = Math::Vector3ArrayToUnmanaged(vertices);
 
 	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->UnmanagedPointer,
 		btVertices, vertices->Length, randomizeConstraints));
@@ -51,9 +52,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromConvexHull(SoftBodyW
 BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromConvexHull(SoftBodyWorldInfo ^worldInfo,
 	array<Vector3>^ vertices)
 {
-	btVector3* btVertices = new btVector3[vertices->Length];
-	for(int i=0; i<vertices->Length; i++)
-		Math::Vector3ToBtVector3(vertices[i], &btVertices[i]);
+	btVector3* btVertices = Math::Vector3ArrayToUnmanaged(vertices);
 
 	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->UnmanagedPointer,
 		btVertices, vertices->Length));
@@ -236,26 +235,24 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorl
 	array<Vector3>^ vertices, array<int>^ triangles, bool randomizeConstraints)
 {
 	pin_ptr<int> trianglesPtr = &triangles[0];
-
-	btVector3* verticesPtr = new btVector3[vertices->Length];
-	for(int i=0; i<vertices->Length; i++)
-		Math::Vector3ToBtVector3(vertices[i], &verticesPtr[i]);
+	btVector3* btVertices = Math::Vector3ArrayToUnmanaged(vertices);
 
 	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
-		verticesPtr[0], trianglesPtr, triangles->Length / 3, randomizeConstraints));
+		(btScalar*)btVertices, trianglesPtr, triangles->Length / 3, randomizeConstraints));
+
+	delete[] btVertices;
 }
 
 BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorldInfo^ worldInfo,
 	array<Vector3>^ vertices, array<int>^ triangles)
 {
 	pin_ptr<int> trianglesPtr = &triangles[0];
-
-	btVector3* verticesPtr = new btVector3[vertices->Length];
-	for(int i=0; i<vertices->Length; i++)
-		Math::Vector3ToBtVector3(vertices[i], &verticesPtr[i]);
+	btVector3* btVertices = Math::Vector3ArrayToUnmanaged(vertices);
 
 	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
-		verticesPtr[0], trianglesPtr, triangles->Length / 3));
+		(btScalar*)btVertices, trianglesPtr, triangles->Length / 3));
+
+	delete[] btVertices;
 }
 
 BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatch(SoftBodyWorldInfo^ worldInfo,
@@ -268,6 +265,48 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatch(SoftBodyWorldInfo^
 	btVector3* corner11Temp = Math::Vector3ToBtVector3(corner11);
 
 	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatch(*worldInfo->UnmanagedPointer,
+		*corner00Temp, *corner10Temp, *corner01Temp, *corner11Temp, resx, resy, fixeds, gendiags));
+
+	delete corner00Temp;
+	delete corner10Temp;
+	delete corner01Temp;
+	delete corner11Temp;
+
+	return body;
+}
+
+BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatchUV(SoftBodyWorldInfo^ worldInfo,
+	Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11,
+	int resx, int resy, int fixeds, bool gendiags, array<float>^ texCoords)
+{
+	btVector3* corner00Temp = Math::Vector3ToBtVector3(corner00);
+	btVector3* corner10Temp = Math::Vector3ToBtVector3(corner10);
+	btVector3* corner01Temp = Math::Vector3ToBtVector3(corner01);
+	btVector3* corner11Temp = Math::Vector3ToBtVector3(corner11);
+
+	pin_ptr<float> texCoordsPtr = &texCoords[0];
+
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatchUV(*worldInfo->UnmanagedPointer,
+		*corner00Temp, *corner10Temp, *corner01Temp, *corner11Temp, resx, resy, fixeds, gendiags, texCoordsPtr));
+
+	delete corner00Temp;
+	delete corner10Temp;
+	delete corner01Temp;
+	delete corner11Temp;
+
+	return body;
+}
+
+BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatchUV(SoftBodyWorldInfo^ worldInfo,
+	Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11,
+	int resx, int resy, int fixeds, bool gendiags)
+{
+		btVector3* corner00Temp = Math::Vector3ToBtVector3(corner00);
+	btVector3* corner10Temp = Math::Vector3ToBtVector3(corner10);
+	btVector3* corner01Temp = Math::Vector3ToBtVector3(corner01);
+	btVector3* corner11Temp = Math::Vector3ToBtVector3(corner11);
+
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatchUV(*worldInfo->UnmanagedPointer,
 		*corner00Temp, *corner10Temp, *corner01Temp, *corner11Temp, resx, resy, fixeds, gendiags));
 
 	delete corner00Temp;
@@ -292,5 +331,72 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateRope(SoftBodyWorldInfo^ 
 
 	return body;
 }
+
+#ifndef DISABLE_DEBUGDRAW
+void SoftBodyHelpers::Draw(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw, DrawFlags drawFlags)
+{
+	btSoftBodyHelpers::Draw(psb->UnmanagedPointer, iDraw->UnmanagedPointer, (int)drawFlags);
+}
+
+void SoftBodyHelpers::Draw(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw)
+{
+	btSoftBodyHelpers::Draw(psb->UnmanagedPointer, iDraw->UnmanagedPointer);
+}
+
+void SoftBodyHelpers::DrawInfos(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw, bool masses, bool areas, bool stress)
+{
+	btSoftBodyHelpers::DrawInfos(psb->UnmanagedPointer, iDraw->UnmanagedPointer, masses, areas, stress);
+}
+
+void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw, int minDepth, int maxDepth)
+{
+	btSoftBodyHelpers::DrawNodeTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer, minDepth, maxDepth);
+}
+
+void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw, int minDepth)
+{
+	btSoftBodyHelpers::DrawNodeTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer, minDepth);
+}
+
+void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw)
+{
+	btSoftBodyHelpers::DrawNodeTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer);
+}
+
+void SoftBodyHelpers::DrawFaceTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw, int minDepth, int maxDepth)
+{
+	btSoftBodyHelpers::DrawFaceTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer, minDepth, maxDepth);
+}
+
+void SoftBodyHelpers::DrawFaceTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw, int minDepth)
+{
+	btSoftBodyHelpers::DrawFaceTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer, minDepth);
+}
+
+void SoftBodyHelpers::DrawFaceTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw)
+{
+	btSoftBodyHelpers::DrawFaceTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer);
+}
+
+void SoftBodyHelpers::DrawClusterTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw, int minDepth, int maxDepth)
+{
+	btSoftBodyHelpers::DrawClusterTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer, minDepth, maxDepth);
+}
+
+void SoftBodyHelpers::DrawClusterTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw, int minDepth)
+{
+	btSoftBodyHelpers::DrawClusterTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer, minDepth);
+}
+
+void SoftBodyHelpers::DrawClusterTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw)
+{
+	btSoftBodyHelpers::DrawClusterTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer);
+}
+
+void SoftBodyHelpers::DrawFrame(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw)
+{
+	btSoftBodyHelpers::DrawFrame(psb->UnmanagedPointer, iDraw->UnmanagedPointer);
+}
+#endif
 
 #endif

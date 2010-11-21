@@ -62,9 +62,7 @@ x SimpleDynamicsWorld (for unit-testing)
 
 
 SoftBody
-0 SoftBody
 - SoftBodyConcaveCollisionAlgorithm
-0 SoftBodyHelpers
 - SoftBodyInternals (internal)
 0 SoftBodyRigidBodyCollisionAlgorithm
 0 SoftBodyRigidDynamicsWorld

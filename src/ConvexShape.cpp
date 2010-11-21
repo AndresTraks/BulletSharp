@@ -13,13 +13,12 @@ void ConvexShape::BatchedUnitVectorGetSupportingVertexWithoutMargin(array<Vector
 {
 	int i;
 	int numVertices = vectors->Length;
+	btVector3* vectorsTemp = Math::Vector3ArrayToUnmanaged(vectors);
 	btVector3* supportVerticesOutTemp = new btVector3[numVertices];
 
-	btVector3* vectorsTemp = new btVector3[numVertices];
-	for (i=0; i<numVertices; i++)
-		Math::Vector3ToBtVector3(vectors[i], &vectorsTemp[i]);
-
 	UnmanagedPointer->batchedUnitVectorGetSupportingVertexWithoutMargin(vectorsTemp, supportVerticesOutTemp, numVertices);
+
+	delete[] vectorsTemp;
 
 	supportVerticesOut = gcnew array<Vector3>(numVertices);
 	for (i=0; i<numVertices; i++)
