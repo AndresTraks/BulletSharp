@@ -1,9 +1,5 @@
 #pragma once
 
-#pragma managed(push, off)
-#include <BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
-#pragma managed(pop)
-
 #include "ActivatingCollisionAlgorithm.h"
 
 namespace BulletSharp

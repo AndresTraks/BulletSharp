@@ -1,8 +1,6 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <BulletCollision/NarrowPhaseCollision/btGjkPairDetector.h>
-#pragma managed(pop)
+#ifndef DISABLE_UNCOMMON
 
 #include "ConvexPenetrationDepthSolver.h"
 #include "ConvexShape.h"
@@ -119,3 +117,5 @@ btGjkPairDetector* GjkPairDetector::UnmanagedPointer::get()
 {
 	return (btGjkPairDetector*)DiscreteCollisionDetectorInterface::UnmanagedPointer;
 }
+
+#endif

@@ -1,10 +1,8 @@
 #include "StdAfx.h"
 
-// Fully implemented as of 30 Jun 2010
+// Fully implemented as of 24 Nov 2010
 
-#pragma managed(push, off)
-#include <BulletCollision/NarrowPhaseCollision/btGjkEpaPenetrationDepthSolver.h>
-#pragma managed(pop)
+#ifndef DISABLE_UNCOMMON
 
 #include "GjkEpaPenetrationDepthSolver.h"
 
@@ -12,3 +10,5 @@ GjkEpaPenetrationDepthSolver::GjkEpaPenetrationDepthSolver()
 : ConvexPenetrationDepthSolver(new btGjkEpaPenetrationDepthSolver())
 {
 }
+
+#endif

@@ -7,8 +7,6 @@
 #include "Serializer.h"
 #endif
 
-#include <msclr/auto_gcroot.h>
-
 CollisionObject::CollisionObject(btCollisionObject* collisionObject)
 {
 	_collisionObject = collisionObject;

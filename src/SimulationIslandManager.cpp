@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
+
 #include "Dispatcher.h"
 #include "CollisionWorld.h"
 #include "PersistentManifold.h"
@@ -144,3 +146,5 @@ void SimulationIslandManager::UnmanagedPointer::set(btSimulationIslandManager* v
 {
 	_manager = value;
 }
+
+#endif

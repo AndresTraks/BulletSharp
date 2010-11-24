@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Enums.h"
-
 namespace BulletSharp
 {
 	public ref class TypedObject

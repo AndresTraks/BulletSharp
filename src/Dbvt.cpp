@@ -130,10 +130,7 @@ DbvtAabbMm^ DbvtAabbMm::FromMM(Vector3 mi, Vector3 mx)
 
 DbvtAabbMm^ DbvtAabbMm::FromPoints(array<Vector3>^ pts)
 {
-	btVector3* pointsTemp = new btVector3[pts->Length];
-	for(int i=0; i<pts->Length; i++)
-		BulletSharp::Math::Vector3ToBtVector3(pts[i], &pointsTemp[i]);
-
+	btVector3* pointsTemp = Math::Vector3ArrayToUnmanaged(pts);
 	btDbvtAabbMm* aabbMm = new btDbvtAabbMm;
 	DbvtAabbMm_FromPoints(aabbMm, pointsTemp, pts->Length);
 	delete[] pointsTemp;
@@ -564,13 +561,8 @@ void Dbvt::Clone(Dbvt^ dest)
 void Dbvt::CollideKdop(DbvtNode^ root, array<Vector3>^ normals,
 	array<btScalar>^ offsets, int count, Dbvt::ICollide^ policy)
 {
-	btVector3* btNormals = new btVector3[normals->Length];
-	btScalar* btOffsets = new btScalar[offsets->Length];
-
-	for(int i=0; i<count; i++)
-		BulletSharp::Math::Vector3ToBtVector3(normals[i], &btNormals[i]);
-	for(int i=0; i<count; i++)
-		btOffsets[i] = offsets[i];
+	btVector3* btNormals = Math::Vector3ArrayToUnmanaged(normals);
+	btScalar* btOffsets = Math::BtScalarArrayToUnmanaged(offsets);
 
 	btDbvt::collideKDOP(root->UnmanagedPointer, btNormals, btOffsets,
 		normals->Length, *policy->UnmanagedPointer);
@@ -582,13 +574,8 @@ void Dbvt::CollideKdop(DbvtNode^ root, array<Vector3>^ normals,
 void Dbvt::CollideOcl(DbvtNode^ root, array<Vector3>^ normals, array<btScalar>^ offsets,
 	Vector3 sortaxis, int count, ICollide^ policy, bool fullsort)
 {
-	btVector3* btNormals = new btVector3[normals->Length];
-	btScalar* btOffsets = new btScalar[offsets->Length];
-
-	for(int i=0; i<count; i++)
-		BulletSharp::Math::Vector3ToBtVector3(normals[i], &btNormals[i]);
-	for(int i=0; i<count; i++)
-		btOffsets[i] = offsets[i];
+	btVector3* btNormals = Math::Vector3ArrayToUnmanaged(normals);
+	btScalar* btOffsets = Math::BtScalarArrayToUnmanaged(offsets);
 
 	btVector3* sortaxisTemp = Math::Vector3ToBtVector3(sortaxis);
 
@@ -603,14 +590,8 @@ void Dbvt::CollideOcl(DbvtNode^ root, array<Vector3>^ normals, array<btScalar>^ 
 void Dbvt::CollideOcl(DbvtNode^ root, array<Vector3>^ normals, array<btScalar>^ offsets,
 	Vector3 sortaxis, int count, ICollide^ policy)
 {
-	btVector3* btNormals = new btVector3[normals->Length];
-	btScalar* btOffsets = new btScalar[offsets->Length];
-
-	for(int i=0; i<count; i++)
-		BulletSharp::Math::Vector3ToBtVector3(normals[i], &btNormals[i]);
-	for(int i=0; i<count; i++)
-		btOffsets[i] = offsets[i];
-
+	btVector3* btNormals = Math::Vector3ArrayToUnmanaged(normals);
+	btScalar* btOffsets = Math::BtScalarArrayToUnmanaged(offsets, count);
 	btVector3* sortaxisTemp = Math::Vector3ToBtVector3(sortaxis);
 
 	btDbvt::collideOCL(root->UnmanagedPointer, btNormals, btOffsets,
@@ -679,11 +660,8 @@ int Dbvt::MaxDepth(DbvtNode^ node)
 
 int Dbvt::Nearest(array<int>^ i, StkNps^ a, btScalar v, int l, int h)
 {
-	int* bti = new int[i->Length];
-	int j;
-	for (j=0; j<i->Length; j++)
-		bti[j] = i[j];
-	return btDbvt::nearest(bti, a->UnmanagedPointer, v, l, h);
+	pin_ptr<int> iPtr = &i[0];
+	return btDbvt::nearest(iPtr, a->UnmanagedPointer, v, l, h);
 }
 
 void Dbvt::OptimizeBottomUp()

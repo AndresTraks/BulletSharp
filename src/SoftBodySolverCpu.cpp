@@ -1,11 +1,6 @@
 #include "StdAfx.h"
 
-#ifndef DISABLE_MULTITHREADED
-#ifndef DISABLE_SOFTBODY
-
-#pragma managed(push, off)
-#include <BulletMultiThreaded/GpuSoftBodySolvers/CPU/btSoftBodySolver_CPU.h>
-#pragma managed(pop)
+#if !defined(DISABLE_MULTITHREADED) & !defined(DISABLE_SOFTBODY) & defined(__OPENCL_CL_H)
 
 #include "SoftBodySolverCpu.h"
 
@@ -21,5 +16,4 @@ btCPUSoftBodySolver* CpuSoftBodySolver::UnmanagedPointer::get()
 	return (btCPUSoftBodySolver*)SoftBodySolver::UnmanagedPointer;
 }
 
-#endif
 #endif

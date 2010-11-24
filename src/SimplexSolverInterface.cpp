@@ -1,8 +1,9 @@
 #include "StdAfx.h"
 
-#include "SimplexSolverInterface.h"
-
+#ifndef DISABLE_UNCOMMON
 #ifndef NO_VIRTUAL_INTERFACE
+
+#include "SimplexSolverInterface.h"
 
 SimplexSolverInterface::SimplexSolverInterface(btSimplexSolverInterface* simplexSolver)
 {
@@ -40,4 +41,5 @@ void SimplexSolverInterface::UnmanagedPointer::set(btSimplexSolverInterface* val
 	_simplexSolver = value;
 }
 
+#endif
 #endif

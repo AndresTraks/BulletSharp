@@ -1,13 +1,9 @@
 #pragma once
 
-// Fully implemented as of 25 Jun 2010
+// Fully implemented as of 24 Nov 2010
 
 #include "ConvexCast.h"
 #include "SimplexSolverInterface.h"
-
-#pragma managed(push, off)
-#include <BulletCollision/NarrowPhaseCollision/btGjkConvexCast.h>
-#pragma managed(pop)
 
 namespace BulletSharp
 {

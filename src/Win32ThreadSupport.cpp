@@ -2,11 +2,6 @@
 
 #ifndef DISABLE_MULTITHREADED
 
-#pragma managed(push, off)
-#include <BulletMultiThreaded/Win32ThreadSupport.h>
-#include <BulletMultiThreaded/SpuNarrowPhaseCollisionTask/SpuGatheringCollisionTask.h>
-#pragma managed(pop)
-
 #include "StringConv.h"
 #include "Win32ThreadSupport.h"
 

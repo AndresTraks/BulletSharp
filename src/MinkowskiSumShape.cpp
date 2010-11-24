@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
+
 #include "ConvexShape.h"
 #include "MinkowskiSumShape.h"
 
@@ -49,3 +51,5 @@ btMinkowskiSumShape* MinkowskiSumShape::UnmanagedPointer::get()
 {
 	return (btMinkowskiSumShape*)ConvexInternalShape::UnmanagedPointer;
 }
+
+#endif

@@ -1,8 +1,6 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <BulletCollision/NarrowPhaseCollision/btVoronoiSimplexSolver.h>
-#pragma managed(pop)
+#ifndef DISABLE_UNCOMMON
 
 #include "VoronoiSimplexSolver.h"
 
@@ -288,4 +286,6 @@ void VoronoiSimplexSolver::UnmanagedPointer::set(btVoronoiSimplexSolver* value)
 {
 	_solver = value;
 }
+#endif
+
 #endif

@@ -2,7 +2,6 @@
 
 // Fully implemented as of 29 May 2010
 
-#include "Enums.h"
 #include "StridingMeshInterface.h"
 
 namespace BulletSharp

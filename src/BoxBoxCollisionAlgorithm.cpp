@@ -2,10 +2,6 @@
 
 #ifndef DISABLE_COLLISION_ALGORITHMS
 
-#pragma managed(push, off)
-#include <BulletCollision/CollisionDispatch/btBoxBoxCollisionAlgorithm.h>
-#pragma managed(pop)
-
 #include "BoxBoxCollisionAlgorithm.h"
 #include "CollisionObject.h"
 #include "PersistentManifold.h"

@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
+
 #include "BvhTriangleMeshShape.h"
 #include "ScaledBvhTriangleMeshShape.h"
 
@@ -25,3 +27,5 @@ btScaledBvhTriangleMeshShape* ScaledBvhTriangleMeshShape::UnmanagedPointer::get(
 {
 	return (btScaledBvhTriangleMeshShape*)ConcaveShape::UnmanagedPointer;
 }
+
+#endif

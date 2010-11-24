@@ -1384,12 +1384,12 @@
     <ClCompile Include="..\src\ManifoldResult.cpp" />
     <ClCompile Include="..\src\Math.cpp" />
     <ClCompile Include="..\src\Matrix.cpp" />
-    <ClCompile Include="..\src\MiniCL.cpp" />
     <ClCompile Include="..\src\MinkowskiPenetrationDepthSolver.cpp" />
     <ClCompile Include="..\src\MinkowskiSumShape.cpp" />
     <ClCompile Include="..\src\MotionState.cpp" />
     <ClCompile Include="..\src\MultiMaterialTriangleMeshShape.cpp" />
     <ClCompile Include="..\src\MultiSphereShape.cpp" />
+    <ClCompile Include="..\src\OpenCL.cpp" />
     <ClCompile Include="..\src\OptimizedBvh.cpp" />
     <ClCompile Include="..\src\OverlappingPairCache.cpp" />
     <ClCompile Include="..\src\OverlappingPairCallback.cpp" />
@@ -1414,6 +1414,7 @@
     <ClCompile Include="..\src\SimulationIslandManager.cpp" />
     <ClCompile Include="..\src\SliderConstraint.cpp" />
     <ClCompile Include="..\src\SoftBody.cpp" />
+    <ClCompile Include="..\src\SoftBodyConcaveCollisionAlgorithm.cpp" />
     <ClCompile Include="..\src\SoftBodyHelpers.cpp" />
     <ClCompile Include="..\src\SoftBodyRigidBodyCollisionConfiguration.cpp" />
     <ClCompile Include="..\src\SoftBodySolver.cpp" />
@@ -1571,12 +1572,12 @@
     <ClInclude Include="..\src\ManifoldResult.h" />
     <ClInclude Include="..\src\Math.h" />
     <ClInclude Include="..\src\Matrix.h" />
-    <ClInclude Include="..\src\MiniCL.h" />
     <ClInclude Include="..\src\MinkowskiPenetrationDepthSolver.h" />
     <ClInclude Include="..\src\MinkowskiSumShape.h" />
     <ClInclude Include="..\src\MotionState.h" />
     <ClInclude Include="..\src\MultiMaterialTriangleMeshShape.h" />
     <ClInclude Include="..\src\MultiSphereShape.h" />
+    <ClInclude Include="..\src\OpenCL.h" />
     <ClInclude Include="..\src\OptimizedBvh.h" />
     <ClInclude Include="..\src\OverlappingPairCache.h" />
     <ClInclude Include="..\src\OverlappingPairCallback.h" />
@@ -1601,6 +1602,7 @@
     <ClInclude Include="..\src\SimulationIslandManager.h" />
     <ClInclude Include="..\src\SliderConstraint.h" />
     <ClInclude Include="..\src\SoftBody.h" />
+    <ClInclude Include="..\src\SoftBodyConcaveCollisionAlgorithm.h" />
     <ClInclude Include="..\src\SoftBodyHelpers.h" />
     <ClInclude Include="..\src\SoftBodyRigidBodyCollisionConfiguration.h" />
     <ClInclude Include="..\src\SoftBodySolver.h" />

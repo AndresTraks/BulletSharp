@@ -22,8 +22,8 @@ namespace OpenCLClothDemo
             device = OclUtils.GetMaxFlopsDev(cxMainContext);
 
             OclUtils.PrintDeviceInfo(device);
-            
-            commandQueue = MiniCL.CreateCommandQueue(cxMainContext, device, CLCommandQueueProperties.None, out ciErrNum);
+
+            commandQueue = CL.CreateCommandQueue(cxMainContext, device, CLCommandQueueProperties.None, out ciErrNum);
         }
     }
 }

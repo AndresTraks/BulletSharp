@@ -1,7 +1,6 @@
 #pragma once
 
 #include "DiscreteDynamicsWorld.h"
-#include "Enums.h"
 
 namespace BulletSharp
 {

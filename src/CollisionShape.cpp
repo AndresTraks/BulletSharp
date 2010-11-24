@@ -1,14 +1,11 @@
 #include "StdAfx.h"
 
-#include "Box2dShape.h"
 #include "BoxShape.h"
 #include "CapsuleShape.h"
 #include "CollisionShape.h"
 #include "CompoundShape.h"
 #include "ConeShape.h"
-#include "Convex2DShape.h"
 #include "ConvexHullShape.h"
-#include "ConvexPointCloudShape.h"
 #include "ConvexShape.h"
 #include "ConvexTriangleMeshShape.h"
 #include "CylinderShape.h"
@@ -16,21 +13,26 @@
 #include "EmptyShape.h"
 //#include "HfFluidBuoyantConvexShape.h"
 //#include "HfFluidShape.h"
-#include "MinkowskiSumShape.h"
-#include "MultimaterialTriangleMeshShape.h"
 #include "MultiSphereShape.h"
 #include "SphereShape.h"
 #include "StaticPlaneShape.h"
 #include "StringConv.h"
-#include "HeightfieldTerrainShape.h"
 #include "TriangleMeshShape.h"
-#include "TriangleShape.h"
 #include "UniformScalingShape.h"
 #ifndef DISABLE_GIMPACT
 #include "GImpactShape.h"
 #endif
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
+#endif
+#ifndef DISABLE_UNCOMMON
+#include "Box2dShape.h"
+#include "Convex2DShape.h"
+#include "ConvexPointCloudShape.h"
+#include "HeightfieldTerrainShape.h"
+#include "MinkowskiSumShape.h"
+#include "MultimaterialTriangleMeshShape.h"
+#include "TriangleShape.h"
 #endif
 
 CollisionShape::CollisionShape(btCollisionShape* collisionShape)
@@ -77,8 +79,6 @@ CollisionShape^ CollisionShape::UpcastDetect()
 {
 	switch(ShapeType)
 	{
-	case BroadphaseNativeType::Box2dShape:
-		return gcnew Box2dShape((btBox2dShape*) _collisionShape);
 	case BroadphaseNativeType::BoxShape:
 		return gcnew BoxShape((btBoxShape*) _collisionShape);
 	case BroadphaseNativeType::CapsuleShape:
@@ -87,12 +87,8 @@ CollisionShape^ CollisionShape::UpcastDetect()
 		return gcnew CompoundShape((btCompoundShape*) _collisionShape);
 	case BroadphaseNativeType::ConeShape:
 		return gcnew ConeShape((btConeShape*) _collisionShape);
-	case BroadphaseNativeType::Convex2DShape:
-		return gcnew Convex2DShape((btConvex2dShape*) _collisionShape);
 	case BroadphaseNativeType::ConvexHullShape:
 		return gcnew ConvexHullShape((btConvexHullShape*) _collisionShape);
-	case BroadphaseNativeType::ConvexPointCloudShape:
-		return gcnew ConvexPointCloudShape((btConvexPointCloudShape*) _collisionShape);
 	case BroadphaseNativeType::ConvexShape:
 		return gcnew ConvexShape((btConvexShape*) _collisionShape);
 	case BroadphaseNativeType::ConvexTriangleMeshShape:
@@ -113,8 +109,6 @@ CollisionShape^ CollisionShape::UpcastDetect()
 	//	return gcnew HfFluidShape((btHfFluidShape*) _collisionShape);
 	//case BroadphaseNativeType::MinkowskiDifferenceShape:
 	//	return gcnew MinkowskiDifferenceShape((btMinkowskiDifferenceShape*) _collisionShape);
-	case BroadphaseNativeType::MinkowskiSumShape:
-		return gcnew MinkowskiSumShape((btMinkowskiSumShape*) _collisionShape);
 	case BroadphaseNativeType::MultiSphereShape:
 		return gcnew MultiSphereShape((btMultiSphereShape*) _collisionShape);
 	//case BroadphaseNativeType::ScaledTriangleMeshShape:
@@ -125,12 +119,8 @@ CollisionShape^ CollisionShape::UpcastDetect()
 		return gcnew StaticPlaneShape((btStaticPlaneShape*) _collisionShape);
 	//case BroadphaseNativeType::SoftBodyShape:
 	//	return gcnew SoftBody((btSoftBody*) _collisionShape);
-	case BroadphaseNativeType::TerrainShape:
-		return gcnew HeightfieldTerrainShape((btHeightfieldTerrainShape*) _collisionShape);
 	//case BroadphaseNativeType::TetrahedralShape:
 	//	return gcnew TetrahedralShape((btTetrahedralShape*) _collisionShape);
-	case BroadphaseNativeType::TriangleShape:
-		return gcnew TriangleShape((btTriangleShape*) _collisionShape);
 	case BroadphaseNativeType::UniformScalingShape:
 		return gcnew UniformScalingShape((btUniformScalingShape*) _collisionShape);
 
@@ -143,10 +133,24 @@ CollisionShape^ CollisionShape::UpcastDetect()
 #endif
 	}
 
+#ifndef DISABLE_UNCOMMON
+	case BroadphaseNativeType::Box2dShape:
+		return gcnew Box2dShape((btBox2dShape*) _collisionShape);
+	case BroadphaseNativeType::Convex2DShape:
+		return gcnew Convex2DShape((btConvex2dShape*) _collisionShape);
+	case BroadphaseNativeType::ConvexPointCloudShape:
+		return gcnew ConvexPointCloudShape((btConvexPointCloudShape*) _collisionShape);
+	case BroadphaseNativeType::MinkowskiSumShape:
+		return gcnew MinkowskiSumShape((btMinkowskiSumShape*) _collisionShape);
 	case BroadphaseNativeType::MultiMaterialTriangleMesh:
 		return gcnew MultimaterialTriangleMeshShape((btMultimaterialTriangleMeshShape*) _collisionShape);
+	case BroadphaseNativeType::TerrainShape:
+		return gcnew HeightfieldTerrainShape((btHeightfieldTerrainShape*) _collisionShape);
 	case BroadphaseNativeType::TriangleMeshShape:
 		return gcnew TriangleMeshShape((btTriangleMeshShape*) _collisionShape);
+	case BroadphaseNativeType::TriangleShape:
+		return gcnew TriangleShape((btTriangleShape*) _collisionShape);
+#endif
 
 	default:
 		return this;

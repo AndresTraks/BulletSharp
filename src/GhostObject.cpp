@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
+
 #include "AlignedObjectArray.h"
 #include "BroadphaseProxy.h"
 #include "CollisionWorld.h"
@@ -103,3 +105,5 @@ btPairCachingGhostObject* PairCachingGhostObject::UnmanagedPointer::get()
 {
 	return (btPairCachingGhostObject*) GhostObject::UnmanagedPointer;
 }
+
+#endif

@@ -3,7 +3,6 @@
 // Fully implemented as of 20 Nov 2010
 
 #include "CollisionObject.h"
-#include <msclr/auto_gcroot.h>
 
 using namespace msclr;
 
@@ -787,7 +786,7 @@ namespace BulletSharp
 			};
 		};
 
-		public ref class ImplicitFn
+		public ref class ImplicitFn abstract
 		{
 		private:
 			ImplicitFnWrapper* _implicitFn;

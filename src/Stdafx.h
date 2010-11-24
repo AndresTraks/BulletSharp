@@ -20,6 +20,7 @@
 //#define DISABLE_MULTITHREADED
 //#define DISABLE_SERIALIZE
 //#define DISABLE_SOFTBODY
+//#define DISABLE_UNCOMMON
 #define DISABLE_VECTORMATH_AOS
 //#define DISABLE_VEHICLE
 
@@ -32,6 +33,7 @@
 
 #define USE_MINICL
 //#define USE_AMD_OPENCL
+//#define USE_NVIDIA_OPENCL
 
 
 #if GRAPHICS_XNA31
@@ -137,21 +139,140 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <msclr/auto_gcroot.h>
+#include <stdio.h>
+#include <vcclr.h>
 
-#include "Math.h"
+
+// Bullet includes
+#pragma managed(push, off)
+
+#ifndef DISABLE_UNCOMMON
+#include <BulletCollision/CollisionDispatch/btBoxBoxDetector.h>
+#include <BulletCollision/CollisionDispatch/btGhostObject.h>
+#include <BulletCollision/CollisionDispatch/btSimulationIslandManager.h>
+#include <BulletCollision/CollisionDispatch/btUnionFind.h>
+#include <BulletCollision/CollisionDispatch/SphereTriangleDetector.h>
+#include <BulletCollision/CollisionShapes/btBox2dShape.h>
+#include <BulletCollision/CollisionShapes/btConvex2dShape.h>
+#include <BulletCollision/CollisionShapes/btConvexPointCloudShape.h>
+#include <BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h>
+#include <BulletCollision/CollisionShapes/btMaterial.h>
+#include <BulletCollision/CollisionShapes/btMinkowskiSumShape.h>
+#include <BulletCollision/CollisionShapes/btMultimaterialTriangleMeshShape.h>
+#include <BulletCollision/CollisionShapes/btScaledBvhTriangleMeshShape.h>
+#include <BulletCollision/CollisionShapes/btShapeHull.h>
+#include <BulletCollision/CollisionShapes/btTriangleBuffer.h>
+#include <BulletCollision/CollisionShapes/btTriangleIndexVertexMaterialArray.h>
+#include <BulletCollision/CollisionShapes/btTriangleShape.h>
+#include <LinearMath/btPoolAllocator.h>
+#include <BulletCollision/NarrowPhaseCollision/btContinuousConvexCollision.h>
+#include <BulletCollision/NarrowPhaseCollision/btGjkConvexCast.h>
+#include <BulletCollision/NarrowPhaseCollision/btConvexCast.h>
+#include <BulletCollision/NarrowPhaseCollision/btConvexPenetrationDepthSolver.h>
+#include <BulletCollision/NarrowPhaseCollision/btGjkEpaPenetrationDepthSolver.h>
+#include <BulletCollision/NarrowPhaseCollision/btGjkPairDetector.h>
+#include <BulletCollision/NarrowPhaseCollision/btMinkowskiPenetrationDepthSolver.h>
+#include <BulletCollision/NarrowPhaseCollision/btPointCollector.h>
+#include <BulletCollision/NarrowPhaseCollision/btSimplexSolverInterface.h>
+//#include <BulletCollision/NarrowPhaseCollision/btVoronoiSimplexSolver.h>
+#include <BulletDynamics/Character/btCharacterControllerInterface.h>
+#include <BulletDynamics/Character/btKinematicCharacterController.h>
+#endif
+
+#ifndef DISABLE_COLLISION_ALGORITHMS
+#include <BulletCollision/CollisionDispatch/btBox2dBox2dCollisionAlgorithm.h>
+#include <BulletCollision/CollisionDispatch/btBoxBoxCollisionAlgorithm.h>
+#include <BulletCollision/CollisionDispatch/btConvex2dConvex2dAlgorithm.h>
+#include <BulletCollision/CollisionDispatch/btConvexConvexAlgorithm.h>
+#include <BulletCollision/CollisionDispatch/btConvexConcaveCollisionAlgorithm.h>
+#include <BulletCollision/CollisionDispatch/btConvexPlaneCollisionAlgorithm.h>
+#include <BulletCollision/CollisionDispatch/btCompoundCollisionAlgorithm.h>
+#include <BulletCollision/CollisionDispatch/btEmptyCollisionAlgorithm.h>
+#include <BulletCollision/CollisionDispatch/btSphereBoxCollisionAlgorithm.h>
+#include <BulletCollision/CollisionDispatch/btSphereSphereCollisionAlgorithm.h>
+#include <BulletCollision/CollisionDispatch/btSphereTriangleCollisionAlgorithm.h>
+#endif
+
+#ifndef DISABLE_CONSTRAINTS
+#include <BulletDynamics/ConstraintSolver/btSolve2LinearConstraint.h>
+#endif
+
+#ifndef DISABLE_GIMPACT
+#include <BulletCollision/Gimpact/btBoxCollision.h>
+#include <BulletCollision/Gimpact/btGImpactShape.h>
+#include <BulletCollision/Gimpact/btTriangleShapeEx.h>
+#ifndef DISABLE_BVH
+#include <BulletCollision/Gimpact/btGImpactBvh.h>
+#include <BulletCollision/Gimpact/btGImpactQuantizedBvh.h>
+#endif
+#ifndef DISABLE_COLLISION_ALGORITHMS
+#include <BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
+#endif
+#ifdef DISABLE_UNCOMMON
+#include <BulletCollision/CollisionShapes/btTriangleShape.h>
+#endif
+#endif
+
+#if defined(USE_MINICL)
+#include <MiniCL/cl.h>
+#pragma comment(lib, "MiniCL.lib")
+#pragma comment(lib, "BulletSoftBodySolvers_OpenCL_Mini.lib")
+#elif defined(USE_AMD_OPENCL)
+#include <CL/cl.h>
+#pragma comment(lib, "OpenCL.lib")
+#pragma comment(lib, "BulletSoftBodySolvers_OpenCL_AMD.lib")
+#elif defined(USE_NVIDIA_OPENCL)
+#include <CL/cl.h>
+#pragma comment(lib, "OpenCL.lib")
+#pragma comment(lib, "BulletSoftBodySolvers_OpenCL_NVidia.lib")
+#endif
+
+#ifndef DISABLE_MULTITHREADED
+#define __BT_SKIP_UINT64_H 1
+#include <BulletMultiThreaded/btParallelConstraintSolver.h>
+#include <BulletMultiThreaded/btThreadSupportInterface.h>
+#include <BulletMultiThreaded/SpuGatheringCollisionDispatcher.h>
+#include <BulletMultiThreaded/SpuNarrowPhaseCollisionTask/SpuGatheringCollisionTask.h>
+#include <BulletMultiThreaded/Win32ThreadSupport.h>
+#ifndef DISABLE_SOFTBODY
+#ifdef __OPENCL_CL_H
+#include <BulletMultiThreaded/GpuSoftBodySolvers/CPU/btSoftBodySolver_CPU.h>
+#include <BulletMultiThreaded/GpuSoftBodySolvers/OpenCL/btSoftBodySolver_OpenCL.h>
+#endif
+#endif
+#endif
+
+#ifndef DISABLE_SERIALIZE
+#ifdef DISABLE_GIMPACT
+#include <BulletCollision/GImpact/btGImpactShape.h>
+#endif
+#include <..\Extras\Serialize\BulletWorldImporter\btBulletWorldImporter.h>
+#endif
 
 #ifndef DISABLE_SOFTBODY
-#pragma managed(push, off)
 #include <BulletSoftBody/btSoftBody.h>
+#include <BulletSoftBody/btSoftBodyHelpers.h>
+#include <BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.h>
 #include <BulletSoftBody/btSoftBodySolvers.h>
+#include <BulletSoftBody/btSoftRigidDynamicsWorld.h>
 #include <BulletSoftBody/btSoftBodySolverVertexBuffer.h>
-#pragma managed(pop)
+#include <BulletSoftBody/btSparseSdf.h>
+#ifndef DISABLE_COLLISION_ALGORITHMS
+#include <BulletSoftBody/btSoftBodyConcaveCollisionAlgorithm.h>
 #endif
+#endif
+
+#pragma managed(pop)
+
 
 using namespace System;
 using namespace System::IO;
 using namespace System::Diagnostics;
 using namespace System::Runtime::InteropServices;
+
+#include "Math.h"
+#include "Enums.h"
 
 inline void* GCHandleToVoidPtr(GCHandle handle)
 {

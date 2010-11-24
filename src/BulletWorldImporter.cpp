@@ -2,11 +2,6 @@
 
 #ifndef DISABLE_SERIALIZE
 
-#pragma managed(push, off)
-#include <BulletCollision/GImpact/btGImpactShape.h>
-#include <..\Extras\Serialize\BulletWorldImporter\btBulletWorldImporter.h>
-#pragma managed(pop)
-
 #include "BulletWorldImporter.h"
 #include "StringConv.h"
 #ifndef DISABLE_BVH

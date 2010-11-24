@@ -5,7 +5,6 @@
 #include "Dbvt.h"
 #endif
 #ifndef DISABLE_SOFTBODY
-#include "Enums.h"
 #endif
 
 using namespace System::Collections;

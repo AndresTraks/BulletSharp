@@ -1,10 +1,6 @@
 #pragma once
 
-// Fully implemented as of 12 May 2010
-
-#pragma managed(push, off)
-#include <BulletDynamics/ConstraintSolver/btSolve2LinearConstraint.h>
-#pragma managed(pop)
+// Fully implemented as of 23 Nov 2010
 
 namespace BulletSharp
 {

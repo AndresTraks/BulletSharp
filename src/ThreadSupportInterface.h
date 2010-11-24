@@ -1,12 +1,8 @@
 #pragma once
 
-// Fully implemented as of 07 Jul 2010
+// Fully implemented as of 24 Nov 2010
 
 #include "IDisposable.h"
-
-#pragma managed(push, off)
-#include <BulletMultiThreaded/btThreadSupportInterface.h>
-#pragma managed(pop)
 
 namespace BulletSharp
 {

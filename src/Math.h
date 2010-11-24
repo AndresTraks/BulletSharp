@@ -24,6 +24,12 @@ namespace BulletSharp
 	private ref class Math
 	{
 	public:
+		static int* IntArrayToUnmanaged(array<int>^);
+		static int* IntArrayToUnmanaged(array<int>^, int);
+
+		static btScalar* BtScalarArrayToUnmanaged(array<btScalar>^);
+		static btScalar* BtScalarArrayToUnmanaged(array<btScalar>^, int);
+
 		static inline Vector3 BtVector3ToVector3(const btVector3* vector)
 		{
 			return Vector3(vector->m_floats[0], vector->m_floats[1], vector->m_floats[2]);

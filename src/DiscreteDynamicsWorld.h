@@ -3,7 +3,6 @@
 // Fully implemented as of 24 apr 2010
 
 #include "DynamicsWorld.h"
-#include "Enums.h"
 
 namespace BulletSharp
 {
@@ -40,10 +39,12 @@ namespace BulletSharp
 			BulletSharp::CollisionWorld^ get();
 		}
 
+#ifndef DISABLE_UNCOMMON
 		property SimulationIslandManager^ SimulationIslandManager
 		{
 			BulletSharp::SimulationIslandManager^ get();
 		}
+#endif
 
 		property bool SynchronizeAllMotionStates
 		{

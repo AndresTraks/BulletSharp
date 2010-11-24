@@ -1,8 +1,6 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <BulletSoftBody/btSparseSdf.h>
-#pragma managed(pop)
+#ifndef DISABLE_SOFTBODY
 
 #include "CollisionShape.h"
 #include "SparseSdf.h"
@@ -53,3 +51,5 @@ void SparseSdf::UnmanagedPointer::set(btSparseSdf<3>* value)
 {
 	_sdf = value;
 }
+
+#endif

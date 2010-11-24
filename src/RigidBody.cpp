@@ -2,7 +2,6 @@
 
 #include "BroadphaseProxy.h"
 #include "CollisionShape.h"
-#include "Enums.h"
 #include "MotionState.h"
 #include "RigidBody.h"
 #ifndef DISABLE_CONSTRAINTS

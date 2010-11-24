@@ -1,9 +1,11 @@
 #include "StdAfx.h"
 
-#include "MiniCL.h"
+#ifdef __OPENCL_CL_H
+
+#include "OpenCL.h"
 #include "StringConv.h"
 
-IntPtr MiniCL::CreateCommandQueue(IntPtr context, IntPtr device, CLCommandQueueProperties properties, [Out]cl_int% errorCode)
+IntPtr CL::CreateCommandQueue(IntPtr context, IntPtr device, CLCommandQueueProperties properties, [Out]cl_int% errorCode)
 {
 	cl_int ciErrNum;
 	cl_command_queue commandQueue = clCreateCommandQueue((cl_context)context.ToPointer(),
@@ -12,7 +14,7 @@ IntPtr MiniCL::CreateCommandQueue(IntPtr context, IntPtr device, CLCommandQueueP
 	return IntPtr(commandQueue);
 }
 
-IntPtr MiniCL::CreateContextFromType(List<KeyValuePair<CLContext, IntPtr>>^ properties, CLDeviceType deviceType, [Out]cl_int% errorCode)
+IntPtr CL::CreateContextFromType(List<KeyValuePair<CLContext, IntPtr>>^ properties, CLDeviceType deviceType, [Out]cl_int% errorCode)
 {
 	cl_context_properties* propertiesTemp = new cl_context_properties[properties->Count * 2 + 1];
 	int i;
@@ -31,7 +33,7 @@ IntPtr MiniCL::CreateContextFromType(List<KeyValuePair<CLContext, IntPtr>>^ prop
 	return IntPtr(retContext);
 }
 
-cl_int MiniCL::GetContextInfo(IntPtr clContext, CLContext param, [Out]array<IntPtr>^% paramValue)
+cl_int CL::GetContextInfo(IntPtr clContext, CLContext param, [Out]array<IntPtr>^% paramValue)
 {
 	cl_int ret;
 	size_t szParmDataBytes;
@@ -61,7 +63,7 @@ cl_int MiniCL::GetContextInfo(IntPtr clContext, CLContext param, [Out]array<IntP
 	return CL_SUCCESS;
 }
 
-cl_int MiniCL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]int% paramValue)
+cl_int CL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]int% paramValue)
 {
 	int paramValueTemp;
 
@@ -73,12 +75,12 @@ cl_int MiniCL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]int% paramValue
 	return CL_SUCCESS;
 }
 
-cl_int MiniCL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]bool% paramValue)
+cl_int CL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]bool% paramValue)
 {
 	return GetDeviceInfo(device, param, (int)paramValue);
 }
 
-cl_int MiniCL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]unsigned long long% paramValue)
+cl_int CL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]unsigned long long% paramValue)
 {
 	unsigned long long paramValueTemp;
 
@@ -90,7 +92,7 @@ cl_int MiniCL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]unsigned long l
 	return CL_SUCCESS;
 }
 
-cl_int MiniCL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]String^% paramValue)
+cl_int CL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]String^% paramValue)
 {
 	cl_int ret;
 
@@ -115,7 +117,7 @@ cl_int MiniCL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]String^% paramV
 	return CL_SUCCESS;
 }
 
-cl_int MiniCL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]array<int>^% paramValue)
+cl_int CL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]array<int>^% paramValue)
 {
 	// Assume param is CL_DEVICE_MAX_WORK_ITEM_SIZES.
 
@@ -133,7 +135,7 @@ cl_int MiniCL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]array<int>^% pa
 	return CL_SUCCESS;
 }
 
-cl_int MiniCL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]CLCommandQueueProperties% paramValue)
+cl_int CL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]CLCommandQueueProperties% paramValue)
 {
 	cl_command_queue_properties paramValueTemp;
 
@@ -145,7 +147,7 @@ cl_int MiniCL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]CLCommandQueueP
 	return CL_SUCCESS;
 }
 
-cl_int MiniCL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]CLDeviceLocalMemoryType% paramValue)
+cl_int CL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]CLDeviceLocalMemoryType% paramValue)
 {
 	cl_device_local_mem_type paramValueTemp;
 
@@ -157,7 +159,7 @@ cl_int MiniCL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]CLDeviceLocalMe
 	return CL_SUCCESS;
 }
 
-cl_int MiniCL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]CLDeviceType% paramValue)
+cl_int CL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]CLDeviceType% paramValue)
 {
 	cl_device_type paramValueTemp;
 
@@ -169,7 +171,7 @@ cl_int MiniCL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]CLDeviceType% p
 	return CL_SUCCESS;
 }
 
-cl_int MiniCL::GetPlatformIDs(cl_uint numEntries, array<IntPtr>^% platforms, [Out]cl_uint% numPlatforms)
+cl_int CL::GetPlatformIDs(cl_uint numEntries, array<IntPtr>^% platforms, [Out]cl_uint% numPlatforms)
 {
 	cl_uint numPlatformsTemp;
 	cl_platform_id* platformsTemp = 0;
@@ -195,7 +197,7 @@ cl_int MiniCL::GetPlatformIDs(cl_uint numEntries, array<IntPtr>^% platforms, [Ou
 	return CL_SUCCESS;
 }
 
-cl_int MiniCL::GetPlatformInfo(IntPtr platform, CLPlatform param, [Out]String^% paramValue)
+cl_int CL::GetPlatformInfo(IntPtr platform, CLPlatform param, [Out]String^% paramValue)
 {
 	char pbuf[128];
 	
@@ -206,3 +208,5 @@ cl_int MiniCL::GetPlatformInfo(IntPtr platform, CLPlatform param, [Out]String^% 
 	paramValue = gcnew String(pbuf);
 	return CL_SUCCESS;
 }
+
+#endif

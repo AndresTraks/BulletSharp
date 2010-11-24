@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
+
 #include "UnionFind.h"
 
 Element::Element(btElement* element)
@@ -112,3 +114,5 @@ int UnionFind::NumElements::get()
 {
 	return _unionFind->getNumElements();
 }
+
+#endif

@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
+
 #include "ContinuousConvexCollision.h"
 #include "ConvexShape.h"
 #include "ConvexPenetrationDepthSolver.h"
@@ -10,3 +12,5 @@ ContinuousConvexCollision::ContinuousConvexCollision(ConvexShape^ convexA, Conve
 	simplexSolver->UnmanagedPointer, (penetrationDepthSolver != nullptr) ? penetrationDepthSolver->UnmanagedPointer : 0))
 {
 }
+
+#endif

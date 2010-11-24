@@ -2,7 +2,6 @@
 
 // Fully implemented as of 23 apr 2010
 
-#include "Enums.h"
 #include "IDisposable.h"
 
 namespace BulletSharp
@@ -36,6 +35,7 @@ namespace BulletSharp
 			virtual bool get();
 		}
 
+#ifndef DISABLE_UNCOMMON
 		property PoolAllocator^ CollisionAlgorithmPool
 		{
 			PoolAllocator^ get();
@@ -45,6 +45,7 @@ namespace BulletSharp
 		{
 			PoolAllocator^ get();
 		}
+#endif
 
 		property StackAlloc^ StackAllocator
 		{

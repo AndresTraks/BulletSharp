@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
+
 #include "ConvexShape.h"
 #include "ShapeHull.h"
 
@@ -37,3 +39,5 @@ int ShapeHull::NumVertices::get()
 {
 	return _shapeHull->numVertices();
 }
+
+#endif

@@ -42,7 +42,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(PROGRAMFILES)\SlimDX SDK (June 2010)\Bin\net20\&quot;;&quot;$(PROGRAMFILES(x86))\SlimDX SDK (June 2010)\Bin\net20\&quot;"
 				PreprocessorDefinitions="GRAPHICS_SLIMDX;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -64,7 +64,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
@@ -122,7 +122,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(PROGRAMFILES)\SlimDX SDK (June 2010)\Bin\net20\&quot;"
 				PreprocessorDefinitions="GRAPHICS_SLIMDX;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -145,7 +145,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
@@ -202,7 +202,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(ProgramFiles)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;;&quot;$(ProgramFiles(x86))\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;"
 				PreprocessorDefinitions="GRAPHICS_XNA31;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -225,7 +225,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
@@ -280,7 +280,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(PROGRAMFILES)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;;&quot;$(PROGRAMFILES(x86))\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;"
 				PreprocessorDefinitions="GRAPHICS_XNA31;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -302,7 +302,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
@@ -360,7 +360,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories=""
 				PreprocessorDefinitions="GRAPHICS_NONE;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -383,7 +383,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
@@ -438,7 +438,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories=""
 				PreprocessorDefinitions="GRAPHICS_NONE;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -460,7 +460,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
@@ -518,7 +518,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="C:\MogreSDK\bin\Release"
 				PreprocessorDefinitions="GRAPHICS_MOGRE;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -541,7 +541,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
@@ -596,7 +596,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="C:\MogreSDK\bin\Debug"
 				PreprocessorDefinitions="GRAPHICS_MOGRE;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -618,7 +618,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
@@ -676,7 +676,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(ProgramFiles)\OpenTK\1.0\Binaries\OpenTK\Release&quot;;&quot;$(USERPROFILE)\My Documents\OpenTK\1.0\Binaries\OpenTK\Release&quot;;&quot;$(ProgramFiles(x86))\OpenTK\1.0\Binaries\OpenTK\Release&quot;"
 				PreprocessorDefinitions="GRAPHICS_OPENTK;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -699,7 +699,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
@@ -754,7 +754,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(PROGRAMFILES)\OpenTK\1.0\Binaries\OpenTK\Debug&quot;;&quot;$(USERPROFILE)\My Documents\OpenTK\1.0\Binaries\OpenTK\Debug&quot;"
 				PreprocessorDefinitions="GRAPHICS_OPENTK;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -776,7 +776,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
@@ -834,7 +834,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="D:\src\Axiom-0.8.0.0-B2\bin\release"
 				PreprocessorDefinitions="GRAPHICS_AXIOM;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -857,7 +857,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
@@ -912,7 +912,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="D:\src\Axiom-0.8.0.0-B2\bin\debug"
 				PreprocessorDefinitions="GRAPHICS_AXIOM;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -934,7 +934,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
@@ -990,7 +990,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="D:\src\SlimMath\SlimMath\bin\Release"
 				PreprocessorDefinitions="GRAPHICS_SLIMMATH;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -1012,7 +1012,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
@@ -1070,7 +1070,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="D:\src\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="D:\src\SlimMath\SlimMath\bin\Release"
 				PreprocessorDefinitions="GRAPHICS_SLIMMATH;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -1093,7 +1093,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib BulletSoftBodySolvers_OpenCL_Mini.lib MiniCL.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="D:\src\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
@@ -1841,6 +1841,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\SoftBodyConcaveCollisionAlgorithm.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\SoftBodyHelpers.cpp"
 					>
 				</File>
@@ -1918,10 +1922,10 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="MiniCL"
+				Name="OpenCL"
 				>
 				<File
-					RelativePath=".\src\MiniCL.cpp"
+					RelativePath=".\src\OpenCL.cpp"
 					>
 				</File>
 			</Filter>
@@ -2511,6 +2515,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\SoftBodyConcaveCollisionAlgorithm.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\SoftBodyHelpers.h"
 					>
 				</File>
@@ -2600,10 +2608,10 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="MiniCL"
+				Name="OpenCL"
 				>
 				<File
-					RelativePath=".\src\MiniCL.h"
+					RelativePath=".\src\OpenCL.h"
 					>
 				</File>
 			</Filter>

@@ -2,10 +2,7 @@
 
 // Fully implemented as of 23 apr 2010
 
-#include "Enums.h"
 #include "IDisposable.h"
-
-#include <msclr/auto_gcroot.h>
 
 using namespace msclr;
 using namespace System::Drawing;

@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
+
 #include "ConvexCast.h"
 #ifndef DISABLE_DEBUGDRAW
 #include "DebugDraw.h"
@@ -178,3 +180,5 @@ void ConvexCast::UnmanagedPointer::set(btConvexCast* value)
 {
 	_convexCast = value;
 }
+
+#endif

@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
+
 #include "HeightfieldTerrainShape.h"
 
 HeightfieldTerrainShape::HeightfieldTerrainShape(btHeightfieldTerrainShape* terrainShape)
@@ -55,3 +57,5 @@ btHeightfieldTerrainShape* HeightfieldTerrainShape::UnmanagedPointer::get()
 {
 	return (btHeightfieldTerrainShape*)ConcaveShape::UnmanagedPointer;
 }
+
+#endif

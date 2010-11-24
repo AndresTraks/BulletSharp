@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
+
 #include "DataStream.h"
 #include "TriangleIndexVertexMaterialArray.h"
 
@@ -109,26 +111,14 @@ TriangleIndexVertexMaterialArray::TriangleIndexVertexMaterialArray(array<int>^ i
 	array<BulletMaterial>^ materials, array<int>^ materialIndices)
 : TriangleIndexVertexArray(0)
 {
-	// Indices
-	pin_ptr<int> indicesBase = &indices[0];
-	int* indicesArray = new int[indices->Length];
-	memcpy(indicesArray, indicesBase, indices->Length * sizeof(int));
-
-	// Vertices
-	btVector3* verticesArray = new btVector3[vertices->Length];
-	for(int i=0; i<vertices->Length; i++)
-		Math::Vector3ToBtVector3(vertices[i], &verticesArray[i]);
+	int* indicesArray = Math::IntArrayToUnmanaged(indices);
+	btVector3* verticesArray = Math::Vector3ArrayToUnmanaged(vertices);
 
 	// Materials
 	pin_ptr<BulletMaterial> materialsBase = &materials[0];
 	unsigned char* materialsArray = new unsigned char[materials->Length * BulletMaterial::SizeInBytes];
 	memcpy(materialsArray, (unsigned char*)materialsBase, materials->Length * BulletMaterial::SizeInBytes);
-
-	// Material indices
-	pin_ptr<int> materialIndicesBase = &materialIndices[0];
-	int* materialIndicesArray = new int[indices->Length / 3];
-	memcpy(materialIndicesArray, materialIndicesBase, (indices->Length / 3) * sizeof(int));
-
+	int* materialIndicesArray = Math::IntArrayToUnmanaged(indices, indices->Length / 3);
 
 	UnmanagedPointer = new btTriangleIndexVertexMaterialArray(
 		indices->Length / 3, indicesArray, 3 * sizeof(int),
@@ -261,3 +251,5 @@ btTriangleIndexVertexMaterialArray* TriangleIndexVertexMaterialArray::UnmanagedP
 {
 	return (btTriangleIndexVertexMaterialArray*)TriangleIndexVertexArray::UnmanagedPointer;
 }
+
+#endif

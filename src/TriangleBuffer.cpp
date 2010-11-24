@@ -1,8 +1,6 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <BulletCollision/CollisionShapes/btTriangleBuffer.h>
-#pragma managed(pop)
+#ifndef DISABLE_UNCOMMON
 
 #include "TriangleBuffer.h"
 
@@ -56,3 +54,5 @@ btTriangleBuffer* TriangleBuffer::UnmanagedPointer::get()
 {
 	return (btTriangleBuffer*)TriangleCallback::UnmanagedPointer;
 }
+
+#endif

@@ -1,8 +1,6 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <BulletCollision/NarrowPhaseCollision/btPointCollector.h>
-#pragma managed(pop)
+#ifndef DISABLE_UNCOMMON
 
 #include "PointCollector.h"
 
@@ -51,3 +49,5 @@ btPointCollector* PointCollector::UnmanagedPointer::get()
 {
 	return (btPointCollector*) DiscreteCollisionDetectorInterface::Result::UnmanagedPointer;
 }
+
+#endif

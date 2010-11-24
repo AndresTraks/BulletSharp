@@ -1,10 +1,6 @@
 #pragma once
 
-// Fully implemented as of 26 Feb 2010
-
-#pragma managed(push, off)
-#include <BulletCollision/CollisionShapes/btConvex2dShape.h>
-#pragma managed(pop)
+// Fully implemented as of 23 Nov 2010
 
 #include "ConvexShape.h"
 

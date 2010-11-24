@@ -1,13 +1,8 @@
 #pragma once
 
-// Fully implemented as of 06 Jun 2010
-
-#pragma managed(push, off)
-#include <BulletCollision/CollisionShapes/btTriangleIndexVertexMaterialArray.h>
-#pragma managed(pop)
+// Fully implemented as of 23 Nov 2010
 
 #include "BulletMaterial.h"
-#include "Enums.h"
 #include "TriangleIndexVertexArray.h"
 
 namespace BulletSharp

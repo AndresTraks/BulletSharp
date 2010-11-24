@@ -14,11 +14,13 @@ namespace BulletSharp
 	public:
 		DefaultCollisionConstructionInfo();
 
+#ifndef DISABLE_UNCOMMON
 		property PoolAllocator^ CollisionAlgorithmPool
 		{
 			PoolAllocator^ get();
 			void set(PoolAllocator^ value);
 		}
+#endif
 
 		property int CustomCollisionAlgorithmMaxElementSize
 		{
@@ -44,11 +46,13 @@ namespace BulletSharp
 			void set(int value);
 		}
 
+#ifndef DISABLE_UNCOMMON
 		property PoolAllocator^ PersistentManifoldPool
 		{
 			PoolAllocator^ get();
 			void set(PoolAllocator^ value);
 		}
+#endif
 
 		property StackAlloc^ StackAllocator
 		{

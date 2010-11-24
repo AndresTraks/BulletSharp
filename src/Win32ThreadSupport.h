@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Enums.h"
 #include "ThreadSupportInterface.h"
 
 namespace BulletSharp

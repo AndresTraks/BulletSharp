@@ -2,7 +2,6 @@
 
 // Fully implemented as of 25 May 2010
 
-#include "Enums.h"
 #include "IDisposable.h"
 
 namespace BulletSharp

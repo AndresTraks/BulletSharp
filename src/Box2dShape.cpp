@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
+
 #include "Box2dShape.h"
 #include "Collections.h"
 
@@ -92,3 +94,5 @@ btBox2dShape* Box2dShape::UnmanagedPointer::get()
 {
 	return (btBox2dShape*)PolyhedralConvexShape::UnmanagedPointer;
 }
+
+#endif

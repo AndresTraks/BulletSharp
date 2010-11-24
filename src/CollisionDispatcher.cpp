@@ -5,7 +5,6 @@
 #include "CollisionCreateFunc.h"
 #include "CollisionDispatcher.h"
 #include "Dispatcher.h"
-#include "Enums.h"
 #include "OverlappingPairCache.h"
 
 void NearCallbackWrapper::nearCallback (btBroadphasePair& collisionPair, btCollisionDispatcherWrapper& dispatcher, const btDispatcherInfo& dispatchInfo)

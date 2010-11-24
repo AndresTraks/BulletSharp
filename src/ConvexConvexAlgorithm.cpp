@@ -1,10 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
 #ifndef DISABLE_COLLISION_ALGORITHMS
-
-#pragma managed(push, off)
-#include <BulletCollision/CollisionDispatch/btConvexConvexAlgorithm.h>
-#pragma managed(pop)
 
 #include "CollisionObject.h"
 #include "ConvexConvexAlgorithm.h"
@@ -82,4 +79,5 @@ btConvexConvexAlgorithm* ConvexConvexAlgorithm::UnmanagedPointer::get()
 	return (btConvexConvexAlgorithm*)ActivatingCollisionAlgorithm::UnmanagedPointer;
 }
 
+#endif
 #endif

@@ -6,15 +6,16 @@ namespace OpenCLClothDemo
 {
     class OclCommon
     {
-        static string platformVendor = "MiniCL, SCEA";
+        //static string platformVendor = "MiniCL, SCEA";
         //static string platformVendor = "Advanced Micro Devices, Inc.";
+        static string platformVendor = "NVIDIA Corporation";
 
         public static IntPtr CreateContextFromType(CLDeviceType deviceType, ref int error)
         {
             uint numPlatforms;
             IntPtr platform = IntPtr.Zero;
             IntPtr[] platforms = null;
-            int ciErrNum = MiniCL.GetPlatformIDs(0, ref platforms, out numPlatforms);
+            int ciErrNum = CL.GetPlatformIDs(0, ref platforms, out numPlatforms);
             if (ciErrNum != 0)
             {
                 error = ciErrNum;
@@ -24,7 +25,7 @@ namespace OpenCLClothDemo
             if (numPlatforms > 0)
             {
                 platforms = new IntPtr[numPlatforms];
-                ciErrNum = MiniCL.GetPlatformIDs(numPlatforms, ref platforms, out numPlatforms);
+                ciErrNum = CL.GetPlatformIDs(numPlatforms, ref platforms, out numPlatforms);
                 if (ciErrNum != 0)
                 {
                     error = ciErrNum;
@@ -34,7 +35,7 @@ namespace OpenCLClothDemo
                 for (int i = 0; i < numPlatforms; ++i)
                 {
                     string vendor;
-                    ciErrNum = MiniCL.GetPlatformInfo(platforms[i], CLPlatform.Vendor, out vendor);
+                    ciErrNum = CL.GetPlatformInfo(platforms[i], CLPlatform.Vendor, out vendor);
                     if (ciErrNum != 0)
                     {
                         error = ciErrNum;
@@ -49,7 +50,7 @@ namespace OpenCLClothDemo
 
             List<KeyValuePair<CLContext, IntPtr>> properties = new List<KeyValuePair<CLContext, IntPtr>>();
             properties.Add(new KeyValuePair<CLContext, IntPtr>(CLContext.Platform, platform));
-            return MiniCL.CreateContextFromType(properties, deviceType, out error);
+            return CL.CreateContextFromType(properties, deviceType, out error);
         }
     }
 }

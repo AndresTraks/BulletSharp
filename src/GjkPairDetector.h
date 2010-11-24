@@ -3,7 +3,6 @@
 // Fully implemented as of 30 Jun 2010
 
 #include "DiscreteCollisionDetectorInterface.h"
-#include "Enums.h"
 #include "SimplexSolverInterface.h"
 
 namespace BulletSharp

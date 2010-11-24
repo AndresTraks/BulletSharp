@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
+
 #include "BulletMaterial.h"
 #include "MultimaterialTriangleMeshShape.h"
 #include "StridingMeshInterface.h"
@@ -61,3 +63,5 @@ btMultimaterialTriangleMeshShape* MultimaterialTriangleMeshShape::UnmanagedPoint
 {
 	return (btMultimaterialTriangleMeshShape*)BvhTriangleMeshShape::UnmanagedPointer;
 }
+
+#endif

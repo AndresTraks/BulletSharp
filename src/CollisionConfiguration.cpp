@@ -2,8 +2,10 @@
 
 #include "CollisionConfiguration.h"
 #include "CollisionCreateFunc.h"
-#include "PoolAllocator.h"
 #include "StackAlloc.h"
+#ifndef DISABLE_UNCOMMON
+#include "PoolAllocator.h"
+#endif
 
 CollisionConfiguration::CollisionConfiguration(btCollisionConfiguration* collisionConfiguration)
 {
@@ -37,6 +39,7 @@ bool CollisionConfiguration::IsDisposed::get()
 	return (_collisionConfiguration == NULL);
 }
 
+#ifndef DISABLE_UNCOMMON
 PoolAllocator^ CollisionConfiguration::CollisionAlgorithmPool::get()
 {
 	return gcnew PoolAllocator(_collisionConfiguration->getCollisionAlgorithmPool());
@@ -46,6 +49,7 @@ PoolAllocator^ CollisionConfiguration::PersistentManifoldPool::get()
 {
 	return gcnew PoolAllocator(_collisionConfiguration->getPersistentManifoldPool());
 }
+#endif
 
 StackAlloc^ CollisionConfiguration::StackAllocator::get()
 {

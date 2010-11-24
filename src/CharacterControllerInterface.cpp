@@ -1,8 +1,6 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <BulletDynamics/Character/btCharacterControllerInterface.h>
-#pragma managed(pop)
+#ifndef DISABLE_UNCOMMON
 
 #include "CharacterControllerInterface.h"
 #include "CollisionWorld.h"
@@ -62,3 +60,5 @@ btCharacterControllerInterface* CharacterControllerInterface::UnmanagedPointer::
 {
 	return (btCharacterControllerInterface*)ActionInterface::UnmanagedPointer;
 }
+
+#endif

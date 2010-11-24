@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
+
 #include "ConvexPointCloudShape.h"
 
 ConvexPointCloudShape::ConvexPointCloudShape(btConvexPointCloudShape* shape)
@@ -97,3 +99,5 @@ btConvexPointCloudShape* ConvexPointCloudShape::UnmanagedPointer::get()
 {
 	return (btConvexPointCloudShape*)PolyhedralConvexAabbCachingShape::UnmanagedPointer;
 }
+
+#endif

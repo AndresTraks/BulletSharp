@@ -1,8 +1,7 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <BulletCollision/NarrowPhaseCollision/btConvexPenetrationDepthSolver.h>
-#pragma managed(pop)
+#ifndef DISABLE_UNCOMMON
+
 #include "ConvexPenetrationDepthSolver.h"
 #include "ConvexShape.h"
 #include "StackAlloc.h"
@@ -77,3 +76,5 @@ void ConvexPenetrationDepthSolver::UnmanagedPointer::set(btConvexPenetrationDept
 {
 	_depthSolver = value;
 }
+
+#endif

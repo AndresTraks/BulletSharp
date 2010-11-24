@@ -1,8 +1,6 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <BulletCollision/CollisionDispatch/btBoxBoxDetector.h>
-#pragma managed(pop)
+#ifndef DISABLE_UNCOMMON
 
 #include "BoxBoxDetector.h"
 #include "BoxShape.h"
@@ -40,3 +38,5 @@ btBoxBoxDetector* BoxBoxDetector::UnmanagedPointer::get()
 {
 	return (btBoxBoxDetector*)DiscreteCollisionDetectorInterface::UnmanagedPointer;
 }
+
+#endif

@@ -2,10 +2,6 @@
 
 #ifndef DISABLE_SOFTBODY
 
-#pragma managed(push, off)
-#include <BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.h>
-#pragma managed(pop)
-
 #include "SoftBodyRigidBodyCollisionConfiguration.h"
 
 SoftBodyRigidBodyCollisionConfiguration::SoftBodyRigidBodyCollisionConfiguration()

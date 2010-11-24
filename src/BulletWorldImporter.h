@@ -20,8 +20,6 @@
 #include "SliderConstraint.h"
 #endif
 
-#include <msclr/auto_gcroot.h>
-
 using namespace msclr;
 
 namespace BulletSharp

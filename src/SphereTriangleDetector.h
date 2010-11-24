@@ -1,10 +1,6 @@
 #pragma once
 
-// Fully implemented as of 10 May 2010
-
-#pragma managed(push, off)
-#include <BulletCollision/CollisionDispatch/SphereTriangleDetector.h>
-#pragma managed(pop)
+// Fully implemented as of 24 Nov 2010
 
 #include "DiscreteCollisionDetectorInterface.h"
 

@@ -1,8 +1,6 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <BulletDynamics/Character/btKinematicCharacterController.h>
-#pragma managed(pop)
+#ifndef DISABLE_UNCOMMON
 
 #include "ConvexShape.h"
 #include "GhostObject.h"
@@ -57,3 +55,5 @@ btKinematicCharacterController* KinematicCharacterController::UnmanagedPointer::
 {
 	return (btKinematicCharacterController*)CharacterControllerInterface::UnmanagedPointer;
 }
+
+#endif

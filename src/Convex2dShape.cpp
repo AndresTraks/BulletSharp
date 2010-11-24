@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
+
 #include "Convex2DShape.h"
 
 using namespace BulletSharp;
@@ -33,3 +35,5 @@ btConvex2dShape* Convex2DShape::UnmanagedPointer::get()
 {
 	return (btConvex2dShape*)ConvexShape::UnmanagedPointer;
 }
+
+#endif

@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
+
 #include "BulletMaterial.h"
 
 BulletMaterial::BulletMaterial(btMaterial* material)
@@ -31,3 +33,5 @@ void BulletMaterial::Restitution::set(btScalar value)
 {
 	restitution = value;
 }
+
+#endif

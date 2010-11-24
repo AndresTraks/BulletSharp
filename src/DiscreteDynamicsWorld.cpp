@@ -6,7 +6,9 @@
 #include "DiscreteDynamicsWorld.h"
 #include "Dispatcher.h"
 #include "RigidBody.h"
+#ifndef DISABLE_UNCOMMON
 #include "SimulationIslandManager.h"
+#endif
 #ifndef DISABLE_CONSTRAINTS
 #include "TypedConstraint.h"
 #include "ConstraintSolver.h"
@@ -58,10 +60,12 @@ CollisionWorld^ DiscreteDynamicsWorld::CollisionWorld::get()
 	return gcnew BulletSharp::CollisionWorld(this->UnmanagedPointer->getCollisionWorld());
 }
 
+#ifndef DISABLE_UNCOMMON
 SimulationIslandManager^ DiscreteDynamicsWorld::SimulationIslandManager::get()
 {
 	return gcnew BulletSharp::SimulationIslandManager(UnmanagedPointer->getSimulationIslandManager());
 }
+#endif
 
 void DiscreteDynamicsWorld::SetNumTasks (int numTasks)
 {

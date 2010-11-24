@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
+
 #include "ConvexShape.h"
 #include "GjkConvexCast.h"
 
@@ -7,3 +9,5 @@ GjkConvexCast::GjkConvexCast(ConvexShape^ convexA, ConvexShape^ convexB, Simplex
 : ConvexCast(new btGjkConvexCast(convexA->UnmanagedPointer, convexB->UnmanagedPointer, simplexSolver->UnmanagedPointer))
 {
 }
+
+#endif

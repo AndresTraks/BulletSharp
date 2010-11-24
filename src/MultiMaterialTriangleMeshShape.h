@@ -1,10 +1,6 @@
 #pragma once
 
-// Fully implemented as of 25 May 2010
-
-#pragma managed(push, off)
-#include <BulletCollision/CollisionShapes/btMultimaterialTriangleMeshShape.h>
-#pragma managed(pop)
+// Fully implemented as of 24 Nov 2010
 
 #include "BvhTriangleMeshShape.h"
 

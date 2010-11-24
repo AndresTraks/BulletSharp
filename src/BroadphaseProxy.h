@@ -2,8 +2,6 @@
 
 // Fully implemented as of 24 Feb 2010
 
-#include "Enums.h"
-
 namespace BulletSharp
 {
 	ref class CollisionAlgorithm;

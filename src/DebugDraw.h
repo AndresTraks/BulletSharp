@@ -1,9 +1,6 @@
 #pragma once
 
-#include "Enums.h"
 #include "StringConv.h"
-
-#include <msclr/auto_gcroot.h>
 
 UsingFrameworkNamespace
 UsingGraphicsNamespace

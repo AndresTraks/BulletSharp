@@ -2,8 +2,6 @@
 
 // Fully implemented as of 27 Feb 2010
 
-#include "Enums.h"
-
 namespace BulletSharp
 {
 	public ref class ContactSolverInfoData

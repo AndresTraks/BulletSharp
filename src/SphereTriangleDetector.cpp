@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_UNCOMMON
+
 #include "SphereTriangleDetector.h"
 #include "SphereShape.h"
 #include "TriangleShape.h"
@@ -19,3 +21,5 @@ BulletSharp::SphereTriangleDetector::SphereTriangleDetector(SphereShape^ sphere,
 {
 	return (::SphereTriangleDetector*)DiscreteCollisionDetectorInterface::UnmanagedPointer;
 }
+
+#endif

@@ -6,6 +6,48 @@ UsingFrameworkNamespace
 
 using namespace BulletSharp;
 
+int* BulletSharp::Math::IntArrayToUnmanaged(array<int>^ i)
+{
+	int* intArray = new int[i->Length];
+	pin_ptr<int> iPtr = &i[0];
+	memcpy(intArray, iPtr, i->Length * sizeof(int));
+	//for(int i=0; i<i->Length; i++)
+	//  intArray[i] = i[i];
+	return intArray;
+}
+
+int* BulletSharp::Math::IntArrayToUnmanaged(array<int>^ i, int length)
+{
+	int* intArray = new int[length];
+	pin_ptr<int> iPtr = &i[0];
+	memcpy(intArray, iPtr, length * sizeof(int));
+	//for(int i=0; i<length; i++)
+	//  intArray[i] = i[i];
+	return intArray;
+}
+
+
+btScalar* BulletSharp::Math::BtScalarArrayToUnmanaged(array<btScalar>^ s)
+{
+	btScalar* btScalars = new btScalar[s->Length];
+	pin_ptr<btScalar> sPtr = &s[0];
+	memcpy(btScalars, sPtr, s->Length * sizeof(btScalar));
+	//for(int i=0; i<s->Length; i++)
+	//  btScalars[i] = s[i];
+	return btScalars;
+}
+
+btScalar* BulletSharp::Math::BtScalarArrayToUnmanaged(array<btScalar>^ s, int length)
+{
+	btScalar* btScalars = new btScalar[length];
+	pin_ptr<btScalar> sPtr = &s[0];
+	memcpy(btScalars, sPtr, length * sizeof(btScalar));
+	//for(int i=0; i<length; i++)
+	//  btScalars[i] = s[i];
+	return btScalars;
+}
+
+
 btVector3* BulletSharp::Math::Vector3ToBtVector3(Vector3 vector)
 {
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
@@ -30,8 +72,16 @@ void BulletSharp::Math::Vector3ToBtVector3(Vector3 vector, btVector3* vectorOut)
 btVector3* BulletSharp::Math::Vector3ArrayToUnmanaged(array<Vector3>^ v)
 {
 	btVector3* btVertices = new btVector3[v->Length];
-	for(int i=0; i<v->Length; i++)
-		Vector3ToBtVector3(v[i], &btVertices[i]);
+	if (sizeof(btVector3) == sizeof(Vector3))
+	{
+		pin_ptr<Vector3> vPtr = &v[0];
+		memcpy(btVertices, vPtr, v->Length * sizeof(btVector3));
+	}
+	else
+	{
+		for(int i=0; i<v->Length; i++)
+			Vector3ToBtVector3(v[i], &btVertices[i]);
+	}
 	return btVertices;
 }
 

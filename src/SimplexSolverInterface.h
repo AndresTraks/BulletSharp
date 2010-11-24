@@ -1,9 +1,5 @@
 #pragma once
 
-#pragma managed(push, off)
-#include <BulletCollision/NarrowPhaseCollision/btSimplexSolverInterface.h>
-#pragma managed(pop)
-
 #include "IDisposable.h"
 
 #ifdef NO_VIRTUAL_INTERFACE

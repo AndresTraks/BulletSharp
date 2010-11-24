@@ -2,12 +2,6 @@
 
 #ifndef DISABLE_SOFTBODY
 
-#pragma managed(push, off)
-#include <BulletSoftBody/btSoftBodyHelpers.h>
-#pragma managed(pop)
-
-#include <stdio.h>
-
 #include "SoftBody.h"
 #include "SoftBodyHelpers.h"
 #include "StringConv.h"

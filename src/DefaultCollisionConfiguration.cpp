@@ -2,14 +2,17 @@
 
 #include "CollisionConfiguration.h"
 #include "DefaultCollisionConfiguration.h"
-#include "PoolAllocator.h"
 #include "StackAlloc.h"
+#ifndef DISABLE_UNCOMMON
+#include "PoolAllocator.h"
+#endif
 
 DefaultCollisionConstructionInfo::DefaultCollisionConstructionInfo()
 {
 	_constructionInfo = new btDefaultCollisionConstructionInfo();
 }
 
+#ifndef DISABLE_UNCOMMON
 PoolAllocator^ DefaultCollisionConstructionInfo::CollisionAlgorithmPool::get()
 {
 	return gcnew PoolAllocator(_constructionInfo->m_collisionAlgorithmPool);
@@ -18,6 +21,7 @@ void DefaultCollisionConstructionInfo::CollisionAlgorithmPool::set(PoolAllocator
 {
 	_constructionInfo->m_collisionAlgorithmPool = value->UnmanagedPointer;
 }
+#endif
 
 int DefaultCollisionConstructionInfo::CustomCollisionAlgorithmMaxElementSize::get()
 {
@@ -55,6 +59,7 @@ void DefaultCollisionConstructionInfo::DefaultStackAllocatorSize::set(int value)
 	_constructionInfo->m_defaultStackAllocatorSize = value;
 }
 
+#ifndef DISABLE_UNCOMMON
 PoolAllocator^ DefaultCollisionConstructionInfo::PersistentManifoldPool::get()
 {
 	return gcnew PoolAllocator(_constructionInfo->m_persistentManifoldPool);
@@ -63,6 +68,7 @@ void DefaultCollisionConstructionInfo::PersistentManifoldPool::set(PoolAllocator
 {
 	_constructionInfo->m_persistentManifoldPool = value->UnmanagedPointer;
 }
+#endif
 
 StackAlloc^ DefaultCollisionConstructionInfo::StackAllocator::get()
 {

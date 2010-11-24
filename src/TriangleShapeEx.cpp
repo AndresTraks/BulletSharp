@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_GIMPACT
+
 #include "Collections.h"
 #include "TriangleShapeEx.h"
 
@@ -213,3 +215,5 @@ btTriangleShapeEx* TriangleShapeEx::UnmanagedPointer::get()
 {
 	return (btTriangleShapeEx*)TriangleShape::UnmanagedPointer;
 }
+
+#endif

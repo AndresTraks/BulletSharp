@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #ifndef DISABLE_BVH
+#ifndef DISABLE_GIMPACT
 
 #include "AlignedObjectArray.h"
 #include "BoxCollision.h"
@@ -239,4 +240,5 @@ void GImpactQuantizedBvh::PrimitiveManager::set(PrimitiveManagerBase^ value)
 	_bvh->setPrimitiveManager(value->UnmanagedPointer);
 }
 
+#endif
 #endif

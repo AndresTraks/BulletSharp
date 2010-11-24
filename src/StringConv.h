@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vcclr.h>
-
 #define PinManagedString(string) return PtrToStringChars(string);
 
 namespace BulletSharp

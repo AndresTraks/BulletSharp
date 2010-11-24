@@ -2,8 +2,6 @@
 
 #include "IDisposable.h"
 
-#include <msclr/auto_gcroot.h>
-
 using namespace msclr;
 
 namespace BulletSharp

@@ -4,7 +4,6 @@
 
 #include "BroadphaseInterface.h"
 #include "BroadphaseProxy.h"
-#include "Enums.h"
 
 namespace BulletSharp
 {

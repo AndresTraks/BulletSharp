@@ -3,10 +3,8 @@
 // Fully implemented as of 18 Nov 2010
 
 #include "CollisionWorld.h"
-#include "Enums.h"
 #include "IDisposable.h"
 
-#include <msclr/auto_gcroot.h>
 using namespace msclr;
 
 namespace BulletSharp

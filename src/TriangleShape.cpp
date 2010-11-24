@@ -1,8 +1,6 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <BulletCollision/CollisionShapes/btTriangleShape.h>
-#pragma managed(pop)
+#if !defined(DISABLE_UNCOMMON) | !defined(DISABLE_GIMPACT)
 
 #include "Collections.h"
 #include "TriangleShape.h"
@@ -76,3 +74,5 @@ btTriangleShape* TriangleShape::UnmanagedPointer::get()
 {
 	return (btTriangleShape*)PolyhedralConvexShape::UnmanagedPointer;
 }
+
+#endif

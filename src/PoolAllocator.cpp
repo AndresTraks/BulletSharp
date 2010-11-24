@@ -1,8 +1,6 @@
 #include "StdAfx.h"
 
-#pragma managed(push, off)
-#include <LinearMath/btPoolAllocator.h>
-#pragma managed(pop)
+#ifndef DISABLE_UNCOMMON
 
 #include "PoolAllocator.h"
 
@@ -71,3 +69,5 @@ void PoolAllocator::UnmanagedPointer::set(btPoolAllocator* value)
 {
 	_allocator = value;
 }
+
+#endif

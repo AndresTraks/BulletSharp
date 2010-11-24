@@ -1,14 +1,9 @@
 #pragma once
 
-// Fully implemented as of 05 Jul 2010
-
-#pragma managed(push, off)
-#include <BulletCollision/Gimpact/btGImpactShape.h>
-#pragma managed(pop)
+// Fully implemented as of 23 Nov 2010
 
 #include "CollisionWorld.h"
 #include "ConcaveShape.h"
-#include "Enums.h"
 #include "TetrahedronShape.h"
 #ifndef DISABLE_BVH
 #include "GImpactBvh.h"
