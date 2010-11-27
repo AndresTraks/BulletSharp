@@ -8,7 +8,7 @@ using SlimDX.Direct3D9;
 
 namespace GImpactTestDemo
 {
-    class GImpactTestDemo : Game
+    public class GImpactTestDemo : Game
     {
         Vector3 eye = new Vector3(0, 10, 50);
         Vector3 target = new Vector3(0, 10, -4);

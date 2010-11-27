@@ -8,7 +8,7 @@ using SlimDX.Direct3D9;
 
 namespace VehicleDemo
 {
-    class VehicleDemo : Game
+    public class VehicleDemo : Game
     {
         Vector3 eye = new Vector3(5, 15, 5);
         Vector3 target = Vector3.Zero;

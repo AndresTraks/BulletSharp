@@ -8,7 +8,7 @@ using SlimDX.Direct3D9;
 
 namespace DistanceDemo
 {
-    class DistanceDemo : Game
+    public class DistanceDemo : Game
     {
         Vector3 eye = new Vector3(10, 10, 5);
         Vector3 target = new Vector3(0, 8, 0);

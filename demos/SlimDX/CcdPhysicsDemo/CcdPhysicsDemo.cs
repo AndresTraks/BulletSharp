@@ -8,7 +8,7 @@ using SlimDX.Direct3D9;
 
 namespace CcdPhysicsDemo
 {
-    class CcdPhysicsDemo : Game
+    public class CcdPhysicsDemo : Game
     {
         Vector3 eye = new Vector3(0, 10, 40);
         Vector3 target = Vector3.Zero;

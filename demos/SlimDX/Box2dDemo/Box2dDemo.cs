@@ -8,7 +8,7 @@ using SlimDX.Direct3D9;
 
 namespace Box2dDemo
 {
-    class Box2dDemo : Game
+    public class Box2dDemo : Game
     {
         Vector3 eye = new Vector3(0, 15, 20);
         Vector3 target = new Vector3(10, 10, 0);

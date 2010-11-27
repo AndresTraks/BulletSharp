@@ -10,7 +10,7 @@ using SlimDX.RawInput;
 
 namespace SoftDemo
 {
-    class SoftDemo : Game
+    public class SoftDemo : Game
     {
         Vector3 eye = new Vector3(20, 20, 80);
         Vector3 target = new Vector3(0, 0, 10);

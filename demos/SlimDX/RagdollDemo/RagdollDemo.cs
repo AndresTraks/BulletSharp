@@ -11,7 +11,7 @@ using SlimDX.Direct3D9;
 
 namespace RagdollDemo
 {
-    class RagdollDemo : Game
+    public class RagdollDemo : Game
     {
         Vector3 eye = new Vector3(1, 1, 10);
         Vector3 target = new Vector3(0, 1, 0);

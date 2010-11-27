@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCLClothDemo", "OpenCLCl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GImpactTestDemo", "GImpactTestDemo\GImpactTestDemo.csproj", "{372FA23F-5F6C-4C2B-94C1-FB004D722B38}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllBulletDemos", "AllBulletDemos\AllBulletDemos.csproj", "{9CFB261D-3493-4C64-8367-C031B4E475C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -97,6 +99,8 @@ Global
 		{372FA23F-5F6C-4C2B-94C1-FB004D722B38}.Debug|x86.Build.0 = Debug|x86
 		{372FA23F-5F6C-4C2B-94C1-FB004D722B38}.Release|x86.ActiveCfg = Release|x86
 		{372FA23F-5F6C-4C2B-94C1-FB004D722B38}.Release|x86.Build.0 = Release|x86
+		{9CFB261D-3493-4C64-8367-C031B4E475C7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9CFB261D-3493-4C64-8367-C031B4E475C7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

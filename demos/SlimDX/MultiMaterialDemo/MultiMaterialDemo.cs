@@ -8,7 +8,7 @@ using SlimDX.Direct3D9;
 
 namespace MultiMaterialDemo
 {
-    class MultiMaterialDemo : Game
+    public class MultiMaterialDemo : Game
     {
         Vector3 eye = new Vector3(30, 20, 10);
         Vector3 target = new Vector3(0, 5, 0);

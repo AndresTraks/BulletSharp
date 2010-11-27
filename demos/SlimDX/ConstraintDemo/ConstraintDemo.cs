@@ -8,7 +8,7 @@ using SlimDX.Direct3D9;
 
 namespace ConstraintDemo
 {
-    class ConstraintDemo : Game
+    public class ConstraintDemo : Game
     {
         Vector3 eye = new Vector3(35, 10, 35);
         Vector3 target = new Vector3(0, 5, 0);

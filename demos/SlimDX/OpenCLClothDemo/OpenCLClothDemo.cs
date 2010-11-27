@@ -8,7 +8,7 @@ using SlimDX.Direct3D9;
 
 namespace OpenCLClothDemo
 {
-    class OpenCLClothDemo : Game
+    public class OpenCLClothDemo : Game
     {
         Vector3 eye = new Vector3(50, 20, 100);
         Vector3 target = new Vector3(0, 20, 40);
