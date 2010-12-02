@@ -51,13 +51,13 @@ namespace OpenCLClothDemo
             }
 
             // collision configuration contains default setup for memory, collision setup
-            CollisionConfiguration collisionConf = new DefaultCollisionConfiguration();
-            Dispatcher = new CollisionDispatcher(collisionConf);
+            CollisionConf = new DefaultCollisionConfiguration();
+            Dispatcher = new CollisionDispatcher(CollisionConf);
 
             Broadphase = new DbvtBroadphase();
             Solver = new SequentialImpulseConstraintSolver();
 
-            World = new SoftRigidDynamicsWorld(Dispatcher, Broadphase, Solver, collisionConf, gSolver);
+            World = new SoftRigidDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf, gSolver);
             World.Gravity = new Vector3(0, -10, 0);
 
             // create the ground
@@ -320,7 +320,8 @@ namespace OpenCLClothDemo
             for (int flagIndex = 0; flagIndex < flags.Count; ++flagIndex)
             {
                 gSolver.CopySoftBodyToVertexBuffer(flags[flagIndex], cloths[flagIndex].VertexBufferDescriptor);
-                flags[flagIndex].UserObject = new object[] { cloths[flagIndex].CpuBuffer, cloths[flagIndex].Indices };
+                if (flags[flagIndex].UserObject == null)
+                    flags[flagIndex].UserObject = new object[] { cloths[flagIndex].CpuBuffer, cloths[flagIndex].Indices };
             }
 
 

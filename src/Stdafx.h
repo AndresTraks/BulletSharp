@@ -31,9 +31,10 @@
 //#define BT_USE_DOUBLE_PRECISION
 
 
-#define USE_MINICL
+// Choose one of these for CL
+//#define USE_MINICL
 //#define USE_AMD_OPENCL
-//#define USE_NVIDIA_OPENCL
+#define USE_NVIDIA_OPENCL
 
 
 #if GRAPHICS_XNA31

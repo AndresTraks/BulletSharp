@@ -13,6 +13,8 @@ namespace OpenCLClothDemo
 
             int maxFlops = 0;
             IntPtr maxFlopsDevice = devices[0];
+            int SimdMultiplier = 1;
+            int currentDevice = 0;
 
             foreach (IntPtr device in devices)
             {
@@ -22,7 +24,31 @@ namespace OpenCLClothDemo
                 int clockCrequency;
                 CL.GetDeviceInfo(device, CLDevice.MaxClockFrequency, out clockCrequency);
 
-                int flops = computeUnits * clockCrequency;
+                CLDeviceType deviceType;
+                CL.GetDeviceInfo(devices[currentDevice], CLDevice.Type, out deviceType);
+
+                if (deviceType == CLDeviceType.Cpu)
+                {
+                    // For simplicity assume that the CPU is running single SSE instructions
+                    // This will of course depend on the kernel
+                    SimdMultiplier = 4;
+                }
+                else if (deviceType == CLDeviceType.Gpu)
+                {
+                    // Approximation to GPU compute power
+                    // As long as this beats the CPU number that's the important thing, really
+#if CL_PLATFORM_AMD
+                    // 16 processing elements, 5 ALUs each
+                    SimdMultiplier = 80;
+#elif CL_PLATFORM_NVIDIA
+                    // 8 processing elements, dual issue - pre-Fermi at least
+                    SimdMultiplier = 16;
+#else
+                    SimdMultiplier = 16;
+#endif
+                }
+
+                int flops = computeUnits * clockCrequency * SimdMultiplier;
                 if (flops > maxFlops)
                 {
                     maxFlops = flops;

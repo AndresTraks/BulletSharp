@@ -69,7 +69,7 @@ namespace CcdPhysicsDemo
             }
 
             // collision configuration contains default setup for memory, collision setup
-            CollisionConfiguration collisionConf = new DefaultCollisionConfiguration();
+            CollisionConf = new DefaultCollisionConfiguration();
 
             if (UseThreading)
             {
@@ -80,11 +80,11 @@ namespace CcdPhysicsDemo
                     maxNumOutstandingTasks);
 
                 threadSupportCollision = new Win32ThreadSupport(info);
-                Dispatcher = new SpuGatheringCollisionDispatcher(threadSupportCollision, maxNumOutstandingTasks, collisionConf);
+                Dispatcher = new SpuGatheringCollisionDispatcher(threadSupportCollision, maxNumOutstandingTasks, CollisionConf);
             }
             else
             {
-                Dispatcher = new CollisionDispatcher(collisionConf);
+                Dispatcher = new CollisionDispatcher(CollisionConf);
             }
 
             Broadphase = new DbvtBroadphase();
@@ -93,7 +93,7 @@ namespace CcdPhysicsDemo
             // the default constraint solver.
             Solver = new SequentialImpulseConstraintSolver();
 
-            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, collisionConf);
+            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf);
             World.Gravity = new Vector3(0, -10, 0);
 
             // RandomizeOrder makes cylinder stacking a bit more stable
@@ -197,6 +197,14 @@ namespace CcdPhysicsDemo
                 RigidBody ballBody = LocalCreateRigidBody(10000, Matrix.Translation(0, 2, 40), ballShape);
                 ballBody.LinearVelocity = new Vector3(0, 0, -10);
             }
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            if (threadSupportCollision != null)
+                threadSupportCollision.Dispose();
         }
     }
 }

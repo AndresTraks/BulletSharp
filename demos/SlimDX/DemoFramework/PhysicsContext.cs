@@ -3,10 +3,11 @@ using SlimDX;
 
 namespace DemoFramework
 {
-    public class PhysicsContext
+    public class PhysicsContext : System.IDisposable
     {
         public DynamicsWorld World { get; protected set; }
 
+        protected CollisionConfiguration CollisionConf;
         protected CollisionDispatcher Dispatcher;
         protected BroadphaseInterface Broadphase;
         protected ConstraintSolver Solver;
@@ -16,6 +17,43 @@ namespace DemoFramework
 
         public PhysicsContext()
         {
+        }
+
+        public virtual void Dispose()
+        {
+            //removed/dispose constraints
+            int i;
+            for (i = World.NumConstraints - 1; i >= 0; i--)
+            {
+                TypedConstraint constraint = World.GetConstraint(i);
+                World.RemoveConstraint(constraint);
+                constraint.Dispose(); ;
+            }
+
+            //remove the rigidbodies from the dynamics world and delete them
+            for (i = World.NumCollisionObjects - 1; i >= 0; i--)
+            {
+                CollisionObject obj = World.CollisionObjectArray[i];
+                RigidBody body = RigidBody.Upcast(obj);
+                if (body != null && body.MotionState != null)
+                {
+                    body.MotionState.Dispose();
+                }
+                World.RemoveCollisionObject(obj);
+                obj.Dispose();
+            }
+
+            //delete collision shapes
+            for (int j = 0; j < CollisionShapes.Count; j++)
+            {
+                CollisionShape shape = CollisionShapes[j];
+                shape.Dispose();
+            }
+
+            World.Dispose();
+            Broadphase.Dispose();
+            Dispatcher.Dispose();
+            CollisionConf.Dispose();
         }
 
         public virtual int Update(float elapsedTime)

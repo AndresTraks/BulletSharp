@@ -6,7 +6,6 @@ namespace OpenCLClothDemo
 {
     class OclCommon
     {
-        //static string platformVendor = "MiniCL, SCEA";
         //static string platformVendor = "Advanced Micro Devices, Inc.";
         static string platformVendor = "NVIDIA Corporation";
 
@@ -15,11 +14,17 @@ namespace OpenCLClothDemo
             uint numPlatforms;
             IntPtr platform = IntPtr.Zero;
             IntPtr[] platforms = null;
+            
             int ciErrNum = CL.GetPlatformIDs(0, ref platforms, out numPlatforms);
             if (ciErrNum != 0)
             {
                 error = ciErrNum;
                 return IntPtr.Zero;
+            }
+
+            if (CLStuff.deviceType == CLDeviceType.Cpu)
+            {
+                platformVendor = "MiniCL, SCEA";
             }
 
             if (numPlatforms > 0)

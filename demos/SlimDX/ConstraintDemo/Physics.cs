@@ -20,12 +20,11 @@ namespace ConstraintDemo
 
         void SetupEmptyDynamicsWorld()
         {
-            CollisionConfiguration collisionConf;
-            collisionConf = new DefaultCollisionConfiguration();
-            Dispatcher = new CollisionDispatcher(collisionConf);
+            CollisionConf = new DefaultCollisionConfiguration();
+            Dispatcher = new CollisionDispatcher(CollisionConf);
             Broadphase = new DbvtBroadphase();
             Solver = new SequentialImpulseConstraintSolver();
-            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, collisionConf);
+            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf);
             World.Gravity = new Vector3(0, -10, 0);
         }
 

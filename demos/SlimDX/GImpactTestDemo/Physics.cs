@@ -26,18 +26,16 @@ namespace GImpactTestDemo
 
         public Physics()
         {
-            CollisionConfiguration collisionConf;
-
             // collision configuration contains default setup for memory, collision setup
-            collisionConf = new DefaultCollisionConfiguration();
-            Dispatcher = new CollisionDispatcher(collisionConf);
+            CollisionConf = new DefaultCollisionConfiguration();
+            Dispatcher = new CollisionDispatcher(CollisionConf);
 
             //Broadphase = new SimpleBroadphase();
             Broadphase = new AxisSweep3_32Bit(new Vector3(-10000, -10000, -10000), new Vector3(10000, 10000, 10000), 1024);
 
             Solver = new SequentialImpulseConstraintSolver();
 
-            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, collisionConf);
+            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf);
             World.Gravity = new Vector3(0, -10, 0);
 
 

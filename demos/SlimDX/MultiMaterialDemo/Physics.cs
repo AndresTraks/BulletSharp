@@ -87,16 +87,14 @@ namespace MultiMaterialDemo
 
         public Physics()
         {
-            CollisionConfiguration collisionConf;
-
             // collision configuration contains default setup for memory, collision setup
-            collisionConf = new DefaultCollisionConfiguration();
-            Dispatcher = new CollisionDispatcher(collisionConf);
+            CollisionConf = new DefaultCollisionConfiguration();
+            Dispatcher = new CollisionDispatcher(CollisionConf);
 
             Broadphase = new AxisSweep3(new Vector3(-10000, -10000, -10000), new Vector3(10000, 10000, 10000));
             Solver = new SequentialImpulseConstraintSolver();
 
-            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, collisionConf);
+            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf);
             World.Gravity = new Vector3(0, -10, 0);
 
 

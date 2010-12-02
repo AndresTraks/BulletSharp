@@ -24,6 +24,7 @@ CollisionConfiguration::!CollisionConfiguration()
 	
 	OnDisposing( this, nullptr );
 	
+	delete _collisionConfiguration;
 	_collisionConfiguration = NULL;
 	
 	OnDisposed( this, nullptr );

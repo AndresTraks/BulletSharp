@@ -49,13 +49,11 @@ namespace VehicleDemo
 
         public Physics(VehicleDemo game)
         {
-            CollisionConfiguration collisionConf;
-
             CollisionShape groundShape = new BoxShape(50, 3, 50);
             CollisionShapes.Add(groundShape);
 
-            collisionConf = new DefaultCollisionConfiguration();
-            Dispatcher = new CollisionDispatcher(collisionConf);
+            CollisionConf = new DefaultCollisionConfiguration();
+            Dispatcher = new CollisionDispatcher(CollisionConf);
             Solver = new SequentialImpulseConstraintSolver();
 
             Vector3 worldMin = new Vector3(-10000, -10000, -10000);
@@ -63,7 +61,7 @@ namespace VehicleDemo
             Broadphase = new AxisSweep3(worldMin, worldMax);
             //Broadphase = new DbvtBroadphase();
 
-            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, collisionConf);
+            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf);
 
             int i;
             Matrix tr;

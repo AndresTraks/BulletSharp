@@ -8,11 +8,12 @@ namespace OpenCLClothDemo
         public static IntPtr cxMainContext;
         public static IntPtr device;
         public static IntPtr commandQueue;
+        public static CLDeviceType deviceType = CLDeviceType.All;
 
         public static void InitCL()
         {
             int ciErrNum = 0;
-            cxMainContext = OclCommon.CreateContextFromType(CLDeviceType.All, ref ciErrNum);
+            cxMainContext = OclCommon.CreateContextFromType(deviceType, ref ciErrNum);
             if (ciErrNum != 0)
             {
                 System.Windows.Forms.MessageBox.Show("OpenCL CreateContextFromType failed, error " + ciErrNum);

@@ -177,6 +177,7 @@ namespace DemoFramework
                     Form.Dispose();
                 Fps.Dispose();
                 MeshFactory.Dispose();
+                PhysicsContext.Dispose();
             }
         }
 

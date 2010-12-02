@@ -12,13 +12,11 @@ namespace Box2dDemo
 
         public Physics()
         {
-            CollisionConfiguration collisionConf;
-
             // collision configuration contains default setup for memory, collision setup
-            collisionConf = new DefaultCollisionConfiguration();
+            CollisionConf = new DefaultCollisionConfiguration();
 
             // Use the default collision dispatcher. For parallel processing you can use a diffent dispatcher.
-            Dispatcher = new CollisionDispatcher(collisionConf);
+            Dispatcher = new CollisionDispatcher(CollisionConf);
 
             VoronoiSimplexSolver simplex = new VoronoiSimplexSolver();
             MinkowskiPenetrationDepthSolver pdSolver = new MinkowskiPenetrationDepthSolver();
@@ -35,7 +33,7 @@ namespace Box2dDemo
             // the default constraint solver.
             Solver = new SequentialImpulseConstraintSolver();
 
-            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, collisionConf);
+            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf);
             World.Gravity = new Vector3(0, -10, 0);
 
             // create a few basic rigid bodies

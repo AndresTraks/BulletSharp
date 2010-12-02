@@ -994,11 +994,9 @@ namespace SoftDemo
                 Init_TetraCube, Init_TetraBunny
             };
 
-            CollisionConfiguration collisionConf;
-
             // collision configuration contains default setup for memory, collision setup
-            collisionConf = new SoftBodyRigidBodyCollisionConfiguration();
-            Dispatcher = new CollisionDispatcher(collisionConf);
+            CollisionConf = new SoftBodyRigidBodyCollisionConfiguration();
+            Dispatcher = new CollisionDispatcher(CollisionConf);
 
             Broadphase = new AxisSweep3(new Vector3(-1000, -1000, -1000),
                 new Vector3(1000, 1000, 1000), maxProxies);
@@ -1016,7 +1014,7 @@ namespace SoftDemo
             softBodyWorldInfo.Broadphase = Broadphase;
             softBodyWorldInfo.SparseSdf.Initialize();
 
-            World = new SoftRigidDynamicsWorld(Dispatcher, Broadphase, Solver, collisionConf);
+            World = new SoftRigidDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf);
             World.Gravity = new Vector3(0, -10, 0);
             World.DispatchInfo.EnableSpu = true;
 
