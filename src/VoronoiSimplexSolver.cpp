@@ -72,7 +72,7 @@ VoronoiSimplexSolver::~VoronoiSimplexSolver()
 
 VoronoiSimplexSolver::!VoronoiSimplexSolver()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );

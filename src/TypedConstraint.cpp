@@ -5,9 +5,36 @@
 #include "RigidBody.h"
 #include "TypedConstraint.h"
 
+TypedConstraint::TypedConstraint(btTypedConstraint* typedConstraint, bool doesNotOwnObject)
+{
+	_doesNotOwnObject = doesNotOwnObject;
+
+	if (typedConstraint == 0)
+		return;
+
+	_typedConstraint = typedConstraint;
+
+	if (_typedConstraint->getUserConstraintPtr() == (void*)-1)
+	{
+		GCHandle handle = GCHandle::Alloc(this);
+		void* obj = GCHandleToVoidPtr(handle);
+		_typedConstraint->setUserConstraintPtr(obj);
+	}
+}
+
 TypedConstraint::TypedConstraint(btTypedConstraint* typedConstraint)
 {
+	if (typedConstraint == 0)
+		return;
+
 	_typedConstraint = typedConstraint;
+
+	if (_typedConstraint->getUserConstraintPtr() == (void*)-1)
+	{
+		GCHandle handle = GCHandle::Alloc(this);
+		void* obj = GCHandleToVoidPtr(handle);
+		_typedConstraint->setUserConstraintPtr(obj);
+	}
 }
 
 TypedConstraint::~TypedConstraint()
@@ -17,11 +44,17 @@ TypedConstraint::~TypedConstraint()
 
 TypedConstraint::!TypedConstraint()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 	
 	OnDisposing( this, nullptr );
 	
+	void* userObj = _typedConstraint->getUserConstraintPtr();
+	if (userObj != (void*)-1)
+		VoidPtrToGCHandle(userObj).Free();
+	
+	if (_doesNotOwnObject == false)
+		delete _typedConstraint;
 	_typedConstraint = NULL;
 	
 	OnDisposed( this, nullptr );
@@ -64,6 +97,18 @@ void TypedConstraint::SetParam(ConstraintParam num, btScalar value)
 	UnmanagedPointer->setParam((int)num, value);
 }
 
+TypedConstraint^ TypedConstraint::Upcast(btTypedConstraint* typedConstraint)
+{
+	if (typedConstraint == 0)
+		return nullptr;
+
+	void* userObj = typedConstraint->getUserConstraintPtr();
+	if (userObj)
+		return static_cast<TypedConstraint^>(VoidPtrToGCHandle(userObj).Target);
+
+	return gcnew TypedConstraint(typedConstraint, true);
+}
+
 btScalar TypedConstraint::AppliedImpulse::get()
 {
 	if (NeedsFeedback == false)
@@ -93,12 +138,12 @@ bool TypedConstraint::NeedsFeedback::get()
 
 RigidBody^ TypedConstraint::RigidBodyA::get()
 {
-	return gcnew RigidBody(&UnmanagedPointer->getRigidBodyA());
+	return (RigidBody^)CollisionObject::Upcast(&UnmanagedPointer->getRigidBodyA());
 }
 
 RigidBody^ TypedConstraint::RigidBodyB::get()
 {
-	return gcnew RigidBody(&UnmanagedPointer->getRigidBodyB());
+	return (RigidBody^)CollisionObject::Upcast(&UnmanagedPointer->getRigidBodyB());
 }
 
 int TypedConstraint::Uid::get()
@@ -106,21 +151,13 @@ int TypedConstraint::Uid::get()
 	return UnmanagedPointer->getUid();
 }
 
-Object^ TypedConstraint::UserConstraint::get()
+Object^ TypedConstraint::UserObject::get()
 {
-	void* obj = UnmanagedPointer->getUserConstraintPtr();
-	if (obj == nullptr)
-		return nullptr;
-	return static_cast<Object^>(VoidPtrToGCHandle(obj).Target);
+	return _userObject;
 }
-void TypedConstraint::UserConstraint::set(Object^ value)
+void TypedConstraint::UserObject::set(Object^ value)
 {
-	void* obj = UnmanagedPointer->getUserConstraintPtr();
-	if (obj != nullptr)
-		VoidPtrToGCHandle(obj).Free();
-
-	GCHandle handle = GCHandle::Alloc(value);
-	UnmanagedPointer->setUserConstraintPtr(GCHandleToVoidPtr(handle));
+	_userObject = value;
 }
 
 int TypedConstraint::UserConstraintType::get()
@@ -139,6 +176,13 @@ btTypedConstraint* TypedConstraint::UnmanagedPointer::get()
 void TypedConstraint::UnmanagedPointer::set(btTypedConstraint* value)
 {
 	_typedConstraint = value;
+
+	if (_typedConstraint->getUserConstraintPtr() == (void*)-1)
+	{
+		GCHandle handle = GCHandle::Alloc(this);
+		void* obj = GCHandleToVoidPtr(handle);
+		_typedConstraint->setUserConstraintPtr(obj);
+	}
 }
 
 #endif

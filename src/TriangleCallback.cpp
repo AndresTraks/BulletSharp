@@ -14,7 +14,7 @@ TriangleCallback::~TriangleCallback()
 
 TriangleCallback::!TriangleCallback()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 	
 	OnDisposing( this, nullptr );
@@ -58,7 +58,7 @@ InternalTriangleIndexCallback::~InternalTriangleIndexCallback()
 
 InternalTriangleIndexCallback::!InternalTriangleIndexCallback()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 	
 	OnDisposing( this, nullptr );

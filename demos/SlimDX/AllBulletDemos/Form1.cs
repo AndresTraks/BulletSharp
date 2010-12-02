@@ -9,7 +9,8 @@ namespace AllBulletDemos
 {
     public partial class Form1 : Form
     {
-        object currentGame = null;
+        IDisposable game = null;
+        Form form;
         Point prevPosition = Point.Empty;
 
         public Form1()
@@ -45,26 +46,34 @@ namespace AllBulletDemos
             TryCloseForm();
         }
 
-        public delegate void InvokeDelegate(Form form);
+        public delegate void InvokeDelegate();
 
-        void CloseForm(Form form)
+        void CloseForm()
         {
             if (prevPosition.IsEmpty)
                 prevPosition = form.Location;
             form.Close();
+            form = null;
+        }
+
+        void DisposeGame()
+        {
+            game.Dispose();
+            game = null;
         }
 
         void TryCloseForm()
         {
-            if (currentGame != null)
+            if (game != null)
             {
-                Form form = (Form)
-                currentGame.GetType().InvokeMember("Form", BindingFlags.GetProperty, null, currentGame, null);
-                form.BeginInvoke(new InvokeDelegate(CloseForm), form);
+                form.BeginInvoke(new InvokeDelegate(CloseForm));
+                while (form != null)
+                    Thread.Sleep(100);
+                game = null;
             }
         }
 
-        void SetLocation(Form form)
+        void SetLocation()
         {
             form.Location = prevPosition;
         }
@@ -82,13 +91,16 @@ namespace AllBulletDemos
             {
                 if (type.BaseType.Name == "Game")
                 {
-                    currentGame = type.InvokeMember(null, BindingFlags.CreateInstance, null, null, null);
+                    game = (IDisposable)type.InvokeMember(null, BindingFlags.CreateInstance, null, null, null);
+
+                    bool librariesOk = (bool)type.InvokeMember("TestLibraries", BindingFlags.InvokeMethod, null, game, null);
+                    if (librariesOk == false)
+                        return;
+                    
                     new Thread(DemoThread).Start();
-                    Form form = null;
                     while (form == null)
                     {
-                        form = (Form)
-                        currentGame.GetType().InvokeMember("Form", BindingFlags.GetProperty, null, currentGame, null);
+                        form = (Form)game.GetType().InvokeMember("Form", BindingFlags.GetProperty, null, game, null);
                     }
                     form.HandleCreated += new EventHandler(form_HandleCreated);
                     break;
@@ -98,14 +110,16 @@ namespace AllBulletDemos
 
         void form_HandleCreated(object sender, EventArgs e)
         {
-            Form form = (Form)
-                        currentGame.GetType().InvokeMember("Form", BindingFlags.GetProperty, null, currentGame, null);
-            form.BeginInvoke(new InvokeDelegate(SetLocation), form);
+            form.BeginInvoke(new InvokeDelegate(SetLocation));
         }
 
         void DemoThread()
         {
-            currentGame.GetType().InvokeMember("Run", BindingFlags.InvokeMethod, null, currentGame, null);
+            game.GetType().InvokeMember("Run", BindingFlags.InvokeMethod, null, game, null);
+            if (form == null || form.IsDisposed)
+                DisposeGame();
+            else
+                form.BeginInvoke(new InvokeDelegate(DisposeGame));
         }
     }
 }

@@ -58,10 +58,17 @@ namespace SoftDemo
 
         void ResetScene()
         {
-            // Don't foreach here, it'll fail.
-            while (World.CollisionObjectArray.Count > 0)
+            while (World.NumConstraints > 0)
             {
-                CollisionObject obj = World.CollisionObjectArray[0];
+                TypedConstraint pc = World.GetConstraint(0);
+                World.RemoveConstraint(pc);
+                pc.Dispose();
+            }
+
+            // Don't foreach here, it'll fail.
+            for (int i = World.CollisionObjectArray.Count - 1; i >= 0;  i--)
+            {
+                CollisionObject obj = World.CollisionObjectArray[i];
 
                 RigidBody body = RigidBody.Upcast(obj);
                 if (body != null && body.MotionState != null)
@@ -71,7 +78,6 @@ namespace SoftDemo
                 if (softBody != null)
                 {
                     SoftWorld.RemoveSoftBody(softBody);
-                    softBody.Dispose();
                 }
                 else
                 {
@@ -80,13 +86,7 @@ namespace SoftDemo
                     else
                         World.RemoveCollisionObject(obj);
                 }
-            }
-
-            while (World.NumConstraints > 0)
-            {
-                TypedConstraint pc = World.GetConstraint(0);
-                World.RemoveConstraint(pc);
-                pc.Dispose();
+                obj.Dispose();
             }
         }
 

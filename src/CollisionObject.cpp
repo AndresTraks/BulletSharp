@@ -3,18 +3,53 @@
 #include "BroadphaseProxy.h"
 #include "CollisionObject.h"
 #include "CollisionShape.h"
+#include "RigidBody.h"
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
 #endif
+#ifndef DISABLE_SOFTBODY
+#include "SoftBody.h"
+#endif
+
+CollisionObject::CollisionObject(btCollisionObject* collisionObject, bool doesNotOwnObject)
+{
+	_doesNotOwnObject = doesNotOwnObject;
+
+	if (collisionObject == 0)
+		return;
+
+	_collisionObject = collisionObject;
+
+	if (_collisionObject->getUserPointer() == 0)
+	{
+		GCHandle handle = GCHandle::Alloc(this);
+		void* obj = GCHandleToVoidPtr(handle);
+		_collisionObject->setUserPointer(obj);
+	}
+}
 
 CollisionObject::CollisionObject(btCollisionObject* collisionObject)
 {
+	if (collisionObject == 0)
+		return;
+
 	_collisionObject = collisionObject;
+
+	if (_collisionObject->getUserPointer() == 0)
+	{
+		GCHandle handle = GCHandle::Alloc(this);
+		void* obj = GCHandleToVoidPtr(handle);
+		_collisionObject->setUserPointer(obj);
+	}
 }
 
 CollisionObject::CollisionObject()
 {
 	_collisionObject = new btCollisionObject();
+	
+	GCHandle handle = GCHandle::Alloc(this);
+	void* obj = GCHandleToVoidPtr(handle);
+	_collisionObject->setUserPointer(obj);
 }
 
 CollisionObject::~CollisionObject()
@@ -24,11 +59,17 @@ CollisionObject::~CollisionObject()
 
 CollisionObject::!CollisionObject()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 	
 	OnDisposing( this, nullptr );
+
+	void* userObj = _collisionObject->getUserPointer();
+	if (userObj)
+		VoidPtrToGCHandle(userObj).Free();
 	
+	if (_doesNotOwnObject == false)
+		delete _collisionObject;
 	_collisionObject = NULL;
 	
 	OnDisposed( this, nullptr );
@@ -76,6 +117,33 @@ void CollisionObject::SerializeSingleObject(BulletSharp::Serializer^ serializer)
 	UnmanagedPointer->serializeSingleObject(serializer->UnmanagedPointer);
 }
 #endif
+
+CollisionObject^ CollisionObject::Upcast(btCollisionObject* collisionObject)
+{
+	if (collisionObject == 0)
+		return nullptr;
+
+	void* userObj = collisionObject->getUserPointer();
+	if (userObj)
+		return static_cast<CollisionObject^>(VoidPtrToGCHandle(userObj).Target);
+
+	return CollisionObject::UpcastDetect(collisionObject);
+}
+
+CollisionObject^ CollisionObject::UpcastDetect(btCollisionObject* collisionObject)
+{
+	btRigidBody* rigidBody = static_cast<btRigidBody*>(collisionObject);
+	if (rigidBody)
+		return gcnew RigidBody(rigidBody);
+
+#ifndef DISABLE_SOFTBODY
+	btSoftBody* softBody = static_cast<btSoftBody*>(collisionObject);
+	if (softBody)
+		return gcnew SoftBody::SoftBody(softBody);
+#endif
+
+	return gcnew CollisionObject(collisionObject);
+}
 
 BulletSharp::ActivationState CollisionObject::ActivationState::get()
 {
@@ -136,17 +204,10 @@ void CollisionObject::CollisionFlags::set(BulletSharp::CollisionFlags value)
 
 CollisionShape^ CollisionObject::CollisionShape::get()
 {
-	if (_collisionShape == nullptr)
-	{
-		btCollisionShape* shape = _collisionObject->getCollisionShape();
-		if ( shape != nullptr)
-			_collisionShape = gcnew BulletSharp::CollisionShape(shape);
-	}
-	return _collisionShape;
+	return BulletSharp::CollisionShape::Upcast(_collisionObject->getCollisionShape());
 }
 void CollisionObject::CollisionShape::set(BulletSharp::CollisionShape^ value)
 {
-	_collisionShape = value;
 	_collisionObject->setCollisionShape(value->UnmanagedPointer);
 }
 
@@ -283,24 +344,16 @@ void CollisionObject::Restitution::set(btScalar value)
 
 CollisionShape^ CollisionObject::RootCollisionShape::get()
 {
-	return _rootCollisionShape;
+	return BulletSharp::CollisionShape::Upcast(_collisionObject->getRootCollisionShape());
 }
 
 Object^ CollisionObject::UserObject::get()
 {
-	void* obj = _collisionObject->getUserPointer();
-	if (obj == nullptr)
-		return nullptr;
-	return static_cast<Object^>(VoidPtrToGCHandle(obj).Target);
+	return _userObject;
 }
 void CollisionObject::UserObject::set(Object^ value)
 {
-	void* obj = _collisionObject->getUserPointer();
-	if (obj != nullptr)
-		VoidPtrToGCHandle(obj).Free();
-
-	GCHandle handle = GCHandle::Alloc(value);
-	_collisionObject->setUserPointer(GCHandleToVoidPtr(handle));
+	_userObject = value;
 }
 
 Matrix CollisionObject::WorldTransform::get()
@@ -321,4 +374,11 @@ btCollisionObject* CollisionObject::UnmanagedPointer::get()
 void CollisionObject::UnmanagedPointer::set(btCollisionObject* value)
 {
 	_collisionObject = value;
+
+	if (_collisionObject->getUserPointer() == 0)
+	{
+		GCHandle handle = GCHandle::Alloc(this);
+		void* obj = GCHandleToVoidPtr(handle);
+		_collisionObject->setUserPointer(obj);
+	}
 }

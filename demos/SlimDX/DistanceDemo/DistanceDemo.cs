@@ -61,14 +61,13 @@ namespace DistanceDemo
 
             Device.SetTransform(TransformState.View, Freelook.View);
 
-            foreach (CollisionObject colObj in Physics.World.CollisionObjectArray)
+            foreach (RigidBody body in PhysicsContext.World.CollisionObjectArray)
             {
-                RigidBody body = RigidBody.Upcast(colObj);
                 Device.SetTransform(TransformState.World, body.WorldTransform);
 
-                if ((string)colObj.UserObject == "Ground")
+                if ((string)body.UserObject == "Ground")
                     Device.Material = GroundMaterial;
-                else if (colObj.ActivationState == ActivationState.ActiveTag)
+                else if (body.ActivationState == ActivationState.ActiveTag)
                     Device.Material = ActiveMaterial;
                 else
                     Device.Material = PassiveMaterial;

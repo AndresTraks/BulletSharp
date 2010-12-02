@@ -14,7 +14,6 @@ namespace BulletSharp
 	ref class ContactSolverInfo;
 	ref class RigidBody;
 	ref class TypedConstraint;
-	ref class UserInfoWrapper;
 
 	public ref class DynamicsWorld : CollisionWorld
 	{

@@ -10,6 +10,9 @@
 #include "SoftRigidDynamicsWorld.h"
 #include "SoftBody.h"
 #include "SoftBodySolver.h"
+#ifndef DISABLE_SERIALIZE
+#include "Serializer.h"
+#endif
 
 using namespace BulletSharp::SoftBody;
 
@@ -69,6 +72,11 @@ void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body)
 void SoftRigidDynamicsWorld::RemoveSoftBody(BulletSharp::SoftBody::SoftBody^ body)
 {
 	UnmanagedPointer->removeSoftBody(body->UnmanagedPointer);
+}
+
+void SoftRigidDynamicsWorld::SerializeSoftBodies(Serializer^ serializer)
+{
+	UnmanagedPointer->serialize(serializer->UnmanagedPointer);
 }
 
 AlignedSoftBodyArray^ SoftRigidDynamicsWorld::SoftBodyArray::get()

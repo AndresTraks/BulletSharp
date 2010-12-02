@@ -27,7 +27,7 @@ void CompoundShapeChild::ChildMargin::set(btScalar value)
 
 CollisionShape^ CompoundShapeChild::ChildShape::get()
 {
-	return gcnew CollisionShape(_child->m_childShape);
+	return CollisionShape::Upcast(_child->m_childShape);
 }
 void CompoundShapeChild::ChildShape::set(CollisionShape^ value)
 {
@@ -116,7 +116,7 @@ void CompoundShape::CreateAabbTreeFromChildren()
 
 CollisionShape^ CompoundShape::GetChildShape(int index)
 {
-	return gcnew CollisionShape(UnmanagedPointer->getChildShape(index));
+	return CollisionShape::Upcast(UnmanagedPointer->getChildShape(index));
 }
 
 Matrix CompoundShape::GetChildTransform(int index)

@@ -21,7 +21,7 @@ DynamicsWorld::RayResultCallback::~RayResultCallback()
 
 DynamicsWorld::RayResultCallback::!RayResultCallback()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );
@@ -94,7 +94,7 @@ void DynamicsWorld::RemoveConstraint(TypedConstraint^ constraint)
 
 TypedConstraint^ DynamicsWorld::GetConstraint(int index)
 {
-	return gcnew TypedConstraint(UnmanagedPointer->getConstraint(index));
+	return TypedConstraint::Upcast(UnmanagedPointer->getConstraint(index));
 }
 #endif
 
@@ -251,7 +251,6 @@ Object^ DynamicsWorld::WorldUserInfo::get()
 		return nullptr;
 	return (static_cast<UserInfoWrapper^>(VoidPtrToGCHandle(obj).Target)->UserObject);
 }
-
 void DynamicsWorld::WorldUserInfo::set(Object^ value)
 {
 	UserInfoWrapper^ userInfo;

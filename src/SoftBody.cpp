@@ -133,9 +133,7 @@ Anchor::Anchor()
 
 RigidBody^ Anchor::Body::get()
 {
-	if (_anchor->m_body == nullptr)
-		return nullptr;
-	return gcnew RigidBody(_anchor->m_body);
+	return (RigidBody^)CollisionObject::Upcast(_anchor->m_body);
 }
 void Anchor::Body::set(RigidBody^ value)
 {
@@ -305,9 +303,7 @@ Vector3 Body::AngularVelocity::get()
 
 CollisionObject^ Body::CollisionObject::get()
 {
-	if (_body->m_collisionObject == 0)
-		return nullptr;
-	return gcnew BulletSharp::CollisionObject(_body->m_collisionObject);
+	return BulletSharp::CollisionObject::Upcast(_body->m_collisionObject);
 }
 void Body::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -337,9 +333,7 @@ Vector3 Body::LinearVelocity::get()
 
 RigidBody^ Body::Rigid::get()
 {
-	if (_body->m_rigid == 0)
-		return nullptr;
-	return gcnew RigidBody(_body->m_rigid);
+	return (RigidBody^)BulletSharp::CollisionObject::Upcast(_body->m_rigid);
 }
 void Body::Rigid::set(RigidBody^ value)
 {
@@ -1929,9 +1923,7 @@ Scti::Scti()
 
 CollisionObject^ Scti::CollisionObject::get()
 {
-	if (_sCti->m_colObj == 0)
-		return nullptr;
-	return gcnew BulletSharp::CollisionObject(_sCti->m_colObj);
+	return BulletSharp::CollisionObject::Upcast(_sCti->m_colObj);
 }
 void Scti::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -2112,9 +2104,7 @@ SRayCast::SRayCast()
 
 BulletSharp::SoftBody::SoftBody^ SRayCast::Body::get()
 {
-	if (_rayCast->body == 0)
-		return nullptr;
-	return gcnew SoftBody(_rayCast->body);
+	return (BulletSharp::SoftBody::SoftBody^)CollisionObject::Upcast(_rayCast->body);
 }
 void SRayCast::Body::set(BulletSharp::SoftBody::SoftBody^ value)
 {
@@ -2316,6 +2306,20 @@ void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body, bo
 void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body)
 {
 	UnmanagedPointer->appendAnchor(node, body->UnmanagedPointer);
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body, Vector3 localPivot, bool disableCollisionBetweenLinkedBodies)
+{
+	btVector3* localPivotTemp = Math::Vector3ToBtVector3(localPivot);
+	UnmanagedPointer->appendAnchor(node, body->UnmanagedPointer, *localPivotTemp, disableCollisionBetweenLinkedBodies);
+	delete localPivotTemp;
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body, Vector3 localPivot)
+{
+	btVector3* localPivotTemp = Math::Vector3ToBtVector3(localPivot);
+	UnmanagedPointer->appendAnchor(node, body->UnmanagedPointer, *localPivotTemp);
+	delete localPivotTemp;
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendFace(int node0, int node1, int node2, Material^ material)
@@ -2889,9 +2893,7 @@ void BulletSharp::SoftBody::SoftBody::Translate(btScalar x, btScalar y, btScalar
 BulletSharp::SoftBody::SoftBody^ BulletSharp::SoftBody::SoftBody::Upcast(CollisionObject^ colObj)
 {
 	btSoftBody* body = btSoftBody::upcast(colObj->UnmanagedPointer);
-	if (body == nullptr)
-		return nullptr;
-	return gcnew SoftBody(body);
+	return (BulletSharp::SoftBody::SoftBody^)CollisionObject::Upcast(body);
 }
 
 AlignedAnchorArray^ BulletSharp::SoftBody::SoftBody::Anchors::get()

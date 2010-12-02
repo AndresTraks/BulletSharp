@@ -158,10 +158,7 @@ void WheelInfo::RaycastInfo::ContactPointWS::set(Vector3 value)
 
 Object^ WheelInfo::RaycastInfo::GroundObject::get()
 {
-	if (_info->m_groundObject = 0)
-		return nullptr;
-
-	return gcnew RigidBody((btRigidBody*)_info->m_groundObject);
+	return CollisionObject::Upcast((btCollisionObject*)_info->m_groundObject);
 }
 void WheelInfo::RaycastInfo::GroundObject::set(Object^ value)
 {

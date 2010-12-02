@@ -136,11 +136,6 @@ namespace BulletSharp
 			void set(Matrix value);
 		}
 
-		property BulletSharp::CollisionShape^ CollisionShape
-		{
-			BulletSharp::CollisionShape^ get();
-		}
-
 		property RigidBodyFlags Flags
 		{
 			RigidBodyFlags get();
@@ -230,7 +225,6 @@ namespace BulletSharp
 		btRigidBody::btRigidBodyConstructionInfo* _info;
 
 	internal:
-		BulletSharp::CollisionShape^ _collisionShape;
 		BulletSharp::MotionState^ _motionState;
 
 	public:

@@ -45,6 +45,7 @@ namespace BulletSharp
 	private:
 		Generic::IList<T>^ _list;
 		int i;
+		int _count;
 
 	public:
 		ListEnumerator(Generic::IList<T>^ list);

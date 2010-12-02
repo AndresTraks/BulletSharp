@@ -11,8 +11,6 @@
 RigidBody::RigidBody(RigidBodyConstructionInfo^ info)
 : CollisionObject(new btRigidBody(*info->UnmanagedPointer))
 {
-	_collisionShape = info->_collisionShape;
-	_rootCollisionShape = info->_collisionShape;
 	_motionState = info->_motionState;
 }
 
@@ -29,7 +27,7 @@ void RigidBody::AddConstraintRef(TypedConstraint^ constraint)
 
 TypedConstraint^ RigidBody::GetConstraintRef(int index)
 {
-	return gcnew TypedConstraint(UnmanagedPointer->getConstraintRef(index));
+	return TypedConstraint::Upcast(UnmanagedPointer->getConstraintRef(index));
 }
 
 void RigidBody::RemoveConstraintRef(TypedConstraint^ constraint)
@@ -199,9 +197,7 @@ void RigidBody::UpdateInertiaTensor()
 RigidBody^ RigidBody::Upcast(CollisionObject^ colObj)
 {
 	btRigidBody* body = btRigidBody::upcast(colObj->UnmanagedPointer);
-	if (body == nullptr)
-		return nullptr;
-	return gcnew RigidBody(body);
+	return (RigidBody^)CollisionObject::Upcast(body);
 }
 
 #ifndef DISABLE_INTERNAL
@@ -320,11 +316,6 @@ void RigidBody::CenterOfMassTransform::set(Matrix value)
 	btTransform* valueTemp = Math::MatrixToBtTransform(value);
 	UnmanagedPointer->setCenterOfMassTransform(*valueTemp);
 	delete valueTemp;
-}
-
-CollisionShape^ RigidBody::CollisionShape::get()
-{
-	return gcnew BulletSharp::CollisionShape(UnmanagedPointer->getCollisionShape());
 }
 
 RigidBodyFlags RigidBody::Flags::get()
@@ -463,25 +454,16 @@ btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfo
 
 RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape)
 {
-	btCollisionShape* btColShape = (collisionShape != nullptr) ?
-		collisionShape->UnmanagedPointer : nullptr;
-	btMotionState* btMotState = (motionState != nullptr) ?
-		motionState->UnmanagedPointer : nullptr;
-
-	_info = RigidBody_GetUnmanagedConstructionInfo(mass, btMotState, btColShape);
-	_collisionShape = collisionShape;
+	_info = RigidBody_GetUnmanagedConstructionInfo(mass,
+		GetUnmanagedNullable(motionState), GetUnmanagedNullable(collisionShape));
 	_motionState = motionState;
 }
 
 RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape, Vector3 localInertia)
 {
-	btCollisionShape* btColShape = (collisionShape != nullptr) ?
-		collisionShape->UnmanagedPointer : nullptr;
-	btMotionState* btMotState = (motionState != nullptr) ?
-		motionState->UnmanagedPointer : nullptr;
-
-	_info = RigidBody_GetUnmanagedConstructionInfo(mass, btMotState, btColShape, Math::Vector3ToBtVector3(localInertia));
-	_collisionShape = collisionShape;
+	_info = RigidBody_GetUnmanagedConstructionInfo(mass,
+		GetUnmanagedNullable(motionState), GetUnmanagedNullable(collisionShape),
+		Math::Vector3ToBtVector3(localInertia));
 	_motionState = motionState;
 }
 
@@ -550,7 +532,7 @@ void RigidBodyConstructionInfo::AngularSleepingThreshold::set(btScalar value)
 
 CollisionShape^ RigidBodyConstructionInfo::CollisionShape::get()
 {
-	return gcnew BulletSharp::CollisionShape(_info->m_collisionShape);
+	return BulletSharp::CollisionShape::Upcast(_info->m_collisionShape);
 }
 void RigidBodyConstructionInfo::CollisionShape::set(BulletSharp::CollisionShape^ value)
 {

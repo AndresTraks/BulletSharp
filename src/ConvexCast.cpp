@@ -19,7 +19,7 @@ ConvexCast::CastResult::~CastResult()
 
 ConvexCast::CastResult::!CastResult()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );
@@ -140,7 +140,7 @@ ConvexCast::~ConvexCast()
 
 ConvexCast::!ConvexCast()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );

@@ -1,9 +1,8 @@
-﻿using BulletSharp;
+﻿using System.Drawing;
+using BulletSharp;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using System;
-using System.Drawing;
 
 namespace BasicDemo
 {
@@ -54,11 +53,10 @@ namespace BasicDemo
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            foreach (CollisionObject colObj in physics.World.CollisionObjectArray)
+            foreach (RigidBody body in physics.World.CollisionObjectArray)
             {
                 Matrix4 modelLookAt;
 
-                RigidBody body = RigidBody.Upcast(colObj);
                 if ((string)body.UserObject == "Ground")
                 {
                     modelLookAt = body.MotionState.WorldTransform * lookat;
@@ -70,7 +68,7 @@ namespace BasicDemo
                 modelLookAt = body.MotionState.WorldTransform * lookat;
                 GL.LoadMatrix(ref modelLookAt);
 
-                if (colObj.ActivationState == ActivationState.ActiveTag)
+                if (body.ActivationState == ActivationState.ActiveTag)
                     DrawCube(Color.Orange);
                 else
                     DrawCube(Color.Red);

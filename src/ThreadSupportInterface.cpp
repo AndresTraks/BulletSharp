@@ -19,7 +19,7 @@ MultiThreaded::Barrier::~Barrier()
 
 MultiThreaded::Barrier::!Barrier()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );
@@ -61,7 +61,7 @@ MultiThreaded::CriticalSection::~CriticalSection()
 
 MultiThreaded::CriticalSection::!CriticalSection()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );
@@ -114,7 +114,7 @@ MultiThreaded::ThreadSupportInterface::~ThreadSupportInterface()
 
 MultiThreaded::ThreadSupportInterface::!ThreadSupportInterface()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );

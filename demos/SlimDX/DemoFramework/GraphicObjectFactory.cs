@@ -136,6 +136,8 @@ namespace DemoFramework
             mesh.UnlockIndexBuffer();
 
             mesh.ComputeNormals();
+            shapes.Add(shape, mesh);
+
             return mesh;
         }
 
@@ -282,7 +284,7 @@ namespace DemoFramework
         {
             if (body.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
             {
-                RenderSoftBody(SoftBody.Upcast(body));
+                RenderSoftBody((SoftBody)body);
             }
             else
             {
@@ -299,10 +301,6 @@ namespace DemoFramework
                 mesh.DrawSubset(0);
                 return;
             }
-
-            // Needs to be upcast, because either information from the shape object
-            // is needed for rendering or the graphics mesh does not exist yet.
-            shape = shape.UpcastDetect();
 
             if (complexShapes.TryGetValue(shape, out mesh))
             {

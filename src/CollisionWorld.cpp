@@ -51,7 +51,7 @@ CollisionWorld::LocalConvexResult::LocalConvexResult(BulletSharp::CollisionObjec
 
 BulletSharp::CollisionObject^ CollisionWorld::LocalConvexResult::CollisionObject::get()
 {
-	return gcnew BulletSharp::CollisionObject(_result->m_hitCollisionObject);
+	return BulletSharp::CollisionObject::Upcast(_result->m_hitCollisionObject);
 }
 void CollisionWorld::LocalConvexResult::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -107,7 +107,7 @@ CollisionWorld::ConvexResultCallback::~ConvexResultCallback()
 
 CollisionWorld::ConvexResultCallback::!ConvexResultCallback()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 	
 	OnDisposing( this, nullptr );
@@ -193,7 +193,7 @@ CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3
 
 BulletSharp::CollisionObject^ CollisionWorld::ClosestConvexResultCallback::CollisionObject::get()
 {
-	return gcnew BulletSharp::CollisionObject(UnmanagedPointer->m_hitCollisionObject);
+	return BulletSharp::CollisionObject::Upcast(UnmanagedPointer->m_hitCollisionObject);
 }
 void CollisionWorld::ClosestConvexResultCallback::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -254,7 +254,7 @@ CollisionWorld::ContactResultCallback::~ContactResultCallback()
 
 CollisionWorld::ContactResultCallback::!ContactResultCallback()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 	
 	OnDisposing( this, nullptr );
@@ -335,7 +335,7 @@ CollisionWorld::LocalRayResult::LocalRayResult(BulletSharp::CollisionObject^ col
 
 BulletSharp::CollisionObject^ CollisionWorld::LocalRayResult::CollisionObject::get()
 {
-	return gcnew BulletSharp::CollisionObject(_result->m_collisionObject);
+	return BulletSharp::CollisionObject::Upcast(_result->m_collisionObject);
 }
 void CollisionWorld::LocalRayResult::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -391,7 +391,7 @@ CollisionWorld::RayResultCallback::~RayResultCallback()
 
 CollisionWorld::RayResultCallback::!RayResultCallback()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 	
 	OnDisposing( this, nullptr );
@@ -413,7 +413,7 @@ bool CollisionWorld::RayResultCallback::NeedsCollision(BroadphaseProxy^ proxy0)
 
 BulletSharp::CollisionObject^ CollisionWorld::RayResultCallback::CollisionObject::get()
 {
-	return gcnew BulletSharp::CollisionObject(_callback->m_collisionObject);
+	return BulletSharp::CollisionObject::Upcast(_callback->m_collisionObject);
 }
 void CollisionWorld::RayResultCallback::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -549,7 +549,7 @@ CollisionWorld::~CollisionWorld()
 
 CollisionWorld::!CollisionWorld()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 	
 	OnDisposing( this, nullptr );
@@ -694,9 +694,14 @@ void CollisionWorld::Broadphase::set(BroadphaseInterface^ value)
 	_broadphase = value;
 }
 
-BulletSharp::AlignedCollisionObjectArray^ CollisionWorld::CollisionObjectArray::get()
+AlignedCollisionObjectArray^ CollisionWorld::CollisionObjectArray::get()
 {
-	return gcnew BulletSharp::AlignedCollisionObjectArray(&_world->getCollisionObjectArray());
+	btCollisionObjectArray* collisionObjectArray = &_world->getCollisionObjectArray();
+	if (_collisionObjectArray != nullptr && _collisionObjectArray->UnmanagedPointer == collisionObjectArray)
+		return _collisionObjectArray;
+
+	_collisionObjectArray = gcnew AlignedCollisionObjectArray(collisionObjectArray);
+	return _collisionObjectArray;
 }
 
 #ifndef DISABLE_DEBUGDRAW
@@ -769,8 +774,8 @@ btScalar ContactResultCallbackWrapper::addSingleResult(btManifoldPoint& cp,
 	const btCollisionObject* colObj1, int partId1, int index1)
 {
 	return _callback->AddSingleResult(gcnew ManifoldPoint(&cp),
-		gcnew CollisionObject((btCollisionObject*)colObj0), partId0, index0,
-		gcnew CollisionObject((btCollisionObject*)colObj1), partId1, index1);
+		CollisionObject::Upcast((btCollisionObject*)colObj0), partId0, index0,
+		CollisionObject::Upcast((btCollisionObject*)colObj1), partId1, index1);
 }
 
 bool ContactResultCallbackWrapper::baseNeedsCollision(btBroadphaseProxy* proxy0) const

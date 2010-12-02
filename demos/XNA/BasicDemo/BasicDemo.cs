@@ -133,12 +133,11 @@ namespace BasicDemo
             basicEffect.VertexColorEnabled = false;
             basicEffect.LightingEnabled = true;
 
-            foreach (CollisionObject colObj in physics.World.CollisionObjectArray)
+            foreach (RigidBody body in physics.World.CollisionObjectArray)
             {
-                RigidBody body = RigidBody.Upcast(colObj);
                 basicEffect.World = body.MotionState.WorldTransform;
 
-                if ((string)colObj.UserObject == "Ground")
+                if ((string)body.UserObject == "Ground")
                 {
                     basicEffect.DiffuseColor = groundColor.ToVector3();
                     basicEffect.CurrentTechnique.Passes[0].Begin();
@@ -147,7 +146,7 @@ namespace BasicDemo
                     continue;
                 }
 
-                if (colObj.ActivationState == ActivationState.ActiveTag)
+                if (body.ActivationState == ActivationState.ActiveTag)
                     basicEffect.DiffuseColor = activeColor.ToVector3();
                 else
                     basicEffect.DiffuseColor = passiveColor.ToVector3();

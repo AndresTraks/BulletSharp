@@ -47,7 +47,7 @@ BroadphaseInterface::~BroadphaseInterface()
 
 BroadphaseInterface::!BroadphaseInterface()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );

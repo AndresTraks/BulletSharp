@@ -199,12 +199,11 @@ namespace BasicDemo
 
             int i = 0;
 
-            foreach (CollisionObject obj in physics.World.CollisionObjectArray)
+            foreach (RigidBody body in physics.World.CollisionObjectArray)
             {
-                if ((string)obj.UserObject == "Ground")
+                if ((string)body.UserObject == "Ground")
                     continue;
 
-                RigidBody body = RigidBody.Upcast(obj);
                 Matrix4 x = body.MotionState.WorldTransform;
                 boxNodes[i].Position = x.GetTrans();
                 boxNodes[i].Orientation = x.ExtractQuaternion();

@@ -17,8 +17,11 @@ namespace BulletSharp
 
 	private:
 		btCollisionShape* _collisionShape;
+		Object^ _userObject;
+		bool _doesNotOwnObject;
 
 	internal:
+		CollisionShape(btCollisionShape* collisionShape, bool doesNotOwnObject);
 		CollisionShape(btCollisionShape* collisionShape);
 
 	public:
@@ -45,8 +48,11 @@ namespace BulletSharp
 		void SerializeSingleShape(Serializer^ serializer);
 #endif
 
-		CollisionShape^ UpcastDetect();
+	internal:
+		static CollisionShape^ Upcast(btCollisionShape* collisionShape);
+		static CollisionShape^ UpcastDetect(btCollisionShape* collisionShape);
 
+	public:
 		property bool IsDisposed
 		{
 			virtual bool get();

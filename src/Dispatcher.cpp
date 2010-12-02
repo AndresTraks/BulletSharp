@@ -168,7 +168,7 @@ Dispatcher::~Dispatcher()
 
 Dispatcher::!Dispatcher()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );

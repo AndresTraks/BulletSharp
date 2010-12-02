@@ -1,6 +1,6 @@
 #pragma once
 
-// Fully implemented as of 12 May 2010
+// Fully implemented as of 1 Dec 2010
 
 #include "IDisposable.h"
 
@@ -16,8 +16,11 @@ namespace BulletSharp
 
 	private:
 		btTypedConstraint* _typedConstraint;
+		bool _doesNotOwnObject;
+		Object^ _userObject;
 
 	internal:
+		TypedConstraint(btTypedConstraint* typedConstraint, bool doesNotOwnObject);
 		TypedConstraint(btTypedConstraint* typedConstraint);
 
 	public:
@@ -41,6 +44,10 @@ namespace BulletSharp
 		void SetParam(ConstraintParam num, btScalar value, int axis);
 		void SetParam(ConstraintParam num, btScalar value);
 
+	internal:
+		static TypedConstraint^ Upcast(btTypedConstraint* typedConstraint);
+
+	public:
 		property btScalar AppliedImpulse
 		{
 			btScalar get();
@@ -77,8 +84,8 @@ namespace BulletSharp
 			int get();
 		}
 
-		// UserConstraintId/UserConstraintPtr implemented as UserConstraint object
-		property Object^ UserConstraint
+		// UserConstraintId/UserConstraintPtr union implemented as UserObject
+		property Object^ UserObject
 		{
 			Object^ get();
 			void set(Object^ value);

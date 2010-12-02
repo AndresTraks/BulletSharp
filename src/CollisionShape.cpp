@@ -22,6 +22,7 @@
 #ifndef DISABLE_GIMPACT
 #include "GImpactShape.h"
 #endif
+#include "CollisionShape.h"
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
 #endif
@@ -32,12 +33,40 @@
 #include "HeightfieldTerrainShape.h"
 #include "MinkowskiSumShape.h"
 #include "MultimaterialTriangleMeshShape.h"
+#include "StringConv.h"
 #include "TriangleShape.h"
 #endif
 
+CollisionShape::CollisionShape(btCollisionShape* collisionShape, bool doesNotOwnObject)
+{
+	_doesNotOwnObject = doesNotOwnObject;
+
+	if (collisionShape == 0)
+		return;
+
+	_collisionShape = collisionShape;
+
+	if (_collisionShape->getUserPointer() == 0)
+	{
+		GCHandle handle = GCHandle::Alloc(this);
+		void* obj = GCHandleToVoidPtr(handle);
+		_collisionShape->setUserPointer(obj);
+	}
+}
+
 CollisionShape::CollisionShape(btCollisionShape* collisionShape)
 {
+	if (collisionShape == 0)
+		return;
+
 	_collisionShape = collisionShape;
+
+	if (_collisionShape->getUserPointer() == 0)
+	{
+		GCHandle handle = GCHandle::Alloc(this);
+		void* obj = GCHandleToVoidPtr(handle);
+		_collisionShape->setUserPointer(obj);
+	}
 }
 
 CollisionShape::~CollisionShape()
@@ -47,11 +76,17 @@ CollisionShape::~CollisionShape()
 
 CollisionShape::!CollisionShape()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 	
 	OnDisposing( this, nullptr );
 
+	void* userObj = _collisionShape->getUserPointer();
+	if (userObj)
+		VoidPtrToGCHandle(userObj).Free();
+
+	if (_doesNotOwnObject == false)
+		delete _collisionShape;
 	_collisionShape = NULL;
 
 	OnDisposed( this, nullptr );
@@ -73,88 +108,6 @@ int CollisionShape::GetHashCode()
 bool CollisionShape::IsDisposed::get()
 {
 	return ( _collisionShape == NULL );
-}
-
-CollisionShape^ CollisionShape::UpcastDetect()
-{
-	switch(ShapeType)
-	{
-	case BroadphaseNativeType::BoxShape:
-		return gcnew BoxShape((btBoxShape*) _collisionShape);
-	case BroadphaseNativeType::CapsuleShape:
-		return gcnew CapsuleShape((btCapsuleShape*) _collisionShape);
-	case BroadphaseNativeType::CompoundShape:
-		return gcnew CompoundShape((btCompoundShape*) _collisionShape);
-	case BroadphaseNativeType::ConeShape:
-		return gcnew ConeShape((btConeShape*) _collisionShape);
-	case BroadphaseNativeType::ConvexHullShape:
-		return gcnew ConvexHullShape((btConvexHullShape*) _collisionShape);
-	case BroadphaseNativeType::ConvexShape:
-		return gcnew ConvexShape((btConvexShape*) _collisionShape);
-	case BroadphaseNativeType::ConvexTriangleMeshShape:
-		return gcnew ConvexTriangleMeshShape((btConvexTriangleMeshShape*) _collisionShape);
-	//case BroadphaseNativeType::CustomConcaveShape:
-	//	return gcnew CustomConcaveShape((btCustomConcaveShape*) _collisionShape);
-	//case BroadphaseNativeType::CustomPolyhedralShape:
-	//	return gcnew CustomPolyhedralShape((btCustomPolyhedralShape*) _collisionShape);
-	case BroadphaseNativeType::CylinderShape:
-		return gcnew CylinderShape((btCylinderShape*) _collisionShape);
-	case BroadphaseNativeType::EmptyShape:
-		return gcnew EmptyShape((btEmptyShape*) _collisionShape);
-	//case BroadphaseNativeType::FastConcaveMesh:
-	//	return gcnew FastConcaveMesh((btFastConcaveMesh*) _collisionShape);
-	//case BroadphaseNativeType::HfFluidBuoyantConvexShape:
-	//	return gcnew HfFluidBuoyantConvexShape((btHfFluidBuoyantConvexShape*) _collisionShape);
-	//case BroadphaseNativeType::HfFluidShape:
-	//	return gcnew HfFluidShape((btHfFluidShape*) _collisionShape);
-	//case BroadphaseNativeType::MinkowskiDifferenceShape:
-	//	return gcnew MinkowskiDifferenceShape((btMinkowskiDifferenceShape*) _collisionShape);
-	case BroadphaseNativeType::MultiSphereShape:
-		return gcnew MultiSphereShape((btMultiSphereShape*) _collisionShape);
-	//case BroadphaseNativeType::ScaledTriangleMeshShape:
-	//	return gcnew ScaledTriangleMeshShape((btScaledTriangleMeshShape*) _collisionShape);
-	case BroadphaseNativeType::SphereShape:
-		return gcnew SphereShape((btSphereShape*) _collisionShape);
-	case BroadphaseNativeType::StaticPlane:
-		return gcnew StaticPlaneShape((btStaticPlaneShape*) _collisionShape);
-	//case BroadphaseNativeType::SoftBodyShape:
-	//	return gcnew SoftBody((btSoftBody*) _collisionShape);
-	//case BroadphaseNativeType::TetrahedralShape:
-	//	return gcnew TetrahedralShape((btTetrahedralShape*) _collisionShape);
-	case BroadphaseNativeType::UniformScalingShape:
-		return gcnew UniformScalingShape((btUniformScalingShape*) _collisionShape);
-
-	case BroadphaseNativeType::GImpactShape:
-	{
-#ifndef DISABLE_GIMPACT
-		return gcnew GImpactMeshShape((btGImpactMeshShape*) _collisionShape);
-#else
-		return this;
-#endif
-	}
-
-#ifndef DISABLE_UNCOMMON
-	case BroadphaseNativeType::Box2dShape:
-		return gcnew Box2dShape((btBox2dShape*) _collisionShape);
-	case BroadphaseNativeType::Convex2DShape:
-		return gcnew Convex2DShape((btConvex2dShape*) _collisionShape);
-	case BroadphaseNativeType::ConvexPointCloudShape:
-		return gcnew ConvexPointCloudShape((btConvexPointCloudShape*) _collisionShape);
-	case BroadphaseNativeType::MinkowskiSumShape:
-		return gcnew MinkowskiSumShape((btMinkowskiSumShape*) _collisionShape);
-	case BroadphaseNativeType::MultiMaterialTriangleMesh:
-		return gcnew MultimaterialTriangleMeshShape((btMultimaterialTriangleMeshShape*) _collisionShape);
-	case BroadphaseNativeType::TerrainShape:
-		return gcnew HeightfieldTerrainShape((btHeightfieldTerrainShape*) _collisionShape);
-	case BroadphaseNativeType::TriangleMeshShape:
-		return gcnew TriangleMeshShape((btTriangleMeshShape*) _collisionShape);
-	case BroadphaseNativeType::TriangleShape:
-		return gcnew TriangleShape((btTriangleShape*) _collisionShape);
-#endif
-
-	default:
-		return this;
-	}
 }
 
 void CollisionShape::CalculateLocalInertia(btScalar mass, Vector3% inertia)
@@ -246,6 +199,97 @@ void CollisionShape::SerializeSingleShape(BulletSharp::Serializer^ serializer)
 }
 #endif
 
+CollisionShape^ CollisionShape::Upcast(btCollisionShape* collisionShape)
+{
+	void* userObj = collisionShape->getUserPointer();
+	if (userObj)
+		return static_cast<CollisionShape^>(VoidPtrToGCHandle(userObj).Target);
+
+	return CollisionShape::UpcastDetect(collisionShape);
+}
+
+CollisionShape^ CollisionShape::UpcastDetect(btCollisionShape* collisionShape)
+{
+	BroadphaseNativeType type = (BroadphaseNativeType)collisionShape->getShapeType();
+
+	switch(type)
+	{
+	case BroadphaseNativeType::BoxShape:
+		return gcnew BoxShape((btBoxShape*) collisionShape);
+	case BroadphaseNativeType::CapsuleShape:
+		return gcnew CapsuleShape((btCapsuleShape*) collisionShape);
+	case BroadphaseNativeType::CompoundShape:
+		return gcnew CompoundShape((btCompoundShape*) collisionShape);
+	case BroadphaseNativeType::ConeShape:
+		return gcnew ConeShape((btConeShape*) collisionShape);
+	case BroadphaseNativeType::ConvexHullShape:
+		return gcnew ConvexHullShape((btConvexHullShape*) collisionShape);
+	case BroadphaseNativeType::ConvexShape:
+		return gcnew ConvexShape((btConvexShape*) collisionShape);
+	case BroadphaseNativeType::ConvexTriangleMeshShape:
+		return gcnew ConvexTriangleMeshShape((btConvexTriangleMeshShape*) collisionShape);
+	//case BroadphaseNativeType::CustomConcaveShape:
+	//	return gcnew CustomConcaveShape((btCustomConcaveShape*) collisionShape);
+	//case BroadphaseNativeType::CustomPolyhedralShape:
+	//	return gcnew CustomPolyhedralShape((btCustomPolyhedralShape*) collisionShape);
+	case BroadphaseNativeType::CylinderShape:
+		return gcnew CylinderShape((btCylinderShape*) collisionShape);
+	case BroadphaseNativeType::EmptyShape:
+		return gcnew EmptyShape((btEmptyShape*) collisionShape);
+	//case BroadphaseNativeType::FastConcaveMesh:
+	//	return gcnew FastConcaveMesh((btFastConcaveMesh*) collisionShape);
+	//case BroadphaseNativeType::HfFluidBuoyantConvexShape:
+	//	return gcnew HfFluidBuoyantConvexShape((btHfFluidBuoyantConvexShape*) collisionShape);
+	//case BroadphaseNativeType::HfFluidShape:
+	//	return gcnew HfFluidShape((btHfFluidShape*) collisionShape);
+	//case BroadphaseNativeType::MinkowskiDifferenceShape:
+	//	return gcnew MinkowskiDifferenceShape((btMinkowskiDifferenceShape*) collisionShape);
+	case BroadphaseNativeType::MultiSphereShape:
+		return gcnew MultiSphereShape((btMultiSphereShape*) collisionShape);
+	//case BroadphaseNativeType::ScaledTriangleMeshShape:
+	//	return gcnew ScaledTriangleMeshShape((btScaledTriangleMeshShape*) collisionShape);
+	case BroadphaseNativeType::SphereShape:
+		return gcnew SphereShape((btSphereShape*) collisionShape);
+	case BroadphaseNativeType::StaticPlane:
+		return gcnew StaticPlaneShape((btStaticPlaneShape*) collisionShape);
+	//case BroadphaseNativeType::TetrahedralShape:
+	//	return gcnew TetrahedralShape((btTetrahedralShape*) collisionShape);
+	case BroadphaseNativeType::UniformScalingShape:
+		return gcnew UniformScalingShape((btUniformScalingShape*) collisionShape);
+
+	case BroadphaseNativeType::GImpactShape:
+	{
+#ifndef DISABLE_GIMPACT
+		return gcnew GImpactMeshShape((btGImpactMeshShape*) collisionShape);
+#else
+		return this;
+#endif
+	}
+
+#ifndef DISABLE_UNCOMMON
+	case BroadphaseNativeType::Box2dShape:
+		return gcnew Box2dShape((btBox2dShape*) collisionShape);
+	case BroadphaseNativeType::Convex2DShape:
+		return gcnew Convex2DShape((btConvex2dShape*) collisionShape);
+	case BroadphaseNativeType::ConvexPointCloudShape:
+		return gcnew ConvexPointCloudShape((btConvexPointCloudShape*) collisionShape);
+	case BroadphaseNativeType::MinkowskiSumShape:
+		return gcnew MinkowskiSumShape((btMinkowskiSumShape*) collisionShape);
+	case BroadphaseNativeType::MultiMaterialTriangleMesh:
+		return gcnew MultimaterialTriangleMeshShape((btMultimaterialTriangleMeshShape*) collisionShape);
+	case BroadphaseNativeType::TerrainShape:
+		return gcnew HeightfieldTerrainShape((btHeightfieldTerrainShape*) collisionShape);
+	case BroadphaseNativeType::TriangleMeshShape:
+		return gcnew TriangleMeshShape((btTriangleMeshShape*) collisionShape);
+	case BroadphaseNativeType::TriangleShape:
+		return gcnew TriangleShape((btTriangleShape*) collisionShape);
+#endif
+
+	default:
+		return gcnew CollisionShape(collisionShape, true);
+	}
+}
+
 btScalar CollisionShape::AngularMotionDisc::get()
 {
 	return _collisionShape->getAngularMotionDisc();
@@ -318,20 +362,12 @@ BroadphaseNativeType CollisionShape::ShapeType::get()
 
 Object^ CollisionShape::UserObject::get()
 {
-	void* obj = _collisionShape->getUserPointer();
-	if (obj == nullptr)
-		return nullptr;
-	return static_cast<Object^>(VoidPtrToGCHandle(obj).Target);
+	return _userObject;
 }
 
 void CollisionShape::UserObject::set(Object^ value)
 {
-	void* obj = _collisionShape->getUserPointer();
-	if (obj != nullptr)
-		VoidPtrToGCHandle(obj).Free();
-
-	GCHandle handle = GCHandle::Alloc(value);
-	_collisionShape->setUserPointer(GCHandleToVoidPtr(handle));
+	_userObject = value;
 }
 
 btCollisionShape* CollisionShape::UnmanagedPointer::get()
@@ -341,4 +377,11 @@ btCollisionShape* CollisionShape::UnmanagedPointer::get()
 void CollisionShape::UnmanagedPointer::set(btCollisionShape* value)
 {
 	_collisionShape = value;
+
+	if (_collisionShape->getUserPointer() == 0)
+	{
+		GCHandle handle = GCHandle::Alloc(this);
+		void* obj = GCHandleToVoidPtr(handle);
+		_collisionShape->setUserPointer(obj);
+	}
 }

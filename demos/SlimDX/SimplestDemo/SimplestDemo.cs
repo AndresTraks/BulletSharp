@@ -115,11 +115,11 @@ namespace SimplestDemo
             Matrix view = Matrix.LookAtLH(eye, target, Vector3.UnitY);
             Device.SetTransform(TransformState.View, view);
 
-            foreach (CollisionObject colObj in physics.World.CollisionObjectArray)
+            foreach (RigidBody body in physics.World.CollisionObjectArray)
             {
-                Device.SetTransform(TransformState.World, colObj.WorldTransform);
+                Device.SetTransform(TransformState.World, body.WorldTransform);
 
-                if ((string)colObj.UserObject == "Ground")
+                if ((string)body.UserObject == "Ground")
                 {
                     Device.Material = groundMaterial;
                     groundBox.DrawSubset(0);

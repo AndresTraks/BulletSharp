@@ -16,8 +16,10 @@ namespace DemoFramework
         public MouseButtonFlags MousePressed { get; private set; }
         public MouseButtonFlags MouseDown { get; private set; }
         public Point MousePoint { get; private set; }
-        public Point MouseDelta { get; private set; }
         public int MouseWheelDelta { get; private set; }
+
+        Point _mouseDelta;
+        public Point MouseDelta { get { return _mouseDelta; } }
 
         Form form;
 
@@ -30,7 +32,6 @@ namespace DemoFramework
             KeysReleased = new List<Keys>();
             MousePoint = form.PointToClient(Cursor.Position);
             MouseWheelDelta = 0;
-            MouseDelta = Point.Empty;
         }
 
         public void ClearKeyCache()
@@ -39,10 +40,11 @@ namespace DemoFramework
             KeysReleased.Clear();
             MousePressed = MouseButtonFlags.None;
             MouseWheelDelta = 0;
-            MouseDelta = Point.Empty;
+            _mouseDelta.X = 0;
+            _mouseDelta.Y = 0;
         }
 
-        public void Device_KeyboardInput(KeyboardInputEventArgs e)
+        public void Device_KeyboardInput(object sender, KeyboardInputEventArgs e)
         {
             if (e.State == KeyState.Pressed)
             {
@@ -59,10 +61,11 @@ namespace DemoFramework
             }
         }
 
-        public void Device_MouseInput(MouseInputEventArgs e)
+        public void Device_MouseInput(object sender, MouseInputEventArgs e)
         {
             MousePoint = form.PointToClient(Cursor.Position);
-            MouseDelta = new Point(e.X, e.Y);
+            _mouseDelta.X = e.X;
+            _mouseDelta.Y = e.Y;
             MouseWheelDelta = e.WheelDelta;
 
             if (e.ButtonFlags != MouseButtonFlags.None)
@@ -70,35 +73,33 @@ namespace DemoFramework
                 MouseButtonFlags MouseFlags = e.ButtonFlags;
 
                 // Don't consider mouse clicks outside of the client area
-                if (form.Focused == false || MousePoint.X < 0 || MousePoint.Y < 0
-                    || MousePoint.X > form.ClientSize.Width || MousePoint.Y > form.ClientSize.Height)
+                if (form.Focused == false || form.ClientRectangle.Contains(MousePoint) == false)
                     MouseFlags &= ~(MouseButtonFlags.LeftDown | MouseButtonFlags.RightDown);
 
-
                 // Find the pressed/unpressed keys
-                if ((MouseDown & MouseButtonFlags.LeftDown) != MouseButtonFlags.LeftDown)
+                if (MouseFlags == MouseButtonFlags.LeftDown)
                 {
-                    if (MouseFlags == MouseButtonFlags.LeftDown)
+                    if ((MouseDown & MouseButtonFlags.LeftDown) != MouseButtonFlags.LeftDown)                    
                     {
                         MouseDown |= MouseButtonFlags.LeftDown;
                         MousePressed |= MouseButtonFlags.LeftDown;
                     }
                 }
-                if ((MouseDown & MouseButtonFlags.RightDown) != MouseButtonFlags.RightDown)
+                else if (MouseFlags == MouseButtonFlags.LeftUp)
                 {
-                    if (MouseFlags == MouseButtonFlags.RightDown)
+                    MouseDown &= ~MouseButtonFlags.LeftDown;
+                    MousePressed |= MouseButtonFlags.LeftUp;
+                }
+
+                if (MouseFlags == MouseButtonFlags.RightDown)
+                {
+                    if ((MouseDown & MouseButtonFlags.RightDown) != MouseButtonFlags.RightDown)                    
                     {
                         MouseDown |= MouseButtonFlags.RightDown;
                         MousePressed |= MouseButtonFlags.RightDown;
                     }
                 }
-
-                if (MouseFlags == MouseButtonFlags.LeftUp)
-                {
-                    MouseDown &= ~MouseButtonFlags.LeftDown;
-                    MousePressed |= MouseButtonFlags.LeftUp;
-                }
-                if (MouseFlags == MouseButtonFlags.RightUp)
+                else if (MouseFlags == MouseButtonFlags.RightUp)
                 {
                     MouseDown &= ~MouseButtonFlags.RightDown;
                     MousePressed |= MouseButtonFlags.RightUp;

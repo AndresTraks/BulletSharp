@@ -46,7 +46,7 @@ SimulationIslandManager::IslandCallback::~IslandCallback()
 
 SimulationIslandManager::IslandCallback::!IslandCallback()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 	
 	OnDisposing( this, nullptr );
@@ -79,7 +79,7 @@ SimulationIslandManager::~SimulationIslandManager()
 
 SimulationIslandManager::!SimulationIslandManager()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 	
 	OnDisposing( this, nullptr );

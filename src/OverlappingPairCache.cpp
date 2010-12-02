@@ -12,7 +12,7 @@ OverlapCallback::~OverlapCallback()
 
 OverlapCallback::!OverlapCallback()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );
@@ -50,7 +50,7 @@ OverlapFilterCallback::~OverlapFilterCallback()
 
 OverlapFilterCallback::!OverlapFilterCallback()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );

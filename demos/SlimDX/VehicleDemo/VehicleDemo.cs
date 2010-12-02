@@ -187,9 +187,8 @@ namespace VehicleDemo
 
             DebugDrawWorld();
 
-            foreach (CollisionObject colObj in Physics.World.CollisionObjectArray)
+            foreach (RigidBody body in PhysicsContext.World.CollisionObjectArray)
             {
-                RigidBody body = RigidBody.Upcast(colObj);
                 if ((string)body.UserObject == "Ground")
                 {
                     Device.SetTransform(TransformState.World, Matrix.Identity);
@@ -199,12 +198,12 @@ namespace VehicleDemo
                 }
                 else if ((string)body.UserObject == "Chassis")
                     Device.Material = bodyMaterial;
-                else if (colObj.ActivationState == ActivationState.ActiveTag)
+                else if (body.ActivationState == ActivationState.ActiveTag)
                     Device.Material = ActiveMaterial;
                 else
                     Device.Material = PassiveMaterial;
                 Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
-                MeshFactory.Render(colObj);
+                MeshFactory.Render(body);
             }
 
             Fps.OnRender(FramesPerSecond);

@@ -4,11 +4,13 @@
 
 namespace BulletSharp
 {
+	ref class Serializer;
+	ref class ConstraintSolver;
+	ref class Dispatcher;
+
 	namespace SoftBody
 	{
 		ref class AlignedSoftBodyArray;
-		ref class ConstraintSolver;
-		ref class Dispatcher;
 		ref class SoftBody;
 		ref class SoftBodySolver;
 		ref class SoftBodyWorldInfo;
@@ -35,6 +37,10 @@ namespace BulletSharp
 				CollisionFilterGroups collisionFilterGroup);
 			void AddSoftBody(SoftBody^ body);
 			void RemoveSoftBody(SoftBody^ body);
+
+#ifndef DISABLE_SERIALIZE
+			void SerializeSoftBodies(Serializer^ serializer);
+#endif
 
 			property AlignedSoftBodyArray^ SoftBodyArray
 			{

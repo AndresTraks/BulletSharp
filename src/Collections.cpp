@@ -42,6 +42,7 @@ ListEnumerator<T>::ListEnumerator(Generic::IList<T>^ list)
 {
 	_list = list;
 	i=-1;
+	_count = _list->Count;
 }
 
 generic<class T>
@@ -60,7 +61,7 @@ generic<class T>
 bool ListEnumerator<T>::MoveNext()
 {
 	i++;
-	return (i < _list->Count);
+	return (i < _count);
 }
 
 generic<class T>

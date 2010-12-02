@@ -25,7 +25,7 @@ AlignedObjectArray<T>::AlignedObjectArray(void* alignedObjectArray)
 generic<class T>
 AlignedObjectArray<T>::!AlignedObjectArray()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );
@@ -448,7 +448,7 @@ void AlignedCollisionShapeArray::CopyTo(array<CollisionShape^>^ array, int array
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew CollisionShape((*UnmanagedPointer)[i]);
+		array[arrayIndex+i] = CollisionShape::Upcast((*UnmanagedPointer)[i]);
 	}
 }
 
@@ -489,15 +489,14 @@ CollisionShape^ AlignedCollisionShapeArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	btCollisionShape* shape = (*UnmanagedPointer)[index];
-	if (shape == nullptr)
-		return nullptr;
-	return gcnew CollisionShape(shape);
+
+	return CollisionShape::Upcast((*UnmanagedPointer)[index]);
 }
 void AlignedCollisionShapeArray::default::set(int index, CollisionShape^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
+
 	(*UnmanagedPointer)[index] = value->UnmanagedPointer;
 }
 
@@ -547,7 +546,7 @@ void AlignedCollisionObjectArray::CopyTo(array<CollisionObject^>^ array, int arr
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew CollisionObject((*UnmanagedPointer)[i]);
+		array[arrayIndex+i] = CollisionObject::Upcast((*UnmanagedPointer)[i]);
 	}
 }
 
@@ -586,12 +585,10 @@ int AlignedCollisionObjectArray::Count::get()
 
 CollisionObject^ AlignedCollisionObjectArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= UnmanagedPointer->size())
 		throw gcnew ArgumentOutOfRangeException("index");
-	btCollisionObject* obj = (*UnmanagedPointer)[index];
-	if (obj == nullptr)
-		return nullptr;
-	return gcnew CollisionObject(obj);
+
+	return CollisionObject::Upcast((*UnmanagedPointer)[index]);
 }
 void AlignedCollisionObjectArray::default::set(int index, CollisionObject^ value)
 {
@@ -2135,7 +2132,7 @@ void BulletSharp::SoftBody::AlignedSoftBodyArray::CopyTo(array<SoftBody^>^ array
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew SoftBody((*UnmanagedPointer)[i]);
+		array[arrayIndex+i] = (SoftBody^)CollisionObject::Upcast((*UnmanagedPointer)[i]);
 	}
 }
 
@@ -2176,7 +2173,7 @@ BulletSharp::SoftBody::SoftBody^ BulletSharp::SoftBody::AlignedSoftBodyArray::de
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew SoftBody((*UnmanagedPointer)[index]);
+	return (SoftBody^)CollisionObject::Upcast((*UnmanagedPointer)[index]);
 }
 void BulletSharp::SoftBody::AlignedSoftBodyArray::default::set(int index, SoftBody^ value)
 {

@@ -226,11 +226,11 @@ namespace SoftDemo
 
                     Device.Material = softBodyMaterial;
                     Device.SetTransform(TransformState.World, Matrix.Identity);
-                    MeshFactory.Render(colObj);
+                    MeshFactory.RenderSoftBody((SoftBody)colObj);
                 }
                 else
                 {
-                    RigidBody body = RigidBody.Upcast(colObj);
+                    RigidBody body = (RigidBody)colObj;
                     Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
 
                     if ((string)body.UserObject == "Ground")

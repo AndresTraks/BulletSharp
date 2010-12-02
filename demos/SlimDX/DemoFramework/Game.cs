@@ -173,7 +173,8 @@ namespace DemoFramework
             if (disposeManagedResources)
             {
                 apiContext.Dispose();
-                Form.Dispose();
+                if (Form.IsDisposed == false)
+                    Form.Dispose();
                 Fps.Dispose();
                 MeshFactory.Dispose();
             }
@@ -334,8 +335,8 @@ namespace DemoFramework
 
             Input = new Input(Form);
 
-            SlimDX.RawInput.Device.KeyboardInput += Device_KeyboardInput;
-            SlimDX.RawInput.Device.MouseInput += Device_MouseInput;
+            SlimDX.RawInput.Device.KeyboardInput += Input.Device_KeyboardInput;
+            SlimDX.RawInput.Device.MouseInput += Input.Device_MouseInput;
 
 
             Width = 1024;
@@ -370,17 +371,10 @@ namespace DemoFramework
                     Render();
             });
 
+            SlimDX.RawInput.Device.KeyboardInput -= Input.Device_KeyboardInput;
+            SlimDX.RawInput.Device.MouseInput -= Input.Device_MouseInput;
+
             OnResourceUnload();
-        }
-
-        private void Device_MouseInput(object sender, MouseInputEventArgs e)
-        {
-            Input.Device_MouseInput(e);
-        }
-
-        private void Device_KeyboardInput(object sender, KeyboardInputEventArgs e)
-        {
-            Input.Device_KeyboardInput(e);
         }
 
         protected virtual void OnInitializeDevice()
@@ -478,7 +472,7 @@ namespace DemoFramework
                         PhysicsContext.World.RayTest(rayFrom, rayTo, rayCallback);
                         if (rayCallback.HasHit)
                         {
-                            RigidBody body = RigidBody.Upcast(rayCallback.CollisionObject);
+                            RigidBody body = rayCallback.CollisionObject as RigidBody;
                             if (body != null)
                             {
                                 if (!(body.IsStaticObject || body.IsKinematicObject))

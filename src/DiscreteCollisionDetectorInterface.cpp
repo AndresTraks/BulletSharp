@@ -73,7 +73,7 @@ DiscreteCollisionDetectorInterface::Result::~Result()
 
 DiscreteCollisionDetectorInterface::Result::!Result()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );
@@ -132,7 +132,7 @@ DiscreteCollisionDetectorInterface::~DiscreteCollisionDetectorInterface()
 
 DiscreteCollisionDetectorInterface::!DiscreteCollisionDetectorInterface()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );

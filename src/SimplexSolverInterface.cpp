@@ -17,7 +17,7 @@ SimplexSolverInterface::~SimplexSolverInterface()
 
 SimplexSolverInterface::!SimplexSolverInterface()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );

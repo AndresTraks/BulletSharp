@@ -400,6 +400,7 @@ namespace BulletSharp
 
 	private:
 		btCollisionWorld* _world;
+		AlignedCollisionObjectArray^ _collisionObjectArray;
 
 	protected:
 		Dispatcher^ _dispatcher;
@@ -461,9 +462,9 @@ namespace BulletSharp
 			void set(BroadphaseInterface^ value);
 		}
 
-		property BulletSharp::AlignedCollisionObjectArray^ CollisionObjectArray
+		property AlignedCollisionObjectArray^ CollisionObjectArray
 		{
-			BulletSharp::AlignedCollisionObjectArray^ get();
+			AlignedCollisionObjectArray^ get();
 		}
 #ifndef DISABLE_DEBUGDRAW
 		property DebugDraw^ DebugDrawer

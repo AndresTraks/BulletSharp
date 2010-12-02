@@ -1690,6 +1690,8 @@ namespace BulletSharp
 			void AddVelocity(Vector3 velocity);
 			void AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies);
 			void AppendAnchor(int node, RigidBody^ body);
+			void AppendAnchor(int node, RigidBody^ body, Vector3 localPivot, bool disableCollisionBetweenLinkedBodies);
+			void AppendAnchor(int node, RigidBody^ body, Vector3 localPivot);
 			void AppendFace(int node0, int node1, int node2, Material^ material);
 			void AppendFace(int node0, int node1, int node2);
 			void AppendFace(int model, Material^ material);

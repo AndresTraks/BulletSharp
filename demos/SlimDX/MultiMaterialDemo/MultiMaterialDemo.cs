@@ -75,14 +75,13 @@ namespace MultiMaterialDemo
 
             Device.SetTransform(TransformState.View, Freelook.View);
 
-            foreach (CollisionObject colObj in PhysicsContext.World.CollisionObjectArray)
+            foreach (RigidBody body in PhysicsContext.World.CollisionObjectArray)
             {
-                RigidBody body = RigidBody.Upcast(colObj);
                 Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
 
-                if ((string)colObj.UserObject == "Ground")
+                if ((string)body.UserObject == "Ground")
                     Device.Material = GroundMaterial;
-                if (colObj.ActivationState == ActivationState.ActiveTag)
+                if (body.ActivationState == ActivationState.ActiveTag)
                     Device.Material = ActiveMaterial;
                 else
                     Device.Material = PassiveMaterial;

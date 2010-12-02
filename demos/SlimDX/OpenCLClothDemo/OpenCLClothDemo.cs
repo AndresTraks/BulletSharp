@@ -94,8 +94,8 @@ namespace OpenCLClothDemo
                     Device.SetTexture(0, null);
                     continue;
                 }
-                RigidBody body = RigidBody.Upcast(colObj);
-                Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
+
+                Device.SetTransform(TransformState.World, ((RigidBody)colObj).MotionState.WorldTransform);
 
                 if ((string)colObj.UserObject == "Ground")
                     Device.Material = GroundMaterial;
@@ -104,7 +104,7 @@ namespace OpenCLClothDemo
                 else
                     Device.Material = PassiveMaterial;
 
-                MeshFactory.Render(body.CollisionShape);
+                MeshFactory.Render(((RigidBody)colObj).CollisionShape);
             }
 
             DebugDrawWorld();

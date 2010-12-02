@@ -18,12 +18,11 @@ namespace BulletSharp
 
 	private:
 		btCollisionObject* _collisionObject;
-
-	protected:
-		CollisionShape^ _collisionShape;
-		CollisionShape^ _rootCollisionShape;
+		bool _doesNotOwnObject;
+		Object^ _userObject;
 
 	internal:
+		CollisionObject(btCollisionObject* collisionObject, bool doesNotOwnObject);
 		CollisionObject(btCollisionObject* collisionObject);
 
 	public:
@@ -50,6 +49,11 @@ namespace BulletSharp
 		void SerializeSingleObject(Serializer^ serializer);
 #endif
 
+	internal:
+		static CollisionObject^ Upcast(btCollisionObject* collisionObject);
+		static CollisionObject^ UpcastDetect(btCollisionObject* collisionObject);
+
+	public:
 		property BulletSharp::ActivationState ActivationState
 		{
 			BulletSharp::ActivationState get();

@@ -62,10 +62,7 @@ Object^ VehicleRaycaster::CastRay(Vector3 from, Vector3 to, VehicleRaycasterResu
 	delete fromTemp;
 	delete toTemp;
 
-	if (ret = 0)
-		return nullptr;
-
-	return gcnew RigidBody((btRigidBody*)ret);
+	return CollisionObject::Upcast((btRigidBody*)ret);
 }
 
 btVehicleRaycaster* VehicleRaycaster::UnmanagedPointer::get()

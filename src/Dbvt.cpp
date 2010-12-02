@@ -272,7 +272,7 @@ Dbvt::ICollide::~ICollide()
 
 Dbvt::ICollide::!ICollide()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );
@@ -334,7 +334,7 @@ Dbvt::IWriter::~IWriter()
 
 Dbvt::IWriter::!IWriter()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );
@@ -386,7 +386,7 @@ Dbvt::IClone::~IClone()
 
 Dbvt::IClone::!IClone()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );
@@ -523,7 +523,7 @@ Dbvt::~Dbvt()
 
 Dbvt::!Dbvt()
 {
-	if( this->IsDisposed == true )
+	if (this->IsDisposed)
 		return;
 
 	OnDisposing( this, nullptr );
