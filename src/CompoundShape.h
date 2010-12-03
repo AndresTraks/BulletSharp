@@ -4,8 +4,6 @@
 
 #include "CollisionShape.h"
 
-UsingFrameworkNamespace
-
 namespace BulletSharp
 {
 	ref class CompoundShapeChildArray;

@@ -13,6 +13,8 @@ Global
 		Debug NoGfx|x64 = Debug NoGfx|x64
 		Debug OpenTK|Win32 = Debug OpenTK|Win32
 		Debug OpenTK|x64 = Debug OpenTK|x64
+		Debug SharpDX|Win32 = Debug SharpDX|Win32
+		Debug SharpDX|x64 = Debug SharpDX|x64
 		Debug SlimDX|Win32 = Debug SlimDX|Win32
 		Debug SlimDX|x64 = Debug SlimDX|x64
 		Debug SlimMath|Win32 = Debug SlimMath|Win32
@@ -29,6 +31,8 @@ Global
 		Release NoGfx|x64 = Release NoGfx|x64
 		Release OpenTK|Win32 = Release OpenTK|Win32
 		Release OpenTK|x64 = Release OpenTK|x64
+		Release SharpDX|Win32 = Release SharpDX|Win32
+		Release SharpDX|x64 = Release SharpDX|x64
 		Release SlimDX|Win32 = Release SlimDX|Win32
 		Release SlimDX|x64 = Release SlimDX|x64
 		Release SlimMath|Win32 = Release SlimMath|Win32
@@ -55,6 +59,10 @@ Global
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug OpenTK|Win32.Build.0 = Debug OpenTK|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug OpenTK|x64.ActiveCfg = Debug OpenTK|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug OpenTK|x64.Build.0 = Debug OpenTK|x64
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX|Win32.ActiveCfg = Debug SharpDX|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX|Win32.Build.0 = Debug SharpDX|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX|x64.ActiveCfg = Debug SharpDX|x64
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX|x64.Build.0 = Debug SharpDX|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimDX|Win32.ActiveCfg = Debug SlimDX|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimDX|Win32.Build.0 = Debug SlimDX|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimDX|x64.ActiveCfg = Debug SlimDX|x64
@@ -87,6 +95,10 @@ Global
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release OpenTK|Win32.Build.0 = Release OpenTK|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release OpenTK|x64.ActiveCfg = Release OpenTK|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release OpenTK|x64.Build.0 = Release OpenTK|x64
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX|Win32.ActiveCfg = Release SharpDX|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX|Win32.Build.0 = Release SharpDX|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX|x64.ActiveCfg = Release SharpDX|x64
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX|x64.Build.0 = Release SharpDX|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimDX|Win32.ActiveCfg = Release SlimDX|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimDX|Win32.Build.0 = Release SlimDX|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimDX|x64.ActiveCfg = Release SlimDX|Win32

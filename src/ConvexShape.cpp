@@ -11,7 +11,6 @@ ConvexShape::ConvexShape(btConvexShape* convexShape)
 
 void ConvexShape::BatchedUnitVectorGetSupportingVertexWithoutMargin(array<Vector3>^ vectors, [Out] array<Vector3>^% supportVerticesOut)
 {
-	int i;
 	int numVertices = vectors->Length;
 	btVector3* vectorsTemp = Math::Vector3ArrayToUnmanaged(vectors);
 	btVector3* supportVerticesOutTemp = new btVector3[numVertices];

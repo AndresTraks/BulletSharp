@@ -38,94 +38,83 @@
 
 
 #if GRAPHICS_XNA31
-	#using <Microsoft.Xna.Framework.dll>
+#using <Microsoft.Xna.Framework.dll>
+using namespace Microsoft::Xna::Framework;
 #elif GRAPHICS_XNA40
-	#using <Microsoft.Xna.Framework.dll>
+#using <Microsoft.Xna.Framework.dll>
+using namespace Microsoft::Xna::Framework;
 #elif GRAPHICS_SLIMDX
 #if WIN32
-	#using <x86/SlimDX.dll>
+#using <x86/SlimDX.dll>
 #elif WIN64
-	#using <x64/SlimDX.dll>
+#using <x64/SlimDX.dll>
 #endif
+using namespace SlimDX;
+#elif GRAPHICS_SHARPDX
+#using <SharpDX.dll>
+using namespace SharpDX;
 #elif GRAPHICS_SLIMMATH
-	#using <SlimMath.dll>
+#using <SlimMath.dll>
+using namespace SlimMath;
 #elif GRAPHICS_MOGRE
-	#if _DEBUG
-	#using <Mogre_d.dll>
-	#else
-	#using <Mogre.dll>
+#if _DEBUG
+#using <Mogre_d.dll>
+#else
+#using <Mogre.dll>
+using namespace Mogre;
 #endif
 #elif GRAPHICS_OPENTK
-	#using <OpenTK.dll>
+#using <OpenTK.dll>
+using namespace OpenTK;
 #elif GRAPHICS_AXIOM
-	#using <Axiom.dll>
+#using <Axiom.dll>
+using namespace Axiom::Math;
 #elif GRAPHICS_NONE
 #else
-	#define GRAPHICS_NONE 1
+#define GRAPHICS_NONE 1
 #endif
 
-#if GRAPHICS_XNA31
-	#define UsingFrameworkNamespace using namespace Microsoft::Xna::Framework;
-	#define UsingGraphicsNamespace using namespace Microsoft::Xna::Framework::Graphics;
-#elif GRAPHICS_XNA40
-	#define UsingFrameworkNamespace using namespace Microsoft::Xna::Framework;
-	#define UsingGraphicsNamespace using namespace Microsoft::Xna::Framework::Graphics;
-#elif GRAPHICS_SLIMDX
-	#define UsingFrameworkNamespace using namespace SlimDX;
-	#define UsingGraphicsNamespace using namespace SlimDX::Direct3D9;
-#elif GRAPHICS_SLIMMATH
-	#define UsingFrameworkNamespace using namespace SlimMath;
-	#define UsingGraphicsNamespace
-#elif GRAPHICS_MOGRE
-	#define UsingFrameworkNamespace using namespace Mogre;
-	#define UsingGraphicsNamespace
-#elif GRAPHICS_OPENTK
-	#define UsingFrameworkNamespace using namespace OpenTK;
-	#define UsingGraphicsNamespace using namespace OpenTK::Graphics;
-#elif GRAPHICS_AXIOM
-	#define UsingFrameworkNamespace using namespace Axiom::Math;
-	#define UsingGraphicsNamespace
-#elif GRAPHICS_NONE
-	#define UsingFrameworkNamespace
-	#define UsingGraphicsNamespace
-#endif
 
 #ifdef USE_INT_COLOR
-	#define BtColor int
-	#define BtColorToBtVector(color) new btVector3((color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff)
-	#define BtVectorToBtColor(color) (((int)(color.getX()*255) << 16) + ((int)(color.getY()*255) << 8) + (int)(color.getZ()*255))
+#define BtColor int
+#define BtColorToBtVector(color) new btVector3((color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff)
+#define BtVectorToBtColor(color) (((int)(color.getX()*255) << 16) + ((int)(color.getY()*255) << 8) + (int)(color.getZ()*255))
 #elif GRAPHICS_XNA31
-	#define BtColor Microsoft::Xna::Framework::Graphics::Color
-	#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
-	#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
+#define BtColor Microsoft::Xna::Framework::Graphics::Color
+#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
+#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
 #elif GRAPHICS_XNA40
-	#define BtColor Microsoft::Xna::Framework::Color
-	#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
-	#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
+#define BtColor Microsoft::Xna::Framework::Color
+#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
+#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
 #elif GRAPHICS_SLIMDX
-	#define BtColor Color4
-	#define BtColorToBtVector(color) new btVector3(color.Red, color.Green, color.Blue)
-	#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
+#define BtColor Color4
+#define BtColorToBtVector(color) new btVector3(color.Red, color.Green, color.Blue)
+#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
+#elif GRAPHICS_SHARPDX
+#define BtColor Color3
+#define BtColorToBtVector(color) new btVector3(color.Red, color.Green, color.Blue)
+#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
 #elif GRAPHICS_SLIMMATH
-	#define BtColor Color3
-	#define BtColorToBtVector(color) new btVector3(color.Red, color.Green, color.Blue)
-	#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
+#define BtColor Color3
+#define BtColorToBtVector(color) new btVector3(color.Red, color.Green, color.Blue)
+#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
 #elif GRAPHICS_MOGRE
-	#define BtColor Mogre::ColourValue
-	#define BtColorToBtVector(color) new btVector3(color.r, color.g, color.b)
-	#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
+#define BtColor Mogre::ColourValue
+#define BtColorToBtVector(color) new btVector3(color.r, color.g, color.b)
+#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
 #elif GRAPHICS_OPENTK
-	#define BtColor OpenTK::Graphics::Color4
-	#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
-	#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ(),1)
+#define BtColor OpenTK::Graphics::Color4
+#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
+#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ(),1)
 #elif GRAPHICS_AXIOM
-	#define BtColor Axiom::Core::ColorEx
-	#define BtColorToBtVector(color) new btVector3(color.r, color.g, color.b)
-	#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
+#define BtColor Axiom::Core::ColorEx
+#define BtColorToBtVector(color) new btVector3(color.r, color.g, color.b)
+#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
 #elif GRAPHICS_NONE
-	#define BtColor Color
-	#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
-	#define BtVectorToBtColor(color) Color::FromArgb(color.getX(), color.getY(), color.getZ())
+#define BtColor Color
+#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
+#define BtVectorToBtColor(color) Color::FromArgb(color.getX(), color.getY(), color.getZ())
 #endif
 
 //#define BT_MANAGED_CODE
@@ -289,13 +278,13 @@ inline GCHandle VoidPtrToGCHandle(void* pointer)
 
 #define ReturnCachedObject(type, managedObj, unmanagedPtr) { \
 	if (managedObj != nullptr && managedObj->UnmanagedPointer != unmanagedPtr) \
-		return managedObj; \
+	return managedObj; \
 	managedObj = gcnew type(unmanagedPtr); \
 	return managedObj; }
 
 #define ReturnCachedObjectStatic(type, managedObj, unmanagedPtr, param) { \
 	if (managedObj == nullptr) \
-		managedObj = gcnew type(unmanagedPtr, param); \
+	managedObj = gcnew type(unmanagedPtr, param); \
 	return managedObj; }
 
 using namespace BulletSharp;

@@ -2,8 +2,6 @@
 
 #include "StringConv.h"
 
-UsingFrameworkNamespace
-UsingGraphicsNamespace
 using namespace msclr;
 using namespace System::Drawing;
 

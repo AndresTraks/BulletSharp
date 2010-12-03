@@ -1,7 +1,5 @@
 #pragma once
 
-UsingFrameworkNamespace
-
 #if GRAPHICS_NONE
 #include "Matrix.h"
 #include "Quaternion.h"

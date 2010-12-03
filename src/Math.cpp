@@ -2,10 +2,6 @@
 
 #include "Math.h"
 
-UsingFrameworkNamespace
-
-using namespace BulletSharp;
-
 int* BulletSharp::Math::IntArrayToUnmanaged(array<int>^ i)
 {
 	int* intArray = new int[i->Length];
