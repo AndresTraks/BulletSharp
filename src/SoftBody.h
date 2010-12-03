@@ -1683,6 +1683,7 @@ namespace BulletSharp
 		public:
 			SoftBody(SoftBodyWorldInfo^ worldInfo, array<Vector3>^ x, array<btScalar>^ m);
 			SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3Array^ x, ScalarArray^ m);
+			SoftBody(SoftBodyWorldInfo^ worldInfo);
 
 			void AddForce(Vector3 force, int node);
 			void AddForce(Vector3 force);
@@ -1751,6 +1752,7 @@ namespace BulletSharp
 			int GenerateClusters(int k);
 			void GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 			btScalar GetMass(int node);
+			void InitDefaults();
 			void IntegrateMotion();
 			void PredictMotion(btScalar dt);
 			void RandomizeConstraints();

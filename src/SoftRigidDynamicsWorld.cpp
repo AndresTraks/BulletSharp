@@ -74,7 +74,7 @@ void SoftRigidDynamicsWorld::RemoveSoftBody(BulletSharp::SoftBody::SoftBody^ bod
 	UnmanagedPointer->removeSoftBody(body->UnmanagedPointer);
 }
 
-void SoftRigidDynamicsWorld::SerializeSoftBodies(Serializer^ serializer)
+void SoftRigidDynamicsWorld::SerializeSoftBodies(BulletSharp::Serializer^ serializer)
 {
 	UnmanagedPointer->serialize(serializer->UnmanagedPointer);
 }

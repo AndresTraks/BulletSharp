@@ -61,6 +61,7 @@ namespace BulletSharp
 			virtual CollisionShape^ CreateCylinderShapeX(btScalar radius, btScalar height);
 			virtual CollisionShape^ CreateCylinderShapeY(btScalar radius, btScalar height);
 			virtual CollisionShape^ CreateCylinderShapeZ(btScalar radius, btScalar height);
+			//virtual TriangleIndexVertexArray^ CreateMeshInterface(StridingMeshInterfaceData^ meshData);
 			virtual TriangleIndexVertexArray^ CreateTriangleMeshContainer();
 #ifndef DISABLE_BVH
 			virtual BvhTriangleMeshShape^ CreateBvhTriangleMeshShape(StridingMeshInterface^ trimesh, OptimizedBvh^ bvh);

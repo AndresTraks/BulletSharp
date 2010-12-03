@@ -2274,6 +2274,11 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3A
 		GetUnmanagedNullable(x), GetUnmanagedNullable(m));
 }
 
+BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo)
+: CollisionObject(new btSoftBody(worldInfo->UnmanagedPointer))
+{
+}
+
 void BulletSharp::SoftBody::SoftBody::AddForce(Vector3 force, int node)
 {
 	btVector3* forceTemp = Math::Vector3ToBtVector3(force);
@@ -2742,6 +2747,11 @@ btScalar BulletSharp::SoftBody::SoftBody::GetMass(int node)
 void BulletSharp::SoftBody::SoftBody::RandomizeConstraints()
 {
 	UnmanagedPointer->randomizeConstraints();
+}
+
+void BulletSharp::SoftBody::SoftBody::InitDefaults()
+{
+	UnmanagedPointer->initDefaults();
 }
 
 void BulletSharp::SoftBody::SoftBody::IntegrateMotion()
