@@ -261,7 +261,7 @@ namespace DemoFramework
                 {
                     Device9.Reset(Context9.PresentParameters);
                     deviceLost = false;
-                    OnResourceLoad();
+                    OnResetDevice();
                 }
                 else
                 {
@@ -288,7 +288,7 @@ namespace DemoFramework
             {
                 if (e.ResultCode == SlimDX.Direct3D9.ResultCode.DeviceLost)
                 {
-                    OnResourceUnload();
+                    OnLostDevice();
                     deviceLost = true;
                 }
                 else
@@ -356,7 +356,7 @@ namespace DemoFramework
             MeshFactory = new GraphicObjectFactory(Device9);
 
             OnInitialize();
-            OnResourceLoad();
+            OnResetDevice();
 
             clock.Start();
             MessagePump.Run(Form, () =>
@@ -375,7 +375,7 @@ namespace DemoFramework
             SlimDX.RawInput.Device.KeyboardInput -= Input.Device_KeyboardInput;
             SlimDX.RawInput.Device.MouseInput -= Input.Device_MouseInput;
 
-            OnResourceUnload();
+            OnLostDevice();
         }
 
         protected virtual void OnInitializeDevice()
@@ -413,19 +413,22 @@ namespace DemoFramework
             GroundMaterial.Ambient = new Color4(Ambient);
         }
 
-        protected virtual void OnResourceLoad()
+        protected virtual void OnResetDevice()
         {
-            Fps.OnResourceLoad();
+            Fps.OnResetDevice();
 
             Matrix projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, NearPlane, FarPlane);
             Device9.SetTransform(TransformState.Projection, projection);
 
             Device9.SetRenderState(RenderState.Ambient, Ambient);
+
+            MeshFactory.OnResetDevice();
         }
 
-        protected virtual void OnResourceUnload()
+        protected virtual void OnLostDevice()
         {
-            Fps.OnResourceUnload();
+            Fps.OnLostDevice();
+            MeshFactory.OnLostDevice();
         }
 
         /// <summary>
@@ -621,7 +624,7 @@ namespace DemoFramework
             if (Form.WindowState == FormWindowState.Minimized)
                 return;
 
-            OnResourceUnload();
+            OnLostDevice();
 
             if (Context9 != null)
             {
@@ -636,7 +639,7 @@ namespace DemoFramework
             //    Context10.SwapChain.ResizeBuffers( 1, WindowWidth, WindowHeight, Context10.SwapChain.Description.ModeDescription.Format, Context10.SwapChain.Description.Flags );
             //}
 
-            OnResourceLoad();
+            OnResetDevice();
         }
 
         public void ToggleFullScreen()
@@ -646,7 +649,7 @@ namespace DemoFramework
 
             togglingFullScreen = true;
 
-            OnResourceUnload();
+            OnLostDevice();
 
             if (Context9.PresentParameters.Windowed)
             {
@@ -679,7 +682,7 @@ namespace DemoFramework
             }
 
             Device9.Reset(Context9.PresentParameters);
-            OnResourceLoad();
+            OnResetDevice();
 
             togglingFullScreen = false;
         }

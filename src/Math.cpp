@@ -81,6 +81,22 @@ btVector3* BulletSharp::Math::Vector3ArrayToUnmanaged(array<Vector3>^ v)
 	return btVertices;
 }
 
+array<Vector3>^ BulletSharp::Math::Vector3ArrayToManaged(btVector3* v, int length)
+{
+	array<Vector3>^ vertices = gcnew array<Vector3>(length);
+	if (sizeof(btVector3) == sizeof(Vector3))
+	{
+		pin_ptr<Vector3> vPtr = &vertices[0];
+		memcpy(vPtr, v, length * sizeof(btVector3));
+	}
+	else
+	{
+		for(int i=0; i<length; i++)
+			vertices[i] = BtVector3ToVector3(&v[i]);
+	}
+	return vertices;
+}
+
 btVector4* BulletSharp::Math::Vector4ToBtVector4(Vector4 vector)
 {
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)

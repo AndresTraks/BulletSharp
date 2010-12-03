@@ -17,12 +17,10 @@ void ConvexShape::BatchedUnitVectorGetSupportingVertexWithoutMargin(array<Vector
 	btVector3* supportVerticesOutTemp = new btVector3[numVertices];
 
 	UnmanagedPointer->batchedUnitVectorGetSupportingVertexWithoutMargin(vectorsTemp, supportVerticesOutTemp, numVertices);
-
 	delete[] vectorsTemp;
 
-	supportVerticesOut = gcnew array<Vector3>(numVertices);
-	for (i=0; i<numVertices; i++)
-		supportVerticesOut[i] = Math::BtVector3ToVector3(&supportVerticesOutTemp[i]);
+	supportVerticesOut = Math::Vector3ArrayToManaged(supportVerticesOutTemp, numVertices);
+	delete supportVerticesOutTemp;
 }
 
 void ConvexShape::GetAabbNonVirtual(Matrix t, Vector3% aabbMin, Vector3% aabbMax)

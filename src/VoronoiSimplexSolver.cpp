@@ -192,23 +192,16 @@ bool VoronoiSimplexSolver::FullSimplex()
 int VoronoiSimplexSolver::GetSimplex([Out] array<Vector3>^% pBuf,
 	[Out] array<Vector3>^% qBuf, [Out] array<Vector3>^% yBuf)
 {
-	int i = NumVertices;
-	pBuf = gcnew array<Vector3>(i);
-	qBuf = gcnew array<Vector3>(i);
-	yBuf = gcnew array<Vector3>(i);
-	btVector3* pBufTemp = new btVector3[i];
-	btVector3* qBufTemp = new btVector3[i];
-	btVector3* yBufTemp = new btVector3[i];
+	int n = NumVertices;
+	btVector3* pBufTemp = new btVector3[n];
+	btVector3* qBufTemp = new btVector3[n];
+	btVector3* yBufTemp = new btVector3[n];
 	
 	int ret = UnmanagedPointer->getSimplex(pBufTemp, qBufTemp, yBufTemp);
 
-	int j;
-	for (j=0; j<i; j++)
-	{
-		pBuf[j] = Math::BtVector3ToVector3(&pBufTemp[j]);
-		qBuf[j] = Math::BtVector3ToVector3(&qBufTemp[j]);
-		yBuf[j] = Math::BtVector3ToVector3(&yBufTemp[j]);
-	}
+	pBuf = Math::Vector3ArrayToManaged(pBufTemp, n);
+	qBuf = Math::Vector3ArrayToManaged(qBufTemp, n);
+	yBuf = Math::Vector3ArrayToManaged(yBufTemp, n);
 
 	delete[] pBufTemp;
 	delete[] qBufTemp;

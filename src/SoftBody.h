@@ -706,6 +706,9 @@ namespace BulletSharp
 		internal:
 			Face(btSoftBody::Face* face);
 
+		private:
+			NodePtrArray^ _n;
+
 		public:
 			Face();
 
@@ -1105,6 +1108,9 @@ namespace BulletSharp
 		{
 		internal:
 			Link(btSoftBody::Link* link);
+
+		private:
+			NodePtrArray^ _nodePtrArray;
 
 		public:
 			Link();
@@ -1679,6 +1685,11 @@ namespace BulletSharp
 		{
 		internal:
 			SoftBody(btSoftBody* body);
+
+		private:
+			AlignedFaceArray^ _alignedFaceArray;
+			AlignedLinkArray^ _alignedLinkArray;
+			AlignedTetraArray^ _alignedTetraArray;
 
 		public:
 			SoftBody(SoftBodyWorldInfo^ worldInfo, array<Vector3>^ x, array<btScalar>^ m);

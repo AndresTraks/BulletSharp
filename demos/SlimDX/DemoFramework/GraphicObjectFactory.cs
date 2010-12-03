@@ -22,6 +22,18 @@ namespace DemoFramework
             this.device = device;
         }
 
+        public void OnLostDevice()
+        {
+            if (planeShader != null)
+                planeShader.OnLostDevice();
+        }
+
+        public void OnResetDevice()
+        {
+            if (planeShader != null)
+                planeShader.OnResetDevice();
+        }
+
         public void Dispose()
         {
             foreach (Mesh mesh in shapes.Values)
@@ -212,7 +224,7 @@ namespace DemoFramework
                 }
                 sphereMesh.Dispose();
             }
-            
+
             complexShapes.Add(shape, mesh);
             return mesh;
         }
@@ -341,7 +353,7 @@ namespace DemoFramework
                         // do a pre-transform
                         Matrix tempTr = device.GetTransform(TransformState.World);
                         device.SetTransform(TransformState.World, child.Transform * tempTr);
-                        
+
                         Render(child.ChildShape);
                     }
                     return;
@@ -562,7 +574,7 @@ namespace DemoFramework
 
                     PositionColored[] linkArray = new PositionColored[linkCount * 2];
 
-                    for (int i=0; i<linkCount; i++)
+                    for (int i = 0; i < linkCount; i++)
                     {
                         Link link = links[i];
                         linkArray[i * 2] = new PositionColored(link.Nodes[0].X, linkColor);
@@ -584,7 +596,7 @@ namespace DemoFramework
             FloatArray vertexBuffer = userObjArr[0] as FloatArray;
             IntArray indexBuffer = userObjArr[1] as IntArray;
 
-            int vertexCount = (vertexBuffer.Count / 8) ;
+            int vertexCount = (vertexBuffer.Count / 8);
 
             if (vertexCount > 0)
             {

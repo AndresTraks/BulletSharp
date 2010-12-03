@@ -287,4 +287,15 @@ inline GCHandle VoidPtrToGCHandle(void* pointer)
 
 #define GetUnmanagedNullable(value) (value != nullptr ? value->UnmanagedPointer : 0)
 
+#define ReturnCachedObject(type, managedObj, unmanagedPtr) { \
+	if (managedObj != nullptr && managedObj->UnmanagedPointer != unmanagedPtr) \
+		return managedObj; \
+	managedObj = gcnew type(unmanagedPtr); \
+	return managedObj; }
+
+#define ReturnCachedObjectStatic(type, managedObj, unmanagedPtr, param) { \
+	if (managedObj == nullptr) \
+		managedObj = gcnew type(unmanagedPtr, param); \
+	return managedObj; }
+
 using namespace BulletSharp;

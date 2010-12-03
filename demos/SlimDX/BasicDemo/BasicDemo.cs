@@ -42,9 +42,9 @@ namespace BasicDemo
             base.OnInitialize();
         }
 
-        protected override void OnResourceLoad()
+        protected override void OnResetDevice()
         {
-            base.OnResourceLoad();
+            base.OnResetDevice();
 
             Device.SetLight(0, light);
             Device.EnableLight(0, true);
@@ -56,7 +56,7 @@ namespace BasicDemo
             Device.BeginScene();
 
             Device.SetTransform(TransformState.View, Freelook.View);
-            
+
             foreach (RigidBody body in PhysicsContext.World.CollisionObjectArray)
             {
                 Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
@@ -70,7 +70,7 @@ namespace BasicDemo
 
                 MeshFactory.Render(body.CollisionShape);
             }
-            
+
             DebugDrawWorld();
             Fps.OnRender(FramesPerSecond);
 

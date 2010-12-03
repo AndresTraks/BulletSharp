@@ -45,9 +45,9 @@ namespace SerializeDemo
             base.OnInitialize();
         }
 
-        protected override void OnResourceLoad()
+        protected override void OnResetDevice()
         {
-            base.OnResourceLoad();
+            base.OnResetDevice();
 
             Device.SetLight(0, light);
             Device.EnableLight(0, true);

@@ -957,7 +957,7 @@ void Face::Leaf::set(DbvtNode^ value)
 
 NodePtrArray^ Face::N::get()
 {
-	return gcnew NodePtrArray(UnmanagedPointer->m_n, 3);
+	ReturnCachedObjectStatic(NodePtrArray, _n, UnmanagedPointer->m_n, 3);
 }
 
 Vector3 Face::Normal::get()
@@ -1504,7 +1504,7 @@ void Link::IsBending::set(bool value)
 
 NodePtrArray^ Link::Nodes::get()
 {
-	return gcnew NodePtrArray(UnmanagedPointer->m_n, 2);
+	ReturnCachedObjectStatic(NodePtrArray, _nodePtrArray, UnmanagedPointer->m_n, 2);
 }
 
 btScalar Link::RestLength::get()
@@ -2954,7 +2954,8 @@ void BulletSharp::SoftBody::SoftBody::CollisionDisabledObjects::set(AlignedColli
 
 AlignedFaceArray^ BulletSharp::SoftBody::SoftBody::Faces::get()
 {
-	return gcnew AlignedFaceArray(&UnmanagedPointer->m_faces);
+	btAlignedObjectArray<btSoftBody::Face>* faceArray = &UnmanagedPointer->m_faces;
+	ReturnCachedObject(AlignedFaceArray, _alignedFaceArray, faceArray);
 }
 void BulletSharp::SoftBody::SoftBody::Faces::set(AlignedFaceArray^ value)
 {
@@ -2972,7 +2973,8 @@ void BulletSharp::SoftBody::SoftBody::Joints::set(AlignedJointArray^ value)
 
 AlignedLinkArray^ BulletSharp::SoftBody::SoftBody::Links::get()
 {
-	return gcnew AlignedLinkArray(&UnmanagedPointer->m_links);
+	btSoftBody::tLinkArray* linkArray = &UnmanagedPointer->m_links;
+	ReturnCachedObject(AlignedLinkArray, _alignedLinkArray, linkArray);
 }
 void BulletSharp::SoftBody::SoftBody::Links::set(AlignedLinkArray^ value)
 {
@@ -3067,7 +3069,8 @@ void BulletSharp::SoftBody::SoftBody::Tag::set(Object^ value)
 
 BulletSharp::SoftBody::AlignedTetraArray^ BulletSharp::SoftBody::SoftBody::Tetras::get()
 {
-	return gcnew AlignedTetraArray(&UnmanagedPointer->m_tetras);
+	btAlignedObjectArray<btSoftBody::Tetra>* tetras = &UnmanagedPointer->m_tetras;
+	ReturnCachedObject(AlignedTetraArray, _alignedTetraArray, tetras);
 }
 
 btScalar BulletSharp::SoftBody::SoftBody::TimeAccumulator::get()

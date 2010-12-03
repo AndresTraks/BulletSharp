@@ -37,6 +37,7 @@ namespace BulletSharp
 		static btVector3* Vector3ToBtVector3(Vector3);
 		static void Vector3ToBtVector3(Vector3, btVector3*);
 		static btVector3* Vector3ArrayToUnmanaged(array<Vector3>^);
+		static array<Vector3>^ Vector3ArrayToManaged(btVector3*, int);
 
 		static inline Vector4 BtVector4ToVector4(const btVector4* vector)
 		{

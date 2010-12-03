@@ -81,21 +81,21 @@ namespace DemoFramework
 
         public void ShootBox(Vector3 camPos, Vector3 destination)
         {
-	        if (World == null)
+            if (World == null)
                 return;
-	        
+
             float mass = 1.0f;
             float speed = 40;
 
             if (shootBoxShape == null)
                 shootBoxShape = new BoxShape(1.0f);
 
-	        RigidBody body = LocalCreateRigidBody(mass, Matrix.Translation(camPos), shootBoxShape);
-            body.LinearFactor = new Vector3(1,1,1);
+            RigidBody body = LocalCreateRigidBody(mass, Matrix.Translation(camPos), shootBoxShape);
+            body.LinearFactor = new Vector3(1, 1, 1);
             //body.Restitution = 1;
 
-	        Vector3 linVel = destination - camPos;
-	        linVel.Normalize();
+            Vector3 linVel = destination - camPos;
+            linVel.Normalize();
 
             body.LinearVelocity = linVel * speed;
             body.CcdMotionThreshold = 1;

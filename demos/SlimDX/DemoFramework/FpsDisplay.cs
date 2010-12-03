@@ -61,13 +61,13 @@ namespace DemoFramework
             fontSprite.End();
         }
 
-        public void OnResourceLoad()
+        public void OnResetDevice()
         {
             fontSprite.OnResetDevice();
             font.OnResetDevice();
         }
 
-        public void OnResourceUnload()
+        public void OnLostDevice()
         {
             fontSprite.OnLostDevice();
             font.OnLostDevice();

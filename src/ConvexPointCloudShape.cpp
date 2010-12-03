@@ -44,13 +44,7 @@ Vector3 ConvexPointCloudShape::GetScaledPoint(int i)
 array<Vector3>^ ConvexPointCloudShape::GetUnscaledPoints()
 {
 	btVector3* pointsTemp = UnmanagedPointer->getUnscaledPoints();
-	array<Vector3>^ points = gcnew array<Vector3>(NumPoints);
-
-	int i;
-	for (i=0; i<points->Length; i++)
-		points[i] = Math::BtVector3ToVector3(&pointsTemp[i]);
-
-	return points;
+	return Math::Vector3ArrayToManaged(pointsTemp, NumPoints);
 }
 
 void ConvexPointCloudShape::SetPoints(array<Vector3>^ points, bool computeAabb, Vector3 localScaling)

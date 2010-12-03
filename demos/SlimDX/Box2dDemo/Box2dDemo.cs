@@ -42,13 +42,13 @@ namespace Box2dDemo
             base.OnInitialize();
         }
 
-        protected override void OnResourceLoad()
+        protected override void OnResetDevice()
         {
-            base.OnResourceLoad();
+            base.OnResetDevice();
 
             Device.SetLight(0, light);
             Device.EnableLight(0, true);
-            
+
             Device.SetRenderState(RenderState.CullMode, Cull.None);
         }
 
