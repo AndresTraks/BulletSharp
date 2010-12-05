@@ -17,11 +17,10 @@ namespace BasicDemo
         public DiscreteDynamicsWorld World { get; set; }
         CollisionDispatcher dispatcher;
         AlignedCollisionShapeArray collisionShapes = new AlignedCollisionShapeArray();
+        CollisionConfiguration collisionConf;
 
         public Physics()
         {
-            CollisionConfiguration collisionConf;
-
             // collision configuration contains default setup for memory, collision setup
             collisionConf = new DefaultCollisionConfiguration();
             dispatcher = new CollisionDispatcher(collisionConf);

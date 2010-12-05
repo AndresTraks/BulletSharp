@@ -34,13 +34,13 @@ void CompoundShapeChild::ChildShape::set(CollisionShape^ value)
 	_child->m_childShape = value->UnmanagedPointer;
 }
 
-int CompoundShapeChild::ChildShapeType::get()
+BroadphaseNativeType CompoundShapeChild::ChildShapeType::get()
 {
-	return _child->m_childShapeType;
+	return (BroadphaseNativeType)_child->m_childShapeType;
 }
-void CompoundShapeChild::ChildShapeType::set(int value)
+void CompoundShapeChild::ChildShapeType::set(BroadphaseNativeType value)
 {
-	_child->m_childShapeType = value;
+	_child->m_childShapeType = (int)value;
 }
 
 #ifndef DISABLE_DBVT

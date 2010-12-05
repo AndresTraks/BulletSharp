@@ -46,9 +46,8 @@ namespace BasicDemo
                     new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0)
                 }));
 
-                foreach (CollisionObject colObj in PhysicsContext.World.CollisionObjectArray)
+                foreach (RigidBody body in PhysicsContext.World.CollisionObjectArray)
                 {
-                    RigidBody body = RigidBody.Upcast(colObj);
                     SetBuffer(body.MotionState.WorldTransform, Color.Green);
                     MeshFactory.Render(body.CollisionShape);
                 }

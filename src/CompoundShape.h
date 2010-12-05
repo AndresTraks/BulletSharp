@@ -33,10 +33,10 @@ namespace BulletSharp
 			void set(CollisionShape^ value);
 		}
 
-		property int ChildShapeType
+		property BroadphaseNativeType ChildShapeType
 		{
-			int get();
-			void set(int value);
+			BroadphaseNativeType get();
+			void set(BroadphaseNativeType value);
 		}
 
 #ifndef DISABLE_DBVT

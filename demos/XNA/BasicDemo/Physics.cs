@@ -12,6 +12,7 @@ namespace BasicDemo
         BroadphaseInterface Broadphase;
         //ConstraintSolver Solver;
         AlignedCollisionShapeArray CollisionShapes;
+        CollisionConfiguration collisionConf;
 
         ///create 125 (5x5x5) dynamic objects
         int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
@@ -23,8 +24,6 @@ namespace BasicDemo
 
         public Physics()
         {
-            CollisionConfiguration collisionConf;
-
             // collision configuration contains default setup for memory, collision setup
             collisionConf = new DefaultCollisionConfiguration();
             Dispatcher = new CollisionDispatcher(collisionConf);
