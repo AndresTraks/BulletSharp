@@ -9,6 +9,7 @@ using SlimDX.Multimedia;
 using SlimDX.RawInput;
 using SlimDX.Windows;
 using SlimDX.Direct3D9;
+using Device = SlimDX.Direct3D9.Device;
 
 namespace DemoFramework
 {
@@ -20,7 +21,7 @@ namespace DemoFramework
             private set;
         }
 
-        public SlimDX.Direct3D9.Device Device9
+        public Device Device
         {
             get { return Context9.Device; }
         }
@@ -108,7 +109,7 @@ namespace DemoFramework
             {
                 if (DebugDrawer == null)
                 {
-                    DebugDrawer = new PhysicsDebugDrawLineGathering(Device9);
+                    DebugDrawer = new PhysicsDebugDrawLineGathering(Device);
                     DebugDrawer.DebugMode = debugDrawMode;
                 }
                 isDebugDrawEnabled = value;
@@ -257,9 +258,9 @@ namespace DemoFramework
             {
                 // This should only become true if we're using D3D9, so we can assume the
                 // D3D9 context is valid at this point.
-                if (Device9.TestCooperativeLevel() == SlimDX.Direct3D9.ResultCode.DeviceNotReset)
+                if (Device.TestCooperativeLevel() == SlimDX.Direct3D9.ResultCode.DeviceNotReset)
                 {
-                    Device9.Reset(Context9.PresentParameters);
+                    Device.Reset(Context9.PresentParameters);
                     deviceLost = false;
                     OnResetDevice();
                 }
@@ -352,8 +353,8 @@ namespace DemoFramework
 
             OnInitializeDevice();
 
-            Fps = new FpsDisplay(Device9);
-            MeshFactory = new GraphicObjectFactory(Device9);
+            Fps = new FpsDisplay(Device);
+            MeshFactory = new GraphicObjectFactory(Device);
 
             OnInitialize();
             OnResetDevice();
@@ -418,9 +419,9 @@ namespace DemoFramework
             Fps.OnResetDevice();
 
             Matrix projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, NearPlane, FarPlane);
-            Device9.SetTransform(TransformState.Projection, projection);
+            Device.SetTransform(TransformState.Projection, projection);
 
-            Device9.SetRenderState(RenderState.Ambient, Ambient);
+            Device.SetRenderState(RenderState.Ambient, Ambient);
 
             MeshFactory.OnResetDevice();
         }
@@ -631,7 +632,7 @@ namespace DemoFramework
                 Context9.PresentParameters.BackBufferWidth = Form.ClientSize.Width;
                 Context9.PresentParameters.BackBufferHeight = Form.ClientSize.Height;
 
-                Device9.Reset(Context9.PresentParameters);
+                Device.Reset(Context9.PresentParameters);
 
             }
             //else if( Context10 != null )
@@ -681,10 +682,22 @@ namespace DemoFramework
                 Context9.PresentParameters.Windowed = true;
             }
 
-            Device9.Reset(Context9.PresentParameters);
+            Device.Reset(Context9.PresentParameters);
             OnResetDevice();
 
             togglingFullScreen = false;
+        }
+
+        protected void RenderWithMaterial(CollisionObject body)
+        {
+            if ((string)body.UserObject == "Ground")
+                Device.Material = GroundMaterial;
+            else if (body.ActivationState == ActivationState.ActiveTag)
+                Device.Material = ActiveMaterial;
+            else
+                Device.Material = PassiveMaterial;
+
+            MeshFactory.Render(body.CollisionShape);
         }
     }
 }

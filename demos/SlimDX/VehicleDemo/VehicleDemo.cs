@@ -196,25 +196,23 @@ namespace VehicleDemo
                     ground.DrawSubset(0);
                     continue;
                 }
-                else if ((string)body.UserObject == "Chassis")
-                    Device.Material = bodyMaterial;
-                else if (body.ActivationState == ActivationState.ActiveTag)
-                    Device.Material = ActiveMaterial;
-                else
-                    Device.Material = PassiveMaterial;
+
                 Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
-                MeshFactory.Render(body);
+
+                if ((string)body.UserObject == "Chassis")
+                {
+                    Device.Material = bodyMaterial;
+                    MeshFactory.Render(body);
+                    continue;
+                }
+
+                RenderWithMaterial(body);
             }
 
             Fps.OnRender(FramesPerSecond);
 
             Device.EndScene();
             Device.Present();
-        }
-
-        public Device Device
-        {
-            get { return Device9; }
         }
     }
 

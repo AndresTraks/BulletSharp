@@ -95,16 +95,9 @@ namespace OpenCLClothDemo
                     continue;
                 }
 
-                Device.SetTransform(TransformState.World, ((RigidBody)colObj).MotionState.WorldTransform);
-
-                if ((string)colObj.UserObject == "Ground")
-                    Device.Material = GroundMaterial;
-                else if (colObj.ActivationState == ActivationState.ActiveTag)
-                    Device.Material = ActiveMaterial;
-                else
-                    Device.Material = PassiveMaterial;
-
-                MeshFactory.Render(((RigidBody)colObj).CollisionShape);
+                RigidBody body = (RigidBody)colObj;
+                Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
+                RenderWithMaterial(body);
             }
 
             DebugDrawWorld();
@@ -113,11 +106,6 @@ namespace OpenCLClothDemo
 
             Device.EndScene();
             Device.Present();
-        }
-
-        public Device Device
-        {
-            get { return Device9; }
         }
     }
 

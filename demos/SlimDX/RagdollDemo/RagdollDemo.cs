@@ -63,15 +63,7 @@ namespace RagdollDemo
             foreach (RigidBody body in PhysicsContext.World.CollisionObjectArray)
             {
                 Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
-
-                if ((string)body.UserObject == "Ground")
-                    Device.Material = GroundMaterial;
-                else if (body.ActivationState == ActivationState.ActiveTag)
-                    Device.Material = ActiveMaterial;
-                else
-                    Device.Material = PassiveMaterial;
-
-                MeshFactory.Render(body.CollisionShape);
+                RenderWithMaterial(body);
             }
 
             DebugDrawWorld();
@@ -80,11 +72,6 @@ namespace RagdollDemo
 
             Device.EndScene();
             Device.Present();
-        }
-
-        public Device Device
-        {
-            get { return Device9; }
         }
     }
 

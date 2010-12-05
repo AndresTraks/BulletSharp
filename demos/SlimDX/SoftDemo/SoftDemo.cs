@@ -232,15 +232,7 @@ namespace SoftDemo
                 {
                     RigidBody body = (RigidBody)colObj;
                     Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
-
-                    if ((string)body.UserObject == "Ground")
-                        Device.Material = GroundMaterial;
-                    else if (colObj.ActivationState == ActivationState.ActiveTag)
-                        Device.Material = ActiveMaterial;
-                    else
-                        Device.Material = PassiveMaterial;
-
-                    MeshFactory.Render(colObj.CollisionShape);
+                    RenderWithMaterial(body);
                 }
             }
 
@@ -250,11 +242,6 @@ namespace SoftDemo
 
             Device.EndScene();
             Device.Present();
-        }
-
-        public SlimDX.Direct3D9.Device Device
-        {
-            get { return Device9; }
         }
     }
 
