@@ -50,11 +50,11 @@ BroadphaseInterface::!BroadphaseInterface()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_broadphase = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 bool BroadphaseInterface::IsDisposed::get()

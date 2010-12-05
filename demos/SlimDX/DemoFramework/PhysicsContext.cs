@@ -47,6 +47,7 @@ namespace DemoFramework
             for (int j = 0; j < CollisionShapes.Count; j++)
             {
                 CollisionShape shape = CollisionShapes[j];
+                CollisionShapes[j] = null;
                 shape.Dispose();
             }
 

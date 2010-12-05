@@ -31,11 +31,11 @@ Serialize::BulletWorldImporter::!BulletWorldImporter()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_importer = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 CollisionObject^ Serialize::BulletWorldImporter::CreateCollisionObject(Matrix startTransform, CollisionShape^ shape, String^ bodyName)

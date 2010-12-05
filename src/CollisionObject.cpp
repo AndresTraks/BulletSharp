@@ -15,32 +15,14 @@ CollisionObject::CollisionObject(btCollisionObject* collisionObject, bool doesNo
 {
 	_doesNotOwnObject = doesNotOwnObject;
 
-	if (collisionObject == 0)
-		return;
-
-	_collisionObject = collisionObject;
-
-	if (_collisionObject->getUserPointer() == 0)
-	{
-		GCHandle handle = GCHandle::Alloc(this);
-		void* obj = GCHandleToVoidPtr(handle);
-		_collisionObject->setUserPointer(obj);
-	}
+	if (collisionObject)
+		UnmanagedPointer = collisionObject;
 }
 
 CollisionObject::CollisionObject(btCollisionObject* collisionObject)
 {
-	if (collisionObject == 0)
-		return;
-
-	_collisionObject = collisionObject;
-
-	if (_collisionObject->getUserPointer() == 0)
-	{
-		GCHandle handle = GCHandle::Alloc(this);
-		void* obj = GCHandleToVoidPtr(handle);
-		_collisionObject->setUserPointer(obj);
-	}
+	if (collisionObject)
+		UnmanagedPointer = collisionObject;
 }
 
 CollisionObject::CollisionObject()
@@ -62,17 +44,18 @@ CollisionObject::!CollisionObject()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
-	void* userObj = _collisionObject->getUserPointer();
-	if (userObj)
-		VoidPtrToGCHandle(userObj).Free();
-	
 	if (_doesNotOwnObject == false)
+	{
+		void* userObj = _collisionObject->getUserPointer();
+		if (userObj)
+			VoidPtrToGCHandle(userObj).Free();
 		delete _collisionObject;
+	}
 	_collisionObject = NULL;
 	
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 bool CollisionObject::IsDisposed::get()
@@ -167,7 +150,8 @@ void CollisionObject::AnisotropicFriction::set(Vector3 value)
 
 BroadphaseProxy^ CollisionObject::BroadphaseHandle::get()
 {
-	return gcnew BroadphaseProxy(_collisionObject->getBroadphaseHandle());
+	btBroadphaseProxy* broadphaseHandle = _collisionObject->getBroadphaseHandle();
+	ReturnCachedObject(BroadphaseProxy, _broadphaseHandle, broadphaseHandle);
 }
 
 btScalar CollisionObject::CcdMotionThreshold::get()
@@ -204,7 +188,8 @@ void CollisionObject::CollisionFlags::set(BulletSharp::CollisionFlags value)
 
 CollisionShape^ CollisionObject::CollisionShape::get()
 {
-	return BulletSharp::CollisionShape::Upcast(_collisionObject->getCollisionShape());
+	btCollisionShape* collisionShape = _collisionObject->getCollisionShape();
+	ReturnCachedObjectUpcast(BulletSharp::CollisionShape, _collisionShape, collisionShape);
 }
 void CollisionObject::CollisionShape::set(BulletSharp::CollisionShape^ value)
 {
@@ -344,7 +329,8 @@ void CollisionObject::Restitution::set(btScalar value)
 
 CollisionShape^ CollisionObject::RootCollisionShape::get()
 {
-	return BulletSharp::CollisionShape::Upcast(_collisionObject->getRootCollisionShape());
+	btCollisionShape* rootCollisionShape = _collisionObject->getRootCollisionShape();
+	ReturnCachedObjectUpcast(BulletSharp::CollisionShape, _rootCollisionShape, rootCollisionShape);
 }
 
 Object^ CollisionObject::UserObject::get()

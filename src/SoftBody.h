@@ -172,6 +172,7 @@ namespace BulletSharp
 		{
 		private:
 			btSoftBody::Anchor* _anchor;
+			RigidBody^ _body;
 
 		internal:
 			Anchor(btSoftBody::Anchor* anchor);

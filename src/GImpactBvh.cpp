@@ -98,11 +98,11 @@ PrimitiveManagerBase::!PrimitiveManagerBase()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_primitiveManager = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 void PrimitiveManagerBase::GetPrimitiveBox(int prim_index, [Out] Aabb^% primbox)

@@ -275,11 +275,11 @@ Dbvt::ICollide::!ICollide()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_iCollide = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 bool Dbvt::ICollide::AllLeaves(DbvtNode^ n)
@@ -337,11 +337,11 @@ Dbvt::IWriter::!IWriter()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_iWriter = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 void Dbvt::IWriter::Prepare(DbvtNode^ root, int numnodes)
@@ -389,11 +389,11 @@ Dbvt::IClone::!IClone()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_iClone = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 void Dbvt::IClone::CloneLeaf(DbvtNode^ n)
@@ -526,11 +526,11 @@ Dbvt::!Dbvt()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_dbvt = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 int Dbvt::Allocate(AlignedIntArray^ ifree, AlignedStkNpsArray^ stock, StkNps^ value)

@@ -17,11 +17,11 @@ TriangleCallback::!TriangleCallback()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 	
 	_callback = NULL;
 	
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 void TriangleCallback::ProcessTriangle(Vector3 triangle, int partId, int triangleIndex)
@@ -61,11 +61,11 @@ InternalTriangleIndexCallback::!InternalTriangleIndexCallback()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 	
 	_callback = NULL;
 	
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 void InternalTriangleIndexCallback::InternalProcessTriangleIndex(Vector3 triangle, int partId, int triangleIndex)

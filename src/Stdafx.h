@@ -277,9 +277,23 @@ inline GCHandle VoidPtrToGCHandle(void* pointer)
 #define GetUnmanagedNullable(value) (value != nullptr ? value->UnmanagedPointer : 0)
 
 #define ReturnCachedObject(type, managedObj, unmanagedPtr) { \
-	if (managedObj != nullptr && managedObj->UnmanagedPointer != unmanagedPtr) \
+	if (managedObj != nullptr && managedObj->UnmanagedPointer == unmanagedPtr) \
 	return managedObj; \
 	managedObj = gcnew type(unmanagedPtr); \
+	return managedObj; }
+
+#define ReturnCachedObjectUpcast(type, managedObj, unmanagedPtr) { \
+	if (managedObj != nullptr && managedObj->UnmanagedPointer == unmanagedPtr) \
+	return managedObj; \
+	managedObj = type::Upcast(unmanagedPtr); \
+	return managedObj; }
+
+#define ReturnCachedObjectUpcastNullable(type, managedObj, unmanagedPtr) { \
+	if (managedObj != nullptr && managedObj->UnmanagedPointer == unmanagedPtr) \
+	return managedObj; \
+	if (unmanagedPtr == 0) \
+	return nullptr; \
+	managedObj = type::Upcast(unmanagedPtr); \
 	return managedObj; }
 
 #define ReturnCachedObjectStatic(type, managedObj, unmanagedPtr, param) { \

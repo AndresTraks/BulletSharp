@@ -42,7 +42,17 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPt
 
 BroadphaseProxy::BroadphaseProxy(btBroadphaseProxy* proxy)
 {
+	if (proxy == 0)
+		return;
+
 	_proxy = proxy;
+
+	if (_proxy->m_clientObject == 0)
+	{
+		GCHandle handle = GCHandle::Alloc(this);
+		void* obj = GCHandleToVoidPtr(handle);
+		_proxy->m_clientObject = obj;
+	}
 }
 
 Vector3 BroadphaseProxy::AabbMin::get()
@@ -63,13 +73,13 @@ void BroadphaseProxy::AabbMax::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &_proxy->m_aabbMax);
 }
 
-IntPtr BroadphaseProxy::ClientObject::get()
+Object^ BroadphaseProxy::ClientObject::get()
 {
-	return IntPtr(_proxy->m_clientObject);
+	return _clientObject;
 }
-void BroadphaseProxy::ClientObject::set(IntPtr value)
+void BroadphaseProxy::ClientObject::set(Object^ value)
 {
-	_proxy->m_clientObject = value.ToPointer();
+	_clientObject = value;
 }
 
 BulletSharp::CollisionFilterGroups BroadphaseProxy::CollisionFilterGroup::get()

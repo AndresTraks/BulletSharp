@@ -242,10 +242,10 @@ void BulletSharp::Math::MatrixToBtTransform(Matrix matrix, btTransform* t)
 
 Matrix BulletSharp::Math::BtMatrix3x3ToMatrix(const btMatrix3x3* matrix)
 {
+#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
 	btScalar m[12];
 	matrix->getOpenGLSubMatrix(m);
 
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
 #ifdef GRAPHICS_MOGRE
 	Matrix t = gcnew Mogre::Matrix4();
 #else
@@ -268,30 +268,14 @@ Matrix BulletSharp::Math::BtMatrix3x3ToMatrix(const btMatrix3x3* matrix)
 	t->m13 = 0;
 	t->m23 = 0;
 	t->m33 = 1;
-
-	return t;
 #else
-	Matrix^ t = Matrix();
+	Matrix t = Matrix();
+	pin_ptr<Matrix> mPtr = &t;
+	matrix->getOpenGLSubMatrix((btScalar*)mPtr);
+	t.M44 = 1;
 
-	t->M11 = m[0];
-	t->M12 = m[1];
-	t->M13 = m[2];
-	t->M14 = 0;
-	t->M21 = m[4];
-	t->M22 = m[5];
-	t->M23 = m[6];
-	t->M24 = 0;
-	t->M31 = m[8];
-	t->M32 = m[9];
-	t->M33 = m[10];
-	t->M34 = 0;
-	t->M41 = 0;
-	t->M42 = 0;
-	t->M43 = 0;
-	t->M44 = 1;
-
-	return *t;
 #endif
+	return t;
 }
 
 btMatrix3x3* BulletSharp::Math::MatrixToBtMatrix3x3(Matrix matrix)

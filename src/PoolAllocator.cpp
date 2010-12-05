@@ -24,11 +24,11 @@ PoolAllocator::!PoolAllocator()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_allocator = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 IntPtr PoolAllocator::Allocate(int size)

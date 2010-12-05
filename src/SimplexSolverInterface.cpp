@@ -20,11 +20,11 @@ SimplexSolverInterface::!SimplexSolverInterface()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_simplexSolver = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 bool SimplexSolverInterface::IsDisposed::get()

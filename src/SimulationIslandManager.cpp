@@ -49,11 +49,11 @@ SimulationIslandManager::IslandCallback::!IslandCallback()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 	
 	_islandCallback = NULL;
 	
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 bool SimulationIslandManager::IslandCallback::IsDisposed::get()
@@ -82,11 +82,11 @@ SimulationIslandManager::!SimulationIslandManager()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 	
 	_manager = NULL;
 	
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 void SimulationIslandManager::BuildAndProcessIslands(Dispatcher^ dispatcher, CollisionWorld^ collisionWorld, IslandCallback^ callback)

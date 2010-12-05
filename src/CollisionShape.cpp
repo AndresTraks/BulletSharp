@@ -41,32 +41,14 @@ CollisionShape::CollisionShape(btCollisionShape* collisionShape, bool doesNotOwn
 {
 	_doesNotOwnObject = doesNotOwnObject;
 
-	if (collisionShape == 0)
-		return;
-
-	_collisionShape = collisionShape;
-
-	if (_collisionShape->getUserPointer() == 0)
-	{
-		GCHandle handle = GCHandle::Alloc(this);
-		void* obj = GCHandleToVoidPtr(handle);
-		_collisionShape->setUserPointer(obj);
-	}
+	if (collisionShape)
+		UnmanagedPointer = collisionShape;
 }
 
 CollisionShape::CollisionShape(btCollisionShape* collisionShape)
 {
-	if (collisionShape == 0)
-		return;
-
-	_collisionShape = collisionShape;
-
-	if (_collisionShape->getUserPointer() == 0)
-	{
-		GCHandle handle = GCHandle::Alloc(this);
-		void* obj = GCHandleToVoidPtr(handle);
-		_collisionShape->setUserPointer(obj);
-	}
+	if (collisionShape)
+		UnmanagedPointer = collisionShape;
 }
 
 CollisionShape::~CollisionShape()
@@ -79,17 +61,18 @@ CollisionShape::!CollisionShape()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing( this, nullptr );
-
-	void* userObj = _collisionShape->getUserPointer();
-	if (userObj)
-		VoidPtrToGCHandle(userObj).Free();
+	OnDisposing(this, nullptr);
 
 	if (_doesNotOwnObject == false)
+	{
+		void* userObj = _collisionShape->getUserPointer();
+		if (userObj)
+			VoidPtrToGCHandle(userObj).Free();
 		delete _collisionShape;
+	}
 	_collisionShape = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 bool CollisionShape::Equals(Object^ obj)
@@ -201,6 +184,9 @@ void CollisionShape::SerializeSingleShape(BulletSharp::Serializer^ serializer)
 
 CollisionShape^ CollisionShape::Upcast(btCollisionShape* collisionShape)
 {
+	if (collisionShape == 0)
+		return nullptr;
+
 	void* userObj = collisionShape->getUserPointer();
 	if (userObj)
 		return static_cast<CollisionShape^>(VoidPtrToGCHandle(userObj).Target);

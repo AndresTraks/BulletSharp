@@ -37,11 +37,11 @@ StridingMeshInterface::!StridingMeshInterface()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_stridingMesh = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 bool StridingMeshInterface::IsDisposed::get()

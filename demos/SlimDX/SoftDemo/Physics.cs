@@ -10,7 +10,6 @@ namespace SoftDemo
     class Physics : PhysicsContext
     {
         //int numObjects = 1;
-        float Scaling = 1;
         //float waveHeight = 5;
         //float triangleHeight=8;
         //float CubeHalfExtents = 1.5f;
@@ -502,7 +501,6 @@ namespace SoftDemo
                     psb.SetMass(1, 0);
                     psb.SetTotalMass(0.01f);
                     SoftWorld.AddSoftBody(psb);
-
                 }
             }
             Create_BigBall(new Vector3(0, 13, 0));

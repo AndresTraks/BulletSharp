@@ -22,12 +22,12 @@ CollisionConfiguration::!CollisionConfiguration()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 	
 	delete _collisionConfiguration;
 	_collisionConfiguration = NULL;
 	
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 CollisionAlgorithmCreateFunc^ CollisionConfiguration::GetCollisionAlgorithmCreateFunc(BroadphaseNativeType proxyType0, BroadphaseNativeType proxyType1)

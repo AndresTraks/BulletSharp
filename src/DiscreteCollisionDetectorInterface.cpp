@@ -76,11 +76,11 @@ DiscreteCollisionDetectorInterface::Result::!Result()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_result = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 bool DiscreteCollisionDetectorInterface::Result::IsDisposed::get()
@@ -135,11 +135,11 @@ DiscreteCollisionDetectorInterface::!DiscreteCollisionDetectorInterface()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_detectorInterface = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 #ifndef DISABLE_DEBUGDRAW

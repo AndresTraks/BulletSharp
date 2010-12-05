@@ -19,6 +19,10 @@ namespace BulletSharp
 	private:
 		btCollisionObject* _collisionObject;
 		bool _doesNotOwnObject;
+		
+		BroadphaseProxy^ _broadphaseHandle;
+		CollisionShape^ _collisionShape;
+		CollisionShape^ _rootCollisionShape;
 		Object^ _userObject;
 
 	internal:

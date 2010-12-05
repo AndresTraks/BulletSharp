@@ -61,11 +61,11 @@ CollisionAlgorithm::!CollisionAlgorithm()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_algorithm = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 btScalar CollisionAlgorithm::CalculateTimeOfImpact(CollisionObject^ body0,

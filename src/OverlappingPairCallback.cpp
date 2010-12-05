@@ -19,11 +19,11 @@ OverlappingPairCallback::!OverlappingPairCallback()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_pairCallback = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 BroadphasePair^ OverlappingPairCallback::AddOverlappingPair(

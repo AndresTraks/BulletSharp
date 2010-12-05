@@ -10,6 +10,9 @@ namespace BulletSharp
 	{
 	private:
 		btBroadphaseProxy* _proxy;
+		bool _doesNotOwnObject;
+
+		Object^ _clientObject;
 
 	internal:
 		BroadphaseProxy(btBroadphaseProxy* proxy);
@@ -37,10 +40,10 @@ namespace BulletSharp
 			void set(Vector3 value);
 		}
 
-		property IntPtr ClientObject
+		property Object^ ClientObject
 		{
-			IntPtr get();
-			void set(IntPtr value);
+			Object^ get();
+			void set(Object^ value);
 		}
 
 		property BulletSharp::CollisionFilterGroups CollisionFilterGroup

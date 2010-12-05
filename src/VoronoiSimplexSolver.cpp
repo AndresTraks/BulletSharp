@@ -75,11 +75,11 @@ VoronoiSimplexSolver::!VoronoiSimplexSolver()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_solver = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 bool VoronoiSimplexSolver::IsDisposed::get()

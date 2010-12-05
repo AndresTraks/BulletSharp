@@ -22,11 +22,11 @@ MultiThreaded::Barrier::!Barrier()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_barrier = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 void MultiThreaded::Barrier::Sync()
@@ -64,11 +64,11 @@ MultiThreaded::CriticalSection::!CriticalSection()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_criticalSection = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 UIntArray^ MultiThreaded::CriticalSection::CommonBuff::get()
@@ -117,11 +117,11 @@ MultiThreaded::ThreadSupportInterface::!ThreadSupportInterface()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_threadSupport = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 Barrier^ MultiThreaded::ThreadSupportInterface::CreateBarrier()

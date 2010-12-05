@@ -171,11 +171,11 @@ Dispatcher::!Dispatcher()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_dispatcher = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 IntPtr Dispatcher::AllocateCollisionAlgorithm(int size)

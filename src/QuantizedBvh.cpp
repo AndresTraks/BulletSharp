@@ -24,11 +24,11 @@ QuantizedBvh::!QuantizedBvh()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_bvh = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 void QuantizedBvh::BuildInternal()

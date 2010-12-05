@@ -295,7 +295,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatchUV(SoftBodyWorldInf
 	Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11,
 	int resx, int resy, int fixeds, bool gendiags)
 {
-		btVector3* corner00Temp = Math::Vector3ToBtVector3(corner00);
+	btVector3* corner00Temp = Math::Vector3ToBtVector3(corner00);
 	btVector3* corner10Temp = Math::Vector3ToBtVector3(corner10);
 	btVector3* corner01Temp = Math::Vector3ToBtVector3(corner01);
 	btVector3* corner11Temp = Math::Vector3ToBtVector3(corner11);

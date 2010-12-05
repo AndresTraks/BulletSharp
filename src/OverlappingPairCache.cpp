@@ -15,11 +15,11 @@ OverlapCallback::!OverlapCallback()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_callback = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 bool OverlapCallback::ProcessOverlap(BroadphasePair^ pair)
@@ -53,11 +53,11 @@ OverlapFilterCallback::!OverlapFilterCallback()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_callback = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 bool OverlapFilterCallback::NeedBroadphaseCollision(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)

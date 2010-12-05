@@ -24,11 +24,11 @@ CollisionAlgorithmCreateFunc::!CollisionAlgorithmCreateFunc()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 	
 	_createFunc = NULL;
 	
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 CollisionAlgorithm^ CollisionAlgorithmCreateFunc::CreateCollisionAlgorithm(

@@ -21,11 +21,11 @@ ActionInterface::!ActionInterface()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_actionInterface = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 bool ActionInterface::IsDisposed::get()

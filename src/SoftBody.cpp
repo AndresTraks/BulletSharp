@@ -133,7 +133,8 @@ Anchor::Anchor()
 
 RigidBody^ Anchor::Body::get()
 {
-	return (RigidBody^)CollisionObject::Upcast(_anchor->m_body);
+	btRigidBody* body = _anchor->m_body;
+	ReturnCachedObjectUpcastNullable((RigidBody^)CollisionObject, _body, body);
 }
 void Anchor::Body::set(RigidBody^ value)
 {

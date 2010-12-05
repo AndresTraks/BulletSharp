@@ -28,11 +28,11 @@ AlignedObjectArray<T>::!AlignedObjectArray()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing( this, nullptr );
+	OnDisposing(this, nullptr);
 
 	_alignedObjectArray = NULL;
 
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 generic<class T>
@@ -403,7 +403,7 @@ void AlignedClusterArray::default::set(int index, Cluster^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*UnmanagedPointer)[index] = value->UnmanagedPointer;
+	(*UnmanagedPointer)[index] = GetUnmanagedNullable(value);
 }
 
 btSoftBody::tClusterArray* BulletSharp::SoftBody::AlignedClusterArray::UnmanagedPointer::get()
@@ -497,7 +497,7 @@ void AlignedCollisionShapeArray::default::set(int index, CollisionShape^ value)
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
 
-	(*UnmanagedPointer)[index] = value->UnmanagedPointer;
+	(*UnmanagedPointer)[index] = GetUnmanagedNullable(value);
 }
 
 btAlignedObjectArray<btCollisionShape*>* AlignedCollisionShapeArray::UnmanagedPointer::get()
@@ -594,7 +594,7 @@ void AlignedCollisionObjectArray::default::set(int index, CollisionObject^ value
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*UnmanagedPointer)[index] = value->UnmanagedPointer;
+	(*UnmanagedPointer)[index] = GetUnmanagedNullable(value);
 }
 
 btCollisionObjectArray* AlignedCollisionObjectArray::UnmanagedPointer::get()
@@ -694,7 +694,7 @@ void AlignedDbvtNodeArray::default::set(int index, DbvtNode^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*UnmanagedPointer)[index] = value->UnmanagedPointer;
+	(*UnmanagedPointer)[index] = GetUnmanagedNullable(value);
 }
 
 btAlignedObjectArray<const btDbvtNode*>* AlignedDbvtNodeArray::UnmanagedPointer::get()
@@ -1172,7 +1172,7 @@ void AlignedJointArray::default::set(int index, BulletSharp::SoftBody::Joint^ va
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	AlignedJointArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+	AlignedJointArray_SetDefault(UnmanagedPointer, index, GetUnmanagedNullable(value));
 }
 
 btSoftBody::tJointArray* AlignedJointArray::UnmanagedPointer::get()
@@ -1272,7 +1272,7 @@ void AlignedManifoldArray::default::set(int index, PersistentManifold^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*UnmanagedPointer)[index] = value->UnmanagedPointer;
+	(*UnmanagedPointer)[index] = GetUnmanagedNullable(value);
 }
 
 btManifoldArray* AlignedManifoldArray::UnmanagedPointer::get()
@@ -1444,7 +1444,7 @@ void AlignedLinkArray::default::set(int index, BulletSharp::SoftBody::Link^ valu
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	AlignedLinkArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+	AlignedLinkArray_SetDefault(UnmanagedPointer, index, GetUnmanagedNullable(value));
 }
 
 btSoftBody::tLinkArray* AlignedLinkArray::UnmanagedPointer::get()
@@ -1540,7 +1540,7 @@ void AlignedMaterialArray::default::set(int index, BulletSharp::SoftBody::Materi
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*UnmanagedPointer)[index] = value->UnmanagedPointer;
+	(*UnmanagedPointer)[index] = GetUnmanagedNullable(value);
 }
 
 btSoftBody::tMaterialArray* AlignedMaterialArray::UnmanagedPointer::get()
@@ -1720,7 +1720,7 @@ void AlignedNodePtrArray::default::set(int index, BulletSharp::SoftBody::Node^ v
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*UnmanagedPointer)[index] = value->UnmanagedPointer;
+	(*UnmanagedPointer)[index] = GetUnmanagedNullable(value);
 }
 
 btAlignedObjectArray<btSoftBody::Node*>* AlignedNodePtrArray::UnmanagedPointer::get()
@@ -2179,7 +2179,7 @@ void BulletSharp::SoftBody::AlignedSoftBodyArray::default::set(int index, SoftBo
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*UnmanagedPointer)[index] = value->UnmanagedPointer;
+	(*UnmanagedPointer)[index] = GetUnmanagedNullable(value);
 }
 
 btSoftBody::tSoftBodyArray* BulletSharp::SoftBody::AlignedSoftBodyArray::UnmanagedPointer::get()

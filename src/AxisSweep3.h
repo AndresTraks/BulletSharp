@@ -1,6 +1,6 @@
 #pragma once
 
-// Fully implemented as of 24 Feb 2010
+// Fully implemented as of 04 Dec 2010
 
 #include "BroadphaseInterface.h"
 
@@ -8,7 +8,7 @@ namespace BulletSharp
 {
 	ref class OverlappingPairCache;
 
-	public ref class AxisSweep3 : BulletSharp::BroadphaseInterface
+	public ref class AxisSweep3 : BroadphaseInterface
 	{
 	public:
 		AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles, BulletSharp::OverlappingPairCache^ pairCache, bool disableRaycastAccelerator);
@@ -23,7 +23,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class AxisSweep3_32Bit : BulletSharp::BroadphaseInterface
+	public ref class AxisSweep3_32Bit : BroadphaseInterface
 	{
 	public:
 		AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles, BulletSharp::OverlappingPairCache^ pairCache, bool disableRaycastAccelerator);

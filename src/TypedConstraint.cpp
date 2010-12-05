@@ -9,32 +9,14 @@ TypedConstraint::TypedConstraint(btTypedConstraint* typedConstraint, bool doesNo
 {
 	_doesNotOwnObject = doesNotOwnObject;
 
-	if (typedConstraint == 0)
-		return;
-
-	_typedConstraint = typedConstraint;
-
-	if (_typedConstraint->getUserConstraintPtr() == (void*)-1)
-	{
-		GCHandle handle = GCHandle::Alloc(this);
-		void* obj = GCHandleToVoidPtr(handle);
-		_typedConstraint->setUserConstraintPtr(obj);
-	}
+	if (typedConstraint)
+		UnmanagedPointer = typedConstraint;
 }
 
 TypedConstraint::TypedConstraint(btTypedConstraint* typedConstraint)
 {
-	if (typedConstraint == 0)
-		return;
-
-	_typedConstraint = typedConstraint;
-
-	if (_typedConstraint->getUserConstraintPtr() == (void*)-1)
-	{
-		GCHandle handle = GCHandle::Alloc(this);
-		void* obj = GCHandleToVoidPtr(handle);
-		_typedConstraint->setUserConstraintPtr(obj);
-	}
+	if (typedConstraint)
+		UnmanagedPointer = typedConstraint;
 }
 
 TypedConstraint::~TypedConstraint()
@@ -47,17 +29,18 @@ TypedConstraint::!TypedConstraint()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing( this, nullptr );
-	
-	void* userObj = _typedConstraint->getUserConstraintPtr();
-	if (userObj != (void*)-1)
-		VoidPtrToGCHandle(userObj).Free();
+	OnDisposing(this, nullptr);
 	
 	if (_doesNotOwnObject == false)
+	{
+		void* userObj = _typedConstraint->getUserConstraintPtr();
+		if (userObj != (void*)-1)
+			VoidPtrToGCHandle(userObj).Free();
 		delete _typedConstraint;
+	}
 	_typedConstraint = NULL;
 	
-	OnDisposed( this, nullptr );
+	OnDisposed(this, nullptr);
 }
 
 bool TypedConstraint::IsDisposed::get()
