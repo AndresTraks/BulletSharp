@@ -12,6 +12,7 @@ namespace BulletSharp
 		btBroadphaseProxy* _proxy;
 		bool _doesNotOwnObject;
 
+	protected:
 		Object^ _clientObject;
 
 	internal:
@@ -19,11 +20,11 @@ namespace BulletSharp
 
 	public:
 		BroadphaseProxy();
-		BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr,
+		BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
 			CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask,
 			IntPtr multiSapParentProxy);
-		BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr,
+		BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
 			CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask);
 

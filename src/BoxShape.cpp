@@ -53,11 +53,6 @@ Vector3 BoxShape::HalfExtentsWithoutMargin::get()
 	return Math::BtVector3ToVector3(&UnmanagedPointer->getHalfExtentsWithoutMargin());
 }
 
-BoxShape^ BoxShape::Upcast(CollisionShape^ shape)
-{
-	return gcnew BoxShape((btBoxShape*)shape->UnmanagedPointer);
-}
-
 btBoxShape* BoxShape::UnmanagedPointer::get()
 {
 	return (btBoxShape*)PolyhedralConvexShape::UnmanagedPointer;

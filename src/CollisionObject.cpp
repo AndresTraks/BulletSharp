@@ -27,11 +27,7 @@ CollisionObject::CollisionObject(btCollisionObject* collisionObject)
 
 CollisionObject::CollisionObject()
 {
-	_collisionObject = new btCollisionObject();
-	
-	GCHandle handle = GCHandle::Alloc(this);
-	void* obj = GCHandleToVoidPtr(handle);
-	_collisionObject->setUserPointer(obj);
+	UnmanagedPointer = new btCollisionObject();
 }
 
 CollisionObject::~CollisionObject()

@@ -8,7 +8,7 @@ BroadphaseProxy::BroadphaseProxy()
 	_proxy = new btBroadphaseProxy();
 }
 
-BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr,
+BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
 	BulletSharp::CollisionFilterGroups collisionFilterGroup,
 	BulletSharp::CollisionFilterGroups collisionFilterMask,
 	IntPtr multiSapParentProxy)
@@ -16,7 +16,9 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPt
 	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
 	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
 
-	_proxy = new btBroadphaseProxy(*aabbMinTemp, *aabbMaxTemp, userPtr.ToPointer(),
+	_clientObject = userObject;
+
+	_proxy = new btBroadphaseProxy(*aabbMinTemp, *aabbMaxTemp, 0,
 		(short int)collisionFilterGroup, (short int)collisionFilterMask,
 		multiSapParentProxy.ToPointer()
 		);
@@ -25,14 +27,16 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPt
 	delete aabbMaxTemp;
 }
 
-BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr,
+BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
 	BulletSharp::CollisionFilterGroups collisionFilterGroup,
 	BulletSharp::CollisionFilterGroups collisionFilterMask)
 {
 	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
 	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
 
-	_proxy = new btBroadphaseProxy(*aabbMinTemp, *aabbMaxTemp, userPtr.ToPointer(),
+	_clientObject = userObject;
+
+	_proxy = new btBroadphaseProxy(*aabbMinTemp, *aabbMaxTemp, 0,
 		(short int)collisionFilterGroup, (short int)collisionFilterMask
 		);
 

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fully implemented as of 06 Jun 2010
+// Fully implemented as of 07 Dec 2010
 
 namespace BulletSharp
 {
@@ -8,6 +8,8 @@ namespace BulletSharp
 	{
 	private:
 		btManifoldPoint* _point;
+
+		Object^ _userPersistentObject;
 
 	internal:
 		ManifoldPoint(btManifoldPoint* point);
@@ -148,7 +150,7 @@ namespace BulletSharp
 			void set(Vector3 value);
 		}
 
-		property Object^ UserPersistentData
+		property Object^ UserPersistentObject
 		{
 			Object^ get();
 			void set(Object^ value);

@@ -84,9 +84,16 @@ void BulletSharp::Serializer::UnmanagedPointer::set(btSerializer* value)
 }
 
 
-DefaultSerializer::DefaultSerializer(int totalSize)
-: Serializer(new btDefaultSerializer(totalSize))
+DefaultSerializer::DefaultSerializer()
+: Serializer(new btDefaultSerializer())
 {
+}
+
+void DefaultSerializer::WriteHeader([Out] String^% buffer)
+{
+	unsigned char* bufferTemp = new unsigned char[12];
+	UnmanagedPointer->writeHeader(bufferTemp);
+	buffer = gcnew String(buffer);
 }
 
 btDefaultSerializer* DefaultSerializer::UnmanagedPointer::get()

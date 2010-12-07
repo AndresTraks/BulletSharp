@@ -18,8 +18,6 @@ namespace BulletSharp
 		Box2dShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ);
 		Box2dShape(btScalar boxHalfExtent); // cube helper
 
-		static Box2dShape^ Upcast(CollisionShape^ shape);
-
 		Vector4 GetPlaneEquation(int i);
 		Vector3 GetVertex(int i);
 

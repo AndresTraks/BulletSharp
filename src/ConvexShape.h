@@ -12,8 +12,6 @@ namespace BulletSharp
 		ConvexShape(btConvexShape* convexShape);
 
 	public:
-		static ConvexShape^ Upcast(CollisionShape^ shape);
-
 		void BatchedUnitVectorGetSupportingVertexWithoutMargin(array<Vector3>^ vectors, [Out] array<Vector3>^% supportVerticesOut);
 		void GetAabbNonVirtual(Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		void GetAabbSlow(Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);

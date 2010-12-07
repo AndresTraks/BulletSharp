@@ -85,11 +85,6 @@ Vector3Array^ Box2dShape::Vertices::get()
 	return gcnew Vector3Array(UnmanagedPointer->getVertices(), 4);
 }
 
-Box2dShape^ Box2dShape::Upcast(CollisionShape^ shape)
-{
-	return gcnew Box2dShape((btBox2dShape*)shape->UnmanagedPointer);
-}
-
 btBox2dShape* Box2dShape::UnmanagedPointer::get()
 {
 	return (btBox2dShape*)PolyhedralConvexShape::UnmanagedPointer;

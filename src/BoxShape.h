@@ -14,8 +14,6 @@ namespace BulletSharp
 		BoxShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ);
 		BoxShape(btScalar boxHalfExtent); // cube helper
 
-		static BoxShape^ Upcast(CollisionShape^ shape);
-
 		Vector4 GetPlaneEquation(int index);
 
 		property Vector3 HalfExtentsWithMargin

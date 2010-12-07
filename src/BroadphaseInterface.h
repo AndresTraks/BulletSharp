@@ -67,8 +67,8 @@ namespace BulletSharp
 		void AabbTest(Vector3 aabbMin, Vector3 aabbMax, BroadphaseAabbCallback^ callback);
 		void CalculateOverlappingPairs(Dispatcher^ dispatcher);
 		BroadphaseProxy^ CreateProxy(Vector3 aabbMin, Vector3 aabbMax,
-			int shapeType, IntPtr userPtr, short int collisionFilterGroup,
-			short int collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy);
+			int shapeType, IntPtr userPtr, CollisionFilterGroups collisionFilterGroup,
+			CollisionFilterGroups collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy);
 		void DestroyProxy(BroadphaseProxy^ proxy, Dispatcher^ dispatcher);
 		void GetAabb(BroadphaseProxy^ proxy, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		void GetBroadphaseAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);

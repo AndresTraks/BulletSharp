@@ -13,14 +13,16 @@
 
 #ifndef DISABLE_DBVT
 
-DbvtProxy::DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr,
+DbvtProxy::DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
 	CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
 : BroadphaseProxy(0)
 {
 	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
 	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
 
-	UnmanagedPointer = new btDbvtProxy(*aabbMinTemp, *aabbMaxTemp, userPtr.ToPointer(),
+	_clientObject = userObject;
+
+	UnmanagedPointer = new btDbvtProxy(*aabbMinTemp, *aabbMaxTemp, 0,
 		(short int)collisionFilterGroup, (short int)collisionFilterMask);
 
 	delete aabbMinTemp;
@@ -34,9 +36,8 @@ DbvtProxy::DbvtProxy(btDbvtProxy* proxy)
 
 DbvtNode^ DbvtProxy::Leaf::get()
 {
-	if (UnmanagedPointer->leaf == nullptr)
-		return nullptr;
-	return gcnew DbvtNode(UnmanagedPointer->leaf);
+	btDbvtNode* leaf = UnmanagedPointer->leaf;
+	ReturnCachedObjectNullable(DbvtNode, _leaf, leaf);
 }
 void DbvtProxy::Leaf::set(DbvtNode^ value)
 {

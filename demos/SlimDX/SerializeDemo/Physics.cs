@@ -107,15 +107,14 @@ namespace SerializeDemo
                     }
                 }
 
-                int maxSerializeBufferSize = 1024 * 1024 * 5;
-                DefaultSerializer serializer = new DefaultSerializer(maxSerializeBufferSize);
+                DefaultSerializer serializer = new DefaultSerializer();
 
                 serializer.RegisterNameForObject(ground, "GroundName");
 
                 for (i = 0; i < CollisionShapes.Count; i++)
                     serializer.RegisterNameForObject(CollisionShapes[i], "name" + i.ToString());
 
-                Point2PointConstraint p2p = new Point2PointConstraint(RigidBody.Upcast(World.CollisionObjectArray[2]), new Vector3(0, 1, 0));
+                Point2PointConstraint p2p = new Point2PointConstraint((RigidBody)World.CollisionObjectArray[2], new Vector3(0, 1, 0));
                 World.AddConstraint(p2p);
 
                 serializer.RegisterNameForObject(p2p, "constraintje");

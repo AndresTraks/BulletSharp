@@ -132,11 +132,6 @@ Vector3 ConvexShape::LocalGetSupportVertexWithoutMarginNonVirtual(Vector3 vec)
 	return vertex;
 }
 
-ConvexShape^ ConvexShape::Upcast(CollisionShape^ shape)
-{
-	return gcnew ConvexShape((btConvexShape*)shape->UnmanagedPointer);
-}
-
 btScalar ConvexShape::MarginNonVirtual::get()
 {
 	return UnmanagedPointer->getMarginNonVirtual();

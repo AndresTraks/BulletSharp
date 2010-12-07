@@ -39,7 +39,9 @@ namespace BulletSharp
 	public ref class DefaultSerializer : Serializer
 	{
 	public:
-		DefaultSerializer(int totalSize);
+		DefaultSerializer();
+
+		void WriteHeader([Out] String^% buffer);
 
 	internal:
 		property btDefaultSerializer* UnmanagedPointer

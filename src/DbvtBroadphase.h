@@ -21,8 +21,12 @@ namespace BulletSharp
 	internal:
 		DbvtProxy(btDbvtProxy* proxy);
 
+	private:
+		DbvtNode^ _leaf;
+		DbvtProxyPtrArray^ _links;
+
 	public:
-		DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr,
+		DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
 			CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask);
 

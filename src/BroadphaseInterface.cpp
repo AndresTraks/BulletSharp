@@ -79,8 +79,8 @@ void BroadphaseInterface::CalculateOverlappingPairs(Dispatcher^ dispatcher)
 }
 
 BroadphaseProxy^ BroadphaseInterface::CreateProxy(Vector3 aabbMin, Vector3 aabbMax,
-	int shapeType, IntPtr userPtr, short int collisionFilterGroup,
-	short int collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
+	int shapeType, IntPtr userPtr, CollisionFilterGroups collisionFilterGroup,
+	CollisionFilterGroups collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
 {
 	btBroadphaseProxy* proxy = new btBroadphaseProxy;
 
@@ -88,7 +88,7 @@ BroadphaseProxy^ BroadphaseInterface::CreateProxy(Vector3 aabbMin, Vector3 aabbM
 	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
 
 	proxy = _broadphase->createProxy(*aabbMinTemp, *aabbMaxTemp,
-		shapeType, userPtr.ToPointer(), collisionFilterGroup, collisionFilterMask,
+		shapeType, userPtr.ToPointer(), (short int)collisionFilterGroup, (short int)collisionFilterMask,
 		dispatcher->UnmanagedPointer, multiSapProxy.ToPointer());
 
 	delete aabbMinTemp;

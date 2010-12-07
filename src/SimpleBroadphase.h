@@ -17,7 +17,7 @@ namespace BulletSharp
 	public:
 		SimpleBroadphaseProxy();
 		SimpleBroadphaseProxy(Vector3 minpt, Vector3 maxpt,
-			int shapeType, IntPtr userPtr,
+			int shapeType, Object^ userObject,
 			CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask,
 			IntPtr multiSapProxy);

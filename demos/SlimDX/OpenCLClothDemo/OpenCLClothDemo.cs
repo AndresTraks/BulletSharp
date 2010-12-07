@@ -90,7 +90,7 @@ namespace OpenCLClothDemo
                     Device.SetTexture(0, atiFlag);
                     Device.Material = softBodyMaterial;
                     Device.SetTransform(TransformState.World, Matrix.Identity);
-                    MeshFactory.RenderSoftBodyTextured(BulletSharp.SoftBody.SoftBody.Upcast(colObj));
+                    MeshFactory.RenderSoftBodyTextured((BulletSharp.SoftBody.SoftBody)colObj);
                     Device.SetTexture(0, null);
                     continue;
                 }

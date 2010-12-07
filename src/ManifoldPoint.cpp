@@ -4,12 +4,13 @@
 
 ManifoldPoint::ManifoldPoint(btManifoldPoint* point)
 {
-	_point = point;
+	if (point)
+		UnmanagedPointer = point;
 }
 
 ManifoldPoint::ManifoldPoint()
 {
-	_point = new btManifoldPoint();
+	UnmanagedPointer = new btManifoldPoint();
 }
 
 ManifoldPoint::ManifoldPoint(Vector3 pointA, Vector3 pointB, Vector3 normal, btScalar distance)
@@ -223,21 +224,13 @@ void ManifoldPoint::PositionWorldOnB::set(Vector3 value)
 	return Math::Vector3ToBtVector3(value, &_point->m_positionWorldOnB);
 }
 
-Object^ ManifoldPoint::UserPersistentData::get()
+Object^ ManifoldPoint::UserPersistentObject::get()
 {
-	void* obj = _point->m_userPersistentData;
-	if (obj == nullptr)
-		return nullptr;
-	return static_cast<Object^>(VoidPtrToGCHandle(obj).Target);
+	return _userPersistentObject;
 }
-void ManifoldPoint::UserPersistentData::set(Object^ value)
+void ManifoldPoint::UserPersistentObject::set(Object^ value)
 {
-	void* obj = _point->m_userPersistentData;
-	if (obj != nullptr)
-		VoidPtrToGCHandle(obj).Free();
-
-	GCHandle handle = GCHandle::Alloc(value);
-	_point->m_userPersistentData = GCHandleToVoidPtr(handle);
+	_userPersistentObject = value;
 }
 
 btManifoldPoint* ManifoldPoint::UnmanagedPointer::get()
@@ -247,4 +240,11 @@ btManifoldPoint* ManifoldPoint::UnmanagedPointer::get()
 void ManifoldPoint::UnmanagedPointer::set(btManifoldPoint* value)
 {
 	_point = value;
+
+	if (_point->m_userPersistentData == 0)
+	{
+		GCHandle handle = GCHandle::Alloc(this);
+		void* obj = GCHandleToVoidPtr(handle);
+		_point->m_userPersistentData = obj;
+	}
 }

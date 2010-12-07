@@ -17,8 +17,6 @@ namespace BulletSharp
 	public:
 		Convex2DShape(ConvexShape^ convexChildShape);
 
-		static Convex2DShape^ Upcast2D(CollisionShape^ shape);
-
 		property ConvexShape^ ChildShape
 		{
 			ConvexShape^ get();
