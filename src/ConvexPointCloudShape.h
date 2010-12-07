@@ -1,13 +1,18 @@
 #pragma once
 
-// Fully implemented as of 24 Nov 2010
+// Fully implemented as of 07 Dec 2010
 
 #include "PolyhedralConvexShape.h"
 
 namespace BulletSharp
 {
+	ref class Vector3Array;
+
 	public ref class ConvexPointCloudShape : PolyhedralConvexAabbCachingShape
 	{
+	private:
+		Vector3Array^ _unscaledPoints;
+
 	internal:
 		ConvexPointCloudShape(btConvexPointCloudShape* shape);
 
@@ -21,11 +26,15 @@ namespace BulletSharp
 		void SetPoints(array<Vector3>^ points);
 
 		Vector3 GetScaledPoint(int i);
-		array<Vector3>^ GetUnscaledPoints();
 
 		property int NumPoints
 		{
 			int get();
+		}
+
+		property Vector3Array^ UnscaledPoints
+		{
+			Vector3Array^ get();
 		}
 
 	internal:

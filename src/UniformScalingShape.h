@@ -1,6 +1,6 @@
 #pragma once
 
-// Fully implemented as of 28 May 2010
+// Fully implemented as of 07 Dec 2010
 
 #include "ConvexShape.h"
 
@@ -8,6 +8,9 @@ namespace BulletSharp
 {
 	public ref class UniformScalingShape : ConvexShape
 	{
+	private:
+		ConvexShape^ _childShape;
+
 	internal:
 		UniformScalingShape(btUniformScalingShape* shape);
 

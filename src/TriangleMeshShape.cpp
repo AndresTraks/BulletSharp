@@ -65,7 +65,8 @@ Vector3 TriangleMeshShape::LocalAabbMin::get()
 
 StridingMeshInterface^ TriangleMeshShape::MeshInterface::get()
 {
-	return gcnew StridingMeshInterface(UnmanagedPointer->getMeshInterface());
+	btStridingMeshInterface* meshInterface = UnmanagedPointer->getMeshInterface();
+	ReturnCachedObject(StridingMeshInterface, _meshInterface, meshInterface);
 }
 
 btTriangleMeshShape* TriangleMeshShape::UnmanagedPointer::get()

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fully implemented as of 24 Nov 2010
+// Fully implemented as of 07 Dec 2010
 
 #include "ConvexInternalShape.h"
 
@@ -10,6 +10,10 @@ namespace BulletSharp
 
 	public ref class MinkowskiSumShape : ConvexInternalShape
 	{
+	private:
+		ConvexShape^ _shapeA;
+		ConvexShape^ _shapeB;
+
 	internal:
 		MinkowskiSumShape(btMinkowskiSumShape* shape);
 

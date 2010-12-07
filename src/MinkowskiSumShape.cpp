@@ -13,16 +13,20 @@ MinkowskiSumShape::MinkowskiSumShape(btMinkowskiSumShape* shape)
 MinkowskiSumShape::MinkowskiSumShape(ConvexShape^ shapeA, ConvexShape^ shapeB)
 : ConvexInternalShape(new btMinkowskiSumShape(shapeA->UnmanagedPointer, shapeB->UnmanagedPointer))
 {
+	_shapeA = shapeA;
+	_shapeB = shapeB;
 }
 
 ConvexShape^ MinkowskiSumShape::ShapeA::get()
 {
-	return gcnew ConvexShape((btConvexShape*)UnmanagedPointer->getShapeA());
+	btConvexShape* shapeA = (btConvexShape*)UnmanagedPointer->getShapeA();
+	ReturnCachedObjectUpcastNullableCastTo(CollisionShape, ConvexShape, _shapeA, shapeA);
 }
 
 ConvexShape^ MinkowskiSumShape::ShapeB::get()
 {
-	return gcnew ConvexShape((btConvexShape*)UnmanagedPointer->getShapeB());
+	btConvexShape* shapeB = (btConvexShape*)UnmanagedPointer->getShapeB();
+	ReturnCachedObjectUpcastNullableCastTo(CollisionShape, ConvexShape, _shapeB, shapeB);
 }
 
 Matrix MinkowskiSumShape::TransformA::get()

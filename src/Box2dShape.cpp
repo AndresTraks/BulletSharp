@@ -72,7 +72,8 @@ Vector3 Box2dShape::HalfExtentsWithoutMargin::get()
 
 Vector3Array^ Box2dShape::Normals::get()
 {
-	return gcnew Vector3Array(UnmanagedPointer->getNormals(), 4);
+	const btVector3* normals = UnmanagedPointer->getNormals();
+	ReturnCachedObjectStatic(Vector3Array, _normals, normals, 4);
 }
 
 int Box2dShape::VertexCount::get()
@@ -82,7 +83,8 @@ int Box2dShape::VertexCount::get()
 
 Vector3Array^ Box2dShape::Vertices::get()
 {
-	return gcnew Vector3Array(UnmanagedPointer->getVertices(), 4);
+	const btVector3* vertices = UnmanagedPointer->getVertices();
+	ReturnCachedObjectStatic(Vector3Array, _vertices, vertices, 4);
 }
 
 btBox2dShape* Box2dShape::UnmanagedPointer::get()

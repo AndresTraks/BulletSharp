@@ -45,12 +45,6 @@ BulletSharp::DataStream^ IndexedMesh::LockVerts()
 		_indexedMesh->m_numVertices * _indexedMesh->m_vertexStride, true, true, false);
 }
 
-BulletSharp::DataStream^ IndexedMesh::LockIndices()
-{
-	return gcnew DataStream((void*)_indexedMesh->m_triangleIndexBase,
-		_indexedMesh->m_numTriangles * _indexedMesh->m_triangleIndexStride, true, true, false);
-}
-
 PhyScalarType IndexedMesh::IndexType::get()
 {
 	return (PhyScalarType)_indexedMesh->m_indexType;
@@ -78,13 +72,25 @@ void IndexedMesh::NumVertices::set(int value)
 	_indexedMesh->m_numVertices = value;
 }
 
-IntArray^ IndexedMesh::TriangleIndexBase::get()
+IntArray^ IndexedMesh::TriangleIndices::get()
 {
-	return gcnew IntArray((int*)_indexedMesh->m_triangleIndexBase, _indexedMesh->m_numTriangles * _indexedMesh->m_triangleIndexStride / sizeof(int));
+	int count = _indexedMesh->m_numTriangles * _indexedMesh->m_triangleIndexStride / sizeof(int);
+	int* triangleIndexBase = (int*)_indexedMesh->m_triangleIndexBase;
+
+	if (_triangleIndices != nullptr &&
+		_triangleIndices->UnmanagedPointer == triangleIndexBase &&
+		_triangleIndices->Count == count)
+	{
+		return _triangleIndices;
+	}
+
+	_triangleIndices = gcnew IntArray(triangleIndexBase, count);
+	return _triangleIndices;
 }
-void IndexedMesh::TriangleIndexBase::set(IntArray^ value)
+void IndexedMesh::TriangleIndices::set(IntArray^ value)
 {
 	_indexedMesh->m_triangleIndexBase = (unsigned char*)value->UnmanagedPointer;
+	_triangleIndices = value;
 }
 
 int IndexedMesh::TriangleIndexStride::get()
@@ -96,13 +102,25 @@ void IndexedMesh::TriangleIndexStride::set(int value)
 	_indexedMesh->m_triangleIndexStride = value;
 }
 
-Vector3Array^ IndexedMesh::VertexBase::get()
+Vector3Array^ IndexedMesh::Vertices::get()
 {
-	return gcnew Vector3Array((btVector3*)_indexedMesh->m_vertexBase, _indexedMesh->m_numVertices);
+	int count = _indexedMesh->m_numVertices;
+	btVector3* vertexBase = (btVector3*)_indexedMesh->m_vertexBase;
+
+	if (_vertices != nullptr &&
+		_vertices->UnmanagedPointer == vertexBase &&
+		_vertices->Count == count)
+	{
+		return _vertices;
+	}
+
+	_vertices = gcnew Vector3Array(vertexBase, count);
+	return _vertices;
 }
-void IndexedMesh::VertexBase::set(Vector3Array^ value)
+void IndexedMesh::Vertices::set(Vector3Array^ value)
 {
 	_indexedMesh->m_vertexBase = (unsigned char*)value->UnmanagedPointer;
+	_vertices = value;
 }
 
 int IndexedMesh::VertexStride::get()

@@ -67,7 +67,8 @@ Vector3 TriangleShape::GetVertexPtr(int index)
 
 Vector3Array^ TriangleShape::Vertices::get()
 {
-	return gcnew Vector3Array(UnmanagedPointer->m_vertices1, 3);
+	btVector3* vertices = UnmanagedPointer->m_vertices1;
+	ReturnCachedObjectStatic(Vector3Array, _vertices, vertices, 3);
 }
 
 btTriangleShape* TriangleShape::UnmanagedPointer::get()

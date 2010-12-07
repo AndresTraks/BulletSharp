@@ -31,7 +31,8 @@ void ConvexTriangleMeshShape::CalculatePrincipalAxisTransform(Matrix principal, 
 
 StridingMeshInterface^ ConvexTriangleMeshShape::MeshInterface::get()
 {
-	return gcnew StridingMeshInterface(UnmanagedPointer->getMeshInterface());
+	btStridingMeshInterface* stridingMeshInterface = UnmanagedPointer->getMeshInterface();
+	ReturnCachedObject(StridingMeshInterface, _stridingMeshInterface, stridingMeshInterface);
 }
 
 btConvexTriangleMeshShape* ConvexTriangleMeshShape::UnmanagedPointer::get()

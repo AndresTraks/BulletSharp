@@ -84,9 +84,6 @@ namespace VehicleDemo
                 IndexedMesh mesh = new IndexedMesh();
                 mesh.Allocate(totalVerts, vertStride, totalTriangles, indexStride);
 
-                game.ground = new Mesh(game.Device, totalTriangles, totalVerts,
-                    MeshFlags.SystemMemory | MeshFlags.Use32Bit, VertexFormat.Position | VertexFormat.Normal);
-                SlimDX.DataStream data2 = game.ground.LockVertexBuffer(LockFlags.None);
                 BulletSharp.DataStream data = mesh.LockVerts();
                 for (i = 0; i < NUM_VERTS_X; i++)
                 {
@@ -98,41 +95,24 @@ namespace VehicleDemo
                         data.Write((i - NUM_VERTS_X * 0.5f) * scale);
                         data.Write(height);
                         data.Write((j - NUM_VERTS_Y * 0.5f) * scale);
-
-                        data2.Write((i - NUM_VERTS_X * 0.5f) * scale);
-                        data2.Write(height);
-                        data2.Write((j - NUM_VERTS_Y * 0.5f) * scale);
-
-                        // Normals will be calculated later
-                        data2.Position += 12;
                     }
                 }
-                game.ground.UnlockVertexBuffer();
 
-                data = mesh.LockIndices();
-                data2 = game.ground.LockIndexBuffer(LockFlags.None);
+                int index = 0;
+                IntArray idata = mesh.TriangleIndices;
                 for (i = 0; i < NUM_VERTS_X - 1; i++)
                 {
                     for (int j = 0; j < NUM_VERTS_Y - 1; j++)
                     {
-                        data.Write(j * NUM_VERTS_X + i);
-                        data.Write(j * NUM_VERTS_X + i + 1);
-                        data.Write((j + 1) * NUM_VERTS_X + i + 1);
+                        idata[index++] = j * NUM_VERTS_X + i;
+                        idata[index++] = j * NUM_VERTS_X + i + 1;
+                        idata[index++] = (j + 1) * NUM_VERTS_X + i + 1;
 
-                        data.Write(j * NUM_VERTS_X + i);
-                        data.Write((j + 1) * NUM_VERTS_X + i + 1);
-                        data.Write((j + 1) * NUM_VERTS_X + i);
-
-                        data2.Write(j * NUM_VERTS_X + i);
-                        data2.Write(j * NUM_VERTS_X + i + 1);
-                        data2.Write((j + 1) * NUM_VERTS_X + i + 1);
-
-                        data2.Write(j * NUM_VERTS_X + i);
-                        data2.Write((j + 1) * NUM_VERTS_X + i + 1);
-                        data2.Write((j + 1) * NUM_VERTS_X + i);
+                        idata[index++] = j * NUM_VERTS_X + i;
+                        idata[index++] = (j + 1) * NUM_VERTS_X + i + 1;
+                        idata[index++] = (j + 1) * NUM_VERTS_X + i;
                     }
                 }
-                game.ground.UnlockIndexBuffer();
 
                 vertexArray.AddIndexedMesh(mesh);
                 groundShape = new BvhTriangleMeshShape(vertexArray, true);
@@ -221,16 +201,43 @@ namespace VehicleDemo
                 {
                     for (int j = 0; j < length - 1; j++)
                     {
-                        data.Write(j * width + i + 1);
-                        data.Write(j * width + i);
-                        data.Write((j + 1) * width + i + 1);
+                        // Using diamond subdivision
+                        if ((j + i) % 2 == 0)
+                        {
+                            data.Write(j * width + i);
+                            data.Write((j + 1) * width + i + 1);
+                            data.Write(j * width + i + 1);
 
-                        data.Write((j + 1) * width + i + 1);
+                            data.Write(j * width + i);
+                            data.Write((j + 1) * width + i);
+                            data.Write((j + 1) * width + i + 1);
+                        }
+                        else
+                        {
+                            data.Write(j * width + i);
+                            data.Write((j + 1) * width + i);
+                            data.Write(j * width + i + 1);
+
+                            data.Write(j * width + i + 1);
+                            data.Write((j + 1) * width + i);
+                            data.Write((j + 1) * width + i + 1);
+                        }
+
+                        /*
+                        // Not using diamond subdivision
                         data.Write(j * width + i);
                         data.Write((j + 1) * width + i);
+                        data.Write(j * width + i + 1);
+
+                        data.Write(j * width + i + 1);
+                        data.Write((j + 1) * width + i);
+                        data.Write((j + 1) * width + i + 1);
+                        */
                     }
                 }
                 game.ground.UnlockIndexBuffer();
+
+                game.ground.ComputeNormals();
             }
 
             CollisionShapes.Add(groundShape);

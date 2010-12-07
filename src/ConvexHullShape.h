@@ -1,6 +1,6 @@
 #pragma once
 
-// Fully implemented as of 21 Oct 2010
+// Fully implemented as of 07 Dec 2010
 
 #include "PolyhedralConvexShape.h"
 
@@ -10,9 +10,12 @@ namespace BulletSharp
 
 	public ref class ConvexHullShape : PolyhedralConvexAabbCachingShape
 	{
+	private:
+		Vector3Array^ _unscaledPoints;
+
 	internal:
 		ConvexHullShape(btConvexHullShape* shape);
-	
+
 	public:
 		ConvexHullShape();
 		ConvexHullShape(array<Vector3>^ points);

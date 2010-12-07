@@ -1,6 +1,6 @@
 #pragma once
 
-// Fully implemented as of 23 May 2010
+// Fully implemented as of 07 Dec 2010
 
 #include "PolyhedralConvexShape.h"
 
@@ -10,6 +10,9 @@ namespace BulletSharp
 
 	public ref class ConvexTriangleMeshShape : PolyhedralConvexAabbCachingShape
 	{
+	private:
+		StridingMeshInterface^ _stridingMeshInterface;
+
 	internal:
 		ConvexTriangleMeshShape(btConvexTriangleMeshShape* meshShape);
 

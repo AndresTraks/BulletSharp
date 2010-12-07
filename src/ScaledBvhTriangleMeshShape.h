@@ -1,6 +1,6 @@
 #pragma once
 
-// Fully implemented as of 23 Nov 2010
+// Fully implemented as of 07 Dec 2010
 
 #include "ConcaveShape.h"
 
@@ -10,6 +10,9 @@ namespace BulletSharp
 
 	public ref class ScaledBvhTriangleMeshShape : ConcaveShape
 	{
+	private:
+		BvhTriangleMeshShape^ _childShape;
+
 	internal:
 		ScaledBvhTriangleMeshShape(btScaledBvhTriangleMeshShape* shape);
 

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fully implemented as of 29 May 2010
+// Fully implemented as of 07 Dec 2010
 
 #include "StridingMeshInterface.h"
 
@@ -16,6 +16,9 @@ namespace BulletSharp
 	private:
 		btIndexedMesh* _indexedMesh;
 
+		IntArray^ _triangleIndices;
+		Vector3Array^ _vertices;
+
 	internal:
 		IndexedMesh(btIndexedMesh* indexedMesh);
 
@@ -27,7 +30,6 @@ namespace BulletSharp
 		void AllocateIndices(int num, int stride);
 
 		DataStream^ LockVerts();
-		DataStream^ LockIndices();
 
 		property PhyScalarType IndexType
 		{
@@ -47,7 +49,7 @@ namespace BulletSharp
 			void set(int value);
 		}
 
-		property IntArray^ TriangleIndexBase
+		property IntArray^ TriangleIndices
 		{
 			IntArray^ get();
 			void set(IntArray^ value);
@@ -59,7 +61,7 @@ namespace BulletSharp
 			void set(int value);
 		}
 
-		property Vector3Array^ VertexBase
+		property Vector3Array^ Vertices
 		{
 			Vector3Array^ get();
 			void set(Vector3Array^ value);

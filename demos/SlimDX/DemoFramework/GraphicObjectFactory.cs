@@ -292,6 +292,50 @@ namespace DemoFramework
             return mesh;
         }
 
+        Mesh CreateTriangleMeshShape(TriangleMeshShape shape)
+        {
+            StridingMeshInterface meshInterface = shape.MeshInterface;
+
+            BulletSharp.DataStream verts, indices;
+            int numVerts, numFaces;
+            PhyScalarType vertsType, indicesType;
+            int vertexStride, indexStride;
+            meshInterface.GetLockedReadOnlyVertexIndexData(out verts, out numVerts, out vertsType, out vertexStride,
+                out indices, out indexStride, out numFaces, out indicesType);
+
+            bool index32 = numVerts > 65536;
+
+            Mesh mesh = new Mesh(device, numFaces, numVerts,
+                 MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
+
+            SlimDX.DataStream data = mesh.LockVertexBuffer(LockFlags.None);
+            while (verts.Position < verts.Length)
+            {
+                Vector3 v = verts.Read<Vector3>();
+                data.Write(v);
+                
+                // Normals will be calculated later
+                data.Position += 12;
+            }
+            mesh.UnlockVertexBuffer();
+
+            data = mesh.LockIndexBuffer(LockFlags.None);
+            while (indices.Position < indices.Length)
+            {
+                int index = indices.Read<int>();
+                if (index32)
+                    data.Write(index);
+                else
+                    data.Write((short)index);
+            }
+            mesh.UnlockVertexBuffer();
+
+            mesh.ComputeNormals();
+
+            shapes.Add(shape, mesh);
+            return mesh;
+        }
+
         public void Render(CollisionObject body)
         {
             if (body.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
@@ -338,9 +382,6 @@ namespace DemoFramework
                 case BroadphaseNativeType.GImpactShape:
                     mesh = CreateGImpactMeshShape((GImpactMeshShape)shape);
                     break;
-                case BroadphaseNativeType.SphereShape:
-                    mesh = CreateSphere((SphereShape)shape);
-                    break;
                 case BroadphaseNativeType.Convex2DShape:
                     Render(((Convex2DShape)shape).ChildShape);
                     return;
@@ -357,6 +398,12 @@ namespace DemoFramework
                         Render(child.ChildShape);
                     }
                     return;
+                case BroadphaseNativeType.SphereShape:
+                    mesh = CreateSphere((SphereShape)shape);
+                    break;
+                case BroadphaseNativeType.TriangleMeshShape:
+                    mesh = CreateTriangleMeshShape((TriangleMeshShape)shape);
+                    break;
             }
 
             // If the shape has one subset, render it.

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fully implemented as of 10 May 2010
+// Fully implemented as of 07 Dec 2010
 
 #include "TriangleMeshShape.h"
 
@@ -12,6 +12,11 @@ namespace BulletSharp
 
 	public ref class BvhTriangleMeshShape : TriangleMeshShape
 	{
+	private:
+#ifndef DISABLE_BVH
+		OptimizedBvh^ _optimizedBvh;
+#endif
+
 	internal:
 		BvhTriangleMeshShape(btBvhTriangleMeshShape* shape);
 

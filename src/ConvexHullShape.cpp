@@ -56,7 +56,15 @@ int ConvexHullShape::NumPoints::get()
 
 Vector3Array^ ConvexHullShape::UnscaledPoints::get()
 {
-	return gcnew Vector3Array(UnmanagedPointer->getUnscaledPoints(), UnmanagedPointer->getNumPoints());
+	btVector3* unscaledPoints = UnmanagedPointer->getUnscaledPoints();
+	int numPoints = UnmanagedPointer->getNumPoints();
+
+	if (_unscaledPoints == nullptr)
+		_unscaledPoints = gcnew Vector3Array(unscaledPoints, numPoints);
+	else if (_unscaledPoints->Count != numPoints)
+		_unscaledPoints = gcnew Vector3Array(unscaledPoints, numPoints);
+
+	return _unscaledPoints;
 }
 
 btConvexHullShape* ConvexHullShape::UnmanagedPointer::get()

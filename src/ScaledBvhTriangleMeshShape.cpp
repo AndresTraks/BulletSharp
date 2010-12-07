@@ -20,7 +20,8 @@ ScaledBvhTriangleMeshShape::ScaledBvhTriangleMeshShape(BvhTriangleMeshShape^ chi
 
 BvhTriangleMeshShape^ ScaledBvhTriangleMeshShape::ChildShape::get()
 {
-	return gcnew BvhTriangleMeshShape(UnmanagedPointer->getChildShape());
+	btBvhTriangleMeshShape* childShape = UnmanagedPointer->getChildShape();
+	ReturnCachedObjectUpcastNullableCastTo(CollisionShape, BvhTriangleMeshShape, _childShape, childShape);
 }
 
 btScaledBvhTriangleMeshShape* ScaledBvhTriangleMeshShape::UnmanagedPointer::get()

@@ -2,6 +2,7 @@
 
 #ifndef DISABLE_UNCOMMON
 
+#include "Collections.h"
 #include "ConvexPointCloudShape.h"
 
 ConvexPointCloudShape::ConvexPointCloudShape(btConvexPointCloudShape* shape)
@@ -39,12 +40,6 @@ Vector3 ConvexPointCloudShape::GetScaledPoint(int i)
 	Vector3 point = Math::BtVector3ToVector3(pointTemp);
 	delete pointTemp;
 	return point;
-}
-
-array<Vector3>^ ConvexPointCloudShape::GetUnscaledPoints()
-{
-	btVector3* pointsTemp = UnmanagedPointer->getUnscaledPoints();
-	return Math::Vector3ArrayToManaged(pointsTemp, NumPoints);
 }
 
 void ConvexPointCloudShape::SetPoints(array<Vector3>^ points, bool computeAabb, Vector3 localScaling)
@@ -87,6 +82,19 @@ void ConvexPointCloudShape::SetPoints(array<Vector3>^ points)
 int ConvexPointCloudShape::NumPoints::get()
 {
 	return UnmanagedPointer->getNumPoints();
+}
+
+Vector3Array^ ConvexPointCloudShape::UnscaledPoints::get()
+{
+	btVector3* unscaledPoints = UnmanagedPointer->getUnscaledPoints();
+	int numPoints = UnmanagedPointer->getNumPoints();
+
+	if (_unscaledPoints == nullptr)
+		_unscaledPoints = gcnew Vector3Array(unscaledPoints, numPoints);
+	else if (_unscaledPoints->Count != numPoints)
+		_unscaledPoints = gcnew Vector3Array(unscaledPoints, numPoints);
+
+	return _unscaledPoints;
 }
 
 btConvexPointCloudShape* ConvexPointCloudShape::UnmanagedPointer::get()

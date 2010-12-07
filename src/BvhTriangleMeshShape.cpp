@@ -153,7 +153,8 @@ void BvhTriangleMeshShape_SetOptimizedBvh(btBvhTriangleMeshShape* shape, btOptim
 #pragma managed(pop)
 OptimizedBvh^ BvhTriangleMeshShape::OptimizedBvh::get()
 {
-	return gcnew BulletSharp::OptimizedBvh(UnmanagedPointer->getOptimizedBvh());
+	btOptimizedBvh* optimizedBvh = UnmanagedPointer->getOptimizedBvh();
+	ReturnCachedObject(BulletSharp::OptimizedBvh, _optimizedBvh, optimizedBvh)
 }
 void BvhTriangleMeshShape::OptimizedBvh::set(BulletSharp::OptimizedBvh^ value)
 {

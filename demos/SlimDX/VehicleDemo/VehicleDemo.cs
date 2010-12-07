@@ -36,7 +36,6 @@ namespace VehicleDemo
             Physics = new Physics(this);
 
             wheel = Mesh.CreateCylinder(Device, Physics.wheelRadius, Physics.wheelRadius, Physics.wheelWidth, 10, 10);
-            ground.ComputeNormals();
 
             Ambient = Color.Black.ToArgb();
 
@@ -72,7 +71,8 @@ namespace VehicleDemo
             if (disposing)
             {
                 wheel.Dispose();
-                ground.Dispose();
+                if (ground != null)
+                    ground.Dispose();
             }
         }
 
@@ -159,25 +159,12 @@ namespace VehicleDemo
                 Device.SetTransform(TransformState.View, Freelook.View);
             }
 
-            // Draw wireframe
-            /*
-            if (IsDebugDrawEnabled == false)
-            {
-                Device.SetRenderState(RenderState.Lighting, false);
-                Device.SetRenderState(RenderState.FillMode, FillMode.Wireframe);
-                Device.SetTransform(TransformState.World, Matrix.Identity);
-                ground.DrawSubset(0);
-                Device.SetRenderState(RenderState.Lighting, true);
-                Device.SetRenderState(RenderState.FillMode, FillMode.Solid);
-            }
-            */
-
             Device.Material = wheelMaterial;
             int i;
             for (i = 0; i < Physics.vehicle.NumWheels; i++)
             {
                 //synchronize the wheels with the (interpolated) chassis worldtransform
-                Physics.vehicle.UpdateWheelTransform(i, true);
+                //Physics.vehicle.UpdateWheelTransform(i, true);
                 //draw wheels (cylinders)
                 trans = Matrix.RotationY((float)Math.PI / 2);
                 trans *= Physics.vehicle.GetWheelInfo(i).WorldTransform;
@@ -189,7 +176,8 @@ namespace VehicleDemo
 
             foreach (RigidBody body in PhysicsContext.World.CollisionObjectArray)
             {
-                if ((string)body.UserObject == "Ground")
+                if (body.CollisionShape.ShapeType == BroadphaseNativeType.TerrainShape
+                    && (string)body.UserObject == "Ground")
                 {
                     Device.SetTransform(TransformState.World, Matrix.Identity);
                     Device.Material = GroundMaterial;
@@ -197,14 +185,16 @@ namespace VehicleDemo
                     continue;
                 }
 
-                Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
-
                 if ((string)body.UserObject == "Chassis")
                 {
+                    Device.SetTransform(TransformState.World, body.WorldTransform);
+
                     Device.Material = bodyMaterial;
                     MeshFactory.Render(body);
                     continue;
                 }
+
+                Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
 
                 RenderWithMaterial(body);
             }

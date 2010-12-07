@@ -1,6 +1,6 @@
 #pragma once
 
-// Fully implemented as of 24 Nov 2010
+// Fully implemented as of 07 Dec 2010
 
 #include "PolyhedralConvexShape.h"
 
@@ -10,6 +10,10 @@ namespace BulletSharp
 
 	public ref class Box2dShape : PolyhedralConvexShape
 	{
+	private:
+		Vector3Array^ _normals;
+		Vector3Array^ _vertices;
+
 	internal:
 		Box2dShape(btBox2dShape* shape);
 
