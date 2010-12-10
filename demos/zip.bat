@@ -12,6 +12,22 @@ if exist bin\SlimDX\data goto _binsd
 mkdir bin\SlimDX\data
 :_binsd
 
+if exist bin\OpenTK goto _bino
+mkdir bin\OpenTK
+:_bino
+
+if exist bin\XNA goto _binx
+mkdir bin\XNA
+:_binx
+
+if exist bin\XNA4 goto _binx4
+mkdir bin\XNA4
+:_binx4
+
+if exist bin\Mogre goto _binm
+mkdir bin\Mogre
+:_binm
+
 if exist bin goto _src
 mkdir src
 :_src
@@ -20,7 +36,28 @@ if exist src\SlimDX goto _srcs
 mkdir src\SlimDX
 :_srcs
 
+if exist src\OpenTK goto _srco
+mkdir src\OpenTK
+:_srco
+
+if exist src\XNA goto _srcx
+mkdir src\XNA
+:_srcx
+
+if exist src\XNA4 goto _srcx4
+mkdir src\XNA4
+:_srcx4
+
+if exist src\Mogre goto _srcm
+mkdir src\Mogre
+:_srcm
+
 copy "..\Release SlimDX\BulletSharp.dll" bin\SlimDX\
+copy "..\Release OpenTK\BulletSharp.dll" bin\OpenTK\
+copy "..\Release XNA 3.1\BulletSharp.dll" bin\XNA\
+copy "..\vs2010\Release XNA 4.0\BulletSharp.dll" bin\XNA4\
+copy "..\Release Mogre\BulletSharp.dll" bin\Mogre\
+
 copy SlimDX\DemoFramework\bin\x86\Release\DemoFramework.dll bin\SlimDX\
 rem copy SlimDX\AllBulletDemos\bin\Release\AllBulletDemos.exe bin\SlimDX\
 copy SlimDX\BasicDemo\bin\x86\Release\BasicDemo.exe bin\SlimDX\
@@ -54,3 +91,19 @@ cmd /C svn export SlimDX\SerializeDemo src\SlimDX\SerializeDemo --force
 cmd /C svn export SlimDX\SimplestDemo src\SlimDX\SimplestDemo --force
 cmd /C svn export SlimDX\SoftDemo src\SlimDX\SoftDemo --force
 cmd /C svn export SlimDX\VehicleDemo src\SlimDX\VehicleDemo --force
+
+copy OpenTK\BasicDemo\bin\x86\release\BasicDemo.exe bin\OpenTK\
+copy OpenTK\BasicDemo\bin\x86\release\OpenTK.dll bin\OpenTK\
+copy XNA\BasicDemo\bin\x86\release\BasicDemo.exe bin\XNA\
+copy XNA4\BasicDemo\bin\x86\release\BasicDemo.exe bin\XNA4\
+copy Mogre\BasicDemo\bin\x86\release\BasicDemo.exe bin\Mogre\
+copy Mogre\BasicDemo\box.mesh bin\Mogre\
+copy Mogre\BasicDemo\materials.material bin\Mogre\
+copy Mogre\BasicDemo\plugins.cfg bin\Mogre\
+copy Mogre\BasicDemo\resources.cfg bin\Mogre\
+copy Mogre\readme.txt bin\Mogre\
+
+cmd /C svn export OpenTK\BasicDemo src\OpenTK\BasicDemo --force
+cmd /C svn export XNA\BasicDemo src\XNA\BasicDemo --force
+cmd /C svn export XNA4\BasicDemo src\XNA4\BasicDemo --force
+cmd /C svn export Mogre\BasicDemo src\Mogre\BasicDemo --force
