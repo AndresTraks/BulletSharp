@@ -28,12 +28,13 @@ DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher
 : DynamicsWorld(new btDiscreteDynamicsWorld(dispatcher->UnmanagedPointer,
 	pairCache->UnmanagedPointer,
 	#ifndef DISABLE_CONSTRAINTS
-	(constraintSolver != nullptr) ? constraintSolver->UnmanagedPointer : 0,
+	GetUnmanagedNullable(constraintSolver),
 	#else
 	0,
 	#endif
 	collisionConfiguration->UnmanagedPointer))
 {
+	_collisionConfiguration = collisionConfiguration;
 	_dispatcher = dispatcher;
 	_broadphase = pairCache;
 }

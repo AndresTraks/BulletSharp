@@ -403,6 +403,7 @@ namespace BulletSharp
 		AlignedCollisionObjectArray^ _collisionObjectArray;
 
 	protected:
+		CollisionConfiguration^ _collisionConfiguration;
 		Dispatcher^ _dispatcher;
 		BroadphaseInterface^ _broadphase;
 #ifndef DISABLE_DEBUGDRAW

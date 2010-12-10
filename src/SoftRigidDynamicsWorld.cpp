@@ -23,12 +23,13 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 	CollisionConfiguration^ collisionConfiguration)
 : DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->UnmanagedPointer, pairCache->UnmanagedPointer,
 #ifndef DISABLE_CONSTRAINTS
-		(constraintSolver != nullptr) ? constraintSolver->UnmanagedPointer : 0,
+		GetUnmanagedNullable(constraintSolver),
 #else
 		nullptr,
 #endif
 		collisionConfiguration->UnmanagedPointer))
 {
+	_collisionConfiguration = collisionConfiguration;
 	_dispatcher = dispatcher;
 	_broadphase = pairCache;
 }
@@ -40,12 +41,13 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 	CollisionConfiguration^ collisionConfiguration, SoftBodySolver^ softBodySolver)
 : DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->UnmanagedPointer, pairCache->UnmanagedPointer,
 #ifndef DISABLE_CONSTRAINTS
-		(constraintSolver != nullptr) ? constraintSolver->UnmanagedPointer : 0,
+		GetUnmanagedNullable(constraintSolver),
 #else
 		nullptr,
 #endif
 		collisionConfiguration->UnmanagedPointer, softBodySolver->UnmanagedPointer))
 {
+	_collisionConfiguration = collisionConfiguration;
 	_dispatcher = dispatcher;
 	_broadphase = pairCache;
 }
