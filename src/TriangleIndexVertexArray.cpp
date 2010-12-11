@@ -39,6 +39,12 @@ void IndexedMesh::AllocateIndices(int num, int stride)
 	_indexedMesh->m_triangleIndexBase = (const unsigned char *)new int[num*3];
 }
 
+BulletSharp::DataStream^ IndexedMesh::LockIndices()
+{
+	return gcnew DataStream((void*)_indexedMesh->m_triangleIndexBase,
+		_indexedMesh->m_numTriangles * _indexedMesh->m_triangleIndexStride, true, true, false);
+}
+
 BulletSharp::DataStream^ IndexedMesh::LockVerts()
 {
 	return gcnew DataStream((void*)_indexedMesh->m_vertexBase,

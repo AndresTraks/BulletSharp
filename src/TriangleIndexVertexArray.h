@@ -29,6 +29,7 @@ namespace BulletSharp
 		void AllocateVerts(int num, int stride);
 		void AllocateIndices(int num, int stride);
 
+		DataStream^ LockIndices();
 		DataStream^ LockVerts();
 
 		property PhyScalarType IndexType
