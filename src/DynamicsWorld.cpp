@@ -69,6 +69,11 @@ void DynamicsWorld::AddAction(ActionInterface^ actionInterface)
 	UnmanagedPointer->addAction(actionInterface->UnmanagedPointer);
 }
 
+void DynamicsWorld::AddRigidBody(RigidBody^ rigidBody, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
+{
+	UnmanagedPointer->addRigidBody(rigidBody->UnmanagedPointer, (short)collisionFilterGroup, (short)collisionFilterMask);
+}
+
 void DynamicsWorld::AddRigidBody(RigidBody^ rigidBody)
 {
 	UnmanagedPointer->addRigidBody(rigidBody->UnmanagedPointer);

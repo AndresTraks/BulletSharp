@@ -69,6 +69,7 @@ namespace BulletSharp
 		void RemoveConstraint(TypedConstraint^ constraint);
 		TypedConstraint^ GetConstraint(int index);
 #endif
+		void AddRigidBody(RigidBody^ rigidBody, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask);
 		void AddRigidBody(RigidBody^ rigidBody);
 		void ClearForces();
 		void RemoveAction(ActionInterface^ actionInterface);

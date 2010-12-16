@@ -5,6 +5,7 @@
 #include "AlignedObjectArray.h"
 #include "BroadphaseInterface.h"
 #include "CollisionConfiguration.h"
+#include "CollisionShape.h"
 #include "ConstraintSolver.h"
 #include "Dispatcher.h"
 #include "SoftRigidDynamicsWorld.h"
@@ -74,11 +75,6 @@ void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body)
 void SoftRigidDynamicsWorld::RemoveSoftBody(BulletSharp::SoftBody::SoftBody^ body)
 {
 	UnmanagedPointer->removeSoftBody(body->UnmanagedPointer);
-}
-
-void SoftRigidDynamicsWorld::SerializeSoftBodies(BulletSharp::Serializer^ serializer)
-{
-	UnmanagedPointer->serialize(serializer->UnmanagedPointer);
 }
 
 AlignedSoftBodyArray^ SoftRigidDynamicsWorld::SoftBodyArray::get()

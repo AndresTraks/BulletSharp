@@ -1,10 +1,13 @@
 #pragma once
 
+// Fully implemented as of 16 Dec 2010
+
 #include "DiscreteDynamicsWorld.h"
 
 namespace BulletSharp
 {
 	ref class Serializer;
+	ref class CollisionShape;
 	ref class ConstraintSolver;
 	ref class Dispatcher;
 
@@ -37,10 +40,6 @@ namespace BulletSharp
 				CollisionFilterGroups collisionFilterGroup);
 			void AddSoftBody(SoftBody^ body);
 			void RemoveSoftBody(SoftBody^ body);
-
-#ifndef DISABLE_SERIALIZE
-			void SerializeSoftBodies(Serializer^ serializer);
-#endif
 
 			property AlignedSoftBodyArray^ SoftBodyArray
 			{

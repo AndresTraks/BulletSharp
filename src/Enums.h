@@ -224,8 +224,8 @@ namespace BulletSharp
 
 	public enum class ContactManifoldType
 	{
-		PersistentManifold = BT_PERSISTENT_MANIFOLD_TYPE,
-		MaxContactManifold = MAX_CONTACT_MANIFOLD_TYPE
+		MinContactManifold = MIN_CONTACT_MANIFOLD_TYPE,
+		PersistentManifold = BT_PERSISTENT_MANIFOLD_TYPE
 	};
 
 #ifndef DISABLE_DEBUGDRAW
@@ -272,14 +272,16 @@ namespace BulletSharp
 	// Mix of ContactManifoldType and TypedConstraintType
 	public enum class ObjectType
 	{
+		MinContactManifold = MIN_CONTACT_MANIFOLD_TYPE,
 		PersistentManifold = BT_PERSISTENT_MANIFOLD_TYPE,
-		MaxContactManifold = MAX_CONTACT_MANIFOLD_TYPE,
 		Point2Point = POINT2POINT_CONSTRAINT_TYPE,
 		Hinge = HINGE_CONSTRAINT_TYPE,
 		ConeTwist = CONETWIST_CONSTRAINT_TYPE,
 		D6 = D6_CONSTRAINT_TYPE,
 		Slider = SLIDER_CONSTRAINT_TYPE,
-		Contact = CONTACT_CONSTRAINT_TYPE
+		Contact = CONTACT_CONSTRAINT_TYPE,
+		D6Spring = D6_SPRING_CONSTRAINT_TYPE,
+		MaxConstraint = MAX_CONSTRAINT_TYPE
 	};
 
 	public enum class PhyScalarType
@@ -344,7 +346,9 @@ namespace BulletSharp
 		ConeTwist = CONETWIST_CONSTRAINT_TYPE,
 		D6 = D6_CONSTRAINT_TYPE,
 		Slider = SLIDER_CONSTRAINT_TYPE,
-		Contact = CONTACT_CONSTRAINT_TYPE
+		Contact = CONTACT_CONSTRAINT_TYPE,
+		D6Spring = D6_SPRING_CONSTRAINT_TYPE,
+		MaxConstraint = MAX_CONSTRAINT_TYPE
 	};
 #endif
 

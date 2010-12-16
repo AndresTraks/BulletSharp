@@ -65,7 +65,6 @@ SoftBody
 0 SoftBodyConcaveCollisionAlgorithm
 - SoftBodyInternals (internal)
 0 SoftBodyRigidBodyCollisionAlgorithm
-0 SoftBodyRigidDynamicsWorld
 0 SoftBodySolver
 - SoftRigidCollisionAlgorithm
 - SoftSoftCollisionAlgorithm
