@@ -370,7 +370,7 @@ namespace BulletSharp
 		virtual void CopyTo(array<btScalar>^ array, int arrayIndex) override;
 		virtual int IndexOf(btScalar item) override;
 
-		property float default[int]
+		property btScalar default[int]
 		{
 			virtual btScalar get(int index) override;
 			virtual void set(int index, btScalar value) override;
