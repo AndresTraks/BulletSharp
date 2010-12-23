@@ -19,6 +19,8 @@ Global
 		Debug SlimDX|x64 = Debug SlimDX|x64
 		Debug SlimMath|Win32 = Debug SlimMath|Win32
 		Debug SlimMath|x64 = Debug SlimMath|x64
+		Debug Windows API Code Pack|Win32 = Debug Windows API Code Pack|Win32
+		Debug Windows API Code Pack|x64 = Debug Windows API Code Pack|x64
 		Debug XNA 3.1|Win32 = Debug XNA 3.1|Win32
 		Debug XNA 3.1|x64 = Debug XNA 3.1|x64
 		Debug XNA 4.0|Win32 = Debug XNA 4.0|Win32
@@ -37,6 +39,8 @@ Global
 		Release SlimDX|x64 = Release SlimDX|x64
 		Release SlimMath|Win32 = Release SlimMath|Win32
 		Release SlimMath|x64 = Release SlimMath|x64
+		Release Windows API Code Pack|Win32 = Release Windows API Code Pack|Win32
+		Release Windows API Code Pack|x64 = Release Windows API Code Pack|x64
 		Release XNA 3.1|Win32 = Release XNA 3.1|Win32
 		Release XNA 3.1|x64 = Release XNA 3.1|x64
 		Release XNA 4.0|Win32 = Release XNA 4.0|Win32
@@ -71,6 +75,10 @@ Global
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimMath|Win32.Build.0 = Debug SlimMath|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimMath|x64.ActiveCfg = Debug SlimDX|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimMath|x64.Build.0 = Debug SlimDX|x64
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Windows API Code Pack|Win32.ActiveCfg = Debug Windows API Code Pack|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Windows API Code Pack|Win32.Build.0 = Debug Windows API Code Pack|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Windows API Code Pack|x64.ActiveCfg = Debug Windows API Code Pack|x64
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Windows API Code Pack|x64.Build.0 = Debug Windows API Code Pack|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug XNA 3.1|Win32.ActiveCfg = Debug XNA 3.1|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug XNA 3.1|Win32.Build.0 = Debug XNA 3.1|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug XNA 3.1|x64.ActiveCfg = Debug XNA 3.1|x64
@@ -107,6 +115,10 @@ Global
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimMath|Win32.Build.0 = Release SlimMath|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimMath|x64.ActiveCfg = Release SlimMath|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimMath|x64.Build.0 = Release SlimMath|x64
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Windows API Code Pack|Win32.ActiveCfg = Release Windows API Code Pack|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Windows API Code Pack|Win32.Build.0 = Release Windows API Code Pack|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Windows API Code Pack|x64.ActiveCfg = Release Windows API Code Pack|x64
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Windows API Code Pack|x64.Build.0 = Release Windows API Code Pack|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release XNA 3.1|Win32.ActiveCfg = Release XNA 3.1|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release XNA 3.1|Win32.Build.0 = Release XNA 3.1|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release XNA 3.1|x64.ActiveCfg = Release XNA 3.1|x64

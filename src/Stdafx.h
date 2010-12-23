@@ -69,6 +69,13 @@ using namespace OpenTK;
 #elif GRAPHICS_AXIOM
 #using <Axiom.dll>
 using namespace Axiom::Math;
+#elif GRAPHICS_WAPICODEPACK
+#if WIN32
+#using <x86/Microsoft.WindowsAPICodePack.DirectX.dll>
+#else
+#using <x64/Microsoft.WindowsAPICodePack.DirectX.dll>
+#endif
+using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #elif GRAPHICS_NONE
 #else
 #define GRAPHICS_NONE 1
@@ -111,6 +118,10 @@ using namespace Axiom::Math;
 #define BtColor Axiom::Core::ColorEx
 #define BtColorToBtVector(color) new btVector3(color.r, color.g, color.b)
 #define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
+#elif GRAPHICS_WAPICODEPACK
+#define BtColor Color
+#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
+#define BtVectorToBtColor(color) Color::FromArgb(color.getX(), color.getY(), color.getZ())
 #elif GRAPHICS_NONE
 #define BtColor Color
 #define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)

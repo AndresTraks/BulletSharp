@@ -15,6 +15,11 @@
 #else
 #define Matrix Matrix4
 #endif
+#elif GRAPHICS_WAPICODEPACK
+#define Vector3 Vector3F
+#define Vector4 Vector4F
+#define Quaternion Vector4
+#define Matrix Matrix4x4F
 #endif
 
 #if defined(BT_USE_DOUBLE_PRECISION) && !defined(GRAPHICS_NONE) && !defined(GRAPHICS_OPENTK)
