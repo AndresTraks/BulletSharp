@@ -5,16 +5,20 @@
 #include "Quaternion.h"
 #include "Vector3.h"
 #include "Vector4.h"
+#elif GRAPHICS_AXIOM
+#define Matrix Matrix4^
 #elif GRAPHICS_MOGRE
 #define Matrix Matrix4^
 #elif GRAPHICS_OPENTK
-#if BT_USE_DOUBLE_PRECISION
+#ifdef BT_USE_DOUBLE_PRECISION
 #define Matrix Matrix4d
 #else
 #define Matrix Matrix4
 #endif
-#elif GRAPHICS_AXIOM
-#define Matrix Matrix4^
+#endif
+
+#if defined(BT_USE_DOUBLE_PRECISION) && !defined(GRAPHICS_NONE) && !defined(GRAPHICS_OPENTK)
+#define GRAPHICS_NO_DIRECT_CAST
 #endif
 
 namespace BulletSharp

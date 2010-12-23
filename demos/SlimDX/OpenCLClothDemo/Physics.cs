@@ -107,11 +107,11 @@ namespace OpenCLClothDemo
             mesh.NumTriangles = 2 * (width - 1) * (height - 1);
 
             Vector3Array vertexArray = new Vector3Array(mesh.NumVertices);
-            mesh.VertexBase = vertexArray;
+            mesh.Vertices = vertexArray;
             mesh.VertexStride = Vector3.SizeInBytes;
 
             IntArray triangleVertexIndexArray = new IntArray(3 * mesh.NumTriangles);
-            mesh.TriangleIndexBase = triangleVertexIndexArray;
+            mesh.TriangleIndices = triangleVertexIndexArray;
             mesh.TriangleIndexStride = sizeof(int) * 3;
 
 

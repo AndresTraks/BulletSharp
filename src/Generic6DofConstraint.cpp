@@ -419,8 +419,7 @@ Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ r
 
 Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frameInB,
 	bool useReferenceFrameA)
-: TypedConstraint(new btGeneric6DofConstraint(*rigidBodyB->UnmanagedPointer,
-	*Math::MatrixToBtTransform(frameInB), useReferenceFrameA))
+: TypedConstraint(0)
 {
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 
@@ -554,7 +553,7 @@ Matrix Generic6DofConstraint::FrameOffsetA::get()
 }
 void Generic6DofConstraint::FrameOffsetA::set(Matrix value)
 {
-	btScalar m[15];
+	btScalar m[16];
 	btTransform* a = Math::MatrixToBtTransform(value);
 	a->getOpenGLMatrix(m);
 	UnmanagedPointer->getFrameOffsetA().setFromOpenGLMatrix(m);
@@ -566,7 +565,7 @@ Matrix Generic6DofConstraint::FrameOffsetB::get()
 }
 void Generic6DofConstraint::FrameOffsetB::set(Matrix value)
 {
-	btScalar m[15];
+	btScalar m[16];
 	btTransform* a = Math::MatrixToBtTransform(value);
 	a->getOpenGLMatrix(m);
 	UnmanagedPointer->getFrameOffsetB().setFromOpenGLMatrix(m);

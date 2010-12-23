@@ -82,11 +82,11 @@ using namespace Axiom::Math;
 #elif GRAPHICS_XNA31
 #define BtColor Microsoft::Xna::Framework::Graphics::Color
 #define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
-#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
+#define BtVectorToBtColor(color) BtColor((float)color.getX(), (float)color.getY(), (float)color.getZ()) // cast for DP build
 #elif GRAPHICS_XNA40
 #define BtColor Microsoft::Xna::Framework::Color
 #define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
-#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
+#define BtVectorToBtColor(color) BtColor((float)color.getX(), (float)color.getY(), (float)color.getZ()) // cast for DP build
 #elif GRAPHICS_SLIMDX
 #define BtColor Color4
 #define BtColorToBtVector(color) new btVector3(color.Red, color.Green, color.Blue)
