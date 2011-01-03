@@ -367,12 +367,14 @@ namespace BulletSharp
 #ifndef DISABLE_MULTITHREADED
 	public enum class Win32ThreadFunc
 	{
-		ProcessCollisionTask
+		ProcessCollisionTask,
+		SolverThreadFunc
 	};
 
 	public enum class Win32LSMemorySetupFunc
 	{
-		CreateCollisionLocalStoreMemory
+		CreateCollisionLocalStoreMemory,
+		SolverLSMemoryFunc
 	};
 #endif
 

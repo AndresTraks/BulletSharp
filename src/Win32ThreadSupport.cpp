@@ -16,12 +16,16 @@ MultiThreaded::Win32ThreadConstructionInfo::Win32ThreadConstructionInfo(String^ 
 	{
 	case Win32ThreadFunc::ProcessCollisionTask:
 		threadFunc = processCollisionTask;
+	case Win32ThreadFunc::SolverThreadFunc:
+		threadFunc = SolverThreadFunc;
 	}
 
 	switch(lsMemoryFunc)
 	{
 	case Win32LSMemorySetupFunc::CreateCollisionLocalStoreMemory:
 		memorySetupFunc = createCollisionLocalStoreMemory;
+	case Win32LSMemorySetupFunc::SolverLSMemoryFunc:
+		memorySetupFunc = SolverlsMemoryFunc;
 	}
 
 	_info = new ::Win32ThreadSupport::Win32ThreadConstructionInfo((char*)uniqueNameTemp, threadFunc, memorySetupFunc);
@@ -40,12 +44,16 @@ MultiThreaded::Win32ThreadConstructionInfo::Win32ThreadConstructionInfo(String^ 
 	{
 	case Win32ThreadFunc::ProcessCollisionTask:
 		threadFunc = processCollisionTask;
+	case Win32ThreadFunc::SolverThreadFunc:
+		threadFunc = SolverThreadFunc;
 	}
 
 	switch(lsMemoryFunc)
 	{
 	case Win32LSMemorySetupFunc::CreateCollisionLocalStoreMemory:
 		memorySetupFunc = createCollisionLocalStoreMemory;
+	case Win32LSMemorySetupFunc::SolverLSMemoryFunc:
+		memorySetupFunc = SolverlsMemoryFunc;
 	}
 
 	_info = new ::Win32ThreadSupport::Win32ThreadConstructionInfo((char*)uniqueNameTemp, threadFunc, memorySetupFunc, threadCount);

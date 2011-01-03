@@ -311,10 +311,6 @@ namespace OpenCLClothDemo
                 }
             }
 
-            //btVector3 origin( capCollider->getWorldTransform().getOrigin() );
-            //origin.setX( origin.getX() + 0.05 );
-            //capCollider->getWorldTransform().setOrigin( origin );
-
             counter++;
 
             for (int flagIndex = 0; flagIndex < flags.Count; ++flagIndex)
