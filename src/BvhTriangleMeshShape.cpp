@@ -15,11 +15,6 @@ BvhTriangleMeshShape::BvhTriangleMeshShape(btBvhTriangleMeshShape* shape)
 {
 }
 
-BvhTriangleMeshShape::BvhTriangleMeshShape()
-: TriangleMeshShape(new btBvhTriangleMeshShape())
-{
-}
-
 BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression)
 : TriangleMeshShape(new btBvhTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression))
 {

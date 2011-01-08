@@ -15,7 +15,6 @@ namespace BulletSharp
 		MultimaterialTriangleMeshShape(btMultimaterialTriangleMeshShape* meshShape);
 
 	public:
-		MultimaterialTriangleMeshShape();
 		MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression, bool buildBvh);
 		MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression);
 		MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,

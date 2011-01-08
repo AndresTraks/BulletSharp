@@ -21,7 +21,6 @@ namespace BulletSharp
 		BvhTriangleMeshShape(btBvhTriangleMeshShape* shape);
 
 	public:
-		BvhTriangleMeshShape();
 		BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression);
 		BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression, bool buildBvh);
 		BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression, Vector3 bvhAabbMin, Vector3 bvhAabbMax, bool buildBvh);

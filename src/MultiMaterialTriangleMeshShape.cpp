@@ -11,11 +11,6 @@ MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(btMultimaterialTr
 {
 }
 
-MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape()
-: BvhTriangleMeshShape(new btMultimaterialTriangleMeshShape())
-{
-}
-
 MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression, bool buildBvh)
 : BvhTriangleMeshShape(new btMultimaterialTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression, buildBvh))
 {
