@@ -128,33 +128,6 @@ namespace DemoFramework
                 DebugDrawer.DrawDebugWorld(PhysicsContext.World);
         }
 
-        public bool TestLibraries()
-        {
-            try
-            {
-                Assembly.Load("SlimDX, Version=2.0.10.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9");
-            }
-            catch
-            {
-                MessageBox.Show("SlimDX(v2.0.10.43) not installed." +
-                    "Please download it from http://slimdx.org.", "Error!");
-                return false;
-            }
-
-            try
-            {
-                Assembly.Load("BulletSharp");
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString(), "BulletSharp Error!");
-                return false;
-            }
-
-            return true;
-        }
-
-
         /// <summary>
         /// Disposes of object resources.
         /// </summary>
@@ -395,7 +368,22 @@ namespace DemoFramework
             {
                 // Disable 4xAA if not supported
                 settings.MultisampleType = MultisampleType.None;
-                InitializeDevice(settings);
+                try
+                {
+                    InitializeDevice(settings);
+                }
+                catch
+                {
+                    settings.CreationFlags = CreateFlags.SoftwareVertexProcessing;
+                    try
+                    {
+                        InitializeDevice(settings);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Could not initialize DirectX device!");
+                    }
+                }
             }
         }
 

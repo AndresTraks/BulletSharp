@@ -79,13 +79,18 @@ namespace Box2dDemo
         [STAThread]
         static void Main()
         {
-            Box2dDemo game = new Box2dDemo();
-
-            if (game.TestLibraries() == false)
+            if (LibraryTest.Test() == false)
                 return;
 
-            game.Run();
-            game.Dispose();
+            RunGame();
+        }
+
+        static void RunGame()
+        {
+            using (Box2dDemo game = new Box2dDemo())
+            {
+                game.Run();
+            }
         }
     }
 }

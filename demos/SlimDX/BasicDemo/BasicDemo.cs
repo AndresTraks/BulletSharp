@@ -76,13 +76,18 @@ namespace BasicDemo
         [STAThread]
         static void Main()
         {
-            BasicDemo game = new BasicDemo();
-
-            if (game.TestLibraries() == false)
+            if (LibraryTest.Test() == false)
                 return;
 
-            game.Run();
-            game.Dispose();
+            RunGame();
+        }
+
+        static void RunGame()
+        {
+            using (BasicDemo game = new BasicDemo())
+            {
+                game.Run();
+            }
         }
     }
 }

@@ -80,13 +80,18 @@ namespace SerializeDemo
         [STAThread]
         static void Main()
         {
-            SerializeDemo game = new SerializeDemo();
-
-            if (game.TestLibraries() == false)
+            if (LibraryTest.Test() == false)
                 return;
 
-            game.Run();
-            game.Dispose();
+            RunGame();
+        }
+
+        static void RunGame()
+        {
+            using (SerializeDemo game = new SerializeDemo())
+            {
+                game.Run();
+            }
         }
     }
 }

@@ -97,13 +97,18 @@ namespace GImpactTestDemo
         [STAThread]
         static void Main()
         {
-            GImpactTestDemo game = new GImpactTestDemo();
-
-            if (game.TestLibraries() == false)
+            if (LibraryTest.Test() == false)
                 return;
 
-            game.Run();
-            game.Dispose();
+            RunGame();
+        }
+
+        static void RunGame()
+        {
+            using (GImpactTestDemo game = new GImpactTestDemo())
+            {
+                game.Run();
+            }
         }
     }
 }

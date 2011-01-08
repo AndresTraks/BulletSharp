@@ -80,13 +80,18 @@ namespace ConstraintDemo
         [STAThread]
         static void Main()
         {
-            ConstraintDemo game = new ConstraintDemo();
-
-            if (game.TestLibraries() == false)
+            if (LibraryTest.Test() == false)
                 return;
 
-            game.Run();
-            game.Dispose();
+            RunGame();
+        }
+
+        static void RunGame()
+        {
+            using (ConstraintDemo game = new ConstraintDemo())
+            {
+                game.Run();
+            }
         }
     }
 }

@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{300EA042-EAD4-4C63-8FCC-7AE5A3A792D1}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{9061C42F-AE78-4F82-9AFB-81D6403BDE76}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DemoFramework</RootNamespace>
-    <AssemblyName>DemoFramework</AssemblyName>
+    <RootNamespace>BspDemo</RootNamespace>
+    <AssemblyName>BspDemo</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>
@@ -40,22 +40,13 @@
   </Target>
   -->
   <ItemGroup>
-    <Compile Include="Clock.cs" />
-    <Compile Include="Controller\FreeLook.cs" />
-    <Compile Include="Controller\Input.cs" />
-    <Compile Include="Controller\MouseController.cs" />
-    <Compile Include="DeviceContext9.cs" />
-    <Compile Include="DeviceSettings9.cs" />
-    <Compile Include="FpsDisplay.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="GraphicObjectFactory.cs" />
-    <Compile Include="LibraryTest.cs" />
-    <Compile Include="PhysicsContext.cs" />
-    <Compile Include="PhysicsDebugDraw.cs" />
-    <Compile Include="VertexHelper.cs" />
+    <Compile Include="BspConverter.cs" />
+    <Compile Include="BspDemo.cs" />
+    <Compile Include="BspLoader.cs" />
+    <Compile Include="Physics.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="BulletSharp, Version=0.11.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="BulletSharp, Version=0.12.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Release SlimDX\BulletSharp.dll</HintPath>
     </Reference>
@@ -65,6 +56,14 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="checker_shader.fx" />
+    <ProjectReference Include="..\DemoFramework\DemoFramework.csproj">
+      <Project>{300EA042-EAD4-4C63-8FCC-7AE5A3A792D1}</Project>
+      <Name>DemoFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BspDemo.bsp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

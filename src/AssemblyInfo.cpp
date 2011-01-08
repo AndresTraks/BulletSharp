@@ -7,7 +7,7 @@ using namespace System::Security::Permissions;
 
 [assembly:AssemblyTitleAttribute("BulletSharp")];
 [assembly:AssemblyProductAttribute("BulletSharp")];
-[assembly:AssemblyCopyrightAttribute("Copyright (c) Andres Traks 2009-2010")];
+[assembly:AssemblyCopyrightAttribute(BULLETSHARP_COPYRIGHT)];
 
 [assembly:AssemblyVersionAttribute(BULLETSHARP_VERSION_STRING)];
 

@@ -250,13 +250,18 @@ namespace SoftDemo
         [STAThread]
         static void Main()
         {
-            SoftDemo game = new SoftDemo();
-
-            if (game.TestLibraries() == false)
+            if (LibraryTest.Test() == false)
                 return;
 
-            game.Run();
-            game.Dispose();
+            RunGame();
+        }
+
+        static void RunGame()
+        {
+            using (SoftDemo game = new SoftDemo())
+            {
+                game.Run();
+            }
         }
     }
 }

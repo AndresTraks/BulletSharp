@@ -211,13 +211,18 @@ namespace VehicleDemo
         [STAThread]
         static void Main()
         {
-            VehicleDemo game = new VehicleDemo();
-
-            if (game.TestLibraries() == false)
+            if (LibraryTest.Test() == false)
                 return;
 
-            game.Run();
-            game.Dispose();
+            RunGame();
+        }
+
+        static void RunGame()
+        {
+            using (VehicleDemo game = new VehicleDemo())
+            {
+                game.Run();
+            }
         }
     }
 }

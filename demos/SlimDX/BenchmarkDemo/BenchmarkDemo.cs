@@ -77,13 +77,18 @@ namespace BenchmarkDemo
         [STAThread]
         static void Main()
         {
-            BenchmarkDemo game = new BenchmarkDemo();
-
-            if (game.TestLibraries() == false)
+            if (LibraryTest.Test() == false)
                 return;
 
-            game.Run();
-            game.Dispose();
+            RunGame();
+        }
+
+        static void RunGame()
+        {
+            using (BenchmarkDemo game = new BenchmarkDemo())
+            {
+                game.Run();
+            }
         }
     }
 }

@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllBulletDemos", "AllBullet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BenchmarkDemo", "BenchmarkDemo\BenchmarkDemo.csproj", "{5C2745AF-7740-4879-9739-9959327D5E40}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BspDemo", "BspDemo\BspDemo.csproj", "{9061C42F-AE78-4F82-9AFB-81D6403BDE76}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -107,6 +109,10 @@ Global
 		{5C2745AF-7740-4879-9739-9959327D5E40}.Debug|x86.Build.0 = Debug|x86
 		{5C2745AF-7740-4879-9739-9959327D5E40}.Release|x86.ActiveCfg = Release|x86
 		{5C2745AF-7740-4879-9739-9959327D5E40}.Release|x86.Build.0 = Release|x86
+		{9061C42F-AE78-4F82-9AFB-81D6403BDE76}.Debug|x86.ActiveCfg = Debug|x86
+		{9061C42F-AE78-4F82-9AFB-81D6403BDE76}.Debug|x86.Build.0 = Debug|x86
+		{9061C42F-AE78-4F82-9AFB-81D6403BDE76}.Release|x86.ActiveCfg = Release|x86
+		{9061C42F-AE78-4F82-9AFB-81D6403BDE76}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -114,13 +114,18 @@ namespace OpenCLClothDemo
         [STAThread]
         static void Main()
         {
-            OpenCLClothDemo game = new OpenCLClothDemo();
-
-            if (game.TestLibraries() == false)
+            if (LibraryTest.Test() == false)
                 return;
 
-            game.Run();
-            game.Dispose();
+            RunGame();
+        }
+
+        static void RunGame()
+        {
+            using (OpenCLClothDemo game = new OpenCLClothDemo())
+            {
+                game.Run();
+            }
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿// Original RagdollDemo by written by Marten Svanfeldt
-// Copyright (c) 2007 Starbreeze Studios
-
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
 using BulletSharp;
@@ -9,18 +6,18 @@ using DemoFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
 
-namespace RagdollDemo
+namespace BspDemo
 {
-    public class RagdollDemo : Game
+    public class BspDemo : Game
     {
-        Vector3 eye = new Vector3(1, 1, 10);
-        Vector3 target = new Vector3(0, 1, 0);
+        Vector3 eye = new Vector3(30, 20, 10);
+        Vector3 target = new Vector3(0, 5, -4);
 
         Light light;
 
         protected override void OnInitializeDevice()
         {
-            Form.Text = "BulletSharp - Ragdoll Demo";
+            Form.Text = "BulletSharp - Basic Demo";
             base.OnInitializeDevice();
         }
 
@@ -30,10 +27,10 @@ namespace RagdollDemo
 
             light = new Light();
             light.Type = LightType.Point;
-            light.Range = 150;
+            light.Range = 70;
             light.Position = new Vector3(10, 25, 10);
             light.Diffuse = Color.LemonChiffon;
-            light.Attenuation0 = 0.9f;
+            light.Attenuation0 = 1.0f;
 
             Freelook.SetEyeTarget(eye, target);
 
@@ -67,7 +64,6 @@ namespace RagdollDemo
             }
 
             DebugDrawWorld();
-
             Fps.OnRender(FramesPerSecond);
 
             Device.EndScene();
@@ -88,7 +84,7 @@ namespace RagdollDemo
 
         static void RunGame()
         {
-            using (RagdollDemo game = new RagdollDemo())
+            using (BspDemo game = new BspDemo())
             {
                 game.Run();
             }

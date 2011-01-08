@@ -65,7 +65,7 @@ BEGIN
             VALUE "FileDescription", "BulletSharp"
             VALUE "FileVersion", BULLETSHARP_VERSION_STRING
             VALUE "InternalName", "BulletSharp"
-            VALUE "LegalCopyright", "Copyright (C) Andres Traks 2009-2010"
+            VALUE "LegalCopyright", BULLETSHARP_COPYRIGHT
             VALUE "OriginalFilename", "BulletSharp.dll"
             VALUE "ProductName", "BulletSharp"
             VALUE "ProductVersion", BULLETSHARP_VERSION_STRING

@@ -95,9 +95,18 @@ namespace MultiMaterialDemo
         [STAThread]
         static void Main()
         {
-            MultiMaterialDemo game = new MultiMaterialDemo();
-            game.Run();
-            game.Dispose();
+            if (LibraryTest.Test() == false)
+                return;
+
+            RunGame();
+        }
+
+        static void RunGame()
+        {
+            using (MultiMaterialDemo game = new MultiMaterialDemo())
+            {
+                game.Run();
+            }
         }
     }
 }

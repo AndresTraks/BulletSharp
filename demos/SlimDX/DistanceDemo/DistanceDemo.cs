@@ -96,13 +96,18 @@ namespace DistanceDemo
         [STAThread]
         static void Main()
         {
-            DistanceDemo game = new DistanceDemo();
-
-            if (game.TestLibraries() == false)
+            if (LibraryTest.Test() == false)
                 return;
 
-            game.Run();
-            game.Dispose();
+            RunGame();
+        }
+
+        static void RunGame()
+        {
+            using (DistanceDemo game = new DistanceDemo())
+            {
+                game.Run();
+            }
         }
     }
 }

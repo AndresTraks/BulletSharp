@@ -87,13 +87,18 @@ namespace CcdPhysicsDemo
         [STAThread]
         static void Main()
         {
-            CcdPhysicsDemo game = new CcdPhysicsDemo();
-
-            if (game.TestLibraries() == false)
+            if (LibraryTest.Test() == false)
                 return;
 
-            game.Run();
-            game.Dispose();
+            RunGame();
+        }
+
+        static void RunGame()
+        {
+            using (CcdPhysicsDemo game = new CcdPhysicsDemo())
+            {
+                game.Run();
+            }
         }
     }
 }
