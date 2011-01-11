@@ -15,13 +15,19 @@ namespace BspDemo
 
             foreach (BspLeaf leaf in bspLoader.Leaves)
             {
+                bool isValidBrush = false;
+
                 for (int b = 0; b < leaf.NumLeafBrushes; b++)
                 {
-                    int brushID = bspLoader.LeafBrushes[leaf.FirstLeafBrush];
-                }
+                    int brushID = bspLoader.LeafBrushes[leaf.FirstLeafBrush + b];
+                    BspBrush brush = bspLoader.Brushes[brushID];
 
-                foreach (int leafBrush in bspLoader.LeafBrushes)
-                {
+                    if (brush.ShaderNum != -1)
+                    {
+                        if ((bspLoader.Shaders[brush.ShaderNum].ContentFlags & ContentFlags.Solid) == ContentFlags.Solid)
+                        {
+                        }
+                    }
                 }
             }
 

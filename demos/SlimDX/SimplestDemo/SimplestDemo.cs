@@ -68,7 +68,14 @@ namespace SimplestDemo
             };
 
             direct3D = new Direct3D();
-            Device = new Device(direct3D, 0, DeviceType.Hardware, Form.Handle, CreateFlags.HardwareVertexProcessing, pp);
+            try
+            {
+                Device = new Device(direct3D, 0, DeviceType.Hardware, Form.Handle, CreateFlags.HardwareVertexProcessing, pp);
+            }
+            catch
+            {
+                Device = new Device(direct3D, 0, DeviceType.Hardware, Form.Handle, CreateFlags.SoftwareVertexProcessing, pp);
+            }
         }
 
         void Initialize()
