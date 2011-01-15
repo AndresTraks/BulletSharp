@@ -2,8 +2,6 @@
 
 #include "DefaultMotionState.h"
 
-using namespace BulletSharp;
-
 MotionState::MotionState()
 {
 	MotionStateWrapper* state = new MotionStateWrapper();

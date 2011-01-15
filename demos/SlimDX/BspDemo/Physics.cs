@@ -6,6 +6,31 @@ namespace BspDemo
 {
     public class BspToBulletConverter : BspConverter
     {
+        PhysicsContext context;
+
+        public BspToBulletConverter(PhysicsContext context)
+        {
+            this.context = context;
+        }
+
+        public override void AddConvexVerticesCollider(AlignedVector3Array vertices, bool isEntity, Vector3 entityTargetLocation)
+        {
+            // perhaps we can do something special with entities (isEntity)
+            // like adding a collision Triggering (as example)
+
+            if (vertices.Count == 0)
+                return;
+
+            float mass = 0.0f;
+            //can use a shift
+            Matrix startTransform = Matrix.Translation(0, 0, -10.0f);
+            Vector3[] vectorArray = new Vector3[vertices.Count];
+            vertices.CopyTo(vectorArray, 0);
+            CollisionShape shape = new ConvexHullShape(vectorArray);
+            context.CollisionShapes.Add(shape);
+
+            context.LocalCreateRigidBody(mass, startTransform, shape);
+        }
     }
 
     class Physics : PhysicsContext
@@ -24,7 +49,7 @@ namespace BspDemo
 
             BspLoader bspLoader = new BspLoader();
             bspLoader.LoadBspFile("BspDemo.bsp");
-            BspConverter bsp2Bullet = new BspToBulletConverter();
+            BspConverter bsp2Bullet = new BspToBulletConverter(this);
             bsp2Bullet.ConvertBsp(bspLoader, 0.1f);
         }
     }

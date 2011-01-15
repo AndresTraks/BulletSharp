@@ -16,6 +16,12 @@ namespace BspDemo
         public int ShaderNum { get; set; }
     }
 
+    public struct BspBrushSide
+    {
+        public int PlaneNum { get; set; }
+        public int ShaderNum { get; set; }
+    }
+
     [DebuggerDisplay("ClassName: {ClassName}")]
     public class BspEntity
     {
@@ -49,6 +55,12 @@ namespace BspDemo
         public int Length;
     }
 
+    public struct BspPlane
+    {
+        public Vector3 Normal;
+        public float Distance;
+    }
+
     [Flags]
     public enum ContentFlags
     {
@@ -66,7 +78,7 @@ namespace BspDemo
     public enum BspLumpType
     {
         Entities = 0,
-        Textures,
+        Shaders,
         Planes,
         Nodes,
         Leaves,
@@ -77,7 +89,6 @@ namespace BspDemo
         BrushSides,
         Vertices,
         MeshIndices,
-        Shaders,
         Faces,
         Lightmaps,
         LightVols,
@@ -87,9 +98,11 @@ namespace BspDemo
     public class BspLoader
     {
         public BspBrush[] Brushes { get; set; }
+        public BspBrushSide[] BrushSides { get; set; }
         public List<BspEntity> Entities { get; set; }
         public BspLeaf[] Leaves { get; set; }
         public int[] LeafBrushes { get; set; }
+        public BspPlane[] Planes { get; set; }
         public List<BspShader> Shaders { get; set; }
 
         public bool LoadBspFile(string filename)
@@ -128,6 +141,17 @@ namespace BspDemo
                 Brushes[i].FirstSide = reader.ReadInt32();
                 Brushes[i].NumSides = reader.ReadInt32();
                 Brushes[i].ShaderNum = reader.ReadInt32();
+            }
+
+            // read brush sides
+            buffer.Position = lumps[(int)BspLumpType.BrushSides].Offset;
+            length = lumps[(int)BspLumpType.BrushSides].Length / Marshal.SizeOf(typeof(BspBrushSide));
+            BrushSides = new BspBrushSide[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                BrushSides[i].PlaneNum = reader.ReadInt32();
+                BrushSides[i].ShaderNum = reader.ReadInt32();
             }
 
 
@@ -219,6 +243,20 @@ namespace BspDemo
             }
 
 
+            // read planes
+            buffer.Position = lumps[(int)BspLumpType.Planes].Offset;
+            length = lumps[(int)BspLumpType.Planes].Length / Marshal.SizeOf(typeof(BspPlane));
+            Planes = new BspPlane[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                Planes[i].Normal.X = reader.ReadSingle();
+                Planes[i].Normal.Y = reader.ReadSingle();
+                Planes[i].Normal.Z = reader.ReadSingle();
+                Planes[i].Distance = reader.ReadSingle();
+            }
+
+
             // read shaders
             Shaders = new List<BspShader>();
             buffer.Position = lumps[(int)BspLumpType.Shaders].Offset;
@@ -227,6 +265,11 @@ namespace BspDemo
             for (int i = 0; i < length; i += (64 + 2 * sizeof(int)))
             {
                 BspShader shader = new BspShader();
+                byte[] shaderBytes = new byte[64];
+                reader.Read(shaderBytes, 0, 64);
+                shader.Shader = Encoding.ASCII.GetString(shaderBytes);
+                shader.SurfaceFlags = reader.ReadInt32();
+                shader.ContentFlags = (ContentFlags)reader.ReadInt32();
                 Shaders.Add(shader);
             }
 

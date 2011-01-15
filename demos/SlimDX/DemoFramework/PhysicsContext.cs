@@ -11,12 +11,13 @@ namespace DemoFramework
         protected CollisionDispatcher Dispatcher;
         protected BroadphaseInterface Broadphase;
         protected ConstraintSolver Solver;
-        protected AlignedCollisionShapeArray CollisionShapes = new AlignedCollisionShapeArray();
+        public AlignedCollisionShapeArray CollisionShapes { get; private set; }
 
         BoxShape shootBoxShape;
 
         public PhysicsContext()
         {
+            CollisionShapes = new AlignedCollisionShapeArray();
         }
 
         public virtual void Dispose()

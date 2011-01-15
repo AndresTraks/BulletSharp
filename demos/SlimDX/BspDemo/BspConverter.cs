@@ -1,8 +1,9 @@
+using BulletSharp;
 using SlimDX;
 
 namespace BspDemo
 {
-    public class BspConverter
+    public abstract class BspConverter
     {
         public void ConvertBsp(BspLoader bspLoader, float scaling)
         {
@@ -19,6 +20,8 @@ namespace BspDemo
 
                 for (int b = 0; b < leaf.NumLeafBrushes; b++)
                 {
+                    AlignedVector3Array planeEquations = new AlignedVector3Array();
+
                     int brushID = bspLoader.LeafBrushes[leaf.FirstLeafBrush + b];
                     BspBrush brush = bspLoader.Brushes[brushID];
 
@@ -26,6 +29,30 @@ namespace BspDemo
                     {
                         if ((bspLoader.Shaders[brush.ShaderNum].ContentFlags & ContentFlags.Solid) == ContentFlags.Solid)
                         {
+                            brush.ShaderNum = -1;
+
+                            for (int p = 0; p < brush.NumSides; p++)
+                            {
+                                int sideid = brush.FirstSide + p;
+
+                                BspBrushSide brushside = bspLoader.BrushSides[sideid];
+                                int planeid = brushside.PlaneNum;
+                                BspPlane plane = bspLoader.Planes[planeid];
+                                Vector3 planeEq = plane.Normal;
+                                //planeEq[3] = scaling*-plane.Distance;
+
+                                planeEquations.Add(planeEq);
+                                isValidBrush = true;
+                            }
+                            if (isValidBrush)
+                            {
+                                AlignedVector3Array vertices;
+                                GeometryUtil.GetVerticesFromPlaneEquations(planeEquations, out vertices);
+
+                                bool isEntity = false;
+                                Vector3 entityTarget = Vector3.Zero;
+                                AddConvexVerticesCollider(vertices, isEntity, entityTarget);
+                            }
                         }
                     }
                 }
@@ -38,5 +65,7 @@ namespace BspDemo
                 }
             }
         }
+
+        public abstract void AddConvexVerticesCollider(AlignedVector3Array vertices, bool isEntity, Vector3 entityTargetLocation);
     }
 }
