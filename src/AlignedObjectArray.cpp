@@ -2374,6 +2374,13 @@ void AlignedVector3Array::Add(Vector3 vector3Value)
 	delete tempVector3Value;
 }
 
+void AlignedVector3Array::Add(Vector4 vector4Value)
+{
+	btVector4* tempVector4Value = Math::Vector4ToBtVector4(vector4Value);
+	UnmanagedPointer->push_back(*tempVector4Value);
+	delete tempVector4Value;
+}
+
 void AlignedVector3Array::Clear()
 {
 	UnmanagedPointer->clear();

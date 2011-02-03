@@ -38,9 +38,7 @@ namespace BspDemo
                                 BspBrushSide brushside = bspLoader.BrushSides[sideid];
                                 int planeid = brushside.PlaneNum;
                                 BspPlane plane = bspLoader.Planes[planeid];
-                                Vector3 planeEq = plane.Normal;
-                                //planeEq[3] = scaling*-plane.Distance;
-
+                                Vector4 planeEq = new Vector4(plane.Normal, scaling*-plane.Distance);
                                 planeEquations.Add(planeEq);
                                 isValidBrush = true;
                             }

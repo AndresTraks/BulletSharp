@@ -1122,6 +1122,7 @@ namespace BulletSharp
 		AlignedVector3Array();
 
 		virtual void Add(Vector3 vector) override;
+		void Add(Vector4 vector);
 		virtual void Clear() override;
 		virtual bool Contains(Vector3 vector) override;
 		virtual void CopyTo(array<Vector3>^ array, int arrayIndex) override;
