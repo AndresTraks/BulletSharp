@@ -1,4 +1,4 @@
-cbuffer ConstantBuffer : register( b0 )
+cbuffer ConstantBuffer
 {
 	matrix World;
 	matrix View;
@@ -8,7 +8,7 @@ cbuffer ConstantBuffer : register( b0 )
 
 struct VS_IN
 {
-	float3 Pos : POSITION;
+	float4 Pos : POSITION;
 };
 
 struct VS_OUT
@@ -19,9 +19,10 @@ struct VS_OUT
 VS_OUT VS(VS_IN input)
 {
     VS_OUT output = (VS_OUT)0;
-    output.Pos = mul(input.Pos, World);
-    output.Pos = mul(output.Pos, View);
-    output.Pos = mul(output.Pos, Projection);
+
+    output.Pos = mul(World, input.Pos);
+    output.Pos = mul(View, output.Pos);
+    output.Pos = mul(Projection, output.Pos);
     return output;
 }
 

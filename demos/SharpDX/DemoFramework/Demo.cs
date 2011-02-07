@@ -52,6 +52,10 @@ namespace DemoFramework
         protected int FullScreenHeight { get; set; }
         protected float NearPlane { get; set; }
         protected float FarPlane { get; set; }
+        protected Vector3 Eye { get; set; }
+        protected Vector3 Target { get; set; }
+
+        ShaderConstants constants = new ShaderConstants();
 
         protected InfoText Info { get; set; }
 
@@ -174,15 +178,13 @@ namespace DemoFramework
 
         void Initialize()
         {
-            ShaderBytecode shaderByteCode = ShaderBytecode.CompileFromFile("shader.fx", "fx_4_0", ShaderFlags.None, EffectFlags.None);
+            //ShaderFlags shaderFlags = ShaderFlags.None;
+            ShaderFlags shaderFlags = ShaderFlags.Debug | ShaderFlags.SkipOptimization;
+            ShaderBytecode shaderByteCode = ShaderBytecode.CompileFromFile("shader.fx", "fx_4_0", shaderFlags, EffectFlags.None);
 
             Effect = new Effect(Device, shaderByteCode);
             Technique = Effect.GetTechniqueByIndex(0);
             Pass = Technique.GetPassByIndex(0);
-            
-            //Device.InputAssembler.SetInputLayout(new InputLayout(Device, Pass.Description.Signature, new[] { 
-            //    new InputElement("POSITION", 0, Format.R32G32B32A32_Float, 0, 0, InputClassification.PerVertexData, 0)
-            //}));
 
             BufferDescription constantsDesc = new BufferDescription()
             {
@@ -223,13 +225,7 @@ namespace DemoFramework
 
         protected void SetBuffer(Matrix world, Color color)
         {
-            Vector3 eye = new Vector3(30, 20, 10);
-            Vector3 target = new Vector3(0, 5, -4);
-
-            ShaderConstants constants = new ShaderConstants();
             constants.World = world;
-            constants.View = Matrix.LookAtLH(eye, target, Vector3.UnitY);
-            constants.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4, AspectRatio, NearPlane, FarPlane);
             constants.Color = (Color4)color;
 
             EffectConstantBuffer effectConstantBuffer = Effect.GetConstantBufferByIndex(0);
@@ -237,11 +233,6 @@ namespace DemoFramework
             DataStream c = constantsBuffer.Map(MapMode.WriteDiscard);
             Marshal.StructureToPtr(constants, c.DataPointer, false);
             constantsBuffer.Unmap();
-
-            //effectConstantBuffer.GetMemberByName("World").AsMatrix().SetMatrix(world);
-            //effectConstantBuffer.GetMemberByName("View").AsMatrix().SetMatrix(constants.View);
-            //effectConstantBuffer.GetMemberByName("Projection").AsMatrix().SetMatrix(constants.Projection);
-            //effectConstantBuffer.GetMemberByName("Color").AsVector().Set(new Int4(255));
         }
 
         void Render()
@@ -257,6 +248,9 @@ namespace DemoFramework
             }
 
             Device.Rasterizer.SetViewports(new Viewport(0, 0, Width, Height));
+            
+            constants.View = Matrix.LookAtLH(Eye, Target, Vector3.UnitY);
+            constants.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4, AspectRatio, NearPlane, FarPlane);
 
             //BlendStateDescription desc = new BlendStateDescription()
             //{

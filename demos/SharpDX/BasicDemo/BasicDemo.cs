@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using BulletSharp;
 using DemoFramework;
+using SharpDX;
 using SharpDX.Direct3D10;
 using SharpDX.DXGI;
 
@@ -10,9 +11,6 @@ namespace BasicDemo
 {
     class BasicDemo : Demo
     {
-        //Vector3 eye = new Vector3(30, 20, 10);
-        //Vector3 target = new Vector3(0, 5, -4);
-
         protected override void OnInitializeDevice()
         {
             Form.Text = "BulletSharp - Basic Demo";
@@ -23,6 +21,8 @@ namespace BasicDemo
         {
             PhysicsContext = new Physics();
 
+            Eye = new Vector3(30, 20, 10);
+            Target = new Vector3(0, 5, -4);
             //Freelook.SetEyeTarget(eye, target);
 
             Info.Text = "Move using mouse and WASD+shift\n" +
@@ -38,17 +38,26 @@ namespace BasicDemo
             Device.ClearRenderTargetView(RenderView, Ambient);
             Device.ClearDepthStencilView(DepthStencilView, DepthStencilClearFlags.Depth, 1.0f, 0);
 
+            Device.InputAssembler.SetInputLayout(new InputLayout(Device, Pass.Description.Signature, new[] { 
+                    new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0)
+                }));
+
             for (int i = 0; i < Technique.Description.PassCount; ++i)
             {
                 Technique.GetPassByIndex(i).Apply();
 
-                Device.InputAssembler.SetInputLayout(new InputLayout(Device, Pass.Description.Signature, new[] { 
-                    new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0)
-                }));
-
                 foreach (RigidBody body in PhysicsContext.World.CollisionObjectArray)
                 {
-                    SetBuffer(body.MotionState.WorldTransform, Color.Green);
+                    Color color;
+                    if ((string)body.UserObject == "Ground")
+                    {
+                        color = Color.Green;
+                    }
+                    else
+                    {
+                        color = body.ActivationState == ActivationState.ActiveTag ? Color.Orange : Color.Red;
+                    }
+                    SetBuffer(body.MotionState.WorldTransform, color);
                     MeshFactory.Render(body.CollisionShape);
                 }
             }
