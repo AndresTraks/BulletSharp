@@ -46,69 +46,102 @@ namespace DemoFramework
         Mesh CreateBoxShape(BoxShape shape)
         {
             Vector3 size = shape.HalfExtentsWithMargin;
-            float x = size.X * 2;
-            float y = size.Y * 2;
-            float z = size.Z * 2;
+            float x = size.X;
+            float y = size.Y;
+            float z = size.Z;
             
             InputElement[] elements = new InputElement[] {
-                new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0)
-                //new InputElement("POSITION", 0, Format.R32G32B32_Float, 0)
+                new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
+                new InputElement("NORMAL", 0, Format.R32G32B32_Float, 12, 0, InputClassification.PerVertexData, 0)
             };
-            Mesh mesh = new Mesh(device, elements, "POSITION", 8, 12, MeshFlags.None);
+            Mesh mesh = new Mesh(device, elements, "POSITION", 36, 12, MeshFlags.None);
             
             MeshBuffer vertexBuffer = mesh.GetVertexBuffer(0);
             SharpDX.DataStream v = vertexBuffer.Map();
-            //*
+
             v.Write(new Vector3(-x, y, -z));
-            //v.Write(1);
-            v.Write(new Vector3(x, y, -z));
-            //v.Write(1);
-            v.Write(new Vector3(x, y, z));
-            //v.Write(1);
-            v.Write(new Vector3(-x, y, z));
-            //v.Write(1);
+            v.Write(new Vector3(-1, 0, 0));
             v.Write(new Vector3(-x, -y, -z));
-            //v.Write(1);
-            v.Write(new Vector3(x, -y, -z));
-            //v.Write(1);
-            v.Write(new Vector3(x, -y, z));
-            //v.Write(1);
+            v.Write(new Vector3(-1, 0, 0));
             v.Write(new Vector3(-x, -y, z));
-            //v.Write(1);
-            //*/
-            /*
+            v.Write(new Vector3(-1, 0, 0));
             v.Write(new Vector3(-x, y, -z));
-            v.Write(1);
-            v.Write(new Vector3(x, y, -z));
-            v.Write(1);
-            v.Write(new Vector3(-x, -y, -z));
-            v.Write(1);
-            v.Write(new Vector3(x, -y, -z));
-            v.Write(1);
+            v.Write(new Vector3(-1, 0, 0));
             v.Write(new Vector3(-x, y, z));
-            v.Write(1);
-            v.Write(new Vector3(x, y, z));
-            v.Write(1);
+            v.Write(new Vector3(-1, 0, 0));
             v.Write(new Vector3(-x, -y, z));
-            v.Write(1);
+            v.Write(new Vector3(-1, 0, 0));
+
+            v.Write(new Vector3(-x, y, -z));
+            v.Write(new Vector3(0, 0, -1));
+            v.Write(new Vector3(-x, -y, -z));
+            v.Write(new Vector3(0, 0, -1));
+            v.Write(new Vector3(x, -y, -z));
+            v.Write(new Vector3(0, 0, -1));
+            v.Write(new Vector3(-x, y, -z));
+            v.Write(new Vector3(0, 0, -1));
+            v.Write(new Vector3(x, y, -z));
+            v.Write(new Vector3(0, 0, -1));
+            v.Write(new Vector3(x, -y, -z));
+            v.Write(new Vector3(0, 0, -1));
+
+            v.Write(new Vector3(x, y, -z));
+            v.Write(new Vector3(1, 0, 0));
+            v.Write(new Vector3(x, -y, -z));
+            v.Write(new Vector3(1, 0, 0));
             v.Write(new Vector3(x, -y, z));
-            v.Write(1);
-            */
+            v.Write(new Vector3(1, 0, 0));
+            v.Write(new Vector3(x, y, -z));
+            v.Write(new Vector3(1, 0, 0));
+            v.Write(new Vector3(x, y, z));
+            v.Write(new Vector3(1, 0, 0));
+            v.Write(new Vector3(x, -y, z));
+            v.Write(new Vector3(1, 0, 0));
+
+            v.Write(new Vector3(-x, y, z));
+            v.Write(new Vector3(0, 0, 1));
+            v.Write(new Vector3(-x, -y, z));
+            v.Write(new Vector3(0, 0, 1));
+            v.Write(new Vector3(x, -y, z));
+            v.Write(new Vector3(0, 0, 1));
+            v.Write(new Vector3(-x, y, z));
+            v.Write(new Vector3(0, 0, 1));
+            v.Write(new Vector3(x, y, z));
+            v.Write(new Vector3(0, 0, 1));
+            v.Write(new Vector3(x, -y, z));
+            v.Write(new Vector3(0, 0, 1));
+
+            v.Write(new Vector3(-x, y, -z));
+            v.Write(new Vector3(0, 1, 0));
+            v.Write(new Vector3(x, y, -z));
+            v.Write(new Vector3(0, 1, 0));
+            v.Write(new Vector3(-x, y, z));
+            v.Write(new Vector3(0, 1, 0));
+            v.Write(new Vector3(x, y, z));
+            v.Write(new Vector3(0, 1, 0));
+            v.Write(new Vector3(-x, y, z));
+            v.Write(new Vector3(0, 1, 0));
+            v.Write(new Vector3(x, y, -z));
+            v.Write(new Vector3(0, 1, 0));
+
+            v.Write(new Vector3(-x, -y, -z));
+            v.Write(new Vector3(0, -1, 0));
+            v.Write(new Vector3(x, -y, -z));
+            v.Write(new Vector3(0, -1, 0));
+            v.Write(new Vector3(-x, -y, z));
+            v.Write(new Vector3(0, -1, 0));
+            v.Write(new Vector3(x, -y, z));
+            v.Write(new Vector3(0, -1, 0));
+            v.Write(new Vector3(-x, -y, z));
+            v.Write(new Vector3(0, -1, 0));
+            v.Write(new Vector3(x, -y, -z));
+            v.Write(new Vector3(0, -1, 0));
+
             vertexBuffer.Unmap();
 
             MeshBuffer indexBuffer = mesh.GetIndexBuffer();
             SharpDX.DataStream i = indexBuffer.Map();
-            //*
-            short[] indices =
-            {
-                3,1,0, 2,1,3,
-                0,5,4, 1,5,0,
-                3,4,7, 0,4,3,
-                1,6,5, 2,6,1,
-                2,7,6, 3,7,2,
-                6,4,5, 7,4,6,
-            };
-            foreach (short ii in indices)
+            for (short ii = 0; ii < mesh.VertexCount; ii++ )
                 i.Write(ii);
             indexBuffer.Unmap();
 

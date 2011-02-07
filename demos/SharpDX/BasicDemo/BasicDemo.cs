@@ -39,7 +39,8 @@ namespace BasicDemo
             Device.ClearDepthStencilView(DepthStencilView, DepthStencilClearFlags.Depth, 1.0f, 0);
 
             Device.InputAssembler.SetInputLayout(new InputLayout(Device, Pass.Description.Signature, new[] { 
-                    new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0)
+                    new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0),
+                    new InputElement("NORMAL", 0, Format.R32G32B32_Float, 0, 0)
                 }));
 
             for (int i = 0; i < Technique.Description.PassCount; ++i)

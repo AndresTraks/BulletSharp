@@ -76,6 +76,7 @@ namespace DemoFramework
         struct ShaderConstants
         {
             public Matrix World;
+            public Matrix WorldInverseTranspose;
             public Matrix View;
             public Matrix Projection;
             public Color4 Color;
@@ -226,6 +227,7 @@ namespace DemoFramework
         protected void SetBuffer(Matrix world, Color color)
         {
             constants.World = world;
+            constants.WorldInverseTranspose = Matrix.Transpose(Matrix.Invert(world));
             constants.Color = (Color4)color;
 
             EffectConstantBuffer effectConstantBuffer = Effect.GetConstantBufferByIndex(0);

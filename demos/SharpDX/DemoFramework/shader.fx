@@ -1,6 +1,7 @@
 cbuffer ConstantBuffer
 {
 	matrix World;
+	matrix WorldInverseTranspose;
 	matrix View;
 	matrix Projection;
 	float4 Color;
@@ -9,11 +10,14 @@ cbuffer ConstantBuffer
 struct VS_IN
 {
 	float4 Pos : POSITION;
+	float3 Normal : NORMAL;
 };
 
 struct VS_OUT
 {
     float4 Pos : SV_POSITION;
+	float3 Normal : TEXCOORD0;
+	float3 lightVec : TEXCOORD1;
 };
 
 VS_OUT VS(VS_IN input)
@@ -23,12 +27,23 @@ VS_OUT VS(VS_IN input)
     output.Pos = mul(World, input.Pos);
     output.Pos = mul(View, output.Pos);
     output.Pos = mul(Projection, output.Pos);
+
+	output.Normal = mul(WorldInverseTranspose, input.Normal).xyz;
+
+	float3 Lamp0Pos = float3(20, 50, 20);
+	float4 Po = float4(input.Pos.xyz,1);
+	float3 Pw = mul(World, Po).xyz;
+	output.lightVec = normalize(Lamp0Pos - Pw);
+
     return output;
 }
 
 float4 PS( VS_OUT input ) : SV_Target
 {
-    return Color;
+	float shade = 0.7+0.3*saturate(dot(input.lightVec, input.Normal));
+	float4 color = Color;
+	color.rgb *= shade;
+    return color;
 }
 
 technique10 Render
