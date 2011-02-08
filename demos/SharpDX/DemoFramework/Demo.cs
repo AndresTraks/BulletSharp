@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using BulletSharp;
 using SharpDX;
 using SharpDX.D3DCompiler;
 using SharpDX.Direct3D10;
@@ -13,7 +14,7 @@ using Device = SharpDX.Direct3D10.Device;
 
 namespace DemoFramework
 {
-    public class Demo : IDisposable
+    public class Demo : System.IDisposable
     {
         public RenderForm Form
         {
@@ -52,8 +53,7 @@ namespace DemoFramework
         protected int FullScreenHeight { get; set; }
         protected float NearPlane { get; set; }
         protected float FarPlane { get; set; }
-        protected Vector3 Eye { get; set; }
-        protected Vector3 Target { get; set; }
+        protected float FieldOfView { get; set; }
 
         ShaderConstants constants = new ShaderConstants();
 
@@ -61,6 +61,9 @@ namespace DemoFramework
 
         protected Color4 Ambient { get; set; }
         protected MeshFactory MeshFactory { get; private set; }
+        
+        protected Input Input { get; private set; }
+        protected FreeLook Freelook { get; set; }
 
         Clock clock = new Clock();
         float frameAccumulator;
@@ -71,6 +74,10 @@ namespace DemoFramework
 
         public PhysicsContext PhysicsContext { get; set; }
 
+        RigidBody pickedBody;
+        bool use6Dof = false;
+        protected TypedConstraint pickConstraint;
+        float oldPickingDist;
         
         [StructLayout(LayoutKind.Sequential)]
         struct ShaderConstants
@@ -232,7 +239,7 @@ namespace DemoFramework
 
             EffectConstantBuffer effectConstantBuffer = Effect.GetConstantBufferByIndex(0);
             Buffer constantsBuffer = effectConstantBuffer.GetConstantBuffer();
-            DataStream c = constantsBuffer.Map(MapMode.WriteDiscard);
+            SharpDX.DataStream c = constantsBuffer.Map(MapMode.WriteDiscard);
             Marshal.StructureToPtr(constants, c.DataPointer, false);
             constantsBuffer.Unmap();
         }
@@ -250,9 +257,9 @@ namespace DemoFramework
             }
 
             Device.Rasterizer.SetViewports(new Viewport(0, 0, Width, Height));
-            
-            constants.View = Matrix.LookAtLH(Eye, Target, Vector3.UnitY);
-            constants.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4, AspectRatio, NearPlane, FarPlane);
+
+            constants.View = Freelook.View;
+            constants.Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, NearPlane, FarPlane);
 
             //BlendStateDescription desc = new BlendStateDescription()
             //{
@@ -307,19 +314,10 @@ namespace DemoFramework
                 Width = Form.ClientSize.Width;
                 Height = Form.ClientSize.Height;
             };
-            /*
-            Form.Closed += (o, args) => { isFormClosed = true; };
 
-
-            // initialize input
-            SlimDX.RawInput.Device.RegisterDevice(UsagePage.Generic, UsageId.Keyboard, DeviceFlags.None);
-            SlimDX.RawInput.Device.RegisterDevice(UsagePage.Generic, UsageId.Mouse, DeviceFlags.None);
+            //Form.Closed += (o, args) => { isFormClosed = true; };
 
             Input = new Input(Form);
-
-            SlimDX.RawInput.Device.KeyboardInput += Device_KeyboardInput;
-            SlimDX.RawInput.Device.MouseInput += Device_MouseInput;
-            */
 
             Width = 1024;
             Height = 768;
@@ -327,9 +325,9 @@ namespace DemoFramework
             FullScreenHeight = Screen.PrimaryScreen.Bounds.Height;
             NearPlane = 0.1f;
             FarPlane = 200.0f;
-            /*
+
             FieldOfView = (float)Math.PI / 4;
-            Freelook = new FreeLook();*/
+            Freelook = new FreeLook();
             Ambient = (Color4)Color.Gray;
 
             OnInitializeDevice();
@@ -342,8 +340,10 @@ namespace DemoFramework
             clock.Start();
             MessagePump.Run(Form, () =>
             {
+                OnHandleInput();
                 Update();
                 Render();
+                Input.ClearKeyCache();
             });
         }
 
@@ -353,8 +353,211 @@ namespace DemoFramework
 
         protected virtual void OnUpdate()
         {
-            //Freelook.Update(FrameDelta, Input);
+            Freelook.Update(FrameDelta, Input);
             PhysicsContext.Update(FrameDelta);
+        }
+
+        protected virtual void OnHandleInput()
+        {
+            if (Input.KeysPressed.Count != 0)
+            {
+                Keys key = Input.KeysPressed[0];
+                switch (key)
+                {
+                    case Keys.Escape:
+                        Form.Close();
+                        return;
+                    case Keys.F3:
+                        //IsDebugDrawEnabled = !IsDebugDrawEnabled;
+                        break;
+                    case Keys.F11:
+                        //ToggleFullScreen();
+                        break;
+                    case Keys.Space:
+                        PhysicsContext.ShootBox(Freelook.Eye, GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView));
+                        break;
+                }
+            }
+
+            if (Input.MousePressed != MouseButtons.None)
+            {
+                Vector3 rayTo = GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView);
+
+                if (Input.MousePressed == MouseButtons.Right)
+                {
+                    if (PhysicsContext.World != null)
+                    {
+                        Vector3 rayFrom = Freelook.Eye;
+
+                        CollisionWorld.ClosestRayResultCallback rayCallback = new CollisionWorld.ClosestRayResultCallback(rayFrom, rayTo);
+                        PhysicsContext.World.RayTest(rayFrom, rayTo, rayCallback);
+                        if (rayCallback.HasHit)
+                        {
+                            RigidBody body = rayCallback.CollisionObject as RigidBody;
+                            if (body != null)
+                            {
+                                if (!(body.IsStaticObject || body.IsKinematicObject))
+                                {
+                                    pickedBody = body;
+                                    pickedBody.ActivationState = ActivationState.DisableDeactivation;
+
+                                    Vector3 pickPos = rayCallback.HitPointWorld;
+                                    Vector3 localPivot = Vector3.TransformCoordinate(pickPos, Matrix.Invert(body.CenterOfMassTransform));
+
+                                    if (use6Dof)
+                                    {
+                                        Generic6DofConstraint dof6 = new Generic6DofConstraint(body, Matrix.Translation(localPivot), false);
+                                        dof6.LinearLowerLimit = Vector3.Zero;
+                                        dof6.LinearUpperLimit = Vector3.Zero;
+                                        dof6.AngularLowerLimit = Vector3.Zero;
+                                        dof6.AngularUpperLimit = Vector3.Zero;
+
+                                        PhysicsContext.World.AddConstraint(dof6);
+                                        pickConstraint = dof6;
+
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 0);
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 1);
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 2);
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 3);
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 4);
+                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 5);
+
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 0);
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 1);
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 2);
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 3);
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 4);
+                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 5);
+                                    }
+                                    else
+                                    {
+                                        Point2PointConstraint p2p = new Point2PointConstraint(body, localPivot);
+                                        PhysicsContext.World.AddConstraint(p2p);
+                                        pickConstraint = p2p;
+                                        p2p.Setting.ImpulseClamp = 30;
+                                        //very weak constraint for picking
+                                        p2p.Setting.Tau = 0.001f;
+                                        /*
+                                        p2p.SetParam(ConstraintParams.Cfm, 0.8f, 0);
+                                        p2p.SetParam(ConstraintParams.Cfm, 0.8f, 1);
+                                        p2p.SetParam(ConstraintParams.Cfm, 0.8f, 2);
+                                        p2p.SetParam(ConstraintParams.Erp, 0.1f, 0);
+                                        p2p.SetParam(ConstraintParams.Erp, 0.1f, 1);
+                                        p2p.SetParam(ConstraintParams.Erp, 0.1f, 2);
+                                        */
+                                    }
+                                    use6Dof = !use6Dof;
+
+                                    oldPickingDist = (pickPos - rayFrom).Length();
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (Input.MouseReleased == MouseButtons.Right)
+                {
+                    if (pickConstraint != null && PhysicsContext.World != null)
+                    {
+                        PhysicsContext.World.RemoveConstraint(pickConstraint);
+                        pickConstraint.Dispose();
+                        pickConstraint = null;
+                        pickedBody.ForceActivationState(ActivationState.ActiveTag);
+                        pickedBody.DeactivationTime = 0;
+                        pickedBody = null;
+                    }
+                }
+            }
+
+            // Mouse movement
+            if (Input.MouseDown == MouseButtons.Right)
+            {
+                if (pickConstraint != null)
+                {
+                    Vector3 newRayTo = GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView);
+
+                    if (pickConstraint.ConstraintType == TypedConstraintType.D6)
+                    {
+                        Generic6DofConstraint pickCon = (Generic6DofConstraint)pickConstraint;
+
+                        //keep it at the same picking distance
+                        Vector3 rayFrom = Freelook.Eye;
+                        Vector3 scale;
+                        Quaternion rotation;
+                        Vector3 oldPivotInB;
+                        pickCon.FrameOffsetA.Decompose(out scale, out rotation, out oldPivotInB);
+
+                        Vector3 dir = newRayTo - rayFrom;
+                        dir.Normalize();
+                        dir *= oldPickingDist;
+                        Vector3 newPivotB = rayFrom + dir;
+
+                        Matrix tempFrameOffsetA = pickCon.FrameOffsetA;
+                        Vector4 transRow = tempFrameOffsetA.Row4;
+                        transRow.X = newPivotB.X;
+                        transRow.Y = newPivotB.Y;
+                        transRow.Z = newPivotB.Z;
+                        tempFrameOffsetA.Row4 = transRow;
+                        pickCon.FrameOffsetA = tempFrameOffsetA;
+                    }
+                    else
+                    {
+                        Point2PointConstraint pickCon = (Point2PointConstraint)pickConstraint;
+
+                        //keep it at the same picking distance
+                        Vector3 rayFrom = Freelook.Eye;
+                        Vector3 oldPivotInB = pickCon.PivotInB;
+
+                        Vector3 dir = newRayTo - rayFrom;
+                        dir.Normalize();
+                        dir *= oldPickingDist;
+                        Vector3 newPivotB = rayFrom + dir;
+
+                        pickCon.PivotInB = newPivotB;
+                    }
+                }
+            }
+        }
+
+        protected Vector3 GetRayTo(Point point, Vector3 eye, Vector3 target, float fov)
+        {
+            float aspect;
+
+            Vector3 rayFrom = eye;
+            Vector3 rayForward = target - eye;
+            rayForward.Normalize();
+            float farPlane = 10000.0f;
+            rayForward *= farPlane;
+
+            Vector3 vertical = Vector3.UnitY;
+
+            Vector3 hor = Vector3.Cross(rayForward, vertical);
+            hor.Normalize();
+            vertical = Vector3.Cross(hor, rayForward);
+            vertical.Normalize();
+
+            float tanFov = (float)Math.Tan(fov / 2);
+            hor *= 2.0f * farPlane * tanFov;
+            vertical *= 2.0f * farPlane * tanFov;
+
+            if (Form.ClientSize.Width > Form.ClientSize.Height)
+            {
+                aspect = (float)Form.ClientSize.Width / (float)Form.ClientSize.Height;
+                hor *= aspect;
+            }
+            else
+            {
+                aspect = (float)Form.ClientSize.Height / (float)Form.ClientSize.Width;
+                vertical *= aspect;
+            }
+
+            Vector3 rayToCenter = rayFrom + rayForward;
+            Vector3 dHor = hor / (float)Form.ClientSize.Width;
+            Vector3 dVert = vertical / (float)Form.ClientSize.Height;
+
+            Vector3 rayTo = rayToCenter - 0.5f * hor + 0.5f * vertical;
+            rayTo += (Form.ClientSize.Width - point.X) * dHor;
+            rayTo -= point.Y * dVert;
+            return rayTo;
         }
     }
 }

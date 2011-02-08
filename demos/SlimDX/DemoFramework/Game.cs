@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Drawing;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using BulletSharp;
 using SlimDX;
+using SlimDX.Direct3D9;
 using SlimDX.Multimedia;
 using SlimDX.RawInput;
 using SlimDX.Windows;
-using SlimDX.Direct3D9;
 using Device = SlimDX.Direct3D9.Device;
 
 namespace DemoFramework

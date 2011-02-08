@@ -54,6 +54,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clock.cs" />
+    <Compile Include="Controller\FreeLook.cs" />
+    <Compile Include="Controller\Input.cs" />
+    <Compile Include="Controller\MouseController.cs" />
     <Compile Include="Demo.cs" />
     <Compile Include="MeshFactory.cs" />
     <Compile Include="InfoText.cs" />
