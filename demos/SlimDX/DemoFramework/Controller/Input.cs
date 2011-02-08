@@ -1,9 +1,7 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using SlimDX.RawInput;
-using SlimDX.Multimedia;
-using System.Collections.Generic;
 
 namespace DemoFramework
 {
@@ -68,42 +66,42 @@ namespace DemoFramework
             _mouseDelta.Y = e.Y;
             MouseWheelDelta = e.WheelDelta;
 
-            if (e.ButtonFlags != MouseButtonFlags.None)
+            if (e.ButtonFlags == MouseButtonFlags.None)
+                return;
+
+            MouseButtonFlags mouseFlags = e.ButtonFlags;
+
+            // Don't consider mouse clicks outside of the client area
+            if (form.Focused == false || form.ClientRectangle.Contains(MousePoint) == false)
+                mouseFlags &= ~(MouseButtonFlags.LeftDown | MouseButtonFlags.RightDown);
+
+            // Find the pressed/unpressed keys
+            if (mouseFlags == MouseButtonFlags.LeftDown)
             {
-                MouseButtonFlags MouseFlags = e.ButtonFlags;
+                if ((MouseDown & MouseButtonFlags.LeftDown) != MouseButtonFlags.LeftDown)
+                {
+                    MouseDown |= MouseButtonFlags.LeftDown;
+                    MousePressed |= MouseButtonFlags.LeftDown;
+                }
+            }
+            else if (mouseFlags == MouseButtonFlags.LeftUp)
+            {
+                MouseDown &= ~MouseButtonFlags.LeftDown;
+                MousePressed |= MouseButtonFlags.LeftUp;
+            }
 
-                // Don't consider mouse clicks outside of the client area
-                if (form.Focused == false || form.ClientRectangle.Contains(MousePoint) == false)
-                    MouseFlags &= ~(MouseButtonFlags.LeftDown | MouseButtonFlags.RightDown);
-
-                // Find the pressed/unpressed keys
-                if (MouseFlags == MouseButtonFlags.LeftDown)
+            if (mouseFlags == MouseButtonFlags.RightDown)
+            {
+                if ((MouseDown & MouseButtonFlags.RightDown) != MouseButtonFlags.RightDown)
                 {
-                    if ((MouseDown & MouseButtonFlags.LeftDown) != MouseButtonFlags.LeftDown)                    
-                    {
-                        MouseDown |= MouseButtonFlags.LeftDown;
-                        MousePressed |= MouseButtonFlags.LeftDown;
-                    }
+                    MouseDown |= MouseButtonFlags.RightDown;
+                    MousePressed |= MouseButtonFlags.RightDown;
                 }
-                else if (MouseFlags == MouseButtonFlags.LeftUp)
-                {
-                    MouseDown &= ~MouseButtonFlags.LeftDown;
-                    MousePressed |= MouseButtonFlags.LeftUp;
-                }
-
-                if (MouseFlags == MouseButtonFlags.RightDown)
-                {
-                    if ((MouseDown & MouseButtonFlags.RightDown) != MouseButtonFlags.RightDown)                    
-                    {
-                        MouseDown |= MouseButtonFlags.RightDown;
-                        MousePressed |= MouseButtonFlags.RightDown;
-                    }
-                }
-                else if (MouseFlags == MouseButtonFlags.RightUp)
-                {
-                    MouseDown &= ~MouseButtonFlags.RightDown;
-                    MousePressed |= MouseButtonFlags.RightUp;
-                }
+            }
+            else if (mouseFlags == MouseButtonFlags.RightUp)
+            {
+                MouseDown &= ~MouseButtonFlags.RightDown;
+                MousePressed |= MouseButtonFlags.RightUp;
             }
         }
 

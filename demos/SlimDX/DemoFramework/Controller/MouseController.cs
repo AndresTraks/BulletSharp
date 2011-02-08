@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
 using SlimDX;
 using SlimDX.RawInput;
 
@@ -8,26 +7,9 @@ namespace DemoFramework
 {
     public class MouseController
     {
-        public Vector3 Vector
-        {
-            get { return vector; }
-            set { vector = value; }
-        }
-
-        public Vector2 DragPoint
-        {
-            get;
-            private set;
-        }
-
-        public float Sensitivity
-        {
-            get;
-            set;
-        }
-
-        Vector3 vector;
-        double sensitivity = 0.01f;
+        public Vector3 Vector { get; set; }
+        public Vector2 DragPoint { get; private set; }
+        public float Sensitivity { get; set; }
 
         Point MouseOrigin;
         double AngleOriginX, AngleOriginY;
@@ -37,6 +19,7 @@ namespace DemoFramework
 
         public MouseController()
         {
+            Sensitivity = 0.005f;
             SetByAngles(0, 0);
         }
 
@@ -44,9 +27,10 @@ namespace DemoFramework
         // VerticalAngle - up-down movement (angle between Vector and Y-axis)
         public void SetByAngles(double horizontalAngle, double verticalAngle)
         {
-            vector.X = (float)(Math.Cos(horizontalAngle) * Math.Cos(verticalAngle));
-            vector.Z = (float)(Math.Sin(horizontalAngle) * Math.Cos(verticalAngle));
-            vector.Y = (float)Math.Sin(verticalAngle);
+            Vector = new Vector3(
+                (float)(Math.Cos(horizontalAngle) * Math.Cos(verticalAngle)),
+                (float)Math.Sin(verticalAngle),
+                (float)(Math.Sin(horizontalAngle) * Math.Cos(verticalAngle)));
         }
 
         public bool Update(Input input)
@@ -82,8 +66,8 @@ namespace DemoFramework
             if ((input.MouseDown & MouseButtonFlags.LeftDown) == MouseButtonFlags.LeftDown)
             {
                 // Calculate how much to change the angles
-                AngleDeltaX = -(input.MousePoint.X - MouseOrigin.X) * sensitivity;
-                AngleDeltaY = (input.MousePoint.Y - MouseOrigin.Y) * sensitivity;
+                AngleDeltaX = -(input.MousePoint.X - MouseOrigin.X) * Sensitivity;
+                AngleDeltaY = (input.MousePoint.Y - MouseOrigin.Y) * Sensitivity;
 
                 SetByAngles(AngleOriginX + AngleDeltaX, AngleOriginY + AngleDeltaY);
             }
