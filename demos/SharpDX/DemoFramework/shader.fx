@@ -1,10 +1,14 @@
-cbuffer ConstantBuffer
+cbuffer object
 {
 	matrix World;
 	matrix WorldInverseTranspose;
+	float4 Color;
+}
+
+cbuffer scene
+{
 	matrix View;
 	matrix Projection;
-	float4 Color;
 }
 
 struct VS_IN

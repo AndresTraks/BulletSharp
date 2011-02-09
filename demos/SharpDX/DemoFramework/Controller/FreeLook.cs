@@ -29,12 +29,12 @@ namespace DemoFramework
             Recalculate();
         }
 
-        public void Update(float frameDelta, Input input)
+        public bool Update(float frameDelta, Input input)
         {
             bool changed = mouseController.Update(input);
 
             if (changed == false && input.KeysDown.Count == 0)
-                return;
+                return false;
 
             Vector3 direction = Vector3.Normalize(-mouseController.Vector);
 
@@ -70,6 +70,7 @@ namespace DemoFramework
             Target = Eye + direction;
 
             Recalculate();
+            return true;
         }
 
         void Recalculate()

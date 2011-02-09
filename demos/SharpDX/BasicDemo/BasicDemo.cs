@@ -14,6 +14,8 @@ namespace BasicDemo
         Vector3 eye = new Vector3(30, 20, 10);
         Vector3 target = new Vector3(0, 5, -4);
 
+        InputLayout inputLayout;
+
         protected override void OnInitializeDevice()
         {
             Form.Text = "BulletSharp - Basic Demo";
@@ -31,6 +33,11 @@ namespace BasicDemo
                 //"F11 - Toggle fullscreen\n" +
                 "Space - Shoot box";
 
+            inputLayout = new InputLayout(Device, Pass.Description.Signature, new[] { 
+                new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0),
+                new InputElement("NORMAL", 0, Format.R32G32B32_Float, 0, 0)
+            });
+
             base.OnInitialize();
         }
 
@@ -39,10 +46,7 @@ namespace BasicDemo
             Device.ClearRenderTargetView(RenderView, Ambient);
             Device.ClearDepthStencilView(DepthStencilView, DepthStencilClearFlags.Depth, 1.0f, 0);
 
-            Device.InputAssembler.SetInputLayout(new InputLayout(Device, Pass.Description.Signature, new[] { 
-                    new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0),
-                    new InputElement("NORMAL", 0, Format.R32G32B32_Float, 0, 0)
-                }));
+            Device.InputAssembler.SetInputLayout(inputLayout);
 
             for (int i = 0; i < Technique.Description.PassCount; ++i)
             {

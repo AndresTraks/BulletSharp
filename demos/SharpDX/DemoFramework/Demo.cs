@@ -55,7 +55,10 @@ namespace DemoFramework
         protected float FarPlane { get; set; }
         protected float FieldOfView { get; set; }
 
-        ShaderConstants constants = new ShaderConstants();
+        ShaderObjectConstants objectConstants = new ShaderObjectConstants();
+        ShaderSceneConstants sceneConstants = new ShaderSceneConstants();
+        Buffer objectConstantsBuffer;
+        Buffer sceneConstantsBuffer;
 
         protected InfoText Info { get; set; }
 
@@ -80,13 +83,18 @@ namespace DemoFramework
         float oldPickingDist;
         
         [StructLayout(LayoutKind.Sequential)]
-        struct ShaderConstants
+        struct ShaderObjectConstants
         {
             public Matrix World;
             public Matrix WorldInverseTranspose;
+            public Color4 Color;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        struct ShaderSceneConstants
+        {
             public Matrix View;
             public Matrix Projection;
-            public Color4 Color;
         }
 
         /// <summary>
@@ -148,7 +156,7 @@ namespace DemoFramework
             var desc = new SwapChainDescription()
             {
                 BufferCount = 1,
-                ModeDescription = new ModeDescription(Form.ClientSize.Width, Form.ClientSize.Height, new Rational(60, 1), Format.R8G8B8A8_UNorm),
+                ModeDescription = new ModeDescription(Width, Height, new Rational(60, 1), Format.R8G8B8A8_UNorm),
                 IsWindowed = true,
                 OutputHandle = Form.Handle,
                 SampleDescription = new SampleDescription(1, 0),
@@ -157,15 +165,20 @@ namespace DemoFramework
             };
 
             // Create Device and SwapChain
-            Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.Debug, desc, out _device, out _swapChain);
+            Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.None, desc, out _device, out _swapChain);
 
             // Ignore all windows events
             Factory factory = SwapChain.GetParent<Factory>();
-            factory.MakeWindowAssociation(Form.Handle, WindowAssociationFlags.IgnoreAll);
+            factory.MakeWindowAssociation(Form.Handle, WindowAssociationFlags.None);
 
+            CreateBuffers();
+        }
+
+        void CreateBuffers()
+        {
             // New RenderTargetView from the backbuffer
-            Texture2D backBuffer = Texture2D.FromSwapChain<Texture2D>(SwapChain, 0);
-            RenderView = new RenderTargetView(Device, backBuffer);
+            using (var bb = Texture2D.FromSwapChain<Texture2D>(_swapChain, 0))
+                RenderView = new RenderTargetView(Device, bb);
 
             Texture2DDescription depthDesc = new Texture2DDescription()
             {
@@ -182,30 +195,46 @@ namespace DemoFramework
             };
             Texture2D depthBuffer = new Texture2D(Device, depthDesc);
             DepthStencilView = new DepthStencilView(Device, depthBuffer);
+
+            Device.OutputMerger.SetTargets(DepthStencilView, RenderView);
+            Device.Rasterizer.SetViewports(new Viewport(0, 0, Width, Height));
         }
 
         void Initialize()
         {
-            //ShaderFlags shaderFlags = ShaderFlags.None;
-            ShaderFlags shaderFlags = ShaderFlags.Debug | ShaderFlags.SkipOptimization;
+            ShaderFlags shaderFlags = ShaderFlags.None;
+            //ShaderFlags shaderFlags = ShaderFlags.Debug | ShaderFlags.SkipOptimization;
             ShaderBytecode shaderByteCode = ShaderBytecode.CompileFromFile("shader.fx", "fx_4_0", shaderFlags, EffectFlags.None);
 
             Effect = new Effect(Device, shaderByteCode);
             Technique = Effect.GetTechniqueByIndex(0);
             Pass = Technique.GetPassByIndex(0);
 
-            BufferDescription constantsDesc = new BufferDescription()
+            BufferDescription objectConstantsDesc = new BufferDescription()
             {
-                SizeInBytes = Marshal.SizeOf(typeof(ShaderConstants)),
+                SizeInBytes = Marshal.SizeOf(typeof(ShaderObjectConstants)),
                 Usage = ResourceUsage.Dynamic,
                 BindFlags = BindFlags.ConstantBuffer,
                 CpuAccessFlags = CpuAccessFlags.Write,
                 OptionFlags = ResourceOptionFlags.None
             };
 
-            Buffer constantsBuffer = new Buffer(Device, constantsDesc);
+            objectConstantsBuffer = new Buffer(Device, objectConstantsDesc);
             EffectConstantBuffer effectConstantBuffer = Effect.GetConstantBufferByIndex(0);
-            effectConstantBuffer.SetConstantBuffer(constantsBuffer);
+            effectConstantBuffer.SetConstantBuffer(objectConstantsBuffer);
+
+            BufferDescription sceneConstantsDesc = new BufferDescription()
+            {
+                SizeInBytes = Marshal.SizeOf(typeof(ShaderSceneConstants)),
+                Usage = ResourceUsage.Dynamic,
+                BindFlags = BindFlags.ConstantBuffer,
+                CpuAccessFlags = CpuAccessFlags.Write,
+                OptionFlags = ResourceOptionFlags.None
+            };
+
+            sceneConstantsBuffer = new Buffer(Device, sceneConstantsDesc);
+            effectConstantBuffer = Effect.GetConstantBufferByIndex(1);
+            effectConstantBuffer.SetConstantBuffer(sceneConstantsBuffer);
 
             RasterizerStateDescription desc = new RasterizerStateDescription()
             {
@@ -229,19 +258,28 @@ namespace DemoFramework
             depthStencilState = new DepthStencilState(Device, depthDesc);
 
             OnInitialize();
+            SetSceneBuffer();
         }
 
         protected void SetBuffer(Matrix world, Color color)
         {
-            constants.World = world;
-            constants.WorldInverseTranspose = Matrix.Transpose(Matrix.Invert(world));
-            constants.Color = (Color4)color;
+            objectConstants.World = world;
+            objectConstants.WorldInverseTranspose = Matrix.Transpose(Matrix.Invert(world));
+            objectConstants.Color = (Color4)color;
 
-            EffectConstantBuffer effectConstantBuffer = Effect.GetConstantBufferByIndex(0);
-            Buffer constantsBuffer = effectConstantBuffer.GetConstantBuffer();
-            SharpDX.DataStream c = constantsBuffer.Map(MapMode.WriteDiscard);
-            Marshal.StructureToPtr(constants, c.DataPointer, false);
-            constantsBuffer.Unmap();
+            SharpDX.DataStream c = objectConstantsBuffer.Map(MapMode.WriteDiscard);
+            Marshal.StructureToPtr(objectConstants, c.DataPointer, false);
+            objectConstantsBuffer.Unmap();
+        }
+
+        protected void SetSceneBuffer()
+        {
+            sceneConstants.View = Freelook.View;
+            sceneConstants.Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, NearPlane, FarPlane);
+
+            SharpDX.DataStream c = sceneConstantsBuffer.Map(MapMode.WriteDiscard);
+            Marshal.StructureToPtr(sceneConstants, c.DataPointer, false);
+            sceneConstantsBuffer.Unmap();
         }
 
         void Render()
@@ -256,20 +294,7 @@ namespace DemoFramework
                 frameCount = 0;
             }
 
-            Device.Rasterizer.SetViewports(new Viewport(0, 0, Width, Height));
-
-            constants.View = Freelook.View;
-            constants.Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, NearPlane, FarPlane);
-
-            //BlendStateDescription desc = new BlendStateDescription()
-            //{
-            //    BlendEnable = true
-            //};
-            //BlendState transBlendState = new BlendState(Device, desc);
-            //Device.OutputMerger.SetBlendState(transBlendState);
-
             Device.OutputMerger.SetDepthStencilState(depthStencilState, 0);
-            Device.OutputMerger.SetTargets(DepthStencilView, RenderView);
 
             OnRender();
 
@@ -310,9 +335,17 @@ namespace DemoFramework
             Form.ResizeBegin += (o, args) => { formIsResizing = true; };
             Form.ResizeEnd += (o, args) =>
             {
-                formIsResizing = false;
                 Width = Form.ClientSize.Width;
                 Height = Form.ClientSize.Height;
+                
+                RenderView.Dispose();
+                DepthStencilView.Dispose();
+                _swapChain.ResizeBuffers(_swapChain.Description.BufferCount, Width, Height, _swapChain.Description.ModeDescription.Format, (int)_swapChain.Description.Flags);
+
+                CreateBuffers();
+
+                SetSceneBuffer();
+                formIsResizing = false;
             };
 
             //Form.Closed += (o, args) => { isFormClosed = true; };
@@ -353,7 +386,8 @@ namespace DemoFramework
 
         protected virtual void OnUpdate()
         {
-            Freelook.Update(FrameDelta, Input);
+            if (Freelook.Update(FrameDelta, Input))
+                SetSceneBuffer();
             PhysicsContext.Update(FrameDelta);
         }
 
@@ -454,17 +488,17 @@ namespace DemoFramework
                         }
                     }
                 }
-                else if (Input.MouseReleased == MouseButtons.Right)
+            }
+            else if (Input.MouseReleased == MouseButtons.Right)
+            {
+                if (pickConstraint != null && PhysicsContext.World != null)
                 {
-                    if (pickConstraint != null && PhysicsContext.World != null)
-                    {
-                        PhysicsContext.World.RemoveConstraint(pickConstraint);
-                        pickConstraint.Dispose();
-                        pickConstraint = null;
-                        pickedBody.ForceActivationState(ActivationState.ActiveTag);
-                        pickedBody.DeactivationTime = 0;
-                        pickedBody = null;
-                    }
+                    PhysicsContext.World.RemoveConstraint(pickConstraint);
+                    pickConstraint.Dispose();
+                    pickConstraint = null;
+                    pickedBody.ForceActivationState(ActivationState.ActiveTag);
+                    pickedBody.DeactivationTime = 0;
+                    pickedBody = null;
                 }
             }
 
