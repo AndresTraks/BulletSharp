@@ -7,12 +7,12 @@ using SharpDX;
 using SharpDX.Direct3D10;
 using SharpDX.DXGI;
 
-namespace BasicDemo
+namespace CcdPhysicsDemo
 {
-    class BasicDemo : Demo
+    class CcdPhysicsDemo : Demo
     {
-        Vector3 eye = new Vector3(30, 20, 10);
-        Vector3 target = new Vector3(0, 5, -4);
+        Vector3 eye = new Vector3(0, 10, 40);
+        Vector3 target = Vector3.Zero;
 
         protected override void OnInitializeDevice()
         {
@@ -68,7 +68,7 @@ namespace BasicDemo
         [STAThread]
         static void Main()
         {
-            BasicDemo game = new BasicDemo();
+            CcdPhysicsDemo game = new CcdPhysicsDemo();
 
             if (game.TestLibraries() == false)
                 return;

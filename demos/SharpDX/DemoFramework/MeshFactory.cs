@@ -29,13 +29,13 @@ namespace DemoFramework
         {
             foreach (Mesh mesh in shapes.Values)
             {
-                //mesh.Dispose();
+                mesh.Dispose();
             }
             shapes.Clear();
 
             foreach (Mesh mesh in complexShapes.Values)
             {
-                //mesh.Dispose();
+                mesh.Dispose();
             }
             complexShapes.Clear();
 
@@ -57,103 +57,64 @@ namespace DemoFramework
             Mesh mesh = new Mesh(device, elements, "POSITION", 36, 12, MeshFlags.None);
             
             MeshBuffer vertexBuffer = mesh.GetVertexBuffer(0);
-            SharpDX.DataStream v = vertexBuffer.Map();
+            SharpDX.DataStream vStream = vertexBuffer.Map();
 
-            v.Write(new Vector3(-x, y, -z));
-            v.Write(new Vector3(-1, 0, 0));
-            v.Write(new Vector3(-x, -y, -z));
-            v.Write(new Vector3(-1, 0, 0));
-            v.Write(new Vector3(-x, -y, z));
-            v.Write(new Vector3(-1, 0, 0));
-            v.Write(new Vector3(-x, y, -z));
-            v.Write(new Vector3(-1, 0, 0));
-            v.Write(new Vector3(-x, y, z));
-            v.Write(new Vector3(-1, 0, 0));
-            v.Write(new Vector3(-x, -y, z));
-            v.Write(new Vector3(-1, 0, 0));
+            // Draw two sides
+            for (int i = 1; i != -3; i -= 2)
+            {
+                vStream.Write(new Vector3(i * x, y, -z));
+                vStream.Write(new Vector3(i, 0, 0));
+                vStream.Write(new Vector3(i *x, -y, -z));
+                vStream.Write(new Vector3(i, 0, 0));
+                vStream.Write(new Vector3(i * x, -y, z));
+                vStream.Write(new Vector3(i, 0, 0));
+                vStream.Write(new Vector3(i * x, y, -z));
+                vStream.Write(new Vector3(i, 0, 0));
+                vStream.Write(new Vector3(i * x, y, z));
+                vStream.Write(new Vector3(i, 0, 0));
+                vStream.Write(new Vector3(i * x, -y, z));
+                vStream.Write(new Vector3(i, 0, 0));
+            }
 
-            v.Write(new Vector3(-x, y, -z));
-            v.Write(new Vector3(0, 0, -1));
-            v.Write(new Vector3(-x, -y, -z));
-            v.Write(new Vector3(0, 0, -1));
-            v.Write(new Vector3(x, -y, -z));
-            v.Write(new Vector3(0, 0, -1));
-            v.Write(new Vector3(-x, y, -z));
-            v.Write(new Vector3(0, 0, -1));
-            v.Write(new Vector3(x, y, -z));
-            v.Write(new Vector3(0, 0, -1));
-            v.Write(new Vector3(x, -y, -z));
-            v.Write(new Vector3(0, 0, -1));
+            for (int i = 1; i != -3; i -= 2)
+            {
+                vStream.Write(new Vector3(-x, y, i * z));
+                vStream.Write(new Vector3(0, 0, i));
+                vStream.Write(new Vector3(-x, -y, i * z));
+                vStream.Write(new Vector3(0, 0, i));
+                vStream.Write(new Vector3(x, -y, i * z));
+                vStream.Write(new Vector3(0, 0, i));
+                vStream.Write(new Vector3(-x, y, i * z));
+                vStream.Write(new Vector3(0, 0, i));
+                vStream.Write(new Vector3(x, y, i * z));
+                vStream.Write(new Vector3(0, 0, i));
+                vStream.Write(new Vector3(x, -y, i * z));
+                vStream.Write(new Vector3(0, 0, i));
+            }
 
-            v.Write(new Vector3(x, y, -z));
-            v.Write(new Vector3(1, 0, 0));
-            v.Write(new Vector3(x, -y, -z));
-            v.Write(new Vector3(1, 0, 0));
-            v.Write(new Vector3(x, -y, z));
-            v.Write(new Vector3(1, 0, 0));
-            v.Write(new Vector3(x, y, -z));
-            v.Write(new Vector3(1, 0, 0));
-            v.Write(new Vector3(x, y, z));
-            v.Write(new Vector3(1, 0, 0));
-            v.Write(new Vector3(x, -y, z));
-            v.Write(new Vector3(1, 0, 0));
-
-            v.Write(new Vector3(-x, y, z));
-            v.Write(new Vector3(0, 0, 1));
-            v.Write(new Vector3(-x, -y, z));
-            v.Write(new Vector3(0, 0, 1));
-            v.Write(new Vector3(x, -y, z));
-            v.Write(new Vector3(0, 0, 1));
-            v.Write(new Vector3(-x, y, z));
-            v.Write(new Vector3(0, 0, 1));
-            v.Write(new Vector3(x, y, z));
-            v.Write(new Vector3(0, 0, 1));
-            v.Write(new Vector3(x, -y, z));
-            v.Write(new Vector3(0, 0, 1));
-
-            v.Write(new Vector3(-x, y, -z));
-            v.Write(new Vector3(0, 1, 0));
-            v.Write(new Vector3(x, y, -z));
-            v.Write(new Vector3(0, 1, 0));
-            v.Write(new Vector3(-x, y, z));
-            v.Write(new Vector3(0, 1, 0));
-            v.Write(new Vector3(x, y, z));
-            v.Write(new Vector3(0, 1, 0));
-            v.Write(new Vector3(-x, y, z));
-            v.Write(new Vector3(0, 1, 0));
-            v.Write(new Vector3(x, y, -z));
-            v.Write(new Vector3(0, 1, 0));
-
-            v.Write(new Vector3(-x, -y, -z));
-            v.Write(new Vector3(0, -1, 0));
-            v.Write(new Vector3(x, -y, -z));
-            v.Write(new Vector3(0, -1, 0));
-            v.Write(new Vector3(-x, -y, z));
-            v.Write(new Vector3(0, -1, 0));
-            v.Write(new Vector3(x, -y, z));
-            v.Write(new Vector3(0, -1, 0));
-            v.Write(new Vector3(-x, -y, z));
-            v.Write(new Vector3(0, -1, 0));
-            v.Write(new Vector3(x, -y, -z));
-            v.Write(new Vector3(0, -1, 0));
+            for (int i = 1; i != -3; i -= 2)
+            {
+                vStream.Write(new Vector3(-x, i * y, -z));
+                vStream.Write(new Vector3(0, i, 0));
+                vStream.Write(new Vector3(x, i * y, -z));
+                vStream.Write(new Vector3(0, i, 0));
+                vStream.Write(new Vector3(-x, i * y, z));
+                vStream.Write(new Vector3(0, i, 0));
+                vStream.Write(new Vector3(x, i * y, z));
+                vStream.Write(new Vector3(0, i, 0));
+                vStream.Write(new Vector3(-x, i *y, z));
+                vStream.Write(new Vector3(0, i, 0));
+                vStream.Write(new Vector3(x, i * y, -z));
+                vStream.Write(new Vector3(0, i, 0));
+            }
 
             vertexBuffer.Unmap();
 
             MeshBuffer indexBuffer = mesh.GetIndexBuffer();
-            SharpDX.DataStream i = indexBuffer.Map();
+            SharpDX.DataStream iStream = indexBuffer.Map();
             for (short ii = 0; ii < mesh.VertexCount; ii++ )
-                i.Write(ii);
+                iStream.Write(ii);
             indexBuffer.Unmap();
-
-            MeshAttributeRange attributes = new MeshAttributeRange()
-            {
-                FaceCount = mesh.FaceCount,
-                FaceStart = 0,
-                VertexCount = mesh.VertexCount,
-                VertexStart = 0,
-                Id = 0
-            };
-            //mesh.SetAttributeTable(new MeshAttributeRange[] { attributes });
 
             mesh.Commit();
 
@@ -186,33 +147,147 @@ namespace DemoFramework
             shapes.Add(shape, mesh);
             return mesh;
         }
+        */
+
+        Vector3 GetVectorByAxis(Vector3 vector, int axis)
+        {
+            switch (axis)
+            {
+                case 0:
+                    return new Vector3(vector.Y, vector.Z, vector.X);
+                case 1:
+                    return new Vector3(vector.Z, vector.Y, vector.X);
+                default:
+                    return vector;
+            }
+        }
 
         Mesh CreateCylinderShape(CylinderShape shape)
         {
-            int upAxis = shape.UpAxis;
+            int up = shape.UpAxis;
             float radius = shape.Radius;
-            float halfHeight = shape.HalfExtentsWithoutMargin[upAxis] + shape.Margin;
+            float halfHeight = shape.HalfExtentsWithoutMargin[up] + shape.Margin;
 
-            Mesh mesh = Mesh.CreateCylinder(device, radius, radius, halfHeight * 2, 16, 1);
-            if (upAxis == 0)
+            int numSteps = 10;
+            float angleStep = (2 * (float)Math.PI) / numSteps;
+
+            InputElement[] elements = new InputElement[] {
+                new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
+                new InputElement("NORMAL", 0, Format.R32G32B32_Float, 12, 0, InputClassification.PerVertexData, 0)
+            };
+            Mesh mesh = new Mesh(device, elements, "POSITION", 2 + 6 * numSteps, 4 * numSteps, MeshFlags.None);
+
+            MeshBuffer vertexBuffer = mesh.GetVertexBuffer(0);
+            SharpDX.DataStream vStream = vertexBuffer.Map();
+
+            MeshBuffer indexBuffer = mesh.GetIndexBuffer();
+            SharpDX.DataStream iStream = indexBuffer.Map();
+            int index = 0;
+
+            Vector3 normal = GetVectorByAxis(Vector3.UnitY, up);
+            normal.Normalize();
+
+            int baseIndex = index;
+            vStream.Write(GetVectorByAxis(new Vector3(0, halfHeight, 0), up));
+            vStream.Write(normal);
+            
+            vStream.Write(GetVectorByAxis(new Vector3(0, halfHeight, radius), up));
+            vStream.Write(normal);
+            index += 2;
+
+            for (int i = 1; i < numSteps; i++)
             {
-                Matrix[] transform = new Matrix[] { Matrix.RotationY((float)Math.PI / 2) };
-                Mesh meshRotated = Mesh.Concatenate(device, new Mesh[] { mesh }, MeshFlags.Managed, transform, null);
-                mesh.Dispose();
-                mesh = meshRotated;
+                float x = radius * (float)Math.Sin(i * angleStep);
+                float z = radius * (float)Math.Cos(i * angleStep);
+
+                vStream.Write(GetVectorByAxis(new Vector3(x, halfHeight, z), up));
+                vStream.Write(normal);
+
+                iStream.Write((short)baseIndex);
+                iStream.Write((short)(index - 1));
+                iStream.Write((short)(index++));
             }
-            else if (upAxis == 1)
+            iStream.Write((short)baseIndex);
+            iStream.Write((short)(index - 1));
+            iStream.Write((short)(baseIndex + 1));
+
+
+            normal = GetVectorByAxis(-Vector3.UnitY, up);
+
+            baseIndex = index;
+            vStream.Write(GetVectorByAxis(new Vector3(0, -halfHeight, 0), up));
+            vStream.Write(normal);
+
+            vStream.Write(GetVectorByAxis(new Vector3(0, -halfHeight, radius), up));
+            vStream.Write(normal);
+            index += 2;
+
+            for (int i = 1; i < numSteps; i++)
             {
-                Matrix[] transform = new Matrix[] { Matrix.RotationX((float)Math.PI / 2) };
-                Mesh cylinderMeshRot = Mesh.Concatenate(device, new Mesh[] { mesh }, MeshFlags.Managed, transform, null);
-                mesh.Dispose();
-                mesh = cylinderMeshRot;
+                float x = radius * (float)Math.Sin(i * angleStep);
+                float z = radius * (float)Math.Cos(i * angleStep);
+
+                vStream.Write(GetVectorByAxis(new Vector3(x, -halfHeight, z), up));
+                vStream.Write(normal);
+
+                iStream.Write((short)baseIndex);
+                iStream.Write((short)(index - 1));
+                iStream.Write((short)(index++));
             }
+            iStream.Write((short)baseIndex);
+            iStream.Write((short)(index - 1));
+            iStream.Write((short)(baseIndex + 1));
+
+
+            normal = GetVectorByAxis(new Vector3(0, 0, radius), up);
+            normal.Normalize();
+
+            baseIndex = index;
+            vStream.Write(GetVectorByAxis(new Vector3(0, halfHeight, radius), up));
+            vStream.Write(normal);
+
+            vStream.Write(GetVectorByAxis(new Vector3(0, -halfHeight, radius), up));
+            vStream.Write(normal);
+            index += 2;
+
+            for (int i = 1; i < numSteps + 1; i++)
+            {
+                float x = radius * (float)Math.Sin(i * angleStep);
+                float z = radius * (float)Math.Cos(i * angleStep);
+
+                normal = GetVectorByAxis(new Vector3(x, 0, z), up);
+                normal.Normalize();
+
+                vStream.Write(GetVectorByAxis(new Vector3(x, halfHeight, z), up));
+                vStream.Write(normal);
+
+                vStream.Write(GetVectorByAxis(new Vector3(x, -halfHeight, z), up));
+                vStream.Write(normal);
+
+                iStream.Write((short)(index - 2));
+                iStream.Write((short)(index - 1));
+                iStream.Write((short)(index));
+                iStream.Write((short)(index));
+                iStream.Write((short)(index - 1));
+                iStream.Write((short)(++index));
+                index++;
+            }
+            iStream.Write((short)(index - 2));
+            iStream.Write((short)(index - 1));
+            iStream.Write((short)(baseIndex));
+            iStream.Write((short)(baseIndex));
+            iStream.Write((short)(index - 1));
+            iStream.Write((short)(baseIndex + 1));
+
+            vertexBuffer.Unmap();
+            indexBuffer.Unmap();
+
+            mesh.Commit();
+
             shapes.Add(shape, mesh);
-
             return mesh;
         }
-
+        /*
         Mesh CreateGImpactMeshShape(GImpactMeshShape shape)
         {
             BulletSharp.DataStream verts, indices;
@@ -425,10 +500,10 @@ namespace DemoFramework
                 case BroadphaseNativeType.BoxShape:
                     mesh = CreateBoxShape((BoxShape)shape);
                     break;
-                /*
                 case BroadphaseNativeType.CylinderShape:
                     mesh = CreateCylinderShape((CylinderShape)shape);
                     break;
+                /*
                 case BroadphaseNativeType.ConeShape:
                     mesh = CreateConeShape((ConeShape)shape);
                     break;

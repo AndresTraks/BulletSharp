@@ -46,6 +46,7 @@ namespace DemoFramework
         public Effect Effect { get; private set; }
         public EffectTechnique Technique { get; private set; }
         public EffectPass Pass { get; private set; }
+        InputLayout inputLayout;
 
         protected int Width { get; set; }
         protected int Height { get; set; }
@@ -167,7 +168,6 @@ namespace DemoFramework
             // Create Device and SwapChain
             Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.None, desc, out _device, out _swapChain);
 
-            // Ignore all windows events
             Factory factory = SwapChain.GetParent<Factory>();
             factory.MakeWindowAssociation(Form.Handle, WindowAssociationFlags.None);
 
@@ -236,6 +236,11 @@ namespace DemoFramework
             effectConstantBuffer = Effect.GetConstantBufferByIndex(1);
             effectConstantBuffer.SetConstantBuffer(sceneConstantsBuffer);
 
+            inputLayout = new InputLayout(Device, Pass.Description.Signature, new[] { 
+                new InputElement("POSITION", 0, Format.R32G32B32_Float, InputElement.AppendAligned, 0, InputClassification.PerVertexData, 0),
+                new InputElement("NORMAL", 0, Format.R32G32B32_Float, InputElement.AppendAligned, 0, InputClassification.PerVertexData, 0)
+            });
+
             RasterizerStateDescription desc = new RasterizerStateDescription()
             {
                 CullMode = CullMode.None,
@@ -295,6 +300,8 @@ namespace DemoFramework
             }
 
             Device.OutputMerger.SetDepthStencilState(depthStencilState, 0);
+
+            Device.InputAssembler.SetInputLayout(inputLayout);
 
             OnRender();
 
@@ -363,7 +370,15 @@ namespace DemoFramework
             Freelook = new FreeLook();
             Ambient = (Color4)Color.Gray;
 
-            OnInitializeDevice();
+            try
+            {
+                OnInitializeDevice();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "Could not create DirectX 10 device.");
+                return;
+            }
 
             Info = new InfoText(Device);
             MeshFactory = new MeshFactory(Device);

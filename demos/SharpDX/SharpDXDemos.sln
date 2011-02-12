@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicDemo", "BasicDemo\Basi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoFramework", "DemoFramework\DemoFramework.csproj", "{0E048765-13EB-4173-A27C-0433E8A68CBD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CcdPhysicsDemo", "CcdPhysicsDemo\CcdPhysicsDemo.csproj", "{9B330CD8-CE97-4D6D-97A9-52F722C1DACF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,16 @@ Global
 		{0E048765-13EB-4173-A27C-0433E8A68CBD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{0E048765-13EB-4173-A27C-0433E8A68CBD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0E048765-13EB-4173-A27C-0433E8A68CBD}.Release|x86.ActiveCfg = Release|Any CPU
+		{9B330CD8-CE97-4D6D-97A9-52F722C1DACF}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{9B330CD8-CE97-4D6D-97A9-52F722C1DACF}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{9B330CD8-CE97-4D6D-97A9-52F722C1DACF}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{9B330CD8-CE97-4D6D-97A9-52F722C1DACF}.Debug|x86.ActiveCfg = Debug|x86
+		{9B330CD8-CE97-4D6D-97A9-52F722C1DACF}.Debug|x86.Build.0 = Debug|x86
+		{9B330CD8-CE97-4D6D-97A9-52F722C1DACF}.Release|Any CPU.ActiveCfg = Release|x86
+		{9B330CD8-CE97-4D6D-97A9-52F722C1DACF}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{9B330CD8-CE97-4D6D-97A9-52F722C1DACF}.Release|Mixed Platforms.Build.0 = Release|x86
+		{9B330CD8-CE97-4D6D-97A9-52F722C1DACF}.Release|x86.ActiveCfg = Release|x86
+		{9B330CD8-CE97-4D6D-97A9-52F722C1DACF}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

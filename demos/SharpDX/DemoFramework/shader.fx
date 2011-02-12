@@ -21,7 +21,7 @@ struct VS_OUT
 {
     float4 Pos : SV_POSITION;
 	float3 Normal : TEXCOORD0;
-	float3 lightVec : TEXCOORD1;
+	float3 Pos2 : TEXCOORD2;
 };
 
 VS_OUT VS(VS_IN input)
@@ -29,22 +29,21 @@ VS_OUT VS(VS_IN input)
     VS_OUT output = (VS_OUT)0;
 
     output.Pos = mul(World, input.Pos);
+	output.Pos2 = output.Pos;
     output.Pos = mul(View, output.Pos);
     output.Pos = mul(Projection, output.Pos);
 
 	output.Normal = mul(WorldInverseTranspose, input.Normal).xyz;
-
-	float3 Lamp0Pos = float3(20, 50, 20);
-	float4 Po = float4(input.Pos.xyz,1);
-	float3 Pw = mul(World, Po).xyz;
-	output.lightVec = normalize(Lamp0Pos - Pw);
 
     return output;
 }
 
 float4 PS( VS_OUT input ) : SV_Target
 {
-	float shade = 0.7+0.3*saturate(dot(input.lightVec, input.Normal));
+	float3 Lamp0Pos = float3(20, 30, 20);
+	float3 light = normalize(Lamp0Pos - input.Pos2);
+
+	float shade = 0.5+0.5*saturate(dot(light, input.Normal));
 	float4 color = Color;
 	color.rgb *= shade;
     return color;
