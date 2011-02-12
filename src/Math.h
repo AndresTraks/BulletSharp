@@ -9,6 +9,7 @@
 #define Matrix Matrix4^
 #elif GRAPHICS_MOGRE
 #define Matrix Matrix4^
+using namespace Mogre;
 #elif GRAPHICS_OPENTK
 #ifdef BT_USE_DOUBLE_PRECISION
 #define Matrix Matrix4d
