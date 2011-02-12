@@ -16,3 +16,4 @@ set OPTS=BulletSharp.vcxproj /p:VCBuildToolPath=%VCPATH%
 %MSBUILD% %OPTS% /p:Configuration="Release XNA 3.1"
 %MSBUILD% %OPTS% /p:Configuration="Release XNA 4.0"
 %MSBUILD% %OPTS% /p:Configuration="Release SlimMath"
+%MSBUILD% %OPTS% /p:Configuration="Release Windows API Code Pack"

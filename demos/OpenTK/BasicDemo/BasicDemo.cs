@@ -10,11 +10,13 @@ namespace BasicDemo
     {
         Physics physics;
         float angle = 0.0f;
+        float frameTime; int fps;
 
         public BasicDemo()
             : base(800, 600,
             new GraphicsMode(), "BulletSharp OpenTK Demo")
         {
+            VSync = VSyncMode.Off;
             physics = new Physics();
         }
 
@@ -24,8 +26,8 @@ namespace BasicDemo
             GL.ClearColor(Color.MidnightBlue);
 
             GL.Enable(EnableCap.ColorMaterial);
-            //GL.Enable(EnableCap.Light0);
-            //GL.Enable(EnableCap.Lighting);
+            GL.Enable(EnableCap.Light0);
+            GL.Enable(EnableCap.Lighting);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -38,6 +40,15 @@ namespace BasicDemo
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+            frameTime += (float)e.Time;
+            fps++;
+            if (frameTime >= 1)
+            {
+                frameTime = 0;
+                Title = "BulletSharp OpenTK Demo, FPS = " + fps.ToString();
+                fps = 0;
+            }
+
             GL.Viewport(0, 0, Width, Height);
 
             float aspect_ratio = Width / (float)Height;
@@ -52,6 +63,8 @@ namespace BasicDemo
             angle += (float)e.Time*100;
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+            InitCube();
 
             foreach (RigidBody body in physics.World.CollisionObjectArray)
             {
@@ -69,10 +82,12 @@ namespace BasicDemo
                 GL.LoadMatrix(ref modelLookAt);
 
                 if (body.ActivationState == ActivationState.ActiveTag)
-                    DrawCube(Color.Orange);
+                    DrawCube2(Color.Orange, 1);
                 else
-                    DrawCube(Color.Red);
+                    DrawCube2(Color.Red, 1);
             }
+
+            UninitCube();
 
             SwapBuffers();
         }
@@ -118,6 +133,47 @@ namespace BasicDemo
             GL.Vertex3(size, -size, size);
 
             GL.End();
+        }
+
+        float[] vertices = new float[] {1,1,1,  -1,1,1,  -1,-1,1,  1,-1,1,
+            1,1,1,  1,-1,1,  1,-1,-1,  1,1,-1,
+            1,1,1,  1,1,-1,  -1,1,-1,  -1,1,1,
+            -1,1,1,  -1,1,-1,  -1,-1,-1,  -1,-1,1,
+            -1,-1,-1,  1,-1,-1,  1,-1,1,  -1,-1,1,
+            1,-1,-1,  -1,-1,-1,  -1,1,-1,  1,1,-1};
+
+        float[] normals = new float[] {0,0,1,  0,0,1,  0,0,1,  0,0,1,
+            1,0,0,  1,0,0,  1,0,0, 1,0,0,
+            0,1,0,  0,1,0,  0,1,0, 0,1,0,
+            -1,0,0,  -1,0,0, -1,0,0,  -1,0,0,
+            0,-1,0,  0,-1,0,  0,-1,0,  0,-1,0,
+            0,0,-1,  0,0,-1,  0,0,-1,  0,0,-1};
+
+        byte[] indices = {0,1,2,3,
+            4,5,6,7,
+            8,9,10,11,
+            12,13,14,15,
+            16,17,18,19,
+            20,21,22,23};
+
+        void InitCube()
+        {
+            GL.EnableClientState(ArrayCap.NormalArray);
+            GL.EnableClientState(ArrayCap.VertexArray);
+            GL.NormalPointer(NormalPointerType.Float, 0, normals);
+            GL.VertexPointer(3, VertexPointerType.Float, 0, vertices);
+        }
+
+        void UninitCube()
+        {
+            GL.DisableClientState(ArrayCap.VertexArray);
+            GL.DisableClientState(ArrayCap.NormalArray);
+        }
+
+        void DrawCube2(Color color, float size)
+        {
+            GL.Color3(color);
+            GL.DrawElements(BeginMode.Quads, 24, DrawElementsType.UnsignedByte, indices);
         }
     }
 }

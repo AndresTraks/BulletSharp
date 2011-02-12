@@ -12,21 +12,13 @@ if exist bin\SlimDX\data goto _binsd
 mkdir bin\SlimDX\data
 :_binsd
 
+if exist bin\SharpDX\data goto _binsh
+mkdir bin\SharpDX
+:_binsh
+
 if exist bin\OpenTK goto _bino
 mkdir bin\OpenTK
 :_bino
-
-if exist bin\XNA goto _binx
-mkdir bin\XNA
-:_binx
-
-if exist bin\XNA4 goto _binx4
-mkdir bin\XNA4
-:_binx4
-
-if exist bin\Mogre goto _binm
-mkdir bin\Mogre
-:_binm
 
 if exist bin goto _src
 mkdir src
@@ -35,6 +27,10 @@ mkdir src
 if exist src\SlimDX goto _srcs
 mkdir src\SlimDX
 :_srcs
+
+if exist src\SharpDX goto _srcsh
+mkdir src\SharpDX
+:_srcsh
 
 if exist src\OpenTK goto _srco
 mkdir src\OpenTK
@@ -54,9 +50,8 @@ mkdir src\Mogre
 
 copy "..\Release SlimDX\BulletSharp.dll" bin\SlimDX\
 copy "..\Release OpenTK\BulletSharp.dll" bin\OpenTK\
-copy "..\Release XNA 3.1\BulletSharp.dll" bin\XNA\
-copy "..\vs2010\Release XNA 4.0\BulletSharp.dll" bin\XNA4\
-copy "..\Release Mogre\BulletSharp.dll" bin\Mogre\
+copy "..\vs2010\Release SharpDX\BulletSharp.dll" bin\SharpDX\
+
 
 copy SlimDX\DemoFramework\bin\x86\Release\DemoFramework.dll bin\SlimDX\
 rem copy SlimDX\AllBulletDemos\bin\Release\AllBulletDemos.exe bin\SlimDX\
@@ -92,18 +87,29 @@ cmd /C svn export SlimDX\SimplestDemo src\SlimDX\SimplestDemo --force
 cmd /C svn export SlimDX\SoftDemo src\SlimDX\SoftDemo --force
 cmd /C svn export SlimDX\VehicleDemo src\SlimDX\VehicleDemo --force
 
+
+copy SharpDX\DemoFramework\bin\Release\DemoFramework.dll bin\SharpDX\
+copy SharpDX\DemoFramework\bin\Release\shader.fx bin\SharpDX\
+copy SharpDX\BasicDemo\bin\Release\BasicDemo.exe bin\SharpDX\
+copy SharpDX\CcdPhysicsDemo\bin\Release\CcdPhysicsDemo.exe bin\SharpDX\
+copy SharpDX\SharpDX.D3DCompiler.dll bin\SharpDX\
+copy SharpDX\SharpDX.Direct3D10.dll bin\SharpDX\
+copy SharpDX\SharpDX.dll bin\SharpDX\
+copy SharpDX\SharpDX.DXGI.dll bin\SharpDX\
+copy SharpDX\SharpDX.Error.dll bin\SharpDX\
+
+cmd /C svn export SharpDX\DemoFramework src\SharpDX\DemoFramework --force
+cmd /C svn export SharpDX\BasicDemo src\SharpDX\BasicDemo --force
+cmd /C svn export SharpDX\CcdPhysicsDemo src\SharpDX\CcdPhysicsDemo --force
+
+
 copy OpenTK\BasicDemo\bin\x86\release\BasicDemo.exe bin\OpenTK\
 copy OpenTK\BasicDemo\bin\x86\release\OpenTK.dll bin\OpenTK\
-copy XNA\BasicDemo\bin\x86\release\BasicDemo.exe bin\XNA\
-copy XNA4\BasicDemo\bin\x86\release\BasicDemo.exe bin\XNA4\
-copy Mogre\BasicDemo\bin\x86\release\BasicDemo.exe bin\Mogre\
-copy Mogre\BasicDemo\box.mesh bin\Mogre\
-copy Mogre\BasicDemo\materials.material bin\Mogre\
-copy Mogre\BasicDemo\plugins.cfg bin\Mogre\
-copy Mogre\BasicDemo\resources.cfg bin\Mogre\
-copy Mogre\readme.txt bin\Mogre\
 
 cmd /C svn export OpenTK\BasicDemo src\OpenTK\BasicDemo --force
 cmd /C svn export XNA\BasicDemo src\XNA\BasicDemo --force
 cmd /C svn export XNA4\BasicDemo src\XNA4\BasicDemo --force
 cmd /C svn export Mogre\BasicDemo src\Mogre\BasicDemo --force
+
+"%PROGRAMFILES%\7-Zip\7z.exe" a bulletsharp-demos.7z bin src
+"%PROGRAMFILES%\7-Zip\7z.exe" a bulletsharp-demos.zip bin src
