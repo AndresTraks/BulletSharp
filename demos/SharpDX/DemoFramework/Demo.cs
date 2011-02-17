@@ -386,7 +386,7 @@ namespace DemoFramework
             Initialize();
 
             clock.Start();
-            MessagePump.Run(Form, () =>
+            RenderLoop.Run(Form, () =>
             {
                 OnHandleInput();
                 Update();
