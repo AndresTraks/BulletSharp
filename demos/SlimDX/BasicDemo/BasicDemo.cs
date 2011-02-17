@@ -55,8 +55,6 @@ namespace BasicDemo
             Device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.LightGray, 1.0f, 0);
             Device.BeginScene();
 
-            Device.SetTransform(TransformState.View, Freelook.View);
-
             foreach (RigidBody body in PhysicsContext.World.CollisionObjectArray)
             {
                 Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);

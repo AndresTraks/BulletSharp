@@ -320,7 +320,7 @@ namespace DemoFramework
             NearPlane = 0.1f;
             FarPlane = 200f;
             FieldOfView = (float)Math.PI / 4;
-            Freelook = new FreeLook();
+            Freelook = new FreeLook(Input);
             Ambient = Color.Gray.ToArgb();
 
             OnInitializeDevice();
@@ -407,6 +407,7 @@ namespace DemoFramework
 
             Matrix projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, NearPlane, FarPlane);
             Device.SetTransform(TransformState.Projection, projection);
+            Device.SetTransform(TransformState.View, Freelook.View);
 
             Device.SetRenderState(RenderState.Ambient, Ambient);
 
@@ -424,7 +425,8 @@ namespace DemoFramework
         /// </summary>
         protected virtual void OnUpdate()
         {
-            Freelook.Update(FrameDelta, Input);
+            if (Freelook.Update(FrameDelta))
+                Device.SetTransform(TransformState.View, Freelook.View);
             PhysicsContext.Update(FrameDelta);
         }
 

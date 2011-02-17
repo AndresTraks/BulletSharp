@@ -154,10 +154,6 @@ namespace VehicleDemo
                 Freelook.SetEyeTarget(pos2 + new Vector3(30, 10, 0), pos2);
                 Device.SetTransform(TransformState.View, Freelook.View);
             }
-            else if (ViewMode == 3)
-            {
-                Device.SetTransform(TransformState.View, Freelook.View);
-            }
 
             Device.Material = wheelMaterial;
             int i;

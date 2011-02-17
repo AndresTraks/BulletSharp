@@ -56,6 +56,7 @@ copy "..\vs2010\Release SharpDX\BulletSharp.dll" bin\SharpDX\
 copy SlimDX\DemoFramework\bin\x86\Release\DemoFramework.dll bin\SlimDX\
 rem copy SlimDX\AllBulletDemos\bin\Release\AllBulletDemos.exe bin\SlimDX\
 copy SlimDX\BasicDemo\bin\x86\Release\BasicDemo.exe bin\SlimDX\
+copy SlimDX\BenchmarkDemo\bin\x86\Release\BenchmarkDemo.exe bin\SlimDX\
 copy SlimDX\Box2dDemo\bin\x86\Release\Box2dDemo.exe bin\SlimDX\
 copy SlimDX\CcdPhysicsDemo\bin\x86\Release\CcdPhysicsDemo.exe bin\SlimDX\
 copy SlimDX\ConstraintDemo\bin\x86\Release\ConstraintDemo.exe bin\SlimDX\
@@ -74,6 +75,7 @@ copy SlimDX\SoftDemo\data\cube.node bin\SlimDX\data\
 rem cmd /C svn export SlimDX\AllBulletDemos src\SlimDX\AllBulletDemos --force
 cmd /C svn export SlimDX\DemoFramework src\SlimDX\DemoFramework --force
 cmd /C svn export SlimDX\BasicDemo src\SlimDX\BasicDemo --force
+cmd /C svn export SlimDX\BenchmarkDemo src\SlimDX\BenchmarkDemo --force
 cmd /C svn export SlimDX\Box2dDemo src\SlimDX\Box2dDemo --force
 cmd /C svn export SlimDX\CcdPhysicsDemo src\SlimDX\CcdPhysicsDemo --force
 cmd /C svn export SlimDX\ConstraintDemo src\SlimDX\ConstraintDemo --force

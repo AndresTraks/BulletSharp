@@ -367,7 +367,7 @@ namespace DemoFramework
             FarPlane = 200.0f;
 
             FieldOfView = (float)Math.PI / 4;
-            Freelook = new FreeLook();
+            Freelook = new FreeLook(Input);
             Ambient = (Color4)Color.Gray;
 
             try
@@ -401,7 +401,7 @@ namespace DemoFramework
 
         protected virtual void OnUpdate()
         {
-            if (Freelook.Update(FrameDelta, Input))
+            if (Freelook.Update(FrameDelta))
                 SetSceneBuffer();
             PhysicsContext.Update(FrameDelta);
         }

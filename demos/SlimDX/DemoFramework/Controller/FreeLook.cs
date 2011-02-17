@@ -10,14 +10,16 @@ namespace DemoFramework
         public Vector3 Target { get; private set; }
         public Matrix View { get; private set; }
         public Vector3 UpVector { get; private set; }
+        public Input Input { get; set; }
 
         MouseController mouseController;
 
-        public FreeLook()
+        public FreeLook(Input input)
         {
             Target = Vector3.UnitX;
             UpVector = Vector3.UnitY;
-            mouseController = new MouseController();
+            Input = input;
+            mouseController = new MouseController(Input);
             Recalculate();
         }
 
@@ -29,37 +31,35 @@ namespace DemoFramework
             Recalculate();
         }
 
-        public void Update(float frameDelta, Input input)
+        public bool Update(float frameDelta)
         {
-            bool changed = mouseController.Update(input);
-
-            if (changed == false && input.KeysDown.Count == 0)
-                return;
+            if (mouseController.Update() == false && Input.KeysDown.Count == 0)
+                return false;
 
             Vector3 direction = Vector3.Normalize(-mouseController.Vector);
 
-            if (input.KeysDown.Count != 0)
+            if (Input.KeysDown.Count != 0)
             {
                 Vector3 relDirection = frameDelta * direction;
                 Vector3 translation = Vector3.Zero;
 
-                float flySpeed = (input.KeysDown.Contains(Keys.ShiftKey)) ? 15 : 5;
+                float flySpeed = Input.KeysDown.Contains(Keys.ShiftKey) ? 15 : 5;
 
-                if (input.KeysDown.Contains(Keys.W))
+                if (Input.KeysDown.Contains(Keys.W))
                 {
                     translation = flySpeed * relDirection;
                 }
-                if (input.KeysDown.Contains(Keys.S))
+                if (Input.KeysDown.Contains(Keys.S))
                 {
                     translation -= flySpeed * relDirection;
                 }
 
-                if (input.KeysDown.Contains(Keys.A))
+                if (Input.KeysDown.Contains(Keys.A))
                 {
                     Vector3 sideways = Vector3.TransformCoordinate(relDirection, Matrix.RotationY((float)-Math.PI / 2));
                     translation += new Vector3(sideways.X, 0, sideways.Z);
                 }
-                if (input.KeysDown.Contains(Keys.D))
+                if (Input.KeysDown.Contains(Keys.D))
                 {
                     Vector3 sideways = Vector3.TransformCoordinate(relDirection, Matrix.RotationY((float)Math.PI / 2));
                     translation += new Vector3(sideways.X, 0, sideways.Z);
@@ -70,6 +70,8 @@ namespace DemoFramework
             Target = Eye + direction;
 
             Recalculate();
+
+            return true;
         }
 
         void Recalculate()

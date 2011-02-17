@@ -1688,6 +1688,7 @@
     <ClCompile Include="..\src\EmptyShape.cpp" />
     <ClCompile Include="..\src\Generic6DofConstraint.cpp" />
     <ClCompile Include="..\src\Generic6DofSpringConstraint.cpp" />
+    <ClCompile Include="..\src\GeometryUtil.cpp" />
     <ClCompile Include="..\src\GhostObject.cpp" />
     <ClCompile Include="..\src\GImpactBvh.cpp" />
     <ClCompile Include="..\src\GImpactCollisionAlgorithm.cpp" />
@@ -1883,6 +1884,7 @@
     <ClInclude Include="..\src\Enums.h" />
     <ClInclude Include="..\src\Generic6DofConstraint.h" />
     <ClInclude Include="..\src\Generic6DofSpringConstraint.h" />
+    <ClInclude Include="..\src\GeometryUtil.h" />
     <ClInclude Include="..\src\GhostObject.h" />
     <ClInclude Include="..\src\GImpactBvh.h" />
     <ClInclude Include="..\src\GImpactCollisionAlgorithm.h" />
