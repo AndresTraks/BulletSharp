@@ -393,6 +393,15 @@ void RigidBody::LinearVelocity::set(Vector3 value)
 
 BulletSharp::MotionState^ RigidBody::MotionState::get()
 {
+	/*
+	btMotionState* state = UnmanagedPointer->getMotionState();
+	if (_motionState != nullptr && _motionState->UnmanagedPointer == state)
+		return _motionState;
+
+	_motionState = gcnew BulletSharp::MotionState(state);
+	return _motionState;
+	*/
+
 	if (_motionState == nullptr)
 	{
 		btMotionState* state = UnmanagedPointer->getMotionState();

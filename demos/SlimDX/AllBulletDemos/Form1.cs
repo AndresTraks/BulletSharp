@@ -28,7 +28,7 @@ namespace AllBulletDemos
                     Type[] types = demo.GetExportedTypes();
                     foreach (Type type in types)
                     {
-                        if (type.BaseType.Name == "Game")
+                        if (type.BaseType.Name.Equals("Game"))
                         {
                             listBox1.Items.Add(Path.GetFileNameWithoutExtension(file));
                             break;
@@ -89,7 +89,7 @@ namespace AllBulletDemos
             Type[] types = demo.GetExportedTypes();
             foreach (Type type in types)
             {
-                if (type.BaseType.Name == "Game")
+                if (type.BaseType.Name.Equals("Game"))
                 {
                     game = (IDisposable)type.InvokeMember(null, BindingFlags.CreateInstance, null, null, null);
 

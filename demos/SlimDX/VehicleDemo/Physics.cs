@@ -163,9 +163,9 @@ namespace VehicleDemo
                 int totalTriangles = (width - 1) * (length - 1) * 2;
                 int totalVerts = width * length;
 
-                game.ground = new Mesh(game.Device, totalTriangles, totalVerts,
+                game.groundMesh = new Mesh(game.Device, totalTriangles, totalVerts,
                     MeshFlags.SystemMemory | MeshFlags.Use32Bit, VertexFormat.Position | VertexFormat.Normal);
-                SlimDX.DataStream data = game.ground.LockVertexBuffer(LockFlags.None);
+                SlimDX.DataStream data = game.groundMesh.LockVertexBuffer(LockFlags.None);
                 for (i = 0; i < width; i++)
                 {
                     for (int j = 0; j < length; j++)
@@ -193,10 +193,10 @@ namespace VehicleDemo
                         data.Position += 12;
                     }
                 }
-                game.ground.UnlockVertexBuffer();
+                game.groundMesh.UnlockVertexBuffer();
                 file.Close();
 
-                data = game.ground.LockIndexBuffer(LockFlags.None);
+                data = game.groundMesh.LockIndexBuffer(LockFlags.None);
                 for (i = 0; i < width - 1; i++)
                 {
                     for (int j = 0; j < length - 1; j++)
@@ -235,9 +235,9 @@ namespace VehicleDemo
                         */
                     }
                 }
-                game.ground.UnlockIndexBuffer();
+                game.groundMesh.UnlockIndexBuffer();
 
-                game.ground.ComputeNormals();
+                game.groundMesh.ComputeNormals();
             }
 
             CollisionShapes.Add(groundShape);

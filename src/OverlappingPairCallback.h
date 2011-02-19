@@ -6,7 +6,7 @@
 
 namespace BulletSharp
 {
-	ref class BroadphasePair;
+	ref struct BroadphasePair;
 	ref class BroadphaseProxy;
 	ref class Dispatcher;
 

@@ -56,6 +56,9 @@ BroadphaseProxy::BroadphaseProxy(btBroadphaseProxy* proxy)
 
 BroadphaseProxy^ BroadphaseProxy::GetObject(btBroadphaseProxy* broadphaseProxy)
 {
+	if (broadphaseProxy == 0)
+		return nullptr;
+
 	BroadphaseProxy^ proxy = GetObjectFromTable(BroadphaseProxy, broadphaseProxy);
 	if (proxy != nullptr)
 		return proxy;

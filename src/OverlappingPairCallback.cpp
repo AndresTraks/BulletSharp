@@ -14,6 +14,9 @@ OverlappingPairCallback::OverlappingPairCallback(btOverlappingPairCallback* pair
 
 OverlappingPairCallback^ OverlappingPairCallback::GetObject(btOverlappingPairCallback* pairCallback)
 {
+	if (pairCallback == 0)
+		return nullptr;
+
 	OverlappingPairCallback^ cache = GetObjectFromTable(OverlappingPairCallback, pairCallback);
 	if (cache != nullptr)
 		return cache;
@@ -36,7 +39,7 @@ OverlappingPairCallback^ OverlappingPairCallback::GetObject(btOverlappingPairCal
 	if (pairCache)
 		return gcnew HashedOverlappingPairCache(pairCache);
 
-	return nullptr;
+	throw gcnew InvalidOperationException("Unknown pairCallback");
 }
 
 OverlappingPairCallback::~OverlappingPairCallback()

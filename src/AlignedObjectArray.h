@@ -11,7 +11,7 @@ using namespace System::Collections;
 
 namespace BulletSharp
 {
-	ref class BroadphasePair;
+	ref struct BroadphasePair;
 	ref class CollisionObject;
 	ref class CollisionShape;
 	ref class CompoundShapeChild;

@@ -677,9 +677,10 @@ namespace DemoFramework
             togglingFullScreen = false;
         }
 
+        string ground = "Ground";
         protected void RenderWithMaterial(CollisionObject body)
         {
-            if ((string)body.UserObject == "Ground")
+            if (ground.Equals(body.UserObject))
                 Device.Material = GroundMaterial;
             else if (body.ActivationState == ActivationState.ActiveTag)
                 Device.Material = ActiveMaterial;

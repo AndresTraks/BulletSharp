@@ -90,7 +90,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class BroadphasePair
+	public ref struct BroadphasePair
 	{
 	private:
 		btBroadphasePair* _pair;

@@ -17,7 +17,7 @@ namespace VehicleDemo
         Light light;
         Material bodyMaterial, wheelMaterial;
         Mesh wheel;
-        public Mesh ground;
+        public Mesh groundMesh;
 
         Physics Physics
         {
@@ -71,8 +71,8 @@ namespace VehicleDemo
             if (disposing)
             {
                 wheel.Dispose();
-                if (ground != null)
-                    ground.Dispose();
+                if (groundMesh != null)
+                    groundMesh.Dispose();
             }
         }
 
@@ -134,6 +134,8 @@ namespace VehicleDemo
             base.OnHandleInput();
         }
 
+        string ground = "Ground";
+        string chassis = "Chassis";
         protected override void OnRender()
         {
             Device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.LightGray, 1.0f, 0);
@@ -173,15 +175,15 @@ namespace VehicleDemo
             foreach (RigidBody body in PhysicsContext.World.CollisionObjectArray)
             {
                 if (body.CollisionShape.ShapeType == BroadphaseNativeType.TerrainShape
-                    && (string)body.UserObject == "Ground")
+                    && ground.Equals(body.UserObject))
                 {
                     Device.SetTransform(TransformState.World, Matrix.Identity);
                     Device.Material = GroundMaterial;
-                    ground.DrawSubset(0);
+                    groundMesh.DrawSubset(0);
                     continue;
                 }
 
-                if ((string)body.UserObject == "Chassis")
+                if (chassis.Equals(body.UserObject))
                 {
                     Device.SetTransform(TransformState.World, body.WorldTransform);
 

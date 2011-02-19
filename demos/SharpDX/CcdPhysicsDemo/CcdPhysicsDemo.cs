@@ -34,6 +34,7 @@ namespace CcdPhysicsDemo
             base.OnInitialize();
         }
 
+        string ground = "Ground";
         protected override void OnRender()
         {
             Device.ClearRenderTargetView(RenderView, Ambient);
@@ -46,7 +47,7 @@ namespace CcdPhysicsDemo
                 foreach (RigidBody body in PhysicsContext.World.CollisionObjectArray)
                 {
                     Color color;
-                    if ((string)body.UserObject == "Ground")
+                    if (ground.Equals(body.UserObject))
                     {
                         color = Color.Green;
                     }
