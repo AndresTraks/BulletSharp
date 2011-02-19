@@ -10,6 +10,7 @@
 #include "ConvexShape.h"
 #include "Dispatcher.h"
 #include "ManifoldPoint.h"
+#include "OverlappingPairCache.h"
 #ifndef DISABLE_DEBUGDRAW
 #include "DebugDraw.h"
 #endif
@@ -747,7 +748,7 @@ int CollisionWorld::NumCollisionObjects::get()
 
 OverlappingPairCache^ CollisionWorld::PairCache::get()
 {
-	return _pairCache;
+	return dynamic_cast<OverlappingPairCache^>(OverlappingPairCache::GetObject(_world->getPairCache()));
 }
 
 btCollisionWorld* CollisionWorld::UnmanagedPointer::get()

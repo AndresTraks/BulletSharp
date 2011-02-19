@@ -13,8 +13,6 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandle
 
 	delete worldAabbMinTemp;
 	delete worldAabbMaxTemp;
-
-	_pairCache = pairCache;
 }
 
 AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles, BulletSharp::OverlappingPairCache^ pairCache)
@@ -27,8 +25,6 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandle
 
 	delete worldAabbMinTemp;
 	delete worldAabbMaxTemp;
-
-	_pairCache = pairCache;
 }
 
 AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles)
@@ -71,8 +67,6 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, i
 
 	delete worldAabbMinTemp;
 	delete worldAabbMaxTemp;
-
-	_pairCache = pairCache;
 }
 
 AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles, BulletSharp::OverlappingPairCache^ pairCache)
@@ -85,8 +79,6 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, i
 
 	delete worldAabbMinTemp;
 	delete worldAabbMaxTemp;
-
-	_pairCache = pairCache;
 }
 
 AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles)

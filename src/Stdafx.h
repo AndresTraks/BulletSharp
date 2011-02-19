@@ -274,6 +274,7 @@ using namespace System::Runtime::InteropServices;
 
 #include "Math.h"
 #include "Enums.h"
+#include "ObjectTable.h"
 
 inline void* GCHandleToVoidPtr(GCHandle handle)
 {
@@ -327,5 +328,12 @@ inline GCHandle VoidPtrToGCHandle(void* pointer)
 	if (managedObj == nullptr) \
 	managedObj = gcnew type(unmanagedPtr, param); \
 	return managedObj; }
+
+#define GetObjectFromTable(type, unmanagedPtr) ( \
+	(unmanagedPtr == 0) ? \
+	nullptr : \
+	(BulletSharp::ObjectTable::Contains((intptr_t)unmanagedPtr) == false) ? \
+	nullptr : BulletSharp::ObjectTable::GetObject<type^>((intptr_t)unmanagedPtr) \
+	)
 
 using namespace BulletSharp;

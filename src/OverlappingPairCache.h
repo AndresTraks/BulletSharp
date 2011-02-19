@@ -4,6 +4,8 @@
 
 #include "OverlappingPairCallback.h"
 
+using namespace msclr;
+
 namespace BulletSharp
 {
 	ref class AlignedBroadphasePairArray;
@@ -49,6 +51,7 @@ namespace BulletSharp
 
 	internal:
 		OverlapFilterCallback(btOverlapFilterCallback* callback);
+		static OverlapFilterCallback^ GetObject(btOverlapFilterCallback* callback);
 
 	public:
 		!OverlapFilterCallback();
@@ -56,7 +59,9 @@ namespace BulletSharp
 		~OverlapFilterCallback();
 
 	public:
-		bool NeedBroadphaseCollision(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1);
+		OverlapFilterCallback();
+
+		virtual bool NeedBroadphaseCollision(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1) = 0;
 
 		property bool IsDisposed
 		{
@@ -139,6 +144,9 @@ namespace BulletSharp
 
 	public ref class SortedOverlappingPairCache : OverlappingPairCache
 	{
+	internal:
+		SortedOverlappingPairCache(btSortedOverlappingPairCache* sortedPairCache);
+
 	public:
 		SortedOverlappingPairCache();
 
@@ -159,6 +167,9 @@ namespace BulletSharp
 
 	public ref class NullPairCache : OverlappingPairCache
 	{
+	internal:
+		NullPairCache(btNullPairCache* nullPairCache);
+
 	public:
 		NullPairCache();
 
@@ -167,5 +178,16 @@ namespace BulletSharp
 		{
 			btNullPairCache* get() new;
 		}
+	};
+
+	class OverlapFilterCallbackWrapper : public btOverlapFilterCallback
+	{
+	private:
+		auto_gcroot<OverlapFilterCallback^> _callback;
+
+	public:
+		OverlapFilterCallbackWrapper(OverlapFilterCallback^ callback);
+
+		virtual bool needBroadphaseCollision(btBroadphaseProxy* proxy0, btBroadphaseProxy* proxy1) const;
 	};
 };

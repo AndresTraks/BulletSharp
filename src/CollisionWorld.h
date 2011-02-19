@@ -409,7 +409,6 @@ namespace BulletSharp
 #ifndef DISABLE_DEBUGDRAW
 		DebugDraw^ _debugDraw;
 #endif
-		OverlappingPairCache^ _pairCache;
 
 	internal:
 		CollisionWorld(btCollisionWorld* world);

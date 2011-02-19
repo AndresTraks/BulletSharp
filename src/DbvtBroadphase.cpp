@@ -74,7 +74,6 @@ DbvtBroadphase::DbvtBroadphase()
 DbvtBroadphase::DbvtBroadphase(BulletSharp::OverlappingPairCache^ pairCache)
 : BroadphaseInterface(new btDbvtBroadphase(pairCache->UnmanagedPointer))
 {
-	_pairCache = pairCache;
 }
 
 #ifndef DISABLE_DBVT

@@ -48,8 +48,6 @@ namespace BulletSharp
 
 	private:
 		btBroadphaseInterface* _broadphase;
-	protected:
-		OverlappingPairCache^ _pairCache;
 
 	internal:
 		BroadphaseInterface(btBroadphaseInterface* broadphase);

@@ -2,11 +2,41 @@
 
 #include "BroadphaseProxy.h"
 #include "Dispatcher.h"
+#include "GhostObject.h"
+#include "OverlappingPairCache.h"
 #include "OverlappingPairCallback.h"
 
 OverlappingPairCallback::OverlappingPairCallback(btOverlappingPairCallback* pairCallback)
 {
 	_pairCallback = pairCallback;
+	ObjectTable::Add(this, _pairCallback);
+}
+
+OverlappingPairCallback^ OverlappingPairCallback::GetObject(btOverlappingPairCallback* pairCallback)
+{
+	OverlappingPairCallback^ cache = GetObjectFromTable(OverlappingPairCallback, pairCallback);
+	if (cache != nullptr)
+		return cache;
+
+#ifndef DISABLE_UNCOMMON
+	btGhostPairCallback* ghostPairCallback = dynamic_cast<btGhostPairCallback*>(pairCallback);
+	if (ghostPairCallback)
+		return gcnew GhostPairCallback(ghostPairCallback);
+#endif
+
+	btSortedOverlappingPairCache* sortedPairCache = dynamic_cast<btSortedOverlappingPairCache*>(pairCallback);
+	if (sortedPairCache)
+		return gcnew SortedOverlappingPairCache(sortedPairCache);
+
+	btNullPairCache* nullPairCache = dynamic_cast<btNullPairCache*>(pairCallback);
+	if (nullPairCache)
+		return gcnew NullPairCache(nullPairCache);
+
+	btHashedOverlappingPairCache* pairCache = dynamic_cast<btHashedOverlappingPairCache*>(pairCallback);
+	if (pairCache)
+		return gcnew HashedOverlappingPairCache(pairCache);
+
+	return nullptr;
 }
 
 OverlappingPairCallback::~OverlappingPairCallback()

@@ -1312,6 +1312,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ObjectTable.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Resources.rc"
 				>
 			</File>
@@ -2127,6 +2131,10 @@
 			</File>
 			<File
 				RelativePath=".\src\Math.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ObjectTable.h"
 				>
 			</File>
 			<File

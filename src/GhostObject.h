@@ -4,6 +4,7 @@
 
 #include "CollisionObject.h"
 #include "CollisionWorld.h"
+#include "OverlappingPairCallback.h"
 
 namespace BulletSharp
 {
@@ -72,6 +73,21 @@ namespace BulletSharp
 		virtual property btPairCachingGhostObject* UnmanagedPointer
 		{
 			btPairCachingGhostObject* get() new;
+		}
+	};
+
+	public ref class GhostPairCallback : OverlappingPairCallback
+	{
+	internal:
+		GhostPairCallback(btGhostPairCallback* ghostPairCallback);
+
+	public:
+		GhostPairCallback();
+
+	internal:
+		property btGhostPairCallback* UnmanagedPointer
+		{
+			btGhostPairCallback* get() new;
 		}
 	};
 }

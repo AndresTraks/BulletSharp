@@ -1710,6 +1710,7 @@
     <ClCompile Include="..\src\MotionState.cpp" />
     <ClCompile Include="..\src\MultiMaterialTriangleMeshShape.cpp" />
     <ClCompile Include="..\src\MultiSphereShape.cpp" />
+    <ClCompile Include="..\src\ObjectTable.cpp" />
     <ClCompile Include="..\src\OpenCL.cpp" />
     <ClCompile Include="..\src\OptimizedBvh.cpp" />
     <ClCompile Include="..\src\OverlappingPairCache.cpp" />
@@ -1907,6 +1908,7 @@
     <ClInclude Include="..\src\MotionState.h" />
     <ClInclude Include="..\src\MultiMaterialTriangleMeshShape.h" />
     <ClInclude Include="..\src\MultiSphereShape.h" />
+    <ClInclude Include="..\src\ObjectTable.h" />
     <ClInclude Include="..\src\OpenCL.h" />
     <ClInclude Include="..\src\OptimizedBvh.h" />
     <ClInclude Include="..\src\OverlappingPairCache.h" />

@@ -60,9 +60,10 @@ OverlapFilterCallback::!OverlapFilterCallback()
 	OnDisposed(this, nullptr);
 }
 
-bool OverlapFilterCallback::NeedBroadphaseCollision(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
+OverlapFilterCallback::OverlapFilterCallback()
 {
-	return UnmanagedPointer->needBroadphaseCollision(proxy0->UnmanagedPointer, proxy1->UnmanagedPointer);
+	_callback = new OverlapFilterCallbackWrapper(this);
+	BulletSharp::ObjectTable::Add(this, _callback);
 }
 
 bool OverlapFilterCallback::IsDisposed::get()
@@ -73,6 +74,11 @@ bool OverlapFilterCallback::IsDisposed::get()
 OverlapFilterCallback::OverlapFilterCallback(btOverlapFilterCallback* callback)
 {
 	_callback = callback;
+}
+
+OverlapFilterCallback^ OverlapFilterCallback::GetObject(btOverlapFilterCallback* callback)
+{
+	return GetObjectFromTable(OverlapFilterCallback, callback);
 }
 
 btOverlapFilterCallback* OverlapFilterCallback::UnmanagedPointer::get()
@@ -125,7 +131,10 @@ void OverlappingPairCache::SetInternalGhostPairCallback(
 
 void OverlappingPairCache::SetOverlapFilterCallback(OverlapFilterCallback^ callback)
 {
-	UnmanagedPointer->setOverlapFilterCallback(callback->UnmanagedPointer);
+	if (callback == nullptr)
+		UnmanagedPointer->setOverlapFilterCallback(0);
+	else
+		UnmanagedPointer->setOverlapFilterCallback(callback->UnmanagedPointer);
 }
 
 void OverlappingPairCache::SortOverlappingPairs(Dispatcher^ dispatcher)
@@ -176,7 +185,7 @@ int HashedOverlappingPairCache::Count::get()
 
 OverlapFilterCallback^ HashedOverlappingPairCache::OverlapFilterCallback::get()
 {
-	return gcnew BulletSharp::OverlapFilterCallback(UnmanagedPointer->getOverlapFilterCallback());
+	return BulletSharp::OverlapFilterCallback::GetObject(UnmanagedPointer->getOverlapFilterCallback());
 }
 void HashedOverlappingPairCache::OverlapFilterCallback::set(BulletSharp::OverlapFilterCallback^ value)
 {
@@ -188,6 +197,11 @@ btHashedOverlappingPairCache* HashedOverlappingPairCache::UnmanagedPointer::get(
 	return (btHashedOverlappingPairCache*)OverlappingPairCache::UnmanagedPointer;
 }
 
+
+SortedOverlappingPairCache::SortedOverlappingPairCache(btSortedOverlappingPairCache* sortedPairCache)
+: OverlappingPairCache(sortedPairCache)
+{
+}
 
 SortedOverlappingPairCache::SortedOverlappingPairCache()
 : OverlappingPairCache(new btSortedOverlappingPairCache)
@@ -201,7 +215,7 @@ bool SortedOverlappingPairCache::NeedsBroadphaseCollision(BroadphaseProxy^ proxy
 
 OverlapFilterCallback^ SortedOverlappingPairCache::OverlapFilterCallback::get()
 {
-	return gcnew BulletSharp::OverlapFilterCallback(UnmanagedPointer->getOverlapFilterCallback());
+	return BulletSharp::OverlapFilterCallback::GetObject(UnmanagedPointer->getOverlapFilterCallback());
 }
 void SortedOverlappingPairCache::OverlapFilterCallback::set(BulletSharp::OverlapFilterCallback^ value)
 {
@@ -214,6 +228,11 @@ btSortedOverlappingPairCache* SortedOverlappingPairCache::UnmanagedPointer::get(
 }
 
 
+NullPairCache::NullPairCache(btNullPairCache* nullPairCache)
+: OverlappingPairCache(nullPairCache)
+{
+}
+
 NullPairCache::NullPairCache()
 : OverlappingPairCache(new btNullPairCache)
 {
@@ -222,4 +241,15 @@ NullPairCache::NullPairCache()
 btNullPairCache* NullPairCache::UnmanagedPointer::get()
 {
 	return (btNullPairCache*)OverlappingPairCache::UnmanagedPointer;
+}
+
+
+OverlapFilterCallbackWrapper::OverlapFilterCallbackWrapper(OverlapFilterCallback^ callback)
+{
+	_callback = callback;
+}
+
+bool OverlapFilterCallbackWrapper::needBroadphaseCollision(btBroadphaseProxy* proxy0, btBroadphaseProxy* proxy1) const
+{
+	return _callback->NeedBroadphaseCollision(gcnew BroadphaseProxy(proxy0), gcnew BroadphaseProxy(proxy1));
 }

@@ -106,4 +106,19 @@ btPairCachingGhostObject* PairCachingGhostObject::UnmanagedPointer::get()
 	return (btPairCachingGhostObject*) GhostObject::UnmanagedPointer;
 }
 
+GhostPairCallback::GhostPairCallback(btGhostPairCallback* ghostPairCallback)
+: OverlappingPairCallback(ghostPairCallback)
+{
+}
+
+GhostPairCallback::GhostPairCallback()
+: OverlappingPairCallback(new btGhostPairCallback)
+{
+}
+
+btGhostPairCallback* GhostPairCallback::UnmanagedPointer::get()
+{
+	return (btGhostPairCallback*)OverlappingPairCallback::UnmanagedPointer;
+}
+
 #endif
