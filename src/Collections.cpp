@@ -497,7 +497,7 @@ void DbvtProxyPtrArray::CopyTo(array<DbvtProxy^>^ array, int arrayIndex)
 	int i;
 	for (i=0; i<length; i++)
 	{
-		array[arrayIndex+i] = gcnew DbvtProxy(UnmanagedPointer[i]);
+		array[arrayIndex+i] = dynamic_cast<DbvtProxy^>(DbvtProxy::GetObject(UnmanagedPointer[i]));
 	}
 }
 
@@ -510,7 +510,7 @@ DbvtProxy^ DbvtProxyPtrArray::default::get(int index)
 	if (proxyPtr == 0)
 		return nullptr;
 
-	return gcnew DbvtProxy(proxyPtr);
+	return dynamic_cast<DbvtProxy^>(DbvtProxy::GetObject(proxyPtr));
 }
 void DbvtProxyPtrArray::default::set(int index, DbvtProxy^ value)
 {

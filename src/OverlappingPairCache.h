@@ -40,7 +40,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class OverlapFilterCallback : BulletSharp::IDisposable
+	public ref class OverlapFilterCallback abstract : BulletSharp::IDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;

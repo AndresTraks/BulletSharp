@@ -251,5 +251,5 @@ OverlapFilterCallbackWrapper::OverlapFilterCallbackWrapper(OverlapFilterCallback
 
 bool OverlapFilterCallbackWrapper::needBroadphaseCollision(btBroadphaseProxy* proxy0, btBroadphaseProxy* proxy1) const
 {
-	return _callback->NeedBroadphaseCollision(gcnew BroadphaseProxy(proxy0), gcnew BroadphaseProxy(proxy1));
+	return _callback->NeedBroadphaseCollision(BroadphaseProxy::GetObject(proxy0), BroadphaseProxy::GetObject(proxy1));
 }

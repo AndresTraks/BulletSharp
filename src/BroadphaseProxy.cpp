@@ -2,10 +2,14 @@
 
 #include "BroadphaseProxy.h"
 #include "CollisionAlgorithm.h"
+#include "SimpleBroadphase.h"
+#ifndef DISABLE_DBVT
+#include "DbvtBroadphase.h"
+#endif
 
 BroadphaseProxy::BroadphaseProxy()
 {
-	_proxy = new btBroadphaseProxy();
+	UnmanagedPointer = new btBroadphaseProxy();
 }
 
 BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
@@ -18,7 +22,7 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userO
 
 	_clientObject = userObject;
 
-	_proxy = new btBroadphaseProxy(*aabbMinTemp, *aabbMaxTemp, 0,
+	UnmanagedPointer = new btBroadphaseProxy(*aabbMinTemp, *aabbMaxTemp, 0,
 		(short int)collisionFilterGroup, (short int)collisionFilterMask,
 		multiSapParentProxy.ToPointer()
 		);
@@ -36,7 +40,7 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userO
 
 	_clientObject = userObject;
 
-	_proxy = new btBroadphaseProxy(*aabbMinTemp, *aabbMaxTemp, 0,
+	UnmanagedPointer = new btBroadphaseProxy(*aabbMinTemp, *aabbMaxTemp, 0,
 		(short int)collisionFilterGroup, (short int)collisionFilterMask
 		);
 
@@ -46,17 +50,27 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userO
 
 BroadphaseProxy::BroadphaseProxy(btBroadphaseProxy* proxy)
 {
-	if (proxy == 0)
-		return;
+	if (proxy)
+		UnmanagedPointer = proxy;
+}
 
-	_proxy = proxy;
+BroadphaseProxy^ BroadphaseProxy::GetObject(btBroadphaseProxy* broadphaseProxy)
+{
+	BroadphaseProxy^ proxy = GetObjectFromTable(BroadphaseProxy, broadphaseProxy);
+	if (proxy != nullptr)
+		return proxy;
 
-	if (_proxy->m_clientObject == 0)
-	{
-		GCHandle handle = GCHandle::Alloc(this);
-		void* obj = GCHandleToVoidPtr(handle);
-		_proxy->m_clientObject = obj;
-	}
+#ifndef DISABLE_DBVT
+	btDbvtProxy* dbvtProxy = static_cast<btDbvtProxy*>(broadphaseProxy);
+	if (dbvtProxy)
+		return gcnew DbvtProxy(dbvtProxy);
+#endif
+
+	btSimpleBroadphaseProxy* simpleProxy = static_cast<btSimpleBroadphaseProxy*>(broadphaseProxy);
+	if (simpleProxy)
+		return gcnew SimpleBroadphaseProxy(simpleProxy);
+
+	return gcnew BroadphaseProxy(broadphaseProxy);
 }
 
 Vector3 BroadphaseProxy::AabbMin::get()
@@ -164,6 +178,7 @@ btBroadphaseProxy* BroadphaseProxy::UnmanagedPointer::get()
 void BroadphaseProxy::UnmanagedPointer::set(btBroadphaseProxy* value)
 {
 	_proxy = value;
+	ObjectTable::Add(this, _proxy);
 }
 
 
@@ -185,8 +200,6 @@ BroadphasePair::BroadphasePair(BroadphasePair^ pair)
 BroadphasePair::BroadphasePair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
 {
 	_pair = new btBroadphasePair(*proxy0->UnmanagedPointer, *proxy1->UnmanagedPointer);
-	_proxy0 = proxy0;
-	_proxy1 = proxy1;
 }
 
 CollisionAlgorithm^ BroadphasePair::Algorithm::get()
@@ -200,40 +213,26 @@ void BroadphasePair::Algorithm::set(CollisionAlgorithm^ value)
 
 BroadphaseProxy^ BroadphasePair::Proxy0::get()
 {
-	if (_proxy0 == nullptr)
-	{
-		if (UnmanagedPointer->m_pProxy0 != nullptr)
-			_proxy0 = gcnew BroadphaseProxy(UnmanagedPointer->m_pProxy0);
-	}
-	return _proxy0;
+	return BroadphaseProxy::GetObject(UnmanagedPointer->m_pProxy0);
 }
 void BroadphasePair::Proxy0::set(BroadphaseProxy^ value)
 {
-	_proxy0 = value;
-
-	if (_proxy0 == nullptr)
+	if (value == nullptr)
 		_pair->m_pProxy0 = nullptr;
 	else
-		_pair->m_pProxy0 = _proxy0->UnmanagedPointer;
+		_pair->m_pProxy0 = value->UnmanagedPointer;
 }
 
 BroadphaseProxy^ BroadphasePair::Proxy1::get()
 {
-	if (_proxy1 == nullptr)
-	{
-		if (UnmanagedPointer->m_pProxy1 != nullptr)
-			_proxy1 = gcnew BroadphaseProxy(UnmanagedPointer->m_pProxy1);
-	}
-	return _proxy1;
+	return BroadphaseProxy::GetObject(UnmanagedPointer->m_pProxy1);
 }
 void BroadphasePair::Proxy1::set(BroadphaseProxy^ value)
 {
-	_proxy1 = value;
-
-	if (_proxy1 == nullptr)
+	if (value == nullptr)
 		_pair->m_pProxy1 = nullptr;
 	else
-		_pair->m_pProxy1 = _proxy0->UnmanagedPointer;
+		_pair->m_pProxy1 = value->UnmanagedPointer;
 }
 
 btBroadphasePair* BroadphasePair::UnmanagedPointer::get()

@@ -158,7 +158,8 @@ void DbvtBroadphase::SetAabbForceUpdate(BroadphaseProxy^ absproxy,
 
 BulletSharp::OverlappingPairCache^ DbvtBroadphase::PairCache::get()
 {
-	return gcnew BulletSharp::OverlappingPairCache(UnmanagedPointer->m_paircache);
+	return dynamic_cast<BulletSharp::OverlappingPairCache^>(
+		BulletSharp::OverlappingPairCache::GetObject(UnmanagedPointer->m_paircache));
 }
 void DbvtBroadphase::PairCache::set(BulletSharp::OverlappingPairCache^ value)
 {

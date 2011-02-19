@@ -295,7 +295,7 @@ void RigidBody::AngularVelocity::set(Vector3 value)
 
 BroadphaseProxy^ RigidBody::BroadphaseProxy::get()
 {
-	return gcnew BulletSharp::BroadphaseProxy(UnmanagedPointer->getBroadphaseProxy());
+	return BulletSharp::BroadphaseProxy::GetObject(UnmanagedPointer->getBroadphaseProxy());
 }
 void RigidBody::BroadphaseProxy::set(BulletSharp::BroadphaseProxy^ value)
 {
