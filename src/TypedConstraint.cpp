@@ -168,4 +168,23 @@ void TypedConstraint::UnmanagedPointer::set(btTypedConstraint* value)
 	}
 }
 
+
+#ifdef _BT_USE_CENTER_LIMIT_
+#ifdef IN_PARALLELL_SOLVER
+AngularLimit::AngularLimit()
+{
+	_angularLimit = new btAngularLimit();
+}
+
+btAngularLimit* AngularLimit::UnmanagedPointer::get()
+{
+	return _angularLimit;
+}
+void AngularLimit::UnmanagedPointer::set(btAngularLimit* value)
+{
+	_angularLimit = value;
+}
+#endif
+#endif
+
 #endif

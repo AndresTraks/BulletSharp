@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C# Express 2010
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicDemo", "BasicDemo\BasicDemo.csproj", "{F329A405-FC9D-421E-A9D9-3D0C2F14138F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoFramework", "DemoFramework\DemoFramework.csproj", "{0E048765-13EB-4173-A27C-0433E8A68CBD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CcdPhysicsDemo", "CcdPhysicsDemo\CcdPhysicsDemo.csproj", "{9B330CD8-CE97-4D6D-97A9-52F722C1DACF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftDemo", "SoftDemo\SoftDemo.csproj", "{38D739AB-06E6-47B1-9F4A-EC040416E412}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,16 @@ Global
 		{9B330CD8-CE97-4D6D-97A9-52F722C1DACF}.Release|Mixed Platforms.Build.0 = Release|x86
 		{9B330CD8-CE97-4D6D-97A9-52F722C1DACF}.Release|x86.ActiveCfg = Release|x86
 		{9B330CD8-CE97-4D6D-97A9-52F722C1DACF}.Release|x86.Build.0 = Release|x86
+		{38D739AB-06E6-47B1-9F4A-EC040416E412}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{38D739AB-06E6-47B1-9F4A-EC040416E412}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{38D739AB-06E6-47B1-9F4A-EC040416E412}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{38D739AB-06E6-47B1-9F4A-EC040416E412}.Debug|x86.ActiveCfg = Debug|x86
+		{38D739AB-06E6-47B1-9F4A-EC040416E412}.Debug|x86.Build.0 = Debug|x86
+		{38D739AB-06E6-47B1-9F4A-EC040416E412}.Release|Any CPU.ActiveCfg = Release|x86
+		{38D739AB-06E6-47B1-9F4A-EC040416E412}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{38D739AB-06E6-47B1-9F4A-EC040416E412}.Release|Mixed Platforms.Build.0 = Release|x86
+		{38D739AB-06E6-47B1-9F4A-EC040416E412}.Release|x86.ActiveCfg = Release|x86
+		{38D739AB-06E6-47B1-9F4A-EC040416E412}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

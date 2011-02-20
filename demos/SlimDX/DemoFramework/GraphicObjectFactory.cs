@@ -528,16 +528,18 @@ namespace DemoFramework
                 foreach (Face face in faces)
                 {
                     NodePtrArray nodes = face.N;
-                    verts.Write(nodes[0].X);
-                    verts.Position += 12;
-                    verts.Write(nodes[1].X);
-                    verts.Position += 12;
-                    verts.Write(nodes[2].X);
-                    verts.Position += 12;
+                    Node n0 = nodes[0];
+                    Node n1 = nodes[1];
+                    Node n2 = nodes[2];
+                    verts.Write(n0.X);
+                    verts.Write(n0.Normal);
+                    verts.Write(n1.X);
+                    verts.Write(n1.Normal);
+                    verts.Write(n2.X);
+                    verts.Write(n2.Normal);
                 }
                 mesh.UnlockVertexBuffer();
 
-                mesh.ComputeNormals();
                 mesh.DrawSubset(0);
                 mesh.Dispose();
             }
@@ -574,33 +576,37 @@ namespace DemoFramework
                     foreach (Tetra t in tetras)
                     {
                         NodePtrArray nodes = t.Nodes;
+                        Vector3 v0 = nodes[0].X;
+                        Vector3 v1 = nodes[1].X;
+                        Vector3 v2 = nodes[2].X;
+                        Vector3 v3 = nodes[3].X;
 
-                        verts.Write(nodes[2].X);
+                        verts.Write(v2);
                         verts.Position += 12;
-                        verts.Write(nodes[1].X);
+                        verts.Write(v1);
                         verts.Position += 12;
-                        verts.Write(nodes[0].X);
-                        verts.Position += 12;
-
-                        verts.Write(nodes[0].X);
-                        verts.Position += 12;
-                        verts.Write(nodes[1].X);
-                        verts.Position += 12;
-                        verts.Write(nodes[3].X);
+                        verts.Write(v0);
                         verts.Position += 12;
 
-                        verts.Write(nodes[2].X);
+                        verts.Write(v0);
                         verts.Position += 12;
-                        verts.Write(nodes[3].X);
+                        verts.Write(v1);
                         verts.Position += 12;
-                        verts.Write(nodes[1].X);
+                        verts.Write(v3);
                         verts.Position += 12;
 
-                        verts.Write(nodes[2].X);
+                        verts.Write(v2);
                         verts.Position += 12;
-                        verts.Write(nodes[0].X);
+                        verts.Write(v3);
                         verts.Position += 12;
-                        verts.Write(nodes[3].X);
+                        verts.Write(v1);
+                        verts.Position += 12;
+
+                        verts.Write(v2);
+                        verts.Position += 12;
+                        verts.Write(v0);
+                        verts.Position += 12;
+                        verts.Write(v3);
                         verts.Position += 12;
                     }
                     mesh.UnlockVertexBuffer();

@@ -87,7 +87,6 @@ namespace DemoFramework
         struct ShaderObjectConstants
         {
             public Matrix World;
-            public Matrix WorldInverseTranspose;
             public Color4 Color;
         }
 
@@ -96,6 +95,7 @@ namespace DemoFramework
         {
             public Matrix View;
             public Matrix Projection;
+            public Matrix ViewInverse;
         }
 
         /// <summary>
@@ -269,7 +269,6 @@ namespace DemoFramework
         protected void SetBuffer(Matrix world, Color color)
         {
             objectConstants.World = world;
-            objectConstants.WorldInverseTranspose = Matrix.Transpose(Matrix.Invert(world));
             objectConstants.Color = (Color4)color;
 
             SharpDX.DataStream c = objectConstantsBuffer.Map(MapMode.WriteDiscard);
@@ -281,6 +280,7 @@ namespace DemoFramework
         {
             sceneConstants.View = Freelook.View;
             sceneConstants.Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, NearPlane, FarPlane);
+            sceneConstants.ViewInverse = Matrix.Invert(Freelook.View);
 
             SharpDX.DataStream c = sceneConstantsBuffer.Map(MapMode.WriteDiscard);
             Marshal.StructureToPtr(sceneConstants, c.DataPointer, false);

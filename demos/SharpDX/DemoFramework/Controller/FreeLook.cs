@@ -9,15 +9,15 @@ namespace DemoFramework
         public Vector3 Eye { get; private set; }
         public Vector3 Target { get; private set; }
         public Matrix View { get; private set; }
-        public Vector3 UpVector { get; private set; }
-        public Input Input { get; set; }
+        public Vector3 Up { get; set; }
+        public Input Input { get; private set; }
 
         MouseController mouseController;
 
         public FreeLook(Input input)
         {
             Target = Vector3.UnitX;
-            UpVector = Vector3.UnitY;
+            Up = Vector3.UnitY;
             Input = input;
             mouseController = new MouseController(Input);
             Recalculate();
@@ -56,13 +56,11 @@ namespace DemoFramework
 
                 if (Input.KeysDown.Contains(Keys.A))
                 {
-                    Vector3 sideways = Vector3.TransformCoordinate(relDirection, Matrix.RotationY((float)-Math.PI / 2));
-                    translation += new Vector3(sideways.X, 0, sideways.Z);
+                    translation += GetSizewaysTranslation(relDirection, -Math.PI / 2);
                 }
                 if (Input.KeysDown.Contains(Keys.D))
                 {
-                    Vector3 sideways = Vector3.TransformCoordinate(relDirection, Matrix.RotationY((float)Math.PI / 2));
-                    translation += new Vector3(sideways.X, 0, sideways.Z);
+                    translation += GetSizewaysTranslation(relDirection, Math.PI / 2);
                 }
 
                 Eye += translation;
@@ -74,9 +72,16 @@ namespace DemoFramework
             return true;
         }
 
+        Vector3 GetSizewaysTranslation(Vector3 direction, double angle)
+        {
+            Vector3 sideways = Vector3.TransformCoordinate(direction, Matrix.RotationAxis(Up, (float)-Math.PI / 2));
+            sideways.Y = 0;
+            return sideways;
+        }
+
         void Recalculate()
         {
-            View = Matrix.LookAtLH(Eye, Target, UpVector);
+            View = Matrix.LookAtLH(Eye, Target, Up);
         }
     }
 }

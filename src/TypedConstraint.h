@@ -104,4 +104,24 @@ namespace BulletSharp
 			void set(btTypedConstraint* value);
 		}
 	};
+
+#ifdef _BT_USE_CENTER_LIMIT_
+#ifdef IN_PARALLELL_SOLVER
+	public ref class AngularLimit
+	{
+	private:
+		btAngularLimit* _angularLimit;
+
+	public:
+		AngularLimit();
+
+	internal:
+		property btAngularLimit* UnmanagedPointer
+		{
+			virtual btAngularLimit* get();
+			void set(btAngularLimit* value);
+		}
+	};
+#endif
+#endif
 };

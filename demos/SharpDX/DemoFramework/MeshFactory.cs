@@ -49,13 +49,13 @@ namespace DemoFramework
             float x = size.X;
             float y = size.Y;
             float z = size.Z;
-            
+
             InputElement[] elements = new InputElement[] {
                 new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
                 new InputElement("NORMAL", 0, Format.R32G32B32_Float, 12, 0, InputClassification.PerVertexData, 0)
             };
             Mesh mesh = new Mesh(device, elements, "POSITION", 36, 12, MeshFlags.None);
-            
+
             MeshBuffer vertexBuffer = mesh.GetVertexBuffer(0);
             SharpDX.DataStream vStream = vertexBuffer.Map();
 
@@ -64,7 +64,7 @@ namespace DemoFramework
             {
                 vStream.Write(new Vector3(i * x, y, -z));
                 vStream.Write(new Vector3(i, 0, 0));
-                vStream.Write(new Vector3(i *x, -y, -z));
+                vStream.Write(new Vector3(i * x, -y, -z));
                 vStream.Write(new Vector3(i, 0, 0));
                 vStream.Write(new Vector3(i * x, -y, z));
                 vStream.Write(new Vector3(i, 0, 0));
@@ -102,7 +102,7 @@ namespace DemoFramework
                 vStream.Write(new Vector3(0, i, 0));
                 vStream.Write(new Vector3(x, i * y, z));
                 vStream.Write(new Vector3(0, i, 0));
-                vStream.Write(new Vector3(-x, i *y, z));
+                vStream.Write(new Vector3(-x, i * y, z));
                 vStream.Write(new Vector3(0, i, 0));
                 vStream.Write(new Vector3(x, i * y, -z));
                 vStream.Write(new Vector3(0, i, 0));
@@ -112,7 +112,7 @@ namespace DemoFramework
 
             MeshBuffer indexBuffer = mesh.GetIndexBuffer();
             SharpDX.DataStream iStream = indexBuffer.Map();
-            for (short ii = 0; ii < mesh.VertexCount; ii++ )
+            for (short ii = 0; ii < mesh.VertexCount; ii++)
                 iStream.Write(ii);
             indexBuffer.Unmap();
 
@@ -190,7 +190,7 @@ namespace DemoFramework
             int baseIndex = index;
             vStream.Write(GetVectorByAxis(new Vector3(0, halfHeight, 0), up));
             vStream.Write(normal);
-            
+
             vStream.Write(GetVectorByAxis(new Vector3(0, halfHeight, radius), up));
             vStream.Write(normal);
             index += 2;
@@ -490,7 +490,7 @@ namespace DemoFramework
 
             if (complexShapes.TryGetValue(shape, out mesh))
             {
-                //RenderComplexShape(shape, mesh);
+                RenderComplexShape(shape, mesh);
                 return;
             }
 
@@ -519,6 +519,7 @@ namespace DemoFramework
                 case BroadphaseNativeType.Convex2DShape:
                     Render(((Convex2DShape)shape).ChildShape);
                     return;
+                */
                 case BroadphaseNativeType.CompoundShape:
                     CompoundShape compoundShape = (CompoundShape)shape;
                     //if (compoundShape.NumChildShapes == 0)
@@ -526,13 +527,12 @@ namespace DemoFramework
                     foreach (CompoundShapeChild child in compoundShape.ChildList)
                     {
                         // do a pre-transform
-                        Matrix tempTr = device.GetTransform(TransformState.World);
-                        device.SetTransform(TransformState.World, child.Transform * tempTr);
+                        //Matrix tempTr = device.GetTransform(TransformState.World);
+                        //device.SetTransform(TransformState.World, child.Transform * tempTr);
                         
                         Render(child.ChildShape);
                     }
                     return;
-                */
             }
 
             // If the shape has one subset, render it.
@@ -554,27 +554,26 @@ namespace DemoFramework
                     mesh = CreateStaticPlaneShape((StaticPlaneShape)shape);
                     break;
             }
-
-            RenderComplexShape(shape, mesh);
             */
+            RenderComplexShape(shape, mesh);
         }
-        /*
+
         public void RenderComplexShape(CollisionShape shape, Mesh mesh)
         {
             switch (shape.ShapeType)
             {
                 case BroadphaseNativeType.StaticPlane:
-                    RenderStaticPlaneShape(mesh);
+                    //RenderStaticPlaneShape(mesh);
                     break;
                 case BroadphaseNativeType.CapsuleShape:
-                    RenderCapsuleShape(mesh);
+                    //RenderCapsuleShape(mesh);
                     break;
                 case BroadphaseNativeType.MultiSphereShape:
-                    RenderMultiSphereShape((MultiSphereShape)shape, mesh);
+                    //RenderMultiSphereShape((MultiSphereShape)shape, mesh);
                     break;
             }
         }
-
+        /*
         public void RenderCapsuleShape(Mesh mesh)
         {
             mesh.DrawSubset(0);
@@ -626,6 +625,7 @@ namespace DemoFramework
                 q = Vector3.Cross(n, p);
             }
         }
+        */
 
         public void RenderSoftBody(SoftBody softBody)
         {
@@ -637,39 +637,50 @@ namespace DemoFramework
                 int vertexCount = faceCount * 3;
                 bool index32 = vertexCount > 65536;
 
-                Mesh mesh = new Mesh(device, faceCount, vertexCount,
-                    MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
+                InputElement[] elements = new InputElement[] {
+                    new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
+                    new InputElement("NORMAL", 0, Format.R32G32B32_Float, 12, 0, InputClassification.PerVertexData, 0)
+                };
+                Mesh mesh = new Mesh(device, elements, "POSITION", vertexCount, faceCount, index32 ? MeshFlags.Has32BitIndices : 0);
 
-                DataStream indices = mesh.LockIndexBuffer(LockFlags.Discard);
+                MeshBuffer indexBuffer = mesh.GetIndexBuffer();
+                SharpDX.DataStream iStream = indexBuffer.Map();
                 int i;
                 if (index32)
                 {
                     for (i = 0; i < vertexCount; i++)
-                        indices.Write(i);
+                        iStream.Write(i);
                 }
                 else
                 {
                     for (i = 0; i < vertexCount; i++)
-                        indices.Write((short)i);
+                        iStream.Write((short)i);
                 }
-                mesh.UnlockIndexBuffer();
+                indexBuffer.Unmap();
 
-                SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.Discard);
+                MeshBuffer vertexBuffer = mesh.GetVertexBuffer(0);
+                SharpDX.DataStream vStream = vertexBuffer.Map();
                 foreach (Face face in faces)
                 {
                     NodePtrArray nodes = face.N;
-                    verts.Write(nodes[0].X);
-                    verts.Position += 12;
-                    verts.Write(nodes[1].X);
-                    verts.Position += 12;
-                    verts.Write(nodes[2].X);
-                    verts.Position += 12;
+                    Node n0 = nodes[0];
+                    Node n1 = nodes[1];
+                    Node n2 = nodes[2];
+                    vStream.Write(n0.X);
+                    vStream.Write(n0.Normal);
+                    vStream.Write(n1.X);
+                    vStream.Write(n1.Normal);
+                    vStream.Write(n2.X);
+                    vStream.Write(n2.Normal);
                 }
-                mesh.UnlockVertexBuffer();
+                vertexBuffer.Unmap();
 
-                mesh.ComputeNormals();
+                mesh.Commit();
+
                 mesh.DrawSubset(0);
                 mesh.Dispose();
+                vertexBuffer.Dispose();
+                indexBuffer.Dispose();
             }
             else
             {
@@ -681,66 +692,82 @@ namespace DemoFramework
                     int vertexCount = tetraCount * 12;
                     bool index32 = vertexCount > 65536;
 
-                    Mesh mesh = new Mesh(device, tetraCount * 4, vertexCount,
-                        MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
+                    InputElement[] elements = new InputElement[] {
+                        new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
+                        new InputElement("NORMAL", 0, Format.R32G32B32_Float, 12, 0, InputClassification.PerVertexData, 0)
+                    };
+                    Mesh mesh = new Mesh(device, elements, "POSITION", vertexCount, tetraCount * 4, index32 ? MeshFlags.Has32BitIndices : 0);
 
-
-                    SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.Discard);
+                    MeshBuffer indexBuffer = mesh.GetIndexBuffer();
+                    SharpDX.DataStream iStream = indexBuffer.Map();
                     int i;
                     if (index32)
                     {
                         for (i = 0; i < vertexCount; i++)
-                            indices.Write(i);
+                            iStream.Write(i);
                     }
                     else
                     {
                         for (i = 0; i < vertexCount; i++)
-                            indices.Write((short)i);
+                            iStream.Write((short)i);
                     }
-                    mesh.UnlockIndexBuffer();
+                    indexBuffer.Unmap();
 
-
-                    SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.Discard);
+                    MeshBuffer vertexBuffer = mesh.GetVertexBuffer(0);
+                    SharpDX.DataStream verts = vertexBuffer.Map();
                     foreach (Tetra t in tetras)
                     {
                         NodePtrArray nodes = t.Nodes;
+                        Vector3 v0 = nodes[0].X;
+                        Vector3 v1 = nodes[1].X;
+                        Vector3 v2 = nodes[2].X;
+                        Vector3 v3 = nodes[3].X;
 
-                        verts.Write(nodes[2].X);
-                        verts.Position += 12;
-                        verts.Write(nodes[1].X);
-                        verts.Position += 12;
-                        verts.Write(nodes[0].X);
-                        verts.Position += 12;
+                        Vector3 normal0 = -Vector3.Cross(v1 - v0, v2 - v0);
+                        Vector3 normal1 = Vector3.Cross(v1 - v0, v3 - v0);
+                        Vector3 normal2 = Vector3.Cross(v2 - v1, v3 - v1);
+                        Vector3 normal3 = Vector3.Cross(v0 - v2, v3 - v2);
 
-                        verts.Write(nodes[0].X);
-                        verts.Position += 12;
-                        verts.Write(nodes[1].X);
-                        verts.Position += 12;
-                        verts.Write(nodes[3].X);
-                        verts.Position += 12;
+                        verts.Write(v0);
+                        verts.Write(normal0);
+                        verts.Write(v1);
+                        verts.Write(normal0);
+                        verts.Write(v2);
+                        verts.Write(normal0);
 
-                        verts.Write(nodes[2].X);
-                        verts.Position += 12;
-                        verts.Write(nodes[3].X);
-                        verts.Position += 12;
-                        verts.Write(nodes[1].X);
-                        verts.Position += 12;
+                        verts.Write(v0);
+                        verts.Write(normal1);
+                        verts.Write(v1);
+                        verts.Write(normal1);
+                        verts.Write(v3);
+                        verts.Write(normal1);
+                        
+                        verts.Write(v1);
+                        verts.Write(normal2);
+                        verts.Write(v2);
+                        verts.Write(normal2);
+                        verts.Write(v3);
+                        verts.Write(normal2);
 
-                        verts.Write(nodes[2].X);
-                        verts.Position += 12;
-                        verts.Write(nodes[0].X);
-                        verts.Position += 12;
-                        verts.Write(nodes[3].X);
-                        verts.Position += 12;
+                        verts.Write(v2);
+                        verts.Write(normal3);
+                        verts.Write(v0);
+                        verts.Write(normal3);
+                        verts.Write(v3);
+                        verts.Write(normal3);
                     }
-                    mesh.UnlockVertexBuffer();
+                    vertexBuffer.Unmap();
 
-                    mesh.ComputeNormals();
+                    mesh.Commit();
+
                     mesh.DrawSubset(0);
                     mesh.Dispose();
+                    vertexBuffer.Dispose();
+                    indexBuffer.Dispose();
                 }
                 else if (softBody.Links.Count > 0)
                 {
+                    /*
                     AlignedLinkArray links = softBody.Links;
                     int linkCount = links.Count;
                     int linkColor = System.Drawing.Color.Black.ToArgb();
@@ -751,7 +778,7 @@ namespace DemoFramework
 
                     PositionColored[] linkArray = new PositionColored[linkCount * 2];
 
-                    for (int i=0; i<linkCount; i++)
+                    for (int i = 0; i < linkCount; i++)
                     {
                         Link link = links[i];
                         linkArray[i * 2] = new PositionColored(link.Nodes[0].X, linkColor);
@@ -760,10 +787,11 @@ namespace DemoFramework
                     device.DrawUserPrimitives(PrimitiveType.LineList, links.Count, linkArray);
 
                     device.SetRenderState(RenderState.Lighting, true);
+                    */
                 }
             }
         }
-
+        /*
         public void RenderSoftBodyTextured(SoftBody softBody)
         {
             if (!(softBody.UserObject is Array))
@@ -773,7 +801,7 @@ namespace DemoFramework
             FloatArray vertexBuffer = userObjArr[0] as FloatArray;
             IntArray indexBuffer = userObjArr[1] as IntArray;
 
-            int vertexCount = (vertexBuffer.Count / 8) ;
+            int vertexCount = (vertexBuffer.Count / 8);
 
             if (vertexCount > 0)
             {
@@ -808,6 +836,6 @@ namespace DemoFramework
                 mesh.Dispose();
             }
         }
-        */
+         * */
     }
 }

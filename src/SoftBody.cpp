@@ -2579,6 +2579,16 @@ void BulletSharp::SoftBody::SoftBody::AppendTetra(int node0, int node1, int node
 	UnmanagedPointer->appendTetra(node0, node1, node2, node3);
 }
 
+void BulletSharp::SoftBody::SoftBody::ApplyClusters(bool drift)
+{
+	UnmanagedPointer->applyClusters(drift);
+}
+
+void BulletSharp::SoftBody::SoftBody::ApplyForces()
+{
+	UnmanagedPointer->applyForces();
+}
+
 bool BulletSharp::SoftBody::SoftBody::CheckFace(int node0, int node1, int node2)
 {
 	return UnmanagedPointer->checkFace(node0, node1, node2);
@@ -2592,6 +2602,11 @@ bool BulletSharp::SoftBody::SoftBody::CheckLink(int node0, int node1)
 bool BulletSharp::SoftBody::SoftBody::CheckLink(Node^ node0, Node^ node1)
 {
 	return UnmanagedPointer->checkLink(node0->UnmanagedPointer, node1->UnmanagedPointer);
+}
+
+void BulletSharp::SoftBody::SoftBody::CleanupClusters()
+{
+	UnmanagedPointer->cleanupClusters();
 }
 
 void SoftBody_ClusterCOM(btSoftBody::Cluster* cluster, btVector3* com)
@@ -2696,6 +2711,11 @@ bool BulletSharp::SoftBody::SoftBody::CutLink(Node^ node0, Node^ node1, btScalar
 	return UnmanagedPointer->cutLink(node0->UnmanagedPointer, node1->UnmanagedPointer, position);
 }
 
+void BulletSharp::SoftBody::SoftBody::DampClusters()
+{
+	UnmanagedPointer->dampClusters();
+}
+
 void BulletSharp::SoftBody::SoftBody::DefaultCollisionHandler(CollisionObject^ pco)
 {
 	UnmanagedPointer->defaultCollisionHandler(pco->UnmanagedPointer);
@@ -2704,6 +2724,22 @@ void BulletSharp::SoftBody::SoftBody::DefaultCollisionHandler(CollisionObject^ p
 void BulletSharp::SoftBody::SoftBody::DefaultCollisionHandler(SoftBody^ psb)
 {
 	UnmanagedPointer->defaultCollisionHandler(psb->UnmanagedPointer);
+}
+
+#pragma managed(push, off)
+void SoftBody_EvaluateCom(btSoftBody* softBody, btVector3* result)
+{
+	*result = softBody->evaluateCom();
+}
+#pragma managed(pop)
+
+Vector3 BulletSharp::SoftBody::SoftBody::EvaluateCom()
+{
+	btVector3* result = new btVector3();
+	SoftBody_EvaluateCom(UnmanagedPointer, result);
+	Vector3 ret = Math::BtVector3ToVector3(result);
+	delete result;
+	return ret;
 }
 
 int BulletSharp::SoftBody::SoftBody::GenerateBendingConstraints(int distance, Material^ material)
@@ -2745,9 +2781,9 @@ btScalar BulletSharp::SoftBody::SoftBody::GetMass(int node)
 	return UnmanagedPointer->getMass(node);
 }
 
-void BulletSharp::SoftBody::SoftBody::RandomizeConstraints()
+void BulletSharp::SoftBody::SoftBody::IndicesToPointers()
 {
-	UnmanagedPointer->randomizeConstraints();
+	UnmanagedPointer->indicesToPointers();
 }
 
 void BulletSharp::SoftBody::SoftBody::InitDefaults()
@@ -2760,9 +2796,34 @@ void BulletSharp::SoftBody::SoftBody::IntegrateMotion()
 	UnmanagedPointer->integrateMotion();
 }
 
+void BulletSharp::SoftBody::SoftBody::InitializeClusters()
+{
+	UnmanagedPointer->initializeClusters();
+}
+
+void BulletSharp::SoftBody::SoftBody::InitializeFaceTree()
+{
+	UnmanagedPointer->initializeFaceTree();
+}
+
+void BulletSharp::SoftBody::SoftBody::PointersToIndices()
+{
+	UnmanagedPointer->pointersToIndices();
+}
+
 void BulletSharp::SoftBody::SoftBody::PredictMotion(btScalar dt)
 {
 	UnmanagedPointer->predictMotion(dt);
+}
+
+void BulletSharp::SoftBody::SoftBody::PrepareClusters(int iterations)
+{
+	UnmanagedPointer->prepareClusters(iterations);
+}
+
+void BulletSharp::SoftBody::SoftBody::RandomizeConstraints()
+{
+	UnmanagedPointer->randomizeConstraints();
 }
 
 bool BulletSharp::SoftBody::SoftBody::RayTest(Vector3 rayFrom, Vector3 rayTo, SRayCast^ results)
@@ -2853,6 +2914,11 @@ void BulletSharp::SoftBody::SoftBody::SetVolumeMass(btScalar mass)
 	UnmanagedPointer->setVolumeMass(mass);
 }
 
+void BulletSharp::SoftBody::SoftBody::SolveClusters(btScalar sor)
+{
+	UnmanagedPointer->solveClusters(sor);
+}
+
 void BulletSharp::SoftBody::SoftBody::SolveClusters(AlignedSoftBodyArray^ bodies)
 {
 	btSoftBody::solveClusters(*bodies->UnmanagedPointer);
@@ -2899,6 +2965,31 @@ void BulletSharp::SoftBody::SoftBody::Translate(Vector3 translation)
 void BulletSharp::SoftBody::SoftBody::Translate(btScalar x, btScalar y, btScalar z)
 {
 	Translate(Vector3(x,y,z));
+}
+
+void BulletSharp::SoftBody::SoftBody::UpdateBounds()
+{
+	UnmanagedPointer->updateBounds();
+}
+
+void BulletSharp::SoftBody::SoftBody::UpdateClusters()
+{
+	UnmanagedPointer->updateClusters();
+}
+
+void BulletSharp::SoftBody::SoftBody::UpdateConstants()
+{
+	UnmanagedPointer->updateConstants();
+}
+
+void BulletSharp::SoftBody::SoftBody::UpdateNormals()
+{
+	UnmanagedPointer->updateNormals();
+}
+
+void BulletSharp::SoftBody::SoftBody::UpdatePose()
+{
+	UnmanagedPointer->updatePose();
 }
 
 BulletSharp::SoftBody::SoftBody^ BulletSharp::SoftBody::SoftBody::Upcast(CollisionObject^ colObj)

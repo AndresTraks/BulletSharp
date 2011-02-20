@@ -12,9 +12,13 @@ if exist bin\SlimDX\data goto _binsd
 mkdir bin\SlimDX\data
 :_binsd
 
-if exist bin\SharpDX\data goto _binsh
+if exist bin\SharpDX goto _binsh
 mkdir bin\SharpDX
 :_binsh
+
+if exist bin\SharpDX\data goto _binshd
+mkdir bin\SharpDX\data
+:_binshd
 
 if exist bin\OpenTK goto _bino
 mkdir bin\OpenTK
@@ -94,6 +98,9 @@ copy SharpDX\DemoFramework\bin\Release\DemoFramework.dll bin\SharpDX\
 copy SharpDX\DemoFramework\bin\Release\shader.fx bin\SharpDX\
 copy SharpDX\BasicDemo\bin\Release\BasicDemo.exe bin\SharpDX\
 copy SharpDX\CcdPhysicsDemo\bin\Release\CcdPhysicsDemo.exe bin\SharpDX\
+copy SharpDX\SoftDemo\bin\Release\SoftDemo.exe bin\SharpDX\
+copy SharpDX\SoftDemo\data\cube.ele bin\SharpDX\data\
+copy SharpDX\SoftDemo\data\cube.node bin\SharpDX\data\
 copy SharpDX\SharpDX.D3DCompiler.dll bin\SharpDX\
 copy SharpDX\SharpDX.Direct3D10.dll bin\SharpDX\
 copy SharpDX\SharpDX.dll bin\SharpDX\
@@ -103,6 +110,7 @@ copy SharpDX\SharpDX.Error.dll bin\SharpDX\
 cmd /C svn export SharpDX\DemoFramework src\SharpDX\DemoFramework --force
 cmd /C svn export SharpDX\BasicDemo src\SharpDX\BasicDemo --force
 cmd /C svn export SharpDX\CcdPhysicsDemo src\SharpDX\CcdPhysicsDemo --force
+cmd /C svn export SharpDX\SoftDemo src\SharpDX\SoftDemo --force
 
 
 copy OpenTK\BasicDemo\bin\x86\release\BasicDemo.exe bin\OpenTK\

@@ -1741,9 +1741,13 @@ namespace BulletSharp
 			void AppendTetra(int model, Material^ material);
 			void AppendTetra(int node0, int node1, int node2, int node3, Material^ material);
 			void AppendTetra(int node0, int node1, int node2, int node3);
+			void ApplyClusters(bool drift);
+			void ApplyForces();
+			//bool CheckContact(CollisionObject^ colObj, Vector3 x, btScalar margin, SoftBody::sCti cti);
 			bool CheckFace(int node0, int node1, int node2);
 			bool CheckLink(int node0, int node1);
 			bool CheckLink(Node^ node0, Node^ node1);
+			void CleanupClusters();
 			static Vector3 ClusterCom(Cluster^ cluster);
 			Vector3 ClusterCom(int cluster);
 			static Vector3 ClusterVelocity(Cluster^ cluster, Vector3 rpos);
@@ -1756,17 +1760,25 @@ namespace BulletSharp
 			static void ClusterDCImpulse(Cluster^ cluster, Vector3 impulse);
 			bool CutLink(int node0, int node1, btScalar position);
 			bool CutLink(Node^ node0, Node^ node1, btScalar position);
+			void DampClusters();
 			void DefaultCollisionHandler(CollisionObject^ pco);
 			void DefaultCollisionHandler(SoftBody^ psb);
+			Vector3 EvaluateCom();
 			int GenerateBendingConstraints(int distance, Material^ material);
 			int GenerateBendingConstraints(int distance);
 			int GenerateClusters(int k, int maxIterations);
 			int GenerateClusters(int k);
 			void GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 			btScalar GetMass(int node);
+			//void IndicesToPointers(array<int>^ map);
+			void IndicesToPointers();
 			void InitDefaults();
 			void IntegrateMotion();
+			void InitializeClusters();
+			void InitializeFaceTree();
+			void PointersToIndices();
 			void PredictMotion(btScalar dt);
+			void PrepareClusters(int iterations);
 			void RandomizeConstraints();
 			bool RayTest(Vector3 rayFrom, Vector3 rayTo, SRayCast^ results);
 			void Refine(ImplicitFn^ ifn, btScalar accurary, bool cut);
@@ -1783,6 +1795,7 @@ namespace BulletSharp
 			void SetVelocity(Vector3 velocity);
 			void SetVolumeDensity(btScalar density);
 			void SetVolumeMass(btScalar mass);
+			void SolveClusters(btScalar sor);
 			static void SolveClusters(AlignedSoftBodyArray^ bodies);
 			static void SolveCommonConstraints(array<SoftBody^>^ bodies, int iterations);
 			void SolveConstraints();
@@ -1790,6 +1803,11 @@ namespace BulletSharp
 			void Transform(Matrix transform);
 			void Translate(Vector3 translation);
 			void Translate(btScalar x, btScalar y, btScalar z); // helper
+			void UpdateBounds();
+			void UpdateClusters();
+			void UpdateConstants();
+			void UpdateNormals();
+			void UpdatePose();
 
 			static SoftBody^ Upcast(CollisionObject^ colObj);
 
