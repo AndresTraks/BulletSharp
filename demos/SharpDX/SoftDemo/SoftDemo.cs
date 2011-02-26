@@ -183,40 +183,30 @@ namespace SoftDemo
         string ground = "Ground";
         protected override void OnRender()
         {
-            Device.ClearRenderTargetView(RenderView, Ambient);
-            Device.ClearDepthStencilView(DepthStencilView, DepthStencilClearFlags.Depth, 1.0f, 0);
-
-            for (int i = 0; i < Technique.Description.PassCount; ++i)
+            foreach (CollisionObject colObj in PhysicsContext.World.CollisionObjectArray)
             {
-                Technique.GetPassByIndex(i).Apply();
-
-                foreach (CollisionObject colObj in PhysicsContext.World.CollisionObjectArray)
+                if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
                 {
-                    if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
+                    //if (IsDebugDrawEnabled)
+                    //    continue;
+                    SetBuffer(Matrix.Identity, Color.LightBlue);
+                    MeshFactory.RenderSoftBody((SoftBody)colObj);
+                }
+                else
+                {
+                    Color color;
+                    if (ground.Equals(colObj.UserObject))
                     {
-                        //if (IsDebugDrawEnabled)
-                        //    continue;
-                        SetBuffer(Matrix.Identity, Color.LightBlue);
-                        MeshFactory.RenderSoftBody((SoftBody)colObj);
+                        color = Color.Green;
                     }
                     else
                     {
-                        Color color;
-                        if (ground.Equals(colObj.UserObject))
-                        {
-                            color = Color.Green;
-                        }
-                        else
-                        {
-                            color = colObj.ActivationState == ActivationState.ActiveTag ? Color.Orange : Color.OrangeRed;
-                        }
-                        SetBuffer((colObj as RigidBody).MotionState.WorldTransform, color);
-                        MeshFactory.Render(colObj.CollisionShape);
+                        color = colObj.ActivationState == ActivationState.ActiveTag ? Color.Orange : Color.OrangeRed;
                     }
+                    SetBuffer((colObj as RigidBody).MotionState.WorldTransform, color);
+                    MeshFactory.Render(colObj.CollisionShape);
                 }
             }
-
-            Info.OnRender(FramesPerSecond);
         }
     }
 

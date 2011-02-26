@@ -41,12 +41,16 @@ namespace DemoFramework
 
         public RenderTargetView RenderView { get; private set; }
         public DepthStencilView DepthStencilView { get; private set; }
+        public DepthStencilView LightDepthView { get; private set; }
         DepthStencilState depthStencilState;
+        DepthStencilState lightDepthStencilState;
+        Texture2D lightDepthTexture;
 
         public Effect Effect { get; private set; }
         public EffectTechnique Technique { get; private set; }
         public EffectPass Pass { get; private set; }
         InputLayout inputLayout;
+        ShaderResourceView lightRes;
 
         protected int Width { get; set; }
         protected int Height { get; set; }
@@ -96,6 +100,9 @@ namespace DemoFramework
             public Matrix View;
             public Matrix Projection;
             public Matrix ViewInverse;
+            public Matrix LightView;
+            public Matrix LightProjection;
+            public Vector4 LightPosition;
         }
 
         /// <summary>
@@ -196,7 +203,40 @@ namespace DemoFramework
             Texture2D depthBuffer = new Texture2D(Device, depthDesc);
             DepthStencilView = new DepthStencilView(Device, depthBuffer);
 
-            Device.OutputMerger.SetTargets(DepthStencilView, RenderView);
+            Texture2DDescription lightDepthDesc = new Texture2DDescription()
+            {
+                ArraySize = 1,
+                BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource,
+                CpuAccessFlags = CpuAccessFlags.None,
+                Format = Format.R32_Typeless,
+                Height = Width,
+                Width = Height,
+                MipLevels = 1,
+                OptionFlags = ResourceOptionFlags.None,
+                SampleDescription = new SampleDescription(1, 0),
+                Usage = ResourceUsage.Default,
+            };
+            lightDepthTexture = new Texture2D(Device, lightDepthDesc);
+
+            DepthStencilViewDescription viewDesc = new DepthStencilViewDescription()
+            {
+                Dimension = DepthStencilViewDimension.Texture2D,
+                Format = Format.D32_Float,
+            };
+            LightDepthView = new DepthStencilView(Device, lightDepthTexture, viewDesc);
+
+            ShaderResourceViewDescription resourceDesc = new ShaderResourceViewDescription()
+            {
+                Format = Format.R32_Float,
+                Dimension = SharpDX.Direct3D.ShaderResourceViewDimension.Texture2D,
+                Texture2D = new ShaderResourceViewDescription.Texture2DResource()
+                {
+                    MipLevels = 1,
+                    MostDetailedMip = 0
+                }
+            };
+            lightRes = new ShaderResourceView(Device, lightDepthTexture, resourceDesc);
+
             Device.Rasterizer.SetViewports(new Viewport(0, 0, Width, Height));
         }
 
@@ -262,6 +302,16 @@ namespace DemoFramework
             };
             depthStencilState = new DepthStencilState(Device, depthDesc);
 
+            DepthStencilStateDescription lightDepthStateDesc = new DepthStencilStateDescription()
+            {
+                IsDepthEnabled = true,
+                IsStencilEnabled = false,
+                DepthWriteMask = DepthWriteMask.All,
+                DepthComparison = Comparison.Less
+            };
+            lightDepthStencilState = new DepthStencilState(Device, lightDepthStateDesc);
+
+
             OnInitialize();
             SetSceneBuffer();
         }
@@ -282,6 +332,12 @@ namespace DemoFramework
             sceneConstants.Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, NearPlane, FarPlane);
             sceneConstants.ViewInverse = Matrix.Invert(Freelook.View);
 
+            Vector3 light = new Vector3(20, 30, 10);
+            sceneConstants.LightPosition = new Vector4(light, 1);
+            sceneConstants.LightView = Matrix.LookAtLH(light, new Vector3(0, 5, -4), Freelook.Up);
+            Texture2DDescription depthBuffer = lightDepthTexture.Description;
+            sceneConstants.LightProjection = Matrix.OrthoLH(depthBuffer.Width / 16, depthBuffer.Height / 16, NearPlane, FarPlane);
+
             SharpDX.DataStream c = sceneConstantsBuffer.Map(MapMode.WriteDiscard);
             Marshal.StructureToPtr(sceneConstants, c.DataPointer, false);
             sceneConstantsBuffer.Unmap();
@@ -299,11 +355,27 @@ namespace DemoFramework
                 frameCount = 0;
             }
 
-            Device.OutputMerger.SetDepthStencilState(depthStencilState, 0);
-
             Device.InputAssembler.SetInputLayout(inputLayout);
 
+            // Clear targets
+            Device.ClearDepthStencilView(LightDepthView, DepthStencilClearFlags.Depth, 1.0f, 0);
+            Device.ClearDepthStencilView(DepthStencilView, DepthStencilClearFlags.Depth, 1.0f, 0);
+            Device.ClearRenderTargetView(RenderView, Ambient);
+
+            // Depth map pass
+            Device.OutputMerger.SetDepthStencilState(lightDepthStencilState, 0);
+            Device.OutputMerger.SetRenderTargets(0, new RenderTargetView[] { }, LightDepthView);
+            Technique.GetPassByIndex(0).Apply();
             OnRender();
+
+            // Render pass
+            Device.OutputMerger.SetDepthStencilState(depthStencilState, 0);
+            Device.OutputMerger.SetRenderTargets(1, new RenderTargetView[] { RenderView }, DepthStencilView);
+            Effect.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightRes);
+            Technique.GetPassByIndex(1).Apply();
+            OnRender();
+
+            Info.OnRender(FramesPerSecond);
 
             SwapChain.Present(0, PresentFlags.None);
         }
@@ -359,11 +431,11 @@ namespace DemoFramework
 
             Input = new Input(Form);
 
-            Width = 1024;
-            Height = 768;
+            Width = 800;
+            Height = 800;
             FullScreenWidth = Screen.PrimaryScreen.Bounds.Width;
             FullScreenHeight = Screen.PrimaryScreen.Bounds.Height;
-            NearPlane = 0.1f;
+            NearPlane = 1.0f;
             FarPlane = 200.0f;
 
             FieldOfView = (float)Math.PI / 4;

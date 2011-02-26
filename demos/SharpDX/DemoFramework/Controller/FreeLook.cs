@@ -74,7 +74,7 @@ namespace DemoFramework
 
         Vector3 GetSizewaysTranslation(Vector3 direction, double angle)
         {
-            Vector3 sideways = Vector3.TransformCoordinate(direction, Matrix.RotationAxis(Up, (float)-Math.PI / 2));
+            Vector3 sideways = Vector3.TransformCoordinate(direction, Matrix.RotationAxis(Up, (float)angle));
             sideways.Y = 0;
             return sideways;
         }
