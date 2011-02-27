@@ -209,8 +209,8 @@ namespace DemoFramework
                 BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource,
                 CpuAccessFlags = CpuAccessFlags.None,
                 Format = Format.R32_Typeless,
-                Height = Width,
-                Width = Height,
+                Height = Height,
+                Width = Width,
                 MipLevels = 1,
                 OptionFlags = ResourceOptionFlags.None,
                 SampleDescription = new SampleDescription(1, 0),
@@ -334,9 +334,9 @@ namespace DemoFramework
 
             Vector3 light = new Vector3(20, 30, 10);
             sceneConstants.LightPosition = new Vector4(light, 1);
-            sceneConstants.LightView = Matrix.LookAtLH(light, new Vector3(0, 5, -4), Freelook.Up);
+            sceneConstants.LightView = Matrix.LookAtLH(light, Vector3.Zero, Freelook.Up);
             Texture2DDescription depthBuffer = lightDepthTexture.Description;
-            sceneConstants.LightProjection = Matrix.OrthoLH(depthBuffer.Width / 16, depthBuffer.Height / 16, NearPlane, FarPlane);
+            sceneConstants.LightProjection = Matrix.OrthoLH(depthBuffer.Width / 8, depthBuffer.Height / 8, NearPlane, FarPlane);
 
             SharpDX.DataStream c = sceneConstantsBuffer.Map(MapMode.WriteDiscard);
             Marshal.StructureToPtr(sceneConstants, c.DataPointer, false);

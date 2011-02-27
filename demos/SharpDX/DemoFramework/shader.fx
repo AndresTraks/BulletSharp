@@ -1,6 +1,6 @@
 SamplerState lightDepthSampler
 {
-    Filter = MIN_MAG_MIP_POINT;
+    Filter = MIN_MAG_MIP_LINEAR;
     AddressU = Clamp;
     AddressV = Clamp;
 };
@@ -72,8 +72,18 @@ float GetShadowAmount(float4 shadowCoord)
 		float shadowBias = 0.002;
 		float sampleDepth = lightDepthMap.Sample(lightDepthSampler, texCoords);
 		float depth = shadowCoord.z/shadowCoord.w - shadowBias;
-		if (depth > sampleDepth)
-			return 0.05;
+
+		float range = 0.00125;
+		float s1 = lightDepthMap.Sample(lightDepthSampler, texCoords);
+		float4 s;
+		s.r = lightDepthMap.Sample(lightDepthSampler, texCoords + float2(range, range));
+		s.g = lightDepthMap.Sample(lightDepthSampler, texCoords + float2(range, -range));
+		s.b = lightDepthMap.Sample(lightDepthSampler, texCoords + float2(-range, range));
+		s.a = lightDepthMap.Sample(lightDepthSampler, texCoords + float2(-range, -range));
+		//float4 s = lightDepthMap.Gather(lightDepthSampler, texCoords); // PS 4.1
+
+		float4 inLight = depth < s;
+		return 1-dot(inLight, 0.25);
 	}
 
 	return 0;
@@ -81,12 +91,11 @@ float GetShadowAmount(float4 shadowCoord)
 
 float4 PS( VS_OUT input ) : SV_Target
 {
-	float shadow = GetShadowAmount(input.LPos);
-
 	float3 normal = normalize(input.Normal);
 	float3 light = normalize(input.light);
 
-	float shade = 0.5+0.5*pow(saturate(dot(light, normal)), 2.0) - shadow;
+	float shade = 0.5+0.5*pow(saturate(dot(light, normal)), 2.0);
+	shade -= GetShadowAmount(input.LPos) * 0.1;
 	return float4(Color.rgb * shade, Color.a);
 }
 
