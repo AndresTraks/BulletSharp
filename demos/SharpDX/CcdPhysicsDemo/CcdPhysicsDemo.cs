@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
-using BulletSharp;
 using DemoFramework;
 using SharpDX;
-using SharpDX.Direct3D10;
-using SharpDX.DXGI;
 
 namespace CcdPhysicsDemo
 {
@@ -32,25 +28,6 @@ namespace CcdPhysicsDemo
                 "Space - Shoot box";
 
             base.OnInitialize();
-        }
-
-        string ground = "Ground";
-        protected override void OnRender()
-        {
-            foreach (RigidBody body in PhysicsContext.World.CollisionObjectArray)
-            {
-                Color color;
-                if (ground.Equals(body.UserObject))
-                {
-                    color = Color.Green;
-                }
-                else
-                {
-                    color = body.ActivationState == ActivationState.ActiveTag ? Color.Orange : Color.OrangeRed;
-                }
-                SetBuffer(body.MotionState.WorldTransform, color);
-                MeshFactory.Render(body.CollisionShape);
-            }
         }
     }
 

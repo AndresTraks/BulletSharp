@@ -70,11 +70,9 @@ float GetShadowAmount(float4 shadowCoord)
 	if (saturate(texCoords.x) == texCoords.x && saturate(texCoords.y) == texCoords.y)
 	{
 		float shadowBias = 0.002;
-		float sampleDepth = lightDepthMap.Sample(lightDepthSampler, texCoords);
 		float depth = shadowCoord.z/shadowCoord.w - shadowBias;
 
 		float range = 0.00125;
-		float s1 = lightDepthMap.Sample(lightDepthSampler, texCoords);
 		float4 s;
 		s.r = lightDepthMap.Sample(lightDepthSampler, texCoords + float2(range, range));
 		s.g = lightDepthMap.Sample(lightDepthSampler, texCoords + float2(range, -range));

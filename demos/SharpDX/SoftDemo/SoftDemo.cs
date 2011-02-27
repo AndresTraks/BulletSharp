@@ -5,8 +5,6 @@ using BulletSharp;
 using BulletSharp.SoftBody;
 using DemoFramework;
 using SharpDX;
-using SharpDX.Direct3D10;
-using SharpDX.DXGI;
 
 namespace SoftDemo
 {
@@ -178,35 +176,6 @@ namespace SoftDemo
             }
 
             (PhysicsContext as Physics).HandleInput(Input,  FrameDelta);
-        }
-
-        string ground = "Ground";
-        protected override void OnRender()
-        {
-            foreach (CollisionObject colObj in PhysicsContext.World.CollisionObjectArray)
-            {
-                if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
-                {
-                    //if (IsDebugDrawEnabled)
-                    //    continue;
-                    SetBuffer(Matrix.Identity, Color.LightBlue);
-                    MeshFactory.RenderSoftBody((SoftBody)colObj);
-                }
-                else
-                {
-                    Color color;
-                    if (ground.Equals(colObj.UserObject))
-                    {
-                        color = Color.Green;
-                    }
-                    else
-                    {
-                        color = colObj.ActivationState == ActivationState.ActiveTag ? Color.Orange : Color.OrangeRed;
-                    }
-                    SetBuffer((colObj as RigidBody).MotionState.WorldTransform, color);
-                    MeshFactory.Render(colObj.CollisionShape);
-                }
-            }
         }
     }
 

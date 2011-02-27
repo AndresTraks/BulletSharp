@@ -86,7 +86,16 @@ namespace DemoFramework
         bool use6Dof = false;
         protected TypedConstraint pickConstraint;
         float oldPickingDist;
-        
+
+        public Matrix BodyTransform
+        {
+            get { return objectConstants.World; }
+            set
+            {
+                SetBuffer(value, objectConstants.Color);
+            }
+        }
+
         [StructLayout(LayoutKind.Sequential)]
         struct ShaderObjectConstants
         {
@@ -316,7 +325,7 @@ namespace DemoFramework
             SetSceneBuffer();
         }
 
-        protected void SetBuffer(Matrix world, Color color)
+        public void SetBuffer(Matrix world, Color color)
         {
             objectConstants.World = world;
             objectConstants.Color = (Color4)color;
@@ -431,8 +440,8 @@ namespace DemoFramework
 
             Input = new Input(Form);
 
-            Width = 800;
-            Height = 800;
+            Width = 1024;
+            Height = 768;
             FullScreenWidth = Screen.PrimaryScreen.Bounds.Width;
             FullScreenHeight = Screen.PrimaryScreen.Bounds.Height;
             NearPlane = 1.0f;
@@ -453,7 +462,7 @@ namespace DemoFramework
             }
 
             Info = new InfoText(Device);
-            MeshFactory = new MeshFactory(Device);
+            MeshFactory = new MeshFactory(this);
 
             Initialize();
 
@@ -469,7 +478,13 @@ namespace DemoFramework
 
         protected virtual void OnInitialize() { }
 
-        protected virtual void OnRender() { }
+        protected virtual void OnRender()
+        {
+            foreach (CollisionObject colObj in PhysicsContext.World.CollisionObjectArray)
+            {
+                MeshFactory.Render(colObj);
+            }
+        }
 
         protected virtual void OnUpdate()
         {
