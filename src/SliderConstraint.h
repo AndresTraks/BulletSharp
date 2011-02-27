@@ -18,6 +18,7 @@ namespace BulletSharp
 		SliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameA);
 
 		void CalculateTransforms(Matrix transA, Matrix transB);
+		void SetFrames(Matrix frameA, Matrix frameB);
 		void TestAngularLimits();
 		void TestLinLimits();
 

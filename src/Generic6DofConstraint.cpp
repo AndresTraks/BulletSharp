@@ -481,6 +481,17 @@ bool Generic6DofConstraint::IsLimited(int limitIndex)
 	return UnmanagedPointer->isLimited(limitIndex);
 }
 
+void Generic6DofConstraint::SetAxis(Vector3 axis1, Vector3 axis2)
+{
+	btVector3* axis1Temp = Math::Vector3ToBtVector3(axis1);
+	btVector3* axis2Temp = Math::Vector3ToBtVector3(axis2);
+
+	UnmanagedPointer->setAxis(*axis1Temp, *axis2Temp);
+
+	delete axis1Temp;
+	delete axis2Temp;
+}
+
 void Generic6DofConstraint::SetFrames(Matrix frameA, Matrix frameB)
 {
 	btTransform* frameATemp = Math::MatrixToBtTransform(frameA);

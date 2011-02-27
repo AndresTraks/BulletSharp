@@ -44,6 +44,17 @@ void SliderConstraint::CalculateTransforms(Matrix transA, Matrix transB)
 	delete transBTemp;
 }
 
+void SliderConstraint::SetFrames(Matrix frameA, Matrix frameB)
+{
+	btTransform* frameATemp = Math::MatrixToBtTransform(frameA);
+	btTransform* frameBTemp = Math::MatrixToBtTransform(frameB);
+
+	UnmanagedPointer->setFrames(*frameATemp, *frameBTemp);
+
+	delete frameBTemp;
+	delete frameATemp;
+}
+
 void SliderConstraint::TestAngularLimits()
 {
 	UnmanagedPointer->testAngLimits();

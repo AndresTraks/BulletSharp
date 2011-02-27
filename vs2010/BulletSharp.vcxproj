@@ -1700,6 +1700,7 @@
     <ClCompile Include="..\src\HeightfieldTerrainShape.cpp" />
     <ClCompile Include="..\src\Hinge2Constraint.cpp" />
     <ClCompile Include="..\src\HingeConstraint.cpp" />
+    <ClCompile Include="..\src\InternalEdgeUtility.cpp" />
     <ClCompile Include="..\src\KinematicCharacterController.cpp" />
     <ClCompile Include="..\src\ManifoldPoint.cpp" />
     <ClCompile Include="..\src\ManifoldResult.cpp" />
@@ -1805,6 +1806,7 @@
     <ClCompile Include="..\src\TriangleCallback.cpp" />
     <ClCompile Include="..\src\TriangleIndexVertexArray.cpp" />
     <ClCompile Include="..\src\TriangleIndexVertexMaterialArray.cpp" />
+    <ClCompile Include="..\src\TriangleInfoMap.cpp" />
     <ClCompile Include="..\src\TriangleMesh.cpp" />
     <ClCompile Include="..\src\TriangleMeshShape.cpp" />
     <ClCompile Include="..\src\TriangleShape.cpp" />
@@ -1898,6 +1900,7 @@
     <ClInclude Include="..\src\Hinge2Constraint.h" />
     <ClInclude Include="..\src\HingeConstraint.h" />
     <ClInclude Include="..\src\IDisposable.h" />
+    <ClInclude Include="..\src\InternalEdgeUtility.h" />
     <ClInclude Include="..\src\KinematicCharacterController.h" />
     <ClInclude Include="..\src\ManifoldPoint.h" />
     <ClInclude Include="..\src\ManifoldResult.h" />
@@ -1962,6 +1965,7 @@
     <ClInclude Include="..\src\TriangleCallback.h" />
     <ClInclude Include="..\src\TriangleIndexVertexArray.h" />
     <ClInclude Include="..\src\TriangleIndexVertexMaterialArray.h" />
+    <ClInclude Include="..\src\TriangleInfoMap.h" />
     <ClInclude Include="..\src\TriangleMesh.h" />
     <ClInclude Include="..\src\TriangleMeshShape.h" />
     <ClInclude Include="..\src\TriangleShape.h" />

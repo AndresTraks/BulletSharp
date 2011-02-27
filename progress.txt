@@ -13,18 +13,6 @@ x MultiSapBroadphase (experimental)
 
 
 
-Collision/CollisionDispatch
-
-x InternalEdgeUtility (internal)
-
-
-
-Collision/CollisionShapes
-
-x TriangleInfoMap (internal)
-
-
-
 Collision/Gimpact
 
 0 BoxCollision

@@ -17,6 +17,7 @@
 //#define DISABLE_DEBUGDRAW
 //#define DISABLE_GIMPACT
 //#define DISABLE_INTERNAL
+//#define DISABLE_INTERNAL_EDGE_UTILITY
 //#define DISABLE_MULTITHREADED
 //#define DISABLE_SERIALIZE
 //#define DISABLE_SOFTBODY
@@ -262,6 +263,10 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #ifndef DISABLE_COLLISION_ALGORITHMS
 #include <BulletSoftBody/btSoftBodyConcaveCollisionAlgorithm.h>
 #endif
+#endif
+
+#ifndef DISABLE_INTERNAL_EDGE_UTILITY
+#include "BulletCollision/CollisionDispatch/btInternalEdgeUtility.h"
 #endif
 
 #pragma managed(pop)

@@ -1,0 +1,34 @@
+#pragma once
+
+namespace BulletSharp
+{
+	ref class BvhTriangleMeshShape;
+	ref class CollisionObject;
+	ref class DebugDraw;
+	ref class ManifoldPoint;
+	ref class TriangleInfoMap;
+
+	[Flags]
+	public enum class InternalEdgeAdjustFlags
+	{
+		None = 0,
+		TriangleConvexBackfaceMode = BT_TRIANGLE_CONVEX_BACKFACE_MODE,
+		TriangleConcaveDoubleSided = BT_TRIANGLE_CONCAVE_DOUBLE_SIDED,
+		TriangleConvexDoubleSided = BT_TRIANGLE_CONVEX_DOUBLE_SIDED
+	};
+
+	public ref class InternalEdgeUtility sealed
+	{
+	public:
+		static void GenerateInternalEdgeInfo(BvhTriangleMeshShape^ trimeshShape, TriangleInfoMap^ triangleInfoMap);
+		static void AdjustInternalEdgeContacts(ManifoldPoint^ cp, CollisionObject^ trimeshColObj0, CollisionObject^ otherColObj1,
+			int partId0, int index0, InternalEdgeAdjustFlags normalAdjustFlags);
+		static void AdjustInternalEdgeContacts(ManifoldPoint^ cp, CollisionObject^ trimeshColObj0, CollisionObject^ otherColObj1,
+			int partId0, int index0);
+#ifndef DISABLE_DEBUGDRAW
+#ifdef BT_INTERNAL_EDGE_DEBUG_DRAW
+		static void SetDebugDrawer(DebugDraw^ debugDrawer);
+#endif
+#endif
+	};
+};

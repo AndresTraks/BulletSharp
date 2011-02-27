@@ -1578,6 +1578,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\InternalEdgeUtility.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\src\ManifoldResult.cpp"
 						>
 					</File>
@@ -1767,6 +1771,10 @@
 					</File>
 					<File
 						RelativePath=".\src\TriangleIndexVertexMaterialArray.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\TriangleInfoMap.cpp"
 						>
 					</File>
 					<File
@@ -2288,6 +2296,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\TriangleInfoMap.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\TriangleMesh.h"
 						>
 					</File>
@@ -2373,6 +2385,10 @@
 					</File>
 					<File
 						RelativePath=".\src\GhostObject.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\InternalEdgeUtility.h"
 						>
 					</File>
 					<File

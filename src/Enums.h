@@ -257,6 +257,7 @@ namespace BulletSharp
 	[Flags]
 	public enum class DispatcherFlags
 	{
+		None = 0,
 		StaticStaticReported = btCollisionDispatcher::DispatcherFlags::CD_STATIC_STATIC_REPORTED,
 		UseRelativeContactBreakingThreshold = btCollisionDispatcher::DispatcherFlags::CD_USE_RELATIVE_CONTACT_BREAKING_THRESHOLD
 	};
@@ -312,6 +313,7 @@ namespace BulletSharp
 	[Flags]
 	public enum class RigidBodyFlags
 	{
+		None = 0,
 		DisableWorldGravity = BT_DISABLE_WORLD_GRAVITY
 	};
 

@@ -272,6 +272,7 @@ namespace BulletSharp
 		btScalar GetRelativePivotPosition(int axis_index);
 		RotationalLimitMotor^ GetRotationalLimitMotor(int index);
 		bool IsLimited(int limitIndex);
+		void SetAxis(Vector3 axis1, Vector3 axis2);
 		void SetFrames(Matrix frameA, Matrix frameB);
 		void SetLimit(int axis, btScalar lo, btScalar hi);
 		bool TestAngularLimitMotor(int axis_index);
