@@ -8,6 +8,7 @@
 #include "Dispatcher.h"
 #include "RigidBody.h"
 #include "SoftBody.h"
+#include "SoftBodySolver.h"
 #include "SparseSdf.h"
 #include "StringConv.h"
 #ifndef DISABLE_DBVT
@@ -3126,6 +3127,15 @@ void BulletSharp::SoftBody::SoftBody::Pose::set(BulletSharp::SoftBody::Pose^ val
 BulletSharp::SoftBody::AlignedRigidContactArray^ BulletSharp::SoftBody::SoftBody::RigidContacts::get()
 {
 	return gcnew AlignedRigidContactArray(&UnmanagedPointer->m_rcontacts);
+}
+
+SoftBodySolver^ BulletSharp::SoftBody::SoftBody::SoftBodySolver::get()
+{
+	return gcnew BulletSharp::SoftBody::SoftBodySolver(UnmanagedPointer->getSoftBodySolver());
+}
+void BulletSharp::SoftBody::SoftBody::SoftBodySolver::set(BulletSharp::SoftBody::SoftBodySolver^ value)
+{
+	UnmanagedPointer->setSoftBodySolver(value->UnmanagedPointer);
 }
 
 BulletSharp::SoftBody::AlignedSoftContactArray^ BulletSharp::SoftBody::SoftBody::SoftContacts::get()

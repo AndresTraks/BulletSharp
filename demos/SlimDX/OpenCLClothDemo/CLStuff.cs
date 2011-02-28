@@ -8,7 +8,7 @@ namespace OpenCLClothDemo
         public static IntPtr cxMainContext;
         public static IntPtr device;
         public static IntPtr commandQueue;
-        public static CLDeviceType deviceType = CLDeviceType.All;
+        public static CLDeviceType deviceType = CLDeviceType.Cpu;
 
         public static void InitCL()
         {

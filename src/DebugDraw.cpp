@@ -101,6 +101,28 @@ void DebugDraw::DrawBox(Vector3 bbMin, Vector3 bbMax, BtColor color)
 	delete colorTemp;
 };
 
+void DebugDraw::DrawCapsule(btScalar radius, btScalar halfHeight, int upAxis, Matrix transform, BtColor color)
+{
+	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
+	btVector3* colorTemp = BtColorToBtVector(color);
+
+	_debugDraw->baseDrawCapsule(radius, halfHeight, upAxis, *transformTemp, *colorTemp);
+
+	delete transformTemp;
+	delete colorTemp;
+}
+
+void DebugDraw::DrawCone(btScalar radius, btScalar height, int upAxis, Matrix transform, BtColor color)
+{
+	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
+	btVector3* colorTemp = BtColorToBtVector(color);
+
+	_debugDraw->baseDrawCone(radius, height, upAxis, *transformTemp, *colorTemp);
+
+	delete transformTemp;
+	delete colorTemp;
+}
+
 void DebugDraw::DrawContactPoint(Vector3 pointOnB, Vector3 normalOnB, btScalar distance, int lifeTime, BtColor color)
 {
 /*
@@ -114,6 +136,17 @@ void DebugDraw::DrawContactPoint(Vector3 pointOnB, Vector3 normalOnB, btScalar d
 	delete normalOnBTemp;
 	delete colorTemp;
 */
+}
+
+void DebugDraw::DrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, Matrix transform, BtColor color)
+{
+	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
+	btVector3* colorTemp = BtColorToBtVector(color);
+
+	_debugDraw->baseDrawCylinder(radius, halfHeight, upAxis, *transformTemp, *colorTemp);
+
+	delete transformTemp;
+	delete colorTemp;
 }
 
 void DebugDraw::DrawLine(Vector3 from, Vector3 to, BtColor fromColor, BtColor toColor)
@@ -130,6 +163,19 @@ void DebugDraw::DrawLine(Vector3 from, Vector3 to, BtColor fromColor, BtColor to
 	delete fromColorTemp;
 	delete toColorTemp;
 };
+
+void DebugDraw::DrawPlane(Vector3 planeNormal, btScalar planeConst, Matrix transform, BtColor color)
+{
+	btVector3* planeNormalTemp = Math::Vector3ToBtVector3(planeNormal);
+	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
+	btVector3* colorTemp = BtColorToBtVector(color);
+
+	_debugDraw->baseDrawPlane(*planeNormalTemp, planeConst, *transformTemp, *colorTemp);
+
+	delete planeNormalTemp;
+	delete transformTemp;
+	delete colorTemp;
+}
 
 void DebugDraw::DrawSphere(Vector3 p, btScalar radius, BtColor color)
 {
@@ -300,10 +346,25 @@ void DebugDrawWrapper::drawBox(const btVector3& bbMin, const btVector3& bbMax, c
 		Math::BtVector3ToVector3(&bbMin), Math::BtVector3ToVector3(&bbMax),	BtVectorToBtColor(color));
 }
 
+void DebugDrawWrapper::drawCapsule(btScalar radius, btScalar halfHeight, int upAxis, const btTransform& transform, const btVector3& color)
+{
+	_debugDraw->DrawCapsule(radius, halfHeight, upAxis, Math::BtTransformToMatrix(&transform), BtVectorToBtColor(color));
+}
+
+void DebugDrawWrapper::drawCone(btScalar radius, btScalar height, int upAxis, const btTransform& transform, const btVector3& color)
+{
+	_debugDraw->DrawCone(radius, height, upAxis, Math::BtTransformToMatrix(&transform), BtVectorToBtColor(color));
+}
+
 void DebugDrawWrapper::drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color)
 {
 	_debugDraw->DrawContactPoint(Math::BtVector3ToVector3(&PointOnB), Math::BtVector3ToVector3(&normalOnB),
 		distance, lifeTime, BtVectorToBtColor(color));
+}
+
+void DebugDrawWrapper::drawCylinder(btScalar radius, btScalar halfHeight, int upAxis, const btTransform& transform, const btVector3& color)
+{
+	_debugDraw->DrawCylinder(radius, halfHeight, upAxis, Math::BtTransformToMatrix(&transform), BtVectorToBtColor(color));
 }
 
 void DebugDrawWrapper::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
@@ -316,6 +377,11 @@ void DebugDrawWrapper::drawLine(const btVector3& from, const btVector3& to, cons
 {
 	_debugDraw->DrawLine(
 		Math::BtVector3ToVector3(&from), Math::BtVector3ToVector3(&to), BtVectorToBtColor(fromColor), BtVectorToBtColor(toColor));
+}
+
+void DebugDrawWrapper::drawPlane(const btVector3& planeNormal, btScalar planeConst, const btTransform& transform, const btVector3& color)
+{
+	_debugDraw->DrawPlane(Math::BtVector3ToVector3(&planeNormal), planeConst, Math::BtTransformToMatrix(&transform), BtVectorToBtColor(color));
 }
 
 void DebugDrawWrapper::drawSphere(const btVector3& p, btScalar radius, const btVector3& color)
@@ -396,6 +462,16 @@ void DebugDrawWrapper::baseDrawBox(const btVector3& bbMin, const btVector3& bbMa
 	btIDebugDraw::drawBox(bbMin, bbMax, color);
 }
 
+void DebugDrawWrapper::baseDrawCapsule(btScalar radius, btScalar halfHeight, int upAxis, const btTransform& transform, const btVector3& color)
+{
+	btIDebugDraw::drawCapsule(radius, halfHeight, upAxis, transform, color);
+}
+
+void DebugDrawWrapper::baseDrawCone(btScalar radius, btScalar height, int upAxis, const btTransform& transform, const btVector3& color)
+{
+	btIDebugDraw::drawCone(radius, height, upAxis, transform, color);
+}
+
 /*
 void DebugDrawWrapper::baseDrawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color)
 {
@@ -403,9 +479,19 @@ void DebugDrawWrapper::baseDrawContactPoint(const btVector3& PointOnB, const btV
 }
 */
 
+void DebugDrawWrapper::baseDrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, const btTransform& transform, const btVector3& color)
+{
+	btIDebugDraw::drawCylinder(radius, halfHeight, upAxis, transform, color);
+}
+
 void DebugDrawWrapper::baseDrawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor)
 {
 	btIDebugDraw::drawLine(from, to, fromColor, toColor);
+}
+
+void DebugDrawWrapper::baseDrawPlane(const btVector3& planeNormal, btScalar planeConst, const btTransform& transform, const btVector3& color)
+{
+	btIDebugDraw::drawPlane(planeNormal, planeConst, transform, color);
 }
 
 void DebugDrawWrapper::baseDrawSphere(const btVector3& p, btScalar radius, const btVector3& color)

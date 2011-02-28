@@ -49,6 +49,7 @@ namespace BulletSharp
 		ref class NodePtrArray;
 		ref class Scti;
 		ref class SoftBody;
+		ref class SoftBodySolver;
 
 		public ref class SoftBodyWorldInfo
 		{
@@ -1896,6 +1897,12 @@ namespace BulletSharp
 			property AlignedRigidContactArray^ RigidContacts
 			{
 				AlignedRigidContactArray^ get();
+			}
+
+			property SoftBodySolver^ SoftBodySolver
+			{
+				BulletSharp::SoftBody::SoftBodySolver^ get();
+				void set(BulletSharp::SoftBody::SoftBodySolver^ value);
 			}
 
 			property AlignedSoftContactArray^ SoftContacts

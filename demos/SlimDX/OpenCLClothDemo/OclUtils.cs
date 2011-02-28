@@ -44,7 +44,7 @@ namespace OpenCLClothDemo
                     // 8 processing elements, dual issue - pre-Fermi at least
                     SimdMultiplier = 16;
 #else
-                    SimdMultiplier = 16;
+                    SimdMultiplier = 1;
 #endif
                 }
 

@@ -33,7 +33,7 @@
 
 
 // Choose one of these for CL
-#define USE_MINICL
+//#define USE_MINICL
 //#define USE_AMD_OPENCL
 //#define USE_NVIDIA_OPENCL
 

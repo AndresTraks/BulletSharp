@@ -28,9 +28,13 @@ namespace BulletSharp
 			btScalar minAngle, btScalar maxAngle, BtColor color, bool drawSect);
 		virtual void DrawBox(Vector3 bbMin, Vector3 bbMax, Matrix trans, BtColor color);
 		virtual void DrawBox(Vector3 bbMin, Vector3 bbMax, BtColor color);
+		virtual void DrawCapsule(btScalar radius, btScalar halfHeight, int upAxis, Matrix transform, BtColor color);
+		virtual void DrawCone(btScalar radius, btScalar height, int upAxis, Matrix transform, BtColor color);
 		virtual void DrawContactPoint(Vector3 pointOnB, Vector3 normalOnB, btScalar distance, int lifeTime, BtColor color);
+		virtual void DrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, Matrix transform, BtColor color);
 		virtual void DrawLine(Vector3 from, Vector3 to, BtColor color) {};
 		virtual void DrawLine(Vector3 from, Vector3 to, BtColor fromColor, BtColor toColor);
+		virtual void DrawPlane(Vector3 planeNormal, btScalar planeConst, Matrix transform, BtColor color);
 		virtual void DrawSphere(Vector3 p, btScalar radius, BtColor color);
 		virtual void DrawSphere(btScalar radius, Matrix transform, BtColor color);
 		virtual void DrawSpherePatch(Vector3 center, Vector3 up, Vector3 axis, btScalar radius, btScalar minTh, btScalar maxTh,
@@ -80,9 +84,13 @@ namespace BulletSharp
 			const btVector3& color, bool drawSect);
 		virtual void drawBox(const btVector3& bbMin, const btVector3& bbMax, const btTransform& trans, const btVector3& color);
 		virtual void drawBox(const btVector3& bbMin, const btVector3& bbMax, const btVector3& color);
+		virtual void drawCapsule(btScalar radius, btScalar halfHeight, int upAxis, const btTransform& transform, const btVector3& color);
+		virtual void drawCone(btScalar radius, btScalar height, int upAxis, const btTransform& transform, const btVector3& color);
 		virtual void drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color);
+		virtual void drawCylinder(btScalar radius, btScalar halfHeight, int upAxis, const btTransform& transform, const btVector3& color);
 		virtual void drawLine(const btVector3& from, const btVector3& to, const btVector3& color);
 		virtual void drawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor);
+		virtual void drawPlane(const btVector3& planeNormal, btScalar planeConst, const btTransform& transform, const btVector3& color);
 		virtual void drawSphere(const btVector3& p, btScalar radius, const btVector3& color);
 		virtual void drawSphere(btScalar radius, const btTransform& transform, const btVector3& color);
 		virtual void drawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
@@ -104,8 +112,12 @@ namespace BulletSharp
 			const btVector3& color, bool drawSect);
 		virtual void baseDrawBox(const btVector3& bbMin, const btVector3& bbMax, const btTransform& trans, const btVector3& color);
 		virtual void baseDrawBox(const btVector3& bbMin, const btVector3& bbMax, const btVector3& color);
+		virtual void baseDrawCapsule(btScalar radius, btScalar halfHeight, int upAxis, const btTransform& transform, const btVector3& color);
+		virtual void baseDrawCone(btScalar radius, btScalar height, int upAxis, const btTransform& transform, const btVector3& color);
 		//virtual void baseDrawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color);
+		virtual void baseDrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, const btTransform& transform, const btVector3& color);
 		virtual void baseDrawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor);
+		virtual void baseDrawPlane(const btVector3& planeNormal, btScalar planeConst, const btTransform& transform, const btVector3& color);
 		virtual void baseDrawSphere(const btVector3& p, btScalar radius, const btVector3& color);
 		virtual void baseDrawSphere(btScalar radius, const btTransform& transform, const btVector3& color);
 		virtual void baseDrawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,

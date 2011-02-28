@@ -3,6 +3,7 @@
 #ifndef DISABLE_SOFTBODY
 
 #include "AlignedObjectArray.h"
+#include "CollisionObject.h"
 #include "SoftBody.h"
 #include "SoftBodySolver.h"
 #include "SoftBodySolverVertexBuffer.h"
@@ -12,14 +13,29 @@ SoftBody::SoftBodySolver::SoftBodySolver(btSoftBodySolver* solver)
 	_solver = solver;
 }
 
+void SoftBody::SoftBodySolver::CopyBackToSoftBodies()
+{
+	_solver->copyBackToSoftBodies();
+}
+
+void SoftBody::SoftBodySolver::Optimize(AlignedSoftBodyArray^ softBodies, bool forceUpdate)
+{
+	_solver->optimize(*softBodies->UnmanagedPointer, forceUpdate);
+}
+
 void SoftBody::SoftBodySolver::Optimize(AlignedSoftBodyArray^ softBodies)
 {
 	_solver->optimize(*softBodies->UnmanagedPointer);
 }
 
-void SoftBody::SoftBodySolver::CopySoftBodyToVertexBuffer(SoftBody^ softBody, VertexBufferDescriptor^ vertexBuffer)
+void SoftBody::SoftBodySolver::ProcessCollision(SoftBody^ softBody, CollisionObject^ collisionObject)
 {
-	_solver->copySoftBodyToVertexBuffer(softBody->UnmanagedPointer, vertexBuffer->UnmanagedPointer);
+	_solver->processCollision(softBody->UnmanagedPointer, collisionObject->UnmanagedPointer);
+}
+
+void SoftBody::SoftBodySolver::ProcessCollision(SoftBody^ softBody, SoftBody^ otherSoftBody)
+{
+	_solver->processCollision(softBody->UnmanagedPointer, otherSoftBody->UnmanagedPointer);
 }
 
 int SoftBody::SoftBodySolver::NumberOfPositionIterations::get()
@@ -40,6 +56,11 @@ void SoftBody::SoftBodySolver::NumberOfVelocityIterations::set(int value)
 	_solver->setNumberOfVelocityIterations(value);
 }
 
+SolverType SoftBody::SoftBodySolver::SolverType::get()
+{
+	return (BulletSharp::SolverType)_solver->getSolverType();
+}
+
 float SoftBody::SoftBodySolver::TimeScale::get()
 {
 	return _solver->getTimeScale();
@@ -52,6 +73,12 @@ btSoftBodySolver* SoftBody::SoftBodySolver::UnmanagedPointer::get()
 void SoftBody::SoftBodySolver::UnmanagedPointer::set(btSoftBodySolver* value)
 {
 	_solver = value;
+}
+
+
+void SoftBody::SoftBodySolverOutput::CopySoftBodyToVertexBuffer(SoftBody^ softBody, VertexBufferDescriptor^ vertexBuffer)
+{
+	_solverOutput->copySoftBodyToVertexBuffer(softBody->UnmanagedPointer, vertexBuffer->UnmanagedPointer);
 }
 
 #endif

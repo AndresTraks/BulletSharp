@@ -23,6 +23,7 @@ namespace OpenCLClothDemo
         Cloth[] cloths;
         SoftBodySolver gSolver;
         BulletSharp.Clock clock = new BulletSharp.Clock();
+        SoftBodySolverOutput softBodyOutput;
 
         SoftRigidDynamicsWorld SoftWorld
         {
@@ -51,7 +52,7 @@ namespace OpenCLClothDemo
             }
 
             // collision configuration contains default setup for memory, collision setup
-            CollisionConf = new DefaultCollisionConfiguration();
+            CollisionConf = new SoftBodyRigidBodyCollisionConfiguration();
             Dispatcher = new CollisionDispatcher(CollisionConf);
 
             Broadphase = new DbvtBroadphase();
@@ -186,6 +187,11 @@ namespace OpenCLClothDemo
                 softBody.SetMass((height - 1) * width + width / 2, 0);
                 softBody.Cfg.Collisions = FCollisions.CLSS | FCollisions.CLRS;
 
+                softBody.Cfg.LF = 0.0005f;
+                softBody.Cfg.VCF = 0.001f;
+                softBody.Cfg.DP = 0.0f;
+                softBody.Cfg.DG = 0.0f;
+
 
                 flags.Add(softBody);
 
@@ -274,7 +280,7 @@ namespace OpenCLClothDemo
             return true;
         }
 
-        static int counter = 0;
+        static int counter = 1;
         static Random random = new Random();
         static int frameCount = 0;
 

@@ -333,6 +333,18 @@ namespace BulletSharp
 		Cuda = SOLVER_CUDA
 	};
 
+#ifndef DISABLE_SOFTBODY
+	public enum class SolverType
+	{
+		Default = btSoftBodySolver::DEFAULT_SOLVER,
+		Cpu = btSoftBodySolver::CPU_SOLVER,
+		CL = btSoftBodySolver::CL_SOLVER,
+		CLSimd = btSoftBodySolver::CL_SIMD_SOLVER,
+		DX = btSoftBodySolver::DX_SOLVER,
+		DXSimd = btSoftBodySolver::DX_SIMD_SOLVER
+	};
+#endif
+
 	public enum class TraversalMode
 	{
 		Recursive = btQuantizedBvh::TRAVERSAL_RECURSIVE,
