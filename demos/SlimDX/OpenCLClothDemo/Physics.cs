@@ -321,7 +321,7 @@ namespace OpenCLClothDemo
 
             for (int flagIndex = 0; flagIndex < flags.Count; ++flagIndex)
             {
-                gSolver.CopySoftBodyToVertexBuffer(flags[flagIndex], cloths[flagIndex].VertexBufferDescriptor);
+                softBodyOutput.CopySoftBodyToVertexBuffer(flags[flagIndex], cloths[flagIndex].VertexBufferDescriptor);
                 if (flags[flagIndex].UserObject == null)
                     flags[flagIndex].UserObject = new object[] { cloths[flagIndex].CpuBuffer, cloths[flagIndex].Indices };
             }

@@ -76,9 +76,23 @@ void SoftBody::SoftBodySolver::UnmanagedPointer::set(btSoftBodySolver* value)
 }
 
 
+SoftBody::SoftBodySolverOutput::SoftBodySolverOutput(btSoftBodySolverOutput* solverOutput)
+{
+	_solverOutput = solverOutput;
+}
+
 void SoftBody::SoftBodySolverOutput::CopySoftBodyToVertexBuffer(SoftBody^ softBody, VertexBufferDescriptor^ vertexBuffer)
 {
 	_solverOutput->copySoftBodyToVertexBuffer(softBody->UnmanagedPointer, vertexBuffer->UnmanagedPointer);
+}
+
+btSoftBodySolverOutput* SoftBody::SoftBodySolverOutput::UnmanagedPointer::get()
+{
+	return _solverOutput;
+}
+void SoftBody::SoftBodySolverOutput::UnmanagedPointer::set(btSoftBodySolverOutput* value)
+{
+	_solverOutput = value;
 }
 
 #endif

@@ -18,6 +18,12 @@ btOpenCLSoftBodySolver* OpenCLSoftBodySolver::UnmanagedPointer::get()
 	return (btOpenCLSoftBodySolver*)SoftBodySolver::UnmanagedPointer;
 }
 
+
+SoftBody::SoftBodySolverOutputCLToCpu::SoftBodySolverOutputCLToCpu()
+: SoftBodySolverOutput(new btSoftBodySolverOutputCLtoCPU())
+{
+}
+
 #endif
 #endif
 #endif

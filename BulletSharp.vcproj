@@ -64,7 +64,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
@@ -145,7 +145,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
@@ -225,7 +225,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
@@ -302,7 +302,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
@@ -383,7 +383,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
@@ -460,7 +460,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
@@ -541,7 +541,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
@@ -618,7 +618,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
@@ -699,7 +699,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
@@ -776,7 +776,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
@@ -857,7 +857,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
@@ -934,7 +934,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
@@ -1012,7 +1012,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
@@ -1093,7 +1093,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
@@ -1173,7 +1173,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
@@ -1250,7 +1250,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib BulletSoftBodySolvers_CPU.lib"
+				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"

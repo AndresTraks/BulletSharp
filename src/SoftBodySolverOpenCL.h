@@ -18,4 +18,14 @@ namespace BulletSharp
 			}
 		};
 	};
+
+	namespace SoftBody
+	{
+		public ref class SoftBodySolverOutputCLToCpu : SoftBodySolverOutput
+		{
+		public:
+			SoftBodySolverOutputCLToCpu();
+		};
+
+	};
 };
