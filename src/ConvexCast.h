@@ -4,11 +4,9 @@
 
 #include "IDisposable.h"
 
-using namespace msclr;
-
 namespace BulletSharp
 {
-	ref class DebugDraw;
+	interface class IDebugDraw;
 
 	public ref class ConvexCast : BulletSharp::IDisposable
 	{
@@ -45,10 +43,10 @@ namespace BulletSharp
 			}
 
 #ifndef DISABLE_DEBUGDRAW
-			property BulletSharp::DebugDraw^ DebugDrawer
+			property IDebugDraw^ DebugDrawer
 			{
-				BulletSharp::DebugDraw^ get();
-				void set(BulletSharp::DebugDraw^ value);
+				IDebugDraw^ get();
+				void set(IDebugDraw^ value);
 			}
 #endif
 

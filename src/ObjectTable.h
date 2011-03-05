@@ -12,8 +12,10 @@ namespace BulletSharp
 	public:
 		static void Add(Object^ obj, void* unmanagedPointer);
 		static bool Contains(intptr_t unmanagedPointer);
+		static bool Contains(Object^ managedObject);
 
 		generic<class T>
 		static T GetObject(intptr_t unmanagedPointer);
+		static intptr_t GetUnmanagedObject(Object^ unmanagedPointer);
 	};
 };

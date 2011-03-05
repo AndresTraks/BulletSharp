@@ -13,6 +13,7 @@
 #include "OverlappingPairCache.h"
 #ifndef DISABLE_DEBUGDRAW
 #include "DebugDraw.h"
+#include "IDebugDraw.h"
 #endif
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
@@ -707,18 +708,13 @@ AlignedCollisionObjectArray^ CollisionWorld::CollisionObjectArray::get()
 }
 
 #ifndef DISABLE_DEBUGDRAW
-DebugDraw^ CollisionWorld::DebugDrawer::get()
+IDebugDraw^ CollisionWorld::DebugDrawer::get()
 {
-	return _debugDraw;
+	return DebugDraw::GetManaged(_world->getDebugDrawer());
 }
-void CollisionWorld::DebugDrawer::set(DebugDraw^ value)
+void CollisionWorld::DebugDrawer::set(IDebugDraw^ value)
 {
-	_debugDraw = value;
-
-	if (value == nullptr)
-		_world->setDebugDrawer(0);
-	else
-		_world->setDebugDrawer(value->UnmanagedPointer);
+	_world->setDebugDrawer(DebugDraw::GetUnmanaged(value));
 }
 #endif
 

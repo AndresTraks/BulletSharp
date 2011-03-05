@@ -144,17 +144,17 @@ DiscreteCollisionDetectorInterface::!DiscreteCollisionDetectorInterface()
 
 #ifndef DISABLE_DEBUGDRAW
 void DiscreteCollisionDetectorInterface::GetClosestPoints(
-	ClosestPointInput^ input, Result^ output, DebugDraw^ debugDraw)
+	ClosestPointInput^ input, Result^ output, IDebugDraw^ debugDraw)
 {
 	UnmanagedPointer->getClosestPoints(*input->UnmanagedPointer, *output->UnmanagedPointer,
-		(debugDraw != nullptr) ? debugDraw->UnmanagedPointer : 0);
+		DebugDraw::GetUnmanaged(debugDraw));
 }
 
 void DiscreteCollisionDetectorInterface::GetClosestPoints(
-	ClosestPointInput^ input, Result^ output, DebugDraw^ debugDraw, bool swapResults)
+	ClosestPointInput^ input, Result^ output, IDebugDraw^ debugDraw, bool swapResults)
 {
 	UnmanagedPointer->getClosestPoints(*input->UnmanagedPointer, *output->UnmanagedPointer,
-		(debugDraw != nullptr) ? debugDraw->UnmanagedPointer : 0, swapResults);
+		DebugDraw::GetUnmanaged(debugDraw), swapResults);
 }
 #else
 void DiscreteCollisionDetectorInterface::GetClosestPoints(

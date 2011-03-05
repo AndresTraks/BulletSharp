@@ -1,7 +1,5 @@
 #pragma once
 
-using namespace msclr;
-
 namespace BulletSharp
 {
 	class MotionStateWrapper;

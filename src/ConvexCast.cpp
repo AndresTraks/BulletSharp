@@ -58,13 +58,13 @@ void ConvexCast::CastResult::AllowedPenetration::set(btScalar value)
 }
 
 #ifndef DISABLE_DEBUGDRAW
-DebugDraw^ ConvexCast::CastResult::DebugDrawer::get()
+IDebugDraw^ ConvexCast::CastResult::DebugDrawer::get()
 {
-	return gcnew BulletSharp::DebugDraw((DebugDrawWrapper*)_castResult->m_debugDrawer);
+	return DebugDraw::GetManaged(_castResult->m_debugDrawer);
 }
-void ConvexCast::CastResult::DebugDrawer::set(BulletSharp::DebugDraw^ value)
+void ConvexCast::CastResult::DebugDrawer::set(IDebugDraw^ value)
 {
-	_castResult->m_debugDrawer = value->UnmanagedPointer;
+	_castResult->m_debugDrawer = DebugDraw::GetUnmanaged(value);
 }
 #endif
 

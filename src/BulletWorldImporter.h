@@ -20,8 +20,6 @@
 #include "SliderConstraint.h"
 #endif
 
-using namespace msclr;
-
 namespace BulletSharp
 {
 	namespace Serialize

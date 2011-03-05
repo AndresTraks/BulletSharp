@@ -4,7 +4,6 @@
 
 #include "IDisposable.h"
 
-using namespace msclr;
 using namespace System::Drawing;
 
 namespace BulletSharp
@@ -16,14 +15,15 @@ namespace BulletSharp
 	ref class AlignedCollisionObjectArray;
 	ref class CollisionShape;
 	ref class ConvexShape;
-	ref class DebugDraw;
 	ref class Dispatcher;
 	ref class DispatcherInfo;
 	ref class ManifoldPoint;
 	ref class OverlappingPairCache;
 	ref class Serializer;
+	interface class IDebugDraw;
 
 	class ContactResultCallbackWrapper;
+	class DebugDrawWrapper;
 
 	public ref class CollisionWorld : BulletSharp::IDisposable
 	{
@@ -406,9 +406,6 @@ namespace BulletSharp
 		CollisionConfiguration^ _collisionConfiguration;
 		Dispatcher^ _dispatcher;
 		BroadphaseInterface^ _broadphase;
-#ifndef DISABLE_DEBUGDRAW
-		DebugDraw^ _debugDraw;
-#endif
 
 	internal:
 		CollisionWorld(btCollisionWorld* world);
@@ -467,10 +464,10 @@ namespace BulletSharp
 			AlignedCollisionObjectArray^ get();
 		}
 #ifndef DISABLE_DEBUGDRAW
-		property DebugDraw^ DebugDrawer
+		property IDebugDraw^ DebugDrawer
 		{
-			DebugDraw^ get();
-			void set(DebugDraw^ value);
+			IDebugDraw^ get();
+			void set(IDebugDraw^ value);
 		}
 #endif
 		property BulletSharp::Dispatcher^ Dispatcher

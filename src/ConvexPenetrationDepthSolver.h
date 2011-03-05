@@ -8,9 +8,9 @@
 namespace BulletSharp
 {
 	ref class ConvexShape;
-	ref class DebugDraw;
 	ref class SimplexSolverInterface;
 	ref class StackAlloc;
+	interface class IDebugDraw;
 
 	public ref class ConvexPenetrationDepthSolver : BulletSharp::IDisposable
 	{
@@ -34,7 +34,7 @@ namespace BulletSharp
 			ConvexShape^ convexA, ConvexShape^ convexB, Matrix transA, Matrix transB,
 			Vector3 v, Vector3 pa, Vector3 pb,
 #ifndef DISABLE_DEBUGDRAW
-			DebugDraw^ debugDraw,
+			IDebugDraw^ debugDraw,
 #endif
 			StackAlloc^ stackAlloc);
 

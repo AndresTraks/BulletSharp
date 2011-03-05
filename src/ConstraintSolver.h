@@ -8,11 +8,11 @@ namespace BulletSharp
 {
 	ref class CollisionObject;
 	ref class ContactSolverInfo;
-	ref class DebugDraw;
 	ref class Dispatcher;
 	ref class PersistentManifold;
 	ref class StackAlloc;
 	ref class TypedConstraint;
+	interface class IDebugDraw;
 
 	public ref class ConstraintSolver : BulletSharp::IDisposable
 	{
@@ -40,7 +40,7 @@ namespace BulletSharp
 #ifndef DISABLE_CONSTRAINTS
 		void AllSolved(ContactSolverInfo^ info,
 #ifndef DISABLE_DEBUGDRAW
-			DebugDraw^ debugDrawer,
+			IDebugDraw^ debugDrawer,
 #endif
 			StackAlloc^ stackAlloc);
 		void PrepareSolve(int numBodies, int numManifolds);
@@ -48,7 +48,7 @@ namespace BulletSharp
 		btScalar SolveGroup(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifold,
 			array<TypedConstraint^>^ constraints, ContactSolverInfo^ info,
 #ifndef DISABLE_DEBUGDRAW
-			DebugDraw^ debugDrawer,
+			IDebugDraw^ debugDrawer,
 #endif
 			StackAlloc^ stackAlloc, Dispatcher^ dispatcher);
 

@@ -3,6 +3,7 @@
 #ifndef DISABLE_DEBUGDRAW
 
 #include "DebugDraw.h"
+#include "StringConv.h"
 
 DebugDraw::DebugDraw()
 {
@@ -13,6 +14,35 @@ DebugDraw::DebugDraw()
 DebugDraw::DebugDraw(DebugDrawWrapper* debugDraw)
 {
 	_debugDraw = debugDraw;
+}
+
+IDebugDraw^ DebugDraw::GetManaged(btIDebugDraw* debugDraw)
+{
+	if (debugDraw == 0)
+		return nullptr;
+
+	if (ObjectTable::Contains((intptr_t)debugDraw))
+		return ObjectTable::GetObject<IDebugDraw^>((intptr_t)debugDraw);
+
+	return ((DebugDrawWrapper*)debugDraw)->getDebugDraw();
+}
+
+DebugDrawWrapper* DebugDraw::GetUnmanaged(IDebugDraw^ debugDraw)
+{
+	if (debugDraw == nullptr)
+		return 0;
+
+	DebugDraw^ cast = dynamic_cast<DebugDraw^>(debugDraw);
+	if (cast != nullptr)
+		return cast->UnmanagedPointer;
+
+	if (ObjectTable::Contains(debugDraw))
+		return (BulletSharp::DebugDrawWrapper*)ObjectTable::GetUnmanagedObject(debugDraw);
+
+	DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDraw);
+	ObjectTable::Add(debugDraw, wrapper);
+
+	return wrapper;
 }
 
 void DebugDraw::Draw3dText(Vector3 location, String^ textString)
@@ -285,11 +315,11 @@ void DebugDraw::ReportErrorWarning(String^ warningString)
 
 DebugDrawModes DebugDraw::DebugMode::get()
 {
-	return (DebugDrawModes)_debugDraw->getDebugMode();
+	return m_debugMode;
 }
 void DebugDraw::DebugMode::set(DebugDrawModes value)
 {
-	_debugDraw->setDebugMode((int)value);
+	m_debugMode = value;
 }
 
 DebugDrawWrapper* DebugDraw::UnmanagedPointer::get()
@@ -302,9 +332,19 @@ void DebugDraw::UnmanagedPointer::set(DebugDrawWrapper* value)
 }
 
 
-DebugDrawWrapper::DebugDrawWrapper(DebugDraw^ debugDraw)
+DebugDrawWrapper::DebugDrawWrapper(IDebugDraw^ debugDraw)
 {
 	_debugDraw = debugDraw;
+}
+
+IDebugDraw^ DebugDrawWrapper::getDebugDraw()
+{
+	return _debugDraw.get();
+}
+
+void DebugDrawWrapper::setDebugDraw(IDebugDraw^ value)
+{
+	_debugDraw.attach(value);
 }
 
 void DebugDrawWrapper::draw3dText(const btVector3& location, const char* textString)
@@ -543,5 +583,14 @@ void DebugDrawWrapper::baseReportErrorWarning(const char* warningString)
 	btIDebugDraw::reportErrorWarning(warningString);
 }
 */
+
+void DebugDrawWrapper::setDebugMode(int debugMode)
+{
+	_debugDraw->DebugMode = (BulletSharp::DebugDrawModes)debugMode;
+}
+int	DebugDrawWrapper::getDebugMode() const
+{
+	return (int)_debugDraw->DebugMode;
+}
 
 #endif

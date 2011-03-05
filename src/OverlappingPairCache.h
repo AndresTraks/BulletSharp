@@ -4,8 +4,6 @@
 
 #include "OverlappingPairCallback.h"
 
-using namespace msclr;
-
 namespace BulletSharp
 {
 	ref class AlignedBroadphasePairArray;

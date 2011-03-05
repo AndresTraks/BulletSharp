@@ -1,21 +1,21 @@
 #pragma once
 
-#include "StringConv.h"
-
-using namespace msclr;
-using namespace System::Drawing;
+#include "IDebugDraw.h"
 
 namespace BulletSharp
 {
 	class DebugDrawWrapper;
 
-	public ref class DebugDraw
+	public ref class DebugDraw : public IDebugDraw
 	{
 	private:
 		DebugDrawWrapper* _debugDraw;
+		DebugDrawModes m_debugMode;
 
 	internal:
 		DebugDraw(DebugDrawWrapper* debugDraw);
+		static IDebugDraw^ GetManaged(btIDebugDraw* debugDraw);
+		static DebugDrawWrapper* GetUnmanaged(IDebugDraw^ debugDraw);
 
 	public:
 		DebugDraw();
@@ -49,8 +49,8 @@ namespace BulletSharp
 
 		property DebugDrawModes DebugMode
 		{
-			DebugDrawModes get();
-			void set(DebugDrawModes value);
+			virtual DebugDrawModes get();
+			virtual void set(DebugDrawModes value);
 		}
 
 	internal:
@@ -68,11 +68,13 @@ namespace BulletSharp
 	class DebugDrawWrapper : public btIDebugDraw
 	{
 	private:
-		auto_gcroot<DebugDraw^> _debugDraw;
-		int m_debugMode;
+		msclr::auto_gcroot<IDebugDraw^> _debugDraw;
 
 	public:
-		DebugDrawWrapper(DebugDraw^ debugDraw);
+		DebugDrawWrapper(IDebugDraw^ debugDraw);
+
+		IDebugDraw^ getDebugDraw();
+		void setDebugDraw(IDebugDraw^ value);
 
 		virtual void draw3dText(const btVector3& location, const char* textString);
 		virtual void drawAabb(const btVector3& from, const btVector3& to, const btVector3& color);
@@ -132,13 +134,7 @@ namespace BulletSharp
 		virtual void reportErrorWarning(const char* warningString);
 		//virtual void baseReportErrorWarning(const char* warningString);
 
-		virtual void setDebugMode(int debugMode)
-		{
-			m_debugMode = debugMode;
-		}
-		virtual int	getDebugMode() const
-		{
-			return m_debugMode;
-		}
+		virtual void setDebugMode(int debugMode);
+		virtual int	getDebugMode() const;
 	};
 };

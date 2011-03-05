@@ -35,7 +35,7 @@ bool ConvexPenetrationDepthSolver::CalcPenDepth(SimplexSolverInterface^ simplexS
 	ConvexShape^ convexA, ConvexShape^ convexB, Matrix transA, Matrix transB,
 	Vector3 v, Vector3 pa, Vector3 pb,
 #ifndef DISABLE_DEBUGDRAW
-	DebugDraw^ debugDraw,
+	IDebugDraw^ debugDraw,
 #endif
 	StackAlloc^ stackAlloc)
 {
@@ -48,7 +48,7 @@ bool ConvexPenetrationDepthSolver::CalcPenDepth(SimplexSolverInterface^ simplexS
 	bool ret = _depthSolver->calcPenDepth(*simplexSolver->UnmanagedPointer, convexA->UnmanagedPointer, convexB->UnmanagedPointer,
 		*transATemp, *transBTemp, *vTemp, *paTemp, *pbTemp,
 #ifndef DISABLE_DEBUGDRAW
-		(debugDraw != nullptr) ? debugDraw->UnmanagedPointer : 0,
+		DebugDraw::GetUnmanaged(debugDraw),
 #else
 		0,
 #endif

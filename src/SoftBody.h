@@ -4,8 +4,6 @@
 
 #include "CollisionObject.h"
 
-using namespace msclr;
-
 namespace BulletSharp
 {
 	ref class AlignedIntArray;

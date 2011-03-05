@@ -25,7 +25,7 @@ namespace BulletSharp
 			SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ penetrationDepthSolver);
 
 #ifndef DISABLE_DEBUGDRAW
-		void GetClosestPointsNonVirtual(ClosestPointInput^ input, Result^ output, DebugDraw^ debugDraw);
+		void GetClosestPointsNonVirtual(ClosestPointInput^ input, Result^ output, IDebugDraw^ debugDraw);
 #else
 		void GetClosestPointsNonVirtual(ClosestPointInput^ input, Result^ output);
 #endif

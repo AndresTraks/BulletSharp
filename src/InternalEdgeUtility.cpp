@@ -34,9 +34,9 @@ void InternalEdgeUtility::AdjustInternalEdgeContacts(ManifoldPoint^ cp, Collisio
 
 #ifndef DISABLE_DEBUGDRAW
 #ifdef BT_INTERNAL_EDGE_DEBUG_DRAW
-void InternalEdgeUtility::SetDebugDrawer(DebugDraw^ debugDrawer)
+void InternalEdgeUtility::SetDebugDrawer(IDebugDraw^ debugDrawer)
 {
-	btSetDebugDrawer(debugDrawer->UnmanagedPointer);
+	btSetDebugDrawer(DebugDraw::GetUnmanaged(debugDrawer));
 }
 #endif
 #endif

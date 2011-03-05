@@ -35,10 +35,10 @@ GjkPairDetector::GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB, Bro
 
 #ifndef DISABLE_DEBUGDRAW
 void GjkPairDetector::GetClosestPointsNonVirtual(
-	ClosestPointInput^ input, Result^ output, DebugDraw^ debugDraw)
+	ClosestPointInput^ input, Result^ output, IDebugDraw^ debugDraw)
 {
 	UnmanagedPointer->getClosestPointsNonVirtual(*input->UnmanagedPointer, *output->UnmanagedPointer,
-		(debugDraw != nullptr) ? debugDraw->UnmanagedPointer : 0);
+		DebugDraw::GetUnmanaged(debugDraw));
 }
 #else
 void GjkPairDetector::GetClosestPointsNonVirtual(

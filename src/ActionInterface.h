@@ -7,7 +7,7 @@
 namespace BulletSharp
 {
 	ref class CollisionWorld;
-	ref class DebugDraw;
+	interface class IDebugDraw;
 
 	public ref class ActionInterface : BulletSharp::IDisposable
 	{
@@ -28,7 +28,7 @@ namespace BulletSharp
 
 	public:
 #ifndef DISABLE_DEBUGDRAW
-		void DebugDraw(DebugDraw^ debugDrawer);
+		void DebugDraw(IDebugDraw^ debugDrawer);
 #endif
 		void UpdateAction(CollisionWorld^ collisionWorld, btScalar deltaTimeStep);
 

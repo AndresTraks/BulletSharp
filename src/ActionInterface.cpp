@@ -34,9 +34,9 @@ bool ActionInterface::IsDisposed::get()
 }
 
 #ifndef DISABLE_DEBUGDRAW
-void ActionInterface::DebugDraw(BulletSharp::DebugDraw^ debugDrawer)
+void ActionInterface::DebugDraw(IDebugDraw^ debugDrawer)
 {
-	_actionInterface->debugDraw(debugDrawer->UnmanagedPointer);
+	_actionInterface->debugDraw(DebugDraw::GetUnmanaged(debugDrawer));
 }
 #endif
 

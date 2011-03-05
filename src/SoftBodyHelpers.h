@@ -4,7 +4,7 @@
 
 namespace BulletSharp
 {
-	ref class DebugDraw;
+	interface class IDebugDraw;
 
 	namespace SoftBody
 	{
@@ -68,19 +68,19 @@ namespace BulletSharp
 			static SoftBody^ CreateRope(SoftBodyWorldInfo^ worldInfo,
 				Vector3 from, Vector3 to, int res, int fixeds);
 #ifndef DISABLE_DEBUGDRAW
-			static void Draw(SoftBody^ psb, DebugDraw^ iDraw, DrawFlags drawFlags);
-			static void Draw(SoftBody^ psb, DebugDraw^ iDraw);
-			static void DrawInfos(SoftBody^ psb, DebugDraw^ iDraw, bool masses, bool areas, bool stress);
-			static void DrawNodeTree(SoftBody^ psb, DebugDraw^ iDraw, int minDepth, int maxDepth);
-			static void DrawNodeTree(SoftBody^ psb, DebugDraw^ iDraw, int minDepth);
-			static void DrawNodeTree(SoftBody^ psb, DebugDraw^ iDraw);
-			static void DrawFaceTree(SoftBody^ psb, DebugDraw^ iDraw, int minDepth, int maxDepth);
-			static void DrawFaceTree(SoftBody^ psb, DebugDraw^ iDraw, int minDepth);
-			static void DrawFaceTree(SoftBody^ psb, DebugDraw^ iDraw);
-			static void DrawClusterTree(SoftBody^ psb, DebugDraw^ iDraw, int minDepth, int maxDepth);
-			static void DrawClusterTree(SoftBody^ psb, DebugDraw^ iDraw, int minDepth);
-			static void DrawClusterTree(SoftBody^ psb, DebugDraw^ iDraw);
-			static void DrawFrame(SoftBody^ psb, DebugDraw^ iDraw);
+			static void Draw(SoftBody^ psb, IDebugDraw^ iDraw, DrawFlags drawFlags);
+			static void Draw(SoftBody^ psb, IDebugDraw^ iDraw);
+			static void DrawInfos(SoftBody^ psb, IDebugDraw^ iDraw, bool masses, bool areas, bool stress);
+			static void DrawNodeTree(SoftBody^ psb, IDebugDraw^ iDraw, int minDepth, int maxDepth);
+			static void DrawNodeTree(SoftBody^ psb, IDebugDraw^ iDraw, int minDepth);
+			static void DrawNodeTree(SoftBody^ psb, IDebugDraw^ iDraw);
+			static void DrawFaceTree(SoftBody^ psb, IDebugDraw^ iDraw, int minDepth, int maxDepth);
+			static void DrawFaceTree(SoftBody^ psb, IDebugDraw^ iDraw, int minDepth);
+			static void DrawFaceTree(SoftBody^ psb, IDebugDraw^ iDraw);
+			static void DrawClusterTree(SoftBody^ psb, IDebugDraw^ iDraw, int minDepth, int maxDepth);
+			static void DrawClusterTree(SoftBody^ psb, IDebugDraw^ iDraw, int minDepth);
+			static void DrawClusterTree(SoftBody^ psb, IDebugDraw^ iDraw);
+			static void DrawFrame(SoftBody^ psb, IDebugDraw^ iDraw);
 #endif
 		};
 	};

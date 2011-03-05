@@ -327,69 +327,69 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateRope(SoftBodyWorldInfo^ 
 }
 
 #ifndef DISABLE_DEBUGDRAW
-void SoftBodyHelpers::Draw(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw, DrawFlags drawFlags)
+void SoftBodyHelpers::Draw(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, DrawFlags drawFlags)
 {
-	btSoftBodyHelpers::Draw(psb->UnmanagedPointer, iDraw->UnmanagedPointer, (int)drawFlags);
+	btSoftBodyHelpers::Draw(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw), (int)drawFlags);
 }
 
-void SoftBodyHelpers::Draw(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw)
+void SoftBodyHelpers::Draw(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw)
 {
-	btSoftBodyHelpers::Draw(psb->UnmanagedPointer, iDraw->UnmanagedPointer);
+	btSoftBodyHelpers::Draw(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw));
 }
 
-void SoftBodyHelpers::DrawInfos(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw, bool masses, bool areas, bool stress)
+void SoftBodyHelpers::DrawInfos(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, bool masses, bool areas, bool stress)
 {
-	btSoftBodyHelpers::DrawInfos(psb->UnmanagedPointer, iDraw->UnmanagedPointer, masses, areas, stress);
+	btSoftBodyHelpers::DrawInfos(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw), masses, areas, stress);
 }
 
-void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw, int minDepth, int maxDepth)
+void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth, int maxDepth)
 {
-	btSoftBodyHelpers::DrawNodeTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer, minDepth, maxDepth);
+	btSoftBodyHelpers::DrawNodeTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw), minDepth, maxDepth);
 }
 
-void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw, int minDepth)
+void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth)
 {
-	btSoftBodyHelpers::DrawNodeTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer, minDepth);
+	btSoftBodyHelpers::DrawNodeTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw), minDepth);
 }
 
-void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw)
+void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw)
 {
-	btSoftBodyHelpers::DrawNodeTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer);
+	btSoftBodyHelpers::DrawNodeTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw));
 }
 
-void SoftBodyHelpers::DrawFaceTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw, int minDepth, int maxDepth)
+void SoftBodyHelpers::DrawFaceTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth, int maxDepth)
 {
-	btSoftBodyHelpers::DrawFaceTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer, minDepth, maxDepth);
+	btSoftBodyHelpers::DrawFaceTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw), minDepth, maxDepth);
 }
 
-void SoftBodyHelpers::DrawFaceTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw, int minDepth)
+void SoftBodyHelpers::DrawFaceTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth)
 {
-	btSoftBodyHelpers::DrawFaceTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer, minDepth);
+	btSoftBodyHelpers::DrawFaceTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw), minDepth);
 }
 
-void SoftBodyHelpers::DrawFaceTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw)
+void SoftBodyHelpers::DrawFaceTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw)
 {
-	btSoftBodyHelpers::DrawFaceTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer);
+	btSoftBodyHelpers::DrawFaceTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw));
 }
 
-void SoftBodyHelpers::DrawClusterTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw, int minDepth, int maxDepth)
+void SoftBodyHelpers::DrawClusterTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth, int maxDepth)
 {
-	btSoftBodyHelpers::DrawClusterTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer, minDepth, maxDepth);
+	btSoftBodyHelpers::DrawClusterTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw), minDepth, maxDepth);
 }
 
-void SoftBodyHelpers::DrawClusterTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw, int minDepth)
+void SoftBodyHelpers::DrawClusterTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth)
 {
-	btSoftBodyHelpers::DrawClusterTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer, minDepth);
+	btSoftBodyHelpers::DrawClusterTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw), minDepth);
 }
 
-void SoftBodyHelpers::DrawClusterTree(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw)
+void SoftBodyHelpers::DrawClusterTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw)
 {
-	btSoftBodyHelpers::DrawClusterTree(psb->UnmanagedPointer, iDraw->UnmanagedPointer);
+	btSoftBodyHelpers::DrawClusterTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw));
 }
 
-void SoftBodyHelpers::DrawFrame(BulletSharp::SoftBody::SoftBody^ psb, DebugDraw^ iDraw)
+void SoftBodyHelpers::DrawFrame(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw)
 {
-	btSoftBodyHelpers::DrawFrame(psb->UnmanagedPointer, iDraw->UnmanagedPointer);
+	btSoftBodyHelpers::DrawFrame(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw));
 }
 #endif
 

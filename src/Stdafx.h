@@ -276,6 +276,7 @@ using namespace System;
 using namespace System::IO;
 using namespace System::Diagnostics;
 using namespace System::Runtime::InteropServices;
+using namespace msclr;
 
 #include "Math.h"
 #include "Enums.h"

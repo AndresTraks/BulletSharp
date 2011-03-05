@@ -139,6 +139,13 @@ void CompoundShape::RemoveChildShapeByIndex(int childShapeindex)
 	UnmanagedPointer->removeChildShapeByIndex(childShapeindex);
 }
 
+void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransform, bool shouldRecalculateLocalAabb)
+{
+	btTransform* newChildTransformTemp = Math::MatrixToBtTransform(newChildTransform);
+	UnmanagedPointer->updateChildTransform(childIndex, *newChildTransformTemp, shouldRecalculateLocalAabb);
+	delete newChildTransformTemp;
+}
+
 void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransform)
 {
 	btTransform* newChildTransformTemp = Math::MatrixToBtTransform(newChildTransform);

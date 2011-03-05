@@ -78,6 +78,7 @@ namespace BulletSharp
 		void RecalculateLocalAabb();
 		void RemoveChildShape(CollisionShape^ shape);
 		void RemoveChildShapeByIndex(int childShapeindex);
+		void UpdateChildTransform(int childIndex, Matrix newChildTransform, bool shouldRecalculateLocalAabb);
 		void UpdateChildTransform(int childIndex, Matrix newChildTransform);
 
 		property CompoundShapeChildArray^ ChildList

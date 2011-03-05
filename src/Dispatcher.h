@@ -11,11 +11,11 @@ namespace BulletSharp
 	ref class BroadphaseProxy;
 	ref class CollisionAlgorithm;
 	ref class CollisionDispatcher;
-	ref class DebugDraw;
 	ref class DispatcherInfo;
 	ref class OverlappingPairCache;
 	ref class PersistentManifold;
 	ref class StackAlloc;
+	interface class IDebugDraw;
 
 	public ref class DispatcherInfo
 	{
@@ -52,10 +52,10 @@ namespace BulletSharp
 		}
 
 #ifndef DISABLE_DEBUGDRAW
-		property BulletSharp::DebugDraw^ DebugDraw
+		property IDebugDraw^ DebugDraw
 		{
-			BulletSharp::DebugDraw^ get();
-			void set(BulletSharp::DebugDraw^ value);
+			IDebugDraw^ get();
+			void set(IDebugDraw^ value);
 		}
 #endif
 

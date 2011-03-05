@@ -42,17 +42,13 @@ void DispatcherInfo::ConvexMaxDistanceUseCpt::set(bool value)
 }
 
 #ifndef DISABLE_DEBUGDRAW
-DebugDraw^ DispatcherInfo::DebugDraw::get()
+IDebugDraw^ DispatcherInfo::DebugDraw::get()
 {
-	if (_info->m_debugDraw == nullptr)
-		return nullptr;
-
-	// Instances of btIDebugDraw can only be of type DebugDrawWrapper.
-	return gcnew BulletSharp::DebugDraw((DebugDrawWrapper*)_info->m_debugDraw);
+	return BulletSharp::DebugDraw::GetManaged(_info->m_debugDraw);
 }
-void DispatcherInfo::DebugDraw::set(BulletSharp::DebugDraw^ value)
+void DispatcherInfo::DebugDraw::set(IDebugDraw^ value)
 {
-	_info->m_debugDraw = value->UnmanagedPointer;
+	_info->m_debugDraw = BulletSharp::DebugDraw::GetUnmanaged(value);
 }
 #endif
 

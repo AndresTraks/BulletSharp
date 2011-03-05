@@ -43,13 +43,13 @@ bool ConstraintSolver::IsDisposed::get()
 
 void ConstraintSolver::AllSolved(ContactSolverInfo^ info,
 #ifndef DISABLE_DEBUGDRAW
-	DebugDraw^ debugDrawer,
+	IDebugDraw^ debugDrawer,
 #endif
 	StackAlloc^ stackAlloc)
 {
 	_solver->allSolved(*info->UnmanagedPointer,
 #ifndef DISABLE_DEBUGDRAW
-		(debugDrawer != nullptr) ? debugDrawer->UnmanagedPointer : 0,
+		DebugDraw::GetUnmanaged(debugDrawer),
 #else
 		0,
 #endif
@@ -69,7 +69,7 @@ void ConstraintSolver::Reset()
 btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifold,
 	array<TypedConstraint^>^ constraints, ContactSolverInfo^ info,
 #ifndef DISABLE_DEBUGDRAW
-	DebugDraw^ debugDrawer,
+	IDebugDraw^ debugDrawer,
 #endif
 	StackAlloc^ stackAlloc, Dispatcher^ dispatcher)
 {
@@ -88,7 +88,7 @@ btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<Per
 	btScalar ret = _solver->solveGroup(bodiesTemp, numBodies, manifoldsTemp, numManifolds,
 		constraintsTemp, numConstraints, *info->UnmanagedPointer,
 #ifndef DISABLE_DEBUGDRAW
-		(debugDrawer != nullptr) ? debugDrawer->UnmanagedPointer : 0,
+		DebugDraw::GetUnmanaged(debugDrawer),
 #else
 		0,
 #endif

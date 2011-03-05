@@ -5,8 +5,6 @@
 #include "CollisionWorld.h"
 #include "IDisposable.h"
 
-using namespace msclr;
-
 namespace BulletSharp
 {
 	ref class ActionInterface;

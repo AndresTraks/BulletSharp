@@ -2,12 +2,10 @@
 
 #include "IDisposable.h"
 
-using namespace msclr;
-
 namespace BulletSharp
 {
-	ref class DebugDraw;
 	ref class StackAlloc;
+	interface class IDebugDraw;
 
 	public ref class DiscreteCollisionDetectorInterface : BulletSharp::IDisposable
 	{
@@ -102,8 +100,8 @@ namespace BulletSharp
 		~DiscreteCollisionDetectorInterface();
 	public:
 #ifndef DISABLE_DEBUGDRAW
-		void GetClosestPoints(ClosestPointInput^ input, Result^ output, DebugDraw^ debugDraw);
-		void GetClosestPoints(ClosestPointInput^ input, Result^ output, DebugDraw^ debugDraw, bool swapResults);
+		void GetClosestPoints(ClosestPointInput^ input, Result^ output, IDebugDraw^ debugDraw);
+		void GetClosestPoints(ClosestPointInput^ input, Result^ output, IDebugDraw^ debugDraw, bool swapResults);
 #else
 		void GetClosestPoints(ClosestPointInput^ input, Result^ output);
 		void GetClosestPoints(ClosestPointInput^ input, Result^ output, bool swapResults);

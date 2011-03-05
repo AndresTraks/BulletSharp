@@ -4,9 +4,9 @@ namespace BulletSharp
 {
 	ref class BvhTriangleMeshShape;
 	ref class CollisionObject;
-	ref class DebugDraw;
 	ref class ManifoldPoint;
 	ref class TriangleInfoMap;
+	interface class IDebugDraw;
 
 	[Flags]
 	public enum class InternalEdgeAdjustFlags
@@ -27,7 +27,7 @@ namespace BulletSharp
 			int partId0, int index0);
 #ifndef DISABLE_DEBUGDRAW
 #ifdef BT_INTERNAL_EDGE_DEBUG_DRAW
-		static void SetDebugDrawer(DebugDraw^ debugDrawer);
+		static void SetDebugDrawer(IDebugDraw^ debugDrawer);
 #endif
 #endif
 	};
