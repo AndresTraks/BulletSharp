@@ -31,8 +31,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiMaterialDemo", "MultiM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RagdollDemo", "RagdollDemo\RagdollDemo.csproj", "{4DC432E5-414B-4AA8-B67D-DFE432B505AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCLClothDemo", "OpenCLClothDemo\OpenCLClothDemo.csproj", "{E05372D8-D2B7-4665-B670-9D81EBFF1D47}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GImpactTestDemo", "GImpactTestDemo\GImpactTestDemo.csproj", "{372FA23F-5F6C-4C2B-94C1-FB004D722B38}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllBulletDemos", "AllBulletDemos\AllBulletDemos.csproj", "{9CFB261D-3493-4C64-8367-C031B4E475C7}"
@@ -95,10 +93,6 @@ Global
 		{4DC432E5-414B-4AA8-B67D-DFE432B505AC}.Debug|x86.Build.0 = Debug|x86
 		{4DC432E5-414B-4AA8-B67D-DFE432B505AC}.Release|x86.ActiveCfg = Release|x86
 		{4DC432E5-414B-4AA8-B67D-DFE432B505AC}.Release|x86.Build.0 = Release|x86
-		{E05372D8-D2B7-4665-B670-9D81EBFF1D47}.Debug|x86.ActiveCfg = Debug|x86
-		{E05372D8-D2B7-4665-B670-9D81EBFF1D47}.Debug|x86.Build.0 = Debug|x86
-		{E05372D8-D2B7-4665-B670-9D81EBFF1D47}.Release|x86.ActiveCfg = Release|x86
-		{E05372D8-D2B7-4665-B670-9D81EBFF1D47}.Release|x86.Build.0 = Release|x86
 		{372FA23F-5F6C-4C2B-94C1-FB004D722B38}.Debug|x86.ActiveCfg = Debug|x86
 		{372FA23F-5F6C-4C2B-94C1-FB004D722B38}.Debug|x86.Build.0 = Debug|x86
 		{372FA23F-5F6C-4C2B-94C1-FB004D722B38}.Release|x86.ActiveCfg = Release|x86
