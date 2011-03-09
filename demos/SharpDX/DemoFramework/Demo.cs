@@ -45,6 +45,7 @@ namespace DemoFramework
         DepthStencilState depthStencilState;
         DepthStencilState lightDepthStencilState;
         Texture2D lightDepthTexture;
+        bool shadowsEnabled = true;
 
         public Effect Effect { get; private set; }
         public EffectTechnique Technique { get; private set; }
@@ -367,21 +368,31 @@ namespace DemoFramework
             Device.InputAssembler.SetInputLayout(inputLayout);
 
             // Clear targets
-            Device.ClearDepthStencilView(LightDepthView, DepthStencilClearFlags.Depth, 1.0f, 0);
             Device.ClearDepthStencilView(DepthStencilView, DepthStencilClearFlags.Depth, 1.0f, 0);
             Device.ClearRenderTargetView(RenderView, Ambient);
 
             // Depth map pass
-            Device.OutputMerger.SetDepthStencilState(lightDepthStencilState, 0);
-            Device.OutputMerger.SetRenderTargets(0, new RenderTargetView[] { }, LightDepthView);
-            Technique.GetPassByIndex(0).Apply();
-            OnRender();
+            if (shadowsEnabled)
+            {
+                Device.ClearDepthStencilView(LightDepthView, DepthStencilClearFlags.Depth, 1.0f, 0);
+                Device.OutputMerger.SetDepthStencilState(lightDepthStencilState, 0);
+                Device.OutputMerger.SetRenderTargets(0, new RenderTargetView[] { }, LightDepthView);
+                Technique.GetPassByIndex(0).Apply();
+                OnRender();
+            }
 
             // Render pass
             Device.OutputMerger.SetDepthStencilState(depthStencilState, 0);
             Device.OutputMerger.SetRenderTargets(1, new RenderTargetView[] { RenderView }, DepthStencilView);
-            Effect.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightRes);
-            Technique.GetPassByIndex(1).Apply();
+            if (shadowsEnabled)
+            {
+                Effect.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightRes);
+                Technique.GetPassByIndex(1).Apply();
+            }
+            else
+            {
+                Technique.GetPassByIndex(2).Apply();
+            }
             OnRender();
 
             Info.OnRender(FramesPerSecond);
@@ -508,6 +519,9 @@ namespace DemoFramework
                         break;
                     case Keys.F11:
                         //ToggleFullScreen();
+                        break;
+                    case Keys.G:
+                        shadowsEnabled = !shadowsEnabled;
                         break;
                     case Keys.Space:
                         PhysicsContext.ShootBox(Freelook.Eye, GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView));

@@ -97,6 +97,15 @@ float4 PS( VS_OUT input ) : SV_Target
 	return float4(Color.rgb * shade, Color.a);
 }
 
+float4 PS_NoShadow( VS_OUT input ) : SV_Target
+{
+	float3 normal = normalize(input.Normal);
+	float3 light = normalize(input.light);
+
+	float shade = 0.5+0.5*pow(saturate(dot(light, normal)), 2.0);
+	return float4(Color.rgb * shade, Color.a);
+}
+
 technique10 Render
 {
 	pass P0
@@ -111,5 +120,12 @@ technique10 Render
         SetVertexShader( CompileShader( vs_4_0, VS() ) );
         SetGeometryShader( NULL );
         SetPixelShader( CompileShader( ps_4_0, PS() ) );
+    }
+
+    pass P2
+    {
+        SetVertexShader( CompileShader( vs_4_0, VS() ) );
+        SetGeometryShader( NULL );
+        SetPixelShader( CompileShader( ps_4_0, PS_NoShadow() ) );
     }
 }
