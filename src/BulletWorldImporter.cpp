@@ -153,6 +153,15 @@ CompoundShape^ Serialize::BulletWorldImporter::CreateCompoundShape()
 }
 
 #ifndef DISABLE_BVH
+ScaledBvhTriangleMeshShape^ Serialize::BulletWorldImporter::CreateScaledTrangleMeshShape(BvhTriangleMeshShape^ meshShape, Vector3 localScaling)
+{
+	btVector3* localScalingTemp = Math::Vector3ToBtVector3(localScaling);
+	ScaledBvhTriangleMeshShape^ ret =
+		gcnew ScaledBvhTriangleMeshShape(_importer->baseCreateScaledTrangleMeshShape(meshShape->UnmanagedPointer, *localScalingTemp));
+	delete localScalingTemp;
+	return ret;
+}
+
 OptimizedBvh^ Serialize::BulletWorldImporter::CreateOptimizedBvh()
 {
 	return gcnew OptimizedBvh(_importer->baseCreateOptimizedBvh());
@@ -780,6 +789,11 @@ class btCompoundShape* Serialize::BulletWorldImporterWrapper::baseCreateCompound
 btOptimizedBvh* Serialize::BulletWorldImporterWrapper::baseCreateOptimizedBvh()
 {
 	return btBulletWorldImporter::createOptimizedBvh();
+}
+
+btScaledBvhTriangleMeshShape* Serialize::BulletWorldImporterWrapper::baseCreateScaledTrangleMeshShape(btBvhTriangleMeshShape* meshShape,const btVector3& localScalingbtBvhTriangleMeshShape)
+{
+	return btBulletWorldImporter::createScaledTrangleMeshShape(meshShape, localScalingbtBvhTriangleMeshShape);
 }
 #endif
 

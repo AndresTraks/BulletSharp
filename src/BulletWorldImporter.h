@@ -1,6 +1,5 @@
 #pragma once
 
-#include "BvhTriangleMeshShape.h"
 #include "CollisionShape.h"
 #include "ConvexHullShape.h"
 #include "CompoundShape.h"
@@ -9,6 +8,10 @@
 #include "RigidBody.h"
 #include "StridingMeshInterface.h"
 #include "TriangleIndexVertexArray.h"
+#ifndef DISABLE_BVH
+#include "BvhTriangleMeshShape.h"
+#include "ScaledBvhTriangleMeshShape.h"
+#endif
 #ifndef DISABLE_GIMPACT
 #include "GImpactShape.h"
 #endif
@@ -68,8 +71,12 @@ namespace BulletSharp
 #ifndef DISABLE_GIMPACT
 			virtual GImpactMeshShape^ CreateGImpactShape(StridingMeshInterface^ trimesh);
 #endif
+			//virtual StridingMeshInterfaceData^ CreateStridingMeshInterfaceData(StridingMeshInterfaceData^ interfaceData);
 			virtual ConvexHullShape^ CreateConvexHullShape();
 			virtual CompoundShape^ CreateCompoundShape();
+#ifndef DISABLE_BVH
+			virtual ScaledBvhTriangleMeshShape^ CreateScaledTrangleMeshShape(BvhTriangleMeshShape^ meshShape, Vector3 localScaling);
+#endif
 
 			// acceleration and connectivity structures
 #ifndef DISABLE_BVH
@@ -249,6 +256,9 @@ namespace BulletSharp
 #endif
 			virtual class btConvexHullShape* baseCreateConvexHullShape();
 			virtual class btCompoundShape* baseCreateCompoundShape();
+#ifndef DISABLE_BVH
+			virtual class btScaledBvhTriangleMeshShape* baseCreateScaledTrangleMeshShape(btBvhTriangleMeshShape* meshShape,const btVector3& localScalingbtBvhTriangleMeshShape);
+#endif
 
 			// acceleration and connectivity structures
 #ifndef DISABLE_BVH
