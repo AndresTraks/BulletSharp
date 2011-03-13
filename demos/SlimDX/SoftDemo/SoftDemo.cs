@@ -226,11 +226,11 @@ namespace SoftDemo
 
                     Device.Material = softBodyMaterial;
                     Device.SetTransform(TransformState.World, Matrix.Identity);
-                    MeshFactory.RenderSoftBody((SoftBody)colObj);
+                    MeshFactory.RenderSoftBody(colObj as SoftBody);
                 }
                 else
                 {
-                    RigidBody body = (RigidBody)colObj;
+                    RigidBody body = colObj as RigidBody;
                     Device.SetTransform(TransformState.World, body.MotionState.WorldTransform);
                     RenderWithMaterial(body);
                 }

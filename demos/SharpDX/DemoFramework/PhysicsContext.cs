@@ -34,7 +34,7 @@ namespace DemoFramework
             for (i = World.NumCollisionObjects - 1; i >= 0; i--)
             {
                 CollisionObject obj = World.CollisionObjectArray[i];
-                RigidBody body = RigidBody.Upcast(obj);
+                RigidBody body = obj as RigidBody;
                 if (body != null && body.MotionState != null)
                 {
                     body.MotionState.Dispose();

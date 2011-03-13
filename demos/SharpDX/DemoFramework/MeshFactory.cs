@@ -1,16 +1,92 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using BulletSharp;
 using BulletSharp.SoftBody;
 using SharpDX;
+using SharpDX.Direct3D;
 using SharpDX.Direct3D10;
 using SharpDX.DXGI;
+using Buffer = SharpDX.Direct3D10.Buffer;
 using Device = SharpDX.Direct3D10.Device;
 using Mesh = SharpDX.Direct3D10.Mesh;
 
 namespace DemoFramework
 {
+    public struct InstanceData
+    {
+        public Matrix WorldTransform { get; set; }
+        public uint Color { get; set; }
+    }
+
+    public class ShapeData : System.IDisposable
+    {
+        public Buffer VertexBuffer { get; private set; }
+        public VertexBufferBinding VertexBufferBinding { get; private set; }
+        public int VertexCount { get; set; }
+
+        public Buffer IndexBuffer { get; set; }
+        public int IndexCount { get; set; }
+        public Format IndexFormat { get; set; }
+
+        public Buffer InstanceDataBuffer { get; set; }
+        public VertexBufferBinding InstanceDataBufferBinding { get; set; }
+        public List<InstanceData> InstanceDataList { get; set; }
+
+        public PrimitiveTopology PrimitiveTopology { get; set; }
+
+        public ShapeData()
+        {
+            InstanceDataList = new List<InstanceData>();
+            PrimitiveTopology = PrimitiveTopology.TriangleList;
+        }
+
+        public void SetVertexBuffer(Device device, Vector3[] vectors)
+        {
+            BufferDescription vertexBufferDesc = new BufferDescription()
+            {
+                SizeInBytes = Marshal.SizeOf(typeof(Vector3)) * vectors.Length,
+                Usage = ResourceUsage.Default,
+                BindFlags = BindFlags.VertexBuffer
+            };
+
+            using (var data = new SharpDX.DataStream(vectors, true, false))
+            {
+                VertexBuffer = new Buffer(device, data, vertexBufferDesc);
+                VertexBuffer.Unmap();
+            }
+
+            VertexBufferBinding = new VertexBufferBinding(VertexBuffer, 24, 0);
+        }
+
+        public void SetIndexBuffer(Device device, byte[] indices)
+        {
+            IndexFormat = Format.R8_UInt;
+
+            BufferDescription boxIndexBufferDesc = new BufferDescription()
+            {
+                SizeInBytes = sizeof(byte) * indices.Length,
+                Usage = ResourceUsage.Default,
+                BindFlags = BindFlags.IndexBuffer
+            };
+
+            using (var data = new SharpDX.DataStream(indices, true, false))
+            {
+                IndexBuffer = new Buffer(device, data, boxIndexBufferDesc);
+            }
+        }
+
+        public void Dispose()
+        {
+            if (VertexBuffer != null)
+            {
+                VertexBuffer.Dispose();
+                VertexBuffer = null;
+            }
+        }
+    }
+
     // This class creates graphical objects (boxes, cones, cylinders, spheres) on the fly.
     public class MeshFactory : System.IDisposable
     {
@@ -18,12 +94,51 @@ namespace DemoFramework
         Demo demo;
         Dictionary<CollisionShape, Mesh> shapes = new Dictionary<CollisionShape, Mesh>();
         Dictionary<CollisionShape, Mesh> complexShapes = new Dictionary<CollisionShape, Mesh>(); // these have more than 1 subset
-        Effect planeShader;
+        Dictionary<CollisionShape, ShapeData> shapes2 = new Dictionary<CollisionShape, ShapeData>();
+        List<CollisionShape> removeList = new List<CollisionShape>();
+        Effect planeShader = null;
+
+        BufferDescription instanceDataDesc;
+        InputLayout inputLayout;
+        uint groundColor;
+        uint activeColor;
+        uint passiveColor;
+        uint softBodyColor;
 
         public MeshFactory(Demo demo)
         {
             this.demo = demo;
             this.device = demo.Device;
+
+            instanceDataDesc = new BufferDescription()
+            {
+                SizeInBytes = 0,
+                Usage = ResourceUsage.Dynamic,
+                BindFlags = BindFlags.VertexBuffer,
+                CpuAccessFlags = CpuAccessFlags.Write,
+                OptionFlags = ResourceOptionFlags.None,
+            };
+
+            InputElement[] elements = new InputElement[]
+            {
+                new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
+                new InputElement("NORMAL", 0, Format.R32G32B32_Float, 12, 0, InputClassification.PerVertexData, 0),
+                new InputElement("WORLD", 0, Format.R32G32B32A32_Float, 0, 1, InputClassification.PerInstanceData, 1),
+                new InputElement("WORLD", 1, Format.R32G32B32A32_Float, 16, 1, InputClassification.PerInstanceData, 1),
+                new InputElement("WORLD", 2, Format.R32G32B32A32_Float, 32, 1, InputClassification.PerInstanceData, 1),
+                new InputElement("WORLD", 3, Format.R32G32B32A32_Float, 48, 1, InputClassification.PerInstanceData, 1),
+                new InputElement("COLOR", 0, Format.R8G8B8A8_UNorm, 64, 1, InputClassification.PerInstanceData, 1)
+            };
+            inputLayout = new InputLayout(device, demo.Pass.Description.Signature, elements);
+
+            Color c = Color.Green;
+            groundColor = (uint)c.R + ((uint)c.G << 8) + ((uint)c.B << 16) + ((uint)c.A << 24);
+            c = Color.Orange;
+            activeColor = (uint)c.R + ((uint)c.G << 8) + ((uint)c.B << 16) + ((uint)c.A << 24);
+            c = Color.OrangeRed;
+            passiveColor = (uint)c.R + ((uint)c.G << 8) + ((uint)c.B << 16) + ((uint)c.A << 24);
+            c = Color.LightBlue;
+            softBodyColor = (uint)c.R + ((uint)c.G << 8) + ((uint)c.B << 16) + ((uint)c.A << 24);
         }
 
         public void Dispose()
@@ -33,6 +148,12 @@ namespace DemoFramework
                 mesh.Dispose();
             }
             shapes.Clear();
+
+            foreach (ShapeData shapeData in shapes2.Values)
+            {
+                shapeData.Dispose();
+            }
+            shapes2.Clear();
 
             foreach (Mesh mesh in complexShapes.Values)
             {
@@ -44,83 +165,71 @@ namespace DemoFramework
                 planeShader.Release();
         }
 
-        Mesh CreateBoxShape(BoxShape shape)
+        ShapeData CreateBoxShape(BoxShape shape)
         {
             Vector3 size = shape.HalfExtentsWithMargin;
             float x = size.X;
             float y = size.Y;
             float z = size.Z;
 
-            InputElement[] elements = new InputElement[] {
-                new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
-                new InputElement("NORMAL", 0, Format.R32G32B32_Float, 12, 0, InputClassification.PerVertexData, 0)
-            };
-            Mesh mesh = new Mesh(device, elements, "POSITION", 36, 12, MeshFlags.None);
+            ShapeData shapeData = new ShapeData();
+            shapeData.VertexCount = 36;
 
-            MeshBuffer vertexBuffer = mesh.GetVertexBuffer(0);
-            SharpDX.DataStream vStream = vertexBuffer.Map();
+            Vector3[] vectors = new Vector3[shapeData.VertexCount * 2];
+            int v = 0;
 
             // Draw two sides
             for (int i = 1; i != -3; i -= 2)
             {
-                vStream.Write(new Vector3(i * x, y, -z));
-                vStream.Write(new Vector3(i, 0, 0));
-                vStream.Write(new Vector3(i * x, -y, -z));
-                vStream.Write(new Vector3(i, 0, 0));
-                vStream.Write(new Vector3(i * x, -y, z));
-                vStream.Write(new Vector3(i, 0, 0));
-                vStream.Write(new Vector3(i * x, y, -z));
-                vStream.Write(new Vector3(i, 0, 0));
-                vStream.Write(new Vector3(i * x, y, z));
-                vStream.Write(new Vector3(i, 0, 0));
-                vStream.Write(new Vector3(i * x, -y, z));
-                vStream.Write(new Vector3(i, 0, 0));
+                vectors[v++] = new Vector3(i * x, y, -z); // Position
+                vectors[v++] = new Vector3(i, 0, 0);      // Normal
+                vectors[v++] = new Vector3(i * x, -y, -z);
+                vectors[v++] = new Vector3(i, 0, 0);
+                vectors[v++] = new Vector3(i * x, -y, z);
+                vectors[v++] = new Vector3(i, 0, 0);
+                vectors[v++] = new Vector3(i * x, y, -z);
+                vectors[v++] = new Vector3(i, 0, 0);
+                vectors[v++] = new Vector3(i * x, y, z);
+                vectors[v++] = new Vector3(i, 0, 0);
+                vectors[v++] = new Vector3(i * x, -y, z);
+                vectors[v++] = new Vector3(i, 0, 0);
             }
 
             for (int i = 1; i != -3; i -= 2)
             {
-                vStream.Write(new Vector3(-x, y, i * z));
-                vStream.Write(new Vector3(0, 0, i));
-                vStream.Write(new Vector3(-x, -y, i * z));
-                vStream.Write(new Vector3(0, 0, i));
-                vStream.Write(new Vector3(x, -y, i * z));
-                vStream.Write(new Vector3(0, 0, i));
-                vStream.Write(new Vector3(-x, y, i * z));
-                vStream.Write(new Vector3(0, 0, i));
-                vStream.Write(new Vector3(x, y, i * z));
-                vStream.Write(new Vector3(0, 0, i));
-                vStream.Write(new Vector3(x, -y, i * z));
-                vStream.Write(new Vector3(0, 0, i));
+                vectors[v++] = new Vector3(-x, y, i * z);
+                vectors[v++] = new Vector3(0, 0, i);
+                vectors[v++] = new Vector3(-x, -y, i * z);
+                vectors[v++] = new Vector3(0, 0, i);
+                vectors[v++] = new Vector3(x, -y, i * z);
+                vectors[v++] = new Vector3(0, 0, i);
+                vectors[v++] = new Vector3(-x, y, i * z);
+                vectors[v++] = new Vector3(0, 0, i);
+                vectors[v++] = new Vector3(x, y, i * z);
+                vectors[v++] = new Vector3(0, 0, i);
+                vectors[v++] = new Vector3(x, -y, i * z);
+                vectors[v++] = new Vector3(0, 0, i);
             }
 
             for (int i = 1; i != -3; i -= 2)
             {
-                vStream.Write(new Vector3(-x, i * y, -z));
-                vStream.Write(new Vector3(0, i, 0));
-                vStream.Write(new Vector3(x, i * y, -z));
-                vStream.Write(new Vector3(0, i, 0));
-                vStream.Write(new Vector3(-x, i * y, z));
-                vStream.Write(new Vector3(0, i, 0));
-                vStream.Write(new Vector3(x, i * y, z));
-                vStream.Write(new Vector3(0, i, 0));
-                vStream.Write(new Vector3(-x, i * y, z));
-                vStream.Write(new Vector3(0, i, 0));
-                vStream.Write(new Vector3(x, i * y, -z));
-                vStream.Write(new Vector3(0, i, 0));
+                vectors[v++] = new Vector3(-x, i * y, -z);
+                vectors[v++] = new Vector3(0, i, 0);
+                vectors[v++] = new Vector3(x, i * y, -z);
+                vectors[v++] = new Vector3(0, i, 0);
+                vectors[v++] = new Vector3(-x, i * y, z);
+                vectors[v++] = new Vector3(0, i, 0);
+                vectors[v++] = new Vector3(x, i * y, z);
+                vectors[v++] = new Vector3(0, i, 0);
+                vectors[v++] = new Vector3(-x, i * y, z);
+                vectors[v++] = new Vector3(0, i, 0);
+                vectors[v++] = new Vector3(x, i * y, -z);
+                vectors[v++] = new Vector3(0, i, 0);
             }
 
-            vertexBuffer.Unmap();
+            shapeData.SetVertexBuffer(device, vectors);
 
-            MeshBuffer indexBuffer = mesh.GetIndexBuffer();
-            SharpDX.DataStream iStream = indexBuffer.Map();
-            for (short ii = 0; ii < mesh.VertexCount; ii++)
-                iStream.Write(ii);
-            indexBuffer.Unmap();
-
-            mesh.Commit();
-
-            shapes.Add(shape, mesh);
-            return mesh;
+            return shapeData;
         }
         /*
         Mesh CreateCapsuleShape(CapsuleShape shape)
@@ -163,7 +272,7 @@ namespace DemoFramework
             }
         }
 
-        Mesh CreateCylinderShape(CylinderShape shape)
+        ShapeData CreateCylinderShape(CylinderShape shape)
         {
             int up = shape.UpAxis;
             float radius = shape.Radius;
@@ -172,121 +281,93 @@ namespace DemoFramework
             int numSteps = 10;
             float angleStep = (2 * (float)Math.PI) / numSteps;
 
-            InputElement[] elements = new InputElement[] {
-                new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
-                new InputElement("NORMAL", 0, Format.R32G32B32_Float, 12, 0, InputClassification.PerVertexData, 0)
-            };
-            Mesh mesh = new Mesh(device, elements, "POSITION", 2 + 6 * numSteps, 4 * numSteps, MeshFlags.None);
+            ShapeData shapeData = new ShapeData();
+            shapeData.VertexCount = 2 + 6 * numSteps;
+            shapeData.IndexCount = (4 * numSteps + 2) * 3;
 
-            MeshBuffer vertexBuffer = mesh.GetVertexBuffer(0);
-            SharpDX.DataStream vStream = vertexBuffer.Map();
+            Vector3[] vertices = new Vector3[shapeData.VertexCount * 2];
+            byte[] indices = new byte[shapeData.IndexCount];
 
-            MeshBuffer indexBuffer = mesh.GetIndexBuffer();
-            SharpDX.DataStream iStream = indexBuffer.Map();
-            int index = 0;
+            int i = 0, v = 0;
+            byte index = 0;
+            byte baseIndex;
+            Vector3 normal;
 
-            Vector3 normal = GetVectorByAxis(Vector3.UnitY, up);
-            normal.Normalize();
-
-            int baseIndex = index;
-            vStream.Write(GetVectorByAxis(new Vector3(0, halfHeight, 0), up));
-            vStream.Write(normal);
-
-            vStream.Write(GetVectorByAxis(new Vector3(0, halfHeight, radius), up));
-            vStream.Write(normal);
-            index += 2;
-
-            for (int i = 1; i < numSteps; i++)
+            // Draw two sides
+            for (int side = 1; side != -3; side -= 2)
             {
-                float x = radius * (float)Math.Sin(i * angleStep);
-                float z = radius * (float)Math.Cos(i * angleStep);
+                normal = GetVectorByAxis(side * Vector3.UnitY, up);
 
-                vStream.Write(GetVectorByAxis(new Vector3(x, halfHeight, z), up));
-                vStream.Write(normal);
+                baseIndex = index;
+                vertices[v++] = GetVectorByAxis(new Vector3(0, side * halfHeight, 0), up);
+                vertices[v++] = normal;
 
-                iStream.Write((short)baseIndex);
-                iStream.Write((short)(index - 1));
-                iStream.Write((short)(index++));
+                vertices[v++] = GetVectorByAxis(new Vector3(0, side * halfHeight, radius), up);
+                vertices[v++] = normal;
+                index += 2;
+
+                for (int j = 1; j < numSteps; j++)
+                {
+                    float x = radius * (float)Math.Sin(j * angleStep);
+                    float z = radius * (float)Math.Cos(j * angleStep);
+
+                    vertices[v++] = GetVectorByAxis(new Vector3(x, side * halfHeight, z), up);
+                    vertices[v++] = normal;
+
+                    indices[i++] = baseIndex;
+                    indices[i++] = (byte)(index - 1);
+                    indices[i++] = index++;
+                }
+                indices[i++] = baseIndex;
+                indices[i++] = (byte)(index - 1);
+                indices[i++] = (byte)(baseIndex + 1);
             }
-            iStream.Write((short)baseIndex);
-            iStream.Write((short)(index - 1));
-            iStream.Write((short)(baseIndex + 1));
-
-
-            normal = GetVectorByAxis(-Vector3.UnitY, up);
-
-            baseIndex = index;
-            vStream.Write(GetVectorByAxis(new Vector3(0, -halfHeight, 0), up));
-            vStream.Write(normal);
-
-            vStream.Write(GetVectorByAxis(new Vector3(0, -halfHeight, radius), up));
-            vStream.Write(normal);
-            index += 2;
-
-            for (int i = 1; i < numSteps; i++)
-            {
-                float x = radius * (float)Math.Sin(i * angleStep);
-                float z = radius * (float)Math.Cos(i * angleStep);
-
-                vStream.Write(GetVectorByAxis(new Vector3(x, -halfHeight, z), up));
-                vStream.Write(normal);
-
-                iStream.Write((short)baseIndex);
-                iStream.Write((short)(index - 1));
-                iStream.Write((short)(index++));
-            }
-            iStream.Write((short)baseIndex);
-            iStream.Write((short)(index - 1));
-            iStream.Write((short)(baseIndex + 1));
 
 
             normal = GetVectorByAxis(new Vector3(0, 0, radius), up);
             normal.Normalize();
 
             baseIndex = index;
-            vStream.Write(GetVectorByAxis(new Vector3(0, halfHeight, radius), up));
-            vStream.Write(normal);
+            vertices[v++] = GetVectorByAxis(new Vector3(0, halfHeight, radius), up);
+            vertices[v++] = normal;
 
-            vStream.Write(GetVectorByAxis(new Vector3(0, -halfHeight, radius), up));
-            vStream.Write(normal);
+            vertices[v++] = GetVectorByAxis(new Vector3(0, -halfHeight, radius), up);
+            vertices[v++] = normal;
             index += 2;
 
-            for (int i = 1; i < numSteps + 1; i++)
+            for (int j = 1; j < numSteps + 1; j++)
             {
-                float x = radius * (float)Math.Sin(i * angleStep);
-                float z = radius * (float)Math.Cos(i * angleStep);
+                float x = radius * (float)Math.Sin(j * angleStep);
+                float z = radius * (float)Math.Cos(j * angleStep);
 
                 normal = GetVectorByAxis(new Vector3(x, 0, z), up);
                 normal.Normalize();
 
-                vStream.Write(GetVectorByAxis(new Vector3(x, halfHeight, z), up));
-                vStream.Write(normal);
+                vertices[v++] = GetVectorByAxis(new Vector3(x, halfHeight, z), up);
+                vertices[v++] = normal;
 
-                vStream.Write(GetVectorByAxis(new Vector3(x, -halfHeight, z), up));
-                vStream.Write(normal);
+                vertices[v++] = GetVectorByAxis(new Vector3(x, -halfHeight, z), up);
+                vertices[v++] = normal;
 
-                iStream.Write((short)(index - 2));
-                iStream.Write((short)(index - 1));
-                iStream.Write((short)(index));
-                iStream.Write((short)(index));
-                iStream.Write((short)(index - 1));
-                iStream.Write((short)(++index));
-                index++;
+                indices[i++] = (byte)(index - 2);
+                indices[i++] = (byte)(index - 1);
+                indices[i++] = (byte)index;
+                indices[i++] = (byte)index;
+                indices[i++] = (byte)(index - 1);
+                indices[i++] = (byte)(index + 1);
+                index += 2;
             }
-            iStream.Write((short)(index - 2));
-            iStream.Write((short)(index - 1));
-            iStream.Write((short)(baseIndex));
-            iStream.Write((short)(baseIndex));
-            iStream.Write((short)(index - 1));
-            iStream.Write((short)(baseIndex + 1));
+            indices[i++] = (byte)(index - 2);
+            indices[i++] = (byte)(index - 1);
+            indices[i++] = (byte)(baseIndex);
+            indices[i++] = (byte)(baseIndex);
+            indices[i++] = (byte)(index - 1);
+            indices[i++] = (byte)(baseIndex + 1);
 
-            vertexBuffer.Unmap();
-            indexBuffer.Unmap();
+            shapeData.SetVertexBuffer(device, vertices);
+            shapeData.SetIndexBuffer(device, indices);
 
-            mesh.Commit();
-
-            shapes.Add(shape, mesh);
-            return mesh;
+            return shapeData;
         }
         /*
         Mesh CreateGImpactMeshShape(GImpactMeshShape shape)
@@ -404,124 +485,107 @@ namespace DemoFramework
             return mesh;
         }
         */
-        Mesh CreateSphere(SphereShape shape)
+        ShapeData CreateSphereShape(SphereShape shape)
         {
             float radius = shape.Radius;
-            int slices = (int)(radius * 10);
-            int stacks = (int)(radius * 10);
+
+            int slices = (int)(radius * 10.0f);
+            int stacks = (int)(radius * 10.0f);
+            slices = (slices > 16) ? 16 : (slices < 3) ? 3 : slices;
+            stacks = (stacks > 16) ? 16 : (stacks < 2) ? 2 : stacks;
+
             float hAngleStep = (float)Math.PI * 2 / slices;
             float vAngleStep = (float)Math.PI / stacks;
 
-            InputElement[] elements = new InputElement[] {
-                new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
-                new InputElement("NORMAL", 0, Format.R32G32B32_Float, 12, 0, InputClassification.PerVertexData, 0)
-            };
-            Mesh mesh = new Mesh(device, elements, "POSITION", (6 * slices) * (stacks - 2), 2 * slices * stacks - 2 * slices, MeshFlags.None);
+            ShapeData shapeData = new ShapeData();
 
-            MeshBuffer vertexBuffer = mesh.GetVertexBuffer(0);
-            SharpDX.DataStream vStream = vertexBuffer.Map();
+            shapeData.VertexCount = 2 + slices * (stacks - 1);
+            shapeData.IndexCount = 6 * slices * (stacks - 1);
 
-            MeshBuffer indexBuffer = mesh.GetIndexBuffer();
-            SharpDX.DataStream iStream = indexBuffer.Map();
-            int index = 0;
+            Vector3[] vertices = new Vector3[shapeData.VertexCount * 2];
+            byte[] indices = new byte[shapeData.IndexCount];
+
+            int i = 0, v = 0;
 
 
-            // Bottom cap
-            vStream.Write(new Vector3(0, -radius, 0));
-            vStream.Write(-Vector3.UnitY);
-            index++;
+            // Vertices
 
-            float angle = 0;
-            float vAngle = -(float)Math.PI / 2 + vAngleStep;
+            // Top and bottom
+            vertices[v++] = new Vector3(0, -radius, 0);
+            vertices[v++] = -Vector3.UnitY;
+            vertices[v++] = new Vector3(0, radius, 0);
+            vertices[v++] = Vector3.UnitY;
 
-            Vector3 v = new Vector3((float)Math.Cos(vAngle) * (float)Math.Sin(angle), (float)Math.Sin(vAngle), (float)Math.Cos(vAngle) * (float)Math.Cos(angle));
-            vStream.Write(v * radius);
-            vStream.Write(Vector3.Normalize(v));
-            index++;
-
-            int i;
-            for (i = 0; i < slices - 1; i++)
-            {
-                iStream.Write((short)0);
-                iStream.Write((short)(index - 1));
-
-                angle += hAngleStep;
-
-                v = new Vector3((float)Math.Cos(vAngle) * (float)Math.Sin(angle), (float)Math.Sin(vAngle), (float)Math.Cos(vAngle) * (float)Math.Cos(angle));
-                vStream.Write(v * radius);
-                vStream.Write(Vector3.Normalize(v));
-                iStream.Write((short)index);
-                index++;
-            }
-
-            iStream.Write((short)0);
-            iStream.Write((short)(index - 1));
-            iStream.Write((short)1);
-
-            
             // Stacks
-            for (i = 0; i < stacks - 2; i++)
+            int j, k;
+            float angle = 0;
+            float vAngle = -(float)Math.PI / 2;
+            Vector3 vTemp;
+            for (j = 0; j < stacks - 1; j++)
             {
                 vAngle += vAngleStep;
 
-                angle = 0;
-
-                v = new Vector3((float)Math.Cos(vAngle) * (float)Math.Sin(angle), (float)Math.Sin(vAngle), (float)Math.Cos(vAngle) * (float)Math.Cos(angle));
-                vStream.Write(v * radius);
-                vStream.Write(Vector3.Normalize(v));
-                index++;
-
-                int j;
-                for (j = 0; j < slices - 1; j++)
+                for (k = 0; k < slices; k++)
                 {
-                    iStream.Write((short)(index - slices - 1));
-                    iStream.Write((short)(index - 1));
-                    iStream.Write((short)(index - slices));
-
                     angle += hAngleStep;
-                    iStream.Write((short)(index - 1));
-                    iStream.Write((short)(index - slices));
 
-                    v = new Vector3((float)Math.Cos(vAngle) * (float)Math.Sin(angle), (float)Math.Sin(vAngle), (float)Math.Cos(vAngle) * (float)Math.Cos(angle));
-                    vStream.Write(v * radius);
-                    vStream.Write(Vector3.Normalize(v));
-                    iStream.Write((short)index);
+                    vTemp = new Vector3((float)Math.Cos(vAngle) * (float)Math.Sin(angle), (float)Math.Sin(vAngle), (float)Math.Cos(vAngle) * (float)Math.Cos(angle));
+                    vertices[v++] = vTemp * radius;
+                    vertices[v++] = Vector3.Normalize(vTemp);
+                }
+            }
+
+
+            // Indices
+
+            // Top cap
+            byte index = 2;
+            for (k = 0; k < slices; k++)
+            {
+                indices[i++] = 0;
+                indices[i++] = index;
+                index++;
+                indices[i++] = index;
+            }
+            indices[i - 1] = 2;
+
+            // Stacks
+            //for (j = 0; j < 1; j++)
+            int sliceDiff = slices * 3;
+            for (j = 0; j < stacks - 2; j++)
+            {
+                for (k = 0; k < slices; k++)
+                {
+                    indices[i++] = indices[i - sliceDiff];
+                    indices[i++] = indices[i - sliceDiff];
+                    indices[i++] = index;
                     index++;
                 }
 
-                iStream.Write((short)(index - 2 * slices));
-                iStream.Write((short)(index - slices));
-                iStream.Write((short)(index - slices - 1));
-
-                iStream.Write((short)(index - slices - 1));
-                iStream.Write((short)(index - slices));
-                iStream.Write((short)(index - 1));
+                for (k = 0; k < slices; k++)
+                {
+                    indices[i++] = indices[i - sliceDiff];
+                    indices[i++] = indices[i - sliceDiff];
+                    indices[i++] = indices[i - sliceDiff + 2];
+                }
+                indices[i - 1] = indices[i - sliceDiff + 1];
             }
 
-
-            // Top cap
-            vStream.Write(new Vector3(0, radius, 0));
-            vStream.Write(Vector3.UnitY);
-
-            for (i = 1; i < slices; i++)
+            // Bottom cap
+            index--;
+            for (k = 0; k < slices; k++)
             {
-                iStream.Write((short)index);
-                iStream.Write((short)(index - i));
-                iStream.Write((short)(index - i - 1));
+                indices[i++] = 1;
+                indices[i++] = index;
+                index--;
+                indices[i++] = index;
             }
-            
-            iStream.Write((short)index);
-            iStream.Write((short)(index - i));
-            iStream.Write((short)(index - 1));
+            indices[i - 1] = indices[i - sliceDiff + 1];
 
+            shapeData.SetVertexBuffer(device, vertices);
+            shapeData.SetIndexBuffer(device, indices);
 
-            vertexBuffer.Unmap();
-            indexBuffer.Unmap();
-
-            mesh.Commit();
-
-            shapes.Add(shape, mesh);
-            return mesh;
+            return shapeData;
         }
         /*
         Mesh CreateStaticPlaneShape(StaticPlaneShape shape)
@@ -580,107 +644,166 @@ namespace DemoFramework
             return mesh;
         }
         */
-        string ground = "Ground";
-        public void Render(CollisionObject body)
+
+        ShapeData InitShapeData(CollisionShape shape)
         {
-            if (body.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
+            ShapeData shapeData;
+
+            if (shapes2.TryGetValue(shape, out shapeData) == false)
             {
-                demo.SetBuffer(Matrix.Identity, Color.LightBlue);
-                RenderSoftBody(SoftBody.Upcast(body));
+                switch (shape.ShapeType)
+                {
+                    case BroadphaseNativeType.SoftBodyShape:
+                        shapeData = CreateSoftBody();
+                        break;
+                    case BroadphaseNativeType.BoxShape:
+                        shapeData = CreateBoxShape(shape as BoxShape);
+                        break;
+                    case BroadphaseNativeType.CylinderShape:
+                        shapeData = CreateCylinderShape(shape as CylinderShape);
+                        break;
+                    case BroadphaseNativeType.CompoundShape:
+                        CompoundShape compoundShape = shape as CompoundShape;
+                        foreach (CompoundShapeChild child in compoundShape.ChildList)
+                        {
+                            InitShapeData(child.ChildShape);
+                        }
+                        return null;
+                    case BroadphaseNativeType.SphereShape:
+                        shapeData = CreateSphereShape(shape as SphereShape);
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
+
+                // Create an initial instance data buffer for a single instance
+                instanceDataDesc.SizeInBytes = Marshal.SizeOf(typeof(InstanceData));
+                shapeData.InstanceDataBuffer = new Buffer(device, instanceDataDesc);
+                shapeData.InstanceDataBufferBinding = new VertexBufferBinding(shapeData.InstanceDataBuffer, instanceDataDesc.SizeInBytes, 0);
+
+                shapes2.Add(shape, shapeData);
+            }
+
+            return shapeData;
+        }
+
+        void InitInstanceData(CollisionObject colObj, CollisionShape shape, ShapeData shapeData, Matrix transform)
+        {
+            if (shape.ShapeType == BroadphaseNativeType.CompoundShape)
+            {
+                CompoundShape compoundShape = shape as CompoundShape;
+                foreach (CompoundShapeChild child in compoundShape.ChildList)
+                {
+                    InitInstanceData(colObj, child.ChildShape, shapes2[child.ChildShape], child.Transform * transform);
+                }
+            }
+            else if (shape.ShapeType == BroadphaseNativeType.SoftBodyShape)
+            {
+                UpdateSoftBody(colObj as SoftBody, shapeData);
+
+                InstanceData instanceData = new InstanceData()
+                {
+                    WorldTransform = transform,
+                    Color = softBodyColor
+                };
+                shapeData.InstanceDataList.Add(instanceData);
             }
             else
             {
-                Color color;
-                if (ground.Equals(body.UserObject))
+                InstanceData instanceData = new InstanceData()
                 {
-                    color = Color.Green;
-                }
-                else
-                {
-                    color = body.ActivationState == ActivationState.ActiveTag ? Color.Orange : Color.OrangeRed;
-                }
-                demo.SetBuffer((body as RigidBody).MotionState.WorldTransform, color);
-                Render(body.CollisionShape);
+                    WorldTransform = transform,
+                    Color = ground.Equals(colObj.UserObject) ? groundColor :
+                        colObj.ActivationState == ActivationState.ActiveTag ? activeColor : passiveColor
+                };
+                shapeData.InstanceDataList.Add(instanceData);
             }
         }
 
-        public void Render(CollisionShape shape)
+        string ground = "Ground";
+
+        public void InitInstancedRender(AlignedCollisionObjectArray objects)
         {
-            Mesh mesh;
+            // Clear instance data
+            foreach (ShapeData s in shapes2.Values)
+                s.InstanceDataList.Clear();
+            removeList.Clear();
 
-            if (shapes.TryGetValue(shape, out mesh))
+            foreach (CollisionObject colObj in objects)
             {
-                mesh.DrawSubset(0);
-                return;
+                ShapeData shapeData;
+                CollisionShape shape = colObj.CollisionShape;
+
+                shapeData = InitShapeData(shape);
+
+                Matrix transform = Matrix.Identity;
+                if (!(colObj is SoftBody))
+                {
+                    transform = (colObj as RigidBody).MotionState.WorldTransform;
+                }
+                InitInstanceData(colObj, shape, shapeData, transform);
             }
 
-            if (complexShapes.TryGetValue(shape, out mesh))
+            foreach (KeyValuePair<CollisionShape, ShapeData> sh in shapes2)
             {
-                RenderComplexShape(shape, mesh);
-                return;
-            }
+                ShapeData s = sh.Value;
 
-            // Create the graphics mesh or go to child shapes.
-            switch (shape.ShapeType)
-            {
-                case BroadphaseNativeType.BoxShape:
-                    mesh = CreateBoxShape((BoxShape)shape);
-                    break;
-                case BroadphaseNativeType.CylinderShape:
-                    mesh = CreateCylinderShape((CylinderShape)shape);
-                    break;
-                /*
-                case BroadphaseNativeType.ConeShape:
-                    mesh = CreateConeShape((ConeShape)shape);
-                    break;
-                case BroadphaseNativeType.ConvexHullShape:
-                    mesh = CreateConvexHullShape((ConvexHullShape)shape);
-                    break;
-                case BroadphaseNativeType.GImpactShape:
-                    mesh = CreateGImpactMeshShape((GImpactMeshShape)shape);
-                    break;
-                */
-                case BroadphaseNativeType.SphereShape:
-                    mesh = CreateSphere((SphereShape)shape);
-                    break;
-                /*
-                case BroadphaseNativeType.Convex2DShape:
-                    Render(((Convex2DShape)shape).ChildShape);
-                    return;
-                */
-                case BroadphaseNativeType.CompoundShape:
-                    CompoundShape compoundShape = (CompoundShape)shape;
-                    foreach (CompoundShapeChild child in compoundShape.ChildList)
+                // Is the instance buffer the right size?
+                if (s.InstanceDataBuffer.Description.SizeInBytes != s.InstanceDataList.Count * 68)
+                {
+                    // No, recreate it
+                    s.InstanceDataBuffer.Dispose();
+
+                    if (s.InstanceDataList.Count == 0)
                     {
-                        // do a pre-transform
-                        demo.BodyTransform = child.Transform * demo.BodyTransform;
-                        
-                        Render(child.ChildShape);
+                        if (s.IndexBuffer != null)
+                            s.IndexBuffer.Dispose();
+                        s.VertexBuffer.Dispose();
+                        removeList.Add(sh.Key);
+                        continue;
                     }
-                    return;
+
+                    instanceDataDesc.SizeInBytes = s.InstanceDataList.Count * 68;
+                    s.InstanceDataBuffer = new Buffer(device, instanceDataDesc);
+                    s.InstanceDataBufferBinding = new VertexBufferBinding(s.InstanceDataBuffer, 68, 0);
+                }
+
+                // Copy the instance data over to the instance buffer
+                using (var data = s.InstanceDataBuffer.Map(MapMode.WriteDiscard))
+                {
+                    foreach (InstanceData instance in s.InstanceDataList)
+                    {
+                        data.Write(instance.WorldTransform);
+                        data.Write(instance.Color);
+                    }
+                    s.InstanceDataBuffer.Unmap();
+                }
             }
 
-            // If the shape has one subset, render it.
-            if (mesh != null)
+            foreach (CollisionShape s in removeList)
             {
-                mesh.DrawSubset(0);
-                return;
+                shapes2.Remove(s);
             }
-            /*
-            switch (shape.ShapeType)
+        }
+
+        public void RenderInstanced()
+        {
+            device.InputAssembler.SetInputLayout(inputLayout);
+
+            foreach (ShapeData s in shapes2.Values)
             {
-                case BroadphaseNativeType.CapsuleShape:
-                    mesh = CreateCapsuleShape((CapsuleShape)shape);
-                    break;
-                case BroadphaseNativeType.MultiSphereShape:
-                    mesh = CreateMultiSphereShape((MultiSphereShape)shape);
-                    break;
-                case BroadphaseNativeType.StaticPlane:
-                    mesh = CreateStaticPlaneShape((StaticPlaneShape)shape);
-                    break;
+                device.InputAssembler.SetVertexBuffers(0, new[] { s.VertexBufferBinding, s.InstanceDataBufferBinding });
+                device.InputAssembler.SetPrimitiveTopology(s.PrimitiveTopology);
+                if (s.IndexBuffer != null)
+                {
+                    device.InputAssembler.SetIndexBuffer(s.IndexBuffer, s.IndexFormat, 0);
+                    device.DrawIndexedInstanced(s.IndexCount, s.InstanceDataList.Count, 0, 0, 0);
+                }
+                else
+                {
+                    device.DrawInstanced(s.VertexCount, s.InstanceDataList.Count, 0, 0);
+                }
             }
-            */
-            RenderComplexShape(shape, mesh);
         }
 
         public void RenderComplexShape(CollisionShape shape, Mesh mesh)
@@ -752,60 +875,42 @@ namespace DemoFramework
         }
         */
 
-        public void RenderSoftBody(SoftBody softBody)
+        public ShapeData CreateSoftBody()
         {
+            // Soft body geometry is recreated each frame. Nothing to do here.
+            return new ShapeData();
+        }
+
+        public void UpdateSoftBody(SoftBody softBody, ShapeData shapeData)
+        {
+            if (shapeData.VertexBuffer != null)
+                shapeData.VertexBuffer.Dispose();
+
             AlignedFaceArray faces = softBody.Faces;
             int faceCount = faces.Count;
 
             if (faceCount > 0)
             {
-                int vertexCount = faceCount * 3;
-                bool index32 = vertexCount > 65536;
+                shapeData.VertexCount = faceCount * 3;
 
-                InputElement[] elements = new InputElement[] {
-                    new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
-                    new InputElement("NORMAL", 0, Format.R32G32B32_Float, 12, 0, InputClassification.PerVertexData, 0)
-                };
-                Mesh mesh = new Mesh(device, elements, "POSITION", vertexCount, faceCount, index32 ? MeshFlags.Has32BitIndices : 0);
+                Vector3[] vectors = new Vector3[shapeData.VertexCount * 2];
+                int v = 0;
 
-                MeshBuffer indexBuffer = mesh.GetIndexBuffer();
-                SharpDX.DataStream iStream = indexBuffer.Map();
-                int i;
-                if (index32)
-                {
-                    for (i = 0; i < vertexCount; i++)
-                        iStream.Write(i);
-                }
-                else
-                {
-                    for (i = 0; i < vertexCount; i++)
-                        iStream.Write((short)i);
-                }
-                indexBuffer.Unmap();
-
-                MeshBuffer vertexBuffer = mesh.GetVertexBuffer(0);
-                SharpDX.DataStream vStream = vertexBuffer.Map();
                 foreach (Face face in faces)
                 {
                     NodePtrArray nodes = face.N;
                     Node n0 = nodes[0];
                     Node n1 = nodes[1];
                     Node n2 = nodes[2];
-                    vStream.Write(n0.X);
-                    vStream.Write(n0.Normal);
-                    vStream.Write(n1.X);
-                    vStream.Write(n1.Normal);
-                    vStream.Write(n2.X);
-                    vStream.Write(n2.Normal);
+                    vectors[v++] = n0.X;
+                    vectors[v++] = n0.Normal;
+                    vectors[v++] = n1.X;
+                    vectors[v++] = n1.Normal;
+                    vectors[v++] = n2.X;
+                    vectors[v++] = n2.Normal;
                 }
-                vertexBuffer.Unmap();
 
-                mesh.Commit();
-
-                mesh.DrawSubset(0);
-                mesh.Dispose();
-                vertexBuffer.Dispose();
-                indexBuffer.Dispose();
+                shapeData.SetVertexBuffer(device, vectors);
             }
             else
             {
@@ -814,32 +919,11 @@ namespace DemoFramework
 
                 if (tetraCount > 0)
                 {
-                    int vertexCount = tetraCount * 12;
-                    bool index32 = vertexCount > 65536;
+                    shapeData.VertexCount = tetraCount * 12;
 
-                    InputElement[] elements = new InputElement[] {
-                        new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
-                        new InputElement("NORMAL", 0, Format.R32G32B32_Float, 12, 0, InputClassification.PerVertexData, 0)
-                    };
-                    Mesh mesh = new Mesh(device, elements, "POSITION", vertexCount, tetraCount * 4, index32 ? MeshFlags.Has32BitIndices : 0);
+                    Vector3[] vectors = new Vector3[shapeData.VertexCount * 2];
+                    int v = 0;
 
-                    MeshBuffer indexBuffer = mesh.GetIndexBuffer();
-                    SharpDX.DataStream iStream = indexBuffer.Map();
-                    int i;
-                    if (index32)
-                    {
-                        for (i = 0; i < vertexCount; i++)
-                            iStream.Write(i);
-                    }
-                    else
-                    {
-                        for (i = 0; i < vertexCount; i++)
-                            iStream.Write((short)i);
-                    }
-                    indexBuffer.Unmap();
-
-                    MeshBuffer vertexBuffer = mesh.GetVertexBuffer(0);
-                    SharpDX.DataStream verts = vertexBuffer.Map();
                     foreach (Tetra t in tetras)
                     {
                         NodePtrArray nodes = t.Nodes;
@@ -853,69 +937,63 @@ namespace DemoFramework
                         Vector3 normal2 = Vector3.Cross(v2 - v1, v3 - v1);
                         Vector3 normal3 = Vector3.Cross(v0 - v2, v3 - v2);
 
-                        verts.Write(v0);
-                        verts.Write(normal0);
-                        verts.Write(v1);
-                        verts.Write(normal0);
-                        verts.Write(v2);
-                        verts.Write(normal0);
+                        vectors[v++] = v0;
+                        vectors[v++] = normal0;
+                        vectors[v++] = v1;
+                        vectors[v++] = normal0;
+                        vectors[v++] = v2;
+                        vectors[v++] = normal0;
 
-                        verts.Write(v0);
-                        verts.Write(normal1);
-                        verts.Write(v1);
-                        verts.Write(normal1);
-                        verts.Write(v3);
-                        verts.Write(normal1);
-                        
-                        verts.Write(v1);
-                        verts.Write(normal2);
-                        verts.Write(v2);
-                        verts.Write(normal2);
-                        verts.Write(v3);
-                        verts.Write(normal2);
+                        vectors[v++] = v0;
+                        vectors[v++] = normal1;
+                        vectors[v++] = v1;
+                        vectors[v++] = normal1;
+                        vectors[v++] = v3;
+                        vectors[v++] = normal1;
 
-                        verts.Write(v2);
-                        verts.Write(normal3);
-                        verts.Write(v0);
-                        verts.Write(normal3);
-                        verts.Write(v3);
-                        verts.Write(normal3);
+                        vectors[v++] = v1;
+                        vectors[v++] = normal2;
+                        vectors[v++] = v2;
+                        vectors[v++] = normal2;
+                        vectors[v++] = v3;
+                        vectors[v++] = normal2;
+
+                        vectors[v++] = v2;
+                        vectors[v++] = normal3;
+                        vectors[v++] = v0;
+                        vectors[v++] = normal3;
+                        vectors[v++] = v3;
+                        vectors[v++] = normal3;
                     }
-                    vertexBuffer.Unmap();
 
-                    mesh.Commit();
-
-                    mesh.DrawSubset(0);
-                    mesh.Dispose();
-                    vertexBuffer.Dispose();
-                    indexBuffer.Dispose();
+                    shapeData.SetVertexBuffer(device, vectors);
                 }
                 else if (softBody.Links.Count > 0)
                 {
-                    /*
                     AlignedLinkArray links = softBody.Links;
                     int linkCount = links.Count;
                     int linkColor = System.Drawing.Color.Black.ToArgb();
+                    shapeData.VertexCount = linkCount * 2;
 
-                    device.SetRenderState(RenderState.Lighting, false);
-                    device.SetTransform(TransformState.World, Matrix.Identity);
-                    device.VertexFormat = PositionColored.FVF;
-
-                    PositionColored[] linkArray = new PositionColored[linkCount * 2];
+                    Vector3[] vectors = new Vector3[shapeData.VertexCount * 2];
 
                     for (int i = 0; i < linkCount; i++)
                     {
                         Link link = links[i];
-                        linkArray[i * 2] = new PositionColored(link.Nodes[0].X, linkColor);
-                        linkArray[i * 2 + 1] = new PositionColored(link.Nodes[1].X, linkColor);
+                        vectors[i * 4] = link.Nodes[0].X;
+                        vectors[i * 4 + 2] = link.Nodes[1].X;
                     }
-                    device.DrawUserPrimitives(PrimitiveType.LineList, links.Count, linkArray);
 
-                    device.SetRenderState(RenderState.Lighting, true);
-                    */
+                    shapeData.PrimitiveTopology = PrimitiveTopology.LineList;
+                    shapeData.SetVertexBuffer(device, vectors);
+                }
+                else
+                {
+                    throw new NotImplementedException();
                 }
             }
         }
+
         /*
         public void RenderSoftBodyTextured(SoftBody softBody)
         {

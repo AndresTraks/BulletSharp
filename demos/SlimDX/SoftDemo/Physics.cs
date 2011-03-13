@@ -73,10 +73,9 @@ namespace SoftDemo
                 if (body != null && body.MotionState != null)
                     body.MotionState.Dispose();
 
-                SoftBody softBody = SoftBody.Upcast(obj);
-                if (softBody != null)
+                if (obj is SoftBody)
                 {
-                    SoftWorld.RemoveSoftBody(softBody);
+                    SoftWorld.RemoveSoftBody(obj as SoftBody);
                 }
                 else
                 {

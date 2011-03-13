@@ -340,7 +340,7 @@ namespace DemoFramework
         {
             if (body.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
             {
-                RenderSoftBody((SoftBody)body);
+                RenderSoftBody(body as SoftBody);
             }
             else
             {
@@ -440,7 +440,7 @@ namespace DemoFramework
                     RenderCapsuleShape(mesh);
                     break;
                 case BroadphaseNativeType.MultiSphereShape:
-                    RenderMultiSphereShape((MultiSphereShape)shape, mesh);
+                    RenderMultiSphereShape(shape as MultiSphereShape, mesh);
                     break;
             }
         }
@@ -505,7 +505,7 @@ namespace DemoFramework
             if (faceCount > 0)
             {
                 int vertexCount = faceCount * 3;
-                bool index32 = vertexCount > 65536;
+                bool index32 = vertexCount > 65535;
 
                 Mesh mesh = new Mesh(device, faceCount, vertexCount,
                     MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);

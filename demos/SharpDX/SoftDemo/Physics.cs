@@ -69,14 +69,13 @@ namespace SoftDemo
             {
                 CollisionObject obj = World.CollisionObjectArray[i];
 
-                RigidBody body = RigidBody.Upcast(obj);
+                RigidBody body = obj as RigidBody;
                 if (body != null && body.MotionState != null)
                     body.MotionState.Dispose();
 
-                SoftBody softBody = SoftBody.Upcast(obj);
-                if (softBody != null)
+                if (obj is SoftBody)
                 {
-                    SoftWorld.RemoveSoftBody(softBody);
+                    SoftWorld.RemoveSoftBody(obj as SoftBody);
                 }
                 else
                 {

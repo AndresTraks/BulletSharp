@@ -6,11 +6,13 @@ using System.Windows.Forms;
 using BulletSharp;
 using SharpDX;
 using SharpDX.D3DCompiler;
+using SharpDX.Direct3D;
 using SharpDX.Direct3D10;
 using SharpDX.DXGI;
 using SharpDX.Windows;
 using Buffer = SharpDX.Direct3D10.Buffer;
 using Device = SharpDX.Direct3D10.Device;
+using DriverType = SharpDX.Direct3D10.DriverType;
 
 namespace DemoFramework
 {
@@ -50,7 +52,6 @@ namespace DemoFramework
         public Effect Effect { get; private set; }
         public EffectTechnique Technique { get; private set; }
         public EffectPass Pass { get; private set; }
-        InputLayout inputLayout;
         ShaderResourceView lightRes;
 
         protected int Width { get; set; }
@@ -61,16 +62,14 @@ namespace DemoFramework
         protected float FarPlane { get; set; }
         protected float FieldOfView { get; set; }
 
-        ShaderObjectConstants objectConstants = new ShaderObjectConstants();
         ShaderSceneConstants sceneConstants = new ShaderSceneConstants();
-        Buffer objectConstantsBuffer;
         Buffer sceneConstantsBuffer;
 
         protected InfoText Info { get; set; }
 
         protected Color4 Ambient { get; set; }
         protected MeshFactory MeshFactory { get; private set; }
-        
+
         protected Input Input { get; private set; }
         protected FreeLook Freelook { get; set; }
 
@@ -87,22 +86,6 @@ namespace DemoFramework
         bool use6Dof = false;
         protected TypedConstraint pickConstraint;
         float oldPickingDist;
-
-        public Matrix BodyTransform
-        {
-            get { return objectConstants.World; }
-            set
-            {
-                SetBuffer(value, objectConstants.Color);
-            }
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        struct ShaderObjectConstants
-        {
-            public Matrix World;
-            public Color4 Color;
-        }
 
         [StructLayout(LayoutKind.Sequential)]
         struct ShaderSceneConstants
@@ -238,7 +221,7 @@ namespace DemoFramework
             ShaderResourceViewDescription resourceDesc = new ShaderResourceViewDescription()
             {
                 Format = Format.R32_Float,
-                Dimension = SharpDX.Direct3D.ShaderResourceViewDimension.Texture2D,
+                Dimension = ShaderResourceViewDimension.Texture2D,
                 Texture2D = new ShaderResourceViewDescription.Texture2DResource()
                 {
                     MipLevels = 1,
@@ -260,19 +243,6 @@ namespace DemoFramework
             Technique = Effect.GetTechniqueByIndex(0);
             Pass = Technique.GetPassByIndex(0);
 
-            BufferDescription objectConstantsDesc = new BufferDescription()
-            {
-                SizeInBytes = Marshal.SizeOf(typeof(ShaderObjectConstants)),
-                Usage = ResourceUsage.Dynamic,
-                BindFlags = BindFlags.ConstantBuffer,
-                CpuAccessFlags = CpuAccessFlags.Write,
-                OptionFlags = ResourceOptionFlags.None
-            };
-
-            objectConstantsBuffer = new Buffer(Device, objectConstantsDesc);
-            EffectConstantBuffer effectConstantBuffer = Effect.GetConstantBufferByIndex(0);
-            effectConstantBuffer.SetConstantBuffer(objectConstantsBuffer);
-
             BufferDescription sceneConstantsDesc = new BufferDescription()
             {
                 SizeInBytes = Marshal.SizeOf(typeof(ShaderSceneConstants)),
@@ -283,13 +253,8 @@ namespace DemoFramework
             };
 
             sceneConstantsBuffer = new Buffer(Device, sceneConstantsDesc);
-            effectConstantBuffer = Effect.GetConstantBufferByIndex(1);
+            EffectConstantBuffer effectConstantBuffer = Effect.GetConstantBufferByName("scene");
             effectConstantBuffer.SetConstantBuffer(sceneConstantsBuffer);
-
-            inputLayout = new InputLayout(Device, Pass.Description.Signature, new[] { 
-                new InputElement("POSITION", 0, Format.R32G32B32_Float, InputElement.AppendAligned, 0, InputClassification.PerVertexData, 0),
-                new InputElement("NORMAL", 0, Format.R32G32B32_Float, InputElement.AppendAligned, 0, InputClassification.PerVertexData, 0)
-            });
 
             RasterizerStateDescription desc = new RasterizerStateDescription()
             {
@@ -321,22 +286,14 @@ namespace DemoFramework
             };
             lightDepthStencilState = new DepthStencilState(Device, lightDepthStateDesc);
 
+            Info = new InfoText(Device);
+            MeshFactory = new MeshFactory(this);
 
             OnInitialize();
-            SetSceneBuffer();
+            SetSceneConstants();
         }
 
-        public void SetBuffer(Matrix world, Color color)
-        {
-            objectConstants.World = world;
-            objectConstants.Color = (Color4)color;
-
-            SharpDX.DataStream c = objectConstantsBuffer.Map(MapMode.WriteDiscard);
-            Marshal.StructureToPtr(objectConstants, c.DataPointer, false);
-            objectConstantsBuffer.Unmap();
-        }
-
-        protected void SetSceneBuffer()
+        protected void SetSceneConstants()
         {
             sceneConstants.View = Freelook.View;
             sceneConstants.Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, NearPlane, FarPlane);
@@ -348,9 +305,11 @@ namespace DemoFramework
             Texture2DDescription depthBuffer = lightDepthTexture.Description;
             sceneConstants.LightProjection = Matrix.OrthoLH(depthBuffer.Width / 8, depthBuffer.Height / 8, NearPlane, FarPlane);
 
-            SharpDX.DataStream c = sceneConstantsBuffer.Map(MapMode.WriteDiscard);
-            Marshal.StructureToPtr(sceneConstants, c.DataPointer, false);
-            sceneConstantsBuffer.Unmap();
+            using (var data = sceneConstantsBuffer.Map(MapMode.WriteDiscard))
+            {
+                Marshal.StructureToPtr(sceneConstants, data.DataPointer, false);
+                sceneConstantsBuffer.Unmap();
+            }
         }
 
         void Render()
@@ -365,11 +324,11 @@ namespace DemoFramework
                 frameCount = 0;
             }
 
-            Device.InputAssembler.SetInputLayout(inputLayout);
-
             // Clear targets
             Device.ClearDepthStencilView(DepthStencilView, DepthStencilClearFlags.Depth, 1.0f, 0);
             Device.ClearRenderTargetView(RenderView, Ambient);
+
+            MeshFactory.InitInstancedRender(PhysicsContext.World.CollisionObjectArray);
 
             // Depth map pass
             if (shadowsEnabled)
@@ -436,14 +395,14 @@ namespace DemoFramework
             {
                 Width = Form.ClientSize.Width;
                 Height = Form.ClientSize.Height;
-                
+
                 RenderView.Dispose();
                 DepthStencilView.Dispose();
                 _swapChain.ResizeBuffers(_swapChain.Description.BufferCount, Width, Height, _swapChain.Description.ModeDescription.Format, (int)_swapChain.Description.Flags);
 
                 CreateBuffers();
 
-                SetSceneBuffer();
+                SetSceneConstants();
                 formIsResizing = false;
             };
 
@@ -472,9 +431,6 @@ namespace DemoFramework
                 return;
             }
 
-            Info = new InfoText(Device);
-            MeshFactory = new MeshFactory(this);
-
             Initialize();
 
             clock.Start();
@@ -491,16 +447,13 @@ namespace DemoFramework
 
         protected virtual void OnRender()
         {
-            foreach (CollisionObject colObj in PhysicsContext.World.CollisionObjectArray)
-            {
-                MeshFactory.Render(colObj);
-            }
+            MeshFactory.RenderInstanced();
         }
 
         protected virtual void OnUpdate()
         {
             if (Freelook.Update(FrameDelta))
-                SetSceneBuffer();
+                SetSceneConstants();
             PhysicsContext.Update(FrameDelta);
         }
 
