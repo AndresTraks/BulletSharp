@@ -19,7 +19,8 @@ namespace DemoFramework
         public Matrix WorldTransform { get; set; }
         public uint Color { get; set; }
     }
-
+    
+    // Contains the geometry buffers and information of all instances of a particular shape.
     public class ShapeData : System.IDisposable
     {
         public Buffer VertexBuffer { get; private set; }
@@ -60,6 +61,45 @@ namespace DemoFramework
             VertexBufferBinding = new VertexBufferBinding(VertexBuffer, 24, 0);
         }
 
+        // Used with soft bodies
+        public void SetDynamicVertexBuffer(Device device, Vector3[] vectors)
+        {
+            if (VertexBuffer != null && VertexBuffer.Description.SizeInBytes == vectors.Length * 12)
+            {
+                // Update existing buffer
+                using (var vData = new SharpDX.DataStream(vectors, true, false))
+                {
+                    using (var data = VertexBuffer.Map(MapMode.WriteDiscard))
+                    {
+                        vData.CopyTo(data);
+                        VertexBuffer.Unmap();
+                    }
+                }
+            }
+            else
+            {
+                // Create new buffer
+                if (VertexBuffer != null)
+                    VertexBuffer.Dispose();
+
+                BufferDescription vertexBufferDesc = new BufferDescription()
+                {
+                    SizeInBytes = Marshal.SizeOf(typeof(Vector3)) * vectors.Length,
+                    Usage = ResourceUsage.Dynamic,
+                    BindFlags = BindFlags.VertexBuffer,
+                    CpuAccessFlags = CpuAccessFlags.Write
+                };
+
+                using (var data = new SharpDX.DataStream(vectors, true, false))
+                {
+                    VertexBuffer = new Buffer(device, data, vertexBufferDesc);
+                    VertexBuffer.Unmap();
+                }
+
+                VertexBufferBinding = new VertexBufferBinding(VertexBuffer, 24, 0);
+            }
+        }
+
         public void SetIndexBuffer(Device device, byte[] indices)
         {
             IndexFormat = Format.R8_UInt;
@@ -92,9 +132,8 @@ namespace DemoFramework
     {
         Device device;
         Demo demo;
-        Dictionary<CollisionShape, Mesh> shapes = new Dictionary<CollisionShape, Mesh>();
-        Dictionary<CollisionShape, Mesh> complexShapes = new Dictionary<CollisionShape, Mesh>(); // these have more than 1 subset
-        Dictionary<CollisionShape, ShapeData> shapes2 = new Dictionary<CollisionShape, ShapeData>();
+        //Dictionary<CollisionShape, Mesh> shapes = new Dictionary<CollisionShape, Mesh>();
+        Dictionary<CollisionShape, ShapeData> shapes = new Dictionary<CollisionShape, ShapeData>();
         List<CollisionShape> removeList = new List<CollisionShape>();
         Effect planeShader = null;
 
@@ -143,23 +182,11 @@ namespace DemoFramework
 
         public void Dispose()
         {
-            foreach (Mesh mesh in shapes.Values)
-            {
-                mesh.Dispose();
-            }
-            shapes.Clear();
-
-            foreach (ShapeData shapeData in shapes2.Values)
+            foreach (ShapeData shapeData in shapes.Values)
             {
                 shapeData.Dispose();
             }
-            shapes2.Clear();
-
-            foreach (Mesh mesh in complexShapes.Values)
-            {
-                mesh.Dispose();
-            }
-            complexShapes.Clear();
+            shapes.Clear();
 
             if (planeShader != null)
                 planeShader.Release();
@@ -509,7 +536,6 @@ namespace DemoFramework
 
 
             // Vertices
-
             // Top and bottom
             vertices[v++] = new Vector3(0, -radius, 0);
             vertices[v++] = -Vector3.UnitY;
@@ -537,7 +563,6 @@ namespace DemoFramework
 
 
             // Indices
-
             // Top cap
             byte index = 2;
             for (k = 0; k < slices; k++)
@@ -649,7 +674,7 @@ namespace DemoFramework
         {
             ShapeData shapeData;
 
-            if (shapes2.TryGetValue(shape, out shapeData) == false)
+            if (shapes.TryGetValue(shape, out shapeData) == false)
             {
                 switch (shape.ShapeType)
                 {
@@ -681,7 +706,7 @@ namespace DemoFramework
                 shapeData.InstanceDataBuffer = new Buffer(device, instanceDataDesc);
                 shapeData.InstanceDataBufferBinding = new VertexBufferBinding(shapeData.InstanceDataBuffer, instanceDataDesc.SizeInBytes, 0);
 
-                shapes2.Add(shape, shapeData);
+                shapes.Add(shape, shapeData);
             }
 
             return shapeData;
@@ -694,7 +719,7 @@ namespace DemoFramework
                 CompoundShape compoundShape = shape as CompoundShape;
                 foreach (CompoundShapeChild child in compoundShape.ChildList)
                 {
-                    InitInstanceData(colObj, child.ChildShape, shapes2[child.ChildShape], child.Transform * transform);
+                    InitInstanceData(colObj, child.ChildShape, shapes[child.ChildShape], child.Transform * transform);
                 }
             }
             else if (shape.ShapeType == BroadphaseNativeType.SoftBodyShape)
@@ -725,7 +750,7 @@ namespace DemoFramework
         public void InitInstancedRender(AlignedCollisionObjectArray objects)
         {
             // Clear instance data
-            foreach (ShapeData s in shapes2.Values)
+            foreach (ShapeData s in shapes.Values)
                 s.InstanceDataList.Clear();
             removeList.Clear();
 
@@ -744,7 +769,7 @@ namespace DemoFramework
                 InitInstanceData(colObj, shape, shapeData, transform);
             }
 
-            foreach (KeyValuePair<CollisionShape, ShapeData> sh in shapes2)
+            foreach (KeyValuePair<CollisionShape, ShapeData> sh in shapes)
             {
                 ShapeData s = sh.Value;
 
@@ -782,7 +807,7 @@ namespace DemoFramework
 
             foreach (CollisionShape s in removeList)
             {
-                shapes2.Remove(s);
+                shapes.Remove(s);
             }
         }
 
@@ -790,7 +815,7 @@ namespace DemoFramework
         {
             device.InputAssembler.SetInputLayout(inputLayout);
 
-            foreach (ShapeData s in shapes2.Values)
+            foreach (ShapeData s in shapes.Values)
             {
                 device.InputAssembler.SetVertexBuffers(0, new[] { s.VertexBufferBinding, s.InstanceDataBufferBinding });
                 device.InputAssembler.SetPrimitiveTopology(s.PrimitiveTopology);
@@ -883,9 +908,6 @@ namespace DemoFramework
 
         public void UpdateSoftBody(SoftBody softBody, ShapeData shapeData)
         {
-            if (shapeData.VertexBuffer != null)
-                shapeData.VertexBuffer.Dispose();
-
             AlignedFaceArray faces = softBody.Faces;
             int faceCount = faces.Count;
 
@@ -910,7 +932,7 @@ namespace DemoFramework
                     vectors[v++] = n2.Normal;
                 }
 
-                shapeData.SetVertexBuffer(device, vectors);
+                shapeData.SetDynamicVertexBuffer(device, vectors);
             }
             else
             {
@@ -966,7 +988,7 @@ namespace DemoFramework
                         vectors[v++] = normal3;
                     }
 
-                    shapeData.SetVertexBuffer(device, vectors);
+                    shapeData.SetDynamicVertexBuffer(device, vectors);
                 }
                 else if (softBody.Links.Count > 0)
                 {
@@ -985,7 +1007,7 @@ namespace DemoFramework
                     }
 
                     shapeData.PrimitiveTopology = PrimitiveTopology.LineList;
-                    shapeData.SetVertexBuffer(device, vectors);
+                    shapeData.SetDynamicVertexBuffer(device, vectors);
                 }
                 else
                 {
