@@ -37,6 +37,11 @@ namespace BulletSharp
 			btScalar get();
 		}
 
+		property btScalar AngularPos
+		{
+			btScalar get();
+		}
+
 		property Matrix CalculatedTransformA
 		{
 			Matrix get();

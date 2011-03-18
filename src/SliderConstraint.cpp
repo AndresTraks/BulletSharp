@@ -104,6 +104,11 @@ btScalar SliderConstraint::AngularDepth::get()
 	return UnmanagedPointer->getAngDepth();
 }
 
+btScalar SliderConstraint::AngularPos::get()
+{
+	return UnmanagedPointer->getAngularPos();
+}
+
 Matrix SliderConstraint::CalculatedTransformA::get()
 {
 	return Math::BtTransformToMatrix(&UnmanagedPointer->getCalculatedTransformA());
