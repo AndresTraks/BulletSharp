@@ -46,7 +46,7 @@ namespace BenchmarkDemo
                     maxNumOutstandingTasks);
 
                 Win32ThreadSupport threadSupportCollision = new Win32ThreadSupport(info);
-                Dispatcher = new SpuGatheringCollisionDispatcher(threadSupportCollision, maxNumOutstandingTasks, CollisionConf);
+                Dispatcher = new SpuGatheringCollisionDispatcher(threadSupportCollision, 1, CollisionConf);
             }
             else
             {

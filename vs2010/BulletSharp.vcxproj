@@ -759,7 +759,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..\bullet\src;$(CUDA_INC_PATH)include;$(ATISTREAMSDKROOT)include</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>$(PROGRAMFILES)\SlimDX SDK (June 2010)\Bin\net40;$(ProgramFiles(x86))\SlimDX SDK (June 2010)\Bin\net40;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(PROGRAMFILES)\SlimDX SDK (March 2011)\Bin\net40;$(ProgramFiles(x86))\SlimDX SDK (June 2010)\Bin\net40;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_SLIMDX;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
@@ -930,7 +930,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release SlimDX|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\bullet\src;$(CUDA_INC_PATH)include;$(ATISTREAMSDKROOT)include</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>$(ProgramFiles)\SlimDX SDK (June 2010)\Bin\net40;$(ProgramFiles(x86))\SlimDX SDK (June 2010)\Bin\net40;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(ProgramFiles)\SlimDX SDK (March 2011)\Bin\net40;$(ProgramFiles(x86))\SlimDX SDK (June 2010)\Bin\net40;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_SLIMDX;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>

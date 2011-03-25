@@ -49,6 +49,12 @@ x SimpleDynamicsWorld (for unit-testing)
 
 
 
+LinearMath
+
+X ConvexHullComputer (internal)
+
+
+
 SoftBody
 0 SoftBodyConcaveCollisionAlgorithm
 - SoftBodyInternals (internal)

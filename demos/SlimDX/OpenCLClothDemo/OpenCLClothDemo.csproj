@@ -52,16 +52,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Debug SlimDX\BulletSharp.dll</HintPath>
     </Reference>
-    <Reference Include="SlimDX, Version=2.0.10.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86" />
+    <Reference Include="DemoFramework, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DemoFramework\bin\x86\Release\DemoFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimDX, Version=2.0.11.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DemoFramework\DemoFramework.csproj">
-      <Project>{300EA042-EAD4-4C63-8FCC-7AE5A3A792D1}</Project>
-      <Name>DemoFramework</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="amdFlag.png">
