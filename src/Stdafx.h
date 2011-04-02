@@ -158,6 +158,7 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #include <BulletCollision/CollisionShapes/btBox2dShape.h>
 #include <BulletCollision/CollisionShapes/btConvex2dShape.h>
 #include <BulletCollision/CollisionShapes/btConvexPointCloudShape.h>
+#include <BulletCollision/CollisionShapes/btConvexPolyhedron.h>
 #include <BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h>
 #include <BulletCollision/CollisionShapes/btMaterial.h>
 #include <BulletCollision/CollisionShapes/btMinkowskiSumShape.h>

@@ -48,6 +48,11 @@ void ConvexCast::CastResult::DrawCoordSystem (Matrix trans)
 	delete transTemp;
 }
 
+void ConvexCast::CastResult::ReportFailure(int errNo, int numIterations)
+{
+	_castResult->reportFailure(errNo, numIterations);
+}
+
 btScalar ConvexCast::CastResult::AllowedPenetration::get()
 {
 	return _castResult->m_allowedPenetration;

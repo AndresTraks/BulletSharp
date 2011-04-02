@@ -1671,6 +1671,7 @@
     <ClCompile Include="..\src\ConvexPenetrationDepthSolver.cpp" />
     <ClCompile Include="..\src\ConvexPlaneCollisionAlgorithm.cpp" />
     <ClCompile Include="..\src\ConvexPointCloudShape.cpp" />
+    <ClCompile Include="..\src\ConvexPolyhedron.cpp" />
     <ClCompile Include="..\src\ConvexShape.cpp" />
     <ClCompile Include="..\src\ConvexTriangleMeshShape.cpp" />
     <ClCompile Include="..\src\CylinderShape.cpp" />
@@ -1869,6 +1870,7 @@
     <ClInclude Include="..\src\ConvexPenetrationDepthSolver.h" />
     <ClInclude Include="..\src\ConvexPlaneCollisionAlgorithm.h" />
     <ClInclude Include="..\src\ConvexPointCloudShape.h" />
+    <ClInclude Include="..\src\ConvexPolyhedron.h" />
     <ClInclude Include="..\src\ConvexShape.h" />
     <ClInclude Include="..\src\ConvexTriangleMeshShape.h" />
     <ClInclude Include="..\src\CylinderShape.h" />

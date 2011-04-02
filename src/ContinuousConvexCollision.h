@@ -9,11 +9,13 @@ namespace BulletSharp
 {
 	ref class ConvexPenetrationDepthSolver;
 	ref class ConvexShape;
+	ref class StaticPlaneShape;
 
 	public ref class ContinuousConvexCollision : ConvexCast
 	{
 	public:
-		ContinuousConvexCollision(ConvexShape^ convexA, ConvexShape^ convexB,
+		ContinuousConvexCollision(ConvexShape^ shapeA, ConvexShape^ shapeB,
 			SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ penetrationDepthSolver);
+		ContinuousConvexCollision(ConvexShape^ shapeA, StaticPlaneShape^ shapeB);
 	};
 };

@@ -2,9 +2,11 @@
 
 #include "BroadphaseProxy.h"
 #include "Dispatcher.h"
-#include "GhostObject.h"
 #include "OverlappingPairCache.h"
 #include "OverlappingPairCallback.h"
+#ifndef DISABLE_UNCOMMON
+#include "GhostObject.h"
+#endif
 
 OverlappingPairCallback::OverlappingPairCallback(btOverlappingPairCallback* pairCallback)
 {

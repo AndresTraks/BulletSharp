@@ -35,6 +35,7 @@ namespace BulletSharp
 			void DebugDraw (btScalar fraction);
 #endif
 			void DrawCoordSystem (Matrix trans);
+			void ReportFailure(int errNo, int numIterations);
 
 			property btScalar AllowedPenetration
 			{

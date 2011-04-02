@@ -6,6 +6,8 @@
 
 namespace BulletSharp
 {
+	ref class ConvexPolyhedron;
+
 	public ref class PolyhedralConvexShape abstract : ConvexInternalShape
 	{
 	internal:
@@ -15,7 +17,15 @@ namespace BulletSharp
 		void GetEdge(int index, [Out] Vector3% pointA, [Out] Vector3% pointB);
 		void GetPlane([Out] Vector3% planeNormal, [Out] Vector3% planeSupport, int index);
 		void GetVertex(int index, [Out] Vector3% vertex);
+		bool InitializePolyhedralFeatures();
 		bool IsInside(Vector3 point, btScalar tolerance);
+
+#ifndef DISABLE_UNCOMMON
+		property ConvexPolyhedron^ ConvexPolyhedron
+		{
+			BulletSharp::ConvexPolyhedron^ get();
+		}
+#endif
 
 		property int EdgeCount
 		{

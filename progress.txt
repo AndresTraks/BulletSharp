@@ -26,6 +26,7 @@ Collision/NarrowPhaseCollision
 x GjkEpa2 (internal)
 0 MinkowskiPenetrationDepthSolver
 0 PersistentManifold
+X PolyhedralContactClipping (internal)
 - RaycastCallback
 0 SimplexSolverInterface
 - SubSimplexConvexCast

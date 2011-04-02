@@ -1694,6 +1694,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\ConvexPolyhedron.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\src\ConvexShape.cpp"
 						>
 					</File>
@@ -2213,6 +2217,10 @@
 					</File>
 					<File
 						RelativePath=".\src\ConvexPointCloudShape.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\ConvexPolyhedron.h"
 						>
 					</File>
 					<File

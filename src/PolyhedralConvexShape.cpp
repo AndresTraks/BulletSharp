@@ -1,6 +1,9 @@
 #include "StdAfx.h"
 
 #include "PolyhedralConvexShape.h"
+#ifndef DISABLE_UNCOMMON
+#include "ConvexPolyhedron.h"
+#endif
 
 using namespace BulletSharp;
 
@@ -47,6 +50,11 @@ void PolyhedralConvexShape::GetVertex(int index, [Out] Vector3% vertex)
 	delete vtxTemp;
 }
 
+bool PolyhedralConvexShape::InitializePolyhedralFeatures()
+{
+	return UnmanagedPointer->initializePolyhedralFeatures();
+}
+
 bool PolyhedralConvexShape::IsInside(Vector3 point, btScalar tolerance)
 {
 	btVector3* ptTemp = Math::Vector3ToBtVector3(point);
@@ -56,6 +64,13 @@ bool PolyhedralConvexShape::IsInside(Vector3 point, btScalar tolerance)
 	delete ptTemp;
 	return ret;
 }
+
+#ifndef DISABLE_UNCOMMON
+ConvexPolyhedron^ PolyhedralConvexShape::ConvexPolyhedron::get()
+{
+	return gcnew BulletSharp::ConvexPolyhedron((btConvexPolyhedron*)UnmanagedPointer->getConvexPolyhedron());
+}
+#endif
 
 int PolyhedralConvexShape::EdgeCount::get()
 {
