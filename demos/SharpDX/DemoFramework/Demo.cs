@@ -29,6 +29,8 @@ namespace DemoFramework
         {
             get { return _device; }
         }
+        Device.OutputMergerStage outputMerger;
+        Device.InputAssemblerStage inputAssembler;
 
         SwapChain _swapChain;
         public SwapChain SwapChain
@@ -41,18 +43,37 @@ namespace DemoFramework
             get { return (float)Width / (float)Height; }
         }
 
+        Texture2D gBufferLight;
+        Texture2D gBufferNormal;
+        Texture2D gBufferDiffuse;
+        Texture2D depthTexture;
+        Texture2D lightDepthTexture;
+
         public RenderTargetView RenderView { get; private set; }
-        public DepthStencilView DepthStencilView { get; private set; }
+        public DepthStencilView DepthView { get; private set; }
         public DepthStencilView LightDepthView { get; private set; }
+        public RenderTargetView GBufferNormalView { get; private set; }
+        public RenderTargetView GBufferDiffuseView { get; private set; }
+        public RenderTargetView GBufferLightView { get; private set; }
+        RenderTargetView[] gBufferViews;
         DepthStencilState depthStencilState;
         DepthStencilState lightDepthStencilState;
-        Texture2D lightDepthTexture;
-        bool shadowsEnabled = true;
+        bool shadowsEnabled = false;
+        
+        VertexBufferBinding quadBinding;
+        InputLayout quadBufferLayout;
 
         public Effect Effect { get; private set; }
-        public EffectTechnique Technique { get; private set; }
-        public EffectPass Pass { get; private set; }
-        ShaderResourceView lightRes;
+        public Effect Effect2 { get; private set; }
+        public EffectPass ShadowGenPass { get; private set; }
+        public EffectPass GBufferGenPass { get; private set; }
+        public EffectPass GBufferRenderPass { get; private set; }
+        
+        ShaderResourceView depthRes;
+        ShaderResourceView lightDepthRes;
+        ShaderResourceView lightBufferRes;
+        ShaderResourceView normalBufferRes;
+        ShaderResourceView diffuseBufferRes;
 
         protected int Width { get; set; }
         protected int Height { get; set; }
@@ -93,8 +114,7 @@ namespace DemoFramework
             public Matrix View;
             public Matrix Projection;
             public Matrix ViewInverse;
-            public Matrix LightView;
-            public Matrix LightProjection;
+            public Matrix LightViewProjection;
             public Vector4 LightPosition;
         }
 
@@ -116,37 +136,10 @@ namespace DemoFramework
         {
             if (disposeManagedResources)
             {
+                DisposeBuffers();
                 //apiContext.Dispose();
                 Form.Dispose();
             }
-        }
-
-        public bool TestLibraries()
-        {
-            /*
-            try
-            {
-                Assembly.Load("SharpDX, Version=2.0.10.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9");
-            }
-            catch
-            {
-                MessageBox.Show("SharpDX(v2.0.10.43) not installed." +
-                    "Please download it from http://code.google.com/p/sharpdx.", "Error!");
-                return false;
-            }
-            */
-
-            try
-            {
-                Assembly.Load("BulletSharp");
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString(), "BulletSharp Error!");
-                return false;
-            }
-
-            return true;
         }
 
         protected virtual void OnInitializeDevice()
@@ -167,25 +160,72 @@ namespace DemoFramework
 
             // Create Device and SwapChain
             Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.None, desc, out _device, out _swapChain);
+            outputMerger = Device.OutputMerger;
+            inputAssembler = Device.InputAssembler;
 
             Factory factory = SwapChain.GetParent<Factory>();
             factory.MakeWindowAssociation(Form.Handle, WindowAssociationFlags.None);
+        }
 
-            CreateBuffers();
+        void DisposeBuffers()
+        {
+            if (RenderView != null)
+                RenderView.Release();
+
+            if (GBufferLightView != null)
+                GBufferLightView.Release();
+
+            if (GBufferNormalView != null)
+                GBufferNormalView.Release();
+
+            if (GBufferDiffuseView != null)
+                GBufferDiffuseView.Release();
+
+            if (gBufferLight != null)
+                gBufferLight.Release();
+            
+            if (gBufferNormal != null)
+                gBufferNormal.Release();
+            
+            if (gBufferDiffuse != null)
+                gBufferDiffuse.Release();
+
+            if (depthTexture != null)
+                depthTexture.Release();
+
+            if (lightDepthTexture != null)
+                lightDepthTexture.Release();
+
+            if (lightBufferRes != null)
+                lightBufferRes.Release();
+
+            if (normalBufferRes != null)
+                normalBufferRes.Release();
+
+            if (diffuseBufferRes != null)
+                diffuseBufferRes.Release();
+
+            if (depthRes != null)
+                depthRes.Release();
+
+            if (lightDepthRes != null)
+                lightDepthRes.Release();
         }
 
         void CreateBuffers()
         {
+            DisposeBuffers();
+
             // New RenderTargetView from the backbuffer
             using (var bb = Texture2D.FromSwapChain<Texture2D>(_swapChain, 0))
                 RenderView = new RenderTargetView(Device, bb);
 
-            Texture2DDescription depthDesc = new Texture2DDescription()
+            Texture2DDescription gBufferDesc = new Texture2DDescription()
             {
                 ArraySize = 1,
-                BindFlags = BindFlags.DepthStencil,
+                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
                 CpuAccessFlags = CpuAccessFlags.None,
-                Format = Format.D32_Float,
+                Format = Format.R8G8B8A8_UNorm,
                 Height = Height,
                 Width = Width,
                 MipLevels = 1,
@@ -193,10 +233,34 @@ namespace DemoFramework
                 SampleDescription = new SampleDescription(1, 0),
                 Usage = ResourceUsage.Default
             };
-            Texture2D depthBuffer = new Texture2D(Device, depthDesc);
-            DepthStencilView = new DepthStencilView(Device, depthBuffer);
 
-            Texture2DDescription lightDepthDesc = new Texture2DDescription()
+            gBufferLight = new Texture2D(Device, gBufferDesc);
+            GBufferLightView = new RenderTargetView(Device, gBufferLight);
+
+            gBufferNormal = new Texture2D(Device, gBufferDesc);
+            GBufferNormalView = new RenderTargetView(Device, gBufferNormal);
+
+            gBufferDiffuse = new Texture2D(Device, gBufferDesc);
+            GBufferDiffuseView = new RenderTargetView(Device, gBufferDiffuse);
+
+            gBufferViews = new RenderTargetView[] { GBufferLightView, GBufferNormalView, GBufferDiffuseView };
+
+            ShaderResourceViewDescription gBufferResourceDesc = new ShaderResourceViewDescription()
+            {
+                Format = Format.R8G8B8A8_UNorm,
+                Dimension = ShaderResourceViewDimension.Texture2D,
+                Texture2D = new ShaderResourceViewDescription.Texture2DResource()
+                {
+                    MipLevels = 1,
+                    MostDetailedMip = 0
+                }
+            };
+            lightBufferRes = new ShaderResourceView(Device, gBufferLight, gBufferResourceDesc);
+            normalBufferRes = new ShaderResourceView(Device, gBufferNormal, gBufferResourceDesc);
+            diffuseBufferRes = new ShaderResourceView(Device, gBufferDiffuse, gBufferResourceDesc);
+
+
+            Texture2DDescription depthDesc = new Texture2DDescription()
             {
                 ArraySize = 1,
                 BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource,
@@ -207,16 +271,14 @@ namespace DemoFramework
                 MipLevels = 1,
                 OptionFlags = ResourceOptionFlags.None,
                 SampleDescription = new SampleDescription(1, 0),
-                Usage = ResourceUsage.Default,
+                Usage = ResourceUsage.Default
             };
-            lightDepthTexture = new Texture2D(Device, lightDepthDesc);
 
-            DepthStencilViewDescription viewDesc = new DepthStencilViewDescription()
+            DepthStencilViewDescription depthViewDesc = new DepthStencilViewDescription()
             {
                 Dimension = DepthStencilViewDimension.Texture2D,
                 Format = Format.D32_Float,
             };
-            LightDepthView = new DepthStencilView(Device, lightDepthTexture, viewDesc);
 
             ShaderResourceViewDescription resourceDesc = new ShaderResourceViewDescription()
             {
@@ -228,20 +290,36 @@ namespace DemoFramework
                     MostDetailedMip = 0
                 }
             };
-            lightRes = new ShaderResourceView(Device, lightDepthTexture, resourceDesc);
+
+            depthTexture = new Texture2D(Device, depthDesc);
+            DepthView = new DepthStencilView(Device, depthTexture, depthViewDesc);
+            depthRes = new ShaderResourceView(Device, depthTexture, resourceDesc);
+
+            lightDepthTexture = new Texture2D(Device, depthDesc);
+            LightDepthView = new DepthStencilView(Device, lightDepthTexture, depthViewDesc);
+            lightDepthRes = new ShaderResourceView(Device, lightDepthTexture, resourceDesc);
+
+            Effect2.GetVariableByName("lightBuffer").AsShaderResource().SetResource(lightBufferRes);
+            Effect2.GetVariableByName("normalBuffer").AsShaderResource().SetResource(normalBufferRes);
+            Effect2.GetVariableByName("diffuseBuffer").AsShaderResource().SetResource(diffuseBufferRes);
+            Effect2.GetVariableByName("depthMap").AsShaderResource().SetResource(depthRes);
+            Effect2.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightDepthRes);
 
             Device.Rasterizer.SetViewports(new Viewport(0, 0, Width, Height));
         }
 
         void Initialize()
         {
+            // shader.fx
+
             ShaderFlags shaderFlags = ShaderFlags.None;
             //ShaderFlags shaderFlags = ShaderFlags.Debug | ShaderFlags.SkipOptimization;
             ShaderBytecode shaderByteCode = ShaderBytecode.CompileFromFile("shader.fx", "fx_4_0", shaderFlags, EffectFlags.None);
 
             Effect = new Effect(Device, shaderByteCode);
-            Technique = Effect.GetTechniqueByIndex(0);
-            Pass = Technique.GetPassByIndex(0);
+            EffectTechnique technique = Effect.GetTechniqueByIndex(0);
+            ShadowGenPass = technique.GetPassByIndex(0);
+            GBufferGenPass = technique.GetPassByIndex(1);
 
             BufferDescription sceneConstantsDesc = new BufferDescription()
             {
@@ -286,10 +364,33 @@ namespace DemoFramework
             };
             lightDepthStencilState = new DepthStencilState(Device, lightDepthStateDesc);
 
+
+            // grender.fx
+
+            shaderByteCode = ShaderBytecode.CompileFromFile("grender.fx", "fx_4_0", shaderFlags, EffectFlags.None);
+
+            Effect2 = new Effect(Device, shaderByteCode);
+            technique = Effect2.GetTechniqueByIndex(0);
+            GBufferRenderPass = technique.GetPassByIndex(0);
+
+            Buffer quad = MeshFactory.CreateScreenQuad(Device);
+            quadBinding = new VertexBufferBinding(quad, 20, 0);
+            Matrix quadProjection = Matrix.OrthoLH(1, 1, 0.1f, 1.0f);
+            Effect2.GetVariableByName("ViewProjection").AsMatrix().SetMatrix(quadProjection);
+
+            InputElement[] elements = new InputElement[]
+            {
+                new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
+                new InputElement("TEXCOORD", 0, Format.R32G32_Float, 12, 0, InputClassification.PerVertexData, 0),
+            };
+            quadBufferLayout = new InputLayout(Device, GBufferRenderPass.Description.Signature, elements);
+
+
             Info = new InfoText(Device);
             MeshFactory = new MeshFactory(this);
 
             OnInitialize();
+            CreateBuffers();
             SetSceneConstants();
         }
 
@@ -301,15 +402,21 @@ namespace DemoFramework
 
             Vector3 light = new Vector3(20, 30, 10);
             sceneConstants.LightPosition = new Vector4(light, 1);
-            sceneConstants.LightView = Matrix.LookAtLH(light, Vector3.Zero, Freelook.Up);
             Texture2DDescription depthBuffer = lightDepthTexture.Description;
-            sceneConstants.LightProjection = Matrix.OrthoLH(depthBuffer.Width / 8, depthBuffer.Height / 8, NearPlane, FarPlane);
+            Matrix lightView = Matrix.LookAtLH(light, Vector3.Zero, Freelook.Up);
+            Matrix lightProjection = Matrix.OrthoLH(depthBuffer.Width / 8, depthBuffer.Height / 8, NearPlane, FarPlane);
+            sceneConstants.LightViewProjection = lightView * lightProjection;
 
             using (var data = sceneConstantsBuffer.Map(MapMode.WriteDiscard))
             {
                 Marshal.StructureToPtr(sceneConstants, data.DataPointer, false);
                 sceneConstantsBuffer.Unmap();
             }
+
+            Effect2.GetVariableByName("InverseProjection").AsMatrix().SetMatrix(Matrix.Invert(sceneConstants.View * sceneConstants.Projection));
+            Effect2.GetVariableByName("InverseView").AsMatrix().SetMatrix(sceneConstants.ViewInverse);
+            Effect2.GetVariableByName("LightInverseViewProjection").AsMatrix().SetMatrix(Matrix.Invert(sceneConstants.LightViewProjection));
+            Effect2.GetVariableByName("LightPosition").AsVector().Set(sceneConstants.LightPosition);
         }
 
         void Render()
@@ -325,8 +432,11 @@ namespace DemoFramework
             }
 
             // Clear targets
-            Device.ClearDepthStencilView(DepthStencilView, DepthStencilClearFlags.Depth, 1.0f, 0);
+            Device.ClearDepthStencilView(DepthView, DepthStencilClearFlags.Depth, 1.0f, 0);
             Device.ClearRenderTargetView(RenderView, Ambient);
+            Device.ClearRenderTargetView(GBufferLightView, Ambient);
+            Device.ClearRenderTargetView(GBufferNormalView, Ambient);
+            Device.ClearRenderTargetView(GBufferDiffuseView, Ambient);
 
             MeshFactory.InitInstancedRender(PhysicsContext.World.CollisionObjectArray);
 
@@ -334,25 +444,32 @@ namespace DemoFramework
             if (shadowsEnabled)
             {
                 Device.ClearDepthStencilView(LightDepthView, DepthStencilClearFlags.Depth, 1.0f, 0);
-                Device.OutputMerger.SetDepthStencilState(lightDepthStencilState, 0);
-                Device.OutputMerger.SetRenderTargets(0, new RenderTargetView[] { }, LightDepthView);
-                Technique.GetPassByIndex(0).Apply();
+                outputMerger.SetDepthStencilState(lightDepthStencilState, 0);
+                outputMerger.SetRenderTargets(0, null, LightDepthView);
+                ShadowGenPass.Apply();
                 OnRender();
             }
 
             // Render pass
-            Device.OutputMerger.SetDepthStencilState(depthStencilState, 0);
-            Device.OutputMerger.SetRenderTargets(1, new RenderTargetView[] { RenderView }, DepthStencilView);
+            outputMerger.SetDepthStencilState(depthStencilState, 0);
+            outputMerger.SetRenderTargets(3, gBufferViews, DepthView);
             if (shadowsEnabled)
             {
-                Effect.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightRes);
-                Technique.GetPassByIndex(1).Apply();
+                Effect.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightDepthRes);
             }
-            else
-            {
-                Technique.GetPassByIndex(2).Apply();
-            }
+            GBufferGenPass.Apply();
             OnRender();
+
+            
+            // G-buffer render pass
+            outputMerger.SetDepthStencilState(null, 0);
+            outputMerger.SetRenderTargets(1, new RenderTargetView[] { RenderView }, null);
+            GBufferRenderPass.Apply();
+
+            inputAssembler.SetVertexBuffers(0, quadBinding);
+            inputAssembler.SetPrimitiveTopology(PrimitiveTopology.TriangleStrip);
+            inputAssembler.SetInputLayout(quadBufferLayout);
+            Device.Draw(4, 0);
 
             Info.OnRender(FramesPerSecond);
 
@@ -397,7 +514,7 @@ namespace DemoFramework
                 Height = Form.ClientSize.Height;
 
                 RenderView.Dispose();
-                DepthStencilView.Dispose();
+                DepthView.Dispose();
                 _swapChain.ResizeBuffers(_swapChain.Description.BufferCount, Width, Height, _swapChain.Description.ModeDescription.Format, (int)_swapChain.Description.Flags);
 
                 CreateBuffers();

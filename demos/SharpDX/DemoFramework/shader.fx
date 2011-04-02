@@ -1,19 +1,9 @@
-SamplerState lightDepthSampler
-{
-    Filter = MIN_MAG_MIP_LINEAR;
-    AddressU = Clamp;
-    AddressV = Clamp;
-};
-Texture2D lightDepthMap;
-
 cbuffer scene
 {
 	matrix View;
 	matrix Projection;
 	matrix ViewInverse;
-	matrix LightView;
-	matrix LightProjection;
-	float3 LightPosition;
+	matrix LightViewProjection;
 }
 
 struct VS_IN
@@ -30,18 +20,22 @@ struct VS_IN
 struct VS_OUT
 {
     float4 Pos : SV_POSITION;
-	float3 light : TEXCOORD0;
-	float3 Normal : TEXCOORD1;
-	float4 LPos : TEXCOORD2;
-	float4 Color : TEXCOORD3;
+	float3 Normal : TEXCOORD0;
+	float4 Color : TEXCOORD1;
+};
+
+struct PS_OUT_MRT
+{
+	float4 Light : SV_Target0;
+	float4 Normal : SV_Target1;
+	float4 Diffuse : SV_Target2;
 };
 
 float4 shadowGenVS(VS_IN input) : SV_POSITION
 {
 	float4x4 world = float4x4(input.World0, input.World1, input.World2, input.World3);
     float4 Pw = mul(input.Pos,world);
-    float4 Pl = mul(LightView,Pw);  // "P" in light coords
-	Pl = mul(LightProjection,Pl);
+    float4 Pl = mul(LightViewProjection,Pw);  // "P" in light coords
 	return Pl;
 }
 
@@ -51,62 +45,26 @@ VS_OUT VS(VS_IN input)
 
 	float4x4 world = float4x4(input.World0, input.World1, input.World2, input.World3);
 	output.Pos = mul(input.Pos, world);
-	output.light = LightPosition - output.Pos.xyz;
 	output.Pos = mul(View, output.Pos);
     output.Pos = mul(Projection, output.Pos);
 
 	output.Normal = mul(input.Normal, world).xyz;
 	output.Color = input.Color;
 
-    float4 Pw = mul(input.Pos, world);
-    float4 Pl = mul(LightView,Pw);
-	output.LPos = mul(LightProjection,Pl);
-
     return output;
 }
 
-float GetShadowAmount(float4 shadowCoord)
+PS_OUT_MRT PS_MRT( VS_OUT input )
 {
-	float2 texCoords = (shadowCoord.xy + 1) / 2;
-	texCoords.y = 1 - texCoords.y;
+	PS_OUT_MRT output = (PS_OUT_MRT)0;
 
-	if (saturate(texCoords.x) == texCoords.x && saturate(texCoords.y) == texCoords.y)
-	{
-		float shadowBias = 0.002;
-		float depth = shadowCoord.z/shadowCoord.w - shadowBias;
-
-		float range = 0.00125;
-		float4 s;
-		s.r = lightDepthMap.Sample(lightDepthSampler, texCoords + float2(range, range)).x;
-		s.g = lightDepthMap.Sample(lightDepthSampler, texCoords + float2(range, -range)).x;
-		s.b = lightDepthMap.Sample(lightDepthSampler, texCoords + float2(-range, range)).x;
-		s.a = lightDepthMap.Sample(lightDepthSampler, texCoords + float2(-range, -range)).x;
-		//float4 s = lightDepthMap.Gather(lightDepthSampler, texCoords); // PS 4.1
-
-		float4 inLight = depth < s;
-		return 0.9 + dot(inLight, 0.25) * 0.1;
-	}
-
-	return 1;
-}
-
-float4 PS( VS_OUT input ) : SV_Target
-{
 	float3 normal = normalize(input.Normal);
-	float3 light = normalize(input.light);
+	normal = normal * 0.5 + 0.5; // from -1...1 to 0...1 range
 
-	float shade = 0.5+0.5*pow(saturate(dot(light, normal)), 2.0);
-	shade *= GetShadowAmount(input.LPos);
-	return float4(input.Color.rgb * shade, input.Color.a);
-}
+	output.Normal = float4(normal, 1);
+	output.Diffuse = float4(input.Color.rgb, 1);
 
-float4 PS_NoShadow( VS_OUT input ) : SV_Target
-{
-	float3 normal = normalize(input.Normal);
-	float3 light = normalize(input.light);
-
-	float shade = 0.5+0.5*pow(saturate(dot(light, normal)), 2.0);
-	return float4(input.Color.rgb * shade, input.Color.a);
+	return output;
 }
 
 technique10 Render
@@ -122,13 +80,6 @@ technique10 Render
     {
         SetVertexShader( CompileShader( vs_4_0, VS() ) );
         SetGeometryShader( NULL );
-        SetPixelShader( CompileShader( ps_4_0, PS() ) );
-    }
-
-    pass P2
-    {
-        SetVertexShader( CompileShader( vs_4_0, VS() ) );
-        SetGeometryShader( NULL );
-        SetPixelShader( CompileShader( ps_4_0, PS_NoShadow() ) );
+        SetPixelShader( CompileShader( ps_4_0, PS_MRT() ) );
     }
 }

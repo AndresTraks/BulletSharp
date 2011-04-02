@@ -58,13 +58,16 @@
     <Compile Include="Controller\Input.cs" />
     <Compile Include="Controller\MouseController.cs" />
     <Compile Include="Demo.cs" />
+    <Compile Include="LibraryTest.cs" />
     <Compile Include="MeshFactory.cs" />
     <Compile Include="InfoText.cs" />
-    <Compile Include="Model.cs" />
     <Compile Include="PhysicsContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="grender.fx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="shader.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

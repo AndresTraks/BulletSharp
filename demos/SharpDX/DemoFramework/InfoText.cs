@@ -48,6 +48,7 @@ namespace DemoFramework
             {
                 fps = framesPerSecond;
                 fpsString = string.Format("FPS: {0}", fps.ToString("0.00", CultureInfo.InvariantCulture));
+                //font.PreloadText(fpsString);
             }
             font.DrawText(null, fpsString, topRect, FontDrawFlags.Left, color);
 

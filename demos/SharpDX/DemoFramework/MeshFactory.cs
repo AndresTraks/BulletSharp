@@ -52,7 +52,7 @@ namespace DemoFramework
                 BindFlags = BindFlags.VertexBuffer
             };
 
-            using (var data = new SharpDX.DataStream(vectors, true, false))
+            using (var data = new SharpDX.DataStream(vectors, false, false))
             {
                 VertexBuffer = new Buffer(device, data, vertexBufferDesc);
                 VertexBuffer.Unmap();
@@ -90,7 +90,7 @@ namespace DemoFramework
                     CpuAccessFlags = CpuAccessFlags.Write
                 };
 
-                using (var data = new SharpDX.DataStream(vectors, true, false))
+                using (var data = new SharpDX.DataStream(vectors, false, false))
                 {
                     VertexBuffer = new Buffer(device, data, vertexBufferDesc);
                     VertexBuffer.Unmap();
@@ -111,7 +111,7 @@ namespace DemoFramework
                 BindFlags = BindFlags.IndexBuffer
             };
 
-            using (var data = new SharpDX.DataStream(indices, true, false))
+            using (var data = new SharpDX.DataStream(indices, false, false))
             {
                 IndexBuffer = new Buffer(device, data, boxIndexBufferDesc);
             }
@@ -168,7 +168,7 @@ namespace DemoFramework
                 new InputElement("WORLD", 3, Format.R32G32B32A32_Float, 48, 1, InputClassification.PerInstanceData, 1),
                 new InputElement("COLOR", 0, Format.R8G8B8A8_UNorm, 64, 1, InputClassification.PerInstanceData, 1)
             };
-            inputLayout = new InputLayout(device, demo.Pass.Description.Signature, elements);
+            inputLayout = new InputLayout(device, demo.ShadowGenPass.Description.Signature, elements);
 
             Color c = Color.Green;
             groundColor = (uint)c.R + ((uint)c.G << 8) + ((uint)c.B << 16) + ((uint)c.A << 24);
@@ -805,23 +805,27 @@ namespace DemoFramework
                 }
             }
 
-            foreach (CollisionShape s in removeList)
+            if (removeList.Count != 0)
             {
-                shapes.Remove(s);
+                foreach (CollisionShape s in removeList)
+                {
+                    shapes.Remove(s);
+                }
             }
         }
 
         public void RenderInstanced()
         {
-            device.InputAssembler.SetInputLayout(inputLayout);
+            Device.InputAssemblerStage ia = device.InputAssembler;
+            ia.SetInputLayout(inputLayout);
 
             foreach (ShapeData s in shapes.Values)
             {
-                device.InputAssembler.SetVertexBuffers(0, new[] { s.VertexBufferBinding, s.InstanceDataBufferBinding });
-                device.InputAssembler.SetPrimitiveTopology(s.PrimitiveTopology);
+                ia.SetVertexBuffers(0, new[] { s.VertexBufferBinding, s.InstanceDataBufferBinding });
+                ia.SetPrimitiveTopology(s.PrimitiveTopology);
                 if (s.IndexBuffer != null)
                 {
-                    device.InputAssembler.SetIndexBuffer(s.IndexBuffer, s.IndexFormat, 0);
+                    ia.SetIndexBuffer(s.IndexBuffer, s.IndexFormat, 0);
                     device.DrawIndexedInstanced(s.IndexCount, s.InstanceDataList.Count, 0, 0, 0);
                 }
                 else
@@ -1062,5 +1066,33 @@ namespace DemoFramework
             }
         }
          * */
+
+        public static Buffer CreateScreenQuad(Device device)
+        {
+            Buffer vertexBuffer;
+
+            BufferDescription vertexBufferDesc = new BufferDescription()
+            {
+                SizeInBytes = sizeof(float) * 5 * 4,
+                Usage = ResourceUsage.Default,
+                BindFlags = BindFlags.VertexBuffer,
+            };
+
+            using (var data = new SharpDX.DataStream(vertexBufferDesc.SizeInBytes, false, true))
+            {
+                data.Write(new Vector3(0.5f, 0.5f, 0));
+                data.Write(new Vector2(1, 0));
+                data.Write(new Vector3(0.5f, -0.5f, 0));
+                data.Write(new Vector2(1, 1));
+                data.Write(new Vector3(-0.5f, 0.5f, 0));
+                data.Write(new Vector2(0, 0));
+                data.Write(new Vector3(-0.5f, -0.5f, 0));
+                data.Write(new Vector2(0, 1));
+                vertexBuffer = new Buffer(device, data, vertexBufferDesc);
+                vertexBuffer.Unmap();
+            }
+
+            return vertexBuffer;
+        }
     }
 }

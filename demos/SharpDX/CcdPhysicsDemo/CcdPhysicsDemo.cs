@@ -36,13 +36,18 @@ namespace CcdPhysicsDemo
         [STAThread]
         static void Main()
         {
-            CcdPhysicsDemo game = new CcdPhysicsDemo();
-
-            if (game.TestLibraries() == false)
+            if (LibraryTest.Test() == false)
                 return;
 
-            game.Run();
-            game.Dispose();
+            RunDemo();
+        }
+
+        static void RunDemo()
+        {
+            using (Demo demo = new CcdPhysicsDemo())
+            {
+                demo.Run();
+            }
         }
     }
 }
