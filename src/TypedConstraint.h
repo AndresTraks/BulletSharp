@@ -29,6 +29,18 @@ namespace BulletSharp
 		~TypedConstraint();
 
 	public:
+		property btScalar BreakingImpulseThreshold
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property bool IsEnabled
+		{
+			bool get();
+			void set(bool value);
+		}
+
 		property bool IsDisposed
 		{
 			virtual bool get();

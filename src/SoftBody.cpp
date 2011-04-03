@@ -2290,7 +2290,9 @@ void BulletSharp::SoftBody::SoftBody::AddForce(Vector3 force, int node)
 
 void BulletSharp::SoftBody::SoftBody::AddForce(Vector3 force)
 {
-	UnmanagedPointer->addForce(*Math::Vector3ToBtVector3(force));
+	btVector3* forceTemp = Math::Vector3ToBtVector3(force);
+	UnmanagedPointer->addForce(*forceTemp);
+	delete forceTemp;
 }
 
 void BulletSharp::SoftBody::SoftBody::AddVelocity(Vector3 velocity, int node)
@@ -2302,7 +2304,9 @@ void BulletSharp::SoftBody::SoftBody::AddVelocity(Vector3 velocity, int node)
 
 void BulletSharp::SoftBody::SoftBody::AddVelocity(Vector3 velocity)
 {
-	UnmanagedPointer->addVelocity(*Math::Vector3ToBtVector3(velocity));
+	btVector3* velocityTemp = Math::Vector3ToBtVector3(velocity);
+	UnmanagedPointer->addVelocity(*velocityTemp);
+	delete velocityTemp;
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies)

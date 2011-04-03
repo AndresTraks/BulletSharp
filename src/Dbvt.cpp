@@ -735,13 +735,18 @@ bool Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume, btScalar margin)
 
 bool Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume, Vector3 velocity)
 {
-	return _dbvt->update(leaf->UnmanagedPointer, *volume->UnmanagedPointer, *Math::Vector3ToBtVector3(velocity));
+	btVector3* velocityTemp = Math::Vector3ToBtVector3(velocity);
+	bool ret = _dbvt->update(leaf->UnmanagedPointer, *volume->UnmanagedPointer, *velocityTemp);
+	delete velocityTemp;
+	return ret;
 }
 
 bool Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume, Vector3 velocity, btScalar margin)
 {
-	return _dbvt->update(leaf->UnmanagedPointer, *volume->UnmanagedPointer,
-		*Math::Vector3ToBtVector3(velocity), margin);
+	btVector3* velocityTemp = Math::Vector3ToBtVector3(velocity);
+	bool ret = _dbvt->update(leaf->UnmanagedPointer, *volume->UnmanagedPointer, *velocityTemp, margin);
+	delete velocityTemp;
+	return ret;
 }
 
 void Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume)

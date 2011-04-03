@@ -60,8 +60,7 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector3 axisInA)
-: TypedConstraint(new btHingeConstraint(*rigidBodyA->UnmanagedPointer,
-	*Math::Vector3ToBtVector3(pivotInA), *Math::Vector3ToBtVector3(axisInA)))
+: TypedConstraint(0)
 {
 	btVector3* pivotInATemp = Math::Vector3ToBtVector3(pivotInA);
 	btVector3* axisInATemp = Math::Vector3ToBtVector3(axisInA);

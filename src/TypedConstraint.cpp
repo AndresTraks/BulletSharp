@@ -43,6 +43,24 @@ TypedConstraint::!TypedConstraint()
 	OnDisposed(this, nullptr);
 }
 
+btScalar TypedConstraint::BreakingImpulseThreshold::get()
+{
+	return _typedConstraint->getBreakingImpulseThreshold();
+}
+void TypedConstraint::BreakingImpulseThreshold::set(btScalar value)
+{
+	_typedConstraint->setBreakingImpulseThreshold(value);
+}
+
+bool TypedConstraint::IsEnabled::get()
+{
+	return _typedConstraint->isEnabled();
+}
+void TypedConstraint::IsEnabled::set(bool value)
+{
+	_typedConstraint->setEnabled(value);
+}
+
 bool TypedConstraint::IsDisposed::get()
 {
 	return (_typedConstraint == NULL);
