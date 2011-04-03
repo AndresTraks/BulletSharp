@@ -24,28 +24,32 @@ void ConvexShape::BatchedUnitVectorGetSupportingVertexWithoutMargin(array<Vector
 
 void ConvexShape::GetAabbNonVirtual(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
 {
+	btTransform* tTemp = Math::MatrixToBtTransform(t);
 	btVector3* aabbMinTemp = new btVector3;
 	btVector3* aabbMaxTemp = new btVector3;
 	
-	UnmanagedPointer->getAabbNonVirtual(*Math::MatrixToBtTransform(t), *aabbMinTemp, *aabbMaxTemp);
+	UnmanagedPointer->getAabbNonVirtual(*tTemp, *aabbMinTemp, *aabbMaxTemp);
 
 	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
 	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
 
+	delete tTemp;
 	delete aabbMinTemp;
 	delete aabbMaxTemp;
 }
 
 void ConvexShape::GetAabbSlow(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
 {
+	btTransform* tTemp = Math::MatrixToBtTransform(t);
 	btVector3* aabbMinTemp = new btVector3;
 	btVector3* aabbMaxTemp = new btVector3;
 	
-	UnmanagedPointer->getAabbSlow(*Math::MatrixToBtTransform(t), *aabbMinTemp, *aabbMaxTemp);
+	UnmanagedPointer->getAabbSlow(*tTemp, *aabbMinTemp, *aabbMaxTemp);
 
 	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
 	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
 
+	delete tTemp;
 	delete aabbMinTemp;
 	delete aabbMaxTemp;
 }

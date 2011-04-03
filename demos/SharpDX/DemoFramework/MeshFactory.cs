@@ -10,6 +10,7 @@ using SharpDX.Direct3D10;
 using SharpDX.DXGI;
 using Buffer = SharpDX.Direct3D10.Buffer;
 using Device = SharpDX.Direct3D10.Device;
+using Face = BulletSharp.SoftBody.Face;
 using Mesh = SharpDX.Direct3D10.Mesh;
 
 namespace DemoFramework

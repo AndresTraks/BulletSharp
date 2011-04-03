@@ -85,7 +85,7 @@ bool CollisionShape::Equals(Object^ obj)
 
 int CollisionShape::GetHashCode()
 {
-	return (int)UnmanagedPointer;
+	return (int)_collisionShape;
 }
 
 bool CollisionShape::IsDisposed::get()
@@ -136,14 +136,16 @@ void CollisionShape::CalculateTemporalAabb(Matrix curTrans,
 
 void CollisionShape::GetAabb(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
 {
+	btTransform* tTemp = Math::MatrixToBtTransform(t);
 	btVector3* aabbMinTemp = new btVector3;
 	btVector3* aabbMaxTemp = new btVector3;
 	
-	_collisionShape->getAabb(*Math::MatrixToBtTransform(t), *aabbMinTemp, *aabbMaxTemp);
+	_collisionShape->getAabb(*tTemp, *aabbMinTemp, *aabbMaxTemp);
 
 	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
 	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
 
+	delete tTemp;
 	delete aabbMinTemp;
 	delete aabbMaxTemp;
 }

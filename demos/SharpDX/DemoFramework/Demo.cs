@@ -448,15 +448,12 @@ namespace DemoFramework
                 outputMerger.SetRenderTargets(0, null, LightDepthView);
                 ShadowGenPass.Apply();
                 OnRender();
+                Effect.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightDepthRes);
             }
 
             // Render pass
             outputMerger.SetDepthStencilState(depthStencilState, 0);
             outputMerger.SetRenderTargets(3, gBufferViews, DepthView);
-            if (shadowsEnabled)
-            {
-                Effect.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightDepthRes);
-            }
             GBufferGenPass.Apply();
             OnRender();
 

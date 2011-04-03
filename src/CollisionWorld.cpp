@@ -596,14 +596,24 @@ void CollisionWorld::ContactTest(CollisionObject^ colObj, ContactResultCallback^
 
 void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback, btScalar allowedCcdPenetration)
 {
-	_world->convexSweepTest(castShape->UnmanagedPointer, *Math::MatrixToBtTransform(from), *Math::MatrixToBtTransform(to),
-		*resultCallback->UnmanagedPointer, allowedCcdPenetration);
+	btTransform* fromTemp = Math::MatrixToBtTransform(from);
+	btTransform* toTemp = Math::MatrixToBtTransform(to);
+
+	_world->convexSweepTest(castShape->UnmanagedPointer, *fromTemp, *toTemp, *resultCallback->UnmanagedPointer, allowedCcdPenetration);
+
+	delete toTemp;
+	delete fromTemp;
 }
 
 void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback)
 {
-	_world->convexSweepTest(castShape->UnmanagedPointer, *Math::MatrixToBtTransform(from), *Math::MatrixToBtTransform(to),
-		*resultCallback->UnmanagedPointer);
+	btTransform* fromTemp = Math::MatrixToBtTransform(from);
+	btTransform* toTemp = Math::MatrixToBtTransform(to);
+
+	_world->convexSweepTest(castShape->UnmanagedPointer, *fromTemp, *toTemp, *resultCallback->UnmanagedPointer);
+
+	delete toTemp;
+	delete fromTemp;
 }
 
 #ifndef DISABLE_DEBUGDRAW
@@ -628,9 +638,17 @@ void CollisionWorld::ObjectQuerySingle(ConvexShape^ castShape, Matrix rayFromTra
 	CollisionObject^ collisionObject, CollisionShape^ collisionShape, Matrix colObjWorldTransform,
 	ConvexResultCallback^ resultCallback, btScalar allowedPenetration)
 {
-	btCollisionWorld::objectQuerySingle(castShape->UnmanagedPointer, *Math::MatrixToBtTransform(rayFromTrans),
-		*Math::MatrixToBtTransform(rayToTrans), collisionObject->UnmanagedPointer, collisionShape->UnmanagedPointer,
-		*Math::MatrixToBtTransform(colObjWorldTransform), *resultCallback->UnmanagedPointer, allowedPenetration);
+	btTransform* rayFromTransTemp = Math::MatrixToBtTransform(rayFromTrans);
+	btTransform* rayToTransTemp = Math::MatrixToBtTransform(rayToTrans);
+	btTransform* colObjWorldTransformTemp = Math::MatrixToBtTransform(colObjWorldTransform);
+
+	btCollisionWorld::objectQuerySingle(castShape->UnmanagedPointer, *rayFromTransTemp, *rayToTransTemp,
+		collisionObject->UnmanagedPointer, collisionShape->UnmanagedPointer,
+		*colObjWorldTransformTemp, *resultCallback->UnmanagedPointer, allowedPenetration);
+
+	delete colObjWorldTransformTemp;
+	delete rayToTransTemp;
+	delete rayFromTransTemp;
 }
 
 void CollisionWorld::PerformDiscreteCollisionDetection()
