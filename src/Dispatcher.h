@@ -14,6 +14,7 @@ namespace BulletSharp
 	ref class DispatcherInfo;
 	ref class OverlappingPairCache;
 	ref class PersistentManifold;
+	ref class PoolAllocator;
 	ref class StackAlloc;
 	interface class IDebugDraw;
 
@@ -166,6 +167,11 @@ namespace BulletSharp
 		property int NumManifolds
 		{
 			int get();
+		}
+
+		property PoolAllocator^ InternalManifoldPool
+		{
+			PoolAllocator^ get();
 		}
 
 		property bool IsDisposed

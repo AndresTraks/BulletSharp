@@ -4,6 +4,7 @@
 #include "Dispatcher.h"
 #include "OverlappingPairCache.h"
 #include "PersistentManifold.h"
+#include "PoolAllocator.h"
 #include "StackAlloc.h"
 #ifndef DISABLE_DEBUGDRAW
 #include "DebugDraw.h"
@@ -244,6 +245,11 @@ int Dispatcher::NumManifolds::get()
 bool Dispatcher::IsDisposed::get()
 {
 	return (_dispatcher == NULL);
+}
+
+PoolAllocator^ Dispatcher::InternalManifoldPool::get()
+{
+	return gcnew PoolAllocator(_dispatcher->getInternalManifoldPool());
 }
 
 btDispatcher* Dispatcher::UnmanagedPointer::get()

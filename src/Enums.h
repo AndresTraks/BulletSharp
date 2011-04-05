@@ -259,7 +259,8 @@ namespace BulletSharp
 	{
 		None = 0,
 		StaticStaticReported = btCollisionDispatcher::DispatcherFlags::CD_STATIC_STATIC_REPORTED,
-		UseRelativeContactBreakingThreshold = btCollisionDispatcher::DispatcherFlags::CD_USE_RELATIVE_CONTACT_BREAKING_THRESHOLD
+		UseRelativeContactBreakingThreshold = btCollisionDispatcher::DispatcherFlags::CD_USE_RELATIVE_CONTACT_BREAKING_THRESHOLD,
+		DisableContactPoolDynamicAllocation = btCollisionDispatcher::DispatcherFlags::CD_DISABLE_CONTACTPOOL_DYNAMIC_ALLOCATION
 	};
 #pragma warning(pop)
 
