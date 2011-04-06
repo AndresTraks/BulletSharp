@@ -203,6 +203,12 @@ namespace BulletSharp
 				void set(btScalar value);
 			}
 
+			property btScalar Influence
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
 			property BulletSharp::SoftBody::Node^ Node
 			{
 				BulletSharp::SoftBody::Node^ get();
@@ -1700,6 +1706,7 @@ namespace BulletSharp
 			void AddForce(Vector3 force);
 			void AddVelocity(Vector3 velocity, int node);
 			void AddVelocity(Vector3 velocity);
+			void AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies, btScalar influence);
 			void AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies);
 			void AppendAnchor(int node, RigidBody^ body);
 			void AppendAnchor(int node, RigidBody^ body, Vector3 localPivot, bool disableCollisionBetweenLinkedBodies);

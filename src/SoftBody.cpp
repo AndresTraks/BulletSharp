@@ -178,6 +178,15 @@ void Anchor::Local::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &_anchor->m_local);
 }
 
+btScalar Anchor::Influence::get()
+{
+	return _anchor->m_influence;
+}
+void Anchor::Influence::set(btScalar value)
+{
+	_anchor->m_influence = value;
+}
+
 BulletSharp::SoftBody::Node^ Anchor::Node::get()
 {
 	if (_anchor->m_node == nullptr)
@@ -2307,6 +2316,11 @@ void BulletSharp::SoftBody::SoftBody::AddVelocity(Vector3 velocity)
 	btVector3* velocityTemp = Math::Vector3ToBtVector3(velocity);
 	UnmanagedPointer->addVelocity(*velocityTemp);
 	delete velocityTemp;
+}
+
+void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies, btScalar influence)
+{
+	UnmanagedPointer->appendAnchor(node, body->UnmanagedPointer, disableCollisionBetweenLinkedBodies, influence);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies)

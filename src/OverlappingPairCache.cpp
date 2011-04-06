@@ -122,8 +122,7 @@ void OverlappingPairCache::ProcessAllOverlappingPairs(array<OverlapCallback^>^ c
 }
 
 #ifndef DISABLE_INTERNAL
-void OverlappingPairCache::SetInternalGhostPairCallback(
-	OverlappingPairCallback^ ghostPairCallback)
+void OverlappingPairCache::SetInternalGhostPairCallback(OverlappingPairCallback^ ghostPairCallback)
 {
 	UnmanagedPointer->setInternalGhostPairCallback(ghostPairCallback->UnmanagedPointer);
 }
