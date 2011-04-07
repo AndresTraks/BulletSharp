@@ -55,6 +55,15 @@ void TriangleInfoMap::EqualVertexThreshold::set(btScalar value)
 	_triangleInfoMap->m_equalVertexThreshold = value;
 }
 
+btScalar TriangleInfoMap::MaxEdgeAngleThreshold::get()
+{
+	return _triangleInfoMap->m_maxEdgeAngleThreshold;
+}
+void TriangleInfoMap::MaxEdgeAngleThreshold::set(btScalar value)
+{
+	_triangleInfoMap->m_maxEdgeAngleThreshold = value;
+}
+
 btScalar TriangleInfoMap::PlanarEpsilon::get()
 {
 	return _triangleInfoMap->m_planarEpsilon;

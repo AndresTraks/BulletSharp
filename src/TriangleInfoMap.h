@@ -37,6 +37,12 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
+		property btScalar MaxEdgeAngleThreshold
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
 		property btScalar PlanarEpsilon
 		{
 			btScalar get();
