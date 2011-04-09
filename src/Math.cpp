@@ -119,8 +119,12 @@ void BulletSharp::Math::Vector4ToBtVector4(Vector4 vector, btVector4* vectorOut)
 
 Quaternion BulletSharp::Math::BtQuatToQuaternion(const btQuaternion* quat)
 {
+#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+	return Quaternion(quat->getW(), quat->getX(), quat->getY(), quat->getZ());
+#else
 	return Quaternion(quat->getX(), quat->getY(), quat->getZ(), quat->getW());
 	//return Quaternion(quat->m_floats[0],quat->m_floats[1],quat->m_floats[2],quat->m_floats[3]);
+#endif
 }
 btQuaternion* BulletSharp::Math::QuaternionToBtQuat(Quaternion quat)
 {
