@@ -45,6 +45,11 @@ namespace BulletSharp
 			virtual bool get();
 		}
 
+		property int MaxCount
+		{
+			int get();
+		}
+
 	internal:
 		property btPoolAllocator* UnmanagedPointer
 		{

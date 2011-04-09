@@ -83,6 +83,7 @@ namespace BulletSharp
 		DefaultCollisionConfiguration(DefaultCollisionConstructionInfo^ constructionInfo);
 		DefaultCollisionConfiguration();
 
+		void SetConvexConvexMultipointIterations();
 		void SetConvexConvexMultipointIterations(int numPerturbationIterations);
 		void SetConvexConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold);
 

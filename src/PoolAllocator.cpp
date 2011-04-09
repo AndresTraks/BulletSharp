@@ -61,6 +61,11 @@ int PoolAllocator::FreeCount::get()
 	return _allocator->getFreeCount();
 }
 
+int PoolAllocator::MaxCount::get()
+{
+	return _allocator->getMaxCount();
+}
+
 btPoolAllocator* PoolAllocator::UnmanagedPointer::get()
 {
 	return _allocator;

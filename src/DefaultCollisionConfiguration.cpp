@@ -113,8 +113,12 @@ DefaultCollisionConfiguration::DefaultCollisionConfiguration()
 {
 }
 
-void DefaultCollisionConfiguration::SetConvexConvexMultipointIterations(
-	int numPerturbationIterations)
+void DefaultCollisionConfiguration::SetConvexConvexMultipointIterations()
+{
+	UnmanagedPointer->setConvexConvexMultipointIterations();
+}
+
+void DefaultCollisionConfiguration::SetConvexConvexMultipointIterations(int numPerturbationIterations)
 {
 	UnmanagedPointer->setConvexConvexMultipointIterations(numPerturbationIterations);
 }

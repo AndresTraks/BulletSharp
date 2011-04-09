@@ -33,15 +33,6 @@ void DispatcherInfo::ConvexConservativeDistanceThreshold::set(btScalar value)
 	_info->m_convexConservativeDistanceThreshold = value;
 }
 
-bool DispatcherInfo::ConvexMaxDistanceUseCpt::get()
-{
-	return _info->m_convexMaxDistanceUseCPT;
-}
-void DispatcherInfo::ConvexMaxDistanceUseCpt::set(bool value)
-{
-	_info->m_convexMaxDistanceUseCPT = value;
-}
-
 #ifndef DISABLE_DEBUGDRAW
 IDebugDraw^ DispatcherInfo::DebugDraw::get()
 {

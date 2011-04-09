@@ -33,8 +33,8 @@ namespace SoftDemo
             PhysicsContext.World.SetInternalTickCallback(PickingPreTickCallback, this, true);
 
             Info.Text = "Move using mouse and WASD+shift\n" +
-                "F3 - Toggle debug\n" +
-                "F11 - Toggle fullscreen\n" +
+                //"F3 - Toggle debug\n" +
+                //"F11 - Toggle fullscreen\n" +
                 "Space - Shoot box\n\n" +
                 "B - Previous Demo\n" +
                 "N - Next Demo";
@@ -144,7 +144,7 @@ namespace SoftDemo
                     }
                 }
             }
-            else if (Input.MousePressed == MouseButtons.Right)
+            else if (Input.MouseReleased == MouseButtons.Right)
             {
                 if ((!drag) && (PhysicsContext as Physics).cutting && (results.Fraction < 1))
                 {

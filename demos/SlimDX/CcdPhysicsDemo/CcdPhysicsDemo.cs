@@ -44,10 +44,7 @@ namespace CcdPhysicsDemo
                 "F11 - Toggle fullscreen\n" +
                 "Space - Shoot box";
 
-            if (Physics.DoBenchmarkPyramids)
-                Freelook.SetEyeTarget(new Vector3(40, 40, 40), Vector3.Zero);
-            else
-                Freelook.SetEyeTarget(eye, Vector3.Zero);
+            Freelook.SetEyeTarget(eye, Vector3.Zero);
 
             base.OnInitialize();
         }

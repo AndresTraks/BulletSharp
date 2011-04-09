@@ -6,6 +6,7 @@ using BulletSharp;
 using BulletSharp.SoftBody;
 using SlimDX;
 using SlimDX.Direct3D9;
+using Face = BulletSharp.SoftBody.Face;
 
 namespace DemoFramework
 {

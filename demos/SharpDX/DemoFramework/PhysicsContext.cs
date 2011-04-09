@@ -13,7 +13,8 @@ namespace DemoFramework
         protected ConstraintSolver Solver;
         protected AlignedCollisionShapeArray CollisionShapes = new AlignedCollisionShapeArray();
 
-        BoxShape shootBoxShape;
+        protected BoxShape shootBoxShape;
+        protected float shootBoxInitialSpeed = 40;
 
         public PhysicsContext()
         {
@@ -80,29 +81,29 @@ namespace DemoFramework
             return body;
         }
 
-        public void ShootBox(Vector3 camPos, Vector3 destination)
+        public virtual void ShootBox(Vector3 camPos, Vector3 destination)
         {
-	        if (World == null)
+            if (World == null)
                 return;
-	        
+
             float mass = 1.0f;
-            float speed = 40;
 
             if (shootBoxShape == null)
+            {
                 shootBoxShape = new BoxShape(1.0f);
+                shootBoxShape.InitializePolyhedralFeatures();
+            }
 
-	        RigidBody body = LocalCreateRigidBody(mass, Matrix.Translation(camPos), shootBoxShape);
-            body.LinearFactor = new Vector3(1,1,1);
+            RigidBody body = LocalCreateRigidBody(mass, Matrix.Translation(camPos), shootBoxShape);
+            body.LinearFactor = new Vector3(1, 1, 1);
             //body.Restitution = 1;
 
-	        Vector3 linVel = destination - camPos;
-	        linVel.Normalize();
+            Vector3 linVel = destination - camPos;
+            linVel.Normalize();
 
-            body.LinearVelocity = linVel * speed;
-            body.CcdMotionThreshold = 1;
-            body.CcdSweptSphereRadius = 0.2f;
-
-            Broadphase.ResetPool(Dispatcher);
+            body.LinearVelocity = linVel * shootBoxInitialSpeed;
+            body.CcdMotionThreshold = 0.5f;
+            body.CcdSweptSphereRadius = 0.9f;
         }
     };
 };

@@ -7,6 +7,7 @@ using DemoFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
 using SlimDX.RawInput;
+using Face = BulletSharp.SoftBody.Face;
 
 namespace SoftDemo
 {

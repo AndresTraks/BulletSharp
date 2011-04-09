@@ -35,7 +35,9 @@ namespace BenchmarkDemo
         public Physics()
         {
             // collision configuration contains default setup for memory, collision setup
-            CollisionConf = new DefaultCollisionConfiguration();
+            DefaultCollisionConstructionInfo cci = new DefaultCollisionConstructionInfo();
+            cci.DefaultMaxPersistentManifoldPoolSize = 32768;
+            CollisionConf = new DefaultCollisionConfiguration(cci);
 
             if (UseParallelDispatcherBenchmark)
             {
@@ -51,6 +53,7 @@ namespace BenchmarkDemo
             else
             {
                 Dispatcher = new CollisionDispatcher(CollisionConf);
+                Dispatcher.DispatcherFlags = DispatcherFlags.DisableContactPoolDynamicAllocation;
             }
 
             // the maximum size of the collision world. Make sure objects stay within these boundaries
@@ -151,6 +154,9 @@ namespace BenchmarkDemo
                         Vector3 vtx = new Vector3(Taru.Vtx[i * 3], Taru.Vtx[i * 3 + 1], Taru.Vtx[i * 3 + 2]);
                         convexHullShape.AddPoint(vtx * (1.0f / scaling));
                     }
+
+                    //this will enable polyhedral contact clipping, better quality, slightly slower
+                    convexHullShape.InitializePolyhedralFeatures();
 
                     convexHullShape.CalculateLocalInertia(mass, out localInertia);
 
