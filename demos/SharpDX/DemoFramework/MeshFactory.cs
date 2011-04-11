@@ -20,7 +20,7 @@ namespace DemoFramework
         public Matrix WorldTransform { get; set; }
         public uint Color { get; set; }
     }
-    
+
     // Contains the geometry buffers and information of all instances of a particular shape.
     public class ShapeData : System.IDisposable
     {
@@ -149,7 +149,7 @@ namespace DemoFramework
         {
             this.demo = demo;
             this.device = demo.Device;
-
+            
             instanceDataDesc = new BufferDescription()
             {
                 SizeInBytes = 0,
@@ -181,13 +181,18 @@ namespace DemoFramework
             softBodyColor = (uint)c.R + ((uint)c.G << 8) + ((uint)c.B << 16) + ((uint)c.A << 24);
         }
 
-        public void Dispose()
+        public void Clear()
         {
             foreach (ShapeData shapeData in shapes.Values)
             {
                 shapeData.Dispose();
             }
             shapes.Clear();
+        }
+
+        public void Dispose()
+        {
+            Clear();
 
             if (planeShader != null)
                 planeShader.Release();

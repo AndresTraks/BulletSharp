@@ -1,5 +1,4 @@
 ﻿using BulletSharp;
-using BulletSharp.MultiThreaded;
 using DemoFramework;
 using SharpDX;
 
@@ -9,9 +8,20 @@ namespace CcdPhysicsDemo
     {
         bool ccdMode = true;
 
+        public bool CcdMode
+        {
+            get { return ccdMode; }
+        }
+
         float CubeHalfExtents = 0.5f;
-        //Vector3 comOffsetVec = new Vector3(0, 2, 0);
         float ExtraHeight = 1.0f;
+
+        public void ToggleCcdMode()
+        {
+            ccdMode = !ccdMode;
+
+            ClientResetScene();
+        }
 
         void CreateStack(CollisionShape boxShape, int size, float zPos)
         {
@@ -35,7 +45,7 @@ namespace CcdPhysicsDemo
             }
         }
 
-        public Physics()
+        public override void InitPhysics()
         {
             int i;
 

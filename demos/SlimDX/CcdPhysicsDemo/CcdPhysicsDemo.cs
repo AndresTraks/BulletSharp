@@ -15,6 +15,11 @@ namespace CcdPhysicsDemo
 
         Light light;
 
+        string fpsText = "Move using mouse and WASD+shift\n" +
+            "F3 - Toggle debug\n" +
+            "F11 - Toggle fullscreen\n" +
+            "Space - Shoot box";
+
         Physics Physics
         {
             get { return (Physics)PhysicsContext; }
@@ -39,14 +44,30 @@ namespace CcdPhysicsDemo
             light.Diffuse = Color.LemonChiffon;
             light.Attenuation0 = 1.0f;
 
-            Fps.Text = "Move using mouse and WASD+shift\n" +
-                "F3 - Toggle debug\n" +
-                "F11 - Toggle fullscreen\n" +
-                "Space - Shoot box";
+            Fps.Text = fpsText + "\nCCD enabled (P to disable)";
 
             Freelook.SetEyeTarget(eye, Vector3.Zero);
 
             base.OnInitialize();
+        }
+
+        protected override void OnHandleInput()
+        {
+            if (Input.KeysPressed.Contains(Keys.P))
+            {
+                Physics.ToggleCcdMode();
+
+                if (Physics.CcdMode)
+                {
+                    Fps.Text = fpsText + "\nCCD enabled (P to disable)";
+                }
+                else
+                {
+                    Fps.Text = fpsText + "\nCCD disabled (P to enable)";
+                }
+            }
+
+            base.OnHandleInput();
         }
 
         protected override void OnResetDevice()

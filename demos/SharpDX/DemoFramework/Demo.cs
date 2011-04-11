@@ -313,7 +313,7 @@ namespace DemoFramework
 
             ShaderFlags shaderFlags = ShaderFlags.None;
             //ShaderFlags shaderFlags = ShaderFlags.Debug | ShaderFlags.SkipOptimization;
-            ShaderBytecode shaderByteCode = ShaderBytecode.CompileFromFile("shader.fx", "fx_4_0", shaderFlags, EffectFlags.None);
+            ShaderBytecode shaderByteCode = ShaderBytecode.CompileFromFile(Application.StartupPath + "\\shader.fx", "fx_4_0", shaderFlags, EffectFlags.None);
 
             Effect = new Effect(Device, shaderByteCode);
             EffectTechnique technique = Effect.GetTechniqueByIndex(0);
@@ -366,7 +366,7 @@ namespace DemoFramework
 
             // grender.fx
 
-            shaderByteCode = ShaderBytecode.CompileFromFile("grender.fx", "fx_4_0", shaderFlags, EffectFlags.None);
+            shaderByteCode = ShaderBytecode.CompileFromFile(Application.StartupPath + "\\grender.fx", "fx_4_0", shaderFlags, EffectFlags.None);
 
             Effect2 = new Effect(Device, shaderByteCode);
             technique = Effect2.GetTechniqueByIndex(0);

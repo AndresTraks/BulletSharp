@@ -3,7 +3,7 @@ using SharpDX;
 
 namespace DemoFramework
 {
-    public class PhysicsContext
+    public class PhysicsContext : System.IDisposable
     {
         public DynamicsWorld World { get; protected set; }
 
@@ -11,16 +11,23 @@ namespace DemoFramework
         protected CollisionDispatcher Dispatcher;
         protected BroadphaseInterface Broadphase;
         protected ConstraintSolver Solver;
-        protected AlignedCollisionShapeArray CollisionShapes = new AlignedCollisionShapeArray();
+        public AlignedCollisionShapeArray CollisionShapes { get; private set; }
 
         protected BoxShape shootBoxShape;
         protected float shootBoxInitialSpeed = 40;
 
         public PhysicsContext()
         {
+            CollisionShapes = new AlignedCollisionShapeArray();
+
+            InitPhysics();
         }
 
-        public virtual void Dispose()
+        public virtual void InitPhysics()
+        {
+        }
+
+        public void ExitPhysics()
         {
             //removed/dispose constraints
             int i;
@@ -45,12 +52,9 @@ namespace DemoFramework
             }
 
             //delete collision shapes
-            for (int j = 0; j < CollisionShapes.Count; j++)
-            {
-                CollisionShape shape = CollisionShapes[j];
-                CollisionShapes[j] = null;
+            foreach (CollisionShape shape in CollisionShapes)
                 shape.Dispose();
-            }
+            CollisionShapes.Clear();
 
             World.Dispose();
             Broadphase.Dispose();
@@ -58,19 +62,33 @@ namespace DemoFramework
             CollisionConf.Dispose();
         }
 
+        public void ClientResetScene()
+        {
+            ExitPhysics();
+            InitPhysics();
+        }
+
+        public virtual void Dispose()
+        {
+            ExitPhysics();
+            CollisionShapes.Dispose();
+        }
+
         public virtual int Update(float elapsedTime)
         {
             return World.StepSimulation(elapsedTime);
         }
 
-        public RigidBody LocalCreateRigidBody(float mass, Matrix startTransform, CollisionShape shape)
+        public virtual RigidBody LocalCreateRigidBody(float mass, Matrix startTransform, CollisionShape shape)
         {
+            //rigidbody is dynamic if and only if mass is non zero, otherwise static
             bool isDynamic = (mass != 0.0f);
 
             Vector3 localInertia = Vector3.Zero;
             if (isDynamic)
                 shape.CalculateLocalInertia(mass, out localInertia);
 
+            //using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
             DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
 
             RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);

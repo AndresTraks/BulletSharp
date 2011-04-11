@@ -95,6 +95,7 @@ cmd /C svn export SlimDX\VehicleDemo src\SlimDX\VehicleDemo --force
 
 
 copy SharpDX\DemoFramework\bin\Release\DemoFramework.dll bin\SharpDX\
+copy SharpDX\DemoFramework\bin\Release\grender.fx bin\SharpDX\
 copy SharpDX\DemoFramework\bin\Release\shader.fx bin\SharpDX\
 copy SharpDX\BasicDemo\bin\Release\BasicDemo.exe bin\SharpDX\
 copy SharpDX\CcdPhysicsDemo\bin\Release\CcdPhysicsDemo.exe bin\SharpDX\

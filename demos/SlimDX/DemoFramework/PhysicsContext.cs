@@ -19,9 +19,15 @@ namespace DemoFramework
         public PhysicsContext()
         {
             CollisionShapes = new AlignedCollisionShapeArray();
+
+            InitPhysics();
         }
 
-        public virtual void Dispose()
+        public virtual void InitPhysics()
+        {
+        }
+
+        public void ExitPhysics()
         {
             //removed/dispose constraints
             int i;
@@ -46,17 +52,26 @@ namespace DemoFramework
             }
 
             //delete collision shapes
-            for (int j = 0; j < CollisionShapes.Count; j++)
-            {
-                CollisionShape shape = CollisionShapes[j];
-                CollisionShapes[j] = null;
+            foreach (CollisionShape shape in CollisionShapes)
                 shape.Dispose();
-            }
+            CollisionShapes.Clear();
 
             World.Dispose();
             Broadphase.Dispose();
             Dispatcher.Dispose();
             CollisionConf.Dispose();
+        }
+
+        public void ClientResetScene()
+        {
+            ExitPhysics();
+            InitPhysics();
+        }
+
+        public virtual void Dispose()
+        {
+            ExitPhysics();
+            CollisionShapes.Dispose();
         }
 
         public virtual int Update(float elapsedTime)
