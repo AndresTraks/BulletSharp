@@ -6,7 +6,7 @@ namespace BulletSharp
 {
 	ref class AlignedIntArray;
 	ref class AlignedVector3Array;
-	ref class FloatArray;
+	ref class ScalarArray;
 
 	public ref class Face
 	{
@@ -28,9 +28,9 @@ namespace BulletSharp
 			void set(AlignedIntArray^ value);
 		}
 
-		property FloatArray^ Plane
+		property ScalarArray^ Plane
 		{
-			FloatArray^ get();
+			ScalarArray^ get();
 		}
 
 	internal:
@@ -62,7 +62,26 @@ namespace BulletSharp
 		ConvexPolyhedron();
 
 		void Initialize();
-		void Project(Matrix transform, Vector3 direction, [Out] float% min, [Out] float% max);
+		void Project(Matrix transform, Vector3 direction, [Out] btScalar% min, [Out] btScalar% max);
+		bool TestContainment();
+
+		property Vector3 C
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property Vector3 E
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property Vector3 Extents
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
 
 		property bool IsDisposed
 		{
@@ -73,6 +92,12 @@ namespace BulletSharp
 		{
 			Vector3 get();
 			void set(Vector3 value);
+		}
+
+		property btScalar Radius
+		{
+			btScalar get();
+			void set(btScalar value);
 		}
 
 		property AlignedVector3Array^ UniqueEdges

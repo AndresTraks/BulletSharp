@@ -136,6 +136,21 @@ Vector3 ConvexShape::LocalGetSupportVertexWithoutMarginNonVirtual(Vector3 vec)
 	return vertex;
 }
 
+void ConvexShape::Project(Matrix transform, Vector3 direction, [Out] btScalar% min, [Out] btScalar% max)
+{
+	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
+	btVector3* directionTemp = Math::Vector3ToBtVector3(direction);
+	btScalar minTemp;
+	btScalar maxTemp;
+	
+	UnmanagedPointer->project(*transformTemp, *directionTemp, minTemp, maxTemp);
+	min = minTemp;
+	max = maxTemp;
+	
+	delete directionTemp;
+	delete transformTemp;
+}
+
 btScalar ConvexShape::MarginNonVirtual::get()
 {
 	return UnmanagedPointer->getMarginNonVirtual();

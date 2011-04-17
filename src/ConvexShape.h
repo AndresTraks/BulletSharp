@@ -20,6 +20,7 @@ namespace BulletSharp
 		Vector3 LocalGetSupportingVertexWithoutMargin(Vector3 vec);
 		Vector3 LocalGetSupportVertexNonVirtual(Vector3 vec);
 		Vector3 LocalGetSupportVertexWithoutMarginNonVirtual(Vector3 vec);
+		void Project(Matrix transform, Vector3 direction, [Out] btScalar% min, [Out] btScalar% max);
 
 		property btScalar MarginNonVirtual
 		{

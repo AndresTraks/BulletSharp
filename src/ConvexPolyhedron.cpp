@@ -29,9 +29,9 @@ void Face::Indices::set(AlignedIntArray^ value)
 	_face->m_indices = *value->UnmanagedPointer;
 }
 
-FloatArray^ Face::Plane::get()
+ScalarArray^ Face::Plane::get()
 {
-	return gcnew FloatArray(_face->m_plane, 4);
+	return gcnew ScalarArray(_face->m_plane, 4);
 }
 
 btFace* Face::UnmanagedPointer::get()
@@ -81,12 +81,12 @@ void ConvexPolyhedron::Initialize()
 	_convexPolyhedron->initialize();
 }
 
-void ConvexPolyhedron::Project(Matrix transform, Vector3 direction, [Out] float% min, [Out] float% max)
+void ConvexPolyhedron::Project(Matrix transform, Vector3 direction, [Out] btScalar% min, [Out] btScalar% max)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	btVector3* directionTemp = Math::Vector3ToBtVector3(direction);
-	float minTemp;
-	float maxTemp;
+	btScalar minTemp;
+	btScalar maxTemp;
 	
 	_convexPolyhedron->project(*transformTemp, *directionTemp, minTemp, maxTemp);
 	min = minTemp;
@@ -96,6 +96,38 @@ void ConvexPolyhedron::Project(Matrix transform, Vector3 direction, [Out] float%
 	delete transformTemp;
 }
 
+bool ConvexPolyhedron::TestContainment()
+{
+	return _convexPolyhedron->testContainment();
+}
+
+Vector3 ConvexPolyhedron::C::get()
+{
+	return Math::BtVector3ToVector3(&_convexPolyhedron->mC);
+}
+void ConvexPolyhedron::C::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_convexPolyhedron->mC);
+}
+
+Vector3 ConvexPolyhedron::E::get()
+{
+	return Math::BtVector3ToVector3(&_convexPolyhedron->mE);
+}
+void ConvexPolyhedron::E::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_convexPolyhedron->mE);
+}
+
+Vector3 ConvexPolyhedron::Extents::get()
+{
+	return Math::BtVector3ToVector3(&_convexPolyhedron->m_extents);
+}
+void ConvexPolyhedron::Extents::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_convexPolyhedron->m_extents);
+}
+
 Vector3 ConvexPolyhedron::LocalCenter::get()
 {
 	return Math::BtVector3ToVector3(&_convexPolyhedron->m_localCenter);
@@ -103,6 +135,15 @@ Vector3 ConvexPolyhedron::LocalCenter::get()
 void ConvexPolyhedron::LocalCenter::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_convexPolyhedron->m_localCenter);
+}
+
+btScalar ConvexPolyhedron::Radius::get()
+{
+	return _convexPolyhedron->m_radius;
+}
+void ConvexPolyhedron::Radius::set(btScalar value)
+{
+	_convexPolyhedron->m_radius = value;
 }
 
 AlignedVector3Array^ ConvexPolyhedron::UniqueEdges::get()
