@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 
+#include "CollisionObject.h"
 #include "ManifoldPoint.h"
 #include "PersistentManifold.h"
 
@@ -67,6 +68,16 @@ void PersistentManifold::ReplaceContactPoint(ManifoldPoint^ newPoint, int insert
 bool PersistentManifold::ValidContactDistance(ManifoldPoint^ pt)
 {
 	return UnmanagedPointer->validContactDistance(*pt->UnmanagedPointer);
+}
+
+Object^ PersistentManifold::Body0::get()
+{
+	return CollisionObject::GetManaged((btCollisionObject*)UnmanagedPointer->getBody0());
+}
+
+Object^ PersistentManifold::Body1::get()
+{
+	return CollisionObject::GetManaged((btCollisionObject*)UnmanagedPointer->getBody1());
 }
 
 int PersistentManifold::CompanionIDA::get()

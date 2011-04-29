@@ -54,7 +54,7 @@ namespace BulletSharp
 #endif
 
 	internal:
-		static CollisionObject^ Upcast(btCollisionObject* collisionObject);
+		static CollisionObject^ GetManaged(btCollisionObject* collisionObject);
 		static CollisionObject^ UpcastDetect(btCollisionObject* collisionObject);
 
 	public:

@@ -18,13 +18,13 @@ ManifoldResult::ManifoldResult(BulletSharp::CollisionObject ^body0, BulletSharp:
 CollisionObject^ ManifoldResult::Body0Internal::get()
 {
 	const btCollisionObject* body0 = UnmanagedPointer->getBody0Internal();
-	return CollisionObject::Upcast((btCollisionObject*)body0);
+	return CollisionObject::GetManaged((btCollisionObject*)body0);
 }
 
 CollisionObject^ ManifoldResult::Body1Internal::get()
 {
 	const btCollisionObject* body1 = UnmanagedPointer->getBody1Internal();
-	return CollisionObject::Upcast((btCollisionObject*)body1);
+	return CollisionObject::GetManaged((btCollisionObject*)body1);
 }
 
 PersistentManifold^ ManifoldResult::PersistentManifold::get()

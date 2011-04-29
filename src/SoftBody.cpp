@@ -135,7 +135,7 @@ Anchor::Anchor()
 RigidBody^ Anchor::Body::get()
 {
 	btRigidBody* body = _anchor->m_body;
-	ReturnCachedObjectUpcastNullable((RigidBody^)CollisionObject, _body, body);
+	ReturnCachedObjectUpcast((RigidBody^)CollisionObject, _body, body);
 }
 void Anchor::Body::set(RigidBody^ value)
 {
@@ -314,7 +314,7 @@ Vector3 Body::AngularVelocity::get()
 
 CollisionObject^ Body::CollisionObject::get()
 {
-	return BulletSharp::CollisionObject::Upcast(_body->m_collisionObject);
+	return BulletSharp::CollisionObject::GetManaged(_body->m_collisionObject);
 }
 void Body::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -344,7 +344,7 @@ Vector3 Body::LinearVelocity::get()
 
 RigidBody^ Body::Rigid::get()
 {
-	return (RigidBody^)BulletSharp::CollisionObject::Upcast(_body->m_rigid);
+	return (RigidBody^)BulletSharp::CollisionObject::GetManaged(_body->m_rigid);
 }
 void Body::Rigid::set(RigidBody^ value)
 {
@@ -1934,7 +1934,7 @@ Scti::Scti()
 
 CollisionObject^ Scti::CollisionObject::get()
 {
-	return BulletSharp::CollisionObject::Upcast(_sCti->m_colObj);
+	return BulletSharp::CollisionObject::GetManaged(_sCti->m_colObj);
 }
 void Scti::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -2115,7 +2115,7 @@ SRayCast::SRayCast()
 
 BulletSharp::SoftBody::SoftBody^ SRayCast::Body::get()
 {
-	return (BulletSharp::SoftBody::SoftBody^)CollisionObject::Upcast(_rayCast->body);
+	return (BulletSharp::SoftBody::SoftBody^)CollisionObject::GetManaged(_rayCast->body);
 }
 void SRayCast::Body::set(BulletSharp::SoftBody::SoftBody^ value)
 {
@@ -3014,7 +3014,7 @@ void BulletSharp::SoftBody::SoftBody::UpdatePose()
 BulletSharp::SoftBody::SoftBody^ BulletSharp::SoftBody::SoftBody::Upcast(CollisionObject^ colObj)
 {
 	btSoftBody* body = btSoftBody::upcast(colObj->UnmanagedPointer);
-	return (BulletSharp::SoftBody::SoftBody^)CollisionObject::Upcast(body);
+	return (BulletSharp::SoftBody::SoftBody^)CollisionObject::GetManaged(body);
 }
 
 AlignedAnchorArray^ BulletSharp::SoftBody::SoftBody::Anchors::get()

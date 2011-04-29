@@ -139,12 +139,12 @@ bool TypedConstraint::NeedsFeedback::get()
 
 RigidBody^ TypedConstraint::RigidBodyA::get()
 {
-	return (RigidBody^)CollisionObject::Upcast(&UnmanagedPointer->getRigidBodyA());
+	return (RigidBody^)CollisionObject::GetManaged(&UnmanagedPointer->getRigidBodyA());
 }
 
 RigidBody^ TypedConstraint::RigidBodyB::get()
 {
-	return (RigidBody^)CollisionObject::Upcast(&UnmanagedPointer->getRigidBodyB());
+	return (RigidBody^)CollisionObject::GetManaged(&UnmanagedPointer->getRigidBodyB());
 }
 
 int TypedConstraint::Uid::get()

@@ -448,7 +448,7 @@ void AlignedCollisionShapeArray::CopyTo(array<CollisionShape^>^ array, int array
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = CollisionShape::Upcast((*UnmanagedPointer)[i]);
+		array[arrayIndex+i] = CollisionShape::GetManaged((*UnmanagedPointer)[i]);
 	}
 }
 
@@ -490,7 +490,7 @@ CollisionShape^ AlignedCollisionShapeArray::default::get(int index)
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
 
-	return CollisionShape::Upcast((*UnmanagedPointer)[index]);
+	return CollisionShape::GetManaged((*UnmanagedPointer)[index]);
 }
 void AlignedCollisionShapeArray::default::set(int index, CollisionShape^ value)
 {
@@ -546,7 +546,7 @@ void AlignedCollisionObjectArray::CopyTo(array<CollisionObject^>^ array, int arr
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = CollisionObject::Upcast((*UnmanagedPointer)[i]);
+		array[arrayIndex+i] = CollisionObject::GetManaged((*UnmanagedPointer)[i]);
 	}
 }
 
@@ -588,7 +588,7 @@ CollisionObject^ AlignedCollisionObjectArray::default::get(int index)
 	if (index < 0 || index >= UnmanagedPointer->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 
-	return CollisionObject::Upcast((*UnmanagedPointer)[index]);
+	return CollisionObject::GetManaged((*UnmanagedPointer)[index]);
 }
 void AlignedCollisionObjectArray::default::set(int index, CollisionObject^ value)
 {
@@ -2132,7 +2132,7 @@ void BulletSharp::SoftBody::AlignedSoftBodyArray::CopyTo(array<SoftBody^>^ array
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = (SoftBody^)CollisionObject::Upcast((*UnmanagedPointer)[i]);
+		array[arrayIndex+i] = (SoftBody^)CollisionObject::GetManaged((*UnmanagedPointer)[i]);
 	}
 }
 
@@ -2173,7 +2173,7 @@ BulletSharp::SoftBody::SoftBody^ BulletSharp::SoftBody::AlignedSoftBodyArray::de
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return (SoftBody^)CollisionObject::Upcast((*UnmanagedPointer)[index]);
+	return (SoftBody^)CollisionObject::GetManaged((*UnmanagedPointer)[index]);
 }
 void BulletSharp::SoftBody::AlignedSoftBodyArray::default::set(int index, SoftBody^ value)
 {

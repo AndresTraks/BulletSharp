@@ -49,7 +49,7 @@ namespace BulletSharp
 #endif
 
 	internal:
-		static CollisionShape^ Upcast(btCollisionShape* collisionShape);
+		static CollisionShape^ GetManaged(btCollisionShape* collisionShape);
 		static CollisionShape^ UpcastDetect(btCollisionShape* collisionShape);
 
 	public:

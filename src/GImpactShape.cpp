@@ -59,7 +59,7 @@ void GImpactShapeInterface::GetBulletTriangle(int prim_index, [Out] TriangleShap
 
 CollisionShape^ GImpactShapeInterface::GetChildShape(int index)
 {
-	return CollisionShape::Upcast(UnmanagedPointer->getChildShape(index));
+	return CollisionShape::GetManaged(UnmanagedPointer->getChildShape(index));
 }
 
 #pragma managed(push, off)

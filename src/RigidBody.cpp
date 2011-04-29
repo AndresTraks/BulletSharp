@@ -231,7 +231,7 @@ void RigidBody::UpdateInertiaTensor()
 RigidBody^ RigidBody::Upcast(CollisionObject^ colObj)
 {
 	btRigidBody* body = btRigidBody::upcast(colObj->UnmanagedPointer);
-	return (RigidBody^)CollisionObject::Upcast(body);
+	return (RigidBody^)CollisionObject::GetManaged(body);
 }
 
 #ifndef DISABLE_INTERNAL
@@ -579,7 +579,7 @@ void RigidBodyConstructionInfo::AngularSleepingThreshold::set(btScalar value)
 
 CollisionShape^ RigidBodyConstructionInfo::CollisionShape::get()
 {
-	return BulletSharp::CollisionShape::Upcast(_info->m_collisionShape);
+	return BulletSharp::CollisionShape::GetManaged(_info->m_collisionShape);
 }
 void RigidBodyConstructionInfo::CollisionShape::set(BulletSharp::CollisionShape^ value)
 {

@@ -33,7 +33,7 @@ void GhostObject::AddOverlappingObjectInternal(BroadphaseProxy^ otherProxy)
 
 CollisionObject^ GhostObject::GetOverlappingObject(int index)
 {
-	return CollisionObject::Upcast(UnmanagedPointer->getOverlappingObject(index));
+	return CollisionObject::GetManaged(UnmanagedPointer->getOverlappingObject(index));
 
 }
 

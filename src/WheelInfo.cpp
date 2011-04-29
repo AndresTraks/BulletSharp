@@ -158,7 +158,7 @@ void WheelInfo::RaycastInfo::ContactPointWS::set(Vector3 value)
 
 Object^ WheelInfo::RaycastInfo::GroundObject::get()
 {
-	return CollisionObject::Upcast((btCollisionObject*)_info->m_groundObject);
+	return CollisionObject::GetManaged((btCollisionObject*)_info->m_groundObject);
 }
 void WheelInfo::RaycastInfo::GroundObject::set(Object^ value)
 {

@@ -184,7 +184,7 @@ void CollisionShape::SerializeSingleShape(BulletSharp::Serializer^ serializer)
 }
 #endif
 
-CollisionShape^ CollisionShape::Upcast(btCollisionShape* collisionShape)
+CollisionShape^ CollisionShape::GetManaged(btCollisionShape* collisionShape)
 {
 	if (collisionShape == 0)
 		return nullptr;

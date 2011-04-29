@@ -53,7 +53,7 @@ CollisionWorld::LocalConvexResult::LocalConvexResult(BulletSharp::CollisionObjec
 
 BulletSharp::CollisionObject^ CollisionWorld::LocalConvexResult::CollisionObject::get()
 {
-	return BulletSharp::CollisionObject::Upcast(_result->m_hitCollisionObject);
+	return BulletSharp::CollisionObject::GetManaged(_result->m_hitCollisionObject);
 }
 void CollisionWorld::LocalConvexResult::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -195,7 +195,7 @@ CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3
 
 BulletSharp::CollisionObject^ CollisionWorld::ClosestConvexResultCallback::CollisionObject::get()
 {
-	return BulletSharp::CollisionObject::Upcast(UnmanagedPointer->m_hitCollisionObject);
+	return BulletSharp::CollisionObject::GetManaged(UnmanagedPointer->m_hitCollisionObject);
 }
 void CollisionWorld::ClosestConvexResultCallback::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -337,7 +337,7 @@ CollisionWorld::LocalRayResult::LocalRayResult(BulletSharp::CollisionObject^ col
 
 BulletSharp::CollisionObject^ CollisionWorld::LocalRayResult::CollisionObject::get()
 {
-	return BulletSharp::CollisionObject::Upcast(_result->m_collisionObject);
+	return BulletSharp::CollisionObject::GetManaged(_result->m_collisionObject);
 }
 void CollisionWorld::LocalRayResult::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -415,7 +415,7 @@ bool CollisionWorld::RayResultCallback::NeedsCollision(BroadphaseProxy^ proxy0)
 
 BulletSharp::CollisionObject^ CollisionWorld::RayResultCallback::CollisionObject::get()
 {
-	return BulletSharp::CollisionObject::Upcast(_callback->m_collisionObject);
+	return BulletSharp::CollisionObject::GetManaged(_callback->m_collisionObject);
 }
 void CollisionWorld::RayResultCallback::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -790,8 +790,8 @@ btScalar ContactResultCallbackWrapper::addSingleResult(btManifoldPoint& cp,
 	const btCollisionObject* colObj1, int partId1, int index1)
 {
 	return _callback->AddSingleResult(gcnew ManifoldPoint(&cp),
-		CollisionObject::Upcast((btCollisionObject*)colObj0), partId0, index0,
-		CollisionObject::Upcast((btCollisionObject*)colObj1), partId1, index1);
+		CollisionObject::GetManaged((btCollisionObject*)colObj0), partId0, index0,
+		CollisionObject::GetManaged((btCollisionObject*)colObj1), partId1, index1);
 }
 
 bool ContactResultCallbackWrapper::baseNeedsCollision(btBroadphaseProxy* proxy0) const

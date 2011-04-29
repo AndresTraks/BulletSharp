@@ -97,7 +97,7 @@ void CollisionObject::SerializeSingleObject(BulletSharp::Serializer^ serializer)
 }
 #endif
 
-CollisionObject^ CollisionObject::Upcast(btCollisionObject* collisionObject)
+CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
 {
 	if (collisionObject == 0)
 		return nullptr;

@@ -29,15 +29,15 @@ namespace BulletSharp
 		//void SetBodies(Object^ body0, Object^ body1);
 		bool ValidContactDistance(ManifoldPoint^ pt);
 
-		//property Object^ Body0
-		//{
-		//	Object^ get();
-		//}
+		property Object^ Body0
+		{
+			Object^ get();
+		}
 
-		//property Object^ Body1
-		//{
-		//	Object^ get();
-		//}
+		property Object^ Body1
+		{
+			Object^ get();
+		}
 
 		property int CompanionIDA
 		{
