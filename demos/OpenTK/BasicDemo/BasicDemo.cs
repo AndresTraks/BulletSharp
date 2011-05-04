@@ -34,7 +34,7 @@ namespace BasicDemo
         {
             physics.Update((float)e.Time);
 
-            if (Keyboard[OpenTK.Input.Key.Escape])
+            if (Keyboard[OpenTK.Input.Key.Escape] || Keyboard[OpenTK.Input.Key.Q])
                 Exit();
         }
 

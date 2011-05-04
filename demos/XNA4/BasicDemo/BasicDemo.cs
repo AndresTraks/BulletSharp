@@ -97,7 +97,7 @@ namespace BasicDemo
         protected override void Update(GameTime gameTime)
         {
             KeyboardState ns = Keyboard.GetState();
-            if (ns.IsKeyDown(Keys.Escape))
+            if (ns.IsKeyDown(Keys.Escape) || ns.IsKeyDown(Keys.Q))
             {
                 Exit();
             }

@@ -578,6 +578,7 @@ namespace DemoFramework
                 switch (key)
                 {
                     case Keys.Escape:
+                    case Keys.Q:
                         Form.Close();
                         return;
                     case Keys.F3:

@@ -438,6 +438,7 @@ namespace DemoFramework
                 switch (key)
                 {
                     case Keys.Escape:
+                    case Keys.Q:
                         Quit();
                         return;
                     case Keys.F3:

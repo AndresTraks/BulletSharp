@@ -169,7 +169,7 @@ namespace BasicDemo
             inputKeyboard.Capture();
             inputMouse.Capture();
 
-            if (inputKeyboard.IsKeyDown(MOIS.KeyCode.KC_ESCAPE))
+            if (inputKeyboard.IsKeyDown(MOIS.KeyCode.KC_ESCAPE) || inputKeyboard.IsKeyDown(MOIS.KeyCode.KC_Q))
             {
                 // stop rendering loop
                 shutDown = true;
