@@ -760,15 +760,19 @@ namespace DemoFramework
                 s.InstanceDataList.Clear();
             removeList.Clear();
 
-            foreach (CollisionObject colObj in objects)
+            int i = objects.Count - 1;
+            for (; i >= 0; i--)
             {
-                ShapeData shapeData;
+                CollisionObject colObj = objects[i];
                 CollisionShape shape = colObj.CollisionShape;
+                ShapeData shapeData = InitShapeData(shape);
 
-                shapeData = InitShapeData(shape);
-
-                Matrix transform = Matrix.Identity;
-                if (!(colObj is SoftBody))
+                Matrix transform;
+                if (colObj is SoftBody)
+                {
+                    transform = Matrix.Identity;
+                }
+                else
                 {
                     transform = (colObj as RigidBody).MotionState.WorldTransform;
                 }
@@ -802,8 +806,10 @@ namespace DemoFramework
                 // Copy the instance data over to the instance buffer
                 using (var data = s.InstanceDataBuffer.Map(MapMode.WriteDiscard))
                 {
-                    foreach (InstanceData instance in s.InstanceDataList)
+                    List<InstanceData> list = s.InstanceDataList;
+                    for (i = 0; i < list.Count; i++)
                     {
+                        InstanceData instance = list[i];
                         data.Write(instance.WorldTransform);
                         data.Write(instance.Color);
                     }
@@ -813,9 +819,9 @@ namespace DemoFramework
 
             if (removeList.Count != 0)
             {
-                foreach (CollisionShape s in removeList)
+                for (i = removeList.Count - 1; i >= 0; i--)
                 {
-                    shapes.Remove(s);
+                    shapes.Remove(removeList[i]);
                 }
             }
         }
