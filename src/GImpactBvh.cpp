@@ -161,13 +161,13 @@ GImpactBvh::GImpactBvh()
 
 bool GImpactBvh::BoxQuery(Aabb^ box, [Out] AlignedIntArray^% collided_results)
 {
-	return _bvh->boxQuery(*box->UnmanagedPointer, *collided_results->UnmanagedPointer);
+	return _bvh->boxQuery(*box->UnmanagedPointer, *(btAlignedObjectArray<int>*)collided_results->_unmanaged);
 }
 
 bool GImpactBvh::BoxQueryTrans(Aabb^ box, Matrix transform, [Out] AlignedIntArray^% collided_results)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
-	bool ret = _bvh->boxQueryTrans(*box->UnmanagedPointer, *transformTemp, *collided_results->UnmanagedPointer);
+	bool ret = _bvh->boxQueryTrans(*box->UnmanagedPointer, *transformTemp, *(btAlignedObjectArray<int>*)collided_results->_unmanaged);
 	delete transformTemp;
 	return ret;
 }

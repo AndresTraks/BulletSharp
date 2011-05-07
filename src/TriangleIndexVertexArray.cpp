@@ -84,7 +84,7 @@ IntArray^ IndexedMesh::TriangleIndices::get()
 	int* triangleIndexBase = (int*)_indexedMesh->m_triangleIndexBase;
 
 	if (_triangleIndices != nullptr &&
-		_triangleIndices->UnmanagedPointer == triangleIndexBase &&
+		(int*)_triangleIndices->_unmanaged == triangleIndexBase &&
 		_triangleIndices->Count == count)
 	{
 		return _triangleIndices;
@@ -95,7 +95,7 @@ IntArray^ IndexedMesh::TriangleIndices::get()
 }
 void IndexedMesh::TriangleIndices::set(IntArray^ value)
 {
-	_indexedMesh->m_triangleIndexBase = (unsigned char*)value->UnmanagedPointer;
+	_indexedMesh->m_triangleIndexBase = (unsigned char*)value->_unmanaged;
 	_triangleIndices = value;
 }
 
@@ -114,7 +114,7 @@ Vector3Array^ IndexedMesh::Vertices::get()
 	btVector3* vertexBase = (btVector3*)_indexedMesh->m_vertexBase;
 
 	if (_vertices != nullptr &&
-		_vertices->UnmanagedPointer == vertexBase &&
+		(btVector3*)_vertices->_unmanaged == vertexBase &&
 		_vertices->Count == count)
 	{
 		return _vertices;
@@ -125,7 +125,7 @@ Vector3Array^ IndexedMesh::Vertices::get()
 }
 void IndexedMesh::Vertices::set(Vector3Array^ value)
 {
-	_indexedMesh->m_vertexBase = (unsigned char*)value->UnmanagedPointer;
+	_indexedMesh->m_vertexBase = (unsigned char*)value->_unmanaged;
 	_vertices = value;
 }
 

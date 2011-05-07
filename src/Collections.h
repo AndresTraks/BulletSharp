@@ -68,8 +68,10 @@ namespace BulletSharp
 	generic<class T>
 	public ref class GenericList abstract : Generic::IList<T>
 	{
+	internal:
+		void* _unmanaged;
+
 	private:
-		void* _array;
 		int _length;
 		bool isReadOnly;
 
@@ -104,13 +106,6 @@ namespace BulletSharp
 		{
 			virtual bool get();
 		}
-
-	internal:
-		property void* UnmanagedPointer
-		{
-			virtual void* get();
-			void set(void* value);
-		}
 	};
 
 	[DebuggerDisplay("Count = {Count}")]
@@ -130,12 +125,6 @@ namespace BulletSharp
 		{
 			virtual bool get(int index) override;
 			virtual void set(int index, bool value) override;
-		}
-
-	internal:
-		property bool* UnmanagedPointer
-		{
-			bool* get() new;
 		}
 	};
 
@@ -160,12 +149,6 @@ namespace BulletSharp
 				virtual Body^ get(int index) override;
 				virtual void set(int index, Body^ value) override;
 			}
-
-		internal:
-			property btSoftBody::Body* UnmanagedPointer
-			{
-				btSoftBody::Body* get() new;
-			}
 		};
 	};
 #endif
@@ -186,12 +169,6 @@ namespace BulletSharp
 			virtual CompoundShapeChild^ get(int index) override;
 			virtual void set(int index, CompoundShapeChild^ value) override;
 		}
-
-	internal:
-		property btCompoundShapeChild* UnmanagedPointer
-		{
-			btCompoundShapeChild* get() new;
-		}
 	};
 
 #ifndef DISABLE_DBVT
@@ -211,12 +188,6 @@ namespace BulletSharp
 			virtual Dbvt^ get(int index) override;
 			virtual void set(int index, Dbvt^ value) override;
 		}
-
-	internal:
-		property btDbvt* UnmanagedPointer
-		{
-			btDbvt* get() new;
-		}
 	};
 
 	[DebuggerDisplay("Count = {Count}")]
@@ -235,12 +206,6 @@ namespace BulletSharp
 			virtual DbvtNode^ get(int index) override;
 			virtual void set(int index, DbvtNode^ value) override;
 		}
-
-	internal:
-		property btDbvtNode** UnmanagedPointer
-		{
-			btDbvtNode** get() new;
-		}
 	};
 
 	[DebuggerDisplay("Count = {Count}")]
@@ -258,12 +223,6 @@ namespace BulletSharp
 		{
 			virtual DbvtProxy^ get(int index) override;
 			virtual void set(int index, DbvtProxy^ value) override;
-		}
-
-	internal:
-		property btDbvtProxy** UnmanagedPointer
-		{
-			btDbvtProxy** get() new;
 		}
 	};
 #endif
@@ -288,12 +247,6 @@ namespace BulletSharp
 			virtual float get(int index) override;
 			virtual void set(int index, float value) override;
 		}
-
-	internal:
-		property float* UnmanagedPointer
-		{
-			float* get() new;
-		}
 	};
 
 	[DebuggerDisplay("Count = {Count}")]
@@ -315,12 +268,6 @@ namespace BulletSharp
 		{
 			virtual int get(int index) override;
 			virtual void set(int index, int value) override;
-		}
-
-	internal:
-		property int* UnmanagedPointer
-		{
-			int* get() new;
 		}
 	};
 
@@ -344,12 +291,6 @@ namespace BulletSharp
 			{
 				virtual Node^ get(int index) override;
 				virtual void set(int index, Node^ value) override;
-			}
-
-		internal:
-			property btSoftBody::Node** UnmanagedPointer
-			{
-				btSoftBody::Node** get() new;
 			}
 		};
 	};
@@ -375,12 +316,6 @@ namespace BulletSharp
 			virtual btScalar get(int index) override;
 			virtual void set(int index, btScalar value) override;
 		}
-
-	internal:
-		property btScalar* UnmanagedPointer
-		{
-			btScalar* get() new;
-		}
 	};
 
 	[DebuggerDisplay("Count = {Count}")]
@@ -401,12 +336,6 @@ namespace BulletSharp
 			virtual unsigned int get(int index) override;
 			virtual void set(int index, unsigned int value) override;
 		}
-
-	internal:
-		property unsigned int* UnmanagedPointer
-		{
-			unsigned int* get() new;
-		}
 	};
 
 	[DebuggerDisplay("Count = {Count}")]
@@ -426,12 +355,6 @@ namespace BulletSharp
 		{
 			virtual unsigned short get(int index) override;
 			virtual void set(int index, unsigned short value) override;
-		}
-
-	internal:
-		property unsigned short* UnmanagedPointer
-		{
-			unsigned short* get() new;
 		}
 	};
 
@@ -454,12 +377,6 @@ namespace BulletSharp
 		{
 			virtual Vector3 get(int index) override;
 			virtual void set(int index, Vector3 value) override;
-		}
-
-	internal:
-		property btVector3* UnmanagedPointer
-		{
-			btVector3* get() new;
 		}
 	};
 };

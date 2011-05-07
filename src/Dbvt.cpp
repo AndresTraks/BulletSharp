@@ -535,7 +535,7 @@ Dbvt::!Dbvt()
 
 int Dbvt::Allocate(AlignedIntArray^ ifree, AlignedStkNpsArray^ stock, StkNps^ value)
 {
-	return btDbvt::allocate(*ifree->UnmanagedPointer, *stock->UnmanagedPointer, *value->UnmanagedPointer);
+	return btDbvt::allocate(*((btAlignedObjectArray<int>*)ifree->_unmanaged), *((btAlignedObjectArray<btDbvt::sStkNPS>*)stock->_unmanaged), *value->UnmanagedPointer);
 }
 
 void Dbvt::Benchmark()
@@ -645,7 +645,7 @@ void Dbvt::EnumNodes(DbvtNode^ root, ICollide^ policy)
 
 void Dbvt::ExtractLeaves(DbvtNode^ node, AlignedDbvtNodeArray^ leaves)
 {
-	btDbvt::extractLeaves(node->UnmanagedPointer, *leaves->UnmanagedPointer);
+	btDbvt::extractLeaves(node->UnmanagedPointer, *(btAlignedObjectArray<const btDbvtNode*>*)leaves->_unmanaged);
 }
 
 DbvtNode^ Dbvt::Insert(DbvtVolume^ box, IntPtr data)
@@ -825,7 +825,7 @@ AlignedStkNnArray^ Dbvt::Stack::get()
 
 void Dbvt::Stack::set(AlignedStkNnArray^ value)
 {
-	_dbvt->m_stkStack = *value->UnmanagedPointer;
+	_dbvt->m_stkStack = *(btAlignedObjectArray<btDbvt::sStkNN>*)value->_unmanaged;
 }
 
 bool Dbvt::IsDisposed::get()

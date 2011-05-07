@@ -46,8 +46,8 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		void* _alignedObjectArray;
+	internal:
+		void* _unmanaged;
 
 	internal:
 		AlignedObjectArray(void* alignedObjectArray);
@@ -91,13 +91,6 @@ namespace BulletSharp
 		{
 			virtual bool get();
 		}
-
-	internal:
-		property void* UnmanagedPointer
-		{
-			virtual void* get();
-			void set(void* value);
-		}
 	};
 
 #ifndef DISABLE_SOFTBODY
@@ -133,12 +126,6 @@ namespace BulletSharp
 			{
 				virtual Anchor^ get (int index) override;
 				virtual void set(int index, Anchor^ value) override;
-			}
-
-		internal:
-			property btSoftBody::tAnchorArray* UnmanagedPointer
-			{
-				virtual btSoftBody::tAnchorArray* get() new;
 			}
 		};
 	};
@@ -177,12 +164,6 @@ namespace BulletSharp
 		{
 			virtual BroadphasePair^ get (int index) override;
 			virtual void set(int index, BroadphasePair^ value) override;
-		}
-
-	internal:
-		property btBroadphasePairArray* UnmanagedPointer
-		{
-			virtual btBroadphasePairArray* get() new;
 		}
 	};
 
@@ -223,12 +204,6 @@ namespace BulletSharp
 				virtual Cluster^ get (int index) override;
 				virtual void set(int index, Cluster^ value) override;
 			}
-
-		internal:
-			property btSoftBody::tClusterArray* UnmanagedPointer
-			{
-				virtual btSoftBody::tClusterArray* get() new;
-			}
 		};
 	};
 #endif
@@ -263,12 +238,6 @@ namespace BulletSharp
 		{
 			virtual CollisionShape^ get (int index) override;
 			virtual void set(int index, CollisionShape^ value) override;
-		}
-
-	internal:
-		property btAlignedObjectArray<btCollisionShape*>* UnmanagedPointer
-		{
-			btAlignedObjectArray<btCollisionShape*>* get() new;
 		}
 	};
 
@@ -305,12 +274,6 @@ namespace BulletSharp
 		{
 			virtual CollisionObject^ get (int index) override;
 			virtual void set(int index, CollisionObject^ value) override;
-		}
-
-	internal:
-		property btCollisionObjectArray* UnmanagedPointer
-		{
-			virtual btCollisionObjectArray* get() new;
 		}
 	};
 
@@ -349,12 +312,6 @@ namespace BulletSharp
 			virtual DbvtNode^ get (int index) override;
 			virtual void set(int index, DbvtNode^ value) override;
 		}
-
-	internal:
-		property btAlignedObjectArray<const btDbvtNode*>* UnmanagedPointer
-		{
-			virtual btAlignedObjectArray<const btDbvtNode*>* get() new;
-		}
 	};
 
 	[DebuggerDisplay("Count = {Count}")]
@@ -388,12 +345,6 @@ namespace BulletSharp
 			virtual Dbvt::StkNn^ get (int index) override;
 			virtual void set(int index, Dbvt::StkNn^ value) override;
 		}
-
-	internal:
-		property btAlignedObjectArray<btDbvt::sStkNN>* UnmanagedPointer
-		{
-			virtual btAlignedObjectArray<btDbvt::sStkNN>* get() new;
-		}
 	};
 
 	[DebuggerDisplay("Count = {Count}")]
@@ -426,12 +377,6 @@ namespace BulletSharp
 		{
 			virtual Dbvt::StkNps^ get (int index) override;
 			virtual void set(int index, Dbvt::StkNps^ value) override;
-		}
-
-	internal:
-		property btAlignedObjectArray<btDbvt::sStkNPS>* UnmanagedPointer
-		{
-			virtual btAlignedObjectArray<btDbvt::sStkNPS>* get() new;
 		}
 	};
 #endif
@@ -470,12 +415,6 @@ namespace BulletSharp
 				virtual Face^ get (int index) override;
 				virtual void set(int index, Face^ value) override;
 			}
-
-		internal:
-			property btAlignedObjectArray<btSoftBody::Face>* UnmanagedPointer
-			{
-				virtual btAlignedObjectArray<btSoftBody::Face>* get() new;
-			}
 		};
 	};
 #endif
@@ -510,12 +449,6 @@ namespace BulletSharp
 		{
 			virtual IndexedMesh^ get (int index) override;
 			virtual void set(int index, IndexedMesh^ value) override;
-		}
-
-	internal:
-		property btAlignedObjectArray<btIndexedMesh>* UnmanagedPointer
-		{
-			virtual btAlignedObjectArray<btIndexedMesh>* get() new;
 		}
 	};
 
@@ -554,12 +487,6 @@ namespace BulletSharp
 		{
 			virtual int get (int index) override;
 			virtual void set(int index, int value) override;
-		}
-
-	internal:
-		property btAlignedObjectArray<int>* UnmanagedPointer
-		{
-			virtual btAlignedObjectArray<int>* get() new;
 		}
 	};
 
@@ -600,12 +527,6 @@ namespace BulletSharp
 				virtual Joint^ get (int index) override;
 				virtual void set(int index, Joint^ value) override;
 			}
-
-		internal:
-			property btSoftBody::tJointArray* UnmanagedPointer
-			{
-				virtual btSoftBody::tJointArray* get() new;
-			}
 		};
 	};
 #endif
@@ -644,12 +565,6 @@ namespace BulletSharp
 			virtual PersistentManifold^ get (int index) override;
 			virtual void set(int index, PersistentManifold^ value) override;
 		}
-
-	internal:
-		property btManifoldArray* UnmanagedPointer
-		{
-			virtual btManifoldArray* get() new;
-		}
 	};
 
 #ifndef DISABLE_SOFTBODY
@@ -685,12 +600,6 @@ namespace BulletSharp
 			{
 				virtual Link^ get (int index) override;
 				virtual void set(int index, Link^ value) override;
-			}
-
-		internal:
-			property btSoftBody::tLinkArray* UnmanagedPointer
-			{
-				virtual btSoftBody::tLinkArray* get() new;
 			}
 		};
 
@@ -728,12 +637,6 @@ namespace BulletSharp
 				virtual Material^ get (int index) override;
 				virtual void set(int index, Material^ value) override;
 			}
-
-		internal:
-			property btSoftBody::tMaterialArray* UnmanagedPointer
-			{
-				virtual btSoftBody::tMaterialArray* get() new;
-			}
 		};
 
 		[DebuggerDisplay("Count = {Count}")]
@@ -766,12 +669,6 @@ namespace BulletSharp
 			{
 				virtual Node^ get (int index) override;
 				virtual void set(int index, Node^ value) override;
-			}
-
-		internal:
-			property btSoftBody::tNodeArray* UnmanagedPointer
-			{
-				virtual btSoftBody::tNodeArray* get() new;
 			}
 		};
 
@@ -809,12 +706,6 @@ namespace BulletSharp
 				virtual Node^ get (int index) override;
 				virtual void set(int index, Node^ value) override;
 			}
-
-		internal:
-			property btAlignedObjectArray<btSoftBody::Node*>* UnmanagedPointer
-			{
-				virtual btAlignedObjectArray<btSoftBody::Node*>* get() new;
-			}
 		};
 
 		[DebuggerDisplay("Count = {Count}")]
@@ -847,12 +738,6 @@ namespace BulletSharp
 			{
 				virtual Note^ get (int index) override;
 				virtual void set(int index, Note^ value) override;
-			}
-
-		internal:
-			property btSoftBody::tNoteArray* UnmanagedPointer
-			{
-				virtual btSoftBody::tNoteArray* get() new;
 			}
 		};
 	};
@@ -895,12 +780,6 @@ namespace BulletSharp
 				virtual PSolver get (int index) override;
 				virtual void set(int index, PSolver value) override;
 			}
-
-		internal:
-			property btSoftBody::tPSolverArray* UnmanagedPointer
-			{
-				virtual btSoftBody::tPSolverArray* get() new;
-			}
 		};
 
 		[DebuggerDisplay("Count = {Count}")]
@@ -933,12 +812,6 @@ namespace BulletSharp
 			{
 				virtual RigidContact^ get (int index) override;
 				virtual void set(int index, RigidContact^ value) override;
-			}
-
-		internal:
-			property btSoftBody::tRContactArray* UnmanagedPointer
-			{
-				virtual btSoftBody::tRContactArray* get() new;
 			}
 		};
 	};
@@ -977,12 +850,6 @@ namespace BulletSharp
 		{
 			virtual btScalar get (int index) override;
 			virtual void set(int index, btScalar value) override;
-		}
-
-	internal:
-		property btAlignedObjectArray<btScalar>* UnmanagedPointer
-		{
-			virtual btAlignedObjectArray<btScalar>* get() new;
 		}
 	};
 
@@ -1023,12 +890,6 @@ namespace BulletSharp
 				virtual SoftBody^ get (int index) override;
 				virtual void set(int index, SoftBody^ value) override;
 			}
-
-		internal:
-			property btSoftBody::tSoftBodyArray* UnmanagedPointer
-			{
-				virtual btSoftBody::tSoftBodyArray* get() new;
-			}
 		};
 
 		[DebuggerDisplay("Count = {Count}")]
@@ -1062,12 +923,6 @@ namespace BulletSharp
 				virtual SoftContact^ get (int index) override;
 				virtual void set(int index, SoftContact^ value) override;
 			}
-
-		internal:
-			property btSoftBody::tSContactArray* UnmanagedPointer
-			{
-				virtual btSoftBody::tSContactArray* get() new;
-			}
 		};
 
 		[DebuggerDisplay("Count = {Count}")]
@@ -1100,12 +955,6 @@ namespace BulletSharp
 			{
 				virtual Tetra^ get (int index) override;
 				virtual void set(int index, Tetra^ value) override;
-			}
-
-		internal:
-			property btAlignedObjectArray<btSoftBody::Tetra>* UnmanagedPointer
-			{
-				virtual btAlignedObjectArray<btSoftBody::Tetra>* get() new;
 			}
 		};
 	};
@@ -1146,12 +995,6 @@ namespace BulletSharp
 			virtual Vector3 get (int index) override;
 			virtual void set(int index, Vector3 value) override;
 		}
-
-	internal:
-		property btAlignedObjectArray<btVector3>* UnmanagedPointer
-		{
-			virtual btAlignedObjectArray<btVector3>* get() new;
-		}
 	};
 
 #ifndef DISABLE_SOFTBODY
@@ -1191,12 +1034,6 @@ namespace BulletSharp
 				virtual VSolver get (int index) override;
 				virtual void set(int index, VSolver value) override;
 			}
-
-		internal:
-			property btSoftBody::tVSolverArray* UnmanagedPointer
-			{
-				virtual btSoftBody::tVSolverArray* get() new;
-			}
 		};
 	};
 #endif
@@ -1232,12 +1069,6 @@ namespace BulletSharp
 		{
 			virtual WheelInfo^ get (int index) override;
 			virtual void set(int index, WheelInfo^ value) override;
-		}
-
-	internal:
-		property btAlignedObjectArray<btWheelInfo>* UnmanagedPointer
-		{
-			virtual btAlignedObjectArray<btWheelInfo>* get() new;
 		}
 	};
 #endif

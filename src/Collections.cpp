@@ -74,7 +74,7 @@ void ListEnumerator<T>::Reset()
 generic<class T>
 GenericList<T>::GenericList(void* array, int length)
 {
-	_array = array;
+	_unmanaged = array;
 	_length = length;
 	isReadOnly = false;
 }
@@ -82,7 +82,7 @@ GenericList<T>::GenericList(void* array, int length)
 generic<class T>
 GenericList<T>::GenericList(const void* array, int length)
 {
-	_array = (void*)array;
+	_unmanaged = (void*)array;
 	_length = length;
 	isReadOnly = true;
 }
@@ -164,17 +164,6 @@ bool GenericList<T>::IsReadOnly::get()
 	return isReadOnly;
 }
 
-generic<class T>
-void* GenericList<T>::UnmanagedPointer::get()
-{
-	return _array;
-}
-generic<class T>
-void GenericList<T>::UnmanagedPointer::set(void* value)
-{
-	_array = value;
-}
-
 
 BoolArray::BoolArray(bool* boolArray, int length)
 : GenericList<bool>(boolArray, length)
@@ -192,7 +181,7 @@ bool BoolArray::Contains(bool item)
 	int length = Count;
 	for (i=Count; i<length; i++)
 	{
-		if (item == UnmanagedPointer[i])
+		if (item == ((bool*)_unmanaged)[i])
 		{
 			return true;
 		}
@@ -215,7 +204,7 @@ void BoolArray::CopyTo(array<bool>^ array, int arrayIndex)
 	int length = Count;
 	for (i=0; i<length; i++)
 	{
-		array[arrayIndex+i] = UnmanagedPointer[i];
+		array[arrayIndex+i] = ((bool*)_unmanaged)[i];
 	}
 }
 
@@ -225,7 +214,7 @@ int BoolArray::IndexOf(bool item)
 	int length = Count;
 	for (i=0; i<length; i++)
 	{
-		if (item == UnmanagedPointer[i])
+		if (item == ((bool*)_unmanaged)[i])
 		{
 			return i;
 		}
@@ -237,7 +226,7 @@ bool BoolArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return UnmanagedPointer[index];
+	return ((bool*)_unmanaged)[index];
 }
 void BoolArray::default::set(int index, bool value)
 {
@@ -245,12 +234,7 @@ void BoolArray::default::set(int index, bool value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	UnmanagedPointer[index] = value;
-}
-
-bool* BoolArray::UnmanagedPointer::get()
-{
-	return (bool*) GenericList::UnmanagedPointer;
+	((bool*)_unmanaged)[index] = value;
 }
 
 
@@ -280,7 +264,7 @@ void SoftBody::BodyArray::CopyTo(array<Body^>^ array, int arrayIndex)
 	int i;
 	for (i=0; i<length; i++)
 	{
-		array[arrayIndex+i] = gcnew Body(&UnmanagedPointer[i]);
+		array[arrayIndex+i] = gcnew Body(&((btSoftBody::Body*)_unmanaged)[i]);
 	}
 }
 
@@ -288,7 +272,7 @@ SoftBody::Body^ SoftBody::BodyArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew Body(&UnmanagedPointer[index]);
+	return gcnew Body(&((btSoftBody::Body*)_unmanaged)[index]);
 }
 
 void SoftBody::BodyArray::default::set(int index, Body^ value)
@@ -297,12 +281,7 @@ void SoftBody::BodyArray::default::set(int index, Body^ value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	UnmanagedPointer[index] = *value->UnmanagedPointer;
-}
-
-btSoftBody::Body* SoftBody::BodyArray::UnmanagedPointer::get()
-{
-	return (btSoftBody::Body*) GenericList::UnmanagedPointer;
+	((btSoftBody::Body*)_unmanaged)[index] = *value->UnmanagedPointer;
 }
 #endif
 
@@ -332,7 +311,7 @@ void CompoundShapeChildArray::CopyTo(array<CompoundShapeChild^>^ array, int arra
 	int i;
 	for (i=0; i<length; i++)
 	{
-		array[arrayIndex+i] = gcnew CompoundShapeChild(&UnmanagedPointer[i]);
+		array[arrayIndex+i] = gcnew CompoundShapeChild(&((btCompoundShapeChild*)_unmanaged)[i]);
 	}
 }
 
@@ -340,7 +319,7 @@ CompoundShapeChild^ CompoundShapeChildArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew CompoundShapeChild(&UnmanagedPointer[index]);
+	return gcnew CompoundShapeChild(&((btCompoundShapeChild*)_unmanaged)[index]);
 }
 
 void CompoundShapeChildArray_SetDefault(btCompoundShapeChild* shapeArray,
@@ -354,12 +333,7 @@ void CompoundShapeChildArray::default::set(int index, CompoundShapeChild^ value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	CompoundShapeChildArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
-}
-
-btCompoundShapeChild* CompoundShapeChildArray::UnmanagedPointer::get()
-{
-	return (btCompoundShapeChild*) GenericList::UnmanagedPointer;
+	CompoundShapeChildArray_SetDefault(((btCompoundShapeChild*)_unmanaged), index, value->UnmanagedPointer);
 }
 
 
@@ -389,7 +363,7 @@ void DbvtArray::CopyTo(array<Dbvt^>^ array, int arrayIndex)
 	int i;
 	for (i=0; i<length; i++)
 	{
-		array[arrayIndex+i] = gcnew Dbvt(&UnmanagedPointer[i]);
+		array[arrayIndex+i] = gcnew Dbvt(&((btDbvt*)_unmanaged)[i]);
 	}
 }
 
@@ -398,7 +372,7 @@ Dbvt^ DbvtArray::default::get(int index)
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
 
-	return gcnew Dbvt(&UnmanagedPointer[index]);
+	return gcnew Dbvt(&((btDbvt*)_unmanaged)[index]);
 }
 void DbvtArray::default::set(int index, Dbvt^ value)
 {
@@ -406,13 +380,8 @@ void DbvtArray::default::set(int index, Dbvt^ value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	UnmanagedPointer[index] = *value->UnmanagedPointer;
+	((btDbvt*)_unmanaged)[index] = *value->UnmanagedPointer;
 
-}
-
-btDbvt* DbvtArray::UnmanagedPointer::get()
-{
-	return (btDbvt*) GenericList::UnmanagedPointer;
 }
 
 
@@ -441,7 +410,7 @@ void DbvtNodePtrArray::CopyTo(array<DbvtNode^>^ array, int arrayIndex)
 	int i;
 	for (i=0; i<length; i++)
 	{
-		array[arrayIndex+i] = gcnew DbvtNode(UnmanagedPointer[i]);
+		array[arrayIndex+i] = gcnew DbvtNode(((btDbvtNode**)_unmanaged)[i]);
 	}
 }
 
@@ -450,7 +419,7 @@ DbvtNode^ DbvtNodePtrArray::default::get(int index)
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
 
-	btDbvtNode* nodePtr = UnmanagedPointer[index];
+	btDbvtNode* nodePtr = ((btDbvtNode**)_unmanaged)[index];
 	if (nodePtr == 0)
 		return nullptr;
 
@@ -463,12 +432,7 @@ void DbvtNodePtrArray::default::set(int index, DbvtNode^ value)
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
 
-	UnmanagedPointer[index] = GetUnmanagedNullable(value);
-}
-
-btDbvtNode** DbvtNodePtrArray::UnmanagedPointer::get()
-{
-	return (btDbvtNode**) GenericList::UnmanagedPointer;
+	((btDbvtNode**)_unmanaged)[index] = GetUnmanagedNullable(value);
 }
 
 
@@ -497,7 +461,7 @@ void DbvtProxyPtrArray::CopyTo(array<DbvtProxy^>^ array, int arrayIndex)
 	int i;
 	for (i=0; i<length; i++)
 	{
-		array[arrayIndex+i] = dynamic_cast<DbvtProxy^>(DbvtProxy::GetObject(UnmanagedPointer[i]));
+		array[arrayIndex+i] = dynamic_cast<DbvtProxy^>(DbvtProxy::GetManaged(((btDbvtProxy**)_unmanaged)[i]));
 	}
 }
 
@@ -506,11 +470,11 @@ DbvtProxy^ DbvtProxyPtrArray::default::get(int index)
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
 
-	btDbvtProxy* proxyPtr = UnmanagedPointer[index];
+	btDbvtProxy* proxyPtr = ((btDbvtProxy**)_unmanaged)[index];
 	if (proxyPtr == 0)
 		return nullptr;
 
-	return dynamic_cast<DbvtProxy^>(DbvtProxy::GetObject(proxyPtr));
+	return dynamic_cast<DbvtProxy^>(DbvtProxy::GetManaged(proxyPtr));
 }
 void DbvtProxyPtrArray::default::set(int index, DbvtProxy^ value)
 {
@@ -519,12 +483,7 @@ void DbvtProxyPtrArray::default::set(int index, DbvtProxy^ value)
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
 
-	UnmanagedPointer[index] = GetUnmanagedNullable(value);
-}
-
-btDbvtProxy** DbvtProxyPtrArray::UnmanagedPointer::get()
-{
-	return (btDbvtProxy**) GenericList::UnmanagedPointer;
+	((btDbvtProxy**)_unmanaged)[index] = GetUnmanagedNullable(value);
 }
 #endif
 
@@ -550,7 +509,7 @@ bool FloatArray::Contains(float item)
 	int length = Count;
 	for (i=Count; i<length; i++)
 	{
-		if (item == UnmanagedPointer[i])
+		if (item == ((float*)_unmanaged)[i])
 		{
 			return true;
 		}
@@ -573,7 +532,7 @@ void FloatArray::CopyTo(array<float>^ array, int arrayIndex)
 	int length = Count;
 	for (i=0; i<length; i++)
 	{
-		array[arrayIndex+i] = UnmanagedPointer[i];
+		array[arrayIndex+i] = ((float*)_unmanaged)[i];
 	}
 }
 
@@ -583,7 +542,7 @@ int FloatArray::IndexOf(float item)
 	int length = Count;
 	for (i=0; i<length; i++)
 	{
-		if (item == UnmanagedPointer[i])
+		if (item == ((float*)_unmanaged)[i])
 		{
 			return i;
 		}
@@ -595,7 +554,7 @@ float FloatArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return UnmanagedPointer[index];
+	return ((float*)_unmanaged)[index];
 }
 void FloatArray::default::set(int index, float value)
 {
@@ -603,12 +562,7 @@ void FloatArray::default::set(int index, float value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	UnmanagedPointer[index] = value;
-}
-
-float* FloatArray::UnmanagedPointer::get()
-{
-	return (float*) GenericList::UnmanagedPointer;
+	((float*)_unmanaged)[index] = value;
 }
 
 
@@ -633,7 +587,7 @@ bool IntArray::Contains(int item)
 	int length = Count;
 	for (i=Count; i<length; i++)
 	{
-		if (item == UnmanagedPointer[i])
+		if (item == ((int*)_unmanaged)[i])
 		{
 			return true;
 		}
@@ -656,7 +610,7 @@ void IntArray::CopyTo(array<int>^ array, int arrayIndex)
 	int length = Count;
 	for (i=0; i<length; i++)
 	{
-		array[arrayIndex+i] = UnmanagedPointer[i];
+		array[arrayIndex+i] = ((int*)_unmanaged)[i];
 	}
 }
 
@@ -666,7 +620,7 @@ int IntArray::IndexOf(int item)
 	int length = Count;
 	for (i=0; i<length; i++)
 	{
-		if (item == UnmanagedPointer[i])
+		if (item == ((int*)_unmanaged)[i])
 		{
 			return i;
 		}
@@ -678,7 +632,7 @@ int IntArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return UnmanagedPointer[index];
+	return ((int*)_unmanaged)[index];
 }
 void IntArray::default::set(int index, int value)
 {
@@ -686,12 +640,7 @@ void IntArray::default::set(int index, int value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	UnmanagedPointer[index] = value;
-}
-
-int* IntArray::UnmanagedPointer::get()
-{
-	return (int*) GenericList::UnmanagedPointer;
+	((int*)_unmanaged)[index] = value;
 }
 
 
@@ -721,13 +670,13 @@ void SoftBody::NodePtrArray::CopyTo(array<Node^>^ array, int arrayIndex)
 	int i;
 	for (i=0; i<length; i++)
 	{
-		array[arrayIndex+i] = gcnew Node(UnmanagedPointer[i]);
+		array[arrayIndex+i] = gcnew Node(((btSoftBody::Node**)_unmanaged)[i]);
 	}
 }
 
 SoftBody::Node^ SoftBody::NodePtrArray::default::get(int index)
 {
-	btSoftBody::Node* nodePtr = UnmanagedPointer[index];
+	btSoftBody::Node* nodePtr = ((btSoftBody::Node**)_unmanaged)[index];
 	if (nodePtr == 0)
 		return nullptr;
 	return gcnew Node(nodePtr);
@@ -738,12 +687,7 @@ void SoftBody::NodePtrArray::default::set(int index, Node^ value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	UnmanagedPointer[index] = (btSoftBody::Node*)GetUnmanagedNullableNew(value);
-}
-
-btSoftBody::Node** SoftBody::NodePtrArray::UnmanagedPointer::get()
-{
-	return (btSoftBody::Node**) GenericList::UnmanagedPointer;
+	((btSoftBody::Node**)_unmanaged)[index] = (btSoftBody::Node*)GetUnmanagedNullableNew(value);
 }
 #endif
 
@@ -769,7 +713,7 @@ bool ScalarArray::Contains(btScalar item)
 	int length = Count;
 	for (i=Count; i<length; i++)
 	{
-		if (item == UnmanagedPointer[i])
+		if (item == ((btScalar*)_unmanaged)[i])
 		{
 			return true;
 		}
@@ -792,7 +736,7 @@ void ScalarArray::CopyTo(array<btScalar>^ array, int arrayIndex)
 	int length = Count;
 	for (i=0; i<length; i++)
 	{
-		array[arrayIndex+i] = UnmanagedPointer[i];
+		array[arrayIndex+i] = ((btScalar*)_unmanaged)[i];
 	}
 }
 
@@ -802,7 +746,7 @@ int ScalarArray::IndexOf(btScalar item)
 	int length = Count;
 	for (i=0; i<length; i++)
 	{
-		if (item == UnmanagedPointer[i])
+		if (item == ((btScalar*)_unmanaged)[i])
 		{
 			return i;
 		}
@@ -814,7 +758,7 @@ btScalar ScalarArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return UnmanagedPointer[index];
+	return ((btScalar*)_unmanaged)[index];
 }
 void ScalarArray::default::set(int index, btScalar value)
 {
@@ -822,12 +766,7 @@ void ScalarArray::default::set(int index, btScalar value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	UnmanagedPointer[index] = value;
-}
-
-btScalar* ScalarArray::UnmanagedPointer::get()
-{
-	return (btScalar*) GenericList::UnmanagedPointer;
+	((btScalar*)_unmanaged)[index] = value;
 }
 
 
@@ -847,7 +786,7 @@ bool UIntArray::Contains(unsigned int item)
 	int length = Count;
 	for (i=Count; i<length; i++)
 	{
-		if (item == UnmanagedPointer[i])
+		if (item == ((unsigned int*)_unmanaged)[i])
 		{
 			return true;
 		}
@@ -870,7 +809,7 @@ void UIntArray::CopyTo(array<unsigned int>^ array, int arrayIndex)
 	int length = Count;
 	for (i=0; i<length; i++)
 	{
-		array[arrayIndex+i] = UnmanagedPointer[i];
+		array[arrayIndex+i] = ((unsigned int*)_unmanaged)[i];
 	}
 }
 
@@ -880,7 +819,7 @@ int UIntArray::IndexOf(unsigned int item)
 	int length = Count;
 	for (i=0; i<length; i++)
 	{
-		if (item == UnmanagedPointer[i])
+		if (item == ((unsigned int*)_unmanaged)[i])
 		{
 			return i;
 		}
@@ -892,7 +831,7 @@ unsigned int UIntArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return UnmanagedPointer[index];
+	return ((unsigned int*)_unmanaged)[index];
 }
 void UIntArray::default::set(int index, unsigned int value)
 {
@@ -900,12 +839,7 @@ void UIntArray::default::set(int index, unsigned int value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	UnmanagedPointer[index] = value;
-}
-
-unsigned int* UIntArray::UnmanagedPointer::get()
-{
-	return (unsigned int*) GenericList::UnmanagedPointer;
+	((unsigned int*)_unmanaged)[index] = value;
 }
 
 
@@ -925,7 +859,7 @@ bool UShortArray::Contains(unsigned short item)
 	int length = Count;
 	for (i=Count; i<length; i++)
 	{
-		if (item == UnmanagedPointer[i])
+		if (item == ((unsigned short*)_unmanaged)[i])
 		{
 			return true;
 		}
@@ -948,7 +882,7 @@ void UShortArray::CopyTo(array<unsigned short>^ array, int arrayIndex)
 	int length = Count;
 	for (i=0; i<length; i++)
 	{
-		array[arrayIndex+i] = UnmanagedPointer[i];
+		array[arrayIndex+i] = ((unsigned short*)_unmanaged)[i];
 	}
 }
 
@@ -958,7 +892,7 @@ int UShortArray::IndexOf(unsigned short item)
 	int length = Count;
 	for (i=0; i<length; i++)
 	{
-		if (item == UnmanagedPointer[i])
+		if (item == ((unsigned short*)_unmanaged)[i])
 		{
 			return i;
 		}
@@ -970,7 +904,7 @@ unsigned short UShortArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return UnmanagedPointer[index];
+	return ((unsigned short*)_unmanaged)[index];
 }
 void UShortArray::default::set(int index, unsigned short value)
 {
@@ -978,12 +912,7 @@ void UShortArray::default::set(int index, unsigned short value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	UnmanagedPointer[index] = value;
-}
-
-unsigned short* UShortArray::UnmanagedPointer::get()
-{
-	return (unsigned short*) GenericList::UnmanagedPointer;
+	((unsigned short*)_unmanaged)[index] = value;
 }
 
 
@@ -1010,9 +939,10 @@ bool Vector3Array::Contains(Vector3 item)
 	int length = Count;
 	for (i=0; i<length; i++)
 	{
-		if (itemTemp->m_floats[0] == UnmanagedPointer[i].m_floats[0] &&
-			itemTemp->m_floats[1] == UnmanagedPointer[i].m_floats[1] &&
-			itemTemp->m_floats[2] == UnmanagedPointer[i].m_floats[2])
+		btVector3* vector = &((btVector3*)_unmanaged)[i];
+		if (itemTemp->m_floats[0] == vector->m_floats[0] &&
+			itemTemp->m_floats[1] == vector->m_floats[1] &&
+			itemTemp->m_floats[2] == vector->m_floats[2])
 		{
 			delete itemTemp;
 			return true;
@@ -1037,7 +967,7 @@ void Vector3Array::CopyTo(array<Vector3>^ array, int arrayIndex)
 	int i;
 	for (i=0; i<length; i++)
 	{
-		array[arrayIndex+i] = Math::BtVector3ToVector3(&UnmanagedPointer[i]);
+		array[arrayIndex+i] = Math::BtVector3ToVector3(&((btVector3*)_unmanaged)[i]);
 	}
 }
 
@@ -1049,9 +979,10 @@ int Vector3Array::IndexOf(Vector3 item)
 	int length = Count;
 	for (i=0; i<length; i++)
 	{
-		if (itemTemp->m_floats[0] == UnmanagedPointer[i].m_floats[0] &&
-			itemTemp->m_floats[1] == UnmanagedPointer[i].m_floats[1] &&
-			itemTemp->m_floats[2] == UnmanagedPointer[i].m_floats[2])
+		btVector3* vector = &((btVector3*)_unmanaged)[i];
+		if (itemTemp->m_floats[0] == vector->m_floats[0] &&
+			itemTemp->m_floats[1] == vector->m_floats[1] &&
+			itemTemp->m_floats[2] == vector->m_floats[2])
 		{
 			delete itemTemp;
 			return i;
@@ -1065,7 +996,7 @@ Vector3 Vector3Array::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return Math::BtVector3ToVector3(&UnmanagedPointer[index]);
+	return Math::BtVector3ToVector3(&((btVector3*)_unmanaged)[index]);
 }
 void Vector3Array::default::set(int index, Vector3 value)
 {
@@ -1073,10 +1004,5 @@ void Vector3Array::default::set(int index, Vector3 value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	Math::Vector3ToBtVector3(value, &UnmanagedPointer[index]);
-}
-
-btVector3* Vector3Array::UnmanagedPointer::get()
-{
-	return (btVector3*) GenericList::UnmanagedPointer;
+	Math::Vector3ToBtVector3(value, &((btVector3*)_unmanaged)[index]);
 }

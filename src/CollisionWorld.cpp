@@ -718,7 +718,7 @@ void CollisionWorld::Broadphase::set(BroadphaseInterface^ value)
 AlignedCollisionObjectArray^ CollisionWorld::CollisionObjectArray::get()
 {
 	btCollisionObjectArray* collisionObjectArray = &_world->getCollisionObjectArray();
-	if (_collisionObjectArray != nullptr && _collisionObjectArray->UnmanagedPointer == collisionObjectArray)
+	if (_collisionObjectArray != nullptr && _collisionObjectArray->_unmanaged == collisionObjectArray)
 		return _collisionObjectArray;
 
 	_collisionObjectArray = gcnew AlignedCollisionObjectArray(collisionObjectArray);

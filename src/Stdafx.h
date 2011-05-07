@@ -302,6 +302,12 @@ inline GCHandle VoidPtrToGCHandle(void* pointer)
 	managedObj = gcnew type(unmanagedPtr); \
 	return managedObj; }
 
+#define ReturnCachedObjectNew(type, managedObj, unmanagedPtr) { \
+	if (managedObj != nullptr && managedObj->_unmanaged == unmanagedPtr) \
+	return managedObj; \
+	managedObj = gcnew type(unmanagedPtr); \
+	return managedObj; }
+
 #define ReturnCachedObjectNullable(type, managedObj, unmanagedPtr) { \
 	if (managedObj != nullptr && managedObj->UnmanagedPointer == unmanagedPtr) \
 	return managedObj; \

@@ -77,7 +77,7 @@ btScalar CollisionAlgorithm::CalculateTimeOfImpact(CollisionObject^ body0,
 
 void CollisionAlgorithm::GetAllContactManifolds(AlignedManifoldArray^ manifoldArray)
 {
-	_algorithm->getAllContactManifolds(*manifoldArray->UnmanagedPointer);
+	_algorithm->getAllContactManifolds(*(btManifoldArray*)manifoldArray->_unmanaged);
 }
 
 void CollisionAlgorithm::ProcessCollision(CollisionObject^ body0, CollisionObject^ body1,

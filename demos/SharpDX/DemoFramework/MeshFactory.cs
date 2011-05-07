@@ -68,13 +68,10 @@ namespace DemoFramework
             if (VertexBuffer != null && VertexBuffer.Description.SizeInBytes == vectors.Length * 12)
             {
                 // Update existing buffer
-                using (var vData = new SharpDX.DataStream(vectors, true, false))
+                using (var data = VertexBuffer.Map(MapMode.WriteDiscard))
                 {
-                    using (var data = VertexBuffer.Map(MapMode.WriteDiscard))
-                    {
-                        vData.CopyTo(data);
-                        VertexBuffer.Unmap();
-                    }
+                    data.WriteRange(vectors, 0, vectors.Length);
+                    VertexBuffer.Unmap();
                 }
             }
             else
@@ -94,7 +91,6 @@ namespace DemoFramework
                 using (var data = new SharpDX.DataStream(vectors, false, false))
                 {
                     VertexBuffer = new Buffer(device, data, vertexBufferDesc);
-                    VertexBuffer.Unmap();
                 }
 
                 BufferBindings[0] = new VertexBufferBinding(VertexBuffer, 24, 0);
@@ -144,6 +140,7 @@ namespace DemoFramework
         uint activeColor;
         uint passiveColor;
         uint softBodyColor;
+        int linkColor = System.Drawing.Color.Black.ToArgb();
 
         public MeshFactory(Demo demo)
         {
@@ -925,27 +922,28 @@ namespace DemoFramework
         public void UpdateSoftBody(SoftBody softBody, ShapeData shapeData)
         {
             AlignedFaceArray faces = softBody.Faces;
-            int faceCount = faces.Count;
 
-            if (faceCount > 0)
+            if (faces.Count > 0)
             {
-                shapeData.VertexCount = faceCount * 3;
+                shapeData.VertexCount = faces.Count * 3;
 
                 Vector3[] vectors = new Vector3[shapeData.VertexCount * 2];
                 int v = 0;
 
-                foreach (Face face in faces)
+                int i;
+                for (i = 0; i<faces.Count; i++)
                 {
-                    NodePtrArray nodes = face.N;
+                    NodePtrArray nodes = faces[i].N;
                     Node n0 = nodes[0];
                     Node n1 = nodes[1];
                     Node n2 = nodes[2];
-                    vectors[v++] = n0.X;
-                    vectors[v++] = n0.Normal;
-                    vectors[v++] = n1.X;
-                    vectors[v++] = n1.Normal;
-                    vectors[v++] = n2.X;
-                    vectors[v++] = n2.Normal;
+                    vectors[v] = n0.X;
+                    vectors[v + 1] = n0.Normal;
+                    vectors[v + 2] = n1.X;
+                    vectors[v + 3] = n1.Normal;
+                    vectors[v + 4] = n2.X;
+                    vectors[v + 5] = n2.Normal;
+                    v += 6;
                 }
 
                 shapeData.SetDynamicVertexBuffer(device, vectors);
@@ -959,49 +957,52 @@ namespace DemoFramework
                 {
                     shapeData.VertexCount = tetraCount * 12;
 
-                    Vector3[] vectors = new Vector3[shapeData.VertexCount * 2];
+                    Vector3[] vectors = new Vector3[tetraCount * 24];
                     int v = 0;
 
-                    foreach (Tetra t in tetras)
+                    int count = tetras.Count;
+                    for (int i = 0; i < count; i++)
                     {
-                        NodePtrArray nodes = t.Nodes;
+                        NodePtrArray nodes = tetras[i].Nodes;
                         Vector3 v0 = nodes[0].X;
                         Vector3 v1 = nodes[1].X;
                         Vector3 v2 = nodes[2].X;
                         Vector3 v3 = nodes[3].X;
+                        Vector3 v10 = v1 - v0;
+                        Vector3 v02 = v0 - v2;
 
-                        Vector3 normal0 = -Vector3.Cross(v1 - v0, v2 - v0);
-                        Vector3 normal1 = Vector3.Cross(v1 - v0, v3 - v0);
-                        Vector3 normal2 = Vector3.Cross(v2 - v1, v3 - v1);
-                        Vector3 normal3 = Vector3.Cross(v0 - v2, v3 - v2);
+                        Vector3 normal = Vector3.Cross(v10, v02);
+                        vectors[v] = v0;
+                        vectors[v + 1] = normal;
+                        vectors[v + 2] = v1;
+                        vectors[v + 3] = normal;
+                        vectors[v + 4] = v2;
+                        vectors[v + 5] = normal;
 
-                        vectors[v++] = v0;
-                        vectors[v++] = normal0;
-                        vectors[v++] = v1;
-                        vectors[v++] = normal0;
-                        vectors[v++] = v2;
-                        vectors[v++] = normal0;
+                        normal = Vector3.Cross(v10, v3 - v0);
+                        vectors[v + 6] = v0;
+                        vectors[v + 7] = normal;
+                        vectors[v + 8] = v1;
+                        vectors[v + 9] = normal;
+                        vectors[v + 10] = v3;
+                        vectors[v + 11] = normal;
 
-                        vectors[v++] = v0;
-                        vectors[v++] = normal1;
-                        vectors[v++] = v1;
-                        vectors[v++] = normal1;
-                        vectors[v++] = v3;
-                        vectors[v++] = normal1;
+                        normal = Vector3.Cross(v2 - v1, v3 - v1);
+                        vectors[v + 12] = v1;
+                        vectors[v + 13] = normal;
+                        vectors[v + 14] = v2;
+                        vectors[v + 15] = normal;
+                        vectors[v + 16] = v3;
+                        vectors[v + 17] = normal;
 
-                        vectors[v++] = v1;
-                        vectors[v++] = normal2;
-                        vectors[v++] = v2;
-                        vectors[v++] = normal2;
-                        vectors[v++] = v3;
-                        vectors[v++] = normal2;
-
-                        vectors[v++] = v2;
-                        vectors[v++] = normal3;
-                        vectors[v++] = v0;
-                        vectors[v++] = normal3;
-                        vectors[v++] = v3;
-                        vectors[v++] = normal3;
+                        normal = Vector3.Cross(v02, v3 - v2);
+                        vectors[v + 18] = v2;
+                        vectors[v + 19] = normal;
+                        vectors[v + 20] = v0;
+                        vectors[v + 21] = normal;
+                        vectors[v + 22] = v3;
+                        vectors[v + 23] = normal;
+                        v += 24;
                     }
 
                     shapeData.SetDynamicVertexBuffer(device, vectors);
@@ -1010,16 +1011,15 @@ namespace DemoFramework
                 {
                     AlignedLinkArray links = softBody.Links;
                     int linkCount = links.Count;
-                    int linkColor = System.Drawing.Color.Black.ToArgb();
                     shapeData.VertexCount = linkCount * 2;
 
-                    Vector3[] vectors = new Vector3[shapeData.VertexCount * 2];
+                    Vector3[] vectors = new Vector3[linkCount * 4];
 
                     for (int i = 0; i < linkCount; i++)
                     {
-                        Link link = links[i];
-                        vectors[i * 4] = link.Nodes[0].X;
-                        vectors[i * 4 + 2] = link.Nodes[1].X;
+                        NodePtrArray nodes = links[i].Nodes;
+                        vectors[i * 4] = nodes[0].X;
+                        vectors[i * 4 + 2] = nodes[1].X;
                     }
 
                     shapeData.PrimitiveTopology = PrimitiveTopology.LineList;

@@ -17,7 +17,7 @@ AlignedIntArray^ Face::ConnectedFaces::get()
 }
 void Face::ConnectedFaces::set(AlignedIntArray^ value)
 {
-	_face->m_connectedFaces = *value->UnmanagedPointer;
+	_face->m_connectedFaces = *(btAlignedObjectArray<int>*)value->_unmanaged;
 }
 
 AlignedIntArray^ Face::Indices::get()
@@ -26,7 +26,7 @@ AlignedIntArray^ Face::Indices::get()
 }
 void Face::Indices::set(AlignedIntArray^ value)
 {
-	_face->m_indices = *value->UnmanagedPointer;
+	_face->m_indices = *(btAlignedObjectArray<int>*)value->_unmanaged;
 }
 
 ScalarArray^ Face::Plane::get()
@@ -152,7 +152,7 @@ AlignedVector3Array^ ConvexPolyhedron::UniqueEdges::get()
 }
 void ConvexPolyhedron::UniqueEdges::set(AlignedVector3Array^ value)
 {
-	_convexPolyhedron->m_uniqueEdges = *value->UnmanagedPointer;
+	_convexPolyhedron->m_uniqueEdges = *(btAlignedObjectArray<btVector3>*)value->_unmanaged;
 }
 
 AlignedVector3Array^ ConvexPolyhedron::Vertices::get()
@@ -161,7 +161,7 @@ AlignedVector3Array^ ConvexPolyhedron::Vertices::get()
 }
 void ConvexPolyhedron::Vertices::set(AlignedVector3Array^ value)
 {
-	_convexPolyhedron->m_vertices = *value->UnmanagedPointer;
+	_convexPolyhedron->m_vertices = *(btAlignedObjectArray<btVector3>*)value->_unmanaged;
 }
 
 btConvexPolyhedron* ConvexPolyhedron::UnmanagedPointer::get()

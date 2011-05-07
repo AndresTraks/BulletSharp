@@ -437,8 +437,9 @@ namespace SoftDemo
 
         void Init_TetraCube()
         {
+            String path = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
             SoftBody psb = SoftBodyHelpers.CreateFromTetGenFile(softBodyWorldInfo,
-                "data\\cube.ele", null, "data\\cube.node", false, true, true);
+                path + "\\data\\cube.ele", null, path + "\\data\\cube.node", false, true, true);
             SoftWorld.AddSoftBody(psb);
             psb.Scale(new Vector3(4, 4, 4));
             psb.Translate(0, 5, 0);

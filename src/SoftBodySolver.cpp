@@ -20,12 +20,12 @@ void SoftBody::SoftBodySolver::CopyBackToSoftBodies()
 
 void SoftBody::SoftBodySolver::Optimize(AlignedSoftBodyArray^ softBodies, bool forceUpdate)
 {
-	_solver->optimize(*softBodies->UnmanagedPointer, forceUpdate);
+	_solver->optimize(*(btSoftBody::tSoftBodyArray*)softBodies->_unmanaged, forceUpdate);
 }
 
 void SoftBody::SoftBodySolver::Optimize(AlignedSoftBodyArray^ softBodies)
 {
-	_solver->optimize(*softBodies->UnmanagedPointer);
+	_solver->optimize(*(btSoftBody::tSoftBodyArray*)softBodies->_unmanaged);
 }
 
 void SoftBody::SoftBodySolver::ProcessCollision(SoftBody^ softBody, CollisionObject^ collisionObject)
