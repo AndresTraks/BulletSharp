@@ -21,7 +21,7 @@ namespace BulletSharp
 
 	internal:
 		OverlappingPairCallback(btOverlappingPairCallback* pairCallback);
-		static OverlappingPairCallback^ GetObject(btOverlappingPairCallback* callback);
+		static OverlappingPairCallback^ GetManaged(btOverlappingPairCallback* callback);
 
 	public:
 		!OverlappingPairCallback();

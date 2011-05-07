@@ -72,6 +72,7 @@ namespace BulletSharp
 
 	public:
 		DebugDrawWrapper(IDebugDraw^ debugDraw);
+		virtual ~DebugDrawWrapper();
 
 		IDebugDraw^ getDebugDraw();
 		void setDebugDraw(IDebugDraw^ value);

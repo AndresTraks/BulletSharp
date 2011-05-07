@@ -24,6 +24,11 @@ bool BulletSharp::ObjectTable::Contains(Object^ managedObject)
 	return objectTable->ContainsValue(managedObject);
 }
 
+void BulletSharp::ObjectTable::Remove(void* unmanagedPointer)
+{
+	objectTable->Remove((intptr_t)unmanagedPointer);
+}
+
 generic<class T>
 T BulletSharp::ObjectTable::GetObject(intptr_t unmanagedPointer)
 {

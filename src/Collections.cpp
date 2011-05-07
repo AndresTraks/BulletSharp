@@ -738,7 +738,7 @@ void SoftBody::NodePtrArray::default::set(int index, Node^ value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	UnmanagedPointer[index] = GetUnmanagedNullable(value);
+	UnmanagedPointer[index] = (btSoftBody::Node*)GetUnmanagedNullableNew(value);
 }
 
 btSoftBody::Node** SoftBody::NodePtrArray::UnmanagedPointer::get()

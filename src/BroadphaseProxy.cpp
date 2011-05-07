@@ -54,7 +54,7 @@ BroadphaseProxy::BroadphaseProxy(btBroadphaseProxy* proxy)
 		UnmanagedPointer = proxy;
 }
 
-BroadphaseProxy^ BroadphaseProxy::GetObject(btBroadphaseProxy* broadphaseProxy)
+BroadphaseProxy^ BroadphaseProxy::GetManaged(btBroadphaseProxy* broadphaseProxy)
 {
 	if (broadphaseProxy == 0)
 		return nullptr;
@@ -216,7 +216,7 @@ void BroadphasePair::Algorithm::set(CollisionAlgorithm^ value)
 
 BroadphaseProxy^ BroadphasePair::Proxy0::get()
 {
-	return BroadphaseProxy::GetObject(UnmanagedPointer->m_pProxy0);
+	return BroadphaseProxy::GetManaged(UnmanagedPointer->m_pProxy0);
 }
 void BroadphasePair::Proxy0::set(BroadphaseProxy^ value)
 {
@@ -228,7 +228,7 @@ void BroadphasePair::Proxy0::set(BroadphaseProxy^ value)
 
 BroadphaseProxy^ BroadphasePair::Proxy1::get()
 {
-	return BroadphaseProxy::GetObject(UnmanagedPointer->m_pProxy1);
+	return BroadphaseProxy::GetManaged(UnmanagedPointer->m_pProxy1);
 }
 void BroadphasePair::Proxy1::set(BroadphaseProxy^ value)
 {

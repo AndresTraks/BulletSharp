@@ -294,6 +294,7 @@ inline GCHandle VoidPtrToGCHandle(void* pointer)
 }
 
 #define GetUnmanagedNullable(value) (value != nullptr ? value->UnmanagedPointer : 0)
+#define GetUnmanagedNullableNew(value) (value != nullptr ? value->_unmanaged : 0)
 
 #define ReturnCachedObject(type, managedObj, unmanagedPtr) { \
 	if (managedObj != nullptr && managedObj->UnmanagedPointer == unmanagedPtr) \

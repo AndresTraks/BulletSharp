@@ -663,8 +663,8 @@ namespace BulletSharp
 
 		public ref class Element
 		{
-		private:
-			btSoftBody::Element* _element;
+		internal:
+			btSoftBody::Element* _unmanaged;
 
 		internal:
 			Element(btSoftBody::Element* element);
@@ -677,13 +677,6 @@ namespace BulletSharp
 				Object^ get();
 				void set(Object^ value);
 			}
-
-		internal:
-			property btSoftBody::Element* UnmanagedPointer
-			{
-				btSoftBody::Element* get();
-				void set(btSoftBody::Element* value);
-			};
 		};
 
 		public ref class Feature : Element
@@ -698,12 +691,6 @@ namespace BulletSharp
 			{
 				BulletSharp::SoftBody::Material^ get();
 				void set(BulletSharp::SoftBody::Material^ value);
-			}
-
-		internal:
-			property btSoftBody::Feature* UnmanagedPointer
-			{
-				btSoftBody::Feature* get() new;
 			}
 		};
 
@@ -740,12 +727,6 @@ namespace BulletSharp
 			{
 				btScalar get();
 				void set(btScalar value);
-			}
-
-		internal:
-			property btSoftBody::Face* UnmanagedPointer
-			{
-				btSoftBody::Face* get() new;
 			}
 		};
 
@@ -1161,12 +1142,6 @@ namespace BulletSharp
 				btScalar get();
 				void set(btScalar value);
 			}
-
-		internal:
-			property btSoftBody::Link* UnmanagedPointer
-			{
-				btSoftBody::Link* get() new;
-			}
 		};
 
 		public ref class Material : Element
@@ -1199,12 +1174,6 @@ namespace BulletSharp
 			{
 				btScalar get();
 				void set(btScalar value);
-			}
-
-		internal:
-			property btSoftBody::Material* UnmanagedPointer
-			{
-				btSoftBody::Material* get() new;
 			}
 		};
 
@@ -1272,12 +1241,6 @@ namespace BulletSharp
 				Vector3 get();
 				void set(Vector3 value);
 			}
-
-		internal:
-			property btSoftBody::Node* UnmanagedPointer
-			{
-				btSoftBody::Node* get() new;
-			}
 		};
 
 		public ref class Note : Element
@@ -1314,12 +1277,6 @@ namespace BulletSharp
 			{
 				String^ get();
 				void set(String^ value);
-			}
-
-		internal:
-			property btSoftBody::Note* UnmanagedPointer
-			{
-				btSoftBody::Note* get() new;
 			}
 		};
 
@@ -1678,12 +1635,6 @@ namespace BulletSharp
 			{
 				btScalar get();
 				void set(btScalar value);
-			}
-
-		internal:
-			property btSoftBody::Tetra* UnmanagedPointer
-			{
-				btSoftBody::Tetra* get() new;
 			}
 		};
 

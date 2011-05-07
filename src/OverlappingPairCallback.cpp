@@ -14,14 +14,13 @@ OverlappingPairCallback::OverlappingPairCallback(btOverlappingPairCallback* pair
 	ObjectTable::Add(this, _pairCallback);
 }
 
-OverlappingPairCallback^ OverlappingPairCallback::GetObject(btOverlappingPairCallback* pairCallback)
+OverlappingPairCallback^ OverlappingPairCallback::GetManaged(btOverlappingPairCallback* pairCallback)
 {
+	if (ObjectTable::Contains((intptr_t)pairCallback))
+		return ObjectTable::GetObject<OverlappingPairCallback^>((intptr_t)pairCallback);
+
 	if (pairCallback == 0)
 		return nullptr;
-
-	OverlappingPairCallback^ cache = GetObjectFromTable(OverlappingPairCallback, pairCallback);
-	if (cache != nullptr)
-		return cache;
 
 #ifndef DISABLE_UNCOMMON
 	btGhostPairCallback* ghostPairCallback = dynamic_cast<btGhostPairCallback*>(pairCallback);
@@ -56,6 +55,7 @@ OverlappingPairCallback::!OverlappingPairCallback()
 
 	OnDisposing(this, nullptr);
 
+	ObjectTable::Remove(_pairCallback);
 	_pairCallback = NULL;
 
 	OnDisposed(this, nullptr);

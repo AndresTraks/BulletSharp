@@ -762,7 +762,7 @@ int CollisionWorld::NumCollisionObjects::get()
 
 OverlappingPairCache^ CollisionWorld::PairCache::get()
 {
-	return dynamic_cast<OverlappingPairCache^>(OverlappingPairCache::GetObject(_world->getPairCache()));
+	return dynamic_cast<OverlappingPairCache^>(OverlappingPairCache::GetManaged(_world->getPairCache()));
 }
 
 btCollisionWorld* CollisionWorld::UnmanagedPointer::get()

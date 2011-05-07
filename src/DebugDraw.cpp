@@ -18,6 +18,7 @@ DebugDraw::DebugDraw(DebugDrawWrapper* debugDraw)
 
 IDebugDraw^ DebugDraw::GetManaged(btIDebugDraw* debugDraw)
 {
+	// Compare to 0 before checking the table here since debugDraw is normally 0.
 	if (debugDraw == 0)
 		return nullptr;
 
@@ -335,6 +336,11 @@ void DebugDraw::UnmanagedPointer::set(DebugDrawWrapper* value)
 DebugDrawWrapper::DebugDrawWrapper(IDebugDraw^ debugDraw)
 {
 	_debugDraw = debugDraw;
+}
+
+DebugDrawWrapper::~DebugDrawWrapper()
+{
+	ObjectTable::Remove(this);
 }
 
 IDebugDraw^ DebugDrawWrapper::getDebugDraw()

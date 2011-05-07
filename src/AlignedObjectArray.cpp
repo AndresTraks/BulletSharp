@@ -889,7 +889,7 @@ AlignedFaceArray::AlignedFaceArray()
 
 void AlignedFaceArray::Add(Face^ face)
 {
-	UnmanagedPointer->push_back(*face->UnmanagedPointer);
+	UnmanagedPointer->push_back((btSoftBody::Face&)*face->_unmanaged);
 }
 
 void AlignedFaceArray::Clear()
@@ -952,7 +952,7 @@ void AlignedFaceArray::default::set(int index, Face^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	FaceArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+	FaceArray_SetDefault(UnmanagedPointer, index, (btSoftBody::Face*)value->_unmanaged);
 }
 
 btAlignedObjectArray<btSoftBody::Face>* AlignedFaceArray::UnmanagedPointer::get()
@@ -1381,7 +1381,7 @@ AlignedLinkArray::AlignedLinkArray()
 
 void AlignedLinkArray::Add(BulletSharp::SoftBody::Link^ link)
 {
-	UnmanagedPointer->push_back(*link->UnmanagedPointer);
+	UnmanagedPointer->push_back((btSoftBody::Link&)*link->_unmanaged);
 }
 
 void AlignedLinkArray::Clear()
@@ -1444,7 +1444,7 @@ void AlignedLinkArray::default::set(int index, BulletSharp::SoftBody::Link^ valu
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	AlignedLinkArray_SetDefault(UnmanagedPointer, index, GetUnmanagedNullable(value));
+	AlignedLinkArray_SetDefault(UnmanagedPointer, index, (btSoftBody::Link*)GetUnmanagedNullableNew(value));
 }
 
 btSoftBody::tLinkArray* AlignedLinkArray::UnmanagedPointer::get()
@@ -1465,7 +1465,7 @@ AlignedMaterialArray::AlignedMaterialArray()
 
 void AlignedMaterialArray::Add(BulletSharp::SoftBody::Material^ material)
 {
-	UnmanagedPointer->push_back(material->UnmanagedPointer);
+	UnmanagedPointer->push_back((btSoftBody::Material*)material->_unmanaged);
 }
 
 void AlignedMaterialArray::Clear()
@@ -1475,7 +1475,7 @@ void AlignedMaterialArray::Clear()
 
 bool AlignedMaterialArray::Contains(BulletSharp::SoftBody::Material^ material)
 {
-	return UnmanagedPointer->findLinearSearch(material->UnmanagedPointer) != UnmanagedPointer->size();
+	return UnmanagedPointer->findLinearSearch((btSoftBody::Material*)material->_unmanaged) != UnmanagedPointer->size();
 }
 
 void AlignedMaterialArray::CopyTo(array<BulletSharp::SoftBody::Material^>^ array, int arrayIndex)
@@ -1499,7 +1499,7 @@ void AlignedMaterialArray::CopyTo(array<BulletSharp::SoftBody::Material^>^ array
 
 int AlignedMaterialArray::IndexOf(BulletSharp::SoftBody::Material^ material)
 {
-	int i = UnmanagedPointer->findLinearSearch(material->UnmanagedPointer);
+	int i = UnmanagedPointer->findLinearSearch((btSoftBody::Material*)material->_unmanaged);
 	return i != UnmanagedPointer->size() ? i : -1;
 }
 
@@ -1511,7 +1511,7 @@ void AlignedMaterialArray::PopBack()
 bool AlignedMaterialArray::Remove(BulletSharp::SoftBody::Material^ material)
 {
 	int sizeBefore = UnmanagedPointer->size();
-	UnmanagedPointer->remove(material->UnmanagedPointer);
+	UnmanagedPointer->remove((btSoftBody::Material*)material->_unmanaged);
 	return sizeBefore != UnmanagedPointer->size();
 }
 
@@ -1540,7 +1540,7 @@ void AlignedMaterialArray::default::set(int index, BulletSharp::SoftBody::Materi
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*UnmanagedPointer)[index] = GetUnmanagedNullable(value);
+	(*UnmanagedPointer)[index] = (btSoftBody::Material*)GetUnmanagedNullableNew(value);
 }
 
 btSoftBody::tMaterialArray* AlignedMaterialArray::UnmanagedPointer::get()
@@ -1562,7 +1562,7 @@ BulletSharp::SoftBody::AlignedNodeArray::AlignedNodeArray()
 
 void BulletSharp::SoftBody::AlignedNodeArray::Add(Node^ node)
 {
-	UnmanagedPointer->push_back(*node->UnmanagedPointer);
+	UnmanagedPointer->push_back((btSoftBody::Node&)*node->_unmanaged);
 }
 
 void BulletSharp::SoftBody::AlignedNodeArray::Clear()
@@ -1624,7 +1624,7 @@ void BulletSharp::SoftBody::AlignedNodeArray::default::set(int index, Node^ valu
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	NodeArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+	NodeArray_SetDefault(UnmanagedPointer, index, (btSoftBody::Node*)value->_unmanaged);
 }
 
 btSoftBody::tNodeArray* BulletSharp::SoftBody::AlignedNodeArray::UnmanagedPointer::get()
@@ -1645,7 +1645,7 @@ AlignedNodePtrArray::AlignedNodePtrArray()
 
 void AlignedNodePtrArray::Add(BulletSharp::SoftBody::Node^ node)
 {
-	UnmanagedPointer->push_back(node->UnmanagedPointer);
+	UnmanagedPointer->push_back((btSoftBody::Node*)node->_unmanaged);
 }
 
 void AlignedNodePtrArray::Clear()
@@ -1655,7 +1655,7 @@ void AlignedNodePtrArray::Clear()
 
 bool AlignedNodePtrArray::Contains(BulletSharp::SoftBody::Node^ node)
 {
-	return UnmanagedPointer->findLinearSearch(node->UnmanagedPointer) != UnmanagedPointer->size();
+	return UnmanagedPointer->findLinearSearch((btSoftBody::Node*)node->_unmanaged) != UnmanagedPointer->size();
 }
 
 void AlignedNodePtrArray::CopyTo(array<BulletSharp::SoftBody::Node^>^ array, int arrayIndex)
@@ -1679,7 +1679,7 @@ void AlignedNodePtrArray::CopyTo(array<BulletSharp::SoftBody::Node^>^ array, int
 
 int AlignedNodePtrArray::IndexOf(BulletSharp::SoftBody::Node^ node)
 {
-	int i = UnmanagedPointer->findLinearSearch(node->UnmanagedPointer);
+	int i = UnmanagedPointer->findLinearSearch((btSoftBody::Node*)node->_unmanaged);
 	return i != UnmanagedPointer->size() ? i : -1;
 }
 
@@ -1691,7 +1691,7 @@ void AlignedNodePtrArray::PopBack()
 bool AlignedNodePtrArray::Remove(BulletSharp::SoftBody::Node^ node)
 {
 	int sizeBefore = UnmanagedPointer->size();
-	UnmanagedPointer->remove(node->UnmanagedPointer);
+	UnmanagedPointer->remove((btSoftBody::Node*)node->_unmanaged);
 	return sizeBefore != UnmanagedPointer->size();
 }
 
@@ -1720,7 +1720,7 @@ void AlignedNodePtrArray::default::set(int index, BulletSharp::SoftBody::Node^ v
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*UnmanagedPointer)[index] = GetUnmanagedNullable(value);
+	(*UnmanagedPointer)[index] = (btSoftBody::Node*)GetUnmanagedNullableNew(value);
 }
 
 btAlignedObjectArray<btSoftBody::Node*>* AlignedNodePtrArray::UnmanagedPointer::get()
@@ -1741,7 +1741,7 @@ AlignedNoteArray::AlignedNoteArray()
 
 void AlignedNoteArray::Add(Note^ note)
 {
-	UnmanagedPointer->push_back(*note->UnmanagedPointer);
+	UnmanagedPointer->push_back((btSoftBody::Note&)*note->_unmanaged);
 }
 
 void AlignedNoteArray::Clear()
@@ -1803,7 +1803,7 @@ void AlignedNoteArray::default::set(int index, Note^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	NoteArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+	NoteArray_SetDefault(UnmanagedPointer, index, (btSoftBody::Note*)value->_unmanaged);
 }
 
 btSoftBody::tNoteArray* AlignedNoteArray::UnmanagedPointer::get()
@@ -2284,7 +2284,7 @@ AlignedTetraArray::AlignedTetraArray()
 
 void AlignedTetraArray::Add(Tetra^ tetra)
 {
-	UnmanagedPointer->push_back(*tetra->UnmanagedPointer);
+	UnmanagedPointer->push_back((btSoftBody::Tetra&)*tetra->_unmanaged);
 }
 
 void AlignedTetraArray::Clear()
@@ -2347,7 +2347,7 @@ void AlignedTetraArray::default::set(int index, Tetra^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	TetraArray_SetDefault(UnmanagedPointer, index, value->UnmanagedPointer);
+	TetraArray_SetDefault(UnmanagedPointer, index, (btSoftBody::Tetra*)value->_unmanaged);
 }
 
 btAlignedObjectArray<btSoftBody::Tetra>* AlignedTetraArray::UnmanagedPointer::get()

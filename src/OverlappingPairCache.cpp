@@ -55,6 +55,7 @@ OverlapFilterCallback::!OverlapFilterCallback()
 
 	OnDisposing(this, nullptr);
 
+	ObjectTable::Remove(_callback);
 	_callback = NULL;
 
 	OnDisposed(this, nullptr);
@@ -76,7 +77,7 @@ OverlapFilterCallback::OverlapFilterCallback(btOverlapFilterCallback* callback)
 	_callback = callback;
 }
 
-OverlapFilterCallback^ OverlapFilterCallback::GetObject(btOverlapFilterCallback* callback)
+OverlapFilterCallback^ OverlapFilterCallback::GetManaged(btOverlapFilterCallback* callback)
 {
 	return GetObjectFromTable(OverlapFilterCallback, callback);
 }
@@ -184,7 +185,7 @@ int HashedOverlappingPairCache::Count::get()
 
 OverlapFilterCallback^ HashedOverlappingPairCache::OverlapFilterCallback::get()
 {
-	return BulletSharp::OverlapFilterCallback::GetObject(UnmanagedPointer->getOverlapFilterCallback());
+	return BulletSharp::OverlapFilterCallback::GetManaged(UnmanagedPointer->getOverlapFilterCallback());
 }
 void HashedOverlappingPairCache::OverlapFilterCallback::set(BulletSharp::OverlapFilterCallback^ value)
 {
@@ -214,7 +215,7 @@ bool SortedOverlappingPairCache::NeedsBroadphaseCollision(BroadphaseProxy^ proxy
 
 OverlapFilterCallback^ SortedOverlappingPairCache::OverlapFilterCallback::get()
 {
-	return BulletSharp::OverlapFilterCallback::GetObject(UnmanagedPointer->getOverlapFilterCallback());
+	return BulletSharp::OverlapFilterCallback::GetManaged(UnmanagedPointer->getOverlapFilterCallback());
 }
 void SortedOverlappingPairCache::OverlapFilterCallback::set(BulletSharp::OverlapFilterCallback^ value)
 {
@@ -250,5 +251,5 @@ OverlapFilterCallbackWrapper::OverlapFilterCallbackWrapper(OverlapFilterCallback
 
 bool OverlapFilterCallbackWrapper::needBroadphaseCollision(btBroadphaseProxy* proxy0, btBroadphaseProxy* proxy1) const
 {
-	return _callback->NeedBroadphaseCollision(BroadphaseProxy::GetObject(proxy0), BroadphaseProxy::GetObject(proxy1));
+	return _callback->NeedBroadphaseCollision(BroadphaseProxy::GetManaged(proxy0), BroadphaseProxy::GetManaged(proxy1));
 }

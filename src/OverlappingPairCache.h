@@ -49,7 +49,7 @@ namespace BulletSharp
 
 	internal:
 		OverlapFilterCallback(btOverlapFilterCallback* callback);
-		static OverlapFilterCallback^ GetObject(btOverlapFilterCallback* callback);
+		static OverlapFilterCallback^ GetManaged(btOverlapFilterCallback* callback);
 
 	public:
 		!OverlapFilterCallback();

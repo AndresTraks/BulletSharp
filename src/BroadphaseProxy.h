@@ -29,7 +29,7 @@ namespace BulletSharp
 			CollisionFilterGroups collisionFilterMask);
 
 	internal:
-		static BroadphaseProxy^ GetObject(btBroadphaseProxy* broadphaseProxy);
+		static BroadphaseProxy^ GetManaged(btBroadphaseProxy* broadphaseProxy);
 
 	public:
 		property Vector3 AabbMin
