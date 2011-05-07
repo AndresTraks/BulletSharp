@@ -25,7 +25,6 @@ namespace DemoFramework
     public class ShapeData : System.IDisposable
     {
         public Buffer VertexBuffer { get; private set; }
-        public VertexBufferBinding VertexBufferBinding { get; private set; }
         public int VertexCount { get; set; }
 
         public Buffer IndexBuffer { get; set; }
@@ -33,15 +32,16 @@ namespace DemoFramework
         public Format IndexFormat { get; set; }
 
         public Buffer InstanceDataBuffer { get; set; }
-        public VertexBufferBinding InstanceDataBufferBinding { get; set; }
         public List<InstanceData> InstanceDataList { get; set; }
 
         public PrimitiveTopology PrimitiveTopology { get; set; }
+        public VertexBufferBinding[] BufferBindings { get; private set; }
 
         public ShapeData()
         {
             InstanceDataList = new List<InstanceData>();
             PrimitiveTopology = PrimitiveTopology.TriangleList;
+            BufferBindings = new VertexBufferBinding[2];
         }
 
         public void SetVertexBuffer(Device device, Vector3[] vectors)
@@ -59,7 +59,7 @@ namespace DemoFramework
                 VertexBuffer.Unmap();
             }
 
-            VertexBufferBinding = new VertexBufferBinding(VertexBuffer, 24, 0);
+            BufferBindings[0] = new VertexBufferBinding(VertexBuffer, 24, 0);
         }
 
         // Used with soft bodies
@@ -97,7 +97,7 @@ namespace DemoFramework
                     VertexBuffer.Unmap();
                 }
 
-                VertexBufferBinding = new VertexBufferBinding(VertexBuffer, 24, 0);
+                BufferBindings[0] = new VertexBufferBinding(VertexBuffer, 24, 0);
             }
         }
 
@@ -710,7 +710,7 @@ namespace DemoFramework
                 // Create an initial instance data buffer for a single instance
                 instanceDataDesc.SizeInBytes = Marshal.SizeOf(typeof(InstanceData));
                 shapeData.InstanceDataBuffer = new Buffer(device, instanceDataDesc);
-                shapeData.InstanceDataBufferBinding = new VertexBufferBinding(shapeData.InstanceDataBuffer, instanceDataDesc.SizeInBytes, 0);
+                shapeData.BufferBindings[1] = new VertexBufferBinding(shapeData.InstanceDataBuffer, instanceDataDesc.SizeInBytes, 0);
 
                 shapes.Add(shape, shapeData);
             }
@@ -796,7 +796,7 @@ namespace DemoFramework
 
                     instanceDataDesc.SizeInBytes = s.InstanceDataList.Count * 68;
                     s.InstanceDataBuffer = new Buffer(device, instanceDataDesc);
-                    s.InstanceDataBufferBinding = new VertexBufferBinding(s.InstanceDataBuffer, 68, 0);
+                    s.BufferBindings[1] = new VertexBufferBinding(s.InstanceDataBuffer, 68, 0);
                 }
 
                 // Copy the instance data over to the instance buffer
@@ -827,7 +827,7 @@ namespace DemoFramework
 
             foreach (ShapeData s in shapes.Values)
             {
-                ia.SetVertexBuffers(0, new[] { s.VertexBufferBinding, s.InstanceDataBufferBinding });
+                ia.SetVertexBuffers(0, s.BufferBindings);
                 ia.SetPrimitiveTopology(s.PrimitiveTopology);
                 if (s.IndexBuffer != null)
                 {

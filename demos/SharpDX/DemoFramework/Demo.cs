@@ -58,6 +58,7 @@ namespace DemoFramework
         DepthStencilState depthStencilState;
         DepthStencilState lightDepthStencilState;
         bool shadowsEnabled = false;
+        public RenderTargetView[] renderViews = new RenderTargetView[1];
         
         VertexBufferBinding quadBinding;
         InputLayout quadBufferLayout;
@@ -217,7 +218,10 @@ namespace DemoFramework
 
             // New RenderTargetView from the backbuffer
             using (var bb = Texture2D.FromSwapChain<Texture2D>(_swapChain, 0))
+            {
                 RenderView = new RenderTargetView(Device, bb);
+                renderViews[0] = RenderView;
+            }
 
             Texture2DDescription gBufferDesc = new Texture2DDescription()
             {
@@ -459,7 +463,7 @@ namespace DemoFramework
             
             // G-buffer render pass
             outputMerger.SetDepthStencilState(null, 0);
-            outputMerger.SetRenderTargets(1, new RenderTargetView[] { RenderView }, null);
+            outputMerger.SetRenderTargets(1, renderViews, null);
             GBufferRenderPass.Apply();
 
             inputAssembler.SetVertexBuffers(0, quadBinding);
