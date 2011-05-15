@@ -206,55 +206,59 @@ namespace DemoFramework
             shapeData.VertexCount = 36;
 
             Vector3[] vectors = new Vector3[shapeData.VertexCount * 2];
+            Vector3 normal;
             int v = 0;
 
             // Draw two sides
             for (int i = 1; i != -3; i -= 2)
             {
+                normal = new Vector3(i, 0, 0);
                 vectors[v++] = new Vector3(i * x, y, -z); // Position
-                vectors[v++] = new Vector3(i, 0, 0);      // Normal
+                vectors[v++] = normal;
                 vectors[v++] = new Vector3(i * x, -y, -z);
-                vectors[v++] = new Vector3(i, 0, 0);
+                vectors[v++] = normal;
                 vectors[v++] = new Vector3(i * x, -y, z);
-                vectors[v++] = new Vector3(i, 0, 0);
+                vectors[v++] = normal;
                 vectors[v++] = new Vector3(i * x, y, -z);
-                vectors[v++] = new Vector3(i, 0, 0);
+                vectors[v++] = normal;
                 vectors[v++] = new Vector3(i * x, y, z);
-                vectors[v++] = new Vector3(i, 0, 0);
+                vectors[v++] = normal;
                 vectors[v++] = new Vector3(i * x, -y, z);
-                vectors[v++] = new Vector3(i, 0, 0);
+                vectors[v++] = normal;
             }
 
             for (int i = 1; i != -3; i -= 2)
             {
+                normal = new Vector3(0, 0, i);
                 vectors[v++] = new Vector3(-x, y, i * z);
-                vectors[v++] = new Vector3(0, 0, i);
+                vectors[v++] = normal;
                 vectors[v++] = new Vector3(-x, -y, i * z);
-                vectors[v++] = new Vector3(0, 0, i);
+                vectors[v++] = normal;
                 vectors[v++] = new Vector3(x, -y, i * z);
-                vectors[v++] = new Vector3(0, 0, i);
+                vectors[v++] = normal;
                 vectors[v++] = new Vector3(-x, y, i * z);
-                vectors[v++] = new Vector3(0, 0, i);
+                vectors[v++] = normal;
                 vectors[v++] = new Vector3(x, y, i * z);
-                vectors[v++] = new Vector3(0, 0, i);
+                vectors[v++] = normal;
                 vectors[v++] = new Vector3(x, -y, i * z);
-                vectors[v++] = new Vector3(0, 0, i);
+                vectors[v++] = normal;
             }
 
             for (int i = 1; i != -3; i -= 2)
             {
+                normal = new Vector3(0, i, 0);
                 vectors[v++] = new Vector3(-x, i * y, -z);
-                vectors[v++] = new Vector3(0, i, 0);
+                vectors[v++] = normal;
                 vectors[v++] = new Vector3(x, i * y, -z);
-                vectors[v++] = new Vector3(0, i, 0);
+                vectors[v++] = normal;
                 vectors[v++] = new Vector3(-x, i * y, z);
-                vectors[v++] = new Vector3(0, i, 0);
+                vectors[v++] = normal;
                 vectors[v++] = new Vector3(x, i * y, z);
-                vectors[v++] = new Vector3(0, i, 0);
+                vectors[v++] = normal;
                 vectors[v++] = new Vector3(-x, i * y, z);
-                vectors[v++] = new Vector3(0, i, 0);
+                vectors[v++] = normal;
                 vectors[v++] = new Vector3(x, i * y, -z);
-                vectors[v++] = new Vector3(0, i, 0);
+                vectors[v++] = normal;
             }
 
             shapeData.SetVertexBuffer(device, vectors);
@@ -806,9 +810,7 @@ namespace DemoFramework
                     List<InstanceData> list = s.InstanceDataList;
                     for (i = 0; i < list.Count; i++)
                     {
-                        InstanceData instance = list[i];
-                        data.Write(instance.WorldTransform);
-                        data.Write(instance.Color);
+                        data.Write(list[i]);
                     }
                     s.InstanceDataBuffer.Unmap();
                 }
