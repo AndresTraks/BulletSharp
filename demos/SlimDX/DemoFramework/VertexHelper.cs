@@ -22,6 +22,22 @@ namespace DemoFramework
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    public struct PositionedNormal
+    {
+        public static readonly VertexFormat FVF = VertexFormat.PositionNormal;
+        public static readonly int Stride = 2 * Vector3.SizeInBytes;
+
+        public Vector3 Position;
+        public Vector3 Normal;
+
+        public PositionedNormal(Vector3 pos, Vector3 normal)
+        {
+            Position = pos;
+            Normal = normal;
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public struct PositionColored
     {
         public static readonly VertexFormat FVF = VertexFormat.Position | VertexFormat.Diffuse;

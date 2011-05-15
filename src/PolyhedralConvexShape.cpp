@@ -19,8 +19,8 @@ void PolyhedralConvexShape::GetEdge(int index, [Out] Vector3% pointA, [Out] Vect
 
 	UnmanagedPointer->getEdge(index, *paTemp, *pbTemp);
 
-	pointA = Math::BtVector3ToVector3(paTemp);
-	pointB = Math::BtVector3ToVector3(pbTemp);
+	Math::BtVector3ToVector3(paTemp, pointA);
+	Math::BtVector3ToVector3(pbTemp, pointB);
 
 	delete paTemp;
 	delete pbTemp;
@@ -33,8 +33,8 @@ void PolyhedralConvexShape::GetPlane([Out] Vector3% planeNormal, [Out] Vector3% 
 
 	UnmanagedPointer->getPlane(*planeNormalTemp, *planeSupportTemp, index);
 
-	planeNormal = Math::BtVector3ToVector3(planeNormalTemp);
-	planeSupport = Math::BtVector3ToVector3(planeSupportTemp);
+	Math::BtVector3ToVector3(planeNormalTemp, planeNormal);
+	Math::BtVector3ToVector3(planeSupportTemp, planeSupport);
 
 	delete planeNormalTemp;
 	delete planeSupportTemp;
@@ -46,7 +46,7 @@ void PolyhedralConvexShape::GetVertex(int index, [Out] Vector3% vertex)
 
 	UnmanagedPointer->getVertex(index, *vtxTemp);
 
-	vertex = Math::BtVector3ToVector3(vtxTemp);
+	Math::BtVector3ToVector3(vtxTemp, vertex);
 	delete vtxTemp;
 }
 
@@ -106,8 +106,8 @@ void PolyhedralConvexAabbCachingShape::GetNonvirtualAabb(Matrix trans, [Out] Vec
 
 	UnmanagedPointer->getNonvirtualAabb(*transTemp, *aabbMinTemp, *aabbMaxTemp, margin);
 
-	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
-	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
+	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
+	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
 
 	delete transTemp;
 	delete aabbMinTemp;

@@ -275,7 +275,7 @@ namespace BulletSharp
 		GImpactMeshShapePart();
 		GImpactMeshShapePart(StridingMeshInterface^ meshInterface, int part);
 
-		void GetVertex(int vertex_index, Vector3% vertex);
+		void GetVertex(int vertex_index, [Out] Vector3% vertex);
 
 		property int Part
 		{

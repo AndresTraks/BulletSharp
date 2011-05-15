@@ -6,8 +6,8 @@ namespace BulletSharp
 
 	public ref class MotionState
 	{
-	private:
-		btMotionState* _motionState;
+	internal:
+		btMotionState* _unmanaged;
 
 	internal:
 		MotionState(btMotionState* motionState);
@@ -17,17 +17,12 @@ namespace BulletSharp
 		~MotionState();
 
 	public:
+		void GetWorldTransform([Out] Matrix% transform);
+
 		property Matrix WorldTransform
 		{
 			virtual Matrix get();
 			virtual void set(Matrix value);
-		}
-
-	internal:
-		property btMotionState* UnmanagedPointer
-		{
-			virtual btMotionState* get();
-			void set(btMotionState* value);
 		}
 	};
 
@@ -43,7 +38,7 @@ namespace BulletSharp
 
 		virtual void setWorldTransform(const btTransform& worldTrans)
 		{
-			_motionState->WorldTransform = Math::BtTransformToMatrix(&worldTrans);
+			Math::BtTransformToMatrix(&worldTrans, _motionState->WorldTransform);
 		}
 	};
 };

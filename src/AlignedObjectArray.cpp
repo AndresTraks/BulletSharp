@@ -2291,7 +2291,7 @@ void AlignedVector3Array::CopyTo(array<Vector3>^ array, int arrayIndex)
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = Math::BtVector3ToVector3(&(*(btAlignedObjectArray<btVector3>*)_unmanaged)[i]);
+		Math::BtVector3ToVector3(&(*(btAlignedObjectArray<btVector3>*)_unmanaged)[i], array[arrayIndex+i]);
 	}
 }
 

@@ -33,7 +33,7 @@ void TriangleShape::CalcNormal([Out] Vector3% normal)
 {
 	btVector3* normalTemp = new btVector3;
 	UnmanagedPointer->calcNormal(*normalTemp);
-	normal = Math::BtVector3ToVector3(normalTemp);
+	Math::BtVector3ToVector3(normalTemp, normal);
 	delete normalTemp;
 }
 
@@ -44,8 +44,8 @@ void TriangleShape::GetPlaneEquation(int index, [Out] Vector3% planeNormal, [Out
 
 	UnmanagedPointer->getPlaneEquation(index, *planeNormalTemp, *planeSupportTemp);
 	
-	planeNormal = Math::BtVector3ToVector3(planeNormalTemp);
-	planeSupport = Math::BtVector3ToVector3(planeSupportTemp);
+	Math::BtVector3ToVector3(planeNormalTemp, planeNormal);
+	Math::BtVector3ToVector3(planeSupportTemp, planeSupport);
 	
 	delete planeNormalTemp;
 }

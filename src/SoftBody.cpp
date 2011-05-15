@@ -1566,6 +1566,16 @@ BulletSharp::SoftBody::Node::Node()
 {
 }
 
+void BulletSharp::SoftBody::Node::GetNormal([Out] Vector3% normal)
+{
+	Math::BtVector3ToVector3(&((btSoftBody::Node*)_unmanaged)->m_n, normal);
+}
+
+void BulletSharp::SoftBody::Node::GetX([Out] Vector3% x)
+{
+	Math::BtVector3ToVector3(&((btSoftBody::Node*)_unmanaged)->m_x, x);
+}
+
 btScalar BulletSharp::SoftBody::Node::Area::get()
 {
 	return ((btSoftBody::Node*)_unmanaged)->m_area;
@@ -2739,15 +2749,15 @@ int BulletSharp::SoftBody::SoftBody::GenerateClusters(int k)
 	return UnmanagedPointer->generateClusters(k);
 }
 
-void BulletSharp::SoftBody::SoftBody::GetAabb(Vector3% aabbMin, Vector3% aabbMax)
+void BulletSharp::SoftBody::SoftBody::GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
 {
 	btVector3* aabbMinTemp = new btVector3;
 	btVector3* aabbMaxTemp = new btVector3;
 
 	UnmanagedPointer->getAabb(*aabbMinTemp, *aabbMaxTemp);
 
-	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
-	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
+	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
+	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
 
 	delete aabbMinTemp;
 	delete aabbMaxTemp;

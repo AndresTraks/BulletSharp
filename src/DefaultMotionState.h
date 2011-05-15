@@ -9,11 +9,5 @@ namespace BulletSharp
 	public:
 		DefaultMotionState(Matrix startTrans);
 		DefaultMotionState();
-
-	internal:
-		property btDefaultMotionState* UnmanagedPointer
-		{
-			btDefaultMotionState* get() new;
-		}
 	};
 };

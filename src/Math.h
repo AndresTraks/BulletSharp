@@ -42,6 +42,7 @@ namespace BulletSharp
 		{
 			return Vector3(vector->m_floats[0], vector->m_floats[1], vector->m_floats[2]);
 		}
+		static void BtVector3ToVector3(const btVector3* vector, [Out] Vector3%);
 		static btVector3* Vector3ToBtVector3(Vector3);
 		static void Vector3ToBtVector3(Vector3, btVector3*);
 		static btVector3* Vector3ArrayToUnmanaged(array<Vector3>^);
@@ -58,6 +59,7 @@ namespace BulletSharp
 		static btQuaternion* QuaternionToBtQuat(Quaternion);
 
 		static Matrix BtTransformToMatrix(const btTransform*);
+		static void BtTransformToMatrix(const btTransform*, [Out] Matrix%);
 		static btTransform* MatrixToBtTransform(Matrix);
 		static void MatrixToBtTransform(Matrix, btTransform*);
 

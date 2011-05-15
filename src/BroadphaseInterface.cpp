@@ -109,8 +109,8 @@ void BroadphaseInterface::GetAabb(BroadphaseProxy^ proxy, Vector3% aabbMin, Vect
 
 	_broadphase->getAabb(proxy->UnmanagedPointer, *aabbMinTemp, *aabbMaxTemp);
 
-	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
-	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
+	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
+	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
 
 	delete aabbMinTemp;
 	delete aabbMaxTemp;
@@ -123,8 +123,8 @@ void BroadphaseInterface::GetBroadphaseAabb(Vector3% aabbMin, Vector3% aabbMax)
 
 	_broadphase->getBroadphaseAabb(*aabbMinTemp, *aabbMaxTemp);
 
-	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
-	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
+	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
+	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
 
 	delete aabbMinTemp;
 	delete aabbMaxTemp;

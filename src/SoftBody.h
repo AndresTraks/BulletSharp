@@ -1185,6 +1185,8 @@ namespace BulletSharp
 
 		public:
 			Node();
+			void GetNormal([Out] Vector3% normal);
+			void GetX([Out] Vector3% x);
 
 			property btScalar Area
 			{

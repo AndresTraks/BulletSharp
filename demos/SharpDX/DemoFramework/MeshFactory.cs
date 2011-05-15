@@ -128,6 +128,7 @@ namespace DemoFramework
     public class MeshFactory : System.IDisposable
     {
         Device device;
+        Device.InputAssemblerStage inputAssembler;
         Demo demo;
         //Dictionary<CollisionShape, Mesh> shapes = new Dictionary<CollisionShape, Mesh>();
         Dictionary<CollisionShape, ShapeData> shapes = new Dictionary<CollisionShape, ShapeData>();
@@ -146,6 +147,7 @@ namespace DemoFramework
         {
             this.demo = demo;
             this.device = demo.Device;
+            this.inputAssembler = device.InputAssembler;
             
             instanceDataDesc = new BufferDescription()
             {
@@ -719,14 +721,15 @@ namespace DemoFramework
             return shapeData;
         }
 
-        void InitInstanceData(CollisionObject colObj, CollisionShape shape, ShapeData shapeData, Matrix transform)
+        void InitInstanceData(CollisionObject colObj, CollisionShape shape, ShapeData shapeData, ref Matrix transform)
         {
             if (shape.ShapeType == BroadphaseNativeType.CompoundShape)
             {
                 CompoundShape compoundShape = shape as CompoundShape;
                 foreach (CompoundShapeChild child in compoundShape.ChildList)
                 {
-                    InitInstanceData(colObj, child.ChildShape, shapes[child.ChildShape], child.Transform * transform);
+                    transform = child.Transform * transform;
+                    InitInstanceData(colObj, child.ChildShape, shapes[child.ChildShape], ref transform);
                 }
             }
             else if (shape.ShapeType == BroadphaseNativeType.SoftBodyShape)
@@ -775,9 +778,9 @@ namespace DemoFramework
                 }
                 else
                 {
-                    transform = (colObj as RigidBody).MotionState.WorldTransform;
+                    (colObj as RigidBody).MotionState.GetWorldTransform(out transform);
                 }
-                InitInstanceData(colObj, shape, shapeData, transform);
+                InitInstanceData(colObj, shape, shapeData, ref transform);
             }
 
             foreach (KeyValuePair<CollisionShape, ShapeData> sh in shapes)
@@ -827,16 +830,15 @@ namespace DemoFramework
 
         public void RenderInstanced()
         {
-            Device.InputAssemblerStage ia = device.InputAssembler;
-            ia.SetInputLayout(inputLayout);
+            inputAssembler.SetInputLayout(inputLayout);
 
             foreach (ShapeData s in shapes.Values)
             {
-                ia.SetVertexBuffers(0, s.BufferBindings);
-                ia.SetPrimitiveTopology(s.PrimitiveTopology);
+                inputAssembler.SetVertexBuffers(0, s.BufferBindings);
+                inputAssembler.SetPrimitiveTopology(s.PrimitiveTopology);
                 if (s.IndexBuffer != null)
                 {
-                    ia.SetIndexBuffer(s.IndexBuffer, s.IndexFormat, 0);
+                    inputAssembler.SetIndexBuffer(s.IndexBuffer, s.IndexFormat, 0);
                     device.DrawIndexedInstanced(s.IndexCount, s.InstanceDataList.Count, 0, 0, 0);
                 }
                 else
@@ -939,12 +941,12 @@ namespace DemoFramework
                     Node n0 = nodes[0];
                     Node n1 = nodes[1];
                     Node n2 = nodes[2];
-                    vectors[v] = n0.X;
-                    vectors[v + 1] = n0.Normal;
-                    vectors[v + 2] = n1.X;
-                    vectors[v + 3] = n1.Normal;
-                    vectors[v + 4] = n2.X;
-                    vectors[v + 5] = n2.Normal;
+                    n0.GetX(out vectors[v]);
+                    n0.GetNormal(out vectors[v + 1]);
+                    n1.GetX(out vectors[v + 2]);
+                    n1.GetNormal(out vectors[v + 3]);
+                    n2.GetX(out vectors[v + 4]);
+                    n2.GetNormal(out vectors[v + 5]);
                     v += 6;
                 }
 
@@ -962,8 +964,7 @@ namespace DemoFramework
                     Vector3[] vectors = new Vector3[tetraCount * 24];
                     int v = 0;
 
-                    int count = tetras.Count;
-                    for (int i = 0; i < count; i++)
+                    for (int i = 0; i < tetraCount; i++)
                     {
                         NodePtrArray nodes = tetras[i].Nodes;
                         Vector3 v0 = nodes[0].X;
@@ -1020,8 +1021,8 @@ namespace DemoFramework
                     for (int i = 0; i < linkCount; i++)
                     {
                         NodePtrArray nodes = links[i].Nodes;
-                        vectors[i * 4] = nodes[0].X;
-                        vectors[i * 4 + 2] = nodes[1].X;
+                        nodes[0].GetX(out vectors[i * 4]);
+                        nodes[1].GetX(out vectors[i * 4 + 2]);
                     }
 
                     shapeData.PrimitiveTopology = PrimitiveTopology.LineList;

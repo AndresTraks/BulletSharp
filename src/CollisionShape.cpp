@@ -93,11 +93,11 @@ bool CollisionShape::IsDisposed::get()
 	return ( _collisionShape == NULL );
 }
 
-void CollisionShape::CalculateLocalInertia(btScalar mass, Vector3% inertia)
+void CollisionShape::CalculateLocalInertia(btScalar mass, [Out] Vector3% inertia)
 {
 	btVector3* inertiaTemp = new btVector3;
 	_collisionShape->calculateLocalInertia(mass, *inertiaTemp);
-	inertia = Math::BtVector3ToVector3(inertiaTemp);
+	Math::BtVector3ToVector3(inertiaTemp, inertia);
 	delete inertiaTemp;
 }
 

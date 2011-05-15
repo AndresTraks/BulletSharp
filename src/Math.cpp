@@ -50,6 +50,19 @@ btScalar* BulletSharp::Math::BtScalarArrayToUnmanaged(array<btScalar>^ s, int le
 }
 
 
+void BulletSharp::Math::BtVector3ToVector3(const btVector3* vector, [Out] Vector3% vectorOut)
+{
+#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+	vectorOut.x = vector.m_floats[0];
+	vectorOut.y = vector.m_floats[1];
+	vectorOut.z = vector.m_floats[2];
+#else
+	vectorOut.X = vector->m_floats[0];
+	vectorOut.Y = vector->m_floats[1];
+	vectorOut.Z = vector->m_floats[2];
+#endif
+}
+
 btVector3* BulletSharp::Math::Vector3ToBtVector3(Vector3 vector)
 {
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
@@ -192,6 +205,62 @@ Matrix BulletSharp::Math::BtTransformToMatrix(const btTransform* transform)
 #endif
 
 	return t;
+}
+
+void BulletSharp::Math::BtTransformToMatrix(const btTransform* transform, [Out] Matrix% t)
+{
+#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+	btScalar m[16];
+	transform->getOpenGLMatrix(m);
+
+#ifdef GRAPHICS_MOGRE
+	t = gcnew Mogre::Matrix4();
+#else
+	t = gcnew Axiom::Math::Matrix4();
+#endif
+	t->m00 = m[0];
+	t->m10 = m[1];
+	t->m20 = m[2];
+	t->m30 = 0;
+	t->m01 = m[4];
+	t->m11 = m[5];
+	t->m21 = m[6];
+	t->m31 = 0;
+	t->m02 = m[8];
+	t->m12 = m[9];
+	t->m22 = m[10];
+	t->m32 = 0;
+	t->m03 = m[12];
+	t->m13 = m[13];
+	t->m23 = m[14];
+	t->m33 = 1;
+
+#else
+
+	t = Matrix();
+#ifdef GRAPHICS_NO_DIRECT_CAST
+	btScalar m[16];
+	transform->getOpenGLMatrix(m);
+
+	t.M11 = (float)m[0];
+	t.M12 = (float)m[1];
+	t.M13 = (float)m[2];
+	t.M21 = (float)m[4];
+	t.M22 = (float)m[5];
+	t.M23 = (float)m[6];
+	t.M31 = (float)m[8];
+	t.M32 = (float)m[9];
+	t.M33 = (float)m[10];
+	t.M41 = (float)m[12];
+	t.M42 = (float)m[13];
+	t.M43 = (float)m[14];
+	t.M44 = 1;
+#else
+	pin_ptr<Matrix> mPtr = &t;
+	transform->getOpenGLMatrix((btScalar*)mPtr);
+#endif
+
+#endif
 }
 
 btTransform* BulletSharp::Math::MatrixToBtTransform(Matrix matrix)

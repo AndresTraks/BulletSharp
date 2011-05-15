@@ -505,44 +505,27 @@ namespace DemoFramework
 
             if (faceCount > 0)
             {
-                int vertexCount = faceCount * 3;
-                bool index32 = vertexCount > 65535;
+                PositionedNormal[] vectors = new PositionedNormal[faceCount * 6];
+                int v = 0;
 
-                Mesh mesh = new Mesh(device, faceCount, vertexCount,
-                    MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
-
-                SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.Discard);
                 int i;
-                if (index32)
+                for (i = 0; i < faces.Count; i++)
                 {
-                    for (i = 0; i < vertexCount; i++)
-                        indices.Write(i);
-                }
-                else
-                {
-                    for (i = 0; i < vertexCount; i++)
-                        indices.Write((short)i);
-                }
-                mesh.UnlockIndexBuffer();
-
-                SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.Discard);
-                foreach (Face face in faces)
-                {
-                    NodePtrArray nodes = face.N;
+                    NodePtrArray nodes = faces[i].N;
                     Node n0 = nodes[0];
                     Node n1 = nodes[1];
                     Node n2 = nodes[2];
-                    verts.Write(n0.X);
-                    verts.Write(n0.Normal);
-                    verts.Write(n1.X);
-                    verts.Write(n1.Normal);
-                    verts.Write(n2.X);
-                    verts.Write(n2.Normal);
+                    n0.GetX(out vectors[v].Position);
+                    n0.GetNormal(out vectors[v].Normal);
+                    n1.GetX(out vectors[v + 1].Position);
+                    n1.GetNormal(out vectors[v + 1].Normal);
+                    n2.GetX(out vectors[v + 2].Position);
+                    n2.GetNormal(out vectors[v + 2].Normal);
+                    v += 3;
                 }
-                mesh.UnlockVertexBuffer();
 
-                mesh.DrawSubset(0);
-                mesh.Dispose();
+                device.VertexFormat = PositionedNormal.FVF;
+                device.DrawUserPrimitives(PrimitiveType.TriangleList, faces.Count, vectors);
             }
             else
             {
@@ -551,70 +534,58 @@ namespace DemoFramework
 
                 if (tetraCount > 0)
                 {
-                    int vertexCount = tetraCount * 12;
-                    bool index32 = vertexCount > 65536;
+                    PositionedNormal[] vectors = new PositionedNormal[tetraCount * 12];
+                    int v = 0;
 
-                    Mesh mesh = new Mesh(device, tetraCount * 4, vertexCount,
-                        MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
-
-
-                    SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.Discard);
-                    int i;
-                    if (index32)
+                    for (int i = 0; i < tetraCount; i++)
                     {
-                        for (i = 0; i < vertexCount; i++)
-                            indices.Write(i);
-                    }
-                    else
-                    {
-                        for (i = 0; i < vertexCount; i++)
-                            indices.Write((short)i);
-                    }
-                    mesh.UnlockIndexBuffer();
-
-
-                    SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.Discard);
-                    foreach (Tetra t in tetras)
-                    {
-                        NodePtrArray nodes = t.Nodes;
+                        NodePtrArray nodes = tetras[i].Nodes;
                         Vector3 v0 = nodes[0].X;
                         Vector3 v1 = nodes[1].X;
                         Vector3 v2 = nodes[2].X;
                         Vector3 v3 = nodes[3].X;
+                        Vector3 v10 = v1 - v0;
+                        Vector3 v02 = v0 - v2;
 
-                        verts.Write(v2);
-                        verts.Position += 12;
-                        verts.Write(v1);
-                        verts.Position += 12;
-                        verts.Write(v0);
-                        verts.Position += 12;
+                        Vector3 normal = Vector3.Cross(v10, v02);
+                        normal.Normalize();
+                        vectors[v].Position = v0;
+                        vectors[v].Normal = normal;
+                        vectors[v + 1].Position = v1;
+                        vectors[v + 1].Normal = normal;
+                        vectors[v + 2].Position = v2;
+                        vectors[v + 2].Normal = normal;
 
-                        verts.Write(v0);
-                        verts.Position += 12;
-                        verts.Write(v1);
-                        verts.Position += 12;
-                        verts.Write(v3);
-                        verts.Position += 12;
+                        normal = Vector3.Cross(v10, v3 - v0);
+                        normal.Normalize();
+                        vectors[v + 3].Position = v0;
+                        vectors[v + 3].Normal = normal;
+                        vectors[v + 4].Position = v1;
+                        vectors[v + 4].Normal = normal;
+                        vectors[v + 5].Position = v3;
+                        vectors[v + 5].Normal = normal;
 
-                        verts.Write(v2);
-                        verts.Position += 12;
-                        verts.Write(v3);
-                        verts.Position += 12;
-                        verts.Write(v1);
-                        verts.Position += 12;
+                        normal = Vector3.Cross(v2 - v1, v3 - v1);
+                        normal.Normalize();
+                        vectors[v + 6].Position = v1;
+                        vectors[v + 6].Normal = normal;
+                        vectors[v + 7].Position = v2;
+                        vectors[v + 7].Normal = normal;
+                        vectors[v + 8].Position = v3;
+                        vectors[v + 8].Normal = normal;
 
-                        verts.Write(v2);
-                        verts.Position += 12;
-                        verts.Write(v0);
-                        verts.Position += 12;
-                        verts.Write(v3);
-                        verts.Position += 12;
+                        normal = Vector3.Cross(v02, v3 - v2);
+                        normal.Normalize();
+                        vectors[v + 9].Position = v2;
+                        vectors[v + 9].Normal = normal;
+                        vectors[v + 10].Position = v0;
+                        vectors[v + 10].Normal = normal;
+                        vectors[v + 11].Position = v3;
+                        vectors[v + 11].Normal = normal;
+                        v += 12;
                     }
-                    mesh.UnlockVertexBuffer();
-
-                    mesh.ComputeNormals();
-                    mesh.DrawSubset(0);
-                    mesh.Dispose();
+                    device.VertexFormat = PositionedNormal.FVF;
+                    device.DrawUserPrimitives(PrimitiveType.TriangleList, tetraCount * 4, vectors);
                 }
                 else if (softBody.Links.Count > 0)
                 {
@@ -622,8 +593,6 @@ namespace DemoFramework
                     int linkCount = links.Count;
                     int linkColor = System.Drawing.Color.Black.ToArgb();
 
-                    device.SetRenderState(RenderState.Lighting, false);
-                    device.SetTransform(TransformState.World, Matrix.Identity);
                     device.VertexFormat = PositionColored.FVF;
 
                     PositionColored[] linkArray = new PositionColored[linkCount * 2];
@@ -631,12 +600,12 @@ namespace DemoFramework
                     for (int i = 0; i < linkCount; i++)
                     {
                         Link link = links[i];
-                        linkArray[i * 2] = new PositionColored(link.Nodes[0].X, linkColor);
-                        linkArray[i * 2 + 1] = new PositionColored(link.Nodes[1].X, linkColor);
+                        linkArray[i * 2].Position = link.Nodes[0].X;
+                        linkArray[i * 2].Color = linkColor;
+                        linkArray[i * 2 + 1].Position = link.Nodes[1].X;
+                        linkArray[i * 2 + 1].Color = linkColor;
                     }
                     device.DrawUserPrimitives(PrimitiveType.LineList, links.Count, linkArray);
-
-                    device.SetRenderState(RenderState.Lighting, true);
                 }
             }
         }

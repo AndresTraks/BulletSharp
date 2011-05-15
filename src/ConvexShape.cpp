@@ -30,8 +30,8 @@ void ConvexShape::GetAabbNonVirtual(Matrix t, Vector3% aabbMin, Vector3% aabbMax
 	
 	UnmanagedPointer->getAabbNonVirtual(*tTemp, *aabbMinTemp, *aabbMaxTemp);
 
-	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
-	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
+	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
+	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
 
 	delete tTemp;
 	delete aabbMinTemp;
@@ -46,8 +46,8 @@ void ConvexShape::GetAabbSlow(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
 	
 	UnmanagedPointer->getAabbSlow(*tTemp, *aabbMinTemp, *aabbMaxTemp);
 
-	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
-	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
+	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
+	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
 
 	delete tTemp;
 	delete aabbMinTemp;
@@ -58,7 +58,7 @@ void ConvexShape::GetPreferredPenetrationDirection(int index, [Out] Vector3% pen
 {
 	btVector3* penetrationVectorTemp = new btVector3;
 	UnmanagedPointer->getPreferredPenetrationDirection(index, *penetrationVectorTemp);
-	penetrationVector = Math::BtVector3ToVector3(penetrationVectorTemp);
+	Math::BtVector3ToVector3(penetrationVectorTemp, penetrationVector);
 	delete penetrationVectorTemp;
 }
 

@@ -15,7 +15,7 @@ void TransformUtil::CalculateDiffAxisAngle(Matrix transform0, Matrix transform1,
 	delete transform0Temp;
 	delete transform1Temp;
 
-	axis = Math::BtVector3ToVector3(axisTemp);
+	Math::BtVector3ToVector3(axisTemp, axis);
 	delete axisTemp;
 
 	angle = angleTemp;
@@ -34,7 +34,7 @@ void TransformUtil::CalculateDiffAxisAngleQuaternion(Quaternion orn0, Quaternion
 	delete orn0Temp;
 	delete orn1aTemp;
 
-	axis = Math::BtVector3ToVector3(axisTemp);
+	Math::BtVector3ToVector3(axisTemp, axis);
 	delete axisTemp;
 
 	angle = angleTemp;
@@ -53,8 +53,8 @@ void TransformUtil::CalculateVelocity(Matrix transform0, Matrix transform1,
 	delete transform0Temp;
 	delete transform1Temp;
 
-	linVel = Math::BtVector3ToVector3(linVelTemp);
-	angVel = Math::BtVector3ToVector3(angVelTemp);
+	Math::BtVector3ToVector3(linVelTemp, linVel);
+	Math::BtVector3ToVector3(angVelTemp, angVel);
 
 	delete linVelTemp;
 	delete angVelTemp;
@@ -78,8 +78,8 @@ void TransformUtil::CalculateVelocityQuaternion (Vector3 pos0, Vector3 pos1, Qua
 	delete orn0Temp;
 	delete orn1Temp;
 
-	linVel = Math::BtVector3ToVector3(linVelTemp);
-	angVel = Math::BtVector3ToVector3(angVelTemp);
+	Math::BtVector3ToVector3(linVelTemp, linVel);
+	Math::BtVector3ToVector3(angVelTemp, angVel);
 
 	delete linVelTemp;
 	delete angVelTemp;
@@ -99,7 +99,7 @@ void TransformUtil::IntegrateTransform(Matrix curTrans, Vector3 linvel, Vector3 
 	delete linvelTemp;
 	delete angvelTemp;
 
-	predictedTransform = Math::BtTransformToMatrix(predictedTransformTemp);
+	Math::BtTransformToMatrix(predictedTransformTemp, predictedTransform);
 	delete predictedTransformTemp;
 }
 

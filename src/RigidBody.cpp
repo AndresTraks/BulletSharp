@@ -138,8 +138,8 @@ void RigidBody::GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
 
 	UnmanagedPointer->getAabb(*aabbMinTemp, *aabbMaxTemp);
 
-	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
-	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
+	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
+	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
 
 	delete aabbMinTemp;
 	delete aabbMaxTemp;
@@ -450,7 +450,7 @@ BulletSharp::MotionState^ RigidBody::MotionState::get()
 }
 void RigidBody::MotionState::set(BulletSharp::MotionState^ value)
 {
-	UnmanagedPointer->setMotionState(value->UnmanagedPointer);
+	UnmanagedPointer->setMotionState(value->_unmanaged);
 	_motionState = value;
 }
 
@@ -502,14 +502,14 @@ btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfo
 RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape)
 {
 	_info = RigidBody_GetUnmanagedConstructionInfo(mass,
-		GetUnmanagedNullable(motionState), GetUnmanagedNullable(collisionShape));
+		GetUnmanagedNullableNew(motionState), GetUnmanagedNullable(collisionShape));
 	_motionState = motionState;
 }
 
 RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape, Vector3 localInertia)
 {
 	_info = RigidBody_GetUnmanagedConstructionInfo(mass,
-		GetUnmanagedNullable(motionState), GetUnmanagedNullable(collisionShape),
+		GetUnmanagedNullableNew(motionState), GetUnmanagedNullable(collisionShape),
 		Math::Vector3ToBtVector3(localInertia));
 	_motionState = motionState;
 }
@@ -641,7 +641,7 @@ BulletSharp::MotionState^ RigidBodyConstructionInfo::MotionState::get()
 }
 void RigidBodyConstructionInfo::MotionState::set(BulletSharp::MotionState^ value)
 {
-	_info->m_motionState = value->UnmanagedPointer;
+	_info->m_motionState = value->_unmanaged;
 }
 
 btScalar RigidBodyConstructionInfo::Restitution::get()

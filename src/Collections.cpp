@@ -967,7 +967,7 @@ void Vector3Array::CopyTo(array<Vector3>^ array, int arrayIndex)
 	int i;
 	for (i=0; i<length; i++)
 	{
-		array[arrayIndex+i] = Math::BtVector3ToVector3(&((btVector3*)_unmanaged)[i]);
+		Math::BtVector3ToVector3(&((btVector3*)_unmanaged)[i], array[arrayIndex+i]);
 	}
 }
 
