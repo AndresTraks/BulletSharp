@@ -8,8 +8,10 @@ namespace BulletSharp
 
 	public ref class DebugDraw : public IDebugDraw
 	{
+	internal:
+		DebugDrawWrapper* _unmanaged;
+
 	private:
-		DebugDrawWrapper* _debugDraw;
 		DebugDrawModes m_debugMode;
 
 	internal:
@@ -51,13 +53,6 @@ namespace BulletSharp
 		{
 			virtual DebugDrawModes get();
 			virtual void set(DebugDrawModes value);
-		}
-
-	internal:
-		property DebugDrawWrapper* UnmanagedPointer
-		{
-			DebugDrawWrapper* get();
-			void set(DebugDrawWrapper* value);
 		}
 	};
 

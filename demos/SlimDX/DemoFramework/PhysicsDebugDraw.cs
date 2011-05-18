@@ -27,8 +27,10 @@ namespace DemoFramework
         {
             int intColor = color.ToArgb();
             PositionColored[] vertices = new PositionColored[2];
-            vertices[0] = new PositionColored(from, intColor);
-            vertices[1] = new PositionColored(to, intColor);
+            vertices[0].Position = from;
+            vertices[0].Color = intColor;
+            vertices[1].Position = to;
+            vertices[1].Color = intColor;
             device.DrawUserPrimitives(PrimitiveType.LineList, 1, vertices);
         }
 
@@ -99,12 +101,15 @@ namespace DemoFramework
         public override void DrawTriangle(Vector3 v0, Vector3 v1, Vector3 v2, Color4 color, float __unnamed004)
         {
             int intColor = color.ToArgb();
-            PositionColored[] vertices = new PositionColored[] {
-                new PositionColored(v0, intColor),
-                new PositionColored(v1, intColor),
-                new PositionColored(v2, intColor),
-                new PositionColored(v0, intColor),
-            };
+            PositionColored[] vertices = new PositionColored[4];
+            vertices[0].Position = v0;
+            vertices[0].Color = intColor;
+            vertices[1].Position = v1;
+            vertices[1].Color = intColor;
+            vertices[2].Position = v2;
+            vertices[2].Color = intColor;
+            vertices[3].Position = v0;
+            vertices[3].Color = intColor;
 
             device.DrawUserPrimitives(PrimitiveType.LineStrip, 3, vertices);
         }
@@ -113,11 +118,19 @@ namespace DemoFramework
         {
             Vector3 start = new Vector3(transform.M41, transform.M42, transform.M43);
 
-            PositionColored[] vertices = new PositionColored[] {
-                new PositionColored(start, 0xff0000), new PositionColored(start + new Vector3(orthoLen,0,0), 0xff0000),
-                new PositionColored(start, 0x00ff00), new PositionColored(start + new Vector3(0,orthoLen,0), 0x00ff00),
-                new PositionColored(start, 0x0000ff), new PositionColored(start + new Vector3(0,0,orthoLen), 0x0000ff),
-            };
+            PositionColored[] vertices = new PositionColored[6];
+            vertices[0].Position = start;
+            vertices[0].Color = 0xff0000;
+            vertices[1].Position = new Vector3(start.X + orthoLen, start.Y, start.Z);
+            vertices[1].Color = 0xff0000;
+            vertices[2].Position = start;
+            vertices[2].Color = 0x00ff00;
+            vertices[3].Position = new Vector3(start.X, start.Y + orthoLen, start.Z);
+            vertices[3].Color = 0x00ff00;
+            vertices[4].Position = start;
+            vertices[4].Color = 0x0000ff;
+            vertices[5].Position = new Vector3(start.X, start.Y, start.Z + orthoLen);
+            vertices[5].Color = 0x0000ff;
 
             device.DrawUserPrimitives(PrimitiveType.LineList, 3, vertices);
         }
@@ -143,12 +156,14 @@ namespace DemoFramework
 
             int intColor = color.ToArgb();
             PositionColored[] vertices = new PositionColored[nSteps + 1];
-            vertices[0] = new PositionColored(next, intColor);
+            vertices[0].Position = next;
+            vertices[0].Color = intColor;
             for (int i = 1; i <= nSteps; i++)
             {
                 float angle = minAngle + (maxAngle - minAngle) * (float)i / (float)nSteps;
                 next = center + radiusA * vx * (float)Math.Cos(angle) + radiusB * vy * (float)Math.Sin(angle);
-                vertices[i] = new PositionColored(next, intColor);
+                vertices[i].Position = next;
+                vertices[i].Color = intColor;
             }
             device.DrawUserPrimitives(PrimitiveType.LineStrip, nSteps, vertices);
 
@@ -219,14 +234,13 @@ namespace DemoFramework
             device.SetRenderState(RenderState.Lighting, lighting);
         }
 
+        static PositionColored[] lines = new PositionColored[0];
         public void DrawBuffer()
         {
             if (lineBuffer.Count == 0)
                 return;
 
-            PositionColored[] lineArray = new PositionColored[lineBuffer.Count];
-            lineBuffer.CopyTo(lineArray);
-            device.DrawUserPrimitives(PrimitiveType.LineList, lineBuffer.Count / 2, lineArray);
+            device.DrawUserPrimitives(PrimitiveType.LineList, lineBuffer.Count / 2, lineBuffer.ToArray());
             lineBuffer.Clear();
         }
     };

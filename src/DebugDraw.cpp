@@ -7,13 +7,13 @@
 
 DebugDraw::DebugDraw()
 {
-	_debugDraw = new DebugDrawWrapper(this);
-	_debugDraw->setDebugMode(0);
+	_unmanaged = new DebugDrawWrapper(this);
+	_unmanaged->setDebugMode(0);
 }
 
 DebugDraw::DebugDraw(DebugDrawWrapper* debugDraw)
 {
-	_debugDraw = debugDraw;
+	_unmanaged = debugDraw;
 }
 
 IDebugDraw^ DebugDraw::GetManaged(btIDebugDraw* debugDraw)
@@ -35,7 +35,7 @@ DebugDrawWrapper* DebugDraw::GetUnmanaged(IDebugDraw^ debugDraw)
 
 	DebugDraw^ cast = dynamic_cast<DebugDraw^>(debugDraw);
 	if (cast != nullptr)
-		return cast->UnmanagedPointer;
+		return cast->_unmanaged;
 
 	if (ObjectTable::Contains(debugDraw))
 		return (BulletSharp::DebugDrawWrapper*)ObjectTable::GetUnmanagedObject(debugDraw);
@@ -52,7 +52,7 @@ void DebugDraw::Draw3dText(Vector3 location, String^ textString)
 	btVector3* locationTemp = Math::Vector3ToBtVector3(location);
 	const char* textStringTemp = StringConv::ManagedToUnmanaged(textString);
 	
-	_debugDraw->baseDraw3dText(*locationTemp, textStringTemp);
+	_unmanaged->baseDraw3dText(*locationTemp, textStringTemp);
 	
 	delete locationTemp;
 	StringConv::FreeUnmanagedString(textStringTemp);
@@ -65,7 +65,7 @@ void DebugDraw::DrawAabb(Vector3 from, Vector3 to, BtColor color)
 	btVector3* toTemp = Math::Vector3ToBtVector3(to);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_debugDraw->baseDrawAabb(*fromTemp, *toTemp, *colorTemp);
+	_unmanaged->baseDrawAabb(*fromTemp, *toTemp, *colorTemp);
 
 	delete fromTemp;
 	delete toTemp;
@@ -80,7 +80,7 @@ void DebugDraw::DrawArc(Vector3 center, Vector3 normal, Vector3 axis, btScalar r
 	btVector3* axisTemp = Math::Vector3ToBtVector3(axis);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_debugDraw->baseDrawArc(*centerTemp, *normalTemp, *axisTemp, radiusA, radiusB, minAngle, maxAngle, *colorTemp, drawSect, stepDegrees);
+	_unmanaged->baseDrawArc(*centerTemp, *normalTemp, *axisTemp, radiusA, radiusB, minAngle, maxAngle, *colorTemp, drawSect, stepDegrees);
 
 	delete centerTemp;
 	delete normalTemp;
@@ -96,7 +96,7 @@ void DebugDraw::DrawArc(Vector3 center, Vector3 normal, Vector3 axis, btScalar r
 	btVector3* axisTemp = Math::Vector3ToBtVector3(axis);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_debugDraw->baseDrawArc(*centerTemp, *normalTemp, *axisTemp, radiusA, radiusB, minAngle, maxAngle, *colorTemp, drawSect);
+	_unmanaged->baseDrawArc(*centerTemp, *normalTemp, *axisTemp, radiusA, radiusB, minAngle, maxAngle, *colorTemp, drawSect);
 
 	delete centerTemp;
 	delete normalTemp;
@@ -111,7 +111,7 @@ void DebugDraw::DrawBox(Vector3 bbMin, Vector3 bbMax, Matrix trans, BtColor colo
 	btTransform* transTemp = Math::MatrixToBtTransform(trans);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_debugDraw->baseDrawBox(*bbMinTemp, *bbMaxTemp, *transTemp, *colorTemp);
+	_unmanaged->baseDrawBox(*bbMinTemp, *bbMaxTemp, *transTemp, *colorTemp);
 	
 	delete bbMinTemp;
 	delete bbMaxTemp;
@@ -125,7 +125,7 @@ void DebugDraw::DrawBox(Vector3 bbMin, Vector3 bbMax, BtColor color)
 	btVector3* bbMaxTemp = Math::Vector3ToBtVector3(bbMax);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_debugDraw->baseDrawBox(*bbMinTemp, *bbMaxTemp, *colorTemp);
+	_unmanaged->baseDrawBox(*bbMinTemp, *bbMaxTemp, *colorTemp);
 
 	delete bbMinTemp;
 	delete bbMaxTemp;
@@ -137,7 +137,7 @@ void DebugDraw::DrawCapsule(btScalar radius, btScalar halfHeight, int upAxis, Ma
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_debugDraw->baseDrawCapsule(radius, halfHeight, upAxis, *transformTemp, *colorTemp);
+	_unmanaged->baseDrawCapsule(radius, halfHeight, upAxis, *transformTemp, *colorTemp);
 
 	delete transformTemp;
 	delete colorTemp;
@@ -148,7 +148,7 @@ void DebugDraw::DrawCone(btScalar radius, btScalar height, int upAxis, Matrix tr
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_debugDraw->baseDrawCone(radius, height, upAxis, *transformTemp, *colorTemp);
+	_unmanaged->baseDrawCone(radius, height, upAxis, *transformTemp, *colorTemp);
 
 	delete transformTemp;
 	delete colorTemp;
@@ -161,7 +161,7 @@ void DebugDraw::DrawContactPoint(Vector3 pointOnB, Vector3 normalOnB, btScalar d
 	btVector3* normalOnBTemp = Math::Vector3ToBtVector3(normalOnB);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_debugDraw->baseDrawContactPoint(*pointOnBTemp, *normalOnBTemp, distance, lifeTime, *colorTemp);
+	_unmanaged->baseDrawContactPoint(*pointOnBTemp, *normalOnBTemp, distance, lifeTime, *colorTemp);
 
 	delete pointOnBTemp;
 	delete normalOnBTemp;
@@ -174,7 +174,7 @@ void DebugDraw::DrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, M
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_debugDraw->baseDrawCylinder(radius, halfHeight, upAxis, *transformTemp, *colorTemp);
+	_unmanaged->baseDrawCylinder(radius, halfHeight, upAxis, *transformTemp, *colorTemp);
 
 	delete transformTemp;
 	delete colorTemp;
@@ -187,7 +187,7 @@ void DebugDraw::DrawLine(Vector3 from, Vector3 to, BtColor fromColor, BtColor to
 	btVector3* fromColorTemp = BtColorToBtVector(fromColor);
 	btVector3* toColorTemp = BtColorToBtVector(toColor);
 
-	_debugDraw->baseDrawLine(*fromTemp, *toTemp, *fromColorTemp, *toColorTemp);
+	_unmanaged->baseDrawLine(*fromTemp, *toTemp, *fromColorTemp, *toColorTemp);
 
 	delete fromTemp;
 	delete toTemp;
@@ -201,7 +201,7 @@ void DebugDraw::DrawPlane(Vector3 planeNormal, btScalar planeConst, Matrix trans
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_debugDraw->baseDrawPlane(*planeNormalTemp, planeConst, *transformTemp, *colorTemp);
+	_unmanaged->baseDrawPlane(*planeNormalTemp, planeConst, *transformTemp, *colorTemp);
 
 	delete planeNormalTemp;
 	delete transformTemp;
@@ -213,7 +213,7 @@ void DebugDraw::DrawSphere(Vector3 p, btScalar radius, BtColor color)
 	btVector3* pTemp = Math::Vector3ToBtVector3(p);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_debugDraw->baseDrawSphere(*pTemp, radius, *colorTemp);
+	_unmanaged->baseDrawSphere(*pTemp, radius, *colorTemp);
 
 	delete pTemp;
 	delete colorTemp;
@@ -224,7 +224,7 @@ void DebugDraw::DrawSphere(btScalar radius, Matrix transform, BtColor color)
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_debugDraw->baseDrawSphere(radius, *transformTemp, *colorTemp);
+	_unmanaged->baseDrawSphere(radius, *transformTemp, *colorTemp);
 
 	delete transformTemp;
 	delete colorTemp;
@@ -238,7 +238,7 @@ void DebugDraw::DrawSpherePatch(Vector3 center, Vector3 up, Vector3 axis, btScal
 	btVector3* axisTemp = Math::Vector3ToBtVector3(axis);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_debugDraw->baseDrawSpherePatch(*centerTemp, *upTemp, *axisTemp, radius, minTh, maxTh, minPs, maxPs, *colorTemp, stepDegrees);
+	_unmanaged->baseDrawSpherePatch(*centerTemp, *upTemp, *axisTemp, radius, minTh, maxTh, minPs, maxPs, *colorTemp, stepDegrees);
 
 	delete centerTemp;
 	delete upTemp;
@@ -254,7 +254,7 @@ void DebugDraw::DrawSpherePatch(Vector3 center, Vector3 up, Vector3 axis, btScal
 	btVector3* axisTemp = Math::Vector3ToBtVector3(axis);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_debugDraw->baseDrawSpherePatch(*centerTemp, *upTemp, *axisTemp, radius, minTh, maxTh, minPs, maxPs, *colorTemp);
+	_unmanaged->baseDrawSpherePatch(*centerTemp, *upTemp, *axisTemp, radius, minTh, maxTh, minPs, maxPs, *colorTemp);
 
 	delete centerTemp;
 	delete upTemp;
@@ -266,7 +266,7 @@ void DebugDraw::DrawTransform(Matrix transform, btScalar orthoLen)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 
-	_debugDraw->baseDrawTransform(*transformTemp, orthoLen);
+	_unmanaged->baseDrawTransform(*transformTemp, orthoLen);
 
 	delete transformTemp;
 }
@@ -278,7 +278,7 @@ void DebugDraw::DrawTriangle(Vector3 v0, Vector3 v1, Vector3 v2, BtColor color, 
 	btVector3* v2Temp = Math::Vector3ToBtVector3(v2);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_debugDraw->baseDrawTriangle(*v0Temp, *v1Temp, *v2Temp, *colorTemp, 0);
+	_unmanaged->baseDrawTriangle(*v0Temp, *v1Temp, *v2Temp, *colorTemp, 0);
 
 	delete v0Temp;
 	delete v1Temp;
@@ -294,7 +294,7 @@ void DebugDraw::DrawTriangle(Vector3 v0, Vector3 v1, Vector3 v2, Vector3, Vector
 	btVector3* colorTemp = BtColorToBtVector(color);
 	btVector3* none = new btVector3();
 
-	_debugDraw->baseDrawTriangle(*v0Temp, *v1Temp, *v2Temp, *none, *none, *none, *colorTemp, alpha);
+	_unmanaged->baseDrawTriangle(*v0Temp, *v1Temp, *v2Temp, *none, *none, *none, *colorTemp, alpha);
 
 	delete v0Temp;
 	delete v1Temp;
@@ -308,7 +308,7 @@ void DebugDraw::ReportErrorWarning(String^ warningString)
 /*
 	const char* warningStringTemp = StringConv::ManagedToUnmanaged(warningString);
 
-	_debugDraw->baseReportErrorWarning(warningStringTemp);
+	_unmanaged->baseReportErrorWarning(warningStringTemp);
 
 	StringConv::FreeUnmanagedString(warningStringTemp);
 */
@@ -321,15 +321,6 @@ DebugDrawModes DebugDraw::DebugMode::get()
 void DebugDraw::DebugMode::set(DebugDrawModes value)
 {
 	m_debugMode = value;
-}
-
-DebugDrawWrapper* DebugDraw::UnmanagedPointer::get()
-{
-	return _debugDraw;
-}
-void DebugDraw::UnmanagedPointer::set(DebugDrawWrapper* value)
-{
-	_debugDraw = value;
 }
 
 
