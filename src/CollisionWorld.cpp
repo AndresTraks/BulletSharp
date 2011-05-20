@@ -530,6 +530,26 @@ CollisionWorld::AllHitsRayResultCallback::AllHitsRayResultCallback(Vector3 rayFr
 	delete rayToWorldTemp;
 }
 
+AlignedCollisionObjectArray^ CollisionWorld::AllHitsRayResultCallback::CollisionObjects::get()
+{
+	btCollisionObjectArray* collisionObjects = &((btCollisionWorld::AllHitsRayResultCallback*)_unmanaged)->m_collisionObjects;
+	if (_collisionObjects != nullptr && _collisionObjects->_unmanaged == collisionObjects)
+		return _collisionObjects;
+
+	_collisionObjects = gcnew AlignedCollisionObjectArray(collisionObjects);
+	return _collisionObjects;
+}
+
+AlignedScalarArray^ CollisionWorld::AllHitsRayResultCallback::HitFractions::get()
+{
+	btAlignedObjectArray<btScalar>* hitFractions = &((btCollisionWorld::AllHitsRayResultCallback*)_unmanaged)->m_hitFractions;
+	if (_hitFractions != nullptr && _hitFractions->_unmanaged == hitFractions)
+		return _hitFractions;
+
+	_hitFractions = gcnew AlignedScalarArray(hitFractions);
+	return _hitFractions;
+}
+
 AlignedVector3Array^ CollisionWorld::AllHitsRayResultCallback::HitNormalWorld::get()
 {
 	btAlignedObjectArray<btVector3>* hitNormalWorld = &((btCollisionWorld::AllHitsRayResultCallback*)_unmanaged)->m_hitNormalWorld;

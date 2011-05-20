@@ -8,6 +8,7 @@ using namespace System::Drawing;
 
 namespace BulletSharp
 {
+	ref class AlignedScalarArray;
 	ref class AlignedVector3Array;
 	ref class BroadphaseInterface;
 	ref class BroadphaseProxy;
@@ -385,11 +386,23 @@ namespace BulletSharp
 		ref class AllHitsRayResultCallback : RayResultCallback
 		{
 		private:
+			AlignedCollisionObjectArray^ _collisionObjects;
+			AlignedScalarArray^ _hitFractions;
 			AlignedVector3Array^ _hitNormalWorld;
 			AlignedVector3Array^ _hitPointWorld;
 
 		public:
 			AllHitsRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld);
+
+			property AlignedCollisionObjectArray^ CollisionObjects
+			{
+				AlignedCollisionObjectArray^ get();
+			}
+
+			property AlignedScalarArray^ HitFractions
+			{
+				AlignedScalarArray^ get();
+			}
 
 			property AlignedVector3Array^ HitNormalWorld
 			{
