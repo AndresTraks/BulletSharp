@@ -1,7 +1,5 @@
 #include "StdAfx.h"
 
-// Fully implemented as of 03 Apr 2010
-
 #include "ConeShape.h"
 
 ConeShape::ConeShape(btConeShape* shape)

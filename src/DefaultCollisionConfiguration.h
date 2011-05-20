@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 09 May 2010
-
 #include "CollisionConfiguration.h"
 
 namespace BulletSharp

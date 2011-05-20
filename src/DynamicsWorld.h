@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 18 Nov 2010
-
 #include "CollisionWorld.h"
 #include "IDisposable.h"
 

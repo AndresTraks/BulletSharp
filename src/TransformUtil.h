@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 21 Jun 2010
-
 namespace BulletSharp
 {
 	public ref class TransformUtil

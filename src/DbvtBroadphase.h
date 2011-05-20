@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 05 Mar 2010
-
 #include "BroadphaseInterface.h"
 #include "BroadphaseProxy.h"
 

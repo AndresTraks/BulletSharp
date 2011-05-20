@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 23 Nov 2010
-
 #include "CollisionWorld.h"
 #include "ConcaveShape.h"
 #include "TetrahedronShape.h"

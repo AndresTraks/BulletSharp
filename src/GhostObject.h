@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 24 Nov 2010
-
 #include "CollisionObject.h"
 #include "CollisionWorld.h"
 #include "OverlappingPairCallback.h"

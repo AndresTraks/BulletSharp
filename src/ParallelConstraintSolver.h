@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 24 Nov 2010
-
 #include "SequentialImpulseConstraintSolver.h"
 #include "ThreadSupportInterface.h"
 

@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 09 May 2010
-
 #include "CharacterControllerInterface.h"
 
 namespace BulletSharp

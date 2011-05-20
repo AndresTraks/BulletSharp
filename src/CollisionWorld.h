@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 23 apr 2010
-
 #include "IDisposable.h"
 
 using namespace System::Drawing;

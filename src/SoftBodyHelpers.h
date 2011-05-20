@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 21 Nov 2010
-
 namespace BulletSharp
 {
 	interface class IDebugDraw;

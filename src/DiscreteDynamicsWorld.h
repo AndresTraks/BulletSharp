@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 24 apr 2010
-
 #include "DynamicsWorld.h"
 
 namespace BulletSharp

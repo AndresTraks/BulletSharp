@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 12 May 2010
-
 #include "ConstraintSolver.h"
 
 namespace BulletSharp

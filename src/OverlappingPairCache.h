@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 22 Mar 2010
-
 #include "OverlappingPairCallback.h"
 
 namespace BulletSharp

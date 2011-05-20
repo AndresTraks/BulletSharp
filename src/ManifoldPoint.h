@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 07 Dec 2010
-
 namespace BulletSharp
 {
 	public ref class ManifoldPoint

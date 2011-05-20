@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 27 Feb 2010
-
 #include "IDisposable.h"
 
 namespace BulletSharp

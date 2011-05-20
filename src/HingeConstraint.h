@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 19 Nov 2010
-
 #include "TypedConstraint.h"
 
 namespace BulletSharp

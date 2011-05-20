@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 25 apr 2010
-
 #include "ActionInterface.h"
 #include "VehicleRaycaster.h"
 

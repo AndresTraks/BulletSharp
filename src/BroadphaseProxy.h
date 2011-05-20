@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 24 Feb 2010
-
 namespace BulletSharp
 {
 	ref class CollisionAlgorithm;

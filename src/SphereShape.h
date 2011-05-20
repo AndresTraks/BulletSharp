@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 10 Apr 2010
-
 #include "ConvexInternalShape.h"
 
 namespace BulletSharp

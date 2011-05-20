@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 04 Dec 2010
-
 #include "BroadphaseInterface.h"
 
 namespace BulletSharp

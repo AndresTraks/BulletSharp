@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 30 Jun 2010
-
 #include "DiscreteCollisionDetectorInterface.h"
 #include "SimplexSolverInterface.h"
 

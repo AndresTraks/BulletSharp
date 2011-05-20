@@ -1,7 +1,5 @@
 #pragma once
 
-// Fully implemented as of 12 Apr 2010
-
 #include "ConcaveShape.h"
 
 namespace BulletSharp
