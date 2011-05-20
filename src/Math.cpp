@@ -53,9 +53,9 @@ btScalar* BulletSharp::Math::BtScalarArrayToUnmanaged(array<btScalar>^ s, int le
 void BulletSharp::Math::BtVector3ToVector3(const btVector3* vector, [Out] Vector3% vectorOut)
 {
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	vectorOut.x = vector.m_floats[0];
-	vectorOut.y = vector.m_floats[1];
-	vectorOut.z = vector.m_floats[2];
+	vectorOut.x = vector->m_floats[0];
+	vectorOut.y = vector->m_floats[1];
+	vectorOut.z = vector->m_floats[2];
 #else
 	vectorOut.X = vector->m_floats[0];
 	vectorOut.Y = vector->m_floats[1];

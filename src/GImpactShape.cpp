@@ -100,7 +100,7 @@ void GImpactShapeInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, CollisionWor
 	btVector3* rayFromTemp = Math::Vector3ToBtVector3(rayFrom);
 	btVector3* rayToTemp = Math::Vector3ToBtVector3(rayTo);
 
-	UnmanagedPointer->rayTest(*rayFromTemp, *rayToTemp, *resultCallback->UnmanagedPointer);
+	UnmanagedPointer->rayTest(*rayFromTemp, *rayToTemp, *resultCallback->_unmanaged);
 
 	delete rayFromTemp;
 	delete rayToTemp;

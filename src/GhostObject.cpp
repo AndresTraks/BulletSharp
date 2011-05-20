@@ -42,7 +42,7 @@ void GhostObject::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, CollisionWor
 	btVector3* rayFromWorldTemp = Math::Vector3ToBtVector3(rayFromWorld);
 	btVector3* rayToWorldTemp = Math::Vector3ToBtVector3(rayToWorld);
 
-	UnmanagedPointer->rayTest(*rayFromWorldTemp, *rayToWorldTemp, *resultCallback->UnmanagedPointer);
+	UnmanagedPointer->rayTest(*rayFromWorldTemp, *rayToWorldTemp, *resultCallback->_unmanaged);
 
 	delete rayFromWorldTemp;
 	delete rayToWorldTemp;

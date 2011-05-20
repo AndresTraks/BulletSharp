@@ -8,6 +8,7 @@ using namespace System::Drawing;
 
 namespace BulletSharp
 {
+	ref class AlignedVector3Array;
 	ref class BroadphaseInterface;
 	ref class BroadphaseProxy;
 	ref class CollisionConfiguration;
@@ -295,8 +296,8 @@ namespace BulletSharp
 			virtual event EventHandler^ OnDisposing;
 			virtual event EventHandler^ OnDisposed;
 
-		private:
-			btCollisionWorld::RayResultCallback* _callback;
+		internal:
+			btCollisionWorld::RayResultCallback* _unmanaged;
 
 		protected:
 			RayResultCallback(btCollisionWorld::RayResultCallback* callback);
@@ -349,13 +350,6 @@ namespace BulletSharp
 			{
 				virtual bool get();
 			}
-
-		internal:
-			property btCollisionWorld::RayResultCallback* UnmanagedPointer
-			{
-				virtual btCollisionWorld::RayResultCallback* get();
-				void set(btCollisionWorld::RayResultCallback* value);
-			}
 		};
 
 		ref class ClosestRayResultCallback : RayResultCallback
@@ -386,11 +380,37 @@ namespace BulletSharp
 				Vector3 get();
 				void set(Vector3 value);
 			}
+		};
 
-		internal:
-			property btCollisionWorld::ClosestRayResultCallback* UnmanagedPointer
+		ref class AllHitsRayResultCallback : RayResultCallback
+		{
+		private:
+			AlignedVector3Array^ _hitNormalWorld;
+			AlignedVector3Array^ _hitPointWorld;
+
+		public:
+			AllHitsRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld);
+
+			property AlignedVector3Array^ HitNormalWorld
 			{
-				btCollisionWorld::ClosestRayResultCallback* get() new;
+				AlignedVector3Array^ get();
+			}
+
+			property AlignedVector3Array^ HitPointWorld
+			{
+				AlignedVector3Array^ get();
+			}
+
+			property Vector3 RayFromWorld
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property Vector3 RayToWorld
+			{
+				Vector3 get();
+				void set(Vector3 value);
 			}
 		};
 
