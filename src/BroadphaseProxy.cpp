@@ -2,6 +2,7 @@
 
 #include "BroadphaseProxy.h"
 #include "CollisionAlgorithm.h"
+#include "CollisionObject.h"
 #include "SimpleBroadphase.h"
 #ifndef DISABLE_DBVT
 #include "DbvtBroadphase.h"
@@ -50,8 +51,7 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userO
 
 BroadphaseProxy::BroadphaseProxy(btBroadphaseProxy* proxy)
 {
-	if (proxy)
-		UnmanagedPointer = proxy;
+	UnmanagedPointer = proxy;
 }
 
 BroadphaseProxy^ BroadphaseProxy::GetManaged(btBroadphaseProxy* broadphaseProxy)
@@ -96,6 +96,11 @@ void BroadphaseProxy::AabbMax::set(Vector3 value)
 
 Object^ BroadphaseProxy::ClientObject::get()
 {
+	if (_proxy->m_clientObject)
+	{
+		_clientObject = CollisionObject::GetManaged((btCollisionObject*)_proxy->m_clientObject);
+	}
+
 	return _clientObject;
 }
 void BroadphaseProxy::ClientObject::set(Object^ value)
