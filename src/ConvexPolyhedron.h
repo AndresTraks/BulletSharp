@@ -15,12 +15,14 @@ namespace BulletSharp
 
 	public:
 		Face();
-
+		
+		/*
 		property AlignedIntArray^ ConnectedFaces
 		{
 			AlignedIntArray^ get();
 			void set(AlignedIntArray^ value);
 		}
+		*/
 
 		property AlignedIntArray^ Indices
 		{

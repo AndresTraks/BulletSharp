@@ -11,6 +11,7 @@ Face::Face()
 	_face = new btFace();
 }
 
+/*
 AlignedIntArray^ Face::ConnectedFaces::get()
 {
 	return gcnew AlignedIntArray(&_face->m_connectedFaces);
@@ -19,6 +20,7 @@ void Face::ConnectedFaces::set(AlignedIntArray^ value)
 {
 	_face->m_connectedFaces = *(btAlignedObjectArray<int>*)value->_unmanaged;
 }
+*/
 
 AlignedIntArray^ Face::Indices::get()
 {
