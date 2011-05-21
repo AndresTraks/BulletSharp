@@ -59,13 +59,13 @@ namespace BulletSharp
 	internal:
 		PairCachingGhostObject(btPairCachingGhostObject* ghost);
 
+	public:
+		PairCachingGhostObject();
+
 		property HashedOverlappingPairCache^ OverlappingPairCache
 		{
 			HashedOverlappingPairCache^ get();
 		}
-
-	public:
-		PairCachingGhostObject();
 
 	internal:
 		virtual property btPairCachingGhostObject* UnmanagedPointer
