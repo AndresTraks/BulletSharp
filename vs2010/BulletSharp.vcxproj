@@ -781,7 +781,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..\bullet\src;$(CUDA_INC_PATH)include;$(ATISTREAMSDKROOT)include</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>D:\src\Windows API Code Pack 1.1\binaries\DirectX;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>..\..\Windows API Code Pack 1.1\binaries\DirectX;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_WAPICODEPACK;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
@@ -952,7 +952,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Windows API Code Pack|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\bullet\src;$(CUDA_INC_PATH)include;$(ATISTREAMSDKROOT)include</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>D:\src\Windows API Code Pack 1.1\binaries\DirectX;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>..\..\Windows API Code Pack 1.1\binaries\DirectX;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_WAPICODEPACK;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -1532,7 +1532,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Axiom|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\bullet\src;$(CUDA_INC_PATH)include;$(ATISTREAMSDKROOT)include</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>D:\src\Axiom-0.8.0.0-B2\bin\release;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>..\..\Axiom-0.8.0.0-B2\bin\release;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_AXIOM;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -1576,7 +1576,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..\bullet\src;$(CUDA_INC_PATH)include;$(ATISTREAMSDKROOT)include</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>D:\src\Axiom-0.8.0.0-B2\bin\debug;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>..\..\Axiom-0.8.0.0-B2\bin\debug;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_AXIOM;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
