@@ -1014,7 +1014,7 @@ Impulse::Impulse()
 
 bool Impulse::AsDrift::get()
 {
-	return _impulse->m_asDrift;
+	return _impulse->m_asDrift != 0;
 }
 void Impulse::AsDrift::set(bool value)
 {
@@ -1023,7 +1023,7 @@ void Impulse::AsDrift::set(bool value)
 
 bool Impulse::AsVelocity::get()
 {
-	return _impulse->m_asVelocity;
+	return _impulse->m_asVelocity != 0;
 }
 void Impulse::AsVelocity::set(bool value)
 {
@@ -1487,7 +1487,7 @@ void Link::C3::set(Vector3 value)
 
 bool Link::IsBending::get()
 {
-	return ((btSoftBody::Link*)_unmanaged)->m_bbending;
+	return ((btSoftBody::Link*)_unmanaged)->m_bbending != 0;
 }
 void Link::IsBending::set(bool value)
 {
@@ -1605,7 +1605,7 @@ void BulletSharp::SoftBody::Node::InverseMass::set(btScalar value)
 
 bool BulletSharp::SoftBody::Node::IsAttached::get()
 {
-	return ((btSoftBody::Node*)_unmanaged)->m_battach;
+	return ((btSoftBody::Node*)_unmanaged)->m_battach != 0;
 }
 void BulletSharp::SoftBody::Node::IsAttached::set(bool value)
 {
