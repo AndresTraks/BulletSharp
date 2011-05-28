@@ -17,8 +17,6 @@ namespace BulletSharp
 		~MotionState();
 
 	public:
-		void GetWorldTransform([Out] Matrix% transform);
-
 		property Matrix WorldTransform
 		{
 			virtual Matrix get();
@@ -38,7 +36,7 @@ namespace BulletSharp
 
 		virtual void setWorldTransform(const btTransform& worldTrans)
 		{
-			Math::BtTransformToMatrix(&worldTrans, _motionState->WorldTransform);
+			_motionState->WorldTransform = Math::BtTransformToMatrix(&worldTrans);
 		}
 	};
 };

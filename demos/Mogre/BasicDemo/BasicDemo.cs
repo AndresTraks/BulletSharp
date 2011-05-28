@@ -14,8 +14,6 @@ namespace BasicDemo
         MessageHook textInputHandler;
         SceneNode planeNode;
         Physics physics;
-        Entity[] boxes;
-        SceneNode[] boxNodes;
 
         public override void ChooseSceneManager()
         {
@@ -40,8 +38,6 @@ namespace BasicDemo
 
         public override void CreateScene()
         {
-            physics = new Physics();
-
             // Set ambient light and fog
             sceneMgr.AmbientLight = new ColourValue(0, 0, 0);
             sceneMgr.SetFog(FogMode.FOG_LINEAR, skyColor, 0, 150, 300);
@@ -68,19 +64,7 @@ namespace BasicDemo
             planeNode = sceneMgr.RootSceneNode.CreateChildSceneNode();
             planeNode.AttachObject(groundEnt);
 
-            // Boxes
-            int nodes = physics.ArraySizeX * physics.ArraySizeY * physics.ArraySizeZ;
-            boxes = new Entity[nodes];
-            boxNodes = new SceneNode[nodes];
-            int i;
-            for (i = 0; i < nodes; i++)
-            {
-                boxes[i] = sceneMgr.CreateEntity("Box" + i.ToString(), "box.mesh");
-                boxes[i].SetMaterialName("BoxMaterial/Active");
-                boxNodes[i] = sceneMgr.RootSceneNode.CreateChildSceneNode("BoxNode" + i.ToString());
-                boxNodes[i].AttachObject(boxes[i]);
-                boxNodes[i].Scale(new Vector3(2,2,2));
-            }
+            physics = new Physics(sceneMgr);
         }
 
         void textInputHandler_MessageReceived(object sender, EventArgs e)
@@ -196,27 +180,6 @@ namespace BasicDemo
         bool root_FrameStarted(FrameEvent evt)
         {
             physics.Update(evt.timeSinceLastFrame);
-
-            int i = 0;
-
-            foreach (RigidBody body in physics.World.CollisionObjectArray)
-            {
-                if ((string)body.UserObject == "Ground")
-                    continue;
-
-                Matrix4 x = body.MotionState.WorldTransform;
-                boxNodes[i].Position = x.GetTrans();
-                boxNodes[i].Orientation = x.ExtractQuaternion();
-
-                if (body.ActivationState == ActivationState.ActiveTag)
-                    boxes[i].SetMaterialName("BoxMaterial/Active");
-                else
-                    boxes[i].SetMaterialName("BoxMaterial/Passive");
-
-                i++;
-            }
-            
-
             return true;
         }
     }

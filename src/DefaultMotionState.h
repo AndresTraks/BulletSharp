@@ -9,5 +9,7 @@ namespace BulletSharp
 	public:
 		DefaultMotionState(Matrix startTrans);
 		DefaultMotionState();
+
+		void GetWorldTransform([Out] Matrix% transform);
 	};
 };

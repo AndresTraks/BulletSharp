@@ -778,7 +778,7 @@ namespace DemoFramework
                 }
                 else
                 {
-                    (colObj as RigidBody).MotionState.GetWorldTransform(out transform);
+                    ((colObj as RigidBody).MotionState as DefaultMotionState).GetWorldTransform(out transform);
                 }
                 InitInstanceData(colObj, shape, shapeData, ref transform);
             }

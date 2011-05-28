@@ -3,6 +3,48 @@ using Mogre;
 
 namespace BasicDemo
 {
+    // For more info:
+    // http://bulletphysics.org/mediawiki-1.5.8/index.php/MotionStates#Ogre3d
+    class MogreMotionState : MotionState
+    {
+        Entity entity;
+        SceneNode node;
+        public RigidBody Body { get; set; }
+
+        public MogreMotionState(Entity entity, SceneNode node, Matrix4 startTransform)
+        {
+            this.entity = entity;
+            this.node = node;
+            
+            node.Position = startTransform.GetTrans();
+            node.Orientation = startTransform.ExtractQuaternion();
+        }
+
+        public override Matrix4 WorldTransform
+        {
+            get
+            {
+                Matrix4 transform = new Matrix4(node.Orientation);
+                transform.SetTrans(node.Position);
+                return transform;
+            }
+            set
+            {
+                node.Position = value.GetTrans();
+                node.Orientation = value.ExtractQuaternion();
+
+                if (Body.ActivationState == ActivationState.ActiveTag)
+                {
+                    entity.SetMaterialName("BoxMaterial/Active");
+                }
+                else
+                {
+                    entity.SetMaterialName("BoxMaterial/Passive");
+                }
+            }
+        }
+    }
+
     class Physics
     {
         public DynamicsWorld World;
@@ -20,7 +62,7 @@ namespace BasicDemo
         float StartPosY = -5;
         float StartPosZ = -3;
 
-        public Physics()
+        public Physics(SceneManager sceneMgr)
         {
             // collision configuration contains default setup for memory, collision setup
             collisionConf = new DefaultCollisionConfiguration();
@@ -66,11 +108,19 @@ namespace BasicDemo
 
                         // using motionstate is recommended, it provides interpolation capabilities
                         // and only synchronizes 'active' objects
-                        DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
+                        int index = (k * ArraySizeX + i) * ArraySizeZ + j;
+                        Entity box = sceneMgr.CreateEntity("Box" + index.ToString(), "box.mesh");
+                        box.SetMaterialName("BoxMaterial/Active");
+                        SceneNode boxNode = sceneMgr.RootSceneNode.CreateChildSceneNode("BoxNode" + index.ToString());
+                        boxNode.AttachObject(box);
+                        boxNode.Scale(new Vector3(2, 2, 2));
+                        MogreMotionState myMotionState = new MogreMotionState(box, boxNode, startTransform);
+
                         RigidBodyConstructionInfo rbInfo =
                             new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
                         RigidBody body = new RigidBody(rbInfo);
-                        
+                        myMotionState.Body = body;
+
                         // make it drop from a height
                         body.Translate(new Vector3(0, 20, 0));
 

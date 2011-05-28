@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 
-#include "DefaultMotionState.h"
+#include "MotionState.h"
 
 MotionState::MotionState()
 {
@@ -17,14 +17,6 @@ MotionState::MotionState(btMotionState* motionState)
 MotionState::~MotionState()
 {
 	_unmanaged = 0;
-}
-
-void MotionState::GetWorldTransform([Out] Matrix% outTransform)
-{
-	btTransform* transform = new btTransform;
-	_unmanaged->getWorldTransform(*transform);
-	Math::BtTransformToMatrix(transform, outTransform);
-	delete transform;
 }
 
 Matrix MotionState::WorldTransform::get()

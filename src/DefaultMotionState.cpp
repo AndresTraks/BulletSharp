@@ -10,3 +10,11 @@ DefaultMotionState::DefaultMotionState(Matrix startTrans) : BulletSharp::MotionS
 {
 	WorldTransform = startTrans;
 }
+
+void DefaultMotionState::GetWorldTransform([Out] Matrix% outTransform)
+{
+	btTransform* transform = new btTransform;
+	_unmanaged->getWorldTransform(*transform);
+	Math::BtTransformToMatrix(transform, outTransform);
+	delete transform;
+}
