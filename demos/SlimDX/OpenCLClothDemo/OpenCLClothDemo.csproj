@@ -48,9 +48,9 @@
     <Compile Include="Physics.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="BulletSharp, Version=0.11.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="BulletSharp, Version=0.15.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Debug SlimDX\BulletSharp.dll</HintPath>
+      <HintPath>..\..\..\vs2008\Debug SlimDX\BulletSharp.dll</HintPath>
     </Reference>
     <Reference Include="DemoFramework, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
