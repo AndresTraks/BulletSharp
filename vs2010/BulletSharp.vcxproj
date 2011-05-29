@@ -803,7 +803,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..\bullet\src;$(CUDA_INC_PATH)include;$(ATISTREAMSDKROOT)include</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>D:\src\SharpDX\Bin;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>..\..\SharpDX\Bin;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_SHARPDX;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
@@ -825,7 +825,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..\bullet\src;$(CUDA_INC_PATH)include;$(ATISTREAMSDKROOT)include</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>D:\src\SlimMath\SlimMath\bin\Debug;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>..\..\SlimMath\SlimMath\bin\Debug;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_SLIMMATH;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
@@ -974,7 +974,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release SharpDX|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\bullet\src;$(CUDA_INC_PATH)include;$(ATISTREAMSDKROOT)include</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>D:\src\SharpDX\Bin;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>..\..\SharpDX\Bin;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_SHARPDX;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -996,7 +996,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release SlimMath|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\bullet\src;$(CUDA_INC_PATH)include;$(ATISTREAMSDKROOT)include</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>D:\src\SlimMath\SlimMath\bin\Debug;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>..\..\SlimMath\SlimMath\bin\Debug;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_SLIMMATH;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
