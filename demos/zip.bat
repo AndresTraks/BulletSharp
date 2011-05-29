@@ -52,9 +52,9 @@ if exist src\Mogre goto _srcm
 mkdir src\Mogre
 :_srcm
 
-copy "..\Release SlimDX\BulletSharp.dll" bin\SlimDX\
-copy "..\Release OpenTK\BulletSharp.dll" bin\OpenTK\
-copy "..\vs2010\Release SharpDX\BulletSharp.dll" bin\SharpDX\
+copy "..\VS2008\Release SlimDX\BulletSharp.dll" bin\SlimDX\
+copy "..\VS2008\Release OpenTK\BulletSharp.dll" bin\OpenTK\
+copy "..\Release SharpDX\BulletSharp.dll" bin\SharpDX\
 
 
 copy SlimDX\DemoFramework\bin\x86\Release\DemoFramework.dll bin\SlimDX\

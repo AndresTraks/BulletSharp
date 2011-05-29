@@ -42,7 +42,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(PROGRAMFILES)\SlimDX SDK (March 2011)\Bin\net20\&quot;;&quot;$(PROGRAMFILES(x86))\SlimDX SDK (June 2010)\Bin\net20\&quot;"
 				PreprocessorDefinitions="GRAPHICS_SLIMDX;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -66,7 +66,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
+				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
@@ -122,7 +122,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(PROGRAMFILES)\SlimDX SDK (March 2011)\Bin\net20\&quot;"
 				PreprocessorDefinitions="GRAPHICS_SLIMDX;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -147,7 +147,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
+				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
 				CLRUnmanagedCodeCheck="true"
@@ -202,7 +202,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(ProgramFiles)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;;&quot;$(ProgramFiles(x86))\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;"
 				PreprocessorDefinitions="GRAPHICS_XNA31;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -227,7 +227,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
+				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
 				CLRUnmanagedCodeCheck="true"
@@ -280,7 +280,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(PROGRAMFILES)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;;&quot;$(PROGRAMFILES(x86))\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;"
 				PreprocessorDefinitions="GRAPHICS_XNA31;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -304,7 +304,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
+				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
@@ -360,7 +360,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories=""
 				PreprocessorDefinitions="GRAPHICS_NONE;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -385,7 +385,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
+				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
 				CLRUnmanagedCodeCheck="true"
@@ -438,7 +438,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories=""
 				PreprocessorDefinitions="GRAPHICS_NONE;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -462,7 +462,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
+				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
@@ -518,7 +518,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="C:\MogreSDK\bin\Release"
 				PreprocessorDefinitions="GRAPHICS_MOGRE;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -543,7 +543,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
+				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
 				CLRUnmanagedCodeCheck="true"
@@ -596,7 +596,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="C:\MogreSDK\bin\Debug"
 				PreprocessorDefinitions="GRAPHICS_MOGRE;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -620,7 +620,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
+				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
@@ -676,7 +676,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(ProgramFiles)\OpenTK\1.0\Binaries\OpenTK\Release&quot;;&quot;$(USERPROFILE)\My Documents\OpenTK\1.0\Binaries\OpenTK\Release&quot;;&quot;$(ProgramFiles(x86))\OpenTK\1.0\Binaries\OpenTK\Release&quot;"
 				PreprocessorDefinitions="GRAPHICS_OPENTK;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -701,7 +701,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
+				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
 				CLRUnmanagedCodeCheck="true"
@@ -754,7 +754,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(PROGRAMFILES)\OpenTK\1.0\Binaries\OpenTK\Debug&quot;;&quot;$(USERPROFILE)\My Documents\OpenTK\1.0\Binaries\OpenTK\Debug&quot;"
 				PreprocessorDefinitions="GRAPHICS_OPENTK;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -778,7 +778,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
+				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
@@ -834,8 +834,8 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
-				AdditionalUsingDirectories="..\Axiom-0.8.0.0-B2\bin\release"
+				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalUsingDirectories="..\..\Axiom-0.8.0.0-B2\bin\release"
 				PreprocessorDefinitions="GRAPHICS_AXIOM;WIN32;NDEBUG"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
@@ -859,7 +859,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
+				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
 				CLRUnmanagedCodeCheck="true"
@@ -912,8 +912,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
-				AdditionalUsingDirectories="..\Axiom-0.8.0.0-B2\bin\debug"
+				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalUsingDirectories="..\..\Axiom-0.8.0.0-B2\bin\debug"
 				PreprocessorDefinitions="GRAPHICS_AXIOM;WIN32;_DEBUG"
 				RuntimeLibrary="3"
 				EnableEnhancedInstructionSet="0"
@@ -936,7 +936,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
+				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
@@ -990,8 +990,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
-				AdditionalUsingDirectories="..\SlimMath\SlimMath\bin\Release"
+				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalUsingDirectories="..\..\SlimMath\SlimMath\bin\Release"
 				PreprocessorDefinitions="GRAPHICS_SLIMMATH;WIN32;_DEBUG"
 				RuntimeLibrary="3"
 				EnableEnhancedInstructionSet="0"
@@ -1014,7 +1014,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
+				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
@@ -1070,8 +1070,8 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
-				AdditionalUsingDirectories="..\SlimMath\SlimMath\bin\Release"
+				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalUsingDirectories="..\..\SlimMath\SlimMath\bin\Release"
 				PreprocessorDefinitions="GRAPHICS_SLIMMATH;WIN32;NDEBUG"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
@@ -1095,7 +1095,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
+				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
 				CLRUnmanagedCodeCheck="true"
@@ -1150,8 +1150,8 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
-				AdditionalUsingDirectories="..\SharpDX\Bin"
+				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalUsingDirectories="..\..\SharpDX\Bin"
 				PreprocessorDefinitions="GRAPHICS_SHARPDX;WIN32;NDEBUG"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
@@ -1175,7 +1175,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
+				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
 				CLRUnmanagedCodeCheck="true"
@@ -1228,8 +1228,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
-				AdditionalUsingDirectories="..\SharpDX\Bin"
+				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)include&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalUsingDirectories="..\..\SharpDX\Bin"
 				PreprocessorDefinitions="GRAPHICS_SHARPDX;WIN32;_DEBUG"
 				RuntimeLibrary="3"
 				EnableEnhancedInstructionSet="0"
@@ -1252,7 +1252,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="LinearMath.lib BulletDynamics.lib BulletCollision.lib BulletSoftBody.lib BulletWorldImporter.lib BulletFileLoader.lib BulletMultiThreaded.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
+				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
@@ -1300,27 +1300,27 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\src\AssemblyInfo.cpp"
+				RelativePath="..\src\AssemblyInfo.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Collections.cpp"
+				RelativePath="..\src\Collections.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Math.cpp"
+				RelativePath="..\src\Math.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\ObjectTable.cpp"
+				RelativePath="..\src\ObjectTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Resources.rc"
+				RelativePath="..\src\Resources.rc"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Stdafx.cpp"
+				RelativePath="..\src\Stdafx.cpp"
 				>
 				<FileConfiguration
 					Name="Debug SlimDX|Win32"
@@ -1452,7 +1452,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\src\StringConv.cpp"
+				RelativePath="..\src\StringConv.cpp"
 				>
 			</File>
 			<Filter
@@ -1462,47 +1462,47 @@
 					Name="BroadphaseCollision"
 					>
 					<File
-						RelativePath=".\src\AxisSweep3.cpp"
+						RelativePath="..\src\AxisSweep3.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\BroadphaseInterface.cpp"
+						RelativePath="..\src\BroadphaseInterface.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\BroadphaseProxy.cpp"
+						RelativePath="..\src\BroadphaseProxy.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CollisionAlgorithm.cpp"
+						RelativePath="..\src\CollisionAlgorithm.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Dbvt.cpp"
+						RelativePath="..\src\Dbvt.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\DbvtBroadphase.cpp"
+						RelativePath="..\src\DbvtBroadphase.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Dispatcher.cpp"
+						RelativePath="..\src\Dispatcher.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\OverlappingPairCache.cpp"
+						RelativePath="..\src\OverlappingPairCache.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\OverlappingPairCallback.cpp"
+						RelativePath="..\src\OverlappingPairCallback.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\QuantizedBvh.cpp"
+						RelativePath="..\src\QuantizedBvh.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SimpleBroadphase.cpp"
+						RelativePath="..\src\SimpleBroadphase.cpp"
 						>
 					</File>
 				</Filter>
@@ -1510,103 +1510,103 @@
 					Name="CollisionDispatch"
 					>
 					<File
-						RelativePath=".\src\ActivatingCollisionAlgorithm.cpp"
+						RelativePath="..\src\ActivatingCollisionAlgorithm.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Box2dBox2dCollisionAlgorithm.cpp"
+						RelativePath="..\src\Box2dBox2dCollisionAlgorithm.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\BoxBoxCollisionAlgorithm.cpp"
+						RelativePath="..\src\BoxBoxCollisionAlgorithm.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\BoxBoxDetector.cpp"
+						RelativePath="..\src\BoxBoxDetector.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CollisionConfiguration.cpp"
+						RelativePath="..\src\CollisionConfiguration.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CollisionCreateFunc.cpp"
+						RelativePath="..\src\CollisionCreateFunc.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CollisionDispatcher.cpp"
+						RelativePath="..\src\CollisionDispatcher.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CollisionObject.cpp"
+						RelativePath="..\src\CollisionObject.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CollisionWorld.cpp"
+						RelativePath="..\src\CollisionWorld.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CompoundCollisionAlgorithm.cpp"
+						RelativePath="..\src\CompoundCollisionAlgorithm.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Convex2dConvex2dAlgorithm.cpp"
+						RelativePath="..\src\Convex2dConvex2dAlgorithm.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexConcaveCollisionAlgorithm.cpp"
+						RelativePath="..\src\ConvexConcaveCollisionAlgorithm.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexConvexAlgorithm.cpp"
+						RelativePath="..\src\ConvexConvexAlgorithm.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexPlaneCollisionAlgorithm.cpp"
+						RelativePath="..\src\ConvexPlaneCollisionAlgorithm.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\DefaultCollisionConfiguration.cpp"
+						RelativePath="..\src\DefaultCollisionConfiguration.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\EmptyCollisionAlgorithm.cpp"
+						RelativePath="..\src\EmptyCollisionAlgorithm.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\GhostObject.cpp"
+						RelativePath="..\src\GhostObject.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\InternalEdgeUtility.cpp"
+						RelativePath="..\src\InternalEdgeUtility.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ManifoldResult.cpp"
+						RelativePath="..\src\ManifoldResult.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SimulationIslandManager.cpp"
+						RelativePath="..\src\SimulationIslandManager.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SphereBoxCollisionAlgorithm.cpp"
+						RelativePath="..\src\SphereBoxCollisionAlgorithm.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SphereSphereCollisionAlgorithm.cpp"
+						RelativePath="..\src\SphereSphereCollisionAlgorithm.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SphereTriangleCollisionAlgorithm.cpp"
+						RelativePath="..\src\SphereTriangleCollisionAlgorithm.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SphereTriangleDetector.cpp"
+						RelativePath="..\src\SphereTriangleDetector.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\UnionFind.cpp"
+						RelativePath="..\src\UnionFind.cpp"
 						>
 					</File>
 				</Filter>
@@ -1614,27 +1614,27 @@
 					Name="GImpact"
 					>
 					<File
-						RelativePath=".\src\BoxCollision.cpp"
+						RelativePath="..\src\BoxCollision.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\GImpactBvh.cpp"
+						RelativePath="..\src\GImpactBvh.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\GImpactCollisionAlgorithm.cpp"
+						RelativePath="..\src\GImpactCollisionAlgorithm.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\GImpactQuantizedBvh.cpp"
+						RelativePath="..\src\GImpactQuantizedBvh.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\GImpactShape.cpp"
+						RelativePath="..\src\GImpactShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleShapeEx.cpp"
+						RelativePath="..\src\TriangleShapeEx.cpp"
 						>
 					</File>
 				</Filter>
@@ -1642,159 +1642,159 @@
 					Name="CollisionShapes"
 					>
 					<File
-						RelativePath=".\src\Box2dShape.cpp"
+						RelativePath="..\src\Box2dShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\BoxShape.cpp"
+						RelativePath="..\src\BoxShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\BulletMaterial.cpp"
+						RelativePath="..\src\BulletMaterial.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\BvhTriangleMeshShape.cpp"
+						RelativePath="..\src\BvhTriangleMeshShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CapsuleShape.cpp"
+						RelativePath="..\src\CapsuleShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CollisionShape.cpp"
+						RelativePath="..\src\CollisionShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CompoundShape.cpp"
+						RelativePath="..\src\CompoundShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConcaveShape.cpp"
+						RelativePath="..\src\ConcaveShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConeShape.cpp"
+						RelativePath="..\src\ConeShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Convex2dShape.cpp"
+						RelativePath="..\src\Convex2dShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexHullShape.cpp"
+						RelativePath="..\src\ConvexHullShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexInternalShape.cpp"
+						RelativePath="..\src\ConvexInternalShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexPointCloudShape.cpp"
+						RelativePath="..\src\ConvexPointCloudShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexPolyhedron.cpp"
+						RelativePath="..\src\ConvexPolyhedron.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexShape.cpp"
+						RelativePath="..\src\ConvexShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexTriangleMeshShape.cpp"
+						RelativePath="..\src\ConvexTriangleMeshShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CylinderShape.cpp"
+						RelativePath="..\src\CylinderShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\EmptyShape.cpp"
+						RelativePath="..\src\EmptyShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\HeightfieldTerrainShape.cpp"
+						RelativePath="..\src\HeightfieldTerrainShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\MinkowskiSumShape.cpp"
+						RelativePath="..\src\MinkowskiSumShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\MultiMaterialTriangleMeshShape.cpp"
+						RelativePath="..\src\MultiMaterialTriangleMeshShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\MultiSphereShape.cpp"
+						RelativePath="..\src\MultiSphereShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\OptimizedBvh.cpp"
+						RelativePath="..\src\OptimizedBvh.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\PolyhedralConvexShape.cpp"
+						RelativePath="..\src\PolyhedralConvexShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ScaledBvhTriangleMeshShape.cpp"
+						RelativePath="..\src\ScaledBvhTriangleMeshShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ShapeHull.cpp"
+						RelativePath="..\src\ShapeHull.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SphereShape.cpp"
+						RelativePath="..\src\SphereShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\StaticPlaneShape.cpp"
+						RelativePath="..\src\StaticPlaneShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\StridingMeshInterface.cpp"
+						RelativePath="..\src\StridingMeshInterface.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TetrahedronShape.cpp"
+						RelativePath="..\src\TetrahedronShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleBuffer.cpp"
+						RelativePath="..\src\TriangleBuffer.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleCallback.cpp"
+						RelativePath="..\src\TriangleCallback.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleIndexVertexArray.cpp"
+						RelativePath="..\src\TriangleIndexVertexArray.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleIndexVertexMaterialArray.cpp"
+						RelativePath="..\src\TriangleIndexVertexMaterialArray.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleInfoMap.cpp"
+						RelativePath="..\src\TriangleInfoMap.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleMesh.cpp"
+						RelativePath="..\src\TriangleMesh.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleMeshShape.cpp"
+						RelativePath="..\src\TriangleMeshShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleShape.cpp"
+						RelativePath="..\src\TriangleShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\UniformScalingShape.cpp"
+						RelativePath="..\src\UniformScalingShape.cpp"
 						>
 					</File>
 				</Filter>
@@ -1802,55 +1802,55 @@
 					Name="NarrowPhaseCollision"
 					>
 					<File
-						RelativePath=".\src\ContinuousConvexCollision.cpp"
+						RelativePath="..\src\ContinuousConvexCollision.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexCast.cpp"
+						RelativePath="..\src\ConvexCast.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexPenetrationDepthSolver.cpp"
+						RelativePath="..\src\ConvexPenetrationDepthSolver.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\DiscreteCollisionDetectorInterface.cpp"
+						RelativePath="..\src\DiscreteCollisionDetectorInterface.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\GjkConvexCast.cpp"
+						RelativePath="..\src\GjkConvexCast.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\GjkEpaPenetrationDepthSolver.cpp"
+						RelativePath="..\src\GjkEpaPenetrationDepthSolver.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\GjkPairDetector.cpp"
+						RelativePath="..\src\GjkPairDetector.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ManifoldPoint.cpp"
+						RelativePath="..\src\ManifoldPoint.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\MinkowskiPenetrationDepthSolver.cpp"
+						RelativePath="..\src\MinkowskiPenetrationDepthSolver.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\PersistentManifold.cpp"
+						RelativePath="..\src\PersistentManifold.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\PointCollector.cpp"
+						RelativePath="..\src\PointCollector.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SimplexSolverInterface.cpp"
+						RelativePath="..\src\SimplexSolverInterface.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\VoronoiSimplexSolver.cpp"
+						RelativePath="..\src\VoronoiSimplexSolver.cpp"
 						>
 					</File>
 				</Filter>
@@ -1862,11 +1862,11 @@
 					Name="Character"
 					>
 					<File
-						RelativePath=".\src\CharacterControllerInterface.cpp"
+						RelativePath="..\src\CharacterControllerInterface.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\KinematicCharacterController.cpp"
+						RelativePath="..\src\KinematicCharacterController.cpp"
 						>
 					</File>
 				</Filter>
@@ -1874,59 +1874,59 @@
 					Name="ConstraintSolver"
 					>
 					<File
-						RelativePath=".\src\ConeTwistConstraint.cpp"
+						RelativePath="..\src\ConeTwistConstraint.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConstraintSolver.cpp"
+						RelativePath="..\src\ConstraintSolver.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ContactConstraint.cpp"
+						RelativePath="..\src\ContactConstraint.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ContactSolverInfo.cpp"
+						RelativePath="..\src\ContactSolverInfo.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Generic6DofConstraint.cpp"
+						RelativePath="..\src\Generic6DofConstraint.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Generic6DofSpringConstraint.cpp"
+						RelativePath="..\src\Generic6DofSpringConstraint.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Hinge2Constraint.cpp"
+						RelativePath="..\src\Hinge2Constraint.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\HingeConstraint.cpp"
+						RelativePath="..\src\HingeConstraint.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Point2PointConstraint.cpp"
+						RelativePath="..\src\Point2PointConstraint.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SequentialImpulseConstraintSolver.cpp"
+						RelativePath="..\src\SequentialImpulseConstraintSolver.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SliderConstraint.cpp"
+						RelativePath="..\src\SliderConstraint.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Solve2LinearConstraint.cpp"
+						RelativePath="..\src\Solve2LinearConstraint.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TypedConstraint.cpp"
+						RelativePath="..\src\TypedConstraint.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\UniversalConstraint.cpp"
+						RelativePath="..\src\UniversalConstraint.cpp"
 						>
 					</File>
 				</Filter>
@@ -1934,19 +1934,19 @@
 					Name="Dynamics"
 					>
 					<File
-						RelativePath=".\src\ActionInterface.cpp"
+						RelativePath="..\src\ActionInterface.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\DiscreteDynamicsWorld.cpp"
+						RelativePath="..\src\DiscreteDynamicsWorld.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\DynamicsWorld.cpp"
+						RelativePath="..\src\DynamicsWorld.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\RigidBody.cpp"
+						RelativePath="..\src\RigidBody.cpp"
 						>
 					</File>
 				</Filter>
@@ -1954,15 +1954,15 @@
 					Name="Vehicle"
 					>
 					<File
-						RelativePath=".\src\RaycastVehicle.cpp"
+						RelativePath="..\src\RaycastVehicle.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\VehicleRaycaster.cpp"
+						RelativePath="..\src\VehicleRaycaster.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\WheelInfo.cpp"
+						RelativePath="..\src\WheelInfo.cpp"
 						>
 					</File>
 				</Filter>
@@ -1974,7 +1974,7 @@
 					Name="Serialize"
 					>
 					<File
-						RelativePath=".\src\BulletWorldImporter.cpp"
+						RelativePath="..\src\BulletWorldImporter.cpp"
 						>
 					</File>
 				</Filter>
@@ -1983,47 +1983,47 @@
 				Name="LinearMath"
 				>
 				<File
-					RelativePath=".\src\AlignedObjectArray.cpp"
+					RelativePath="..\src\AlignedObjectArray.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\DebugDraw.cpp"
+					RelativePath="..\src\DebugDraw.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\DefaultMotionState.cpp"
+					RelativePath="..\src\DefaultMotionState.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\GeometryUtil.cpp"
+					RelativePath="..\src\GeometryUtil.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\MotionState.cpp"
+					RelativePath="..\src\MotionState.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\PoolAllocator.cpp"
+					RelativePath="..\src\PoolAllocator.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\QuickProf.cpp"
+					RelativePath="..\src\QuickProf.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\Scalar.cpp"
+					RelativePath="..\src\Scalar.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\Serializer.cpp"
+					RelativePath="..\src\Serializer.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\StackAlloc.cpp"
+					RelativePath="..\src\StackAlloc.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\TransformUtil.cpp"
+					RelativePath="..\src\TransformUtil.cpp"
 					>
 				</File>
 			</Filter>
@@ -2031,35 +2031,35 @@
 				Name="SoftBody"
 				>
 				<File
-					RelativePath=".\src\SoftBody.cpp"
+					RelativePath="..\src\SoftBody.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\SoftBodyConcaveCollisionAlgorithm.cpp"
+					RelativePath="..\src\SoftBodyConcaveCollisionAlgorithm.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\SoftBodyHelpers.cpp"
+					RelativePath="..\src\SoftBodyHelpers.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\SoftBodyRigidBodyCollisionConfiguration.cpp"
+					RelativePath="..\src\SoftBodyRigidBodyCollisionConfiguration.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\SoftBodySolver.cpp"
+					RelativePath="..\src\SoftBodySolver.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\SoftBodySolverVertexBuffer.cpp"
+					RelativePath="..\src\SoftBodySolverVertexBuffer.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\SoftRigidDynamicsWorld.cpp"
+					RelativePath="..\src\SoftRigidDynamicsWorld.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\SparseSdf.cpp"
+					RelativePath="..\src\SparseSdf.cpp"
 					>
 				</File>
 			</Filter>
@@ -2067,22 +2067,22 @@
 				Name="MultiThreaded"
 				>
 				<File
-					RelativePath=".\src\ParallelConstraintSolver.cpp"
+					RelativePath="..\src\ParallelConstraintSolver.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\ThreadSupportInterface.cpp"
+					RelativePath="..\src\ThreadSupportInterface.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\Win32ThreadSupport.cpp"
+					RelativePath="..\src\Win32ThreadSupport.cpp"
 					>
 				</File>
 				<Filter
 					Name="SpuNarrowPhaseCollisionTask"
 					>
 					<File
-						RelativePath=".\src\SpuGatheringCollisionDispatcher.cpp"
+						RelativePath="..\src\SpuGatheringCollisionDispatcher.cpp"
 						>
 					</File>
 				</Filter>
@@ -2093,7 +2093,7 @@
 						Name="OpenCL"
 						>
 						<File
-							RelativePath=".\src\SoftBodySolverOpenCL.cpp"
+							RelativePath="..\src\SoftBodySolverOpenCL.cpp"
 							>
 						</File>
 					</Filter>
@@ -2101,7 +2101,7 @@
 						Name="Cpu"
 						>
 						<File
-							RelativePath=".\src\SoftBodySolverCpu.cpp"
+							RelativePath="..\src\SoftBodySolverCpu.cpp"
 							>
 						</File>
 					</Filter>
@@ -2111,7 +2111,7 @@
 				Name="VectorMath"
 				>
 				<File
-					RelativePath=".\src\VectorMathAos.cpp"
+					RelativePath="..\src\VectorMathAos.cpp"
 					>
 				</File>
 			</Filter>
@@ -2119,7 +2119,7 @@
 				Name="OpenCL"
 				>
 				<File
-					RelativePath=".\src\OpenCL.cpp"
+					RelativePath="..\src\OpenCL.cpp"
 					>
 				</File>
 			</Filter>
@@ -2130,35 +2130,35 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\src\Collections.h"
+				RelativePath="..\src\Collections.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Enums.h"
+				RelativePath="..\src\Enums.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\IDisposable.h"
+				RelativePath="..\src\IDisposable.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Math.h"
+				RelativePath="..\src\Math.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\ObjectTable.h"
+				RelativePath="..\src\ObjectTable.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Stdafx.h"
+				RelativePath="..\src\Stdafx.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\StringConv.h"
+				RelativePath="..\src\StringConv.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Version.h"
+				RelativePath="..\src\Version.h"
 				>
 			</File>
 			<Filter
@@ -2168,159 +2168,159 @@
 					Name="CollisionShapes"
 					>
 					<File
-						RelativePath=".\src\Box2dShape.h"
+						RelativePath="..\src\Box2dShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\BoxShape.h"
+						RelativePath="..\src\BoxShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\BulletMaterial.h"
+						RelativePath="..\src\BulletMaterial.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\BvhTriangleMeshShape.h"
+						RelativePath="..\src\BvhTriangleMeshShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CapsuleShape.h"
+						RelativePath="..\src\CapsuleShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CollisionShape.h"
+						RelativePath="..\src\CollisionShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CompoundShape.h"
+						RelativePath="..\src\CompoundShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConcaveShape.h"
+						RelativePath="..\src\ConcaveShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConeShape.h"
+						RelativePath="..\src\ConeShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Convex2dShape.h"
+						RelativePath="..\src\Convex2dShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexHullShape.h"
+						RelativePath="..\src\ConvexHullShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexInternalShape.h"
+						RelativePath="..\src\ConvexInternalShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexPointCloudShape.h"
+						RelativePath="..\src\ConvexPointCloudShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexPolyhedron.h"
+						RelativePath="..\src\ConvexPolyhedron.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexShape.h"
+						RelativePath="..\src\ConvexShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexTriangleMeshShape.h"
+						RelativePath="..\src\ConvexTriangleMeshShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CylinderShape.h"
+						RelativePath="..\src\CylinderShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\EmptyShape.h"
+						RelativePath="..\src\EmptyShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\HeightfieldTerrainShape.h"
+						RelativePath="..\src\HeightfieldTerrainShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\MinkowskiSumShape.h"
+						RelativePath="..\src\MinkowskiSumShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\MultiMaterialTriangleMeshShape.h"
+						RelativePath="..\src\MultiMaterialTriangleMeshShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\MultiSphereShape.h"
+						RelativePath="..\src\MultiSphereShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\OptimizedBvh.h"
+						RelativePath="..\src\OptimizedBvh.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\PolyhedralConvexShape.h"
+						RelativePath="..\src\PolyhedralConvexShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ScaledBvhTriangleMeshShape.h"
+						RelativePath="..\src\ScaledBvhTriangleMeshShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ShapeHull.h"
+						RelativePath="..\src\ShapeHull.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SphereShape.h"
+						RelativePath="..\src\SphereShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\StaticPlaneShape.h"
+						RelativePath="..\src\StaticPlaneShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\StridingMeshInterface.h"
+						RelativePath="..\src\StridingMeshInterface.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TetrahedronShape.h"
+						RelativePath="..\src\TetrahedronShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleBuffer.h"
+						RelativePath="..\src\TriangleBuffer.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleCallback.h"
+						RelativePath="..\src\TriangleCallback.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleIndexVertexArray.h"
+						RelativePath="..\src\TriangleIndexVertexArray.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleIndexVertexMaterialArray.h"
+						RelativePath="..\src\TriangleIndexVertexMaterialArray.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleInfoMap.h"
+						RelativePath="..\src\TriangleInfoMap.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleMesh.h"
+						RelativePath="..\src\TriangleMesh.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleMeshShape.h"
+						RelativePath="..\src\TriangleMeshShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleShape.h"
+						RelativePath="..\src\TriangleShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\UniformScalingShape.h"
+						RelativePath="..\src\UniformScalingShape.h"
 						>
 					</File>
 				</Filter>
@@ -2328,103 +2328,103 @@
 					Name="CollisionDispatch"
 					>
 					<File
-						RelativePath=".\src\ActivatingCollisionAlgorithm.h"
+						RelativePath="..\src\ActivatingCollisionAlgorithm.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Box2dBox2dCollisionAlgorithm.h"
+						RelativePath="..\src\Box2dBox2dCollisionAlgorithm.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\BoxBoxCollisionAlgorithm.h"
+						RelativePath="..\src\BoxBoxCollisionAlgorithm.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\BoxBoxDetector.h"
+						RelativePath="..\src\BoxBoxDetector.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CollisionConfiguration.h"
+						RelativePath="..\src\CollisionConfiguration.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CollisionCreateFunc.h"
+						RelativePath="..\src\CollisionCreateFunc.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CollisionDispatcher.h"
+						RelativePath="..\src\CollisionDispatcher.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CollisionObject.h"
+						RelativePath="..\src\CollisionObject.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CollisionWorld.h"
+						RelativePath="..\src\CollisionWorld.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CompoundCollisionAlgorithm.h"
+						RelativePath="..\src\CompoundCollisionAlgorithm.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Convex2dConvex2dAlgorithm.h"
+						RelativePath="..\src\Convex2dConvex2dAlgorithm.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexConcaveCollisionAlgorithm.h"
+						RelativePath="..\src\ConvexConcaveCollisionAlgorithm.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexConvexAlgorithm.h"
+						RelativePath="..\src\ConvexConvexAlgorithm.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexPlaneCollisionAlgorithm.h"
+						RelativePath="..\src\ConvexPlaneCollisionAlgorithm.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\DefaultCollisionConfiguration.h"
+						RelativePath="..\src\DefaultCollisionConfiguration.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\EmptyCollisionAlgorithm.h"
+						RelativePath="..\src\EmptyCollisionAlgorithm.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\GhostObject.h"
+						RelativePath="..\src\GhostObject.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\InternalEdgeUtility.h"
+						RelativePath="..\src\InternalEdgeUtility.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ManifoldResult.h"
+						RelativePath="..\src\ManifoldResult.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SimulationIslandManager.h"
+						RelativePath="..\src\SimulationIslandManager.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SphereBoxCollisionAlgorithm.h"
+						RelativePath="..\src\SphereBoxCollisionAlgorithm.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SphereSphereCollisionAlgorithm.h"
+						RelativePath="..\src\SphereSphereCollisionAlgorithm.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SphereTriangleCollisionAlgorithm.h"
+						RelativePath="..\src\SphereTriangleCollisionAlgorithm.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SphereTriangleDetector.h"
+						RelativePath="..\src\SphereTriangleDetector.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\UnionFind.h"
+						RelativePath="..\src\UnionFind.h"
 						>
 					</File>
 				</Filter>
@@ -2432,47 +2432,47 @@
 					Name="BroadphaseCollision"
 					>
 					<File
-						RelativePath=".\src\AxisSweep3.h"
+						RelativePath="..\src\AxisSweep3.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\BroadphaseInterface.h"
+						RelativePath="..\src\BroadphaseInterface.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\BroadphaseProxy.h"
+						RelativePath="..\src\BroadphaseProxy.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\CollisionAlgorithm.h"
+						RelativePath="..\src\CollisionAlgorithm.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Dbvt.h"
+						RelativePath="..\src\Dbvt.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\DbvtBroadphase.h"
+						RelativePath="..\src\DbvtBroadphase.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Dispatcher.h"
+						RelativePath="..\src\Dispatcher.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\OverlappingPairCache.h"
+						RelativePath="..\src\OverlappingPairCache.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\OverlappingPairCallback.h"
+						RelativePath="..\src\OverlappingPairCallback.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\QuantizedBvh.h"
+						RelativePath="..\src\QuantizedBvh.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SimpleBroadphase.h"
+						RelativePath="..\src\SimpleBroadphase.h"
 						>
 					</File>
 				</Filter>
@@ -2480,27 +2480,27 @@
 					Name="GImpact"
 					>
 					<File
-						RelativePath=".\src\BoxCollision.h"
+						RelativePath="..\src\BoxCollision.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\GImpactBvh.h"
+						RelativePath="..\src\GImpactBvh.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\GImpactCollisionAlgorithm.h"
+						RelativePath="..\src\GImpactCollisionAlgorithm.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\GImpactQuantizedBvh.h"
+						RelativePath="..\src\GImpactQuantizedBvh.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\GImpactShape.h"
+						RelativePath="..\src\GImpactShape.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TriangleShapeEx.h"
+						RelativePath="..\src\TriangleShapeEx.h"
 						>
 					</File>
 				</Filter>
@@ -2508,55 +2508,55 @@
 					Name="NarrowPhaseCollision"
 					>
 					<File
-						RelativePath=".\src\ContinuousConvexCollision.h"
+						RelativePath="..\src\ContinuousConvexCollision.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexCast.h"
+						RelativePath="..\src\ConvexCast.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConvexPenetrationDepthSolver.h"
+						RelativePath="..\src\ConvexPenetrationDepthSolver.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\DiscreteCollisionDetectorInterface.h"
+						RelativePath="..\src\DiscreteCollisionDetectorInterface.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\GjkConvexCast.h"
+						RelativePath="..\src\GjkConvexCast.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\GjkEpaPenetrationDepthSolver.h"
+						RelativePath="..\src\GjkEpaPenetrationDepthSolver.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\GjkPairDetector.h"
+						RelativePath="..\src\GjkPairDetector.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ManifoldPoint.h"
+						RelativePath="..\src\ManifoldPoint.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\MinkowskiPenetrationDepthSolver.h"
+						RelativePath="..\src\MinkowskiPenetrationDepthSolver.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\PersistentManifold.h"
+						RelativePath="..\src\PersistentManifold.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\PointCollector.h"
+						RelativePath="..\src\PointCollector.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SimplexSolverInterface.h"
+						RelativePath="..\src\SimplexSolverInterface.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\VoronoiSimplexSolver.h"
+						RelativePath="..\src\VoronoiSimplexSolver.h"
 						>
 					</File>
 				</Filter>
@@ -2568,19 +2568,19 @@
 					Name="Dynamics"
 					>
 					<File
-						RelativePath=".\src\ActionInterface.h"
+						RelativePath="..\src\ActionInterface.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\DiscreteDynamicsWorld.h"
+						RelativePath="..\src\DiscreteDynamicsWorld.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\DynamicsWorld.h"
+						RelativePath="..\src\DynamicsWorld.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\RigidBody.h"
+						RelativePath="..\src\RigidBody.h"
 						>
 					</File>
 				</Filter>
@@ -2588,59 +2588,59 @@
 					Name="ConstraintSolver"
 					>
 					<File
-						RelativePath=".\src\ConeTwistConstraint.h"
+						RelativePath="..\src\ConeTwistConstraint.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ConstraintSolver.h"
+						RelativePath="..\src\ConstraintSolver.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ContactConstraint.h"
+						RelativePath="..\src\ContactConstraint.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\ContactSolverInfo.h"
+						RelativePath="..\src\ContactSolverInfo.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Generic6DofConstraint.h"
+						RelativePath="..\src\Generic6DofConstraint.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Generic6DofSpringConstraint.h"
+						RelativePath="..\src\Generic6DofSpringConstraint.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Hinge2Constraint.h"
+						RelativePath="..\src\Hinge2Constraint.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\HingeConstraint.h"
+						RelativePath="..\src\HingeConstraint.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Point2PointConstraint.h"
+						RelativePath="..\src\Point2PointConstraint.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SequentialImpulseConstraintSolver.h"
+						RelativePath="..\src\SequentialImpulseConstraintSolver.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\SliderConstraint.h"
+						RelativePath="..\src\SliderConstraint.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\Solve2LinearConstraint.h"
+						RelativePath="..\src\Solve2LinearConstraint.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\TypedConstraint.h"
+						RelativePath="..\src\TypedConstraint.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\UniversalConstraint.h"
+						RelativePath="..\src\UniversalConstraint.h"
 						>
 					</File>
 				</Filter>
@@ -2648,15 +2648,15 @@
 					Name="Vehicle"
 					>
 					<File
-						RelativePath=".\src\RaycastVehicle.h"
+						RelativePath="..\src\RaycastVehicle.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\VehicleRaycaster.h"
+						RelativePath="..\src\VehicleRaycaster.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\WheelInfo.h"
+						RelativePath="..\src\WheelInfo.h"
 						>
 					</File>
 				</Filter>
@@ -2664,11 +2664,11 @@
 					Name="Character"
 					>
 					<File
-						RelativePath=".\src\CharacterControllerInterface.h"
+						RelativePath="..\src\CharacterControllerInterface.h"
 						>
 					</File>
 					<File
-						RelativePath=".\src\KinematicCharacterController.h"
+						RelativePath="..\src\KinematicCharacterController.h"
 						>
 					</File>
 				</Filter>
@@ -2677,51 +2677,51 @@
 				Name="LinearMath"
 				>
 				<File
-					RelativePath=".\src\AlignedObjectArray.h"
+					RelativePath="..\src\AlignedObjectArray.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\DebugDraw.h"
+					RelativePath="..\src\DebugDraw.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\DefaultMotionState.h"
+					RelativePath="..\src\DefaultMotionState.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\GeometryUtil.h"
+					RelativePath="..\src\GeometryUtil.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\IDebugDraw.h"
+					RelativePath="..\src\IDebugDraw.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\MotionState.h"
+					RelativePath="..\src\MotionState.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\PoolAllocator.h"
+					RelativePath="..\src\PoolAllocator.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\QuickProf.h"
+					RelativePath="..\src\QuickProf.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\Scalar.h"
+					RelativePath="..\src\Scalar.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\Serializer.h"
+					RelativePath="..\src\Serializer.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\StackAlloc.h"
+					RelativePath="..\src\StackAlloc.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\TransformUtil.h"
+					RelativePath="..\src\TransformUtil.h"
 					>
 				</File>
 			</Filter>
@@ -2729,35 +2729,35 @@
 				Name="SoftBody"
 				>
 				<File
-					RelativePath=".\src\SoftBody.h"
+					RelativePath="..\src\SoftBody.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\SoftBodyConcaveCollisionAlgorithm.h"
+					RelativePath="..\src\SoftBodyConcaveCollisionAlgorithm.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\SoftBodyHelpers.h"
+					RelativePath="..\src\SoftBodyHelpers.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\SoftBodyRigidBodyCollisionConfiguration.h"
+					RelativePath="..\src\SoftBodyRigidBodyCollisionConfiguration.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\SoftBodySolver.h"
+					RelativePath="..\src\SoftBodySolver.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\SoftBodySolverVertexBuffer.h"
+					RelativePath="..\src\SoftBodySolverVertexBuffer.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\SoftRigidDynamicsWorld.h"
+					RelativePath="..\src\SoftRigidDynamicsWorld.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\SparseSdf.h"
+					RelativePath="..\src\SparseSdf.h"
 					>
 				</File>
 			</Filter>
@@ -2768,7 +2768,7 @@
 					Name="Serialize"
 					>
 					<File
-						RelativePath=".\src\BulletWorldImporter.h"
+						RelativePath="..\src\BulletWorldImporter.h"
 						>
 					</File>
 				</Filter>
@@ -2777,22 +2777,22 @@
 				Name="MultiThreaded"
 				>
 				<File
-					RelativePath=".\src\ParallelConstraintSolver.h"
+					RelativePath="..\src\ParallelConstraintSolver.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\ThreadSupportInterface.h"
+					RelativePath="..\src\ThreadSupportInterface.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\Win32ThreadSupport.h"
+					RelativePath="..\src\Win32ThreadSupport.h"
 					>
 				</File>
 				<Filter
 					Name="SpuNarrowPhaseCollisionTask"
 					>
 					<File
-						RelativePath=".\src\SpuGatheringCollisionDispatcher.h"
+						RelativePath="..\src\SpuGatheringCollisionDispatcher.h"
 						>
 					</File>
 				</Filter>
@@ -2803,7 +2803,7 @@
 						Name="OpenCL"
 						>
 						<File
-							RelativePath=".\src\SoftBodySolverOpenCL.h"
+							RelativePath="..\src\SoftBodySolverOpenCL.h"
 							>
 						</File>
 					</Filter>
@@ -2811,7 +2811,7 @@
 						Name="Cpu"
 						>
 						<File
-							RelativePath=".\src\SoftBodySolverCpu.h"
+							RelativePath="..\src\SoftBodySolverCpu.h"
 							>
 						</File>
 					</Filter>
@@ -2821,7 +2821,7 @@
 				Name="VectorMath"
 				>
 				<File
-					RelativePath=".\src\VectorMathAos.h"
+					RelativePath="..\src\VectorMathAos.h"
 					>
 				</File>
 			</Filter>
@@ -2829,7 +2829,7 @@
 				Name="OpenCL"
 				>
 				<File
-					RelativePath=".\src\OpenCL.h"
+					RelativePath="..\src\OpenCL.h"
 					>
 				</File>
 			</Filter>
@@ -2838,51 +2838,51 @@
 			Name="external"
 			>
 			<File
-				RelativePath=".\src\DataStream.cpp"
+				RelativePath="..\src\DataStream.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DataStream.h"
+				RelativePath="..\src\DataStream.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Matrix.cpp"
+				RelativePath="..\src\Matrix.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Matrix.h"
+				RelativePath="..\src\Matrix.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Quaternion.cpp"
+				RelativePath="..\src\Quaternion.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Quaternion.h"
+				RelativePath="..\src\Quaternion.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Utilities.cpp"
+				RelativePath="..\src\Utilities.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Utilities.h"
+				RelativePath="..\src\Utilities.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Vector3.cpp"
+				RelativePath="..\src\Vector3.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Vector3.h"
+				RelativePath="..\src\Vector3.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Vector4.cpp"
+				RelativePath="..\src\Vector4.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Vector4.h"
+				RelativePath="..\src\Vector4.h"
 				>
 			</File>
 		</Filter>

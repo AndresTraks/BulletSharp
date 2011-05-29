@@ -57,9 +57,9 @@
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BulletSharp, Version=0.3.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="BulletSharp, Version=0.15.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Release XNA 3.1\BulletSharp.dll</HintPath>
+      <HintPath>..\..\..\vs2008\Release XNA 3.1\BulletSharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86">
       <Private>False</Private>

@@ -47,9 +47,9 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="BulletSharp, Version=0.4.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="BulletSharp, Version=0.15.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Release Mogre\BulletSharp.dll</HintPath>
+      <HintPath>..\..\..\vs2008\Release Mogre\BulletSharp.dll</HintPath>
     </Reference>
     <Reference Include="Mogre, Version=1.6.5.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
