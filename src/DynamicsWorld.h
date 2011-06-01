@@ -16,43 +16,6 @@ namespace BulletSharp
 	public:
 		delegate void InternalTickCallback(DynamicsWorld^ world, btScalar timeStep);
 
-		ref class RayResultCallback abstract : BulletSharp::IDisposable
-		{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
-
-		private:
-			btDynamicsWorld::RayResultCallback* _callback;
-
-		protected:
-			RayResultCallback(btDynamicsWorld::RayResultCallback* callback);
-
-		public:
-			!RayResultCallback();
-		protected:
-			~RayResultCallback();
-
-		public:
-			property bool IsDisposed
-			{
-				virtual bool get();
-			}
-
-		internal:
-			property btDynamicsWorld::RayResultCallback* UnmanagedPointer
-			{
-				virtual btDynamicsWorld::RayResultCallback* get();
-				void set(btDynamicsWorld::RayResultCallback* value);
-			}
-		};
-
-		ref class ClosestRayResultCallback : RayResultCallback
-		{
-		public:
-			ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld);
-		};
-
 	internal:
 		DynamicsWorld(btDynamicsWorld* world);
 

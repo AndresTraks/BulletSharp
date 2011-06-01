@@ -9,56 +9,6 @@
 #include "TypedConstraint.h"
 #endif
 
-DynamicsWorld::RayResultCallback::RayResultCallback(btDynamicsWorld::RayResultCallback* callback)
-{
-	_callback = callback;
-}
-
-DynamicsWorld::RayResultCallback::~RayResultCallback()
-{
-	this->!RayResultCallback();
-}
-
-DynamicsWorld::RayResultCallback::!RayResultCallback()
-{
-	if (this->IsDisposed)
-		return;
-
-	OnDisposing(this, nullptr);
-
-	_callback = NULL;
-
-	OnDisposed(this, nullptr);
-}
-
-bool DynamicsWorld::RayResultCallback::IsDisposed::get()
-{
-	return (_callback == NULL);
-}
-
-btDynamicsWorld::RayResultCallback* DynamicsWorld::RayResultCallback::UnmanagedPointer::get()
-{
-	return _callback;
-}
-void DynamicsWorld::RayResultCallback::UnmanagedPointer::set(btDynamicsWorld::RayResultCallback* value)
-{
-	_callback = value;
-}
-
-
-DynamicsWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld)
-: RayResultCallback(0)
-{
-	btVector3* rayFromWorldTemp = Math::Vector3ToBtVector3(rayFromWorld);
-	btVector3* rayToWorldTemp = Math::Vector3ToBtVector3(rayToWorld);
-
-	UnmanagedPointer = new btDynamicsWorld::ClosestRayResultCallback(*rayFromWorldTemp, *rayToWorldTemp);
-
-	delete rayFromWorldTemp;
-	delete rayToWorldTemp;
-}
-
-
 DynamicsWorld::DynamicsWorld(btDynamicsWorld* world)
 : CollisionWorld(world)
 {
