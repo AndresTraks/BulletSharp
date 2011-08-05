@@ -551,42 +551,31 @@ namespace DemoFramework
 
                     if (pickConstraint.ConstraintType == TypedConstraintType.D6)
                     {
-                        Generic6DofConstraint pickCon = (Generic6DofConstraint)pickConstraint;
+                        Generic6DofConstraint pickCon = pickConstraint as Generic6DofConstraint;
 
                         //keep it at the same picking distance
                         Vector3 rayFrom = Freelook.Eye;
-                        Vector3 scale;
-                        Quaternion rotation;
-                        Vector3 oldPivotInB;
-                        pickCon.FrameOffsetA.Decompose(out scale, out rotation, out oldPivotInB);
-
                         Vector3 dir = newRayTo - rayFrom;
                         dir.Normalize();
                         dir *= oldPickingDist;
                         Vector3 newPivotB = rayFrom + dir;
 
                         Matrix tempFrameOffsetA = pickCon.FrameOffsetA;
-                        Vector4 transRow = tempFrameOffsetA.get_Rows(3);
-                        transRow.X = newPivotB.X;
-                        transRow.Y = newPivotB.Y;
-                        transRow.Z = newPivotB.Z;
-                        tempFrameOffsetA.set_Rows(3, transRow);
+                        tempFrameOffsetA.M41 = newPivotB.X;
+                        tempFrameOffsetA.M42 = newPivotB.Y;
+                        tempFrameOffsetA.M43 = newPivotB.Z;
                         pickCon.FrameOffsetA = tempFrameOffsetA;
                     }
                     else
                     {
-                        Point2PointConstraint pickCon = (Point2PointConstraint)pickConstraint;
+                        Point2PointConstraint pickCon = pickConstraint as Point2PointConstraint;
 
                         //keep it at the same picking distance
                         Vector3 rayFrom = Freelook.Eye;
-                        Vector3 oldPivotInB = pickCon.PivotInB;
-
                         Vector3 dir = newRayTo - rayFrom;
                         dir.Normalize();
                         dir *= oldPickingDist;
-                        Vector3 newPivotB = rayFrom + dir;
-
-                        pickCon.PivotInB = newPivotB;
+                        pickCon.PivotInB = rayFrom + dir;
                     }
                 }
             }

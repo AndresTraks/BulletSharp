@@ -1,11 +1,29 @@
 #pragma once
 
+#include "CollisionObject.h"
+
 namespace BulletSharp
 {
+	class ContactAddedCallbackWrapper;
+	ref class ManifoldPoint;
+
+	public delegate bool ContactAdded(ManifoldPoint^ cp,
+		CollisionObject^ colObj0, int partId0, int index0,
+		CollisionObject^ colObj1, int partId1, int index1);
+
 	public ref class ManifoldPoint
 	{
+	internal:
+		static ContactAdded^ gContactAddedCallback;
+	public:
+		static property ContactAdded^ ContactAddedCallback
+		{
+			ContactAdded^ get();
+			void set(ContactAdded^ value);
+		}
+
 	private:
-		btManifoldPoint* _point;
+		btManifoldPoint* _manifoldPoint;
 
 		Object^ _userPersistentObject;
 
@@ -160,5 +178,12 @@ namespace BulletSharp
 			virtual btManifoldPoint* get();
 			void set(btManifoldPoint* value);
 		}
+	};
+
+	class ContactAddedCallbackWrapper
+	{
+	public:
+		static bool CustomMaterialCombinerCallback(btManifoldPoint& cp, const btCollisionObject* colObj0,
+			int partId0, int index0, const btCollisionObject* colObj1, int partId1, int index1);
 	};
 };
