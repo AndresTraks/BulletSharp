@@ -11,14 +11,6 @@
 #include "SoftBody.h"
 #endif
 
-CollisionObject::CollisionObject(btCollisionObject* collisionObject, bool doesNotOwnObject)
-{
-	_doesNotOwnObject = doesNotOwnObject;
-
-	if (collisionObject)
-		UnmanagedPointer = collisionObject;
-}
-
 CollisionObject::CollisionObject(btCollisionObject* collisionObject)
 {
 	if (collisionObject)
@@ -106,22 +98,29 @@ CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
 	if (userObj)
 		return static_cast<CollisionObject^>(VoidPtrToGCHandle(userObj).Target);
 
-	return CollisionObject::UpcastDetect(collisionObject);
-}
-
-CollisionObject^ CollisionObject::UpcastDetect(btCollisionObject* collisionObject)
-{
+	// If we reach here, then collisionObject was created from within unmanaged code,
+	// mark the wrapper object we create here so we don't try to destroy it later.
 	btRigidBody* rigidBody = static_cast<btRigidBody*>(collisionObject);
 	if (rigidBody)
-		return gcnew RigidBody(rigidBody);
+	{
+		RigidBody^ body = gcnew RigidBody(rigidBody);
+		body->_doesNotOwnObject = true;
+		return body;
+	}
 
 #ifndef DISABLE_SOFTBODY
 	btSoftBody* softBody = static_cast<btSoftBody*>(collisionObject);
 	if (softBody)
-		return gcnew SoftBody::SoftBody(softBody);
+	{
+		SoftBody::SoftBody^ body = gcnew SoftBody::SoftBody(softBody);
+		body->_doesNotOwnObject = true;
+		return body;
+	}
 #endif
 
-	return gcnew CollisionObject(collisionObject);
+	CollisionObject^ colObject = gcnew CollisionObject(collisionObject);
+	colObject->_doesNotOwnObject = true;
+	return colObject;
 }
 
 BulletSharp::ActivationState CollisionObject::ActivationState::get()
@@ -184,8 +183,7 @@ void CollisionObject::CollisionFlags::set(BulletSharp::CollisionFlags value)
 
 CollisionShape^ CollisionObject::CollisionShape::get()
 {
-	btCollisionShape* collisionShape = _collisionObject->getCollisionShape();
-	ReturnCachedObjectUpcast(BulletSharp::CollisionShape, _collisionShape, collisionShape);
+	return BulletSharp::CollisionShape::GetManaged(_collisionObject->getCollisionShape());
 }
 void CollisionObject::CollisionShape::set(BulletSharp::CollisionShape^ value)
 {
@@ -325,8 +323,7 @@ void CollisionObject::Restitution::set(btScalar value)
 
 CollisionShape^ CollisionObject::RootCollisionShape::get()
 {
-	btCollisionShape* rootCollisionShape = _collisionObject->getRootCollisionShape();
-	ReturnCachedObjectUpcast(BulletSharp::CollisionShape, _rootCollisionShape, rootCollisionShape);
+	return BulletSharp::CollisionShape::GetManaged(_collisionObject->getRootCollisionShape());
 }
 
 Object^ CollisionObject::UserObject::get()

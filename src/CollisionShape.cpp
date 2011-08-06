@@ -37,14 +37,6 @@
 #include "TriangleShape.h"
 #endif
 
-CollisionShape::CollisionShape(btCollisionShape* collisionShape, bool doesNotOwnObject)
-{
-	_doesNotOwnObject = doesNotOwnObject;
-
-	if (collisionShape)
-		UnmanagedPointer = collisionShape;
-}
-
 CollisionShape::CollisionShape(btCollisionShape* collisionShape)
 {
 	if (collisionShape)
@@ -193,89 +185,117 @@ CollisionShape^ CollisionShape::GetManaged(btCollisionShape* collisionShape)
 	if (userObj)
 		return static_cast<CollisionShape^>(VoidPtrToGCHandle(userObj).Target);
 
-	return CollisionShape::UpcastDetect(collisionShape);
-}
-
-CollisionShape^ CollisionShape::UpcastDetect(btCollisionShape* collisionShape)
-{
+	// If we reach here, then collisionShape was created from within unmanaged code,
+	// create a wrapper object based on the shape type.
 	BroadphaseNativeType type = (BroadphaseNativeType)collisionShape->getShapeType();
-
+	CollisionShape^ shape;
 	switch(type)
 	{
 	case BroadphaseNativeType::BoxShape:
-		return gcnew BoxShape((btBoxShape*) collisionShape);
+		shape = gcnew BoxShape((btBoxShape*) collisionShape);
+		break;
 	case BroadphaseNativeType::CapsuleShape:
-		return gcnew CapsuleShape((btCapsuleShape*) collisionShape);
+		shape = gcnew CapsuleShape((btCapsuleShape*) collisionShape);
+		break;
 	case BroadphaseNativeType::CompoundShape:
-		return gcnew CompoundShape((btCompoundShape*) collisionShape);
+		shape = gcnew CompoundShape((btCompoundShape*) collisionShape);
+		break;
 	case BroadphaseNativeType::ConeShape:
-		return gcnew ConeShape((btConeShape*) collisionShape);
+		shape = gcnew ConeShape((btConeShape*) collisionShape);
+		break;
 	case BroadphaseNativeType::ConvexHullShape:
-		return gcnew ConvexHullShape((btConvexHullShape*) collisionShape);
+		shape = gcnew ConvexHullShape((btConvexHullShape*) collisionShape);
+		break;
 	case BroadphaseNativeType::ConvexShape:
-		return gcnew ConvexShape((btConvexShape*) collisionShape);
+		shape = gcnew ConvexShape((btConvexShape*) collisionShape);
+		break;
 	case BroadphaseNativeType::ConvexTriangleMeshShape:
-		return gcnew ConvexTriangleMeshShape((btConvexTriangleMeshShape*) collisionShape);
+		shape = gcnew ConvexTriangleMeshShape((btConvexTriangleMeshShape*) collisionShape);
+		break;
 	//case BroadphaseNativeType::CustomConcaveShape:
-	//	return gcnew CustomConcaveShape((btCustomConcaveShape*) collisionShape);
+	//	shape = gcnew CustomConcaveShape((btCustomConcaveShape*) collisionShape);
+	//	break;
 	//case BroadphaseNativeType::CustomPolyhedralShape:
-	//	return gcnew CustomPolyhedralShape((btCustomPolyhedralShape*) collisionShape);
+	//	shape = gcnew CustomPolyhedralShape((btCustomPolyhedralShape*) collisionShape);
+	//	break;
 	case BroadphaseNativeType::CylinderShape:
-		return gcnew CylinderShape((btCylinderShape*) collisionShape);
+		shape = gcnew CylinderShape((btCylinderShape*) collisionShape);
+		break;
 	case BroadphaseNativeType::EmptyShape:
-		return gcnew EmptyShape((btEmptyShape*) collisionShape);
+		shape = gcnew EmptyShape((btEmptyShape*) collisionShape);
+		break;
 	//case BroadphaseNativeType::FastConcaveMesh:
-	//	return gcnew FastConcaveMesh((btFastConcaveMesh*) collisionShape);
+	//	shape = gcnew FastConcaveMesh((btFastConcaveMesh*) collisionShape);
+	//	break;
 	//case BroadphaseNativeType::HfFluidBuoyantConvexShape:
-	//	return gcnew HfFluidBuoyantConvexShape((btHfFluidBuoyantConvexShape*) collisionShape);
+	//	shape = gcnew HfFluidBuoyantConvexShape((btHfFluidBuoyantConvexShape*) collisionShape);
+	//	break;
 	//case BroadphaseNativeType::HfFluidShape:
-	//	return gcnew HfFluidShape((btHfFluidShape*) collisionShape);
+	//	shape = gcnew HfFluidShape((btHfFluidShape*) collisionShape);
+	//	break;
 	//case BroadphaseNativeType::MinkowskiDifferenceShape:
-	//	return gcnew MinkowskiDifferenceShape((btMinkowskiDifferenceShape*) collisionShape);
+	//	shape = gcnew MinkowskiDifferenceShape((btMinkowskiDifferenceShape*) collisionShape);
+	//	break;
 	case BroadphaseNativeType::MultiSphereShape:
-		return gcnew MultiSphereShape((btMultiSphereShape*) collisionShape);
+		shape = gcnew MultiSphereShape((btMultiSphereShape*) collisionShape);
+		break;
 	//case BroadphaseNativeType::ScaledTriangleMeshShape:
-	//	return gcnew ScaledTriangleMeshShape((btScaledTriangleMeshShape*) collisionShape);
+	//	shape = gcnew ScaledTriangleMeshShape((btScaledTriangleMeshShape*) collisionShape);
+	//	break;
 	case BroadphaseNativeType::SphereShape:
-		return gcnew SphereShape((btSphereShape*) collisionShape);
+		shape = gcnew SphereShape((btSphereShape*) collisionShape);
+		break;
 	case BroadphaseNativeType::StaticPlane:
-		return gcnew StaticPlaneShape((btStaticPlaneShape*) collisionShape);
+		shape = gcnew StaticPlaneShape((btStaticPlaneShape*) collisionShape);
+		break;
 	//case BroadphaseNativeType::TetrahedralShape:
-	//	return gcnew TetrahedralShape((btTetrahedralShape*) collisionShape);
+	//	shape = gcnew TetrahedralShape((btTetrahedralShape*) collisionShape);
+	//	break;
 	case BroadphaseNativeType::UniformScalingShape:
-		return gcnew UniformScalingShape((btUniformScalingShape*) collisionShape);
+		shape = gcnew UniformScalingShape((btUniformScalingShape*) collisionShape);
+		break;
 
-	case BroadphaseNativeType::GImpactShape:
-	{
 #ifndef DISABLE_GIMPACT
-		return gcnew GImpactMeshShape((btGImpactMeshShape*) collisionShape);
-#else
-		return this;
+	case BroadphaseNativeType::GImpactShape:
+		shape = gcnew GImpactMeshShape((btGImpactMeshShape*) collisionShape);
+		break;
 #endif
-	}
 
 #ifndef DISABLE_UNCOMMON
 	case BroadphaseNativeType::Box2dShape:
-		return gcnew Box2dShape((btBox2dShape*) collisionShape);
+		shape = gcnew Box2dShape((btBox2dShape*) collisionShape);
+		break;
 	case BroadphaseNativeType::Convex2DShape:
-		return gcnew Convex2DShape((btConvex2dShape*) collisionShape);
+		shape = gcnew Convex2DShape((btConvex2dShape*) collisionShape);
+		break;
 	case BroadphaseNativeType::ConvexPointCloudShape:
-		return gcnew ConvexPointCloudShape((btConvexPointCloudShape*) collisionShape);
+		shape = gcnew ConvexPointCloudShape((btConvexPointCloudShape*) collisionShape);
+		break;
 	case BroadphaseNativeType::MinkowskiSumShape:
-		return gcnew MinkowskiSumShape((btMinkowskiSumShape*) collisionShape);
+		shape = gcnew MinkowskiSumShape((btMinkowskiSumShape*) collisionShape);
+		break;
 	case BroadphaseNativeType::MultiMaterialTriangleMesh:
-		return gcnew MultimaterialTriangleMeshShape((btMultimaterialTriangleMeshShape*) collisionShape);
+		shape = gcnew MultimaterialTriangleMeshShape((btMultimaterialTriangleMeshShape*) collisionShape);
+		break;
 	case BroadphaseNativeType::TerrainShape:
-		return gcnew HeightfieldTerrainShape((btHeightfieldTerrainShape*) collisionShape);
+		shape = gcnew HeightfieldTerrainShape((btHeightfieldTerrainShape*) collisionShape);
+		break;
 	case BroadphaseNativeType::TriangleMeshShape:
-		return gcnew TriangleMeshShape((btTriangleMeshShape*) collisionShape);
+		shape = gcnew TriangleMeshShape((btTriangleMeshShape*) collisionShape);
+		break;
 	case BroadphaseNativeType::TriangleShape:
-		return gcnew TriangleShape((btTriangleShape*) collisionShape);
+		shape = gcnew TriangleShape((btTriangleShape*) collisionShape);
+		break;
 #endif
 
 	default:
-		return gcnew CollisionShape(collisionShape, true);
+		shape = gcnew CollisionShape(collisionShape);
 	}
+
+	// Tell the wrapper object we just created not to destroy this collisionShape.
+	shape->_doesNotOwnObject = true;
+
+	return shape;
 }
 
 btScalar CollisionShape::AngularMotionDisc::get()

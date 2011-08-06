@@ -19,12 +19,9 @@ namespace BulletSharp
 		bool _doesNotOwnObject;
 		
 		BroadphaseProxy^ _broadphaseHandle;
-		CollisionShape^ _collisionShape;
-		CollisionShape^ _rootCollisionShape;
 		Object^ _userObject;
 
 	internal:
-		CollisionObject(btCollisionObject* collisionObject, bool doesNotOwnObject);
 		CollisionObject(btCollisionObject* collisionObject);
 
 	public:
@@ -53,7 +50,6 @@ namespace BulletSharp
 
 	internal:
 		static CollisionObject^ GetManaged(btCollisionObject* collisionObject);
-		static CollisionObject^ UpcastDetect(btCollisionObject* collisionObject);
 
 	public:
 		property BulletSharp::ActivationState ActivationState

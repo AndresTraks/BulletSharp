@@ -19,7 +19,6 @@ namespace BulletSharp
 		bool _doesNotOwnObject;
 
 	internal:
-		CollisionShape(btCollisionShape* collisionShape, bool doesNotOwnObject);
 		CollisionShape(btCollisionShape* collisionShape);
 
 	public:
@@ -48,7 +47,6 @@ namespace BulletSharp
 
 	internal:
 		static CollisionShape^ GetManaged(btCollisionShape* collisionShape);
-		static CollisionShape^ UpcastDetect(btCollisionShape* collisionShape);
 
 	public:
 		property bool IsDisposed
