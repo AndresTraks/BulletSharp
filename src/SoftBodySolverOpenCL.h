@@ -26,6 +26,5 @@ namespace BulletSharp
 		public:
 			SoftBodySolverOutputCLToCpu();
 		};
-
 	};
 };

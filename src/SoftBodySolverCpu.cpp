@@ -16,4 +16,10 @@ btCPUSoftBodySolver* CpuSoftBodySolver::UnmanagedPointer::get()
 	return (btCPUSoftBodySolver*)SoftBodySolver::UnmanagedPointer;
 }
 
+
+SoftBody::SoftBodySolverOutputCpuToCpu::SoftBodySolverOutputCpuToCpu()
+: SoftBodySolverOutput(new btSoftBodySolverOutputCPUtoCPU())
+{
+}
+
 #endif

@@ -10,7 +10,7 @@ namespace OpenCLClothDemo
 {
     class Physics : PhysicsContext
     {
-        bool UseGpuSolver = true;
+        bool UseGpuSolver = false;
 
         const int numFlags = 5;
         const int clothWidth = 20;//40;
@@ -50,6 +50,7 @@ namespace OpenCLClothDemo
             else
             {
                 gSolver = new CpuSoftBodySolver();
+                softBodyOutput = new SoftBodySolverOutputCpuToCpu();
             }
 
             // collision configuration contains default setup for memory, collision setup
