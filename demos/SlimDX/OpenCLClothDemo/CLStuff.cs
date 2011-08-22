@@ -8,7 +8,9 @@ namespace OpenCLClothDemo
         public static IntPtr cxMainContext;
         public static IntPtr device;
         public static IntPtr commandQueue;
-        public static CLDeviceType deviceType = CLDeviceType.Cpu;
+
+        // BulletSharp has to be compiled with CL support if these types can't be found. See Stdafx.h
+        public static CLDeviceType deviceType = CLDeviceType.Gpu;
 
         public static void InitCL()
         {
@@ -25,6 +27,10 @@ namespace OpenCLClothDemo
             OclUtils.PrintDeviceInfo(device);
 
             commandQueue = CL.CreateCommandQueue(cxMainContext, device, CLCommandQueueProperties.None, out ciErrNum);
+            if (ciErrNum != 0)
+            {
+                System.Windows.Forms.MessageBox.Show("OpenCL CreateCommandQueue failed, error " + ciErrNum);
+            }
         }
     }
 }

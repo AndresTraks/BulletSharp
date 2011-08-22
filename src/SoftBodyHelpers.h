@@ -9,6 +9,7 @@ namespace BulletSharp
 		ref class SoftBody;
 		ref class SoftBodyWorldInfo;
 
+		[Flags]
 		public enum class DrawFlags
 		{
 			Nodes = fDrawFlags::Nodes,

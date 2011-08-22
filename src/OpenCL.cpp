@@ -174,12 +174,26 @@ cl_int CL::GetDeviceInfo(IntPtr device, CLDevice param, [Out]CLDeviceType% param
 cl_int CL::GetPlatformIDs(cl_uint numEntries, array<IntPtr>^% platforms, [Out]cl_uint% numPlatforms)
 {
 	cl_uint numPlatformsTemp;
-	cl_platform_id* platformsTemp = 0;
+	cl_platform_id* platformsTemp;
+	cl_int ret;
+
+	if (numEntries == 0)
+	{
+		// Get only the number of platforms available.
+		ret = clGetPlatformIDs(0, NULL, &numPlatformsTemp);
+		if (ret == CL_SUCCESS)
+		{
+			numPlatforms = numPlatformsTemp;
+		}
+		return ret;
+	}
 
 	if (platforms != nullptr)
 		platformsTemp = new cl_platform_id[platforms->Length];
+	else
+		platformsTemp = 0;
 
-	cl_int ret = clGetPlatformIDs(numEntries, platformsTemp, &numPlatformsTemp);
+	ret = clGetPlatformIDs(numEntries, platformsTemp, &numPlatformsTemp);
 	if (ret != CL_SUCCESS)
 		return ret;
 

@@ -77,11 +77,11 @@ namespace OpenCLClothDemo
 
             if ((deviceType & CLDeviceType.Cpu) == CLDeviceType.Cpu)
                 Console.WriteLine("  CL_DEVICE_TYPE:\t\t\tCL_DEVICE_TYPE_CPU");
-            if ((deviceType & CLDeviceType.Cpu) == CLDeviceType.Gpu)
+            if ((deviceType & CLDeviceType.Gpu) == CLDeviceType.Gpu)
                 Console.WriteLine("  CL_DEVICE_TYPE:\t\t\tCL_DEVICE_TYPE_GPU");
-            if ((deviceType & CLDeviceType.Cpu) == CLDeviceType.Accelerator)
+            if ((deviceType & CLDeviceType.Accelerator) == CLDeviceType.Accelerator)
                 Console.WriteLine("  CL_DEVICE_TYPE:\t\t\tCL_DEVICE_TYPE_DEFAULT");
-            if ((deviceType & CLDeviceType.Cpu) == CLDeviceType.Default)
+            if ((deviceType & CLDeviceType.Default) == CLDeviceType.Default)
                 Console.WriteLine("  CL_DEVICE_TYPE:\t\t\tCL_DEVICE_TYPE_DEFAULT");
 
             int computeUnits;

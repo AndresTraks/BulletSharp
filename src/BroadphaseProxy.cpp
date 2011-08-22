@@ -146,37 +146,37 @@ void BroadphaseProxy::Uid::set(int value)
 
 bool BroadphaseProxy::IsCompound(int proxyType)
 {
-	return _proxy->isCompound(proxyType);
+	return btBroadphaseProxy::isCompound(proxyType);
 }
 
 bool BroadphaseProxy::IsConcave(int proxyType)
 {
-	return _proxy->isConcave(proxyType);
+	return btBroadphaseProxy::isConcave(proxyType);
 }
 
 bool BroadphaseProxy::IsConvex(int proxyType)
 {
-	return _proxy->isConvex(proxyType);
+	return btBroadphaseProxy::isConvex(proxyType);
 }
 
 bool BroadphaseProxy::IsConvex2d(int proxyType)
 {
-	return _proxy->isConvex2d(proxyType);
+	return btBroadphaseProxy::isConvex2d(proxyType);
 }
 
 bool BroadphaseProxy::IsInfinite(int proxyType)
 {
-	return _proxy->isInfinite(proxyType);
+	return btBroadphaseProxy::isInfinite(proxyType);
 }
 
 bool BroadphaseProxy::IsPolyhedral(int proxyType)
 {
-	return _proxy->isPolyhedral(proxyType);
+	return btBroadphaseProxy::isPolyhedral(proxyType);
 }
 
 bool BroadphaseProxy::IsSoftBody(int proxyType)
 {
-	return _proxy->isSoftBody(proxyType);
+	return btBroadphaseProxy::isSoftBody(proxyType);
 }
 
 btBroadphaseProxy* BroadphaseProxy::UnmanagedPointer::get()

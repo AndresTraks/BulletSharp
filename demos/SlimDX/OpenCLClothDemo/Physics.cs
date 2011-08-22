@@ -45,6 +45,7 @@ namespace OpenCLClothDemo
             if (UseGpuSolver)
             {
                 gSolver = new OpenCLSoftBodySolver(CLStuff.commandQueue, CLStuff.cxMainContext);
+                softBodyOutput = new SoftBodySolverOutputCLToCpu();
             }
             else
             {

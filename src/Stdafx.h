@@ -221,14 +221,17 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #include <MiniCL/cl.h>
 #pragma comment(lib, "MiniCL.lib")
 #pragma comment(lib, "BulletSoftBodySolvers_OpenCL_Mini.lib")
+#pragma comment(lib, "BulletSoftBodySolvers_CPU.lib")
 #elif defined(USE_AMD_OPENCL)
 #include <CL/cl.h>
 #pragma comment(lib, "OpenCL.lib")
 #pragma comment(lib, "BulletSoftBodySolvers_OpenCL_AMD.lib")
+#pragma comment(lib, "BulletSoftBodySolvers_CPU.lib")
 #elif defined(USE_NVIDIA_OPENCL)
 #include <CL/cl.h>
 #pragma comment(lib, "OpenCL.lib")
 #pragma comment(lib, "BulletSoftBodySolvers_OpenCL_NVidia.lib")
+#pragma comment(lib, "BulletSoftBodySolvers_CPU.lib")
 #endif
 
 #ifndef DISABLE_MULTITHREADED

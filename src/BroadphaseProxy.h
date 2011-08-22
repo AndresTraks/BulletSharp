@@ -72,13 +72,13 @@ namespace BulletSharp
 			void set(int value);
 		}
 
-		bool IsCompound(int proxyType);
-		bool IsConcave(int proxyType);
-		bool IsConvex(int proxyType);
-		bool IsConvex2d(int proxyType);
-		bool IsInfinite(int proxyType);
-		bool IsPolyhedral(int proxyType);
-		bool IsSoftBody(int proxyType);
+		static bool IsCompound(int proxyType);
+		static bool IsConcave(int proxyType);
+		static bool IsConvex(int proxyType);
+		static bool IsConvex2d(int proxyType);
+		static bool IsInfinite(int proxyType);
+		static bool IsPolyhedral(int proxyType);
+		static bool IsSoftBody(int proxyType);
 
 	internal:
 		property btBroadphaseProxy* UnmanagedPointer

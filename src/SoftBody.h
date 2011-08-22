@@ -131,6 +131,7 @@ namespace BulletSharp
 			Node = btSoftBody::eFeature::Node,
 			Link = btSoftBody::eFeature::Link,
 			Face = btSoftBody::eFeature::Face,
+			Tetra = btSoftBody::eFeature::Tetra,
 			End = btSoftBody::eFeature::END
 		};
 

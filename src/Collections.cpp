@@ -195,7 +195,7 @@ void BoolArray::CopyTo(array<bool>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	if (arrayIndex + Count > array->Length)
 		throw gcnew ArgumentException("Array too small.");
@@ -255,7 +255,7 @@ void SoftBody::BodyArray::CopyTo(array<Body^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int length = Count;
 	if (arrayIndex + length > array->Length)
@@ -302,7 +302,7 @@ void CompoundShapeChildArray::CopyTo(array<CompoundShapeChild^>^ array, int arra
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int length = Count;
 	if (arrayIndex + length > array->Length)
@@ -354,7 +354,7 @@ void DbvtArray::CopyTo(array<Dbvt^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int length = Count;
 	if (arrayIndex + length > array->Length)
@@ -401,7 +401,7 @@ void DbvtNodePtrArray::CopyTo(array<DbvtNode^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int length = Count;
 	if (arrayIndex + length > array->Length)
@@ -452,7 +452,7 @@ void DbvtProxyPtrArray::CopyTo(array<DbvtProxy^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int length = Count;
 	if (arrayIndex + length > array->Length)
@@ -523,7 +523,7 @@ void FloatArray::CopyTo(array<float>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	if (arrayIndex + Count > array->Length)
 		throw gcnew ArgumentException("Array too small.");
@@ -601,7 +601,7 @@ void IntArray::CopyTo(array<int>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	if (arrayIndex + Count > array->Length)
 		throw gcnew ArgumentException("Array too small.");
@@ -661,7 +661,7 @@ void SoftBody::NodePtrArray::CopyTo(array<Node^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int length = Count;
 	if (arrayIndex + length > array->Length)
@@ -727,7 +727,7 @@ void ScalarArray::CopyTo(array<btScalar>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	if (arrayIndex + Count > array->Length)
 		throw gcnew ArgumentException("Array too small.");
@@ -800,7 +800,7 @@ void UIntArray::CopyTo(array<unsigned int>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	if (arrayIndex + Count > array->Length)
 		throw gcnew ArgumentException("Array too small.");
@@ -873,7 +873,7 @@ void UShortArray::CopyTo(array<unsigned short>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	if (arrayIndex + Count > array->Length)
 		throw gcnew ArgumentException("Array too small.");
@@ -958,7 +958,7 @@ void Vector3Array::CopyTo(array<Vector3>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int length = Count;
 	if (arrayIndex + length > array->Length)

@@ -14,7 +14,7 @@ namespace OpenCLClothDemo
             uint numPlatforms;
             IntPtr platform = IntPtr.Zero;
             IntPtr[] platforms = null;
-            
+
             int ciErrNum = CL.GetPlatformIDs(0, ref platforms, out numPlatforms);
             if (ciErrNum != 0)
             {

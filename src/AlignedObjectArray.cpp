@@ -143,7 +143,7 @@ void AlignedAnchorArray::CopyTo(array<Anchor^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btSoftBody::tAnchorArray*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -229,7 +229,7 @@ void AlignedBroadphasePairArray::CopyTo(array<BroadphasePair^>^ array, int array
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btBroadphasePairArray*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -328,7 +328,7 @@ void AlignedClusterArray::CopyTo(array<Cluster^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btSoftBody::tClusterArray*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -416,7 +416,7 @@ void AlignedCollisionShapeArray::CopyTo(array<CollisionShape^>^ array, int array
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btAlignedObjectArray<btCollisionShape>*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -510,7 +510,7 @@ void AlignedCollisionObjectArray::CopyTo(array<CollisionObject^>^ array, int arr
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btCollisionObjectArray*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -604,7 +604,7 @@ void AlignedDbvtNodeArray::CopyTo(array<DbvtNode^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btAlignedObjectArray<const btDbvtNode*>*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -693,7 +693,7 @@ void AlignedStkNnArray::CopyTo(array<Dbvt::StkNn^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btAlignedObjectArray<btDbvt::sStkNN>*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -774,7 +774,7 @@ void AlignedStkNpsArray::CopyTo(array<Dbvt::StkNps^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btAlignedObjectArray<btDbvt::sStkNPS>*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -857,7 +857,7 @@ void AlignedFaceArray::CopyTo(array<Face^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btAlignedObjectArray<btSoftBody::Face>*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -943,7 +943,7 @@ void AlignedIntArray::CopyTo(array<int>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btAlignedObjectArray<int>*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -1046,7 +1046,7 @@ void AlignedJointArray::CopyTo(array<Joint^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btSoftBody::tJointArray*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -1155,7 +1155,7 @@ void AlignedManifoldArray::CopyTo(array<PersistentManifold^>^ array, int arrayIn
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btManifoldArray*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -1244,7 +1244,7 @@ void AlignedIndexedMeshArray::CopyTo(array<IndexedMesh^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btAlignedObjectArray<btIndexedMesh>*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -1327,7 +1327,7 @@ void AlignedLinkArray::CopyTo(array<Link^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btSoftBody::tLinkArray*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -1412,7 +1412,7 @@ void AlignedMaterialArray::CopyTo(array<BulletSharp::SoftBody::Material^>^ array
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btSoftBody::tMaterialArray*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -1499,7 +1499,7 @@ void BulletSharp::SoftBody::AlignedNodeArray::CopyTo(array<Node^>^ array, int ar
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btSoftBody::tNodeArray*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -1583,7 +1583,7 @@ void AlignedNodePtrArray::CopyTo(array<BulletSharp::SoftBody::Node^>^ array, int
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -1669,7 +1669,7 @@ void AlignedNoteArray::CopyTo(array<Note^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btSoftBody::tNoteArray*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -1755,7 +1755,7 @@ void AlignedPSolverArray::CopyTo(array<PSolver>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btSoftBody::tPSolverArray*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -1841,7 +1841,7 @@ void AlignedRigidContactArray::CopyTo(array<RigidContact^>^ array, int arrayInde
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btSoftBody::tRContactArray*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -1927,7 +1927,7 @@ void AlignedScalarArray::CopyTo(array<btScalar>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btAlignedObjectArray<btScalar>*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -2020,7 +2020,7 @@ void BulletSharp::SoftBody::AlignedSoftBodyArray::CopyTo(array<SoftBody^>^ array
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btSoftBody::tSoftBodyArray*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -2106,7 +2106,7 @@ void AlignedSoftContactArray::CopyTo(array<SoftContact^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btSoftBody::tSContactArray*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -2185,7 +2185,7 @@ void AlignedTetraArray::CopyTo(array<Tetra^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btAlignedObjectArray<btSoftBody::Tetra>*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -2282,7 +2282,7 @@ void AlignedVector3Array::CopyTo(array<Vector3>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btAlignedObjectArray<btVector3>*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -2379,7 +2379,7 @@ void AlignedVSolverArray::CopyTo(array<VSolver>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btSoftBody::tVSolverArray*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
@@ -2467,7 +2467,7 @@ void AlignedWheelInfoArray::CopyTo(array<WheelInfo^>^ array, int arrayIndex)
 		throw gcnew ArgumentNullException("array");
 
 	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("arrayIndex");
+		throw gcnew ArgumentOutOfRangeException("array");
 
 	int size = ((btAlignedObjectArray<btWheelInfo>*)_unmanaged)->size();
 	if (arrayIndex + size > array->Length)
