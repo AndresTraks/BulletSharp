@@ -118,8 +118,10 @@ namespace BulletSharp
 		{
 			VPoint = btSoftBody::eAeroModel::V_Point,
 			VTwoSided = btSoftBody::eAeroModel::V_TwoSided,
+			VTwoSidedLiftDrag = btSoftBody::eAeroModel::V_TwoSidedLiftDrag,
 			VOneSided = btSoftBody::eAeroModel::V_OneSided,
 			FTwoSided = btSoftBody::eAeroModel::F_TwoSided,
+			FTwoSidedLiftDrag = btSoftBody::eAeroModel::F_TwoSidedLiftDrag,
 			FOneSided = btSoftBody::eAeroModel::F_OneSided,
 			End = btSoftBody::eAeroModel::END
 		};
