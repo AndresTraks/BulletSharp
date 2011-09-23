@@ -16,8 +16,7 @@ namespace OpenCLClothDemo
 
         Light light;
         Material softBodyMaterial;
-        Texture amdFlag;
-        Texture atiFlag;
+        Texture flagTex;
 
         protected override void OnInitializeDevice()
         {
@@ -41,8 +40,7 @@ namespace OpenCLClothDemo
             softBodyMaterial.Diffuse = Color.White;
             softBodyMaterial.Ambient = new Color4(Ambient);
 
-            amdFlag = Texture.FromFile(Device, "amdFlag.png");
-            atiFlag = Texture.FromFile(Device, "atiFlag.png");
+            flagTex = Texture.FromFile(Device, "bullet_logo.png");
 
             FarPlane = 200f;
             Freelook.SetEyeTarget(eye, target);
@@ -60,8 +58,7 @@ namespace OpenCLClothDemo
             base.Dispose(disposing);
             if (disposing)
             {
-                amdFlag.Dispose();
-                atiFlag.Dispose();
+                flagTex.Dispose();
             }
         }
 
@@ -87,7 +84,7 @@ namespace OpenCLClothDemo
             {
                 if (colObj.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
                 {
-                    Device.SetTexture(0, atiFlag);
+                    Device.SetTexture(0, flagTex);
                     Device.Material = softBodyMaterial;
                     Device.SetTransform(TransformState.World, Matrix.Identity);
                     MeshFactory.RenderSoftBodyTextured((BulletSharp.SoftBody.SoftBody)colObj);

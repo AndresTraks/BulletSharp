@@ -65,7 +65,7 @@ namespace SoftDemo
             }
 
             // Don't foreach here, it'll fail.
-            for (int i = World.CollisionObjectArray.Count - 1; i >= 0;  i--)
+            for (int i = World.CollisionObjectArray.Count - 1; i >= 0; i--)
             {
                 CollisionObject obj = World.CollisionObjectArray[i];
 
@@ -470,7 +470,7 @@ namespace SoftDemo
             psb.SetVolumeMass(150);
             psb.Cfg.PIterations = 2;
             //psb.Cfg.PIterations = 1;
-            cutting = true;
+            cutting = false;
             //psb.CollisionShape.Margin = 0.01f;
             psb.Cfg.Collisions = FCollisions.CLSS | FCollisions.CLRS; //| FCollisions.CLSelf;
 
@@ -503,7 +503,7 @@ namespace SoftDemo
             psb.Cfg.Collisions = FCollisions.CLSS | FCollisions.CLRS;
             // | FCollisions.CLSelf;
             psb.Materials[0].Lst = 0.8f;
-            cutting = true;
+            cutting = false;
         }
 
         void Init_Volume()

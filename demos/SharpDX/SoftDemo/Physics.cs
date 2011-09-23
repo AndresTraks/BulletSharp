@@ -403,6 +403,51 @@ namespace SoftDemo
             }
         }
 
+        void Init_Aero2()
+        {
+            //TRACEDEMO
+            float s = 5;
+            const int segments = 10;
+            const int count = 5;
+            Vector3 pos = new Vector3(-s * segments, 0, 0);
+            float gap = 0.5f;
+
+            for (int i = 0; i < count; ++i)
+            {
+                SoftBody psb = SoftBodyHelpers.CreatePatch(softBodyWorldInfo, new Vector3(-s, 0, -s * 3),
+                    new Vector3(+s, 0, -s * 3),
+                    new Vector3(-s, 0, +s),
+                    new Vector3(+s, 0, +s),
+                    segments, segments * 3,
+                    1 + 2, true);
+
+                psb.CollisionShape.Margin = 0.5f;
+                Material pm = psb.AppendMaterial();
+                pm.Lst = 0.0004f;
+                pm.Flags -= FMaterial.DebugDraw;
+                psb.GenerateBendingConstraints(2, pm);
+
+                psb.Cfg.LF = 0.05f;
+                psb.Cfg.DG = 0.01f;
+
+                //psb.Cfg.LF = 0.004f;
+                //psb.Cfg.DG = 0.0003f;
+
+                psb.Cfg.PIterations = 2;
+                psb.Cfg.AeroModel = AeroModel.VTwoSidedLiftDrag;
+
+
+                psb.WindVelocity = new Vector3(4, -12.0f, -25.0f);
+
+                pos += new Vector3(s * 2 + gap, 0, 0);
+                Matrix trs = Matrix.RotationX((float)Math.PI / 2) * Matrix.Translation(pos);
+                psb.Transform(trs);
+                psb.TotalMass = 2.0f;
+
+                SoftWorld.AddSoftBody(psb);
+            }
+        }
+
         void Init_Friction()
         {
             const float bs = 2;
@@ -425,7 +470,7 @@ namespace SoftDemo
             psb.SetVolumeMass(150);
             psb.Cfg.PIterations = 2;
             //psb.Cfg.PIterations = 1;
-            cutting = true;
+            cutting = false;
             //psb.CollisionShape.Margin = 0.01f;
             psb.Cfg.Collisions = FCollisions.CLSS | FCollisions.CLRS; //| FCollisions.CLSelf;
 
@@ -458,7 +503,7 @@ namespace SoftDemo
             psb.Cfg.Collisions = FCollisions.CLSS | FCollisions.CLRS;
             // | FCollisions.CLSelf;
             psb.Materials[0].Lst = 0.8f;
-            cutting = true;
+            cutting = false;
         }
 
         void Init_Volume()
@@ -986,7 +1031,7 @@ namespace SoftDemo
         {
             demos = new DemoConstructor[] { Init_Cloth, Init_Pressure, Init_Volume, Init_Ropes, Init_RopeAttach,
                 Init_ClothAttach, Init_Sticks, Init_Collide, Init_Collide2, Init_Collide3, Init_Impact, Init_Aero,
-                Init_Friction, Init_Torus, Init_TorusMatch, Init_Bunny, Init_BunnyMatch, Init_Cutting1,
+                Init_Aero2, Init_Friction, Init_Torus, Init_TorusMatch, Init_Bunny, Init_BunnyMatch, Init_Cutting1,
                 Init_ClusterDeform, Init_ClusterCollide1, Init_ClusterCollide2, Init_ClusterSocket, Init_ClusterHinge,
                 Init_ClusterCombine, Init_ClusterCar, Init_ClusterRobot, Init_ClusterStackSoft, Init_ClusterStackMixed,
                 Init_TetraCube, Init_TetraBunny

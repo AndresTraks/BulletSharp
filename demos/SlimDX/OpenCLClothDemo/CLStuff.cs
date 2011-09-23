@@ -10,7 +10,7 @@ namespace OpenCLClothDemo
         public static IntPtr commandQueue;
 
         // BulletSharp has to be compiled with CL support if these types can't be found. See Stdafx.h
-        public static CLDeviceType deviceType = CLDeviceType.Gpu;
+        public static CLDeviceType deviceType = CLDeviceType.All;
 
         public static void InitCL()
         {

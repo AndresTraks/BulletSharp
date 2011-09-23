@@ -10,6 +10,11 @@ namespace BulletSharp
 		ConvexInternalShape(btConvexInternalShape* convexInternalShape);
 
 	public:
+		void SetSafeMargin(btScalar minDimension, btScalar defaultMarginMultiplier);
+		void SetSafeMargin(btScalar minDimension);
+		void SetSafeMargin(Vector3 halfExtents, btScalar defaultMarginMultiplier);
+		void SetSafeMargin(Vector3 halfExtents);
+
 		property Vector3 ImplicitShapeDimensions
 		{
 			Vector3 get();

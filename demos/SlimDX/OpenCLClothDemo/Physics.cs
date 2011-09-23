@@ -17,7 +17,7 @@ namespace OpenCLClothDemo
         const int clothHeight = 30;//60;
         const float flagSpacing = 30;
         float _windAngle = 1.0f;//0.4f;
-        float _windStrength = 15;
+        float _windStrength = 10;
 
         AlignedSoftBodyArray flags;
         Cloth[] cloths;
@@ -165,7 +165,7 @@ namespace OpenCLClothDemo
             }
 
 
-            Matrix defaultRotateAndScale = Matrix.RotationX(0.5f) * Matrix.RotationZ(0.5f);
+            Matrix defaultRotateAndScale = Matrix.RotationX(0.5f);
 
             // Construct the sequence flags applying a slightly different translation to each one to arrange them
             // appropriately in the scene.

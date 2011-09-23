@@ -17,7 +17,7 @@ namespace DistanceDemo
 
         Physics Physics
         {
-            get { return (Physics)PhysicsContext; }
+            get { return PhysicsContext as Physics; }
             set { PhysicsContext = value; }
         }
 

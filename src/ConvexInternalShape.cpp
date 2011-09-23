@@ -9,6 +9,30 @@ ConvexInternalShape::ConvexInternalShape(btConvexInternalShape* convexInternalSh
 {
 }
 
+void ConvexInternalShape::SetSafeMargin(btScalar minDimension, btScalar defaultMarginMultiplier)
+{
+	UnmanagedPointer->setSafeMargin(minDimension, defaultMarginMultiplier);
+}
+
+void ConvexInternalShape::SetSafeMargin(btScalar minDimension)
+{
+	UnmanagedPointer->setSafeMargin(minDimension);
+}
+
+void ConvexInternalShape::SetSafeMargin(Vector3 halfExtents, btScalar defaultMarginMultiplier)
+{
+	btVector3* halfExtentsTemp = Math::Vector3ToBtVector3(halfExtents);
+	UnmanagedPointer->setSafeMargin(*halfExtentsTemp, defaultMarginMultiplier);
+	delete halfExtentsTemp;
+}
+
+void ConvexInternalShape::SetSafeMargin(Vector3 halfExtents)
+{
+	btVector3* halfExtentsTemp = Math::Vector3ToBtVector3(halfExtents);
+	UnmanagedPointer->setSafeMargin(*halfExtentsTemp);
+	delete halfExtentsTemp;
+}
+
 Vector3 ConvexInternalShape::ImplicitShapeDimensions::get()
 {
 	return Math::BtVector3ToVector3(&UnmanagedPointer->getImplicitShapeDimensions());

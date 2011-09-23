@@ -106,7 +106,6 @@ copy SharpDX\SharpDX.D3DCompiler.dll bin\SharpDX\
 copy SharpDX\SharpDX.Direct3D10.dll bin\SharpDX\
 copy SharpDX\SharpDX.dll bin\SharpDX\
 copy SharpDX\SharpDX.DXGI.dll bin\SharpDX\
-copy SharpDX\SharpDX.Error.dll bin\SharpDX\
 
 cmd /C svn export SharpDX\DemoFramework src\SharpDX\DemoFramework --force
 cmd /C svn export SharpDX\BasicDemo src\SharpDX\BasicDemo --force

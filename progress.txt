@@ -45,7 +45,6 @@ x SolverConstraint (internal)
 
 Dynamics/Dynamics
 
-x ContinuousDynamicsWorld (under construction)
 x SimpleDynamicsWorld (for unit-testing)
 
 

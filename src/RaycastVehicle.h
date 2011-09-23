@@ -82,6 +82,7 @@ namespace BulletSharp
 		void ResetSuspension();
 		void SetBrake(btScalar brake, int wheelIndex);
 		void SetCoordinateSystem(int rightIndex, int upIndex, int forwardIndex);
+		void SetPitchControl(btScalar pitch);
 		//void SetRaycastWheelInfo(int wheelIndex, bool isInContact, Vector3 hitPoint, Vector3 hitNormal, btScalar depth);
 		void SetSteeringValue(btScalar steering, int wheel);
 		void UpdateFriction(btScalar timeStep);
@@ -115,11 +116,6 @@ namespace BulletSharp
 		property int NumWheels
 		{
 			int get();
-		}
-
-		property btScalar PitchControl
-		{
-			void set(btScalar value);
 		}
 
 		property int RightAxis

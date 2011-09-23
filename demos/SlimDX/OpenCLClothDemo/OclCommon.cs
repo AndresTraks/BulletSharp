@@ -6,6 +6,7 @@ namespace OpenCLClothDemo
 {
     class OclCommon
     {
+        //static string platformVendor = "Intel(R) Corporation";
         //static string platformVendor = "Advanced Micro Devices, Inc.";
         static string platformVendor = "NVIDIA Corporation";
 

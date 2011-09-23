@@ -84,6 +84,9 @@ namespace BulletSharp
 		void SetConvexConvexMultipointIterations();
 		void SetConvexConvexMultipointIterations(int numPerturbationIterations);
 		void SetConvexConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold);
+		void SetPlaneConvexMultipointIterations();
+		void SetPlaneConvexMultipointIterations(int numPerturbationIterations);
+		void SetPlaneConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold);
 
 	internal:
 		property btDefaultCollisionConfiguration* UnmanagedPointer

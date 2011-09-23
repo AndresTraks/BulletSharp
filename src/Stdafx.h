@@ -34,6 +34,7 @@
 
 // Choose one of these for CL
 //#define USE_MINICL
+//#define USE_INTEL_OPENCL
 //#define USE_AMD_OPENCL
 //#define USE_NVIDIA_OPENCL
 
@@ -222,6 +223,11 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #pragma comment(lib, "MiniCL.lib")
 #pragma comment(lib, "BulletSoftBodySolvers_OpenCL_Mini.lib")
 #pragma comment(lib, "BulletSoftBodySolvers_CPU.lib")
+#elif defined(USE_INTEL_OPENCL)
+#include <CL/cl.h>
+#pragma comment(lib, "OpenCL.lib")
+#pragma comment(lib, "BulletSoftBodySolvers_OpenCL_Intel.lib")
+#pragma comment(lib, "BulletSoftBodySolvers_CPU.lib")
 #elif defined(USE_AMD_OPENCL)
 #include <CL/cl.h>
 #pragma comment(lib, "OpenCL.lib")
@@ -235,6 +241,11 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #endif
 
 #ifndef DISABLE_MULTITHREADED
+#if _DEBUG
+#pragma comment(lib, "BulletMultiThreaded_Debug.lib")
+#else
+#pragma comment(lib, "BulletMultiThreaded_MinSizeRel.lib")
+#endif
 #define __BT_SKIP_UINT64_H 1
 #include <BulletMultiThreaded/btParallelConstraintSolver.h>
 #include <BulletMultiThreaded/btThreadSupportInterface.h>
@@ -250,6 +261,13 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #endif
 
 #ifndef DISABLE_SERIALIZE
+#if _DEBUG
+#pragma comment(lib, "BulletWorldImporter_Debug.lib")
+#pragma comment(lib, "BulletFileLoader_Debug.lib")
+#else
+#pragma comment(lib, "BulletWorldImporter_MinSizeRel.lib")
+#pragma comment(lib, "BulletFileLoader_MinSizeRel.lib")
+#endif
 #ifdef DISABLE_GIMPACT
 #include <BulletCollision/GImpact/btGImpactShape.h>
 #endif
@@ -257,6 +275,11 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #endif
 
 #ifndef DISABLE_SOFTBODY
+#if _DEBUG
+#pragma comment(lib, "BulletSoftBody_Debug.lib")
+#else
+#pragma comment(lib, "BulletSoftBody_MinSizeRel.lib")
+#endif
 #include <BulletSoftBody/btSoftBody.h>
 #include <BulletSoftBody/btSoftBodyHelpers.h>
 #include <BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.h>

@@ -130,6 +130,23 @@ void DefaultCollisionConfiguration::SetConvexConvexMultipointIterations(
 		numPerturbationIterations, minimumPointsPerturbationThreshold);
 }
 
+void DefaultCollisionConfiguration::SetPlaneConvexMultipointIterations()
+{
+	UnmanagedPointer->setPlaneConvexMultipointIterations();
+}
+
+void DefaultCollisionConfiguration::SetPlaneConvexMultipointIterations(int numPerturbationIterations)
+{
+	UnmanagedPointer->setPlaneConvexMultipointIterations(numPerturbationIterations);
+}
+
+void DefaultCollisionConfiguration::SetPlaneConvexMultipointIterations(
+	int numPerturbationIterations, int minimumPointsPerturbationThreshold)
+{
+	UnmanagedPointer->setPlaneConvexMultipointIterations(
+		numPerturbationIterations, minimumPointsPerturbationThreshold);
+}
+
 btDefaultCollisionConfiguration* DefaultCollisionConfiguration::UnmanagedPointer::get()
 {
 	return (btDefaultCollisionConfiguration*)CollisionConfiguration::UnmanagedPointer;

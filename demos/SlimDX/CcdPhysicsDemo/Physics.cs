@@ -75,7 +75,7 @@ namespace CcdPhysicsDemo
             World.Gravity = new Vector3(0, -10, 0);
 
             BoxShape ground = new BoxShape(200, 1, 200);
-            ground.InitializePolyhedralFeatures();
+//            ground.InitializePolyhedralFeatures();
             CollisionShapes.Add(ground);
             RigidBody body = LocalCreateRigidBody(0, Matrix.Identity, ground);
             body.UserObject = "Ground";
@@ -105,7 +105,7 @@ namespace CcdPhysicsDemo
 
                 if (ccdMode)
                 {
-                    body.CcdMotionThreshold = 1e-7f;
+                    body.CcdMotionThreshold = CubeHalfExtents;
                     body.CcdSweptSphereRadius = 0.9f * CubeHalfExtents;
                 }
             }
@@ -136,7 +136,7 @@ namespace CcdPhysicsDemo
                 ///when using m_ccdMode, disable regular CCD
                 if (ccdMode)
                 {
-                    body.CcdMotionThreshold = 0.0001f;
+                    body.CcdMotionThreshold = CubeHalfExtents;
                     body.CcdSweptSphereRadius = 0.4f;
                 }
             }

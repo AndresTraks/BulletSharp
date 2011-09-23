@@ -118,11 +118,25 @@ namespace SoftDemo
                     if (results.Fraction < 1)
                     {
                         impact = rayFrom + (rayTo - rayFrom) * results.Fraction;
-                        drag = false;
+                        drag = !(PhysicsContext as Physics).cutting;
                         lastMousePos = Input.MousePoint;
                         node = null;
                         switch (results.Feature)
                         {
+                            case EFeature.Tetra:
+                                {
+                                    Tetra tet = results.Body.Tetras[results.Index];
+                                    node = tet.Nodes[0];
+                                    for (int i = 1; i < 4; ++i)
+                                    {
+                                        if ((node.X - impact).LengthSquared() >
+                                            (tet.Nodes[i].X - impact).LengthSquared())
+                                        {
+                                            node = tet.Nodes[i];
+                                        }
+                                    }
+                                    break;
+                                }
                             case EFeature.Face:
                                 {
                                     Face f = results.Body.Faces[results.Index];
@@ -176,7 +190,7 @@ namespace SoftDemo
                 }
             }
 
-            (PhysicsContext as Physics).HandleInput(Input,  FrameDelta);
+            (PhysicsContext as Physics).HandleInput(Input, FrameDelta);
         }
     }
 

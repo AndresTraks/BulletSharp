@@ -152,6 +152,12 @@ void RaycastVehicle::SetCoordinateSystem(int rightIndex, int upIndex, int forwar
 {
 	UnmanagedPointer->setCoordinateSystem(rightIndex, upIndex, forwardIndex);
 }
+
+void RaycastVehicle::SetPitchControl(btScalar pitch)
+{
+	UnmanagedPointer->setPitchControl(pitch);
+}
+
 /*
 void RaycastVehicle::SetRaycastWheelInfo(int wheelIndex, bool isInContact, Vector3 hitPoint, Vector3 hitNormal, btScalar depth)
 {
@@ -226,11 +232,6 @@ Vector3 RaycastVehicle::ForwardVector::get()
 int RaycastVehicle::NumWheels::get()
 {
 	return UnmanagedPointer->getNumWheels();
-}
-
-void RaycastVehicle::PitchControl::set(btScalar value)
-{
-	UnmanagedPointer->setPitchControl(value);
 }
 
 int RaycastVehicle::RightAxis::get()
