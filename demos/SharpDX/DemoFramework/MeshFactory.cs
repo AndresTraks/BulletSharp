@@ -194,7 +194,7 @@ namespace DemoFramework
             Clear();
 
             if (planeShader != null)
-                planeShader.Release();
+                planeShader.Dispose();
         }
 
         ShapeData CreateBoxShape(BoxShape shape)
@@ -830,12 +830,12 @@ namespace DemoFramework
 
         public void RenderInstanced()
         {
-            inputAssembler.SetInputLayout(inputLayout);
+            inputAssembler.InputLayout = inputLayout;
 
             foreach (ShapeData s in shapes.Values)
             {
                 inputAssembler.SetVertexBuffers(0, s.BufferBindings);
-                inputAssembler.SetPrimitiveTopology(s.PrimitiveTopology);
+                inputAssembler.PrimitiveTopology = s.PrimitiveTopology;
                 if (s.IndexBuffer != null)
                 {
                     inputAssembler.SetIndexBuffer(s.IndexBuffer, s.IndexFormat, 0);

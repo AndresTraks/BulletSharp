@@ -35,7 +35,7 @@ namespace DemoFramework
         {
             if (isDisposing)
             {
-                font.Release();
+                font.Dispose();
             }
         }
 

@@ -170,46 +170,46 @@ namespace DemoFramework
         void DisposeBuffers()
         {
             if (RenderView != null)
-                RenderView.Release();
+                RenderView.Dispose();
 
             if (GBufferLightView != null)
-                GBufferLightView.Release();
+                GBufferLightView.Dispose();
 
             if (GBufferNormalView != null)
-                GBufferNormalView.Release();
+                GBufferNormalView.Dispose();
 
             if (GBufferDiffuseView != null)
-                GBufferDiffuseView.Release();
+                GBufferDiffuseView.Dispose();
 
             if (gBufferLight != null)
-                gBufferLight.Release();
+                gBufferLight.Dispose();
             
             if (gBufferNormal != null)
-                gBufferNormal.Release();
+                gBufferNormal.Dispose();
             
             if (gBufferDiffuse != null)
-                gBufferDiffuse.Release();
+                gBufferDiffuse.Dispose();
 
             if (depthTexture != null)
-                depthTexture.Release();
+                depthTexture.Dispose();
 
             if (lightDepthTexture != null)
-                lightDepthTexture.Release();
+                lightDepthTexture.Dispose();
 
             if (lightBufferRes != null)
-                lightBufferRes.Release();
+                lightBufferRes.Dispose();
 
             if (normalBufferRes != null)
-                normalBufferRes.Release();
+                normalBufferRes.Dispose();
 
             if (diffuseBufferRes != null)
-                diffuseBufferRes.Release();
+                diffuseBufferRes.Dispose();
 
             if (depthRes != null)
-                depthRes.Release();
+                depthRes.Dispose();
 
             if (lightDepthRes != null)
-                lightDepthRes.Release();
+                lightDepthRes.Dispose();
         }
 
         void CreateBuffers()
@@ -467,8 +467,8 @@ namespace DemoFramework
             GBufferRenderPass.Apply();
 
             inputAssembler.SetVertexBuffers(0, quadBinding);
-            inputAssembler.SetPrimitiveTopology(PrimitiveTopology.TriangleStrip);
-            inputAssembler.SetInputLayout(quadBufferLayout);
+            inputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
+            inputAssembler.InputLayout = quadBufferLayout;
             Device.Draw(4, 0);
 
             Info.OnRender(FramesPerSecond);
