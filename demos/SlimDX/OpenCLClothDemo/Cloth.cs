@@ -54,8 +54,8 @@ namespace OpenCLClothDemo
                     cpuBuffer[index + 4] = 0;
                     cpuBuffer[index + 5] = 0;
                     // TexCoords
-                    cpuBuffer[index + 6] = x / ((float)(width - 1));
-                    cpuBuffer[index + 7] = y / ((float)(height - 1));
+                    cpuBuffer[index + 6] = y / ((float)(height - 1));
+                    cpuBuffer[index + 7] = -x / ((float)(width - 1));
                 }
             }
 
