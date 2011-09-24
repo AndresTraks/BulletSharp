@@ -1,10 +1,14 @@
 @echo off
 set MSBUILD=%WINDIR%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe
 
-set VCPATH="[%PROGRAMFILES^(x86^)%]"
-if %VCPATH%=="[]" set VCPATH=%PROGRAMFILES%
-set VCPATH="%VCPATH%\Microsoft Visual Studio 10.0\VC\vcpackages"
+if "[%ProgramFiles(x86)%]"=="[]" goto x86
+set VCPATH=%ProgramFiles(x86)%
+goto checkdone
+:x86
+set VCPATH=%ProgramFiles%
+:checkdone
 
+set VCPATH="%VCPATH%\Microsoft Visual Studio 10.0\VC\vcpackages"
 set OPTS=BulletSharp.vcxproj /p:VCBuildToolPath=%VCPATH%
 
 %MSBUILD% %OPTS% /p:Configuration="Release Axiom"
