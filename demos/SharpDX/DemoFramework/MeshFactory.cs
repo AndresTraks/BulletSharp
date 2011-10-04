@@ -769,6 +769,8 @@ namespace DemoFramework
             {
                 CollisionObject colObj = objects[i];
                 CollisionShape shape = colObj.CollisionShape;
+                if (shape.ShapeType == BroadphaseNativeType.CapsuleShape)
+                    continue;
                 ShapeData shapeData = InitShapeData(shape);
 
                 Matrix transform;
