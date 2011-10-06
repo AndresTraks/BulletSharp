@@ -16,15 +16,6 @@ namespace BasicDemo
             base.OnInitializeDevice();
         }
 
-        protected override void OnHandleInput()
-        {
-            base.OnHandleInput();
-            if (Input.KeysPressed.Contains(Keys.V))
-            {
-                (PhysicsContext as Physics).AddPlayer(Matrix.Identity, 1.0f, "sdsd");
-            }
-        }
-
         protected override void OnInitialize()
         {
             PhysicsContext = new Physics();

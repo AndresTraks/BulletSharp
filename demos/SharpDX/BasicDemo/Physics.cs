@@ -14,19 +14,6 @@ namespace BasicDemo
         float StartPosY = -5;
         float StartPosZ = -3;
 
-        public void AddPlayer(Matrix initialWorld, float mass, string name)
-        {
-            PairCachingGhostObject pcgo = new PairCachingGhostObject();
-            pcgo.WorldTransform = initialWorld;
-            Broadphase.OverlappingPairCache.SetInternalGhostPairCallback(new GhostPairCallback());
-            ConvexShape colShape = new CapsuleShape(0.5f, 2.0f);
-            pcgo.CollisionShape = colShape;
-            pcgo.CollisionFlags = CollisionFlags.CharacterObject;
-            KinematicCharacterController ch = new KinematicCharacterController(pcgo, colShape, 0.35f);
-            World.AddCollisionObject(pcgo, CollisionFilterGroups.CharacterFilter);
-            World.AddAction(ch);
-        }
-
         public Physics()
         {
             // collision configuration contains default setup for memory, collision setup
