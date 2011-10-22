@@ -90,7 +90,8 @@ btVector3* BulletSharp::Math::Vector3ArrayToUnmanaged(array<Vector3>^ v)
 	}
 	else
 	{
-		for(int i=0; i<v->Length; i++)
+		int len = v->Length;
+		for(int i=0; i < len; i++)
 			Vector3ToBtVector3(v[i], &btVertices[i]);
 	}
 	return btVertices;

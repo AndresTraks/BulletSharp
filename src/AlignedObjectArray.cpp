@@ -8,6 +8,7 @@
 #include "CompoundShape.h"
 #include "PersistentManifold.h"
 #include "TriangleIndexVertexArray.h"
+#include "TriangleMesh.h"
 #ifndef DISABLE_SOFTBODY
 #include "SoftBody.h"
 using namespace BulletSharp::SoftBody;
@@ -1717,7 +1718,7 @@ void AlignedNoteArray::default::set(int index, Note^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	NoteArray_SetDefault(((btSoftBody::tNoteArray*)_unmanaged), index, (btSoftBody::Note*)value->_unmanaged);
+	NoteArray_SetDefault(((btSoftBody::tNoteArray*)_unmanaged), index, (btSoftBody::Note*)GetUnmanagedNullableNew(value));
 }
 #endif
 
@@ -2237,6 +2238,80 @@ void AlignedTetraArray::default::set(int index, Tetra^ value)
 	TetraArray_SetDefault((btAlignedObjectArray<btSoftBody::Tetra>*)_unmanaged, index, (btSoftBody::Tetra*)value->_unmanaged);
 }
 #endif
+
+
+AlignedTriangleMeshArray::AlignedTriangleMeshArray(btAlignedObjectArray<btTriangleMesh*>* triangleMeshArray)
+: AlignedObjectArray(triangleMeshArray)
+{
+}
+
+AlignedTriangleMeshArray::AlignedTriangleMeshArray()
+: AlignedObjectArray(new btAlignedObjectArray<btTriangleMesh*>)
+{
+}
+
+void AlignedTriangleMeshArray::Add(TriangleMesh^ triangleMesh)
+{
+	((btAlignedObjectArray<btTriangleMesh*>*)_unmanaged)->push_back(triangleMesh->UnmanagedPointer);
+}
+
+void AlignedTriangleMeshArray::Clear()
+{
+	((btAlignedObjectArray<btTriangleMesh*>*)_unmanaged)->clear();
+}
+
+void AlignedTriangleMeshArray::CopyTo(array<TriangleMesh^>^ array, int arrayIndex)
+{
+	if (array == nullptr)
+		throw gcnew ArgumentNullException("array");
+
+	if (arrayIndex < 0)
+		throw gcnew ArgumentOutOfRangeException("array");
+
+	int size = ((btAlignedObjectArray<btTriangleMesh>*)_unmanaged)->size();
+	if (arrayIndex + size > array->Length)
+		throw gcnew ArgumentException("Array too small.", "array");
+
+	int i;
+	for (i=0; i<size; i++)
+	{
+		array[arrayIndex+i] = gcnew TriangleMesh(&(*(btAlignedObjectArray<btTriangleMesh*>*)_unmanaged)[i]);
+	}
+}
+
+void AlignedTriangleMeshArray::PopBack()
+{
+	((btAlignedObjectArray<btTriangleMesh*>*)_unmanaged)->pop_back();
+}
+
+int AlignedTriangleMeshArray::Capacity::get()
+{
+	return ((btAlignedObjectArray<btTriangleMesh*>*)_unmanaged)->capacity();
+}
+
+int AlignedTriangleMeshArray::Count::get()
+{
+	return ((btAlignedObjectArray<btTriangleMesh*>*)_unmanaged)->size();
+}
+
+void AlignedTriangleMeshArray::Swap(int index0, int index1)
+{
+	((btAlignedObjectArray<btTriangleMesh*>*)_unmanaged)->swap(index0, index1);
+}
+
+TriangleMesh^ AlignedTriangleMeshArray::default::get(int index)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	return gcnew TriangleMesh(&(*(btAlignedObjectArray<btTriangleMesh>*)_unmanaged)[index]);
+}
+
+void AlignedTriangleMeshArray::default::set(int index, TriangleMesh^ value)
+{
+	if (index < 0 || index >= Count)
+		throw gcnew ArgumentOutOfRangeException("index");
+	(*((btAlignedObjectArray<btTriangleMesh*>*)_unmanaged))[index] = GetUnmanagedNullable(value);
+}
 
 
 AlignedVector3Array::AlignedVector3Array(btAlignedObjectArray<btVector3>* vector3Array)

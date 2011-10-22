@@ -352,7 +352,7 @@ void GImpactMeshShapePart::TrimeshPrimitiveManager::Margin::set(btScalar value)
 
 StridingMeshInterface^ GImpactMeshShapePart::TrimeshPrimitiveManager::MeshInterface::get()
 {
-	return gcnew StridingMeshInterface(UnmanagedPointer->m_meshInterface);
+	return StridingMeshInterface::GetManaged(UnmanagedPointer->m_meshInterface);
 }
 void GImpactMeshShapePart::TrimeshPrimitiveManager::MeshInterface::set(StridingMeshInterface^ value)
 {

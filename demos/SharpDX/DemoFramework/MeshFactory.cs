@@ -114,6 +114,40 @@ namespace DemoFramework
             }
         }
 
+        public void SetIndexBuffer(Device device, short[] indices)
+        {
+            IndexFormat = Format.R16_UInt;
+
+            BufferDescription boxIndexBufferDesc = new BufferDescription()
+            {
+                SizeInBytes = sizeof(short) * indices.Length,
+                Usage = ResourceUsage.Default,
+                BindFlags = BindFlags.IndexBuffer
+            };
+
+            using (var data = new SharpDX.DataStream(indices, false, false))
+            {
+                IndexBuffer = new Buffer(device, data, boxIndexBufferDesc);
+            }
+        }
+
+        public void SetIndexBuffer(Device device, int[] indices)
+        {
+            IndexFormat = Format.R32_UInt;
+
+            BufferDescription boxIndexBufferDesc = new BufferDescription()
+            {
+                SizeInBytes = sizeof(int) * indices.Length,
+                Usage = ResourceUsage.Default,
+                BindFlags = BindFlags.IndexBuffer
+            };
+
+            using (var data = new SharpDX.DataStream(indices, false, false))
+            {
+                IndexBuffer = new Buffer(device, data, boxIndexBufferDesc);
+            }
+        }
+
         public void Dispose()
         {
             if (VertexBuffer != null)
@@ -444,53 +478,36 @@ namespace DemoFramework
             mesh.ComputeNormals();
             return mesh;
         }
-
-        Mesh CreateConvexHullShape(ConvexHullShape shape)
+        */
+        ShapeData CreateConvexHullShape(ConvexHullShape shape)
         {
             int vertexCount = shape.NumPoints;
             int faceCount = vertexCount / 3;
             vertexCount = faceCount * 3; // must be 3 verts for every face
 
-            bool index32 = vertexCount > 65536;
+            ShapeData shapeData = new ShapeData();
+            shapeData.VertexCount = vertexCount;
 
-            Mesh mesh = new Mesh(device, faceCount, vertexCount,
-                MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
+            Vector3[] vertices = new Vector3[shapeData.VertexCount * 2];
 
-
-            SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.Discard);
-            int i;
-            if (index32)
-            {
-                for (i = 0; i < vertexCount; i++)
-                    indices.Write(i);
-            }
-            else
-            {
-                for (i = 0; i < vertexCount; i++)
-                    indices.Write((short)i);
-            }
-            mesh.UnlockIndexBuffer();
-
-            SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.Discard);
             Vector3Array points = shape.UnscaledPoints;
             Vector3 scale = Vector3.Multiply(shape.LocalScaling, 1.0f + shape.Margin);
-            for (i = 0; i < vertexCount; )
+            int v;
+            for (v = 0; v < vertexCount; )
             {
-                verts.Write(Vector3.Modulate(points[i++], scale));
-                verts.Position += 12;
-                verts.Write(Vector3.Modulate(points[i++], scale));
-                verts.Position += 12;
-                verts.Write(Vector3.Modulate(points[i++], scale));
-                verts.Position += 12;
+                vertices[v++] = Vector3.Modulate(points[v], scale);
+                vertices[v++] = Vector3.Zero;
+                vertices[v++] = Vector3.Modulate(points[v], scale);
+                vertices[v++] = Vector3.Zero;
+                vertices[v++] = Vector3.Modulate(points[v], scale);
+                vertices[v++] = Vector3.Zero;
             }
-            mesh.UnlockVertexBuffer();
 
-            mesh.ComputeNormals();
-            shapes.Add(shape, mesh);
+            shapeData.SetVertexBuffer(device, vertices);
 
-            return mesh;
+            return shapeData;
         }
-
+        /*
         Mesh CreateMultiSphereShape(MultiSphereShape shape)
         {
             Mesh mesh = null;
@@ -679,6 +696,73 @@ namespace DemoFramework
         }
         */
 
+        ShapeData CreateTriangleMeshShape(TriangleMeshShape shape)
+        {
+            StridingMeshInterface meshInterface = shape.MeshInterface.UpcastDetect();
+
+            BulletSharp.DataStream vertexStream, indexStream;
+            int numVerts, numFaces;
+            PhyScalarType vertsType, indicesType;
+            int vertexStride, indexStride;
+            meshInterface.GetLockedReadOnlyVertexIndexData(out vertexStream, out numVerts, out vertsType, out vertexStride,
+                out indexStream, out indexStride, out numFaces, out indicesType);
+
+            ShapeData shapeData = new ShapeData();
+            shapeData.VertexCount = numVerts;
+            shapeData.IndexCount = numFaces * 3;
+
+            Vector3[] vertices = new Vector3[shapeData.VertexCount * 2];
+            int v = 0;
+            int vStrideExtra = vertexStride - Marshal.SizeOf(typeof(Vector3));
+            while (vertexStream.Position < vertexStream.Length)
+            {
+                Vector3 v0 = vertexStream.Read<Vector3>();
+                vertexStream.Position += vStrideExtra;
+                Vector3 v1 = vertexStream.Read<Vector3>();
+                vertexStream.Position += vStrideExtra;
+                Vector3 v2 = vertexStream.Read<Vector3>();
+                vertexStream.Position += vStrideExtra;
+
+                Vector3 v01 = v0 - v1;
+                Vector3 v02 = v0 - v2;
+                Vector3 normal = Vector3.Cross(v01, v02);
+
+                vertices[v++] = v0;
+                vertices[v++] = normal;
+                vertices[v++] = v1;
+                vertices[v++] = normal;
+                vertices[v++] = v2;
+                vertices[v++] = normal;
+            }
+
+            int i = 0;
+            if (numVerts > 65536)
+            {
+                int[] indices = new int[shapeData.IndexCount];
+                while (indexStream.Position < indexStream.Length)
+                    indices[i++] = indexStream.Read<int>();
+                shapeData.SetIndexBuffer(device, indices);
+            }
+            else if (numVerts > 256)
+            {
+                short[] indices = new short[shapeData.IndexCount];
+                while (indexStream.Position < indexStream.Length)
+                    indices[i++] = (short)indexStream.Read<int>();
+                shapeData.SetIndexBuffer(device, indices);
+            }
+            else
+            {
+                byte[] indices = new byte[shapeData.IndexCount];
+                while (indexStream.Position < indexStream.Length)
+                    indices[i++] = (byte)indexStream.Read<int>();
+                shapeData.SetIndexBuffer(device, indices);
+            }
+
+            shapeData.SetVertexBuffer(device, vertices);
+
+            return shapeData;
+        }
+
         ShapeData InitShapeData(CollisionShape shape)
         {
             ShapeData shapeData;
@@ -703,8 +787,14 @@ namespace DemoFramework
                             InitShapeData(child.ChildShape);
                         }
                         return null;
+                    case BroadphaseNativeType.ConvexHullShape:
+                        shapeData = CreateConvexHullShape(shape as ConvexHullShape);
+                        break;
                     case BroadphaseNativeType.SphereShape:
                         shapeData = CreateSphereShape(shape as SphereShape);
+                        break;
+                    case BroadphaseNativeType.TriangleMeshShape:
+                        shapeData = CreateTriangleMeshShape(shape as TriangleMeshShape);
                         break;
                     default:
                         throw new NotImplementedException();

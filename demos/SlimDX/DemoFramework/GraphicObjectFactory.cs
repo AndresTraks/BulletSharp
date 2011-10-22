@@ -314,7 +314,9 @@ namespace DemoFramework
             {
                 Vector3 v = verts.Read<Vector3>();
                 data.Write(v);
-                
+
+                verts.Position += vertexStride - 12;
+
                 // Normals will be calculated later
                 data.Position += 12;
             }
@@ -369,25 +371,25 @@ namespace DemoFramework
             switch (shape.ShapeType)
             {
                 case BroadphaseNativeType.BoxShape:
-                    mesh = CreateBoxShape((BoxShape)shape);
+                    mesh = CreateBoxShape(shape as BoxShape);
                     break;
                 case BroadphaseNativeType.CylinderShape:
-                    mesh = CreateCylinderShape((CylinderShape)shape);
+                    mesh = CreateCylinderShape(shape as CylinderShape);
                     break;
                 case BroadphaseNativeType.ConeShape:
-                    mesh = CreateConeShape((ConeShape)shape);
+                    mesh = CreateConeShape(shape as ConeShape);
                     break;
                 case BroadphaseNativeType.ConvexHullShape:
-                    mesh = CreateConvexHullShape((ConvexHullShape)shape);
+                    mesh = CreateConvexHullShape(shape as ConvexHullShape);
                     break;
                 case BroadphaseNativeType.GImpactShape:
-                    mesh = CreateGImpactMeshShape((GImpactMeshShape)shape);
+                    mesh = CreateGImpactMeshShape(shape as GImpactMeshShape);
                     break;
                 case BroadphaseNativeType.Convex2DShape:
-                    Render(((Convex2DShape)shape).ChildShape);
+                    Render((shape as Convex2DShape).ChildShape);
                     return;
                 case BroadphaseNativeType.CompoundShape:
-                    CompoundShape compoundShape = (CompoundShape)shape;
+                    CompoundShape compoundShape = shape as CompoundShape;
                     //if (compoundShape.NumChildShapes == 0)
                     //    return;
                     foreach (CompoundShapeChild child in compoundShape.ChildList)
@@ -400,10 +402,10 @@ namespace DemoFramework
                     }
                     return;
                 case BroadphaseNativeType.SphereShape:
-                    mesh = CreateSphere((SphereShape)shape);
+                    mesh = CreateSphere(shape as SphereShape);
                     break;
                 case BroadphaseNativeType.TriangleMeshShape:
-                    mesh = CreateTriangleMeshShape((TriangleMeshShape)shape);
+                    mesh = CreateTriangleMeshShape(shape as TriangleMeshShape);
                     break;
             }
 
@@ -417,13 +419,13 @@ namespace DemoFramework
             switch (shape.ShapeType)
             {
                 case BroadphaseNativeType.CapsuleShape:
-                    mesh = CreateCapsuleShape((CapsuleShape)shape);
+                    mesh = CreateCapsuleShape(shape as CapsuleShape);
                     break;
                 case BroadphaseNativeType.MultiSphereShape:
-                    mesh = CreateMultiSphereShape((MultiSphereShape)shape);
+                    mesh = CreateMultiSphereShape(shape as MultiSphereShape);
                     break;
                 case BroadphaseNativeType.StaticPlane:
-                    mesh = CreateStaticPlaneShape((StaticPlaneShape)shape);
+                    mesh = CreateStaticPlaneShape(shape as StaticPlaneShape);
                     break;
             }
 
