@@ -343,6 +343,12 @@ bool Serialize::BulletWorldImporter::LoadFile(String^ filename)
 	return ret;
 }
 
+bool Serialize::BulletWorldImporter::LoadFileFromMemory(array<Byte>^ memoryBuffer)
+{
+	pin_ptr<Byte> memoryBufferPtr = &memoryBuffer[0];
+	return _importer->loadFileFromMemory((char*)memoryBufferPtr, memoryBuffer->Length);
+}
+
 CollisionShape^ Serialize::BulletWorldImporter::GetCollisionShapeByIndex(int index)
 {
 	return CollisionShape::GetManaged(_importer->getCollisionShapeByIndex(index));

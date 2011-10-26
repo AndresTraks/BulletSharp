@@ -114,13 +114,13 @@ namespace DemoFramework
             }
         }
 
-        public void SetIndexBuffer(Device device, short[] indices)
+        public void SetIndexBuffer(Device device, ushort[] indices)
         {
             IndexFormat = Format.R16_UInt;
 
             BufferDescription boxIndexBufferDesc = new BufferDescription()
             {
-                SizeInBytes = sizeof(short) * indices.Length,
+                SizeInBytes = sizeof(ushort) * indices.Length,
                 Usage = ResourceUsage.Default,
                 BindFlags = BindFlags.IndexBuffer
             };
@@ -471,7 +471,7 @@ namespace DemoFramework
             else
             {
                 while (indexBuffer.Position < indexBuffer.Length)
-                    indexBuffer.Write((short)indices.Read<int>());
+                    indexBuffer.Write((ushort)indices.Read<int>());
             }
             mesh.UnlockIndexBuffer();
 
@@ -745,9 +745,9 @@ namespace DemoFramework
             }
             else if (numVerts > 256)
             {
-                short[] indices = new short[shapeData.IndexCount];
+                ushort[] indices = new ushort[shapeData.IndexCount];
                 while (indexStream.Position < indexStream.Length)
-                    indices[i++] = (short)indexStream.Read<int>();
+                    indices[i++] = (ushort)indexStream.Read<int>();
                 shapeData.SetIndexBuffer(device, indices);
             }
             else
@@ -1156,7 +1156,7 @@ namespace DemoFramework
                 else
                 {
                     foreach (int i in indexBuffer)
-                        indices.Write((short)i);
+                        indices.Write((ushort)i);
                 }
                 mesh.UnlockIndexBuffer();
 

@@ -102,7 +102,7 @@ namespace BulletSharp
 
 			void DeleteAllData();
 			bool LoadFile(String^ fileName);
-			//bool LoadFileFromMemory(MemoryStream^ memoryBuffer, int len);
+			bool LoadFileFromMemory(array<Byte>^ memoryBuffer);
 			//bool LoadFileFromMemory(Parse::BulletFile^ file);
 			//bool ConvertAllObjects(Parse::BulletFile^ file);
 
