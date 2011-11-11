@@ -2097,14 +2097,6 @@
 							>
 						</File>
 					</Filter>
-					<Filter
-						Name="Cpu"
-						>
-						<File
-							RelativePath="..\src\SoftBodySolverCpu.cpp"
-							>
-						</File>
-					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
@@ -2804,14 +2796,6 @@
 						>
 						<File
 							RelativePath="..\src\SoftBodySolverOpenCL.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="Cpu"
-						>
-						<File
-							RelativePath="..\src\SoftBodySolverCpu.h"
 							>
 						</File>
 					</Filter>

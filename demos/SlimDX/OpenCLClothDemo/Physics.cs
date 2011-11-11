@@ -17,7 +17,7 @@ namespace OpenCLClothDemo
         const int clothHeight = 30;//60;
         const float flagSpacing = 30;
         float _windAngle = 1.0f;//0.4f;
-        float _windStrength = 10;
+        float _windStrength = 0;
 
         AlignedSoftBodyArray flags;
         Cloth[] cloths;
@@ -42,16 +42,8 @@ namespace OpenCLClothDemo
             }
 
 
-            if (UseGpuSolver)
-            {
-                gSolver = new OpenCLSoftBodySolver(CLStuff.commandQueue, CLStuff.cxMainContext);
-                softBodyOutput = new SoftBodySolverOutputCLToCpu();
-            }
-            else
-            {
-                gSolver = new CpuSoftBodySolver();
-                softBodyOutput = new SoftBodySolverOutputCpuToCpu();
-            }
+            gSolver = new OpenCLSoftBodySolver(CLStuff.commandQueue, CLStuff.cxMainContext);
+            softBodyOutput = new SoftBodySolverOutputCLToCpu();
 
             // collision configuration contains default setup for memory, collision setup
             CollisionConf = new SoftBodyRigidBodyCollisionConfiguration();

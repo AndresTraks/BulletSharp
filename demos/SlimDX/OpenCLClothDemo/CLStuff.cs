@@ -22,7 +22,7 @@ namespace OpenCLClothDemo
                 return;
             }
 
-            device = OclUtils.GetMaxFlopsDev(cxMainContext);
+            device = OclUtils.GetDev(cxMainContext, 0);
 
             OclUtils.PrintDeviceInfo(device);
 

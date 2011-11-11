@@ -985,7 +985,6 @@
     <ClCompile Include="src\Win32ThreadSupport.cpp" />
     <ClCompile Include="src\SpuGatheringCollisionDispatcher.cpp" />
     <ClCompile Include="src\SoftBodySolverOpenCL.cpp" />
-    <ClCompile Include="src\SoftBodySolverCpu.cpp" />
     <ClCompile Include="src\VectorMathAos.cpp" />
     <ClCompile Include="src\OpenCL.cpp" />
     <ClCompile Include="src\DataStream.cpp" />
@@ -1150,7 +1149,6 @@
     <ClInclude Include="src\Win32ThreadSupport.h" />
     <ClInclude Include="src\SpuGatheringCollisionDispatcher.h" />
     <ClInclude Include="src\SoftBodySolverOpenCL.h" />
-    <ClInclude Include="src\SoftBodySolverCpu.h" />
     <ClInclude Include="src\VectorMathAos.h" />
     <ClInclude Include="src\OpenCL.h" />
     <ClInclude Include="src\DataStream.h" />

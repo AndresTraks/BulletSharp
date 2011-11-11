@@ -277,7 +277,6 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #include <BulletMultiThreaded/Win32ThreadSupport.h>
 #ifndef DISABLE_SOFTBODY
 #ifdef __OPENCL_CL_H
-#include <BulletMultiThreaded/GpuSoftBodySolvers/CPU/btSoftBodySolver_CPU.h>
 #include <BulletMultiThreaded/GpuSoftBodySolvers/OpenCL/btSoftBodySolver_OpenCL.h>
 #endif
 #endif

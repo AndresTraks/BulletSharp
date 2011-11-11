@@ -62,9 +62,6 @@
     <Filter Include="Source Files\MultiThreaded\GpuSoftBodySolvers\OpenCL">
       <UniqueIdentifier>{96426824-200f-4c87-8fd3-e576cb84670f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\MultiThreaded\GpuSoftBodySolvers\Cpu">
-      <UniqueIdentifier>{6bf80082-2f27-4fae-adec-606601a55055}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\VectorMath">
       <UniqueIdentifier>{47cde687-1395-4d13-87c6-09e3ad3d1557}</UniqueIdentifier>
     </Filter>
@@ -131,9 +128,6 @@
     </Filter>
     <Filter Include="Header Files\MultiThreaded\GpuSoftBodySolvers\OpenCL">
       <UniqueIdentifier>{d2de70d5-fb1c-4f9e-a35a-76c6993aa96c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\MultiThreaded\GpuSoftBodySolvers\Cpu">
-      <UniqueIdentifier>{89034469-ce68-4e74-8059-4df170e69d5e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\VectorMath">
       <UniqueIdentifier>{32fd7a5b-90ea-4cca-b72d-f6b192dbc5cc}</UniqueIdentifier>
@@ -589,9 +583,6 @@
     </ClCompile>
     <ClCompile Include="src\SoftBodySolverOpenCL.cpp">
       <Filter>Source Files\MultiThreaded\GpuSoftBodySolvers\OpenCL</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SoftBodySolverCpu.cpp">
-      <Filter>Source Files\MultiThreaded\GpuSoftBodySolvers\Cpu</Filter>
     </ClCompile>
     <ClCompile Include="src\VectorMathAos.cpp">
       <Filter>Source Files\VectorMath</Filter>
@@ -1076,9 +1067,6 @@
     </ClInclude>
     <ClInclude Include="src\SoftBodySolverOpenCL.h">
       <Filter>Header Files\MultiThreaded\GpuSoftBodySolvers\OpenCL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SoftBodySolverCpu.h">
-      <Filter>Header Files\MultiThreaded\GpuSoftBodySolvers\Cpu</Filter>
     </ClInclude>
     <ClInclude Include="src\VectorMathAos.h">
       <Filter>Header Files\VectorMath</Filter>
