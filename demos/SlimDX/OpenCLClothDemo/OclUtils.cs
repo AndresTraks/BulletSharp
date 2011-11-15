@@ -5,12 +5,33 @@ namespace OpenCLClothDemo
 {
     class OclUtils
     {
-        public static IntPtr GetDev(IntPtr cxMainContext, uint nr)
+        public static uint GetNumPlatforms(ref int pErrNum)
+        {
+	        uint numPlatforms;
+            IntPtr[] platforms = new IntPtr[0];
+            int ciErrNum = CL.GetPlatformIDs(0, ref platforms, out numPlatforms);
+
+	        if(ciErrNum != 0)
+	        {
+		        if(pErrNum != null) 
+			        pErrNum = ciErrNum;
+	        }
+	        return numPlatforms;
+        }
+
+        public static IntPtr GetDevice(IntPtr cxMainContext, uint deviceIndex)
         {
             // get the list of GPU devices associated with context
             IntPtr[] devices;
             CL.GetContextInfo(cxMainContext, CLContext.Devices, out devices);
-            return devices[nr];
+            return devices[deviceIndex];
+        }
+
+        public static int GetNumDevices(IntPtr cxMainContext)
+        {
+            IntPtr[] devices;
+            CL.GetContextInfo(cxMainContext, CLContext.Devices, out devices);
+            return devices.Length;
         }
 
         public static void PrintDeviceInfo(IntPtr device)

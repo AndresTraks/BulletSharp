@@ -1656,6 +1656,8 @@ namespace BulletSharp
 			SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3Array^ x, ScalarArray^ m);
 			SoftBody(SoftBodyWorldInfo^ worldInfo);
 
+			void AddAeroForceToFace(Vector3 windVelocity, int faceIndex);
+			void AddAeroForceToNode(Vector3 windVelocity, int nodeIndex);
 			void AddForce(Vector3 force, int node);
 			void AddForce(Vector3 force);
 			void AddVelocity(Vector3 velocity, int node);

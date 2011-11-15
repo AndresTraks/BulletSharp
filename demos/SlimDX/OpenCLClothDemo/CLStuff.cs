@@ -22,7 +22,14 @@ namespace OpenCLClothDemo
                 return;
             }
 
-            device = OclUtils.GetDev(cxMainContext, 0);
+            int numDev = OclUtils.GetNumDevices(cxMainContext);
+	        if (numDev == 0)
+	        {
+                System.Windows.Forms.MessageBox.Show("No OpenCL devices found.");
+                return;
+	        }
+
+            device = OclUtils.GetDevice(cxMainContext, 0);
 
             OclUtils.PrintDeviceInfo(device);
 

@@ -2256,6 +2256,20 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo)
 {
 }
 
+void BulletSharp::SoftBody::SoftBody::AddAeroForceToFace(Vector3 windVelocity, int faceIndex)
+{
+	btVector3* windVelocityTemp = Math::Vector3ToBtVector3(windVelocity);
+	UnmanagedPointer->addAeroForceToFace(*windVelocityTemp, faceIndex);
+	delete windVelocityTemp;
+}
+
+void BulletSharp::SoftBody::SoftBody::AddAeroForceToNode(Vector3 windVelocity, int nodeIndex)
+{
+	btVector3* windVelocityTemp = Math::Vector3ToBtVector3(windVelocity);
+	UnmanagedPointer->addAeroForceToNode(*windVelocityTemp, nodeIndex);
+	delete windVelocityTemp;
+}
+
 void BulletSharp::SoftBody::SoftBody::AddForce(Vector3 force, int node)
 {
 	btVector3* forceTemp = Math::Vector3ToBtVector3(force);
