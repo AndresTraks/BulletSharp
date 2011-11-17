@@ -27,7 +27,6 @@ namespace BulletSharp
 		property AlignedIntArray^ Indices
 		{
 			AlignedIntArray^ get();
-			void set(AlignedIntArray^ value);
 		}
 
 		property ScalarArray^ Plane
@@ -105,13 +104,11 @@ namespace BulletSharp
 		property AlignedVector3Array^ UniqueEdges
 		{
 			AlignedVector3Array^ get();
-			void set(AlignedVector3Array^ value);
 		}
 
 		property AlignedVector3Array^ Vertices
 		{
 			AlignedVector3Array^ get();
-			void set(AlignedVector3Array^ value);
 		}
 
 	internal:

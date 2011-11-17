@@ -85,7 +85,6 @@ namespace BulletSharp
 			property BulletSharp::SparseSdf^ SparseSdf
 			{
 				BulletSharp::SparseSdf^ get();
-				void set(BulletSharp::SparseSdf^ value);
 			}
 
 			property btScalar WaterDensity
@@ -360,7 +359,6 @@ namespace BulletSharp
 			property AlignedVector3Array^ FrameRefs
 			{
 				AlignedVector3Array^ get();
-				void set(AlignedVector3Array^ value);
 			}
 
 			property Matrix FrameXForm
@@ -416,7 +414,6 @@ namespace BulletSharp
 			property AlignedScalarArray^ Masses
 			{
 				AlignedScalarArray^ get();
-				void set(AlignedScalarArray^ value);
 			}
 
 			property btScalar Matching
@@ -445,7 +442,6 @@ namespace BulletSharp
 			property AlignedNodePtrArray^ Nodes
 			{
 				AlignedNodePtrArray^ get();
-				void set(AlignedNodePtrArray^ value);
 			}
 
 			property int NVImpulses
@@ -1321,7 +1317,6 @@ namespace BulletSharp
 			property AlignedVector3Array^ Positions
 			{
 				AlignedVector3Array^ get();
-				void set(AlignedVector3Array^ value);
 			}
 
 			property Matrix Rotation
@@ -1345,7 +1340,6 @@ namespace BulletSharp
 			property AlignedScalarArray^ Weights
 			{
 				AlignedScalarArray^ get();
-				void set(AlignedScalarArray^ value);
 			}
 
 		internal:
@@ -1776,7 +1770,6 @@ namespace BulletSharp
 			property AlignedAnchorArray^ Anchors
 			{
 				AlignedAnchorArray^ get();
-				void set(AlignedAnchorArray^ value);
 			}
 
 			property Vector3Array^ Bounds
@@ -1787,13 +1780,11 @@ namespace BulletSharp
 			property AlignedClusterArray^ Clusters
 			{
 				AlignedClusterArray^ get();
-				void set(AlignedClusterArray^ value);
 			}
 
 			property Config^ Cfg
 			{
 				Config^ get();
-				void set(Config^ value);
 			}
 
 			property int ClusterCount
@@ -1804,13 +1795,11 @@ namespace BulletSharp
 			property AlignedCollisionObjectArray^ CollisionDisabledObjects
 			{
 				AlignedCollisionObjectArray^ get();
-				void set(AlignedCollisionObjectArray^ value);
 			}
 
 			property AlignedFaceArray^ Faces
 			{
 				AlignedFaceArray^ get();
-				void set(AlignedFaceArray^ value);
 			}
 
 			property Matrix InitialWorldTransform
@@ -1822,37 +1811,31 @@ namespace BulletSharp
 			property AlignedJointArray^ Joints
 			{
 				AlignedJointArray^ get();
-				void set(AlignedJointArray^ value);
 			}
 
 			property AlignedLinkArray^ Links
 			{
 				AlignedLinkArray^ get();
-				void set(AlignedLinkArray^ value);
 			}
 
 			property AlignedMaterialArray^ Materials
 			{
 				AlignedMaterialArray^ get();
-				void set(AlignedMaterialArray^ value);
 			}
 
 			property AlignedNodeArray^ Nodes
 			{
 				AlignedNodeArray^ get();
-				void set(AlignedNodeArray^ value);
 			}
 
 			property AlignedNoteArray^ Notes
 			{
 				AlignedNoteArray^ get();
-				void set(AlignedNoteArray^ value);
 			}
 
 			property Pose^ Pose
 			{
 				BulletSharp::SoftBody::Pose^ get();
-				void set(BulletSharp::SoftBody::Pose^ value);
 			}
 
 			property AlignedRigidContactArray^ RigidContacts
@@ -1909,7 +1892,6 @@ namespace BulletSharp
 			property AlignedIntArray^ UserIndexMapping
 			{
 				AlignedIntArray^ get();
-				void set(AlignedIntArray^ value);
 			}
 
 			property btScalar Volume

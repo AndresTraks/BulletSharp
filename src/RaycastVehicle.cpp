@@ -253,10 +253,6 @@ AlignedWheelInfoArray^ RaycastVehicle::WheelInfo::get()
 {
 	return gcnew AlignedWheelInfoArray(&UnmanagedPointer->m_wheelInfo);
 }
-void RaycastVehicle::WheelInfo::set(AlignedWheelInfoArray^ value)
-{
-	UnmanagedPointer->m_wheelInfo = *(btAlignedObjectArray<btWheelInfo>*)value->_unmanaged;
-}
 
 btRaycastVehicle* RaycastVehicle::UnmanagedPointer::get()
 {

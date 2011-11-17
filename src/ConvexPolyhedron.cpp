@@ -26,10 +26,6 @@ AlignedIntArray^ Face::Indices::get()
 {
 	return gcnew AlignedIntArray(&_face->m_indices);
 }
-void Face::Indices::set(AlignedIntArray^ value)
-{
-	_face->m_indices = *(btAlignedObjectArray<int>*)value->_unmanaged;
-}
 
 ScalarArray^ Face::Plane::get()
 {
@@ -152,18 +148,10 @@ AlignedVector3Array^ ConvexPolyhedron::UniqueEdges::get()
 {
 	return gcnew AlignedVector3Array(&_convexPolyhedron->m_uniqueEdges);
 }
-void ConvexPolyhedron::UniqueEdges::set(AlignedVector3Array^ value)
-{
-	_convexPolyhedron->m_uniqueEdges = *(btAlignedObjectArray<btVector3>*)value->_unmanaged;
-}
 
 AlignedVector3Array^ ConvexPolyhedron::Vertices::get()
 {
 	return gcnew AlignedVector3Array(&_convexPolyhedron->m_vertices);
-}
-void ConvexPolyhedron::Vertices::set(AlignedVector3Array^ value)
-{
-	_convexPolyhedron->m_vertices = *(btAlignedObjectArray<btVector3>*)value->_unmanaged;
 }
 
 btConvexPolyhedron* ConvexPolyhedron::UnmanagedPointer::get()

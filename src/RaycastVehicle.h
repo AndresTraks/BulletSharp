@@ -136,7 +136,6 @@ namespace BulletSharp
 		property AlignedWheelInfoArray^ WheelInfo
 		{
 			AlignedWheelInfoArray^ get();
-			void set(AlignedWheelInfoArray^ value);
 		}
 
 	internal:

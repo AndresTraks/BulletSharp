@@ -223,11 +223,9 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #if _DEBUG
 #pragma comment(lib, "MiniCL_Debug.lib")
 #pragma comment(lib, "BulletSoftBodySolvers_OpenCL_Mini_Debug.lib")
-#pragma comment(lib, "BulletSoftBodySolvers_CPU_Debug.lib")
 #else
 #pragma comment(lib, "MiniCL_MinsizeRel.lib")
 #pragma comment(lib, "BulletSoftBodySolvers_OpenCL_Mini_MinsizeRel.lib")
-#pragma comment(lib, "BulletSoftBodySolvers_CPU_MinsizeRel.lib")
 #endif
 #endif
 
@@ -236,30 +234,24 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #pragma comment(lib, "OpenCL.lib")
 #if _DEBUG
 #pragma comment(lib, "BulletSoftBodySolvers_OpenCL_Intel_Debug.lib")
-#pragma comment(lib, "BulletSoftBodySolvers_CPU_Debug.lib")
 #else
 #pragma comment(lib, "BulletSoftBodySolvers_OpenCL_Intel_MinsizeRel.lib")
-#pragma comment(lib, "BulletSoftBodySolvers_CPU_MinsizeRel.lib")
 #endif
 #elif defined(USE_AMD_OPENCL)
 #include <CL/cl.h>
 #pragma comment(lib, "OpenCL.lib")
 #if _DEBUG
 #pragma comment(lib, "BulletSoftBodySolvers_OpenCL_AMD_Debug.lib")
-#pragma comment(lib, "BulletSoftBodySolvers_CPU_Debug.lib")
 #else
 #pragma comment(lib, "BulletSoftBodySolvers_OpenCL_AMD_MinsizeRel.lib")
-#pragma comment(lib, "BulletSoftBodySolvers_CPU_MinsizeRel.lib")
 #endif
 #elif defined(USE_NVIDIA_OPENCL)
 #include <CL/cl.h>
 #pragma comment(lib, "OpenCL.lib")
 #if _DEBUG
 #pragma comment(lib, "BulletSoftBodySolvers_OpenCL_NVidia_Debug.lib")
-#pragma comment(lib, "BulletSoftBodySolvers_CPU_Debug.lib")
 #else
 #pragma comment(lib, "BulletSoftBodySolvers_OpenCL_NVidia_MinsizeRel.lib")
-#pragma comment(lib, "BulletSoftBodySolvers_CPU_MinsizeRel.lib")
 #endif
 #endif
 
