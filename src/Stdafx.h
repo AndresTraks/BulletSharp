@@ -16,6 +16,7 @@
 #define DISABLE_DBVT
 //#define DISABLE_DEBUGDRAW
 //#define DISABLE_GIMPACT
+//#define DISABLE_HACD
 //#define DISABLE_INTERNAL
 //#define DISABLE_INTERNAL_EDGE_UTILITY
 //#define DISABLE_MULTITHREADED
@@ -216,6 +217,15 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #ifdef DISABLE_UNCOMMON
 #include <BulletCollision/CollisionShapes/btTriangleShape.h>
 #endif
+#endif
+
+#ifndef DISABLE_HACD
+#if _DEBUG
+#pragma comment(lib, "HACD_Debug.lib")
+#else
+#pragma comment(lib, "HACD_MinSizeRel.lib")
+#endif
+#include <hacdHACD.h>
 #endif
 
 #if defined(USE_MINICL)

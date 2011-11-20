@@ -1,10 +1,38 @@
 ﻿using BulletSharp;
+using BulletSharp.Hacd;
 using DemoFramework;
 using SharpDX;
 using System.Collections.Generic;
 
 namespace ConvexDecompositionDemo
 {
+    class MyConvexDecomposition : IConvexDecomposition
+    {
+        public MyConvexDecomposition(string outputFile, Physics demo)
+        {
+        }
+
+        public void ConvexDebugTri(float[] p1, float[] p2, float[] p3, uint color)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void ConvexDebugPoint(float[] p, float dist, uint color)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void ConvexDebugBound(float[] bmin, float[] bmax, uint color)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void ConvexDebugOBB(float[] sides, float[] matrix, uint color)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
     class Physics : PhysicsContext
     {
         Vector3 convexDecompositionObjectOffset;
@@ -118,6 +146,32 @@ namespace ConvexDecompositionDemo
                 LocalCreateRigidBody(0, Matrix.Translation(convexDecompositionObjectOffset), concaveShape);
 
                 CollisionShapes.Add(concaveShape);
+
+
+                // Bullet Convex Decomposition
+
+                DecompDesc desc = new DecompDesc();
+                desc.mVertices = wo.Vertices.ToArray();
+                desc.mTcount = tcount * 3;
+                desc.mIndices = wo.Indices.ToArray();
+                desc.mDepth = 5;
+                desc.mCpercent = 5;
+                desc.mPpercent = 15;
+                desc.mMaxVertices = 16;
+                desc.mSkinWidth = 0.0f;
+
+                MyConvexDecomposition convexDecomposition = new MyConvexDecomposition("file_convex.obj", this);
+                desc.mCallback = convexDecomposition;
+
+
+                // HACD
+
+                Hacd myHACD = new Hacd();
+                myHACD.SetPoints(wo.Vertices);
+                myHACD.SetTriangles(wo.Indices);
+                myHACD.CompacityWeight = 0.1;
+
+                myHACD.Compute();
             }
         }
     }

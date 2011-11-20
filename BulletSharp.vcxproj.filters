@@ -138,6 +138,12 @@
     <Filter Include="external">
       <UniqueIdentifier>{009a5f47-e16e-4c9b-bc8a-3c1e3815d83a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Extras\HACD">
+      <UniqueIdentifier>{4a5e7625-189c-4217-9c7a-b32ca866da29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Extras\HACD">
+      <UniqueIdentifier>{6e5fd7a6-8bfa-427f-86d0-aa2656cd7341}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AssemblyInfo.cpp">
@@ -607,6 +613,9 @@
     </ClCompile>
     <ClCompile Include="src\Vector4.cpp">
       <Filter>external</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hacd.cpp">
+      <Filter>Source Files\Extras\HACD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1091,6 +1100,9 @@
     </ClInclude>
     <ClInclude Include="src\Vector4.h">
       <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hacd.h">
+      <Filter>Header Files\Extras\HACD</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

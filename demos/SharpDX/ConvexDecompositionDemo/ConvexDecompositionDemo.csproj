@@ -60,6 +60,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConvexDecomposition.cs" />
     <Compile Include="ConvexDecompositionDemo.cs" />
     <Compile Include="Physics.cs" />
     <Compile Include="Wavefront.cs" />

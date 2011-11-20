@@ -42,7 +42,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;..\..\bullet\Extras\HACD;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(PROGRAMFILES)\SlimDX SDK (September 2011)\Bin\net20\&quot;;&quot;$(PROGRAMFILES(x86))\SlimDX SDK (June 2010)\Bin\net20\&quot;"
 				PreprocessorDefinitions="GRAPHICS_SLIMDX;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -64,6 +64,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -122,7 +123,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;..\..\bullet\Extras\HACD;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(PROGRAMFILES)\SlimDX SDK (September 2011)\Bin\net20\&quot;"
 				PreprocessorDefinitions="GRAPHICS_SLIMDX;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -145,6 +146,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_MinsizeRel.lib BulletDynamics_MinsizeRel.lib BulletCollision_MinsizeRel.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -202,7 +204,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;..\..\bullet\Extras\HACD;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(ProgramFiles)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;;&quot;$(ProgramFiles(x86))\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;"
 				PreprocessorDefinitions="GRAPHICS_XNA31;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -225,6 +227,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_MinsizeRel.lib BulletDynamics_MinsizeRel.lib BulletCollision_MinsizeRel.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -280,7 +283,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;..\..\bullet\Extras\HACD;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(PROGRAMFILES)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;;&quot;$(PROGRAMFILES(x86))\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\&quot;"
 				PreprocessorDefinitions="GRAPHICS_XNA31;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -302,6 +305,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -360,7 +364,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;..\..\bullet\Extras\HACD;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories=""
 				PreprocessorDefinitions="GRAPHICS_NONE;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -383,6 +387,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_MinsizeRel.lib BulletDynamics_MinsizeRel.lib BulletCollision_MinsizeRel.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -438,7 +443,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;..\..\bullet\Extras\HACD;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories=""
 				PreprocessorDefinitions="GRAPHICS_NONE;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -460,6 +465,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -518,7 +524,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;..\..\bullet\Extras\HACD;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="C:\MogreSDK\bin\Release"
 				PreprocessorDefinitions="GRAPHICS_MOGRE;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -541,6 +547,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_MinsizeRel.lib BulletDynamics_MinsizeRel.lib BulletCollision_MinsizeRel.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -596,7 +603,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;..\..\bullet\Extras\HACD;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="C:\MogreSDK\bin\Debug"
 				PreprocessorDefinitions="GRAPHICS_MOGRE;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -618,6 +625,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -676,7 +684,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;..\..\bullet\Extras\HACD;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(ProgramFiles)\OpenTK\1.0\Binaries\OpenTK\Release&quot;;&quot;$(USERPROFILE)\My Documents\OpenTK\1.0\Binaries\OpenTK\Release&quot;;&quot;$(ProgramFiles(x86))\OpenTK\1.0\Binaries\OpenTK\Release&quot;"
 				PreprocessorDefinitions="GRAPHICS_OPENTK;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -699,6 +707,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_MinsizeRel.lib BulletDynamics_MinsizeRel.lib BulletCollision_MinsizeRel.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -754,7 +763,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;..\..\bullet\Extras\HACD;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="&quot;$(PROGRAMFILES)\OpenTK\1.0\Binaries\OpenTK\Debug&quot;;&quot;$(USERPROFILE)\My Documents\OpenTK\1.0\Binaries\OpenTK\Debug&quot;"
 				PreprocessorDefinitions="GRAPHICS_OPENTK;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -776,6 +785,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -834,7 +844,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;..\..\bullet\Extras\HACD;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="..\..\Axiom-Sdk-v0.8.0.0-RC1\lib\.Net 3.5\Release"
 				PreprocessorDefinitions="GRAPHICS_AXIOM;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -857,6 +867,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_MinsizeRel.lib BulletDynamics_MinsizeRel.lib BulletCollision_MinsizeRel.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -912,7 +923,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;..\..\bullet\Extras\HACD;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="..\..\Axiom-Sdk-v0.8.0.0-RC1\lib\.Net 3.5\Debug"
 				PreprocessorDefinitions="GRAPHICS_AXIOM;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -934,6 +945,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -990,7 +1002,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;..\..\bullet\Extras\HACD;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="..\..\SlimMath\SlimMath\bin\Release"
 				PreprocessorDefinitions="GRAPHICS_SLIMMATH;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -1012,6 +1024,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -1070,7 +1083,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;..\..\bullet\Extras\HACD;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="..\..\SlimMath\SlimMath\bin\Release"
 				PreprocessorDefinitions="GRAPHICS_SLIMMATH;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -1093,6 +1106,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_MinsizeRel.lib BulletDynamics_MinsizeRel.lib BulletCollision_MinsizeRel.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -1150,7 +1164,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;..\..\bullet\Extras\HACD;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="..\..\sharpdx\Source\SharpDX\bin\Release"
 				PreprocessorDefinitions="GRAPHICS_SHARPDX;WIN32;NDEBUG"
 				RuntimeLibrary="2"
@@ -1173,6 +1187,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_MinsizeRel.lib BulletDynamics_MinsizeRel.lib BulletCollision_MinsizeRel.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -1228,7 +1243,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\bullet\src;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
+				AdditionalIncludeDirectories="..\..\bullet\src;..\..\bullet\Extras\HACD;&quot;$(CUDA_INC_PATH)&quot;;&quot;$(ATISTREAMSDKROOT)include&quot;"
 				AdditionalUsingDirectories="..\..\sharpdx\Source\SharpDX\bin\Debug"
 				PreprocessorDefinitions="GRAPHICS_SHARPDX;WIN32;_DEBUG"
 				RuntimeLibrary="3"
@@ -1250,6 +1265,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -1975,6 +1991,14 @@
 					>
 					<File
 						RelativePath="..\src\BulletWorldImporter.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="HACD"
+					>
+					<File
+						RelativePath="..\src\Hacd.cpp"
 						>
 					</File>
 				</Filter>
@@ -2761,6 +2785,14 @@
 					>
 					<File
 						RelativePath="..\src\BulletWorldImporter.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="HACD"
+					>
+					<File
+						RelativePath="..\src\Hacd.h"
 						>
 					</File>
 				</Filter>
