@@ -1,42 +1,137 @@
-﻿using BulletSharp;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using BulletSharp;
 using BulletSharp.Hacd;
 using DemoFramework;
 using SharpDX;
-using System.Collections.Generic;
 
 namespace ConvexDecompositionDemo
 {
     class MyConvexDecomposition : IConvexDecomposition
     {
-        public MyConvexDecomposition(string outputFile, Physics demo)
+        StreamWriter output;
+        Physics demo;
+        CultureInfo floatFormat = new CultureInfo("en-US");
+
+        public AlignedCollisionShapeArray convexShapes = new AlignedCollisionShapeArray();
+        public AlignedVector3Array convexCentroids = new AlignedVector3Array();
+
+        int mHullCount = 0;
+        int mBaseCount = 0;
+
+        public MyConvexDecomposition(StreamWriter output, Physics demo)
         {
+            this.output = output;
+            this.demo = demo;
         }
 
-        public void ConvexDebugTri(float[] p1, float[] p2, float[] p3, uint color)
+        public override void ConvexDecompResult(ConvexResult result)
         {
-            throw new System.NotImplementedException();
-        }
+            TriangleMesh trimesh = new TriangleMesh();
+            demo.trimeshes.Add(trimesh);
 
-        public void ConvexDebugPoint(float[] p, float dist, uint color)
-        {
-            throw new System.NotImplementedException();
-        }
+            Vector3 localScaling = new Vector3(6.0f, 6.0f, 6.0f);
 
-        public void ConvexDebugBound(float[] bmin, float[] bmax, uint color)
-        {
-            throw new System.NotImplementedException();
-        }
+            if (output == null)
+                return;
 
-        public void ConvexDebugOBB(float[] sides, float[] matrix, uint color)
-        {
-            throw new System.NotImplementedException();
+            output.WriteLine(string.Format("## Hull Piece {0} with {1} vertices and {2} triangles.", mHullCount, result.mHullVertices.Length, result.mHullIndices.Length));
+
+            output.WriteLine(string.Format("usemtl Material{0}", mBaseCount));
+            output.WriteLine(string.Format("o Object{0}", mBaseCount));
+
+            foreach (Vector3 p in result.mHullVertices)
+            {
+                output.WriteLine(string.Format(floatFormat, "v {0:F9} {1:F9} {2:F9}", p.X, p.Y, p.Z));
+            }
+
+            //calc centroid, to shift vertices around center of mass
+            demo.centroid = Vector3.Zero;
+
+            AlignedVector3Array vertices = new AlignedVector3Array();
+            if (true)
+            {
+                foreach (Vector3 vertex in result.mHullVertices)
+                {
+                    demo.centroid += Vector3.Modulate(vertex, localScaling);
+                }
+            }
+
+            demo.centroid *= 1.0f / ((float)result.mHullVertices.Length);
+
+            if (true)
+            {
+                foreach (Vector3 vertex in result.mHullVertices)
+                {
+                    vertices.Add(Vector3.Modulate(vertex, localScaling) - demo.centroid);
+                }
+            }
+
+            if (true)
+            {
+                int[] src = result.mHullIndices;
+                for (int i = 0; i < src.Length; i += 3)
+                {
+                    int index0 = src[i];
+                    int index1 = src[i + 1];
+                    int index2 = src[i + 2];
+
+
+                    Vector3 vertex0 = Vector3.Modulate(result.mHullVertices[index0], localScaling) - demo.centroid;
+                    Vector3 vertex1 = Vector3.Modulate(result.mHullVertices[index1], localScaling) - demo.centroid;
+                    Vector3 vertex2 = Vector3.Modulate(result.mHullVertices[index2], localScaling) - demo.centroid;
+
+                    trimesh.AddTriangle(vertex0, vertex1, vertex2);
+
+                    index0 += mBaseCount;
+                    index1 += mBaseCount;
+                    index2 += mBaseCount;
+
+                    output.WriteLine(string.Format("f {0} {1} {2}", index0 + 1, index1 + 1, index2 + 1));
+                }
+            }
+
+            //this is a tools issue: due to collision margin, convex objects overlap, compensate for it here:
+            //#define SHRINK_OBJECT_INWARDS 1
+#if SHRINK_OBJECT_INWARDS
+
+			float collisionMargin = 0.01f;
+					
+			btAlignedObjectArray<btVector3> planeEquations;
+			btGeometryUtil::getPlaneEquationsFromVertices(vertices,planeEquations);
+
+			btAlignedObjectArray<btVector3> shiftedPlaneEquations;
+			for (int p=0;p<planeEquations.size();p++)
+			{
+				btVector3 plane = planeEquations[p];
+				plane[3] += collisionMargin;
+				shiftedPlaneEquations.push_back(plane);
+			}
+			btAlignedObjectArray<btVector3> shiftedVertices;
+			btGeometryUtil::getVerticesFromPlaneEquations(shiftedPlaneEquations,shiftedVertices);
+
+					
+			btConvexHullShape* convexShape = new btConvexHullShape(&(shiftedVertices[0].getX()),shiftedVertices.size());
+					
+#else //SHRINK_OBJECT_INWARDS
+
+            ConvexHullShape convexShape = new ConvexHullShape(vertices);
+#endif
+
+            convexShape.Margin = 0.01f;
+            convexShapes.Add(convexShape);
+            convexCentroids.Add(demo.centroid);
+            demo.CollisionShapes.Add(convexShape);
+            mBaseCount += result.mHullVertices.Length; // advance the 'base index' counter.
         }
     }
 
     class Physics : PhysicsContext
     {
+        public Vector3 centroid;
         Vector3 convexDecompositionObjectOffset;
-        AlignedTriangleMeshArray trimeshes = new AlignedTriangleMeshArray();
+        public AlignedTriangleMeshArray trimeshes = new AlignedTriangleMeshArray();
 
         // MyContactCallback is just an example to show how to get access to the child shape that collided
         bool MyContactCallback(ManifoldPoint cp, CollisionObject colObj0, int partId0, int index0, CollisionObject colObj1, int partId1, int index1)
@@ -152,7 +247,7 @@ namespace ConvexDecompositionDemo
 
                 DecompDesc desc = new DecompDesc();
                 desc.mVertices = wo.Vertices.ToArray();
-                desc.mTcount = tcount * 3;
+                desc.mTcount = tcount;
                 desc.mIndices = wo.Indices.ToArray();
                 desc.mDepth = 5;
                 desc.mCpercent = 5;
@@ -160,7 +255,9 @@ namespace ConvexDecompositionDemo
                 desc.mMaxVertices = 16;
                 desc.mSkinWidth = 0.0f;
 
-                MyConvexDecomposition convexDecomposition = new MyConvexDecomposition("file_convex.obj", this);
+                FileStream outputFile = new FileStream("file_convex.obj", FileMode.Create, FileAccess.Write);
+                StreamWriter writer = new StreamWriter(outputFile);
+                MyConvexDecomposition convexDecomposition = new MyConvexDecomposition(writer, this);
                 desc.mCallback = convexDecomposition;
 
 
@@ -170,8 +267,94 @@ namespace ConvexDecompositionDemo
                 myHACD.SetPoints(wo.Vertices);
                 myHACD.SetTriangles(wo.Indices);
                 myHACD.CompacityWeight = 0.1;
+                myHACD.VolumeWeight = 0.0;
+
+                // HACD parameters
+                // Recommended parameters: 2 100 0 0 0 0
+                int nClusters = 2;
+                double concavity = 100;
+                //bool invert = false;
+                bool addExtraDistPoints = false;
+                bool addNeighboursDistPoints = false;
+                bool addFacesPoints = false;
+
+                myHACD.NClusters = nClusters;                     // minimum number of clusters
+                myHACD.VerticesPerConvexHull = 100;                      // max of 100 vertices per convex-hull
+                myHACD.Concavity = concavity;                     // maximum concavity
+                myHACD.AddExtraDistPoints = addExtraDistPoints;
+                myHACD.AddNeighboursDistPoints = addNeighboursDistPoints;
+                myHACD.AddFacesPoints = addFacesPoints;
 
                 myHACD.Compute();
+                nClusters = myHACD.NClusters;
+
+                myHACD.Save("output.wrl", false);
+
+
+                if (true)
+                {
+                    CompoundShape compound = new CompoundShape();
+                    CollisionShapes.Add(compound);
+
+                    Matrix trans = Matrix.Identity;
+
+                    for (int c = 0; c < nClusters; c++)
+                    {
+                        //generate convex result
+                        Vector3[] points;
+                        int[] triangles;
+                        myHACD.GetCH(c, out points, out triangles);
+
+                        ConvexResult r = new ConvexResult(points, triangles);
+                        convexDecomposition.ConvexDecompResult(r);
+                    }
+
+                    for (i = 0; i < convexDecomposition.convexShapes.Count; i++)
+                    {
+                        Vector3 centroid = convexDecomposition.convexCentroids[i];
+                        trans = Matrix.Translation(centroid);
+                        ConvexHullShape convexShape2 = convexDecomposition.convexShapes[i] as ConvexHullShape;
+                        compound.AddChildShape(trans, convexShape2);
+
+                        RigidBody body = LocalCreateRigidBody(1.0f, trans, convexShape2);
+                    }
+                    /*
+                    for (int i=0;i<convexDecomposition.convexShapes.Count;i++)
+                    {
+                        Vector3 centroid = convexDecomposition.convexCentroids[i];
+                        trans = Matrix.Translation(centroid);
+                        ConvexHullShape convexShape2 = convexDecomposition.convexShapes[i] as ConvexHullShape;
+                        compound.AddChildShape(trans,convexShape2);
+
+                        RigidBody body = LocalCreateRigidBody(1.0f, trans, convexShape2);
+                    }
+                    */
+#if true
+                    mass = 10.0f;
+                    trans = Matrix.Translation(-convexDecompositionObjectOffset);
+                    RigidBody body2 = LocalCreateRigidBody(mass, trans, compound);
+                    body2.CollisionFlags |= CollisionFlags.CustomMaterialCallback;
+
+                    convexDecompositionObjectOffset.Z = 6;
+                    trans = Matrix.Translation(-convexDecompositionObjectOffset);
+                    body2 = LocalCreateRigidBody(mass, trans, compound);
+                    body2.CollisionFlags |= CollisionFlags.CustomMaterialCallback;
+
+                    convexDecompositionObjectOffset.Z = -6;
+                    trans = Matrix.Translation(-convexDecompositionObjectOffset);
+                    body2 = LocalCreateRigidBody(mass, trans, compound);
+                    body2.CollisionFlags |= CollisionFlags.CustomMaterialCallback;
+#endif
+                }
+
+                if (outputFile != null)
+                {
+                    if (writer != null)
+                    {
+                        writer.Dispose();
+                    }
+                    outputFile.Dispose();
+                }
             }
         }
     }

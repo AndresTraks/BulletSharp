@@ -16,7 +16,7 @@ namespace BulletSharp
 
 	public:
 		ConvexHullShape();
-		ConvexHullShape(array<Vector3>^ points);
+		ConvexHullShape(System::Collections::Generic::IEnumerable<Vector3>^ points);
 
 		void AddPoint(Vector3 point);
 		Vector3 GetScaledPoint(int i);

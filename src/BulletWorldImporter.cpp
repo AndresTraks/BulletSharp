@@ -47,7 +47,7 @@ CollisionObject^ Serialize::BulletWorldImporter::CreateCollisionObject(Matrix st
 		_importer->baseCreateCollisionObject(*startTransformTemp, shape->UnmanagedPointer, bodyNameTemp));
 
 	delete startTransformTemp;
-	StringConv::UnmanagedToManaged(bodyNameTemp);
+	StringConv::FreeUnmanagedString(bodyNameTemp);
 
 	return ret;
 }
@@ -61,7 +61,7 @@ RigidBody^ Serialize::BulletWorldImporter::CreateRigidBody(bool isDynamic, btSca
 		_importer->baseCreateRigidBody(isDynamic, mass, *startTransformTemp, shape->UnmanagedPointer, bodyNameTemp));
 
 	delete startTransformTemp;
-	StringConv::UnmanagedToManaged(bodyNameTemp);
+	StringConv::FreeUnmanagedString(bodyNameTemp);
 
 	return ret;
 }
@@ -390,7 +390,7 @@ CollisionShape^ Serialize::BulletWorldImporter::GetCollisionShapeByName(String^ 
 	shape = _importer->getCollisionShapeByName(nameTemp);
 	ret = CollisionShape::GetManaged(shape);
 
-	StringConv::UnmanagedToManaged(nameTemp);
+	StringConv::FreeUnmanagedString(nameTemp);
 	return ret;
 }
 
@@ -404,7 +404,7 @@ RigidBody^ Serialize::BulletWorldImporter::GetRigidBodyByName(String^ name)
 	body = _importer->getRigidBodyByName(nameTemp);
 	ret = (RigidBody^)CollisionObject::GetManaged(body);
 
-	StringConv::UnmanagedToManaged(nameTemp);
+	StringConv::FreeUnmanagedString(nameTemp);
 	return ret;
 }
 
@@ -419,7 +419,7 @@ TypedConstraint^ Serialize::BulletWorldImporter::GetConstraintByName(String^ nam
 	constraint = _importer->getConstraintByName(nameTemp);
 	ret = TypedConstraint::Upcast(constraint);
 
-	StringConv::UnmanagedToManaged(nameTemp);
+	StringConv::FreeUnmanagedString(nameTemp);
 	return ret;
 }
 #endif

@@ -13,7 +13,7 @@ ConvexHullShape::ConvexHullShape(btConvexHullShape* shape)
 {
 }
 
-ConvexHullShape::ConvexHullShape(array<Vector3>^ points)
+ConvexHullShape::ConvexHullShape(System::Collections::Generic::IEnumerable<Vector3>^ points)
 : PolyhedralConvexAabbCachingShape(new btConvexHullShape())
 {
 	btVector3* pointTemp = new btVector3;

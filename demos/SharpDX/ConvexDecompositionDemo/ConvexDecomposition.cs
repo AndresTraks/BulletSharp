@@ -4,22 +4,26 @@ namespace ConvexDecompositionDemo
 {
     class ConvexResult
     {
-        ConvexResult(float[] hvertices, int[] hindices)
+        public ConvexResult()
         {
-            mHullVertices = (float[])hvertices.Clone();
+        }
+
+        public ConvexResult(Vector3[] hvertices, int[] hindices)
+        {
+            mHullVertices = (Vector3[])hvertices.Clone();
             mHullIndices = (int[])hindices.Clone();
         }
 
-        ConvexResult(ConvexResult r)
+        public ConvexResult(ConvexResult r)
         {
-            mHullVertices = (float[])r.mHullVertices.Clone();
+            mHullVertices = (Vector3[])r.mHullVertices.Clone();
             mHullIndices = (int[])r.mHullIndices.Clone();
         }
 
         // the convex hull.
-        float[] mHullVertices;
-        int[] mHullIndices;
-
+        public Vector3[] mHullVertices;
+        public int[] mHullIndices;
+        /*
         float mHullVolume;		    // the volume of the convex hull.
 
         Vector3 mOBBSides;			  // the width, height and breadth of the best fit OBB
@@ -31,16 +35,17 @@ namespace ConvexDecompositionDemo
         float mSphereRadius;      // radius and center of best fit sphere
         Vector3 mSphereCenter;
         float mSphereVolume;      // volume of the best fit sphere
+        */
     };
 
-    interface IConvexDecomposition
+    abstract class IConvexDecomposition
     {
-        void ConvexDebugTri(float[] p1, float[] p2, float[] p3, uint color);
-        void ConvexDebugPoint(float[] p, float dist, uint color);
-        void ConvexDebugBound(float[] bmin, float[] bmax, uint color);
-        void ConvexDebugOBB(float[] sides, float[] matrix, uint color);
+        public void ConvexDebugTri(float[] p1, float[] p2, float[] p3, uint color) { }
+        public void ConvexDebugPoint(float[] p, float dist, uint color) { }
+        public void ConvexDebugBound(float[] bmin, float[] bmax, uint color) { }
+        public void ConvexDebugOBB(float[] sides, float[] matrix, uint color) { }
 
-        //void ConvexDecompResult(ConvexResult &result) = 0;
+        public abstract void ConvexDecompResult(ConvexResult result);
     };
 
     // just to avoid passing a zillion parameters to the method the
