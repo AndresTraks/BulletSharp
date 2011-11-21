@@ -36,7 +36,7 @@ namespace ConvexDecompositionDemo
             if (output == null)
                 return;
 
-            output.WriteLine(string.Format("## Hull Piece {0} with {1} vertices and {2} triangles.", mHullCount, result.mHullVertices.Length, result.mHullIndices.Length));
+            output.WriteLine(string.Format("## Hull Piece {0} with {1} vertices and {2} triangles.", mHullCount, result.mHullVertices.Length, result.mHullIndices.Length / 3));
 
             output.WriteLine(string.Format("usemtl Material{0}", mBaseCount));
             output.WriteLine(string.Format("o Object{0}", mBaseCount));
@@ -245,6 +245,9 @@ namespace ConvexDecompositionDemo
 
                 // Bullet Convex Decomposition
 
+                FileStream outputFile = new FileStream("file_convex.obj", FileMode.Create, FileAccess.Write);
+                StreamWriter writer = new StreamWriter(outputFile);
+
                 DecompDesc desc = new DecompDesc();
                 desc.mVertices = wo.Vertices.ToArray();
                 desc.mTcount = tcount;
@@ -255,8 +258,6 @@ namespace ConvexDecompositionDemo
                 desc.mMaxVertices = 16;
                 desc.mSkinWidth = 0.0f;
 
-                FileStream outputFile = new FileStream("file_convex.obj", FileMode.Create, FileAccess.Write);
-                StreamWriter writer = new StreamWriter(outputFile);
                 MyConvexDecomposition convexDecomposition = new MyConvexDecomposition(writer, this);
                 desc.mCallback = convexDecomposition;
 
@@ -279,7 +280,7 @@ namespace ConvexDecompositionDemo
                 bool addFacesPoints = false;
 
                 myHACD.NClusters = nClusters;                     // minimum number of clusters
-                myHACD.VerticesPerConvexHull = 100;                      // max of 100 vertices per convex-hull
+                myHACD.VerticesPerConvexHull = 100;               // max of 100 vertices per convex-hull
                 myHACD.Concavity = concavity;                     // maximum concavity
                 myHACD.AddExtraDistPoints = addExtraDistPoints;
                 myHACD.AddNeighboursDistPoints = addNeighboursDistPoints;
@@ -318,17 +319,7 @@ namespace ConvexDecompositionDemo
 
                         RigidBody body = LocalCreateRigidBody(1.0f, trans, convexShape2);
                     }
-                    /*
-                    for (int i=0;i<convexDecomposition.convexShapes.Count;i++)
-                    {
-                        Vector3 centroid = convexDecomposition.convexCentroids[i];
-                        trans = Matrix.Translation(centroid);
-                        ConvexHullShape convexShape2 = convexDecomposition.convexShapes[i] as ConvexHullShape;
-                        compound.AddChildShape(trans,convexShape2);
 
-                        RigidBody body = LocalCreateRigidBody(1.0f, trans, convexShape2);
-                    }
-                    */
 #if true
                     mass = 10.0f;
                     trans = Matrix.Translation(-convexDecompositionObjectOffset);

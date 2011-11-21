@@ -10,9 +10,9 @@ Hacd::Hacd::Hacd()
 	_unmanaged = new HACD::HACD();
 }
 
-void Hacd::Hacd::Compute()
+bool Hacd::Hacd::Compute()
 {
-	_unmanaged->Compute();
+	return _unmanaged->Compute();
 }
 
 bool Hacd::Hacd::GetCH(int numCH, [Out] array<Vector3>^% points, [Out] array<long>^% triangles)
@@ -109,12 +109,16 @@ void Hacd::Hacd::SetTriangles(ICollection<long>^ triangles)
 	IEnumerator<long>^ enumerator = triangles->GetEnumerator();
 	while(enumerator->MoveNext())
 	{
-		_triangles[i] = enumerator->Current;
-		i++;
+		int x = enumerator->Current;
+		enumerator->MoveNext();
+		int y = enumerator->Current;
+		enumerator->MoveNext();
+		int z = enumerator->Current;
+		_triangles[i++] = HACD::Vec3<long>(x, y, z);
 	}
 
 	_unmanaged->SetTriangles(_triangles);
-	_unmanaged->SetNTriangles(count);
+	_unmanaged->SetNTriangles(count / 3);
 }
 
 bool BulletSharp::Hacd::Hacd::AddExtraDistPoints::get()
@@ -169,6 +173,11 @@ int BulletSharp::Hacd::Hacd::NClusters::get()
 void BulletSharp::Hacd::Hacd::NClusters::set(int value)
 {
 	return _unmanaged->SetNClusters(value);
+}
+
+int BulletSharp::Hacd::Hacd::NPoints::get()
+{
+	return _unmanaged->GetNPoints();
 }
 
 int BulletSharp::Hacd::Hacd::VerticesPerConvexHull::get()

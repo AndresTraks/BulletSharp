@@ -492,15 +492,23 @@ namespace DemoFramework
 
             Vector3Array points = shape.UnscaledPoints;
             Vector3 scale = Vector3.Multiply(shape.LocalScaling, 1.0f + shape.Margin);
-            int v;
+            int v, vv = 0;
             for (v = 0; v < vertexCount; )
             {
-                vertices[v++] = Vector3.Modulate(points[v], scale);
-                vertices[v++] = Vector3.Zero;
-                vertices[v++] = Vector3.Modulate(points[v], scale);
-                vertices[v++] = Vector3.Zero;
-                vertices[v++] = Vector3.Modulate(points[v], scale);
-                vertices[v++] = Vector3.Zero;
+                Vector3 v0 = Vector3.Modulate(points[v++], scale);
+                Vector3 v1 = Vector3.Modulate(points[v++], scale);
+                Vector3 v2 = Vector3.Modulate(points[v++], scale);
+
+                Vector3 v01 = v0 - v1;
+                Vector3 v02 = v0 - v2;
+                Vector3 normal = Vector3.Cross(v01, v02);
+
+                vertices[vv++] = v0;
+                vertices[vv++] = normal;
+                vertices[vv++] = v1;
+                vertices[vv++] = normal;
+                vertices[vv++] = v2;
+                vertices[vv++] = normal;
             }
 
             shapeData.SetVertexBuffer(device, vertices);

@@ -18,7 +18,7 @@ namespace BulletSharp
 		public:
 			Hacd();
 
-			void Compute();
+			bool Compute();
 			bool GetCH(int numCH, [Out] array<Vector3>^% points, [Out] array<long>^% triangles);
 			int GetNPointsCH(int numCH);
 			int GetNTrianglesCH(int numCH);
@@ -61,6 +61,11 @@ namespace BulletSharp
 			{
 				int get();
 				void set(int value);
+			}
+
+			property int NPoints
+			{
+				int get();
 			}
 
 			property int VerticesPerConvexHull
