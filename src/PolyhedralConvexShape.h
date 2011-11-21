@@ -11,6 +11,9 @@ namespace BulletSharp
 	internal:
 		PolyhedralConvexShape(btPolyhedralConvexShape* polyhedralConvexShape);
 
+	private:
+		ConvexPolyhedron^ _convexPolyhedron;
+
 	public:
 		void GetEdge(int index, [Out] Vector3% pointA, [Out] Vector3% pointB);
 		void GetPlane([Out] Vector3% planeNormal, [Out] Vector3% planeSupport, int index);

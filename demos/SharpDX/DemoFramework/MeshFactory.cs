@@ -131,13 +131,13 @@ namespace DemoFramework
             }
         }
 
-        public void SetIndexBuffer(Device device, int[] indices)
+        public void SetIndexBuffer(Device device, uint[] indices)
         {
             IndexFormat = Format.R32_UInt;
 
             BufferDescription boxIndexBufferDesc = new BufferDescription()
             {
-                SizeInBytes = sizeof(int) * indices.Length,
+                SizeInBytes = sizeof(uint) * indices.Length,
                 Usage = ResourceUsage.Default,
                 BindFlags = BindFlags.IndexBuffer
             };
@@ -481,34 +481,54 @@ namespace DemoFramework
         */
         ShapeData CreateConvexHullShape(ConvexHullShape shape)
         {
-            int vertexCount = shape.NumPoints;
-            int faceCount = vertexCount / 3;
-            vertexCount = faceCount * 3; // must be 3 verts for every face
+            ConvexPolyhedron poly = shape.ConvexPolyhedron;
+            if (poly != null)
+            {
+                throw new NotImplementedException();
+            }
+
+            ShapeHull hull = new ShapeHull(shape);
+            hull.BuildHull(shape.Margin);
+
+            int faceCount = hull.NumTriangles;
+            int vertexCount = hull.NumVertices;
+            int indexCount = hull.NumIndices;
+            UIntArray hullIndices = hull.Indices;
+            Vector3Array points = hull.Vertices;
 
             ShapeData shapeData = new ShapeData();
             shapeData.VertexCount = vertexCount;
+            shapeData.IndexCount = indexCount;
 
-            Vector3[] vertices = new Vector3[shapeData.VertexCount * 2];
+            int i = 0;
+            if (vertexCount > 65536)
+            {
+                uint[] indices = new uint[indexCount];
+                hullIndices.CopyTo(indices, 0);
+                shapeData.SetIndexBuffer(device, indices);
+            }
+            else if (vertexCount > 256)
+            {
+                ushort[] indices = new ushort[indexCount];
+                for (i = 0; i < indexCount; i++)
+                    indices[i] = (ushort)hullIndices[i];
+                shapeData.SetIndexBuffer(device, indices);
+            }
+            else
+            {
+                byte[] indices = new byte[indexCount];
+                for (i = 0; i < indexCount; i++)
+                    indices[i] = (byte)hullIndices[i];
+                shapeData.SetIndexBuffer(device, indices);
+            }
 
-            Vector3Array points = shape.UnscaledPoints;
+            Vector3[] vertices = new Vector3[hull.NumVertices * 2];
             Vector3 scale = Vector3.Multiply(shape.LocalScaling, 1.0f + shape.Margin);
             int v, vv = 0;
             for (v = 0; v < vertexCount; )
             {
-                Vector3 v0 = Vector3.Modulate(points[v++], scale);
-                Vector3 v1 = Vector3.Modulate(points[v++], scale);
-                Vector3 v2 = Vector3.Modulate(points[v++], scale);
-
-                Vector3 v01 = v0 - v1;
-                Vector3 v02 = v0 - v2;
-                Vector3 normal = Vector3.Cross(v01, v02);
-
-                vertices[vv++] = v0;
-                vertices[vv++] = normal;
-                vertices[vv++] = v1;
-                vertices[vv++] = normal;
-                vertices[vv++] = v2;
-                vertices[vv++] = normal;
+                vertices[vv++] = Vector3.Modulate(points[v++], scale);
+                vertices[vv++] = Vector3.Zero;
             }
 
             shapeData.SetVertexBuffer(device, vertices);
@@ -746,9 +766,9 @@ namespace DemoFramework
             int i = 0;
             if (numVerts > 65536)
             {
-                int[] indices = new int[shapeData.IndexCount];
+                uint[] indices = new uint[shapeData.IndexCount];
                 while (indexStream.Position < indexStream.Length)
-                    indices[i++] = indexStream.Read<int>();
+                    indices[i++] = indexStream.Read<uint>();
                 shapeData.SetIndexBuffer(device, indices);
             }
             else if (numVerts > 256)

@@ -5,6 +5,8 @@
 namespace BulletSharp
 {
 	ref class ConvexShape;
+	ref class UIntArray;
+	ref class Vector3Array;
 
 	public ref class ShapeHull
 	{
@@ -17,6 +19,11 @@ namespace BulletSharp
 		bool BuildHull(btScalar margin);
 		DataStream^ GetIndexStream();
 		DataStream^ GetVertexStream();
+
+		property UIntArray^ Indices
+		{
+			UIntArray^ get();
+		}
 
 		property int NumIndices
 		{
@@ -31,6 +38,11 @@ namespace BulletSharp
 		property int NumVertices
 		{
 			int get();
+		}
+
+		property Vector3Array^ Vertices
+		{
+			Vector3Array^ get();
 		}
 	};
 };

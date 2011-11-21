@@ -2,6 +2,7 @@
 
 #ifndef DISABLE_UNCOMMON
 
+#include "Collections.h"
 #include "ConvexShape.h"
 #include "ShapeHull.h"
 
@@ -25,6 +26,11 @@ BulletSharp::DataStream^ ShapeHull::GetVertexStream()
 	return gcnew BulletSharp::DataStream((void*)_shapeHull->getVertexPointer(), NumVertices * sizeof(btVector3), true, false, false);
 }
 
+UIntArray^ ShapeHull::Indices::get()
+{
+	return gcnew UIntArray(_shapeHull->getIndexPointer(), NumIndices);
+}
+
 int ShapeHull::NumIndices::get()
 {
 	return _shapeHull->numIndices();
@@ -38,6 +44,11 @@ int ShapeHull::NumTriangles::get()
 int ShapeHull::NumVertices::get()
 {
 	return _shapeHull->numVertices();
+}
+
+Vector3Array^ ShapeHull::Vertices::get()
+{
+	return gcnew Vector3Array(_shapeHull->getVertexPointer(), NumVertices);
 }
 
 #endif

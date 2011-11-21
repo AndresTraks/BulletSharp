@@ -68,7 +68,8 @@ bool PolyhedralConvexShape::IsInside(Vector3 point, btScalar tolerance)
 #ifndef DISABLE_UNCOMMON
 ConvexPolyhedron^ PolyhedralConvexShape::ConvexPolyhedron::get()
 {
-	return gcnew BulletSharp::ConvexPolyhedron((btConvexPolyhedron*)UnmanagedPointer->getConvexPolyhedron());
+	btConvexPolyhedron* convexPolyhedron = (btConvexPolyhedron*)UnmanagedPointer->getConvexPolyhedron();
+	ReturnCachedObjectNullable(BulletSharp::ConvexPolyhedron, _convexPolyhedron, convexPolyhedron);
 }
 #endif
 
