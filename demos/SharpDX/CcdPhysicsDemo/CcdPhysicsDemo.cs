@@ -42,7 +42,7 @@ namespace CcdPhysicsDemo
             if (Input.KeysPressed.Contains(Keys.P))
             {
                 Physics.ToggleCcdMode();
-                MeshFactory.Clear();
+                GetMeshFactory().Clear();
 
                 if (Physics.CcdMode)
                 {

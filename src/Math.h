@@ -68,3 +68,82 @@ namespace BulletSharp
 		static void MatrixToBtMatrix3x3(Matrix, btMatrix3x3*);
 	};
 };
+
+#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+#define BtVector3ToVector3Fast(v, out) \
+	out.x = (v)->m_floats[0]; \
+	out.y = (v)->m_floats[1]; \
+	out.z = (v)->m_floats[2];
+#else
+#define BtVector3ToVector3Fast(v, out) \
+	out.X = (v)->m_floats[0]; \
+	out.Y = (v)->m_floats[1]; \
+	out.Z = (v)->m_floats[2];
+#endif
+
+#define BtVector3ToVector3FastRet(v) Vector3((v)->m_floats[0], (v)->m_floats[1], (v)->m_floats[2])
+
+#if defined(GRAPHICS_MOGRE)
+#define BtTransformToMatrixFast(transform, out)	out = gcnew Mogre::Matrix4(); \
+	btScalar m[16]; \
+	(transform).getOpenGLMatrix(m); \
+	out->m00 = m[0]; \
+	out->m10 = m[1]; \
+	out->m20 = m[2]; \
+	out->m30 = 0; \
+	out->m01 = m[4]; \
+	out->m11 = m[5]; \
+	out->m21 = m[6]; \
+	out->m31 = 0; \
+	out->m02 = m[8]; \
+	out->m12 = m[9]; \
+	out->m22 = m[10]; \
+	out->m32 = 0; \
+	out->m03 = m[12]; \
+	out->m13 = m[13]; \
+	out->m23 = m[14]; \
+	out->m33 = 1;
+#elif defined(GRAPHICS_AXIOM)
+#define BtTransformToMatrixFast(transform, out)	out = gcnew Axiom::Math::Matrix4(); \
+	btScalar m[16]; \
+	transform.getOpenGLMatrix(m); \
+	out->m00 = m[0]; \
+	out->m10 = m[1]; \
+	out->m20 = m[2]; \
+	out->m30 = 0; \
+	out->m01 = m[4]; \
+	out->m11 = m[5]; \
+	out->m21 = m[6]; \
+	out->m31 = 0; \
+	out->m02 = m[8]; \
+	out->m12 = m[9]; \
+	out->m22 = m[10]; \
+	out->m32 = 0; \
+	out->m03 = m[12]; \
+	out->m13 = m[13]; \
+	out->m23 = m[14]; \
+	out->m33 = 1;
+#else
+#ifdef GRAPHICS_NO_DIRECT_CAST
+#define BtTransformToMatrixFast(transform, out) out = Matrix(); \
+	btScalar m[16]; \
+	transform.getOpenGLMatrix(m); \
+	out.M11 = (float)m[0]; \
+	out.M12 = (float)m[1]; \
+	out.M13 = (float)m[2]; \
+	out.M21 = (float)m[4]; \
+	out.M22 = (float)m[5]; \
+	out.M23 = (float)m[6]; \
+	out.M31 = (float)m[8]; \
+	out.M32 = (float)m[9]; \
+	out.M33 = (float)m[10]; \
+	out.M41 = (float)m[12]; \
+	out.M42 = (float)m[13]; \
+	out.M43 = (float)m[14]; \
+	out.M44 = 1;
+#else
+#define BtTransformToMatrixFast(transform, out) out = Matrix(); \
+	pin_ptr<Matrix> ptr = &out; \
+	transform.getOpenGLMatrix((btScalar*)ptr);
+#endif
+#endif

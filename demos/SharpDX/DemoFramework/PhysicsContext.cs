@@ -5,7 +5,12 @@ namespace DemoFramework
 {
     public class PhysicsContext : System.IDisposable
     {
-        public DynamicsWorld World { get; protected set; }
+        DynamicsWorld _world;
+        public DynamicsWorld World
+        {
+            get { return _world; }
+            protected set { _world = value; }
+        }
 
         protected CollisionConfiguration CollisionConf;
         protected CollisionDispatcher Dispatcher;
@@ -31,23 +36,23 @@ namespace DemoFramework
         {
             //removed/dispose constraints
             int i;
-            for (i = World.NumConstraints - 1; i >= 0; i--)
+            for (i = _world.NumConstraints - 1; i >= 0; i--)
             {
-                TypedConstraint constraint = World.GetConstraint(i);
-                World.RemoveConstraint(constraint);
+                TypedConstraint constraint = _world.GetConstraint(i);
+                _world.RemoveConstraint(constraint);
                 constraint.Dispose(); ;
             }
 
             //remove the rigidbodies from the dynamics world and delete them
-            for (i = World.NumCollisionObjects - 1; i >= 0; i--)
+            for (i = _world.NumCollisionObjects - 1; i >= 0; i--)
             {
-                CollisionObject obj = World.CollisionObjectArray[i];
+                CollisionObject obj = _world.CollisionObjectArray[i];
                 RigidBody body = obj as RigidBody;
                 if (body != null && body.MotionState != null)
                 {
                     body.MotionState.Dispose();
                 }
-                World.RemoveCollisionObject(obj);
+                _world.RemoveCollisionObject(obj);
                 obj.Dispose();
             }
 
@@ -56,7 +61,7 @@ namespace DemoFramework
                 shape.Dispose();
             CollisionShapes.Clear();
 
-            World.Dispose();
+            _world.Dispose();
             Broadphase.Dispose();
             Dispatcher.Dispose();
             CollisionConf.Dispose();
@@ -76,7 +81,7 @@ namespace DemoFramework
 
         public virtual int Update(float elapsedTime)
         {
-            return World.StepSimulation(elapsedTime);
+            return _world.StepSimulation(elapsedTime);
         }
 
         public virtual RigidBody LocalCreateRigidBody(float mass, Matrix startTransform, CollisionShape shape)
@@ -94,14 +99,14 @@ namespace DemoFramework
             RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
             RigidBody body = new RigidBody(rbInfo);
 
-            World.AddRigidBody(body);
+            _world.AddRigidBody(body);
 
             return body;
         }
 
         public virtual void ShootBox(Vector3 camPos, Vector3 destination)
         {
-            if (World == null)
+            if (_world == null)
                 return;
 
             float mass = 1.0f;

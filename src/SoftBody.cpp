@@ -1552,12 +1552,12 @@ BulletSharp::SoftBody::Node::Node()
 
 void BulletSharp::SoftBody::Node::GetNormal([Out] Vector3% normal)
 {
-	Math::BtVector3ToVector3(&((btSoftBody::Node*)_unmanaged)->m_n, normal);
+	BtVector3ToVector3Fast(&((btSoftBody::Node*)_unmanaged)->m_n, normal);
 }
 
 void BulletSharp::SoftBody::Node::GetX([Out] Vector3% x)
 {
-	Math::BtVector3ToVector3(&((btSoftBody::Node*)_unmanaged)->m_x, x);
+	BtVector3ToVector3Fast(&((btSoftBody::Node*)_unmanaged)->m_x, x);
 }
 
 btScalar BulletSharp::SoftBody::Node::Area::get()
@@ -1638,7 +1638,7 @@ void BulletSharp::SoftBody::Node::Velocity::set(Vector3 value)
 
 Vector3 BulletSharp::SoftBody::Node::X::get()
 {
-	return Math::BtVector3ToVector3(&((btSoftBody::Node*)_unmanaged)->m_x);
+	return BtVector3ToVector3FastRet(&((btSoftBody::Node*)_unmanaged)->m_x);
 }
 void BulletSharp::SoftBody::Node::X::set(Vector3 value)
 {

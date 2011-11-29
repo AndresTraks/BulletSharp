@@ -64,7 +64,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprt"
+				AdditionalOptions="/NODEFAULTLIB:msvcprtd"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -305,7 +305,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprt"
+				AdditionalOptions="/NODEFAULTLIB:msvcprtd"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -465,7 +465,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprt"
+				AdditionalOptions="/NODEFAULTLIB:msvcprtd"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -625,7 +625,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprt"
+				AdditionalOptions="/NODEFAULTLIB:msvcprtd"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -785,7 +785,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprt"
+				AdditionalOptions="/NODEFAULTLIB:msvcprtd"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -945,7 +945,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprt"
+				AdditionalOptions="/NODEFAULTLIB:msvcprtd"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -1024,7 +1024,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprt"
+				AdditionalOptions="/NODEFAULTLIB:msvcprtd"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"
@@ -1265,7 +1265,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprt"
+				AdditionalOptions="/NODEFAULTLIB:msvcprtd"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug;&quot;$(ATISTREAMSDKROOT)lib\x86\&quot;;&quot;$(CUDA_LIB_PATH)&quot;"

@@ -71,6 +71,11 @@ void CollisionObject::ForceActivationState(BulletSharp::ActivationState newState
 	_collisionObject->forceActivationState((int)newState);
 }
 
+void CollisionObject::GetWorldTransform([Out] Matrix% outTransform)
+{
+	BtTransformToMatrixFast(_collisionObject->getWorldTransform(), outTransform);
+}
+
 #ifndef DISABLE_SERIALIZE
 int CollisionObject::CalculateSerializeBufferSize()
 {

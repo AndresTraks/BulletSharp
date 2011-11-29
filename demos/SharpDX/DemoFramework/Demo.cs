@@ -32,10 +32,6 @@ namespace DemoFramework
         Device.InputAssemblerStage inputAssembler;
 
         SwapChain _swapChain;
-        public SwapChain SwapChain
-        {
-            get { return _swapChain; }
-        }
 
         public float AspectRatio
         {
@@ -48,12 +44,12 @@ namespace DemoFramework
         Texture2D depthTexture;
         Texture2D lightDepthTexture;
 
-        public RenderTargetView RenderView { get; private set; }
-        public DepthStencilView DepthView { get; private set; }
-        public DepthStencilView LightDepthView { get; private set; }
-        public RenderTargetView GBufferNormalView { get; private set; }
-        public RenderTargetView GBufferDiffuseView { get; private set; }
-        public RenderTargetView GBufferLightView { get; private set; }
+        RenderTargetView renderView;
+        DepthStencilView depthView;
+        DepthStencilView lightDepthView;
+        RenderTargetView gBufferNormalView;
+        RenderTargetView gBufferDiffuseView;
+        RenderTargetView gBufferLightView;
         RenderTargetView[] gBufferViews;
         DepthStencilState depthStencilState;
         DepthStencilState lightDepthStencilState;
@@ -63,12 +59,17 @@ namespace DemoFramework
         VertexBufferBinding quadBinding;
         InputLayout quadBufferLayout;
 
-        public Effect Effect { get; private set; }
-        public Effect Effect2 { get; private set; }
-        public EffectPass ShadowGenPass { get; private set; }
-        public EffectPass GBufferGenPass { get; private set; }
-        public EffectPass GBufferRenderPass { get; private set; }
-        
+        Effect effect;
+        Effect effect2;
+        EffectPass shadowGenPass;
+        EffectPass gBufferGenPass;
+        EffectPass gBufferRenderPass;
+
+        public EffectPass GetShadowGenPass()
+        {
+            return shadowGenPass;
+        }
+
         ShaderResourceView depthRes;
         ShaderResourceView lightDepthRes;
         ShaderResourceView lightBufferRes;
@@ -88,8 +89,18 @@ namespace DemoFramework
 
         protected InfoText Info { get; set; }
 
-        protected Color4 Ambient { get; set; }
-        protected MeshFactory MeshFactory { get; private set; }
+        Color4 ambient;
+        protected Color4 Ambient
+        {
+            get { return ambient; }
+            set { ambient = value; }
+        }
+
+        MeshFactory meshFactory;
+        protected MeshFactory GetMeshFactory()
+        {
+            return meshFactory;
+        }
 
         protected Input Input { get; private set; }
         protected FreeLook Freelook { get; set; }
@@ -98,7 +109,12 @@ namespace DemoFramework
         float frameAccumulator;
         int frameCount;
 
-        public float FrameDelta { get; private set; }
+        float _frameDelta;
+        public float FrameDelta
+        {
+            get { return _frameDelta; }
+            private set { _frameDelta = value; }
+        }
         public float FramesPerSecond { get; private set; }
 
         public PhysicsContext PhysicsContext { get; set; }
@@ -160,26 +176,26 @@ namespace DemoFramework
 
             // Create Device and SwapChain
             Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.None, desc, out _device, out _swapChain);
-            outputMerger = Device.OutputMerger;
-            inputAssembler = Device.InputAssembler;
+            outputMerger = _device.OutputMerger;
+            inputAssembler = _device.InputAssembler;
 
-            Factory factory = SwapChain.GetParent<Factory>();
+            Factory factory = _swapChain.GetParent<Factory>();
             factory.MakeWindowAssociation(Form.Handle, WindowAssociationFlags.None);
         }
 
         void DisposeBuffers()
         {
-            if (RenderView != null)
-                RenderView.Dispose();
+            if (renderView != null)
+                renderView.Dispose();
 
-            if (GBufferLightView != null)
-                GBufferLightView.Dispose();
+            if (gBufferLightView != null)
+                gBufferLightView.Dispose();
 
-            if (GBufferNormalView != null)
-                GBufferNormalView.Dispose();
+            if (gBufferNormalView != null)
+                gBufferNormalView.Dispose();
 
-            if (GBufferDiffuseView != null)
-                GBufferDiffuseView.Dispose();
+            if (gBufferDiffuseView != null)
+                gBufferDiffuseView.Dispose();
 
             if (gBufferLight != null)
                 gBufferLight.Dispose();
@@ -219,8 +235,8 @@ namespace DemoFramework
             // New RenderTargetView from the backbuffer
             using (var bb = Texture2D.FromSwapChain<Texture2D>(_swapChain, 0))
             {
-                RenderView = new RenderTargetView(Device, bb);
-                renderViews[0] = RenderView;
+                renderView = new RenderTargetView(_device, bb);
+                renderViews[0] = renderView;
             }
 
             Texture2DDescription gBufferDesc = new Texture2DDescription()
@@ -237,16 +253,16 @@ namespace DemoFramework
                 Usage = ResourceUsage.Default
             };
 
-            gBufferLight = new Texture2D(Device, gBufferDesc);
-            GBufferLightView = new RenderTargetView(Device, gBufferLight);
+            gBufferLight = new Texture2D(_device, gBufferDesc);
+            gBufferLightView = new RenderTargetView(_device, gBufferLight);
 
-            gBufferNormal = new Texture2D(Device, gBufferDesc);
-            GBufferNormalView = new RenderTargetView(Device, gBufferNormal);
+            gBufferNormal = new Texture2D(_device, gBufferDesc);
+            gBufferNormalView = new RenderTargetView(_device, gBufferNormal);
 
-            gBufferDiffuse = new Texture2D(Device, gBufferDesc);
-            GBufferDiffuseView = new RenderTargetView(Device, gBufferDiffuse);
+            gBufferDiffuse = new Texture2D(_device, gBufferDesc);
+            gBufferDiffuseView = new RenderTargetView(_device, gBufferDiffuse);
 
-            gBufferViews = new RenderTargetView[] { GBufferLightView, GBufferNormalView, GBufferDiffuseView };
+            gBufferViews = new RenderTargetView[] { gBufferLightView, gBufferNormalView, gBufferDiffuseView };
 
             ShaderResourceViewDescription gBufferResourceDesc = new ShaderResourceViewDescription()
             {
@@ -258,9 +274,9 @@ namespace DemoFramework
                     MostDetailedMip = 0
                 }
             };
-            lightBufferRes = new ShaderResourceView(Device, gBufferLight, gBufferResourceDesc);
-            normalBufferRes = new ShaderResourceView(Device, gBufferNormal, gBufferResourceDesc);
-            diffuseBufferRes = new ShaderResourceView(Device, gBufferDiffuse, gBufferResourceDesc);
+            lightBufferRes = new ShaderResourceView(_device, gBufferLight, gBufferResourceDesc);
+            normalBufferRes = new ShaderResourceView(_device, gBufferNormal, gBufferResourceDesc);
+            diffuseBufferRes = new ShaderResourceView(_device, gBufferDiffuse, gBufferResourceDesc);
 
 
             Texture2DDescription depthDesc = new Texture2DDescription()
@@ -294,21 +310,21 @@ namespace DemoFramework
                 }
             };
 
-            depthTexture = new Texture2D(Device, depthDesc);
-            DepthView = new DepthStencilView(Device, depthTexture, depthViewDesc);
-            depthRes = new ShaderResourceView(Device, depthTexture, resourceDesc);
+            depthTexture = new Texture2D(_device, depthDesc);
+            depthView = new DepthStencilView(_device, depthTexture, depthViewDesc);
+            depthRes = new ShaderResourceView(_device, depthTexture, resourceDesc);
 
-            lightDepthTexture = new Texture2D(Device, depthDesc);
-            LightDepthView = new DepthStencilView(Device, lightDepthTexture, depthViewDesc);
-            lightDepthRes = new ShaderResourceView(Device, lightDepthTexture, resourceDesc);
+            lightDepthTexture = new Texture2D(_device, depthDesc);
+            lightDepthView = new DepthStencilView(_device, lightDepthTexture, depthViewDesc);
+            lightDepthRes = new ShaderResourceView(_device, lightDepthTexture, resourceDesc);
 
-            Effect2.GetVariableByName("lightBuffer").AsShaderResource().SetResource(lightBufferRes);
-            Effect2.GetVariableByName("normalBuffer").AsShaderResource().SetResource(normalBufferRes);
-            Effect2.GetVariableByName("diffuseBuffer").AsShaderResource().SetResource(diffuseBufferRes);
-            Effect2.GetVariableByName("depthMap").AsShaderResource().SetResource(depthRes);
-            Effect2.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightDepthRes);
+            effect2.GetVariableByName("lightBuffer").AsShaderResource().SetResource(lightBufferRes);
+            effect2.GetVariableByName("normalBuffer").AsShaderResource().SetResource(normalBufferRes);
+            effect2.GetVariableByName("diffuseBuffer").AsShaderResource().SetResource(diffuseBufferRes);
+            effect2.GetVariableByName("depthMap").AsShaderResource().SetResource(depthRes);
+            effect2.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightDepthRes);
 
-            Device.Rasterizer.SetViewports(new Viewport(0, 0, Width, Height));
+            _device.Rasterizer.SetViewports(new Viewport(0, 0, Width, Height));
         }
 
         void Initialize()
@@ -319,10 +335,10 @@ namespace DemoFramework
             //ShaderFlags shaderFlags = ShaderFlags.Debug | ShaderFlags.SkipOptimization;
             ShaderBytecode shaderByteCode = ShaderBytecode.CompileFromFile(Application.StartupPath + "\\shader.fx", "fx_4_0", shaderFlags, EffectFlags.None);
 
-            Effect = new Effect(Device, shaderByteCode);
-            EffectTechnique technique = Effect.GetTechniqueByIndex(0);
-            ShadowGenPass = technique.GetPassByIndex(0);
-            GBufferGenPass = technique.GetPassByIndex(1);
+            effect = new Effect(_device, shaderByteCode);
+            EffectTechnique technique = effect.GetTechniqueByIndex(0);
+            shadowGenPass = technique.GetPassByIndex(0);
+            gBufferGenPass = technique.GetPassByIndex(1);
 
             BufferDescription sceneConstantsDesc = new BufferDescription()
             {
@@ -333,8 +349,8 @@ namespace DemoFramework
                 OptionFlags = ResourceOptionFlags.None
             };
 
-            sceneConstantsBuffer = new Buffer(Device, sceneConstantsDesc);
-            EffectConstantBuffer effectConstantBuffer = Effect.GetConstantBufferByName("scene");
+            sceneConstantsBuffer = new Buffer(_device, sceneConstantsDesc);
+            EffectConstantBuffer effectConstantBuffer = effect.GetConstantBufferByName("scene");
             effectConstantBuffer.SetConstantBuffer(sceneConstantsBuffer);
 
             RasterizerStateDescription desc = new RasterizerStateDescription()
@@ -347,7 +363,7 @@ namespace DemoFramework
                 SlopeScaledDepthBias = 0,
                 IsDepthClipEnabled = true,
             };
-            Device.Rasterizer.State = new RasterizerState(Device, desc);
+            _device.Rasterizer.State = new RasterizerState(_device, desc);
 
             DepthStencilStateDescription depthDesc = new DepthStencilStateDescription()
             {
@@ -356,7 +372,7 @@ namespace DemoFramework
                 DepthWriteMask = DepthWriteMask.All,
                 DepthComparison = Comparison.Less
             };
-            depthStencilState = new DepthStencilState(Device, depthDesc);
+            depthStencilState = new DepthStencilState(_device, depthDesc);
 
             DepthStencilStateDescription lightDepthStateDesc = new DepthStencilStateDescription()
             {
@@ -365,32 +381,32 @@ namespace DemoFramework
                 DepthWriteMask = DepthWriteMask.All,
                 DepthComparison = Comparison.Less
             };
-            lightDepthStencilState = new DepthStencilState(Device, lightDepthStateDesc);
+            lightDepthStencilState = new DepthStencilState(_device, lightDepthStateDesc);
 
 
             // grender.fx
 
             shaderByteCode = ShaderBytecode.CompileFromFile(Application.StartupPath + "\\grender.fx", "fx_4_0", shaderFlags, EffectFlags.None);
 
-            Effect2 = new Effect(Device, shaderByteCode);
-            technique = Effect2.GetTechniqueByIndex(0);
-            GBufferRenderPass = technique.GetPassByIndex(0);
+            effect2 = new Effect(_device, shaderByteCode);
+            technique = effect2.GetTechniqueByIndex(0);
+            gBufferRenderPass = technique.GetPassByIndex(0);
 
-            Buffer quad = MeshFactory.CreateScreenQuad(Device);
+            Buffer quad = MeshFactory.CreateScreenQuad(_device);
             quadBinding = new VertexBufferBinding(quad, 20, 0);
             Matrix quadProjection = Matrix.OrthoLH(1, 1, 0.1f, 1.0f);
-            Effect2.GetVariableByName("ViewProjection").AsMatrix().SetMatrix(quadProjection);
+            effect2.GetVariableByName("ViewProjection").AsMatrix().SetMatrix(quadProjection);
 
             InputElement[] elements = new InputElement[]
             {
                 new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
                 new InputElement("TEXCOORD", 0, Format.R32G32_Float, 12, 0, InputClassification.PerVertexData, 0),
             };
-            quadBufferLayout = new InputLayout(Device, GBufferRenderPass.Description.Signature, elements);
+            quadBufferLayout = new InputLayout(_device, gBufferRenderPass.Description.Signature, elements);
 
 
-            Info = new InfoText(Device);
-            MeshFactory = new MeshFactory(this);
+            Info = new InfoText(_device);
+            meshFactory = new MeshFactory(this);
 
             OnInitialize();
             CreateBuffers();
@@ -416,15 +432,15 @@ namespace DemoFramework
                 sceneConstantsBuffer.Unmap();
             }
 
-            Effect2.GetVariableByName("InverseProjection").AsMatrix().SetMatrix(Matrix.Invert(sceneConstants.View * sceneConstants.Projection));
-            Effect2.GetVariableByName("InverseView").AsMatrix().SetMatrix(sceneConstants.ViewInverse);
-            Effect2.GetVariableByName("LightInverseViewProjection").AsMatrix().SetMatrix(Matrix.Invert(sceneConstants.LightViewProjection));
-            Effect2.GetVariableByName("LightPosition").AsVector().Set(sceneConstants.LightPosition);
+            effect2.GetVariableByName("InverseProjection").AsMatrix().SetMatrix(Matrix.Invert(sceneConstants.View * sceneConstants.Projection));
+            effect2.GetVariableByName("InverseView").AsMatrix().SetMatrix(sceneConstants.ViewInverse);
+            effect2.GetVariableByName("LightInverseViewProjection").AsMatrix().SetMatrix(Matrix.Invert(sceneConstants.LightViewProjection));
+            effect2.GetVariableByName("LightPosition").AsVector().Set(sceneConstants.LightPosition);
         }
 
         void Render()
         {
-            frameAccumulator += FrameDelta;
+            frameAccumulator += _frameDelta;
             ++frameCount;
             if (frameAccumulator >= 1.0f)
             {
@@ -435,45 +451,45 @@ namespace DemoFramework
             }
 
             // Clear targets
-            Device.ClearDepthStencilView(DepthView, DepthStencilClearFlags.Depth, 1.0f, 0);
-            Device.ClearRenderTargetView(RenderView, Ambient);
-            Device.ClearRenderTargetView(GBufferLightView, Ambient);
-            Device.ClearRenderTargetView(GBufferNormalView, Ambient);
-            Device.ClearRenderTargetView(GBufferDiffuseView, Ambient);
+            _device.ClearDepthStencilView(depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
+            _device.ClearRenderTargetView(renderView, ambient);
+            _device.ClearRenderTargetView(gBufferLightView, ambient);
+            _device.ClearRenderTargetView(gBufferNormalView, ambient);
+            _device.ClearRenderTargetView(gBufferDiffuseView, ambient);
 
-            MeshFactory.InitInstancedRender(PhysicsContext.World.CollisionObjectArray);
+            meshFactory.InitInstancedRender();
 
             // Depth map pass
             if (shadowsEnabled)
             {
-                Device.ClearDepthStencilView(LightDepthView, DepthStencilClearFlags.Depth, 1.0f, 0);
+                _device.ClearDepthStencilView(lightDepthView, DepthStencilClearFlags.Depth, 1.0f, 0);
                 outputMerger.SetDepthStencilState(lightDepthStencilState, 0);
-                outputMerger.SetRenderTargets(0, null, LightDepthView);
-                ShadowGenPass.Apply();
+                outputMerger.SetRenderTargets(0, null, lightDepthView);
+                shadowGenPass.Apply();
                 OnRender();
-                Effect.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightDepthRes);
+                effect2.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightDepthRes);
             }
 
             // Render pass
             outputMerger.SetDepthStencilState(depthStencilState, 0);
-            outputMerger.SetRenderTargets(3, gBufferViews, DepthView);
-            GBufferGenPass.Apply();
+            outputMerger.SetRenderTargets(3, gBufferViews, depthView);
+            gBufferGenPass.Apply();
             OnRender();
 
             
             // G-buffer render pass
             outputMerger.SetDepthStencilState(null, 0);
             outputMerger.SetRenderTargets(1, renderViews, null);
-            GBufferRenderPass.Apply();
+            gBufferRenderPass.Apply();
 
             inputAssembler.SetVertexBuffers(0, quadBinding);
             inputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
             inputAssembler.InputLayout = quadBufferLayout;
-            Device.Draw(4, 0);
+            _device.Draw(4, 0);
 
             Info.OnRender(FramesPerSecond);
 
-            SwapChain.Present(0, PresentFlags.None);
+            _swapChain.Present(0, PresentFlags.None);
         }
 
         /// <summary>
@@ -481,7 +497,7 @@ namespace DemoFramework
         /// </summary>
         private void Update()
         {
-            FrameDelta = clock.Update();
+            _frameDelta = clock.Update();
             OnUpdate();
         }
 
@@ -513,8 +529,8 @@ namespace DemoFramework
                 Width = Form.ClientSize.Width;
                 Height = Form.ClientSize.Height;
 
-                RenderView.Dispose();
-                DepthView.Dispose();
+                renderView.Dispose();
+                depthView.Dispose();
                 _swapChain.ResizeBuffers(_swapChain.Description.BufferCount, Width, Height, _swapChain.Description.ModeDescription.Format, (int)_swapChain.Description.Flags);
 
                 CreateBuffers();
@@ -536,7 +552,7 @@ namespace DemoFramework
 
             FieldOfView = (float)Math.PI / 4;
             Freelook = new FreeLook(Input);
-            Ambient = (Color4)Color.Gray;
+            ambient = (Color4)Color.Gray;
 
             try
             {
@@ -564,14 +580,14 @@ namespace DemoFramework
 
         protected virtual void OnRender()
         {
-            MeshFactory.RenderInstanced();
+            meshFactory.RenderInstanced();
         }
 
         protected virtual void OnUpdate()
         {
-            if (Freelook.Update(FrameDelta))
+            if (Freelook.Update(_frameDelta))
                 SetSceneConstants();
-            PhysicsContext.Update(FrameDelta);
+            PhysicsContext.Update(_frameDelta);
         }
 
         protected virtual void OnHandleInput()

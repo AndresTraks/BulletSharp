@@ -11,10 +11,27 @@ namespace DemoFramework
         SlimDX.Direct3D9.Font font;
         int color = Color.Red.ToArgb();
         float fps = -1;
-        string fpsString = "";
+        string textString = "";
+        Rectangle rect = new Rectangle(0, 0, 210, 200);
+        CultureInfo culture = CultureInfo.InvariantCulture;
 
-        public bool IsEnabled { get; set; }
-        public string Text { get; set; }
+        bool _isEnabled = true;
+        public bool IsEnabled
+        {
+            get { return _isEnabled; }
+            set { _isEnabled = value; }
+        }
+
+        string _text = "";
+        public string Text
+        {
+            get { return _text; }
+            set
+            {
+                _text = value;
+                textString = string.Format("FPS: {0}\n{1}", fps.ToString("0.00", culture), value);
+            }
+        }
 
         public FpsDisplay(Device device)
         {
@@ -22,8 +39,6 @@ namespace DemoFramework
             font = new SlimDX.Direct3D9.Font(device, 20,
               0, FontWeight.Normal, 0, false, CharacterSet.Default,
               Precision.Default, FontQuality.ClearTypeNatural, PitchAndFamily.DontCare, "tahoma");
-            IsEnabled = true;
-            Text = "";
         }
 
         public void Dispose()
@@ -43,7 +58,7 @@ namespace DemoFramework
 
         public void OnRender(float framesPerSecond)
         {
-            if (IsEnabled == false)
+            if (_isEnabled == false)
                 return;
 
             fontSprite.Begin(SlimDX.Direct3D9.SpriteFlags.AlphaBlend);
@@ -51,12 +66,9 @@ namespace DemoFramework
             if (fps != framesPerSecond)
             {
                 fps = framesPerSecond;
-                fpsString = string.Format("FPS: {0}", fps.ToString("0.00", CultureInfo.InvariantCulture));
+                textString = string.Format("FPS: {0}\n{1}", fps.ToString("0.00", culture), _text);
             }
-            font.DrawString(fontSprite, fpsString, 0, 0, color);
-
-            if (Text.Length > 0)
-                font.DrawString(fontSprite, Text, 0, 20, color);
+            font.DrawString(fontSprite, textString, 0, 0, color);
 
             fontSprite.End();
         }

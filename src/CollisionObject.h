@@ -41,6 +41,7 @@ namespace BulletSharp
 		void Activate(bool forceActivation);
 		bool CheckCollideWith(CollisionObject^ collisionObject);
 		void ForceActivationState(BulletSharp::ActivationState newState);
+		void GetWorldTransform([Out] Matrix% transform);
 
 #ifndef DISABLE_SERIALIZE
 		int CalculateSerializeBufferSize();

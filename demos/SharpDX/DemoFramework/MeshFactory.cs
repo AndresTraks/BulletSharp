@@ -202,7 +202,7 @@ namespace DemoFramework
                 new InputElement("WORLD", 3, Format.R32G32B32A32_Float, 48, 1, InputClassification.PerInstanceData, 1),
                 new InputElement("COLOR", 0, Format.R8G8B8A8_UNorm, 64, 1, InputClassification.PerInstanceData, 1)
             };
-            inputLayout = new InputLayout(device, demo.ShadowGenPass.Description.Signature, elements);
+            inputLayout = new InputLayout(device, demo.GetShadowGenPass().Description.Signature, elements);
 
             Color c = Color.Green;
             groundColor = (uint)c.R + ((uint)c.G << 8) + ((uint)c.B << 16) + ((uint)c.A << 24);
@@ -808,13 +808,6 @@ namespace DemoFramework
                     case BroadphaseNativeType.CylinderShape:
                         shapeData = CreateCylinderShape(shape as CylinderShape);
                         break;
-                    case BroadphaseNativeType.CompoundShape:
-                        CompoundShape compoundShape = shape as CompoundShape;
-                        foreach (CompoundShapeChild child in compoundShape.ChildList)
-                        {
-                            InitShapeData(child.ChildShape);
-                        }
-                        return null;
                     case BroadphaseNativeType.ConvexHullShape:
                         shapeData = CreateConvexHullShape(shape as ConvexHullShape);
                         break;
@@ -839,55 +832,53 @@ namespace DemoFramework
             return shapeData;
         }
 
-        void InitInstanceData(CollisionObject colObj, CollisionShape shape, ShapeData shapeData, ref Matrix transform)
+        void InitInstanceData(CollisionObject colObj, CollisionShape shape, ref Matrix transform)
         {
             if (shape.ShapeType == BroadphaseNativeType.CompoundShape)
             {
-                CompoundShape compoundShape = shape as CompoundShape;
-                foreach (CompoundShapeChild child in compoundShape.ChildList)
+                foreach (CompoundShapeChild child in (shape as CompoundShape).ChildList)
                 {
                     transform = child.Transform * transform;
-                    InitInstanceData(colObj, child.ChildShape, shapes[child.ChildShape], ref transform);
+                    CollisionShape childShape = child.ChildShape;
+                    InitInstanceData(colObj, childShape, ref transform);
                 }
             }
             else if (shape.ShapeType == BroadphaseNativeType.SoftBodyShape)
             {
+                ShapeData shapeData = InitShapeData(shape);
                 UpdateSoftBody(colObj as SoftBody, shapeData);
 
-                InstanceData instanceData = new InstanceData()
+                shapeData.InstanceDataList.Add(new InstanceData()
                 {
                     WorldTransform = transform,
                     Color = softBodyColor
-                };
-                shapeData.InstanceDataList.Add(instanceData);
+                });
             }
             else
             {
-                InstanceData instanceData = new InstanceData()
+                InitShapeData(shape).InstanceDataList.Add(new InstanceData()
                 {
                     WorldTransform = transform,
                     Color = ground.Equals(colObj.UserObject) ? groundColor :
                         colObj.ActivationState == ActivationState.ActiveTag ? activeColor : passiveColor
-                };
-                shapeData.InstanceDataList.Add(instanceData);
+                });
             }
         }
 
         string ground = "Ground";
 
-        public void InitInstancedRender(AlignedCollisionObjectArray objects)
+        public void InitInstancedRender()
         {
             // Clear instance data
             foreach (ShapeData s in shapes.Values)
                 s.InstanceDataList.Clear();
             removeList.Clear();
 
+            AlignedCollisionObjectArray objects = demo.PhysicsContext.World.CollisionObjectArray;
             int i = objects.Count - 1;
             for (; i >= 0; i--)
             {
                 CollisionObject colObj = objects[i];
-                CollisionShape shape = colObj.CollisionShape;
-                ShapeData shapeData = InitShapeData(shape);
 
                 Matrix transform;
                 if (colObj is SoftBody)
@@ -898,7 +889,7 @@ namespace DemoFramework
                 {
                     ((colObj as RigidBody).MotionState as DefaultMotionState).GetWorldTransform(out transform);
                 }
-                InitInstanceData(colObj, shape, shapeData, ref transform);
+                InitInstanceData(colObj, colObj.CollisionShape, ref transform);
             }
 
             foreach (KeyValuePair<CollisionShape, ShapeData> sh in shapes)
@@ -928,11 +919,7 @@ namespace DemoFramework
                 // Copy the instance data over to the instance buffer
                 using (var data = s.InstanceDataBuffer.Map(MapMode.WriteDiscard))
                 {
-                    List<InstanceData> list = s.InstanceDataList;
-                    for (i = 0; i < list.Count; i++)
-                    {
-                        data.Write(list[i]);
-                    }
+                    data.WriteRange(s.InstanceDataList.ToArray());
                     s.InstanceDataBuffer.Unmap();
                 }
             }
@@ -1045,7 +1032,7 @@ namespace DemoFramework
         {
             AlignedFaceArray faces = softBody.Faces;
 
-            if (faces.Count > 0)
+            if (faces.Count != 0)
             {
                 shapeData.VertexCount = faces.Count * 3;
 
@@ -1075,7 +1062,7 @@ namespace DemoFramework
                 AlignedTetraArray tetras = softBody.Tetras;
                 int tetraCount = tetras.Count;
 
-                if (tetraCount > 0)
+                if (tetraCount != 0)
                 {
                     shapeData.VertexCount = tetraCount * 12;
 
@@ -1128,7 +1115,7 @@ namespace DemoFramework
 
                     shapeData.SetDynamicVertexBuffer(device, vectors);
                 }
-                else if (softBody.Links.Count > 0)
+                else if (softBody.Links.Count != 0)
                 {
                     AlignedLinkArray links = softBody.Links;
                     int linkCount = links.Count;
