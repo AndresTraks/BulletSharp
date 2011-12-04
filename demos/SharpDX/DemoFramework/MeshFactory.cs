@@ -164,7 +164,6 @@ namespace DemoFramework
         Device device;
         Device.InputAssemblerStage inputAssembler;
         Demo demo;
-        //Dictionary<CollisionShape, Mesh> shapes = new Dictionary<CollisionShape, Mesh>();
         Dictionary<CollisionShape, ShapeData> shapes = new Dictionary<CollisionShape, ShapeData>();
         List<CollisionShape> removeList = new List<CollisionShape>();
         Effect planeShader = null;
@@ -490,45 +489,33 @@ namespace DemoFramework
             ShapeHull hull = new ShapeHull(shape);
             hull.BuildHull(shape.Margin);
 
-            int faceCount = hull.NumTriangles;
-            int vertexCount = hull.NumVertices;
             int indexCount = hull.NumIndices;
-            UIntArray hullIndices = hull.Indices;
+            UIntArray indices = hull.Indices;
             Vector3Array points = hull.Vertices;
 
             ShapeData shapeData = new ShapeData();
-            shapeData.VertexCount = vertexCount;
-            shapeData.IndexCount = indexCount;
+            shapeData.VertexCount = indexCount;
 
-            int i = 0;
-            if (vertexCount > 65536)
-            {
-                uint[] indices = new uint[indexCount];
-                hullIndices.CopyTo(indices, 0);
-                shapeData.SetIndexBuffer(device, indices);
-            }
-            else if (vertexCount > 256)
-            {
-                ushort[] indices = new ushort[indexCount];
-                for (i = 0; i < indexCount; i++)
-                    indices[i] = (ushort)hullIndices[i];
-                shapeData.SetIndexBuffer(device, indices);
-            }
-            else
-            {
-                byte[] indices = new byte[indexCount];
-                for (i = 0; i < indexCount; i++)
-                    indices[i] = (byte)hullIndices[i];
-                shapeData.SetIndexBuffer(device, indices);
-            }
+            Vector3[] vertices = new Vector3[indexCount * 2];
 
-            Vector3[] vertices = new Vector3[hull.NumVertices * 2];
-            Vector3 scale = Vector3.Multiply(shape.LocalScaling, 1.0f + shape.Margin);
-            int v, vv = 0;
-            for (v = 0; v < vertexCount; )
+            int v = 0, i;
+            for (i = 0; i < indexCount; i += 3)
             {
-                vertices[vv++] = Vector3.Modulate(points[v++], scale);
-                vertices[vv++] = Vector3.Zero;
+                Vector3 v0 = points[(int)indices[i]];
+                Vector3 v1 = points[(int)indices[i + 1]];
+                Vector3 v2 = points[(int)indices[i + 2]];
+
+                Vector3 v01 = v0 - v1;
+                Vector3 v02 = v0 - v2;
+                Vector3 normal = Vector3.Cross(v01, v02);
+                normal.Normalize();
+
+                vertices[v++] = v0;
+                vertices[v++] = normal;
+                vertices[v++] = v1;
+                vertices[v++] = normal;
+                vertices[v++] = v2;
+                vertices[v++] = normal;
             }
 
             shapeData.SetVertexBuffer(device, vertices);

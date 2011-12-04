@@ -10,9 +10,24 @@ Hacd::Hacd::Hacd()
 	_unmanaged = new HACD::HACD();
 }
 
+bool Hacd::Hacd::Compute(bool fullCH, bool exportDistPoints)
+{
+	return _unmanaged->Compute(fullCH, exportDistPoints);
+}
+
+bool Hacd::Hacd::Compute(bool fullCH)
+{
+	return _unmanaged->Compute(fullCH);
+}
+
 bool Hacd::Hacd::Compute()
 {
 	return _unmanaged->Compute();
+}
+
+void Hacd::Hacd::DenormalizeData()
+{
+	return _unmanaged->DenormalizeData();
 }
 
 bool Hacd::Hacd::GetCH(int numCH, [Out] array<Vector3>^% points, [Out] array<long>^% triangles)
@@ -62,6 +77,11 @@ int Hacd::Hacd::GetNPointsCH(int numCH)
 int Hacd::Hacd::GetNTrianglesCH(int numCH)
 {
 	return _unmanaged->GetNTrianglesCH(numCH);
+}
+
+void Hacd::Hacd::NormalizeData()
+{
+	return _unmanaged->NormalizeData();
 }
 
 bool Hacd::Hacd::Save(String^ fileName, bool uniColor, long numCluster)
@@ -166,6 +186,15 @@ void BulletSharp::Hacd::Hacd::Concavity::set(double value)
 	return _unmanaged->SetConcavity(value);
 }
 
+double BulletSharp::Hacd::Hacd::ConnectDist::get()
+{
+	return _unmanaged->GetConnectDist();
+}
+void BulletSharp::Hacd::Hacd::ConnectDist::set(double value)
+{
+	return _unmanaged->SetConnectDist(value);
+}
+
 int BulletSharp::Hacd::Hacd::NClusters::get()
 {
 	return _unmanaged->GetNClusters();
@@ -196,6 +225,15 @@ double BulletSharp::Hacd::Hacd::VolumeWeight::get()
 void BulletSharp::Hacd::Hacd::VolumeWeight::set(double value)
 {
 	return _unmanaged->SetVolumeWeight(value);
+}
+
+double BulletSharp::Hacd::Hacd::ScaleFactor::get()
+{
+	return _unmanaged->GetScaleFactor();
+}
+void BulletSharp::Hacd::Hacd::ScaleFactor::set(double value)
+{
+	return _unmanaged->SetScaleFactor(value);
 }
 
 #endif

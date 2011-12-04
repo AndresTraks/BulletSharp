@@ -156,9 +156,21 @@ namespace DemoFramework
 
         Mesh CreateConvexHullShape(ConvexHullShape shape)
         {
-            int vertexCount = shape.NumPoints;
-            int faceCount = vertexCount / 3;
-            vertexCount = faceCount * 3; // must be 3 verts for every face
+            ConvexPolyhedron poly = shape.ConvexPolyhedron;
+            if (poly != null)
+            {
+                throw new NotImplementedException();
+            }
+
+            ShapeHull hull = new ShapeHull(shape);
+            hull.BuildHull(shape.Margin);
+
+            UIntArray hullIndices = hull.Indices;
+            Vector3Array points = hull.Vertices;
+
+
+            int vertexCount = hull.NumIndices;
+            int faceCount = hull.NumTriangles;
 
             bool index32 = vertexCount > 65536;
 
@@ -181,15 +193,14 @@ namespace DemoFramework
             mesh.UnlockIndexBuffer();
 
             SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.Discard);
-            Vector3Array points = shape.UnscaledPoints;
             Vector3 scale = Vector3.Multiply(shape.LocalScaling, 1.0f + shape.Margin);
-            for (i = 0; i < vertexCount; )
+            for (i = 0; i < vertexCount; i += 3)
             {
-                verts.Write(Vector3.Modulate(points[i++], scale));
+                verts.Write(Vector3.Modulate(points[(int)hullIndices[i]], scale));
                 verts.Position += 12;
-                verts.Write(Vector3.Modulate(points[i++], scale));
+                verts.Write(Vector3.Modulate(points[(int)hullIndices[i+1]], scale));
                 verts.Position += 12;
-                verts.Write(Vector3.Modulate(points[i++], scale));
+                verts.Write(Vector3.Modulate(points[(int)hullIndices[i+2]], scale));
                 verts.Position += 12;
             }
             mesh.UnlockVertexBuffer();

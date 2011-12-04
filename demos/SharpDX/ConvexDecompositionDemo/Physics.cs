@@ -58,7 +58,7 @@ namespace ConvexDecompositionDemo
                 }
             }
 
-            demo.centroid *= 1.0f / ((float)result.mHullVertices.Length);
+            demo.centroid /= (float)result.mHullVertices.Length;
 
             if (true)
             {
@@ -217,14 +217,10 @@ namespace ConvexDecompositionDemo
                 tmpConvexShape.UserObject = hull;
 
                 ConvexHullShape convexShape = new ConvexHullShape();
-                BulletSharp.DataStream ds = hull.GetVertexStream();
-                while (ds.Position < ds.Length)
+                foreach (Vector3 v in hull.Vertices)
                 {
-                    Vector3 a = ds.Read<Vector3>();
-                    ds.Read<int>(); // btVector3 padding
-                    convexShape.AddPoint(a);
+                    convexShape.AddPoint(v);
                 }
-                ds.Dispose();
 
                 tmpConvexShape.Dispose();
                 //hull.Dispose();

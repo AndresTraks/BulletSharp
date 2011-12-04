@@ -18,10 +18,15 @@ namespace BulletSharp
 		public:
 			Hacd();
 
+			bool Compute(bool fullCH, bool exportDistPoints);
+			bool Compute(bool fullCH);
 			bool Compute();
+			void DenormalizeData();
 			bool GetCH(int numCH, [Out] array<Vector3>^% points, [Out] array<long>^% triangles);
 			int GetNPointsCH(int numCH);
 			int GetNTrianglesCH(int numCH);
+			//LongArray GetPartition();
+			void NormalizeData();
 			bool Save(String^ fileName, bool uniColor, long numCluster);
 			bool Save(String^ fileName, bool uniColor);
 			void SetPoints(ICollection<Vector3>^ points);
@@ -57,6 +62,12 @@ namespace BulletSharp
 				void set(double value);
 			}
 
+			property double ConnectDist
+			{
+				double get();
+				void set(double value);
+			}
+
 			property int NClusters
 			{
 				int get();
@@ -66,6 +77,12 @@ namespace BulletSharp
 			property int NPoints
 			{
 				int get();
+			}
+
+			property double ScaleFactor
+			{
+				double get();
+				void set(double value);
 			}
 
 			property int VerticesPerConvexHull
