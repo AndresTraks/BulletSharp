@@ -825,9 +825,9 @@ namespace DemoFramework
             {
                 foreach (CompoundShapeChild child in (shape as CompoundShape).ChildList)
                 {
-                    transform = child.Transform * transform;
+                    Matrix childTransform = child.Transform * transform;
                     CollisionShape childShape = child.ChildShape;
-                    InitInstanceData(colObj, childShape, ref transform);
+                    InitInstanceData(colObj, childShape, ref childTransform);
                 }
             }
             else if (shape.ShapeType == BroadphaseNativeType.SoftBodyShape)
