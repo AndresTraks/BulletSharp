@@ -617,6 +617,34 @@ namespace BulletSharp
 		result.M44 = 1.0f;
 	}
 
+	Matrix Matrix::LookAtLH( Vector3 eye, Vector3 target, Vector3 up )
+	{
+		Matrix result;
+
+		Vector3 zaxis = Vector3::Normalize(target - eye);
+		Vector3 xaxis = Vector3::Normalize(Vector3::Cross(up, zaxis));
+		Vector3 yaxis = Vector3::Cross(zaxis, xaxis);
+
+		result.M11 = xaxis.X;
+		result.M12 = yaxis.X;
+		result.M13 = zaxis.X;
+		result.M14 = 0.0f;
+		result.M21 = xaxis.Y;
+		result.M22 = yaxis.Y;
+		result.M23 = zaxis.Y;
+		result.M24 = 0.0f;
+		result.M31 = xaxis.Z;
+		result.M32 = yaxis.Z;
+		result.M33 = zaxis.Z;
+		result.M34 = 0.0f;
+		result.M41 = -Vector3::Dot(xaxis, eye);
+		result.M42 = -Vector3::Dot(yaxis, eye);
+		result.M43 = -Vector3::Dot(zaxis, eye);;
+		result.M44 = 1.0f;
+
+		return result;
+	}
+
 	Matrix Matrix::RotationX( btScalar angle )
 	{
 		Matrix result;

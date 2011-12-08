@@ -2,26 +2,21 @@
 using System.Drawing;
 using System.Windows.Forms;
 using SharpDX;
-using SharpDX.Windows;
 
 namespace DemoFramework
 {
     public class MouseController
     {
         public Vector3 Vector { get; set; }
-        public Vector2 DragPoint { get; private set; }
         public float Sensitivity { get; set; }
-        public Input Input { get; set; }
 
+        Input input;
         Point mouseOrigin;
         double angleOriginX, angleOriginY;
-        double angleDeltaX, angleDeltaY;
-        int rightDragX, rightDragY;
-        int rightDragDeltaX, rightDragDeltaY;
 
         public MouseController(Input input)
         {
-            Input = input;
+            this.input = input;
             Sensitivity = 0.005f;
             SetByAngles(0, 0);
         }
@@ -38,52 +33,29 @@ namespace DemoFramework
 
         public bool Update()
         {
-            if ((Input.MouseDown & MouseButtons.Left) == MouseButtons.Left)
+            if ((input.MouseDown & MouseButtons.Left) != MouseButtons.Left)
+                return false;
+
+            // When mouse button is clicked, store cursor position and angles
+            if ((input.MousePressed & MouseButtons.Left) == MouseButtons.Left)
             {
-                // When mouse button is clicked, store cursor position and angles
-                if ((Input.MousePressed & MouseButtons.Left) == MouseButtons.Left)
-                {
-                    mouseOrigin = Input.MousePoint;
+                mouseOrigin = input.MousePoint;
 
-                    // Get normalized Vector
-                    Vector3 norm = Vector3.Normalize(Vector);
+                // Get normalized Vector
+                Vector3 norm = Vector3.Normalize(Vector);
 
-                    // Calculate angles from the vector
-                    angleOriginX = Math.Atan2(norm.Z, norm.X);
-                    angleOriginY = Math.Asin(norm.Y);
-                }
-
-                // Calculate how much to change the angles
-                angleDeltaX = -(Input.MousePoint.X - mouseOrigin.X) * Sensitivity;
-                angleDeltaY = (Input.MousePoint.Y - mouseOrigin.Y) * Sensitivity;
-
-                SetByAngles(angleOriginX + angleDeltaX, angleOriginY + angleDeltaY);
-
-                return true;
+                // Calculate angles from the vector
+                angleOriginX = Math.Atan2(norm.Z, norm.X);
+                angleOriginY = Math.Asin(norm.Y);
             }
 
-            if ((Input.MouseDown & MouseButtons.Right) == MouseButtons.Right)
-            {
-                if ((Input.MousePressed & MouseButtons.Right) == MouseButtons.Right)
-                    mouseOrigin = Input.MousePoint;
+            // Calculate how much to change the angles
+            double angleDeltaX = -(input.MousePoint.X - mouseOrigin.X) * Sensitivity;
+            double angleDeltaY = (input.MousePoint.Y - mouseOrigin.Y) * Sensitivity;
 
-                if ((Input.MouseDown & MouseButtons.Right) == MouseButtons.Right)
-                {
-                    rightDragDeltaX = Input.MousePoint.X - mouseOrigin.X;
-                    rightDragDeltaY = Input.MousePoint.Y - mouseOrigin.Y;
-                    DragPoint = new Vector2(rightDragDeltaX + rightDragX,
-                        rightDragDeltaY + rightDragY);
+            SetByAngles(angleOriginX + angleDeltaX, angleOriginY + angleDeltaY);
 
-                    return true;
-                }
-            }
-            else if ((Input.MousePressed & MouseButtons.Right) == MouseButtons.Right)
-            {
-                rightDragX += rightDragDeltaX;
-                rightDragY += rightDragDeltaY;
-            }
-
-            return false;
+            return true;
         }
     }
 }

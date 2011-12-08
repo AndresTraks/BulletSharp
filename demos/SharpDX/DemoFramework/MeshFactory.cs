@@ -10,7 +10,6 @@ using SharpDX.Direct3D10;
 using SharpDX.DXGI;
 using Buffer = SharpDX.Direct3D10.Buffer;
 using Device = SharpDX.Direct3D10.Device;
-using Face = BulletSharp.SoftBody.Face;
 using Mesh = SharpDX.Direct3D10.Mesh;
 
 namespace DemoFramework
@@ -181,7 +180,7 @@ namespace DemoFramework
             this.demo = demo;
             this.device = demo.Device;
             this.inputAssembler = device.InputAssembler;
-            
+
             instanceDataDesc = new BufferDescription()
             {
                 SizeInBytes = 0,
@@ -1027,7 +1026,7 @@ namespace DemoFramework
                 int v = 0;
 
                 int i;
-                for (i = 0; i<faces.Count; i++)
+                for (i = 0; i < faces.Count; i++)
                 {
                     NodePtrArray nodes = faces[i].N;
                     Node n0 = nodes[0];

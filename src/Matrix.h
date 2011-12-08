@@ -317,6 +317,15 @@ namespace BulletSharp
 		static void Billboard( Vector3% objectPosition, Vector3% cameraPosition, Vector3% cameraUpVector, Vector3% cameraForwardVector, [Out] Matrix% result );
 
 		/// <summary>
+		/// Creates a left-handed, look-at matrix.
+		/// </summary>
+		/// <param name="eye">The position of the viewer's eye.</param>
+		/// <param name="target">The camera look-at target.</param>
+		/// <param name="up">The camera's up vector.</param>
+		/// <returns>The created look-at matrix.</returns>
+		static Matrix LookAtLH( Vector3 eye, Vector3 target, Vector3 up );
+
+		/// <summary>
 		/// Creates a matrix that rotates around the x-axis.
 		/// </summary>
 		/// <param name="angle">Angle of rotation in radians. Angles are measured clockwise when looking along the rotation axis toward the origin.</param>

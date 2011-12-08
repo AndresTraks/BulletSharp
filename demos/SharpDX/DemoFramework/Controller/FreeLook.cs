@@ -10,16 +10,16 @@ namespace DemoFramework
         public Vector3 Target { get; private set; }
         public Matrix View { get; private set; }
         public Vector3 Up { get; set; }
-        public Input Input { get; private set; }
 
+        Input input;
         MouseController mouseController;
 
         public FreeLook(Input input)
         {
             Target = Vector3.UnitX;
             Up = Vector3.UnitY;
-            Input = input;
-            mouseController = new MouseController(Input);
+            this.input = input;
+            mouseController = new MouseController(input);
             Recalculate();
         }
 
@@ -33,32 +33,32 @@ namespace DemoFramework
 
         public bool Update(float frameDelta)
         {
-            if (mouseController.Update() == false && Input.KeysDown.Count == 0)
+            if (mouseController.Update() == false && input.KeysDown.Count == 0)
                 return false;
 
             Vector3 direction = Vector3.Normalize(-mouseController.Vector);
 
-            if (Input.KeysDown.Count != 0)
+            if (input.KeysDown.Count != 0)
             {
                 Vector3 relDirection = frameDelta * direction;
                 Vector3 translation = Vector3.Zero;
 
-                float flySpeed = Input.KeysDown.Contains(Keys.ShiftKey) ? 15 : 5;
+                float flySpeed = input.KeysDown.Contains(Keys.ShiftKey) ? 15 : 5;
 
-                if (Input.KeysDown.Contains(Keys.W))
+                if (input.KeysDown.Contains(Keys.W))
                 {
                     translation = flySpeed * relDirection;
                 }
-                if (Input.KeysDown.Contains(Keys.S))
+                if (input.KeysDown.Contains(Keys.S))
                 {
                     translation -= flySpeed * relDirection;
                 }
 
-                if (Input.KeysDown.Contains(Keys.A))
+                if (input.KeysDown.Contains(Keys.A))
                 {
                     translation += GetSizewaysTranslation(relDirection, -Math.PI / 2);
                 }
-                if (Input.KeysDown.Contains(Keys.D))
+                if (input.KeysDown.Contains(Keys.D))
                 {
                     translation += GetSizewaysTranslation(relDirection, Math.PI / 2);
                 }
