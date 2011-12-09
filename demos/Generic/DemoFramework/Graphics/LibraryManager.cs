@@ -32,6 +32,9 @@ namespace DemoFramework
                 case "SlimDX (DirectX 9)":
                     assemblyNames = new string[] { "DemoFramework.SlimDX", "SlimDX, Version=4.0.12.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9" };
                     break;
+                case "OpenTK (OpenGL)":
+                    assemblyNames = new string[] { "DemoFramework.OpenTK", "OpenTK" };
+                    break;
                 default:
                     return false;
             }
@@ -64,6 +67,10 @@ namespace DemoFramework
                 case "SlimDX (DirectX 9)":
                     assembly = Assembly.Load("DemoFramework.SlimDX");
                     graphicsType = assembly.GetType("DemoFramework.SlimDX.SlimDXGraphics");
+                    break;
+                case "OpenTK (OpenGL)":
+                    assembly = Assembly.Load("DemoFramework.OpenTK");
+                    graphicsType = assembly.GetType("DemoFramework.OpenTK.OpenTKGraphics");
                     break;
                 default:
                     return null;

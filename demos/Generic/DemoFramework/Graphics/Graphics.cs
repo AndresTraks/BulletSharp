@@ -24,7 +24,7 @@ namespace DemoFramework
             protected set;
         }
 
-        public float AspectRatio
+        public virtual float AspectRatio
         {
             get
             {

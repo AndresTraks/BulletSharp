@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace DemoFramework
@@ -28,8 +22,20 @@ namespace DemoFramework
                     logText.Text += library + " not loaded\r\n";
                 }
             }
+
             if (libraryList.Items.Count != 0)
+            {
+                okButton.Enabled = true;
                 libraryList.SelectedIndex = 0;
+            }
+
+            libraryList.DoubleClick += new EventHandler(libraryList_DoubleClick);
+        }
+
+        void libraryList_DoubleClick(object sender, EventArgs e)
+        {
+            LibraryManager.GraphicsLibraryName = libraryList.SelectedItem as string;
+            Close();
         }
 
         private void okButton_Click(object sender, EventArgs e)

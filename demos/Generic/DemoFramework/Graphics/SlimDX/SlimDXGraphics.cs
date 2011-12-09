@@ -40,9 +40,12 @@ namespace DemoFramework.SlimDX
         protected float NearPlane { get; set; }
         protected float FarPlane { get; set; }
 
-        protected float AspectRatio
+        public override float AspectRatio
         {
-            get { return (float)Context9.PresentParameters.BackBufferWidth / (float)Context9.PresentParameters.BackBufferHeight; }
+            get
+            {
+                return (float)Context9.PresentParameters.BackBufferWidth / (float)Context9.PresentParameters.BackBufferHeight;
+            }
         }
 
         protected InfoText Info { get; set; }

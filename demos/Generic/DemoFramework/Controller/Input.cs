@@ -71,8 +71,11 @@ namespace DemoFramework
                 return;
 
             // Don't consider mouse clicks outside of the client area
-            if (form.Focused == false || form.ClientRectangle.Contains(MousePoint) == false)
+            if (form.ClientRectangle.Contains(MousePoint) == false)
                 return;
+
+            //if (form.Focused == false && form.CanFocus)
+            //    return;
 
             if (e.Button == MouseButtons.Left)
             {
