@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Drawing;
 using System.Globalization;
-using SlimDX.Direct3D9;
+using SharpDX;
+using SharpDX.Direct3D10;
 
-namespace DemoFramework
+namespace DemoFramework.SharpDX
 {
-    public class FpsDisplay : IDisposable
+    public class InfoText : IDisposable
     {
-        Sprite fontSprite;
-        SlimDX.Direct3D9.Font font;
-        int color = Color.Red.ToArgb();
+        Font font;
+        Color4 color = new Color4(1, 1, 0, 0);
         float fps = -1;
         string textString = "";
+        Rectangle rect = new Rectangle(0, 0, 210, 200);
         CultureInfo culture = CultureInfo.InvariantCulture;
 
         bool _isEnabled = true;
@@ -32,12 +32,10 @@ namespace DemoFramework
             }
         }
 
-        public FpsDisplay(Device device)
+        public InfoText(Device device)
         {
-            fontSprite = new Sprite(device);
-            font = new SlimDX.Direct3D9.Font(device, 20,
-              0, FontWeight.Normal, 0, false, CharacterSet.Default,
-              Precision.Default, FontQuality.ClearTypeNatural, PitchAndFamily.DontCare, "tahoma");
+            font = new Font(device, 20, 0, FontWeight.Normal, 0, false, FontCharacterSet.Default,
+              FontPrecision.Default, FontQuality.ClearTypeNatural, FontPitchAndFamily.DontCare, "tahoma");
         }
 
         public void Dispose()
@@ -50,7 +48,6 @@ namespace DemoFramework
         {
             if (isDisposing)
             {
-                fontSprite.Dispose();
                 font.Dispose();
             }
         }
@@ -60,28 +57,12 @@ namespace DemoFramework
             if (_isEnabled == false)
                 return;
 
-            fontSprite.Begin(SlimDX.Direct3D9.SpriteFlags.AlphaBlend);
-
             if (fps != framesPerSecond)
             {
                 fps = framesPerSecond;
                 textString = string.Format("FPS: {0}\n{1}", fps.ToString("0.00", culture), _text);
             }
-            font.DrawString(fontSprite, textString, 0, 0, color);
-
-            fontSprite.End();
-        }
-
-        public void OnResetDevice()
-        {
-            fontSprite.OnResetDevice();
-            font.OnResetDevice();
-        }
-
-        public void OnLostDevice()
-        {
-            fontSprite.OnLostDevice();
-            font.OnLostDevice();
+            font.DrawText(null, textString, rect, FontDrawFlags.Left, color);
         }
     }
 }

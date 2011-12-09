@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Drawing;
 using System.Globalization;
 using SlimDX.Direct3D9;
 
-namespace DemoFramework
+namespace DemoFramework.SlimDX
 {
-    public class FpsDisplay : IDisposable
+    public class InfoText : IDisposable
     {
         Sprite fontSprite;
-        SlimDX.Direct3D9.Font font;
-        int color = Color.Red.ToArgb();
+        Font font;
+        int color = System.Drawing.Color.Red.ToArgb();
         float fps = -1;
         string textString = "";
         CultureInfo culture = CultureInfo.InvariantCulture;
@@ -32,10 +31,10 @@ namespace DemoFramework
             }
         }
 
-        public FpsDisplay(Device device)
+        public InfoText(Device device)
         {
             fontSprite = new Sprite(device);
-            font = new SlimDX.Direct3D9.Font(device, 20,
+            font = new Font(device, 20,
               0, FontWeight.Normal, 0, false, CharacterSet.Default,
               Precision.Default, FontQuality.ClearTypeNatural, PitchAndFamily.DontCare, "tahoma");
         }
@@ -60,7 +59,7 @@ namespace DemoFramework
             if (_isEnabled == false)
                 return;
 
-            fontSprite.Begin(SlimDX.Direct3D9.SpriteFlags.AlphaBlend);
+            fontSprite.Begin(SpriteFlags.AlphaBlend);
 
             if (fps != framesPerSecond)
             {

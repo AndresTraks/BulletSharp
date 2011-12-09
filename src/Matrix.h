@@ -255,6 +255,13 @@ namespace BulletSharp
 		static void Divide( Matrix% left, btScalar right, [Out] Matrix% result );
 
 		/// <summary>
+		/// Calculates the inverse of the specified matrix.
+		/// </summary>
+		/// <param name="matrix">The matrix whose inverse is to be calculated.</param>
+		/// <returns>The inverse of the specified matrix.</returns>
+		static Matrix Invert( Matrix matrix );
+
+		/// <summary>
 		/// Negates a matrix.
 		/// </summary>
 		/// <param name="matrix">The matrix to be negated.</param>

@@ -501,6 +501,53 @@ namespace BulletSharp
 		result = r;
 	}
 
+	Matrix Matrix::Invert( Matrix m )
+	{
+		Matrix inv;
+		btScalar det;
+
+		inv.M11 = m.M22*m.M33*m.M44 - m.M22*m.M34*m.M43 - m.M32*m.M23*m.M44
+				+ m.M32*m.M24*m.M43 + m.M42*m.M23*m.M34 - m.M42*m.M24*m.M33;
+		inv.M21 =-m.M21*m.M33*m.M44 + m.M21*m.M34*m.M43 + m.M31*m.M23*m.M44
+				- m.M31*m.M24*m.M43 - m.M41*m.M23*m.M34 + m.M41*m.M24*m.M33;
+		inv.M31 = m.M21*m.M32*m.M44 - m.M21*m.M34*m.M42 - m.M31*m.M22*m.M44
+				+ m.M31*m.M24*m.M42 + m.M41*m.M22*m.M34 - m.M41*m.M24*m.M32;
+		inv.M41 =-m.M21*m.M32*m.M43 + m.M21*m.M33*m.M42 + m.M31*m.M22*m.M43
+				- m.M31*m.M23*m.M42 - m.M41*m.M22*m.M33 + m.M41*m.M23*m.M32;
+		inv.M12 =-m.M12*m.M33*m.M44 + m.M12*m.M34*m.M43 + m.M32*m.M13*m.M44
+				- m.M32*m.M14*m.M43 - m.M42*m.M13*m.M34 + m.M42*m.M14*m.M33;
+		inv.M22 = m.M11*m.M33*m.M44 - m.M11*m.M34*m.M43 - m.M31*m.M13*m.M44
+				+ m.M31*m.M14*m.M43 + m.M41*m.M13*m.M34 - m.M41*m.M14*m.M33;
+		inv.M32 =-m.M11*m.M32*m.M44 + m.M11*m.M34*m.M42 + m.M31*m.M12*m.M44
+				- m.M31*m.M14*m.M42 - m.M41*m.M12*m.M34 + m.M41*m.M14*m.M32;
+		inv.M42 = m.M11*m.M32*m.M43 - m.M11*m.M33*m.M42 - m.M31*m.M12*m.M43
+				+ m.M31*m.M13*m.M42 + m.M41*m.M12*m.M33 - m.M41*m.M13*m.M32;
+		inv.M13 = m.M12*m.M23*m.M44 - m.M12*m.M24*m.M43 - m.M22*m.M13*m.M44
+				+ m.M22*m.M14*m.M43 + m.M42*m.M13*m.M24 - m.M42*m.M14*m.M23;
+		inv.M23 =-m.M11*m.M23*m.M44 + m.M11*m.M24*m.M43 + m.M21*m.M13*m.M44
+				- m.M21*m.M14*m.M43 - m.M41*m.M13*m.M24 + m.M41*m.M14*m.M23;
+		inv.M33 = m.M11*m.M22*m.M44 - m.M11*m.M24*m.M42 - m.M21*m.M12*m.M44
+				+ m.M21*m.M14*m.M42 + m.M41*m.M12*m.M24 - m.M41*m.M14*m.M22;
+		inv.M43 =-m.M11*m.M22*m.M43 + m.M11*m.M23*m.M42 + m.M21*m.M12*m.M43
+				- m.M21*m.M13*m.M42 - m.M41*m.M12*m.M23 + m.M41*m.M13*m.M22;
+		inv.M14 =-m.M12*m.M23*m.M34 + m.M12*m.M24*m.M33 + m.M22*m.M13*m.M34
+				- m.M22*m.M14*m.M33 - m.M32*m.M13*m.M24 + m.M32*m.M14*m.M23;
+		inv.M24 = m.M11*m.M23*m.M34 - m.M11*m.M24*m.M33 - m.M21*m.M13*m.M34
+				+ m.M21*m.M14*m.M33 + m.M31*m.M13*m.M24 - m.M31*m.M14*m.M23;
+		inv.M34 =-m.M11*m.M22*m.M34 + m.M11*m.M24*m.M32 + m.M21*m.M12*m.M34
+				- m.M21*m.M14*m.M32 - m.M31*m.M12*m.M24 + m.M31*m.M14*m.M22;
+		inv.M44 = m.M11*m.M22*m.M33 - m.M11*m.M23*m.M32 - m.M21*m.M12*m.M33
+				+ m.M21*m.M13*m.M32 + m.M31*m.M12*m.M23 - m.M31*m.M13*m.M22;
+
+		det = m.M11*inv.M11 + m.M12*inv.M21 + m.M13*inv.M31 + m.M14*inv.M41;
+		if (det == 0)
+			return inv;
+
+		det = 1.0 / det;
+
+		return inv * det;
+	}
+
 	Matrix Matrix::Lerp( Matrix value1, Matrix value2, btScalar amount )
 	{
 		Matrix result;
