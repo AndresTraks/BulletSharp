@@ -24,7 +24,7 @@ void SimulationIslandManager::IslandCallback::ProcessIsland(array<CollisionObjec
 		manifoldsTemp[i] = manifolds[i]->UnmanagedPointer;
 
 
-	UnmanagedPointer->ProcessIsland(bodiesTemp, numBodies, manifoldsTemp, numManifolds, islandId);
+	UnmanagedPointer->processIsland(bodiesTemp, numBodies, manifoldsTemp, numManifolds, islandId);
 
 	delete[] bodiesTemp;
 	delete[] manifoldsTemp;
