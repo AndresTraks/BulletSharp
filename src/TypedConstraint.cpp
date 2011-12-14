@@ -98,6 +98,11 @@ void TypedConstraint::SetParam(ConstraintParam num, btScalar value)
 	UnmanagedPointer->setParam((int)num, value);
 }
 
+RigidBody^ TypedConstraint::FixedBody::get()
+{
+	return (RigidBody^)CollisionObject::GetManaged(&btTypedConstraint::getFixedBody());
+}
+
 TypedConstraint^ TypedConstraint::Upcast(btTypedConstraint* typedConstraint)
 {
 	if (typedConstraint == 0)

@@ -54,6 +54,11 @@ namespace BulletSharp
 		void SetParam(ConstraintParam num, btScalar value, int axis);
 		void SetParam(ConstraintParam num, btScalar value);
 
+		static property RigidBody^ FixedBody
+		{
+			RigidBody^ get();
+		}
+
 	internal:
 		static TypedConstraint^ Upcast(btTypedConstraint* typedConstraint);
 
