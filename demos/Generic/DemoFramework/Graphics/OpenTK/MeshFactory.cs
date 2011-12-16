@@ -17,15 +17,14 @@ namespace DemoFramework.OpenTK
 
     public class ShapeData : System.IDisposable
     {
-        public int VertexCount { get; set; }
-        public int IndexCount { get; set; }
+        public int VertexCount;
+        public int ElementCount;
 
         public int VertexBufferID;
         public int TexCoordBufferID;
         public int NormalBufferID;
-
         public int ElementBufferID;
-        //public int NumElements;
+        public DrawElementsType ElementsType;
 
         public List<InstanceData> InstanceDataList { get; set; }
 
@@ -66,9 +65,11 @@ namespace DemoFramework.OpenTK
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         }
 
-        public void SetIndexBuffer(int[] indices)
+        public void SetIndexBuffer(uint[] indices)
         {
             int bufferSize;
+
+            ElementsType = DrawElementsType.UnsignedInt;
 
             // Generate Array Buffer Id
             GL.GenBuffers(1, out ElementBufferID);
@@ -77,11 +78,35 @@ namespace DemoFramework.OpenTK
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferID);
 
             // Send data to buffer
-            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(indices.Length * sizeof(int)), indices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(indices.Length * sizeof(uint)), indices, BufferUsageHint.StaticDraw);
 
             // Validate that the buffer is the correct size
             GL.GetBufferParameter(BufferTarget.ElementArrayBuffer, BufferParameterName.BufferSize, out bufferSize);
-            if (indices.Length * sizeof(int) != bufferSize)
+            if (indices.Length * sizeof(uint) != bufferSize)
+                throw new ApplicationException("Element array not uploaded correctly");
+
+            // Clear the buffer Binding
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
+        }
+
+        public void SetIndexBuffer(byte[] indices)
+        {
+            int bufferSize;
+
+            ElementsType = DrawElementsType.UnsignedByte;
+
+            // Generate Array Buffer Id
+            GL.GenBuffers(1, out ElementBufferID);
+
+            // Bind current context to Array Buffer ID
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferID);
+
+            // Send data to buffer
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)indices.Length, indices, BufferUsageHint.StaticDraw);
+
+            // Validate that the buffer is the correct size
+            GL.GetBufferParameter(BufferTarget.ElementArrayBuffer, BufferParameterName.BufferSize, out bufferSize);
+            if (indices.Length != bufferSize)
                 throw new ApplicationException("Element array not uploaded correctly");
 
             // Clear the buffer Binding
@@ -212,11 +237,11 @@ namespace DemoFramework.OpenTK
 
             ShapeData shapeData = new ShapeData();
             shapeData.VertexCount = 2 + 6 * numSteps;
-            shapeData.IndexCount = (4 * numSteps + 2) * 3;
+            shapeData.ElementCount = (4 * numSteps + 2) * 3;
 
             Vector3[] vertices = new Vector3[shapeData.VertexCount];
             Vector3[] normals = new Vector3[shapeData.VertexCount];
-            byte[] indices = new byte[shapeData.IndexCount];
+            byte[] indices = new byte[shapeData.ElementCount];
 
             int i = 0, v = 0;
             byte index = 0;
@@ -294,15 +319,9 @@ namespace DemoFramework.OpenTK
             indices[i++] = (byte)(index - 1);
             indices[i++] = (byte)(baseIndex + 1);
 
-            int[] indices2 = new int[indices.Length];
-            for (i = 0; i < indices.Length; i++)
-            {
-                indices2[i] = indices[i];
-            }
-
             shapeData.SetVertexBuffer(vertices);
             shapeData.SetNormalBuffer(vertices);
-            shapeData.SetIndexBuffer(indices2);
+            shapeData.SetIndexBuffer(indices);
 
             return shapeData;
         }
@@ -465,7 +484,7 @@ namespace DemoFramework.OpenTK
                 GL.EnableClientState(ArrayCap.VertexArray);
 
                 // index buffer
-                if (s.IndexCount != 0)
+                if (s.ElementCount != 0)
                 {
                     GL.BindBuffer(BufferTarget.ElementArrayBuffer, s.ElementBufferID);
 
@@ -474,7 +493,7 @@ namespace DemoFramework.OpenTK
                         Matrix4 modelLookAt = instance.worldTransform * lookat;
                         GL.LoadMatrix(ref modelLookAt);
                         GL.Color3(instance.color);
-                        GL.DrawElements(BeginMode.Triangles, s.IndexCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
+                        GL.DrawElements(BeginMode.Triangles, s.ElementCount, s.ElementsType, IntPtr.Zero);
                     }
                 }
                 else

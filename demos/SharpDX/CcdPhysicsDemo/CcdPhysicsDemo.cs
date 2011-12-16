@@ -32,7 +32,7 @@ namespace CcdPhysicsDemo
 
             Freelook.SetEyeTarget(eye, target);
 
-            Info.Text = infoText + "\nCCD enabled (P to disable)"; ;
+            Info.Text = infoText + "\nCCD enabled (P to disable)";
 
             base.OnInitialize();
         }
