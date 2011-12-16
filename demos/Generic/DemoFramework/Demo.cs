@@ -91,6 +91,48 @@ namespace DemoFramework
 
         protected abstract void OnInitializePhysics();
 
+        public void ClientResetScene()
+        {
+            Graphics.ResetScene();
+            ExitPhysics();
+            OnInitializePhysics();
+        }
+
+        public void ExitPhysics()
+        {
+            //removed/dispose constraints
+            int i;
+            for (i = _world.NumConstraints - 1; i >= 0; i--)
+            {
+                TypedConstraint constraint = _world.GetConstraint(i);
+                _world.RemoveConstraint(constraint);
+                constraint.Dispose(); ;
+            }
+
+            //remove the rigidbodies from the dynamics world and delete them
+            for (i = _world.NumCollisionObjects - 1; i >= 0; i--)
+            {
+                CollisionObject obj = _world.CollisionObjectArray[i];
+                RigidBody body = obj as RigidBody;
+                if (body != null && body.MotionState != null)
+                {
+                    body.MotionState.Dispose();
+                }
+                _world.RemoveCollisionObject(obj);
+                obj.Dispose();
+            }
+
+            //delete collision shapes
+            foreach (CollisionShape shape in CollisionShapes)
+                shape.Dispose();
+            CollisionShapes.Clear();
+
+            _world.Dispose();
+            Broadphase.Dispose();
+            Dispatcher.Dispose();
+            CollisionConf.Dispose();
+        }
+
         public virtual void OnUpdate()
         {
             _frameDelta = clock.Update();

@@ -18,13 +18,14 @@ namespace DemoFramework.OpenTK
     public class ShapeData : System.IDisposable
     {
         public int VertexCount { get; set; }
+        public int IndexCount { get; set; }
 
         public int VertexBufferID;
         public int TexCoordBufferID;
         public int NormalBufferID;
-        
+
         public int ElementBufferID;
-        public int NumElements;
+        //public int NumElements;
 
         public List<InstanceData> InstanceDataList { get; set; }
 
@@ -187,6 +188,125 @@ namespace DemoFramework.OpenTK
             return shapeData;
         }
 
+        Vector3 GetVectorByAxis(Vector3 vector, int axis)
+        {
+            switch (axis)
+            {
+                case 0:
+                    return new Vector3(vector.Y, vector.Z, vector.X);
+                case 1:
+                    return new Vector3(vector.Z, vector.Y, vector.X);
+                default:
+                    return vector;
+            }
+        }
+
+        ShapeData CreateCylinderShape(CylinderShape shape)
+        {
+            int up = shape.UpAxis;
+            float radius = shape.Radius;
+            float halfHeight = shape.HalfExtentsWithoutMargin[up] + shape.Margin;
+
+            int numSteps = 10;
+            float angleStep = (2 * (float)Math.PI) / numSteps;
+
+            ShapeData shapeData = new ShapeData();
+            shapeData.VertexCount = 2 + 6 * numSteps;
+            shapeData.IndexCount = (4 * numSteps + 2) * 3;
+
+            Vector3[] vertices = new Vector3[shapeData.VertexCount];
+            Vector3[] normals = new Vector3[shapeData.VertexCount];
+            byte[] indices = new byte[shapeData.IndexCount];
+
+            int i = 0, v = 0;
+            byte index = 0;
+            byte baseIndex;
+            Vector3 normal;
+
+            // Draw two sides
+            for (int side = 1; side != -3; side -= 2)
+            {
+                normal = GetVectorByAxis(side * Vector3.UnitY, up);
+
+                baseIndex = index;
+                normals[v] = normal;
+                vertices[v++] = GetVectorByAxis(new Vector3(0, side * halfHeight, 0), up);
+
+                normals[v] = normal;
+                vertices[v++] = GetVectorByAxis(new Vector3(0, side * halfHeight, radius), up);
+                index += 2;
+
+                for (int j = 1; j < numSteps; j++)
+                {
+                    float x = radius * (float)Math.Sin(j * angleStep);
+                    float z = radius * (float)Math.Cos(j * angleStep);
+
+                    normals[v] = normal;
+                    vertices[v++] = GetVectorByAxis(new Vector3(x, side * halfHeight, z), up);
+
+                    indices[i++] = baseIndex;
+                    indices[i++] = (byte)(index - 1);
+                    indices[i++] = index++;
+                }
+                indices[i++] = baseIndex;
+                indices[i++] = (byte)(index - 1);
+                indices[i++] = (byte)(baseIndex + 1);
+            }
+
+
+            normal = GetVectorByAxis(new Vector3(0, 0, radius), up);
+            normal.Normalize();
+
+            baseIndex = index;
+            normals[v] = normal;
+            vertices[v++] = GetVectorByAxis(new Vector3(0, halfHeight, radius), up);
+
+            normals[v] = normal;
+            vertices[v++] = GetVectorByAxis(new Vector3(0, -halfHeight, radius), up);
+            index += 2;
+
+            for (int j = 1; j < numSteps + 1; j++)
+            {
+                float x = radius * (float)Math.Sin(j * angleStep);
+                float z = radius * (float)Math.Cos(j * angleStep);
+
+                normal = GetVectorByAxis(new Vector3(x, 0, z), up);
+                normal.Normalize();
+
+                normals[v] = normal;
+                vertices[v++] = GetVectorByAxis(new Vector3(x, halfHeight, z), up);
+
+                normals[v] = normal;
+                vertices[v++] = GetVectorByAxis(new Vector3(x, -halfHeight, z), up);
+
+                indices[i++] = (byte)(index - 2);
+                indices[i++] = (byte)(index - 1);
+                indices[i++] = (byte)index;
+                indices[i++] = (byte)index;
+                indices[i++] = (byte)(index - 1);
+                indices[i++] = (byte)(index + 1);
+                index += 2;
+            }
+            indices[i++] = (byte)(index - 2);
+            indices[i++] = (byte)(index - 1);
+            indices[i++] = (byte)(baseIndex);
+            indices[i++] = (byte)(baseIndex);
+            indices[i++] = (byte)(index - 1);
+            indices[i++] = (byte)(baseIndex + 1);
+
+            int[] indices2 = new int[indices.Length];
+            for (i = 0; i < indices.Length; i++)
+            {
+                indices2[i] = indices[i];
+            }
+
+            shapeData.SetVertexBuffer(vertices);
+            shapeData.SetNormalBuffer(vertices);
+            shapeData.SetIndexBuffer(indices2);
+
+            return shapeData;
+        }
+
         ShapeData InitShapeData(CollisionShape shape)
         {
             ShapeData shapeData;
@@ -202,7 +322,7 @@ namespace DemoFramework.OpenTK
                         shapeData = CreateBoxShape(shape as BoxShape);
                         break;
                     case BroadphaseNativeType.CylinderShape:
-                        //shapeData = CreateCylinderShape(shape as CylinderShape);
+                        shapeData = CreateCylinderShape(shape as CylinderShape);
                         break;
                     case BroadphaseNativeType.ConvexHullShape:
                         //shapeData = CreateConvexHullShape(shape as ConvexHullShape);
@@ -345,15 +465,27 @@ namespace DemoFramework.OpenTK
                 GL.EnableClientState(ArrayCap.VertexArray);
 
                 // index buffer
-                //GL.BindBuffer(BufferTarget.ElementArrayBuffer, s.ElementBufferID);
-
-                foreach (InstanceData instance in s.InstanceDataList)
+                if (s.IndexCount != 0)
                 {
-                    Matrix4 modelLookAt = instance.worldTransform * lookat;
-                    GL.LoadMatrix(ref modelLookAt);
-                    GL.Color3(instance.color);
-                    GL.DrawArrays(BeginMode.Triangles, 0, s.VertexCount);
-                    //GL.DrawElements(BeginMode.Triangles, s.VertexCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
+                    GL.BindBuffer(BufferTarget.ElementArrayBuffer, s.ElementBufferID);
+
+                    foreach (InstanceData instance in s.InstanceDataList)
+                    {
+                        Matrix4 modelLookAt = instance.worldTransform * lookat;
+                        GL.LoadMatrix(ref modelLookAt);
+                        GL.Color3(instance.color);
+                        GL.DrawElements(BeginMode.Triangles, s.IndexCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
+                    }
+                }
+                else
+                {
+                    foreach (InstanceData instance in s.InstanceDataList)
+                    {
+                        Matrix4 modelLookAt = instance.worldTransform * lookat;
+                        GL.LoadMatrix(ref modelLookAt);
+                        GL.Color3(instance.color);
+                        GL.DrawArrays(BeginMode.Triangles, 0, s.VertexCount);
+                    }
                 }
 
                 GL.DisableClientState(ArrayCap.VertexArray);

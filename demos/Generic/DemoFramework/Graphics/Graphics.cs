@@ -43,6 +43,10 @@ namespace DemoFramework
         {
         }
 
+        public virtual void ResetScene()
+        {
+        }
+
         public abstract void Run();
         public abstract void UpdateView();
 

@@ -22,7 +22,7 @@ namespace CcdPhysicsDemo
 
         protected override void OnInitializeDevice()
         {
-            Form.Text = "BulletSharp - Basic Demo";
+            Form.Text = "BulletSharp - CCD Demo";
             base.OnInitializeDevice();
         }
 

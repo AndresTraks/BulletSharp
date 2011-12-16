@@ -48,6 +48,7 @@ namespace DemoFramework.OpenTK
             LibraryManager.LibraryStarted();
             Form.ShowDialog();
         }
+
         static float fps;
         public void Render()
         {
