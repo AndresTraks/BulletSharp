@@ -19,25 +19,27 @@ namespace DemoFramework.SharpDX
 {
     public struct InstanceData
     {
-        public Matrix WorldTransform { get; set; }
-        public uint Color { get; set; }
+        public Matrix WorldTransform;
+        public uint Color;
+
+        public static readonly int SizeInBytes = Marshal.SizeOf(typeof(InstanceData));
     }
 
     // Contains the geometry buffers and information of all instances of a particular shape.
     public class ShapeData : System.IDisposable
     {
-        public Buffer VertexBuffer { get; private set; }
-        public int VertexCount { get; set; }
+        public Buffer VertexBuffer;
+        public int VertexCount;
 
-        public Buffer IndexBuffer { get; set; }
-        public int IndexCount { get; set; }
-        public Format IndexFormat { get; set; }
+        public Buffer IndexBuffer;
+        public int IndexCount;
+        public Format IndexFormat;
 
-        public Buffer InstanceDataBuffer { get; set; }
-        public List<InstanceData> InstanceDataList { get; set; }
+        public Buffer InstanceDataBuffer;
+        public List<InstanceData> InstanceDataList;
 
-        public PrimitiveTopology PrimitiveTopology { get; set; }
-        public VertexBufferBinding[] BufferBindings { get; private set; }
+        public PrimitiveTopology PrimitiveTopology;
+        public VertexBufferBinding[] BufferBindings;
 
         public ShapeData()
         {
@@ -157,6 +159,16 @@ namespace DemoFramework.SharpDX
                 VertexBuffer.Dispose();
                 VertexBuffer = null;
             }
+            if (IndexBuffer != null)
+            {
+                IndexBuffer.Dispose();
+                IndexBuffer = null;
+            }
+            if (InstanceDataBuffer != null)
+            {
+                InstanceDataBuffer.Dispose();
+                InstanceDataBuffer = null;
+            }
         }
     }
 
@@ -184,7 +196,6 @@ namespace DemoFramework.SharpDX
 
             instanceDataDesc = new BufferDescription()
             {
-                SizeInBytes = 0,
                 Usage = ResourceUsage.Dynamic,
                 BindFlags = BindFlags.VertexBuffer,
                 CpuAccessFlags = CpuAccessFlags.Write,
@@ -809,7 +820,7 @@ namespace DemoFramework.SharpDX
                 }
 
                 // Create an initial instance data buffer for a single instance
-                instanceDataDesc.SizeInBytes = Marshal.SizeOf(typeof(InstanceData));
+                instanceDataDesc.SizeInBytes = InstanceData.SizeInBytes;
                 shapeData.InstanceDataBuffer = new Buffer(device, instanceDataDesc);
                 shapeData.BufferBindings[1] = new VertexBufferBinding(shapeData.InstanceDataBuffer, instanceDataDesc.SizeInBytes, 0);
 
@@ -881,9 +892,8 @@ namespace DemoFramework.SharpDX
             foreach (KeyValuePair<CollisionShape, ShapeData> sh in shapes)
             {
                 ShapeData s = sh.Value;
-
                 // Is the instance buffer the right size?
-                if (s.InstanceDataBuffer.Description.SizeInBytes != s.InstanceDataList.Count * 68)
+                if (s.InstanceDataBuffer.Description.SizeInBytes != s.InstanceDataList.Count * InstanceData.SizeInBytes)
                 {
                     // No, recreate it
                     s.InstanceDataBuffer.Dispose();
@@ -897,9 +907,9 @@ namespace DemoFramework.SharpDX
                         continue;
                     }
 
-                    instanceDataDesc.SizeInBytes = s.InstanceDataList.Count * 68;
+                    instanceDataDesc.SizeInBytes = s.InstanceDataList.Count * InstanceData.SizeInBytes;
                     s.InstanceDataBuffer = new Buffer(device, instanceDataDesc);
-                    s.BufferBindings[1] = new VertexBufferBinding(s.InstanceDataBuffer, 68, 0);
+                    s.BufferBindings[1] = new VertexBufferBinding(s.InstanceDataBuffer, InstanceData.SizeInBytes, 0);
                 }
 
                 // Copy the instance data over to the instance buffer

@@ -177,7 +177,7 @@ namespace DemoFramework.SharpDX
                 lightDepthRes.Dispose();
         }
 
-        protected virtual void OnInitializeDevice()
+        protected void OnInitializeDevice()
         {
             Form.ClientSize = new System.Drawing.Size(Width, Height);
 
@@ -438,6 +438,7 @@ namespace DemoFramework.SharpDX
 
             CreateBuffers();
             SetSceneConstants();
+            LibraryManager.LibraryStarted();
         }
 
         protected void SetSceneConstants()

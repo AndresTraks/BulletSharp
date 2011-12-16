@@ -68,18 +68,14 @@ namespace BasicDemo
 
             foreach (RigidBody body in physics.World.CollisionObjectArray)
             {
-                Matrix4 modelLookAt;
+                Matrix4 modelLookAt = body.MotionState.WorldTransform * lookat;
+                GL.LoadMatrix(ref modelLookAt);
 
                 if ((string)body.UserObject == "Ground")
                 {
-                    modelLookAt = body.MotionState.WorldTransform * lookat;
-                    GL.LoadMatrix(ref modelLookAt);
                     DrawCube(Color.Green, 50.0f);
                     continue;
                 }
-
-                modelLookAt = body.MotionState.WorldTransform * lookat;
-                GL.LoadMatrix(ref modelLookAt);
 
                 if (body.ActivationState == ActivationState.ActiveTag)
                     DrawCube2(Color.Orange, 1);

@@ -8,6 +8,8 @@ namespace DemoFramework
 {
     public class LibraryManager
     {
+        static LibrarySelection librarySelection;
+
         static string settingsFilename = "settings.xml";
         public static string GraphicsLibraryName
         {
@@ -78,23 +80,8 @@ namespace DemoFramework
             return graphicsType.InvokeMember(null, BindingFlags.CreateInstance, null, null, new[] { demo }) as Graphics;
         }
 
-        public static bool Initialize()
+        static XmlElement GetSettingsDocumentRoot()
         {
-            Application.EnableVisualStyles();
-
-            // Check if BulletSharp exists
-            try
-            {
-                Assembly.Load("BulletSharp");
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString(), "BulletSharp Error!");
-                return false;
-            }
-
-
-            // Load settings
             XmlDocument settings = new XmlDocument();
             XmlElement root;
             try
@@ -110,31 +97,99 @@ namespace DemoFramework
                 settings.Save(settingsFilename);
             }
 
+            return root;
+        }
+
+        public static void Initialize(Demo demo)
+        {
+            Application.EnableVisualStyles();
+
+            // Check if BulletSharp exists
+            try
+            {
+                Assembly.Load("BulletSharp");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "BulletSharp Error!");
+                return;
+            }
+
+
+            // Load settings
+            XmlElement root = GetSettingsDocumentRoot();
+
+            XmlNodeList l = root.GetElementsByTagName("graphicsframework");
+            if (l.Count == 1)
+            {
+                XmlElement graphics = l.Item(0) as XmlElement;
+                GraphicsLibraryName = graphics.GetAttribute("value");
+            }
+
+            if (GraphicsLibraryName == null)
+            {
+                if (!SelectLibraryModal())
+                {
+                    return;
+                }
+            }
+
+            demo.Run();
+            while (ExitWithReload)
+            {
+                ExitWithReload = false;
+                if (!SelectLibraryModal())
+                {
+                    return;
+                }
+                demo.Run();
+            }
+        }
+
+        public static void SelectLibrary()
+        {
+            librarySelection = new LibrarySelection();
+            librarySelection.Show();
+        }
+
+        public static bool SelectLibraryModal()
+        {
+            if (librarySelection != null)
+            {
+                return false;
+            }
+            librarySelection = new LibrarySelection();
+            librarySelection.ShowDialog();
+            librarySelection.Dispose();
+            librarySelection = null;
+            return GraphicsLibraryName != null;
+        }
+
+        // Called by Graphics to indicate that the library was loaded successfully
+        public static void LibraryStarted()
+        {
+            XmlElement root = GetSettingsDocumentRoot();
+
             XmlElement graphics;
             XmlNodeList l = root.GetElementsByTagName("graphicsframework");
             if (l.Count == 1)
             {
                 graphics = l.Item(0) as XmlElement;
-                GraphicsLibraryName = graphics.GetAttribute("value");
             }
             else
             {
-                // No library selected yet, select one now
-                Application.Run(new LibrarySelection());
-
-                // Nothing selected
-                if (GraphicsLibraryName == null)
-                {
-                    return false;
-                }
-
-                graphics = settings.CreateElement("graphicsframework");
-                graphics.SetAttribute("value", GraphicsLibraryName);
-                root.AppendChild(graphics);
-                settings.Save(settingsFilename);
+                graphics = root.OwnerDocument.CreateElement("graphicsframework");
             }
 
-            return true;
+            graphics.SetAttribute("value", GraphicsLibraryName);
+            root.AppendChild(graphics);
+            root.OwnerDocument.Save(settingsFilename);
+        }
+
+        public static bool ExitWithReload
+        {
+            get;
+            set;
         }
     }
 }

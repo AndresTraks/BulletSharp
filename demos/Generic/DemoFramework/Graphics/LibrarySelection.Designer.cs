@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.libraryList = new System.Windows.Forms.ListBox();
-            this.okButton = new System.Windows.Forms.Button();
+            this.runButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.logText = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
@@ -42,16 +42,16 @@
             this.libraryList.Size = new System.Drawing.Size(266, 160);
             this.libraryList.TabIndex = 0;
             // 
-            // okButton
+            // runButton
             // 
-            this.okButton.Enabled = false;
-            this.okButton.Location = new System.Drawing.Point(13, 244);
-            this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(87, 43);
-            this.okButton.TabIndex = 1;
-            this.okButton.Text = "Run";
-            this.okButton.UseVisualStyleBackColor = true;
-            this.okButton.Click += new System.EventHandler(this.okButton_Click);
+            this.runButton.Enabled = false;
+            this.runButton.Location = new System.Drawing.Point(13, 244);
+            this.runButton.Name = "runButton";
+            this.runButton.Size = new System.Drawing.Size(87, 43);
+            this.runButton.TabIndex = 1;
+            this.runButton.Text = "Run";
+            this.runButton.UseVisualStyleBackColor = true;
+            this.runButton.Click += new System.EventHandler(this.runButton_Click);
             // 
             // cancelButton
             // 
@@ -79,7 +79,7 @@
             this.ClientSize = new System.Drawing.Size(291, 293);
             this.Controls.Add(this.logText);
             this.Controls.Add(this.cancelButton);
-            this.Controls.Add(this.okButton);
+            this.Controls.Add(this.runButton);
             this.Controls.Add(this.libraryList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -93,7 +93,7 @@
         #endregion
 
         private System.Windows.Forms.ListBox libraryList;
-        private System.Windows.Forms.Button okButton;
+        private System.Windows.Forms.Button runButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.TextBox logText;
     }

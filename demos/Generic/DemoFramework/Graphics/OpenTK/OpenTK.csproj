@@ -56,6 +56,7 @@
       <DependentUpon>GLForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MathHelper.cs" />
+    <Compile Include="MeshFactory.cs" />
     <Compile Include="OpenTKGraphics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

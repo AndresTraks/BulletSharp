@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace DemoFramework
 {
-    public class Graphics
+    public abstract class Graphics
     {
         public Demo Demo
         {
@@ -43,13 +43,8 @@ namespace DemoFramework
         {
         }
 
-        public virtual void Run()
-        {
-        }
-
-        public virtual void UpdateView()
-        {
-        }
+        public abstract void Run();
+        public abstract void UpdateView();
 
         public virtual void SetFormText(string text)
         {

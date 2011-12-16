@@ -4,7 +4,7 @@ namespace DemoFramework.SharpDX
 {
     class MathHelper
     {
-        public static Matrix Convert(BulletSharp.Matrix m)
+        public static Matrix Convert(ref BulletSharp.Matrix m)
         {
             return new Matrix(
                 m.M11, m.M12, m.M13, m.M14,
@@ -13,7 +13,7 @@ namespace DemoFramework.SharpDX
                 m.M41, m.M42, m.M43, m.M44);
         }
 
-        public static BulletSharp.Matrix Convert(Matrix m)
+        public static BulletSharp.Matrix Convert(ref Matrix m)
         {
             BulletSharp.Matrix r = new BulletSharp.Matrix();
             r.M11 = m.M11; r.M12 = m.M12; r.M13 = m.M13; r.M14 = m.M14;

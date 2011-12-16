@@ -10,12 +10,17 @@ namespace DemoFramework
             InitializeComponent();
 
             string[] supportedLibraries = LibraryManager.GetSupportedLibraries();
+            int selectLibrary = 0;
             foreach (string library in supportedLibraries)
             {
                 if (LibraryManager.IsLibraryAvailable(library))
                 {
-                    libraryList.Items.Add(library);
+                    int index = libraryList.Items.Add(library);
                     logText.Text += library + " OK\r\n";
+                    if (library.Equals(LibraryManager.GraphicsLibraryName))
+                    {
+                        selectLibrary = index;
+                    }
                 }
                 else
                 {
@@ -25,9 +30,10 @@ namespace DemoFramework
 
             if (libraryList.Items.Count != 0)
             {
-                okButton.Enabled = true;
-                libraryList.SelectedIndex = 0;
+                runButton.Enabled = true;
+                libraryList.SelectedIndex = selectLibrary;
             }
+            LibraryManager.GraphicsLibraryName = null;
 
             libraryList.DoubleClick += new EventHandler(libraryList_DoubleClick);
         }
@@ -38,7 +44,7 @@ namespace DemoFramework
             Close();
         }
 
-        private void okButton_Click(object sender, EventArgs e)
+        private void runButton_Click(object sender, EventArgs e)
         {
             LibraryManager.GraphicsLibraryName = libraryList.SelectedItem as string;
             Close();

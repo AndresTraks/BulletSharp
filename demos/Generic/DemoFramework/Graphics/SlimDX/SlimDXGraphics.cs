@@ -297,7 +297,7 @@ namespace DemoFramework.SlimDX
             OnLostDevice();
         }
 
-        protected virtual void OnInitializeDevice()
+        protected void OnInitializeDevice()
         {
             Form.ClientSize = new Size(Width, Height);
 
@@ -327,9 +327,11 @@ namespace DemoFramework.SlimDX
                     catch
                     {
                         MessageBox.Show("Could not initialize DirectX device!");
+                        return;
                     }
                 }
             }
+            LibraryManager.LibraryStarted();
         }
 
         protected virtual void OnResetDevice()

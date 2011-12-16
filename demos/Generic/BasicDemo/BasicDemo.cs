@@ -26,7 +26,10 @@ namespace BasicDemo
                 //"F3 - Toggle debug\n" +
                 //"F11 - Toggle fullscreen\n" +
                 "Space - Shoot box");
+        }
 
+        protected override void OnInitializePhysics()
+        {
             // collision configuration contains default setup for memory, collision setup
             CollisionConf = new DefaultCollisionConfiguration();
             Dispatcher = new CollisionDispatcher(CollisionConf);
@@ -88,15 +91,9 @@ namespace BasicDemo
         [STAThread]
         static void Main()
         {
-            if (LibraryManager.Initialize())
-                RunDemo();
-        }
-
-        static void RunDemo()
-        {
             using (Demo demo = new BasicDemo())
             {
-                demo.Run();
+                LibraryManager.Initialize(demo);
             }
         }
     }

@@ -5,7 +5,7 @@ using BulletSharp;
 
 namespace DemoFramework
 {
-    public class Demo : System.IDisposable
+    public abstract class Demo : System.IDisposable
     {
         bool disposed = false;
         Graphics _graphics;
@@ -67,6 +67,10 @@ namespace DemoFramework
 
         public void Run()
         {
+            if (_graphics != null)
+            {
+                _graphics.Form.Close();
+            }
             _graphics = LibraryManager.GetGraphics(this);
 
             _input = new Input(Graphics.Form);
@@ -74,6 +78,7 @@ namespace DemoFramework
 
             _graphics.Initialize();
             OnInitialize();
+            OnInitializePhysics();
             _graphics.UpdateView();
 
             clock.Start();
@@ -83,6 +88,8 @@ namespace DemoFramework
         protected virtual void OnInitialize()
         {
         }
+
+        protected abstract void OnInitializePhysics();
 
         public virtual void OnUpdate()
         {
@@ -143,6 +150,11 @@ namespace DemoFramework
                         return;
                     case Keys.F3:
                         //IsDebugDrawEnabled = !IsDebugDrawEnabled;
+                        break;
+                    case Keys.F8:
+                        Input.ClearKeyCache();
+                        LibraryManager.ExitWithReload = true;
+                        Graphics.Form.Close();
                         break;
                     case Keys.F11:
                         //ToggleFullScreen();
