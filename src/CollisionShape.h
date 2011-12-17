@@ -16,7 +16,9 @@ namespace BulletSharp
 	private:
 		btCollisionShape* _collisionShape;
 		Object^ _userObject;
-		bool _doesNotOwnObject;
+
+		// 1 = is disposed; 2 = does not own object (can't delete btCollisionShape ourselves)
+		int _flags;
 
 	internal:
 		CollisionShape(btCollisionShape* collisionShape);

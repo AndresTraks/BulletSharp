@@ -55,14 +55,15 @@ CollisionShape::!CollisionShape()
 	
 	OnDisposing(this, nullptr);
 
-	if (_doesNotOwnObject == false)
+	// delete the btCollisionShape only if we are responsible for it
+	if (_flags != 2)
 	{
 		void* userObj = _collisionShape->getUserPointer();
 		if (userObj)
 			VoidPtrToGCHandle(userObj).Free();
 		delete _collisionShape;
 	}
-	_collisionShape = NULL;
+	_flags |= 1;
 
 	OnDisposed(this, nullptr);
 }
@@ -82,7 +83,7 @@ int CollisionShape::GetHashCode()
 
 bool CollisionShape::IsDisposed::get()
 {
-	return ( _collisionShape == NULL );
+	return _flags & 1;
 }
 
 void CollisionShape::CalculateLocalInertia(btScalar mass, [Out] Vector3% inertia)
@@ -293,7 +294,7 @@ CollisionShape^ CollisionShape::GetManaged(btCollisionShape* collisionShape)
 	}
 
 	// Tell the wrapper object we just created not to destroy this collisionShape.
-	shape->_doesNotOwnObject = true;
+	shape->_flags = 2;
 
 	return shape;
 }
