@@ -5,13 +5,10 @@ using System.Windows.Forms;
 using BulletSharp;
 using SlimDX;
 using SlimDX.Direct3D9;
-using SlimDX.Multimedia;
-using SlimDX.RawInput;
 using SlimDX.Windows;
 using Device = SlimDX.Direct3D9.Device;
 using Matrix = SlimDX.Matrix;
 using Vector3 = SlimDX.Vector3;
-using Vector4 = SlimDX.Vector4;
 
 namespace DemoFramework.SlimDX
 {
@@ -448,6 +445,11 @@ namespace DemoFramework.SlimDX
                 Device.Material = PassiveMaterial;
 
             meshFactory.Render(body.CollisionShape);
+        }
+
+        public override void SetInfoText(string text)
+        {
+            Info.Text = text;
         }
     }
 }

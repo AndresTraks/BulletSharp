@@ -334,9 +334,9 @@ namespace DemoFramework
                 case 0:
                     return new Vector3(vector.Y, vector.Z, vector.X);
                 case 1:
-                    return new Vector3(vector.Z, vector.Y, vector.X);
-                default:
                     return vector;
+                default:
+                    return new Vector3(vector.Z, vector.X, vector.Y);
             }
         }
 

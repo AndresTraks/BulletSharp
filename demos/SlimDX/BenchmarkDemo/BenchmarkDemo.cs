@@ -17,7 +17,7 @@ namespace BenchmarkDemo
 
         protected override void OnInitializeDevice()
         {
-            Form.Text = "BulletSharp - Basic Demo";
+            Form.Text = "BulletSharp - Benchmark Demo";
             base.OnInitializeDevice();
         }
 

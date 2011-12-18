@@ -13,6 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenTK", "DemoFramework\Gra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CcdPhysicsDemo", "CcdPhysicsDemo\CcdPhysicsDemo.csproj", "{60FB11CC-8D7D-4EBE-80AF-D4914BC88759}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BenchmarkDemo", "BenchmarkDemo\BenchmarkDemo.csproj", "{8712106F-F6B3-4196-B124-6516936451C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Box2DDemo", "Box2DDemo\Box2DDemo.csproj", "{C47829F1-A1BC-440F-8879-63B41E5176F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftDemo", "SoftDemo\SoftDemo.csproj", "{99135BBD-934C-411D-9DB0-1157BA35EDB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -39,6 +45,18 @@ Global
 		{60FB11CC-8D7D-4EBE-80AF-D4914BC88759}.Debug|x86.Build.0 = Debug|x86
 		{60FB11CC-8D7D-4EBE-80AF-D4914BC88759}.Release|x86.ActiveCfg = Release|x86
 		{60FB11CC-8D7D-4EBE-80AF-D4914BC88759}.Release|x86.Build.0 = Release|x86
+		{8712106F-F6B3-4196-B124-6516936451C3}.Debug|x86.ActiveCfg = Debug|x86
+		{8712106F-F6B3-4196-B124-6516936451C3}.Debug|x86.Build.0 = Debug|x86
+		{8712106F-F6B3-4196-B124-6516936451C3}.Release|x86.ActiveCfg = Release|x86
+		{8712106F-F6B3-4196-B124-6516936451C3}.Release|x86.Build.0 = Release|x86
+		{C47829F1-A1BC-440F-8879-63B41E5176F6}.Debug|x86.ActiveCfg = Debug|x86
+		{C47829F1-A1BC-440F-8879-63B41E5176F6}.Debug|x86.Build.0 = Debug|x86
+		{C47829F1-A1BC-440F-8879-63B41E5176F6}.Release|x86.ActiveCfg = Release|x86
+		{C47829F1-A1BC-440F-8879-63B41E5176F6}.Release|x86.Build.0 = Release|x86
+		{99135BBD-934C-411D-9DB0-1157BA35EDB6}.Debug|x86.ActiveCfg = Debug|x86
+		{99135BBD-934C-411D-9DB0-1157BA35EDB6}.Debug|x86.Build.0 = Debug|x86
+		{99135BBD-934C-411D-9DB0-1157BA35EDB6}.Release|x86.ActiveCfg = Release|x86
+		{99135BBD-934C-411D-9DB0-1157BA35EDB6}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

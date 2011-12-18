@@ -517,11 +517,6 @@ namespace DemoFramework.SharpDX
             SetSceneConstants();
         }
 
-        public override void ResetScene()
-        {
-            meshFactory.Clear();
-        }
-
         public override void Run()
         {
             RenderLoop.Run(Form, () =>

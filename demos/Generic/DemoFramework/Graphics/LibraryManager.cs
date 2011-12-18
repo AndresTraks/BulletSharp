@@ -128,7 +128,7 @@ namespace DemoFramework
 
             if (GraphicsLibraryName == null)
             {
-                if (!SelectLibraryModal())
+                if (!SelectLibrary())
                 {
                     return;
                 }
@@ -138,7 +138,7 @@ namespace DemoFramework
             while (ExitWithReload)
             {
                 ExitWithReload = false;
-                if (!SelectLibraryModal())
+                if (!SelectLibrary())
                 {
                     return;
                 }
@@ -146,18 +146,8 @@ namespace DemoFramework
             }
         }
 
-        public static void SelectLibrary()
+        public static bool SelectLibrary()
         {
-            librarySelection = new LibrarySelection();
-            librarySelection.Show();
-        }
-
-        public static bool SelectLibraryModal()
-        {
-            if (librarySelection != null)
-            {
-                return false;
-            }
             librarySelection = new LibrarySelection();
             librarySelection.ShowDialog();
             librarySelection.Dispose();

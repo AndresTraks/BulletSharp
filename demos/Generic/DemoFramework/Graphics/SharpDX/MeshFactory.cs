@@ -69,7 +69,7 @@ namespace DemoFramework.SharpDX
         // Used with soft bodies
         public void SetDynamicVertexBuffer(Device device, Vector3[] vectors)
         {
-            if (VertexBuffer != null && VertexBuffer.Description.SizeInBytes == vectors.Length * 12)
+            if (VertexBuffer != null && VertexCount * 2 == vectors.Length)
             {
                 // Update existing buffer
                 using (var data = VertexBuffer.Map(MapMode.WriteDiscard))
@@ -346,9 +346,9 @@ namespace DemoFramework.SharpDX
                 case 0:
                     return new Vector3(vector.Y, vector.Z, vector.X);
                 case 1:
-                    return new Vector3(vector.Z, vector.Y, vector.X);
-                default:
                     return vector;
+                default:
+                    return new Vector3(vector.Z, vector.X, vector.Y);
             }
         }
 
@@ -806,6 +806,8 @@ namespace DemoFramework.SharpDX
                     case BroadphaseNativeType.CylinderShape:
                         shapeData = CreateCylinderShape(shape as CylinderShape);
                         break;
+                    case BroadphaseNativeType.Convex2DShape:
+                        return InitShapeData((shape as Convex2DShape).ChildShape);
                     case BroadphaseNativeType.ConvexHullShape:
                         shapeData = CreateConvexHullShape(shape as ConvexHullShape);
                         break;
@@ -837,8 +839,7 @@ namespace DemoFramework.SharpDX
                 foreach (CompoundShapeChild child in (shape as CompoundShape).ChildList)
                 {
                     Matrix childTransform = child.Transform * transform;
-                    CollisionShape childShape = child.ChildShape;
-                    InitInstanceData(colObj, childShape, ref childTransform);
+                    InitInstanceData(colObj, child.ChildShape, ref childTransform);
                 }
             }
             else if (shape.ShapeType == BroadphaseNativeType.SoftBodyShape)
@@ -884,7 +885,7 @@ namespace DemoFramework.SharpDX
                 }
                 else
                 {
-                    ((colObj as RigidBody).MotionState as DefaultMotionState).GetWorldTransform(out transform);
+                    (colObj as RigidBody).GetWorldTransform(out transform);
                 }
                 InitInstanceData(colObj, colObj.CollisionShape, ref transform);
             }

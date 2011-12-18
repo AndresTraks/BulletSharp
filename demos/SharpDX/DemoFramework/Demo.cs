@@ -694,15 +694,7 @@ namespace DemoFramework
             }
             else if (Input.MouseReleased == MouseButtons.Right)
             {
-                if (pickConstraint != null && PhysicsContext.World != null)
-                {
-                    PhysicsContext.World.RemoveConstraint(pickConstraint);
-                    pickConstraint.Dispose();
-                    pickConstraint = null;
-                    pickedBody.ForceActivationState(ActivationState.ActiveTag);
-                    pickedBody.DeactivationTime = 0;
-                    pickedBody = null;
-                }
+                RemovePickingConstraint();
             }
 
             // Mouse movement
@@ -741,6 +733,19 @@ namespace DemoFramework
                         pickCon.PivotInB = rayFrom + dir;
                     }
                 }
+            }
+        }
+
+        void RemovePickingConstraint()
+        {
+            if (pickConstraint != null && PhysicsContext.World != null)
+            {
+                PhysicsContext.World.RemoveConstraint(pickConstraint);
+                pickConstraint.Dispose();
+                pickConstraint = null;
+                pickedBody.ForceActivationState(ActivationState.ActiveTag);
+                pickedBody.DeactivationTime = 0;
+                pickedBody = null;
             }
         }
 

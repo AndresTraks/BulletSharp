@@ -91,9 +91,9 @@ namespace DemoFramework
 
         protected abstract void OnInitializePhysics();
 
-        public void ClientResetScene()
+        public virtual void ClientResetScene()
         {
-            Graphics.ResetScene();
+            RemovePickingConstraint();
             ExitPhysics();
             OnInitializePhysics();
         }
@@ -207,6 +207,9 @@ namespace DemoFramework
                     case Keys.Space:
                         ShootBox(Freelook.Eye, GetRayTo(_input.MousePoint, Freelook.Eye, Freelook.Target, Graphics.FieldOfView));
                         break;
+                    case Keys.Return:
+                        ClientResetScene();
+                        break;
                 }
             }
 
@@ -288,15 +291,7 @@ namespace DemoFramework
             }
             else if (_input.MouseReleased == MouseButtons.Right)
             {
-                if (pickConstraint != null && World != null)
-                {
-                    World.RemoveConstraint(pickConstraint);
-                    pickConstraint.Dispose();
-                    pickConstraint = null;
-                    pickedBody.ForceActivationState(ActivationState.ActiveTag);
-                    pickedBody.DeactivationTime = 0;
-                    pickedBody = null;
-                }
+                RemovePickingConstraint();
             }
 
             // Mouse movement
@@ -335,6 +330,19 @@ namespace DemoFramework
                         pickCon.PivotInB = rayFrom + dir;
                     }
                 }
+            }
+        }
+
+        void RemovePickingConstraint()
+        {
+            if (pickConstraint != null && World != null)
+            {
+                World.RemoveConstraint(pickConstraint);
+                pickConstraint.Dispose();
+                pickConstraint = null;
+                pickedBody.ForceActivationState(ActivationState.ActiveTag);
+                pickedBody.DeactivationTime = 0;
+                pickedBody = null;
             }
         }
 

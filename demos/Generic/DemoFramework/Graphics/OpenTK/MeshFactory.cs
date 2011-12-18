@@ -11,8 +11,8 @@ namespace DemoFramework.OpenTK
 {
     public struct InstanceData
     {
-        public Matrix4 worldTransform;
-        public Color color;
+        public Matrix4 WorldTransform;
+        public Color Color;
     }
 
     public class ShapeData : System.IDisposable
@@ -25,25 +25,45 @@ namespace DemoFramework.OpenTK
         public int NormalBufferID;
         public int ElementBufferID;
         public DrawElementsType ElementsType;
+        public BeginMode BeginMode = BeginMode.Triangles;
 
-        public List<InstanceData> InstanceDataList { get; set; }
+        public List<InstanceData> InstanceDataList = new List<InstanceData>();
 
-        public ShapeData()
+        public void SetVertexBuffer<T>(T[] vertices) where T : struct
         {
-            InstanceDataList = new List<InstanceData>();
+            SetBuffer(vertices, out VertexBufferID);
         }
 
-        public void SetVertexBuffer(Vector3[] vectors)
-        {
-            SetBuffer(vectors, out VertexBufferID);
-        }
-
-        public void SetNormalBuffer(Vector3[] normals)
+        public void SetNormalBuffer<T>(T[] normals) where T : struct
         {
             SetBuffer(normals, out NormalBufferID);
         }
 
-        static void SetBuffer(Vector3[] vertices, out int bufferId)
+        public void SetDynamicVertexBuffer<T>(T[] vertices) where T : struct
+        {
+            if (VertexBufferID == 0)
+            {
+                SetBuffer(vertices, out VertexBufferID, BufferUsageHint.DynamicDraw);
+            }
+            else
+            {
+                UpdateBuffer(vertices, VertexBufferID);
+            }
+        }
+
+        public void SetDynamicNormalBuffer<T>(T[] vertices) where T : struct
+        {
+            if (NormalBufferID == 0)
+            {
+                SetBuffer(vertices, out NormalBufferID, BufferUsageHint.DynamicDraw);
+            }
+            else
+            {
+                UpdateBuffer(vertices, NormalBufferID);
+            }
+        }
+
+        static void SetBuffer<T>(T[] vertices, out int bufferId, BufferUsageHint usage = BufferUsageHint.StaticDraw) where T : struct
         {
             int bufferSize;
 
@@ -54,12 +74,24 @@ namespace DemoFramework.OpenTK
             GL.BindBuffer(BufferTarget.ArrayBuffer, bufferId);
 
             // Send data to buffer
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(vertices.Length * Vector3.SizeInBytes), vertices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(vertices.Length * Vector3.SizeInBytes), vertices, usage);
 
             // Validate that the buffer is the correct size
             GL.GetBufferParameter(BufferTarget.ArrayBuffer, BufferParameterName.BufferSize, out bufferSize);
             if (vertices.Length * Vector3.SizeInBytes != bufferSize)
                 throw new ApplicationException("Buffer data not uploaded correctly");
+
+            // Clear the buffer Binding
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+        }
+
+        static void UpdateBuffer<T>(T[] vertices, int bufferId) where T : struct
+        {
+            // Bind current context to Array Buffer ID
+            GL.BindBuffer(BufferTarget.ArrayBuffer, bufferId);
+
+            // Send data to buffer
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(vertices.Length * Vector3.SizeInBytes), vertices, BufferUsageHint.DynamicDraw);
 
             // Clear the buffer Binding
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
@@ -213,6 +245,53 @@ namespace DemoFramework.OpenTK
             return shapeData;
         }
 
+        ShapeData CreateConvexHullShape(ConvexHullShape shape)
+        {
+            ConvexPolyhedron poly = shape.ConvexPolyhedron;
+            if (poly != null)
+            {
+                throw new NotImplementedException();
+            }
+
+            ShapeHull hull = new ShapeHull(shape);
+            hull.BuildHull(shape.Margin);
+
+            int indexCount = hull.NumIndices;
+            UIntArray indices = hull.Indices;
+            Vector3Array points = hull.Vertices;
+
+            ShapeData shapeData = new ShapeData();
+            shapeData.VertexCount = indexCount;
+
+            Vector3[] vertices = new Vector3[indexCount];
+            Vector3[] normals = new Vector3[indexCount];
+
+            int v = 0, i;
+            for (i = 0; i < indexCount; i += 3)
+            {
+                Vector3 v0 = MathHelper.Convert(points[(int)indices[i]]);
+                Vector3 v1 = MathHelper.Convert(points[(int)indices[i + 1]]);
+                Vector3 v2 = MathHelper.Convert(points[(int)indices[i + 2]]);
+
+                Vector3 v01 = v0 - v1;
+                Vector3 v02 = v0 - v2;
+                Vector3 normal = Vector3.Cross(v01, v02);
+                normal.Normalize();
+
+                normals[v] = normal;
+                vertices[v++] = v0;
+                normals[v] = normal;
+                vertices[v++] = v1;
+                normals[v] = normal;
+                vertices[v++] = v2;
+            }
+
+            shapeData.SetVertexBuffer(vertices);
+            shapeData.SetNormalBuffer(normals);
+
+            return shapeData;
+        }
+
         Vector3 GetVectorByAxis(Vector3 vector, int axis)
         {
             switch (axis)
@@ -220,9 +299,9 @@ namespace DemoFramework.OpenTK
                 case 0:
                     return new Vector3(vector.Y, vector.Z, vector.X);
                 case 1:
-                    return new Vector3(vector.Z, vector.Y, vector.X);
-                default:
                     return vector;
+                default:
+                    return new Vector3(vector.Z, vector.X, vector.Y);
             }
         }
 
@@ -320,7 +399,116 @@ namespace DemoFramework.OpenTK
             indices[i++] = (byte)(baseIndex + 1);
 
             shapeData.SetVertexBuffer(vertices);
-            shapeData.SetNormalBuffer(vertices);
+            shapeData.SetNormalBuffer(normals);
+            shapeData.SetIndexBuffer(indices);
+
+            return shapeData;
+        }
+
+        public ShapeData CreateSoftBody()
+        {
+            // Soft body geometry is recreated each frame. Nothing to do here.
+            return new ShapeData();
+        }
+
+        ShapeData CreateSphereShape(SphereShape shape)
+        {
+            float radius = shape.Radius;
+
+            int slices = (int)(radius * 10.0f);
+            int stacks = (int)(radius * 10.0f);
+            slices = (slices > 16) ? 16 : (slices < 3) ? 3 : slices;
+            stacks = (stacks > 16) ? 16 : (stacks < 2) ? 2 : stacks;
+
+            float hAngleStep = (float)Math.PI * 2 / slices;
+            float vAngleStep = (float)Math.PI / stacks;
+
+            ShapeData shapeData = new ShapeData();
+
+            shapeData.VertexCount = 2 + slices * (stacks - 1);
+            shapeData.ElementCount = 6 * slices * (stacks - 1);
+
+            Vector3[] vertices = new Vector3[shapeData.VertexCount];
+            Vector3[] normals = new Vector3[shapeData.VertexCount];
+            byte[] indices = new byte[shapeData.ElementCount];
+
+            int i = 0, v = 0;
+
+
+            // Vertices
+            // Top and bottom
+            normals[v] = -Vector3.UnitY;
+            vertices[v++] = new Vector3(0, -radius, 0);
+            normals[v] = Vector3.UnitY;
+            vertices[v++] = new Vector3(0, radius, 0);
+
+            // Stacks
+            int j, k;
+            float angle = 0;
+            float vAngle = -(float)Math.PI / 2;
+            Vector3 vTemp;
+            for (j = 0; j < stacks - 1; j++)
+            {
+                vAngle += vAngleStep;
+
+                for (k = 0; k < slices; k++)
+                {
+                    angle += hAngleStep;
+
+                    vTemp = new Vector3((float)Math.Cos(vAngle) * (float)Math.Sin(angle), (float)Math.Sin(vAngle), (float)Math.Cos(vAngle) * (float)Math.Cos(angle));
+                    normals[v] = Vector3.Normalize(vTemp);
+                    vertices[v++] = vTemp * radius;
+                }
+            }
+
+
+            // Indices
+            // Top cap
+            byte index = 2;
+            for (k = 0; k < slices; k++)
+            {
+                indices[i++] = 0;
+                indices[i++] = index;
+                index++;
+                indices[i++] = index;
+            }
+            indices[i - 1] = 2;
+
+            // Stacks
+            //for (j = 0; j < 1; j++)
+            int sliceDiff = slices * 3;
+            for (j = 0; j < stacks - 2; j++)
+            {
+                for (k = 0; k < slices; k++)
+                {
+                    indices[i++] = indices[i - sliceDiff];
+                    indices[i++] = indices[i - sliceDiff];
+                    indices[i++] = index;
+                    index++;
+                }
+
+                for (k = 0; k < slices; k++)
+                {
+                    indices[i++] = indices[i - sliceDiff];
+                    indices[i++] = indices[i - sliceDiff];
+                    indices[i++] = indices[i - sliceDiff + 2];
+                }
+                indices[i - 1] = indices[i - sliceDiff + 1];
+            }
+
+            // Bottom cap
+            index--;
+            for (k = 0; k < slices; k++)
+            {
+                indices[i++] = 1;
+                indices[i++] = index;
+                index--;
+                indices[i++] = index;
+            }
+            indices[i - 1] = indices[i - sliceDiff + 1];
+
+            shapeData.SetVertexBuffer(vertices);
+            shapeData.SetNormalBuffer(normals);
             shapeData.SetIndexBuffer(indices);
 
             return shapeData;
@@ -335,7 +523,7 @@ namespace DemoFramework.OpenTK
                 switch (shape.ShapeType)
                 {
                     case BroadphaseNativeType.SoftBodyShape:
-                        //shapeData = CreateSoftBody();
+                        shapeData = CreateSoftBody();
                         break;
                     case BroadphaseNativeType.BoxShape:
                         shapeData = CreateBoxShape(shape as BoxShape);
@@ -343,11 +531,13 @@ namespace DemoFramework.OpenTK
                     case BroadphaseNativeType.CylinderShape:
                         shapeData = CreateCylinderShape(shape as CylinderShape);
                         break;
+                    case BroadphaseNativeType.Convex2DShape:
+                        return InitShapeData((shape as Convex2DShape).ChildShape);
                     case BroadphaseNativeType.ConvexHullShape:
-                        //shapeData = CreateConvexHullShape(shape as ConvexHullShape);
+                        shapeData = CreateConvexHullShape(shape as ConvexHullShape);
                         break;
                     case BroadphaseNativeType.SphereShape:
-                        //shapeData = CreateSphereShape(shape as SphereShape);
+                        shapeData = CreateSphereShape(shape as SphereShape);
                         break;
                     case BroadphaseNativeType.TriangleMeshShape:
                         //shapeData = CreateTriangleMeshShape(shape as TriangleMeshShape);
@@ -369,36 +559,33 @@ namespace DemoFramework.OpenTK
 
         void InitInstanceData(CollisionObject colObj, CollisionShape shape, ref BulletSharp.Matrix transform)
         {
-            if (shape.ShapeType == BroadphaseNativeType.CompoundShape)
+            switch (shape.ShapeType)
             {
-                foreach (CompoundShapeChild child in (shape as CompoundShape).ChildList)
-                {
-                    BulletSharp.Matrix childTransform = child.Transform * transform;
-                    CollisionShape childShape = child.ChildShape;
-                    InitInstanceData(colObj, childShape, ref childTransform);
-                }
-            }
-            else if (shape.ShapeType == BroadphaseNativeType.SoftBodyShape)
-            {
-                /*
-                ShapeData shapeData = InitShapeData(shape);
-                UpdateSoftBody(colObj as SoftBody, shapeData);
+                case BroadphaseNativeType.CompoundShape:
+                    foreach (CompoundShapeChild child in (shape as CompoundShape).ChildList)
+                    {
+                        BulletSharp.Matrix childTransform = child.Transform * transform;
+                        InitInstanceData(colObj, child.ChildShape, ref childTransform);
+                    }
+                    break;
+                case BroadphaseNativeType.SoftBodyShape:
+                    ShapeData shapeData = InitShapeData(shape);
+                    UpdateSoftBody(colObj as SoftBody, shapeData);
 
-                shapeData.InstanceDataList.Add(new InstanceData()
-                {
-                    WorldTransform = transform,
-                    Color = softBodyColor
-                });
-                */
-            }
-            else
-            {
-                InitShapeData(shape).InstanceDataList.Add(new InstanceData()
-                {
-                    worldTransform = MathHelper.Convert(ref transform),
-                    color = ground.Equals(colObj.UserObject) ? groundColor :
-                        colObj.ActivationState == ActivationState.ActiveTag ? activeColor : passiveColor
-                });
+                    shapeData.InstanceDataList.Add(new InstanceData()
+                    {
+                        WorldTransform = MathHelper.Convert(ref transform),
+                        Color = softBodyColor
+                    });
+                    break;
+                default:
+                    InitShapeData(shape).InstanceDataList.Add(new InstanceData()
+                    {
+                        WorldTransform = MathHelper.Convert(ref transform),
+                        Color = ground.Equals(colObj.UserObject) ? groundColor :
+                            colObj.ActivationState == ActivationState.ActiveTag ? activeColor : passiveColor
+                    });
+                    break;
             }
         }
 
@@ -423,15 +610,21 @@ namespace DemoFramework.OpenTK
                 }
                 else
                 {
-                    ((colObj as RigidBody).MotionState as DefaultMotionState).GetWorldTransform(out transform);
+                    (colObj as RigidBody).GetWorldTransform(out transform);
                 }
                 InitInstanceData(colObj, colObj.CollisionShape, ref transform);
             }
-            /*
+
             foreach (KeyValuePair<CollisionShape, ShapeData> sh in shapes)
             {
                 ShapeData s = sh.Value;
 
+                if (s.InstanceDataList.Count == 0)
+                {
+                    removeList.Add(sh.Key);
+                }
+
+                /*
                 // Is the instance buffer the right size?
                 if (s.InstanceDataBuffer.Description.SizeInBytes != s.InstanceDataList.Count * InstanceData.SizeInBytes)
                 {
@@ -458,8 +651,9 @@ namespace DemoFramework.OpenTK
                     data.WriteRange(s.InstanceDataList.ToArray());
                     s.InstanceDataBuffer.Unmap();
                 }
+                */
             }
-            */
+
             if (removeList.Count != 0)
             {
                 for (i = removeList.Count - 1; i >= 0; i--)
@@ -473,42 +667,165 @@ namespace DemoFramework.OpenTK
         {
             foreach (ShapeData s in shapes.Values)
             {
-                // Bormal buffer
-                GL.BindBuffer(BufferTarget.ArrayBuffer, s.NormalBufferID);
-                GL.NormalPointer(NormalPointerType.Float, Vector3.SizeInBytes, IntPtr.Zero);
-                GL.EnableClientState(ArrayCap.NormalArray);
+                // Normal buffer
+                if (s.NormalBufferID != 0)
+                {
+                    GL.BindBuffer(BufferTarget.ArrayBuffer, s.NormalBufferID);
+                    GL.NormalPointer(NormalPointerType.Float, Vector3.SizeInBytes, IntPtr.Zero);
+                    GL.EnableClientState(ArrayCap.NormalArray);
+                }
+                else
+                {
+                    GL.DisableClientState(ArrayCap.NormalArray);
+                }
 
                 // Vertex buffer
                 GL.BindBuffer(BufferTarget.ArrayBuffer, s.VertexBufferID);
                 GL.VertexPointer(3, VertexPointerType.Float, Vector3.SizeInBytes, IntPtr.Zero);
                 GL.EnableClientState(ArrayCap.VertexArray);
 
-                // index buffer
+                // Index (element) buffer
                 if (s.ElementCount != 0)
                 {
                     GL.BindBuffer(BufferTarget.ElementArrayBuffer, s.ElementBufferID);
 
                     foreach (InstanceData instance in s.InstanceDataList)
                     {
-                        Matrix4 modelLookAt = instance.worldTransform * lookat;
+                        Matrix4 modelLookAt = instance.WorldTransform * lookat;
                         GL.LoadMatrix(ref modelLookAt);
-                        GL.Color3(instance.color);
-                        GL.DrawElements(BeginMode.Triangles, s.ElementCount, s.ElementsType, IntPtr.Zero);
+                        GL.Color3(instance.Color);
+                        GL.DrawElements(s.BeginMode, s.ElementCount, s.ElementsType, IntPtr.Zero);
                     }
+
+                    GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
                 }
                 else
                 {
                     foreach (InstanceData instance in s.InstanceDataList)
                     {
-                        Matrix4 modelLookAt = instance.worldTransform * lookat;
+                        Matrix4 modelLookAt = instance.WorldTransform * lookat;
                         GL.LoadMatrix(ref modelLookAt);
-                        GL.Color3(instance.color);
-                        GL.DrawArrays(BeginMode.Triangles, 0, s.VertexCount);
+                        GL.Color3(instance.Color);
+                        GL.DrawArrays(s.BeginMode, 0, s.VertexCount);
                     }
                 }
 
                 GL.DisableClientState(ArrayCap.VertexArray);
                 GL.DisableClientState(ArrayCap.NormalArray);
+            }
+        }
+
+        public void UpdateSoftBody(SoftBody softBody, ShapeData shapeData)
+        {
+            AlignedFaceArray faces = softBody.Faces;
+
+            if (faces.Count != 0)
+            {
+                shapeData.VertexCount = faces.Count * 3;
+
+                BulletSharp.Vector3[] vectors = new BulletSharp.Vector3[shapeData.VertexCount];
+                BulletSharp.Vector3[] normals = new BulletSharp.Vector3[shapeData.VertexCount];
+                int v = 0;
+
+                int i;
+                for (i = 0; i < faces.Count; i++)
+                {
+                    NodePtrArray nodes = faces[i].N;
+                    Node n0 = nodes[0];
+                    Node n1 = nodes[1];
+                    Node n2 = nodes[2];
+                    n0.GetX(out vectors[v]);
+                    n0.GetNormal(out normals[v++]);
+                    n1.GetX(out vectors[v]);
+                    n1.GetNormal(out normals[v++]);
+                    n2.GetX(out vectors[v]);
+                    n2.GetNormal(out normals[v++]);
+                }
+
+                shapeData.SetDynamicVertexBuffer(vectors);
+                shapeData.SetDynamicNormalBuffer(normals);
+            }
+            else
+            {
+                AlignedTetraArray tetras = softBody.Tetras;
+                int tetraCount = tetras.Count;
+
+                if (tetraCount != 0)
+                {
+                    shapeData.VertexCount = tetraCount * 12;
+
+                    BulletSharp.Vector3[] vectors = new BulletSharp.Vector3[tetraCount * 12];
+                    BulletSharp.Vector3[] normals = new BulletSharp.Vector3[tetraCount * 12];
+                    int v = 0;
+
+                    for (int i = 0; i < tetraCount; i++)
+                    {
+                        NodePtrArray nodes = tetras[i].Nodes;
+                        BulletSharp.Vector3 v0 = nodes[0].X;
+                        BulletSharp.Vector3 v1 = nodes[1].X;
+                        BulletSharp.Vector3 v2 = nodes[2].X;
+                        BulletSharp.Vector3 v3 = nodes[3].X;
+                        BulletSharp.Vector3 v10 = v1 - v0;
+                        BulletSharp.Vector3 v02 = v0 - v2;
+
+                        BulletSharp.Vector3 normal = BulletSharp.Vector3.Cross(v10, v02);
+                        vectors[v] = v0;
+                        normals[v++] = normal;
+                        vectors[v] = v1;
+                        normals[v++] = normal;
+                        vectors[v] = v2;
+                        normals[v++] = normal;
+
+                        normal = BulletSharp.Vector3.Cross(v10, v3 - v0);
+                        vectors[v] = v0;
+                        normals[v++] = normal;
+                        vectors[v] = v1;
+                        normals[v++] = normal;
+                        vectors[v] = v3;
+                        normals[v++] = normal;
+
+                        normal = BulletSharp.Vector3.Cross(v2 - v1, v3 - v1);
+                        vectors[v] = v1;
+                        normals[v++] = normal;
+                        vectors[v] = v2;
+                        normals[v++] = normal;
+                        vectors[v] = v3;
+                        normals[v++] = normal;
+
+                        normal = BulletSharp.Vector3.Cross(v02, v3 - v2);
+                        vectors[v] = v2;
+                        normals[v++] = normal;
+                        vectors[v] = v0;
+                        normals[v++] = normal;
+                        vectors[v] = v3;
+                        normals[v++] = normal;
+                    }
+
+                    shapeData.SetDynamicVertexBuffer(vectors);
+                    shapeData.SetDynamicNormalBuffer(normals);
+                }
+                else if (softBody.Links.Count != 0)
+                {
+                    AlignedLinkArray links = softBody.Links;
+                    int linkCount = links.Count;
+                    shapeData.VertexCount = linkCount * 2;
+
+                    BulletSharp.Vector3[] vectors = new BulletSharp.Vector3[shapeData.VertexCount];
+
+                    for (int i = 0; i < linkCount; i++)
+                    {
+                        NodePtrArray nodes = links[i].Nodes;
+                        nodes[0].GetX(out vectors[i * 2]);
+                        nodes[1].GetX(out vectors[i * 2 + 1]);
+                    }
+
+                    shapeData.BeginMode = BeginMode.Lines;
+                    shapeData.SetDynamicVertexBuffer(vectors);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
             }
         }
     }
