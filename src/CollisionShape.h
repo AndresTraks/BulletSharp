@@ -29,9 +29,6 @@ namespace BulletSharp
 		~CollisionShape();
 
 	public:
-		virtual bool Equals(Object^ obj) override;
-		virtual int GetHashCode() override;
-
 		void CalculateLocalInertia(btScalar mass, [Out] Vector3% inertia);
 		Vector3 CalculateLocalInertia(btScalar mass);
 		void CalculateTemporalAabb(Matrix curTrans,

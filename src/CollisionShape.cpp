@@ -68,19 +68,6 @@ CollisionShape::!CollisionShape()
 	OnDisposed(this, nullptr);
 }
 
-bool CollisionShape::Equals(Object^ obj)
-{
-	CollisionShape^ p = dynamic_cast<CollisionShape^>(obj);
-	if (p == nullptr)
-		return false;
-	return (_collisionShape == p->UnmanagedPointer);
-}
-
-int CollisionShape::GetHashCode()
-{
-	return (int)_collisionShape;
-}
-
 bool CollisionShape::IsDisposed::get()
 {
 	return _flags & 1;
