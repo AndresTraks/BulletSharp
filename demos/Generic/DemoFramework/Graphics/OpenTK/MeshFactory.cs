@@ -665,6 +665,8 @@ namespace DemoFramework.OpenTK
 
         public void RenderInstanced(ref Matrix4 lookat)
         {
+            GL.MatrixMode(MatrixMode.Modelview);
+
             foreach (ShapeData s in shapes.Values)
             {
                 // Normal buffer

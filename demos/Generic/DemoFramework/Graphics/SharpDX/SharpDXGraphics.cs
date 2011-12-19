@@ -77,7 +77,7 @@ namespace DemoFramework.SharpDX
         ShaderSceneConstants sceneConstants = new ShaderSceneConstants();
         Buffer sceneConstantsBuffer;
 
-        protected InfoText Info { get; set; }
+        InfoText info;
 
         Color4 ambient;
         protected Color4 Ambient
@@ -303,23 +303,6 @@ namespace DemoFramework.SharpDX
 
         public override void Initialize()
         {
-            //bool isFormClosed = false;
-            bool formIsResizing = false;
-
-            /*
-            currentFormWindowState = Form.WindowState;
-            Form.Resize += (o, args) =>
-            {
-                if (Form.WindowState != currentFormWindowState)
-                {
-                    if (togglingFullScreen == false)
-                        HandleResize(o, args);
-                }
-
-                currentFormWindowState = Form.WindowState;
-            };
-            */
-            Form.ResizeBegin += (o, args) => { formIsResizing = true; };
             Form.ResizeEnd += (o, args) =>
             {
                 Width = Form.ClientSize.Width;
@@ -332,10 +315,7 @@ namespace DemoFramework.SharpDX
                 CreateBuffers();
 
                 SetSceneConstants();
-                formIsResizing = false;
             };
-
-            //Form.Closed += (o, args) => { isFormClosed = true; };
 
             Width = 1024;
             Height = 768;
@@ -433,7 +413,7 @@ namespace DemoFramework.SharpDX
             quadBufferLayout = new InputLayout(_device, gBufferRenderPass.Description.Signature, elements);
 
 
-            Info = new InfoText(_device);
+            info = new InfoText(_device);
             meshFactory = new MeshFactory(this);
 
             CreateBuffers();
@@ -507,7 +487,7 @@ namespace DemoFramework.SharpDX
             inputAssembler.InputLayout = quadBufferLayout;
             _device.Draw(4, 0);
 
-            Info.OnRender(Demo.FramesPerSecond);
+            info.OnRender(Demo.FramesPerSecond);
 
             _swapChain.Present(0, PresentFlags.None);
         }
@@ -534,7 +514,7 @@ namespace DemoFramework.SharpDX
 
         public override void SetInfoText(string text)
         {
-            Info.Text = text;
+            info.Text = text;
         }
     }
 }

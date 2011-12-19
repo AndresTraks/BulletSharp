@@ -55,6 +55,7 @@
     <Compile Include="GLForm.Designer.cs">
       <DependentUpon>GLForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="InfoText.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="MeshFactory.cs" />
     <Compile Include="OpenTKGraphics.cs" />
