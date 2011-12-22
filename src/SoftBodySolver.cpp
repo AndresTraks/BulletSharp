@@ -13,6 +13,11 @@ SoftBody::SoftBodySolver::SoftBodySolver(btSoftBodySolver* solver)
 	_solver = solver;
 }
 
+void SoftBody::SoftBodySolver::CopyBackToSoftBodies(bool bMove)
+{
+	_solver->copyBackToSoftBodies(bMove);
+}
+
 void SoftBody::SoftBodySolver::CopyBackToSoftBodies()
 {
 	_solver->copyBackToSoftBodies();

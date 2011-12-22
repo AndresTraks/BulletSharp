@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using System;
 
 namespace DemoFramework.OpenTK
 {
@@ -13,6 +14,11 @@ namespace DemoFramework.OpenTK
 
         MeshFactory meshFactory;
         InfoText info;
+
+        int shaderProgramHandle;
+        int projectionMatrixLocation;
+        int modelviewMatrixLocation;
+        int lightPositionVectorLocation;
 
         public override float AspectRatio
         {
@@ -45,14 +51,30 @@ namespace DemoFramework.OpenTK
             }
 
             int shaderHandle = GL.CreateShader(type);
+            ErrorCode e = GL.GetError();
+            e.ToString();
+            if (GL.GetError() != ErrorCode.NoError)
+                return 0;
+
             GL.ShaderSource(shaderHandle, shaderSource);
+            if (GL.GetError() != ErrorCode.NoError)
+                return 0;
+
             GL.CompileShader(shaderHandle);
+            if (GL.GetError() != ErrorCode.NoError)
+                return 0;
 
             return shaderHandle;
         }
 
         public void InitializeDevice()
         {
+            Version ver = new Version(GL.GetString(StringName.Version));
+            Version req = new Version(1, 4, 0, 0);
+
+            if (ver < req)
+                MessageBox.Show(string.Format("Need OpenGL {0:0.0} or newer to run.", req.ToString()));
+
             GL.ClearColor(Color.Gray);
 
             GL.Enable(EnableCap.ColorMaterial);
@@ -66,7 +88,42 @@ namespace DemoFramework.OpenTK
             GL.Light(LightName.Light0, LightParameter.Diffuse, new global::OpenTK.Vector4(1.0f, 0.98f, 0.8f, 1.0f));
 
             int vertexShaderHandle = CreateShader(ShaderType.VertexShader, "vp.cg");
-            int fragmentShaderHandle = CreateShader(ShaderType.VertexShader, "fp.cg");
+            int fragmentShaderHandle = CreateShader(ShaderType.FragmentShader, "fp.cg");
+
+            if (vertexShaderHandle == 0 || fragmentShaderHandle == 0)
+            {
+                MessageBox.Show("Could not create shaders!");
+                return;
+            }
+
+            shaderProgramHandle = GL.CreateProgram();
+            if (GL.GetError() != ErrorCode.NoError)
+                return;
+
+            GL.AttachShader(shaderProgramHandle, vertexShaderHandle);
+            if (GL.GetError() != ErrorCode.NoError)
+                return;
+            
+            GL.AttachShader(shaderProgramHandle, fragmentShaderHandle);
+            if (GL.GetError() != ErrorCode.NoError)
+                return;
+            
+            GL.LinkProgram(shaderProgramHandle);
+            if (GL.GetError() != ErrorCode.NoError)
+                return;
+
+            string programInfoLog;
+            GL.GetProgramInfoLog(shaderProgramHandle, out programInfoLog);
+            programInfoLog.ToString();
+
+            GL.UseProgram(shaderProgramHandle);
+            if (GL.GetError() != ErrorCode.NoError)
+                return;
+
+            projectionMatrixLocation = GL.GetUniformLocation(shaderProgramHandle, "projection_matrix");
+            modelviewMatrixLocation = GL.GetUniformLocation(shaderProgramHandle, "modelview_matrix");
+            lightPositionVectorLocation = GL.GetUniformLocation(shaderProgramHandle, "light_position");
+            meshFactory.SetModelViewMatrixLocation(modelviewMatrixLocation);
         }
 
         public override void Initialize()
@@ -81,23 +138,17 @@ namespace DemoFramework.OpenTK
             Form.ShowDialog();
         }
 
-        static float fps;
         public void Render()
         {
             Demo.OnHandleInput();
             Demo.OnUpdate();
 
-            if (fps != Demo.FramesPerSecond)
-            {
-                fps = Demo.FramesPerSecond;
-                Form.Text = "FPS: " + Demo.FramesPerSecond.ToString();
-            }
-
             GL.Viewport(0, 0, glControl.Width, glControl.Height);
 
+            GL.UseProgram(shaderProgramHandle);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref perspective);
-            GL.Scale(-1.0f, 1.0f, 1.0f);
+            GL.UniformMatrix4(projectionMatrixLocation, false, ref perspective);
 
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Lighting);
@@ -106,6 +157,7 @@ namespace DemoFramework.OpenTK
             meshFactory.InitInstancedRender(Demo.World.CollisionObjectArray);
             meshFactory.RenderInstanced(ref lookat);
 
+            GL.UseProgram(0);
             info.OnRender(Demo.FramesPerSecond);
 
             glControl.SwapBuffers();
@@ -113,7 +165,12 @@ namespace DemoFramework.OpenTK
 
         public override void UpdateView()
         {
-            perspective = Matrix4.CreatePerspectiveFieldOfView((float)System.Math.PI / 4.0f, AspectRatio, 0.1f, 400);
+            perspective = Matrix4.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, 0.1f, 400);
+            perspective *= Matrix4.Scale(-1.0f, 1.0f, 1.0f);
+            if (projectionMatrixLocation != 0)
+            {
+                GL.UniformMatrix4(projectionMatrixLocation, false, ref perspective);
+            }
 
             FreeLook freelook = Demo.Freelook;
             lookat = Matrix4.LookAt(MathHelper.Convert(freelook.Eye), MathHelper.Convert(freelook.Target), MathHelper.Convert(freelook.Up));

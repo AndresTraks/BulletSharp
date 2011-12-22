@@ -19,6 +19,7 @@ namespace BulletSharp
 			SoftBodySolver(btSoftBodySolver* solver);
 
 		public:
+			void CopyBackToSoftBodies(bool bMove);
 			void CopyBackToSoftBodies();
 			void Optimize(AlignedSoftBodyArray^ softBodies, bool forceUpdate);
 			void Optimize(AlignedSoftBodyArray^ softBodies);

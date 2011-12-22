@@ -22,6 +22,12 @@ matrix InverseProjection;
 matrix InverseView;
 matrix LightInverseViewProjection;
 float4 LightPosition;
+float4 EyePosition;
+float4 EyeZAxis;
+float TanHalfFOVX;
+float TanHalfFOVY;
+float ProjectionA;
+float ProjectionB;
 
 struct VS_IN
 {
@@ -49,25 +55,41 @@ float4 PS( VS_OUT input ) : SV_Target
 {
 	float4 lightSample = lightBuffer.Sample(bufferSampler, input.texCoord);
 	float4 normalSample = normalBuffer.Sample(bufferSampler, input.texCoord);
-	float4 diffuseSample = diffuseBuffer.Sample(bufferSampler, input.texCoord);
+	float3 diffuseSample = diffuseBuffer.Sample(bufferSampler, input.texCoord).rgb;
 	float depthSample = depthMap.Sample(depthSampler, input.texCoord).x;
 	float lightDepthSample = lightDepthMap.Sample(depthSampler, input.texCoord).x;
-	
-	float4 projected = float4(input.texCoord.x * 2 - 1, (1 - input.texCoord.y) * 2 - 1, depthSample, 1);
-	float4 worldPosition = mul(projected, InverseProjection);
-	//worldPosition.xyz / worldPosition.w;
-	worldPosition = mul(worldPosition, InverseView);
 
-	//float3 light = normalize(LightPosition.xyz - worldPosition.xyz);
-	float3 light = normalize(LightPosition.xyz);
-	float3 normal = (normalSample.xyz - 0.5) * 2; // from 0...1 to -1...1 range
-	float3 diffuse = diffuseSample.xyz;
+	// from 0...1 to -1...1; also take advantage of mad (mul + add)
+	float2 screenPos = (input.texCoord * float2(2,-2)) + float2(-1,1);
 
-	float shade = 0.5+0.5*saturate(dot(light, normal));
-	//shade *= GetShadowAmount(input.LPos);
-	diffuse *= shade;
+	float linearDepth = ProjectionB / (depthSample - ProjectionA);
 
-	return float4(diffuse, 1);
+	float4 viewSpacePosition = float4(
+		linearDepth * screenPos.x*TanHalfFOVX,
+		linearDepth * screenPos.y*TanHalfFOVY,
+		linearDepth, 1);
+	float4 worldPosition = mul(viewSpacePosition, InverseView);
+
+	// Project the view ray onto the camera's z-axis
+	//float viewZDist = dot(EyeZAxis.xyz, viewSpacePosition);
+	//float3 worldPosition = EyePosition.xyz + viewSpacePosition * (linearDepth/viewZDist);
+
+	float3 light = LightPosition.xyz - worldPosition;
+	//float3 light = normalize(LightPosition.xyz);
+	light = normalize(light);
+	float3 normal = normalize((normalSample.xyz - 0.5) * 2); // from 0...1 to -1...1
+	float3 vhalf = normalize(light + EyePosition);
+
+	float3 specularMaterial = float3(0.8, 0.8, 1.0);
+	//float3 specularMaterial = float3(1.0, 1.0, 1.0);
+	float diffuse = 0.5 + 0.5 * dot(normal, light);
+    float specular = saturate(dot(normal, vhalf));
+    specular = 0.3f * pow(specular, 16);
+
+	//float shade *= GetShadowAmount(input.LPos);
+	//diffuse *= shade;
+
+	return float4(diffuse * diffuseSample + specular * specularMaterial, 1);
 }
 
 technique10 Render

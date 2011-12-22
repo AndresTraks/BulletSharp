@@ -48,7 +48,7 @@ VS_OUT VS(VS_IN input)
 	output.Pos = mul(View, output.Pos);
     output.Pos = mul(Projection, output.Pos);
 
-	output.Normal = mul(input.Normal, world).xyz;
+	output.Normal = mul(input.Normal, (float3x3)world).xyz;
 	output.Color = input.Color;
 
     return output;

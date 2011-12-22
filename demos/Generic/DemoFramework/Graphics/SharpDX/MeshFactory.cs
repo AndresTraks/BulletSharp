@@ -57,8 +57,9 @@ namespace DemoFramework.SharpDX
                 BindFlags = BindFlags.VertexBuffer
             };
 
-            using (var data = new DataStream(vectors, false, false))
+            using (var data = new DataStream(vertexBufferDesc.SizeInBytes, false, true))
             {
+                data.WriteRange(vectors);
                 VertexBuffer = new Buffer(device, data, vertexBufferDesc);
                 VertexBuffer.Unmap();
             }
@@ -92,8 +93,9 @@ namespace DemoFramework.SharpDX
                     CpuAccessFlags = CpuAccessFlags.Write
                 };
 
-                using (var data = new DataStream(vectors, false, false))
+                using (var data = new DataStream(vertexBufferDesc.SizeInBytes, false, true))
                 {
+                    data.WriteRange(vectors);
                     VertexBuffer = new Buffer(device, data, vertexBufferDesc);
                 }
 
@@ -101,37 +103,21 @@ namespace DemoFramework.SharpDX
             }
         }
 
-        public void SetIndexBuffer(Device device, byte[] indices)
-        {
-            IndexFormat = Format.R8_UInt;
-
-            BufferDescription boxIndexBufferDesc = new BufferDescription()
-            {
-                SizeInBytes = sizeof(byte) * indices.Length,
-                Usage = ResourceUsage.Default,
-                BindFlags = BindFlags.IndexBuffer
-            };
-
-            using (var data = new DataStream(indices, false, false))
-            {
-                IndexBuffer = new Buffer(device, data, boxIndexBufferDesc);
-            }
-        }
-
         public void SetIndexBuffer(Device device, ushort[] indices)
         {
             IndexFormat = Format.R16_UInt;
 
-            BufferDescription boxIndexBufferDesc = new BufferDescription()
+            BufferDescription indexBufferDesc = new BufferDescription()
             {
                 SizeInBytes = sizeof(ushort) * indices.Length,
                 Usage = ResourceUsage.Default,
                 BindFlags = BindFlags.IndexBuffer
             };
 
-            using (var data = new DataStream(indices, false, false))
+            using (var data = new DataStream(indexBufferDesc.SizeInBytes, false, true))
             {
-                IndexBuffer = new Buffer(device, data, boxIndexBufferDesc);
+                data.WriteRange(indices);
+                IndexBuffer = new Buffer(device, data, indexBufferDesc);
             }
         }
 
@@ -139,16 +125,17 @@ namespace DemoFramework.SharpDX
         {
             IndexFormat = Format.R32_UInt;
 
-            BufferDescription boxIndexBufferDesc = new BufferDescription()
+            BufferDescription indexBufferDesc = new BufferDescription()
             {
                 SizeInBytes = sizeof(uint) * indices.Length,
                 Usage = ResourceUsage.Default,
                 BindFlags = BindFlags.IndexBuffer
             };
 
-            using (var data = new DataStream(indices, false, false))
+            using (var data = new DataStream(indexBufferDesc.SizeInBytes, false, true))
             {
-                IndexBuffer = new Buffer(device, data, boxIndexBufferDesc);
+                data.WriteRange(indices);
+                IndexBuffer = new Buffer(device, data, indexBufferDesc);
             }
         }
 
@@ -176,7 +163,7 @@ namespace DemoFramework.SharpDX
     public class MeshFactory : System.IDisposable
     {
         Device device;
-        Device.InputAssemblerStage inputAssembler;
+        InputAssemblerStage inputAssembler;
         Dictionary<CollisionShape, ShapeData> shapes = new Dictionary<CollisionShape, ShapeData>();
         List<CollisionShape> removeList = new List<CollisionShape>();
         Effect planeShader = null;
@@ -311,26 +298,119 @@ namespace DemoFramework.SharpDX
 
             return shapeData;
         }
-        /*
-        Mesh CreateCapsuleShape(CapsuleShape shape)
+
+        ShapeData CreateCapsuleShape(CapsuleShape shape)
         {
-            // Combine a cylinder and two spheres.
-            Vector3 size = shape.ImplicitShapeDimensions;
-            Mesh cylinder = Mesh.CreateCylinder(device, size.X, size.X, size.Y * 2, 8, 1);
-            Mesh sphere = Mesh.CreateSphere(device, size.Z, 8, 4);
-            Mesh[] meshes = new Mesh[] { sphere, cylinder, sphere };
-            Matrix[] transforms = new Matrix[] {
-                    Matrix.Translation(0, -size.Y, 0),
-                    Matrix.RotationX((float)Math.PI / 2),
-                    Matrix.Translation(0, size.Y, 0)};
-            Mesh mesh = Mesh.Concatenate(device, meshes, MeshFlags.Managed, transforms, null);
-            cylinder.Dispose();
-            sphere.Dispose();
+            int up = shape.UpAxis;
+            float radius = shape.Radius;
+            float cylinderHalfHeight = shape.HalfHeight;
 
-            complexShapes.Add(shape, mesh);
-            return mesh;
+            int slices = (int)(radius * 10.0f);
+            int stacks = (int)(radius * 10.0f);
+            slices = (slices > 16) ? 16 : (slices < 3) ? 3 : slices;
+            stacks = (stacks > 16) ? 16 : (stacks < 2) ? 2 : stacks;
+
+            float hAngleStep = (float)Math.PI * 2 / slices;
+            float vAngleStep = (float)Math.PI / stacks;
+
+            ShapeData shapeData = new ShapeData();
+
+            shapeData.VertexCount = 2 + slices * (stacks - 1);
+            shapeData.IndexCount = 6 * slices * (stacks - 1);
+
+            Vector3[] vertices = new Vector3[shapeData.VertexCount * 2];
+            ushort[] indices = new ushort[shapeData.IndexCount];
+
+            int i = 0, v = 0;
+
+
+            // Vertices
+            // Top and bottom
+            vertices[v++] = GetVectorByAxis(new Vector3(0, -cylinderHalfHeight - radius, 0), up);
+            vertices[v++] = GetVectorByAxis(-Vector3.UnitY, up);
+            vertices[v++] = GetVectorByAxis(new Vector3(0, cylinderHalfHeight + radius, 0), up);
+            vertices[v++] = GetVectorByAxis(Vector3.UnitY, up);
+
+            // Stacks
+            int j, k;
+            float angle = 0;
+            float vAngle = -(float)Math.PI / 2;
+            Vector3 vTemp;
+            Vector3 cylinderOffset = GetVectorByAxis(new Vector3(0, -cylinderHalfHeight, 0), up);
+            for (j = 0; j < stacks - 1; j++)
+            {
+                float prevAngle = vAngle;
+                vAngle += vAngleStep;
+
+                if (vAngle > 0 && prevAngle < 0)
+                {
+                    cylinderOffset = GetVectorByAxis(new Vector3(0, cylinderHalfHeight, 0), up);
+                }
+
+                for (k = 0; k < slices; k++)
+                {
+                    angle += hAngleStep;
+
+                    vTemp = GetVectorByAxis(new Vector3((float)Math.Cos(vAngle) * (float)Math.Sin(angle),
+                        (float)Math.Sin(vAngle),
+                        (float)Math.Cos(vAngle) * (float)Math.Cos(angle)), up);
+                    vertices[v++] = vTemp * radius + cylinderOffset;
+                    vertices[v++] = Vector3.Normalize(vTemp);
+                }
+            }
+
+
+            // Indices
+            // Top cap
+            byte index = 2;
+            for (k = 0; k < slices; k++)
+            {
+                indices[i++] = 0;
+                indices[i++] = index;
+                index++;
+                indices[i++] = index;
+            }
+            indices[i - 1] = 2;
+
+            // Stacks
+            //for (j = 0; j < 1; j++)
+            int sliceDiff = slices * 3;
+            for (j = 0; j < stacks - 2; j++)
+            {
+                for (k = 0; k < slices; k++)
+                {
+                    indices[i++] = indices[i - sliceDiff];
+                    indices[i++] = indices[i - sliceDiff];
+                    indices[i++] = index;
+                    index++;
+                }
+
+                for (k = 0; k < slices; k++)
+                {
+                    indices[i++] = indices[i - sliceDiff];
+                    indices[i++] = indices[i - sliceDiff];
+                    indices[i++] = indices[i - sliceDiff + 2];
+                }
+                indices[i - 1] = indices[i - sliceDiff + 1];
+            }
+
+            // Bottom cap
+            index--;
+            for (k = 0; k < slices; k++)
+            {
+                indices[i++] = 1;
+                indices[i++] = index;
+                index--;
+                indices[i++] = index;
+            }
+            indices[i - 1] = indices[i - sliceDiff + 1];
+
+            shapeData.SetVertexBuffer(device, vertices);
+            shapeData.SetIndexBuffer(device, indices);
+
+            return shapeData;
         }
-
+        /*
         Mesh CreateConeShape(ConeShape shape)
         {
             Mesh mesh = Mesh.CreateCylinder(device, 0, shape.Radius, shape.Height, 16, 1);
@@ -366,11 +446,11 @@ namespace DemoFramework.SharpDX
             shapeData.IndexCount = (4 * numSteps + 2) * 3;
 
             Vector3[] vertices = new Vector3[shapeData.VertexCount * 2];
-            byte[] indices = new byte[shapeData.IndexCount];
+            ushort[] indices = new ushort[shapeData.IndexCount];
 
             int i = 0, v = 0;
-            byte index = 0;
-            byte baseIndex;
+            ushort index = 0;
+            ushort baseIndex;
             Vector3 normal;
 
             // Draw two sides
@@ -395,12 +475,12 @@ namespace DemoFramework.SharpDX
                     vertices[v++] = normal;
 
                     indices[i++] = baseIndex;
-                    indices[i++] = (byte)(index - 1);
+                    indices[i++] = (ushort)(index - 1);
                     indices[i++] = index++;
                 }
                 indices[i++] = baseIndex;
-                indices[i++] = (byte)(index - 1);
-                indices[i++] = (byte)(baseIndex + 1);
+                indices[i++] = (ushort)(index - 1);
+                indices[i++] = (ushort)(baseIndex + 1);
             }
 
 
@@ -429,20 +509,20 @@ namespace DemoFramework.SharpDX
                 vertices[v++] = GetVectorByAxis(new Vector3(x, -halfHeight, z), up);
                 vertices[v++] = normal;
 
-                indices[i++] = (byte)(index - 2);
-                indices[i++] = (byte)(index - 1);
-                indices[i++] = (byte)index;
-                indices[i++] = (byte)index;
-                indices[i++] = (byte)(index - 1);
-                indices[i++] = (byte)(index + 1);
+                indices[i++] = (ushort)(index - 2);
+                indices[i++] = (ushort)(index - 1);
+                indices[i++] = index;
+                indices[i++] = index;
+                indices[i++] = (ushort)(index - 1);
+                indices[i++] = (ushort)(index + 1);
                 index += 2;
             }
-            indices[i++] = (byte)(index - 2);
-            indices[i++] = (byte)(index - 1);
-            indices[i++] = (byte)(baseIndex);
-            indices[i++] = (byte)(baseIndex);
-            indices[i++] = (byte)(index - 1);
-            indices[i++] = (byte)(baseIndex + 1);
+            indices[i++] = (ushort)(index - 2);
+            indices[i++] = (ushort)(index - 1);
+            indices[i++] = baseIndex;
+            indices[i++] = baseIndex;
+            indices[i++] = (ushort)(index - 1);
+            indices[i++] = (ushort)(baseIndex + 1);
 
             shapeData.SetVertexBuffer(device, vertices);
             shapeData.SetIndexBuffer(device, indices);
@@ -582,7 +662,7 @@ namespace DemoFramework.SharpDX
             shapeData.IndexCount = 6 * slices * (stacks - 1);
 
             Vector3[] vertices = new Vector3[shapeData.VertexCount * 2];
-            byte[] indices = new byte[shapeData.IndexCount];
+            ushort[] indices = new ushort[shapeData.IndexCount];
 
             int i = 0, v = 0;
 
@@ -769,18 +849,11 @@ namespace DemoFramework.SharpDX
                     indices[i++] = indexStream.Read<uint>();
                 shapeData.SetIndexBuffer(device, indices);
             }
-            else if (numVerts > 256)
+            else
             {
                 ushort[] indices = new ushort[shapeData.IndexCount];
                 while (indexStream.Position < indexStream.Length)
-                    indices[i++] = (ushort)indexStream.Read<int>();
-                shapeData.SetIndexBuffer(device, indices);
-            }
-            else
-            {
-                byte[] indices = new byte[shapeData.IndexCount];
-                while (indexStream.Position < indexStream.Length)
-                    indices[i++] = (byte)indexStream.Read<int>();
+                    indices[i++] = (ushort)indexStream.Read<uint>();
                 shapeData.SetIndexBuffer(device, indices);
             }
 
@@ -802,6 +875,9 @@ namespace DemoFramework.SharpDX
                         break;
                     case BroadphaseNativeType.BoxShape:
                         shapeData = CreateBoxShape(shape as BoxShape);
+                        break;
+                    case BroadphaseNativeType.CapsuleShape:
+                        shapeData = CreateCapsuleShape(shape as CapsuleShape);
                         break;
                     case BroadphaseNativeType.CylinderShape:
                         shapeData = CreateCylinderShape(shape as CylinderShape);

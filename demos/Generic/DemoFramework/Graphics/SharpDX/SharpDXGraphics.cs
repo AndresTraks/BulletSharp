@@ -24,8 +24,8 @@ namespace DemoFramework.SharpDX
         {
             get { return _device; }
         }
-        Device.OutputMergerStage outputMerger;
-        Device.InputAssemblerStage inputAssembler;
+        OutputMergerStage outputMerger;
+        InputAssemblerStage inputAssembler;
 
         SwapChain _swapChain;
 
@@ -44,7 +44,7 @@ namespace DemoFramework.SharpDX
         RenderTargetView[] gBufferViews;
         DepthStencilState depthStencilState;
         DepthStencilState lightDepthStencilState;
-        bool shadowsEnabled = false;
+        bool shadowsEnabled = true;
         public RenderTargetView[] renderViews = new RenderTargetView[1];
 
         VertexBufferBinding quadBinding;
@@ -99,7 +99,6 @@ namespace DemoFramework.SharpDX
             public Matrix Projection;
             public Matrix ViewInverse;
             public Matrix LightViewProjection;
-            public Vector4 LightPosition;
         }
 
         public SharpDXGraphics(Demo demo)
@@ -417,7 +416,6 @@ namespace DemoFramework.SharpDX
             meshFactory = new MeshFactory(this);
 
             CreateBuffers();
-            SetSceneConstants();
             LibraryManager.LibraryStarted();
         }
 
@@ -430,7 +428,6 @@ namespace DemoFramework.SharpDX
             sceneConstants.ViewInverse = Matrix.Invert(sceneConstants.View);
 
             Vector3 light = new Vector3(20, 30, 10);
-            sceneConstants.LightPosition = new Vector4(light, 1);
             Texture2DDescription depthBuffer = lightDepthTexture.Description;
             Matrix lightView = Matrix.LookAtLH(light, Vector3.Zero, up);
             Matrix lightProjection = Matrix.OrthoLH(depthBuffer.Width / 8, depthBuffer.Height / 8, NearPlane, FarPlane);
@@ -442,10 +439,21 @@ namespace DemoFramework.SharpDX
                 sceneConstantsBuffer.Unmap();
             }
 
-            effect2.GetVariableByName("InverseProjection").AsMatrix().SetMatrix(Matrix.Invert(sceneConstants.View * sceneConstants.Projection));
+            Vector4 viewSpaceLightPosition = Vector3.Transform(light, sceneConstants.View);
+            effect2.GetVariableByName("InverseProjection").AsMatrix().SetMatrix(Matrix.Invert(sceneConstants.Projection));
             effect2.GetVariableByName("InverseView").AsMatrix().SetMatrix(sceneConstants.ViewInverse);
             effect2.GetVariableByName("LightInverseViewProjection").AsMatrix().SetMatrix(Matrix.Invert(sceneConstants.LightViewProjection));
-            effect2.GetVariableByName("LightPosition").AsVector().Set(sceneConstants.LightPosition);
+            effect2.GetVariableByName("LightPosition").AsVector().Set(new Vector4(light, 1));
+            effect2.GetVariableByName("EyePosition").AsVector().Set(new Vector4(MathHelper.Convert(freelook.Eye), 1));
+            effect2.GetVariableByName("EyeZAxis").AsVector().Set(new Vector4(Vector3.Normalize(MathHelper.Convert(freelook.Target - freelook.Eye)), 1));
+
+            float TanHalfFOVY = (float)Math.Tan(FieldOfView * 0.5f);
+            effect2.GetVariableByName("TanHalfFOVX").AsScalar().Set(TanHalfFOVY * AspectRatio);
+            effect2.GetVariableByName("TanHalfFOVY").AsScalar().Set(TanHalfFOVY);
+            float projectionA = FarPlane / (FarPlane - NearPlane);
+            float projectionB = -projectionA * NearPlane;
+            effect2.GetVariableByName("ProjectionA").AsScalar().Set(projectionA);
+            effect2.GetVariableByName("ProjectionB").AsScalar().Set(projectionB);
         }
 
         void Render()
@@ -464,13 +472,18 @@ namespace DemoFramework.SharpDX
             {
                 _device.ClearDepthStencilView(lightDepthView, DepthStencilClearFlags.Depth, 1.0f, 0);
                 outputMerger.SetDepthStencilState(lightDepthStencilState, 0);
-                outputMerger.SetRenderTargets(0, null, lightDepthView);
+                outputMerger.SetRenderTargets(0, new RenderTargetView[0], lightDepthView);
                 shadowGenPass.Apply();
                 OnRender();
                 effect2.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightDepthRes);
             }
 
             // Render pass
+            effect2.GetVariableByName("lightBuffer").AsShaderResource().SetResource(null);
+            effect2.GetVariableByName("normalBuffer").AsShaderResource().SetResource(null);
+            effect2.GetVariableByName("diffuseBuffer").AsShaderResource().SetResource(null);
+            effect2.GetVariableByName("depthMap").AsShaderResource().SetResource(null);
+            effect2.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(null);
             outputMerger.SetDepthStencilState(depthStencilState, 0);
             outputMerger.SetRenderTargets(3, gBufferViews, depthView);
             gBufferGenPass.Apply();
@@ -479,6 +492,11 @@ namespace DemoFramework.SharpDX
 
             // G-buffer render pass
             outputMerger.SetDepthStencilState(null, 0);
+            effect2.GetVariableByName("lightBuffer").AsShaderResource().SetResource(lightBufferRes);
+            effect2.GetVariableByName("normalBuffer").AsShaderResource().SetResource(normalBufferRes);
+            effect2.GetVariableByName("diffuseBuffer").AsShaderResource().SetResource(diffuseBufferRes);
+            effect2.GetVariableByName("depthMap").AsShaderResource().SetResource(depthRes);
+            effect2.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightDepthRes);
             outputMerger.SetRenderTargets(1, renderViews, null);
             gBufferRenderPass.Apply();
 

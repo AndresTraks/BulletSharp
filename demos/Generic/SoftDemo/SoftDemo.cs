@@ -17,7 +17,7 @@ namespace SoftDemo
         //float CubeHalfExtents = 1.5f;
         //float extraHeight = -10.0f;
 
-        int demo = 0;
+        int demo = 7;
 
         SoftBodyWorldInfo softBodyWorldInfo;
 
@@ -40,7 +40,7 @@ namespace SoftDemo
         public SoftDemo()
         {
             demos = new DemoConstructor[] { Init_Cloth, Init_Pressure, Init_Volume, Init_Ropes, Init_RopeAttach,
-                Init_ClothAttach, Init_Sticks, Init_Collide, Init_Collide2, Init_Collide3, Init_Impact, Init_Aero,
+                Init_ClothAttach, Init_Sticks, Init_CapsuleCollision, Init_Collide, Init_Collide2, Init_Collide3, Init_Impact, Init_Aero,
                 Init_Aero2, Init_Friction, Init_Torus, Init_TorusMatch, Init_Bunny, Init_BunnyMatch, Init_Cutting1,
                 Init_ClusterDeform, Init_ClusterCollide1, Init_ClusterCollide2, Init_ClusterSocket, Init_ClusterHinge,
                 Init_ClusterCombine, Init_ClusterCar, Init_ClusterRobot, Init_ClusterStackSoft, Init_ClusterStackMixed,
@@ -280,6 +280,41 @@ namespace SoftDemo
             SoftWorld.AddSoftBody(psb);
             psb.Cfg.Chr = 0.5f;
             LocalCreateRigidBody(10, Matrix.Translation(0, 20, 0), new BoxShape(2));
+        }
+
+        void Init_CapsuleCollision()
+        {
+            float s = 4;
+            float h = 6;
+            int r = 20;
+
+            Matrix startTransform = Matrix.Translation(0, h - 2, 0);
+
+            CollisionShape capsuleShape = new CapsuleShapeX(1, 5);
+            capsuleShape.Margin = 0.5f;
+
+            //	capsule->setLocalScaling(btVector3(5,1,1));
+            //RigidBody body = LocalCreateRigidBody(20, startTransform, capsuleShape);
+            RigidBody body = LocalCreateRigidBody(0, startTransform, capsuleShape);
+            body.Friction = 0.8f;
+
+            int fixeds = 0;//4+8;
+            SoftBody psb = SoftBodyHelpers.CreatePatch(softBodyWorldInfo, new Vector3(-s, h, -s),
+                new Vector3(+s, h, -s),
+                new Vector3(-s, h, +s),
+                new Vector3(+s, h, +s), r, r, fixeds, true);
+            SoftWorld.AddSoftBody(psb);
+            psb.TotalMass = 0.1f;
+
+            psb.Cfg.PIterations = 10;
+            psb.Cfg.CIterations = 10;
+            psb.Cfg.DIterations = 10;
+            //	psb->m_cfg.viterations = 10;
+
+
+            //	psb->appendAnchor(0,body);
+            //	psb->appendAnchor(r-1,body);
+            //	pdemo->m_cutting=true;
         }
 
         void Init_Collide()

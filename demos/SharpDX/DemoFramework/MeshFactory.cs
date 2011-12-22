@@ -43,17 +43,18 @@ namespace DemoFramework
             BufferBindings = new VertexBufferBinding[2];
         }
 
-        public void SetVertexBuffer(Device device, Vector3[] vectors)
+        public void SetVertexBuffer(Device device, Vector3[] vertices)
         {
             BufferDescription vertexBufferDesc = new BufferDescription()
             {
-                SizeInBytes = Marshal.SizeOf(typeof(Vector3)) * vectors.Length,
+                SizeInBytes = Marshal.SizeOf(typeof(Vector3)) * vertices.Length,
                 Usage = ResourceUsage.Default,
                 BindFlags = BindFlags.VertexBuffer
             };
 
-            using (var data = new SharpDX.DataStream(vectors, false, false))
+            using (var data = new SharpDX.DataStream(vertexBufferDesc.SizeInBytes, false, true))
             {
+                data.WriteRange(vertices);
                 VertexBuffer = new Buffer(device, data, vertexBufferDesc);
                 VertexBuffer.Unmap();
             }
@@ -62,14 +63,14 @@ namespace DemoFramework
         }
 
         // Used with soft bodies
-        public void SetDynamicVertexBuffer(Device device, Vector3[] vectors)
+        public void SetDynamicVertexBuffer(Device device, Vector3[] vertices)
         {
-            if (VertexBuffer != null && VertexBuffer.Description.SizeInBytes == vectors.Length * 12)
+            if (VertexBuffer != null && VertexBuffer.Description.SizeInBytes == vertices.Length * 12)
             {
                 // Update existing buffer
                 using (var data = VertexBuffer.Map(MapMode.WriteDiscard))
                 {
-                    data.WriteRange(vectors, 0, vectors.Length);
+                    data.WriteRange(vertices, 0, vertices.Length);
                     VertexBuffer.Unmap();
                 }
             }
@@ -81,14 +82,15 @@ namespace DemoFramework
 
                 BufferDescription vertexBufferDesc = new BufferDescription()
                 {
-                    SizeInBytes = Marshal.SizeOf(typeof(Vector3)) * vectors.Length,
+                    SizeInBytes = Marshal.SizeOf(typeof(Vector3)) * vertices.Length,
                     Usage = ResourceUsage.Dynamic,
                     BindFlags = BindFlags.VertexBuffer,
                     CpuAccessFlags = CpuAccessFlags.Write
                 };
 
-                using (var data = new SharpDX.DataStream(vectors, false, false))
+                using (var data = new SharpDX.DataStream(vertexBufferDesc.SizeInBytes, false, true))
                 {
+                    data.WriteRange(vertices);
                     VertexBuffer = new Buffer(device, data, vertexBufferDesc);
                 }
 
@@ -100,16 +102,17 @@ namespace DemoFramework
         {
             IndexFormat = Format.R8_UInt;
 
-            BufferDescription boxIndexBufferDesc = new BufferDescription()
+            BufferDescription indexBufferDesc = new BufferDescription()
             {
                 SizeInBytes = sizeof(byte) * indices.Length,
                 Usage = ResourceUsage.Default,
                 BindFlags = BindFlags.IndexBuffer
             };
 
-            using (var data = new SharpDX.DataStream(indices, false, false))
+            using (var data = new SharpDX.DataStream(indexBufferDesc.SizeInBytes, false, true))
             {
-                IndexBuffer = new Buffer(device, data, boxIndexBufferDesc);
+                data.WriteRange(indices);
+                IndexBuffer = new Buffer(device, data, indexBufferDesc);
             }
         }
 
@@ -117,16 +120,17 @@ namespace DemoFramework
         {
             IndexFormat = Format.R16_UInt;
 
-            BufferDescription boxIndexBufferDesc = new BufferDescription()
+            BufferDescription indexBufferDesc = new BufferDescription()
             {
                 SizeInBytes = sizeof(ushort) * indices.Length,
                 Usage = ResourceUsage.Default,
                 BindFlags = BindFlags.IndexBuffer
             };
 
-            using (var data = new SharpDX.DataStream(indices, false, false))
+            using (var data = new SharpDX.DataStream(indexBufferDesc.SizeInBytes, false, true))
             {
-                IndexBuffer = new Buffer(device, data, boxIndexBufferDesc);
+                data.WriteRange(indices);
+                IndexBuffer = new Buffer(device, data, indexBufferDesc);
             }
         }
 
@@ -134,16 +138,17 @@ namespace DemoFramework
         {
             IndexFormat = Format.R32_UInt;
 
-            BufferDescription boxIndexBufferDesc = new BufferDescription()
+            BufferDescription indexBufferDesc = new BufferDescription()
             {
                 SizeInBytes = sizeof(uint) * indices.Length,
                 Usage = ResourceUsage.Default,
                 BindFlags = BindFlags.IndexBuffer
             };
 
-            using (var data = new SharpDX.DataStream(indices, false, false))
+            using (var data = new SharpDX.DataStream(indexBufferDesc.SizeInBytes, false, true))
             {
-                IndexBuffer = new Buffer(device, data, boxIndexBufferDesc);
+                data.WriteRange(indices);
+                IndexBuffer = new Buffer(device, data, indexBufferDesc);
             }
         }
 
@@ -161,7 +166,7 @@ namespace DemoFramework
     public class MeshFactory : System.IDisposable
     {
         Device device;
-        Device.InputAssemblerStage inputAssembler;
+        InputAssemblerStage inputAssembler;
         Demo demo;
         Dictionary<CollisionShape, ShapeData> shapes = new Dictionary<CollisionShape, ShapeData>();
         List<CollisionShape> removeList = new List<CollisionShape>();

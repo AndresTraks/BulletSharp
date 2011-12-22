@@ -187,7 +187,7 @@ namespace DemoFramework.SlimDX
             Height = 768;
             FullScreenWidth = Screen.PrimaryScreen.Bounds.Width;
             FullScreenHeight = Screen.PrimaryScreen.Bounds.Height;
-            NearPlane = 0.1f;
+            NearPlane = 1.0f;
             FarPlane = 200f;
             Ambient = Color.Gray.ToArgb();
 

@@ -25,7 +25,7 @@ namespace DemoFramework.OpenTK
         string textString = "";
         CultureInfo culture = CultureInfo.InvariantCulture;
         int width = 270;
-        int height = 100;
+        int height = 150;
         GLControl glControl;
 
         bool _isEnabled = true;
@@ -42,7 +42,8 @@ namespace DemoFramework.OpenTK
             set
             {
                 _text = value;
-                textString = string.Format("FPS: {0}\n{1}", fps.ToString("0.00", culture), value);
+                textString = string.Format("{0} fps / {1} ms\nF8 - Graphics engine\n{2}",
+                    fps.ToString("0.00", culture), (1000.0f / fps).ToString("0.00", culture), value);
             }
         }
 
@@ -90,7 +91,8 @@ namespace DemoFramework.OpenTK
             if (fps != framesPerSecond)
             {
                 fps = framesPerSecond;
-                textString = string.Format("FPS: {0}\n{1}", fps.ToString("0.00", culture), _text);
+                textString = string.Format("{0} fps / {1} ms\nF8 - Graphics engine\n{2}",
+                    fps.ToString("0.00", culture), (1000.0f / fps).ToString("0.00", culture), _text);
             }
 
             Clear();

@@ -28,8 +28,8 @@ namespace DemoFramework
         {
             get { return _device; }
         }
-        Device.OutputMergerStage outputMerger;
-        Device.InputAssemblerStage inputAssembler;
+        OutputMergerStage outputMerger;
+        InputAssemblerStage inputAssembler;
 
         SwapChain _swapChain;
 
@@ -464,7 +464,7 @@ namespace DemoFramework
             {
                 _device.ClearDepthStencilView(lightDepthView, DepthStencilClearFlags.Depth, 1.0f, 0);
                 outputMerger.SetDepthStencilState(lightDepthStencilState, 0);
-                outputMerger.SetRenderTargets(0, null, lightDepthView);
+                outputMerger.SetRenderTargets(0, new RenderTargetView[0], lightDepthView);
                 shadowGenPass.Apply();
                 OnRender();
                 effect2.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightDepthRes);

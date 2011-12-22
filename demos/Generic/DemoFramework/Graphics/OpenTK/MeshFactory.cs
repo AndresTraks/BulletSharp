@@ -169,6 +169,12 @@ namespace DemoFramework.OpenTK
         Color softBodyColor = Color.LightBlue;
         Color linkColor = Color.Black;
 
+        int modelViewMatrixLocation;
+        public void SetModelViewMatrixLocation(int modelViewMatrixLocation)
+        {
+            this.modelViewMatrixLocation = modelViewMatrixLocation;
+        }
+
         ShapeData CreateBoxShape(BoxShape shape)
         {
             BulletSharp.Vector3 size = shape.HalfExtentsWithMargin;
@@ -241,6 +247,120 @@ namespace DemoFramework.OpenTK
 
             shapeData.SetVertexBuffer(vertices);
             shapeData.SetNormalBuffer(normals);
+
+            return shapeData;
+        }
+
+        ShapeData CreateCapsuleShape(CapsuleShape shape)
+        {
+            int up = shape.UpAxis;
+            float radius = shape.Radius;
+            float cylinderHalfHeight = shape.HalfHeight;
+
+            int slices = (int)(radius * 10.0f);
+            int stacks = (int)(radius * 10.0f);
+            slices = (slices > 16) ? 16 : (slices < 3) ? 3 : slices;
+            stacks = (stacks > 16) ? 16 : (stacks < 2) ? 2 : stacks;
+
+            float hAngleStep = (float)Math.PI * 2 / slices;
+            float vAngleStep = (float)Math.PI / stacks;
+
+            ShapeData shapeData = new ShapeData();
+
+            shapeData.VertexCount = 2 + slices * (stacks - 1);
+            shapeData.ElementCount = 6 * slices * (stacks - 1);
+
+            Vector3[] vertices = new Vector3[shapeData.VertexCount];
+            Vector3[] normals = new Vector3[shapeData.VertexCount];
+            byte[] indices = new byte[shapeData.ElementCount];
+
+            int i = 0, v = 0;
+
+
+            // Vertices
+            // Top and bottom
+            normals[v] = GetVectorByAxis(-Vector3.UnitY, up);
+            vertices[v++] = GetVectorByAxis(new Vector3(0, -cylinderHalfHeight - radius, 0), up);
+            normals[v] = GetVectorByAxis(Vector3.UnitY, up);
+            vertices[v++] = GetVectorByAxis(new Vector3(0, cylinderHalfHeight + radius, 0), up);
+
+            // Stacks
+            int j, k;
+            float angle = 0;
+            float vAngle = -(float)Math.PI / 2;
+            Vector3 vTemp;
+            Vector3 cylinderOffset = GetVectorByAxis(new Vector3(0, -cylinderHalfHeight, 0), up);
+            for (j = 0; j < stacks - 1; j++)
+            {
+                float prevAngle = vAngle;
+                vAngle += vAngleStep;
+
+                if (vAngle > 0 && prevAngle < 0)
+                {
+                    cylinderOffset = GetVectorByAxis(new Vector3(0, cylinderHalfHeight, 0), up);
+                }
+
+                for (k = 0; k < slices; k++)
+                {
+                    angle += hAngleStep;
+
+                    vTemp = GetVectorByAxis(new Vector3((float)Math.Cos(vAngle) * (float)Math.Sin(angle),
+                        (float)Math.Sin(vAngle),
+                        (float)Math.Cos(vAngle) * (float)Math.Cos(angle)), up);
+                    normals[v] = Vector3.Normalize(vTemp);
+                    vertices[v++] = vTemp * radius + cylinderOffset;
+                }
+            }
+
+
+            // Indices
+            // Top cap
+            byte index = 2;
+            for (k = 0; k < slices; k++)
+            {
+                indices[i++] = 0;
+                indices[i++] = index;
+                index++;
+                indices[i++] = index;
+            }
+            indices[i - 1] = 2;
+
+            // Stacks
+            //for (j = 0; j < 1; j++)
+            int sliceDiff = slices * 3;
+            for (j = 0; j < stacks - 2; j++)
+            {
+                for (k = 0; k < slices; k++)
+                {
+                    indices[i++] = indices[i - sliceDiff];
+                    indices[i++] = indices[i - sliceDiff];
+                    indices[i++] = index;
+                    index++;
+                }
+
+                for (k = 0; k < slices; k++)
+                {
+                    indices[i++] = indices[i - sliceDiff];
+                    indices[i++] = indices[i - sliceDiff];
+                    indices[i++] = indices[i - sliceDiff + 2];
+                }
+                indices[i - 1] = indices[i - sliceDiff + 1];
+            }
+
+            // Bottom cap
+            index--;
+            for (k = 0; k < slices; k++)
+            {
+                indices[i++] = 1;
+                indices[i++] = index;
+                index--;
+                indices[i++] = index;
+            }
+            indices[i - 1] = indices[i - sliceDiff + 1];
+
+            shapeData.SetVertexBuffer(vertices);
+            shapeData.SetNormalBuffer(normals);
+            shapeData.SetIndexBuffer(indices);
 
             return shapeData;
         }
@@ -528,6 +648,9 @@ namespace DemoFramework.OpenTK
                     case BroadphaseNativeType.BoxShape:
                         shapeData = CreateBoxShape(shape as BoxShape);
                         break;
+                    case BroadphaseNativeType.CapsuleShape:
+                        shapeData = CreateCapsuleShape(shape as CapsuleShape);
+                        break;
                     case BroadphaseNativeType.CylinderShape:
                         shapeData = CreateCylinderShape(shape as CylinderShape);
                         break;
@@ -694,6 +817,7 @@ namespace DemoFramework.OpenTK
                     foreach (InstanceData instance in s.InstanceDataList)
                     {
                         Matrix4 modelLookAt = instance.WorldTransform * lookat;
+                        GL.UniformMatrix4(modelViewMatrixLocation, false, ref modelLookAt);
                         GL.LoadMatrix(ref modelLookAt);
                         GL.Color3(instance.Color);
                         GL.DrawElements(s.BeginMode, s.ElementCount, s.ElementsType, IntPtr.Zero);
