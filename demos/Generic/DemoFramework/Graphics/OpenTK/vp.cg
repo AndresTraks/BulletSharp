@@ -1,23 +1,15 @@
 #version 140
 
-// object space to camera space transformation
 uniform mat4 modelview_matrix;
-// camera space to clip coordinates
 uniform mat4 projection_matrix;
-uniform vec3 light_position;
 
-// incoming vertex position
-in vec3 vertex_position;
-// incoming vertex normal
-in vec3 vertex_normal;
-// transformed vertex normal
-out vec3 normal;
+in vec3 position;
+in vec3 normal;
+
+out vec3 out_normal;
 
 void main(void)
 {
-	light_position
-    //not a proper transformation if modelview_matrix involves non-uniform scaling
-    normal = ( modelview_matrix * vec4( vertex_normal, 0 ) ).xyz;
-    // transforming the incoming vertex position
-    gl_Position = projection_matrix * modelview_matrix * vec4( vertex_position, 1 );
+    out_normal = ( modelview_matrix * vec4(normal, 0) ).xyz;
+    gl_Position = projection_matrix * modelview_matrix * vec4(position, 1);
 }

@@ -170,9 +170,16 @@ namespace DemoFramework.OpenTK
         Color linkColor = Color.Black;
 
         int modelViewMatrixLocation;
-        public void SetModelViewMatrixLocation(int modelViewMatrixLocation)
+        int vertexPositionLocation;
+        int vertexNormalLocation;
+        int vertexColorLocation;
+
+        public void SetShaderLocations(int modelViewMatrix, int position, int normal, int color)
         {
-            this.modelViewMatrixLocation = modelViewMatrixLocation;
+            modelViewMatrixLocation = modelViewMatrix;
+            vertexPositionLocation = position;
+            vertexNormalLocation = normal;
+            vertexColorLocation = color;
         }
 
         ShapeData CreateBoxShape(BoxShape shape)
@@ -788,26 +795,23 @@ namespace DemoFramework.OpenTK
 
         public void RenderInstanced(ref Matrix4 lookat)
         {
-            GL.MatrixMode(MatrixMode.Modelview);
+            GL.EnableVertexAttribArray(vertexPositionLocation);
 
             foreach (ShapeData s in shapes.Values)
             {
                 // Normal buffer
                 if (s.NormalBufferID != 0)
                 {
+                    GL.EnableVertexAttribArray(vertexNormalLocation);
                     GL.BindBuffer(BufferTarget.ArrayBuffer, s.NormalBufferID);
-                    GL.NormalPointer(NormalPointerType.Float, Vector3.SizeInBytes, IntPtr.Zero);
-                    GL.EnableClientState(ArrayCap.NormalArray);
-                }
-                else
-                {
-                    GL.DisableClientState(ArrayCap.NormalArray);
+                    GL.VertexAttribPointer(vertexNormalLocation, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, IntPtr.Zero);
                 }
 
                 // Vertex buffer
                 GL.BindBuffer(BufferTarget.ArrayBuffer, s.VertexBufferID);
-                GL.VertexPointer(3, VertexPointerType.Float, Vector3.SizeInBytes, IntPtr.Zero);
-                GL.EnableClientState(ArrayCap.VertexArray);
+                GL.VertexAttribPointer(vertexPositionLocation, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, IntPtr.Zero);
+
+                Matrix4 modelLookAt;
 
                 // Index (element) buffer
                 if (s.ElementCount != 0)
@@ -816,10 +820,9 @@ namespace DemoFramework.OpenTK
 
                     foreach (InstanceData instance in s.InstanceDataList)
                     {
-                        Matrix4 modelLookAt = instance.WorldTransform * lookat;
+                        modelLookAt = instance.WorldTransform * lookat;
                         GL.UniformMatrix4(modelViewMatrixLocation, false, ref modelLookAt);
-                        GL.LoadMatrix(ref modelLookAt);
-                        GL.Color3(instance.Color);
+                        GL.Uniform4(vertexColorLocation, instance.Color);
                         GL.DrawElements(s.BeginMode, s.ElementCount, s.ElementsType, IntPtr.Zero);
                     }
 
@@ -829,16 +832,20 @@ namespace DemoFramework.OpenTK
                 {
                     foreach (InstanceData instance in s.InstanceDataList)
                     {
-                        Matrix4 modelLookAt = instance.WorldTransform * lookat;
-                        GL.LoadMatrix(ref modelLookAt);
-                        GL.Color3(instance.Color);
+                        modelLookAt = instance.WorldTransform * lookat;
+                        GL.UniformMatrix4(modelViewMatrixLocation, false, ref modelLookAt);
+                        GL.Uniform4(vertexColorLocation, instance.Color);
                         GL.DrawArrays(s.BeginMode, 0, s.VertexCount);
                     }
                 }
 
-                GL.DisableClientState(ArrayCap.VertexArray);
-                GL.DisableClientState(ArrayCap.NormalArray);
+                if (s.NormalBufferID != 0)
+                {
+                    GL.DisableVertexAttribArray(vertexNormalLocation);
+                }
             }
+
+            GL.DisableVertexAttribArray(vertexPositionLocation);
         }
 
         public void UpdateSoftBody(SoftBody softBody, ShapeData shapeData)

@@ -142,8 +142,6 @@ namespace DemoFramework.OpenTK
             GL.TexCoord2(1.0f, 0.0f); GL.Vertex2(width, height);
             GL.TexCoord2(0.0f, 0.0f); GL.Vertex2(0, height);
             GL.End();
-
-            GL.Disable(EnableCap.Texture2D);
         }
 
         #region IDisposable Members
