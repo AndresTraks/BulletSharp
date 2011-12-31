@@ -24,8 +24,11 @@ namespace DemoFramework
         public void SetEyeTarget(Vector3 eye, Vector3 target)
         {
             Eye = eye;
-            this.Target = target;
-            mouseController.Vector = eye - target;
+            Target = target;
+
+            // Convert direction vector to Y-up for MouseController
+            Matrix swapAxis = Matrix.RotationAxis(Vector3.Cross(Up, Vector3.UnitY), Angle(Up, Vector3.UnitY));
+            mouseController.Vector = Vector3.TransformCoordinate(Vector3.Normalize(eye - target), swapAxis);
         }
 
         public bool Update(float frameDelta)
@@ -33,45 +36,42 @@ namespace DemoFramework
             if (mouseController.Update() == false && input.KeysDown.Count == 0)
                 return false;
 
-            Vector3 direction = Vector3.Normalize(-mouseController.Vector);
+            // MouseController is Y-up, convert to Up-up
+            Matrix swapAxis = Matrix.RotationAxis(Vector3.Cross(Vector3.UnitY, Up), Angle(Vector3.UnitY, Up));
+            Vector3 direction = Vector3.TransformCoordinate(-mouseController.Vector, swapAxis);
 
             if (input.KeysDown.Count != 0)
             {
                 Vector3 relDirection = frameDelta * direction;
-                Vector3 translation = Vector3.Zero;
-
                 float flySpeed = input.KeysDown.Contains(Keys.ShiftKey) ? 15 : 5;
 
                 if (input.KeysDown.Contains(Keys.W))
                 {
-                    translation = flySpeed * relDirection;
+                    Eye += flySpeed * relDirection;
                 }
                 if (input.KeysDown.Contains(Keys.S))
                 {
-                    translation -= flySpeed * relDirection;
+                    Eye -= flySpeed * relDirection;
                 }
 
                 if (input.KeysDown.Contains(Keys.A))
                 {
-                    translation += GetSizewaysTranslation(relDirection, -Math.PI / 2);
+                    Eye += Vector3.Cross(relDirection, Up);
                 }
                 if (input.KeysDown.Contains(Keys.D))
                 {
-                    translation += GetSizewaysTranslation(relDirection, Math.PI / 2);
+                    Eye -= Vector3.Cross(relDirection, Up);
                 }
-
-                Eye += translation;
             }
-            Target = Eye + direction;
+            Target = Eye + (Eye - Target).Length() * direction;
 
             return true;
         }
 
-        Vector3 GetSizewaysTranslation(Vector3 direction, double angle)
+        // vectors must be normalized
+        float Angle(Vector3 v1, Vector3 v2)
         {
-            Vector3 sideways = Vector3.TransformCoordinate(direction, Matrix.RotationAxis(Up, (float)angle));
-            sideways.Y = 0;
-            return sideways;
+            return (float)Math.Acos(Vector3.Dot(v1, v2));
         }
     }
 }

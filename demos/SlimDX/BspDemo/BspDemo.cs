@@ -10,14 +10,14 @@ namespace BspDemo
 {
     public class BspDemo : Game
     {
-        Vector3 eye = new Vector3(30, 20, 10);
-        Vector3 target = new Vector3(0, 5, -4);
+        Vector3 eye = new Vector3(10, 20, 10);
+        Vector3 target = new Vector3(0, 0, 0);
 
         Light light;
 
         protected override void OnInitializeDevice()
         {
-            Form.Text = "BulletSharp - Basic Demo";
+            Form.Text = "BulletSharp - Quake BSP Physics Viewer";
             base.OnInitializeDevice();
         }
 
@@ -32,6 +32,7 @@ namespace BspDemo
             light.Diffuse = Color.LemonChiffon;
             light.Attenuation0 = 1.0f;
 
+            Freelook.Up = Vector3.UnitZ;
             Freelook.SetEyeTarget(eye, target);
 
             Fps.Text = "Move using mouse and WASD+shift\n" +

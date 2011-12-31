@@ -8,10 +8,10 @@ uniform vec4 color;
 in vec3 out_normal;
 out vec4 out_color;
 
-const vec3 ambient = vec3(0.15, 0.15, 0.15);
+const vec3 ambient = vec3(0.1, 0.1, 0.1);
 
 void main(void)
 {
-    float diffuse = clamp( dot( light_direction, normalize( out_normal ) ), 0.0, 1.0 );
+    float diffuse = 0.25 + 0.75 * clamp( dot( light_direction, normalize( out_normal ) ), 0.0, 1.0 );
     out_color = vec4( ambient + diffuse * color.xyz, 1.0 );
 }

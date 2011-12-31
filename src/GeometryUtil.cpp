@@ -13,7 +13,7 @@ void GeometryUtil::GetPlaneEquationsFromVertices(AlignedVector3Array^ vertices, 
 void GeometryUtil::GetVerticesFromPlaneEquations(AlignedVector3Array^ planeEquations, [Out] AlignedVector3Array^% verticesOut)
 {
 	btAlignedObjectArray<btVector3>* verticesOutTemp = new btAlignedObjectArray<btVector3>;
-	btGeometryUtil::getPlaneEquationsFromVertices(*(btAlignedObjectArray<btVector3>*)planeEquations->_unmanaged, *verticesOutTemp);
+	btGeometryUtil::getVerticesFromPlaneEquations(*(btAlignedObjectArray<btVector3>*)planeEquations->_unmanaged, *verticesOutTemp);
 	verticesOut = gcnew AlignedVector3Array(verticesOutTemp);
 }
 /*

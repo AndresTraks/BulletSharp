@@ -355,7 +355,7 @@ namespace DemoFramework
             float farPlane = 10000.0f;
             rayForward *= farPlane;
 
-            Vector3 vertical = Vector3.UnitY;
+            Vector3 vertical = Freelook.Up;
 
             Vector3 hor = Vector3.Cross(rayForward, vertical);
             hor.Normalize();

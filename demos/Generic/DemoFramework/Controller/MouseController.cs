@@ -41,12 +41,9 @@ namespace DemoFramework
             {
                 mouseOrigin = input.MousePoint;
 
-                // Get normalized Vector
-                Vector3 norm = Vector3.Normalize(Vector);
-
                 // Calculate angles from the vector
-                angleOriginX = Math.Atan2(norm.Z, norm.X);
-                angleOriginY = Math.Asin(norm.Y);
+                angleOriginX = Math.Atan2(Vector.Z, Vector.X);
+                angleOriginY = Math.Asin(Vector.Y);
             }
 
             // Calculate how much to change the angles

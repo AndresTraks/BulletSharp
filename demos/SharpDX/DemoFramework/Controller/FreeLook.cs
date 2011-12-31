@@ -41,42 +41,31 @@ namespace DemoFramework
             if (input.KeysDown.Count != 0)
             {
                 Vector3 relDirection = frameDelta * direction;
-                Vector3 translation = Vector3.Zero;
-
                 float flySpeed = input.KeysDown.Contains(Keys.ShiftKey) ? 15 : 5;
 
                 if (input.KeysDown.Contains(Keys.W))
                 {
-                    translation = flySpeed * relDirection;
+                    Eye += flySpeed * relDirection;
                 }
                 if (input.KeysDown.Contains(Keys.S))
                 {
-                    translation -= flySpeed * relDirection;
+                    Eye -= flySpeed * relDirection;
                 }
 
                 if (input.KeysDown.Contains(Keys.A))
                 {
-                    translation += GetSizewaysTranslation(relDirection, -Math.PI / 2);
+                    Eye += Vector3.Cross(relDirection, Up);
                 }
                 if (input.KeysDown.Contains(Keys.D))
                 {
-                    translation += GetSizewaysTranslation(relDirection, Math.PI / 2);
+                    Eye -= Vector3.Cross(relDirection, Up);
                 }
-
-                Eye += translation;
             }
             Target = Eye + direction;
 
             Recalculate();
 
             return true;
-        }
-
-        Vector3 GetSizewaysTranslation(Vector3 direction, double angle)
-        {
-            Vector3 sideways = Vector3.TransformCoordinate(direction, Matrix.RotationAxis(Up, (float)angle));
-            sideways.Y = 0;
-            return sideways;
         }
 
         void Recalculate()

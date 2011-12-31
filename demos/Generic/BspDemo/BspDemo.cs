@@ -1,16 +1,16 @@
-﻿using BulletSharp;
+﻿using System;
+using BulletSharp;
 using DemoFramework;
-using SlimDX;
 
 namespace BspDemo
 {
     public class BspToBulletConverter : BspConverter
     {
-        PhysicsContext context;
+        Demo demo;
 
-        public BspToBulletConverter(PhysicsContext context)
+        public BspToBulletConverter(Demo demo)
         {
-            this.context = context;
+            this.demo = demo;
         }
 
         public override void AddConvexVerticesCollider(AlignedVector3Array vertices, bool isEntity, Vector3 entityTargetLocation)
@@ -25,15 +25,30 @@ namespace BspDemo
             //can use a shift
             Matrix startTransform = Matrix.Translation(0, 0, -10.0f);
             CollisionShape shape = new ConvexHullShape(vertices);
-            context.CollisionShapes.Add(shape);
+            demo.CollisionShapes.Add(shape);
 
-            context.LocalCreateRigidBody(mass, startTransform, shape);
+            demo.LocalCreateRigidBody(mass, startTransform, shape);
         }
     }
 
-    class Physics : PhysicsContext
+    class BspDemo : Demo
     {
-        public Physics()
+        Vector3 eye = new Vector3(10, 10, 10);
+        Vector3 target = new Vector3(0, 0, 0);
+
+        protected override void OnInitialize()
+        {
+            Freelook.Up = Vector3.UnitZ;
+            Freelook.SetEyeTarget(eye, target);
+
+            Graphics.SetFormText("BulletSharp - Quake BSP Physics Viewer");
+            Graphics.SetInfoText("Move using mouse and WASD+shift\n" +
+                //"F3 - Toggle debug\n" +
+                //"F11 - Toggle fullscreen\n" +
+                "Space - Shoot box");
+        }
+
+        protected override void OnInitializePhysics()
         {
             // collision configuration contains default setup for memory, collision setup
             CollisionConf = new DefaultCollisionConfiguration();
@@ -43,12 +58,24 @@ namespace BspDemo
             Solver = new SequentialImpulseConstraintSolver();
 
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf);
-            World.Gravity = new Vector3(0, -10, 0);
+            World.Gravity = Freelook.Up * -10.0f;
 
             BspLoader bspLoader = new BspLoader();
             bspLoader.LoadBspFile("BspDemo.bsp");
             BspConverter bsp2Bullet = new BspToBulletConverter(this);
             bsp2Bullet.ConvertBsp(bspLoader, 0.1f);
+        }
+    }
+
+    static class Program
+    {
+        [STAThread]
+        static void Main()
+        {
+            using (Demo demo = new BspDemo())
+            {
+                LibraryManager.Initialize(demo);
+            }
         }
     }
 }
