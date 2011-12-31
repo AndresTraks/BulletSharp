@@ -8,7 +8,7 @@ namespace DemoFramework.SharpDX
     public class InfoText : IDisposable
     {
         Font font;
-        Color4 color = new Color4(1, 1, 0, 0);
+        Color4 color = new Color4(1, 0, 0, 1);
         float fps = -1;
         string textString = "";
         Rectangle rect = new Rectangle(0, 0, 210, 200);
