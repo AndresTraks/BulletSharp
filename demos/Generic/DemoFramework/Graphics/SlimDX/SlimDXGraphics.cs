@@ -3,10 +3,12 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using BulletSharp;
+using BulletSharp.SoftBody;
 using SlimDX;
 using SlimDX.Direct3D9;
 using SlimDX.Windows;
 using Device = SlimDX.Direct3D9.Device;
+using Material = SlimDX.Direct3D9.Material;
 using Matrix = SlimDX.Matrix;
 using Vector3 = SlimDX.Vector3;
 
@@ -51,6 +53,7 @@ namespace DemoFramework.SlimDX
         protected Material ActiveMaterial;
         protected Material PassiveMaterial;
         protected Material GroundMaterial;
+        protected Material SoftBodyMaterial;
         Light light;
 
         bool isFormClosed = false;
@@ -205,6 +208,10 @@ namespace DemoFramework.SlimDX
             GroundMaterial.Diffuse = Color.Green;
             GroundMaterial.Ambient = new Color4(Ambient);
 
+            SoftBodyMaterial = new Material();
+            SoftBodyMaterial.Diffuse = Color.White;
+            SoftBodyMaterial.Ambient = new Color4(Ambient);
+
             light = new Light();
             light.Type = LightType.Point;
             light.Range = 70;
@@ -240,10 +247,27 @@ namespace DemoFramework.SlimDX
                 Device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.LightGray, 1.0f, 0);
                 Device.BeginScene();
 
-                foreach (RigidBody body in Demo.World.CollisionObjectArray)
+                foreach (CollisionObject colObj in Demo.World.CollisionObjectArray)
                 {
-                    Device.SetTransform(TransformState.World, MathHelper.Convert(body.MotionState.WorldTransform));
-                    RenderWithMaterial(body);
+                    if (colObj is SoftBody)
+                    {
+                        Device.Material = SoftBodyMaterial;
+                        Device.SetTransform(TransformState.World, Matrix.Identity);
+                        meshFactory.RenderSoftBody(colObj as SoftBody);
+                    }
+                    else
+                    {
+                        RigidBody body = colObj as RigidBody;
+                        if ("Ground".Equals(body.UserObject))
+                            Device.Material = GroundMaterial;
+                        else if (body.ActivationState == ActivationState.ActiveTag)
+                            Device.Material = ActiveMaterial;
+                        else
+                            Device.Material = PassiveMaterial;
+
+                        Device.SetTransform(TransformState.World, MathHelper.Convert(body.MotionState.WorldTransform));
+                        meshFactory.Render(body.CollisionShape);
+                    }
                 }
 
                 DebugDrawWorld();
@@ -432,19 +456,6 @@ namespace DemoFramework.SlimDX
             OnResetDevice();
 
             togglingFullScreen = false;
-        }
-
-        string ground = "Ground";
-        protected void RenderWithMaterial(CollisionObject body)
-        {
-            if (ground.Equals(body.UserObject))
-                Device.Material = GroundMaterial;
-            else if (body.ActivationState == ActivationState.ActiveTag)
-                Device.Material = ActiveMaterial;
-            else
-                Device.Material = PassiveMaterial;
-
-            meshFactory.Render(body.CollisionShape);
         }
 
         public override void SetInfoText(string text)

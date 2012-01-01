@@ -346,7 +346,7 @@ namespace DemoFramework
             }
         }
 
-        Vector3 GetRayTo(Point point, Vector3 eye, Vector3 target, float fov)
+        protected Vector3 GetRayTo(Point point, Vector3 eye, Vector3 target, float fov)
         {
             float aspect;
 

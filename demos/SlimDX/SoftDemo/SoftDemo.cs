@@ -137,7 +137,7 @@ namespace SoftDemo
                     Vector3 rayTo = GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView);
                     Vector3 rayDir = (rayTo - rayFrom);
                     rayDir.Normalize();
-                    AlignedSoftBodyArray sbs = ((SoftRigidDynamicsWorld)Physics.World).SoftBodyArray;
+                    AlignedSoftBodyArray sbs = (Physics.World as SoftRigidDynamicsWorld).SoftBodyArray;
                     for (int ib = 0; ib < sbs.Count; ++ib)
                     {
                         SoftBody psb = sbs[ib];

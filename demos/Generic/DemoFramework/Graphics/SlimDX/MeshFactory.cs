@@ -513,6 +513,9 @@ namespace DemoFramework.SlimDX
 
         public void RenderSoftBody(SoftBody softBody)
         {
+            Cull cullMode = device.GetRenderState<Cull>(RenderState.CullMode);
+            device.SetRenderState(RenderState.CullMode, Cull.None);
+
             AlignedFaceArray faces = softBody.Faces;
             int faceCount = faces.Count;
 
@@ -621,6 +624,8 @@ namespace DemoFramework.SlimDX
                     device.DrawUserPrimitives(PrimitiveType.LineList, links.Count, linkArray);
                 }
             }
+
+            device.SetRenderState(RenderState.CullMode, cullMode);
         }
 
         public void RenderSoftBodyTextured(SoftBody softBody)
