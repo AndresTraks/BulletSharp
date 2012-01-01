@@ -38,6 +38,7 @@
     <Compile Include="InfoText.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="MeshFactory.cs" />
+    <Compile Include="PhysicsDebugDraw.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharpDXGraphics.cs" />
   </ItemGroup>

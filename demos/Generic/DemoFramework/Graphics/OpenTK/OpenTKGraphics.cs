@@ -27,6 +27,11 @@ namespace DemoFramework.OpenTK
             }
         }
 
+        public override BulletSharp.IDebugDraw GetPhysicsDebugDrawer()
+        {
+            throw new NotImplementedException();
+        }
+
         public OpenTKGraphics(Demo demo)
             : base(demo)
         {

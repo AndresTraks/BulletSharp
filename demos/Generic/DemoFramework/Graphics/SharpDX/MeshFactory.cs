@@ -61,7 +61,6 @@ namespace DemoFramework.SharpDX
             {
                 data.WriteRange(vectors);
                 VertexBuffer = new Buffer(device, data, vertexBufferDesc);
-                VertexBuffer.Unmap();
             }
 
             BufferBindings[0] = new VertexBufferBinding(VertexBuffer, 24, 0);
@@ -162,6 +161,7 @@ namespace DemoFramework.SharpDX
     // This class creates graphical objects (boxes, cones, cylinders, spheres) on the fly.
     public class MeshFactory : System.IDisposable
     {
+        Demo demo;
         Device device;
         InputAssemblerStage inputAssembler;
         Dictionary<CollisionShape, ShapeData> shapes = new Dictionary<CollisionShape, ShapeData>();
@@ -180,6 +180,7 @@ namespace DemoFramework.SharpDX
         {
             this.device = graphics.Device;
             this.inputAssembler = device.InputAssembler;
+            this.demo = graphics.Demo;
 
             instanceDataDesc = new BufferDescription()
             {
@@ -199,7 +200,7 @@ namespace DemoFramework.SharpDX
                 new InputElement("WORLD", 3, Format.R32G32B32A32_Float, 48, 1, InputClassification.PerInstanceData, 1),
                 new InputElement("COLOR", 0, Format.R8G8B8A8_UNorm, 64, 1, InputClassification.PerInstanceData, 1)
             };
-            inputLayout = new InputLayout(device, graphics.GetShadowGenPass().Description.Signature, elements);
+            inputLayout = new InputLayout(device, graphics.GetEffectPass().Description.Signature, elements);
 
             Color c = Color.Green;
             groundColor = (uint)c.R + ((uint)c.G << 8) + ((uint)c.B << 16) + ((uint)c.A << 24);
@@ -957,6 +958,8 @@ namespace DemoFramework.SharpDX
                 Matrix transform;
                 if (colObj is SoftBody)
                 {
+                    if (demo.IsDebugDrawEnabled)
+                        continue;
                     transform = Matrix.Identity;
                 }
                 else

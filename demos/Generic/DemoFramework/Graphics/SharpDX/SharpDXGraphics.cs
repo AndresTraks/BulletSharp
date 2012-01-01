@@ -35,6 +35,12 @@ namespace DemoFramework.SharpDX
         Texture2D depthTexture;
         Texture2D lightDepthTexture;
 
+        EffectShaderResourceVariable lightBufferVar;
+        EffectShaderResourceVariable normalBufferVar;
+        EffectShaderResourceVariable diffuseBufferVar;
+        EffectShaderResourceVariable depthMapVar;
+        EffectShaderResourceVariable lightDepthMapVar;
+
         RenderTargetView renderView;
         DepthStencilView depthView;
         DepthStencilView lightDepthView;
@@ -44,7 +50,7 @@ namespace DemoFramework.SharpDX
         RenderTargetView[] gBufferViews;
         DepthStencilState depthStencilState;
         DepthStencilState lightDepthStencilState;
-        bool shadowsEnabled = true;
+        bool shadowsEnabled = false;
         public RenderTargetView[] renderViews = new RenderTargetView[1];
 
         VertexBufferBinding quadBinding;
@@ -55,10 +61,16 @@ namespace DemoFramework.SharpDX
         EffectPass shadowGenPass;
         EffectPass gBufferGenPass;
         EffectPass gBufferRenderPass;
+        EffectPass debugDrawPass;
 
-        public EffectPass GetShadowGenPass()
+        public EffectPass GetEffectPass()
         {
-            return shadowGenPass;
+            return gBufferGenPass;
+        }
+
+        public EffectPass GetDebugDrawPass()
+        {
+            return debugDrawPass;
         }
 
         ShaderResourceView depthRes;
@@ -99,6 +111,11 @@ namespace DemoFramework.SharpDX
             public Matrix Projection;
             public Matrix ViewInverse;
             public Matrix LightViewProjection;
+        }
+
+        public override BulletSharp.IDebugDraw GetPhysicsDebugDrawer()
+        {
+            return new PhysicsDebugDraw(this);
         }
 
         public SharpDXGraphics(Demo demo)
@@ -291,11 +308,11 @@ namespace DemoFramework.SharpDX
             lightDepthView = new DepthStencilView(_device, lightDepthTexture, depthViewDesc);
             lightDepthRes = new ShaderResourceView(_device, lightDepthTexture, resourceDesc);
 
-            effect2.GetVariableByName("lightBuffer").AsShaderResource().SetResource(lightBufferRes);
-            effect2.GetVariableByName("normalBuffer").AsShaderResource().SetResource(normalBufferRes);
-            effect2.GetVariableByName("diffuseBuffer").AsShaderResource().SetResource(diffuseBufferRes);
-            effect2.GetVariableByName("depthMap").AsShaderResource().SetResource(depthRes);
-            effect2.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightDepthRes);
+            lightBufferVar = effect2.GetVariableByName("lightBuffer").AsShaderResource();
+            normalBufferVar = effect2.GetVariableByName("normalBuffer").AsShaderResource();
+            diffuseBufferVar = effect2.GetVariableByName("diffuseBuffer").AsShaderResource();
+            depthMapVar = effect2.GetVariableByName("depthMap").AsShaderResource();
+            lightDepthMapVar = effect2.GetVariableByName("lightDepthMap").AsShaderResource();
 
             _device.Rasterizer.SetViewports(new Viewport(0, 0, Width, Height));
         }
@@ -346,6 +363,7 @@ namespace DemoFramework.SharpDX
             EffectTechnique technique = effect.GetTechniqueByIndex(0);
             shadowGenPass = technique.GetPassByIndex(0);
             gBufferGenPass = technique.GetPassByIndex(1);
+            debugDrawPass = technique.GetPassByName("debug");
 
             BufferDescription sceneConstantsDesc = new BufferDescription()
             {
@@ -467,7 +485,7 @@ namespace DemoFramework.SharpDX
 
             meshFactory.InitInstancedRender(Demo.World.CollisionObjectArray);
 
-            // Depth map pass
+            // Light depth map pass
             if (shadowsEnabled)
             {
                 _device.ClearDepthStencilView(lightDepthView, DepthStencilClearFlags.Depth, 1.0f, 0);
@@ -475,28 +493,36 @@ namespace DemoFramework.SharpDX
                 outputMerger.SetRenderTargets(0, new RenderTargetView[0], lightDepthView);
                 shadowGenPass.Apply();
                 OnRender();
-                effect2.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightDepthRes);
+                lightDepthMapVar.SetResource(lightDepthRes);
             }
 
             // Render pass
-            effect2.GetVariableByName("lightBuffer").AsShaderResource().SetResource(null);
-            effect2.GetVariableByName("normalBuffer").AsShaderResource().SetResource(null);
-            effect2.GetVariableByName("diffuseBuffer").AsShaderResource().SetResource(null);
-            effect2.GetVariableByName("depthMap").AsShaderResource().SetResource(null);
-            effect2.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(null);
+            lightBufferVar.SetResource(null);
+            normalBufferVar.SetResource(null);
+            diffuseBufferVar.SetResource(null);
+            depthMapVar.SetResource(null);
+            lightDepthMapVar.SetResource(null);
+
             outputMerger.SetDepthStencilState(depthStencilState, 0);
             outputMerger.SetRenderTargets(3, gBufferViews, depthView);
             gBufferGenPass.Apply();
             OnRender();
 
+            if (Demo.IsDebugDrawEnabled)
+            {
+                debugDrawPass.Apply();
+                (Demo.World.DebugDrawer as PhysicsDebugDraw).DrawDebugWorld(Demo.World);
+            }
+
 
             // G-buffer render pass
             outputMerger.SetDepthStencilState(null, 0);
-            effect2.GetVariableByName("lightBuffer").AsShaderResource().SetResource(lightBufferRes);
-            effect2.GetVariableByName("normalBuffer").AsShaderResource().SetResource(normalBufferRes);
-            effect2.GetVariableByName("diffuseBuffer").AsShaderResource().SetResource(diffuseBufferRes);
-            effect2.GetVariableByName("depthMap").AsShaderResource().SetResource(depthRes);
-            effect2.GetVariableByName("lightDepthMap").AsShaderResource().SetResource(lightDepthRes);
+            lightBufferVar.SetResource(lightBufferRes);
+            normalBufferVar.SetResource(normalBufferRes);
+            diffuseBufferVar.SetResource(diffuseBufferRes);
+            depthMapVar.SetResource(depthRes);
+            lightDepthMapVar.SetResource(lightDepthRes);
+
             outputMerger.SetRenderTargets(1, renderViews, null);
             gBufferRenderPass.Apply();
 

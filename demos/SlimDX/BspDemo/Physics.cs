@@ -43,7 +43,7 @@ namespace BspDemo
             Solver = new SequentialImpulseConstraintSolver();
 
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf);
-            World.Gravity = new Vector3(0, -10, 0);
+            World.Gravity = new Vector3(0, 0, -10);
 
             BspLoader bspLoader = new BspLoader();
             bspLoader.LoadBspFile("BspDemo.bsp");

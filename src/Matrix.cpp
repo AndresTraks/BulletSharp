@@ -543,7 +543,7 @@ namespace BulletSharp
 		if (det == 0)
 			return inv;
 
-		det = 1.0 / det;
+		det = btScalar(1.0) / det;
 
 		return inv * det;
 	}

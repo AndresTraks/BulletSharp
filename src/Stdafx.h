@@ -123,12 +123,12 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
 #elif GRAPHICS_WAPICODEPACK
 #define BtColor Color
-#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
-#define BtVectorToBtColor(color) Color::FromArgb(color.getX(), color.getY(), color.getZ())
+#define BtColorToBtVector(color) new btVector3(color.R / btScalar(255.0), color.G / btScalar(255.0), color.B / btScalar(255.0))
+#define BtVectorToBtColor(color) Color::FromArgb((int)(color.getX() * btScalar(255.0)), (int)(color.getY() * btScalar(255.0)), (int)(color.getZ() * btScalar(255.0)))
 #elif GRAPHICS_NONE
 #define BtColor Color
-#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
-#define BtVectorToBtColor(color) Color::FromArgb(color.getX(), color.getY(), color.getZ())
+#define BtColorToBtVector(color) new btVector3(color.R / btScalar(255.0), color.G / btScalar(255.0), color.B / btScalar(255.0))
+#define BtVectorToBtColor(color) Color::FromArgb((int)(color.getX() * btScalar(255.0)), (int)(color.getY() * btScalar(255.0)), (int)(color.getZ() * btScalar(255.0)))
 #endif
 
 //#define BT_MANAGED_CODE

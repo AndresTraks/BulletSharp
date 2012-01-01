@@ -65,59 +65,15 @@ namespace DemoFramework.SlimDX
         FormBorderStyle windowedFormBorderStyle;
         bool togglingFullScreen = false;
 
-        DebugDrawModes debugDrawMode = DebugDrawModes.DrawWireframe;
-        public DebugDrawModes DebugDrawMode
+        public override IDebugDraw GetPhysicsDebugDrawer()
         {
-            get
-            {
-                if (DebugDrawer == null)
-                    return debugDrawMode;
-                else
-                    return DebugDrawer.DebugMode;
-            }
-            set
-            {
-                if (DebugDrawer == null)
-                    debugDrawMode = value;
-                else
-                    DebugDrawer.DebugMode = value;
-            }
-        }
-
-        bool isDebugDrawEnabled = false;
-        public bool IsDebugDrawEnabled
-        {
-            get
-            {
-                return isDebugDrawEnabled;
-            }
-            set
-            {
-                if (DebugDrawer == null)
-                {
-                    DebugDrawer = new PhysicsDebugDrawLineGathering(Device);
-                    DebugDrawer.DebugMode = debugDrawMode;
-                }
-                isDebugDrawEnabled = value;
-            }
-        }
-
-        public PhysicsDebugDraw DebugDrawer
-        {
-            get { return (PhysicsDebugDraw)Demo.World.DebugDrawer; }
-            set { Demo.World.DebugDrawer = value; }
+            return new PhysicsDebugDraw(Device);
         }
 
         public SlimDXGraphics(Demo demo)
             : base(demo)
         {
             Form = new RenderForm();
-        }
-
-        public void DebugDrawWorld()
-        {
-            if (IsDebugDrawEnabled)
-                DebugDrawer.DrawDebugWorld(Demo.World);
         }
 
         /// <summary>
@@ -251,6 +207,9 @@ namespace DemoFramework.SlimDX
                 {
                     if (colObj is SoftBody)
                     {
+                        if (Demo.IsDebugDrawEnabled)
+                            continue;
+
                         Device.Material = SoftBodyMaterial;
                         Device.SetTransform(TransformState.World, Matrix.Identity);
                         meshFactory.RenderSoftBody(colObj as SoftBody);
@@ -265,12 +224,13 @@ namespace DemoFramework.SlimDX
                         else
                             Device.Material = PassiveMaterial;
 
-                        Device.SetTransform(TransformState.World, MathHelper.Convert(body.MotionState.WorldTransform));
+                        Device.SetTransform(TransformState.World, MathHelper.Convert(body.WorldTransform));
                         meshFactory.Render(body.CollisionShape);
                     }
                 }
 
-                DebugDrawWorld();
+                if (Demo.IsDebugDrawEnabled)
+                    (Demo.World.DebugDrawer as PhysicsDebugDraw).DrawDebugWorld(Demo.World);
                 Info.OnRender(Demo.FramesPerSecond);
 
                 Device.EndScene();

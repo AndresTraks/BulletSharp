@@ -59,6 +59,52 @@ namespace DemoFramework
         protected TypedConstraint pickConstraint;
         float oldPickingDist;
 
+        DebugDrawModes debugDrawMode = DebugDrawModes.DrawWireframe;
+        public DebugDrawModes DebugDrawMode
+        {
+            get
+            {
+                if (World.DebugDrawer == null)
+                    return debugDrawMode;
+                else
+                    return World.DebugDrawer.DebugMode;
+            }
+            set
+            {
+                if (World.DebugDrawer == null)
+                    debugDrawMode = value;
+                else
+                    World.DebugDrawer.DebugMode = value;
+            }
+        }
+
+        bool isDebugDrawEnabled = false;
+        public bool IsDebugDrawEnabled
+        {
+            get
+            {
+                if (!isDebugDrawEnabled)
+                    return false;
+
+                if (World.DebugDrawer == null)
+                {
+                    DebugDrawModes debugDrawMode = DebugDrawMode;
+                    World.DebugDrawer = Graphics.GetPhysicsDebugDrawer();
+                    World.DebugDrawer.DebugMode = debugDrawMode;
+                }
+                return true;
+            }
+            set
+            {
+                if (value == true && World.DebugDrawer == null)
+                {
+                    BulletSharp.DebugDrawModes debugDrawMode = DebugDrawMode;
+                    World.DebugDrawer = Graphics.GetPhysicsDebugDrawer();
+                    World.DebugDrawer.DebugMode = debugDrawMode;
+                }
+                isDebugDrawEnabled = value;
+            }
+        }
 
         public Demo()
         {
@@ -191,7 +237,7 @@ namespace DemoFramework
                         Graphics.Form.Close();
                         return;
                     case Keys.F3:
-                        //IsDebugDrawEnabled = !IsDebugDrawEnabled;
+                        IsDebugDrawEnabled = !IsDebugDrawEnabled;
                         break;
                     case Keys.F8:
                         Input.ClearKeyCache();

@@ -64,15 +64,38 @@ namespace DemoFramework.SlimDX
 
         Mesh CreateCapsuleShape(CapsuleShape shape)
         {
-            // Combine a cylinder and two spheres.
+            int upAxis = shape.UpAxis;
             BulletSharp.Vector3 size = shape.ImplicitShapeDimensions;
-            Mesh cylinder = Mesh.CreateCylinder(device, size.X, size.X, size.Y * 2, 8, 1);
-            Mesh sphere = Mesh.CreateSphere(device, size.Z, 8, 4);
-            Mesh[] meshes = new Mesh[] { sphere, cylinder, sphere };
-            Matrix[] transforms = new Matrix[] {
-                    Matrix.Translation(0, -size.Y, 0),
+            float halfHeight = size[upAxis];
+            float radius = (upAxis == 0) ? size.Y : size.X;
+
+            // Combine a cylinder and two spheres.
+            Mesh cylinder = Mesh.CreateCylinder(device, radius, radius, halfHeight * 2, 8, 1);
+            Mesh sphere = Mesh.CreateSphere(device, radius, 8, 4);
+            Matrix[] transforms;
+            if (upAxis == 0)
+            {
+                transforms = new Matrix[] {
+                    Matrix.Translation(halfHeight, 0, 0),
+                    Matrix.RotationY((float)Math.PI / 2),
+                    Matrix.Translation(-halfHeight, 0, 0)};
+            }
+            else if (upAxis == 1)
+            {
+                transforms = new Matrix[] {
+                    Matrix.Translation(0, halfHeight, 0),
                     Matrix.RotationX((float)Math.PI / 2),
-                    Matrix.Translation(0, size.Y, 0)};
+                    Matrix.Translation(0, -halfHeight, 0)};
+            }
+            else
+            {
+                transforms = new Matrix[] {
+                    Matrix.Translation(0, 0, halfHeight),
+                    Matrix.Identity,
+                    Matrix.Translation(0, 0, -halfHeight)};
+            }
+
+            Mesh[] meshes = new Mesh[] { sphere, cylinder, sphere };
             Mesh mesh = Mesh.Concatenate(device, meshes, MeshFlags.Managed, transforms, null);
             cylinder.Dispose();
             sphere.Dispose();

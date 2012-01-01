@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using BulletSharp;
 
 namespace DemoFramework
 {
@@ -32,6 +33,8 @@ namespace DemoFramework
                 return (float)clientSize.Width / (float)clientSize.Height;
             }
         }
+
+        public abstract IDebugDraw GetPhysicsDebugDrawer();
 
         public Graphics(Demo demo)
         {

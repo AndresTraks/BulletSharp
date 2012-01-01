@@ -31,6 +31,23 @@ struct PS_OUT_MRT
 	float4 Diffuse : SV_Target2;
 };
 
+struct VS_DEBUG_IN
+{
+	float4 Pos : POSITION;
+	float4 Color : COLOR;
+};
+
+struct VS_DEBUG_OUT
+{
+    float4 Pos : SV_POSITION;
+	float4 Color : TEXCOORD1;
+};
+
+struct PS_DEBUG_OUT_MRT
+{
+	float4 Diffuse : SV_Target2;
+};
+
 float4 shadowGenVS(VS_IN input) : SV_POSITION
 {
 	float4x4 world = float4x4(input.World0, input.World1, input.World2, input.World3);
@@ -67,6 +84,24 @@ PS_OUT_MRT PS_MRT( VS_OUT input )
 	return output;
 }
 
+VS_DEBUG_OUT VS_DEBUG(VS_DEBUG_IN input)
+{
+    VS_DEBUG_OUT output = (VS_DEBUG_OUT)0;
+
+	output.Pos = mul(View, input.Pos);
+    output.Pos = mul(Projection, output.Pos);
+	output.Color = input.Color;
+
+    return output;
+}
+
+PS_DEBUG_OUT_MRT PS_DEBUG_MRT( VS_DEBUG_OUT input )
+{
+	PS_DEBUG_OUT_MRT output = (PS_DEBUG_OUT_MRT)0;
+	output.Diffuse = float4(input.Color.rgb, 1);
+	return output;
+}
+
 technique10 Render
 {
 	pass P0
@@ -82,4 +117,11 @@ technique10 Render
         SetGeometryShader( NULL );
         SetPixelShader( CompileShader( ps_4_0, PS_MRT() ) );
     }
+
+	pass debug
+	{
+		SetVertexShader( CompileShader( vs_4_0, VS_DEBUG() ) );
+        SetGeometryShader( NULL );
+        SetPixelShader( CompileShader( ps_4_0, PS_DEBUG_MRT() ) );
+	}
 }
