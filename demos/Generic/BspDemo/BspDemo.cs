@@ -43,7 +43,7 @@ namespace BspDemo
 
             Graphics.SetFormText("BulletSharp - Quake BSP Physics Viewer");
             Graphics.SetInfoText("Move using mouse and WASD+shift\n" +
-                //"F3 - Toggle debug\n" +
+                "F3 - Toggle debug\n" +
                 //"F11 - Toggle fullscreen\n" +
                 "Space - Shoot box");
         }

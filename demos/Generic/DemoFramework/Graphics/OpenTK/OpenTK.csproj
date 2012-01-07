@@ -60,6 +60,7 @@
     <Compile Include="MathHelper.cs" />
     <Compile Include="MeshFactory.cs" />
     <Compile Include="OpenTKGraphics.cs" />
+    <Compile Include="PhysicsDebugDraw.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

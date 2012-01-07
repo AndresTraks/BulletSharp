@@ -23,7 +23,7 @@ namespace BasicDemo
 
             Graphics.SetFormText("BulletSharp - Basic Demo");
             Graphics.SetInfoText("Move using mouse and WASD+shift\n" +
-                //"F3 - Toggle debug\n" +
+                "F3 - Toggle debug\n" +
                 //"F11 - Toggle fullscreen\n" +
                 "Space - Shoot box");
         }

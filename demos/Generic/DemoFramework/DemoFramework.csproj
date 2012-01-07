@@ -49,6 +49,7 @@
     <Compile Include="Controller\Input.cs" />
     <Compile Include="Controller\MouseController.cs" />
     <Compile Include="Demo.cs" />
+    <Compile Include="Graphics\BufferedDebugDraw.cs" />
     <Compile Include="Graphics\LibrarySelection.cs">
       <SubType>Form</SubType>
     </Compile>

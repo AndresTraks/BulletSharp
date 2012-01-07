@@ -135,13 +135,15 @@ namespace DemoFramework.OpenTK
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
             GL.BindTexture(TextureTarget.Texture2D, texture);
-            GL.Begin(BeginMode.Quads);
 
+            GL.Begin(BeginMode.Quads);
             GL.TexCoord2(0.0f, 1.0f); GL.Vertex2(0, 0);
             GL.TexCoord2(1.0f, 1.0f); GL.Vertex2(width, 0);
             GL.TexCoord2(1.0f, 0.0f); GL.Vertex2(width, height);
             GL.TexCoord2(0.0f, 0.0f); GL.Vertex2(0, height);
             GL.End();
+
+            GL.Disable(EnableCap.Texture2D);
         }
 
         #region IDisposable Members

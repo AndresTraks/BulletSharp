@@ -64,14 +64,14 @@ namespace DemoFramework
         {
             get
             {
-                if (World.DebugDrawer == null)
+                if (World == null || World.DebugDrawer == null)
                     return debugDrawMode;
                 else
                     return World.DebugDrawer.DebugMode;
             }
             set
             {
-                if (World.DebugDrawer == null)
+                if (World == null || World.DebugDrawer == null)
                     debugDrawMode = value;
                 else
                     World.DebugDrawer.DebugMode = value;

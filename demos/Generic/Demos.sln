@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftDemo", "SoftDemo\SoftDe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BspDemo", "BspDemo\BspDemo.csproj", "{AD666B32-ADA7-46EF-9546-4CBD680B7E18}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConstraintDemo", "ConstraintDemo\ConstraintDemo.csproj", "{E53D74AE-3F31-41A5-9046-57109CC9CBD5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -63,6 +65,10 @@ Global
 		{AD666B32-ADA7-46EF-9546-4CBD680B7E18}.Debug|x86.Build.0 = Debug|x86
 		{AD666B32-ADA7-46EF-9546-4CBD680B7E18}.Release|x86.ActiveCfg = Release|x86
 		{AD666B32-ADA7-46EF-9546-4CBD680B7E18}.Release|x86.Build.0 = Release|x86
+		{E53D74AE-3F31-41A5-9046-57109CC9CBD5}.Debug|x86.ActiveCfg = Debug|x86
+		{E53D74AE-3F31-41A5-9046-57109CC9CBD5}.Debug|x86.Build.0 = Debug|x86
+		{E53D74AE-3F31-41A5-9046-57109CC9CBD5}.Release|x86.ActiveCfg = Release|x86
+		{E53D74AE-3F31-41A5-9046-57109CC9CBD5}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

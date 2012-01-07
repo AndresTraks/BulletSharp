@@ -29,7 +29,7 @@ namespace DemoFramework.OpenTK
 
         public override BulletSharp.IDebugDraw GetPhysicsDebugDrawer()
         {
-            throw new NotImplementedException();
+            return new PhysicsDebugDraw(this);
         }
 
         public OpenTKGraphics(Demo demo)
@@ -127,7 +127,7 @@ namespace DemoFramework.OpenTK
 
         public override void Initialize()
         {
-            meshFactory = new MeshFactory();
+            meshFactory = new MeshFactory(Demo);
             info = new InfoText(glControl);
         }
 
@@ -150,6 +150,15 @@ namespace DemoFramework.OpenTK
             meshFactory.RenderInstanced(ref lookat);
 
             GL.UseProgram(0);
+            if (Demo.IsDebugDrawEnabled)
+            {
+                GL.MatrixMode(MatrixMode.Modelview);
+                GL.LoadMatrix(ref lookat);
+                GL.MatrixMode(MatrixMode.Projection);
+                GL.LoadMatrix(ref perspective);
+                (Demo.World.DebugDrawer as PhysicsDebugDraw).DrawDebugWorld(Demo.World);
+            }
+
             info.OnRender(Demo.FramesPerSecond);
 
             glControl.SwapBuffers();

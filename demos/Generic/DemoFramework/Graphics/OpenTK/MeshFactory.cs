@@ -160,6 +160,8 @@ namespace DemoFramework.OpenTK
 
     class MeshFactory
     {
+        Demo demo;
+
         Dictionary<CollisionShape, ShapeData> shapes = new Dictionary<CollisionShape, ShapeData>();
         List<CollisionShape> removeList = new List<CollisionShape>();
 
@@ -173,6 +175,11 @@ namespace DemoFramework.OpenTK
         int vertexPositionLocation;
         int vertexNormalLocation;
         int vertexColorLocation;
+
+        public MeshFactory(Demo demo)
+        {
+            this.demo = demo;
+        }
 
         public void SetShaderLocations(int modelViewMatrix, int position, int normal, int color)
         {
@@ -736,6 +743,8 @@ namespace DemoFramework.OpenTK
                 BulletSharp.Matrix transform;
                 if (colObj is SoftBody)
                 {
+                    if (demo.IsDebugDrawEnabled)
+                        continue;
                     transform = BulletSharp.Matrix.Identity;
                 }
                 else
@@ -845,6 +854,7 @@ namespace DemoFramework.OpenTK
                 }
             }
 
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.DisableVertexAttribArray(vertexPositionLocation);
         }
 
