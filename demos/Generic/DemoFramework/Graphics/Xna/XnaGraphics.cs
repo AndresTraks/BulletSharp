@@ -20,6 +20,11 @@ namespace DemoFramework.Xna
             return meshFactory;
         }
 
+        public override float AspectRatio
+        {
+            get { return Device.Viewport.AspectRatio; }
+        }
+
         protected int Width { get; set; }
         protected int Height { get; set; }
         protected int FullScreenWidth { get; set; }
@@ -39,6 +44,8 @@ namespace DemoFramework.Xna
         bool isFormClosed = false;
         bool formIsResizing = false;
         FormWindowState currentFormWindowState;
+
+        BasicEffect effect;
 
         public override IDebugDraw GetPhysicsDebugDrawer()
         {
@@ -105,23 +112,27 @@ namespace DemoFramework.Xna
             //Ambient = Color.Gray.ToArgb();
 
             Info = new InfoText(Device);
+            Demo.Input.Control = (Form as XnaForm).GraphicsDeviceControl;
         }
 
         public void InitializeDevice()
         {
             Form.ClientSize = new Size(Width, Height);
 
-            /*
-            light = new Light();
-            light.Type = LightType.Point;
-            light.Range = 70;
-            light.Position = new Vector3(10, 25, 10);
-            light.Diffuse = Color.LemonChiffon;
-            light.Attenuation0 = 1.0f;
-            */
-
             meshFactory = new MeshFactory(this);
 
+            effect = new BasicEffect(Device);
+
+            // Set light
+            //effect.LightingEnabled = true;
+            //effect.AmbientLightColor = Color.Gray.ToVector3();
+            //effect.DirectionalLight0.Enabled = true;
+            //effect.DirectionalLight0.DiffuseColor = Color.LemonChiffon.ToVector3();
+            effect.EnableDefaultLighting();
+
+            Device.RasterizerState = RasterizerState.CullNone;
+
+            UpdateView();
             LibraryManager.LibraryStarted();
         }
 
@@ -130,7 +141,7 @@ namespace DemoFramework.Xna
             Device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Microsoft.Xna.Framework.Color.LightGray, 1.0f, 0);
 
             meshFactory.InitInstancedRender(Demo.World.CollisionObjectArray);
-            meshFactory.RenderInstanced();
+            meshFactory.RenderInstanced(effect);
 
             //if (Demo.IsDebugDrawEnabled)
             //    (Demo.World.DebugDrawer as PhysicsDebugDraw).DrawDebugWorld(Demo.World);
@@ -139,8 +150,12 @@ namespace DemoFramework.Xna
 
         public override void UpdateView()
         {
-            FreeLook freelook = Demo.Freelook;
-            //Device.SetTransform(TransformState.View, Matrix.CreateLookAt(MathHelper.Convert(freelook.Eye), MathHelper.Convert(freelook.Target), MathHelper.Convert(freelook.Up)));
+            if (effect != null)
+            {
+                FreeLook freelook = Demo.Freelook;
+                effect.View = Matrix.CreateLookAt(MathHelper.Convert(freelook.Eye), MathHelper.Convert(freelook.Target), MathHelper.Convert(freelook.Up));
+                effect.View *= Matrix.CreateScale(-1, 1, 1);
+            }
         }
 
         /// <summary>
@@ -149,28 +164,13 @@ namespace DemoFramework.Xna
         public override void Run()
         {
             Form.ShowDialog();
-            /*
-            while(true)
-            {
-                Demo.OnHandleInput();
-                Demo.OnUpdate();
-
-                if (isFormClosed)
-                    break;
-
-                if (!formIsResizing)
-                    Render();
-            }
-            */
-            //OnLostDevice();
         }
 
-        protected virtual void OnResetDevice()
+        public virtual void OnResetDevice()
         {
             Info.OnResetDevice();
 
-            Matrix projection = Matrix.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, NearPlane, FarPlane);
-            //Device.SetTransform(TransformState.Projection, projection);
+            effect.Projection = Matrix.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, NearPlane, FarPlane);
             UpdateView();
 
             //Device.SetRenderState(RenderState.Ambient, Ambient);

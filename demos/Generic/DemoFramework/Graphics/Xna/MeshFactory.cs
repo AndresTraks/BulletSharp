@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using BulletSharp;
 using BulletSharp.SoftBody;
 using Microsoft.Xna.Framework.Graphics;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace DemoFramework.Xna
 {
     public struct InstanceData
     {
-        public Matrix WorldTransform;
-        public int Color;
+        public Microsoft.Xna.Framework.Matrix WorldTransform;
+        public Microsoft.Xna.Framework.Vector3 Color;
 
         public static readonly int SizeInBytes = Marshal.SizeOf(typeof(InstanceData));
     }
@@ -29,30 +29,56 @@ namespace DemoFramework.Xna
         public List<InstanceData> InstanceDataList;
 
         public PrimitiveType PrimitiveType;
-        public VertexBufferBinding[] BufferBindings;
+        //public VertexBufferBinding[] BufferBindings;
 
         public ShapeData()
         {
             InstanceDataList = new List<InstanceData>();
             PrimitiveType = PrimitiveType.TriangleList;
-            BufferBindings = new VertexBufferBinding[2];
+            //BufferBindings = new VertexBufferBinding[2];
         }
 
-        static VertexDeclaration vertexDecl = new VertexDeclaration(new VertexElement[] {
+        static readonly VertexDeclaration vertexDecl = new VertexDeclaration(new VertexElement[] {
             new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
             new VertexElement(12, VertexElementFormat.Vector3, VertexElementUsage.Normal, 0)
         });
 
         public void SetVertexBuffer(GraphicsDevice device, Vector3[] vectors)
         {
-            VertexBuffer = new VertexBuffer(device, vertexDecl, vectors.Length, BufferUsage.None);
+            VertexCount = vectors.Length;
+            VertexBuffer = new VertexBuffer(device, vertexDecl, VertexCount, BufferUsage.WriteOnly);
             VertexBuffer.SetData(vectors);
-            BufferBindings[0] = new VertexBufferBinding(VertexBuffer, 0, 0);
+            //BufferBindings[0] = new VertexBufferBinding(VertexBuffer, 0, 0);
+        }
+
+        public void SetVertexNormalBuffer(GraphicsDevice device, Vector3[] vectors)
+        {
             VertexCount = vectors.Length / 2;
+            VertexBuffer = new VertexBuffer(device, vertexDecl, VertexCount, BufferUsage.WriteOnly);
+            VertexBuffer.SetData(vectors);
+            //BufferBindings[0] = new VertexBufferBinding(VertexBuffer, 0, 0);
         }
 
         // Used with soft bodies
         public void SetDynamicVertexBuffer(GraphicsDevice device, Vector3[] vectors)
+        {
+            if (VertexBuffer != null && VertexCount == vectors.Length)
+            {
+                // Update existing buffer
+                VertexBuffer.SetData(vectors);
+            }
+            else
+            {
+                // Create new buffer
+                if (VertexBuffer != null)
+                    VertexBuffer.Dispose();
+
+                SetVertexBuffer(device, vectors);
+            }
+        }
+
+        // Used with soft bodies
+        public void SetDynamicVertexNormalBuffer(GraphicsDevice device, Vector3[] vectors)
         {
             if (VertexBuffer != null && VertexCount * 2 == vectors.Length)
             {
@@ -65,7 +91,7 @@ namespace DemoFramework.Xna
                 if (VertexBuffer != null)
                     VertexBuffer.Dispose();
 
-                SetVertexBuffer(device, vectors);
+                SetVertexNormalBuffer(device, vectors);
             }
         }
 
@@ -112,11 +138,11 @@ namespace DemoFramework.Xna
         List<CollisionShape> removeList = new List<CollisionShape>();
         Effect planeShader;
 
-        int groundColor = Color.Green.ToArgb();
-        int activeColor = Color.Orange.ToArgb();
-        int passiveColor = Color.Red.ToArgb();
-        int softBodyColor = Color.LightBlue.ToArgb();
-        int linkColor = Color.Black.ToArgb();
+        Microsoft.Xna.Framework.Vector3 groundColor = Color.Green.ToVector3();
+        Microsoft.Xna.Framework.Vector3 activeColor = Color.Orange.ToVector3();
+        Microsoft.Xna.Framework.Vector3 passiveColor = Color.Red.ToVector3();
+        Microsoft.Xna.Framework.Vector3 softBodyColor = Color.LightBlue.ToVector3();
+        Microsoft.Xna.Framework.Vector3 linkColor = Color.Black.ToVector3();
 
         public MeshFactory(XnaGraphics graphics)
         {
@@ -137,8 +163,7 @@ namespace DemoFramework.Xna
             ShapeData shapeData = new ShapeData();
             ushort[] indices;
             Vector3[] vertices = ShapeGenerator.CreateShape(shape, out indices);
-            shapeData.VertexCount = vertices.Length / 2;
-            shapeData.SetVertexBuffer(device, vertices);
+            shapeData.SetVertexNormalBuffer(device, vertices);
 
             if (indices != null)
             {
@@ -322,6 +347,12 @@ namespace DemoFramework.Xna
         }
         */
 
+        public ShapeData CreateSoftBody()
+        {
+            // Soft body geometry is recreated each frame. Nothing to do here.
+            return new ShapeData();
+        }
+
         ShapeData InitShapeData(CollisionShape shape)
         {
             ShapeData shapeData;
@@ -331,7 +362,7 @@ namespace DemoFramework.Xna
                 switch (shape.ShapeType)
                 {
                     case BroadphaseNativeType.SoftBodyShape:
-                        //shapeData = CreateSoftBody();
+                        shapeData = CreateSoftBody();
                         break;
                     case BroadphaseNativeType.Convex2DShape:
                         return InitShapeData((shape as Convex2DShape).ChildShape);
@@ -367,18 +398,18 @@ namespace DemoFramework.Xna
                     break;
                 case BroadphaseNativeType.SoftBodyShape:
                     ShapeData shapeData = InitShapeData(shape);
-                    //UpdateSoftBody(colObj as SoftBody, shapeData);
+                    UpdateSoftBody(colObj as SoftBody, shapeData);
 
                     shapeData.InstanceDataList.Add(new InstanceData()
                     {
-                        WorldTransform = transform,
+                        WorldTransform = MathHelper.Convert(transform),
                         Color = softBodyColor
                     });
                     break;
                 default:
                     InitShapeData(shape).InstanceDataList.Add(new InstanceData()
                     {
-                        WorldTransform = transform,
+                        WorldTransform = MathHelper.Convert(transform),
                         Color = ground.Equals(colObj.UserObject) ? groundColor :
                             colObj.ActivationState == ActivationState.ActiveTag ? activeColor : passiveColor
                     });
@@ -462,20 +493,29 @@ namespace DemoFramework.Xna
             }
         }
 
-        public void RenderInstanced()
+        public void RenderInstanced(BasicEffect effect)
         {
+            EffectPass pass = effect.CurrentTechnique.Passes[0];
+
             foreach (ShapeData s in shapes.Values)
             {
                 device.SetVertexBuffer(s.VertexBuffer);
-                if (s.IndexBuffer != null)
+                foreach (InstanceData instance in s.InstanceDataList)
                 {
-                    device.Indices = s.IndexBuffer;
-                    device.DrawIndexedPrimitives(s.PrimitiveType, 0, 0,
-                        s.VertexCount, 0, s.IndexCount);
-                }
-                else
-                {
-                    //device.DrawPrimitives(s.PrimitiveType, 0, s.VertexCount);
+                    effect.DiffuseColor = instance.Color;
+                    effect.World = instance.WorldTransform;
+                    pass.Apply();
+
+                    if (s.IndexBuffer != null)
+                    {
+                        device.Indices = s.IndexBuffer;
+                        device.DrawIndexedPrimitives(s.PrimitiveType, 0, 0,
+                            s.VertexCount / 3, 0, s.IndexCount);
+                    }
+                    else
+                    {
+                        device.DrawPrimitives(s.PrimitiveType, 0, s.VertexCount / 3);
+                    }
                 }
             }
         }
@@ -517,18 +557,16 @@ namespace DemoFramework.Xna
                 q = BulletSharp.Vector3.Cross(n, p);
             }
         }
-        /*
-        public void RenderSoftBody(SoftBody softBody)
+
+        public void UpdateSoftBody(SoftBody softBody, ShapeData shapeData)
         {
-            Cull cullMode = device.GetRenderState<Cull>(RenderState.CullMode);
-            device.SetRenderState(RenderState.CullMode, Cull.None);
-
             AlignedFaceArray faces = softBody.Faces;
-            int faceCount = faces.Count;
 
-            if (faceCount > 0)
+            if (faces.Count != 0)
             {
-                PositionedNormal[] vectors = new PositionedNormal[faceCount * 6];
+                shapeData.VertexCount = faces.Count * 3;
+
+                Vector3[] vectors = new Vector3[shapeData.VertexCount * 2];
                 int v = 0;
 
                 int i;
@@ -538,103 +576,100 @@ namespace DemoFramework.Xna
                     Node n0 = nodes[0];
                     Node n1 = nodes[1];
                     Node n2 = nodes[2];
-                    n0.GetX(out vectors[v].Position);
-                    n0.GetNormal(out vectors[v].Normal);
-                    n1.GetX(out vectors[v + 1].Position);
-                    n1.GetNormal(out vectors[v + 1].Normal);
-                    n2.GetX(out vectors[v + 2].Position);
-                    n2.GetNormal(out vectors[v + 2].Normal);
-                    v += 3;
+                    n0.GetX(out vectors[v]);
+                    n0.GetNormal(out vectors[v + 1]);
+                    n1.GetX(out vectors[v + 2]);
+                    n1.GetNormal(out vectors[v + 3]);
+                    n2.GetX(out vectors[v + 4]);
+                    n2.GetNormal(out vectors[v + 5]);
+                    v += 6;
                 }
 
-                device.VertexFormat = PositionedNormal.FVF;
-                device.DrawUserPrimitives(PrimitiveType.TriangleList, faces.Count, vectors);
+                shapeData.SetDynamicVertexNormalBuffer(device, vectors);
             }
             else
             {
                 AlignedTetraArray tetras = softBody.Tetras;
                 int tetraCount = tetras.Count;
 
-                if (tetraCount > 0)
+                if (tetraCount != 0)
                 {
-                    PositionedNormal[] vectors = new PositionedNormal[tetraCount * 12];
+                    shapeData.VertexCount = tetraCount * 12;
+
+                    Vector3[] vectors = new Vector3[tetraCount * 24];
                     int v = 0;
 
                     for (int i = 0; i < tetraCount; i++)
                     {
                         NodePtrArray nodes = tetras[i].Nodes;
-                        BulletSharp.Vector3 v0 = nodes[0].X;
-                        BulletSharp.Vector3 v1 = nodes[1].X;
-                        BulletSharp.Vector3 v2 = nodes[2].X;
-                        BulletSharp.Vector3 v3 = nodes[3].X;
-                        BulletSharp.Vector3 v10 = v1 - v0;
-                        BulletSharp.Vector3 v02 = v0 - v2;
+                        Vector3 v0 = nodes[0].X;
+                        Vector3 v1 = nodes[1].X;
+                        Vector3 v2 = nodes[2].X;
+                        Vector3 v3 = nodes[3].X;
+                        Vector3 v10 = v1 - v0;
+                        Vector3 v02 = v0 - v2;
 
-                        BulletSharp.Vector3 normal = BulletSharp.Vector3.Cross(v10, v02);
-                        normal.Normalize();
-                        vectors[v].Position = v0;
-                        vectors[v].Normal = normal;
-                        vectors[v + 1].Position = v1;
-                        vectors[v + 1].Normal = normal;
-                        vectors[v + 2].Position = v2;
-                        vectors[v + 2].Normal = normal;
+                        Vector3 normal = Vector3.Cross(v10, v02);
+                        vectors[v] = v0;
+                        vectors[v + 1] = normal;
+                        vectors[v + 2] = v1;
+                        vectors[v + 3] = normal;
+                        vectors[v + 4] = v2;
+                        vectors[v + 5] = normal;
 
-                        normal = BulletSharp.Vector3.Cross(v10, v3 - v0);
-                        normal.Normalize();
-                        vectors[v + 3].Position = v0;
-                        vectors[v + 3].Normal = normal;
-                        vectors[v + 4].Position = v1;
-                        vectors[v + 4].Normal = normal;
-                        vectors[v + 5].Position = v3;
-                        vectors[v + 5].Normal = normal;
+                        normal = Vector3.Cross(v10, v3 - v0);
+                        vectors[v + 6] = v0;
+                        vectors[v + 7] = normal;
+                        vectors[v + 8] = v1;
+                        vectors[v + 9] = normal;
+                        vectors[v + 10] = v3;
+                        vectors[v + 11] = normal;
 
-                        normal = BulletSharp.Vector3.Cross(v2 - v1, v3 - v1);
-                        normal.Normalize();
-                        vectors[v + 6].Position = v1;
-                        vectors[v + 6].Normal = normal;
-                        vectors[v + 7].Position = v2;
-                        vectors[v + 7].Normal = normal;
-                        vectors[v + 8].Position = v3;
-                        vectors[v + 8].Normal = normal;
+                        normal = Vector3.Cross(v2 - v1, v3 - v1);
+                        vectors[v + 12] = v1;
+                        vectors[v + 13] = normal;
+                        vectors[v + 14] = v2;
+                        vectors[v + 15] = normal;
+                        vectors[v + 16] = v3;
+                        vectors[v + 17] = normal;
 
-                        normal = BulletSharp.Vector3.Cross(v02, v3 - v2);
-                        normal.Normalize();
-                        vectors[v + 9].Position = v2;
-                        vectors[v + 9].Normal = normal;
-                        vectors[v + 10].Position = v0;
-                        vectors[v + 10].Normal = normal;
-                        vectors[v + 11].Position = v3;
-                        vectors[v + 11].Normal = normal;
-                        v += 12;
+                        normal = Vector3.Cross(v02, v3 - v2);
+                        vectors[v + 18] = v2;
+                        vectors[v + 19] = normal;
+                        vectors[v + 20] = v0;
+                        vectors[v + 21] = normal;
+                        vectors[v + 22] = v3;
+                        vectors[v + 23] = normal;
+                        v += 24;
                     }
-                    device.VertexFormat = PositionedNormal.FVF;
-                    device.DrawUserPrimitives(PrimitiveType.TriangleList, tetraCount * 4, vectors);
+
+                    shapeData.SetDynamicVertexNormalBuffer(device, vectors);
                 }
-                else if (softBody.Links.Count > 0)
+                else if (softBody.Links.Count != 0)
                 {
                     AlignedLinkArray links = softBody.Links;
                     int linkCount = links.Count;
-                    int linkColor = System.Drawing.Color.Black.ToArgb();
+                    shapeData.VertexCount = linkCount * 2;
 
-                    device.VertexFormat = PositionColored.FVF;
-
-                    PositionColored[] linkArray = new PositionColored[linkCount * 2];
+                    Vector3[] vectors = new Vector3[linkCount * 4];
 
                     for (int i = 0; i < linkCount; i++)
                     {
-                        Link link = links[i];
-                        linkArray[i * 2].Position = link.Nodes[0].X;
-                        linkArray[i * 2].Color = linkColor;
-                        linkArray[i * 2 + 1].Position = link.Nodes[1].X;
-                        linkArray[i * 2 + 1].Color = linkColor;
+                        NodePtrArray nodes = links[i].Nodes;
+                        nodes[0].GetX(out vectors[i * 4]);
+                        nodes[1].GetX(out vectors[i * 4 + 2]);
                     }
-                    device.DrawUserPrimitives(PrimitiveType.LineList, links.Count, linkArray);
+
+                    shapeData.PrimitiveType = PrimitiveType.LineList;
+                    shapeData.SetDynamicVertexBuffer(device, vectors);
+                }
+                else
+                {
+                    throw new NotImplementedException();
                 }
             }
-
-            device.SetRenderState(RenderState.CullMode, cullMode);
         }
-
+        /*
         public void RenderSoftBodyTextured(SoftBody softBody)
         {
             if (!(softBody.UserObject is Array))

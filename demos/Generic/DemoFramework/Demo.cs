@@ -17,10 +17,10 @@ namespace DemoFramework
         public FreeLook Freelook { get; private set; }
 
         Input _input;
-        protected Input Input
+        public Input Input
         {
             get { return _input; }
-            private set { _input = value; }
+            set { _input = value; }
         }
 
 

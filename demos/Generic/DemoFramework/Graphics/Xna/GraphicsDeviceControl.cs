@@ -29,8 +29,8 @@ namespace DemoFramework.Xna
             get { return graphicsDeviceService.GraphicsDevice; }
         }
 
-        #region Initialization
 
+        #region Initialization
 
         /// <summary>
         /// Initializes the control.
@@ -52,7 +52,6 @@ namespace DemoFramework.Xna
 
             base.OnCreateControl();
         }
-
 
         /// <summary>
         /// Disposes the control.
@@ -113,6 +112,9 @@ namespace DemoFramework.Xna
             GraphicsDevice.Viewport = viewport;
 
 
+            graphics.Demo.OnHandleInput();
+            graphics.Demo.OnUpdate();
+
             // Draw the control
             graphics.Render();
 
@@ -170,6 +172,7 @@ namespace DemoFramework.Xna
                 {
                     graphicsDeviceService.ResetDevice(ClientSize.Width,
                                                       ClientSize.Height);
+                    graphics.OnResetDevice();
                 }
                 catch (Exception e)
                 {

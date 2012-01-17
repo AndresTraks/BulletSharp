@@ -16,23 +16,47 @@ namespace DemoFramework
         public Point MousePoint { get; private set; }
         public int MouseWheelDelta { get; private set; }
 
-        Form form;
-
-        public Input(Form form)
+        Control _control;
+        public Control Control
         {
-            this.form = form;
-            form.KeyDown += new KeyEventHandler(form_KeyDown);
-            form.KeyUp += new KeyEventHandler(form_KeyUp);
-            form.MouseDown += new MouseEventHandler(form_MouseDown);
-            form.MouseMove += new MouseEventHandler(form_MouseMove);
-            form.MouseUp += new MouseEventHandler(form_MouseUp);
-            form.MouseWheel += new MouseEventHandler(form_MouseWheel);
+            get { return _control; }
+            set
+            {
+                Release();
+                _control = value;
+                _control.KeyDown += new KeyEventHandler(form_KeyDown);
+                _control.KeyUp += new KeyEventHandler(form_KeyUp);
+                _control.MouseDown += new MouseEventHandler(form_MouseDown);
+                _control.MouseMove += new MouseEventHandler(form_MouseMove);
+                _control.MouseUp += new MouseEventHandler(form_MouseUp);
+                _control.MouseWheel += new MouseEventHandler(form_MouseWheel);
+            }
+        }
+
+        public Input(Control control)
+        {
+            Control = control;
 
             KeysDown = new List<Keys>();
             KeysPressed = new List<Keys>();
             KeysReleased = new List<Keys>();
-            MousePoint = form.PointToClient(Cursor.Position);
+            MousePoint = control.PointToClient(Cursor.Position);
             MouseWheelDelta = 0;
+        }
+
+        public void Release()
+        {
+            if (_control == null)
+                return;
+
+            _control.KeyDown -= new KeyEventHandler(form_KeyDown);
+            _control.KeyUp -= new KeyEventHandler(form_KeyUp);
+            _control.MouseDown -= new MouseEventHandler(form_MouseDown);
+            _control.MouseMove -= new MouseEventHandler(form_MouseMove);
+            _control.MouseUp -= new MouseEventHandler(form_MouseUp);
+            _control.MouseWheel -= new MouseEventHandler(form_MouseWheel);
+            
+            _control = null;
         }
 
         void form_KeyDown(object sender, KeyEventArgs e)
@@ -71,10 +95,10 @@ namespace DemoFramework
                 return;
 
             // Don't consider mouse clicks outside of the client area
-            if (form.ClientRectangle.Contains(MousePoint) == false)
+            if (_control.ClientRectangle.Contains(MousePoint) == false)
                 return;
 
-            //if (form.Focused == false && form.CanFocus)
+            //if (_control.Focused == false && _control.CanFocus)
             //    return;
 
             if (e.Button == MouseButtons.Left)
