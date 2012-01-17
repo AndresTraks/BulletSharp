@@ -564,9 +564,7 @@ namespace DemoFramework.Xna
 
             if (faces.Count != 0)
             {
-                shapeData.VertexCount = faces.Count * 3;
-
-                Vector3[] vectors = new Vector3[shapeData.VertexCount * 2];
+                Vector3[] vectors = new Vector3[3 * faces.Count * 2];
                 int v = 0;
 
                 int i;
@@ -594,8 +592,6 @@ namespace DemoFramework.Xna
 
                 if (tetraCount != 0)
                 {
-                    shapeData.VertexCount = tetraCount * 12;
-
                     Vector3[] vectors = new Vector3[tetraCount * 24];
                     int v = 0;
 
@@ -649,7 +645,6 @@ namespace DemoFramework.Xna
                 {
                     AlignedLinkArray links = softBody.Links;
                     int linkCount = links.Count;
-                    shapeData.VertexCount = linkCount * 2;
 
                     Vector3[] vectors = new Vector3[linkCount * 4];
 
