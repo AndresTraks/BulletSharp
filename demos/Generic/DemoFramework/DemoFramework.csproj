@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="Graphics\Graphics.cs" />
     <Compile Include="Graphics\LibraryManager.cs" />
+    <Compile Include="Graphics\ShapeGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

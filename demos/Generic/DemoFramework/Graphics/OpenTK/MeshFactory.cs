@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using BulletSharp;
 using BulletSharp.SoftBody;
-using OpenTK.Graphics.OpenGL;
 using OpenTK;
-using Vector3 = OpenTK.Vector3;
+using OpenTK.Graphics.OpenGL;
+//using Vector3 = OpenTK.Vector3;
+using Vector3 = BulletSharp.Vector3;
 
 namespace DemoFramework.OpenTK
 {
@@ -121,6 +122,30 @@ namespace DemoFramework.OpenTK
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
         }
 
+        public void SetIndexBuffer(ushort[] indices)
+        {
+            int bufferSize;
+
+            ElementsType = DrawElementsType.UnsignedShort;
+
+            // Generate Array Buffer Id
+            GL.GenBuffers(1, out ElementBufferID);
+
+            // Bind current context to Array Buffer ID
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferID);
+
+            // Send data to buffer
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(indices.Length * sizeof(ushort)), indices, BufferUsageHint.StaticDraw);
+
+            // Validate that the buffer is the correct size
+            GL.GetBufferParameter(BufferTarget.ElementArrayBuffer, BufferParameterName.BufferSize, out bufferSize);
+            if (indices.Length * sizeof(ushort) != bufferSize)
+                throw new ApplicationException("Element array not uploaded correctly");
+
+            // Clear the buffer Binding
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
+        }
+
         public void SetIndexBuffer(byte[] indices)
         {
             int bufferSize;
@@ -189,352 +214,31 @@ namespace DemoFramework.OpenTK
             vertexColorLocation = color;
         }
 
-        ShapeData CreateBoxShape(BoxShape shape)
+        ShapeData CreateShape(CollisionShape shape)
         {
-            BulletSharp.Vector3 size = shape.HalfExtentsWithMargin;
-            float x = size.X;
-            float y = size.Y;
-            float z = size.Z;
-
             ShapeData shapeData = new ShapeData();
-            shapeData.VertexCount = 36;
+            ushort[] indices;
+            BulletSharp.Vector3[] vertexBuffer = ShapeGenerator.CreateShape(shape, out indices);
+            shapeData.VertexCount = vertexBuffer.Length / 2;
 
             Vector3[] vertices = new Vector3[shapeData.VertexCount];
             Vector3[] normals = new Vector3[shapeData.VertexCount];
-            Vector3 normal;
-            int v = 0;
 
-            // Draw opposite sides
-            for (int i = 1; i != -3; i -= 2)
+            int i;
+            for (i = 0; i < shapeData.VertexCount; i++)
             {
-                normal = new Vector3(i, 0, 0);
-                float ix = i * x;
-                normals[v] = normal;
-                vertices[v++] = new Vector3(ix, y, -z); // Position
-                normals[v] = normal;
-                vertices[v++] = new Vector3(ix, -y, -z);
-                normals[v] = normal;
-                vertices[v++] = new Vector3(ix, -y, z);
-                normals[v] = normal;
-                vertices[v++] = new Vector3(ix, y, -z);
-                normals[v] = normal;
-                vertices[v++] = new Vector3(ix, y, z);
-                normals[v] = normal;
-                vertices[v++] = new Vector3(ix, -y, z);
-            }
-
-            for (int i = 1; i != -3; i -= 2)
-            {
-                normal = new Vector3(0, 0, i);
-                float iz = i * z;
-                normals[v] = normal;
-                vertices[v++] = new Vector3(-x, y, iz);
-                normals[v] = normal;
-                vertices[v++] = new Vector3(-x, -y, iz);
-                normals[v] = normal;
-                vertices[v++] = new Vector3(x, -y, iz);
-                normals[v] = normal;
-                vertices[v++] = new Vector3(-x, y, iz);
-                normals[v] = normal;
-                vertices[v++] = new Vector3(x, y, iz);
-                normals[v] = normal;
-                vertices[v++] = new Vector3(x, -y, iz);
-            }
-
-            for (int i = 1; i != -3; i -= 2)
-            {
-                normal = new Vector3(0, i, 0);
-                float iy = i * y;
-                normals[v] = normal;
-                vertices[v++] = new Vector3(-x, iy, -z);
-                normals[v] = normal;
-                vertices[v++] = new Vector3(x, iy, -z);
-                normals[v] = normal;
-                vertices[v++] = new Vector3(-x, iy, z);
-                normals[v] = normal;
-                vertices[v++] = new Vector3(x, iy, z);
-                normals[v] = normal;
-                vertices[v++] = new Vector3(-x, iy, z);
-                normals[v] = normal;
-                vertices[v++] = new Vector3(x, i * y, -z);
+                vertices[i] = vertexBuffer[i * 2];
+                normals[i] = vertexBuffer[i * 2 + 1];
             }
 
             shapeData.SetVertexBuffer(vertices);
             shapeData.SetNormalBuffer(normals);
 
-            return shapeData;
-        }
-
-        ShapeData CreateCapsuleShape(CapsuleShape shape)
-        {
-            int up = shape.UpAxis;
-            float radius = shape.Radius;
-            float cylinderHalfHeight = shape.HalfHeight;
-
-            int slices = (int)(radius * 10.0f);
-            int stacks = (int)(radius * 10.0f);
-            slices = (slices > 16) ? 16 : (slices < 3) ? 3 : slices;
-            stacks = (stacks > 16) ? 16 : (stacks < 2) ? 2 : stacks;
-
-            float hAngleStep = (float)Math.PI * 2 / slices;
-            float vAngleStep = (float)Math.PI / stacks;
-
-            ShapeData shapeData = new ShapeData();
-
-            shapeData.VertexCount = 2 + slices * (stacks - 1);
-            shapeData.ElementCount = 6 * slices * (stacks - 1);
-
-            Vector3[] vertices = new Vector3[shapeData.VertexCount];
-            Vector3[] normals = new Vector3[shapeData.VertexCount];
-            byte[] indices = new byte[shapeData.ElementCount];
-
-            int i = 0, v = 0;
-
-
-            // Vertices
-            // Top and bottom
-            normals[v] = GetVectorByAxis(-Vector3.UnitY, up);
-            vertices[v++] = GetVectorByAxis(new Vector3(0, -cylinderHalfHeight - radius, 0), up);
-            normals[v] = GetVectorByAxis(Vector3.UnitY, up);
-            vertices[v++] = GetVectorByAxis(new Vector3(0, cylinderHalfHeight + radius, 0), up);
-
-            // Stacks
-            int j, k;
-            float angle = 0;
-            float vAngle = -(float)Math.PI / 2;
-            Vector3 vTemp;
-            Vector3 cylinderOffset = GetVectorByAxis(new Vector3(0, -cylinderHalfHeight, 0), up);
-            for (j = 0; j < stacks - 1; j++)
+            if (indices != null)
             {
-                float prevAngle = vAngle;
-                vAngle += vAngleStep;
-
-                if (vAngle > 0 && prevAngle < 0)
-                {
-                    cylinderOffset = GetVectorByAxis(new Vector3(0, cylinderHalfHeight, 0), up);
-                }
-
-                for (k = 0; k < slices; k++)
-                {
-                    angle += hAngleStep;
-
-                    vTemp = GetVectorByAxis(new Vector3((float)Math.Cos(vAngle) * (float)Math.Sin(angle),
-                        (float)Math.Sin(vAngle),
-                        (float)Math.Cos(vAngle) * (float)Math.Cos(angle)), up);
-                    normals[v] = Vector3.Normalize(vTemp);
-                    vertices[v++] = vTemp * radius + cylinderOffset;
-                }
+                shapeData.ElementCount = indices.Length;
+                shapeData.SetIndexBuffer(indices);
             }
-
-
-            // Indices
-            // Top cap
-            byte index = 2;
-            for (k = 0; k < slices; k++)
-            {
-                indices[i++] = 0;
-                indices[i++] = index;
-                index++;
-                indices[i++] = index;
-            }
-            indices[i - 1] = 2;
-
-            // Stacks
-            //for (j = 0; j < 1; j++)
-            int sliceDiff = slices * 3;
-            for (j = 0; j < stacks - 2; j++)
-            {
-                for (k = 0; k < slices; k++)
-                {
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = index;
-                    index++;
-                }
-
-                for (k = 0; k < slices; k++)
-                {
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff + 2];
-                }
-                indices[i - 1] = indices[i - sliceDiff + 1];
-            }
-
-            // Bottom cap
-            index--;
-            for (k = 0; k < slices; k++)
-            {
-                indices[i++] = 1;
-                indices[i++] = index;
-                index--;
-                indices[i++] = index;
-            }
-            indices[i - 1] = indices[i - sliceDiff + 1];
-
-            shapeData.SetVertexBuffer(vertices);
-            shapeData.SetNormalBuffer(normals);
-            shapeData.SetIndexBuffer(indices);
-
-            return shapeData;
-        }
-
-        ShapeData CreateConvexHullShape(ConvexHullShape shape)
-        {
-            ConvexPolyhedron poly = shape.ConvexPolyhedron;
-            if (poly != null)
-            {
-                throw new NotImplementedException();
-            }
-
-            ShapeHull hull = new ShapeHull(shape);
-            hull.BuildHull(shape.Margin);
-
-            int indexCount = hull.NumIndices;
-            UIntArray indices = hull.Indices;
-            Vector3Array points = hull.Vertices;
-
-            ShapeData shapeData = new ShapeData();
-            shapeData.VertexCount = indexCount;
-
-            Vector3[] vertices = new Vector3[indexCount];
-            Vector3[] normals = new Vector3[indexCount];
-
-            int v = 0, i;
-            for (i = 0; i < indexCount; i += 3)
-            {
-                Vector3 v0 = MathHelper.Convert(points[(int)indices[i]]);
-                Vector3 v1 = MathHelper.Convert(points[(int)indices[i + 1]]);
-                Vector3 v2 = MathHelper.Convert(points[(int)indices[i + 2]]);
-
-                Vector3 v01 = v0 - v1;
-                Vector3 v02 = v0 - v2;
-                Vector3 normal = Vector3.Cross(v01, v02);
-                normal.Normalize();
-
-                normals[v] = normal;
-                vertices[v++] = v0;
-                normals[v] = normal;
-                vertices[v++] = v1;
-                normals[v] = normal;
-                vertices[v++] = v2;
-            }
-
-            shapeData.SetVertexBuffer(vertices);
-            shapeData.SetNormalBuffer(normals);
-
-            return shapeData;
-        }
-
-        Vector3 GetVectorByAxis(Vector3 vector, int axis)
-        {
-            switch (axis)
-            {
-                case 0:
-                    return new Vector3(vector.Y, vector.Z, vector.X);
-                case 1:
-                    return vector;
-                default:
-                    return new Vector3(vector.Z, vector.X, vector.Y);
-            }
-        }
-
-        ShapeData CreateCylinderShape(CylinderShape shape)
-        {
-            int up = shape.UpAxis;
-            float radius = shape.Radius;
-            float halfHeight = shape.HalfExtentsWithoutMargin[up] + shape.Margin;
-
-            int numSteps = 10;
-            float angleStep = (2 * (float)Math.PI) / numSteps;
-
-            ShapeData shapeData = new ShapeData();
-            shapeData.VertexCount = 2 + 6 * numSteps;
-            shapeData.ElementCount = (4 * numSteps + 2) * 3;
-
-            Vector3[] vertices = new Vector3[shapeData.VertexCount];
-            Vector3[] normals = new Vector3[shapeData.VertexCount];
-            byte[] indices = new byte[shapeData.ElementCount];
-
-            int i = 0, v = 0;
-            byte index = 0;
-            byte baseIndex;
-            Vector3 normal;
-
-            // Draw two sides
-            for (int side = 1; side != -3; side -= 2)
-            {
-                normal = GetVectorByAxis(side * Vector3.UnitY, up);
-
-                baseIndex = index;
-                normals[v] = normal;
-                vertices[v++] = GetVectorByAxis(new Vector3(0, side * halfHeight, 0), up);
-
-                normals[v] = normal;
-                vertices[v++] = GetVectorByAxis(new Vector3(0, side * halfHeight, radius), up);
-                index += 2;
-
-                for (int j = 1; j < numSteps; j++)
-                {
-                    float x = radius * (float)Math.Sin(j * angleStep);
-                    float z = radius * (float)Math.Cos(j * angleStep);
-
-                    normals[v] = normal;
-                    vertices[v++] = GetVectorByAxis(new Vector3(x, side * halfHeight, z), up);
-
-                    indices[i++] = baseIndex;
-                    indices[i++] = (byte)(index - 1);
-                    indices[i++] = index++;
-                }
-                indices[i++] = baseIndex;
-                indices[i++] = (byte)(index - 1);
-                indices[i++] = (byte)(baseIndex + 1);
-            }
-
-
-            normal = GetVectorByAxis(new Vector3(0, 0, radius), up);
-            normal.Normalize();
-
-            baseIndex = index;
-            normals[v] = normal;
-            vertices[v++] = GetVectorByAxis(new Vector3(0, halfHeight, radius), up);
-
-            normals[v] = normal;
-            vertices[v++] = GetVectorByAxis(new Vector3(0, -halfHeight, radius), up);
-            index += 2;
-
-            for (int j = 1; j < numSteps + 1; j++)
-            {
-                float x = radius * (float)Math.Sin(j * angleStep);
-                float z = radius * (float)Math.Cos(j * angleStep);
-
-                normal = GetVectorByAxis(new Vector3(x, 0, z), up);
-                normal.Normalize();
-
-                normals[v] = normal;
-                vertices[v++] = GetVectorByAxis(new Vector3(x, halfHeight, z), up);
-
-                normals[v] = normal;
-                vertices[v++] = GetVectorByAxis(new Vector3(x, -halfHeight, z), up);
-
-                indices[i++] = (byte)(index - 2);
-                indices[i++] = (byte)(index - 1);
-                indices[i++] = (byte)index;
-                indices[i++] = (byte)index;
-                indices[i++] = (byte)(index - 1);
-                indices[i++] = (byte)(index + 1);
-                index += 2;
-            }
-            indices[i++] = (byte)(index - 2);
-            indices[i++] = (byte)(index - 1);
-            indices[i++] = (byte)(baseIndex);
-            indices[i++] = (byte)(baseIndex);
-            indices[i++] = (byte)(index - 1);
-            indices[i++] = (byte)(baseIndex + 1);
-
-            shapeData.SetVertexBuffer(vertices);
-            shapeData.SetNormalBuffer(normals);
-            shapeData.SetIndexBuffer(indices);
 
             return shapeData;
         }
@@ -543,109 +247,6 @@ namespace DemoFramework.OpenTK
         {
             // Soft body geometry is recreated each frame. Nothing to do here.
             return new ShapeData();
-        }
-
-        ShapeData CreateSphereShape(SphereShape shape)
-        {
-            float radius = shape.Radius;
-
-            int slices = (int)(radius * 10.0f);
-            int stacks = (int)(radius * 10.0f);
-            slices = (slices > 16) ? 16 : (slices < 3) ? 3 : slices;
-            stacks = (stacks > 16) ? 16 : (stacks < 2) ? 2 : stacks;
-
-            float hAngleStep = (float)Math.PI * 2 / slices;
-            float vAngleStep = (float)Math.PI / stacks;
-
-            ShapeData shapeData = new ShapeData();
-
-            shapeData.VertexCount = 2 + slices * (stacks - 1);
-            shapeData.ElementCount = 6 * slices * (stacks - 1);
-
-            Vector3[] vertices = new Vector3[shapeData.VertexCount];
-            Vector3[] normals = new Vector3[shapeData.VertexCount];
-            byte[] indices = new byte[shapeData.ElementCount];
-
-            int i = 0, v = 0;
-
-
-            // Vertices
-            // Top and bottom
-            normals[v] = -Vector3.UnitY;
-            vertices[v++] = new Vector3(0, -radius, 0);
-            normals[v] = Vector3.UnitY;
-            vertices[v++] = new Vector3(0, radius, 0);
-
-            // Stacks
-            int j, k;
-            float angle = 0;
-            float vAngle = -(float)Math.PI / 2;
-            Vector3 vTemp;
-            for (j = 0; j < stacks - 1; j++)
-            {
-                vAngle += vAngleStep;
-
-                for (k = 0; k < slices; k++)
-                {
-                    angle += hAngleStep;
-
-                    vTemp = new Vector3((float)Math.Cos(vAngle) * (float)Math.Sin(angle), (float)Math.Sin(vAngle), (float)Math.Cos(vAngle) * (float)Math.Cos(angle));
-                    normals[v] = Vector3.Normalize(vTemp);
-                    vertices[v++] = vTemp * radius;
-                }
-            }
-
-
-            // Indices
-            // Top cap
-            byte index = 2;
-            for (k = 0; k < slices; k++)
-            {
-                indices[i++] = 0;
-                indices[i++] = index;
-                index++;
-                indices[i++] = index;
-            }
-            indices[i - 1] = 2;
-
-            // Stacks
-            //for (j = 0; j < 1; j++)
-            int sliceDiff = slices * 3;
-            for (j = 0; j < stacks - 2; j++)
-            {
-                for (k = 0; k < slices; k++)
-                {
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = index;
-                    index++;
-                }
-
-                for (k = 0; k < slices; k++)
-                {
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff + 2];
-                }
-                indices[i - 1] = indices[i - sliceDiff + 1];
-            }
-
-            // Bottom cap
-            index--;
-            for (k = 0; k < slices; k++)
-            {
-                indices[i++] = 1;
-                indices[i++] = index;
-                index--;
-                indices[i++] = index;
-            }
-            indices[i - 1] = indices[i - sliceDiff + 1];
-
-            shapeData.SetVertexBuffer(vertices);
-            shapeData.SetNormalBuffer(normals);
-            shapeData.SetIndexBuffer(indices);
-
-            return shapeData;
         }
 
         ShapeData InitShapeData(CollisionShape shape)
@@ -659,28 +260,14 @@ namespace DemoFramework.OpenTK
                     case BroadphaseNativeType.SoftBodyShape:
                         shapeData = CreateSoftBody();
                         break;
-                    case BroadphaseNativeType.BoxShape:
-                        shapeData = CreateBoxShape(shape as BoxShape);
-                        break;
-                    case BroadphaseNativeType.CapsuleShape:
-                        shapeData = CreateCapsuleShape(shape as CapsuleShape);
-                        break;
-                    case BroadphaseNativeType.CylinderShape:
-                        shapeData = CreateCylinderShape(shape as CylinderShape);
-                        break;
                     case BroadphaseNativeType.Convex2DShape:
                         return InitShapeData((shape as Convex2DShape).ChildShape);
-                    case BroadphaseNativeType.ConvexHullShape:
-                        shapeData = CreateConvexHullShape(shape as ConvexHullShape);
-                        break;
-                    case BroadphaseNativeType.SphereShape:
-                        shapeData = CreateSphereShape(shape as SphereShape);
-                        break;
                     case BroadphaseNativeType.TriangleMeshShape:
                         //shapeData = CreateTriangleMeshShape(shape as TriangleMeshShape);
                         break;
                     default:
-                        throw new NotImplementedException();
+                        shapeData = CreateShape(shape);
+                        break;
                 }
 
                 // Create an initial instance data buffer for a single instance

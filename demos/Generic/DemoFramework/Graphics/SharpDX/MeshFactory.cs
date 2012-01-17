@@ -229,307 +229,23 @@ namespace DemoFramework.SharpDX
                 planeShader.Dispose();
         }
 
-        ShapeData CreateBoxShape(BoxShape shape)
+        ShapeData CreateShape(CollisionShape shape)
         {
-            Vector3 size = shape.HalfExtentsWithMargin;
-            float x = size.X;
-            float y = size.Y;
-            float z = size.Z;
-
             ShapeData shapeData = new ShapeData();
-            shapeData.VertexCount = 36;
-
-            Vector3[] vectors = new Vector3[shapeData.VertexCount * 2];
-            Vector3 normal;
-            int v = 0;
-
-            // Draw two sides
-            for (int i = 1; i != -3; i -= 2)
-            {
-                normal = new Vector3(i, 0, 0);
-                vectors[v++] = new Vector3(i * x, y, -z); // Position
-                vectors[v++] = normal;
-                vectors[v++] = new Vector3(i * x, -y, -z);
-                vectors[v++] = normal;
-                vectors[v++] = new Vector3(i * x, -y, z);
-                vectors[v++] = normal;
-                vectors[v++] = new Vector3(i * x, y, -z);
-                vectors[v++] = normal;
-                vectors[v++] = new Vector3(i * x, y, z);
-                vectors[v++] = normal;
-                vectors[v++] = new Vector3(i * x, -y, z);
-                vectors[v++] = normal;
-            }
-
-            for (int i = 1; i != -3; i -= 2)
-            {
-                normal = new Vector3(0, 0, i);
-                vectors[v++] = new Vector3(-x, y, i * z);
-                vectors[v++] = normal;
-                vectors[v++] = new Vector3(-x, -y, i * z);
-                vectors[v++] = normal;
-                vectors[v++] = new Vector3(x, -y, i * z);
-                vectors[v++] = normal;
-                vectors[v++] = new Vector3(-x, y, i * z);
-                vectors[v++] = normal;
-                vectors[v++] = new Vector3(x, y, i * z);
-                vectors[v++] = normal;
-                vectors[v++] = new Vector3(x, -y, i * z);
-                vectors[v++] = normal;
-            }
-
-            for (int i = 1; i != -3; i -= 2)
-            {
-                normal = new Vector3(0, i, 0);
-                vectors[v++] = new Vector3(-x, i * y, -z);
-                vectors[v++] = normal;
-                vectors[v++] = new Vector3(x, i * y, -z);
-                vectors[v++] = normal;
-                vectors[v++] = new Vector3(-x, i * y, z);
-                vectors[v++] = normal;
-                vectors[v++] = new Vector3(x, i * y, z);
-                vectors[v++] = normal;
-                vectors[v++] = new Vector3(-x, i * y, z);
-                vectors[v++] = normal;
-                vectors[v++] = new Vector3(x, i * y, -z);
-                vectors[v++] = normal;
-            }
-
-            shapeData.SetVertexBuffer(device, vectors);
-
-            return shapeData;
-        }
-
-        ShapeData CreateCapsuleShape(CapsuleShape shape)
-        {
-            int up = shape.UpAxis;
-            float radius = shape.Radius;
-            float cylinderHalfHeight = shape.HalfHeight;
-
-            int slices = (int)(radius * 10.0f);
-            int stacks = (int)(radius * 10.0f);
-            slices = (slices > 16) ? 16 : (slices < 3) ? 3 : slices;
-            stacks = (stacks > 16) ? 16 : (stacks < 2) ? 2 : stacks;
-
-            float hAngleStep = (float)Math.PI * 2 / slices;
-            float vAngleStep = (float)Math.PI / stacks;
-
-            ShapeData shapeData = new ShapeData();
-
-            shapeData.VertexCount = 2 + slices * (stacks - 1);
-            shapeData.IndexCount = 6 * slices * (stacks - 1);
-
-            Vector3[] vertices = new Vector3[shapeData.VertexCount * 2];
-            ushort[] indices = new ushort[shapeData.IndexCount];
-
-            int i = 0, v = 0;
-
-
-            // Vertices
-            // Top and bottom
-            vertices[v++] = GetVectorByAxis(new Vector3(0, -cylinderHalfHeight - radius, 0), up);
-            vertices[v++] = GetVectorByAxis(-Vector3.UnitY, up);
-            vertices[v++] = GetVectorByAxis(new Vector3(0, cylinderHalfHeight + radius, 0), up);
-            vertices[v++] = GetVectorByAxis(Vector3.UnitY, up);
-
-            // Stacks
-            int j, k;
-            float angle = 0;
-            float vAngle = -(float)Math.PI / 2;
-            Vector3 vTemp;
-            Vector3 cylinderOffset = GetVectorByAxis(new Vector3(0, -cylinderHalfHeight, 0), up);
-            for (j = 0; j < stacks - 1; j++)
-            {
-                float prevAngle = vAngle;
-                vAngle += vAngleStep;
-
-                if (vAngle > 0 && prevAngle < 0)
-                {
-                    cylinderOffset = GetVectorByAxis(new Vector3(0, cylinderHalfHeight, 0), up);
-                }
-
-                for (k = 0; k < slices; k++)
-                {
-                    angle += hAngleStep;
-
-                    vTemp = GetVectorByAxis(new Vector3((float)Math.Cos(vAngle) * (float)Math.Sin(angle),
-                        (float)Math.Sin(vAngle),
-                        (float)Math.Cos(vAngle) * (float)Math.Cos(angle)), up);
-                    vertices[v++] = vTemp * radius + cylinderOffset;
-                    vertices[v++] = Vector3.Normalize(vTemp);
-                }
-            }
-
-
-            // Indices
-            // Top cap
-            byte index = 2;
-            for (k = 0; k < slices; k++)
-            {
-                indices[i++] = 0;
-                indices[i++] = index;
-                index++;
-                indices[i++] = index;
-            }
-            indices[i - 1] = 2;
-
-            // Stacks
-            //for (j = 0; j < 1; j++)
-            int sliceDiff = slices * 3;
-            for (j = 0; j < stacks - 2; j++)
-            {
-                for (k = 0; k < slices; k++)
-                {
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = index;
-                    index++;
-                }
-
-                for (k = 0; k < slices; k++)
-                {
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff + 2];
-                }
-                indices[i - 1] = indices[i - sliceDiff + 1];
-            }
-
-            // Bottom cap
-            index--;
-            for (k = 0; k < slices; k++)
-            {
-                indices[i++] = 1;
-                indices[i++] = index;
-                index--;
-                indices[i++] = index;
-            }
-            indices[i - 1] = indices[i - sliceDiff + 1];
-
+            ushort[] indices;
+            Vector3[] vertices = ShapeGenerator.CreateShape(shape, out indices);
+            shapeData.VertexCount = vertices.Length / 2;
             shapeData.SetVertexBuffer(device, vertices);
-            shapeData.SetIndexBuffer(device, indices);
+
+            if (indices != null)
+            {
+                shapeData.IndexCount = indices.Length;
+                shapeData.SetIndexBuffer(device, indices);
+            }
 
             return shapeData;
         }
-        /*
-        Mesh CreateConeShape(ConeShape shape)
-        {
-            Mesh mesh = Mesh.CreateCylinder(device, 0, shape.Radius, shape.Height, 16, 1);
-            shapes.Add(shape, mesh);
-            return mesh;
-        }
-        */
 
-        Vector3 GetVectorByAxis(Vector3 vector, int axis)
-        {
-            switch (axis)
-            {
-                case 0:
-                    return new Vector3(vector.Y, vector.Z, vector.X);
-                case 1:
-                    return vector;
-                default:
-                    return new Vector3(vector.Z, vector.X, vector.Y);
-            }
-        }
-
-        ShapeData CreateCylinderShape(CylinderShape shape)
-        {
-            int up = shape.UpAxis;
-            float radius = shape.Radius;
-            float halfHeight = shape.HalfExtentsWithoutMargin[up] + shape.Margin;
-
-            int numSteps = 10;
-            float angleStep = (2 * (float)Math.PI) / numSteps;
-
-            ShapeData shapeData = new ShapeData();
-            shapeData.VertexCount = 2 + 6 * numSteps;
-            shapeData.IndexCount = (4 * numSteps + 2) * 3;
-
-            Vector3[] vertices = new Vector3[shapeData.VertexCount * 2];
-            ushort[] indices = new ushort[shapeData.IndexCount];
-
-            int i = 0, v = 0;
-            ushort index = 0;
-            ushort baseIndex;
-            Vector3 normal;
-
-            // Draw two sides
-            for (int side = 1; side != -3; side -= 2)
-            {
-                normal = GetVectorByAxis(side * Vector3.UnitY, up);
-
-                baseIndex = index;
-                vertices[v++] = GetVectorByAxis(new Vector3(0, side * halfHeight, 0), up);
-                vertices[v++] = normal;
-
-                vertices[v++] = GetVectorByAxis(new Vector3(0, side * halfHeight, radius), up);
-                vertices[v++] = normal;
-                index += 2;
-
-                for (int j = 1; j < numSteps; j++)
-                {
-                    float x = radius * (float)Math.Sin(j * angleStep);
-                    float z = radius * (float)Math.Cos(j * angleStep);
-
-                    vertices[v++] = GetVectorByAxis(new Vector3(x, side * halfHeight, z), up);
-                    vertices[v++] = normal;
-
-                    indices[i++] = baseIndex;
-                    indices[i++] = (ushort)(index - 1);
-                    indices[i++] = index++;
-                }
-                indices[i++] = baseIndex;
-                indices[i++] = (ushort)(index - 1);
-                indices[i++] = (ushort)(baseIndex + 1);
-            }
-
-
-            normal = GetVectorByAxis(new Vector3(0, 0, radius), up);
-            normal.Normalize();
-
-            baseIndex = index;
-            vertices[v++] = GetVectorByAxis(new Vector3(0, halfHeight, radius), up);
-            vertices[v++] = normal;
-
-            vertices[v++] = GetVectorByAxis(new Vector3(0, -halfHeight, radius), up);
-            vertices[v++] = normal;
-            index += 2;
-
-            for (int j = 1; j < numSteps + 1; j++)
-            {
-                float x = radius * (float)Math.Sin(j * angleStep);
-                float z = radius * (float)Math.Cos(j * angleStep);
-
-                normal = GetVectorByAxis(new Vector3(x, 0, z), up);
-                normal.Normalize();
-
-                vertices[v++] = GetVectorByAxis(new Vector3(x, halfHeight, z), up);
-                vertices[v++] = normal;
-
-                vertices[v++] = GetVectorByAxis(new Vector3(x, -halfHeight, z), up);
-                vertices[v++] = normal;
-
-                indices[i++] = (ushort)(index - 2);
-                indices[i++] = (ushort)(index - 1);
-                indices[i++] = index;
-                indices[i++] = index;
-                indices[i++] = (ushort)(index - 1);
-                indices[i++] = (ushort)(index + 1);
-                index += 2;
-            }
-            indices[i++] = (ushort)(index - 2);
-            indices[i++] = (ushort)(index - 1);
-            indices[i++] = baseIndex;
-            indices[i++] = baseIndex;
-            indices[i++] = (ushort)(index - 1);
-            indices[i++] = (ushort)(baseIndex + 1);
-
-            shapeData.SetVertexBuffer(device, vertices);
-            shapeData.SetIndexBuffer(device, indices);
-
-            return shapeData;
-        }
         /*
         Mesh CreateGImpactMeshShape(GImpactMeshShape shape)
         {
@@ -569,52 +285,7 @@ namespace DemoFramework.SharpDX
             mesh.ComputeNormals();
             return mesh;
         }
-        */
-        ShapeData CreateConvexHullShape(ConvexHullShape shape)
-        {
-            ConvexPolyhedron poly = shape.ConvexPolyhedron;
-            if (poly != null)
-            {
-                throw new NotImplementedException();
-            }
 
-            ShapeHull hull = new ShapeHull(shape);
-            hull.BuildHull(shape.Margin);
-
-            int indexCount = hull.NumIndices;
-            UIntArray indices = hull.Indices;
-            Vector3Array points = hull.Vertices;
-
-            ShapeData shapeData = new ShapeData();
-            shapeData.VertexCount = indexCount;
-
-            Vector3[] vertices = new Vector3[indexCount * 2];
-
-            int v = 0, i;
-            for (i = 0; i < indexCount; i += 3)
-            {
-                Vector3 v0 = points[(int)indices[i]];
-                Vector3 v1 = points[(int)indices[i + 1]];
-                Vector3 v2 = points[(int)indices[i + 2]];
-
-                Vector3 v01 = v0 - v1;
-                Vector3 v02 = v0 - v2;
-                Vector3 normal = Vector3.Cross(v01, v02);
-                normal.Normalize();
-
-                vertices[v++] = v0;
-                vertices[v++] = normal;
-                vertices[v++] = v1;
-                vertices[v++] = normal;
-                vertices[v++] = v2;
-                vertices[v++] = normal;
-            }
-
-            shapeData.SetVertexBuffer(device, vertices);
-
-            return shapeData;
-        }
-        /*
         Mesh CreateMultiSphereShape(MultiSphereShape shape)
         {
             Mesh mesh = null;
@@ -644,108 +315,7 @@ namespace DemoFramework.SharpDX
             complexShapes.Add(shape, mesh);
             return mesh;
         }
-        */
-        ShapeData CreateSphereShape(SphereShape shape)
-        {
-            float radius = shape.Radius;
 
-            int slices = (int)(radius * 10.0f);
-            int stacks = (int)(radius * 10.0f);
-            slices = (slices > 16) ? 16 : (slices < 3) ? 3 : slices;
-            stacks = (stacks > 16) ? 16 : (stacks < 2) ? 2 : stacks;
-
-            float hAngleStep = (float)Math.PI * 2 / slices;
-            float vAngleStep = (float)Math.PI / stacks;
-
-            ShapeData shapeData = new ShapeData();
-
-            shapeData.VertexCount = 2 + slices * (stacks - 1);
-            shapeData.IndexCount = 6 * slices * (stacks - 1);
-
-            Vector3[] vertices = new Vector3[shapeData.VertexCount * 2];
-            ushort[] indices = new ushort[shapeData.IndexCount];
-
-            int i = 0, v = 0;
-
-
-            // Vertices
-            // Top and bottom
-            vertices[v++] = new Vector3(0, -radius, 0);
-            vertices[v++] = -Vector3.UnitY;
-            vertices[v++] = new Vector3(0, radius, 0);
-            vertices[v++] = Vector3.UnitY;
-
-            // Stacks
-            int j, k;
-            float angle = 0;
-            float vAngle = -(float)Math.PI / 2;
-            Vector3 vTemp;
-            for (j = 0; j < stacks - 1; j++)
-            {
-                vAngle += vAngleStep;
-
-                for (k = 0; k < slices; k++)
-                {
-                    angle += hAngleStep;
-
-                    vTemp = new Vector3((float)Math.Cos(vAngle) * (float)Math.Sin(angle), (float)Math.Sin(vAngle), (float)Math.Cos(vAngle) * (float)Math.Cos(angle));
-                    vertices[v++] = vTemp * radius;
-                    vertices[v++] = Vector3.Normalize(vTemp);
-                }
-            }
-
-
-            // Indices
-            // Top cap
-            byte index = 2;
-            for (k = 0; k < slices; k++)
-            {
-                indices[i++] = 0;
-                indices[i++] = index;
-                index++;
-                indices[i++] = index;
-            }
-            indices[i - 1] = 2;
-
-            // Stacks
-            //for (j = 0; j < 1; j++)
-            int sliceDiff = slices * 3;
-            for (j = 0; j < stacks - 2; j++)
-            {
-                for (k = 0; k < slices; k++)
-                {
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = index;
-                    index++;
-                }
-
-                for (k = 0; k < slices; k++)
-                {
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff + 2];
-                }
-                indices[i - 1] = indices[i - sliceDiff + 1];
-            }
-
-            // Bottom cap
-            index--;
-            for (k = 0; k < slices; k++)
-            {
-                indices[i++] = 1;
-                indices[i++] = index;
-                index--;
-                indices[i++] = index;
-            }
-            indices[i - 1] = indices[i - sliceDiff + 1];
-
-            shapeData.SetVertexBuffer(device, vertices);
-            shapeData.SetIndexBuffer(device, indices);
-
-            return shapeData;
-        }
-        /*
         Mesh CreateStaticPlaneShape(StaticPlaneShape shape)
         {
             // Load shader
@@ -874,28 +444,14 @@ namespace DemoFramework.SharpDX
                     case BroadphaseNativeType.SoftBodyShape:
                         shapeData = CreateSoftBody();
                         break;
-                    case BroadphaseNativeType.BoxShape:
-                        shapeData = CreateBoxShape(shape as BoxShape);
-                        break;
-                    case BroadphaseNativeType.CapsuleShape:
-                        shapeData = CreateCapsuleShape(shape as CapsuleShape);
-                        break;
-                    case BroadphaseNativeType.CylinderShape:
-                        shapeData = CreateCylinderShape(shape as CylinderShape);
-                        break;
                     case BroadphaseNativeType.Convex2DShape:
                         return InitShapeData((shape as Convex2DShape).ChildShape);
-                    case BroadphaseNativeType.ConvexHullShape:
-                        shapeData = CreateConvexHullShape(shape as ConvexHullShape);
-                        break;
-                    case BroadphaseNativeType.SphereShape:
-                        shapeData = CreateSphereShape(shape as SphereShape);
-                        break;
                     case BroadphaseNativeType.TriangleMeshShape:
                         shapeData = CreateTriangleMeshShape(shape as TriangleMeshShape);
                         break;
                     default:
-                        throw new NotImplementedException();
+                        shapeData = CreateShape(shape);
+                        break;
                 }
 
                 // Create an initial instance data buffer for a single instance
@@ -1029,29 +585,7 @@ namespace DemoFramework.SharpDX
             }
         }
 
-        public void RenderComplexShape(CollisionShape shape, Mesh mesh)
-        {
-            switch (shape.ShapeType)
-            {
-                case BroadphaseNativeType.StaticPlane:
-                    //RenderStaticPlaneShape(mesh);
-                    break;
-                case BroadphaseNativeType.CapsuleShape:
-                    //RenderCapsuleShape(mesh);
-                    break;
-                case BroadphaseNativeType.MultiSphereShape:
-                    //RenderMultiSphereShape((MultiSphereShape)shape, mesh);
-                    break;
-            }
-        }
         /*
-        public void RenderCapsuleShape(Mesh mesh)
-        {
-            mesh.DrawSubset(0);
-            mesh.DrawSubset(1);
-            mesh.DrawSubset(2);
-        }
-
         public void RenderMultiSphereShape(MultiSphereShape shape, Mesh mesh)
         {
             int count = shape.SphereCount;

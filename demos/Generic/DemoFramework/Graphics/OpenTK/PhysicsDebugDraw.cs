@@ -1,5 +1,4 @@
-﻿using System;
-using BulletSharp;
+﻿using BulletSharp;
 using OpenTK.Graphics.OpenGL;
 
 namespace DemoFramework.OpenTK

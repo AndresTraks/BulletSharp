@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SharpDX")]
+[assembly: AssemblyTitle("DemoFramework.SharpDX")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("CtrlSoft")]
+[assembly: AssemblyCompany("Andres Traks")]
 [assembly: AssemblyProduct("SharpDX")]
-[assembly: AssemblyCopyright("Copyright © CtrlSoft 2011")]
+[assembly: AssemblyCopyright("Copyright © Andres Traks 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

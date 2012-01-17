@@ -1,9 +1,9 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using System;
 
 namespace DemoFramework.OpenTK
 {

@@ -68,7 +68,7 @@ namespace DemoFramework
             return true;
         }
 
-        // vectors must be normalized
+        // vertices must be normalized
         float Angle(Vector3 v1, Vector3 v2)
         {
             return (float)Math.Acos(Vector3.Dot(v1, v2));
