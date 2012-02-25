@@ -329,7 +329,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\bullet\src;..\bullet\Extras\HACD;$(CUDA_INC_PATH);$(ATISTREAMSDKROOT)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>$(PROGRAMFILES)\SlimDX SDK (March 2011)\Bin\net40\;$(PROGRAMFILES(x86))\SlimDX SDK (June 2010)\Bin\net20\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(PROGRAMFILES)\SlimDX SDK (January 2012)\Bin\net40\;$(PROGRAMFILES(x86))\SlimDX SDK (June 2010)\Bin\net20\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_SLIMDX;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
@@ -354,7 +354,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>..\bullet\src;..\bullet\Extras\HACD;$(CUDA_INC_PATH);$(ATISTREAMSDKROOT)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>$(PROGRAMFILES)\SlimDX SDK (March 2011)\Bin\net40\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(PROGRAMFILES)\SlimDX SDK (January 2012)\Bin\net40\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_SLIMDX;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>

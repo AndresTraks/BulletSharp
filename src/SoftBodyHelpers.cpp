@@ -229,24 +229,48 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorl
 	array<Vector3>^ vertices, array<int>^ triangles, bool randomizeConstraints)
 {
 	pin_ptr<int> trianglesPtr = &triangles[0];
-	btVector3* btVertices = Math::Vector3ArrayToUnmanaged(vertices);
 
-	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
-		(btScalar*)btVertices, trianglesPtr, triangles->Length / 3, randomizeConstraints));
+	if (sizeof(Vector3) == 3 * sizeof(btScalar)) {
+		pin_ptr<Vector3> vPtr = &vertices[0];
+		return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
+			(btScalar*)vPtr, trianglesPtr, triangles->Length / 3, randomizeConstraints));
+	}
 
+	int len = vertices->Length;
+	btScalar* btVertices = new btScalar[len*3];
+	for(int i=0; i<len; i++) {
+		btVertices[i*3] = vertices[i].X;
+		btVertices[i*3+1] = vertices[i].Y;
+		btVertices[i*3+2] = vertices[i].Z;
+	}
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
+		btVertices, trianglesPtr, triangles->Length / 3, randomizeConstraints));
 	delete[] btVertices;
+	return body;
 }
 
 BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorldInfo^ worldInfo,
 	array<Vector3>^ vertices, array<int>^ triangles)
 {
 	pin_ptr<int> trianglesPtr = &triangles[0];
-	btVector3* btVertices = Math::Vector3ArrayToUnmanaged(vertices);
 
-	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
-		(btScalar*)btVertices, trianglesPtr, triangles->Length / 3));
+	if (sizeof(Vector3) == 3 * sizeof(btScalar)) {
+		pin_ptr<Vector3> vPtr = &vertices[0];
+		return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
+			(btScalar*)vPtr, trianglesPtr, triangles->Length / 3));
+	}
 
+	int len = vertices->Length;
+	btScalar* btVertices = new btScalar[len*3];
+	for(int i=0; i<len; i++) {
+		btVertices[i*3] = vertices[i].X;
+		btVertices[i*3+1] = vertices[i].Y;
+		btVertices[i*3+2] = vertices[i].Z;
+	}
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
+		btVertices, trianglesPtr, triangles->Length / 3));
 	delete[] btVertices;
+	return body;
 }
 
 BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatch(SoftBodyWorldInfo^ worldInfo,
