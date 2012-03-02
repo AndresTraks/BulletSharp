@@ -248,6 +248,7 @@ namespace BulletSharp
 		DrawConstraints = btIDebugDraw::DBG_DrawConstraints,
 		DrawConstraintLimits = btIDebugDraw::DBG_DrawConstraintLimits,
 		FastWireframe = btIDebugDraw::DBG_FastWireframe,
+		DrawNormals = btIDebugDraw::DBG_DrawNormals,
 		MaxDebugDrawMode = btIDebugDraw::DBG_MAX_DEBUG_DRAW_MODE
 	};
 #endif
