@@ -142,6 +142,15 @@ bool TypedConstraint::NeedsFeedback::get()
 	return UnmanagedPointer->needsFeedback();
 }
 
+int TypedConstraint::OverrideNumSolverIterations::get()
+{
+	return UnmanagedPointer->getOverrideNumSolverIterations();
+}
+void TypedConstraint::OverrideNumSolverIterations::set(int value)
+{
+	return UnmanagedPointer->setOverrideNumSolverIterations(value);
+}
+
 RigidBody^ TypedConstraint::RigidBodyA::get()
 {
 	return (RigidBody^)CollisionObject::GetManaged(&UnmanagedPointer->getRigidBodyA());

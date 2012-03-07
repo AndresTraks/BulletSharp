@@ -84,6 +84,12 @@ namespace BulletSharp
 			bool get();
 		}
 
+		property int OverrideNumSolverIterations
+		{
+			int get();
+			void set(int value);
+		}
+
 		property RigidBody^ RigidBodyA
 		{
 			RigidBody^ get();
