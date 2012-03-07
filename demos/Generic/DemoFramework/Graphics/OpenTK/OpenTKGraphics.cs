@@ -73,7 +73,7 @@ namespace DemoFramework.OpenTK
 
         public void InitializeDevice()
         {
-            Version ver = new Version(GL.GetString(StringName.Version));
+            Version ver = new Version(GL.GetString(StringName.Version).Split(' ')[0]);
             Version req = new Version(3, 1, 0, 0);
 
             if (ver < req)
