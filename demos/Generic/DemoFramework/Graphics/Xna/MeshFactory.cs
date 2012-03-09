@@ -518,6 +518,7 @@ namespace DemoFramework.Xna
                     }
                 }
             }
+            device.SetVertexBuffer(null);
         }
         /*
         void RenderStaticPlaneShape(Model mesh)

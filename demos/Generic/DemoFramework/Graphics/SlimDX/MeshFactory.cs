@@ -375,13 +375,27 @@ namespace DemoFramework.SlimDX
 
         public void Render(CollisionObject body)
         {
-            if (body.CollisionShape.ShapeType == BroadphaseNativeType.SoftBodyShape)
+            switch (body.CollisionShape.ShapeType)
             {
-                RenderSoftBody(body as SoftBody);
-            }
-            else
-            {
-                Render(body.CollisionShape);
+                case BroadphaseNativeType.SoftBodyShape:
+                    device.SetTransform(TransformState.World, Matrix.Identity);
+                    RenderSoftBody(body as SoftBody);
+                    break;
+                case BroadphaseNativeType.CompoundShape:
+                    CompoundShape compoundShape = body.CollisionShape as CompoundShape;
+                    //if (compoundShape.NumChildShapes == 0)
+                    //    return;
+                    foreach (CompoundShapeChild child in compoundShape.ChildList)
+                    {
+                        device.SetTransform(TransformState.World,
+                            MathHelper.Convert(child.Transform) * MathHelper.Convert(body.WorldTransform));
+                        Render(child.ChildShape);
+                    }
+                    break;
+                default:
+                    device.SetTransform(TransformState.World, MathHelper.Convert(body.WorldTransform));
+                    Render(body.CollisionShape);
+                    break;
             }
         }
 
@@ -421,19 +435,6 @@ namespace DemoFramework.SlimDX
                     break;
                 case BroadphaseNativeType.Convex2DShape:
                     Render((shape as Convex2DShape).ChildShape);
-                    return;
-                case BroadphaseNativeType.CompoundShape:
-                    CompoundShape compoundShape = shape as CompoundShape;
-                    //if (compoundShape.NumChildShapes == 0)
-                    //    return;
-                    foreach (CompoundShapeChild child in compoundShape.ChildList)
-                    {
-                        // do a pre-transform
-                        global::SlimDX.Matrix tempTr = device.GetTransform(TransformState.World);
-                        device.SetTransform(TransformState.World, MathHelper.Convert(child.Transform) * tempTr);
-
-                        Render(child.ChildShape);
-                    }
                     return;
                 case BroadphaseNativeType.SphereShape:
                     mesh = CreateSphere(shape as SphereShape);

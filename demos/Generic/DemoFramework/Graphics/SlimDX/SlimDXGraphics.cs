@@ -224,8 +224,7 @@ namespace DemoFramework.SlimDX
                         else
                             Device.Material = PassiveMaterial;
 
-                        Device.SetTransform(TransformState.World, MathHelper.Convert(body.WorldTransform));
-                        meshFactory.Render(body.CollisionShape);
+                        meshFactory.Render(body);
                     }
                 }
 
