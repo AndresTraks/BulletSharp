@@ -32,64 +32,28 @@ namespace DemoFramework
         public static Vector3[] CreateBox(BoxShape shape)
         {
             Vector3 size = shape.HalfExtentsWithMargin;
-            float x = size.X;
-            float y = size.Y;
-            float z = size.Z;
-
             Vector3[] vertices = new Vector3[36 * 2];
             Vector3 normal;
             int v = 0;
 
-            // Draw two sides (x and -x)
-            for (int i = 1; i != -3; i -= 2)
+            for (int j = 0; j < 3 ; j++)
             {
-                normal = new Vector3(i, 0, 0);
-                vertices[v++] = new Vector3(i * x, y, -z); // Position
-                vertices[v++] = normal;
-                vertices[v++] = new Vector3(i * x, -y, -z);
-                vertices[v++] = normal;
-                vertices[v++] = new Vector3(i * x, -y, z);
-                vertices[v++] = normal;
-                vertices[v++] = new Vector3(i * x, y, -z);
-                vertices[v++] = normal;
-                vertices[v++] = new Vector3(i * x, y, z);
-                vertices[v++] = normal;
-                vertices[v++] = new Vector3(i * x, -y, z);
-                vertices[v++] = normal;
-            }
-
-            for (int i = 1; i != -3; i -= 2)
-            {
-                normal = new Vector3(0, 0, i);
-                vertices[v++] = new Vector3(-x, y, i * z);
-                vertices[v++] = normal;
-                vertices[v++] = new Vector3(-x, -y, i * z);
-                vertices[v++] = normal;
-                vertices[v++] = new Vector3(x, -y, i * z);
-                vertices[v++] = normal;
-                vertices[v++] = new Vector3(-x, y, i * z);
-                vertices[v++] = normal;
-                vertices[v++] = new Vector3(x, y, i * z);
-                vertices[v++] = normal;
-                vertices[v++] = new Vector3(x, -y, i * z);
-                vertices[v++] = normal;
-            }
-
-            for (int i = 1; i != -3; i -= 2)
-            {
-                normal = new Vector3(0, i, 0);
-                vertices[v++] = new Vector3(-x, i * y, -z);
-                vertices[v++] = normal;
-                vertices[v++] = new Vector3(x, i * y, -z);
-                vertices[v++] = normal;
-                vertices[v++] = new Vector3(-x, i * y, z);
-                vertices[v++] = normal;
-                vertices[v++] = new Vector3(x, i * y, z);
-                vertices[v++] = normal;
-                vertices[v++] = new Vector3(-x, i * y, z);
-                vertices[v++] = normal;
-                vertices[v++] = new Vector3(x, i * y, -z);
-                vertices[v++] = normal;
+                for (int i = 1; i != -3; i -= 2)
+                {
+                    normal = GetVectorByAxis(0, i, 0, j);
+                    vertices[v++] = Vector3.Modulate(GetVectorByAxis(i, i, i, j), size);
+                    vertices[v++] = normal;
+                    vertices[v++] = Vector3.Modulate(GetVectorByAxis(1, i, -1, j), size);
+                    vertices[v++] = normal;
+                    vertices[v++] = Vector3.Modulate(GetVectorByAxis(-1, i, 1, j), size);
+                    vertices[v++] = normal;
+                    vertices[v++] = Vector3.Modulate(GetVectorByAxis(-i, i, -i, j), size);
+                    vertices[v++] = normal;
+                    vertices[v++] = Vector3.Modulate(GetVectorByAxis(-1, i, 1, j), size);
+                    vertices[v++] = normal;
+                    vertices[v++] = Vector3.Modulate(GetVectorByAxis(1, i, -1, j), size);
+                    vertices[v++] = normal;
+                }
             }
 
             return vertices;
@@ -120,9 +84,9 @@ namespace DemoFramework
 
             // Vertices
             // Top and bottom
-            vertices[v++] = GetVectorByAxis(new Vector3(0, -cylinderHalfHeight - radius, 0), up);
+            vertices[v++] = GetVectorByAxis(0, -cylinderHalfHeight - radius, 0, up);
             vertices[v++] = GetVectorByAxis(-Vector3.UnitY, up);
-            vertices[v++] = GetVectorByAxis(new Vector3(0, cylinderHalfHeight + radius, 0), up);
+            vertices[v++] = GetVectorByAxis(0, cylinderHalfHeight + radius, 0, up);
             vertices[v++] = GetVectorByAxis(Vector3.UnitY, up);
 
             // Stacks
@@ -130,7 +94,7 @@ namespace DemoFramework
             float angle = 0;
             float vAngle = -(float)Math.PI / 2;
             Vector3 vTemp;
-            Vector3 cylinderOffset = GetVectorByAxis(new Vector3(0, -cylinderHalfHeight, 0), up);
+            Vector3 cylinderOffset = GetVectorByAxis(0, -cylinderHalfHeight, 0, up);
             for (j = 0; j < stacks - 1; j++)
             {
                 float prevAngle = vAngle;
@@ -138,16 +102,16 @@ namespace DemoFramework
 
                 if (vAngle > 0 && prevAngle < 0)
                 {
-                    cylinderOffset = GetVectorByAxis(new Vector3(0, cylinderHalfHeight, 0), up);
+                    cylinderOffset = GetVectorByAxis(0, cylinderHalfHeight, 0, up);
                 }
 
                 for (k = 0; k < slices; k++)
                 {
                     angle += hAngleStep;
 
-                    vTemp = GetVectorByAxis(new Vector3((float)Math.Cos(vAngle) * (float)Math.Sin(angle),
+                    vTemp = GetVectorByAxis((float)Math.Cos(vAngle) * (float)Math.Sin(angle),
                         (float)Math.Sin(vAngle),
-                        (float)Math.Cos(vAngle) * (float)Math.Cos(angle)), up);
+                        (float)Math.Cos(vAngle) * (float)Math.Cos(angle), up);
                     vertices[v++] = vTemp * radius + cylinderOffset;
                     vertices[v++] = Vector3.Normalize(vTemp);
                 }
@@ -159,45 +123,43 @@ namespace DemoFramework
             byte index = 2;
             for (k = 0; k < slices; k++)
             {
+                indices[i++] = index++;
                 indices[i++] = 0;
-                indices[i++] = index;
-                index++;
                 indices[i++] = index;
             }
             indices[i - 1] = 2;
 
             // Stacks
-            //for (j = 0; j < 1; j++)
             int sliceDiff = slices * 3;
             for (j = 0; j < stacks - 2; j++)
             {
                 for (k = 0; k < slices; k++)
                 {
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = index;
-                    index++;
+                    indices[i] = indices[i - sliceDiff + 2];
+                    indices[i + 1] = index++;
+                    indices[i + 2] = indices[i - sliceDiff];
+                    i += 3;
                 }
 
                 for (k = 0; k < slices; k++)
                 {
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff + 2];
+                    indices[i] = indices[i - sliceDiff + 1];
+                    indices[i + 1] = indices[i - sliceDiff];
+                    indices[i + 2] = indices[i - sliceDiff + 4];
+                    i += 3;
                 }
-                indices[i - 1] = indices[i - sliceDiff + 1];
+                indices[i - 1] = indices[i - sliceDiff];
             }
 
             // Bottom cap
             index--;
             for (k = 0; k < slices; k++)
             {
+                indices[i++] = index--;
                 indices[i++] = 1;
                 indices[i++] = index;
-                index--;
-                indices[i++] = index;
             }
-            indices[i - 1] = indices[i - sliceDiff + 1];
+            indices[i - 1] = indices[i - sliceDiff];
 
             return vertices;
         }
@@ -212,6 +174,19 @@ namespace DemoFramework
                     return vector;
                 default:
                     return new Vector3(vector.Z, vector.X, vector.Y);
+            }
+        }
+
+        public static Vector3 GetVectorByAxis(float x, float y, float z, int axis)
+        {
+            switch (axis)
+            {
+                case 0:
+                    return new Vector3(y, z, x);
+                case 1:
+                    return new Vector3(x, y, z);
+                default:
+                    return new Vector3(z, x, y);
             }
         }
 
@@ -239,10 +214,10 @@ namespace DemoFramework
             normal = GetVectorByAxis(-Vector3.UnitY, up);
 
             baseIndex = index;
-            vertices[v++] = GetVectorByAxis(new Vector3(0, -halfHeight, 0), up);
+            vertices[v++] = GetVectorByAxis(0, -halfHeight, 0, up);
             vertices[v++] = normal;
 
-            vertices[v++] = GetVectorByAxis(new Vector3(0, -halfHeight, radius), up);
+            vertices[v++] = GetVectorByAxis(0, -halfHeight, radius, up);
             vertices[v++] = normal;
             index += 2;
 
@@ -251,7 +226,7 @@ namespace DemoFramework
                 float x = radius * (float)Math.Sin(j * angleStep);
                 float z = radius * (float)Math.Cos(j * angleStep);
 
-                vertices[v++] = GetVectorByAxis(new Vector3(x, -halfHeight, z), up);
+                vertices[v++] = GetVectorByAxis(x, -halfHeight, z, up);
                 vertices[v++] = normal;
 
                 indices[i++] = baseIndex;
@@ -263,14 +238,14 @@ namespace DemoFramework
             indices[i++] = (ushort)(baseIndex + 1);
 
 
-            normal = GetVectorByAxis(new Vector3(0, 0, radius), up);
+            normal = GetVectorByAxis(0, 0, radius, up);
             normal.Normalize();
 
             baseIndex = index;
-            vertices[v++] = GetVectorByAxis(new Vector3(0, halfHeight, 0), up);
+            vertices[v++] = GetVectorByAxis(0, halfHeight, 0, up);
             vertices[v++] = normal;
 
-            vertices[v++] = GetVectorByAxis(new Vector3(0, -halfHeight, radius), up);
+            vertices[v++] = GetVectorByAxis(0, -halfHeight, radius, up);
             vertices[v++] = normal;
             index += 2;
 
@@ -279,13 +254,13 @@ namespace DemoFramework
                 float x = radius * (float)Math.Sin(j * angleStep);
                 float z = radius * (float)Math.Cos(j * angleStep);
 
-                normal = GetVectorByAxis(new Vector3(x, 0, z), up);
+                normal = GetVectorByAxis(x, 0, z, up);
                 normal.Normalize();
 
-                vertices[v++] = GetVectorByAxis(new Vector3(0, halfHeight, 0), up);
+                vertices[v++] = GetVectorByAxis(0, halfHeight, 0, up);
                 vertices[v++] = normal;
 
-                vertices[v++] = GetVectorByAxis(new Vector3(x, -halfHeight, z), up);
+                vertices[v++] = GetVectorByAxis(x, -halfHeight, z, up);
                 vertices[v++] = normal;
 
                 indices[i++] = (ushort)(index - 2);
@@ -332,10 +307,10 @@ namespace DemoFramework
                 normal = GetVectorByAxis(side * Vector3.UnitY, up);
 
                 baseIndex = index;
-                vertices[v++] = GetVectorByAxis(new Vector3(0, side * halfHeight, 0), up);
+                vertices[v++] = GetVectorByAxis(0, side * halfHeight, 0, up);
                 vertices[v++] = normal;
 
-                vertices[v++] = GetVectorByAxis(new Vector3(0, side * halfHeight, radius), up);
+                vertices[v++] = GetVectorByAxis(0, side * halfHeight, radius, up);
                 vertices[v++] = normal;
                 index += 2;
 
@@ -344,27 +319,44 @@ namespace DemoFramework
                     float x = radius * (float)Math.Sin(j * angleStep);
                     float z = radius * (float)Math.Cos(j * angleStep);
 
-                    vertices[v++] = GetVectorByAxis(new Vector3(x, side * halfHeight, z), up);
+                    vertices[v++] = GetVectorByAxis(x, side * halfHeight, z, up);
                     vertices[v++] = normal;
 
                     indices[i++] = baseIndex;
-                    indices[i++] = (ushort)(index - 1);
-                    indices[i++] = index++;
+                    if (side == 1)
+                    {
+                        indices[i++] = (ushort)(index - 1);
+                        indices[i++] = index++;
+                    }
+                    else
+                    {
+                        indices[i++] = index;
+                        indices[i++] = (ushort)(index - 1);
+                        index++;
+                    }
                 }
                 indices[i++] = baseIndex;
-                indices[i++] = (ushort)(index - 1);
-                indices[i++] = (ushort)(baseIndex + 1);
+                if (side == 1)
+                {
+                    indices[i++] = (ushort)(index - 1);
+                    indices[i++] = (ushort)(baseIndex + 1);
+                }
+                else
+                {
+                    indices[i++] = (ushort)(baseIndex + 1);
+                    indices[i++] = (ushort)(index - 1);
+                }
             }
 
 
-            normal = GetVectorByAxis(new Vector3(0, 0, radius), up);
+            normal = GetVectorByAxis(0, 0, radius, up);
             normal.Normalize();
 
             baseIndex = index;
-            vertices[v++] = GetVectorByAxis(new Vector3(0, halfHeight, radius), up);
+            vertices[v++] = GetVectorByAxis(0, halfHeight, radius, up);
             vertices[v++] = normal;
 
-            vertices[v++] = GetVectorByAxis(new Vector3(0, -halfHeight, radius), up);
+            vertices[v++] = GetVectorByAxis(0, -halfHeight, radius, up);
             vertices[v++] = normal;
             index += 2;
 
@@ -373,13 +365,13 @@ namespace DemoFramework
                 float x = radius * (float)Math.Sin(j * angleStep);
                 float z = radius * (float)Math.Cos(j * angleStep);
 
-                normal = GetVectorByAxis(new Vector3(x, 0, z), up);
+                normal = GetVectorByAxis(x, 0, z, up);
                 normal.Normalize();
 
-                vertices[v++] = GetVectorByAxis(new Vector3(x, halfHeight, z), up);
+                vertices[v++] = GetVectorByAxis(x, halfHeight, z, up);
                 vertices[v++] = normal;
 
-                vertices[v++] = GetVectorByAxis(new Vector3(x, -halfHeight, z), up);
+                vertices[v++] = GetVectorByAxis(x, -halfHeight, z, up);
                 vertices[v++] = normal;
 
                 indices[i++] = (ushort)(index - 2);
@@ -562,9 +554,8 @@ namespace DemoFramework
             byte index = 2;
             for (k = 0; k < slices; k++)
             {
+                indices[i++] = index++;
                 indices[i++] = 0;
-                indices[i++] = index;
-                index++;
                 indices[i++] = index;
             }
             indices[i - 1] = 2;
@@ -576,31 +567,31 @@ namespace DemoFramework
             {
                 for (k = 0; k < slices; k++)
                 {
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = index;
-                    index++;
+                    indices[i] = indices[i - sliceDiff + 2];
+                    indices[i + 1] = index++;
+                    indices[i + 2] = indices[i - sliceDiff];
+                    i += 3;
                 }
 
                 for (k = 0; k < slices; k++)
                 {
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff];
-                    indices[i++] = indices[i - sliceDiff + 2];
+                    indices[i] = indices[i - sliceDiff + 1];
+                    indices[i + 1] = indices[i - sliceDiff];
+                    indices[i + 2] = indices[i - sliceDiff + 4];
+                    i += 3;
                 }
-                indices[i - 1] = indices[i - sliceDiff + 1];
+                indices[i - 1] = indices[i - sliceDiff];
             }
 
             // Bottom cap
             index--;
             for (k = 0; k < slices; k++)
             {
+                indices[i++] = index--;
                 indices[i++] = 1;
                 indices[i++] = index;
-                index--;
-                indices[i++] = index;
             }
-            indices[i - 1] = indices[i - sliceDiff + 1];
+            indices[i - 1] = indices[i - sliceDiff];
 
             return vertices;
         }

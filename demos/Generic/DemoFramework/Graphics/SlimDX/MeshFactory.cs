@@ -54,53 +54,48 @@ namespace DemoFramework.SlimDX
                 planeShader.Dispose();
         }
 
-        Mesh CreateBoxShape(BoxShape shape)
+        Mesh CreateShape(CollisionShape shape)
         {
-            BulletSharp.Vector3 size = shape.HalfExtentsWithMargin;
-            Mesh mesh = Mesh.CreateBox(device, size.X * 2, size.Y * 2, size.Z * 2);
-            shapes.Add(shape, mesh);
-            return mesh;
-        }
+            ushort[] indices;
+            BulletSharp.Vector3[] vertices = ShapeGenerator.CreateShape(shape, out indices);
 
-        Mesh CreateCapsuleShape(CapsuleShape shape)
-        {
-            int upAxis = shape.UpAxis;
-            BulletSharp.Vector3 size = shape.ImplicitShapeDimensions;
-            float halfHeight = size[upAxis];
-            float radius = (upAxis == 0) ? size.Y : size.X;
+            int vertexCount = vertices.Length / 2;
+            int indexCount = (indices != null) ? indices.Length : vertexCount;
+            bool index32 = indexCount > 65536;
 
-            // Combine a cylinder and two spheres.
-            Mesh cylinder = Mesh.CreateCylinder(device, radius, radius, halfHeight * 2, 8, 1);
-            Mesh sphere = Mesh.CreateSphere(device, radius, 8, 4);
-            Matrix[] transforms;
-            if (upAxis == 0)
+            Mesh mesh = new Mesh(device, indexCount / 3, vertexCount,
+                MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
+
+            int i = 0;
+            DataStream vertexBuffer = mesh.LockVertexBuffer(LockFlags.Discard);
+            vertexBuffer.WriteRange(vertices);
+            mesh.UnlockVertexBuffer();
+
+            if (indices == null)
             {
-                transforms = new Matrix[] {
-                    Matrix.Translation(halfHeight, 0, 0),
-                    Matrix.RotationY((float)Math.PI / 2),
-                    Matrix.Translation(-halfHeight, 0, 0)};
+                indices = new ushort[indexCount];
+                i = 0;
+                while (i < indexCount)
+                {
+                    indices[i] = (ushort)i;
+                    i++;
+                }
             }
-            else if (upAxis == 1)
+
+            i = 0;
+            DataStream indexBuffer = mesh.LockIndexBuffer(LockFlags.Discard);
+            if (index32)
             {
-                transforms = new Matrix[] {
-                    Matrix.Translation(0, halfHeight, 0),
-                    Matrix.RotationX((float)Math.PI / 2),
-                    Matrix.Translation(0, -halfHeight, 0)};
+                while (indexBuffer.Position < indexBuffer.Length)
+                    indexBuffer.Write((int)indices[i++]);
             }
             else
             {
-                transforms = new Matrix[] {
-                    Matrix.Translation(0, 0, halfHeight),
-                    Matrix.Identity,
-                    Matrix.Translation(0, 0, -halfHeight)};
+                indexBuffer.WriteRange(indices);
             }
+            mesh.UnlockIndexBuffer();
 
-            Mesh[] meshes = new Mesh[] { sphere, cylinder, sphere };
-            Mesh mesh = Mesh.Concatenate(device, meshes, MeshFlags.Managed, transforms, null);
-            cylinder.Dispose();
-            sphere.Dispose();
-
-            complexShapes.Add(shape, mesh);
+            shapes.Add(shape, mesh);
             return mesh;
         }
 
@@ -108,32 +103,6 @@ namespace DemoFramework.SlimDX
         {
             Mesh mesh = Mesh.CreateCylinder(device, 0, shape.Radius, shape.Height, 16, 1);
             shapes.Add(shape, mesh);
-            return mesh;
-        }
-
-        Mesh CreateCylinderShape(CylinderShape shape)
-        {
-            int upAxis = shape.UpAxis;
-            float radius = shape.Radius;
-            float halfHeight = shape.HalfExtentsWithoutMargin[upAxis] + shape.Margin;
-
-            Mesh mesh = Mesh.CreateCylinder(device, radius, radius, halfHeight * 2, 16, 1);
-            if (upAxis == 0)
-            {
-                Matrix[] transform = new Matrix[] { Matrix.RotationY((float)Math.PI / 2) };
-                Mesh meshRotated = Mesh.Concatenate(device, new Mesh[] { mesh }, MeshFlags.Managed, transform, null);
-                mesh.Dispose();
-                mesh = meshRotated;
-            }
-            else if (upAxis == 1)
-            {
-                Matrix[] transform = new Matrix[] { Matrix.RotationX((float)Math.PI / 2) };
-                Mesh cylinderMeshRot = Mesh.Concatenate(device, new Mesh[] { mesh }, MeshFlags.Managed, transform, null);
-                mesh.Dispose();
-                mesh = cylinderMeshRot;
-            }
-            shapes.Add(shape, mesh);
-
             return mesh;
         }
 
@@ -178,63 +147,6 @@ namespace DemoFramework.SlimDX
             return mesh;
         }
 
-        Mesh CreateConvexHullShape(ConvexHullShape shape)
-        {
-            ConvexPolyhedron poly = shape.ConvexPolyhedron;
-            if (poly != null)
-            {
-                throw new NotImplementedException();
-            }
-
-            ShapeHull hull = new ShapeHull(shape);
-            hull.BuildHull(shape.Margin);
-
-            UIntArray hullIndices = hull.Indices;
-            Vector3Array points = hull.Vertices;
-
-
-            int vertexCount = hull.NumIndices;
-            int faceCount = hull.NumTriangles;
-
-            bool index32 = vertexCount > 65536;
-
-            Mesh mesh = new Mesh(device, faceCount, vertexCount,
-                MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
-
-
-            DataStream indices = mesh.LockIndexBuffer(LockFlags.Discard);
-            int i;
-            if (index32)
-            {
-                for (i = 0; i < vertexCount; i++)
-                    indices.Write(i);
-            }
-            else
-            {
-                for (i = 0; i < vertexCount; i++)
-                    indices.Write((short)i);
-            }
-            mesh.UnlockIndexBuffer();
-
-            DataStream verts = mesh.LockVertexBuffer(LockFlags.Discard);
-            BulletSharp.Vector3 scale = BulletSharp.Vector3.Multiply(shape.LocalScaling, 1.0f + shape.Margin);
-            for (i = 0; i < vertexCount; i += 3)
-            {
-                verts.Write(BulletSharp.Vector3.Modulate(points[(int)hullIndices[i]], scale));
-                verts.Position += 12;
-                verts.Write(BulletSharp.Vector3.Modulate(points[(int)hullIndices[i + 1]], scale));
-                verts.Position += 12;
-                verts.Write(BulletSharp.Vector3.Modulate(points[(int)hullIndices[i + 2]], scale));
-                verts.Position += 12;
-            }
-            mesh.UnlockVertexBuffer();
-
-            mesh.ComputeNormals();
-            shapes.Add(shape, mesh);
-
-            return mesh;
-        }
-
         Mesh CreateMultiSphereShape(MultiSphereShape shape)
         {
             Mesh mesh = null;
@@ -262,13 +174,6 @@ namespace DemoFramework.SlimDX
             }
 
             complexShapes.Add(shape, mesh);
-            return mesh;
-        }
-
-        Mesh CreateSphere(SphereShape shape)
-        {
-            Mesh mesh = Mesh.CreateSphere(device, shape.Radius, 16, 16);
-            shapes.Add(shape, mesh);
             return mesh;
         }
 
@@ -418,17 +323,8 @@ namespace DemoFramework.SlimDX
             // Create the graphics mesh or go to child shapes.
             switch (shape.ShapeType)
             {
-                case BroadphaseNativeType.BoxShape:
-                    mesh = CreateBoxShape(shape as BoxShape);
-                    break;
-                case BroadphaseNativeType.CylinderShape:
-                    mesh = CreateCylinderShape(shape as CylinderShape);
-                    break;
                 case BroadphaseNativeType.ConeShape:
                     mesh = CreateConeShape(shape as ConeShape);
-                    break;
-                case BroadphaseNativeType.ConvexHullShape:
-                    mesh = CreateConvexHullShape(shape as ConvexHullShape);
                     break;
                 case BroadphaseNativeType.GImpactShape:
                     mesh = CreateGImpactMeshShape(shape as GImpactMeshShape);
@@ -436,11 +332,11 @@ namespace DemoFramework.SlimDX
                 case BroadphaseNativeType.Convex2DShape:
                     Render((shape as Convex2DShape).ChildShape);
                     return;
-                case BroadphaseNativeType.SphereShape:
-                    mesh = CreateSphere(shape as SphereShape);
-                    break;
                 case BroadphaseNativeType.TriangleMeshShape:
                     mesh = CreateTriangleMeshShape(shape as TriangleMeshShape);
+                    break;
+                default:
+                    mesh = CreateShape(shape);
                     break;
             }
 
@@ -453,9 +349,6 @@ namespace DemoFramework.SlimDX
 
             switch (shape.ShapeType)
             {
-                case BroadphaseNativeType.CapsuleShape:
-                    mesh = CreateCapsuleShape(shape as CapsuleShape);
-                    break;
                 case BroadphaseNativeType.MultiSphereShape:
                     mesh = CreateMultiSphereShape(shape as MultiSphereShape);
                     break;
