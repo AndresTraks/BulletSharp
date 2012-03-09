@@ -32,7 +32,7 @@ namespace DemoFramework
                     assemblyNames = new string[] { "DemoFramework.SharpDX", "SharpDX", "SharpDX.Direct3D10", "SharpDX.DXGI", "SharpDX.D3DCompiler" };
                     break;
                 case "SlimDX (DirectX 9)":
-                    assemblyNames = new string[] { "DemoFramework.SlimDX", "SlimDX, Version=4.0.12.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9" };
+                    assemblyNames = new string[] { "DemoFramework.SlimDX", "SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9" };
                     break;
                 case "OpenTK (OpenGL)":
                     assemblyNames = new string[] { "DemoFramework.OpenTK", "OpenTK" };
