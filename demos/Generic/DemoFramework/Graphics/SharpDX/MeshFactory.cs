@@ -232,7 +232,7 @@ namespace DemoFramework.SharpDX
         ShapeData CreateShape(CollisionShape shape)
         {
             ShapeData shapeData = new ShapeData();
-            ushort[] indices;
+            uint[] indices;
             Vector3[] vertices = ShapeGenerator.CreateShape(shape, out indices);
             shapeData.VertexCount = vertices.Length / 2;
             shapeData.SetVertexBuffer(device, vertices);
@@ -240,7 +240,15 @@ namespace DemoFramework.SharpDX
             if (indices != null)
             {
                 shapeData.IndexCount = indices.Length;
-                shapeData.SetIndexBuffer(device, indices);
+                ushort[] indices_s = ShapeGenerator.CompactIndexBuffer(indices);
+                if (indices_s != null)
+                {
+                    shapeData.SetIndexBuffer(device, indices_s);
+                }
+                else
+                {
+                    shapeData.SetIndexBuffer(device, indices);
+                }
             }
 
             return shapeData;

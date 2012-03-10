@@ -32,8 +32,10 @@ copy Generic\bin\Release\Box2DDemo.exe bin\
 copy Generic\bin\Release\BspDemo.exe bin\
 copy Generic\bin\Release\CcdPhysicsDemo.exe bin\
 copy Generic\bin\Release\ConstraintDemo.exe bin\
+copy Generic\bin\Release\ConvexDecompositionDemo.exe bin\
 copy Generic\bin\Release\SoftDemo.exe bin\
 copy Generic\bin\Release\BspDemo.bsp bin\
+copy Generic\bin\Release\file.obj bin\
 
 copy Generic\bin\Release\OpenTK.dll bin\
 copy Generic\bin\Release\OpenTK.GLControl.dll bin\

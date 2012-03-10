@@ -56,7 +56,7 @@ namespace DemoFramework.SlimDX
 
         Mesh CreateShape(CollisionShape shape)
         {
-            ushort[] indices;
+            uint[] indices;
             BulletSharp.Vector3[] vertices = ShapeGenerator.CreateShape(shape, out indices);
 
             int vertexCount = vertices.Length / 2;
@@ -66,32 +66,43 @@ namespace DemoFramework.SlimDX
             Mesh mesh = new Mesh(device, indexCount / 3, vertexCount,
                 MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
 
-            int i = 0;
             DataStream vertexBuffer = mesh.LockVertexBuffer(LockFlags.Discard);
             vertexBuffer.WriteRange(vertices);
             mesh.UnlockVertexBuffer();
 
-            if (indices == null)
-            {
-                indices = new ushort[indexCount];
-                i = 0;
-                while (i < indexCount)
-                {
-                    indices[i] = (ushort)i;
-                    i++;
-                }
-            }
-
-            i = 0;
             DataStream indexBuffer = mesh.LockIndexBuffer(LockFlags.Discard);
             if (index32)
             {
-                while (indexBuffer.Position < indexBuffer.Length)
-                    indexBuffer.Write((int)indices[i++]);
+                if (indices == null)
+                {
+                    indices = new uint[indexCount];
+                    uint i = 0;
+                    while (i < indexCount)
+                    {
+                        indices[i] = i;
+                        i++;
+                    }
+                }
+                indexBuffer.WriteRange(indices);
             }
             else
             {
-                indexBuffer.WriteRange(indices);
+                ushort[] indices_s;
+                if (indices == null)
+                {
+                    indices_s = new ushort[indexCount];
+                    ushort i = 0;
+                    while (i < indexCount)
+                    {
+                        indices_s[i] = i;
+                        i++;
+                    }
+                }
+                else
+                {
+                    indices_s = ShapeGenerator.CompactIndexBuffer(indices);
+                }
+                indexBuffer.WriteRange(indices_s);
             }
             mesh.UnlockIndexBuffer();
 

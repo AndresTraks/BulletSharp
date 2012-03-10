@@ -8,7 +8,7 @@ namespace DemoFramework
     // (boxes, cones, cylinders, spheres) for drawing. Includes normals.
     public static class ShapeGenerator
     {
-        public static Vector3[] CreateShape(CollisionShape shape, out ushort[] indices)
+        public static Vector3[] CreateShape(CollisionShape shape, out uint[] indices)
         {
             switch (shape.ShapeType)
             {
@@ -27,6 +27,20 @@ namespace DemoFramework
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        public static ushort[] CompactIndexBuffer(uint[] indices)
+        {
+            if (indices.Length > 65535)
+            {
+                return null;
+            }
+            ushort[] ib = new ushort[indices.Length];
+            for (int i = 0; i < ib.Length; i++)
+            {
+                ib[i] = (ushort)indices[i];
+            }
+            return ib;
         }
 
         public static Vector3[] CreateBox(BoxShape shape)
@@ -59,7 +73,7 @@ namespace DemoFramework
             return vertices;
         }
 
-        public static Vector3[] CreateCapsule(CapsuleShape shape, out ushort[] indices)
+        public static Vector3[] CreateCapsule(CapsuleShape shape, out uint[] indices)
         {
             int up = shape.UpAxis;
             float radius = shape.Radius;
@@ -77,7 +91,7 @@ namespace DemoFramework
             int indexCount = 6 * slices * (stacks - 1);
 
             Vector3[] vertices = new Vector3[vertexCount * 2];
-            indices = new ushort[indexCount];
+            indices = new uint[indexCount];
 
             int i = 0, v = 0;
 
@@ -120,7 +134,7 @@ namespace DemoFramework
 
             // Indices
             // Top cap
-            byte index = 2;
+            uint index = 2;
             for (k = 0; k < slices; k++)
             {
                 indices[i++] = index++;
@@ -190,7 +204,7 @@ namespace DemoFramework
             }
         }
 
-        public static Vector3[] CreateCone(ConeShape shape, out ushort[] indices)
+        public static Vector3[] CreateCone(ConeShape shape, out uint[] indices)
         {
             int up = shape.ConeUpIndex;
             float radius = shape.Radius;
@@ -203,11 +217,11 @@ namespace DemoFramework
             int indexCount = (4 * numSteps + 2) * 3;
 
             Vector3[] vertices = new Vector3[vertexCount * 2];
-            indices = new ushort[indexCount];
+            indices = new uint[indexCount];
 
             int i = 0, v = 0;
-            ushort index = 0;
-            ushort baseIndex;
+            uint index = 0;
+            uint baseIndex;
             Vector3 normal;
 
             // Draw the base
@@ -230,12 +244,12 @@ namespace DemoFramework
                 vertices[v++] = normal;
 
                 indices[i++] = baseIndex;
-                indices[i++] = (ushort)(index - 1);
+                indices[i++] = index - 1;
                 indices[i++] = index++;
             }
             indices[i++] = baseIndex;
-            indices[i++] = (ushort)(index - 1);
-            indices[i++] = (ushort)(baseIndex + 1);
+            indices[i++] = index - 1;
+            indices[i++] = baseIndex + 1;
 
 
             normal = GetVectorByAxis(0, 0, radius, up);
@@ -263,25 +277,25 @@ namespace DemoFramework
                 vertices[v++] = GetVectorByAxis(x, -halfHeight, z, up);
                 vertices[v++] = normal;
 
-                indices[i++] = (ushort)(index - 2);
-                indices[i++] = (ushort)(index - 1);
+                indices[i++] = index - 2;
+                indices[i++] = index - 1;
                 indices[i++] = index;
                 indices[i++] = index;
-                indices[i++] = (ushort)(index - 1);
-                indices[i++] = (ushort)(index + 1);
+                indices[i++] = index - 1;
+                indices[i++] = index + 1;
                 index += 2;
             }
-            indices[i++] = (ushort)(index - 2);
-            indices[i++] = (ushort)(index - 1);
+            indices[i++] = index - 2;
+            indices[i++] = index - 1;
             indices[i++] = baseIndex;
             indices[i++] = baseIndex;
-            indices[i++] = (ushort)(index - 1);
-            indices[i++] = (ushort)(baseIndex + 1);
+            indices[i++] = index - 1;
+            indices[i++] = baseIndex + 1;
 
             return vertices;
         }
 
-        public static Vector3[] CreateCylinder(CylinderShape shape, out ushort[] indices)
+        public static Vector3[] CreateCylinder(CylinderShape shape, out uint[] indices)
         {
             int up = shape.UpAxis;
             float radius = shape.Radius;
@@ -294,11 +308,11 @@ namespace DemoFramework
             int indexCount = (4 * numSteps + 2) * 3;
 
             Vector3[] vertices = new Vector3[vertexCount * 2];
-            indices = new ushort[indexCount];
+            indices = new uint[indexCount];
 
             int i = 0, v = 0;
-            ushort index = 0;
-            ushort baseIndex;
+            uint index = 0;
+            uint baseIndex;
             Vector3 normal;
 
             // Draw two sides
@@ -325,26 +339,26 @@ namespace DemoFramework
                     indices[i++] = baseIndex;
                     if (side == 1)
                     {
-                        indices[i++] = (ushort)(index - 1);
+                        indices[i++] = index - 1;
                         indices[i++] = index++;
                     }
                     else
                     {
                         indices[i++] = index;
-                        indices[i++] = (ushort)(index - 1);
+                        indices[i++] = index - 1;
                         index++;
                     }
                 }
                 indices[i++] = baseIndex;
                 if (side == 1)
                 {
-                    indices[i++] = (ushort)(index - 1);
-                    indices[i++] = (ushort)(baseIndex + 1);
+                    indices[i++] = index - 1;
+                    indices[i++] = baseIndex + 1;
                 }
                 else
                 {
-                    indices[i++] = (ushort)(baseIndex + 1);
-                    indices[i++] = (ushort)(index - 1);
+                    indices[i++] = baseIndex + 1;
+                    indices[i++] = index - 1;
                 }
             }
 
@@ -374,20 +388,20 @@ namespace DemoFramework
                 vertices[v++] = GetVectorByAxis(x, -halfHeight, z, up);
                 vertices[v++] = normal;
 
-                indices[i++] = (ushort)(index - 2);
-                indices[i++] = (ushort)(index - 1);
+                indices[i++] = index - 2;
+                indices[i++] = index - 1;
                 indices[i++] = index;
                 indices[i++] = index;
-                indices[i++] = (ushort)(index - 1);
-                indices[i++] = (ushort)(index + 1);
+                indices[i++] = index - 1;
+                indices[i++] = index + 1;
                 index += 2;
             }
-            indices[i++] = (ushort)(index - 2);
-            indices[i++] = (ushort)(index - 1);
+            indices[i++] = index - 2;
+            indices[i++] = index - 1;
             indices[i++] = baseIndex;
             indices[i++] = baseIndex;
-            indices[i++] = (ushort)(index - 1);
-            indices[i++] = (ushort)(baseIndex + 1);
+            indices[i++] = index - 1;
+            indices[i++] = baseIndex + 1;
 
             return vertices;
         }
@@ -501,7 +515,7 @@ namespace DemoFramework
             return mesh;
         }
         */
-        public static Vector3[] CreateSphere(SphereShape shape, out ushort[] indices)
+        public static Vector3[] CreateSphere(SphereShape shape, out uint[] indices)
         {
             float radius = shape.Radius;
 
@@ -517,7 +531,7 @@ namespace DemoFramework
             int indexCount = 6 * slices * (stacks - 1);
 
             Vector3[] vertices = new Vector3[vertexCount * 2];
-            indices = new ushort[indexCount];
+            indices = new uint[indexCount];
 
             int i = 0, v = 0;
 

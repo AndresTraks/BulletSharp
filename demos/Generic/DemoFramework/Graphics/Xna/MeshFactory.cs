@@ -46,7 +46,7 @@ namespace DemoFramework.Xna
         public void SetVertexBuffer(GraphicsDevice device, Vector3[] vectors)
         {
             VertexCount = vectors.Length;
-            VertexBuffer = new VertexBuffer(device, vertexDecl, VertexCount, BufferUsage.WriteOnly);
+            VertexBuffer = new VertexBuffer(device, vertexDecl, VertexCount, BufferUsage.None);
             VertexBuffer.SetData(vectors);
             //BufferBindings[0] = new VertexBufferBinding(VertexBuffer, 0, 0);
         }
@@ -54,7 +54,7 @@ namespace DemoFramework.Xna
         public void SetVertexNormalBuffer(GraphicsDevice device, Vector3[] vectors)
         {
             VertexCount = vectors.Length / 2;
-            VertexBuffer = new VertexBuffer(device, vertexDecl, VertexCount, BufferUsage.WriteOnly);
+            VertexBuffer = new VertexBuffer(device, vertexDecl, VertexCount, BufferUsage.None);
             VertexBuffer.SetData(vectors);
             //BufferBindings[0] = new VertexBufferBinding(VertexBuffer, 0, 0);
         }
@@ -97,13 +97,13 @@ namespace DemoFramework.Xna
 
         public void SetIndexBuffer(GraphicsDevice device, ushort[] indices)
         {
-            IndexBuffer = new IndexBuffer(device, typeof(ushort), indices.Length, BufferUsage.WriteOnly);
+            IndexBuffer = new IndexBuffer(device, typeof(ushort), indices.Length, BufferUsage.None);
             IndexBuffer.SetData(indices);
         }
 
         public void SetIndexBuffer(GraphicsDevice device, uint[] indices)
         {
-            IndexBuffer = new IndexBuffer(device, typeof(uint), indices.Length, BufferUsage.WriteOnly);
+            IndexBuffer = new IndexBuffer(device, typeof(uint), indices.Length, BufferUsage.None);
             IndexBuffer.SetData(indices);
         }
 
@@ -161,14 +161,22 @@ namespace DemoFramework.Xna
         ShapeData CreateShape(CollisionShape shape)
         {
             ShapeData shapeData = new ShapeData();
-            ushort[] indices;
+            uint[] indices;
             Vector3[] vertices = ShapeGenerator.CreateShape(shape, out indices);
             shapeData.SetVertexNormalBuffer(device, vertices);
 
             if (indices != null)
             {
                 shapeData.IndexCount = indices.Length;
-                shapeData.SetIndexBuffer(device, indices);
+                ushort[] indices_s = ShapeGenerator.CompactIndexBuffer(indices);
+                if (indices_s != null)
+                {
+                    shapeData.SetIndexBuffer(device, indices_s);
+                }
+                else
+                {
+                    shapeData.SetIndexBuffer(device, indices);
+                }
             }
 
             return shapeData;
@@ -510,7 +518,7 @@ namespace DemoFramework.Xna
                     {
                         device.Indices = s.IndexBuffer;
                         device.DrawIndexedPrimitives(s.PrimitiveType, 0, 0,
-                            s.VertexCount / 3, 0, s.IndexCount);
+                            s.VertexCount, 0, s.IndexCount / 3);
                     }
                     else
                     {

@@ -217,7 +217,7 @@ namespace DemoFramework.OpenTK
         ShapeData CreateShape(CollisionShape shape)
         {
             ShapeData shapeData = new ShapeData();
-            ushort[] indices;
+            uint[] indices;
             BulletSharp.Vector3[] vertexBuffer = ShapeGenerator.CreateShape(shape, out indices);
             shapeData.VertexCount = vertexBuffer.Length / 2;
 
@@ -236,8 +236,16 @@ namespace DemoFramework.OpenTK
 
             if (indices != null)
             {
+                ushort[] indices_s = ShapeGenerator.CompactIndexBuffer(indices);
+                if (indices_s != null)
+                {
+                    shapeData.SetIndexBuffer(indices_s);
+                }
+                else
+                {
+                    shapeData.SetIndexBuffer(indices);
+                }
                 shapeData.ElementCount = indices.Length;
-                shapeData.SetIndexBuffer(indices);
             }
 
             return shapeData;
