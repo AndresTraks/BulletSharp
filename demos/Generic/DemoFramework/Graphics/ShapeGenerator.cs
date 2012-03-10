@@ -34,7 +34,8 @@ namespace DemoFramework
                 case BroadphaseNativeType.StaticPlane:
                     return CreateStaticPlane(shape as StaticPlaneShape, out indices);
                 case BroadphaseNativeType.TriangleMeshShape:
-                    return CreateTriangleMesh(shape as TriangleMeshShape, out indices);
+                    indices = null;
+                    return CreateTriangleMesh(shape as TriangleMeshShape);
                 default:
                     throw new NotImplementedException();
             }
@@ -466,8 +467,7 @@ namespace DemoFramework
             shape.MeshInterface.GetLockedReadOnlyVertexIndexData(out vertexBuffer, out numVerts, out vertsType, out vertexStride,
                 out indexBuffer, out indexStride, out numFaces, out indicesType);
 
-            int numIndices = numFaces * 3;
-            Vector3[] vertices = new Vector3[numIndices * 2];
+            Vector3[] vertices = new Vector3[numFaces * 3 * 2];
 
             // Need to un-index the vertex buffer to make the normals right.
             int v = 0;
@@ -696,30 +696,32 @@ namespace DemoFramework
             };
         }
 
-        static Vector3[] CreateTriangleMesh(TriangleMeshShape shape, out uint[] indices)
+        static Vector3[] CreateTriangleMesh(TriangleMeshShape shape)
         {
             StridingMeshInterface meshInterface = shape.MeshInterface.UpcastDetect();
 
-            BulletSharp.DataStream vertexStream, indexStream;
+            BulletSharp.DataStream vertexBuffer, indexBuffer;
             int numVerts, numFaces;
             PhyScalarType vertsType, indicesType;
             int vertexStride, indexStride;
-            meshInterface.GetLockedReadOnlyVertexIndexData(out vertexStream, out numVerts, out vertsType, out vertexStride,
-                out indexStream, out indexStride, out numFaces, out indicesType);
+            meshInterface.GetLockedReadOnlyVertexIndexData(out vertexBuffer, out numVerts, out vertsType, out vertexStride,
+                out indexBuffer, out indexStride, out numFaces, out indicesType);
 
-            int indexCount = numFaces * 3;
+            Vector3[] vertices = new Vector3[numFaces * 3 * 2];
 
-            Vector3[] vertices = new Vector3[numVerts * 2];
+            // Need to un-index the vertex buffer to make the normals right.
             int v = 0;
-            int vStrideExtra = vertexStride - Marshal.SizeOf(typeof(Vector3));
-            while (vertexStream.Position < vertexStream.Length)
+            while (indexBuffer.Position < indexBuffer.Length)
             {
-                Vector3 v0 = vertexStream.Read<Vector3>();
-                vertexStream.Position += vStrideExtra;
-                Vector3 v1 = vertexStream.Read<Vector3>();
-                vertexStream.Position += vStrideExtra;
-                Vector3 v2 = vertexStream.Read<Vector3>();
-                vertexStream.Position += vStrideExtra;
+                uint i = indexBuffer.Read<uint>();
+                vertexBuffer.Position = vertexStride * i;
+                Vector3 v0 = vertexBuffer.Read<Vector3>();
+                i = indexBuffer.Read<uint>();
+                vertexBuffer.Position = vertexStride * i;
+                Vector3 v1 = vertexBuffer.Read<Vector3>();
+                i = indexBuffer.Read<uint>();
+                vertexBuffer.Position = vertexStride * i;
+                Vector3 v2 = vertexBuffer.Read<Vector3>();
 
                 Vector3 v01 = v0 - v1;
                 Vector3 v02 = v0 - v2;
@@ -733,11 +735,6 @@ namespace DemoFramework
                 vertices[v++] = v2;
                 vertices[v++] = normal;
             }
-
-            int i = 0;
-            indices = new uint[indexCount];
-            while (indexStream.Position < indexStream.Length)
-                indices[i++] = indexStream.Read<uint>();
 
             return vertices;
         }

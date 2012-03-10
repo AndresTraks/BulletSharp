@@ -19,6 +19,12 @@ namespace DemoFramework
             protected set;
         }
 
+        public virtual float FarPlane
+        {
+            get;
+            set;
+        }
+
         public float FieldOfView
         {
             get;
@@ -45,6 +51,7 @@ namespace DemoFramework
         public Graphics(Demo demo)
         {
             Demo = demo;
+            FarPlane = 200.0f;
             FieldOfView = (float)Math.PI / 4;
         }
 

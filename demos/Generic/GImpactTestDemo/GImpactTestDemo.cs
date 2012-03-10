@@ -38,6 +38,8 @@ namespace GImpactTestDemo
                 //"F11 - Toggle fullscreen\n" +
                 "Space - Shoot box\n" +
                 ". - Shoot Bunny");
+            
+            Graphics.FarPlane = 400.0f;
         }
 
         protected override void OnInitializePhysics()
@@ -255,14 +257,14 @@ namespace GImpactTestDemo
             }
         }
 
-        public override void OnUpdate()
+        public override void OnHandleInput()
         {
             if (Input.KeysPressed.Contains(Keys.OemPeriod))
             {
                 ShootTrimesh(Freelook.Eye, Freelook.Target);
             }
 
-            base.OnUpdate();
+            base.OnHandleInput();
         }
     }
 

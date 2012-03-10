@@ -37,13 +37,24 @@ namespace DemoFramework.SlimDX
         protected int FullScreenWidth { get; set; }
         protected int FullScreenHeight { get; set; }
         protected float NearPlane { get; set; }
-        protected float FarPlane { get; set; }
 
         public override float AspectRatio
         {
             get
             {
                 return (float)Context9.PresentParameters.BackBufferWidth / (float)Context9.PresentParameters.BackBufferHeight;
+            }
+        }
+
+        public override float FarPlane
+        {
+            set
+            {
+                base.FarPlane = value;
+                if (Context9 != null && Demo.Freelook != null)
+                {
+                    UpdateView();
+                }
             }
         }
 

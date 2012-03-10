@@ -54,6 +54,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerializeDemo", "SerializeD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GImpactTestDemo", "GImpactTestDemo\GImpactTestDemo.csproj", "{67C912BA-AE82-431C-AE11-326A7C00C5B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleDemo", "VehicleDemo\VehicleDemo.csproj", "{B6135DE9-0844-40A8-A57B-EA0F20ADFD55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -120,6 +122,10 @@ Global
 		{67C912BA-AE82-431C-AE11-326A7C00C5B0}.Debug|x86.Build.0 = Debug|x86
 		{67C912BA-AE82-431C-AE11-326A7C00C5B0}.Release|x86.ActiveCfg = Release|x86
 		{67C912BA-AE82-431C-AE11-326A7C00C5B0}.Release|x86.Build.0 = Release|x86
+		{B6135DE9-0844-40A8-A57B-EA0F20ADFD55}.Debug|x86.ActiveCfg = Debug|x86
+		{B6135DE9-0844-40A8-A57B-EA0F20ADFD55}.Debug|x86.Build.0 = Debug|x86
+		{B6135DE9-0844-40A8-A57B-EA0F20ADFD55}.Release|x86.ActiveCfg = Release|x86
+		{B6135DE9-0844-40A8-A57B-EA0F20ADFD55}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using SharpDX;
@@ -82,7 +84,6 @@ namespace DemoFramework.SharpDX
         protected int Width { get; set; }
         protected int Height { get; set; }
         protected float NearPlane { get; set; }
-        protected float FarPlane { get; set; }
 
         ShaderSceneConstants sceneConstants = new ShaderSceneConstants();
         Buffer sceneConstantsBuffer;
@@ -327,12 +328,23 @@ namespace DemoFramework.SharpDX
             _device.Rasterizer.SetViewports(new Viewport(0, 0, Width, Height));
         }
 
+        ShaderBytecode LoadShader(string name, ShaderFlags flags)
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            StreamReader reader = new StreamReader(assembly.GetManifestResourceStream("DemoFramework.SharpDX." + name));
+            string shaderSource = reader.ReadToEnd();
+            return ShaderBytecode.Compile(shaderSource, "fx_4_0", flags, EffectFlags.None);
+        }
+
         public override void Initialize()
         {
             Form.SizeChanged += (o, args) =>
             {
                 Width = Form.ClientSize.Width;
                 Height = Form.ClientSize.Height;
+
+                if (_swapChain == null)
+                    return;
 
                 renderView.Dispose();
                 depthView.Dispose();
@@ -345,7 +357,6 @@ namespace DemoFramework.SharpDX
             Width = 1024;
             Height = 768;
             NearPlane = 1.0f;
-            FarPlane = 200.0f;
 
             ambient = (Color4)Color.Gray;
 
@@ -364,7 +375,7 @@ namespace DemoFramework.SharpDX
 
             ShaderFlags shaderFlags = ShaderFlags.None;
             //ShaderFlags shaderFlags = ShaderFlags.Debug | ShaderFlags.SkipOptimization;
-            ShaderBytecode shaderByteCode = ShaderBytecode.CompileFromFile(Application.StartupPath + "\\shader.fx", "fx_4_0", shaderFlags, EffectFlags.None);
+            ShaderBytecode shaderByteCode = LoadShader("shader.fx", shaderFlags);
 
             effect = new Effect(_device, shaderByteCode);
             EffectTechnique technique = effect.GetTechniqueByIndex(0);
@@ -418,7 +429,7 @@ namespace DemoFramework.SharpDX
 
             // grender.fx
 
-            shaderByteCode = ShaderBytecode.CompileFromFile(Application.StartupPath + "\\grender.fx", "fx_4_0", shaderFlags, EffectFlags.None);
+            shaderByteCode = LoadShader("grender.fx", shaderFlags);
 
             effect2 = new Effect(_device, shaderByteCode);
             technique = effect2.GetTechniqueByIndex(0);

@@ -28,6 +28,18 @@ namespace DemoFramework.OpenTK
             }
         }
 
+        public override float FarPlane
+        {
+            set
+            {
+                base.FarPlane = value;
+                if (Demo.Freelook != null)
+                {
+                    UpdateView();
+                }
+            }
+        }
+
         public override BulletSharp.IDebugDraw GetPhysicsDebugDrawer()
         {
             return new PhysicsDebugDraw(this);
@@ -195,7 +207,7 @@ namespace DemoFramework.OpenTK
             {
                 GL.Viewport(0, 0, glControl.Width, glControl.Height);
                 
-                perspective = Matrix4.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, 0.1f, 400);
+                perspective = Matrix4.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, 0.1f, FarPlane);
                 perspective *= Matrix4.Scale(-1.0f, 1.0f, 1.0f);
                 GL.UniformMatrix4(projectionMatrixLocation, false, ref perspective);
 

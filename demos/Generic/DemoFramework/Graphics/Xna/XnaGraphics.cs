@@ -30,7 +30,6 @@ namespace DemoFramework.Xna
         protected int FullScreenWidth { get; set; }
         protected int FullScreenHeight { get; set; }
         protected float NearPlane { get; set; }
-        protected float FarPlane { get; set; }
 
         protected InfoText Info { get; set; }
 
@@ -46,6 +45,15 @@ namespace DemoFramework.Xna
         FormWindowState currentFormWindowState;
 
         BasicEffect effect;
+
+        public override float FarPlane
+        {
+            set
+            {
+                base.FarPlane = value;
+                UpdateView();
+            }
+        }
 
         public override IDebugDraw GetPhysicsDebugDrawer()
         {
