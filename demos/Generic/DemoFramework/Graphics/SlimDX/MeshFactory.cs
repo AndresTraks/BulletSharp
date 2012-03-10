@@ -117,54 +117,13 @@ namespace DemoFramework.SlimDX
             return mesh;
         }
 
-        Mesh CreateGImpactMeshShape(GImpactMeshShape shape)
-        {
-            BulletSharp.DataStream verts, indices;
-            int numVerts, numFaces;
-            PhyScalarType vertsType, indicesType;
-            int vertexStride, indexStride;
-            shape.MeshInterface.GetLockedReadOnlyVertexIndexData(out verts, out numVerts, out vertsType, out vertexStride,
-                out indices, out indexStride, out numFaces, out indicesType);
-
-            bool index32 = numVerts > 65536;
-
-            Mesh mesh = new Mesh(device, numFaces, numVerts,
-                MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
-
-            DataStream vertexBuffer = mesh.LockVertexBuffer(LockFlags.Discard);
-            while (vertexBuffer.Position < vertexBuffer.Length)
-            {
-                vertexBuffer.Write(verts.Read<Vector3>());
-                vertexBuffer.Position += 12;
-            }
-            mesh.UnlockVertexBuffer();
-
-            DataStream indexBuffer = mesh.LockIndexBuffer(LockFlags.Discard);
-            if (index32)
-            {
-                while (indexBuffer.Position < indexBuffer.Length)
-                    indexBuffer.Write(indices.Read<int>());
-            }
-            else
-            {
-                while (indexBuffer.Position < indexBuffer.Length)
-                    indexBuffer.Write((short)indices.Read<int>());
-            }
-            mesh.UnlockIndexBuffer();
-
-            mesh.ComputeNormals();
-            shapes.Add(shape, mesh);
-
-            return mesh;
-        }
-
         Mesh CreateStaticPlaneShape(StaticPlaneShape shape)
         {
             // Load shader
             if (planeShader == null)
             {
                 Assembly assembly = Assembly.GetExecutingAssembly();
-                Stream shaderStream = assembly.GetManifestResourceStream("DemoFramework.checker_shader.fx");
+                Stream shaderStream = assembly.GetManifestResourceStream("DemoFramework.SlimDX.checker_shader.fx");
 
                 planeShader = Effect.FromStream(device, shaderStream, ShaderFlags.None);
             }
@@ -211,51 +170,6 @@ namespace DemoFramework.SlimDX
 
             complexShapes.Add(shape, mesh);
 
-            return mesh;
-        }
-
-        Mesh CreateTriangleMeshShape(TriangleMeshShape shape)
-        {
-            StridingMeshInterface meshInterface = shape.MeshInterface;
-
-            BulletSharp.DataStream verts, indices;
-            int numVerts, numFaces;
-            PhyScalarType vertsType, indicesType;
-            int vertexStride, indexStride;
-            meshInterface.GetLockedReadOnlyVertexIndexData(out verts, out numVerts, out vertsType, out vertexStride,
-                out indices, out indexStride, out numFaces, out indicesType);
-
-            bool index32 = numVerts > 65536;
-
-            Mesh mesh = new Mesh(device, numFaces, numVerts,
-                 MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
-            DataStream data = mesh.LockVertexBuffer(LockFlags.None);
-            while (verts.Position < verts.Length)
-            {
-                Vector3 v = verts.Read<Vector3>();
-                data.Write(v);
-
-                verts.Position += vertexStride - 12;
-
-                // Normals will be calculated later
-                data.Position += 12;
-            }
-            mesh.UnlockVertexBuffer();
-
-            data = mesh.LockIndexBuffer(LockFlags.None);
-            while (indices.Position < indices.Length)
-            {
-                int index = indices.Read<int>();
-                if (index32)
-                    data.Write(index);
-                else
-                    data.Write((short)index);
-            }
-            mesh.UnlockVertexBuffer();
-
-            mesh.ComputeNormals();
-
-            shapes.Add(shape, mesh);
             return mesh;
         }
 
@@ -307,14 +221,10 @@ namespace DemoFramework.SlimDX
                 case BroadphaseNativeType.ConeShape:
                     mesh = CreateConeShape(shape as ConeShape);
                     break;
-                case BroadphaseNativeType.GImpactShape:
-                    mesh = CreateGImpactMeshShape(shape as GImpactMeshShape);
-                    break;
                 case BroadphaseNativeType.Convex2DShape:
                     Render((shape as Convex2DShape).ChildShape);
                     return;
-                case BroadphaseNativeType.TriangleMeshShape:
-                    mesh = CreateTriangleMeshShape(shape as TriangleMeshShape);
+                case BroadphaseNativeType.StaticPlane:
                     break;
                 default:
                     mesh = CreateShape(shape);

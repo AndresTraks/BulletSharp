@@ -245,7 +245,7 @@ namespace DemoFramework
                         Graphics.Form.Close();
                         break;
                     case Keys.F11:
-                        //ToggleFullScreen();
+                        Graphics.IsFullScreen = !Graphics.IsFullScreen;
                         break;
                     case Keys.G:
                         //shadowsEnabled = !shadowsEnabled;

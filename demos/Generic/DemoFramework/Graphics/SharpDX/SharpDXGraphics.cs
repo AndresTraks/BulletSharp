@@ -81,8 +81,6 @@ namespace DemoFramework.SharpDX
 
         protected int Width { get; set; }
         protected int Height { get; set; }
-        protected int FullScreenWidth { get; set; }
-        protected int FullScreenHeight { get; set; }
         protected float NearPlane { get; set; }
         protected float FarPlane { get; set; }
 
@@ -116,6 +114,18 @@ namespace DemoFramework.SharpDX
         public override BulletSharp.IDebugDraw GetPhysicsDebugDrawer()
         {
             return new PhysicsDebugDraw(this);
+        }
+
+        public override bool IsFullScreen
+        {
+            get
+            {
+                return !_swapChain.Description.IsWindowed;
+            }
+            set
+            {
+                _swapChain.SetFullscreenState(value, null);
+            }
         }
 
         public SharpDXGraphics(Demo demo)
@@ -206,7 +216,7 @@ namespace DemoFramework.SharpDX
                 OutputHandle = Form.Handle,
                 SampleDescription = new SampleDescription(1, 0),
                 SwapEffect = SwapEffect.Discard,
-                Usage = Usage.RenderTargetOutput
+                Usage = Usage.RenderTargetOutput,
             };
 
             // Create Device and SwapChain
@@ -319,24 +329,21 @@ namespace DemoFramework.SharpDX
 
         public override void Initialize()
         {
-            Form.ResizeEnd += (o, args) =>
+            Form.SizeChanged += (o, args) =>
             {
                 Width = Form.ClientSize.Width;
                 Height = Form.ClientSize.Height;
 
                 renderView.Dispose();
                 depthView.Dispose();
-                _swapChain.ResizeBuffers(_swapChain.Description.BufferCount, Width, Height, _swapChain.Description.ModeDescription.Format, (int)_swapChain.Description.Flags);
+                _swapChain.ResizeBuffers(_swapChain.Description.BufferCount, 0, 0, Format.Unknown, 0);
 
                 CreateBuffers();
-
                 SetSceneConstants();
             };
 
             Width = 1024;
             Height = 768;
-            FullScreenWidth = Screen.PrimaryScreen.Bounds.Width;
-            FullScreenHeight = Screen.PrimaryScreen.Bounds.Height;
             NearPlane = 1.0f;
             FarPlane = 200.0f;
 

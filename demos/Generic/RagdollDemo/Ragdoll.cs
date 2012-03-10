@@ -26,6 +26,8 @@ namespace RagdollDemo
     class Ragdoll
     {
         const float ConstraintDebugSize = 0.2f;
+        const float PI_2 = (float)Math.PI / 2;
+        const float PI_4 = (float)Math.PI / 4;
 
         DynamicsWorld ownerWorld;
         CollisionShape[] shapes = new CollisionShape[(int)BodyPart.Count];
@@ -72,16 +74,16 @@ namespace RagdollDemo
             transform = offset * Matrix.Translation(0.18f, 0.2f, 0);
 		    bodies[(int)BodyPart.RightLowerLeg] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.RightLowerLeg]);
 
-            transform = Matrix.RotationX((float)Math.PI / 2) * offset * Matrix.Translation(-0.35f, 1.45f, 0);
+            transform = Matrix.RotationX(PI_2) * offset * Matrix.Translation(-0.35f, 1.45f, 0);
 		    bodies[(int)BodyPart.LeftUpperArm] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.LeftUpperArm]);
 
-            transform = Matrix.RotationY((float)Math.PI / 2) * offset * Matrix.Translation(-0.7f, 1.45f, 0);
+            transform = Matrix.RotationY(PI_2) * offset * Matrix.Translation(-0.7f, 1.45f, 0);
 		    bodies[(int)BodyPart.LeftLowerArm] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.LeftLowerArm]);
 
-            transform = Matrix.RotationY(-(float)Math.PI / 2) * offset * Matrix.Translation(0.35f, 1.45f, 0);
+            transform = Matrix.RotationY(-PI_2) * offset * Matrix.Translation(0.35f, 1.45f, 0);
 		    bodies[(int)BodyPart.RightUpperArm] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.RightUpperArm]);
 
-		    transform = Matrix.RotationY(-(float)Math.PI / 2) * offset * Matrix.Translation(0.7f, 1.45f, 0);
+		    transform = Matrix.RotationY(-PI_2) * offset * Matrix.Translation(0.7f, 1.45f, 0);
 		    bodies[(int)BodyPart.RightLowerArm] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.RightLowerArm]);
 
             // Setup some damping on the m_bodies
@@ -98,60 +100,60 @@ namespace RagdollDemo
 
             Matrix localA, localB;
 
-            localA = Matrix.RotationYawPitchRoll(0, (float)Math.PI / 2, 0) * Matrix.Translation(0, 0.15f, 0);
-            localB = Matrix.RotationYawPitchRoll(0, (float)Math.PI / 2, 0) * Matrix.Translation(0, -0.15f, 0);
+            localA = Matrix.RotationYawPitchRoll(0, PI_2, 0) * Matrix.Translation(0, 0.15f, 0);
+            localB = Matrix.RotationYawPitchRoll(0, PI_2, 0) * Matrix.Translation(0, -0.15f, 0);
             hingeC = new HingeConstraint(bodies[(int)BodyPart.Pelvis], bodies[(int)BodyPart.Spine], localA, localB);
-	        hingeC.SetLimit(-(float)Math.PI / 4, -(float)Math.PI / 2);
+            hingeC.SetLimit(-PI_4, PI_2);
 	        joints[(int)Joint.PelvisSpine] = hingeC;
             hingeC.DebugDrawSize = ConstraintDebugSize;
 
             ownerWorld.AddConstraint(joints[(int)Joint.PelvisSpine], true);
 
 
-            localA = Matrix.RotationYawPitchRoll(0, 0, (float)Math.PI / 2) * Matrix.Translation(0, 0.30f, 0);
-            localB = Matrix.RotationYawPitchRoll(0, 0, (float)Math.PI / 2) * Matrix.Translation(0, -0.14f, 0);
+            localA = Matrix.RotationYawPitchRoll(0, 0, PI_2) * Matrix.Translation(0, 0.30f, 0);
+            localB = Matrix.RotationYawPitchRoll(0, 0, PI_2) * Matrix.Translation(0, -0.14f, 0);
             coneC = new ConeTwistConstraint(bodies[(int)BodyPart.Spine], bodies[(int)BodyPart.Head], localA, localB);
-            coneC.SetLimit((float)Math.PI / 4, (float)Math.PI / 4, (float)Math.PI / 2);
+            coneC.SetLimit(PI_4, PI_4, PI_2);
             joints[(int)Joint.SpineHead] = coneC;
             coneC.DebugDrawSize = ConstraintDebugSize;
 
 		    ownerWorld.AddConstraint(joints[(int)Joint.SpineHead], true);
 
 
-            localA = Matrix.RotationYawPitchRoll(0, 0, -5 * (float)Math.PI / 4) * Matrix.Translation(-0.18f, -0.18f, 0);
-            localB = Matrix.RotationYawPitchRoll(0, 0, -5 * (float)Math.PI / 4) * Matrix.Translation(0, 0.225f, 0);
+            localA = Matrix.RotationYawPitchRoll(0, 0, -PI_4 * 5) * Matrix.Translation(-0.18f, -0.18f, 0);
+            localB = Matrix.RotationYawPitchRoll(0, 0, -PI_4 * 5) * Matrix.Translation(0, 0.225f, 0);
             coneC = new ConeTwistConstraint(bodies[(int)BodyPart.Pelvis], bodies[(int)BodyPart.LeftUpperLeg], localA, localB);
-            coneC.SetLimit((float)Math.PI / 4, (float)Math.PI / 4, 0);
+            coneC.SetLimit(PI_4, PI_4, 0);
 		    joints[(int)Joint.LeftHip] = coneC;
             coneC.DebugDrawSize = ConstraintDebugSize;
 
             ownerWorld.AddConstraint(joints[(int)Joint.LeftHip], true);
 
 
-            localA = Matrix.RotationYawPitchRoll(0, (float)Math.PI / 2, 0) * Matrix.Translation(0, -0.225f, 0);
-            localB = Matrix.RotationYawPitchRoll(0, (float)Math.PI / 2, 0) * Matrix.Translation(0, 0.185f, 0);
+            localA = Matrix.RotationYawPitchRoll(0, -PI_2, 0) * Matrix.Translation(0, -0.225f, 0);
+            localB = Matrix.RotationYawPitchRoll(0, -PI_2, 0) * Matrix.Translation(0, 0.185f, 0);
             hingeC = new HingeConstraint(bodies[(int)BodyPart.LeftUpperLeg], bodies[(int)BodyPart.LeftLowerLeg], localA, localB);
-            hingeC.SetLimit(0, (float)Math.PI / 2);
+            hingeC.SetLimit(0, PI_2);
             joints[(int)Joint.LeftKnee] = hingeC;
             hingeC.DebugDrawSize = ConstraintDebugSize;
 
             ownerWorld.AddConstraint(joints[(int)Joint.LeftKnee], true);
 
 
-            localA = Matrix.RotationYawPitchRoll(0, 0, (float)Math.PI / 4) * Matrix.Translation(0.18f, -0.10f, 0);
-            localB = Matrix.RotationYawPitchRoll(0, 0, (float)Math.PI / 4) * Matrix.Translation(0, 0.225f, 0);
+            localA = Matrix.RotationYawPitchRoll(0, 0, PI_4) * Matrix.Translation(0.18f, -0.10f, 0);
+            localB = Matrix.RotationYawPitchRoll(0, 0, PI_4) * Matrix.Translation(0, 0.225f, 0);
             coneC = new ConeTwistConstraint(bodies[(int)BodyPart.Pelvis], bodies[(int)BodyPart.RightUpperLeg], localA, localB);
-            coneC.SetLimit((float)Math.PI / 4, (float)Math.PI / 4, 0);
+            coneC.SetLimit(PI_4, PI_4, 0);
             joints[(int)Joint.RightHip] = coneC;
             coneC.DebugDrawSize = ConstraintDebugSize;
 
             ownerWorld.AddConstraint(joints[(int)Joint.RightHip], true);
 
 
-            localA = Matrix.RotationYawPitchRoll(0, (float)Math.PI / 2, 0) * Matrix.Translation(0, -0.225f, 0);
-            localB = Matrix.RotationYawPitchRoll(0, (float)Math.PI / 2, 0) * Matrix.Translation(0, 0.185f, 0);
+            localA = Matrix.RotationYawPitchRoll(0, PI_2, 0) * Matrix.Translation(0, -0.225f, 0);
+            localB = Matrix.RotationYawPitchRoll(0, PI_2, 0) * Matrix.Translation(0, 0.185f, 0);
             hingeC = new HingeConstraint(bodies[(int)BodyPart.RightUpperLeg], bodies[(int)BodyPart.RightLowerLeg], localA, localB);
-            hingeC.SetLimit(0, (float)Math.PI / 2);
+            hingeC.SetLimit(0, PI_2);
             joints[(int)Joint.RightKnee] = hingeC;
             hingeC.DebugDrawSize = ConstraintDebugSize;
 
@@ -159,19 +161,19 @@ namespace RagdollDemo
 
 
             localA = Matrix.RotationYawPitchRoll(0, 0, (float)Math.PI) * Matrix.Translation(-0.2f, 0.15f, 0);
-            localB = Matrix.RotationYawPitchRoll(0, 0, (float)Math.PI / 2) * Matrix.Translation(0, -0.18f, 0);
+            localB = Matrix.RotationYawPitchRoll(0, 0, PI_2) * Matrix.Translation(0, -0.18f, 0);
             coneC = new ConeTwistConstraint(bodies[(int)BodyPart.Spine], bodies[(int)BodyPart.LeftUpperArm], localA, localB);
-            coneC.SetLimit((float)Math.PI / 2, (float)Math.PI / 2, 0);
+            coneC.SetLimit(PI_2, PI_2, 0);
             joints[(int)Joint.LeftShoulder] = coneC;
             coneC.DebugDrawSize = ConstraintDebugSize;
 
             ownerWorld.AddConstraint(joints[(int)Joint.LeftShoulder], true);
 
 
-            localA = Matrix.RotationYawPitchRoll(0, (float)Math.PI / 2, 0) * Matrix.Translation(0, 0.18f, 0);
-            localB = Matrix.RotationYawPitchRoll(0, (float)Math.PI / 2, 0) * Matrix.Translation(0, -0.14f, 0);
+            localA = Matrix.RotationYawPitchRoll(0, PI_2, 0) * Matrix.Translation(0, 0.18f, 0);
+            localB = Matrix.RotationYawPitchRoll(0, PI_2, 0) * Matrix.Translation(0, -0.14f, 0);
             hingeC = new HingeConstraint(bodies[(int)BodyPart.LeftUpperArm], bodies[(int)BodyPart.LeftLowerArm], localA, localB);
-            hingeC.SetLimit(0, (float)Math.PI / 2);
+            hingeC.SetLimit(0, PI_2);
             joints[(int)Joint.LeftElbow] = hingeC;
             hingeC.DebugDrawSize = ConstraintDebugSize;
 
@@ -179,20 +181,20 @@ namespace RagdollDemo
 
 
             localA = Matrix.RotationYawPitchRoll(0, 0, 0) * Matrix.Translation(0.2f, 0.15f, 0);
-            localB = Matrix.RotationYawPitchRoll(0, 0, (float)Math.PI / 2) * Matrix.Translation(0, -0.18f, 0);
+            localB = Matrix.RotationYawPitchRoll(0, 0, PI_2) * Matrix.Translation(0, -0.18f, 0);
             coneC = new ConeTwistConstraint(bodies[(int)BodyPart.Spine], bodies[(int)BodyPart.RightUpperArm], localA, localB);
-            coneC.SetLimit((float)Math.PI / 2, (float)Math.PI / 2, 0);
+            coneC.SetLimit(PI_2, PI_2, 0);
             joints[(int)Joint.RightShoulder] = coneC;
             coneC.DebugDrawSize = ConstraintDebugSize;
 
             ownerWorld.AddConstraint(joints[(int)Joint.RightShoulder], true);
 
 
-            localA = Matrix.RotationYawPitchRoll(0, (float)Math.PI / 2, 0) * Matrix.Translation(0, 0.18f, 0);
-            localB = Matrix.RotationYawPitchRoll(0, (float)Math.PI / 2, 0) * Matrix.Translation(0, -0.14f, 0);
+            localA = Matrix.RotationYawPitchRoll(0, PI_2, 0) * Matrix.Translation(0, 0.18f, 0);
+            localB = Matrix.RotationYawPitchRoll(0, PI_2, 0) * Matrix.Translation(0, -0.14f, 0);
             hingeC = new HingeConstraint(bodies[(int)BodyPart.RightUpperArm], bodies[(int)BodyPart.RightLowerArm], localA, localB);
-            //hingeC.SetLimit(-(float)Math.PI / 2, 0);
-            hingeC.SetLimit(0, (float)Math.PI / 2);
+            //hingeC.SetLimit(-PI_2, 0);
+            hingeC.SetLimit(0, PI_2);
             joints[(int)Joint.RightElbow] = hingeC;
             hingeC.DebugDrawSize = ConstraintDebugSize;
 

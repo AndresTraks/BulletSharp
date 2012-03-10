@@ -181,149 +181,6 @@ namespace DemoFramework.Xna
 
             return shapeData;
         }
-        /*
-        Mesh CreateGImpactMeshShape(GImpactMeshShape shape)
-        {
-            BulletSharp.DataStream verts, indices;
-            int numVerts, numFaces;
-            PhyScalarType vertsType, indicesType;
-            int vertexStride, indexStride;
-            shape.MeshInterface.GetLockedReadOnlyVertexIndexData(out verts, out numVerts, out vertsType, out vertexStride,
-                out indices, out indexStride, out numFaces, out indicesType);
-
-            bool index32 = numVerts > 65536;
-
-            Mesh mesh = new Mesh(device, numFaces, numVerts,
-                MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
-
-            DataStream vertexBuffer = mesh.LockVertexBuffer(LockFlags.Discard);
-            while (vertexBuffer.Position < vertexBuffer.Length)
-            {
-                vertexBuffer.Write(verts.Read<Vector3>());
-                vertexBuffer.Position += 12;
-            }
-            mesh.UnlockVertexBuffer();
-
-            DataStream indexBuffer = mesh.LockIndexBuffer(LockFlags.Discard);
-            if (index32)
-            {
-                while (indexBuffer.Position < indexBuffer.Length)
-                    indexBuffer.Write(indices.Read<int>());
-            }
-            else
-            {
-                while (indexBuffer.Position < indexBuffer.Length)
-                    indexBuffer.Write((short)indices.Read<int>());
-            }
-            mesh.UnlockIndexBuffer();
-
-            mesh.ComputeNormals();
-            shapes.Add(shape, mesh);
-
-            return mesh;
-        }
-
-        Mesh CreateStaticPlaneShape(StaticPlaneShape shape)
-        {
-            // Load shader
-            if (planeShader == null)
-            {
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                Stream shaderStream = assembly.GetManifestResourceStream("DemoFramework.checker_shader.fx");
-
-                planeShader = Effect.FromStream(device, shaderStream, ShaderFlags.None);
-            }
-
-
-            Vector3[] vertices = new Vector3[4 * 2];
-
-            Mesh mesh = new Mesh(device, 2, 4, MeshFlags.SystemMemory, VertexFormat.Position | VertexFormat.Normal);
-
-            BulletSharp.Vector3 planeOrigin = shape.PlaneNormal * shape.PlaneConstant;
-            BulletSharp.Vector3 vec0, vec1;
-            PlaneSpace1(shape.PlaneNormal, out vec0, out vec1);
-            float size = 1000;
-
-            BulletSharp.Vector3[] verts = new BulletSharp.Vector3[4]
-                {
-                    planeOrigin + vec0*size,
-                    planeOrigin - vec0*size,
-                    planeOrigin + vec1*size,
-                    planeOrigin - vec1*size
-                };
-
-            DataStream vertexBuffer = mesh.LockVertexBuffer(LockFlags.Discard);
-            vertexBuffer.Write(verts[0]);
-            vertexBuffer.Position += 12;
-            vertexBuffer.Write(verts[1]);
-            vertexBuffer.Position += 12;
-            vertexBuffer.Write(verts[2]);
-            vertexBuffer.Position += 12;
-            vertexBuffer.Write(verts[3]);
-            vertexBuffer.Position += 12;
-            mesh.UnlockVertexBuffer();
-
-            DataStream indexBuffer = mesh.LockIndexBuffer(LockFlags.Discard);
-            indexBuffer.Write((short)1);
-            indexBuffer.Write((short)2);
-            indexBuffer.Write((short)0);
-            indexBuffer.Write((short)1);
-            indexBuffer.Write((short)3);
-            indexBuffer.Write((short)0);
-            mesh.UnlockIndexBuffer();
-
-            mesh.ComputeNormals();
-
-            complexShapes.Add(shape, mesh);
-
-            return mesh;
-        }
-
-        Mesh CreateTriangleMeshShape(TriangleMeshShape shape)
-        {
-            StridingMeshInterface meshInterface = shape.MeshInterface;
-
-            BulletSharp.DataStream verts, indices;
-            int numVerts, numFaces;
-            PhyScalarType vertsType, indicesType;
-            int vertexStride, indexStride;
-            meshInterface.GetLockedReadOnlyVertexIndexData(out verts, out numVerts, out vertsType, out vertexStride,
-                out indices, out indexStride, out numFaces, out indicesType);
-
-            bool index32 = numVerts > 65536;
-
-            Mesh mesh = new Mesh(device, numFaces, numVerts,
-                 MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
-            DataStream data = mesh.LockVertexBuffer(LockFlags.None);
-            while (verts.Position < verts.Length)
-            {
-                Vector3 v = verts.Read<Vector3>();
-                data.Write(v);
-
-                verts.Position += vertexStride - 12;
-
-                // Normals will be calculated later
-                data.Position += 12;
-            }
-            mesh.UnlockVertexBuffer();
-
-            data = mesh.LockIndexBuffer(LockFlags.None);
-            while (indices.Position < indices.Length)
-            {
-                int index = indices.Read<int>();
-                if (index32)
-                    data.Write(index);
-                else
-                    data.Write((short)index);
-            }
-            mesh.UnlockVertexBuffer();
-
-            mesh.ComputeNormals();
-
-            shapes.Add(shape, mesh);
-            return mesh;
-        }
-        */
 
         public ShapeData CreateSoftBody()
         {
@@ -344,9 +201,6 @@ namespace DemoFramework.Xna
                         break;
                     case BroadphaseNativeType.Convex2DShape:
                         return InitShapeData((shape as Convex2DShape).ChildShape);
-                    case BroadphaseNativeType.TriangleMeshShape:
-                        //shapeData = CreateTriangleMeshShape(shape as TriangleMeshShape);
-                        break;
                     default:
                         shapeData = CreateShape(shape);
                         break;
@@ -497,44 +351,6 @@ namespace DemoFramework.Xna
                 }
             }
             device.SetVertexBuffer(null);
-        }
-        /*
-        void RenderStaticPlaneShape(Model mesh)
-        {
-            Cull cullMode = device.GetRenderState<Cull>(RenderState.CullMode);
-            device.SetRenderState(RenderState.CullMode, Cull.None);
-            planeShader.Begin();
-            Matrix matrix = device.GetTransform(TransformState.World);
-            planeShader.SetValue("World", matrix);
-            matrix = device.GetTransform(TransformState.View) * device.GetTransform(TransformState.Projection);
-            planeShader.SetValue("ViewProjection", matrix);
-            planeShader.BeginPass(0);
-            mesh.DrawSubset(0);
-            planeShader.EndPass();
-            planeShader.End();
-            device.SetRenderState(RenderState.CullMode, cullMode);
-        }
-        */
-        void PlaneSpace1(BulletSharp.Vector3 n, out BulletSharp.Vector3 p, out BulletSharp.Vector3 q)
-        {
-            if (Math.Abs(n[2]) > (Math.Sqrt(2) / 2))
-            {
-                // choose p in y-z plane
-                float a = n[1] * n[1] + n[2] * n[2];
-                float k = 1.0f / (float)Math.Sqrt(a);
-                p = new BulletSharp.Vector3(0, -n[2] * k, n[1] * k);
-                // set q = n x p
-                q = BulletSharp.Vector3.Cross(n, p);
-            }
-            else
-            {
-                // choose p in x-y plane
-                float a = n[0] * n[0] + n[1] * n[1];
-                float k = 1.0f / (float)Math.Sqrt(a);
-                p = new BulletSharp.Vector3(-n[1] * k, n[0] * k, 0);
-                // set q = n x p
-                q = BulletSharp.Vector3.Cross(n, p);
-            }
         }
 
         public void UpdateSoftBody(SoftBody softBody, ShapeData shapeData)

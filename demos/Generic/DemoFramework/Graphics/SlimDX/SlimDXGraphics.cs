@@ -70,6 +70,61 @@ namespace DemoFramework.SlimDX
             return new PhysicsDebugDraw(Device);
         }
 
+        public override bool IsFullScreen
+        {
+            get
+            {
+                return !Context9.PresentParameters.Windowed;
+            }
+            set
+            {
+                if (Context9 == null)
+                    return;
+
+                if (value == !Context9.PresentParameters.Windowed)
+                    return;
+
+                togglingFullScreen = true;
+
+                OnLostDevice();
+
+                if (Context9.PresentParameters.Windowed)
+                {
+                    windowedFormWindowState = Form.WindowState;
+                    windowedFormBorderStyle = Form.FormBorderStyle;
+
+                    Width = Form.ClientSize.Width;
+                    Height = Form.ClientSize.Height;
+
+                    // Only normal window can be used in full screen.
+                    if (Form.WindowState != FormWindowState.Normal)
+                        Form.WindowState = FormWindowState.Normal;
+
+                    Context9.PresentParameters.BackBufferWidth = FullScreenWidth;
+                    Context9.PresentParameters.BackBufferHeight = FullScreenHeight;
+                    Form.FormBorderStyle = FormBorderStyle.None;
+
+                    Context9.PresentParameters.Windowed = false;
+                }
+                else
+                {
+                    Context9.PresentParameters.BackBufferWidth = Width;
+                    Context9.PresentParameters.BackBufferHeight = Height;
+                    Form.FormBorderStyle = windowedFormBorderStyle;
+                    Form.WindowState = windowedFormWindowState;
+                    if (Form.WindowState == FormWindowState.Normal)
+                        Form.ClientSize = new System.Drawing.Size(Width, Height);
+
+                    Context9.PresentParameters.Windowed = true;
+                }
+
+                Device.Reset(Context9.PresentParameters);
+                OnResetDevice();
+
+                togglingFullScreen = false;
+            }
+        }
+
         public SlimDXGraphics(Demo demo)
             : base(demo)
         {
@@ -370,51 +425,6 @@ namespace DemoFramework.SlimDX
             //}
 
             OnResetDevice();
-        }
-
-        public void ToggleFullScreen()
-        {
-            if (Context9 == null)
-                return;
-
-            togglingFullScreen = true;
-
-            OnLostDevice();
-
-            if (Context9.PresentParameters.Windowed)
-            {
-                windowedFormWindowState = Form.WindowState;
-                windowedFormBorderStyle = Form.FormBorderStyle;
-
-                Width = Form.ClientSize.Width;
-                Height = Form.ClientSize.Height;
-
-                // Only normal window can be used in full screen.
-                if (Form.WindowState != FormWindowState.Normal)
-                    Form.WindowState = FormWindowState.Normal;
-
-                Context9.PresentParameters.BackBufferWidth = FullScreenWidth;
-                Context9.PresentParameters.BackBufferHeight = FullScreenHeight;
-                Form.FormBorderStyle = FormBorderStyle.None;
-
-                Context9.PresentParameters.Windowed = false;
-            }
-            else
-            {
-                Context9.PresentParameters.BackBufferWidth = Width;
-                Context9.PresentParameters.BackBufferHeight = Height;
-                Form.FormBorderStyle = windowedFormBorderStyle;
-                Form.WindowState = windowedFormWindowState;
-                if (Form.WindowState == FormWindowState.Normal)
-                    Form.ClientSize = new System.Drawing.Size(Width, Height);
-
-                Context9.PresentParameters.Windowed = true;
-            }
-
-            Device.Reset(Context9.PresentParameters);
-            OnResetDevice();
-
-            togglingFullScreen = false;
         }
 
         public override void SetInfoText(string text)

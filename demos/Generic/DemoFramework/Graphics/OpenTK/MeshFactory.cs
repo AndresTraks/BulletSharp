@@ -270,9 +270,6 @@ namespace DemoFramework.OpenTK
                         break;
                     case BroadphaseNativeType.Convex2DShape:
                         return InitShapeData((shape as Convex2DShape).ChildShape);
-                    case BroadphaseNativeType.TriangleMeshShape:
-                        //shapeData = CreateTriangleMeshShape(shape as TriangleMeshShape);
-                        break;
                     default:
                         shapeData = CreateShape(shape);
                         break;

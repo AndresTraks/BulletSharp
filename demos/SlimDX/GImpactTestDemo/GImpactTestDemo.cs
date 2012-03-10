@@ -66,7 +66,7 @@ namespace GImpactTestDemo
 
             if (Input.KeysPressed.Contains(Keys.OemPeriod))
             {
-                Physics.ShootTrimesh(Freelook.Eye, Freelook.Eye - Freelook.Target);
+                Physics.ShootTrimesh(Freelook.Eye, Freelook.Target);
             }
         }
 

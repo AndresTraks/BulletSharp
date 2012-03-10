@@ -34,6 +34,12 @@ namespace DemoFramework
             }
         }
 
+        public virtual bool IsFullScreen
+        {
+            get;
+            set;
+        }
+
         public abstract IDebugDraw GetPhysicsDebugDrawer();
 
         public Graphics(Demo demo)

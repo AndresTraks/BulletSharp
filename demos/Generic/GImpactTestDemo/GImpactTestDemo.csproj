@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{EDB369AD-86B1-4B2E-B0D6-77A3B50C1875}</ProjectGuid>
+    <ProjectGuid>{67C912BA-AE82-431C-AE11-326A7C00C5B0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SerializeDemo</RootNamespace>
-    <AssemblyName>SerializeDemo</AssemblyName>
+    <RootNamespace>GImpactTestDemo</RootNamespace>
+    <AssemblyName>GImpactTestDemo</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -43,6 +43,7 @@
       <HintPath>..\..\..\Release NoGfx\BulletSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DemoFramework\DemoFramework.csproj">
@@ -51,12 +52,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SerializeDemo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="testFile.bullet">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Compile Include="BunnyMesh.cs" />
+    <Compile Include="GImpactTestDemo.cs" />
+    <Compile Include="TorusMesh.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
