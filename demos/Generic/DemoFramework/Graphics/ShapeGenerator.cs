@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BulletSharp;
 using BulletSharp.SoftBody;
 
@@ -22,6 +23,8 @@ namespace DemoFramework
                     return CreateConvexHull(shape as ConvexHullShape);
                 case BroadphaseNativeType.CylinderShape:
                     return CreateCylinder(shape as CylinderShape, out indices);
+                case BroadphaseNativeType.MultiSphereShape:
+                    return CreateMultiSphere(shape as MultiSphereShape, out indices);
                 case BroadphaseNativeType.SphereShape:
                     return CreateSphere(shape as SphereShape, out indices);
                 default:
@@ -82,7 +85,7 @@ namespace DemoFramework
             int slices = (int)(radius * 10.0f);
             int stacks = (int)(radius * 10.0f);
             slices = (slices > 16) ? 16 : (slices < 3) ? 3 : slices;
-            stacks = (stacks > 16) ? 16 : (stacks < 2) ? 2 : stacks;
+            stacks = (stacks > 16) ? 16 : (stacks < 3) ? 3 : stacks;
 
             float hAngleStep = (float)Math.PI * 2 / slices;
             float vAngleStep = (float)Math.PI / stacks;
@@ -484,41 +487,69 @@ namespace DemoFramework
 
             return vertices;
         }
-        /*
-        Mesh CreateMultiSphereShape(MultiSphereShape shape)
+
+        public static Vector3[] CreateMultiSphere(MultiSphereShape shape, out uint[] indices)
         {
-            Mesh mesh = null;
+            List<Vector3[]> allVertices = new List<Vector3[]>();
+            List<uint[]> allIndices = new List<uint[]>();
+            int vertexCount = 0;
+            int indexCount = 0;
 
             int i;
             for (i = 0; i < shape.SphereCount; i++)
             {
+                uint[] sphereIndices;
+                Vector3[] sphereVertices = CreateSphere(shape.GetSphereRadius(i), out sphereIndices);
+                
+                // Adjust sphere position
                 Vector3 position = shape.GetSpherePosition(i);
+                for (int j = 0; j < sphereVertices.Length / 2; j++)
+                {
+                    sphereVertices[j * 2] += position;
+                }
 
-                Mesh sphereMesh = Mesh.CreateSphere(device, shape.GetSphereRadius(i), 12, 12);
-                if (i == 0)
+                // Adjust indices
+                if (indexCount != 0)
                 {
-                    Matrix[] transform = new Matrix[] { Matrix.Translation(position) };
-                    mesh = Mesh.Concatenate(device, new Mesh[] { sphereMesh }, MeshFlags.Managed, transform, null);
+                    int indexOffset = vertexCount / 2;
+                    for (int j = 0; j < sphereIndices.Length; j++)
+                    {
+                        sphereIndices[j] += (uint)indexOffset;
+                    }
                 }
-                else
-                {
-                    Mesh multiSphereMeshNew;
-                    Matrix[] transform = new Matrix[] { Matrix.Identity, Matrix.Translation(position) };
-                    multiSphereMeshNew = Mesh.Concatenate(device, new Mesh[] { mesh, sphereMesh }, MeshFlags.Managed, transform, null);
-                    mesh.Dispose();
-                    mesh = multiSphereMeshNew;
-                }
-                sphereMesh.Dispose();
+
+                allVertices.Add(sphereVertices);
+                allIndices.Add(sphereIndices);
+                vertexCount += sphereVertices.Length;
+                indexCount += sphereIndices.Length;
             }
-            
-            complexShapes.Add(shape, mesh);
-            return mesh;
+
+            Vector3[] finalVertices = new Vector3[vertexCount];
+            int vo = 0;
+            foreach (Vector3[] v in allVertices)
+            {
+                v.CopyTo(finalVertices, vo);
+                vo += v.Length;
+            }
+
+            indices = new uint[indexCount];
+            int io = 0;
+            foreach (uint[] ind in allIndices)
+            {
+                ind.CopyTo(indices, io);
+                io += ind.Length;
+            }
+
+            return finalVertices;
         }
-        */
+
         public static Vector3[] CreateSphere(SphereShape shape, out uint[] indices)
         {
-            float radius = shape.Radius;
+            return CreateSphere(shape.Radius, out indices);
+        }
 
+        static Vector3[] CreateSphere(float radius, out uint[] indices)
+        {
             int slices = (int)(radius * 10.0f);
             int stacks = (int)(radius * 10.0f);
             slices = (slices > 16) ? 16 : (slices < 3) ? 3 : slices;

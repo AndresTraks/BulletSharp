@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -39,13 +40,14 @@ namespace DemoFramework.OpenTK
             glControl = (Form as GLForm).GLControl;
         }
 
-        int CreateShader(ShaderType type, string filename)
+        int CreateShaderFromResource(ShaderType type, string resourceName)
         {
+            Assembly assembly = Assembly.GetExecutingAssembly();
             string shaderSource;
             StreamReader reader;
             try
             {
-                reader = new StreamReader(filename);
+                reader = new StreamReader(assembly.GetManifestResourceStream("DemoFramework.OpenTK." + resourceName));
                 shaderSource = reader.ReadToEnd();
                 reader.Close();
             }
@@ -54,6 +56,11 @@ namespace DemoFramework.OpenTK
                 return 0;
             }
 
+            return CreateShaderFromString(type, shaderSource);
+        }
+
+        int CreateShaderFromString(ShaderType type, string shaderSource)
+        {
             int shaderHandle = GL.CreateShader(type);
             ErrorCode e = GL.GetError();
             e.ToString();
@@ -71,6 +78,24 @@ namespace DemoFramework.OpenTK
             return shaderHandle;
         }
 
+        int CreateShaderFromFile(ShaderType type, string filename)
+        {
+            string shaderSource;
+            StreamReader reader;
+            try
+            {
+                reader = new StreamReader(filename);
+                shaderSource = reader.ReadToEnd();
+                reader.Close();
+            }
+            catch
+            {
+                return 0;
+            }
+
+            return CreateShaderFromString(type, shaderSource);
+        }
+
         public void InitializeDevice()
         {
             Version ver = new Version(GL.GetString(StringName.Version).Split(' ')[0]);
@@ -81,8 +106,8 @@ namespace DemoFramework.OpenTK
 
             GL.ClearColor(Color.Gray);
 
-            int vertexShaderHandle = CreateShader(ShaderType.VertexShader, "vp.cg");
-            int fragmentShaderHandle = CreateShader(ShaderType.FragmentShader, "fp.cg");
+            int vertexShaderHandle = CreateShaderFromResource(ShaderType.VertexShader, "vp.cg");
+            int fragmentShaderHandle = CreateShaderFromResource(ShaderType.FragmentShader, "fp.cg");
 
             if (vertexShaderHandle == 0 || fragmentShaderHandle == 0)
             {

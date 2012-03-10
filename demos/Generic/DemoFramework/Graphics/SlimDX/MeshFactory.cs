@@ -158,36 +158,6 @@ namespace DemoFramework.SlimDX
             return mesh;
         }
 
-        Mesh CreateMultiSphereShape(MultiSphereShape shape)
-        {
-            Mesh mesh = null;
-
-            int i;
-            for (i = 0; i < shape.SphereCount; i++)
-            {
-                Vector3 position = MathHelper.Convert(shape.GetSpherePosition(i));
-
-                Mesh sphereMesh = Mesh.CreateSphere(device, shape.GetSphereRadius(i), 12, 12);
-                if (i == 0)
-                {
-                    Matrix[] transform = new Matrix[] { Matrix.Translation(position) };
-                    mesh = Mesh.Concatenate(device, new Mesh[] { sphereMesh }, MeshFlags.Managed, transform, null);
-                }
-                else
-                {
-                    Mesh multiSphereMeshNew;
-                    Matrix[] transform = new Matrix[] { Matrix.Identity, Matrix.Translation(position) };
-                    multiSphereMeshNew = Mesh.Concatenate(device, new Mesh[] { mesh, sphereMesh }, MeshFlags.Managed, transform, null);
-                    mesh.Dispose();
-                    mesh = multiSphereMeshNew;
-                }
-                sphereMesh.Dispose();
-            }
-
-            complexShapes.Add(shape, mesh);
-            return mesh;
-        }
-
         Mesh CreateStaticPlaneShape(StaticPlaneShape shape)
         {
             // Load shader
@@ -360,9 +330,6 @@ namespace DemoFramework.SlimDX
 
             switch (shape.ShapeType)
             {
-                case BroadphaseNativeType.MultiSphereShape:
-                    mesh = CreateMultiSphereShape(shape as MultiSphereShape);
-                    break;
                 case BroadphaseNativeType.StaticPlane:
                     mesh = CreateStaticPlaneShape(shape as StaticPlaneShape);
                     break;
@@ -378,27 +345,7 @@ namespace DemoFramework.SlimDX
                 case BroadphaseNativeType.StaticPlane:
                     RenderStaticPlaneShape(mesh);
                     break;
-                case BroadphaseNativeType.CapsuleShape:
-                    RenderCapsuleShape(mesh);
-                    break;
-                case BroadphaseNativeType.MultiSphereShape:
-                    RenderMultiSphereShape(shape as MultiSphereShape, mesh);
-                    break;
             }
-        }
-
-        public void RenderCapsuleShape(Mesh mesh)
-        {
-            mesh.DrawSubset(0);
-            mesh.DrawSubset(1);
-            mesh.DrawSubset(2);
-        }
-
-        public void RenderMultiSphereShape(MultiSphereShape shape, Mesh mesh)
-        {
-            int count = shape.SphereCount;
-            for (int i = 0; i < count; i++)
-                mesh.DrawSubset(i);
         }
 
         void RenderStaticPlaneShape(Mesh mesh)

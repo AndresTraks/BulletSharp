@@ -33,9 +33,13 @@ copy Generic\bin\Release\BspDemo.exe bin\
 copy Generic\bin\Release\CcdPhysicsDemo.exe bin\
 copy Generic\bin\Release\ConstraintDemo.exe bin\
 copy Generic\bin\Release\ConvexDecompositionDemo.exe bin\
+copy Generic\bin\Release\RagdollDemo.exe bin\
+copy Generic\bin\Release\SerializeDemo.exe bin\
 copy Generic\bin\Release\SoftDemo.exe bin\
 copy Generic\bin\Release\BspDemo.bsp bin\
 copy Generic\bin\Release\file.obj bin\
+copy Generic\bin\Release\data\cube.ele bin\data\
+copy Generic\bin\Release\data\cube.node bin\data\
 
 copy Generic\bin\Release\OpenTK.dll bin\
 copy Generic\bin\Release\OpenTK.GLControl.dll bin\
@@ -43,8 +47,6 @@ copy Generic\bin\Release\SharpDX.dll bin\
 copy Generic\bin\Release\SharpDX.D3DCompiler.dll bin\
 copy Generic\bin\Release\SharpDX.Direct3D10.dll bin\
 copy Generic\bin\Release\SharpDX.DXGI.dll bin\
-copy Generic\bin\Release\fp.cg bin\
-copy Generic\bin\Release\vp.cg bin\
 copy Generic\bin\Release\grender.fx bin\
 copy Generic\bin\Release\shader.fx bin\
 
