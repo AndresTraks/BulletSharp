@@ -13,8 +13,7 @@
 
 CollisionObject::CollisionObject(btCollisionObject* collisionObject)
 {
-	if (collisionObject)
-		UnmanagedPointer = collisionObject;
+	UnmanagedPointer = collisionObject;
 }
 
 CollisionObject::CollisionObject()

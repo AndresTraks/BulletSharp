@@ -41,6 +41,19 @@ namespace DemoFramework.OpenTK
             Resize += new EventHandler(GLForm_Resize);
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Left || keyData == Keys.Right || keyData == Keys.Up || keyData == Keys.Down)
+            {
+                if (msg.Msg == 0x100)
+                {
+                    OnKeyDown(new KeyEventArgs(keyData));
+                }
+                return false;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         void GLForm_Resize(object sender, EventArgs e)
         {
             graphics.UpdateView();

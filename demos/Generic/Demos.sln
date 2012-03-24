@@ -56,6 +56,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GImpactTestDemo", "GImpactT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleDemo", "VehicleDemo\VehicleDemo.csproj", "{B6135DE9-0844-40A8-A57B-EA0F20ADFD55}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharacterDemo", "CharacterDemo\CharacterDemo.csproj", "{2C4C781D-BB0E-4BE9-AE46-D25641F6D531}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -126,6 +128,10 @@ Global
 		{B6135DE9-0844-40A8-A57B-EA0F20ADFD55}.Debug|x86.Build.0 = Debug|x86
 		{B6135DE9-0844-40A8-A57B-EA0F20ADFD55}.Release|x86.ActiveCfg = Release|x86
 		{B6135DE9-0844-40A8-A57B-EA0F20ADFD55}.Release|x86.Build.0 = Release|x86
+		{2C4C781D-BB0E-4BE9-AE46-D25641F6D531}.Debug|x86.ActiveCfg = Debug|x86
+		{2C4C781D-BB0E-4BE9-AE46-D25641F6D531}.Debug|x86.Build.0 = Debug|x86
+		{2C4C781D-BB0E-4BE9-AE46-D25641F6D531}.Release|x86.ActiveCfg = Release|x86
+		{2C4C781D-BB0E-4BE9-AE46-D25641F6D531}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -341,7 +341,7 @@ namespace DemoFramework.OpenTK
                 }
                 else
                 {
-                    (colObj as RigidBody).GetWorldTransform(out transform);
+                    colObj.GetWorldTransform(out transform);
                 }
                 InitInstanceData(colObj, colObj.CollisionShape, ref transform);
             }
