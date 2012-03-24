@@ -15,6 +15,7 @@ namespace BulletSharp
 
 	internal:
 		BroadphaseProxy(btBroadphaseProxy* proxy);
+		int _uid;
 
 	public:
 		BroadphaseProxy();

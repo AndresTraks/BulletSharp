@@ -94,7 +94,7 @@ BroadphaseProxy^ BroadphaseInterface::CreateProxy(Vector3 aabbMin, Vector3 aabbM
 	delete aabbMinTemp;
 	delete aabbMaxTemp;
 
-	return gcnew BroadphaseProxy(proxy);
+	return BroadphaseProxy::GetManaged(proxy);
 }
 
 void BroadphaseInterface::DestroyProxy(BroadphaseProxy^ proxy, Dispatcher^ dispatcher)

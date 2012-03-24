@@ -60,8 +60,12 @@ BroadphaseProxy^ BroadphaseProxy::GetManaged(btBroadphaseProxy* broadphaseProxy)
 		return nullptr;
 
 	BroadphaseProxy^ proxy = GetObjectFromTable(BroadphaseProxy, broadphaseProxy);
-	if (proxy != nullptr)
-		return proxy;
+	if (proxy != nullptr) {
+		if (broadphaseProxy->getUid() == proxy->_uid) {
+			return proxy;
+		}
+		ObjectTable::Remove(broadphaseProxy);
+	}
 
 #ifndef DISABLE_DBVT
 	btDbvtProxy* dbvtProxy = static_cast<btDbvtProxy*>(broadphaseProxy);
@@ -141,6 +145,7 @@ int BroadphaseProxy::Uid::get()
 }
 void BroadphaseProxy::Uid::set(int value)
 {
+	_uid = value;
 	_proxy->m_uniqueId = value;
 }
 

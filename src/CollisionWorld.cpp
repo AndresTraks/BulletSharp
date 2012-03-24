@@ -839,7 +839,7 @@ ContactResultCallbackWrapper::ContactResultCallbackWrapper(CollisionWorld::Conta
 
 bool ContactResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) const
 {
-	return _callback->NeedsCollision(gcnew BroadphaseProxy(proxy0));
+	return _callback->NeedsCollision(BroadphaseProxy::GetManaged(proxy0));
 }
 
 btScalar ContactResultCallbackWrapper::addSingleResult(btManifoldPoint& cp,
