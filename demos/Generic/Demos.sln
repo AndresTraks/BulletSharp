@@ -58,6 +58,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleDemo", "VehicleDemo\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharacterDemo", "CharacterDemo\CharacterDemo.csproj", "{2C4C781D-BB0E-4BE9-AE46-D25641F6D531}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollisionInterfaceDemo", "CollisionInterfaceDemo\CollisionInterfaceDemo.csproj", "{C945B9CB-E50E-44C9-810D-3483F18D4F8C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -132,6 +134,10 @@ Global
 		{2C4C781D-BB0E-4BE9-AE46-D25641F6D531}.Debug|x86.Build.0 = Debug|x86
 		{2C4C781D-BB0E-4BE9-AE46-D25641F6D531}.Release|x86.ActiveCfg = Release|x86
 		{2C4C781D-BB0E-4BE9-AE46-D25641F6D531}.Release|x86.Build.0 = Release|x86
+		{C945B9CB-E50E-44C9-810D-3483F18D4F8C}.Debug|x86.ActiveCfg = Debug|x86
+		{C945B9CB-E50E-44C9-810D-3483F18D4F8C}.Debug|x86.Build.0 = Debug|x86
+		{C945B9CB-E50E-44C9-810D-3483F18D4F8C}.Release|x86.ActiveCfg = Release|x86
+		{C945B9CB-E50E-44C9-810D-3483F18D4F8C}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

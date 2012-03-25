@@ -310,7 +310,7 @@ namespace DemoFramework.SlimDX
                 int v = 0;
 
                 int i;
-                for (i = 0; i < faces.Count; i++)
+                for (i = 0; i < faceCount; i++)
                 {
                     NodePtrArray nodes = faces[i].N;
                     Node n0 = nodes[0];
@@ -325,7 +325,7 @@ namespace DemoFramework.SlimDX
                     v += 3;
                 }
 
-                device.VertexFormat = PositionedNormal.FVF;
+                device.VertexFormat = VertexFormat.PositionNormal;
                 device.DrawUserPrimitives(PrimitiveType.TriangleList, faces.Count, vectors);
             }
             else
@@ -385,7 +385,7 @@ namespace DemoFramework.SlimDX
                         vectors[v + 11].Normal = normal;
                         v += 12;
                     }
-                    device.VertexFormat = PositionedNormal.FVF;
+                    device.VertexFormat = VertexFormat.PositionNormal;
                     device.DrawUserPrimitives(PrimitiveType.TriangleList, tetraCount * 4, vectors);
                 }
                 else if (softBody.Links.Count > 0)
@@ -394,7 +394,7 @@ namespace DemoFramework.SlimDX
                     int linkCount = links.Count;
                     int linkColor = System.Drawing.Color.Black.ToArgb();
 
-                    device.VertexFormat = PositionColored.FVF;
+                    device.VertexFormat = VertexFormat.Position | VertexFormat.Diffuse;
 
                     PositionColored[] linkArray = new PositionColored[linkCount * 2];
 

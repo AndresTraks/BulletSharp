@@ -29,19 +29,6 @@ namespace DemoFramework.Xna
             get { return graphicsDeviceService.GraphicsDevice; }
         }
 
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            if (keyData == Keys.Left || keyData == Keys.Right || keyData == Keys.Up || keyData == Keys.Down)
-            {
-                if (msg.Msg == 0x100)
-                {
-                    OnKeyDown(new KeyEventArgs(keyData));
-                }
-                return false;
-            }
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
-
         #region Initialization
 
         /// <summary>
@@ -60,9 +47,19 @@ namespace DemoFramework.Xna
 
                 graphics.Device = graphicsDeviceService.GraphicsDevice;
                 graphics.InitializeDevice();
+
+                PreviewKeyDown += new PreviewKeyDownEventHandler(GraphicsDeviceControl_PreviewKeyDown);
             }
 
             base.OnCreateControl();
+        }
+
+        void GraphicsDeviceControl_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Right || e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
+            {
+                e.IsInputKey = true;
+            }
         }
 
         /// <summary>

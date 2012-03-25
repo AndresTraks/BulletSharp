@@ -37,21 +37,17 @@ namespace DemoFramework.OpenTK
             glControl.MouseUp += new MouseEventHandler(glControl_MouseUp);
             glControl.MouseMove += new MouseEventHandler(glControl_MouseMove);
             glControl.MouseWheel += new MouseEventHandler(glControl_MouseWheel);
+            glControl.PreviewKeyDown += new PreviewKeyDownEventHandler(glControl_PreviewKeyDown);
 
             Resize += new EventHandler(GLForm_Resize);
         }
 
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        void glControl_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            if (keyData == Keys.Left || keyData == Keys.Right || keyData == Keys.Up || keyData == Keys.Down)
+            if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Right || e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
             {
-                if (msg.Msg == 0x100)
-                {
-                    OnKeyDown(new KeyEventArgs(keyData));
-                }
-                return false;
+                e.IsInputKey = true;
             }
-            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         void GLForm_Resize(object sender, EventArgs e)

@@ -6,6 +6,48 @@ using BulletSharp.SoftBody;
 
 namespace DemoFramework
 {
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PositionColored
+    {
+        public static readonly int Stride = Vector3.SizeInBytes + sizeof(int);
+
+        public Vector3 Position;
+        public int Color;
+
+        public PositionColored(Vector3 pos, int col)
+        {
+            Position = pos;
+            Color = col;
+        }
+
+        public PositionColored(ref Vector3 pos, int col)
+        {
+            Position = pos;
+            Color = col;
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PositionedNormal
+    {
+        public static readonly int Stride = 2 * Vector3.SizeInBytes;
+
+        public Vector3 Position;
+        public Vector3 Normal;
+
+        public PositionedNormal(Vector3 pos, Vector3 normal)
+        {
+            Position = pos;
+            Normal = normal;
+        }
+
+        public PositionedNormal(ref Vector3 pos, ref Vector3 normal)
+        {
+            Position = pos;
+            Normal = normal;
+        }
+    }
+
     // Creates platform-agnostic vertex buffers of physical shapes
     // (boxes, cones, cylinders, spheres) for drawing. Includes normals.
     public static class ShapeGenerator

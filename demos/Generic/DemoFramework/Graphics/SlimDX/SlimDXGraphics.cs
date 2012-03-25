@@ -282,28 +282,13 @@ namespace DemoFramework.SlimDX
                     }
                     else
                     {
-                        if (colObj is RigidBody)
-                        {
-                            RigidBody body = colObj as RigidBody;
-                            if ("Ground".Equals(body.UserObject))
-                                Device.Material = GroundMaterial;
-                            else if (body.ActivationState == ActivationState.ActiveTag)
-                                Device.Material = ActiveMaterial;
-                            else
-                                Device.Material = PassiveMaterial;
-                            meshFactory.Render(body);
-                        }
+                        if ("Ground".Equals(colObj.UserObject))
+                            Device.Material = GroundMaterial;
+                        else if (colObj.ActivationState == ActivationState.ActiveTag)
+                            Device.Material = ActiveMaterial;
                         else
-                        {
-                            GhostObject body = colObj as GhostObject;
-                            if ("Ground".Equals(body.UserObject))
-                                Device.Material = GroundMaterial;
-                            else if (body.ActivationState == ActivationState.ActiveTag)
-                                Device.Material = ActiveMaterial;
-                            else
-                                Device.Material = PassiveMaterial;
-                            meshFactory.Render(body);
-                        }
+                            Device.Material = PassiveMaterial;
+                        meshFactory.Render(colObj);
                     }
                 }
 

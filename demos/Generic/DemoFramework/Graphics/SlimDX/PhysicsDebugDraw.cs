@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using BulletSharp;
 using SlimDX.Direct3D9;
 
@@ -15,6 +13,11 @@ namespace DemoFramework.SlimDX
             this.device = device;
         }
 
+        public override int colorToInt(ref Color c)
+        {
+            return c.ToArgb();
+        }
+
         public override void DrawDebugWorld(DynamicsWorld world)
         {
             world.DebugDrawWorld();
@@ -24,7 +27,7 @@ namespace DemoFramework.SlimDX
             int lighting = device.GetRenderState(RenderState.Lighting);
             device.SetRenderState(RenderState.Lighting, false);
             device.SetTransform(TransformState.World, global::SlimDX.Matrix.Identity);
-            device.VertexFormat = PositionColored.FVF;
+            device.VertexFormat = VertexFormat.Position | VertexFormat.Diffuse;
 
             device.DrawUserPrimitives(PrimitiveType.LineList, lines.Count / 2, lines.ToArray());
             lines.Clear();
