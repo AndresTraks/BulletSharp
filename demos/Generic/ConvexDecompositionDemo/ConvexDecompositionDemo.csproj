@@ -55,8 +55,9 @@
     <Compile Include="ConvexDecompositionDemo.cs" />
     <Compile Include="Wavefront.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <None Include="file.obj">
+    <None Include="data\file.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

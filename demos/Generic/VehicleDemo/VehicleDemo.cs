@@ -12,7 +12,7 @@ namespace BasicDemo
         Vector3 target = Vector3.Zero;
 
         //bool UseTrimeshGround = false;
-        //string heightfieldFile = "heightfield128x128.raw";
+        //string heightfieldFile = "data/heightfield128x128.raw";
 
         int rightIndex = 0;
         int upIndex = 1;

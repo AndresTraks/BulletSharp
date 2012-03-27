@@ -198,7 +198,7 @@ namespace ConvexDecompositionDemo
             SetupEmptyDynamicsWorld();
 
             WavefrontObj wo = new WavefrontObj();
-            int tcount = wo.LoadObj("file.obj");
+            int tcount = wo.LoadObj("data/file.obj");
             if (tcount > 0)
             {
                 TriangleMesh trimesh = new TriangleMesh();

@@ -54,8 +54,9 @@
       <Name>DemoFramework</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <None Include="BspDemo.bsp">
+    <None Include="data\BspDemo.bsp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

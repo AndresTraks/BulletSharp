@@ -61,7 +61,7 @@ namespace BspDemo
             World.Gravity = Freelook.Up * -10.0f;
 
             BspLoader bspLoader = new BspLoader();
-            bspLoader.LoadBspFile("BspDemo.bsp");
+            bspLoader.LoadBspFile("data/BspDemo.bsp");
             BspConverter bsp2Bullet = new BspToBulletConverter(this);
             bsp2Bullet.ConvertBsp(bspLoader, 0.1f);
         }

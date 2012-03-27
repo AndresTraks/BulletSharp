@@ -35,12 +35,12 @@ copy Generic\bin\Release\SerializeDemo.exe bin\
 copy Generic\bin\Release\SoftDemo.exe bin\
 copy Generic\bin\Release\VehicleDemo.exe bin\
 
-copy Generic\bin\Release\BspDemo.bsp bin\
-copy Generic\bin\Release\file.obj bin\
+copy Generic\bin\Release\data\BspDemo.bsp bin\data\
+copy Generic\bin\Release\data\file.obj bin\data\
 copy Generic\bin\Release\data\cube.ele bin\data\
 copy Generic\bin\Release\data\cube.node bin\data\
 copy Generic\bin\Release\testFile.bullet bin\
-rem copy Generic\bin\Release\heightfield128x128.raw bin\
+rem copy Generic\bin\Release\data\heightfield128x128.raw bin\data\
 
 copy Generic\bin\Release\DemoFramework.dll bin\
 copy Generic\bin\Release\DemoFramework.OpenTK.dll bin\
