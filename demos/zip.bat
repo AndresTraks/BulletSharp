@@ -29,6 +29,7 @@ copy Generic\bin\Release\CharacterDemo.exe bin\
 copy Generic\bin\Release\CollisionInterfaceDemo.exe bin\
 copy Generic\bin\Release\ConstraintDemo.exe bin\
 copy Generic\bin\Release\ConvexDecompositionDemo.exe bin\
+copy Generic\bin\Release\DistanceDemo.exe bin\
 copy Generic\bin\Release\GImpactTestDemo.exe bin\
 copy Generic\bin\Release\RagdollDemo.exe bin\
 copy Generic\bin\Release\SerializeDemo.exe bin\
