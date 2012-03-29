@@ -136,7 +136,7 @@ void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb)
 	}
 	userInfo->Callback = cb;
 
-	UnmanagedPointer->setInternalTickCallback(callback);
+	UnmanagedPointer->setInternalTickCallback(callback, obj);
 }
 
 int DynamicsWorld::StepSimulation(btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep)
