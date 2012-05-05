@@ -29,6 +29,8 @@ namespace DemoFramework.OpenTK
         public BeginMode BeginMode = BeginMode.Triangles;
 
         public List<InstanceData> InstanceDataList = new List<InstanceData>();
+        public Vector3[] SoftBodyVertices;
+        public Vector3[] SoftBodyNormals;
 
         public void SetVertexBuffer<T>(T[] vertices) where T : struct
         {
@@ -452,115 +454,17 @@ namespace DemoFramework.OpenTK
 
         public void UpdateSoftBody(SoftBody softBody, ShapeData shapeData)
         {
-            AlignedFaceArray faces = softBody.Faces;
+            shapeData.VertexCount = softBody.GetVertexNormalData(out shapeData.SoftBodyVertices, out shapeData.SoftBodyNormals);
+            shapeData.SetDynamicVertexBuffer(shapeData.SoftBodyVertices);
 
-            if (faces.Count != 0)
+            if (shapeData.SoftBodyNormals != null)
             {
-                shapeData.VertexCount = faces.Count * 3;
-
-                BulletSharp.Vector3[] vectors = new BulletSharp.Vector3[shapeData.VertexCount];
-                BulletSharp.Vector3[] normals = new BulletSharp.Vector3[shapeData.VertexCount];
-                int v = 0;
-
-                int i;
-                for (i = 0; i < faces.Count; i++)
-                {
-                    NodePtrArray nodes = faces[i].N;
-                    Node n0 = nodes[0];
-                    Node n1 = nodes[1];
-                    Node n2 = nodes[2];
-                    n0.GetX(out vectors[v]);
-                    n0.GetNormal(out normals[v++]);
-                    n1.GetX(out vectors[v]);
-                    n1.GetNormal(out normals[v++]);
-                    n2.GetX(out vectors[v]);
-                    n2.GetNormal(out normals[v++]);
-                }
-
-                shapeData.SetDynamicVertexBuffer(vectors);
-                shapeData.SetDynamicNormalBuffer(normals);
+                shapeData.SetDynamicNormalBuffer(shapeData.SoftBodyNormals);
             }
             else
             {
-                AlignedTetraArray tetras = softBody.Tetras;
-                int tetraCount = tetras.Count;
-
-                if (tetraCount != 0)
-                {
-                    shapeData.VertexCount = tetraCount * 12;
-
-                    BulletSharp.Vector3[] vectors = new BulletSharp.Vector3[tetraCount * 12];
-                    BulletSharp.Vector3[] normals = new BulletSharp.Vector3[tetraCount * 12];
-                    int v = 0;
-
-                    for (int i = 0; i < tetraCount; i++)
-                    {
-                        NodePtrArray nodes = tetras[i].Nodes;
-                        BulletSharp.Vector3 v0 = nodes[0].X;
-                        BulletSharp.Vector3 v1 = nodes[1].X;
-                        BulletSharp.Vector3 v2 = nodes[2].X;
-                        BulletSharp.Vector3 v3 = nodes[3].X;
-                        BulletSharp.Vector3 v10 = v1 - v0;
-                        BulletSharp.Vector3 v02 = v0 - v2;
-
-                        BulletSharp.Vector3 normal = BulletSharp.Vector3.Cross(v10, v02);
-                        vectors[v] = v0;
-                        normals[v++] = normal;
-                        vectors[v] = v1;
-                        normals[v++] = normal;
-                        vectors[v] = v2;
-                        normals[v++] = normal;
-
-                        normal = BulletSharp.Vector3.Cross(v10, v3 - v0);
-                        vectors[v] = v0;
-                        normals[v++] = normal;
-                        vectors[v] = v1;
-                        normals[v++] = normal;
-                        vectors[v] = v3;
-                        normals[v++] = normal;
-
-                        normal = BulletSharp.Vector3.Cross(v2 - v1, v3 - v1);
-                        vectors[v] = v1;
-                        normals[v++] = normal;
-                        vectors[v] = v2;
-                        normals[v++] = normal;
-                        vectors[v] = v3;
-                        normals[v++] = normal;
-
-                        normal = BulletSharp.Vector3.Cross(v02, v3 - v2);
-                        vectors[v] = v2;
-                        normals[v++] = normal;
-                        vectors[v] = v0;
-                        normals[v++] = normal;
-                        vectors[v] = v3;
-                        normals[v++] = normal;
-                    }
-
-                    shapeData.SetDynamicVertexBuffer(vectors);
-                    shapeData.SetDynamicNormalBuffer(normals);
-                }
-                else if (softBody.Links.Count != 0)
-                {
-                    AlignedLinkArray links = softBody.Links;
-                    int linkCount = links.Count;
-                    shapeData.VertexCount = linkCount * 2;
-
-                    BulletSharp.Vector3[] vectors = new BulletSharp.Vector3[shapeData.VertexCount];
-
-                    for (int i = 0; i < linkCount; i++)
-                    {
-                        NodePtrArray nodes = links[i].Nodes;
-                        nodes[0].GetX(out vectors[i * 2]);
-                        nodes[1].GetX(out vectors[i * 2 + 1]);
-                    }
-
-                    shapeData.BeginMode = BeginMode.Lines;
-                    shapeData.SetDynamicVertexBuffer(vectors);
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
+                shapeData.SetDynamicNormalBuffer(new Vector3[shapeData.VertexCount]); // hack, should use a different shader that doesn't process normals
+                shapeData.BeginMode = BeginMode.Lines;
             }
         }
     }

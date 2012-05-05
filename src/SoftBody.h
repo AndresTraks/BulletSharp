@@ -1725,7 +1725,17 @@ namespace BulletSharp
 			int GenerateClusters(int k, int maxIterations);
 			int GenerateClusters(int k);
 			void GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
+			int GetFaceVertexData([Out] array<Vector3>^% vertices); // helper
+			int GetFaceVertexNormalData([Out] array<Vector3>^% data); // helper
+			int GetFaceVertexNormalData([Out] array<Vector3>^% vertices, [Out] array<Vector3>^% normals); // helper
+			int GetLinkVertexData([Out] array<Vector3>^% vertices); // helper
+			int GetLinkVertexNormalData([Out] array<Vector3>^% data); // helper
 			btScalar GetMass(int node);
+			int GetTetraVertexData([Out] array<Vector3>^% vertices); // helper
+			int GetTetraVertexNormalData([Out] array<Vector3>^% data); // helper
+			int GetTetraVertexNormalData([Out] array<Vector3>^% vertices, [Out] array<Vector3>^% normals); // helper
+			int GetVertexNormalData([Out] array<Vector3>^% data); // helper
+			int GetVertexNormalData([Out] array<Vector3>^% vertices, [Out] array<Vector3>^% normals); // helper
 			//void IndicesToPointers(array<int>^ map);
 			void IndicesToPointers();
 			void InitDefaults();

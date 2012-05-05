@@ -147,3 +147,13 @@ namespace BulletSharp
 	transform.getOpenGLMatrix((btScalar*)ptr);
 #endif
 #endif
+
+#ifdef GRAPHICS_AXIOM
+#define Vector3_Cross(left, right, result) result = left.Cross(right)
+#elif defined(GRAPHICS_MOGRE)
+#define Vector3_Cross(left, right, result) result = left.CrossProduct(right)
+#elif defined(GRAPHICS_WAPICODEPACK)
+#define Vector3_Cross(left, right, result) result = Vector3::Cross(left, right)
+#else
+#define Vector3_Cross(left, right, result) Vector3::Cross(left, right, result)
+#endif

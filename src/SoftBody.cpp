@@ -2753,6 +2753,336 @@ void BulletSharp::SoftBody::SoftBody::GetAabb([Out] Vector3% aabbMin, [Out] Vect
 	delete aabbMaxTemp;
 }
 
+int BulletSharp::SoftBody::SoftBody::GetFaceVertexData([Out] array<Vector3>^% vertices)
+{
+	btAlignedObjectArray<btSoftBody::Face>* faceArray = &UnmanagedPointer->m_faces;
+	int faceCount = faceArray->size();
+	if (faceCount == 0) {
+		return 0;
+	}
+
+	int vertexCount = faceCount * 3;
+
+	if (vertices == nullptr || vertices->Length != vertexCount) {
+		vertices = gcnew array<Vector3>(vertexCount);
+	}
+
+	int i, j;
+	pin_ptr<Vector3> vPtr = &vertices[0];
+	for (i = 0; i < faceCount; i++) {
+		for (j = 0; j < 3; j++) {
+			btSoftBody::Node* n = faceArray->at(i).m_n[j];
+			Math::BtVector3ToVector3(&n->m_x, *vPtr++);
+		}
+	}
+
+	return vertexCount;
+}
+
+int BulletSharp::SoftBody::SoftBody::GetFaceVertexNormalData([Out] array<Vector3>^% data)
+{
+	btAlignedObjectArray<btSoftBody::Face>* faceArray = &UnmanagedPointer->m_faces;
+	int faceCount = faceArray->size();
+	if (faceCount == 0) {
+		return 0;
+	}
+
+	int vertexCount = faceCount * 3;
+	int vertexNormalCount = vertexCount * 2;
+
+	if (data == nullptr || data->Length != vertexNormalCount) {
+		data = gcnew array<Vector3>(vertexNormalCount);
+	}
+
+	int i, j;
+	pin_ptr<Vector3> vPtr = &data[0];
+	for (i = 0; i < faceCount; i++) {
+		for (j = 0; j < 3; j++) {
+			btSoftBody::Node* n = faceArray->at(i).m_n[j];
+			Math::BtVector3ToVector3(&n->m_x, *vPtr++);
+			Math::BtVector3ToVector3(&n->m_n, *vPtr++);
+		}
+	}
+
+	return vertexCount;
+}
+
+int BulletSharp::SoftBody::SoftBody::GetFaceVertexNormalData([Out] array<Vector3>^% vertices, [Out] array<Vector3>^% normals)
+{
+	btAlignedObjectArray<btSoftBody::Face>* faceArray = &UnmanagedPointer->m_faces;
+	int faceCount = faceArray->size();
+	if (faceCount == 0) {
+		return 0;
+	}
+
+	int vertexCount = faceCount * 3;
+
+	if (vertices == nullptr || vertices->Length != vertexCount) {
+		vertices = gcnew array<Vector3>(vertexCount);
+	}
+	if (normals == nullptr || normals->Length != vertexCount) {
+		normals = gcnew array<Vector3>(vertexCount);
+	}
+
+	int i, j;
+	pin_ptr<Vector3> vPtr = &vertices[0];
+	pin_ptr<Vector3> nPtr = &normals[0];
+	for (i = 0; i < faceCount; i++) {
+		for (j = 0; j < 3; j++) {
+			btSoftBody::Node* n = faceArray->at(i).m_n[j];
+			Math::BtVector3ToVector3(&n->m_x, *vPtr++);
+			Math::BtVector3ToVector3(&n->m_n, *nPtr++);
+		}
+	}
+
+	return vertexCount;
+}
+
+int BulletSharp::SoftBody::SoftBody::GetLinkVertexData([Out] array<Vector3>^% vertices)
+{
+	btAlignedObjectArray<btSoftBody::Link>* linkArray = &UnmanagedPointer->m_links;
+	int linkCount = linkArray->size();
+	if (linkCount == 0) {
+		return 0;
+	}
+
+	int vertexCount = linkCount * 2;
+
+	if (vertices == nullptr || vertices->Length != vertexCount) {
+		vertices = gcnew array<Vector3>(vertexCount);
+	}
+
+	int i, j;
+	pin_ptr<Vector3> vPtr = &vertices[0];
+	for (i = 0; i < linkCount; i++) {
+		btSoftBody::Link* l = &linkArray->at(i);
+		Math::BtVector3ToVector3(&l->m_n[0]->m_x, *vPtr++);
+		Math::BtVector3ToVector3(&l->m_n[1]->m_x, *vPtr++);
+	}
+
+	return vertexCount;
+}
+
+int BulletSharp::SoftBody::SoftBody::GetLinkVertexNormalData([Out] array<Vector3>^% data)
+{
+	btAlignedObjectArray<btSoftBody::Link>* linkArray = &UnmanagedPointer->m_links;
+	int linkCount = linkArray->size();
+	if (linkCount == 0) {
+		return 0;
+	}
+
+	int vertexCount = linkCount * 2;
+	int vertexNormalCount = vertexCount * 2;
+
+	if (data == nullptr || data->Length != vertexNormalCount) {
+		data = gcnew array<Vector3>(vertexNormalCount);
+	}
+
+	int i, j;
+	pin_ptr<Vector3> vPtr = &data[0];
+	for (i = 0; i < linkCount; i++) {
+		btSoftBody::Link* l = &linkArray->at(i);
+		Math::BtVector3ToVector3(&l->m_n[0]->m_x, *vPtr);
+		vPtr += 2;
+		Math::BtVector3ToVector3(&l->m_n[1]->m_x, *vPtr);
+		vPtr += 2;
+	}
+
+	return vertexCount;
+}
+
+int BulletSharp::SoftBody::SoftBody::GetTetraVertexData([Out] array<Vector3>^% vertices)
+{
+	btAlignedObjectArray<btSoftBody::Tetra>* tetraArray = &UnmanagedPointer->m_tetras;
+	int tetraCount = tetraArray->size();
+	if (tetraCount == 0) {
+		return 0;
+	}
+
+	int vertexCount = tetraCount * 12;
+
+	if (vertices == nullptr || vertices->Length != vertexCount) {
+		vertices = gcnew array<Vector3>(vertexCount);
+	}
+
+	int i, j;
+	pin_ptr<Vector3> vPtr = &vertices[0];
+	Vector3 v0, v1, v2, v3;
+	for (i = 0; i < tetraCount; i++) {
+		Math::BtVector3ToVector3(&tetraArray->at(i).m_n[0]->m_x, v0);
+		Math::BtVector3ToVector3(&tetraArray->at(i).m_n[1]->m_x, v1);
+		Math::BtVector3ToVector3(&tetraArray->at(i).m_n[2]->m_x, v2);
+		Math::BtVector3ToVector3(&tetraArray->at(i).m_n[3]->m_x, v3);
+
+		*vPtr++ = v0;
+		*vPtr++ = v1;
+		*vPtr++ = v2;
+
+		*vPtr++ = v0;
+		*vPtr++ = v1;
+		*vPtr++ = v3;
+
+		*vPtr++ = v1;
+		*vPtr++ = v2;
+		*vPtr++ = v3;
+
+		*vPtr++ = v2;
+		*vPtr++ = v0;
+		*vPtr++ = v3;
+	}
+
+	return vertexCount;
+}
+
+int BulletSharp::SoftBody::SoftBody::GetTetraVertexNormalData([Out] array<Vector3>^% data)
+{
+	btAlignedObjectArray<btSoftBody::Tetra>* tetraArray = &UnmanagedPointer->m_tetras;
+	int tetraCount = tetraArray->size();
+	if (tetraCount == 0) {
+		return 0;
+	}
+
+	int vertexCount = tetraCount * 12;
+	int vertexNormalCount = vertexCount * 2;
+
+	if (data == nullptr || data->Length != vertexNormalCount) {
+		data = gcnew array<Vector3>(vertexNormalCount);
+	}
+
+	int i, j;
+	pin_ptr<Vector3> vPtr = &data[0];
+	Vector3 v0, v1, v2, v3;
+	Vector3 v10, v02, normal;
+	for (i = 0; i < tetraCount; i++) {
+		Math::BtVector3ToVector3(&tetraArray->at(i).m_n[0]->m_x, v0);
+		Math::BtVector3ToVector3(&tetraArray->at(i).m_n[1]->m_x, v1);
+		Math::BtVector3ToVector3(&tetraArray->at(i).m_n[2]->m_x, v2);
+		Math::BtVector3ToVector3(&tetraArray->at(i).m_n[3]->m_x, v3);
+		v10 = v1 - v0;
+		v02 = v0 - v2;
+
+		Vector3_Cross(v10, v02, normal);
+		*vPtr++ = v0;
+		*vPtr++ = normal;
+		*vPtr++ = v1;
+		*vPtr++ = normal;
+		*vPtr++ = v2;
+		*vPtr++ = normal;
+
+		Vector3_Cross(v10, v3 - v0, normal);
+		*vPtr++ = v0;
+		*vPtr++ = normal;
+		*vPtr++ = v1;
+		*vPtr++ = normal;
+		*vPtr++ = v3;
+		*vPtr++ = normal;
+
+		Vector3_Cross(v2 - v1, v3 - v1, normal);
+		*vPtr++ = v1;
+		*vPtr++ = normal;
+		*vPtr++ = v2;
+		*vPtr++ = normal;
+		*vPtr++ = v3;
+		*vPtr++ = normal;
+
+		Vector3_Cross(v02, v3 - v2, normal);
+		*vPtr++ = v2;
+		*vPtr++ = normal;
+		*vPtr++ = v0;
+		*vPtr++ = normal;
+		*vPtr++ = v3;
+		*vPtr++ = normal;
+	}
+
+	return vertexCount;
+}
+
+int BulletSharp::SoftBody::SoftBody::GetTetraVertexNormalData([Out] array<Vector3>^% vertices, [Out] array<Vector3>^% normals)
+{
+	btAlignedObjectArray<btSoftBody::Tetra>* tetraArray = &UnmanagedPointer->m_tetras;
+	int tetraCount = tetraArray->size();
+	if (tetraCount == 0) {
+		return 0;
+	}
+
+	int vertexCount = tetraCount * 12;
+
+	if (vertices == nullptr || vertices->Length != vertexCount) {
+		vertices = gcnew array<Vector3>(vertexCount);
+	}
+	if (normals == nullptr || normals->Length != vertexCount) {
+		normals = gcnew array<Vector3>(vertexCount);
+	}
+
+	int i, j;
+	pin_ptr<Vector3> vPtr = &vertices[0];
+	pin_ptr<Vector3> nPtr = &normals[0];
+	Vector3 v0, v1, v2, v3;
+	Vector3 v10, v02, normal;
+	for (i = 0; i < tetraCount; i++) {
+		Math::BtVector3ToVector3(&tetraArray->at(i).m_n[0]->m_x, v0);
+		Math::BtVector3ToVector3(&tetraArray->at(i).m_n[1]->m_x, v1);
+		Math::BtVector3ToVector3(&tetraArray->at(i).m_n[2]->m_x, v2);
+		Math::BtVector3ToVector3(&tetraArray->at(i).m_n[3]->m_x, v3);
+		v10 = v1 - v0;
+		v02 = v0 - v2;
+
+		Vector3_Cross(v10, v02, normal);
+		*vPtr++ = v0;
+		*nPtr++ = normal;
+		*vPtr++ = v1;
+		*nPtr++ = normal;
+		*vPtr++ = v2;
+		*nPtr++ = normal;
+
+		Vector3_Cross(v10, v3 - v0, normal);
+		*vPtr++ = v0;
+		*nPtr++ = normal;
+		*vPtr++ = v1;
+		*nPtr++ = normal;
+		*vPtr++ = v3;
+		*nPtr++ = normal;
+
+		Vector3_Cross(v2 - v1, v3 - v1, normal);
+		*vPtr++ = v1;
+		*nPtr++ = normal;
+		*vPtr++ = v2;
+		*nPtr++ = normal;
+		*vPtr++ = v3;
+		*nPtr++ = normal;
+
+		Vector3_Cross(v02, v3 - v2, normal);
+		*vPtr++ = v2;
+		*nPtr++ = normal;
+		*vPtr++ = v0;
+		*nPtr++ = normal;
+		*vPtr++ = v3;
+		*nPtr++ = normal;
+	}
+
+	return vertexCount;
+}
+
+int BulletSharp::SoftBody::SoftBody::GetVertexNormalData([Out] array<Vector3>^% data)
+{
+	if (UnmanagedPointer->m_faces.size()) {
+		return GetFaceVertexNormalData(data);
+	} else if (UnmanagedPointer->m_tetras.size()) {
+		return GetTetraVertexNormalData(data);
+	}
+	return GetLinkVertexNormalData(data);
+}
+
+int BulletSharp::SoftBody::SoftBody::GetVertexNormalData([Out] array<Vector3>^% vertices, [Out] array<Vector3>^% normals)
+{
+	if (UnmanagedPointer->m_faces.size()) {
+		return GetFaceVertexNormalData(vertices, normals);
+	} else if (UnmanagedPointer->m_tetras.size()) {
+		return GetTetraVertexNormalData(vertices, normals);
+	}
+	return GetLinkVertexData(vertices);
+}
+
 btScalar BulletSharp::SoftBody::SoftBody::GetMass(int node)
 {
 	return UnmanagedPointer->getMass(node);

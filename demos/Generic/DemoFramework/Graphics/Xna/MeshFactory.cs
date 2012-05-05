@@ -31,6 +31,8 @@ namespace DemoFramework.Xna
         public PrimitiveType PrimitiveType;
         //public VertexBufferBinding[] BufferBindings;
 
+        public Vector3[] SoftBodyData;
+
         public ShapeData()
         {
             InstanceDataList = new List<InstanceData>();
@@ -355,110 +357,17 @@ namespace DemoFramework.Xna
 
         public void UpdateSoftBody(SoftBody softBody, ShapeData shapeData)
         {
-            AlignedFaceArray faces = softBody.Faces;
+            // Could just allocate a Vector3 array here at each frame, but reusing shapeData.SoftBodyData is faster.
+            // Probably uses more memory though.
+            shapeData.VertexCount = softBody.GetVertexNormalData(out shapeData.SoftBodyData);
+            shapeData.SetDynamicVertexBuffer(device, shapeData.SoftBodyData);
 
-            if (faces.Count != 0)
+            if (softBody.Faces.Count == 0 && softBody.Tetras.Count == 0)
             {
-                Vector3[] vectors = new Vector3[3 * faces.Count * 2];
-                int v = 0;
-
-                int i;
-                for (i = 0; i < faces.Count; i++)
-                {
-                    NodePtrArray nodes = faces[i].N;
-                    Node n0 = nodes[0];
-                    Node n1 = nodes[1];
-                    Node n2 = nodes[2];
-                    n0.GetX(out vectors[v]);
-                    n0.GetNormal(out vectors[v + 1]);
-                    n1.GetX(out vectors[v + 2]);
-                    n1.GetNormal(out vectors[v + 3]);
-                    n2.GetX(out vectors[v + 4]);
-                    n2.GetNormal(out vectors[v + 5]);
-                    v += 6;
-                }
-
-                shapeData.SetDynamicVertexNormalBuffer(device, vectors);
-            }
-            else
-            {
-                AlignedTetraArray tetras = softBody.Tetras;
-                int tetraCount = tetras.Count;
-
-                if (tetraCount != 0)
-                {
-                    Vector3[] vectors = new Vector3[tetraCount * 24];
-                    int v = 0;
-
-                    for (int i = 0; i < tetraCount; i++)
-                    {
-                        NodePtrArray nodes = tetras[i].Nodes;
-                        Vector3 v0 = nodes[0].X;
-                        Vector3 v1 = nodes[1].X;
-                        Vector3 v2 = nodes[2].X;
-                        Vector3 v3 = nodes[3].X;
-                        Vector3 v10 = v1 - v0;
-                        Vector3 v02 = v0 - v2;
-
-                        Vector3 normal = Vector3.Cross(v10, v02);
-                        vectors[v] = v0;
-                        vectors[v + 1] = normal;
-                        vectors[v + 2] = v1;
-                        vectors[v + 3] = normal;
-                        vectors[v + 4] = v2;
-                        vectors[v + 5] = normal;
-
-                        normal = Vector3.Cross(v10, v3 - v0);
-                        vectors[v + 6] = v0;
-                        vectors[v + 7] = normal;
-                        vectors[v + 8] = v1;
-                        vectors[v + 9] = normal;
-                        vectors[v + 10] = v3;
-                        vectors[v + 11] = normal;
-
-                        normal = Vector3.Cross(v2 - v1, v3 - v1);
-                        vectors[v + 12] = v1;
-                        vectors[v + 13] = normal;
-                        vectors[v + 14] = v2;
-                        vectors[v + 15] = normal;
-                        vectors[v + 16] = v3;
-                        vectors[v + 17] = normal;
-
-                        normal = Vector3.Cross(v02, v3 - v2);
-                        vectors[v + 18] = v2;
-                        vectors[v + 19] = normal;
-                        vectors[v + 20] = v0;
-                        vectors[v + 21] = normal;
-                        vectors[v + 22] = v3;
-                        vectors[v + 23] = normal;
-                        v += 24;
-                    }
-
-                    shapeData.SetDynamicVertexNormalBuffer(device, vectors);
-                }
-                else if (softBody.Links.Count != 0)
-                {
-                    AlignedLinkArray links = softBody.Links;
-                    int linkCount = links.Count;
-
-                    Vector3[] vectors = new Vector3[linkCount * 4];
-
-                    for (int i = 0; i < linkCount; i++)
-                    {
-                        NodePtrArray nodes = links[i].Nodes;
-                        nodes[0].GetX(out vectors[i * 4]);
-                        nodes[1].GetX(out vectors[i * 4 + 2]);
-                    }
-
-                    shapeData.PrimitiveType = PrimitiveType.LineList;
-                    shapeData.SetDynamicVertexBuffer(device, vectors);
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
+                shapeData.PrimitiveType = PrimitiveType.LineList;
             }
         }
+
         /*
         public void RenderSoftBodyTextured(SoftBody softBody)
         {

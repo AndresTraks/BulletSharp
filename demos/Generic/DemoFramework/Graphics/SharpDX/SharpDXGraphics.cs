@@ -565,7 +565,8 @@ namespace DemoFramework.SharpDX
             {
                 Demo.OnHandleInput();
                 Demo.OnUpdate();
-                Render();
+                if (Form.WindowState != FormWindowState.Minimized)
+                    Render();
             });
         }
 
