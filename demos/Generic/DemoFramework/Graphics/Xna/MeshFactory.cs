@@ -138,7 +138,6 @@ namespace DemoFramework.Xna
         GraphicsDevice device;
         Dictionary<CollisionShape, ShapeData> shapes = new Dictionary<CollisionShape, ShapeData>();
         List<CollisionShape> removeList = new List<CollisionShape>();
-        Effect planeShader;
 
         Microsoft.Xna.Framework.Vector3 groundColor = Color.Green.ToVector3();
         Microsoft.Xna.Framework.Vector3 activeColor = Color.Orange.ToVector3();
@@ -155,9 +154,6 @@ namespace DemoFramework.Xna
         public void Dispose()
         {
             shapes.Clear();
-
-            if (planeShader != null)
-                planeShader.Dispose();
         }
 
         ShapeData CreateShape(CollisionShape shape)

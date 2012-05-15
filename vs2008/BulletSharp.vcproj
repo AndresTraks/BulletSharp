@@ -337,7 +337,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release NoGfx|Win32"
+			Name="Release Generic|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
@@ -418,7 +418,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug NoGfx|Win32"
+			Name="Debug Generic|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
@@ -1371,7 +1371,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release NoGfx|Win32"
+					Name="Release Generic|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1379,7 +1379,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug NoGfx|Win32"
+					Name="Debug Generic|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"

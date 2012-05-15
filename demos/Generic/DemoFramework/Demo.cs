@@ -64,17 +64,17 @@ namespace DemoFramework
         {
             get
             {
-                if (World == null || World.DebugDrawer == null)
+                if (_world == null || _world.DebugDrawer == null)
                     return debugDrawMode;
                 else
-                    return World.DebugDrawer.DebugMode;
+                    return _world.DebugDrawer.DebugMode;
             }
             set
             {
-                if (World == null || World.DebugDrawer == null)
+                if (_world == null || _world.DebugDrawer == null)
                     debugDrawMode = value;
                 else
-                    World.DebugDrawer.DebugMode = value;
+                    _world.DebugDrawer.DebugMode = value;
             }
         }
 
@@ -86,21 +86,21 @@ namespace DemoFramework
                 if (!isDebugDrawEnabled)
                     return false;
 
-                if (World.DebugDrawer == null)
+                if (_world.DebugDrawer == null)
                 {
                     DebugDrawModes debugDrawMode = DebugDrawMode;
-                    World.DebugDrawer = Graphics.GetPhysicsDebugDrawer();
-                    World.DebugDrawer.DebugMode = debugDrawMode;
+                    _world.DebugDrawer = Graphics.GetPhysicsDebugDrawer();
+                    _world.DebugDrawer.DebugMode = debugDrawMode;
                 }
                 return true;
             }
             set
             {
-                if (value == true && World.DebugDrawer == null)
+                if (value == true && _world.DebugDrawer == null)
                 {
                     BulletSharp.DebugDrawModes debugDrawMode = DebugDrawMode;
-                    World.DebugDrawer = Graphics.GetPhysicsDebugDrawer();
-                    World.DebugDrawer.DebugMode = debugDrawMode;
+                    _world.DebugDrawer = Graphics.GetPhysicsDebugDrawer();
+                    _world.DebugDrawer.DebugMode = debugDrawMode;
                 }
                 isDebugDrawEnabled = value;
             }
@@ -146,7 +146,7 @@ namespace DemoFramework
 
         public void ExitPhysics()
         {
-            //removed/dispose constraints
+            //remove/dispose constraints
             int i;
             for (i = _world.NumConstraints - 1; i >= 0; i--)
             {
@@ -265,12 +265,12 @@ namespace DemoFramework
 
                 if (_input.MousePressed == MouseButtons.Right)
                 {
-                    if (World != null)
+                    if (_world != null)
                     {
                         Vector3 rayFrom = Freelook.Eye;
 
                         CollisionWorld.ClosestRayResultCallback rayCallback = new CollisionWorld.ClosestRayResultCallback(rayFrom, rayTo);
-                        World.RayTest(rayFrom, rayTo, rayCallback);
+                        _world.RayTest(rayFrom, rayTo, rayCallback);
                         if (rayCallback.HasHit)
                         {
                             RigidBody body = rayCallback.CollisionObject as RigidBody;
@@ -292,7 +292,7 @@ namespace DemoFramework
                                         dof6.AngularLowerLimit = Vector3.Zero;
                                         dof6.AngularUpperLimit = Vector3.Zero;
 
-                                        World.AddConstraint(dof6);
+                                        _world.AddConstraint(dof6);
                                         pickConstraint = dof6;
 
                                         dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 0);
@@ -312,7 +312,7 @@ namespace DemoFramework
                                     else
                                     {
                                         Point2PointConstraint p2p = new Point2PointConstraint(body, localPivot);
-                                        World.AddConstraint(p2p);
+                                        _world.AddConstraint(p2p);
                                         pickConstraint = p2p;
                                         p2p.Setting.ImpulseClamp = 30;
                                         //very weak constraint for picking
@@ -381,9 +381,9 @@ namespace DemoFramework
 
         void RemovePickingConstraint()
         {
-            if (pickConstraint != null && World != null)
+            if (pickConstraint != null && _world != null)
             {
-                World.RemoveConstraint(pickConstraint);
+                _world.RemoveConstraint(pickConstraint);
                 pickConstraint.Dispose();
                 pickConstraint = null;
                 pickedBody.ForceActivationState(ActivationState.ActiveTag);

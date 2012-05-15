@@ -42,9 +42,9 @@
     <Compile Include="BspLoader.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="BulletSharp, Version=2.79.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="BulletSharp, Version=2.80.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Release NoGfx\BulletSharp.dll</HintPath>
+      <HintPath>..\..\..\Release Generic\BulletSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Windows.Forms" />

@@ -40,8 +40,9 @@
     <Compile Include="BasicDemo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="BulletSharp">
-      <HintPath>..\..\..\Release NoGfx\BulletSharp.dll</HintPath>
+    <Reference Include="BulletSharp, Version=2.80.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Release Generic\BulletSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>

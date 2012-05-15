@@ -18,7 +18,7 @@ goto _src2
 rd /s /q src
 :_src2
 
-copy "..\Release NoGfx\BulletSharp.dll" bin\
+copy "..\Release Generic\BulletSharp.dll" bin\
 
 copy Generic\bin\Release\BasicDemo.exe bin\
 copy Generic\bin\Release\BenchmarkDemo.exe bin\
