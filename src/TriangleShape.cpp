@@ -48,6 +48,7 @@ void TriangleShape::GetPlaneEquation(int index, [Out] Vector3% planeNormal, [Out
 	Math::BtVector3ToVector3(planeSupportTemp, planeSupport);
 	
 	delete planeNormalTemp;
+	delete planeSupportTemp;
 }
 
 #pragma managed(push, off)

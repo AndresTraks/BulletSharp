@@ -19,7 +19,7 @@ void ConvexShape::BatchedUnitVectorGetSupportingVertexWithoutMargin(array<Vector
 	delete[] vectorsTemp;
 
 	supportVerticesOut = Math::Vector3ArrayToManaged(supportVerticesOutTemp, numVertices);
-	delete supportVerticesOutTemp;
+	delete[] supportVerticesOutTemp;
 }
 
 void ConvexShape::GetAabbNonVirtual(Matrix t, Vector3% aabbMin, Vector3% aabbMax)

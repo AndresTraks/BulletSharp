@@ -139,6 +139,7 @@ void CollisionShape::GetBoundingSphere(Vector3% center, btScalar% radius)
 	
 	center = Math::BtVector3ToVector3(centerTemp);
 	radius = radiusTemp;
+	delete centerTemp;
 }
 
 btScalar CollisionShape::GetContactBreakingThreshold(btScalar defaultContactThreshold)

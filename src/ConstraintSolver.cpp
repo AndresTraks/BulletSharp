@@ -94,9 +94,9 @@ btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<Per
 #endif
 		stackAlloc->UnmanagedPointer, dispatcher->UnmanagedPointer);
 
-	delete bodiesTemp;
-	delete manifoldsTemp;
-	delete constraintsTemp;
+	delete[] bodiesTemp;
+	delete[] manifoldsTemp;
+	delete[] constraintsTemp;
 
 	return ret;
 }

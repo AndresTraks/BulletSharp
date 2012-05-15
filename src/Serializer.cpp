@@ -94,6 +94,7 @@ void DefaultSerializer::WriteHeader([Out] String^% buffer)
 	unsigned char* bufferTemp = new unsigned char[12];
 	UnmanagedPointer->writeHeader(bufferTemp);
 	buffer = gcnew String(buffer);
+	delete[] bufferTemp;
 }
 
 btDefaultSerializer* DefaultSerializer::UnmanagedPointer::get()

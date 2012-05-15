@@ -66,7 +66,7 @@ GhostObject^ GhostObject::Upcast(CollisionObject^ colObj)
 {
 	btGhostObject* obj = btGhostObject::upcast(colObj->UnmanagedPointer);
 	
-	if (obj = 0)
+	if (obj == 0)
 		return nullptr;
 
 	return gcnew GhostObject(obj);

@@ -281,7 +281,9 @@ Vector3 Body::GetAngularVelocity(Vector3 rPos)
 	btVector3* velocityTemp = new btVector3;
 	Body_GetAngularVelocity(_body, rposTemp, velocityTemp);
 	delete rposTemp;
-	return Math::BtVector3ToVector3(velocityTemp);
+	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
+	delete velocityTemp;
+	return velocity;
 }
 
 void Body_GetVelocity(btSoftBody::Body* body, btVector3* rpos, btVector3* velocity)
@@ -294,7 +296,9 @@ Vector3 Body::Velocity(Vector3 rPos)
 	btVector3* velocityTemp = new btVector3;
 	Body_GetVelocity(_body, rposTemp, velocityTemp);
 	delete rposTemp;
-	return Math::BtVector3ToVector3(velocityTemp);
+	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
+	delete velocityTemp;
+	return velocity;
 }
 
 void Body_GetAngularVelocity(btSoftBody::Body* body, btVector3* velocity)
@@ -335,7 +339,9 @@ Vector3 Body::LinearVelocity::get()
 {
 	btVector3* velocityTemp = new btVector3;
 	Body_GetLinearVelocity(_body, velocityTemp);
-	return Math::BtVector3ToVector3(velocityTemp);
+	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
+	delete velocityTemp;
+	return velocity;
 }
 
 RigidBody^ Body::Rigid::get()
