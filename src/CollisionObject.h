@@ -14,8 +14,10 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
+	internal:
+		btCollisionObject* _unmanaged;
+
 	private:
-		btCollisionObject* _collisionObject;
 		bool _doesNotOwnObject;
 		
 		BroadphaseProxy^ _broadphaseHandle;

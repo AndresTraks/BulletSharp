@@ -4,10 +4,12 @@
 #include "Dispatcher.h"
 #include "OverlappingPairCache.h"
 #include "PersistentManifold.h"
-#include "PoolAllocator.h"
 #include "StackAlloc.h"
 #ifndef DISABLE_DEBUGDRAW
 #include "DebugDraw.h"
+#endif
+#ifndef DISABLE_UNCOMMON
+#include "PoolAllocator.h"
 #endif
 
 DispatcherInfo::DispatcherInfo(btDispatcherInfo* info)
@@ -238,10 +240,12 @@ bool Dispatcher::IsDisposed::get()
 	return (_dispatcher == NULL);
 }
 
+#ifndef DISABLE_UNCOMMON
 PoolAllocator^ Dispatcher::InternalManifoldPool::get()
 {
 	return gcnew PoolAllocator(_dispatcher->getInternalManifoldPool());
 }
+#endif
 
 btDispatcher* Dispatcher::UnmanagedPointer::get()
 {

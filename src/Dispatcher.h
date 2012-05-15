@@ -161,10 +161,12 @@ namespace BulletSharp
 			int get();
 		}
 
+#ifndef DISABLE_UNCOMMON
 		property PoolAllocator^ InternalManifoldPool
 		{
 			PoolAllocator^ get();
 		}
+#endif
 
 		property bool IsDisposed
 		{

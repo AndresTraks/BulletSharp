@@ -1989,6 +1989,9 @@ void AlignedScalarArray::default::set(int index, btScalar value)
 
 
 #ifndef DISABLE_SOFTBODY
+
+#define Unmanaged static_cast<btSoftBody::tSoftBodyArray*>(_unmanaged)
+
 BulletSharp::SoftBody::AlignedSoftBodyArray::AlignedSoftBodyArray(btSoftBody::tSoftBodyArray* softBodyArray)
 : AlignedObjectArray(softBodyArray)
 {
@@ -2001,18 +2004,17 @@ BulletSharp::SoftBody::AlignedSoftBodyArray::AlignedSoftBodyArray()
 
 void BulletSharp::SoftBody::AlignedSoftBodyArray::Add(SoftBody^ softBody)
 {
-	((btSoftBody::tSoftBodyArray*)_unmanaged)->push_back(softBody->UnmanagedPointer);
+	Unmanaged->push_back(softBody->UnmanagedPointer);
 }
 
 void BulletSharp::SoftBody::AlignedSoftBodyArray::Clear()
 {
-	((btSoftBody::tSoftBodyArray*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 bool BulletSharp::SoftBody::AlignedSoftBodyArray::Contains(SoftBody^ softBody)
 {
-	return ((btSoftBody::tSoftBodyArray*)_unmanaged)->findLinearSearch(softBody->UnmanagedPointer)
-		!= ((btSoftBody::tSoftBodyArray*)_unmanaged)->size();
+	return Unmanaged->findLinearSearch(softBody->UnmanagedPointer) != Unmanaged->size();
 }
 
 void BulletSharp::SoftBody::AlignedSoftBodyArray::CopyTo(array<SoftBody^>^ array, int arrayIndex)
@@ -2023,61 +2025,61 @@ void BulletSharp::SoftBody::AlignedSoftBodyArray::CopyTo(array<SoftBody^>^ array
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btSoftBody::tSoftBodyArray*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = (SoftBody^)CollisionObject::GetManaged((*((btSoftBody::tSoftBodyArray*)_unmanaged))[i]);
+		array[arrayIndex+i] = (SoftBody^)CollisionObject::GetManaged((*Unmanaged)[i]);
 	}
 }
 
 int BulletSharp::SoftBody::AlignedSoftBodyArray::IndexOf(SoftBody^ softBody)
 {
-	int i = ((btSoftBody::tSoftBodyArray*)_unmanaged)->findLinearSearch(softBody->UnmanagedPointer);
-	return i != ((btSoftBody::tSoftBodyArray*)_unmanaged)->size() ? i : -1;
+	int i = Unmanaged->findLinearSearch(softBody->UnmanagedPointer);
+	return i != Unmanaged->size() ? i : -1;
 }
 
 void BulletSharp::SoftBody::AlignedSoftBodyArray::PopBack()
 {
-	((btSoftBody::tSoftBodyArray*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 bool BulletSharp::SoftBody::AlignedSoftBodyArray::Remove(SoftBody^ softBody)
 {
-	int sizeBefore = ((btSoftBody::tSoftBodyArray*)_unmanaged)->size();
-	((btSoftBody::tSoftBodyArray*)_unmanaged)->remove(softBody->UnmanagedPointer);
-	return sizeBefore != ((btSoftBody::tSoftBodyArray*)_unmanaged)->size();
+	int sizeBefore = Unmanaged->size();
+	Unmanaged->remove(softBody->UnmanagedPointer);
+	return sizeBefore != Unmanaged->size();
 }
 
 int BulletSharp::SoftBody::AlignedSoftBodyArray::Capacity::get()
 {
-	return ((btSoftBody::tSoftBodyArray*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int BulletSharp::SoftBody::AlignedSoftBodyArray::Count::get()
 {
-	return ((btSoftBody::tSoftBodyArray*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 void BulletSharp::SoftBody::AlignedSoftBodyArray::Swap(int index0, int index1)
 {
-	((btSoftBody::tSoftBodyArray*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 BulletSharp::SoftBody::SoftBody^ BulletSharp::SoftBody::AlignedSoftBodyArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return (SoftBody^)CollisionObject::GetManaged((*((btSoftBody::tSoftBodyArray*)_unmanaged))[index]);
+	return (SoftBody^)CollisionObject::GetManaged((*Unmanaged)[index]);
 }
 void BulletSharp::SoftBody::AlignedSoftBodyArray::default::set(int index, SoftBody^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*((btSoftBody::tSoftBodyArray*)_unmanaged))[index] = GetUnmanagedNullable(value);
+	(*Unmanaged)[index] = (btSoftBody*)GetUnmanagedNullableNew(value);
 }
 
 

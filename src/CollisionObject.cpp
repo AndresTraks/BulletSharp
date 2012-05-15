@@ -18,7 +18,7 @@ CollisionObject::CollisionObject(btCollisionObject* collisionObject)
 
 CollisionObject::CollisionObject()
 {
-	UnmanagedPointer = new btCollisionObject();
+	CollisionObject(new btCollisionObject());
 }
 
 CollisionObject::~CollisionObject()
@@ -35,61 +35,61 @@ CollisionObject::!CollisionObject()
 
 	if (_doesNotOwnObject == false)
 	{
-		void* userObj = _collisionObject->getUserPointer();
+		void* userObj = _unmanaged->getUserPointer();
 		if (userObj)
 			VoidPtrToGCHandle(userObj).Free();
-		delete _collisionObject;
+		delete _unmanaged;
 	}
-	_collisionObject = NULL;
+	_unmanaged = NULL;
 	
 	OnDisposed(this, nullptr);
 }
 
 bool CollisionObject::IsDisposed::get()
 {
-	return (_collisionObject == NULL);
+	return (_unmanaged == NULL);
 }
 
 void CollisionObject::Activate()
 {
-	_collisionObject->activate();
+	_unmanaged->activate();
 }
 
 void CollisionObject::Activate(bool forceActivation)
 {
-	_collisionObject->activate(forceActivation);
+	_unmanaged->activate(forceActivation);
 }
 
 bool CollisionObject::CheckCollideWith(CollisionObject^ collisionObject)
 {
-	return _collisionObject->checkCollideWith(collisionObject->UnmanagedPointer);
+	return _unmanaged->checkCollideWith(collisionObject->UnmanagedPointer);
 }
 
 void CollisionObject::ForceActivationState(BulletSharp::ActivationState newState)
 {
-	_collisionObject->forceActivationState((int)newState);
+	_unmanaged->forceActivationState((int)newState);
 }
 
 void CollisionObject::GetWorldTransform([Out] Matrix% outTransform)
 {
-	BtTransformToMatrixFast(_collisionObject->getWorldTransform(), outTransform);
+	BtTransformToMatrixFast(_unmanaged->getWorldTransform(), outTransform);
 }
 
 #ifndef DISABLE_SERIALIZE
 int CollisionObject::CalculateSerializeBufferSize()
 {
-	return _collisionObject->calculateSerializeBufferSize();
+	return _unmanaged->calculateSerializeBufferSize();
 }
 
 String^ CollisionObject::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
 {
-	const char* name = UnmanagedPointer->serialize(dataBuffer.ToPointer(), serializer->UnmanagedPointer);
+	const char* name = _unmanaged->serialize(dataBuffer.ToPointer(), serializer->UnmanagedPointer);
 	return gcnew String(name);
 }
 
 void CollisionObject::SerializeSingleObject(BulletSharp::Serializer^ serializer)
 {
-	UnmanagedPointer->serializeSingleObject(serializer->UnmanagedPointer);
+	_unmanaged->serializeSingleObject(serializer->UnmanagedPointer);
 }
 #endif
 
@@ -129,205 +129,205 @@ CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
 
 BulletSharp::ActivationState CollisionObject::ActivationState::get()
 {
-	return (BulletSharp::ActivationState)_collisionObject->getActivationState();
+	return (BulletSharp::ActivationState)_unmanaged->getActivationState();
 }
 void CollisionObject::ActivationState::set(BulletSharp::ActivationState value)
 {
-	_collisionObject->setActivationState((int)value);
+	_unmanaged->setActivationState((int)value);
 }
 
 Vector3 CollisionObject::AnisotropicFriction::get()
 {
-	return Math::BtVector3ToVector3(&_collisionObject->getAnisotropicFriction());
+	return Math::BtVector3ToVector3(&_unmanaged->getAnisotropicFriction());
 }
 void CollisionObject::AnisotropicFriction::set(Vector3 value)
 {
 	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
-	_collisionObject->setAnisotropicFriction(*valueTemp);
+	_unmanaged->setAnisotropicFriction(*valueTemp);
 	delete valueTemp;
 }
 
 BroadphaseProxy^ CollisionObject::BroadphaseHandle::get()
 {
-	btBroadphaseProxy* broadphaseHandle = _collisionObject->getBroadphaseHandle();
+	btBroadphaseProxy* broadphaseHandle = _unmanaged->getBroadphaseHandle();
 	ReturnCachedObject(BroadphaseProxy, _broadphaseHandle, broadphaseHandle);
 }
 
 btScalar CollisionObject::CcdMotionThreshold::get()
 {
-	return _collisionObject->getCcdMotionThreshold();
+	return _unmanaged->getCcdMotionThreshold();
 }
 void CollisionObject::CcdMotionThreshold::set(btScalar value)
 {
-	_collisionObject->setCcdMotionThreshold(value);
+	_unmanaged->setCcdMotionThreshold(value);
 }
 
 btScalar CollisionObject::CcdSquareMotionThreshold::get()
 {
-	return _collisionObject->getCcdSquareMotionThreshold();
+	return _unmanaged->getCcdSquareMotionThreshold();
 }
 
 btScalar CollisionObject::CcdSweptSphereRadius::get()
 {
-	return _collisionObject->getCcdSweptSphereRadius();
+	return _unmanaged->getCcdSweptSphereRadius();
 }
 void CollisionObject::CcdSweptSphereRadius::set(btScalar value)
 {
-	_collisionObject->setCcdSweptSphereRadius(value);
+	_unmanaged->setCcdSweptSphereRadius(value);
 }
 
 CollisionFlags CollisionObject::CollisionFlags::get()
 {
-	return (BulletSharp::CollisionFlags)_collisionObject->getCollisionFlags();
+	return (BulletSharp::CollisionFlags)_unmanaged->getCollisionFlags();
 }
 void CollisionObject::CollisionFlags::set(BulletSharp::CollisionFlags value)
 {
-	_collisionObject->setCollisionFlags((int)value);
+	_unmanaged->setCollisionFlags((int)value);
 }
 
 CollisionShape^ CollisionObject::CollisionShape::get()
 {
-	return BulletSharp::CollisionShape::GetManaged(_collisionObject->getCollisionShape());
+	return BulletSharp::CollisionShape::GetManaged(_unmanaged->getCollisionShape());
 }
 void CollisionObject::CollisionShape::set(BulletSharp::CollisionShape^ value)
 {
-	_collisionObject->setCollisionShape(value->UnmanagedPointer);
+	_unmanaged->setCollisionShape(value->UnmanagedPointer);
 }
 
 int CollisionObject::CompanionId::get()
 {
-	return _collisionObject->getCompanionId();
+	return _unmanaged->getCompanionId();
 }
 void CollisionObject::CompanionId::set(int value)
 {
-	_collisionObject->setCompanionId(value);
+	_unmanaged->setCompanionId(value);
 }
 
 btScalar CollisionObject::ContactProcessingThreshold::get()
 {
-	return _collisionObject->getContactProcessingThreshold();
+	return _unmanaged->getContactProcessingThreshold();
 }
 void CollisionObject::ContactProcessingThreshold::set(btScalar value)
 {
-	_collisionObject->setContactProcessingThreshold(value);
+	_unmanaged->setContactProcessingThreshold(value);
 }
 
 btScalar CollisionObject::DeactivationTime::get()
 {
-	return _collisionObject->getDeactivationTime();
+	return _unmanaged->getDeactivationTime();
 }
 void CollisionObject::DeactivationTime::set(btScalar value)
 {
-	_collisionObject->setDeactivationTime(value);
+	_unmanaged->setDeactivationTime(value);
 }
 
 btScalar CollisionObject::Friction::get()
 {
-	return _collisionObject->getFriction();
+	return _unmanaged->getFriction();
 }
 void CollisionObject::Friction::set(btScalar value)
 {
-	_collisionObject->setFriction(value);
+	_unmanaged->setFriction(value);
 }
 
 bool CollisionObject::HasAnisotropicFriction::get()
 {
-	return _collisionObject->hasAnisotropicFriction();
+	return _unmanaged->hasAnisotropicFriction();
 }
 
 bool CollisionObject::HasContactResponse::get()
 {
-	return _collisionObject->hasContactResponse();
+	return _unmanaged->hasContactResponse();
 }
 
 btScalar CollisionObject::HitFraction::get()
 {
-	return _collisionObject->getHitFraction();
+	return _unmanaged->getHitFraction();
 }
 void CollisionObject::HitFraction::set(btScalar value)
 {
-	_collisionObject->setHitFraction(value);
+	_unmanaged->setHitFraction(value);
 }
 
 Vector3 CollisionObject::InterpolationAngularVelocity::get()
 {
-	return Math::BtVector3ToVector3(&_collisionObject->getInterpolationAngularVelocity());
+	return Math::BtVector3ToVector3(&_unmanaged->getInterpolationAngularVelocity());
 }
 void CollisionObject::InterpolationAngularVelocity::set(Vector3 value)
 {
 	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
-	_collisionObject->setInterpolationAngularVelocity(*valueTemp);
+	_unmanaged->setInterpolationAngularVelocity(*valueTemp);
 	delete valueTemp;
 }
 
 Vector3 CollisionObject::InterpolationLinearVelocity::get()
 {
-	return Math::BtVector3ToVector3(&_collisionObject->getInterpolationLinearVelocity());
+	return Math::BtVector3ToVector3(&_unmanaged->getInterpolationLinearVelocity());
 }
 void CollisionObject::InterpolationLinearVelocity::set(Vector3 value)
 {
 	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
-	_collisionObject->setInterpolationLinearVelocity(*valueTemp);
+	_unmanaged->setInterpolationLinearVelocity(*valueTemp);
 	delete valueTemp;
 }
 
 Matrix CollisionObject::InterpolationWorldTransform::get()
 {
-	return Math::BtTransformToMatrix(&_collisionObject->getInterpolationWorldTransform());
+	return Math::BtTransformToMatrix(&_unmanaged->getInterpolationWorldTransform());
 }
 void CollisionObject::InterpolationWorldTransform::set(Matrix value)
 {
 	btTransform* valueTemp = Math::MatrixToBtTransform(value);
-	_collisionObject->setInterpolationWorldTransform(*valueTemp);
+	_unmanaged->setInterpolationWorldTransform(*valueTemp);
 	delete valueTemp;
 }
 
 bool CollisionObject::IsActive::get()
 {
-	return _collisionObject->isActive();
+	return _unmanaged->isActive();
 }
 
 bool CollisionObject::IsKinematicObject::get()
 {
-	return _collisionObject->isKinematicObject();
+	return _unmanaged->isKinematicObject();
 }
 
 int CollisionObject::IslandTag::get()
 {
-	return _collisionObject->getIslandTag();
+	return _unmanaged->getIslandTag();
 }
 void CollisionObject::IslandTag::set(int value)
 {
-	_collisionObject->setIslandTag(value);
+	_unmanaged->setIslandTag(value);
 }
 
 bool CollisionObject::IsStaticObject::get()
 {
-	return _collisionObject->isStaticObject();
+	return _unmanaged->isStaticObject();
 }
 
 bool CollisionObject::IsStaticOrKinematicObject::get()
 {
-	return _collisionObject->isStaticOrKinematicObject();
+	return _unmanaged->isStaticOrKinematicObject();
 }
 
 bool CollisionObject::MergesSimulationIslands::get()
 {
-	return _collisionObject->mergesSimulationIslands();
+	return _unmanaged->mergesSimulationIslands();
 }
 
 btScalar CollisionObject::Restitution::get()
 {
-	return _collisionObject->getRestitution();
+	return _unmanaged->getRestitution();
 }
 void CollisionObject::Restitution::set(btScalar value)
 {
-	_collisionObject->setRestitution(value);
+	_unmanaged->setRestitution(value);
 }
 
 CollisionShape^ CollisionObject::RootCollisionShape::get()
 {
-	return BulletSharp::CollisionShape::GetManaged(_collisionObject->getRootCollisionShape());
+	return BulletSharp::CollisionShape::GetManaged(_unmanaged->getRootCollisionShape());
 }
 
 Object^ CollisionObject::UserObject::get()
@@ -341,27 +341,27 @@ void CollisionObject::UserObject::set(Object^ value)
 
 Matrix CollisionObject::WorldTransform::get()
 {
-	return Math::BtTransformToMatrix(&_collisionObject->getWorldTransform());
+	return Math::BtTransformToMatrix(&_unmanaged->getWorldTransform());
 }
 void CollisionObject::WorldTransform::set(Matrix value)
 {
 	btTransform* valueTemp = Math::MatrixToBtTransform(value);
-	_collisionObject->setWorldTransform(*valueTemp);
+	_unmanaged->setWorldTransform(*valueTemp);
 	delete valueTemp;
 }
 
 btCollisionObject* CollisionObject::UnmanagedPointer::get()
 {
-	return _collisionObject;
+	return _unmanaged;
 }
 void CollisionObject::UnmanagedPointer::set(btCollisionObject* value)
 {
-	_collisionObject = value;
+	_unmanaged = value;
 
-	if (_collisionObject->getUserPointer() == 0)
+	if (_unmanaged->getUserPointer() == 0)
 	{
 		GCHandle handle = GCHandle::Alloc(this);
 		void* obj = GCHandleToVoidPtr(handle);
-		_collisionObject->setUserPointer(obj);
+		_unmanaged->setUserPointer(obj);
 	}
 }
