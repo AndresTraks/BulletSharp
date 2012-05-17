@@ -10,9 +10,21 @@ namespace DemoFramework
     {
         protected List<PositionColored> lines = new List<PositionColored>();
 
+        DebugDrawModes _debugMode;
+        public override DebugDrawModes DebugMode
+        {
+            get { return _debugMode; }
+            set { _debugMode = value; }
+        }
+
         public virtual int colorToInt(ref Color c)
         {
             return c.R + (c.G << 8) + (c.B << 16);
+        }
+
+        public override void Draw3dText(Vector3 location, string textString)
+        {
+            throw new NotImplementedException();
         }
 
         public override void DrawLine(Vector3 from, Vector3 to, Color fromColor, Color toColor)
@@ -139,6 +151,19 @@ namespace DemoFramework
                 DrawLine(center, next, color);
         }
 
+        public override void DrawContactPoint(Vector3 pointOnB, Vector3 normalOnB, float distance, int lifeTime, Color color)
+        {
+            int intColor = colorToInt(ref color);
+            Vector3 to = pointOnB + normalOnB * 1; // distance
+            lines.Add(new PositionColored(ref pointOnB, intColor));
+            lines.Add(new PositionColored(ref to, intColor));
+        }
+
         public abstract void DrawDebugWorld(DynamicsWorld world);
+
+        public override void ReportErrorWarning(string warningString)
+        {
+            throw new NotImplementedException();
+        }
     }
 };

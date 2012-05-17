@@ -18,7 +18,6 @@ DebugDraw::DebugDraw(DebugDrawWrapper* debugDraw)
 
 IDebugDraw^ DebugDraw::GetManaged(btIDebugDraw* debugDraw)
 {
-	// Compare to 0 before checking the table here since debugDraw is normally 0.
 	if (debugDraw == 0)
 		return nullptr;
 
@@ -44,19 +43,6 @@ DebugDrawWrapper* DebugDraw::GetUnmanaged(IDebugDraw^ debugDraw)
 	ObjectTable::Add(debugDraw, wrapper);
 
 	return wrapper;
-}
-
-void DebugDraw::Draw3dText(Vector3 location, String^ textString)
-{
-/*
-	btVector3* locationTemp = Math::Vector3ToBtVector3(location);
-	const char* textStringTemp = StringConv::ManagedToUnmanaged(textString);
-	
-	_unmanaged->baseDraw3dText(*locationTemp, textStringTemp);
-	
-	delete locationTemp;
-	StringConv::FreeUnmanagedString(textStringTemp);
-*/
 }
 
 void DebugDraw::DrawAabb(Vector3 from, Vector3 to, BtColor color)
@@ -152,21 +138,6 @@ void DebugDraw::DrawCone(btScalar radius, btScalar height, int upAxis, Matrix tr
 
 	delete transformTemp;
 	delete colorTemp;
-}
-
-void DebugDraw::DrawContactPoint(Vector3 pointOnB, Vector3 normalOnB, btScalar distance, int lifeTime, BtColor color)
-{
-/*
-	btVector3* pointOnBTemp = Math::Vector3ToBtVector3(pointOnB);
-	btVector3* normalOnBTemp = Math::Vector3ToBtVector3(normalOnB);
-	btVector3* colorTemp = BtColorToBtVector(color);
-
-	_unmanaged->baseDrawContactPoint(*pointOnBTemp, *normalOnBTemp, distance, lifeTime, *colorTemp);
-
-	delete pointOnBTemp;
-	delete normalOnBTemp;
-	delete colorTemp;
-*/
 }
 
 void DebugDraw::DrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, Matrix transform, BtColor color)
@@ -301,26 +272,6 @@ void DebugDraw::DrawTriangle(Vector3 v0, Vector3 v1, Vector3 v2, Vector3, Vector
 	delete v2Temp;
 	delete colorTemp;
 	delete none;
-}
-
-void DebugDraw::ReportErrorWarning(String^ warningString)
-{
-/*
-	const char* warningStringTemp = StringConv::ManagedToUnmanaged(warningString);
-
-	_unmanaged->baseReportErrorWarning(warningStringTemp);
-
-	StringConv::FreeUnmanagedString(warningStringTemp);
-*/
-}
-
-DebugDrawModes DebugDraw::DebugMode::get()
-{
-	return m_debugMode;
-}
-void DebugDraw::DebugMode::set(DebugDrawModes value)
-{
-	m_debugMode = value;
 }
 
 
@@ -463,13 +414,6 @@ void DebugDrawWrapper::drawTriangle(const btVector3& v0, const btVector3& v1, co
 		Math::BtVector3ToVector3(&n0), Math::BtVector3ToVector3(&n1), Math::BtVector3ToVector3(&n2), BtVectorToBtColor(color), alpha);
 }
 
-/*
-void DebugDrawWrapper::baseDraw3dText(const btVector3& location,const char* textString)
-{
-	btIDebugDraw::draw3dText(location, textString);
-}
-*/
-
 void DebugDrawWrapper::baseDrawAabb(const btVector3& from, const btVector3& to, const btVector3& color)
 {
 	btIDebugDraw::drawAabb(from, to, color);
@@ -508,13 +452,6 @@ void DebugDrawWrapper::baseDrawCone(btScalar radius, btScalar height, int upAxis
 {
 	btIDebugDraw::drawCone(radius, height, upAxis, transform, color);
 }
-
-/*
-void DebugDrawWrapper::baseDrawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color)
-{
-	btIDebugDraw::drawContactPoint(PointOnB, normalOnB, distance, lifeTime, color);
-}
-*/
 
 void DebugDrawWrapper::baseDrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, const btTransform& transform, const btVector3& color)
 {
@@ -573,13 +510,6 @@ void DebugDrawWrapper::reportErrorWarning(const char* warningString)
 {
 	_debugDraw->ReportErrorWarning(StringConv::UnmanagedToManaged(warningString));
 }
-
-/*
-void DebugDrawWrapper::baseReportErrorWarning(const char* warningString)
-{
-	btIDebugDraw::reportErrorWarning(warningString);
-}
-*/
 
 void DebugDrawWrapper::setDebugMode(int debugMode)
 {

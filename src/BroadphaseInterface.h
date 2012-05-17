@@ -11,13 +11,19 @@ namespace BulletSharp
 	public ref class BroadphaseAabbCallback
 	{
 	protected:
-		btBroadphaseAabbCallback* _aabbCallback;
+		btBroadphaseAabbCallback* _unmanaged;
 
 	internal:
 		BroadphaseAabbCallback(btBroadphaseAabbCallback* callback);
 
 	public:
-		bool Process(BroadphaseProxy^ proxy);
+		BroadphaseAabbCallback();
+		virtual bool Process(BroadphaseProxy^ proxy) = 0;
+
+	public:
+		~BroadphaseAabbCallback();
+	protected:
+		!BroadphaseAabbCallback();
 
 	internal:
 		property btBroadphaseAabbCallback* UnmanagedPointer
@@ -25,6 +31,17 @@ namespace BulletSharp
 			virtual btBroadphaseAabbCallback* get();
 			void set(btBroadphaseAabbCallback* value);
 		}
+	};
+
+	struct BroadphaseAabbCallbackWrapper : public btBroadphaseAabbCallback
+	{
+	private:
+		gcroot<BroadphaseAabbCallback^> _aabbCallback;
+
+	public:
+		BroadphaseAabbCallbackWrapper(BroadphaseAabbCallback^ aabbCallback);
+
+		virtual bool process(const btBroadphaseProxy* proxy);
 	};
 
 	public ref class BroadphaseRayCallback : BroadphaseAabbCallback

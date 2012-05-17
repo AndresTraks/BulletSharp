@@ -7,21 +7,43 @@
 
 BroadphaseAabbCallback::BroadphaseAabbCallback(btBroadphaseAabbCallback* callback)
 {
-	_aabbCallback = callback;
+	_unmanaged = callback;
 }
 
-bool BroadphaseAabbCallback::Process(BroadphaseProxy^ proxy)
+BroadphaseAabbCallback::BroadphaseAabbCallback()
 {
-	return UnmanagedPointer->process(proxy->UnmanagedPointer);
+	_unmanaged = new BroadphaseAabbCallbackWrapper(this);
+}
+
+BroadphaseAabbCallback::~BroadphaseAabbCallback()
+{
+	this->!BroadphaseAabbCallback();
+}
+
+BroadphaseAabbCallback::!BroadphaseAabbCallback()
+{
+	delete _unmanaged;
+	_unmanaged = 0;
 }
 
 btBroadphaseAabbCallback* BroadphaseAabbCallback::UnmanagedPointer::get()
 {
-	return _aabbCallback;
+	return _unmanaged;
 }
 void BroadphaseAabbCallback::UnmanagedPointer::set(btBroadphaseAabbCallback* value)
 {
-	_aabbCallback = value;
+	_unmanaged = value;
+}
+
+
+BroadphaseAabbCallbackWrapper::BroadphaseAabbCallbackWrapper(BroadphaseAabbCallback^ aabbCallback)
+{
+	_aabbCallback = aabbCallback;
+}
+
+bool BroadphaseAabbCallbackWrapper::process(const btBroadphaseProxy* proxy)
+{
+	return _aabbCallback->Process(BroadphaseProxy::GetManaged((btBroadphaseProxy*)proxy));
 }
 
 

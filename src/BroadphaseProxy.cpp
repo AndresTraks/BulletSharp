@@ -70,14 +70,24 @@ BroadphaseProxy^ BroadphaseProxy::GetManaged(btBroadphaseProxy* broadphaseProxy)
 #ifndef DISABLE_DBVT
 	btDbvtProxy* dbvtProxy = static_cast<btDbvtProxy*>(broadphaseProxy);
 	if (dbvtProxy)
-		return gcnew DbvtProxy(dbvtProxy);
+	{
+		proxy = gcnew DbvtProxy(dbvtProxy);
+		proxy->_doesNotOwnObject = true;
+		return proxy;
+	}
 #endif
 
 	btSimpleBroadphaseProxy* simpleProxy = static_cast<btSimpleBroadphaseProxy*>(broadphaseProxy);
 	if (simpleProxy)
-		return gcnew SimpleBroadphaseProxy(simpleProxy);
+	{
+		proxy = gcnew SimpleBroadphaseProxy(simpleProxy);
+		proxy->_doesNotOwnObject = true;
+		return proxy;
+	}
 
-	return gcnew BroadphaseProxy(broadphaseProxy);
+	proxy = gcnew BroadphaseProxy(broadphaseProxy);
+	proxy->_doesNotOwnObject = true;
+	return proxy;
 }
 
 Vector3 BroadphaseProxy::AabbMin::get()
