@@ -2,7 +2,6 @@
 
 #ifdef __OPENCL_CL_H
 
-#include "OpenCL.h"
 #include "StringConv.h"
 
 IntPtr CL::CreateCommandQueue(IntPtr context, IntPtr device, CLCommandQueueProperties properties, [Out]cl_int% errorCode)

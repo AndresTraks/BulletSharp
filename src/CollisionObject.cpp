@@ -18,7 +18,7 @@ CollisionObject::CollisionObject(btCollisionObject* collisionObject)
 
 CollisionObject::CollisionObject()
 {
-	CollisionObject(new btCollisionObject());
+	UnmanagedPointer = new btCollisionObject();
 }
 
 CollisionObject::~CollisionObject()
