@@ -800,7 +800,7 @@ BulletSharp::Dispatcher^ CollisionWorld::Dispatcher::get()
 
 DispatcherInfo^ CollisionWorld::DispatchInfo::get()
 {
-	return gcnew DispatcherInfo(&_world->getDispatchInfo());;
+	return gcnew DispatcherInfo(&_world->getDispatchInfo());
 }
 
 bool CollisionWorld::ForceUpdateAllAabbs::get()

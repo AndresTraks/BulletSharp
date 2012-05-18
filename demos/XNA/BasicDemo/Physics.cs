@@ -1,6 +1,7 @@
 ﻿using BulletSharp;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace BasicDemo
 {
@@ -111,10 +112,30 @@ namespace BasicDemo
             GraphicsDevice device;
             VertexDeclaration vertexDeclaration;
 
+            DebugDrawModes _debugMode;
+            public override DebugDrawModes DebugMode
+            {
+                get { return _debugMode; }
+                set { _debugMode = value; }
+            }
+
             public PhysicsDebugDraw(GraphicsDevice device, BasicEffect effect)
             {
                 this.device = device;
                 vertexDeclaration = new VertexDeclaration(device, VertexPositionColor.VertexElements);
+            }
+
+            public override void Draw3dText(Vector3 location, string textString)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override void DrawContactPoint(Vector3 pointOnB, Vector3 normalOnB, float distance, int lifeTime, Color color)
+            {
+                VertexPositionColor[] vertices = new VertexPositionColor[2];
+                vertices[0] = new VertexPositionColor(pointOnB, color);
+                vertices[1] = new VertexPositionColor(pointOnB + normalOnB, color);
+                device.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.LineList, vertices, 0, 1);
             }
 
             public override void DrawLine(Vector3 from, Vector3 to, Color color)
@@ -129,6 +150,11 @@ namespace BasicDemo
             {
                 device.VertexDeclaration = vertexDeclaration;
                 world.DebugDrawWorld();
+            }
+
+            public override void ReportErrorWarning(string warningString)
+            {
+                throw new NotImplementedException();
             }
         }
     }

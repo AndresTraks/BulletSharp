@@ -531,7 +531,7 @@ namespace DemoFramework
 
                 renderView.Dispose();
                 depthView.Dispose();
-                _swapChain.ResizeBuffers(_swapChain.Description.BufferCount, Width, Height, _swapChain.Description.ModeDescription.Format, (int)_swapChain.Description.Flags);
+                _swapChain.ResizeBuffers(_swapChain.Description.BufferCount, Width, Height, _swapChain.Description.ModeDescription.Format, _swapChain.Description.Flags);
 
                 CreateBuffers();
 

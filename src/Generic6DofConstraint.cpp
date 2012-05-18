@@ -303,7 +303,7 @@ btScalar TranslationalLimitMotor::Damping::get()
 }
 void TranslationalLimitMotor::Damping::set(btScalar value)
 {
-	motor->m_damping = value;;
+	motor->m_damping = value;
 }
 
 BoolArray^ TranslationalLimitMotor::EnableMotor::get()
@@ -317,7 +317,7 @@ btScalar TranslationalLimitMotor::LimitSoftness::get()
 }
 void TranslationalLimitMotor::LimitSoftness::set(btScalar value)
 {
-	motor->m_limitSoftness = value;;
+	motor->m_limitSoftness = value;
 }
 
 Vector3 TranslationalLimitMotor::LowerLimit::get()
@@ -347,13 +347,13 @@ void TranslationalLimitMotor::NormalCFM::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &motor->m_normalCFM);
 }
 
-btScalar TranslationalLimitMotor::Resitution::get()
+btScalar TranslationalLimitMotor::Restitution::get()
 {
 	return motor->m_restitution;
 }
-void TranslationalLimitMotor::Resitution::set(btScalar value)
+void TranslationalLimitMotor::Restitution::set(btScalar value)
 {
-	motor->m_restitution = value;;
+	motor->m_restitution = value;
 }
 
 Vector3 TranslationalLimitMotor::StopCFM::get()

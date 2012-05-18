@@ -6,7 +6,7 @@ namespace BulletSharp
 {
 	class DebugDrawWrapper;
 
-	public ref class DebugDraw : public IDebugDraw
+	public ref class DebugDraw abstract : public IDebugDraw
 	{
 	internal:
 		DebugDrawWrapper* _unmanaged;

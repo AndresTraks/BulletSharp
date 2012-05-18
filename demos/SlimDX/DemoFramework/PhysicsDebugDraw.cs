@@ -10,9 +10,30 @@ namespace DemoFramework
     {
         protected Device device;
 
+        DebugDrawModes _debugMode;
+        public override DebugDrawModes DebugMode
+        {
+            get { return _debugMode; }
+            set { _debugMode = value; }
+        }
+
         public PhysicsDebugDraw(Device device)
         {
             this.device = device;
+        }
+
+        public override void Draw3dText(Vector3 location, string textString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void DrawContactPoint(Vector3 pointOnB, Vector3 normalOnB, float distance, int lifeTime, Color4 color)
+        {
+            int intColor = color.ToArgb();
+            PositionColored[] vertices = new PositionColored[2];
+            vertices[0] = new PositionColored(pointOnB, intColor);
+            vertices[1] = new PositionColored(pointOnB + normalOnB, intColor);
+            device.DrawUserPrimitives(PrimitiveType.LineList, 1, vertices);
         }
 
         public override void DrawLine(Vector3 from, Vector3 to, Color4 fromColor, Color4 toColor)
@@ -178,6 +199,11 @@ namespace DemoFramework
             device.VertexFormat = PositionColored.FVF;
             world.DebugDrawWorld();
             device.SetRenderState(RenderState.Lighting, true);
+        }
+
+        public override void ReportErrorWarning(string warningString)
+        {
+            throw new NotImplementedException();
         }
     }
 

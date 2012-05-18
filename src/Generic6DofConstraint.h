@@ -214,7 +214,7 @@ namespace BulletSharp
 			void set(Vector3 value);
 		}
 
-		property btScalar Resitution
+		property btScalar Restitution
 		{
 			btScalar get();
 			void set(btScalar value);

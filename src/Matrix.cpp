@@ -686,7 +686,7 @@ namespace BulletSharp
 		result.M34 = 0.0f;
 		result.M41 = -Vector3::Dot(xaxis, eye);
 		result.M42 = -Vector3::Dot(yaxis, eye);
-		result.M43 = -Vector3::Dot(zaxis, eye);;
+		result.M43 = -Vector3::Dot(zaxis, eye);
 		result.M44 = 1.0f;
 
 		return result;
