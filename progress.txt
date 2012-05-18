@@ -5,23 +5,25 @@ BulletSharp wrapper progress
 x won't implement
 
 
-
 Collision/BroadphaseCollision
 
 x MultiSapBroadphase (experimental)
 0 QuantizedBvh
 
 
+Collision/CollisionDispatch
+x SingleContactCallback (use CollisionWorld.ContactTest)
+x SingleRayCallback (use CollisionWorld.RayTest)
+x SingleSweepCallback (use CollisionWorld.ConvexSweepTest)
+x SoftSingleRayCallback (use SoftRigidDynamicsWorld.RayTest)
+
 
 Collision/Gimpact
-
 0 BoxCollision
 0 GImpactCollisionAlgorithm
 
 
-
 Collision/NarrowPhaseCollision
-
 0 DiscreteCollisionDetectorInterface
 x GjkEpa2 (internal)
 0 MinkowskiPenetrationDepthSolver
@@ -33,27 +35,20 @@ X PolyhedralContactClipping (internal)
 0 VoronoiSimplexSolver
 
 
-
 Dynamics/ConstraintSolver
-
 0 ContactConstraint (abstract?)
 x JacobianEntry (internal)
 x SolverBody (obsolete)
 x SolverConstraint (internal)
 
 
-
 Dynamics/Dynamics
-
 x SimpleDynamicsWorld (for unit-testing)
 
 
-
 LinearMath
-
 X ConvexHullComputer (internal)
 - GrahamScan2DConvexHull
-
 
 
 SoftBody

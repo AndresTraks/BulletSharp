@@ -4,16 +4,18 @@
 
 namespace BulletSharp
 {
+	struct BroadphaseAabbCallbackWrapper;
+	struct BroadphaseRayCallbackWrapper;
+
 	ref class BroadphaseProxy;
 	ref class Dispatcher;
 	ref class OverlappingPairCache;
+	ref class UIntArray;
 
-	public ref class BroadphaseAabbCallback
+	public ref class BroadphaseAabbCallback abstract
 	{
-	protected:
-		btBroadphaseAabbCallback* _unmanaged;
-
 	internal:
+		btBroadphaseAabbCallback* _unmanaged;
 		BroadphaseAabbCallback(btBroadphaseAabbCallback* callback);
 
 	public:
@@ -35,7 +37,7 @@ namespace BulletSharp
 
 	struct BroadphaseAabbCallbackWrapper : public btBroadphaseAabbCallback
 	{
-	private:
+	protected:
 		gcroot<BroadphaseAabbCallback^> _aabbCallback;
 
 	public:
@@ -44,15 +46,47 @@ namespace BulletSharp
 		virtual bool process(const btBroadphaseProxy* proxy);
 	};
 
-	public ref class BroadphaseRayCallback : BroadphaseAabbCallback
+	public ref class BroadphaseRayCallback abstract : BroadphaseAabbCallback
 	{
 	internal:
-		BroadphaseRayCallback(btBroadphaseRayCallback* callback);
+		BroadphaseRayCallback(BroadphaseRayCallbackWrapper* callback);
 
+	public:
+		BroadphaseRayCallback();
+
+		property btScalar LambdaMax
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property Vector3 RayDirectionInverse
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property UIntArray^ Signs
+		{
+			UIntArray^ get();
+		}
+
+	internal:
 		property btBroadphaseRayCallback* UnmanagedPointer
 		{
 			btBroadphaseRayCallback* get() new;
 		}
+	};
+
+	struct BroadphaseRayCallbackWrapper : public btBroadphaseRayCallback
+	{
+	protected:
+		gcroot<BroadphaseRayCallback^> _rayCallback;
+
+	public:
+		BroadphaseRayCallbackWrapper(gcroot<BroadphaseRayCallback^> rayCallback);
+
+		virtual bool process(const btBroadphaseProxy* proxy);
 	};
 
 	public ref class BroadphaseInterface : BulletSharp::IDisposable

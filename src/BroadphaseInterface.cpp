@@ -2,6 +2,7 @@
 
 #include "BroadphaseProxy.h"
 #include "BroadphaseInterface.h"
+#include "Collections.h"
 #include "Dispatcher.h"
 #include "OverlappingPairCache.h"
 
@@ -47,15 +48,56 @@ bool BroadphaseAabbCallbackWrapper::process(const btBroadphaseProxy* proxy)
 }
 
 
-BroadphaseRayCallback::BroadphaseRayCallback(btBroadphaseRayCallback* callback)
+BroadphaseRayCallback::BroadphaseRayCallback(BroadphaseRayCallbackWrapper* callback)
 : BroadphaseAabbCallback(callback)
 {
 }
 
+BroadphaseRayCallback::BroadphaseRayCallback()
+: BroadphaseAabbCallback(0)
+{
+	_unmanaged = new BroadphaseRayCallbackWrapper(this);
+}
+
+btScalar BroadphaseRayCallback::LambdaMax::get()
+{
+	return ((btBroadphaseRayCallback*)_unmanaged)->m_lambda_max;
+}
+void BroadphaseRayCallback::LambdaMax::set(btScalar value)
+{
+	((btBroadphaseRayCallback*)_unmanaged)->m_lambda_max = value;
+}
+
+Vector3 BroadphaseRayCallback::RayDirectionInverse::get()
+{
+	return Math::BtVector3ToVector3(&((btBroadphaseRayCallback*)_unmanaged)->m_rayDirectionInverse);
+}
+void BroadphaseRayCallback::RayDirectionInverse::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &((btBroadphaseRayCallback*)_unmanaged)->m_rayDirectionInverse);
+}
+
+UIntArray^ BroadphaseRayCallback::Signs::get()
+{
+	return gcnew UIntArray(&((btBroadphaseRayCallback*)_unmanaged)->m_signs[0], 3);
+}
+
 btBroadphaseRayCallback* BroadphaseRayCallback::UnmanagedPointer::get()
 {
-	return (btBroadphaseRayCallback*)BroadphaseAabbCallback::UnmanagedPointer;;
+	return (btBroadphaseRayCallback*)BroadphaseAabbCallback::UnmanagedPointer;
 }
+
+
+BroadphaseRayCallbackWrapper::BroadphaseRayCallbackWrapper(gcroot<BroadphaseRayCallback^> rayCallback)
+{
+	_rayCallback = rayCallback;
+}
+
+bool BroadphaseRayCallbackWrapper::process(const btBroadphaseProxy* proxy)
+{
+	return _rayCallback->Process(BroadphaseProxy::GetManaged((btBroadphaseProxy*)proxy));
+}
+
 
 BroadphaseInterface::BroadphaseInterface(btBroadphaseInterface* broadphase)
 {
@@ -204,7 +246,7 @@ void BroadphaseInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayC
 	btVector3* rayFromTemp = Math::Vector3ToBtVector3(rayFrom);
 	btVector3* rayToTemp = Math::Vector3ToBtVector3(rayTo);
 
-	BroadphaseInterface_RayTest(_broadphase, rayFromTemp, rayToTemp, rayCallback->UnmanagedPointer);
+	BroadphaseInterface_RayTest(_broadphase, rayFromTemp, rayToTemp, (btBroadphaseRayCallback*)rayCallback->_unmanaged);
 
 	delete rayFromTemp;
 	delete rayToTemp;
