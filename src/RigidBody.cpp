@@ -493,7 +493,13 @@ btRigidBody* RigidBody::UnmanagedPointer::get()
 
 
 btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfo(
-	btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape, btVector3* localInertia = new btVector3())
+	btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape)
+{
+	return new btRigidBody::btRigidBodyConstructionInfo(mass, motionState, collisionShape);
+}
+
+btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfoLocalInertia(
+	btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape, btVector3* localInertia)
 {
 	btRigidBody::btRigidBodyConstructionInfo* ret =
 		new btRigidBody::btRigidBodyConstructionInfo(mass, motionState, collisionShape, *localInertia);
@@ -510,7 +516,7 @@ RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp:
 
 RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape, Vector3 localInertia)
 {
-	_info = RigidBody_GetUnmanagedConstructionInfo(mass,
+	_info = RigidBody_GetUnmanagedConstructionInfoLocalInertia(mass,
 		GetUnmanagedNullableNew(motionState), GetUnmanagedNullable(collisionShape),
 		Math::Vector3ToBtVector3(localInertia));
 	_motionState = motionState;
