@@ -98,24 +98,6 @@ namespace DemoFramework
             }
         }
 
-        public void SetIndexBuffer(Device device, byte[] indices)
-        {
-            IndexFormat = Format.R8_UInt;
-
-            BufferDescription indexBufferDesc = new BufferDescription()
-            {
-                SizeInBytes = sizeof(byte) * indices.Length,
-                Usage = ResourceUsage.Default,
-                BindFlags = BindFlags.IndexBuffer
-            };
-
-            using (var data = new SharpDX.DataStream(indexBufferDesc.SizeInBytes, false, true))
-            {
-                data.WriteRange(indices);
-                IndexBuffer = new Buffer(device, data, indexBufferDesc);
-            }
-        }
-
         public void SetIndexBuffer(Device device, ushort[] indices)
         {
             IndexFormat = Format.R16_UInt;
@@ -359,11 +341,11 @@ namespace DemoFramework
             shapeData.IndexCount = (4 * numSteps + 2) * 3;
 
             Vector3[] vertices = new Vector3[shapeData.VertexCount * 2];
-            byte[] indices = new byte[shapeData.IndexCount];
+            ushort[] indices = new ushort[shapeData.IndexCount];
 
             int i = 0, v = 0;
-            byte index = 0;
-            byte baseIndex;
+            ushort index = 0;
+            ushort baseIndex;
             Vector3 normal;
 
             // Draw two sides
@@ -388,12 +370,12 @@ namespace DemoFramework
                     vertices[v++] = normal;
 
                     indices[i++] = baseIndex;
-                    indices[i++] = (byte)(index - 1);
+                    indices[i++] = (ushort)(index - 1);
                     indices[i++] = index++;
                 }
                 indices[i++] = baseIndex;
-                indices[i++] = (byte)(index - 1);
-                indices[i++] = (byte)(baseIndex + 1);
+                indices[i++] = (ushort)(index - 1);
+                indices[i++] = (ushort)(baseIndex + 1);
             }
 
 
@@ -422,20 +404,20 @@ namespace DemoFramework
                 vertices[v++] = GetVectorByAxis(new Vector3(x, -halfHeight, z), up);
                 vertices[v++] = normal;
 
-                indices[i++] = (byte)(index - 2);
-                indices[i++] = (byte)(index - 1);
-                indices[i++] = (byte)index;
-                indices[i++] = (byte)index;
-                indices[i++] = (byte)(index - 1);
-                indices[i++] = (byte)(index + 1);
+                indices[i++] = (ushort)(index - 2);
+                indices[i++] = (ushort)(index - 1);
+                indices[i++] = index;
+                indices[i++] = index;
+                indices[i++] = (ushort)(index - 1);
+                indices[i++] = (ushort)(index + 1);
                 index += 2;
             }
-            indices[i++] = (byte)(index - 2);
-            indices[i++] = (byte)(index - 1);
-            indices[i++] = (byte)(baseIndex);
-            indices[i++] = (byte)(baseIndex);
-            indices[i++] = (byte)(index - 1);
-            indices[i++] = (byte)(baseIndex + 1);
+            indices[i++] = (ushort)(index - 2);
+            indices[i++] = (ushort)(index - 1);
+            indices[i++] = baseIndex;
+            indices[i++] = baseIndex;
+            indices[i++] = (ushort)(index - 1);
+            indices[i++] = (ushort)(baseIndex + 1);
 
             shapeData.SetVertexBuffer(device, vertices);
             shapeData.SetIndexBuffer(device, indices);
@@ -575,7 +557,7 @@ namespace DemoFramework
             shapeData.IndexCount = 6 * slices * (stacks - 1);
 
             Vector3[] vertices = new Vector3[shapeData.VertexCount * 2];
-            byte[] indices = new byte[shapeData.IndexCount];
+            ushort[] indices = new ushort[shapeData.IndexCount];
 
             int i = 0, v = 0;
 
@@ -609,7 +591,7 @@ namespace DemoFramework
 
             // Indices
             // Top cap
-            byte index = 2;
+            ushort index = 2;
             for (k = 0; k < slices; k++)
             {
                 indices[i++] = 0;
@@ -717,7 +699,7 @@ namespace DemoFramework
 
         ShapeData CreateTriangleMeshShape(TriangleMeshShape shape)
         {
-            StridingMeshInterface meshInterface = shape.MeshInterface.UpcastDetect();
+            StridingMeshInterface meshInterface = shape.MeshInterface;
 
             BulletSharp.DataStream vertexStream, indexStream;
             int numVerts, numFaces;
@@ -762,18 +744,11 @@ namespace DemoFramework
                     indices[i++] = indexStream.Read<uint>();
                 shapeData.SetIndexBuffer(device, indices);
             }
-            else if (numVerts > 256)
+            else
             {
                 ushort[] indices = new ushort[shapeData.IndexCount];
                 while (indexStream.Position < indexStream.Length)
                     indices[i++] = (ushort)indexStream.Read<int>();
-                shapeData.SetIndexBuffer(device, indices);
-            }
-            else
-            {
-                byte[] indices = new byte[shapeData.IndexCount];
-                while (indexStream.Position < indexStream.Length)
-                    indices[i++] = (byte)indexStream.Read<int>();
                 shapeData.SetIndexBuffer(device, indices);
             }
 

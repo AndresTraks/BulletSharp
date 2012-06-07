@@ -4,6 +4,8 @@
 #include "StridingMeshInterface.h"
 #include "TriangleCallback.h"
 #include "TriangleIndexVertexArray.h"
+#include "TriangleIndexVertexMaterialArray.h"
+#include "TriangleMesh.h"
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
 #endif
@@ -11,20 +13,6 @@
 StridingMeshInterface::StridingMeshInterface(btStridingMeshInterface* stridingMesh)
 {
 	_stridingMesh = stridingMesh;
-}
-
-StridingMeshInterface^ StridingMeshInterface::UpcastDetect()
-{
-	if (_stridingMesh == nullptr)
-		return nullptr;
-
-	void* ptr;
-
-	ptr = static_cast<btTriangleIndexVertexArray*>(_stridingMesh);
-	if (ptr != 0)
-		return gcnew TriangleIndexVertexArray((btTriangleIndexVertexArray*)ptr);
-
-	return this;
 }
 
 StridingMeshInterface::~StridingMeshInterface()
@@ -42,6 +30,26 @@ StridingMeshInterface::!StridingMeshInterface()
 	_stridingMesh = NULL;
 
 	OnDisposed(this, nullptr);
+}
+
+StridingMeshInterface^ StridingMeshInterface::GetManaged(btStridingMeshInterface* stridingMesh)
+{
+	if (stridingMesh == nullptr)
+		return nullptr;
+
+	btTriangleMesh* triangleMesh = static_cast<btTriangleMesh*>(stridingMesh);
+	if (triangleMesh != 0)
+		return gcnew TriangleMesh(triangleMesh);
+
+	btTriangleIndexVertexMaterialArray* triangleIndexVertexMaterialArray = static_cast<btTriangleIndexVertexMaterialArray*>(stridingMesh);
+	if (triangleIndexVertexMaterialArray != 0)
+		return gcnew TriangleIndexVertexMaterialArray(triangleIndexVertexMaterialArray);
+
+	btTriangleIndexVertexArray* triangleIndexVertexArray = static_cast<btTriangleIndexVertexArray*>(stridingMesh);
+	if (triangleIndexVertexArray != 0)
+		return gcnew TriangleIndexVertexArray(triangleIndexVertexArray);
+
+	return gcnew StridingMeshInterface(stridingMesh);
 }
 
 bool StridingMeshInterface::IsDisposed::get()

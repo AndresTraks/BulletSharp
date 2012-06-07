@@ -175,7 +175,10 @@ namespace DemoFramework
 
             _world.Dispose();
             Broadphase.Dispose();
-            Dispatcher.Dispose();
+            if (Dispatcher != null)
+            {
+                Dispatcher.Dispose();
+            }
             CollisionConf.Dispose();
         }
 

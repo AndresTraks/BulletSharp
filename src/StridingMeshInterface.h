@@ -25,9 +25,10 @@ namespace BulletSharp
 	protected:
 		~StridingMeshInterface();
 
-	public:
-		StridingMeshInterface^ UpcastDetect();
+	internal:
+		static StridingMeshInterface^ GetManaged(btStridingMeshInterface* stridingMesh);
 
+	public:
 #ifndef DISABLE_SERIALIZE
 		int CalculateSerializeBufferSize();
 		String^ Serialize(IntPtr dataBuffer, Serializer^ serializer);

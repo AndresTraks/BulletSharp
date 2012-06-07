@@ -8,10 +8,8 @@ namespace BulletSharp
 
 	public ref class TriangleMeshShape : ConcaveShape
 	{
-	private:
-		StridingMeshInterface^ _meshInterface;
-
 	internal:
+		StridingMeshInterface^ _meshInterface;
 		TriangleMeshShape(btTriangleMeshShape* shape);
 
 	public:

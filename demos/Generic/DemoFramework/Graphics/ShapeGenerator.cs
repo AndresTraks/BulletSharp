@@ -649,7 +649,7 @@ namespace DemoFramework
 
             // Indices
             // Top cap
-            byte index = 2;
+            ushort index = 2;
             for (k = 0; k < slices; k++)
             {
                 indices[i++] = index++;
@@ -740,7 +740,7 @@ namespace DemoFramework
 
         static Vector3[] CreateTriangleMesh(TriangleMeshShape shape)
         {
-            StridingMeshInterface meshInterface = shape.MeshInterface.UpcastDetect();
+            StridingMeshInterface meshInterface = shape.MeshInterface;
 
             BulletSharp.DataStream vertexBuffer, indexBuffer;
             int numVerts, numFaces;
