@@ -94,7 +94,7 @@ namespace DistanceDemo
                 distanceFrom = result.PointInWorld;
                 distanceTo = result.PointInWorld + result.NormalOnBInWorld * result.Distance;
                 distance = result.Distance;
-                World.DebugDrawer.DrawLine(distanceFrom, distanceTo, Color.White);
+                World.DebugDrawer.DrawLine(ref distanceFrom, ref distanceTo, Color.White);
             }
             else
             {

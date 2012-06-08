@@ -185,7 +185,7 @@ namespace DemoFramework.OpenTK
         }
     }
 
-    class MeshFactory
+    class MeshFactory : DemoFramework.MeshFactory
     {
         Demo demo;
 
@@ -220,7 +220,7 @@ namespace DemoFramework.OpenTK
         {
             ShapeData shapeData = new ShapeData();
             uint[] indices;
-            BulletSharp.Vector3[] vertexBuffer = ShapeGenerator.CreateShape(shape, out indices);
+            BulletSharp.Vector3[] vertexBuffer = CreateShape(shape, out indices);
             shapeData.VertexCount = vertexBuffer.Length / 2;
 
             Vector3[] vertices = new Vector3[shapeData.VertexCount];
@@ -238,7 +238,7 @@ namespace DemoFramework.OpenTK
 
             if (indices != null)
             {
-                ushort[] indices_s = ShapeGenerator.CompactIndexBuffer(indices);
+                ushort[] indices_s = CompactIndexBuffer(indices);
                 if (indices_s != null)
                 {
                     shapeData.SetIndexBuffer(indices_s);
@@ -257,6 +257,15 @@ namespace DemoFramework.OpenTK
         {
             // Soft body geometry is recreated each frame. Nothing to do here.
             return new ShapeData();
+        }
+
+        public override void RemoveShape(CollisionShape shape)
+        {
+            if (shapes.ContainsKey(shape))
+            {
+                shapes[shape].Dispose();
+                shapes.Remove(shape);
+            }
         }
 
         ShapeData InitShapeData(CollisionShape shape)

@@ -13,7 +13,7 @@ namespace DemoFramework.OpenTK
         GLControl glControl;
         Matrix4 lookat, perspective;
 
-        MeshFactory meshFactory;
+        MeshFactory _meshFactory;
         InfoText info;
 
         int shaderProgram;
@@ -153,7 +153,7 @@ namespace DemoFramework.OpenTK
 
             projectionMatrixLocation = GL.GetUniformLocation(shaderProgram, "projection_matrix");
             lightDirectionVectorLocation = GL.GetUniformLocation(shaderProgram, "light_direction");
-            meshFactory.SetShaderLocations(GL.GetUniformLocation(shaderProgram, "modelview_matrix"),
+            _meshFactory.SetShaderLocations(GL.GetUniformLocation(shaderProgram, "modelview_matrix"),
                 GL.GetAttribLocation(shaderProgram, "position"),
                 GL.GetAttribLocation(shaderProgram, "normal"),
                 GL.GetUniformLocation(shaderProgram, "color")
@@ -164,7 +164,8 @@ namespace DemoFramework.OpenTK
 
         public override void Initialize()
         {
-            meshFactory = new MeshFactory(Demo);
+            _meshFactory = new MeshFactory(Demo);
+            MeshFactory = _meshFactory;
             info = new InfoText(glControl);
         }
 
@@ -183,8 +184,8 @@ namespace DemoFramework.OpenTK
             GL.Enable(EnableCap.DepthTest);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            meshFactory.InitInstancedRender(Demo.World.CollisionObjectArray);
-            meshFactory.RenderInstanced(ref lookat);
+            _meshFactory.InitInstancedRender(Demo.World.CollisionObjectArray);
+            _meshFactory.RenderInstanced(ref lookat);
 
             GL.UseProgram(0);
             if (Demo.IsDebugDrawEnabled)

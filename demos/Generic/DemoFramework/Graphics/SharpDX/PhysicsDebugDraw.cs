@@ -12,11 +12,15 @@ namespace DemoFramework.SharpDX
         InputAssemblerStage inputAssembler;
         InputLayout inputLayout;
         BufferDescription vertexBufferDesc;
+        PositionColored[] lineArray;
+        Buffer vertexBuffer;
+        VertexBufferBinding vertexBufferBinding;
 
         public PhysicsDebugDraw(SharpDXGraphics graphics)
         {
             device = graphics.Device;
             inputAssembler = device.InputAssembler;
+            lineArray = new PositionColored[0];
 
             InputElement[] elements = new InputElement[]
             {
@@ -27,9 +31,26 @@ namespace DemoFramework.SharpDX
             
             vertexBufferDesc = new BufferDescription()
             {
-                Usage = ResourceUsage.Default,
+                Usage = ResourceUsage.Dynamic,
                 BindFlags = BindFlags.VertexBuffer,
+                CpuAccessFlags = CpuAccessFlags.Write
             };
+
+            vertexBufferBinding = new VertexBufferBinding(null, PositionColored.Stride, 0);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (vertexBuffer != null)
+                {
+                    vertexBuffer.Dispose();
+                    vertexBuffer = null;
+                }
+            }
+
+            base.Dispose(disposing);
         }
 
         public override void DrawDebugWorld(DynamicsWorld world)
@@ -41,20 +62,38 @@ namespace DemoFramework.SharpDX
 
             inputAssembler.InputLayout = inputLayout;
 
-            vertexBufferDesc.SizeInBytes = PositionColored.Stride * lines.Count;
-            Buffer vertexBuffer;
-            using (var data = new DataStream(vertexBufferDesc.SizeInBytes, false, true))
+            if (lineArray.Length != lines.Count)
             {
-                data.WriteRange(lines.ToArray());
-                vertexBuffer = new Buffer(device, data, vertexBufferDesc);
+                lineArray = new PositionColored[lines.Count];
+                lines.CopyTo(lineArray);
+
+                if (vertexBuffer != null)
+                {
+                    vertexBuffer.Dispose();
+                }
+                vertexBufferDesc.SizeInBytes = PositionColored.Stride * lines.Count;
+                using (var data = new DataStream(vertexBufferDesc.SizeInBytes, false, true))
+                {
+                    data.WriteRange(lineArray);
+                    vertexBuffer = new Buffer(device, data, vertexBufferDesc);
+                }
+                vertexBufferBinding.Buffer = vertexBuffer;
+            }
+            else
+            {
+                lines.CopyTo(lineArray);
+                using (var map = vertexBuffer.Map(MapMode.WriteDiscard))
+                {
+                    map.WriteRange(lineArray);
+                }
+                vertexBuffer.Unmap();
             }
 
-            inputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, PositionColored.Stride, 0));
+            inputAssembler.SetVertexBuffers(0, vertexBufferBinding);
             inputAssembler.PrimitiveTopology = global::SharpDX.Direct3D.PrimitiveTopology.LineList;
 
             device.Draw(lines.Count, 0);
 
-            vertexBuffer.Dispose();
             lines.Clear();
         }
     }

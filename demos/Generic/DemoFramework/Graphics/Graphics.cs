@@ -46,6 +46,8 @@ namespace DemoFramework
             set;
         }
 
+        public MeshFactory MeshFactory;
+
         public abstract IDebugDraw GetPhysicsDebugDrawer();
 
         public Graphics(Demo demo)

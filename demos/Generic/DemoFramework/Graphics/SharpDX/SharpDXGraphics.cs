@@ -97,11 +97,7 @@ namespace DemoFramework.SharpDX
             set { ambient = value; }
         }
 
-        MeshFactory meshFactory;
-        protected MeshFactory GetMeshFactory()
-        {
-            return meshFactory;
-        }
+        MeshFactory _meshFactory;
 
         [StructLayout(LayoutKind.Sequential)]
         struct ShaderSceneConstants
@@ -435,7 +431,7 @@ namespace DemoFramework.SharpDX
             technique = effect2.GetTechniqueByIndex(0);
             gBufferRenderPass = technique.GetPassByIndex(0);
 
-            Buffer quad = MeshFactory.CreateScreenQuad(_device);
+            Buffer quad = DemoFramework.SharpDX.MeshFactory.CreateScreenQuad(_device);
             quadBinding = new VertexBufferBinding(quad, 20, 0);
             Matrix quadProjection = Matrix.OrthoLH(1, 1, 0.1f, 1.0f);
             effect2.GetVariableByName("ViewProjection").AsMatrix().SetMatrix(quadProjection);
@@ -449,7 +445,8 @@ namespace DemoFramework.SharpDX
 
 
             info = new InfoText(_device);
-            meshFactory = new MeshFactory(this);
+            _meshFactory = new MeshFactory(this);
+            MeshFactory = _meshFactory;
 
             CreateBuffers();
             LibraryManager.LibraryStarted();
@@ -501,7 +498,7 @@ namespace DemoFramework.SharpDX
             _device.ClearRenderTargetView(gBufferNormalView, ambient);
             _device.ClearRenderTargetView(gBufferDiffuseView, ambient);
 
-            meshFactory.InitInstancedRender(Demo.World.CollisionObjectArray);
+            _meshFactory.InitInstancedRender(Demo.World.CollisionObjectArray);
 
             // Light depth map pass
             if (shadowsEnabled)
@@ -572,7 +569,7 @@ namespace DemoFramework.SharpDX
 
         protected virtual void OnRender()
         {
-            meshFactory.RenderInstanced();
+            _meshFactory.RenderInstanced();
         }
 
         public override void SetInfoText(string text)

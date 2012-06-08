@@ -132,7 +132,7 @@ namespace DemoFramework.Xna
     }
 
     // This class creates graphical objects (boxes, cones, cylinders, spheres) on the fly.
-    public class MeshFactory : System.IDisposable
+    public class MeshFactory : DemoFramework.MeshFactory
     {
         Demo demo;
         GraphicsDevice device;
@@ -160,13 +160,13 @@ namespace DemoFramework.Xna
         {
             ShapeData shapeData = new ShapeData();
             uint[] indices;
-            Vector3[] vertices = ShapeGenerator.CreateShape(shape, out indices);
+            Vector3[] vertices = CreateShape(shape, out indices);
             shapeData.SetVertexNormalBuffer(device, vertices);
 
             if (indices != null)
             {
                 shapeData.IndexCount = indices.Length;
-                ushort[] indices_s = ShapeGenerator.CompactIndexBuffer(indices);
+                ushort[] indices_s = CompactIndexBuffer(indices);
                 if (indices_s != null)
                 {
                     shapeData.SetIndexBuffer(device, indices_s);
@@ -184,6 +184,15 @@ namespace DemoFramework.Xna
         {
             // Soft body geometry is recreated each frame. Nothing to do here.
             return new ShapeData();
+        }
+
+        public override void RemoveShape(CollisionShape shape)
+        {
+            if (shapes.ContainsKey(shape))
+            {
+                shapes[shape].Dispose();
+                shapes.Remove(shape);
+            }
         }
 
         ShapeData InitShapeData(CollisionShape shape)

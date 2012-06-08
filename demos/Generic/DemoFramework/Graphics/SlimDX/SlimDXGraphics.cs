@@ -26,10 +26,10 @@ namespace DemoFramework.SlimDX
         /// </summary>
         public DeviceContext9 Context9 { get; private set; }
 
-        MeshFactory meshFactory;
+        MeshFactory _meshFactory;
         protected MeshFactory GetMeshFactory()
         {
-            return meshFactory;
+            return _meshFactory;
         }
 
         protected int Width { get; set; }
@@ -164,7 +164,7 @@ namespace DemoFramework.SlimDX
                 if (Form.IsDisposed == false)
                     Form.Dispose();
                 Info.Dispose();
-                meshFactory.Dispose();
+                _meshFactory.Dispose();
             }
         }
 
@@ -242,7 +242,8 @@ namespace DemoFramework.SlimDX
             light.Attenuation0 = 1.0f;
 
             Info = new InfoText(Device);
-            meshFactory = new MeshFactory(this);
+            _meshFactory = new MeshFactory(this);
+            MeshFactory = _meshFactory;
         }
 
         private void Render()
@@ -278,7 +279,7 @@ namespace DemoFramework.SlimDX
 
                         Device.Material = SoftBodyMaterial;
                         Device.SetTransform(TransformState.World, Matrix.Identity);
-                        meshFactory.RenderSoftBody(colObj as SoftBody);
+                        _meshFactory.RenderSoftBody(colObj as SoftBody);
                     }
                     else
                     {
@@ -288,7 +289,7 @@ namespace DemoFramework.SlimDX
                             Device.Material = ActiveMaterial;
                         else
                             Device.Material = PassiveMaterial;
-                        meshFactory.Render(colObj);
+                        _meshFactory.Render(colObj);
                     }
                 }
 
@@ -391,13 +392,13 @@ namespace DemoFramework.SlimDX
             Device.SetLight(0, light);
             Device.EnableLight(0, true);
 
-            meshFactory.OnResetDevice();
+            _meshFactory.OnResetDevice();
         }
 
         protected virtual void OnLostDevice()
         {
             Info.OnLostDevice();
-            meshFactory.OnLostDevice();
+            _meshFactory.OnLostDevice();
         }
 
         /// <summary>

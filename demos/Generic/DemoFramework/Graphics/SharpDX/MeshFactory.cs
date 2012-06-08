@@ -161,14 +161,13 @@ namespace DemoFramework.SharpDX
     }
 
     // This class creates graphical objects (boxes, cones, cylinders, spheres) on the fly.
-    public class MeshFactory : System.IDisposable
+    public class MeshFactory : DemoFramework.MeshFactory
     {
         Demo demo;
         Device device;
         InputAssemblerStage inputAssembler;
         Dictionary<CollisionShape, ShapeData> shapes = new Dictionary<CollisionShape, ShapeData>();
         List<CollisionShape> removeList = new List<CollisionShape>();
-        Effect planeShader = null;
 
         BufferDescription instanceDataDesc;
         InputLayout inputLayout;
@@ -214,6 +213,15 @@ namespace DemoFramework.SharpDX
             softBodyColor = (uint)c.R + ((uint)c.G << 8) + ((uint)c.B << 16) + ((uint)c.A << 24);
         }
 
+        public override void RemoveShape(CollisionShape shape)
+        {
+            if (shapes.ContainsKey(shape))
+            {
+                shapes[shape].Dispose();
+                shapes.Remove(shape);
+            }
+        }
+
         public void Clear()
         {
             foreach (ShapeData shapeData in shapes.Values)
@@ -226,23 +234,20 @@ namespace DemoFramework.SharpDX
         public void Dispose()
         {
             Clear();
-
-            if (planeShader != null)
-                planeShader.Dispose();
         }
 
         ShapeData CreateShape(CollisionShape shape)
         {
             ShapeData shapeData = new ShapeData();
             uint[] indices;
-            Vector3[] vertices = ShapeGenerator.CreateShape(shape, out indices);
+            Vector3[] vertices = CreateShape(shape, out indices);
             shapeData.VertexCount = vertices.Length / 2;
             shapeData.SetVertexBuffer(device, vertices);
 
             if (indices != null)
             {
                 shapeData.IndexCount = indices.Length;
-                ushort[] indices_s = ShapeGenerator.CompactIndexBuffer(indices);
+                ushort[] indices_s = CompactIndexBuffer(indices);
                 if (indices_s != null)
                 {
                     shapeData.SetIndexBuffer(device, indices_s);

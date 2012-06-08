@@ -71,6 +71,19 @@ btVector3* BulletSharp::Math::Vector3ToBtVector3(Vector3 vector)
 	return new btVector3(vector.X, vector.Y, vector.Z);
 #endif
 }
+btVector3* BulletSharp::Math::Vector3ToBtVector3Ref(Vector3% vector)
+{
+#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+	btScalar x = vector.x;
+	btScalar y = vector.y;
+	btScalar z = vector.x;
+#else
+	btScalar x = vector.X;
+	btScalar y = vector.Y;
+	btScalar z = vector.Z;
+#endif
+	return new btVector3(x, y, z);
+}
 void BulletSharp::Math::Vector3ToBtVector3(Vector3 vector, btVector3* vectorOut)
 {
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)

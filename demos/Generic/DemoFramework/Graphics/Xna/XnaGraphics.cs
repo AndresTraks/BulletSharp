@@ -14,10 +14,10 @@ namespace DemoFramework.Xna
     {
         public GraphicsDevice Device;
 
-        MeshFactory meshFactory;
+        MeshFactory _meshFactory;
         protected MeshFactory GetMeshFactory()
         {
-            return meshFactory;
+            return _meshFactory;
         }
 
         public override float AspectRatio
@@ -87,7 +87,7 @@ namespace DemoFramework.Xna
                 if (Form.IsDisposed == false)
                     Form.Dispose();
                 Info.Dispose();
-                meshFactory.Dispose();
+                _meshFactory.Dispose();
             }
         }
 
@@ -127,7 +127,8 @@ namespace DemoFramework.Xna
         {
             Form.ClientSize = new Size(Width, Height);
 
-            meshFactory = new MeshFactory(this);
+            _meshFactory = new MeshFactory(this);
+            MeshFactory = _meshFactory;
 
             effect = new BasicEffect(Device);
 
@@ -148,8 +149,8 @@ namespace DemoFramework.Xna
         {
             Device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Microsoft.Xna.Framework.Color.LightGray, 1.0f, 0);
 
-            meshFactory.InitInstancedRender(Demo.World.CollisionObjectArray);
-            meshFactory.RenderInstanced(effect);
+            _meshFactory.InitInstancedRender(Demo.World.CollisionObjectArray);
+            _meshFactory.RenderInstanced(effect);
 
             //if (Demo.IsDebugDrawEnabled)
             //    (Demo.World.DebugDrawer as PhysicsDebugDraw).DrawDebugWorld(Demo.World);

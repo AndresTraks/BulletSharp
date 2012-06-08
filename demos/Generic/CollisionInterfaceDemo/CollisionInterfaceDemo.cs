@@ -16,7 +16,7 @@ namespace CollisionInterfaceDemo
         {
             Vector3 ptA = cp.PositionWorldOnA;
             Vector3 ptB = cp.PositionWorldOnB;
-            world.DebugDrawer.DrawLine(ptA, ptB, System.Drawing.Color.Blue);
+            world.DebugDrawer.DrawLine(ref ptA, ref ptB, System.Drawing.Color.Blue);
 		    return 0;
         }
     };
@@ -88,7 +88,9 @@ namespace CollisionInterfaceDemo
             t.set_Rows(3, pos);
             objects[0].WorldTransform = t;
 
-            World.DebugDrawer.DrawBox(new Vector3(-1, -1, -1), new Vector3(1, 1, 1), t, System.Drawing.Color.White);
+            Vector3 min = new Vector3(-1, -1, -1);
+            Vector3 max = new Vector3(1, 1, 1);
+            World.DebugDrawer.DrawBox(ref min, ref max, ref t, System.Drawing.Color.White);
         }
     }
 

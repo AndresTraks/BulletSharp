@@ -8,6 +8,10 @@ namespace BulletSharp
 
 	public ref class DebugDraw abstract : public IDebugDraw
 	{
+	public:
+		virtual event EventHandler^ OnDisposing;
+		virtual event EventHandler^ OnDisposed;
+
 	internal:
 		DebugDrawWrapper* _unmanaged;
 
@@ -20,34 +24,44 @@ namespace BulletSharp
 		static DebugDrawWrapper* GetUnmanaged(IDebugDraw^ debugDraw);
 
 	public:
+		!DebugDraw();
+	protected:
+		~DebugDraw();
+
+	public:
 		DebugDraw();
 
-		virtual void Draw3dText(Vector3 location, String^ textString) = 0;
-		virtual void DrawAabb(Vector3 from, Vector3 to, BtColor color);
-		virtual void DrawArc(Vector3 center, Vector3 normal, Vector3 axis, btScalar radiusA, btScalar radiusB,
+		virtual void Draw3dText(Vector3% location, String^ textString) = 0;
+		virtual void DrawAabb(Vector3% from, Vector3% to, BtColor color);
+		virtual void DrawArc(Vector3% center, Vector3% normal, Vector3% axis, btScalar radiusA, btScalar radiusB,
 			btScalar minAngle, btScalar maxAngle, BtColor color, bool drawSect, btScalar stepDegrees);
-		virtual void DrawArc(Vector3 center, Vector3 normal, Vector3 axis, btScalar radiusA, btScalar radiusB,
+		virtual void DrawArc(Vector3% center, Vector3% normal, Vector3% axis, btScalar radiusA, btScalar radiusB,
 			btScalar minAngle, btScalar maxAngle, BtColor color, bool drawSect);
-		virtual void DrawBox(Vector3 bbMin, Vector3 bbMax, Matrix trans, BtColor color);
-		virtual void DrawBox(Vector3 bbMin, Vector3 bbMax, BtColor color);
-		virtual void DrawCapsule(btScalar radius, btScalar halfHeight, int upAxis, Matrix transform, BtColor color);
-		virtual void DrawCone(btScalar radius, btScalar height, int upAxis, Matrix transform, BtColor color);
-		virtual void DrawContactPoint(Vector3 pointOnB, Vector3 normalOnB, btScalar distance, int lifeTime, BtColor color) = 0;
-		virtual void DrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, Matrix transform, BtColor color);
-		virtual void DrawLine(Vector3 from, Vector3 to, BtColor color) = 0;
-		virtual void DrawLine(Vector3 from, Vector3 to, BtColor fromColor, BtColor toColor);
-		virtual void DrawPlane(Vector3 planeNormal, btScalar planeConst, Matrix transform, BtColor color);
-		virtual void DrawSphere(Vector3 p, btScalar radius, BtColor color);
-		virtual void DrawSphere(btScalar radius, Matrix transform, BtColor color);
-		virtual void DrawSpherePatch(Vector3 center, Vector3 up, Vector3 axis, btScalar radius, btScalar minTh, btScalar maxTh,
+		virtual void DrawBox(Vector3% bbMin, Vector3% bbMax, Matrix% trans, BtColor color);
+		virtual void DrawBox(Vector3% bbMin, Vector3% bbMax, BtColor color);
+		virtual void DrawCapsule(btScalar radius, btScalar halfHeight, int upAxis, Matrix% transform, BtColor color);
+		virtual void DrawCone(btScalar radius, btScalar height, int upAxis, Matrix% transform, BtColor color);
+		virtual void DrawContactPoint(Vector3% pointOnB, Vector3% normalOnB, btScalar distance, int lifeTime, BtColor color) = 0;
+		virtual void DrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, Matrix% transform, BtColor color);
+		virtual void DrawLine(Vector3% from, Vector3% to, BtColor color) = 0;
+		virtual void DrawLine(Vector3% from, Vector3% to, BtColor fromColor, BtColor toColor);
+		virtual void DrawPlane(Vector3% planeNormal, btScalar planeConst, Matrix% transform, BtColor color);
+		virtual void DrawSphere(Vector3% p, btScalar radius, BtColor color);
+		virtual void DrawSphere(btScalar radius, Matrix% transform, BtColor color);
+		virtual void DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btScalar radius, btScalar minTh, btScalar maxTh,
 			btScalar minPs, btScalar maxPs, BtColor color, btScalar stepDegrees);
-		virtual void DrawSpherePatch(Vector3 center, Vector3 up, Vector3 axis, btScalar radius, btScalar minTh, btScalar maxTh,
+		virtual void DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btScalar radius, btScalar minTh, btScalar maxTh,
 			btScalar minPs, btScalar maxPs, BtColor color);
-		virtual void DrawTransform(Matrix transform, btScalar orthoLen);
-		virtual void DrawTriangle(Vector3 v0, Vector3 v1, Vector3 v2, BtColor color, btScalar);
-		virtual void DrawTriangle(Vector3 v0, Vector3 v1, Vector3 v2, Vector3, Vector3, Vector3, BtColor color, btScalar alpha);
+		virtual void DrawTransform(Matrix% transform, btScalar orthoLen);
+		virtual void DrawTriangle(Vector3% v0, Vector3% v1, Vector3% v2, BtColor color, btScalar);
+		virtual void DrawTriangle(Vector3% v0, Vector3% v1, Vector3% v2, Vector3%, Vector3%, Vector3%, BtColor color, btScalar alpha);
 
 		virtual void ReportErrorWarning(String^ warningString) = 0;
+
+		property bool IsDisposed
+		{
+			virtual bool get();
+		}
 
 		property DebugDrawModes DebugMode
 		{
@@ -63,7 +77,7 @@ namespace BulletSharp
 	class DebugDrawWrapper : public btIDebugDraw
 	{
 	private:
-		msclr::auto_gcroot<IDebugDraw^> _debugDraw;
+		gcroot<IDebugDraw^> _debugDraw;
 
 	public:
 		DebugDrawWrapper(IDebugDraw^ debugDraw);

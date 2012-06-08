@@ -59,12 +59,13 @@
     </Compile>
     <Compile Include="Graphics\Graphics.cs" />
     <Compile Include="Graphics\LibraryManager.cs" />
-    <Compile Include="Graphics\ShapeGenerator.cs" />
+    <Compile Include="Graphics\MeshFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Graphics\LibrarySelection.resx">
       <DependentUpon>LibrarySelection.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

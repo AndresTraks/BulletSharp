@@ -50,8 +50,10 @@ namespace DemoFramework
 
     // Creates platform-agnostic vertex buffers of physical shapes
     // (boxes, cones, cylinders, spheres) for drawing. Includes normals.
-    public static class ShapeGenerator
+    public abstract class MeshFactory
     {
+        public abstract void RemoveShape(CollisionShape shape);
+
         public static Vector3[] CreateShape(CollisionShape shape, out uint[] indices)
         {
             switch (shape.ShapeType)
@@ -104,7 +106,7 @@ namespace DemoFramework
             Vector3 normal;
             int v = 0;
 
-            for (int j = 0; j < 3 ; j++)
+            for (int j = 0; j < 3; j++)
             {
                 for (int i = 1; i != -3; i -= 2)
                 {
@@ -553,7 +555,7 @@ namespace DemoFramework
             {
                 uint[] sphereIndices;
                 Vector3[] sphereVertices = CreateSphere(shape.GetSphereRadius(i), out sphereIndices);
-                
+
                 // Adjust sphere position
                 Vector3 position = shape.GetSpherePosition(i);
                 for (int j = 0; j < sphereVertices.Length / 2; j++)

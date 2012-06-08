@@ -16,6 +16,24 @@ DebugDraw::DebugDraw(DebugDrawWrapper* debugDraw)
 	_unmanaged = debugDraw;
 }
 
+DebugDraw::~DebugDraw()
+{
+	this->!DebugDraw();
+}
+
+DebugDraw::!DebugDraw()
+{
+	if (this->IsDisposed)
+		return;
+	
+	OnDisposing(this, nullptr);
+
+	delete _unmanaged;
+	_unmanaged = NULL;
+
+	OnDisposed(this, nullptr);
+}
+
 IDebugDraw^ DebugDraw::GetManaged(btIDebugDraw* debugDraw)
 {
 	if (debugDraw == 0)
@@ -45,7 +63,7 @@ DebugDrawWrapper* DebugDraw::GetUnmanaged(IDebugDraw^ debugDraw)
 	return wrapper;
 }
 
-void DebugDraw::DrawAabb(Vector3 from, Vector3 to, BtColor color)
+void DebugDraw::DrawAabb(Vector3% from, Vector3% to, BtColor color)
 {
 	btVector3* fromTemp = Math::Vector3ToBtVector3(from);
 	btVector3* toTemp = Math::Vector3ToBtVector3(to);
@@ -58,7 +76,7 @@ void DebugDraw::DrawAabb(Vector3 from, Vector3 to, BtColor color)
 	delete colorTemp;
 }
 
-void DebugDraw::DrawArc(Vector3 center, Vector3 normal, Vector3 axis, btScalar radiusA, btScalar radiusB,
+void DebugDraw::DrawArc(Vector3% center, Vector3% normal, Vector3% axis, btScalar radiusA, btScalar radiusB,
 	btScalar minAngle, btScalar maxAngle, BtColor color, bool drawSect, btScalar stepDegrees)
 {
 	btVector3* centerTemp = Math::Vector3ToBtVector3(center);
@@ -74,7 +92,7 @@ void DebugDraw::DrawArc(Vector3 center, Vector3 normal, Vector3 axis, btScalar r
 	delete colorTemp;
 }
 
-void DebugDraw::DrawArc(Vector3 center, Vector3 normal, Vector3 axis, btScalar radiusA, btScalar radiusB,
+void DebugDraw::DrawArc(Vector3% center, Vector3% normal, Vector3% axis, btScalar radiusA, btScalar radiusB,
 	btScalar minAngle, btScalar maxAngle, BtColor color, bool drawSect)
 {
 	btVector3* centerTemp = Math::Vector3ToBtVector3(center);
@@ -90,7 +108,7 @@ void DebugDraw::DrawArc(Vector3 center, Vector3 normal, Vector3 axis, btScalar r
 	delete colorTemp;
 }
 
-void DebugDraw::DrawBox(Vector3 bbMin, Vector3 bbMax, Matrix trans, BtColor color)
+void DebugDraw::DrawBox(Vector3% bbMin, Vector3% bbMax, Matrix% trans, BtColor color)
 {
 	btVector3* bbMinTemp = Math::Vector3ToBtVector3(bbMin);
 	btVector3* bbMaxTemp = Math::Vector3ToBtVector3(bbMax);
@@ -105,7 +123,7 @@ void DebugDraw::DrawBox(Vector3 bbMin, Vector3 bbMax, Matrix trans, BtColor colo
 	delete colorTemp;
 };
 
-void DebugDraw::DrawBox(Vector3 bbMin, Vector3 bbMax, BtColor color)
+void DebugDraw::DrawBox(Vector3% bbMin, Vector3% bbMax, BtColor color)
 {
 	btVector3* bbMinTemp = Math::Vector3ToBtVector3(bbMin);
 	btVector3* bbMaxTemp = Math::Vector3ToBtVector3(bbMax);
@@ -118,7 +136,7 @@ void DebugDraw::DrawBox(Vector3 bbMin, Vector3 bbMax, BtColor color)
 	delete colorTemp;
 };
 
-void DebugDraw::DrawCapsule(btScalar radius, btScalar halfHeight, int upAxis, Matrix transform, BtColor color)
+void DebugDraw::DrawCapsule(btScalar radius, btScalar halfHeight, int upAxis, Matrix% transform, BtColor color)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	btVector3* colorTemp = BtColorToBtVector(color);
@@ -129,7 +147,7 @@ void DebugDraw::DrawCapsule(btScalar radius, btScalar halfHeight, int upAxis, Ma
 	delete colorTemp;
 }
 
-void DebugDraw::DrawCone(btScalar radius, btScalar height, int upAxis, Matrix transform, BtColor color)
+void DebugDraw::DrawCone(btScalar radius, btScalar height, int upAxis, Matrix% transform, BtColor color)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	btVector3* colorTemp = BtColorToBtVector(color);
@@ -140,7 +158,7 @@ void DebugDraw::DrawCone(btScalar radius, btScalar height, int upAxis, Matrix tr
 	delete colorTemp;
 }
 
-void DebugDraw::DrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, Matrix transform, BtColor color)
+void DebugDraw::DrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, Matrix% transform, BtColor color)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	btVector3* colorTemp = BtColorToBtVector(color);
@@ -151,7 +169,7 @@ void DebugDraw::DrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, M
 	delete colorTemp;
 }
 
-void DebugDraw::DrawLine(Vector3 from, Vector3 to, BtColor fromColor, BtColor toColor)
+void DebugDraw::DrawLine(Vector3% from, Vector3% to, BtColor fromColor, BtColor toColor)
 {
 	btVector3* fromTemp = Math::Vector3ToBtVector3(from);
 	btVector3* toTemp = Math::Vector3ToBtVector3(to);
@@ -166,7 +184,7 @@ void DebugDraw::DrawLine(Vector3 from, Vector3 to, BtColor fromColor, BtColor to
 	delete toColorTemp;
 };
 
-void DebugDraw::DrawPlane(Vector3 planeNormal, btScalar planeConst, Matrix transform, BtColor color)
+void DebugDraw::DrawPlane(Vector3% planeNormal, btScalar planeConst, Matrix% transform, BtColor color)
 {
 	btVector3* planeNormalTemp = Math::Vector3ToBtVector3(planeNormal);
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
@@ -179,7 +197,7 @@ void DebugDraw::DrawPlane(Vector3 planeNormal, btScalar planeConst, Matrix trans
 	delete colorTemp;
 }
 
-void DebugDraw::DrawSphere(Vector3 p, btScalar radius, BtColor color)
+void DebugDraw::DrawSphere(Vector3% p, btScalar radius, BtColor color)
 {
 	btVector3* pTemp = Math::Vector3ToBtVector3(p);
 	btVector3* colorTemp = BtColorToBtVector(color);
@@ -190,7 +208,7 @@ void DebugDraw::DrawSphere(Vector3 p, btScalar radius, BtColor color)
 	delete colorTemp;
 }
 
-void DebugDraw::DrawSphere(btScalar radius, Matrix transform, BtColor color)
+void DebugDraw::DrawSphere(btScalar radius, Matrix% transform, BtColor color)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	btVector3* colorTemp = BtColorToBtVector(color);
@@ -201,7 +219,7 @@ void DebugDraw::DrawSphere(btScalar radius, Matrix transform, BtColor color)
 	delete colorTemp;
 }
 
-void DebugDraw::DrawSpherePatch(Vector3 center, Vector3 up, Vector3 axis, btScalar radius, btScalar minTh, btScalar maxTh,
+void DebugDraw::DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btScalar radius, btScalar minTh, btScalar maxTh,
 	btScalar minPs, btScalar maxPs, BtColor color, btScalar stepDegrees)
 {
 	btVector3* centerTemp = Math::Vector3ToBtVector3(center);
@@ -217,7 +235,7 @@ void DebugDraw::DrawSpherePatch(Vector3 center, Vector3 up, Vector3 axis, btScal
 	delete colorTemp;
 }
 
-void DebugDraw::DrawSpherePatch(Vector3 center, Vector3 up, Vector3 axis, btScalar radius, btScalar minTh, btScalar maxTh,
+void DebugDraw::DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btScalar radius, btScalar minTh, btScalar maxTh,
 	btScalar minPs, btScalar maxPs, BtColor color)
 {
 	btVector3* centerTemp = Math::Vector3ToBtVector3(center);
@@ -233,7 +251,7 @@ void DebugDraw::DrawSpherePatch(Vector3 center, Vector3 up, Vector3 axis, btScal
 	delete colorTemp;
 }
 
-void DebugDraw::DrawTransform(Matrix transform, btScalar orthoLen)
+void DebugDraw::DrawTransform(Matrix% transform, btScalar orthoLen)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 
@@ -242,7 +260,7 @@ void DebugDraw::DrawTransform(Matrix transform, btScalar orthoLen)
 	delete transformTemp;
 }
 
-void DebugDraw::DrawTriangle(Vector3 v0, Vector3 v1, Vector3 v2, BtColor color, btScalar)
+void DebugDraw::DrawTriangle(Vector3% v0, Vector3% v1, Vector3% v2, BtColor color, btScalar)
 {
 	btVector3* v0Temp = Math::Vector3ToBtVector3(v0);
 	btVector3* v1Temp = Math::Vector3ToBtVector3(v1);
@@ -257,7 +275,7 @@ void DebugDraw::DrawTriangle(Vector3 v0, Vector3 v1, Vector3 v2, BtColor color, 
 	delete colorTemp;
 }
 
-void DebugDraw::DrawTriangle(Vector3 v0, Vector3 v1, Vector3 v2, Vector3, Vector3, Vector3, BtColor color, btScalar alpha)
+void DebugDraw::DrawTriangle(Vector3% v0, Vector3% v1, Vector3% v2, Vector3%, Vector3%, Vector3%, BtColor color, btScalar alpha)
 {
 	btVector3* v0Temp = Math::Vector3ToBtVector3(v0);
 	btVector3* v1Temp = Math::Vector3ToBtVector3(v1);
@@ -274,6 +292,11 @@ void DebugDraw::DrawTriangle(Vector3 v0, Vector3 v1, Vector3 v2, Vector3, Vector
 	delete none;
 }
 
+bool DebugDraw::IsDisposed::get()
+{
+	return ( _unmanaged == NULL );
+}
+
 
 DebugDrawWrapper::DebugDrawWrapper(IDebugDraw^ debugDraw)
 {
@@ -287,12 +310,12 @@ DebugDrawWrapper::~DebugDrawWrapper()
 
 IDebugDraw^ DebugDrawWrapper::getDebugDraw()
 {
-	return _debugDraw.get();
+	return _debugDraw;
 }
 
 void DebugDrawWrapper::setDebugDraw(IDebugDraw^ value)
 {
-	_debugDraw.attach(value);
+	_debugDraw = value;
 }
 
 void DebugDrawWrapper::draw3dText(const btVector3& location, const char* textString)

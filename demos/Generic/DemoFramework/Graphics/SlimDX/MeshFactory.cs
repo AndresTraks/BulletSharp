@@ -12,11 +12,11 @@ using Vector3 = SlimDX.Vector3;
 namespace DemoFramework.SlimDX
 {
     // This class creates graphical objects (boxes, cones, cylinders, spheres) on the fly.
-    public class MeshFactory : System.IDisposable
+    public class MeshFactory : DemoFramework.MeshFactory
     {
         Device device;
         Dictionary<CollisionShape, Mesh> shapes = new Dictionary<CollisionShape, Mesh>();
-        Dictionary<CollisionShape, Mesh> complexShapes = new Dictionary<CollisionShape, Mesh>(); // these have more than 1 subset
+        Dictionary<CollisionShape, Mesh> planeShapes = new Dictionary<CollisionShape, Mesh>(); // these are rendered differently
         Effect planeShader;
 
         public MeshFactory(SlimDXGraphics graphics)
@@ -44,20 +44,29 @@ namespace DemoFramework.SlimDX
             }
             shapes.Clear();
 
-            foreach (Mesh mesh in complexShapes.Values)
+            foreach (Mesh mesh in planeShapes.Values)
             {
                 mesh.Dispose();
             }
-            complexShapes.Clear();
+            planeShapes.Clear();
 
             if (planeShader != null)
                 planeShader.Dispose();
         }
 
+        public override void RemoveShape(CollisionShape shape)
+        {
+            if (shapes.ContainsKey(shape))
+            {
+                shapes[shape].Dispose();
+                shapes.Remove(shape);
+            }
+        }
+
         Mesh CreateShape(CollisionShape shape)
         {
             uint[] indices;
-            BulletSharp.Vector3[] vertices = ShapeGenerator.CreateShape(shape, out indices);
+            BulletSharp.Vector3[] vertices = CreateShape(shape, out indices);
 
             int vertexCount = vertices.Length / 2;
             int indexCount = (indices != null) ? indices.Length : vertexCount;
@@ -100,7 +109,7 @@ namespace DemoFramework.SlimDX
                 }
                 else
                 {
-                    indices_s = ShapeGenerator.CompactIndexBuffer(indices);
+                    indices_s = CompactIndexBuffer(indices);
                 }
                 indexBuffer.WriteRange(indices_s);
             }
@@ -128,47 +137,9 @@ namespace DemoFramework.SlimDX
                 planeShader = Effect.FromStream(device, shaderStream, ShaderFlags.None);
             }
 
-
-            Vector3[] vertices = new Vector3[4 * 2];
-
-            Mesh mesh = new Mesh(device, 2, 4, MeshFlags.SystemMemory, VertexFormat.Position | VertexFormat.Normal);
-
-            BulletSharp.Vector3 planeOrigin = shape.PlaneNormal * shape.PlaneConstant;
-            BulletSharp.Vector3 vec0, vec1;
-            PlaneSpace1(shape.PlaneNormal, out vec0, out vec1);
-            float size = 1000;
-
-            BulletSharp.Vector3[] verts = new BulletSharp.Vector3[4]
-                {
-                    planeOrigin + vec0*size,
-                    planeOrigin - vec0*size,
-                    planeOrigin + vec1*size,
-                    planeOrigin - vec1*size
-                };
-
-            DataStream vertexBuffer = mesh.LockVertexBuffer(LockFlags.Discard);
-            vertexBuffer.Write(verts[0]);
-            vertexBuffer.Position += 12;
-            vertexBuffer.Write(verts[1]);
-            vertexBuffer.Position += 12;
-            vertexBuffer.Write(verts[2]);
-            vertexBuffer.Position += 12;
-            vertexBuffer.Write(verts[3]);
-            vertexBuffer.Position += 12;
-            mesh.UnlockVertexBuffer();
-
-            DataStream indexBuffer = mesh.LockIndexBuffer(LockFlags.Discard);
-            indexBuffer.Write((short)1);
-            indexBuffer.Write((short)2);
-            indexBuffer.Write((short)0);
-            indexBuffer.Write((short)1);
-            indexBuffer.Write((short)3);
-            indexBuffer.Write((short)0);
-            mesh.UnlockIndexBuffer();
-
-            mesh.ComputeNormals();
-
-            complexShapes.Add(shape, mesh);
+            Mesh mesh = CreateShape(shape);
+            shapes.Remove(shape);
+            planeShapes.Add(shape, mesh);
 
             return mesh;
         }
@@ -209,9 +180,9 @@ namespace DemoFramework.SlimDX
                 return;
             }
 
-            if (complexShapes.TryGetValue(shape, out mesh))
+            if (planeShapes.TryGetValue(shape, out mesh))
             {
-                RenderComplexShape(shape, mesh);
+                RenderStaticPlaneShape(mesh);
                 return;
             }
 
@@ -225,37 +196,15 @@ namespace DemoFramework.SlimDX
                     Render((shape as Convex2DShape).ChildShape);
                     return;
                 case BroadphaseNativeType.StaticPlane:
-                    break;
+                    mesh = CreateStaticPlaneShape(shape as StaticPlaneShape);
+                    RenderStaticPlaneShape(mesh);
+                    return;
                 default:
                     mesh = CreateShape(shape);
                     break;
             }
 
-            // If the shape has one subset, render it.
-            if (mesh != null)
-            {
-                mesh.DrawSubset(0);
-                return;
-            }
-
-            switch (shape.ShapeType)
-            {
-                case BroadphaseNativeType.StaticPlane:
-                    mesh = CreateStaticPlaneShape(shape as StaticPlaneShape);
-                    break;
-            }
-
-            RenderComplexShape(shape, mesh);
-        }
-
-        public void RenderComplexShape(CollisionShape shape, Mesh mesh)
-        {
-            switch (shape.ShapeType)
-            {
-                case BroadphaseNativeType.StaticPlane:
-                    RenderStaticPlaneShape(mesh);
-                    break;
-            }
+            mesh.DrawSubset(0);
         }
 
         void RenderStaticPlaneShape(Mesh mesh)

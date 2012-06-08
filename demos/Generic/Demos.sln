@@ -62,6 +62,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollisionInterfaceDemo", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistanceDemo", "DistanceDemo\DistanceDemo.csproj", "{3EE18FE3-D5C4-4BDD-92F9-1763E586F246}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConcaveRaycastDemo", "ConcaveRaycastDemo\ConcaveRaycastDemo.csproj", "{435BCDE5-8EA0-4B94-8768-65AC338F85F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -144,6 +146,10 @@ Global
 		{3EE18FE3-D5C4-4BDD-92F9-1763E586F246}.Debug|x86.Build.0 = Debug|x86
 		{3EE18FE3-D5C4-4BDD-92F9-1763E586F246}.Release|x86.ActiveCfg = Release|x86
 		{3EE18FE3-D5C4-4BDD-92F9-1763E586F246}.Release|x86.Build.0 = Release|x86
+		{435BCDE5-8EA0-4B94-8768-65AC338F85F0}.Debug|x86.ActiveCfg = Debug|x86
+		{435BCDE5-8EA0-4B94-8768-65AC338F85F0}.Debug|x86.Build.0 = Debug|x86
+		{435BCDE5-8EA0-4B94-8768-65AC338F85F0}.Release|x86.ActiveCfg = Release|x86
+		{435BCDE5-8EA0-4B94-8768-65AC338F85F0}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
