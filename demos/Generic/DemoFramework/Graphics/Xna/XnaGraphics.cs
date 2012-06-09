@@ -45,6 +45,10 @@ namespace DemoFramework.Xna
         FormWindowState currentFormWindowState;
 
         BasicEffect effect;
+        public BasicEffect GetEffect()
+        {
+            return effect;
+        }
 
         public override float FarPlane
         {
@@ -57,7 +61,7 @@ namespace DemoFramework.Xna
 
         public override IDebugDraw GetPhysicsDebugDrawer()
         {
-            return new PhysicsDebugDraw(Device);
+            return new PhysicsDebugDraw(this);
         }
 
         public XnaGraphics(Demo demo)
@@ -152,8 +156,8 @@ namespace DemoFramework.Xna
             _meshFactory.InitInstancedRender(Demo.World.CollisionObjectArray);
             _meshFactory.RenderInstanced(effect);
 
-            //if (Demo.IsDebugDrawEnabled)
-            //    (Demo.World.DebugDrawer as PhysicsDebugDraw).DrawDebugWorld(Demo.World);
+            if (Demo.IsDebugDrawEnabled)
+                (Demo.World.DebugDrawer as PhysicsDebugDraw).DrawDebugWorld(Demo.World);
             //Info.OnRender(Demo.FramesPerSecond);
         }
 

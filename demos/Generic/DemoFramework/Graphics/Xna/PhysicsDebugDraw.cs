@@ -1,38 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using BulletSharp;
 using Microsoft.Xna.Framework.Graphics;
-using BulletSharp;
+using Microsoft.Xna.Framework;
 
 namespace DemoFramework.Xna
 {
     public class PhysicsDebugDraw : BufferedDebugDraw
     {
-        GraphicsDevice device;
+        XnaGraphics graphics;
+        BasicEffect effect;
+        EffectPass pass;
 
-        public PhysicsDebugDraw(GraphicsDevice device)
+        public PhysicsDebugDraw(XnaGraphics graphics)
         {
-            this.device = device;
+            this.graphics = graphics;
         }
 
         public override void DrawDebugWorld(DynamicsWorld world)
         {
             world.DebugDrawWorld();
+
             if (lines.Count == 0)
                 return;
-            /*
-            int lighting = device.GetRenderState(RenderState.Lighting);
-            device.SetRenderState(RenderState.Lighting, false);
-            device.SetTransform(TransformState.World, global::SlimDX.Matrix.Identity);
-            device.VertexFormat = PositionColored.FVF;
 
-            device.DrawUserPrimitives(PrimitiveType.LineList, lines.ToArray(), 0, lines.Count / 2);
-            device.DrawUserPrimitives(PrimitiveType.LineList, lines.Count / 2, lines.ToArray());
+            if (effect == null)
+            {
+                effect = new BasicEffect(graphics.Device);
+                effect.World = Microsoft.Xna.Framework.Matrix.Identity;
+                effect.VertexColorEnabled = true;
+                pass = effect.CurrentTechnique.Passes[0];
+            }
+
+            effect.Projection = graphics.GetEffect().Projection;
+            effect.View = graphics.GetEffect().View;
+            pass.Apply();
+
+            int pointCount = lines.Count;
+            int linesCount = pointCount / 2;
+            VertexPositionColor[] linesArray = new VertexPositionColor[pointCount];
+            for (int i = 0; i < pointCount; i++)
+            {
+                int color = lines[i].Color;
+                linesArray[i].Color = new Color(color & 0xff, (color & 0xff00) >> 8, (color & 0xff0000) >> 16, 1);
+                linesArray[i].Position = MathHelper.Convert(lines[i].Position);
+            }
+            graphics.Device.DrawUserPrimitives(PrimitiveType.LineList, linesArray, 0, linesCount);
             lines.Clear();
-
-            device.BlendState.
-            device.SetRenderState(RenderState.Lighting, lighting);
-            */
         }
     };
 };
