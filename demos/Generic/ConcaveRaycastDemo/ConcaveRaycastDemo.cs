@@ -296,6 +296,7 @@ namespace ConcaveRaycastDemo
 
             staticBody = LocalCreateRigidBody(0.0f, Matrix.Identity, groundShape);
             staticBody.CollisionFlags |= CollisionFlags.StaticObject;
+            staticBody.UserObject = "Ground";
         }
 
         public override void OnUpdate()
