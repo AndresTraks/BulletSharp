@@ -48,7 +48,7 @@ void KinematicCharacterController::SetUseGhostSweepTest(bool useGhostObjectSweep
 
 BulletSharp::GhostObject^ KinematicCharacterController::GhostObject::get()
 {
-	return gcnew BulletSharp::GhostObject(UnmanagedPointer->getGhostObject());
+	return static_cast<BulletSharp::GhostObject^>(CollisionObject::GetManaged(UnmanagedPointer->getGhostObject()));
 }
 
 btKinematicCharacterController* KinematicCharacterController::UnmanagedPointer::get()

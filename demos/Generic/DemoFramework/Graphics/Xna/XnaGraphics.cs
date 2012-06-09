@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Windows.Forms;
 using BulletSharp;
-using BulletSharp.SoftBody;
 using Microsoft.Xna.Framework.Graphics;
 using Color = Microsoft.Xna.Framework.Color;
 using Matrix = Microsoft.Xna.Framework.Matrix;
