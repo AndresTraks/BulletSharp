@@ -143,8 +143,7 @@ namespace BulletSharp
 	out.M43 = (float)m[14]; \
 	out.M44 = 1;
 #else
-#define BtTransformToMatrixFast(transform, out) out = Matrix(); \
-	pin_ptr<Matrix> ptr = &out; \
+#define BtTransformToMatrixFast(transform, out) pin_ptr<Matrix> ptr = &out; \
 	transform.getOpenGLMatrix((btScalar*)ptr);
 #endif
 #endif

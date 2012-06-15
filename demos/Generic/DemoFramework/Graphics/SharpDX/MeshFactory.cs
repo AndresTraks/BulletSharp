@@ -37,6 +37,7 @@ namespace DemoFramework.SharpDX
 
         public Buffer InstanceDataBuffer;
         public List<InstanceData> InstanceDataList;
+        public InstanceData[] InstanceDataListArray;
 
         public PrimitiveTopology PrimitiveTopology;
         public VertexBufferBinding[] BufferBindings;
@@ -46,6 +47,7 @@ namespace DemoFramework.SharpDX
         public ShapeData()
         {
             InstanceDataList = new List<InstanceData>();
+            InstanceDataListArray = new InstanceData[0];
             PrimitiveTopology = PrimitiveTopology.TriangleList;
             BufferBindings = new VertexBufferBinding[2];
         }
@@ -353,13 +355,15 @@ namespace DemoFramework.SharpDX
             foreach (KeyValuePair<CollisionShape, ShapeData> sh in shapes)
             {
                 ShapeData s = sh.Value;
+                int instanceCount = s.InstanceDataList.Count;
+
                 // Is the instance buffer the right size?
-                if (s.InstanceDataBuffer.Description.SizeInBytes != s.InstanceDataList.Count * InstanceData.SizeInBytes)
+                if (s.InstanceDataBuffer.Description.SizeInBytes != instanceCount * InstanceData.SizeInBytes)
                 {
                     // No, recreate it
                     s.InstanceDataBuffer.Dispose();
 
-                    if (s.InstanceDataList.Count == 0)
+                    if (instanceCount == 0)
                     {
                         if (s.IndexBuffer != null)
                             s.IndexBuffer.Dispose();
@@ -368,15 +372,23 @@ namespace DemoFramework.SharpDX
                         continue;
                     }
 
-                    instanceDataDesc.SizeInBytes = s.InstanceDataList.Count * InstanceData.SizeInBytes;
+                    instanceDataDesc.SizeInBytes = instanceCount * InstanceData.SizeInBytes;
                     s.InstanceDataBuffer = new Buffer(device, instanceDataDesc);
                     s.BufferBindings[1] = new VertexBufferBinding(s.InstanceDataBuffer, InstanceData.SizeInBytes, 0);
                 }
 
                 // Copy the instance data over to the instance buffer
-                using (var data = s.InstanceDataBuffer.Map(MapMode.WriteDiscard))
+                InstanceData[] instanceArray = s.InstanceDataListArray;
+                if (instanceArray.Length != instanceCount)
                 {
-                    data.WriteRange(s.InstanceDataList.ToArray());
+                    instanceArray = new InstanceData[instanceCount];
+                    s.InstanceDataListArray = instanceArray;
+                }
+                s.InstanceDataList.CopyTo(instanceArray);
+
+                using (var data = s.InstanceDataBuffer.Map(MapMode.WriteDiscard, global::SharpDX.Direct3D10.MapFlags.None))
+                {
+                    data.WriteRange(instanceArray);
                     s.InstanceDataBuffer.Unmap();
                 }
             }

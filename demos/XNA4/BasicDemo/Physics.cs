@@ -123,12 +123,12 @@ namespace BasicDemo
                 this.device = device;
             }
 
-            public override void Draw3dText(Vector3 location, string textString)
+            public override void Draw3dText(ref Vector3 location, string textString)
             {
                 throw new NotImplementedException();
             }
 
-            public override void DrawContactPoint(Vector3 pointOnB, Vector3 normalOnB, float distance, int lifeTime, Color color)
+            public override void DrawContactPoint(ref Vector3 pointOnB, ref Vector3 normalOnB, float distance, int lifeTime, Color color)
             {
                 VertexPositionColor[] vertices = new VertexPositionColor[2];
                 vertices[0] = new VertexPositionColor(pointOnB, color);
@@ -136,7 +136,7 @@ namespace BasicDemo
                 device.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.LineList, vertices, 0, 1);
             }
 
-            public override void DrawLine(Vector3 from, Vector3 to, Color color)
+            public override void DrawLine(ref Vector3 from, ref Vector3 to, Color color)
             {
                 VertexPositionColor[] vertices = new VertexPositionColor[2];
                 vertices[0] = new VertexPositionColor(from, color);
