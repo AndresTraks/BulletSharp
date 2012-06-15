@@ -7,7 +7,6 @@ namespace DemoFramework
 {
     public abstract class Demo : System.IDisposable
     {
-        bool disposed = false;
         Graphics _graphics;
         protected Graphics Graphics
         {
@@ -211,15 +210,10 @@ namespace DemoFramework
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposed)
+            if (_graphics != null)
             {
-                if (disposing)
-                {
-                    // Free other state (managed objects).
-                }
-                // Free your own state (unmanaged objects).
-                // Set large fields to null.
-                disposed = true;
+                _graphics.Dispose();
+                _graphics = null;
             }
         }
 

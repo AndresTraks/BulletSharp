@@ -63,6 +63,7 @@ namespace DemoFramework.SharpDX
         EffectPass shadowGenPass;
         EffectPass gBufferGenPass;
         EffectPass gBufferRenderPass;
+        EffectPass gBufferOverlayPass;
         EffectPass debugDrawPass;
 
         public EffectPass GetEffectPass()
@@ -134,21 +135,15 @@ namespace DemoFramework.SharpDX
         /// <summary>
         /// Disposes of object resources.
         /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes of object resources.
-        /// </summary>
         /// <param name="disposeManagedResources">If true, managed resources should be
         /// disposed of in addition to unmanaged resources.</param>
-        protected virtual void Dispose(bool disposeManagedResources)
+        protected override void Dispose(bool disposeManagedResources)
         {
             if (disposeManagedResources)
             {
+                if (info != null)
+                    info.Dispose();
+
                 DisposeBuffers();
                 //apiContext.Dispose();
                 Form.Dispose();
@@ -430,6 +425,7 @@ namespace DemoFramework.SharpDX
             effect2 = new Effect(_device, shaderByteCode);
             technique = effect2.GetTechniqueByIndex(0);
             gBufferRenderPass = technique.GetPassByIndex(0);
+            gBufferOverlayPass = technique.GetPassByIndex(1);
 
             Buffer quad = DemoFramework.SharpDX.MeshFactory.CreateScreenQuad(_device);
             quadBinding = new VertexBufferBinding(quad, 20, 0);
@@ -487,6 +483,10 @@ namespace DemoFramework.SharpDX
             float projectionB = -projectionA * NearPlane;
             effect2.GetVariableByName("ProjectionA").AsScalar().Set(projectionA);
             effect2.GetVariableByName("ProjectionB").AsScalar().Set(projectionB);
+
+            Matrix overlayMatrix = Matrix.Scaling(2 * info.Width / Width, 2 * info.Height / Height, 1.0f);
+            overlayMatrix *= Matrix.Translation(-(Width - info.Width) / Width, (Height - info.Height) / Height, 0.0f);
+            effect2.GetVariableByName("OverlayViewProjection").AsMatrix().SetMatrix(overlayMatrix);
         }
 
         void Render()
@@ -529,9 +529,11 @@ namespace DemoFramework.SharpDX
                 (Demo.World.DebugDrawer as PhysicsDebugDraw).DrawDebugWorld(Demo.World);
             }
 
+            outputMerger.SetDepthStencilState(null, 0);
+            info.OnRender(Demo.FramesPerSecond);
+
 
             // G-buffer render pass
-            outputMerger.SetDepthStencilState(null, 0);
             lightBufferVar.SetResource(lightBufferRes);
             normalBufferVar.SetResource(normalBufferRes);
             diffuseBufferVar.SetResource(diffuseBufferRes);
@@ -546,7 +548,11 @@ namespace DemoFramework.SharpDX
             inputAssembler.InputLayout = quadBufferLayout;
             _device.Draw(4, 0);
 
-            info.OnRender(Demo.FramesPerSecond);
+
+            // G-buffer overlay pass
+            diffuseBufferVar.SetResource(info.OverlayBufferRes);
+            gBufferOverlayPass.Apply();
+            _device.Draw(4, 0);
 
             _swapChain.Present(0, PresentFlags.None);
         }

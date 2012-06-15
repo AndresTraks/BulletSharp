@@ -1,22 +1,18 @@
-SamplerState bufferSampler
+SamplerState defaultSampler
 {
     Filter = MIN_MAG_MIP_LINEAR;
     AddressU = Clamp;
     AddressV = Clamp;
 };
+
 Texture2D lightBuffer;
 Texture2D normalBuffer;
 Texture2D diffuseBuffer;
 
-SamplerState depthSampler
-{
-    Filter = MIN_MAG_MIP_LINEAR;
-    AddressU = Clamp;
-    AddressV = Clamp;
-};
 Texture2D depthMap;
 Texture2D lightDepthMap;
 
+matrix OverlayViewProjection;
 matrix ViewProjection;
 matrix InverseProjection;
 matrix InverseView;
@@ -53,11 +49,11 @@ VS_OUT VS(VS_IN input)
 
 float4 PS( VS_OUT input ) : SV_Target
 {
-	float4 lightSample = lightBuffer.Sample(bufferSampler, input.texCoord);
-	float4 normalSample = normalBuffer.Sample(bufferSampler, input.texCoord);
-	float3 diffuseSample = diffuseBuffer.Sample(bufferSampler, input.texCoord).rgb;
-	float depthSample = depthMap.Sample(depthSampler, input.texCoord).x;
-	float lightDepthSample = lightDepthMap.Sample(depthSampler, input.texCoord).x;
+	float4 lightSample = lightBuffer.Sample(defaultSampler, input.texCoord);
+	float4 normalSample = normalBuffer.Sample(defaultSampler, input.texCoord);
+	float3 diffuseSample = diffuseBuffer.Sample(defaultSampler, input.texCoord).rgb;
+	float depthSample = depthMap.Sample(defaultSampler, input.texCoord).x;
+	float lightDepthSample = lightDepthMap.Sample(defaultSampler, input.texCoord).x;
 
 	// from 0...1 to -1...1; also take advantage of mad (mul + add)
 	float2 screenPos = (input.texCoord * float2(2,-2)) + float2(-1,1);
@@ -92,6 +88,21 @@ float4 PS( VS_OUT input ) : SV_Target
 	return float4(diffuse * diffuseSample + specular * specularMaterial, 1);
 }
 
+VS_OUT Overlay_VS(VS_IN input)
+{
+    VS_OUT output = (VS_OUT)0;
+
+	output.Pos = mul(float4(input.Pos,1), OverlayViewProjection);
+	output.texCoord = input.texCoord;
+
+	return output;
+}
+
+float4 Overlay_PS( VS_OUT input ) : SV_Target
+{
+	return diffuseBuffer.Sample(defaultSampler, input.texCoord);
+}
+
 technique10 Render
 {
     pass P1
@@ -99,5 +110,12 @@ technique10 Render
         SetVertexShader( CompileShader( vs_4_0, VS() ) );
         SetGeometryShader( NULL );
         SetPixelShader( CompileShader( ps_4_0, PS() ) );
+    }
+
+	pass Overlay
+    {
+        SetVertexShader( CompileShader( vs_4_0, Overlay_VS() ) );
+        SetGeometryShader( NULL );
+        SetPixelShader( CompileShader( ps_4_0, Overlay_PS() ) );
     }
 }

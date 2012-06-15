@@ -5,7 +5,7 @@ using BulletSharp;
 
 namespace DemoFramework
 {
-    public abstract class Graphics
+    public abstract class Graphics : System.IDisposable
     {
         public Demo Demo
         {
@@ -58,6 +58,16 @@ namespace DemoFramework
         }
 
         public virtual void Initialize()
+        {
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
         {
         }
 
