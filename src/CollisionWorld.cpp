@@ -53,7 +53,7 @@ CollisionWorld::LocalConvexResult::LocalConvexResult(BulletSharp::CollisionObjec
 
 BulletSharp::CollisionObject^ CollisionWorld::LocalConvexResult::CollisionObject::get()
 {
-	return BulletSharp::CollisionObject::GetManaged(_result->m_hitCollisionObject);
+	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)_result->m_hitCollisionObject);
 }
 void CollisionWorld::LocalConvexResult::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -195,7 +195,7 @@ CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3
 
 BulletSharp::CollisionObject^ CollisionWorld::ClosestConvexResultCallback::CollisionObject::get()
 {
-	return BulletSharp::CollisionObject::GetManaged(UnmanagedPointer->m_hitCollisionObject);
+	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)UnmanagedPointer->m_hitCollisionObject);
 }
 void CollisionWorld::ClosestConvexResultCallback::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -337,7 +337,7 @@ CollisionWorld::LocalRayResult::LocalRayResult(BulletSharp::CollisionObject^ col
 
 BulletSharp::CollisionObject^ CollisionWorld::LocalRayResult::CollisionObject::get()
 {
-	return BulletSharp::CollisionObject::GetManaged(_result->m_collisionObject);
+	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)_result->m_collisionObject);
 }
 void CollisionWorld::LocalRayResult::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -415,7 +415,7 @@ bool CollisionWorld::RayResultCallback::NeedsCollision(BroadphaseProxy^ proxy0)
 
 BulletSharp::CollisionObject^ CollisionWorld::RayResultCallback::CollisionObject::get()
 {
-	return BulletSharp::CollisionObject::GetManaged(_unmanaged->m_collisionObject);
+	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)_unmanaged->m_collisionObject);
 }
 void CollisionWorld::RayResultCallback::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -532,11 +532,11 @@ CollisionWorld::AllHitsRayResultCallback::AllHitsRayResultCallback(Vector3 rayFr
 
 AlignedCollisionObjectArray^ CollisionWorld::AllHitsRayResultCallback::CollisionObjects::get()
 {
-	btCollisionObjectArray* collisionObjects = &((btCollisionWorld::AllHitsRayResultCallback*)_unmanaged)->m_collisionObjects;
+	btAlignedObjectArray<const btCollisionObject*>* collisionObjects = &((btCollisionWorld::AllHitsRayResultCallback*)_unmanaged)->m_collisionObjects;
 	if (_collisionObjects != nullptr && _collisionObjects->_unmanaged == collisionObjects)
 		return _collisionObjects;
 
-	_collisionObjects = gcnew AlignedCollisionObjectArray(collisionObjects);
+	_collisionObjects = gcnew AlignedCollisionObjectArray((btAlignedObjectArray<btCollisionObject*>*)collisionObjects);
 	return _collisionObjects;
 }
 
@@ -843,12 +843,15 @@ bool ContactResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) con
 }
 
 btScalar ContactResultCallbackWrapper::addSingleResult(btManifoldPoint& cp,
-	const btCollisionObject* colObj0, int partId0, int index0,
-	const btCollisionObject* colObj1, int partId1, int index1)
+	const btCollisionObjectWrapper* colObj0, int partId0, int index0,
+	const btCollisionObjectWrapper* colObj1, int partId1, int index1)
 {
+	throw gcnew NotImplementedException();
+	/*
 	return _callback->AddSingleResult(gcnew ManifoldPoint(&cp),
 		CollisionObject::GetManaged((btCollisionObject*)colObj0), partId0, index0,
 		CollisionObject::GetManaged((btCollisionObject*)colObj1), partId1, index1);
+	*/
 }
 
 bool ContactResultCallbackWrapper::baseNeedsCollision(btBroadphaseProxy* proxy0) const

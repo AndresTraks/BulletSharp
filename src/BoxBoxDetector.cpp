@@ -18,7 +18,7 @@ BoxBoxDetector::BoxBoxDetector(BoxShape^ box1, BoxShape^ box2)
 
 BoxShape^ BoxBoxDetector::Box1::get()
 {
-	return gcnew BoxShape(UnmanagedPointer->m_box1);
+	return gcnew BoxShape((btBoxShape*)UnmanagedPointer->m_box1);
 }
 void BoxBoxDetector::Box1::set(BoxShape^ value)
 {
@@ -27,7 +27,7 @@ void BoxBoxDetector::Box1::set(BoxShape^ value)
 
 BoxShape^ BoxBoxDetector::Box2::get()
 {
-	return gcnew BoxShape(UnmanagedPointer->m_box2);
+	return gcnew BoxShape((btBoxShape*)UnmanagedPointer->m_box2);
 }
 void BoxBoxDetector::Box2::set(BoxShape^ value)
 {

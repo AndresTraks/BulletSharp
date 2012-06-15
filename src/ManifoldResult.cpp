@@ -8,13 +8,14 @@ ManifoldResult::ManifoldResult()
 : DiscreteCollisionDetectorInterface::Result(new btManifoldResult())
 {
 }
-
+/*
 ManifoldResult::ManifoldResult(BulletSharp::CollisionObject ^body0, BulletSharp::CollisionObject ^body1)
 : DiscreteCollisionDetectorInterface::Result(
 	new btManifoldResult(body0->UnmanagedPointer, body1->UnmanagedPointer))
 {
+	throw gcnew NotImplementedException();
 }
-
+*/
 CollisionObject^ ManifoldResult::Body0Internal::get()
 {
 	const btCollisionObject* body0 = UnmanagedPointer->getBody0Internal();

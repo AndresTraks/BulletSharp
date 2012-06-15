@@ -34,8 +34,9 @@ CollisionAlgorithmCreateFunc::!CollisionAlgorithmCreateFunc()
 CollisionAlgorithm^ CollisionAlgorithmCreateFunc::CreateCollisionAlgorithm(
 	CollisionAlgorithmConstructionInfo^ info, CollisionObject^ body0, CollisionObject^ body1)
 {
-	return gcnew CollisionAlgorithm(UnmanagedPointer->CreateCollisionAlgorithm(
-		*info->UnmanagedPointer, body0->UnmanagedPointer, body1->UnmanagedPointer));
+	throw gcnew NotImplementedException();
+	/* return gcnew CollisionAlgorithm(UnmanagedPointer->CreateCollisionAlgorithm(
+		*info->UnmanagedPointer, body0->UnmanagedPointer, body1->UnmanagedPointer)); */
 }
 
 bool CollisionAlgorithmCreateFunc::IsDisposed::get()

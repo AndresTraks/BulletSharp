@@ -11,7 +11,7 @@ namespace BulletSharp
 	{
 	public:
 		ManifoldResult();
-		ManifoldResult(CollisionObject^ body0, CollisionObject^ body1);
+		//ManifoldResult(CollisionObject^ body0, CollisionObject^ body1);
 
 		property CollisionObject^ Body0Internal
 		{

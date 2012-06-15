@@ -314,7 +314,7 @@ Vector3 Body::AngularVelocity::get()
 
 CollisionObject^ Body::CollisionObject::get()
 {
-	return BulletSharp::CollisionObject::GetManaged(_body->m_collisionObject);
+	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)_body->m_collisionObject);
 }
 void Body::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -1887,7 +1887,7 @@ Scti::Scti()
 
 CollisionObject^ Scti::CollisionObject::get()
 {
-	return BulletSharp::CollisionObject::GetManaged(_sCti->m_colObj);
+	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)_sCti->m_colObj);
 }
 void Scti::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
@@ -2703,7 +2703,8 @@ void BulletSharp::SoftBody::SoftBody::DampClusters()
 
 void BulletSharp::SoftBody::SoftBody::DefaultCollisionHandler(CollisionObject^ pco)
 {
-	Unmanaged->defaultCollisionHandler(pco->UnmanagedPointer);
+	throw gcnew NotImplementedException();
+	//Unmanaged->defaultCollisionHandler(pco->UnmanagedPointer);
 }
 
 void BulletSharp::SoftBody::SoftBody::DefaultCollisionHandler(SoftBody^ psb)
@@ -3340,7 +3341,7 @@ int BulletSharp::SoftBody::SoftBody::ClusterCount::get()
 
 AlignedCollisionObjectArray^ BulletSharp::SoftBody::SoftBody::CollisionDisabledObjects::get()
 {
-	return gcnew AlignedCollisionObjectArray(&Unmanaged->m_collisionDisabledObjects);
+	return gcnew AlignedCollisionObjectArray((btAlignedObjectArray<btCollisionObject*>*)&Unmanaged->m_collisionDisabledObjects);
 }
 
 AlignedFaceArray^ BulletSharp::SoftBody::SoftBody::Faces::get()

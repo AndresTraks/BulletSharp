@@ -43,7 +43,7 @@ namespace MultiMaterialDemo
             // Apply material properties
             if (colObj0.CollisionShape.ShapeType == BroadphaseNativeType.TriangleShape)
             {
-                CollisionShape parent0 = colObj0.RootCollisionShape;
+                CollisionShape parent0 = colObj0.CollisionShape;
                 if (parent0 != null && parent0.ShapeType == BroadphaseNativeType.MultiMaterialTriangleMesh)
                 {
                     MultimaterialTriangleMeshShape shape = parent0 as MultimaterialTriangleMeshShape;
@@ -54,7 +54,7 @@ namespace MultiMaterialDemo
             }
             else if (colObj1.CollisionShape.ShapeType == BroadphaseNativeType.TriangleShape)
             {
-                CollisionShape parent1 = colObj1.RootCollisionShape;
+                CollisionShape parent1 = colObj1.CollisionShape;
                 if (parent1 != null && parent1.ShapeType == BroadphaseNativeType.MultiMaterialTriangleMesh)
                 {
                     MultimaterialTriangleMeshShape shape = parent1 as MultimaterialTriangleMeshShape;

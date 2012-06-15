@@ -150,15 +150,15 @@ namespace ConvexDecompositionDemo
         // MyContactCallback is just an example to show how to get access to the child shape that collided
         bool MyContactCallback(ManifoldPoint cp, CollisionObject colObj0, int partId0, int index0, CollisionObject colObj1, int partId1, int index1)
         {
-            if (colObj0.RootCollisionShape.ShapeType == BroadphaseNativeType.CompoundShape)
+            if (colObj0.CollisionShape.ShapeType == BroadphaseNativeType.CompoundShape)
             {
-                CompoundShape compound = colObj0.RootCollisionShape as CompoundShape;
+                CompoundShape compound = colObj0.CollisionShape as CompoundShape;
                 CollisionShape childShape = compound.GetChildShape(index0);
             }
 
-            if (colObj1.RootCollisionShape.ShapeType == BroadphaseNativeType.CompoundShape)
+            if (colObj1.CollisionShape.ShapeType == BroadphaseNativeType.CompoundShape)
             {
-                CompoundShape compound = colObj1.RootCollisionShape as CompoundShape;
+                CompoundShape compound = colObj1.CollisionShape as CompoundShape;
                 CollisionShape childShape = compound.GetChildShape(index1);
             }
 

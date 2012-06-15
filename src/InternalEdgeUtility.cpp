@@ -21,15 +21,17 @@ void InternalEdgeUtility::GenerateInternalEdgeInfo(BvhTriangleMeshShape^ trimesh
 void InternalEdgeUtility::AdjustInternalEdgeContacts(ManifoldPoint^ cp, CollisionObject^ trimeshColObj0, CollisionObject^ otherColObj1,
 	int partId0, int index0, InternalEdgeAdjustFlags normalAdjustFlags)
 {
-	btAdjustInternalEdgeContacts(*cp->UnmanagedPointer, trimeshColObj0->UnmanagedPointer, otherColObj1->UnmanagedPointer,
-		partId0, index0, (int)normalAdjustFlags);
+	throw gcnew NotImplementedException();
+	/* btAdjustInternalEdgeContacts(*cp->UnmanagedPointer, trimeshColObj0->UnmanagedPointer, otherColObj1->UnmanagedPointer,
+		partId0, index0, (int)normalAdjustFlags); */
 }
 
 void InternalEdgeUtility::AdjustInternalEdgeContacts(ManifoldPoint^ cp, CollisionObject^ trimeshColObj0, CollisionObject^ otherColObj1,
 	int partId0, int index0)
 {
-	btAdjustInternalEdgeContacts(*cp->UnmanagedPointer, trimeshColObj0->UnmanagedPointer, otherColObj1->UnmanagedPointer,
-		partId0, index0);
+	throw gcnew NotImplementedException();
+	/* btAdjustInternalEdgeContacts(*cp->UnmanagedPointer, trimeshColObj0->UnmanagedPointer, otherColObj1->UnmanagedPointer,
+		partId0, index0); */
 }
 
 #ifndef DISABLE_DEBUGDRAW

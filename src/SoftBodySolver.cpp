@@ -35,7 +35,8 @@ void SoftBody::SoftBodySolver::Optimize(AlignedSoftBodyArray^ softBodies)
 
 void SoftBody::SoftBodySolver::ProcessCollision(SoftBody^ softBody, CollisionObject^ collisionObject)
 {
-	_solver->processCollision(softBody->UnmanagedPointer, collisionObject->UnmanagedPointer);
+	throw gcnew NotImplementedException();
+	//_solver->processCollision(softBody->UnmanagedPointer, collisionObject->UnmanagedPointer);
 }
 
 void SoftBody::SoftBodySolver::ProcessCollision(SoftBody^ softBody, SoftBody^ otherSoftBody)

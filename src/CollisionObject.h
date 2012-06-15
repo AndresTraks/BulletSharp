@@ -196,11 +196,6 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property BulletSharp::CollisionShape^ RootCollisionShape
-		{
-			BulletSharp::CollisionShape^ get();
-		}
-
 		// UserPointer implemented as UserObject
 		property Object^ UserObject
 		{

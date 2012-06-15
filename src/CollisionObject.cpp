@@ -325,11 +325,6 @@ void CollisionObject::Restitution::set(btScalar value)
 	_unmanaged->setRestitution(value);
 }
 
-CollisionShape^ CollisionObject::RootCollisionShape::get()
-{
-	return BulletSharp::CollisionShape::GetManaged(_unmanaged->getRootCollisionShape());
-}
-
 Object^ CollisionObject::UserObject::get()
 {
 	return _userObject;

@@ -8,8 +8,9 @@ ContactAdded^ ManifoldPoint::ContactAddedCallback::get()
 }
 void ManifoldPoint::ContactAddedCallback::set(ContactAdded^ value)
 {
-	ManifoldPoint::gContactAddedCallback = value;
-	::gContactAddedCallback = (value != nullptr) ? ContactAddedCallbackWrapper::CustomMaterialCombinerCallback : 0;
+	throw gcnew NotImplementedException();
+	//ManifoldPoint::gContactAddedCallback = value;
+	//::gContactAddedCallback = (value != nullptr) ? ContactAddedCallbackWrapper::CustomMaterialCombinerCallback : 0;
 }
 
 ManifoldPoint::ManifoldPoint(btManifoldPoint* point)

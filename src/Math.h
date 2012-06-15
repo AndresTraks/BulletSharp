@@ -126,8 +126,7 @@ namespace BulletSharp
 	out->m33 = 1;
 #else
 #ifdef GRAPHICS_NO_DIRECT_CAST
-#define BtTransformToMatrixFast(transform, out) out = Matrix(); \
-	btScalar m[16]; \
+#define BtTransformToMatrixFast(transform, out) btScalar m[16]; \
 	transform.getOpenGLMatrix(m); \
 	out.M11 = (float)m[0]; \
 	out.M12 = (float)m[1]; \

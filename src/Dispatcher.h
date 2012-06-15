@@ -151,7 +151,7 @@ namespace BulletSharp
 		//array<PersistentManifold^>^ GetInternalManifoldPointer();
 		PersistentManifold^ GetManifoldByIndexInternal(int index);
 #endif
-		PersistentManifold^ GetNewManifold(IntPtr body0, IntPtr body1);
+		PersistentManifold^ GetNewManifold(CollisionObject^ body0, CollisionObject^ body1);
 		bool NeedsCollision(CollisionObject^ body0, CollisionObject^ body1);
 		bool NeedsResponse(CollisionObject^ body0, CollisionObject^ body1);
 		void ReleaseManifold(PersistentManifold^ manifold);

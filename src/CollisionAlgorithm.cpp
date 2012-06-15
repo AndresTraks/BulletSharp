@@ -83,8 +83,9 @@ void CollisionAlgorithm::GetAllContactManifolds(AlignedManifoldArray^ manifoldAr
 void CollisionAlgorithm::ProcessCollision(CollisionObject^ body0, CollisionObject^ body1,
 	DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
 {
-	_algorithm->processCollision(body0->UnmanagedPointer, body1->UnmanagedPointer,
-		*dispatchInfo->UnmanagedPointer, resultOut->UnmanagedPointer);
+	throw gcnew NotImplementedException();
+	/* _algorithm->processCollision(body0->UnmanagedPointer, body1->UnmanagedPointer,
+		*dispatchInfo->UnmanagedPointer, resultOut->UnmanagedPointer); */
 }
 
 bool CollisionAlgorithm::IsDisposed::get()

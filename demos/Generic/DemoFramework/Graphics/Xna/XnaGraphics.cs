@@ -72,15 +72,6 @@ namespace DemoFramework.Xna
         /// <summary>
         /// Disposes of object resources.
         /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes of object resources.
-        /// </summary>
         /// <param name="disposeManagedResources">If true, managed resources should be
         /// disposed of in addition to unmanaged resources.</param>
         protected virtual void Dispose(bool disposeManagedResources)

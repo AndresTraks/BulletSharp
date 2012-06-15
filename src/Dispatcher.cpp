@@ -187,14 +187,16 @@ void Dispatcher::DispatchAllCollisionPairs(OverlappingPairCache^ pairCache,
 
 CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObject^ body0, CollisionObject^ body1)
 {
-	return gcnew CollisionAlgorithm(_dispatcher->findAlgorithm(body0->UnmanagedPointer, body1->UnmanagedPointer));
+	throw gcnew NotImplementedException();
+	//return gcnew CollisionAlgorithm(_dispatcher->findAlgorithm(body0->UnmanagedPointer, body1->UnmanagedPointer));
 }
 
 CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObject^ body0, CollisionObject^ body1,
 	PersistentManifold^ sharedManifold)
 {
-	return gcnew CollisionAlgorithm(_dispatcher->findAlgorithm(
-		body0->UnmanagedPointer, body1->UnmanagedPointer, sharedManifold->UnmanagedPointer));
+	throw gcnew NotImplementedException();
+	/* return gcnew CollisionAlgorithm(_dispatcher->findAlgorithm(
+		body0->UnmanagedPointer, body1->UnmanagedPointer, sharedManifold->UnmanagedPointer)); */
 }
 
 void Dispatcher::FreeCollisionAlgorithm(IntPtr ptr)
@@ -209,10 +211,10 @@ PersistentManifold^ Dispatcher::GetManifoldByIndexInternal(int index)
 }
 #endif
 
-PersistentManifold^ Dispatcher::GetNewManifold(IntPtr body0, IntPtr body1)
+PersistentManifold^ Dispatcher::GetNewManifold(CollisionObject^ body0, CollisionObject^ body1)
 {
 	return gcnew PersistentManifold(_dispatcher->getNewManifold(
-		body0.ToPointer(), body1.ToPointer()));
+		body0->_unmanaged, body1->_unmanaged));
 }
 
 bool Dispatcher::NeedsCollision(CollisionObject^ body0, CollisionObject^ body1)
