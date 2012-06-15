@@ -39,6 +39,8 @@
 
 CollisionShape::CollisionShape(btCollisionShape* collisionShape)
 {
+	// UnmanagedPointer may be set later if a child constructor does
+	// extra processing, so check for NULL here.
 	if (collisionShape)
 		UnmanagedPointer = collisionShape;
 }
@@ -354,7 +356,7 @@ String^ CollisionShape::Name::get()
 
 BroadphaseNativeType CollisionShape::ShapeType::get()
 {
-	return (BroadphaseNativeType)_collisionShape->getShapeType();
+	return _shapeType;
 }
 
 Object^ CollisionShape::UserObject::get()
@@ -381,4 +383,6 @@ void CollisionShape::UnmanagedPointer::set(btCollisionShape* value)
 		void* obj = GCHandleToVoidPtr(handle);
 		_collisionShape->setUserPointer(obj);
 	}
+
+	_shapeType = (BroadphaseNativeType)_collisionShape->getShapeType();
 }
