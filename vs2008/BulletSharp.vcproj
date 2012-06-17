@@ -64,7 +64,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprtd"
+				AdditionalOptions="/NODEFAULTLIB:libcmtd /NODEFAULTLIB:msvcprtd"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug"
@@ -146,7 +146,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprt"
+				AdditionalOptions="/NODEFAULTLIB:libcmt /NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_MinsizeRel.lib BulletDynamics_MinsizeRel.lib BulletCollision_MinsizeRel.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel"
@@ -227,7 +227,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprt"
+				AdditionalOptions="/NODEFAULTLIB:libcmt /NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_MinsizeRel.lib BulletDynamics_MinsizeRel.lib BulletCollision_MinsizeRel.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel"
@@ -305,7 +305,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprtd"
+				AdditionalOptions="/NODEFAULTLIB:libcmtd /NODEFAULTLIB:msvcprtd"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug"
@@ -387,7 +387,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprt"
+				AdditionalOptions="/NODEFAULTLIB:libcmt /NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_MinsizeRel.lib BulletDynamics_MinsizeRel.lib BulletCollision_MinsizeRel.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel"
@@ -465,7 +465,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprtd"
+				AdditionalOptions="/NODEFAULTLIB:libcmtd /NODEFAULTLIB:msvcprtd"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug"
@@ -547,7 +547,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprt"
+				AdditionalOptions="/NODEFAULTLIB:libcmt /NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_MinsizeRel.lib BulletDynamics_MinsizeRel.lib BulletCollision_MinsizeRel.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel"
@@ -625,7 +625,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprtd"
+				AdditionalOptions="/NODEFAULTLIB:libcmtd /NODEFAULTLIB:msvcprtd"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug"
@@ -707,7 +707,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprt"
+				AdditionalOptions="/NODEFAULTLIB:libcmt /NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_MinsizeRel.lib BulletDynamics_MinsizeRel.lib BulletCollision_MinsizeRel.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel"
@@ -785,7 +785,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprtd"
+				AdditionalOptions="/NODEFAULTLIB:libcmtd /NODEFAULTLIB:msvcprtd"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug"
@@ -867,7 +867,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprt"
+				AdditionalOptions="/NODEFAULTLIB:libcmt /NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_MinsizeRel.lib BulletDynamics_MinsizeRel.lib BulletCollision_MinsizeRel.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel"
@@ -945,7 +945,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprtd"
+				AdditionalOptions="/NODEFAULTLIB:libcmtd /NODEFAULTLIB:msvcprtd"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug"
@@ -1024,7 +1024,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprtd"
+				AdditionalOptions="/NODEFAULTLIB:libcmtd /NODEFAULTLIB:msvcprtd"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug"
@@ -1106,7 +1106,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprt"
+				AdditionalOptions="/NODEFAULTLIB:libcmt /NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_MinsizeRel.lib BulletDynamics_MinsizeRel.lib BulletCollision_MinsizeRel.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel"
@@ -1187,7 +1187,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprt"
+				AdditionalOptions="/NODEFAULTLIB:libcmt /NODEFAULTLIB:msvcprt"
 				AdditionalDependencies="LinearMath_MinsizeRel.lib BulletDynamics_MinsizeRel.lib BulletCollision_MinsizeRel.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\MinSizeRel"
@@ -1265,7 +1265,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:msvcprtd"
+				AdditionalOptions="/NODEFAULTLIB:libcmtd /NODEFAULTLIB:msvcprtd"
 				AdditionalDependencies="LinearMath_Debug.lib BulletDynamics_Debug.lib BulletCollision_Debug.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\bullet\msvc\2008\lib\Debug"
