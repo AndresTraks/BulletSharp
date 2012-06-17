@@ -927,6 +927,7 @@
     <ClCompile Include="..\src\CollisionCreateFunc.cpp" />
     <ClCompile Include="..\src\CollisionDispatcher.cpp" />
     <ClCompile Include="..\src\CollisionObject.cpp" />
+    <ClCompile Include="..\src\CollisionObjectWrapper.cpp" />
     <ClCompile Include="..\src\CollisionWorld.cpp" />
     <ClCompile Include="..\src\CompoundCollisionAlgorithm.cpp" />
     <ClCompile Include="..\src\Convex2dConvex2dAlgorithm.cpp" />
@@ -1119,6 +1120,7 @@
     <ClInclude Include="..\src\CollisionCreateFunc.h" />
     <ClInclude Include="..\src\CollisionDispatcher.h" />
     <ClInclude Include="..\src\CollisionObject.h" />
+    <ClInclude Include="..\src\CollisionObjectWrapper.h" />
     <ClInclude Include="..\src\CollisionWorld.h" />
     <ClInclude Include="..\src\CompoundCollisionAlgorithm.h" />
     <ClInclude Include="..\src\Convex2dConvex2dAlgorithm.h" />

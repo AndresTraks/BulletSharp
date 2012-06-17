@@ -12,6 +12,7 @@ namespace BulletSharp
 	ref class BroadphaseProxy;
 	ref class CollisionConfiguration;
 	ref class CollisionObject;
+	ref class CollisionObjectWrapper;
 	ref class AlignedCollisionObjectArray;
 	ref class CollisionShape;
 	ref class ConvexShape;
@@ -219,8 +220,8 @@ namespace BulletSharp
 		public:
 			ContactResultCallback();
 
-			virtual btScalar AddSingleResult(ManifoldPoint^ cp, CollisionObject^ colObj0, int partId0, int index0,
-				CollisionObject^ colObj1, int partId1, int index1) = 0;
+			virtual btScalar AddSingleResult(ManifoldPoint^ cp, CollisionObjectWrapper^ colObj0Wrap, int partId0, int index0,
+				CollisionObjectWrapper^ colObj1Wrap, int partId1, int index1) = 0;
 			virtual bool NeedsCollision(BroadphaseProxy^ proxy0);
 
 			property CollisionFilterGroups CollisionFilterGroup

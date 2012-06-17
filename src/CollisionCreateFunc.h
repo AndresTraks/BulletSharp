@@ -7,6 +7,7 @@ namespace BulletSharp
 	ref class CollisionAlgorithm;
 	ref class CollisionAlgorithmConstructionInfo;
 	ref class CollisionObject;
+	ref class CollisionObjectWrapper;
 
 	public ref class CollisionAlgorithmCreateFunc : BulletSharp::IDisposable
 	{
@@ -29,7 +30,7 @@ namespace BulletSharp
 		CollisionAlgorithmCreateFunc();
 
 		CollisionAlgorithm^ CreateCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ info,
-			CollisionObject^ body0, CollisionObject^ body1);
+			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap);
 
 		property bool IsDisposed
 		{

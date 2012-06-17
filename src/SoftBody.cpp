@@ -5,6 +5,7 @@
 #include "AlignedObjectArray.h"
 #include "BroadphaseInterface.h"
 #include "Collections.h"
+#include "CollisionObjectWrapper.h"
 #include "Dispatcher.h"
 #include "RigidBody.h"
 #include "SoftBody.h"
@@ -2701,10 +2702,9 @@ void BulletSharp::SoftBody::SoftBody::DampClusters()
 	Unmanaged->dampClusters();
 }
 
-void BulletSharp::SoftBody::SoftBody::DefaultCollisionHandler(CollisionObject^ pco)
+void BulletSharp::SoftBody::SoftBody::DefaultCollisionHandler(CollisionObjectWrapper^ pco)
 {
-	throw gcnew NotImplementedException();
-	//Unmanaged->defaultCollisionHandler(pco->UnmanagedPointer);
+	Unmanaged->defaultCollisionHandler(pco->_unmanaged);
 }
 
 void BulletSharp::SoftBody::SoftBody::DefaultCollisionHandler(SoftBody^ psb)

@@ -4,6 +4,7 @@
 #ifndef DISABLE_COLLISION_ALGORITHMS
 
 #include "CollisionObject.h"
+#include "CollisionObjectWrapper.h"
 #include "ConvexConvexAlgorithm.h"
 #include "ConvexPenetrationDepthSolver.h"
 #include "PersistentManifold.h"
@@ -56,10 +57,10 @@ btConvexConvexAlgorithm::CreateFunc* ConvexConvexAlgorithm::CreateFunc::Unmanage
 
 
 ConvexConvexAlgorithm::ConvexConvexAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
-	CollisionObject^ body0, CollisionObject^ body1, SimplexSolverInterface^ simplexSolver,
+	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, SimplexSolverInterface^ simplexSolver,
 	ConvexPenetrationDepthSolver^ pdSolver, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
-: ActivatingCollisionAlgorithm(new btConvexConvexAlgorithm(mf->UnmanagedPointer, *ci->UnmanagedPointer, body0->UnmanagedPointer,
-	body1->UnmanagedPointer, simplexSolver->UnmanagedPointer, pdSolver->UnmanagedPointer,
+: ActivatingCollisionAlgorithm(new btConvexConvexAlgorithm(mf->UnmanagedPointer, *ci->UnmanagedPointer, body0Wrap->_unmanaged,
+	body1Wrap->_unmanaged, simplexSolver->UnmanagedPointer, pdSolver->UnmanagedPointer,
 	numPerturbationIterations, minimumPointsPerturbationThreshold))
 {
 }

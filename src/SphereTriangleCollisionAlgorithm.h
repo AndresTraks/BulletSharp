@@ -5,6 +5,8 @@
 
 namespace BulletSharp
 {
+	ref class CollisionObjectWrapper;
+
 	public ref class SphereTriangleCollisionAlgorithm : ActivatingCollisionAlgorithm
 	{
 	public:
@@ -15,7 +17,7 @@ namespace BulletSharp
 		};
 
 		SphereTriangleCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
-			CollisionObject^ body0, CollisionObject^ body1, bool isSwapped);
+			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped);
 		SphereTriangleCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci);
 
 	internal:

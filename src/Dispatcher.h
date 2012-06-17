@@ -9,6 +9,7 @@ namespace BulletSharp
 	ref class BroadphaseProxy;
 	ref class CollisionAlgorithm;
 	ref class CollisionDispatcher;
+	ref class CollisionObjectWrapper;
 	ref class DispatcherInfo;
 	ref class OverlappingPairCache;
 	ref class PersistentManifold;
@@ -142,10 +143,10 @@ namespace BulletSharp
 		void ClearManifold(PersistentManifold^ manifold);
 		void DispatchAllCollisionPairs(OverlappingPairCache^ pairCache,
 			DispatcherInfo^ dispatchInfo, Dispatcher^ dispatcher);
-		CollisionAlgorithm^ FindAlgorithm(CollisionObject^ body0,
-			CollisionObject^ body1, PersistentManifold^ sharedManifold);
-		CollisionAlgorithm^ FindAlgorithm(CollisionObject^ body0,
-			CollisionObject^ body1);
+		CollisionAlgorithm^ FindAlgorithm(CollisionObjectWrapper^ body0Wrap,
+			CollisionObjectWrapper^ body1Wrap, PersistentManifold^ sharedManifold);
+		CollisionAlgorithm^ FindAlgorithm(CollisionObjectWrapper^ body0Wrap,
+			CollisionObjectWrapper^ body1Wrap);
 		void FreeCollisionAlgorithm(IntPtr ptr);
 #ifndef DISABLE_INTERNAL
 		//array<PersistentManifold^>^ GetInternalManifoldPointer();

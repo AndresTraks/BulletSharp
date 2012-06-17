@@ -6,7 +6,6 @@ namespace BulletSharp
 {
 	ref class Serializer;
 
-	[DebuggerDisplay("Type = {ShapeType}")]
 	public ref class CollisionShape : BulletSharp::IDisposable
 	{
 	public:

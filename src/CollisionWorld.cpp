@@ -5,6 +5,7 @@
 #include "BroadphaseProxy.h"
 #include "CollisionConfiguration.h"
 #include "CollisionObject.h"
+#include "CollisionObjectWrapper.h"
 #include "CollisionShape.h"
 #include "CollisionWorld.h"
 #include "ConvexShape.h"
@@ -843,15 +844,12 @@ bool ContactResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) con
 }
 
 btScalar ContactResultCallbackWrapper::addSingleResult(btManifoldPoint& cp,
-	const btCollisionObjectWrapper* colObj0, int partId0, int index0,
-	const btCollisionObjectWrapper* colObj1, int partId1, int index1)
+	const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0,
+	const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
 {
-	throw gcnew NotImplementedException();
-	/*
 	return _callback->AddSingleResult(gcnew ManifoldPoint(&cp),
-		CollisionObject::GetManaged((btCollisionObject*)colObj0), partId0, index0,
-		CollisionObject::GetManaged((btCollisionObject*)colObj1), partId1, index1);
-	*/
+		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap), partId0, index0,
+		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj1Wrap), partId1, index1);
 }
 
 bool ContactResultCallbackWrapper::baseNeedsCollision(btBroadphaseProxy* proxy0) const

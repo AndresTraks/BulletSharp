@@ -4,6 +4,7 @@
 
 #include "AlignedObjectArray.h"
 #include "CollisionObject.h"
+#include "CollisionObjectWrapper.h"
 #include "SoftBody.h"
 #include "SoftBodySolver.h"
 #include "SoftBodySolverVertexBuffer.h"
@@ -33,10 +34,9 @@ void SoftBody::SoftBodySolver::Optimize(AlignedSoftBodyArray^ softBodies)
 	_solver->optimize(*(btSoftBody::tSoftBodyArray*)softBodies->_unmanaged);
 }
 
-void SoftBody::SoftBodySolver::ProcessCollision(SoftBody^ softBody, CollisionObject^ collisionObject)
+void SoftBody::SoftBodySolver::ProcessCollision(SoftBody^ softBody, CollisionObjectWrapper^ collisionObjectWrapper)
 {
-	throw gcnew NotImplementedException();
-	//_solver->processCollision(softBody->UnmanagedPointer, collisionObject->UnmanagedPointer);
+	_solver->processCollision(softBody->UnmanagedPointer, collisionObjectWrapper->_unmanaged);
 }
 
 void SoftBody::SoftBodySolver::ProcessCollision(SoftBody^ softBody, SoftBody^ otherSoftBody)

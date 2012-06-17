@@ -3,6 +3,7 @@
 #ifndef DISABLE_COLLISION_ALGORITHMS
 
 #include "CollisionObject.h"
+#include "CollisionObjectWrapper.h"
 #include "PersistentManifold.h"
 #include "SphereSphereCollisionAlgorithm.h"
 
@@ -12,9 +13,9 @@ SphereSphereCollisionAlgorithm::CreateFunc::CreateFunc()
 }
 
 SphereSphereCollisionAlgorithm::SphereSphereCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
-	CollisionObject^ body0, CollisionObject^ body1)
+	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
 : ActivatingCollisionAlgorithm(new btSphereSphereCollisionAlgorithm(mf->UnmanagedPointer, *ci->UnmanagedPointer,
-	body0->UnmanagedPointer, body1->UnmanagedPointer))
+	body0Wrap->_unmanaged, body1Wrap->_unmanaged))
 {
 }
 

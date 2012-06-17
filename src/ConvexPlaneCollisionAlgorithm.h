@@ -6,6 +6,7 @@
 
 namespace BulletSharp
 {
+	ref class CollisionObjectWrapper;
 	ref class ConvexPenetrationDepthSolver;
 	ref class PersistentManifold;
 
@@ -37,10 +38,10 @@ namespace BulletSharp
 		};
 
 		ConvexPlaneCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
-			CollisionObject^ col0, CollisionObject^ col1, bool isSwapped, int numPerturbationIterations,
+			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped, int numPerturbationIterations,
 			int minimumPointsPerturbationThreshold);
 
-		void CollideSingleContact(Quaternion perturbeRot, CollisionObject^ body0, CollisionObject^ body1,
+		void CollideSingleContact(Quaternion perturbeRot, CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 			DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut);
 
 	internal:

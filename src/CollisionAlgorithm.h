@@ -7,6 +7,7 @@ namespace BulletSharp
 	ref class Dispatcher;
 	ref class DispatcherInfo;
 	ref class CollisionObject;
+	ref class CollisionObjectWrapper;
 	ref class ManifoldResult;
 	ref class AlignedManifoldArray;
 	ref class PersistentManifold;
@@ -61,7 +62,7 @@ namespace BulletSharp
 		btScalar CalculateTimeOfImpact(CollisionObject^ body0, CollisionObject^ body1,
 			DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut);
 		void GetAllContactManifolds(AlignedManifoldArray^ manifoldArray);
-		void ProcessCollision(CollisionObject^ body0, CollisionObject^ body1,
+		void ProcessCollision(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 			DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut);
 
 		property bool IsDisposed

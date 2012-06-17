@@ -5,13 +5,14 @@
 namespace BulletSharp
 {
 	ref class CollisionObject;
+	ref class CollisionObjectWrapper;
 	ref class PersistentManifold;
 
 	public ref class ManifoldResult : DiscreteCollisionDetectorInterface::Result
 	{
 	public:
 		ManifoldResult();
-		//ManifoldResult(CollisionObject^ body0, CollisionObject^ body1);
+		ManifoldResult(CollisionObjectWrapper^ body0, CollisionObjectWrapper^ body1);
 
 		property CollisionObject^ Body0Internal
 		{
@@ -21,6 +22,16 @@ namespace BulletSharp
 		property CollisionObject^ Body1Internal
 		{
 			CollisionObject^ get();
+		}
+
+		property CollisionObjectWrapper^ Body0Wrap
+		{
+			CollisionObjectWrapper^ get();
+		}
+
+		property CollisionObjectWrapper^ Body1Wrap
+		{
+			CollisionObjectWrapper^ get();
 		}
 
 		property BulletSharp::PersistentManifold^ PersistentManifold

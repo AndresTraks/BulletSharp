@@ -26,7 +26,7 @@ namespace SoftDemo
         Vector3 goal;
         bool drag;
 
-        int demo = 7;
+        int demo = 20;
 
         SoftBodyWorldInfo softBodyWorldInfo;
 

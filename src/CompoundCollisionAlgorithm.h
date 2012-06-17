@@ -7,6 +7,7 @@ namespace BulletSharp
 {
 	ref class CollisionAlgorithmConstructionInfo;
 	ref class CollisionObject;
+	ref class CollisionObjectWrapper;
 	ref class PersistentManifold;
 
 	public ref class CompoundCollisionAlgorithm : ActivatingCollisionAlgorithm
@@ -25,6 +26,6 @@ namespace BulletSharp
 		};
 
 		CompoundCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci,
-			CollisionObject^ body0, CollisionObject^ body1, bool isSwapped);
+			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped);
 	};
 };

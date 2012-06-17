@@ -1558,6 +1558,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\CollisionObjectWrapper.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\src\CollisionWorld.cpp"
 						>
 					</File>
@@ -2373,6 +2377,10 @@
 					</File>
 					<File
 						RelativePath="..\src\CollisionObject.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CollisionObjectWrapper.h"
 						>
 					</File>
 					<File

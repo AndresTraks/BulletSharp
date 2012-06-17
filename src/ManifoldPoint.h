@@ -5,11 +5,12 @@
 namespace BulletSharp
 {
 	class ContactAddedCallbackWrapper;
+	ref class CollisionObjectWrapper;
 	ref class ManifoldPoint;
 
 	public delegate bool ContactAdded(ManifoldPoint^ cp,
-		CollisionObject^ colObj0, int partId0, int index0,
-		CollisionObject^ colObj1, int partId1, int index1);
+		CollisionObjectWrapper^ colObj0Wrap, int partId0, int index0,
+		CollisionObjectWrapper^ colObj1Wrap, int partId1, int index1);
 
 	public ref class ManifoldPoint
 	{
@@ -183,7 +184,7 @@ namespace BulletSharp
 	class ContactAddedCallbackWrapper
 	{
 	public:
-		static bool CustomMaterialCombinerCallback(btManifoldPoint& cp, const btCollisionObject* colObj0,
-			int partId0, int index0, const btCollisionObject* colObj1, int partId1, int index1);
+		static bool CustomMaterialCombinerCallback(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap,
+			int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1);
 	};
 };

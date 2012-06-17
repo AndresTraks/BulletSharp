@@ -3,6 +3,7 @@
 #include "CollisionAlgorithm.h"
 #include "CollisionCreateFunc.h"
 #include "CollisionObject.h"
+#include "CollisionObjectWrapper.h"
 
 CollisionAlgorithmCreateFunc::CollisionAlgorithmCreateFunc()
 {
@@ -32,11 +33,10 @@ CollisionAlgorithmCreateFunc::!CollisionAlgorithmCreateFunc()
 }
 
 CollisionAlgorithm^ CollisionAlgorithmCreateFunc::CreateCollisionAlgorithm(
-	CollisionAlgorithmConstructionInfo^ info, CollisionObject^ body0, CollisionObject^ body1)
+	CollisionAlgorithmConstructionInfo^ info, CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
 {
-	throw gcnew NotImplementedException();
-	/* return gcnew CollisionAlgorithm(UnmanagedPointer->CreateCollisionAlgorithm(
-		*info->UnmanagedPointer, body0->UnmanagedPointer, body1->UnmanagedPointer)); */
+	return gcnew CollisionAlgorithm(UnmanagedPointer->CreateCollisionAlgorithm(
+		*info->UnmanagedPointer, body0Wrap->_unmanaged, body1Wrap->_unmanaged));
 }
 
 bool CollisionAlgorithmCreateFunc::IsDisposed::get()

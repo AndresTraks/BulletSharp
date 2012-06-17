@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #include "CollisionAlgorithm.h"
+#include "CollisionObjectWrapper.h"
 #include "Dispatcher.h"
 #include "OverlappingPairCache.h"
 #include "PersistentManifold.h"
@@ -185,18 +186,16 @@ void Dispatcher::DispatchAllCollisionPairs(OverlappingPairCache^ pairCache,
 		*dispatchInfo->UnmanagedPointer, dispatcher->UnmanagedPointer);
 }
 
-CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObject^ body0, CollisionObject^ body1)
+CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
 {
-	throw gcnew NotImplementedException();
-	//return gcnew CollisionAlgorithm(_dispatcher->findAlgorithm(body0->UnmanagedPointer, body1->UnmanagedPointer));
+	return gcnew CollisionAlgorithm(_dispatcher->findAlgorithm(body0Wrap->_unmanaged, body1Wrap->_unmanaged));
 }
 
-CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObject^ body0, CollisionObject^ body1,
+CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 	PersistentManifold^ sharedManifold)
 {
-	throw gcnew NotImplementedException();
-	/* return gcnew CollisionAlgorithm(_dispatcher->findAlgorithm(
-		body0->UnmanagedPointer, body1->UnmanagedPointer, sharedManifold->UnmanagedPointer)); */
+	return gcnew CollisionAlgorithm(_dispatcher->findAlgorithm(
+		body0Wrap->_unmanaged, body1Wrap->_unmanaged, sharedManifold->UnmanagedPointer));
 }
 
 void Dispatcher::FreeCollisionAlgorithm(IntPtr ptr)

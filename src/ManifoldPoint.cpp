@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 
+#include "CollisionObjectWrapper.h"
 #include "ManifoldPoint.h"
 
 ContactAdded^ ManifoldPoint::ContactAddedCallback::get()
@@ -8,9 +9,8 @@ ContactAdded^ ManifoldPoint::ContactAddedCallback::get()
 }
 void ManifoldPoint::ContactAddedCallback::set(ContactAdded^ value)
 {
-	throw gcnew NotImplementedException();
-	//ManifoldPoint::gContactAddedCallback = value;
-	//::gContactAddedCallback = (value != nullptr) ? ContactAddedCallbackWrapper::CustomMaterialCombinerCallback : 0;
+	ManifoldPoint::gContactAddedCallback = value;
+	::gContactAddedCallback = (value != nullptr) ? ContactAddedCallbackWrapper::CustomMaterialCombinerCallback : 0;
 }
 
 ManifoldPoint::ManifoldPoint(btManifoldPoint* point)
@@ -260,10 +260,10 @@ void ManifoldPoint::UnmanagedPointer::set(btManifoldPoint* value)
 	}
 }
 
-bool ContactAddedCallbackWrapper::CustomMaterialCombinerCallback(btManifoldPoint& cp, const btCollisionObject* colObj0,
-	int partId0, int index0, const btCollisionObject* colObj1, int partId1, int index1)
+bool ContactAddedCallbackWrapper::CustomMaterialCombinerCallback(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap,
+	int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
 {
 	return ManifoldPoint::gContactAddedCallback->Invoke(gcnew ManifoldPoint(&cp),
-		CollisionObject::GetManaged((btCollisionObject*)colObj0), partId0, index0,
-		CollisionObject::GetManaged((btCollisionObject*)colObj1), partId1, index1);
+		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap), partId0, index0,
+		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj1Wrap), partId1, index1);
 }

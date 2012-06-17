@@ -5,6 +5,8 @@
 
 namespace BulletSharp
 {
+	ref class CollisionObjectWrapper;
+
 	public ref class ConvexConcaveCollisionAlgorithm : ActivatingCollisionAlgorithm
 	{
 	public:
@@ -21,7 +23,7 @@ namespace BulletSharp
 		};
 
 		ConvexConcaveCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci,
-			CollisionObject^ body0, CollisionObject^ body1, bool isSwapped);
+			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped);
 
 		void ClearCache();
 

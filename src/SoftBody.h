@@ -9,6 +9,7 @@ namespace BulletSharp
 	ref class AlignedVector3Array;
 	ref class AlignedCollisionObjectArray;
 	ref class BroadphaseInterface;
+	ref class CollisionObjectWrapper;
 	ref class Dbvt;
 	ref class DbvtNode;
 	ref class Dispatcher;
@@ -1717,7 +1718,7 @@ namespace BulletSharp
 			bool CutLink(int node0, int node1, btScalar position);
 			bool CutLink(Node^ node0, Node^ node1, btScalar position);
 			void DampClusters();
-			void DefaultCollisionHandler(CollisionObject^ pco);
+			void DefaultCollisionHandler(CollisionObjectWrapper^ pco);
 			void DefaultCollisionHandler(SoftBody^ psb);
 			Vector3 EvaluateCom();
 			int GenerateBendingConstraints(int distance, Material^ material);

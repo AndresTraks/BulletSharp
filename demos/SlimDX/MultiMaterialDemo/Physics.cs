@@ -37,30 +37,30 @@ namespace MultiMaterialDemo
         }
 
         static bool CustomMaterialCombinerCallback(ManifoldPoint cp,
-            CollisionObject colObj0, int partId0, int index0,
-            CollisionObject colObj1, int partId1, int index1)
+            CollisionObjectWrapper colObj0Wrap, int partId0, int index0,
+            CollisionObjectWrapper colObj1Wrap, int partId1, int index1)
         {
             // Apply material properties
-            if (colObj0.CollisionShape.ShapeType == BroadphaseNativeType.TriangleShape)
+            if (colObj0Wrap.CollisionShape.ShapeType == BroadphaseNativeType.TriangleShape)
             {
-                CollisionShape parent0 = colObj0.CollisionShape;
+                CollisionShape parent0 = colObj0Wrap.CollisionObject.CollisionShape;
                 if (parent0 != null && parent0.ShapeType == BroadphaseNativeType.MultiMaterialTriangleMesh)
                 {
                     MultimaterialTriangleMeshShape shape = parent0 as MultimaterialTriangleMeshShape;
                     BulletMaterial props = shape.GetMaterialProperties(partId0, index0);
-                    cp.CombinedFriction = CalculateCombinedFriction(props.Friction, colObj1.Friction);
-                    cp.CombinedRestitution = props.Restitution * colObj1.Restitution;
+                    cp.CombinedFriction = CalculateCombinedFriction(props.Friction, colObj1Wrap.CollisionObject.Friction);
+                    cp.CombinedRestitution = props.Restitution * colObj1Wrap.CollisionObject.Restitution;
                 }
             }
-            else if (colObj1.CollisionShape.ShapeType == BroadphaseNativeType.TriangleShape)
+            else if (colObj1Wrap.CollisionShape.ShapeType == BroadphaseNativeType.TriangleShape)
             {
-                CollisionShape parent1 = colObj1.CollisionShape;
+                CollisionShape parent1 = colObj1Wrap.CollisionObject.CollisionShape;
                 if (parent1 != null && parent1.ShapeType == BroadphaseNativeType.MultiMaterialTriangleMesh)
                 {
                     MultimaterialTriangleMeshShape shape = parent1 as MultimaterialTriangleMeshShape;
                     BulletMaterial props = shape.GetMaterialProperties(partId1, index1);
-                    cp.CombinedFriction = CalculateCombinedFriction(props.Friction, colObj0.Friction);
-                    cp.CombinedRestitution = props.Restitution * colObj0.Restitution;
+                    cp.CombinedFriction = CalculateCombinedFriction(props.Friction, colObj0Wrap.CollisionObject.Friction);
+                    cp.CombinedRestitution = props.Restitution * colObj0Wrap.CollisionObject.Restitution;
                 }
             }
 

@@ -3,6 +3,7 @@
 #include "AlignedObjectArray.h"
 #include "CollisionAlgorithm.h"
 #include "CollisionObject.h"
+#include "CollisionObjectWrapper.h"
 #include "Dispatcher.h"
 #include "ManifoldResult.h"
 #include "PersistentManifold.h"
@@ -80,12 +81,11 @@ void CollisionAlgorithm::GetAllContactManifolds(AlignedManifoldArray^ manifoldAr
 	_algorithm->getAllContactManifolds(*(btManifoldArray*)manifoldArray->_unmanaged);
 }
 
-void CollisionAlgorithm::ProcessCollision(CollisionObject^ body0, CollisionObject^ body1,
+void CollisionAlgorithm::ProcessCollision(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 	DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
 {
-	throw gcnew NotImplementedException();
-	/* _algorithm->processCollision(body0->UnmanagedPointer, body1->UnmanagedPointer,
-		*dispatchInfo->UnmanagedPointer, resultOut->UnmanagedPointer); */
+	_algorithm->processCollision(body0Wrap->_unmanaged, body1Wrap->_unmanaged,
+		*dispatchInfo->UnmanagedPointer, resultOut->UnmanagedPointer);
 }
 
 bool CollisionAlgorithm::IsDisposed::get()

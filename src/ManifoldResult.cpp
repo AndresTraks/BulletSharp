@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #include "CollisionObject.h"
+#include "CollisionObjectWrapper.h"
 #include "ManifoldResult.h"
 #include "PersistentManifold.h"
 
@@ -8,14 +9,13 @@ ManifoldResult::ManifoldResult()
 : DiscreteCollisionDetectorInterface::Result(new btManifoldResult())
 {
 }
-/*
-ManifoldResult::ManifoldResult(BulletSharp::CollisionObject ^body0, BulletSharp::CollisionObject ^body1)
+
+ManifoldResult::ManifoldResult(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
 : DiscreteCollisionDetectorInterface::Result(
-	new btManifoldResult(body0->UnmanagedPointer, body1->UnmanagedPointer))
+	new btManifoldResult(body0Wrap->_unmanaged, body1Wrap->_unmanaged))
 {
-	throw gcnew NotImplementedException();
 }
-*/
+
 CollisionObject^ ManifoldResult::Body0Internal::get()
 {
 	const btCollisionObject* body0 = UnmanagedPointer->getBody0Internal();
@@ -26,6 +26,16 @@ CollisionObject^ ManifoldResult::Body1Internal::get()
 {
 	const btCollisionObject* body1 = UnmanagedPointer->getBody1Internal();
 	return CollisionObject::GetManaged((btCollisionObject*)body1);
+}
+
+CollisionObjectWrapper^ ManifoldResult::Body0Wrap::get()
+{
+	return gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)UnmanagedPointer->getBody0Wrap());
+}
+
+CollisionObjectWrapper^ ManifoldResult::Body1Wrap::get()
+{
+	return gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)UnmanagedPointer->getBody1Wrap());
 }
 
 PersistentManifold^ ManifoldResult::PersistentManifold::get()

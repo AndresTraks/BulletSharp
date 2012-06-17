@@ -5,6 +5,8 @@
 
 namespace BulletSharp
 {
+	ref class CollisionObjectWrapper;
+
 	public ref class SphereBoxCollisionAlgorithm : ActivatingCollisionAlgorithm
 	{
 	public:
@@ -15,11 +17,11 @@ namespace BulletSharp
 		};
 
 		SphereBoxCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
-			CollisionObject^ body0, CollisionObject^ body1, bool isSwapped);
+			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped);
 
-		btScalar GetSphereDistance(CollisionObject^ boxObj, Vector3 v3PointOnBox,
+		btScalar GetSphereDistance(CollisionObjectWrapper^ boxObjWrap, Vector3 v3PointOnBox,
 			Vector3 v3PointOnSphere, Vector3 v3SphereCenter, btScalar fRadius);
-		btScalar GetSpherePenetration(CollisionObject^ boxObj, Vector3 v3PointOnBox, Vector3 v3PointOnSphere,
+		btScalar GetSpherePenetration(CollisionObjectWrapper^ boxObjWrap, Vector3 v3PointOnBox, Vector3 v3PointOnSphere,
 			Vector3 v3SphereCenter, btScalar fRadius, Vector3 aabbMin, Vector3 aabbMax);
 
 	internal:

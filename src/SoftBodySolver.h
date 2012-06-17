@@ -23,7 +23,7 @@ namespace BulletSharp
 			void CopyBackToSoftBodies();
 			void Optimize(AlignedSoftBodyArray^ softBodies, bool forceUpdate);
 			void Optimize(AlignedSoftBodyArray^ softBodies);
-			void ProcessCollision(SoftBody^ softBody, CollisionObject^ collisionObject);
+			void ProcessCollision(SoftBody^ softBody, CollisionObjectWrapper^ collisionObjectWrapper);
 			void ProcessCollision(SoftBody^ softBody, SoftBody^ otherSoftBody);
 
 			property int NumberOfPositionIterations

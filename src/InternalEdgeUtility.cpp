@@ -4,6 +4,7 @@
 
 #include "BvhTriangleMeshShape.h"
 #include "CollisionObject.h"
+#include "CollisionObjectWrapper.h"
 #include "InternalEdgeUtility.h"
 #include "ManifoldPoint.h"
 #include "TriangleInfoMap.h"
@@ -18,20 +19,18 @@ void InternalEdgeUtility::GenerateInternalEdgeInfo(BvhTriangleMeshShape^ trimesh
 	btGenerateInternalEdgeInfo(trimeshShape->UnmanagedPointer, triangleInfoMap->UnmanagedPointer);
 }
 
-void InternalEdgeUtility::AdjustInternalEdgeContacts(ManifoldPoint^ cp, CollisionObject^ trimeshColObj0, CollisionObject^ otherColObj1,
+void InternalEdgeUtility::AdjustInternalEdgeContacts(ManifoldPoint^ cp, CollisionObjectWrapper^ trimeshColObj0Wrap, CollisionObjectWrapper^ otherColObj1Wrap,
 	int partId0, int index0, InternalEdgeAdjustFlags normalAdjustFlags)
 {
-	throw gcnew NotImplementedException();
-	/* btAdjustInternalEdgeContacts(*cp->UnmanagedPointer, trimeshColObj0->UnmanagedPointer, otherColObj1->UnmanagedPointer,
-		partId0, index0, (int)normalAdjustFlags); */
+	btAdjustInternalEdgeContacts(*cp->UnmanagedPointer, trimeshColObj0Wrap->_unmanaged, otherColObj1Wrap->_unmanaged,
+		partId0, index0, (int)normalAdjustFlags);
 }
 
-void InternalEdgeUtility::AdjustInternalEdgeContacts(ManifoldPoint^ cp, CollisionObject^ trimeshColObj0, CollisionObject^ otherColObj1,
+void InternalEdgeUtility::AdjustInternalEdgeContacts(ManifoldPoint^ cp, CollisionObjectWrapper^ trimeshColObj0Wrap, CollisionObjectWrapper^ otherColObj1Wrap,
 	int partId0, int index0)
 {
-	throw gcnew NotImplementedException();
-	/* btAdjustInternalEdgeContacts(*cp->UnmanagedPointer, trimeshColObj0->UnmanagedPointer, otherColObj1->UnmanagedPointer,
-		partId0, index0); */
+	btAdjustInternalEdgeContacts(*cp->UnmanagedPointer, trimeshColObj0Wrap->_unmanaged, otherColObj1Wrap->_unmanaged,
+		partId0, index0);
 }
 
 #ifndef DISABLE_DEBUGDRAW

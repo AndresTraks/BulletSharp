@@ -3,6 +3,7 @@
 #ifndef DISABLE_COLLISION_ALGORITHMS
 
 #include "CollisionObject.h"
+#include "CollisionObjectWrapper.h"
 #include "CompoundCollisionAlgorithm.h"
 #include "PersistentManifold.h"
 
@@ -17,9 +18,9 @@ CompoundCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc()
 }
 
 CompoundCollisionAlgorithm::CompoundCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci,
-	CollisionObject^ body0, CollisionObject^ body1, bool isSwapped)
+	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped)
 : ActivatingCollisionAlgorithm(new btCompoundCollisionAlgorithm(*ci->UnmanagedPointer,
-	body0->UnmanagedPointer, body1->UnmanagedPointer, isSwapped))
+	body0Wrap->_unmanaged, body1Wrap->_unmanaged, isSwapped))
 {
 }
 

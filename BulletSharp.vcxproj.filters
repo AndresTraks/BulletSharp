@@ -617,6 +617,9 @@
     <ClCompile Include="src\Hacd.cpp">
       <Filter>Source Files\Extras\HACD</Filter>
     </ClCompile>
+    <ClCompile Include="src\CollisionObjectWrapper.cpp">
+      <Filter>Source Files\Collision\CollisionDispatch</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\Resources.rc">
@@ -1103,6 +1106,9 @@
     </ClInclude>
     <ClInclude Include="src\Hacd.h">
       <Filter>Header Files\Extras\HACD</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CollisionObjectWrapper.h">
+      <Filter>Header Files\Collision\CollisionDispatch</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

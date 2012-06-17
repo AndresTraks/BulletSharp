@@ -7,6 +7,7 @@ namespace BulletSharp
 {
 	ref class CollisionAlgorithmConstructionInfo;
 	ref class CollisionObject;
+	ref class CollisionObjectWrapper;
 	ref class PersistentManifold;
 
 	public ref class Box2dBox2dCollisionAlgorithm : ActivatingCollisionAlgorithm
@@ -20,6 +21,6 @@ namespace BulletSharp
 
 		Box2dBox2dCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci);
 		Box2dBox2dCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
-			CollisionObject^ body0, CollisionObject^ body1);
+			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap);
 	};
 };

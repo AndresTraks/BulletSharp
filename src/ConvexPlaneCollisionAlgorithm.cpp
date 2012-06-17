@@ -4,6 +4,7 @@
 #ifndef DISABLE_COLLISION_ALGORITHMS
 
 #include "CollisionObject.h"
+#include "CollisionObjectWrapper.h"
 #include "ConvexPlaneCollisionAlgorithm.h"
 #include "Dispatcher.h"
 #include "ManifoldResult.h"
@@ -39,17 +40,17 @@ btConvexPlaneCollisionAlgorithm::CreateFunc* ConvexPlaneCollisionAlgorithm::Crea
 
 
 ConvexPlaneCollisionAlgorithm::ConvexPlaneCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
-	CollisionObject^ col0, CollisionObject^ col1, bool isSwapped, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
+	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
 : CollisionAlgorithm(new btConvexPlaneCollisionAlgorithm(mf->UnmanagedPointer, *ci->UnmanagedPointer,
-	col0->UnmanagedPointer, col1->UnmanagedPointer, isSwapped, numPerturbationIterations, minimumPointsPerturbationThreshold))
+	body0Wrap->_unmanaged, body1Wrap->_unmanaged, isSwapped, numPerturbationIterations, minimumPointsPerturbationThreshold))
 {
 }
 
-void ConvexPlaneCollisionAlgorithm::CollideSingleContact(Quaternion perturbeRot, CollisionObject^ body0, CollisionObject^ body1,
+void ConvexPlaneCollisionAlgorithm::CollideSingleContact(Quaternion perturbeRot, CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 	DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
 {
 	btQuaternion* perturbeRotTemp = Math::QuaternionToBtQuat(perturbeRot);
-	UnmanagedPointer->collideSingleContact(*perturbeRotTemp, body0->UnmanagedPointer, body1->UnmanagedPointer,
+	UnmanagedPointer->collideSingleContact(*perturbeRotTemp, body0Wrap->_unmanaged, body1Wrap->_unmanaged,
 		*dispatchInfo->UnmanagedPointer, resultOut->UnmanagedPointer);
 	delete perturbeRotTemp;
 }

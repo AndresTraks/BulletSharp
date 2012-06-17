@@ -4,6 +4,7 @@
 
 #include "Box2dBox2dCollisionAlgorithm.h"
 #include "CollisionObject.h"
+#include "CollisionObjectWrapper.h"
 #include "PersistentManifold.h"
 
 Box2dBox2dCollisionAlgorithm::CreateFunc::CreateFunc()
@@ -17,9 +18,9 @@ Box2dBox2dCollisionAlgorithm::Box2dBox2dCollisionAlgorithm(CollisionAlgorithmCon
 }
 
 Box2dBox2dCollisionAlgorithm::Box2dBox2dCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
-	CollisionObject^ body0, CollisionObject^ body1)
+	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
 : ActivatingCollisionAlgorithm(new btBox2dBox2dCollisionAlgorithm((mf != nullptr) ? mf->UnmanagedPointer : 0, *ci->UnmanagedPointer,
-	body0->_unmanaged, body1->_unmanaged))
+	body0Wrap->_unmanaged, body1Wrap->_unmanaged))
 {
 }
 

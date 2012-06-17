@@ -142,23 +142,9 @@ namespace DemoFramework.SlimDX
             Form = new RenderForm();
         }
 
-        /// <summary>
-        /// Disposes of object resources.
-        /// </summary>
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes of object resources.
-        /// </summary>
-        /// <param name="disposeManagedResources">If true, managed resources should be
-        /// disposed of in addition to unmanaged resources.</param>
-        protected virtual void Dispose(bool disposeManagedResources)
-        {
-            if (disposeManagedResources)
+            if (disposing)
             {
                 apiContext.Dispose();
                 if (Form.IsDisposed == false)
@@ -166,6 +152,7 @@ namespace DemoFramework.SlimDX
                 Info.Dispose();
                 _meshFactory.Dispose();
             }
+            base.Dispose(disposing);
         }
 
         /// <summary>
