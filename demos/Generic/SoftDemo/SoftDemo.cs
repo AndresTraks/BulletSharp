@@ -1201,6 +1201,10 @@ namespace SoftDemo
                         {
                             results = res;
                         }
+                        else
+                        {
+                            //res.Dispose();
+                        }
                     }
                     if (results.Fraction < 1)
                     {

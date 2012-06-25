@@ -69,20 +69,16 @@ namespace DemoFramework.Xna
             Form = new XnaForm(this);
         }
 
-        /// <summary>
-        /// Disposes of object resources.
-        /// </summary>
-        /// <param name="disposeManagedResources">If true, managed resources should be
-        /// disposed of in addition to unmanaged resources.</param>
-        protected virtual void Dispose(bool disposeManagedResources)
+        protected override void Dispose(bool disposing)
         {
-            if (disposeManagedResources)
+            if (disposing)
             {
                 if (Form.IsDisposed == false)
                     Form.Dispose();
                 Info.Dispose();
                 _meshFactory.Dispose();
             }
+            base.Dispose(disposing);
         }
 
         /// <summary>

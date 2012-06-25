@@ -394,14 +394,8 @@ CollisionWorld::RayResultCallback::~RayResultCallback()
 
 CollisionWorld::RayResultCallback::!RayResultCallback()
 {
-	if (this->IsDisposed)
-		return;
-	
-	OnDisposing(this, nullptr);
-	
+	delete _unmanaged;
 	_unmanaged = NULL;
-	
-	OnDisposed(this, nullptr);
 }
 
 btScalar CollisionWorld::RayResultCallback::AddSingleResult(LocalRayResult^ rayResult, bool normalInWorldSpace)

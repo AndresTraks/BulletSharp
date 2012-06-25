@@ -329,6 +329,7 @@ namespace DemoFramework
                                 }
                             }
                         }
+                        rayCallback.Dispose();
                     }
                 }
             }

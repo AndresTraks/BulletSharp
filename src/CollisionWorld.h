@@ -290,12 +290,8 @@ namespace BulletSharp
 			}
 		};
 
-		ref class RayResultCallback : BulletSharp::IDisposable
+		ref class RayResultCallback
 		{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
-
 		internal:
 			btCollisionWorld::RayResultCallback* _unmanaged;
 
@@ -303,9 +299,9 @@ namespace BulletSharp
 			RayResultCallback(btCollisionWorld::RayResultCallback* callback);
 
 		public:
-			!RayResultCallback();
-		protected:
 			~RayResultCallback();
+		protected:
+			!RayResultCallback();
 
 		public:
 			btScalar AddSingleResult(LocalRayResult^ rayResult, bool normalInWorldSpace);
