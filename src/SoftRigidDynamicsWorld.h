@@ -48,12 +48,6 @@ namespace BulletSharp
 			{
 				SoftBodyWorldInfo^ get();
 			}
-
-		internal:
-			property btSoftRigidDynamicsWorld* UnmanagedPointer
-			{
-				btSoftRigidDynamicsWorld* get() new;
-			}
 		};
 	};
 };

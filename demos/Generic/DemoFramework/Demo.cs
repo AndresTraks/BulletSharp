@@ -210,16 +210,15 @@ namespace DemoFramework
 
         protected virtual void Dispose(bool disposing)
         {
-            if (_graphics != null)
+            if (disposing)
             {
-                _graphics.Dispose();
-                _graphics = null;
+                if (_graphics != null)
+                {
+                    _graphics.Dispose();
+                    _graphics = null;
+                }
+                ExitPhysics();
             }
-        }
-
-        ~Demo()
-        {
-            Dispose(false);
         }
 
         public virtual void OnHandleInput()
@@ -266,8 +265,8 @@ namespace DemoFramework
                     {
                         Vector3 rayFrom = Freelook.Eye;
 
-                        CollisionWorld.ClosestRayResultCallback rayCallback = new CollisionWorld.ClosestRayResultCallback(rayFrom, rayTo);
-                        _world.RayTest(rayFrom, rayTo, rayCallback);
+                        CollisionWorld.ClosestRayResultCallback rayCallback = new CollisionWorld.ClosestRayResultCallback(ref rayFrom, ref rayTo);
+                        _world.RayTest(ref rayFrom, ref rayTo, rayCallback);
                         if (rayCallback.HasHit)
                         {
                             RigidBody body = rayCallback.CollisionObject as RigidBody;

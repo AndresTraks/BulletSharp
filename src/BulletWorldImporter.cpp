@@ -10,10 +10,7 @@
 
 Serialize::BulletWorldImporter::BulletWorldImporter(DynamicsWorld^ world)
 {
-	if (world == nullptr)
-		_importer = new BulletWorldImporterWrapper(0, this);
-	else
-		_importer = new BulletWorldImporterWrapper(world->UnmanagedPointer, this);
+	_importer = new BulletWorldImporterWrapper(GetUnmanagedNullable(world), this);
 }
 
 Serialize::BulletWorldImporter::BulletWorldImporter()

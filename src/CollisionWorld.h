@@ -352,6 +352,7 @@ namespace BulletSharp
 		{
 		public:
 			ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld);
+			ClosestRayResultCallback(Vector3% rayFromWorld, Vector3% rayToWorld);
 
 			property Vector3 HitNormalWorld
 			{
@@ -426,8 +427,10 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
+	internal:
+		btCollisionWorld* _unmanaged;
+
 	private:
-		btCollisionWorld* _world;
 		AlignedCollisionObjectArray^ _collisionObjectArray;
 
 	protected:
@@ -466,8 +469,8 @@ namespace BulletSharp
 		void DebugDrawWorld();
 #endif
 		void PerformDiscreteCollisionDetection();
-		void RayTest(Vector3 rayFromWorld, Vector3 rayToWorld,
-			RayResultCallback^ resultCallback);
+		void RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResultCallback^ resultCallback);
+		void RayTest(Vector3% rayFromWorld, Vector3% rayToWorld, RayResultCallback^ resultCallback);
 		void RemoveCollisionObject(CollisionObject^ collisionObject);
 		void UpdateAabbs();
 		void UpdateSingleAabb(CollisionObject^ colObj);

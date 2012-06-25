@@ -17,6 +17,8 @@
 
 using namespace BulletSharp::SoftBody;
 
+#define Unmanaged static_cast<btSoftRigidDynamicsWorld*>(_unmanaged)
+
 SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
 #ifndef DISABLE_CONSTRAINTS
 	BulletSharp::ConstraintSolver^ constraintSolver,
@@ -56,40 +58,35 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body,
 	CollisionFilterGroups collisionFilterGroup,	CollisionFilterGroups collisionFilterMask)
 {
-	UnmanagedPointer->addSoftBody(body->UnmanagedPointer,
+	Unmanaged->addSoftBody(body->UnmanagedPointer,
 		(short int)collisionFilterGroup, (short int)collisionFilterMask);
 }
 
 void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body,
 	CollisionFilterGroups collisionFilterGroup)
 {
-	UnmanagedPointer->addSoftBody(body->UnmanagedPointer,
+	Unmanaged->addSoftBody(body->UnmanagedPointer,
 		(short int)collisionFilterGroup);
 }
 
 void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body)
 {
-	UnmanagedPointer->addSoftBody(body->UnmanagedPointer);
+	Unmanaged->addSoftBody(body->UnmanagedPointer);
 }
 
 void SoftRigidDynamicsWorld::RemoveSoftBody(BulletSharp::SoftBody::SoftBody^ body)
 {
-	UnmanagedPointer->removeSoftBody(body->UnmanagedPointer);
+	Unmanaged->removeSoftBody(body->UnmanagedPointer);
 }
 
 AlignedSoftBodyArray^ SoftRigidDynamicsWorld::SoftBodyArray::get()
 {
-	return gcnew AlignedSoftBodyArray(&UnmanagedPointer->getSoftBodyArray());
+	return gcnew AlignedSoftBodyArray(&Unmanaged->getSoftBodyArray());
 }
 
 SoftBodyWorldInfo^ SoftRigidDynamicsWorld::WorldInfo::get()
 {
-	return gcnew SoftBodyWorldInfo(&UnmanagedPointer->getWorldInfo());
-}
-
-btSoftRigidDynamicsWorld* SoftRigidDynamicsWorld::UnmanagedPointer::get()
-{
-	return (btSoftRigidDynamicsWorld*)DiscreteDynamicsWorld::UnmanagedPointer;
+	return gcnew SoftBodyWorldInfo(&Unmanaged->getWorldInfo());
 }
 
 #endif

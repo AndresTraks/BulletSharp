@@ -14,6 +14,8 @@
 #include "ConstraintSolver.h"
 #endif
 
+#define Unmanaged static_cast<btDiscreteDynamicsWorld*>(_unmanaged)
+
 DiscreteDynamicsWorld::DiscreteDynamicsWorld(btDiscreteDynamicsWorld* world)
 : DynamicsWorld(world)
 {
@@ -39,55 +41,45 @@ DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher
 	_broadphase = pairCache;
 }
 
-void DiscreteDynamicsWorld::AddRigidBody(RigidBody^ body, CollisionFilterGroups group, CollisionFilterGroups mask)
-{
-	UnmanagedPointer->addRigidBody(body->UnmanagedPointer, (short)group, (short)mask);
-}
-
 void DiscreteDynamicsWorld::ApplyGravity()
 {
-	UnmanagedPointer->applyGravity();
+	Unmanaged->applyGravity();
 }
 
 #if !defined(DISABLE_CONSTRAINTS) && !defined (DISABLE_DEBUGDRAW)
 void DiscreteDynamicsWorld::DebugDrawConstraint(TypedConstraint^ constraint)
 {
-	UnmanagedPointer->debugDrawConstraint(constraint->UnmanagedPointer);
+	Unmanaged->debugDrawConstraint(constraint->UnmanagedPointer);
 }
 #endif
 
 CollisionWorld^ DiscreteDynamicsWorld::CollisionWorld::get()
 {
-	return gcnew BulletSharp::CollisionWorld(this->UnmanagedPointer->getCollisionWorld());
+	return gcnew BulletSharp::CollisionWorld(Unmanaged->getCollisionWorld());
 }
 
 #ifndef DISABLE_UNCOMMON
 SimulationIslandManager^ DiscreteDynamicsWorld::SimulationIslandManager::get()
 {
-	return gcnew BulletSharp::SimulationIslandManager(UnmanagedPointer->getSimulationIslandManager());
+	return gcnew BulletSharp::SimulationIslandManager(Unmanaged->getSimulationIslandManager());
 }
 #endif
 
 void DiscreteDynamicsWorld::SetNumTasks (int numTasks)
 {
-	UnmanagedPointer->setNumTasks(numTasks);
+	Unmanaged->setNumTasks(numTasks);
 }
 
 bool DiscreteDynamicsWorld::SynchronizeAllMotionStates::get()
 {
-	return UnmanagedPointer->getSynchronizeAllMotionStates();
+	return Unmanaged->getSynchronizeAllMotionStates();
 }
 void DiscreteDynamicsWorld::SynchronizeAllMotionStates::set(bool value)
 {
-	return UnmanagedPointer->setSynchronizeAllMotionStates(value);
+	return Unmanaged->setSynchronizeAllMotionStates(value);
 }
 
 void DiscreteDynamicsWorld::SynchronizeSingleMotionState(RigidBody^ body)
 {
-	UnmanagedPointer->synchronizeSingleMotionState(body->UnmanagedPointer);
-}
-
-btDiscreteDynamicsWorld* DiscreteDynamicsWorld::UnmanagedPointer::get()
-{
-	return (btDiscreteDynamicsWorld*)DynamicsWorld::UnmanagedPointer;
+	Unmanaged->synchronizeSingleMotionState(body->UnmanagedPointer);
 }

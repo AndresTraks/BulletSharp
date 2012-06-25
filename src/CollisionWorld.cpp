@@ -476,6 +476,18 @@ CollisionWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3 rayFr
 	delete rayToWorldTemp;
 }
 
+CollisionWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3% rayFromWorld, Vector3% rayToWorld)
+: RayResultCallback(0)
+{
+	btVector3* rayFromWorldTemp = Math::Vector3ToBtVector3(rayFromWorld);
+	btVector3* rayToWorldTemp = Math::Vector3ToBtVector3(rayToWorld);
+
+	_unmanaged = new btCollisionWorld::ClosestRayResultCallback(*rayFromWorldTemp, *rayToWorldTemp);
+
+	delete rayFromWorldTemp;
+	delete rayToWorldTemp;
+}
+
 Vector3 CollisionWorld::ClosestRayResultCallback::HitNormalWorld::get()
 {
 	return Math::BtVector3ToVector3(&((btCollisionWorld::ClosestRayResultCallback*)_unmanaged)->m_hitNormalWorld);
@@ -586,12 +598,12 @@ void CollisionWorld::AllHitsRayResultCallback::RayToWorld::set(Vector3 value)
 
 CollisionWorld::CollisionWorld(btCollisionWorld* world)
 {
-	_world = world;
+	_unmanaged = world;
 }
 
 CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, CollisionConfiguration^ collisionConfiguration)
 {
-	_world = new btCollisionWorld(dispatcher->UnmanagedPointer, pairCache->UnmanagedPointer, collisionConfiguration->UnmanagedPointer);
+	_unmanaged = new btCollisionWorld(dispatcher->UnmanagedPointer, pairCache->UnmanagedPointer, collisionConfiguration->UnmanagedPointer);
 	_collisionConfiguration = collisionConfiguration;
 	_dispatcher = dispatcher;
 	_broadphase = pairCache;
@@ -609,41 +621,42 @@ CollisionWorld::!CollisionWorld()
 	
 	OnDisposing(this, nullptr);
 	
-	_world = NULL;
+	delete _unmanaged;
+	_unmanaged = NULL;
 	
 	OnDisposed(this, nullptr);
 }
 
 bool CollisionWorld::IsDisposed::get()
 {
-	return (_world == NULL);
+	return (_unmanaged == NULL);
 }
 
 void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject,
 	CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
 {
-	_world->addCollisionObject(collisionObject->UnmanagedPointer, (short int)collisionFilterGroup, (short int)collisionFilterMask);
+	_unmanaged->addCollisionObject(collisionObject->UnmanagedPointer, (short int)collisionFilterGroup, (short int)collisionFilterMask);
 }
 
 void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject,
 	CollisionFilterGroups collisionFilterGroup)
 {
-	_world->addCollisionObject(collisionObject->UnmanagedPointer, (short int)collisionFilterGroup);
+	_unmanaged->addCollisionObject(collisionObject->UnmanagedPointer, (short int)collisionFilterGroup);
 }
 
 void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject)
 {
-	_world->addCollisionObject(collisionObject->UnmanagedPointer);
+	_unmanaged->addCollisionObject(collisionObject->UnmanagedPointer);
 }
 
 void CollisionWorld::ContactPairTest(CollisionObject^ colObjA, CollisionObject^ colObjB, ContactResultCallback^ resultCallback)
 {
-	_world->contactPairTest(colObjA->UnmanagedPointer, colObjB->UnmanagedPointer, *resultCallback->UnmanagedPointer);
+	_unmanaged->contactPairTest(colObjA->UnmanagedPointer, colObjB->UnmanagedPointer, *resultCallback->UnmanagedPointer);
 }
 
 void CollisionWorld::ContactTest(CollisionObject^ colObj, ContactResultCallback^ resultCallback)
 {
-	_world->contactTest(colObj->UnmanagedPointer, *resultCallback->UnmanagedPointer);
+	_unmanaged->contactTest(colObj->UnmanagedPointer, *resultCallback->UnmanagedPointer);
 }
 
 void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback, btScalar allowedCcdPenetration)
@@ -651,7 +664,7 @@ void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix
 	btTransform* fromTemp = Math::MatrixToBtTransform(from);
 	btTransform* toTemp = Math::MatrixToBtTransform(to);
 
-	_world->convexSweepTest(castShape->UnmanagedPointer, *fromTemp, *toTemp, *resultCallback->UnmanagedPointer, allowedCcdPenetration);
+	_unmanaged->convexSweepTest(castShape->UnmanagedPointer, *fromTemp, *toTemp, *resultCallback->UnmanagedPointer, allowedCcdPenetration);
 
 	delete toTemp;
 	delete fromTemp;
@@ -662,7 +675,7 @@ void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix
 	btTransform* fromTemp = Math::MatrixToBtTransform(from);
 	btTransform* toTemp = Math::MatrixToBtTransform(to);
 
-	_world->convexSweepTest(castShape->UnmanagedPointer, *fromTemp, *toTemp, *resultCallback->UnmanagedPointer);
+	_unmanaged->convexSweepTest(castShape->UnmanagedPointer, *fromTemp, *toTemp, *resultCallback->UnmanagedPointer);
 
 	delete toTemp;
 	delete fromTemp;
@@ -674,7 +687,7 @@ void CollisionWorld::DebugDrawObject(Matrix worldTransform, CollisionShape^ shap
 	btTransform* worldTransformTemp = Math::MatrixToBtTransform(worldTransform);
 	btVector3* colorTemp = BtColorToBtVector(color);
 	
-	_world->debugDrawObject(*worldTransformTemp, shape->UnmanagedPointer, *colorTemp);
+	_unmanaged->debugDrawObject(*worldTransformTemp, shape->UnmanagedPointer, *colorTemp);
 	
 	delete worldTransformTemp;
 	delete colorTemp;
@@ -705,7 +718,7 @@ void CollisionWorld::ObjectQuerySingle(ConvexShape^ castShape, Matrix rayFromTra
 
 void CollisionWorld::PerformDiscreteCollisionDetection()
 {
-	_world->performDiscreteCollisionDetection();
+	_unmanaged->performDiscreteCollisionDetection();
 }
 
 void CollisionWorld::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResultCallback^ resultCallback)
@@ -713,7 +726,18 @@ void CollisionWorld::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResult
 	btVector3* rayFromWorldTemp = Math::Vector3ToBtVector3(rayFromWorld);
 	btVector3* rayToWorldTemp = Math::Vector3ToBtVector3(rayToWorld);
 
-	_world->rayTest(*rayFromWorldTemp, *rayToWorldTemp, *resultCallback->_unmanaged);
+	_unmanaged->rayTest(*rayFromWorldTemp, *rayToWorldTemp, *resultCallback->_unmanaged);
+
+	delete rayFromWorldTemp;
+	delete rayToWorldTemp;
+}
+
+void CollisionWorld::RayTest(Vector3% rayFromWorld, Vector3% rayToWorld, RayResultCallback^ resultCallback)
+{
+	btVector3* rayFromWorldTemp = Math::Vector3ToBtVector3(rayFromWorld);
+	btVector3* rayToWorldTemp = Math::Vector3ToBtVector3(rayToWorld);
+
+	_unmanaged->rayTest(*rayFromWorldTemp, *rayToWorldTemp, *resultCallback->_unmanaged);
 
 	delete rayFromWorldTemp;
 	delete rayToWorldTemp;
@@ -737,23 +761,23 @@ void CollisionWorld::RayTestSingle(Matrix rayFromTrans, Matrix rayToTrans, Colli
 
 void CollisionWorld::RemoveCollisionObject(CollisionObject^ collisionObject)
 {
-	_world->removeCollisionObject(collisionObject->UnmanagedPointer);
+	_unmanaged->removeCollisionObject(collisionObject->UnmanagedPointer);
 }
 
 void CollisionWorld::UpdateAabbs()
 {
-	_world->updateAabbs();
+	_unmanaged->updateAabbs();
 }
 
 void CollisionWorld::UpdateSingleAabb(CollisionObject^ colObj)
 {
-	_world->updateSingleAabb(colObj->UnmanagedPointer);
+	_unmanaged->updateSingleAabb(colObj->UnmanagedPointer);
 }
 
 #ifndef DISABLE_SERIALIZE
 void CollisionWorld::Serialize(BulletSharp::Serializer^ serializer)
 {
-	_world->serialize(serializer->UnmanagedPointer);
+	_unmanaged->serialize(serializer->UnmanagedPointer);
 }
 #endif
 
@@ -763,13 +787,13 @@ BroadphaseInterface^ CollisionWorld::Broadphase::get()
 }
 void CollisionWorld::Broadphase::set(BroadphaseInterface^ value)
 {
-	_world->setBroadphase(value->UnmanagedPointer);
+	_unmanaged->setBroadphase(value->UnmanagedPointer);
 	_broadphase = value;
 }
 
 AlignedCollisionObjectArray^ CollisionWorld::CollisionObjectArray::get()
 {
-	btCollisionObjectArray* collisionObjectArray = &_world->getCollisionObjectArray();
+	btCollisionObjectArray* collisionObjectArray = &_unmanaged->getCollisionObjectArray();
 	if (_collisionObjectArray != nullptr && _collisionObjectArray->_unmanaged == collisionObjectArray)
 		return _collisionObjectArray;
 
@@ -780,11 +804,11 @@ AlignedCollisionObjectArray^ CollisionWorld::CollisionObjectArray::get()
 #ifndef DISABLE_DEBUGDRAW
 IDebugDraw^ CollisionWorld::DebugDrawer::get()
 {
-	return DebugDraw::GetManaged(_world->getDebugDrawer());
+	return DebugDraw::GetManaged(_unmanaged->getDebugDrawer());
 }
 void CollisionWorld::DebugDrawer::set(IDebugDraw^ value)
 {
-	_world->setDebugDrawer(DebugDraw::GetUnmanaged(value));
+	_unmanaged->setDebugDrawer(DebugDraw::GetUnmanaged(value));
 }
 #endif
 
@@ -795,35 +819,35 @@ BulletSharp::Dispatcher^ CollisionWorld::Dispatcher::get()
 
 DispatcherInfo^ CollisionWorld::DispatchInfo::get()
 {
-	return gcnew DispatcherInfo(&_world->getDispatchInfo());
+	return gcnew DispatcherInfo(&_unmanaged->getDispatchInfo());
 }
 
 bool CollisionWorld::ForceUpdateAllAabbs::get()
 {
-	return _world->getForceUpdateAllAabbs();
+	return _unmanaged->getForceUpdateAllAabbs();
 }
 void CollisionWorld::ForceUpdateAllAabbs::set(bool value)
 {
-	_world->setForceUpdateAllAabbs(value);
+	_unmanaged->setForceUpdateAllAabbs(value);
 }
 
 int CollisionWorld::NumCollisionObjects::get()
 {
-	return _world->getNumCollisionObjects();
+	return _unmanaged->getNumCollisionObjects();
 }
 
 OverlappingPairCache^ CollisionWorld::PairCache::get()
 {
-	return dynamic_cast<OverlappingPairCache^>(OverlappingPairCache::GetManaged(_world->getPairCache()));
+	return dynamic_cast<OverlappingPairCache^>(OverlappingPairCache::GetManaged(_unmanaged->getPairCache()));
 }
 
 btCollisionWorld* CollisionWorld::UnmanagedPointer::get()
 {
-	return _world;
+	return _unmanaged;
 }
 void CollisionWorld::UnmanagedPointer::set(btCollisionWorld* value)
 {
-	_world = value;
+	_unmanaged = value;
 }
 
 

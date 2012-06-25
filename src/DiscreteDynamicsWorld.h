@@ -24,7 +24,6 @@ namespace BulletSharp
 #endif
 			CollisionConfiguration^ collisionConfiguration);
 
-		void AddRigidBody(RigidBody^ body, CollisionFilterGroups group, CollisionFilterGroups mask);
 		void ApplyGravity();
 #if !defined(DISABLE_CONSTRAINTS) && !defined (DISABLE_DEBUGDRAW)
 		void DebugDrawConstraint(TypedConstraint^ constraint);
@@ -48,12 +47,6 @@ namespace BulletSharp
 		{
 			bool get();
 			void set(bool value);
-		}
-
-	internal:
-		property btDiscreteDynamicsWorld* UnmanagedPointer
-		{
-			btDiscreteDynamicsWorld* get() new;
 		}
 	};
 };
