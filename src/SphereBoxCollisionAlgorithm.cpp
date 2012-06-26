@@ -22,16 +22,16 @@ SphereBoxCollisionAlgorithm::SphereBoxCollisionAlgorithm(PersistentManifold^ mf,
 btScalar SphereBoxCollisionAlgorithm::GetSphereDistance(CollisionObjectWrapper^ boxObjWrap, Vector3 v3PointOnBox,
 	Vector3 v3PointOnSphere, Vector3 v3SphereCenter, btScalar fRadius)
 {
-	btVector3* v3PointOnBoxTemp = Math::Vector3ToBtVector3(v3PointOnBox);
-	btVector3* v3PointOnSphereTemp = Math::Vector3ToBtVector3(v3PointOnSphere);
-	btVector3* v3SphereCenterTemp = Math::Vector3ToBtVector3(v3SphereCenter);
+	VECTOR3_DEF(v3PointOnBox);
+	VECTOR3_DEF(v3PointOnSphere);
+	VECTOR3_DEF(v3SphereCenter);
 
-	btScalar ret = UnmanagedPointer->getSphereDistance(boxObjWrap->_unmanaged, *v3PointOnBoxTemp, *v3PointOnSphereTemp,
-		*v3SphereCenterTemp, fRadius);
+	btScalar ret = UnmanagedPointer->getSphereDistance(boxObjWrap->_unmanaged, VECTOR3_USE(v3PointOnBox),
+		VECTOR3_USE(v3PointOnSphere), VECTOR3_USE(v3SphereCenter), fRadius);
 
-	delete v3PointOnBoxTemp;
-	delete v3PointOnSphereTemp;
-	delete v3SphereCenterTemp;
+	VECTOR3_DEL(v3PointOnBox);
+	VECTOR3_DEL(v3PointOnSphere);
+	VECTOR3_DEL(v3SphereCenter);
 
 	return ret;
 }
@@ -39,20 +39,21 @@ btScalar SphereBoxCollisionAlgorithm::GetSphereDistance(CollisionObjectWrapper^ 
 btScalar SphereBoxCollisionAlgorithm::GetSpherePenetration(CollisionObjectWrapper^ boxObjWrap, Vector3 v3PointOnBox,
 	Vector3 v3PointOnSphere, Vector3 v3SphereCenter, btScalar fRadius, Vector3 aabbMin, Vector3 aabbMax)
 {
-	btVector3* v3PointOnBoxTemp = Math::Vector3ToBtVector3(v3PointOnBox);
-	btVector3* v3PointOnSphereTemp = Math::Vector3ToBtVector3(v3PointOnSphere);
-	btVector3* v3SphereCenterTemp = Math::Vector3ToBtVector3(v3SphereCenter);
-	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
-	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
+	VECTOR3_DEF(v3PointOnBox);
+	VECTOR3_DEF(v3PointOnSphere);
+	VECTOR3_DEF(v3SphereCenter);
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
 
-	btScalar ret = UnmanagedPointer->getSpherePenetration(boxObjWrap->_unmanaged, *v3PointOnBoxTemp, *v3PointOnSphereTemp,
-		*v3SphereCenterTemp, fRadius, *aabbMinTemp, *aabbMaxTemp);
+	btScalar ret = UnmanagedPointer->getSpherePenetration(boxObjWrap->_unmanaged,
+		VECTOR3_USE(v3PointOnBox), VECTOR3_USE(v3PointOnSphere),
+		VECTOR3_USE(v3SphereCenter), fRadius, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 
-	delete v3PointOnBoxTemp;
-	delete v3PointOnSphereTemp;
-	delete v3SphereCenterTemp;
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	VECTOR3_DEL(v3PointOnBox);
+	VECTOR3_DEL(v3PointOnSphere);
+	VECTOR3_DEL(v3SphereCenter);
+	VECTOR3_DEL(aabbMinTemp);
+	VECTOR3_DEL(aabbMaxTemp);
 
 	return ret;
 }

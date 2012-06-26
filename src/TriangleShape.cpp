@@ -18,15 +18,15 @@ TriangleShape::TriangleShape()
 TriangleShape::TriangleShape(Vector3 point0, Vector3 point1, Vector3 point2)
 : PolyhedralConvexShape(0)
 {
-	btVector3* p0Temp = Math::Vector3ToBtVector3(point0);
-	btVector3* p1Temp = Math::Vector3ToBtVector3(point1);
-	btVector3* p2Temp = Math::Vector3ToBtVector3(point2);
+	VECTOR3_DEF(point0);
+	VECTOR3_DEF(point1);
+	VECTOR3_DEF(point2);
 
-	UnmanagedPointer = new btTriangleShape(*p0Temp, *p1Temp, *p2Temp);
+	UnmanagedPointer = new btTriangleShape(VECTOR3_USE(point0), VECTOR3_USE(point1), VECTOR3_USE(point2));
 
-	delete p0Temp;
-	delete p1Temp;
-	delete p2Temp;
+	VECTOR3_DEL(point0);
+	VECTOR3_DEL(point1);
+	VECTOR3_DEL(point2);
 }
 
 void TriangleShape::CalcNormal([Out] Vector3% normal)

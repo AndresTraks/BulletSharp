@@ -16,7 +16,11 @@ namespace BulletSharp
 	public:
 		delegate void InternalTickCallback(DynamicsWorld^ world, btScalar timeStep);
 
+	private:
+		Object^ _userObject;
 	internal:
+		InternalTickCallback^ _callback;
+
 		DynamicsWorld(btDynamicsWorld* world);
 
 	public:
@@ -80,30 +84,6 @@ namespace BulletSharp
 		property btDynamicsWorld* UnmanagedPointer
 		{
 			btDynamicsWorld* get() new;
-		}
-	};
-
-	// Use the user info value to also store our own stuff.
-	ref class UserInfoWrapper
-	{
-	private:
-		Object^ _userObject;
-		DynamicsWorld::InternalTickCallback^ _callback;
-
-	public:
-		UserInfoWrapper(Object^ userObject);
-		UserInfoWrapper();
-
-		property DynamicsWorld::InternalTickCallback^ Callback
-		{
-			DynamicsWorld::InternalTickCallback^ get();
-			void set(DynamicsWorld::InternalTickCallback^ value);
-		}
-
-		property Object^ UserObject
-		{
-			Object^ get();
-			void set(Object^ value);
 		}
 	};
 };

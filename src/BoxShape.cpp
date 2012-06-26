@@ -10,9 +10,9 @@ BoxShape::BoxShape(btBoxShape* shape)
 BoxShape::BoxShape(Vector3 boxHalfExtents)
 : PolyhedralConvexShape(0)
 {
-	btVector3* boxHalfExtentsTemp = Math::Vector3ToBtVector3(boxHalfExtents);
-	UnmanagedPointer = new btBoxShape(*boxHalfExtentsTemp);
-	delete boxHalfExtentsTemp;
+	VECTOR3_DEF(boxHalfExtents);
+	UnmanagedPointer = new btBoxShape(VECTOR3_USE(boxHalfExtents));
+	VECTOR3_DEL(boxHalfExtents);
 }
 
 BoxShape::BoxShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ)

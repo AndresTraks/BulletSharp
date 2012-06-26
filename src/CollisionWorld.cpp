@@ -19,6 +19,9 @@
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
 #endif
+#ifndef DISABLE_SOFTBODY
+#include "SoftRigidDynamicsWorld.h"
+#endif
 
 int CollisionWorld::LocalShapeInfo::ShapePart::get()
 {
@@ -42,14 +45,14 @@ void CollisionWorld::LocalShapeInfo::TriangleIndex::set(int value)
 CollisionWorld::LocalConvexResult::LocalConvexResult(BulletSharp::CollisionObject^ collisionObject, CollisionWorld::LocalShapeInfo^ localShapeInfo,
 	Vector3 hitNormalLocal, Vector3 hitPointLocal, btScalar hitFraction)
 {
-	btVector3* hitNormalLocalTemp = Math::Vector3ToBtVector3(hitNormalLocal);
-	btVector3* hitPointLocalTemp = Math::Vector3ToBtVector3(hitPointLocal);
+	VECTOR3_DEF(hitNormalLocal);
+	VECTOR3_DEF(hitPointLocal);
 
 	_result = new btCollisionWorld::LocalConvexResult(collisionObject->UnmanagedPointer, localShapeInfo->UnmanagedPointer,
-		*hitNormalLocalTemp, *hitPointLocalTemp, hitFraction);
+		VECTOR3_USE(hitNormalLocal), VECTOR3_USE(hitPointLocal), hitFraction);
 
-	delete hitNormalLocalTemp;
-	delete hitPointLocalTemp;
+	VECTOR3_DEL(hitNormalLocal);
+	VECTOR3_DEL(hitPointLocal);
 }
 
 BulletSharp::CollisionObject^ CollisionWorld::LocalConvexResult::CollisionObject::get()
@@ -185,13 +188,13 @@ CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(btColli
 CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3 convexFromWorld, Vector3 convexToWorld)
 : ConvexResultCallback(0)
 {
-	btVector3* convexFromWorldTemp = Math::Vector3ToBtVector3(convexFromWorld);
-	btVector3* convexToWorldTemp = Math::Vector3ToBtVector3(convexToWorld);
+	VECTOR3_DEF(convexFromWorld);
+	VECTOR3_DEF(convexToWorld);
 
-	UnmanagedPointer = new btCollisionWorld::ClosestConvexResultCallback(*convexFromWorldTemp, *convexToWorldTemp);
+	UnmanagedPointer = new btCollisionWorld::ClosestConvexResultCallback(VECTOR3_USE(convexFromWorld), VECTOR3_USE(convexToWorld));
 
-	delete convexFromWorldTemp;
-	delete convexToWorldTemp;
+	VECTOR3_DEL(convexFromWorld);
+	VECTOR3_DEL(convexToWorld);
 }
 
 BulletSharp::CollisionObject^ CollisionWorld::ClosestConvexResultCallback::CollisionObject::get()
@@ -328,12 +331,12 @@ void CollisionWorld::LocalShapeInfo::UnmanagedPointer::set(btCollisionWorld::Loc
 CollisionWorld::LocalRayResult::LocalRayResult(BulletSharp::CollisionObject^ collisionObject, CollisionWorld::LocalShapeInfo^ localShapeInfo,
 	Vector3 hitNormalLocal, btScalar hitFraction)
 {
-	btVector3* hitNormalLocalTemp = Math::Vector3ToBtVector3(hitNormalLocal);
+	VECTOR3_DEF(hitNormalLocal);
 
 	_result = new btCollisionWorld::LocalRayResult(collisionObject->UnmanagedPointer, localShapeInfo->UnmanagedPointer,
-		*hitNormalLocalTemp, hitFraction);
+		VECTOR3_USE(hitNormalLocal), hitFraction);
 
-	delete hitNormalLocalTemp;
+	VECTOR3_DEL(hitNormalLocal);
 }
 
 BulletSharp::CollisionObject^ CollisionWorld::LocalRayResult::CollisionObject::get()
@@ -467,25 +470,25 @@ bool CollisionWorld::RayResultCallback::IsDisposed::get()
 CollisionWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld)
 : RayResultCallback(0)
 {
-	btVector3* rayFromWorldTemp = Math::Vector3ToBtVector3(rayFromWorld);
-	btVector3* rayToWorldTemp = Math::Vector3ToBtVector3(rayToWorld);
+	VECTOR3_DEF(rayFromWorld);
+	VECTOR3_DEF(rayToWorld);
 
-	_unmanaged = new btCollisionWorld::ClosestRayResultCallback(*rayFromWorldTemp, *rayToWorldTemp);
+	_unmanaged = new btCollisionWorld::ClosestRayResultCallback(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld));
 
-	delete rayFromWorldTemp;
-	delete rayToWorldTemp;
+	VECTOR3_DEL(rayFromWorld);
+	VECTOR3_DEL(rayToWorld);
 }
 
 CollisionWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3% rayFromWorld, Vector3% rayToWorld)
 : RayResultCallback(0)
 {
-	btVector3* rayFromWorldTemp = Math::Vector3ToBtVector3(rayFromWorld);
-	btVector3* rayToWorldTemp = Math::Vector3ToBtVector3(rayToWorld);
+	VECTOR3_DEF(rayFromWorld);
+	VECTOR3_DEF(rayToWorld);
 
-	_unmanaged = new btCollisionWorld::ClosestRayResultCallback(*rayFromWorldTemp, *rayToWorldTemp);
+	_unmanaged = new btCollisionWorld::ClosestRayResultCallback(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld));
 
-	delete rayFromWorldTemp;
-	delete rayToWorldTemp;
+	VECTOR3_DEL(rayFromWorld);
+	VECTOR3_DEL(rayToWorld);
 }
 
 Vector3 CollisionWorld::ClosestRayResultCallback::HitNormalWorld::get()
@@ -528,13 +531,13 @@ void CollisionWorld::ClosestRayResultCallback::RayToWorld::set(Vector3 value)
 CollisionWorld::AllHitsRayResultCallback::AllHitsRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld)
 : RayResultCallback(0)
 {
-	btVector3* rayFromWorldTemp = Math::Vector3ToBtVector3(rayFromWorld);
-	btVector3* rayToWorldTemp = Math::Vector3ToBtVector3(rayToWorld);
+	VECTOR3_DEF(rayFromWorld);
+	VECTOR3_DEF(rayToWorld);
 
-	_unmanaged = new btCollisionWorld::AllHitsRayResultCallback(*rayFromWorldTemp, *rayToWorldTemp);
+	_unmanaged = new btCollisionWorld::AllHitsRayResultCallback(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld));
 
-	delete rayFromWorldTemp;
-	delete rayToWorldTemp;
+	VECTOR3_DEL(rayFromWorld);
+	VECTOR3_DEL(rayToWorld);
 }
 
 AlignedCollisionObjectArray^ CollisionWorld::AllHitsRayResultCallback::CollisionObjects::get()
@@ -598,12 +601,12 @@ void CollisionWorld::AllHitsRayResultCallback::RayToWorld::set(Vector3 value)
 
 CollisionWorld::CollisionWorld(btCollisionWorld* world)
 {
-	_unmanaged = world;
+	UnmanagedPointer = world;
 }
 
 CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, CollisionConfiguration^ collisionConfiguration)
 {
-	_unmanaged = new btCollisionWorld(dispatcher->UnmanagedPointer, pairCache->UnmanagedPointer, collisionConfiguration->UnmanagedPointer);
+	UnmanagedPointer = new btCollisionWorld(dispatcher->UnmanagedPointer, pairCache->UnmanagedPointer, collisionConfiguration->UnmanagedPointer);
 	_collisionConfiguration = collisionConfiguration;
 	_dispatcher = dispatcher;
 	_broadphase = pairCache;
@@ -621,6 +624,16 @@ CollisionWorld::!CollisionWorld()
 	
 	OnDisposing(this, nullptr);
 	
+	btDynamicsWorld* dynamicsWorld = static_cast<btDynamicsWorld*>(_unmanaged);
+	if (dynamicsWorld != 0)
+	{
+		void* userObj = dynamicsWorld->getWorldUserInfo();
+		if (userObj != 0)
+		{
+			VoidPtrToGCHandle(userObj).Free();
+		}
+	}
+
 	delete _unmanaged;
 	_unmanaged = NULL;
 	
@@ -723,24 +736,24 @@ void CollisionWorld::PerformDiscreteCollisionDetection()
 
 void CollisionWorld::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResultCallback^ resultCallback)
 {
-	btVector3* rayFromWorldTemp = Math::Vector3ToBtVector3(rayFromWorld);
-	btVector3* rayToWorldTemp = Math::Vector3ToBtVector3(rayToWorld);
+	VECTOR3_DEF(rayFromWorld);
+	VECTOR3_DEF(rayToWorld);
 
-	_unmanaged->rayTest(*rayFromWorldTemp, *rayToWorldTemp, *resultCallback->_unmanaged);
+	_unmanaged->rayTest(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld), *resultCallback->_unmanaged);
 
-	delete rayFromWorldTemp;
-	delete rayToWorldTemp;
+	VECTOR3_DEL(rayFromWorld);
+	VECTOR3_DEL(rayToWorld);
 }
 
 void CollisionWorld::RayTest(Vector3% rayFromWorld, Vector3% rayToWorld, RayResultCallback^ resultCallback)
 {
-	btVector3* rayFromWorldTemp = Math::Vector3ToBtVector3(rayFromWorld);
-	btVector3* rayToWorldTemp = Math::Vector3ToBtVector3(rayToWorld);
+	VECTOR3_DEF(rayFromWorld);
+	VECTOR3_DEF(rayToWorld);
 
-	_unmanaged->rayTest(*rayFromWorldTemp, *rayToWorldTemp, *resultCallback->_unmanaged);
+	_unmanaged->rayTest(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld), *resultCallback->_unmanaged);
 
-	delete rayFromWorldTemp;
-	delete rayToWorldTemp;
+	VECTOR3_DEL(rayFromWorld);
+	VECTOR3_DEL(rayToWorld);
 }
 
 void CollisionWorld::RayTestSingle(Matrix rayFromTrans, Matrix rayToTrans, CollisionObject^ collisionObject,
@@ -780,6 +793,39 @@ void CollisionWorld::Serialize(BulletSharp::Serializer^ serializer)
 	_unmanaged->serialize(serializer->UnmanagedPointer);
 }
 #endif
+
+CollisionWorld^ CollisionWorld::GetManaged(btCollisionWorld* collisionWorld)
+{
+	if (collisionWorld == 0)
+		return nullptr;
+
+	btDynamicsWorld* dynamicsWorld = static_cast<btDynamicsWorld*>(collisionWorld);
+	if (dynamicsWorld == 0)
+	{
+		return gcnew CollisionWorld(collisionWorld);
+	}
+
+	void* userObj = dynamicsWorld->getWorldUserInfo();
+	if (userObj)
+		return static_cast<DynamicsWorld^>(VoidPtrToGCHandle(userObj).Target);
+
+	// If we reach here, then collisionObject was created from within unmanaged code,
+	// mark the wrapper object we create here so we don't try to destroy it later.
+/*
+#ifndef DISABLE_SOFTBODY
+	btSoftRigidDynamicsWorld* softWorld = static_cast<btSoftRigidDynamicsWorld*>(dynamicsWorld);
+	if (softWorld)
+	{
+		SoftBody::SoftRigidDynamicsWorld^ world = gcnew SoftBody::SoftRigidDynamicsWorld(softWorld);
+		//world->_doesNotOwnObject = true;
+		return world;
+	}
+#endif
+*/
+	DynamicsWorld^ world = gcnew DynamicsWorld(dynamicsWorld);
+	//colObject->_doesNotOwnObject = true;
+	return world;
+}
 
 BroadphaseInterface^ CollisionWorld::Broadphase::get()
 {
@@ -848,6 +894,17 @@ btCollisionWorld* CollisionWorld::UnmanagedPointer::get()
 void CollisionWorld::UnmanagedPointer::set(btCollisionWorld* value)
 {
 	_unmanaged = value;
+
+	btDynamicsWorld* dynamicsWorld = static_cast<btDynamicsWorld*>(value);
+	if (dynamicsWorld != 0)
+	{
+		if (dynamicsWorld->getWorldUserInfo() == 0)
+		{
+			GCHandle handle = GCHandle::Alloc(this);
+			void* obj = GCHandleToVoidPtr(handle);
+			dynamicsWorld->setWorldUserInfo(obj);
+		}
+	}
 }
 
 

@@ -479,6 +479,10 @@ namespace BulletSharp
 		void Serialize(Serializer^ serializer);
 #endif
 
+	internal:
+		static CollisionWorld^ GetManaged(btCollisionWorld* collisionWorld);
+
+	public:
 		property bool IsDisposed
 		{
 			virtual bool get();

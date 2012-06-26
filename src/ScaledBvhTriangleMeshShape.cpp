@@ -13,9 +13,9 @@ ScaledBvhTriangleMeshShape::ScaledBvhTriangleMeshShape(btScaledBvhTriangleMeshSh
 ScaledBvhTriangleMeshShape::ScaledBvhTriangleMeshShape(BvhTriangleMeshShape^ childShape, Vector3 localScaling)
 : ConcaveShape(0)
 {
-	btVector3* localScalingTemp = Math::Vector3ToBtVector3(localScaling);
-	UnmanagedPointer = new btScaledBvhTriangleMeshShape(childShape->UnmanagedPointer, *localScalingTemp);
-	delete localScalingTemp;
+	VECTOR3_DEF(localScaling);
+	UnmanagedPointer = new btScaledBvhTriangleMeshShape(childShape->UnmanagedPointer, VECTOR3_USE(localScaling));
+	VECTOR3_DEL(localScaling);
 }
 
 BvhTriangleMeshShape^ ScaledBvhTriangleMeshShape::ChildShape::get()

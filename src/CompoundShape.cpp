@@ -101,12 +101,12 @@ void CompoundShape::CalculatePrincipalAxisTransform(array<btScalar>^ masses, Mat
 {
 	pin_ptr<btScalar> massesPtr = &masses[0];
 	btTransform* principalTemp = Math::MatrixToBtTransform(principal);
-	btVector3* inertiaTemp = Math::Vector3ToBtVector3(inertia);
+	VECTOR3_DEF(inertia);
 	
-	UnmanagedPointer->calculatePrincipalAxisTransform(massesPtr, *principalTemp, *inertiaTemp);
+	UnmanagedPointer->calculatePrincipalAxisTransform(massesPtr, *principalTemp, VECTOR3_USE(inertia));
 	
 	delete principalTemp;
-	delete inertiaTemp;
+	VECTOR3_DEL(inertia);
 }
 
 void CompoundShape::CreateAabbTreeFromChildren()

@@ -21,12 +21,12 @@ ConvexTriangleMeshShape::ConvexTriangleMeshShape(StridingMeshInterface^ meshInte
 void ConvexTriangleMeshShape::CalculatePrincipalAxisTransform(Matrix principal, Vector3 inertia, btScalar volume)
 {
 	btTransform* principalTemp = Math::MatrixToBtTransform(principal);
-	btVector3* inertiaTemp = Math::Vector3ToBtVector3(inertia);
+	VECTOR3_DEF(inertia);
 
-	UnmanagedPointer->calculatePrincipalAxisTransform(*principalTemp, *inertiaTemp, volume);
+	UnmanagedPointer->calculatePrincipalAxisTransform(*principalTemp, VECTOR3_USE(inertia), volume);
 
 	delete principalTemp;
-	delete inertiaTemp;
+	VECTOR3_DEL(inertia);
 }
 
 StridingMeshInterface^ ConvexTriangleMeshShape::MeshInterface::get()

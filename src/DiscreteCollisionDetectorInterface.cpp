@@ -90,13 +90,13 @@ bool DiscreteCollisionDetectorInterface::Result::IsDisposed::get()
 
 void DiscreteCollisionDetectorInterface::Result::AddContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld, btScalar depth)
 {
-	btVector3* normalOnBInWorldTemp = Math::Vector3ToBtVector3(normalOnBInWorld);
-	btVector3* pointInWorldTemp = Math::Vector3ToBtVector3(pointInWorld);
+	VECTOR3_DEF(normalOnBInWorld);
+	VECTOR3_DEF(pointInWorld);
 	
-	_result->addContactPoint(*normalOnBInWorldTemp, *pointInWorldTemp, depth);
+	_result->addContactPoint(VECTOR3_USE(normalOnBInWorld), VECTOR3_USE(pointInWorld), depth);
 	
-	delete normalOnBInWorldTemp;
-	delete pointInWorldTemp;
+	VECTOR3_DEL(normalOnBInWorld);
+	VECTOR3_DEL(pointInWorld);
 }
 
 void DiscreteCollisionDetectorInterface::Result::SetShapeIdentifiersA(int partId0, int index0)

@@ -99,10 +99,10 @@ void CollisionShape::CalculateTemporalAabb(Matrix curTrans,
 	btTransform* curTransTemp = Math::MatrixToBtTransform(curTrans);
 	btVector3* temporalAabbMinTemp = new btVector3;
 	btVector3* temporalAabbMaxTemp = new btVector3;
-	btVector3* linvelTemp = Math::Vector3ToBtVector3(linvel);
-	btVector3* angvelTemp = Math::Vector3ToBtVector3(angvel);
+	VECTOR3_DEF(linvel);
+	VECTOR3_DEF(angvel);
 
-	_collisionShape->calculateTemporalAabb(*curTransTemp, *linvelTemp, *angvelTemp,
+	_collisionShape->calculateTemporalAabb(*curTransTemp, VECTOR3_USE(linvel), VECTOR3_USE(angvel),
 		timeStep, *temporalAabbMinTemp,	*temporalAabbMaxTemp
 	);
 
@@ -112,8 +112,8 @@ void CollisionShape::CalculateTemporalAabb(Matrix curTrans,
 	delete curTransTemp;
 	delete temporalAabbMinTemp;
 	delete temporalAabbMaxTemp;
-	delete linvelTemp;
-	delete angvelTemp;
+	VECTOR3_DEL(linvel);
+	VECTOR3_DEL(angvel);
 }
 
 void CollisionShape::GetAabb(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
@@ -335,9 +335,9 @@ Vector3 CollisionShape::LocalScaling::get()
 }
 void CollisionShape::LocalScaling::set(Vector3 value)
 {
-	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
-	_collisionShape->setLocalScaling(*valueTemp);
-	delete valueTemp;
+	VECTOR3_DEF(value);
+	_collisionShape->setLocalScaling(VECTOR3_USE(value));
+	VECTOR3_DEL(value);
 }
 
 btScalar CollisionShape::Margin::get()

@@ -10,9 +10,9 @@ StaticPlaneShape::StaticPlaneShape(btStaticPlaneShape* shape)
 StaticPlaneShape::StaticPlaneShape(Vector3 planeNormal, btScalar planeConstant)
 : BulletSharp::ConcaveShape(0)
 {
-	btVector3* planeNormalTemp = Math::Vector3ToBtVector3(planeNormal);
-	UnmanagedPointer = new btStaticPlaneShape(*planeNormalTemp, planeConstant);
-	delete planeNormalTemp;
+	VECTOR3_DEF(planeNormal);
+	UnmanagedPointer = new btStaticPlaneShape(VECTOR3_USE(planeNormal), planeConstant);
+	VECTOR3_DEL(planeNormal);
 }
 
 btScalar StaticPlaneShape::PlaneConstant::get()

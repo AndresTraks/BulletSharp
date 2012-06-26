@@ -26,9 +26,9 @@ TriangleCallback::!TriangleCallback()
 
 void TriangleCallback::ProcessTriangle(Vector3 triangle, int partId, int triangleIndex)
 {
-	btVector3* triangleTemp = Math::Vector3ToBtVector3(triangle);
-	UnmanagedPointer->processTriangle(triangleTemp, partId, triangleIndex);
-	delete triangleTemp;
+	VECTOR3_DEF(triangle);
+	UnmanagedPointer->processTriangle(VECTOR3_PTR(triangle), partId, triangleIndex);
+	VECTOR3_DEL(triangle);
 }
 
 bool TriangleCallback::IsDisposed::get()
@@ -68,11 +68,12 @@ InternalTriangleIndexCallback::!InternalTriangleIndexCallback()
 	OnDisposed(this, nullptr);
 }
 
+// TODO: triangle is an array
 void InternalTriangleIndexCallback::InternalProcessTriangleIndex(Vector3 triangle, int partId, int triangleIndex)
 {
-	btVector3* triangleTemp = Math::Vector3ToBtVector3(triangle);
-	UnmanagedPointer->internalProcessTriangleIndex(triangleTemp, partId, triangleIndex);
-	delete triangleTemp;
+	VECTOR3_DEF(triangle);
+	UnmanagedPointer->internalProcessTriangleIndex(VECTOR3_PTR(triangle), partId, triangleIndex);
+	VECTOR3_DEL(triangle);
 }
 
 bool InternalTriangleIndexCallback::IsDisposed::get()

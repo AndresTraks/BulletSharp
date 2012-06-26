@@ -65,18 +65,18 @@ RigidBody^ Serialize::BulletWorldImporter::CreateRigidBody(bool isDynamic, btSca
 
 CollisionShape^ Serialize::BulletWorldImporter::CreatePlaneShape(Vector3 planeNormal, btScalar planeConstant)
 {
-	btVector3* planeNormalTemp = Math::Vector3ToBtVector3(planeNormal);
-	CollisionShape^ ret = CollisionShape::GetManaged(_importer->baseCreatePlaneShape(*planeNormalTemp, planeConstant));
-	delete planeNormalTemp;
+	VECTOR3_DEF(planeNormal);
+	CollisionShape^ ret = CollisionShape::GetManaged(_importer->baseCreatePlaneShape(VECTOR3_USE(planeNormal), planeConstant));
+	VECTOR3_DEL(planeNormal);
 	return ret;
 
 }
 
 CollisionShape^ Serialize::BulletWorldImporter::CreateBoxShape(Vector3 halfExtents)
 {
-	btVector3* halfExtentsTemp = Math::Vector3ToBtVector3(halfExtents);
-	CollisionShape^ ret = CollisionShape::GetManaged(_importer->baseCreateBoxShape(*halfExtentsTemp));
-	delete halfExtentsTemp;
+	VECTOR3_DEF(halfExtents);
+	CollisionShape^ ret = CollisionShape::GetManaged(_importer->baseCreateBoxShape(VECTOR3_USE(halfExtents)));
+	VECTOR3_DEL(halfExtents);
 	return ret;
 }
 
@@ -152,10 +152,10 @@ CompoundShape^ Serialize::BulletWorldImporter::CreateCompoundShape()
 #ifndef DISABLE_BVH
 ScaledBvhTriangleMeshShape^ Serialize::BulletWorldImporter::CreateScaledTrangleMeshShape(BvhTriangleMeshShape^ meshShape, Vector3 localScaling)
 {
-	btVector3* localScalingTemp = Math::Vector3ToBtVector3(localScaling);
-	ScaledBvhTriangleMeshShape^ ret =
-		gcnew ScaledBvhTriangleMeshShape(_importer->baseCreateScaledTrangleMeshShape(meshShape->UnmanagedPointer, *localScalingTemp));
-	delete localScalingTemp;
+	VECTOR3_DEF(localScaling);
+	ScaledBvhTriangleMeshShape^ ret = gcnew ScaledBvhTriangleMeshShape(
+		_importer->baseCreateScaledTrangleMeshShape(meshShape->UnmanagedPointer, VECTOR3_USE(localScaling)));
+	VECTOR3_DEL(localScaling);
 	return ret;
 }
 
@@ -175,26 +175,26 @@ OptimizedBvh^ Serialize::BulletWorldImporter::CreateOptimizedBvh()
 Point2PointConstraint^ Serialize::BulletWorldImporter::CreatePoint2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	Vector3 pivotInA, Vector3 pivotInB)
 {
-	btVector3* pivotInATemp = Math::Vector3ToBtVector3(pivotInA);
-	btVector3* pivotInBTemp = Math::Vector3ToBtVector3(pivotInB);
+	VECTOR3_DEF(pivotInA);
+	VECTOR3_DEF(pivotInB);
 
 	Point2PointConstraint^ ret = gcnew Point2PointConstraint(_importer->baseCreatePoint2PointConstraint(
-		*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer, *pivotInATemp, *pivotInBTemp));
+		*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer, VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB)));
 
-	delete pivotInATemp;
-	delete pivotInBTemp;
+	VECTOR3_DEL(pivotInA);
+	VECTOR3_DEL(pivotInB);
 
 	return ret;
 }
 
 Point2PointConstraint^ Serialize::BulletWorldImporter::CreatePoint2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA)
 {
-	btVector3* pivotInATemp = Math::Vector3ToBtVector3(pivotInA);
+	VECTOR3_DEF(pivotInA);
 
 	Point2PointConstraint^ ret = gcnew Point2PointConstraint(_importer->baseCreatePoint2PointConstraint(
-		*rigidBodyA->UnmanagedPointer, *pivotInATemp));
+		*rigidBodyA->UnmanagedPointer, VECTOR3_USE(pivotInA)));
 
-	delete pivotInATemp;
+	VECTOR3_DEL(pivotInA);
 	return ret;
 }
 

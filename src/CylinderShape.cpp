@@ -10,9 +10,9 @@ CylinderShape::CylinderShape(btCylinderShape* shape)
 CylinderShape::CylinderShape(Vector3 halfExtents)
 : ConvexInternalShape(0)
 {
-	btVector3* halfExtentsTemp = Math::Vector3ToBtVector3(halfExtents);
-	UnmanagedPointer = new btCylinderShape(*halfExtentsTemp);
-	delete halfExtentsTemp;
+	VECTOR3_DEF(halfExtents);
+	UnmanagedPointer = new btCylinderShape(VECTOR3_USE(halfExtents));
+	VECTOR3_DEL(halfExtents);
 }
 
 CylinderShape::CylinderShape(btScalar halfExtentsX, btScalar halfExtentsY, btScalar halfExtentsZ)
@@ -63,9 +63,9 @@ btCylinderShape* CylinderShape::UnmanagedPointer::get()
 CylinderShapeX::CylinderShapeX(Vector3 halfExtents)
 : CylinderShape((btCylinderShape*)0)
 {
-	btVector3* halfExtentsTemp = Math::Vector3ToBtVector3(halfExtents);
-	UnmanagedPointer = new btCylinderShapeX(*halfExtentsTemp);
-	delete halfExtentsTemp;
+	VECTOR3_DEF(halfExtents);
+	UnmanagedPointer = new btCylinderShapeX(VECTOR3_USE(halfExtents));
+	VECTOR3_DEL(halfExtents);
 }
 
 CylinderShapeX::CylinderShapeX(btScalar halfExtentsX, btScalar halfExtentsY, btScalar halfExtentsZ)
@@ -88,9 +88,9 @@ CylinderShapeX::CylinderShapeX(btScalar halfExtents)
 CylinderShapeZ::CylinderShapeZ(Vector3 halfExtents)
 : CylinderShape((btCylinderShape*)0)
 {
-	btVector3* halfExtentsTemp = Math::Vector3ToBtVector3(halfExtents);
-	UnmanagedPointer = new btCylinderShapeZ(*halfExtentsTemp);
-	delete halfExtentsTemp;
+	VECTOR3_DEF(halfExtents);
+	UnmanagedPointer = new btCylinderShapeZ(VECTOR3_USE(halfExtents));
+	VECTOR3_DEL(halfExtents);
 }
 
 CylinderShapeZ::CylinderShapeZ(btScalar halfExtentsX, btScalar halfExtentsY, btScalar halfExtentsZ)

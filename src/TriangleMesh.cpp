@@ -30,38 +30,37 @@ void TriangleMesh::AddIndex(int index)
 
 int TriangleMesh::FindOrAddVertex(Vector3 vertex, bool removeDuplicateVertices)
 {
-	btVector3* vertexTemp = Math::Vector3ToBtVector3(vertex);
-	int ret = UnmanagedPointer->findOrAddVertex(*vertexTemp, removeDuplicateVertices);
-
-	delete vertexTemp;
+	VECTOR3_DEF(vertex);
+	int ret = UnmanagedPointer->findOrAddVertex(VECTOR3_USE(vertex), removeDuplicateVertices);
+	VECTOR3_DEL(vertex);
 	return ret;
 }
 #endif
 
 void TriangleMesh::AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2, bool removeDuplicateVertices)
 {
-	btVector3* vertex0Temp = Math::Vector3ToBtVector3(vertex0);
-	btVector3* vertex1Temp = Math::Vector3ToBtVector3(vertex1);
-	btVector3* vertex2Temp = Math::Vector3ToBtVector3(vertex2);
+	VECTOR3_DEF(vertex0);
+	VECTOR3_DEF(vertex1);
+	VECTOR3_DEF(vertex2);
 
-	UnmanagedPointer->addTriangle(*vertex0Temp, *vertex1Temp, *vertex2Temp, removeDuplicateVertices);
+	UnmanagedPointer->addTriangle(VECTOR3_USE(vertex0), VECTOR3_USE(vertex1), VECTOR3_USE(vertex2), removeDuplicateVertices);
 	
-	delete vertex0Temp;
-	delete vertex1Temp;
-	delete vertex2Temp;
+	VECTOR3_DEL(vertex0);
+	VECTOR3_DEL(vertex1);
+	VECTOR3_DEL(vertex2);
 }
 
 void TriangleMesh::AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2)
 {
-	btVector3* vertex0Temp = Math::Vector3ToBtVector3(vertex0);
-	btVector3* vertex1Temp = Math::Vector3ToBtVector3(vertex1);
-	btVector3* vertex2Temp = Math::Vector3ToBtVector3(vertex2);
+	VECTOR3_DEF(vertex0);
+	VECTOR3_DEF(vertex1);
+	VECTOR3_DEF(vertex2);
 
-	UnmanagedPointer->addTriangle(*vertex0Temp, *vertex1Temp, *vertex2Temp);
+	UnmanagedPointer->addTriangle(VECTOR3_USE(vertex0), VECTOR3_USE(vertex1), VECTOR3_USE(vertex2));
 	
-	delete vertex0Temp;
-	delete vertex1Temp;
-	delete vertex2Temp;
+	VECTOR3_DEL(vertex0);
+	VECTOR3_DEL(vertex1);
+	VECTOR3_DEL(vertex2);
 }
 
 void TriangleMesh::PreallocateIndexes(int indexCount)

@@ -13,9 +13,9 @@ Box2dShape::Box2dShape(btBox2dShape* shape)
 Box2dShape::Box2dShape(Vector3 boxHalfExtents)
 : PolyhedralConvexShape(0)
 {
-	btVector3* boxHalfExtentsTemp = Math::Vector3ToBtVector3(boxHalfExtents);
-	UnmanagedPointer = new btBox2dShape(*boxHalfExtentsTemp);
-	delete boxHalfExtentsTemp;
+	VECTOR3_DEF(boxHalfExtents);
+	UnmanagedPointer = new btBox2dShape(VECTOR3_USE(boxHalfExtents));
+	VECTOR3_DEL(boxHalfExtents);
 }
 
 Box2dShape::Box2dShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ)

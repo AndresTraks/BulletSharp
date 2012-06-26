@@ -29,9 +29,9 @@ ConvexHullShape::ConvexHullShape(System::Collections::Generic::IEnumerable<Vecto
 
 void ConvexHullShape::AddPoint(Vector3 point)
 {
-	btVector3* pointTemp = Math::Vector3ToBtVector3(point);
-	UnmanagedPointer->addPoint(*pointTemp);
-	delete pointTemp;
+	VECTOR3_DEF(point);
+	UnmanagedPointer->addPoint(VECTOR3_USE(point));
+	VECTOR3_DEL(point);
 }
 
 #pragma managed(push, off)

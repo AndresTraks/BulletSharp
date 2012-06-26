@@ -163,6 +163,7 @@ namespace CharacterDemo
             {
                 cameraPos = Vector3.Lerp(pos, cameraPos, cb.ClosestHitFraction);
             }
+            cb.Dispose();
             Freelook.SetEyeTarget(cameraPos, pos);
 
             character.SetWalkDirection(walkDirection * walkSpeed);

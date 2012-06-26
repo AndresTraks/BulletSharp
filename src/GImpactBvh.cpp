@@ -241,15 +241,15 @@ bool GImpactBvh::IsLeafNode(int nodeIndex)
 
 bool GImpactBvh::RayQuery(Vector3 ray_dir, Vector3 ray_origin, [Out] AlignedIntArray^% collided_results)
 {
-	btVector3* ray_dirTemp = Math::Vector3ToBtVector3(ray_dir);
-	btVector3* ray_originTemp = Math::Vector3ToBtVector3(ray_origin);
+	VECTOR3_DEF(ray_dir);
+	VECTOR3_DEF(ray_origin);
 	btAlignedObjectArray<int>* collided_resultsTemp = new btAlignedObjectArray<int>();
 
-	bool ret = _bvh->rayQuery(*ray_dirTemp, *ray_originTemp, *collided_resultsTemp);
+	bool ret = _bvh->rayQuery(VECTOR3_USE(ray_dir), VECTOR3_USE(ray_origin), *collided_resultsTemp);
 	collided_results = gcnew AlignedIntArray(collided_resultsTemp);
 
-	delete ray_dirTemp;
-	delete ray_originTemp;
+	VECTOR3_DEL(ray_dir);
+	VECTOR3_DEL(ray_origin);
 
 	return ret;
 }

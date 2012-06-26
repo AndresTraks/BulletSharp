@@ -18,35 +18,35 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userO
 	BulletSharp::CollisionFilterGroups collisionFilterMask,
 	IntPtr multiSapParentProxy)
 {
-	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
-	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
 
 	_clientObject = userObject;
 
-	UnmanagedPointer = new btBroadphaseProxy(*aabbMinTemp, *aabbMaxTemp, 0,
+	UnmanagedPointer = new btBroadphaseProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), 0,
 		(short int)collisionFilterGroup, (short int)collisionFilterMask,
 		multiSapParentProxy.ToPointer()
 		);
 
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
 }
 
 BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
 	BulletSharp::CollisionFilterGroups collisionFilterGroup,
 	BulletSharp::CollisionFilterGroups collisionFilterMask)
 {
-	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
-	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
 
 	_clientObject = userObject;
 
-	UnmanagedPointer = new btBroadphaseProxy(*aabbMinTemp, *aabbMaxTemp, 0,
+	UnmanagedPointer = new btBroadphaseProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), 0,
 		(short int)collisionFilterGroup, (short int)collisionFilterMask
 		);
 
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
 }
 
 BroadphaseProxy::BroadphaseProxy(btBroadphaseProxy* proxy)

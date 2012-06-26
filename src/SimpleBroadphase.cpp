@@ -18,16 +18,16 @@ SimpleBroadphaseProxy::SimpleBroadphaseProxy(Vector3 minpt, Vector3 maxpt,
 	CollisionFilterGroups collisionFilterMask, IntPtr multiSapProxy)
 : BroadphaseProxy(0)
 {
-	btVector3* minptTemp = Math::Vector3ToBtVector3(minpt);
-	btVector3* maxptTemp = Math::Vector3ToBtVector3(maxpt);
+	VECTOR3_DEF(minpt);
+	VECTOR3_DEF(maxpt);
 
 	_clientObject = userObject;
 
-	UnmanagedPointer = new btSimpleBroadphaseProxy(*minptTemp, *maxptTemp, shapeType, 0,
+	UnmanagedPointer = new btSimpleBroadphaseProxy(VECTOR3_USE(minpt), VECTOR3_USE(maxpt), shapeType, 0,
 		(short int)collisionFilterGroup, (short int)collisionFilterMask, multiSapProxy.ToPointer());
 
-	delete minptTemp;
-	delete maxptTemp;
+	VECTOR3_DEL(minpt);
+	VECTOR3_DEL(maxpt);
 }
 
 int SimpleBroadphaseProxy::NextFree::get()

@@ -17,35 +17,36 @@ OptimizedBvh::OptimizedBvh()
 
 void OptimizedBvh::Build(StridingMeshInterface^ triangles, bool useQuantizedAabbCompression, Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 {
-	btVector3* bvhAabbMinTemp = Math::Vector3ToBtVector3(bvhAabbMin);
-	btVector3* bvhAabbMaxTemp = Math::Vector3ToBtVector3(bvhAabbMax);
+	VECTOR3_DEF(bvhAabbMin);
+	VECTOR3_DEF(bvhAabbMax);
 
-	UnmanagedPointer->build(triangles->UnmanagedPointer, useQuantizedAabbCompression, *bvhAabbMinTemp, *bvhAabbMaxTemp);
+	UnmanagedPointer->build(triangles->UnmanagedPointer, useQuantizedAabbCompression,
+		VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax));
 
-	delete bvhAabbMinTemp;
-	delete bvhAabbMaxTemp;
+	VECTOR3_DEL(bvhAabbMin);
+	VECTOR3_DEL(bvhAabbMax);
 }
 
 void OptimizedBvh::Refit(StridingMeshInterface^ triangles, Vector3 aabbMin, Vector3 aabbMax)
 {
-	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
-	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
 
-	UnmanagedPointer->refit(triangles->UnmanagedPointer, *aabbMinTemp, *aabbMaxTemp);
+	UnmanagedPointer->refit(triangles->UnmanagedPointer, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
 }
 
 void OptimizedBvh::RefitPartial(StridingMeshInterface^ triangles, Vector3 aabbMin, Vector3 aabbMax)
 {
-	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
-	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
 
-	UnmanagedPointer->refit(triangles->UnmanagedPointer, *aabbMinTemp, *aabbMaxTemp);
+	UnmanagedPointer->refitPartial(triangles->UnmanagedPointer, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
 }
 
 void OptimizedBvh::UpdateBvhNodes(StridingMeshInterface^ meshInterface, int firstNode, int endNode, int index)

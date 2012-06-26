@@ -142,9 +142,9 @@ Vector3 CollisionObject::AnisotropicFriction::get()
 }
 void CollisionObject::AnisotropicFriction::set(Vector3 value)
 {
-	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
-	_unmanaged->setAnisotropicFriction(*valueTemp);
-	delete valueTemp;
+	VECTOR3_DEF(value);
+	_unmanaged->setAnisotropicFriction(VECTOR3_USE(value));
+	VECTOR3_DEL(value);
 }
 
 BroadphaseProxy^ CollisionObject::BroadphaseHandle::get()
@@ -255,9 +255,9 @@ Vector3 CollisionObject::InterpolationAngularVelocity::get()
 }
 void CollisionObject::InterpolationAngularVelocity::set(Vector3 value)
 {
-	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
-	_unmanaged->setInterpolationAngularVelocity(*valueTemp);
-	delete valueTemp;
+	VECTOR3_DEF(value);
+	_unmanaged->setInterpolationAngularVelocity(VECTOR3_USE(value));
+	VECTOR3_DEL(value);
 }
 
 Vector3 CollisionObject::InterpolationLinearVelocity::get()
@@ -266,9 +266,9 @@ Vector3 CollisionObject::InterpolationLinearVelocity::get()
 }
 void CollisionObject::InterpolationLinearVelocity::set(Vector3 value)
 {
-	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
-	_unmanaged->setInterpolationLinearVelocity(*valueTemp);
-	delete valueTemp;
+	VECTOR3_DEF(value);
+	_unmanaged->setInterpolationLinearVelocity(VECTOR3_USE(value));
+	VECTOR3_DEL(value);
 }
 
 Matrix CollisionObject::InterpolationWorldTransform::get()

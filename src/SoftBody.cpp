@@ -232,32 +232,34 @@ void Body::Activate()
 
 void Body::ApplyDImpulse(Vector3 impulse, Vector3 rPos)
 {
-	btVector3* impulseTemp = Math::Vector3ToBtVector3(impulse);
-	btVector3* rPosTemp = Math::Vector3ToBtVector3(rPos);
-	_body->applyDImpulse(*impulseTemp, *rPosTemp);
-	delete impulseTemp;
-	delete rPosTemp;
+	VECTOR3_DEF(impulse);
+	VECTOR3_DEF(rPos);
+
+	_body->applyDImpulse(VECTOR3_USE(impulse), VECTOR3_USE(rPos));
+
+	VECTOR3_DEL(impulse);
+	VECTOR3_DEL(rPos);
 }
 
 void Body::ApplyImpulse(Impulse^ impulse, Vector3 rPos)
 {
-	btVector3* rPosTemp = Math::Vector3ToBtVector3(rPos);
-	_body->applyImpulse(*impulse->UnmanagedPointer, *rPosTemp);
-	delete rPosTemp;
+	VECTOR3_DEF(rPos);
+	_body->applyImpulse(*impulse->UnmanagedPointer, VECTOR3_USE(rPos));
+	VECTOR3_DEL(rPos);
 }
 
 void Body::ApplyVAImpulse(Vector3 impulse)
 {
-	btVector3* impulseTemp = Math::Vector3ToBtVector3(impulse);
-	_body->applyVAImpulse(*impulseTemp);
-	delete impulseTemp;
+	VECTOR3_DEF(impulse);
+	_body->applyVAImpulse(VECTOR3_USE(impulse));
+	VECTOR3_DEL(impulse);
 }
 
 void Body::ApplyDAImpulse(Vector3 impulse)
 {
-	btVector3* impulseTemp = Math::Vector3ToBtVector3(impulse);
-	_body->applyDAImpulse(*impulseTemp);
-	delete impulseTemp;
+	VECTOR3_DEF(impulse);
+	_body->applyDAImpulse(VECTOR3_USE(impulse));
+	VECTOR3_DEL(impulse);
 }
 
 void Body::ApplyAImpulse(Impulse^ impulse)
@@ -267,9 +269,9 @@ void Body::ApplyAImpulse(Impulse^ impulse)
 
 void Body::ApplyDCImpulse(Vector3 impulse)
 {
-	btVector3* impulseTemp = Math::Vector3ToBtVector3(impulse);
-	_body->applyDCImpulse(*impulseTemp);
-	delete impulseTemp;
+	VECTOR3_DEF(impulse);
+	_body->applyDCImpulse(VECTOR3_USE(impulse));
+	VECTOR3_DEL(impulse);
 }
 
 void Body_GetAngularVelocity(btSoftBody::Body* body, btVector3* rpos, btVector3* velocity)
@@ -278,10 +280,10 @@ void Body_GetAngularVelocity(btSoftBody::Body* body, btVector3* rpos, btVector3*
 }
 Vector3 Body::GetAngularVelocity(Vector3 rPos)
 {
-	btVector3* rposTemp = Math::Vector3ToBtVector3(rPos);
+	VECTOR3_DEF(rPos);
 	btVector3* velocityTemp = new btVector3;
-	Body_GetAngularVelocity(_body, rposTemp, velocityTemp);
-	delete rposTemp;
+	Body_GetAngularVelocity(_body, VECTOR3_PTR(rPos), velocityTemp);
+	VECTOR3_DEL(rPos);
 	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
 	delete velocityTemp;
 	return velocity;
@@ -293,10 +295,10 @@ void Body_GetVelocity(btSoftBody::Body* body, btVector3* rpos, btVector3* veloci
 }
 Vector3 Body::Velocity(Vector3 rPos)
 {
-	btVector3* rposTemp = Math::Vector3ToBtVector3(rPos);
+	VECTOR3_DEF(rPos);
 	btVector3* velocityTemp = new btVector3;
-	Body_GetVelocity(_body, rposTemp, velocityTemp);
-	delete rposTemp;
+	Body_GetVelocity(_body, VECTOR3_PTR(rPos), velocityTemp);
+	VECTOR3_DEL(rPos);
 	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
 	delete velocityTemp;
 	return velocity;
@@ -310,7 +312,9 @@ Vector3 Body::AngularVelocity::get()
 {
 	btVector3* velocityTemp = new btVector3;
 	Body_GetAngularVelocity(_body, velocityTemp);
-	return Math::BtVector3ToVector3(velocityTemp);
+	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
+	delete velocityTemp;
+	return velocity;
 }
 
 CollisionObject^ Body::CollisionObject::get()
@@ -2243,44 +2247,44 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo)
 
 void BulletSharp::SoftBody::SoftBody::AddAeroForceToFace(Vector3 windVelocity, int faceIndex)
 {
-	btVector3* windVelocityTemp = Math::Vector3ToBtVector3(windVelocity);
-	Unmanaged->addAeroForceToFace(*windVelocityTemp, faceIndex);
-	delete windVelocityTemp;
+	VECTOR3_DEF(windVelocity);
+	Unmanaged->addAeroForceToFace(VECTOR3_USE(windVelocity), faceIndex);
+	VECTOR3_DEL(windVelocity);
 }
 
 void BulletSharp::SoftBody::SoftBody::AddAeroForceToNode(Vector3 windVelocity, int nodeIndex)
 {
-	btVector3* windVelocityTemp = Math::Vector3ToBtVector3(windVelocity);
-	Unmanaged->addAeroForceToNode(*windVelocityTemp, nodeIndex);
-	delete windVelocityTemp;
+	VECTOR3_DEF(windVelocity);
+	Unmanaged->addAeroForceToNode(VECTOR3_USE(windVelocity), nodeIndex);
+	VECTOR3_DEL(windVelocity);
 }
 
 void BulletSharp::SoftBody::SoftBody::AddForce(Vector3 force, int node)
 {
-	btVector3* forceTemp = Math::Vector3ToBtVector3(force);
-	Unmanaged->addForce(*forceTemp, node);
-	delete forceTemp;
+	VECTOR3_DEF(force);
+	Unmanaged->addForce(VECTOR3_USE(force), node);
+	VECTOR3_DEL(force);
 }
 
 void BulletSharp::SoftBody::SoftBody::AddForce(Vector3 force)
 {
-	btVector3* forceTemp = Math::Vector3ToBtVector3(force);
-	Unmanaged->addForce(*forceTemp);
-	delete forceTemp;
+	VECTOR3_DEF(force);
+	Unmanaged->addForce(VECTOR3_USE(force));
+	VECTOR3_DEL(force);
 }
 
 void BulletSharp::SoftBody::SoftBody::AddVelocity(Vector3 velocity, int node)
 {
-	btVector3* velocityTemp = Math::Vector3ToBtVector3(velocity);
-	Unmanaged->addVelocity(*velocityTemp, node);
-	delete velocityTemp;
+	VECTOR3_DEF(velocity);
+	Unmanaged->addVelocity(VECTOR3_USE(velocity), node);
+	VECTOR3_DEL(velocity);
 }
 
 void BulletSharp::SoftBody::SoftBody::AddVelocity(Vector3 velocity)
 {
-	btVector3* velocityTemp = Math::Vector3ToBtVector3(velocity);
-	Unmanaged->addVelocity(*velocityTemp);
-	delete velocityTemp;
+	VECTOR3_DEF(velocity);
+	Unmanaged->addVelocity(VECTOR3_USE(velocity));
+	VECTOR3_DEL(velocity);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies, btScalar influence)
@@ -2300,16 +2304,16 @@ void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body)
 
 void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body, Vector3 localPivot, bool disableCollisionBetweenLinkedBodies)
 {
-	btVector3* localPivotTemp = Math::Vector3ToBtVector3(localPivot);
-	Unmanaged->appendAnchor(node, body->UnmanagedPointer, *localPivotTemp, disableCollisionBetweenLinkedBodies);
-	delete localPivotTemp;
+	VECTOR3_DEF(localPivot);
+	Unmanaged->appendAnchor(node, body->UnmanagedPointer, VECTOR3_USE(localPivot), disableCollisionBetweenLinkedBodies);
+	VECTOR3_DEL(localPivot);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body, Vector3 localPivot)
 {
-	btVector3* localPivotTemp = Math::Vector3ToBtVector3(localPivot);
-	Unmanaged->appendAnchor(node, body->UnmanagedPointer, *localPivotTemp);
-	delete localPivotTemp;
+	VECTOR3_DEF(localPivot);
+	Unmanaged->appendAnchor(node, body->UnmanagedPointer, VECTOR3_USE(localPivot));
+	VECTOR3_DEL(localPivot);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendFace(int node0, int node1, int node2, Material^ material)
@@ -2430,75 +2434,75 @@ BulletSharp::SoftBody::Material^ BulletSharp::SoftBody::SoftBody::AppendMaterial
 void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Vector4 c, Node^ n0, Node^ n1, Node^ n2, Node^ n3)
 {
 	const char* textTemp = StringConv::ManagedToUnmanaged(text);
-	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+	VECTOR3_DEF(o);
 	btVector4* cTemp = Math::Vector4ToBtVector4(c);
 
-	Unmanaged->appendNote(textTemp, *oTemp, *cTemp, (btSoftBody::Node*)n0->_unmanaged, (btSoftBody::Node*)n1->_unmanaged,
+	Unmanaged->appendNote(textTemp, VECTOR3_USE(o), *cTemp, (btSoftBody::Node*)n0->_unmanaged, (btSoftBody::Node*)n1->_unmanaged,
 		(btSoftBody::Node*)n2->_unmanaged, (btSoftBody::Node*)n3->_unmanaged);
 
 	StringConv::FreeUnmanagedString(textTemp);
-	delete oTemp;
+	VECTOR3_DEL(o);
 	delete cTemp;
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Vector4 c, Node^ n0, Node^ n1, Node^ n2)
 {
 	const char* textTemp = StringConv::ManagedToUnmanaged(text);
-	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+	VECTOR3_DEF(o);
 	btVector4* cTemp = Math::Vector4ToBtVector4(c);
 
-	Unmanaged->appendNote(textTemp, *oTemp, *cTemp, (btSoftBody::Node*)n0->_unmanaged, (btSoftBody::Node*)n1->_unmanaged,
+	Unmanaged->appendNote(textTemp, VECTOR3_USE(o), *cTemp, (btSoftBody::Node*)n0->_unmanaged, (btSoftBody::Node*)n1->_unmanaged,
 		(btSoftBody::Node*)n2->_unmanaged);
 
 	StringConv::FreeUnmanagedString(textTemp);
-	delete oTemp;
+	VECTOR3_DEL(o);
 	delete cTemp;
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Vector4 c, Node^ n0, Node^ n1)
 {
 	const char* textTemp = StringConv::ManagedToUnmanaged(text);
-	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+	VECTOR3_DEF(o);
 	btVector4* cTemp = Math::Vector4ToBtVector4(c);
 
-	Unmanaged->appendNote(textTemp, *oTemp, *cTemp, (btSoftBody::Node*)n0->_unmanaged, (btSoftBody::Node*)n1->_unmanaged);
+	Unmanaged->appendNote(textTemp, VECTOR3_USE(o), *cTemp, (btSoftBody::Node*)n0->_unmanaged, (btSoftBody::Node*)n1->_unmanaged);
 
 	StringConv::FreeUnmanagedString(textTemp);
-	delete oTemp;
+	VECTOR3_DEL(o);
 	delete cTemp;
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Vector4 c, Node^ n0)
 {
 	const char* textTemp = StringConv::ManagedToUnmanaged(text);
-	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+	VECTOR3_DEF(o);
 	btVector4* cTemp = Math::Vector4ToBtVector4(c);
 
-	Unmanaged->appendNote(textTemp, *oTemp, *cTemp, (btSoftBody::Node*)n0->_unmanaged);
+	Unmanaged->appendNote(textTemp, VECTOR3_USE(o), *cTemp, (btSoftBody::Node*)n0->_unmanaged);
 
 	StringConv::FreeUnmanagedString(textTemp);
-	delete oTemp;
+	VECTOR3_DEL(o);
 	delete cTemp;
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Vector4 c)
 {
 	const char* textTemp = StringConv::ManagedToUnmanaged(text);
-	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+	VECTOR3_DEF(o);
 	btVector4* cTemp = Math::Vector4ToBtVector4(c);
 
-	Unmanaged->appendNote(textTemp, *oTemp, *cTemp);
+	Unmanaged->appendNote(textTemp, VECTOR3_USE(o), *cTemp);
 
 	StringConv::FreeUnmanagedString(textTemp);
-	delete oTemp;
+	VECTOR3_DEL(o);
 	delete cTemp;
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendNode(Vector3 x, btScalar m)
 {
-	btVector3* xTemp = Math::Vector3ToBtVector3(x);
-	Unmanaged->appendNode(*xTemp, m);
-	delete xTemp;
+	VECTOR3_DEF(x);
+	Unmanaged->appendNode(VECTOR3_USE(x), m);
+	VECTOR3_DEL(x);
 }
 
 void SoftBody_AppendNote(btSoftBody* body, const char* text, btVector3* c)
@@ -2509,45 +2513,45 @@ void SoftBody_AppendNote(btSoftBody* body, const char* text, btVector3* c)
 void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o)
 {
 	const char* textTemp = StringConv::ManagedToUnmanaged(text);
-	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+	VECTOR3_DEF(o);
 
-	SoftBody_AppendNote(Unmanaged, textTemp, oTemp);
+	SoftBody_AppendNote(Unmanaged, textTemp, VECTOR3_PTR(o));
 
 	StringConv::FreeUnmanagedString(textTemp);
-	delete oTemp;
+	VECTOR3_DEL(o);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Node^ feature)
 {
 	const char* textTemp = StringConv::ManagedToUnmanaged(text);
-	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+	VECTOR3_DEF(o);
 
-	Unmanaged->appendNote(textTemp, *oTemp, (btSoftBody::Node*)feature->_unmanaged);
+	Unmanaged->appendNote(textTemp, VECTOR3_USE(o), (btSoftBody::Node*)feature->_unmanaged);
 
 	StringConv::FreeUnmanagedString(textTemp);
-	delete oTemp;
+	VECTOR3_DEL(o);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Link^ feature)
 {
 	const char* textTemp = StringConv::ManagedToUnmanaged(text);
-	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+	VECTOR3_DEF(o);
 
-	Unmanaged->appendNote(textTemp, *oTemp, (btSoftBody::Link*)feature->_unmanaged);
+	Unmanaged->appendNote(textTemp, VECTOR3_USE(o), (btSoftBody::Link*)feature->_unmanaged);
 
 	StringConv::FreeUnmanagedString(textTemp);
-	delete oTemp;
+	VECTOR3_DEL(o);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Face^ feature)
 {
 	const char* textTemp = StringConv::ManagedToUnmanaged(text);
-	btVector3* oTemp = Math::Vector3ToBtVector3(o);
+	VECTOR3_DEF(o);
 
-	Unmanaged->appendNote(textTemp, *oTemp, (btSoftBody::Face*)feature->_unmanaged);
+	Unmanaged->appendNote(textTemp, VECTOR3_USE(o), (btSoftBody::Face*)feature->_unmanaged);
 
 	StringConv::FreeUnmanagedString(textTemp);
-	delete oTemp;
+	VECTOR3_DEL(o);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendTetra(int model, Material^ material)
@@ -2628,51 +2632,51 @@ void SoftBody_ClusterVelocity(btSoftBody::Cluster* cluster, btVector3* rpos, btV
 Vector3 BulletSharp::SoftBody::SoftBody::ClusterVelocity(Cluster^ cluster, Vector3 rpos)
 {
 	btVector3* tempVelocity = new btVector3;
-	btVector3* tempRpos = Math::Vector3ToBtVector3(rpos);
-	SoftBody_ClusterVelocity(cluster->UnmanagedPointer, tempRpos, tempVelocity);
+	VECTOR3_DEF(rpos);
+	SoftBody_ClusterVelocity(cluster->UnmanagedPointer, VECTOR3_PTR(rpos), tempVelocity);
+	VECTOR3_DEL(rpos);
 	Vector3 velocity = Math::BtVector3ToVector3(tempVelocity);
 	delete tempVelocity;
-	delete tempRpos;
 	return velocity;
 }
 
 void BulletSharp::SoftBody::SoftBody::ClusterVImpulse(Cluster^ cluster, Vector3 rpos, Vector3 impulse)
 {
-	btVector3* tempRpos = Math::Vector3ToBtVector3(rpos);
-	btVector3* tempImpulse = Math::Vector3ToBtVector3(impulse);
-	btSoftBody::clusterVImpulse(cluster->UnmanagedPointer, *tempRpos, *tempImpulse);
-	delete tempRpos;
-	delete tempImpulse;
+	VECTOR3_DEF(rpos);
+	VECTOR3_DEF(impulse);
+	btSoftBody::clusterVImpulse(cluster->UnmanagedPointer, VECTOR3_USE(rpos), VECTOR3_USE(impulse));
+	VECTOR3_DEL(rpos);
+	VECTOR3_DEL(impulse);
 }
 
 void BulletSharp::SoftBody::SoftBody::ClusterDImpulse(Cluster^ cluster, Vector3 rpos, Vector3 impulse)
 {
-	btVector3* tempRpos = Math::Vector3ToBtVector3(rpos);
-	btVector3* tempImpulse = Math::Vector3ToBtVector3(impulse);
-	btSoftBody::clusterDImpulse(cluster->UnmanagedPointer, *tempRpos, *tempImpulse);
-	delete tempRpos;
-	delete tempImpulse;
+	VECTOR3_DEF(rpos);
+	VECTOR3_DEF(impulse);
+	btSoftBody::clusterDImpulse(cluster->UnmanagedPointer, VECTOR3_USE(rpos), VECTOR3_USE(impulse));
+	VECTOR3_DEL(rpos);
+	VECTOR3_DEL(impulse);
 }
 
 void BulletSharp::SoftBody::SoftBody::ClusterImpulse(Cluster^ cluster, Vector3 rpos, Impulse^ impulse)
 {
-	btVector3* tempRpos = Math::Vector3ToBtVector3(rpos);
-	btSoftBody::clusterImpulse(cluster->UnmanagedPointer, *tempRpos, *impulse->UnmanagedPointer);
-	delete tempRpos;
+	VECTOR3_DEF(rpos);
+	btSoftBody::clusterImpulse(cluster->UnmanagedPointer, VECTOR3_USE(rpos), *impulse->UnmanagedPointer);
+	VECTOR3_DEL(rpos);
 }
 
 void BulletSharp::SoftBody::SoftBody::ClusterVAImpulse(Cluster^ cluster, Vector3 impulse)
 {
-	btVector3* tempImpulse = Math::Vector3ToBtVector3(impulse);
-	btSoftBody::clusterVAImpulse(cluster->UnmanagedPointer, *tempImpulse);
-	delete tempImpulse;
+	VECTOR3_DEF(impulse);
+	btSoftBody::clusterVAImpulse(cluster->UnmanagedPointer, VECTOR3_USE(impulse));
+	VECTOR3_DEL(impulse);
 }
 
 void BulletSharp::SoftBody::SoftBody::ClusterDAImpulse(Cluster^ cluster, Vector3 impulse)
 {
-	btVector3* tempImpulse = Math::Vector3ToBtVector3(impulse);
-	btSoftBody::clusterDAImpulse(cluster->UnmanagedPointer, *tempImpulse);
-	delete tempImpulse;
+	VECTOR3_DEF(impulse);
+	btSoftBody::clusterDAImpulse(cluster->UnmanagedPointer, VECTOR3_USE(impulse));
+	VECTOR3_DEL(impulse);
 }
 
 void BulletSharp::SoftBody::SoftBody::ClusterAImpulse(Cluster^ cluster, Impulse^ impulse)
@@ -2682,9 +2686,9 @@ void BulletSharp::SoftBody::SoftBody::ClusterAImpulse(Cluster^ cluster, Impulse^
 
 void BulletSharp::SoftBody::SoftBody::ClusterDCImpulse(Cluster^ cluster, Vector3 impulse)
 {
-	btVector3* tempImpulse = Math::Vector3ToBtVector3(impulse);
-	btSoftBody::clusterDCImpulse(cluster->UnmanagedPointer, *tempImpulse);
-	delete tempImpulse;
+	VECTOR3_DEF(impulse);
+	btSoftBody::clusterDCImpulse(cluster->UnmanagedPointer, VECTOR3_USE(impulse));
+	VECTOR3_DEL(impulse);
 }
 
 bool BulletSharp::SoftBody::SoftBody::CutLink(int node0, int node1, btScalar position)
@@ -3144,13 +3148,13 @@ void BulletSharp::SoftBody::SoftBody::RandomizeConstraints()
 
 bool BulletSharp::SoftBody::SoftBody::RayTest(Vector3 rayFrom, Vector3 rayTo, SRayCast^ results)
 {
-	btVector3* rayFromTemp = Math::Vector3ToBtVector3(rayFrom);
-	btVector3* rayToTemp = Math::Vector3ToBtVector3(rayTo);
+	VECTOR3_DEF(rayFrom);
+	VECTOR3_DEF(rayTo);
 
-	bool ret = Unmanaged->rayTest(*rayFromTemp, *rayToTemp, *results->UnmanagedPointer);
+	bool ret = Unmanaged->rayTest(VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo), *results->UnmanagedPointer);
 
-	delete rayFromTemp;
-	delete rayToTemp;
+	VECTOR3_DEL(rayFrom);
+	VECTOR3_DEL(rayTo);
 	return ret;
 }
 
@@ -3178,9 +3182,9 @@ void BulletSharp::SoftBody::SoftBody::Rotate(Quaternion rotation)
 
 void BulletSharp::SoftBody::SoftBody::Scale(Vector3 scale)
 {
-	btVector3* scaleTemp = Math::Vector3ToBtVector3(scale);
-	Unmanaged->scale(*scaleTemp);
-	delete scaleTemp;
+	VECTOR3_DEF(scale);
+	Unmanaged->scale(VECTOR3_USE(scale));
+	VECTOR3_DEL(scale);
 }
 
 void BulletSharp::SoftBody::SoftBody::SetMass(int node, btScalar mass)
@@ -3215,9 +3219,9 @@ void BulletSharp::SoftBody::SoftBody::SetTotalMass(btScalar mass)
 
 void BulletSharp::SoftBody::SoftBody::SetVelocity(Vector3 velocity)
 {
-	btVector3* velocityTemp = Math::Vector3ToBtVector3(velocity);
-	Unmanaged->setVelocity(*velocityTemp);
-	delete velocityTemp;
+	VECTOR3_DEF(velocity);
+	Unmanaged->setVelocity(VECTOR3_USE(velocity));
+	VECTOR3_DEL(velocity);
 }
 
 void BulletSharp::SoftBody::SoftBody::SetVolumeDensity(btScalar density)
@@ -3273,9 +3277,9 @@ void BulletSharp::SoftBody::SoftBody::Transform(Matrix transform)
 
 void BulletSharp::SoftBody::SoftBody::Translate(Vector3 translation)
 {
-	btVector3* translationTemp = Math::Vector3ToBtVector3(translation);
-	Unmanaged->translate(*translationTemp);
-	delete translationTemp;
+	VECTOR3_DEF(translation);
+	Unmanaged->translate(VECTOR3_USE(translation));
+	VECTOR3_DEL(translation);
 }
 
 void BulletSharp::SoftBody::SoftBody::Translate(btScalar x, btScalar y, btScalar z)
@@ -3484,9 +3488,9 @@ Vector3 BulletSharp::SoftBody::SoftBody::WindVelocity::get()
 }
 void BulletSharp::SoftBody::SoftBody::WindVelocity::set(Vector3 value)
 {
-	btVector3* tempWindVelocity = Math::Vector3ToBtVector3(value);
-	Unmanaged->setWindVelocity(*tempWindVelocity);
-	delete tempWindVelocity;
+	VECTOR3_DEF(value);
+	Unmanaged->setWindVelocity(VECTOR3_USE(value));
+	VECTOR3_DEL(value);
 }
 
 SoftBodyWorldInfo^ BulletSharp::SoftBody::SoftBody::WorldInfo::get()

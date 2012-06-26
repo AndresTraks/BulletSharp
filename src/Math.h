@@ -27,6 +27,23 @@ using namespace Mogre;
 #define GRAPHICS_NO_DIRECT_CAST
 #endif
 
+// Macros for passing Vector3 parameters.
+// VECTOR3_DEF and VECTOR3_PTR convert Vector3 to btVector3, but allow pinned pointers to be passed
+// if the structure of Vector3 and btVector3 is compatible.
+// VECTOR3_DEL cleans up the btVector3 if pinning is not possible.
+// VECTOR3_USE is used to dereference the btVector3* pointer.
+#define VECTOR3_NAME(vec) vec ## Temp
+#ifdef GRAPHICS_NO_DIRECT_CAST
+#define VECTOR3_DEF(vec) btVector3* VECTOR3_NAME(vec) = Math::Vector3ToBtVector3(vec)
+#define VECTOR3_PTR(vec) VECTOR3_NAME(vec)
+#define VECTOR3_DEL(vec) delete VECTOR3_PTR(vec)
+#else
+#define VECTOR3_DEF(vec) pin_ptr<Vector3> VECTOR3_NAME(vec) = &vec;
+#define VECTOR3_PTR(vec) ((btVector3*) VECTOR3_NAME(vec))
+#define VECTOR3_DEL(vec)
+#endif
+#define VECTOR3_USE(vec) *VECTOR3_PTR(vec)
+
 namespace BulletSharp
 {
 	private ref class Math

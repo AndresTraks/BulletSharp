@@ -10,13 +10,13 @@ ConcaveShape::ConcaveShape(btConcaveShape* concaveShape)
 
 void ConcaveShape::ProcessAllTriangles(TriangleCallback^ callback, Vector3 aabbMin, Vector3 aabbMax)
 {
-	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
-	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
 
-	UnmanagedPointer->processAllTriangles(callback->UnmanagedPointer, *aabbMinTemp, *aabbMaxTemp);
+	UnmanagedPointer->processAllTriangles(callback->UnmanagedPointer, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
 }
 
 btConcaveShape* ConcaveShape::UnmanagedPointer::get()

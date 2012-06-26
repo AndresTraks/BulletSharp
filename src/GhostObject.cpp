@@ -41,13 +41,13 @@ CollisionObject^ GhostObject::GetOverlappingObject(int index)
 
 void GhostObject::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, CollisionWorld::RayResultCallback^ resultCallback)
 {
-	btVector3* rayFromWorldTemp = Math::Vector3ToBtVector3(rayFromWorld);
-	btVector3* rayToWorldTemp = Math::Vector3ToBtVector3(rayToWorld);
+	VECTOR3_DEF(rayFromWorld);
+	VECTOR3_DEF(rayToWorld);
 
-	Unmanaged->rayTest(*rayFromWorldTemp, *rayToWorldTemp, *resultCallback->_unmanaged);
+	Unmanaged->rayTest(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld), *resultCallback->_unmanaged);
 
-	delete rayFromWorldTemp;
-	delete rayToWorldTemp;
+	VECTOR3_DEL(rayFromWorld);
+	VECTOR3_DEL(rayToWorld);
 }
 
 #ifndef DISABLE_INTERNAL

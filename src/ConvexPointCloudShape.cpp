@@ -45,11 +45,11 @@ Vector3 ConvexPointCloudShape::GetScaledPoint(int i)
 void ConvexPointCloudShape::SetPoints(array<Vector3>^ points, bool computeAabb, Vector3 localScaling)
 {
 	btVector3* btPoints = Math::Vector3ArrayToUnmanaged(points);
-	btVector3* localScalingTemp = Math::Vector3ToBtVector3(localScaling);
+	VECTOR3_DEF(localScaling);
 	
-	UnmanagedPointer->setPoints(btPoints, points->Length, computeAabb, *localScalingTemp);
+	UnmanagedPointer->setPoints(btPoints, points->Length, computeAabb, VECTOR3_USE(localScaling));
 
-	delete localScalingTemp;
+	VECTOR3_DEL(localScaling);
 	// Don't delete btPoints, they'll be used by btConvexPointCloudShape.
 }
 

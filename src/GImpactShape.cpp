@@ -19,17 +19,17 @@ TetrahedronShapeEx::TetrahedronShapeEx()
 
 void TetrahedronShapeEx::SetVertices(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 v3)
 {
-	btVector3* v0Temp = Math::Vector3ToBtVector3(v0);
-	btVector3* v1Temp = Math::Vector3ToBtVector3(v1);
-	btVector3* v2Temp = Math::Vector3ToBtVector3(v2);
-	btVector3* v3Temp = Math::Vector3ToBtVector3(v3);
+	VECTOR3_DEF(v0);
+	VECTOR3_DEF(v1);
+	VECTOR3_DEF(v2);
+	VECTOR3_DEF(v3);
 
-	UnmanagedPointer->setVertices(*v0Temp, *v1Temp, *v2Temp, *v3Temp);
+	UnmanagedPointer->setVertices(VECTOR3_USE(v0), VECTOR3_USE(v1), VECTOR3_USE(v2), VECTOR3_USE(v3));
 
-	delete v0Temp;
-	delete v1Temp;
-	delete v2Temp;
-	delete v3Temp;
+	VECTOR3_DEL(v0);
+	VECTOR3_DEL(v1);
+	VECTOR3_DEL(v2);
+	VECTOR3_DEL(v3);
 }
 
 btTetrahedronShapeEx* TetrahedronShapeEx::UnmanagedPointer::get()
@@ -97,13 +97,13 @@ void GImpactShapeInterface::PostUpdate()
 
 void GImpactShapeInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, CollisionWorld::RayResultCallback^ resultCallback)
 {
-	btVector3* rayFromTemp = Math::Vector3ToBtVector3(rayFrom);
-	btVector3* rayToTemp = Math::Vector3ToBtVector3(rayTo);
+	VECTOR3_DEF(rayFrom);
+	VECTOR3_DEF(rayTo);
 
-	UnmanagedPointer->rayTest(*rayFromTemp, *rayToTemp, *resultCallback->_unmanaged);
+	UnmanagedPointer->rayTest(VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo), *resultCallback->_unmanaged);
 
-	delete rayFromTemp;
-	delete rayToTemp;
+	VECTOR3_DEL(rayFrom);
+	VECTOR3_DEL(rayTo);
 }
 
 void GImpactShapeInterface::SetChildTransform(int index, Matrix transform)

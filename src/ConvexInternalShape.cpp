@@ -21,16 +21,16 @@ void ConvexInternalShape::SetSafeMargin(btScalar minDimension)
 
 void ConvexInternalShape::SetSafeMargin(Vector3 halfExtents, btScalar defaultMarginMultiplier)
 {
-	btVector3* halfExtentsTemp = Math::Vector3ToBtVector3(halfExtents);
-	UnmanagedPointer->setSafeMargin(*halfExtentsTemp, defaultMarginMultiplier);
-	delete halfExtentsTemp;
+	VECTOR3_DEF(halfExtents);
+	UnmanagedPointer->setSafeMargin(VECTOR3_USE(halfExtents), defaultMarginMultiplier);
+	VECTOR3_DEL(halfExtents);
 }
 
 void ConvexInternalShape::SetSafeMargin(Vector3 halfExtents)
 {
-	btVector3* halfExtentsTemp = Math::Vector3ToBtVector3(halfExtents);
-	UnmanagedPointer->setSafeMargin(*halfExtentsTemp);
-	delete halfExtentsTemp;
+	VECTOR3_DEF(halfExtents);
+	UnmanagedPointer->setSafeMargin(VECTOR3_USE(halfExtents));
+	VECTOR3_DEL(halfExtents);
 }
 
 Vector3 ConvexInternalShape::ImplicitShapeDimensions::get()
@@ -39,9 +39,9 @@ Vector3 ConvexInternalShape::ImplicitShapeDimensions::get()
 }
 void ConvexInternalShape::ImplicitShapeDimensions::set(Vector3 value)
 {
-	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
-	UnmanagedPointer->setImplicitShapeDimensions(*valueTemp);
-	delete valueTemp;
+	VECTOR3_DEF(value);
+	UnmanagedPointer->setImplicitShapeDimensions(VECTOR3_USE(value));
+	VECTOR3_DEL(value);
 }
 
 Vector3 ConvexInternalShape::LocalScalingNV::get()

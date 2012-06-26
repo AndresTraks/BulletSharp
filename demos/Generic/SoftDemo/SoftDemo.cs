@@ -39,7 +39,7 @@ namespace SoftDemo
 
         SoftRigidDynamicsWorld SoftWorld
         {
-            get { return (SoftRigidDynamicsWorld)World; }
+            get { return World as SoftRigidDynamicsWorld; }
         }
 
         delegate void DemoConstructor();

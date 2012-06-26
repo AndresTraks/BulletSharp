@@ -41,12 +41,12 @@ bool ConvexPenetrationDepthSolver::CalcPenDepth(SimplexSolverInterface^ simplexS
 {
 	btTransform* transATemp = Math::MatrixToBtTransform(transA);
 	btTransform* transBTemp = Math::MatrixToBtTransform(transB);
-	btVector3* vTemp = Math::Vector3ToBtVector3(v);
-	btVector3* paTemp = Math::Vector3ToBtVector3(pa);
-	btVector3* pbTemp = Math::Vector3ToBtVector3(pb);
+	VECTOR3_DEF(v);
+	VECTOR3_DEF(pa);
+	VECTOR3_DEF(pb);
 
 	bool ret = _depthSolver->calcPenDepth(*simplexSolver->UnmanagedPointer, convexA->UnmanagedPointer, convexB->UnmanagedPointer,
-		*transATemp, *transBTemp, *vTemp, *paTemp, *pbTemp,
+		*transATemp, *transBTemp, VECTOR3_USE(v), VECTOR3_USE(pa), VECTOR3_USE(pb),
 #ifndef DISABLE_DEBUGDRAW
 		DebugDraw::GetUnmanaged(debugDraw),
 #else
@@ -56,9 +56,9 @@ bool ConvexPenetrationDepthSolver::CalcPenDepth(SimplexSolverInterface^ simplexS
 
 	delete transATemp;
 	delete transBTemp;
-	delete vTemp;
-	delete paTemp;
-	delete pbTemp;
+	VECTOR3_DEL(v);
+	VECTOR3_DEL(pa);
+	VECTOR3_DEL(pb);
 
 	return ret;
 }

@@ -57,11 +57,9 @@ bool PolyhedralConvexShape::InitializePolyhedralFeatures()
 
 bool PolyhedralConvexShape::IsInside(Vector3 point, btScalar tolerance)
 {
-	btVector3* ptTemp = Math::Vector3ToBtVector3(point);
-
-	bool ret = UnmanagedPointer->isInside(*ptTemp, tolerance);
-
-	delete ptTemp;
+	VECTOR3_DEF(point);
+	bool ret = UnmanagedPointer->isInside(VECTOR3_USE(point), tolerance);
+	VECTOR3_DEL(point);
 	return ret;
 }
 
@@ -102,17 +100,17 @@ PolyhedralConvexAabbCachingShape::PolyhedralConvexAabbCachingShape(btPolyhedralC
 void PolyhedralConvexAabbCachingShape::GetNonvirtualAabb(Matrix trans, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax, btScalar margin)
 {
 	btTransform* transTemp = Math::MatrixToBtTransform(trans);
-	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
-	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
 
-	UnmanagedPointer->getNonvirtualAabb(*transTemp, *aabbMinTemp, *aabbMaxTemp, margin);
+	UnmanagedPointer->getNonvirtualAabb(*transTemp, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), margin);
 
-	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
-	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
+	Math::BtVector3ToVector3(VECTOR3_PTR(aabbMin), aabbMin);
+	Math::BtVector3ToVector3(VECTOR3_PTR(aabbMax), aabbMax);
 
 	delete transTemp;
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
 }
 
 void PolyhedralConvexAabbCachingShape::RecalcLocalAabb()

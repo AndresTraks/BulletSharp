@@ -27,28 +27,28 @@ MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInter
 	Vector3 bvhAabbMin, Vector3 bvhAabbMax, bool buildBvh)
 : BvhTriangleMeshShape(0)
 {
-	btVector3* bvhAabbMinTemp = Math::Vector3ToBtVector3(bvhAabbMin);
-	btVector3* bvhAabbMaxTemp = Math::Vector3ToBtVector3(bvhAabbMax);
+	VECTOR3_DEF(bvhAabbMin);
+	VECTOR3_DEF(bvhAabbMax);
 
 	UnmanagedPointer = new btMultimaterialTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression,
-		*bvhAabbMinTemp, *bvhAabbMaxTemp, buildBvh);
+		VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax), buildBvh);
 
-	delete bvhAabbMinTemp;
-	delete bvhAabbMaxTemp;
+	VECTOR3_DEL(bvhAabbMin);
+	VECTOR3_DEL(bvhAabbMax);
 }
 
 MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
 	Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 : BvhTriangleMeshShape(0)
 {
-	btVector3* bvhAabbMinTemp = Math::Vector3ToBtVector3(bvhAabbMin);
-	btVector3* bvhAabbMaxTemp = Math::Vector3ToBtVector3(bvhAabbMax);
+	VECTOR3_DEF(bvhAabbMin);
+	VECTOR3_DEF(bvhAabbMax);
 
 	UnmanagedPointer = new btMultimaterialTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression,
-		*bvhAabbMinTemp, *bvhAabbMaxTemp);
+		VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax));
 
-	delete bvhAabbMinTemp;
-	delete bvhAabbMaxTemp;
+	VECTOR3_DEL(bvhAabbMin);
+	VECTOR3_DEL(bvhAabbMax);
 }
 
 BulletMaterial MultimaterialTriangleMeshShape::GetMaterialProperties(int partID, int triIndex)

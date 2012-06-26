@@ -69,75 +69,30 @@ void DynamicsWorld::RemoveRigidBody(RigidBody^ rigidBody)
 	Unmanaged->removeRigidBody(rigidBody->UnmanagedPointer);
 }
 
-void callback(btDynamicsWorld *world, btScalar timeStep)
+void callback(btDynamicsWorld* world, btScalar timeStep)
 {
-	void* obj = world->getWorldUserInfo();
-	if (obj == nullptr)
-		return;
-	UserInfoWrapper^ userInfo = static_cast<UserInfoWrapper^>(VoidPtrToGCHandle(obj).Target);
-	if (userInfo == nullptr)
-		return;
-	userInfo->Callback(gcnew DynamicsWorld(world), timeStep);
+	DynamicsWorld^ dynamicsWorld = static_cast<DynamicsWorld^>(CollisionWorld::GetManaged(world));
+	dynamicsWorld->_callback(dynamicsWorld, timeStep);
 }
 
 void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo, bool isPreTick)
 {
-	UserInfoWrapper^ userInfo;
-
-	void* obj = Unmanaged->getWorldUserInfo();
-	if (obj != nullptr)
-	{
-		userInfo = static_cast<UserInfoWrapper^>(VoidPtrToGCHandle(obj).Target);
-	}
-	else
-	{
-		userInfo = gcnew UserInfoWrapper(worldUserInfo);
-		GCHandle handle = GCHandle::Alloc(userInfo);
-		obj = GCHandleToVoidPtr(handle);
-	}
-	userInfo->Callback = cb;
-
-	Unmanaged->setInternalTickCallback(callback, obj, isPreTick);
+	_callback = cb;
+	_userObject = worldUserInfo;
+	Unmanaged->setInternalTickCallback(callback, Unmanaged->getWorldUserInfo(), isPreTick);
 }
 
 void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo)
 {
-	UserInfoWrapper^ userInfo;
-
-	void* obj = Unmanaged->getWorldUserInfo();
-	if (obj != nullptr)
-	{
-		userInfo = static_cast<UserInfoWrapper^>(VoidPtrToGCHandle(obj).Target);
-	}
-	else
-	{
-		userInfo = gcnew UserInfoWrapper(worldUserInfo);
-		GCHandle handle = GCHandle::Alloc(userInfo);
-		obj = GCHandleToVoidPtr(handle);
-	}
-	userInfo->Callback = cb;
-
-	Unmanaged->setInternalTickCallback(callback, obj);
+	_callback = cb;
+	_userObject = worldUserInfo;
+	Unmanaged->setInternalTickCallback(callback, Unmanaged->getWorldUserInfo());
 }
 
 void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb)
 {
-	UserInfoWrapper^ userInfo;
-
-	void* obj = Unmanaged->getWorldUserInfo();
-	if (obj != nullptr)
-	{
-		userInfo = static_cast<UserInfoWrapper^>(VoidPtrToGCHandle(obj).Target);
-	}
-	else
-	{
-		userInfo = gcnew UserInfoWrapper();
-		GCHandle handle = GCHandle::Alloc(userInfo);
-		obj = GCHandleToVoidPtr(handle);
-	}
-	userInfo->Callback = cb;
-
-	Unmanaged->setInternalTickCallback(callback, obj);
+	_callback = cb;
+	Unmanaged->setInternalTickCallback(callback, Unmanaged->getWorldUserInfo());
 }
 
 int DynamicsWorld::StepSimulation(btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep)
@@ -195,35 +150,18 @@ Vector3 DynamicsWorld::Gravity::get()
 
 void DynamicsWorld::Gravity::set(Vector3 value)
 {
-	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
-	Unmanaged->setGravity(*valueTemp);
-	delete valueTemp;
+	VECTOR3_DEF(value);
+	Unmanaged->setGravity(VECTOR3_USE(value));
+	VECTOR3_DEL(value);
 }
 
 Object^ DynamicsWorld::WorldUserInfo::get()
 {
-	void* obj = Unmanaged->getWorldUserInfo();
-	if (obj == nullptr)
-		return nullptr;
-	return (static_cast<UserInfoWrapper^>(VoidPtrToGCHandle(obj).Target)->UserObject);
+	return _userObject;
 }
 void DynamicsWorld::WorldUserInfo::set(Object^ value)
 {
-	UserInfoWrapper^ userInfo;
-
-	void* obj = Unmanaged->getWorldUserInfo();
-	if (obj != nullptr)
-	{
-		userInfo = static_cast<UserInfoWrapper^>(VoidPtrToGCHandle(obj).Target);
-	}
-	else
-	{
-		userInfo = gcnew UserInfoWrapper(value);
-		GCHandle handle = GCHandle::Alloc(userInfo);
-		Unmanaged->setWorldUserInfo(GCHandleToVoidPtr(handle));
-	}
-
-	userInfo->UserObject = value;
+	_userObject = value;
 }
 
 DynamicsWorldType DynamicsWorld::WorldType::get()
@@ -234,33 +172,4 @@ DynamicsWorldType DynamicsWorld::WorldType::get()
 btDynamicsWorld* DynamicsWorld::UnmanagedPointer::get()
 {
 	return (btDynamicsWorld*)CollisionWorld::UnmanagedPointer;
-}
-
-
-UserInfoWrapper::UserInfoWrapper(Object^ userObject)
-{
-	_userObject = userObject;
-}
-
-UserInfoWrapper::UserInfoWrapper()
-{
-	_userObject = nullptr;
-}
-
-DynamicsWorld::InternalTickCallback^ UserInfoWrapper::Callback::get()
-{
-	return _callback;
-}
-void UserInfoWrapper::Callback::set(DynamicsWorld::InternalTickCallback^ value)
-{
-	_callback = value;
-}
-
-Object^ UserInfoWrapper::UserObject::get()
-{
-	return _userObject;
-}
-void UserInfoWrapper::UserObject::set(Object^ value)
-{
-	_userObject = value;
 }

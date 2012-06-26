@@ -214,13 +214,13 @@ void StridingMeshInterface::GetPremadeAabb(Vector3% aabbMin, Vector3% aabbMax)
 #ifndef DISABLE_INTERNAL
 void StridingMeshInterface::InternalProcessAllTriangles(InternalTriangleIndexCallback^ callback, Vector3 aabbMin, Vector3 aabbMax)
 {
-	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
-	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
 	
-	_stridingMesh->InternalProcessAllTriangles(callback->UnmanagedPointer, *aabbMinTemp, *aabbMaxTemp);
+	_stridingMesh->InternalProcessAllTriangles(callback->UnmanagedPointer, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
 }
 #endif
 
@@ -236,13 +236,13 @@ void StridingMeshInterface::PreallocateVertices(int numVerts)
 
 void StridingMeshInterface::SetPremadeAabb(Vector3 aabbMin, Vector3 aabbMax)
 {
-	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
-	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
+	
+	_stridingMesh->setPremadeAabb(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 
-	_stridingMesh->setPremadeAabb(*aabbMinTemp, *aabbMaxTemp);
-
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
 }
 
 void StridingMeshInterface::UnlockReadOnlyVertexData(int subpart)
@@ -271,9 +271,9 @@ Vector3 StridingMeshInterface::Scaling::get()
 }
 void StridingMeshInterface::Scaling::set(Vector3 value)
 {
-	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
-	UnmanagedPointer->setScaling(*valueTemp);
-	delete valueTemp;
+	VECTOR3_DEF(value);
+	UnmanagedPointer->setScaling(VECTOR3_USE(value));
+	VECTOR3_DEL(value);
 }
 
 btStridingMeshInterface* StridingMeshInterface::UnmanagedPointer::get()

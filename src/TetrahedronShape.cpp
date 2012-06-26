@@ -15,60 +15,58 @@ BU_Simplex1to4::BU_Simplex1to4()
 BU_Simplex1to4::BU_Simplex1to4(Vector3 pt0)
 : PolyhedralConvexAabbCachingShape(0)
 {
-	btVector3* pt0Temp = Math::Vector3ToBtVector3(pt0);
-	
-	UnmanagedPointer = new btBU_Simplex1to4(*pt0Temp);
-	
-	delete pt0Temp;
+	VECTOR3_DEF(pt0);
+	UnmanagedPointer = new btBU_Simplex1to4(VECTOR3_USE(pt0));
+	VECTOR3_DEL(pt0);
 }
 
 BU_Simplex1to4::BU_Simplex1to4(Vector3 pt0, Vector3 pt1)
 : PolyhedralConvexAabbCachingShape(0)
 {
-	btVector3* pt0Temp = Math::Vector3ToBtVector3(pt0);
-	btVector3* pt1Temp = Math::Vector3ToBtVector3(pt1);
+	VECTOR3_DEF(pt0);
+	VECTOR3_DEF(pt1);
 	
-	UnmanagedPointer = new btBU_Simplex1to4(*pt0Temp, *pt1Temp);
+	UnmanagedPointer = new btBU_Simplex1to4(VECTOR3_USE(pt0), VECTOR3_USE(pt1));
 	
-	delete pt0Temp;
-	delete pt1Temp;
+	VECTOR3_DEL(pt0);
+	VECTOR3_DEL(pt1);
 }
 
 BU_Simplex1to4::BU_Simplex1to4(Vector3 pt0, Vector3 pt1, Vector3 pt2)
 : PolyhedralConvexAabbCachingShape(0)
 {
-	btVector3* pt0Temp = Math::Vector3ToBtVector3(pt0);
-	btVector3* pt1Temp = Math::Vector3ToBtVector3(pt1);
-	btVector3* pt2Temp = Math::Vector3ToBtVector3(pt2);
+	VECTOR3_DEF(pt0);
+	VECTOR3_DEF(pt1);
+	VECTOR3_DEF(pt2);
 	
-	UnmanagedPointer = new btBU_Simplex1to4(*pt0Temp, *pt1Temp, *pt2Temp);
+	UnmanagedPointer = new btBU_Simplex1to4(VECTOR3_USE(pt0), VECTOR3_USE(pt1), VECTOR3_USE(pt2));
 	
-	delete pt0Temp;
-	delete pt1Temp;
-	delete pt2Temp;
+	VECTOR3_DEL(pt0);
+	VECTOR3_DEL(pt1);
+	VECTOR3_DEL(pt2);
 }
 
 BU_Simplex1to4::BU_Simplex1to4(Vector3 pt0, Vector3 pt1, Vector3 pt2, Vector3 pt3)
 : PolyhedralConvexAabbCachingShape(0)
 {
-	btVector3* pt0Temp = Math::Vector3ToBtVector3(pt0);
-	btVector3* pt1Temp = Math::Vector3ToBtVector3(pt1);
-	btVector3* pt2Temp = Math::Vector3ToBtVector3(pt2);
-	btVector3* pt3Temp = Math::Vector3ToBtVector3(pt3);
+	VECTOR3_DEF(pt0);
+	VECTOR3_DEF(pt1);
+	VECTOR3_DEF(pt2);
+	VECTOR3_DEF(pt3);
 	
-	UnmanagedPointer = new btBU_Simplex1to4(*pt0Temp, *pt1Temp, *pt2Temp, *pt3Temp);
+	UnmanagedPointer = new btBU_Simplex1to4(VECTOR3_USE(pt0), VECTOR3_USE(pt1), VECTOR3_USE(pt2), VECTOR3_USE(pt3));
 	
-	delete pt0Temp;
-	delete pt1Temp;
-	delete pt2Temp;
-	delete pt3Temp;
+	VECTOR3_DEL(pt0);
+	VECTOR3_DEL(pt1);
+	VECTOR3_DEL(pt2);
+	VECTOR3_DEL(pt3);
 }
 
 void BU_Simplex1to4::AddVertex(Vector3 pt)
 {
-	btVector3* ptTemp = Math::Vector3ToBtVector3(pt);
-	UnmanagedPointer->addVertex(*ptTemp);
-	delete ptTemp;
+	VECTOR3_DEF(pt);
+	UnmanagedPointer->addVertex(VECTOR3_USE(pt));
+	VECTOR3_DEL(pt);
 }
 
 int BU_Simplex1to4::GetIndex(int i)

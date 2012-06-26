@@ -176,15 +176,15 @@ TriangleShapeEx::TriangleShapeEx(btTriangleShapeEx* triangle)
 TriangleShapeEx::TriangleShapeEx(Vector3 p0, Vector3 p1, Vector3 p2)
 : TriangleShape()
 {
-	btVector3* p0Temp = Math::Vector3ToBtVector3(p0);
-	btVector3* p1Temp = Math::Vector3ToBtVector3(p1);
-	btVector3* p2Temp = Math::Vector3ToBtVector3(p2);
+	VECTOR3_DEF(p0);
+	VECTOR3_DEF(p1);
+	VECTOR3_DEF(p2);
 
-	UnmanagedPointer = new btTriangleShapeEx(*p0Temp, *p1Temp, *p2Temp);
+	UnmanagedPointer = new btTriangleShapeEx(VECTOR3_USE(p0), VECTOR3_USE(p1), VECTOR3_USE(p2));
 
-	delete p0Temp;
-	delete p1Temp;
-	delete p2Temp;
+	VECTOR3_DEL(p0);
+	VECTOR3_DEL(p1);
+	VECTOR3_DEL(p2);
 }
 
 TriangleShapeEx::TriangleShapeEx(TriangleShapeEx^ other)

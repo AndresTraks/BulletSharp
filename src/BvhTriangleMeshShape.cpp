@@ -30,25 +30,25 @@ BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface,
 BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression, Vector3 bvhAabbMin, Vector3 bvhAabbMax, bool buildBvh)
 : TriangleMeshShape(0)
 {
-	btVector3* bvhAabbMinTemp = Math::Vector3ToBtVector3(bvhAabbMin);
-	btVector3* bvhAabbMaxTemp = Math::Vector3ToBtVector3(bvhAabbMax);
+	VECTOR3_DEF(bvhAabbMin);
+	VECTOR3_DEF(bvhAabbMax);
 
-	UnmanagedPointer = new btBvhTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression, *bvhAabbMinTemp, *bvhAabbMaxTemp, buildBvh);
+	UnmanagedPointer = new btBvhTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression, VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax), buildBvh);
 
-	delete bvhAabbMinTemp;
-	delete bvhAabbMaxTemp;
+	VECTOR3_DEL(bvhAabbMin);
+	VECTOR3_DEL(bvhAabbMax);
 }
 
 BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression, Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 : TriangleMeshShape(0)
 {
-	btVector3* bvhAabbMinTemp = Math::Vector3ToBtVector3(bvhAabbMin);
-	btVector3* bvhAabbMaxTemp = Math::Vector3ToBtVector3(bvhAabbMax);
+	VECTOR3_DEF(bvhAabbMin);
+	VECTOR3_DEF(bvhAabbMax);
 
-	UnmanagedPointer = new btBvhTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression, *bvhAabbMinTemp, *bvhAabbMaxTemp);
+	UnmanagedPointer = new btBvhTriangleMeshShape(meshInterface->UnmanagedPointer, useQuantizedAabbCompression, VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax));
 
-	delete bvhAabbMinTemp;
-	delete bvhAabbMaxTemp;
+	VECTOR3_DEL(bvhAabbMin);
+	VECTOR3_DEL(bvhAabbMax);
 }
 
 void BvhTriangleMeshShape::BuildOptimizedBvh()
@@ -58,50 +58,51 @@ void BvhTriangleMeshShape::BuildOptimizedBvh()
 
 void BvhTriangleMeshShape::PartialRefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 {
-	btVector3* bvhAabbMinTemp = Math::Vector3ToBtVector3(bvhAabbMin);
-	btVector3* bvhAabbMaxTemp = Math::Vector3ToBtVector3(bvhAabbMax);
+	VECTOR3_DEF(bvhAabbMin);
+	VECTOR3_DEF(bvhAabbMax);
 
-	UnmanagedPointer->partialRefitTree(*bvhAabbMinTemp, *bvhAabbMaxTemp);
+	UnmanagedPointer->partialRefitTree(VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax));
 
-	delete bvhAabbMinTemp;
-	delete bvhAabbMaxTemp;
+	VECTOR3_DEL(bvhAabbMin);
+	VECTOR3_DEL(bvhAabbMax);
 }
 
 void BvhTriangleMeshShape::PerformConvexcast(TriangleCallback^ callback, Vector3 boxSource, Vector3 boxTarget, Vector3 boxMin, Vector3 boxMax)
 {
-	btVector3* boxSourceTemp = Math::Vector3ToBtVector3(boxSource);
-	btVector3* boxTargetTemp = Math::Vector3ToBtVector3(boxTarget);
-	btVector3* boxMinTemp = Math::Vector3ToBtVector3(boxMin);
-	btVector3* boxMaxTemp = Math::Vector3ToBtVector3(boxMax);
+	VECTOR3_DEF(boxSource);
+	VECTOR3_DEF(boxTarget);
+	VECTOR3_DEF(boxMin);
+	VECTOR3_DEF(boxMax);
 
-	UnmanagedPointer->performConvexcast(callback->UnmanagedPointer, *boxSourceTemp, *boxTargetTemp, *boxMinTemp, *boxMaxTemp);
+	UnmanagedPointer->performConvexcast(callback->UnmanagedPointer, VECTOR3_USE(boxSource),
+		VECTOR3_USE(boxTarget), VECTOR3_USE(boxMin), VECTOR3_USE(boxMax));
 
-	delete boxSourceTemp;
-	delete boxTargetTemp;
-	delete boxMinTemp;
-	delete boxMaxTemp;
+	VECTOR3_DEL(boxSource);
+	VECTOR3_DEL(boxTarget);
+	VECTOR3_DEL(boxMin);
+	VECTOR3_DEL(boxMax);
 }
 
 void BvhTriangleMeshShape::PerformRaycast(TriangleCallback^ callback, Vector3 raySource, Vector3 rayTarget)
 {
-	btVector3* raySourceTemp = Math::Vector3ToBtVector3(raySource);
-	btVector3* rayTargetTemp = Math::Vector3ToBtVector3(rayTarget);
+	VECTOR3_DEF(raySource);
+	VECTOR3_DEF(rayTarget);
 
-	UnmanagedPointer->performRaycast(callback->UnmanagedPointer, *rayTargetTemp, *rayTargetTemp);
+	UnmanagedPointer->performRaycast(callback->UnmanagedPointer, VECTOR3_USE(raySource), VECTOR3_USE(rayTarget));
 
-	delete raySourceTemp;
-	delete rayTargetTemp;
+	VECTOR3_DEL(raySource);
+	VECTOR3_DEL(rayTarget);
 }
 
 void BvhTriangleMeshShape::ProcessAllTriangles(TriangleCallback^ callback, Vector3 aabbMin, Vector3 aabbMax)
 {
-	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
-	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
 
-	UnmanagedPointer->processAllTriangles(callback->UnmanagedPointer, *aabbMinTemp, *aabbMaxTemp);
+	UnmanagedPointer->processAllTriangles(callback->UnmanagedPointer, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
 }
 
 void BvhTriangleMeshShape::RecalcLocalAabb()
@@ -111,21 +112,21 @@ void BvhTriangleMeshShape::RecalcLocalAabb()
 
 void BvhTriangleMeshShape::RefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 {
-	btVector3* bvhAabbMinTemp = Math::Vector3ToBtVector3(bvhAabbMin);
-	btVector3* bvhAabbMaxTemp = Math::Vector3ToBtVector3(bvhAabbMax);
+	VECTOR3_DEF(bvhAabbMin);
+	VECTOR3_DEF(bvhAabbMax);
 
-	UnmanagedPointer->refitTree(*bvhAabbMinTemp, *bvhAabbMaxTemp);
+	UnmanagedPointer->refitTree(VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax));
 
-	delete bvhAabbMinTemp;
-	delete bvhAabbMaxTemp;
+	VECTOR3_DEL(bvhAabbMin);
+	VECTOR3_DEL(bvhAabbMax);
 }
 
 #ifndef DISABLE_BVH
 void BvhTriangleMeshShape::SetOptimizedBvh(BulletSharp::OptimizedBvh^ bvh, Vector3 localScaling)
 {
-	btVector3* localScalingTemp = Math::Vector3ToBtVector3(localScaling);
-	UnmanagedPointer->setOptimizedBvh(bvh->UnmanagedPointer, *localScalingTemp);
-	delete localScalingTemp;
+	VECTOR3_DEF(localScaling);
+	UnmanagedPointer->setOptimizedBvh(bvh->UnmanagedPointer, VECTOR3_USE(localScaling));
+	VECTOR3_DEL(localScaling);
 }
 #endif
 

@@ -933,22 +933,22 @@ Vector3Array::Vector3Array(int length)
 
 bool Vector3Array::Contains(Vector3 item)
 {
-	btVector3* itemTemp = Math::Vector3ToBtVector3(item);
+	VECTOR3_DEF(item);
 
 	int i;
 	int length = Count;
 	for (i=0; i<length; i++)
 	{
 		btVector3* vector = &((btVector3*)_unmanaged)[i];
-		if (itemTemp->m_floats[0] == vector->m_floats[0] &&
-			itemTemp->m_floats[1] == vector->m_floats[1] &&
-			itemTemp->m_floats[2] == vector->m_floats[2])
+		if (VECTOR3_PTR(item)->m_floats[0] == vector->m_floats[0] &&
+			VECTOR3_PTR(item)->m_floats[1] == vector->m_floats[1] &&
+			VECTOR3_PTR(item)->m_floats[2] == vector->m_floats[2])
 		{
-			delete itemTemp;
+			VECTOR3_DEL(item);
 			return true;
 		}
 	}
-	delete itemTemp;
+	VECTOR3_DEL(item);
 	return false;
 }
 
@@ -973,22 +973,22 @@ void Vector3Array::CopyTo(array<Vector3>^ array, int arrayIndex)
 
 int Vector3Array::IndexOf(Vector3 item)
 {
-	btVector3* itemTemp = Math::Vector3ToBtVector3(item);
+	VECTOR3_DEF(item);
 
 	int i;
 	int length = Count;
 	for (i=0; i<length; i++)
 	{
 		btVector3* vector = &((btVector3*)_unmanaged)[i];
-		if (itemTemp->m_floats[0] == vector->m_floats[0] &&
-			itemTemp->m_floats[1] == vector->m_floats[1] &&
-			itemTemp->m_floats[2] == vector->m_floats[2])
+		if (VECTOR3_PTR(item)->m_floats[0] == vector->m_floats[0] &&
+			VECTOR3_PTR(item)->m_floats[1] == vector->m_floats[1] &&
+			VECTOR3_PTR(item)->m_floats[2] == vector->m_floats[2])
 		{
-			delete itemTemp;
+			VECTOR3_DEL(item);
 			return i;
 		}
 	}
-	delete itemTemp;
+	VECTOR3_DEL(item);
 	return -1;
 }
 

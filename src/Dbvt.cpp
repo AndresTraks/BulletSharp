@@ -32,19 +32,14 @@ void DbvtAabbMm_Maxs(btDbvtAabbMm* aabbMm, btVector3* maxs)
 void DbvtAabbMm_FromCE(btDbvtAabbMm* out, btVector3* c, btVector3* e)
 {
 	*out = btDbvtAabbMm::FromCE(*c, *e);
-	delete c;
-	delete e;
 }
 void DbvtAabbMm_FromCR(btDbvtAabbMm* out, btVector3* c, btScalar r)
 {
 	*out = btDbvtAabbMm::FromCR(*c, r);
-	delete c;
 }
 void DbvtAabbMm_FromMM(btDbvtAabbMm* out, btVector3* mi, btVector3* mx)
 {
 	*out = btDbvtAabbMm::FromMM(*mi, *mx);
-	delete mi;
-	delete mx;
 }
 void DbvtAabbMm_FromPoints(btDbvtAabbMm* out, btVector3* pts, int n)
 {
@@ -109,23 +104,45 @@ Vector3 DbvtAabbMm::Maxs()
 
 DbvtAabbMm^ DbvtAabbMm::FromCE(Vector3 c, Vector3 e)
 {
-	btDbvtAabbMm* aabbMm = new btDbvtAabbMm;
-	DbvtAabbMm_FromCE(aabbMm, Math::Vector3ToBtVector3(c), Math::Vector3ToBtVector3(e));
-	return gcnew DbvtAabbMm(aabbMm);
+	VECTOR3_DEF(c);
+	VECTOR3_DEF(e);
+
+	btDbvtAabbMm* aabbMmTemp = new btDbvtAabbMm;
+	DbvtAabbMm_FromCE(aabbMmTemp, VECTOR3_PTR(c), VECTOR3_PTR(e));
+	DbvtAabbMm^ aabbMm = gcnew DbvtAabbMm(aabbMmTemp);
+
+	VECTOR3_DEL(c);
+	VECTOR3_DEL(e);
+
+	return aabbMm;
 }
 
 DbvtAabbMm^ DbvtAabbMm::FromCR(Vector3 c, btScalar r)
 {
-	btDbvtAabbMm* aabbMm = new btDbvtAabbMm;
-	DbvtAabbMm_FromCR(aabbMm, Math::Vector3ToBtVector3(c), r);
-	return gcnew DbvtAabbMm(aabbMm);
+	VECTOR3_DEF(c);
+
+	btDbvtAabbMm* aabbMmTemp = new btDbvtAabbMm;
+	DbvtAabbMm_FromCR(aabbMmTemp, VECTOR3_PTR(c), r);
+	DbvtAabbMm^ aabbMm = gcnew DbvtAabbMm(aabbMmTemp);
+
+	VECTOR3_DEL(c);
+
+	return aabbMm;
 }
 
 DbvtAabbMm^ DbvtAabbMm::FromMM(Vector3 mi, Vector3 mx)
 {
-	btDbvtAabbMm* aabbMm = new btDbvtAabbMm;
-	DbvtAabbMm_FromMM(aabbMm, Math::Vector3ToBtVector3(mi), Math::Vector3ToBtVector3(mx));
-	return gcnew DbvtAabbMm(aabbMm);
+	VECTOR3_DEF(mi);
+	VECTOR3_DEF(mx);
+
+	btDbvtAabbMm* aabbMmTemp = new btDbvtAabbMm;
+	DbvtAabbMm_FromMM(aabbMmTemp, VECTOR3_PTR(mi), VECTOR3_PTR(mx));
+	DbvtAabbMm^ aabbMm = gcnew DbvtAabbMm(aabbMmTemp);
+
+	VECTOR3_DEL(mi);
+	VECTOR3_DEL(mx);
+
+	return aabbMm;
 }
 
 DbvtAabbMm^ DbvtAabbMm::FromPoints(array<Vector3>^ pts)
@@ -139,16 +156,16 @@ DbvtAabbMm^ DbvtAabbMm::FromPoints(array<Vector3>^ pts)
 
 void DbvtAabbMm::Expand(Vector3 e)
 {
-	btVector3* eTemp = Math::Vector3ToBtVector3(e);
-	_aabbMm->Expand(*eTemp);
-	delete eTemp;
+	VECTOR3_DEF(e);
+	_aabbMm->Expand(VECTOR3_USE(e));
+	VECTOR3_DEL(e);
 }
 
 void DbvtAabbMm::SignedExpand(Vector3 e)
 {
-	btVector3* eTemp = Math::Vector3ToBtVector3(e);
-	_aabbMm->SignedExpand(*eTemp);
-	delete eTemp;
+	VECTOR3_DEF(e);
+	_aabbMm->SignedExpand(VECTOR3_USE(e));
+	VECTOR3_DEL(e);
 }
 
 bool DbvtAabbMm::Contain(DbvtAabbMm^ a)
@@ -158,17 +175,17 @@ bool DbvtAabbMm::Contain(DbvtAabbMm^ a)
 
 int DbvtAabbMm::Classify(Vector3 n, btScalar o, int s)
 {
-	btVector3* nTemp = Math::Vector3ToBtVector3(n);
-	int ret =  _aabbMm->Classify(*nTemp, 0, s);
-	delete nTemp;
+	VECTOR3_DEF(n);
+	int ret = _aabbMm->Classify(VECTOR3_USE(n), 0, s);
+	VECTOR3_DEL(n);
 	return ret;
 }
 
 btScalar DbvtAabbMm::ProjectMinimum(Vector3 v, unsigned signs)
 {
-	btVector3* vTemp = Math::Vector3ToBtVector3(v);
-	btScalar ret = _aabbMm->ProjectMinimum(*vTemp, signs);
-	delete vTemp;
+	VECTOR3_DEF(v);
+	btScalar ret = _aabbMm->ProjectMinimum(VECTOR3_USE(v), signs);
+	VECTOR3_DEL(v);
 	return ret;
 }
 
@@ -576,15 +593,14 @@ void Dbvt::CollideOcl(DbvtNode^ root, array<Vector3>^ normals, array<btScalar>^ 
 {
 	btVector3* btNormals = Math::Vector3ArrayToUnmanaged(normals);
 	btScalar* btOffsets = Math::BtScalarArrayToUnmanaged(offsets);
+	VECTOR3_DEF(sortaxis);
 
-	btVector3* sortaxisTemp = Math::Vector3ToBtVector3(sortaxis);
-
-	btDbvt::collideOCL(root->UnmanagedPointer, btNormals, btOffsets, *sortaxisTemp,
+	btDbvt::collideOCL(root->UnmanagedPointer, btNormals, btOffsets, VECTOR3_USE(sortaxis),
 		count, *policy->UnmanagedPointer, fullsort);
 
 	delete[] btNormals;
 	delete[] btOffsets;
-	delete sortaxisTemp;
+	VECTOR3_DEL(sortaxis);
 }
 
 void Dbvt::CollideOcl(DbvtNode^ root, array<Vector3>^ normals, array<btScalar>^ offsets,
@@ -592,14 +608,14 @@ void Dbvt::CollideOcl(DbvtNode^ root, array<Vector3>^ normals, array<btScalar>^ 
 {
 	btVector3* btNormals = Math::Vector3ArrayToUnmanaged(normals);
 	btScalar* btOffsets = Math::BtScalarArrayToUnmanaged(offsets, count);
-	btVector3* sortaxisTemp = Math::Vector3ToBtVector3(sortaxis);
+	VECTOR3_DEF(sortaxis);
 
 	btDbvt::collideOCL(root->UnmanagedPointer, btNormals, btOffsets,
-		*sortaxisTemp, count, *policy->UnmanagedPointer);
+		VECTOR3_USE(sortaxis), count, *policy->UnmanagedPointer);
 
 	delete[] btNormals;
 	delete[] btOffsets;
-	delete sortaxisTemp;
+	VECTOR3_DEL(sortaxis);
 }
 
 void Dbvt::CollideTT(DbvtNode^ root0, DbvtNode^ root1, ICollide^ policy)
@@ -686,13 +702,13 @@ void Dbvt::OptimizeTopDown()
 
 void Dbvt::RayTest(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, ICollide^ policy)
 {
-	btVector3* rayFromTemp = Math::Vector3ToBtVector3(rayFrom);
-	btVector3* rayToTemp = Math::Vector3ToBtVector3(rayTo);
+	VECTOR3_DEF(rayFrom);
+	VECTOR3_DEF(rayTo);
 
-	btDbvt::rayTest(root->UnmanagedPointer, *rayFromTemp, *rayToTemp, *policy->UnmanagedPointer);
+	btDbvt::rayTest(root->UnmanagedPointer, VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo), *policy->UnmanagedPointer);
 
-	delete rayFromTemp;
-	delete rayToTemp;
+	VECTOR3_DEL(rayFrom);
+	VECTOR3_DEL(rayTo);
 }
 
 #ifndef DISABLE_INTERNAL
@@ -705,21 +721,21 @@ void Dbvt::RayTestInternal(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo,
 	btSigns[1] = signs[1];
 	btSigns[2] = signs[2];
 
-	btVector3* rayFromTemp = Math::Vector3ToBtVector3(rayFrom);
-	btVector3* rayToTemp = Math::Vector3ToBtVector3(rayTo);
-	btVector3* rayDirectionInverseTemp = Math::Vector3ToBtVector3(rayDirectionInverse);
-	btVector3* aabbMinTemp = Math::Vector3ToBtVector3(aabbMin);
-	btVector3* aabbMaxTemp = Math::Vector3ToBtVector3(aabbMax);
+	VECTOR3_DEF(rayFrom);
+	VECTOR3_DEF(rayTo);
+	VECTOR3_DEF(rayDirectionInverse);
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
 
-	_dbvt->rayTestInternal(root->UnmanagedPointer, *rayFromTemp, *rayToTemp, *rayDirectionInverseTemp,
-		btSigns, lambda_max, *aabbMinTemp, *aabbMaxTemp, *policy->UnmanagedPointer
-		);
+	_dbvt->rayTestInternal(root->UnmanagedPointer, VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo),
+		VECTOR3_USE(rayDirectionInverse), btSigns, lambda_max, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax),
+		*policy->UnmanagedPointer);
 
-	delete rayFromTemp;
-	delete rayToTemp;
-	delete rayDirectionInverseTemp;
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	VECTOR3_DEL(rayFrom);
+	VECTOR3_DEL(rayTo);
+	VECTOR3_DEL(rayDirectionInverse);
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
 }
 #endif
 
@@ -735,17 +751,17 @@ bool Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume, btScalar margin)
 
 bool Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume, Vector3 velocity)
 {
-	btVector3* velocityTemp = Math::Vector3ToBtVector3(velocity);
-	bool ret = _dbvt->update(leaf->UnmanagedPointer, *volume->UnmanagedPointer, *velocityTemp);
-	delete velocityTemp;
+	VECTOR3_DEF(velocity);
+	bool ret = _dbvt->update(leaf->UnmanagedPointer, *volume->UnmanagedPointer, VECTOR3_USE(velocity));
+	VECTOR3_DEL(velocity);
 	return ret;
 }
 
 bool Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume, Vector3 velocity, btScalar margin)
 {
-	btVector3* velocityTemp = Math::Vector3ToBtVector3(velocity);
-	bool ret = _dbvt->update(leaf->UnmanagedPointer, *volume->UnmanagedPointer, *velocityTemp, margin);
-	delete velocityTemp;
+	VECTOR3_DEF(velocity);
+	bool ret = _dbvt->update(leaf->UnmanagedPointer, *volume->UnmanagedPointer, VECTOR3_USE(velocity), margin);
+	VECTOR3_DEL(velocity);
 	return ret;
 }
 

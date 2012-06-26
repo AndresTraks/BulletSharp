@@ -122,8 +122,6 @@ namespace BulletSharp
 		void PrintStats();
 		void RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback^ rayCallback,
 			Vector3 aabbMin, Vector3 aabbMax);
-		void RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback^ rayCallback,
-			Vector3 aabbMin);
 		void RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback^ rayCallback);
 		void ResetPool(Dispatcher^ dispatcher);
 		void SetAabb(BroadphaseProxy^ proxy, Vector3 aabbMin, Vector3 aabbMax, Dispatcher^ dispatcher);

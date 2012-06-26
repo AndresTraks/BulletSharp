@@ -82,15 +82,15 @@ void ConvexPolyhedron::Initialize()
 void ConvexPolyhedron::Project(Matrix transform, Vector3 direction, [Out] btScalar% min, [Out] btScalar% max)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
-	btVector3* directionTemp = Math::Vector3ToBtVector3(direction);
+	VECTOR3_DEF(direction);
 	btScalar minTemp;
 	btScalar maxTemp;
 	
-	_convexPolyhedron->project(*transformTemp, *directionTemp, minTemp, maxTemp);
+	_convexPolyhedron->project(*transformTemp, VECTOR3_USE(direction), minTemp, maxTemp);
 	min = minTemp;
 	max = maxTemp;
 	
-	delete directionTemp;
+	VECTOR3_DEL(direction);
 	delete transformTemp;
 }
 
