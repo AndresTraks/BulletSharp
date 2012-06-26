@@ -24,12 +24,13 @@ RotationalLimitMotor::RotationalLimitMotor(btRotationalLimitMotor* motor)
 btScalar RotationalLimitMotor::SolveAngularLimits(btScalar timeStep, Vector3 axis,
 	btScalar jacDiagABInv, RigidBody^ body0, RigidBody^ body1)
 {
-	btVector3* axisTemp = Math::Vector3ToBtVector3(axis);
+	VECTOR3_DEF(axis);
 	
-	return motor->solveAngularLimits(timeStep, *axisTemp,
+	btScalar ret = motor->solveAngularLimits(timeStep, VECTOR3_USE(axis),
 		jacDiagABInv, body0->UnmanagedPointer, body1->UnmanagedPointer);
 
-	delete axisTemp;
+	VECTOR3_DEL(axis);
+	return ret;
 }
 
 int RotationalLimitMotor::TestLimitValue(btScalar test_value)
@@ -232,21 +233,21 @@ btScalar TranslationalLimitMotor::SolveLinearAxis(btScalar timeStep, btScalar ja
 	RigidBody^ body1, Vector3 pointInA, RigidBody^ body2, Vector3 pointInB,
 	int limit_index, Vector3 axis_normal_on_a, Vector3 anchorPos)
 {
-	btVector3* pointInATemp = Math::Vector3ToBtVector3(pointInA);
-	btVector3* pointInBTemp = Math::Vector3ToBtVector3(pointInB);
-	btVector3* axis_normal_on_aTemp = Math::Vector3ToBtVector3(axis_normal_on_a);
-	btVector3* anchorPosTemp = Math::Vector3ToBtVector3(anchorPos);
+	VECTOR3_DEF(pointInA);
+	VECTOR3_DEF(pointInB);
+	VECTOR3_DEF(axis_normal_on_a);
+	VECTOR3_DEF(anchorPos);
 
 	btScalar ret =  motor->solveLinearAxis(timeStep, jacDiagABInv,
-		*body1->UnmanagedPointer, *pointInATemp,
-		*body2->UnmanagedPointer, *pointInBTemp,
-		limit_index, *axis_normal_on_aTemp, *anchorPosTemp
+		*body1->UnmanagedPointer, VECTOR3_USE(pointInA),
+		*body2->UnmanagedPointer, VECTOR3_USE(pointInB),
+		limit_index, VECTOR3_USE(axis_normal_on_a), VECTOR3_USE(anchorPos)
 	);
 
-	delete pointInATemp;
-	delete pointInBTemp;
-	delete axis_normal_on_aTemp;
-	delete anchorPosTemp;
+	VECTOR3_DEL(pointInA);
+	VECTOR3_DEL(pointInB);
+	VECTOR3_DEL(axis_normal_on_a);
+	VECTOR3_DEL(anchorPos);
 
 	return ret;
 }
@@ -483,13 +484,13 @@ bool Generic6DofConstraint::IsLimited(int limitIndex)
 
 void Generic6DofConstraint::SetAxis(Vector3 axis1, Vector3 axis2)
 {
-	btVector3* axis1Temp = Math::Vector3ToBtVector3(axis1);
-	btVector3* axis2Temp = Math::Vector3ToBtVector3(axis2);
+	VECTOR3_DEF(axis1);
+	VECTOR3_DEF(axis2);
 
-	UnmanagedPointer->setAxis(*axis1Temp, *axis2Temp);
+	UnmanagedPointer->setAxis(VECTOR3_USE(axis1), VECTOR3_USE(axis2));
 
-	delete axis1Temp;
-	delete axis2Temp;
+	VECTOR3_DEL(axis1);
+	VECTOR3_DEL(axis2);
 }
 
 void Generic6DofConstraint::SetFrames(Matrix frameA, Matrix frameB)
@@ -528,9 +529,9 @@ Vector3 Generic6DofConstraint::AngularLowerLimit::get()
 }
 void Generic6DofConstraint::AngularLowerLimit::set(Vector3 value)
 {
-	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
-	UnmanagedPointer->setAngularLowerLimit(*valueTemp);
-	delete valueTemp;
+	VECTOR3_DEF(value);
+	UnmanagedPointer->setAngularLowerLimit(VECTOR3_USE(value));
+	VECTOR3_DEL(value);
 }
 
 Vector3 Generic6DofConstraint::AngularUpperLimit::get()
@@ -543,9 +544,9 @@ Vector3 Generic6DofConstraint::AngularUpperLimit::get()
 }
 void Generic6DofConstraint::AngularUpperLimit::set(Vector3 value)
 {
-	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
-	UnmanagedPointer->setAngularUpperLimit(*valueTemp);
-	delete valueTemp;
+	VECTOR3_DEF(value);
+	UnmanagedPointer->setAngularUpperLimit(VECTOR3_USE(value));
+	VECTOR3_DEL(value);
 }
 
 Matrix Generic6DofConstraint::CalculatedTransformA::get()
@@ -592,9 +593,9 @@ Vector3 Generic6DofConstraint::LinearLowerLimit::get()
 }
 void Generic6DofConstraint::LinearLowerLimit::set(Vector3 linearLower)
 {
-	btVector3* linearLowerTemp = Math::Vector3ToBtVector3(linearLower);
-	UnmanagedPointer->setLinearLowerLimit(*linearLowerTemp);
-	delete linearLowerTemp;
+	VECTOR3_DEF(linearLower);
+	UnmanagedPointer->setLinearLowerLimit(VECTOR3_USE(linearLower));
+	VECTOR3_DEL(linearLower);
 }
 
 Vector3 Generic6DofConstraint::LinearUpperLimit::get()
@@ -607,9 +608,9 @@ Vector3 Generic6DofConstraint::LinearUpperLimit::get()
 }
 void Generic6DofConstraint::LinearUpperLimit::set(Vector3 linearUpper)
 {
-	btVector3* linearUpperTemp = Math::Vector3ToBtVector3(linearUpper);
-	UnmanagedPointer->setLinearUpperLimit(*linearUpperTemp);
-	delete linearUpperTemp;
+	VECTOR3_DEF(linearUpper);
+	UnmanagedPointer->setLinearUpperLimit(VECTOR3_USE(linearUpper));
+	VECTOR3_DEL(linearUpper);
 }
 
 BulletSharp::TranslationalLimitMotor^ Generic6DofConstraint::TranslationalLimitMotor::get()

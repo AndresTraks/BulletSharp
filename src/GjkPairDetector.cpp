@@ -69,9 +69,9 @@ Vector3 GjkPairDetector::CachedSeparatingAxis::get()
 }
 void GjkPairDetector::CachedSeparatingAxis::set(Vector3 value)
 {
-	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
-	UnmanagedPointer->setCachedSeperatingAxis(*valueTemp);
-	delete valueTemp;
+	VECTOR3_DEF(value);
+	UnmanagedPointer->setCachedSeperatingAxis(VECTOR3_USE(value));
+	VECTOR3_DEL(value);
 }
 
 btScalar GjkPairDetector::CachedSeparatingDistance::get()

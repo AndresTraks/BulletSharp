@@ -19,24 +19,24 @@ void GeometryUtil::GetVerticesFromPlaneEquations(AlignedVector3Array^ planeEquat
 /*
 bool GeometryUtil::IsInside(AlignedVector3Array^ vertices, Vector3 planeNormal, btScalar margin)
 {
-	btVector3* planeNormalTemp = Math::Vector3ToBtVector3(planeNormal);
-	bool ret = btGeometryUtil::isInside(*vertices->UnmanagedPointer, *planeNormalTemp, margin);
-	delete planeNormalTemp;
+	VECTOR3_DEF(planeNormal);
+	bool ret = btGeometryUtil::isInside(*vertices->UnmanagedPointer, VECTOR3_USE(planeNormal), margin);
+	VECTOR3_DEL(planeNormal);
 	return ret;
 }
 */
 bool GeometryUtil::IsPointInsidePlanes(AlignedVector3Array^ planeEquations, Vector3 point, btScalar margin)
 {
-	btVector3* pointTemp = Math::Vector3ToBtVector3(point);
-	bool ret = btGeometryUtil::isPointInsidePlanes(*(btAlignedObjectArray<btVector3>*)planeEquations->_unmanaged, *pointTemp, margin);
-	delete pointTemp;
+	VECTOR3_DEF(point);
+	bool ret = btGeometryUtil::isPointInsidePlanes(*(btAlignedObjectArray<btVector3>*)planeEquations->_unmanaged, VECTOR3_USE(point), margin);
+	VECTOR3_DEL(point);
 	return ret;
 }
 
 bool GeometryUtil::AreVerticesBehindPlane(Vector3 planeNormal, AlignedVector3Array^ vertices, btScalar margin)
 {
-	btVector3* planeNormalTemp = Math::Vector3ToBtVector3(planeNormal);
-	bool ret = btGeometryUtil::areVerticesBehindPlane(*planeNormalTemp, *(btAlignedObjectArray<btVector3>*)vertices->_unmanaged, margin);
-	delete planeNormalTemp;
+	VECTOR3_DEF(planeNormal);
+	bool ret = btGeometryUtil::areVerticesBehindPlane(VECTOR3_USE(planeNormal), *(btAlignedObjectArray<btVector3>*)vertices->_unmanaged, margin);
+	VECTOR3_DEL(planeNormal);
 	return ret;
 }

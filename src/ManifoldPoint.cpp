@@ -26,15 +26,15 @@ ManifoldPoint::ManifoldPoint()
 
 ManifoldPoint::ManifoldPoint(Vector3 pointA, Vector3 pointB, Vector3 normal, btScalar distance)
 {
-	btVector3* pointATemp = Math::Vector3ToBtVector3(pointA);
-	btVector3* pointBTemp = Math::Vector3ToBtVector3(pointB);
-	btVector3* normalTemp = Math::Vector3ToBtVector3(normal);
+	VECTOR3_DEF(pointA);
+	VECTOR3_DEF(pointB);
+	VECTOR3_DEF(normal);
 
-	_manifoldPoint = new btManifoldPoint(*pointATemp, *pointBTemp, *normalTemp, distance);
+	_manifoldPoint = new btManifoldPoint(VECTOR3_USE(pointA), VECTOR3_USE(pointB), VECTOR3_USE(normal), distance);
 
-	delete pointATemp;
-	delete pointBTemp;
-	delete normalTemp;
+	VECTOR3_DEL(pointA);
+	VECTOR3_DEL(pointB);
+	VECTOR3_DEL(normal);
 }
 
 btScalar ManifoldPoint::AppliedImpulse::get()

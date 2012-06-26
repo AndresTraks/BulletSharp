@@ -51,6 +51,12 @@ namespace BasicDemo
             base.Initialize();
         }
 
+        protected override void EndRun()
+        {
+            physics.ExitPhysics();
+            base.EndRun();
+        }
+
         protected override void LoadContent()
         {
             device = graphics.GraphicsDevice;

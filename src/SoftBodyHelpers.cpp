@@ -19,14 +19,14 @@ float SoftBodyHelpers::CalculateUV(int resx, int resy, int ix, int iy, int id)
 BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateEllipsoid(SoftBodyWorldInfo^ worldInfo,
 	Vector3 center, Vector3 radius, int res)
 {
-	btVector3* centerTemp = Math::Vector3ToBtVector3(center);
-	btVector3* radiusTemp = Math::Vector3ToBtVector3(radius);
+	VECTOR3_DEF(center);
+	VECTOR3_DEF(radius);
 
 	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateEllipsoid(*worldInfo->UnmanagedPointer,
-		*centerTemp, *radiusTemp, res));
+		VECTOR3_USE(center), VECTOR3_USE(radius), res));
 
-	delete centerTemp;
-	delete radiusTemp;
+	VECTOR3_DEL(center);
+	VECTOR3_DEL(radius);
 
 	return body;
 }
@@ -289,18 +289,19 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatch(SoftBodyWorldInfo^
 	Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11,
 	int resx, int resy, int fixeds, bool gendiags)
 {
-	btVector3* corner00Temp = Math::Vector3ToBtVector3(corner00);
-	btVector3* corner10Temp = Math::Vector3ToBtVector3(corner10);
-	btVector3* corner01Temp = Math::Vector3ToBtVector3(corner01);
-	btVector3* corner11Temp = Math::Vector3ToBtVector3(corner11);
+	VECTOR3_DEF(corner00);
+	VECTOR3_DEF(corner10);
+	VECTOR3_DEF(corner01);
+	VECTOR3_DEF(corner11);
 
 	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatch(*worldInfo->UnmanagedPointer,
-		*corner00Temp, *corner10Temp, *corner01Temp, *corner11Temp, resx, resy, fixeds, gendiags));
+		VECTOR3_USE(corner00), VECTOR3_USE(corner10), VECTOR3_USE(corner01), VECTOR3_USE(corner11),
+		resx, resy, fixeds, gendiags));
 
-	delete corner00Temp;
-	delete corner10Temp;
-	delete corner01Temp;
-	delete corner11Temp;
+	VECTOR3_DEL(corner00);
+	VECTOR3_DEL(corner10);
+	VECTOR3_DEL(corner01);
+	VECTOR3_DEL(corner11);
 
 	return body;
 }
@@ -309,20 +310,21 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatchUV(SoftBodyWorldInf
 	Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11,
 	int resx, int resy, int fixeds, bool gendiags, array<float>^ texCoords)
 {
-	btVector3* corner00Temp = Math::Vector3ToBtVector3(corner00);
-	btVector3* corner10Temp = Math::Vector3ToBtVector3(corner10);
-	btVector3* corner01Temp = Math::Vector3ToBtVector3(corner01);
-	btVector3* corner11Temp = Math::Vector3ToBtVector3(corner11);
+	VECTOR3_DEF(corner00);
+	VECTOR3_DEF(corner10);
+	VECTOR3_DEF(corner01);
+	VECTOR3_DEF(corner11);
 
 	pin_ptr<float> texCoordsPtr = &texCoords[0];
 
 	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatchUV(*worldInfo->UnmanagedPointer,
-		*corner00Temp, *corner10Temp, *corner01Temp, *corner11Temp, resx, resy, fixeds, gendiags, texCoordsPtr));
+		VECTOR3_USE(corner00), VECTOR3_USE(corner10), VECTOR3_USE(corner01), VECTOR3_USE(corner11),
+		resx, resy, fixeds, gendiags, texCoordsPtr));
 
-	delete corner00Temp;
-	delete corner10Temp;
-	delete corner01Temp;
-	delete corner11Temp;
+	VECTOR3_DEL(corner00);
+	VECTOR3_DEL(corner10);
+	VECTOR3_DEL(corner01);
+	VECTOR3_DEL(corner11);
 
 	return body;
 }
@@ -331,18 +333,19 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatchUV(SoftBodyWorldInf
 	Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11,
 	int resx, int resy, int fixeds, bool gendiags)
 {
-	btVector3* corner00Temp = Math::Vector3ToBtVector3(corner00);
-	btVector3* corner10Temp = Math::Vector3ToBtVector3(corner10);
-	btVector3* corner01Temp = Math::Vector3ToBtVector3(corner01);
-	btVector3* corner11Temp = Math::Vector3ToBtVector3(corner11);
+	VECTOR3_DEF(corner00);
+	VECTOR3_DEF(corner10);
+	VECTOR3_DEF(corner01);
+	VECTOR3_DEF(corner11);
 
 	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatchUV(*worldInfo->UnmanagedPointer,
-		*corner00Temp, *corner10Temp, *corner01Temp, *corner11Temp, resx, resy, fixeds, gendiags));
+		VECTOR3_USE(corner00), VECTOR3_USE(corner10), VECTOR3_USE(corner01), VECTOR3_USE(corner11),
+		resx, resy, fixeds, gendiags));
 
-	delete corner00Temp;
-	delete corner10Temp;
-	delete corner01Temp;
-	delete corner11Temp;
+	VECTOR3_DEL(corner00);
+	VECTOR3_DEL(corner10);
+	VECTOR3_DEL(corner01);
+	VECTOR3_DEL(corner11);
 
 	return body;
 }
@@ -350,14 +353,14 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatchUV(SoftBodyWorldInf
 BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateRope(SoftBodyWorldInfo^ worldInfo,
 	Vector3 from, Vector3 to, int res, int fixeds)
 {
-	btVector3* fromTemp = Math::Vector3ToBtVector3(from);
-	btVector3* toTemp = Math::Vector3ToBtVector3(to);
+	VECTOR3_DEF(from);
+	VECTOR3_DEF(to);
 
 	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateRope(
-		*worldInfo->UnmanagedPointer, *fromTemp, *toTemp, res, fixeds));
+		*worldInfo->UnmanagedPointer, VECTOR3_USE(from), VECTOR3_USE(to), res, fixeds));
 
-	delete fromTemp;
-	delete toTemp;
+	VECTOR3_DEL(from);
+	VECTOR3_DEL(to);
 
 	return body;
 }

@@ -63,18 +63,18 @@ void TransformUtil::CalculateVelocity(Matrix transform0, Matrix transform1,
 void TransformUtil::CalculateVelocityQuaternion (Vector3 pos0, Vector3 pos1, Quaternion orn0, Quaternion orn1,
 	btScalar timeStep, [Out] Vector3% linVel, [Out] Vector3% angVel)
 {
-	btVector3* pos0Temp = Math::Vector3ToBtVector3(pos0);
-	btVector3* pos1Temp = Math::Vector3ToBtVector3(pos1);
+	VECTOR3_DEF(pos0);
+	VECTOR3_DEF(pos1);
 	btQuaternion* orn0Temp = Math::QuaternionToBtQuat(orn0);
 	btQuaternion* orn1Temp = Math::QuaternionToBtQuat(orn1);
 	btVector3* linVelTemp = new btVector3;
 	btVector3* angVelTemp = new btVector3;
 
-	btTransformUtil::calculateVelocityQuaternion(*pos0Temp, *pos1Temp,
+	btTransformUtil::calculateVelocityQuaternion(VECTOR3_USE(pos0), VECTOR3_USE(pos1),
 		*orn0Temp, *orn1Temp, timeStep, *linVelTemp, *angVelTemp);
 
-	delete pos0Temp;
-	delete pos1Temp;
+	VECTOR3_DEL(pos0);
+	VECTOR3_DEL(pos1);
 	delete orn0Temp;
 	delete orn1Temp;
 
@@ -89,15 +89,15 @@ void TransformUtil::IntegrateTransform(Matrix curTrans, Vector3 linvel, Vector3 
 	btScalar timeStep, [Out] Matrix% predictedTransform)
 {
 	btTransform* curTransTemp = Math::MatrixToBtTransform(curTrans);
-	btVector3* linvelTemp = Math::Vector3ToBtVector3(linvel);
-	btVector3* angvelTemp = Math::Vector3ToBtVector3(angvel);
+	VECTOR3_DEF(linvel);
+	VECTOR3_DEF(angvel);
 	btTransform* predictedTransformTemp = new btTransform;
 
-	btTransformUtil::integrateTransform(*curTransTemp, *linvelTemp, *angvelTemp, timeStep, *predictedTransformTemp);
+	btTransformUtil::integrateTransform(*curTransTemp, VECTOR3_USE(linvel), VECTOR3_USE(angvel), timeStep, *predictedTransformTemp);
 
 	delete curTransTemp;
-	delete linvelTemp;
-	delete angvelTemp;
+	VECTOR3_DEL(linvel);
+	VECTOR3_DEL(angvel);
 
 	Math::BtTransformToMatrix(predictedTransformTemp, predictedTransform);
 	delete predictedTransformTemp;
@@ -110,13 +110,13 @@ ConvexSeparatingDistanceUtil::ConvexSeparatingDistanceUtil(btScalar boundingRadi
 
 void ConvexSeparatingDistanceUtil::InitSeparatingDistance(Vector3 separatingVector, btScalar separatingDistance, Matrix transA, Matrix transB)
 {
-	btVector3* separatingVectorTemp = Math::Vector3ToBtVector3(separatingVector);
+	VECTOR3_DEF(separatingVector);
 	btTransform* transATemp = Math::MatrixToBtTransform(transA);
 	btTransform* transBTemp = Math::MatrixToBtTransform(transB);
 
-	_util->initSeparatingDistance(*separatingVectorTemp, separatingDistance, *transATemp, *transBTemp);
+	_util->initSeparatingDistance(VECTOR3_USE(separatingVector), separatingDistance, *transATemp, *transBTemp);
 
-	delete separatingVectorTemp;
+	VECTOR3_DEL(separatingVector);
 	delete transATemp;
 	delete transBTemp;
 }

@@ -135,6 +135,43 @@ namespace BasicDemo
             World.StepSimulation(elapsedTime);
         }
 
+        public void ExitPhysics()
+        {
+            //remove/dispose constraints
+            int i;
+            for (i = World.NumConstraints - 1; i >= 0; i--)
+            {
+                TypedConstraint constraint = World.GetConstraint(i);
+                World.RemoveConstraint(constraint);
+                constraint.Dispose(); ;
+            }
+
+            //remove the rigidbodies from the dynamics world and delete them
+            for (i = World.NumCollisionObjects - 1; i >= 0; i--)
+            {
+                CollisionObject obj = World.CollisionObjectArray[i];
+                RigidBody body = obj as RigidBody;
+                if (body != null && body.MotionState != null)
+                {
+                    body.MotionState.Dispose();
+                }
+                World.RemoveCollisionObject(obj);
+                obj.Dispose();
+            }
+
+            //delete collision shapes
+            foreach (CollisionShape shape in CollisionShapes)
+                shape.Dispose();
+            CollisionShapes.Clear();
+
+            World.Dispose();
+            Broadphase.Dispose();
+            if (Dispatcher != null)
+            {
+                Dispatcher.Dispose();
+            }
+        }
+
         public RigidBody LocalCreateRigidBody(float mass, Matrix4 startTransform, CollisionShape shape)
         {
             bool isDynamic = (mass != 0.0f);

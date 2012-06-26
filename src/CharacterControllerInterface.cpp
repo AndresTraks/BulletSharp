@@ -27,23 +27,23 @@ void CharacterControllerInterface::Reset()
 
 void CharacterControllerInterface::SetVelocityForTimeInterval(Vector3 velocity, btScalar timeInterval)
 {
-	btVector3* velocityTemp = Math::Vector3ToBtVector3(velocity);
-	UnmanagedPointer->setVelocityForTimeInterval(*velocityTemp, timeInterval);
-	delete velocityTemp;
+	VECTOR3_DEF(velocity);
+	UnmanagedPointer->setVelocityForTimeInterval(VECTOR3_USE(velocity), timeInterval);
+	VECTOR3_DEL(velocity);
 }
 
 void CharacterControllerInterface::SetWalkDirection(Vector3 walkDirection)
 {
-	btVector3* walkDirectionTemp = Math::Vector3ToBtVector3(walkDirection);
-	UnmanagedPointer->setWalkDirection(*walkDirectionTemp);
-	delete walkDirectionTemp;
+	VECTOR3_DEF(walkDirection);
+	UnmanagedPointer->setWalkDirection(VECTOR3_USE(walkDirection));
+	VECTOR3_DEL(walkDirection);
 }
 
 void CharacterControllerInterface::Warp(Vector3 origin)
 {
-	btVector3* originTemp = Math::Vector3ToBtVector3(origin);
-	UnmanagedPointer->warp(*originTemp);
-	delete originTemp;
+	VECTOR3_DEF(origin);
+	UnmanagedPointer->warp(VECTOR3_USE(origin));
+	VECTOR3_DEL(origin);
 }
 
 bool CharacterControllerInterface::CanJump::get()

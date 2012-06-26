@@ -30,6 +30,12 @@ namespace BasicDemo
             GL.Enable(EnableCap.Lighting);
         }
 
+        protected override void OnUnload(System.EventArgs e)
+        {
+            physics.ExitPhysics();
+            base.OnUnload(e);
+        }
+
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             physics.Update((float)e.Time);

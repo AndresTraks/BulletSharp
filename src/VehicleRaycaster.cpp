@@ -54,13 +54,13 @@ VehicleRaycaster::VehicleRaycaster(btVehicleRaycaster* vehicleRaycaster)
 
 Object^ VehicleRaycaster::CastRay(Vector3 from, Vector3 to, VehicleRaycasterResult^ result)
 {
-	btVector3* fromTemp = Math::Vector3ToBtVector3(from);
-	btVector3* toTemp = Math::Vector3ToBtVector3(to);
+	VECTOR3_DEF(from);
+	VECTOR3_DEF(to);
 
-	void* ret = _vehicleRaycaster->castRay(*fromTemp, *toTemp, *result->UnmanagedPointer);
+	void* ret = _vehicleRaycaster->castRay(VECTOR3_USE(from), VECTOR3_USE(to), *result->UnmanagedPointer);
 
-	delete fromTemp;
-	delete toTemp;
+	VECTOR3_DEL(from);
+	VECTOR3_DEL(to);
 
 	return CollisionObject::GetManaged((btRigidBody*)ret);
 }

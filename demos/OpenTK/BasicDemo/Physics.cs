@@ -16,6 +16,7 @@ namespace BasicDemo
 
         public DiscreteDynamicsWorld World { get; set; }
         CollisionDispatcher dispatcher;
+        DbvtBroadphase broadphase;
         AlignedCollisionShapeArray collisionShapes = new AlignedCollisionShapeArray();
         CollisionConfiguration collisionConf;
 
@@ -25,7 +26,8 @@ namespace BasicDemo
             collisionConf = new DefaultCollisionConfiguration();
             dispatcher = new CollisionDispatcher(collisionConf);
 
-            World = new DiscreteDynamicsWorld(dispatcher, new DbvtBroadphase(), null, collisionConf);
+            broadphase = new DbvtBroadphase();
+            World = new DiscreteDynamicsWorld(dispatcher, broadphase, null, collisionConf);
             World.Gravity = new Vector3(0, -10, 0);
 
             // create the ground
@@ -79,6 +81,44 @@ namespace BasicDemo
         public virtual void Update(float elapsedTime)
         {
             World.StepSimulation(elapsedTime);
+        }
+
+        public void ExitPhysics()
+        {
+            //remove/dispose constraints
+            int i;
+            for (i = World.NumConstraints - 1; i >= 0; i--)
+            {
+                TypedConstraint constraint = World.GetConstraint(i);
+                World.RemoveConstraint(constraint);
+                constraint.Dispose(); ;
+            }
+
+            //remove the rigidbodies from the dynamics world and delete them
+            for (i = World.NumCollisionObjects - 1; i >= 0; i--)
+            {
+                CollisionObject obj = World.CollisionObjectArray[i];
+                RigidBody body = obj as RigidBody;
+                if (body != null && body.MotionState != null)
+                {
+                    body.MotionState.Dispose();
+                }
+                World.RemoveCollisionObject(obj);
+                obj.Dispose();
+            }
+
+            //delete collision shapes
+            foreach (CollisionShape shape in collisionShapes)
+                shape.Dispose();
+            collisionShapes.Clear();
+
+            World.Dispose();
+            broadphase.Dispose();
+            if (dispatcher != null)
+            {
+                dispatcher.Dispose();
+            }
+            collisionConf.Dispose();
         }
 
         public RigidBody LocalCreateRigidBody(float mass, Matrix4 startTransform, CollisionShape shape)

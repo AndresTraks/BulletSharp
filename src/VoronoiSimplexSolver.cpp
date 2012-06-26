@@ -100,50 +100,50 @@ VoronoiSimplexSolver::VoronoiSimplexSolver()
 
 void VoronoiSimplexSolver::AddVertex(Vector3 w, Vector3 p, Vector3 q)
 {
-	btVector3* wTemp = Math::Vector3ToBtVector3(w);
-	btVector3* pTemp = Math::Vector3ToBtVector3(p);
-	btVector3* qTemp = Math::Vector3ToBtVector3(q);
+	VECTOR3_DEF(w);
+	VECTOR3_DEF(p);
+	VECTOR3_DEF(q);
 
-	UnmanagedPointer->addVertex(*wTemp, *pTemp, *qTemp);
+	UnmanagedPointer->addVertex(VECTOR3_USE(w), VECTOR3_USE(p), VECTOR3_USE(q));
 
-	delete wTemp;
-	delete pTemp;
-	delete qTemp;
+	VECTOR3_DEL(w);
+	VECTOR3_DEL(p);
+	VECTOR3_DEL(q);
 }
 
 void VoronoiSimplexSolver::BackupClosest(Vector3 v)
 {
-	btVector3* vTemp = Math::Vector3ToBtVector3(v);
-	UnmanagedPointer->backup_closest(*vTemp);
-	delete vTemp;
+	VECTOR3_DEF(v);
+	UnmanagedPointer->backup_closest(VECTOR3_USE(v));
+	VECTOR3_DEL(v);
 }
 
 bool VoronoiSimplexSolver::Closest(Vector3 v)
 {
-	btVector3* vTemp = Math::Vector3ToBtVector3(v);
-	bool ret = UnmanagedPointer->closest(*vTemp);
-	delete vTemp;
+	VECTOR3_DEF(v);
+	bool ret = UnmanagedPointer->closest(VECTOR3_USE(v));
+	VECTOR3_DEL(v);
 	return ret;
 }
 
 bool VoronoiSimplexSolver::ClosestPtPointTetrahedron(Vector3 p,
 	Vector3 a, Vector3 b, Vector3 c, Vector3 d, [Out] SubSimplexClosestResult^% finalResult)
 {
-	btVector3* pTemp = Math::Vector3ToBtVector3(p);
-	btVector3* aTemp = Math::Vector3ToBtVector3(a);
-	btVector3* bTemp = Math::Vector3ToBtVector3(b);
-	btVector3* cTemp = Math::Vector3ToBtVector3(c);
-	btVector3* dTemp = Math::Vector3ToBtVector3(d);
+	VECTOR3_DEF(p);
+	VECTOR3_DEF(a);
+	VECTOR3_DEF(b);
+	VECTOR3_DEF(c);
+	VECTOR3_DEF(d);
 
 	btSubSimplexClosestResult* tempResult = new btSubSimplexClosestResult();
+	bool ret = UnmanagedPointer->closestPtPointTetrahedron(VECTOR3_USE(p),
+		VECTOR3_USE(a), VECTOR3_USE(b), VECTOR3_USE(c), VECTOR3_USE(d), *tempResult);
 
-	bool ret = UnmanagedPointer->closestPtPointTetrahedron(*pTemp, *aTemp, *bTemp, *cTemp, *dTemp, *tempResult);
-
-	delete pTemp;
-	delete aTemp;
-	delete bTemp;
-	delete cTemp;
-	delete dTemp;
+	VECTOR3_DEL(p);
+	VECTOR3_DEL(a);
+	VECTOR3_DEL(b);
+	VECTOR3_DEL(c);
+	VECTOR3_DEL(d);
 
 	finalResult = gcnew SubSimplexClosestResult(tempResult);
 	return ret;
@@ -152,18 +152,19 @@ bool VoronoiSimplexSolver::ClosestPtPointTetrahedron(Vector3 p,
 bool VoronoiSimplexSolver::ClosestPtPointTriangle(Vector3 p,
 	Vector3 a, Vector3 b, Vector3 c, [Out] SubSimplexClosestResult^% result)
 {
-	btVector3* pTemp = Math::Vector3ToBtVector3(p);
-	btVector3* aTemp = Math::Vector3ToBtVector3(a);
-	btVector3* bTemp = Math::Vector3ToBtVector3(b);
-	btVector3* cTemp = Math::Vector3ToBtVector3(c);
+	VECTOR3_DEF(p);
+	VECTOR3_DEF(a);
+	VECTOR3_DEF(b);
+	VECTOR3_DEF(c);
 
 	btSubSimplexClosestResult* tempResult = new btSubSimplexClosestResult;
-	bool ret = UnmanagedPointer->closestPtPointTriangle(*pTemp, *aTemp, *bTemp, *cTemp, *tempResult);
+	bool ret = UnmanagedPointer->closestPtPointTriangle(VECTOR3_USE(p),
+		VECTOR3_USE(a), VECTOR3_USE(b), VECTOR3_USE(c), *tempResult);
 	
-	delete pTemp;
-	delete aTemp;
-	delete bTemp;
-	delete cTemp;
+	VECTOR3_DEL(p);
+	VECTOR3_DEL(a);
+	VECTOR3_DEL(b);
+	VECTOR3_DEL(c);
 
 	result = gcnew SubSimplexClosestResult(tempResult);
 	return ret;
@@ -171,13 +172,13 @@ bool VoronoiSimplexSolver::ClosestPtPointTriangle(Vector3 p,
 
 void VoronoiSimplexSolver::ComputePoints(Vector3 p1, Vector3 p2)
 {
-	btVector3* p1Temp = Math::Vector3ToBtVector3(p1);
-	btVector3* p2Temp = Math::Vector3ToBtVector3(p2);
+	VECTOR3_DEF(p1);
+	VECTOR3_DEF(p2);
 
-	UnmanagedPointer->compute_points(*p1Temp, *p2Temp);
+	UnmanagedPointer->compute_points(VECTOR3_USE(p1), VECTOR3_USE(p2));
 
-	delete p1Temp;
-	delete p2Temp;
+	VECTOR3_DEL(p1);
+	VECTOR3_DEL(p2);
 }
 
 bool VoronoiSimplexSolver::EmptySimplex()
@@ -213,9 +214,9 @@ int VoronoiSimplexSolver::GetSimplex([Out] array<Vector3>^% pBuf,
 
 bool VoronoiSimplexSolver::InSimplex(Vector3 w)
 {
-	btVector3* wTemp = Math::Vector3ToBtVector3(w);
-	bool ret = UnmanagedPointer->inSimplex(*wTemp);
-	delete wTemp;
+	VECTOR3_DEF(w);
+	bool ret = UnmanagedPointer->inSimplex(VECTOR3_USE(w));
+	VECTOR3_DEL(w);
 	return ret;
 }
 
@@ -227,20 +228,20 @@ btScalar VoronoiSimplexSolver::MaxVertex()
 int VoronoiSimplexSolver::PointOutsideOfPlane(Vector3 p,
 	Vector3 a, Vector3 b, Vector3 c, Vector3 d)
 {
-	btVector3* pTemp = Math::Vector3ToBtVector3(p);
-	btVector3* aTemp = Math::Vector3ToBtVector3(a);
-	btVector3* bTemp = Math::Vector3ToBtVector3(b);
-	btVector3* cTemp = Math::Vector3ToBtVector3(c);
-	btVector3* dTemp = Math::Vector3ToBtVector3(d);
+	VECTOR3_DEF(p);
+	VECTOR3_DEF(a);
+	VECTOR3_DEF(b);
+	VECTOR3_DEF(c);
+	VECTOR3_DEF(d);
 
-	int ret = UnmanagedPointer->pointOutsideOfPlane(*pTemp,
-		*aTemp, *bTemp, *cTemp, *dTemp);
+	int ret = UnmanagedPointer->pointOutsideOfPlane(VECTOR3_USE(p),
+		VECTOR3_USE(a), VECTOR3_USE(b), VECTOR3_USE(c), VECTOR3_USE(d));
 
-	delete pTemp;
-	delete aTemp;
-	delete bTemp;
-	delete cTemp;
-	delete dTemp;
+	VECTOR3_DEL(p);
+	VECTOR3_DEL(a);
+	VECTOR3_DEL(b);
+	VECTOR3_DEL(c);
+	VECTOR3_DEL(d);
 
 	return ret;
 }

@@ -1,8 +1,5 @@
-﻿using BulletSharp;
+﻿using System;
 using Mogre;
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace BasicDemo
 {
@@ -76,6 +73,8 @@ namespace BasicDemo
         public override void DestroyScene()
         {
             base.DestroyScene();
+
+            physics.ExitPhysics();
 
             textInputHandler.MessageReceived -= textInputHandler_MessageReceived;
             if (textInputHandler != null)

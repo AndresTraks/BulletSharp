@@ -61,24 +61,22 @@ Point2PointConstraint::Point2PointConstraint(btPoint2PointConstraint* constraint
 Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA, Vector3 pivotInB)
 : TypedConstraint(0)
 {
-	btVector3* pivotInATemp = Math::Vector3ToBtVector3(pivotInA);
-	btVector3* pivotInBTemp = Math::Vector3ToBtVector3(pivotInB);
+	VECTOR3_DEF(pivotInA);
+	VECTOR3_DEF(pivotInB);
 
 	UnmanagedPointer = new btPoint2PointConstraint(*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer,
-	*pivotInATemp, *pivotInBTemp);
+		VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB));
 
-	delete pivotInATemp;
-	delete pivotInBTemp;
+	VECTOR3_DEL(pivotInA);
+	VECTOR3_DEL(pivotInB);
 }
 
 Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA)
 : TypedConstraint(0)
 {
-	btVector3* pivotInATemp = Math::Vector3ToBtVector3(pivotInA);
-
-	UnmanagedPointer = new btPoint2PointConstraint(*rigidBodyA->UnmanagedPointer, *pivotInATemp);
-
-	delete pivotInATemp;
+	VECTOR3_DEF(pivotInA);
+	UnmanagedPointer = new btPoint2PointConstraint(*rigidBodyA->UnmanagedPointer, VECTOR3_USE(pivotInA));
+	VECTOR3_DEL(pivotInA);
 }
 
 btScalar Point2PointConstraint::GetParam(int num, int axis)
@@ -108,9 +106,9 @@ Vector3 Point2PointConstraint::PivotInA::get()
 
 void Point2PointConstraint::PivotInA::set(Vector3 value)
 {
-	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
-	UnmanagedPointer->setPivotA(*valueTemp);
-	delete valueTemp;
+	VECTOR3_DEF(value);
+	UnmanagedPointer->setPivotA(VECTOR3_USE(value));
+	VECTOR3_DEL(value);
 }
 
 Vector3 Point2PointConstraint::PivotInB::get()
@@ -120,9 +118,9 @@ Vector3 Point2PointConstraint::PivotInB::get()
 
 void Point2PointConstraint::PivotInB::set(Vector3 value)
 {
-	btVector3* valueTemp = Math::Vector3ToBtVector3(value);
-	UnmanagedPointer->setPivotB(*valueTemp);
-	delete valueTemp;
+	VECTOR3_DEF(value);
+	UnmanagedPointer->setPivotB(VECTOR3_USE(value));
+	VECTOR3_DEL(value);
 }
 
 ConstraintSetting^ Point2PointConstraint::Setting::get()

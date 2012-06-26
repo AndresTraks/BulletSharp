@@ -94,17 +94,17 @@ WheelInfo^ RaycastVehicle::AddWheel(Vector3 connectionPointCS0, Vector3 wheelDir
 	Vector3 wheelAxleCS, btScalar suspensionRestLength,	btScalar wheelRadius,
 	VehicleTuning^ tuning, bool isFrontWheel)
 {
-	btVector3* connectionPointCS0Temp = Math::Vector3ToBtVector3(connectionPointCS0);
-	btVector3* wheelDirectionCS0Temp = Math::Vector3ToBtVector3(wheelDirectionCS0);
-	btVector3* wheelAxleCSTemp = Math::Vector3ToBtVector3(wheelAxleCS);
+	VECTOR3_DEF(connectionPointCS0);
+	VECTOR3_DEF(wheelDirectionCS0);
+	VECTOR3_DEF(wheelAxleCS);
 
-	btWheelInfo* wheelInfo = &UnmanagedPointer->addWheel(*connectionPointCS0Temp,
-		*wheelDirectionCS0Temp,	*wheelAxleCSTemp, suspensionRestLength, wheelRadius,
+	btWheelInfo* wheelInfo = &UnmanagedPointer->addWheel(VECTOR3_USE(connectionPointCS0),
+		VECTOR3_USE(wheelDirectionCS0), VECTOR3_USE(wheelAxleCS), suspensionRestLength, wheelRadius,
 		*tuning->UnmanagedPointer, isFrontWheel);
 	
-	delete connectionPointCS0Temp;
-	delete wheelDirectionCS0Temp;
-	delete wheelAxleCSTemp;
+	VECTOR3_DEL(connectionPointCS0);
+	VECTOR3_DEL(wheelDirectionCS0);
+	VECTOR3_DEL(wheelAxleCS);
 
 	return gcnew BulletSharp::WheelInfo(wheelInfo);
 }
@@ -161,13 +161,13 @@ void RaycastVehicle::SetPitchControl(btScalar pitch)
 /*
 void RaycastVehicle::SetRaycastWheelInfo(int wheelIndex, bool isInContact, Vector3 hitPoint, Vector3 hitNormal, btScalar depth)
 {
-	btVector3* hitPointTemp = Math::Vector3ToBtVector3(hitPoint);
-	btVector3* hitNormalTemp = Math::Vector3ToBtVector3(hitNormal);
+	VECTOR3_DEF(hitPoint);
+	VECTOR3_DEF(hitNormal);
 
-	UnmanagedPointer->setRaycastWheelInfo(wheelIndex, isInContact, *hitPointTemp, *hitNormalTemp, depth);
+	UnmanagedPointer->setRaycastWheelInfo(wheelIndex, isInContact, VECTOR3_USE(hitPoint), VECTOR3_USE(hitNormal), depth);
 
-	delete hitPointTemp;
-	delete hitNormalTemp;
+	VECTOR3_DEL(hitPoint);
+	VECTOR3_DEL(hitNormal);
 }
 */
 void RaycastVehicle::UpdateFriction(btScalar timeStep)

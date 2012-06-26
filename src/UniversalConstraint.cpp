@@ -9,16 +9,16 @@ UniversalConstraint::UniversalConstraint(RigidBody^ rigidBodyA, RigidBody^ rigid
 	Vector3 anchor, Vector3 axis1, Vector3 axis2)
 : Generic6DofConstraint(0)
 {
-	btVector3* anchorTemp = Math::Vector3ToBtVector3(anchor);
-	btVector3* axis1Temp = Math::Vector3ToBtVector3(axis1);
-	btVector3* axis2Temp = Math::Vector3ToBtVector3(axis2);
+	VECTOR3_DEF(anchor);
+	VECTOR3_DEF(axis1);
+	VECTOR3_DEF(axis2);
 
 	UnmanagedPointer = new btUniversalConstraint(*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer,
-		*anchorTemp, *axis1Temp, *axis2Temp);
+		VECTOR3_USE(anchor), VECTOR3_USE(axis1), VECTOR3_USE(axis2));
 
-	delete anchorTemp;
-	delete axis1Temp;
-	delete axis2Temp;
+	VECTOR3_DEL(anchor);
+	VECTOR3_DEL(axis1);
+	VECTOR3_DEL(axis2);
 }
 
 void UniversalConstraint::SetLowerLimit(btScalar ang1min, btScalar ang2min)

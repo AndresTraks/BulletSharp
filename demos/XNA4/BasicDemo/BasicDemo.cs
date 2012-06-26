@@ -60,6 +60,12 @@ namespace BasicDemo
             base.Initialize();
         }
 
+        protected override void EndRun()
+        {
+            physics.ExitPhysics();
+            base.EndRun();
+        }
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
