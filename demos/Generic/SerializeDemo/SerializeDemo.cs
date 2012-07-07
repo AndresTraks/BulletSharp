@@ -64,9 +64,19 @@ namespace SerializeDemo
 
             GImpactCollisionAlgorithm.RegisterAlgorithm(Dispatcher);
 
+            string bulletFile;
+            string[] args = Environment.GetCommandLineArgs();
+            if (args.Length == 1)
+            {
+                bulletFile = "testFile.bullet";
+            }
+            else
+            {
+                bulletFile = args[1];
+            }
 
             BulletWorldImporter fileLoader = new CustomBulletWorldImporter(World);
-            if (!fileLoader.LoadFile("testFile.bullet"))
+            if (!fileLoader.LoadFile(bulletFile))
             {
                 CollisionShape groundShape = new BoxShape(50);
                 CollisionShapes.Add(groundShape);

@@ -335,12 +335,12 @@ using namespace msclr;
 
 inline void* GCHandleToVoidPtr(GCHandle handle)
 {
-	return (GCHandle::operator System::IntPtr(handle)).ToPointer();
+	return GCHandle::ToIntPtr(handle).ToPointer();
 }
 
 inline GCHandle VoidPtrToGCHandle(void* pointer)
 {
-	return GCHandle::operator GCHandle(System::IntPtr(pointer));
+	return GCHandle::FromIntPtr(System::IntPtr(pointer));
 }
 
 #define GetUnmanagedNullable(value) (value != nullptr ? value->UnmanagedPointer : 0)
