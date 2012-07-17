@@ -65,7 +65,9 @@ namespace SoftDemo
             Graphics.SetInfoText("Move using mouse and WASD+shift\n" +
                 "F3 - Toggle debug\n" +
                 //"F11 - Toggle fullscreen\n" +
-                "Space - Shoot box");
+                "Space - Shoot box\n" +
+                "B - Previous Demo\n" +
+                "N - Next Demo");
         }
 
         public void NextDemo()
