@@ -9,6 +9,7 @@
 #include "CollisionShape.h"
 #include "CollisionWorld.h"
 #include "ConvexShape.h"
+#include "DynamicsWorld.h"
 #include "Dispatcher.h"
 #include "ManifoldPoint.h"
 #include "OverlappingPairCache.h"

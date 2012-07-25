@@ -4,10 +4,12 @@
 #include "StridingMeshInterface.h"
 #include "TriangleCallback.h"
 #include "TriangleIndexVertexArray.h"
-#include "TriangleIndexVertexMaterialArray.h"
 #include "TriangleMesh.h"
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
+#endif
+#ifndef DISABLE_UNCOMMON
+#include "TriangleIndexVertexMaterialArray.h"
 #endif
 
 StridingMeshInterface::StridingMeshInterface(btStridingMeshInterface* stridingMesh)
@@ -41,9 +43,11 @@ StridingMeshInterface^ StridingMeshInterface::GetManaged(btStridingMeshInterface
 	if (triangleMesh != 0)
 		return gcnew TriangleMesh(triangleMesh);
 
+#ifndef DISABLE_UNCOMMON
 	btTriangleIndexVertexMaterialArray* triangleIndexVertexMaterialArray = static_cast<btTriangleIndexVertexMaterialArray*>(stridingMesh);
 	if (triangleIndexVertexMaterialArray != 0)
 		return gcnew TriangleIndexVertexMaterialArray(triangleIndexVertexMaterialArray);
+#endif
 
 	btTriangleIndexVertexArray* triangleIndexVertexArray = static_cast<btTriangleIndexVertexArray*>(stridingMesh);
 	if (triangleIndexVertexArray != 0)

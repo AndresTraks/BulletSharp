@@ -15,6 +15,7 @@
 //#define DISABLE_CONSTRAINTS
 #define DISABLE_DBVT
 //#define DISABLE_DEBUGDRAW
+//#define DISABLE_GEOMETRY_UTIL
 //#define DISABLE_GIMPACT
 //#define DISABLE_HACD
 //#define DISABLE_INTERNAL
@@ -201,6 +202,10 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 
 #ifndef DISABLE_CONSTRAINTS
 #include <BulletDynamics/ConstraintSolver/btSolve2LinearConstraint.h>
+#endif
+
+#ifndef DISABLE_GEOMETRY_UTIL
+#include <LinearMath/btGeometryUtil.h>
 #endif
 
 #ifndef DISABLE_GIMPACT

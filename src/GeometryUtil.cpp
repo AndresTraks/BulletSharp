@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_GEOMETRY_UTIL
+
 #include "AlignedObjectArray.h"
 #include "GeometryUtil.h"
 
@@ -40,3 +42,5 @@ bool GeometryUtil::AreVerticesBehindPlane(Vector3 planeNormal, AlignedVector3Arr
 	VECTOR3_DEL(planeNormal);
 	return ret;
 }
+
+#endif
