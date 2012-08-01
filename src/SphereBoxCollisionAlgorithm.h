@@ -19,10 +19,10 @@ namespace BulletSharp
 		SphereBoxCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
 			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped);
 
-		btScalar GetSphereDistance(CollisionObjectWrapper^ boxObjWrap, Vector3 v3PointOnBox,
-			Vector3 v3PointOnSphere, Vector3 v3SphereCenter, btScalar fRadius);
-		btScalar GetSpherePenetration(CollisionObjectWrapper^ boxObjWrap, Vector3 v3PointOnBox, Vector3 v3PointOnSphere,
-			Vector3 v3SphereCenter, btScalar fRadius, Vector3 aabbMin, Vector3 aabbMax);
+		bool GetSphereDistance(CollisionObjectWrapper^ boxObjWrap, Vector3 v3PointOnBox, Vector3 normal,
+			btScalar% penetrationDepth, Vector3 v3SphereCenter, btScalar fRadius, btScalar maxContactDistance);
+		btScalar GetSpherePenetration(Vector3 boxHalfExtent, Vector3 sphereRelPos, Vector3 closestPoint,
+			Vector3 normal);
 
 	internal:
 		property btSphereBoxCollisionAlgorithm* UnmanagedPointer

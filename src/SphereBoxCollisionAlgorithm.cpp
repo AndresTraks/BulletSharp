@@ -19,41 +19,40 @@ SphereBoxCollisionAlgorithm::SphereBoxCollisionAlgorithm(PersistentManifold^ mf,
 {
 }
 
-btScalar SphereBoxCollisionAlgorithm::GetSphereDistance(CollisionObjectWrapper^ boxObjWrap, Vector3 v3PointOnBox,
-	Vector3 v3PointOnSphere, Vector3 v3SphereCenter, btScalar fRadius)
+bool SphereBoxCollisionAlgorithm::GetSphereDistance(CollisionObjectWrapper^ boxObjWrap, Vector3 v3PointOnBox,
+	Vector3 normal, btScalar% penetrationDepth, Vector3 v3SphereCenter, btScalar fRadius, btScalar maxContactDistance)
 {
 	VECTOR3_DEF(v3PointOnBox);
-	VECTOR3_DEF(v3PointOnSphere);
+	VECTOR3_DEF(normal);
 	VECTOR3_DEF(v3SphereCenter);
+	btScalar penetrationDepthTemp = penetrationDepth;
 
-	btScalar ret = UnmanagedPointer->getSphereDistance(boxObjWrap->_unmanaged, VECTOR3_USE(v3PointOnBox),
-		VECTOR3_USE(v3PointOnSphere), VECTOR3_USE(v3SphereCenter), fRadius);
+	bool ret = UnmanagedPointer->getSphereDistance(boxObjWrap->_unmanaged, VECTOR3_USE(v3PointOnBox),
+		VECTOR3_USE(normal), penetrationDepthTemp, VECTOR3_USE(v3SphereCenter), fRadius, maxContactDistance);
 
 	VECTOR3_DEL(v3PointOnBox);
-	VECTOR3_DEL(v3PointOnSphere);
+	VECTOR3_DEL(normal);
 	VECTOR3_DEL(v3SphereCenter);
 
+	penetrationDepth = penetrationDepthTemp;
 	return ret;
 }
 
-btScalar SphereBoxCollisionAlgorithm::GetSpherePenetration(CollisionObjectWrapper^ boxObjWrap, Vector3 v3PointOnBox,
-	Vector3 v3PointOnSphere, Vector3 v3SphereCenter, btScalar fRadius, Vector3 aabbMin, Vector3 aabbMax)
+btScalar SphereBoxCollisionAlgorithm::GetSpherePenetration(Vector3 boxHalfExtent, Vector3 sphereRelPos,
+	Vector3 closestPoint, Vector3 normal)
 {
-	VECTOR3_DEF(v3PointOnBox);
-	VECTOR3_DEF(v3PointOnSphere);
-	VECTOR3_DEF(v3SphereCenter);
-	VECTOR3_DEF(aabbMin);
-	VECTOR3_DEF(aabbMax);
+	VECTOR3_DEF(boxHalfExtent);
+	VECTOR3_DEF(sphereRelPos);
+	VECTOR3_DEF(closestPoint);
+	VECTOR3_DEF(normal);
 
-	btScalar ret = UnmanagedPointer->getSpherePenetration(boxObjWrap->_unmanaged,
-		VECTOR3_USE(v3PointOnBox), VECTOR3_USE(v3PointOnSphere),
-		VECTOR3_USE(v3SphereCenter), fRadius, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
+	btScalar ret = UnmanagedPointer->getSpherePenetration(VECTOR3_USE(boxHalfExtent), VECTOR3_USE(sphereRelPos),
+		VECTOR3_USE(closestPoint), VECTOR3_USE(normal));
 
-	VECTOR3_DEL(v3PointOnBox);
-	VECTOR3_DEL(v3PointOnSphere);
-	VECTOR3_DEL(v3SphereCenter);
-	VECTOR3_DEL(aabbMinTemp);
-	VECTOR3_DEL(aabbMaxTemp);
+	VECTOR3_DEL(boxHalfExtent);
+	VECTOR3_DEL(sphereRelPos);
+	VECTOR3_DEL(closestPoint);
+	VECTOR3_DEL(normal);
 
 	return ret;
 }
