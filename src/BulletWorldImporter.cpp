@@ -10,7 +10,7 @@
 
 Serialize::BulletWorldImporter::BulletWorldImporter(DynamicsWorld^ world)
 {
-	_importer = new BulletWorldImporterWrapper(GetUnmanagedNullable(world), this);
+	_importer = new BulletWorldImporterWrapper((btDynamicsWorld*)GetUnmanagedNullable(world), this);
 }
 
 Serialize::BulletWorldImporter::BulletWorldImporter()
@@ -428,14 +428,14 @@ String^	Serialize::BulletWorldImporter::GetNameForObject(Object^ obj)
 	CollisionShape^ shape = static_cast<CollisionShape^>(obj);
 	if (shape != nullptr)
 	{
-		pointer = shape->UnmanagedPointer;
+		pointer = shape->_unmanaged;
 		goto returnName;
 	}
 
 	CollisionObject^ body = static_cast<CollisionObject^>(obj);
 	if (body != nullptr)
 	{
-		pointer = body->UnmanagedPointer;
+		pointer = body->_unmanaged;
 		goto returnName;
 	}
 

@@ -71,11 +71,5 @@ namespace BulletSharp
 		{
 			int get();
 		}
-
-	internal:
-		property btPersistentManifold* UnmanagedPointer
-		{
-			btPersistentManifold* get() new;
-		}
 	};
 };

@@ -17,6 +17,8 @@ namespace BulletSharp
 		BroadphaseProxy(btBroadphaseProxy* proxy);
 		int _uid;
 
+		static BroadphaseProxy^ GetManaged(btBroadphaseProxy* broadphaseProxy);
+
 	public:
 		BroadphaseProxy();
 		BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
@@ -27,10 +29,6 @@ namespace BulletSharp
 			CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask);
 
-	internal:
-		static BroadphaseProxy^ GetManaged(btBroadphaseProxy* broadphaseProxy);
-
-	public:
 		property Vector3 AabbMin
 		{
 			Vector3 get();

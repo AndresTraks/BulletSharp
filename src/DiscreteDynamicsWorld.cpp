@@ -81,5 +81,5 @@ void DiscreteDynamicsWorld::SynchronizeAllMotionStates::set(bool value)
 
 void DiscreteDynamicsWorld::SynchronizeSingleMotionState(RigidBody^ body)
 {
-	Unmanaged->synchronizeSingleMotionState(body->UnmanagedPointer);
+	Unmanaged->synchronizeSingleMotionState((btRigidBody*)body->_unmanaged);
 }

@@ -294,8 +294,6 @@ namespace BulletSharp
 		{
 		internal:
 			btCollisionWorld::RayResultCallback* _unmanaged;
-
-		protected:
 			RayResultCallback(btCollisionWorld::RayResultCallback* callback);
 
 		public:

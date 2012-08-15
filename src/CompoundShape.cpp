@@ -31,7 +31,7 @@ CollisionShape^ CompoundShapeChild::ChildShape::get()
 }
 void CompoundShapeChild::ChildShape::set(CollisionShape^ value)
 {
-	_child->m_childShape = value->UnmanagedPointer;
+	_child->m_childShape = value->_unmanaged;
 }
 
 BroadphaseNativeType CompoundShapeChild::ChildShapeType::get()
@@ -75,6 +75,8 @@ void CompoundShapeChild::UnmanagedPointer::set(btCompoundShapeChild* value)
 }
 
 
+#define Unmanaged (static_cast<btCompoundShape*>(_unmanaged))
+
 CompoundShape::CompoundShape(btCompoundShape* compoundShape)
 : CollisionShape(compoundShape)
 {
@@ -93,7 +95,7 @@ CompoundShape::CompoundShape(bool enableDynamicAabbTree)
 void CompoundShape::AddChildShape(Matrix localTransform, CollisionShape^ shape)
 {
 	btTransform* localTransformTemp = Math::MatrixToBtTransform(localTransform);
-	UnmanagedPointer->addChildShape(*localTransformTemp, shape->UnmanagedPointer);
+	Unmanaged->addChildShape(*localTransformTemp, shape->_unmanaged);
 	delete localTransformTemp;
 }
 
@@ -103,7 +105,7 @@ void CompoundShape::CalculatePrincipalAxisTransform(array<btScalar>^ masses, Mat
 	btTransform* principalTemp = Math::MatrixToBtTransform(principal);
 	VECTOR3_DEF(inertia);
 	
-	UnmanagedPointer->calculatePrincipalAxisTransform(massesPtr, *principalTemp, VECTOR3_USE(inertia));
+	Unmanaged->calculatePrincipalAxisTransform(massesPtr, *principalTemp, VECTOR3_USE(inertia));
 	
 	delete principalTemp;
 	VECTOR3_DEL(inertia);
@@ -111,54 +113,54 @@ void CompoundShape::CalculatePrincipalAxisTransform(array<btScalar>^ masses, Mat
 
 void CompoundShape::CreateAabbTreeFromChildren()
 {
-	UnmanagedPointer->createAabbTreeFromChildren();
+	Unmanaged->createAabbTreeFromChildren();
 }
 
 CollisionShape^ CompoundShape::GetChildShape(int index)
 {
-	return CollisionShape::GetManaged(UnmanagedPointer->getChildShape(index));
+	return CollisionShape::GetManaged(Unmanaged->getChildShape(index));
 }
 
 Matrix CompoundShape::GetChildTransform(int index)
 {
-	return Math::BtTransformToMatrix(&UnmanagedPointer->getChildTransform(index));
+	return Math::BtTransformToMatrix(&Unmanaged->getChildTransform(index));
 }
 
 void CompoundShape::RecalculateLocalAabb()
 {
-	UnmanagedPointer->recalculateLocalAabb();
+	Unmanaged->recalculateLocalAabb();
 }
 
 void CompoundShape::RemoveChildShape(CollisionShape^ shape)
 {
-	UnmanagedPointer->removeChildShape(shape->UnmanagedPointer);
+	Unmanaged->removeChildShape(shape->UnmanagedPointer);
 }
 
 void CompoundShape::RemoveChildShapeByIndex(int childShapeindex)
 {
-	UnmanagedPointer->removeChildShapeByIndex(childShapeindex);
+	Unmanaged->removeChildShapeByIndex(childShapeindex);
 }
 
 void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransform, bool shouldRecalculateLocalAabb)
 {
 	btTransform* newChildTransformTemp = Math::MatrixToBtTransform(newChildTransform);
-	UnmanagedPointer->updateChildTransform(childIndex, *newChildTransformTemp, shouldRecalculateLocalAabb);
+	Unmanaged->updateChildTransform(childIndex, *newChildTransformTemp, shouldRecalculateLocalAabb);
 	delete newChildTransformTemp;
 }
 
 void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransform)
 {
 	btTransform* newChildTransformTemp = Math::MatrixToBtTransform(newChildTransform);
-	UnmanagedPointer->updateChildTransform(childIndex, *newChildTransformTemp);
+	Unmanaged->updateChildTransform(childIndex, *newChildTransformTemp);
 	delete newChildTransformTemp;
 }
 
 CompoundShapeChildArray^ CompoundShape::ChildList::get()
 {
-	btCompoundShapeChild* childList = UnmanagedPointer->getChildList();
+	btCompoundShapeChild* childList = Unmanaged->getChildList();
 	if (childList == 0)
 		return nullptr;
-	return gcnew CompoundShapeChildArray(childList, UnmanagedPointer->getNumChildShapes());
+	return gcnew CompoundShapeChildArray(childList, Unmanaged->getNumChildShapes());
 }
 
 #ifndef DISABLE_DBVT
@@ -170,12 +172,12 @@ Dbvt^ CompoundShape::DynamicAabbTree::get()
 
 int CompoundShape::NumChildShapes::get()
 {
-	return UnmanagedPointer->getNumChildShapes();
+	return Unmanaged->getNumChildShapes();
 }
 
 int CompoundShape::UpdateRevision::get()
 {
-	return UnmanagedPointer->getUpdateRevision();
+	return Unmanaged->getUpdateRevision();
 }
 
 btCompoundShape* CompoundShape::UnmanagedPointer::get()

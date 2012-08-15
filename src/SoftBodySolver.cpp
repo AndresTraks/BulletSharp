@@ -11,74 +11,74 @@
 
 SoftBody::SoftBodySolver::SoftBodySolver(btSoftBodySolver* solver)
 {
-	_solver = solver;
+	_unmanaged = solver;
 }
 
 void SoftBody::SoftBodySolver::CopyBackToSoftBodies(bool bMove)
 {
-	_solver->copyBackToSoftBodies(bMove);
+	_unmanaged->copyBackToSoftBodies(bMove);
 }
 
 void SoftBody::SoftBodySolver::CopyBackToSoftBodies()
 {
-	_solver->copyBackToSoftBodies();
+	_unmanaged->copyBackToSoftBodies();
 }
 
 void SoftBody::SoftBodySolver::Optimize(AlignedSoftBodyArray^ softBodies, bool forceUpdate)
 {
-	_solver->optimize(*(btSoftBody::tSoftBodyArray*)softBodies->_unmanaged, forceUpdate);
+	_unmanaged->optimize(*(btSoftBody::tSoftBodyArray*)softBodies->_unmanaged, forceUpdate);
 }
 
 void SoftBody::SoftBodySolver::Optimize(AlignedSoftBodyArray^ softBodies)
 {
-	_solver->optimize(*(btSoftBody::tSoftBodyArray*)softBodies->_unmanaged);
+	_unmanaged->optimize(*(btSoftBody::tSoftBodyArray*)softBodies->_unmanaged);
 }
 
 void SoftBody::SoftBodySolver::ProcessCollision(SoftBody^ softBody, CollisionObjectWrapper^ collisionObjectWrapper)
 {
-	_solver->processCollision(softBody->UnmanagedPointer, collisionObjectWrapper->_unmanaged);
+	_unmanaged->processCollision(softBody->UnmanagedPointer, collisionObjectWrapper->_unmanaged);
 }
 
 void SoftBody::SoftBodySolver::ProcessCollision(SoftBody^ softBody, SoftBody^ otherSoftBody)
 {
-	_solver->processCollision(softBody->UnmanagedPointer, otherSoftBody->UnmanagedPointer);
+	_unmanaged->processCollision(softBody->UnmanagedPointer, otherSoftBody->UnmanagedPointer);
 }
 
 int SoftBody::SoftBodySolver::NumberOfPositionIterations::get()
 {
-	return _solver->getNumberOfPositionIterations();
+	return _unmanaged->getNumberOfPositionIterations();
 }
 void SoftBody::SoftBodySolver::NumberOfPositionIterations::set(int value)
 {
-	_solver->setNumberOfPositionIterations(value);
+	_unmanaged->setNumberOfPositionIterations(value);
 }
 
 int SoftBody::SoftBodySolver::NumberOfVelocityIterations::get()
 {
-	return _solver->getNumberOfVelocityIterations();
+	return _unmanaged->getNumberOfVelocityIterations();
 }
 void SoftBody::SoftBodySolver::NumberOfVelocityIterations::set(int value)
 {
-	_solver->setNumberOfVelocityIterations(value);
+	_unmanaged->setNumberOfVelocityIterations(value);
 }
 
 SolverType SoftBody::SoftBodySolver::SolverType::get()
 {
-	return (BulletSharp::SolverType)_solver->getSolverType();
+	return (BulletSharp::SolverType)_unmanaged->getSolverType();
 }
 
 float SoftBody::SoftBodySolver::TimeScale::get()
 {
-	return _solver->getTimeScale();
+	return _unmanaged->getTimeScale();
 }
 
 btSoftBodySolver* SoftBody::SoftBodySolver::UnmanagedPointer::get()
 {
-	return _solver;
+	return _unmanaged;
 }
 void SoftBody::SoftBodySolver::UnmanagedPointer::set(btSoftBodySolver* value)
 {
-	_solver = value;
+	_unmanaged = value;
 }
 
 

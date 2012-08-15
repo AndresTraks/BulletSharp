@@ -307,10 +307,8 @@ namespace BulletSharp
 		[DebuggerDisplay("ClusterIndex = {ClusterIndex}")]
 		public ref class Cluster
 		{
-		private:
-			btSoftBody::Cluster* _cluster;
-
 		internal:
+			btSoftBody::Cluster* _unmanaged;
 			Cluster(btSoftBody::Cluster* cluster);
 
 		public:
@@ -460,13 +458,6 @@ namespace BulletSharp
 			{
 				Vector3Array^ get();
 			}
-
-		internal:
-			property btSoftBody::Cluster* UnmanagedPointer
-			{
-				btSoftBody::Cluster* get();
-				void set(btSoftBody::Cluster* value);
-			};
 		};
 
 		public ref class Config
@@ -663,8 +654,6 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBody::Element* _unmanaged;
-
-		internal:
 			Element(btSoftBody::Element* element);
 
 		public:
@@ -808,8 +797,9 @@ namespace BulletSharp
 		public:
 			ref class Specs
 			{
-			private:
-				btSoftBody::Joint::Specs* _specs;
+			internal:
+				btSoftBody::Joint::Specs* _unmanaged;
+				//static Specs^ GetManaged(btSoftBody::Joint::Specs* specs);
 
 			public:
 				property btScalar Cfm
@@ -829,13 +819,6 @@ namespace BulletSharp
 					btScalar get();
 					void set(btScalar value);
 				}
-
-			internal:
-				property btSoftBody::Joint::Specs* UnmanagedPointer
-				{
-					btSoftBody::Joint::Specs* get();
-					void set(btSoftBody::Joint::Specs* value);
-				};
 			};
 
 			enum class JointType
@@ -843,8 +826,9 @@ namespace BulletSharp
 				Linear, Angular, Contact
 			};
 
-		private:
-			btSoftBody::Joint* _joint;
+		internal:
+			btSoftBody::Joint* _unmanaged;
+			static Joint^ GetManaged(btSoftBody::Joint* joint);
 
 		public:
 			Joint(btSoftBody::Joint* joint);
@@ -909,13 +893,6 @@ namespace BulletSharp
 			{
 				JointType get();
 			}
-
-		internal:
-			property btSoftBody::Joint* UnmanagedPointer
-			{
-				btSoftBody::Joint* get();
-				void set(btSoftBody::Joint* value);
-			}
 		};
 
 		public ref class LJoint : Joint
@@ -932,12 +909,6 @@ namespace BulletSharp
 					Vector3 get();
 					void set(Vector3 value);
 				}
-
-			internal:
-				property btSoftBody::LJoint::Specs* UnmanagedPointer
-				{
-					btSoftBody::LJoint::Specs* get() new;
-				};
 			};
 
 		internal:
@@ -950,12 +921,6 @@ namespace BulletSharp
 			{
 				Vector3Array^ get();
 			}
-
-		internal:
-			property btSoftBody::LJoint* UnmanagedPointer
-			{
-				btSoftBody::LJoint* get() new;
-			};
 		};
 
 		public ref class AJoint : Joint
@@ -1005,12 +970,6 @@ namespace BulletSharp
 					AJoint::IControl^ get();
 					void set(AJoint::IControl^ value);
 				}
-
-			internal:
-				property btSoftBody::AJoint::Specs* UnmanagedPointer
-				{
-					btSoftBody::AJoint::Specs* get() new;
-				};
 			};
 
 		internal:
@@ -1026,11 +985,6 @@ namespace BulletSharp
 				AJoint::IControl^ get();
 				void set(AJoint::IControl^ value);
 			}
-
-			property btSoftBody::AJoint* UnmanagedPointer
-			{
-				btSoftBody::AJoint* get() new;
-			};
 		};
 
 		class AJointIControlWrapper : public btSoftBody::AJoint::IControl
@@ -1081,12 +1035,6 @@ namespace BulletSharp
 			{
 				Vector3Array^ get();
 			}
-
-		internal:
-			property btSoftBody::CJoint* UnmanagedPointer
-			{
-				btSoftBody::CJoint* get() new;
-			};
 		};
 
 		public ref class Link : Feature

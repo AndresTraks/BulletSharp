@@ -4,10 +4,8 @@ namespace BulletSharp
 {
 	public ref class TypedObject
 	{
-	private:
-		btTypedObject* _typedObject;
-
 	internal:
+		btTypedObject* _unmanaged;
 		TypedObject(btTypedObject* typedObject);
 
 	public:
@@ -15,13 +13,6 @@ namespace BulletSharp
 		{
 			BulletSharp::ObjectType get();
 			void set(BulletSharp::ObjectType value);
-		}
-
-	internal:
-		property btTypedObject* UnmanagedPointer
-		{
-			virtual btTypedObject* get();
-			void set(btTypedObject* value);
 		}
 	};
 };

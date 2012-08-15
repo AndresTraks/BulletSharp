@@ -10,8 +10,8 @@
 
 OverlappingPairCallback::OverlappingPairCallback(btOverlappingPairCallback* pairCallback)
 {
-	_pairCallback = pairCallback;
-	ObjectTable::Add(this, _pairCallback);
+	_unmanaged = pairCallback;
+	ObjectTable::Add(this, _unmanaged);
 }
 
 OverlappingPairCallback^ OverlappingPairCallback::GetManaged(btOverlappingPairCallback* pairCallback)
@@ -55,8 +55,8 @@ OverlappingPairCallback::!OverlappingPairCallback()
 
 	OnDisposing(this, nullptr);
 
-	ObjectTable::Remove(_pairCallback);
-	_pairCallback = NULL;
+	ObjectTable::Remove(_unmanaged);
+	_unmanaged = NULL;
 
 	OnDisposed(this, nullptr);
 }
@@ -64,34 +64,34 @@ OverlappingPairCallback::!OverlappingPairCallback()
 BroadphasePair^ OverlappingPairCallback::AddOverlappingPair(
 	BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
 {
-	return gcnew BroadphasePair(_pairCallback->addOverlappingPair(
+	return gcnew BroadphasePair(_unmanaged->addOverlappingPair(
 		proxy0->UnmanagedPointer, proxy1->UnmanagedPointer));
 }
 
 IntPtr OverlappingPairCallback::RemoveOverlappingPair(BroadphaseProxy^ proxy0,
 	BroadphaseProxy^ proxy1, Dispatcher^ dispatcher)
 {
-	return IntPtr(_pairCallback->removeOverlappingPair(proxy0->UnmanagedPointer,
+	return IntPtr(_unmanaged->removeOverlappingPair(proxy0->UnmanagedPointer,
 		proxy1->UnmanagedPointer, dispatcher->UnmanagedPointer));
 }
 
 void OverlappingPairCallback::RemoveOverlappingPairsContainingProxy(
 	BroadphaseProxy^ proxy0, Dispatcher^ dispatcher)
 {
-	_pairCallback->removeOverlappingPairsContainingProxy(
+	_unmanaged->removeOverlappingPairsContainingProxy(
 		proxy0->UnmanagedPointer, dispatcher->UnmanagedPointer);
 }
 
 bool OverlappingPairCallback::IsDisposed::get()
 {
-	return (_pairCallback == NULL);
+	return (_unmanaged == NULL);
 }
 
 btOverlappingPairCallback* OverlappingPairCallback::UnmanagedPointer::get()
 {
-	return _pairCallback;
+	return _unmanaged;
 }
 void OverlappingPairCallback::UnmanagedPointer::set(btOverlappingPairCallback* value)
 {
-	_pairCallback = value;
+	_unmanaged = value;
 }

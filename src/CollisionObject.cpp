@@ -191,7 +191,7 @@ CollisionShape^ CollisionObject::CollisionShape::get()
 }
 void CollisionObject::CollisionShape::set(BulletSharp::CollisionShape^ value)
 {
-	_unmanaged->setCollisionShape(value->UnmanagedPointer);
+	_unmanaged->setCollisionShape(value->_unmanaged);
 }
 
 int CollisionObject::CompanionId::get()

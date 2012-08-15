@@ -44,7 +44,7 @@ PersistentManifold^ ManifoldResult::PersistentManifold::get()
 }
 void ManifoldResult::PersistentManifold::set(BulletSharp::PersistentManifold^ value)
 {
-	UnmanagedPointer->setPersistentManifold(value->UnmanagedPointer);
+	UnmanagedPointer->setPersistentManifold((btPersistentManifold*)GetUnmanagedNullable(value));
 }
 
 btManifoldResult* ManifoldResult::UnmanagedPointer::get()

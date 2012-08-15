@@ -14,10 +14,8 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		btOverlappingPairCallback* _pairCallback;
-
 	internal:
+		btOverlappingPairCallback* _unmanaged;
 		OverlappingPairCallback(btOverlappingPairCallback* pairCallback);
 		static OverlappingPairCallback^ GetManaged(btOverlappingPairCallback* callback);
 

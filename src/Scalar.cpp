@@ -4,23 +4,14 @@
 
 TypedObject::TypedObject(btTypedObject* typedObject)
 {
-	_typedObject = typedObject;
+	_unmanaged = typedObject;
 }
 
 ObjectType TypedObject::ObjectType::get()
 {
-	return (BulletSharp::ObjectType)_typedObject->getObjectType();
+	return (BulletSharp::ObjectType)_unmanaged->getObjectType();
 }
 void TypedObject::ObjectType::set(BulletSharp::ObjectType value)
 {
-	_typedObject->m_objectType = (int)value;
-}
-
-btTypedObject* TypedObject::UnmanagedPointer::get()
-{
-	return _typedObject;
-}
-void TypedObject::UnmanagedPointer::set(btTypedObject* value)
-{
-	_typedObject = value;
+	_unmanaged->m_objectType = (int)value;
 }

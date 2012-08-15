@@ -13,8 +13,8 @@ CollisionObjectWrapper::CollisionObjectWrapper(btCollisionObjectWrapper* collisi
 CollisionObjectWrapper::CollisionObjectWrapper(CollisionObjectWrapper^ parent, CollisionShape^ shape, CollisionObject^ collisionObject, Matrix worldTransform)
 {
 	btTransform* worldTransformTemp = Math::MatrixToBtTransform(worldTransform);
-	_unmanaged = &btCollisionObjectWrapper(GetUnmanagedNullableNew(parent), GetUnmanagedNullable(shape),
-		GetUnmanagedNullableNew(collisionObject), *worldTransformTemp);
+	_unmanaged = &btCollisionObjectWrapper(GetUnmanagedNullable(parent), GetUnmanagedNullable(shape),
+		GetUnmanagedNullable(collisionObject), *worldTransformTemp);
 	delete worldTransformTemp;
 }
 

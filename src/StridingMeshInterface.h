@@ -14,8 +14,8 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		btStridingMeshInterface* _stridingMesh;
+	internal:
+		btStridingMeshInterface* _unmanaged;
 
 	internal:
 		StridingMeshInterface(btStridingMeshInterface* stridingMesh);

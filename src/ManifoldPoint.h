@@ -23,9 +23,10 @@ namespace BulletSharp
 			void set(ContactAdded^ value);
 		}
 
-	private:
-		btManifoldPoint* _manifoldPoint;
+	internal:
+		btManifoldPoint* _unmanaged;
 
+	private:
 		Object^ _userPersistentObject;
 
 	internal:

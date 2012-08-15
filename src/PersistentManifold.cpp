@@ -4,6 +4,8 @@
 #include "ManifoldPoint.h"
 #include "PersistentManifold.h"
 
+#define Unmanaged static_cast<btPersistentManifold*>(_unmanaged)
+
 PersistentManifold::PersistentManifold(btPersistentManifold* manifold)
 : TypedObject(manifold)
 {
@@ -16,113 +18,110 @@ PersistentManifold::PersistentManifold()
 
 int PersistentManifold::AddManifoldPoint(ManifoldPoint^ newPoint)
 {
-	return UnmanagedPointer->addManifoldPoint(*newPoint->UnmanagedPointer);
+	return Unmanaged->addManifoldPoint(*newPoint->_unmanaged);
 }
 
 void PersistentManifold::ClearManifold()
 {
-	return UnmanagedPointer->clearManifold();
+	return Unmanaged->clearManifold();
 }
 
 void PersistentManifold::ClearUserCache(ManifoldPoint^ pt)
 {
-	UnmanagedPointer->clearUserCache(*pt->UnmanagedPointer);
+	Unmanaged->clearUserCache(*pt->UnmanagedPointer);
 }
 
 #ifdef DEBUG_PERSISTENCY
 void PersistentManifold::DebugPersistency()
 {
-	UnmanagedPointer->DebugPersistency();
+	Unmanaged->DebugPersistency();
 }
 #endif
 
 int PersistentManifold::GetCacheEntry(ManifoldPoint^ newPoint)
 {
-	return UnmanagedPointer->getCacheEntry(*newPoint->UnmanagedPointer);
+	return Unmanaged->getCacheEntry(*newPoint->UnmanagedPointer);
 }
 
 ManifoldPoint^ PersistentManifold::GetContactPoint(int index)
 {
-	return gcnew ManifoldPoint(&UnmanagedPointer->getContactPoint(index));
+	return gcnew ManifoldPoint(&Unmanaged->getContactPoint(index));
 }
 
 void PersistentManifold::RefreshContactPoints(Matrix trA, Matrix trB)
 {
 	btTransform* trATemp = Math::MatrixToBtTransform(trA);
 	btTransform* trBTemp = Math::MatrixToBtTransform(trB);
-	UnmanagedPointer->refreshContactPoints(*trATemp, *trBTemp);
+
+	Unmanaged->refreshContactPoints(*trATemp, *trBTemp);
+
 	delete trATemp;
 	delete trBTemp;
 }
 
 void PersistentManifold::RemoveContactPoint(int index)
 {
-	UnmanagedPointer->removeContactPoint(index);
+	Unmanaged->removeContactPoint(index);
 }
 
 void PersistentManifold::ReplaceContactPoint(ManifoldPoint^ newPoint, int insertIndex)
 {
-	UnmanagedPointer->replaceContactPoint(*newPoint->UnmanagedPointer, insertIndex);
+	Unmanaged->replaceContactPoint(*newPoint->UnmanagedPointer, insertIndex);
 }
 
 bool PersistentManifold::ValidContactDistance(ManifoldPoint^ pt)
 {
-	return UnmanagedPointer->validContactDistance(*pt->UnmanagedPointer);
+	return Unmanaged->validContactDistance(*pt->UnmanagedPointer);
 }
 
 Object^ PersistentManifold::Body0::get()
 {
-	return CollisionObject::GetManaged((btCollisionObject*)UnmanagedPointer->getBody0());
+	return CollisionObject::GetManaged((btCollisionObject*)Unmanaged->getBody0());
 }
 
 Object^ PersistentManifold::Body1::get()
 {
-	return CollisionObject::GetManaged((btCollisionObject*)UnmanagedPointer->getBody1());
+	return CollisionObject::GetManaged((btCollisionObject*)Unmanaged->getBody1());
 }
 
 int PersistentManifold::CompanionIDA::get()
 {
-	return UnmanagedPointer->m_companionIdA;
+	return Unmanaged->m_companionIdA;
 }
 void PersistentManifold::CompanionIDA::set(int value)
 {
-	UnmanagedPointer->m_companionIdA = value;
+	Unmanaged->m_companionIdA = value;
 }
 
 int PersistentManifold::CompanionIDB::get()
 {
-	return UnmanagedPointer->m_companionIdB;
+	return Unmanaged->m_companionIdB;
 }
 void PersistentManifold::CompanionIDB::set(int value)
 {
-	UnmanagedPointer->m_companionIdB = value;
+	Unmanaged->m_companionIdB = value;
 }
 
 float PersistentManifold::ContactBreakingThreshold::get()
 {
-	return UnmanagedPointer->getContactBreakingThreshold();
+	return Unmanaged->getContactBreakingThreshold();
 }
 
 float PersistentManifold::ContactProcessingThreshold::get()
 {
-	return UnmanagedPointer->getContactProcessingThreshold();
+	return Unmanaged->getContactProcessingThreshold();
 }
 
 int PersistentManifold::Index1A::get()
 {
-	return UnmanagedPointer->m_index1a;
+	return Unmanaged->m_index1a;
 }
 void PersistentManifold::Index1A::set(int value)
 {
-	UnmanagedPointer->m_index1a = value;
+	Unmanaged->m_index1a = value;
 }
 
 int PersistentManifold::NumContacts::get()
 {
-	return UnmanagedPointer->getNumContacts();
-}
-
-btPersistentManifold* PersistentManifold::UnmanagedPointer::get()
-{
-	return (btPersistentManifold*)TypedObject::UnmanagedPointer;
+	return Unmanaged->getNumContacts();
 }

@@ -18,10 +18,8 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		btConstraintSolver* _solver;
-
 	internal:
+		btConstraintSolver* _unmanaged;
 		ConstraintSolver(btConstraintSolver* solver);
 
 	public:

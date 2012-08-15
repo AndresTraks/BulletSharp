@@ -56,10 +56,8 @@ namespace BulletSharp
 			virtual event EventHandler^ OnDisposing;
 			virtual event EventHandler^ OnDisposed;
 
-		private:
-			btDiscreteCollisionDetectorInterface::Result* _result;
-
 		internal:
+			btDiscreteCollisionDetectorInterface::Result* _unmanaged;
 			Result(btDiscreteCollisionDetectorInterface::Result* result);
 
 		public:

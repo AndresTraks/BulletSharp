@@ -701,7 +701,7 @@ void CollisionWorld::DebugDrawObject(Matrix worldTransform, CollisionShape^ shap
 	btTransform* worldTransformTemp = Math::MatrixToBtTransform(worldTransform);
 	btVector3* colorTemp = BtColorToBtVector(color);
 	
-	_unmanaged->debugDrawObject(*worldTransformTemp, shape->UnmanagedPointer, *colorTemp);
+	_unmanaged->debugDrawObject(*worldTransformTemp, shape->_unmanaged, *colorTemp);
 	
 	delete worldTransformTemp;
 	delete colorTemp;
@@ -721,8 +721,8 @@ void CollisionWorld::ObjectQuerySingle(ConvexShape^ castShape, Matrix rayFromTra
 	btTransform* rayToTransTemp = Math::MatrixToBtTransform(rayToTrans);
 	btTransform* colObjWorldTransformTemp = Math::MatrixToBtTransform(colObjWorldTransform);
 
-	btCollisionWorld::objectQuerySingle(castShape->UnmanagedPointer, *rayFromTransTemp, *rayToTransTemp,
-		collisionObject->UnmanagedPointer, collisionShape->UnmanagedPointer,
+	btCollisionWorld::objectQuerySingle((btConvexShape*)castShape->_unmanaged, *rayFromTransTemp, *rayToTransTemp,
+		collisionObject->_unmanaged, collisionShape->_unmanaged,
 		*colObjWorldTransformTemp, *resultCallback->UnmanagedPointer, allowedPenetration);
 
 	delete colObjWorldTransformTemp;
@@ -765,7 +765,7 @@ void CollisionWorld::RayTestSingle(Matrix rayFromTrans, Matrix rayToTrans, Colli
 	btTransform* colObjWorldTransformTemp = Math::MatrixToBtTransform(colObjWorldTransform);
 
 	btCollisionWorld::rayTestSingle(*rayFromTransTemp, *rayToTransTemp,
-		collisionObject->UnmanagedPointer, collisionShape->UnmanagedPointer,
+		collisionObject->_unmanaged, collisionShape->_unmanaged,
 		*colObjWorldTransformTemp, *resultCallback->_unmanaged);
 
 	delete rayFromTransTemp;

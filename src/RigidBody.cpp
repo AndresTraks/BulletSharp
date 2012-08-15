@@ -11,7 +11,7 @@
 #define Unmanaged static_cast<btRigidBody*>(_unmanaged)
 
 RigidBody::RigidBody(RigidBodyConstructionInfo^ info)
-: CollisionObject(new btRigidBody(*info->UnmanagedPointer))
+: CollisionObject(new btRigidBody(*info->_unmanaged))
 {
 	_motionState = info->_motionState;
 }
@@ -506,16 +506,16 @@ btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfo
 
 RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape)
 {
-	_info = RigidBody_GetUnmanagedConstructionInfo(mass,
-		GetUnmanagedNullableNew(motionState), GetUnmanagedNullable(collisionShape));
+	_unmanaged = RigidBody_GetUnmanagedConstructionInfo(mass,
+		GetUnmanagedNullable(motionState), GetUnmanagedNullable(collisionShape));
 	_motionState = motionState;
 }
 
 RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape, Vector3 localInertia)
 {
 	VECTOR3_DEF(localInertia);
-	_info = RigidBody_GetUnmanagedConstructionInfoLocalInertia(mass,
-		GetUnmanagedNullableNew(motionState), GetUnmanagedNullable(collisionShape),
+	_unmanaged = RigidBody_GetUnmanagedConstructionInfoLocalInertia(mass,
+		GetUnmanagedNullable(motionState), GetUnmanagedNullable(collisionShape),
 		VECTOR3_PTR(localInertia));
 	VECTOR3_DEL(localInertia);
 	_motionState = motionState;
@@ -523,124 +523,124 @@ RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp:
 
 btScalar RigidBodyConstructionInfo::AdditionalAngularDampingFactor::get()
 {
-	return _info->m_additionalAngularDampingFactor;
+	return _unmanaged->m_additionalAngularDampingFactor;
 }
 void RigidBodyConstructionInfo::AdditionalAngularDampingFactor::set(btScalar value)
 {
-	_info->m_additionalAngularDampingFactor = value;
+	_unmanaged->m_additionalAngularDampingFactor = value;
 }
 
 btScalar RigidBodyConstructionInfo::AdditionalAngularDampingThresholdSqr::get()
 {
-	return _info->m_additionalAngularDampingThresholdSqr;
+	return _unmanaged->m_additionalAngularDampingThresholdSqr;
 }
 void RigidBodyConstructionInfo::AdditionalAngularDampingThresholdSqr::set(btScalar value)
 {
-	_info->m_additionalAngularDampingThresholdSqr = value;
+	_unmanaged->m_additionalAngularDampingThresholdSqr = value;
 }
 
 bool RigidBodyConstructionInfo::AdditionalDamping::get()
 {
-	return _info->m_additionalDamping;
+	return _unmanaged->m_additionalDamping;
 }
 void RigidBodyConstructionInfo::AdditionalDamping::set(bool value)
 {
-	_info->m_additionalDamping = value;
+	_unmanaged->m_additionalDamping = value;
 }
 
 btScalar RigidBodyConstructionInfo::AdditionalDampingFactor::get()
 {
-	return _info->m_additionalDampingFactor;
+	return _unmanaged->m_additionalDampingFactor;
 }
 void RigidBodyConstructionInfo::AdditionalDampingFactor::set(btScalar value)
 {
-	_info->m_additionalDampingFactor = value;
+	_unmanaged->m_additionalDampingFactor = value;
 }
 
 btScalar RigidBodyConstructionInfo::AdditionalLinearDampingThresholdSqr::get()
 {
-	return _info->m_additionalLinearDampingThresholdSqr;
+	return _unmanaged->m_additionalLinearDampingThresholdSqr;
 }
 void RigidBodyConstructionInfo::AdditionalLinearDampingThresholdSqr::set(btScalar value)
 {
-	_info->m_additionalLinearDampingThresholdSqr = value;
+	_unmanaged->m_additionalLinearDampingThresholdSqr = value;
 }
 
 btScalar RigidBodyConstructionInfo::AngularDamping::get()
 {
-	return _info->m_angularDamping;
+	return _unmanaged->m_angularDamping;
 }
 void RigidBodyConstructionInfo::AngularDamping::set(btScalar value)
 {
-	_info->m_angularDamping = value;
+	_unmanaged->m_angularDamping = value;
 }
 
 btScalar RigidBodyConstructionInfo::AngularSleepingThreshold::get()
 {
-	return _info->m_angularSleepingThreshold;
+	return _unmanaged->m_angularSleepingThreshold;
 }
 void RigidBodyConstructionInfo::AngularSleepingThreshold::set(btScalar value)
 {
-	_info->m_angularSleepingThreshold = value;
+	_unmanaged->m_angularSleepingThreshold = value;
 }
 
 CollisionShape^ RigidBodyConstructionInfo::CollisionShape::get()
 {
-	return BulletSharp::CollisionShape::GetManaged(_info->m_collisionShape);
+	return BulletSharp::CollisionShape::GetManaged(_unmanaged->m_collisionShape);
 }
 void RigidBodyConstructionInfo::CollisionShape::set(BulletSharp::CollisionShape^ value)
 {
-	_info->m_collisionShape = value->UnmanagedPointer;
+	_unmanaged->m_collisionShape = GetUnmanagedNullable(value);
 }
 
 btScalar RigidBodyConstructionInfo::Friction::get()
 {
-	return _info->m_friction;
+	return _unmanaged->m_friction;
 }
 void RigidBodyConstructionInfo::Friction::set(btScalar value)
 {
-	_info->m_friction = value;
+	_unmanaged->m_friction = value;
 }
 
 btScalar RigidBodyConstructionInfo::LinearDamping::get()
 {
-	return _info->m_linearDamping;
+	return _unmanaged->m_linearDamping;
 }
 void RigidBodyConstructionInfo::LinearDamping::set(btScalar value)
 {
-	_info->m_linearDamping = value;
+	_unmanaged->m_linearDamping = value;
 }
 
 btScalar RigidBodyConstructionInfo::LinearSleepingThreshold::get()
 {
-	return _info->m_linearSleepingThreshold;
+	return _unmanaged->m_linearSleepingThreshold;
 }
 void RigidBodyConstructionInfo::LinearSleepingThreshold::set(btScalar value)
 {
-	_info->m_linearSleepingThreshold = value;
+	_unmanaged->m_linearSleepingThreshold = value;
 }
 
 Vector3 RigidBodyConstructionInfo::LocalInertia::get()
 {
-	return Math::BtVector3ToVector3(&_info->m_localInertia);
+	return Math::BtVector3ToVector3(&_unmanaged->m_localInertia);
 }
 void RigidBodyConstructionInfo::LocalInertia::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_info->m_localInertia);
+	Math::Vector3ToBtVector3(value, &_unmanaged->m_localInertia);
 }
 
 btScalar RigidBodyConstructionInfo::Mass::get()
 {
-	return _info->m_mass;
+	return _unmanaged->m_mass;
 }
 void RigidBodyConstructionInfo::Mass::set(btScalar value)
 {
-	_info->m_mass = value;
+	_unmanaged->m_mass = value;
 }
 
 BulletSharp::MotionState^ RigidBodyConstructionInfo::MotionState::get()
 {
-	btMotionState* state = _info->m_motionState;
+	btMotionState* state = _unmanaged->m_motionState;
 	if (state != nullptr)
 		_motionState = gcnew BulletSharp::MotionState(state);
 
@@ -648,28 +648,23 @@ BulletSharp::MotionState^ RigidBodyConstructionInfo::MotionState::get()
 }
 void RigidBodyConstructionInfo::MotionState::set(BulletSharp::MotionState^ value)
 {
-	_info->m_motionState = value->_unmanaged;
+	_unmanaged->m_motionState = value->_unmanaged;
 }
 
 btScalar RigidBodyConstructionInfo::Restitution::get()
 {
-	return _info->m_restitution;
+	return _unmanaged->m_restitution;
 }
 void RigidBodyConstructionInfo::Restitution::set(btScalar value)
 {
-	_info->m_restitution = value;
+	_unmanaged->m_restitution = value;
 }
 
 Matrix RigidBodyConstructionInfo::StartWorldTransform::get()
 {
-	return Math::BtTransformToMatrix(&_info->m_startWorldTransform);
+	return Math::BtTransformToMatrix(&_unmanaged->m_startWorldTransform);
 }
 void RigidBodyConstructionInfo::StartWorldTransform::set(Matrix value)
 {
-	Math::MatrixToBtTransform(value, &_info->m_startWorldTransform);
-}
-
-btRigidBody::btRigidBodyConstructionInfo* RigidBodyConstructionInfo::UnmanagedPointer::get()
-{
-	return _info;
+	Math::MatrixToBtTransform(value, &_unmanaged->m_startWorldTransform);
 }

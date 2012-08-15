@@ -219,6 +219,8 @@ btGImpactCompoundShape::CompoundPrimitiveManager* GImpactCompoundShape::Compound
 #endif
 
 
+#define Unmanaged (static_cast<btGImpactCompoundShape*>(_unmanaged))
+
 GImpactCompoundShape::GImpactCompoundShape(bool childrenHasTransform)
 : GImpactShapeInterface(new btGImpactCompoundShape(childrenHasTransform))
 {
@@ -231,20 +233,20 @@ GImpactCompoundShape::GImpactCompoundShape()
 
 void GImpactCompoundShape::AddChildShape(CollisionShape^ shape)
 {
-	UnmanagedPointer->addChildShape(shape->UnmanagedPointer);
+	Unmanaged->addChildShape(shape->_unmanaged);
 }
 
 void GImpactCompoundShape::AddChildShape(Matrix localTransform, CollisionShape^ shape)
 {
 	btTransform* localTransformTemp = Math::MatrixToBtTransform(localTransform);
-	UnmanagedPointer->addChildShape(*localTransformTemp, shape->UnmanagedPointer);
+	Unmanaged->addChildShape(*localTransformTemp, shape->_unmanaged);
 	delete localTransformTemp;
 }
 
 #ifndef DISABLE_BVH
 GImpactCompoundShape::CompoundPrimitiveManager^ GImpactCompoundShape::GImpactCompoundPrimitiveManager::get()
 {
-	return gcnew CompoundPrimitiveManager(UnmanagedPointer->getCompoundPrimitiveManager());
+	return gcnew CompoundPrimitiveManager(Unmanaged->getCompoundPrimitiveManager());
 }
 #endif
 

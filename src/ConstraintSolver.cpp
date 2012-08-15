@@ -14,7 +14,7 @@
 
 ConstraintSolver::ConstraintSolver(btConstraintSolver* solver)
 {
-	_solver = solver;
+	_unmanaged = solver;
 }
 
 ConstraintSolver::~ConstraintSolver()
@@ -29,14 +29,14 @@ ConstraintSolver::!ConstraintSolver()
 	
 	OnDisposing(this, nullptr);
 	
-	_solver = NULL;
+	_unmanaged = NULL;
 	
 	OnDisposed(this, nullptr);
 }
 
 bool ConstraintSolver::IsDisposed::get()
 {
-	return (_solver == NULL);
+	return (_unmanaged == NULL);
 }
 
 #ifndef DISABLE_CONSTRAINTS
@@ -47,7 +47,7 @@ void ConstraintSolver::AllSolved(ContactSolverInfo^ info,
 #endif
 	StackAlloc^ stackAlloc)
 {
-	_solver->allSolved(*info->UnmanagedPointer,
+	_unmanaged->allSolved(*info->UnmanagedPointer,
 #ifndef DISABLE_DEBUGDRAW
 		DebugDraw::GetUnmanaged(debugDrawer),
 #else
@@ -58,7 +58,7 @@ void ConstraintSolver::AllSolved(ContactSolverInfo^ info,
 
 void ConstraintSolver::PrepareSolve(int numBodies, int numManifolds)
 {
-	_solver->prepareSolve(numBodies, numManifolds);
+	_unmanaged->prepareSolve(numBodies, numManifolds);
 }
 
 void ConstraintSolver::Reset()
@@ -85,7 +85,7 @@ btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<Per
 	for (i=0; i<numBodies; i++)
 		bodiesTemp[i] = bodies[i]->UnmanagedPointer;
 
-	btScalar ret = _solver->solveGroup(bodiesTemp, numBodies, manifoldsTemp, numManifolds,
+	btScalar ret = _unmanaged->solveGroup(bodiesTemp, numBodies, manifoldsTemp, numManifolds,
 		constraintsTemp, numConstraints, *info->UnmanagedPointer,
 #ifndef DISABLE_DEBUGDRAW
 		DebugDraw::GetUnmanaged(debugDrawer),
@@ -103,11 +103,11 @@ btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<Per
 
 btConstraintSolver* ConstraintSolver::UnmanagedPointer::get()
 {
-	return _solver;
+	return _unmanaged;
 }
 void ConstraintSolver::UnmanagedPointer::set(btConstraintSolver* value)
 {
-	_solver = value;
+	_unmanaged = value;
 }
 
 #endif

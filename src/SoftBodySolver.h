@@ -12,10 +12,8 @@ namespace BulletSharp
 
 		public ref class SoftBodySolver
 		{
-		private:
-			btSoftBodySolver* _solver;
-
 		internal:
+			btSoftBodySolver* _unmanaged;
 			SoftBodySolver(btSoftBodySolver* solver);
 
 		public:

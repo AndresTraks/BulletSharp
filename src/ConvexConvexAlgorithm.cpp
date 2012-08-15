@@ -59,9 +59,9 @@ btConvexConvexAlgorithm::CreateFunc* ConvexConvexAlgorithm::CreateFunc::Unmanage
 ConvexConvexAlgorithm::ConvexConvexAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, SimplexSolverInterface^ simplexSolver,
 	ConvexPenetrationDepthSolver^ pdSolver, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
-: ActivatingCollisionAlgorithm(new btConvexConvexAlgorithm(mf->UnmanagedPointer, *ci->UnmanagedPointer, body0Wrap->_unmanaged,
-	body1Wrap->_unmanaged, simplexSolver->UnmanagedPointer, pdSolver->UnmanagedPointer,
-	numPerturbationIterations, minimumPointsPerturbationThreshold))
+: ActivatingCollisionAlgorithm(new btConvexConvexAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf),
+	*ci->UnmanagedPointer, body0Wrap->_unmanaged, body1Wrap->_unmanaged, simplexSolver->UnmanagedPointer,
+	pdSolver->UnmanagedPointer, numPerturbationIterations, minimumPointsPerturbationThreshold))
 {
 }
 

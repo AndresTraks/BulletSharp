@@ -23,12 +23,12 @@ void DynamicsWorld::AddAction(ActionInterface^ actionInterface)
 
 void DynamicsWorld::AddRigidBody(RigidBody^ rigidBody, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
 {
-	Unmanaged->addRigidBody(rigidBody->UnmanagedPointer, (short)collisionFilterGroup, (short)collisionFilterMask);
+	Unmanaged->addRigidBody((btRigidBody*)rigidBody->_unmanaged, (short)collisionFilterGroup, (short)collisionFilterMask);
 }
 
 void DynamicsWorld::AddRigidBody(RigidBody^ rigidBody)
 {
-	Unmanaged->addRigidBody(rigidBody->UnmanagedPointer);
+	Unmanaged->addRigidBody((btRigidBody*)rigidBody->_unmanaged);
 }
 
 #ifndef DISABLE_CONSTRAINTS
@@ -66,7 +66,7 @@ void DynamicsWorld::RemoveAction(ActionInterface^ actionInterface)
 
 void DynamicsWorld::RemoveRigidBody(RigidBody^ rigidBody)
 {
-	Unmanaged->removeRigidBody(rigidBody->UnmanagedPointer);
+	Unmanaged->removeRigidBody((btRigidBody*)rigidBody->_unmanaged);
 }
 
 void callback(btDynamicsWorld* world, btScalar timeStep)

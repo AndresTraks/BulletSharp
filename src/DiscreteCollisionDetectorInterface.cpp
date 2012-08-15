@@ -63,7 +63,7 @@ void DiscreteCollisionDetectorInterface::ClosestPointInput::UnmanagedPointer::se
 DiscreteCollisionDetectorInterface::Result::Result(
 	btDiscreteCollisionDetectorInterface::Result* result)
 {
-	_result = result;
+	_unmanaged = result;
 }
 
 DiscreteCollisionDetectorInterface::Result::~Result()
@@ -78,14 +78,14 @@ DiscreteCollisionDetectorInterface::Result::!Result()
 
 	OnDisposing(this, nullptr);
 
-	_result = NULL;
+	_unmanaged = NULL;
 
 	OnDisposed(this, nullptr);
 }
 
 bool DiscreteCollisionDetectorInterface::Result::IsDisposed::get()
 {
-	return (_result == NULL);
+	return (_unmanaged == NULL);
 }
 
 void DiscreteCollisionDetectorInterface::Result::AddContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld, btScalar depth)
@@ -93,7 +93,7 @@ void DiscreteCollisionDetectorInterface::Result::AddContactPoint(Vector3 normalO
 	VECTOR3_DEF(normalOnBInWorld);
 	VECTOR3_DEF(pointInWorld);
 	
-	_result->addContactPoint(VECTOR3_USE(normalOnBInWorld), VECTOR3_USE(pointInWorld), depth);
+	_unmanaged->addContactPoint(VECTOR3_USE(normalOnBInWorld), VECTOR3_USE(pointInWorld), depth);
 	
 	VECTOR3_DEL(normalOnBInWorld);
 	VECTOR3_DEL(pointInWorld);
@@ -101,21 +101,21 @@ void DiscreteCollisionDetectorInterface::Result::AddContactPoint(Vector3 normalO
 
 void DiscreteCollisionDetectorInterface::Result::SetShapeIdentifiersA(int partId0, int index0)
 {
-	_result->setShapeIdentifiersA(partId0, index0);
+	_unmanaged->setShapeIdentifiersA(partId0, index0);
 }
 
 void DiscreteCollisionDetectorInterface::Result::SetShapeIdentifiersB(int partId1, int index1)
 {
-	_result->setShapeIdentifiersB(partId1, index1);
+	_unmanaged->setShapeIdentifiersB(partId1, index1);
 }
 
 btDiscreteCollisionDetectorInterface::Result* DiscreteCollisionDetectorInterface::Result::UnmanagedPointer::get()
 {
-	return _result;
+	return _unmanaged;
 }
 void DiscreteCollisionDetectorInterface::Result::UnmanagedPointer::set(btDiscreteCollisionDetectorInterface::Result* value)
 {
-	_result = value;
+	_unmanaged = value;
 }
 
 

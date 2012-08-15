@@ -45,128 +45,6 @@ CollisionShape::CollisionShape(btCollisionShape* collisionShape)
 		UnmanagedPointer = collisionShape;
 }
 
-CollisionShape::~CollisionShape()
-{
-	this->!CollisionShape();
-}
-
-CollisionShape::!CollisionShape()
-{
-	if (this->IsDisposed)
-		return;
-	
-	OnDisposing(this, nullptr);
-
-	// delete the btCollisionShape only if we are responsible for it
-	if (_flags != 2)
-	{
-		void* userObj = _collisionShape->getUserPointer();
-		if (userObj)
-			VoidPtrToGCHandle(userObj).Free();
-		delete _collisionShape;
-	}
-	_flags |= 1;
-
-	OnDisposed(this, nullptr);
-}
-
-bool CollisionShape::IsDisposed::get()
-{
-	return _flags & 1;
-}
-
-void CollisionShape::CalculateLocalInertia(btScalar mass, [Out] Vector3% inertia)
-{
-	btVector3* inertiaTemp = new btVector3;
-	_collisionShape->calculateLocalInertia(mass, *inertiaTemp);
-	Math::BtVector3ToVector3(inertiaTemp, inertia);
-	delete inertiaTemp;
-}
-
-Vector3 CollisionShape::CalculateLocalInertia(btScalar mass)
-{
-	btVector3* inertiaTemp = new btVector3;
-	_collisionShape->calculateLocalInertia(mass, *inertiaTemp);
-	Vector3 inertia = Math::BtVector3ToVector3(inertiaTemp);
-	delete inertiaTemp;
-	return inertia;
-}
-
-void CollisionShape::CalculateTemporalAabb(Matrix curTrans,
-	Vector3 linvel,	Vector3 angvel, btScalar timeStep,
-	Vector3% temporalAabbMin, Vector3% temporalAabbMax)
-{
-	btTransform* curTransTemp = Math::MatrixToBtTransform(curTrans);
-	btVector3* temporalAabbMinTemp = new btVector3;
-	btVector3* temporalAabbMaxTemp = new btVector3;
-	VECTOR3_DEF(linvel);
-	VECTOR3_DEF(angvel);
-
-	_collisionShape->calculateTemporalAabb(*curTransTemp, VECTOR3_USE(linvel), VECTOR3_USE(angvel),
-		timeStep, *temporalAabbMinTemp,	*temporalAabbMaxTemp
-	);
-
-	temporalAabbMin = Math::BtVector3ToVector3(temporalAabbMaxTemp);
-	temporalAabbMax = Math::BtVector3ToVector3(temporalAabbMaxTemp);
-
-	delete curTransTemp;
-	delete temporalAabbMinTemp;
-	delete temporalAabbMaxTemp;
-	VECTOR3_DEL(linvel);
-	VECTOR3_DEL(angvel);
-}
-
-void CollisionShape::GetAabb(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
-{
-	btTransform* tTemp = Math::MatrixToBtTransform(t);
-	btVector3* aabbMinTemp = new btVector3;
-	btVector3* aabbMaxTemp = new btVector3;
-	
-	_collisionShape->getAabb(*tTemp, *aabbMinTemp, *aabbMaxTemp);
-
-	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
-	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
-
-	delete tTemp;
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
-}
-
-void CollisionShape::GetBoundingSphere(Vector3% center, btScalar% radius)
-{
-	btVector3* centerTemp = new btVector3;
-	btScalar radiusTemp;
-	
-	_collisionShape->getBoundingSphere(*centerTemp, radiusTemp);
-	
-	center = Math::BtVector3ToVector3(centerTemp);
-	radius = radiusTemp;
-	delete centerTemp;
-}
-
-btScalar CollisionShape::GetContactBreakingThreshold(btScalar defaultContactThreshold)
-{
-	return _collisionShape->getContactBreakingThreshold(defaultContactThreshold);
-}
-
-#ifndef DISABLE_SERIALIZE
-int CollisionShape::CalculateSerializeBufferSize()
-{
-	return UnmanagedPointer->calculateSerializeBufferSize();
-}
-
-String^ CollisionShape::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
-{
-	const char* name = UnmanagedPointer->serialize(dataBuffer.ToPointer(), serializer->UnmanagedPointer);
-	return gcnew String(name);
-}
-
-void CollisionShape::SerializeSingleShape(BulletSharp::Serializer^ serializer)
-{
-	UnmanagedPointer->serializeSingleShape(serializer->UnmanagedPointer);
-}
-#endif
-
 CollisionShape^ CollisionShape::GetManaged(btCollisionShape* collisionShape)
 {
 	if (collisionShape == 0)
@@ -289,69 +167,191 @@ CollisionShape^ CollisionShape::GetManaged(btCollisionShape* collisionShape)
 	return shape;
 }
 
+CollisionShape::~CollisionShape()
+{
+	this->!CollisionShape();
+}
+
+CollisionShape::!CollisionShape()
+{
+	if (this->IsDisposed)
+		return;
+	
+	OnDisposing(this, nullptr);
+
+	// delete the btCollisionShape only if we are responsible for it
+	if (_flags != 2)
+	{
+		void* userObj = _unmanaged->getUserPointer();
+		if (userObj)
+			VoidPtrToGCHandle(userObj).Free();
+		delete _unmanaged;
+	}
+	_flags |= 1;
+
+	OnDisposed(this, nullptr);
+}
+
+bool CollisionShape::IsDisposed::get()
+{
+	return _flags & 1;
+}
+
+void CollisionShape::CalculateLocalInertia(btScalar mass, [Out] Vector3% inertia)
+{
+	btVector3* inertiaTemp = new btVector3;
+	_unmanaged->calculateLocalInertia(mass, *inertiaTemp);
+	Math::BtVector3ToVector3(inertiaTemp, inertia);
+	delete inertiaTemp;
+}
+
+Vector3 CollisionShape::CalculateLocalInertia(btScalar mass)
+{
+	btVector3* inertiaTemp = new btVector3;
+	_unmanaged->calculateLocalInertia(mass, *inertiaTemp);
+	Vector3 inertia = Math::BtVector3ToVector3(inertiaTemp);
+	delete inertiaTemp;
+	return inertia;
+}
+
+void CollisionShape::CalculateTemporalAabb(Matrix curTrans,
+	Vector3 linvel,	Vector3 angvel, btScalar timeStep,
+	Vector3% temporalAabbMin, Vector3% temporalAabbMax)
+{
+	btTransform* curTransTemp = Math::MatrixToBtTransform(curTrans);
+	btVector3* temporalAabbMinTemp = new btVector3;
+	btVector3* temporalAabbMaxTemp = new btVector3;
+	VECTOR3_DEF(linvel);
+	VECTOR3_DEF(angvel);
+
+	_unmanaged->calculateTemporalAabb(*curTransTemp, VECTOR3_USE(linvel), VECTOR3_USE(angvel),
+		timeStep, *temporalAabbMinTemp,	*temporalAabbMaxTemp
+	);
+
+	temporalAabbMin = Math::BtVector3ToVector3(temporalAabbMaxTemp);
+	temporalAabbMax = Math::BtVector3ToVector3(temporalAabbMaxTemp);
+
+	delete curTransTemp;
+	delete temporalAabbMinTemp;
+	delete temporalAabbMaxTemp;
+	VECTOR3_DEL(linvel);
+	VECTOR3_DEL(angvel);
+}
+
+void CollisionShape::GetAabb(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
+{
+	btTransform* tTemp = Math::MatrixToBtTransform(t);
+	btVector3* aabbMinTemp = new btVector3;
+	btVector3* aabbMaxTemp = new btVector3;
+	
+	_unmanaged->getAabb(*tTemp, *aabbMinTemp, *aabbMaxTemp);
+
+	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
+	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
+
+	delete tTemp;
+	delete aabbMinTemp;
+	delete aabbMaxTemp;
+}
+
+void CollisionShape::GetBoundingSphere(Vector3% center, btScalar% radius)
+{
+	btVector3* centerTemp = new btVector3;
+	btScalar radiusTemp;
+	
+	_unmanaged->getBoundingSphere(*centerTemp, radiusTemp);
+	
+	center = Math::BtVector3ToVector3(centerTemp);
+	radius = radiusTemp;
+	delete centerTemp;
+}
+
+btScalar CollisionShape::GetContactBreakingThreshold(btScalar defaultContactThreshold)
+{
+	return _unmanaged->getContactBreakingThreshold(defaultContactThreshold);
+}
+
+#ifndef DISABLE_SERIALIZE
+int CollisionShape::CalculateSerializeBufferSize()
+{
+	return _unmanaged->calculateSerializeBufferSize();
+}
+
+String^ CollisionShape::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
+{
+	const char* name = _unmanaged->serialize(dataBuffer.ToPointer(), serializer->UnmanagedPointer);
+	return gcnew String(name);
+}
+
+void CollisionShape::SerializeSingleShape(BulletSharp::Serializer^ serializer)
+{
+	_unmanaged->serializeSingleShape(serializer->UnmanagedPointer);
+}
+#endif
+
 btScalar CollisionShape::AngularMotionDisc::get()
 {
-	return _collisionShape->getAngularMotionDisc();
+	return _unmanaged->getAngularMotionDisc();
 }
 
 bool CollisionShape::IsCompound::get()
 {
-	return _collisionShape->isCompound();
+	return _unmanaged->isCompound();
 }
 
 bool CollisionShape::IsConcave::get()
 {
-	return _collisionShape->isConcave();
+	return _unmanaged->isConcave();
 }
 
 bool CollisionShape::IsConvex::get()
 {
-	return _collisionShape->isConvex();
+	return _unmanaged->isConvex();
 }
 
 bool CollisionShape::IsConvex2d::get()
 {
-	return _collisionShape->isConvex2d();
+	return _unmanaged->isConvex2d();
 }
 
 bool CollisionShape::IsInfinite::get()
 {
-	return _collisionShape->isInfinite();
+	return _unmanaged->isInfinite();
 }
 
 bool CollisionShape::IsPolyhedral::get()
 {
-	return _collisionShape->isPolyhedral();
+	return _unmanaged->isPolyhedral();
 }
 
 bool CollisionShape::IsSoftBody::get()
 {
-	return _collisionShape->isSoftBody();
+	return _unmanaged->isSoftBody();
 }
 
 Vector3 CollisionShape::LocalScaling::get()
 {
-	return Math::BtVector3ToVector3(&_collisionShape->getLocalScaling());
+	return Math::BtVector3ToVector3(&_unmanaged->getLocalScaling());
 }
 void CollisionShape::LocalScaling::set(Vector3 value)
 {
 	VECTOR3_DEF(value);
-	_collisionShape->setLocalScaling(VECTOR3_USE(value));
+	_unmanaged->setLocalScaling(VECTOR3_USE(value));
 	VECTOR3_DEL(value);
 }
 
 btScalar CollisionShape::Margin::get()
 {
-	return _collisionShape->getMargin();
+	return _unmanaged->getMargin();
 }
 void CollisionShape::Margin::set(btScalar margin)
 {
-	_collisionShape->setMargin(margin);
+	_unmanaged->setMargin(margin);
 }
 
 String^ CollisionShape::Name::get()
 {
-	return StringConv::UnmanagedToManaged(_collisionShape->getName());
+	return StringConv::UnmanagedToManaged(_unmanaged->getName());
 }
 
 BroadphaseNativeType CollisionShape::ShapeType::get()
@@ -371,18 +371,18 @@ void CollisionShape::UserObject::set(Object^ value)
 
 btCollisionShape* CollisionShape::UnmanagedPointer::get()
 {
-	return _collisionShape;
+	return _unmanaged;
 }
 void CollisionShape::UnmanagedPointer::set(btCollisionShape* value)
 {
-	_collisionShape = value;
+	_unmanaged = value;
 
-	if (_collisionShape->getUserPointer() == 0)
+	if (_unmanaged->getUserPointer() == 0)
 	{
 		GCHandle handle = GCHandle::Alloc(this);
 		void* obj = GCHandleToVoidPtr(handle);
-		_collisionShape->setUserPointer(obj);
+		_unmanaged->setUserPointer(obj);
 	}
 
-	_shapeType = (BroadphaseNativeType)_collisionShape->getShapeType();
+	_shapeType = (BroadphaseNativeType)_unmanaged->getShapeType();
 }

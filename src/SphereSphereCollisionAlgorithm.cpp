@@ -14,7 +14,7 @@ SphereSphereCollisionAlgorithm::CreateFunc::CreateFunc()
 
 SphereSphereCollisionAlgorithm::SphereSphereCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
-: ActivatingCollisionAlgorithm(new btSphereSphereCollisionAlgorithm(mf->UnmanagedPointer, *ci->UnmanagedPointer,
+: ActivatingCollisionAlgorithm(new btSphereSphereCollisionAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf), *ci->UnmanagedPointer,
 	body0Wrap->_unmanaged, body1Wrap->_unmanaged))
 {
 }

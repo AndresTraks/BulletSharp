@@ -19,8 +19,8 @@ BoxBoxCollisionAlgorithm::BoxBoxCollisionAlgorithm(CollisionAlgorithmConstructio
 
 BoxBoxCollisionAlgorithm::BoxBoxCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
-: ActivatingCollisionAlgorithm(new btBoxBoxCollisionAlgorithm((mf != nullptr) ? mf->UnmanagedPointer : 0, *ci->UnmanagedPointer,
-	body0Wrap->_unmanaged, body1Wrap->_unmanaged))
+: ActivatingCollisionAlgorithm(new btBoxBoxCollisionAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf),
+	*ci->UnmanagedPointer, body0Wrap->_unmanaged, body1Wrap->_unmanaged))
 {
 }
 

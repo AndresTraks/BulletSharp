@@ -319,7 +319,8 @@ AlignedClusterArray::AlignedClusterArray()
 
 void AlignedClusterArray::Add(Cluster^ cluster)
 {
-	Unmanaged->push_back(cluster->UnmanagedPointer);
+	btSoftBody::Cluster* clusterTemp = cluster->_unmanaged;
+	Unmanaged->push_back(clusterTemp);
 }
 
 void AlignedClusterArray::Clear()
@@ -329,7 +330,8 @@ void AlignedClusterArray::Clear()
 
 bool AlignedClusterArray::Contains(Cluster^ cluster)
 {
-	return Unmanaged->findLinearSearch(cluster->UnmanagedPointer)
+	btSoftBody::Cluster* clusterTemp = cluster->_unmanaged;
+	return Unmanaged->findLinearSearch(clusterTemp)
 		!= Unmanaged->size();
 }
 
@@ -354,7 +356,8 @@ void AlignedClusterArray::CopyTo(array<Cluster^>^ array, int arrayIndex)
 
 int AlignedClusterArray::IndexOf(Cluster^ cluster)
 {
-	int i = Unmanaged->findLinearSearch(cluster->UnmanagedPointer);
+	btSoftBody::Cluster* clusterTemp = cluster->_unmanaged;
+	int i = Unmanaged->findLinearSearch(clusterTemp);
 	return i != Unmanaged->size() ? i : -1;
 }
 
@@ -366,7 +369,8 @@ void AlignedClusterArray::PopBack()
 bool AlignedClusterArray::Remove(Cluster^ cluster)
 {
 	int sizeBefore = Unmanaged->size();
-	Unmanaged->remove(cluster->UnmanagedPointer);
+	btSoftBody::Cluster* clusterTemp = cluster->_unmanaged;
+	Unmanaged->remove(clusterTemp);
 	return sizeBefore != Unmanaged->size();
 }
 
@@ -389,7 +393,7 @@ BulletSharp::SoftBody::Cluster^ AlignedClusterArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew Cluster(Unmanaged->at(index));
+	return gcnew Cluster((*Unmanaged)[index]);
 }
 void AlignedClusterArray::default::set(int index, Cluster^ value)
 {
@@ -587,6 +591,10 @@ void AlignedCollisionObjectArray::default::set(int index, CollisionObject^ value
 
 
 #ifndef DISABLE_DBVT
+
+#undef Unmanaged
+#define Unmanaged (static_cast<btAlignedObjectArray<const btDbvtNode*>*>(_unmanaged))
+
 AlignedDbvtNodeArray::AlignedDbvtNodeArray(btAlignedObjectArray<const btDbvtNode*>* AlignedNodeArray)
 : AlignedObjectArray(AlignedNodeArray)
 {
@@ -599,18 +607,18 @@ AlignedDbvtNodeArray::AlignedDbvtNodeArray()
 
 void AlignedDbvtNodeArray::Add(DbvtNode^ node)
 {
-	((btAlignedObjectArray<const btDbvtNode*>*)_unmanaged)->push_back(node->UnmanagedPointer);
+	Unmanaged->push_back(node->UnmanagedPointer);
 }
 
 void AlignedDbvtNodeArray::Clear()
 {
-	((btAlignedObjectArray<const btDbvtNode*>*)_unmanaged)->clear();
+	Unmanaged_unmanaged)->clear();
 }
 
 bool AlignedDbvtNodeArray::Contains(DbvtNode^ node)
 {
-	return ((btAlignedObjectArray<const btDbvtNode*>*)_unmanaged)->findLinearSearch(node->UnmanagedPointer)
-		!= ((btAlignedObjectArray<const btDbvtNode*>*)_unmanaged)->size();
+	return Unmanaged->findLinearSearch(node->UnmanagedPointer)
+		!= Unmanaged->size();
 }
 
 void AlignedDbvtNodeArray::CopyTo(array<DbvtNode^>^ array, int arrayIndex)
@@ -621,55 +629,55 @@ void AlignedDbvtNodeArray::CopyTo(array<DbvtNode^>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btAlignedObjectArray<const btDbvtNode*>*)_unmanaged)->size();
+	int size = (Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew DbvtNode((btDbvtNode*)(*(btAlignedObjectArray<const btDbvtNode*>*)_unmanaged)[i]);
+		array[arrayIndex+i] = gcnew DbvtNode((btDbvtNode*)(*Unmanaged[i]);
 	}
 }
 
 int AlignedDbvtNodeArray::IndexOf(DbvtNode^ node)
 {
-	int i = ((btAlignedObjectArray<const btDbvtNode*>*)_unmanaged)->findLinearSearch(node->UnmanagedPointer);
-	return i != ((btAlignedObjectArray<const btDbvtNode*>*)_unmanaged)->size() ? i : -1;
+	int i = (Unmanaged->findLinearSearch(node->UnmanagedPointer);
+	return i != (Unmanaged->size() ? i : -1;
 }
 
 void AlignedDbvtNodeArray::PopBack()
 {
-	((btAlignedObjectArray<const btDbvtNode*>*)_unmanaged)->pop_back();
+	(Unmanaged->pop_back();
 }
 
 bool AlignedDbvtNodeArray::Remove(DbvtNode^ node)
 {
-	int sizeBefore = ((btAlignedObjectArray<const btDbvtNode*>*)_unmanaged)->size();
-	((btAlignedObjectArray<const btDbvtNode*>*)_unmanaged)->remove(node->UnmanagedPointer);
-	return sizeBefore != ((btAlignedObjectArray<const btDbvtNode*>*)_unmanaged)->size();
+	int sizeBefore = (Unmanaged->size();
+	(Unmanaged->remove(node->UnmanagedPointer);
+	return sizeBefore != (Unmanaged->size();
 }
 
 int AlignedDbvtNodeArray::Capacity::get()
 {
-	return ((btAlignedObjectArray<const btDbvtNode*>*)_unmanaged)->capacity();
+	return (Unmanaged->capacity();
 }
 
 int AlignedDbvtNodeArray::Count::get()
 {
-	return ((btAlignedObjectArray<const btDbvtNode*>*)_unmanaged)->size();
+	return (Unmanaged->size();
 }
 
 void AlignedDbvtNodeArray::Swap(int index0, int index1)
 {
-	((btAlignedObjectArray<const btDbvtNode*>*)_unmanaged)->swap(index0, index1);
+	(Unmanaged->swap(index0, index1);
 }
 
 DbvtNode^ AlignedDbvtNodeArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	btDbvtNode* obj = (btDbvtNode*)(*((btAlignedObjectArray<const btDbvtNode*>*)_unmanaged))[index];
+	btDbvtNode* obj = (btDbvtNode*)(*(Unmanaged)[index];
 	if (obj == nullptr)
 		return nullptr;
 	return gcnew DbvtNode(obj);
@@ -678,9 +686,12 @@ void AlignedDbvtNodeArray::default::set(int index, DbvtNode^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*((btAlignedObjectArray<const btDbvtNode*>*)_unmanaged))[index] = GetUnmanagedNullable(value);
+	(*(Unmanaged)[index] = GetUnmanagedNullable(value);
 }
 
+
+#undef Unmanaged
+#define Unmanaged (static_cast<btAlignedObjectArray<btDbvt::sStkNN>*>(_unmanaged))
 
 AlignedStkNnArray::AlignedStkNnArray(btAlignedObjectArray<btDbvt::sStkNN>* stkNnArray)
 : AlignedObjectArray(stkNnArray)
@@ -694,12 +705,12 @@ AlignedStkNnArray::AlignedStkNnArray()
 
 void AlignedStkNnArray::Add(Dbvt::StkNn^ stkNn)
 {
-	((btAlignedObjectArray<btDbvt::sStkNN>*)_unmanaged)->push_back(*stkNn->UnmanagedPointer);
+	Unmanaged->push_back(*stkNn->UnmanagedPointer);
 }
 
 void AlignedStkNnArray::Clear()
 {
-	((btAlignedObjectArray<btDbvt::sStkNN>*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 void AlignedStkNnArray::CopyTo(array<Dbvt::StkNn^>^ array, int arrayIndex)
@@ -710,35 +721,35 @@ void AlignedStkNnArray::CopyTo(array<Dbvt::StkNn^>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btAlignedObjectArray<btDbvt::sStkNN>*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew Dbvt::StkNn(&(*((btAlignedObjectArray<btDbvt::sStkNN>*)_unmanaged))[i]);
+		array[arrayIndex+i] = gcnew Dbvt::StkNn(&(*Unmanaged)[i]);
 	}
 }
 
 void AlignedStkNnArray::PopBack()
 {
-	((btAlignedObjectArray<btDbvt::sStkNN>*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 void AlignedStkNnArray::Swap(int index0, int index1)
 {
-	((btAlignedObjectArray<btDbvt::sStkNN>*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 int AlignedStkNnArray::Capacity::get()
 {
-	return ((btAlignedObjectArray<btDbvt::sStkNN>*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedStkNnArray::Count::get()
 {
-	return ((btAlignedObjectArray<btDbvt::sStkNN>*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 void StkNnArray_GetDefault(btAlignedObjectArray<btDbvt::sStkNN>* stkNnArray,
@@ -751,7 +762,7 @@ Dbvt::StkNn^ AlignedStkNnArray::default::get(int index)
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
 	btDbvt::sStkNN* obj = new btDbvt::sStkNN;
-	StkNnArray_GetDefault(((btAlignedObjectArray<btDbvt::sStkNN>*)_unmanaged), index, obj);
+	StkNnArray_GetDefault(Unmanaged, index, obj);
 	return gcnew Dbvt::StkNn(obj);
 }
 
@@ -762,6 +773,9 @@ void AlignedStkNnArray::default::set(int index, Dbvt::StkNn^ value)
 	(*(btAlignedObjectArray<btDbvt::sStkNN>*)_unmanaged)[index] = *value->UnmanagedPointer;
 }
 
+
+#undef Unmanaged
+#define Unmanaged (static_cast<btAlignedObjectArray<btDbvt::sStkNPS>*>(_unmanaged))
 
 AlignedStkNpsArray::AlignedStkNpsArray(btAlignedObjectArray<btDbvt::sStkNPS>* stkNpsArray)
 : AlignedObjectArray(stkNpsArray)
@@ -775,12 +789,12 @@ AlignedStkNpsArray::AlignedStkNpsArray()
 
 void AlignedStkNpsArray::Add(Dbvt::StkNps^ stkNps)
 {
-	((btAlignedObjectArray<btDbvt::sStkNPS>*)_unmanaged)->push_back(*stkNps->UnmanagedPointer);
+	Unmanaged->push_back(*stkNps->UnmanagedPointer);
 }
 
 void AlignedStkNpsArray::Clear()
 {
-	((btAlignedObjectArray<btDbvt::sStkNPS>*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 void AlignedStkNpsArray::CopyTo(array<Dbvt::StkNps^>^ array, int arrayIndex)
@@ -791,35 +805,35 @@ void AlignedStkNpsArray::CopyTo(array<Dbvt::StkNps^>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btAlignedObjectArray<btDbvt::sStkNPS>*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew Dbvt::StkNps(&(*((btAlignedObjectArray<btDbvt::sStkNPS>*)_unmanaged))[i]);
+		array[arrayIndex+i] = gcnew Dbvt::StkNps(&(*Unmanaged)[i]);
 	}
 }
 
 void AlignedStkNpsArray::PopBack()
 {
-	((btAlignedObjectArray<btDbvt::sStkNPS>*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 void AlignedStkNpsArray::Swap(int index0, int index1)
 {
-	((btAlignedObjectArray<btDbvt::sStkNPS>*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 int AlignedStkNpsArray::Capacity::get()
 {
-	return ((btAlignedObjectArray<btDbvt::sStkNPS>*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedStkNpsArray::Count::get()
 {
-	return ((btAlignedObjectArray<btDbvt::sStkNPS>*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 void StkNpsArray_GetDefault(btAlignedObjectArray<btDbvt::sStkNPS>* stkNpsArray,
@@ -832,7 +846,7 @@ Dbvt::StkNps^ AlignedStkNpsArray::default::get(int index)
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
 	btDbvt::sStkNPS* obj = new btDbvt::sStkNPS;
-	StkNpsArray_GetDefault(((btAlignedObjectArray<btDbvt::sStkNPS>*)_unmanaged), index, obj);
+	StkNpsArray_GetDefault(Unmanaged, index, obj);
 	return gcnew Dbvt::StkNps(obj);
 }
 
@@ -840,12 +854,16 @@ void AlignedStkNpsArray::default::set(int index, Dbvt::StkNps^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*((btAlignedObjectArray<btDbvt::sStkNPS>*)_unmanaged))[index] = *value->UnmanagedPointer;
+	(*Unmanaged)[index] = *value->UnmanagedPointer;
 }
 #endif
 
 
 #ifndef DISABLE_SOFTBODY
+
+#undef Unmanaged
+#define Unmanaged (static_cast<btAlignedObjectArray<btSoftBody::Face>*>(_unmanaged))
+
 AlignedFaceArray::AlignedFaceArray(btAlignedObjectArray<btSoftBody::Face>* faceArray)
 : AlignedObjectArray(faceArray)
 {
@@ -858,12 +876,12 @@ AlignedFaceArray::AlignedFaceArray()
 
 void AlignedFaceArray::Add(Face^ face)
 {
-	((btAlignedObjectArray<btSoftBody::Face>*)_unmanaged)->push_back((btSoftBody::Face&)*face->_unmanaged);
+	Unmanaged->push_back((btSoftBody::Face&)*face->_unmanaged);
 }
 
 void AlignedFaceArray::Clear()
 {
-	((btAlignedObjectArray<btSoftBody::Face>*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 void AlignedFaceArray::CopyTo(array<Face^>^ array, int arrayIndex)
@@ -874,42 +892,42 @@ void AlignedFaceArray::CopyTo(array<Face^>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btAlignedObjectArray<btSoftBody::Face>*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew Face(&(*((btAlignedObjectArray<btSoftBody::Face>*)_unmanaged))[i]);
+		array[arrayIndex+i] = gcnew Face(&(*Unmanaged)[i]);
 	}
 }
 
 void AlignedFaceArray::PopBack()
 {
-	((btAlignedObjectArray<btSoftBody::Face>*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 void AlignedFaceArray::Swap(int index0, int index1)
 {
-	((btAlignedObjectArray<btSoftBody::Face>*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 int AlignedFaceArray::Capacity::get()
 {
-	return ((btAlignedObjectArray<btSoftBody::Face>*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedFaceArray::Count::get()
 {
-	return ((btAlignedObjectArray<btSoftBody::Face>*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 Face^ AlignedFaceArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew Face(&(*((btAlignedObjectArray<btSoftBody::Face>*)_unmanaged))[index]);
+	return gcnew Face(&(*Unmanaged)[index]);
 }
 
 void FaceArray_SetDefault(btAlignedObjectArray<btSoftBody::Face>* faceArray,
@@ -921,10 +939,13 @@ void AlignedFaceArray::default::set(int index, Face^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	FaceArray_SetDefault((btAlignedObjectArray<btSoftBody::Face>*)_unmanaged, index, (btSoftBody::Face*)value->_unmanaged);
+	FaceArray_SetDefault(Unmanaged, index, (btSoftBody::Face*)value->_unmanaged);
 }
 #endif
 
+
+#undef Unmanaged
+#define Unmanaged (static_cast<btAlignedObjectArray<int>*>(_unmanaged))
 
 AlignedIntArray::AlignedIntArray(btAlignedObjectArray<int>* intArray)
 : AlignedObjectArray(intArray)
@@ -938,18 +959,18 @@ AlignedIntArray::AlignedIntArray()
 
 void AlignedIntArray::Add(int integer)
 {
-	((btAlignedObjectArray<int>*)_unmanaged)->push_back(integer);
+	Unmanaged->push_back(integer);
 }
 
 void AlignedIntArray::Clear()
 {
-	((btAlignedObjectArray<int>*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 bool AlignedIntArray::Contains(int integer)
 {
-	return ((btAlignedObjectArray<int>*)_unmanaged)->findLinearSearch(integer)
-		!= ((btAlignedObjectArray<int>*)_unmanaged)->size();
+	return Unmanaged->findLinearSearch(integer)
+		!= Unmanaged->size();
 }
 
 void AlignedIntArray::CopyTo(array<int>^ array, int arrayIndex)
@@ -960,75 +981,79 @@ void AlignedIntArray::CopyTo(array<int>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btAlignedObjectArray<int>*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = (*((btAlignedObjectArray<int>*)_unmanaged))[i];
+		array[arrayIndex+i] = (*Unmanaged)[i];
 	}
 }
 
 int AlignedIntArray::IndexOf(int integer)
 {
-	int i = ((btAlignedObjectArray<int>*)_unmanaged)->findLinearSearch(integer);
-	return i != ((btAlignedObjectArray<int>*)_unmanaged)->size() ? i : -1;
+	int i = Unmanaged->findLinearSearch(integer);
+	return i != Unmanaged->size() ? i : -1;
 }
 
 void AlignedIntArray::PopBack()
 {
-	((btAlignedObjectArray<int>*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 bool AlignedIntArray::Remove(int integer)
 {
-	int sizeBefore = ((btAlignedObjectArray<int>*)_unmanaged)->size();
-	((btAlignedObjectArray<int>*)_unmanaged)->remove(integer);
-	return sizeBefore != ((btAlignedObjectArray<int>*)_unmanaged)->size();
+	int sizeBefore = Unmanaged->size();
+	Unmanaged->remove(integer);
+	return sizeBefore != Unmanaged->size();
 }
 
 void AlignedIntArray::Resize(int newSize)
 {
-	((btAlignedObjectArray<int>*)_unmanaged)->resize(newSize);
+	Unmanaged->resize(newSize);
 }
 
 void AlignedIntArray::Resize(int newSize, int fillData)
 {
-	((btAlignedObjectArray<int>*)_unmanaged)->resize(newSize, fillData);
+	Unmanaged->resize(newSize, fillData);
 }
 
 void AlignedIntArray::Swap(int index0, int index1)
 {
-	((btAlignedObjectArray<int>*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 int AlignedIntArray::Capacity::get()
 {
-	return ((btAlignedObjectArray<int>*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedIntArray::Count::get()
 {
-	return ((btAlignedObjectArray<int>*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 int AlignedIntArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return (*((btAlignedObjectArray<int>*)_unmanaged))[index];
+	return (*Unmanaged)[index];
 }
 void AlignedIntArray::default::set(int index, int value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*((btAlignedObjectArray<int>*)_unmanaged))[index] = value;
+	(*Unmanaged)[index] = value;
 }
 
 
 #ifndef DISABLE_SOFTBODY
+
+#undef Unmanaged
+#define Unmanaged (static_cast<btSoftBody::tJointArray*>(_unmanaged))
+
 AlignedJointArray::AlignedJointArray(btSoftBody::tJointArray* jointArray)
 : AlignedObjectArray(jointArray)
 {
@@ -1041,18 +1066,20 @@ AlignedJointArray::AlignedJointArray()
 
 void AlignedJointArray::Add(BulletSharp::SoftBody::Joint^ joint)
 {
-	((btSoftBody::tJointArray*)_unmanaged)->push_back(joint->UnmanagedPointer);
+	btSoftBody::Joint* jointTemp = joint->_unmanaged;
+	Unmanaged->push_back(jointTemp);
 }
 
 void AlignedJointArray::Clear()
 {
-	((btSoftBody::tJointArray*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 bool AlignedJointArray::Contains(Joint^ joint)
 {
-	return ((btSoftBody::tJointArray*)_unmanaged)->findLinearSearch(joint->UnmanagedPointer)
-		!= ((btSoftBody::tJointArray*)_unmanaged)->size();
+	btSoftBody::Joint* jointTemp = joint->_unmanaged;
+	return Unmanaged->findLinearSearch(jointTemp)
+		!= Unmanaged->size();
 }
 
 void AlignedJointArray::CopyTo(array<Joint^>^ array, int arrayIndex)
@@ -1063,7 +1090,7 @@ void AlignedJointArray::CopyTo(array<Joint^>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btSoftBody::tJointArray*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
@@ -1076,42 +1103,44 @@ void AlignedJointArray::CopyTo(array<Joint^>^ array, int arrayIndex)
 
 void AlignedJointArray::PopBack()
 {
-	((btSoftBody::tJointArray*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 int AlignedJointArray::Capacity::get()
 {
-	return ((btSoftBody::tJointArray*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedJointArray::Count::get()
 {
-	return ((btSoftBody::tJointArray*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 int AlignedJointArray::IndexOf(Joint^ joint)
 {
-	int i = ((btSoftBody::tJointArray*)_unmanaged)->findLinearSearch(joint->UnmanagedPointer);
-	return i != ((btSoftBody::tJointArray*)_unmanaged)->size() ? i : -1;
+	btSoftBody::Joint* jointTemp = joint->_unmanaged;
+	int i = Unmanaged->findLinearSearch(jointTemp);
+	return i != Unmanaged->size() ? i : -1;
 }
 
 bool AlignedJointArray::Remove(Joint^ joint)
 {
-	int sizeBefore = ((btSoftBody::tJointArray*)_unmanaged)->size();
-	((btSoftBody::tJointArray*)_unmanaged)->remove(joint->UnmanagedPointer);
-	return sizeBefore != ((btSoftBody::tJointArray*)_unmanaged)->size();
+	int sizeBefore = Unmanaged->size();
+	btSoftBody::Joint* jointTemp = joint->_unmanaged;
+	Unmanaged->remove(jointTemp);
+	return sizeBefore != Unmanaged->size();
 }
 
 void AlignedJointArray::Swap(int index0, int index1)
 {
-	((btSoftBody::tJointArray*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 BulletSharp::SoftBody::Joint^ AlignedJointArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	btSoftBody::Joint* j = (*((btSoftBody::tJointArray*)_unmanaged))[index];
+	btSoftBody::Joint* j = (*Unmanaged)[index];
 	switch(j->Type())
 	{
 	case btSoftBody::Joint::eType::Linear:
@@ -1133,10 +1162,13 @@ void AlignedJointArray::default::set(int index, BulletSharp::SoftBody::Joint^ va
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	AlignedJointArray_SetDefault(((btSoftBody::tJointArray*)_unmanaged), index, GetUnmanagedNullable(value));
+	AlignedJointArray_SetDefault(Unmanaged, index, GetUnmanagedNullable(value));
 }
 #endif
 
+
+#undef Unmanaged
+#define Unmanaged (static_cast<btManifoldArray*>(_unmanaged))
 
 AlignedManifoldArray::AlignedManifoldArray(btManifoldArray* manifoldArray)
 : AlignedObjectArray(manifoldArray)
@@ -1150,18 +1182,18 @@ AlignedManifoldArray::AlignedManifoldArray()
 
 void AlignedManifoldArray::Add(PersistentManifold^ manifold)
 {
-	((btManifoldArray*)_unmanaged)->push_back(manifold->UnmanagedPointer);
+	Unmanaged->push_back((btPersistentManifold*)manifold->_unmanaged);
 }
 
 void AlignedManifoldArray::Clear()
 {
-	((btManifoldArray*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 bool AlignedManifoldArray::Contains(PersistentManifold^ manifold)
 {
-	return ((btManifoldArray*)_unmanaged)->findLinearSearch(manifold->UnmanagedPointer)
-		!= ((btManifoldArray*)_unmanaged)->size();
+	return Unmanaged->findLinearSearch((btPersistentManifold*)manifold->_unmanaged)
+		!= Unmanaged->size();
 }
 
 void AlignedManifoldArray::CopyTo(array<PersistentManifold^>^ array, int arrayIndex)
@@ -1172,55 +1204,55 @@ void AlignedManifoldArray::CopyTo(array<PersistentManifold^>^ array, int arrayIn
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btManifoldArray*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew PersistentManifold((*(btManifoldArray*)_unmanaged)[i]);
+		array[arrayIndex+i] = gcnew PersistentManifold((*Unmanaged)[i]);
 	}
 }
 
 int AlignedManifoldArray::IndexOf(PersistentManifold^ manifold)
 {
-	int i = ((btManifoldArray*)_unmanaged)->findLinearSearch(manifold->UnmanagedPointer);
-	return i != ((btManifoldArray*)_unmanaged)->size() ? i : -1;
+	int i = Unmanaged->findLinearSearch((btPersistentManifold*)manifold->_unmanaged);
+	return i != Unmanaged->size() ? i : -1;
 }
 
 void AlignedManifoldArray::PopBack()
 {
-	((btManifoldArray*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 bool AlignedManifoldArray::Remove(PersistentManifold^ manifold)
 {
-	int sizeBefore = ((btManifoldArray*)_unmanaged)->size();
-	((btManifoldArray*)_unmanaged)->remove(manifold->UnmanagedPointer);
-	return sizeBefore != ((btManifoldArray*)_unmanaged)->size();
+	int sizeBefore = Unmanaged->size();
+	Unmanaged->remove((btPersistentManifold*)manifold->_unmanaged);
+	return sizeBefore != Unmanaged->size();
 }
 
 int AlignedManifoldArray::Capacity::get()
 {
-	return ((btManifoldArray*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedManifoldArray::Count::get()
 {
-	return ((btManifoldArray*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 void AlignedManifoldArray::Swap(int index0, int index1)
 {
-	((btManifoldArray*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 PersistentManifold^ AlignedManifoldArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	btPersistentManifold* obj = (*((btManifoldArray*)_unmanaged))[index];
+	btPersistentManifold* obj = (*Unmanaged)[index];
 	if (obj == nullptr)
 		return nullptr;
 	return gcnew PersistentManifold(obj);
@@ -1229,9 +1261,12 @@ void AlignedManifoldArray::default::set(int index, PersistentManifold^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*((btManifoldArray*)_unmanaged))[index] = GetUnmanagedNullable(value);
+	(*Unmanaged)[index] = (btPersistentManifold*)GetUnmanagedNullable(value);
 }
 
+
+#undef Unmanaged
+#define Unmanaged (static_cast<btAlignedObjectArray<btIndexedMesh>*>(_unmanaged))
 
 AlignedIndexedMeshArray::AlignedIndexedMeshArray(btAlignedObjectArray<btIndexedMesh>* indexedMeshArray)
 : AlignedObjectArray(indexedMeshArray)
@@ -1245,12 +1280,12 @@ AlignedIndexedMeshArray::AlignedIndexedMeshArray()
 
 void AlignedIndexedMeshArray::Add(IndexedMesh^ indexedMesh)
 {
-	((btAlignedObjectArray<btIndexedMesh>*)_unmanaged)->push_back(*indexedMesh->UnmanagedPointer);
+	Unmanaged->push_back(*indexedMesh->UnmanagedPointer);
 }
 
 void AlignedIndexedMeshArray::Clear()
 {
-	((btAlignedObjectArray<btIndexedMesh>*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 void AlignedIndexedMeshArray::CopyTo(array<IndexedMesh^>^ array, int arrayIndex)
@@ -1261,42 +1296,42 @@ void AlignedIndexedMeshArray::CopyTo(array<IndexedMesh^>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btAlignedObjectArray<btIndexedMesh>*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew IndexedMesh(&(*((btAlignedObjectArray<btIndexedMesh>*)_unmanaged))[i]);
+		array[arrayIndex+i] = gcnew IndexedMesh(&(*Unmanaged)[i]);
 	}
 }
 
 void AlignedIndexedMeshArray::PopBack()
 {
-	((btAlignedObjectArray<btIndexedMesh>*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 int AlignedIndexedMeshArray::Capacity::get()
 {
-	return ((btAlignedObjectArray<btIndexedMesh>*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedIndexedMeshArray::Count::get()
 {
-	return ((btAlignedObjectArray<btIndexedMesh>*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 void AlignedIndexedMeshArray::Swap(int index0, int index1)
 {
-	((btAlignedObjectArray<btIndexedMesh>*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 IndexedMesh^ AlignedIndexedMeshArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	btIndexedMesh* obj = &(*((btAlignedObjectArray<btIndexedMesh>*)_unmanaged))[index];
+	btIndexedMesh* obj = &(*Unmanaged)[index];
 	if (obj == nullptr)
 		return nullptr;
 	return gcnew IndexedMesh(obj);
@@ -1311,11 +1346,15 @@ void AlignedIndexedMeshArray::default::set(int index, IndexedMesh^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	AlignedIndexedMeshArray_SetDefault(((btAlignedObjectArray<btIndexedMesh>*)_unmanaged), index, value->UnmanagedPointer);
+	AlignedIndexedMeshArray_SetDefault(Unmanaged, index, value->UnmanagedPointer);
 }
 
 
 #ifndef DISABLE_SOFTBODY
+
+#undef Unmanaged
+#define Unmanaged (static_cast<btSoftBody::tLinkArray*>(_unmanaged))
+
 AlignedLinkArray::AlignedLinkArray(btSoftBody::tLinkArray* linkArray)
 : AlignedObjectArray(linkArray)
 {
@@ -1328,12 +1367,12 @@ AlignedLinkArray::AlignedLinkArray()
 
 void AlignedLinkArray::Add(BulletSharp::SoftBody::Link^ link)
 {
-	((btSoftBody::tLinkArray*)_unmanaged)->push_back((btSoftBody::Link&)*link->_unmanaged);
+	Unmanaged->push_back((btSoftBody::Link&)*link->_unmanaged);
 }
 
 void AlignedLinkArray::Clear()
 {
-	((btSoftBody::tLinkArray*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 void AlignedLinkArray::CopyTo(array<Link^>^ array, int arrayIndex)
@@ -1344,42 +1383,42 @@ void AlignedLinkArray::CopyTo(array<Link^>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btSoftBody::tLinkArray*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew Link(&(*((btSoftBody::tLinkArray*)_unmanaged))[i]);
+		array[arrayIndex+i] = gcnew Link(&(*Unmanaged)[i]);
 	}
 }
 
 void AlignedLinkArray::PopBack()
 {
-	((btSoftBody::tLinkArray*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 int AlignedLinkArray::Capacity::get()
 {
-	return ((btSoftBody::tLinkArray*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedLinkArray::Count::get()
 {
-	return ((btSoftBody::tLinkArray*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 void AlignedLinkArray::Swap(int index0, int index1)
 {
-	((btSoftBody::tLinkArray*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 BulletSharp::SoftBody::Link^ AlignedLinkArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew Link(&(*((btSoftBody::tLinkArray*)_unmanaged))[index]);
+	return gcnew Link(&(*Unmanaged)[index]);
 }
 
 void AlignedLinkArray_SetDefault(btSoftBody::tLinkArray* linkArray,
@@ -1391,9 +1430,12 @@ void AlignedLinkArray::default::set(int index, BulletSharp::SoftBody::Link^ valu
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	AlignedLinkArray_SetDefault(((btSoftBody::tLinkArray*)_unmanaged), index, (btSoftBody::Link*)GetUnmanagedNullableNew(value));
+	AlignedLinkArray_SetDefault(Unmanaged, index, (btSoftBody::Link*)GetUnmanagedNullable(value));
 }
 
+
+#undef Unmanaged
+#define Unmanaged (static_cast<btSoftBody::tMaterialArray*>(_unmanaged))
 
 AlignedMaterialArray::AlignedMaterialArray(btSoftBody::tMaterialArray* materialArray)
 : AlignedObjectArray(materialArray)
@@ -1407,18 +1449,18 @@ AlignedMaterialArray::AlignedMaterialArray()
 
 void AlignedMaterialArray::Add(BulletSharp::SoftBody::Material^ material)
 {
-	((btSoftBody::tMaterialArray*)_unmanaged)->push_back((btSoftBody::Material*)material->_unmanaged);
+	Unmanaged->push_back((btSoftBody::Material*)material->_unmanaged);
 }
 
 void AlignedMaterialArray::Clear()
 {
-	((btSoftBody::tMaterialArray*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 bool AlignedMaterialArray::Contains(BulletSharp::SoftBody::Material^ material)
 {
-	return ((btSoftBody::tMaterialArray*)_unmanaged)->findLinearSearch((btSoftBody::Material*)material->_unmanaged)
-		!= ((btSoftBody::tMaterialArray*)_unmanaged)->size();
+	return Unmanaged->findLinearSearch((btSoftBody::Material*)material->_unmanaged)
+		!= Unmanaged->size();
 }
 
 void AlignedMaterialArray::CopyTo(array<BulletSharp::SoftBody::Material^>^ array, int arrayIndex)
@@ -1429,63 +1471,66 @@ void AlignedMaterialArray::CopyTo(array<BulletSharp::SoftBody::Material^>^ array
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btSoftBody::tMaterialArray*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew Material((*((btSoftBody::tMaterialArray*)_unmanaged))[i]);
+		array[arrayIndex+i] = gcnew Material((*Unmanaged)[i]);
 	}
 }
 
 int AlignedMaterialArray::IndexOf(BulletSharp::SoftBody::Material^ material)
 {
-	int i = ((btSoftBody::tMaterialArray*)_unmanaged)->findLinearSearch((btSoftBody::Material*)material->_unmanaged);
-	return i != ((btSoftBody::tMaterialArray*)_unmanaged)->size() ? i : -1;
+	int i = Unmanaged->findLinearSearch((btSoftBody::Material*)material->_unmanaged);
+	return i != Unmanaged->size() ? i : -1;
 }
 
 void AlignedMaterialArray::PopBack()
 {
-	((btSoftBody::tMaterialArray*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 bool AlignedMaterialArray::Remove(BulletSharp::SoftBody::Material^ material)
 {
-	int sizeBefore = ((btSoftBody::tMaterialArray*)_unmanaged)->size();
-	((btSoftBody::tMaterialArray*)_unmanaged)->remove((btSoftBody::Material*)material->_unmanaged);
-	return sizeBefore != ((btSoftBody::tMaterialArray*)_unmanaged)->size();
+	int sizeBefore = Unmanaged->size();
+	Unmanaged->remove((btSoftBody::Material*)material->_unmanaged);
+	return sizeBefore != Unmanaged->size();
 }
 
 int AlignedMaterialArray::Capacity::get()
 {
-	return ((btSoftBody::tMaterialArray*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedMaterialArray::Count::get()
 {
-	return ((btSoftBody::tMaterialArray*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 void AlignedMaterialArray::Swap(int index0, int index1)
 {
-	((btSoftBody::tMaterialArray*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 BulletSharp::SoftBody::Material^ AlignedMaterialArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew Material((*((btSoftBody::tMaterialArray*)_unmanaged))[index]);
+	return gcnew Material((*Unmanaged)[index]);
 }
 void AlignedMaterialArray::default::set(int index, BulletSharp::SoftBody::Material^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*((btSoftBody::tMaterialArray*)_unmanaged))[index] = (btSoftBody::Material*)GetUnmanagedNullableNew(value);
+	(*Unmanaged)[index] = (btSoftBody::Material*)GetUnmanagedNullable(value);
 }
 
+
+#undef Unmanaged
+#define Unmanaged (static_cast<btSoftBody::tNodeArray*>(_unmanaged))
 
 // Note: Keep "BulletSharp::SoftBody::" to avoid conflict with AlignedNodeArray in btQuantizedBvh.h
 BulletSharp::SoftBody::AlignedNodeArray::AlignedNodeArray(btSoftBody::tNodeArray* AlignedNodeArray)
@@ -1500,12 +1545,12 @@ BulletSharp::SoftBody::AlignedNodeArray::AlignedNodeArray()
 
 void BulletSharp::SoftBody::AlignedNodeArray::Add(Node^ node)
 {
-	((btSoftBody::tNodeArray*)_unmanaged)->push_back((btSoftBody::Node&)*node->_unmanaged);
+	Unmanaged->push_back((btSoftBody::Node&)*node->_unmanaged);
 }
 
 void BulletSharp::SoftBody::AlignedNodeArray::Clear()
 {
-	((btSoftBody::tNodeArray*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 void BulletSharp::SoftBody::AlignedNodeArray::CopyTo(array<Node^>^ array, int arrayIndex)
@@ -1516,42 +1561,42 @@ void BulletSharp::SoftBody::AlignedNodeArray::CopyTo(array<Node^>^ array, int ar
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btSoftBody::tNodeArray*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew Node(&(*((btSoftBody::tNodeArray*)_unmanaged))[i]);
+		array[arrayIndex+i] = gcnew Node(&(*Unmanaged)[i]);
 	}
 }
 
 void BulletSharp::SoftBody::AlignedNodeArray::PopBack()
 {
-	((btSoftBody::tNodeArray*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 int BulletSharp::SoftBody::AlignedNodeArray::Capacity::get()
 {
-	return ((btSoftBody::tNodeArray*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int BulletSharp::SoftBody::AlignedNodeArray::Count::get()
 {
-	return ((btSoftBody::tNodeArray*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 void BulletSharp::SoftBody::AlignedNodeArray::Swap(int index0, int index1)
 {
-	((btSoftBody::tNodeArray*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 BulletSharp::SoftBody::Node^ BulletSharp::SoftBody::AlignedNodeArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew Node(&(*((btSoftBody::tNodeArray*)_unmanaged))[index]);
+	return gcnew Node(&(*Unmanaged)[index]);
 }
 
 void NodeArray_SetDefault(btSoftBody::tNodeArray* AlignedNodeArray, int index, btSoftBody::Node* node)
@@ -1562,9 +1607,12 @@ void BulletSharp::SoftBody::AlignedNodeArray::default::set(int index, Node^ valu
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	NodeArray_SetDefault(((btSoftBody::tNodeArray*)_unmanaged), index, (btSoftBody::Node*)value->_unmanaged);
+	NodeArray_SetDefault(Unmanaged, index, (btSoftBody::Node*)value->_unmanaged);
 }
 
+
+#undef Unmanaged
+#define Unmanaged (static_cast<btAlignedObjectArray<btSoftBody::Node*>*>(_unmanaged))
 
 AlignedNodePtrArray::AlignedNodePtrArray(btAlignedObjectArray<btSoftBody::Node*>* AlignedNodeArray)
 : AlignedObjectArray(AlignedNodeArray)
@@ -1578,18 +1626,18 @@ AlignedNodePtrArray::AlignedNodePtrArray()
 
 void AlignedNodePtrArray::Add(BulletSharp::SoftBody::Node^ node)
 {
-	((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged)->push_back((btSoftBody::Node*)node->_unmanaged);
+	Unmanaged->push_back((btSoftBody::Node*)node->_unmanaged);
 }
 
 void AlignedNodePtrArray::Clear()
 {
-	((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 bool AlignedNodePtrArray::Contains(BulletSharp::SoftBody::Node^ node)
 {
-	return ((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged)->findLinearSearch((btSoftBody::Node*)node->_unmanaged)
-		!= ((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged)->size();
+	return Unmanaged->findLinearSearch((btSoftBody::Node*)node->_unmanaged)
+		!= Unmanaged->size();
 }
 
 void AlignedNodePtrArray::CopyTo(array<BulletSharp::SoftBody::Node^>^ array, int arrayIndex)
@@ -1600,63 +1648,66 @@ void AlignedNodePtrArray::CopyTo(array<BulletSharp::SoftBody::Node^>^ array, int
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew Node((*((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged))[i]);
+		array[arrayIndex+i] = gcnew Node((*Unmanaged)[i]);
 	}
 }
 
 int AlignedNodePtrArray::IndexOf(BulletSharp::SoftBody::Node^ node)
 {
-	int i = ((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged)->findLinearSearch((btSoftBody::Node*)node->_unmanaged);
-	return i != ((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged)->size() ? i : -1;
+	int i = Unmanaged->findLinearSearch((btSoftBody::Node*)node->_unmanaged);
+	return i != Unmanaged->size() ? i : -1;
 }
 
 void AlignedNodePtrArray::PopBack()
 {
-	((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 bool AlignedNodePtrArray::Remove(BulletSharp::SoftBody::Node^ node)
 {
-	int sizeBefore = ((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged)->size();
-	((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged)->remove((btSoftBody::Node*)node->_unmanaged);
-	return sizeBefore != ((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged)->size();
+	int sizeBefore = Unmanaged->size();
+	Unmanaged->remove((btSoftBody::Node*)node->_unmanaged);
+	return sizeBefore != Unmanaged->size();
 }
 
 int AlignedNodePtrArray::Capacity::get()
 {
-	return ((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedNodePtrArray::Count::get()
 {
-	return ((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 void AlignedNodePtrArray::Swap(int index0, int index1)
 {
-	((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 BulletSharp::SoftBody::Node^ AlignedNodePtrArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew Node((*((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged))[index]);
+	return gcnew Node((*Unmanaged)[index]);
 }
 void AlignedNodePtrArray::default::set(int index, BulletSharp::SoftBody::Node^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*((btAlignedObjectArray<btSoftBody::Node*>*)_unmanaged))[index] = (btSoftBody::Node*)GetUnmanagedNullableNew(value);
+	(*Unmanaged)[index] = (btSoftBody::Node*)GetUnmanagedNullable(value);
 }
 
+
+#undef Unmanaged
+#define Unmanaged (static_cast<btSoftBody::tNoteArray*>(_unmanaged))
 
 AlignedNoteArray::AlignedNoteArray(btSoftBody::tNoteArray* noteArray)
 : AlignedObjectArray(noteArray)
@@ -1670,12 +1721,12 @@ AlignedNoteArray::AlignedNoteArray()
 
 void AlignedNoteArray::Add(Note^ note)
 {
-	((btSoftBody::tNoteArray*)_unmanaged)->push_back((btSoftBody::Note&)*note->_unmanaged);
+	Unmanaged->push_back((btSoftBody::Note&)*note->_unmanaged);
 }
 
 void AlignedNoteArray::Clear()
 {
-	((btSoftBody::tNoteArray*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 void AlignedNoteArray::CopyTo(array<Note^>^ array, int arrayIndex)
@@ -1686,42 +1737,42 @@ void AlignedNoteArray::CopyTo(array<Note^>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btSoftBody::tNoteArray*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew Note(&(*((btSoftBody::tNoteArray*)_unmanaged))[i]);
+		array[arrayIndex+i] = gcnew Note(&(*Unmanaged)[i]);
 	}
 }
 
 void AlignedNoteArray::PopBack()
 {
-	((btSoftBody::tNoteArray*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 int AlignedNoteArray::Capacity::get()
 {
-	return ((btSoftBody::tNoteArray*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedNoteArray::Count::get()
 {
-	return ((btSoftBody::tNoteArray*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 void AlignedNoteArray::Swap(int index0, int index1)
 {
-	((btSoftBody::tNoteArray*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 BulletSharp::SoftBody::Note^ AlignedNoteArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew Note(&(*((btSoftBody::tNoteArray*)_unmanaged))[index]);
+	return gcnew Note(&(*Unmanaged)[index]);
 }
 
 void NoteArray_SetDefault(btSoftBody::tNoteArray* noteArray, int index, btSoftBody::Note* note)
@@ -1732,12 +1783,13 @@ void AlignedNoteArray::default::set(int index, Note^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	NoteArray_SetDefault(((btSoftBody::tNoteArray*)_unmanaged), index, (btSoftBody::Note*)GetUnmanagedNullableNew(value));
+	NoteArray_SetDefault(Unmanaged, index, (btSoftBody::Note*)GetUnmanagedNullable(value));
 }
-#endif
 
 
-#ifndef DISABLE_SOFTBODY
+#undef Unmanaged
+#define Unmanaged (static_cast<btSoftBody::tPSolverArray*>(_unmanaged))
+
 AlignedPSolverArray::AlignedPSolverArray(btSoftBody::tPSolverArray* pSolverArray)
 : AlignedObjectArray(pSolverArray)
 {
@@ -1750,18 +1802,18 @@ AlignedPSolverArray::AlignedPSolverArray()
 
 void AlignedPSolverArray::Add(PSolver solver)
 {
-	((btSoftBody::tPSolverArray*)_unmanaged)->push_back((btSoftBody::ePSolver::_)solver);
+	Unmanaged->push_back((btSoftBody::ePSolver::_)solver);
 }
 
 void AlignedPSolverArray::Clear()
 {
-	((btSoftBody::tPSolverArray*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 bool AlignedPSolverArray::Contains(PSolver solver)
 {
-	return ((btSoftBody::tPSolverArray*)_unmanaged)->findLinearSearch((btSoftBody::ePSolver::_)solver)
-		!= ((btSoftBody::tPSolverArray*)_unmanaged)->size();
+	return Unmanaged->findLinearSearch((btSoftBody::ePSolver::_)solver)
+		!= Unmanaged->size();
 }
 
 void AlignedPSolverArray::CopyTo(array<PSolver>^ array, int arrayIndex)
@@ -1772,63 +1824,66 @@ void AlignedPSolverArray::CopyTo(array<PSolver>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btSoftBody::tPSolverArray*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = (PSolver)(*((btSoftBody::tPSolverArray*)_unmanaged))[i];
+		array[arrayIndex+i] = (PSolver)(*Unmanaged)[i];
 	}
 }
 
 int AlignedPSolverArray::IndexOf(PSolver solver)
 {
-	int i = ((btSoftBody::tPSolverArray*)_unmanaged)->findLinearSearch((btSoftBody::ePSolver::_)solver);
-	return i != ((btSoftBody::tPSolverArray*)_unmanaged)->size() ? i : -1;
+	int i = Unmanaged->findLinearSearch((btSoftBody::ePSolver::_)solver);
+	return i != Unmanaged->size() ? i : -1;
 }
 
 void AlignedPSolverArray::PopBack()
 {
-	((btSoftBody::tPSolverArray*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 bool AlignedPSolverArray::Remove(PSolver solver)
 {
-	int sizeBefore = ((btSoftBody::tPSolverArray*)_unmanaged)->size();
-	((btSoftBody::tPSolverArray*)_unmanaged)->remove((btSoftBody::ePSolver::_)solver);
-	return sizeBefore != ((btSoftBody::tPSolverArray*)_unmanaged)->size();
+	int sizeBefore = Unmanaged->size();
+	Unmanaged->remove((btSoftBody::ePSolver::_)solver);
+	return sizeBefore != Unmanaged->size();
 }
 
 int AlignedPSolverArray::Capacity::get()
 {
-	return ((btSoftBody::tPSolverArray*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedPSolverArray::Count::get()
 {
-	return ((btSoftBody::tPSolverArray*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 void AlignedPSolverArray::Swap(int index0, int index1)
 {
-	((btSoftBody::tPSolverArray*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 PSolver AlignedPSolverArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return (PSolver)(*((btSoftBody::tPSolverArray*)_unmanaged))[index];
+	return (PSolver)(*Unmanaged)[index];
 }
 void AlignedPSolverArray::default::set(int index, PSolver value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*((btSoftBody::tPSolverArray*)_unmanaged))[index] = (btSoftBody::ePSolver::_)value;
+	(*Unmanaged)[index] = (btSoftBody::ePSolver::_)value;
 }
 
+
+#undef Unmanaged
+#define Unmanaged (static_cast<btSoftBody::tRContactArray*>(_unmanaged))
 
 AlignedRigidContactArray::AlignedRigidContactArray(btSoftBody::tRContactArray* rigidContactArray)
 : AlignedObjectArray(rigidContactArray)
@@ -1842,12 +1897,12 @@ AlignedRigidContactArray::AlignedRigidContactArray()
 
 void AlignedRigidContactArray::Add(RigidContact^ rigidContact)
 {
-	((btSoftBody::tRContactArray*)_unmanaged)->push_back(*rigidContact->UnmanagedPointer);
+	Unmanaged->push_back(*rigidContact->UnmanagedPointer);
 }
 
 void AlignedRigidContactArray::Clear()
 {
-	((btSoftBody::tRContactArray*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 void AlignedRigidContactArray::CopyTo(array<RigidContact^>^ array, int arrayIndex)
@@ -1858,42 +1913,42 @@ void AlignedRigidContactArray::CopyTo(array<RigidContact^>^ array, int arrayInde
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btSoftBody::tRContactArray*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew RigidContact(&(*((btSoftBody::tRContactArray*)_unmanaged))[i]);
+		array[arrayIndex+i] = gcnew RigidContact(&(*Unmanaged)[i]);
 	}
 }
 
 void AlignedRigidContactArray::PopBack()
 {
-	((btSoftBody::tRContactArray*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 void AlignedRigidContactArray::Swap(int index0, int index1)
 {
-	((btSoftBody::tRContactArray*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 int AlignedRigidContactArray::Capacity::get()
 {
-	return ((btSoftBody::tRContactArray*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedRigidContactArray::Count::get()
 {
-	return ((btSoftBody::tRContactArray*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 BulletSharp::SoftBody::RigidContact^ AlignedRigidContactArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew RigidContact(&(*((btSoftBody::tRContactArray*)_unmanaged))[index]);
+	return gcnew RigidContact(&(*Unmanaged)[index]);
 }
 
 void AlignedRigidContactArray_SetDefault(btSoftBody::tRContactArray* rigidContactArray,
@@ -1905,10 +1960,13 @@ void AlignedRigidContactArray::default::set(int index, RigidContact^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	AlignedRigidContactArray_SetDefault(((btSoftBody::tRContactArray*)_unmanaged), index, value->UnmanagedPointer);
+	AlignedRigidContactArray_SetDefault(Unmanaged, index, value->UnmanagedPointer);
 }
 #endif
 
+
+#undef Unmanaged
+#define Unmanaged (static_cast<btAlignedObjectArray<btScalar>*>(_unmanaged))
 
 AlignedScalarArray::AlignedScalarArray(btAlignedObjectArray<btScalar>* btScalarArray)
 : AlignedObjectArray(btScalarArray)
@@ -1922,18 +1980,18 @@ AlignedScalarArray::AlignedScalarArray()
 
 void AlignedScalarArray::Add(btScalar intValue)
 {
-	((btAlignedObjectArray<btScalar>*)_unmanaged)->push_back(intValue);
+	Unmanaged->push_back(intValue);
 }
 
 void AlignedScalarArray::Clear()
 {
-	((btAlignedObjectArray<btScalar>*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 bool AlignedScalarArray::Contains(btScalar scalar)
 {
-	return ((btAlignedObjectArray<btScalar>*)_unmanaged)->findLinearSearch(scalar)
-		!= ((btAlignedObjectArray<btScalar>*)_unmanaged)->size();
+	return Unmanaged->findLinearSearch(scalar)
+		!= Unmanaged->size();
 }
 
 void AlignedScalarArray::CopyTo(array<btScalar>^ array, int arrayIndex)
@@ -1944,61 +2002,61 @@ void AlignedScalarArray::CopyTo(array<btScalar>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btAlignedObjectArray<btScalar>*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = (*((btAlignedObjectArray<btScalar>*)_unmanaged))[i];
+		array[arrayIndex+i] = (*Unmanaged)[i];
 	}
 }
 
 int AlignedScalarArray::IndexOf(btScalar scalar)
 {
-	int i = ((btAlignedObjectArray<btScalar>*)_unmanaged)->findLinearSearch(scalar);
-	return i != ((btAlignedObjectArray<btScalar>*)_unmanaged)->size() ? i : -1;
+	int i = Unmanaged->findLinearSearch(scalar);
+	return i != Unmanaged->size() ? i : -1;
 }
 
 void AlignedScalarArray::PopBack()
 {
-	((btAlignedObjectArray<btScalar>*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 bool AlignedScalarArray::Remove(btScalar scalar)
 {
-	int sizeBefore = ((btAlignedObjectArray<btScalar>*)_unmanaged)->size();
-	((btAlignedObjectArray<btScalar>*)_unmanaged)->remove(scalar);
-	return sizeBefore != ((btAlignedObjectArray<btScalar>*)_unmanaged)->size();
+	int sizeBefore = Unmanaged->size();
+	Unmanaged->remove(scalar);
+	return sizeBefore != Unmanaged->size();
 }
 
 int AlignedScalarArray::Capacity::get()
 {
-	return ((btAlignedObjectArray<btScalar>*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedScalarArray::Count::get()
 {
-	return ((btAlignedObjectArray<btScalar>*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 void AlignedScalarArray::Swap(int index0, int index1)
 {
-	((btAlignedObjectArray<btScalar>*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 btScalar AlignedScalarArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return (*((btAlignedObjectArray<btScalar>*)_unmanaged))[index];
+	return (*Unmanaged)[index];
 }
 void AlignedScalarArray::default::set(int index, btScalar value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*((btAlignedObjectArray<btScalar>*)_unmanaged))[index] = value;
+	(*Unmanaged)[index] = value;
 }
 
 
@@ -2094,9 +2152,12 @@ void BulletSharp::SoftBody::AlignedSoftBodyArray::default::set(int index, SoftBo
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*Unmanaged)[index] = (btSoftBody*)GetUnmanagedNullableNew(value);
+	(*Unmanaged)[index] = (btSoftBody*)GetUnmanagedNullable(value);
 }
 
+
+#undef Unmanaged
+#define Unmanaged static_cast<btSoftBody::tSContactArray*>(_unmanaged)
 
 AlignedSoftContactArray::AlignedSoftContactArray(btSoftBody::tSContactArray* softContactArray)
 : AlignedObjectArray(softContactArray)
@@ -2110,12 +2171,12 @@ AlignedSoftContactArray::AlignedSoftContactArray()
 
 void AlignedSoftContactArray::Add(SoftContact^ softContact)
 {
-	((btSoftBody::tSContactArray*)_unmanaged)->push_back(*softContact->UnmanagedPointer);
+	Unmanaged->push_back(*softContact->UnmanagedPointer);
 }
 
 void AlignedSoftContactArray::Clear()
 {
-	((btSoftBody::tSContactArray*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 void AlignedSoftContactArray::CopyTo(array<SoftContact^>^ array, int arrayIndex)
@@ -2126,42 +2187,42 @@ void AlignedSoftContactArray::CopyTo(array<SoftContact^>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btSoftBody::tSContactArray*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew SoftContact(&(*(btSoftBody::tSContactArray*)_unmanaged)[i]);
+		array[arrayIndex+i] = gcnew SoftContact(&(*Unmanaged)[i]);
 	}
 }
 
 void AlignedSoftContactArray::PopBack()
 {
-	((btSoftBody::tSContactArray*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 void AlignedSoftContactArray::Swap(int index0, int index1)
 {
-	((btSoftBody::tSContactArray*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 int AlignedSoftContactArray::Capacity::get()
 {
-	return ((btSoftBody::tSContactArray*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedSoftContactArray::Count::get()
 {
-	return ((btSoftBody::tSContactArray*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 BulletSharp::SoftBody::SoftContact^ AlignedSoftContactArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew SoftContact(&(*(btSoftBody::tSContactArray*)_unmanaged)[index]);
+	return gcnew SoftContact(&(*Unmanaged)[index]);
 }
 
 void AlignedSoftContactArray_SetDefault(btSoftBody::tSContactArray* softContactArray,
@@ -2173,9 +2234,12 @@ void AlignedSoftContactArray::default::set(int index, SoftContact^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	AlignedSoftContactArray_SetDefault((btSoftBody::tSContactArray*)_unmanaged, index, value->UnmanagedPointer);
+	AlignedSoftContactArray_SetDefault(Unmanaged, index, value->UnmanagedPointer);
 }
 
+
+#undef Unmanaged
+#define Unmanaged static_cast<btAlignedObjectArray<btSoftBody::Tetra>*>(_unmanaged)
 
 AlignedTetraArray::AlignedTetraArray(btAlignedObjectArray<btSoftBody::Tetra>* tetraArray)
 : AlignedObjectArray(tetraArray)
@@ -2189,12 +2253,12 @@ AlignedTetraArray::AlignedTetraArray()
 
 void AlignedTetraArray::Add(Tetra^ tetra)
 {
-	((btAlignedObjectArray<btSoftBody::Tetra>*)_unmanaged)->push_back((btSoftBody::Tetra&)*tetra->_unmanaged);
+	Unmanaged->push_back((btSoftBody::Tetra&)*tetra->_unmanaged);
 }
 
 void AlignedTetraArray::Clear()
 {
-	((btAlignedObjectArray<btSoftBody::Tetra>*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 void AlignedTetraArray::CopyTo(array<Tetra^>^ array, int arrayIndex)
@@ -2205,42 +2269,42 @@ void AlignedTetraArray::CopyTo(array<Tetra^>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btAlignedObjectArray<btSoftBody::Tetra>*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew Tetra(&(*(btAlignedObjectArray<btSoftBody::Tetra>*)_unmanaged)[i]);
+		array[arrayIndex+i] = gcnew Tetra(&(*Unmanaged)[i]);
 	}
 }
 
 void AlignedTetraArray::PopBack()
 {
-	((btAlignedObjectArray<btSoftBody::Tetra>*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 void AlignedTetraArray::Swap(int index0, int index1)
 {
-	((btAlignedObjectArray<btSoftBody::Tetra>*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 int AlignedTetraArray::Capacity::get()
 {
-	return ((btAlignedObjectArray<btSoftBody::Tetra>*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedTetraArray::Count::get()
 {
-	return ((btAlignedObjectArray<btSoftBody::Tetra>*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 Tetra^ AlignedTetraArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew Tetra(&(*(btAlignedObjectArray<btSoftBody::Tetra>*)_unmanaged)[index]);
+	return gcnew Tetra(&(*Unmanaged)[index]);
 }
 
 void TetraArray_SetDefault(btAlignedObjectArray<btSoftBody::Tetra>* tetraArray,
@@ -2252,10 +2316,13 @@ void AlignedTetraArray::default::set(int index, Tetra^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	TetraArray_SetDefault((btAlignedObjectArray<btSoftBody::Tetra>*)_unmanaged, index, (btSoftBody::Tetra*)value->_unmanaged);
+	TetraArray_SetDefault(Unmanaged, index, (btSoftBody::Tetra*)value->_unmanaged);
 }
 #endif
 
+
+#undef Unmanaged
+#define Unmanaged static_cast<btAlignedObjectArray<btTriangleMesh*>*>(_unmanaged)
 
 AlignedTriangleMeshArray::AlignedTriangleMeshArray(btAlignedObjectArray<btTriangleMesh*>* triangleMeshArray)
 : AlignedObjectArray(triangleMeshArray)
@@ -2269,12 +2336,12 @@ AlignedTriangleMeshArray::AlignedTriangleMeshArray()
 
 void AlignedTriangleMeshArray::Add(TriangleMesh^ triangleMesh)
 {
-	((btAlignedObjectArray<btTriangleMesh*>*)_unmanaged)->push_back(triangleMesh->UnmanagedPointer);
+	Unmanaged->push_back(triangleMesh->UnmanagedPointer);
 }
 
 void AlignedTriangleMeshArray::Clear()
 {
-	((btAlignedObjectArray<btTriangleMesh*>*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 void AlignedTriangleMeshArray::CopyTo(array<TriangleMesh^>^ array, int arrayIndex)
@@ -2285,51 +2352,54 @@ void AlignedTriangleMeshArray::CopyTo(array<TriangleMesh^>^ array, int arrayInde
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btAlignedObjectArray<btTriangleMesh>*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew TriangleMesh(&(*(btAlignedObjectArray<btTriangleMesh*>*)_unmanaged)[i]);
+		array[arrayIndex+i] = gcnew TriangleMesh(&(*Unmanaged)[i]);
 	}
 }
 
 void AlignedTriangleMeshArray::PopBack()
 {
-	((btAlignedObjectArray<btTriangleMesh*>*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 int AlignedTriangleMeshArray::Capacity::get()
 {
-	return ((btAlignedObjectArray<btTriangleMesh*>*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedTriangleMeshArray::Count::get()
 {
-	return ((btAlignedObjectArray<btTriangleMesh*>*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 void AlignedTriangleMeshArray::Swap(int index0, int index1)
 {
-	((btAlignedObjectArray<btTriangleMesh*>*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 TriangleMesh^ AlignedTriangleMeshArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew TriangleMesh(&(*(btAlignedObjectArray<btTriangleMesh>*)_unmanaged)[index]);
+	return gcnew TriangleMesh(&(*Unmanaged)[index]);
 }
 
 void AlignedTriangleMeshArray::default::set(int index, TriangleMesh^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*((btAlignedObjectArray<btTriangleMesh*>*)_unmanaged))[index] = GetUnmanagedNullable(value);
+	(*Unmanaged)[index] = (btTriangleMesh*)GetUnmanagedNullable(value);
 }
 
+
+#undef Unmanaged
+#define Unmanaged static_cast<btAlignedObjectArray<btVector3>*>(_unmanaged)
 
 AlignedVector3Array::AlignedVector3Array(btAlignedObjectArray<btVector3>* vector3Array)
 : AlignedObjectArray(vector3Array)
@@ -2344,28 +2414,28 @@ AlignedVector3Array::AlignedVector3Array()
 void AlignedVector3Array::Add(Vector3 vector3Value)
 {
 	VECTOR3_DEF(vector3Value);
-	((btAlignedObjectArray<btVector3>*)_unmanaged)->push_back(VECTOR3_USE(vector3Value));
+	Unmanaged->push_back(VECTOR3_USE(vector3Value));
 	VECTOR3_DEL(vector3Value);
 }
 
 void AlignedVector3Array::Add(Vector4 vector4Value)
 {
 	btVector4* tempVector4Value = Math::Vector4ToBtVector4(vector4Value);
-	((btAlignedObjectArray<btVector3>*)_unmanaged)->push_back(*tempVector4Value);
+	Unmanaged->push_back(*tempVector4Value);
 	delete tempVector4Value;
 }
 
 void AlignedVector3Array::Clear()
 {
-	((btAlignedObjectArray<btVector3>*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 bool AlignedVector3Array::Contains(Vector3 vector)
 {
 	VECTOR3_DEF(vector);
-	int i = ((btAlignedObjectArray<btVector3>*)_unmanaged)->findLinearSearch(VECTOR3_USE(vector));
+	int i = Unmanaged->findLinearSearch(VECTOR3_USE(vector));
 	VECTOR3_DEL(vector);
-	return i != ((btAlignedObjectArray<btVector3>*)_unmanaged)->size();
+	return i != Unmanaged->size();
 }
 
 void AlignedVector3Array::CopyTo(array<Vector3>^ array, int arrayIndex)
@@ -2376,69 +2446,73 @@ void AlignedVector3Array::CopyTo(array<Vector3>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btAlignedObjectArray<btVector3>*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		Math::BtVector3ToVector3(&(*(btAlignedObjectArray<btVector3>*)_unmanaged)[i], array[arrayIndex+i]);
+		Math::BtVector3ToVector3(&(*Unmanaged)[i], array[arrayIndex+i]);
 	}
 }
 
 int AlignedVector3Array::IndexOf(Vector3 vector)
 {
 	VECTOR3_DEF(vector);
-	int i = ((btAlignedObjectArray<btVector3>*)_unmanaged)->findLinearSearch(VECTOR3_USE(vector));
+	int i = Unmanaged->findLinearSearch(VECTOR3_USE(vector));
 	VECTOR3_DEL(vector);
-	return i != ((btAlignedObjectArray<btVector3>*)_unmanaged)->size() ? i : -1;
+	return i != Unmanaged->size() ? i : -1;
 }
 
 void AlignedVector3Array::PopBack()
 {
-	((btAlignedObjectArray<btVector3>*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 bool AlignedVector3Array::Remove(Vector3 vector)
 {
-	int sizeBefore = ((btAlignedObjectArray<btVector3>*)_unmanaged)->size();
+	int sizeBefore = Unmanaged->size();
 	VECTOR3_DEF(vector);
-	((btAlignedObjectArray<btVector3>*)_unmanaged)->remove(VECTOR3_USE(vector));
+	Unmanaged->remove(VECTOR3_USE(vector));
 	VECTOR3_DEL(vector);
-	return sizeBefore != ((btAlignedObjectArray<btVector3>*)_unmanaged)->size();
+	return sizeBefore != Unmanaged->size();
 }
 
 int AlignedVector3Array::Capacity::get()
 {
-	return ((btAlignedObjectArray<btVector3>*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedVector3Array::Count::get()
 {
-	return ((btAlignedObjectArray<btVector3>*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 void AlignedVector3Array::Swap(int index0, int index1)
 {
-	((btAlignedObjectArray<btVector3>*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 Vector3 AlignedVector3Array::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return Math::BtVector3ToVector3(&(*(btAlignedObjectArray<btVector3>*)_unmanaged)[index]);
+	return Math::BtVector3ToVector3(&(*Unmanaged)[index]);
 }
 void AlignedVector3Array::default::set(int index, Vector3 value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	Math::Vector3ToBtVector3(value, &(*(btAlignedObjectArray<btVector3>*)_unmanaged)[index]);
+	Math::Vector3ToBtVector3(value, &(*Unmanaged)[index]);
 }
 
 
 #ifndef DISABLE_SOFTBODY
+
+#undef Unmanaged
+#define Unmanaged static_cast<btSoftBody::tVSolverArray*>(_unmanaged)
+
 AlignedVSolverArray::AlignedVSolverArray(btSoftBody::tVSolverArray* vSolverArray)
 : AlignedObjectArray(vSolverArray)
 {
@@ -2451,18 +2525,18 @@ AlignedVSolverArray::AlignedVSolverArray()
 
 void AlignedVSolverArray::Add(VSolver solver)
 {
-	((btSoftBody::tVSolverArray*)_unmanaged)->push_back((btSoftBody::eVSolver::_)solver);
+	Unmanaged->push_back((btSoftBody::eVSolver::_)solver);
 }
 
 void AlignedVSolverArray::Clear()
 {
-	((btSoftBody::tVSolverArray*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 bool AlignedVSolverArray::Contains(VSolver solver)
 {
-	return ((btSoftBody::tVSolverArray*)_unmanaged)->findLinearSearch((btSoftBody::eVSolver::_)solver)
-		!= ((btSoftBody::tVSolverArray*)_unmanaged)->size();
+	return Unmanaged->findLinearSearch((btSoftBody::eVSolver::_)solver)
+		!= Unmanaged->size();
 }
 
 void AlignedVSolverArray::CopyTo(array<VSolver>^ array, int arrayIndex)
@@ -2473,66 +2547,70 @@ void AlignedVSolverArray::CopyTo(array<VSolver>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btSoftBody::tVSolverArray*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = (VSolver)(*(btSoftBody::tVSolverArray*)_unmanaged)[i];
+		array[arrayIndex+i] = (VSolver)(*Unmanaged)[i];
 	}
 }
 
 int AlignedVSolverArray::IndexOf(VSolver solver)
 {
-	int i = ((btSoftBody::tVSolverArray*)_unmanaged)->findLinearSearch((btSoftBody::eVSolver::_)solver);
-	return i != ((btSoftBody::tVSolverArray*)_unmanaged)->size() ? i : -1;
+	int i = Unmanaged->findLinearSearch((btSoftBody::eVSolver::_)solver);
+	return i != Unmanaged->size() ? i : -1;
 }
 
 void AlignedVSolverArray::PopBack()
 {
-	((btSoftBody::tVSolverArray*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 bool AlignedVSolverArray::Remove(VSolver solver)
 {
-	int sizeBefore = ((btSoftBody::tVSolverArray*)_unmanaged)->size();
-	((btSoftBody::tVSolverArray*)_unmanaged)->remove((btSoftBody::eVSolver::_)solver);
-	return sizeBefore != ((btSoftBody::tVSolverArray*)_unmanaged)->size();
+	int sizeBefore = Unmanaged->size();
+	Unmanaged->remove((btSoftBody::eVSolver::_)solver);
+	return sizeBefore != Unmanaged->size();
 }
 
 int AlignedVSolverArray::Capacity::get()
 {
-	return ((btSoftBody::tVSolverArray*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedVSolverArray::Count::get()
 {
-	return ((btSoftBody::tVSolverArray*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 void AlignedVSolverArray::Swap(int index0, int index1)
 {
-	((btSoftBody::tVSolverArray*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 VSolver AlignedVSolverArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return (VSolver)(*(btSoftBody::tVSolverArray*)_unmanaged)[index];
+	return (VSolver)(*Unmanaged)[index];
 }
 void AlignedVSolverArray::default::set(int index, VSolver value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*(btSoftBody::tVSolverArray*)_unmanaged)[index] = (btSoftBody::eVSolver::_)value;
+	(*Unmanaged)[index] = (btSoftBody::eVSolver::_)value;
 }
 #endif
 
 
 #ifndef DISABLE_VEHICLE
+
+#undef Unmanaged
+#define Unmanaged static_cast<btAlignedObjectArray<btWheelInfo>*>(_unmanaged)
+
 AlignedWheelInfoArray::AlignedWheelInfoArray(btAlignedObjectArray<btWheelInfo>* wheelInfoArray)
 : AlignedObjectArray(wheelInfoArray)
 {
@@ -2545,12 +2623,12 @@ AlignedWheelInfoArray::AlignedWheelInfoArray()
 
 void AlignedWheelInfoArray::Add(WheelInfo^ wheelInfo)
 {
-	((btAlignedObjectArray<btWheelInfo>*)_unmanaged)->push_back(*wheelInfo->UnmanagedPointer);
+	Unmanaged->push_back(*wheelInfo->UnmanagedPointer);
 }
 
 void AlignedWheelInfoArray::Clear()
 {
-	((btAlignedObjectArray<btWheelInfo>*)_unmanaged)->clear();
+	Unmanaged->clear();
 }
 
 void AlignedWheelInfoArray::CopyTo(array<WheelInfo^>^ array, int arrayIndex)
@@ -2561,42 +2639,42 @@ void AlignedWheelInfoArray::CopyTo(array<WheelInfo^>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int size = ((btAlignedObjectArray<btWheelInfo>*)_unmanaged)->size();
+	int size = Unmanaged->size();
 	if (arrayIndex + size > array->Length)
 		throw gcnew ArgumentException("Array too small.", "array");
 
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew WheelInfo(&(*(btAlignedObjectArray<btWheelInfo>*)_unmanaged)[i]);
+		array[arrayIndex+i] = gcnew WheelInfo(&(*Unmanaged)[i]);
 	}
 }
 
 void AlignedWheelInfoArray::PopBack()
 {
-	((btAlignedObjectArray<btWheelInfo>*)_unmanaged)->pop_back();
+	Unmanaged->pop_back();
 }
 
 int AlignedWheelInfoArray::Capacity::get()
 {
-	return ((btAlignedObjectArray<btWheelInfo>*)_unmanaged)->capacity();
+	return Unmanaged->capacity();
 }
 
 int AlignedWheelInfoArray::Count::get()
 {
-	return ((btAlignedObjectArray<btWheelInfo>*)_unmanaged)->size();
+	return Unmanaged->size();
 }
 
 void AlignedWheelInfoArray::Swap(int index0, int index1)
 {
-	((btAlignedObjectArray<btWheelInfo>*)_unmanaged)->swap(index0, index1);
+	Unmanaged->swap(index0, index1);
 }
 
 WheelInfo^ AlignedWheelInfoArray::default::get(int index)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew WheelInfo(&(*(btAlignedObjectArray<btWheelInfo>*)_unmanaged)[index]);
+	return gcnew WheelInfo(&(*Unmanaged)[index]);
 }
 
 void WheelInfoArray_SetDefault(btAlignedObjectArray<btWheelInfo>* wheelInfoArray,
@@ -2608,6 +2686,6 @@ void AlignedWheelInfoArray::default::set(int index, WheelInfo^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	WheelInfoArray_SetDefault((btAlignedObjectArray<btWheelInfo>*)_unmanaged, index, value->UnmanagedPointer);
+	WheelInfoArray_SetDefault(Unmanaged, index, value->UnmanagedPointer);
 }
 #endif

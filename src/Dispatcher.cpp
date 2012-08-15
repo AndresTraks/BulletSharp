@@ -149,7 +149,7 @@ void DispatcherInfo::UnmanagedPointer::set(btDispatcherInfo* info)
 
 Dispatcher::Dispatcher(btDispatcher* dispatcher)
 {
-	_dispatcher = dispatcher;
+	_unmanaged = dispatcher;
 }
 
 Dispatcher::~Dispatcher()
@@ -164,95 +164,95 @@ Dispatcher::!Dispatcher()
 
 	OnDisposing(this, nullptr);
 
-	_dispatcher = NULL;
+	_unmanaged = NULL;
 
 	OnDisposed(this, nullptr);
 }
 
 IntPtr Dispatcher::AllocateCollisionAlgorithm(int size)
 {
-	return IntPtr(_dispatcher->allocateCollisionAlgorithm(size));
+	return IntPtr(_unmanaged->allocateCollisionAlgorithm(size));
 }
 
 void Dispatcher::ClearManifold(PersistentManifold^ manifold)
 {
-	_dispatcher->clearManifold(manifold->UnmanagedPointer);
+	_unmanaged->clearManifold((btPersistentManifold*)manifold->_unmanaged);
 }
 
 void Dispatcher::DispatchAllCollisionPairs(OverlappingPairCache^ pairCache,
 	DispatcherInfo^ dispatchInfo, Dispatcher^ dispatcher)
 {
-	_dispatcher->dispatchAllCollisionPairs(pairCache->UnmanagedPointer,
+	_unmanaged->dispatchAllCollisionPairs(pairCache->UnmanagedPointer,
 		*dispatchInfo->UnmanagedPointer, dispatcher->UnmanagedPointer);
 }
 
 CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
 {
-	return gcnew CollisionAlgorithm(_dispatcher->findAlgorithm(body0Wrap->_unmanaged, body1Wrap->_unmanaged));
+	return gcnew CollisionAlgorithm(_unmanaged->findAlgorithm(body0Wrap->_unmanaged, body1Wrap->_unmanaged));
 }
 
 CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 	PersistentManifold^ sharedManifold)
 {
-	return gcnew CollisionAlgorithm(_dispatcher->findAlgorithm(
-		body0Wrap->_unmanaged, body1Wrap->_unmanaged, sharedManifold->UnmanagedPointer));
+	return gcnew CollisionAlgorithm(_unmanaged->findAlgorithm(
+		body0Wrap->_unmanaged, body1Wrap->_unmanaged, (btPersistentManifold*)sharedManifold->_unmanaged));
 }
 
 void Dispatcher::FreeCollisionAlgorithm(IntPtr ptr)
 {
-	_dispatcher->freeCollisionAlgorithm(ptr.ToPointer());
+	_unmanaged->freeCollisionAlgorithm(ptr.ToPointer());
 }
 
 #ifndef DISABLE_INTERNAL
 PersistentManifold^ Dispatcher::GetManifoldByIndexInternal(int index)
 {
-	return gcnew PersistentManifold(_dispatcher->getManifoldByIndexInternal(index));
+	return gcnew PersistentManifold(_unmanaged->getManifoldByIndexInternal(index));
 }
 #endif
 
 PersistentManifold^ Dispatcher::GetNewManifold(CollisionObject^ body0, CollisionObject^ body1)
 {
-	return gcnew PersistentManifold(_dispatcher->getNewManifold(
+	return gcnew PersistentManifold(_unmanaged->getNewManifold(
 		body0->_unmanaged, body1->_unmanaged));
 }
 
 bool Dispatcher::NeedsCollision(CollisionObject^ body0, CollisionObject^ body1)
 {
-	return _dispatcher->needsCollision(body0->UnmanagedPointer, body1->UnmanagedPointer);
+	return _unmanaged->needsCollision(body0->UnmanagedPointer, body1->UnmanagedPointer);
 }
 
 bool Dispatcher::NeedsResponse(CollisionObject^ body0, CollisionObject^ body1)
 {
-	return _dispatcher->needsResponse(body0->UnmanagedPointer, body1->UnmanagedPointer);
+	return _unmanaged->needsResponse(body0->UnmanagedPointer, body1->UnmanagedPointer);
 }
 
 void Dispatcher::ReleaseManifold(PersistentManifold^ manifold)
 {
-	_dispatcher->releaseManifold(manifold->UnmanagedPointer);
+	_unmanaged->releaseManifold((btPersistentManifold*)manifold->_unmanaged);
 }
 
 int Dispatcher::NumManifolds::get()
 {
-	return _dispatcher->getNumManifolds();
+	return _unmanaged->getNumManifolds();
 }
 
 bool Dispatcher::IsDisposed::get()
 {
-	return (_dispatcher == NULL);
+	return (_unmanaged == NULL);
 }
 
 #ifndef DISABLE_UNCOMMON
 PoolAllocator^ Dispatcher::InternalManifoldPool::get()
 {
-	return gcnew PoolAllocator(_dispatcher->getInternalManifoldPool());
+	return gcnew PoolAllocator(_unmanaged->getInternalManifoldPool());
 }
 #endif
 
 btDispatcher* Dispatcher::UnmanagedPointer::get()
 {
-	return _dispatcher;
+	return _unmanaged;
 }
 void Dispatcher::UnmanagedPointer::set(btDispatcher* value)
 {
-	_dispatcher = value;
+	_unmanaged = value;
 }

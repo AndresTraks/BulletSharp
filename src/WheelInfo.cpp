@@ -162,14 +162,7 @@ Object^ WheelInfo::RaycastInfo::GroundObject::get()
 }
 void WheelInfo::RaycastInfo::GroundObject::set(Object^ value)
 {
-	RigidBody^ body = static_cast<RigidBody^>(value);
-	if (body == nullptr)
-	{
-		_info->m_groundObject = 0;
-		return;
-	}
-	
-	_info->m_groundObject = body->UnmanagedPointer;
+	_info->m_groundObject = GetUnmanagedNullable(static_cast<RigidBody^>(value));
 }
 
 Vector3 WheelInfo::RaycastInfo::HardPointWS::get()

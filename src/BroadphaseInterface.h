@@ -95,11 +95,10 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		btBroadphaseInterface* _broadphase;
-
 	internal:
+		btBroadphaseInterface* _unmanaged;
 		BroadphaseInterface(btBroadphaseInterface* broadphase);
+
 	public:
 		!BroadphaseInterface();
 	protected:

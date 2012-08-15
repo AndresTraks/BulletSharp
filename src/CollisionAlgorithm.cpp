@@ -34,7 +34,7 @@ PersistentManifold^ CollisionAlgorithmConstructionInfo::Manifold::get()
 }
 void CollisionAlgorithmConstructionInfo::Manifold::set(PersistentManifold^ value)
 {
-	_info->m_manifold = value->UnmanagedPointer;
+	_info->m_manifold = (btPersistentManifold*)value->_unmanaged;
 }
 
 btCollisionAlgorithmConstructionInfo* CollisionAlgorithmConstructionInfo::UnmanagedPointer::get()

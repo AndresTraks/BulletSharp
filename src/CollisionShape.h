@@ -13,7 +13,6 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposed;
 
 	private:
-		btCollisionShape* _collisionShape;
 		Object^ _userObject;
 		BroadphaseNativeType _shapeType;
 
@@ -21,7 +20,9 @@ namespace BulletSharp
 		int _flags;
 
 	internal:
+		btCollisionShape* _unmanaged;
 		CollisionShape(btCollisionShape* collisionShape);
+		static CollisionShape^ GetManaged(btCollisionShape* collisionShape);
 
 	public:
 		!CollisionShape();
@@ -43,9 +44,6 @@ namespace BulletSharp
 		String^ Serialize(IntPtr dataBuffer, Serializer^ serializer);
 		void SerializeSingleShape(Serializer^ serializer);
 #endif
-
-	internal:
-		static CollisionShape^ GetManaged(btCollisionShape* collisionShape);
 
 	public:
 		property bool IsDisposed
