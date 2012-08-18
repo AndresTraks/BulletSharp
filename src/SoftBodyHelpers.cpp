@@ -22,7 +22,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateEllipsoid(SoftBodyWorldI
 	VECTOR3_DEF(center);
 	VECTOR3_DEF(radius);
 
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateEllipsoid(*worldInfo->UnmanagedPointer,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateEllipsoid(*worldInfo->_unmanaged,
 		VECTOR3_USE(center), VECTOR3_USE(radius), res));
 
 	VECTOR3_DEL(center);
@@ -36,7 +36,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromConvexHull(SoftBodyW
 {
 	btVector3* btVertices = Math::Vector3ArrayToUnmanaged(vertices);
 
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->UnmanagedPointer,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->_unmanaged,
 		btVertices, vertices->Length, randomizeConstraints));
 
 	delete[] btVertices;
@@ -48,7 +48,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromConvexHull(SoftBodyW
 {
 	btVector3* btVertices = Math::Vector3ArrayToUnmanaged(vertices);
 
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->UnmanagedPointer,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->_unmanaged,
 		btVertices, vertices->Length));
 
 	delete[] btVertices;
@@ -62,7 +62,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTetGenData(SoftBodyW
 	const char* faceTemp = StringConv::ManagedToUnmanaged(face);
 	const char* nodeTemp = StringConv::ManagedToUnmanaged(node);
 
-	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTetGenData(*worldInfo->UnmanagedPointer,
+	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTetGenData(*worldInfo->_unmanaged,
 		eleTemp, faceTemp, nodeTemp, faceLinks, tetraLinks, facesfromtetras)
 		);
 
@@ -194,9 +194,8 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyW
 	nodeStr[fileSize] = 0;
 
 	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromTetGenData(
-		*worldInfo->UnmanagedPointer, elementStr, faceStr, nodeStr,
-		faceLinks, tetraLinks, facesfromtetras)
-		);
+		*worldInfo->_unmanaged, elementStr, faceStr, nodeStr, faceLinks, tetraLinks, facesfromtetras)
+	);
 
 	free(elementStr);
 	free(faceStr);
@@ -211,7 +210,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorl
 	pin_ptr<btScalar> verticesPtr = &vertices[0];
 	pin_ptr<int> trianglesPtr = &triangles[0];
 
-	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
+	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_unmanaged,
 		verticesPtr, trianglesPtr, triangles->Length / 3, randomizeConstraints));
 }
 
@@ -221,7 +220,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorl
 	pin_ptr<btScalar> verticesPtr = &vertices[0];
 	pin_ptr<int> trianglesPtr = &triangles[0];
 
-	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
+	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_unmanaged,
 		verticesPtr, trianglesPtr, triangles->Length / 3));
 }
 
@@ -232,7 +231,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorl
 
 	if (sizeof(Vector3) == 3 * sizeof(btScalar)) {
 		pin_ptr<Vector3> vPtr = &vertices[0];
-		return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
+		return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_unmanaged,
 			(btScalar*)vPtr, trianglesPtr, triangles->Length / 3, randomizeConstraints));
 	}
 
@@ -249,7 +248,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorl
 		btVertices[i*3+2] = vertices[i].Z;
 #endif
 	}
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_unmanaged,
 		btVertices, trianglesPtr, triangles->Length / 3, randomizeConstraints));
 	delete[] btVertices;
 	return body;
@@ -262,7 +261,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorl
 
 	if (sizeof(Vector3) == 3 * sizeof(btScalar)) {
 		pin_ptr<Vector3> vPtr = &vertices[0];
-		return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
+		return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_unmanaged,
 			(btScalar*)vPtr, trianglesPtr, triangles->Length / 3));
 	}
 
@@ -279,7 +278,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorl
 		btVertices[i*3+2] = vertices[i].Z;
 #endif
 	}
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->UnmanagedPointer,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_unmanaged,
 		btVertices, trianglesPtr, triangles->Length / 3));
 	delete[] btVertices;
 	return body;
@@ -294,7 +293,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatch(SoftBodyWorldInfo^
 	VECTOR3_DEF(corner01);
 	VECTOR3_DEF(corner11);
 
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatch(*worldInfo->UnmanagedPointer,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatch(*worldInfo->_unmanaged,
 		VECTOR3_USE(corner00), VECTOR3_USE(corner10), VECTOR3_USE(corner01), VECTOR3_USE(corner11),
 		resx, resy, fixeds, gendiags));
 
@@ -317,7 +316,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatchUV(SoftBodyWorldInf
 
 	pin_ptr<float> texCoordsPtr = &texCoords[0];
 
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatchUV(*worldInfo->UnmanagedPointer,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatchUV(*worldInfo->_unmanaged,
 		VECTOR3_USE(corner00), VECTOR3_USE(corner10), VECTOR3_USE(corner01), VECTOR3_USE(corner11),
 		resx, resy, fixeds, gendiags, texCoordsPtr));
 
@@ -338,7 +337,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatchUV(SoftBodyWorldInf
 	VECTOR3_DEF(corner01);
 	VECTOR3_DEF(corner11);
 
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatchUV(*worldInfo->UnmanagedPointer,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatchUV(*worldInfo->_unmanaged,
 		VECTOR3_USE(corner00), VECTOR3_USE(corner10), VECTOR3_USE(corner01), VECTOR3_USE(corner11),
 		resx, resy, fixeds, gendiags));
 
@@ -357,7 +356,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateRope(SoftBodyWorldInfo^ 
 	VECTOR3_DEF(to);
 
 	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateRope(
-		*worldInfo->UnmanagedPointer, VECTOR3_USE(from), VECTOR3_USE(to), res, fixeds));
+		*worldInfo->_unmanaged, VECTOR3_USE(from), VECTOR3_USE(to), res, fixeds));
 
 	VECTOR3_DEL(from);
 	VECTOR3_DEL(to);

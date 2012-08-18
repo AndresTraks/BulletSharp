@@ -1,10 +1,13 @@
 #include "StdAfx.h"
 
+#include "AxisSweep3.h"
 #include "BroadphaseProxy.h"
 #include "BroadphaseInterface.h"
 #include "Collections.h"
+#include "DbvtBroadphase.h"
 #include "Dispatcher.h"
 #include "OverlappingPairCache.h"
+#include "SimpleBroadphase.h"
 
 BroadphaseAabbCallback::BroadphaseAabbCallback(btBroadphaseAabbCallback* callback)
 {
@@ -102,6 +105,38 @@ bool BroadphaseRayCallbackWrapper::process(const btBroadphaseProxy* proxy)
 BroadphaseInterface::BroadphaseInterface(btBroadphaseInterface* broadphase)
 {
 	_unmanaged = broadphase;
+}
+
+BroadphaseInterface^ BroadphaseInterface::GetManaged(btBroadphaseInterface* broadphase)
+{
+	if (broadphase == 0)
+		return nullptr;
+
+	btAxisSweep3* axisSweep = static_cast<btAxisSweep3*>(broadphase);
+	if (axisSweep)
+	{
+		return gcnew AxisSweep3(axisSweep);
+	}
+
+	btDbvtBroadphase* dbvt = static_cast<btDbvtBroadphase*>(broadphase);
+	if (dbvt)
+	{
+		return gcnew DbvtBroadphase(dbvt);
+	}
+
+	bt32BitAxisSweep3* axisSweep32 = static_cast<bt32BitAxisSweep3*>(broadphase);
+	if (axisSweep32)
+	{
+		return gcnew AxisSweep3_32Bit(axisSweep32);
+	}
+
+	btSimpleBroadphase* simple = static_cast<btSimpleBroadphase*>(broadphase);
+	if (simple)
+	{
+		return gcnew SimpleBroadphase(simple);
+	}
+
+	return gcnew BroadphaseInterface(broadphase);
 }
 
 BroadphaseInterface::~BroadphaseInterface()
@@ -255,13 +290,4 @@ OverlappingPairCache^ BroadphaseInterface::OverlappingPairCache::get()
 {
 	return dynamic_cast<BulletSharp::OverlappingPairCache^>(
 		BulletSharp::OverlappingPairCache::GetManaged(_unmanaged->getOverlappingPairCache()));
-}
-
-btBroadphaseInterface* BroadphaseInterface::UnmanagedPointer::get()
-{
-	return _unmanaged;
-}
-void BroadphaseInterface::UnmanagedPointer::set(btBroadphaseInterface* value)
-{
-	_unmanaged = value;
 }

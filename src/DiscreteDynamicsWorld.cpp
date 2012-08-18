@@ -28,7 +28,7 @@ DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher
 	#endif
 	CollisionConfiguration^ collisionConfiguration)
 : DynamicsWorld(new btDiscreteDynamicsWorld(dispatcher->UnmanagedPointer,
-	pairCache->UnmanagedPointer,
+	pairCache->_unmanaged,
 	#ifndef DISABLE_CONSTRAINTS
 	GetUnmanagedNullable(constraintSolver),
 	#else

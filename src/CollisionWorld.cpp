@@ -607,7 +607,7 @@ CollisionWorld::CollisionWorld(btCollisionWorld* world)
 
 CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, CollisionConfiguration^ collisionConfiguration)
 {
-	UnmanagedPointer = new btCollisionWorld(dispatcher->UnmanagedPointer, pairCache->UnmanagedPointer, collisionConfiguration->UnmanagedPointer);
+	UnmanagedPointer = new btCollisionWorld(dispatcher->UnmanagedPointer, pairCache->_unmanaged, collisionConfiguration->UnmanagedPointer);
 	_collisionConfiguration = collisionConfiguration;
 	_dispatcher = dispatcher;
 	_broadphase = pairCache;
@@ -834,7 +834,7 @@ BroadphaseInterface^ CollisionWorld::Broadphase::get()
 }
 void CollisionWorld::Broadphase::set(BroadphaseInterface^ value)
 {
-	_unmanaged->setBroadphase(value->UnmanagedPointer);
+	_unmanaged->setBroadphase(value->_unmanaged);
 	_broadphase = value;
 }
 

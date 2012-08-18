@@ -825,13 +825,11 @@ namespace DemoFramework
                 InitShapeData(shape).InstanceDataList.Add(new InstanceData()
                 {
                     WorldTransform = transform,
-                    Color = ground.Equals(colObj.UserObject) ? groundColor :
+                    Color = "Ground".Equals(colObj.UserObject) ? groundColor :
                         colObj.ActivationState == ActivationState.ActiveTag ? activeColor : passiveColor
                 });
             }
         }
-
-        string ground = "Ground";
 
         public void InitInstancedRender()
         {

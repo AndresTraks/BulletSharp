@@ -24,7 +24,7 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 	BulletSharp::ConstraintSolver^ constraintSolver,
 #endif
 	CollisionConfiguration^ collisionConfiguration)
-: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->UnmanagedPointer, pairCache->UnmanagedPointer,
+: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->UnmanagedPointer, pairCache->_unmanaged,
 #ifndef DISABLE_CONSTRAINTS
 		GetUnmanagedNullable(constraintSolver),
 #else
@@ -42,7 +42,7 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 	BulletSharp::ConstraintSolver^ constraintSolver,
 #endif
 	CollisionConfiguration^ collisionConfiguration, SoftBodySolver^ softBodySolver)
-: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->UnmanagedPointer, pairCache->UnmanagedPointer,
+: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->UnmanagedPointer, pairCache->_unmanaged,
 #ifndef DISABLE_CONSTRAINTS
 		GetUnmanagedNullable(constraintSolver),
 #else

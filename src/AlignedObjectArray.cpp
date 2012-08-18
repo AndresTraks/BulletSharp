@@ -133,7 +133,7 @@ AlignedAnchorArray::AlignedAnchorArray()
 
 void AlignedAnchorArray::Add(Anchor^ anchor)
 {
-	Unmanaged->push_back(*anchor->UnmanagedPointer);
+	Unmanaged->push_back(*anchor->_unmanaged);
 }
 
 void AlignedAnchorArray::Clear()
@@ -196,7 +196,7 @@ void AlignedAnchorArray::default::set(int index, Anchor^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	AlignedAnchorArray_SetDefault(Unmanaged, index, value->UnmanagedPointer);
+	AlignedAnchorArray_SetDefault(Unmanaged, index, value->_unmanaged);
 }
 #endif
 

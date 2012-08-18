@@ -66,6 +66,13 @@ btDbvtProxy* DbvtProxy::UnmanagedPointer::get()
 #endif
 
 
+#define Unmanaged static_cast<btDbvtBroadphase*>(_unmanaged)
+
+DbvtBroadphase::DbvtBroadphase(btDbvtBroadphase* broadphase)
+: BroadphaseInterface(broadphase)
+{
+}
+
 DbvtBroadphase::DbvtBroadphase()
 : BroadphaseInterface(new btDbvtBroadphase())
 {
@@ -80,67 +87,67 @@ DbvtBroadphase::DbvtBroadphase(BulletSharp::OverlappingPairCache^ pairCache)
 
 void DbvtBroadphase::Benchmark(BroadphaseInterface^ broadphase)
 {
-	btDbvtBroadphase::benchmark(broadphase->UnmanagedPointer);
+	btDbvtBroadphase::benchmark(broadphase->_unmanaged);
 }
 
 void DbvtBroadphase::Collide(Dispatcher^ dispatcher)
 {
-	UnmanagedPointer->collide(dispatcher->UnmanagedPointer);
+	Unmanaged->collide(dispatcher->_unmanaged);
 }
 
 int DbvtBroadphase::CUpdates::get()
 {
-	return UnmanagedPointer->m_cupdates;
+	return Unmanaged->m_cupdates;
 }
 void DbvtBroadphase::CUpdates::set(int value)
 {
-	UnmanagedPointer->m_cupdates = value;
+	Unmanaged->m_cupdates = value;
 }
 
 int DbvtBroadphase::DUpdates::get()
 {
-	return UnmanagedPointer->m_dupdates;
+	return Unmanaged->m_dupdates;
 }
 void DbvtBroadphase::DUpdates::set(int value)
 {
-	UnmanagedPointer->m_dupdates = value;
+	Unmanaged->m_dupdates = value;
 }
 
 int DbvtBroadphase::FixedLeft::get()
 {
-	return UnmanagedPointer->m_fixedleft;
+	return Unmanaged->m_fixedleft;
 }
 void DbvtBroadphase::FixedLeft::set(int value)
 {
-	UnmanagedPointer->m_fixedleft = value;
+	Unmanaged->m_fixedleft = value;
 }
 
 int DbvtBroadphase::FUpdates::get()
 {
-	return UnmanagedPointer->m_fupdates;
+	return Unmanaged->m_fupdates;
 }
 void DbvtBroadphase::FUpdates::set(int value)
 {
-	UnmanagedPointer->m_fupdates = value;
+	Unmanaged->m_fupdates = value;
 }
 
 int DbvtBroadphase::NewPairs::get()
 {
-	return UnmanagedPointer->m_newpairs;
+	return Unmanaged->m_newpairs;
 }
 void DbvtBroadphase::NewPairs::set(int value)
 {
-	UnmanagedPointer->m_newpairs = value;
+	Unmanaged->m_newpairs = value;
 }
 
 void DbvtBroadphase::Optimize()
 {
-	UnmanagedPointer->optimize();
+	Unmanaged->optimize();
 }
 
 void DbvtBroadphase::PerformDeferredRemoval(Dispatcher^ dispatcher)
 {
-	UnmanagedPointer->performDeferredRemoval(dispatcher->UnmanagedPointer);
+	Unmanaged->performDeferredRemoval(dispatcher->_unmanaged);
 }
 
 void DbvtBroadphase::SetAabbForceUpdate(BroadphaseProxy^ absproxy,
@@ -149,8 +156,8 @@ void DbvtBroadphase::SetAabbForceUpdate(BroadphaseProxy^ absproxy,
 	VECTOR3_DEF(aabbMin);
 	VECTOR3_DEF(aabbMax);
 
-	UnmanagedPointer->setAabbForceUpdate(absproxy->UnmanagedPointer,
-		VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), dispatcher->UnmanagedPointer);
+	Unmanaged->setAabbForceUpdate(absproxy->UnmanagedPointer,
+		VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), dispatcher->_unmanaged);
 
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
@@ -159,134 +166,129 @@ void DbvtBroadphase::SetAabbForceUpdate(BroadphaseProxy^ absproxy,
 BulletSharp::OverlappingPairCache^ DbvtBroadphase::PairCache::get()
 {
 	return dynamic_cast<BulletSharp::OverlappingPairCache^>(
-		BulletSharp::OverlappingPairCache::GetManaged(UnmanagedPointer->m_paircache));
+		BulletSharp::OverlappingPairCache::GetManaged(Unmanaged->m_paircache));
 }
 void DbvtBroadphase::PairCache::set(BulletSharp::OverlappingPairCache^ value)
 {
-	UnmanagedPointer->m_paircache = value->UnmanagedPointer;
+	Unmanaged->m_paircache = value->UnmanagedPointer;
 }
 
 int DbvtBroadphase::CId::get()
 {
-	return UnmanagedPointer->m_cid;
+	return Unmanaged->m_cid;
 }
 void DbvtBroadphase::CId::set(int value)
 {
-	UnmanagedPointer->m_cid = value;
+	Unmanaged->m_cid = value;
 }
 
 bool DbvtBroadphase::DeferredCollide::get()
 {
-	return UnmanagedPointer->m_deferedcollide;
+	return Unmanaged->m_deferedcollide;
 }
 void DbvtBroadphase::DeferredCollide::set(bool value)
 {
-	UnmanagedPointer->m_deferedcollide = value;
+	Unmanaged->m_deferedcollide = value;
 }
 
 int DbvtBroadphase::GId::get()
 {
-	return UnmanagedPointer->m_gid;
+	return Unmanaged->m_gid;
 }
 void DbvtBroadphase::GId::set(int value)
 {
-	UnmanagedPointer->m_gid = value;
+	Unmanaged->m_gid = value;
 }
 
 bool DbvtBroadphase::NeedCleanup::get()
 {
-	return UnmanagedPointer->m_needcleanup;
+	return Unmanaged->m_needcleanup;
 }
 void DbvtBroadphase::NeedCleanup::set(bool value)
 {
-	UnmanagedPointer->m_needcleanup = value;
+	Unmanaged->m_needcleanup = value;
 }
 
 int DbvtBroadphase::PId::get()
 {
-	return UnmanagedPointer->m_pid;
+	return Unmanaged->m_pid;
 }
 void DbvtBroadphase::PId::set(int value)
 {
-	UnmanagedPointer->m_pid = value;
+	Unmanaged->m_pid = value;
 }
 
 btScalar DbvtBroadphase::Prediction::get()
 {
-	return UnmanagedPointer->m_prediction;
+	return Unmanaged->m_prediction;
 }
 void DbvtBroadphase::Prediction::set(btScalar value)
 {
-	UnmanagedPointer->m_prediction = value;
+	Unmanaged->m_prediction = value;
 }
 
 bool DbvtBroadphase::ReleasePairCache::get()
 {
-	return UnmanagedPointer->m_releasepaircache;
+	return Unmanaged->m_releasepaircache;
 }
 void DbvtBroadphase::ReleasePairCache::set(bool value)
 {
-	UnmanagedPointer->m_releasepaircache = value;
+	Unmanaged->m_releasepaircache = value;
 }
 
 DbvtArray^ DbvtBroadphase::Sets::get()
 {
-	return gcnew DbvtArray(UnmanagedPointer->m_sets, 2);
+	return gcnew DbvtArray(Unmanaged->m_sets, 2);
 }
 
 int DbvtBroadphase::StageCurrent::get()
 {
-	return UnmanagedPointer->m_stageCurrent;
+	return Unmanaged->m_stageCurrent;
 }
 void DbvtBroadphase::StageCurrent::set(int value)
 {
-	UnmanagedPointer->m_stageCurrent = value;
+	Unmanaged->m_stageCurrent = value;
 }
 
 DbvtProxyPtrArray^ DbvtBroadphase::StageRoots::get()
 {
-	return gcnew DbvtProxyPtrArray(UnmanagedPointer->m_stageRoots, StageCount+1);
+	return gcnew DbvtProxyPtrArray(Unmanaged->m_stageRoots, StageCount+1);
 }
 
 unsigned int DbvtBroadphase::UpdatesCall::get()
 {
-	return UnmanagedPointer->m_updates_call;
+	return Unmanaged->m_updates_call;
 }
 void DbvtBroadphase::UpdatesCall::set(unsigned int value)
 {
-	UnmanagedPointer->m_updates_call = value;
+	Unmanaged->m_updates_call = value;
 }
 
 unsigned int DbvtBroadphase::UpdatesDone::get()
 {
-	return UnmanagedPointer->m_updates_done;
+	return Unmanaged->m_updates_done;
 }
 void DbvtBroadphase::UpdatesDone::set(unsigned int value)
 {
-	UnmanagedPointer->m_updates_done = value;
+	Unmanaged->m_updates_done = value;
 }
 
 btScalar DbvtBroadphase::UpdatesRatio::get()
 {
-	return UnmanagedPointer->m_updates_ratio;
+	return Unmanaged->m_updates_ratio;
 }
 void DbvtBroadphase::UpdatesRatio::set(btScalar value)
 {
-	UnmanagedPointer->m_updates_ratio = value;
+	Unmanaged->m_updates_ratio = value;
 }
 
 btScalar DbvtBroadphase::VelocityPrediction::get()
 {
-	return UnmanagedPointer->getVelocityPrediction();
+	return Unmanaged->getVelocityPrediction();
 }
 void DbvtBroadphase::VelocityPrediction::set(btScalar value)
 {
-	UnmanagedPointer->setVelocityPrediction(value);
-}
-
-btDbvtBroadphase* DbvtBroadphase::UnmanagedPointer::get()
-{
-	return (btDbvtBroadphase*)BroadphaseInterface::UnmanagedPointer;
+	Unmanaged->setVelocityPrediction(value);
 }
 
 #endif

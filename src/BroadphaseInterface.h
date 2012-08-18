@@ -98,6 +98,7 @@ namespace BulletSharp
 	internal:
 		btBroadphaseInterface* _unmanaged;
 		BroadphaseInterface(btBroadphaseInterface* broadphase);
+		static BroadphaseInterface^ GetManaged(btBroadphaseInterface* broadphase);
 
 	public:
 		!BroadphaseInterface();
@@ -128,13 +129,6 @@ namespace BulletSharp
 		property BulletSharp::OverlappingPairCache^ OverlappingPairCache
 		{
 			BulletSharp::OverlappingPairCache^ get();
-		}
-
-	internal:
-		property btBroadphaseInterface* UnmanagedPointer
-		{
-			virtual btBroadphaseInterface* get();
-			void set(btBroadphaseInterface* value);
 		}
 	};
 };

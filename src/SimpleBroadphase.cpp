@@ -45,6 +45,13 @@ btSimpleBroadphaseProxy* SimpleBroadphaseProxy::UnmanagedPointer::get()
 }
 
 
+#define Unmanaged static_cast<btSimpleBroadphase*>(_unmanaged)
+
+SimpleBroadphase::SimpleBroadphase(btSimpleBroadphase* broadphase)
+: BroadphaseInterface(broadphase)
+{
+}
+
 SimpleBroadphase::SimpleBroadphase(int maxProxies, BulletSharp::OverlappingPairCache^ overlappingPairCache)
 : BroadphaseInterface(new btSimpleBroadphase(maxProxies, (btOverlappingPairCache*)GetUnmanagedNullable(overlappingPairCache)))
 {
@@ -62,15 +69,10 @@ SimpleBroadphase::SimpleBroadphase()
 
 bool SimpleBroadphase::AabbOverlap(SimpleBroadphaseProxy^ proxy0, SimpleBroadphaseProxy^ proxy1)
 {
-	return UnmanagedPointer->aabbOverlap(proxy0->UnmanagedPointer, proxy1->UnmanagedPointer);
+	return Unmanaged->aabbOverlap(proxy0->UnmanagedPointer, proxy1->UnmanagedPointer);
 }
 
 bool SimpleBroadphase::TestAabbOverlap(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
 {
-	return UnmanagedPointer->testAabbOverlap(proxy0->UnmanagedPointer, proxy1->UnmanagedPointer);
-}
-
-btSimpleBroadphase* SimpleBroadphase::UnmanagedPointer::get()
-{
-	return (btSimpleBroadphase*)BroadphaseInterface::UnmanagedPointer;
+	return Unmanaged->testAabbOverlap(proxy0->UnmanagedPointer, proxy1->UnmanagedPointer);
 }

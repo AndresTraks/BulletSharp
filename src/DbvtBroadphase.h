@@ -61,6 +61,9 @@ namespace BulletSharp
 		static int StageCount = btDbvtBroadphase::STAGECOUNT;
 #endif
 
+	internal:
+		DbvtBroadphase(btDbvtBroadphase* broadphase);
+
 	public:
 		DbvtBroadphase(BulletSharp::OverlappingPairCache^ pairCache);
 		DbvtBroadphase();
@@ -189,12 +192,6 @@ namespace BulletSharp
 		{
 			btScalar get();
 			void set(btScalar value);
-		}
-
-	internal:
-		property btDbvtBroadphase* UnmanagedPointer
-		{
-			btDbvtBroadphase* get() new;
 		}
 #endif
 	};

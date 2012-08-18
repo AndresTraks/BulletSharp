@@ -34,6 +34,9 @@ namespace BulletSharp
 
 	public ref class SimpleBroadphase : BroadphaseInterface
 	{
+	internal:
+		SimpleBroadphase(btSimpleBroadphase* broadphase);
+
 	public:
 		SimpleBroadphase(int maxProxies, BulletSharp::OverlappingPairCache^ overlappingPairCache);
 		SimpleBroadphase(int maxProxies);
@@ -41,11 +44,5 @@ namespace BulletSharp
 
 		bool AabbOverlap(SimpleBroadphaseProxy^ proxy0, SimpleBroadphaseProxy^ proxy1);
 		bool TestAabbOverlap(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1);
-
-	internal:
-		property btSimpleBroadphase* UnmanagedPointer
-		{
-			btSimpleBroadphase* get() new;
-		}
 	};
 };

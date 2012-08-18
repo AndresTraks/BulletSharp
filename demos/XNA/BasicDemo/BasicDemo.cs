@@ -143,7 +143,7 @@ namespace BasicDemo
             {
                 basicEffect.World = body.MotionState.WorldTransform;
 
-                if ((string)body.UserObject == "Ground")
+                if ("Ground".Equals(body.UserObject))
                 {
                     basicEffect.DiffuseColor = groundColor.ToVector3();
                     basicEffect.CurrentTechnique.Passes[0].Begin();

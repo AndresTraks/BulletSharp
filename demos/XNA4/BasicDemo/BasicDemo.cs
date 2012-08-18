@@ -168,7 +168,7 @@ namespace BasicDemo
                 RigidBody body = RigidBody.Upcast(colObj);
                 basicEffect.World = body.MotionState.WorldTransform;
 
-                if ((string)colObj.UserObject == "Ground")
+                if ("Ground".Equals(colObj.UserObject))
                 {
                     basicEffect.DiffuseColor = groundColor.ToVector3();
                     basicEffect.CurrentTechnique.Passes[0].Apply();

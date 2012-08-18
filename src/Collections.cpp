@@ -281,7 +281,7 @@ void SoftBody::BodyArray::default::set(int index, Body^ value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	((btSoftBody::Body*)_unmanaged)[index] = *value->UnmanagedPointer;
+	((btSoftBody::Body*)_unmanaged)[index] = *value->_unmanaged;
 }
 #endif
 

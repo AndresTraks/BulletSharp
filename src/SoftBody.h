@@ -48,13 +48,16 @@ namespace BulletSharp
 		ref class SoftBody;
 		ref class SoftBodySolver;
 
-		public ref class SoftBodyWorldInfo
+		public ref class SoftBodyWorldInfo : System::IDisposable
 		{
-		private:
-			btSoftBodyWorldInfo* _info;
-
 		internal:
+			btSoftBodyWorldInfo* _unmanaged;
 			SoftBodyWorldInfo(btSoftBodyWorldInfo* info);
+
+		public:
+			!SoftBodyWorldInfo();
+		protected:
+			~SoftBodyWorldInfo();
 
 		public:
 			SoftBodyWorldInfo();
@@ -105,13 +108,6 @@ namespace BulletSharp
 				btScalar get();
 				void set(btScalar value);
 			}
-
-		internal:
-			property btSoftBodyWorldInfo* UnmanagedPointer
-			{
-				btSoftBodyWorldInfo* get();
-				void set(btSoftBodyWorldInfo* value);
-			};
 		};
 
 		public enum class AeroModel
@@ -170,11 +166,8 @@ namespace BulletSharp
 
 		public ref class Anchor
 		{
-		private:
-			btSoftBody::Anchor* _anchor;
-			RigidBody^ _body;
-
 		internal:
+			btSoftBody::Anchor* _unmanaged;
 			Anchor(btSoftBody::Anchor* anchor);
 
 		public:
@@ -221,21 +214,12 @@ namespace BulletSharp
 				Vector3 get();
 				void set(Vector3 value);
 			}
-
-		internal:
-			property btSoftBody::Anchor* UnmanagedPointer
-			{
-				btSoftBody::Anchor* get();
-				void set(btSoftBody::Anchor* value);
-			};
 		};
 
 		public ref class Body
 		{
-		private:
-			btSoftBody::Body* _body;
-
 		internal:
+			btSoftBody::Body* _unmanaged;
 			Body(btSoftBody::Body* body);
 
 		public:
@@ -295,13 +279,6 @@ namespace BulletSharp
 			{
 				Matrix get();
 			}
-
-		internal:
-			property btSoftBody::Body* UnmanagedPointer
-			{
-				btSoftBody::Body* get();
-				void set(btSoftBody::Body* value);
-			};
 		};
 
 		[DebuggerDisplay("ClusterIndex = {ClusterIndex}")]
@@ -1590,6 +1567,7 @@ namespace BulletSharp
 			SoftBody(btSoftBody* body);
 
 		private:
+			SoftBodyWorldInfo^ _worldInfo;
 			AlignedFaceArray^ _alignedFaceArray;
 			AlignedLinkArray^ _alignedLinkArray;
 			AlignedTetraArray^ _alignedTetraArray;

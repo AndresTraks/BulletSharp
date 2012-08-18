@@ -29,205 +29,195 @@ btSoftBodyWorldInfo* SoftBodyWorldInfo_New()
 
 SoftBodyWorldInfo::SoftBodyWorldInfo(btSoftBodyWorldInfo* info)
 {
-	_info = info;
+	_unmanaged = info;
+}
+
+SoftBodyWorldInfo::!SoftBodyWorldInfo()
+{
+	delete _unmanaged;
+	_unmanaged = 0;
+}
+
+SoftBodyWorldInfo::~SoftBodyWorldInfo()
+{
+	this->!SoftBodyWorldInfo();
 }
 
 SoftBodyWorldInfo::SoftBodyWorldInfo()
 {
-	_info = SoftBodyWorldInfo_New();
+	_unmanaged = SoftBodyWorldInfo_New();
 }
 
 btScalar SoftBodyWorldInfo::AirDensity::get()
 {
-	return _info->air_density;
+	return _unmanaged->air_density;
 }
 void SoftBodyWorldInfo::AirDensity::set(btScalar value)
 {
-	_info->air_density = value;
+	_unmanaged->air_density = value;
 }
 
 BroadphaseInterface^ SoftBodyWorldInfo::Broadphase::get()
 {
-	if (_info->m_broadphase == nullptr)
-		return nullptr;
-	return gcnew BroadphaseInterface(_info->m_broadphase);
+	return BroadphaseInterface::GetManaged(_unmanaged->m_broadphase);
 }
 void SoftBodyWorldInfo::Broadphase::set(BroadphaseInterface^ value)
 {
-	_info->m_broadphase = GetUnmanagedNullable(value);
+	_unmanaged->m_broadphase = GetUnmanagedNullable(value);
 }
 
 Dispatcher^ SoftBodyWorldInfo::Dispatcher::get()
 {
-	if (_info->m_dispatcher == nullptr)
+	if (_unmanaged->m_dispatcher == nullptr)
 		return nullptr;
-	return gcnew BulletSharp::Dispatcher(_info->m_dispatcher);
+	return gcnew BulletSharp::Dispatcher(_unmanaged->m_dispatcher);
 }
 void SoftBodyWorldInfo::Dispatcher::set(BulletSharp::Dispatcher^ value)
 {
-	_info->m_dispatcher = GetUnmanagedNullable(value);
+	_unmanaged->m_dispatcher = GetUnmanagedNullable(value);
 }
 
 Vector3 SoftBodyWorldInfo::Gravity::get()
 {
-	return Math::BtVector3ToVector3(&_info->m_gravity);
+	return Math::BtVector3ToVector3(&_unmanaged->m_gravity);
 }
 void SoftBodyWorldInfo::Gravity::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_info->m_gravity);
+	Math::Vector3ToBtVector3(value, &_unmanaged->m_gravity);
 }
 
 SparseSdf^ SoftBodyWorldInfo::SparseSdf::get()
 {
-	return gcnew BulletSharp::SparseSdf(&_info->m_sparsesdf);
+	return gcnew BulletSharp::SparseSdf(&_unmanaged->m_sparsesdf);
 }
 
 btScalar SoftBodyWorldInfo::WaterDensity::get()
 {
-	return _info->water_density;
+	return _unmanaged->water_density;
 }
 void SoftBodyWorldInfo::WaterDensity::set(btScalar value)
 {
-	_info->water_density = value;
+	_unmanaged->water_density = value;
 }
 
 Vector3 SoftBodyWorldInfo::WaterNormal::get()
 {
-	return Math::BtVector3ToVector3(&_info->water_normal);
+	return Math::BtVector3ToVector3(&_unmanaged->water_normal);
 }
 void SoftBodyWorldInfo::WaterNormal::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_info->water_normal);
+	Math::Vector3ToBtVector3(value, &_unmanaged->water_normal);
 }
 
 btScalar SoftBodyWorldInfo::WaterOffset::get()
 {
-	return _info->water_offset;
+	return _unmanaged->water_offset;
 }
 void SoftBodyWorldInfo::WaterOffset::set(btScalar value)
 {
-	_info->water_offset = value;
-}
-
-btSoftBodyWorldInfo* SoftBodyWorldInfo::UnmanagedPointer::get()
-{
-	return _info;
-}
-void SoftBodyWorldInfo::UnmanagedPointer::set(btSoftBodyWorldInfo* value)
-{
-	_info = value;
+	_unmanaged->water_offset = value;
 }
 
 
 Anchor::Anchor(btSoftBody::Anchor* anchor)
 {
-	_anchor = anchor;
+	_unmanaged = anchor;
 }
 
 Anchor::Anchor()
 {
-	_anchor = new btSoftBody::Anchor();
+	_unmanaged = new btSoftBody::Anchor();
 }
 
 RigidBody^ Anchor::Body::get()
 {
-	btRigidBody* body = _anchor->m_body;
-	ReturnCachedObjectUpcast((RigidBody^)CollisionObject, _body, body);
+	return (RigidBody^)CollisionObject::GetManaged(_unmanaged->m_body);
 }
 void Anchor::Body::set(RigidBody^ value)
 {
-	_anchor->m_body = (btRigidBody*)GetUnmanagedNullable(value);
+	_unmanaged->m_body = (btRigidBody*)GetUnmanagedNullable(value);
 }
 
 Matrix Anchor::C0::get()
 {
-	return Math::BtMatrix3x3ToMatrix(&_anchor->m_c0);
+	return Math::BtMatrix3x3ToMatrix(&_unmanaged->m_c0);
 }
 void Anchor::C0::set(Matrix value)
 {
-	Math::MatrixToBtMatrix3x3(value, &_anchor->m_c0);
+	Math::MatrixToBtMatrix3x3(value, &_unmanaged->m_c0);
 }
 
 Vector3 Anchor::C1::get()
 {
-	return Math::BtVector3ToVector3(&_anchor->m_c1);
+	return Math::BtVector3ToVector3(&_unmanaged->m_c1);
 }
 void Anchor::C1::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_anchor->m_c1);
+	Math::Vector3ToBtVector3(value, &_unmanaged->m_c1);
 }
 
 btScalar Anchor::C2::get()
 {
-	return _anchor->m_c2;
+	return _unmanaged->m_c2;
 }
 void Anchor::C2::set(btScalar value)
 {
-	_anchor->m_c2 = value;
+	_unmanaged->m_c2 = value;
 }
 
 Vector3 Anchor::Local::get()
 {
-	return Math::BtVector3ToVector3(&_anchor->m_local);
+	return Math::BtVector3ToVector3(&_unmanaged->m_local);
 }
 void Anchor::Local::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_anchor->m_local);
+	Math::Vector3ToBtVector3(value, &_unmanaged->m_local);
 }
 
 btScalar Anchor::Influence::get()
 {
-	return _anchor->m_influence;
+	return _unmanaged->m_influence;
 }
 void Anchor::Influence::set(btScalar value)
 {
-	_anchor->m_influence = value;
+	_unmanaged->m_influence = value;
 }
 
 BulletSharp::SoftBody::Node^ Anchor::Node::get()
 {
-	if (_anchor->m_node == nullptr)
+	if (_unmanaged->m_node == nullptr)
 		return nullptr;
-	return gcnew BulletSharp::SoftBody::Node(_anchor->m_node);
+	return gcnew BulletSharp::SoftBody::Node(_unmanaged->m_node);
 }
 void Anchor::Node::set(BulletSharp::SoftBody::Node^ value)
 {
-	_anchor->m_node = (btSoftBody::Node*)GetUnmanagedNullable(value);
-}
-
-btSoftBody::Anchor* Anchor::UnmanagedPointer::get()
-{
-	return _anchor;
-}
-void Anchor::UnmanagedPointer::set(btSoftBody::Anchor* value)
-{
-	_anchor = value;
+	_unmanaged->m_node = (btSoftBody::Node*)GetUnmanagedNullable(value);
 }
 
 
 Body::Body(btSoftBody::Body* body)
 {
-	_body = body;
+	_unmanaged = body;
 }
 
 Body::Body()
 {
-	_body = new btSoftBody::Body();
+	_unmanaged = new btSoftBody::Body();
 }
 
 Body::Body(Cluster^ p)
 {
-	_body = new btSoftBody::Body(p->_unmanaged);
+	_unmanaged = new btSoftBody::Body(p->_unmanaged);
 }
 
 Body::Body(BulletSharp::CollisionObject^ colObj)
 {
-	_body = new btSoftBody::Body(GetUnmanagedNullable(colObj));
+	_unmanaged = new btSoftBody::Body(GetUnmanagedNullable(colObj));
 }
 
 void Body::Activate()
 {
-	_body->activate();
+	_unmanaged->activate();
 }
 
 void Body::ApplyDImpulse(Vector3 impulse, Vector3 rPos)
@@ -235,7 +225,7 @@ void Body::ApplyDImpulse(Vector3 impulse, Vector3 rPos)
 	VECTOR3_DEF(impulse);
 	VECTOR3_DEF(rPos);
 
-	_body->applyDImpulse(VECTOR3_USE(impulse), VECTOR3_USE(rPos));
+	_unmanaged->applyDImpulse(VECTOR3_USE(impulse), VECTOR3_USE(rPos));
 
 	VECTOR3_DEL(impulse);
 	VECTOR3_DEL(rPos);
@@ -244,33 +234,33 @@ void Body::ApplyDImpulse(Vector3 impulse, Vector3 rPos)
 void Body::ApplyImpulse(Impulse^ impulse, Vector3 rPos)
 {
 	VECTOR3_DEF(rPos);
-	_body->applyImpulse(*impulse->UnmanagedPointer, VECTOR3_USE(rPos));
+	_unmanaged->applyImpulse(*impulse->UnmanagedPointer, VECTOR3_USE(rPos));
 	VECTOR3_DEL(rPos);
 }
 
 void Body::ApplyVAImpulse(Vector3 impulse)
 {
 	VECTOR3_DEF(impulse);
-	_body->applyVAImpulse(VECTOR3_USE(impulse));
+	_unmanaged->applyVAImpulse(VECTOR3_USE(impulse));
 	VECTOR3_DEL(impulse);
 }
 
 void Body::ApplyDAImpulse(Vector3 impulse)
 {
 	VECTOR3_DEF(impulse);
-	_body->applyDAImpulse(VECTOR3_USE(impulse));
+	_unmanaged->applyDAImpulse(VECTOR3_USE(impulse));
 	VECTOR3_DEL(impulse);
 }
 
 void Body::ApplyAImpulse(Impulse^ impulse)
 {
-	_body->applyAImpulse(*impulse->UnmanagedPointer);
+	_unmanaged->applyAImpulse(*impulse->UnmanagedPointer);
 }
 
 void Body::ApplyDCImpulse(Vector3 impulse)
 {
 	VECTOR3_DEF(impulse);
-	_body->applyDCImpulse(VECTOR3_USE(impulse));
+	_unmanaged->applyDCImpulse(VECTOR3_USE(impulse));
 	VECTOR3_DEL(impulse);
 }
 
@@ -282,7 +272,7 @@ Vector3 Body::GetAngularVelocity(Vector3 rPos)
 {
 	VECTOR3_DEF(rPos);
 	btVector3* velocityTemp = new btVector3;
-	Body_GetAngularVelocity(_body, VECTOR3_PTR(rPos), velocityTemp);
+	Body_GetAngularVelocity(_unmanaged, VECTOR3_PTR(rPos), velocityTemp);
 	VECTOR3_DEL(rPos);
 	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
 	delete velocityTemp;
@@ -297,7 +287,7 @@ Vector3 Body::Velocity(Vector3 rPos)
 {
 	VECTOR3_DEF(rPos);
 	btVector3* velocityTemp = new btVector3;
-	Body_GetVelocity(_body, VECTOR3_PTR(rPos), velocityTemp);
+	Body_GetVelocity(_unmanaged, VECTOR3_PTR(rPos), velocityTemp);
 	VECTOR3_DEL(rPos);
 	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
 	delete velocityTemp;
@@ -311,7 +301,7 @@ void Body_GetAngularVelocity(btSoftBody::Body* body, btVector3* velocity)
 Vector3 Body::AngularVelocity::get()
 {
 	btVector3* velocityTemp = new btVector3;
-	Body_GetAngularVelocity(_body, velocityTemp);
+	Body_GetAngularVelocity(_unmanaged, velocityTemp);
 	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
 	delete velocityTemp;
 	return velocity;
@@ -319,21 +309,21 @@ Vector3 Body::AngularVelocity::get()
 
 CollisionObject^ Body::CollisionObject::get()
 {
-	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)_body->m_collisionObject);
+	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)_unmanaged->m_collisionObject);
 }
 void Body::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
-	_body->m_collisionObject = GetUnmanagedNullable(value);
+	_unmanaged->m_collisionObject = GetUnmanagedNullable(value);
 }
 
 btScalar Body::InvMass::get()
 {
-	return _body->invMass();
+	return _unmanaged->invMass();
 }
 
 Matrix Body::InvWorldInertia::get()
 {
-	return Math::BtMatrix3x3ToMatrix(&_body->invWorldInertia());
+	return Math::BtMatrix3x3ToMatrix(&_unmanaged->invWorldInertia());
 }
 
 void Body_GetLinearVelocity(btSoftBody::Body* body, btVector3* velocity)
@@ -343,7 +333,7 @@ void Body_GetLinearVelocity(btSoftBody::Body* body, btVector3* velocity)
 Vector3 Body::LinearVelocity::get()
 {
 	btVector3* velocityTemp = new btVector3;
-	Body_GetLinearVelocity(_body, velocityTemp);
+	Body_GetLinearVelocity(_unmanaged, velocityTemp);
 	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
 	delete velocityTemp;
 	return velocity;
@@ -351,36 +341,27 @@ Vector3 Body::LinearVelocity::get()
 
 RigidBody^ Body::Rigid::get()
 {
-	return (RigidBody^)BulletSharp::CollisionObject::GetManaged(_body->m_rigid);
+	return (RigidBody^)BulletSharp::CollisionObject::GetManaged(_unmanaged->m_rigid);
 }
 void Body::Rigid::set(RigidBody^ value)
 {
-	_body->m_rigid = (btRigidBody*)GetUnmanagedNullable(value);
+	_unmanaged->m_rigid = (btRigidBody*)GetUnmanagedNullable(value);
 }
 
 Cluster^ Body::Soft::get()
 {
-	if (_body->m_soft == 0)
+	if (_unmanaged->m_soft == 0)
 		return nullptr;
-	return gcnew Cluster(_body->m_soft);
+	return gcnew Cluster(_unmanaged->m_soft);
 }
 void Body::Soft::set(Cluster^ value)
 {
-	_body->m_soft = GetUnmanagedNullable(value);
+	_unmanaged->m_soft = GetUnmanagedNullable(value);
 }
 
 Matrix Body::XForm::get()
 {
-	return Math::BtTransformToMatrix(&_body->xform());
-}
-
-btSoftBody::Body* Body::UnmanagedPointer::get()
-{
-	return _body;
-}
-void Body::UnmanagedPointer::set(btSoftBody::Body* value)
-{
-	_body = value;
+	return Math::BtTransformToMatrix(&_unmanaged->xform());
 }
 
 
@@ -1224,6 +1205,7 @@ Vector3Array^ BulletSharp::SoftBody::LJoint::RPos::get()
 }
 
 
+#undef Unmanaged
 #define Unmanaged static_cast<btSoftBody::LJoint::Specs*>(_unmanaged)
 
 BulletSharp::SoftBody::LJoint::Specs::Specs()
@@ -1332,6 +1314,7 @@ btScalar AJointIControlWrapper::baseSpeed(btSoftBody::AJoint* joint, btScalar cu
 }
 
 
+#undef Unmanaged
 #define Unmanaged static_cast<btSoftBody::AJoint*>(_unmanaged)
 
 AJoint::AJoint(btSoftBody::AJoint* joint)
@@ -1354,6 +1337,7 @@ void AJoint::Control::set(AJoint::IControl^ value)
 }
 
 
+#undef Unmanaged
 #define Unmanaged static_cast<btSoftBody::CJoint*>(_unmanaged)
 
 CJoint::CJoint(btSoftBody::CJoint* joint)
@@ -2143,6 +2127,7 @@ void Tetra::RestVolume::set(btScalar value)
 }
 
 
+#undef Unmanaged
 #define Unmanaged static_cast<btSoftBody*>(_unmanaged)
 
 BulletSharp::SoftBody::SoftBody::SoftBody(btSoftBody* body)
@@ -2182,7 +2167,7 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, array<Ve
 	else
 		m_ptr = nullptr;
 
-	UnmanagedPointer = new btSoftBody(worldInfo->UnmanagedPointer, length, (btVector3*)x_ptr, m_ptr);
+	UnmanagedPointer = new btSoftBody(worldInfo->_unmanaged, length, (btVector3*)x_ptr, m_ptr);
 }
 
 BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3Array^ x, ScalarArray^ m)
@@ -2205,12 +2190,12 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3A
 		length = (x != nullptr) ? x->Count : m->Count;
 	}
 
-	UnmanagedPointer = new btSoftBody(worldInfo->UnmanagedPointer, length,
+	UnmanagedPointer = new btSoftBody(worldInfo->_unmanaged, length,
 		(btVector3*)GetUnmanagedNullable(x), (btScalar*)GetUnmanagedNullable(m));
 }
 
 BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo)
-: CollisionObject(new btSoftBody(worldInfo->UnmanagedPointer))
+: CollisionObject(new btSoftBody(worldInfo->_unmanaged))
 {
 }
 
@@ -2312,12 +2297,12 @@ void BulletSharp::SoftBody::SoftBody::AppendFace()
 
 void BulletSharp::SoftBody::SoftBody::AppendLinearJoint(LJoint::Specs^ specs, Cluster^ body0, Body^ body1)
 {
-	Unmanaged->appendLinearJoint(*(btSoftBody::LJoint::Specs*)specs->_unmanaged, body0->_unmanaged, *body1->UnmanagedPointer);
+	Unmanaged->appendLinearJoint(*(btSoftBody::LJoint::Specs*)specs->_unmanaged, body0->_unmanaged, *body1->_unmanaged);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendLinearJoint(LJoint::Specs^ specs, Body^ body1)
 {
-	Unmanaged->appendLinearJoint(*(btSoftBody::LJoint::Specs*)specs->_unmanaged, *body1->UnmanagedPointer);
+	Unmanaged->appendLinearJoint(*(btSoftBody::LJoint::Specs*)specs->_unmanaged, *body1->_unmanaged);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendLinearJoint(LJoint::Specs^ specs)
@@ -2332,12 +2317,12 @@ void BulletSharp::SoftBody::SoftBody::AppendLinearJoint(LJoint::Specs^ specs, So
 
 void BulletSharp::SoftBody::SoftBody::AppendAngularJoint(AJoint::Specs^ specs, Cluster^ body0, Body^ body1)
 {
-	Unmanaged->appendAngularJoint(*(btSoftBody::AJoint::Specs*)specs->_unmanaged, body0->_unmanaged, *body1->UnmanagedPointer);
+	Unmanaged->appendAngularJoint(*(btSoftBody::AJoint::Specs*)specs->_unmanaged, body0->_unmanaged, *body1->_unmanaged);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendAngularJoint(AJoint::Specs^ specs, Body^ body1)
 {
-	Unmanaged->appendAngularJoint(*(btSoftBody::AJoint::Specs*)specs->_unmanaged, *body1->UnmanagedPointer);
+	Unmanaged->appendAngularJoint(*(btSoftBody::AJoint::Specs*)specs->_unmanaged, *body1->_unmanaged);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendAngularJoint(AJoint::Specs^ specs)
@@ -3464,11 +3449,16 @@ void BulletSharp::SoftBody::SoftBody::WindVelocity::set(Vector3 value)
 
 SoftBodyWorldInfo^ BulletSharp::SoftBody::SoftBody::WorldInfo::get()
 {
-	return gcnew SoftBodyWorldInfo(Unmanaged->getWorldInfo());
+	if (_worldInfo == nullptr)
+	{
+		_worldInfo = gcnew SoftBodyWorldInfo(Unmanaged->getWorldInfo());
+	}
+	return _worldInfo;
 }
 void BulletSharp::SoftBody::SoftBody::WorldInfo::set(SoftBodyWorldInfo^ value)
 {
-	Unmanaged->m_worldInfo = value->UnmanagedPointer;
+	Unmanaged->m_worldInfo = value->_unmanaged;
+	_worldInfo = value;
 }
 
 #ifndef DISABLE_DBVT

@@ -77,7 +77,7 @@ namespace BasicDemo
                 Matrix4 modelLookAt = body.MotionState.WorldTransform * lookat;
                 GL.LoadMatrix(ref modelLookAt);
 
-                if ((string)body.UserObject == "Ground")
+                if ("Ground".Equals(body.UserObject))
                 {
                     DrawCube(Color.Green, 50.0f);
                     continue;
