@@ -25,11 +25,5 @@ namespace BulletSharp
 		{
 			Vector3 get();
 		}
-
-	internal:
-		property btBoxShape* UnmanagedPointer
-		{
-			btBoxShape* get() new;
-		}
 	};
 };

@@ -4,6 +4,8 @@
 
 #include "HeightfieldTerrainShape.h"
 
+#define Unmanaged (static_cast<btHeightfieldTerrainShape*>(_unmanaged))
+
 HeightfieldTerrainShape::HeightfieldTerrainShape(btHeightfieldTerrainShape* terrainShape)
 : ConcaveShape(terrainShape)
 {
@@ -45,17 +47,12 @@ HeightfieldTerrainShape::HeightfieldTerrainShape(int heightStickWidth, int heigh
 
 void HeightfieldTerrainShape::SetUseDiamondSubdivision(bool useDiamondSubdivision)
 {
-	UnmanagedPointer->setUseDiamondSubdivision(useDiamondSubdivision);
+	Unmanaged->setUseDiamondSubdivision(useDiamondSubdivision);
 }
 
 void HeightfieldTerrainShape::SetUseDiamondSubdivision()
 {
-	UnmanagedPointer->setUseDiamondSubdivision();
-}
-
-btHeightfieldTerrainShape* HeightfieldTerrainShape::UnmanagedPointer::get()
-{
-	return (btHeightfieldTerrainShape*)ConcaveShape::UnmanagedPointer;
+	Unmanaged->setUseDiamondSubdivision();
 }
 
 #endif

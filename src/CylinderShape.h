@@ -33,12 +33,6 @@ namespace BulletSharp
 		{
 			int get();
 		}
-
-	internal:
-		property btCylinderShape* UnmanagedPointer
-		{
-			btCylinderShape* get() new;
-		}
 	};
 
 	public ref class CylinderShapeX : CylinderShape

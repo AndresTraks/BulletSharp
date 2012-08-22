@@ -11,7 +11,7 @@
 
 ConvexPenetrationDepthSolver::ConvexPenetrationDepthSolver(btConvexPenetrationDepthSolver* depthSolver)
 {
-	_depthSolver = depthSolver;
+	_unmanaged = depthSolver;
 }
 
 ConvexPenetrationDepthSolver::~ConvexPenetrationDepthSolver()
@@ -26,7 +26,8 @@ ConvexPenetrationDepthSolver::!ConvexPenetrationDepthSolver()
 
 	OnDisposing(this, nullptr);
 
-	_depthSolver = NULL;
+	delete _unmanaged;
+	_unmanaged = NULL;
 
 	OnDisposed(this, nullptr);
 }
@@ -45,7 +46,8 @@ bool ConvexPenetrationDepthSolver::CalcPenDepth(SimplexSolverInterface^ simplexS
 	VECTOR3_DEF(pa);
 	VECTOR3_DEF(pb);
 
-	bool ret = _depthSolver->calcPenDepth(*simplexSolver->UnmanagedPointer, convexA->UnmanagedPointer, convexB->UnmanagedPointer,
+	bool ret = _unmanaged->calcPenDepth(*simplexSolver->UnmanagedPointer,
+		(btConvexShape*)convexA->_unmanaged, (btConvexShape*)convexB->_unmanaged,
 		*transATemp, *transBTemp, VECTOR3_USE(v), VECTOR3_USE(pa), VECTOR3_USE(pb),
 #ifndef DISABLE_DEBUGDRAW
 		DebugDraw::GetUnmanaged(debugDraw),
@@ -65,16 +67,7 @@ bool ConvexPenetrationDepthSolver::CalcPenDepth(SimplexSolverInterface^ simplexS
 
 bool ConvexPenetrationDepthSolver::IsDisposed::get()
 {
-	return (_depthSolver == NULL);
-}
-
-btConvexPenetrationDepthSolver* ConvexPenetrationDepthSolver::UnmanagedPointer::get()
-{
-	return _depthSolver;
-}
-void ConvexPenetrationDepthSolver::UnmanagedPointer::set(btConvexPenetrationDepthSolver* value)
-{
-	_depthSolver = value;
+	return (_unmanaged == NULL);
 }
 
 #endif

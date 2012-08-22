@@ -104,7 +104,7 @@ void CollisionWorld::LocalConvexResult::UnmanagedPointer::set(btCollisionWorld::
 
 CollisionWorld::ConvexResultCallback::ConvexResultCallback(btCollisionWorld::ConvexResultCallback* callback)
 {
-	_callback = callback;
+	_unmanaged = callback;
 }
 
 CollisionWorld::ConvexResultCallback::~ConvexResultCallback()
@@ -119,72 +119,61 @@ CollisionWorld::ConvexResultCallback::!ConvexResultCallback()
 	
 	OnDisposing(this, nullptr);
 	
-	_callback = NULL;
+	delete _unmanaged;
+	_unmanaged = NULL;
 	
 	OnDisposed(this, nullptr);
 }
 
 btScalar CollisionWorld::ConvexResultCallback::AddSingleResult(LocalConvexResult^ convexResult, bool normalInWorldSpace)
 {
-	return _callback->addSingleResult(*convexResult->UnmanagedPointer, normalInWorldSpace);
+	return _unmanaged->addSingleResult(*convexResult->UnmanagedPointer, normalInWorldSpace);
 }
 
 bool CollisionWorld::ConvexResultCallback::NeedsCollision(BroadphaseProxy^ proxy0)
 {
-	return _callback->needsCollision(proxy0->UnmanagedPointer);
+	return _unmanaged->needsCollision(proxy0->UnmanagedPointer);
 }
 
 btScalar CollisionWorld::ConvexResultCallback::ClosestHitFraction::get()
 {
-	return _callback->m_closestHitFraction;
+	return _unmanaged->m_closestHitFraction;
 }
 void CollisionWorld::ConvexResultCallback::ClosestHitFraction::set(btScalar value)
 {
-	_callback->m_closestHitFraction = value;
+	_unmanaged->m_closestHitFraction = value;
 }
 
 CollisionFilterGroups CollisionWorld::ConvexResultCallback::CollisionFilterGroup::get()
 {
-	return (CollisionFilterGroups)_callback->m_collisionFilterGroup;
+	return (CollisionFilterGroups)_unmanaged->m_collisionFilterGroup;
 }
 void CollisionWorld::ConvexResultCallback::CollisionFilterGroup::set(CollisionFilterGroups value)
 {
-	_callback->m_collisionFilterGroup = (short int)value;
+	_unmanaged->m_collisionFilterGroup = (short int)value;
 }
 
 CollisionFilterGroups CollisionWorld::ConvexResultCallback::CollisionFilterMask::get()
 {
-	return (CollisionFilterGroups)_callback->m_collisionFilterMask;
+	return (CollisionFilterGroups)_unmanaged->m_collisionFilterMask;
 }
 void CollisionWorld::ConvexResultCallback::CollisionFilterMask::set(CollisionFilterGroups value)
 {
-	_callback->m_collisionFilterMask = (short int)value;
+	_unmanaged->m_collisionFilterMask = (short int)value;
 }
 
 bool CollisionWorld::ConvexResultCallback::HasHit::get()
 {
-	return _callback->hasHit();
+	return _unmanaged->hasHit();
 }
 
 bool CollisionWorld::ConvexResultCallback::IsDisposed::get()
 {
-	return (_callback == NULL);
-}
-
-btCollisionWorld::ConvexResultCallback* CollisionWorld::ConvexResultCallback::UnmanagedPointer::get()
-{
-	return _callback;
-}
-void CollisionWorld::ConvexResultCallback::UnmanagedPointer::set(btCollisionWorld::ConvexResultCallback* value)
-{
-	_callback = value;
+	return (_unmanaged == NULL);
 }
 
 
-CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(btCollisionWorld::ClosestConvexResultCallback* callback)
-: ConvexResultCallback(callback)
-{
-}
+#define Unmanaged static_cast<btCollisionWorld::ClosestConvexResultCallback*>(_unmanaged)
 
 CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3 convexFromWorld, Vector3 convexToWorld)
 : ConvexResultCallback(0)
@@ -192,7 +181,7 @@ CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3
 	VECTOR3_DEF(convexFromWorld);
 	VECTOR3_DEF(convexToWorld);
 
-	UnmanagedPointer = new btCollisionWorld::ClosestConvexResultCallback(VECTOR3_USE(convexFromWorld), VECTOR3_USE(convexToWorld));
+	_unmanaged = new btCollisionWorld::ClosestConvexResultCallback(VECTOR3_USE(convexFromWorld), VECTOR3_USE(convexToWorld));
 
 	VECTOR3_DEL(convexFromWorld);
 	VECTOR3_DEL(convexToWorld);
@@ -200,52 +189,47 @@ CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3
 
 BulletSharp::CollisionObject^ CollisionWorld::ClosestConvexResultCallback::CollisionObject::get()
 {
-	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)UnmanagedPointer->m_hitCollisionObject);
+	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)Unmanaged->m_hitCollisionObject);
 }
 void CollisionWorld::ClosestConvexResultCallback::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
-	UnmanagedPointer->m_hitCollisionObject = value->UnmanagedPointer;
+	Unmanaged->m_hitCollisionObject = value->_unmanaged;
 }
 
 Vector3 CollisionWorld::ClosestConvexResultCallback::ConvexFromWorld::get()
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->m_convexFromWorld);
+	return Math::BtVector3ToVector3(&Unmanaged->m_convexFromWorld);
 }
 void CollisionWorld::ClosestConvexResultCallback::ConvexFromWorld::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_convexFromWorld);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_convexFromWorld);
 }
 
 Vector3 CollisionWorld::ClosestConvexResultCallback::ConvexToWorld::get()
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->m_convexToWorld);
+	return Math::BtVector3ToVector3(&Unmanaged->m_convexToWorld);
 }
 void CollisionWorld::ClosestConvexResultCallback::ConvexToWorld::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_convexToWorld);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_convexToWorld);
 }
 
 Vector3 CollisionWorld::ClosestConvexResultCallback::HitNormalWorld::get()
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->m_hitNormalWorld);
+	return Math::BtVector3ToVector3(&Unmanaged->m_hitNormalWorld);
 }
 void CollisionWorld::ClosestConvexResultCallback::HitNormalWorld::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_hitNormalWorld);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_hitNormalWorld);
 }
 
 Vector3 CollisionWorld::ClosestConvexResultCallback::HitPointWorld::get()
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->m_hitPointWorld);
+	return Math::BtVector3ToVector3(&Unmanaged->m_hitPointWorld);
 }
 void CollisionWorld::ClosestConvexResultCallback::HitPointWorld::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_hitPointWorld);
-}
-
-btCollisionWorld::ClosestConvexResultCallback* CollisionWorld::ClosestConvexResultCallback::UnmanagedPointer::get()
-{
-	return (btCollisionWorld::ClosestConvexResultCallback*)ConvexResultCallback::UnmanagedPointer;
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_hitPointWorld);
 }
 
 
@@ -678,7 +662,7 @@ void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix
 	btTransform* fromTemp = Math::MatrixToBtTransform(from);
 	btTransform* toTemp = Math::MatrixToBtTransform(to);
 
-	_unmanaged->convexSweepTest(castShape->UnmanagedPointer, *fromTemp, *toTemp, *resultCallback->UnmanagedPointer, allowedCcdPenetration);
+	_unmanaged->convexSweepTest((btConvexShape*)castShape->_unmanaged, *fromTemp, *toTemp, *resultCallback->_unmanaged, allowedCcdPenetration);
 
 	delete toTemp;
 	delete fromTemp;
@@ -689,7 +673,7 @@ void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix
 	btTransform* fromTemp = Math::MatrixToBtTransform(from);
 	btTransform* toTemp = Math::MatrixToBtTransform(to);
 
-	_unmanaged->convexSweepTest(castShape->UnmanagedPointer, *fromTemp, *toTemp, *resultCallback->UnmanagedPointer);
+	_unmanaged->convexSweepTest((btConvexShape*)castShape->_unmanaged, *fromTemp, *toTemp, *resultCallback->_unmanaged);
 
 	delete toTemp;
 	delete fromTemp;
@@ -723,7 +707,7 @@ void CollisionWorld::ObjectQuerySingle(ConvexShape^ castShape, Matrix rayFromTra
 
 	btCollisionWorld::objectQuerySingle((btConvexShape*)castShape->_unmanaged, *rayFromTransTemp, *rayToTransTemp,
 		collisionObject->_unmanaged, collisionShape->_unmanaged,
-		*colObjWorldTransformTemp, *resultCallback->UnmanagedPointer, allowedPenetration);
+		*colObjWorldTransformTemp, *resultCallback->_unmanaged, allowedPenetration);
 
 	delete colObjWorldTransformTemp;
 	delete rayToTransTemp;

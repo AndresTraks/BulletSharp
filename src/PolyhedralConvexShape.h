@@ -44,12 +44,6 @@ namespace BulletSharp
 		{
 			int get();
 		}
-
-	internal:
-		property btPolyhedralConvexShape* UnmanagedPointer
-		{
-			btPolyhedralConvexShape* get();
-		}
 	};
 
 	public ref class PolyhedralConvexAabbCachingShape : PolyhedralConvexShape
@@ -59,11 +53,5 @@ namespace BulletSharp
 
 		void GetNonvirtualAabb(Matrix trans, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax, btScalar margin);
 		void RecalcLocalAabb();
-
-	internal:
-		property btPolyhedralConvexAabbCachingShape* UnmanagedPointer
-		{
-			btPolyhedralConvexAabbCachingShape* get();
-		}
 	};
 };

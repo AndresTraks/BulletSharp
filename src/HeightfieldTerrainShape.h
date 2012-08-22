@@ -16,11 +16,5 @@ namespace BulletSharp
 
 		void SetUseDiamondSubdivision(bool useDiamondSubdivision);
 		void SetUseDiamondSubdivision();
-
-	internal:
-		property btHeightfieldTerrainShape* UnmanagedPointer
-		{
-			virtual btHeightfieldTerrainShape* get() new;
-		}
 	};
 };

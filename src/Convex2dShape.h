@@ -19,11 +19,5 @@ namespace BulletSharp
 		{
 			ConvexShape^ get();
 		}
-
-	internal:
-		property btConvex2dShape* UnmanagedPointer
-		{
-			btConvex2dShape* get() new;
-		}
 	};
 };

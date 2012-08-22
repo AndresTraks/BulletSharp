@@ -2,6 +2,8 @@
 
 #include "ConeShape.h"
 
+#define Unmanaged static_cast<btConeShape*>(_unmanaged)
+
 ConeShape::ConeShape(btConeShape* shape)
 : ConvexInternalShape(shape)
 {
@@ -14,26 +16,21 @@ ConeShape::ConeShape(btScalar radius, btScalar height)
 
 int ConeShape::ConeUpIndex::get()
 {
-	return UnmanagedPointer->getConeUpIndex();
+	return Unmanaged->getConeUpIndex();
 }
 void ConeShape::ConeUpIndex::set(int value)
 {
-	UnmanagedPointer->setConeUpIndex(value);
+	Unmanaged->setConeUpIndex(value);
 }
 
 btScalar ConeShape::Height::get()
 {
-	return UnmanagedPointer->getHeight();
+	return Unmanaged->getHeight();
 }
 
 btScalar ConeShape::Radius::get()
 {
-	return UnmanagedPointer->getRadius();
-}
-
-btConeShape* ConeShape::UnmanagedPointer::get()
-{
-	return (btConeShape*)ConvexInternalShape::UnmanagedPointer;
+	return Unmanaged->getRadius();
 }
 
 

@@ -24,11 +24,5 @@ namespace BulletSharp
 		{
 			btScalar get();
 		}
-
-	internal:
-		property btUniformScalingShape* UnmanagedPointer
-		{
-			btUniformScalingShape* get() new;
-		}
 	};
 };

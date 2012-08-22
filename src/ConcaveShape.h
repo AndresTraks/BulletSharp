@@ -13,11 +13,5 @@ namespace BulletSharp
 
 	public:
 		void ProcessAllTriangles(TriangleCallback^ callback, Vector3 aabbMin, Vector3 aabbMax);
-
-	internal:
-		property btConcaveShape* UnmanagedPointer
-		{
-			btConcaveShape* get();
-		}
 	};
 };

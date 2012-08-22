@@ -19,11 +19,5 @@ namespace BulletSharp
 		{
 			int get();
 		}
-
-	internal:
-		property btMultiSphereShape* UnmanagedPointer
-		{
-			btMultiSphereShape* get() new;
-		}
 	};
 };

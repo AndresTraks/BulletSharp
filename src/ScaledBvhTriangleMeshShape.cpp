@@ -5,6 +5,8 @@
 #include "BvhTriangleMeshShape.h"
 #include "ScaledBvhTriangleMeshShape.h"
 
+#define Unmanaged static_cast<btScaledBvhTriangleMeshShape*>(_unmanaged)
+
 ScaledBvhTriangleMeshShape::ScaledBvhTriangleMeshShape(btScaledBvhTriangleMeshShape* shape)
 : ConcaveShape(shape)
 {
@@ -14,19 +16,14 @@ ScaledBvhTriangleMeshShape::ScaledBvhTriangleMeshShape(BvhTriangleMeshShape^ chi
 : ConcaveShape(0)
 {
 	VECTOR3_DEF(localScaling);
-	UnmanagedPointer = new btScaledBvhTriangleMeshShape(childShape->UnmanagedPointer, VECTOR3_USE(localScaling));
+	UnmanagedPointer = new btScaledBvhTriangleMeshShape((btBvhTriangleMeshShape*)childShape->_unmanaged, VECTOR3_USE(localScaling));
 	VECTOR3_DEL(localScaling);
 }
 
 BvhTriangleMeshShape^ ScaledBvhTriangleMeshShape::ChildShape::get()
 {
-	btBvhTriangleMeshShape* childShape = UnmanagedPointer->getChildShape();
+	btBvhTriangleMeshShape* childShape = Unmanaged->getChildShape();
 	ReturnCachedObjectUpcastNullableCastTo(CollisionShape, BvhTriangleMeshShape, _childShape, childShape);
-}
-
-btScaledBvhTriangleMeshShape* ScaledBvhTriangleMeshShape::UnmanagedPointer::get()
-{
-	return (btScaledBvhTriangleMeshShape*)ConcaveShape::UnmanagedPointer;
 }
 
 #endif

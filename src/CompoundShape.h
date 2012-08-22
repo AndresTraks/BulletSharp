@@ -100,11 +100,5 @@ namespace BulletSharp
 		{
 			int get();
 		}
-
-	internal:
-		property btCompoundShape* UnmanagedPointer
-		{
-			btCompoundShape* get();
-		}
 	};
 };

@@ -12,7 +12,7 @@ BoxBoxDetector::BoxBoxDetector(btBoxBoxDetector* detector)
 
 BoxBoxDetector::BoxBoxDetector(BoxShape^ box1, BoxShape^ box2)
 : DiscreteCollisionDetectorInterface(new btBoxBoxDetector(
-	box1->UnmanagedPointer, box2->UnmanagedPointer))
+	(btBoxShape*)box1->_unmanaged, (btBoxShape*)box2->_unmanaged))
 {
 }
 
@@ -22,7 +22,7 @@ BoxShape^ BoxBoxDetector::Box1::get()
 }
 void BoxBoxDetector::Box1::set(BoxShape^ value)
 {
-	UnmanagedPointer->m_box1 = value->UnmanagedPointer;
+	UnmanagedPointer->m_box1 = (btBoxShape*)value->_unmanaged;
 }
 
 BoxShape^ BoxBoxDetector::Box2::get()
@@ -31,7 +31,7 @@ BoxShape^ BoxBoxDetector::Box2::get()
 }
 void BoxBoxDetector::Box2::set(BoxShape^ value)
 {
-	UnmanagedPointer->m_box2 = value->UnmanagedPointer;
+	UnmanagedPointer->m_box2 = (btBoxShape*)value->_unmanaged;
 }
 
 btBoxBoxDetector* BoxBoxDetector::UnmanagedPointer::get()

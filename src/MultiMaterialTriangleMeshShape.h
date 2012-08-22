@@ -21,11 +21,5 @@ namespace BulletSharp
 			Vector3 bvhAabbMin, Vector3 bvhAabbMax);
 
 		BulletMaterial GetMaterialProperties(int partID, int triIndex);
-
-	internal:
-		property btMultimaterialTriangleMeshShape* UnmanagedPointer
-		{
-			btMultimaterialTriangleMeshShape* get() new;
-		}
 	};
 };

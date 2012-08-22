@@ -12,12 +12,12 @@ KinematicCharacterController::KinematicCharacterController(btKinematicCharacterC
 }
 
 KinematicCharacterController::KinematicCharacterController(PairCachingGhostObject^ ghostObject, ConvexShape^ convexShape, btScalar stepHeight, int upAxis)
-: CharacterControllerInterface(new btKinematicCharacterController(ghostObject->UnmanagedPointer, convexShape->UnmanagedPointer, stepHeight, upAxis))
+: CharacterControllerInterface(new btKinematicCharacterController(ghostObject->UnmanagedPointer, (btConvexShape*)convexShape->_unmanaged, stepHeight, upAxis))
 {
 }
 
 KinematicCharacterController::KinematicCharacterController(PairCachingGhostObject^ ghostObject, ConvexShape^ convexShape, btScalar stepHeight)
-: CharacterControllerInterface(new btKinematicCharacterController(ghostObject->UnmanagedPointer, convexShape->UnmanagedPointer, stepHeight))
+: CharacterControllerInterface(new btKinematicCharacterController(ghostObject->UnmanagedPointer, (btConvexShape*)convexShape->_unmanaged, stepHeight))
 {
 }
 

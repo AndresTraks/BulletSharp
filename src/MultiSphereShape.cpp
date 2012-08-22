@@ -2,6 +2,8 @@
 
 #include "MultiSphereShape.h"
 
+#define Unmanaged static_cast<btMultiSphereShape*>(_unmanaged)
+
 MultiSphereShape::MultiSphereShape(btMultiSphereShape* shape)
 : ConvexInternalAabbCachingShape(shape)
 {
@@ -23,20 +25,15 @@ MultiSphereShape::MultiSphereShape(array<Vector3>^ positions, array<btScalar>^ r
 
 Vector3 MultiSphereShape::GetSpherePosition(int index)
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->getSpherePosition(index));
+	return Math::BtVector3ToVector3(&Unmanaged->getSpherePosition(index));
 }
 
 btScalar MultiSphereShape::GetSphereRadius(int index)
 {
-	return UnmanagedPointer->getSphereRadius(index);
+	return Unmanaged->getSphereRadius(index);
 }
 
 int MultiSphereShape::SphereCount::get()
 {
-	return UnmanagedPointer->getSphereCount();
-}
-
-btMultiSphereShape* MultiSphereShape::UnmanagedPointer::get()
-{
-	return (btMultiSphereShape*)ConvexInternalAabbCachingShape::UnmanagedPointer;
+	return Unmanaged->getSphereCount();
 }

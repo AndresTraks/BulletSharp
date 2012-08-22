@@ -5,13 +5,15 @@
 #include "ConvexShape.h"
 #include "MinkowskiSumShape.h"
 
+#define Unmanaged static_cast<btMinkowskiSumShape*>(_unmanaged)
+
 MinkowskiSumShape::MinkowskiSumShape(btMinkowskiSumShape* shape)
 : ConvexInternalShape(shape)
 {
 }
 
 MinkowskiSumShape::MinkowskiSumShape(ConvexShape^ shapeA, ConvexShape^ shapeB)
-: ConvexInternalShape(new btMinkowskiSumShape(shapeA->UnmanagedPointer, shapeB->UnmanagedPointer))
+: ConvexInternalShape(new btMinkowskiSumShape((btConvexShape*)shapeA->_unmanaged, (btConvexShape*)shapeB->_unmanaged))
 {
 	_shapeA = shapeA;
 	_shapeB = shapeB;
@@ -19,41 +21,36 @@ MinkowskiSumShape::MinkowskiSumShape(ConvexShape^ shapeA, ConvexShape^ shapeB)
 
 ConvexShape^ MinkowskiSumShape::ShapeA::get()
 {
-	btConvexShape* shapeA = (btConvexShape*)UnmanagedPointer->getShapeA();
+	btConvexShape* shapeA = (btConvexShape*)Unmanaged->getShapeA();
 	ReturnCachedObjectUpcastNullableCastTo(CollisionShape, ConvexShape, _shapeA, shapeA);
 }
 
 ConvexShape^ MinkowskiSumShape::ShapeB::get()
 {
-	btConvexShape* shapeB = (btConvexShape*)UnmanagedPointer->getShapeB();
+	btConvexShape* shapeB = (btConvexShape*)Unmanaged->getShapeB();
 	ReturnCachedObjectUpcastNullableCastTo(CollisionShape, ConvexShape, _shapeB, shapeB);
 }
 
 Matrix MinkowskiSumShape::TransformA::get()
 {
-	return Math::BtTransformToMatrix(&UnmanagedPointer->getTransformA());
+	return Math::BtTransformToMatrix(&Unmanaged->getTransformA());
 }
 void MinkowskiSumShape::TransformA::set(Matrix value)
 {
 	btTransform* valueTemp = Math::MatrixToBtTransform(value);
-	UnmanagedPointer->setTransformA(*valueTemp);
+	Unmanaged->setTransformA(*valueTemp);
 	delete valueTemp;
 }
 
 Matrix MinkowskiSumShape::TransformB::get()
 {
-	return Math::BtTransformToMatrix(&UnmanagedPointer->GetTransformB());
+	return Math::BtTransformToMatrix(&Unmanaged->GetTransformB());
 }
 void MinkowskiSumShape::TransformB::set(Matrix value)
 {
 	btTransform* valueTemp = Math::MatrixToBtTransform(value);
-	UnmanagedPointer->setTransformB(*valueTemp);
+	Unmanaged->setTransformB(*valueTemp);
 	delete valueTemp;
-}
-
-btMinkowskiSumShape* MinkowskiSumShape::UnmanagedPointer::get()
-{
-	return (btMinkowskiSumShape*)ConvexInternalShape::UnmanagedPointer;
 }
 
 #endif

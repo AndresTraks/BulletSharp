@@ -3,6 +3,8 @@
 #include "StridingMeshInterface.h"
 #include "TriangleMeshShape.h"
 
+#define Unmanaged static_cast<btTriangleMeshShape*>(_unmanaged)
+
 TriangleMeshShape::TriangleMeshShape(btTriangleMeshShape* shape)
 : ConcaveShape(shape)
 {
@@ -25,7 +27,7 @@ Vector3 TriangleMeshShape::LocalGetSupportingVertex(Vector3 vec)
 	VECTOR3_DEF(vec);
 	btVector3* vecOut = new btVector3;
 	
-	TriangleMeshShape_LocalGetSupportingVertex(UnmanagedPointer, VECTOR3_PTR(vec), vecOut);
+	TriangleMeshShape_LocalGetSupportingVertex(Unmanaged, VECTOR3_PTR(vec), vecOut);
 	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
 	
 	VECTOR3_DEL(vec);
@@ -39,7 +41,7 @@ Vector3 TriangleMeshShape::LocalGetSupportingVertexWithoutMargin(Vector3 vec)
 	VECTOR3_DEF(vec);
 	btVector3* vecOut = new btVector3;
 	
-	TriangleMeshShape_LocalGetSupportingVertexWithoutMargin(UnmanagedPointer, VECTOR3_PTR(vec), vecOut);
+	TriangleMeshShape_LocalGetSupportingVertexWithoutMargin(Unmanaged, VECTOR3_PTR(vec), vecOut);
 	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
 	
 	VECTOR3_DEL(vec);
@@ -50,26 +52,21 @@ Vector3 TriangleMeshShape::LocalGetSupportingVertexWithoutMargin(Vector3 vec)
 
 void TriangleMeshShape::RecalcLocalAabb()
 {
-	UnmanagedPointer->recalcLocalAabb();
+	Unmanaged->recalcLocalAabb();
 }
 
 Vector3 TriangleMeshShape::LocalAabbMax::get()
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->getLocalAabbMax());
+	return Math::BtVector3ToVector3(&Unmanaged->getLocalAabbMax());
 }
 
 Vector3 TriangleMeshShape::LocalAabbMin::get()
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->getLocalAabbMin());
+	return Math::BtVector3ToVector3(&Unmanaged->getLocalAabbMin());
 }
 
 StridingMeshInterface^ TriangleMeshShape::MeshInterface::get()
 {
-	btStridingMeshInterface* meshInterface = UnmanagedPointer->getMeshInterface();
+	btStridingMeshInterface* meshInterface = Unmanaged->getMeshInterface();
 	ReturnCachedObject(StridingMeshInterface, _meshInterface, meshInterface);
-}
-
-btTriangleMeshShape* TriangleMeshShape::UnmanagedPointer::get()
-{
-	return (btTriangleMeshShape*)ConcaveShape::UnmanagedPointer;
 }

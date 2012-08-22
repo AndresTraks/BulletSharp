@@ -8,7 +8,7 @@
 
 ShapeHull::ShapeHull(ConvexShape^ shape)
 {
-	_shapeHull = new btShapeHull(shape->UnmanagedPointer);
+	_shapeHull = new btShapeHull((btConvexShape*)shape->_unmanaged);
 }
 
 bool ShapeHull::BuildHull(btScalar margin)

@@ -2,28 +2,25 @@
 
 #include "UniformScalingShape.h"
 
+#define Unmanaged static_cast<btUniformScalingShape*>(_unmanaged)
+
 UniformScalingShape::UniformScalingShape(btUniformScalingShape* shape)
 : ConvexShape(shape)
 {
 }
 
 UniformScalingShape::UniformScalingShape(ConvexShape^ convexChildShape, btScalar uniformScalingFactor)
-: ConvexShape(new btUniformScalingShape(convexChildShape->UnmanagedPointer, uniformScalingFactor))
+: ConvexShape(new btUniformScalingShape((btConvexShape*)convexChildShape->_unmanaged, uniformScalingFactor))
 {
 }
 
 ConvexShape^ UniformScalingShape::ChildShape::get()
 {
-	btConvexShape* childShape = UnmanagedPointer->getChildShape();
+	btConvexShape* childShape = Unmanaged->getChildShape();
 	ReturnCachedObject(ConvexShape, _childShape, childShape);
 }
 
 btScalar UniformScalingShape::UniformScalingFactor::get()
 {
-	return UnmanagedPointer->getUniformScalingFactor();
-}
-
-btUniformScalingShape* UniformScalingShape::UnmanagedPointer::get()
-{
-	return (btUniformScalingShape*)ConvexShape::UnmanagedPointer;
+	return Unmanaged->getUniformScalingFactor();
 }

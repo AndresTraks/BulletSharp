@@ -179,8 +179,3 @@ int CompoundShape::UpdateRevision::get()
 {
 	return Unmanaged->getUpdateRevision();
 }
-
-btCompoundShape* CompoundShape::UnmanagedPointer::get()
-{
-	return (btCompoundShape*)CollisionShape::UnmanagedPointer;
-}

@@ -27,12 +27,6 @@ namespace BulletSharp
 		{
 			btScalar get();
 		}
-
-	internal:
-		property btConeShape* UnmanagedPointer
-		{
-			btConeShape* get() new;
-		}
 	};
 
 	public ref class ConeShapeX : ConeShape

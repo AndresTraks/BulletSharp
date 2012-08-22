@@ -2,6 +2,8 @@
 
 #include "CylinderShape.h"
 
+#define Unmanaged static_cast<btCylinderShape*>(_unmanaged)
+
 CylinderShape::CylinderShape(btCylinderShape* shape)
 : ConvexInternalShape(shape)
 {
@@ -33,7 +35,7 @@ CylinderShape::CylinderShape(btScalar halfExtents)
 
 Vector3 CylinderShape::HalfExtentsWithMargin::get()
 {
-	btVector3* extentsTemp = new btVector3(UnmanagedPointer->getHalfExtentsWithMargin());
+	btVector3* extentsTemp = new btVector3(Unmanaged->getHalfExtentsWithMargin());
 	Vector3 extents = Math::BtVector3ToVector3(extentsTemp);
 	delete extentsTemp;
 	return extents;
@@ -41,22 +43,17 @@ Vector3 CylinderShape::HalfExtentsWithMargin::get()
 
 Vector3 CylinderShape::HalfExtentsWithoutMargin::get()
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->getHalfExtentsWithoutMargin());
+	return Math::BtVector3ToVector3(&Unmanaged->getHalfExtentsWithoutMargin());
 }
 
 btScalar CylinderShape::Radius::get()
 {
-	return UnmanagedPointer->getRadius();
+	return Unmanaged->getRadius();
 }
 
 int CylinderShape::UpAxis::get()
 {
-	return UnmanagedPointer->getUpAxis();
-}
-
-btCylinderShape* CylinderShape::UnmanagedPointer::get()
-{
-	return (btCylinderShape*)ConvexInternalShape::UnmanagedPointer;
+	return Unmanaged->getUpAxis();
 }
 
 

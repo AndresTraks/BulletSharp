@@ -39,11 +39,5 @@ namespace BulletSharp
 			Matrix get();
 			void set(Matrix value);
 		}
-
-	internal:
-		property btMinkowskiSumShape* UnmanagedPointer
-		{
-			btMinkowskiSumShape* get() new;
-		}
 	};
 };

@@ -16,10 +16,8 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		btConvexPenetrationDepthSolver* _depthSolver;
-
 	internal:
+		btConvexPenetrationDepthSolver* _unmanaged;
 		ConvexPenetrationDepthSolver(btConvexPenetrationDepthSolver* depthSolver);
 
 	public:
@@ -39,13 +37,6 @@ namespace BulletSharp
 		property bool IsDisposed
 		{
 			virtual bool get();
-		}
-
-	internal:
-		property btConvexPenetrationDepthSolver* UnmanagedPointer
-		{
-			virtual btConvexPenetrationDepthSolver* get();
-			void set(btConvexPenetrationDepthSolver* value);
 		}
 	};
 };

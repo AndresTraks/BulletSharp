@@ -19,11 +19,5 @@ namespace BulletSharp
 		void AddVertex(Vector3 pt);
 		int GetIndex(int i);
 		void Reset();
-
-	internal:
-		property btBU_Simplex1to4* UnmanagedPointer
-		{
-			btBU_Simplex1to4* get();
-		}
 	};
 };

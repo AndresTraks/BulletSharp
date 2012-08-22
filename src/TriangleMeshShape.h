@@ -31,11 +31,5 @@ namespace BulletSharp
 		{
 			StridingMeshInterface^ get();
 		}
-
-	internal:
-		property btTriangleMeshShape* UnmanagedPointer
-		{
-			btTriangleMeshShape* get() new;
-		}
 	};
 };

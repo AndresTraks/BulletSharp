@@ -62,7 +62,7 @@ void CollisionObject::Activate(bool forceActivation)
 
 bool CollisionObject::CheckCollideWith(CollisionObject^ collisionObject)
 {
-	return _unmanaged->checkCollideWith(collisionObject->UnmanagedPointer);
+	return _unmanaged->checkCollideWith(collisionObject->_unmanaged);
 }
 
 void CollisionObject::ForceActivationState(BulletSharp::ActivationState newState)

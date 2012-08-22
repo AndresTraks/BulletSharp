@@ -2,6 +2,8 @@
 
 #include "StaticPlaneShape.h"
 
+#define Unmanaged static_cast<btStaticPlaneShape*>(_unmanaged)
+
 StaticPlaneShape::StaticPlaneShape(btStaticPlaneShape* shape)
 : BulletSharp::ConcaveShape(shape)
 {
@@ -17,15 +19,10 @@ StaticPlaneShape::StaticPlaneShape(Vector3 planeNormal, btScalar planeConstant)
 
 btScalar StaticPlaneShape::PlaneConstant::get()
 {
-	return UnmanagedPointer->getPlaneConstant();
+	return Unmanaged->getPlaneConstant();
 }
 
 Vector3 StaticPlaneShape::PlaneNormal::get()
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->getPlaneNormal());
-}
-
-btStaticPlaneShape* StaticPlaneShape::UnmanagedPointer::get()
-{
-	return (btStaticPlaneShape*)ConcaveShape::UnmanagedPointer;
+	return Math::BtVector3ToVector3(&Unmanaged->getPlaneNormal());
 }

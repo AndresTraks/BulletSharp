@@ -26,12 +26,6 @@ namespace BulletSharp
 		{
 			int get();
 		}
-
-	internal:
-		property btCapsuleShape* UnmanagedPointer
-		{
-			btCapsuleShape* get() new;
-		}
 	};
 
 	public ref class CapsuleShapeX : CapsuleShape

@@ -2,7 +2,7 @@
 
 #include "ConvexInternalShape.h"
 
-using namespace BulletSharp;
+#define Unmanaged static_cast<btConvexInternalShape*>(_unmanaged)
 
 ConvexInternalShape::ConvexInternalShape(btConvexInternalShape* convexInternalShape)
 : BulletSharp::ConvexShape(convexInternalShape)
@@ -11,52 +11,47 @@ ConvexInternalShape::ConvexInternalShape(btConvexInternalShape* convexInternalSh
 
 void ConvexInternalShape::SetSafeMargin(btScalar minDimension, btScalar defaultMarginMultiplier)
 {
-	UnmanagedPointer->setSafeMargin(minDimension, defaultMarginMultiplier);
+	Unmanaged->setSafeMargin(minDimension, defaultMarginMultiplier);
 }
 
 void ConvexInternalShape::SetSafeMargin(btScalar minDimension)
 {
-	UnmanagedPointer->setSafeMargin(minDimension);
+	Unmanaged->setSafeMargin(minDimension);
 }
 
 void ConvexInternalShape::SetSafeMargin(Vector3 halfExtents, btScalar defaultMarginMultiplier)
 {
 	VECTOR3_DEF(halfExtents);
-	UnmanagedPointer->setSafeMargin(VECTOR3_USE(halfExtents), defaultMarginMultiplier);
+	Unmanaged->setSafeMargin(VECTOR3_USE(halfExtents), defaultMarginMultiplier);
 	VECTOR3_DEL(halfExtents);
 }
 
 void ConvexInternalShape::SetSafeMargin(Vector3 halfExtents)
 {
 	VECTOR3_DEF(halfExtents);
-	UnmanagedPointer->setSafeMargin(VECTOR3_USE(halfExtents));
+	Unmanaged->setSafeMargin(VECTOR3_USE(halfExtents));
 	VECTOR3_DEL(halfExtents);
 }
 
 Vector3 ConvexInternalShape::ImplicitShapeDimensions::get()
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->getImplicitShapeDimensions());
+	return Math::BtVector3ToVector3(&Unmanaged->getImplicitShapeDimensions());
 }
 void ConvexInternalShape::ImplicitShapeDimensions::set(Vector3 value)
 {
 	VECTOR3_DEF(value);
-	UnmanagedPointer->setImplicitShapeDimensions(VECTOR3_USE(value));
+	Unmanaged->setImplicitShapeDimensions(VECTOR3_USE(value));
 	VECTOR3_DEL(value);
 }
 
 Vector3 ConvexInternalShape::LocalScalingNV::get()
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->getLocalScalingNV());
+	return Math::BtVector3ToVector3(&Unmanaged->getLocalScalingNV());
 }
 
 btScalar ConvexInternalShape::MarginNV::get()
 {
-	return UnmanagedPointer->getMarginNV();
-}
-
-btConvexInternalShape* ConvexInternalShape::UnmanagedPointer::get()
-{
-	return (btConvexInternalShape*)ConvexShape::UnmanagedPointer;
+	return Unmanaged->getMarginNV();
 }
 
 

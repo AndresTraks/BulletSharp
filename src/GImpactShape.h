@@ -106,12 +106,6 @@ namespace BulletSharp
 			PrimitiveManagerBase^ get();
 		}
 #endif
-
-	internal:
-		property btGImpactShapeInterface* UnmanagedPointer
-		{
-			btGImpactShapeInterface* get() new;
-		}
 	};
 
 	public ref class GImpactCompoundShape : GImpactShapeInterface
@@ -153,12 +147,6 @@ namespace BulletSharp
 			CompoundPrimitiveManager^ get();
 		}
 #endif
-
-	internal:
-		property btGImpactCompoundShape* UnmanagedPointer
-		{
-			btGImpactCompoundShape* get() new;
-		}
 	};
 
 	public ref class GImpactMeshShapePart : GImpactShapeInterface
@@ -257,12 +245,6 @@ namespace BulletSharp
 				IntPtr get();
 				void set(IntPtr value);
 			}
-
-		internal:
-			property btGImpactMeshShapePart::TrimeshPrimitiveManager* UnmanagedPointer
-			{
-				btGImpactMeshShapePart::TrimeshPrimitiveManager* get() new;
-			}
 		};
 #endif
 
@@ -291,12 +273,6 @@ namespace BulletSharp
 			TrimeshPrimitiveManager^ get();
 		}
 #endif
-
-	internal:
-		property btGImpactMeshShapePart* UnmanagedPointer
-		{
-			btGImpactMeshShapePart* get() new;
-		}
 	};
 
 	public ref class GImpactMeshShape : GImpactShapeInterface
@@ -317,12 +293,6 @@ namespace BulletSharp
 		property int MeshPartCount
 		{
 			int get();
-		}
-
-	internal:
-		property btGImpactMeshShape* UnmanagedPointer
-		{
-			btGImpactMeshShape* get() new;
 		}
 	};
 };

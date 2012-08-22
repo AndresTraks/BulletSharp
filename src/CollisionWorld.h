@@ -105,10 +105,8 @@ namespace BulletSharp
 			virtual event EventHandler^ OnDisposing;
 			virtual event EventHandler^ OnDisposed;
 
-		private:
-			btCollisionWorld::ConvexResultCallback* _callback;
-
-		protected:
+		internal:
+			btCollisionWorld::ConvexResultCallback* _unmanaged;
 			ConvexResultCallback(btCollisionWorld::ConvexResultCallback* callback);
 
 		public:
@@ -147,20 +145,10 @@ namespace BulletSharp
 			{
 				virtual bool get();
 			}
-
-		internal:
-			property btCollisionWorld::ConvexResultCallback* UnmanagedPointer
-			{
-				virtual btCollisionWorld::ConvexResultCallback* get();
-				void set(btCollisionWorld::ConvexResultCallback* value);
-			}
 		};
 
 		ref class ClosestConvexResultCallback : ConvexResultCallback
 		{
-		internal:
-			ClosestConvexResultCallback(btCollisionWorld::ClosestConvexResultCallback* callback);
-
 		public:
 			ClosestConvexResultCallback(Vector3 convexFromWorld, Vector3 convexToWorld);
 
@@ -192,11 +180,6 @@ namespace BulletSharp
 			{
 				Vector3 get();
 				void set(Vector3 value);
-			}
-
-			property btCollisionWorld::ClosestConvexResultCallback* UnmanagedPointer
-			{
-				btCollisionWorld::ClosestConvexResultCallback* get() new;
 			}
 		};
 

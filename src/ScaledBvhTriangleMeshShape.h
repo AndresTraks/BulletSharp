@@ -21,11 +21,5 @@ namespace BulletSharp
 		{
 			BvhTriangleMeshShape^ get();
 		}
-
-	internal:
-		property btScaledBvhTriangleMeshShape* UnmanagedPointer
-		{
-			btScaledBvhTriangleMeshShape* get();
-		}
 	};
 };

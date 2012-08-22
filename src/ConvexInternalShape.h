@@ -30,12 +30,6 @@ namespace BulletSharp
 		{
 			btScalar get();
 		}
-
-	internal:
-		property btConvexInternalShape* UnmanagedPointer
-		{
-			btConvexInternalShape* get() new;
-		}
 	};
 
 	public ref class ConvexInternalAabbCachingShape abstract : ConvexInternalShape

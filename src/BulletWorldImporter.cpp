@@ -580,7 +580,7 @@ btCollisionShape* Serialize::BulletWorldImporterWrapper::createConvexTriangleMes
 #ifndef DISABLE_GIMPACT
 btGImpactMeshShape* Serialize::BulletWorldImporterWrapper::createGimpactShape(btStridingMeshInterface* trimesh)
 {
-	return _importer->CreateGImpactShape(gcnew StridingMeshInterface(trimesh))->UnmanagedPointer;
+	return (btGImpactMeshShape*)_importer->CreateGImpactShape(gcnew StridingMeshInterface(trimesh))->_unmanaged;
 }
 #endif
 
@@ -591,7 +591,7 @@ class btConvexHullShape* Serialize::BulletWorldImporterWrapper::createConvexHull
 
 class btCompoundShape* Serialize::BulletWorldImporterWrapper::createCompoundShape()
 {
-	return _importer->CreateCompoundShape()->UnmanagedPointer;
+	return (btCompoundShape*)_importer->CreateCompoundShape()->_unmanaged;
 }
 
 #ifndef DISABLE_BVH

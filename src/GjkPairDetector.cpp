@@ -17,19 +17,19 @@ GjkPairDetector::GjkPairDetector(btGjkPairDetector* detector)
 
 GjkPairDetector::GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB,
 	SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ penetrationDepthSolver)
-: DiscreteCollisionDetectorInterface(new btGjkPairDetector(objectA->UnmanagedPointer,
-	objectB->UnmanagedPointer, simplexSolver->UnmanagedPointer,
-	(penetrationDepthSolver != nullptr) ? penetrationDepthSolver->UnmanagedPointer : 0))
+: DiscreteCollisionDetectorInterface(new btGjkPairDetector((btConvexShape*)objectA->_unmanaged,
+	(btConvexShape*)objectB->_unmanaged, simplexSolver->UnmanagedPointer,
+	GetUnmanagedNullable(penetrationDepthSolver)))
 {
 }
 
 GjkPairDetector::GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB, BroadphaseNativeType shapeTypeA,
 	BroadphaseNativeType shapeTypeB, btScalar marginA, btScalar marginB,
 	SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ penetrationDepthSolver)
-: DiscreteCollisionDetectorInterface(new btGjkPairDetector(objectA->UnmanagedPointer,
-	objectB->UnmanagedPointer, (int)shapeTypeA, (int)shapeTypeB,
+: DiscreteCollisionDetectorInterface(new btGjkPairDetector((btConvexShape*)objectA->_unmanaged,
+	(btConvexShape*)objectB->_unmanaged, (int)shapeTypeA, (int)shapeTypeB,
 	marginA, marginB, simplexSolver->UnmanagedPointer,
-	(penetrationDepthSolver != nullptr) ? penetrationDepthSolver->UnmanagedPointer : 0))
+	GetUnmanagedNullable(penetrationDepthSolver)))
 {
 }
 
@@ -50,17 +50,17 @@ void GjkPairDetector::GetClosestPointsNonVirtual(
 
 void GjkPairDetector::SetMinkowskiA(ConvexShape^ minkA)
 {
-	UnmanagedPointer->setMinkowskiA(minkA->UnmanagedPointer);
+	UnmanagedPointer->setMinkowskiA((btConvexShape*)minkA->_unmanaged);
 }
 
 void GjkPairDetector::SetMinkowskiB(ConvexShape^ minkB)
 {
-	UnmanagedPointer->setMinkowskiB(minkB->UnmanagedPointer);
+	UnmanagedPointer->setMinkowskiB((btConvexShape*)minkB->_unmanaged);
 }
 
 void GjkPairDetector::SetPenetrationDepthSolver(ConvexPenetrationDepthSolver^ penetrationDepthSolver)
 {
-	UnmanagedPointer->setPenetrationDepthSolver(penetrationDepthSolver->UnmanagedPointer);
+	UnmanagedPointer->setPenetrationDepthSolver(penetrationDepthSolver->_unmanaged);
 }
 
 Vector3 GjkPairDetector::CachedSeparatingAxis::get()

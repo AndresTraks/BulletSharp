@@ -10,7 +10,7 @@
 #include "PersistentManifold.h"
 
 ConvexConvexAlgorithm::CreateFunc::CreateFunc(SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ pdSolver)
-: CollisionAlgorithmCreateFunc(new btConvexConvexAlgorithm::CreateFunc(simplexSolver->UnmanagedPointer, pdSolver->UnmanagedPointer))
+: CollisionAlgorithmCreateFunc(new btConvexConvexAlgorithm::CreateFunc(simplexSolver->UnmanagedPointer, pdSolver->_unmanaged))
 {
 }
 
@@ -38,7 +38,7 @@ ConvexPenetrationDepthSolver^ ConvexConvexAlgorithm::CreateFunc::PdSolver::get()
 }
 void ConvexConvexAlgorithm::CreateFunc::PdSolver::set(ConvexPenetrationDepthSolver^ value)
 {
-	UnmanagedPointer->m_pdSolver = value->UnmanagedPointer;
+	UnmanagedPointer->m_pdSolver = value->_unmanaged;
 }
 
 SimplexSolverInterface^ ConvexConvexAlgorithm::CreateFunc::SimplexSolver::get()
@@ -61,7 +61,7 @@ ConvexConvexAlgorithm::ConvexConvexAlgorithm(PersistentManifold^ mf, CollisionAl
 	ConvexPenetrationDepthSolver^ pdSolver, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
 : ActivatingCollisionAlgorithm(new btConvexConvexAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf),
 	*ci->UnmanagedPointer, body0Wrap->_unmanaged, body1Wrap->_unmanaged, simplexSolver->UnmanagedPointer,
-	pdSolver->UnmanagedPointer, numPerturbationIterations, minimumPointsPerturbationThreshold))
+	pdSolver->_unmanaged, numPerturbationIterations, minimumPointsPerturbationThreshold))
 {
 }
 

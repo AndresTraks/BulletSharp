@@ -6,7 +6,7 @@
 #include "GjkConvexCast.h"
 
 GjkConvexCast::GjkConvexCast(ConvexShape^ convexA, ConvexShape^ convexB, SimplexSolverInterface^ simplexSolver)
-: ConvexCast(new btGjkConvexCast(convexA->UnmanagedPointer, convexB->UnmanagedPointer, simplexSolver->UnmanagedPointer))
+: ConvexCast(new btGjkConvexCast((btConvexShape*)convexA->_unmanaged, (btConvexShape*)convexB->_unmanaged, simplexSolver->UnmanagedPointer))
 {
 }
 

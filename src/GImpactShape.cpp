@@ -38,6 +38,8 @@ btTetrahedronShapeEx* TetrahedronShapeEx::UnmanagedPointer::get()
 }
 
 
+#define Unmanaged static_cast<btGImpactShapeInterface*>(_unmanaged)
+
 GImpactShapeInterface::GImpactShapeInterface(btGImpactShapeInterface* shapeInterface)
 : ConcaveShape(shapeInterface)
 {
@@ -46,20 +48,20 @@ GImpactShapeInterface::GImpactShapeInterface(btGImpactShapeInterface* shapeInter
 void GImpactShapeInterface::GetBulletTetrahedron(int prim_index, [Out] TetrahedronShapeEx^% tetrahedron)
 {
 	btTetrahedronShapeEx* tetrahedronTemp = new btTetrahedronShapeEx;
-	UnmanagedPointer->getBulletTetrahedron(prim_index, *tetrahedronTemp);
+	Unmanaged->getBulletTetrahedron(prim_index, *tetrahedronTemp);
 	tetrahedron = gcnew TetrahedronShapeEx(tetrahedronTemp);
 }
 
 void GImpactShapeInterface::GetBulletTriangle(int prim_index, [Out] TriangleShapeEx^% triangle)
 {
 	btTriangleShapeEx* triangleTemp = new btTriangleShapeEx;
-	UnmanagedPointer->getBulletTriangle(prim_index, *triangleTemp);
+	Unmanaged->getBulletTriangle(prim_index, *triangleTemp);
 	triangle = gcnew TriangleShapeEx(triangleTemp);
 }
 
 CollisionShape^ GImpactShapeInterface::GetChildShape(int index)
 {
-	return CollisionShape::GetManaged(UnmanagedPointer->getChildShape(index));
+	return CollisionShape::GetManaged(Unmanaged->getChildShape(index));
 }
 
 #pragma managed(push, off)
@@ -72,7 +74,7 @@ btTransform* GImpactShapeInterface_GetChildTransform(btGImpactShapeInterface* sh
 #pragma managed(pop)
 Matrix GImpactShapeInterface::GetChildTransform(int index)
 {
-	btTransform* transformTemp = GImpactShapeInterface_GetChildTransform(UnmanagedPointer, index);
+	btTransform* transformTemp = GImpactShapeInterface_GetChildTransform(Unmanaged, index);
 	Matrix transform = Math::BtTransformToMatrix(transformTemp);
 	delete transformTemp;
 	return transform;
@@ -81,18 +83,18 @@ Matrix GImpactShapeInterface::GetChildTransform(int index)
 void GImpactShapeInterface::GetPrimitiveTriangle(int prim_index, [Out] PrimitiveTriangle^% triangle)
 {
 	btPrimitiveTriangle* triangleTemp = new btPrimitiveTriangle();
-	UnmanagedPointer->getPrimitiveTriangle(prim_index, *triangleTemp);
+	Unmanaged->getPrimitiveTriangle(prim_index, *triangleTemp);
 	triangle = gcnew PrimitiveTriangle(triangleTemp);
 }
 
 void GImpactShapeInterface::LockChildShapes()
 {
-	UnmanagedPointer->lockChildShapes();
+	Unmanaged->lockChildShapes();
 }
 
 void GImpactShapeInterface::PostUpdate()
 {
-	UnmanagedPointer->postUpdate();
+	Unmanaged->postUpdate();
 }
 
 void GImpactShapeInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, CollisionWorld::RayResultCallback^ resultCallback)
@@ -100,7 +102,7 @@ void GImpactShapeInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, CollisionWor
 	VECTOR3_DEF(rayFrom);
 	VECTOR3_DEF(rayTo);
 
-	UnmanagedPointer->rayTest(VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo), *resultCallback->_unmanaged);
+	Unmanaged->rayTest(VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo), *resultCallback->_unmanaged);
 
 	VECTOR3_DEL(rayFrom);
 	VECTOR3_DEL(rayTo);
@@ -109,40 +111,40 @@ void GImpactShapeInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, CollisionWor
 void GImpactShapeInterface::SetChildTransform(int index, Matrix transform)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
-	UnmanagedPointer->setChildTransform(index, *transformTemp);
+	Unmanaged->setChildTransform(index, *transformTemp);
 	delete transformTemp;
 }
 
 void GImpactShapeInterface::UnlockChildShapes()
 {
-	UnmanagedPointer->unlockChildShapes();
+	Unmanaged->unlockChildShapes();
 }
 
 void GImpactShapeInterface::UpdateBound()
 {
-	UnmanagedPointer->updateBound();
+	Unmanaged->updateBound();
 }
 
 #ifndef DISABLE_BVH
 GImpactQuantizedBvh^ GImpactShapeInterface::BoxSet::get()
 {
-	return gcnew GImpactQuantizedBvh(UnmanagedPointer->getBoxSet());
+	return gcnew GImpactQuantizedBvh(Unmanaged->getBoxSet());
 }
 #endif
 
 bool GImpactShapeInterface::ChildrenHasTransform::get()
 {
-	return UnmanagedPointer->childrenHasTransform();
+	return Unmanaged->childrenHasTransform();
 }
 
 BulletSharp::GImpactShapeType GImpactShapeInterface::GImpactShapeType::get()
 {
-	return (BulletSharp::GImpactShapeType)UnmanagedPointer->getGImpactShapeType();
+	return (BulletSharp::GImpactShapeType)Unmanaged->getGImpactShapeType();
 }
 
 bool GImpactShapeInterface::HasBoxSet::get()
 {
-	return UnmanagedPointer->hasBoxSet();
+	return Unmanaged->hasBoxSet();
 }
 
 #pragma managed(push, off)
@@ -154,36 +156,31 @@ void GImpactShapeInterface_GetLocalBox(btGImpactShapeInterface* shape, btAABB* a
 Aabb^ GImpactShapeInterface::LocalBox::get()
 {
 	btAABB* boxTemp = new btAABB();
-	GImpactShapeInterface_GetLocalBox(UnmanagedPointer, boxTemp);
+	GImpactShapeInterface_GetLocalBox(Unmanaged, boxTemp);
 	return gcnew Aabb(boxTemp);
 }
 
 bool GImpactShapeInterface::NeedsRetrieveTetrahedrons::get()
 {
-	return UnmanagedPointer->needsRetrieveTetrahedrons();
+	return Unmanaged->needsRetrieveTetrahedrons();
 }
 
 bool GImpactShapeInterface::NeedsRetrieveTriangles::get()
 {
-	return UnmanagedPointer->needsRetrieveTriangles();
+	return Unmanaged->needsRetrieveTriangles();
 }
 
 int GImpactShapeInterface::NumChildShapes::get()
 {
-	return UnmanagedPointer->getNumChildShapes();
+	return Unmanaged->getNumChildShapes();
 }
 
 #ifndef DISABLE_BVH
 PrimitiveManagerBase^ GImpactShapeInterface::PrimitiveManager::get()
 {
-	return gcnew PrimitiveManagerBase((btPrimitiveManagerBase*)UnmanagedPointer->getPrimitiveManager());
+	return gcnew PrimitiveManagerBase((btPrimitiveManagerBase*)Unmanaged->getPrimitiveManager());
 }
 #endif
-
-btGImpactShapeInterface* GImpactShapeInterface::UnmanagedPointer::get()
-{
-	return (btGImpactShapeInterface*)ConcaveShape::UnmanagedPointer;
-}
 
 
 #ifndef DISABLE_BVH
@@ -219,6 +216,7 @@ btGImpactCompoundShape::CompoundPrimitiveManager* GImpactCompoundShape::Compound
 #endif
 
 
+#undef Unmanaged
 #define Unmanaged (static_cast<btGImpactCompoundShape*>(_unmanaged))
 
 GImpactCompoundShape::GImpactCompoundShape(bool childrenHasTransform)
@@ -249,11 +247,6 @@ GImpactCompoundShape::CompoundPrimitiveManager^ GImpactCompoundShape::GImpactCom
 	return gcnew CompoundPrimitiveManager(Unmanaged->getCompoundPrimitiveManager());
 }
 #endif
-
-btGImpactCompoundShape* GImpactCompoundShape::UnmanagedPointer::get()
-{
-	return (btGImpactCompoundShape*)GImpactShapeInterface::UnmanagedPointer;
-}
 
 
 #ifndef DISABLE_BVH
@@ -431,6 +424,9 @@ btGImpactMeshShapePart::TrimeshPrimitiveManager* GImpactMeshShapePart::TrimeshPr
 #endif
 
 
+#undef Unmanaged
+#define Unmanaged static_cast<btGImpactMeshShapePart*>(_unmanaged)
+
 GImpactMeshShapePart::GImpactMeshShapePart(btGImpactMeshShapePart* shape)
 : GImpactShapeInterface(shape)
 {
@@ -449,19 +445,19 @@ GImpactMeshShapePart::GImpactMeshShapePart(StridingMeshInterface^ meshInterface,
 void GImpactMeshShapePart::GetVertex(int vertex_index, [Out] Vector3% vertex)
 {
 	btVector3* vertexTemp = new btVector3;
-	UnmanagedPointer->getVertex(vertex_index, *vertexTemp);
+	Unmanaged->getVertex(vertex_index, *vertexTemp);
 	Math::BtVector3ToVector3(vertexTemp, vertex);
 	delete vertexTemp;
 }
 
 int GImpactMeshShapePart::Part::get()
 {
-	return UnmanagedPointer->getPart();
+	return Unmanaged->getPart();
 }
 
 int GImpactMeshShapePart::VertexCount::get()
 {
-	return UnmanagedPointer->getVertexCount();
+	return Unmanaged->getVertexCount();
 }
 
 #ifndef DISABLE_BVH
@@ -471,11 +467,9 @@ GImpactMeshShapePart::TrimeshPrimitiveManager^ GImpactMeshShapePart::GImpactTrim
 }
 #endif
 
-btGImpactMeshShapePart* GImpactMeshShapePart::UnmanagedPointer::get()
-{
-	return (btGImpactMeshShapePart*)GImpactShapeInterface::UnmanagedPointer;
-}
 
+#undef Unmanaged
+#define Unmanaged static_cast<btGImpactMeshShape*>(_unmanaged)
 
 GImpactMeshShape::GImpactMeshShape(btGImpactMeshShape* shape)
 : GImpactShapeInterface(shape)
@@ -489,22 +483,17 @@ GImpactMeshShape::GImpactMeshShape(StridingMeshInterface^ meshInterface)
 
 GImpactMeshShapePart^ GImpactMeshShape::GetMeshPart(int index)
 {
-	return gcnew GImpactMeshShapePart(UnmanagedPointer->getMeshPart(index));
+	return gcnew GImpactMeshShapePart(Unmanaged->getMeshPart(index));
 }
 
 StridingMeshInterface^ GImpactMeshShape::MeshInterface::get()
 {
-	return gcnew StridingMeshInterface(UnmanagedPointer->getMeshInterface());
+	return gcnew StridingMeshInterface(Unmanaged->getMeshInterface());
 }
 
 int GImpactMeshShape::MeshPartCount::get()
 {
-	return UnmanagedPointer->getMeshPartCount();
-}
-
-btGImpactMeshShape* GImpactMeshShape::UnmanagedPointer::get()
-{
-	return (btGImpactMeshShape*)GImpactShapeInterface::UnmanagedPointer;
+	return Unmanaged->getMeshPartCount();
 }
 
 #endif

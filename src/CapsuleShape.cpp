@@ -2,6 +2,8 @@
 
 #include "CapsuleShape.h"
 
+#define Unmanaged static_cast<btCapsuleShape*>(_unmanaged)
+
 CapsuleShape::CapsuleShape(btCapsuleShape* shape)
 : ConvexInternalShape(shape)
 {
@@ -14,22 +16,17 @@ CapsuleShape::CapsuleShape(btScalar radius, btScalar height)
 
 btScalar CapsuleShape::HalfHeight::get()
 {
-	return UnmanagedPointer->getHalfHeight();
+	return Unmanaged->getHalfHeight();
 }
 
 btScalar CapsuleShape::Radius::get()
 {
-	return UnmanagedPointer->getRadius();
+	return Unmanaged->getRadius();
 }
 
 int CapsuleShape::UpAxis::get()
 {
-	return UnmanagedPointer->getUpAxis();
-}
-
-btCapsuleShape* CapsuleShape::UnmanagedPointer::get()
-{
-	return (btCapsuleShape*)ConvexInternalShape::UnmanagedPointer;
+	return Unmanaged->getUpAxis();
 }
 
 
