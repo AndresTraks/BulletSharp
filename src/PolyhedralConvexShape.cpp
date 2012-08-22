@@ -87,6 +87,7 @@ int PolyhedralConvexShape::VertexCount::get()
 }
 
 
+#undef Unmanaged
 #define Unmanaged static_cast<btPolyhedralConvexAabbCachingShape*>(_unmanaged)
 
 PolyhedralConvexAabbCachingShape::PolyhedralConvexAabbCachingShape(btPolyhedralConvexAabbCachingShape *shape)

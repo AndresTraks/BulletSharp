@@ -25,11 +25,6 @@ namespace BulletSharp
 			int get();
 			void set(int value);
 		}
-
-		property btSimpleBroadphaseProxy* UnmanagedPointer
-		{
-			btSimpleBroadphaseProxy* get() new;
-		}
 	};
 
 	public ref class SimpleBroadphase : BroadphaseInterface

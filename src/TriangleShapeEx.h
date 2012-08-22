@@ -111,11 +111,5 @@ namespace BulletSharp
 		void ApplyTransform(Matrix transform);
 		void BuildTriPlane(Vector4 plane);
 		bool OverlapTestConservative(TriangleShapeEx^ other);
-
-	internal:
-		property btTriangleShapeEx* UnmanagedPointer
-		{
-			btTriangleShapeEx* get();
-		}
 	};
 };

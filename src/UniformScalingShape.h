@@ -6,9 +6,6 @@ namespace BulletSharp
 {
 	public ref class UniformScalingShape : ConvexShape
 	{
-	private:
-		ConvexShape^ _childShape;
-
 	internal:
 		UniformScalingShape(btUniformScalingShape* shape);
 

@@ -11,7 +11,7 @@ HeightfieldTerrainShape::HeightfieldTerrainShape(btHeightfieldTerrainShape* terr
 {
 }
 
-HeightfieldTerrainShape::HeightfieldTerrainShape(int heightStickWidth, int heightStickLength, Stream^ heightfieldData,
+HeightfieldTerrainShape::HeightfieldTerrainShape(int heightStickWidth, int heightStickLength, System::IO::Stream^ heightfieldData,
 	btScalar heightScale, btScalar minHeight, btScalar maxHeight, int upAxis,
 	PhyScalarType heightDataType, bool flipQuadEdges)
 : ConcaveShape(0)

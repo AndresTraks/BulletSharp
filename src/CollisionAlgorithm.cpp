@@ -16,7 +16,7 @@ CollisionAlgorithmConstructionInfo::CollisionAlgorithmConstructionInfo()
 CollisionAlgorithmConstructionInfo::CollisionAlgorithmConstructionInfo(
 	BulletSharp::Dispatcher^ dispatcher, int temp)
 {
-	_info = new btCollisionAlgorithmConstructionInfo(dispatcher->UnmanagedPointer, temp);
+	_info = new btCollisionAlgorithmConstructionInfo(dispatcher->_unmanaged, temp);
 }
 
 BulletSharp::Dispatcher^ CollisionAlgorithmConstructionInfo::Dispatcher::get()

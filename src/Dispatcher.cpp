@@ -183,7 +183,7 @@ void Dispatcher::DispatchAllCollisionPairs(OverlappingPairCache^ pairCache,
 	DispatcherInfo^ dispatchInfo, Dispatcher^ dispatcher)
 {
 	_unmanaged->dispatchAllCollisionPairs(pairCache->UnmanagedPointer,
-		*dispatchInfo->UnmanagedPointer, dispatcher->UnmanagedPointer);
+		*dispatchInfo->UnmanagedPointer, dispatcher->_unmanaged);
 }
 
 CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)

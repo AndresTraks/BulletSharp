@@ -32,12 +32,6 @@ namespace BulletSharp
 		TetrahedronShapeEx();
 
 		void SetVertices(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 v3);
-
-	internal:
-		property btTetrahedronShapeEx* UnmanagedPointer
-		{
-			btTetrahedronShapeEx* get() new;
-		}
 	};
 
 	public ref class GImpactShapeInterface : ConcaveShape

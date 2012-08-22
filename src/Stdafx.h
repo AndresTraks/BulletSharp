@@ -329,7 +329,6 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 
 
 using namespace System;
-using namespace System::IO;
 using namespace System::Diagnostics;
 using namespace System::Runtime::InteropServices;
 using namespace msclr;
@@ -351,12 +350,6 @@ inline GCHandle VoidPtrToGCHandle(void* pointer)
 #define GetUnmanagedNullable(value) (value != nullptr ? value->_unmanaged : 0)
 
 #define ReturnCachedObject(type, managedObj, unmanagedPtr) { \
-	if (managedObj != nullptr && managedObj->UnmanagedPointer == unmanagedPtr) \
-	return managedObj; \
-	managedObj = gcnew type(unmanagedPtr); \
-	return managedObj; }
-
-#define ReturnCachedObjectNew(type, managedObj, unmanagedPtr) { \
 	if (managedObj != nullptr && managedObj->_unmanaged == unmanagedPtr) \
 	return managedObj; \
 	managedObj = gcnew type(unmanagedPtr); \

@@ -27,6 +27,8 @@
 #include "Utilities.h"
 //#include "InternalHelpers.h"
 
+using namespace System::IO;
+
 namespace BulletSharp
 {
 	DataStream::DataStream( const void* buffer, Int64 sizeInBytes, bool canRead, bool makeCopy )

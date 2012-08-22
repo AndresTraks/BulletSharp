@@ -92,27 +92,27 @@ BroadphaseProxy^ BroadphaseProxy::GetManaged(btBroadphaseProxy* broadphaseProxy)
 
 Vector3 BroadphaseProxy::AabbMin::get()
 {
-	return Math::BtVector3ToVector3(&_proxy->m_aabbMin);
+	return Math::BtVector3ToVector3(&_unmanaged->m_aabbMin);
 }
 void BroadphaseProxy::AabbMin::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_proxy->m_aabbMin);
+	Math::Vector3ToBtVector3(value, &_unmanaged->m_aabbMin);
 }
 
 Vector3 BroadphaseProxy::AabbMax::get()
 {
-	return Math::BtVector3ToVector3(&_proxy->m_aabbMax);
+	return Math::BtVector3ToVector3(&_unmanaged->m_aabbMax);
 }
 void BroadphaseProxy::AabbMax::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_proxy->m_aabbMax);
+	Math::Vector3ToBtVector3(value, &_unmanaged->m_aabbMax);
 }
 
 Object^ BroadphaseProxy::ClientObject::get()
 {
-	if (_proxy->m_clientObject)
+	if (_unmanaged->m_clientObject)
 	{
-		_clientObject = CollisionObject::GetManaged((btCollisionObject*)_proxy->m_clientObject);
+		_clientObject = CollisionObject::GetManaged((btCollisionObject*)_unmanaged->m_clientObject);
 	}
 
 	return _clientObject;
@@ -124,39 +124,39 @@ void BroadphaseProxy::ClientObject::set(Object^ value)
 
 BulletSharp::CollisionFilterGroups BroadphaseProxy::CollisionFilterGroup::get()
 {
-	return (BulletSharp::CollisionFilterGroups)_proxy->m_collisionFilterGroup;
+	return (BulletSharp::CollisionFilterGroups)_unmanaged->m_collisionFilterGroup;
 }
 void BroadphaseProxy::CollisionFilterGroup::set(BulletSharp::CollisionFilterGroups value)
 {
-	_proxy->m_collisionFilterGroup = (short int)value;
+	_unmanaged->m_collisionFilterGroup = (short int)value;
 }
 
 BulletSharp::CollisionFilterGroups BroadphaseProxy::CollisionFilterMask::get()
 {
-	return (BulletSharp::CollisionFilterGroups)_proxy->m_collisionFilterMask;
+	return (BulletSharp::CollisionFilterGroups)_unmanaged->m_collisionFilterMask;
 }
 void BroadphaseProxy::CollisionFilterMask::set(BulletSharp::CollisionFilterGroups value)
 {
-	_proxy->m_collisionFilterMask = (short int)value;
+	_unmanaged->m_collisionFilterMask = (short int)value;
 }
 
 IntPtr BroadphaseProxy::MultiSapParentProxy::get()
 {
-	return IntPtr(_proxy->m_multiSapParentProxy);
+	return IntPtr(_unmanaged->m_multiSapParentProxy);
 }
 void BroadphaseProxy::MultiSapParentProxy::set(IntPtr value)
 {
-	_proxy->m_multiSapParentProxy = value.ToPointer();
+	_unmanaged->m_multiSapParentProxy = value.ToPointer();
 }
 
 int BroadphaseProxy::Uid::get()
 {
-	return _proxy->getUid();
+	return _unmanaged->getUid();
 }
 void BroadphaseProxy::Uid::set(int value)
 {
 	_uid = value;
-	_proxy->m_uniqueId = value;
+	_unmanaged->m_uniqueId = value;
 }
 
 bool BroadphaseProxy::IsCompound(int proxyType)
@@ -196,12 +196,12 @@ bool BroadphaseProxy::IsSoftBody(int proxyType)
 
 btBroadphaseProxy* BroadphaseProxy::UnmanagedPointer::get()
 {
-	return _proxy;
+	return _unmanaged;
 }
 void BroadphaseProxy::UnmanagedPointer::set(btBroadphaseProxy* value)
 {
-	_proxy = value;
-	ObjectTable::Add(this, _proxy);
+	_unmanaged = value;
+	ObjectTable::Add(this, _unmanaged);
 }
 
 
@@ -222,7 +222,7 @@ BroadphasePair::BroadphasePair(BroadphasePair^ pair)
 
 BroadphasePair::BroadphasePair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
 {
-	_pair = new btBroadphasePair(*proxy0->UnmanagedPointer, *proxy1->UnmanagedPointer);
+	_pair = new btBroadphasePair(*proxy0->_unmanaged, *proxy1->_unmanaged);
 }
 
 CollisionAlgorithm^ BroadphasePair::Algorithm::get()
@@ -243,7 +243,7 @@ void BroadphasePair::Proxy0::set(BroadphaseProxy^ value)
 	if (value == nullptr)
 		_pair->m_pProxy0 = nullptr;
 	else
-		_pair->m_pProxy0 = value->UnmanagedPointer;
+		_pair->m_pProxy0 = value->_unmanaged;
 }
 
 BroadphaseProxy^ BroadphasePair::Proxy1::get()
@@ -255,7 +255,7 @@ void BroadphasePair::Proxy1::set(BroadphaseProxy^ value)
 	if (value == nullptr)
 		_pair->m_pProxy1 = nullptr;
 	else
-		_pair->m_pProxy1 = value->UnmanagedPointer;
+		_pair->m_pProxy1 = value->_unmanaged;
 }
 
 btBroadphasePair* BroadphasePair::UnmanagedPointer::get()

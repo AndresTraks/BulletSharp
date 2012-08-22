@@ -16,8 +16,7 @@ UniformScalingShape::UniformScalingShape(ConvexShape^ convexChildShape, btScalar
 
 ConvexShape^ UniformScalingShape::ChildShape::get()
 {
-	btConvexShape* childShape = Unmanaged->getChildShape();
-	ReturnCachedObject(ConvexShape, _childShape, childShape);
+	return (ConvexShape^)CollisionShape::GetManaged(Unmanaged->getChildShape());
 }
 
 btScalar UniformScalingShape::UniformScalingFactor::get()

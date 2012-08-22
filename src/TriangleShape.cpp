@@ -5,6 +5,8 @@
 #include "Collections.h"
 #include "TriangleShape.h"
 
+#define Unmanaged static_cast<btTriangleShape*>(_unmanaged)
+
 TriangleShape::TriangleShape(btTriangleShape* triangleShape)
 : PolyhedralConvexShape(triangleShape)
 {
@@ -32,7 +34,7 @@ TriangleShape::TriangleShape(Vector3 point0, Vector3 point1, Vector3 point2)
 void TriangleShape::CalcNormal([Out] Vector3% normal)
 {
 	btVector3* normalTemp = new btVector3;
-	UnmanagedPointer->calcNormal(*normalTemp);
+	Unmanaged->calcNormal(*normalTemp);
 	Math::BtVector3ToVector3(normalTemp, normal);
 	delete normalTemp;
 }
@@ -42,7 +44,7 @@ void TriangleShape::GetPlaneEquation(int index, [Out] Vector3% planeNormal, [Out
 	btVector3* planeNormalTemp = new btVector3;
 	btVector3* planeSupportTemp = new btVector3;
 
-	UnmanagedPointer->getPlaneEquation(index, *planeNormalTemp, *planeSupportTemp);
+	Unmanaged->getPlaneEquation(index, *planeNormalTemp, *planeSupportTemp);
 	
 	Math::BtVector3ToVector3(planeNormalTemp, planeNormal);
 	Math::BtVector3ToVector3(planeSupportTemp, planeSupport);
@@ -60,7 +62,7 @@ void TriangleShape_GetVertexPtr(btTriangleShape* shape, int index, btVector3* ve
 Vector3 TriangleShape::GetVertexPtr(int index)
 {
 	btVector3* vertexTemp = new btVector3;
-	TriangleShape_GetVertexPtr(UnmanagedPointer, index, vertexTemp);
+	TriangleShape_GetVertexPtr(Unmanaged, index, vertexTemp);
 	Vector3 vertex = Math::BtVector3ToVector3(vertexTemp);
 	delete vertexTemp;
 	return vertex;
@@ -68,13 +70,8 @@ Vector3 TriangleShape::GetVertexPtr(int index)
 
 Vector3Array^ TriangleShape::Vertices::get()
 {
-	btVector3* vertices = UnmanagedPointer->m_vertices1;
+	btVector3* vertices = Unmanaged->m_vertices1;
 	ReturnCachedObjectStatic(Vector3Array, _vertices, vertices, 3);
-}
-
-btTriangleShape* TriangleShape::UnmanagedPointer::get()
-{
-	return (btTriangleShape*)PolyhedralConvexShape::UnmanagedPointer;
 }
 
 #endif

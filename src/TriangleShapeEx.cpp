@@ -163,6 +163,8 @@ void PrimitiveTriangle::UnmanagedPointer::set(btPrimitiveTriangle* value)
 }
 
 
+#define Unmanaged static_cast<btTriangleShapeEx*>(_unmanaged)
+
 TriangleShapeEx::TriangleShapeEx()
 : TriangleShape(new btTriangleShapeEx())
 {
@@ -188,32 +190,27 @@ TriangleShapeEx::TriangleShapeEx(Vector3 p0, Vector3 p1, Vector3 p2)
 }
 
 TriangleShapeEx::TriangleShapeEx(TriangleShapeEx^ other)
-: TriangleShape(new btTriangleShapeEx(*other->UnmanagedPointer))
+: TriangleShape(new btTriangleShapeEx(*(btTriangleShapeEx*)other->_unmanaged))
 {
 }
 
 void TriangleShapeEx::ApplyTransform(Matrix transform)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
-	UnmanagedPointer->applyTransform(*transformTemp);
+	Unmanaged->applyTransform(*transformTemp);
 	delete transformTemp;
 }
 
 void TriangleShapeEx::BuildTriPlane(Vector4 plane)
 {
 	btVector4* planeTemp = Math::Vector4ToBtVector4(plane);
-	UnmanagedPointer->buildTriPlane(*planeTemp);
+	Unmanaged->buildTriPlane(*planeTemp);
 	delete planeTemp;
 }
 
 bool TriangleShapeEx::OverlapTestConservative(TriangleShapeEx^ other)
 {
-	return UnmanagedPointer->overlap_test_conservative(*other->UnmanagedPointer);
-}
-
-btTriangleShapeEx* TriangleShapeEx::UnmanagedPointer::get()
-{
-	return (btTriangleShapeEx*)TriangleShape::UnmanagedPointer;
+	return Unmanaged->overlap_test_conservative(*(btTriangleShapeEx*)other->_unmanaged);
 }
 
 #endif

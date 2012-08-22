@@ -6,8 +6,10 @@ namespace BulletSharp
 
 	public ref class BroadphaseProxy
 	{
+	internal:
+		btBroadphaseProxy* _unmanaged;
+
 	private:
-		btBroadphaseProxy* _proxy;
 		bool _doesNotOwnObject;
 
 	protected:

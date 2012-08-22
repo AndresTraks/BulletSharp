@@ -10,7 +10,7 @@ namespace BulletSharp
 		HeightfieldTerrainShape(btHeightfieldTerrainShape* terrainShape);
 
 	public:
-		HeightfieldTerrainShape(int heightStickWidth, int heightStickLength, Stream^ heightfieldData,
+		HeightfieldTerrainShape(int heightStickWidth, int heightStickLength, System::IO::Stream^ heightfieldData,
 			btScalar heightScale, btScalar minHeight, btScalar maxHeight, int upAxis,
 			PhyScalarType heightDataType, bool flipQuadEdges);
 

@@ -174,7 +174,7 @@ void BroadphaseInterface::AabbTest(Vector3 aabbMin, Vector3 aabbMax, BroadphaseA
 
 void BroadphaseInterface::CalculateOverlappingPairs(Dispatcher^ dispatcher)
 {
-	_unmanaged->calculateOverlappingPairs(dispatcher->UnmanagedPointer);
+	_unmanaged->calculateOverlappingPairs(dispatcher->_unmanaged);
 }
 
 BroadphaseProxy^ BroadphaseInterface::CreateProxy(Vector3 aabbMin, Vector3 aabbMax,
@@ -188,7 +188,7 @@ BroadphaseProxy^ BroadphaseInterface::CreateProxy(Vector3 aabbMin, Vector3 aabbM
 
 	proxy = _unmanaged->createProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax),
 		shapeType, userPtr.ToPointer(), (short int)collisionFilterGroup, (short int)collisionFilterMask,
-		dispatcher->UnmanagedPointer, multiSapProxy.ToPointer());
+		dispatcher->_unmanaged, multiSapProxy.ToPointer());
 
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
@@ -198,7 +198,7 @@ BroadphaseProxy^ BroadphaseInterface::CreateProxy(Vector3 aabbMin, Vector3 aabbM
 
 void BroadphaseInterface::DestroyProxy(BroadphaseProxy^ proxy, Dispatcher^ dispatcher)
 {
-	_unmanaged->destroyProxy(proxy->UnmanagedPointer, dispatcher->UnmanagedPointer);
+	_unmanaged->destroyProxy(proxy->_unmanaged, dispatcher->_unmanaged);
 }
 
 void BroadphaseInterface::GetAabb(BroadphaseProxy^ proxy, Vector3% aabbMin, Vector3% aabbMax)
@@ -206,7 +206,7 @@ void BroadphaseInterface::GetAabb(BroadphaseProxy^ proxy, Vector3% aabbMin, Vect
 	btVector3* aabbMinTemp = new btVector3;
 	btVector3* aabbMaxTemp = new btVector3;
 
-	_unmanaged->getAabb(proxy->UnmanagedPointer, *aabbMinTemp, *aabbMaxTemp);
+	_unmanaged->getAabb(proxy->_unmanaged, *aabbMinTemp, *aabbMaxTemp);
 
 	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
 	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
@@ -272,7 +272,7 @@ void BroadphaseInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayC
 
 void BroadphaseInterface::ResetPool(Dispatcher^ dispatcher)
 {
-	_unmanaged->resetPool(dispatcher->UnmanagedPointer);
+	_unmanaged->resetPool(dispatcher->_unmanaged);
 }
 
 void BroadphaseInterface::SetAabb(BroadphaseProxy^ proxy, Vector3 aabbMin, Vector3 aabbMax, Dispatcher^ dispatcher)
@@ -280,7 +280,7 @@ void BroadphaseInterface::SetAabb(BroadphaseProxy^ proxy, Vector3 aabbMin, Vecto
 	VECTOR3_DEF(aabbMin);
 	VECTOR3_DEF(aabbMax);
 
-	_unmanaged->setAabb(proxy->UnmanagedPointer, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), dispatcher->UnmanagedPointer);
+	_unmanaged->setAabb(proxy->_unmanaged, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), dispatcher->_unmanaged);
 
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);

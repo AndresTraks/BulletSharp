@@ -13,6 +13,8 @@
 
 #ifndef DISABLE_DBVT
 
+#define Unmanaged static_cast<btDbvtProxy*>(_unmanaged)
+
 DbvtProxy::DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
 	CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
 : BroadphaseProxy(0)
@@ -36,36 +38,32 @@ DbvtProxy::DbvtProxy(btDbvtProxy* proxy)
 
 DbvtNode^ DbvtProxy::Leaf::get()
 {
-	btDbvtNode* leaf = UnmanagedPointer->leaf;
+	btDbvtNode* leaf = Unmanaged->leaf;
 	ReturnCachedObjectNullable(DbvtNode, _leaf, leaf);
 }
 void DbvtProxy::Leaf::set(DbvtNode^ value)
 {
-	UnmanagedPointer->leaf = GetUnmanagedNullable(value);
+	Unmanaged->leaf = GetUnmanagedNullable(value);
 }
 
 DbvtProxyPtrArray^ DbvtProxy::Links::get()
 {
-	return gcnew DbvtProxyPtrArray(UnmanagedPointer->links, 2);
+	return gcnew DbvtProxyPtrArray(Unmanaged->links, 2);
 }
 
 int DbvtProxy::Stage::get()
 {
-	return UnmanagedPointer->stage;
+	return Unmanaged->stage;
 }
 void DbvtProxy::Stage::set(int value)
 {
-	UnmanagedPointer->stage = value;
-}
-
-btDbvtProxy* DbvtProxy::UnmanagedPointer::get()
-{
-	return (btDbvtProxy*)BroadphaseProxy::UnmanagedPointer;
+	Unmanaged->stage = value;
 }
 
 #endif
 
 
+#undef Unmanaged
 #define Unmanaged static_cast<btDbvtBroadphase*>(_unmanaged)
 
 DbvtBroadphase::DbvtBroadphase(btDbvtBroadphase* broadphase)

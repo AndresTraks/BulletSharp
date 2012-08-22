@@ -34,11 +34,5 @@ namespace BulletSharp
 		{
 			Vector3Array^ get();
 		}
-
-	internal:
-		property btConvexPointCloudShape* UnmanagedPointer
-		{
-			btConvexPointCloudShape* get() new;
-		}
 	};
 };

@@ -132,7 +132,7 @@ btScalar CollisionWorld::ConvexResultCallback::AddSingleResult(LocalConvexResult
 
 bool CollisionWorld::ConvexResultCallback::NeedsCollision(BroadphaseProxy^ proxy0)
 {
-	return _unmanaged->needsCollision(proxy0->UnmanagedPointer);
+	return _unmanaged->needsCollision(proxy0->_unmanaged);
 }
 
 btScalar CollisionWorld::ConvexResultCallback::ClosestHitFraction::get()
@@ -262,7 +262,7 @@ CollisionWorld::ContactResultCallback::ContactResultCallback()
 
 bool CollisionWorld::ContactResultCallback::NeedsCollision(BroadphaseProxy^ proxy0)
 {
-	return _callback->baseNeedsCollision(proxy0->UnmanagedPointer);
+	return _callback->baseNeedsCollision(proxy0->_unmanaged);
 }
 
 CollisionFilterGroups CollisionWorld::ContactResultCallback::CollisionFilterGroup::get()
@@ -393,7 +393,7 @@ btScalar CollisionWorld::RayResultCallback::AddSingleResult(LocalRayResult^ rayR
 
 bool CollisionWorld::RayResultCallback::NeedsCollision(BroadphaseProxy^ proxy0)
 {
-	return _unmanaged->needsCollision(proxy0->UnmanagedPointer);
+	return _unmanaged->needsCollision(proxy0->_unmanaged);
 }
 
 BulletSharp::CollisionObject^ CollisionWorld::RayResultCallback::CollisionObject::get()
@@ -591,7 +591,7 @@ CollisionWorld::CollisionWorld(btCollisionWorld* world)
 
 CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, CollisionConfiguration^ collisionConfiguration)
 {
-	UnmanagedPointer = new btCollisionWorld(dispatcher->UnmanagedPointer, pairCache->_unmanaged, collisionConfiguration->UnmanagedPointer);
+	UnmanagedPointer = new btCollisionWorld(dispatcher->_unmanaged, pairCache->_unmanaged, collisionConfiguration->UnmanagedPointer);
 	_collisionConfiguration = collisionConfiguration;
 	_dispatcher = dispatcher;
 	_broadphase = pairCache;

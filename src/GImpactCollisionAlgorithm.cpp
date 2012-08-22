@@ -13,7 +13,7 @@ GImpactCollisionAlgorithm::GImpactCollisionAlgorithm(btGImpactCollisionAlgorithm
 
 void GImpactCollisionAlgorithm::RegisterAlgorithm(CollisionDispatcher^ dispatcher)
 {
-	btGImpactCollisionAlgorithm::registerAlgorithm(dispatcher->UnmanagedPointer);
+	btGImpactCollisionAlgorithm::registerAlgorithm((btCollisionDispatcher*)dispatcher->_unmanaged);
 }
 
 #endif

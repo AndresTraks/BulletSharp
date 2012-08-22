@@ -42,14 +42,14 @@ void CollisionDispatcher::DefaultNearCallback(BroadphasePair^ collisionPair,
 	CollisionDispatcher^ dispatcher, DispatcherInfo^ dispatchInfo)
 {
 	btCollisionDispatcherWrapper::defaultNearCallback(*collisionPair->UnmanagedPointer,
-		*dispatcher->UnmanagedPointer, *dispatchInfo->UnmanagedPointer);
+		*(btCollisionDispatcher*)dispatcher->_unmanaged, *dispatchInfo->UnmanagedPointer);
 }
 
 void CollisionDispatcher::DispatchAllCollisionPairs(OverlappingPairCache^ pairCache,
 	DispatcherInfo^ dispatchInfo, Dispatcher^ dispatcher)
 {
 	UnmanagedPointer->dispatchAllCollisionPairs(pairCache->UnmanagedPointer,
-		*dispatchInfo->UnmanagedPointer, dispatcher->UnmanagedPointer);
+		*dispatchInfo->UnmanagedPointer, dispatcher->_unmanaged);
 }
 
 void CollisionDispatcher::RegisterCollisionCreateFunc(BroadphaseNativeType proxyType0,

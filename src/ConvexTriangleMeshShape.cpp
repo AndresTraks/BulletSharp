@@ -3,6 +3,8 @@
 #include "ConvexTriangleMeshShape.h"
 #include "StridingMeshInterface.h"
 
+#define Unmanaged static_cast<btConvexTriangleMeshShape*>(_unmanaged)
+
 ConvexTriangleMeshShape::ConvexTriangleMeshShape(btConvexTriangleMeshShape* meshShape)
 : PolyhedralConvexAabbCachingShape(meshShape)
 {
@@ -23,7 +25,7 @@ void ConvexTriangleMeshShape::CalculatePrincipalAxisTransform(Matrix principal, 
 	btTransform* principalTemp = Math::MatrixToBtTransform(principal);
 	VECTOR3_DEF(inertia);
 
-	UnmanagedPointer->calculatePrincipalAxisTransform(*principalTemp, VECTOR3_USE(inertia), volume);
+	Unmanaged->calculatePrincipalAxisTransform(*principalTemp, VECTOR3_USE(inertia), volume);
 
 	delete principalTemp;
 	VECTOR3_DEL(inertia);
@@ -31,11 +33,6 @@ void ConvexTriangleMeshShape::CalculatePrincipalAxisTransform(Matrix principal, 
 
 StridingMeshInterface^ ConvexTriangleMeshShape::MeshInterface::get()
 {
-	btStridingMeshInterface* stridingMeshInterface = UnmanagedPointer->getMeshInterface();
+	btStridingMeshInterface* stridingMeshInterface = Unmanaged->getMeshInterface();
 	ReturnCachedObject(StridingMeshInterface, _stridingMeshInterface, stridingMeshInterface);
-}
-
-btConvexTriangleMeshShape* ConvexTriangleMeshShape::UnmanagedPointer::get()
-{
-	return (btConvexTriangleMeshShape*)PolyhedralConvexAabbCachingShape::UnmanagedPointer;
 }

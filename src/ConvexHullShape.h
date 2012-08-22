@@ -30,11 +30,5 @@ namespace BulletSharp
 		{
 			Vector3Array^ get();
 		}
-
-	internal:
-		property btConvexHullShape* UnmanagedPointer
-		{
-			btConvexHullShape* get() new;
-		}
 	};
 };

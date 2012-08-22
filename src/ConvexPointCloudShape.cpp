@@ -5,6 +5,8 @@
 #include "Collections.h"
 #include "ConvexPointCloudShape.h"
 
+#define Unmanaged static_cast<btConvexPointCloudShape*>(_unmanaged)
+
 ConvexPointCloudShape::ConvexPointCloudShape(btConvexPointCloudShape* shape)
 : PolyhedralConvexAabbCachingShape(shape)
 {
@@ -36,7 +38,7 @@ void ConvexPointCloudShape_GetScaledPoint(btConvexPointCloudShape* shape, int i,
 Vector3 ConvexPointCloudShape::GetScaledPoint(int i)
 {
 	btVector3* pointTemp = new btVector3;
-	ConvexPointCloudShape_GetScaledPoint(UnmanagedPointer, i, pointTemp);
+	ConvexPointCloudShape_GetScaledPoint(Unmanaged, i, pointTemp);
 	Vector3 point = Math::BtVector3ToVector3(pointTemp);
 	delete pointTemp;
 	return point;
@@ -47,7 +49,7 @@ void ConvexPointCloudShape::SetPoints(array<Vector3>^ points, bool computeAabb, 
 	btVector3* btPoints = Math::Vector3ArrayToUnmanaged(points);
 	VECTOR3_DEF(localScaling);
 	
-	UnmanagedPointer->setPoints(btPoints, points->Length, computeAabb, VECTOR3_USE(localScaling));
+	Unmanaged->setPoints(btPoints, points->Length, computeAabb, VECTOR3_USE(localScaling));
 
 	VECTOR3_DEL(localScaling);
 	// Don't delete btPoints, they'll be used by btConvexPointCloudShape.
@@ -63,7 +65,7 @@ void ConvexPointCloudShape::SetPoints(array<Vector3>^ points, bool computeAabb)
 {
 	btVector3* btPoints = Math::Vector3ArrayToUnmanaged(points);
 	
-	ConvexPointCloudShape_SetPoints(UnmanagedPointer, btPoints, points->Length, computeAabb);
+	ConvexPointCloudShape_SetPoints(Unmanaged, btPoints, points->Length, computeAabb);
 }
 
 #pragma managed(push, off)
@@ -76,18 +78,18 @@ void ConvexPointCloudShape::SetPoints(array<Vector3>^ points)
 {
 	btVector3* btPoints = Math::Vector3ArrayToUnmanaged(points);
 	
-	ConvexPointCloudShape_SetPoints(UnmanagedPointer, btPoints, points->Length);
+	ConvexPointCloudShape_SetPoints(Unmanaged, btPoints, points->Length);
 }
 
 int ConvexPointCloudShape::NumPoints::get()
 {
-	return UnmanagedPointer->getNumPoints();
+	return Unmanaged->getNumPoints();
 }
 
 Vector3Array^ ConvexPointCloudShape::UnscaledPoints::get()
 {
-	btVector3* unscaledPoints = UnmanagedPointer->getUnscaledPoints();
-	int numPoints = UnmanagedPointer->getNumPoints();
+	btVector3* unscaledPoints = Unmanaged->getUnscaledPoints();
+	int numPoints = Unmanaged->getNumPoints();
 
 	if (_unscaledPoints == nullptr)
 		_unscaledPoints = gcnew Vector3Array(unscaledPoints, numPoints);
@@ -95,11 +97,6 @@ Vector3Array^ ConvexPointCloudShape::UnscaledPoints::get()
 		_unscaledPoints = gcnew Vector3Array(unscaledPoints, numPoints);
 
 	return _unscaledPoints;
-}
-
-btConvexPointCloudShape* ConvexPointCloudShape::UnmanagedPointer::get()
-{
-	return (btConvexPointCloudShape*)PolyhedralConvexAabbCachingShape::UnmanagedPointer;
 }
 
 #endif

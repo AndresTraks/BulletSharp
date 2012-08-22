@@ -24,12 +24,12 @@ GhostObject::GhostObject()
 #ifndef DISABLE_INTERNAL
 void GhostObject::AddOverlappingObjectInternal(BroadphaseProxy^ otherProxy, BroadphaseProxy^ thisProxy)
 {
-	Unmanaged->addOverlappingObjectInternal(otherProxy->UnmanagedPointer, thisProxy->UnmanagedPointer);
+	Unmanaged->addOverlappingObjectInternal(otherProxy->_unmanaged, thisProxy->_unmanaged);
 }
 
 void GhostObject::AddOverlappingObjectInternal(BroadphaseProxy^ otherProxy)
 {
-	Unmanaged->addOverlappingObjectInternal(otherProxy->UnmanagedPointer);
+	Unmanaged->addOverlappingObjectInternal(otherProxy->_unmanaged);
 }
 #endif
 
@@ -53,12 +53,12 @@ void GhostObject::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, CollisionWor
 #ifndef DISABLE_INTERNAL
 void GhostObject::RemoveOverlappingObjectInternal(BroadphaseProxy^ otherProxy, Dispatcher^ dispatcher, BroadphaseProxy^ thisProxy)
 {
-	Unmanaged->removeOverlappingObjectInternal(otherProxy->UnmanagedPointer, dispatcher->UnmanagedPointer, thisProxy->UnmanagedPointer);
+	Unmanaged->removeOverlappingObjectInternal(otherProxy->_unmanaged, dispatcher->_unmanaged, thisProxy->_unmanaged);
 }
 
 void GhostObject::RemoveOverlappingObjectInternal(BroadphaseProxy^ otherProxy, Dispatcher^ dispatcher)
 {
-	Unmanaged->removeOverlappingObjectInternal(otherProxy->UnmanagedPointer, dispatcher->UnmanagedPointer);
+	Unmanaged->removeOverlappingObjectInternal(otherProxy->_unmanaged, dispatcher->_unmanaged);
 }
 #endif
 

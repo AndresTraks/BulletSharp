@@ -586,7 +586,7 @@ btGImpactMeshShape* Serialize::BulletWorldImporterWrapper::createGimpactShape(bt
 
 class btConvexHullShape* Serialize::BulletWorldImporterWrapper::createConvexHullShape()
 {
-	return _importer->CreateConvexHullShape()->UnmanagedPointer;
+	return (btConvexHullShape*)_importer->CreateConvexHullShape()->_unmanaged;
 }
 
 class btCompoundShape* Serialize::BulletWorldImporterWrapper::createCompoundShape()

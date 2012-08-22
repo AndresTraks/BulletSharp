@@ -7,6 +7,8 @@
 #include "StridingMeshInterface.h"
 #include "TriangleShapeEx.h"
 
+#define Unmanaged static_cast<btTetrahedronShapeEx*>(_unmanaged)
+
 TetrahedronShapeEx::TetrahedronShapeEx(btTetrahedronShapeEx* shape)
 : BU_Simplex1to4(shape)
 {
@@ -24,7 +26,7 @@ void TetrahedronShapeEx::SetVertices(Vector3 v0, Vector3 v1, Vector3 v2, Vector3
 	VECTOR3_DEF(v2);
 	VECTOR3_DEF(v3);
 
-	UnmanagedPointer->setVertices(VECTOR3_USE(v0), VECTOR3_USE(v1), VECTOR3_USE(v2), VECTOR3_USE(v3));
+	Unmanaged->setVertices(VECTOR3_USE(v0), VECTOR3_USE(v1), VECTOR3_USE(v2), VECTOR3_USE(v3));
 
 	VECTOR3_DEL(v0);
 	VECTOR3_DEL(v1);
@@ -32,12 +34,8 @@ void TetrahedronShapeEx::SetVertices(Vector3 v0, Vector3 v1, Vector3 v2, Vector3
 	VECTOR3_DEL(v3);
 }
 
-btTetrahedronShapeEx* TetrahedronShapeEx::UnmanagedPointer::get()
-{
-	return (btTetrahedronShapeEx*)BU_Simplex1to4::UnmanagedPointer;
-}
 
-
+#undef Unmanaged
 #define Unmanaged static_cast<btGImpactShapeInterface*>(_unmanaged)
 
 GImpactShapeInterface::GImpactShapeInterface(btGImpactShapeInterface* shapeInterface)

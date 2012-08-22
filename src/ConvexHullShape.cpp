@@ -3,6 +3,8 @@
 #include "Collections.h"
 #include "ConvexHullShape.h"
 
+#define Unmanaged static_cast<btConvexHullShape*>(_unmanaged)
+
 ConvexHullShape::ConvexHullShape()
 : PolyhedralConvexAabbCachingShape(new btConvexHullShape())
 {
@@ -21,7 +23,7 @@ ConvexHullShape::ConvexHullShape(System::Collections::Generic::IEnumerable<Vecto
 	for each (Vector3 point in points)
 	{
 		Math::Vector3ToBtVector3(point, pointTemp);
-		UnmanagedPointer->addPoint(*pointTemp);
+		Unmanaged->addPoint(*pointTemp);
 	}
 
 	delete pointTemp;
@@ -30,7 +32,7 @@ ConvexHullShape::ConvexHullShape(System::Collections::Generic::IEnumerable<Vecto
 void ConvexHullShape::AddPoint(Vector3 point)
 {
 	VECTOR3_DEF(point);
-	UnmanagedPointer->addPoint(VECTOR3_USE(point));
+	Unmanaged->addPoint(VECTOR3_USE(point));
 	VECTOR3_DEL(point);
 }
 
@@ -43,7 +45,7 @@ void ConvexHullShape_GetScaledPoint(btConvexHullShape* shape, int i, btVector3* 
 Vector3 ConvexHullShape::GetScaledPoint(int i)
 {
 	btVector3* pointTemp = new btVector3;
-	ConvexHullShape_GetScaledPoint(UnmanagedPointer, i, pointTemp);
+	ConvexHullShape_GetScaledPoint(Unmanaged, i, pointTemp);
 	Vector3 point = Math::BtVector3ToVector3(pointTemp);
 	delete pointTemp;
 	return point;
@@ -51,13 +53,13 @@ Vector3 ConvexHullShape::GetScaledPoint(int i)
 
 int ConvexHullShape::NumPoints::get()
 {
-	return UnmanagedPointer->getNumPoints();
+	return Unmanaged->getNumPoints();
 }
 
 Vector3Array^ ConvexHullShape::UnscaledPoints::get()
 {
-	btVector3* unscaledPoints = UnmanagedPointer->getUnscaledPoints();
-	int numPoints = UnmanagedPointer->getNumPoints();
+	btVector3* unscaledPoints = Unmanaged->getUnscaledPoints();
+	int numPoints = Unmanaged->getNumPoints();
 
 	if (_unscaledPoints == nullptr)
 		_unscaledPoints = gcnew Vector3Array(unscaledPoints, numPoints);
@@ -65,9 +67,4 @@ Vector3Array^ ConvexHullShape::UnscaledPoints::get()
 		_unscaledPoints = gcnew Vector3Array(unscaledPoints, numPoints);
 
 	return _unscaledPoints;
-}
-
-btConvexHullShape* ConvexHullShape::UnmanagedPointer::get()
-{
-	return (btConvexHullShape*)PolyhedralConvexAabbCachingShape::UnmanagedPointer;
 }

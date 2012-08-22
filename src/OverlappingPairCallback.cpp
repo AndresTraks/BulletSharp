@@ -64,22 +64,19 @@ OverlappingPairCallback::!OverlappingPairCallback()
 BroadphasePair^ OverlappingPairCallback::AddOverlappingPair(
 	BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
 {
-	return gcnew BroadphasePair(_unmanaged->addOverlappingPair(
-		proxy0->UnmanagedPointer, proxy1->UnmanagedPointer));
+	return gcnew BroadphasePair(_unmanaged->addOverlappingPair(proxy0->_unmanaged, proxy1->_unmanaged));
 }
 
 IntPtr OverlappingPairCallback::RemoveOverlappingPair(BroadphaseProxy^ proxy0,
 	BroadphaseProxy^ proxy1, Dispatcher^ dispatcher)
 {
-	return IntPtr(_unmanaged->removeOverlappingPair(proxy0->UnmanagedPointer,
-		proxy1->UnmanagedPointer, dispatcher->UnmanagedPointer));
+	return IntPtr(_unmanaged->removeOverlappingPair(proxy0->_unmanaged, proxy1->_unmanaged, dispatcher->_unmanaged));
 }
 
 void OverlappingPairCallback::RemoveOverlappingPairsContainingProxy(
 	BroadphaseProxy^ proxy0, Dispatcher^ dispatcher)
 {
-	_unmanaged->removeOverlappingPairsContainingProxy(
-		proxy0->UnmanagedPointer, dispatcher->UnmanagedPointer);
+	_unmanaged->removeOverlappingPairsContainingProxy(proxy0->_unmanaged, dispatcher->_unmanaged);
 }
 
 bool OverlappingPairCallback::IsDisposed::get()

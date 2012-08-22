@@ -44,11 +44,6 @@ namespace BulletSharp
 			int get();
 			void set(int value);
 		}
-
-		property btDbvtProxy* UnmanagedPointer
-		{
-			btDbvtProxy* get() new;
-		}
 	};
 #endif
 

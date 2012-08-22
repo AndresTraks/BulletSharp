@@ -339,7 +339,7 @@ BroadphaseProxy^ RigidBody::BroadphaseProxy::get()
 }
 void RigidBody::BroadphaseProxy::set(BulletSharp::BroadphaseProxy^ value)
 {
-	Unmanaged->setNewBroadphaseProxy(value->UnmanagedPointer);
+	Unmanaged->setNewBroadphaseProxy(value->_unmanaged);
 }
 
 Vector3 RigidBody::CenterOfMassPosition::get()

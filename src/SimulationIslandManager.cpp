@@ -91,17 +91,17 @@ SimulationIslandManager::!SimulationIslandManager()
 
 void SimulationIslandManager::BuildAndProcessIslands(Dispatcher^ dispatcher, CollisionWorld^ collisionWorld, IslandCallback^ callback)
 {
-	UnmanagedPointer->buildAndProcessIslands(dispatcher->UnmanagedPointer, collisionWorld->UnmanagedPointer, callback->UnmanagedPointer);
+	UnmanagedPointer->buildAndProcessIslands(dispatcher->_unmanaged, collisionWorld->UnmanagedPointer, callback->UnmanagedPointer);
 }
 
 void SimulationIslandManager::BuildIslands(Dispatcher^ dispatcher, CollisionWorld^ colWorld)
 {
-	UnmanagedPointer->buildIslands(dispatcher->UnmanagedPointer, colWorld->UnmanagedPointer);
+	UnmanagedPointer->buildIslands(dispatcher->_unmanaged, colWorld->UnmanagedPointer);
 }
 
 void SimulationIslandManager::FindUnions(Dispatcher^ dispatcher, CollisionWorld^ colWorld)
 {
-	UnmanagedPointer->findUnions(dispatcher->UnmanagedPointer, colWorld->UnmanagedPointer);
+	UnmanagedPointer->findUnions(dispatcher->_unmanaged, colWorld->UnmanagedPointer);
 }
 
 void SimulationIslandManager::InitUnionFind(int n)
@@ -111,7 +111,7 @@ void SimulationIslandManager::InitUnionFind(int n)
 
 void SimulationIslandManager::UpdateActivationState(CollisionWorld^ colWorld, Dispatcher^ dispatcher)
 {
-	UnmanagedPointer->updateActivationState(colWorld->UnmanagedPointer, dispatcher->UnmanagedPointer);
+	UnmanagedPointer->updateActivationState(colWorld->UnmanagedPointer, dispatcher->_unmanaged);
 }
 
 void SimulationIslandManager::StoreIslandActivationState(CollisionWorld^ world)
