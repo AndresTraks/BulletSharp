@@ -19,7 +19,8 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	VECTOR3_DEF(axisInA);
 	VECTOR3_DEF(axisInB);
 
-	UnmanagedPointer = new btHingeConstraint(*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer,
+	UnmanagedPointer = new btHingeConstraint(
+		*(btRigidBody*)rigidBodyA->_unmanaged, *(btRigidBody*)rigidBodyB->_unmanaged,
 		VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB), VECTOR3_USE(axisInA), VECTOR3_USE(axisInB), useReferenceFrameA);
 
 	VECTOR3_DEL(pivotInA);
@@ -37,7 +38,8 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	VECTOR3_DEF(axisInA);
 	VECTOR3_DEF(axisInB);
 
-	UnmanagedPointer = new btHingeConstraint(*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer,
+	UnmanagedPointer = new btHingeConstraint(
+		*(btRigidBody*)rigidBodyA->_unmanaged, *(btRigidBody*)rigidBodyB->_unmanaged,
 		VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB), VECTOR3_USE(axisInA), VECTOR3_USE(axisInB));
 
 	VECTOR3_DEL(pivotInA);
@@ -53,7 +55,8 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector
 	VECTOR3_DEF(pivotInA);
 	VECTOR3_DEF(axisInA);
 
-	UnmanagedPointer = new btHingeConstraint(*rigidBodyA->UnmanagedPointer, VECTOR3_USE(pivotInA), VECTOR3_USE(axisInA), useReferenceFrameA);
+	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_unmanaged,
+		VECTOR3_USE(pivotInA), VECTOR3_USE(axisInA), useReferenceFrameA);
 
 	VECTOR3_DEL(pivotInA);
 	VECTOR3_DEL(axisInA);
@@ -65,7 +68,8 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector
 	VECTOR3_DEF(pivotInA);
 	VECTOR3_DEF(axisInA);
 
-	UnmanagedPointer = new btHingeConstraint(*rigidBodyA->UnmanagedPointer, VECTOR3_USE(pivotInA), VECTOR3_USE(axisInA));
+	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_unmanaged,
+		VECTOR3_USE(pivotInA), VECTOR3_USE(axisInA));
 
 	VECTOR3_DEL(pivotInA);
 	VECTOR3_DEL(axisInA);
@@ -78,7 +82,7 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
 	btTransform* rigidBodyBFrameTemp = Math::MatrixToBtTransform(rigidBodyBFrame);
 
-	UnmanagedPointer = new btHingeConstraint(*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer,
+	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_unmanaged, *(btRigidBody*)rigidBodyB->_unmanaged,
 		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp, useReferenceFrameA);
 
 	delete rigidBodyAFrameTemp;
@@ -91,7 +95,7 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, M
 	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
 	btTransform* rigidBodyBFrameTemp = Math::MatrixToBtTransform(rigidBodyBFrame);
 
-	UnmanagedPointer = new btHingeConstraint(*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer,
+	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_unmanaged, *(btRigidBody*)rigidBodyB->_unmanaged,
 		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp);
 
 	delete rigidBodyAFrameTemp;
@@ -103,7 +107,7 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame, 
 {
 	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
 
-	UnmanagedPointer = new btHingeConstraint(*rigidBodyA->UnmanagedPointer, *rigidBodyAFrameTemp, useReferenceFrameA);
+	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_unmanaged, *rigidBodyAFrameTemp, useReferenceFrameA);
 
 	delete rigidBodyAFrameTemp;
 }
@@ -113,7 +117,7 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame)
 {
 	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
 
-	UnmanagedPointer = new btHingeConstraint(*rigidBodyA->UnmanagedPointer, *rigidBodyAFrameTemp);
+	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_unmanaged, *rigidBodyAFrameTemp);
 
 	delete rigidBodyAFrameTemp;
 }

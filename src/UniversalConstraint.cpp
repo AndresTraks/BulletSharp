@@ -13,7 +13,8 @@ UniversalConstraint::UniversalConstraint(RigidBody^ rigidBodyA, RigidBody^ rigid
 	VECTOR3_DEF(axis1);
 	VECTOR3_DEF(axis2);
 
-	UnmanagedPointer = new btUniversalConstraint(*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer,
+	UnmanagedPointer = new btUniversalConstraint(
+		*(btRigidBody*)rigidBodyA->_unmanaged, *(btRigidBody*)rigidBodyB->_unmanaged,
 		VECTOR3_USE(anchor), VECTOR3_USE(axis1), VECTOR3_USE(axis2));
 
 	VECTOR3_DEL(anchor);

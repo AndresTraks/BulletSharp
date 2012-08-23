@@ -232,7 +232,7 @@ WheelInfo::WheelInfo(WheelInfoConstructionInfo^ ci)
 
 void WheelInfo::UpdateWheel(RigidBody^ chassis, RaycastInfo^ raycastInfo)
 {
-	_wheelInfo->updateWheel(*chassis->UnmanagedPointer, *raycastInfo->UnmanagedPointer);
+	_wheelInfo->updateWheel(*(btRigidBody*)chassis->_unmanaged, *raycastInfo->UnmanagedPointer);
 }
 
 btScalar WheelInfo::Brake::get()

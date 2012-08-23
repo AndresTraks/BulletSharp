@@ -17,7 +17,7 @@ void RaycastVehicle_GetForwardVector(btRaycastVehicle* vehicle, btVector3* forwa
 #pragma managed(pop)
 
 RaycastVehicle::RaycastVehicle(RaycastVehicle::VehicleTuning^ tuning, BulletSharp::RigidBody^ chassis, VehicleRaycaster^ raycaster)
-: ActionInterface(new btRaycastVehicle(*tuning->UnmanagedPointer, chassis->UnmanagedPointer, raycaster->UnmanagedPointer))
+: ActionInterface(new btRaycastVehicle(*tuning->UnmanagedPointer, (btRigidBody*)chassis->_unmanaged, raycaster->UnmanagedPointer))
 {
 	_chassisBody = chassis;
 }

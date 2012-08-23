@@ -4,7 +4,7 @@ namespace BulletSharp
 {
 	class MotionStateWrapper;
 
-	public ref class MotionState
+	public ref class MotionState abstract
 	{
 	internal:
 		btMotionState* _unmanaged;
@@ -12,22 +12,26 @@ namespace BulletSharp
 	internal:
 		MotionState(btMotionState* motionState);
 
+	public:
+		~MotionState();
+	protected:
+		!MotionState();
+
 	protected:
 		MotionState();
-		~MotionState();
 
 	public:
-		property Matrix WorldTransform
+		virtual property Matrix WorldTransform
 		{
-			virtual Matrix get();
-			virtual void set(Matrix value);
+			Matrix get() abstract;
+			void set(Matrix value) abstract;
 		}
 	};
 
 	class MotionStateWrapper : public btMotionState
 	{
 	public:
-		auto_gcroot<MotionState^> _motionState;
+		gcroot<MotionState^> _motionState;
 
 		virtual void getWorldTransform(btTransform& worldTrans) const
 		{

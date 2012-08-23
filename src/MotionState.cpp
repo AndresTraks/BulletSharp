@@ -16,20 +16,11 @@ MotionState::MotionState(btMotionState* motionState)
 
 MotionState::~MotionState()
 {
-	_unmanaged = 0;
+	this->!MotionState();
 }
 
-Matrix MotionState::WorldTransform::get()
+MotionState::!MotionState()
 {
-	btTransform* transform = new btTransform;
-	_unmanaged->getWorldTransform(*transform);
-	Matrix m = Math::BtTransformToMatrix(transform);
-	delete transform;
-	return m;
-}
-void MotionState::WorldTransform::set(Matrix worldTransform)
-{
-	btTransform* worldTransformTemp = Math::MatrixToBtTransform(worldTransform);
-	_unmanaged->setWorldTransform(*worldTransformTemp);
-	delete worldTransformTemp;
+	delete _unmanaged;
+	_unmanaged = 0;
 }

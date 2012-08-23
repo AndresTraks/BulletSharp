@@ -209,12 +209,6 @@ namespace BulletSharp
 		{
 			bool get();
 		}
-
-	internal:
-		property btRigidBody* UnmanagedPointer
-		{
-			btRigidBody* get() new;
-		}
 	};
 
 	public ref class RigidBodyConstructionInfo
@@ -222,6 +216,11 @@ namespace BulletSharp
 	internal:
 		btRigidBody::btRigidBodyConstructionInfo* _unmanaged;
 		BulletSharp::MotionState^ _motionState;
+
+	public:
+		~RigidBodyConstructionInfo();
+	protected:
+		!RigidBodyConstructionInfo();
 
 	public:
 		RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState,

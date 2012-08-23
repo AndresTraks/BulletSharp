@@ -2,6 +2,7 @@
 
 #include "BroadphaseProxy.h"
 #include "CollisionShape.h"
+#include "DefaultMotionState.h"
 #include "MotionState.h"
 #include "RigidBody.h"
 #ifndef DISABLE_CONSTRAINTS
@@ -433,21 +434,6 @@ void RigidBody::LinearVelocity::set(Vector3 value)
 
 BulletSharp::MotionState^ RigidBody::MotionState::get()
 {
-	/*
-	btMotionState* state = Unmanaged->getMotionState();
-	if (_motionState != nullptr && _motionState->UnmanagedPointer == state)
-		return _motionState;
-
-	_motionState = gcnew BulletSharp::MotionState(state);
-	return _motionState;
-	*/
-
-	if (_motionState == nullptr)
-	{
-		btMotionState* state = Unmanaged->getMotionState();
-		if (state != nullptr)
-			_motionState = gcnew BulletSharp::MotionState(state);
-	}
 	return _motionState;
 }
 void RigidBody::MotionState::set(BulletSharp::MotionState^ value)
@@ -486,11 +472,17 @@ bool RigidBody::WantsSleeping::get()
 	return Unmanaged->wantsSleeping();
 }
 
-btRigidBody* RigidBody::UnmanagedPointer::get()
+
+RigidBodyConstructionInfo::~RigidBodyConstructionInfo()
 {
-	return (btRigidBody*)CollisionObject::UnmanagedPointer;
+	this->!RigidBodyConstructionInfo();
 }
 
+RigidBodyConstructionInfo::!RigidBodyConstructionInfo()
+{
+	delete _unmanaged;
+	_unmanaged = NULL;
+}
 
 btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfo(
 	btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape)
@@ -640,15 +632,12 @@ void RigidBodyConstructionInfo::Mass::set(btScalar value)
 
 BulletSharp::MotionState^ RigidBodyConstructionInfo::MotionState::get()
 {
-	btMotionState* state = _unmanaged->m_motionState;
-	if (state != nullptr)
-		_motionState = gcnew BulletSharp::MotionState(state);
-
 	return _motionState;
 }
 void RigidBodyConstructionInfo::MotionState::set(BulletSharp::MotionState^ value)
 {
-	_unmanaged->m_motionState = value->_unmanaged;
+	_unmanaged->m_motionState = GetUnmanagedNullable(value);
+	_motionState = value;
 }
 
 btScalar RigidBodyConstructionInfo::Restitution::get()

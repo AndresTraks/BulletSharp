@@ -16,7 +16,8 @@ SliderConstraint::SliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	btTransform* frameInATemp = Math::MatrixToBtTransform(frameInA);
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 
-	UnmanagedPointer = new btSliderConstraint(*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer,
+	UnmanagedPointer = new btSliderConstraint(
+		*(btRigidBody*)rigidBodyA->_unmanaged, *(btRigidBody*)rigidBodyB->_unmanaged,
 		*frameInATemp, *frameInBTemp, useLinearReferenceFrameA);
 
 	delete frameInATemp;
@@ -28,7 +29,7 @@ SliderConstraint::SliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool 
 {
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 
-	UnmanagedPointer = new btSliderConstraint(*rigidBodyB->UnmanagedPointer, *frameInBTemp, useLinearReferenceFrameA);
+	UnmanagedPointer = new btSliderConstraint(*(btRigidBody*)rigidBodyB->_unmanaged, *frameInBTemp, useLinearReferenceFrameA);
 
 	delete frameInBTemp;
 }

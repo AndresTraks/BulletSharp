@@ -179,7 +179,7 @@ Point2PointConstraint^ Serialize::BulletWorldImporter::CreatePoint2PointConstrai
 	VECTOR3_DEF(pivotInB);
 
 	Point2PointConstraint^ ret = gcnew Point2PointConstraint(_importer->baseCreatePoint2PointConstraint(
-		*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer, VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB)));
+		*(btRigidBody*)rigidBodyA->_unmanaged, *(btRigidBody*)rigidBodyB->_unmanaged, VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB)));
 
 	VECTOR3_DEL(pivotInA);
 	VECTOR3_DEL(pivotInB);
@@ -192,7 +192,7 @@ Point2PointConstraint^ Serialize::BulletWorldImporter::CreatePoint2PointConstrai
 	VECTOR3_DEF(pivotInA);
 
 	Point2PointConstraint^ ret = gcnew Point2PointConstraint(_importer->baseCreatePoint2PointConstraint(
-		*rigidBodyA->UnmanagedPointer, VECTOR3_USE(pivotInA)));
+		*(btRigidBody*)rigidBodyA->_unmanaged, VECTOR3_USE(pivotInA)));
 
 	VECTOR3_DEL(pivotInA);
 	return ret;
@@ -204,7 +204,8 @@ HingeConstraint^ Serialize::BulletWorldImporter::CreateHingeConstraint(RigidBody
 	btTransform* rigidBodyBFrameTemp = Math::MatrixToBtTransform(rigidBodyBFrame);
 
 	HingeConstraint^ ret = gcnew HingeConstraint(_importer->baseCreateHingeConstraint(
-		*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer, *rigidBodyAFrameTemp, *rigidBodyBFrameTemp, useReferenceFrameA));
+		*(btRigidBody*)rigidBodyA->_unmanaged, *(btRigidBody*)rigidBodyB->_unmanaged,
+		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp, useReferenceFrameA));
 
 	delete rigidBodyAFrameTemp;
 	delete rigidBodyBFrameTemp;
@@ -218,7 +219,8 @@ HingeConstraint^ Serialize::BulletWorldImporter::CreateHingeConstraint(RigidBody
 	btTransform* rigidBodyBFrameTemp = Math::MatrixToBtTransform(rigidBodyBFrame);
 
 	HingeConstraint^ ret = gcnew HingeConstraint(_importer->baseCreateHingeConstraint(
-		*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer, *rigidBodyAFrameTemp, *rigidBodyBFrameTemp));
+		*(btRigidBody*)rigidBodyA->_unmanaged, *(btRigidBody*)rigidBodyB->_unmanaged,
+		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp));
 
 	delete rigidBodyAFrameTemp;
 	delete rigidBodyBFrameTemp;
@@ -231,7 +233,7 @@ HingeConstraint^ Serialize::BulletWorldImporter::CreateHingeConstraint(RigidBody
 	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
 
 	HingeConstraint^ ret = gcnew HingeConstraint(_importer->baseCreateHingeConstraint(
-		*rigidBodyA->UnmanagedPointer, *rigidBodyAFrameTemp, useReferenceFrameA));
+		*(btRigidBody*)rigidBodyA->_unmanaged, *rigidBodyAFrameTemp, useReferenceFrameA));
 
 	delete rigidBodyAFrameTemp;
 	return ret;
@@ -242,7 +244,7 @@ HingeConstraint^ Serialize::BulletWorldImporter::CreateHingeConstraint(RigidBody
 	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
 
 	HingeConstraint^ ret = gcnew HingeConstraint(_importer->baseCreateHingeConstraint(
-		*rigidBodyA->UnmanagedPointer, *rigidBodyAFrameTemp));
+		*(btRigidBody*)rigidBodyA->_unmanaged, *rigidBodyAFrameTemp));
 
 	delete rigidBodyAFrameTemp;
 	return ret;
@@ -254,7 +256,8 @@ ConeTwistConstraint^ Serialize::BulletWorldImporter::CreateConeTwistConstraint(R
 	btTransform* rigidBodyBFrameTemp = Math::MatrixToBtTransform(rigidBodyBFrame);
 
 	ConeTwistConstraint^ ret = gcnew ConeTwistConstraint(_importer->baseCreateConeTwistConstraint(
-		*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer, *rigidBodyAFrameTemp, *rigidBodyBFrameTemp));
+		*(btRigidBody*)rigidBodyA->_unmanaged, *(btRigidBody*)rigidBodyB->_unmanaged,
+		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp));
 
 	delete rigidBodyAFrameTemp;
 	delete rigidBodyBFrameTemp;
@@ -267,7 +270,7 @@ ConeTwistConstraint^ Serialize::BulletWorldImporter::CreateConeTwistConstraint(R
 	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
 
 	ConeTwistConstraint^ ret = gcnew ConeTwistConstraint(_importer->baseCreateConeTwistConstraint(
-		*rigidBodyA->UnmanagedPointer, *rigidBodyAFrameTemp));
+		*(btRigidBody*)rigidBodyA->_unmanaged, *rigidBodyAFrameTemp));
 
 	delete rigidBodyAFrameTemp;
 	return ret;
@@ -279,7 +282,8 @@ Generic6DofConstraint^ Serialize::BulletWorldImporter::CreateGeneric6DofConstrai
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 
 	Generic6DofConstraint^ ret = gcnew Generic6DofConstraint(_importer->baseCreateGeneric6DofConstraint(
-		*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer, *frameInATemp, *frameInBTemp, useLinearReferenceFrameA));
+		*(btRigidBody*)rigidBodyA->_unmanaged, *(btRigidBody*)rigidBodyB->_unmanaged,
+		*frameInATemp, *frameInBTemp, useLinearReferenceFrameA));
 
 	delete frameInATemp;
 	delete frameInBTemp;
@@ -292,7 +296,7 @@ Generic6DofConstraint^ Serialize::BulletWorldImporter::CreateGeneric6DofConstrai
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 
 	Generic6DofConstraint^ ret = gcnew Generic6DofConstraint(_importer->baseCreateGeneric6DofConstraint(
-		*rigidBodyB->UnmanagedPointer, *frameInBTemp, useLinearReferenceFrameB));
+		*(btRigidBody*)rigidBodyB->_unmanaged, *frameInBTemp, useLinearReferenceFrameB));
 
 	delete frameInBTemp;
 	return ret;
@@ -304,7 +308,7 @@ SliderConstraint^ Serialize::BulletWorldImporter::CreateSliderConstraint(RigidBo
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 
 	SliderConstraint^ ret = gcnew SliderConstraint(_importer->baseCreateSliderConstraint(
-		*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer,
+		*(btRigidBody*)rigidBodyA->_unmanaged, *(btRigidBody*)rigidBodyB->_unmanaged,
 		*frameInATemp, *frameInBTemp, useLinearReferenceFrameA));
 
 	delete frameInATemp;
@@ -318,7 +322,7 @@ SliderConstraint^ Serialize::BulletWorldImporter::CreateSliderConstraint(RigidBo
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 
 	SliderConstraint^ ret = gcnew SliderConstraint(_importer->baseCreateSliderConstraint(
-		*rigidBodyB->UnmanagedPointer,*frameInBTemp, useLinearReferenceFrameA));
+		*(btRigidBody*)rigidBodyB->_unmanaged, *frameInBTemp, useLinearReferenceFrameA));
 	
 	delete frameInBTemp;
 	return ret;
@@ -511,8 +515,8 @@ btCollisionObject* Serialize::BulletWorldImporterWrapper::createCollisionObject(
 btRigidBody* Serialize::BulletWorldImporterWrapper::createRigidBody(bool isDynamic, btScalar mass, const btTransform& startTransform,
 	btCollisionShape* shape, const char* bodyName)
 {
-	return _importer->CreateRigidBody(isDynamic, mass, Math::BtTransformToMatrix(&startTransform),
-		CollisionShape::GetManaged(shape), StringConv::UnmanagedToManaged(bodyName))->UnmanagedPointer;
+	return (btRigidBody*)_importer->CreateRigidBody(isDynamic, mass, Math::BtTransformToMatrix(&startTransform),
+		CollisionShape::GetManaged(shape), StringConv::UnmanagedToManaged(bodyName))->_unmanaged;
 }
 
 btCollisionShape* Serialize::BulletWorldImporterWrapper::createPlaneShape(const btVector3& planeNormal, btScalar planeConstant)

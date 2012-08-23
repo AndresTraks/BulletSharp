@@ -13,7 +13,8 @@ Hinge2Constraint::Hinge2Constraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	VECTOR3_DEF(axis1);
 	VECTOR3_DEF(axis2);
 
-	UnmanagedPointer = new btHinge2Constraint(*rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer,
+	UnmanagedPointer = new btHinge2Constraint(
+		*(btRigidBody*)rigidBodyA->_unmanaged, *(btRigidBody*)rigidBodyB->_unmanaged,
 		VECTOR3_USE(anchor), VECTOR3_USE(axis1), VECTOR3_USE(axis2));
 
 	VECTOR3_DEL(anchor);
