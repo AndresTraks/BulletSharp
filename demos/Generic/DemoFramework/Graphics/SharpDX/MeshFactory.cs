@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using BulletSharp;
@@ -12,7 +11,6 @@ using Buffer = SharpDX.Direct3D10.Buffer;
 using DataStream = SharpDX.DataStream;
 using Device = SharpDX.Direct3D10.Device;
 using Matrix = BulletSharp.Matrix;
-using Mesh = SharpDX.Direct3D10.Mesh;
 using Vector3 = BulletSharp.Vector3;
 
 namespace DemoFramework.SharpDX
@@ -177,7 +175,7 @@ namespace DemoFramework.SharpDX
         uint activeColor;
         uint passiveColor;
         uint softBodyColor;
-        int linkColor = System.Drawing.Color.Black.ToArgb();
+        int linkColor = Color.Black.ToArgb();
 
         public MeshFactory(SharpDXGraphics graphics)
         {

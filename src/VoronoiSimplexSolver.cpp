@@ -72,14 +72,8 @@ VoronoiSimplexSolver::~VoronoiSimplexSolver()
 
 VoronoiSimplexSolver::!VoronoiSimplexSolver()
 {
-	if (this->IsDisposed)
-		return;
-
-	OnDisposing(this, nullptr);
-
+	delete _solver;
 	_solver = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 bool VoronoiSimplexSolver::IsDisposed::get()

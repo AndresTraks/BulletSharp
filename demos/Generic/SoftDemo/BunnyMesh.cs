@@ -2,7 +2,7 @@ namespace SoftDemo
 {
     static class BunnyMesh
     {
-        public static float[] Vertices = new float[]
+        public static readonly float[] Vertices = new[]
         {
             -0.334392f, 0.133007f, 0.062259f,
 	        -0.350189f, 0.150354f, -0.147769f,
@@ -459,7 +459,7 @@ namespace SoftDemo
 	        0.337656f, 0.131992f, 0.066374f
         };
 
-        public static int[] Indices = new int[]
+        public static readonly int[] Indices = new[]
         {
             126,134,133,
 	        342,138,134,

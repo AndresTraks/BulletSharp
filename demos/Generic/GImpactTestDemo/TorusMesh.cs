@@ -2,7 +2,7 @@ namespace GImpactTestDemo
 {
     static class TorusMesh
     {
-        public static float[] Vertices = new float[]
+        public static readonly float[] Vertices = new[]
         {
             2.5f,		0f,		0f,
 	        2.405f,	0.294f,	0f,
@@ -306,7 +306,7 @@ namespace GImpactTestDemo
 	        2.352f,	-0.294f,	-0.5f
         };
 
-        public static int[] Indices = new int[]
+        public static readonly int[] Indices = new[]
         {
             0,    1,    11,
             1,    2,    12,

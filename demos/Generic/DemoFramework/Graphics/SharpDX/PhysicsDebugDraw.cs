@@ -53,7 +53,7 @@ namespace DemoFramework.SharpDX
             base.Dispose(disposing);
         }
 
-        public override void DrawDebugWorld(DynamicsWorld world)
+        public void DrawDebugWorld(DynamicsWorld world)
         {
             world.DebugDrawWorld();
 

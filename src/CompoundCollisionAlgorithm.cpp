@@ -19,7 +19,7 @@ CompoundCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc()
 
 CompoundCollisionAlgorithm::CompoundCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped)
-: ActivatingCollisionAlgorithm(new btCompoundCollisionAlgorithm(*ci->UnmanagedPointer,
+: ActivatingCollisionAlgorithm(new btCompoundCollisionAlgorithm(*ci->_unmanaged,
 	body0Wrap->_unmanaged, body1Wrap->_unmanaged, isSwapped))
 {
 }

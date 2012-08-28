@@ -122,6 +122,7 @@ namespace SerializeDemo
                             RigidBodyConstructionInfo rbInfo =
                                 new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
                             RigidBody body = new RigidBody(rbInfo);
+                            rbInfo.Dispose();
 
                             // make it drop from a height
                             body.Translate(new Vector3(0, 20, 0));

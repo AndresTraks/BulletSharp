@@ -248,14 +248,12 @@ namespace DemoFramework.Xna
                     InitShapeData(shape).InstanceDataList.Add(new InstanceData()
                     {
                         WorldTransform = MathHelper.Convert(transform),
-                        Color = ground.Equals(colObj.UserObject) ? groundColor :
+                        Color = "Ground".Equals(colObj.UserObject) ? groundColor :
                             colObj.ActivationState == ActivationState.ActiveTag ? activeColor : passiveColor
                     });
                     break;
             }
         }
-
-        string ground = "Ground";
 
         public void InitInstancedRender(AlignedCollisionObjectArray objects)
         {

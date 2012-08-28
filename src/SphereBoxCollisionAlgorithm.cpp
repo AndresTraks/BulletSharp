@@ -15,7 +15,7 @@ SphereBoxCollisionAlgorithm::CreateFunc::CreateFunc()
 SphereBoxCollisionAlgorithm::SphereBoxCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped)
 : ActivatingCollisionAlgorithm(new btSphereBoxCollisionAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf),
-	*ci->UnmanagedPointer, body0Wrap->_unmanaged, body1Wrap->_unmanaged, isSwapped))
+	*ci->_unmanaged, body0Wrap->_unmanaged, body1Wrap->_unmanaged, isSwapped))
 {
 }
 

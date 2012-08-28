@@ -8,12 +8,8 @@ namespace BulletSharp
 	ref class PoolAllocator;
 	ref class StackAlloc;
 
-	public ref class CollisionConfiguration : BulletSharp::IDisposable
+	public ref class CollisionConfiguration
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	private:
 		btCollisionConfiguration* _collisionConfiguration;
 

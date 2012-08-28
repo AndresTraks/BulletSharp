@@ -10,7 +10,7 @@ namespace Box2DDemo
         Vector3 target = new Vector3(10, 10, 0);
 
         ///create 25 (5x5) dynamic objects
-        int ArraySizeX = 5, ArraySizeY = 5;
+        const int ArraySizeX = 5, ArraySizeY = 5;
         public float Depth = 0.04f;
 
         protected override void OnInitialize()
@@ -104,6 +104,7 @@ namespace Box2DDemo
                             break;
                     }
                     RigidBody body = new RigidBody(rbInfo);
+                    rbInfo.Dispose();
                     //body.ActivationState = ActivationState.IslandSleeping;
                     body.LinearFactor = new Vector3(1, 1, 0);
                     body.AngularFactor = new Vector3(0, 0, 1);

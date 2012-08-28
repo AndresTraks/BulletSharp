@@ -53,7 +53,7 @@ namespace DemoFramework.SharpDX
         DepthStencilState depthStencilState;
         DepthStencilState lightDepthStencilState;
         bool shadowsEnabled = false;
-        public RenderTargetView[] renderViews = new RenderTargetView[1];
+        RenderTargetView[] renderViews = new RenderTargetView[1];
 
         VertexBufferBinding quadBinding;
         InputLayout quadBufferLayout;
@@ -82,21 +82,16 @@ namespace DemoFramework.SharpDX
         ShaderResourceView normalBufferRes;
         ShaderResourceView diffuseBufferRes;
 
-        protected int Width { get; set; }
-        protected int Height { get; set; }
-        protected float NearPlane { get; set; }
+        int _width;
+        int _height;
+        float _nearPlane;
 
-        ShaderSceneConstants sceneConstants = new ShaderSceneConstants();
+        ShaderSceneConstants sceneConstants;
         Buffer sceneConstantsBuffer;
 
         InfoText info;
 
         Color4 ambient;
-        protected Color4 Ambient
-        {
-            get { return ambient; }
-            set { ambient = value; }
-        }
 
         MeshFactory _meshFactory;
 
@@ -197,13 +192,13 @@ namespace DemoFramework.SharpDX
 
         protected void OnInitializeDevice()
         {
-            Form.ClientSize = new System.Drawing.Size(Width, Height);
+            Form.ClientSize = new Size(_width, _height);
 
             // SwapChain description
             var desc = new SwapChainDescription()
             {
                 BufferCount = 1,
-                ModeDescription = new ModeDescription(Width, Height, new Rational(60, 1), Format.R8G8B8A8_UNorm),
+                ModeDescription = new ModeDescription(_width, _height, new Rational(60, 1), Format.R8G8B8A8_UNorm),
                 IsWindowed = true,
                 OutputHandle = Form.Handle,
                 SampleDescription = new SampleDescription(1, 0),
@@ -237,8 +232,8 @@ namespace DemoFramework.SharpDX
                 BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
                 CpuAccessFlags = CpuAccessFlags.None,
                 Format = Format.R8G8B8A8_UNorm,
-                Height = Height,
-                Width = Width,
+                Width = _width,
+                Height = _height,
                 MipLevels = 1,
                 OptionFlags = ResourceOptionFlags.None,
                 SampleDescription = new SampleDescription(1, 0),
@@ -277,8 +272,8 @@ namespace DemoFramework.SharpDX
                 BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource,
                 CpuAccessFlags = CpuAccessFlags.None,
                 Format = Format.R32_Typeless,
-                Height = Height,
-                Width = Width,
+                Width = _width,
+                Height = _height,
                 MipLevels = 1,
                 OptionFlags = ResourceOptionFlags.None,
                 SampleDescription = new SampleDescription(1, 0),
@@ -316,7 +311,7 @@ namespace DemoFramework.SharpDX
             depthMapVar = effect2.GetVariableByName("depthMap").AsShaderResource();
             lightDepthMapVar = effect2.GetVariableByName("lightDepthMap").AsShaderResource();
 
-            _device.Rasterizer.SetViewports(new Viewport(0, 0, Width, Height));
+            _device.Rasterizer.SetViewports(new Viewport(0, 0, _width, _height));
         }
 
         ShaderBytecode LoadShader(string name, ShaderFlags flags)
@@ -331,8 +326,8 @@ namespace DemoFramework.SharpDX
         {
             Form.SizeChanged += (o, args) =>
             {
-                Width = Form.ClientSize.Width;
-                Height = Form.ClientSize.Height;
+                _width = Form.ClientSize.Width;
+                _height = Form.ClientSize.Height;
 
                 if (_swapChain == null)
                     return;
@@ -345,11 +340,11 @@ namespace DemoFramework.SharpDX
                 SetSceneConstants();
             };
 
-            Width = 1024;
-            Height = 768;
-            NearPlane = 1.0f;
+            _width = 1024;
+            _height = 768;
+            _nearPlane = 1.0f;
 
-            ambient = (Color4)Color.Gray;
+            ambient = Color.Gray;
 
             try
             {
@@ -364,8 +359,8 @@ namespace DemoFramework.SharpDX
 
             // shader.fx
 
-            ShaderFlags shaderFlags = ShaderFlags.None;
-            //ShaderFlags shaderFlags = ShaderFlags.Debug | ShaderFlags.SkipOptimization;
+            const ShaderFlags shaderFlags = ShaderFlags.None;
+            //const ShaderFlags shaderFlags = ShaderFlags.Debug | ShaderFlags.SkipOptimization;
             ShaderBytecode shaderByteCode = LoadShader("shader.fx", shaderFlags);
 
             effect = new Effect(_device, shaderByteCode);
@@ -432,7 +427,7 @@ namespace DemoFramework.SharpDX
             Matrix quadProjection = Matrix.OrthoLH(1, 1, 0.1f, 1.0f);
             effect2.GetVariableByName("ViewProjection").AsMatrix().SetMatrix(quadProjection);
 
-            InputElement[] elements = new InputElement[]
+            InputElement[] elements = new[]
             {
                 new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
                 new InputElement("TEXCOORD", 0, Format.R32G32_Float, 12, 0, InputClassification.PerVertexData, 0),
@@ -448,18 +443,18 @@ namespace DemoFramework.SharpDX
             LibraryManager.LibraryStarted();
         }
 
-        protected void SetSceneConstants()
+        void SetSceneConstants()
         {
             FreeLook freelook = Demo.Freelook;
             Vector3 up = MathHelper.Convert(freelook.Up);
             sceneConstants.View = Matrix.LookAtLH(MathHelper.Convert(freelook.Eye), MathHelper.Convert(freelook.Target), MathHelper.Convert(freelook.Up));
-            sceneConstants.Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, NearPlane, FarPlane);
+            sceneConstants.Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, _nearPlane, FarPlane);
             sceneConstants.ViewInverse = Matrix.Invert(sceneConstants.View);
 
             Vector3 light = new Vector3(20, 30, 10);
             Texture2DDescription depthBuffer = lightDepthTexture.Description;
             Matrix lightView = Matrix.LookAtLH(light, Vector3.Zero, up);
-            Matrix lightProjection = Matrix.OrthoLH(depthBuffer.Width / 8, depthBuffer.Height / 8, NearPlane, FarPlane);
+            Matrix lightProjection = Matrix.OrthoLH(depthBuffer.Width / 8.0f, depthBuffer.Height / 8.0f, _nearPlane, FarPlane);
             sceneConstants.LightViewProjection = lightView * lightProjection;
 
             using (var data = sceneConstantsBuffer.Map(MapMode.WriteDiscard))
@@ -468,7 +463,6 @@ namespace DemoFramework.SharpDX
                 sceneConstantsBuffer.Unmap();
             }
 
-            Vector4 viewSpaceLightPosition = Vector3.Transform(light, sceneConstants.View);
             effect2.GetVariableByName("InverseProjection").AsMatrix().SetMatrix(Matrix.Invert(sceneConstants.Projection));
             effect2.GetVariableByName("InverseView").AsMatrix().SetMatrix(sceneConstants.ViewInverse);
             effect2.GetVariableByName("LightInverseViewProjection").AsMatrix().SetMatrix(Matrix.Invert(sceneConstants.LightViewProjection));
@@ -476,16 +470,16 @@ namespace DemoFramework.SharpDX
             effect2.GetVariableByName("EyePosition").AsVector().Set(new Vector4(MathHelper.Convert(freelook.Eye), 1));
             effect2.GetVariableByName("EyeZAxis").AsVector().Set(new Vector4(Vector3.Normalize(MathHelper.Convert(freelook.Target - freelook.Eye)), 1));
 
-            float TanHalfFOVY = (float)Math.Tan(FieldOfView * 0.5f);
-            effect2.GetVariableByName("TanHalfFOVX").AsScalar().Set(TanHalfFOVY * AspectRatio);
-            effect2.GetVariableByName("TanHalfFOVY").AsScalar().Set(TanHalfFOVY);
-            float projectionA = FarPlane / (FarPlane - NearPlane);
-            float projectionB = -projectionA * NearPlane;
+            float tanHalfFOVY = (float)Math.Tan(FieldOfView * 0.5f);
+            effect2.GetVariableByName("TanHalfFOVX").AsScalar().Set(tanHalfFOVY * AspectRatio);
+            effect2.GetVariableByName("TanHalfFOVY").AsScalar().Set(tanHalfFOVY);
+            float projectionA = FarPlane / (FarPlane - _nearPlane);
+            float projectionB = -projectionA * _nearPlane;
             effect2.GetVariableByName("ProjectionA").AsScalar().Set(projectionA);
             effect2.GetVariableByName("ProjectionB").AsScalar().Set(projectionB);
 
-            Matrix overlayMatrix = Matrix.Scaling(2 * info.Width / Width, 2 * info.Height / Height, 1.0f);
-            overlayMatrix *= Matrix.Translation(-(Width - info.Width) / Width, (Height - info.Height) / Height, 0.0f);
+            Matrix overlayMatrix = Matrix.Scaling(2 * info.Width / _width, 2 * info.Height / _height, 1.0f);
+            overlayMatrix *= Matrix.Translation(-(_width - info.Width) / _width, (_height - info.Height) / _height, 0.0f);
             effect2.GetVariableByName("OverlayViewProjection").AsMatrix().SetMatrix(overlayMatrix);
         }
 

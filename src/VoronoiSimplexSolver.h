@@ -30,7 +30,7 @@ namespace BulletSharp
 	};
 
 #ifdef NO_VIRTUAL_INTERFACE
-	public ref class VoronoiSimplexSolver : BulletSharp::IDisposable
+	public ref class VoronoiSimplexSolver
 #else
 	public ref class VoronoiSimplexSolver : SimplexSolverInterface
 #endif
@@ -39,10 +39,6 @@ namespace BulletSharp
 		VoronoiSimplexSolver(btVoronoiSimplexSolver* solver);
 
 #ifdef NO_VIRTUAL_INTERFACE
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	private:
 		btVoronoiSimplexSolver* _solver;
 

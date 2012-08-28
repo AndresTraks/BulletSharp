@@ -10,7 +10,8 @@ namespace DemoFramework
     {
         static LibrarySelection librarySelection;
 
-        static string settingsFilename = "settings.xml";
+        const string SettingsFilename = "settings.xml";
+
         public static string GraphicsLibraryName
         {
             get;
@@ -93,7 +94,7 @@ namespace DemoFramework
             XmlElement root;
             try
             {
-                settings.Load(settingsFilename);
+                settings.Load(SettingsFilename);
                 root = settings.DocumentElement;
             }
             catch (FileNotFoundException)
@@ -101,7 +102,7 @@ namespace DemoFramework
                 // Create an empty settings file
                 root = settings.CreateElement("settings");
                 settings.AppendChild(root);
-                settings.Save(settingsFilename);
+                settings.Save(SettingsFilename);
             }
 
             return root;
@@ -180,7 +181,7 @@ namespace DemoFramework
 
             graphics.SetAttribute("value", GraphicsLibraryName);
             root.AppendChild(graphics);
-            root.OwnerDocument.Save(settingsFilename);
+            root.OwnerDocument.Save(SettingsFilename);
         }
 
         public static bool ExitWithReload

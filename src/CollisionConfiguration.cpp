@@ -19,15 +19,8 @@ CollisionConfiguration::~CollisionConfiguration()
 
 CollisionConfiguration::!CollisionConfiguration()
 {
-	if (this->IsDisposed)
-		return;
-	
-	OnDisposing(this, nullptr);
-	
 	delete _collisionConfiguration;
 	_collisionConfiguration = NULL;
-	
-	OnDisposed(this, nullptr);
 }
 
 CollisionAlgorithmCreateFunc^ CollisionConfiguration::GetCollisionAlgorithmCreateFunc(BroadphaseNativeType proxyType0, BroadphaseNativeType proxyType1)

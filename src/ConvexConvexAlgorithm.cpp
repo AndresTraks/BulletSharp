@@ -60,7 +60,7 @@ ConvexConvexAlgorithm::ConvexConvexAlgorithm(PersistentManifold^ mf, CollisionAl
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, SimplexSolverInterface^ simplexSolver,
 	ConvexPenetrationDepthSolver^ pdSolver, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
 : ActivatingCollisionAlgorithm(new btConvexConvexAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf),
-	*ci->UnmanagedPointer, body0Wrap->_unmanaged, body1Wrap->_unmanaged, simplexSolver->UnmanagedPointer,
+	*ci->_unmanaged, body0Wrap->_unmanaged, body1Wrap->_unmanaged, simplexSolver->UnmanagedPointer,
 	pdSolver->_unmanaged, numPerturbationIterations, minimumPointsPerturbationThreshold))
 {
 }

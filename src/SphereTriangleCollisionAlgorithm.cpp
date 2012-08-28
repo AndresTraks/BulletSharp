@@ -15,12 +15,12 @@ SphereTriangleCollisionAlgorithm::CreateFunc::CreateFunc()
 SphereTriangleCollisionAlgorithm::SphereTriangleCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped)
 : ActivatingCollisionAlgorithm(new btSphereTriangleCollisionAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf),
-	*ci->UnmanagedPointer, body0Wrap->_unmanaged, body1Wrap->_unmanaged, isSwapped))
+	*ci->_unmanaged, body0Wrap->_unmanaged, body1Wrap->_unmanaged, isSwapped))
 {
 }
 
 SphereTriangleCollisionAlgorithm::SphereTriangleCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci)
-: ActivatingCollisionAlgorithm(new btSphereTriangleCollisionAlgorithm(*ci->UnmanagedPointer))
+: ActivatingCollisionAlgorithm(new btSphereTriangleCollisionAlgorithm(*ci->_unmanaged))
 {
 }
 

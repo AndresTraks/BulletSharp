@@ -22,7 +22,7 @@ namespace CharacterDemo
             if (vertices.Count == 0)
                 return;
 
-            float mass = 0.0f;
+            const float mass = 0.0f;
             //can use a shift
             Matrix startTransform = Matrix.Translation(0, -10.0f, 0);
             //this create an internal copy of the vertices
@@ -77,14 +77,14 @@ namespace CharacterDemo
             ghostObject.WorldTransform = startTransform;
             Broadphase.OverlappingPairCache.SetInternalGhostPairCallback(new GhostPairCallback());
 
-            float characterHeight = 1.75f;
-	        float characterWidth = 1.75f;
-	        ConvexShape capsule = new CapsuleShape(characterWidth, characterHeight);
-	        ghostObject.CollisionShape = capsule;
-	        ghostObject.CollisionFlags = CollisionFlags.CharacterObject;
+            const float characterHeight = 1.75f;
+            const float characterWidth = 1.75f;
+            ConvexShape capsule = new CapsuleShape(characterWidth, characterHeight);
+            ghostObject.CollisionShape = capsule;
+            ghostObject.CollisionFlags = CollisionFlags.CharacterObject;
 
-	        float stepHeight = 0.35f;
-	        character = new KinematicCharacterController(ghostObject, capsule, stepHeight);
+            const float stepHeight = 0.35f;
+            character = new KinematicCharacterController(ghostObject, capsule, stepHeight);
 
             BspLoader bspLoader = new BspLoader();
             bspLoader.LoadBspFile("data/BspDemo.bsp");
@@ -93,7 +93,7 @@ namespace CharacterDemo
 
             World.AddCollisionObject(ghostObject, CollisionFilterGroups.CharacterFilter, CollisionFilterGroups.StaticFilter | CollisionFilterGroups.DefaultFilter);
 
-	        World.AddAction(character);
+            World.AddAction(character);
         }
 
         public override void ClientResetScene()
@@ -117,7 +117,7 @@ namespace CharacterDemo
             Vector3 pos = new Vector3(xform.M41, xform.M42, xform.M43);
 
             Vector3 walkDirection = Vector3.Zero;
-            float walkVelocity = 1.1f * 4.0f;
+            const float walkVelocity = 1.1f * 4.0f;
             float walkSpeed = walkVelocity * FrameDelta * 10;// * 0.0001f;
             float turnSpeed = FrameDelta * 3;
 
@@ -128,10 +128,6 @@ namespace CharacterDemo
                 orn *= Matrix.RotationAxis(upDir, -turnSpeed);
                 orn.set_Rows(3, new Vector4(pos.X, pos.Y, pos.Z, 1));
                 ghostObject.WorldTransform = orn;
-            }
-            if (Input.KeysPressed.Count != 0)
-            {
-                Input.ToString();
             }
             if (Input.KeysDown.Contains(Keys.Right))
             {

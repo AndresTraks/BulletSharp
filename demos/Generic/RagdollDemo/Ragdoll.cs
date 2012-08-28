@@ -213,6 +213,7 @@ namespace RagdollDemo
 
             RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
             RigidBody body = new RigidBody(rbInfo);
+            rbInfo.Dispose();
 
             ownerWorld.AddRigidBody(body);
 

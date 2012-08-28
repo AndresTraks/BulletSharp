@@ -41,7 +41,7 @@ btConvexPlaneCollisionAlgorithm::CreateFunc* ConvexPlaneCollisionAlgorithm::Crea
 
 ConvexPlaneCollisionAlgorithm::ConvexPlaneCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
-: CollisionAlgorithm(new btConvexPlaneCollisionAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf), *ci->UnmanagedPointer,
+: CollisionAlgorithm(new btConvexPlaneCollisionAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf), *ci->_unmanaged,
 	body0Wrap->_unmanaged, body1Wrap->_unmanaged, isSwapped, numPerturbationIterations, minimumPointsPerturbationThreshold))
 {
 }

@@ -36,10 +36,10 @@ namespace ConvexDecompositionDemo
             if (output == null)
                 return;
 
-            output.WriteLine(string.Format("## Hull Piece {0} with {1} vertices and {2} triangles.", mHullCount, result.mHullVertices.Length, result.mHullIndices.Length / 3));
+            output.WriteLine("## Hull Piece {0} with {1} vertices and {2} triangles.", mHullCount, result.mHullVertices.Length, result.mHullIndices.Length / 3);
 
-            output.WriteLine(string.Format("usemtl Material{0}", mBaseCount));
-            output.WriteLine(string.Format("o Object{0}", mBaseCount));
+            output.WriteLine("usemtl Material{0}", mBaseCount);
+            output.WriteLine("o Object{0}", mBaseCount);
 
             foreach (Vector3 p in result.mHullVertices)
             {
@@ -88,7 +88,7 @@ namespace ConvexDecompositionDemo
                     index1 += mBaseCount;
                     index2 += mBaseCount;
 
-                    output.WriteLine(string.Format("f {0} {1} {2}", index0 + 1, index1 + 1, index2 + 1));
+                    output.WriteLine("f {0} {1} {2}", index0 + 1, index1 + 1, index2 + 1);
                 }
             }
 
@@ -246,7 +246,7 @@ namespace ConvexDecompositionDemo
 
                 LocalCreateRigidBody(mass, Matrix.Translation(0, 2, 14), convexShape);
 
-                bool useQuantization = true;
+                const bool useQuantization = true;
                 CollisionShape concaveShape = new BvhTriangleMeshShape(trimesh, useQuantization);
                 LocalCreateRigidBody(0, Matrix.Translation(convexDecompositionObjectOffset), concaveShape);
 
@@ -258,15 +258,17 @@ namespace ConvexDecompositionDemo
                 FileStream outputFile = new FileStream("file_convex.obj", FileMode.Create, FileAccess.Write);
                 StreamWriter writer = new StreamWriter(outputFile);
 
-                DecompDesc desc = new DecompDesc();
-                desc.mVertices = wo.Vertices.ToArray();
-                desc.mTcount = tcount;
-                desc.mIndices = wo.Indices.ToArray();
-                desc.mDepth = 5;
-                desc.mCpercent = 5;
-                desc.mPpercent = 15;
-                desc.mMaxVertices = 16;
-                desc.mSkinWidth = 0.0f;
+                DecompDesc desc = new DecompDesc
+                {
+                    mVertices = wo.Vertices.ToArray(),
+                    mTcount = tcount,
+                    mIndices = wo.Indices.ToArray(),
+                    mDepth = 5,
+                    mCpercent = 5,
+                    mPpercent = 15,
+                    mMaxVertices = 16,
+                    mSkinWidth = 0.0f
+                };
 
                 MyConvexDecomposition convexDecomposition = new MyConvexDecomposition(writer, this);
                 desc.mCallback = convexDecomposition;
@@ -283,11 +285,11 @@ namespace ConvexDecompositionDemo
                 // HACD parameters
                 // Recommended parameters: 2 100 0 0 0 0
                 int nClusters = 2;
-                double concavity = 100;
+                const double concavity = 100;
                 //bool invert = false;
-                bool addExtraDistPoints = false;
-                bool addNeighboursDistPoints = false;
-                bool addFacesPoints = false;
+                const bool addExtraDistPoints = false;
+                const bool addNeighboursDistPoints = false;
+                const bool addFacesPoints = false;
 
                 myHACD.NClusters = nClusters;                     // minimum number of clusters
                 myHACD.VerticesPerConvexHull = 100;               // max of 100 vertices per convex-hull
@@ -348,14 +350,8 @@ namespace ConvexDecompositionDemo
 #endif
                 }
 
-                if (outputFile != null)
-                {
-                    if (writer != null)
-                    {
-                        writer.Dispose();
-                    }
-                    outputFile.Dispose();
-                }
+                writer.Dispose();
+                outputFile.Dispose();
             }
         }
     }

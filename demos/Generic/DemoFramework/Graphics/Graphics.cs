@@ -50,7 +50,7 @@ namespace DemoFramework
 
         public abstract IDebugDraw GetPhysicsDebugDrawer();
 
-        public Graphics(Demo demo)
+        protected Graphics(Demo demo)
         {
             Demo = demo;
             FarPlane = 200.0f;

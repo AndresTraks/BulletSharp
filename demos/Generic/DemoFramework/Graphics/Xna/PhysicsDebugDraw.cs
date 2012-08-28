@@ -15,7 +15,7 @@ namespace DemoFramework.Xna
             this.graphics = graphics;
         }
 
-        public override void DrawDebugWorld(DynamicsWorld world)
+        public void DrawDebugWorld(DynamicsWorld world)
         {
             world.DebugDrawWorld();
 

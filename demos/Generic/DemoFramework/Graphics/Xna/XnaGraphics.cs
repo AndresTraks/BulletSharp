@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 using BulletSharp;
 using Microsoft.Xna.Framework.Graphics;
@@ -133,6 +132,8 @@ namespace DemoFramework.Xna
 
             UpdateView();
             LibraryManager.LibraryStarted();
+
+            Info.SetDevice(Device);
         }
 
         public void Render()
@@ -144,7 +145,7 @@ namespace DemoFramework.Xna
 
             if (Demo.IsDebugDrawEnabled)
                 (Demo.World.DebugDrawer as PhysicsDebugDraw).DrawDebugWorld(Demo.World);
-            //Info.OnRender(Demo.FramesPerSecond);
+            Info.OnRender(Demo.FramesPerSecond);
         }
 
         public override void UpdateView()

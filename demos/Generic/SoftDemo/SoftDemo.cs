@@ -70,7 +70,7 @@ namespace SoftDemo
                 "N - Next Demo");
         }
 
-        public void NextDemo()
+        void NextDemo()
         {
             demo++;
             if (demo >= demos.Length)
@@ -79,7 +79,7 @@ namespace SoftDemo
             ClientResetScene();
         }
 
-        public void PreviousDemo()
+        void PreviousDemo()
         {
             demo--;
             if (demo < 0)
@@ -171,7 +171,7 @@ namespace SoftDemo
 
         void Create_RbUpStack(int count)
         {
-            float mass = 10.0f;
+            const float mass = 10.0f;
 
             CompoundShape cylinderCompound = new CompoundShape();
             CollisionShape cylinderShape = new CylinderShapeX(4, 1, 1);
@@ -257,8 +257,8 @@ namespace SoftDemo
 
         void Init_ClothAttach()
         {
-            float s = 4;
-            float h = 6;
+            const float s = 4;
+            const float h = 6;
             int r = 9;
             SoftBody psb = SoftBodyHelpers.CreatePatch(softBodyWorldInfo, new Vector3(-s, h, -s),
                 new Vector3(+s, h, -s),
@@ -309,7 +309,7 @@ namespace SoftDemo
             RigidBody body = LocalCreateRigidBody(0, startTransform, capsuleShape);
             body.Friction = 0.8f;
 
-            int fixeds = 0;//4+8;
+            const int fixeds = 0; //4+8;
             SoftBody psb = SoftBodyHelpers.CreatePatch(softBodyWorldInfo, new Vector3(-s, h, -s),
                 new Vector3(+s, h, -s),
                 new Vector3(-s, h, +s),
@@ -441,7 +441,7 @@ namespace SoftDemo
         void Init_Aero2()
         {
             //TRACEDEMO
-            float s = 5;
+            const float s = 5;
             const int segments = 10;
             const int count = 5;
             Vector3 pos = new Vector3(-s * segments, 0, 0);
@@ -525,7 +525,7 @@ namespace SoftDemo
             psb.Translate(0, 5, 0);
             psb.SetVolumeMass(300);
 
-            ///fix one vertex
+            // fix one vertex
             //psb.SetMass(0,0);
             //psb.SetMass(10,0);
             //psb.SetMass(20,0);
@@ -795,7 +795,7 @@ namespace SoftDemo
             psb.CollisionShape.Margin = 0.05f;
             psb.SetTotalMass(50);
 
-            ///pass zero in generateClusters to create  cluster for each tetrahedron or triangle
+            // pass zero in generateClusters to create  cluster for each tetrahedron or triangle
             psb.GenerateClusters(0);
             //psb.GenerateClusters(64);
 
@@ -1074,15 +1074,17 @@ namespace SoftDemo
             // the default constraint solver.
             Solver = new SequentialImpulseConstraintSolver();
 
-            softBodyWorldInfo = new SoftBodyWorldInfo();
-            softBodyWorldInfo.AirDensity = 1.2f;
-            softBodyWorldInfo.WaterDensity = 0;
-            softBodyWorldInfo.WaterOffset = 0;
-            softBodyWorldInfo.WaterNormal = Vector3.Zero;
-            softBodyWorldInfo.Gravity = new Vector3(0, -10, 0);
-            softBodyWorldInfo.Dispatcher = Dispatcher;
-            softBodyWorldInfo.Broadphase = Broadphase;
-            softBodyWorldInfo.SparseSdf.Initialize();
+            softBodyWorldInfo = new SoftBodyWorldInfo
+	        {
+		        AirDensity = 1.2f,
+		        WaterDensity = 0,
+		        WaterOffset = 0,
+		        WaterNormal = Vector3.Zero,
+		        Gravity = new Vector3(0, -10, 0),
+		        Dispatcher = Dispatcher,
+		        Broadphase = Broadphase
+	        };
+	        softBodyWorldInfo.SparseSdf.Initialize();
 
             World = new SoftRigidDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf);
             World.Gravity = new Vector3(0, -10, 0);
@@ -1137,7 +1139,7 @@ namespace SoftDemo
                     }
                 }
                 Vector3 delta = goal - node.X;
-                float maxdrag = 10;
+                const float maxdrag = 10;
                 if (delta.LengthSquared() > (maxdrag * maxdrag))
                 {
                     delta.Normalize();

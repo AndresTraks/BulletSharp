@@ -9,14 +9,11 @@ namespace BulletSharp
 	ref class CollisionObject;
 	ref class CollisionObjectWrapper;
 
-	public ref class CollisionAlgorithmCreateFunc : BulletSharp::IDisposable
+	public ref class CollisionAlgorithmCreateFunc
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	private:
 		btCollisionAlgorithmCreateFunc* _createFunc;
+		bool _deleteObject;
 
 	internal:
 		CollisionAlgorithmCreateFunc(btCollisionAlgorithmCreateFunc* solver);

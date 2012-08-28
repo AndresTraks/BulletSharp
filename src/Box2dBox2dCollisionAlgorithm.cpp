@@ -13,14 +13,14 @@ Box2dBox2dCollisionAlgorithm::CreateFunc::CreateFunc()
 }
 
 Box2dBox2dCollisionAlgorithm::Box2dBox2dCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci)
-: ActivatingCollisionAlgorithm(new btBox2dBox2dCollisionAlgorithm(*ci->UnmanagedPointer))
+: ActivatingCollisionAlgorithm(new btBox2dBox2dCollisionAlgorithm(*ci->_unmanaged))
 {
 }
 
 Box2dBox2dCollisionAlgorithm::Box2dBox2dCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
 : ActivatingCollisionAlgorithm(new btBox2dBox2dCollisionAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf),
-	*ci->UnmanagedPointer, body0Wrap->_unmanaged, body1Wrap->_unmanaged))
+	*ci->_unmanaged, body0Wrap->_unmanaged, body1Wrap->_unmanaged))
 {
 }
 

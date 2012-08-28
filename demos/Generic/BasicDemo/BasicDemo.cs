@@ -10,12 +10,12 @@ namespace BasicDemo
         Vector3 target = new Vector3(0, 5, -4);
 
         // create 125 (5x5x5) dynamic objects
-        int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
+        const int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
 
         // scaling of the objects (0.1 = 20 centimeter boxes )
-        float StartPosX = -5;
-        float StartPosY = -5;
-        float StartPosZ = -3;
+        const float StartPosX = -5;
+        const float StartPosY = -5;
+        const float StartPosZ = -3;
 
         protected override void OnInitialize()
         {
@@ -52,9 +52,9 @@ namespace BasicDemo
             CollisionShapes.Add(colShape);
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
-            float start_x = StartPosX - ArraySizeX / 2;
-            float start_y = StartPosY;
-            float start_z = StartPosZ - ArraySizeZ / 2;
+            const float start_x = StartPosX - ArraySizeX / 2;
+            const float start_y = StartPosY;
+            const float start_z = StartPosZ - ArraySizeZ / 2;
 
             int k, i, j;
             for (k = 0; k < ArraySizeY; k++)
@@ -75,6 +75,7 @@ namespace BasicDemo
                         RigidBodyConstructionInfo rbInfo =
                             new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
                         RigidBody body = new RigidBody(rbInfo);
+                        rbInfo.Dispose();
 
                         // make it drop from a height
                         body.Translate(new Vector3(0, 20, 0));

@@ -24,12 +24,12 @@ namespace DemoFramework
             {
                 Release();
                 _control = value;
-                _control.KeyDown += new KeyEventHandler(form_KeyDown);
-                _control.KeyUp += new KeyEventHandler(form_KeyUp);
-                _control.MouseDown += new MouseEventHandler(form_MouseDown);
-                _control.MouseMove += new MouseEventHandler(form_MouseMove);
-                _control.MouseUp += new MouseEventHandler(form_MouseUp);
-                _control.MouseWheel += new MouseEventHandler(form_MouseWheel);
+                _control.KeyDown += ControlOnKeyDown;
+                _control.KeyUp += ControlOnKeyUp;
+                _control.MouseDown += ControlOnMouseDown;
+                _control.MouseMove += ControlOnMouseMove;
+                _control.MouseUp += ControlOnMouseUp;
+                _control.MouseWheel += ControlOnMouseWheel;
             }
         }
 
@@ -49,17 +49,17 @@ namespace DemoFramework
             if (_control == null)
                 return;
 
-            _control.KeyDown -= new KeyEventHandler(form_KeyDown);
-            _control.KeyUp -= new KeyEventHandler(form_KeyUp);
-            _control.MouseDown -= new MouseEventHandler(form_MouseDown);
-            _control.MouseMove -= new MouseEventHandler(form_MouseMove);
-            _control.MouseUp -= new MouseEventHandler(form_MouseUp);
-            _control.MouseWheel -= new MouseEventHandler(form_MouseWheel);
-            
+            _control.KeyDown -= ControlOnKeyDown;
+            _control.KeyUp -= ControlOnKeyUp;
+            _control.MouseDown -= ControlOnMouseDown;
+            _control.MouseMove -= ControlOnMouseMove;
+            _control.MouseUp -= ControlOnMouseUp;
+            _control.MouseWheel -= ControlOnMouseWheel;
+
             _control = null;
         }
 
-        void form_KeyDown(object sender, KeyEventArgs e)
+        void ControlOnKeyDown(object sender, KeyEventArgs e)
         {
             Keys key = e.KeyData & ~Keys.Shift;
 
@@ -70,7 +70,7 @@ namespace DemoFramework
             }
         }
 
-        void form_KeyUp(object sender, KeyEventArgs e)
+        void ControlOnKeyUp(object sender, KeyEventArgs e)
         {
             Keys key = e.KeyData & ~Keys.Shift;
 
@@ -87,7 +87,7 @@ namespace DemoFramework
             MouseWheelDelta = 0;
         }
 
-        void form_MouseDown(object sender, MouseEventArgs e)
+        void ControlOnMouseDown(object sender, MouseEventArgs e)
         {
             MousePoint = e.Location;
 
@@ -119,12 +119,12 @@ namespace DemoFramework
             }
         }
 
-        void form_MouseMove(object sender, MouseEventArgs e)
+        void ControlOnMouseMove(object sender, MouseEventArgs e)
         {
             MousePoint = e.Location;
         }
 
-        void form_MouseUp(object sender, MouseEventArgs e)
+        void ControlOnMouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -139,7 +139,7 @@ namespace DemoFramework
             }
         }
 
-        void form_MouseWheel(object sender, MouseEventArgs e)
+        void ControlOnMouseWheel(object sender, MouseEventArgs e)
         {
             MouseWheelDelta = e.Delta;
         }

@@ -29,6 +29,8 @@ namespace BulletSharp
 	{
 	private:
 		btNearCallback originalCallback;
+		CollisionConfiguration^ _collisionConfiguration;
+		System::Collections::Generic::List<CollisionAlgorithmCreateFunc^>^ _collisionCreateFuncs;
 
 	internal:
 		CollisionDispatcher(btCollisionDispatcher* dispatcher);

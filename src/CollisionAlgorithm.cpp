@@ -8,42 +8,44 @@
 #include "ManifoldResult.h"
 #include "PersistentManifold.h"
 
+CollisionAlgorithmConstructionInfo::~CollisionAlgorithmConstructionInfo()
+{
+	this->!CollisionAlgorithmConstructionInfo();
+}
+
+CollisionAlgorithmConstructionInfo::!CollisionAlgorithmConstructionInfo()
+{
+	delete _unmanaged;
+	_unmanaged = NULL;
+}
+
 CollisionAlgorithmConstructionInfo::CollisionAlgorithmConstructionInfo()
 {
-	_info = new btCollisionAlgorithmConstructionInfo();
+	_unmanaged = new btCollisionAlgorithmConstructionInfo();
 }
 
 CollisionAlgorithmConstructionInfo::CollisionAlgorithmConstructionInfo(
 	BulletSharp::Dispatcher^ dispatcher, int temp)
 {
-	_info = new btCollisionAlgorithmConstructionInfo(dispatcher->_unmanaged, temp);
+	_unmanaged = new btCollisionAlgorithmConstructionInfo(dispatcher->_unmanaged, temp);
 }
 
 BulletSharp::Dispatcher^ CollisionAlgorithmConstructionInfo::Dispatcher::get()
 {
-	return gcnew BulletSharp::Dispatcher(_info->m_dispatcher1);
+	return gcnew BulletSharp::Dispatcher(_unmanaged->m_dispatcher1);
 }
 void CollisionAlgorithmConstructionInfo::Dispatcher::set(BulletSharp::Dispatcher^ value)
 {
-	_info->m_dispatcher1 = value->UnmanagedPointer;
+	_unmanaged->m_dispatcher1 = value->UnmanagedPointer;
 }
 
 PersistentManifold^ CollisionAlgorithmConstructionInfo::Manifold::get()
 {
-	return gcnew PersistentManifold(_info->m_manifold);
+	return gcnew PersistentManifold(_unmanaged->m_manifold);
 }
 void CollisionAlgorithmConstructionInfo::Manifold::set(PersistentManifold^ value)
 {
-	_info->m_manifold = (btPersistentManifold*)value->_unmanaged;
-}
-
-btCollisionAlgorithmConstructionInfo* CollisionAlgorithmConstructionInfo::UnmanagedPointer::get()
-{
-	return _info;
-}
-void CollisionAlgorithmConstructionInfo::UnmanagedPointer::set(btCollisionAlgorithmConstructionInfo* value)
-{
-	_info = value;
+	_unmanaged->m_manifold = (btPersistentManifold*)value->_unmanaged;
 }
 
 

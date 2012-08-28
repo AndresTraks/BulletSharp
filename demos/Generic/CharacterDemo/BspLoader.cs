@@ -159,7 +159,7 @@ namespace CharacterDemo
             Entities = new List<BspEntity>();
             buffer.Position = lumps[(int)BspLumpType.Entities].Offset;
             length = lumps[(int)BspLumpType.Entities].Length;
-            
+
             byte[] entityBytes = new byte[length];
             reader.Read(entityBytes, 0, length);
 
@@ -183,7 +183,7 @@ namespace CharacterDemo
                         break;
 
                     default:
-                        string[] keyValue = entity.Trim('\"').Split(new string[] { "\" \"" }, 2, 0);
+                        string[] keyValue = entity.Trim('\"').Split(new[] { "\" \"" }, 2, 0);
                         if (keyValue[0] == "classname")
                         {
                             bspEntity.ClassName = keyValue[1];
@@ -203,14 +203,14 @@ namespace CharacterDemo
                         break;
                 }
             }
-            
+
 
             // read leaves
             buffer.Position = lumps[(int)BspLumpType.Leaves].Offset;
             length = lumps[(int)BspLumpType.Leaves].Length / Marshal.SizeOf(typeof(BspLeaf));
             Leaves = new BspLeaf[length];
 
-            for (int i = 0; i < length; i++ )
+            for (int i = 0; i < length; i++)
             {
                 Leaves[i].Cluster = reader.ReadInt32();
                 Leaves[i].Area = reader.ReadInt32();

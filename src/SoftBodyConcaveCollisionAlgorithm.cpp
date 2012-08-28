@@ -26,7 +26,7 @@ SoftBodyConcaveCollisionAlgorithm::SoftBodyConcaveCollisionAlgorithm(btSoftBodyC
 
 SoftBodyConcaveCollisionAlgorithm::SoftBodyConcaveCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped)
-: CollisionAlgorithm(new btSoftBodyConcaveCollisionAlgorithm(*ci->UnmanagedPointer, body0Wrap->_unmanaged, body1Wrap->_unmanaged, isSwapped))
+: CollisionAlgorithm(new btSoftBodyConcaveCollisionAlgorithm(*ci->_unmanaged, body0Wrap->_unmanaged, body1Wrap->_unmanaged, isSwapped))
 {
 }
 

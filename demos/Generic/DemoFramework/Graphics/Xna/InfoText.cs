@@ -47,7 +47,7 @@ namespace DemoFramework.Xna
 
         void Dispose(bool isDisposing)
         {
-            if (isDisposing)
+            if (isDisposing && spriteBatch != null)
             {
                 spriteBatch.Dispose();
             }
@@ -56,6 +56,9 @@ namespace DemoFramework.Xna
         public void OnRender(float framesPerSecond)
         {
             if (_isEnabled == false)
+                return;
+
+            if (spriteBatch == null)
                 return;
 
             spriteBatch.Begin();
@@ -77,6 +80,12 @@ namespace DemoFramework.Xna
         public void OnLostDevice()
         {
             spriteBatch = new SpriteBatch(device);
+        }
+
+        public void SetDevice(GraphicsDevice device)
+        {
+            this.device = device;
+            //spriteBatch = new SpriteBatch(device);
         }
     }
 }

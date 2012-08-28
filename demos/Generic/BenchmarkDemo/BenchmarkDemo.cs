@@ -428,6 +428,7 @@ namespace BenchmarkDemo
 
             RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, null, shape, localInertia);
             RigidBody body = new RigidBody(rbInfo);
+            rbInfo.Dispose();
             body.ContactProcessingThreshold = defaultContactProcessingThreshold;
             body.WorldTransform = startTransform;
 

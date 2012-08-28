@@ -42,7 +42,7 @@ namespace DemoFramework.OpenTK
 
         public override BulletSharp.IDebugDraw GetPhysicsDebugDrawer()
         {
-            return new PhysicsDebugDraw(this);
+            return new PhysicsDebugDraw();
         }
 
         public OpenTKGraphics(Demo demo)
@@ -74,8 +74,6 @@ namespace DemoFramework.OpenTK
         int CreateShaderFromString(ShaderType type, string shaderSource)
         {
             int shaderHandle = GL.CreateShader(type);
-            ErrorCode e = GL.GetError();
-            e.ToString();
             if (GL.GetError() != ErrorCode.NoError)
                 return 0;
 
@@ -143,9 +141,8 @@ namespace DemoFramework.OpenTK
             if (GL.GetError() != ErrorCode.NoError)
                 return;
 
-            string programInfoLog;
-            GL.GetProgramInfoLog(shaderProgram, out programInfoLog);
-            programInfoLog.ToString();
+            //string programInfoLog;
+            //GL.GetProgramInfoLog(shaderProgram, out programInfoLog);
 
             GL.UseProgram(shaderProgram);
             if (GL.GetError() != ErrorCode.NoError)

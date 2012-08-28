@@ -12,15 +12,15 @@ namespace CcdPhysicsDemo
         Vector3 eye = new Vector3(0, 10, 40);
         Vector3 target = Vector3.Zero;
 
-        float CubeHalfExtents = 0.5f;
-        float ExtraHeight = 1.0f;
+        const float CubeHalfExtents = 0.5f;
+        const float ExtraHeight = 1.0f;
 
         string infoText = "Move using mouse and WASD+shift\n" +
             "F3 - Toggle debug\n" +
             //"F11 - Toggle fullscreen\n" +
             "Space - Shoot box";
 
-        public void ToggleCcdMode()
+        void ToggleCcdMode()
         {
             ccdMode = !ccdMode;
 
@@ -39,7 +39,7 @@ namespace CcdPhysicsDemo
         void CreateStack(CollisionShape boxShape, int size, float zPos)
         {
             Matrix trans;
-            float mass = 1.0f;
+            const float mass = 1.0f;
 
             for (int i = 0; i < size; i++)
             {
@@ -112,11 +112,11 @@ namespace CcdPhysicsDemo
             CollisionShape shape = new CylinderShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents);
             CollisionShapes.Add(shape);
 
-            int numObjects = 120;
+            const int numObjects = 120;
             for (i = 0; i < numObjects; i++)
             {
                 //stack them
-                int colsize = 10;
+                const int colsize = 10;
                 int row = (int)((i * CubeHalfExtents * 2) / (colsize * 2 * CubeHalfExtents));
                 int row2 = row;
                 int col = (i) % (colsize) - colsize / 2;
@@ -144,7 +144,7 @@ namespace CcdPhysicsDemo
         {
             if (World != null)
             {
-                float mass = 1.0f;
+                const float mass = 1.0f;
 
                 if (shootBoxShape == null)
                 {
@@ -162,7 +162,7 @@ namespace CcdPhysicsDemo
                 body.AngularVelocity = Vector3.Zero;
                 body.ContactProcessingThreshold = 1e30f;
 
-                ///when using m_ccdMode, disable regular CCD
+                // when using m_ccdMode, disable regular CCD
                 if (ccdMode)
                 {
                     body.CcdMotionThreshold = 0.0001f;

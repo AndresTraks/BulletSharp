@@ -38,7 +38,7 @@ namespace CharacterDemo
                                 BspBrushSide brushside = bspLoader.BrushSides[sideid];
                                 int planeid = brushside.PlaneNum;
                                 BspPlane plane = bspLoader.Planes[planeid];
-                                Vector4 planeEq = new Vector4(plane.Normal, scaling*-plane.Distance);
+                                Vector4 planeEq = new Vector4(plane.Normal, scaling * -plane.Distance);
                                 planeEquations.Add(planeEq);
                                 isValidBrush = true;
                             }
@@ -47,7 +47,7 @@ namespace CharacterDemo
                                 AlignedVector3Array vertices;
                                 GeometryUtil.GetVerticesFromPlaneEquations(planeEquations, out vertices);
 
-                                bool isEntity = false;
+                                const bool isEntity = false;
                                 Vector3 entityTarget = Vector3.Zero;
                                 AddConvexVerticesCollider(vertices, isEntity, entityTarget);
                             }

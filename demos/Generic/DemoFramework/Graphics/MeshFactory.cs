@@ -30,8 +30,6 @@ namespace DemoFramework
     [StructLayout(LayoutKind.Sequential)]
     public struct PositionedNormal
     {
-        public static readonly int Stride = 2 * Vector3.SizeInBytes;
-
         public Vector3 Position;
         public Vector3 Normal;
 
@@ -66,6 +64,8 @@ namespace DemoFramework
                 case BroadphaseNativeType.ConvexHullShape:
                     indices = null;
                     return CreateConvexHull(shape as ConvexHullShape);
+                case BroadphaseNativeType.ConeShape:
+                    return CreateCone(shape as ConeShape, out indices);
                 case BroadphaseNativeType.CylinderShape:
                     return CreateCylinder(shape as CylinderShape, out indices);
                 case BroadphaseNativeType.GImpactShape:
@@ -266,11 +266,11 @@ namespace DemoFramework
             float radius = shape.Radius;
             float halfHeight = shape.Height / 2 + shape.Margin;
 
-            int numSteps = 10;
-            float angleStep = (2 * (float)Math.PI) / numSteps;
+            const int numSteps = 10;
+            const float angleStep = (2 * (float)Math.PI) / numSteps;
 
-            int vertexCount = 2 + 6 * numSteps;
-            int indexCount = (4 * numSteps + 2) * 3;
+            const int vertexCount = 2 + 6 * numSteps;
+            const int indexCount = (4 * numSteps + 2) * 3;
 
             Vector3[] vertices = new Vector3[vertexCount * 2];
             indices = new uint[indexCount];
@@ -346,7 +346,7 @@ namespace DemoFramework
             indices[i++] = baseIndex;
             indices[i++] = baseIndex;
             indices[i++] = index - 1;
-            indices[i++] = baseIndex + 1;
+            indices[i] = baseIndex + 1;
 
             return vertices;
         }
@@ -357,11 +357,11 @@ namespace DemoFramework
             float radius = shape.Radius;
             float halfHeight = shape.HalfExtentsWithoutMargin[up] + shape.Margin;
 
-            int numSteps = 10;
-            float angleStep = (2 * (float)Math.PI) / numSteps;
+            const int numSteps = 10;
+            const float angleStep = (2 * (float)Math.PI) / numSteps;
 
-            int vertexCount = 2 + 6 * numSteps;
-            int indexCount = (4 * numSteps + 2) * 3;
+            const int vertexCount = 2 + 6 * numSteps;
+            const int indexCount = (4 * numSteps + 2) * 3;
 
             Vector3[] vertices = new Vector3[vertexCount * 2];
             indices = new uint[indexCount];
@@ -457,7 +457,7 @@ namespace DemoFramework
             indices[i++] = baseIndex;
             indices[i++] = baseIndex;
             indices[i++] = index - 1;
-            indices[i++] = baseIndex + 1;
+            indices[i] = baseIndex + 1;
 
             return vertices;
         }
@@ -504,7 +504,7 @@ namespace DemoFramework
 
         public static Vector3[] CreateGImpactMesh(GImpactMeshShape shape)
         {
-            BulletSharp.DataStream vertexBuffer, indexBuffer;
+            DataStream vertexBuffer, indexBuffer;
             int numVerts, numFaces;
             PhyScalarType vertsType, indicesType;
             int vertexStride, indexStride;
@@ -703,18 +703,18 @@ namespace DemoFramework
                 // choose p in y-z plane
                 float a = n[1] * n[1] + n[2] * n[2];
                 float k = 1.0f / (float)Math.Sqrt(a);
-                p = new BulletSharp.Vector3(0, -n[2] * k, n[1] * k);
+                p = new Vector3(0, -n[2] * k, n[1] * k);
                 // set q = n x p
-                q = BulletSharp.Vector3.Cross(n, p);
+                q = Vector3.Cross(n, p);
             }
             else
             {
                 // choose p in x-y plane
                 float a = n[0] * n[0] + n[1] * n[1];
                 float k = 1.0f / (float)Math.Sqrt(a);
-                p = new BulletSharp.Vector3(-n[1] * k, n[0] * k, 0);
+                p = new Vector3(-n[1] * k, n[0] * k, 0);
                 // set q = n x p
-                q = BulletSharp.Vector3.Cross(n, p);
+                q = Vector3.Cross(n, p);
             }
         }
 
@@ -723,7 +723,7 @@ namespace DemoFramework
             Vector3 planeOrigin = shape.PlaneNormal * shape.PlaneConstant;
             Vector3 vec0, vec1;
             PlaneSpace1(shape.PlaneNormal, out vec0, out vec1);
-            float size = 1000;
+            const float size = 1000;
 
             indices = new uint[] { 1, 2, 0, 1, 3, 0 };
 

@@ -32,7 +32,6 @@ namespace DemoFramework
         public float FrameDelta
         {
             get { return _frameDelta; }
-            private set { _frameDelta = value; }
         }
         public float FramesPerSecond { get; private set; }
 
@@ -97,7 +96,7 @@ namespace DemoFramework
             {
                 if (value == true && _world.DebugDrawer == null)
                 {
-                    BulletSharp.DebugDrawModes debugDrawMode = DebugDrawMode;
+                    DebugDrawModes debugDrawMode = DebugDrawMode;
                     _world.DebugDrawer = Graphics.GetPhysicsDebugDrawer();
                     _world.DebugDrawer.DebugMode = debugDrawMode;
                 }
@@ -282,11 +281,13 @@ namespace DemoFramework
 
                                     if (use6Dof)
                                     {
-                                        Generic6DofConstraint dof6 = new Generic6DofConstraint(body, Matrix.Translation(localPivot), false);
-                                        dof6.LinearLowerLimit = Vector3.Zero;
-                                        dof6.LinearUpperLimit = Vector3.Zero;
-                                        dof6.AngularLowerLimit = Vector3.Zero;
-                                        dof6.AngularUpperLimit = Vector3.Zero;
+                                        Generic6DofConstraint dof6 = new Generic6DofConstraint(body, Matrix.Translation(localPivot), false)
+                                        {
+                                            LinearLowerLimit = Vector3.Zero,
+                                            LinearUpperLimit = Vector3.Zero,
+                                            AngularLowerLimit = Vector3.Zero,
+                                            AngularUpperLimit = Vector3.Zero
+                                        };
 
                                         _world.AddConstraint(dof6);
                                         pickConstraint = dof6;
@@ -395,7 +396,7 @@ namespace DemoFramework
 
             Vector3 rayForward = target - eye;
             rayForward.Normalize();
-            float farPlane = 10000.0f;
+            const float farPlane = 10000.0f;
             rayForward *= farPlane;
 
             Vector3 vertical = Freelook.Up;
@@ -436,7 +437,7 @@ namespace DemoFramework
             if (_world == null)
                 return;
 
-            float mass = 1.0f;
+            const float mass = 1.0f;
 
             if (shootBoxShape == null)
             {
@@ -470,6 +471,7 @@ namespace DemoFramework
 
             RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
             RigidBody body = new RigidBody(rbInfo);
+            rbInfo.Dispose();
 
             _world.AddRigidBody(body);
 

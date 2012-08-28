@@ -8,6 +8,7 @@
 CollisionAlgorithmCreateFunc::CollisionAlgorithmCreateFunc()
 {
 	_createFunc = new btCollisionAlgorithmCreateFunc();
+	_deleteObject = true;
 }
 
 CollisionAlgorithmCreateFunc::CollisionAlgorithmCreateFunc(btCollisionAlgorithmCreateFunc* createFunc)
@@ -22,21 +23,18 @@ CollisionAlgorithmCreateFunc::~CollisionAlgorithmCreateFunc()
 
 CollisionAlgorithmCreateFunc::!CollisionAlgorithmCreateFunc()
 {
-	if (this->IsDisposed)
-		return;
-	
-	OnDisposing(this, nullptr);
-	
-	_createFunc = NULL;
-	
-	OnDisposed(this, nullptr);
+	if (_deleteObject)
+	{
+		delete _createFunc;
+		_createFunc = NULL;
+	}
 }
 
 CollisionAlgorithm^ CollisionAlgorithmCreateFunc::CreateCollisionAlgorithm(
 	CollisionAlgorithmConstructionInfo^ info, CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
 {
 	return gcnew CollisionAlgorithm(UnmanagedPointer->CreateCollisionAlgorithm(
-		*info->UnmanagedPointer, body0Wrap->_unmanaged, body1Wrap->_unmanaged));
+		*info->_unmanaged, body0Wrap->_unmanaged, body1Wrap->_unmanaged));
 }
 
 bool CollisionAlgorithmCreateFunc::IsDisposed::get()

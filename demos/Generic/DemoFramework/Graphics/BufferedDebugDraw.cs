@@ -10,14 +10,9 @@ namespace DemoFramework
     {
         protected List<PositionColored> lines = new List<PositionColored>();
 
-        DebugDrawModes _debugMode;
-        public override DebugDrawModes DebugMode
-        {
-            get { return _debugMode; }
-            set { _debugMode = value; }
-        }
+        public override DebugDrawModes DebugMode { get; set; }
 
-        public virtual int colorToInt(ref Color c)
+        protected virtual int ColorToInt(ref Color c)
         {
             int ci = c.ToArgb();
             return (ci & 0xff0000) >> 16 | (ci & 0xff00) | (ci & 0xff) << 16;
@@ -30,13 +25,13 @@ namespace DemoFramework
 
         public override void DrawLine(ref Vector3 from, ref Vector3 to, Color fromColor, Color toColor)
         {
-            lines.Add(new PositionColored(ref from, colorToInt(ref fromColor)));
-            lines.Add(new PositionColored(ref to, colorToInt(ref toColor)));
+            lines.Add(new PositionColored(ref from, ColorToInt(ref fromColor)));
+            lines.Add(new PositionColored(ref to, ColorToInt(ref toColor)));
         }
 
         public override void DrawLine(ref Vector3 from, ref Vector3 to, Color color)
         {
-            int intColor = colorToInt(ref color);
+            int intColor = ColorToInt(ref color);
             lines.Add(new PositionColored(ref from, intColor));
             lines.Add(new PositionColored(ref to, intColor));
         }
@@ -52,7 +47,7 @@ namespace DemoFramework
             var p7 = bbMax;
             var p8 = new Vector3(bbMin.X, bbMax.Y, bbMax.Z);
 
-            int intColor = colorToInt(ref color);
+            int intColor = ColorToInt(ref color);
             lines.Add(new PositionColored(ref p1, intColor)); lines.Add(new PositionColored(ref p2, intColor));
             lines.Add(new PositionColored(ref p2, intColor)); lines.Add(new PositionColored(ref p3, intColor));
             lines.Add(new PositionColored(ref p3, intColor)); lines.Add(new PositionColored(ref p4, intColor));
@@ -80,7 +75,7 @@ namespace DemoFramework
             var p7 = Vector3.TransformCoordinate(bbMax, trans);
             var p8 = Vector3.TransformCoordinate(new Vector3(bbMin.X, bbMax.Y, bbMax.Z), trans);
 
-            int intColor = colorToInt(ref color);
+            int intColor = ColorToInt(ref color);
             lines.Add(new PositionColored(ref p1, intColor)); lines.Add(new PositionColored(ref p2, intColor));
             lines.Add(new PositionColored(ref p2, intColor)); lines.Add(new PositionColored(ref p3, intColor));
             lines.Add(new PositionColored(ref p3, intColor)); lines.Add(new PositionColored(ref p4, intColor));
@@ -99,7 +94,7 @@ namespace DemoFramework
 
         public override void DrawTriangle(ref Vector3 v0, ref Vector3 v1, ref Vector3 v2, Color color, float __unnamed004)
         {
-            int intColor = colorToInt(ref color);
+            int intColor = ColorToInt(ref color);
             lines.Add(new PositionColored(ref v0, intColor));
             lines.Add(new PositionColored(ref v1, intColor));
             lines.Add(new PositionColored(ref v2, intColor));
@@ -137,12 +132,12 @@ namespace DemoFramework
             if (drawSect)
                 DrawLine(ref center, ref next, color);
 
-            int intColor = colorToInt(ref color);
+            int intColor = ColorToInt(ref color);
             PositionColored last = new PositionColored(ref next, intColor);
             for (int i = 1; i <= nSteps; i++)
             {
                 lines.Add(last);
-                float angle = minAngle + (maxAngle - minAngle) * (float)i / (float)nSteps;
+                float angle = minAngle + (maxAngle - minAngle) * i / nSteps;
                 next = center + radiusA * vx * (float)Math.Cos(angle) + radiusB * vy * (float)Math.Sin(angle);
                 last = new PositionColored(ref next, intColor);
                 lines.Add(last);
@@ -154,13 +149,11 @@ namespace DemoFramework
 
         public override void DrawContactPoint(ref Vector3 pointOnB, ref Vector3 normalOnB, float distance, int lifeTime, Color color)
         {
-            int intColor = colorToInt(ref color);
+            int intColor = ColorToInt(ref color);
             Vector3 to = pointOnB + normalOnB * 1; // distance
             lines.Add(new PositionColored(ref pointOnB, intColor));
             lines.Add(new PositionColored(ref to, intColor));
         }
-
-        public abstract void DrawDebugWorld(DynamicsWorld world);
 
         public override void ReportErrorWarning(string warningString)
         {

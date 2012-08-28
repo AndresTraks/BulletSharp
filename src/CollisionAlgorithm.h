@@ -14,8 +14,13 @@ namespace BulletSharp
 
 	public ref class CollisionAlgorithmConstructionInfo
 	{
-	private:
-		btCollisionAlgorithmConstructionInfo* _info;
+	internal:
+		btCollisionAlgorithmConstructionInfo* _unmanaged;
+
+	public:
+		!CollisionAlgorithmConstructionInfo();
+	protected:
+		~CollisionAlgorithmConstructionInfo();
 
 	public:
 		CollisionAlgorithmConstructionInfo();
@@ -31,13 +36,6 @@ namespace BulletSharp
 		{
 			PersistentManifold^ get();
 			void set(PersistentManifold^ value);
-		}
-
-	internal:
-		property btCollisionAlgorithmConstructionInfo* UnmanagedPointer
-		{
-			virtual btCollisionAlgorithmConstructionInfo* get();
-			void set(btCollisionAlgorithmConstructionInfo* value);
 		}
 	};
 

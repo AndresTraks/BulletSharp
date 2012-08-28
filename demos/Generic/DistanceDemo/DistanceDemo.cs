@@ -10,7 +10,6 @@ namespace DistanceDemo
         Vector3 eye = new Vector3(30, 20, 10);
         Vector3 target = new Vector3(0, 5, -4);
 
-        public bool HasDistanceResult;
         Vector3 distanceFrom, distanceTo;
         float distance;
 
@@ -90,15 +89,10 @@ namespace DistanceDemo
 
             if (result.HasResult)
             {
-                HasDistanceResult = true;
                 distanceFrom = result.PointInWorld;
                 distanceTo = result.PointInWorld + result.NormalOnBInWorld * result.Distance;
                 distance = result.Distance;
                 World.DebugDrawer.DrawLine(ref distanceFrom, ref distanceTo, Color.White);
-            }
-            else
-            {
-                HasDistanceResult = false;
             }
         }
     }

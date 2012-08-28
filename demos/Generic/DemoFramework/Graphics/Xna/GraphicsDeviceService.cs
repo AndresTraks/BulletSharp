@@ -34,15 +34,16 @@ namespace DemoFramework.Xna
         /// </summary>
         public GraphicsDeviceService(IntPtr windowHandle, int width, int height)
         {
-            parameters = new PresentationParameters();
-
-            parameters.BackBufferWidth = Math.Max(width, 1);
-            parameters.BackBufferHeight = Math.Max(height, 1);
-            parameters.BackBufferFormat = SurfaceFormat.Color;
-            parameters.DepthStencilFormat = DepthFormat.Depth24;
-            parameters.DeviceWindowHandle = windowHandle;
-            parameters.PresentationInterval = PresentInterval.Immediate;
-            parameters.IsFullScreen = false;
+            parameters = new PresentationParameters
+            {
+                BackBufferWidth = Math.Max(width, 1),
+                BackBufferHeight = Math.Max(height, 1),
+                BackBufferFormat = SurfaceFormat.Color,
+                DepthStencilFormat = DepthFormat.Depth24,
+                DeviceWindowHandle = windowHandle,
+                PresentationInterval = PresentInterval.Immediate,
+                IsFullScreen = false
+            };
 
             graphicsDevice = new GraphicsDevice(GraphicsAdapter.DefaultAdapter,
                                                 GraphicsProfile.Reach,

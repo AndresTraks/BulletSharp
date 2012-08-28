@@ -4,6 +4,7 @@
 #include "CollisionConfiguration.h"
 #include "CollisionCreateFunc.h"
 #include "CollisionDispatcher.h"
+#include "DefaultCollisionConfiguration.h"
 #include "Dispatcher.h"
 #include "OverlappingPairCache.h"
 
@@ -31,6 +32,7 @@ CollisionDispatcher::CollisionDispatcher(btCollisionDispatcher* dispatcher)
 CollisionDispatcher::CollisionDispatcher(BulletSharp::CollisionConfiguration^ collisionConfiguration)
 : Dispatcher(new btCollisionDispatcherWrapper(collisionConfiguration->UnmanagedPointer))
 {
+	_collisionConfiguration = collisionConfiguration;
 }
 
 CollisionDispatcher::CollisionDispatcher()
@@ -55,16 +57,27 @@ void CollisionDispatcher::DispatchAllCollisionPairs(OverlappingPairCache^ pairCa
 void CollisionDispatcher::RegisterCollisionCreateFunc(BroadphaseNativeType proxyType0,
 	BroadphaseNativeType proxyType1, CollisionAlgorithmCreateFunc^ createFunc)
 {
+	if (_collisionCreateFuncs == nullptr)
+	{
+		_collisionCreateFuncs = gcnew System::Collections::Generic::List<CollisionAlgorithmCreateFunc^>();
+	}
+	_collisionCreateFuncs->Add(createFunc);
+
 	UnmanagedPointer->registerCollisionCreateFunc((int)proxyType0, (int)proxyType1, createFunc->UnmanagedPointer);
 }
 
 CollisionConfiguration^ CollisionDispatcher::CollisionConfiguration::get()
 {
-	return gcnew BulletSharp::CollisionConfiguration(UnmanagedPointer->getCollisionConfiguration());
+	if (_collisionConfiguration == nullptr)
+	{
+		_collisionConfiguration = gcnew DefaultCollisionConfiguration((btDefaultCollisionConfiguration*)UnmanagedPointer->getCollisionConfiguration());
+	}
+	return _collisionConfiguration;
 }
 void CollisionDispatcher::CollisionConfiguration::set(BulletSharp::CollisionConfiguration^ value)
 {
 	UnmanagedPointer->setCollisionConfiguration(value->UnmanagedPointer);
+	_collisionConfiguration = value;
 }
 
 DispatcherFlags CollisionDispatcher::DispatcherFlags::get()

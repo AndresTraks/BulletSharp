@@ -5,11 +5,7 @@ namespace DemoFramework.OpenTK
 {
     public class PhysicsDebugDraw : BufferedDebugDraw
     {
-        public PhysicsDebugDraw(OpenTKGraphics graphics)
-        {
-        }
-
-        public override void DrawDebugWorld(DynamicsWorld world)
+        public void DrawDebugWorld(DynamicsWorld world)
         {
             world.DebugDrawWorld();
 

@@ -1,10 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Windows.Forms;
 using BulletSharp;
 using DemoFramework;
 
-namespace BasicDemo
+namespace VehicleDemo
 {
     class VehicleDemo : Demo
     {
@@ -292,7 +291,7 @@ namespace BasicDemo
             World.AddAction(vehicle);
 
 
-            float connectionHeight = 1.2f;
+            const float connectionHeight = 1.2f;
             bool isFrontWheel = true;
 
             // choose coordinate system

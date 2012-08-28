@@ -4,7 +4,6 @@
 //#define BULLET_GIMPACT_CONVEX_DECOMPOSITION
 
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 using BulletSharp;
 using DemoFramework;
@@ -38,7 +37,7 @@ namespace GImpactTestDemo
                 //"F11 - Toggle fullscreen\n" +
                 "Space - Shoot box\n" +
                 ". - Shoot Bunny");
-            
+
             Graphics.FarPlane = 400.0f;
         }
 
@@ -57,10 +56,10 @@ namespace GImpactTestDemo
             World.Gravity = new Vector3(0, -10, 0);
 
 
-            //create trimesh model and shape
+            // create trimesh model and shape
             InitGImpactCollision();
 
-            /// Create Scene
+            // Create Scene
             float mass = 0.0f;
 
             CollisionShape staticboxShape1 = new BoxShape(200, 1, 200);//floor
@@ -102,10 +101,10 @@ namespace GImpactTestDemo
             staticBody2 = LocalCreateRigidBody(mass, Matrix.Translation(0, -10, 0), staticplaneShape7);
 
 
-            /// Create Static Torus
+            // Create Static Torus
             float height = 28;
-            float step = 2.5f;
-            float massT = 1.0f;
+            const float step = 2.5f;
+            const float massT = 1.0f;
 
             Matrix startTransform =
                 Matrix.RotationQuaternion(Quaternion.RotationYawPitchRoll((float)Math.PI * 0.5f, 0, (float)Math.PI * 0.5f)) *
@@ -203,7 +202,7 @@ namespace GImpactTestDemo
 #endif
 
 
-            /// Create Bunny Shape
+            // Create Bunny Shape
             indexVertexArrays2 = new TriangleIndexVertexArray(BunnyMesh.Indices, BunnyMesh.Vertices);
 
 #if BULLET_GIMPACT
@@ -240,7 +239,7 @@ namespace GImpactTestDemo
         {
             if (World != null)
             {
-                float mass = 4.0f;
+                const float mass = 4.0f;
                 Matrix startTransform = Matrix.Translation(camPos);
 #if BULLET_GIMPACT
                 RigidBody body = LocalCreateRigidBody(mass, startTransform, trimeshShape2);

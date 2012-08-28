@@ -9,12 +9,8 @@
 
 namespace BulletSharp
 {
-	public ref class SimplexSolverInterface : BulletSharp::IDisposable
+	public ref class SimplexSolverInterface
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	private:
 		btSimplexSolverInterface* _simplexSolver;
 
@@ -31,8 +27,6 @@ namespace BulletSharp
 		{
 			virtual bool get();
 		}
-
-	public:
 
 	internal:
 		property btSimplexSolverInterface* UnmanagedPointer

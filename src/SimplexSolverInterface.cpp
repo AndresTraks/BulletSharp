@@ -17,14 +17,8 @@ SimplexSolverInterface::~SimplexSolverInterface()
 
 SimplexSolverInterface::!SimplexSolverInterface()
 {
-	if (this->IsDisposed)
-		return;
-
-	OnDisposing(this, nullptr);
-
+	delete _simplexSolver;
 	_simplexSolver = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 bool SimplexSolverInterface::IsDisposed::get()

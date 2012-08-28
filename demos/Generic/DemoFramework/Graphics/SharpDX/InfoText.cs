@@ -72,7 +72,7 @@ namespace DemoFramework.SharpDX
                 Usage = ResourceUsage.Default
             });
             renderTextureView = new RenderTargetView(device, renderTexture);
-            renderViews = new RenderTargetView[] { renderTextureView };
+            renderViews = new[] { renderTextureView };
 
             OverlayBufferRes = new ShaderResourceView(device, renderTexture, new ShaderResourceViewDescription()
             {
