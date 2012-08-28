@@ -187,6 +187,18 @@ CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3
 	VECTOR3_DEL(convexToWorld);
 }
 
+CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3% convexFromWorld, Vector3% convexToWorld)
+: ConvexResultCallback(0)
+{
+	VECTOR3_DEF(convexFromWorld);
+	VECTOR3_DEF(convexToWorld);
+
+	_unmanaged = new btCollisionWorld::ClosestConvexResultCallback(VECTOR3_USE(convexFromWorld), VECTOR3_USE(convexToWorld));
+
+	VECTOR3_DEL(convexFromWorld);
+	VECTOR3_DEL(convexToWorld);
+}
+
 BulletSharp::CollisionObject^ CollisionWorld::ClosestConvexResultCallback::CollisionObject::get()
 {
 	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)Unmanaged->m_hitCollisionObject);

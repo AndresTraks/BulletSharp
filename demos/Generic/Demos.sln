@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C# Express 2010
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoFramework", "DemoFramework\DemoFramework.csproj", "{7F50B160-6C4D-467A-9AAB-10C516326BD1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicDemo", "BasicDemo\BasicDemo.csproj", "{8B5B1C14-C924-42FD-ABAB-4CD851F06DF9}"
@@ -63,6 +63,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistanceDemo", "DistanceDemo\DistanceDemo.csproj", "{3EE18FE3-D5C4-4BDD-92F9-1763E586F246}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConcaveRaycastDemo", "ConcaveRaycastDemo\ConcaveRaycastDemo.csproj", "{435BCDE5-8EA0-4B94-8768-65AC338F85F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConcaveConvexCastDemo", "ConcaveConvexCastDemo\ConcaveConvexCastDemo.csproj", "{216CE49B-474F-4A64-9084-E23E487CB0C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -150,6 +152,10 @@ Global
 		{435BCDE5-8EA0-4B94-8768-65AC338F85F0}.Debug|x86.Build.0 = Debug|x86
 		{435BCDE5-8EA0-4B94-8768-65AC338F85F0}.Release|x86.ActiveCfg = Release|x86
 		{435BCDE5-8EA0-4B94-8768-65AC338F85F0}.Release|x86.Build.0 = Release|x86
+		{216CE49B-474F-4A64-9084-E23E487CB0C9}.Debug|x86.ActiveCfg = Debug|x86
+		{216CE49B-474F-4A64-9084-E23E487CB0C9}.Debug|x86.Build.0 = Debug|x86
+		{216CE49B-474F-4A64-9084-E23E487CB0C9}.Release|x86.ActiveCfg = Release|x86
+		{216CE49B-474F-4A64-9084-E23E487CB0C9}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

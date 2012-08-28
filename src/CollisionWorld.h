@@ -151,6 +151,7 @@ namespace BulletSharp
 		{
 		public:
 			ClosestConvexResultCallback(Vector3 convexFromWorld, Vector3 convexToWorld);
+			ClosestConvexResultCallback(Vector3% convexFromWorld, Vector3% convexToWorld);
 
 			property BulletSharp::CollisionObject^ CollisionObject
 			{

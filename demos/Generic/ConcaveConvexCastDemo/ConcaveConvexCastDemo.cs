@@ -4,17 +4,19 @@ using DemoFramework;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace ConcaveRaycastDemo
+namespace ConcaveConvexCastDemo
 {
     // Scrolls back and forth over terrain
-    class RaycastBar
+    class ConvexcastBatch
     {
         const int NUMRAYS_IN_BAR = 100;
 
         Vector3[] source = new Vector3[NUMRAYS_IN_BAR];
         Vector3[] dest = new Vector3[NUMRAYS_IN_BAR];
         Vector3[] direction = new Vector3[NUMRAYS_IN_BAR];
-        Vector3[] hit = new Vector3[NUMRAYS_IN_BAR];
+        Vector3[] hit_com = new Vector3[NUMRAYS_IN_BAR];
+        Vector3[] hit_surface = new Vector3[NUMRAYS_IN_BAR];
+        float[] hit_fraction = new float[NUMRAYS_IN_BAR];
         Vector3[] normal = new Vector3[NUMRAYS_IN_BAR];
 
         int frame_counter;
@@ -31,8 +33,12 @@ namespace ConcaveRaycastDemo
         float max_y;
         float sign;
 
-        public RaycastBar()
+        Vector3  boxShapeHalfExtents;
+	    BoxShape boxShape;
+
+        public ConvexcastBatch()
         {
+            boxShape = new BoxShape(0);
             ms = 0;
             max_ms = 0;
             min_ms = 9999;
@@ -40,8 +46,10 @@ namespace ConcaveRaycastDemo
             sum_ms = 0;
         }
 
-        public RaycastBar(bool unused, float ray_length, float min_z, float max_z, float min_y = -10, float max_y = 10)
+        public ConvexcastBatch(bool unused, float ray_length, float min_z, float max_z, float min_y, float max_y)
         {
+            boxShapeHalfExtents = new Vector3(1.0f, 1.0f, 1.0f);
+            boxShape = new BoxShape(boxShapeHalfExtents);
             frame_counter = 0;
             ms = 0;
             max_ms = 0;
@@ -54,18 +62,20 @@ namespace ConcaveRaycastDemo
             this.min_y = min_y;
             this.max_y = max_y;
             sign = 1.0f;
-            float dalpha = 4 * (float)Math.PI / NUMRAYS_IN_BAR;
+            const float dalpha = 4 * (float)Math.PI / NUMRAYS_IN_BAR;
             for (int i = 0; i < NUMRAYS_IN_BAR; i++)
             {
-                float z = (max_z - min_z) / NUMRAYS_IN_BAR * (float)i + min_z;
+                float z = (max_z - min_z) / NUMRAYS_IN_BAR * i + min_z;
                 source[i] = new Vector3(min_x, max_y, z);
                 dest[i] = new Vector3(min_x + ray_length, min_y, z);
                 normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
             }
         }
 
-        public RaycastBar(float ray_length, float z, float min_y = -1000, float max_y = 10)
+        public ConvexcastBatch(float ray_length, float z, float min_y = -1000, float max_y = 10)
         {
+            boxShapeHalfExtents = new Vector3(1.0f, 1.0f, 1.0f);
+            boxShape = new BoxShape(boxShapeHalfExtents);
             frame_counter = 0;
             ms = 0;
             max_ms = 0;
@@ -78,7 +88,7 @@ namespace ConcaveRaycastDemo
             this.min_y = min_y;
             this.max_y = max_y;
             sign = 1.0f;
-            float dalpha = 4 * (float)Math.PI / NUMRAYS_IN_BAR;
+            const float dalpha = 4 * (float)Math.PI / NUMRAYS_IN_BAR;
             for (int i = 0; i < NUMRAYS_IN_BAR; i++)
             {
                 float alpha = dalpha * i;
@@ -86,9 +96,8 @@ namespace ConcaveRaycastDemo
                 Matrix tr = Matrix.RotationQuaternion(Quaternion.RotationAxis(new Vector3(0.0f, 1.0f, 0.0f), alpha));
                 direction[i] = new Vector3(1.0f, 0.0f, 0.0f);
                 direction[i] = Vector3.TransformCoordinate(direction[i], tr);
-                direction[i] = direction[i] * ray_length;
                 source[i] = new Vector3(min_x, max_y, z);
-                dest[i] = source[i] + direction[i];
+                dest[i] = source[i] + direction[i] * ray_length;
                 dest[i][1] = min_y;
                 normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
             }
@@ -111,38 +120,28 @@ namespace ConcaveRaycastDemo
 
         public void Cast(CollisionWorld cw)
         {
-#if BATCH_RAYCASTER
-		    if (!gBatchRaycaster)
-			    return;
-
-		    gBatchRaycaster->clearRays ();
-		    for (int i = 0; i < NUMRAYS_IN_BAR; i++)
-		    {
-			    gBatchRaycaster->addRay (source[i], dest[i]);
-		    }
-		    gBatchRaycaster->performBatchRaycast ();
-		    for (int i = 0; i < gBatchRaycaster->getNumRays (); i++)
-		    {
-				    const SpuRaycastTaskWorkUnitOut& out = (*gBatchRaycaster)[i];
-				    hit[i].setInterpolate3(source[i],dest[i],out.HitFraction);
-				    normal[i] = out.hitNormal;
-				    normal[i].Normalize();
-		    }
-#else
             for (int i = 0; i < NUMRAYS_IN_BAR; i++)
             {
-                using (var cb = new CollisionWorld.ClosestRayResultCallback(ref source[i], ref dest[i]))
+                using (var cb = new CollisionWorld.ClosestConvexResultCallback(ref source[i], ref dest[i]))
                 {
-                    cw.RayTest(ref source[i], ref dest[i], cb);
+                    Quaternion qFrom = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
+                    Quaternion qTo = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.7f);
+                    Matrix from = Matrix.RotationQuaternion(qFrom) * Matrix.Translation(source[i]);
+                    Matrix to = Matrix.RotationQuaternion(qTo) * Matrix.Translation(dest[i]);
+                    cw.ConvexSweepTest(boxShape, from, to, cb);
                     if (cb.HasHit)
                     {
-                        hit[i] = cb.HitPointWorld;
+                        hit_surface[i] = cb.HitPointWorld;
+                        hit_com[i] = Vector3.Lerp(source[i], dest[i], cb.ClosestHitFraction);
+                        hit_fraction[i] = cb.ClosestHitFraction;
                         normal[i] = cb.HitNormalWorld;
                         normal[i].Normalize();
                     }
                     else
                     {
-                        hit[i] = dest[i];
+                        hit_com[i] = dest[i];
+                        hit_surface[i] = dest[i];
+                        hit_fraction[i] = 1.0f;
                         normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
                     }
                 }
@@ -160,7 +159,6 @@ namespace ConcaveRaycastDemo
                 ms = 0;
                 frame_counter = 0;
             }
-#endif
         }
 
         public void Draw(IDebugDraw drawer)
@@ -168,40 +166,57 @@ namespace ConcaveRaycastDemo
             int i;
             for (i = 0; i < NUMRAYS_IN_BAR; i++)
             {
-                drawer.DrawLine(ref source[i], ref hit[i], Color.Lime);
+                drawer.DrawLine(ref source[i], ref hit_com[i], Color.Lime);
             }
+            const float normalScale = 10.0f; // easier to see if this is big
             for (i = 0; i < NUMRAYS_IN_BAR; i++)
             {
-                Vector3 to = hit[i] + normal[i];
-                drawer.DrawLine(ref hit[i], ref to, Color.White);
+                Vector3 to = hit_surface[i] + normalScale * normal[i];
+                drawer.DrawLine(ref hit_surface[i], ref to, Color.White);
             }
+            Quaternion qFrom = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
+            Quaternion qTo = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.7f);
+		    for (i = 0; i < NUMRAYS_IN_BAR; i++)
+		    {
+			    Matrix from = Matrix.RotationQuaternion(qFrom) * Matrix.Translation(source[i]);
+                Matrix to = Matrix.RotationQuaternion(qTo) * Matrix.Translation(dest[i]);
+			    Vector3 linVel, angVel;
+			    TransformUtil.CalculateVelocity (from, to, 1.0f, out linVel, out angVel);
+			    Matrix T;
+			    TransformUtil.IntegrateTransform (from, linVel, angVel, hit_fraction[i], out T);
+                Vector3 box1 = boxShapeHalfExtents;
+                Vector3 box2 = -boxShapeHalfExtents;
+                drawer.DrawBox(ref box1, ref box2, ref T, Color.Aqua);
+		    }
         }
     }
 
-    class ConcaveRaycastDemo : Demo
+    class ConcaveConvexCastDemo : Demo
     {
         Vector3 eye = new Vector3(0, 15, 60);
         Vector3 target = new Vector3(-5, 5, 0);
 
         const DebugDrawModes debugMode = DebugDrawModes.None;
 
-        const float TRIANGLE_SIZE = 8.0f;
-        const int NUM_VERTS_X = 30;
-        const int NUM_VERTS_Y = 30;
-        const float waveHeight = 5.0f;
+        const float TriangleSize = 8.0f;
+        const int NumVertsX = 30;
+        const int NumVertsY = 30;
+        const float WaveHeight = 5.0f;
         static float offset = 0.0f;
         bool animatedMesh = false;
+        const int NumDynamicBoxesX = 30;
+        const int NumDynamicBoxesY = 30;
 
         TriangleIndexVertexArray indexVertexArrays;
         BvhTriangleMeshShape groundShape;
-        static RaycastBar raycastBar;
+        static ConvexcastBatch convexcastBatch;
         RigidBody staticBody;
 
         protected override void OnInitialize()
         {
             Freelook.SetEyeTarget(eye, target);
 
-            Graphics.SetFormText("BulletSharp - Concave Raycast Demo");
+            Graphics.SetFormText("BulletSharp - Concave Convexcast Demo");
             Graphics.SetInfoText("Move using mouse and WASD+shift\n" +
                 "F3 - Toggle debug\n" +
                 //"F11 - Toggle fullscreen\n" +
@@ -209,32 +224,32 @@ namespace ConcaveRaycastDemo
 
             DebugDrawMode = debugMode;
 
-            const int totalVerts = NUM_VERTS_X * NUM_VERTS_Y;
-            const int totalTriangles = 2 * (NUM_VERTS_X - 1) * (NUM_VERTS_Y - 1);
+            const int totalVerts = NumVertsX * NumVertsY;
+            const int totalTriangles = 2 * (NumVertsX - 1) * (NumVertsY - 1);
             indexVertexArrays = new TriangleIndexVertexArray();
 
             IndexedMesh mesh = new IndexedMesh();
             mesh.Allocate(totalVerts, Vector3.SizeInBytes, totalTriangles * 3, 3 * sizeof(int));
             DataStream indices = mesh.LockIndices();
-            for (int i = 0; i < NUM_VERTS_X - 1; i++)
+            for (int i = 0; i < NumVertsX - 1; i++)
             {
-                for (int j = 0; j < NUM_VERTS_Y - 1; j++)
+                for (int j = 0; j < NumVertsY - 1; j++)
                 {
-                    indices.Write(j * NUM_VERTS_X + i);
-                    indices.Write(j * NUM_VERTS_X + i + 1);
-                    indices.Write((j + 1) * NUM_VERTS_X + i + 1);
+                    indices.Write(j * NumVertsX + i);
+                    indices.Write(j * NumVertsX + i + 1);
+                    indices.Write((j + 1) * NumVertsX + i + 1);
 
-                    indices.Write(j * NUM_VERTS_X + i);
-                    indices.Write((j + 1) * NUM_VERTS_X + i + 1);
-                    indices.Write((j + 1) * NUM_VERTS_X + i);
+                    indices.Write(j * NumVertsX + i);
+                    indices.Write((j + 1) * NumVertsX + i + 1);
+                    indices.Write((j + 1) * NumVertsX + i);
                 }
             }
             indices.Dispose();
 
             indexVertexArrays.AddIndexedMesh(mesh);
 
-            raycastBar = new RaycastBar(4000.0f, 0.0f);
-            //raycastBar = new RaycastBar(true, 40.0f, -50.0f, 50.0f);
+            convexcastBatch = new ConvexcastBatch(40.0f, 0.0f, -10.0f, 80.0f);
+            //convexcastBatch = new ConvexcastBatch(true, 40.0f, -50.0f, 50.0f);
         }
 
         void SetVertexPositions(float waveheight, float offset)
@@ -246,13 +261,13 @@ namespace ConcaveRaycastDemo
             indexVertexArrays.GetLockedVertexIndexData(out vertexBuffer, out numVerts, out vertsType, out vertexStride,
                 out indexBuffer, out indexStride, out numFaces, out indicesType);
 
-            for (int i = 0; i < NUM_VERTS_X; i++)
+            for (int i = 0; i < NumVertsX; i++)
             {
-                for (int j = 0; j < NUM_VERTS_Y; j++)
+                for (int j = 0; j < NumVertsY; j++)
                 {
-                    vertexBuffer.Write((i - NUM_VERTS_X * 0.5f) * TRIANGLE_SIZE);
+                    vertexBuffer.Write((i - NumVertsX * 0.5f) * TriangleSize);
                     vertexBuffer.Write(waveheight * (float)Math.Sin((float)i + offset) * (float)Math.Cos((float)j + offset));
-                    vertexBuffer.Write((j - NUM_VERTS_Y * 0.5f) * TRIANGLE_SIZE);
+                    vertexBuffer.Write((j - NumVertsY * 0.5f) * TriangleSize);
                 }
             }
 
@@ -280,15 +295,17 @@ namespace ConcaveRaycastDemo
             CollisionShape colShape = new BoxShape(1);
             CollisionShapes.Add(colShape);
 
-            for (int i = 0; i < 10; i++)
+            for (int j = 0; j < NumDynamicBoxesX; j++)
             {
-                //CollisionShape colShape = new CapsuleShape(0.5f,2.0f);//boxShape = new SphereShape(1.0f);
-                Matrix startTransform = Matrix.Translation(2 * i, 10, 1);
-                LocalCreateRigidBody(1.0f, startTransform, colShape);
+                for (int i = 0; i < NumDynamicBoxesY; i++)
+                {
+                    //CollisionShape colShape = new CapsuleShape(0.5f,2.0f);//boxShape = new SphereShape(1.0f);
+                    Matrix startTransform = Matrix.Translation(5 * (i - NumDynamicBoxesX / 2), 10, 5 * (j - NumDynamicBoxesY / 2));
+                    LocalCreateRigidBody(1.0f, startTransform, colShape);
+                }
             }
 
-
-            SetVertexPositions(waveHeight, 0.0f);
+            SetVertexPositions(WaveHeight, 0.0f);
 
             const bool useQuantizedAabbCompression = true;
             groundShape = new BvhTriangleMeshShape(indexVertexArrays, useQuantizedAabbCompression);
@@ -304,7 +321,7 @@ namespace ConcaveRaycastDemo
             if (animatedMesh)
             {
                 offset += FrameDelta;
-                SetVertexPositions(waveHeight, offset);
+                SetVertexPositions(WaveHeight, offset);
                 Graphics.MeshFactory.RemoveShape(groundShape);
 
                 Vector3 worldMin = new Vector3(-1000, -1000, -1000);
@@ -316,9 +333,9 @@ namespace ConcaveRaycastDemo
                 Broadphase.OverlappingPairCache.CleanProxyFromPairs(staticBody.BroadphaseHandle, Dispatcher);
             }
 
-            raycastBar.Move(FrameDelta);
-            raycastBar.Cast(World);
-            raycastBar.Draw(World.DebugDrawer);
+            convexcastBatch.Move(FrameDelta);
+            convexcastBatch.Cast(World);
+            convexcastBatch.Draw(World.DebugDrawer);
 
             base.OnUpdate();
         }
@@ -348,7 +365,7 @@ namespace ConcaveRaycastDemo
         [STAThread]
         static void Main()
         {
-            using (Demo demo = new ConcaveRaycastDemo())
+            using (Demo demo = new ConcaveConvexCastDemo())
             {
                 LibraryManager.Initialize(demo);
             }
