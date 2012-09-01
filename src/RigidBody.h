@@ -46,8 +46,7 @@ namespace BulletSharp
 		Vector3 GetVelocityInLocalPoint(Vector3 relativePosition);
 		void IntegrateVelocities(btScalar step);
 		bool IsInWorld();
-		void PredictIntegratedTransform(btScalar step, Matrix% predictedTransform);
-		void PredictIntegratedTransform(btScalar step, Matrix predictedTransform);
+		void PredictIntegratedTransform(btScalar step, [Out] Matrix% predictedTransform);
 		void ProceedToTransform(Matrix newTransform);
 		void SaveKinematicState(btScalar step);
 		void SetDamping(btScalar linearDamping, btScalar angularDamping);

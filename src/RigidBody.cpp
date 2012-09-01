@@ -178,17 +178,11 @@ bool RigidBody::IsInWorld()
 	return Unmanaged->isInWorld();
 }
 
-void RigidBody::PredictIntegratedTransform(btScalar step, Matrix% predictedTransform)
+void RigidBody::PredictIntegratedTransform(btScalar step, [Out] Matrix% predictedTransform)
 {
-	btTransform* predictedTransformTemp = Math::MatrixToBtTransform(predictedTransform);
+	btTransform* predictedTransformTemp = new btTransform();
 	Unmanaged->predictIntegratedTransform(step, *predictedTransformTemp);
-	delete predictedTransformTemp;
-}
-
-void RigidBody::PredictIntegratedTransform(btScalar step, Matrix predictedTransform)
-{
-	btTransform* predictedTransformTemp = Math::MatrixToBtTransform(predictedTransform);
-	Unmanaged->predictIntegratedTransform(step, *predictedTransformTemp);
+	Math::BtTransformToMatrix(predictedTransformTemp, predictedTransform);
 	delete predictedTransformTemp;
 }
 
