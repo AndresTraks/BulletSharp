@@ -327,13 +327,13 @@ namespace BulletSharp
 		RandomizeOrder = SOLVER_RANDMIZE_ORDER,
 		FrictionSeparate = SOLVER_FRICTION_SEPARATE,
 		UseWarmStarting = SOLVER_USE_WARMSTARTING,
-		UseFrictionWarmStarting = SOLVER_USE_FRICTION_WARMSTARTING,
 		Use2FrictionDirections = SOLVER_USE_2_FRICTION_DIRECTIONS,
 		EnableFrictionDirectionCaching = SOLVER_ENABLE_FRICTION_DIRECTION_CACHING,
 		DisableVelocityDependentFrictionDirection = SOLVER_DISABLE_VELOCITY_DEPENDENT_FRICTION_DIRECTION,
 		CacheFriendly = SOLVER_CACHE_FRIENDLY,
 		Simd = SOLVER_SIMD,
-		Cuda = SOLVER_CUDA
+		InterleaveContactAndFrictionConstraints = SOLVER_INTERLEAVE_CONTACT_AND_FRICTION_CONSTRAINTS,
+		AllowZeroLengthFrictionDirections = SOLVER_ALLOW_ZERO_LENGTH_FRICTION_DIRECTIONS
 	};
 
 #ifndef DISABLE_SOFTBODY

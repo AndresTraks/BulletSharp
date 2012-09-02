@@ -56,43 +56,6 @@ namespace BulletSharp
 		void UpdateDeactivation(btScalar timeStep);
 		void UpdateInertiaTensor();
 
-#ifndef DISABLE_INTERNAL
-		void InternalApplyImpulse(Vector3 linearComponent, Vector3 angularComponent, btScalar impulseMagnitude);
-		void InternalApplyPushImpulse(Vector3 linearComponent, Vector3 angularComponent, btScalar impulseMagnitude);
-		void InternalWritebackVelocity(btScalar timeStep);
-		void InternalWritebackVelocity();
-
-		property Vector3 InternalAngularFactor
-		{
-			Vector3 get();
-		}
-
-		property Vector3 InternalDeltaAngularVelocity
-		{
-			Vector3 get();
-		}
-
-		property Vector3 InternalDeltaLinearVelocity
-		{
-			Vector3 get();
-		}
-
-		property Vector3 InternalInvMass
-		{
-			Vector3 get();
-		}
-
-		property Vector3 InternalPushVelocity
-		{
-			Vector3 get();
-		}
-
-		property Vector3 InternalTurnVelocity
-		{
-			Vector3 get();
-		}
-#endif
-
 		static RigidBody^ Upcast(CollisionObject^ colObj);
 
 		property btScalar AngularDamping
