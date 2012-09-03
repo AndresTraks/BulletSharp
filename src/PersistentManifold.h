@@ -51,14 +51,16 @@ namespace BulletSharp
 			void set(int value);
 		}
 
-		property float ContactBreakingThreshold
+		property btScalar ContactBreakingThreshold
 		{
 			btScalar get();
+			void set(btScalar value);
 		}
 
-		property float ContactProcessingThreshold
+		property btScalar ContactProcessingThreshold
 		{
 			btScalar get();
+			void set(btScalar value);
 		}
 
 		property int Index1A
@@ -70,6 +72,7 @@ namespace BulletSharp
 		property int NumContacts
 		{
 			int get();
+			void set(int value);
 		}
 	};
 };

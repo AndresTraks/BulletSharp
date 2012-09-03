@@ -103,6 +103,12 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
+		property btScalar SplitImpulseTurnErp
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
 		property btScalar Tau
 		{
 			btScalar get();

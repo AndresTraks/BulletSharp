@@ -102,14 +102,22 @@ void PersistentManifold::CompanionIDB::set(int value)
 	Unmanaged->m_companionIdB = value;
 }
 
-float PersistentManifold::ContactBreakingThreshold::get()
+btScalar PersistentManifold::ContactBreakingThreshold::get()
 {
 	return Unmanaged->getContactBreakingThreshold();
+}
+void PersistentManifold::ContactBreakingThreshold::set(btScalar value)
+{
+	Unmanaged->setContactBreakingThreshold(value);
 }
 
 float PersistentManifold::ContactProcessingThreshold::get()
 {
 	return Unmanaged->getContactProcessingThreshold();
+}
+void PersistentManifold::ContactProcessingThreshold::set(btScalar value)
+{
+	Unmanaged->setContactProcessingThreshold(value);
 }
 
 int PersistentManifold::Index1A::get()
@@ -124,4 +132,8 @@ void PersistentManifold::Index1A::set(int value)
 int PersistentManifold::NumContacts::get()
 {
 	return Unmanaged->getNumContacts();
+}
+void PersistentManifold::NumContacts::set(int value)
+{
+	Unmanaged->setNumContacts(value);
 }

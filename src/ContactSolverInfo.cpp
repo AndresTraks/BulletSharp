@@ -149,6 +149,15 @@ void ContactSolverInfoData::SplitImpulsePenetrationThreshold::set(btScalar value
 	_infoData->m_splitImpulsePenetrationThreshold = value;
 }
 
+btScalar ContactSolverInfoData::SplitImpulseTurnErp::get()
+{
+	return _infoData->m_splitImpulseTurnErp;
+}
+void ContactSolverInfoData::SplitImpulseTurnErp::set(btScalar value)
+{
+	_infoData->m_splitImpulseTurnErp = value;
+}
+
 btScalar ContactSolverInfoData::Tau::get()
 {
 	return _infoData->m_tau;
