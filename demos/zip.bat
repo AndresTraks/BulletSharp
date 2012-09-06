@@ -27,11 +27,13 @@ copy Generic\bin\Release\BspDemo.exe bin\
 copy Generic\bin\Release\CcdPhysicsDemo.exe bin\
 copy Generic\bin\Release\CharacterDemo.exe bin\
 copy Generic\bin\Release\CollisionInterfaceDemo.exe bin\
+copy Generic\bin\Release\ConcaveConvexCastDemo.exe bin\
 copy Generic\bin\Release\ConstraintDemo.exe bin\
 copy Generic\bin\Release\ConvexDecompositionDemo.exe bin\
 copy Generic\bin\Release\ConcaveRaycastDemo.exe bin\
 copy Generic\bin\Release\DistanceDemo.exe bin\
 copy Generic\bin\Release\GImpactTestDemo.exe bin\
+copy Generic\bin\Release\MotorDemo.exe bin\
 copy Generic\bin\Release\RagdollDemo.exe bin\
 copy Generic\bin\Release\SerializeDemo.exe bin\
 copy Generic\bin\Release\SoftDemo.exe bin\

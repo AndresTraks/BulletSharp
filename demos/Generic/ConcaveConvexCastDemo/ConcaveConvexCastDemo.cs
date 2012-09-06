@@ -203,7 +203,7 @@ namespace ConcaveConvexCastDemo
         const int NumVertsY = 30;
         const float WaveHeight = 5.0f;
         static float offset = 0.0f;
-        bool animatedMesh = false;
+        bool animatedMesh = true;
         const int NumDynamicBoxesX = 30;
         const int NumDynamicBoxesY = 30;
 

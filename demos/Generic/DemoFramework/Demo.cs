@@ -142,7 +142,7 @@ namespace DemoFramework
             OnInitializePhysics();
         }
 
-        public void ExitPhysics()
+        public virtual void ExitPhysics()
         {
             //remove/dispose constraints
             int i;
