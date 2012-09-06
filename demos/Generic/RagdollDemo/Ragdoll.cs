@@ -100,8 +100,8 @@ namespace RagdollDemo
 
             Matrix localA, localB;
 
-            localA = Matrix.RotationYawPitchRoll(0, PI_2, 0) * Matrix.Translation(0, 0.15f, 0);
-            localB = Matrix.RotationYawPitchRoll(0, PI_2, 0) * Matrix.Translation(0, -0.15f, 0);
+            localA = Matrix.RotationYawPitchRoll(PI_2, 0, 0) * Matrix.Translation(0, 0.15f, 0);
+            localB = Matrix.RotationYawPitchRoll(PI_2, 0, 0) * Matrix.Translation(0, -0.15f, 0);
             hingeC = new HingeConstraint(bodies[(int)BodyPart.Pelvis], bodies[(int)BodyPart.Spine], localA, localB);
             hingeC.SetLimit(-PI_4, PI_2);
 	        joints[(int)Joint.PelvisSpine] = hingeC;
@@ -130,8 +130,8 @@ namespace RagdollDemo
             ownerWorld.AddConstraint(joints[(int)Joint.LeftHip], true);
 
 
-            localA = Matrix.RotationYawPitchRoll(0, -PI_2, 0) * Matrix.Translation(0, -0.225f, 0);
-            localB = Matrix.RotationYawPitchRoll(0, -PI_2, 0) * Matrix.Translation(0, 0.185f, 0);
+            localA = Matrix.RotationYawPitchRoll(PI_2, 0, 0) * Matrix.Translation(0, -0.225f, 0);
+            localB = Matrix.RotationYawPitchRoll(PI_2, 0, 0) * Matrix.Translation(0, 0.185f, 0);
             hingeC = new HingeConstraint(bodies[(int)BodyPart.LeftUpperLeg], bodies[(int)BodyPart.LeftLowerLeg], localA, localB);
             hingeC.SetLimit(0, PI_2);
             joints[(int)Joint.LeftKnee] = hingeC;
@@ -150,8 +150,8 @@ namespace RagdollDemo
             ownerWorld.AddConstraint(joints[(int)Joint.RightHip], true);
 
 
-            localA = Matrix.RotationYawPitchRoll(0, PI_2, 0) * Matrix.Translation(0, -0.225f, 0);
-            localB = Matrix.RotationYawPitchRoll(0, PI_2, 0) * Matrix.Translation(0, 0.185f, 0);
+            localA = Matrix.RotationYawPitchRoll(PI_2, 0, 0) * Matrix.Translation(0, -0.225f, 0);
+            localB = Matrix.RotationYawPitchRoll(PI_2, 0, 0) * Matrix.Translation(0, 0.185f, 0);
             hingeC = new HingeConstraint(bodies[(int)BodyPart.RightUpperLeg], bodies[(int)BodyPart.RightLowerLeg], localA, localB);
             hingeC.SetLimit(0, PI_2);
             joints[(int)Joint.RightKnee] = hingeC;
@@ -170,8 +170,8 @@ namespace RagdollDemo
             ownerWorld.AddConstraint(joints[(int)Joint.LeftShoulder], true);
 
 
-            localA = Matrix.RotationYawPitchRoll(0, PI_2, 0) * Matrix.Translation(0, 0.18f, 0);
-            localB = Matrix.RotationYawPitchRoll(0, PI_2, 0) * Matrix.Translation(0, -0.14f, 0);
+            localA = Matrix.RotationYawPitchRoll(PI_2, 0, 0) * Matrix.Translation(0, 0.18f, 0);
+            localB = Matrix.RotationYawPitchRoll(PI_2, 0, 0) * Matrix.Translation(0, -0.14f, 0);
             hingeC = new HingeConstraint(bodies[(int)BodyPart.LeftUpperArm], bodies[(int)BodyPart.LeftLowerArm], localA, localB);
             hingeC.SetLimit(0, PI_2);
             joints[(int)Joint.LeftElbow] = hingeC;
@@ -190,8 +190,8 @@ namespace RagdollDemo
             ownerWorld.AddConstraint(joints[(int)Joint.RightShoulder], true);
 
 
-            localA = Matrix.RotationYawPitchRoll(0, PI_2, 0) * Matrix.Translation(0, 0.18f, 0);
-            localB = Matrix.RotationYawPitchRoll(0, PI_2, 0) * Matrix.Translation(0, -0.14f, 0);
+            localA = Matrix.RotationYawPitchRoll(PI_2, 0, 0) * Matrix.Translation(0, 0.18f, 0);
+            localB = Matrix.RotationYawPitchRoll(PI_2, 0, 0) * Matrix.Translation(0, -0.14f, 0);
             hingeC = new HingeConstraint(bodies[(int)BodyPart.RightUpperArm], bodies[(int)BodyPart.RightLowerArm], localA, localB);
             //hingeC.SetLimit(-PI_2, 0);
             hingeC.SetLimit(0, PI_2);
