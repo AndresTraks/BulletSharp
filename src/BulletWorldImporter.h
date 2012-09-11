@@ -1,30 +1,29 @@
 #pragma once
 
-#include "CollisionShape.h"
-#include "ConvexHullShape.h"
-#include "CompoundShape.h"
-#include "DynamicsWorld.h"
 #include "IDisposable.h"
-#include "RigidBody.h"
-#include "StridingMeshInterface.h"
-#include "TriangleIndexVertexArray.h"
-#ifndef DISABLE_BVH
-#include "BvhTriangleMeshShape.h"
-#include "ScaledBvhTriangleMeshShape.h"
-#endif
-#ifndef DISABLE_GIMPACT
-#include "GImpactShape.h"
-#endif
-#ifndef DISABLE_CONSTRAINTS
-#include "ConeTwistConstraint.h"
-#include "Generic6DofConstraint.h"
-#include "HingeConstraint.h"
-#include "Point2PointConstraint.h"
-#include "SliderConstraint.h"
-#endif
 
 namespace BulletSharp
 {
+	ref class CollisionObject;
+	ref class CollisionShape;
+	ref class ConvexHullShape;
+	ref class CompoundShape;
+	ref class DynamicsWorld;
+	ref class RigidBody;
+	ref class MultiSphereShape;
+	ref class StridingMeshInterface;
+	ref class TriangleIndexVertexArray;
+	ref class BvhTriangleMeshShape;
+	ref class OptimizedBvh;
+	ref class ScaledBvhTriangleMeshShape;
+	ref class ConeTwistConstraint;
+	ref class Generic6DofConstraint;
+	ref class HingeConstraint;
+	ref class Point2PointConstraint;
+	ref class SliderConstraint;
+	ref class TypedConstraint;
+	ref class GImpactMeshShape;
+
 	namespace Serialize
 	{
 		class BulletWorldImporterWrapper;
@@ -77,6 +76,7 @@ namespace BulletSharp
 #ifndef DISABLE_BVH
 			virtual ScaledBvhTriangleMeshShape^ CreateScaledTrangleMeshShape(BvhTriangleMeshShape^ meshShape, Vector3 localScaling);
 #endif
+			virtual MultiSphereShape^ CreateMultiSphereShape(array<Vector3>^ positions, array<btScalar>^ radi);
 
 			// acceleration and connectivity structures
 #ifndef DISABLE_BVH
@@ -165,7 +165,7 @@ namespace BulletSharp
 		class BulletWorldImporterWrapper : public btBulletWorldImporter
 		{
 		private:
-			auto_gcroot<BulletWorldImporter^> _importer;
+			gcroot<BulletWorldImporter^> _importer;
 
 		public:
 			BulletWorldImporterWrapper(btDynamicsWorld* world, BulletWorldImporter^ importer);
@@ -259,6 +259,7 @@ namespace BulletSharp
 #ifndef DISABLE_BVH
 			virtual class btScaledBvhTriangleMeshShape* baseCreateScaledTrangleMeshShape(btBvhTriangleMeshShape* meshShape,const btVector3& localScalingbtBvhTriangleMeshShape);
 #endif
+			virtual class btMultiSphereShape* baseCreateMultiSphereShape(const btVector3* positions, const btScalar* radi, int numSpheres);
 
 			// acceleration and connectivity structures
 #ifndef DISABLE_BVH

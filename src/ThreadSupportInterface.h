@@ -14,10 +14,9 @@ namespace BulletSharp
 			virtual event EventHandler^ OnDisposing;
 			virtual event EventHandler^ OnDisposed;
 
-		private:
-			btBarrier* _barrier;
-
 		internal:
+			btBarrier* _unmanaged;
+
 			Barrier(btBarrier* barrier);
 
 		public:
@@ -46,10 +45,9 @@ namespace BulletSharp
 			virtual event EventHandler^ OnDisposing;
 			virtual event EventHandler^ OnDisposed;
 
-		private:
-			btCriticalSection* _criticalSection;
-
 		internal:
+			btCriticalSection* _unmanaged;
+
 			CriticalSection(btCriticalSection* criticalSection);
 
 		public:
@@ -74,7 +72,7 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class ThreadSupportInterface : BulletSharp::IDisposable
+		public ref class ThreadSupportInterface abstract : BulletSharp::IDisposable
 		{
 		public:
 			virtual event EventHandler^ OnDisposing;
@@ -94,6 +92,8 @@ namespace BulletSharp
 		public:
 			Barrier^ CreateBarrier();
 			CriticalSection^ CreateCriticalSection();
+			void DeleteBarrier(Barrier^ barrier);
+			void DeleteCriticalSection(CriticalSection^ criticalSection);
 			IntPtr GetThreadLocalMemory(int taskId);
 			void SendRequest(uint32_t uiCommand, ppu_address_t uiArgument0, uint32_t uiArgument1);
 			void StartSpu();

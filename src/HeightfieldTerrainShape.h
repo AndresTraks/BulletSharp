@@ -16,5 +16,7 @@ namespace BulletSharp
 
 		void SetUseDiamondSubdivision(bool useDiamondSubdivision);
 		void SetUseDiamondSubdivision();
+		void SetUseZigzagSubdivision(bool useZigzagSubdivision);
+		void SetUseZigzagSubdivision();
 	};
 };

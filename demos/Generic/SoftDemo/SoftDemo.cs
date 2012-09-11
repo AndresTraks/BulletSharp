@@ -337,7 +337,7 @@ namespace SoftDemo
                 psb.Cfg.PIterations = 2;
                 psb.Cfg.Collisions |= FCollisions.VFSS;
                 psb.RandomizeConstraints();
-                Matrix m = Matrix.RotationYawPitchRoll((float)Math.PI / 2 * (1 - (i & 1)), (float)Math.PI / 2 * (i & 1), 0) *
+                Matrix m = Matrix.RotationYawPitchRoll((float)Math.PI / 2 * (i & 1), (float)Math.PI / 2 * (1 - (i & 1)), 0) *
                     Matrix.Translation(3 * i, 2, 0);
                 psb.Transform(m);
                 psb.Scale(new Vector3(2, 2, 2));
@@ -360,7 +360,7 @@ namespace SoftDemo
                 psb.Cfg.DF = 0.5f;
                 psb.Cfg.Collisions |= FCollisions.VFSS;
                 psb.RandomizeConstraints();
-                Matrix m = Matrix.RotationYawPitchRoll(0, (float)Math.PI / 2 * (i & 1), 0) *
+                Matrix m = Matrix.RotationYawPitchRoll((float)Math.PI / 2 * (i & 1), 0, 0) *
                     Matrix.Translation(0, -1 + 5 * i, 0);
                 psb.Transform(m);
                 psb.Scale(new Vector3(6, 6, 6));
@@ -637,7 +637,7 @@ namespace SoftDemo
             psb.Cfg.PIterations = 2;
             psb.Cfg.DF = 0.5f;
             psb.RandomizeConstraints();
-            Matrix m = Matrix.RotationYawPitchRoll((float)Math.PI / 2, 0, 0) *
+            Matrix m = Matrix.RotationYawPitchRoll(0, (float)Math.PI / 2, 0) *
                 Matrix.Translation(0, 4, 0);
             psb.Transform(m);
             psb.Scale(new Vector3(6, 6, 6));
@@ -665,7 +665,7 @@ namespace SoftDemo
             psb.GenerateBendingConstraints(2);
             psb.Cfg.PIterations = 2;
             psb.RandomizeConstraints();
-            Matrix m = Matrix.RotationYawPitchRoll((float)Math.PI / 2, 0, 0) *
+            Matrix m = Matrix.RotationYawPitchRoll(0, (float)Math.PI / 2, 0) *
                 Matrix.Translation(0, 4, 0);
             psb.Transform(m);
             psb.Scale(new Vector3(2, 2, 2));
@@ -680,7 +680,7 @@ namespace SoftDemo
             psb.Materials[0].Lst = 0.1f;
             psb.Cfg.MT = 0.05f;
             psb.RandomizeConstraints();
-            Matrix m = Matrix.RotationYawPitchRoll((float)Math.PI / 2, 0, 0) *
+            Matrix m = Matrix.RotationYawPitchRoll(0, (float)Math.PI / 2, 0) *
                 Matrix.Translation(0, 4, 0);
             psb.Transform(m);
             psb.Scale(new Vector3(2, 2, 2));
@@ -820,7 +820,7 @@ namespace SoftDemo
                 psb.Cfg.SKSplitCl = 1;
                 psb.Cfg.Collisions = FCollisions.CLSS | FCollisions.CLRS;
                 psb.RandomizeConstraints();
-                Matrix m = Matrix.RotationYawPitchRoll((float)Math.PI / 2 * (1 - (i & 1)), (float)Math.PI / 2 * (i & 1), 0)
+                Matrix m = Matrix.RotationYawPitchRoll((float)Math.PI / 2 * (i & 1), (float)Math.PI / 2 * (1 - (i & 1)), 0)
                     * Matrix.Translation(3 * i, 2, 0);
                 psb.Transform(m);
                 psb.Scale(new Vector3(2, 2, 2));

@@ -60,14 +60,22 @@ namespace Box2DDemo
             // Re-using the same collision is better for memory usage and performance
             float u = 0.96f;
             Vector3[] points = { new Vector3(0, u, 0), new Vector3(-u, -u, 0), new Vector3(u, -u, 0) };
-            ConvexShape colShape = new Convex2DShape(new BoxShape(1, 1, Depth));
-            ConvexShape colShape2 = new Convex2DShape(new ConvexHullShape(points));
-            ConvexShape colShape3 = new Convex2DShape(new CylinderShapeZ(1, 1, Depth));
+            ConvexShape childShape0 = new BoxShape(1, 1, Depth);
+            ConvexShape colShape = new Convex2DShape(childShape0);
+            ConvexShape childShape1 = new ConvexHullShape(points);
+            ConvexShape colShape2 = new Convex2DShape(childShape1);
+            ConvexShape childShape2 = new CylinderShapeZ(1, 1, Depth);
+            ConvexShape colShape3 = new Convex2DShape(childShape2);
 
-            colShape.Margin = 0.03f;
             CollisionShapes.Add(colShape);
             CollisionShapes.Add(colShape2);
             CollisionShapes.Add(colShape3);
+
+            CollisionShapes.Add(childShape0);
+            CollisionShapes.Add(childShape1);
+            CollisionShapes.Add(childShape2);
+
+            colShape.Margin = 0.03f;
 
             float mass = 1.0f;
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);

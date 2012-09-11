@@ -15,6 +15,7 @@ namespace BulletSharp
 		PersistentManifold();
 		//PersistentManifold(Object^ body0, Object^ body1, int , btScalar contactBreakingThreshold, btScalar contactProcessingThreshold);
 
+		int AddManifoldPoint(ManifoldPoint^ newPoint, bool isPredictive);
 		int AddManifoldPoint(ManifoldPoint^ newPoint);
 		void ClearManifold();
 		void ClearUserCache(ManifoldPoint^ pt);

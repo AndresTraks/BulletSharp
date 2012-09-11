@@ -55,4 +55,14 @@ void HeightfieldTerrainShape::SetUseDiamondSubdivision()
 	Unmanaged->setUseDiamondSubdivision();
 }
 
+void HeightfieldTerrainShape::SetUseZigzagSubdivision(bool useZigzagSubdivision)
+{
+	Unmanaged->setUseZigzagSubdivision(useZigzagSubdivision);
+}
+
+void HeightfieldTerrainShape::SetUseZigzagSubdivision()
+{
+	Unmanaged->setUseZigzagSubdivision();
+}
+
 #endif

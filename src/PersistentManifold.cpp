@@ -16,6 +16,11 @@ PersistentManifold::PersistentManifold()
 {
 }
 
+int PersistentManifold::AddManifoldPoint(ManifoldPoint^ newPoint, bool isPredictive)
+{
+	return Unmanaged->addManifoldPoint(*newPoint->_unmanaged, isPredictive);
+}
+
 int PersistentManifold::AddManifoldPoint(ManifoldPoint^ newPoint)
 {
 	return Unmanaged->addManifoldPoint(*newPoint->_unmanaged);

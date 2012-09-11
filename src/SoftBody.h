@@ -1677,6 +1677,7 @@ namespace BulletSharp
 			void Refine(ImplicitFn^ ifn, btScalar accurary, bool cut);
 			void ReleaseCluster(int index);
 			void ReleaseClusters();
+			void ResetLinkRestLengths();
 			void Rotate(Quaternion rotation);
 			void Scale(Vector3 scale);
 			void SetMass(int node, btScalar mass);
@@ -1696,9 +1697,12 @@ namespace BulletSharp
 			void Transform(Matrix transform);
 			void Translate(Vector3 translation);
 			void Translate(btScalar x, btScalar y, btScalar z); // helper
+			void UpdateArea(bool averageArea);
+			void UpdateArea();
 			void UpdateBounds();
 			void UpdateClusters();
 			void UpdateConstants();
+			void UpdateLinkConstants();
 			void UpdateNormals();
 			void UpdatePose();
 
@@ -1773,6 +1777,12 @@ namespace BulletSharp
 			property Pose^ Pose
 			{
 				BulletSharp::SoftBody::Pose^ get();
+			}
+
+			property btScalar RestLengthScale
+			{
+				btScalar get();
+				void set(btScalar value);
 			}
 
 			property AlignedRigidContactArray^ RigidContacts

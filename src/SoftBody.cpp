@@ -3127,6 +3127,11 @@ void BulletSharp::SoftBody::SoftBody::ReleaseClusters()
 	Unmanaged->releaseClusters();
 }
 
+void BulletSharp::SoftBody::SoftBody::ResetLinkRestLengths()
+{
+	Unmanaged->resetLinkRestLengths();
+}
+
 void BulletSharp::SoftBody::SoftBody::Rotate(Quaternion rotation)
 {
 	btQuaternion* rotationTemp = Math::QuaternionToBtQuat(rotation);
@@ -3241,6 +3246,16 @@ void BulletSharp::SoftBody::SoftBody::Translate(btScalar x, btScalar y, btScalar
 	Translate(Vector3(x,y,z));
 }
 
+void BulletSharp::SoftBody::SoftBody::UpdateArea(bool averageArea)
+{
+	Unmanaged->updateArea(averageArea);
+}
+
+void BulletSharp::SoftBody::SoftBody::UpdateArea()
+{
+	Unmanaged->updateArea();
+}
+
 void BulletSharp::SoftBody::SoftBody::UpdateBounds()
 {
 	Unmanaged->updateBounds();
@@ -3254,6 +3269,11 @@ void BulletSharp::SoftBody::SoftBody::UpdateClusters()
 void BulletSharp::SoftBody::SoftBody::UpdateConstants()
 {
 	Unmanaged->updateConstants();
+}
+
+void BulletSharp::SoftBody::SoftBody::UpdateLinkConstants()
+{
+	Unmanaged->updateLinkConstants();
 }
 
 void BulletSharp::SoftBody::SoftBody::UpdateNormals()
@@ -3346,6 +3366,15 @@ BulletSharp::SoftBody::AlignedNoteArray^ BulletSharp::SoftBody::SoftBody::Notes:
 BulletSharp::SoftBody::Pose^ BulletSharp::SoftBody::SoftBody::Pose::get()
 {
 	return gcnew BulletSharp::SoftBody::Pose(&Unmanaged->m_pose);
+}
+
+btScalar BulletSharp::SoftBody::SoftBody::RestLengthScale::get()
+{
+	return Unmanaged->getRestLengthScale();
+}
+void BulletSharp::SoftBody::SoftBody::RestLengthScale::set(btScalar value)
+{
+	Unmanaged->setRestLengthScale(value);
 }
 
 BulletSharp::SoftBody::AlignedRigidContactArray^ BulletSharp::SoftBody::SoftBody::RigidContacts::get()

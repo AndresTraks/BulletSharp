@@ -3,9 +3,30 @@
 #ifndef DISABLE_SERIALIZE
 
 #include "BulletWorldImporter.h"
+#include "CollisionObject.h"
+#include "CompoundShape.h"
+#include "ConvexHullShape.h"
+#include "DynamicsWorld.h"
+#include "MultiSphereShape.h"
+#include "RigidBody.h"
+#include "StridingMeshInterface.h"
 #include "StringConv.h"
+#include "TriangleIndexVertexArray.h"
 #ifndef DISABLE_BVH
+#include "BvhTriangleMeshShape.h"
 #include "OptimizedBvh.h"
+#include "ScaledBvhTriangleMeshShape.h"
+#endif
+#ifndef DISABLE_CONSTRAINTS
+#include "ConeTwistConstraint.h"
+#include "Generic6DofConstraint.h"
+#include "HingeConstraint.h"
+#include "Point2PointConstraint.h"
+#include "SliderConstraint.h"
+#include "TypedConstraint.h"
+#endif
+#ifndef DISABLE_GIMPACT
+#include "GImpactShape.h"
 #endif
 
 Serialize::BulletWorldImporter::BulletWorldImporter(DynamicsWorld^ world)
@@ -30,6 +51,7 @@ Serialize::BulletWorldImporter::!BulletWorldImporter()
 
 	OnDisposing(this, nullptr);
 
+	delete _importer;
 	_importer = NULL;
 
 	OnDisposed(this, nullptr);
@@ -164,6 +186,22 @@ OptimizedBvh^ Serialize::BulletWorldImporter::CreateOptimizedBvh()
 	return gcnew OptimizedBvh(_importer->baseCreateOptimizedBvh());
 }
 #endif
+
+MultiSphereShape^ Serialize::BulletWorldImporter::CreateMultiSphereShape(array<Vector3>^ positions, array<btScalar>^ radi)
+{
+	int numSpheres = (positions->Length < radi->Length) ? positions->Length : radi->Length;
+
+	btVector3* positionsTemp = Math::Vector3ArrayToUnmanaged(positions);
+	btScalar* radiTemp = Math::BtScalarArrayToUnmanaged(radi, numSpheres);
+
+	MultiSphereShape^ ret = gcnew MultiSphereShape(
+		_importer->baseCreateMultiSphereShape(positionsTemp, radiTemp, numSpheres));
+
+	delete[] positionsTemp;
+	delete[] radiTemp;
+
+	return ret;
+}
 
 //TriangleInfoMap^ Serialize::BulletWorldImporter::CreateTriangleInfoMap()
 //{
@@ -803,6 +841,11 @@ btScaledBvhTriangleMeshShape* Serialize::BulletWorldImporterWrapper::baseCreateS
 	return btBulletWorldImporter::createScaledTrangleMeshShape(meshShape, localScalingbtBvhTriangleMeshShape);
 }
 #endif
+
+btMultiSphereShape* Serialize::BulletWorldImporterWrapper::baseCreateMultiSphereShape(const btVector3* positions, const btScalar* radi, int numSpheres)
+{
+	return btBulletWorldImporter::createMultiSphereShape(positions, radi, numSpheres);
+}
 
 btTriangleInfoMap* Serialize::BulletWorldImporterWrapper::baseCreateTriangleInfoMap()
 {
