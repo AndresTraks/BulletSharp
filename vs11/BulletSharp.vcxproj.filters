@@ -498,6 +498,9 @@
     <ClInclude Include="..\src\Win32ThreadSupport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\GearConstraint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\VoronoiSimplexSolver.cpp">
@@ -972,6 +975,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Win32ThreadSupport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GearConstraint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

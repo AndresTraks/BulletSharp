@@ -442,6 +442,7 @@ namespace BulletSharp
 		void AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask);
 		void AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup);
 		void AddCollisionObject(CollisionObject^ collisionObject);
+		void ComputeOverlappingPairs();
 		void ContactPairTest(CollisionObject^ colObjA, CollisionObject^ colObjB, ContactResultCallback^ resultCallback);
 		void ContactTest(CollisionObject^ colObj, ContactResultCallback^ resultCallback);
 		void ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback, btScalar allowedCcdPenetration);

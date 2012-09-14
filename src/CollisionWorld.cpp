@@ -659,6 +659,11 @@ void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject)
 	_unmanaged->addCollisionObject(collisionObject->UnmanagedPointer);
 }
 
+void CollisionWorld::ComputeOverlappingPairs()
+{
+	_unmanaged->computeOverlappingPairs();
+}
+
 void CollisionWorld::ContactPairTest(CollisionObject^ colObjA, CollisionObject^ colObjB, ContactResultCallback^ resultCallback)
 {
 	_unmanaged->contactPairTest(colObjA->UnmanagedPointer, colObjB->UnmanagedPointer, *resultCallback->UnmanagedPointer);

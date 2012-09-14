@@ -1910,6 +1910,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\GearConstraint.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\src\Generic6DofConstraint.cpp"
 						>
 					</File>
@@ -2625,6 +2629,10 @@
 					</File>
 					<File
 						RelativePath="..\src\ContactSolverInfo.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\GearConstraint.h"
 						>
 					</File>
 					<File

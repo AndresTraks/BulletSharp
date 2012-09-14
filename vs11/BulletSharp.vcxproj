@@ -385,7 +385,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\bullet\msvc\vs11\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\bullet\msvc\2012\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
@@ -412,7 +412,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_MinSizeRel.lib;BulletCollision_MinsizeRel.lib;BulletDynamics_MinsizeRel.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bullet\msvc\vs11\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bullet\msvc\2012\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
       <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
@@ -438,7 +438,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_MinSizeRel.lib;BulletCollision_MinsizeRel.lib;BulletDynamics_MinsizeRel.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bullet\msvc\vs11\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bullet\msvc\2012\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
       <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
@@ -464,7 +464,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_MinSizeRel.lib;BulletCollision_MinsizeRel.lib;BulletDynamics_MinsizeRel.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bullet\msvc\vs11\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bullet\msvc\2012\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
       <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
@@ -487,7 +487,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\bullet\msvc\vs11\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\bullet\msvc\2012\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
@@ -511,7 +511,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\bullet\msvc\vs11\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\bullet\msvc\2012\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
@@ -538,7 +538,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_MinSizeRel.lib;BulletCollision_MinsizeRel.lib;BulletDynamics_MinsizeRel.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bullet\msvc\vs11\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bullet\msvc\2012\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
       <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
@@ -561,7 +561,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\bullet\msvc\vs11\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\bullet\msvc\2012\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
@@ -588,7 +588,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_MinSizeRel.lib;BulletCollision_MinsizeRel.lib;BulletDynamics_MinsizeRel.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bullet\msvc\vs11\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bullet\msvc\2012\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
       <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
@@ -611,7 +611,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\bullet\msvc\vs11\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\bullet\msvc\2012\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
@@ -638,7 +638,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_MinSizeRel.lib;BulletCollision_MinsizeRel.lib;BulletDynamics_MinsizeRel.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bullet\msvc\vs11\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bullet\msvc\2012\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
       <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
@@ -661,7 +661,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\bullet\msvc\vs11\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\bullet\msvc\2012\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
@@ -688,7 +688,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_MinSizeRel.lib;BulletCollision_MinsizeRel.lib;BulletDynamics_MinsizeRel.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bullet\msvc\vs11\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bullet\msvc\2012\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
       <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
@@ -711,7 +711,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\bullet\msvc\vs11\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\bullet\msvc\2012\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
@@ -735,7 +735,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\bullet\msvc\vs11\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\bullet\msvc\2012\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
@@ -762,7 +762,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_MinSizeRel.lib;BulletCollision_MinsizeRel.lib;BulletDynamics_MinsizeRel.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bullet\msvc\vs11\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bullet\msvc\2012\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
       <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
@@ -788,7 +788,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_MinSizeRel.lib;BulletCollision_MinsizeRel.lib;BulletDynamics_MinsizeRel.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bullet\msvc\vs11\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bullet\msvc\2012\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
       <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
@@ -814,7 +814,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_MinSizeRel.lib;BulletCollision_MinsizeRel.lib;BulletDynamics_MinsizeRel.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bullet\msvc\vs11\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bullet\msvc\2012\lib\MinSizeRel;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
       <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
@@ -837,7 +837,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\bullet\msvc\vs11\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\bullet\msvc\2012\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
@@ -861,7 +861,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>LinearMath_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\bullet\msvc\vs11\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\bullet\msvc\2012\lib\Debug;$(ATISTREAMSDKROOT)lib\x86\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
@@ -882,6 +882,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\AssemblyInfo.cpp" />
     <ClCompile Include="..\src\Collections.cpp" />
+    <ClCompile Include="..\src\GearConstraint.cpp" />
     <ClCompile Include="..\src\Hacd.cpp" />
     <ClCompile Include="..\src\Math.cpp" />
     <ClCompile Include="..\src\ObjectTable.cpp" />
@@ -1066,6 +1067,7 @@
   <ItemGroup>
     <ClInclude Include="..\src\Collections.h" />
     <ClInclude Include="..\src\Enums.h" />
+    <ClInclude Include="..\src\GearConstraint.h" />
     <ClInclude Include="..\src\Hacd.h" />
     <ClInclude Include="..\src\IDisposable.h" />
     <ClInclude Include="..\src\Math.h" />
