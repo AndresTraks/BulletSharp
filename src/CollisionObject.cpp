@@ -75,6 +75,28 @@ void CollisionObject::GetWorldTransform([Out] Matrix% outTransform)
 	BtTransformToMatrixFast(_unmanaged->getWorldTransform(), outTransform);
 }
 
+bool CollisionObject::HasAnisotropicFriction()
+{
+	return _unmanaged->hasAnisotropicFriction();
+}
+bool CollisionObject::HasAnisotropicFriction(AnisotropicFrictionFlags frictionMode)
+{
+	return _unmanaged->hasAnisotropicFriction((int)frictionMode);
+}
+
+void CollisionObject::SetAnisotropicFriction(Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode)
+{
+	VECTOR3_DEF(anisotropicFriction);
+	_unmanaged->setAnisotropicFriction(VECTOR3_USE(anisotropicFriction), (int)frictionMode);
+	VECTOR3_DEL(anisotropicFriction);
+}
+void CollisionObject::SetAnisotropicFriction(Vector3 anisotropicFriction)
+{
+	VECTOR3_DEF(anisotropicFriction);
+	_unmanaged->setAnisotropicFriction(VECTOR3_USE(anisotropicFriction));
+	VECTOR3_DEL(anisotropicFriction);
+}
+
 #ifndef DISABLE_SERIALIZE
 int CollisionObject::CalculateSerializeBufferSize()
 {
@@ -230,11 +252,6 @@ void CollisionObject::Friction::set(btScalar value)
 	_unmanaged->setFriction(value);
 }
 
-bool CollisionObject::HasAnisotropicFriction::get()
-{
-	return _unmanaged->hasAnisotropicFriction();
-}
-
 bool CollisionObject::HasContactResponse::get()
 {
 	return _unmanaged->hasContactResponse();
@@ -323,6 +340,15 @@ btScalar CollisionObject::Restitution::get()
 void CollisionObject::Restitution::set(btScalar value)
 {
 	_unmanaged->setRestitution(value);
+}
+
+btScalar CollisionObject::RollingFriction::get()
+{
+	return _unmanaged->getRollingFriction();
+}
+void CollisionObject::RollingFriction::set(btScalar value)
+{
+	_unmanaged->setRollingFriction(value);
 }
 
 Object^ CollisionObject::UserObject::get()

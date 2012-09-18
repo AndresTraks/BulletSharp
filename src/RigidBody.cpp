@@ -122,6 +122,21 @@ btScalar RigidBody::ComputeAngularImpulseDenominator(Vector3 axis)
 	return ret;
 }
 
+#pragma managed(push, off)
+void RigidBody_ComputeGyroscopicForce(btRigidBody* body, btVector3* ret, btScalar maxGyroscopicForce)
+{
+	*ret = body->computeGyroscopicForce(maxGyroscopicForce);
+}
+#pragma managed(pop)
+Vector3 RigidBody::ComputeGyroscopicForce(btScalar maxGyroscopicForce)
+{
+	btVector3* retTemp = new btVector3;
+	RigidBody_ComputeGyroscopicForce(Unmanaged, retTemp, maxGyroscopicForce);
+	Vector3 ret = Math::BtVector3ToVector3(retTemp);
+	delete retTemp;
+	return ret;
+}
+
 btScalar RigidBody::ComputeImpulseDenominator(Vector3 pos, Vector3 normal)
 {
 	VECTOR3_DEF(pos);

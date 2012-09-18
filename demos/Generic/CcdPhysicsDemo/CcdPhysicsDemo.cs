@@ -131,6 +131,8 @@ namespace CcdPhysicsDemo
                     row * 2 * CubeHalfExtents + CubeHalfExtents + ExtraHeight, 0);
 
                 body = LocalCreateRigidBody(1, trans, shape);
+                body.SetAnisotropicFriction(shape.AnisotropicRollingFrictionDirection, AnisotropicFrictionFlags.AnisotropicRollingFriction);
+                body.RollingFriction = 0.3f;
 
                 if (ccdMode)
                 {

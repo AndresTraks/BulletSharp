@@ -41,6 +41,7 @@ namespace BulletSharp
 		bool CheckCollideWithOverride(CollisionObject^ co);
 		void ClearForces();
 		btScalar ComputeAngularImpulseDenominator(Vector3 axis);
+		Vector3 ComputeGyroscopicForce(btScalar maxGyroscopicForce);
 		btScalar ComputeImpulseDenominator(Vector3 pos, Vector3 normal);
 		void GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		Vector3 GetVelocityInLocalPoint(Vector3 relativePosition);

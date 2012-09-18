@@ -77,6 +77,15 @@ void ContactSolverInfoData::MaxErrorReduction::set(btScalar value)
 	_infoData->m_maxErrorReduction = value;
 }
 
+btScalar ContactSolverInfoData::MaxGyroscopicForce::get()
+{
+	return _infoData->m_maxGyroscopicForce;
+}
+void ContactSolverInfoData::MaxGyroscopicForce::set(btScalar value)
+{
+	_infoData->m_maxGyroscopicForce = value;
+}
+
 int ContactSolverInfoData::MinimumSolverBatchSize::get()
 {
 	return _infoData->m_minimumSolverBatchSize;
@@ -111,6 +120,15 @@ btScalar ContactSolverInfoData::Restitution::get()
 void ContactSolverInfoData::Restitution::set(btScalar value)
 {
 	_infoData->m_restitution = value;
+}
+
+btScalar ContactSolverInfoData::SingleAxisRollingFrictionThreshold::get()
+{
+	return _infoData->m_singleAxisRollingFrictionThreshold;
+}
+void ContactSolverInfoData::SingleAxisRollingFrictionThreshold::set(btScalar value)
+{
+	_infoData->m_singleAxisRollingFrictionThreshold = value;
 }
 
 SolverModes ContactSolverInfoData::SolverMode::get()

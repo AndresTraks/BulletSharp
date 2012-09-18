@@ -56,6 +56,11 @@ namespace BulletSharp
 			btScalar get();
 		}
 
+		property Vector3 AnisotropicRollingFrictionDirection
+		{
+			Vector3 get();
+		}
+
 		property bool IsCompound
 		{
 			bool get();

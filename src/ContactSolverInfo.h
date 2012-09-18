@@ -55,6 +55,12 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
+		property btScalar MaxGyroscopicForce
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
 		property int MinimumSolverBatchSize
 		{
 			int get();
@@ -74,6 +80,12 @@ namespace BulletSharp
 		}
 
 		property btScalar Restitution
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property btScalar SingleAxisRollingFrictionThreshold
 		{
 			btScalar get();
 			void set(btScalar value);

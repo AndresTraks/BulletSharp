@@ -44,6 +44,10 @@ namespace BulletSharp
 		bool CheckCollideWith(CollisionObject^ collisionObject);
 		void ForceActivationState(BulletSharp::ActivationState newState);
 		void GetWorldTransform([Out] Matrix% transform);
+		bool HasAnisotropicFriction();
+		bool HasAnisotropicFriction(AnisotropicFrictionFlags frictionMode);
+		void SetAnisotropicFriction(Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode);
+		void SetAnisotropicFriction(Vector3 anisotropicFriction);
 
 #ifndef DISABLE_SERIALIZE
 		int CalculateSerializeBufferSize();
@@ -125,11 +129,6 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property bool HasAnisotropicFriction
-		{
-			bool get();
-		}
-
 		property bool HasContactResponse
 		{
 			bool get();
@@ -191,6 +190,12 @@ namespace BulletSharp
 		}
 
 		property btScalar Restitution
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property btScalar RollingFriction
 		{
 			btScalar get();
 			void set(btScalar value);

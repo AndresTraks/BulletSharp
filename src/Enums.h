@@ -11,6 +11,15 @@ namespace BulletSharp
 		DisableSimulation = DISABLE_SIMULATION
 	};
 
+	[Flags]
+	public enum class  AnisotropicFrictionFlags
+	{
+		//None = btCollisionObject::CF_ANISOTROPIC_FRICTION_DISABLED,
+		AnisotropicFrictionDisabled = btCollisionObject::CF_ANISOTROPIC_FRICTION_DISABLED,
+		AnisotropicFriction = btCollisionObject::CF_ANISOTROPIC_FRICTION,
+		AnisotropicRollingFriction = btCollisionObject::CF_ANISOTROPIC_ROLLING_FRICTION,
+	};
+
 	public enum class BroadphaseNativeType
 	{
 		BoxShape = BOX_SHAPE_PROXYTYPE,
@@ -317,7 +326,8 @@ namespace BulletSharp
 	public enum class RigidBodyFlags
 	{
 		None = 0,
-		DisableWorldGravity = BT_DISABLE_WORLD_GRAVITY
+		DisableWorldGravity = BT_DISABLE_WORLD_GRAVITY,
+		EnableGyroscopicForce = BT_ENABLE_GYROPSCOPIC_FORCE
 	};
 
 	[Flags]

@@ -64,6 +64,15 @@ void ManifoldPoint::CombinedRestitution::set(btScalar value)
 	_unmanaged->m_combinedRestitution = value;
 }
 
+btScalar ManifoldPoint::CombinedRollingFriction::get()
+{
+	return _unmanaged->m_combinedRollingFriction;
+}
+void ManifoldPoint::CombinedRollingFriction::set(btScalar value)
+{
+	_unmanaged->m_combinedRollingFriction = value;
+}
+
 btScalar ManifoldPoint::ContactCfm1::get()
 {
 	return _unmanaged->m_contactCFM1;

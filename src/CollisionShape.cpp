@@ -294,6 +294,21 @@ btScalar CollisionShape::AngularMotionDisc::get()
 	return _unmanaged->getAngularMotionDisc();
 }
 
+#pragma managed(push, off)
+void CollisionShape_AnisotropicRollingFrictionDirection(btCollisionShape* shape, btVector3* ret)
+{
+	*ret = shape->getAnisotropicRollingFrictionDirection();
+}
+#pragma managed(pop)
+Vector3 CollisionShape::AnisotropicRollingFrictionDirection::get()
+{
+	btVector3* retTemp = new btVector3;
+	CollisionShape_AnisotropicRollingFrictionDirection(_unmanaged, retTemp);
+	Vector3 ret = Math::BtVector3ToVector3(retTemp);
+	delete retTemp;
+	return ret;
+}
+
 bool CollisionShape::IsCompound::get()
 {
 	return _unmanaged->isCompound();

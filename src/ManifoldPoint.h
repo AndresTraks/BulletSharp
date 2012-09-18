@@ -54,6 +54,12 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
+		property btScalar CombinedRollingFriction
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
 		property btScalar ContactCfm1
 		{
 			btScalar get();
