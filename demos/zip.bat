@@ -35,6 +35,7 @@ copy Generic\bin\Release\DistanceDemo.exe bin\
 copy Generic\bin\Release\GImpactTestDemo.exe bin\
 copy Generic\bin\Release\MotorDemo.exe bin\
 copy Generic\bin\Release\RagdollDemo.exe bin\
+copy Generic\bin\Release\RollingFrictionDemo.exe bin\
 copy Generic\bin\Release\SerializeDemo.exe bin\
 copy Generic\bin\Release\SoftDemo.exe bin\
 copy Generic\bin\Release\VehicleDemo.exe bin\

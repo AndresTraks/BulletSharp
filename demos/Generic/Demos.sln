@@ -68,6 +68,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConcaveConvexCastDemo", "Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorDemo", "MotorDemo\MotorDemo.csproj", "{9B13DC6C-3704-4969-810C-412557FC9E47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RollingFrictionDemo", "RollingFrictionDemo\RollingFrictionDemo.csproj", "{F88BB418-67AD-45D8-BEC7-781CCA1CCA98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -162,6 +164,10 @@ Global
 		{9B13DC6C-3704-4969-810C-412557FC9E47}.Debug|x86.Build.0 = Debug|x86
 		{9B13DC6C-3704-4969-810C-412557FC9E47}.Release|x86.ActiveCfg = Release|x86
 		{9B13DC6C-3704-4969-810C-412557FC9E47}.Release|x86.Build.0 = Release|x86
+		{F88BB418-67AD-45D8-BEC7-781CCA1CCA98}.Debug|x86.ActiveCfg = Debug|x86
+		{F88BB418-67AD-45D8-BEC7-781CCA1CCA98}.Debug|x86.Build.0 = Debug|x86
+		{F88BB418-67AD-45D8-BEC7-781CCA1CCA98}.Release|x86.ActiveCfg = Release|x86
+		{F88BB418-67AD-45D8-BEC7-781CCA1CCA98}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
