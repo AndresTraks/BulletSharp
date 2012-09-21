@@ -174,7 +174,7 @@ Vector3 RigidBody::GetVelocityInLocalPoint(Vector3 relativePosition)
 	VECTOR3_DEF(relativePosition);
 	btVector3* velocityTemp = new btVector3;
 
-	RigidBody_GetVelocityInLocalPoint((btRigidBody*)_unmanaged, velocityTemp, VECTOR3_PTR(relativePosition));
+	RigidBody_GetVelocityInLocalPoint(Unmanaged, velocityTemp, VECTOR3_PTR(relativePosition));
 	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
 
 	VECTOR3_DEL(relativePosition);
@@ -402,7 +402,7 @@ void RigidBody_GetOrientation(btRigidBody* body, btQuaternion* orientation)
 Quaternion RigidBody::Orientation::get()
 {
 	btQuaternion* orientationTemp = new btQuaternion;
-	RigidBody_GetOrientation((btRigidBody*)_unmanaged, orientationTemp);
+	RigidBody_GetOrientation(Unmanaged, orientationTemp);
 	Quaternion orientation = Math::BtQuatToQuaternion(orientationTemp);
 	delete orientationTemp;
 	return orientation;
@@ -598,6 +598,15 @@ btScalar RigidBodyConstructionInfo::Restitution::get()
 void RigidBodyConstructionInfo::Restitution::set(btScalar value)
 {
 	_unmanaged->m_restitution = value;
+}
+
+btScalar RigidBodyConstructionInfo::RollingFriction::get()
+{
+	return _unmanaged->m_rollingFriction;
+}
+void RigidBodyConstructionInfo::RollingFriction::set(btScalar value)
+{
+	_unmanaged->m_rollingFriction = value;
 }
 
 Matrix RigidBodyConstructionInfo::StartWorldTransform::get()

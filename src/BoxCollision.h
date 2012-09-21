@@ -22,11 +22,5 @@ namespace BulletSharp
 			Vector3 get();
 			void set(Vector3 value);
 		}
-
-	internal:
-		property btAABB* UnmanagedPointer
-		{
-			btAABB* get();
-		}
 	};
 };

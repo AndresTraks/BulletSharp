@@ -770,7 +770,7 @@ void AlignedStkNnArray::default::set(int index, Dbvt::StkNn^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*(btAlignedObjectArray<btDbvt::sStkNN>*)_unmanaged)[index] = *value->UnmanagedPointer;
+	Unmanaged[index] = *value->UnmanagedPointer;
 }
 
 
@@ -2623,7 +2623,7 @@ AlignedWheelInfoArray::AlignedWheelInfoArray()
 
 void AlignedWheelInfoArray::Add(WheelInfo^ wheelInfo)
 {
-	Unmanaged->push_back(*wheelInfo->UnmanagedPointer);
+	Unmanaged->push_back(*wheelInfo->_unmanaged);
 }
 
 void AlignedWheelInfoArray::Clear()
@@ -2686,6 +2686,6 @@ void AlignedWheelInfoArray::default::set(int index, WheelInfo^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	WheelInfoArray_SetDefault(Unmanaged, index, value->UnmanagedPointer);
+	WheelInfoArray_SetDefault(Unmanaged, index, GetUnmanagedNullable(value));
 }
 #endif

@@ -711,11 +711,11 @@ void Config::MT::set(btScalar value)
 
 int Config::PIterations::get()
 {
-	return UnmanagedPointer->piterations;
+	return _config->piterations;
 }
 void Config::PIterations::set(int value)
 {
-	UnmanagedPointer->piterations = value;
+	_config->piterations = value;
 }
 
 btScalar Config::PR::get()
@@ -874,6 +874,8 @@ void Element::Tag::set(Object^ value)
 }
 
 
+#define Unmanaged (static_cast<btSoftBody::Feature*>(_unmanaged))
+
 Feature::Feature(btSoftBody::Feature* feature)
 : Element(feature)
 {
@@ -886,15 +888,18 @@ Feature::Feature()
 
 BulletSharp::SoftBody::Material^ Feature::Material::get()
 {
-	if (((btSoftBody::Feature*)_unmanaged)->m_material == 0)
+	if (Unmanaged->m_material == 0)
 		return nullptr;
-	return gcnew BulletSharp::SoftBody::Material(((btSoftBody::Feature*)_unmanaged)->m_material);
+	return gcnew BulletSharp::SoftBody::Material(Unmanaged->m_material);
 }
 void Feature::Material::set(BulletSharp::SoftBody::Material^ value)
 {
-	((btSoftBody::Feature*)_unmanaged)->m_material = (btSoftBody::Material*)GetUnmanagedNullable(value);
+	Unmanaged->m_material = (btSoftBody::Material*)GetUnmanagedNullable(value);
 }
 
+
+#undef Unmanaged
+#define Unmanaged (static_cast<btSoftBody::Face*>(_unmanaged))
 
 Face::Face(btSoftBody::Face* face)
 : Feature(face)
@@ -909,37 +914,37 @@ Face::Face()
 #ifndef DISABLE_DBVT
 DbvtNode^ Face::Leaf::get()
 {
-	if (((btSoftBody::Face*)_unmanaged)->m_leaf == 0)
+	if (Unmanaged->m_leaf == 0)
 		return nullptr;
-	return gcnew DbvtNode(((btSoftBody::Face*)_unmanaged)->m_leaf);
+	return gcnew DbvtNode(Unmanaged->m_leaf);
 }
 void Face::Leaf::set(DbvtNode^ value)
 {
-	((btSoftBody::Face*)_unmanaged)->m_leaf = GetUnmanagedNullable(value);
+	Unmanaged->m_leaf = GetUnmanagedNullable(value);
 }
 #endif
 
 NodePtrArray^ Face::N::get()
 {
-	ReturnCachedObjectStatic(NodePtrArray, _n, ((btSoftBody::Face*)_unmanaged)->m_n, 3);
+	ReturnCachedObjectStatic(NodePtrArray, _n, Unmanaged->m_n, 3);
 }
 
 Vector3 Face::Normal::get()
 {
-	return Math::BtVector3ToVector3(&((btSoftBody::Face*)_unmanaged)->m_normal);
+	return Math::BtVector3ToVector3(&Unmanaged->m_normal);
 }
 void Face::Normal::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &((btSoftBody::Face*)_unmanaged)->m_normal);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_normal);
 }
 
 btScalar Face::RestArea::get()
 {
-	return ((btSoftBody::Face*)_unmanaged)->m_ra;
+	return Unmanaged->m_ra;
 }
 void Face::RestArea::set(btScalar value)
 {
-	((btSoftBody::Face*)_unmanaged)->m_ra = value;
+	Unmanaged->m_ra = value;
 }
 
 
@@ -1187,6 +1192,7 @@ Joint::JointType BulletSharp::SoftBody::Joint::Type::get()
 }
 
 
+#undef Unmanaged
 #define Unmanaged static_cast<btSoftBody::LJoint*>(_unmanaged)
 
 LJoint::LJoint(btSoftBody::LJoint* joint)
@@ -1387,6 +1393,9 @@ Vector3Array^ CJoint::RPos::get()
 }
 
 
+#undef Unmanaged
+#define Unmanaged static_cast<btSoftBody::Link*>(_unmanaged)
+
 Link::Link(btSoftBody::Link* link)
 : Feature(link)
 {
@@ -1399,63 +1408,66 @@ Link::Link()
 
 btScalar Link::C0::get()
 {
-	return ((btSoftBody::Link*)_unmanaged)->m_c0;
+	return Unmanaged->m_c0;
 }
 void Link::C0::set(btScalar value)
 {
-	((btSoftBody::Link*)_unmanaged)->m_c0 = value;
+	Unmanaged->m_c0 = value;
 }
 
 btScalar Link::C1::get()
 {
-	return ((btSoftBody::Link*)_unmanaged)->m_c1;
+	return Unmanaged->m_c1;
 }
 void Link::C1::set(btScalar value)
 {
-	((btSoftBody::Link*)_unmanaged)->m_c1 = value;
+	Unmanaged->m_c1 = value;
 }
 
 btScalar Link::C2::get()
 {
-	return ((btSoftBody::Link*)_unmanaged)->m_c2;
+	return Unmanaged->m_c2;
 }
 void Link::C2::set(btScalar value)
 {
-	((btSoftBody::Link*)_unmanaged)->m_c2 = value;
+	Unmanaged->m_c2 = value;
 }
 
 Vector3 Link::C3::get()
 {
-	return Math::BtVector3ToVector3(&((btSoftBody::Link*)_unmanaged)->m_c3);
+	return Math::BtVector3ToVector3(&Unmanaged->m_c3);
 }
 void Link::C3::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &((btSoftBody::Link*)_unmanaged)->m_c3);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_c3);
 }
 
 bool Link::IsBending::get()
 {
-	return ((btSoftBody::Link*)_unmanaged)->m_bbending != 0;
+	return Unmanaged->m_bbending != 0;
 }
 void Link::IsBending::set(bool value)
 {
-	((btSoftBody::Link*)_unmanaged)->m_bbending = value;
+	Unmanaged->m_bbending = value;
 }
 
 NodePtrArray^ Link::Nodes::get()
 {
-	ReturnCachedObjectStatic(NodePtrArray, _nodePtrArray, ((btSoftBody::Link*)_unmanaged)->m_n, 2);
+	ReturnCachedObjectStatic(NodePtrArray, _nodePtrArray, Unmanaged->m_n, 2);
 }
 
 btScalar Link::RestLength::get()
 {
-	return ((btSoftBody::Link*)_unmanaged)->m_rl;
+	return Unmanaged->m_rl;
 }
 void Link::RestLength::set(btScalar value)
 {
-	((btSoftBody::Link*)_unmanaged)->m_rl = value;
+	Unmanaged->m_rl = value;
 }
 
+
+#undef Unmanaged
+#define Unmanaged static_cast<btSoftBody::Material*>(_unmanaged)
 
 BulletSharp::SoftBody::Material::Material(btSoftBody::Material* material)
 : Element(material)
@@ -1469,40 +1481,43 @@ BulletSharp::SoftBody::Material::Material()
 
 btScalar BulletSharp::SoftBody::Material::Ast::get()
 {
-	return ((btSoftBody::Material*)_unmanaged)->m_kAST;
+	return Unmanaged->m_kAST;
 }
 void BulletSharp::SoftBody::Material::Ast::set(btScalar value)
 {
-	((btSoftBody::Material*)_unmanaged)->m_kAST = value;
+	Unmanaged->m_kAST = value;
 }
 
 FMaterial BulletSharp::SoftBody::Material::Flags::get()
 {
-	return (FMaterial)((btSoftBody::Material*)_unmanaged)->m_flags;
+	return (FMaterial)Unmanaged->m_flags;
 }
 void BulletSharp::SoftBody::Material::Flags::set(FMaterial value)
 {
-	((btSoftBody::Material*)_unmanaged)->m_flags = (int)value;
+	Unmanaged->m_flags = (int)value;
 }
 
 btScalar BulletSharp::SoftBody::Material::Lst::get()
 {
-	return ((btSoftBody::Material*)_unmanaged)->m_kLST;
+	return Unmanaged->m_kLST;
 }
 void BulletSharp::SoftBody::Material::Lst::set(btScalar value)
 {
-	((btSoftBody::Material*)_unmanaged)->m_kLST = value;
+	Unmanaged->m_kLST = value;
 }
 
 btScalar BulletSharp::SoftBody::Material::Vst::get()
 {
-	return ((btSoftBody::Material*)_unmanaged)->m_kVST;
+	return Unmanaged->m_kVST;
 }
 void BulletSharp::SoftBody::Material::Vst::set(btScalar value)
 {
-	((btSoftBody::Material*)_unmanaged)->m_kVST = value;
+	Unmanaged->m_kVST = value;
 }
 
+
+#undef Unmanaged
+#define Unmanaged static_cast<btSoftBody::Node*>(_unmanaged)
 
 BulletSharp::SoftBody::Node::Node(btSoftBody::Node* node)
 : Feature(node)
@@ -1516,99 +1531,102 @@ BulletSharp::SoftBody::Node::Node()
 
 void BulletSharp::SoftBody::Node::GetNormal([Out] Vector3% normal)
 {
-	BtVector3ToVector3Fast(&((btSoftBody::Node*)_unmanaged)->m_n, normal);
+	BtVector3ToVector3Fast(&Unmanaged->m_n, normal);
 }
 
 void BulletSharp::SoftBody::Node::GetX([Out] Vector3% x)
 {
-	BtVector3ToVector3Fast(&((btSoftBody::Node*)_unmanaged)->m_x, x);
+	BtVector3ToVector3Fast(&Unmanaged->m_x, x);
 }
 
 btScalar BulletSharp::SoftBody::Node::Area::get()
 {
-	return ((btSoftBody::Node*)_unmanaged)->m_area;
+	return Unmanaged->m_area;
 }
 void BulletSharp::SoftBody::Node::Area::set(btScalar value)
 {
-	((btSoftBody::Node*)_unmanaged)->m_area = value;
+	Unmanaged->m_area = value;
 }
 
 Vector3 BulletSharp::SoftBody::Node::Force::get()
 {
-	return Math::BtVector3ToVector3(&((btSoftBody::Node*)_unmanaged)->m_f);
+	return Math::BtVector3ToVector3(&Unmanaged->m_f);
 }
 void BulletSharp::SoftBody::Node::Force::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &((btSoftBody::Node*)_unmanaged)->m_f);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_f);
 }
 
 btScalar BulletSharp::SoftBody::Node::InverseMass::get()
 {
-	return ((btSoftBody::Node*)_unmanaged)->m_im;
+	return Unmanaged->m_im;
 }
 void BulletSharp::SoftBody::Node::InverseMass::set(btScalar value)
 {
-	((btSoftBody::Node*)_unmanaged)->m_im = value;
+	Unmanaged->m_im = value;
 }
 
 bool BulletSharp::SoftBody::Node::IsAttached::get()
 {
-	return ((btSoftBody::Node*)_unmanaged)->m_battach != 0;
+	return Unmanaged->m_battach != 0;
 }
 void BulletSharp::SoftBody::Node::IsAttached::set(bool value)
 {
-	((btSoftBody::Node*)_unmanaged)->m_battach = value;
+	Unmanaged->m_battach = value;
 }
 
 #ifndef DISABLE_DBVT
 DbvtNode^ BulletSharp::SoftBody::Node::Leaf::get()
 {
-	if (((btSoftBody::Node*)_unmanaged)->m_leaf == 0)
+	if (Unmanaged->m_leaf == 0)
 		return nullptr;
-	return gcnew DbvtNode(((btSoftBody::Node*)_unmanaged)->m_leaf);
+	return gcnew DbvtNode(Unmanaged->m_leaf);
 }
 void BulletSharp::SoftBody::Node::Leaf::set(DbvtNode^ value)
 {
-	((btSoftBody::Node*)_unmanaged)->m_leaf = GetUnmanagedNullable(value);
+	Unmanaged->m_leaf = GetUnmanagedNullable(value);
 }
 #endif
 
 Vector3 BulletSharp::SoftBody::Node::Normal::get()
 {
-	return Math::BtVector3ToVector3(&((btSoftBody::Node*)_unmanaged)->m_n);
+	return Math::BtVector3ToVector3(&Unmanaged->m_n);
 }
 void BulletSharp::SoftBody::Node::Normal::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &((btSoftBody::Node*)_unmanaged)->m_n);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_n);
 }
 
 Vector3 BulletSharp::SoftBody::Node::Q::get()
 {
-	return Math::BtVector3ToVector3(&((btSoftBody::Node*)_unmanaged)->m_q);
+	return Math::BtVector3ToVector3(&Unmanaged->m_q);
 }
 void BulletSharp::SoftBody::Node::Q::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &((btSoftBody::Node*)_unmanaged)->m_q);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_q);
 }
 
 Vector3 BulletSharp::SoftBody::Node::Velocity::get()
 {
-	return Math::BtVector3ToVector3(&((btSoftBody::Node*)_unmanaged)->m_v);
+	return Math::BtVector3ToVector3(&Unmanaged->m_v);
 }
 void BulletSharp::SoftBody::Node::Velocity::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &((btSoftBody::Node*)_unmanaged)->m_v);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_v);
 }
 
 Vector3 BulletSharp::SoftBody::Node::X::get()
 {
-	return BtVector3ToVector3FastRet(&((btSoftBody::Node*)_unmanaged)->m_x);
+	return BtVector3ToVector3FastRet(&Unmanaged->m_x);
 }
 void BulletSharp::SoftBody::Node::X::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &((btSoftBody::Node*)_unmanaged)->m_x);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_x);
 }
 
+
+#undef Unmanaged
+#define Unmanaged static_cast<btSoftBody::Note*>(_unmanaged)
 
 Note::Note(btSoftBody::Note* note)
 : Element(note)
@@ -1622,39 +1640,39 @@ Note::Note()
 
 ScalarArray^ Note::Coords::get()
 {
-	return gcnew ScalarArray(&((btSoftBody::Note*)_unmanaged)->m_coords[0], 4);
+	return gcnew ScalarArray(&Unmanaged->m_coords[0], 4);
 }
 
 NodePtrArray^ Note::Nodes::get()
 {
-	return gcnew NodePtrArray(&((btSoftBody::Note*)_unmanaged)->m_nodes[0], 4);
+	return gcnew NodePtrArray(&Unmanaged->m_nodes[0], 4);
 }
 
 Vector3 Note::Offset::get()
 {
-	return Math::BtVector3ToVector3(&((btSoftBody::Note*)_unmanaged)->m_offset);
+	return Math::BtVector3ToVector3(&Unmanaged->m_offset);
 }
 void Note::Offset::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &((btSoftBody::Note*)_unmanaged)->m_offset);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_offset);
 }
 
 int Note::Rank::get()
 {
-	return ((btSoftBody::Note*)_unmanaged)->m_rank;
+	return Unmanaged->m_rank;
 }
 void Note::Rank::set(int value)
 {
-	((btSoftBody::Note*)_unmanaged)->m_rank = value;
+	Unmanaged->m_rank = value;
 }
 
 String^ Note::Text::get()
 {
-	return StringConv::UnmanagedToManaged(((btSoftBody::Note*)_unmanaged)->m_text);
+	return StringConv::UnmanagedToManaged(Unmanaged->m_text);
 }
 void Note::Text::set(String^ value)
 {
-	((btSoftBody::Note*)_unmanaged)->m_text = StringConv::ManagedToUnmanaged(value);
+	Unmanaged->m_text = StringConv::ManagedToUnmanaged(value);
 }
 
 
@@ -2066,6 +2084,9 @@ btSoftBody::sRayCast* SRayCast::UnmanagedPointer::get()
 }
 
 
+#undef Unmanaged
+#define Unmanaged static_cast<btSoftBody::Tetra*>(_unmanaged)
+
 Tetra::Tetra(btSoftBody::Tetra* tetra)
 : Feature(tetra)
 {
@@ -2078,52 +2099,52 @@ Tetra::Tetra()
 
 Vector3Array^ Tetra::C0::get()
 {
-	return gcnew Vector3Array(((btSoftBody::Tetra*)_unmanaged)->m_c0, 4);
+	return gcnew Vector3Array(Unmanaged->m_c0, 4);
 }
 
 btScalar Tetra::C1::get()
 {
-	return ((btSoftBody::Tetra*)_unmanaged)->m_c1;
+	return Unmanaged->m_c1;
 }
 void Tetra::C1::set(btScalar value)
 {
-	((btSoftBody::Tetra*)_unmanaged)->m_c1 = value;
+	Unmanaged->m_c1 = value;
 }
 
 btScalar Tetra::C2::get()
 {
-	return ((btSoftBody::Tetra*)_unmanaged)->m_c2;
+	return Unmanaged->m_c2;
 }
 void Tetra::C2::set(btScalar value)
 {
-	((btSoftBody::Tetra*)_unmanaged)->m_c2 = value;
+	Unmanaged->m_c2 = value;
 }
 
 NodePtrArray^ Tetra::Nodes::get()
 {
-	return gcnew NodePtrArray(((btSoftBody::Tetra*)_unmanaged)->m_n, 4);
+	return gcnew NodePtrArray(Unmanaged->m_n, 4);
 }
 
 #ifndef DISABLE_DBVT
 DbvtNode^ Tetra::Leaf::get()
 {
-	if (((btSoftBody::Face*)_unmanaged)->m_leaf == 0)
+	if (Unmanaged->m_leaf == 0)
 		return nullptr;
-	return gcnew DbvtNode(((btSoftBody::Face*)_unmanaged)->m_leaf);
+	return gcnew DbvtNode(Unmanaged->m_leaf);
 }
 void Tetra::Leaf::set(DbvtNode^ value)
 {
-	((btSoftBody::Tetra*)_unmanaged)->m_leaf = GetUnmanagedNullable(value);
+	Unmanaged->m_leaf = GetUnmanagedNullable(value);
 }
 #endif
 
 btScalar Tetra::RestVolume::get()
 {
-	return ((btSoftBody::Tetra*)_unmanaged)->m_rv;
+	return Unmanaged->m_rv;
 }
 void Tetra::RestVolume::set(btScalar value)
 {
-	((btSoftBody::Tetra*)_unmanaged)->m_rv = value;
+	Unmanaged->m_rv = value;
 }
 
 

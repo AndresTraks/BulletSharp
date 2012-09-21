@@ -6,8 +6,13 @@ namespace BulletSharp
 
 	public ref class WheelInfoConstructionInfo
 	{
-	private:
-		btWheelInfoConstructionInfo* _info;
+	internal:
+		btWheelInfoConstructionInfo* _unmanaged;
+
+	public:
+		!WheelInfoConstructionInfo();
+	protected:
+		~WheelInfoConstructionInfo();
 
 	public:
 		WheelInfoConstructionInfo();
@@ -83,13 +88,6 @@ namespace BulletSharp
 			btScalar get();
 			void set(btScalar value);
 		}
-
-	internal:
-		property btWheelInfoConstructionInfo* UnmanagedPointer
-		{
-			virtual btWheelInfoConstructionInfo* get();
-			void set(btWheelInfoConstructionInfo* value);
-		}
 	};
 
 	public ref class WheelInfo
@@ -162,10 +160,9 @@ namespace BulletSharp
 			}
 		};
 
-	private:
-		btWheelInfo* _wheelInfo;
-
 	internal:
+		btWheelInfo* _unmanaged;
+
 		WheelInfo(btWheelInfo* wheelInfo);
 
 	public:
@@ -326,12 +323,6 @@ namespace BulletSharp
 		{
 			Matrix get();
 			void set(Matrix value);
-		}
-
-		property btWheelInfo* UnmanagedPointer
-		{
-			virtual btWheelInfo* get();
-			void set(btWheelInfo* value);
 		}
 	};
 }

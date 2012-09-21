@@ -13,10 +13,8 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		btActionInterface* _actionInterface;
-
 	internal:
+		btActionInterface* _unmanaged;
 		ActionInterface(btActionInterface* actionInterface);
 
 	public:
@@ -33,13 +31,6 @@ namespace BulletSharp
 		property bool IsDisposed
 		{
 			virtual bool get();
-		}
-
-	internal:
-		property btActionInterface* UnmanagedPointer
-		{
-			btActionInterface* get();
-			void set(btActionInterface* value);
 		}
 	};
 };

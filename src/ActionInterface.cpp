@@ -8,7 +8,7 @@
 
 ActionInterface::ActionInterface(btActionInterface* actionInterface)
 {
-	_actionInterface = actionInterface;
+	_unmanaged = actionInterface;
 }
 
 ActionInterface::~ActionInterface()
@@ -23,33 +23,25 @@ ActionInterface::!ActionInterface()
 
 	OnDisposing(this, nullptr);
 
-	_actionInterface = NULL;
+	//delete _unmanaged;
+	_unmanaged = NULL;
 
 	OnDisposed(this, nullptr);
 }
 
 bool ActionInterface::IsDisposed::get()
 {
-	return ( _actionInterface == NULL );
+	return ( _unmanaged == NULL );
 }
 
 #ifndef DISABLE_DEBUGDRAW
 void ActionInterface::DebugDraw(IDebugDraw^ debugDrawer)
 {
-	_actionInterface->debugDraw(DebugDraw::GetUnmanaged(debugDrawer));
+	_unmanaged->debugDraw(DebugDraw::GetUnmanaged(debugDrawer));
 }
 #endif
 
 void ActionInterface::UpdateAction(CollisionWorld^ collisionWorld, btScalar deltaTimeStep)
 {
-	_actionInterface->updateAction(collisionWorld->UnmanagedPointer, deltaTimeStep);
-}
-
-btActionInterface* ActionInterface::UnmanagedPointer::get()
-{
-	return _actionInterface;
-}
-void ActionInterface::UnmanagedPointer::set(btActionInterface* value)
-{
-	_actionInterface = value;
+	_unmanaged->updateAction(collisionWorld->UnmanagedPointer, deltaTimeStep);
 }

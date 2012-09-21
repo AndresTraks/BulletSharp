@@ -5,6 +5,8 @@
 #include "CharacterControllerInterface.h"
 #include "CollisionWorld.h"
 
+#define Unmanaged (static_cast<btCharacterControllerInterface*>(_unmanaged))
+
 CharacterControllerInterface::CharacterControllerInterface(btCharacterControllerInterface* controllerInterface)
 : ActionInterface(controllerInterface)
 {
@@ -12,53 +14,48 @@ CharacterControllerInterface::CharacterControllerInterface(btCharacterController
 
 void CharacterControllerInterface::PlayerStep(CollisionWorld^ collisionWorld, btScalar dt)
 {
-	UnmanagedPointer->playerStep(collisionWorld->UnmanagedPointer, dt);
+	Unmanaged->playerStep(collisionWorld->UnmanagedPointer, dt);
 }
 
 void CharacterControllerInterface::Jump()
 {
-	UnmanagedPointer->jump();
+	Unmanaged->jump();
 }
 
 void CharacterControllerInterface::Reset()
 {
-	UnmanagedPointer->reset();
+	Unmanaged->reset();
 }
 
 void CharacterControllerInterface::SetVelocityForTimeInterval(Vector3 velocity, btScalar timeInterval)
 {
 	VECTOR3_DEF(velocity);
-	UnmanagedPointer->setVelocityForTimeInterval(VECTOR3_USE(velocity), timeInterval);
+	Unmanaged->setVelocityForTimeInterval(VECTOR3_USE(velocity), timeInterval);
 	VECTOR3_DEL(velocity);
 }
 
 void CharacterControllerInterface::SetWalkDirection(Vector3 walkDirection)
 {
 	VECTOR3_DEF(walkDirection);
-	UnmanagedPointer->setWalkDirection(VECTOR3_USE(walkDirection));
+	Unmanaged->setWalkDirection(VECTOR3_USE(walkDirection));
 	VECTOR3_DEL(walkDirection);
 }
 
 void CharacterControllerInterface::Warp(Vector3 origin)
 {
 	VECTOR3_DEF(origin);
-	UnmanagedPointer->warp(VECTOR3_USE(origin));
+	Unmanaged->warp(VECTOR3_USE(origin));
 	VECTOR3_DEL(origin);
 }
 
 bool CharacterControllerInterface::CanJump::get()
 {
-	return UnmanagedPointer->canJump();
+	return Unmanaged->canJump();
 }
 
 bool CharacterControllerInterface::OnGround::get()
 {
-	return UnmanagedPointer->onGround();
-}
-
-btCharacterControllerInterface* CharacterControllerInterface::UnmanagedPointer::get()
-{
-	return (btCharacterControllerInterface*)ActionInterface::UnmanagedPointer;
+	return Unmanaged->onGround();
 }
 
 #endif

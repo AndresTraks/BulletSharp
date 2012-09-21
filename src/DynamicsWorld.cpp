@@ -18,7 +18,7 @@ DynamicsWorld::DynamicsWorld(btDynamicsWorld* world)
 
 void DynamicsWorld::AddAction(ActionInterface^ actionInterface)
 {
-	Unmanaged->addAction(actionInterface->UnmanagedPointer);
+	Unmanaged->addAction(actionInterface->_unmanaged);
 }
 
 void DynamicsWorld::AddRigidBody(RigidBody^ rigidBody, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
@@ -61,7 +61,7 @@ void DynamicsWorld::ClearForces()
 
 void DynamicsWorld::RemoveAction(ActionInterface^ actionInterface)
 {
-	Unmanaged->removeAction(actionInterface->UnmanagedPointer);
+	Unmanaged->removeAction(actionInterface->_unmanaged);
 }
 
 void DynamicsWorld::RemoveRigidBody(RigidBody^ rigidBody)

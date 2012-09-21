@@ -464,6 +464,9 @@ bool CollisionWorld::RayResultCallback::IsDisposed::get()
 }
 
 
+#undef Unmanaged
+#define Unmanaged static_cast<btCollisionWorld::ClosestRayResultCallback*>(_unmanaged)
+
 CollisionWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld)
 : RayResultCallback(0)
 {
@@ -490,40 +493,43 @@ CollisionWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3% rayF
 
 Vector3 CollisionWorld::ClosestRayResultCallback::HitNormalWorld::get()
 {
-	return Math::BtVector3ToVector3(&((btCollisionWorld::ClosestRayResultCallback*)_unmanaged)->m_hitNormalWorld);
+	return Math::BtVector3ToVector3(&Unmanaged->m_hitNormalWorld);
 }
 void CollisionWorld::ClosestRayResultCallback::HitNormalWorld::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &((btCollisionWorld::ClosestRayResultCallback*)_unmanaged)->m_hitNormalWorld);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_hitNormalWorld);
 }
 
 Vector3 CollisionWorld::ClosestRayResultCallback::HitPointWorld::get()
 {
-	return Math::BtVector3ToVector3(&((btCollisionWorld::ClosestRayResultCallback*)_unmanaged)->m_hitPointWorld);
+	return Math::BtVector3ToVector3(&Unmanaged->m_hitPointWorld);
 }
 void CollisionWorld::ClosestRayResultCallback::HitPointWorld::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &((btCollisionWorld::ClosestRayResultCallback*)_unmanaged)->m_hitPointWorld);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_hitPointWorld);
 }
 
 Vector3 CollisionWorld::ClosestRayResultCallback::RayFromWorld::get()
 {
-	return Math::BtVector3ToVector3(&((btCollisionWorld::ClosestRayResultCallback*)_unmanaged)->m_rayFromWorld);
+	return Math::BtVector3ToVector3(&Unmanaged->m_rayFromWorld);
 }
 void CollisionWorld::ClosestRayResultCallback::RayFromWorld::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &((btCollisionWorld::ClosestRayResultCallback*)_unmanaged)->m_rayFromWorld);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_rayFromWorld);
 }
 
 Vector3 CollisionWorld::ClosestRayResultCallback::RayToWorld::get()
 {
-	return Math::BtVector3ToVector3(&((btCollisionWorld::ClosestRayResultCallback*)_unmanaged)->m_rayToWorld);
+	return Math::BtVector3ToVector3(&Unmanaged->m_rayToWorld);
 }
 void CollisionWorld::ClosestRayResultCallback::RayToWorld::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &((btCollisionWorld::ClosestRayResultCallback*)_unmanaged)->m_rayToWorld);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_rayToWorld);
 }
 
+
+#undef Unmanaged
+#define Unmanaged static_cast<btCollisionWorld::AllHitsRayResultCallback*>(_unmanaged)
 
 CollisionWorld::AllHitsRayResultCallback::AllHitsRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld)
 : RayResultCallback(0)
@@ -539,7 +545,7 @@ CollisionWorld::AllHitsRayResultCallback::AllHitsRayResultCallback(Vector3 rayFr
 
 AlignedCollisionObjectArray^ CollisionWorld::AllHitsRayResultCallback::CollisionObjects::get()
 {
-	btAlignedObjectArray<const btCollisionObject*>* collisionObjects = &((btCollisionWorld::AllHitsRayResultCallback*)_unmanaged)->m_collisionObjects;
+	btAlignedObjectArray<const btCollisionObject*>* collisionObjects = &Unmanaged->m_collisionObjects;
 	if (_collisionObjects != nullptr && _collisionObjects->_unmanaged == collisionObjects)
 		return _collisionObjects;
 
@@ -549,7 +555,7 @@ AlignedCollisionObjectArray^ CollisionWorld::AllHitsRayResultCallback::Collision
 
 AlignedScalarArray^ CollisionWorld::AllHitsRayResultCallback::HitFractions::get()
 {
-	btAlignedObjectArray<btScalar>* hitFractions = &((btCollisionWorld::AllHitsRayResultCallback*)_unmanaged)->m_hitFractions;
+	btAlignedObjectArray<btScalar>* hitFractions = &Unmanaged->m_hitFractions;
 	if (_hitFractions != nullptr && _hitFractions->_unmanaged == hitFractions)
 		return _hitFractions;
 
@@ -559,7 +565,7 @@ AlignedScalarArray^ CollisionWorld::AllHitsRayResultCallback::HitFractions::get(
 
 AlignedVector3Array^ CollisionWorld::AllHitsRayResultCallback::HitNormalWorld::get()
 {
-	btAlignedObjectArray<btVector3>* hitNormalWorld = &((btCollisionWorld::AllHitsRayResultCallback*)_unmanaged)->m_hitNormalWorld;
+	btAlignedObjectArray<btVector3>* hitNormalWorld = &Unmanaged->m_hitNormalWorld;
 	if (_hitNormalWorld != nullptr && _hitNormalWorld->_unmanaged == hitNormalWorld)
 		return _hitNormalWorld;
 
@@ -569,7 +575,7 @@ AlignedVector3Array^ CollisionWorld::AllHitsRayResultCallback::HitNormalWorld::g
 
 AlignedVector3Array^ CollisionWorld::AllHitsRayResultCallback::HitPointWorld::get()
 {
-	btAlignedObjectArray<btVector3>* hitPointWorld = &((btCollisionWorld::AllHitsRayResultCallback*)_unmanaged)->m_hitPointWorld;
+	btAlignedObjectArray<btVector3>* hitPointWorld = &Unmanaged->m_hitPointWorld;
 	if (_hitPointWorld != nullptr && _hitPointWorld->_unmanaged == hitPointWorld)
 		return _hitNormalWorld;
 
@@ -579,20 +585,20 @@ AlignedVector3Array^ CollisionWorld::AllHitsRayResultCallback::HitPointWorld::ge
 
 Vector3 CollisionWorld::AllHitsRayResultCallback::RayFromWorld::get()
 {
-	return Math::BtVector3ToVector3(&((btCollisionWorld::AllHitsRayResultCallback*)_unmanaged)->m_rayFromWorld);
+	return Math::BtVector3ToVector3(&Unmanaged->m_rayFromWorld);
 }
 void CollisionWorld::AllHitsRayResultCallback::RayFromWorld::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &((btCollisionWorld::AllHitsRayResultCallback*)_unmanaged)->m_rayFromWorld);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_rayFromWorld);
 }
 
 Vector3 CollisionWorld::AllHitsRayResultCallback::RayToWorld::get()
 {
-	return Math::BtVector3ToVector3(&((btCollisionWorld::AllHitsRayResultCallback*)_unmanaged)->m_rayToWorld);
+	return Math::BtVector3ToVector3(&Unmanaged->m_rayToWorld);
 }
 void CollisionWorld::AllHitsRayResultCallback::RayToWorld::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &((btCollisionWorld::AllHitsRayResultCallback*)_unmanaged)->m_rayToWorld);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_rayToWorld);
 }
 
 

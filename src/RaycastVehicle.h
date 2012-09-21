@@ -137,12 +137,6 @@ namespace BulletSharp
 		{
 			AlignedWheelInfoArray^ get();
 		}
-
-	internal:
-		property btRaycastVehicle* UnmanagedPointer
-		{
-			btRaycastVehicle* get() new;
-		}
 	};
 
 	public ref class DefaultVehicleRaycaster : VehicleRaycaster

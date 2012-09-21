@@ -30,15 +30,6 @@ BroadphaseAabbCallback::!BroadphaseAabbCallback()
 	_unmanaged = 0;
 }
 
-btBroadphaseAabbCallback* BroadphaseAabbCallback::UnmanagedPointer::get()
-{
-	return _unmanaged;
-}
-void BroadphaseAabbCallback::UnmanagedPointer::set(btBroadphaseAabbCallback* value)
-{
-	_unmanaged = value;
-}
-
 
 BroadphaseAabbCallbackWrapper::BroadphaseAabbCallbackWrapper(BroadphaseAabbCallback^ aabbCallback)
 {
@@ -50,6 +41,8 @@ bool BroadphaseAabbCallbackWrapper::process(const btBroadphaseProxy* proxy)
 	return _aabbCallback->Process(BroadphaseProxy::GetManaged((btBroadphaseProxy*)proxy));
 }
 
+
+#define Unmanaged static_cast<btBroadphaseRayCallback*>(_unmanaged)
 
 BroadphaseRayCallback::BroadphaseRayCallback(BroadphaseRayCallbackWrapper* callback)
 : BroadphaseAabbCallback(callback)
@@ -64,30 +57,25 @@ BroadphaseRayCallback::BroadphaseRayCallback()
 
 btScalar BroadphaseRayCallback::LambdaMax::get()
 {
-	return ((btBroadphaseRayCallback*)_unmanaged)->m_lambda_max;
+	return Unmanaged->m_lambda_max;
 }
 void BroadphaseRayCallback::LambdaMax::set(btScalar value)
 {
-	((btBroadphaseRayCallback*)_unmanaged)->m_lambda_max = value;
+	Unmanaged->m_lambda_max = value;
 }
 
 Vector3 BroadphaseRayCallback::RayDirectionInverse::get()
 {
-	return Math::BtVector3ToVector3(&((btBroadphaseRayCallback*)_unmanaged)->m_rayDirectionInverse);
+	return Math::BtVector3ToVector3(&Unmanaged->m_rayDirectionInverse);
 }
 void BroadphaseRayCallback::RayDirectionInverse::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &((btBroadphaseRayCallback*)_unmanaged)->m_rayDirectionInverse);
+	Math::Vector3ToBtVector3(value, &Unmanaged->m_rayDirectionInverse);
 }
 
 UIntArray^ BroadphaseRayCallback::Signs::get()
 {
-	return gcnew UIntArray(&((btBroadphaseRayCallback*)_unmanaged)->m_signs[0], 3);
-}
-
-btBroadphaseRayCallback* BroadphaseRayCallback::UnmanagedPointer::get()
-{
-	return (btBroadphaseRayCallback*)BroadphaseAabbCallback::UnmanagedPointer;
+	return gcnew UIntArray(&Unmanaged->m_signs[0], 3);
 }
 
 
@@ -166,7 +154,7 @@ void BroadphaseInterface::AabbTest(Vector3 aabbMin, Vector3 aabbMax, BroadphaseA
 	VECTOR3_DEF(aabbMin);
 	VECTOR3_DEF(aabbMax);
 
-	_unmanaged->aabbTest(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), *callback->UnmanagedPointer);
+	_unmanaged->aabbTest(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), *(btBroadphaseRayCallback*)callback->_unmanaged);
 
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
@@ -250,7 +238,7 @@ void BroadphaseInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayC
 	VECTOR3_DEF(aabbMin);
 	VECTOR3_DEF(aabbMax);
 
-	_unmanaged->rayTest(VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo), *rayCallback->UnmanagedPointer,
+	_unmanaged->rayTest(VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo), *(btBroadphaseRayCallback*)rayCallback->_unmanaged,
 		VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 
 	VECTOR3_DEL(rayFrom);

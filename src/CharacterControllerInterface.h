@@ -26,11 +26,5 @@ namespace BulletSharp
 		{
 			bool get();
 		}
-
-	internal:
-		property btCharacterControllerInterface* UnmanagedPointer
-		{
-			btCharacterControllerInterface* get() new;
-		}
 	};
 };

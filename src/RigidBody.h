@@ -282,6 +282,12 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
+		property btScalar RollingFriction
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
 		property Matrix StartWorldTransform
 		{
 			Matrix get();

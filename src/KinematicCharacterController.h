@@ -26,11 +26,5 @@ namespace BulletSharp
 		{
 			BulletSharp::GhostObject^ get();
 		}
-
-	internal:
-		property btKinematicCharacterController* UnmanagedPointer
-		{
-			btKinematicCharacterController* get() new;
-		}
 	};
 };

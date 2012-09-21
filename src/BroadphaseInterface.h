@@ -26,13 +26,6 @@ namespace BulletSharp
 		~BroadphaseAabbCallback();
 	protected:
 		!BroadphaseAabbCallback();
-
-	internal:
-		property btBroadphaseAabbCallback* UnmanagedPointer
-		{
-			virtual btBroadphaseAabbCallback* get();
-			void set(btBroadphaseAabbCallback* value);
-		}
 	};
 
 	struct BroadphaseAabbCallbackWrapper : public btBroadphaseAabbCallback
@@ -69,12 +62,6 @@ namespace BulletSharp
 		property UIntArray^ Signs
 		{
 			UIntArray^ get();
-		}
-
-	internal:
-		property btBroadphaseRayCallback* UnmanagedPointer
-		{
-			btBroadphaseRayCallback* get() new;
 		}
 	};
 

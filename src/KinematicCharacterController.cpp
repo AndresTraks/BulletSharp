@@ -6,6 +6,8 @@
 #include "GhostObject.h"
 #include "KinematicCharacterController.h"
 
+#define Unmanaged (static_cast<btKinematicCharacterController*>(_unmanaged))
+
 KinematicCharacterController::KinematicCharacterController(btKinematicCharacterController* characterController)
 : CharacterControllerInterface(characterController)
 {
@@ -23,37 +25,32 @@ KinematicCharacterController::KinematicCharacterController(PairCachingGhostObjec
 
 void KinematicCharacterController::SetFallSpeed(btScalar fallSpeed)
 {
-	UnmanagedPointer->setFallSpeed(fallSpeed);
+	Unmanaged->setFallSpeed(fallSpeed);
 }
 
 void KinematicCharacterController::SetJumpSpeed(btScalar jumpSpeed)
 {
-	UnmanagedPointer->setJumpSpeed(jumpSpeed);
+	Unmanaged->setJumpSpeed(jumpSpeed);
 }
 
 void KinematicCharacterController::SetMaxJumpHeight(btScalar maxJumpHeight)
 {
-	UnmanagedPointer->setMaxJumpHeight(maxJumpHeight);
+	Unmanaged->setMaxJumpHeight(maxJumpHeight);
 }
 
 void KinematicCharacterController::SetUpAxis(int axis)
 {
-	UnmanagedPointer->setUpAxis(axis);
+	Unmanaged->setUpAxis(axis);
 }
 
 void KinematicCharacterController::SetUseGhostSweepTest(bool useGhostObjectSweepTest)
 {
-	UnmanagedPointer->setUseGhostSweepTest(useGhostObjectSweepTest);
+	Unmanaged->setUseGhostSweepTest(useGhostObjectSweepTest);
 }
 
 BulletSharp::GhostObject^ KinematicCharacterController::GhostObject::get()
 {
-	return static_cast<BulletSharp::GhostObject^>(CollisionObject::GetManaged(UnmanagedPointer->getGhostObject()));
-}
-
-btKinematicCharacterController* KinematicCharacterController::UnmanagedPointer::get()
-{
-	return (btKinematicCharacterController*)CharacterControllerInterface::UnmanagedPointer;
+	return static_cast<BulletSharp::GhostObject^>(CollisionObject::GetManaged(Unmanaged->getGhostObject()));
 }
 
 #endif

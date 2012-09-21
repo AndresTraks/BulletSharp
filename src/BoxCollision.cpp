@@ -27,9 +27,4 @@ void Aabb::Min::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &_aabb->m_min);
 }
 
-btAABB* Aabb::UnmanagedPointer::get()
-{
-	return _aabb;
-}
-
 #endif
