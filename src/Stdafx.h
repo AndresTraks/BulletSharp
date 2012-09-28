@@ -292,15 +292,18 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #ifndef DISABLE_SERIALIZE
 #if _DEBUG
 #pragma comment(lib, "BulletWorldImporter_Debug.lib")
+#pragma comment(lib, "BulletXmlWorldImporter_Debug.lib")
 #pragma comment(lib, "BulletFileLoader_Debug.lib")
 #else
 #pragma comment(lib, "BulletWorldImporter_MinSizeRel.lib")
+#pragma comment(lib, "BulletXmlWorldImporter_MinSizeRel.lib")
 #pragma comment(lib, "BulletFileLoader_MinSizeRel.lib")
 #endif
 #ifdef DISABLE_GIMPACT
 #include <BulletCollision/GImpact/btGImpactShape.h>
 #endif
 #include <..\Extras\Serialize\BulletWorldImporter\btBulletWorldImporter.h>
+#include <..\Extras\Serialize\BulletXmlWorldImporter\btBulletXmlWorldImporter.h>
 #endif
 
 #ifndef DISABLE_SOFTBODY

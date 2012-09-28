@@ -40,7 +40,10 @@ namespace BasicDemo
             World.Gravity = new Vector3(0, -10, 0);
 
             // create the ground
-            CollisionShape groundShape = new BoxShape(50, 1, 50);
+            BoxShape groundShape = new BoxShape(50, 1, 50);
+            //groundShape.InitializePolyhedralFeatures();
+            //CollisionShape groundShape = new StaticPlaneShape(new Vector3(0,1,0), 50);
+
             CollisionShapes.Add(groundShape);
             CollisionObject ground = LocalCreateRigidBody(0, Matrix.Identity, groundShape);
             ground.UserObject = "Ground";
@@ -48,7 +51,7 @@ namespace BasicDemo
             // create a few dynamic rigidbodies
             float mass = 1.0f;
 
-            CollisionShape colShape = new BoxShape(1);
+            BoxShape colShape = new BoxShape(1);
             CollisionShapes.Add(colShape);
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 

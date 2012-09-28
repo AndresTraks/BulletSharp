@@ -50,6 +50,11 @@ void PolyhedralConvexShape::GetVertex(int index, [Out] Vector3% vertex)
 	delete vtxTemp;
 }
 
+bool PolyhedralConvexShape::InitializePolyhedralFeatures(int shiftVerticesByMargin)
+{
+	return Unmanaged->initializePolyhedralFeatures(shiftVerticesByMargin);
+}
+
 bool PolyhedralConvexShape::InitializePolyhedralFeatures()
 {
 	return Unmanaged->initializePolyhedralFeatures();

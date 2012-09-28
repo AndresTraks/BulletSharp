@@ -623,6 +623,12 @@
     <ClCompile Include="src\GearConstraint.cpp">
       <Filter>Source Files\Dynamics\ConstraintSolver</Filter>
     </ClCompile>
+    <ClCompile Include="src\WorldImporter.cpp">
+      <Filter>Source Files\Extras\Serialize</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BulletXmlWorldImporter.cpp">
+      <Filter>Source Files\Extras\Serialize</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\Resources.rc">
@@ -1115,6 +1121,12 @@
     </ClInclude>
     <ClInclude Include="src\GearConstraint.h">
       <Filter>Header Files\Dynamics\ConstraintSolver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\WorldImporter.h">
+      <Filter>Header Files\Extras\Serialize</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BulletXmlWorldImporter.h">
+      <Filter>Header Files\Extras\Serialize</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

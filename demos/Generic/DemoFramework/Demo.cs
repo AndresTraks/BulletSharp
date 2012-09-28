@@ -53,7 +53,6 @@ namespace DemoFramework
         protected BoxShape shootBoxShape;
         protected float shootBoxInitialSpeed = 40;
         RigidBody pickedBody;
-        bool use6Dof = false;
         protected TypedConstraint pickConstraint;
         float oldPickingDist;
 
@@ -279,7 +278,7 @@ namespace DemoFramework
                                     Vector3 pickPos = rayCallback.HitPointWorld;
                                     Vector3 localPivot = Vector3.TransformCoordinate(pickPos, Matrix.Invert(body.CenterOfMassTransform));
 
-                                    if (use6Dof)
+                                    if (_input.KeysDown.Contains(Keys.ShiftKey))
                                     {
                                         Generic6DofConstraint dof6 = new Generic6DofConstraint(body, Matrix.Translation(localPivot), false)
                                         {
@@ -323,7 +322,6 @@ namespace DemoFramework
                                         p2p.SetParam(ConstraintParams.Erp, 0.1f, 2);
                                         */
                                     }
-                                    use6Dof = !use6Dof;
 
                                     oldPickingDist = (pickPos - rayFrom).Length();
                                 }
@@ -442,7 +440,7 @@ namespace DemoFramework
             if (shootBoxShape == null)
             {
                 shootBoxShape = new BoxShape(1.0f);
-                shootBoxShape.InitializePolyhedralFeatures();
+                //shootBoxShape.InitializePolyhedralFeatures();
             }
 
             RigidBody body = LocalCreateRigidBody(mass, Matrix.Translation(camPos), shootBoxShape);

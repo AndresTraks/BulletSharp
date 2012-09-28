@@ -63,7 +63,7 @@ namespace BulletSharp
 		ConvexPolyhedron();
 
 		void Initialize();
-		void Project(Matrix transform, Vector3 direction, [Out] btScalar% min, [Out] btScalar% max);
+		void Project(Matrix transform, Vector3 direction, [Out] btScalar% minProj, [Out] btScalar% maxProj, [Out] Vector3% witnesPtMin, [Out] Vector3% witnesPtMax);
 		bool TestContainment();
 
 		property Vector3 C

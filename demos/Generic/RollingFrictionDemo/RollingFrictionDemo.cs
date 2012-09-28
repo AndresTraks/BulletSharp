@@ -49,7 +49,7 @@ namespace RollingFrictionDemo
             ground.RollingFriction = 1;
             ground.UserObject = "Ground";
             
-            groundShape = new BoxShape(50, 50, 50);
+            groundShape = new BoxShape(100, 50, 100);
             CollisionShapes.Add(groundShape);
             ground = LocalCreateRigidBody(0, Matrix.Translation(0, -54, 0), groundShape);
             ground.Friction = 1;
@@ -75,7 +75,7 @@ namespace RollingFrictionDemo
                 CollisionShapes.Add(collisionShape);
             }
 
-            float mass = 1.0f;
+            const float mass = 1.0f;
 
             CollisionShape colShape = new BoxShape(1);
             CollisionShapes.Add(colShape);

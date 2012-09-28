@@ -238,7 +238,7 @@ void CollisionShape::CalculateTemporalAabb(Matrix curTrans,
 	VECTOR3_DEL(angvel);
 }
 
-void CollisionShape::GetAabb(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
+void CollisionShape::GetAabb(Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
 {
 	btTransform* tTemp = Math::MatrixToBtTransform(t);
 	btVector3* aabbMinTemp = new btVector3;
@@ -254,7 +254,7 @@ void CollisionShape::GetAabb(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
 	delete aabbMaxTemp;
 }
 
-void CollisionShape::GetBoundingSphere(Vector3% center, btScalar% radius)
+void CollisionShape::GetBoundingSphere([Out] Vector3% center, [Out] btScalar% radius)
 {
 	btVector3* centerTemp = new btVector3;
 	btScalar radiusTemp;
