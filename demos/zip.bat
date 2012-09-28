@@ -24,6 +24,7 @@ copy Generic\bin\Release\BasicDemo.exe bin\
 copy Generic\bin\Release\BenchmarkDemo.exe bin\
 copy Generic\bin\Release\Box2DDemo.exe bin\
 copy Generic\bin\Release\BspDemo.exe bin\
+copy Generic\bin\Release\BulletXmlImportDemo.exe bin\
 copy Generic\bin\Release\CcdPhysicsDemo.exe bin\
 copy Generic\bin\Release\CharacterDemo.exe bin\
 copy Generic\bin\Release\CollisionInterfaceDemo.exe bin\

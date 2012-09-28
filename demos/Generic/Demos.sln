@@ -70,6 +70,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorDemo", "MotorDemo\Moto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RollingFrictionDemo", "RollingFrictionDemo\RollingFrictionDemo.csproj", "{F88BB418-67AD-45D8-BEC7-781CCA1CCA98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulletXmlImportDemo", "BulletXmlImportDemo\BulletXmlImportDemo.csproj", "{8CADFD40-525F-4C72-8D38-443B094DB1BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -168,6 +170,10 @@ Global
 		{F88BB418-67AD-45D8-BEC7-781CCA1CCA98}.Debug|x86.Build.0 = Debug|x86
 		{F88BB418-67AD-45D8-BEC7-781CCA1CCA98}.Release|x86.ActiveCfg = Release|x86
 		{F88BB418-67AD-45D8-BEC7-781CCA1CCA98}.Release|x86.Build.0 = Release|x86
+		{8CADFD40-525F-4C72-8D38-443B094DB1BE}.Debug|x86.ActiveCfg = Debug|x86
+		{8CADFD40-525F-4C72-8D38-443B094DB1BE}.Debug|x86.Build.0 = Debug|x86
+		{8CADFD40-525F-4C72-8D38-443B094DB1BE}.Release|x86.ActiveCfg = Release|x86
+		{8CADFD40-525F-4C72-8D38-443B094DB1BE}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

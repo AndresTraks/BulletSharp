@@ -49,7 +49,7 @@ namespace BasicDemo
             ground.UserObject = "Ground";
 
             // create a few dynamic rigidbodies
-            float mass = 1.0f;
+            const float mass = 1.0f;
 
             BoxShape colShape = new BoxShape(1);
             CollisionShapes.Add(colShape);
