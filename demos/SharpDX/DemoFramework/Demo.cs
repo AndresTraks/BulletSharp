@@ -12,6 +12,7 @@ using SharpDX.Windows;
 using Buffer = SharpDX.Direct3D10.Buffer;
 using Device = SharpDX.Direct3D10.Device;
 using DriverType = SharpDX.Direct3D10.DriverType;
+using Color = System.Drawing.Color;
 
 namespace DemoFramework
 {
@@ -552,7 +553,7 @@ namespace DemoFramework
 
             FieldOfView = (float)Math.PI / 4;
             Freelook = new FreeLook(Input);
-            ambient = (Color4)Color.Gray;
+            ambient = new Color4(Color.Gray.ToArgb());
 
             try
             {

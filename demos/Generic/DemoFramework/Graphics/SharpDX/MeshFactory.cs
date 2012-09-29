@@ -12,6 +12,7 @@ using DataStream = SharpDX.DataStream;
 using Device = SharpDX.Direct3D10.Device;
 using Matrix = BulletSharp.Matrix;
 using Vector3 = BulletSharp.Vector3;
+using Color = System.Drawing.Color;
 
 namespace DemoFramework.SharpDX
 {

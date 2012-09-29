@@ -11,6 +11,7 @@ using SharpDX.DXGI;
 using Buffer = SharpDX.Direct3D10.Buffer;
 using Device = SharpDX.Direct3D10.Device;
 using Mesh = SharpDX.Direct3D10.Mesh;
+using Color = System.Drawing.Color;
 
 namespace DemoFramework
 {

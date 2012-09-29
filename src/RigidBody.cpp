@@ -396,7 +396,8 @@ void RigidBody::MotionState::set(BulletSharp::MotionState^ value)
 #pragma managed(push, off)
 void RigidBody_GetOrientation(btRigidBody* body, btQuaternion* orientation)
 {
-	*orientation = body->getOrientation();
+	//FIXME: *orientation = body->getOrientation();
+	body->getWorldTransform().getBasis().getRotation(*orientation);
 }
 #pragma managed(pop)
 Quaternion RigidBody::Orientation::get()

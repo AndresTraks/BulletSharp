@@ -16,6 +16,7 @@ using DriverType = SharpDX.Direct3D10.DriverType;
 using Matrix = SharpDX.Matrix;
 using Vector3 = SharpDX.Vector3;
 using Vector4 = SharpDX.Vector4;
+using Color = System.Drawing.Color;
 
 namespace DemoFramework.SharpDX
 {
@@ -344,7 +345,7 @@ namespace DemoFramework.SharpDX
             _height = 768;
             _nearPlane = 1.0f;
 
-            ambient = Color.Gray;
+            ambient = new Color4(Color.Gray.ToArgb());
 
             try
             {
