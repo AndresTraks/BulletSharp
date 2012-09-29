@@ -10,8 +10,8 @@ namespace BulletSharp
 
 	public ref class Face
 	{
-	private:
-		btFace* _face;
+	internal:
+		btFace* _unmanaged;
 
 	public:
 		Face();
@@ -33,13 +33,6 @@ namespace BulletSharp
 		{
 			ScalarArray^ get();
 		}
-
-	internal:
-		property btFace* UnmanagedPointer
-		{
-			btFace* get();
-			void set(btFace* value);
-		}
 	};
 
 	public ref class ConvexPolyhedron : BulletSharp::IDisposable
@@ -48,10 +41,9 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		btConvexPolyhedron* _convexPolyhedron;
-
 	internal:
+		btConvexPolyhedron* _unmanaged;
+
 		ConvexPolyhedron(btConvexPolyhedron* convexPolyhedron);
 
 	public:
@@ -109,13 +101,6 @@ namespace BulletSharp
 		property AlignedVector3Array^ Vertices
 		{
 			AlignedVector3Array^ get();
-		}
-
-	internal:
-		property btConvexPolyhedron* UnmanagedPointer
-		{
-			btConvexPolyhedron* get();
-			void set(btConvexPolyhedron* value);
 		}
 	};
 };

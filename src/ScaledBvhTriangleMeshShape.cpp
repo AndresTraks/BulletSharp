@@ -23,7 +23,7 @@ ScaledBvhTriangleMeshShape::ScaledBvhTriangleMeshShape(BvhTriangleMeshShape^ chi
 BvhTriangleMeshShape^ ScaledBvhTriangleMeshShape::ChildShape::get()
 {
 	btBvhTriangleMeshShape* childShape = Unmanaged->getChildShape();
-	ReturnCachedObjectUpcastNullableCastTo(CollisionShape, BvhTriangleMeshShape, _childShape, childShape);
+	ReturnCachedObjectCastTo(CollisionShape, BvhTriangleMeshShape, _childShape, childShape);
 }
 
 #endif

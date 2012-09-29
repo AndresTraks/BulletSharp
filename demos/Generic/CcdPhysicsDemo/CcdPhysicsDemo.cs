@@ -9,10 +9,10 @@ namespace CcdPhysicsDemo
     {
         bool ccdMode = true;
 
-        Vector3 eye = new Vector3(0, 10, 40);
+        Vector3 eye = new Vector3(0, 20, 80);
         Vector3 target = Vector3.Zero;
 
-        const float CubeHalfExtents = 0.5f;
+        const float CubeHalfExtents = 1.0f;
         const float ExtraHeight = 1.0f;
 
         string infoText = "Move using mouse and WASD+shift\n" +
@@ -86,8 +86,8 @@ namespace CcdPhysicsDemo
             CollisionConf = new DefaultCollisionConfiguration();
 
             Dispatcher = new CollisionDispatcher(CollisionConf);
-            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.BoxShape, BroadphaseNativeType.BoxShape,
-                CollisionConf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.ConvexShape, BroadphaseNativeType.ConvexShape));
+            //Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.BoxShape, BroadphaseNativeType.BoxShape,
+            //    CollisionConf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.ConvexShape, BroadphaseNativeType.ConvexShape));
 
             Broadphase = new DbvtBroadphase();
 
@@ -96,7 +96,8 @@ namespace CcdPhysicsDemo
             Solver = new SequentialImpulseConstraintSolver();
 
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf);
-            World.SolverInfo.SplitImpulse = 1;
+            World.SolverInfo.SolverMode |= SolverModes.Use2FrictionDirections | SolverModes.RandomizeOrder;
+            //World.SolverInfo.SplitImpulse = 0;
             World.SolverInfo.NumIterations = 20;
 
             World.DispatchInfo.UseContinuous = ccdMode;
@@ -107,9 +108,12 @@ namespace CcdPhysicsDemo
             ground.InitializePolyhedralFeatures();
             CollisionShapes.Add(ground);
             RigidBody body = LocalCreateRigidBody(0, Matrix.Identity, ground);
+            body.Friction = 0.5f;
+            //body.RollingFriction = 0.3f;
             body.UserObject = "Ground";
 
-            CollisionShape shape = new CylinderShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents);
+            //CollisionShape shape = new CylinderShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents);
+            CollisionShape shape = new BoxShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents);
             CollisionShapes.Add(shape);
 
             const int numObjects = 120;
@@ -132,7 +136,8 @@ namespace CcdPhysicsDemo
 
                 body = LocalCreateRigidBody(1, trans, shape);
                 body.SetAnisotropicFriction(shape.AnisotropicRollingFrictionDirection, AnisotropicFrictionFlags.AnisotropicRollingFriction);
-                body.RollingFriction = 0.3f;
+                body.Friction = 0.5f;
+                //body.RollingFriction = 0.3f;
 
                 if (ccdMode)
                 {

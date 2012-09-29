@@ -355,22 +355,26 @@ inline GCHandle VoidPtrToGCHandle(void* pointer)
 #define ReturnCachedObject(type, managedObj, unmanagedPtr) { \
 	if (managedObj != nullptr && managedObj->_unmanaged == unmanagedPtr) \
 	return managedObj; \
+	managedObj = type::GetManaged(unmanagedPtr); \
+	return managedObj; }
+
+#define ReturnCachedObjectGcnew(type, managedObj, unmanagedPtr) { \
+	if (managedObj != nullptr && managedObj->_unmanaged == unmanagedPtr) \
+	return managedObj; \
 	managedObj = gcnew type(unmanagedPtr); \
 	return managedObj; }
 
-#define ReturnCachedObjectNullable(type, managedObj, unmanagedPtr) { \
-	if (managedObj != nullptr && managedObj->UnmanagedPointer == unmanagedPtr) \
+#define ReturnCachedObjectGcnewNullable(type, managedObj, unmanagedPtr) { \
+	if (managedObj != nullptr && managedObj->_unmanaged == unmanagedPtr) \
 	return managedObj; \
 	if (unmanagedPtr == 0) \
 	return nullptr; \
 	managedObj = gcnew type(unmanagedPtr); \
 	return managedObj; }
 
-#define ReturnCachedObjectUpcastNullableCastTo(type, castTo, managedObj, unmanagedPtr) { \
-	if (managedObj != nullptr && managedObj->UnmanagedPointer == unmanagedPtr) \
+#define ReturnCachedObjectCastTo(type, castTo, managedObj, unmanagedPtr) { \
+	if (managedObj != nullptr && managedObj->_unmanaged == unmanagedPtr) \
 	return managedObj; \
-	if (unmanagedPtr == 0) \
-	return nullptr; \
 	managedObj = (castTo^)type::GetManaged(unmanagedPtr); \
 	return managedObj; }
 

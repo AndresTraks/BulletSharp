@@ -22,13 +22,13 @@ MinkowskiSumShape::MinkowskiSumShape(ConvexShape^ shapeA, ConvexShape^ shapeB)
 ConvexShape^ MinkowskiSumShape::ShapeA::get()
 {
 	btConvexShape* shapeA = (btConvexShape*)Unmanaged->getShapeA();
-	ReturnCachedObjectUpcastNullableCastTo(CollisionShape, ConvexShape, _shapeA, shapeA);
+	ReturnCachedObjectCastTo(CollisionShape, ConvexShape, _shapeA, shapeA);
 }
 
 ConvexShape^ MinkowskiSumShape::ShapeB::get()
 {
 	btConvexShape* shapeB = (btConvexShape*)Unmanaged->getShapeB();
-	ReturnCachedObjectUpcastNullableCastTo(CollisionShape, ConvexShape, _shapeB, shapeB);
+	ReturnCachedObjectCastTo(CollisionShape, ConvexShape, _shapeB, shapeB);
 }
 
 Matrix MinkowskiSumShape::TransformA::get()

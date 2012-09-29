@@ -3346,7 +3346,7 @@ AlignedCollisionObjectArray^ BulletSharp::SoftBody::SoftBody::CollisionDisabledO
 AlignedFaceArray^ BulletSharp::SoftBody::SoftBody::Faces::get()
 {
 	btAlignedObjectArray<btSoftBody::Face>* faceArray = &Unmanaged->m_faces;
-	ReturnCachedObject(AlignedFaceArray, _alignedFaceArray, faceArray);
+	ReturnCachedObjectGcnew(AlignedFaceArray, _alignedFaceArray, faceArray);
 }
 
 AlignedJointArray^ BulletSharp::SoftBody::SoftBody::Joints::get()
@@ -3357,7 +3357,7 @@ AlignedJointArray^ BulletSharp::SoftBody::SoftBody::Joints::get()
 AlignedLinkArray^ BulletSharp::SoftBody::SoftBody::Links::get()
 {
 	btSoftBody::tLinkArray* linkArray = &Unmanaged->m_links;
-	ReturnCachedObject(AlignedLinkArray, _alignedLinkArray, linkArray);
+	ReturnCachedObjectGcnew(AlignedLinkArray, _alignedLinkArray, linkArray);
 }
 
 Matrix BulletSharp::SoftBody::SoftBody::InitialWorldTransform::get()
@@ -3446,7 +3446,7 @@ void BulletSharp::SoftBody::SoftBody::Tag::set(Object^ value)
 BulletSharp::SoftBody::AlignedTetraArray^ BulletSharp::SoftBody::SoftBody::Tetras::get()
 {
 	btAlignedObjectArray<btSoftBody::Tetra>* tetras = &Unmanaged->m_tetras;
-	ReturnCachedObject(AlignedTetraArray, _alignedTetraArray, tetras);
+	ReturnCachedObjectGcnew(AlignedTetraArray, _alignedTetraArray, tetras);
 }
 
 btScalar BulletSharp::SoftBody::SoftBody::TimeAccumulator::get()

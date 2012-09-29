@@ -72,7 +72,7 @@ bool PolyhedralConvexShape::IsInside(Vector3 point, btScalar tolerance)
 ConvexPolyhedron^ PolyhedralConvexShape::ConvexPolyhedron::get()
 {
 	btConvexPolyhedron* convexPolyhedron = (btConvexPolyhedron*)Unmanaged->getConvexPolyhedron();
-	ReturnCachedObjectNullable(BulletSharp::ConvexPolyhedron, _convexPolyhedron, convexPolyhedron);
+	ReturnCachedObjectGcnewNullable(BulletSharp::ConvexPolyhedron, _convexPolyhedron, convexPolyhedron);
 }
 #endif
 
