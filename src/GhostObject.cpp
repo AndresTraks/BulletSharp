@@ -79,12 +79,7 @@ int GhostObject::NumOverlappingObjects::get()
 
 AlignedCollisionObjectArray^ GhostObject::OverlappingPairs::get()
 {
-	return gcnew AlignedCollisionObjectArray(&Unmanaged->getOverlappingPairs());
-}
-
-btGhostObject* GhostObject::UnmanagedPointer::get()
-{
-	return (btGhostObject*) CollisionObject::UnmanagedPointer;
+	ReturnCachedObjectGcnew(AlignedCollisionObjectArray, _overlappingPairs, &Unmanaged->getOverlappingPairs());
 }
 
 
@@ -103,13 +98,10 @@ PairCachingGhostObject::PairCachingGhostObject()
 
 HashedOverlappingPairCache^ PairCachingGhostObject::OverlappingPairCache::get()
 {
-	return gcnew HashedOverlappingPairCache(Unmanaged->getOverlappingPairCache());
+	btHashedOverlappingPairCache* cache = Unmanaged->getOverlappingPairCache();
+	ReturnCachedObjectCast(HashedOverlappingPairCache, _overlappingPairCache, cache);
 }
 
-btPairCachingGhostObject* PairCachingGhostObject::UnmanagedPointer::get()
-{
-	return (btPairCachingGhostObject*) GhostObject::UnmanagedPointer;
-}
 
 GhostPairCallback::GhostPairCallback(btGhostPairCallback* ghostPairCallback)
 : OverlappingPairCallback(ghostPairCallback)

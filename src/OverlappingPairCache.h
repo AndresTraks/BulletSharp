@@ -42,10 +42,9 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		btOverlapFilterCallback* _callback;
-
 	internal:
+		btOverlapFilterCallback* _unmanaged;
+
 		OverlapFilterCallback(btOverlapFilterCallback* callback);
 		static OverlapFilterCallback^ GetManaged(btOverlapFilterCallback* callback);
 
@@ -76,6 +75,9 @@ namespace BulletSharp
 	{
 	internal:
 		OverlappingPairCache(btOverlappingPairCache* pairCache);
+
+	private:
+		AlignedBroadphasePairArray^ _overlappingPairArray;
 
 	public:
 		void CleanOverlappingPair(BroadphasePair^ pair, Dispatcher^ dispatcher);
@@ -168,12 +170,6 @@ namespace BulletSharp
 
 	public:
 		NullPairCache();
-
-	internal:
-		property btNullPairCache* UnmanagedPointer
-		{
-			btNullPairCache* get() new;
-		}
 	};
 
 	class OverlapFilterCallbackWrapper : public btOverlapFilterCallback

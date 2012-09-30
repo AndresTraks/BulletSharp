@@ -55,26 +55,27 @@ OverlapFilterCallback::!OverlapFilterCallback()
 
 	OnDisposing(this, nullptr);
 
-	ObjectTable::Remove(_callback);
-	_callback = NULL;
+	ObjectTable::Remove(_unmanaged);
+	//delete _unmanaged;
+	_unmanaged = NULL;
 
 	OnDisposed(this, nullptr);
 }
 
 OverlapFilterCallback::OverlapFilterCallback()
 {
-	_callback = new OverlapFilterCallbackWrapper(this);
-	BulletSharp::ObjectTable::Add(this, _callback);
+	_unmanaged = new OverlapFilterCallbackWrapper(this);
+	BulletSharp::ObjectTable::Add(this, _unmanaged);
 }
 
 bool OverlapFilterCallback::IsDisposed::get()
 {
-	return (_callback == NULL);
+	return (_unmanaged == NULL);
 }
 
 OverlapFilterCallback::OverlapFilterCallback(btOverlapFilterCallback* callback)
 {
-	_callback = callback;
+	_unmanaged = callback;
 }
 
 OverlapFilterCallback^ OverlapFilterCallback::GetManaged(btOverlapFilterCallback* callback)
@@ -84,13 +85,14 @@ OverlapFilterCallback^ OverlapFilterCallback::GetManaged(btOverlapFilterCallback
 
 btOverlapFilterCallback* OverlapFilterCallback::UnmanagedPointer::get()
 {
-	return _callback;
+	return _unmanaged;
 }
 
 void OverlapFilterCallback::UnmanagedPointer::set(btOverlapFilterCallback* value)
 {
-	_callback = value;
+	_unmanaged = value;
 }
+
 
 OverlappingPairCache::OverlappingPairCache(btOverlappingPairCache* pairCache)
 : OverlappingPairCallback(pairCache)
@@ -131,10 +133,7 @@ void OverlappingPairCache::SetInternalGhostPairCallback(OverlappingPairCallback^
 
 void OverlappingPairCache::SetOverlapFilterCallback(OverlapFilterCallback^ callback)
 {
-	if (callback == nullptr)
-		UnmanagedPointer->setOverlapFilterCallback(0);
-	else
-		UnmanagedPointer->setOverlapFilterCallback(callback->UnmanagedPointer);
+	UnmanagedPointer->setOverlapFilterCallback(GetUnmanagedNullable(callback));
 }
 
 void OverlappingPairCache::SortOverlappingPairs(Dispatcher^ dispatcher)
@@ -154,7 +153,8 @@ int OverlappingPairCache::NumOverlappingPairs::get()
 
 AlignedBroadphasePairArray^ OverlappingPairCache::OverlappingPairArray::get()
 {
-	return gcnew AlignedBroadphasePairArray(&UnmanagedPointer->getOverlappingPairArray());
+	btBroadphasePairArray* pairArray = &UnmanagedPointer->getOverlappingPairArray();
+	ReturnCachedObjectGcnew(AlignedBroadphasePairArray, _overlappingPairArray, pairArray);
 }
 
 btOverlappingPairCache* OverlappingPairCache::UnmanagedPointer::get()
@@ -236,11 +236,6 @@ NullPairCache::NullPairCache(btNullPairCache* nullPairCache)
 NullPairCache::NullPairCache()
 : OverlappingPairCache(new btNullPairCache)
 {
-}
-
-btNullPairCache* NullPairCache::UnmanagedPointer::get()
-{
-	return (btNullPairCache*)OverlappingPairCache::UnmanagedPointer;
 }
 
 

@@ -15,6 +15,9 @@ namespace BulletSharp
 	internal:
 		GhostObject(btGhostObject* ghostObject);
 
+	private:
+		AlignedCollisionObjectArray^ _overlappingPairs;
+
 	public:
 		GhostObject();
 
@@ -46,12 +49,6 @@ namespace BulletSharp
 		{
 			AlignedCollisionObjectArray^ get();
 		}
-
-	internal:
-		virtual property btGhostObject* UnmanagedPointer
-		{
-			btGhostObject* get() new;
-		}
 	};
 
 	public ref class PairCachingGhostObject : GhostObject
@@ -59,18 +56,15 @@ namespace BulletSharp
 	internal:
 		PairCachingGhostObject(btPairCachingGhostObject* ghost);
 
+	private:
+		HashedOverlappingPairCache^ _overlappingPairCache;
+
 	public:
 		PairCachingGhostObject();
 
 		property HashedOverlappingPairCache^ OverlappingPairCache
 		{
 			HashedOverlappingPairCache^ get();
-		}
-
-	internal:
-		virtual property btPairCachingGhostObject* UnmanagedPointer
-		{
-			btPairCachingGhostObject* get() new;
 		}
 	};
 

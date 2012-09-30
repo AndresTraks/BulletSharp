@@ -372,10 +372,10 @@ inline GCHandle VoidPtrToGCHandle(void* pointer)
 	managedObj = gcnew type(unmanagedPtr); \
 	return managedObj; }
 
-#define ReturnCachedObjectCastTo(type, castTo, managedObj, unmanagedPtr) { \
+#define ReturnCachedObjectCast(type, managedObj, unmanagedPtr) { \
 	if (managedObj != nullptr && managedObj->_unmanaged == unmanagedPtr) \
 	return managedObj; \
-	managedObj = (castTo^)type::GetManaged(unmanagedPtr); \
+	managedObj = static_cast<type^>(type::GetManaged(unmanagedPtr)); \
 	return managedObj; }
 
 #define ReturnCachedObjectStatic(type, managedObj, unmanagedPtr, param) { \
