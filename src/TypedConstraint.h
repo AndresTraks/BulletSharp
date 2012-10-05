@@ -6,6 +6,46 @@ namespace BulletSharp
 {
 	ref class RigidBody;
 
+	public ref class JointFeedback
+	{
+	internal:
+		btJointFeedback* _unmanaged;
+
+		JointFeedback(btJointFeedback* jointFeedback);
+
+	public:
+		!JointFeedback();
+	protected:
+		~JointFeedback();
+
+	public:
+		JointFeedback();
+
+		property Vector3 AppliedForceBodyA
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property Vector3 AppliedForceBodyB
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property Vector3 AppliedTorqueBodyA
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property Vector3 AppliedTorqueBodyB
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+	};
+
 	public ref class TypedConstraint : BulletSharp::IDisposable
 	{
 	public:
@@ -16,6 +56,7 @@ namespace BulletSharp
 		btTypedConstraint* _typedConstraint;
 		bool _doesNotOwnObject;
 		Object^ _userObject;
+		JointFeedback^ _jointFeedback;
 
 	internal:
 		TypedConstraint(btTypedConstraint* typedConstraint, bool doesNotOwnObject);
@@ -25,24 +66,6 @@ namespace BulletSharp
 		!TypedConstraint();
 	protected:
 		~TypedConstraint();
-
-	public:
-		property btScalar BreakingImpulseThreshold
-		{
-			btScalar get();
-			void set(btScalar value);
-		}
-
-		property bool IsEnabled
-		{
-			bool get();
-			void set(bool value);
-		}
-
-		property bool IsDisposed
-		{
-			virtual bool get();
-		}
 
 	public:
 #ifndef DISABLE_SERIALIZE
@@ -68,6 +91,12 @@ namespace BulletSharp
 			btScalar get();
 		}
 
+		property btScalar BreakingImpulseThreshold
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
 		property TypedConstraintType ConstraintType
 		{
 			TypedConstraintType get();
@@ -77,6 +106,23 @@ namespace BulletSharp
 		{
 			btScalar get();
 			void set(btScalar value);
+		}
+
+		property bool IsDisposed
+		{
+			virtual bool get();
+		}
+
+		property bool IsEnabled
+		{
+			bool get();
+			void set(bool value);
+		}
+
+		property BulletSharp::JointFeedback^ JointFeedback
+		{
+			BulletSharp::JointFeedback^ get();
+			void set(BulletSharp::JointFeedback^ value);
 		}
 
 		property bool NeedsFeedback

@@ -5,6 +5,64 @@
 #include "RigidBody.h"
 #include "TypedConstraint.h"
 
+JointFeedback::JointFeedback(btJointFeedback* jointFeedback)
+{
+	_unmanaged = jointFeedback;
+}
+
+JointFeedback::JointFeedback()
+{
+	_unmanaged = new btJointFeedback();
+}
+
+JointFeedback::~JointFeedback()
+{
+	this->!JointFeedback();
+}
+
+JointFeedback::!JointFeedback()
+{
+	delete _unmanaged;
+	_unmanaged = NULL;
+}
+
+Vector3 JointFeedback::AppliedForceBodyA::get()
+{
+	return Math::BtVector3ToVector3(&_unmanaged->m_appliedForceBodyA);
+}
+void JointFeedback::AppliedForceBodyA::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_unmanaged->m_appliedForceBodyA);
+}
+
+Vector3 JointFeedback::AppliedForceBodyB::get()
+{
+	return Math::BtVector3ToVector3(&_unmanaged->m_appliedForceBodyB);
+}
+void JointFeedback::AppliedForceBodyB::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_unmanaged->m_appliedForceBodyB);
+}
+
+Vector3 JointFeedback::AppliedTorqueBodyA::get()
+{
+	return Math::BtVector3ToVector3(&_unmanaged->m_appliedTorqueBodyA);
+}
+void JointFeedback::AppliedTorqueBodyA::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_unmanaged->m_appliedTorqueBodyA);
+}
+
+Vector3 JointFeedback::AppliedTorqueBodyB::get()
+{
+	return Math::BtVector3ToVector3(&_unmanaged->m_appliedTorqueBodyB);
+}
+void JointFeedback::AppliedTorqueBodyB::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_unmanaged->m_appliedTorqueBodyB);
+}
+
+
 TypedConstraint::TypedConstraint(btTypedConstraint* typedConstraint, bool doesNotOwnObject)
 {
 	_doesNotOwnObject = doesNotOwnObject;
@@ -41,29 +99,6 @@ TypedConstraint::!TypedConstraint()
 	_typedConstraint = NULL;
 	
 	OnDisposed(this, nullptr);
-}
-
-btScalar TypedConstraint::BreakingImpulseThreshold::get()
-{
-	return _typedConstraint->getBreakingImpulseThreshold();
-}
-void TypedConstraint::BreakingImpulseThreshold::set(btScalar value)
-{
-	_typedConstraint->setBreakingImpulseThreshold(value);
-}
-
-bool TypedConstraint::IsEnabled::get()
-{
-	return _typedConstraint->isEnabled();
-}
-void TypedConstraint::IsEnabled::set(bool value)
-{
-	_typedConstraint->setEnabled(value);
-}
-
-bool TypedConstraint::IsDisposed::get()
-{
-	return (_typedConstraint == NULL);
 }
 
 #ifndef DISABLE_SERIALIZE
@@ -123,6 +158,15 @@ btScalar TypedConstraint::AppliedImpulse::get()
 	return _typedConstraint->getAppliedImpulse();
 }
 
+btScalar TypedConstraint::BreakingImpulseThreshold::get()
+{
+	return _typedConstraint->getBreakingImpulseThreshold();
+}
+void TypedConstraint::BreakingImpulseThreshold::set(btScalar value)
+{
+	_typedConstraint->setBreakingImpulseThreshold(value);
+}
+
 TypedConstraintType TypedConstraint::ConstraintType::get()
 {
 	return (TypedConstraintType)_typedConstraint->getConstraintType();
@@ -135,6 +179,31 @@ btScalar TypedConstraint::DebugDrawSize::get()
 void TypedConstraint::DebugDrawSize::set(btScalar value)
 {
 	_typedConstraint->setDbgDrawSize(value);
+}
+
+bool TypedConstraint::IsDisposed::get()
+{
+	return (_typedConstraint == NULL);
+}
+
+bool TypedConstraint::IsEnabled::get()
+{
+	return _typedConstraint->isEnabled();
+}
+void TypedConstraint::IsEnabled::set(bool value)
+{
+	_typedConstraint->setEnabled(value);
+}
+
+JointFeedback^ TypedConstraint::JointFeedback::get()
+{
+	btJointFeedback* jointFeedback = _typedConstraint->getJointFeedback();
+	ReturnCachedObjectGcnewNullable(BulletSharp::JointFeedback, _jointFeedback, jointFeedback);
+}
+void TypedConstraint::JointFeedback::set(BulletSharp::JointFeedback^ value)
+{
+	_typedConstraint->setJointFeedback(GetUnmanagedNullable(value));
+	_jointFeedback = value;
 }
 
 bool TypedConstraint::NeedsFeedback::get()
