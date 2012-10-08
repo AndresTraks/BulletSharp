@@ -45,6 +45,7 @@ copy Generic\bin\Release\data\BspDemo.bsp bin\data\
 copy Generic\bin\Release\data\file.obj bin\data\
 copy Generic\bin\Release\data\cube.ele bin\data\
 copy Generic\bin\Release\data\cube.node bin\data\
+copy Generic\bin\Release\data\bullet_basic.xml bin\data\
 copy Generic\bin\Release\testFile.bullet bin\
 rem copy Generic\bin\Release\data\heightfield128x128.raw bin\data\
 
