@@ -32,11 +32,5 @@ namespace BulletSharp
 			Vector3 get();
 			void set(Vector3 value);
 		}
-
-	internal:
-		property btPointCollector* UnmanagedPointer
-		{
-			virtual btPointCollector* get() new;
-		}
 	};
 };

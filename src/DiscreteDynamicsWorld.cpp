@@ -53,6 +53,15 @@ void DiscreteDynamicsWorld::DebugDrawConstraint(TypedConstraint^ constraint)
 }
 #endif
 
+bool DiscreteDynamicsWorld::ApplySpeculativeContactRestitution::get()
+{
+	return Unmanaged->getApplySpeculativeContactRestitution();
+}
+void DiscreteDynamicsWorld::ApplySpeculativeContactRestitution::set(bool value)
+{
+	return Unmanaged->setApplySpeculativeContactRestitution(value);
+}
+
 CollisionWorld^ DiscreteDynamicsWorld::CollisionWorld::get()
 {
 	return gcnew BulletSharp::CollisionWorld(Unmanaged->getCollisionWorld());

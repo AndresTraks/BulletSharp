@@ -74,13 +74,6 @@ namespace BulletSharp
 			{
 				virtual bool get();
 			}
-
-		internal:
-			property btDiscreteCollisionDetectorInterface::Result* UnmanagedPointer
-			{
-				btDiscreteCollisionDetectorInterface::Result* get();
-				void set(btDiscreteCollisionDetectorInterface::Result* value);
-			}
 		};
 
 	public:
@@ -149,12 +142,6 @@ namespace BulletSharp
 		{
 			Vector3 get();
 			void set(Vector3 value);
-		}
-
-	internal:
-		property btStorageResultWrapper* UnmanagedPointer
-		{
-			btStorageResultWrapper* get() new;
 		}
 	};
 

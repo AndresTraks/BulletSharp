@@ -14,6 +14,9 @@ namespace BulletSharp
 		ManifoldResult();
 		ManifoldResult(CollisionObjectWrapper^ body0, CollisionObjectWrapper^ body1);
 
+		static btScalar	CalculateCombinedFriction(CollisionObject^ body0, CollisionObject^ body1);
+		static btScalar	CalculateCombinedRestitution(CollisionObject^ body0, CollisionObject^ body1);
+
 		property CollisionObject^ Body0Internal
 		{
 			CollisionObject^ get();
@@ -38,12 +41,6 @@ namespace BulletSharp
 		{
 			BulletSharp::PersistentManifold^ get();
 			void set(BulletSharp::PersistentManifold^ value);
-		}
-
-	internal:
-		property btManifoldResult* UnmanagedPointer
-		{
-			btManifoldResult* get() new;
 		}
 	};
 };

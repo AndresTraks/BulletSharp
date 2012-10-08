@@ -37,14 +37,14 @@ GjkPairDetector::GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB, Bro
 void GjkPairDetector::GetClosestPointsNonVirtual(
 	ClosestPointInput^ input, Result^ output, IDebugDraw^ debugDraw)
 {
-	UnmanagedPointer->getClosestPointsNonVirtual(*input->UnmanagedPointer, *output->UnmanagedPointer,
+	UnmanagedPointer->getClosestPointsNonVirtual(*input->UnmanagedPointer, *output->_unmanaged,
 		DebugDraw::GetUnmanaged(debugDraw));
 }
 #else
 void GjkPairDetector::GetClosestPointsNonVirtual(
 	ClosestPointInput^ input, Result^ output)
 {
-	UnmanagedPointer->getClosestPointsNonVirtual(*input->UnmanagedPointer, *output->UnmanagedPointer, 0);
+	UnmanagedPointer->getClosestPointsNonVirtual(*input->UnmanagedPointer, *output->_unmanaged, 0);
 }
 #endif
 

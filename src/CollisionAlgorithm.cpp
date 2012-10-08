@@ -75,7 +75,7 @@ btScalar CollisionAlgorithm::CalculateTimeOfImpact(CollisionObject^ body0,
 	CollisionObject^ body1, DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
 {
 	return _algorithm->calculateTimeOfImpact(body0->UnmanagedPointer, body1->UnmanagedPointer,
-		*dispatchInfo->UnmanagedPointer, resultOut->UnmanagedPointer);
+		*dispatchInfo->UnmanagedPointer, (btManifoldResult*)resultOut->_unmanaged);
 }
 
 void CollisionAlgorithm::GetAllContactManifolds(AlignedManifoldArray^ manifoldArray)
@@ -87,7 +87,7 @@ void CollisionAlgorithm::ProcessCollision(CollisionObjectWrapper^ body0Wrap, Col
 	DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
 {
 	_algorithm->processCollision(body0Wrap->_unmanaged, body1Wrap->_unmanaged,
-		*dispatchInfo->UnmanagedPointer, resultOut->UnmanagedPointer);
+		*dispatchInfo->UnmanagedPointer, (btManifoldResult*)resultOut->_unmanaged);
 }
 
 bool CollisionAlgorithm::IsDisposed::get()

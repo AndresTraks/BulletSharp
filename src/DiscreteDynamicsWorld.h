@@ -31,6 +31,12 @@ namespace BulletSharp
 		void SetNumTasks (int numTasks);
 		void SynchronizeSingleMotionState(RigidBody^ body);
 
+		property bool ApplySpeculativeContactRestitution
+		{
+			bool get();
+			void set(bool value);
+		}
+
 		property CollisionWorld^ CollisionWorld
 		{
 			BulletSharp::CollisionWorld^ get();
