@@ -14,7 +14,7 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandle
 	VECTOR3_DEF(worldAabbMin);
 	VECTOR3_DEF(worldAabbMax);
 
-	_unmanaged = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles, pairCache->UnmanagedPointer, disableRaycastAccelerator);
+	_native = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles, pairCache->UnmanagedPointer, disableRaycastAccelerator);
 
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
@@ -26,7 +26,7 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandle
 	VECTOR3_DEF(worldAabbMin);
 	VECTOR3_DEF(worldAabbMax);
 
-	_unmanaged = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles, pairCache->UnmanagedPointer);
+	_native = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles, pairCache->UnmanagedPointer);
 
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
@@ -38,7 +38,7 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandle
 	VECTOR3_DEF(worldAabbMin);
 	VECTOR3_DEF(worldAabbMax);
 
-	_unmanaged = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles);
+	_native = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles);
 
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
@@ -50,7 +50,7 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax)
 	VECTOR3_DEF(worldAabbMin);
 	VECTOR3_DEF(worldAabbMax);
 
-	_unmanaged = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax));
+	_native = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax));
 
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
@@ -68,7 +68,7 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, i
 	VECTOR3_DEF(worldAabbMin);
 	VECTOR3_DEF(worldAabbMax);
 
-	_unmanaged = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles, pairCache->UnmanagedPointer, disableRaycastAccelerator);
+	_native = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles, pairCache->UnmanagedPointer, disableRaycastAccelerator);
 
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
@@ -80,7 +80,7 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, i
 	VECTOR3_DEF(worldAabbMin);
 	VECTOR3_DEF(worldAabbMax);
 
-	_unmanaged = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles, pairCache->UnmanagedPointer);
+	_native = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles, pairCache->UnmanagedPointer);
 
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
@@ -92,7 +92,7 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, i
 	VECTOR3_DEF(worldAabbMin);
 	VECTOR3_DEF(worldAabbMax);
 
-	_unmanaged = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles);
+	_native = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles);
 
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
@@ -104,7 +104,7 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax)
 	VECTOR3_DEF(worldAabbMin);
 	VECTOR3_DEF(worldAabbMax);
 
-	_unmanaged = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax));
+	_native = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax));
 
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);

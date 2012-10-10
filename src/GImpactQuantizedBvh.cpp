@@ -95,13 +95,13 @@ GImpactQuantizedBvh::GImpactQuantizedBvh(PrimitiveManagerBase^ primitiveManager)
 
 bool GImpactQuantizedBvh::BoxQuery(Aabb^ box, [Out] AlignedIntArray^% collided_results)
 {
-	return _bvh->boxQuery(*box->UnmanagedPointer, *(btAlignedObjectArray<int>*)collided_results->_unmanaged);
+	return _bvh->boxQuery(*box->UnmanagedPointer, *(btAlignedObjectArray<int>*)collided_results->_native);
 }
 
 bool GImpactQuantizedBvh::BoxQueryTrans(Aabb^ box, Matrix transform, [Out] AlignedIntArray^% collided_results)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
-	bool ret = _bvh->boxQueryTrans(*box->UnmanagedPointer, *transformTemp, *(btAlignedObjectArray<int>*)collided_results->_unmanaged);
+	bool ret = _bvh->boxQueryTrans(*box->UnmanagedPointer, *transformTemp, *(btAlignedObjectArray<int>*)collided_results->_native);
 	delete transformTemp;
 	return ret;
 }

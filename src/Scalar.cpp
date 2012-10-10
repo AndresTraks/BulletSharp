@@ -4,14 +4,14 @@
 
 TypedObject::TypedObject(btTypedObject* typedObject)
 {
-	_unmanaged = typedObject;
+	_native = typedObject;
 }
 
 ObjectType TypedObject::ObjectType::get()
 {
-	return (BulletSharp::ObjectType)_unmanaged->getObjectType();
+	return (BulletSharp::ObjectType)_native->getObjectType();
 }
 void TypedObject::ObjectType::set(BulletSharp::ObjectType value)
 {
-	_unmanaged->m_objectType = (int)value;
+	_native->m_objectType = (int)value;
 }

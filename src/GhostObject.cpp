@@ -9,7 +9,7 @@
 #include "GhostObject.h"
 #include "OverlappingPairCache.h"
 
-#define Unmanaged static_cast<btGhostObject*>(_unmanaged)
+#define Native static_cast<btGhostObject*>(_native)
 
 GhostObject::GhostObject(btGhostObject* ghostObject)
 : CollisionObject(ghostObject)
@@ -24,18 +24,18 @@ GhostObject::GhostObject()
 #ifndef DISABLE_INTERNAL
 void GhostObject::AddOverlappingObjectInternal(BroadphaseProxy^ otherProxy, BroadphaseProxy^ thisProxy)
 {
-	Unmanaged->addOverlappingObjectInternal(otherProxy->_unmanaged, thisProxy->_unmanaged);
+	Native->addOverlappingObjectInternal(otherProxy->_native, thisProxy->_native);
 }
 
 void GhostObject::AddOverlappingObjectInternal(BroadphaseProxy^ otherProxy)
 {
-	Unmanaged->addOverlappingObjectInternal(otherProxy->_unmanaged);
+	Native->addOverlappingObjectInternal(otherProxy->_native);
 }
 #endif
 
 CollisionObject^ GhostObject::GetOverlappingObject(int index)
 {
-	return CollisionObject::GetManaged(Unmanaged->getOverlappingObject(index));
+	return CollisionObject::GetManaged(Native->getOverlappingObject(index));
 
 }
 
@@ -44,7 +44,7 @@ void GhostObject::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, CollisionWor
 	VECTOR3_DEF(rayFromWorld);
 	VECTOR3_DEF(rayToWorld);
 
-	Unmanaged->rayTest(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld), *resultCallback->_unmanaged);
+	Native->rayTest(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld), *resultCallback->_native);
 
 	VECTOR3_DEL(rayFromWorld);
 	VECTOR3_DEL(rayToWorld);
@@ -53,12 +53,12 @@ void GhostObject::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, CollisionWor
 #ifndef DISABLE_INTERNAL
 void GhostObject::RemoveOverlappingObjectInternal(BroadphaseProxy^ otherProxy, Dispatcher^ dispatcher, BroadphaseProxy^ thisProxy)
 {
-	Unmanaged->removeOverlappingObjectInternal(otherProxy->_unmanaged, dispatcher->_unmanaged, thisProxy->_unmanaged);
+	Native->removeOverlappingObjectInternal(otherProxy->_native, dispatcher->_native, thisProxy->_native);
 }
 
 void GhostObject::RemoveOverlappingObjectInternal(BroadphaseProxy^ otherProxy, Dispatcher^ dispatcher)
 {
-	Unmanaged->removeOverlappingObjectInternal(otherProxy->_unmanaged, dispatcher->_unmanaged);
+	Native->removeOverlappingObjectInternal(otherProxy->_native, dispatcher->_native);
 }
 #endif
 
@@ -74,17 +74,17 @@ GhostObject^ GhostObject::Upcast(CollisionObject^ colObj)
 
 int GhostObject::NumOverlappingObjects::get()
 {
-	return Unmanaged->getNumOverlappingObjects();
+	return Native->getNumOverlappingObjects();
 }
 
 AlignedCollisionObjectArray^ GhostObject::OverlappingPairs::get()
 {
-	ReturnCachedObjectGcnew(AlignedCollisionObjectArray, _overlappingPairs, &Unmanaged->getOverlappingPairs());
+	ReturnCachedObjectGcnew(AlignedCollisionObjectArray, _overlappingPairs, &Native->getOverlappingPairs());
 }
 
 
-#undef Unmanaged
-#define Unmanaged static_cast<btPairCachingGhostObject*>(_unmanaged)
+#undef Native
+#define Native static_cast<btPairCachingGhostObject*>(_native)
 
 PairCachingGhostObject::PairCachingGhostObject(btPairCachingGhostObject* ghostObject)
 : GhostObject(ghostObject)
@@ -98,7 +98,7 @@ PairCachingGhostObject::PairCachingGhostObject()
 
 HashedOverlappingPairCache^ PairCachingGhostObject::OverlappingPairCache::get()
 {
-	btHashedOverlappingPairCache* cache = Unmanaged->getOverlappingPairCache();
+	btHashedOverlappingPairCache* cache = Native->getOverlappingPairCache();
 	ReturnCachedObjectCast(HashedOverlappingPairCache, _overlappingPairCache, cache);
 }
 

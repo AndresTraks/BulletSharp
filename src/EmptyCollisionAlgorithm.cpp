@@ -11,7 +11,7 @@ EmptyAlgorithm::CreateFunc::CreateFunc()
 }
 
 EmptyAlgorithm::EmptyAlgorithm(CollisionAlgorithmConstructionInfo^ ci)
-: CollisionAlgorithm(new btEmptyAlgorithm(*ci->_unmanaged))
+: CollisionAlgorithm(new btEmptyAlgorithm(*ci->_native))
 {
 }
 

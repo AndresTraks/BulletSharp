@@ -15,7 +15,7 @@ namespace BulletSharp
 	public ref class CollisionAlgorithmConstructionInfo
 	{
 	internal:
-		btCollisionAlgorithmConstructionInfo* _unmanaged;
+		btCollisionAlgorithmConstructionInfo* _native;
 
 	public:
 		!CollisionAlgorithmConstructionInfo();
@@ -45,10 +45,9 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		btCollisionAlgorithm* _algorithm;
-
 	internal:
+		btCollisionAlgorithm* _native;
+
 		CollisionAlgorithm(btCollisionAlgorithm* algorithm);
 
 	public:

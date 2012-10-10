@@ -9,7 +9,7 @@ namespace BulletSharp
 	public ref class JointFeedback
 	{
 	internal:
-		btJointFeedback* _unmanaged;
+		btJointFeedback* _native;
 
 		JointFeedback(btJointFeedback* jointFeedback);
 

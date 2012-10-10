@@ -149,7 +149,7 @@ void DispatcherInfo::UnmanagedPointer::set(btDispatcherInfo* info)
 
 Dispatcher::Dispatcher(btDispatcher* dispatcher)
 {
-	_unmanaged = dispatcher;
+	_native = dispatcher;
 }
 
 Dispatcher::~Dispatcher()
@@ -164,95 +164,95 @@ Dispatcher::!Dispatcher()
 
 	OnDisposing(this, nullptr);
 
-	_unmanaged = NULL;
+	_native = NULL;
 
 	OnDisposed(this, nullptr);
 }
 
 IntPtr Dispatcher::AllocateCollisionAlgorithm(int size)
 {
-	return IntPtr(_unmanaged->allocateCollisionAlgorithm(size));
+	return IntPtr(_native->allocateCollisionAlgorithm(size));
 }
 
 void Dispatcher::ClearManifold(PersistentManifold^ manifold)
 {
-	_unmanaged->clearManifold((btPersistentManifold*)manifold->_unmanaged);
+	_native->clearManifold((btPersistentManifold*)manifold->_native);
 }
 
 void Dispatcher::DispatchAllCollisionPairs(OverlappingPairCache^ pairCache,
 	DispatcherInfo^ dispatchInfo, Dispatcher^ dispatcher)
 {
-	_unmanaged->dispatchAllCollisionPairs(pairCache->UnmanagedPointer,
-		*dispatchInfo->UnmanagedPointer, dispatcher->_unmanaged);
+	_native->dispatchAllCollisionPairs(pairCache->UnmanagedPointer,
+		*dispatchInfo->UnmanagedPointer, dispatcher->_native);
 }
 
 CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
 {
-	return gcnew CollisionAlgorithm(_unmanaged->findAlgorithm(body0Wrap->_unmanaged, body1Wrap->_unmanaged));
+	return gcnew CollisionAlgorithm(_native->findAlgorithm(body0Wrap->_native, body1Wrap->_native));
 }
 
 CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 	PersistentManifold^ sharedManifold)
 {
-	return gcnew CollisionAlgorithm(_unmanaged->findAlgorithm(
-		body0Wrap->_unmanaged, body1Wrap->_unmanaged, (btPersistentManifold*)sharedManifold->_unmanaged));
+	return gcnew CollisionAlgorithm(_native->findAlgorithm(
+		body0Wrap->_native, body1Wrap->_native, (btPersistentManifold*)sharedManifold->_native));
 }
 
 void Dispatcher::FreeCollisionAlgorithm(IntPtr ptr)
 {
-	_unmanaged->freeCollisionAlgorithm(ptr.ToPointer());
+	_native->freeCollisionAlgorithm(ptr.ToPointer());
 }
 
 #ifndef DISABLE_INTERNAL
 PersistentManifold^ Dispatcher::GetManifoldByIndexInternal(int index)
 {
-	return gcnew PersistentManifold(_unmanaged->getManifoldByIndexInternal(index));
+	return gcnew PersistentManifold(_native->getManifoldByIndexInternal(index));
 }
 #endif
 
 PersistentManifold^ Dispatcher::GetNewManifold(CollisionObject^ body0, CollisionObject^ body1)
 {
-	return gcnew PersistentManifold(_unmanaged->getNewManifold(
-		body0->_unmanaged, body1->_unmanaged));
+	return gcnew PersistentManifold(_native->getNewManifold(
+		body0->_native, body1->_native));
 }
 
 bool Dispatcher::NeedsCollision(CollisionObject^ body0, CollisionObject^ body1)
 {
-	return _unmanaged->needsCollision(body0->UnmanagedPointer, body1->UnmanagedPointer);
+	return _native->needsCollision(body0->UnmanagedPointer, body1->UnmanagedPointer);
 }
 
 bool Dispatcher::NeedsResponse(CollisionObject^ body0, CollisionObject^ body1)
 {
-	return _unmanaged->needsResponse(body0->UnmanagedPointer, body1->UnmanagedPointer);
+	return _native->needsResponse(body0->UnmanagedPointer, body1->UnmanagedPointer);
 }
 
 void Dispatcher::ReleaseManifold(PersistentManifold^ manifold)
 {
-	_unmanaged->releaseManifold((btPersistentManifold*)manifold->_unmanaged);
+	_native->releaseManifold((btPersistentManifold*)manifold->_native);
 }
 
 int Dispatcher::NumManifolds::get()
 {
-	return _unmanaged->getNumManifolds();
+	return _native->getNumManifolds();
 }
 
 bool Dispatcher::IsDisposed::get()
 {
-	return (_unmanaged == NULL);
+	return (_native == NULL);
 }
 
 #ifndef DISABLE_UNCOMMON
 PoolAllocator^ Dispatcher::InternalManifoldPool::get()
 {
-	return gcnew PoolAllocator(_unmanaged->getInternalManifoldPool());
+	return gcnew PoolAllocator(_native->getInternalManifoldPool());
 }
 #endif
 
 btDispatcher* Dispatcher::UnmanagedPointer::get()
 {
-	return _unmanaged;
+	return _native;
 }
 void Dispatcher::UnmanagedPointer::set(btDispatcher* value)
 {
-	_unmanaged = value;
+	_native = value;
 }

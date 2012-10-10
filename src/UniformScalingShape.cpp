@@ -2,7 +2,7 @@
 
 #include "UniformScalingShape.h"
 
-#define Unmanaged static_cast<btUniformScalingShape*>(_unmanaged)
+#define Native static_cast<btUniformScalingShape*>(_native)
 
 UniformScalingShape::UniformScalingShape(btUniformScalingShape* shape)
 : ConvexShape(shape)
@@ -10,16 +10,16 @@ UniformScalingShape::UniformScalingShape(btUniformScalingShape* shape)
 }
 
 UniformScalingShape::UniformScalingShape(ConvexShape^ convexChildShape, btScalar uniformScalingFactor)
-: ConvexShape(new btUniformScalingShape((btConvexShape*)convexChildShape->_unmanaged, uniformScalingFactor))
+: ConvexShape(new btUniformScalingShape((btConvexShape*)convexChildShape->_native, uniformScalingFactor))
 {
 }
 
 ConvexShape^ UniformScalingShape::ChildShape::get()
 {
-	return (ConvexShape^)CollisionShape::GetManaged(Unmanaged->getChildShape());
+	return (ConvexShape^)CollisionShape::GetManaged(Native->getChildShape());
 }
 
 btScalar UniformScalingShape::UniformScalingFactor::get()
 {
-	return Unmanaged->getUniformScalingFactor();
+	return Native->getUniformScalingFactor();
 }

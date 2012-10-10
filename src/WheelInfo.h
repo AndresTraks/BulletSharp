@@ -7,7 +7,7 @@ namespace BulletSharp
 	public ref class WheelInfoConstructionInfo
 	{
 	internal:
-		btWheelInfoConstructionInfo* _unmanaged;
+		btWheelInfoConstructionInfo* _native;
 
 	public:
 		!WheelInfoConstructionInfo();
@@ -161,7 +161,7 @@ namespace BulletSharp
 		};
 
 	internal:
-		btWheelInfo* _unmanaged;
+		btWheelInfo* _native;
 
 		WheelInfo(btWheelInfo* wheelInfo);
 

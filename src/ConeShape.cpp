@@ -2,7 +2,7 @@
 
 #include "ConeShape.h"
 
-#define Unmanaged static_cast<btConeShape*>(_unmanaged)
+#define Native static_cast<btConeShape*>(_native)
 
 ConeShape::ConeShape(btConeShape* shape)
 : ConvexInternalShape(shape)
@@ -16,21 +16,21 @@ ConeShape::ConeShape(btScalar radius, btScalar height)
 
 int ConeShape::ConeUpIndex::get()
 {
-	return Unmanaged->getConeUpIndex();
+	return Native->getConeUpIndex();
 }
 void ConeShape::ConeUpIndex::set(int value)
 {
-	Unmanaged->setConeUpIndex(value);
+	Native->setConeUpIndex(value);
 }
 
 btScalar ConeShape::Height::get()
 {
-	return Unmanaged->getHeight();
+	return Native->getHeight();
 }
 
 btScalar ConeShape::Radius::get()
 {
-	return Unmanaged->getRadius();
+	return Native->getRadius();
 }
 
 

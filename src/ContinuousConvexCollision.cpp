@@ -9,13 +9,13 @@
 
 ContinuousConvexCollision::ContinuousConvexCollision(ConvexShape^ shapeA, ConvexShape^ shapeB,
 	SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ penetrationDepthSolver)
-: ConvexCast(new btContinuousConvexCollision((btConvexShape*)shapeA->_unmanaged, (btConvexShape*)shapeB->_unmanaged,
+: ConvexCast(new btContinuousConvexCollision((btConvexShape*)shapeA->_native, (btConvexShape*)shapeB->_native,
 	simplexSolver->UnmanagedPointer, GetUnmanagedNullable(penetrationDepthSolver)))
 {
 }
 
 ContinuousConvexCollision::ContinuousConvexCollision(ConvexShape^ shapeA, StaticPlaneShape^ shapeB)
-: ConvexCast(new btContinuousConvexCollision((btConvexShape*)shapeA->_unmanaged, (btStaticPlaneShape*)shapeB->_unmanaged))
+: ConvexCast(new btContinuousConvexCollision((btConvexShape*)shapeA->_native, (btStaticPlaneShape*)shapeB->_native))
 {
 }
 

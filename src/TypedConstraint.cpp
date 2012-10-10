@@ -7,12 +7,12 @@
 
 JointFeedback::JointFeedback(btJointFeedback* jointFeedback)
 {
-	_unmanaged = jointFeedback;
+	_native = jointFeedback;
 }
 
 JointFeedback::JointFeedback()
 {
-	_unmanaged = new btJointFeedback();
+	_native = new btJointFeedback();
 }
 
 JointFeedback::~JointFeedback()
@@ -22,44 +22,44 @@ JointFeedback::~JointFeedback()
 
 JointFeedback::!JointFeedback()
 {
-	delete _unmanaged;
-	_unmanaged = NULL;
+	delete _native;
+	_native = NULL;
 }
 
 Vector3 JointFeedback::AppliedForceBodyA::get()
 {
-	return Math::BtVector3ToVector3(&_unmanaged->m_appliedForceBodyA);
+	return Math::BtVector3ToVector3(&_native->m_appliedForceBodyA);
 }
 void JointFeedback::AppliedForceBodyA::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_unmanaged->m_appliedForceBodyA);
+	Math::Vector3ToBtVector3(value, &_native->m_appliedForceBodyA);
 }
 
 Vector3 JointFeedback::AppliedForceBodyB::get()
 {
-	return Math::BtVector3ToVector3(&_unmanaged->m_appliedForceBodyB);
+	return Math::BtVector3ToVector3(&_native->m_appliedForceBodyB);
 }
 void JointFeedback::AppliedForceBodyB::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_unmanaged->m_appliedForceBodyB);
+	Math::Vector3ToBtVector3(value, &_native->m_appliedForceBodyB);
 }
 
 Vector3 JointFeedback::AppliedTorqueBodyA::get()
 {
-	return Math::BtVector3ToVector3(&_unmanaged->m_appliedTorqueBodyA);
+	return Math::BtVector3ToVector3(&_native->m_appliedTorqueBodyA);
 }
 void JointFeedback::AppliedTorqueBodyA::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_unmanaged->m_appliedTorqueBodyA);
+	Math::Vector3ToBtVector3(value, &_native->m_appliedTorqueBodyA);
 }
 
 Vector3 JointFeedback::AppliedTorqueBodyB::get()
 {
-	return Math::BtVector3ToVector3(&_unmanaged->m_appliedTorqueBodyB);
+	return Math::BtVector3ToVector3(&_native->m_appliedTorqueBodyB);
 }
 void JointFeedback::AppliedTorqueBodyB::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_unmanaged->m_appliedTorqueBodyB);
+	Math::Vector3ToBtVector3(value, &_native->m_appliedTorqueBodyB);
 }
 
 

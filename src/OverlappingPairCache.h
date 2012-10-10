@@ -43,7 +43,7 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposed;
 
 	internal:
-		btOverlapFilterCallback* _unmanaged;
+		btOverlapFilterCallback* _native;
 
 		OverlapFilterCallback(btOverlapFilterCallback* callback);
 		static OverlapFilterCallback^ GetManaged(btOverlapFilterCallback* callback);

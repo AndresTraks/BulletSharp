@@ -3,7 +3,7 @@
 #include "StridingMeshInterface.h"
 #include "TriangleMeshShape.h"
 
-#define Unmanaged static_cast<btTriangleMeshShape*>(_unmanaged)
+#define Native static_cast<btTriangleMeshShape*>(_native)
 
 TriangleMeshShape::TriangleMeshShape(btTriangleMeshShape* shape)
 : ConcaveShape(shape)
@@ -27,7 +27,7 @@ Vector3 TriangleMeshShape::LocalGetSupportingVertex(Vector3 vec)
 	VECTOR3_DEF(vec);
 	btVector3* vecOut = new btVector3;
 	
-	TriangleMeshShape_LocalGetSupportingVertex(Unmanaged, VECTOR3_PTR(vec), vecOut);
+	TriangleMeshShape_LocalGetSupportingVertex(Native, VECTOR3_PTR(vec), vecOut);
 	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
 	
 	VECTOR3_DEL(vec);
@@ -41,7 +41,7 @@ Vector3 TriangleMeshShape::LocalGetSupportingVertexWithoutMargin(Vector3 vec)
 	VECTOR3_DEF(vec);
 	btVector3* vecOut = new btVector3;
 	
-	TriangleMeshShape_LocalGetSupportingVertexWithoutMargin(Unmanaged, VECTOR3_PTR(vec), vecOut);
+	TriangleMeshShape_LocalGetSupportingVertexWithoutMargin(Native, VECTOR3_PTR(vec), vecOut);
 	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
 	
 	VECTOR3_DEL(vec);
@@ -52,21 +52,21 @@ Vector3 TriangleMeshShape::LocalGetSupportingVertexWithoutMargin(Vector3 vec)
 
 void TriangleMeshShape::RecalcLocalAabb()
 {
-	Unmanaged->recalcLocalAabb();
+	Native->recalcLocalAabb();
 }
 
 Vector3 TriangleMeshShape::LocalAabbMax::get()
 {
-	return Math::BtVector3ToVector3(&Unmanaged->getLocalAabbMax());
+	return Math::BtVector3ToVector3(&Native->getLocalAabbMax());
 }
 
 Vector3 TriangleMeshShape::LocalAabbMin::get()
 {
-	return Math::BtVector3ToVector3(&Unmanaged->getLocalAabbMin());
+	return Math::BtVector3ToVector3(&Native->getLocalAabbMin());
 }
 
 StridingMeshInterface^ TriangleMeshShape::MeshInterface::get()
 {
-	btStridingMeshInterface* meshInterface = Unmanaged->getMeshInterface();
+	btStridingMeshInterface* meshInterface = Native->getMeshInterface();
 	ReturnCachedObject(StridingMeshInterface, _meshInterface, meshInterface);
 }

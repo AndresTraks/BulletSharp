@@ -85,10 +85,10 @@ void RaycastVehicle::VehicleTuning::UnmanagedPointer::set(btRaycastVehicle::btVe
 }
 
 
-#define Unmanaged (static_cast<btRaycastVehicle*>(_unmanaged))
+#define Native (static_cast<btRaycastVehicle*>(_native))
 
 RaycastVehicle::RaycastVehicle(RaycastVehicle::VehicleTuning^ tuning, BulletSharp::RigidBody^ chassis, VehicleRaycaster^ raycaster)
-: ActionInterface(new btRaycastVehicle(*tuning->UnmanagedPointer, (btRigidBody*)chassis->_unmanaged, raycaster->UnmanagedPointer))
+: ActionInterface(new btRaycastVehicle(*tuning->UnmanagedPointer, (btRigidBody*)chassis->_native, raycaster->UnmanagedPointer))
 {
 	_chassisBody = chassis;
 }
@@ -101,7 +101,7 @@ WheelInfo^ RaycastVehicle::AddWheel(Vector3 connectionPointCS0, Vector3 wheelDir
 	VECTOR3_DEF(wheelDirectionCS0);
 	VECTOR3_DEF(wheelAxleCS);
 
-	btWheelInfo* wheelInfo = &Unmanaged->addWheel(VECTOR3_USE(connectionPointCS0),
+	btWheelInfo* wheelInfo = &Native->addWheel(VECTOR3_USE(connectionPointCS0),
 		VECTOR3_USE(wheelDirectionCS0), VECTOR3_USE(wheelAxleCS), suspensionRestLength, wheelRadius,
 		*tuning->UnmanagedPointer, isFrontWheel);
 	
@@ -114,51 +114,51 @@ WheelInfo^ RaycastVehicle::AddWheel(Vector3 connectionPointCS0, Vector3 wheelDir
 
 void RaycastVehicle::ApplyEngineForce(btScalar force, int wheel)
 {
-	Unmanaged->applyEngineForce(force, wheel);
+	Native->applyEngineForce(force, wheel);
 }
 
 WheelInfo^ RaycastVehicle::GetWheelInfo(int index)
 {
-	return gcnew BulletSharp::WheelInfo(&Unmanaged->getWheelInfo(index));
+	return gcnew BulletSharp::WheelInfo(&Native->getWheelInfo(index));
 }
 
 btScalar RaycastVehicle::GetSteeringValue(int wheel)
 {
-	return Unmanaged->getSteeringValue(wheel);
+	return Native->getSteeringValue(wheel);
 }
 void RaycastVehicle::SetSteeringValue(btScalar steering, int wheel)
 {
-	Unmanaged->setSteeringValue(steering, wheel);
+	Native->setSteeringValue(steering, wheel);
 }
 
 Matrix RaycastVehicle::GetWheelTransformWS(int wheelIndex)
 {
-	return Math::BtTransformToMatrix(&Unmanaged->getWheelTransformWS(wheelIndex));
+	return Math::BtTransformToMatrix(&Native->getWheelTransformWS(wheelIndex));
 }
 
 btScalar RaycastVehicle::RayCast(BulletSharp::WheelInfo^ wheel)
 {
-	return Unmanaged->rayCast(*wheel->_unmanaged);
+	return Native->rayCast(*wheel->_native);
 }
 
 void RaycastVehicle::ResetSuspension()
 {
-	Unmanaged->resetSuspension();
+	Native->resetSuspension();
 }
 
 void RaycastVehicle::SetBrake(btScalar brake, int wheelIndex)
 {
-	Unmanaged->setBrake(brake, wheelIndex);
+	Native->setBrake(brake, wheelIndex);
 }
 
 void RaycastVehicle::SetCoordinateSystem(int rightIndex, int upIndex, int forwardIndex)
 {
-	Unmanaged->setCoordinateSystem(rightIndex, upIndex, forwardIndex);
+	Native->setCoordinateSystem(rightIndex, upIndex, forwardIndex);
 }
 
 void RaycastVehicle::SetPitchControl(btScalar pitch)
 {
-	Unmanaged->setPitchControl(pitch);
+	Native->setPitchControl(pitch);
 }
 
 /*
@@ -167,7 +167,7 @@ void RaycastVehicle::SetRaycastWheelInfo(int wheelIndex, bool isInContact, Vecto
 	VECTOR3_DEF(hitPoint);
 	VECTOR3_DEF(hitNormal);
 
-	Unmanaged->setRaycastWheelInfo(wheelIndex, isInContact, VECTOR3_USE(hitPoint), VECTOR3_USE(hitNormal), depth);
+	Native->setRaycastWheelInfo(wheelIndex, isInContact, VECTOR3_USE(hitPoint), VECTOR3_USE(hitNormal), depth);
 
 	VECTOR3_DEL(hitPoint);
 	VECTOR3_DEL(hitNormal);
@@ -175,58 +175,58 @@ void RaycastVehicle::SetRaycastWheelInfo(int wheelIndex, bool isInContact, Vecto
 */
 void RaycastVehicle::UpdateFriction(btScalar timeStep)
 {
-	Unmanaged->updateFriction(timeStep);
+	Native->updateFriction(timeStep);
 }
 
 void RaycastVehicle::UpdateSuspension(btScalar deltaTime)
 {
-	Unmanaged->updateSuspension(deltaTime);
+	Native->updateSuspension(deltaTime);
 }
 
 void RaycastVehicle::UpdateVehicle(btScalar step)
 {
-	Unmanaged->updateVehicle(step);
+	Native->updateVehicle(step);
 }
 
 void RaycastVehicle::UpdateWheelTransform(int wheelIndex, bool interpolatedTransform)
 {
-	Unmanaged->updateWheelTransform(wheelIndex, interpolatedTransform);
+	Native->updateWheelTransform(wheelIndex, interpolatedTransform);
 }
 
 void RaycastVehicle::UpdateWheelTransform(int wheelIndex)
 {
-	Unmanaged->updateWheelTransform(wheelIndex);
+	Native->updateWheelTransform(wheelIndex);
 }
 
 void RaycastVehicle::UpdateWheelTransformsWS(BulletSharp::WheelInfo^ wheelIndex, bool interpolatedTransform)
 {
-	Unmanaged->updateWheelTransformsWS(*wheelIndex->_unmanaged, interpolatedTransform);
+	Native->updateWheelTransformsWS(*wheelIndex->_native, interpolatedTransform);
 }
 
 void RaycastVehicle::UpdateWheelTransformsWS(BulletSharp::WheelInfo^ wheelIndex)
 {
-	Unmanaged->updateWheelTransformsWS(*wheelIndex->_unmanaged);
+	Native->updateWheelTransformsWS(*wheelIndex->_native);
 }
 
 Matrix RaycastVehicle::ChassisWorldTransform::get()
 {
-	return Math::BtTransformToMatrix(&Unmanaged->getChassisWorldTransform());
+	return Math::BtTransformToMatrix(&Native->getChassisWorldTransform());
 }
 
 btScalar RaycastVehicle::CurrentSpeedKmHour::get()
 {
-	return Unmanaged->getCurrentSpeedKmHour();
+	return Native->getCurrentSpeedKmHour();
 }
 
 int RaycastVehicle::ForwardAxis::get()
 {
-	return Unmanaged->getForwardAxis();
+	return Native->getForwardAxis();
 }
 
 Vector3 RaycastVehicle::ForwardVector::get()
 {
 	btVector3* vectorTemp = new btVector3;
-	RaycastVehicle_GetForwardVector(Unmanaged, vectorTemp);
+	RaycastVehicle_GetForwardVector(Native, vectorTemp);
 	Vector3 vector = Math::BtVector3ToVector3(vectorTemp);
 	delete vectorTemp;
 	return vector;
@@ -234,12 +234,12 @@ Vector3 RaycastVehicle::ForwardVector::get()
 
 int RaycastVehicle::NumWheels::get()
 {
-	return Unmanaged->getNumWheels();
+	return Native->getNumWheels();
 }
 
 int RaycastVehicle::RightAxis::get()
 {
-	return Unmanaged->getRightAxis();
+	return Native->getRightAxis();
 }
 
 RigidBody^ RaycastVehicle::RigidBody::get()
@@ -249,12 +249,12 @@ RigidBody^ RaycastVehicle::RigidBody::get()
 
 int RaycastVehicle::UpAxis::get()
 {
-	return Unmanaged->getUpAxis();
+	return Native->getUpAxis();
 }
 
 AlignedWheelInfoArray^ RaycastVehicle::WheelInfo::get()
 {
-	return gcnew AlignedWheelInfoArray(&Unmanaged->m_wheelInfo);
+	return gcnew AlignedWheelInfoArray(&Native->m_wheelInfo);
 }
 
 

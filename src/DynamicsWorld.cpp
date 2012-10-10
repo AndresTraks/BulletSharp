@@ -9,7 +9,7 @@
 #include "TypedConstraint.h"
 #endif
 
-#define Unmanaged static_cast<btDynamicsWorld*>(_unmanaged)
+#define Native static_cast<btDynamicsWorld*>(_native)
 
 DynamicsWorld::DynamicsWorld(btDynamicsWorld* world)
 : CollisionWorld(world)
@@ -18,55 +18,55 @@ DynamicsWorld::DynamicsWorld(btDynamicsWorld* world)
 
 void DynamicsWorld::AddAction(ActionInterface^ actionInterface)
 {
-	Unmanaged->addAction(actionInterface->_unmanaged);
+	Native->addAction(actionInterface->_native);
 }
 
 void DynamicsWorld::AddRigidBody(RigidBody^ rigidBody, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
 {
-	Unmanaged->addRigidBody((btRigidBody*)rigidBody->_unmanaged, (short)collisionFilterGroup, (short)collisionFilterMask);
+	Native->addRigidBody((btRigidBody*)rigidBody->_native, (short)collisionFilterGroup, (short)collisionFilterMask);
 }
 
 void DynamicsWorld::AddRigidBody(RigidBody^ rigidBody)
 {
-	Unmanaged->addRigidBody((btRigidBody*)rigidBody->_unmanaged);
+	Native->addRigidBody((btRigidBody*)rigidBody->_native);
 }
 
 #ifndef DISABLE_CONSTRAINTS
 void DynamicsWorld::AddConstraint(TypedConstraint^ constraint,
 	bool disableCollisionsBetweenLinkedBodies)
 {
-	Unmanaged->addConstraint(constraint->UnmanagedPointer, disableCollisionsBetweenLinkedBodies);
+	Native->addConstraint(constraint->UnmanagedPointer, disableCollisionsBetweenLinkedBodies);
 }
 
 void DynamicsWorld::AddConstraint(TypedConstraint^ constraint)
 {
-	Unmanaged->addConstraint(constraint->UnmanagedPointer);
+	Native->addConstraint(constraint->UnmanagedPointer);
 }
 
 void DynamicsWorld::RemoveConstraint(TypedConstraint^ constraint)
 {
-	Unmanaged->removeConstraint(constraint->UnmanagedPointer);
+	Native->removeConstraint(constraint->UnmanagedPointer);
 }
 
 TypedConstraint^ DynamicsWorld::GetConstraint(int index)
 {
-	return TypedConstraint::Upcast(Unmanaged->getConstraint(index));
+	return TypedConstraint::Upcast(Native->getConstraint(index));
 }
 #endif
 
 void DynamicsWorld::ClearForces()
 {
-	Unmanaged->clearForces();
+	Native->clearForces();
 }
 
 void DynamicsWorld::RemoveAction(ActionInterface^ actionInterface)
 {
-	Unmanaged->removeAction(actionInterface->_unmanaged);
+	Native->removeAction(actionInterface->_native);
 }
 
 void DynamicsWorld::RemoveRigidBody(RigidBody^ rigidBody)
 {
-	Unmanaged->removeRigidBody((btRigidBody*)rigidBody->_unmanaged);
+	Native->removeRigidBody((btRigidBody*)rigidBody->_native);
 }
 
 void callback(btDynamicsWorld* world, btScalar timeStep)
@@ -79,60 +79,60 @@ void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ wo
 {
 	_callback = cb;
 	_userObject = worldUserInfo;
-	Unmanaged->setInternalTickCallback(callback, Unmanaged->getWorldUserInfo(), isPreTick);
+	Native->setInternalTickCallback(callback, Native->getWorldUserInfo(), isPreTick);
 }
 
 void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo)
 {
 	_callback = cb;
 	_userObject = worldUserInfo;
-	Unmanaged->setInternalTickCallback(callback, Unmanaged->getWorldUserInfo());
+	Native->setInternalTickCallback(callback, Native->getWorldUserInfo());
 }
 
 void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb)
 {
 	_callback = cb;
-	Unmanaged->setInternalTickCallback(callback, Unmanaged->getWorldUserInfo());
+	Native->setInternalTickCallback(callback, Native->getWorldUserInfo());
 }
 
 int DynamicsWorld::StepSimulation(btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep)
 {
-	return Unmanaged->stepSimulation(timeStep, maxSubSteps, fixedTimeStep);
+	return Native->stepSimulation(timeStep, maxSubSteps, fixedTimeStep);
 }
 
 int DynamicsWorld::StepSimulation(btScalar timeStep, int maxSubSteps)
 {
-	return Unmanaged->stepSimulation(timeStep, maxSubSteps);
+	return Native->stepSimulation(timeStep, maxSubSteps);
 }
 
 int DynamicsWorld::StepSimulation(btScalar timeStep)
 {
-	return Unmanaged->stepSimulation(timeStep);
+	return Native->stepSimulation(timeStep);
 }
 
 void DynamicsWorld::SynchronizeMotionStates()
 {
-	Unmanaged->synchronizeMotionStates();
+	Native->synchronizeMotionStates();
 }
 
 #ifndef DISABLE_CONSTRAINTS
 ConstraintSolver^ DynamicsWorld::ConstraintSolver::get()
 {
-	return gcnew BulletSharp::ConstraintSolver(Unmanaged->getConstraintSolver());
+	return gcnew BulletSharp::ConstraintSolver(Native->getConstraintSolver());
 }
 void DynamicsWorld::ConstraintSolver::set(BulletSharp::ConstraintSolver^ value)
 {
-	Unmanaged->setConstraintSolver(value->UnmanagedPointer);
+	Native->setConstraintSolver(value->UnmanagedPointer);
 }
 
 int DynamicsWorld::NumConstraints::get()
 {
-	return Unmanaged->getNumConstraints();
+	return Native->getNumConstraints();
 }
 
 ContactSolverInfo^ DynamicsWorld::SolverInfo::get()
 {
-	return gcnew ContactSolverInfo(&Unmanaged->getSolverInfo());
+	return gcnew ContactSolverInfo(&Native->getSolverInfo());
 }
 #endif
 
@@ -145,13 +145,13 @@ btVector3* World_GetGravity(btDynamicsWorld* world)
 
 Vector3 DynamicsWorld::Gravity::get()
 {
-	return Math::BtVector3ToVector3(World_GetGravity(Unmanaged));
+	return Math::BtVector3ToVector3(World_GetGravity(Native));
 }
 
 void DynamicsWorld::Gravity::set(Vector3 value)
 {
 	VECTOR3_DEF(value);
-	Unmanaged->setGravity(VECTOR3_USE(value));
+	Native->setGravity(VECTOR3_USE(value));
 	VECTOR3_DEL(value);
 }
 
@@ -166,7 +166,7 @@ void DynamicsWorld::WorldUserInfo::set(Object^ value)
 
 DynamicsWorldType DynamicsWorld::WorldType::get()
 {
-	return (DynamicsWorldType) Unmanaged->getWorldType();
+	return (DynamicsWorldType) Native->getWorldType();
 }
 
 btDynamicsWorld* DynamicsWorld::UnmanagedPointer::get()

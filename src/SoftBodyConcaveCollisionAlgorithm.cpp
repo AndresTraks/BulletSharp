@@ -19,6 +19,8 @@ SoftBodyConcaveCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc()
 }
 
 
+#define Native static_cast<btSoftBodyConcaveCollisionAlgorithm*>(_native)
+
 SoftBodyConcaveCollisionAlgorithm::SoftBodyConcaveCollisionAlgorithm(btSoftBodyConcaveCollisionAlgorithm* algorithm)
 : CollisionAlgorithm(algorithm)
 {
@@ -26,18 +28,13 @@ SoftBodyConcaveCollisionAlgorithm::SoftBodyConcaveCollisionAlgorithm(btSoftBodyC
 
 SoftBodyConcaveCollisionAlgorithm::SoftBodyConcaveCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped)
-: CollisionAlgorithm(new btSoftBodyConcaveCollisionAlgorithm(*ci->_unmanaged, body0Wrap->_unmanaged, body1Wrap->_unmanaged, isSwapped))
+: CollisionAlgorithm(new btSoftBodyConcaveCollisionAlgorithm(*ci->_native, body0Wrap->_native, body1Wrap->_native, isSwapped))
 {
 }
 
 void SoftBodyConcaveCollisionAlgorithm::ClearCache()
 {
-	UnmanagedPointer->clearCache();
-}
-
-btSoftBodyConcaveCollisionAlgorithm* SoftBodyConcaveCollisionAlgorithm::UnmanagedPointer::get()
-{
-	return (btSoftBodyConcaveCollisionAlgorithm*) CollisionAlgorithm::UnmanagedPointer;
+	Native->clearCache();
 }
 
 #endif

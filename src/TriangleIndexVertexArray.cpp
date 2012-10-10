@@ -7,12 +7,12 @@
 
 IndexedMesh::IndexedMesh(btIndexedMesh* indexedMesh)
 {
-	_indexedMesh = indexedMesh;
+	_native = indexedMesh;
 }
 
 IndexedMesh::IndexedMesh()
 {
-	_indexedMesh = new btIndexedMesh();
+	_native = new btIndexedMesh();
 }
 
 void IndexedMesh::Allocate(int numVerts, int vertexStride, int numIndices, int indexStride)
@@ -23,68 +23,68 @@ void IndexedMesh::Allocate(int numVerts, int vertexStride, int numIndices, int i
 
 void IndexedMesh::AllocateVerts(int num, int stride)
 {
-	_indexedMesh->m_numVertices = num;
-	_indexedMesh->m_vertexStride = stride;
-	//_indexedMesh->m_indexType = PHY_INTEGER;
+	_native->m_numVertices = num;
+	_native->m_vertexStride = stride;
+	//_native->m_indexType = PHY_INTEGER;
 
-	_indexedMesh->m_vertexBase = (const unsigned char *)new btVector3[num];
+	_native->m_vertexBase = (const unsigned char *)new btVector3[num];
 }
 
 void IndexedMesh::AllocateIndices(int num, int stride)
 {
-	_indexedMesh->m_numTriangles = num;
-	_indexedMesh->m_triangleIndexStride = stride;
-	//_IndexedMesh->m_vertexType = PHY_FLOAT;
+	_native->m_numTriangles = num;
+	_native->m_triangleIndexStride = stride;
+	//_native->m_vertexType = PHY_FLOAT;
 
-	_indexedMesh->m_triangleIndexBase = (const unsigned char *)new int[num*3];
+	_native->m_triangleIndexBase = (const unsigned char *)new int[num*3];
 }
 
 BulletSharp::DataStream^ IndexedMesh::LockIndices()
 {
-	return gcnew DataStream((void*)_indexedMesh->m_triangleIndexBase,
-		_indexedMesh->m_numTriangles * _indexedMesh->m_triangleIndexStride, true, true, false);
+	return gcnew DataStream((void*)_native->m_triangleIndexBase,
+		_native->m_numTriangles * _native->m_triangleIndexStride, true, true, false);
 }
 
 BulletSharp::DataStream^ IndexedMesh::LockVerts()
 {
-	return gcnew DataStream((void*)_indexedMesh->m_vertexBase,
-		_indexedMesh->m_numVertices * _indexedMesh->m_vertexStride, true, true, false);
+	return gcnew DataStream((void*)_native->m_vertexBase,
+		_native->m_numVertices * _native->m_vertexStride, true, true, false);
 }
 
 PhyScalarType IndexedMesh::IndexType::get()
 {
-	return (PhyScalarType)_indexedMesh->m_indexType;
+	return (PhyScalarType)_native->m_indexType;
 }
 void IndexedMesh::IndexType::set(PhyScalarType value)
 {
-	_indexedMesh->m_indexType = (PHY_ScalarType)value;
+	_native->m_indexType = (PHY_ScalarType)value;
 }
 
 int IndexedMesh::NumTriangles::get()
 {
-	return _indexedMesh->m_numTriangles;
+	return _native->m_numTriangles;
 }
 void IndexedMesh::NumTriangles::set(int value)
 {
-	_indexedMesh->m_numTriangles = value;
+	_native->m_numTriangles = value;
 }
 
 int IndexedMesh::NumVertices::get()
 {
-	return _indexedMesh->m_numVertices;
+	return _native->m_numVertices;
 }
 void IndexedMesh::NumVertices::set(int value)
 {
-	_indexedMesh->m_numVertices = value;
+	_native->m_numVertices = value;
 }
 
 IntArray^ IndexedMesh::TriangleIndices::get()
 {
-	int count = _indexedMesh->m_numTriangles * _indexedMesh->m_triangleIndexStride / sizeof(int);
-	int* triangleIndexBase = (int*)_indexedMesh->m_triangleIndexBase;
+	int count = _native->m_numTriangles * _native->m_triangleIndexStride / sizeof(int);
+	int* triangleIndexBase = (int*)_native->m_triangleIndexBase;
 
 	if (_triangleIndices != nullptr &&
-		(int*)_triangleIndices->_unmanaged == triangleIndexBase &&
+		(int*)_triangleIndices->_native == triangleIndexBase &&
 		_triangleIndices->Count == count)
 	{
 		return _triangleIndices;
@@ -95,26 +95,26 @@ IntArray^ IndexedMesh::TriangleIndices::get()
 }
 void IndexedMesh::TriangleIndices::set(IntArray^ value)
 {
-	_indexedMesh->m_triangleIndexBase = (unsigned char*)value->_unmanaged;
+	_native->m_triangleIndexBase = (unsigned char*)value->_native;
 	_triangleIndices = value;
 }
 
 int IndexedMesh::TriangleIndexStride::get()
 {
-	return _indexedMesh->m_triangleIndexStride;
+	return _native->m_triangleIndexStride;
 }
 void IndexedMesh::TriangleIndexStride::set(int value)
 {
-	_indexedMesh->m_triangleIndexStride = value;
+	_native->m_triangleIndexStride = value;
 }
 
 Vector3Array^ IndexedMesh::Vertices::get()
 {
-	int count = _indexedMesh->m_numVertices;
-	btVector3* vertexBase = (btVector3*)_indexedMesh->m_vertexBase;
+	int count = _native->m_numVertices;
+	btVector3* vertexBase = (btVector3*)_native->m_vertexBase;
 
 	if (_vertices != nullptr &&
-		(btVector3*)_vertices->_unmanaged == vertexBase &&
+		(btVector3*)_vertices->_native == vertexBase &&
 		_vertices->Count == count)
 	{
 		return _vertices;
@@ -125,35 +125,26 @@ Vector3Array^ IndexedMesh::Vertices::get()
 }
 void IndexedMesh::Vertices::set(Vector3Array^ value)
 {
-	_indexedMesh->m_vertexBase = (unsigned char*)value->_unmanaged;
+	_native->m_vertexBase = (unsigned char*)value->_native;
 	_vertices = value;
 }
 
 int IndexedMesh::VertexStride::get()
 {
-	return _indexedMesh->m_vertexStride;
+	return _native->m_vertexStride;
 }
 void IndexedMesh::VertexStride::set(int value)
 {
-	_indexedMesh->m_vertexStride = value;
+	_native->m_vertexStride = value;
 }
 
 PhyScalarType IndexedMesh::VertexType::get()
 {
-	return (PhyScalarType)_indexedMesh->m_vertexType;
+	return (PhyScalarType)_native->m_vertexType;
 }
 void IndexedMesh::VertexType::set(PhyScalarType value)
 {
-	_indexedMesh->m_vertexType = (PHY_ScalarType)value;
-}
-
-btIndexedMesh* IndexedMesh::UnmanagedPointer::get()
-{
-	return _indexedMesh;
-}
-void IndexedMesh::UnmanagedPointer::set(btIndexedMesh* value)
-{
-	_indexedMesh = value;
+	_native->m_vertexType = (PHY_ScalarType)value;
 }
 
 
@@ -196,12 +187,12 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(array<int>^ indices, array<bt
 
 void TriangleIndexVertexArray::AddIndexedMesh(IndexedMesh^ mesh)
 {
-	UnmanagedPointer->addIndexedMesh(*mesh->UnmanagedPointer);
+	UnmanagedPointer->addIndexedMesh(*mesh->_native);
 }
 
 void TriangleIndexVertexArray::AddIndexedMesh(IndexedMesh^ mesh, PhyScalarType indexType)
 {
-	UnmanagedPointer->addIndexedMesh(*mesh->UnmanagedPointer, static_cast<PHY_ScalarType>(indexType));
+	UnmanagedPointer->addIndexedMesh(*mesh->_native, static_cast<PHY_ScalarType>(indexType));
 }
 
 AlignedIndexedMeshArray^ TriangleIndexVertexArray::IndexedMeshArray::get()

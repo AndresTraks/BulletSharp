@@ -13,7 +13,7 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposed;
 
 	internal:
-		DebugDrawWrapper* _unmanaged;
+		DebugDrawWrapper* _native;
 
 	private:
 		DebugDrawModes m_debugMode;

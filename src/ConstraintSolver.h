@@ -19,7 +19,7 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposed;
 
 	internal:
-		btConstraintSolver* _unmanaged;
+		btConstraintSolver* _native;
 		ConstraintSolver(btConstraintSolver* solver);
 
 	public:

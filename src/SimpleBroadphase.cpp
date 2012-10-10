@@ -3,7 +3,7 @@
 #include "OverlappingPairCache.h"
 #include "SimpleBroadphase.h"
 
-#define Unmanaged static_cast<btSimpleBroadphaseProxy*>(_unmanaged)
+#define Native static_cast<btSimpleBroadphaseProxy*>(_native)
 
 SimpleBroadphaseProxy::SimpleBroadphaseProxy(btSimpleBroadphaseProxy* proxy)
 : BroadphaseProxy(proxy)
@@ -34,16 +34,16 @@ SimpleBroadphaseProxy::SimpleBroadphaseProxy(Vector3 minpt, Vector3 maxpt,
 
 int SimpleBroadphaseProxy::NextFree::get()
 {
-	return Unmanaged->GetNextFree();
+	return Native->GetNextFree();
 }
 void SimpleBroadphaseProxy::NextFree::set(int value)
 {
-	Unmanaged->SetNextFree(value);
+	Native->SetNextFree(value);
 }
 
 
-#undef Unmanaged
-#define Unmanaged static_cast<btSimpleBroadphase*>(_unmanaged)
+#undef Native
+#define Native static_cast<btSimpleBroadphase*>(_native)
 
 SimpleBroadphase::SimpleBroadphase(btSimpleBroadphase* broadphase)
 : BroadphaseInterface(broadphase)
@@ -67,10 +67,10 @@ SimpleBroadphase::SimpleBroadphase()
 
 bool SimpleBroadphase::AabbOverlap(SimpleBroadphaseProxy^ proxy0, SimpleBroadphaseProxy^ proxy1)
 {
-	return Unmanaged->aabbOverlap((btSimpleBroadphaseProxy*)proxy0->_unmanaged, (btSimpleBroadphaseProxy*)proxy1->_unmanaged);
+	return Native->aabbOverlap((btSimpleBroadphaseProxy*)proxy0->_native, (btSimpleBroadphaseProxy*)proxy1->_native);
 }
 
 bool SimpleBroadphase::TestAabbOverlap(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
 {
-	return Unmanaged->testAabbOverlap((btSimpleBroadphaseProxy*)proxy0->_unmanaged, (btSimpleBroadphaseProxy*)proxy1->_unmanaged);
+	return Native->testAabbOverlap((btSimpleBroadphaseProxy*)proxy0->_native, (btSimpleBroadphaseProxy*)proxy1->_native);
 }

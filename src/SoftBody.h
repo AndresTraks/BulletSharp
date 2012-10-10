@@ -51,7 +51,7 @@ namespace BulletSharp
 		public ref class SoftBodyWorldInfo : System::IDisposable
 		{
 		internal:
-			btSoftBodyWorldInfo* _unmanaged;
+			btSoftBodyWorldInfo* _native;
 			SoftBodyWorldInfo(btSoftBodyWorldInfo* info);
 
 		public:
@@ -167,7 +167,7 @@ namespace BulletSharp
 		public ref class Anchor
 		{
 		internal:
-			btSoftBody::Anchor* _unmanaged;
+			btSoftBody::Anchor* _native;
 			Anchor(btSoftBody::Anchor* anchor);
 
 		public:
@@ -219,7 +219,7 @@ namespace BulletSharp
 		public ref class Body
 		{
 		internal:
-			btSoftBody::Body* _unmanaged;
+			btSoftBody::Body* _native;
 			Body(btSoftBody::Body* body);
 
 		public:
@@ -285,7 +285,7 @@ namespace BulletSharp
 		public ref class Cluster
 		{
 		internal:
-			btSoftBody::Cluster* _unmanaged;
+			btSoftBody::Cluster* _native;
 			Cluster(btSoftBody::Cluster* cluster);
 
 		public:
@@ -630,7 +630,7 @@ namespace BulletSharp
 		public ref class Element
 		{
 		internal:
-			btSoftBody::Element* _unmanaged;
+			btSoftBody::Element* _native;
 			Element(btSoftBody::Element* element);
 
 		public:
@@ -775,7 +775,7 @@ namespace BulletSharp
 			ref class Specs
 			{
 			internal:
-				btSoftBody::Joint::Specs* _unmanaged;
+				btSoftBody::Joint::Specs* _native;
 				//static Specs^ GetManaged(btSoftBody::Joint::Specs* specs);
 
 			public:
@@ -804,7 +804,7 @@ namespace BulletSharp
 			};
 
 		internal:
-			btSoftBody::Joint* _unmanaged;
+			btSoftBody::Joint* _native;
 			static Joint^ GetManaged(btSoftBody::Joint* joint);
 
 		public:
@@ -1568,9 +1568,13 @@ namespace BulletSharp
 
 		private:
 			SoftBodyWorldInfo^ _worldInfo;
-			AlignedFaceArray^ _alignedFaceArray;
-			AlignedLinkArray^ _alignedLinkArray;
-			AlignedTetraArray^ _alignedTetraArray;
+			AlignedFaceArray^ _faces;
+			AlignedJointArray^ _joints;
+			AlignedLinkArray^ _links;
+			AlignedMaterialArray^ _materials;
+			AlignedNodeArray^ _nodes;
+			AlignedNoteArray^ _notes;
+			AlignedTetraArray^ _tetras;
 
 		public:
 			SoftBody(SoftBodyWorldInfo^ worldInfo, array<Vector3>^ x, array<btScalar>^ m);
@@ -1877,12 +1881,6 @@ namespace BulletSharp
 				void set(Dbvt^ value);
 			}
 #endif
-
-		internal:
-			property btSoftBody* UnmanagedPointer
-			{
-				btSoftBody* get() new;
-			}
 		};
 	};
 };

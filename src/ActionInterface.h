@@ -14,7 +14,7 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposed;
 
 	internal:
-		btActionInterface* _unmanaged;
+		btActionInterface* _native;
 		ActionInterface(btActionInterface* actionInterface);
 
 	public:

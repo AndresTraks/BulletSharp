@@ -14,7 +14,7 @@ namespace BulletSharp
 		//virtual event EventHandler^ OnDisposed;
 
 	internal:
-		btCollisionObjectWrapper* _unmanaged;
+		btCollisionObjectWrapper* _native;
 
 	private:
 		//bool _doesNotOwnObject;

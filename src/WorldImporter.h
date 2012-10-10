@@ -35,7 +35,7 @@ namespace BulletSharp
 			virtual event EventHandler^ OnDisposed;
 
 		internal:
-			WorldImporterWrapper* _unmanaged;
+			WorldImporterWrapper* _native;
 
 		public:
 			!WorldImporter();
@@ -161,7 +161,7 @@ namespace BulletSharp
 		class WorldImporterWrapper : public btWorldImporter
 		{
 		private:
-			gcroot<WorldImporter^> _unmanaged;
+			gcroot<WorldImporter^> _native;
 
 		public:
 			WorldImporterWrapper(btDynamicsWorld* world, WorldImporter^ importer);

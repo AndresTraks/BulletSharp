@@ -69,7 +69,7 @@ namespace BulletSharp
 	public ref class GenericList abstract : Generic::IList<T>
 	{
 	internal:
-		void* _unmanaged;
+		void* _native;
 
 	private:
 		int _length;

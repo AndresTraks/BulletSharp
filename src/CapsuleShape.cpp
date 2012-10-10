@@ -2,7 +2,7 @@
 
 #include "CapsuleShape.h"
 
-#define Unmanaged static_cast<btCapsuleShape*>(_unmanaged)
+#define Native static_cast<btCapsuleShape*>(_native)
 
 CapsuleShape::CapsuleShape(btCapsuleShape* shape)
 : ConvexInternalShape(shape)
@@ -16,17 +16,17 @@ CapsuleShape::CapsuleShape(btScalar radius, btScalar height)
 
 btScalar CapsuleShape::HalfHeight::get()
 {
-	return Unmanaged->getHalfHeight();
+	return Native->getHalfHeight();
 }
 
 btScalar CapsuleShape::Radius::get()
 {
-	return Unmanaged->getRadius();
+	return Native->getRadius();
 }
 
 int CapsuleShape::UpAxis::get()
 {
-	return Unmanaged->getUpAxis();
+	return Native->getUpAxis();
 }
 
 

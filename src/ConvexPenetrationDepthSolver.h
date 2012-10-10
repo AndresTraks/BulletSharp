@@ -17,7 +17,7 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposed;
 
 	internal:
-		btConvexPenetrationDepthSolver* _unmanaged;
+		btConvexPenetrationDepthSolver* _native;
 		ConvexPenetrationDepthSolver(btConvexPenetrationDepthSolver* depthSolver);
 
 	public:

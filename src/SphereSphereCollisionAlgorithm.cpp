@@ -14,13 +14,13 @@ SphereSphereCollisionAlgorithm::CreateFunc::CreateFunc()
 
 SphereSphereCollisionAlgorithm::SphereSphereCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
-: ActivatingCollisionAlgorithm(new btSphereSphereCollisionAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf), *ci->_unmanaged,
-	body0Wrap->_unmanaged, body1Wrap->_unmanaged))
+: ActivatingCollisionAlgorithm(new btSphereSphereCollisionAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf), *ci->_native,
+	body0Wrap->_native, body1Wrap->_native))
 {
 }
 
 SphereSphereCollisionAlgorithm::SphereSphereCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci)
-: ActivatingCollisionAlgorithm(new btSphereSphereCollisionAlgorithm(*ci->_unmanaged))
+: ActivatingCollisionAlgorithm(new btSphereSphereCollisionAlgorithm(*ci->_native))
 {
 }
 

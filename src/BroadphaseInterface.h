@@ -15,7 +15,7 @@ namespace BulletSharp
 	public ref class BroadphaseAabbCallback abstract
 	{
 	internal:
-		btBroadphaseAabbCallback* _unmanaged;
+		btBroadphaseAabbCallback* _native;
 		BroadphaseAabbCallback(btBroadphaseAabbCallback* callback);
 
 	public:
@@ -83,7 +83,7 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposed;
 
 	internal:
-		btBroadphaseInterface* _unmanaged;
+		btBroadphaseInterface* _native;
 		BroadphaseInterface(btBroadphaseInterface* broadphase);
 		static BroadphaseInterface^ GetManaged(btBroadphaseInterface* broadphase);
 

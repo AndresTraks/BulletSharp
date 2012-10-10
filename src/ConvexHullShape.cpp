@@ -3,7 +3,7 @@
 #include "Collections.h"
 #include "ConvexHullShape.h"
 
-#define Unmanaged static_cast<btConvexHullShape*>(_unmanaged)
+#define Native static_cast<btConvexHullShape*>(_native)
 
 ConvexHullShape::ConvexHullShape()
 : PolyhedralConvexAabbCachingShape(new btConvexHullShape())
@@ -23,7 +23,7 @@ ConvexHullShape::ConvexHullShape(System::Collections::Generic::IEnumerable<Vecto
 	for each (Vector3 point in points)
 	{
 		Math::Vector3ToBtVector3(point, pointTemp);
-		Unmanaged->addPoint(*pointTemp);
+		Native->addPoint(*pointTemp);
 	}
 
 	delete pointTemp;
@@ -32,7 +32,7 @@ ConvexHullShape::ConvexHullShape(System::Collections::Generic::IEnumerable<Vecto
 void ConvexHullShape::AddPoint(Vector3 point)
 {
 	VECTOR3_DEF(point);
-	Unmanaged->addPoint(VECTOR3_USE(point));
+	Native->addPoint(VECTOR3_USE(point));
 	VECTOR3_DEL(point);
 }
 
@@ -45,7 +45,7 @@ void ConvexHullShape_GetScaledPoint(btConvexHullShape* shape, int i, btVector3* 
 Vector3 ConvexHullShape::GetScaledPoint(int i)
 {
 	btVector3* pointTemp = new btVector3;
-	ConvexHullShape_GetScaledPoint(Unmanaged, i, pointTemp);
+	ConvexHullShape_GetScaledPoint(Native, i, pointTemp);
 	Vector3 point = Math::BtVector3ToVector3(pointTemp);
 	delete pointTemp;
 	return point;
@@ -53,13 +53,13 @@ Vector3 ConvexHullShape::GetScaledPoint(int i)
 
 int ConvexHullShape::NumPoints::get()
 {
-	return Unmanaged->getNumPoints();
+	return Native->getNumPoints();
 }
 
 Vector3Array^ ConvexHullShape::UnscaledPoints::get()
 {
-	btVector3* unscaledPoints = Unmanaged->getUnscaledPoints();
-	int numPoints = Unmanaged->getNumPoints();
+	btVector3* unscaledPoints = Native->getUnscaledPoints();
+	int numPoints = Native->getNumPoints();
 
 	if (_unscaledPoints == nullptr)
 		_unscaledPoints = gcnew Vector3Array(unscaledPoints, numPoints);

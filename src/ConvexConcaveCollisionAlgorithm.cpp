@@ -18,8 +18,8 @@ ConvexConcaveCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc()
 
 ConvexConcaveCollisionAlgorithm::ConvexConcaveCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped)
-: ActivatingCollisionAlgorithm(new btConvexConcaveCollisionAlgorithm(*ci->_unmanaged,
-	body0Wrap->_unmanaged, body1Wrap->_unmanaged, isSwapped))
+: ActivatingCollisionAlgorithm(new btConvexConcaveCollisionAlgorithm(*ci->_native,
+	body0Wrap->_native, body1Wrap->_native, isSwapped))
 {
 }
 

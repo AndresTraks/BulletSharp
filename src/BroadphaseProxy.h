@@ -7,7 +7,7 @@ namespace BulletSharp
 	public ref class BroadphaseProxy
 	{
 	internal:
-		btBroadphaseProxy* _unmanaged;
+		btBroadphaseProxy* _native;
 
 	private:
 		bool _doesNotOwnObject;
@@ -91,10 +91,9 @@ namespace BulletSharp
 
 	public ref struct BroadphasePair
 	{
-	private:
-		btBroadphasePair* _pair;
-
 	internal:
+		btBroadphasePair* _native;
+
 		BroadphasePair(btBroadphasePair* pair);
 
 	public:
@@ -118,13 +117,6 @@ namespace BulletSharp
 		{
 			BroadphaseProxy^ get();
 			void set(BroadphaseProxy^ value);
-		}
-
-	internal:
-		property btBroadphasePair* UnmanagedPointer
-		{
-			virtual btBroadphasePair* get();
-			void set(btBroadphasePair* value);
 		}
 	};
 }

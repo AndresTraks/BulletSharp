@@ -6,7 +6,7 @@
 #include "MultimaterialTriangleMeshShape.h"
 #include "StridingMeshInterface.h"
 
-#define Unmanaged static_cast<btMultimaterialTriangleMeshShape*>(_unmanaged)
+#define Native static_cast<btMultimaterialTriangleMeshShape*>(_native)
 
 MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(btMultimaterialTriangleMeshShape* meshShape)
 : BvhTriangleMeshShape(meshShape)
@@ -55,7 +55,7 @@ MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInter
 
 BulletMaterial MultimaterialTriangleMeshShape::GetMaterialProperties(int partID, int triIndex)
 {
-	return BulletMaterial((btMaterial*)Unmanaged->getMaterialProperties(partID, triIndex));
+	return BulletMaterial((btMaterial*)Native->getMaterialProperties(partID, triIndex));
 }
 
 #endif

@@ -27,7 +27,7 @@ btScalar RotationalLimitMotor::SolveAngularLimits(btScalar timeStep, Vector3 axi
 	VECTOR3_DEF(axis);
 	
 	btScalar ret = motor->solveAngularLimits(timeStep, VECTOR3_USE(axis),
-		jacDiagABInv, (btRigidBody*)body0->_unmanaged, (btRigidBody*)body1->_unmanaged);
+		jacDiagABInv, (btRigidBody*)body0->_native, (btRigidBody*)body1->_native);
 
 	VECTOR3_DEL(axis);
 	return ret;
@@ -239,8 +239,8 @@ btScalar TranslationalLimitMotor::SolveLinearAxis(btScalar timeStep, btScalar ja
 	VECTOR3_DEF(anchorPos);
 
 	btScalar ret =  motor->solveLinearAxis(timeStep, jacDiagABInv,
-		*(btRigidBody*)body1->_unmanaged, VECTOR3_USE(pointInA),
-		*(btRigidBody*)body2->_unmanaged, VECTOR3_USE(pointInB),
+		*(btRigidBody*)body1->_native, VECTOR3_USE(pointInA),
+		*(btRigidBody*)body2->_native, VECTOR3_USE(pointInB),
 		limit_index, VECTOR3_USE(axis_normal_on_a), VECTOR3_USE(anchorPos)
 	);
 
@@ -412,7 +412,7 @@ Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ r
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 
 	UnmanagedPointer = new btGeneric6DofConstraint(
-		*(btRigidBody*)rigidBodyA->_unmanaged, *(btRigidBody*)rigidBodyB->_unmanaged,
+		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*frameInATemp, *frameInBTemp, useReferenceFrameA);
 
 	delete frameInATemp;
@@ -425,7 +425,7 @@ Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frame
 {
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 
-	UnmanagedPointer = new btGeneric6DofConstraint(*(btRigidBody*)rigidBodyB->_unmanaged, *frameInBTemp, useReferenceFrameA);
+	UnmanagedPointer = new btGeneric6DofConstraint(*(btRigidBody*)rigidBodyB->_native, *frameInBTemp, useReferenceFrameA);
 
 	delete frameInBTemp;
 }

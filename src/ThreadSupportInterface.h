@@ -15,7 +15,7 @@ namespace BulletSharp
 			virtual event EventHandler^ OnDisposed;
 
 		internal:
-			btBarrier* _unmanaged;
+			btBarrier* _native;
 
 			Barrier(btBarrier* barrier);
 
@@ -46,7 +46,7 @@ namespace BulletSharp
 			virtual event EventHandler^ OnDisposed;
 
 		internal:
-			btCriticalSection* _unmanaged;
+			btCriticalSection* _native;
 
 			CriticalSection(btCriticalSection* criticalSection);
 

@@ -56,7 +56,7 @@ void SoftBody::VertexBufferDescriptor::UnmanagedPointer::set(btVertexBufferDescr
 
 
 SoftBody::CpuVertexBufferDescriptor::CpuVertexBufferDescriptor(FloatArray^ array, int vertexOffset, int vertexStride, int normalOffset, int normalStride)
-: VertexBufferDescriptor(new btCPUVertexBufferDescriptor((array != nullptr) ? (btScalar*)array->_unmanaged : 0, vertexOffset, vertexStride, normalOffset, normalStride))
+: VertexBufferDescriptor(new btCPUVertexBufferDescriptor((array != nullptr) ? (btScalar*)array->_native : 0, vertexOffset, vertexStride, normalOffset, normalStride))
 {
 	_length = (array != nullptr) ? array->Count : 0;
 }

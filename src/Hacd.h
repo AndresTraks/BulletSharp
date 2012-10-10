@@ -9,7 +9,7 @@ namespace BulletSharp
 		public ref class Hacd
 		{
 		internal:
-			HACD::HACD* _unmanaged;
+			HACD::HACD* _native;
 
 		private:
 			HACD::Vec3<HACD::Real>* _points;

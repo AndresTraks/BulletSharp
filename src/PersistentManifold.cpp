@@ -4,7 +4,7 @@
 #include "ManifoldPoint.h"
 #include "PersistentManifold.h"
 
-#define Unmanaged static_cast<btPersistentManifold*>(_unmanaged)
+#define Native static_cast<btPersistentManifold*>(_native)
 
 PersistentManifold::PersistentManifold(btPersistentManifold* manifold)
 : TypedObject(manifold)
@@ -18,39 +18,39 @@ PersistentManifold::PersistentManifold()
 
 int PersistentManifold::AddManifoldPoint(ManifoldPoint^ newPoint, bool isPredictive)
 {
-	return Unmanaged->addManifoldPoint(*newPoint->_unmanaged, isPredictive);
+	return Native->addManifoldPoint(*newPoint->_native, isPredictive);
 }
 
 int PersistentManifold::AddManifoldPoint(ManifoldPoint^ newPoint)
 {
-	return Unmanaged->addManifoldPoint(*newPoint->_unmanaged);
+	return Native->addManifoldPoint(*newPoint->_native);
 }
 
 void PersistentManifold::ClearManifold()
 {
-	return Unmanaged->clearManifold();
+	return Native->clearManifold();
 }
 
 void PersistentManifold::ClearUserCache(ManifoldPoint^ pt)
 {
-	Unmanaged->clearUserCache(*pt->UnmanagedPointer);
+	Native->clearUserCache(*pt->_native);
 }
 
 #ifdef DEBUG_PERSISTENCY
 void PersistentManifold::DebugPersistency()
 {
-	Unmanaged->DebugPersistency();
+	Native->DebugPersistency();
 }
 #endif
 
 int PersistentManifold::GetCacheEntry(ManifoldPoint^ newPoint)
 {
-	return Unmanaged->getCacheEntry(*newPoint->UnmanagedPointer);
+	return Native->getCacheEntry(*newPoint->_native);
 }
 
 ManifoldPoint^ PersistentManifold::GetContactPoint(int index)
 {
-	return gcnew ManifoldPoint(&Unmanaged->getContactPoint(index));
+	return gcnew ManifoldPoint(&Native->getContactPoint(index));
 }
 
 void PersistentManifold::RefreshContactPoints(Matrix trA, Matrix trB)
@@ -58,7 +58,7 @@ void PersistentManifold::RefreshContactPoints(Matrix trA, Matrix trB)
 	btTransform* trATemp = Math::MatrixToBtTransform(trA);
 	btTransform* trBTemp = Math::MatrixToBtTransform(trB);
 
-	Unmanaged->refreshContactPoints(*trATemp, *trBTemp);
+	Native->refreshContactPoints(*trATemp, *trBTemp);
 
 	delete trATemp;
 	delete trBTemp;
@@ -66,79 +66,79 @@ void PersistentManifold::RefreshContactPoints(Matrix trA, Matrix trB)
 
 void PersistentManifold::RemoveContactPoint(int index)
 {
-	Unmanaged->removeContactPoint(index);
+	Native->removeContactPoint(index);
 }
 
 void PersistentManifold::ReplaceContactPoint(ManifoldPoint^ newPoint, int insertIndex)
 {
-	Unmanaged->replaceContactPoint(*newPoint->UnmanagedPointer, insertIndex);
+	Native->replaceContactPoint(*newPoint->_native, insertIndex);
 }
 
 bool PersistentManifold::ValidContactDistance(ManifoldPoint^ pt)
 {
-	return Unmanaged->validContactDistance(*pt->UnmanagedPointer);
+	return Native->validContactDistance(*pt->_native);
 }
 
 Object^ PersistentManifold::Body0::get()
 {
-	return CollisionObject::GetManaged((btCollisionObject*)Unmanaged->getBody0());
+	return CollisionObject::GetManaged((btCollisionObject*)Native->getBody0());
 }
 
 Object^ PersistentManifold::Body1::get()
 {
-	return CollisionObject::GetManaged((btCollisionObject*)Unmanaged->getBody1());
+	return CollisionObject::GetManaged((btCollisionObject*)Native->getBody1());
 }
 
 int PersistentManifold::CompanionIDA::get()
 {
-	return Unmanaged->m_companionIdA;
+	return Native->m_companionIdA;
 }
 void PersistentManifold::CompanionIDA::set(int value)
 {
-	Unmanaged->m_companionIdA = value;
+	Native->m_companionIdA = value;
 }
 
 int PersistentManifold::CompanionIDB::get()
 {
-	return Unmanaged->m_companionIdB;
+	return Native->m_companionIdB;
 }
 void PersistentManifold::CompanionIDB::set(int value)
 {
-	Unmanaged->m_companionIdB = value;
+	Native->m_companionIdB = value;
 }
 
 btScalar PersistentManifold::ContactBreakingThreshold::get()
 {
-	return Unmanaged->getContactBreakingThreshold();
+	return Native->getContactBreakingThreshold();
 }
 void PersistentManifold::ContactBreakingThreshold::set(btScalar value)
 {
-	Unmanaged->setContactBreakingThreshold(value);
+	Native->setContactBreakingThreshold(value);
 }
 
 float PersistentManifold::ContactProcessingThreshold::get()
 {
-	return Unmanaged->getContactProcessingThreshold();
+	return Native->getContactProcessingThreshold();
 }
 void PersistentManifold::ContactProcessingThreshold::set(btScalar value)
 {
-	Unmanaged->setContactProcessingThreshold(value);
+	Native->setContactProcessingThreshold(value);
 }
 
 int PersistentManifold::Index1A::get()
 {
-	return Unmanaged->m_index1a;
+	return Native->m_index1a;
 }
 void PersistentManifold::Index1A::set(int value)
 {
-	Unmanaged->m_index1a = value;
+	Native->m_index1a = value;
 }
 
 int PersistentManifold::NumContacts::get()
 {
-	return Unmanaged->getNumContacts();
+	return Native->getNumContacts();
 }
 void PersistentManifold::NumContacts::set(int value)
 {
-	Unmanaged->setNumContacts(value);
+	Native->setNumContacts(value);
 }

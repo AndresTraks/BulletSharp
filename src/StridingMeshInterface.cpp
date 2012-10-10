@@ -14,7 +14,7 @@
 
 StridingMeshInterface::StridingMeshInterface(btStridingMeshInterface* stridingMesh)
 {
-	_unmanaged = stridingMesh;
+	_native = stridingMesh;
 }
 
 StridingMeshInterface::~StridingMeshInterface()
@@ -29,7 +29,7 @@ StridingMeshInterface::!StridingMeshInterface()
 	
 	OnDisposing(this, nullptr);
 
-	_unmanaged = NULL;
+	_native = NULL;
 
 	OnDisposed(this, nullptr);
 }
@@ -58,7 +58,7 @@ StridingMeshInterface^ StridingMeshInterface::GetManaged(btStridingMeshInterface
 
 bool StridingMeshInterface::IsDisposed::get()
 {
-	return ( _unmanaged == NULL );
+	return ( _native == NULL );
 }
 
 void StridingMeshInterface::CalculateAabbBruteForce(Vector3% aabbMin, Vector3% aabbMax)
@@ -66,7 +66,7 @@ void StridingMeshInterface::CalculateAabbBruteForce(Vector3% aabbMin, Vector3% a
 	btVector3* aabbMinTemp = new btVector3;
 	btVector3* aabbMaxTemp = new btVector3;
 	
-	_unmanaged->calculateAabbBruteForce(*aabbMinTemp, *aabbMaxTemp);
+	_native->calculateAabbBruteForce(*aabbMinTemp, *aabbMaxTemp);
 	
 	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
 	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
@@ -78,12 +78,12 @@ void StridingMeshInterface::CalculateAabbBruteForce(Vector3% aabbMin, Vector3% a
 #ifndef DISABLE_SERIALIZE
 int StridingMeshInterface::CalculateSerializeBufferSize()
 {
-	return _unmanaged->calculateSerializeBufferSize();
+	return _native->calculateSerializeBufferSize();
 }
 
 String^ StridingMeshInterface::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
 {
-	const char* name = _unmanaged->serialize(dataBuffer.ToPointer(), serializer->UnmanagedPointer);
+	const char* name = _native->serialize(dataBuffer.ToPointer(), serializer->UnmanagedPointer);
 	if (name == 0)
 		return nullptr;
 
@@ -206,7 +206,7 @@ void StridingMeshInterface::GetPremadeAabb(Vector3% aabbMin, Vector3% aabbMax)
 	btVector3* aabbMinTemp = new btVector3;
 	btVector3* aabbMaxTemp = new btVector3;
 	
-	_unmanaged->getPremadeAabb(aabbMinTemp, aabbMaxTemp);
+	_native->getPremadeAabb(aabbMinTemp, aabbMaxTemp);
 	
 	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
 	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
@@ -221,7 +221,7 @@ void StridingMeshInterface::InternalProcessAllTriangles(InternalTriangleIndexCal
 	VECTOR3_DEF(aabbMin);
 	VECTOR3_DEF(aabbMax);
 	
-	_unmanaged->InternalProcessAllTriangles(callback->UnmanagedPointer, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
+	_native->InternalProcessAllTriangles(callback->UnmanagedPointer, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
@@ -230,12 +230,12 @@ void StridingMeshInterface::InternalProcessAllTriangles(InternalTriangleIndexCal
 
 void StridingMeshInterface::PreallocateIndices(int numIndices)
 {
-	_unmanaged->preallocateIndices(numIndices);
+	_native->preallocateIndices(numIndices);
 }
 
 void StridingMeshInterface::PreallocateVertices(int numVerts)
 {
-	_unmanaged->preallocateIndices(numVerts);
+	_native->preallocateIndices(numVerts);
 }
 
 void StridingMeshInterface::SetPremadeAabb(Vector3 aabbMin, Vector3 aabbMax)
@@ -243,7 +243,7 @@ void StridingMeshInterface::SetPremadeAabb(Vector3 aabbMin, Vector3 aabbMax)
 	VECTOR3_DEF(aabbMin);
 	VECTOR3_DEF(aabbMax);
 	
-	_unmanaged->setPremadeAabb(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
+	_native->setPremadeAabb(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
@@ -251,22 +251,22 @@ void StridingMeshInterface::SetPremadeAabb(Vector3 aabbMin, Vector3 aabbMax)
 
 void StridingMeshInterface::UnlockReadOnlyVertexData(int subpart)
 {
-	_unmanaged->unLockReadOnlyVertexBase(subpart);
+	_native->unLockReadOnlyVertexBase(subpart);
 }
 
 void StridingMeshInterface::UnlockVertexData(int subpart)
 {
-	_unmanaged->unLockVertexBase(subpart);
+	_native->unLockVertexBase(subpart);
 }
 
 bool StridingMeshInterface::HasPremadeAabb::get()
 {
-	return _unmanaged->hasPremadeAabb();
+	return _native->hasPremadeAabb();
 }
 
 int StridingMeshInterface::NumSubParts::get()
 {
-	return _unmanaged->getNumSubParts();
+	return _native->getNumSubParts();
 }
 
 Vector3 StridingMeshInterface::Scaling::get()
@@ -282,9 +282,9 @@ void StridingMeshInterface::Scaling::set(Vector3 value)
 
 btStridingMeshInterface* StridingMeshInterface::UnmanagedPointer::get()
 {
-	return _unmanaged;
+	return _native;
 }
 void StridingMeshInterface::UnmanagedPointer::set(btStridingMeshInterface* value)
 {
-	_unmanaged = value;
+	_native = value;
 }

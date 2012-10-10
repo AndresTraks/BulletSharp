@@ -6,12 +6,12 @@ MotionState::MotionState()
 {
 	MotionStateWrapper* state = new MotionStateWrapper();
 	state->_motionState = this;
-	_unmanaged = state;
+	_native = state;
 }
 
 MotionState::MotionState(btMotionState* motionState)
 {
-	_unmanaged = motionState;
+	_native = motionState;
 }
 
 MotionState::~MotionState()
@@ -21,6 +21,6 @@ MotionState::~MotionState()
 
 MotionState::!MotionState()
 {
-	delete _unmanaged;
-	_unmanaged = 0;
+	delete _native;
+	_native = 0;
 }

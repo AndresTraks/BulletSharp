@@ -17,7 +17,7 @@ GearConstraint::GearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vec
 	VECTOR3_DEF(axisInB);
 
 	UnmanagedPointer = new btGearConstraint(
-		*(btRigidBody*)rigidBodyA->_unmanaged, *(btRigidBody*)rigidBodyB->_unmanaged,
+		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		VECTOR3_USE(axisInA), VECTOR3_USE(axisInB), ratio);
 
 	VECTOR3_DEL(axisInA);

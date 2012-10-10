@@ -7,7 +7,7 @@ namespace BulletSharp
 	public ref class MotionState abstract
 	{
 	internal:
-		btMotionState* _unmanaged;
+		btMotionState* _native;
 
 	internal:
 		MotionState(btMotionState* motionState);

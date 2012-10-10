@@ -7,13 +7,13 @@
 
 DebugDraw::DebugDraw()
 {
-	_unmanaged = new DebugDrawWrapper(this);
-	_unmanaged->setDebugMode(0);
+	_native = new DebugDrawWrapper(this);
+	_native->setDebugMode(0);
 }
 
 DebugDraw::DebugDraw(DebugDrawWrapper* debugDraw)
 {
-	_unmanaged = debugDraw;
+	_native = debugDraw;
 }
 
 DebugDraw::~DebugDraw()
@@ -28,8 +28,8 @@ DebugDraw::!DebugDraw()
 	
 	OnDisposing(this, nullptr);
 
-	delete _unmanaged;
-	_unmanaged = NULL;
+	delete _native;
+	_native = NULL;
 
 	OnDisposed(this, nullptr);
 }
@@ -52,7 +52,7 @@ DebugDrawWrapper* DebugDraw::GetUnmanaged(IDebugDraw^ debugDraw)
 
 	DebugDraw^ cast = dynamic_cast<DebugDraw^>(debugDraw);
 	if (cast != nullptr)
-		return cast->_unmanaged;
+		return cast->_native;
 
 	if (ObjectTable::Contains(debugDraw))
 		return (BulletSharp::DebugDrawWrapper*)ObjectTable::GetUnmanagedObject(debugDraw);
@@ -69,7 +69,7 @@ void DebugDraw::DrawAabb(Vector3% from, Vector3% to, BtColor color)
 	VECTOR3_DEF(to);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_unmanaged->baseDrawAabb(VECTOR3_USE(from), VECTOR3_USE(to), *colorTemp);
+	_native->baseDrawAabb(VECTOR3_USE(from), VECTOR3_USE(to), *colorTemp);
 
 	VECTOR3_DEL(from);
 	VECTOR3_DEL(to);
@@ -84,7 +84,7 @@ void DebugDraw::DrawArc(Vector3% center, Vector3% normal, Vector3% axis, btScala
 	VECTOR3_DEF(axis);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_unmanaged->baseDrawArc(VECTOR3_USE(center), VECTOR3_USE(normal), VECTOR3_USE(axis), radiusA, radiusB, minAngle, maxAngle, *colorTemp, drawSect, stepDegrees);
+	_native->baseDrawArc(VECTOR3_USE(center), VECTOR3_USE(normal), VECTOR3_USE(axis), radiusA, radiusB, minAngle, maxAngle, *colorTemp, drawSect, stepDegrees);
 
 	VECTOR3_DEL(center);
 	VECTOR3_DEL(normal);
@@ -100,7 +100,7 @@ void DebugDraw::DrawArc(Vector3% center, Vector3% normal, Vector3% axis, btScala
 	VECTOR3_DEF(axis);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_unmanaged->baseDrawArc(VECTOR3_USE(center), VECTOR3_USE(normal), VECTOR3_USE(axis), radiusA, radiusB, minAngle, maxAngle, *colorTemp, drawSect);
+	_native->baseDrawArc(VECTOR3_USE(center), VECTOR3_USE(normal), VECTOR3_USE(axis), radiusA, radiusB, minAngle, maxAngle, *colorTemp, drawSect);
 
 	VECTOR3_DEL(center);
 	VECTOR3_DEL(normal);
@@ -115,7 +115,7 @@ void DebugDraw::DrawBox(Vector3% bbMin, Vector3% bbMax, Matrix% trans, BtColor c
 	btTransform* transTemp = Math::MatrixToBtTransform(trans);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_unmanaged->baseDrawBox(VECTOR3_USE(bbMin), VECTOR3_USE(bbMax), *transTemp, *colorTemp);
+	_native->baseDrawBox(VECTOR3_USE(bbMin), VECTOR3_USE(bbMax), *transTemp, *colorTemp);
 	
 	VECTOR3_DEL(bbMin);
 	VECTOR3_DEL(bbMax);
@@ -129,7 +129,7 @@ void DebugDraw::DrawBox(Vector3% bbMin, Vector3% bbMax, BtColor color)
 	VECTOR3_DEF(bbMax);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_unmanaged->baseDrawBox(VECTOR3_USE(bbMin), VECTOR3_USE(bbMax), *colorTemp);
+	_native->baseDrawBox(VECTOR3_USE(bbMin), VECTOR3_USE(bbMax), *colorTemp);
 
 	VECTOR3_DEL(bbMin);
 	VECTOR3_DEL(bbMax);
@@ -141,7 +141,7 @@ void DebugDraw::DrawCapsule(btScalar radius, btScalar halfHeight, int upAxis, Ma
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_unmanaged->baseDrawCapsule(radius, halfHeight, upAxis, *transformTemp, *colorTemp);
+	_native->baseDrawCapsule(radius, halfHeight, upAxis, *transformTemp, *colorTemp);
 
 	delete transformTemp;
 	delete colorTemp;
@@ -152,7 +152,7 @@ void DebugDraw::DrawCone(btScalar radius, btScalar height, int upAxis, Matrix% t
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_unmanaged->baseDrawCone(radius, height, upAxis, *transformTemp, *colorTemp);
+	_native->baseDrawCone(radius, height, upAxis, *transformTemp, *colorTemp);
 
 	delete transformTemp;
 	delete colorTemp;
@@ -163,7 +163,7 @@ void DebugDraw::DrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, M
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_unmanaged->baseDrawCylinder(radius, halfHeight, upAxis, *transformTemp, *colorTemp);
+	_native->baseDrawCylinder(radius, halfHeight, upAxis, *transformTemp, *colorTemp);
 
 	delete transformTemp;
 	delete colorTemp;
@@ -176,7 +176,7 @@ void DebugDraw::DrawLine(Vector3% from, Vector3% to, BtColor fromColor, BtColor 
 	btVector3* fromColorTemp = BtColorToBtVector(fromColor);
 	btVector3* toColorTemp = BtColorToBtVector(toColor);
 
-	_unmanaged->baseDrawLine(VECTOR3_USE(from), VECTOR3_USE(to), *fromColorTemp, *toColorTemp);
+	_native->baseDrawLine(VECTOR3_USE(from), VECTOR3_USE(to), *fromColorTemp, *toColorTemp);
 
 	VECTOR3_DEL(from);
 	VECTOR3_DEL(to);
@@ -190,7 +190,7 @@ void DebugDraw::DrawPlane(Vector3% planeNormal, btScalar planeConst, Matrix% tra
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_unmanaged->baseDrawPlane(VECTOR3_USE(planeNormal), planeConst, *transformTemp, *colorTemp);
+	_native->baseDrawPlane(VECTOR3_USE(planeNormal), planeConst, *transformTemp, *colorTemp);
 
 	VECTOR3_DEL(planeNormal);
 	delete transformTemp;
@@ -202,7 +202,7 @@ void DebugDraw::DrawSphere(Vector3% p, btScalar radius, BtColor color)
 	VECTOR3_DEF(p);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_unmanaged->baseDrawSphere(VECTOR3_USE(p), radius, *colorTemp);
+	_native->baseDrawSphere(VECTOR3_USE(p), radius, *colorTemp);
 
 	VECTOR3_DEL(p);
 	delete colorTemp;
@@ -213,7 +213,7 @@ void DebugDraw::DrawSphere(btScalar radius, Matrix% transform, BtColor color)
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_unmanaged->baseDrawSphere(radius, *transformTemp, *colorTemp);
+	_native->baseDrawSphere(radius, *transformTemp, *colorTemp);
 
 	delete transformTemp;
 	delete colorTemp;
@@ -227,7 +227,7 @@ void DebugDraw::DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btS
 	VECTOR3_DEF(axis);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_unmanaged->baseDrawSpherePatch(VECTOR3_USE(center), VECTOR3_USE(up), VECTOR3_USE(axis), radius, minTh, maxTh, minPs, maxPs, *colorTemp, stepDegrees);
+	_native->baseDrawSpherePatch(VECTOR3_USE(center), VECTOR3_USE(up), VECTOR3_USE(axis), radius, minTh, maxTh, minPs, maxPs, *colorTemp, stepDegrees);
 
 	VECTOR3_DEL(center);
 	VECTOR3_DEL(up);
@@ -243,7 +243,7 @@ void DebugDraw::DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btS
 	VECTOR3_DEF(axis);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_unmanaged->baseDrawSpherePatch(VECTOR3_USE(center), VECTOR3_USE(up), VECTOR3_USE(axis), radius, minTh, maxTh, minPs, maxPs, *colorTemp);
+	_native->baseDrawSpherePatch(VECTOR3_USE(center), VECTOR3_USE(up), VECTOR3_USE(axis), radius, minTh, maxTh, minPs, maxPs, *colorTemp);
 
 	VECTOR3_DEL(center);
 	VECTOR3_DEL(up);
@@ -255,7 +255,7 @@ void DebugDraw::DrawTransform(Matrix% transform, btScalar orthoLen)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 
-	_unmanaged->baseDrawTransform(*transformTemp, orthoLen);
+	_native->baseDrawTransform(*transformTemp, orthoLen);
 
 	delete transformTemp;
 }
@@ -267,7 +267,7 @@ void DebugDraw::DrawTriangle(Vector3% v0, Vector3% v1, Vector3% v2, BtColor colo
 	VECTOR3_DEF(v2);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
-	_unmanaged->baseDrawTriangle(VECTOR3_USE(v0), VECTOR3_USE(v1), VECTOR3_USE(v2), *colorTemp, 0);
+	_native->baseDrawTriangle(VECTOR3_USE(v0), VECTOR3_USE(v1), VECTOR3_USE(v2), *colorTemp, 0);
 
 	VECTOR3_DEL(v0);
 	VECTOR3_DEL(v1);
@@ -283,7 +283,7 @@ void DebugDraw::DrawTriangle(Vector3% v0, Vector3% v1, Vector3% v2, Vector3%, Ve
 	btVector3* colorTemp = BtColorToBtVector(color);
 	btVector3* none = new btVector3();
 
-	_unmanaged->baseDrawTriangle(VECTOR3_USE(v0), VECTOR3_USE(v1), VECTOR3_USE(v2), *none, *none, *none, *colorTemp, alpha);
+	_native->baseDrawTriangle(VECTOR3_USE(v0), VECTOR3_USE(v1), VECTOR3_USE(v2), *none, *none, *none, *colorTemp, alpha);
 
 	VECTOR3_DEL(v0);
 	VECTOR3_DEL(v1);
@@ -294,7 +294,7 @@ void DebugDraw::DrawTriangle(Vector3% v0, Vector3% v1, Vector3% v2, Vector3%, Ve
 
 bool DebugDraw::IsDisposed::get()
 {
-	return ( _unmanaged == NULL );
+	return ( _native == NULL );
 }
 
 

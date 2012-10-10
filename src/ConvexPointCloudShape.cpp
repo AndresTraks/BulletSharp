@@ -5,7 +5,7 @@
 #include "Collections.h"
 #include "ConvexPointCloudShape.h"
 
-#define Unmanaged static_cast<btConvexPointCloudShape*>(_unmanaged)
+#define Native static_cast<btConvexPointCloudShape*>(_native)
 
 ConvexPointCloudShape::ConvexPointCloudShape(btConvexPointCloudShape* shape)
 : PolyhedralConvexAabbCachingShape(shape)
@@ -38,7 +38,7 @@ void ConvexPointCloudShape_GetScaledPoint(btConvexPointCloudShape* shape, int i,
 Vector3 ConvexPointCloudShape::GetScaledPoint(int i)
 {
 	btVector3* pointTemp = new btVector3;
-	ConvexPointCloudShape_GetScaledPoint(Unmanaged, i, pointTemp);
+	ConvexPointCloudShape_GetScaledPoint(Native, i, pointTemp);
 	Vector3 point = Math::BtVector3ToVector3(pointTemp);
 	delete pointTemp;
 	return point;
@@ -49,7 +49,7 @@ void ConvexPointCloudShape::SetPoints(array<Vector3>^ points, bool computeAabb, 
 	btVector3* btPoints = Math::Vector3ArrayToUnmanaged(points);
 	VECTOR3_DEF(localScaling);
 	
-	Unmanaged->setPoints(btPoints, points->Length, computeAabb, VECTOR3_USE(localScaling));
+	Native->setPoints(btPoints, points->Length, computeAabb, VECTOR3_USE(localScaling));
 
 	VECTOR3_DEL(localScaling);
 	// Don't delete btPoints, they'll be used by btConvexPointCloudShape.
@@ -65,7 +65,7 @@ void ConvexPointCloudShape::SetPoints(array<Vector3>^ points, bool computeAabb)
 {
 	btVector3* btPoints = Math::Vector3ArrayToUnmanaged(points);
 	
-	ConvexPointCloudShape_SetPoints(Unmanaged, btPoints, points->Length, computeAabb);
+	ConvexPointCloudShape_SetPoints(Native, btPoints, points->Length, computeAabb);
 }
 
 #pragma managed(push, off)
@@ -78,18 +78,18 @@ void ConvexPointCloudShape::SetPoints(array<Vector3>^ points)
 {
 	btVector3* btPoints = Math::Vector3ArrayToUnmanaged(points);
 	
-	ConvexPointCloudShape_SetPoints(Unmanaged, btPoints, points->Length);
+	ConvexPointCloudShape_SetPoints(Native, btPoints, points->Length);
 }
 
 int ConvexPointCloudShape::NumPoints::get()
 {
-	return Unmanaged->getNumPoints();
+	return Native->getNumPoints();
 }
 
 Vector3Array^ ConvexPointCloudShape::UnscaledPoints::get()
 {
-	btVector3* unscaledPoints = Unmanaged->getUnscaledPoints();
-	int numPoints = Unmanaged->getNumPoints();
+	btVector3* unscaledPoints = Native->getUnscaledPoints();
+	int numPoints = Native->getNumPoints();
 
 	if (_unscaledPoints == nullptr)
 		_unscaledPoints = gcnew Vector3Array(unscaledPoints, numPoints);

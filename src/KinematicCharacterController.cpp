@@ -6,7 +6,7 @@
 #include "GhostObject.h"
 #include "KinematicCharacterController.h"
 
-#define Unmanaged (static_cast<btKinematicCharacterController*>(_unmanaged))
+#define Native (static_cast<btKinematicCharacterController*>(_native))
 
 KinematicCharacterController::KinematicCharacterController(btKinematicCharacterController* characterController)
 : CharacterControllerInterface(characterController)
@@ -14,43 +14,43 @@ KinematicCharacterController::KinematicCharacterController(btKinematicCharacterC
 }
 
 KinematicCharacterController::KinematicCharacterController(PairCachingGhostObject^ ghostObject, ConvexShape^ convexShape, btScalar stepHeight, int upAxis)
-: CharacterControllerInterface(new btKinematicCharacterController((btPairCachingGhostObject*)ghostObject->_unmanaged, (btConvexShape*)convexShape->_unmanaged, stepHeight, upAxis))
+: CharacterControllerInterface(new btKinematicCharacterController((btPairCachingGhostObject*)ghostObject->_native, (btConvexShape*)convexShape->_native, stepHeight, upAxis))
 {
 }
 
 KinematicCharacterController::KinematicCharacterController(PairCachingGhostObject^ ghostObject, ConvexShape^ convexShape, btScalar stepHeight)
-: CharacterControllerInterface(new btKinematicCharacterController((btPairCachingGhostObject*)ghostObject->_unmanaged, (btConvexShape*)convexShape->_unmanaged, stepHeight))
+: CharacterControllerInterface(new btKinematicCharacterController((btPairCachingGhostObject*)ghostObject->_native, (btConvexShape*)convexShape->_native, stepHeight))
 {
 }
 
 void KinematicCharacterController::SetFallSpeed(btScalar fallSpeed)
 {
-	Unmanaged->setFallSpeed(fallSpeed);
+	Native->setFallSpeed(fallSpeed);
 }
 
 void KinematicCharacterController::SetJumpSpeed(btScalar jumpSpeed)
 {
-	Unmanaged->setJumpSpeed(jumpSpeed);
+	Native->setJumpSpeed(jumpSpeed);
 }
 
 void KinematicCharacterController::SetMaxJumpHeight(btScalar maxJumpHeight)
 {
-	Unmanaged->setMaxJumpHeight(maxJumpHeight);
+	Native->setMaxJumpHeight(maxJumpHeight);
 }
 
 void KinematicCharacterController::SetUpAxis(int axis)
 {
-	Unmanaged->setUpAxis(axis);
+	Native->setUpAxis(axis);
 }
 
 void KinematicCharacterController::SetUseGhostSweepTest(bool useGhostObjectSweepTest)
 {
-	Unmanaged->setUseGhostSweepTest(useGhostObjectSweepTest);
+	Native->setUseGhostSweepTest(useGhostObjectSweepTest);
 }
 
 BulletSharp::GhostObject^ KinematicCharacterController::GhostObject::get()
 {
-	return static_cast<BulletSharp::GhostObject^>(CollisionObject::GetManaged(Unmanaged->getGhostObject()));
+	return static_cast<BulletSharp::GhostObject^>(CollisionObject::GetManaged(Native->getGhostObject()));
 }
 
 #endif

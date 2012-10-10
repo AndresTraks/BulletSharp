@@ -20,7 +20,7 @@ namespace BulletSharp
 		int _flags;
 
 	internal:
-		btCollisionShape* _unmanaged;
+		btCollisionShape* _native;
 		CollisionShape(btCollisionShape* collisionShape);
 		static CollisionShape^ GetManaged(btCollisionShape* collisionShape);
 

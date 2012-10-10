@@ -22,7 +22,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateEllipsoid(SoftBodyWorldI
 	VECTOR3_DEF(center);
 	VECTOR3_DEF(radius);
 
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateEllipsoid(*worldInfo->_unmanaged,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateEllipsoid(*worldInfo->_native,
 		VECTOR3_USE(center), VECTOR3_USE(radius), res));
 
 	VECTOR3_DEL(center);
@@ -36,7 +36,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromConvexHull(SoftBodyW
 {
 	btVector3* btVertices = Math::Vector3ArrayToUnmanaged(vertices);
 
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->_unmanaged,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->_native,
 		btVertices, vertices->Length, randomizeConstraints));
 
 	delete[] btVertices;
@@ -48,7 +48,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromConvexHull(SoftBodyW
 {
 	btVector3* btVertices = Math::Vector3ArrayToUnmanaged(vertices);
 
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->_unmanaged,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromConvexHull(*worldInfo->_native,
 		btVertices, vertices->Length));
 
 	delete[] btVertices;
@@ -62,7 +62,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTetGenData(SoftBodyW
 	const char* faceTemp = StringConv::ManagedToUnmanaged(face);
 	const char* nodeTemp = StringConv::ManagedToUnmanaged(node);
 
-	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTetGenData(*worldInfo->_unmanaged,
+	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTetGenData(*worldInfo->_native,
 		eleTemp, faceTemp, nodeTemp, faceLinks, tetraLinks, facesfromtetras)
 		);
 
@@ -194,7 +194,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTetGenFile(SoftBodyW
 	nodeStr[fileSize] = 0;
 
 	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromTetGenData(
-		*worldInfo->_unmanaged, elementStr, faceStr, nodeStr, faceLinks, tetraLinks, facesfromtetras)
+		*worldInfo->_native, elementStr, faceStr, nodeStr, faceLinks, tetraLinks, facesfromtetras)
 	);
 
 	free(elementStr);
@@ -210,7 +210,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorl
 	pin_ptr<btScalar> verticesPtr = &vertices[0];
 	pin_ptr<int> trianglesPtr = &triangles[0];
 
-	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_unmanaged,
+	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_native,
 		verticesPtr, trianglesPtr, triangles->Length / 3, randomizeConstraints));
 }
 
@@ -220,7 +220,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorl
 	pin_ptr<btScalar> verticesPtr = &vertices[0];
 	pin_ptr<int> trianglesPtr = &triangles[0];
 
-	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_unmanaged,
+	return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_native,
 		verticesPtr, trianglesPtr, triangles->Length / 3));
 }
 
@@ -231,7 +231,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorl
 
 	if (sizeof(Vector3) == 3 * sizeof(btScalar)) {
 		pin_ptr<Vector3> vPtr = &vertices[0];
-		return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_unmanaged,
+		return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_native,
 			(btScalar*)vPtr, trianglesPtr, triangles->Length / 3, randomizeConstraints));
 	}
 
@@ -248,7 +248,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorl
 		btVertices[i*3+2] = vertices[i].Z;
 #endif
 	}
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_unmanaged,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_native,
 		btVertices, trianglesPtr, triangles->Length / 3, randomizeConstraints));
 	delete[] btVertices;
 	return body;
@@ -261,7 +261,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorl
 
 	if (sizeof(Vector3) == 3 * sizeof(btScalar)) {
 		pin_ptr<Vector3> vPtr = &vertices[0];
-		return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_unmanaged,
+		return gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_native,
 			(btScalar*)vPtr, trianglesPtr, triangles->Length / 3));
 	}
 
@@ -278,7 +278,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorl
 		btVertices[i*3+2] = vertices[i].Z;
 #endif
 	}
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_unmanaged,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_native,
 		btVertices, trianglesPtr, triangles->Length / 3));
 	delete[] btVertices;
 	return body;
@@ -293,7 +293,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatch(SoftBodyWorldInfo^
 	VECTOR3_DEF(corner01);
 	VECTOR3_DEF(corner11);
 
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatch(*worldInfo->_unmanaged,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatch(*worldInfo->_native,
 		VECTOR3_USE(corner00), VECTOR3_USE(corner10), VECTOR3_USE(corner01), VECTOR3_USE(corner11),
 		resx, resy, fixeds, gendiags));
 
@@ -316,7 +316,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatchUV(SoftBodyWorldInf
 
 	pin_ptr<float> texCoordsPtr = &texCoords[0];
 
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatchUV(*worldInfo->_unmanaged,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatchUV(*worldInfo->_native,
 		VECTOR3_USE(corner00), VECTOR3_USE(corner10), VECTOR3_USE(corner01), VECTOR3_USE(corner11),
 		resx, resy, fixeds, gendiags, texCoordsPtr));
 
@@ -337,7 +337,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatchUV(SoftBodyWorldInf
 	VECTOR3_DEF(corner01);
 	VECTOR3_DEF(corner11);
 
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatchUV(*worldInfo->_unmanaged,
+	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatchUV(*worldInfo->_native,
 		VECTOR3_USE(corner00), VECTOR3_USE(corner10), VECTOR3_USE(corner01), VECTOR3_USE(corner11),
 		resx, resy, fixeds, gendiags));
 
@@ -356,7 +356,7 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateRope(SoftBodyWorldInfo^ 
 	VECTOR3_DEF(to);
 
 	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateRope(
-		*worldInfo->_unmanaged, VECTOR3_USE(from), VECTOR3_USE(to), res, fixeds));
+		*worldInfo->_native, VECTOR3_USE(from), VECTOR3_USE(to), res, fixeds));
 
 	VECTOR3_DEL(from);
 	VECTOR3_DEL(to);
@@ -367,67 +367,67 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateRope(SoftBodyWorldInfo^ 
 #ifndef DISABLE_DEBUGDRAW
 void SoftBodyHelpers::Draw(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, DrawFlags drawFlags)
 {
-	btSoftBodyHelpers::Draw(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw), (int)drawFlags);
+	btSoftBodyHelpers::Draw((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw), (int)drawFlags);
 }
 
 void SoftBodyHelpers::Draw(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw)
 {
-	btSoftBodyHelpers::Draw(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw));
+	btSoftBodyHelpers::Draw((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw));
 }
 
 void SoftBodyHelpers::DrawInfos(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, bool masses, bool areas, bool stress)
 {
-	btSoftBodyHelpers::DrawInfos(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw), masses, areas, stress);
+	btSoftBodyHelpers::DrawInfos((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw), masses, areas, stress);
 }
 
 void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth, int maxDepth)
 {
-	btSoftBodyHelpers::DrawNodeTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw), minDepth, maxDepth);
+	btSoftBodyHelpers::DrawNodeTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw), minDepth, maxDepth);
 }
 
 void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth)
 {
-	btSoftBodyHelpers::DrawNodeTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw), minDepth);
+	btSoftBodyHelpers::DrawNodeTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw), minDepth);
 }
 
 void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw)
 {
-	btSoftBodyHelpers::DrawNodeTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw));
+	btSoftBodyHelpers::DrawNodeTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw));
 }
 
 void SoftBodyHelpers::DrawFaceTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth, int maxDepth)
 {
-	btSoftBodyHelpers::DrawFaceTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw), minDepth, maxDepth);
+	btSoftBodyHelpers::DrawFaceTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw), minDepth, maxDepth);
 }
 
 void SoftBodyHelpers::DrawFaceTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth)
 {
-	btSoftBodyHelpers::DrawFaceTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw), minDepth);
+	btSoftBodyHelpers::DrawFaceTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw), minDepth);
 }
 
 void SoftBodyHelpers::DrawFaceTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw)
 {
-	btSoftBodyHelpers::DrawFaceTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw));
+	btSoftBodyHelpers::DrawFaceTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw));
 }
 
 void SoftBodyHelpers::DrawClusterTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth, int maxDepth)
 {
-	btSoftBodyHelpers::DrawClusterTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw), minDepth, maxDepth);
+	btSoftBodyHelpers::DrawClusterTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw), minDepth, maxDepth);
 }
 
 void SoftBodyHelpers::DrawClusterTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth)
 {
-	btSoftBodyHelpers::DrawClusterTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw), minDepth);
+	btSoftBodyHelpers::DrawClusterTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw), minDepth);
 }
 
 void SoftBodyHelpers::DrawClusterTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw)
 {
-	btSoftBodyHelpers::DrawClusterTree(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw));
+	btSoftBodyHelpers::DrawClusterTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw));
 }
 
 void SoftBodyHelpers::DrawFrame(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw)
 {
-	btSoftBodyHelpers::DrawFrame(psb->UnmanagedPointer, DebugDraw::GetUnmanaged(iDraw));
+	btSoftBodyHelpers::DrawFrame((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw));
 }
 #endif
 

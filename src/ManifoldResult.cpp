@@ -5,7 +5,7 @@
 #include "ManifoldResult.h"
 #include "PersistentManifold.h"
 
-#define Unmanaged static_cast<btManifoldResult*>(_unmanaged)
+#define Native static_cast<btManifoldResult*>(_native)
 
 ManifoldResult::ManifoldResult()
 : DiscreteCollisionDetectorInterface::Result(new btManifoldResult())
@@ -14,47 +14,47 @@ ManifoldResult::ManifoldResult()
 
 ManifoldResult::ManifoldResult(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
 : DiscreteCollisionDetectorInterface::Result(
-	new btManifoldResult(body0Wrap->_unmanaged, body1Wrap->_unmanaged))
+	new btManifoldResult(body0Wrap->_native, body1Wrap->_native))
 {
 }
 
 btScalar ManifoldResult::CalculateCombinedFriction(CollisionObject^ body0, CollisionObject^ body1)
 {
-	return btManifoldResult::calculateCombinedFriction(body0->_unmanaged, body1->_unmanaged);
+	return btManifoldResult::calculateCombinedFriction(body0->_native, body1->_native);
 }
 
 btScalar ManifoldResult::CalculateCombinedRestitution(CollisionObject^ body0, CollisionObject^ body1)
 {
-	return btManifoldResult::calculateCombinedRestitution(body0->_unmanaged, body1->_unmanaged);
+	return btManifoldResult::calculateCombinedRestitution(body0->_native, body1->_native);
 }
 
 CollisionObject^ ManifoldResult::Body0Internal::get()
 {
-	const btCollisionObject* body0 = Unmanaged->getBody0Internal();
+	const btCollisionObject* body0 = Native->getBody0Internal();
 	return CollisionObject::GetManaged((btCollisionObject*)body0);
 }
 
 CollisionObject^ ManifoldResult::Body1Internal::get()
 {
-	const btCollisionObject* body1 = Unmanaged->getBody1Internal();
+	const btCollisionObject* body1 = Native->getBody1Internal();
 	return CollisionObject::GetManaged((btCollisionObject*)body1);
 }
 
 CollisionObjectWrapper^ ManifoldResult::Body0Wrap::get()
 {
-	return gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)Unmanaged->getBody0Wrap());
+	return gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)Native->getBody0Wrap());
 }
 
 CollisionObjectWrapper^ ManifoldResult::Body1Wrap::get()
 {
-	return gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)Unmanaged->getBody1Wrap());
+	return gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)Native->getBody1Wrap());
 }
 
 PersistentManifold^ ManifoldResult::PersistentManifold::get()
 {
-	return gcnew BulletSharp::PersistentManifold(Unmanaged->getPersistentManifold());
+	return gcnew BulletSharp::PersistentManifold(Native->getPersistentManifold());
 }
 void ManifoldResult::PersistentManifold::set(BulletSharp::PersistentManifold^ value)
 {
-	Unmanaged->setPersistentManifold((btPersistentManifold*)GetUnmanagedNullable(value));
+	Native->setPersistentManifold((btPersistentManifold*)GetUnmanagedNullable(value));
 }

@@ -17,7 +17,7 @@ ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, RigidBody^ rigid
 	btTransform* rigidBodyBFrameTemp = Math::MatrixToBtTransform(rigidBodyBFrame);
 
 	UnmanagedPointer = new btConeTwistConstraint(
-		*(btRigidBody*)rigidBodyA->_unmanaged, *(btRigidBody*)rigidBodyB->_unmanaged,
+		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp);
 
 	delete rigidBodyAFrameTemp;
@@ -29,7 +29,7 @@ ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, Matrix rigidBody
 {
 	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
 
-	UnmanagedPointer = new btConeTwistConstraint(*(btRigidBody*)rigidBodyA->_unmanaged, *rigidBodyAFrameTemp);
+	UnmanagedPointer = new btConeTwistConstraint(*(btRigidBody*)rigidBodyA->_native, *rigidBodyAFrameTemp);
 
 	delete rigidBodyAFrameTemp;
 }

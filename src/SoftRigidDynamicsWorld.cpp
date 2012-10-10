@@ -17,14 +17,14 @@
 
 using namespace BulletSharp::SoftBody;
 
-#define Unmanaged static_cast<btSoftRigidDynamicsWorld*>(_unmanaged)
+#define Native static_cast<btSoftRigidDynamicsWorld*>(_native)
 
 SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
 #ifndef DISABLE_CONSTRAINTS
 	BulletSharp::ConstraintSolver^ constraintSolver,
 #endif
 	CollisionConfiguration^ collisionConfiguration)
-: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->UnmanagedPointer, pairCache->_unmanaged,
+: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->UnmanagedPointer, pairCache->_native,
 #ifndef DISABLE_CONSTRAINTS
 		GetUnmanagedNullable(constraintSolver),
 #else
@@ -42,7 +42,7 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 	BulletSharp::ConstraintSolver^ constraintSolver,
 #endif
 	CollisionConfiguration^ collisionConfiguration, SoftBodySolver^ softBodySolver)
-: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->UnmanagedPointer, pairCache->_unmanaged,
+: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->UnmanagedPointer, pairCache->_native,
 #ifndef DISABLE_CONSTRAINTS
 		GetUnmanagedNullable(constraintSolver),
 #else
@@ -58,35 +58,35 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body,
 	CollisionFilterGroups collisionFilterGroup,	CollisionFilterGroups collisionFilterMask)
 {
-	Unmanaged->addSoftBody(body->UnmanagedPointer,
+	Native->addSoftBody((btSoftBody*)body->_native,
 		(short int)collisionFilterGroup, (short int)collisionFilterMask);
 }
 
 void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body,
 	CollisionFilterGroups collisionFilterGroup)
 {
-	Unmanaged->addSoftBody(body->UnmanagedPointer,
+	Native->addSoftBody((btSoftBody*)body->_native,
 		(short int)collisionFilterGroup);
 }
 
 void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body)
 {
-	Unmanaged->addSoftBody(body->UnmanagedPointer);
+	Native->addSoftBody((btSoftBody*)body->_native);
 }
 
 void SoftRigidDynamicsWorld::RemoveSoftBody(BulletSharp::SoftBody::SoftBody^ body)
 {
-	Unmanaged->removeSoftBody(body->UnmanagedPointer);
+	Native->removeSoftBody((btSoftBody*)body->_native);
 }
 
 AlignedSoftBodyArray^ SoftRigidDynamicsWorld::SoftBodyArray::get()
 {
-	return gcnew AlignedSoftBodyArray(&Unmanaged->getSoftBodyArray());
+	return gcnew AlignedSoftBodyArray(&Native->getSoftBodyArray());
 }
 
 SoftBodyWorldInfo^ SoftRigidDynamicsWorld::WorldInfo::get()
 {
-	return gcnew SoftBodyWorldInfo(&Unmanaged->getWorldInfo());
+	return gcnew SoftBodyWorldInfo(&Native->getWorldInfo());
 }
 
 #endif

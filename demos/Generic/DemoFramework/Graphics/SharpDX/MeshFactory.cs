@@ -178,6 +178,11 @@ namespace DemoFramework.SharpDX
         uint softBodyColor;
         int linkColor = Color.Black.ToArgb();
 
+        uint ColorToUint(Color c)
+        {
+            return (uint)c.R + ((uint)c.G << 8) + ((uint)c.B << 16) + ((uint)c.A << 24);
+        }
+
         public MeshFactory(SharpDXGraphics graphics)
         {
             this.device = graphics.Device;
@@ -204,14 +209,10 @@ namespace DemoFramework.SharpDX
             };
             inputLayout = new InputLayout(device, graphics.GetEffectPass().Description.Signature, elements);
 
-            Color c = Color.Green;
-            groundColor = (uint)c.R + ((uint)c.G << 8) + ((uint)c.B << 16) + ((uint)c.A << 24);
-            c = Color.Orange;
-            activeColor = (uint)c.R + ((uint)c.G << 8) + ((uint)c.B << 16) + ((uint)c.A << 24);
-            c = Color.OrangeRed;
-            passiveColor = (uint)c.R + ((uint)c.G << 8) + ((uint)c.B << 16) + ((uint)c.A << 24);
-            c = Color.LightBlue;
-            softBodyColor = (uint)c.R + ((uint)c.G << 8) + ((uint)c.B << 16) + ((uint)c.A << 24);
+            groundColor = ColorToUint(Color.Green);
+            activeColor = ColorToUint(Color.Orange);
+            passiveColor = ColorToUint(Color.OrangeRed);
+            softBodyColor = ColorToUint(Color.LightBlue);
         }
 
         public override void RemoveShape(CollisionShape shape)

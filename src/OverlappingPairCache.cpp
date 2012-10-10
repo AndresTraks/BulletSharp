@@ -24,7 +24,7 @@ OverlapCallback::!OverlapCallback()
 
 bool OverlapCallback::ProcessOverlap(BroadphasePair^ pair)
 {
-	return UnmanagedPointer->processOverlap(*pair->UnmanagedPointer);
+	return UnmanagedPointer->processOverlap(*pair->_native);
 }
 
 bool OverlapCallback::IsDisposed::get()
@@ -55,27 +55,27 @@ OverlapFilterCallback::!OverlapFilterCallback()
 
 	OnDisposing(this, nullptr);
 
-	ObjectTable::Remove(_unmanaged);
-	//delete _unmanaged;
-	_unmanaged = NULL;
+	ObjectTable::Remove(_native);
+	//delete _native;
+	_native = NULL;
 
 	OnDisposed(this, nullptr);
 }
 
 OverlapFilterCallback::OverlapFilterCallback()
 {
-	_unmanaged = new OverlapFilterCallbackWrapper(this);
-	BulletSharp::ObjectTable::Add(this, _unmanaged);
+	_native = new OverlapFilterCallbackWrapper(this);
+	BulletSharp::ObjectTable::Add(this, _native);
 }
 
 bool OverlapFilterCallback::IsDisposed::get()
 {
-	return (_unmanaged == NULL);
+	return (_native == NULL);
 }
 
 OverlapFilterCallback::OverlapFilterCallback(btOverlapFilterCallback* callback)
 {
-	_unmanaged = callback;
+	_native = callback;
 }
 
 OverlapFilterCallback^ OverlapFilterCallback::GetManaged(btOverlapFilterCallback* callback)
@@ -85,12 +85,12 @@ OverlapFilterCallback^ OverlapFilterCallback::GetManaged(btOverlapFilterCallback
 
 btOverlapFilterCallback* OverlapFilterCallback::UnmanagedPointer::get()
 {
-	return _unmanaged;
+	return _native;
 }
 
 void OverlapFilterCallback::UnmanagedPointer::set(btOverlapFilterCallback* value)
 {
-	_unmanaged = value;
+	_native = value;
 }
 
 
@@ -101,17 +101,17 @@ OverlappingPairCache::OverlappingPairCache(btOverlappingPairCache* pairCache)
 
 void OverlappingPairCache::CleanOverlappingPair(BroadphasePair^ pair, Dispatcher^ dispatcher)
 {
-	UnmanagedPointer->cleanOverlappingPair(*pair->UnmanagedPointer, dispatcher->_unmanaged);
+	UnmanagedPointer->cleanOverlappingPair(*pair->_native, dispatcher->_native);
 }
 
 void OverlappingPairCache::CleanProxyFromPairs(BroadphaseProxy^ proxy, Dispatcher^ dispatcher)
 {
-	UnmanagedPointer->cleanProxyFromPairs(proxy->_unmanaged, dispatcher->_unmanaged);
+	UnmanagedPointer->cleanProxyFromPairs(proxy->_native, dispatcher->_native);
 }
 
 BroadphasePair^ OverlappingPairCache::FindPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
 {
-	return gcnew BroadphasePair(UnmanagedPointer->findPair(proxy0->_unmanaged, proxy1->_unmanaged));
+	return gcnew BroadphasePair(UnmanagedPointer->findPair(proxy0->_native, proxy1->_native));
 }
 
 void OverlappingPairCache::ProcessAllOverlappingPairs(array<OverlapCallback^>^ callbacks, Dispatcher^ dispatcher)
@@ -120,7 +120,7 @@ void OverlappingPairCache::ProcessAllOverlappingPairs(array<OverlapCallback^>^ c
 	int i;
 	for (i=0; i<callbacks->Length; i++)
 		btCallbacks[i] = callbacks[i]->UnmanagedPointer;
-	UnmanagedPointer->processAllOverlappingPairs(*btCallbacks, dispatcher->_unmanaged);
+	UnmanagedPointer->processAllOverlappingPairs(*btCallbacks, dispatcher->_native);
 	delete[] btCallbacks;
 }
 
@@ -138,7 +138,7 @@ void OverlappingPairCache::SetOverlapFilterCallback(OverlapFilterCallback^ callb
 
 void OverlappingPairCache::SortOverlappingPairs(Dispatcher^ dispatcher)
 {
-	UnmanagedPointer->sortOverlappingPairs(dispatcher->_unmanaged);
+	UnmanagedPointer->sortOverlappingPairs(dispatcher->_native);
 }
 
 bool OverlappingPairCache::HasDeferredRemoval::get()
@@ -175,7 +175,7 @@ HashedOverlappingPairCache::HashedOverlappingPairCache()
 
 bool HashedOverlappingPairCache::NeedsBroadphaseCollision(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
 {
-	return UnmanagedPointer->needsBroadphaseCollision(proxy0->_unmanaged, proxy1->_unmanaged);
+	return UnmanagedPointer->needsBroadphaseCollision(proxy0->_native, proxy1->_native);
 }
 
 int HashedOverlappingPairCache::Count::get()
@@ -210,7 +210,7 @@ SortedOverlappingPairCache::SortedOverlappingPairCache()
 
 bool SortedOverlappingPairCache::NeedsBroadphaseCollision(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
 {
-	return UnmanagedPointer->needsBroadphaseCollision(proxy0->_unmanaged, proxy1->_unmanaged);
+	return UnmanagedPointer->needsBroadphaseCollision(proxy0->_native, proxy1->_native);
 }
 
 OverlapFilterCallback^ SortedOverlappingPairCache::OverlapFilterCallback::get()

@@ -11,7 +11,7 @@ namespace BulletSharp
 	public ref class Face
 	{
 	internal:
-		btFace* _unmanaged;
+		btFace* _native;
 
 	public:
 		Face();
@@ -42,7 +42,7 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposed;
 
 	internal:
-		btConvexPolyhedron* _unmanaged;
+		btConvexPolyhedron* _native;
 
 		ConvexPolyhedron(btConvexPolyhedron* convexPolyhedron);
 

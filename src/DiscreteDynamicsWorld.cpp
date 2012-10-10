@@ -14,7 +14,7 @@
 #include "ConstraintSolver.h"
 #endif
 
-#define Unmanaged static_cast<btDiscreteDynamicsWorld*>(_unmanaged)
+#define Native static_cast<btDiscreteDynamicsWorld*>(_native)
 
 DiscreteDynamicsWorld::DiscreteDynamicsWorld(btDiscreteDynamicsWorld* world)
 : DynamicsWorld(world)
@@ -28,7 +28,7 @@ DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher
 	#endif
 	CollisionConfiguration^ collisionConfiguration)
 : DynamicsWorld(new btDiscreteDynamicsWorld(dispatcher->UnmanagedPointer,
-	pairCache->_unmanaged,
+	pairCache->_native,
 	#ifndef DISABLE_CONSTRAINTS
 	GetUnmanagedNullable(constraintSolver),
 	#else
@@ -43,52 +43,52 @@ DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher
 
 void DiscreteDynamicsWorld::ApplyGravity()
 {
-	Unmanaged->applyGravity();
+	Native->applyGravity();
 }
 
 #if !defined(DISABLE_CONSTRAINTS) && !defined (DISABLE_DEBUGDRAW)
 void DiscreteDynamicsWorld::DebugDrawConstraint(TypedConstraint^ constraint)
 {
-	Unmanaged->debugDrawConstraint(constraint->UnmanagedPointer);
+	Native->debugDrawConstraint(constraint->UnmanagedPointer);
 }
 #endif
 
 bool DiscreteDynamicsWorld::ApplySpeculativeContactRestitution::get()
 {
-	return Unmanaged->getApplySpeculativeContactRestitution();
+	return Native->getApplySpeculativeContactRestitution();
 }
 void DiscreteDynamicsWorld::ApplySpeculativeContactRestitution::set(bool value)
 {
-	return Unmanaged->setApplySpeculativeContactRestitution(value);
+	return Native->setApplySpeculativeContactRestitution(value);
 }
 
 CollisionWorld^ DiscreteDynamicsWorld::CollisionWorld::get()
 {
-	return gcnew BulletSharp::CollisionWorld(Unmanaged->getCollisionWorld());
+	return gcnew BulletSharp::CollisionWorld(Native->getCollisionWorld());
 }
 
 #ifndef DISABLE_UNCOMMON
 SimulationIslandManager^ DiscreteDynamicsWorld::SimulationIslandManager::get()
 {
-	return gcnew BulletSharp::SimulationIslandManager(Unmanaged->getSimulationIslandManager());
+	return gcnew BulletSharp::SimulationIslandManager(Native->getSimulationIslandManager());
 }
 #endif
 
 void DiscreteDynamicsWorld::SetNumTasks (int numTasks)
 {
-	Unmanaged->setNumTasks(numTasks);
+	Native->setNumTasks(numTasks);
 }
 
 bool DiscreteDynamicsWorld::SynchronizeAllMotionStates::get()
 {
-	return Unmanaged->getSynchronizeAllMotionStates();
+	return Native->getSynchronizeAllMotionStates();
 }
 void DiscreteDynamicsWorld::SynchronizeAllMotionStates::set(bool value)
 {
-	return Unmanaged->setSynchronizeAllMotionStates(value);
+	return Native->setSynchronizeAllMotionStates(value);
 }
 
 void DiscreteDynamicsWorld::SynchronizeSingleMotionState(RigidBody^ body)
 {
-	Unmanaged->synchronizeSingleMotionState((btRigidBody*)body->_unmanaged);
+	Native->synchronizeSingleMotionState((btRigidBody*)body->_native);
 }

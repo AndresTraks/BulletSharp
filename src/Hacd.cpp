@@ -7,38 +7,38 @@
 
 Hacd::Hacd::Hacd()
 {
-	_unmanaged = new HACD::HACD();
+	_native = new HACD::HACD();
 }
 
 bool Hacd::Hacd::Compute(bool fullCH, bool exportDistPoints)
 {
-	return _unmanaged->Compute(fullCH, exportDistPoints);
+	return _native->Compute(fullCH, exportDistPoints);
 }
 
 bool Hacd::Hacd::Compute(bool fullCH)
 {
-	return _unmanaged->Compute(fullCH);
+	return _native->Compute(fullCH);
 }
 
 bool Hacd::Hacd::Compute()
 {
-	return _unmanaged->Compute();
+	return _native->Compute();
 }
 
 void Hacd::Hacd::DenormalizeData()
 {
-	return _unmanaged->DenormalizeData();
+	return _native->DenormalizeData();
 }
 
 bool Hacd::Hacd::GetCH(int numCH, [Out] array<Vector3>^% points, [Out] array<long>^% triangles)
 {
-	size_t nPoints = _unmanaged->GetNPointsCH(numCH);
-	size_t nTriangles = _unmanaged->GetNTrianglesCH(numCH);
+	size_t nPoints = _native->GetNPointsCH(numCH);
+	size_t nTriangles = _native->GetNTrianglesCH(numCH);
 
 	HACD::Vec3<HACD::Real>* pointsCH = new HACD::Vec3<HACD::Real>[nPoints];
 	HACD::Vec3<long>* trianglesCH = new HACD::Vec3<long>[nTriangles];
 
-	bool ret = _unmanaged->GetCH(numCH, pointsCH, trianglesCH);
+	bool ret = _native->GetCH(numCH, pointsCH, trianglesCH);
 
 	if (!ret)
 	{
@@ -71,23 +71,23 @@ bool Hacd::Hacd::GetCH(int numCH, [Out] array<Vector3>^% points, [Out] array<lon
 
 int Hacd::Hacd::GetNPointsCH(int numCH)
 {
-	return _unmanaged->GetNPointsCH(numCH);
+	return _native->GetNPointsCH(numCH);
 }
 
 int Hacd::Hacd::GetNTrianglesCH(int numCH)
 {
-	return _unmanaged->GetNTrianglesCH(numCH);
+	return _native->GetNTrianglesCH(numCH);
 }
 
 void Hacd::Hacd::NormalizeData()
 {
-	return _unmanaged->NormalizeData();
+	return _native->NormalizeData();
 }
 
 bool Hacd::Hacd::Save(String^ fileName, bool uniColor, long numCluster)
 {
 	const char* fileNameTemp = StringConv::ManagedToUnmanaged(fileName);
-	bool ret = _unmanaged->Save(fileNameTemp, uniColor, numCluster);
+	bool ret = _native->Save(fileNameTemp, uniColor, numCluster);
 	StringConv::FreeUnmanagedString(fileNameTemp);
 	return ret;
 }
@@ -95,7 +95,7 @@ bool Hacd::Hacd::Save(String^ fileName, bool uniColor, long numCluster)
 bool Hacd::Hacd::Save(String^ fileName, bool uniColor)
 {
 	const char* fileNameTemp = StringConv::ManagedToUnmanaged(fileName);
-	bool ret = _unmanaged->Save(fileNameTemp, uniColor);
+	bool ret = _native->Save(fileNameTemp, uniColor);
 	StringConv::FreeUnmanagedString(fileNameTemp);
 	return ret;
 }
@@ -117,8 +117,8 @@ void Hacd::Hacd::SetPoints(ICollection<Vector3>^ points)
 		i++;
 	}
 
-	_unmanaged->SetPoints(_points);
-	_unmanaged->SetNPoints(count);
+	_native->SetPoints(_points);
+	_native->SetNPoints(count);
 }
 
 void Hacd::Hacd::SetTriangles(ICollection<long>^ triangles)
@@ -137,103 +137,103 @@ void Hacd::Hacd::SetTriangles(ICollection<long>^ triangles)
 		_triangles[i++] = HACD::Vec3<long>(x, y, z);
 	}
 
-	_unmanaged->SetTriangles(_triangles);
-	_unmanaged->SetNTriangles(count / 3);
+	_native->SetTriangles(_triangles);
+	_native->SetNTriangles(count / 3);
 }
 
 bool BulletSharp::Hacd::Hacd::AddExtraDistPoints::get()
 {
-	return _unmanaged->GetAddExtraDistPoints();
+	return _native->GetAddExtraDistPoints();
 }
 void BulletSharp::Hacd::Hacd::AddExtraDistPoints::set(bool value)
 {
-	return _unmanaged->SetAddExtraDistPoints(value);
+	return _native->SetAddExtraDistPoints(value);
 }
 
 bool BulletSharp::Hacd::Hacd::AddFacesPoints::get()
 {
-	return _unmanaged->GetAddFacesPoints();
+	return _native->GetAddFacesPoints();
 }
 void BulletSharp::Hacd::Hacd::AddFacesPoints::set(bool value)
 {
-	return _unmanaged->SetAddFacesPoints(value);
+	return _native->SetAddFacesPoints(value);
 }
 
 bool BulletSharp::Hacd::Hacd::AddNeighboursDistPoints::get()
 {
-	return _unmanaged->GetAddNeighboursDistPoints();
+	return _native->GetAddNeighboursDistPoints();
 }
 void BulletSharp::Hacd::Hacd::AddNeighboursDistPoints::set(bool value)
 {
-	return _unmanaged->SetAddNeighboursDistPoints(value);
+	return _native->SetAddNeighboursDistPoints(value);
 }
 
 double BulletSharp::Hacd::Hacd::CompacityWeight::get()
 {
-	return _unmanaged->GetCompacityWeight();
+	return _native->GetCompacityWeight();
 }
 void BulletSharp::Hacd::Hacd::CompacityWeight::set(double value)
 {
-	return _unmanaged->SetCompacityWeight(value);
+	return _native->SetCompacityWeight(value);
 }
 
 double BulletSharp::Hacd::Hacd::Concavity::get()
 {
-	return _unmanaged->GetConcavity();
+	return _native->GetConcavity();
 }
 void BulletSharp::Hacd::Hacd::Concavity::set(double value)
 {
-	return _unmanaged->SetConcavity(value);
+	return _native->SetConcavity(value);
 }
 
 double BulletSharp::Hacd::Hacd::ConnectDist::get()
 {
-	return _unmanaged->GetConnectDist();
+	return _native->GetConnectDist();
 }
 void BulletSharp::Hacd::Hacd::ConnectDist::set(double value)
 {
-	return _unmanaged->SetConnectDist(value);
+	return _native->SetConnectDist(value);
 }
 
 int BulletSharp::Hacd::Hacd::NClusters::get()
 {
-	return _unmanaged->GetNClusters();
+	return _native->GetNClusters();
 }
 void BulletSharp::Hacd::Hacd::NClusters::set(int value)
 {
-	return _unmanaged->SetNClusters(value);
+	return _native->SetNClusters(value);
 }
 
 int BulletSharp::Hacd::Hacd::NPoints::get()
 {
-	return _unmanaged->GetNPoints();
+	return _native->GetNPoints();
 }
 
 int BulletSharp::Hacd::Hacd::VerticesPerConvexHull::get()
 {
-	return _unmanaged->GetNVerticesPerCH();
+	return _native->GetNVerticesPerCH();
 }
 void BulletSharp::Hacd::Hacd::VerticesPerConvexHull::set(int value)
 {
-	return _unmanaged->SetNVerticesPerCH(value);
+	return _native->SetNVerticesPerCH(value);
 }
 
 double BulletSharp::Hacd::Hacd::VolumeWeight::get()
 {
-	return _unmanaged->GetVolumeWeight();
+	return _native->GetVolumeWeight();
 }
 void BulletSharp::Hacd::Hacd::VolumeWeight::set(double value)
 {
-	return _unmanaged->SetVolumeWeight(value);
+	return _native->SetVolumeWeight(value);
 }
 
 double BulletSharp::Hacd::Hacd::ScaleFactor::get()
 {
-	return _unmanaged->GetScaleFactor();
+	return _native->GetScaleFactor();
 }
 void BulletSharp::Hacd::Hacd::ScaleFactor::set(double value)
 {
-	return _unmanaged->SetScaleFactor(value);
+	return _native->SetScaleFactor(value);
 }
 
 #endif

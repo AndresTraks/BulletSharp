@@ -6,14 +6,14 @@
 
 CollisionObjectWrapper::CollisionObjectWrapper(btCollisionObjectWrapper* collisionObject)
 {
-	_unmanaged = collisionObject;
+	_native = collisionObject;
 }
 
 /*
 CollisionObjectWrapper::CollisionObjectWrapper(CollisionObjectWrapper^ parent, CollisionShape^ shape, CollisionObject^ collisionObject, Matrix worldTransform)
 {
 	btTransform* worldTransformTemp = Math::MatrixToBtTransform(worldTransform);
-	_unmanaged = &btCollisionObjectWrapper(GetUnmanagedNullable(parent), GetUnmanagedNullable(shape),
+	_native = &btCollisionObjectWrapper(GetUnmanagedNullable(parent), GetUnmanagedNullable(shape),
 		GetUnmanagedNullable(collisionObject), *worldTransformTemp);
 	delete worldTransformTemp;
 }
@@ -32,35 +32,35 @@ CollisionObjectWrapper::!CollisionObjectWrapper()
 
 	if (_doesNotOwnObject == false)
 	{
-		delete _unmanaged;
+		delete _native;
 	}
-	_unmanaged = NULL;
+	_native = NULL;
 	
 	OnDisposed(this, nullptr);
 }
 */
 void CollisionObjectWrapper::GetWorldTransform([Out] Matrix% outTransform)
 {
-	BtTransformToMatrixFast(_unmanaged->getWorldTransform(), outTransform);
+	BtTransformToMatrixFast(_native->getWorldTransform(), outTransform);
 }
 /*
 bool CollisionObjectWrapper::IsDisposed::get()
 {
-	return (_unmanaged == NULL);
+	return (_native == NULL);
 }
 */
 
 CollisionObject^ CollisionObjectWrapper::CollisionObject::get()
 {
-	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)_unmanaged->getCollisionObject());
+	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)_native->getCollisionObject());
 }
 
 CollisionShape^ CollisionObjectWrapper::CollisionShape::get()
 {
-	return BulletSharp::CollisionShape::GetManaged((btCollisionShape*)_unmanaged->getCollisionShape());
+	return BulletSharp::CollisionShape::GetManaged((btCollisionShape*)_native->getCollisionShape());
 }
 
 Matrix CollisionObjectWrapper::WorldTransform::get()
 {
-	return Math::BtTransformToMatrix(&_unmanaged->getWorldTransform());
+	return Math::BtTransformToMatrix(&_native->getWorldTransform());
 }

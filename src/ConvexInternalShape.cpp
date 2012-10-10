@@ -2,7 +2,7 @@
 
 #include "ConvexInternalShape.h"
 
-#define Unmanaged static_cast<btConvexInternalShape*>(_unmanaged)
+#define Native static_cast<btConvexInternalShape*>(_native)
 
 ConvexInternalShape::ConvexInternalShape(btConvexInternalShape* convexInternalShape)
 : BulletSharp::ConvexShape(convexInternalShape)
@@ -11,47 +11,47 @@ ConvexInternalShape::ConvexInternalShape(btConvexInternalShape* convexInternalSh
 
 void ConvexInternalShape::SetSafeMargin(btScalar minDimension, btScalar defaultMarginMultiplier)
 {
-	Unmanaged->setSafeMargin(minDimension, defaultMarginMultiplier);
+	Native->setSafeMargin(minDimension, defaultMarginMultiplier);
 }
 
 void ConvexInternalShape::SetSafeMargin(btScalar minDimension)
 {
-	Unmanaged->setSafeMargin(minDimension);
+	Native->setSafeMargin(minDimension);
 }
 
 void ConvexInternalShape::SetSafeMargin(Vector3 halfExtents, btScalar defaultMarginMultiplier)
 {
 	VECTOR3_DEF(halfExtents);
-	Unmanaged->setSafeMargin(VECTOR3_USE(halfExtents), defaultMarginMultiplier);
+	Native->setSafeMargin(VECTOR3_USE(halfExtents), defaultMarginMultiplier);
 	VECTOR3_DEL(halfExtents);
 }
 
 void ConvexInternalShape::SetSafeMargin(Vector3 halfExtents)
 {
 	VECTOR3_DEF(halfExtents);
-	Unmanaged->setSafeMargin(VECTOR3_USE(halfExtents));
+	Native->setSafeMargin(VECTOR3_USE(halfExtents));
 	VECTOR3_DEL(halfExtents);
 }
 
 Vector3 ConvexInternalShape::ImplicitShapeDimensions::get()
 {
-	return Math::BtVector3ToVector3(&Unmanaged->getImplicitShapeDimensions());
+	return Math::BtVector3ToVector3(&Native->getImplicitShapeDimensions());
 }
 void ConvexInternalShape::ImplicitShapeDimensions::set(Vector3 value)
 {
 	VECTOR3_DEF(value);
-	Unmanaged->setImplicitShapeDimensions(VECTOR3_USE(value));
+	Native->setImplicitShapeDimensions(VECTOR3_USE(value));
 	VECTOR3_DEL(value);
 }
 
 Vector3 ConvexInternalShape::LocalScalingNV::get()
 {
-	return Math::BtVector3ToVector3(&Unmanaged->getLocalScalingNV());
+	return Math::BtVector3ToVector3(&Native->getLocalScalingNV());
 }
 
 btScalar ConvexInternalShape::MarginNV::get()
 {
-	return Unmanaged->getMarginNV();
+	return Native->getMarginNV();
 }
 
 

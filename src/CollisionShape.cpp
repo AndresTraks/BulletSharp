@@ -182,10 +182,10 @@ CollisionShape::!CollisionShape()
 	// delete the btCollisionShape only if we are responsible for it
 	if (_flags != 2)
 	{
-		void* userObj = _unmanaged->getUserPointer();
+		void* userObj = _native->getUserPointer();
 		if (userObj)
 			VoidPtrToGCHandle(userObj).Free();
-		delete _unmanaged;
+		delete _native;
 	}
 	_flags |= 1;
 
@@ -200,7 +200,7 @@ bool CollisionShape::IsDisposed::get()
 void CollisionShape::CalculateLocalInertia(btScalar mass, [Out] Vector3% inertia)
 {
 	btVector3* inertiaTemp = new btVector3;
-	_unmanaged->calculateLocalInertia(mass, *inertiaTemp);
+	_native->calculateLocalInertia(mass, *inertiaTemp);
 	Math::BtVector3ToVector3(inertiaTemp, inertia);
 	delete inertiaTemp;
 }
@@ -208,7 +208,7 @@ void CollisionShape::CalculateLocalInertia(btScalar mass, [Out] Vector3% inertia
 Vector3 CollisionShape::CalculateLocalInertia(btScalar mass)
 {
 	btVector3* inertiaTemp = new btVector3;
-	_unmanaged->calculateLocalInertia(mass, *inertiaTemp);
+	_native->calculateLocalInertia(mass, *inertiaTemp);
 	Vector3 inertia = Math::BtVector3ToVector3(inertiaTemp);
 	delete inertiaTemp;
 	return inertia;
@@ -224,7 +224,7 @@ void CollisionShape::CalculateTemporalAabb(Matrix curTrans,
 	VECTOR3_DEF(linvel);
 	VECTOR3_DEF(angvel);
 
-	_unmanaged->calculateTemporalAabb(*curTransTemp, VECTOR3_USE(linvel), VECTOR3_USE(angvel),
+	_native->calculateTemporalAabb(*curTransTemp, VECTOR3_USE(linvel), VECTOR3_USE(angvel),
 		timeStep, *temporalAabbMinTemp,	*temporalAabbMaxTemp
 	);
 
@@ -244,7 +244,7 @@ void CollisionShape::GetAabb(Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aa
 	btVector3* aabbMinTemp = new btVector3;
 	btVector3* aabbMaxTemp = new btVector3;
 	
-	_unmanaged->getAabb(*tTemp, *aabbMinTemp, *aabbMaxTemp);
+	_native->getAabb(*tTemp, *aabbMinTemp, *aabbMaxTemp);
 
 	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
 	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
@@ -259,7 +259,7 @@ void CollisionShape::GetBoundingSphere([Out] Vector3% center, [Out] btScalar% ra
 	btVector3* centerTemp = new btVector3;
 	btScalar radiusTemp;
 	
-	_unmanaged->getBoundingSphere(*centerTemp, radiusTemp);
+	_native->getBoundingSphere(*centerTemp, radiusTemp);
 	
 	center = Math::BtVector3ToVector3(centerTemp);
 	radius = radiusTemp;
@@ -268,30 +268,30 @@ void CollisionShape::GetBoundingSphere([Out] Vector3% center, [Out] btScalar% ra
 
 btScalar CollisionShape::GetContactBreakingThreshold(btScalar defaultContactThreshold)
 {
-	return _unmanaged->getContactBreakingThreshold(defaultContactThreshold);
+	return _native->getContactBreakingThreshold(defaultContactThreshold);
 }
 
 #ifndef DISABLE_SERIALIZE
 int CollisionShape::CalculateSerializeBufferSize()
 {
-	return _unmanaged->calculateSerializeBufferSize();
+	return _native->calculateSerializeBufferSize();
 }
 
 String^ CollisionShape::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
 {
-	const char* name = _unmanaged->serialize(dataBuffer.ToPointer(), serializer->UnmanagedPointer);
+	const char* name = _native->serialize(dataBuffer.ToPointer(), serializer->UnmanagedPointer);
 	return gcnew String(name);
 }
 
 void CollisionShape::SerializeSingleShape(BulletSharp::Serializer^ serializer)
 {
-	_unmanaged->serializeSingleShape(serializer->UnmanagedPointer);
+	_native->serializeSingleShape(serializer->UnmanagedPointer);
 }
 #endif
 
 btScalar CollisionShape::AngularMotionDisc::get()
 {
-	return _unmanaged->getAngularMotionDisc();
+	return _native->getAngularMotionDisc();
 }
 
 #pragma managed(push, off)
@@ -303,7 +303,7 @@ void CollisionShape_AnisotropicRollingFrictionDirection(btCollisionShape* shape,
 Vector3 CollisionShape::AnisotropicRollingFrictionDirection::get()
 {
 	btVector3* retTemp = new btVector3;
-	CollisionShape_AnisotropicRollingFrictionDirection(_unmanaged, retTemp);
+	CollisionShape_AnisotropicRollingFrictionDirection(_native, retTemp);
 	Vector3 ret = Math::BtVector3ToVector3(retTemp);
 	delete retTemp;
 	return ret;
@@ -311,62 +311,62 @@ Vector3 CollisionShape::AnisotropicRollingFrictionDirection::get()
 
 bool CollisionShape::IsCompound::get()
 {
-	return _unmanaged->isCompound();
+	return _native->isCompound();
 }
 
 bool CollisionShape::IsConcave::get()
 {
-	return _unmanaged->isConcave();
+	return _native->isConcave();
 }
 
 bool CollisionShape::IsConvex::get()
 {
-	return _unmanaged->isConvex();
+	return _native->isConvex();
 }
 
 bool CollisionShape::IsConvex2d::get()
 {
-	return _unmanaged->isConvex2d();
+	return _native->isConvex2d();
 }
 
 bool CollisionShape::IsInfinite::get()
 {
-	return _unmanaged->isInfinite();
+	return _native->isInfinite();
 }
 
 bool CollisionShape::IsPolyhedral::get()
 {
-	return _unmanaged->isPolyhedral();
+	return _native->isPolyhedral();
 }
 
 bool CollisionShape::IsSoftBody::get()
 {
-	return _unmanaged->isSoftBody();
+	return _native->isSoftBody();
 }
 
 Vector3 CollisionShape::LocalScaling::get()
 {
-	return Math::BtVector3ToVector3(&_unmanaged->getLocalScaling());
+	return Math::BtVector3ToVector3(&_native->getLocalScaling());
 }
 void CollisionShape::LocalScaling::set(Vector3 value)
 {
 	VECTOR3_DEF(value);
-	_unmanaged->setLocalScaling(VECTOR3_USE(value));
+	_native->setLocalScaling(VECTOR3_USE(value));
 	VECTOR3_DEL(value);
 }
 
 btScalar CollisionShape::Margin::get()
 {
-	return _unmanaged->getMargin();
+	return _native->getMargin();
 }
 void CollisionShape::Margin::set(btScalar margin)
 {
-	_unmanaged->setMargin(margin);
+	_native->setMargin(margin);
 }
 
 String^ CollisionShape::Name::get()
 {
-	return StringConv::UnmanagedToManaged(_unmanaged->getName());
+	return StringConv::UnmanagedToManaged(_native->getName());
 }
 
 BroadphaseNativeType CollisionShape::ShapeType::get()
@@ -386,18 +386,18 @@ void CollisionShape::UserObject::set(Object^ value)
 
 btCollisionShape* CollisionShape::UnmanagedPointer::get()
 {
-	return _unmanaged;
+	return _native;
 }
 void CollisionShape::UnmanagedPointer::set(btCollisionShape* value)
 {
-	_unmanaged = value;
+	_native = value;
 
-	if (_unmanaged->getUserPointer() == 0)
+	if (_native->getUserPointer() == 0)
 	{
 		GCHandle handle = GCHandle::Alloc(this);
 		void* obj = GCHandleToVoidPtr(handle);
-		_unmanaged->setUserPointer(obj);
+		_native->setUserPointer(obj);
 	}
 
-	_shapeType = (BroadphaseNativeType)_unmanaged->getShapeType();
+	_shapeType = (BroadphaseNativeType)_native->getShapeType();
 }

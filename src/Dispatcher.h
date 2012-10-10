@@ -128,7 +128,7 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposed;
 
 	internal:
-		btDispatcher* _unmanaged;
+		btDispatcher* _native;
 		Dispatcher(btDispatcher* dispatcher);
 
 	public:

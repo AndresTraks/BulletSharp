@@ -38,7 +38,7 @@ void Solve2LinearConstraint::ResolveBilateralPairConstraint(
 	VECTOR3_DEF(normalB);
 
 	_constraint->resolveBilateralPairConstraint(
-		(btRigidBody*)body0->_unmanaged, (btRigidBody*)body1->_unmanaged, *world2ATemp, *world2BTemp,
+		(btRigidBody*)body0->_native, (btRigidBody*)body1->_native, *world2ATemp, *world2BTemp,
 		VECTOR3_USE(invInertiaADiag), invMassA, VECTOR3_USE(linvelA), VECTOR3_USE(angvelA), VECTOR3_USE(rel_posA1),
 		VECTOR3_USE(invInertiaBDiag), invMassB, VECTOR3_USE(linvelB), VECTOR3_USE(angvelB), VECTOR3_USE(rel_posA2),
 		depthA, VECTOR3_USE(normalA), VECTOR3_USE(rel_posB1), VECTOR3_USE(rel_posB2), depthB, VECTOR3_USE(normalB), imp0, imp1
@@ -81,7 +81,7 @@ void Solve2LinearConstraint::ResolveUnilateralPairConstraint(
 	VECTOR3_DEF(normalB);
 
 	_constraint->resolveUnilateralPairConstraint(
-		(btRigidBody*)body0->_unmanaged, (btRigidBody*)body1->_unmanaged, *world2ATemp, *world2BTemp,
+		(btRigidBody*)body0->_native, (btRigidBody*)body1->_native, *world2ATemp, *world2BTemp,
 		VECTOR3_USE(invInertiaADiag), invMassA, VECTOR3_USE(linvelA), VECTOR3_USE(angvelA), VECTOR3_USE(rel_posA1),
 		VECTOR3_USE(invInertiaBDiag), invMassB, VECTOR3_USE(linvelB), VECTOR3_USE(angvelB), VECTOR3_USE(rel_posA2),
 		depthA, VECTOR3_USE(normalA), VECTOR3_USE(rel_posB1), VECTOR3_USE(rel_posB2), depthB, VECTOR3_USE(normalB), imp0, imp1

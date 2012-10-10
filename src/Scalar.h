@@ -5,7 +5,7 @@ namespace BulletSharp
 	public ref class TypedObject
 	{
 	internal:
-		btTypedObject* _unmanaged;
+		btTypedObject* _native;
 		TypedObject(btTypedObject* typedObject);
 
 	public:

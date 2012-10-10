@@ -4,7 +4,7 @@
 
 #include "PointCollector.h"
 
-#define Unmanaged static_cast<btPointCollector*>(_unmanaged)
+#define Native static_cast<btPointCollector*>(_native)
 
 PointCollector::PointCollector()
 : DiscreteCollisionDetectorInterface::Result(new btPointCollector)
@@ -13,38 +13,38 @@ PointCollector::PointCollector()
 
 btScalar PointCollector::Distance::get()
 {
-	return Unmanaged->m_distance;
+	return Native->m_distance;
 }
 void PointCollector::Distance::set(btScalar value)
 {
-	Unmanaged->m_distance = value;
+	Native->m_distance = value;
 }
 
 bool PointCollector::HasResult::get()
 {
-	return Unmanaged->m_hasResult;
+	return Native->m_hasResult;
 }
 void PointCollector::HasResult::set(bool value)
 {
-	Unmanaged->m_hasResult = value;
+	Native->m_hasResult = value;
 }
 
 Vector3 PointCollector::NormalOnBInWorld::get()
 {
-	return Math::BtVector3ToVector3(&Unmanaged->m_normalOnBInWorld);
+	return Math::BtVector3ToVector3(&Native->m_normalOnBInWorld);
 }
 void PointCollector::NormalOnBInWorld::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &Unmanaged->m_normalOnBInWorld);
+	Math::Vector3ToBtVector3(value, &Native->m_normalOnBInWorld);
 }
 
 Vector3 PointCollector::PointInWorld::get()
 {
-	return Math::BtVector3ToVector3(&Unmanaged->m_pointInWorld);
+	return Math::BtVector3ToVector3(&Native->m_pointInWorld);
 }
 void PointCollector::PointInWorld::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &Unmanaged->m_pointInWorld);
+	Math::Vector3ToBtVector3(value, &Native->m_pointInWorld);
 }
 
 #endif

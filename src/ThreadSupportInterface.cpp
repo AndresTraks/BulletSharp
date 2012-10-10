@@ -9,7 +9,7 @@ using namespace BulletSharp::MultiThreaded;
 
 MultiThreaded::Barrier::Barrier(btBarrier* barrier)
 {
-	_unmanaged = barrier;
+	_native = barrier;
 }
 
 MultiThreaded::Barrier::~Barrier()
@@ -24,35 +24,35 @@ MultiThreaded::Barrier::!Barrier()
 
 	OnDisposing(this, nullptr);
 
-	//delete _unmanaged;
-	_unmanaged = NULL;
+	//delete _native;
+	_native = NULL;
 
 	OnDisposed(this, nullptr);
 }
 
 void MultiThreaded::Barrier::Sync()
 {
-	return _unmanaged->sync();
+	return _native->sync();
 }
 
 int MultiThreaded::Barrier::MaxCount::get()
 {
-	return _unmanaged->getMaxCount();
+	return _native->getMaxCount();
 }
 void MultiThreaded::Barrier::MaxCount::set(int value)
 {
-	_unmanaged->setMaxCount(value);
+	_native->setMaxCount(value);
 }
 
 bool MultiThreaded::Barrier::IsDisposed::get()
 {
-	return (_unmanaged == NULL);
+	return (_native == NULL);
 }
 
 
 MultiThreaded::CriticalSection::CriticalSection(btCriticalSection* criticalSection)
 {
-	_unmanaged = criticalSection;
+	_native = criticalSection;
 }
 
 MultiThreaded::CriticalSection::~CriticalSection()
@@ -67,40 +67,40 @@ MultiThreaded::CriticalSection::!CriticalSection()
 
 	OnDisposing(this, nullptr);
 
-	//delete _unmanaged;
-	_unmanaged = NULL;
+	//delete _native;
+	_native = NULL;
 
 	OnDisposed(this, nullptr);
 }
 
 UIntArray^ MultiThreaded::CriticalSection::CommonBuff::get()
 {
-	return gcnew UIntArray(_unmanaged->mCommonBuff, 32);
+	return gcnew UIntArray(_native->mCommonBuff, 32);
 }
 
 unsigned int MultiThreaded::CriticalSection::GetSharedParam(int i)
 {
-	return _unmanaged->getSharedParam(i);
+	return _native->getSharedParam(i);
 }
 
 void MultiThreaded::CriticalSection::SetSharedParam(int i, unsigned int p)
 {
-	return _unmanaged->setSharedParam(i, p);
+	return _native->setSharedParam(i, p);
 }
 
 void MultiThreaded::CriticalSection::Lock()
 {
-	_unmanaged->lock();
+	_native->lock();
 }
 
 void MultiThreaded::CriticalSection::Unlock()
 {
-	_unmanaged->unlock();
+	_native->unlock();
 }
 
 bool MultiThreaded::CriticalSection::IsDisposed::get()
 {
-	return (_unmanaged == NULL);
+	return (_native == NULL);
 }
 
 
@@ -138,12 +138,12 @@ CriticalSection^ MultiThreaded::ThreadSupportInterface::CreateCriticalSection()
 
 void MultiThreaded::ThreadSupportInterface::DeleteBarrier(Barrier^ barrier)
 {
-	_threadSupport->deleteBarrier(barrier->_unmanaged);
+	_threadSupport->deleteBarrier(barrier->_native);
 }
 
 void MultiThreaded::ThreadSupportInterface::DeleteCriticalSection(CriticalSection^ criticalSection)
 {
-	_threadSupport->deleteCriticalSection(criticalSection->_unmanaged);
+	_threadSupport->deleteCriticalSection(criticalSection->_native);
 }
 
 IntPtr MultiThreaded::ThreadSupportInterface::GetThreadLocalMemory(int taskId)

@@ -2,7 +2,7 @@
 
 #include "TetrahedronShape.h"
 
-#define Unmanaged static_cast<btBU_Simplex1to4*>(_unmanaged)
+#define Native static_cast<btBU_Simplex1to4*>(_native)
 
 BU_Simplex1to4::BU_Simplex1to4(btBU_Simplex1to4* shape)
 : PolyhedralConvexAabbCachingShape(shape)
@@ -67,16 +67,16 @@ BU_Simplex1to4::BU_Simplex1to4(Vector3 pt0, Vector3 pt1, Vector3 pt2, Vector3 pt
 void BU_Simplex1to4::AddVertex(Vector3 pt)
 {
 	VECTOR3_DEF(pt);
-	Unmanaged->addVertex(VECTOR3_USE(pt));
+	Native->addVertex(VECTOR3_USE(pt));
 	VECTOR3_DEL(pt);
 }
 
 int BU_Simplex1to4::GetIndex(int i)
 {
-	return Unmanaged->getIndex(i);
+	return Native->getIndex(i);
 }
 
 void BU_Simplex1to4::Reset()
 {
-	Unmanaged->reset();
+	Native->reset();
 }

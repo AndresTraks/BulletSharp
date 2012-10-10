@@ -3,7 +3,7 @@
 #include "ConcaveShape.h"
 #include "TriangleCallback.h"
 
-#define Unmanaged (static_cast<btConcaveShape*>(_unmanaged))
+#define Native (static_cast<btConcaveShape*>(_native))
 
 ConcaveShape::ConcaveShape(btConcaveShape* concaveShape)
 : CollisionShape(concaveShape)
@@ -15,7 +15,7 @@ void ConcaveShape::ProcessAllTriangles(TriangleCallback^ callback, Vector3 aabbM
 	VECTOR3_DEF(aabbMin);
 	VECTOR3_DEF(aabbMax);
 
-	Unmanaged->processAllTriangles(callback->UnmanagedPointer, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
+	Native->processAllTriangles(callback->UnmanagedPointer, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);

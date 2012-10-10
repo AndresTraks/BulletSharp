@@ -2,7 +2,7 @@
 
 #include "BoxShape.h"
 
-#define Unmanaged static_cast<btBoxShape*>(_unmanaged)
+#define Native static_cast<btBoxShape*>(_native)
 
 BoxShape::BoxShape(btBoxShape* shape)
 : PolyhedralConvexShape(shape)
@@ -36,7 +36,7 @@ BoxShape::BoxShape(btScalar boxHalfExtents)
 Vector4 BoxShape::GetPlaneEquation(int index)
 {
 	btVector4* equationTemp = new btVector4;
-	Unmanaged->getPlaneEquation(*equationTemp, index);
+	Native->getPlaneEquation(*equationTemp, index);
 	Vector4 equation = Math::BtVector4ToVector4(equationTemp);
 	delete equationTemp;
 	return equation;
@@ -44,7 +44,7 @@ Vector4 BoxShape::GetPlaneEquation(int index)
 
 Vector3 BoxShape::HalfExtentsWithMargin::get()
 {
-	btVector3* extentsTemp = new btVector3(Unmanaged->getHalfExtentsWithMargin());
+	btVector3* extentsTemp = new btVector3(Native->getHalfExtentsWithMargin());
 	Vector3 extents = Math::BtVector3ToVector3(extentsTemp);
 	delete extentsTemp;
 	return extents;
@@ -52,5 +52,5 @@ Vector3 BoxShape::HalfExtentsWithMargin::get()
 
 Vector3 BoxShape::HalfExtentsWithoutMargin::get()
 {
-	return Math::BtVector3ToVector3(&Unmanaged->getHalfExtentsWithoutMargin());
+	return Math::BtVector3ToVector3(&Native->getHalfExtentsWithoutMargin());
 }

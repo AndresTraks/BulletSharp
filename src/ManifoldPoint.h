@@ -24,7 +24,7 @@ namespace BulletSharp
 		}
 
 	internal:
-		btManifoldPoint* _unmanaged;
+		btManifoldPoint* _native;
 
 	private:
 		Object^ _userPersistentObject;

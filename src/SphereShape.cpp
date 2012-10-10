@@ -2,7 +2,7 @@
 
 #include "SphereShape.h"
 
-#define Unmanaged static_cast<btSphereShape*>(_unmanaged)
+#define Native static_cast<btSphereShape*>(_native)
 
 SphereShape::SphereShape(btSphereShape* shape)
 : ConvexInternalShape(shape)
@@ -16,10 +16,10 @@ SphereShape::SphereShape(btScalar radius)
 
 void SphereShape::SetUnscaledRadius(btScalar radius)
 {
-	Unmanaged->setUnscaledRadius(radius);
+	Native->setUnscaledRadius(radius);
 }
 
 btScalar SphereShape::Radius::get()
 {
-	return Unmanaged->getRadius();
+	return Native->getRadius();
 }

@@ -48,7 +48,7 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposed;
 
 	internal:
-		void* _unmanaged;
+		void* _native;
 
 	internal:
 		AlignedObjectArray(void* alignedObjectArray);

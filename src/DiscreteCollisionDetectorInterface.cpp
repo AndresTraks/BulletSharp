@@ -63,7 +63,7 @@ void DiscreteCollisionDetectorInterface::ClosestPointInput::UnmanagedPointer::se
 DiscreteCollisionDetectorInterface::Result::Result(
 	btDiscreteCollisionDetectorInterface::Result* result)
 {
-	_unmanaged = result;
+	_native = result;
 }
 
 DiscreteCollisionDetectorInterface::Result::~Result()
@@ -78,15 +78,15 @@ DiscreteCollisionDetectorInterface::Result::!Result()
 
 	OnDisposing(this, nullptr);
 
-	delete _unmanaged;
-	_unmanaged = NULL;
+	delete _native;
+	_native = NULL;
 
 	OnDisposed(this, nullptr);
 }
 
 bool DiscreteCollisionDetectorInterface::Result::IsDisposed::get()
 {
-	return (_unmanaged == NULL);
+	return (_native == NULL);
 }
 
 void DiscreteCollisionDetectorInterface::Result::AddContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld, btScalar depth)
@@ -94,7 +94,7 @@ void DiscreteCollisionDetectorInterface::Result::AddContactPoint(Vector3 normalO
 	VECTOR3_DEF(normalOnBInWorld);
 	VECTOR3_DEF(pointInWorld);
 	
-	_unmanaged->addContactPoint(VECTOR3_USE(normalOnBInWorld), VECTOR3_USE(pointInWorld), depth);
+	_native->addContactPoint(VECTOR3_USE(normalOnBInWorld), VECTOR3_USE(pointInWorld), depth);
 	
 	VECTOR3_DEL(normalOnBInWorld);
 	VECTOR3_DEL(pointInWorld);
@@ -102,12 +102,12 @@ void DiscreteCollisionDetectorInterface::Result::AddContactPoint(Vector3 normalO
 
 void DiscreteCollisionDetectorInterface::Result::SetShapeIdentifiersA(int partId0, int index0)
 {
-	_unmanaged->setShapeIdentifiersA(partId0, index0);
+	_native->setShapeIdentifiersA(partId0, index0);
 }
 
 void DiscreteCollisionDetectorInterface::Result::SetShapeIdentifiersB(int partId1, int index1)
 {
-	_unmanaged->setShapeIdentifiersB(partId1, index1);
+	_native->setShapeIdentifiersB(partId1, index1);
 }
 
 
@@ -138,14 +138,14 @@ DiscreteCollisionDetectorInterface::!DiscreteCollisionDetectorInterface()
 void DiscreteCollisionDetectorInterface::GetClosestPoints(
 	ClosestPointInput^ input, Result^ output, IDebugDraw^ debugDraw)
 {
-	UnmanagedPointer->getClosestPoints(*input->UnmanagedPointer, *output->_unmanaged,
+	UnmanagedPointer->getClosestPoints(*input->UnmanagedPointer, *output->_native,
 		DebugDraw::GetUnmanaged(debugDraw));
 }
 
 void DiscreteCollisionDetectorInterface::GetClosestPoints(
 	ClosestPointInput^ input, Result^ output, IDebugDraw^ debugDraw, bool swapResults)
 {
-	UnmanagedPointer->getClosestPoints(*input->UnmanagedPointer, *output->_unmanaged,
+	UnmanagedPointer->getClosestPoints(*input->UnmanagedPointer, *output->_native,
 		DebugDraw::GetUnmanaged(debugDraw), swapResults);
 }
 #else
@@ -177,7 +177,7 @@ void DiscreteCollisionDetectorInterface::UnmanagedPointer::set(btDiscreteCollisi
 }
 
 
-#define Unmanaged static_cast<btStorageResultWrapper*>(_unmanaged)
+#define Native static_cast<btStorageResultWrapper*>(_native)
 
 StorageResult::StorageResult(btStorageResultWrapper* result)
 : DiscreteCollisionDetectorInterface::Result(result)
@@ -187,44 +187,44 @@ StorageResult::StorageResult(btStorageResultWrapper* result)
 StorageResult::StorageResult()
 : DiscreteCollisionDetectorInterface::Result(0)
 {
-//	_unmanaged = new btStorageResultWrapper(this);
+//	_native = new btStorageResultWrapper(this);
 }
 
 void StorageResult::SetShapeIdentifiersA(int partId0, int index0)
 {
-	Unmanaged->setShapeIdentifiersA(partId0, index0);
+	Native->setShapeIdentifiersA(partId0, index0);
 }
 
 void StorageResult::SetShapeIdentifiersB(int partId1, int index1)
 {
-	Unmanaged->setShapeIdentifiersB(partId1, index1);
+	Native->setShapeIdentifiersB(partId1, index1);
 }
 
 Vector3 StorageResult::ClosestPointInB::get()
 {
-	return Math::BtVector3ToVector3(&Unmanaged->m_closestPointInB);
+	return Math::BtVector3ToVector3(&Native->m_closestPointInB);
 }
 void StorageResult::ClosestPointInB::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &Unmanaged->m_closestPointInB);
+	Math::Vector3ToBtVector3(value, &Native->m_closestPointInB);
 }
 
 btScalar StorageResult::Distance::get()
 {
-	return Unmanaged->m_distance;
+	return Native->m_distance;
 }
 void StorageResult::Distance::set(btScalar value)
 {
-	Unmanaged->m_distance = value;
+	Native->m_distance = value;
 }
 
 Vector3 StorageResult::NormalOnSurfaceB::get()
 {
-	return Math::BtVector3ToVector3(&Unmanaged->m_normalOnSurfaceB);
+	return Math::BtVector3ToVector3(&Native->m_normalOnSurfaceB);
 }
 void StorageResult::NormalOnSurfaceB::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &Unmanaged->m_normalOnSurfaceB);
+	Math::Vector3ToBtVector3(value, &Native->m_normalOnSurfaceB);
 }
 
 

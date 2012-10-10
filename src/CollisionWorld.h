@@ -106,7 +106,7 @@ namespace BulletSharp
 			virtual event EventHandler^ OnDisposed;
 
 		internal:
-			btCollisionWorld::ConvexResultCallback* _unmanaged;
+			btCollisionWorld::ConvexResultCallback* _native;
 			ConvexResultCallback(btCollisionWorld::ConvexResultCallback* callback);
 
 		public:
@@ -277,7 +277,7 @@ namespace BulletSharp
 		ref class RayResultCallback
 		{
 		internal:
-			btCollisionWorld::RayResultCallback* _unmanaged;
+			btCollisionWorld::RayResultCallback* _native;
 			RayResultCallback(btCollisionWorld::RayResultCallback* callback);
 
 		public:
@@ -410,7 +410,7 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposed;
 
 	internal:
-		btCollisionWorld* _unmanaged;
+		btCollisionWorld* _native;
 
 	private:
 		AlignedCollisionObjectArray^ _collisionObjectArray;

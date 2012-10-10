@@ -15,7 +15,7 @@ SphereBoxCollisionAlgorithm::CreateFunc::CreateFunc()
 SphereBoxCollisionAlgorithm::SphereBoxCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped)
 : ActivatingCollisionAlgorithm(new btSphereBoxCollisionAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf),
-	*ci->_unmanaged, body0Wrap->_unmanaged, body1Wrap->_unmanaged, isSwapped))
+	*ci->_native, body0Wrap->_native, body1Wrap->_native, isSwapped))
 {
 }
 
@@ -27,7 +27,7 @@ bool SphereBoxCollisionAlgorithm::GetSphereDistance(CollisionObjectWrapper^ boxO
 	VECTOR3_DEF(v3SphereCenter);
 	btScalar penetrationDepthTemp = penetrationDepth;
 
-	bool ret = UnmanagedPointer->getSphereDistance(boxObjWrap->_unmanaged, VECTOR3_USE(v3PointOnBox),
+	bool ret = UnmanagedPointer->getSphereDistance(boxObjWrap->_native, VECTOR3_USE(v3PointOnBox),
 		VECTOR3_USE(normal), penetrationDepthTemp, VECTOR3_USE(v3SphereCenter), fRadius, maxContactDistance);
 
 	VECTOR3_DEL(v3PointOnBox);

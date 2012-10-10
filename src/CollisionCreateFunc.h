@@ -11,12 +11,13 @@ namespace BulletSharp
 
 	public ref class CollisionAlgorithmCreateFunc
 	{
-	private:
-		btCollisionAlgorithmCreateFunc* _createFunc;
-		bool _deleteObject;
-
 	internal:
+		btCollisionAlgorithmCreateFunc* _native;
+
 		CollisionAlgorithmCreateFunc(btCollisionAlgorithmCreateFunc* solver);
+
+	private:
+		bool _deleteObject;
 
 	public:
 		!CollisionAlgorithmCreateFunc();

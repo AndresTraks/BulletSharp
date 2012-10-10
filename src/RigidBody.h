@@ -178,7 +178,7 @@ namespace BulletSharp
 	public ref class RigidBodyConstructionInfo
 	{
 	internal:
-		btRigidBody::btRigidBodyConstructionInfo* _unmanaged;
+		btRigidBody::btRigidBodyConstructionInfo* _native;
 		BulletSharp::MotionState^ _motionState;
 
 	public:

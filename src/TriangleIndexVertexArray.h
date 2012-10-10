@@ -11,14 +11,14 @@ namespace BulletSharp
 
 	public ref class IndexedMesh
 	{
-	private:
-		btIndexedMesh* _indexedMesh;
+	internal:
+		btIndexedMesh* _native;
 
+		IndexedMesh(btIndexedMesh* indexedMesh);
+
+	private:
 		IntArray^ _triangleIndices;
 		Vector3Array^ _vertices;
-
-	internal:
-		IndexedMesh(btIndexedMesh* indexedMesh);
 
 	public:
 		IndexedMesh();
@@ -76,13 +76,6 @@ namespace BulletSharp
 		{
 			PhyScalarType get();
 			void set(PhyScalarType value);
-		}
-
-	internal:
-		property btIndexedMesh* UnmanagedPointer
-		{
-			virtual btIndexedMesh* get();
-			void set(btIndexedMesh* value);
 		}
 	};
 

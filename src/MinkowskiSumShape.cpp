@@ -5,7 +5,7 @@
 #include "ConvexShape.h"
 #include "MinkowskiSumShape.h"
 
-#define Unmanaged static_cast<btMinkowskiSumShape*>(_unmanaged)
+#define Native static_cast<btMinkowskiSumShape*>(_native)
 
 MinkowskiSumShape::MinkowskiSumShape(btMinkowskiSumShape* shape)
 : ConvexInternalShape(shape)
@@ -13,7 +13,7 @@ MinkowskiSumShape::MinkowskiSumShape(btMinkowskiSumShape* shape)
 }
 
 MinkowskiSumShape::MinkowskiSumShape(ConvexShape^ shapeA, ConvexShape^ shapeB)
-: ConvexInternalShape(new btMinkowskiSumShape((btConvexShape*)shapeA->_unmanaged, (btConvexShape*)shapeB->_unmanaged))
+: ConvexInternalShape(new btMinkowskiSumShape((btConvexShape*)shapeA->_native, (btConvexShape*)shapeB->_native))
 {
 	_shapeA = shapeA;
 	_shapeB = shapeB;
@@ -21,35 +21,35 @@ MinkowskiSumShape::MinkowskiSumShape(ConvexShape^ shapeA, ConvexShape^ shapeB)
 
 ConvexShape^ MinkowskiSumShape::ShapeA::get()
 {
-	btConvexShape* shapeA = (btConvexShape*)Unmanaged->getShapeA();
+	btConvexShape* shapeA = (btConvexShape*)Native->getShapeA();
 	ReturnCachedObjectCast(ConvexShape, _shapeA, shapeA);
 }
 
 ConvexShape^ MinkowskiSumShape::ShapeB::get()
 {
-	btConvexShape* shapeB = (btConvexShape*)Unmanaged->getShapeB();
+	btConvexShape* shapeB = (btConvexShape*)Native->getShapeB();
 	ReturnCachedObjectCast(ConvexShape, _shapeB, shapeB);
 }
 
 Matrix MinkowskiSumShape::TransformA::get()
 {
-	return Math::BtTransformToMatrix(&Unmanaged->getTransformA());
+	return Math::BtTransformToMatrix(&Native->getTransformA());
 }
 void MinkowskiSumShape::TransformA::set(Matrix value)
 {
 	btTransform* valueTemp = Math::MatrixToBtTransform(value);
-	Unmanaged->setTransformA(*valueTemp);
+	Native->setTransformA(*valueTemp);
 	delete valueTemp;
 }
 
 Matrix MinkowskiSumShape::TransformB::get()
 {
-	return Math::BtTransformToMatrix(&Unmanaged->GetTransformB());
+	return Math::BtTransformToMatrix(&Native->GetTransformB());
 }
 void MinkowskiSumShape::TransformB::set(Matrix value)
 {
 	btTransform* valueTemp = Math::MatrixToBtTransform(value);
-	Unmanaged->setTransformB(*valueTemp);
+	Native->setTransformB(*valueTemp);
 	delete valueTemp;
 }
 

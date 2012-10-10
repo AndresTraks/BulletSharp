@@ -10,7 +10,7 @@
 #include "Serializer.h"
 #endif
 
-#define Unmanaged static_cast<btBvhTriangleMeshShape*>(_unmanaged)
+#define Native static_cast<btBvhTriangleMeshShape*>(_native)
 
 BvhTriangleMeshShape::BvhTriangleMeshShape(btBvhTriangleMeshShape* shape)
 : TriangleMeshShape(shape)
@@ -55,7 +55,7 @@ BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface,
 
 void BvhTriangleMeshShape::BuildOptimizedBvh()
 {
-	Unmanaged->buildOptimizedBvh();
+	Native->buildOptimizedBvh();
 }
 
 void BvhTriangleMeshShape::PartialRefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbMax)
@@ -63,7 +63,7 @@ void BvhTriangleMeshShape::PartialRefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbM
 	VECTOR3_DEF(bvhAabbMin);
 	VECTOR3_DEF(bvhAabbMax);
 
-	Unmanaged->partialRefitTree(VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax));
+	Native->partialRefitTree(VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax));
 
 	VECTOR3_DEL(bvhAabbMin);
 	VECTOR3_DEL(bvhAabbMax);
@@ -76,7 +76,7 @@ void BvhTriangleMeshShape::PerformConvexcast(TriangleCallback^ callback, Vector3
 	VECTOR3_DEF(boxMin);
 	VECTOR3_DEF(boxMax);
 
-	Unmanaged->performConvexcast(callback->UnmanagedPointer, VECTOR3_USE(boxSource),
+	Native->performConvexcast(callback->UnmanagedPointer, VECTOR3_USE(boxSource),
 		VECTOR3_USE(boxTarget), VECTOR3_USE(boxMin), VECTOR3_USE(boxMax));
 
 	VECTOR3_DEL(boxSource);
@@ -90,7 +90,7 @@ void BvhTriangleMeshShape::PerformRaycast(TriangleCallback^ callback, Vector3 ra
 	VECTOR3_DEF(raySource);
 	VECTOR3_DEF(rayTarget);
 
-	Unmanaged->performRaycast(callback->UnmanagedPointer, VECTOR3_USE(raySource), VECTOR3_USE(rayTarget));
+	Native->performRaycast(callback->UnmanagedPointer, VECTOR3_USE(raySource), VECTOR3_USE(rayTarget));
 
 	VECTOR3_DEL(raySource);
 	VECTOR3_DEL(rayTarget);
@@ -101,7 +101,7 @@ void BvhTriangleMeshShape::ProcessAllTriangles(TriangleCallback^ callback, Vecto
 	VECTOR3_DEF(aabbMin);
 	VECTOR3_DEF(aabbMax);
 
-	Unmanaged->processAllTriangles(callback->UnmanagedPointer, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
+	Native->processAllTriangles(callback->UnmanagedPointer, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
@@ -109,7 +109,7 @@ void BvhTriangleMeshShape::ProcessAllTriangles(TriangleCallback^ callback, Vecto
 
 void BvhTriangleMeshShape::RecalcLocalAabb()
 {
-	Unmanaged->recalcLocalAabb();
+	Native->recalcLocalAabb();
 }
 
 void BvhTriangleMeshShape::RefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbMax)
@@ -117,7 +117,7 @@ void BvhTriangleMeshShape::RefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 	VECTOR3_DEF(bvhAabbMin);
 	VECTOR3_DEF(bvhAabbMax);
 
-	Unmanaged->refitTree(VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax));
+	Native->refitTree(VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax));
 
 	VECTOR3_DEL(bvhAabbMin);
 	VECTOR3_DEL(bvhAabbMax);
@@ -127,7 +127,7 @@ void BvhTriangleMeshShape::RefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 void BvhTriangleMeshShape::SetOptimizedBvh(BulletSharp::OptimizedBvh^ bvh, Vector3 localScaling)
 {
 	VECTOR3_DEF(localScaling);
-	Unmanaged->setOptimizedBvh(bvh->UnmanagedPointer, VECTOR3_USE(localScaling));
+	Native->setOptimizedBvh(bvh->UnmanagedPointer, VECTOR3_USE(localScaling));
 	VECTOR3_DEL(localScaling);
 }
 #endif
@@ -135,12 +135,12 @@ void BvhTriangleMeshShape::SetOptimizedBvh(BulletSharp::OptimizedBvh^ bvh, Vecto
 #ifndef DISABLE_SERIALIZE
 void BvhTriangleMeshShape::SerializeSingleBvh(BulletSharp::Serializer^ serializer)
 {
-	Unmanaged->serializeSingleBvh(serializer->UnmanagedPointer);
+	Native->serializeSingleBvh(serializer->UnmanagedPointer);
 }
 
 void BvhTriangleMeshShape::SerializeSingleTriangleInfoMap(BulletSharp::Serializer^ serializer)
 {
-	Unmanaged->serializeSingleTriangleInfoMap(serializer->UnmanagedPointer);
+	Native->serializeSingleTriangleInfoMap(serializer->UnmanagedPointer);
 }
 #endif
 
@@ -164,10 +164,10 @@ void BvhTriangleMeshShape::OptimizedBvh::set(BulletSharp::OptimizedBvh^ value)
 
 bool BvhTriangleMeshShape::OwnsBvh::get()
 {
-	return Unmanaged->getOwnsBvh();
+	return Native->getOwnsBvh();
 }
 
 bool BvhTriangleMeshShape::UsesQuantizedAabbCompression::get()
 {
-	return Unmanaged->usesQuantizedAabbCompression();
+	return Native->usesQuantizedAabbCompression();
 }

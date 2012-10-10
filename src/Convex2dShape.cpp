@@ -4,10 +4,10 @@
 
 #include "Convex2DShape.h"
 
-#define Unmanaged static_cast<btConvex2dShape*>(_unmanaged)
+#define Native static_cast<btConvex2dShape*>(_native)
 
 Convex2DShape::Convex2DShape(ConvexShape^ convexChildShape)
-: ConvexShape(new btConvex2dShape((btConvexShape*)convexChildShape->_unmanaged))
+: ConvexShape(new btConvex2dShape((btConvexShape*)convexChildShape->_native))
 {
 	childShape = convexChildShape;
 }
@@ -21,7 +21,7 @@ ConvexShape^ Convex2DShape::ChildShape::get()
 {
 	if (childShape == nullptr)
 	{
-		childShape = gcnew ConvexShape(Unmanaged->getChildShape());
+		childShape = gcnew ConvexShape(Native->getChildShape());
 	}
 	return childShape;
 }

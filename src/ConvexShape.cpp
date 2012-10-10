@@ -2,7 +2,7 @@
 
 #include "ConvexShape.h"
 
-#define Unmanaged static_cast<btConvexShape*>(_unmanaged)
+#define Native static_cast<btConvexShape*>(_native)
 
 ConvexShape::ConvexShape(btConvexShape* convexShape)
 : CollisionShape(convexShape)
@@ -15,7 +15,7 @@ void ConvexShape::BatchedUnitVectorGetSupportingVertexWithoutMargin(array<Vector
 	btVector3* vectorsTemp = Math::Vector3ArrayToUnmanaged(vectors);
 	btVector3* supportVerticesOutTemp = new btVector3[numVertices];
 
-	Unmanaged->batchedUnitVectorGetSupportingVertexWithoutMargin(vectorsTemp, supportVerticesOutTemp, numVertices);
+	Native->batchedUnitVectorGetSupportingVertexWithoutMargin(vectorsTemp, supportVerticesOutTemp, numVertices);
 	delete[] vectorsTemp;
 
 	supportVerticesOut = Math::Vector3ArrayToManaged(supportVerticesOutTemp, numVertices);
@@ -28,7 +28,7 @@ void ConvexShape::GetAabbNonVirtual(Matrix t, Vector3% aabbMin, Vector3% aabbMax
 	btVector3* aabbMinTemp = new btVector3;
 	btVector3* aabbMaxTemp = new btVector3;
 	
-	Unmanaged->getAabbNonVirtual(*tTemp, *aabbMinTemp, *aabbMaxTemp);
+	Native->getAabbNonVirtual(*tTemp, *aabbMinTemp, *aabbMaxTemp);
 
 	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
 	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
@@ -44,7 +44,7 @@ void ConvexShape::GetAabbSlow(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
 	btVector3* aabbMinTemp = new btVector3;
 	btVector3* aabbMaxTemp = new btVector3;
 	
-	Unmanaged->getAabbSlow(*tTemp, *aabbMinTemp, *aabbMaxTemp);
+	Native->getAabbSlow(*tTemp, *aabbMinTemp, *aabbMaxTemp);
 
 	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
 	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
@@ -57,7 +57,7 @@ void ConvexShape::GetAabbSlow(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
 void ConvexShape::GetPreferredPenetrationDirection(int index, [Out] Vector3% penetrationVector)
 {
 	btVector3* penetrationVectorTemp = new btVector3;
-	Unmanaged->getPreferredPenetrationDirection(index, *penetrationVectorTemp);
+	Native->getPreferredPenetrationDirection(index, *penetrationVectorTemp);
 	Math::BtVector3ToVector3(penetrationVectorTemp, penetrationVector);
 	delete penetrationVectorTemp;
 }
@@ -85,7 +85,7 @@ Vector3 ConvexShape::LocalGetSupportingVertex(Vector3 vec)
 	VECTOR3_DEF(vec);
 	btVector3* vecOut = new btVector3;
 	
-	ConvexShape_LocalGetSupportingVertex(Unmanaged, VECTOR3_PTR(vec), vecOut);
+	ConvexShape_LocalGetSupportingVertex(Native, VECTOR3_PTR(vec), vecOut);
 	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
 	
 	VECTOR3_DEL(vec);
@@ -99,7 +99,7 @@ Vector3 ConvexShape::LocalGetSupportingVertexWithoutMargin(Vector3 vec)
 	VECTOR3_DEF(vec);
 	btVector3* vecOut = new btVector3;
 	
-	ConvexShape_LocalGetSupportingVertexWithoutMargin(Unmanaged, VECTOR3_PTR(vec), vecOut);
+	ConvexShape_LocalGetSupportingVertexWithoutMargin(Native, VECTOR3_PTR(vec), vecOut);
 	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
 	
 	VECTOR3_DEL(vec);
@@ -113,7 +113,7 @@ Vector3 ConvexShape::LocalGetSupportVertexNonVirtual(Vector3 vec)
 	VECTOR3_DEF(vec);
 	btVector3* vecOut = new btVector3;
 	
-	ConvexShape_LocalGetSupportVertexNonVirtual(Unmanaged, VECTOR3_PTR(vec), vecOut);
+	ConvexShape_LocalGetSupportVertexNonVirtual(Native, VECTOR3_PTR(vec), vecOut);
 	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
 	
 	VECTOR3_DEL(vec);
@@ -127,7 +127,7 @@ Vector3 ConvexShape::LocalGetSupportVertexWithoutMarginNonVirtual(Vector3 vec)
 	VECTOR3_DEF(vec);
 	btVector3* vecOut = new btVector3;
 	
-	ConvexShape_LocalGetSupportVertexWithoutMarginNonVirtual(Unmanaged, VECTOR3_PTR(vec), vecOut);
+	ConvexShape_LocalGetSupportVertexWithoutMarginNonVirtual(Native, VECTOR3_PTR(vec), vecOut);
 	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
 	
 	VECTOR3_DEL(vec);
@@ -143,7 +143,7 @@ void ConvexShape::Project(Matrix transform, Vector3 direction, [Out] btScalar% m
 	btScalar minTemp;
 	btScalar maxTemp;
 	
-	Unmanaged->project(*transformTemp, VECTOR3_USE(direction), minTemp, maxTemp);
+	Native->project(*transformTemp, VECTOR3_USE(direction), minTemp, maxTemp);
 	min = minTemp;
 	max = maxTemp;
 	
@@ -153,10 +153,10 @@ void ConvexShape::Project(Matrix transform, Vector3 direction, [Out] btScalar% m
 
 btScalar ConvexShape::MarginNonVirtual::get()
 {
-	return Unmanaged->getMarginNonVirtual();
+	return Native->getMarginNonVirtual();
 }
 
 int ConvexShape::NumPreferredPenetrationDirections::get()
 {
-	return Unmanaged->getNumPreferredPenetrationDirections();
+	return Native->getNumPreferredPenetrationDirections();
 }

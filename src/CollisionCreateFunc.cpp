@@ -7,13 +7,13 @@
 
 CollisionAlgorithmCreateFunc::CollisionAlgorithmCreateFunc()
 {
-	_createFunc = new btCollisionAlgorithmCreateFunc();
+	_native = new btCollisionAlgorithmCreateFunc();
 	_deleteObject = true;
 }
 
 CollisionAlgorithmCreateFunc::CollisionAlgorithmCreateFunc(btCollisionAlgorithmCreateFunc* createFunc)
 {
-	_createFunc = createFunc;
+	_native = createFunc;
 }
 
 CollisionAlgorithmCreateFunc::~CollisionAlgorithmCreateFunc()
@@ -25,8 +25,8 @@ CollisionAlgorithmCreateFunc::!CollisionAlgorithmCreateFunc()
 {
 	if (_deleteObject)
 	{
-		delete _createFunc;
-		_createFunc = NULL;
+		delete _native;
+		_native = NULL;
 	}
 }
 
@@ -34,28 +34,28 @@ CollisionAlgorithm^ CollisionAlgorithmCreateFunc::CreateCollisionAlgorithm(
 	CollisionAlgorithmConstructionInfo^ info, CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
 {
 	return gcnew CollisionAlgorithm(UnmanagedPointer->CreateCollisionAlgorithm(
-		*info->_unmanaged, body0Wrap->_unmanaged, body1Wrap->_unmanaged));
+		*info->_native, body0Wrap->_native, body1Wrap->_native));
 }
 
 bool CollisionAlgorithmCreateFunc::IsDisposed::get()
 {
-	return (_createFunc == NULL);
+	return (_native == NULL);
 }
 
 bool CollisionAlgorithmCreateFunc::Swapped::get()
 {
-	return _createFunc->m_swapped;
+	return _native->m_swapped;
 }
 void CollisionAlgorithmCreateFunc::Swapped::set(bool value)
 {
-	_createFunc->m_swapped = value;
+	_native->m_swapped = value;
 }
 
 btCollisionAlgorithmCreateFunc* CollisionAlgorithmCreateFunc::UnmanagedPointer::get()
 {
-	return _createFunc;
+	return _native;
 }
 void CollisionAlgorithmCreateFunc::UnmanagedPointer::set(btCollisionAlgorithmCreateFunc* value)
 {
-	_createFunc = value;
+	_native = value;
 }

@@ -13,7 +13,7 @@
 Convex2dConvex2dAlgorithm::CreateFunc::CreateFunc(SimplexSolverInterface^ simplexSolver,
 	ConvexPenetrationDepthSolver^ pdSolver)
 : CollisionAlgorithmCreateFunc(new btConvex2dConvex2dAlgorithm::CreateFunc(
-	simplexSolver->UnmanagedPointer, pdSolver->_unmanaged))
+	simplexSolver->UnmanagedPointer, pdSolver->_native))
 {
 	_simplexSolver = simplexSolver;
 	_pdSolver = pdSolver;
@@ -24,8 +24,8 @@ Convex2dConvex2dAlgorithm::Convex2dConvex2dAlgorithm(PersistentManifold^ mf, Col
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, SimplexSolverInterface^ simplexSolver,
 	ConvexPenetrationDepthSolver^ pdSolver, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
 : ActivatingCollisionAlgorithm(new btConvex2dConvex2dAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf),
-	*ci->_unmanaged, body0Wrap->_unmanaged, body1Wrap->_unmanaged, simplexSolver->UnmanagedPointer,
-	pdSolver->_unmanaged, numPerturbationIterations, minimumPointsPerturbationThreshold))
+	*ci->_native, body0Wrap->_native, body1Wrap->_native, simplexSolver->UnmanagedPointer,
+	pdSolver->_native, numPerturbationIterations, minimumPointsPerturbationThreshold))
 {
 }
 

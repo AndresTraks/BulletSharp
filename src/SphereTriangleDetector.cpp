@@ -13,7 +13,7 @@ BulletSharp::SphereTriangleDetector::SphereTriangleDetector(::SphereTriangleDete
 
 BulletSharp::SphereTriangleDetector::SphereTriangleDetector(SphereShape^ sphere, TriangleShape^ triangle, btScalar contactBreakingThreshold)
 : DiscreteCollisionDetectorInterface(new ::SphereTriangleDetector(
-	(btSphereShape*)sphere->_unmanaged, (btTriangleShape*)triangle->_unmanaged, contactBreakingThreshold))
+	(btSphereShape*)sphere->_native, (btTriangleShape*)triangle->_native, contactBreakingThreshold))
 {
 }
 

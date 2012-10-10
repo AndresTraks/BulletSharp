@@ -4,7 +4,7 @@
 
 #include "HeightfieldTerrainShape.h"
 
-#define Unmanaged (static_cast<btHeightfieldTerrainShape*>(_unmanaged))
+#define Native (static_cast<btHeightfieldTerrainShape*>(_native))
 
 HeightfieldTerrainShape::HeightfieldTerrainShape(btHeightfieldTerrainShape* terrainShape)
 : ConcaveShape(terrainShape)
@@ -47,22 +47,22 @@ HeightfieldTerrainShape::HeightfieldTerrainShape(int heightStickWidth, int heigh
 
 void HeightfieldTerrainShape::SetUseDiamondSubdivision(bool useDiamondSubdivision)
 {
-	Unmanaged->setUseDiamondSubdivision(useDiamondSubdivision);
+	Native->setUseDiamondSubdivision(useDiamondSubdivision);
 }
 
 void HeightfieldTerrainShape::SetUseDiamondSubdivision()
 {
-	Unmanaged->setUseDiamondSubdivision();
+	Native->setUseDiamondSubdivision();
 }
 
 void HeightfieldTerrainShape::SetUseZigzagSubdivision(bool useZigzagSubdivision)
 {
-	Unmanaged->setUseZigzagSubdivision(useZigzagSubdivision);
+	Native->setUseZigzagSubdivision(useZigzagSubdivision);
 }
 
 void HeightfieldTerrainShape::SetUseZigzagSubdivision()
 {
-	Unmanaged->setUseZigzagSubdivision();
+	Native->setUseZigzagSubdivision();
 }
 
 #endif

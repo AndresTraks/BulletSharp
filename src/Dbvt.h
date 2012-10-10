@@ -56,10 +56,9 @@ namespace BulletSharp
 
 	public ref class DbvtNode
 	{
-	private:
-		btDbvtNode* _node;
-
 	internal:
+		btDbvtNode* _native;
+
 		DbvtNode(btDbvtNode* node);
 
 	public:
@@ -100,13 +99,6 @@ namespace BulletSharp
 		{
 			DbvtVolume^ get();
 			void set(DbvtVolume^ value);
-		}
-
-	internal:
-		property btDbvtNode* UnmanagedPointer
-		{
-			virtual btDbvtNode* get();
-			void set(btDbvtNode* value);
 		}
 	};
 
