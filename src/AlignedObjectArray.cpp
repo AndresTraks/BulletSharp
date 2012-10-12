@@ -413,7 +413,7 @@ AlignedCollisionShapeArray::AlignedCollisionShapeArray()
 
 void AlignedCollisionShapeArray::Add(CollisionShape^ shape)
 {
-	Native->push_back((btCollisionShape* const&)*shape->_native);
+	Native->push_back(shape->UnmanagedPointer);
 }
 
 void AlignedCollisionShapeArray::Clear()
@@ -423,7 +423,7 @@ void AlignedCollisionShapeArray::Clear()
 
 bool AlignedCollisionShapeArray::Contains(CollisionShape^ shape)
 {
-	return Native->findLinearSearch((btCollisionShape* const&)*shape->_native) != Native->size();
+	return Native->findLinearSearch(shape->UnmanagedPointer) != Native->size();
 }
 
 void AlignedCollisionShapeArray::CopyTo(array<CollisionShape^>^ array, int arrayIndex)
@@ -447,7 +447,7 @@ void AlignedCollisionShapeArray::CopyTo(array<CollisionShape^>^ array, int array
 
 int AlignedCollisionShapeArray::IndexOf(CollisionShape^ shape)
 {
-	int i = Native->findLinearSearch((btCollisionShape* const&)*shape->_native);
+	int i = Native->findLinearSearch(shape->UnmanagedPointer);
 	return i != Native->size() ? i : -1;
 }
 
@@ -459,7 +459,7 @@ void AlignedCollisionShapeArray::PopBack()
 bool AlignedCollisionShapeArray::Remove(CollisionShape^ shape)
 {
 	int sizeBefore = Native->size();
-	Native->remove((btCollisionShape* const&)*shape->_native);
+	Native->remove(shape->UnmanagedPointer);
 	return sizeBefore != Native->size();
 }
 
@@ -509,7 +509,7 @@ AlignedCollisionObjectArray::AlignedCollisionObjectArray()
 
 void AlignedCollisionObjectArray::Add(CollisionObject^ obj)
 {
-	Native->push_back((btCollisionObject* const&)*obj->_native);
+	Native->push_back(obj->UnmanagedPointer);
 }
 
 void AlignedCollisionObjectArray::Clear()
@@ -519,7 +519,7 @@ void AlignedCollisionObjectArray::Clear()
 
 bool AlignedCollisionObjectArray::Contains(CollisionObject^ obj)
 {
-	return Native->findLinearSearch((btCollisionObject* const&)*obj->_native) != Native->size();
+	return Native->findLinearSearch(obj->UnmanagedPointer) != Native->size();
 }
 
 void AlignedCollisionObjectArray::CopyTo(array<CollisionObject^>^ array, int arrayIndex)
@@ -543,7 +543,7 @@ void AlignedCollisionObjectArray::CopyTo(array<CollisionObject^>^ array, int arr
 
 int AlignedCollisionObjectArray::IndexOf(CollisionObject^ obj)
 {
-	int i = Native->findLinearSearch((btCollisionObject* const&)*obj->_native);
+	int i = Native->findLinearSearch(obj->UnmanagedPointer);
 	return i != Native->size() ? i : -1;
 }
 
@@ -555,7 +555,7 @@ void AlignedCollisionObjectArray::PopBack()
 bool AlignedCollisionObjectArray::Remove(CollisionObject^ obj)
 {
 	int sizeBefore = Native->size();
-	Native->remove((btCollisionObject* const&)*obj->_native);
+	Native->remove(obj->UnmanagedPointer);
 	return sizeBefore != Native->size();
 }
 
@@ -703,7 +703,7 @@ AlignedStkNnArray::AlignedStkNnArray()
 
 void AlignedStkNnArray::Add(Dbvt::StkNn^ stkNn)
 {
-	Native->push_back(*stkNn->UnmanagedPointer);
+	Native->push_back(*stkNn->_native);
 }
 
 void AlignedStkNnArray::Clear()
@@ -768,7 +768,7 @@ void AlignedStkNnArray::default::set(int index, Dbvt::StkNn^ value)
 {
 	if (index < 0 || index >= Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*Native)[index] = *value->UnmanagedPointer;
+	(*Native)[index] = *value->_native;
 }
 
 

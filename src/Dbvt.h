@@ -107,21 +107,25 @@ namespace BulletSharp
 	public:
 		ref class StkNn
 		{
-		private:
-			btDbvt::sStkNN* _stkNn;
-
 		internal:
+			btDbvt::sStkNN* _native;
+
 			StkNn(btDbvt::sStkNN* stkNn);
 
 		public:
 			StkNn();
 			StkNn(DbvtNode^ na, DbvtNode^ nb);
 
-		internal:
-			property btDbvt::sStkNN* UnmanagedPointer
+			property DbvtNode^ A
 			{
-				btDbvt::sStkNN* get();
-				void set(btDbvt::sStkNN* value);
+				DbvtNode^ get();
+				void set(DbvtNode^ value);
+			}
+
+			property DbvtNode^ B
+			{
+				DbvtNode^ get();
+				void set(DbvtNode^ value);
 			}
 		};
 

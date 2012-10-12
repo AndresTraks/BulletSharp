@@ -426,26 +426,35 @@ void Dbvt::IClone::UnmanagedPointer::set(btDbvt::IClone* value)
 
 Dbvt::StkNn::StkNn(btDbvt::sStkNN* stkNn)
 {
-	_stkNn = stkNn;
+	_native = stkNn;
 }
 
 Dbvt::StkNn::StkNn()
 {
-	_stkNn = new btDbvt::sStkNN();
+	_native = new btDbvt::sStkNN();
 }
 
 Dbvt::StkNn::StkNn(DbvtNode^ na, DbvtNode^ nb)
 {
-	_stkNn = new btDbvt::sStkNN(na->_native, nb->_native);
+	_native = new btDbvt::sStkNN(na->_native, nb->_native);
 }
 
-btDbvt::sStkNN* Dbvt::StkNn::UnmanagedPointer::get()
+DbvtNode^ Dbvt::StkNn::A::get()
 {
-	return _stkNn;
+	return gcnew DbvtNode((btDbvtNode*)_native->a);
 }
-void Dbvt::StkNn::UnmanagedPointer::set(btDbvt::sStkNN* value)
+void Dbvt::StkNn::A::set(DbvtNode^ value)
 {
-	_stkNn = value;
+	_native->a = value->_native;
+}
+
+DbvtNode^ Dbvt::StkNn::B::get()
+{
+	return gcnew DbvtNode((btDbvtNode*)_native->b);
+}
+void Dbvt::StkNn::B::set(DbvtNode^ value)
+{
+	_native->b = value->_native;
 }
 
 
