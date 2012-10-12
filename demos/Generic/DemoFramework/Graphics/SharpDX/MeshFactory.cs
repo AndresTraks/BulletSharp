@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using BulletSharp;
 using BulletSharp.SoftBody;
@@ -8,11 +7,11 @@ using SharpDX.Direct3D;
 using SharpDX.Direct3D10;
 using SharpDX.DXGI;
 using Buffer = SharpDX.Direct3D10.Buffer;
+using Color = System.Drawing.Color;
 using DataStream = SharpDX.DataStream;
 using Device = SharpDX.Direct3D10.Device;
 using Matrix = BulletSharp.Matrix;
 using Vector3 = BulletSharp.Vector3;
-using Color = System.Drawing.Color;
 
 namespace DemoFramework.SharpDX
 {

@@ -50,7 +50,11 @@ namespace BulletSharp
 	internal:
 		void* _native;
 
+	private:
+		bool _ownsObject;
+
 	internal:
+		AlignedObjectArray(void* alignedObjectArray, bool ownsObject);
 		AlignedObjectArray(void* alignedObjectArray);
 
 	public:

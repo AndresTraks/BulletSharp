@@ -18,6 +18,13 @@ using namespace BulletSharp::SoftBody;
 #endif
 
 generic<class T>
+AlignedObjectArray<T>::AlignedObjectArray(void* alignedObjectArray, bool ownsObject)
+{
+	_native = alignedObjectArray;
+	_ownsObject = ownsObject;
+}
+
+generic<class T>
 AlignedObjectArray<T>::AlignedObjectArray(void* alignedObjectArray)
 {
 	_native = alignedObjectArray;
@@ -31,6 +38,9 @@ AlignedObjectArray<T>::!AlignedObjectArray()
 
 	OnDisposing(this, nullptr);
 
+	if (_ownsObject) {
+		delete _native;
+	}
 	_native = NULL;
 
 	OnDisposed(this, nullptr);
@@ -127,7 +137,7 @@ AlignedAnchorArray::AlignedAnchorArray(btSoftBody::tAnchorArray* anchorArray)
 }
 
 AlignedAnchorArray::AlignedAnchorArray()
-: AlignedObjectArray(new btSoftBody::tAnchorArray())
+: AlignedObjectArray(new btSoftBody::tAnchorArray(), true)
 {
 }
 
@@ -210,7 +220,7 @@ AlignedBroadphasePairArray::AlignedBroadphasePairArray(btBroadphasePairArray* pa
 }
 
 AlignedBroadphasePairArray::AlignedBroadphasePairArray()
-: AlignedObjectArray(new btBroadphasePairArray)
+: AlignedObjectArray(new btBroadphasePairArray, true)
 {
 }
 
@@ -312,7 +322,7 @@ AlignedClusterArray::AlignedClusterArray(btSoftBody::tClusterArray* clusterArray
 }
 
 AlignedClusterArray::AlignedClusterArray()
-: AlignedObjectArray(new btSoftBody::tClusterArray())
+: AlignedObjectArray(new btSoftBody::tClusterArray(), true)
 {
 }
 
@@ -407,7 +417,7 @@ void AlignedClusterArray::default::set(int index, Cluster^ value)
 #define Native (static_cast<btAlignedObjectArray<btCollisionShape*>*>(_native))
 
 AlignedCollisionShapeArray::AlignedCollisionShapeArray()
-: AlignedObjectArray(new btAlignedObjectArray<btCollisionShape*>())
+: AlignedObjectArray(new btAlignedObjectArray<btCollisionShape*>(), true)
 {
 }
 
@@ -503,7 +513,7 @@ AlignedCollisionObjectArray::AlignedCollisionObjectArray(btCollisionObjectArray*
 }
 
 AlignedCollisionObjectArray::AlignedCollisionObjectArray()
-: AlignedObjectArray(new btCollisionObjectArray())
+: AlignedObjectArray(new btCollisionObjectArray(), true)
 {
 }
 
@@ -600,7 +610,7 @@ AlignedDbvtNodeArray::AlignedDbvtNodeArray(btAlignedObjectArray<const btDbvtNode
 }
 
 AlignedDbvtNodeArray::AlignedDbvtNodeArray()
-: AlignedObjectArray(new btAlignedObjectArray<btDbvtNode>)
+: AlignedObjectArray(new btAlignedObjectArray<btDbvtNode>, true)
 {
 }
 
@@ -697,7 +707,7 @@ AlignedStkNnArray::AlignedStkNnArray(btAlignedObjectArray<btDbvt::sStkNN>* stkNn
 }
 
 AlignedStkNnArray::AlignedStkNnArray()
-: AlignedObjectArray(new btAlignedObjectArray<btDbvt::sStkNN>)
+: AlignedObjectArray(new btAlignedObjectArray<btDbvt::sStkNN>, true)
 {
 }
 
@@ -781,7 +791,7 @@ AlignedStkNpsArray::AlignedStkNpsArray(btAlignedObjectArray<btDbvt::sStkNPS>* st
 }
 
 AlignedStkNpsArray::AlignedStkNpsArray()
-: AlignedObjectArray(new btAlignedObjectArray<btDbvt::sStkNPS>)
+: AlignedObjectArray(new btAlignedObjectArray<btDbvt::sStkNPS>, true)
 {
 }
 
@@ -868,7 +878,7 @@ AlignedFaceArray::AlignedFaceArray(btAlignedObjectArray<btSoftBody::Face>* faceA
 }
 
 AlignedFaceArray::AlignedFaceArray()
-: AlignedObjectArray(new btAlignedObjectArray<btSoftBody::Face>)
+: AlignedObjectArray(new btAlignedObjectArray<btSoftBody::Face>, true)
 {
 }
 
@@ -951,7 +961,7 @@ AlignedIntArray::AlignedIntArray(btAlignedObjectArray<int>* intArray)
 }
 
 AlignedIntArray::AlignedIntArray()
-: AlignedObjectArray(new btAlignedObjectArray<int>)
+: AlignedObjectArray(new btAlignedObjectArray<int>, true)
 {
 }
 
@@ -1058,7 +1068,7 @@ AlignedJointArray::AlignedJointArray(btSoftBody::tJointArray* jointArray)
 }
 
 AlignedJointArray::AlignedJointArray()
-: AlignedObjectArray(new btSoftBody::tLinkArray())
+: AlignedObjectArray(new btSoftBody::tLinkArray(), true)
 {
 }
 
@@ -1174,7 +1184,7 @@ AlignedManifoldArray::AlignedManifoldArray(btManifoldArray* manifoldArray)
 }
 
 AlignedManifoldArray::AlignedManifoldArray()
-: AlignedObjectArray(new btCollisionObjectArray())
+: AlignedObjectArray(new btCollisionObjectArray(), true)
 {
 }
 
@@ -1272,7 +1282,7 @@ AlignedIndexedMeshArray::AlignedIndexedMeshArray(btAlignedObjectArray<btIndexedM
 }
 
 AlignedIndexedMeshArray::AlignedIndexedMeshArray()
-: AlignedObjectArray(new btAlignedObjectArray<btIndexedMesh>())
+: AlignedObjectArray(new btAlignedObjectArray<btIndexedMesh>(), true)
 {
 }
 
@@ -1359,7 +1369,7 @@ AlignedLinkArray::AlignedLinkArray(btSoftBody::tLinkArray* linkArray)
 }
 
 AlignedLinkArray::AlignedLinkArray()
-: AlignedObjectArray(new btSoftBody::tLinkArray())
+: AlignedObjectArray(new btSoftBody::tLinkArray(), true)
 {
 }
 
@@ -1441,7 +1451,7 @@ AlignedMaterialArray::AlignedMaterialArray(btSoftBody::tMaterialArray* materialA
 }
 
 AlignedMaterialArray::AlignedMaterialArray()
-: AlignedObjectArray(new btSoftBody::tMaterialArray())
+: AlignedObjectArray(new btSoftBody::tMaterialArray(), true)
 {
 }
 
@@ -1537,7 +1547,7 @@ BulletSharp::SoftBody::AlignedNodeArray::AlignedNodeArray(btSoftBody::tNodeArray
 }
 
 BulletSharp::SoftBody::AlignedNodeArray::AlignedNodeArray()
-: AlignedObjectArray(new btSoftBody::tNodeArray())
+: AlignedObjectArray(new btSoftBody::tNodeArray(), true)
 {
 }
 
@@ -1618,7 +1628,7 @@ AlignedNodePtrArray::AlignedNodePtrArray(btAlignedObjectArray<btSoftBody::Node*>
 }
 
 AlignedNodePtrArray::AlignedNodePtrArray()
-: AlignedObjectArray(new btAlignedObjectArray<btSoftBody::Node*>())
+: AlignedObjectArray(new btAlignedObjectArray<btSoftBody::Node*>(), true)
 {
 }
 
@@ -1713,7 +1723,7 @@ AlignedNoteArray::AlignedNoteArray(btSoftBody::tNoteArray* noteArray)
 }
 
 AlignedNoteArray::AlignedNoteArray()
-: AlignedObjectArray(new btSoftBody::tNoteArray())
+: AlignedObjectArray(new btSoftBody::tNoteArray(), true)
 {
 }
 
@@ -1794,7 +1804,7 @@ AlignedPSolverArray::AlignedPSolverArray(btSoftBody::tPSolverArray* pSolverArray
 }
 
 AlignedPSolverArray::AlignedPSolverArray()
-: AlignedObjectArray(new btSoftBody::tPSolverArray())
+: AlignedObjectArray(new btSoftBody::tPSolverArray(), true)
 {
 }
 
@@ -1889,7 +1899,7 @@ AlignedRigidContactArray::AlignedRigidContactArray(btSoftBody::tRContactArray* r
 }
 
 AlignedRigidContactArray::AlignedRigidContactArray()
-: AlignedObjectArray(new btSoftBody::tRContactArray())
+: AlignedObjectArray(new btSoftBody::tRContactArray(), true)
 {
 }
 
@@ -1972,7 +1982,7 @@ AlignedScalarArray::AlignedScalarArray(btAlignedObjectArray<btScalar>* btScalarA
 }
 
 AlignedScalarArray::AlignedScalarArray()
-: AlignedObjectArray(new btAlignedObjectArray<btScalar>)
+: AlignedObjectArray(new btAlignedObjectArray<btScalar>, true)
 {
 }
 
@@ -2069,7 +2079,7 @@ BulletSharp::SoftBody::AlignedSoftBodyArray::AlignedSoftBodyArray(btSoftBody::tS
 }
 
 BulletSharp::SoftBody::AlignedSoftBodyArray::AlignedSoftBodyArray()
-: AlignedObjectArray(new btSoftBody::tSoftBodyArray())
+: AlignedObjectArray(new btSoftBody::tSoftBodyArray(), true)
 {
 }
 
@@ -2163,7 +2173,7 @@ AlignedSoftContactArray::AlignedSoftContactArray(btSoftBody::tSContactArray* sof
 }
 
 AlignedSoftContactArray::AlignedSoftContactArray()
-: AlignedObjectArray(new btSoftBody::tSContactArray())
+: AlignedObjectArray(new btSoftBody::tSContactArray(), true)
 {
 }
 
@@ -2245,7 +2255,7 @@ AlignedTetraArray::AlignedTetraArray(btAlignedObjectArray<btSoftBody::Tetra>* te
 }
 
 AlignedTetraArray::AlignedTetraArray()
-: AlignedObjectArray(new btAlignedObjectArray<btSoftBody::Tetra>)
+: AlignedObjectArray(new btAlignedObjectArray<btSoftBody::Tetra>, true)
 {
 }
 
@@ -2328,7 +2338,7 @@ AlignedTriangleMeshArray::AlignedTriangleMeshArray(btAlignedObjectArray<btTriang
 }
 
 AlignedTriangleMeshArray::AlignedTriangleMeshArray()
-: AlignedObjectArray(new btAlignedObjectArray<btTriangleMesh*>)
+: AlignedObjectArray(new btAlignedObjectArray<btTriangleMesh*>, true)
 {
 }
 
@@ -2405,7 +2415,7 @@ AlignedVector3Array::AlignedVector3Array(btAlignedObjectArray<btVector3>* vector
 }
 
 AlignedVector3Array::AlignedVector3Array()
-: AlignedObjectArray(new btAlignedObjectArray<btVector3>)
+: AlignedObjectArray(new btAlignedObjectArray<btVector3>, true)
 {
 }
 
@@ -2517,7 +2527,7 @@ AlignedVSolverArray::AlignedVSolverArray(btSoftBody::tVSolverArray* vSolverArray
 }
 
 AlignedVSolverArray::AlignedVSolverArray()
-: AlignedObjectArray(new btSoftBody::tVSolverArray())
+: AlignedObjectArray(new btSoftBody::tVSolverArray(), true)
 {
 }
 
@@ -2615,7 +2625,7 @@ AlignedWheelInfoArray::AlignedWheelInfoArray(btAlignedObjectArray<btWheelInfo>* 
 }
 
 AlignedWheelInfoArray::AlignedWheelInfoArray()
-: AlignedObjectArray(new btAlignedObjectArray<btWheelInfo>)
+: AlignedObjectArray(new btAlignedObjectArray<btWheelInfo>, true)
 {
 }
 
