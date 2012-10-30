@@ -9,9 +9,4 @@ SoftBodyRigidBodyCollisionConfiguration::SoftBodyRigidBodyCollisionConfiguration
 {
 }
 
-btSoftBodyRigidBodyCollisionConfiguration* SoftBodyRigidBodyCollisionConfiguration::UnmanagedPointer::get()
-{
-	return (btSoftBodyRigidBodyCollisionConfiguration*)DefaultCollisionConfiguration::UnmanagedPointer;
-}
-
 #endif

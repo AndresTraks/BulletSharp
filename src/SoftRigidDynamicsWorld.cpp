@@ -30,7 +30,7 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 #else
 		nullptr,
 #endif
-		collisionConfiguration->UnmanagedPointer))
+		collisionConfiguration->_native))
 {
 	_collisionConfiguration = collisionConfiguration;
 	_dispatcher = dispatcher;
@@ -48,7 +48,7 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 #else
 		nullptr,
 #endif
-		collisionConfiguration->UnmanagedPointer, softBodySolver->UnmanagedPointer))
+		collisionConfiguration->_native, softBodySolver->UnmanagedPointer))
 {
 	_collisionConfiguration = collisionConfiguration;
 	_dispatcher = dispatcher;

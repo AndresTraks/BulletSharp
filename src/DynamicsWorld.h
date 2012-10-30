@@ -79,11 +79,5 @@ namespace BulletSharp
 			Object^ get();
 			void set(Object^ value);
 		}
-
-	internal:
-		property btDynamicsWorld* UnmanagedPointer
-		{
-			btDynamicsWorld* get() new;
-		}
 	};
 };

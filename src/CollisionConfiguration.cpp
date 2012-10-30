@@ -9,7 +9,7 @@
 
 CollisionConfiguration::CollisionConfiguration(btCollisionConfiguration* collisionConfiguration)
 {
-	_collisionConfiguration = collisionConfiguration;
+	_native = collisionConfiguration;
 }
 
 CollisionConfiguration::~CollisionConfiguration()
@@ -19,42 +19,33 @@ CollisionConfiguration::~CollisionConfiguration()
 
 CollisionConfiguration::!CollisionConfiguration()
 {
-	delete _collisionConfiguration;
-	_collisionConfiguration = NULL;
+	delete _native;
+	_native = NULL;
 }
 
 CollisionAlgorithmCreateFunc^ CollisionConfiguration::GetCollisionAlgorithmCreateFunc(BroadphaseNativeType proxyType0, BroadphaseNativeType proxyType1)
 {
-	return gcnew CollisionAlgorithmCreateFunc(_collisionConfiguration->getCollisionAlgorithmCreateFunc((int)proxyType0, (int)proxyType1));
+	return gcnew CollisionAlgorithmCreateFunc(_native->getCollisionAlgorithmCreateFunc((int)proxyType0, (int)proxyType1));
 }
 
 bool CollisionConfiguration::IsDisposed::get()
 {
-	return (_collisionConfiguration == NULL);
+	return (_native == NULL);
 }
 
 #ifndef DISABLE_UNCOMMON
 PoolAllocator^ CollisionConfiguration::CollisionAlgorithmPool::get()
 {
-	return gcnew PoolAllocator(_collisionConfiguration->getCollisionAlgorithmPool());
+	return gcnew PoolAllocator(_native->getCollisionAlgorithmPool());
 }
 
 PoolAllocator^ CollisionConfiguration::PersistentManifoldPool::get()
 {
-	return gcnew PoolAllocator(_collisionConfiguration->getPersistentManifoldPool());
+	return gcnew PoolAllocator(_native->getPersistentManifoldPool());
 }
 #endif
 
 StackAlloc^ CollisionConfiguration::StackAllocator::get()
 {
-	return gcnew StackAlloc(_collisionConfiguration->getStackAllocator());
-}
-
-btCollisionConfiguration* CollisionConfiguration::UnmanagedPointer::get()
-{
-	return _collisionConfiguration;
-}
-void CollisionConfiguration::UnmanagedPointer::set( btCollisionConfiguration* value )
-{
-	_collisionConfiguration = value;
+	return gcnew StackAlloc(_native->getStackAllocator());
 }

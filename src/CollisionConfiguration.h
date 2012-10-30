@@ -10,10 +10,8 @@ namespace BulletSharp
 
 	public ref class CollisionConfiguration
 	{
-	private:
-		btCollisionConfiguration* _collisionConfiguration;
-
 	internal:
+		btCollisionConfiguration* _native;
 		CollisionConfiguration(btCollisionConfiguration* collisionConfiguration);
 
 	public:
@@ -44,13 +42,6 @@ namespace BulletSharp
 		property StackAlloc^ StackAllocator
 		{
 			StackAlloc^ get();
-		}
-
-	internal:
-		property btCollisionConfiguration* UnmanagedPointer
-		{
-			virtual btCollisionConfiguration* get();
-			void set(btCollisionConfiguration* value);
 		}
 	};
 };

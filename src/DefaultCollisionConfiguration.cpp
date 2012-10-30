@@ -9,94 +9,87 @@
 
 DefaultCollisionConstructionInfo::DefaultCollisionConstructionInfo()
 {
-	_constructionInfo = new btDefaultCollisionConstructionInfo();
+	_native = new btDefaultCollisionConstructionInfo();
 }
 
 #ifndef DISABLE_UNCOMMON
 PoolAllocator^ DefaultCollisionConstructionInfo::CollisionAlgorithmPool::get()
 {
-	return gcnew PoolAllocator(_constructionInfo->m_collisionAlgorithmPool);
+	return gcnew PoolAllocator(_native->m_collisionAlgorithmPool);
 }
 void DefaultCollisionConstructionInfo::CollisionAlgorithmPool::set(PoolAllocator^ value)
 {
-	_constructionInfo->m_collisionAlgorithmPool = value->UnmanagedPointer;
+	_native->m_collisionAlgorithmPool = value->UnmanagedPointer;
 }
 #endif
 
 int DefaultCollisionConstructionInfo::CustomCollisionAlgorithmMaxElementSize::get()
 {
-	return _constructionInfo->m_customCollisionAlgorithmMaxElementSize;
+	return _native->m_customCollisionAlgorithmMaxElementSize;
 }
 void DefaultCollisionConstructionInfo::CustomCollisionAlgorithmMaxElementSize::set(int value)
 {
-	_constructionInfo->m_customCollisionAlgorithmMaxElementSize = value;
+	_native->m_customCollisionAlgorithmMaxElementSize = value;
 }
 
 int DefaultCollisionConstructionInfo::DefaultMaxCollisionAlgorithmPoolSize::get()
 {
-	return _constructionInfo->m_defaultMaxCollisionAlgorithmPoolSize;
+	return _native->m_defaultMaxCollisionAlgorithmPoolSize;
 }
 void DefaultCollisionConstructionInfo::DefaultMaxCollisionAlgorithmPoolSize::set(int value)
 {
-	_constructionInfo->m_defaultMaxCollisionAlgorithmPoolSize = value;
+	_native->m_defaultMaxCollisionAlgorithmPoolSize = value;
 }
 
 int DefaultCollisionConstructionInfo::DefaultMaxPersistentManifoldPoolSize::get()
 {
-	return _constructionInfo->m_defaultMaxPersistentManifoldPoolSize;
+	return _native->m_defaultMaxPersistentManifoldPoolSize;
 }
 void DefaultCollisionConstructionInfo::DefaultMaxPersistentManifoldPoolSize::set(int value)
 {
-	_constructionInfo->m_defaultMaxPersistentManifoldPoolSize = value;
+	_native->m_defaultMaxPersistentManifoldPoolSize = value;
 }
 
 int DefaultCollisionConstructionInfo::DefaultStackAllocatorSize::get()
 {
-	return _constructionInfo->m_defaultStackAllocatorSize;
+	return _native->m_defaultStackAllocatorSize;
 }
 void DefaultCollisionConstructionInfo::DefaultStackAllocatorSize::set(int value)
 {
-	_constructionInfo->m_defaultStackAllocatorSize = value;
+	_native->m_defaultStackAllocatorSize = value;
 }
 
 #ifndef DISABLE_UNCOMMON
 PoolAllocator^ DefaultCollisionConstructionInfo::PersistentManifoldPool::get()
 {
-	return gcnew PoolAllocator(_constructionInfo->m_persistentManifoldPool);
+	return gcnew PoolAllocator(_native->m_persistentManifoldPool);
 }
 void DefaultCollisionConstructionInfo::PersistentManifoldPool::set(PoolAllocator^ value)
 {
-	_constructionInfo->m_persistentManifoldPool = value->UnmanagedPointer;
+	_native->m_persistentManifoldPool = value->UnmanagedPointer;
 }
 #endif
 
 StackAlloc^ DefaultCollisionConstructionInfo::StackAllocator::get()
 {
-	return gcnew StackAlloc(_constructionInfo->m_stackAlloc);
+	return gcnew StackAlloc(_native->m_stackAlloc);
 }
 void DefaultCollisionConstructionInfo::StackAllocator::set(StackAlloc^ value)
 {
-	_constructionInfo->m_stackAlloc = value->UnmanagedPointer;
+	_native->m_stackAlloc = value->UnmanagedPointer;
 }
 
 int DefaultCollisionConstructionInfo::UseEpaPenetrationAlgorithm::get()
 {
-	return _constructionInfo->m_useEpaPenetrationAlgorithm;
+	return _native->m_useEpaPenetrationAlgorithm;
 }
 void DefaultCollisionConstructionInfo::UseEpaPenetrationAlgorithm::set(int value)
 {
-	_constructionInfo->m_useEpaPenetrationAlgorithm = value;
+	_native->m_useEpaPenetrationAlgorithm = value;
 }
 
-btDefaultCollisionConstructionInfo* DefaultCollisionConstructionInfo::UnmanagedPointer::get()
-{
-	return _constructionInfo;
-}
-void DefaultCollisionConstructionInfo::UnmanagedPointer::set( btDefaultCollisionConstructionInfo* value )
-{
-	_constructionInfo = value;
-}
 
+#define Native static_cast<btDefaultCollisionConfiguration*>(_native)
 
 DefaultCollisionConfiguration::DefaultCollisionConfiguration(btDefaultCollisionConfiguration* conf)
 : CollisionConfiguration(conf)
@@ -104,7 +97,7 @@ DefaultCollisionConfiguration::DefaultCollisionConfiguration(btDefaultCollisionC
 }
 
 DefaultCollisionConfiguration::DefaultCollisionConfiguration(DefaultCollisionConstructionInfo^ constructionInfo)
-: CollisionConfiguration(new btDefaultCollisionConfiguration(*constructionInfo->UnmanagedPointer))
+: CollisionConfiguration(new btDefaultCollisionConfiguration(*constructionInfo->_native))
 {
 }
 
@@ -115,39 +108,34 @@ DefaultCollisionConfiguration::DefaultCollisionConfiguration()
 
 void DefaultCollisionConfiguration::SetConvexConvexMultipointIterations()
 {
-	UnmanagedPointer->setConvexConvexMultipointIterations();
+	Native->setConvexConvexMultipointIterations();
 }
 
 void DefaultCollisionConfiguration::SetConvexConvexMultipointIterations(int numPerturbationIterations)
 {
-	UnmanagedPointer->setConvexConvexMultipointIterations(numPerturbationIterations);
+	Native->setConvexConvexMultipointIterations(numPerturbationIterations);
 }
 
 void DefaultCollisionConfiguration::SetConvexConvexMultipointIterations(
 	int numPerturbationIterations, int minimumPointsPerturbationThreshold)
 {
-	UnmanagedPointer->setConvexConvexMultipointIterations(
+	Native->setConvexConvexMultipointIterations(
 		numPerturbationIterations, minimumPointsPerturbationThreshold);
 }
 
 void DefaultCollisionConfiguration::SetPlaneConvexMultipointIterations()
 {
-	UnmanagedPointer->setPlaneConvexMultipointIterations();
+	Native->setPlaneConvexMultipointIterations();
 }
 
 void DefaultCollisionConfiguration::SetPlaneConvexMultipointIterations(int numPerturbationIterations)
 {
-	UnmanagedPointer->setPlaneConvexMultipointIterations(numPerturbationIterations);
+	Native->setPlaneConvexMultipointIterations(numPerturbationIterations);
 }
 
 void DefaultCollisionConfiguration::SetPlaneConvexMultipointIterations(
 	int numPerturbationIterations, int minimumPointsPerturbationThreshold)
 {
-	UnmanagedPointer->setPlaneConvexMultipointIterations(
+	Native->setPlaneConvexMultipointIterations(
 		numPerturbationIterations, minimumPointsPerturbationThreshold);
-}
-
-btDefaultCollisionConfiguration* DefaultCollisionConfiguration::UnmanagedPointer::get()
-{
-	return (btDefaultCollisionConfiguration*)CollisionConfiguration::UnmanagedPointer;
 }

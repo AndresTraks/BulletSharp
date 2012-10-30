@@ -71,28 +71,42 @@ void DynamicsWorld::RemoveRigidBody(RigidBody^ rigidBody)
 
 void callback(btDynamicsWorld* world, btScalar timeStep)
 {
-	DynamicsWorld^ dynamicsWorld = static_cast<DynamicsWorld^>(CollisionWorld::GetManaged(world));
-	dynamicsWorld->_callback(dynamicsWorld, timeStep);
+	void* userInfo = world->getWorldUserInfo();
+	WeakReference^ worldWeakRef = static_cast<WeakReference^>(VoidPtrToGCHandle(userInfo).Target);
+	DynamicsWorld^ dynamicsWorld = static_cast<DynamicsWorld^>(worldWeakRef->Target);
+	if (dynamicsWorld != nullptr) {
+		dynamicsWorld->_callback(dynamicsWorld, timeStep);
+	}
 }
 
 void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo, bool isPreTick)
 {
 	_callback = cb;
 	_userObject = worldUserInfo;
-	Native->setInternalTickCallback(callback, Native->getWorldUserInfo(), isPreTick);
+
+	void* nativeUserInfo = Native->getWorldUserInfo();
+	if (cb != nullptr) {
+		if (!nativeUserInfo) {
+			GCHandle handle = GCHandle::Alloc(gcnew WeakReference(this));
+			nativeUserInfo = GCHandleToVoidPtr(handle);
+		}
+		Native->setInternalTickCallback(callback, nativeUserInfo, isPreTick);
+	} else {
+		if (nativeUserInfo) {
+			VoidPtrToGCHandle(nativeUserInfo).Free();
+		}
+		Native->setInternalTickCallback(0, 0, isPreTick);
+	}
 }
 
 void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo)
 {
-	_callback = cb;
-	_userObject = worldUserInfo;
-	Native->setInternalTickCallback(callback, Native->getWorldUserInfo());
+	SetInternalTickCallback(cb, worldUserInfo, false);
 }
 
 void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb)
 {
-	_callback = cb;
-	Native->setInternalTickCallback(callback, Native->getWorldUserInfo());
+	SetInternalTickCallback(cb, _userObject, false);
 }
 
 int DynamicsWorld::StepSimulation(btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep)
@@ -167,9 +181,4 @@ void DynamicsWorld::WorldUserInfo::set(Object^ value)
 DynamicsWorldType DynamicsWorld::WorldType::get()
 {
 	return (DynamicsWorldType) Native->getWorldType();
-}
-
-btDynamicsWorld* DynamicsWorld::UnmanagedPointer::get()
-{
-	return (btDynamicsWorld*)CollisionWorld::UnmanagedPointer;
 }

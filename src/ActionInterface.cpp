@@ -43,5 +43,5 @@ void ActionInterface::DebugDraw(IDebugDraw^ debugDrawer)
 
 void ActionInterface::UpdateAction(CollisionWorld^ collisionWorld, btScalar deltaTimeStep)
 {
-	_native->updateAction(collisionWorld->UnmanagedPointer, deltaTimeStep);
+	_native->updateAction(collisionWorld->_native, deltaTimeStep);
 }

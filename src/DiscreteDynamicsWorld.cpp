@@ -34,7 +34,7 @@ DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher
 	#else
 	0,
 	#endif
-	collisionConfiguration->UnmanagedPointer))
+	collisionConfiguration->_native))
 {
 	_collisionConfiguration = collisionConfiguration;
 	_dispatcher = dispatcher;

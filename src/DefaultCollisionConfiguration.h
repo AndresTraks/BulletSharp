@@ -6,8 +6,8 @@ namespace BulletSharp
 {
 	public ref class DefaultCollisionConstructionInfo
 	{
-	private:
-		btDefaultCollisionConstructionInfo* _constructionInfo;
+	internal:
+		btDefaultCollisionConstructionInfo* _native;
 
 	public:
 		DefaultCollisionConstructionInfo();
@@ -63,13 +63,6 @@ namespace BulletSharp
 			int get();
 			void set(int value);
 		}
-
-	internal:
-		property btDefaultCollisionConstructionInfo* UnmanagedPointer
-		{
-			virtual btDefaultCollisionConstructionInfo* get();
-			void set(btDefaultCollisionConstructionInfo* value);
-		}
 	};
 
 	public ref class DefaultCollisionConfiguration : CollisionConfiguration
@@ -87,11 +80,5 @@ namespace BulletSharp
 		void SetPlaneConvexMultipointIterations();
 		void SetPlaneConvexMultipointIterations(int numPerturbationIterations);
 		void SetPlaneConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold);
-
-	internal:
-		property btDefaultCollisionConfiguration* UnmanagedPointer
-		{
-			btDefaultCollisionConfiguration* get() new;
-		}
 	};
 };

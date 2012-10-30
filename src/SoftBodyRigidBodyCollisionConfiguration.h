@@ -8,11 +8,5 @@ namespace BulletSharp
 	{
 	public:
 		SoftBodyRigidBodyCollisionConfiguration();
-
-	internal:
-		property btSoftBodyRigidBodyCollisionConfiguration* UnmanagedPointer
-		{
-			btSoftBodyRigidBodyCollisionConfiguration* get() new;
-		}
 	};
 };

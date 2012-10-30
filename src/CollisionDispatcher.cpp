@@ -30,7 +30,7 @@ CollisionDispatcher::CollisionDispatcher(btCollisionDispatcher* dispatcher)
 }
 
 CollisionDispatcher::CollisionDispatcher(BulletSharp::CollisionConfiguration^ collisionConfiguration)
-: Dispatcher(new btCollisionDispatcherWrapper(collisionConfiguration->UnmanagedPointer))
+: Dispatcher(new btCollisionDispatcherWrapper(collisionConfiguration->_native))
 {
 	_collisionConfiguration = collisionConfiguration;
 }
@@ -76,7 +76,7 @@ CollisionConfiguration^ CollisionDispatcher::CollisionConfiguration::get()
 }
 void CollisionDispatcher::CollisionConfiguration::set(BulletSharp::CollisionConfiguration^ value)
 {
-	UnmanagedPointer->setCollisionConfiguration(value->UnmanagedPointer);
+	UnmanagedPointer->setCollisionConfiguration(value->_native);
 	_collisionConfiguration = value;
 }
 

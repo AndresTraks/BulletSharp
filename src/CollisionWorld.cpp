@@ -604,12 +604,12 @@ void CollisionWorld::AllHitsRayResultCallback::RayToWorld::set(Vector3 value)
 
 CollisionWorld::CollisionWorld(btCollisionWorld* world)
 {
-	UnmanagedPointer = world;
+	_native = world;
 }
 
 CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, CollisionConfiguration^ collisionConfiguration)
 {
-	UnmanagedPointer = new btCollisionWorld(dispatcher->_native, pairCache->_native, collisionConfiguration->UnmanagedPointer);
+	_native = new btCollisionWorld(dispatcher->_native, pairCache->_native, collisionConfiguration->_native);
 	_collisionConfiguration = collisionConfiguration;
 	_dispatcher = dispatcher;
 	_broadphase = pairCache;
@@ -716,7 +716,7 @@ void CollisionWorld::DebugDrawObject(Matrix worldTransform, CollisionShape^ shap
 
 void CollisionWorld::DebugDrawWorld()
 {
-	UnmanagedPointer->debugDrawWorld();
+	_native->debugDrawWorld();
 }
 #endif
 
@@ -802,39 +802,6 @@ void CollisionWorld::Serialize(BulletSharp::Serializer^ serializer)
 }
 #endif
 
-CollisionWorld^ CollisionWorld::GetManaged(btCollisionWorld* collisionWorld)
-{
-	if (collisionWorld == 0)
-		return nullptr;
-
-	btDynamicsWorld* dynamicsWorld = static_cast<btDynamicsWorld*>(collisionWorld);
-	if (dynamicsWorld == 0)
-	{
-		return gcnew CollisionWorld(collisionWorld);
-	}
-
-	void* userObj = dynamicsWorld->getWorldUserInfo();
-	if (userObj)
-		return static_cast<DynamicsWorld^>(VoidPtrToGCHandle(userObj).Target);
-
-	// If we reach here, then collisionObject was created from within unmanaged code,
-	// mark the wrapper object we create here so we don't try to destroy it later.
-/*
-#ifndef DISABLE_SOFTBODY
-	btSoftRigidDynamicsWorld* softWorld = static_cast<btSoftRigidDynamicsWorld*>(dynamicsWorld);
-	if (softWorld)
-	{
-		SoftBody::SoftRigidDynamicsWorld^ world = gcnew SoftBody::SoftRigidDynamicsWorld(softWorld);
-		//world->_doesNotOwnObject = true;
-		return world;
-	}
-#endif
-*/
-	DynamicsWorld^ world = gcnew DynamicsWorld(dynamicsWorld);
-	//colObject->_doesNotOwnObject = true;
-	return world;
-}
-
 BroadphaseInterface^ CollisionWorld::Broadphase::get()
 {
 	return _broadphase;
@@ -893,26 +860,6 @@ int CollisionWorld::NumCollisionObjects::get()
 OverlappingPairCache^ CollisionWorld::PairCache::get()
 {
 	return dynamic_cast<OverlappingPairCache^>(OverlappingPairCache::GetManaged(_native->getPairCache()));
-}
-
-btCollisionWorld* CollisionWorld::UnmanagedPointer::get()
-{
-	return _native;
-}
-void CollisionWorld::UnmanagedPointer::set(btCollisionWorld* value)
-{
-	_native = value;
-
-	btDynamicsWorld* dynamicsWorld = static_cast<btDynamicsWorld*>(value);
-	if (dynamicsWorld != 0)
-	{
-		if (dynamicsWorld->getWorldUserInfo() == 0)
-		{
-			GCHandle handle = GCHandle::Alloc(this);
-			void* obj = GCHandleToVoidPtr(handle);
-			dynamicsWorld->setWorldUserInfo(obj);
-		}
-	}
 }
 
 
