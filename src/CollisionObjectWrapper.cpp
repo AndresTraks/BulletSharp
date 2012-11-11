@@ -10,11 +10,11 @@ CollisionObjectWrapper::CollisionObjectWrapper(btCollisionObjectWrapper* collisi
 }
 
 /*
-CollisionObjectWrapper::CollisionObjectWrapper(CollisionObjectWrapper^ parent, CollisionShape^ shape, CollisionObject^ collisionObject, Matrix worldTransform)
+CollisionObjectWrapper::CollisionObjectWrapper(CollisionObjectWrapper^ parent, CollisionShape^ shape, CollisionObject^ collisionObject, Matrix worldTransform, int partId, int index)
 {
 	btTransform* worldTransformTemp = Math::MatrixToBtTransform(worldTransform);
 	_native = &btCollisionObjectWrapper(GetUnmanagedNullable(parent), GetUnmanagedNullable(shape),
-		GetUnmanagedNullable(collisionObject), *worldTransformTemp);
+		GetUnmanagedNullable(collisionObject), *worldTransformTemp, partId, index);
 	delete worldTransformTemp;
 }
 
@@ -58,6 +58,24 @@ CollisionObject^ CollisionObjectWrapper::CollisionObject::get()
 CollisionShape^ CollisionObjectWrapper::CollisionShape::get()
 {
 	return BulletSharp::CollisionShape::GetManaged((btCollisionShape*)_native->getCollisionShape());
+}
+
+int CollisionObjectWrapper::Index::get()
+{
+	return _native->m_index;
+}
+void CollisionObjectWrapper::Index::set(int value)
+{
+	_native->m_index = value;
+}
+
+int CollisionObjectWrapper::PartID::get()
+{
+	return _native->m_partId;
+}
+void CollisionObjectWrapper::PartID::set(int value)
+{
+	_native->m_partId = value;
 }
 
 Matrix CollisionObjectWrapper::WorldTransform::get()

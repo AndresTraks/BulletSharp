@@ -101,6 +101,7 @@ namespace BulletSharp
 #endif
 
 			void DeleteAllData();
+			bool LoadFile(String^ fileName, String^ preSwapFilenameOut);
 			bool LoadFile(String^ fileName);
 			bool LoadFileFromMemory(array<Byte>^ memoryBuffer);
 			//bool LoadFileFromMemory(Parse::BulletFile^ file);

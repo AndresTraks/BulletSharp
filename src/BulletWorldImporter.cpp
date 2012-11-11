@@ -374,6 +374,16 @@ void Serialize::BulletWorldImporter::DeleteAllData()
 	_importer->deleteAllData();
 }
 
+bool Serialize::BulletWorldImporter::LoadFile(String^ filename, String^ preSwapFilenameOut)
+{
+	const char* filenameTemp = StringConv::ManagedToUnmanaged(filename);
+	const char* preSwapFilenameOutTemp = StringConv::ManagedToUnmanaged(preSwapFilenameOut);
+	bool ret = _importer->loadFile(filenameTemp, preSwapFilenameOutTemp);
+	StringConv::FreeUnmanagedString(filenameTemp);
+	StringConv::FreeUnmanagedString(preSwapFilenameOutTemp);
+	return ret;
+}
+
 bool Serialize::BulletWorldImporter::LoadFile(String^ filename)
 {
 	const char* filenameTemp = StringConv::ManagedToUnmanaged(filename);

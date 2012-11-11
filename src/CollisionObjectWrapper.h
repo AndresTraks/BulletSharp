@@ -30,7 +30,7 @@ namespace BulletSharp
 */
 
 	public:
-		//CollisionObjectWrapper(CollisionObjectWrapper^ parent, CollisionShape^ shape, CollisionObject^ collisionObject, Matrix worldTransform);
+		//CollisionObjectWrapper(CollisionObjectWrapper^ parent, CollisionShape^ shape, CollisionObject^ collisionObject, Matrix worldTransform, int partId, int index);
 
 		void GetWorldTransform([Out] Matrix% outTransform);
 /*
@@ -47,6 +47,18 @@ namespace BulletSharp
 		property CollisionShape^ CollisionShape
 		{
 			BulletSharp::CollisionShape^ get();
+		}
+
+		property int Index
+		{
+			int get();
+			void set(int value);
+		}
+
+		property int PartID
+		{
+			int get();
+			void set(int value);
 		}
 
 		property Matrix WorldTransform
