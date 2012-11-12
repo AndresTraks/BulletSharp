@@ -310,7 +310,6 @@ namespace BulletSharp
 #ifndef DISABLE_SOFTBODY
 	namespace SoftBody
 	{
-		[Flags]
 		public enum class PSolver
 		{
 			Linear = btSoftBody::ePSolver::Linear,

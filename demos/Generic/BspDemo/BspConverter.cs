@@ -27,7 +27,8 @@ namespace BspDemo
 
                     if (brush.ShaderNum != -1)
                     {
-                        if ((bspLoader.Shaders[brush.ShaderNum].ContentFlags & ContentFlags.Solid) == ContentFlags.Solid)
+                        ContentFlags flags = bspLoader.IsVbsp ? (ContentFlags)brush.ShaderNum : bspLoader.Shaders[brush.ShaderNum].ContentFlags;
+                        if ((flags & ContentFlags.Solid) == ContentFlags.Solid)
                         {
                             brush.ShaderNum = -1;
 

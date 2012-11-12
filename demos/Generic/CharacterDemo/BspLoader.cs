@@ -65,7 +65,9 @@ namespace CharacterDemo
     public enum ContentFlags
     {
         Solid = 1,
-        AreaPortal = 0x8000
+        AreaPortal = 0x8000,
+        MonsterClip = 0x20000,
+        Detail = 0x8000000
     }
 
     public class BspShader
@@ -75,7 +77,7 @@ namespace CharacterDemo
         public ContentFlags ContentFlags;
     }
 
-    public enum BspLumpType
+    public enum IBspLumpType
     {
         Entities = 0,
         Shaders,
@@ -95,6 +97,67 @@ namespace CharacterDemo
         VisData
     }
 
+    public enum VBspLumpType
+    {
+        Entities = 0,
+        Planes,
+        Texdata,
+        Vertexes,
+        Visibility,
+        Nodes,
+        Texinfo,
+        Faces,
+        Lighting,
+        Occlusion,
+        Leafs,
+        Unused1,
+        Edges,
+        Surfedges,
+        Models,
+        Worldlights,
+        LeafFaces,
+        LeafBrushes,
+        Brushes,
+        BrushSides,
+        Area,
+        AreaPortals,
+        Portals,
+        Clusters,
+        PortalVerts,
+        ClusterPortals,
+        Dispinfo,
+        OriginalFaces,
+        Unused2,
+        PhysCollide,
+        VertNormals,
+        VertNormalIndices,
+        DispLightmapAlphas,
+        DispVerts,
+        DispLightmapSamplePos,
+        GameLump,
+        LeafWaterData,
+        Primitives,
+        PrimVerts,
+        PrimIndices,
+        Pakfile,
+        ClipPortalVerts,
+        Cubemaps,
+        TexdataStringData,
+        TexdataStringTable,
+        Overlays,
+        LeafMinDistToWater,
+        FaceMacroTextureInfo,
+        DispTris,
+        PhysCollideSurface,
+        Unused3,
+        Unused4,
+        Unused5,
+        LightingHDR,
+        WorldlightsHDR,
+        LeaflightHDR1,
+        LeaflightHDR2
+    }
+
     public class BspLoader
     {
         public BspBrush[] Brushes { get; set; }
@@ -104,6 +167,7 @@ namespace CharacterDemo
         public int[] LeafBrushes { get; set; }
         public BspPlane[] Planes { get; set; }
         public List<BspShader> Shaders { get; set; }
+        public bool IsVbsp { get; private set; }
 
         public bool LoadBspFile(string filename)
         {
@@ -114,26 +178,51 @@ namespace CharacterDemo
         {
             BinaryReader reader = new BinaryReader(buffer);
 
-            BspLump[] lumps = new BspLump[17];
-
 
             // read header
             string id = Encoding.ASCII.GetString(reader.ReadBytes(4), 0, 4);
             int version = reader.ReadInt32();
 
-            if (id != "IBSP" || version != 0x2E)
+            if (id != "IBSP" && id != "VBSP")
                 return false;
 
+            int nHeaderLumps;
+
+            if (id == "IBSP")
+            {
+                if (version != 0x2E)
+                {
+                    return false;
+                }
+                nHeaderLumps = 17;
+            }
+            else// if (id == "VBSP")
+            {
+                if (version != 0x14)
+                {
+                    return false;
+                }
+                nHeaderLumps = 64;
+                IsVbsp = true;
+            }
+
+            BspLump[] lumps = new BspLump[nHeaderLumps];
             for (int i = 0; i < lumps.Length; i++)
             {
                 lumps[i].Offset = reader.ReadInt32();
                 lumps[i].Length = reader.ReadInt32();
+                if (IsVbsp)
+                {
+                    reader.ReadInt32(); // lump format version
+                    reader.ReadInt32(); // lump ident code
+                }
             }
 
 
             // read brushes
-            buffer.Position = lumps[(int)BspLumpType.Brushes].Offset;
-            int length = lumps[(int)BspLumpType.Brushes].Length / Marshal.SizeOf(typeof(BspBrush));
+            int lumpHeaderOffset = IsVbsp ? (int)VBspLumpType.Brushes : (int)IBspLumpType.Brushes;
+            buffer.Position = lumps[lumpHeaderOffset].Offset;
+            int length = lumps[lumpHeaderOffset].Length / Marshal.SizeOf(typeof(BspBrush));
             Brushes = new BspBrush[length];
 
             for (int i = 0; i < length; i++)
@@ -144,21 +233,32 @@ namespace CharacterDemo
             }
 
             // read brush sides
-            buffer.Position = lumps[(int)BspLumpType.BrushSides].Offset;
-            length = lumps[(int)BspLumpType.BrushSides].Length / Marshal.SizeOf(typeof(BspBrushSide));
+            lumpHeaderOffset = IsVbsp ? (int)VBspLumpType.BrushSides : (int)IBspLumpType.BrushSides;
+            buffer.Position = lumps[lumpHeaderOffset].Offset;
+            length = lumps[lumpHeaderOffset].Length / Marshal.SizeOf(typeof(BspBrushSide));
             BrushSides = new BspBrushSide[length];
 
             for (int i = 0; i < length; i++)
             {
-                BrushSides[i].PlaneNum = reader.ReadInt32();
-                BrushSides[i].ShaderNum = reader.ReadInt32();
+                if (IsVbsp)
+                {
+                    BrushSides[i].PlaneNum = reader.ReadUInt16();
+                    reader.ReadInt16(); // texinfo
+                    BrushSides[i].ShaderNum = reader.ReadInt16();
+                    reader.ReadInt16(); // bevel
+                }
+                else
+                {
+                    BrushSides[i].PlaneNum = reader.ReadInt32();
+                    BrushSides[i].ShaderNum = reader.ReadInt32();
+                }
             }
 
 
             // read entities
             Entities = new List<BspEntity>();
-            buffer.Position = lumps[(int)BspLumpType.Entities].Offset;
-            length = lumps[(int)BspLumpType.Entities].Length;
+            buffer.Position = lumps[(int)IBspLumpType.Entities].Offset;
+            length = lumps[(int)IBspLumpType.Entities].Length;
 
             byte[] entityBytes = new byte[length];
             reader.Read(entityBytes, 0, length);
@@ -184,21 +284,31 @@ namespace CharacterDemo
 
                     default:
                         string[] keyValue = entity.Trim('\"').Split(new[] { "\" \"" }, 2, 0);
-                        if (keyValue[0] == "classname")
+                        switch (keyValue[0])
                         {
-                            bspEntity.ClassName = keyValue[1];
-                        }
-                        else if (keyValue[0] == "origin")
-                        {
-                            string[] originStrings = keyValue[1].Split(' ');
-                            bspEntity.Origin = new Vector3(
-                                float.Parse(originStrings[0], CultureInfo.InvariantCulture),
-                                float.Parse(originStrings[1], CultureInfo.InvariantCulture),
-                                float.Parse(originStrings[2], CultureInfo.InvariantCulture));
-                        }
-                        else
-                        {
-                            bspEntity.KeyValues.Add(keyValue[0], keyValue[1]);
+                            case "classname":
+                                bspEntity.ClassName = keyValue[1];
+                                break;
+                            case "origin":
+                                string[] originStrings = keyValue[1].Split(' ');
+                                bspEntity.Origin = new Vector3(
+                                    float.Parse(originStrings[0], CultureInfo.InvariantCulture),
+                                    float.Parse(originStrings[1], CultureInfo.InvariantCulture),
+                                    float.Parse(originStrings[2], CultureInfo.InvariantCulture));
+                                break;
+                            default:
+                                if (!bspEntity.KeyValues.ContainsKey(keyValue[0]))
+                                {
+                                    if (keyValue.Length == 1)
+                                    {
+                                        bspEntity.KeyValues.Add(keyValue[0], "");
+                                    }
+                                    else
+                                    {
+                                        bspEntity.KeyValues.Add(keyValue[0], keyValue[1]);
+                                    }
+                                }
+                                break;
                         }
                         break;
                 }
@@ -206,46 +316,89 @@ namespace CharacterDemo
 
 
             // read leaves
-            buffer.Position = lumps[(int)BspLumpType.Leaves].Offset;
-            length = lumps[(int)BspLumpType.Leaves].Length / Marshal.SizeOf(typeof(BspLeaf));
+            lumpHeaderOffset = IsVbsp ? (int)VBspLumpType.Leafs : (int)IBspLumpType.Leaves;
+            buffer.Position = lumps[lumpHeaderOffset].Offset;
+            length = lumps[lumpHeaderOffset].Length;
+            length /= IsVbsp ? 32 : Marshal.SizeOf(typeof(BspLeaf));
             Leaves = new BspLeaf[length];
 
             for (int i = 0; i < length; i++)
             {
-                Leaves[i].Cluster = reader.ReadInt32();
-                Leaves[i].Area = reader.ReadInt32();
+                if (IsVbsp)
+                {
+                    reader.ReadInt32(); // contents
 
-                //Swap Y and Z; invert Z
-                Leaves[i].Min.X = reader.ReadInt32();
-                Leaves[i].Min.Z = -reader.ReadInt32();
-                Leaves[i].Min.Y = reader.ReadInt32();
+                    Leaves[i].Cluster = reader.ReadInt16();
+                    Leaves[i].Area = reader.ReadInt16();
 
-                //Swap Y and Z; invert Z
-                Leaves[i].Max.X = reader.ReadInt32();
-                Leaves[i].Max.Z = -reader.ReadInt32();
-                Leaves[i].Max.Y = reader.ReadInt32();
+                    //Swap Y and Z; invert Z
+                    Leaves[i].Min.X = reader.ReadInt16();
+                    Leaves[i].Min.Z = -reader.ReadInt16();
+                    Leaves[i].Min.Y = reader.ReadInt16();
 
-                Leaves[i].FirstLeafFace = reader.ReadInt32();
-                Leaves[i].NumLeafFaces = reader.ReadInt32();
-                Leaves[i].FirstLeafBrush = reader.ReadInt32();
-                Leaves[i].NumLeafBrushes = reader.ReadInt32();
+                    //Swap Y and Z; invert Z
+                    Leaves[i].Max.X = reader.ReadInt16();
+                    Leaves[i].Max.Z = -reader.ReadInt16();
+                    Leaves[i].Max.Y = reader.ReadInt16();
+
+                    Leaves[i].FirstLeafFace = reader.ReadUInt16();
+                    Leaves[i].NumLeafFaces = reader.ReadUInt16();
+                    Leaves[i].FirstLeafBrush = reader.ReadUInt16();
+                    Leaves[i].NumLeafBrushes = reader.ReadUInt16();
+
+                    reader.ReadInt16(); // leafWaterDataID
+                    //reader.ReadInt16(); // ambientLighting
+                    //reader.ReadSByte(); // ambientLighting
+                    reader.ReadInt16(); // padding
+                }
+                else
+                {
+                    Leaves[i].Cluster = reader.ReadInt32();
+                    Leaves[i].Area = reader.ReadInt32();
+
+                    //Swap Y and Z; invert Z
+                    Leaves[i].Min.X = reader.ReadInt32();
+                    Leaves[i].Min.Z = -reader.ReadInt32();
+                    Leaves[i].Min.Y = reader.ReadInt32();
+
+                    //Swap Y and Z; invert Z
+                    Leaves[i].Max.X = reader.ReadInt32();
+                    Leaves[i].Max.Z = -reader.ReadInt32();
+                    Leaves[i].Max.Y = reader.ReadInt32();
+
+                    Leaves[i].FirstLeafFace = reader.ReadInt32();
+                    Leaves[i].NumLeafFaces = reader.ReadInt32();
+                    Leaves[i].FirstLeafBrush = reader.ReadInt32();
+                    Leaves[i].NumLeafBrushes = reader.ReadInt32();
+                }
             }
 
 
             // read leaf brushes
-            buffer.Position = lumps[(int)BspLumpType.LeafBrushes].Offset;
-            length = lumps[(int)BspLumpType.LeafBrushes].Length / sizeof(int);
+            lumpHeaderOffset = IsVbsp ? (int)VBspLumpType.LeafBrushes : (int)IBspLumpType.LeafBrushes;
+            buffer.Position = lumps[lumpHeaderOffset].Offset;
+            length = lumps[lumpHeaderOffset].Length;
+            length /= IsVbsp ? sizeof(short) : sizeof(int);
             LeafBrushes = new int[length];
 
             for (int i = 0; i < length; i++)
             {
-                LeafBrushes[i] = reader.ReadInt32();
+                if (IsVbsp)
+                {
+                    LeafBrushes[i] = reader.ReadInt16();
+                }
+                else
+                {
+                    LeafBrushes[i] = reader.ReadInt32();
+                }
             }
 
 
             // read planes
-            buffer.Position = lumps[(int)BspLumpType.Planes].Offset;
-            length = lumps[(int)BspLumpType.Planes].Length / Marshal.SizeOf(typeof(BspPlane));
+            lumpHeaderOffset = IsVbsp ? (int)VBspLumpType.Planes : (int)IBspLumpType.Planes;
+            buffer.Position = lumps[lumpHeaderOffset].Offset;
+            length = lumps[lumpHeaderOffset].Length;
+            length /= IsVbsp ? (Marshal.SizeOf(typeof(BspPlane)) + sizeof(int)) : Marshal.SizeOf(typeof(BspPlane));
             Planes = new BspPlane[length];
 
             for (int i = 0; i < length; i++)
@@ -254,25 +407,31 @@ namespace CharacterDemo
                 Planes[i].Normal.Y = reader.ReadSingle();
                 Planes[i].Normal.Z = reader.ReadSingle();
                 Planes[i].Distance = reader.ReadSingle();
+                if (IsVbsp)
+                {
+                    reader.ReadInt32(); // type
+                }
             }
 
 
-            // read shaders
-            Shaders = new List<BspShader>();
-            buffer.Position = lumps[(int)BspLumpType.Shaders].Offset;
-            length = lumps[(int)BspLumpType.Shaders].Length / (64 + 2 * sizeof(int));
-
-            byte[] shaderBytes = new byte[64];
-            for (int i = 0; i < length; i++)
+            if (!IsVbsp)
             {
-                BspShader shader = new BspShader();
-                reader.Read(shaderBytes, 0, 64);
-                shader.Shader = Encoding.ASCII.GetString(shaderBytes, 0, Array.IndexOf(shaderBytes, (byte)0));
-                shader.SurfaceFlags = reader.ReadInt32();
-                shader.ContentFlags = (ContentFlags)reader.ReadInt32();
-                Shaders.Add(shader);
-            }
+                // read shaders
+                Shaders = new List<BspShader>();
+                buffer.Position = lumps[(int)IBspLumpType.Shaders].Offset;
+                length = lumps[(int)IBspLumpType.Shaders].Length / (64 + 2 * sizeof(int));
 
+                byte[] shaderBytes = new byte[64];
+                for (int i = 0; i < length; i++)
+                {
+                    BspShader shader = new BspShader();
+                    reader.Read(shaderBytes, 0, 64);
+                    shader.Shader = Encoding.ASCII.GetString(shaderBytes, 0, Array.IndexOf(shaderBytes, (byte)0));
+                    shader.SurfaceFlags = reader.ReadInt32();
+                    shader.ContentFlags = (ContentFlags)reader.ReadInt32();
+                    Shaders.Add(shader);
+                }
+            }
 
             return true;
         }
