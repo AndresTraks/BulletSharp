@@ -11,6 +11,54 @@ PersistentManifold::PersistentManifold(btPersistentManifold* manifold)
 {
 }
 
+bool onContactDestroyed(void* userPersistentData)
+{
+	bool ret = PersistentManifold::_contactDestroyed->Invoke(VoidPtrToGCHandle(userPersistentData).Target);
+	VoidPtrToGCHandle(userPersistentData).Free();
+	return ret;
+}
+
+bool onContactProcessed(btManifoldPoint& cp, void* body0, void* body1)
+{
+	return PersistentManifold::_contactProcessed->Invoke(gcnew ManifoldPoint(&cp),
+		CollisionObject::GetManaged((btCollisionObject*)body0),
+		CollisionObject::GetManaged((btCollisionObject*)body1));
+}
+
+void PersistentManifold::ContactDestroyed::add(ContactDestroyedEventHandler^ callback)
+{
+	if (!gContactDestroyedCallback) {
+		gContactDestroyedCallback = onContactDestroyed;
+	}
+	_contactDestroyed += callback;
+}
+
+void PersistentManifold::ContactDestroyed::remove(ContactDestroyedEventHandler^ callback)
+{
+	_contactDestroyed -= callback;
+	if (!_contactDestroyed)
+	{
+		gContactDestroyedCallback = 0;
+	}
+}
+
+void PersistentManifold::ContactProcessed::add(ContactProcessedEventHandler^ callback)
+{
+	if (!gContactProcessedCallback) {
+		gContactProcessedCallback = onContactProcessed;
+	}
+	_contactProcessed += callback;
+}
+
+void PersistentManifold::ContactProcessed::remove(ContactProcessedEventHandler^ callback)
+{
+	_contactProcessed -= callback;
+	if (!_contactProcessed)
+	{
+		gContactProcessedCallback = 0;
+	}
+}
+
 PersistentManifold::PersistentManifold()
 : TypedObject(new btPersistentManifold())
 {

@@ -4,33 +4,27 @@
 
 namespace BulletSharp
 {
-	class ContactAddedCallbackWrapper;
 	ref class CollisionObjectWrapper;
 	ref class ManifoldPoint;
 
-	public delegate bool ContactAdded(ManifoldPoint^ cp,
+	public delegate bool ContactAddedEventHandler(ManifoldPoint^ cp,
 		CollisionObjectWrapper^ colObj0Wrap, int partId0, int index0,
 		CollisionObjectWrapper^ colObj1Wrap, int partId1, int index1);
 
 	public ref class ManifoldPoint
 	{
 	internal:
-		static ContactAdded^ gContactAddedCallback;
-	public:
-		static property ContactAdded^ ContactAddedCallback
-		{
-			ContactAdded^ get();
-			void set(ContactAdded^ value);
-		}
-
-	internal:
 		btManifoldPoint* _native;
+		static ContactAddedEventHandler^ _contactAdded;
 
-	private:
-		Object^ _userPersistentObject;
-
-	internal:
 		ManifoldPoint(btManifoldPoint* point);
+
+	public:
+		static event ContactAddedEventHandler^ ContactAdded
+		{
+			void add(ContactAddedEventHandler^ callback);
+			void remove(ContactAddedEventHandler^ callback);
+		}
 
 	public:
 		ManifoldPoint();
@@ -174,24 +168,10 @@ namespace BulletSharp
 			void set(Vector3 value);
 		}
 
-		property Object^ UserPersistentObject
+		property Object^ UserPersistentData
 		{
 			Object^ get();
 			void set(Object^ value);
 		}
-
-	internal:
-		property btManifoldPoint* UnmanagedPointer
-		{
-			virtual btManifoldPoint* get();
-			void set(btManifoldPoint* value);
-		}
-	};
-
-	class ContactAddedCallbackWrapper
-	{
-	public:
-		static bool CustomMaterialCombinerCallback(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap,
-			int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1);
 	};
 };

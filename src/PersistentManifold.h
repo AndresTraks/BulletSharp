@@ -5,13 +5,30 @@
 namespace BulletSharp
 {
 	ref class ManifoldPoint;
+	
+	public delegate bool ContactDestroyedEventHandler(Object^ userPersistantData);
+	public delegate bool ContactProcessedEventHandler(ManifoldPoint^ cp, CollisionObject^ body0, CollisionObject^ body1);
 
 	public ref class PersistentManifold : TypedObject
 	{
 	internal:
 		PersistentManifold(btPersistentManifold* manifold);
 
+		static ContactDestroyedEventHandler^ _contactDestroyed;
+		static ContactProcessedEventHandler^ _contactProcessed;
+
 	public:
+		static event ContactDestroyedEventHandler^ ContactDestroyed
+		{
+			void add(ContactDestroyedEventHandler^ callback);
+			void remove(ContactDestroyedEventHandler^ callback);
+		}
+		static event ContactProcessedEventHandler^ ContactProcessed
+		{
+			void add(ContactProcessedEventHandler^ callback);
+			void remove(ContactProcessedEventHandler^ callback);
+		}
+
 		PersistentManifold();
 		//PersistentManifold(Object^ body0, Object^ body1, int , btScalar contactBreakingThreshold, btScalar contactProcessingThreshold);
 

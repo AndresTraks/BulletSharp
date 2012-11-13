@@ -148,17 +148,17 @@ namespace ConvexDecompositionDemo
         }
 
         // MyContactCallback is just an example to show how to get access to the child shape that collided
-        bool MyContactCallback(ManifoldPoint cp, CollisionObject colObj0, int partId0, int index0, CollisionObject colObj1, int partId1, int index1)
+        bool MyContactCallback(ManifoldPoint cp, CollisionObjectWrapper colObj0Wrap, int partId0, int index0, CollisionObjectWrapper colObj1Wrap, int partId1, int index1)
         {
-            if (colObj0.CollisionShape.ShapeType == BroadphaseNativeType.CompoundShape)
+            if (colObj0Wrap.CollisionObject.CollisionShape.ShapeType == BroadphaseNativeType.CompoundShape)
             {
-                CompoundShape compound = colObj0.CollisionShape as CompoundShape;
+                CompoundShape compound = colObj0Wrap.CollisionObject.CollisionShape as CompoundShape;
                 CollisionShape childShape = compound.GetChildShape(index0);
             }
 
-            if (colObj1.CollisionShape.ShapeType == BroadphaseNativeType.CompoundShape)
+            if (colObj1Wrap.CollisionObject.CollisionShape.ShapeType == BroadphaseNativeType.CompoundShape)
             {
-                CompoundShape compound = colObj1.CollisionShape as CompoundShape;
+                CompoundShape compound = colObj1Wrap.CollisionObject.CollisionShape as CompoundShape;
                 CollisionShape childShape = compound.GetChildShape(index1);
             }
 
@@ -195,6 +195,8 @@ namespace ConvexDecompositionDemo
 
         protected override void OnInitializePhysics()
         {
+            ManifoldPoint.ContactAdded += MyContactCallback;
+
             SetupEmptyDynamicsWorld();
 
             WavefrontObj wo = new WavefrontObj();

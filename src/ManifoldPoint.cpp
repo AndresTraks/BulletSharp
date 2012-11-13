@@ -3,20 +3,34 @@
 #include "CollisionObjectWrapper.h"
 #include "ManifoldPoint.h"
 
-ContactAdded^ ManifoldPoint::ContactAddedCallback::get()
-{
-	return ManifoldPoint::gContactAddedCallback;
-}
-void ManifoldPoint::ContactAddedCallback::set(ContactAdded^ value)
-{
-	ManifoldPoint::gContactAddedCallback = value;
-	::gContactAddedCallback = (value != nullptr) ? ContactAddedCallbackWrapper::CustomMaterialCombinerCallback : 0;
-}
-
 ManifoldPoint::ManifoldPoint(btManifoldPoint* point)
 {
-	if (point)
-		_native = point;
+	_native = point;
+}
+
+bool onContactAdded(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap,
+	int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
+{
+	return ManifoldPoint::_contactAdded->Invoke(gcnew ManifoldPoint(&cp),
+		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap), partId0, index0,
+		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj1Wrap), partId1, index1);
+}
+
+void ManifoldPoint::ContactAdded::add(ContactAddedEventHandler^ callback)
+{
+	if (!gContactAddedCallback) {
+		gContactAddedCallback = onContactAdded;
+	}
+	_contactAdded += callback;
+}
+
+void ManifoldPoint::ContactAdded::remove(ContactAddedEventHandler^ callback)
+{
+	_contactAdded -= callback;
+	if (!_contactAdded)
+	{
+		gContactAddedCallback = 0;
+	}
 }
 
 ManifoldPoint::ManifoldPoint()
@@ -244,35 +258,24 @@ void ManifoldPoint::PositionWorldOnB::set(Vector3 value)
 	return Math::Vector3ToBtVector3(value, &_native->m_positionWorldOnB);
 }
 
-Object^ ManifoldPoint::UserPersistentObject::get()
+Object^ ManifoldPoint::UserPersistentData::get()
 {
-	return _userPersistentObject;
-}
-void ManifoldPoint::UserPersistentObject::set(Object^ value)
-{
-	_userPersistentObject = value;
-}
-
-btManifoldPoint* ManifoldPoint::UnmanagedPointer::get()
-{
-	return _native;
-}
-void ManifoldPoint::UnmanagedPointer::set(btManifoldPoint* value)
-{
-	_native = value;
-
-	if (_native->m_userPersistentData == 0)
-	{
-		GCHandle handle = GCHandle::Alloc(this);
-		void* obj = GCHandleToVoidPtr(handle);
-		_native->m_userPersistentData = obj;
+	if (!_native->m_userPersistentData) {
+		return nullptr;
 	}
+	return VoidPtrToGCHandle(_native->m_userPersistentData).Target;
 }
-
-bool ContactAddedCallbackWrapper::CustomMaterialCombinerCallback(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap,
-	int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
+void ManifoldPoint::UserPersistentData::set(Object^ value)
 {
-	return ManifoldPoint::gContactAddedCallback->Invoke(gcnew ManifoldPoint(&cp),
-		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap), partId0, index0,
-		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj1Wrap), partId1, index1);
+	if (value != nullptr) {
+		if (!_native->m_userPersistentData) {
+			GCHandle handle = GCHandle::Alloc(value);
+			_native->m_userPersistentData = GCHandleToVoidPtr(handle);
+		}
+	} else {
+		if (_native->m_userPersistentData) {
+			VoidPtrToGCHandle(_native->m_userPersistentData).Free();
+		}
+		_native->m_userPersistentData = 0;
+	}
 }
