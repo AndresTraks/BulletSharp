@@ -227,11 +227,11 @@ BroadphasePair::BroadphasePair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
 
 CollisionAlgorithm^ BroadphasePair::Algorithm::get()
 {
-	return gcnew CollisionAlgorithm(_native->m_algorithm);
+	return _native->m_algorithm ? gcnew CollisionAlgorithm(_native->m_algorithm) : nullptr;
 }
 void BroadphasePair::Algorithm::set(CollisionAlgorithm^ value)
 {
-	_native->m_algorithm = value->_native;
+	_native->m_algorithm = GetUnmanagedNullable(value);
 }
 
 BroadphaseProxy^ BroadphasePair::Proxy0::get()
