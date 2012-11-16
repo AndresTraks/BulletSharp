@@ -42,7 +42,7 @@ IDebugDraw^ DebugDraw::GetManaged(btIDebugDraw* debugDraw)
 	if (ObjectTable::Contains((intptr_t)debugDraw))
 		return ObjectTable::GetObject<IDebugDraw^>((intptr_t)debugDraw);
 
-	return ((DebugDrawWrapper*)debugDraw)->getDebugDraw();
+	return ((DebugDrawWrapper*)debugDraw)->_debugDraw;
 }
 
 DebugDrawWrapper* DebugDraw::GetUnmanaged(IDebugDraw^ debugDraw)
@@ -306,16 +306,6 @@ DebugDrawWrapper::DebugDrawWrapper(IDebugDraw^ debugDraw)
 DebugDrawWrapper::~DebugDrawWrapper()
 {
 	ObjectTable::Remove(this);
-}
-
-IDebugDraw^ DebugDrawWrapper::getDebugDraw()
-{
-	return _debugDraw;
-}
-
-void DebugDrawWrapper::setDebugDraw(IDebugDraw^ value)
-{
-	_debugDraw = value;
 }
 
 void DebugDrawWrapper::draw3dText(const btVector3& location, const char* textString)

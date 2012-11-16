@@ -192,7 +192,7 @@ int AlignedAnchorArray::Count::get()
 
 BulletSharp::SoftBody::Anchor^ AlignedAnchorArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew Anchor(&Native->at(index));
 }
@@ -204,7 +204,7 @@ void AlignedAnchorArray_SetDefault(btSoftBody::tAnchorArray* anchorArray,
 }
 void AlignedAnchorArray::default::set(int index, Anchor^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	AlignedAnchorArray_SetDefault(Native, index, value->_native);
 }
@@ -293,7 +293,7 @@ void AlignedBroadphasePairArray::Swap(int index0, int index1)
 
 BroadphasePair^ AlignedBroadphasePairArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew BroadphasePair(&Native->at(index));
 }
@@ -305,7 +305,7 @@ void BroadphasePairList_SetDefault(btBroadphasePairArray* pairArray,
 }
 void AlignedBroadphasePairArray::default::set(int index, BroadphasePair^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	BroadphasePairList_SetDefault(Native, index, value->_native);
 }
@@ -400,13 +400,13 @@ int AlignedClusterArray::Count::get()
 
 BulletSharp::SoftBody::Cluster^ AlignedClusterArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew Cluster((*Native)[index]);
 }
 void AlignedClusterArray::default::set(int index, Cluster^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	(*Native)[index] = GetUnmanagedNullable(value);
 }
@@ -490,14 +490,14 @@ int AlignedCollisionShapeArray::Count::get()
 
 CollisionShape^ AlignedCollisionShapeArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 
 	return CollisionShape::GetManaged(Native->at(index));
 }
 void AlignedCollisionShapeArray::default::set(int index, CollisionShape^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 
 	(*Native)[index] = GetUnmanagedNullable(value);
@@ -593,7 +593,7 @@ CollisionObject^ AlignedCollisionObjectArray::default::get(int index)
 }
 void AlignedCollisionObjectArray::default::set(int index, CollisionObject^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	(*Native)[index] = GetUnmanagedNullable(value);
 }
@@ -683,7 +683,7 @@ void AlignedDbvtNodeArray::Swap(int index0, int index1)
 
 DbvtNode^ AlignedDbvtNodeArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	btDbvtNode* obj = (btDbvtNode*)(*Native)[index];
 	if (obj == nullptr)
@@ -692,7 +692,7 @@ DbvtNode^ AlignedDbvtNodeArray::default::get(int index)
 }
 void AlignedDbvtNodeArray::default::set(int index, DbvtNode^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	(*Native)[index] = GetUnmanagedNullable(value);
 }
@@ -767,7 +767,7 @@ void StkNnArray_GetDefault(btAlignedObjectArray<btDbvt::sStkNN>* stkNnArray,
 }
 Dbvt::StkNn^ AlignedStkNnArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	btDbvt::sStkNN* obj = new btDbvt::sStkNN;
 	StkNnArray_GetDefault(Native, index, obj);
@@ -776,7 +776,7 @@ Dbvt::StkNn^ AlignedStkNnArray::default::get(int index)
 
 void AlignedStkNnArray::default::set(int index, Dbvt::StkNn^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	(*Native)[index] = *value->_native;
 }
@@ -851,7 +851,7 @@ void StkNpsArray_GetDefault(btAlignedObjectArray<btDbvt::sStkNPS>* stkNpsArray,
 }
 Dbvt::StkNps^ AlignedStkNpsArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	btDbvt::sStkNPS* obj = new btDbvt::sStkNPS;
 	StkNpsArray_GetDefault(Native, index, obj);
@@ -860,7 +860,7 @@ Dbvt::StkNps^ AlignedStkNpsArray::default::get(int index)
 
 void AlignedStkNpsArray::default::set(int index, Dbvt::StkNps^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	(*Native)[index] = *value->UnmanagedPointer;
 }
@@ -933,7 +933,7 @@ int AlignedFaceArray::Count::get()
 
 Face^ AlignedFaceArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew Face(&(*Native)[index]);
 }
@@ -945,7 +945,7 @@ void FaceArray_SetDefault(btAlignedObjectArray<btSoftBody::Face>* faceArray,
 }
 void AlignedFaceArray::default::set(int index, Face^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	FaceArray_SetDefault(Native, index, (btSoftBody::Face*)value->_native);
 }
@@ -1045,13 +1045,13 @@ int AlignedIntArray::Count::get()
 
 int AlignedIntArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return (*Native)[index];
 }
 void AlignedIntArray::default::set(int index, int value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	(*Native)[index] = value;
 }
@@ -1146,7 +1146,7 @@ void AlignedJointArray::Swap(int index0, int index1)
 
 BulletSharp::SoftBody::Joint^ AlignedJointArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	btSoftBody::Joint* j = (*Native)[index];
 	switch(j->Type())
@@ -1168,7 +1168,7 @@ void AlignedJointArray_SetDefault(btSoftBody::tJointArray* jointArray,
 }
 void AlignedJointArray::default::set(int index, BulletSharp::SoftBody::Joint^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	AlignedJointArray_SetDefault(Native, index, GetUnmanagedNullable(value));
 }
@@ -1258,7 +1258,7 @@ void AlignedManifoldArray::Swap(int index0, int index1)
 
 PersistentManifold^ AlignedManifoldArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	btPersistentManifold* obj = (*Native)[index];
 	if (obj == nullptr)
@@ -1267,7 +1267,7 @@ PersistentManifold^ AlignedManifoldArray::default::get(int index)
 }
 void AlignedManifoldArray::default::set(int index, PersistentManifold^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	(*Native)[index] = (btPersistentManifold*)GetUnmanagedNullable(value);
 }
@@ -1337,7 +1337,7 @@ void AlignedIndexedMeshArray::Swap(int index0, int index1)
 
 IndexedMesh^ AlignedIndexedMeshArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	btIndexedMesh* obj = &(*Native)[index];
 	if (obj == nullptr)
@@ -1352,7 +1352,7 @@ void AlignedIndexedMeshArray_SetDefault(btAlignedObjectArray<btIndexedMesh>* ind
 }
 void AlignedIndexedMeshArray::default::set(int index, IndexedMesh^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	AlignedIndexedMeshArray_SetDefault(Native, index, value->_native);
 }
@@ -1424,7 +1424,7 @@ void AlignedLinkArray::Swap(int index0, int index1)
 
 BulletSharp::SoftBody::Link^ AlignedLinkArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew Link(&(*Native)[index]);
 }
@@ -1436,7 +1436,7 @@ void AlignedLinkArray_SetDefault(btSoftBody::tLinkArray* linkArray,
 }
 void AlignedLinkArray::default::set(int index, BulletSharp::SoftBody::Link^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	AlignedLinkArray_SetDefault(Native, index, (btSoftBody::Link*)GetUnmanagedNullable(value));
 }
@@ -1525,13 +1525,13 @@ void AlignedMaterialArray::Swap(int index0, int index1)
 
 BulletSharp::SoftBody::Material^ AlignedMaterialArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew Material((*Native)[index]);
 }
 void AlignedMaterialArray::default::set(int index, BulletSharp::SoftBody::Material^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	(*Native)[index] = (btSoftBody::Material*)GetUnmanagedNullable(value);
 }
@@ -1602,7 +1602,7 @@ void BulletSharp::SoftBody::AlignedNodeArray::Swap(int index0, int index1)
 
 BulletSharp::SoftBody::Node^ BulletSharp::SoftBody::AlignedNodeArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew Node(&(*Native)[index]);
 }
@@ -1613,7 +1613,7 @@ void NodeArray_SetDefault(btSoftBody::tNodeArray* AlignedNodeArray, int index, b
 }
 void BulletSharp::SoftBody::AlignedNodeArray::default::set(int index, Node^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	NodeArray_SetDefault(Native, index, (btSoftBody::Node*)value->_native);
 }
@@ -1702,13 +1702,13 @@ void AlignedNodePtrArray::Swap(int index0, int index1)
 
 BulletSharp::SoftBody::Node^ AlignedNodePtrArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew Node((*Native)[index]);
 }
 void AlignedNodePtrArray::default::set(int index, BulletSharp::SoftBody::Node^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	(*Native)[index] = (btSoftBody::Node*)GetUnmanagedNullable(value);
 }
@@ -1778,7 +1778,7 @@ void AlignedNoteArray::Swap(int index0, int index1)
 
 BulletSharp::SoftBody::Note^ AlignedNoteArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew Note(&(*Native)[index]);
 }
@@ -1789,7 +1789,7 @@ void NoteArray_SetDefault(btSoftBody::tNoteArray* noteArray, int index, btSoftBo
 }
 void AlignedNoteArray::default::set(int index, Note^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	NoteArray_SetDefault(Native, index, (btSoftBody::Note*)GetUnmanagedNullable(value));
 }
@@ -1878,13 +1878,13 @@ void AlignedPSolverArray::Swap(int index0, int index1)
 
 PSolver AlignedPSolverArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return (PSolver)(*Native)[index];
 }
 void AlignedPSolverArray::default::set(int index, PSolver value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	(*Native)[index] = (btSoftBody::ePSolver::_)value;
 }
@@ -1954,7 +1954,7 @@ int AlignedRigidContactArray::Count::get()
 
 BulletSharp::SoftBody::RigidContact^ AlignedRigidContactArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew RigidContact(&(*Native)[index]);
 }
@@ -1966,7 +1966,7 @@ void AlignedRigidContactArray_SetDefault(btSoftBody::tRContactArray* rigidContac
 }
 void AlignedRigidContactArray::default::set(int index, RigidContact^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	AlignedRigidContactArray_SetDefault(Native, index, value->UnmanagedPointer);
 }
@@ -2056,13 +2056,13 @@ void AlignedScalarArray::Swap(int index0, int index1)
 
 btScalar AlignedScalarArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return (*Native)[index];
 }
 void AlignedScalarArray::default::set(int index, btScalar value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	(*Native)[index] = value;
 }
@@ -2152,13 +2152,13 @@ void BulletSharp::SoftBody::AlignedSoftBodyArray::Swap(int index0, int index1)
 
 BulletSharp::SoftBody::SoftBody^ BulletSharp::SoftBody::AlignedSoftBodyArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return (SoftBody^)CollisionObject::GetManaged((*Native)[index]);
 }
 void BulletSharp::SoftBody::AlignedSoftBodyArray::default::set(int index, SoftBody^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	(*Native)[index] = (btSoftBody*)GetUnmanagedNullable(value);
 }
@@ -2228,7 +2228,7 @@ int AlignedSoftContactArray::Count::get()
 
 BulletSharp::SoftBody::SoftContact^ AlignedSoftContactArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew SoftContact(&(*Native)[index]);
 }
@@ -2240,7 +2240,7 @@ void AlignedSoftContactArray_SetDefault(btSoftBody::tSContactArray* softContactA
 }
 void AlignedSoftContactArray::default::set(int index, SoftContact^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	AlignedSoftContactArray_SetDefault(Native, index, value->UnmanagedPointer);
 }
@@ -2310,7 +2310,7 @@ int AlignedTetraArray::Count::get()
 
 Tetra^ AlignedTetraArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew Tetra(&(*Native)[index]);
 }
@@ -2322,7 +2322,7 @@ void TetraArray_SetDefault(btAlignedObjectArray<btSoftBody::Tetra>* tetraArray,
 }
 void AlignedTetraArray::default::set(int index, Tetra^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	TetraArray_SetDefault(Native, index, (btSoftBody::Tetra*)value->_native);
 }
@@ -2393,14 +2393,14 @@ void AlignedTriangleMeshArray::Swap(int index0, int index1)
 
 TriangleMesh^ AlignedTriangleMeshArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew TriangleMesh(&(*Native)[index]);
 }
 
 void AlignedTriangleMeshArray::default::set(int index, TriangleMesh^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	(*Native)[index] = (btTriangleMesh*)GetUnmanagedNullable(value);
 }
@@ -2504,13 +2504,13 @@ void AlignedVector3Array::Swap(int index0, int index1)
 
 Vector3 AlignedVector3Array::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return Math::BtVector3ToVector3(&(*Native)[index]);
 }
 void AlignedVector3Array::default::set(int index, Vector3 value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	Math::Vector3ToBtVector3(value, &(*Native)[index]);
 }
@@ -2601,13 +2601,13 @@ void AlignedVSolverArray::Swap(int index0, int index1)
 
 VSolver AlignedVSolverArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return (VSolver)(*Native)[index];
 }
 void AlignedVSolverArray::default::set(int index, VSolver value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	(*Native)[index] = (btSoftBody::eVSolver::_)value;
 }
@@ -2680,7 +2680,7 @@ void AlignedWheelInfoArray::Swap(int index0, int index1)
 
 WheelInfo^ AlignedWheelInfoArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew WheelInfo(&(*Native)[index]);
 }
@@ -2692,7 +2692,7 @@ void WheelInfoArray_SetDefault(btAlignedObjectArray<btWheelInfo>* wheelInfoArray
 }
 void AlignedWheelInfoArray::default::set(int index, WheelInfo^ value)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	WheelInfoArray_SetDefault(Native, index, GetUnmanagedNullable(value));
 }

@@ -76,15 +76,11 @@ namespace BulletSharp
 
 	class DebugDrawWrapper : public btIDebugDraw
 	{
-	private:
+	public:
 		gcroot<IDebugDraw^> _debugDraw;
 
-	public:
 		DebugDrawWrapper(IDebugDraw^ debugDraw);
 		virtual ~DebugDrawWrapper();
-
-		IDebugDraw^ getDebugDraw();
-		void setDebugDraw(IDebugDraw^ value);
 
 		virtual void draw3dText(const btVector3& location, const char* textString);
 		virtual void drawAabb(const btVector3& from, const btVector3& to, const btVector3& color);

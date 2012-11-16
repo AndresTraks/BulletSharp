@@ -97,9 +97,9 @@ namespace BulletSharp
 		BroadphasePair(btBroadphasePair* pair);
 
 	public:
-		BroadphasePair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy);
-		BroadphasePair(BroadphasePair^ pair);
-		BroadphasePair();
+		//BroadphasePair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy);
+		//BroadphasePair(BroadphasePair^ pair);
+		//BroadphasePair();
 
 		property CollisionAlgorithm^ Algorithm
 		{

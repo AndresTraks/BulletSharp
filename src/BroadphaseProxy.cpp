@@ -209,7 +209,7 @@ BroadphasePair::BroadphasePair(btBroadphasePair* pair)
 {
 	_native = pair;
 }
-
+/*
 BroadphasePair::BroadphasePair()
 {
 	_native = new btBroadphasePair();
@@ -224,7 +224,7 @@ BroadphasePair::BroadphasePair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
 {
 	_native = new btBroadphasePair(*proxy0->_native, *proxy1->_native);
 }
-
+*/
 CollisionAlgorithm^ BroadphasePair::Algorithm::get()
 {
 	return _native->m_algorithm ? gcnew CollisionAlgorithm(_native->m_algorithm) : nullptr;

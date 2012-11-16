@@ -199,11 +199,11 @@ void BoolArray::CopyTo(array<bool>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	if (arrayIndex + Count > array->Length)
+	int length = Count;
+	if (arrayIndex + length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	int length = Count;
 	for (i=0; i<length; i++)
 	{
 		array[arrayIndex+i] = Native[i];
@@ -547,11 +547,11 @@ void FloatArray::CopyTo(array<float>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	if (arrayIndex + Count > array->Length)
+	int length = Count;
+	if (arrayIndex + length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	int length = Count;
 	for (i=0; i<length; i++)
 	{
 		array[arrayIndex+i] = Native[i];
@@ -628,11 +628,11 @@ void IntArray::CopyTo(array<int>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	if (arrayIndex + Count > array->Length)
+	int length = Count;
+	if (arrayIndex + length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	int length = Count;
 	for (i=0; i<length; i++)
 	{
 		array[arrayIndex+i] = Native[i];
@@ -761,11 +761,11 @@ void ScalarArray::CopyTo(array<btScalar>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	if (arrayIndex + Count > array->Length)
+	int length = Count;
+	if (arrayIndex + length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	int length = Count;
 	for (i=0; i<length; i++)
 	{
 		array[arrayIndex+i] = Native[i];
@@ -837,11 +837,11 @@ void UIntArray::CopyTo(array<unsigned int>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	if (arrayIndex + Count > array->Length)
+	int length = Count;
+	if (arrayIndex + length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	int length = Count;
 	for (i=0; i<length; i++)
 	{
 		array[arrayIndex+i] = Native[i];
@@ -913,11 +913,11 @@ void UShortArray::CopyTo(array<unsigned short>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	if (arrayIndex + Count > array->Length)
+	int length = Count;
+	if (arrayIndex + length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	int length = Count;
 	for (i=0; i<length; i++)
 	{
 		array[arrayIndex+i] = Native[i];
