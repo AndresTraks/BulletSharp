@@ -76,7 +76,7 @@ GenericList<T>::GenericList(void* array, int length)
 {
 	_native = array;
 	_length = length;
-	isReadOnly = false;
+	_isReadOnly = false;
 }
 
 generic<class T>
@@ -84,7 +84,7 @@ GenericList<T>::GenericList(const void* array, int length)
 {
 	_native = (void*)array;
 	_length = length;
-	isReadOnly = true;
+	_isReadOnly = true;
 }
 
 generic<class T>
@@ -126,7 +126,7 @@ int GenericList<T>::IndexOf(T item)
 	which does a member-wise comparison.
 	*/
 	int i;
-	for (i=0; i<Count; i++)
+	for (i=0; i<_length; i++)
 	{
 		if (this[i]->Equals(item))
 			return i;
@@ -161,7 +161,7 @@ int GenericList<T>::Count::get()
 generic<class T>
 bool GenericList<T>::IsReadOnly::get()
 {
-	return isReadOnly;
+	return _isReadOnly;
 }
 
 
@@ -180,8 +180,7 @@ BoolArray::BoolArray(const bool* boolArray, int length)
 bool BoolArray::Contains(bool item)
 {
 	int i;
-	int length = Count;
-	for (i=Count; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		if (item == Native[i])
 		{
@@ -199,12 +198,11 @@ void BoolArray::CopyTo(array<bool>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int length = Count;
-	if (arrayIndex + length > array->Length)
+	if (arrayIndex + _length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		array[arrayIndex+i] = Native[i];
 	}
@@ -213,8 +211,7 @@ void BoolArray::CopyTo(array<bool>^ array, int arrayIndex)
 int BoolArray::IndexOf(bool item)
 {
 	int i;
-	int length = Count;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		if (item == Native[i])
 		{
@@ -226,15 +223,15 @@ int BoolArray::IndexOf(bool item)
 
 bool BoolArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return Native[index];
 }
 void BoolArray::default::set(int index, bool value)
 {
-	if (IsReadOnly)
+	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = value;
 }
@@ -263,12 +260,11 @@ void SoftBody::BodyArray::CopyTo(array<Body^>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int length = Count;
-	if (arrayIndex + length > array->Length)
+	if (arrayIndex + _length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		array[arrayIndex+i] = gcnew Body(&Native[i]);
 	}
@@ -276,16 +272,16 @@ void SoftBody::BodyArray::CopyTo(array<Body^>^ array, int arrayIndex)
 
 SoftBody::Body^ SoftBody::BodyArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew Body(&Native[index]);
 }
 
 void SoftBody::BodyArray::default::set(int index, Body^ value)
 {
-	if (IsReadOnly)
+	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = *value->_native;
 }
@@ -313,12 +309,11 @@ void CompoundShapeChildArray::CopyTo(array<CompoundShapeChild^>^ array, int arra
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int length = Count;
-	if (arrayIndex + length > array->Length)
+	if (arrayIndex + _length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		array[arrayIndex+i] = gcnew CompoundShapeChild(&Native[i]);
 	}
@@ -326,7 +321,7 @@ void CompoundShapeChildArray::CopyTo(array<CompoundShapeChild^>^ array, int arra
 
 CompoundShapeChild^ CompoundShapeChildArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew CompoundShapeChild(&Native[index]);
 }
@@ -338,9 +333,9 @@ void CompoundShapeChildArray_SetDefault(btCompoundShapeChild* shapeArray,
 }
 void CompoundShapeChildArray::default::set(int index, CompoundShapeChild^ value)
 {
-	if (IsReadOnly)
+	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	CompoundShapeChildArray_SetDefault(Native, index, value->UnmanagedPointer);
 }
@@ -369,12 +364,11 @@ void DbvtArray::CopyTo(array<Dbvt^>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int length = Count;
-	if (arrayIndex + length > array->Length)
+	if (arrayIndex + _length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		array[arrayIndex+i] = gcnew Dbvt(&Native[i]);
 	}
@@ -382,16 +376,16 @@ void DbvtArray::CopyTo(array<Dbvt^>^ array, int arrayIndex)
 
 Dbvt^ DbvtArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 
 	return gcnew Dbvt(&Native[index]);
 }
 void DbvtArray::default::set(int index, Dbvt^ value)
 {
-	if (IsReadOnly)
+	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = *value->UnmanagedPointer;
 
@@ -419,12 +413,11 @@ void DbvtNodePtrArray::CopyTo(array<DbvtNode^>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int length = Count;
-	if (arrayIndex + length > array->Length)
+	if (arrayIndex + _length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		array[arrayIndex+i] = gcnew DbvtNode(Native[i]);
 	}
@@ -432,7 +425,7 @@ void DbvtNodePtrArray::CopyTo(array<DbvtNode^>^ array, int arrayIndex)
 
 DbvtNode^ DbvtNodePtrArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 
 	btDbvtNode* nodePtr = Native[index];
@@ -443,9 +436,9 @@ DbvtNode^ DbvtNodePtrArray::default::get(int index)
 }
 void DbvtNodePtrArray::default::set(int index, DbvtNode^ value)
 {
-	if (IsReadOnly)
+	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 
 	Native[index] = GetUnmanagedNullable(value);
@@ -473,12 +466,11 @@ void DbvtProxyPtrArray::CopyTo(array<DbvtProxy^>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int length = Count;
-	if (arrayIndex + length > array->Length)
+	if (arrayIndex + _length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		array[arrayIndex+i] = dynamic_cast<DbvtProxy^>(DbvtProxy::GetManaged(Native[i]));
 	}
@@ -486,7 +478,7 @@ void DbvtProxyPtrArray::CopyTo(array<DbvtProxy^>^ array, int arrayIndex)
 
 DbvtProxy^ DbvtProxyPtrArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 
 	btDbvtProxy* proxyPtr = Native[index];
@@ -497,9 +489,9 @@ DbvtProxy^ DbvtProxyPtrArray::default::get(int index)
 }
 void DbvtProxyPtrArray::default::set(int index, DbvtProxy^ value)
 {
-	if (IsReadOnly)
+	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 
 	Native[index] = (btDbvtProxy*)GetUnmanagedNullable(value);
@@ -528,8 +520,7 @@ FloatArray::FloatArray(int length)
 bool FloatArray::Contains(float item)
 {
 	int i;
-	int length = Count;
-	for (i=Count; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		if (item == Native[i])
 		{
@@ -547,12 +538,11 @@ void FloatArray::CopyTo(array<float>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int length = Count;
-	if (arrayIndex + length > array->Length)
+	if (arrayIndex + _length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		array[arrayIndex+i] = Native[i];
 	}
@@ -561,8 +551,7 @@ void FloatArray::CopyTo(array<float>^ array, int arrayIndex)
 int FloatArray::IndexOf(float item)
 {
 	int i;
-	int length = Count;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		if (item == Native[i])
 		{
@@ -574,15 +563,15 @@ int FloatArray::IndexOf(float item)
 
 float FloatArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return Native[index];
 }
 void FloatArray::default::set(int index, float value)
 {
-	if (IsReadOnly)
+	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = value;
 }
@@ -609,8 +598,7 @@ IntArray::IntArray(int length)
 bool IntArray::Contains(int item)
 {
 	int i;
-	int length = Count;
-	for (i=Count; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		if (item == Native[i])
 		{
@@ -628,12 +616,11 @@ void IntArray::CopyTo(array<int>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int length = Count;
-	if (arrayIndex + length > array->Length)
+	if (arrayIndex + _length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		array[arrayIndex+i] = Native[i];
 	}
@@ -642,8 +629,7 @@ void IntArray::CopyTo(array<int>^ array, int arrayIndex)
 int IntArray::IndexOf(int item)
 {
 	int i;
-	int length = Count;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		if (item == Native[i])
 		{
@@ -655,15 +641,15 @@ int IntArray::IndexOf(int item)
 
 int IntArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return Native[index];
 }
 void IntArray::default::set(int index, int value)
 {
-	if (IsReadOnly)
+	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = value;
 }
@@ -692,12 +678,11 @@ void SoftBody::NodePtrArray::CopyTo(array<Node^>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int length = Count;
-	if (arrayIndex + length > array->Length)
+	if (arrayIndex + _length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		array[arrayIndex+i] = gcnew Node(Native[i]);
 	}
@@ -712,9 +697,9 @@ SoftBody::Node^ SoftBody::NodePtrArray::default::get(int index)
 }
 void SoftBody::NodePtrArray::default::set(int index, Node^ value)
 {
-	if (IsReadOnly)
+	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = (btSoftBody::Node*)GetUnmanagedNullable(value);
 }
@@ -742,8 +727,7 @@ ScalarArray::ScalarArray(int length)
 bool ScalarArray::Contains(btScalar item)
 {
 	int i;
-	int length = Count;
-	for (i=Count; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		if (item == Native[i])
 		{
@@ -761,12 +745,11 @@ void ScalarArray::CopyTo(array<btScalar>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int length = Count;
-	if (arrayIndex + length > array->Length)
+	if (arrayIndex + _length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		array[arrayIndex+i] = Native[i];
 	}
@@ -775,8 +758,7 @@ void ScalarArray::CopyTo(array<btScalar>^ array, int arrayIndex)
 int ScalarArray::IndexOf(btScalar item)
 {
 	int i;
-	int length = Count;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		if (item == Native[i])
 		{
@@ -788,15 +770,15 @@ int ScalarArray::IndexOf(btScalar item)
 
 btScalar ScalarArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return Native[index];
 }
 void ScalarArray::default::set(int index, btScalar value)
 {
-	if (IsReadOnly)
+	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = value;
 }
@@ -818,8 +800,7 @@ UIntArray::UIntArray(const unsigned int* uintArray, int length)
 bool UIntArray::Contains(unsigned int item)
 {
 	int i;
-	int length = Count;
-	for (i=Count; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		if (item == Native[i])
 		{
@@ -837,12 +818,11 @@ void UIntArray::CopyTo(array<unsigned int>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int length = Count;
-	if (arrayIndex + length > array->Length)
+	if (arrayIndex + _length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		array[arrayIndex+i] = Native[i];
 	}
@@ -851,8 +831,7 @@ void UIntArray::CopyTo(array<unsigned int>^ array, int arrayIndex)
 int UIntArray::IndexOf(unsigned int item)
 {
 	int i;
-	int length = Count;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		if (item == Native[i])
 		{
@@ -864,15 +843,15 @@ int UIntArray::IndexOf(unsigned int item)
 
 unsigned int UIntArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return Native[index];
 }
 void UIntArray::default::set(int index, unsigned int value)
 {
-	if (IsReadOnly)
+	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = value;
 }
@@ -894,8 +873,7 @@ UShortArray::UShortArray(const unsigned short* uShortArray, int length)
 bool UShortArray::Contains(unsigned short item)
 {
 	int i;
-	int length = Count;
-	for (i=Count; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		if (item == Native[i])
 		{
@@ -913,12 +891,11 @@ void UShortArray::CopyTo(array<unsigned short>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int length = Count;
-	if (arrayIndex + length > array->Length)
+	if (arrayIndex + _length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		array[arrayIndex+i] = Native[i];
 	}
@@ -927,8 +904,7 @@ void UShortArray::CopyTo(array<unsigned short>^ array, int arrayIndex)
 int UShortArray::IndexOf(unsigned short item)
 {
 	int i;
-	int length = Count;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		if (item == Native[i])
 		{
@@ -940,15 +916,15 @@ int UShortArray::IndexOf(unsigned short item)
 
 unsigned short UShortArray::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return Native[index];
 }
 void UShortArray::default::set(int index, unsigned short value)
 {
-	if (IsReadOnly)
+	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = value;
 }
@@ -977,8 +953,7 @@ bool Vector3Array::Contains(Vector3 item)
 	VECTOR3_DEF(item);
 
 	int i;
-	int length = Count;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		btVector3* vector = &Native[i];
 		if (VECTOR3_PTR(item)->m_floats[0] == vector->m_floats[0] &&
@@ -1001,12 +976,11 @@ void Vector3Array::CopyTo(array<Vector3>^ array, int arrayIndex)
 	if (arrayIndex < 0)
 		throw gcnew ArgumentOutOfRangeException("array");
 
-	int length = Count;
-	if (arrayIndex + length > array->Length)
+	if (arrayIndex + _length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		Math::BtVector3ToVector3(&Native[i], array[arrayIndex+i]);
 	}
@@ -1017,8 +991,7 @@ int Vector3Array::IndexOf(Vector3 item)
 	VECTOR3_DEF(item);
 
 	int i;
-	int length = Count;
-	for (i=0; i<length; i++)
+	for (i=0; i<_length; i++)
 	{
 		btVector3* vector = &Native[i];
 		if (VECTOR3_PTR(item)->m_floats[0] == vector->m_floats[0] &&
@@ -1035,15 +1008,15 @@ int Vector3Array::IndexOf(Vector3 item)
 
 Vector3 Vector3Array::default::get(int index)
 {
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return Math::BtVector3ToVector3(&Native[index]);
 }
 void Vector3Array::default::set(int index, Vector3 value)
 {
-	if (IsReadOnly)
+	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= Count)
+	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Math::Vector3ToBtVector3(value, &Native[index]);
 }

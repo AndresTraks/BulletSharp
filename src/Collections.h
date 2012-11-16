@@ -71,9 +71,9 @@ namespace BulletSharp
 	internal:
 		void* _native;
 
-	private:
+	protected:
 		int _length;
-		bool isReadOnly;
+		bool _isReadOnly;
 
 	internal:
 		GenericList(void* array, int length);
