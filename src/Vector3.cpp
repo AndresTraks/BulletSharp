@@ -641,6 +641,11 @@ namespace BulletSharp
 		return vec * scale;
 	}
 	
+	Vector3 Vector3::operator * ( Vector3 left, Vector3 right )
+	{
+		return Vector3( left.X * right.X, left.Y * right.Y, left.Z * right.Z );
+	}
+
 	Vector3 Vector3::operator / ( Vector3 value, btScalar scale )
 	{
 		return Vector3( value.X / scale, value.Y / scale, value.Z / scale );

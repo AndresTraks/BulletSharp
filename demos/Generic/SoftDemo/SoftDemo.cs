@@ -138,14 +138,14 @@ namespace SoftDemo
         {
             Vector3 h = s * 0.5f;
             Vector3[] c = new Vector3[]{
-                Vector3.Modulate(h, new Vector3(-1,-1,-1)),
-		        Vector3.Modulate(h, new Vector3(+1,-1,-1)),
-		        Vector3.Modulate(h, new Vector3(-1,+1,-1)),
-		        Vector3.Modulate(h, new Vector3(+1,+1,-1)),
-		        Vector3.Modulate(h, new Vector3(-1,-1,+1)),
-		        Vector3.Modulate(h, new Vector3(+1,-1,+1)),
-		        Vector3.Modulate(h, new Vector3(-1,+1,+1)),
-		        Vector3.Modulate(h, new Vector3(+1,+1,+1))};
+                h * new Vector3(-1,-1,-1),
+		        h * new Vector3(+1,-1,-1),
+		        h * new Vector3(-1,+1,-1),
+		        h * new Vector3(+1,+1,-1),
+		        h * new Vector3(-1,-1,+1),
+		        h * new Vector3(+1,-1,+1),
+		        h * new Vector3(-1,+1,+1),
+		        h * new Vector3(+1,+1,+1)};
             SoftBody psb = SoftBodyHelpers.CreateFromConvexHull(softBodyWorldInfo, c);
             psb.GenerateBendingConstraints(2);
             psb.Translate(p);
@@ -159,7 +159,7 @@ namespace SoftDemo
             Random random = new Random();
             Vector3[] pts = new Vector3[np];
             for (int i = 0; i < np; ++i)
-                pts[i] = Vector3.Modulate(GetRandomVector(random), s);
+                pts[i] = GetRandomVector(random) * s;
 
             SoftBody psb = SoftBodyHelpers.CreateFromConvexHull(softBodyWorldInfo, pts);
             psb.GenerateBendingConstraints(2);

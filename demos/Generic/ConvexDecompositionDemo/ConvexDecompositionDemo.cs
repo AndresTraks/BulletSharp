@@ -54,7 +54,7 @@ namespace ConvexDecompositionDemo
             {
                 foreach (Vector3 vertex in result.mHullVertices)
                 {
-                    demo.centroid += Vector3.Modulate(vertex, localScaling);
+                    demo.centroid += vertex * localScaling;
                 }
             }
 
@@ -64,7 +64,7 @@ namespace ConvexDecompositionDemo
             {
                 foreach (Vector3 vertex in result.mHullVertices)
                 {
-                    vertices.Add(Vector3.Modulate(vertex, localScaling) - demo.centroid);
+                    vertices.Add(vertex * localScaling - demo.centroid);
                 }
             }
 
@@ -78,9 +78,9 @@ namespace ConvexDecompositionDemo
                     int index2 = src[i + 2];
 
 
-                    Vector3 vertex0 = Vector3.Modulate(result.mHullVertices[index0], localScaling) - demo.centroid;
-                    Vector3 vertex1 = Vector3.Modulate(result.mHullVertices[index1], localScaling) - demo.centroid;
-                    Vector3 vertex2 = Vector3.Modulate(result.mHullVertices[index2], localScaling) - demo.centroid;
+                    Vector3 vertex0 = result.mHullVertices[index0] * localScaling - demo.centroid;
+                    Vector3 vertex1 = result.mHullVertices[index1] * localScaling - demo.centroid;
+                    Vector3 vertex2 = result.mHullVertices[index2] * localScaling - demo.centroid;
 
                     trimesh.AddTriangle(vertex0, vertex1, vertex2);
 
@@ -217,9 +217,9 @@ namespace ConvexDecompositionDemo
                     int index1 = indices[i * 3 + 1];
                     int index2 = indices[i * 3 + 2];
 
-                    Vector3 vertex0 = Vector3.Modulate(vertices[index0], localScaling);
-                    Vector3 vertex1 = Vector3.Modulate(vertices[index1], localScaling);
-                    Vector3 vertex2 = Vector3.Modulate(vertices[index2], localScaling);
+                    Vector3 vertex0 = vertices[index0] * localScaling;
+                    Vector3 vertex1 = vertices[index1] * localScaling;
+                    Vector3 vertex2 = vertices[index2] * localScaling;
 
                     trimesh.AddTriangle(vertex0, vertex1, vertex2);
                 }

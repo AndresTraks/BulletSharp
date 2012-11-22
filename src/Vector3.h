@@ -607,6 +607,14 @@ namespace BulletSharp
 		static Vector3 operator * ( btScalar scale, Vector3 vector );
 
 		/// <summary>
+		/// Modulates a vector by another.
+		/// </summary>
+		/// <param name="left">The first vector to modulate.</param>
+		/// <param name="right">The second vector to modulate.</param>
+		/// <returns>The modulated vector.</returns>
+		static Vector3 operator * ( Vector3 left, Vector3 right );
+
+		/// <summary>
 		/// Scales a vector by the given value.
 		/// </summary>
 		/// <param name="vector">The vector to scale.</param>

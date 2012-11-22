@@ -111,17 +111,17 @@ namespace DemoFramework
                 for (int i = 1; i != -3; i -= 2)
                 {
                     normal = GetVectorByAxis(0, i, 0, j);
-                    vertices[v++] = Vector3.Modulate(GetVectorByAxis(i, i, i, j), size);
+                    vertices[v++] = GetVectorByAxis(i, i, i, j) * size;
                     vertices[v++] = normal;
-                    vertices[v++] = Vector3.Modulate(GetVectorByAxis(1, i, -1, j), size);
+                    vertices[v++] = GetVectorByAxis(1, i, -1, j) * size;
                     vertices[v++] = normal;
-                    vertices[v++] = Vector3.Modulate(GetVectorByAxis(-1, i, 1, j), size);
+                    vertices[v++] = GetVectorByAxis(-1, i, 1, j) * size;
                     vertices[v++] = normal;
-                    vertices[v++] = Vector3.Modulate(GetVectorByAxis(-i, i, -i, j), size);
+                    vertices[v++] = GetVectorByAxis(-i, i, -i, j) * size;
                     vertices[v++] = normal;
-                    vertices[v++] = Vector3.Modulate(GetVectorByAxis(-1, i, 1, j), size);
+                    vertices[v++] = GetVectorByAxis(-1, i, 1, j) * size;
                     vertices[v++] = normal;
-                    vertices[v++] = Vector3.Modulate(GetVectorByAxis(1, i, -1, j), size);
+                    vertices[v++] = GetVectorByAxis(1, i, -1, j) * size;
                     vertices[v++] = normal;
                 }
             }
