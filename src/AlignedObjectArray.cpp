@@ -2367,7 +2367,7 @@ void AlignedTriangleMeshArray::CopyTo(array<TriangleMesh^>^ array, int arrayInde
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew TriangleMesh(&(*Native)[i]);
+		array[arrayIndex+i] = gcnew TriangleMesh((*Native)[i]);
 	}
 }
 
@@ -2395,7 +2395,7 @@ TriangleMesh^ AlignedTriangleMeshArray::default::get(int index)
 {
 	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew TriangleMesh(&(*Native)[index]);
+	return gcnew TriangleMesh((*Native)[index]);
 }
 
 void AlignedTriangleMeshArray::default::set(int index, TriangleMesh^ value)
