@@ -41,7 +41,7 @@ namespace BulletSharp
 
 	public:
 		void GetBulletTetrahedron(int prim_index, [Out] TetrahedronShapeEx^% tetrahedron);
-		void GetBulletTriangle(int prim_index, [Out] TriangleShapeEx^% triangle);
+		void GetBulletTriangle(int prim_index, TriangleShapeEx^ triangle);
 		CollisionShape^ GetChildShape(int index);
 		Matrix GetChildTransform(int index);
 		void GetPrimitiveTriangle(int prim_index, [Out] PrimitiveTriangle^% triangle);
@@ -157,7 +157,7 @@ namespace BulletSharp
 			TrimeshPrimitiveManager(TrimeshPrimitiveManager^ manager);
 			TrimeshPrimitiveManager(StridingMeshInterface^ meshInterface, int part);
 
-			void GetBulletTriangle(int prim_index, [Out] TriangleShapeEx^% triangle);
+			void GetBulletTriangle(int prim_index, TriangleShapeEx^ triangle);
 			void GetIndices(int face_index, int% i0, int% i1, int% i2);
 			void Lock();
 			void Unlock();

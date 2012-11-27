@@ -35,6 +35,7 @@
 #include "MultimaterialTriangleMeshShape.h"
 #include "StringConv.h"
 #include "TriangleShape.h"
+#include "TriangleShapeEx.h"
 #endif
 
 CollisionShape::CollisionShape(btCollisionShape* collisionShape)
@@ -153,8 +154,15 @@ CollisionShape^ CollisionShape::GetManaged(btCollisionShape* collisionShape)
 		shape = gcnew TriangleMeshShape((btTriangleMeshShape*) collisionShape);
 		break;
 	case BroadphaseNativeType::TriangleShape:
-		shape = gcnew TriangleShape((btTriangleShape*) collisionShape);
+		{
+		btTriangleShapeEx* triangleShapeEx = dynamic_cast<btTriangleShapeEx*>(collisionShape);
+		if (triangleShapeEx) {
+			shape = gcnew TriangleShapeEx(triangleShapeEx);
+		} else {
+			shape = gcnew TriangleShape((btTriangleShape*) collisionShape);
+		}
 		break;
+		}
 #endif
 
 	default:

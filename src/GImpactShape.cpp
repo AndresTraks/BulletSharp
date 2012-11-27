@@ -50,11 +50,9 @@ void GImpactShapeInterface::GetBulletTetrahedron(int prim_index, [Out] Tetrahedr
 	tetrahedron = gcnew TetrahedronShapeEx(tetrahedronTemp);
 }
 
-void GImpactShapeInterface::GetBulletTriangle(int prim_index, [Out] TriangleShapeEx^% triangle)
+void GImpactShapeInterface::GetBulletTriangle(int prim_index, TriangleShapeEx^ triangle)
 {
-	btTriangleShapeEx* triangleTemp = new btTriangleShapeEx;
-	Native->getBulletTriangle(prim_index, *triangleTemp);
-	triangle = gcnew TriangleShapeEx(triangleTemp);
+	Native->getBulletTriangle(prim_index, *(btTriangleShapeEx*)triangle->_native);
 }
 
 CollisionShape^ GImpactShapeInterface::GetChildShape(int index)
@@ -268,11 +266,9 @@ GImpactMeshShapePart::TrimeshPrimitiveManager::TrimeshPrimitiveManager(StridingM
 {
 }
 
-void GImpactMeshShapePart::TrimeshPrimitiveManager::GetBulletTriangle(int prim_index, [Out] TriangleShapeEx^% triangle)
+void GImpactMeshShapePart::TrimeshPrimitiveManager::GetBulletTriangle(int prim_index, TriangleShapeEx^ triangle)
 {
-	btTriangleShapeEx* triangleTemp = new btTriangleShapeEx;
-	UnmanagedPointer->get_bullet_triangle(prim_index, *triangleTemp);
-	triangle = gcnew TriangleShapeEx(triangleTemp);
+	UnmanagedPointer->get_bullet_triangle(prim_index, *(btTriangleShapeEx*)triangle->_native);
 }
 
 void GImpactMeshShapePart::TrimeshPrimitiveManager::GetIndices(int face_index, int% i0, int% i1, int% i2)
