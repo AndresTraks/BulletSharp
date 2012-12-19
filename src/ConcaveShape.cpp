@@ -15,7 +15,7 @@ void ConcaveShape::ProcessAllTriangles(TriangleCallback^ callback, Vector3 aabbM
 	VECTOR3_DEF(aabbMin);
 	VECTOR3_DEF(aabbMax);
 
-	Native->processAllTriangles(callback->UnmanagedPointer, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
+	Native->processAllTriangles(callback->_native, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);

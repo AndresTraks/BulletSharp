@@ -32,11 +32,5 @@ namespace BulletSharp
 		{
 			int get();
 		}
-
-	internal:
-		property btTriangleBuffer* UnmanagedPointer
-		{
-			btTriangleBuffer* get() new;
-		}
 	};
 };

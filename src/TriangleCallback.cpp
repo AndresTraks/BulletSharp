@@ -4,7 +4,7 @@
 
 TriangleCallback::TriangleCallback(btTriangleCallback* callback)
 {
-	_callback = callback;
+	_native = callback;
 }
 
 TriangleCallback::~TriangleCallback()
@@ -19,7 +19,8 @@ TriangleCallback::!TriangleCallback()
 	
 	OnDisposing(this, nullptr);
 	
-	_callback = NULL;
+	delete _native;
+	_native = NULL;
 	
 	OnDisposed(this, nullptr);
 }
@@ -27,23 +28,15 @@ TriangleCallback::!TriangleCallback()
 void TriangleCallback::ProcessTriangle(Vector3 triangle, int partId, int triangleIndex)
 {
 	VECTOR3_DEF(triangle);
-	UnmanagedPointer->processTriangle(VECTOR3_PTR(triangle), partId, triangleIndex);
+	_native->processTriangle(VECTOR3_PTR(triangle), partId, triangleIndex);
 	VECTOR3_DEL(triangle);
 }
 
 bool TriangleCallback::IsDisposed::get()
 {
-	return (_callback == NULL);
+	return (_native == NULL);
 }
 
-btTriangleCallback* TriangleCallback::UnmanagedPointer::get()
-{
-	return _callback;
-}
-void TriangleCallback::UnmanagedPointer::set(btTriangleCallback* value)
-{
-	_callback = value;
-}
 
 #ifndef DISABLE_INTERNAL
 InternalTriangleIndexCallback::InternalTriangleIndexCallback(btInternalTriangleIndexCallback* callback)

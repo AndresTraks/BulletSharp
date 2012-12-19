@@ -1638,6 +1638,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\CompoundFromGImpact.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\src\GImpactBvh.cpp"
 						>
 					</File>
@@ -2517,6 +2521,10 @@
 					>
 					<File
 						RelativePath="..\src\BoxCollision.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CompoundFromGImpact.h"
 						>
 					</File>
 					<File

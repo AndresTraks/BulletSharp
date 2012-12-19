@@ -3,6 +3,7 @@
 #include "CollisionWorld.h"
 #include "ConcaveShape.h"
 #include "TetrahedronShape.h"
+#include "TriangleCallback.h"
 #ifndef DISABLE_BVH
 #include "GImpactBvh.h"
 #include "GImpactQuantizedBvh.h"
@@ -14,6 +15,7 @@ namespace BulletSharp
 	ref class PrimitiveManagerBase;
 	ref class PrimitiveTriangle;
 	ref class StridingMeshInterface;
+	ref class TriangleCallback;
 	ref class TriangleShapeEx;
 
 	public enum class GImpactShapeType
@@ -47,6 +49,8 @@ namespace BulletSharp
 		void GetPrimitiveTriangle(int prim_index, [Out] PrimitiveTriangle^% triangle);
 		void LockChildShapes();
 		void PostUpdate();
+		void ProcessAllTriangles(TriangleCallback^ callback, Vector3 aabbMin, Vector3 aabbMax);
+		void ProcessAllTrianglesRay(TriangleCallback^ callback, Vector3 rayFrom, Vector3 rayTo);
 		void RayTest(Vector3 rayFrom, Vector3 rayTo, CollisionWorld::RayResultCallback^ resultCallback);
 		void SetChildTransform(int index, Matrix transform);
 		void UnlockChildShapes();
@@ -158,7 +162,7 @@ namespace BulletSharp
 			TrimeshPrimitiveManager(StridingMeshInterface^ meshInterface, int part);
 
 			void GetBulletTriangle(int prim_index, TriangleShapeEx^ triangle);
-			void GetIndices(int face_index, int% i0, int% i1, int% i2);
+			void GetIndices(int face_index, unsigned int% i0, unsigned int% i1, unsigned int% i2);
 			void Lock();
 			void Unlock();
 
@@ -249,7 +253,7 @@ namespace BulletSharp
 		GImpactMeshShapePart();
 		GImpactMeshShapePart(StridingMeshInterface^ meshInterface, int part);
 
-		void GetVertex(int vertex_index, [Out] Vector3% vertex);
+		void GetVertex(unsigned int vertexIndex, [Out] Vector3% vertex);
 
 		property int Part
 		{

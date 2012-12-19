@@ -629,6 +629,9 @@
     <ClCompile Include="src\BulletXmlWorldImporter.cpp">
       <Filter>Source Files\Extras\Serialize</Filter>
     </ClCompile>
+    <ClCompile Include="src\CompoundFromGImpact.cpp">
+      <Filter>Source Files\Collision\GImpact</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\Resources.rc">
@@ -1127,6 +1130,9 @@
     </ClInclude>
     <ClInclude Include="src\BulletXmlWorldImporter.h">
       <Filter>Header Files\Extras\Serialize</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CompoundFromGImpact.h">
+      <Filter>Header Files\Collision\GImpact</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

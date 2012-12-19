@@ -27,6 +27,8 @@ BulletTriangle::BulletTriangle(const BulletTriangle^ &triangle)
 }
 
 
+#define Native static_cast<btTriangleBuffer*>(_native)
+
 TriangleBuffer::TriangleBuffer()
 : TriangleCallback(new btTriangleBuffer())
 {
@@ -34,12 +36,12 @@ TriangleBuffer::TriangleBuffer()
 
 void TriangleBuffer::ClearBuffer()
 {
-	UnmanagedPointer->clearBuffer();
+	Native->clearBuffer();
 }
 
 BulletTriangle^ TriangleBuffer::GetTriangle(int index)
 {
-	const btTriangle* triangle = &UnmanagedPointer->getTriangle(index);
+	const btTriangle* triangle = &Native->getTriangle(index);
 	if (triangle == 0)
 		return nullptr;
 	return gcnew BulletTriangle(triangle);
@@ -47,12 +49,7 @@ BulletTriangle^ TriangleBuffer::GetTriangle(int index)
 
 int TriangleBuffer::TriangleCount::get()
 {
-	return UnmanagedPointer->getNumTriangles();
-}
-
-btTriangleBuffer* TriangleBuffer::UnmanagedPointer::get()
-{
-	return (btTriangleBuffer*)TriangleCallback::UnmanagedPointer;
+	return Native->getNumTriangles();
 }
 
 #endif

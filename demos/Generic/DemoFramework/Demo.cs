@@ -143,40 +143,50 @@ namespace DemoFramework
 
         public virtual void ExitPhysics()
         {
-            //remove/dispose constraints
-            int i;
-            for (i = _world.NumConstraints - 1; i >= 0; i--)
+            if (_world != null)
             {
-                TypedConstraint constraint = _world.GetConstraint(i);
-                _world.RemoveConstraint(constraint);
-                constraint.Dispose(); ;
-            }
-
-            //remove the rigidbodies from the dynamics world and delete them
-            for (i = _world.NumCollisionObjects - 1; i >= 0; i--)
-            {
-                CollisionObject obj = _world.CollisionObjectArray[i];
-                RigidBody body = obj as RigidBody;
-                if (body != null && body.MotionState != null)
+                //remove/dispose constraints
+                int i;
+                for (i = _world.NumConstraints - 1; i >= 0; i--)
                 {
-                    body.MotionState.Dispose();
+                    TypedConstraint constraint = _world.GetConstraint(i);
+                    _world.RemoveConstraint(constraint);
+                    constraint.Dispose(); ;
                 }
-                _world.RemoveCollisionObject(obj);
-                obj.Dispose();
+
+                //remove the rigidbodies from the dynamics world and delete them
+                for (i = _world.NumCollisionObjects - 1; i >= 0; i--)
+                {
+                    CollisionObject obj = _world.CollisionObjectArray[i];
+                    RigidBody body = obj as RigidBody;
+                    if (body != null && body.MotionState != null)
+                    {
+                        body.MotionState.Dispose();
+                    }
+                    _world.RemoveCollisionObject(obj);
+                    obj.Dispose();
+                }
+
+                //delete collision shapes
+                foreach (CollisionShape shape in CollisionShapes)
+                    shape.Dispose();
+                CollisionShapes.Clear();
+
+                _world.Dispose();
             }
 
-            //delete collision shapes
-            foreach (CollisionShape shape in CollisionShapes)
-                shape.Dispose();
-            CollisionShapes.Clear();
-
-            _world.Dispose();
-            Broadphase.Dispose();
+            if (Broadphase != null)
+            {
+                Broadphase.Dispose();
+            }
             if (Dispatcher != null)
             {
                 Dispatcher.Dispose();
             }
-            CollisionConf.Dispose();
+            if (CollisionConf != null)
+            {
+                CollisionConf.Dispose();
+            }
         }
 
         public virtual void OnUpdate()

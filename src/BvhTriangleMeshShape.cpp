@@ -76,7 +76,7 @@ void BvhTriangleMeshShape::PerformConvexcast(TriangleCallback^ callback, Vector3
 	VECTOR3_DEF(boxMin);
 	VECTOR3_DEF(boxMax);
 
-	Native->performConvexcast(callback->UnmanagedPointer, VECTOR3_USE(boxSource),
+	Native->performConvexcast(callback->_native, VECTOR3_USE(boxSource),
 		VECTOR3_USE(boxTarget), VECTOR3_USE(boxMin), VECTOR3_USE(boxMax));
 
 	VECTOR3_DEL(boxSource);
@@ -90,7 +90,7 @@ void BvhTriangleMeshShape::PerformRaycast(TriangleCallback^ callback, Vector3 ra
 	VECTOR3_DEF(raySource);
 	VECTOR3_DEF(rayTarget);
 
-	Native->performRaycast(callback->UnmanagedPointer, VECTOR3_USE(raySource), VECTOR3_USE(rayTarget));
+	Native->performRaycast(callback->_native, VECTOR3_USE(raySource), VECTOR3_USE(rayTarget));
 
 	VECTOR3_DEL(raySource);
 	VECTOR3_DEL(rayTarget);
@@ -101,7 +101,7 @@ void BvhTriangleMeshShape::ProcessAllTriangles(TriangleCallback^ callback, Vecto
 	VECTOR3_DEF(aabbMin);
 	VECTOR3_DEF(aabbMax);
 
-	Native->processAllTriangles(callback->UnmanagedPointer, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
+	Native->processAllTriangles(callback->_native, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);

@@ -507,6 +507,9 @@
     <ClInclude Include="..\src\WorldImporter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\CompoundFromGImpact.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\VoronoiSimplexSolver.cpp">
@@ -990,6 +993,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\WorldImporter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\CompoundFromGImpact.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

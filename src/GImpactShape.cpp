@@ -93,6 +93,28 @@ void GImpactShapeInterface::PostUpdate()
 	Native->postUpdate();
 }
 
+void GImpactShapeInterface::ProcessAllTriangles(TriangleCallback^ callback, Vector3 aabbMin, Vector3 aabbMax)
+{
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
+
+	Native->processAllTriangles(callback->_native, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
+
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
+}
+
+void GImpactShapeInterface::ProcessAllTrianglesRay(TriangleCallback^ callback, Vector3 rayFrom, Vector3 rayTo)
+{
+	VECTOR3_DEF(rayFrom);
+	VECTOR3_DEF(rayTo);
+
+	Native->processAllTrianglesRay(callback->_native, VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo));
+
+	VECTOR3_DEL(rayFrom);
+	VECTOR3_DEL(rayTo);
+}
+
 void GImpactShapeInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, CollisionWorld::RayResultCallback^ resultCallback)
 {
 	VECTOR3_DEF(rayFrom);
@@ -271,11 +293,11 @@ void GImpactMeshShapePart::TrimeshPrimitiveManager::GetBulletTriangle(int prim_i
 	UnmanagedPointer->get_bullet_triangle(prim_index, *(btTriangleShapeEx*)triangle->_native);
 }
 
-void GImpactMeshShapePart::TrimeshPrimitiveManager::GetIndices(int face_index, int% i0, int% i1, int% i2)
+void GImpactMeshShapePart::TrimeshPrimitiveManager::GetIndices(int face_index, unsigned int% i0, unsigned int% i1, unsigned int% i2)
 {
-	int i0Temp;
-	int i1Temp;
-	int i2Temp;
+	unsigned int i0Temp;
+	unsigned int i1Temp;
+	unsigned int i2Temp;
 
 	UnmanagedPointer->get_indices(face_index, i0Temp, i1Temp, i2Temp);
 
@@ -436,10 +458,10 @@ GImpactMeshShapePart::GImpactMeshShapePart(StridingMeshInterface^ meshInterface,
 {
 }
 
-void GImpactMeshShapePart::GetVertex(int vertex_index, [Out] Vector3% vertex)
+void GImpactMeshShapePart::GetVertex(unsigned int vertexIndex, [Out] Vector3% vertex)
 {
 	btVector3* vertexTemp = new btVector3;
-	Native->getVertex(vertex_index, *vertexTemp);
+	Native->getVertex(vertexIndex, *vertexTemp);
 	Math::BtVector3ToVector3(vertexTemp, vertex);
 	delete vertexTemp;
 }

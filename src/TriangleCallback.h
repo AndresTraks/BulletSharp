@@ -10,10 +10,8 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		btTriangleCallback* _callback;
-
 	internal:
+		btTriangleCallback* _native;
 		TriangleCallback(btTriangleCallback* callback);
 
 	public:
@@ -27,13 +25,6 @@ namespace BulletSharp
 		property bool IsDisposed
 		{
 			virtual bool get();
-		}
-
-	internal:
-		property btTriangleCallback* UnmanagedPointer
-		{
-			btTriangleCallback* get();
-			void set(btTriangleCallback* value);
 		}
 	};
 

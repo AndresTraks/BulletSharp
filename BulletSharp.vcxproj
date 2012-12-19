@@ -840,6 +840,7 @@
     <ClCompile Include="src\BulletXmlWorldImporter.cpp" />
     <ClCompile Include="src\Collections.cpp" />
     <ClCompile Include="src\CollisionObjectWrapper.cpp" />
+    <ClCompile Include="src\CompoundFromGImpact.cpp" />
     <ClCompile Include="src\GearConstraint.cpp" />
     <ClCompile Include="src\Hacd.cpp" />
     <ClCompile Include="src\Math.cpp" />
@@ -1026,6 +1027,7 @@
     <ClInclude Include="src\BulletXmlWorldImporter.h" />
     <ClInclude Include="src\Collections.h" />
     <ClInclude Include="src\CollisionObjectWrapper.h" />
+    <ClInclude Include="src\CompoundFromGImpact.h" />
     <ClInclude Include="src\Enums.h" />
     <ClInclude Include="src\GearConstraint.h" />
     <ClInclude Include="src\Hacd.h" />
