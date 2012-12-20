@@ -296,7 +296,7 @@ void CollisionObject::InterpolationWorldTransform::set(Matrix value)
 {
 	btTransform* valueTemp = Math::MatrixToBtTransform(value);
 	_native->setInterpolationWorldTransform(*valueTemp);
-	delete valueTemp;
+	ALIGNED_DEL(valueTemp);
 }
 
 bool CollisionObject::IsActive::get()
@@ -368,7 +368,7 @@ void CollisionObject::WorldTransform::set(Matrix value)
 {
 	btTransform* valueTemp = Math::MatrixToBtTransform(value);
 	_native->setWorldTransform(*valueTemp);
-	delete valueTemp;
+	ALIGNED_DEL(valueTemp);
 }
 
 btCollisionObject* CollisionObject::UnmanagedPointer::get()

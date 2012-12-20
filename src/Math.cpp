@@ -50,25 +50,26 @@ btScalar* BulletSharp::Math::BtScalarArrayToUnmanaged(array<btScalar>^ s, int le
 }
 
 
-void BulletSharp::Math::BtVector3ToVector3(const btVector3* vector, [Out] Vector3% vectorOut)
-{
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	vectorOut.x = vector->m_floats[0];
-	vectorOut.y = vector->m_floats[1];
-	vectorOut.z = vector->m_floats[2];
-#else
-	vectorOut.X = vector->m_floats[0];
-	vectorOut.Y = vector->m_floats[1];
-	vectorOut.Z = vector->m_floats[2];
-#endif
-}
-
 btVector3* BulletSharp::Math::Vector3ToBtVector3(Vector3 vector)
 {
+#ifdef ALIGN_FOR_SSE
+	btVector3* v = ALIGNED_ALLOC(btVector3);
+#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+	v->setX(vector.x);
+	v->setY(vector.y);
+	v->setZ(vector.z);
+#else
+	v->setX(vector.X);
+	v->setY(vector.Y);
+	v->setZ(vector.Z);
+#endif
+	return v;
+#else
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
 	return new btVector3(vector.x, vector.y, vector.z);
 #else
 	return new btVector3(vector.X, vector.Y, vector.Z);
+#endif
 #endif
 }
 btVector3* BulletSharp::Math::Vector3ToBtVector3Ref(Vector3% vector)
@@ -279,7 +280,11 @@ void BulletSharp::Math::BtTransformToMatrix(const btTransform* transform, [Out] 
 
 btTransform* BulletSharp::Math::MatrixToBtTransform(Matrix matrix)
 {
+#ifdef ALIGN_FOR_SSE
+	btTransform* t = ALIGNED_ALLOC(btTransform);
+#else
 	btTransform* t = new btTransform;
+#endif
 
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
 	btScalar m[16];

@@ -195,17 +195,17 @@ bool RigidBody::IsInWorld()
 
 void RigidBody::PredictIntegratedTransform(btScalar step, [Out] Matrix% predictedTransform)
 {
-	btTransform* predictedTransformTemp = new btTransform();
+	btTransform* predictedTransformTemp = ALIGNED_ALLOC(btTransform);
 	Native->predictIntegratedTransform(step, *predictedTransformTemp);
 	Math::BtTransformToMatrix(predictedTransformTemp, predictedTransform);
-	delete predictedTransformTemp;
+	ALIGNED_DEL(predictedTransformTemp);
 }
 
 void RigidBody::ProceedToTransform(Matrix newTransform)
 {
 	btTransform* newTransformTemp = Math::MatrixToBtTransform(newTransform);
 	Native->proceedToTransform(*newTransformTemp);
-	delete newTransformTemp;
+	ALIGNED_DEL(newTransformTemp);
 }
 
 void RigidBody::SaveKinematicState(btScalar step)
@@ -307,7 +307,7 @@ void RigidBody::CenterOfMassTransform::set(Matrix value)
 {
 	btTransform* valueTemp = Math::MatrixToBtTransform(value);
 	Native->setCenterOfMassTransform(*valueTemp);
-	delete valueTemp;
+	ALIGNED_DEL(valueTemp);
 }
 
 RigidBodyFlags RigidBody::Flags::get()

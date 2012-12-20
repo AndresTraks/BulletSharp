@@ -108,8 +108,8 @@ void PersistentManifold::RefreshContactPoints(Matrix trA, Matrix trB)
 
 	Native->refreshContactPoints(*trATemp, *trBTemp);
 
-	delete trATemp;
-	delete trBTemp;
+	ALIGNED_DEL(trATemp);
+	ALIGNED_DEL(trBTemp);
 }
 
 void PersistentManifold::RemoveContactPoint(int index)

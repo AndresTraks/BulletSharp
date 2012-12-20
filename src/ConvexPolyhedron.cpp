@@ -89,7 +89,7 @@ void ConvexPolyhedron::Project(Matrix transform, Vector3 direction, [Out] btScal
 	delete witnesPtMaxTemp;
 	delete witnesPtMinTemp;
 	VECTOR3_DEL(direction);
-	delete transformTemp;
+	ALIGNED_DEL(transformTemp);
 }
 
 bool ConvexPolyhedron::TestContainment()

@@ -39,7 +39,7 @@ void MinkowskiSumShape::TransformA::set(Matrix value)
 {
 	btTransform* valueTemp = Math::MatrixToBtTransform(value);
 	Native->setTransformA(*valueTemp);
-	delete valueTemp;
+	ALIGNED_DEL(valueTemp);
 }
 
 Matrix MinkowskiSumShape::TransformB::get()
@@ -50,7 +50,7 @@ void MinkowskiSumShape::TransformB::set(Matrix value)
 {
 	btTransform* valueTemp = Math::MatrixToBtTransform(value);
 	Native->setTransformB(*valueTemp);
-	delete valueTemp;
+	ALIGNED_DEL(valueTemp);
 }
 
 #endif

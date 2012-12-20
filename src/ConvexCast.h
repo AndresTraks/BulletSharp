@@ -9,16 +9,10 @@ namespace BulletSharp
 	public ref class ConvexCast : BulletSharp::IDisposable
 	{
 	public:
-		ref class CastResult : BulletSharp::IDisposable
+		ref class CastResult
 		{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
-
-		private:
-			btConvexCast::CastResult* _castResult;
-
 		internal:
+			btConvexCast::CastResult* _native;
 			CastResult(btConvexCast::CastResult* castResult);
 
 		public:
@@ -82,13 +76,6 @@ namespace BulletSharp
 			property bool IsDisposed
 			{
 				virtual bool get();
-			}
-
-		internal:
-			property btConvexCast::CastResult* UnmanagedPointer
-			{
-				virtual btConvexCast::CastResult* get();
-				void set(btConvexCast::CastResult* value);
 			}
 		};
 

@@ -25,11 +25,5 @@ namespace BulletSharp
 			BoxShape^ get();
 			void set(BoxShape^ value);
 		}
-
-	internal:
-		property btBoxBoxDetector* UnmanagedPointer
-		{
-			btBoxBoxDetector* get() new;
-		}
 	};
 };

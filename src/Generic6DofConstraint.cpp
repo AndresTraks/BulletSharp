@@ -415,8 +415,8 @@ Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ r
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*frameInATemp, *frameInBTemp, useReferenceFrameA);
 
-	delete frameInATemp;
-	delete frameInBTemp;
+	ALIGNED_DEL(frameInATemp);
+	ALIGNED_DEL(frameInBTemp);
 }
 
 Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frameInB,
@@ -424,10 +424,8 @@ Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frame
 : TypedConstraint(0)
 {
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
-
 	UnmanagedPointer = new btGeneric6DofConstraint(*(btRigidBody*)rigidBodyB->_native, *frameInBTemp, useReferenceFrameA);
-
-	delete frameInBTemp;
+	ALIGNED_DEL(frameInBTemp);
 }
 
 void Generic6DofConstraint::CalcAnchorPos()
@@ -447,8 +445,8 @@ void Generic6DofConstraint::CalculateTransforms(Matrix transA, Matrix transB)
 
 	UnmanagedPointer->calculateTransforms(*transATemp, *transBTemp);
 	
-	delete transATemp;
-	delete transBTemp;
+	ALIGNED_DEL(transATemp);
+	ALIGNED_DEL(transBTemp);
 }
 
 btScalar Generic6DofConstraint::GetAngle(int axis_index)
@@ -501,8 +499,8 @@ void Generic6DofConstraint::SetFrames(Matrix frameA, Matrix frameB)
 
 	UnmanagedPointer->setFrames(*frameATemp, *frameBTemp);
 
-	delete frameBTemp;
-	delete frameATemp;
+	ALIGNED_DEL(frameBTemp);
+	ALIGNED_DEL(frameATemp);
 }
 
 void Generic6DofConstraint::SetLimit(int axis, btScalar lo, btScalar hi)
@@ -582,6 +580,7 @@ void Generic6DofConstraint::FrameOffsetB::set(Matrix value)
 	btTransform* a = Math::MatrixToBtTransform(value);
 	a->getOpenGLMatrix(m);
 	UnmanagedPointer->getFrameOffsetB().setFromOpenGLMatrix(m);
+	ALIGNED_FREE(a);
 }
 
 Vector3 Generic6DofConstraint::LinearLowerLimit::get()

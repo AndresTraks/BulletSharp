@@ -779,6 +779,11 @@ namespace BulletSharp
 				//static Specs^ GetManaged(btSoftBody::Joint::Specs* specs);
 
 			public:
+				!Specs();
+			protected:
+				~Specs();
+
+			public:
 				property btScalar Cfm
 				{
 					btScalar get();

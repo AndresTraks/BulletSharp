@@ -14,11 +14,5 @@ namespace BulletSharp
 
 	public:
 		SphereTriangleDetector(SphereShape^ sphere, TriangleShape^ triangle, btScalar contactBreakingThreshold);
-
-	internal:
-		property ::SphereTriangleDetector* UnmanagedPointer
-		{
-			::SphereTriangleDetector* get() new;
-		}
 	};
 };

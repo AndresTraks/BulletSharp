@@ -157,7 +157,7 @@ namespace DemoFramework
 
         public override void ReportErrorWarning(string warningString)
         {
-            throw new NotImplementedException();
+            System.Windows.Forms.MessageBox.Show(warningString);
         }
     }
 };

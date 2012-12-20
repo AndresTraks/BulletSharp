@@ -6,20 +6,19 @@
 #include "SphereShape.h"
 #include "TriangleShape.h"
 
+#define Native static_cast<::SphereTriangleDetector*>(_native)
+
 BulletSharp::SphereTriangleDetector::SphereTriangleDetector(::SphereTriangleDetector* detector)
 : DiscreteCollisionDetectorInterface(detector)
 {
 }
 
 BulletSharp::SphereTriangleDetector::SphereTriangleDetector(SphereShape^ sphere, TriangleShape^ triangle, btScalar contactBreakingThreshold)
-: DiscreteCollisionDetectorInterface(new ::SphereTriangleDetector(
-	(btSphereShape*)sphere->_native, (btTriangleShape*)triangle->_native, contactBreakingThreshold))
+: DiscreteCollisionDetectorInterface(0)
 {
-}
-
-::SphereTriangleDetector* BulletSharp::SphereTriangleDetector::UnmanagedPointer::get()
-{
-	return (::SphereTriangleDetector*)DiscreteCollisionDetectorInterface::UnmanagedPointer;
+	_native = ALIGNED_ALLOC(::SphereTriangleDetector);
+	new (_native) ::SphereTriangleDetector(
+		(btSphereShape*)sphere->_native, (btTriangleShape*)triangle->_native, contactBreakingThreshold);
 }
 
 #endif

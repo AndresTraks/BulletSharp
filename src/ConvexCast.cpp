@@ -9,7 +9,12 @@
 
 ConvexCast::CastResult::CastResult(btConvexCast::CastResult* castResult)
 {
-	_castResult = castResult;
+	_native = castResult;
+}
+
+ConvexCast::CastResult::CastResult()
+{
+	_native = new btConvexCast::CastResult();
 }
 
 ConvexCast::CastResult::~CastResult()
@@ -19,117 +24,97 @@ ConvexCast::CastResult::~CastResult()
 
 ConvexCast::CastResult::!CastResult()
 {
-	if (this->IsDisposed)
-		return;
-
-	OnDisposing(this, nullptr);
-
-	_castResult = NULL;
-
-	OnDisposed(this, nullptr);
-}
-
-ConvexCast::CastResult::CastResult()
-{
-	_castResult = new btConvexCast::CastResult();
+	delete _native;
+	_native = NULL;
 }
 
 #ifndef DISABLE_DEBUGDRAW
 void ConvexCast::CastResult::DebugDraw (btScalar fraction)
 {
-	_castResult->DebugDraw(fraction);
+	_native->DebugDraw(fraction);
 }
 #endif
 
 void ConvexCast::CastResult::DrawCoordSystem (Matrix trans)
 {
 	btTransform* transTemp = Math::MatrixToBtTransform(trans);
-	_castResult->drawCoordSystem(*transTemp);
-	delete transTemp;
+	_native->drawCoordSystem(*transTemp);
+	ALIGNED_DEL(transTemp);
 }
 
 void ConvexCast::CastResult::ReportFailure(int errNo, int numIterations)
 {
-	_castResult->reportFailure(errNo, numIterations);
+	_native->reportFailure(errNo, numIterations);
 }
 
 btScalar ConvexCast::CastResult::AllowedPenetration::get()
 {
-	return _castResult->m_allowedPenetration;
+	return _native->m_allowedPenetration;
 }
 void ConvexCast::CastResult::AllowedPenetration::set(btScalar value)
 {
-	_castResult->m_allowedPenetration = value;
+	_native->m_allowedPenetration = value;
 }
 
 #ifndef DISABLE_DEBUGDRAW
 IDebugDraw^ ConvexCast::CastResult::DebugDrawer::get()
 {
-	return DebugDraw::GetManaged(_castResult->m_debugDrawer);
+	return DebugDraw::GetManaged(_native->m_debugDrawer);
 }
 void ConvexCast::CastResult::DebugDrawer::set(IDebugDraw^ value)
 {
-	_castResult->m_debugDrawer = DebugDraw::GetUnmanaged(value);
+	_native->m_debugDrawer = DebugDraw::GetUnmanaged(value);
 }
 #endif
 
 btScalar ConvexCast::CastResult::Fraction::get()
 {
-	return _castResult->m_fraction;
+	return _native->m_fraction;
 }
 void ConvexCast::CastResult::Fraction::set(btScalar value)
 {
-	_castResult->m_fraction = value;
+	_native->m_fraction = value;
 }
 
 Vector3 ConvexCast::CastResult::HitPoint::get()
 {
-	return Math::BtVector3ToVector3(&_castResult->m_hitPoint);
+	return Math::BtVector3ToVector3(&_native->m_hitPoint);
 }
 void ConvexCast::CastResult::HitPoint::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_castResult->m_hitPoint);
+	Math::Vector3ToBtVector3(value, &_native->m_hitPoint);
 }
 
 Matrix ConvexCast::CastResult::HitTransformA::get()
 {
-	return Math::BtTransformToMatrix(&_castResult->m_hitTransformA);
+	return Math::BtTransformToMatrix(&_native->m_hitTransformA);
 }
 void ConvexCast::CastResult::HitTransformA::set(Matrix value)
 {
-	Math::MatrixToBtTransform(value, &_castResult->m_hitTransformA);
+	Math::MatrixToBtTransform(value, &_native->m_hitTransformA);
 }
 
 Matrix ConvexCast::CastResult::HitTransformB::get()
 {
-	return Math::BtTransformToMatrix(&_castResult->m_hitTransformB);
+	return Math::BtTransformToMatrix(&_native->m_hitTransformB);
 }
 void ConvexCast::CastResult::HitTransformB::set(Matrix value)
 {
-	Math::MatrixToBtTransform(value, &_castResult->m_hitTransformB);
+	Math::MatrixToBtTransform(value, &_native->m_hitTransformB);
 }
 
 Vector3 ConvexCast::CastResult::Normal::get()
 {
-	return Math::BtVector3ToVector3(&_castResult->m_normal);
+	return Math::BtVector3ToVector3(&_native->m_normal);
 }
 void ConvexCast::CastResult::Normal::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_castResult->m_normal);
+	Math::Vector3ToBtVector3(value, &_native->m_normal);
 }
 
 bool ConvexCast::CastResult::IsDisposed::get()
 {
-	return (_castResult == NULL);
-}
-
-btConvexCast::CastResult* ConvexCast::CastResult::UnmanagedPointer::get()
-{
-	return _castResult;
-}
-void ConvexCast::CastResult::UnmanagedPointer::set(btConvexCast::CastResult* value)
-{
-	_castResult = value;
+	return (_native == NULL);
 }
 
 
@@ -162,12 +147,12 @@ bool ConvexCast::CalcTimeOfImpact(Matrix fromA, Matrix toA, Matrix fromB, Matrix
 	btTransform* fromBTemp = Math::MatrixToBtTransform(fromB);
 	btTransform* toBTemp = Math::MatrixToBtTransform(toB);
 
-	bool ret = _convexCast->calcTimeOfImpact(*fromATemp, *toATemp, *fromBTemp, *toBTemp, *result->UnmanagedPointer);
+	bool ret = _convexCast->calcTimeOfImpact(*fromATemp, *toATemp, *fromBTemp, *toBTemp, *result->_native);
 
-	delete fromATemp;
-	delete toATemp;
-	delete fromBTemp;
-	delete toBTemp;
+	ALIGNED_DEL(fromATemp);
+	ALIGNED_DEL(toATemp);
+	ALIGNED_DEL(fromBTemp);
+	ALIGNED_DEL(toBTemp);
 
 	return ret;
 }

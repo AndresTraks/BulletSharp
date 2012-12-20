@@ -1052,6 +1052,17 @@ void BulletSharp::SoftBody::Impulse::UnmanagedPointer::set(btSoftBody::Impulse* 
 }
 
 
+BulletSharp::SoftBody::Joint::Specs::~Specs()
+{
+	this->!Specs();
+}
+
+BulletSharp::SoftBody::Joint::Specs::!Specs()
+{
+	ALIGNED_FREE(_native);
+	_native = NULL;
+}
+
 btScalar BulletSharp::SoftBody::Joint::Specs::Cfm::get()
 {
 	return _native->cfm;
@@ -1216,7 +1227,8 @@ Vector3Array^ BulletSharp::SoftBody::LJoint::RPos::get()
 
 BulletSharp::SoftBody::LJoint::Specs::Specs()
 {
-	_native = new btSoftBody::LJoint::Specs();
+	_native = ALIGNED_ALLOC(btSoftBody::LJoint::Specs);
+	new (_native) btSoftBody::LJoint::Specs();
 }
 
 Vector3 BulletSharp::SoftBody::LJoint::Specs::Position::get()
@@ -1261,7 +1273,8 @@ void BulletSharp::SoftBody::AJoint::IControl::UnmanagedPointer::set(AJointIContr
 
 BulletSharp::SoftBody::AJoint::Specs::Specs()
 {
-	_native = new btSoftBody::AJoint::Specs();
+	_native = ALIGNED_ALLOC(btSoftBody::AJoint::Specs);
+	new (_native) btSoftBody::AJoint::Specs();
 }
 
 Vector3 BulletSharp::SoftBody::AJoint::Specs::Axis::get()
@@ -3252,7 +3265,7 @@ void BulletSharp::SoftBody::SoftBody::Transform(Matrix transform)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	Native->transform(*transformTemp);
-	delete transformTemp;
+	ALIGNED_DEL(transformTemp);
 }
 
 void BulletSharp::SoftBody::SoftBody::Translate(Vector3 translation)

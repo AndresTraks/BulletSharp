@@ -119,7 +119,7 @@ void DebugDraw::DrawBox(Vector3% bbMin, Vector3% bbMax, Matrix% trans, BtColor c
 	
 	VECTOR3_DEL(bbMin);
 	VECTOR3_DEL(bbMax);
-	delete transTemp;
+	ALIGNED_DEL(transTemp);
 	delete colorTemp;
 };
 
@@ -143,7 +143,7 @@ void DebugDraw::DrawCapsule(btScalar radius, btScalar halfHeight, int upAxis, Ma
 
 	_native->baseDrawCapsule(radius, halfHeight, upAxis, *transformTemp, *colorTemp);
 
-	delete transformTemp;
+	ALIGNED_DEL(transformTemp);
 	delete colorTemp;
 }
 
@@ -154,7 +154,7 @@ void DebugDraw::DrawCone(btScalar radius, btScalar height, int upAxis, Matrix% t
 
 	_native->baseDrawCone(radius, height, upAxis, *transformTemp, *colorTemp);
 
-	delete transformTemp;
+	ALIGNED_DEL(transformTemp);
 	delete colorTemp;
 }
 
@@ -165,7 +165,7 @@ void DebugDraw::DrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, M
 
 	_native->baseDrawCylinder(radius, halfHeight, upAxis, *transformTemp, *colorTemp);
 
-	delete transformTemp;
+	ALIGNED_DEL(transformTemp);
 	delete colorTemp;
 }
 
@@ -193,7 +193,7 @@ void DebugDraw::DrawPlane(Vector3% planeNormal, btScalar planeConst, Matrix% tra
 	_native->baseDrawPlane(VECTOR3_USE(planeNormal), planeConst, *transformTemp, *colorTemp);
 
 	VECTOR3_DEL(planeNormal);
-	delete transformTemp;
+	ALIGNED_DEL(transformTemp);
 	delete colorTemp;
 }
 
@@ -215,7 +215,7 @@ void DebugDraw::DrawSphere(btScalar radius, Matrix% transform, BtColor color)
 
 	_native->baseDrawSphere(radius, *transformTemp, *colorTemp);
 
-	delete transformTemp;
+	ALIGNED_DEL(transformTemp);
 	delete colorTemp;
 }
 
@@ -254,10 +254,8 @@ void DebugDraw::DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btS
 void DebugDraw::DrawTransform(Matrix% transform, btScalar orthoLen)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
-
 	_native->baseDrawTransform(*transformTemp, orthoLen);
-
-	delete transformTemp;
+	ALIGNED_DEL(transformTemp);
 }
 
 void DebugDraw::DrawTriangle(Vector3% v0, Vector3% v1, Vector3% v2, BtColor color, btScalar)

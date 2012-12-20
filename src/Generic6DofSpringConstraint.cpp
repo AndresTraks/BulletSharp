@@ -21,8 +21,8 @@ Generic6DofSpringConstraint::Generic6DofSpringConstraint(RigidBody^ rigidBodyA, 
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*frameInATemp, *frameInBTemp, useReferenceFrameA);
 
-	delete frameInATemp;
-	delete frameInBTemp;
+	ALIGNED_DEL(frameInATemp);
+	ALIGNED_DEL(frameInBTemp);
 }
 
 void Generic6DofSpringConstraint::EnableSpring(int index, bool onOff)

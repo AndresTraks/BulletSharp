@@ -395,4 +395,7 @@ inline GCHandle VoidPtrToGCHandle(void* pointer)
 	nullptr : BulletSharp::ObjectTable::GetObject<type^>((intptr_t)unmanagedPtr) \
 	)
 
+#define ALIGNED_ALLOC(targetClass) (targetClass*)btAlignedAlloc(sizeof(targetClass), 16)
+#define ALIGNED_FREE(target) btAlignedFree(target)
+
 using namespace BulletSharp;

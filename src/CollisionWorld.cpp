@@ -687,8 +687,8 @@ void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix
 
 	_native->convexSweepTest((btConvexShape*)castShape->_native, *fromTemp, *toTemp, *resultCallback->_native, allowedCcdPenetration);
 
-	delete toTemp;
-	delete fromTemp;
+	ALIGNED_DEL(toTemp);
+	ALIGNED_DEL(fromTemp);
 }
 
 void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback)
@@ -698,8 +698,8 @@ void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix
 
 	_native->convexSweepTest((btConvexShape*)castShape->_native, *fromTemp, *toTemp, *resultCallback->_native);
 
-	delete toTemp;
-	delete fromTemp;
+	ALIGNED_DEL(toTemp);
+	ALIGNED_DEL(fromTemp);
 }
 
 #ifndef DISABLE_DEBUGDRAW
@@ -710,7 +710,7 @@ void CollisionWorld::DebugDrawObject(Matrix worldTransform, CollisionShape^ shap
 	
 	_native->debugDrawObject(*worldTransformTemp, shape->_native, *colorTemp);
 	
-	delete worldTransformTemp;
+	ALIGNED_DEL(worldTransformTemp);
 	delete colorTemp;
 }
 
@@ -732,9 +732,9 @@ void CollisionWorld::ObjectQuerySingle(ConvexShape^ castShape, Matrix rayFromTra
 		collisionObject->_native, collisionShape->_native,
 		*colObjWorldTransformTemp, *resultCallback->_native, allowedPenetration);
 
-	delete colObjWorldTransformTemp;
-	delete rayToTransTemp;
-	delete rayFromTransTemp;
+	ALIGNED_DEL(colObjWorldTransformTemp);
+	ALIGNED_DEL(rayToTransTemp);
+	ALIGNED_DEL(rayFromTransTemp);
 }
 
 void CollisionWorld::PerformDiscreteCollisionDetection()
@@ -775,9 +775,9 @@ void CollisionWorld::RayTestSingle(Matrix rayFromTrans, Matrix rayToTrans, Colli
 		collisionObject->_native, collisionShape->_native,
 		*colObjWorldTransformTemp, *resultCallback->_native);
 
-	delete rayFromTransTemp;
-	delete rayToTransTemp;
-	delete colObjWorldTransformTemp;
+	ALIGNED_DEL(rayFromTransTemp);
+	ALIGNED_DEL(rayToTransTemp);
+	ALIGNED_DEL(colObjWorldTransformTemp);
 }
 
 void CollisionWorld::RemoveCollisionObject(CollisionObject^ collisionObject)

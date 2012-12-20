@@ -27,6 +27,14 @@ using namespace Mogre;
 #define GRAPHICS_NO_DIRECT_CAST
 #endif
 
+#define ALIGN_FOR_SSE
+
+#ifdef ALIGN_FOR_SSE
+#define ALIGNED_DEL(mem) ALIGNED_FREE(mem)
+#else
+#define ALIGNED_DEL(mem) delete mem
+#endif
+
 // Macros for passing Vector3 parameters.
 // VECTOR3_DEF and VECTOR3_PTR convert Vector3 to btVector3, but allow pinned pointers to be passed
 // if the structure of Vector3 and btVector3 is compatible.
@@ -36,11 +44,19 @@ using namespace Mogre;
 #ifdef GRAPHICS_NO_DIRECT_CAST
 #define VECTOR3_DEF(vec) btVector3* VECTOR3_NAME(vec) = Math::Vector3ToBtVector3(vec)
 #define VECTOR3_PTR(vec) VECTOR3_NAME(vec)
-#define VECTOR3_DEL(vec) delete VECTOR3_PTR(vec)
+#define VECTOR3_DEL(vec) ALIGNED_DEL(VECTOR3_PTR(vec))
+#else
+#ifdef ALIGN_FOR_SSE
+#define VECTOR3_DEF(vec) btVector3* VECTOR3_NAME(vec) = Math::Vector3ToBtVector3(vec)
 #else
 #define VECTOR3_DEF(vec) pin_ptr<Vector3> VECTOR3_NAME(vec) = &vec;
+#endif
 #define VECTOR3_PTR(vec) ((btVector3*) VECTOR3_NAME(vec))
+#ifdef ALIGN_FOR_SSE
 #define VECTOR3_DEL(vec)
+#else
+#define VECTOR3_DEL(vec) ALIGNED_FREE(VECTOR3_PTR(vec))
+#endif
 #endif
 #define VECTOR3_USE(vec) *VECTOR3_PTR(vec)
 
@@ -59,7 +75,18 @@ namespace BulletSharp
 		{
 			return Vector3(vector->m_floats[0], vector->m_floats[1], vector->m_floats[2]);
 		}
-		static void BtVector3ToVector3(const btVector3* vector, [Out] Vector3%);
+		static inline void BtVector3ToVector3(const btVector3* vector, [Out] Vector3% vectorOut)
+		{
+#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+			vectorOut.x = vector->m_floats[0];
+			vectorOut.y = vector->m_floats[1];
+			vectorOut.z = vector->m_floats[2];
+#else
+			vectorOut.X = vector->m_floats[0];
+			vectorOut.Y = vector->m_floats[1];
+			vectorOut.Z = vector->m_floats[2];
+#endif
+		}
 		static btVector3* Vector3ToBtVector3(Vector3);
 		static btVector3* Vector3ToBtVector3Ref(Vector3%);
 		static void Vector3ToBtVector3(Vector3, btVector3*);

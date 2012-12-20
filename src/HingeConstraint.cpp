@@ -85,8 +85,8 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp, useReferenceFrameA);
 
-	delete rigidBodyAFrameTemp;
-	delete rigidBodyBFrameTemp;
+	ALIGNED_DEL(rigidBodyAFrameTemp);
+	ALIGNED_DEL(rigidBodyBFrameTemp);
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame, Matrix rigidBodyBFrame)
@@ -98,28 +98,24 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, M
 	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp);
 
-	delete rigidBodyAFrameTemp;
-	delete rigidBodyBFrameTemp;
+	ALIGNED_DEL(rigidBodyAFrameTemp);
+	ALIGNED_DEL(rigidBodyBFrameTemp);
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame, bool useReferenceFrameA)
 : TypedConstraint(0)
 {
 	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
-
 	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_native, *rigidBodyAFrameTemp, useReferenceFrameA);
-
-	delete rigidBodyAFrameTemp;
+	ALIGNED_DEL(rigidBodyAFrameTemp);
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame)
 : TypedConstraint(0)
 {
 	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
-
 	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_native, *rigidBodyAFrameTemp);
-
-	delete rigidBodyAFrameTemp;
+	ALIGNED_DEL(rigidBodyAFrameTemp);
 }
 
 void HingeConstraint::EnableAngularMotor(bool enableMotor,
@@ -135,8 +131,8 @@ btScalar HingeConstraint::GetHingeAngle(Matrix transA, Matrix transB)
 
 	btScalar angle = UnmanagedPointer->getHingeAngle(*transATemp, *transBTemp);
 
-	delete transATemp;
-	delete transBTemp;
+	ALIGNED_DEL(transATemp);
+	ALIGNED_DEL(transBTemp);
 
 	return angle;
 }
@@ -192,8 +188,8 @@ void HingeConstraint::TestLimit(Matrix transA, Matrix transB)
 
 	UnmanagedPointer->testLimit(*transATemp, *transBTemp);
 
-	delete transATemp;
-	delete transBTemp;
+	ALIGNED_DEL(transATemp);
+	ALIGNED_DEL(transBTemp);
 }
 
 void HingeConstraint::UpdateRHS(btScalar timeStep)

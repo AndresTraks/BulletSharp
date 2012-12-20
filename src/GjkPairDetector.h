@@ -65,11 +65,5 @@ namespace BulletSharp
 			int get();
 			void set(int value);
 		}
-
-	internal:
-		property btGjkPairDetector* UnmanagedPointer
-		{
-			virtual btGjkPairDetector* get() new;
-		}
 	};
 };

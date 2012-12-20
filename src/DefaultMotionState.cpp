@@ -13,24 +13,24 @@ DefaultMotionState::DefaultMotionState(Matrix startTrans) : BulletSharp::MotionS
 
 Matrix DefaultMotionState::WorldTransform::get()
 {
-	btTransform* transform = new btTransform;
+	btTransform* transform = ALIGNED_ALLOC(btTransform);
 	_native->getWorldTransform(*transform);
 	Matrix m = Math::BtTransformToMatrix(transform);
-	delete transform;
+	ALIGNED_DEL(transform);
 	return m;
 }
 void DefaultMotionState::WorldTransform::set(Matrix worldTransform)
 {
 	btTransform* worldTransformTemp = Math::MatrixToBtTransform(worldTransform);
 	_native->setWorldTransform(*worldTransformTemp);
-	delete worldTransformTemp;
+	ALIGNED_DEL(worldTransformTemp);
 }
 
 
 void DefaultMotionState::GetWorldTransform([Out] Matrix% outTransform)
 {
-	btTransform* transform = new btTransform;
+	btTransform* transform = ALIGNED_ALLOC(btTransform);
 	_native->getWorldTransform(*transform);
 	Math::BtTransformToMatrix(transform, outTransform);
-	delete transform;
+	ALIGNED_DEL(transform);
 }

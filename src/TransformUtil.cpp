@@ -12,8 +12,8 @@ void TransformUtil::CalculateDiffAxisAngle(Matrix transform0, Matrix transform1,
 
 	btTransformUtil::calculateDiffAxisAngle(*transform0Temp, *transform1Temp, *axisTemp, angleTemp);
 
-	delete transform0Temp;
-	delete transform1Temp;
+	ALIGNED_DEL(transform0Temp);
+	ALIGNED_DEL(transform1Temp);
 
 	Math::BtVector3ToVector3(axisTemp, axis);
 	delete axisTemp;
@@ -50,8 +50,8 @@ void TransformUtil::CalculateVelocity(Matrix transform0, Matrix transform1,
 
 	btTransformUtil::calculateVelocity(*transform0Temp, *transform1Temp, timeStep, *linVelTemp, *angVelTemp);
 
-	delete transform0Temp;
-	delete transform1Temp;
+	ALIGNED_DEL(transform0Temp);
+	ALIGNED_DEL(transform1Temp);
 
 	Math::BtVector3ToVector3(linVelTemp, linVel);
 	Math::BtVector3ToVector3(angVelTemp, angVel);
@@ -91,16 +91,16 @@ void TransformUtil::IntegrateTransform(Matrix curTrans, Vector3 linvel, Vector3 
 	btTransform* curTransTemp = Math::MatrixToBtTransform(curTrans);
 	VECTOR3_DEF(linvel);
 	VECTOR3_DEF(angvel);
-	btTransform* predictedTransformTemp = new btTransform;
+	btTransform* predictedTransformTemp = ALIGNED_ALLOC(btTransform);
 
 	btTransformUtil::integrateTransform(*curTransTemp, VECTOR3_USE(linvel), VECTOR3_USE(angvel), timeStep, *predictedTransformTemp);
 
-	delete curTransTemp;
+	ALIGNED_DEL(curTransTemp);
 	VECTOR3_DEL(linvel);
 	VECTOR3_DEL(angvel);
 
 	Math::BtTransformToMatrix(predictedTransformTemp, predictedTransform);
-	delete predictedTransformTemp;
+	ALIGNED_DEL(predictedTransformTemp);
 }
 
 ConvexSeparatingDistanceUtil::ConvexSeparatingDistanceUtil(btScalar boundingRadiusA, btScalar boundingRadiusB)
@@ -117,8 +117,8 @@ void ConvexSeparatingDistanceUtil::InitSeparatingDistance(Vector3 separatingVect
 	_util->initSeparatingDistance(VECTOR3_USE(separatingVector), separatingDistance, *transATemp, *transBTemp);
 
 	VECTOR3_DEL(separatingVector);
-	delete transATemp;
-	delete transBTemp;
+	ALIGNED_DEL(transATemp);
+	ALIGNED_DEL(transBTemp);
 }
 
 void ConvexSeparatingDistanceUtil::UpdateSeparatingDistance(Matrix transA, Matrix transB)
@@ -128,8 +128,8 @@ void ConvexSeparatingDistanceUtil::UpdateSeparatingDistance(Matrix transA, Matri
 
 	_util->updateSeparatingDistance(*transATemp, *transBTemp);
 
-	delete transATemp;
-	delete transBTemp;
+	ALIGNED_DEL(transATemp);
+	ALIGNED_DEL(transBTemp);
 }
 
 btScalar ConvexSeparatingDistanceUtil::ConservativeSeparatingDistance::get()

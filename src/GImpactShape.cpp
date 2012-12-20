@@ -63,7 +63,7 @@ CollisionShape^ GImpactShapeInterface::GetChildShape(int index)
 #pragma managed(push, off)
 btTransform* GImpactShapeInterface_GetChildTransform(btGImpactShapeInterface* shape, int index)
 {
-	btTransform* transform = new btTransform;
+	btTransform* transform = ALIGNED_ALLOC(btTransform);
 	*transform = shape->getChildTransform(index);
 	return transform;
 }
@@ -72,7 +72,7 @@ Matrix GImpactShapeInterface::GetChildTransform(int index)
 {
 	btTransform* transformTemp = GImpactShapeInterface_GetChildTransform(Native, index);
 	Matrix transform = Math::BtTransformToMatrix(transformTemp);
-	delete transformTemp;
+	ALIGNED_DEL(transformTemp);
 	return transform;
 }
 
@@ -130,7 +130,7 @@ void GImpactShapeInterface::SetChildTransform(int index, Matrix transform)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	Native->setChildTransform(index, *transformTemp);
-	delete transformTemp;
+	ALIGNED_DEL(transformTemp);
 }
 
 void GImpactShapeInterface::UnlockChildShapes()
@@ -256,7 +256,7 @@ void GImpactCompoundShape::AddChildShape(Matrix localTransform, CollisionShape^ 
 {
 	btTransform* localTransformTemp = Math::MatrixToBtTransform(localTransform);
 	Native->addChildShape(*localTransformTemp, shape->_native);
-	delete localTransformTemp;
+	ALIGNED_DEL(localTransformTemp);
 }
 
 #ifndef DISABLE_BVH

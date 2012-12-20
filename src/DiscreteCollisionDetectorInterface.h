@@ -12,8 +12,13 @@ namespace BulletSharp
 	public:
 		ref class ClosestPointInput
 		{
-		private:
-			btDiscreteCollisionDetectorInterface::ClosestPointInput* _input;
+		internal:
+			btDiscreteCollisionDetectorInterface::ClosestPointInput* _native;
+
+		public:
+			!ClosestPointInput();
+		protected:
+			~ClosestPointInput();
 
 		public:
 			ClosestPointInput();
@@ -40,13 +45,6 @@ namespace BulletSharp
 			{
 				Matrix get();
 				void set(Matrix value);
-			}
-
-		internal:
-			property btDiscreteCollisionDetectorInterface::ClosestPointInput* UnmanagedPointer
-			{
-				btDiscreteCollisionDetectorInterface::ClosestPointInput* get();
-				void set(btDiscreteCollisionDetectorInterface::ClosestPointInput* value);
 			}
 		};
 
@@ -80,11 +78,10 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		btDiscreteCollisionDetectorInterface* _detectorInterface;
-
 	internal:
+		btDiscreteCollisionDetectorInterface* _native;
 		DiscreteCollisionDetectorInterface(btDiscreteCollisionDetectorInterface* dispatcher);
+
 	public:
 		!DiscreteCollisionDetectorInterface();
 	protected:
@@ -101,13 +98,6 @@ namespace BulletSharp
 		property bool IsDisposed
 		{
 			virtual bool get();
-		}
-
-	internal:
-		property btDiscreteCollisionDetectorInterface* UnmanagedPointer
-		{
-			btDiscreteCollisionDetectorInterface* get();
-			void set(btDiscreteCollisionDetectorInterface* value);
 		}
 	};
 

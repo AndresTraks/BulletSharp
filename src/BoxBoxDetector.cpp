@@ -5,38 +5,37 @@
 #include "BoxBoxDetector.h"
 #include "BoxShape.h"
 
+#define Native static_cast<btBoxBoxDetector*>(_native)
+
 BoxBoxDetector::BoxBoxDetector(btBoxBoxDetector* detector)
 : DiscreteCollisionDetectorInterface(detector)
 {
 }
 
 BoxBoxDetector::BoxBoxDetector(BoxShape^ box1, BoxShape^ box2)
-: DiscreteCollisionDetectorInterface(new btBoxBoxDetector(
-	(btBoxShape*)box1->_native, (btBoxShape*)box2->_native))
+: DiscreteCollisionDetectorInterface(0)
 {
+	_native = ALIGNED_ALLOC(btBoxBoxDetector);
+	new (_native) btBoxBoxDetector(
+		(btBoxShape*)box1->_native, (btBoxShape*)box2->_native);
 }
 
 BoxShape^ BoxBoxDetector::Box1::get()
 {
-	return gcnew BoxShape((btBoxShape*)UnmanagedPointer->m_box1);
+	return gcnew BoxShape((btBoxShape*)Native->m_box1);
 }
 void BoxBoxDetector::Box1::set(BoxShape^ value)
 {
-	UnmanagedPointer->m_box1 = (btBoxShape*)value->_native;
+	Native->m_box1 = (btBoxShape*)value->_native;
 }
 
 BoxShape^ BoxBoxDetector::Box2::get()
 {
-	return gcnew BoxShape((btBoxShape*)UnmanagedPointer->m_box2);
+	return gcnew BoxShape((btBoxShape*)Native->m_box2);
 }
 void BoxBoxDetector::Box2::set(BoxShape^ value)
 {
-	UnmanagedPointer->m_box2 = (btBoxShape*)value->_native;
-}
-
-btBoxBoxDetector* BoxBoxDetector::UnmanagedPointer::get()
-{
-	return (btBoxBoxDetector*)DiscreteCollisionDetectorInterface::UnmanagedPointer;
+	Native->m_box2 = (btBoxShape*)value->_native;
 }
 
 #endif

@@ -7,8 +7,10 @@
 #define Native static_cast<btPointCollector*>(_native)
 
 PointCollector::PointCollector()
-: DiscreteCollisionDetectorInterface::Result(new btPointCollector)
+: DiscreteCollisionDetectorInterface::Result(0)
 {
+	_native = ALIGNED_ALLOC(btPointCollector);
+	new (_native) btPointCollector();
 }
 
 btScalar PointCollector::Distance::get()

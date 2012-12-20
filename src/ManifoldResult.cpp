@@ -8,8 +8,10 @@
 #define Native static_cast<btManifoldResult*>(_native)
 
 ManifoldResult::ManifoldResult()
-: DiscreteCollisionDetectorInterface::Result(new btManifoldResult())
+: DiscreteCollisionDetectorInterface::Result(0)
 {
+	_native = ALIGNED_ALLOC(btManifoldResult);
+	new (_native) btManifoldResult();
 }
 
 ManifoldResult::ManifoldResult(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)

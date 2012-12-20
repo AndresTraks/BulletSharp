@@ -66,7 +66,7 @@ CollisionObject^ Serialize::WorldImporter::CreateCollisionObject(Matrix startTra
 	CollisionObject^ ret = CollisionObject::GetManaged(
 		_native->baseCreateCollisionObject(*startTransformTemp, shape->UnmanagedPointer, bodyNameTemp));
 
-	delete startTransformTemp;
+	ALIGNED_DEL(startTransformTemp);
 	StringConv::FreeUnmanagedString(bodyNameTemp);
 
 	return ret;
@@ -80,7 +80,7 @@ RigidBody^ Serialize::WorldImporter::CreateRigidBody(bool isDynamic, btScalar ma
 	RigidBody^ ret = (RigidBody^)CollisionObject::GetManaged(
 		_native->baseCreateRigidBody(isDynamic, mass, *startTransformTemp, shape->UnmanagedPointer, bodyNameTemp));
 
-	delete startTransformTemp;
+	ALIGNED_DEL(startTransformTemp);
 	StringConv::FreeUnmanagedString(bodyNameTemp);
 
 	return ret;
@@ -246,8 +246,8 @@ HingeConstraint^ Serialize::WorldImporter::CreateHingeConstraint(RigidBody^ rigi
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp, useReferenceFrameA));
 
-	delete rigidBodyAFrameTemp;
-	delete rigidBodyBFrameTemp;
+	ALIGNED_DEL(rigidBodyAFrameTemp);
+	ALIGNED_DEL(rigidBodyBFrameTemp);
 
 	return ret;
 }
@@ -261,8 +261,8 @@ HingeConstraint^ Serialize::WorldImporter::CreateHingeConstraint(RigidBody^ rigi
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp));
 
-	delete rigidBodyAFrameTemp;
-	delete rigidBodyBFrameTemp;
+	ALIGNED_DEL(rigidBodyAFrameTemp);
+	ALIGNED_DEL(rigidBodyBFrameTemp);
 
 	return ret;
 }
@@ -274,7 +274,7 @@ HingeConstraint^ Serialize::WorldImporter::CreateHingeConstraint(RigidBody^ rigi
 	HingeConstraint^ ret = gcnew HingeConstraint(_native->baseCreateHingeConstraint(
 		*(btRigidBody*)rigidBodyA->_native, *rigidBodyAFrameTemp, useReferenceFrameA));
 
-	delete rigidBodyAFrameTemp;
+	ALIGNED_DEL(rigidBodyAFrameTemp);
 	return ret;
 }
 
@@ -285,7 +285,7 @@ HingeConstraint^ Serialize::WorldImporter::CreateHingeConstraint(RigidBody^ rigi
 	HingeConstraint^ ret = gcnew HingeConstraint(_native->baseCreateHingeConstraint(
 		*(btRigidBody*)rigidBodyA->_native, *rigidBodyAFrameTemp));
 
-	delete rigidBodyAFrameTemp;
+	ALIGNED_DEL(rigidBodyAFrameTemp);
 	return ret;
 }
 
@@ -298,8 +298,8 @@ ConeTwistConstraint^ Serialize::WorldImporter::CreateConeTwistConstraint(RigidBo
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp));
 
-	delete rigidBodyAFrameTemp;
-	delete rigidBodyBFrameTemp;
+	ALIGNED_DEL(rigidBodyAFrameTemp);
+	ALIGNED_DEL(rigidBodyBFrameTemp);
 
 	return ret;
 }
@@ -311,7 +311,7 @@ ConeTwistConstraint^ Serialize::WorldImporter::CreateConeTwistConstraint(RigidBo
 	ConeTwistConstraint^ ret = gcnew ConeTwistConstraint(_native->baseCreateConeTwistConstraint(
 		*(btRigidBody*)rigidBodyA->_native, *rigidBodyAFrameTemp));
 
-	delete rigidBodyAFrameTemp;
+	ALIGNED_DEL(rigidBodyAFrameTemp);
 	return ret;
 }
 
@@ -324,8 +324,8 @@ Generic6DofConstraint^ Serialize::WorldImporter::CreateGeneric6DofConstraint(Rig
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*frameInATemp, *frameInBTemp, useLinearReferenceFrameA));
 
-	delete frameInATemp;
-	delete frameInBTemp;
+	ALIGNED_DEL(frameInATemp);
+	ALIGNED_DEL(frameInBTemp);
 
 	return ret;
 }
@@ -337,7 +337,7 @@ Generic6DofConstraint^ Serialize::WorldImporter::CreateGeneric6DofConstraint(Rig
 	Generic6DofConstraint^ ret = gcnew Generic6DofConstraint(_native->baseCreateGeneric6DofConstraint(
 		*(btRigidBody*)rigidBodyB->_native, *frameInBTemp, useLinearReferenceFrameB));
 
-	delete frameInBTemp;
+	ALIGNED_DEL(frameInBTemp);
 	return ret;
 }
 
@@ -350,8 +350,8 @@ SliderConstraint^ Serialize::WorldImporter::CreateSliderConstraint(RigidBody^ ri
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*frameInATemp, *frameInBTemp, useLinearReferenceFrameA));
 
-	delete frameInATemp;
-	delete frameInBTemp;
+	ALIGNED_DEL(frameInATemp);
+	ALIGNED_DEL(frameInBTemp);
 
 	return ret;
 }
@@ -363,7 +363,7 @@ SliderConstraint^ Serialize::WorldImporter::CreateSliderConstraint(RigidBody^ ri
 	SliderConstraint^ ret = gcnew SliderConstraint(_native->baseCreateSliderConstraint(
 		*(btRigidBody*)rigidBodyB->_native, *frameInBTemp, useLinearReferenceFrameA));
 	
-	delete frameInBTemp;
+	ALIGNED_DEL(frameInBTemp);
 	return ret;
 }
 
