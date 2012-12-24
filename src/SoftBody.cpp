@@ -271,11 +271,11 @@ void Body_GetAngularVelocity(btSoftBody::Body* body, btVector3* rpos, btVector3*
 Vector3 Body::GetAngularVelocity(Vector3 rPos)
 {
 	VECTOR3_DEF(rPos);
-	btVector3* velocityTemp = new btVector3;
+	btVector3* velocityTemp = ALIGNED_NEW(btVector3);
 	Body_GetAngularVelocity(_native, VECTOR3_PTR(rPos), velocityTemp);
 	VECTOR3_DEL(rPos);
 	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
-	delete velocityTemp;
+	ALIGNED_FREE(velocityTemp);
 	return velocity;
 }
 
@@ -286,11 +286,11 @@ void Body_GetVelocity(btSoftBody::Body* body, btVector3* rpos, btVector3* veloci
 Vector3 Body::Velocity(Vector3 rPos)
 {
 	VECTOR3_DEF(rPos);
-	btVector3* velocityTemp = new btVector3;
+	btVector3* velocityTemp = ALIGNED_NEW(btVector3);
 	Body_GetVelocity(_native, VECTOR3_PTR(rPos), velocityTemp);
 	VECTOR3_DEL(rPos);
 	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
-	delete velocityTemp;
+	ALIGNED_FREE(velocityTemp);
 	return velocity;
 }
 
@@ -300,10 +300,10 @@ void Body_GetAngularVelocity(btSoftBody::Body* body, btVector3* velocity)
 }
 Vector3 Body::AngularVelocity::get()
 {
-	btVector3* velocityTemp = new btVector3;
+	btVector3* velocityTemp = ALIGNED_NEW(btVector3);
 	Body_GetAngularVelocity(_native, velocityTemp);
 	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
-	delete velocityTemp;
+	ALIGNED_FREE(velocityTemp);
 	return velocity;
 }
 
@@ -332,10 +332,10 @@ void Body_GetLinearVelocity(btSoftBody::Body* body, btVector3* velocity)
 }
 Vector3 Body::LinearVelocity::get()
 {
-	btVector3* velocityTemp = new btVector3;
+	btVector3* velocityTemp = ALIGNED_NEW(btVector3);
 	Body_GetLinearVelocity(_native, velocityTemp);
 	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
-	delete velocityTemp;
+	ALIGNED_FREE(velocityTemp);
 	return velocity;
 }
 
@@ -1227,8 +1227,7 @@ Vector3Array^ BulletSharp::SoftBody::LJoint::RPos::get()
 
 BulletSharp::SoftBody::LJoint::Specs::Specs()
 {
-	_native = ALIGNED_ALLOC(btSoftBody::LJoint::Specs);
-	new (_native) btSoftBody::LJoint::Specs();
+	_native = ALIGNED_NEW(btSoftBody::LJoint::Specs) ();
 }
 
 Vector3 BulletSharp::SoftBody::LJoint::Specs::Position::get()
@@ -1273,8 +1272,7 @@ void BulletSharp::SoftBody::AJoint::IControl::UnmanagedPointer::set(AJointIContr
 
 BulletSharp::SoftBody::AJoint::Specs::Specs()
 {
-	_native = ALIGNED_ALLOC(btSoftBody::AJoint::Specs);
-	new (_native) btSoftBody::AJoint::Specs();
+	_native = ALIGNED_NEW(btSoftBody::AJoint::Specs) ();
 }
 
 Vector3 BulletSharp::SoftBody::AJoint::Specs::Axis::get()
@@ -2593,10 +2591,10 @@ void SoftBody_ClusterCOM(btSoftBody::Cluster* cluster, btVector3* com)
 }
 Vector3 BulletSharp::SoftBody::SoftBody::ClusterCom(Cluster^ cluster)
 {
-	btVector3* tempClusterCom = new btVector3;
+	btVector3* tempClusterCom = ALIGNED_NEW(btVector3);
 	SoftBody_ClusterCOM(cluster->_native, tempClusterCom);
 	Vector3 com = Math::BtVector3ToVector3(tempClusterCom);
-	delete tempClusterCom;
+	ALIGNED_FREE(tempClusterCom);
 	return com;
 }
 
@@ -2606,10 +2604,10 @@ void SoftBody_ClusterCOM(btSoftBody* softBody, int cluster, btVector3* com)
 }
 Vector3 BulletSharp::SoftBody::SoftBody::ClusterCom(int cluster)
 {
-	btVector3* tempClusterCom = new btVector3;
+	btVector3* tempClusterCom = ALIGNED_NEW(btVector3);
 	SoftBody_ClusterCOM(Native, cluster, tempClusterCom);
 	Vector3 com = Math::BtVector3ToVector3(tempClusterCom);
-	delete tempClusterCom;
+	ALIGNED_FREE(tempClusterCom);
 	return com;
 }
 
@@ -2619,12 +2617,12 @@ void SoftBody_ClusterVelocity(btSoftBody::Cluster* cluster, btVector3* rpos, btV
 }
 Vector3 BulletSharp::SoftBody::SoftBody::ClusterVelocity(Cluster^ cluster, Vector3 rpos)
 {
-	btVector3* tempVelocity = new btVector3;
+	btVector3* tempVelocity = ALIGNED_NEW(btVector3);
 	VECTOR3_DEF(rpos);
 	SoftBody_ClusterVelocity(cluster->_native, VECTOR3_PTR(rpos), tempVelocity);
 	VECTOR3_DEL(rpos);
 	Vector3 velocity = Math::BtVector3ToVector3(tempVelocity);
-	delete tempVelocity;
+	ALIGNED_FREE(tempVelocity);
 	return velocity;
 }
 
@@ -2713,10 +2711,10 @@ void SoftBody_EvaluateCom(btSoftBody* softBody, btVector3* result)
 
 Vector3 BulletSharp::SoftBody::SoftBody::EvaluateCom()
 {
-	btVector3* result = new btVector3();
+	btVector3* result = ALIGNED_NEW(btVector3);
 	SoftBody_EvaluateCom(Native, result);
 	Vector3 ret = Math::BtVector3ToVector3(result);
-	delete result;
+	ALIGNED_FREE(result);
 	return ret;
 }
 
@@ -2742,16 +2740,16 @@ int BulletSharp::SoftBody::SoftBody::GenerateClusters(int k)
 
 void BulletSharp::SoftBody::SoftBody::GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
 {
-	btVector3* aabbMinTemp = new btVector3;
-	btVector3* aabbMaxTemp = new btVector3;
+	btVector3* aabbMinTemp = ALIGNED_NEW(btVector3);
+	btVector3* aabbMaxTemp = ALIGNED_NEW(btVector3);
 
 	Native->getAabb(*aabbMinTemp, *aabbMaxTemp);
 
 	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
 	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
 
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	ALIGNED_FREE(aabbMinTemp);
+	ALIGNED_FREE(aabbMaxTemp);
 }
 
 int BulletSharp::SoftBody::SoftBody::GetFaceVertexData([Out] array<Vector3>^% vertices)
@@ -3265,7 +3263,7 @@ void BulletSharp::SoftBody::SoftBody::Transform(Matrix transform)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	Native->transform(*transformTemp);
-	ALIGNED_DEL(transformTemp);
+	ALIGNED_FREE(transformTemp);
 }
 
 void BulletSharp::SoftBody::SoftBody::Translate(Vector3 translation)

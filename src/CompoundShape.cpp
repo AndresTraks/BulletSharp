@@ -96,7 +96,7 @@ void CompoundShape::AddChildShape(Matrix localTransform, CollisionShape^ shape)
 {
 	btTransform* localTransformTemp = Math::MatrixToBtTransform(localTransform);
 	Native->addChildShape(*localTransformTemp, shape->_native);
-	ALIGNED_DEL(localTransformTemp);
+	ALIGNED_FREE(localTransformTemp);
 }
 
 void CompoundShape::CalculatePrincipalAxisTransform(array<btScalar>^ masses, Matrix principal, Vector3 inertia)
@@ -107,7 +107,7 @@ void CompoundShape::CalculatePrincipalAxisTransform(array<btScalar>^ masses, Mat
 	
 	Native->calculatePrincipalAxisTransform(massesPtr, *principalTemp, VECTOR3_USE(inertia));
 	
-	ALIGNED_DEL(principalTemp);
+	ALIGNED_FREE(principalTemp);
 	VECTOR3_DEL(inertia);
 }
 
@@ -145,14 +145,14 @@ void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransfor
 {
 	btTransform* newChildTransformTemp = Math::MatrixToBtTransform(newChildTransform);
 	Native->updateChildTransform(childIndex, *newChildTransformTemp, shouldRecalculateLocalAabb);
-	ALIGNED_DEL(newChildTransformTemp);
+	ALIGNED_FREE(newChildTransformTemp);
 }
 
 void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransform)
 {
 	btTransform* newChildTransformTemp = Math::MatrixToBtTransform(newChildTransform);
 	Native->updateChildTransform(childIndex, *newChildTransformTemp);
-	ALIGNED_DEL(newChildTransformTemp);
+	ALIGNED_FREE(newChildTransformTemp);
 }
 
 CompoundShapeChildArray^ CompoundShape::ChildList::get()

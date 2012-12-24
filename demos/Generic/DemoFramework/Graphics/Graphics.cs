@@ -53,7 +53,7 @@ namespace DemoFramework
         protected Graphics(Demo demo)
         {
             Demo = demo;
-            FarPlane = 200.0f;
+            FarPlane = 400.0f;
             FieldOfView = (float)Math.PI / 4;
         }
 

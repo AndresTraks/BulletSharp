@@ -33,7 +33,7 @@ void ConvexShape::GetAabbNonVirtual(Matrix t, Vector3% aabbMin, Vector3% aabbMax
 	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
 	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
 
-	ALIGNED_DEL(tTemp);
+	ALIGNED_FREE(tTemp);
 	delete aabbMinTemp;
 	delete aabbMaxTemp;
 }
@@ -49,7 +49,7 @@ void ConvexShape::GetAabbSlow(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
 	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
 	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
 
-	ALIGNED_DEL(tTemp);
+	ALIGNED_FREE(tTemp);
 	delete aabbMinTemp;
 	delete aabbMaxTemp;
 }
@@ -148,7 +148,7 @@ void ConvexShape::Project(Matrix transform, Vector3 direction, [Out] btScalar% m
 	max = maxTemp;
 	
 	VECTOR3_DEL(direction);
-	ALIGNED_DEL(transformTemp);
+	ALIGNED_FREE(transformTemp);
 }
 
 btScalar ConvexShape::MarginNonVirtual::get()

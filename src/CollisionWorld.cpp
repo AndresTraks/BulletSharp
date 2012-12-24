@@ -119,7 +119,7 @@ CollisionWorld::ConvexResultCallback::!ConvexResultCallback()
 	
 	OnDisposing(this, nullptr);
 	
-	delete _native;
+	ALIGNED_FREE(_native);
 	_native = NULL;
 	
 	OnDisposed(this, nullptr);
@@ -181,7 +181,7 @@ CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3
 	VECTOR3_DEF(convexFromWorld);
 	VECTOR3_DEF(convexToWorld);
 
-	_native = new btCollisionWorld::ClosestConvexResultCallback(VECTOR3_USE(convexFromWorld), VECTOR3_USE(convexToWorld));
+	_native = ALIGNED_NEW(btCollisionWorld::ClosestConvexResultCallback) (VECTOR3_USE(convexFromWorld), VECTOR3_USE(convexToWorld));
 
 	VECTOR3_DEL(convexFromWorld);
 	VECTOR3_DEL(convexToWorld);
@@ -193,7 +193,7 @@ CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3
 	VECTOR3_DEF(convexFromWorld);
 	VECTOR3_DEF(convexToWorld);
 
-	_native = new btCollisionWorld::ClosestConvexResultCallback(VECTOR3_USE(convexFromWorld), VECTOR3_USE(convexToWorld));
+	_native = ALIGNED_NEW(btCollisionWorld::ClosestConvexResultCallback) (VECTOR3_USE(convexFromWorld), VECTOR3_USE(convexToWorld));
 
 	VECTOR3_DEL(convexFromWorld);
 	VECTOR3_DEL(convexToWorld);
@@ -394,7 +394,7 @@ CollisionWorld::RayResultCallback::~RayResultCallback()
 
 CollisionWorld::RayResultCallback::!RayResultCallback()
 {
-	delete _native;
+	ALIGNED_FREE(_native);
 	_native = NULL;
 }
 
@@ -473,7 +473,7 @@ CollisionWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3 rayFr
 	VECTOR3_DEF(rayFromWorld);
 	VECTOR3_DEF(rayToWorld);
 
-	_native = new btCollisionWorld::ClosestRayResultCallback(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld));
+	_native = ALIGNED_NEW(btCollisionWorld::ClosestRayResultCallback) (VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld));
 
 	VECTOR3_DEL(rayFromWorld);
 	VECTOR3_DEL(rayToWorld);
@@ -485,7 +485,7 @@ CollisionWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3% rayF
 	VECTOR3_DEF(rayFromWorld);
 	VECTOR3_DEF(rayToWorld);
 
-	_native = new btCollisionWorld::ClosestRayResultCallback(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld));
+	_native = ALIGNED_NEW(btCollisionWorld::ClosestRayResultCallback) (VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld));
 
 	VECTOR3_DEL(rayFromWorld);
 	VECTOR3_DEL(rayToWorld);
@@ -687,8 +687,8 @@ void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix
 
 	_native->convexSweepTest((btConvexShape*)castShape->_native, *fromTemp, *toTemp, *resultCallback->_native, allowedCcdPenetration);
 
-	ALIGNED_DEL(toTemp);
-	ALIGNED_DEL(fromTemp);
+	ALIGNED_FREE(toTemp);
+	ALIGNED_FREE(fromTemp);
 }
 
 void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback)
@@ -698,8 +698,8 @@ void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix
 
 	_native->convexSweepTest((btConvexShape*)castShape->_native, *fromTemp, *toTemp, *resultCallback->_native);
 
-	ALIGNED_DEL(toTemp);
-	ALIGNED_DEL(fromTemp);
+	ALIGNED_FREE(toTemp);
+	ALIGNED_FREE(fromTemp);
 }
 
 #ifndef DISABLE_DEBUGDRAW
@@ -710,7 +710,7 @@ void CollisionWorld::DebugDrawObject(Matrix worldTransform, CollisionShape^ shap
 	
 	_native->debugDrawObject(*worldTransformTemp, shape->_native, *colorTemp);
 	
-	ALIGNED_DEL(worldTransformTemp);
+	ALIGNED_FREE(worldTransformTemp);
 	delete colorTemp;
 }
 
@@ -732,9 +732,9 @@ void CollisionWorld::ObjectQuerySingle(ConvexShape^ castShape, Matrix rayFromTra
 		collisionObject->_native, collisionShape->_native,
 		*colObjWorldTransformTemp, *resultCallback->_native, allowedPenetration);
 
-	ALIGNED_DEL(colObjWorldTransformTemp);
-	ALIGNED_DEL(rayToTransTemp);
-	ALIGNED_DEL(rayFromTransTemp);
+	ALIGNED_FREE(colObjWorldTransformTemp);
+	ALIGNED_FREE(rayToTransTemp);
+	ALIGNED_FREE(rayFromTransTemp);
 }
 
 void CollisionWorld::PerformDiscreteCollisionDetection()
@@ -775,9 +775,9 @@ void CollisionWorld::RayTestSingle(Matrix rayFromTrans, Matrix rayToTrans, Colli
 		collisionObject->_native, collisionShape->_native,
 		*colObjWorldTransformTemp, *resultCallback->_native);
 
-	ALIGNED_DEL(rayFromTransTemp);
-	ALIGNED_DEL(rayToTransTemp);
-	ALIGNED_DEL(colObjWorldTransformTemp);
+	ALIGNED_FREE(rayFromTransTemp);
+	ALIGNED_FREE(rayToTransTemp);
+	ALIGNED_FREE(colObjWorldTransformTemp);
 }
 
 void CollisionWorld::RemoveCollisionObject(CollisionObject^ collisionObject)

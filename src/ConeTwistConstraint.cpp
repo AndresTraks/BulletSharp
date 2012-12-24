@@ -20,8 +20,8 @@ ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, RigidBody^ rigid
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp);
 
-	ALIGNED_DEL(rigidBodyAFrameTemp);
-	ALIGNED_DEL(rigidBodyBFrameTemp);
+	ALIGNED_FREE(rigidBodyAFrameTemp);
+	ALIGNED_FREE(rigidBodyBFrameTemp);
 }
 
 ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame)
@@ -31,7 +31,7 @@ ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, Matrix rigidBody
 
 	UnmanagedPointer = new btConeTwistConstraint(*(btRigidBody*)rigidBodyA->_native, *rigidBodyAFrameTemp);
 
-	ALIGNED_DEL(rigidBodyAFrameTemp);
+	ALIGNED_FREE(rigidBodyAFrameTemp);
 }
 
 void ConeTwistConstraint::CalcAngleInfo()
@@ -48,8 +48,8 @@ void ConeTwistConstraint::CalcAngleInfo2(Matrix transA, Matrix transB, Matrix in
 
 	UnmanagedPointer->calcAngleInfo2(*transATemp, *transBTemp, *invInertiaWorldATemp, *invInertiaWorldBTemp);
 
-	ALIGNED_DEL(transATemp);
-	ALIGNED_DEL(transBTemp);
+	ALIGNED_FREE(transATemp);
+	ALIGNED_FREE(transBTemp);
 	delete invInertiaWorldATemp;
 	delete invInertiaWorldBTemp;
 }

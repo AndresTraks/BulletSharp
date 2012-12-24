@@ -63,7 +63,7 @@ CollisionShape^ GImpactShapeInterface::GetChildShape(int index)
 #pragma managed(push, off)
 btTransform* GImpactShapeInterface_GetChildTransform(btGImpactShapeInterface* shape, int index)
 {
-	btTransform* transform = ALIGNED_ALLOC(btTransform);
+	btTransform* transform = ALIGNED_NEW(btTransform);
 	*transform = shape->getChildTransform(index);
 	return transform;
 }
@@ -72,7 +72,7 @@ Matrix GImpactShapeInterface::GetChildTransform(int index)
 {
 	btTransform* transformTemp = GImpactShapeInterface_GetChildTransform(Native, index);
 	Matrix transform = Math::BtTransformToMatrix(transformTemp);
-	ALIGNED_DEL(transformTemp);
+	ALIGNED_FREE(transformTemp);
 	return transform;
 }
 
@@ -130,7 +130,7 @@ void GImpactShapeInterface::SetChildTransform(int index, Matrix transform)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	Native->setChildTransform(index, *transformTemp);
-	ALIGNED_DEL(transformTemp);
+	ALIGNED_FREE(transformTemp);
 }
 
 void GImpactShapeInterface::UnlockChildShapes()
@@ -256,7 +256,7 @@ void GImpactCompoundShape::AddChildShape(Matrix localTransform, CollisionShape^ 
 {
 	btTransform* localTransformTemp = Math::MatrixToBtTransform(localTransform);
 	Native->addChildShape(*localTransformTemp, shape->_native);
-	ALIGNED_DEL(localTransformTemp);
+	ALIGNED_FREE(localTransformTemp);
 }
 
 #ifndef DISABLE_BVH
@@ -460,10 +460,10 @@ GImpactMeshShapePart::GImpactMeshShapePart(StridingMeshInterface^ meshInterface,
 
 void GImpactMeshShapePart::GetVertex(unsigned int vertexIndex, [Out] Vector3% vertex)
 {
-	btVector3* vertexTemp = new btVector3;
+	btVector3* vertexTemp = ALIGNED_NEW(btVector3);
 	Native->getVertex(vertexIndex, *vertexTemp);
 	Math::BtVector3ToVector3(vertexTemp, vertex);
-	delete vertexTemp;
+	ALIGNED_FREE(vertexTemp);
 }
 
 int GImpactMeshShapePart::Part::get()

@@ -56,8 +56,8 @@ bool ConvexPenetrationDepthSolver::CalcPenDepth(SimplexSolverInterface^ simplexS
 #endif
 		stackAlloc->UnmanagedPointer);
 
-	ALIGNED_DEL(transATemp);
-	ALIGNED_DEL(transBTemp);
+	ALIGNED_FREE(transATemp);
+	ALIGNED_FREE(transBTemp);
 	VECTOR3_DEL(v);
 	VECTOR3_DEL(pa);
 	VECTOR3_DEL(pb);

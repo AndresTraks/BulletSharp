@@ -87,7 +87,7 @@ void PrimitiveTriangle::ApplyTransform(Matrix transform)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	_triangle->applyTransform(*transformTemp);
-	ALIGNED_DEL(transformTemp);
+	ALIGNED_FREE(transformTemp);
 }
 
 void PrimitiveTriangle::BuildTriPlane()
@@ -198,7 +198,7 @@ void TriangleShapeEx::ApplyTransform(Matrix transform)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	Native->applyTransform(*transformTemp);
-	ALIGNED_DEL(transformTemp);
+	ALIGNED_FREE(transformTemp);
 }
 
 void TriangleShapeEx::BuildTriPlane(Vector4 plane)

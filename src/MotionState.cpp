@@ -11,7 +11,9 @@ MotionState::MotionState()
 
 MotionState::MotionState(btMotionState* motionState)
 {
-	_native = motionState;
+	if (motionState) {
+		_native = motionState;
+	}
 }
 
 MotionState::~MotionState()

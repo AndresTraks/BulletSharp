@@ -27,7 +27,7 @@ void ConvexTriangleMeshShape::CalculatePrincipalAxisTransform(Matrix principal, 
 
 	Native->calculatePrincipalAxisTransform(*principalTemp, VECTOR3_USE(inertia), volume);
 
-	ALIGNED_DEL(principalTemp);
+	ALIGNED_FREE(principalTemp);
 	VECTOR3_DEL(inertia);
 }
 

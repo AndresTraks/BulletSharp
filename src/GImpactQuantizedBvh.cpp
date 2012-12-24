@@ -102,7 +102,7 @@ bool GImpactQuantizedBvh::BoxQueryTrans(Aabb^ box, Matrix transform, [Out] Align
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	bool ret = _bvh->boxQueryTrans(*box->UnmanagedPointer, *transformTemp, *(btAlignedObjectArray<int>*)collided_results->_native);
-	ALIGNED_DEL(transformTemp);
+	ALIGNED_FREE(transformTemp);
 	return ret;
 }
 
@@ -120,8 +120,8 @@ void GImpactQuantizedBvh::FindCollision(GImpactBvh^ boxset1, Matrix trans1, GImp
 	btGImpactBvh::find_collision(boxset1->UnmanagedPointer, *trans1Temp, boxset2->UnmanagedPointer, *trans2Temp, *collision_pairsTemp);
 	collision_pairs = gcnew PairSet(collision_pairsTemp);
 
-	ALIGNED_DEL(trans1Temp);
-	ALIGNED_DEL(trans2Temp);
+	ALIGNED_FREE(trans1Temp);
+	ALIGNED_FREE(trans2Temp);
 }
 
 int GImpactQuantizedBvh::GetEscapeNodeIndex(int nodeIndex)

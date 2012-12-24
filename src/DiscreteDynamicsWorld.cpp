@@ -74,7 +74,7 @@ SimulationIslandManager^ DiscreteDynamicsWorld::SimulationIslandManager::get()
 }
 #endif
 
-void DiscreteDynamicsWorld::SetNumTasks (int numTasks)
+void DiscreteDynamicsWorld::SetNumTasks(int numTasks)
 {
 	Native->setNumTasks(numTasks);
 }

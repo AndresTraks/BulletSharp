@@ -415,8 +415,8 @@ Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ r
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*frameInATemp, *frameInBTemp, useReferenceFrameA);
 
-	ALIGNED_DEL(frameInATemp);
-	ALIGNED_DEL(frameInBTemp);
+	ALIGNED_FREE(frameInATemp);
+	ALIGNED_FREE(frameInBTemp);
 }
 
 Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frameInB,
@@ -425,7 +425,7 @@ Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frame
 {
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 	UnmanagedPointer = new btGeneric6DofConstraint(*(btRigidBody*)rigidBodyB->_native, *frameInBTemp, useReferenceFrameA);
-	ALIGNED_DEL(frameInBTemp);
+	ALIGNED_FREE(frameInBTemp);
 }
 
 void Generic6DofConstraint::CalcAnchorPos()
@@ -445,8 +445,8 @@ void Generic6DofConstraint::CalculateTransforms(Matrix transA, Matrix transB)
 
 	UnmanagedPointer->calculateTransforms(*transATemp, *transBTemp);
 	
-	ALIGNED_DEL(transATemp);
-	ALIGNED_DEL(transBTemp);
+	ALIGNED_FREE(transATemp);
+	ALIGNED_FREE(transBTemp);
 }
 
 btScalar Generic6DofConstraint::GetAngle(int axis_index)
@@ -499,8 +499,8 @@ void Generic6DofConstraint::SetFrames(Matrix frameA, Matrix frameB)
 
 	UnmanagedPointer->setFrames(*frameATemp, *frameBTemp);
 
-	ALIGNED_DEL(frameBTemp);
-	ALIGNED_DEL(frameATemp);
+	ALIGNED_FREE(frameBTemp);
+	ALIGNED_FREE(frameATemp);
 }
 
 void Generic6DofConstraint::SetLimit(int axis, btScalar lo, btScalar hi)

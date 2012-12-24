@@ -10,8 +10,7 @@
 ManifoldResult::ManifoldResult()
 : DiscreteCollisionDetectorInterface::Result(0)
 {
-	_native = ALIGNED_ALLOC(btManifoldResult);
-	new (_native) btManifoldResult();
+	_native = ALIGNED_NEW(btManifoldResult) ();
 }
 
 ManifoldResult::ManifoldResult(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)

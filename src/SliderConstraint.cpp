@@ -20,8 +20,8 @@ SliderConstraint::SliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*frameInATemp, *frameInBTemp, useLinearReferenceFrameA);
 
-	ALIGNED_DEL(frameInATemp);
-	ALIGNED_DEL(frameInBTemp);
+	ALIGNED_FREE(frameInATemp);
+	ALIGNED_FREE(frameInBTemp);
 }
 
 SliderConstraint::SliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameA)
@@ -29,7 +29,7 @@ SliderConstraint::SliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool 
 {
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 	UnmanagedPointer = new btSliderConstraint(*(btRigidBody*)rigidBodyB->_native, *frameInBTemp, useLinearReferenceFrameA);
-	ALIGNED_DEL(frameInBTemp);
+	ALIGNED_FREE(frameInBTemp);
 }
 
 void SliderConstraint::CalculateTransforms(Matrix transA, Matrix transB)
@@ -39,8 +39,8 @@ void SliderConstraint::CalculateTransforms(Matrix transA, Matrix transB)
 
 	UnmanagedPointer->calculateTransforms(*transATemp, *transBTemp);
 
-	ALIGNED_DEL(transATemp);
-	ALIGNED_DEL(transBTemp);
+	ALIGNED_FREE(transATemp);
+	ALIGNED_FREE(transBTemp);
 }
 
 void SliderConstraint::SetFrames(Matrix frameA, Matrix frameB)
@@ -50,8 +50,8 @@ void SliderConstraint::SetFrames(Matrix frameA, Matrix frameB)
 
 	UnmanagedPointer->setFrames(*frameATemp, *frameBTemp);
 
-	ALIGNED_DEL(frameBTemp);
-	ALIGNED_DEL(frameATemp);
+	ALIGNED_FREE(frameBTemp);
+	ALIGNED_FREE(frameATemp);
 }
 
 void SliderConstraint::TestAngularLimits()

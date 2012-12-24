@@ -29,6 +29,13 @@ ConvexHullShape::ConvexHullShape(System::Collections::Generic::IEnumerable<Vecto
 	delete pointTemp;
 }
 
+void ConvexHullShape::AddPoint(Vector3 point, bool recalculateLocalAabb)
+{
+	VECTOR3_DEF(point);
+	Native->addPoint(VECTOR3_USE(point), recalculateLocalAabb);
+	VECTOR3_DEL(point);
+}
+
 void ConvexHullShape::AddPoint(Vector3 point)
 {
 	VECTOR3_DEF(point);

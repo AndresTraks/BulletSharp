@@ -4,10 +4,11 @@
 
 int* BulletSharp::Math::IntArrayToUnmanaged(array<int>^ i)
 {
-	int* intArray = new int[i->Length];
+	int length = i->Length;
+	int* intArray = new int[length];
 	pin_ptr<int> iPtr = &i[0];
-	memcpy(intArray, iPtr, i->Length * sizeof(int));
-	//for(int i=0; i<i->Length; i++)
+	memcpy(intArray, iPtr, length * sizeof(int));
+	//for(int i=0; i<length; i++)
 	//  intArray[i] = i[i];
 	return intArray;
 }
@@ -25,13 +26,14 @@ int* BulletSharp::Math::IntArrayToUnmanaged(array<int>^ i, int length)
 
 btScalar* BulletSharp::Math::BtScalarArrayToUnmanaged(array<btScalar>^ s)
 {
-	btScalar* btScalars = new btScalar[s->Length];
+	int length = s->Length;
+	btScalar* btScalars = new btScalar[length];
 #ifdef GRAPHICS_NO_DIRECT_CAST
-	for(int i=0; i<s->Length; i++)
+	for(int i=0; i<length; i++)
 		btScalars[i] = s[i];
 #else
 	pin_ptr<btScalar> sPtr = &s[0];
-	memcpy(btScalars, sPtr, s->Length * sizeof(btScalar));
+	memcpy(btScalars, sPtr, length * sizeof(btScalar));
 #endif
 	return btScalars;
 }
@@ -52,24 +54,10 @@ btScalar* BulletSharp::Math::BtScalarArrayToUnmanaged(array<btScalar>^ s, int le
 
 btVector3* BulletSharp::Math::Vector3ToBtVector3(Vector3 vector)
 {
-#ifdef ALIGN_FOR_SSE
-	btVector3* v = ALIGNED_ALLOC(btVector3);
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	v->setX(vector.x);
-	v->setY(vector.y);
-	v->setZ(vector.z);
+	return ALIGNED_NEW(btVector3) (vector.x, vector.y, vector.z);
 #else
-	v->setX(vector.X);
-	v->setY(vector.Y);
-	v->setZ(vector.Z);
-#endif
-	return v;
-#else
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	return new btVector3(vector.x, vector.y, vector.z);
-#else
-	return new btVector3(vector.X, vector.Y, vector.Z);
-#endif
+	return ALIGNED_NEW(btVector3) (vector.X, vector.Y, vector.Z);
 #endif
 }
 btVector3* BulletSharp::Math::Vector3ToBtVector3Ref(Vector3% vector)
@@ -83,7 +71,7 @@ btVector3* BulletSharp::Math::Vector3ToBtVector3Ref(Vector3% vector)
 	btScalar y = vector.Y;
 	btScalar z = vector.Z;
 #endif
-	return new btVector3(x, y, z);
+	return ALIGNED_NEW(btVector3) (x, y, z);
 }
 void BulletSharp::Math::Vector3ToBtVector3(Vector3 vector, btVector3* vectorOut)
 {
@@ -96,16 +84,16 @@ void BulletSharp::Math::Vector3ToBtVector3(Vector3 vector, btVector3* vectorOut)
 
 btVector3* BulletSharp::Math::Vector3ArrayToUnmanaged(array<Vector3>^ v)
 {
-	btVector3* btVertices = new btVector3[v->Length];
+	int length = v->Length;
+	btVector3* btVertices = new btVector3[length];
 	if (sizeof(btVector3) == sizeof(Vector3))
 	{
 		pin_ptr<Vector3> vPtr = &v[0];
-		memcpy(btVertices, vPtr, v->Length * sizeof(btVector3));
+		memcpy(btVertices, vPtr, length * sizeof(btVector3));
 	}
 	else
 	{
-		int len = v->Length;
-		for(int i=0; i < len; i++)
+		for(int i=0; i < length; i++)
 			Vector3ToBtVector3(v[i], &btVertices[i]);
 	}
 	return btVertices;
@@ -167,24 +155,22 @@ btQuaternion* BulletSharp::Math::QuaternionToBtQuat(Quaternion quat)
 Matrix BulletSharp::Math::BtTransformToMatrix(const btTransform* transform)
 {
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	btScalar m[16];
-	transform->getOpenGLMatrix(m);
-
+	btScalar* m = (btScalar*)transform;
 #ifdef GRAPHICS_MOGRE
 	Matrix t = gcnew Mogre::Matrix4();
 #else
 	Matrix t = gcnew Axiom::Math::Matrix4();
 #endif
 	t->m00 = m[0];
-	t->m10 = m[1];
-	t->m20 = m[2];
+	t->m01 = m[1];
+	t->m02 = m[2];
 	t->m30 = 0;
-	t->m01 = m[4];
+	t->m10 = m[4];
 	t->m11 = m[5];
-	t->m21 = m[6];
+	t->m12 = m[6];
 	t->m31 = 0;
-	t->m02 = m[8];
-	t->m12 = m[9];
+	t->m20 = m[8];
+	t->m21 = m[9];
 	t->m22 = m[10];
 	t->m32 = 0;
 	t->m03 = m[12];
@@ -196,17 +182,15 @@ Matrix BulletSharp::Math::BtTransformToMatrix(const btTransform* transform)
 
 	Matrix t = Matrix();
 #ifdef GRAPHICS_NO_DIRECT_CAST
-	btScalar m[16];
-	transform->getOpenGLMatrix(m);
-
+	btScalar* m = (btScalar*)transform;
 	t.M11 = (float)m[0];
-	t.M12 = (float)m[1];
-	t.M13 = (float)m[2];
-	t.M21 = (float)m[4];
+	t.M12 = (float)m[4];
+	t.M13 = (float)m[8];
+	t.M21 = (float)m[1];
 	t.M22 = (float)m[5];
-	t.M23 = (float)m[6];
-	t.M31 = (float)m[8];
-	t.M32 = (float)m[9];
+	t.M23 = (float)m[9];
+	t.M31 = (float)m[2];
+	t.M32 = (float)m[6];
 	t.M33 = (float)m[10];
 	t.M41 = (float)m[12];
 	t.M42 = (float)m[13];
@@ -225,46 +209,41 @@ Matrix BulletSharp::Math::BtTransformToMatrix(const btTransform* transform)
 void BulletSharp::Math::BtTransformToMatrix(const btTransform* transform, [Out] Matrix% t)
 {
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	btScalar m[16];
-	transform->getOpenGLMatrix(m);
-
 #ifdef GRAPHICS_MOGRE
 	t = gcnew Mogre::Matrix4();
 #else
 	t = gcnew Axiom::Math::Matrix4();
 #endif
+	btScalar* m = (btScalar*)transform;
 	t->m00 = m[0];
-	t->m10 = m[1];
-	t->m20 = m[2];
+	t->m01 = m[1];
+	t->m02 = m[2];
 	t->m30 = 0;
-	t->m01 = m[4];
+	t->m10 = m[4];
 	t->m11 = m[5];
-	t->m21 = m[6];
-	t->m31 = 0;
+	t->m12 = m[6];
+	t->m13 = 0;
 	t->m02 = m[8];
-	t->m12 = m[9];
+	t->m21 = m[9];
 	t->m22 = m[10];
-	t->m32 = 0;
+	t->m23 = 0;
 	t->m03 = m[12];
 	t->m13 = m[13];
 	t->m23 = m[14];
 	t->m33 = 1;
 
 #else
-
 	t = Matrix();
 #ifdef GRAPHICS_NO_DIRECT_CAST
-	btScalar m[16];
-	transform->getOpenGLMatrix(m);
-
+	btScalar* m = (btScalar*)transform;
 	t.M11 = (float)m[0];
-	t.M12 = (float)m[1];
-	t.M13 = (float)m[2];
-	t.M21 = (float)m[4];
+	t.M21 = (float)m[1];
+	t.M31 = (float)m[2];
+	t.M12 = (float)m[4];
 	t.M22 = (float)m[5];
-	t.M23 = (float)m[6];
-	t.M31 = (float)m[8];
-	t.M32 = (float)m[9];
+	t.M32 = (float)m[6];
+	t.M13 = (float)m[8];
+	t.M23 = (float)m[9];
 	t.M33 = (float)m[10];
 	t.M41 = (float)m[12];
 	t.M42 = (float)m[13];
@@ -280,57 +259,46 @@ void BulletSharp::Math::BtTransformToMatrix(const btTransform* transform, [Out] 
 
 btTransform* BulletSharp::Math::MatrixToBtTransform(Matrix matrix)
 {
-#ifdef ALIGN_FOR_SSE
-	btTransform* t = ALIGNED_ALLOC(btTransform);
-#else
-	btTransform* t = new btTransform;
-#endif
+	btTransform* t = ALIGNED_NEW(btTransform);
 
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	btScalar m[16];
-
+	btScalar* m = (btScalar*)t;
 	m[0] = matrix->m00;
-	m[1] = matrix->m10;
-	m[2] = matrix->m20;
+	m[1] = matrix->m01;
+	m[2] = matrix->m02;
 	m[3] = 0;
-	m[4] = matrix->m01;
+	m[4] = matrix->m10;
 	m[5] = matrix->m11;
-	m[6] = matrix->m21;
+	m[6] = matrix->m12;
 	m[7] = 0;
-	m[8] = matrix->m02;
-	m[9] = matrix->m12;
+	m[8] = matrix->m20;
+	m[9] = matrix->m21;
 	m[10] = matrix->m22;
 	m[11] = 0;
 	m[12] = matrix->m03;
 	m[13] = matrix->m13;
 	m[14] = matrix->m23;
 	m[15] = 1;
-
-	t->setFromOpenGLMatrix(m);
-
 #else
 
 #ifdef GRAPHICS_NO_DIRECT_CAST
-	btScalar m[16];
-
+	btScalar* m = (btScalar*)t;
 	m[0] = matrix.M11;
-	m[1] = matrix.M12;
-	m[2] = matrix.M13;
+	m[1] = matrix.M21;
+	m[2] = matrix.M31;
 	m[3] = 0;
-	m[4] = matrix.M21;
+	m[4] = matrix.M12;
 	m[5] = matrix.M22;
-	m[6] = matrix.M23;
+	m[6] = matrix.M32;
 	m[7] = 0;
-	m[8] = matrix.M31;
-	m[9] = matrix.M32;
+	m[8] = matrix.M13;
+	m[9] = matrix.M23;
 	m[10] = matrix.M33;
 	m[11] = 0;
 	m[12] = matrix.M41;
 	m[13] = matrix.M42;
 	m[14] = matrix.M43;
 	m[15] = 1;
-
-	t->setFromOpenGLMatrix(m);
 #else
 	pin_ptr<Matrix> mPtr = &matrix;
 	t->setFromOpenGLMatrix((btScalar*)mPtr);
@@ -344,48 +312,42 @@ btTransform* BulletSharp::Math::MatrixToBtTransform(Matrix matrix)
 void BulletSharp::Math::MatrixToBtTransform(Matrix matrix, btTransform* t)
 {
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	btMatrix3x3* basis = new btMatrix3x3;
-	btVector3* vector;
-
-	btScalar m[12];
-
-	m[0] = matrix->m03;
-	m[1] = matrix->m13;
-	m[2] = matrix->m23;
-	vector = new btVector3(m[0], m[1], m[2]);
-
+	btScalar* m = (btScalar*)t;
 	m[0] = matrix->m00;
-	m[1] = matrix->m10;
-	m[2] = matrix->m20;
+	m[1] = matrix->m01;
+	m[2] = matrix->m02;
 	m[3] = 0;
-	m[4] = matrix->m01;
+	m[4] = matrix->m10;
 	m[5] = matrix->m11;
-	m[6] = matrix->m21;
+	m[6] = matrix->m12;
 	m[7] = 0;
-	m[8] = matrix->m02;
-	m[9] = matrix->m12;
+	m[8] = matrix->m20;
+	m[9] = matrix->m21;
 	m[10] = matrix->m22;
 	m[11] = 0;
-	basis->setFromOpenGLSubMatrix(m);
-
-	t->setBasis(*basis);
-	delete basis;
-
-	t->setOrigin(*vector);
-	delete vector;
+	m[12] = matrix->m03;
+	m[13] = matrix->m13;
+	m[14] = matrix->m23;
+	m[15] = 1;
 #else
 
 #ifdef GRAPHICS_NO_DIRECT_CAST
-	btMatrix3x3* basis = new btMatrix3x3(
-		matrix.M11, matrix.M21, matrix.M31,
-		matrix.M12, matrix.M22, matrix.M32,
-		matrix.M13, matrix.M23, matrix.M33);
-	t->setBasis(*basis);
-	delete basis;
-	
-	btVector3* vector = new btVector3(matrix.M41, matrix.M42, matrix.M43);
-	t->setOrigin(*vector);
-	delete vector;
+	btScalar* m = (btScalar*)&t;
+	m[0] = matrix.M11;
+	m[1] = matrix.M21;
+	m[2] = matrix.M31;
+	m[3] = 0;
+	m[4] = matrix.M12;
+	m[5] = matrix.M22;
+	m[6] = matrix.M32;
+	m[7] = 0;
+	m[8] = matrix.M13;
+	m[9] = matrix.M23;
+	m[10] = matrix.M33;
+	m[11] = 0;
+	m[12] = matrix.M41;
+	m[13] = matrix.M42;
+	m[14] = matrix.M43;
 #else
 	pin_ptr<Matrix> mPtr = &matrix;
 	t->setFromOpenGLMatrix((btScalar*)mPtr);
@@ -399,25 +361,22 @@ void BulletSharp::Math::MatrixToBtTransform(Matrix matrix, btTransform* t)
 Matrix BulletSharp::Math::BtMatrix3x3ToMatrix(const btMatrix3x3* matrix)
 {
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	btScalar m[12];
-	matrix->getOpenGLSubMatrix(m);
-
 #ifdef GRAPHICS_MOGRE
 	Matrix t = gcnew Mogre::Matrix4();
 #else
 	Matrix t = gcnew Axiom::Math::Matrix4();
 #endif
-
+	btScalar* m = (btScalar*)&matrix;
 	t->m00 = m[0];
-	t->m10 = m[1];
-	t->m20 = m[2];
+	t->m10 = m[4];
+	t->m20 = m[8];
 	t->m30 = 0;
-	t->m01 = m[4];
+	t->m01 = m[1];
 	t->m11 = m[5];
-	t->m21 = m[6];
+	t->m21 = m[9];
 	t->m31 = 0;
-	t->m02 = m[8];
-	t->m12 = m[9];
+	t->m02 = m[2];
+	t->m12 = m[6];
 	t->m22 = m[10];
 	t->m32 = 0;
 	t->m03 = 0;
@@ -428,17 +387,15 @@ Matrix BulletSharp::Math::BtMatrix3x3ToMatrix(const btMatrix3x3* matrix)
 
 	Matrix t = Matrix();
 #ifdef GRAPHICS_NO_DIRECT_CAST
-	btScalar m[12];
-	matrix->getOpenGLSubMatrix(m);
-
+	btScalar* m = (btScalar*)&matrix;
 	t.M11 = (float)m[0];
-	t.M12 = (float)m[1];
-	t.M13 = (float)m[2];
-	t.M21 = (float)m[4];
+	t.M21 = (float)m[1];
+	t.M31 = (float)m[2];
+	t.M12 = (float)m[4];
 	t.M22 = (float)m[5];
-	t.M23 = (float)m[6];
-	t.M31 = (float)m[8];
-	t.M32 = (float)m[9];
+	t.M32 = (float)m[6];
+	t.M13 = (float)m[8];
+	t.M23 = (float)m[9];
 	t.M33 = (float)m[10];
 	t.M44 = 1;
 #else
@@ -456,35 +413,29 @@ btMatrix3x3* BulletSharp::Math::MatrixToBtMatrix3x3(Matrix matrix)
 	btMatrix3x3* t = new btMatrix3x3;
 
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	btScalar m[11];
-
+	btScalar* m = (btScalar*)&t;
 	m[0] = matrix->m00;
-	m[1] = matrix->m10;
-	m[2] = matrix->m20;
-	m[4] = matrix->m01;
+	m[1] = matrix->m01;
+	m[2] = matrix->m02;
+	m[4] = matrix->m10;
 	m[5] = matrix->m11;
-	m[6] = matrix->m21;
-	m[8] = matrix->m02;
-	m[9] = matrix->m12;
+	m[6] = matrix->m11;
+	m[8] = matrix->m20;
+	m[9] = matrix->m21;
 	m[10] = matrix->m22;
-	t->setFromOpenGLSubMatrix(m);
-
 #else
 
 #ifdef GRAPHICS_NO_DIRECT_CAST
-	btScalar m[12];
-
+	btScalar* m = (btScalar*)&t;
 	m[0] = matrix.M11;
-	m[1] = matrix.M12;
-	m[2] = matrix.M13;
-	m[4] = matrix.M21;
+	m[1] = matrix.M21;
+	m[2] = matrix.M31;
+	m[4] = matrix.M12;
 	m[5] = matrix.M22;
-	m[6] = matrix.M23;
-	m[8] = matrix.M31;
-	m[9] = matrix.M32;
+	m[6] = matrix.M32;
+	m[8] = matrix.M13;
+	m[9] = matrix.M23;
 	m[10] = matrix.M33;
-
-	t->setFromOpenGLSubMatrix(m);
 #else
 	pin_ptr<Matrix> mPtr = &matrix;
 	t->setFromOpenGLSubMatrix((btScalar*)mPtr);
@@ -497,35 +448,29 @@ btMatrix3x3* BulletSharp::Math::MatrixToBtMatrix3x3(Matrix matrix)
 void BulletSharp::Math::MatrixToBtMatrix3x3(Matrix matrix, btMatrix3x3* t)
 {
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	btScalar m[12];
-
+	btScalar* m = (btScalar*)&t;
 	m[0] = matrix->m00;
-	m[1] = matrix->m10;
-	m[2] = matrix->m20;
-	m[4] = matrix->m01;
+	m[1] = matrix->m01;
+	m[2] = matrix->m02;
+	m[4] = matrix->m10;
 	m[5] = matrix->m11;
-	m[6] = matrix->m21;
-	m[8] = matrix->m02;
-	m[9] = matrix->m12;
+	m[6] = matrix->m12;
+	m[8] = matrix->m20;
+	m[9] = matrix->m21;
 	m[10] = matrix->m22;
-
-	t->setFromOpenGLSubMatrix(m);
 #else
 
 #ifdef GRAPHICS_NO_DIRECT_CAST
-	btScalar m[12];
-
+	btScalar* m = (btScalar*)&t;
 	m[0] = matrix.M11;
-	m[1] = matrix.M12;
-	m[2] = matrix.M13;
-	m[4] = matrix.M21;
+	m[1] = matrix.M21;
+	m[2] = matrix.M31;
+	m[4] = matrix.M12;
 	m[5] = matrix.M22;
-	m[6] = matrix.M23;
-	m[8] = matrix.M31;
-	m[9] = matrix.M32;
+	m[6] = matrix.M32;
+	m[8] = matrix.M13;
+	m[9] = matrix.M23;
 	m[10] = matrix.M33;
-
-	t->setFromOpenGLSubMatrix(m);
 #else
 	pin_ptr<Matrix> mPtr = &matrix;
 	t->setFromOpenGLSubMatrix((btScalar*)mPtr);

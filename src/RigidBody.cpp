@@ -130,10 +130,10 @@ void RigidBody_ComputeGyroscopicForce(btRigidBody* body, btVector3* ret, btScala
 #pragma managed(pop)
 Vector3 RigidBody::ComputeGyroscopicForce(btScalar maxGyroscopicForce)
 {
-	btVector3* retTemp = new btVector3;
+	btVector3* retTemp = ALIGNED_NEW(btVector3);
 	RigidBody_ComputeGyroscopicForce(Native, retTemp, maxGyroscopicForce);
 	Vector3 ret = Math::BtVector3ToVector3(retTemp);
-	delete retTemp;
+	ALIGNED_FREE(retTemp);
 	return ret;
 }
 
@@ -151,16 +151,16 @@ btScalar RigidBody::ComputeImpulseDenominator(Vector3 pos, Vector3 normal)
 
 void RigidBody::GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
 {
-	btVector3* aabbMinTemp = new btVector3;
-	btVector3* aabbMaxTemp = new btVector3;
+	btVector3* aabbMinTemp = ALIGNED_NEW(btVector3);
+	btVector3* aabbMaxTemp = ALIGNED_NEW(btVector3);
 
 	Native->getAabb(*aabbMinTemp, *aabbMaxTemp);
 
 	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
 	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
 
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	ALIGNED_FREE(aabbMinTemp);
+	ALIGNED_FREE(aabbMaxTemp);
 }
 
 #pragma managed(push, off)
@@ -172,13 +172,13 @@ void RigidBody_GetVelocityInLocalPoint(btRigidBody* body, btVector3* velocity, b
 Vector3 RigidBody::GetVelocityInLocalPoint(Vector3 relativePosition)
 {
 	VECTOR3_DEF(relativePosition);
-	btVector3* velocityTemp = new btVector3;
+	btVector3* velocityTemp = ALIGNED_NEW(btVector3);
 
 	RigidBody_GetVelocityInLocalPoint(Native, velocityTemp, VECTOR3_PTR(relativePosition));
 	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
 
 	VECTOR3_DEL(relativePosition);
-	delete velocityTemp;
+	ALIGNED_FREE(velocityTemp);
 
 	return velocity;
 }
@@ -195,17 +195,17 @@ bool RigidBody::IsInWorld()
 
 void RigidBody::PredictIntegratedTransform(btScalar step, [Out] Matrix% predictedTransform)
 {
-	btTransform* predictedTransformTemp = ALIGNED_ALLOC(btTransform);
+	btTransform* predictedTransformTemp = ALIGNED_NEW(btTransform);
 	Native->predictIntegratedTransform(step, *predictedTransformTemp);
 	Math::BtTransformToMatrix(predictedTransformTemp, predictedTransform);
-	ALIGNED_DEL(predictedTransformTemp);
+	ALIGNED_FREE(predictedTransformTemp);
 }
 
 void RigidBody::ProceedToTransform(Matrix newTransform)
 {
 	btTransform* newTransformTemp = Math::MatrixToBtTransform(newTransform);
 	Native->proceedToTransform(*newTransformTemp);
-	ALIGNED_DEL(newTransformTemp);
+	ALIGNED_FREE(newTransformTemp);
 }
 
 void RigidBody::SaveKinematicState(btScalar step)
@@ -307,7 +307,7 @@ void RigidBody::CenterOfMassTransform::set(Matrix value)
 {
 	btTransform* valueTemp = Math::MatrixToBtTransform(value);
 	Native->setCenterOfMassTransform(*valueTemp);
-	ALIGNED_DEL(valueTemp);
+	ALIGNED_FREE(valueTemp);
 }
 
 RigidBodyFlags RigidBody::Flags::get()
@@ -432,20 +432,20 @@ RigidBodyConstructionInfo::~RigidBodyConstructionInfo()
 
 RigidBodyConstructionInfo::!RigidBodyConstructionInfo()
 {
-	delete _native;
+	ALIGNED_FREE(_native);
 	_native = NULL;
 }
 
 btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfo(
 	btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape)
 {
-	return new btRigidBody::btRigidBodyConstructionInfo(mass, motionState, collisionShape);
+	return ALIGNED_NEW(btRigidBody::btRigidBodyConstructionInfo) (mass, motionState, collisionShape);
 }
 
 btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfoLocalInertia(
 	btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape, btVector3* localInertia)
 {
-	return new btRigidBody::btRigidBodyConstructionInfo(mass, motionState, collisionShape, *localInertia);
+	return ALIGNED_NEW(btRigidBody::btRigidBodyConstructionInfo) (mass, motionState, collisionShape, *localInertia);
 }
 
 RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape)

@@ -15,9 +15,7 @@ BoxBoxDetector::BoxBoxDetector(btBoxBoxDetector* detector)
 BoxBoxDetector::BoxBoxDetector(BoxShape^ box1, BoxShape^ box2)
 : DiscreteCollisionDetectorInterface(0)
 {
-	_native = ALIGNED_ALLOC(btBoxBoxDetector);
-	new (_native) btBoxBoxDetector(
-		(btBoxShape*)box1->_native, (btBoxShape*)box2->_native);
+	_native = ALIGNED_NEW(btBoxBoxDetector) ((btBoxShape*)box1->_native, (btBoxShape*)box2->_native);
 }
 
 BoxShape^ BoxBoxDetector::Box1::get()

@@ -23,16 +23,9 @@ using namespace Mogre;
 #define Matrix Matrix4x4F
 #endif
 
-#if defined(BT_USE_DOUBLE_PRECISION) && !defined(GRAPHICS_NONE) && !defined(GRAPHICS_OPENTK)
+#if (defined(BT_USE_DOUBLE_PRECISION) && !defined(GRAPHICS_NONE) && !defined(GRAPHICS_OPENTK)) || \
+	(defined(BT_USE_SIMD_VECTOR3) && defined (BT_USE_SSE_IN_API) && defined (BT_USE_SSE))
 #define GRAPHICS_NO_DIRECT_CAST
-#endif
-
-#define ALIGN_FOR_SSE
-
-#ifdef ALIGN_FOR_SSE
-#define ALIGNED_DEL(mem) ALIGNED_FREE(mem)
-#else
-#define ALIGNED_DEL(mem) delete mem
 #endif
 
 // Macros for passing Vector3 parameters.
@@ -40,22 +33,20 @@ using namespace Mogre;
 // if the structure of Vector3 and btVector3 is compatible.
 // VECTOR3_DEL cleans up the btVector3 if pinning is not possible.
 // VECTOR3_USE is used to dereference the btVector3* pointer.
+// FIXME: is it safe to cast Vector3 to btVector3 given that btVector3 has padding?
 #define VECTOR3_NAME(vec) vec ## Temp
 #ifdef GRAPHICS_NO_DIRECT_CAST
 #define VECTOR3_DEF(vec) btVector3* VECTOR3_NAME(vec) = Math::Vector3ToBtVector3(vec)
 #define VECTOR3_PTR(vec) VECTOR3_NAME(vec)
-#define VECTOR3_DEL(vec) ALIGNED_DEL(VECTOR3_PTR(vec))
+#define VECTOR3_DEL(vec) ALIGNED_FREE(VECTOR3_PTR(vec))
 #else
-#ifdef ALIGN_FOR_SSE
+#define VECTOR3_PTR(vec) ((btVector3*) VECTOR3_NAME(vec))
+#ifdef BT_USE_SSE_IN_API
 #define VECTOR3_DEF(vec) btVector3* VECTOR3_NAME(vec) = Math::Vector3ToBtVector3(vec)
+#define VECTOR3_DEL(vec) ALIGNED_FREE(VECTOR3_PTR(vec))
 #else
 #define VECTOR3_DEF(vec) pin_ptr<Vector3> VECTOR3_NAME(vec) = &vec;
-#endif
-#define VECTOR3_PTR(vec) ((btVector3*) VECTOR3_NAME(vec))
-#ifdef ALIGN_FOR_SSE
 #define VECTOR3_DEL(vec)
-#else
-#define VECTOR3_DEL(vec) ALIGNED_FREE(VECTOR3_PTR(vec))
 #endif
 #endif
 #define VECTOR3_USE(vec) *VECTOR3_PTR(vec)
@@ -130,18 +121,17 @@ namespace BulletSharp
 
 #if defined(GRAPHICS_MOGRE)
 #define BtTransformToMatrixFast(transform, out)	out = gcnew Mogre::Matrix4(); \
-	btScalar m[16]; \
-	(transform).getOpenGLMatrix(m); \
+	btScalar* m = (btScalar*)&transform; \
 	out->m00 = m[0]; \
-	out->m10 = m[1]; \
-	out->m20 = m[2]; \
+	out->m01 = m[1]; \
+	out->m02 = m[2]; \
 	out->m30 = 0; \
-	out->m01 = m[4]; \
+	out->m10 = m[4]; \
 	out->m11 = m[5]; \
-	out->m21 = m[6]; \
+	out->m12 = m[6]; \
 	out->m31 = 0; \
-	out->m02 = m[8]; \
-	out->m12 = m[9]; \
+	out->m20 = m[8]; \
+	out->m21 = m[9]; \
 	out->m22 = m[10]; \
 	out->m32 = 0; \
 	out->m03 = m[12]; \
@@ -150,18 +140,17 @@ namespace BulletSharp
 	out->m33 = 1;
 #elif defined(GRAPHICS_AXIOM)
 #define BtTransformToMatrixFast(transform, out)	out = gcnew Axiom::Math::Matrix4(); \
-	btScalar m[16]; \
-	transform.getOpenGLMatrix(m); \
+	btScalar* m = (btScalar*)&transform; \
 	out->m00 = m[0]; \
-	out->m10 = m[1]; \
-	out->m20 = m[2]; \
+	out->m01 = m[1]; \
+	out->m02 = m[2]; \
 	out->m30 = 0; \
-	out->m01 = m[4]; \
+	out->m10 = m[4]; \
 	out->m11 = m[5]; \
-	out->m21 = m[6]; \
+	out->m12 = m[6]; \
 	out->m31 = 0; \
-	out->m02 = m[8]; \
-	out->m12 = m[9]; \
+	out->m20 = m[8]; \
+	out->m21 = m[9]; \
 	out->m22 = m[10]; \
 	out->m32 = 0; \
 	out->m03 = m[12]; \
@@ -170,16 +159,16 @@ namespace BulletSharp
 	out->m33 = 1;
 #else
 #ifdef GRAPHICS_NO_DIRECT_CAST
-#define BtTransformToMatrixFast(transform, out) btScalar m[16]; \
-	transform.getOpenGLMatrix(m); \
+#define BtTransformToMatrixFast(transform, out) \
+	btScalar* m = (btScalar*)&transform; \
 	out.M11 = (float)m[0]; \
-	out.M12 = (float)m[1]; \
-	out.M13 = (float)m[2]; \
-	out.M21 = (float)m[4]; \
+	out.M12 = (float)m[4]; \
+	out.M13 = (float)m[8]; \
+	out.M21 = (float)m[1]; \
 	out.M22 = (float)m[5]; \
-	out.M23 = (float)m[6]; \
-	out.M31 = (float)m[8]; \
-	out.M32 = (float)m[9]; \
+	out.M23 = (float)m[9]; \
+	out.M31 = (float)m[2]; \
+	out.M32 = (float)m[6]; \
 	out.M33 = (float)m[10]; \
 	out.M41 = (float)m[12]; \
 	out.M42 = (float)m[13]; \
@@ -193,10 +182,14 @@ namespace BulletSharp
 
 #ifdef GRAPHICS_AXIOM
 #define Vector3_Cross(left, right, result) result = left.Cross(right)
+#define Matrix_Identity Matrix4::Identity
 #elif defined(GRAPHICS_MOGRE)
 #define Vector3_Cross(left, right, result) result = left.CrossProduct(right)
+#define Matrix_Identity Matrix4::IDENTITY
 #elif defined(GRAPHICS_WAPICODEPACK)
 #define Vector3_Cross(left, right, result) result = Vector3::Cross(left, right)
+#define Matrix_Identity Matrix::Identity
 #else
 #define Vector3_Cross(left, right, result) Vector3::Cross(left, right, result)
+#define Matrix_Identity Matrix::Identity
 #endif

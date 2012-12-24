@@ -65,7 +65,7 @@ CollisionObject^ Serialize::BulletWorldImporter::CreateCollisionObject(Matrix st
 	CollisionObject^ ret = CollisionObject::GetManaged(
 		_importer->baseCreateCollisionObject(*startTransformTemp, shape->UnmanagedPointer, bodyNameTemp));
 
-	ALIGNED_DEL(startTransformTemp);
+	ALIGNED_FREE(startTransformTemp);
 	StringConv::FreeUnmanagedString(bodyNameTemp);
 
 	return ret;
@@ -79,7 +79,7 @@ RigidBody^ Serialize::BulletWorldImporter::CreateRigidBody(bool isDynamic, btSca
 	RigidBody^ ret = (RigidBody^)CollisionObject::GetManaged(
 		_importer->baseCreateRigidBody(isDynamic, mass, *startTransformTemp, shape->UnmanagedPointer, bodyNameTemp));
 
-	ALIGNED_DEL(startTransformTemp);
+	ALIGNED_FREE(startTransformTemp);
 	StringConv::FreeUnmanagedString(bodyNameTemp);
 
 	return ret;
@@ -245,8 +245,8 @@ HingeConstraint^ Serialize::BulletWorldImporter::CreateHingeConstraint(RigidBody
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp, useReferenceFrameA));
 
-	ALIGNED_DEL(rigidBodyAFrameTemp);
-	ALIGNED_DEL(rigidBodyBFrameTemp);
+	ALIGNED_FREE(rigidBodyAFrameTemp);
+	ALIGNED_FREE(rigidBodyBFrameTemp);
 
 	return ret;
 }
@@ -260,8 +260,8 @@ HingeConstraint^ Serialize::BulletWorldImporter::CreateHingeConstraint(RigidBody
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp));
 
-	ALIGNED_DEL(rigidBodyAFrameTemp);
-	ALIGNED_DEL(rigidBodyBFrameTemp);
+	ALIGNED_FREE(rigidBodyAFrameTemp);
+	ALIGNED_FREE(rigidBodyBFrameTemp);
 
 	return ret;
 }
@@ -273,7 +273,7 @@ HingeConstraint^ Serialize::BulletWorldImporter::CreateHingeConstraint(RigidBody
 	HingeConstraint^ ret = gcnew HingeConstraint(_importer->baseCreateHingeConstraint(
 		*(btRigidBody*)rigidBodyA->_native, *rigidBodyAFrameTemp, useReferenceFrameA));
 
-	ALIGNED_DEL(rigidBodyAFrameTemp);
+	ALIGNED_FREE(rigidBodyAFrameTemp);
 	return ret;
 }
 
@@ -284,7 +284,7 @@ HingeConstraint^ Serialize::BulletWorldImporter::CreateHingeConstraint(RigidBody
 	HingeConstraint^ ret = gcnew HingeConstraint(_importer->baseCreateHingeConstraint(
 		*(btRigidBody*)rigidBodyA->_native, *rigidBodyAFrameTemp));
 
-	ALIGNED_DEL(rigidBodyAFrameTemp);
+	ALIGNED_FREE(rigidBodyAFrameTemp);
 	return ret;
 }
 
@@ -297,8 +297,8 @@ ConeTwistConstraint^ Serialize::BulletWorldImporter::CreateConeTwistConstraint(R
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp));
 
-	ALIGNED_DEL(rigidBodyAFrameTemp);
-	ALIGNED_DEL(rigidBodyBFrameTemp);
+	ALIGNED_FREE(rigidBodyAFrameTemp);
+	ALIGNED_FREE(rigidBodyBFrameTemp);
 
 	return ret;
 }
@@ -310,7 +310,7 @@ ConeTwistConstraint^ Serialize::BulletWorldImporter::CreateConeTwistConstraint(R
 	ConeTwistConstraint^ ret = gcnew ConeTwistConstraint(_importer->baseCreateConeTwistConstraint(
 		*(btRigidBody*)rigidBodyA->_native, *rigidBodyAFrameTemp));
 
-	ALIGNED_DEL(rigidBodyAFrameTemp);
+	ALIGNED_FREE(rigidBodyAFrameTemp);
 	return ret;
 }
 
@@ -323,8 +323,8 @@ Generic6DofConstraint^ Serialize::BulletWorldImporter::CreateGeneric6DofConstrai
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*frameInATemp, *frameInBTemp, useLinearReferenceFrameA));
 
-	ALIGNED_DEL(frameInATemp);
-	ALIGNED_DEL(frameInBTemp);
+	ALIGNED_FREE(frameInATemp);
+	ALIGNED_FREE(frameInBTemp);
 
 	return ret;
 }
@@ -336,7 +336,7 @@ Generic6DofConstraint^ Serialize::BulletWorldImporter::CreateGeneric6DofConstrai
 	Generic6DofConstraint^ ret = gcnew Generic6DofConstraint(_importer->baseCreateGeneric6DofConstraint(
 		*(btRigidBody*)rigidBodyB->_native, *frameInBTemp, useLinearReferenceFrameB));
 
-	ALIGNED_DEL(frameInBTemp);
+	ALIGNED_FREE(frameInBTemp);
 	return ret;
 }
 
@@ -349,8 +349,8 @@ SliderConstraint^ Serialize::BulletWorldImporter::CreateSliderConstraint(RigidBo
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*frameInATemp, *frameInBTemp, useLinearReferenceFrameA));
 
-	ALIGNED_DEL(frameInATemp);
-	ALIGNED_DEL(frameInBTemp);
+	ALIGNED_FREE(frameInATemp);
+	ALIGNED_FREE(frameInBTemp);
 
 	return ret;
 }
@@ -362,7 +362,7 @@ SliderConstraint^ Serialize::BulletWorldImporter::CreateSliderConstraint(RigidBo
 	SliderConstraint^ ret = gcnew SliderConstraint(_importer->baseCreateSliderConstraint(
 		*(btRigidBody*)rigidBodyB->_native, *frameInBTemp, useLinearReferenceFrameA));
 	
-	ALIGNED_DEL(frameInBTemp);
+	ALIGNED_FREE(frameInBTemp);
 	return ret;
 }
 

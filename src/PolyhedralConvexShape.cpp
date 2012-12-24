@@ -111,7 +111,7 @@ void PolyhedralConvexAabbCachingShape::GetNonvirtualAabb(Matrix trans, [Out] Vec
 	Math::BtVector3ToVector3(VECTOR3_PTR(aabbMin), aabbMin);
 	Math::BtVector3ToVector3(VECTOR3_PTR(aabbMax), aabbMax);
 
-	ALIGNED_DEL(transTemp);
+	ALIGNED_FREE(transTemp);
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
 }

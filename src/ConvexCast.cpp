@@ -39,7 +39,7 @@ void ConvexCast::CastResult::DrawCoordSystem (Matrix trans)
 {
 	btTransform* transTemp = Math::MatrixToBtTransform(trans);
 	_native->drawCoordSystem(*transTemp);
-	ALIGNED_DEL(transTemp);
+	ALIGNED_FREE(transTemp);
 }
 
 void ConvexCast::CastResult::ReportFailure(int errNo, int numIterations)
@@ -149,10 +149,10 @@ bool ConvexCast::CalcTimeOfImpact(Matrix fromA, Matrix toA, Matrix fromB, Matrix
 
 	bool ret = _convexCast->calcTimeOfImpact(*fromATemp, *toATemp, *fromBTemp, *toBTemp, *result->_native);
 
-	ALIGNED_DEL(fromATemp);
-	ALIGNED_DEL(toATemp);
-	ALIGNED_DEL(fromBTemp);
-	ALIGNED_DEL(toBTemp);
+	ALIGNED_FREE(fromATemp);
+	ALIGNED_FREE(toATemp);
+	ALIGNED_FREE(fromBTemp);
+	ALIGNED_FREE(toBTemp);
 
 	return ret;
 }

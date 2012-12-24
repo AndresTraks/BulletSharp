@@ -9,8 +9,7 @@
 PointCollector::PointCollector()
 : DiscreteCollisionDetectorInterface::Result(0)
 {
-	_native = ALIGNED_ALLOC(btPointCollector);
-	new (_native) btPointCollector();
+	_native = ALIGNED_NEW(btPointCollector) ();
 }
 
 btScalar PointCollector::Distance::get()

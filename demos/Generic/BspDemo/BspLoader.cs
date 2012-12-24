@@ -440,9 +440,7 @@ namespace BspDemo
         {
             foreach (BspEntity entity in Entities)
             {
-                if (entity.ClassName == name &&
-                    (entity.ClassName == "info_player_start" ||
-                    entity.ClassName == "info_player_deathmatch"))
+                if (entity.ClassName == name)
                 {
                     outVector = entity.Origin;
                     return true;

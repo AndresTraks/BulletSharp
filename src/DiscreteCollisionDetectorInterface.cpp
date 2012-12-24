@@ -8,8 +8,7 @@
 
 DiscreteCollisionDetectorInterface::ClosestPointInput::ClosestPointInput()
 {
-	_native = ALIGNED_ALLOC(btDiscreteCollisionDetectorInterface::ClosestPointInput);
-	new (_native) btDiscreteCollisionDetectorInterface::ClosestPointInput();
+	_native = ALIGNED_NEW(btDiscreteCollisionDetectorInterface::ClosestPointInput) ();
 }
 
 DiscreteCollisionDetectorInterface::ClosestPointInput::~ClosestPointInput()
@@ -181,8 +180,7 @@ StorageResult::StorageResult(btStorageResultWrapper* result)
 StorageResult::StorageResult()
 : DiscreteCollisionDetectorInterface::Result(0)
 {
-	_native = ALIGNED_ALLOC(btStorageResultWrapper);
-//	new (_native) btStorageResultWrapper(this);
+	//_native = ALIGNED_NEW(btStorageResultWrapper);
 }
 
 void StorageResult::SetShapeIdentifiersA(int partId0, int index0)
