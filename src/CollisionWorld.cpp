@@ -637,6 +637,14 @@ CollisionWorld::!CollisionWorld()
 		}
 	}
 
+	if (_broadphase->IsDisposed) {
+		//throw gcnew ObjectDisposedException("_broadphase",
+		Console::WriteLine(
+			"The BroadphaseInterface was disposed before the CollisionWorld. "
+			"It is required for CollisionWorld cleanup, so dispose it later than the world.");
+		return;
+	}
+
 	delete _native;
 	_native = NULL;
 	

@@ -145,9 +145,9 @@ Quaternion BulletSharp::Math::BtQuatToQuaternion(const btQuaternion* quat)
 btQuaternion* BulletSharp::Math::QuaternionToBtQuat(Quaternion quat)
 {
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	return new btQuaternion(quat.x, quat.y, quat.z, quat.w);
+	return ALIGNED_NEW(btQuaternion) (quat.x, quat.y, quat.z, quat.w);
 #else
-	return new btQuaternion(quat.X, quat.Y, quat.Z, quat.W);
+	return ALIGNED_NEW(btQuaternion) (quat.X, quat.Y, quat.Z, quat.W);
 #endif
 }
 

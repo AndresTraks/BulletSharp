@@ -6,15 +6,23 @@ namespace DemoFramework
 {
     public class Input
     {
-        public List<Keys> KeysPressed { get; private set; }
-        public List<Keys> KeysReleased { get; private set; }
-        public List<Keys> KeysDown { get; private set; }
+        List<Keys> _keysPressed;
+        List<Keys> _keysReleased;
+        List<Keys> _keysDown;
+        MouseButtons _mousePressed;
+        MouseButtons _mouseReleased;
+        MouseButtons _mouseDown;
+        Point _mousePoint;
+        int _mouseWheelDelta;
 
-        public MouseButtons MousePressed { get; private set; }
-        public MouseButtons MouseReleased { get; private set; }
-        public MouseButtons MouseDown { get; private set; }
-        public Point MousePoint { get; private set; }
-        public int MouseWheelDelta { get; private set; }
+        public List<Keys> KeysPressed { get { return _keysPressed; } }
+        public List<Keys> KeysReleased { get { return _keysReleased; } }
+        public List<Keys> KeysDown { get { return _keysDown; } }
+        public MouseButtons MousePressed { get { return _mousePressed; } }
+        public MouseButtons MouseReleased { get { return _mouseReleased; } }
+        public MouseButtons MouseDown { get { return _mouseDown; } }
+        public Point MousePoint { get { return _mousePoint; } }
+        public int MouseWheelDelta { get { return _mouseWheelDelta; } }
 
         Control _control;
         public Control Control
@@ -37,11 +45,11 @@ namespace DemoFramework
         {
             Control = control;
 
-            KeysDown = new List<Keys>();
-            KeysPressed = new List<Keys>();
-            KeysReleased = new List<Keys>();
-            MousePoint = control.PointToClient(Cursor.Position);
-            MouseWheelDelta = 0;
+            _keysDown = new List<Keys>();
+            _keysPressed = new List<Keys>();
+            _keysReleased = new List<Keys>();
+            _mousePoint = control.PointToClient(Cursor.Position);
+            _mouseWheelDelta = 0;
         }
 
         public void Release()
@@ -63,10 +71,10 @@ namespace DemoFramework
         {
             Keys key = e.KeyData & ~Keys.Shift;
 
-            if (KeysDown.Contains(key) == false)
+            if (_keysDown.Contains(key) == false)
             {
-                KeysPressed.Add(key);
-                KeysDown.Add(key);
+                _keysPressed.Add(key);
+                _keysDown.Add(key);
             }
         }
 
@@ -74,28 +82,28 @@ namespace DemoFramework
         {
             Keys key = e.KeyData & ~Keys.Shift;
 
-            KeysReleased.Add(key);
-            KeysDown.Remove(key);
+            _keysReleased.Add(key);
+            _keysDown.Remove(key);
         }
 
         public void ClearKeyCache()
         {
-            KeysPressed.Clear();
-            KeysReleased.Clear();
-            MousePressed = MouseButtons.None;
-            MouseReleased = MouseButtons.None;
-            MouseWheelDelta = 0;
+            _keysPressed.Clear();
+            _keysReleased.Clear();
+            _mousePressed = MouseButtons.None;
+            _mouseReleased = MouseButtons.None;
+            _mouseWheelDelta = 0;
         }
 
         void ControlOnMouseDown(object sender, MouseEventArgs e)
         {
-            MousePoint = e.Location;
+            _mousePoint = e.Location;
 
             if (e.Button == MouseButtons.None)
                 return;
 
             // Don't consider mouse clicks outside of the client area
-            if (_control.ClientRectangle.Contains(MousePoint) == false)
+            if (_control.ClientRectangle.Contains(_mousePoint) == false)
                 return;
 
             //if (_control.Focused == false && _control.CanFocus)
@@ -103,45 +111,45 @@ namespace DemoFramework
 
             if (e.Button == MouseButtons.Left)
             {
-                if ((MouseDown & MouseButtons.Left) != MouseButtons.Left)
+                if ((_mouseDown & MouseButtons.Left) != MouseButtons.Left)
                 {
-                    MouseDown |= MouseButtons.Left;
-                    MousePressed |= MouseButtons.Left;
+                    _mouseDown |= MouseButtons.Left;
+                    _mousePressed |= MouseButtons.Left;
                 }
             }
             else if (e.Button == MouseButtons.Right)
             {
-                if ((MouseDown & MouseButtons.Right) != MouseButtons.Right)
+                if ((_mouseDown & MouseButtons.Right) != MouseButtons.Right)
                 {
-                    MouseDown |= MouseButtons.Right;
-                    MousePressed |= MouseButtons.Right;
+                    _mouseDown |= MouseButtons.Right;
+                    _mousePressed |= MouseButtons.Right;
                 }
             }
         }
 
         void ControlOnMouseMove(object sender, MouseEventArgs e)
         {
-            MousePoint = e.Location;
+            _mousePoint = e.Location;
         }
 
         void ControlOnMouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                MouseDown &= ~MouseButtons.Left;
-                MouseReleased |= MouseButtons.Left;
+                _mouseDown &= ~MouseButtons.Left;
+                _mouseReleased |= MouseButtons.Left;
             }
 
             if (e.Button == MouseButtons.Right)
             {
-                MouseDown &= ~MouseButtons.Right;
-                MouseReleased |= MouseButtons.Right;
+                _mouseDown &= ~MouseButtons.Right;
+                _mouseReleased |= MouseButtons.Right;
             }
         }
 
         void ControlOnMouseWheel(object sender, MouseEventArgs e)
         {
-            MouseWheelDelta = e.Delta;
+            _mouseWheelDelta = e.Delta;
         }
     }
 }

@@ -12,7 +12,7 @@
 #define Native static_cast<btRigidBody*>(_native)
 
 RigidBody::RigidBody(RigidBodyConstructionInfo^ info)
-: CollisionObject(new btRigidBody(*info->_native))
+: CollisionObject(ALIGNED_NEW(btRigidBody) (*info->_native))
 {
 	_motionState = info->_motionState;
 }

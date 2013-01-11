@@ -9,6 +9,9 @@ namespace DemoFramework
         {
             InitializeComponent();
 
+            AcceptButton = runButton;
+            CancelButton = cancelButton;
+
             string[] supportedLibraries = LibraryManager.GetSupportedLibraries();
             int selectLibrary = 0;
             foreach (string library in supportedLibraries)

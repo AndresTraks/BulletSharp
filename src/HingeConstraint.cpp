@@ -178,7 +178,7 @@ void HingeConstraint::SetMotorTarget(Quaternion qAinB, btScalar dt)
 {
 	btQuaternion* qAinBTemp = Math::QuaternionToBtQuat(qAinB);
 	UnmanagedPointer->setMotorTarget(*qAinBTemp, dt);
-	delete qAinBTemp;
+	ALIGNED_FREE(qAinBTemp);
 }
 
 void HingeConstraint::TestLimit(Matrix transA, Matrix transB)

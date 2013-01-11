@@ -52,7 +52,7 @@ void ConvexPlaneCollisionAlgorithm::CollideSingleContact(Quaternion perturbeRot,
 	btQuaternion* perturbeRotTemp = Math::QuaternionToBtQuat(perturbeRot);
 	UnmanagedPointer->collideSingleContact(*perturbeRotTemp, body0Wrap->_native, body1Wrap->_native,
 		*dispatchInfo->UnmanagedPointer, (btManifoldResult*)resultOut->_native);
-	delete perturbeRotTemp;
+	ALIGNED_FREE(perturbeRotTemp);
 }
 
 btConvexPlaneCollisionAlgorithm* ConvexPlaneCollisionAlgorithm::UnmanagedPointer::get()

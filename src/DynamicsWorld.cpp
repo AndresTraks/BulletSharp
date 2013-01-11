@@ -72,11 +72,8 @@ void DynamicsWorld::RemoveRigidBody(RigidBody^ rigidBody)
 void callback(btDynamicsWorld* world, btScalar timeStep)
 {
 	void* userInfo = world->getWorldUserInfo();
-	WeakReference^ worldWeakRef = static_cast<WeakReference^>(VoidPtrToGCHandle(userInfo).Target);
-	DynamicsWorld^ dynamicsWorld = static_cast<DynamicsWorld^>(worldWeakRef->Target);
-	if (dynamicsWorld != nullptr) {
-		dynamicsWorld->_callback(dynamicsWorld, timeStep);
-	}
+	DynamicsWorld^ dynamicsWorld = static_cast<DynamicsWorld^>(VoidPtrToGCHandle(userInfo).Target);
+	dynamicsWorld->_callback(dynamicsWorld, timeStep);
 }
 
 void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo, bool isPreTick)
@@ -87,7 +84,7 @@ void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ wo
 	void* nativeUserInfo = Native->getWorldUserInfo();
 	if (cb != nullptr) {
 		if (!nativeUserInfo) {
-			GCHandle handle = GCHandle::Alloc(gcnew WeakReference(this));
+			GCHandle handle = GCHandle::Alloc(this, GCHandleType::Weak);
 			nativeUserInfo = GCHandleToVoidPtr(handle);
 		}
 		Native->setInternalTickCallback(callback, nativeUserInfo, isPreTick);

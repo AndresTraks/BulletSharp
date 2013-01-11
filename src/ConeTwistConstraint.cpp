@@ -128,14 +128,14 @@ void ConeTwistConstraint::SetMotorTarget(Quaternion q)
 {
 	btQuaternion* qTemp = Math::QuaternionToBtQuat(q);
 	UnmanagedPointer->setMotorTarget(*qTemp);
-	delete qTemp;
+	ALIGNED_FREE(qTemp);
 }
 
 void ConeTwistConstraint::SetMotorTargetInConstraintSpace(Quaternion q)
 {
 	btQuaternion* qTemp = Math::QuaternionToBtQuat(q);
 	UnmanagedPointer->setMotorTargetInConstraintSpace(*qTemp);
-	delete qTemp;
+	ALIGNED_FREE(qTemp);
 }
 
 void ConeTwistConstraint::UpdateRHS(btScalar timeStep)

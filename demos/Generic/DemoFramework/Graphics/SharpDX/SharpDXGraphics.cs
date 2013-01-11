@@ -448,7 +448,7 @@ namespace DemoFramework.SharpDX
         {
             FreeLook freelook = Demo.Freelook;
             Vector3 up = MathHelper.Convert(freelook.Up);
-            sceneConstants.View = Matrix.LookAtLH(MathHelper.Convert(freelook.Eye), MathHelper.Convert(freelook.Target), MathHelper.Convert(freelook.Up));
+            sceneConstants.View = Matrix.LookAtLH(MathHelper.Convert(freelook.Eye), MathHelper.Convert(freelook.Target), up);
             sceneConstants.Projection = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, _nearPlane, FarPlane);
             sceneConstants.ViewInverse = Matrix.Invert(sceneConstants.View);
 

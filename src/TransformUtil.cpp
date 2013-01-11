@@ -31,8 +31,8 @@ void TransformUtil::CalculateDiffAxisAngleQuaternion(Quaternion orn0, Quaternion
 
 	btTransformUtil::calculateDiffAxisAngleQuaternion(*orn0Temp, *orn1aTemp, *axisTemp, angleTemp);
 
-	delete orn0Temp;
-	delete orn1aTemp;
+	ALIGNED_FREE(orn0Temp);
+	ALIGNED_FREE(orn1aTemp);
 
 	Math::BtVector3ToVector3(axisTemp, axis);
 	ALIGNED_FREE(axisTemp);
@@ -75,8 +75,8 @@ void TransformUtil::CalculateVelocityQuaternion (Vector3 pos0, Vector3 pos1, Qua
 
 	VECTOR3_DEL(pos0);
 	VECTOR3_DEL(pos1);
-	delete orn0Temp;
-	delete orn1Temp;
+	ALIGNED_FREE(orn0Temp);
+	ALIGNED_FREE(orn1Temp);
 
 	Math::BtVector3ToVector3(linVelTemp, linVel);
 	Math::BtVector3ToVector3(angVelTemp, angVel);

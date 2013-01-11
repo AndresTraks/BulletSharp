@@ -13,7 +13,13 @@ namespace DemoFramework
             get { return _graphics; }
             private set { _graphics = value; }
         }
-        public FreeLook Freelook { get; private set; }
+
+        FreeLook _freelook;
+        public FreeLook Freelook
+        {
+            get { return _freelook; }
+            private set { _freelook = value; }
+        }
 
         Input _input;
         public Input Input
@@ -204,7 +210,7 @@ namespace DemoFramework
 
             _world.StepSimulation(_frameDelta);
 
-            if (Freelook.Update(_frameDelta))
+            if (_freelook.Update(_frameDelta))
                 _graphics.UpdateView();
 
             _input.ClearKeyCache();
@@ -233,8 +239,7 @@ namespace DemoFramework
         {
             if (_input.KeysPressed.Count != 0)
             {
-                Keys key = _input.KeysPressed[0];
-                switch (key)
+                switch (_input.KeysPressed[0])
                 {
                     case Keys.Escape:
                     case Keys.Q:
@@ -255,7 +260,7 @@ namespace DemoFramework
                         //shadowsEnabled = !shadowsEnabled;
                         break;
                     case Keys.Space:
-                        ShootBox(Freelook.Eye, GetRayTo(_input.MousePoint, Freelook.Eye, Freelook.Target, Graphics.FieldOfView));
+                        ShootBox(_freelook.Eye, GetRayTo(_input.MousePoint, _freelook.Eye, _freelook.Target, Graphics.FieldOfView));
                         break;
                     case Keys.Return:
                         ClientResetScene();
@@ -265,13 +270,13 @@ namespace DemoFramework
 
             if (_input.MousePressed != MouseButtons.None)
             {
-                Vector3 rayTo = GetRayTo(_input.MousePoint, Freelook.Eye, Freelook.Target, Graphics.FieldOfView);
+                Vector3 rayTo = GetRayTo(_input.MousePoint, _freelook.Eye, _freelook.Target, Graphics.FieldOfView);
 
                 if (_input.MousePressed == MouseButtons.Right)
                 {
                     if (_world != null)
                     {
-                        Vector3 rayFrom = Freelook.Eye;
+                        Vector3 rayFrom = _freelook.Eye;
 
                         CollisionWorld.ClosestRayResultCallback rayCallback = new CollisionWorld.ClosestRayResultCallback(ref rayFrom, ref rayTo);
                         _world.RayTest(ref rayFrom, ref rayTo, rayCallback);
@@ -351,14 +356,14 @@ namespace DemoFramework
             {
                 if (pickConstraint != null)
                 {
-                    Vector3 newRayTo = GetRayTo(_input.MousePoint, Freelook.Eye, Freelook.Target, Graphics.FieldOfView);
+                    Vector3 newRayTo = GetRayTo(_input.MousePoint, _freelook.Eye, _freelook.Target, Graphics.FieldOfView);
 
                     if (pickConstraint.ConstraintType == TypedConstraintType.D6)
                     {
                         Generic6DofConstraint pickCon = pickConstraint as Generic6DofConstraint;
 
                         //keep it at the same picking distance
-                        Vector3 rayFrom = Freelook.Eye;
+                        Vector3 rayFrom = _freelook.Eye;
                         Vector3 dir = newRayTo - rayFrom;
                         dir.Normalize();
                         dir *= oldPickingDist;
@@ -375,7 +380,7 @@ namespace DemoFramework
                         Point2PointConstraint pickCon = pickConstraint as Point2PointConstraint;
 
                         //keep it at the same picking distance
-                        Vector3 rayFrom = Freelook.Eye;
+                        Vector3 rayFrom = _freelook.Eye;
                         Vector3 dir = newRayTo - rayFrom;
                         dir.Normalize();
                         dir *= oldPickingDist;
@@ -407,7 +412,7 @@ namespace DemoFramework
             const float farPlane = 10000.0f;
             rayForward *= farPlane;
 
-            Vector3 vertical = Freelook.Up;
+            Vector3 vertical = _freelook.Up;
 
             Vector3 hor = Vector3.Cross(rayForward, vertical);
             hor.Normalize();
