@@ -2,15 +2,22 @@
 
 #include "DefaultMotionState.h"
 
-DefaultMotionState::DefaultMotionState() : BulletSharp::MotionState(new btDefaultMotionState())
+DefaultMotionState::DefaultMotionState() : BulletSharp::MotionState(0)
 {
+#ifdef BT_USE_SSE_IN_API
+	btTransform* identityMatrix = Math::MatrixToBtTransform(Matrix_Identity); // default optional parameters are not aligned
+	_native = ALIGNED_NEW(btDefaultMotionState) (*identityMatrix, *identityMatrix);
+	ALIGNED_FREE(identityMatrix);
+#else
+	_native = ALIGNED_NEW(btDefaultMotionState) ();
+#endif
 }
 
 DefaultMotionState::DefaultMotionState(Matrix startTrans) : BulletSharp::MotionState(0)
 {
 	btTransform* startTransTemp = Math::MatrixToBtTransform(startTrans);
 #ifdef BT_USE_SSE_IN_API
-	btTransform* centerOfMassOffset = Math::MatrixToBtTransform(Matrix_Identity); // default optional parameter is not aligned
+	btTransform* centerOfMassOffset = Math::MatrixToBtTransform(Matrix_Identity); // default optional parameters are not aligned
 	_native = ALIGNED_NEW(btDefaultMotionState) (*startTransTemp, *centerOfMassOffset);
 	ALIGNED_FREE(centerOfMassOffset);
 #else

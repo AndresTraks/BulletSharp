@@ -10,10 +10,8 @@ namespace BulletSharp
 
 	public ref class CompoundShapeChild
 	{
-	private:
-		btCompoundShapeChild* _child;
-
 	internal:
+		btCompoundShapeChild* _native;
 		CompoundShapeChild(btCompoundShapeChild* compoundShapeChild);
 
 	public:
@@ -50,19 +48,15 @@ namespace BulletSharp
 			Matrix get();
 			void set(Matrix value);
 		}
-
-	internal:
-		property btCompoundShapeChild* UnmanagedPointer
-		{
-			btCompoundShapeChild* get();
-			void set(btCompoundShapeChild* value);
-		}
 	};
 
 	public ref class CompoundShape : CollisionShape
 	{
 	internal:
 		CompoundShape(btCompoundShape* compoundShape);
+
+	private:
+		CompoundShapeChildArray^ _childList;
 
 	public:
 		CompoundShape();

@@ -402,10 +402,10 @@ void RigidBody_GetOrientation(btRigidBody* body, btQuaternion* orientation)
 #pragma managed(pop)
 Quaternion RigidBody::Orientation::get()
 {
-	btQuaternion* orientationTemp = new btQuaternion;
+	btQuaternion* orientationTemp = ALIGNED_NEW(btQuaternion);
 	RigidBody_GetOrientation(Native, orientationTemp);
 	Quaternion orientation = Math::BtQuatToQuaternion(orientationTemp);
-	delete orientationTemp;
+	ALIGNED_FREE(orientationTemp);
 	return orientation;
 }
 

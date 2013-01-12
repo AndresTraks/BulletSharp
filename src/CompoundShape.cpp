@@ -8,70 +8,61 @@
 
 CompoundShapeChild::CompoundShapeChild(btCompoundShapeChild* compoundShapeChild)
 {
-	_child = compoundShapeChild;
+	_native = compoundShapeChild;
 }
 
 CompoundShapeChild::CompoundShapeChild()
 {
-	_child = new btCompoundShapeChild;
+	_native = new btCompoundShapeChild;
 }
 
 btScalar CompoundShapeChild::ChildMargin::get()
 {
-	return _child->m_childMargin;
+	return _native->m_childMargin;
 }
 void CompoundShapeChild::ChildMargin::set(btScalar value)
 {
-	_child->m_childMargin = value;
+	_native->m_childMargin = value;
 }
 
 CollisionShape^ CompoundShapeChild::ChildShape::get()
 {
-	return CollisionShape::GetManaged(_child->m_childShape);
+	return CollisionShape::GetManaged(_native->m_childShape);
 }
 void CompoundShapeChild::ChildShape::set(CollisionShape^ value)
 {
-	_child->m_childShape = value->_native;
+	_native->m_childShape = value->_native;
 }
 
 BroadphaseNativeType CompoundShapeChild::ChildShapeType::get()
 {
-	return (BroadphaseNativeType)_child->m_childShapeType;
+	return (BroadphaseNativeType)_native->m_childShapeType;
 }
 void CompoundShapeChild::ChildShapeType::set(BroadphaseNativeType value)
 {
-	_child->m_childShapeType = (int)value;
+	_native->m_childShapeType = (int)value;
 }
 
 #ifndef DISABLE_DBVT
 DbvtNode^ CompoundShapeChild::Node::get()
 {
-	if (_child->m_node == 0)
+	if (_native->m_node == 0)
 		return nullptr;
-	return gcnew DbvtNode(_child->m_node);
+	return gcnew DbvtNode(_native->m_node);
 }
 void CompoundShapeChild::Node::set(DbvtNode^ value)
 {
-	_child->m_node = GetUnmanagedNullable(value);
+	_native->m_node = GetUnmanagedNullable(value);
 }
 #endif
 
 Matrix CompoundShapeChild::Transform::get()
 {
-	return Math::BtTransformToMatrix(&_child->m_transform);
+	return Math::BtTransformToMatrix(&_native->m_transform);
 }
 void CompoundShapeChild::Transform::set(Matrix value)
 {
-	Math::MatrixToBtTransform(value, &_child->m_transform);
-}
-
-btCompoundShapeChild* CompoundShapeChild::UnmanagedPointer::get()
-{
-	return _child;
-}
-void CompoundShapeChild::UnmanagedPointer::set(btCompoundShapeChild* value)
-{
-	_child = value;
+	Math::MatrixToBtTransform(value, &_native->m_transform);
 }
 
 
@@ -157,10 +148,10 @@ void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransfor
 
 CompoundShapeChildArray^ CompoundShape::ChildList::get()
 {
-	btCompoundShapeChild* childList = Native->getChildList();
-	if (childList == 0)
-		return nullptr;
-	return gcnew CompoundShapeChildArray(childList, Native->getNumChildShapes());
+	if (_childList == nullptr) {
+		_childList = gcnew CompoundShapeChildArray(Native->getChildList(), Native->getNumChildShapes());
+	}
+	return _childList;
 }
 
 #ifndef DISABLE_DBVT

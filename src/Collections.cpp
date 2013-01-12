@@ -337,7 +337,7 @@ void CompoundShapeChildArray::default::set(int index, CompoundShapeChild^ value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
-	CompoundShapeChildArray_SetDefault(Native, index, value->UnmanagedPointer);
+	CompoundShapeChildArray_SetDefault(Native, index, value->_native);
 }
 
 
