@@ -332,7 +332,7 @@ void BulletSharp::Math::MatrixToBtTransform(Matrix matrix, btTransform* t)
 #else
 
 #ifdef GRAPHICS_NO_DIRECT_CAST
-	btScalar* m = (btScalar*)&t;
+	btScalar* m = (btScalar*)t;
 	m[0] = matrix.M11;
 	m[1] = matrix.M21;
 	m[2] = matrix.M31;
@@ -366,7 +366,7 @@ Matrix BulletSharp::Math::BtMatrix3x3ToMatrix(const btMatrix3x3* matrix)
 #else
 	Matrix t = gcnew Axiom::Math::Matrix4();
 #endif
-	btScalar* m = (btScalar*)&matrix;
+	btScalar* m = (btScalar*)matrix;
 	t->m00 = m[0];
 	t->m10 = m[4];
 	t->m20 = m[8];
@@ -387,7 +387,7 @@ Matrix BulletSharp::Math::BtMatrix3x3ToMatrix(const btMatrix3x3* matrix)
 
 	Matrix t = Matrix();
 #ifdef GRAPHICS_NO_DIRECT_CAST
-	btScalar* m = (btScalar*)&matrix;
+	btScalar* m = (btScalar*)matrix;
 	t.M11 = (float)m[0];
 	t.M21 = (float)m[1];
 	t.M31 = (float)m[2];
@@ -413,7 +413,7 @@ btMatrix3x3* BulletSharp::Math::MatrixToBtMatrix3x3(Matrix matrix)
 	btMatrix3x3* t = new btMatrix3x3;
 
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	btScalar* m = (btScalar*)&t;
+	btScalar* m = (btScalar*)t;
 	m[0] = matrix->m00;
 	m[1] = matrix->m01;
 	m[2] = matrix->m02;
@@ -426,7 +426,7 @@ btMatrix3x3* BulletSharp::Math::MatrixToBtMatrix3x3(Matrix matrix)
 #else
 
 #ifdef GRAPHICS_NO_DIRECT_CAST
-	btScalar* m = (btScalar*)&t;
+	btScalar* m = (btScalar*)t;
 	m[0] = matrix.M11;
 	m[1] = matrix.M21;
 	m[2] = matrix.M31;
@@ -448,7 +448,7 @@ btMatrix3x3* BulletSharp::Math::MatrixToBtMatrix3x3(Matrix matrix)
 void BulletSharp::Math::MatrixToBtMatrix3x3(Matrix matrix, btMatrix3x3* t)
 {
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	btScalar* m = (btScalar*)&t;
+	btScalar* m = (btScalar*)t;
 	m[0] = matrix->m00;
 	m[1] = matrix->m01;
 	m[2] = matrix->m02;
@@ -461,7 +461,7 @@ void BulletSharp::Math::MatrixToBtMatrix3x3(Matrix matrix, btMatrix3x3* t)
 #else
 
 #ifdef GRAPHICS_NO_DIRECT_CAST
-	btScalar* m = (btScalar*)&t;
+	btScalar* m = (btScalar*)t;
 	m[0] = matrix.M11;
 	m[1] = matrix.M21;
 	m[2] = matrix.M31;

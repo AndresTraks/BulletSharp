@@ -15,9 +15,6 @@ namespace BulletSharp
 	internal:
 		DebugDrawWrapper* _native;
 
-	private:
-		DebugDrawModes m_debugMode;
-
 	internal:
 		DebugDraw(DebugDrawWrapper* debugDraw);
 		static IDebugDraw^ GetManaged(btIDebugDraw* debugDraw);

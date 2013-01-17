@@ -18,15 +18,6 @@
 
 using namespace BulletSharp::SoftBody;
 
-#pragma managed(push, off)
-btSoftBodyWorldInfo* SoftBodyWorldInfo_New()
-{
-	btSoftBodyWorldInfo* info = new btSoftBodyWorldInfo();
-	memset(info, 0, sizeof(btSoftBodyWorldInfo));
-	return info;
-}
-#pragma managed(pop)
-
 SoftBodyWorldInfo::SoftBodyWorldInfo(btSoftBodyWorldInfo* info)
 {
 	_native = info;
@@ -34,7 +25,7 @@ SoftBodyWorldInfo::SoftBodyWorldInfo(btSoftBodyWorldInfo* info)
 
 SoftBodyWorldInfo::!SoftBodyWorldInfo()
 {
-	delete _native;
+	ALIGNED_FREE(_native);
 	_native = 0;
 }
 
@@ -45,7 +36,7 @@ SoftBodyWorldInfo::~SoftBodyWorldInfo()
 
 SoftBodyWorldInfo::SoftBodyWorldInfo()
 {
-	_native = SoftBodyWorldInfo_New();
+	_native = ALIGNED_NEW(btSoftBodyWorldInfo) ();
 }
 
 btScalar SoftBodyWorldInfo::AirDensity::get()
@@ -948,29 +939,37 @@ void Face::RestArea::set(btScalar value)
 }
 
 
-ImplicitFn::ImplicitFn()
+ImplicitFn::~ImplicitFn()
 {
-	_implicitFn = new ImplicitFnWrapper(this);
+	this->!ImplicitFn();
 }
 
-ImplicitFnWrapper* ImplicitFn::UnmanagedPointer::get()
+ImplicitFn::!ImplicitFn()
 {
-	return _implicitFn;
+	delete _native;
+	_native = NULL;
 }
-void ImplicitFn::UnmanagedPointer::set(ImplicitFnWrapper* value)
+
+ImplicitFn::ImplicitFn()
 {
-	_implicitFn = value;
+	_native = new ImplicitFnWrapper(this);
 }
 
 
 ImplicitFnWrapper::ImplicitFnWrapper(BulletSharp::SoftBody::ImplicitFn^ implicitFn)
 {
-	_implicitFn = implicitFn;
+	_implicitFn = GCHandle::Alloc(implicitFn);
+}
+
+ImplicitFnWrapper::~ImplicitFnWrapper()
+{
+	_implicitFn.Free();
+	//_implicitFn = 0;
 }
 
 btScalar ImplicitFnWrapper::Eval(const btVector3& x)
 {
-	return _implicitFn->Eval(Math::BtVector3ToVector3(&x));
+	return static_cast<BulletSharp::SoftBody::ImplicitFn^>(_implicitFn.Target)->Eval(Math::BtVector3ToVector3(&x));
 }
 
 
@@ -3146,7 +3145,7 @@ bool BulletSharp::SoftBody::SoftBody::RayTest(Vector3 rayFrom, Vector3 rayTo, SR
 
 void BulletSharp::SoftBody::SoftBody::Refine(ImplicitFn^ ifn, btScalar accurary, bool cut)
 {
-	Native->refine(ifn->UnmanagedPointer, accurary, cut);
+	Native->refine(ifn->_native, accurary, cut);
 }
 
 void BulletSharp::SoftBody::SoftBody::ReleaseCluster(int index)
@@ -3168,7 +3167,7 @@ void BulletSharp::SoftBody::SoftBody::Rotate(Quaternion rotation)
 {
 	btQuaternion* rotationTemp = Math::QuaternionToBtQuat(rotation);
 	Native->rotate(*rotationTemp);
-	delete rotationTemp;
+	ALIGNED_FREE(rotationTemp);
 }
 
 void BulletSharp::SoftBody::SoftBody::Scale(Vector3 scale)

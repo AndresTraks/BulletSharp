@@ -37,7 +37,7 @@ namespace BulletSharp
 		SimpleBroadphase(int maxProxies);
 		SimpleBroadphase();
 
-		bool AabbOverlap(SimpleBroadphaseProxy^ proxy0, SimpleBroadphaseProxy^ proxy1);
+		static bool AabbOverlap(SimpleBroadphaseProxy^ proxy0, SimpleBroadphaseProxy^ proxy1);
 		bool TestAabbOverlap(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1);
 	};
 };

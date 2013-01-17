@@ -20,6 +20,9 @@ namespace BulletSharp
 
 	public ref class InternalEdgeUtility sealed
 	{
+	private:
+		InternalEdgeUtility() {}
+
 	public:
 		static void GenerateInternalEdgeInfo(BvhTriangleMeshShape^ trimeshShape, TriangleInfoMap^ triangleInfoMap);
 		static void AdjustInternalEdgeContacts(ManifoldPoint^ cp, CollisionObjectWrapper^ trimeshColObj0Wrap, CollisionObjectWrapper^ otherColObj1Wrap,

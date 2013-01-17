@@ -4,98 +4,95 @@ using namespace System::Collections::Generic;
 
 namespace BulletSharp
 {
-	namespace Hacd
+	public ref class Hacd
 	{
-		public ref class Hacd
+	internal:
+		HACD::HACD* _native;
+
+	private:
+		HACD::Vec3<HACD::Real>* _points;
+		HACD::Vec3<long>* _triangles;
+
+	public:
+		Hacd();
+
+		bool Compute(bool fullCH, bool exportDistPoints);
+		bool Compute(bool fullCH);
+		bool Compute();
+		void DenormalizeData();
+		bool GetCH(int numCH, [Out] array<Vector3>^% points, [Out] array<long>^% triangles);
+		int GetNPointsCH(int numCH);
+		int GetNTrianglesCH(int numCH);
+		//LongArray GetPartition();
+		void NormalizeData();
+		bool Save(String^ fileName, bool uniColor, long numCluster);
+		bool Save(String^ fileName, bool uniColor);
+		void SetPoints(ICollection<Vector3>^ points);
+		void SetTriangles(ICollection<long>^ points);
+
+		property bool AddExtraDistPoints
 		{
-		internal:
-			HACD::HACD* _native;
+			bool get();
+			void set(bool value);
+		}
 
-		private:
-			HACD::Vec3<HACD::Real>* _points;
-			HACD::Vec3<long>* _triangles;
+		property bool AddFacesPoints
+		{
+			bool get();
+			void set(bool value);
+		}
 
-		public:
-			Hacd();
+		property bool AddNeighboursDistPoints
+		{
+			bool get();
+			void set(bool value);
+		}
 
-			bool Compute(bool fullCH, bool exportDistPoints);
-			bool Compute(bool fullCH);
-			bool Compute();
-			void DenormalizeData();
-			bool GetCH(int numCH, [Out] array<Vector3>^% points, [Out] array<long>^% triangles);
-			int GetNPointsCH(int numCH);
-			int GetNTrianglesCH(int numCH);
-			//LongArray GetPartition();
-			void NormalizeData();
-			bool Save(String^ fileName, bool uniColor, long numCluster);
-			bool Save(String^ fileName, bool uniColor);
-			void SetPoints(ICollection<Vector3>^ points);
-			void SetTriangles(ICollection<long>^ points);
+		property double CompacityWeight
+		{
+			double get();
+			void set(double value);
+		}
 
-			property bool AddExtraDistPoints
-			{
-				bool get();
-				void set(bool value);
-			}
+		property double Concavity
+		{
+			double get();
+			void set(double value);
+		}
 
-			property bool AddFacesPoints
-			{
-				bool get();
-				void set(bool value);
-			}
+		property double ConnectDist
+		{
+			double get();
+			void set(double value);
+		}
 
-			property bool AddNeighboursDistPoints
-			{
-				bool get();
-				void set(bool value);
-			}
+		property int NClusters
+		{
+			int get();
+			void set(int value);
+		}
 
-			property double CompacityWeight
-			{
-				double get();
-				void set(double value);
-			}
+		property int NPoints
+		{
+			int get();
+		}
 
-			property double Concavity
-			{
-				double get();
-				void set(double value);
-			}
+		property double ScaleFactor
+		{
+			double get();
+			void set(double value);
+		}
 
-			property double ConnectDist
-			{
-				double get();
-				void set(double value);
-			}
+		property int VerticesPerConvexHull
+		{
+			int get();
+			void set(int value);
+		}
 
-			property int NClusters
-			{
-				int get();
-				void set(int value);
-			}
-
-			property int NPoints
-			{
-				int get();
-			}
-
-			property double ScaleFactor
-			{
-				double get();
-				void set(double value);
-			}
-
-			property int VerticesPerConvexHull
-			{
-				int get();
-				void set(int value);
-			}
-
-			property double VolumeWeight
-			{
-				double get();
-				void set(double value);
-			}
-		};
+		property double VolumeWeight
+		{
+			double get();
+			void set(double value);
+		}
 	};
 };

@@ -4,8 +4,11 @@ namespace BulletSharp
 {
 	ref class AlignedVector3Array;
 
-	public ref class GeometryUtil
+	public ref class GeometryUtil sealed
 	{
+	private:
+		GeometryUtil() {}
+
 	public:
 		static void GetPlaneEquationsFromVertices(AlignedVector3Array^ vertices, [Out] AlignedVector3Array^% planeEquationsOut);
 		static void GetVerticesFromPlaneEquations(AlignedVector3Array^ planeEquations, [Out] AlignedVector3Array^% verticesOut);

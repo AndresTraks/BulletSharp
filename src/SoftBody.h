@@ -742,29 +742,28 @@ namespace BulletSharp
 
 		public ref class ImplicitFn abstract
 		{
-		private:
-			ImplicitFnWrapper* _implicitFn;
+		internal:
+			ImplicitFnWrapper* _native;
+
+		public:
+			!ImplicitFn();
+		protected:
+			~ImplicitFn();
 
 		public:
 			ImplicitFn();
 
 			virtual btScalar Eval(Vector3 x) = 0;
-
-		internal:
-			property ImplicitFnWrapper* UnmanagedPointer
-			{
-				ImplicitFnWrapper* get();
-				void set(ImplicitFnWrapper* value);
-			};
 		};
 
 		class ImplicitFnWrapper : public btSoftBody::ImplicitFn
 		{
-		private:
-			auto_gcroot<BulletSharp::SoftBody::ImplicitFn^> _implicitFn;
+		public:
+			GCHandle _implicitFn;
 
 		public:
 			ImplicitFnWrapper(BulletSharp::SoftBody::ImplicitFn^ implicitFn);
+			~ImplicitFnWrapper();
 
 			virtual btScalar Eval(const btVector3& x);
 		};

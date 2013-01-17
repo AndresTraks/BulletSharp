@@ -5,32 +5,32 @@
 #include "Hacd.h"
 #include "StringConv.h"
 
-Hacd::Hacd::Hacd()
+Hacd::Hacd()
 {
 	_native = new HACD::HACD();
 }
 
-bool Hacd::Hacd::Compute(bool fullCH, bool exportDistPoints)
+bool Hacd::Compute(bool fullCH, bool exportDistPoints)
 {
 	return _native->Compute(fullCH, exportDistPoints);
 }
 
-bool Hacd::Hacd::Compute(bool fullCH)
+bool Hacd::Compute(bool fullCH)
 {
 	return _native->Compute(fullCH);
 }
 
-bool Hacd::Hacd::Compute()
+bool Hacd::Compute()
 {
 	return _native->Compute();
 }
 
-void Hacd::Hacd::DenormalizeData()
+void Hacd::DenormalizeData()
 {
 	return _native->DenormalizeData();
 }
 
-bool Hacd::Hacd::GetCH(int numCH, [Out] array<Vector3>^% points, [Out] array<long>^% triangles)
+bool Hacd::GetCH(int numCH, [Out] array<Vector3>^% points, [Out] array<long>^% triangles)
 {
 	size_t nPoints = _native->GetNPointsCH(numCH);
 	size_t nTriangles = _native->GetNTrianglesCH(numCH);
@@ -69,22 +69,22 @@ bool Hacd::Hacd::GetCH(int numCH, [Out] array<Vector3>^% points, [Out] array<lon
 	return ret;
 }
 
-int Hacd::Hacd::GetNPointsCH(int numCH)
+int Hacd::GetNPointsCH(int numCH)
 {
 	return _native->GetNPointsCH(numCH);
 }
 
-int Hacd::Hacd::GetNTrianglesCH(int numCH)
+int Hacd::GetNTrianglesCH(int numCH)
 {
 	return _native->GetNTrianglesCH(numCH);
 }
 
-void Hacd::Hacd::NormalizeData()
+void Hacd::NormalizeData()
 {
 	return _native->NormalizeData();
 }
 
-bool Hacd::Hacd::Save(String^ fileName, bool uniColor, long numCluster)
+bool Hacd::Save(String^ fileName, bool uniColor, long numCluster)
 {
 	const char* fileNameTemp = StringConv::ManagedToUnmanaged(fileName);
 	bool ret = _native->Save(fileNameTemp, uniColor, numCluster);
@@ -92,7 +92,7 @@ bool Hacd::Hacd::Save(String^ fileName, bool uniColor, long numCluster)
 	return ret;
 }
 
-bool Hacd::Hacd::Save(String^ fileName, bool uniColor)
+bool Hacd::Save(String^ fileName, bool uniColor)
 {
 	const char* fileNameTemp = StringConv::ManagedToUnmanaged(fileName);
 	bool ret = _native->Save(fileNameTemp, uniColor);
@@ -100,7 +100,7 @@ bool Hacd::Hacd::Save(String^ fileName, bool uniColor)
 	return ret;
 }
 
-void Hacd::Hacd::SetPoints(ICollection<Vector3>^ points)
+void Hacd::SetPoints(ICollection<Vector3>^ points)
 {
 	int count = points->Count, i = 0;
 
@@ -121,7 +121,7 @@ void Hacd::Hacd::SetPoints(ICollection<Vector3>^ points)
 	_native->SetNPoints(count);
 }
 
-void Hacd::Hacd::SetTriangles(ICollection<long>^ triangles)
+void Hacd::SetTriangles(ICollection<long>^ triangles)
 {
 	int count = triangles->Count, i = 0;
 
@@ -141,97 +141,97 @@ void Hacd::Hacd::SetTriangles(ICollection<long>^ triangles)
 	_native->SetNTriangles(count / 3);
 }
 
-bool BulletSharp::Hacd::Hacd::AddExtraDistPoints::get()
+bool Hacd::AddExtraDistPoints::get()
 {
 	return _native->GetAddExtraDistPoints();
 }
-void BulletSharp::Hacd::Hacd::AddExtraDistPoints::set(bool value)
+void Hacd::AddExtraDistPoints::set(bool value)
 {
 	return _native->SetAddExtraDistPoints(value);
 }
 
-bool BulletSharp::Hacd::Hacd::AddFacesPoints::get()
+bool Hacd::AddFacesPoints::get()
 {
 	return _native->GetAddFacesPoints();
 }
-void BulletSharp::Hacd::Hacd::AddFacesPoints::set(bool value)
+void Hacd::AddFacesPoints::set(bool value)
 {
 	return _native->SetAddFacesPoints(value);
 }
 
-bool BulletSharp::Hacd::Hacd::AddNeighboursDistPoints::get()
+bool Hacd::AddNeighboursDistPoints::get()
 {
 	return _native->GetAddNeighboursDistPoints();
 }
-void BulletSharp::Hacd::Hacd::AddNeighboursDistPoints::set(bool value)
+void Hacd::AddNeighboursDistPoints::set(bool value)
 {
 	return _native->SetAddNeighboursDistPoints(value);
 }
 
-double BulletSharp::Hacd::Hacd::CompacityWeight::get()
+double Hacd::CompacityWeight::get()
 {
 	return _native->GetCompacityWeight();
 }
-void BulletSharp::Hacd::Hacd::CompacityWeight::set(double value)
+void Hacd::CompacityWeight::set(double value)
 {
 	return _native->SetCompacityWeight(value);
 }
 
-double BulletSharp::Hacd::Hacd::Concavity::get()
+double Hacd::Concavity::get()
 {
 	return _native->GetConcavity();
 }
-void BulletSharp::Hacd::Hacd::Concavity::set(double value)
+void Hacd::Concavity::set(double value)
 {
 	return _native->SetConcavity(value);
 }
 
-double BulletSharp::Hacd::Hacd::ConnectDist::get()
+double Hacd::ConnectDist::get()
 {
 	return _native->GetConnectDist();
 }
-void BulletSharp::Hacd::Hacd::ConnectDist::set(double value)
+void Hacd::ConnectDist::set(double value)
 {
 	return _native->SetConnectDist(value);
 }
 
-int BulletSharp::Hacd::Hacd::NClusters::get()
+int Hacd::NClusters::get()
 {
 	return _native->GetNClusters();
 }
-void BulletSharp::Hacd::Hacd::NClusters::set(int value)
+void Hacd::NClusters::set(int value)
 {
 	return _native->SetNClusters(value);
 }
 
-int BulletSharp::Hacd::Hacd::NPoints::get()
+int Hacd::NPoints::get()
 {
 	return _native->GetNPoints();
 }
 
-int BulletSharp::Hacd::Hacd::VerticesPerConvexHull::get()
+int Hacd::VerticesPerConvexHull::get()
 {
 	return _native->GetNVerticesPerCH();
 }
-void BulletSharp::Hacd::Hacd::VerticesPerConvexHull::set(int value)
+void Hacd::VerticesPerConvexHull::set(int value)
 {
 	return _native->SetNVerticesPerCH(value);
 }
 
-double BulletSharp::Hacd::Hacd::VolumeWeight::get()
+double Hacd::VolumeWeight::get()
 {
 	return _native->GetVolumeWeight();
 }
-void BulletSharp::Hacd::Hacd::VolumeWeight::set(double value)
+void Hacd::VolumeWeight::set(double value)
 {
 	return _native->SetVolumeWeight(value);
 }
 
-double BulletSharp::Hacd::Hacd::ScaleFactor::get()
+double Hacd::ScaleFactor::get()
 {
 	return _native->GetScaleFactor();
 }
-void BulletSharp::Hacd::Hacd::ScaleFactor::set(double value)
+void Hacd::ScaleFactor::set(double value)
 {
 	return _native->SetScaleFactor(value);
 }

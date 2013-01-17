@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using BulletSharp;
-using BulletSharp.Hacd;
 using DemoFramework;
 
 namespace ConvexDecompositionDemo

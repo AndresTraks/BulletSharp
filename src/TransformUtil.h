@@ -2,8 +2,11 @@
 
 namespace BulletSharp
 {
-	public ref class TransformUtil
+	public ref class TransformUtil sealed
 	{
+	private:
+		TransformUtil() {}
+
 	public:
 		static void CalculateDiffAxisAngle(Matrix transform0, Matrix transform1, [Out] Vector3% axis, [Out] btScalar% angle);
 		static void CalculateDiffAxisAngleQuaternion(Quaternion orn0, Quaternion orn1a, [Out] Vector3% axis, [Out] btScalar% angle);

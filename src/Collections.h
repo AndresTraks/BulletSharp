@@ -9,7 +9,7 @@ namespace BulletSharp
 	ref class DbvtNode;
 	ref class DbvtProxy;
 
-	ref class ListDebugView
+	public ref class ListDebugView
 	{
 	private:
 		IEnumerable^ _list;
@@ -24,7 +24,7 @@ namespace BulletSharp
 		}
 	};
 
-	ref class Vector3ListDebugView
+	public ref class Vector3ListDebugView
 	{
 	private:
 		Generic::IList<Vector3>^ _list;
