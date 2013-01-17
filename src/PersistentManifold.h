@@ -6,14 +6,20 @@ namespace BulletSharp
 {
 	ref class ManifoldPoint;
 	
-	public delegate bool ContactDestroyedEventHandler(Object^ userPersistantData);
-	public delegate bool ContactProcessedEventHandler(ManifoldPoint^ cp, CollisionObject^ body0, CollisionObject^ body1);
+#ifdef BT_CALLBACKS_ARE_EVENTS
+	public delegate void ContactDestroyedEventHandler(Object^ userPersistantData);
+	public delegate void ContactProcessedEventHandler(ManifoldPoint^ cp, CollisionObject^ body0, CollisionObject^ body1);
+#else
+	public delegate bool ContactDestroyed(Object^ userPersistantData);
+	public delegate bool ContactProcessed(ManifoldPoint^ cp, CollisionObject^ body0, CollisionObject^ body1);
+#endif
 
 	public ref class PersistentManifold : TypedObject
 	{
 	internal:
 		PersistentManifold(btPersistentManifold* manifold);
 
+#ifdef BT_CALLBACKS_ARE_EVENTS
 		static ContactDestroyedEventHandler^ _contactDestroyed;
 		static ContactProcessedEventHandler^ _contactProcessed;
 
@@ -28,6 +34,22 @@ namespace BulletSharp
 			void add(ContactProcessedEventHandler^ callback);
 			void remove(ContactProcessedEventHandler^ callback);
 		}
+#else
+		static ContactDestroyed^ _contactDestroyed;
+		static ContactProcessed^ _contactProcessed;
+
+		static property ContactDestroyed^ ContactDestroyed
+		{
+			::ContactDestroyed^ get();
+			void set(::ContactDestroyed^ value);
+		}
+
+		static property ContactProcessed^ ContactProcessed
+		{
+			::ContactProcessed^ get();
+			void set(::ContactProcessed^ value);
+		}
+#endif
 
 		PersistentManifold();
 		//PersistentManifold(Object^ body0, Object^ body1, int , btScalar contactBreakingThreshold, btScalar contactProcessingThreshold);

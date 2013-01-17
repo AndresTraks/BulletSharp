@@ -8,22 +8,33 @@ ManifoldPoint::ManifoldPoint(btManifoldPoint* point)
 	_native = point;
 }
 
+#ifdef BT_CALLBACKS_ARE_EVENTS
 bool onContactAdded(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap,
 	int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
 {
-	return ManifoldPoint::_contactAdded->Invoke(gcnew ManifoldPoint(&cp),
+	/*
+	ContactAddedEventArgs^ args = gcnew ContactAddedEventArgs();
+	args->ContactPoint = gcnew ManifoldPoint(&cp);
+	args->CollisionObject0Wrapper = gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap);
+	args->PartID0 = partId0;
+	args->Index0 = index0;
+	args->CollisionObject1Wrapper = gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj1Wrap);
+	args->PartID1 = partId1;
+	args->Index1 = index1;
+	ManifoldPoint::_contactAdded(nullptr, args);
+	return args->IsContactModified;
+	*/
+	ManifoldPoint::_contactAdded(gcnew ManifoldPoint(&cp),
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap), partId0, index0,
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj1Wrap), partId1, index1);
+	return false;
 }
 
 void ManifoldPoint::ContactAdded::add(ContactAddedEventHandler^ callback)
 {
-	if (!gContactAddedCallback) {
-		gContactAddedCallback = onContactAdded;
-	}
+	gContactAddedCallback = onContactAdded;
 	_contactAdded += callback;
 }
-
 void ManifoldPoint::ContactAdded::remove(ContactAddedEventHandler^ callback)
 {
 	_contactAdded -= callback;
@@ -32,6 +43,33 @@ void ManifoldPoint::ContactAdded::remove(ContactAddedEventHandler^ callback)
 		gContactAddedCallback = 0;
 	}
 }
+#else
+bool onContactAdded(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap,
+	int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
+{
+	return ManifoldPoint::_contactAdded(gcnew ManifoldPoint(&cp),
+		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap), partId0, index0,
+		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj1Wrap), partId1, index1);
+}
+
+ContactAdded^ ManifoldPoint::ContactAdded::get()
+{
+	return _contactAdded;
+}
+void ManifoldPoint::ContactAdded::set(::ContactAdded^ value)
+{
+	if (value != nullptr)
+	{
+		_contactAdded = value;
+		gContactAddedCallback = onContactAdded;
+	}
+	else
+	{
+		gContactAddedCallback = 0;
+		_contactAdded = nullptr;
+	}
+}
+#endif
 
 ManifoldPoint::ManifoldPoint()
 {

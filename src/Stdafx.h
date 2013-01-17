@@ -41,6 +41,11 @@
 //#define USE_NVIDIA_OPENCL
 
 
+// This makes ManifoldPoint.ContactAdded, PersistentManifold.ContactProcessed and PersistentManifold.ContactDestroyed
+// events instead of delegate properties
+#define BT_CALLBACKS_ARE_EVENTS
+
+
 #if GRAPHICS_XNA31
 #using <Microsoft.Xna.Framework.dll>
 using namespace Microsoft::Xna::Framework;

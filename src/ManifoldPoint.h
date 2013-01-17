@@ -7,26 +7,58 @@ namespace BulletSharp
 	ref class CollisionObjectWrapper;
 	ref class ManifoldPoint;
 
-	public delegate bool ContactAddedEventHandler(ManifoldPoint^ cp,
+#ifdef BT_CALLBACKS_ARE_EVENTS
+	/*
+	public ref class ContactAddedEventArgs : EventArgs
+	{
+	public:
+		property ManifoldPoint^ ContactPoint;
+		property CollisionObjectWrapper^ CollisionObject0Wrapper;
+		property int PartID0;
+		property int Index0;
+		property CollisionObjectWrapper^ CollisionObject1Wrapper;
+		property int PartID1;
+		property int Index1;
+		property bool IsContactModified;
+	};
+	public delegate void ContactAddedEventHandler(Object^ sender, ContactAddedEventArgs^ e);
+	*/
+
+	public delegate void ContactAddedEventHandler(ManifoldPoint^ cp,
 		CollisionObjectWrapper^ colObj0Wrap, int partId0, int index0,
 		CollisionObjectWrapper^ colObj1Wrap, int partId1, int index1);
+#else
+	public delegate bool ContactAdded(ManifoldPoint^ cp,
+		CollisionObjectWrapper^ colObj0Wrap, int partId0, int index0,
+		CollisionObjectWrapper^ colObj1Wrap, int partId1, int index1);
+#endif
 
 	public ref class ManifoldPoint
 	{
 	internal:
 		btManifoldPoint* _native;
-		static ContactAddedEventHandler^ _contactAdded;
-
 		ManifoldPoint(btManifoldPoint* point);
 
+#ifdef BT_CALLBACKS_ARE_EVENTS
+	internal:
+		static ContactAddedEventHandler^ _contactAdded;
 	public:
 		static event ContactAddedEventHandler^ ContactAdded
 		{
 			void add(ContactAddedEventHandler^ callback);
 			void remove(ContactAddedEventHandler^ callback);
 		}
-
+#else
+	internal:
+		static ContactAdded^ _contactAdded;
 	public:
+		static property ContactAdded^ ContactAdded
+		{
+			::ContactAdded^ get();
+			void set(::ContactAdded^ value);
+		}
+#endif
+
 		ManifoldPoint();
 		ManifoldPoint(Vector3 pointA, Vector3 pointB, Vector3 normal, btScalar distance);
 

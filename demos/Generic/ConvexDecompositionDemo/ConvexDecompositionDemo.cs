@@ -148,7 +148,7 @@ namespace ConvexDecompositionDemo
         }
 
         // MyContactCallback is just an example to show how to get access to the child shape that collided
-        bool MyContactCallback(ManifoldPoint cp, CollisionObjectWrapper colObj0Wrap, int partId0, int index0, CollisionObjectWrapper colObj1Wrap, int partId1, int index1)
+        void MyContactCallback(ManifoldPoint cp, CollisionObjectWrapper colObj0Wrap, int partId0, int index0, CollisionObjectWrapper colObj1Wrap, int partId1, int index1)
         {
             if (colObj0Wrap.CollisionObject.CollisionShape.ShapeType == BroadphaseNativeType.CompoundShape)
             {
@@ -161,9 +161,26 @@ namespace ConvexDecompositionDemo
                 CompoundShape compound = colObj1Wrap.CollisionObject.CollisionShape as CompoundShape;
                 CollisionShape childShape = compound.GetChildShape(index1);
             }
-
-            return true;
         }
+
+        /*
+        void MyContactCallback(object sender, ContactAddedEventArgs e)
+        {
+            if (e.CollisionObject0Wrapper.CollisionObject.CollisionShape.ShapeType == BroadphaseNativeType.CompoundShape)
+            {
+                CompoundShape compound = e.CollisionObject0Wrapper.CollisionObject.CollisionShape as CompoundShape;
+                CollisionShape childShape = compound.GetChildShape(e.Index0);
+            }
+
+            if (e.CollisionObject1Wrapper.CollisionObject.CollisionShape.ShapeType == BroadphaseNativeType.CompoundShape)
+            {
+                CompoundShape compound = e.CollisionObject1Wrapper.CollisionObject.CollisionShape as CompoundShape;
+                CollisionShape childShape = compound.GetChildShape(e.Index1);
+            }
+
+            e.IsContactModified = true;
+        }
+        */
 
         public void SetupEmptyDynamicsWorld()
         {
