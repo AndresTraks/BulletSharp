@@ -510,12 +510,12 @@
     <ClInclude Include="..\src\CompoundFromGImpact.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\IActionInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\VoronoiSimplexSolver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ActionInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ActivatingCollisionAlgorithm.cpp">
@@ -996,6 +996,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\CompoundFromGImpact.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\IActionInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

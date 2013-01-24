@@ -2,13 +2,15 @@
 
 #include "SequentialImpulseConstraintSolver.h"
 
+#define Native static_cast<btSequentialImpulseConstraintSolver*>(_native)
+
 SequentialImpulseConstraintSolver::SequentialImpulseConstraintSolver(btSequentialImpulseConstraintSolver* solver)
 : ConstraintSolver(solver)
 {
 }
 
 SequentialImpulseConstraintSolver::SequentialImpulseConstraintSolver()
-: ConstraintSolver(new btSequentialImpulseConstraintSolver())
+: ConstraintSolver(ALIGNED_NEW(btSequentialImpulseConstraintSolver) ())
 {
 }
 
@@ -16,27 +18,22 @@ SequentialImpulseConstraintSolver::SequentialImpulseConstraintSolver()
 
 unsigned long SequentialImpulseConstraintSolver::Rand2()
 {
-	return UnmanagedPointer->btRand2();
+	return Native->btRand2();
 }
 
 int SequentialImpulseConstraintSolver::RandInt2(int n)
 {
-	return UnmanagedPointer->btRandInt2(n);
+	return Native->btRandInt2(n);
 }
 
 unsigned long SequentialImpulseConstraintSolver::RandSeed::get()
 {
-	return UnmanagedPointer->getRandSeed();
+	return Native->getRandSeed();
 }
 
 void SequentialImpulseConstraintSolver::RandSeed::set(unsigned long value)
 {
-	UnmanagedPointer->setRandSeed(value);
-}
-
-btSequentialImpulseConstraintSolver* SequentialImpulseConstraintSolver::UnmanagedPointer::get()
-{
-	return (btSequentialImpulseConstraintSolver*)ConstraintSolver::UnmanagedPointer;
+	Native->setRandSeed(value);
 }
 
 #endif

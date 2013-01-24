@@ -1,15 +1,31 @@
 #pragma once
 
-#include "ActionInterface.h"
+#include "IActionInterface.h"
+#include "IDisposable.h"
 
 namespace BulletSharp
 {
-	public ref class CharacterControllerInterface : ActionInterface
+	public ref class CharacterControllerInterface : IActionInterface,  BulletSharp::IDisposable
 	{
+	public:
+		virtual event EventHandler^ OnDisposing;
+		virtual event EventHandler^ OnDisposed;
+
 	internal:
+		btCharacterControllerInterface* _native;
 		CharacterControllerInterface(btCharacterControllerInterface* controllerInterface);
 
 	public:
+		!CharacterControllerInterface();
+	protected:
+		~CharacterControllerInterface();
+
+	public:
+#ifndef DISABLE_DEBUGDRAW
+		virtual void DebugDraw(IDebugDraw^ debugDrawer);
+#endif
+		virtual void UpdateAction(CollisionWorld^ collisionWorld, btScalar deltaTimeStep);
+
 		void Jump();
 		void PlayerStep(CollisionWorld^ collisionWorld, btScalar dt);
 		void Reset();
@@ -20,6 +36,11 @@ namespace BulletSharp
 		property bool CanJump
 		{
 			bool get();
+		}
+
+		property bool IsDisposed
+		{
+			virtual bool get();
 		}
 
 		property bool OnGround

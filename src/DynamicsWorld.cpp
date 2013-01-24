@@ -1,12 +1,16 @@
 #include "StdAfx.h"
 
-#include "ActionInterface.h"
+#include "IActionInterface.h"
+#include "CharacterControllerInterface.h"
 #include "ConstraintSOlver.h"
 #include "ContactSolverInfo.h"
 #include "DynamicsWorld.h"
 #include "RigidBody.h"
 #ifndef DISABLE_CONSTRAINTS
 #include "TypedConstraint.h"
+#endif
+#ifndef DISABLE_VEHICLE
+#include "RaycastVehicle.h"
 #endif
 
 #define Native static_cast<btDynamicsWorld*>(_native)
@@ -16,9 +20,28 @@ DynamicsWorld::DynamicsWorld(btDynamicsWorld* world)
 {
 }
 
-void DynamicsWorld::AddAction(ActionInterface^ actionInterface)
+void DynamicsWorld::AddAction(IActionInterface^ actionInterface)
 {
-	Native->addAction(actionInterface->_native);
+	if (!_actions) {
+		_actions = gcnew System::Collections::Generic::List<IActionInterface^>();
+	}
+	_actions->Add(actionInterface);
+#ifndef DISABLE_VEHICLE
+	RaycastVehicle^ vehicle = dynamic_cast<RaycastVehicle^>(actionInterface);
+	if (vehicle) {
+		Native->addAction(vehicle->_native);
+		return;
+	}
+#endif
+	CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(actionInterface);
+	if (character) {
+		Native->addAction(character->_native);
+		return;
+	}
+	ActionInterfaceWrapper* wrapper = new ActionInterfaceWrapper(actionInterface, this);
+	ObjectTable::Add(actionInterface, wrapper);
+	Native->addAction(wrapper);
+	return;
 }
 
 void DynamicsWorld::AddRigidBody(RigidBody^ rigidBody, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
@@ -59,9 +82,31 @@ void DynamicsWorld::ClearForces()
 	Native->clearForces();
 }
 
-void DynamicsWorld::RemoveAction(ActionInterface^ actionInterface)
+void DynamicsWorld::RemoveAction(IActionInterface^ actionInterface)
 {
-	Native->removeAction(actionInterface->_native);
+	if (_actions) {
+		// No shapes have been added
+		return;
+	}
+
+	_actions->Remove(actionInterface);
+
+#ifndef DISABLE_VEHICLE
+	RaycastVehicle^ vehicle = dynamic_cast<RaycastVehicle^>(actionInterface);
+	if (vehicle) {
+		Native->removeAction(vehicle->_native);
+		return;
+	}
+#endif
+	CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(actionInterface);
+	if (character) {
+		Native->removeAction(character->_native);
+		return;
+	}
+	ActionInterfaceWrapper* wrapper = (ActionInterfaceWrapper*)ObjectTable::GetUnmanagedObject(actionInterface);
+	Native->removeAction(wrapper);
+	ObjectTable::Remove(wrapper);
+	delete wrapper;
 }
 
 void DynamicsWorld::RemoveRigidBody(RigidBody^ rigidBody)
@@ -133,7 +178,7 @@ ConstraintSolver^ DynamicsWorld::ConstraintSolver::get()
 }
 void DynamicsWorld::ConstraintSolver::set(BulletSharp::ConstraintSolver^ value)
 {
-	Native->setConstraintSolver(value->UnmanagedPointer);
+	Native->setConstraintSolver(value->_native);
 }
 
 int DynamicsWorld::NumConstraints::get()

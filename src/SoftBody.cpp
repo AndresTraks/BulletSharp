@@ -1241,7 +1241,7 @@ void BulletSharp::SoftBody::LJoint::Specs::Position::set(Vector3 value)
 
 BulletSharp::SoftBody::AJoint::IControl::IControl()
 {
-	_iControl = new AJointIControlWrapper(this);
+	_iControl = ALIGNED_NEW(AJointIControlWrapper) (this);
 }
 
 BulletSharp::SoftBody::AJoint::IControl::IControl(AJointIControlWrapper* iControl)
@@ -3413,11 +3413,12 @@ BulletSharp::SoftBody::AlignedRigidContactArray^ BulletSharp::SoftBody::SoftBody
 
 SoftBodySolver^ BulletSharp::SoftBody::SoftBody::SoftBodySolver::get()
 {
-	return gcnew BulletSharp::SoftBody::SoftBodySolver(Native->getSoftBodySolver());
+	btSoftBodySolver* solver = Native->getSoftBodySolver();
+	return solver ? gcnew BulletSharp::SoftBody::SoftBodySolver(solver) : nullptr;
 }
 void BulletSharp::SoftBody::SoftBody::SoftBodySolver::set(BulletSharp::SoftBody::SoftBodySolver^ value)
 {
-	Native->setSoftBodySolver(value->UnmanagedPointer);
+	Native->setSoftBodySolver(GetUnmanagedNullable(value));
 }
 
 BulletSharp::SoftBody::AlignedSoftContactArray^ BulletSharp::SoftBody::SoftBody::SoftContacts::get()

@@ -3,6 +3,7 @@
 #include "AlignedObjectArray.h"
 #include "BroadphaseInterface.h"
 #include "BroadphaseProxy.h"
+#include "CharacterControllerInterface.h"
 #include "CollisionConfiguration.h"
 #include "CollisionObject.h"
 #include "CollisionObjectWrapper.h"
@@ -11,11 +12,15 @@
 #include "ConvexShape.h"
 #include "DynamicsWorld.h"
 #include "Dispatcher.h"
+#include "IActionInterface.h"
 #include "ManifoldPoint.h"
 #include "OverlappingPairCache.h"
 #ifndef DISABLE_DEBUGDRAW
 #include "DebugDraw.h"
 #include "IDebugDraw.h"
+#endif
+#ifndef DISABLE_VEHICLE
+#include "RaycastVehicle.h"
 #endif
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
@@ -634,6 +639,28 @@ CollisionWorld::!CollisionWorld()
 		if (userObj != 0)
 		{
 			VoidPtrToGCHandle(userObj).Free();
+		}
+
+		// Delete ActionInterfaceWrappers
+		DynamicsWorld^ world = static_cast<DynamicsWorld^>(this);
+		if (world->_actions)
+		{
+			for each (IActionInterface^ action in world->_actions)
+			{
+#ifndef DISABLE_VEHICLE
+				RaycastVehicle^ vehicle = dynamic_cast<RaycastVehicle^>(action);
+				if (vehicle) {
+					continue;
+				}
+#endif
+				CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(action);
+				if (character) {
+					continue;
+				}
+				ActionInterfaceWrapper* wrapper = (ActionInterfaceWrapper*)ObjectTable::GetUnmanagedObject(action);
+				ObjectTable::Remove(wrapper);
+				delete wrapper;
+			}
 		}
 	}
 

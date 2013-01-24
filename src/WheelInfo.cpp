@@ -7,7 +7,7 @@
 
 WheelInfoConstructionInfo::!WheelInfoConstructionInfo()
 {
-	delete _native;
+	ALIGNED_FREE(_native);
 	_native = 0;
 }
 
@@ -18,7 +18,7 @@ WheelInfoConstructionInfo::~WheelInfoConstructionInfo()
 
 WheelInfoConstructionInfo::WheelInfoConstructionInfo()
 {
-	_native = new btWheelInfoConstructionInfo();
+	_native = ALIGNED_NEW(btWheelInfoConstructionInfo) ();
 }
 
 Vector3 WheelInfoConstructionInfo::ChassisConnectionCS::get()
@@ -93,20 +93,20 @@ void WheelInfoConstructionInfo::WheelAxleCS::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &_native->m_wheelAxleCS);
 }
 
-btScalar WheelInfoConstructionInfo::WheelDampingCompression::get()
+btScalar WheelInfoConstructionInfo::WheelsDampingCompression::get()
 {
 	return _native->m_wheelsDampingCompression;
 }
-void WheelInfoConstructionInfo::WheelDampingCompression::set(btScalar value)
+void WheelInfoConstructionInfo::WheelsDampingCompression::set(btScalar value)
 {
 	_native->m_wheelsDampingCompression = value;
 }
 
-btScalar WheelInfoConstructionInfo::WheelDampingRelaxation::get()
+btScalar WheelInfoConstructionInfo::WheelsDampingRelaxation::get()
 {
 	return _native->m_wheelsDampingRelaxation;
 }
-void WheelInfoConstructionInfo::WheelDampingRelaxation::set(btScalar value)
+void WheelInfoConstructionInfo::WheelsDampingRelaxation::set(btScalar value)
 {
 	_native->m_wheelsDampingRelaxation = value;
 }
@@ -130,95 +130,86 @@ void WheelInfoConstructionInfo::WheelRadius::set(btScalar value)
 }
 
 
-WheelInfo::RaycastInfo::RaycastInfo(btWheelInfo::RaycastInfo* info)
+RaycastInfo::RaycastInfo(btWheelInfo::RaycastInfo* info)
 {
-	_info = info;
+	_native = info;
 }
 
-WheelInfo::RaycastInfo::RaycastInfo()
+RaycastInfo::RaycastInfo()
 {
-	_info = new btWheelInfo::RaycastInfo();
+	_native = new btWheelInfo::RaycastInfo();
 }
 
-Vector3 WheelInfo::RaycastInfo::ContactNormalWS::get()
+Vector3 RaycastInfo::ContactNormalWS::get()
 {
-	return Math::BtVector3ToVector3(&_info->m_contactNormalWS);
+	return Math::BtVector3ToVector3(&_native->m_contactNormalWS);
 }
-void WheelInfo::RaycastInfo::ContactNormalWS::set(Vector3 value)
+void RaycastInfo::ContactNormalWS::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_info->m_contactNormalWS);
-}
-
-Vector3 WheelInfo::RaycastInfo::ContactPointWS::get()
-{
-	return Math::BtVector3ToVector3(&_info->m_contactPointWS);
-}
-void WheelInfo::RaycastInfo::ContactPointWS::set(Vector3 value)
-{
-	Math::Vector3ToBtVector3(value, &_info->m_contactPointWS);
+	Math::Vector3ToBtVector3(value, &_native->m_contactNormalWS);
 }
 
-Object^ WheelInfo::RaycastInfo::GroundObject::get()
+Vector3 RaycastInfo::ContactPointWS::get()
 {
-	return CollisionObject::GetManaged((btCollisionObject*)_info->m_groundObject);
+	return Math::BtVector3ToVector3(&_native->m_contactPointWS);
 }
-void WheelInfo::RaycastInfo::GroundObject::set(Object^ value)
+void RaycastInfo::ContactPointWS::set(Vector3 value)
 {
-	_info->m_groundObject = GetUnmanagedNullable(static_cast<RigidBody^>(value));
-}
-
-Vector3 WheelInfo::RaycastInfo::HardPointWS::get()
-{
-	return Math::BtVector3ToVector3(&_info->m_hardPointWS);
-}
-void WheelInfo::RaycastInfo::HardPointWS::set(Vector3 value)
-{
-	Math::Vector3ToBtVector3(value, &_info->m_hardPointWS);
+	Math::Vector3ToBtVector3(value, &_native->m_contactPointWS);
 }
 
-bool WheelInfo::RaycastInfo::IsInContact::get()
+Object^ RaycastInfo::GroundObject::get()
 {
-	return _info->m_isInContact;
+	return CollisionObject::GetManaged((btCollisionObject*)_native->m_groundObject);
 }
-void WheelInfo::RaycastInfo::IsInContact::set(bool value)
+void RaycastInfo::GroundObject::set(Object^ value)
 {
-	_info->m_isInContact = value;
-}
-
-btScalar WheelInfo::RaycastInfo::SuspensionLength::get()
-{
-	return _info->m_suspensionLength;
-}
-void WheelInfo::RaycastInfo::SuspensionLength::set(btScalar value)
-{
-	_info->m_suspensionLength = value;
+	_native->m_groundObject = GetUnmanagedNullable(static_cast<RigidBody^>(value));
 }
 
-Vector3 WheelInfo::RaycastInfo::WheelAxleWS::get()
+Vector3 RaycastInfo::HardPointWS::get()
 {
-	return Math::BtVector3ToVector3(&_info->m_wheelAxleWS);
+	return Math::BtVector3ToVector3(&_native->m_hardPointWS);
 }
-void WheelInfo::RaycastInfo::WheelAxleWS::set(Vector3 value)
+void RaycastInfo::HardPointWS::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_info->m_wheelAxleWS);
-}
-
-Vector3 WheelInfo::RaycastInfo::WheelDirectionWS::get()
-{
-	return Math::BtVector3ToVector3(&_info->m_wheelDirectionWS);
-}
-void WheelInfo::RaycastInfo::WheelDirectionWS::set(Vector3 value)
-{
-	Math::Vector3ToBtVector3(value, &_info->m_wheelDirectionWS);
+	Math::Vector3ToBtVector3(value, &_native->m_hardPointWS);
 }
 
-btWheelInfo::RaycastInfo* WheelInfo::RaycastInfo::UnmanagedPointer::get()
+bool RaycastInfo::IsInContact::get()
 {
-	return _info;
+	return _native->m_isInContact;
 }
-void WheelInfo::RaycastInfo::UnmanagedPointer::set(btWheelInfo::RaycastInfo* value)
+void RaycastInfo::IsInContact::set(bool value)
 {
-	_info = value;
+	_native->m_isInContact = value;
+}
+
+btScalar RaycastInfo::SuspensionLength::get()
+{
+	return _native->m_suspensionLength;
+}
+void RaycastInfo::SuspensionLength::set(btScalar value)
+{
+	_native->m_suspensionLength = value;
+}
+
+Vector3 RaycastInfo::WheelAxleWS::get()
+{
+	return Math::BtVector3ToVector3(&_native->m_wheelAxleWS);
+}
+void RaycastInfo::WheelAxleWS::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_native->m_wheelAxleWS);
+}
+
+Vector3 RaycastInfo::WheelDirectionWS::get()
+{
+	return Math::BtVector3ToVector3(&_native->m_wheelDirectionWS);
+}
+void RaycastInfo::WheelDirectionWS::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_native->m_wheelDirectionWS);
 }
 
 
@@ -229,12 +220,12 @@ WheelInfo::WheelInfo(btWheelInfo* wheelInfo)
 
 WheelInfo::WheelInfo(WheelInfoConstructionInfo^ ci)
 {
-	_native = new btWheelInfo(*ci->_native);
+	_native = ALIGNED_NEW(btWheelInfo) (*ci->_native);
 }
 
-void WheelInfo::UpdateWheel(RigidBody^ chassis, RaycastInfo^ raycastInfo)
+void WheelInfo::UpdateWheel(RigidBody^ chassis, ::RaycastInfo^ raycastInfo)
 {
-	_native->updateWheel(*(btRigidBody*)chassis->_native, *raycastInfo->UnmanagedPointer);
+	_native->updateWheel(*(btRigidBody*)chassis->_native, *raycastInfo->_native);
 }
 
 btScalar WheelInfo::Brake::get()
@@ -341,13 +332,16 @@ void WheelInfo_SetRaycastInfo(btWheelInfo* wheelInfo, btWheelInfo::RaycastInfo* 
 	wheelInfo->m_raycastInfo = *info;
 }
 #pragma managed(pop)
-WheelInfo::RaycastInfo^ WheelInfo::RaycastInfo_::get()
+RaycastInfo^ WheelInfo::RaycastInfo::get()
 {
-	return gcnew RaycastInfo(&_native->m_raycastInfo);
+	if (!_raycastInfo) {
+		_raycastInfo = gcnew ::RaycastInfo(&_native->m_raycastInfo);
+	}
+	return _raycastInfo;
 }
-void WheelInfo::RaycastInfo_::set(WheelInfo::RaycastInfo^ value)
+void WheelInfo::RaycastInfo::set(::RaycastInfo^ value)
 {
-	WheelInfo_SetRaycastInfo(_native, value->UnmanagedPointer);
+	WheelInfo_SetRaycastInfo(_native, value->_native);
 }
 
 btScalar WheelInfo::RollInfluence::get()
@@ -427,20 +421,20 @@ void WheelInfo::WheelAxleCS::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &_native->m_wheelAxleCS);
 }
 
-btScalar WheelInfo::WheelDampingCompression::get()
+btScalar WheelInfo::WheelsDampingCompression::get()
 {
 	return _native->m_wheelsDampingCompression;
 }
-void WheelInfo::WheelDampingCompression::set(btScalar value)
+void WheelInfo::WheelsDampingCompression::set(btScalar value)
 {
 	_native->m_wheelsDampingCompression = value;
 }
 
-btScalar WheelInfo::WheelDampingRelaxation::get()
+btScalar WheelInfo::WheelsDampingRelaxation::get()
 {
 	return _native->m_wheelsDampingRelaxation;
 }
-void WheelInfo::WheelDampingRelaxation::set(btScalar value)
+void WheelInfo::WheelsDampingRelaxation::set(btScalar value)
 {
 	_native->m_wheelsDampingRelaxation = value;
 }
@@ -454,20 +448,20 @@ void WheelInfo::WheelDirectionCS::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &_native->m_wheelDirectionCS);
 }
 
-btScalar WheelInfo::WheelRadius::get()
+btScalar WheelInfo::WheelsRadius::get()
 {
 	return _native->m_wheelsRadius;
 }
-void WheelInfo::WheelRadius::set(btScalar value)
+void WheelInfo::WheelsRadius::set(btScalar value)
 {
 	_native->m_wheelsRadius = value;
 }
 
-btScalar WheelInfo::WheelSuspensionForce::get()
+btScalar WheelInfo::WheelsSuspensionForce::get()
 {
 	return _native->m_wheelsSuspensionForce;
 }
-void WheelInfo::WheelSuspensionForce::set(btScalar value)
+void WheelInfo::WheelsSuspensionForce::set(btScalar value)
 {
 	_native->m_wheelsSuspensionForce = value;
 }

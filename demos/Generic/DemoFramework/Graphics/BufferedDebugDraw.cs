@@ -103,7 +103,7 @@ namespace DemoFramework
 
         public override void DrawTransform(ref Matrix transform, float orthoLen)
         {
-            Vector3 start = new Vector3(transform.M41, transform.M42, transform.M43);
+            Vector3 start = transform.Origin;
 
             lines.Add(new PositionColored(ref start, 0xff0000));
             lines.Add(new PositionColored(start + new Vector3(orthoLen, 0, 0), 0xff0000));

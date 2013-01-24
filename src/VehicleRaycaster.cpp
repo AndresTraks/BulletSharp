@@ -5,45 +5,47 @@
 #include "RigidBody.h"
 #include "VehicleRaycaster.h"
 
-VehicleRaycaster::VehicleRaycasterResult::VehicleRaycasterResult()
+VehicleRaycasterResult::VehicleRaycasterResult()
 {
-	_result = new btVehicleRaycaster::btVehicleRaycasterResult();
+	_native = ALIGNED_NEW(btVehicleRaycaster::btVehicleRaycasterResult) ();
 }
 
-btScalar VehicleRaycaster::VehicleRaycasterResult::DistFraction::get()
+VehicleRaycasterResult::~VehicleRaycasterResult()
 {
-	return _result->m_distFraction;
-}
-void VehicleRaycaster::VehicleRaycasterResult::DistFraction::set(btScalar value)
-{
-	_result->m_distFraction = value;
+	this->!VehicleRaycasterResult();
 }
 
-Vector3 VehicleRaycaster::VehicleRaycasterResult::HitNormalInWorld::get()
+VehicleRaycasterResult::!VehicleRaycasterResult()
 {
-	return Math::BtVector3ToVector3(&_result->m_hitNormalInWorld);
-}
-void VehicleRaycaster::VehicleRaycasterResult::HitNormalInWorld::set(Vector3 value)
-{
-	Math::Vector3ToBtVector3(value, &_result->m_hitNormalInWorld);
+	ALIGNED_FREE(_native);
+	_native = NULL;
 }
 
-Vector3 VehicleRaycaster::VehicleRaycasterResult::HitPointInWorld::get()
+btScalar VehicleRaycasterResult::DistFraction::get()
 {
-	return Math::BtVector3ToVector3(&_result->m_hitPointInWorld);
+	return _native->m_distFraction;
 }
-void VehicleRaycaster::VehicleRaycasterResult::HitPointInWorld::set(Vector3 value)
+void VehicleRaycasterResult::DistFraction::set(btScalar value)
 {
-	Math::Vector3ToBtVector3(value, &_result->m_hitPointInWorld);
+	_native->m_distFraction = value;
 }
 
-btVehicleRaycaster::btVehicleRaycasterResult* VehicleRaycaster::VehicleRaycasterResult::UnmanagedPointer::get()
+Vector3 VehicleRaycasterResult::HitNormalInWorld::get()
 {
-	return _result;
+	return Math::BtVector3ToVector3(&_native->m_hitNormalInWorld);
 }
-void VehicleRaycaster::VehicleRaycasterResult::UnmanagedPointer::set(btVehicleRaycaster::btVehicleRaycasterResult* value)
+void VehicleRaycasterResult::HitNormalInWorld::set(Vector3 value)
 {
-	_result = value;
+	Math::Vector3ToBtVector3(value, &_native->m_hitNormalInWorld);
+}
+
+Vector3 VehicleRaycasterResult::HitPointInWorld::get()
+{
+	return Math::BtVector3ToVector3(&_native->m_hitPointInWorld);
+}
+void VehicleRaycasterResult::HitPointInWorld::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_native->m_hitPointInWorld);
 }
 
 
@@ -57,7 +59,7 @@ Object^ VehicleRaycaster::CastRay(Vector3 from, Vector3 to, VehicleRaycasterResu
 	VECTOR3_DEF(from);
 	VECTOR3_DEF(to);
 
-	void* ret = _vehicleRaycaster->castRay(VECTOR3_USE(from), VECTOR3_USE(to), *result->UnmanagedPointer);
+	void* ret = _vehicleRaycaster->castRay(VECTOR3_USE(from), VECTOR3_USE(to), *result->_native);
 
 	VECTOR3_DEL(from);
 	VECTOR3_DEL(to);

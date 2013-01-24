@@ -139,6 +139,12 @@ namespace BulletSharp
 			void set( int column, Vector4 value );
 		}
 		
+		property Vector3 Origin
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
 		/// <summary>
 		/// Gets a <see cref="Matrix"/> that represents an identity matrix.
 		/// </summary>

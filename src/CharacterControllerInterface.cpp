@@ -4,58 +4,94 @@
 
 #include "CharacterControllerInterface.h"
 #include "CollisionWorld.h"
-
-#define Native (static_cast<btCharacterControllerInterface*>(_native))
+#ifndef DISABLE_DEBUGDRAW
+#include "DebugDraw.h"
+#endif
 
 CharacterControllerInterface::CharacterControllerInterface(btCharacterControllerInterface* controllerInterface)
-: ActionInterface(controllerInterface)
 {
+	_native = controllerInterface;
+}
+
+CharacterControllerInterface::~CharacterControllerInterface()
+{
+	this->!CharacterControllerInterface();
+}
+
+CharacterControllerInterface::!CharacterControllerInterface()
+{
+	if (this->IsDisposed)
+		return;
+
+	OnDisposing(this, nullptr);
+
+	delete _native;
+	_native = NULL;
+
+	OnDisposed(this, nullptr);
+}
+
+#ifndef DISABLE_DEBUGDRAW
+void CharacterControllerInterface::DebugDraw(IDebugDraw^ debugDrawer)
+{
+	_native->debugDraw(DebugDraw::GetUnmanaged(debugDrawer));
+}
+#endif
+
+void CharacterControllerInterface::UpdateAction(CollisionWorld^ collisionWorld, btScalar deltaTimeStep)
+{
+	_native->updateAction(collisionWorld->_native, deltaTimeStep);
 }
 
 void CharacterControllerInterface::PlayerStep(CollisionWorld^ collisionWorld, btScalar dt)
 {
-	Native->playerStep(collisionWorld->_native, dt);
+	_native->playerStep(collisionWorld->_native, dt);
 }
 
 void CharacterControllerInterface::Jump()
 {
-	Native->jump();
+	_native->jump();
 }
 
 void CharacterControllerInterface::Reset()
 {
-	Native->reset();
+	_native->reset();
 }
 
 void CharacterControllerInterface::SetVelocityForTimeInterval(Vector3 velocity, btScalar timeInterval)
 {
 	VECTOR3_DEF(velocity);
-	Native->setVelocityForTimeInterval(VECTOR3_USE(velocity), timeInterval);
+	_native->setVelocityForTimeInterval(VECTOR3_USE(velocity), timeInterval);
 	VECTOR3_DEL(velocity);
 }
 
 void CharacterControllerInterface::SetWalkDirection(Vector3 walkDirection)
 {
 	VECTOR3_DEF(walkDirection);
-	Native->setWalkDirection(VECTOR3_USE(walkDirection));
+	_native->setWalkDirection(VECTOR3_USE(walkDirection));
 	VECTOR3_DEL(walkDirection);
 }
 
 void CharacterControllerInterface::Warp(Vector3 origin)
 {
 	VECTOR3_DEF(origin);
-	Native->warp(VECTOR3_USE(origin));
+	_native->warp(VECTOR3_USE(origin));
 	VECTOR3_DEL(origin);
 }
 
 bool CharacterControllerInterface::CanJump::get()
 {
-	return Native->canJump();
+	return _native->canJump();
+}
+
+bool CharacterControllerInterface::IsDisposed::get()
+{
+	return ( _native == NULL );
 }
 
 bool CharacterControllerInterface::OnGround::get()
 {
-	return Native->onGround();
+	return _native->onGround();
 }
 
 #endif

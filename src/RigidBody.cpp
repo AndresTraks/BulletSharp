@@ -436,11 +436,13 @@ RigidBodyConstructionInfo::!RigidBodyConstructionInfo()
 	_native = NULL;
 }
 
+#ifndef BT_USE_SSE_IN_API
 btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfo(
 	btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape)
 {
 	return ALIGNED_NEW(btRigidBody::btRigidBodyConstructionInfo) (mass, motionState, collisionShape);
 }
+#endif
 
 btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfoLocalInertia(
 	btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape, btVector3* localInertia)
@@ -450,8 +452,15 @@ btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfo
 
 RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape)
 {
+#ifdef BT_USE_SSE_IN_API
+	btVector3* localInertia = ALIGNED_NEW(btVector3) (0,0,0); // default localInertia parameter is not aligned
+	_native = RigidBody_GetUnmanagedConstructionInfoLocalInertia(mass,
+		GetUnmanagedNullable(motionState), GetUnmanagedNullable(collisionShape), localInertia);
+	ALIGNED_FREE(localInertia);
+#else
 	_native = RigidBody_GetUnmanagedConstructionInfo(mass,
 		GetUnmanagedNullable(motionState), GetUnmanagedNullable(collisionShape));
+#endif
 	_motionState = motionState;
 }
 

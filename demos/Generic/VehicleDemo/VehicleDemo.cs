@@ -13,9 +13,9 @@ namespace VehicleDemo
         //bool UseTrimeshGround = false;
         //string heightfieldFile = "data/heightfield128x128.raw";
 
-        int rightIndex = 0;
-        int upIndex = 1;
-        int forwardIndex = 2;
+        const int rightIndex = 0;
+        const int upIndex = 1;
+        const int forwardIndex = 2;
         Vector3 wheelDirectionCS0 = new Vector3(0, -1, 0);
         Vector3 wheelAxleCS = new Vector3(-1, 0, 0);
 
@@ -28,24 +28,25 @@ namespace VehicleDemo
         float gEngineForce = 0.0f;
         float gBreakingForce = 0.0f;
 
-        float maxEngineForce = 2000.0f;//this should be engine/velocity dependent
-        float maxBreakingForce = 100.0f;
+        const float maxEngineForce = 2000.0f;//this should be engine/velocity dependent
+        const float maxBreakingForce = 100.0f;
 
         float gVehicleSteering = 0.0f;
-        float steeringIncrement = 1.0f;
-        float steeringClamp = 0.3f;
-        public float wheelRadius = 0.7f;
-        public float wheelWidth = 0.4f;
-        float wheelFriction = 1000;//BT_LARGE_FLOAT;
-        float suspensionStiffness = 20.0f;
-        float suspensionDamping = 2.3f;
-        float suspensionCompression = 4.4f;
-        float rollInfluence = 0.1f;//1.0f;
+        const float steeringIncrement = 1.0f;
+        const float steeringClamp = 0.3f;
+        public const float wheelRadius = 0.7f;
+        public const float wheelWidth = 0.4f;
+        const float wheelFriction = 1000;//BT_LARGE_FLOAT;
+        const float suspensionStiffness = 20.0f;
+        const float suspensionDamping = 2.3f;
+        const float suspensionCompression = 4.4f;
+        const float rollInfluence = 0.1f;//1.0f;
 
-        float suspensionRestLength = 0.6f;
-        float CUBE_HALF_EXTENTS = 1;
+        const float suspensionRestLength = 0.6f;
+        const float CUBE_HALF_EXTENTS = 1;
 
-        public RaycastVehicle vehicle;
+        //public RaycastVehicle vehicle;
+        public CustomVehicle vehicle;
 
         protected override void OnInitialize()
         {
@@ -285,7 +286,8 @@ namespace VehicleDemo
             // create vehicle
             RaycastVehicle.VehicleTuning tuning = new RaycastVehicle.VehicleTuning();
             VehicleRaycaster vehicleRayCaster = new DefaultVehicleRaycaster(World);
-            vehicle = new RaycastVehicle(tuning, carChassis, vehicleRayCaster);
+            //vehicle = new RaycastVehicle(tuning, carChassis, vehicleRayCaster);
+            vehicle = new CustomVehicle(tuning, carChassis, vehicleRayCaster);
 
             carChassis.ActivationState = ActivationState.DisableDeactivation;
             World.AddAction(vehicle);
@@ -298,7 +300,7 @@ namespace VehicleDemo
             vehicle.SetCoordinateSystem(rightIndex, upIndex, forwardIndex);
 
             Vector3 connectionPointCS0 = new Vector3(CUBE_HALF_EXTENTS - (0.3f * wheelWidth), connectionHeight, 2 * CUBE_HALF_EXTENTS - wheelRadius);
-            WheelInfo a = vehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, tuning, isFrontWheel);
+            vehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, tuning, isFrontWheel);
 
             connectionPointCS0 = new Vector3(-CUBE_HALF_EXTENTS + (0.3f * wheelWidth), connectionHeight, 2 * CUBE_HALF_EXTENTS - wheelRadius);
             vehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, tuning, isFrontWheel);
@@ -315,8 +317,8 @@ namespace VehicleDemo
             {
                 WheelInfo wheel = vehicle.GetWheelInfo(i);
                 wheel.SuspensionStiffness = suspensionStiffness;
-                wheel.WheelDampingRelaxation = suspensionDamping;
-                wheel.WheelDampingCompression = suspensionCompression;
+                wheel.WheelsDampingRelaxation = suspensionDamping;
+                wheel.WheelsDampingCompression = suspensionCompression;
                 wheel.FrictionSlip = wheelFriction;
                 wheel.RollInfluence = rollInfluence;
             }
@@ -329,9 +331,9 @@ namespace VehicleDemo
             gEngineForce *= (1.0f - FrameDelta);
 
             vehicle.ApplyEngineForce(gEngineForce, 2);
-            vehicle.SetBrake(gBreakingForce, 0);
+            vehicle.SetBrake(gBreakingForce, 2);
             vehicle.ApplyEngineForce(gEngineForce, 3);
-            vehicle.SetBrake(gBreakingForce, 1);
+            vehicle.SetBrake(gBreakingForce, 3);
 
             vehicle.SetSteeringValue(gVehicleSteering, 0);
             vehicle.SetSteeringValue(gVehicleSteering, 1);
@@ -341,7 +343,7 @@ namespace VehicleDemo
 
         public override void OnHandleInput()
         {
-            if (Input.KeysDown.Contains(Keys.Right))
+            if (Input.KeysDown.Contains(Keys.Left))
             {
                 gVehicleSteering += FrameDelta * steeringIncrement;
                 if (gVehicleSteering > steeringClamp)
@@ -352,7 +354,7 @@ namespace VehicleDemo
                 gVehicleSteering -= FrameDelta * steeringIncrement;
             }
 
-            if (Input.KeysDown.Contains(Keys.Left))
+            if (Input.KeysDown.Contains(Keys.Right))
             {
                 gVehicleSteering -= FrameDelta * steeringIncrement;
                 if (gVehicleSteering < -steeringClamp)

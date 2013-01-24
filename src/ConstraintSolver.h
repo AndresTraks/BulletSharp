@@ -47,13 +47,6 @@ namespace BulletSharp
 			IDebugDraw^ debugDrawer,
 #endif
 			StackAlloc^ stackAlloc, Dispatcher^ dispatcher);
-
-	internal:
-		property btConstraintSolver* UnmanagedPointer
-		{
-			virtual btConstraintSolver* get();
-			void set(btConstraintSolver* value);
-		}
 #endif
 	};
 };

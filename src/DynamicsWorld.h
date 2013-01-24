@@ -5,11 +5,11 @@
 
 namespace BulletSharp
 {
-	ref class ActionInterface;
 	ref class ConstraintSolver;
 	ref class ContactSolverInfo;
 	ref class RigidBody;
 	ref class TypedConstraint;
+	interface class IActionInterface;
 
 	public ref class DynamicsWorld : CollisionWorld
 	{
@@ -20,12 +20,12 @@ namespace BulletSharp
 		Object^ _userObject;
 	internal:
 		InternalTickCallback^ _callback;
+		System::Collections::Generic::List<IActionInterface^>^ _actions;
 
 		DynamicsWorld(btDynamicsWorld* world);
 
 	public:
-		void AddAction(ActionInterface^ actionInterface);
-
+		void AddAction(IActionInterface^ actionInterface);
 #ifndef DISABLE_CONSTRAINTS
 		void AddConstraint(TypedConstraint^ constraint,	bool disableCollisionsBetweenLinkedBodies);
 		void AddConstraint(TypedConstraint^ constraint);
@@ -35,7 +35,7 @@ namespace BulletSharp
 		void AddRigidBody(RigidBody^ rigidBody, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask);
 		void AddRigidBody(RigidBody^ rigidBody);
 		void ClearForces();
-		void RemoveAction(ActionInterface^ actionInterface);
+		void RemoveAction(IActionInterface^ actionInterface);
 		void RemoveRigidBody(RigidBody^ rigidBody);
 		void SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo, bool isPreTick);
 		void SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo);

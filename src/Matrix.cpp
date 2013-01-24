@@ -120,6 +120,18 @@ namespace BulletSharp
 		default[3, column] = value.W;
 	}
 
+	Vector3 Matrix::Origin::get()
+	{
+		return Vector3(M41, M42, M43);
+	}
+
+	void Matrix::Origin::set(Vector3 value)
+	{
+		M41 = value.X;
+		M42 = value.Y;
+		M43 = value.Z;
+	}
+
 	Matrix Matrix::Identity::get()
 	{
 		Matrix result;

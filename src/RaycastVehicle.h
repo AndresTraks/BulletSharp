@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ActionInterface.h"
+#include "IActionInterface.h"
 #include "VehicleRaycaster.h"
 
 namespace BulletSharp
@@ -11,7 +11,7 @@ namespace BulletSharp
 	ref class WheelInfo;
 	ref class AlignedWheelInfoArray;
 
-	public ref class RaycastVehicle : ActionInterface
+	public ref class RaycastVehicle : IActionInterface,  BulletSharp::IDisposable
 	{
 	public:
 		ref class VehicleTuning
@@ -66,11 +66,28 @@ namespace BulletSharp
 			}
 		};
 
+	public:
+		virtual event EventHandler^ OnDisposing;
+		virtual event EventHandler^ OnDisposed;
+
+	internal:
+		btRaycastVehicle* _native;
+
 	private:
 		RigidBody^ _chassisBody;
 
 	public:
+		!RaycastVehicle();
+	protected:
+		~RaycastVehicle();
+
+	public:
 		RaycastVehicle(VehicleTuning^ tuning, RigidBody^ chassis, VehicleRaycaster^ raycaster);
+
+#ifndef DISABLE_DEBUGDRAW
+		virtual void DebugDraw(IDebugDraw^ debugDrawer);
+#endif
+		virtual void UpdateAction(CollisionWorld^ collisionWorld, btScalar deltaTimeStep);
 
 		WheelInfo^ AddWheel(Vector3 connectionPointCS0, Vector3 wheelDirectionCS0, Vector3 wheelAxleCS,
 			btScalar suspensionRestLength, btScalar wheelRadius, VehicleTuning^ tuning,	bool isFrontWheel);
@@ -111,6 +128,11 @@ namespace BulletSharp
 		property Vector3 ForwardVector
 		{
 			Vector3 get();
+		}
+
+		property bool IsDisposed
+		{
+			virtual bool get();
 		}
 
 		property int NumWheels

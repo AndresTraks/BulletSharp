@@ -44,9 +44,9 @@ Vector4 BoxShape::GetPlaneEquation(int index)
 
 Vector3 BoxShape::HalfExtentsWithMargin::get()
 {
-	btVector3* extentsTemp = new btVector3(Native->getHalfExtentsWithMargin());
+	btVector3* extentsTemp = ALIGNED_NEW(btVector3) (Native->getHalfExtentsWithMargin());
 	Vector3 extents = Math::BtVector3ToVector3(extentsTemp);
-	delete extentsTemp;
+	ALIGNED_FREE(extentsTemp);
 	return extents;
 }
 

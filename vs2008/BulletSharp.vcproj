@@ -1962,15 +1962,15 @@
 					Name="Dynamics"
 					>
 					<File
-						RelativePath="..\src\ActionInterface.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\src\DiscreteDynamicsWorld.cpp"
 						>
 					</File>
 					<File
 						RelativePath="..\src\DynamicsWorld.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\IActionInterface.cpp"
 						>
 					</File>
 					<File
@@ -2612,15 +2612,15 @@
 					Name="Dynamics"
 					>
 					<File
-						RelativePath="..\src\ActionInterface.h"
-						>
-					</File>
-					<File
 						RelativePath="..\src\DiscreteDynamicsWorld.h"
 						>
 					</File>
 					<File
 						RelativePath="..\src\DynamicsWorld.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\IActionInterface.h"
 						>
 					</File>
 					<File

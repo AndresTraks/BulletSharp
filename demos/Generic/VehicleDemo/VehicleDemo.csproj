@@ -37,6 +37,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CustomVehicle.cs" />
     <Compile Include="VehicleDemo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +46,7 @@
       <HintPath>..\..\..\Release Generic\BulletSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>

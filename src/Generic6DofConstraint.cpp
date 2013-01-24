@@ -564,10 +564,18 @@ Matrix Generic6DofConstraint::FrameOffsetA::get()
 }
 void Generic6DofConstraint::FrameOffsetA::set(Matrix value)
 {
+#if defined(BT_USE_SIMD_VECTOR3) && defined(BT_USE_SSE_IN_API) && defined(BT_USE_SSE)
+	btScalar* m = (btScalar*)btAlignedAlloc(sizeof(btScalar) * 16, 16);
+	btTransform* a = Math::MatrixToBtTransform(value);
+	a->getOpenGLMatrix(m);
+	UnmanagedPointer->getFrameOffsetA().setFromOpenGLMatrix(m);
+	btAlignedFree(m);
+#else
 	btScalar m[16];
 	btTransform* a = Math::MatrixToBtTransform(value);
 	a->getOpenGLMatrix(m);
 	UnmanagedPointer->getFrameOffsetA().setFromOpenGLMatrix(m);
+#endif
 }
 
 Matrix Generic6DofConstraint::FrameOffsetB::get()

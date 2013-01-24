@@ -494,9 +494,6 @@
     <ClCompile Include="src\UniversalConstraint.cpp">
       <Filter>Source Files\Dynamics\ConstraintSolver</Filter>
     </ClCompile>
-    <ClCompile Include="src\ActionInterface.cpp">
-      <Filter>Source Files\Dynamics\Dynamics</Filter>
-    </ClCompile>
     <ClCompile Include="src\DiscreteDynamicsWorld.cpp">
       <Filter>Source Files\Dynamics\Dynamics</Filter>
     </ClCompile>
@@ -631,6 +628,9 @@
     </ClCompile>
     <ClCompile Include="src\CompoundFromGImpact.cpp">
       <Filter>Source Files\Collision\GImpact</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IActionInterface.cpp">
+      <Filter>Source Files\Dynamics\Dynamics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -945,9 +945,6 @@
     <ClInclude Include="src\VoronoiSimplexSolver.h">
       <Filter>Header Files\Collision\NarrowPhaseCollision</Filter>
     </ClInclude>
-    <ClInclude Include="src\ActionInterface.h">
-      <Filter>Header Files\Dynamics\Dynamics</Filter>
-    </ClInclude>
     <ClInclude Include="src\DiscreteDynamicsWorld.h">
       <Filter>Header Files\Dynamics\Dynamics</Filter>
     </ClInclude>
@@ -1133,6 +1130,9 @@
     </ClInclude>
     <ClInclude Include="src\CompoundFromGImpact.h">
       <Filter>Header Files\Collision\GImpact</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IActionInterface.h">
+      <Filter>Header Files\Dynamics\Dynamics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

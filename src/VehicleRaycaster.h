@@ -2,43 +2,40 @@
 
 namespace BulletSharp
 {
+	public ref class VehicleRaycasterResult : System::IDisposable
+	{
+	internal:
+		btVehicleRaycaster::btVehicleRaycasterResult* _native;
+
+	public:
+		!VehicleRaycasterResult();
+	protected:
+		~VehicleRaycasterResult();
+
+	public:
+		VehicleRaycasterResult();
+
+		property btScalar DistFraction
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property Vector3 HitNormalInWorld
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property Vector3 HitPointInWorld
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+	};
+
 	public ref class VehicleRaycaster abstract
 	{
-	public:
-		ref class VehicleRaycasterResult
-		{
-		private:
-			btVehicleRaycaster::btVehicleRaycasterResult* _result;
-
-		public:
-			VehicleRaycasterResult();
-
-			property btScalar DistFraction
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
-
-			property Vector3 HitNormalInWorld
-			{
-				Vector3 get();
-				void set(Vector3 value);
-			}
-
-			property Vector3 HitPointInWorld
-			{
-				Vector3 get();
-				void set(Vector3 value);
-			}
-
-		internal:
-			property btVehicleRaycaster::btVehicleRaycasterResult* UnmanagedPointer
-			{
-				virtual btVehicleRaycaster::btVehicleRaycasterResult* get();
-				void set(btVehicleRaycaster::btVehicleRaycasterResult* value);
-			}
-		};
-
 	private:
 		btVehicleRaycaster* _vehicleRaycaster;
 

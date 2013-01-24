@@ -843,6 +843,7 @@
     <ClCompile Include="src\CompoundFromGImpact.cpp" />
     <ClCompile Include="src\GearConstraint.cpp" />
     <ClCompile Include="src\Hacd.cpp" />
+    <ClCompile Include="src\IActionInterface.cpp" />
     <ClCompile Include="src\Math.cpp" />
     <ClCompile Include="src\ObjectTable.cpp" />
     <ClCompile Include="src\Stdafx.cpp">
@@ -978,7 +979,6 @@
     <ClCompile Include="src\Solve2LinearConstraint.cpp" />
     <ClCompile Include="src\TypedConstraint.cpp" />
     <ClCompile Include="src\UniversalConstraint.cpp" />
-    <ClCompile Include="src\ActionInterface.cpp" />
     <ClCompile Include="src\DiscreteDynamicsWorld.cpp" />
     <ClCompile Include="src\DynamicsWorld.cpp" />
     <ClCompile Include="src\RigidBody.cpp" />
@@ -1031,6 +1031,7 @@
     <ClInclude Include="src\Enums.h" />
     <ClInclude Include="src\GearConstraint.h" />
     <ClInclude Include="src\Hacd.h" />
+    <ClInclude Include="src\IActionInterface.h" />
     <ClInclude Include="src\IDisposable.h" />
     <ClInclude Include="src\Math.h" />
     <ClInclude Include="src\ObjectTable.h" />
@@ -1131,7 +1132,6 @@
     <ClInclude Include="src\PointCollector.h" />
     <ClInclude Include="src\SimplexSolverInterface.h" />
     <ClInclude Include="src\VoronoiSimplexSolver.h" />
-    <ClInclude Include="src\ActionInterface.h" />
     <ClInclude Include="src\DiscreteDynamicsWorld.h" />
     <ClInclude Include="src\DynamicsWorld.h" />
     <ClInclude Include="src\RigidBody.h" />

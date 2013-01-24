@@ -29,6 +29,7 @@ ConstraintSolver::!ConstraintSolver()
 	
 	OnDisposing(this, nullptr);
 	
+	ALIGNED_FREE(_native);
 	_native = NULL;
 	
 	OnDisposed(this, nullptr);
@@ -63,7 +64,7 @@ void ConstraintSolver::PrepareSolve(int numBodies, int numManifolds)
 
 void ConstraintSolver::Reset()
 {
-	UnmanagedPointer->reset();
+	_native->reset();
 }
 
 btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifold,
@@ -99,15 +100,6 @@ btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<Per
 	delete[] constraintsTemp;
 
 	return ret;
-}
-
-btConstraintSolver* ConstraintSolver::UnmanagedPointer::get()
-{
-	return _native;
-}
-void ConstraintSolver::UnmanagedPointer::set(btConstraintSolver* value)
-{
-	_native = value;
 }
 
 #endif
