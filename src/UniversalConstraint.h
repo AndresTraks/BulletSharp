@@ -44,11 +44,5 @@ namespace BulletSharp
 		{
 			Vector3 get();
 		}
-
-	internal:
-		property btUniversalConstraint* UnmanagedPointer
-		{
-			btUniversalConstraint* get() new;
-		}
 	};
 };

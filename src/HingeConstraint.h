@@ -104,11 +104,5 @@ namespace BulletSharp
 			bool get();
 			void set(bool value);
 		}
-
-	internal:
-		property btHingeConstraint* UnmanagedPointer
-		{
-			btHingeConstraint* get() new;
-		}
 	};
 };

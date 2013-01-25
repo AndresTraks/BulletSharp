@@ -99,10 +99,5 @@ namespace BulletSharp
 		{
 			btScalar get();
 		}
-
-		property btConeTwistConstraint* UnmanagedPointer
-		{
-			btConeTwistConstraint* get() new;
-		}
 	};
 };

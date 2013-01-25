@@ -193,17 +193,17 @@ Body::Body(btSoftBody::Body* body)
 
 Body::Body()
 {
-	_native = new btSoftBody::Body();
+	_native = ALIGNED_NEW(btSoftBody::Body) ();
 }
 
 Body::Body(Cluster^ p)
 {
-	_native = new btSoftBody::Body(p->_native);
+	_native = ALIGNED_NEW(btSoftBody::Body) (p->_native);
 }
 
 Body::Body(BulletSharp::CollisionObject^ colObj)
 {
-	_native = new btSoftBody::Body(GetUnmanagedNullable(colObj));
+	_native = ALIGNED_NEW(btSoftBody::Body) (GetUnmanagedNullable(colObj));
 }
 
 void Body::Activate()
@@ -352,7 +352,14 @@ void Body::Soft::set(Cluster^ value)
 
 Matrix Body::XForm::get()
 {
+	// Unaligned btTransform::getIdentity() in the inline xform() method causes problems.
+#ifdef BT_USE_SSE_IN_API
+	if(_native->m_collisionObject) return Math::BtTransformToMatrix(&_native->m_collisionObject->getWorldTransform());
+	if(_native->m_soft) return Math::BtTransformToMatrix(&_native->m_soft->m_framexform);
+	return Matrix_Identity;
+#else
 	return Math::BtTransformToMatrix(&_native->xform());
+#endif
 }
 
 

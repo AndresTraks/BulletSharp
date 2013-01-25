@@ -13,7 +13,7 @@ ContactConstraint::ContactConstraint(btContactConstraint* constraint)
 }
 
 ContactConstraint::ContactConstraint(PersistentManifold^ contactManifold, RigidBody^ rigidBodyA, RigidBody^ rigidBodyB)
-: TypedConstraint(new btContactConstraint(contactManifold->UnmanagedPointer, *rigidBodyA->UnmanagedPointer, *rigidBodyB->UnmanagedPointer))
+: TypedConstraint(new btContactConstraint(contactManifold->_native, *rigidBodyA->_native, *rigidBodyB->_native))
 {
 }
 

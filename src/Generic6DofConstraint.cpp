@@ -393,11 +393,8 @@ void TranslationalLimitMotor::UpperLimit::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &motor->m_upperLimit);
 }
 
-btTranslationalLimitMotor* TranslationalLimitMotor::UnmanagedPointer::get()
-{
-	return motor;
-}
 
+#define Native static_cast<btGeneric6DofConstraint*>(_native)
 
 Generic6DofConstraint::Generic6DofConstraint(btGeneric6DofConstraint* constraint)
 : TypedConstraint(constraint)
@@ -430,12 +427,12 @@ Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frame
 
 void Generic6DofConstraint::CalcAnchorPos()
 {
-	UnmanagedPointer->calcAnchorPos();
+	Native->calcAnchorPos();
 }
 
 void Generic6DofConstraint::CalculateTransforms()
 {
-	UnmanagedPointer->calculateTransforms();
+	Native->calculateTransforms();
 }
 
 void Generic6DofConstraint::CalculateTransforms(Matrix transA, Matrix transB)
@@ -443,7 +440,7 @@ void Generic6DofConstraint::CalculateTransforms(Matrix transA, Matrix transB)
 	btTransform* transATemp = Math::MatrixToBtTransform(transA);
 	btTransform* transBTemp = Math::MatrixToBtTransform(transB);
 
-	UnmanagedPointer->calculateTransforms(*transATemp, *transBTemp);
+	Native->calculateTransforms(*transATemp, *transBTemp);
 	
 	ALIGNED_FREE(transATemp);
 	ALIGNED_FREE(transBTemp);
@@ -451,7 +448,7 @@ void Generic6DofConstraint::CalculateTransforms(Matrix transA, Matrix transB)
 
 btScalar Generic6DofConstraint::GetAngle(int axis_index)
 {
-	return UnmanagedPointer->getAngle(axis_index);
+	return Native->getAngle(axis_index);
 }
 
 #pragma managed(push, off)
@@ -463,22 +460,22 @@ btVector3* Generic6DofConstraint_GetAxis(btGeneric6DofConstraint* constraint, in
 
 Vector3 Generic6DofConstraint::GetAxis(int axis_index)
 {
-	return Math::BtVector3ToVector3(Generic6DofConstraint_GetAxis(UnmanagedPointer, axis_index));
+	return Math::BtVector3ToVector3(Generic6DofConstraint_GetAxis(Native, axis_index));
 }
 
 btScalar Generic6DofConstraint::GetRelativePivotPosition(int axis_index)
 {
-	return UnmanagedPointer->getRelativePivotPosition(axis_index);
+	return Native->getRelativePivotPosition(axis_index);
 }
 
 RotationalLimitMotor^ Generic6DofConstraint::GetRotationalLimitMotor(int index)
 {
-	return gcnew RotationalLimitMotor(UnmanagedPointer->getRotationalLimitMotor(index));
+	return gcnew RotationalLimitMotor(Native->getRotationalLimitMotor(index));
 }
 
 bool Generic6DofConstraint::IsLimited(int limitIndex)
 {
-	return UnmanagedPointer->isLimited(limitIndex);
+	return Native->isLimited(limitIndex);
 }
 
 void Generic6DofConstraint::SetAxis(Vector3 axis1, Vector3 axis2)
@@ -486,7 +483,7 @@ void Generic6DofConstraint::SetAxis(Vector3 axis1, Vector3 axis2)
 	VECTOR3_DEF(axis1);
 	VECTOR3_DEF(axis2);
 
-	UnmanagedPointer->setAxis(VECTOR3_USE(axis1), VECTOR3_USE(axis2));
+	Native->setAxis(VECTOR3_USE(axis1), VECTOR3_USE(axis2));
 
 	VECTOR3_DEL(axis1);
 	VECTOR3_DEL(axis2);
@@ -497,7 +494,7 @@ void Generic6DofConstraint::SetFrames(Matrix frameA, Matrix frameB)
 	btTransform* frameATemp = Math::MatrixToBtTransform(frameA);
 	btTransform* frameBTemp = Math::MatrixToBtTransform(frameB);
 
-	UnmanagedPointer->setFrames(*frameATemp, *frameBTemp);
+	Native->setFrames(*frameATemp, *frameBTemp);
 
 	ALIGNED_FREE(frameBTemp);
 	ALIGNED_FREE(frameATemp);
@@ -505,23 +502,23 @@ void Generic6DofConstraint::SetFrames(Matrix frameA, Matrix frameB)
 
 void Generic6DofConstraint::SetLimit(int axis, btScalar lo, btScalar hi)
 {
-	UnmanagedPointer->setLimit(axis, lo, hi);
+	Native->setLimit(axis, lo, hi);
 }
 
 bool Generic6DofConstraint::TestAngularLimitMotor(int axis_index)
 {
-	return UnmanagedPointer->testAngularLimitMotor(axis_index);
+	return Native->testAngularLimitMotor(axis_index);
 }
 
 void Generic6DofConstraint::UpdateRHS(btScalar timeStep)
 {
-	UnmanagedPointer->updateRHS(timeStep);
+	Native->updateRHS(timeStep);
 }
 
 Vector3 Generic6DofConstraint::AngularLowerLimit::get()
 {
 	btVector3* limitTemp = new btVector3;
-	UnmanagedPointer->getAngularLowerLimit(*limitTemp);
+	Native->getAngularLowerLimit(*limitTemp);
 	Vector3 limit = Math::BtVector3ToVector3(limitTemp);
 	delete limitTemp;
 	return limit;
@@ -529,14 +526,14 @@ Vector3 Generic6DofConstraint::AngularLowerLimit::get()
 void Generic6DofConstraint::AngularLowerLimit::set(Vector3 value)
 {
 	VECTOR3_DEF(value);
-	UnmanagedPointer->setAngularLowerLimit(VECTOR3_USE(value));
+	Native->setAngularLowerLimit(VECTOR3_USE(value));
 	VECTOR3_DEL(value);
 }
 
 Vector3 Generic6DofConstraint::AngularUpperLimit::get()
 {
 	btVector3* limitTemp = new btVector3;
-	UnmanagedPointer->getAngularUpperLimit(*limitTemp);
+	Native->getAngularUpperLimit(*limitTemp);
 	Vector3 limit = Math::BtVector3ToVector3(limitTemp);
 	delete limitTemp;
 	return limit;
@@ -544,23 +541,23 @@ Vector3 Generic6DofConstraint::AngularUpperLimit::get()
 void Generic6DofConstraint::AngularUpperLimit::set(Vector3 value)
 {
 	VECTOR3_DEF(value);
-	UnmanagedPointer->setAngularUpperLimit(VECTOR3_USE(value));
+	Native->setAngularUpperLimit(VECTOR3_USE(value));
 	VECTOR3_DEL(value);
 }
 
 Matrix Generic6DofConstraint::CalculatedTransformA::get()
 {
-	return Math::BtTransformToMatrix(&UnmanagedPointer->getCalculatedTransformA());
+	return Math::BtTransformToMatrix(&Native->getCalculatedTransformA());
 }
 
 Matrix Generic6DofConstraint::CalculatedTransformB::get()
 {
-	return Math::BtTransformToMatrix(&UnmanagedPointer->getCalculatedTransformB());
+	return Math::BtTransformToMatrix(&Native->getCalculatedTransformB());
 }
 
 Matrix Generic6DofConstraint::FrameOffsetA::get()
 {
-	return Math::BtTransformToMatrix(&UnmanagedPointer->getFrameOffsetA());
+	return Math::BtTransformToMatrix(&Native->getFrameOffsetA());
 }
 void Generic6DofConstraint::FrameOffsetA::set(Matrix value)
 {
@@ -568,33 +565,33 @@ void Generic6DofConstraint::FrameOffsetA::set(Matrix value)
 	btScalar* m = (btScalar*)btAlignedAlloc(sizeof(btScalar) * 16, 16);
 	btTransform* a = Math::MatrixToBtTransform(value);
 	a->getOpenGLMatrix(m);
-	UnmanagedPointer->getFrameOffsetA().setFromOpenGLMatrix(m);
+	Native->getFrameOffsetA().setFromOpenGLMatrix(m);
 	btAlignedFree(m);
 #else
 	btScalar m[16];
 	btTransform* a = Math::MatrixToBtTransform(value);
 	a->getOpenGLMatrix(m);
-	UnmanagedPointer->getFrameOffsetA().setFromOpenGLMatrix(m);
+	Native->getFrameOffsetA().setFromOpenGLMatrix(m);
 #endif
 }
 
 Matrix Generic6DofConstraint::FrameOffsetB::get()
 {
-	return Math::BtTransformToMatrix(&UnmanagedPointer->getFrameOffsetB());
+	return Math::BtTransformToMatrix(&Native->getFrameOffsetB());
 }
 void Generic6DofConstraint::FrameOffsetB::set(Matrix value)
 {
 	btScalar m[16];
 	btTransform* a = Math::MatrixToBtTransform(value);
 	a->getOpenGLMatrix(m);
-	UnmanagedPointer->getFrameOffsetB().setFromOpenGLMatrix(m);
+	Native->getFrameOffsetB().setFromOpenGLMatrix(m);
 	ALIGNED_FREE(a);
 }
 
 Vector3 Generic6DofConstraint::LinearLowerLimit::get()
 {
 	btVector3* limitTemp = new btVector3;
-	UnmanagedPointer->getLinearLowerLimit(*limitTemp);
+	Native->getLinearLowerLimit(*limitTemp);
 	Vector3 limit = Math::BtVector3ToVector3(limitTemp);
 	delete limitTemp;
 	return limit;
@@ -602,14 +599,14 @@ Vector3 Generic6DofConstraint::LinearLowerLimit::get()
 void Generic6DofConstraint::LinearLowerLimit::set(Vector3 linearLower)
 {
 	VECTOR3_DEF(linearLower);
-	UnmanagedPointer->setLinearLowerLimit(VECTOR3_USE(linearLower));
+	Native->setLinearLowerLimit(VECTOR3_USE(linearLower));
 	VECTOR3_DEL(linearLower);
 }
 
 Vector3 Generic6DofConstraint::LinearUpperLimit::get()
 {
 	btVector3* limitTemp = new btVector3;
-	UnmanagedPointer->getLinearUpperLimit(*limitTemp);
+	Native->getLinearUpperLimit(*limitTemp);
 	Vector3 limit = Math::BtVector3ToVector3(limitTemp);
 	delete limitTemp;
 	return limit;
@@ -617,27 +614,22 @@ Vector3 Generic6DofConstraint::LinearUpperLimit::get()
 void Generic6DofConstraint::LinearUpperLimit::set(Vector3 linearUpper)
 {
 	VECTOR3_DEF(linearUpper);
-	UnmanagedPointer->setLinearUpperLimit(VECTOR3_USE(linearUpper));
+	Native->setLinearUpperLimit(VECTOR3_USE(linearUpper));
 	VECTOR3_DEL(linearUpper);
 }
 
 BulletSharp::TranslationalLimitMotor^ Generic6DofConstraint::TranslationalLimitMotor::get()
 {
-	return gcnew BulletSharp::TranslationalLimitMotor(UnmanagedPointer->getTranslationalLimitMotor());
+	return gcnew BulletSharp::TranslationalLimitMotor(Native->getTranslationalLimitMotor());
 }
 
 bool Generic6DofConstraint::UseFrameOffset::get()
 {
-	return UnmanagedPointer->getUseFrameOffset();
+	return Native->getUseFrameOffset();
 }
 void Generic6DofConstraint::UseFrameOffset::set(bool value)
 {
-	UnmanagedPointer->setUseFrameOffset(value);
-}
-
-btGeneric6DofConstraint* Generic6DofConstraint::UnmanagedPointer::get()
-{
-	return (btGeneric6DofConstraint*)TypedConstraint::UnmanagedPointer;
+	Native->setUseFrameOffset(value);
 }
 
 #endif

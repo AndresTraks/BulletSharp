@@ -42,11 +42,5 @@ namespace BulletSharp
 		{
 			Vector3 get();
 		}
-
-	internal:
-		property btHinge2Constraint* UnmanagedPointer
-		{
-			btHinge2Constraint* get() new;
-		}
 	};
 };

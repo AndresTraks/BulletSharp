@@ -8,10 +8,8 @@ namespace BulletSharp
 
 	public ref class ConstraintSetting
 	{
-	private:
-		btConstraintSetting* _setting;
-
 	internal:
+		btConstraintSetting* _native;
 		ConstraintSetting(btConstraintSetting* setting);
 
 	public:
@@ -33,13 +31,6 @@ namespace BulletSharp
 		{
 			btScalar get();
 			void set(btScalar value);
-		}
-
-	internal:
-		property btConstraintSetting* UnmanagedPointer
-		{
-			virtual btConstraintSetting* get();
-			void set(btConstraintSetting* value);
 		}
 	};
 
@@ -74,12 +65,6 @@ namespace BulletSharp
 		{
 			ConstraintSetting^ get();
 			void set(ConstraintSetting^ value);
-		}
-
-	internal:
-		property btPoint2PointConstraint* UnmanagedPointer
-		{
-			btPoint2PointConstraint* get() new;
 		}
 	};
 };

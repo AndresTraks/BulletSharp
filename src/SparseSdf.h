@@ -10,7 +10,7 @@ namespace BulletSharp
 	public ref class SparseSdf
 	{
 	internal:
-		btSparseSdf<3>* _sdf;
+		btSparseSdf<3>* _native;
 		SparseSdf(btSparseSdf<3>* sdf);
 
 	public:
@@ -20,12 +20,5 @@ namespace BulletSharp
 		void Initialize();
 		int RemoveReferences(CollisionShape^ pcs);
 		void Reset();
-
-	internal:
-		property btSparseSdf<3>* UnmanagedPointer
-		{
-			btSparseSdf<3>* get();
-			void set(btSparseSdf<3>* value);
-		};
 	};
 };

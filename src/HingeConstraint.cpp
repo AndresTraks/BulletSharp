@@ -5,6 +5,8 @@
 #include "HingeConstraint.h"
 #include "RigidBody.h"
 
+#define Native static_cast<btHingeConstraint*>(_native)
+
 HingeConstraint::HingeConstraint(btHingeConstraint* constraint)
 : TypedConstraint(constraint)
 {
@@ -121,7 +123,7 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame)
 void HingeConstraint::EnableAngularMotor(bool enableMotor,
 	btScalar targetVelocity, btScalar maxMotorImpulse)
 {
-	UnmanagedPointer->enableAngularMotor(enableMotor, targetVelocity, maxMotorImpulse);
+	Native->enableAngularMotor(enableMotor, targetVelocity, maxMotorImpulse);
 }
 
 btScalar HingeConstraint::GetHingeAngle(Matrix transA, Matrix transB)
@@ -129,7 +131,7 @@ btScalar HingeConstraint::GetHingeAngle(Matrix transA, Matrix transB)
 	btTransform* transATemp = Math::MatrixToBtTransform(transA);
 	btTransform* transBTemp = Math::MatrixToBtTransform(transB);
 
-	btScalar angle = UnmanagedPointer->getHingeAngle(*transATemp, *transBTemp);
+	btScalar angle = Native->getHingeAngle(*transATemp, *transBTemp);
 
 	ALIGNED_FREE(transATemp);
 	ALIGNED_FREE(transBTemp);
@@ -139,45 +141,45 @@ btScalar HingeConstraint::GetHingeAngle(Matrix transA, Matrix transB)
 
 btScalar HingeConstraint::GetHingeAngle()
 {
-	return UnmanagedPointer->getHingeAngle();
+	return Native->getHingeAngle();
 }
 
 void HingeConstraint::SetAxis(Vector3 axisInA)
 {
 	VECTOR3_DEF(axisInA);
-	UnmanagedPointer->setAxis(VECTOR3_USE(axisInA));
+	Native->setAxis(VECTOR3_USE(axisInA));
 	VECTOR3_DEL(axisInA);
 }
 
 void HingeConstraint::SetLimit(btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor, btScalar _relaxationFactor)
 {
-	UnmanagedPointer->setLimit(low, high, _softness, _biasFactor, _relaxationFactor);
+	Native->setLimit(low, high, _softness, _biasFactor, _relaxationFactor);
 }
 
 void HingeConstraint::SetLimit(btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor)
 {
-	UnmanagedPointer->setLimit(low, high, _softness, _biasFactor);
+	Native->setLimit(low, high, _softness, _biasFactor);
 }
 
 void HingeConstraint::SetLimit(btScalar low, btScalar high, btScalar _softness)
 {
-	UnmanagedPointer->setLimit(low, high, _softness);
+	Native->setLimit(low, high, _softness);
 }
 
 void HingeConstraint::SetLimit(btScalar low, btScalar high)
 {
-	UnmanagedPointer->setLimit(low, high);
+	Native->setLimit(low, high);
 }
 
 void HingeConstraint::SetMotorTarget(btScalar targetAngle, btScalar dt)
 {
-	UnmanagedPointer->setMotorTarget(targetAngle, dt);
+	Native->setMotorTarget(targetAngle, dt);
 }
 
 void HingeConstraint::SetMotorTarget(Quaternion qAinB, btScalar dt)
 {
 	btQuaternion* qAinBTemp = Math::QuaternionToBtQuat(qAinB);
-	UnmanagedPointer->setMotorTarget(*qAinBTemp, dt);
+	Native->setMotorTarget(*qAinBTemp, dt);
 	ALIGNED_FREE(qAinBTemp);
 }
 
@@ -186,7 +188,7 @@ void HingeConstraint::TestLimit(Matrix transA, Matrix transB)
 	btTransform* transATemp = Math::MatrixToBtTransform(transA);
 	btTransform* transBTemp = Math::MatrixToBtTransform(transB);
 
-	UnmanagedPointer->testLimit(*transATemp, *transBTemp);
+	Native->testLimit(*transATemp, *transBTemp);
 
 	ALIGNED_FREE(transATemp);
 	ALIGNED_FREE(transBTemp);
@@ -194,94 +196,89 @@ void HingeConstraint::TestLimit(Matrix transA, Matrix transB)
 
 void HingeConstraint::UpdateRHS(btScalar timeStep)
 {
-	UnmanagedPointer->updateRHS(timeStep);
+	Native->updateRHS(timeStep);
 }
 
 Matrix HingeConstraint::AFrame::get()
 {
-	return Math::BtTransformToMatrix(&UnmanagedPointer->getAFrame());
+	return Math::BtTransformToMatrix(&Native->getAFrame());
 }
 
 bool HingeConstraint::AngularOnly::get()
 {
-	return UnmanagedPointer->getAngularOnly();
+	return Native->getAngularOnly();
 }
 void HingeConstraint::AngularOnly::set(bool value)
 {
-	UnmanagedPointer->setAngularOnly(value);
+	Native->setAngularOnly(value);
 }
 
 Matrix HingeConstraint::BFrame::get()
 {
-	return Math::BtTransformToMatrix(&UnmanagedPointer->getAFrame());
+	return Math::BtTransformToMatrix(&Native->getAFrame());
 }
 
 bool HingeConstraint::EnableMotor::get()
 {
-	return UnmanagedPointer->getEnableAngularMotor();
+	return Native->getEnableAngularMotor();
 }
 void HingeConstraint::EnableMotor::set(bool value)
 {
-	UnmanagedPointer->enableMotor(value);
+	Native->enableMotor(value);
 }
 
 Matrix HingeConstraint::FrameOffsetA::get()
 {
-	return Math::BtTransformToMatrix(&UnmanagedPointer->getFrameOffsetA());
+	return Math::BtTransformToMatrix(&Native->getFrameOffsetA());
 }
 
 Matrix HingeConstraint::FrameOffsetB::get()
 {
-	return Math::BtTransformToMatrix(&UnmanagedPointer->getFrameOffsetB());
+	return Math::BtTransformToMatrix(&Native->getFrameOffsetB());
 }
 
 btScalar HingeConstraint::LimitSign::get()
 {
-	return UnmanagedPointer->getLimitSign();
+	return Native->getLimitSign();
 }
 
 btScalar HingeConstraint::UpperLimit::get()
 {
-	return UnmanagedPointer->getUpperLimit();
+	return Native->getUpperLimit();
 }
 
 btScalar HingeConstraint::LowerLimit::get()
 {
-	return UnmanagedPointer->getLowerLimit();
+	return Native->getLowerLimit();
 }
 
 btScalar HingeConstraint::MaxMotorImpulse::get()
 {
-	return UnmanagedPointer->getMaxMotorImpulse();
+	return Native->getMaxMotorImpulse();
 }
 void HingeConstraint::MaxMotorImpulse::set(btScalar value)
 {
-	UnmanagedPointer->setMaxMotorImpulse(value);
+	Native->setMaxMotorImpulse(value);
 }
 
 btScalar HingeConstraint::MotorTargetVelocity::get()
 {
-	//return UnmanagedPointer->getMotorTargetVelocity();
-	return UnmanagedPointer->getMotorTargetVelosity();
+	//return Native->getMotorTargetVelocity();
+	return Native->getMotorTargetVelosity();
 }
 
 int HingeConstraint::SolveLimit::get()
 {
-	return UnmanagedPointer->getSolveLimit();
+	return Native->getSolveLimit();
 }
 
 bool HingeConstraint::UseFrameOffset::get()
 {
-	return UnmanagedPointer->getUseFrameOffset();
+	return Native->getUseFrameOffset();
 }
 void HingeConstraint::UseFrameOffset::set(bool value)
 {
-	UnmanagedPointer->setUseFrameOffset(value);
-}
-
-btHingeConstraint* HingeConstraint::UnmanagedPointer::get()
-{
-	return (btHingeConstraint*)TypedConstraint::UnmanagedPointer;
+	Native->setUseFrameOffset(value);
 }
 
 #endif

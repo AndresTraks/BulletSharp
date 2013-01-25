@@ -19,11 +19,5 @@ namespace BulletSharp
 		void SetEquilibriumPoint(int index);
 		void SetEquilibriumPoint();
 		void SetStiffness(int index, btScalar stiffness);
-
-	internal:
-		property btGeneric6DofSpringConstraint* UnmanagedPointer
-		{
-			btGeneric6DofSpringConstraint* get() new;
-		}
 	};
 };

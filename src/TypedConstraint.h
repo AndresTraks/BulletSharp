@@ -53,12 +53,12 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposed;
 
 	private:
-		btTypedConstraint* _typedConstraint;
 		bool _doesNotOwnObject;
 		Object^ _userObject;
 		JointFeedback^ _jointFeedback;
 
 	internal:
+		btTypedConstraint* _native;
 		TypedConstraint(btTypedConstraint* typedConstraint, bool doesNotOwnObject);
 		TypedConstraint(btTypedConstraint* typedConstraint);
 
@@ -167,7 +167,7 @@ namespace BulletSharp
 	internal:
 		property btTypedConstraint* UnmanagedPointer
 		{
-			virtual btTypedConstraint* get();
+			btTypedConstraint* get();
 			void set(btTypedConstraint* value);
 		}
 	};
@@ -181,13 +181,6 @@ namespace BulletSharp
 
 	public:
 		AngularLimit();
-
-	internal:
-		property btAngularLimit* UnmanagedPointer
-		{
-			virtual btAngularLimit* get();
-			void set(btAngularLimit* value);
-		}
 	};
 #endif
 #endif

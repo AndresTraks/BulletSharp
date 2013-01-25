@@ -7,49 +7,37 @@
 
 SparseSdf::SparseSdf(btSparseSdf<3>* sdf)
 {
-	_sdf = sdf;
+	_native = sdf;
 }
 
 void SparseSdf::GarbageCollect(int lifetime)
 {
-	_sdf->GarbageCollect(lifetime);
+	_native->GarbageCollect(lifetime);
 }
 
 void SparseSdf::GarbageCollect()
 {
-	_sdf->GarbageCollect();
+	_native->GarbageCollect();
 }
 
 void SparseSdf::Initialize(int hashSize)
 {
-	_sdf->Initialize(hashSize);
+	_native->Initialize(hashSize);
 }
 
 void SparseSdf::Initialize()
 {
-	_sdf->Initialize();
+	_native->Initialize();
 }
 
 int SparseSdf::RemoveReferences(CollisionShape^ pcs)
 {
-	if (pcs == nullptr)
-		return _sdf->RemoveReferences(0);
-	else
-		return _sdf->RemoveReferences(pcs->UnmanagedPointer);
+	return _native->RemoveReferences(GetUnmanagedNullable(pcs));
 }
 
 void SparseSdf::Reset()
 {
-	_sdf->Reset();
-}
-
-btSparseSdf<3>* SparseSdf::UnmanagedPointer::get()
-{
-	return _sdf;
-}
-void SparseSdf::UnmanagedPointer::set(btSparseSdf<3>* value)
-{
-	_sdf = value;
+	_native->Reset();
 }
 
 #endif

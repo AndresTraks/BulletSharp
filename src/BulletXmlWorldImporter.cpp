@@ -648,86 +648,87 @@ btTriangleInfoMap* Serialize::BulletXmlWorldImporterWrapper::createTriangleInfoM
 btPoint2PointConstraint* Serialize::BulletXmlWorldImporterWrapper::createPoint2PointConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
 	const btVector3& pivotInA, const btVector3& pivotInB)
 {
-	return _importer->CreatePoint2PointConstraint(
+	return (btPoint2PointConstraint*)_importer->CreatePoint2PointConstraint(
 		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), (RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
-		Math::BtVector3ToVector3(&pivotInA), Math::BtVector3ToVector3(&pivotInB))->UnmanagedPointer;
+		Math::BtVector3ToVector3(&pivotInA), Math::BtVector3ToVector3(&pivotInB))->_native;
 }
 
 btPoint2PointConstraint* Serialize::BulletXmlWorldImporterWrapper::createPoint2PointConstraint(btRigidBody& rigidBodyA, const btVector3& pivotInA)
 {
-	return _importer->CreatePoint2PointConstraint((RigidBody^)CollisionObject::GetManaged(&rigidBodyA), Math::BtVector3ToVector3(&pivotInA))->UnmanagedPointer;
+	return (btPoint2PointConstraint*)_importer->CreatePoint2PointConstraint(
+		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), Math::BtVector3ToVector3(&pivotInA))->_native;
 }
 
 btHingeConstraint* Serialize::BulletXmlWorldImporterWrapper::createHingeConstraint(btRigidBody& rigidBodyA,btRigidBody& rigidBodyB,
 	const btTransform& rigidBodyAFrame, const btTransform& rigidBodyBFrame, bool useReferenceFrameA)
 {
-	return _importer->CreateHingeConstraint(
+	return (btHingeConstraint*)_importer->CreateHingeConstraint(
 		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), (RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
-		Math::BtTransformToMatrix(&rigidBodyAFrame), Math::BtTransformToMatrix(&rigidBodyBFrame), useReferenceFrameA)->UnmanagedPointer;
+		Math::BtTransformToMatrix(&rigidBodyAFrame), Math::BtTransformToMatrix(&rigidBodyBFrame), useReferenceFrameA)->_native;
 }
 
 btHingeConstraint* Serialize::BulletXmlWorldImporterWrapper::createHingeConstraint(btRigidBody& rigidBodyA,btRigidBody& rigidBodyB,
 	const btTransform& rigidBodyAFrame, const btTransform& rigidBodyBFrame)
 {
-	return _importer->CreateHingeConstraint(
+	return (btHingeConstraint*)_importer->CreateHingeConstraint(
 		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), (RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
-		Math::BtTransformToMatrix(&rigidBodyAFrame), Math::BtTransformToMatrix(&rigidBodyBFrame))->UnmanagedPointer;
+		Math::BtTransformToMatrix(&rigidBodyAFrame), Math::BtTransformToMatrix(&rigidBodyBFrame))->_native;
 }
 
 btHingeConstraint* Serialize::BulletXmlWorldImporterWrapper::createHingeConstraint(btRigidBody& rigidBodyA, const btTransform& rigidBodyAFrame, bool useReferenceFrameA)
 {
-	return _importer->CreateHingeConstraint(
-		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), Math::BtTransformToMatrix(&rigidBodyAFrame), useReferenceFrameA)->UnmanagedPointer;
+	return (btHingeConstraint*)_importer->CreateHingeConstraint(
+		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), Math::BtTransformToMatrix(&rigidBodyAFrame), useReferenceFrameA)->_native;
 }
 
 btHingeConstraint* Serialize::BulletXmlWorldImporterWrapper::createHingeConstraint(btRigidBody& rigidBodyA, const btTransform& rigidBodyAFrame)
 {
-	return _importer->CreateHingeConstraint(
-		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), Math::BtTransformToMatrix(&rigidBodyAFrame))->UnmanagedPointer;
+	return (btHingeConstraint*)_importer->CreateHingeConstraint(
+		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), Math::BtTransformToMatrix(&rigidBodyAFrame))->_native;
 }
 
 btConeTwistConstraint* Serialize::BulletXmlWorldImporterWrapper::createConeTwistConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
 	const btTransform& rigidBodyAFrame, const btTransform& rigidBodyBFrame)
 {
-	return _importer->CreateConeTwistConstraint(
+	return (btConeTwistConstraint*)_importer->CreateConeTwistConstraint(
 		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), (RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
-		Math::BtTransformToMatrix(&rigidBodyAFrame), Math::BtTransformToMatrix(&rigidBodyBFrame))->UnmanagedPointer;
+		Math::BtTransformToMatrix(&rigidBodyAFrame), Math::BtTransformToMatrix(&rigidBodyBFrame))->_native;
 }
 
 btConeTwistConstraint* Serialize::BulletXmlWorldImporterWrapper::createConeTwistConstraint(btRigidBody& rigidBodyA, const btTransform& rigidBodyAFrame)
 {
-	return _importer->CreateConeTwistConstraint(
-		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), Math::BtTransformToMatrix(&rigidBodyAFrame))->UnmanagedPointer;
+	return (btConeTwistConstraint*)_importer->CreateConeTwistConstraint(
+		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), Math::BtTransformToMatrix(&rigidBodyAFrame))->_native;
 }
 
 btGeneric6DofConstraint* Serialize::BulletXmlWorldImporterWrapper::createGeneric6DofConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
 	const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA)
 {
-	return _importer->CreateGeneric6DofConstraint(
+	return (btGeneric6DofConstraint*)_importer->CreateGeneric6DofConstraint(
 		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), (RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
-		Math::BtTransformToMatrix(&frameInA), Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameA)->UnmanagedPointer;
+		Math::BtTransformToMatrix(&frameInA), Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameA)->_native;
 }
 
 btGeneric6DofConstraint* Serialize::BulletXmlWorldImporterWrapper::createGeneric6DofConstraint(btRigidBody& rigidBodyB,
 	const btTransform& frameInB, bool useLinearReferenceFrameB)
 {
-	return _importer->CreateGeneric6DofConstraint((RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
-		Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameB)->UnmanagedPointer;
+	return (btGeneric6DofConstraint*)_importer->CreateGeneric6DofConstraint((RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
+		Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameB)->_native;
 }
 
 btSliderConstraint* Serialize::BulletXmlWorldImporterWrapper::createSliderConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
 	const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA)
 {
-	return _importer->CreateSliderConstraint(
+	return (btSliderConstraint*)_importer->CreateSliderConstraint(
 		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), (RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
-		Math::BtTransformToMatrix(&frameInA), Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameA)->UnmanagedPointer;
+		Math::BtTransformToMatrix(&frameInA), Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameA)->_native;
 }
 
 btSliderConstraint* Serialize::BulletXmlWorldImporterWrapper::createSliderConstraint(btRigidBody& rigidBodyB,
 	const btTransform& frameInB, bool useLinearReferenceFrameA)
 {
-	return _importer->CreateSliderConstraint(
-		(RigidBody^)CollisionObject::GetManaged(&rigidBodyB), Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameA)->UnmanagedPointer;
+	return (btSliderConstraint*)_importer->CreateSliderConstraint(
+		(RigidBody^)CollisionObject::GetManaged(&rigidBodyB), Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameA)->_native;
 }
 
 #endif

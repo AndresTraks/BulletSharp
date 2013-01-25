@@ -243,12 +243,6 @@ namespace BulletSharp
 			Vector3 get();
 			void set(Vector3 value);
 		}
-
-	internal:
-		property btTranslationalLimitMotor* UnmanagedPointer
-		{
-			btTranslationalLimitMotor* get();
-		}
 	};
 
 	public ref class Generic6DofConstraint : TypedConstraint
@@ -331,12 +325,6 @@ namespace BulletSharp
 		{
 			bool get();
 			void set(bool value);
-		}
-
-	internal:
-		property btGeneric6DofConstraint* UnmanagedPointer
-		{
-			btGeneric6DofConstraint* get() new;
 		}
 	};
 };

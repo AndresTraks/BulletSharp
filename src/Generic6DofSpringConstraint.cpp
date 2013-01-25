@@ -5,6 +5,8 @@
 #include "Generic6DofSpringConstraint.h"
 #include "RigidBody.h"
 
+#define Native static_cast<btGeneric6DofSpringConstraint*>(_native)
+
 Generic6DofSpringConstraint::Generic6DofSpringConstraint(btGeneric6DofSpringConstraint* constraint)
 : Generic6DofConstraint(constraint)
 {
@@ -27,37 +29,32 @@ Generic6DofSpringConstraint::Generic6DofSpringConstraint(RigidBody^ rigidBodyA, 
 
 void Generic6DofSpringConstraint::EnableSpring(int index, bool onOff)
 {
-	UnmanagedPointer->enableSpring(index, onOff);
+	Native->enableSpring(index, onOff);
 }
 
 void Generic6DofSpringConstraint::SetDamping(int index, btScalar damping)
 {
-	UnmanagedPointer->setDamping(index, damping);
+	Native->setDamping(index, damping);
 }
 
 void Generic6DofSpringConstraint::SetEquilibriumPoint(int index, btScalar val)
 {
-	UnmanagedPointer->setEquilibriumPoint(index, val);
+	Native->setEquilibriumPoint(index, val);
 }
 
 void Generic6DofSpringConstraint::SetEquilibriumPoint(int index)
 {
-	UnmanagedPointer->setEquilibriumPoint(index);
+	Native->setEquilibriumPoint(index);
 }
 
 void Generic6DofSpringConstraint::SetEquilibriumPoint()
 {
-	UnmanagedPointer->setEquilibriumPoint();
+	Native->setEquilibriumPoint();
 }
 
 void Generic6DofSpringConstraint::SetStiffness(int index, btScalar stiffness)
 {
-	UnmanagedPointer->setStiffness(index, stiffness);
-}
-
-btGeneric6DofSpringConstraint* Generic6DofSpringConstraint::UnmanagedPointer::get()
-{
-	return (btGeneric6DofSpringConstraint*)Generic6DofConstraint::UnmanagedPointer;
+	Native->setStiffness(index, stiffness);
 }
 
 #endif

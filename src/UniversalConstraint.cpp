@@ -5,6 +5,8 @@
 #include "RigidBody.h"
 #include "UniversalConstraint.h"
 
+#define Native static_cast<btUniversalConstraint*>(_native)
+
 UniversalConstraint::UniversalConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	Vector3 anchor, Vector3 axis1, Vector3 axis2)
 : Generic6DofConstraint(0)
@@ -24,47 +26,42 @@ UniversalConstraint::UniversalConstraint(RigidBody^ rigidBodyA, RigidBody^ rigid
 
 void UniversalConstraint::SetLowerLimit(btScalar ang1min, btScalar ang2min)
 {
-	UnmanagedPointer->setLowerLimit(ang1min, ang2min);
+	Native->setLowerLimit(ang1min, ang2min);
 }
 
 void UniversalConstraint::SetUpperLimit(btScalar ang1max, btScalar ang2max)
 {
-	UnmanagedPointer->setUpperLimit(ang1max, ang2max);
+	Native->setUpperLimit(ang1max, ang2max);
 }
 
 Vector3 UniversalConstraint::Anchor::get()
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->getAnchor());
+	return Math::BtVector3ToVector3(&Native->getAnchor());
 }
 
 Vector3 UniversalConstraint::Anchor2::get()
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->getAnchor2());
+	return Math::BtVector3ToVector3(&Native->getAnchor2());
 }
 
 btScalar UniversalConstraint::Angle1::get()
 {
-	return UnmanagedPointer->getAngle1();
+	return Native->getAngle1();
 }
 
 btScalar UniversalConstraint::Angle2::get()
 {
-	return UnmanagedPointer->getAngle2();
+	return Native->getAngle2();
 }
 
 Vector3 UniversalConstraint::Axis1::get()
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->getAxis1());
+	return Math::BtVector3ToVector3(&Native->getAxis1());
 }
 
 Vector3 UniversalConstraint::Axis2::get()
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->getAxis2());
-}
-
-btUniversalConstraint* UniversalConstraint::UnmanagedPointer::get()
-{
-	return (btUniversalConstraint*)TypedConstraint::UnmanagedPointer;
+	return Math::BtVector3ToVector3(&Native->getAxis2());
 }
 
 #endif

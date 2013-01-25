@@ -258,11 +258,5 @@ namespace BulletSharp
 		{
 			bool get();
 		}
-
-	internal:
-		property btSliderConstraint* UnmanagedPointer
-		{
-			btSliderConstraint* get() new;
-		}
 	};
 };
