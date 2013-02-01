@@ -21,12 +21,12 @@ btScalar ConstraintSetting::Damping::get()
 }
 void ConstraintSetting::Damping::set(btScalar value)
 {
-	_native->m_impulseClamp = value;
+	_native->m_damping = value;
 }
 
 btScalar ConstraintSetting::ImpulseClamp::get()
 {
-	return _native->m_damping;
+	return _native->m_impulseClamp;
 }
 void ConstraintSetting::ImpulseClamp::set(btScalar value)
 {
