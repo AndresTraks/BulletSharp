@@ -13,7 +13,7 @@ namespace BulletSharp
 		ConstraintSetting(btConstraintSetting* setting);
 
 	public:
-		ConstraintSetting();
+		//ConstraintSetting();
 
 		property btScalar Damping
 		{

@@ -537,11 +537,11 @@ int Serialize::BulletWorldImporter::TriangleInfoMapCount::get()
 	return _importer->getNumTriangleInfoMaps();
 }
 
-bool Serialize::BulletWorldImporter::VerboseMode::get()
+int Serialize::BulletWorldImporter::VerboseMode::get()
 {
 	return _importer->getVerboseMode();
 }
-void Serialize::BulletWorldImporter::VerboseMode::set(bool value)
+void Serialize::BulletWorldImporter::VerboseMode::set(int value)
 {
 	_importer->setVerboseMode(value);
 }

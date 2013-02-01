@@ -4,12 +4,12 @@
 
 #include "Point2PointConstraint.h"
 #include "RigidBody.h"
-
+/*
 ConstraintSetting::ConstraintSetting()
 {
 	_native = new btConstraintSetting();
 }
-
+*/
 ConstraintSetting::ConstraintSetting(btConstraintSetting* setting)
 {
 	_native = setting;

@@ -156,10 +156,10 @@ namespace BulletSharp
 				int get();
 			}
 
-			property bool VerboseMode
+			property int VerboseMode
 			{
-				bool get();
-				void set(bool value);
+				int get();
+				void set(int value);
 			}
 		};
 
