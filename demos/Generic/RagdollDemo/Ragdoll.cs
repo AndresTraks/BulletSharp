@@ -74,16 +74,16 @@ namespace RagdollDemo
             transform = offset * Matrix.Translation(0.18f, 0.2f, 0);
 		    bodies[(int)BodyPart.RightLowerLeg] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.RightLowerLeg]);
 
-            transform = Matrix.RotationX(PI_2) * offset * Matrix.Translation(-0.35f, 1.45f, 0);
+            transform = Matrix.RotationZ(PI_2) * offset * Matrix.Translation(-0.35f, 1.45f, 0);
 		    bodies[(int)BodyPart.LeftUpperArm] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.LeftUpperArm]);
 
-            transform = Matrix.RotationY(PI_2) * offset * Matrix.Translation(-0.7f, 1.45f, 0);
+            transform = Matrix.RotationZ(PI_2) * offset * Matrix.Translation(-0.7f, 1.45f, 0);
 		    bodies[(int)BodyPart.LeftLowerArm] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.LeftLowerArm]);
 
-            transform = Matrix.RotationY(-PI_2) * offset * Matrix.Translation(0.35f, 1.45f, 0);
+            transform = Matrix.RotationZ(-PI_2) * offset * Matrix.Translation(0.35f, 1.45f, 0);
 		    bodies[(int)BodyPart.RightUpperArm] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.RightUpperArm]);
 
-		    transform = Matrix.RotationY(-PI_2) * offset * Matrix.Translation(0.7f, 1.45f, 0);
+		    transform = Matrix.RotationZ(-PI_2) * offset * Matrix.Translation(0.7f, 1.45f, 0);
 		    bodies[(int)BodyPart.RightLowerArm] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.RightLowerArm]);
 
             // Setup some damping on the m_bodies
