@@ -16,6 +16,8 @@ ConvexConcaveCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc()
 {
 }
 
+#define Native static_cast<btConvexConcaveCollisionAlgorithm*>(_native)
+
 ConvexConcaveCollisionAlgorithm::ConvexConcaveCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped)
 : ActivatingCollisionAlgorithm(new btConvexConcaveCollisionAlgorithm(*ci->_native,
@@ -25,12 +27,7 @@ ConvexConcaveCollisionAlgorithm::ConvexConcaveCollisionAlgorithm(CollisionAlgori
 
 void ConvexConcaveCollisionAlgorithm::ClearCache()
 {
-	UnmanagedPointer->clearCache();
-}
-
-btConvexConcaveCollisionAlgorithm* ConvexConcaveCollisionAlgorithm::UnmanagedPointer::get()
-{
-	return (btConvexConcaveCollisionAlgorithm*)ActivatingCollisionAlgorithm::UnmanagedPointer;
+	Native->clearCache();
 }
 
 #endif

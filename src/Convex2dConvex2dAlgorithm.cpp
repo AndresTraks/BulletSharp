@@ -20,6 +20,8 @@ Convex2dConvex2dAlgorithm::CreateFunc::CreateFunc(SimplexSolverInterface^ simple
 }
 
 
+#define Native static_cast<btConvex2dConvex2dAlgorithm*>(_native)
+
 Convex2dConvex2dAlgorithm::Convex2dConvex2dAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, SimplexSolverInterface^ simplexSolver,
 	ConvexPenetrationDepthSolver^ pdSolver, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
@@ -31,12 +33,7 @@ Convex2dConvex2dAlgorithm::Convex2dConvex2dAlgorithm(PersistentManifold^ mf, Col
 
 PersistentManifold^ Convex2dConvex2dAlgorithm::Manifold::get()
 {
-	return gcnew PersistentManifold((btPersistentManifold*)UnmanagedPointer->getManifold());
-}
-
-btConvex2dConvex2dAlgorithm* Convex2dConvex2dAlgorithm::UnmanagedPointer::get()
-{
-	return (btConvex2dConvex2dAlgorithm*) CollisionAlgorithm::UnmanagedPointer;
+	return gcnew PersistentManifold((btPersistentManifold*)Native->getManifold());
 }
 
 #endif

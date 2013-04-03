@@ -40,12 +40,6 @@ namespace BulletSharp
 				SimplexSolverInterface^ get();
 				void set(SimplexSolverInterface^ value);
 			}
-
-		internal:
-			property btConvexConvexAlgorithm::CreateFunc* UnmanagedPointer
-			{
-				btConvexConvexAlgorithm::CreateFunc* get() new;
-			}
 		};
 
 		ConvexConvexAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
@@ -57,12 +51,6 @@ namespace BulletSharp
 		property PersistentManifold^ Manifold
 		{
 			PersistentManifold^ get();
-		}
-
-	internal:
-		property btConvexConvexAlgorithm* UnmanagedPointer
-		{
-			btConvexConvexAlgorithm* get() new;
 		}
 	};
 };

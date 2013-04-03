@@ -94,12 +94,3 @@ bool CollisionAlgorithm::IsDisposed::get()
 {
 	return (_native == NULL);
 }
-
-btCollisionAlgorithm* CollisionAlgorithm::UnmanagedPointer::get()
-{
-	return _native;
-}
-void CollisionAlgorithm::UnmanagedPointer::set(btCollisionAlgorithm* value)
-{
-	_native = value;
-}

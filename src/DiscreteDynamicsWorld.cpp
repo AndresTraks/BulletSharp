@@ -62,15 +62,14 @@ void DiscreteDynamicsWorld::ApplySpeculativeContactRestitution::set(bool value)
 	return Native->setApplySpeculativeContactRestitution(value);
 }
 
-CollisionWorld^ DiscreteDynamicsWorld::CollisionWorld::get()
-{
-	return gcnew BulletSharp::CollisionWorld(Native->getCollisionWorld());
-}
-
 #ifndef DISABLE_UNCOMMON
 SimulationIslandManager^ DiscreteDynamicsWorld::SimulationIslandManager::get()
 {
-	return gcnew BulletSharp::SimulationIslandManager(Native->getSimulationIslandManager());
+	if (_simulationIslandManager == nullptr)
+	{
+		_simulationIslandManager = gcnew BulletSharp::SimulationIslandManager(Native->getSimulationIslandManager(), true);
+	}
+	return _simulationIslandManager;
 }
 #endif
 

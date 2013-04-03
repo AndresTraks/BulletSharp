@@ -10,6 +10,8 @@
 #include "ManifoldResult.h"
 #include "PersistentManifold.h"
 
+#define Native static_cast<btConvexPlaneCollisionAlgorithm::CreateFunc*>(_native)
+
 ConvexPlaneCollisionAlgorithm::CreateFunc::CreateFunc()
 : CollisionAlgorithmCreateFunc(new btConvexPlaneCollisionAlgorithm::CreateFunc())
 {
@@ -17,27 +19,25 @@ ConvexPlaneCollisionAlgorithm::CreateFunc::CreateFunc()
 
 int ConvexPlaneCollisionAlgorithm::CreateFunc::MinimumPointsPerturbationThreshold::get()
 {
-	return UnmanagedPointer->m_minimumPointsPerturbationThreshold;
+	return Native->m_minimumPointsPerturbationThreshold;
 }
 void ConvexPlaneCollisionAlgorithm::CreateFunc::MinimumPointsPerturbationThreshold::set(int value)
 {
-	UnmanagedPointer->m_minimumPointsPerturbationThreshold = value;
+	Native->m_minimumPointsPerturbationThreshold = value;
 }
 
 int ConvexPlaneCollisionAlgorithm::CreateFunc::PerturbationIterationsCount::get()
 {
-	return UnmanagedPointer->m_numPerturbationIterations;
+	return Native->m_numPerturbationIterations;
 }
 void ConvexPlaneCollisionAlgorithm::CreateFunc::PerturbationIterationsCount::set(int value)
 {
-	UnmanagedPointer->m_numPerturbationIterations = value;
+	Native->m_numPerturbationIterations = value;
 }
 
-btConvexPlaneCollisionAlgorithm::CreateFunc* ConvexPlaneCollisionAlgorithm::CreateFunc::UnmanagedPointer::get()
-{
-	return (btConvexPlaneCollisionAlgorithm::CreateFunc*)CollisionAlgorithmCreateFunc::UnmanagedPointer;
-}
 
+#undef Native
+#define Native static_cast<btConvexPlaneCollisionAlgorithm*>(_native)
 
 ConvexPlaneCollisionAlgorithm::ConvexPlaneCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
@@ -50,14 +50,9 @@ void ConvexPlaneCollisionAlgorithm::CollideSingleContact(Quaternion perturbeRot,
 	DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
 {
 	btQuaternion* perturbeRotTemp = Math::QuaternionToBtQuat(perturbeRot);
-	UnmanagedPointer->collideSingleContact(*perturbeRotTemp, body0Wrap->_native, body1Wrap->_native,
+	Native->collideSingleContact(*perturbeRotTemp, body0Wrap->_native, body1Wrap->_native,
 		*dispatchInfo->UnmanagedPointer, (btManifoldResult*)resultOut->_native);
 	ALIGNED_FREE(perturbeRotTemp);
-}
-
-btConvexPlaneCollisionAlgorithm* ConvexPlaneCollisionAlgorithm::UnmanagedPointer::get()
-{
-	return (btConvexPlaneCollisionAlgorithm*)CollisionAlgorithm::UnmanagedPointer;
 }
 
 #endif

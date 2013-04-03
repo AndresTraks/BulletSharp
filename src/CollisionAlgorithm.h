@@ -66,12 +66,5 @@ namespace BulletSharp
 		{
 			virtual bool get();
 		}
-
-	internal:
-		property btCollisionAlgorithm* UnmanagedPointer
-		{
-			virtual btCollisionAlgorithm* get();
-			void set(btCollisionAlgorithm* value);
-		}
 	};
 };

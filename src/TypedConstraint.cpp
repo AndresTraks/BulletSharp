@@ -210,6 +210,10 @@ bool TypedConstraint::NeedsFeedback::get()
 {
 	return _native->needsFeedback();
 }
+void TypedConstraint::NeedsFeedback::set(bool value)
+{
+	return _native->enableFeedback(value);
+}
 
 int TypedConstraint::OverrideNumSolverIterations::get()
 {

@@ -550,41 +550,37 @@ CollisionWorld::AllHitsRayResultCallback::AllHitsRayResultCallback(Vector3 rayFr
 
 AlignedCollisionObjectArray^ CollisionWorld::AllHitsRayResultCallback::CollisionObjects::get()
 {
-	btAlignedObjectArray<const btCollisionObject*>* collisionObjects = &Native->m_collisionObjects;
-	if (_collisionObjects != nullptr && _collisionObjects->_native == collisionObjects)
-		return _collisionObjects;
-
-	_collisionObjects = gcnew AlignedCollisionObjectArray((btAlignedObjectArray<btCollisionObject*>*)collisionObjects);
+	if (_collisionObjects == nullptr)
+	{
+		_collisionObjects = gcnew AlignedCollisionObjectArray((btAlignedObjectArray<btCollisionObject*>*)&Native->m_collisionObjects);
+	}
 	return _collisionObjects;
 }
 
 AlignedScalarArray^ CollisionWorld::AllHitsRayResultCallback::HitFractions::get()
 {
-	btAlignedObjectArray<btScalar>* hitFractions = &Native->m_hitFractions;
-	if (_hitFractions != nullptr && _hitFractions->_native == hitFractions)
-		return _hitFractions;
-
-	_hitFractions = gcnew AlignedScalarArray(hitFractions);
+	if (_hitFractions == nullptr)
+	{
+		_hitFractions = gcnew AlignedScalarArray(&Native->m_hitFractions);
+	}
 	return _hitFractions;
 }
 
 AlignedVector3Array^ CollisionWorld::AllHitsRayResultCallback::HitNormalWorld::get()
 {
-	btAlignedObjectArray<btVector3>* hitNormalWorld = &Native->m_hitNormalWorld;
-	if (_hitNormalWorld != nullptr && _hitNormalWorld->_native == hitNormalWorld)
-		return _hitNormalWorld;
-
-	_hitNormalWorld = gcnew AlignedVector3Array(hitNormalWorld);
+	if (_hitNormalWorld == nullptr)
+	{
+		_hitNormalWorld = gcnew AlignedVector3Array(&Native->m_hitNormalWorld);
+	}
 	return _hitNormalWorld;
 }
 
 AlignedVector3Array^ CollisionWorld::AllHitsRayResultCallback::HitPointWorld::get()
 {
-	btAlignedObjectArray<btVector3>* hitPointWorld = &Native->m_hitPointWorld;
-	if (_hitPointWorld != nullptr && _hitPointWorld->_native == hitPointWorld)
-		return _hitNormalWorld;
-
-	_hitPointWorld = gcnew AlignedVector3Array(hitPointWorld);
+	if (_hitPointWorld == nullptr)
+	{
+		_hitPointWorld = gcnew AlignedVector3Array(&Native->m_hitPointWorld);
+	}
 	return _hitPointWorld;
 }
 
@@ -849,11 +845,10 @@ void CollisionWorld::Broadphase::set(BroadphaseInterface^ value)
 
 AlignedCollisionObjectArray^ CollisionWorld::CollisionObjectArray::get()
 {
-	btCollisionObjectArray* collisionObjectArray = &_native->getCollisionObjectArray();
-	if (_collisionObjectArray != nullptr && _collisionObjectArray->_native == collisionObjectArray)
-		return _collisionObjectArray;
-
-	_collisionObjectArray = gcnew AlignedCollisionObjectArray(collisionObjectArray);
+	if (_collisionObjectArray == nullptr)
+	{
+		_collisionObjectArray = gcnew AlignedCollisionObjectArray(&_native->getCollisionObjectArray());
+	}
 	return _collisionObjectArray;
 }
 

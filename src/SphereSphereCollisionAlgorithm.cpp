@@ -7,6 +7,8 @@
 #include "PersistentManifold.h"
 #include "SphereSphereCollisionAlgorithm.h"
 
+#define Native static_cast<btSphereSphereCollisionAlgorithm::CreateFunc*>(_native)
+
 SphereSphereCollisionAlgorithm::CreateFunc::CreateFunc()
 : CollisionAlgorithmCreateFunc(new btSphereSphereCollisionAlgorithm::CreateFunc())
 {
@@ -22,11 +24,6 @@ SphereSphereCollisionAlgorithm::SphereSphereCollisionAlgorithm(PersistentManifol
 SphereSphereCollisionAlgorithm::SphereSphereCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci)
 : ActivatingCollisionAlgorithm(new btSphereSphereCollisionAlgorithm(*ci->_native))
 {
-}
-
-btSphereSphereCollisionAlgorithm* SphereSphereCollisionAlgorithm::UnmanagedPointer::get()
-{
-	return (btSphereSphereCollisionAlgorithm*)ActivatingCollisionAlgorithm::UnmanagedPointer;
 }
 
 #endif

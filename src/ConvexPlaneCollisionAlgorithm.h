@@ -29,12 +29,6 @@ namespace BulletSharp
 				int get();
 				void set(int value);
 			}
-
-		internal:
-			property btConvexPlaneCollisionAlgorithm::CreateFunc* UnmanagedPointer
-			{
-				btConvexPlaneCollisionAlgorithm::CreateFunc* get() new;
-			}
 		};
 
 		ConvexPlaneCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
@@ -43,11 +37,5 @@ namespace BulletSharp
 
 		void CollideSingleContact(Quaternion perturbeRot, CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 			DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut);
-
-	internal:
-		property btConvexPlaneCollisionAlgorithm* UnmanagedPointer
-		{
-			btConvexPlaneCollisionAlgorithm* get() new;
-		}
 	};
 };

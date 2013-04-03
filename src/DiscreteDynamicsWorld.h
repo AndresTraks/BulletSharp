@@ -16,6 +16,11 @@ namespace BulletSharp
 	internal:
 		DiscreteDynamicsWorld(btDiscreteDynamicsWorld* world);
 
+#ifndef DISABLE_UNCOMMON
+	private:
+		SimulationIslandManager^ _simulationIslandManager;
+#endif
+
 	public:
 		DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher,
 			BroadphaseInterface^ pairCache,
@@ -35,11 +40,6 @@ namespace BulletSharp
 		{
 			bool get();
 			void set(bool value);
-		}
-
-		property CollisionWorld^ CollisionWorld
-		{
-			BulletSharp::CollisionWorld^ get();
 		}
 
 #ifndef DISABLE_UNCOMMON

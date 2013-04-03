@@ -23,11 +23,5 @@ namespace BulletSharp
 			btScalar% penetrationDepth, Vector3 v3SphereCenter, btScalar fRadius, btScalar maxContactDistance);
 		btScalar GetSpherePenetration(Vector3 boxHalfExtent, Vector3 sphereRelPos, Vector3 closestPoint,
 			Vector3 normal);
-
-	internal:
-		property btSphereBoxCollisionAlgorithm* UnmanagedPointer
-		{
-			btSphereBoxCollisionAlgorithm* get() new;
-		}
 	};
 };

@@ -9,6 +9,8 @@
 #include "ConvexPenetrationDepthSolver.h"
 #include "PersistentManifold.h"
 
+#define Native static_cast<btConvexConvexAlgorithm::CreateFunc*>(_native)
+
 ConvexConvexAlgorithm::CreateFunc::CreateFunc(SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ pdSolver)
 : CollisionAlgorithmCreateFunc(new btConvexConvexAlgorithm::CreateFunc(simplexSolver->UnmanagedPointer, pdSolver->_native))
 {
@@ -16,45 +18,43 @@ ConvexConvexAlgorithm::CreateFunc::CreateFunc(SimplexSolverInterface^ simplexSol
 
 int ConvexConvexAlgorithm::CreateFunc::MinimumPointsPerturbationThreshold::get()
 {
-	return UnmanagedPointer->m_minimumPointsPerturbationThreshold;
+	return Native->m_minimumPointsPerturbationThreshold;
 }
 void ConvexConvexAlgorithm::CreateFunc::MinimumPointsPerturbationThreshold::set(int value)
 {
-	UnmanagedPointer->m_minimumPointsPerturbationThreshold = value;
+	Native->m_minimumPointsPerturbationThreshold = value;
 }
 
 int ConvexConvexAlgorithm::CreateFunc::NumPerturbationIterations::get()
 {
-	return UnmanagedPointer->m_numPerturbationIterations;
+	return Native->m_numPerturbationIterations;
 }
 void ConvexConvexAlgorithm::CreateFunc::NumPerturbationIterations::set(int value)
 {
-	UnmanagedPointer->m_numPerturbationIterations = value;
+	Native->m_numPerturbationIterations = value;
 }
 
 ConvexPenetrationDepthSolver^ ConvexConvexAlgorithm::CreateFunc::PdSolver::get()
 {
-	return gcnew ConvexPenetrationDepthSolver(UnmanagedPointer->m_pdSolver);
+	return gcnew ConvexPenetrationDepthSolver(Native->m_pdSolver);
 }
 void ConvexConvexAlgorithm::CreateFunc::PdSolver::set(ConvexPenetrationDepthSolver^ value)
 {
-	UnmanagedPointer->m_pdSolver = value->_native;
+	Native->m_pdSolver = value->_native;
 }
 
 SimplexSolverInterface^ ConvexConvexAlgorithm::CreateFunc::SimplexSolver::get()
 {
-	return gcnew SimplexSolverInterface(UnmanagedPointer->m_simplexSolver);
+	return gcnew SimplexSolverInterface(Native->m_simplexSolver);
 }
 void ConvexConvexAlgorithm::CreateFunc::SimplexSolver::set(SimplexSolverInterface^ value)
 {
-	UnmanagedPointer->m_simplexSolver = value->UnmanagedPointer;
+	Native->m_simplexSolver = value->UnmanagedPointer;
 }
 
-btConvexConvexAlgorithm::CreateFunc* ConvexConvexAlgorithm::CreateFunc::UnmanagedPointer::get()
-{
-	return (btConvexConvexAlgorithm::CreateFunc*)CollisionAlgorithmCreateFunc::UnmanagedPointer;
-}
 
+#undef Native
+#define Native static_cast<btConvexConvexAlgorithm*>(_native)
 
 ConvexConvexAlgorithm::ConvexConvexAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, SimplexSolverInterface^ simplexSolver,
@@ -67,17 +67,12 @@ ConvexConvexAlgorithm::ConvexConvexAlgorithm(PersistentManifold^ mf, CollisionAl
 
 void ConvexConvexAlgorithm::SetLowLevelOfDetail(bool useLowLevel)
 {
-	UnmanagedPointer->setLowLevelOfDetail(useLowLevel);
+	Native->setLowLevelOfDetail(useLowLevel);
 }
 
 PersistentManifold^ ConvexConvexAlgorithm::Manifold::get()
 {
-	return gcnew PersistentManifold((btPersistentManifold*)UnmanagedPointer->getManifold());
-}
-
-btConvexConvexAlgorithm* ConvexConvexAlgorithm::UnmanagedPointer::get()
-{
-	return (btConvexConvexAlgorithm*)ActivatingCollisionAlgorithm::UnmanagedPointer;
+	return gcnew PersistentManifold((btPersistentManifold*)Native->getManifold());
 }
 
 #endif

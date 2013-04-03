@@ -8,32 +8,27 @@
 
 Clock::Clock()
 {
-	_clock = new btClock();
+	_native = new btClock();
 }
 
 Clock::Clock(Clock^ other)
 {
-	_clock = new btClock(*other->UnmanagedPointer);
+	_native = new btClock(*other->_native);
 }
 
 void Clock::Reset()
 {
-	_clock->reset();
+	_native->reset();
 }
 
 long Clock::TimeMicroseconds::get()
 {
-	return _clock->getTimeMicroseconds();
+	return _native->getTimeMicroseconds();
 }
 
 long Clock::TimeMilliseconds::get()
 {
-	return _clock->getTimeMilliseconds();
-}
-
-btClock* Clock::UnmanagedPointer::get()
-{
-	return _clock;
+	return _native->getTimeMilliseconds();
 }
 
 #endif

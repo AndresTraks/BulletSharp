@@ -507,7 +507,6 @@ namespace DemoFramework.SharpDX
                 data.Write(new Vector3(-0.5f, -0.5f, 0));
                 data.Write(new Vector2(0, 1));
                 vertexBuffer = new Buffer(device, data, vertexBufferDesc);
-                vertexBuffer.Unmap();
             }
 
             return vertexBuffer;

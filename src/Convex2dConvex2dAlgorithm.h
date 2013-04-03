@@ -32,11 +32,5 @@ namespace BulletSharp
 		{
 			PersistentManifold^ get();
 		}
-
-	internal:
-		property btConvex2dConvex2dAlgorithm* UnmanagedPointer
-		{
-			virtual btConvex2dConvex2dAlgorithm* get() new;
-		}
 	};
 };

@@ -25,6 +25,7 @@ ConvexHullShape::ConvexHullShape(System::Collections::Generic::IEnumerable<Vecto
 		Math::Vector3ToBtVector3(point, pointTemp);
 		Native->addPoint(*pointTemp);
 	}
+	Native->recalcLocalAabb();
 
 	delete pointTemp;
 }

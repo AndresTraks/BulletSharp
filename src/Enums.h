@@ -199,7 +199,7 @@ namespace BulletSharp
 	};
 
 	[Flags]
-	public enum class CollisionObjectType
+	public enum class CollisionObjectTypes
 	{
 		None = 0,
 		CollisionObjectType = btCollisionObject::CO_COLLISION_OBJECT,

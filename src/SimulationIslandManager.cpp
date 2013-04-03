@@ -7,38 +7,7 @@
 #include "PersistentManifold.h"
 #include "SimulationIslandManager.h"
 #include "UnionFind.h"
-
-void SimulationIslandManager::IslandCallback::ProcessIsland(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifolds, int islandId)
-{
-	int numBodies = bodies->Length;
-	int numManifolds = manifolds->Length;
-	int i;
-
-	btCollisionObject** bodiesTemp = new btCollisionObject*[numBodies];
-	btPersistentManifold** manifoldsTemp = new btPersistentManifold*[numManifolds];
-
-	for(i=0; i<numBodies; i++)
-		bodiesTemp[i] = bodies[i]->UnmanagedPointer;
-
-	for(i=0; i<numManifolds; i++)
-		manifoldsTemp[i] = (btPersistentManifold*)manifolds[i]->_native;
-
-
-	UnmanagedPointer->processIsland(bodiesTemp, numBodies, manifoldsTemp, numManifolds, islandId);
-
-	delete[] bodiesTemp;
-	delete[] manifoldsTemp;
-}
-
-btSimulationIslandManager::IslandCallback* SimulationIslandManager::IslandCallback::UnmanagedPointer::get()
-{
-	return _islandCallback;
-}
-void SimulationIslandManager::IslandCallback::UnmanagedPointer::set(btSimulationIslandManager::IslandCallback* value)
-{
-	_islandCallback = value;
-}
-
+/*
 SimulationIslandManager::IslandCallback::~IslandCallback()
 {
 	this->!IslandCallback();
@@ -51,25 +20,54 @@ SimulationIslandManager::IslandCallback::!IslandCallback()
 	
 	OnDisposing(this, nullptr);
 	
-	_islandCallback = NULL;
+	delete _native;
+	_native = NULL;
 	
 	OnDisposed(this, nullptr);
 }
 
-bool SimulationIslandManager::IslandCallback::IsDisposed::get()
+SimulationIslandManager::IslandCallback::IslandCallback()
 {
-	return (_islandCallback == NULL);
+	_native = new btSimulationIslandManager::IslandCallback();
 }
 
+void SimulationIslandManager::IslandCallback::ProcessIsland(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifolds, int islandId)
+{
+	int numBodies = bodies->Length;
+	int numManifolds = manifolds->Length;
+	int i;
+
+	btCollisionObject** bodiesTemp = new btCollisionObject*[numBodies];
+	btPersistentManifold** manifoldsTemp = new btPersistentManifold*[numManifolds];
+
+	for(i=0; i<numBodies; i++)
+		bodiesTemp[i] = bodies[i]->_native;
+
+	for(i=0; i<numManifolds; i++)
+		manifoldsTemp[i] = (btPersistentManifold*)manifolds[i]->_native;
+
+
+	_native->processIsland(bodiesTemp, numBodies, manifoldsTemp, numManifolds, islandId);
+
+	delete[] bodiesTemp;
+	delete[] manifoldsTemp;
+}
+
+bool SimulationIslandManager::IslandCallback::IsDisposed::get()
+{
+	return (_native == NULL);
+}
+*/
 
 SimulationIslandManager::SimulationIslandManager()
 {
-	_manager = new btSimulationIslandManager();
+	_native = new btSimulationIslandManager();
 }
 
-SimulationIslandManager::SimulationIslandManager(btSimulationIslandManager* manager)
+SimulationIslandManager::SimulationIslandManager(btSimulationIslandManager* manager, bool preventDelete)
 {
-	_manager = manager;
+	_native = manager;
+	_preventDelete = preventDelete;
 }
 
 SimulationIslandManager::~SimulationIslandManager()
@@ -84,67 +82,61 @@ SimulationIslandManager::!SimulationIslandManager()
 	
 	OnDisposing(this, nullptr);
 	
-	_manager = NULL;
+	if (!_preventDelete) {
+		delete _native;
+	}
+	_native = NULL;
 	
 	OnDisposed(this, nullptr);
 }
-
+/*
 void SimulationIslandManager::BuildAndProcessIslands(Dispatcher^ dispatcher, CollisionWorld^ collisionWorld, IslandCallback^ callback)
 {
-	UnmanagedPointer->buildAndProcessIslands(dispatcher->_native, collisionWorld->_native, callback->UnmanagedPointer);
+	_native->buildAndProcessIslands(dispatcher->_native, collisionWorld->_native, callback->_native);
 }
-
+*/
 void SimulationIslandManager::BuildIslands(Dispatcher^ dispatcher, CollisionWorld^ colWorld)
 {
-	UnmanagedPointer->buildIslands(dispatcher->_native, colWorld->_native);
+	_native->buildIslands(dispatcher->_native, colWorld->_native);
 }
 
 void SimulationIslandManager::FindUnions(Dispatcher^ dispatcher, CollisionWorld^ colWorld)
 {
-	UnmanagedPointer->findUnions(dispatcher->_native, colWorld->_native);
+	_native->findUnions(dispatcher->_native, colWorld->_native);
 }
 
 void SimulationIslandManager::InitUnionFind(int n)
 {
-	UnmanagedPointer->initUnionFind(n);
+	_native->initUnionFind(n);
 }
 
 void SimulationIslandManager::UpdateActivationState(CollisionWorld^ colWorld, Dispatcher^ dispatcher)
 {
-	UnmanagedPointer->updateActivationState(colWorld->_native, dispatcher->_native);
+	_native->updateActivationState(colWorld->_native, dispatcher->_native);
 }
 
 void SimulationIslandManager::StoreIslandActivationState(CollisionWorld^ world)
 {
-	UnmanagedPointer->storeIslandActivationState(world->_native);
+	_native->storeIslandActivationState(world->_native);
 }
 
 bool SimulationIslandManager::IsDisposed::get()
 {
-	return (_manager == NULL);
+	return (_native == NULL);
 }
 
 bool SimulationIslandManager::SplitIslands::get()
 {
-	return UnmanagedPointer->getSplitIslands();
+	return _native->getSplitIslands();
 }
 void SimulationIslandManager::SplitIslands::set(bool value)
 {
-	UnmanagedPointer->setSplitIslands(value);
+	_native->setSplitIslands(value);
 }
 
 UnionFind^ SimulationIslandManager::UnionFind::get()
 {
-	return gcnew BulletSharp::UnionFind(&UnmanagedPointer->getUnionFind());
-}
-
-btSimulationIslandManager* SimulationIslandManager::UnmanagedPointer::get()
-{
-	return _manager;
-}
-void SimulationIslandManager::UnmanagedPointer::set(btSimulationIslandManager* value)
-{
-	_manager = value;
+	return gcnew BulletSharp::UnionFind(&_native->getUnionFind());
 }
 
 #endif

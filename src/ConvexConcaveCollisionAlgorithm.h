@@ -26,11 +26,5 @@ namespace BulletSharp
 			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped);
 
 		void ClearCache();
-
-	internal:
-		property btConvexConcaveCollisionAlgorithm* UnmanagedPointer
-		{
-			btConvexConcaveCollisionAlgorithm* get() new;
-		}
 	};
 };

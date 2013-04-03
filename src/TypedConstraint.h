@@ -128,6 +128,7 @@ namespace BulletSharp
 		property bool NeedsFeedback
 		{
 			bool get();
+			void set(bool value);
 		}
 
 		property int OverrideNumSolverIterations

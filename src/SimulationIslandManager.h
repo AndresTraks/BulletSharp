@@ -11,14 +11,14 @@ namespace BulletSharp
 	public ref class SimulationIslandManager : BulletSharp::IDisposable
 	{
 	public:
-		ref class IslandCallback : BulletSharp::IDisposable
+		/*ref class IslandCallback : BulletSharp::IDisposable
 		{
 		public:
 			virtual event EventHandler^ OnDisposing;
 			virtual event EventHandler^ OnDisposed;
 
-		private:
-			btSimulationIslandManager::IslandCallback* _islandCallback;
+		internal:
+			btSimulationIslandManager::IslandCallback* _native;
 
 		public:
 			!IslandCallback();
@@ -26,29 +26,26 @@ namespace BulletSharp
 			~IslandCallback();
 
 		public:
+			IslandCallback();
+
 			void ProcessIsland(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifolds, int islandId);
 
 			property bool IsDisposed
 			{
 				virtual bool get();
 			}
-
-		internal:
-			property btSimulationIslandManager::IslandCallback* UnmanagedPointer
-			{
-				virtual btSimulationIslandManager::IslandCallback* get();
-				void set(btSimulationIslandManager::IslandCallback* value);
-			}
 		};
-
+		*/
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
 	private:
-		btSimulationIslandManager* _manager;
+		bool _preventDelete;
 
 	internal:
-		SimulationIslandManager(btSimulationIslandManager* manager);
+		btSimulationIslandManager* _native;
+
+		SimulationIslandManager(btSimulationIslandManager* manager, bool preventDelete);
 
 	public:
 		!SimulationIslandManager();
@@ -58,7 +55,7 @@ namespace BulletSharp
 	public:
 		SimulationIslandManager();
 
-		void BuildAndProcessIslands(Dispatcher^ dispatcher, CollisionWorld^ collisionWorld, IslandCallback^ callback);
+		//void BuildAndProcessIslands(Dispatcher^ dispatcher, CollisionWorld^ collisionWorld, IslandCallback^ callback);
 		void BuildIslands(Dispatcher^ dispatcher, CollisionWorld^ colWorld);
 		void FindUnions(Dispatcher^ dispatcher, CollisionWorld^ colWorld);
 		void InitUnionFind(int n);
@@ -79,13 +76,6 @@ namespace BulletSharp
 		property UnionFind^ UnionFind
 		{
 			BulletSharp::UnionFind^ get();
-		}
-
-	internal:
-		property btSimulationIslandManager* UnmanagedPointer
-		{
-			virtual btSimulationIslandManager* get();
-			void set(btSimulationIslandManager* value);
 		}
 	};
 };

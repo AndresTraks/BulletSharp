@@ -19,6 +19,9 @@ SphereBoxCollisionAlgorithm::SphereBoxCollisionAlgorithm(PersistentManifold^ mf,
 {
 }
 
+
+#define Native static_cast<btSphereBoxCollisionAlgorithm*>(_native)
+
 bool SphereBoxCollisionAlgorithm::GetSphereDistance(CollisionObjectWrapper^ boxObjWrap, Vector3 v3PointOnBox,
 	Vector3 normal, btScalar% penetrationDepth, Vector3 v3SphereCenter, btScalar fRadius, btScalar maxContactDistance)
 {
@@ -27,7 +30,7 @@ bool SphereBoxCollisionAlgorithm::GetSphereDistance(CollisionObjectWrapper^ boxO
 	VECTOR3_DEF(v3SphereCenter);
 	btScalar penetrationDepthTemp = penetrationDepth;
 
-	bool ret = UnmanagedPointer->getSphereDistance(boxObjWrap->_native, VECTOR3_USE(v3PointOnBox),
+	bool ret = Native->getSphereDistance(boxObjWrap->_native, VECTOR3_USE(v3PointOnBox),
 		VECTOR3_USE(normal), penetrationDepthTemp, VECTOR3_USE(v3SphereCenter), fRadius, maxContactDistance);
 
 	VECTOR3_DEL(v3PointOnBox);
@@ -46,7 +49,7 @@ btScalar SphereBoxCollisionAlgorithm::GetSpherePenetration(Vector3 boxHalfExtent
 	VECTOR3_DEF(closestPoint);
 	VECTOR3_DEF(normal);
 
-	btScalar ret = UnmanagedPointer->getSpherePenetration(VECTOR3_USE(boxHalfExtent), VECTOR3_USE(sphereRelPos),
+	btScalar ret = Native->getSpherePenetration(VECTOR3_USE(boxHalfExtent), VECTOR3_USE(sphereRelPos),
 		VECTOR3_USE(closestPoint), VECTOR3_USE(normal));
 
 	VECTOR3_DEL(boxHalfExtent);
@@ -55,11 +58,6 @@ btScalar SphereBoxCollisionAlgorithm::GetSpherePenetration(Vector3 boxHalfExtent
 	VECTOR3_DEL(normal);
 
 	return ret;
-}
-
-btSphereBoxCollisionAlgorithm* SphereBoxCollisionAlgorithm::UnmanagedPointer::get()
-{
-	return (btSphereBoxCollisionAlgorithm*)ActivatingCollisionAlgorithm::UnmanagedPointer;
 }
 
 #endif

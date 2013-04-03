@@ -277,6 +277,10 @@ void BroadphaseInterface::SetAabb(BroadphaseProxy^ proxy, Vector3 aabbMin, Vecto
 
 OverlappingPairCache^ BroadphaseInterface::OverlappingPairCache::get()
 {
-	return dynamic_cast<BulletSharp::OverlappingPairCache^>(
-		BulletSharp::OverlappingPairCache::GetManaged(_native->getOverlappingPairCache()));
+	if (_pairCache == nullptr)
+	{
+		_pairCache = dynamic_cast<BulletSharp::OverlappingPairCache^>(
+			BulletSharp::OverlappingPairCache::GetManaged(_native->getOverlappingPairCache()));
+	}
+	return _pairCache;
 }

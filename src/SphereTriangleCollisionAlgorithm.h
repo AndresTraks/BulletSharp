@@ -19,11 +19,5 @@ namespace BulletSharp
 		SphereTriangleCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
 			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped);
 		SphereTriangleCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci);
-
-	internal:
-		property btSphereTriangleCollisionAlgorithm* UnmanagedPointer
-		{
-			btSphereTriangleCollisionAlgorithm* get() new;
-		}
 	};
 };

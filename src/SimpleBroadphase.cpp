@@ -53,6 +53,7 @@ SimpleBroadphase::SimpleBroadphase(btSimpleBroadphase* broadphase)
 SimpleBroadphase::SimpleBroadphase(int maxProxies, BulletSharp::OverlappingPairCache^ overlappingPairCache)
 : BroadphaseInterface(new btSimpleBroadphase(maxProxies, (btOverlappingPairCache*)GetUnmanagedNullable(overlappingPairCache)))
 {
+	_pairCache = overlappingPairCache;
 }
 
 SimpleBroadphase::SimpleBroadphase(int maxProxies)

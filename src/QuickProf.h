@@ -5,8 +5,8 @@ namespace BulletSharp
 #ifdef USE_BT_CLOCK
 	public ref class Clock
 	{
-	private:
-		btClock* _clock;
+	internal:
+		btClock* _native;
 
 	public:
 		Clock();
@@ -22,12 +22,6 @@ namespace BulletSharp
 		property long TimeMilliseconds
 		{
 			long get();
-		}
-
-	internal:
-		property btClock* UnmanagedPointer
-		{
-			btClock* get();
 		}
 	};
 #endif
