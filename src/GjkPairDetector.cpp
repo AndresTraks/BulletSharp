@@ -110,6 +110,15 @@ void GjkPairDetector::DegenerateSimplex::set(int value)
 	Native->m_degenerateSimplex = value;
 }
 
+int GjkPairDetector::FixContactNormalDirection::get()
+{
+	return Native->m_fixContactNormalDirection;
+}
+void GjkPairDetector::FixContactNormalDirection::set(int value)
+{
+	Native->m_fixContactNormalDirection = value;
+}
+
 int GjkPairDetector::LastUsedMethod::get()
 {
 	return Native->m_lastUsedMethod;

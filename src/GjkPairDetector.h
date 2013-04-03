@@ -60,6 +60,12 @@ namespace BulletSharp
 			void set(int value);
 		}
 
+		property int FixContactNormalDirection
+		{
+			int get();
+			void set(int value);
+		}
+
 		property int LastUsedMethod
 		{
 			int get();

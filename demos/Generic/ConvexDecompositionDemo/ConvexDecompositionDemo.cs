@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Windows.Forms;
 using BulletSharp;
 using DemoFramework;
 
@@ -118,6 +119,10 @@ namespace ConvexDecompositionDemo
             ConvexHullShape convexShape = new ConvexHullShape(vertices);
 #endif
 
+            if (demo.sEnableSAT)
+            {
+                convexShape.InitializePolyhedralFeatures();
+            }
             convexShape.Margin = 0.01f;
             convexShapes.Add(convexShape);
             convexCentroids.Add(demo.centroid);
@@ -134,6 +139,7 @@ namespace ConvexDecompositionDemo
         public Vector3 centroid;
         Vector3 convexDecompositionObjectOffset;
         public AlignedTriangleMeshArray trimeshes = new AlignedTriangleMeshArray();
+        public bool sEnableSAT = false;
 
         protected override void OnInitialize()
         {
@@ -144,6 +150,11 @@ namespace ConvexDecompositionDemo
                 "F3 - Toggle debug\n" +
                 //"F11 - Toggle fullscreen\n" +
                 "Space - Shoot box");
+        }
+
+        bool MyCompoundChildShapeCallback(CollisionShape shape0, CollisionShape shape1)
+        {
+            return true;
         }
 
         // MyContactCallback is just an example to show how to get access to the child shape that collided
@@ -186,6 +197,8 @@ namespace ConvexDecompositionDemo
             // collision configuration contains default setup for memory, collision setup
             CollisionConf = new DefaultCollisionConfiguration();
             Dispatcher = new CollisionDispatcher(CollisionConf);
+
+            CompoundCollisionAlgorithm.CompoundChildShapePairCallback = MyCompoundChildShapeCallback;
 
             convexDecompositionObjectOffset = new Vector3(10, 0, 0);
 
@@ -254,6 +267,10 @@ namespace ConvexDecompositionDemo
                     convexShape.AddPoint(v);
                 }
 
+                if (sEnableSAT)
+                {
+                    convexShape.InitializePolyhedralFeatures();
+                }
                 tmpConvexShape.Dispose();
                 //hull.Dispose();
 
@@ -370,6 +387,24 @@ namespace ConvexDecompositionDemo
 
                 writer.Dispose();
                 outputFile.Dispose();
+            }
+        }
+
+        public override void OnHandleInput()
+        {
+            base.OnHandleInput();
+
+            if (Input.KeysPressed.Contains(Keys.S))
+            {
+                sEnableSAT = !sEnableSAT;
+                if (sEnableSAT)
+                {
+                    //printf("SAT enabled after the next restart of the demo\n");
+                }
+                else
+                {
+                    //printf("SAT disabled after the next restart of the demo\n");
+                }
             }
         }
     }
