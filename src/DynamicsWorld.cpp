@@ -193,15 +193,19 @@ ContactSolverInfo^ DynamicsWorld::SolverInfo::get()
 #endif
 
 #pragma managed(push, off)
-btVector3* World_GetGravity(btDynamicsWorld* world)
+void World_GetGravity(btDynamicsWorld* world, btVector3* gravity)
 {
-	return &world->getGravity();
+	*gravity = world->getGravity();
 }
 #pragma managed(pop)
 
 Vector3 DynamicsWorld::Gravity::get()
 {
-	return Math::BtVector3ToVector3(World_GetGravity(Native));
+	btVector3* gravityTemp = ALIGNED_NEW(btVector3);
+	World_GetGravity(Native, gravityTemp);
+	Vector3 gravity = Math::BtVector3ToVector3(gravityTemp);
+	ALIGNED_FREE(gravityTemp);
+	return gravity;
 }
 
 void DynamicsWorld::Gravity::set(Vector3 value)
