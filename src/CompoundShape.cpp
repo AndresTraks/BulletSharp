@@ -90,16 +90,18 @@ void CompoundShape::AddChildShape(Matrix localTransform, CollisionShape^ shape)
 	ALIGNED_FREE(localTransformTemp);
 }
 
-void CompoundShape::CalculatePrincipalAxisTransform(array<btScalar>^ masses, Matrix principal, Vector3 inertia)
+void CompoundShape::CalculatePrincipalAxisTransform(array<btScalar>^ masses, Matrix% principal, [Out] Vector3% inertia)
 {
 	pin_ptr<btScalar> massesPtr = &masses[0];
 	btTransform* principalTemp = Math::MatrixToBtTransform(principal);
-	VECTOR3_DEF(inertia);
+	btVector3* inertiaTemp = new btVector3;
 	
-	Native->calculatePrincipalAxisTransform(massesPtr, *principalTemp, VECTOR3_USE(inertia));
+	Native->calculatePrincipalAxisTransform(massesPtr, *principalTemp, *inertiaTemp);
+	Math::BtTransformToMatrix(principalTemp, principal);
+	inertia = Math::BtVector3ToVector3(inertiaTemp);
 	
 	ALIGNED_FREE(principalTemp);
-	VECTOR3_DEL(inertia);
+	delete inertiaTemp;
 }
 
 void CompoundShape::CreateAabbTreeFromChildren()
