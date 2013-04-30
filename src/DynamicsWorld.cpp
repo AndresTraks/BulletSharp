@@ -84,7 +84,7 @@ void DynamicsWorld::ClearForces()
 
 void DynamicsWorld::RemoveAction(IActionInterface^ actionInterface)
 {
-	if (_actions) {
+	if (!_actions) {
 		// No shapes have been added
 		return;
 	}
