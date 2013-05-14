@@ -411,9 +411,6 @@
     <ClInclude Include="..\src\SpuGatheringCollisionDispatcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\StackAlloc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\StaticPlaneShape.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -900,9 +897,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SpuGatheringCollisionDispatcher.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\StackAlloc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\StaticPlaneShape.cpp">

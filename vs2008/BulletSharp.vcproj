@@ -2063,10 +2063,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\src\StackAlloc.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\src\TransformUtil.cpp"
 					>
 				</File>
@@ -2762,10 +2758,6 @@
 				</File>
 				<File
 					RelativePath="..\src\Serializer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\StackAlloc.h"
 					>
 				</File>
 				<File

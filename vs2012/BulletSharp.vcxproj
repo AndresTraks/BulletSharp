@@ -1041,7 +1041,6 @@
     <ClCompile Include="..\src\QuickProf.cpp" />
     <ClCompile Include="..\src\Scalar.cpp" />
     <ClCompile Include="..\src\Serializer.cpp" />
-    <ClCompile Include="..\src\StackAlloc.cpp" />
     <ClCompile Include="..\src\TransformUtil.cpp" />
     <ClCompile Include="..\src\SoftBody.cpp" />
     <ClCompile Include="..\src\SoftBodyConcaveCollisionAlgorithm.cpp" />
@@ -1211,7 +1210,6 @@
     <ClInclude Include="..\src\QuickProf.h" />
     <ClInclude Include="..\src\Scalar.h" />
     <ClInclude Include="..\src\Serializer.h" />
-    <ClInclude Include="..\src\StackAlloc.h" />
     <ClInclude Include="..\src\TransformUtil.h" />
     <ClInclude Include="..\src\SoftBody.h" />
     <ClInclude Include="..\src\SoftBodyConcaveCollisionAlgorithm.h" />
