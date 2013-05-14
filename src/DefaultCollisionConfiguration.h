@@ -38,12 +38,6 @@ namespace BulletSharp
 			void set(int value);
 		}
 
-		property int DefaultStackAllocatorSize
-		{
-			int get();
-			void set(int value);
-		}
-
 #ifndef DISABLE_UNCOMMON
 		property PoolAllocator^ PersistentManifoldPool
 		{
@@ -51,12 +45,6 @@ namespace BulletSharp
 			void set(PoolAllocator^ value);
 		}
 #endif
-
-		property StackAlloc^ StackAllocator
-		{
-			StackAlloc^ get();
-			void set(StackAlloc^ value);
-		}
 
 		property int UseEpaPenetrationAlgorithm
 		{

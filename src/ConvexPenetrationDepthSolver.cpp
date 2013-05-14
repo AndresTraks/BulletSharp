@@ -4,7 +4,6 @@
 
 #include "ConvexPenetrationDepthSolver.h"
 #include "ConvexShape.h"
-#include "StackAlloc.h"
 #ifndef DISABLE_DEBUGDRAW
 #include "DebugDraw.h"
 #endif
@@ -34,11 +33,11 @@ ConvexPenetrationDepthSolver::!ConvexPenetrationDepthSolver()
 
 bool ConvexPenetrationDepthSolver::CalcPenDepth(SimplexSolverInterface^ simplexSolver,
 	ConvexShape^ convexA, ConvexShape^ convexB, Matrix transA, Matrix transB,
-	Vector3 v, Vector3 pa, Vector3 pb,
+	Vector3 v, Vector3 pa, Vector3 pb
 #ifndef DISABLE_DEBUGDRAW
-	IDebugDraw^ debugDraw,
+	, IDebugDraw^ debugDraw
 #endif
-	StackAlloc^ stackAlloc)
+	)
 {
 	btTransform* transATemp = Math::MatrixToBtTransform(transA);
 	btTransform* transBTemp = Math::MatrixToBtTransform(transB);
@@ -50,11 +49,11 @@ bool ConvexPenetrationDepthSolver::CalcPenDepth(SimplexSolverInterface^ simplexS
 		(btConvexShape*)convexA->_native, (btConvexShape*)convexB->_native,
 		*transATemp, *transBTemp, VECTOR3_USE(v), VECTOR3_USE(pa), VECTOR3_USE(pb),
 #ifndef DISABLE_DEBUGDRAW
-		DebugDraw::GetUnmanaged(debugDraw),
+		DebugDraw::GetUnmanaged(debugDraw)
 #else
-		0,
+		0
 #endif
-		stackAlloc->UnmanagedPointer);
+		);
 
 	ALIGNED_FREE(transATemp);
 	ALIGNED_FREE(transBTemp);

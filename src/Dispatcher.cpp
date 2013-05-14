@@ -5,7 +5,6 @@
 #include "Dispatcher.h"
 #include "OverlappingPairCache.h"
 #include "PersistentManifold.h"
-#include "StackAlloc.h"
 #ifndef DISABLE_DEBUGDRAW
 #include "DebugDraw.h"
 #endif
@@ -72,15 +71,6 @@ bool DispatcherInfo::EnableSpu::get()
 void DispatcherInfo::EnableSpu::set(bool value)
 {
 	_info->m_enableSPU = value;
-}
-
-StackAlloc^ DispatcherInfo::StackAllocator::get()
-{
-	return gcnew StackAlloc(_info->m_stackAllocator);
-}
-void DispatcherInfo::StackAllocator::set(StackAlloc^ value)
-{
-	_info->m_stackAllocator = value->UnmanagedPointer;
 }
 
 int DispatcherInfo::StepCount::get()

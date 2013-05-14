@@ -2,7 +2,6 @@
 
 #include "CollisionConfiguration.h"
 #include "CollisionCreateFunc.h"
-#include "StackAlloc.h"
 #ifndef DISABLE_UNCOMMON
 #include "PoolAllocator.h"
 #endif
@@ -44,8 +43,3 @@ PoolAllocator^ CollisionConfiguration::PersistentManifoldPool::get()
 	return gcnew PoolAllocator(_native->getPersistentManifoldPool());
 }
 #endif
-
-StackAlloc^ CollisionConfiguration::StackAllocator::get()
-{
-	return gcnew StackAlloc(_native->getStackAllocator());
-}

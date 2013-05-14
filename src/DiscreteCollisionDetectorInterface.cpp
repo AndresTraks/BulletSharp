@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 
 #include "DiscreteCollisionDetectorInterface.h"
-#include "StackAlloc.h"
 #ifndef DISABLE_DEBUGDRAW
 #include "DebugDraw.h"
 #endif
@@ -29,17 +28,6 @@ btScalar DiscreteCollisionDetectorInterface::ClosestPointInput::MaximumDistanceS
 void DiscreteCollisionDetectorInterface::ClosestPointInput::MaximumDistanceSquared::set(btScalar value)
 {
 	_native->m_maximumDistanceSquared = value;
-}
-
-StackAlloc^ DiscreteCollisionDetectorInterface::ClosestPointInput::StackAlloc::get()
-{
-	if (_native->m_stackAlloc == nullptr)
-		return nullptr;
-	return gcnew BulletSharp::StackAlloc(_native->m_stackAlloc);
-}
-void DiscreteCollisionDetectorInterface::ClosestPointInput::StackAlloc::set(BulletSharp::StackAlloc^ value)
-{
-	_native->m_stackAlloc = value->UnmanagedPointer;
 }
 
 Matrix DiscreteCollisionDetectorInterface::ClosestPointInput::TransformA::get()

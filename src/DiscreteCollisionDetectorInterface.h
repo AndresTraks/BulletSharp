@@ -4,7 +4,6 @@
 
 namespace BulletSharp
 {
-	ref class StackAlloc;
 	interface class IDebugDraw;
 
 	public ref class DiscreteCollisionDetectorInterface : BulletSharp::IDisposable
@@ -27,12 +26,6 @@ namespace BulletSharp
 			{
 				btScalar get();
 				void set(btScalar value);
-			}
-
-			property BulletSharp::StackAlloc^ StackAlloc
-			{
-				BulletSharp::StackAlloc^ get();
-				void set(BulletSharp::StackAlloc^ value);
 			}
 
 			property Matrix TransformA

@@ -4,7 +4,6 @@
 #include "ConstraintSolver.h"
 #include "ContactSolverInfo.h"
 #include "Dispatcher.h"
-#include "StackAlloc.h"
 #ifndef DISABLE_CONSTRAINTS
 #include "TypedConstraint.h"
 #endif
@@ -42,19 +41,19 @@ bool ConstraintSolver::IsDisposed::get()
 
 #ifndef DISABLE_CONSTRAINTS
 
-void ConstraintSolver::AllSolved(ContactSolverInfo^ info,
+void ConstraintSolver::AllSolved(ContactSolverInfo^ info
 #ifndef DISABLE_DEBUGDRAW
-	IDebugDraw^ debugDrawer,
+	,IDebugDraw^ debugDrawer
 #endif
-	StackAlloc^ stackAlloc)
+	)
 {
 	_native->allSolved(*info->UnmanagedPointer,
 #ifndef DISABLE_DEBUGDRAW
-		DebugDraw::GetUnmanaged(debugDrawer),
+		DebugDraw::GetUnmanaged(debugDrawer)
 #else
-		0,
+		0
 #endif
-		stackAlloc->UnmanagedPointer);
+	);
 }
 
 void ConstraintSolver::PrepareSolve(int numBodies, int numManifolds)
@@ -72,7 +71,7 @@ btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<Per
 #ifndef DISABLE_DEBUGDRAW
 	IDebugDraw^ debugDrawer,
 #endif
-	StackAlloc^ stackAlloc, Dispatcher^ dispatcher)
+	Dispatcher^ dispatcher)
 {
 	int i;
 	int numBodies = bodies->Length;
@@ -93,7 +92,7 @@ btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<Per
 #else
 		0,
 #endif
-		stackAlloc->UnmanagedPointer, dispatcher->UnmanagedPointer);
+		dispatcher->UnmanagedPointer);
 
 	delete[] bodiesTemp;
 	delete[] manifoldsTemp;

@@ -542,9 +542,6 @@
     <ClCompile Include="src\Serializer.cpp">
       <Filter>Source Files\LinearMath</Filter>
     </ClCompile>
-    <ClCompile Include="src\StackAlloc.cpp">
-      <Filter>Source Files\LinearMath</Filter>
-    </ClCompile>
     <ClCompile Include="src\TransformUtil.cpp">
       <Filter>Source Files\LinearMath</Filter>
     </ClCompile>
@@ -1039,9 +1036,6 @@
       <Filter>Header Files\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="src\Serializer.h">
-      <Filter>Header Files\LinearMath</Filter>
-    </ClInclude>
-    <ClInclude Include="src\StackAlloc.h">
       <Filter>Header Files\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="src\TransformUtil.h">

@@ -2,7 +2,6 @@
 
 #include "CollisionConfiguration.h"
 #include "DefaultCollisionConfiguration.h"
-#include "StackAlloc.h"
 #ifndef DISABLE_UNCOMMON
 #include "PoolAllocator.h"
 #endif
@@ -50,15 +49,6 @@ void DefaultCollisionConstructionInfo::DefaultMaxPersistentManifoldPoolSize::set
 	_native->m_defaultMaxPersistentManifoldPoolSize = value;
 }
 
-int DefaultCollisionConstructionInfo::DefaultStackAllocatorSize::get()
-{
-	return _native->m_defaultStackAllocatorSize;
-}
-void DefaultCollisionConstructionInfo::DefaultStackAllocatorSize::set(int value)
-{
-	_native->m_defaultStackAllocatorSize = value;
-}
-
 #ifndef DISABLE_UNCOMMON
 PoolAllocator^ DefaultCollisionConstructionInfo::PersistentManifoldPool::get()
 {
@@ -69,15 +59,6 @@ void DefaultCollisionConstructionInfo::PersistentManifoldPool::set(PoolAllocator
 	_native->m_persistentManifoldPool = value->UnmanagedPointer;
 }
 #endif
-
-StackAlloc^ DefaultCollisionConstructionInfo::StackAllocator::get()
-{
-	return gcnew StackAlloc(_native->m_stackAlloc);
-}
-void DefaultCollisionConstructionInfo::StackAllocator::set(StackAlloc^ value)
-{
-	_native->m_stackAlloc = value->UnmanagedPointer;
-}
 
 int DefaultCollisionConstructionInfo::UseEpaPenetrationAlgorithm::get()
 {

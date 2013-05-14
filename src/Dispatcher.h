@@ -14,7 +14,6 @@ namespace BulletSharp
 	ref class OverlappingPairCache;
 	ref class PersistentManifold;
 	ref class PoolAllocator;
-	ref class StackAlloc;
 	interface class IDebugDraw;
 
 	public ref class DispatcherInfo
@@ -69,12 +68,6 @@ namespace BulletSharp
 		{
 			bool get();
 			void set(bool value);
-		}
-
-		property StackAlloc^ StackAllocator
-		{
-			StackAlloc^ get();
-			void set(StackAlloc^ value);
 		}
 
 		property int StepCount

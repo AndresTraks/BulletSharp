@@ -8,7 +8,6 @@ namespace BulletSharp
 	ref class ContactSolverInfo;
 	ref class Dispatcher;
 	ref class PersistentManifold;
-	ref class StackAlloc;
 	ref class TypedConstraint;
 	interface class IDebugDraw;
 
@@ -34,11 +33,11 @@ namespace BulletSharp
 		}
 
 #ifndef DISABLE_CONSTRAINTS
-		void AllSolved(ContactSolverInfo^ info,
+		void AllSolved(ContactSolverInfo^ info
 #ifndef DISABLE_DEBUGDRAW
-			IDebugDraw^ debugDrawer,
+			, IDebugDraw^ debugDrawer
 #endif
-			StackAlloc^ stackAlloc);
+			);
 		void PrepareSolve(int numBodies, int numManifolds);
 		void Reset();
 		btScalar SolveGroup(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifold,
@@ -46,7 +45,7 @@ namespace BulletSharp
 #ifndef DISABLE_DEBUGDRAW
 			IDebugDraw^ debugDrawer,
 #endif
-			StackAlloc^ stackAlloc, Dispatcher^ dispatcher);
+			Dispatcher^ dispatcher);
 #endif
 	};
 };

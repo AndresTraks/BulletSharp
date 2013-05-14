@@ -6,7 +6,6 @@ namespace BulletSharp
 {
 	ref class CollisionAlgorithmCreateFunc;
 	ref class PoolAllocator;
-	ref class StackAlloc;
 
 	public ref class CollisionConfiguration
 	{
@@ -38,10 +37,5 @@ namespace BulletSharp
 			PoolAllocator^ get();
 		}
 #endif
-
-		property StackAlloc^ StackAllocator
-		{
-			StackAlloc^ get();
-		}
 	};
 };
