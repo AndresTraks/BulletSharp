@@ -7,53 +7,46 @@
 
 SoftBody::VertexBufferDescriptor::VertexBufferDescriptor(btVertexBufferDescriptor* buffer)
 {
-	_buffer = buffer;
+	_native = buffer;
 }
 
 BufferType SoftBody::VertexBufferDescriptor::BufferType::get()
 {
-	return (BulletSharp::BufferType)_buffer->getBufferType();
+	return (BulletSharp::BufferType)_native->getBufferType();
 }
 
 bool SoftBody::VertexBufferDescriptor::HasNormals::get()
 {
-	return _buffer->hasNormals();
+	return _native->hasNormals();
 }
 
 bool SoftBody::VertexBufferDescriptor::HasVertexPositions::get()
 {
-	return _buffer->hasVertexPositions();
+	return _native->hasVertexPositions();
 }
 
 int SoftBody::VertexBufferDescriptor::NormalOffset::get()
 {
-	return _buffer->getNormalOffset();
+	return _native->getNormalOffset();
 }
 
 int SoftBody::VertexBufferDescriptor::NormalStride::get()
 {
-	return _buffer->getNormalStride();
+	return _native->getNormalStride();
 }
 
 int SoftBody::VertexBufferDescriptor::VertexOffset::get()
 {
-	return _buffer->getVertexOffset();
+	return _native->getVertexOffset();
 }
 
 int SoftBody::VertexBufferDescriptor::VertexStride::get()
 {
-	return _buffer->getVertexStride();
+	return _native->getVertexStride();
 }
 
-btVertexBufferDescriptor* SoftBody::VertexBufferDescriptor::UnmanagedPointer::get()
-{
-	return _buffer;
-}
-void SoftBody::VertexBufferDescriptor::UnmanagedPointer::set(btVertexBufferDescriptor* value)
-{
-	_buffer = value;
-}
 
+#define Native static_cast<btCPUVertexBufferDescriptor*>(_native)
 
 SoftBody::CpuVertexBufferDescriptor::CpuVertexBufferDescriptor(FloatArray^ array, int vertexOffset, int vertexStride, int normalOffset, int normalStride)
 : VertexBufferDescriptor(new btCPUVertexBufferDescriptor((array != nullptr) ? (btScalar*)array->_native : 0, vertexOffset, vertexStride, normalOffset, normalStride))
@@ -63,12 +56,7 @@ SoftBody::CpuVertexBufferDescriptor::CpuVertexBufferDescriptor(FloatArray^ array
 
 FloatArray^ SoftBody::CpuVertexBufferDescriptor::VertexBuffer::get()
 {
-	return gcnew FloatArray(UnmanagedPointer->getBasePointer(), _length);
-}
-
-btCPUVertexBufferDescriptor* SoftBody::CpuVertexBufferDescriptor::UnmanagedPointer::get()
-{
-	return (btCPUVertexBufferDescriptor*) VertexBufferDescriptor::UnmanagedPointer;
+	return gcnew FloatArray(Native->getBasePointer(), _length);
 }
 
 #endif

@@ -82,10 +82,9 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		btConvexCast* _convexCast;
-
 	internal:
+		btConvexCast* _native;
+
 		ConvexCast(btConvexCast* convexCast);
 
 	public:
@@ -99,13 +98,6 @@ namespace BulletSharp
 		property bool IsDisposed
 		{
 			virtual bool get();
-		}
-
-	internal:
-		property btConvexCast* UnmanagedPointer
-		{
-			virtual btConvexCast* get();
-			void set(btConvexCast* value);
 		}
 	};
 };

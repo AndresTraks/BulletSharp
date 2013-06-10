@@ -12,8 +12,8 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		btOverlapCallback* _callback;
+	internal:
+		btOverlapCallback* _native;
 
 	public:
 		!OverlapCallback();
@@ -26,13 +26,6 @@ namespace BulletSharp
 		property bool IsDisposed
 		{
 			virtual bool get();
-		}
-
-	internal:
-		property btOverlapCallback* UnmanagedPointer
-		{
-			virtual btOverlapCallback* get();
-			void set(btOverlapCallback* value);
 		}
 	};
 
@@ -61,13 +54,6 @@ namespace BulletSharp
 		property bool IsDisposed
 		{
 			virtual bool get();
-		}
-
-	internal:
-		property btOverlapFilterCallback* UnmanagedPointer
-		{
-			virtual btOverlapFilterCallback* get();
-			void set(btOverlapFilterCallback* value);
 		}
 	};
 
@@ -104,12 +90,6 @@ namespace BulletSharp
 		{
 			AlignedBroadphasePairArray^ get();
 		}
-
-	internal:
-		property btOverlappingPairCache* UnmanagedPointer
-		{
-			btOverlappingPairCache* get() new;
-		}
 	};
 
 	public ref class HashedOverlappingPairCache : OverlappingPairCache
@@ -132,12 +112,6 @@ namespace BulletSharp
 			BulletSharp::OverlapFilterCallback^ get();
 			void set(BulletSharp::OverlapFilterCallback^ value);
 		}
-
-	internal:
-		property btHashedOverlappingPairCache* UnmanagedPointer
-		{
-			btHashedOverlappingPairCache* get() new;
-		}
 	};
 
 	public ref class SortedOverlappingPairCache : OverlappingPairCache
@@ -154,12 +128,6 @@ namespace BulletSharp
 		{
 			BulletSharp::OverlapFilterCallback^ get();
 			void set(BulletSharp::OverlapFilterCallback^ value);
-		}
-
-	internal:
-		property btSortedOverlappingPairCache* UnmanagedPointer
-		{
-			btSortedOverlappingPairCache* get() new;
 		}
 	};
 

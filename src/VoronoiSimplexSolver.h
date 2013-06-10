@@ -6,10 +6,9 @@ namespace BulletSharp
 {
 	public ref class SubSimplexClosestResult
 	{
-	private:
-		btSubSimplexClosestResult* _result;
-
 	internal:
+		btSubSimplexClosestResult* _native;
+
 		SubSimplexClosestResult(btSubSimplexClosestResult* result);
 
 	public:
@@ -20,13 +19,6 @@ namespace BulletSharp
 		void SetBarycentricCoordinates(btScalar a, btScalar b);
 		void SetBarycentricCoordinates(btScalar a);
 		void SetBarycentricCoordinates();
-
-	internal:
-		property btSubSimplexClosestResult* UnmanagedPointer
-		{
-			virtual btSubSimplexClosestResult* get();
-			void set(btSubSimplexClosestResult* value);
-		}
 	};
 
 #ifdef NO_VIRTUAL_INTERFACE
@@ -39,8 +31,8 @@ namespace BulletSharp
 		VoronoiSimplexSolver(btVoronoiSimplexSolver* solver);
 
 #ifdef NO_VIRTUAL_INTERFACE
-	private:
-		btVoronoiSimplexSolver* _solver;
+	internal:
+		btVoronoiSimplexSolver* _native;
 
 	public:
 		!VoronoiSimplexSolver();
@@ -83,17 +75,6 @@ namespace BulletSharp
 		property int NumVertices
 		{
 			int get();
-		}
-
-	internal:
-		property btVoronoiSimplexSolver* UnmanagedPointer
-		{
-#ifdef NO_VIRTUAL_INTERFACE
-			virtual btVoronoiSimplexSolver* get();
-			void set(btVoronoiSimplexSolver* value);
-#else
-			btVoronoiSimplexSolver* get() new;
-#endif
 		}
 	};
 };

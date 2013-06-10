@@ -11,12 +11,12 @@ ConvexTriangleMeshShape::ConvexTriangleMeshShape(btConvexTriangleMeshShape* mesh
 }
 
 ConvexTriangleMeshShape::ConvexTriangleMeshShape(StridingMeshInterface^ meshInterface, bool calcAabb)
-: PolyhedralConvexAabbCachingShape(new btConvexTriangleMeshShape(meshInterface->UnmanagedPointer, calcAabb))
+: PolyhedralConvexAabbCachingShape(new btConvexTriangleMeshShape(meshInterface->_native, calcAabb))
 {
 }
 
 ConvexTriangleMeshShape::ConvexTriangleMeshShape(StridingMeshInterface^ meshInterface)
-: PolyhedralConvexAabbCachingShape(new btConvexTriangleMeshShape(meshInterface->UnmanagedPointer))
+: PolyhedralConvexAabbCachingShape(new btConvexTriangleMeshShape(meshInterface->_native))
 {
 }
 

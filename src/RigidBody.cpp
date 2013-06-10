@@ -25,7 +25,7 @@ RigidBody::RigidBody(btRigidBody* body)
 #ifndef DISABLE_CONSTRAINTS
 void RigidBody::AddConstraintRef(TypedConstraint^ constraint)
 {
-	Native->addConstraintRef(constraint->UnmanagedPointer);
+	Native->addConstraintRef(constraint->_native);
 }
 
 TypedConstraint^ RigidBody::GetConstraintRef(int index)
@@ -35,7 +35,7 @@ TypedConstraint^ RigidBody::GetConstraintRef(int index)
 
 void RigidBody::RemoveConstraintRef(TypedConstraint^ constraint)
 {
-	Native->removeConstraintRef(constraint->UnmanagedPointer);
+	Native->removeConstraintRef(constraint->_native);
 }
 
 int RigidBody::ConstraintRefCount::get()
@@ -106,7 +106,7 @@ void RigidBody::ApplyTorqueImpulse(Vector3 torque)
 
 bool RigidBody::CheckCollideWithOverride(CollisionObject^ co)
 {
-	return Native->checkCollideWithOverride(co->UnmanagedPointer);
+	return Native->checkCollideWithOverride(co->_native);
 }
 
 void RigidBody::ClearForces()
@@ -249,7 +249,7 @@ void RigidBody::UpdateInertiaTensor()
 
 RigidBody^ RigidBody::Upcast(CollisionObject^ colObj)
 {
-	btRigidBody* body = btRigidBody::upcast(colObj->UnmanagedPointer);
+	btRigidBody* body = btRigidBody::upcast(colObj->_native);
 	return (RigidBody^)CollisionObject::GetManaged(body);
 }
 

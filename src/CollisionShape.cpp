@@ -48,8 +48,9 @@ CollisionShape::CollisionShape(btCollisionShape* collisionShape)
 
 CollisionShape^ CollisionShape::GetManaged(btCollisionShape* collisionShape)
 {
-	if (collisionShape == 0)
+	if (collisionShape == 0) {
 		return nullptr;
+	}
 
 	void* userObj = collisionShape->getUserPointer();
 	if (userObj)
@@ -287,13 +288,13 @@ int CollisionShape::CalculateSerializeBufferSize()
 
 String^ CollisionShape::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
 {
-	const char* name = _native->serialize(dataBuffer.ToPointer(), serializer->UnmanagedPointer);
+	const char* name = _native->serialize(dataBuffer.ToPointer(), serializer->_native);
 	return gcnew String(name);
 }
 
 void CollisionShape::SerializeSingleShape(BulletSharp::Serializer^ serializer)
 {
-	_native->serializeSingleShape(serializer->UnmanagedPointer);
+	_native->serializeSingleShape(serializer->_native);
 }
 #endif
 

@@ -28,7 +28,7 @@ MultiThreaded::Win32ThreadConstructionInfo::Win32ThreadConstructionInfo(String^ 
 		memorySetupFunc = SolverlsMemoryFunc;
 	}
 
-	_info = new ::Win32ThreadSupport::Win32ThreadConstructionInfo((char*)uniqueNameTemp, threadFunc, memorySetupFunc);
+	_native = new ::Win32ThreadSupport::Win32ThreadConstructionInfo((char*)uniqueNameTemp, threadFunc, memorySetupFunc);
 
 	StringConv::FreeUnmanagedString(uniqueNameTemp);
 }
@@ -56,19 +56,14 @@ MultiThreaded::Win32ThreadConstructionInfo::Win32ThreadConstructionInfo(String^ 
 		memorySetupFunc = SolverlsMemoryFunc;
 	}
 
-	_info = new ::Win32ThreadSupport::Win32ThreadConstructionInfo((char*)uniqueNameTemp, threadFunc, memorySetupFunc, threadCount);
+	_native = new ::Win32ThreadSupport::Win32ThreadConstructionInfo((char*)uniqueNameTemp, threadFunc, memorySetupFunc, threadCount);
 
 	StringConv::FreeUnmanagedString(uniqueNameTemp);
 }
 
-::Win32ThreadSupport::Win32ThreadConstructionInfo* MultiThreaded::Win32ThreadConstructionInfo::UnmanagedPointer::get()
-{
-	return _info;
-}
-
 
 MultiThreaded::Win32ThreadSupport::Win32ThreadSupport(Win32ThreadConstructionInfo^ info)
-: ThreadSupportInterface(new ::Win32ThreadSupport(*info->UnmanagedPointer))
+: ThreadSupportInterface(new ::Win32ThreadSupport(*info->_native))
 {
 }
 

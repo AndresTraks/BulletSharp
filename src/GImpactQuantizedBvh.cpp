@@ -80,35 +80,35 @@ bool QuantizedBvhNode::IsLeafNode::get()
 
 GImpactQuantizedBvh::GImpactQuantizedBvh(btGImpactQuantizedBvh* bvh)
 {
-	_bvh = bvh;
+	_native = bvh;
 }
 
 GImpactQuantizedBvh::GImpactQuantizedBvh()
 {
-	_bvh = new btGImpactQuantizedBvh();
+	_native = new btGImpactQuantizedBvh();
 }
 
 GImpactQuantizedBvh::GImpactQuantizedBvh(PrimitiveManagerBase^ primitiveManager)
 {
-	_bvh = new btGImpactQuantizedBvh(primitiveManager->UnmanagedPointer);
+	_native = new btGImpactQuantizedBvh(primitiveManager->_native);
 }
 
 bool GImpactQuantizedBvh::BoxQuery(Aabb^ box, [Out] AlignedIntArray^% collided_results)
 {
-	return _bvh->boxQuery(*box->UnmanagedPointer, *(btAlignedObjectArray<int>*)collided_results->_native);
+	return _native->boxQuery(*box->_native, *(btAlignedObjectArray<int>*)collided_results->_native);
 }
 
 bool GImpactQuantizedBvh::BoxQueryTrans(Aabb^ box, Matrix transform, [Out] AlignedIntArray^% collided_results)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
-	bool ret = _bvh->boxQueryTrans(*box->UnmanagedPointer, *transformTemp, *(btAlignedObjectArray<int>*)collided_results->_native);
+	bool ret = _native->boxQueryTrans(*box->_native, *transformTemp, *(btAlignedObjectArray<int>*)collided_results->_native);
 	ALIGNED_FREE(transformTemp);
 	return ret;
 }
 
 void GImpactQuantizedBvh::BuildSet()
 {
-	_bvh->buildSet();
+	_native->buildSet();
 }
 
 void GImpactQuantizedBvh::FindCollision(GImpactBvh^ boxset1, Matrix trans1, GImpactBvh^ boxset2, Matrix trans2, [Out] PairSet^% collision_pairs)
@@ -117,7 +117,7 @@ void GImpactQuantizedBvh::FindCollision(GImpactBvh^ boxset1, Matrix trans1, GImp
 	btTransform* trans2Temp = Math::MatrixToBtTransform(trans2);
 	btPairSet* collision_pairsTemp = new btPairSet();
 
-	btGImpactBvh::find_collision(boxset1->UnmanagedPointer, *trans1Temp, boxset2->UnmanagedPointer, *trans2Temp, *collision_pairsTemp);
+	btGImpactBvh::find_collision(boxset1->_native, *trans1Temp, boxset2->_native, *trans2Temp, *collision_pairsTemp);
 	collision_pairs = gcnew PairSet(collision_pairsTemp);
 
 	ALIGNED_FREE(trans1Temp);
@@ -126,51 +126,51 @@ void GImpactQuantizedBvh::FindCollision(GImpactBvh^ boxset1, Matrix trans1, GImp
 
 int GImpactQuantizedBvh::GetEscapeNodeIndex(int nodeIndex)
 {
-	return _bvh->getEscapeNodeIndex(nodeIndex);
+	return _native->getEscapeNodeIndex(nodeIndex);
 }
 
 int GImpactQuantizedBvh::GetLeftNode(int nodeIndex)
 {
-	return _bvh->getLeftNode(nodeIndex);
+	return _native->getLeftNode(nodeIndex);
 }
 
 void GImpactQuantizedBvh::GetNodeBound(int nodeIndex, [Out] Aabb^% bound)
 {
 	btAABB* boundTemp = new btAABB;
-	_bvh->getNodeBound(nodeIndex, *boundTemp);
+	_native->getNodeBound(nodeIndex, *boundTemp);
 	bound = gcnew Aabb(boundTemp);
 }
 
 int GImpactQuantizedBvh::GetNodeData(int nodeIndex)
 {
-	return _bvh->getNodeData(nodeIndex);
+	return _native->getNodeData(nodeIndex);
 }
 
 QuantizedBvhNode^ GImpactQuantizedBvh::GetNodePointer(int index)
 {
-	return gcnew QuantizedBvhNode(_bvh->get_node_pointer(index));
+	return gcnew QuantizedBvhNode(_native->get_node_pointer(index));
 }
 
 QuantizedBvhNode^ GImpactQuantizedBvh::GetNodePointer()
 {
-	return gcnew QuantizedBvhNode(_bvh->get_node_pointer());
+	return gcnew QuantizedBvhNode(_native->get_node_pointer());
 }
 
 void GImpactQuantizedBvh::GetNodeTriangle(int nodeIndex, [Out] PrimitiveTriangle^% triangle)
 {
 	btPrimitiveTriangle* triangleTemp = new btPrimitiveTriangle;
-	_bvh->getNodeTriangle(nodeIndex, *triangleTemp);
+	_native->getNodeTriangle(nodeIndex, *triangleTemp);
 	triangle = gcnew PrimitiveTriangle(triangleTemp);
 }
 
 int GImpactQuantizedBvh::GetRightNode(int nodeIndex)
 {
-	return _bvh->getRightNode(nodeIndex);
+	return _native->getRightNode(nodeIndex);
 }
 
 bool GImpactQuantizedBvh::IsLeafNode(int nodeIndex)
 {
-	return _bvh->isLeafNode(nodeIndex);
+	return _native->isLeafNode(nodeIndex);
 }
 
 bool GImpactQuantizedBvh::RayQuery(Vector3 ray_dir, Vector3 ray_origin, [Out] AlignedIntArray^% collided_results)
@@ -179,7 +179,7 @@ bool GImpactQuantizedBvh::RayQuery(Vector3 ray_dir, Vector3 ray_origin, [Out] Al
 	VECTOR3_DEF(ray_origin);
 	btAlignedObjectArray<int>* collided_resultsTemp = new btAlignedObjectArray<int>();
 
-	bool ret = _bvh->rayQuery(VECTOR3_USE(ray_dir), VECTOR3_USE(ray_origin), *collided_resultsTemp);
+	bool ret = _native->rayQuery(VECTOR3_USE(ray_dir), VECTOR3_USE(ray_origin), *collided_resultsTemp);
 	collided_results = gcnew AlignedIntArray(collided_resultsTemp);
 
 	VECTOR3_DEL(ray_dir);
@@ -190,12 +190,12 @@ bool GImpactQuantizedBvh::RayQuery(Vector3 ray_dir, Vector3 ray_origin, [Out] Al
 
 void GImpactQuantizedBvh::SetNodeBound(int nodeIndex, Aabb^ bound)
 {
-	_bvh->setNodeBound(nodeIndex, *bound->UnmanagedPointer);
+	_native->setNodeBound(nodeIndex, *bound->_native);
 }
 
 void GImpactQuantizedBvh::Update()
 {
-	_bvh->update();
+	_native->update();
 }
 
 //float GImpactQuantizedBvh::AverageTreeCollisionTime::get()
@@ -212,32 +212,32 @@ void GImpactQuantizedBvh_GlobalBox(btGImpactQuantizedBvh* bvh, btAABB* aabb)
 Aabb^ GImpactQuantizedBvh::GlobalBox::get()
 {
 	btAABB* aabb = new btAABB;
-	GImpactQuantizedBvh_GlobalBox(_bvh, aabb);
+	GImpactQuantizedBvh_GlobalBox(_native, aabb);
 	return gcnew Aabb(aabb);
 }
 
 bool GImpactQuantizedBvh::HasHierarchy::get()
 {
-	return _bvh->hasHierarchy();
+	return _native->hasHierarchy();
 }
 
 bool GImpactQuantizedBvh::IsTrimesh::get()
 {
-	return _bvh->isTrimesh();
+	return _native->isTrimesh();
 }
 
 int GImpactQuantizedBvh::NodeCount::get()
 {
-	return _bvh->getNodeCount();
+	return _native->getNodeCount();
 }
 
 PrimitiveManagerBase^ GImpactQuantizedBvh::PrimitiveManager::get()
 {
-	return gcnew PrimitiveManagerBase(_bvh->getPrimitiveManager());
+	return gcnew PrimitiveManagerBase(_native->getPrimitiveManager());
 }
 void GImpactQuantizedBvh::PrimitiveManager::set(PrimitiveManagerBase^ value)
 {
-	_bvh->setPrimitiveManager(value->UnmanagedPointer);
+	_native->setPrimitiveManager(value->_native);
 }
 
 #endif

@@ -16,7 +16,7 @@
 
 void InternalEdgeUtility::GenerateInternalEdgeInfo(BvhTriangleMeshShape^ trimeshShape, TriangleInfoMap^ triangleInfoMap)
 {
-	btGenerateInternalEdgeInfo((btBvhTriangleMeshShape*)trimeshShape->_native, triangleInfoMap->UnmanagedPointer);
+	btGenerateInternalEdgeInfo((btBvhTriangleMeshShape*)trimeshShape->_native, triangleInfoMap->_native);
 }
 
 void InternalEdgeUtility::AdjustInternalEdgeContacts(ManifoldPoint^ cp, CollisionObjectWrapper^ trimeshColObj0Wrap, CollisionObjectWrapper^ otherColObj1Wrap,

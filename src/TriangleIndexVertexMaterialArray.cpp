@@ -7,86 +7,83 @@
 
 MaterialProperties::MaterialProperties()
 {
-	_properties = new btMaterialProperties();
+	_native = new btMaterialProperties();
 }
 
 IntPtr MaterialProperties::MaterialBase::get()
 {
-	return IntPtr((void*)_properties->m_materialBase);
+	return IntPtr((void*)_native->m_materialBase);
 }
 void MaterialProperties::MaterialBase::set(IntPtr value)
 {
-	_properties->m_materialBase = (const unsigned char *)value.ToPointer();
+	_native->m_materialBase = (const unsigned char *)value.ToPointer();
 }
 
 int MaterialProperties::MaterialStride::get()
 {
-	return _properties->m_materialStride;
+	return _native->m_materialStride;
 }
 void MaterialProperties::MaterialStride::set(int value)
 {
-	_properties->m_materialStride = value;
+	_native->m_materialStride = value;
 }
 
 PhyScalarType MaterialProperties::MaterialType::get()
 {
-	return (PhyScalarType)_properties->m_materialType;
+	return (PhyScalarType)_native->m_materialType;
 }
 void MaterialProperties::MaterialType::set(PhyScalarType value)
 {
-	_properties->m_materialType = (PHY_ScalarType)value;
+	_native->m_materialType = (PHY_ScalarType)value;
 }
 
 int MaterialProperties::NumMaterials::get()
 {
-	return _properties->m_numMaterials;
+	return _native->m_numMaterials;
 }
 void MaterialProperties::NumMaterials::set(int value)
 {
-	_properties->m_numMaterials = value;
+	_native->m_numMaterials = value;
 }
 
 int MaterialProperties::NumTriangles::get()
 {
-	return _properties->m_numTriangles;
+	return _native->m_numTriangles;
 }
 void MaterialProperties::NumTriangles::set(int value)
 {
-	_properties->m_numTriangles = value;
+	_native->m_numTriangles = value;
 }
 
 IntPtr MaterialProperties::TriangleMaterialsBase::get()
 {
-	return IntPtr((void*)_properties->m_triangleMaterialsBase);
+	return IntPtr((void*)_native->m_triangleMaterialsBase);
 }
 void MaterialProperties::TriangleMaterialsBase::set(IntPtr value)
 {
-	_properties->m_triangleMaterialsBase = (const unsigned char *)value.ToPointer();
+	_native->m_triangleMaterialsBase = (const unsigned char *)value.ToPointer();
 }
 
 int MaterialProperties::TriangleMaterialStride::get()
 {
-	return _properties->m_triangleMaterialStride;
+	return _native->m_triangleMaterialStride;
 }
 void MaterialProperties::TriangleMaterialStride::set(int value)
 {
-	_properties->m_triangleMaterialStride = value;
+	_native->m_triangleMaterialStride = value;
 }
 
 PhyScalarType MaterialProperties::TriangleType::get()
 {
-	return (PhyScalarType)_properties->m_triangleType;
+	return (PhyScalarType)_native->m_triangleType;
 }
 void MaterialProperties::TriangleType::set(PhyScalarType value)
 {
-	_properties->m_triangleType = (PHY_ScalarType)value;
+	_native->m_triangleType = (PHY_ScalarType)value;
 }
 
-btMaterialProperties* MaterialProperties::UnmanagedPointer::get()
-{
-	return _properties;
-}
 
+#define Native static_cast<btTriangleIndexVertexMaterialArray*>(_native)
 
 TriangleIndexVertexMaterialArray::TriangleIndexVertexMaterialArray(btTriangleIndexVertexMaterialArray* triangleArray)
 : TriangleIndexVertexArray(triangleArray)
@@ -120,7 +117,7 @@ TriangleIndexVertexMaterialArray::TriangleIndexVertexMaterialArray(array<int>^ i
 	memcpy(materialsArray, (unsigned char*)materialsBase, materials->Length * BulletMaterial::SizeInBytes);
 	int* materialIndicesArray = Math::IntArrayToUnmanaged(indices, indices->Length / 3);
 
-	UnmanagedPointer = new btTriangleIndexVertexMaterialArray(
+	_native = new btTriangleIndexVertexMaterialArray(
 		indices->Length / 3, indicesArray, 3 * sizeof(int),
 		vertices->Length, verticesArray[0], sizeof(btVector3),
 		materials->Length, materialsArray, materials[0].SizeInBytes,
@@ -132,7 +129,7 @@ TriangleIndexVertexMaterialArray::TriangleIndexVertexMaterialArray(array<int>^ i
 
 void TriangleIndexVertexMaterialArray::AddMaterialProperties(MaterialProperties^ mat, PhyScalarType triangleType)
 {
-	UnmanagedPointer->addMaterialProperties(*mat->UnmanagedPointer, (PHY_ScalarType)triangleType);
+	Native->addMaterialProperties(*mat->_native, (PHY_ScalarType)triangleType);
 }
 
 void TriangleIndexVertexMaterialArray::GetLockedMaterialData([Out] BulletSharp::DataStream^% materialData,
@@ -149,7 +146,7 @@ void TriangleIndexVertexMaterialArray::GetLockedMaterialData([Out] BulletSharp::
 	int triangleMaterialStrideTemp;
 	PHY_ScalarType triangleTypeTemp;
 
-	UnmanagedPointer->getLockedMaterialBase(&materialDataTemp, numMaterialsTemp, materialTypeTemp,
+	Native->getLockedMaterialBase(&materialDataTemp, numMaterialsTemp, materialTypeTemp,
 		materialStrideTemp, &triangleMaterialDataTemp, numTrianglesTemp, triangleMaterialStrideTemp, triangleTypeTemp, subpart);
 
 	numMaterials = numMaterialsTemp;
@@ -177,7 +174,7 @@ void TriangleIndexVertexMaterialArray::GetLockedMaterialData([Out] BulletSharp::
 	int triangleMaterialStrideTemp;
 	PHY_ScalarType triangleTypeTemp;
 
-	UnmanagedPointer->getLockedMaterialBase(&materialDataTemp, numMaterialsTemp, materialTypeTemp,
+	Native->getLockedMaterialBase(&materialDataTemp, numMaterialsTemp, materialTypeTemp,
 		materialStrideTemp, &triangleMaterialDataTemp, numTrianglesTemp, triangleMaterialStrideTemp, triangleTypeTemp);
 
 	numMaterials = numMaterialsTemp;
@@ -205,7 +202,7 @@ void TriangleIndexVertexMaterialArray::GetLockedReadOnlyMaterialData([Out] Bulle
 	int triangleMaterialStrideTemp;
 	PHY_ScalarType triangleTypeTemp;
 
-	UnmanagedPointer->getLockedReadOnlyMaterialBase(&materialDataTemp, numMaterialsTemp, materialTypeTemp,
+	Native->getLockedReadOnlyMaterialBase(&materialDataTemp, numMaterialsTemp, materialTypeTemp,
 		materialStrideTemp, &triangleMaterialDataTemp, numTrianglesTemp, triangleMaterialStrideTemp, triangleTypeTemp, subpart);
 
 	numMaterials = numMaterialsTemp;
@@ -233,7 +230,7 @@ void TriangleIndexVertexMaterialArray::GetLockedReadOnlyMaterialData([Out] Bulle
 	int triangleMaterialStrideTemp;
 	PHY_ScalarType triangleTypeTemp;
 
-	UnmanagedPointer->getLockedReadOnlyMaterialBase(&materialDataTemp, numMaterialsTemp, materialTypeTemp,
+	Native->getLockedReadOnlyMaterialBase(&materialDataTemp, numMaterialsTemp, materialTypeTemp,
 		materialStrideTemp, &triangleMaterialDataTemp, numTrianglesTemp, triangleMaterialStrideTemp, triangleTypeTemp);
 
 	numMaterials = numMaterialsTemp;
@@ -245,11 +242,6 @@ void TriangleIndexVertexMaterialArray::GetLockedReadOnlyMaterialData([Out] Bulle
 
 	materialData = gcnew BulletSharp::DataStream((void*)materialDataTemp, numMaterials * materialStride, true, false, false);
 	triangleMaterialData = gcnew BulletSharp::DataStream((void*)triangleMaterialDataTemp, numTrianglesTemp * triangleMaterialStrideTemp, true, false, false);
-}
-
-btTriangleIndexVertexMaterialArray* TriangleIndexVertexMaterialArray::UnmanagedPointer::get()
-{
-	return (btTriangleIndexVertexMaterialArray*)TriangleIndexVertexArray::UnmanagedPointer;
 }
 
 #endif

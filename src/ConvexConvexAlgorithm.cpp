@@ -12,7 +12,7 @@
 #define Native static_cast<btConvexConvexAlgorithm::CreateFunc*>(_native)
 
 ConvexConvexAlgorithm::CreateFunc::CreateFunc(SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ pdSolver)
-: CollisionAlgorithmCreateFunc(new btConvexConvexAlgorithm::CreateFunc(simplexSolver->UnmanagedPointer, pdSolver->_native))
+: CollisionAlgorithmCreateFunc(new btConvexConvexAlgorithm::CreateFunc(simplexSolver->_native, pdSolver->_native))
 {
 }
 
@@ -49,7 +49,7 @@ SimplexSolverInterface^ ConvexConvexAlgorithm::CreateFunc::SimplexSolver::get()
 }
 void ConvexConvexAlgorithm::CreateFunc::SimplexSolver::set(SimplexSolverInterface^ value)
 {
-	Native->m_simplexSolver = value->UnmanagedPointer;
+	Native->m_simplexSolver = value->_native;
 }
 
 
@@ -60,7 +60,7 @@ ConvexConvexAlgorithm::ConvexConvexAlgorithm(PersistentManifold^ mf, CollisionAl
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, SimplexSolverInterface^ simplexSolver,
 	ConvexPenetrationDepthSolver^ pdSolver, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
 : ActivatingCollisionAlgorithm(new btConvexConvexAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf),
-	*ci->_native, body0Wrap->_native, body1Wrap->_native, simplexSolver->UnmanagedPointer,
+	*ci->_native, body0Wrap->_native, body1Wrap->_native, simplexSolver->_native,
 	pdSolver->_native, numPerturbationIterations, minimumPointsPerturbationThreshold))
 {
 }

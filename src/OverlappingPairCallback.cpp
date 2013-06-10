@@ -83,12 +83,3 @@ bool OverlappingPairCallback::IsDisposed::get()
 {
 	return (_native == NULL);
 }
-
-btOverlappingPairCallback* OverlappingPairCallback::UnmanagedPointer::get()
-{
-	return _native;
-}
-void OverlappingPairCallback::UnmanagedPointer::set(btOverlappingPairCallback* value)
-{
-	_native = value;
-}

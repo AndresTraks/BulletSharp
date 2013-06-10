@@ -47,7 +47,7 @@ void ConstraintSolver::AllSolved(ContactSolverInfo^ info
 #endif
 	)
 {
-	_native->allSolved(*info->UnmanagedPointer,
+	_native->allSolved(*(btContactSolverInfo*)info->_native,
 #ifndef DISABLE_DEBUGDRAW
 		DebugDraw::GetUnmanaged(debugDrawer)
 #else
@@ -83,16 +83,16 @@ btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<Per
 	btTypedConstraint** constraintsTemp = new btTypedConstraint*[numConstraints];
 
 	for (i=0; i<numBodies; i++)
-		bodiesTemp[i] = bodies[i]->UnmanagedPointer;
+		bodiesTemp[i] = bodies[i]->_native;
 
 	btScalar ret = _native->solveGroup(bodiesTemp, numBodies, manifoldsTemp, numManifolds,
-		constraintsTemp, numConstraints, *info->UnmanagedPointer,
+		constraintsTemp, numConstraints, *(btContactSolverInfo*)info->_native,
 #ifndef DISABLE_DEBUGDRAW
 		DebugDraw::GetUnmanaged(debugDrawer),
 #else
 		0,
 #endif
-		dispatcher->UnmanagedPointer);
+		dispatcher->_native);
 
 	delete[] bodiesTemp;
 	delete[] manifoldsTemp;

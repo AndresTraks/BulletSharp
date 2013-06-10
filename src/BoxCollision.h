@@ -4,10 +4,9 @@ namespace BulletSharp
 {
 	public ref class Aabb
 	{
-	private:
-		btAABB* _aabb;
-
 	internal:
+		btAABB* _native;
+
 		Aabb(btAABB* aabb);
 
 	public:

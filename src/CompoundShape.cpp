@@ -126,7 +126,7 @@ void CompoundShape::RecalculateLocalAabb()
 
 void CompoundShape::RemoveChildShape(CollisionShape^ shape)
 {
-	Native->removeChildShape(shape->UnmanagedPointer);
+	Native->removeChildShape(shape->_native);
 }
 
 void CompoundShape::RemoveChildShapeByIndex(int childShapeindex)

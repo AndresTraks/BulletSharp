@@ -6,8 +6,8 @@ namespace BulletSharp
 
 	public ref class TriangleInfoMap
 	{
-	private:
-		btTriangleInfoMap* _triangleInfoMap;
+	internal:
+		btTriangleInfoMap* _native;
 
 	public:
 		TriangleInfoMap();
@@ -58,13 +58,6 @@ namespace BulletSharp
 		{
 			btScalar get();
 			void set(btScalar value);
-		}
-
-	internal:
-		property btTriangleInfoMap* UnmanagedPointer
-		{
-			virtual btTriangleInfoMap* get();
-			void set(btTriangleInfoMap* value);
 		}
 	};
 };

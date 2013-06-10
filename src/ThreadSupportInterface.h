@@ -78,10 +78,9 @@ namespace BulletSharp
 			virtual event EventHandler^ OnDisposing;
 			virtual event EventHandler^ OnDisposed;
 
-		private:
-			btThreadSupportInterface* _threadSupport;
-
 		internal:
+			btThreadSupportInterface* _native;
+
 			ThreadSupportInterface(btThreadSupportInterface* threadSupport);
 
 		public:
@@ -109,11 +108,6 @@ namespace BulletSharp
 			property bool IsDisposed
 			{
 				virtual bool get();
-			}
-
-			property btThreadSupportInterface* UnmanagedPointer
-			{
-				btThreadSupportInterface* get();
 			}
 		};
 	};

@@ -14,11 +14,16 @@ DefaultCollisionConstructionInfo::DefaultCollisionConstructionInfo()
 #ifndef DISABLE_UNCOMMON
 PoolAllocator^ DefaultCollisionConstructionInfo::CollisionAlgorithmPool::get()
 {
-	return gcnew PoolAllocator(_native->m_collisionAlgorithmPool);
+	if (_collisionAlgorithmPool == nullptr)
+	{
+		_collisionAlgorithmPool = gcnew PoolAllocator(_native->m_collisionAlgorithmPool);
+	}
+	return _collisionAlgorithmPool;
 }
 void DefaultCollisionConstructionInfo::CollisionAlgorithmPool::set(PoolAllocator^ value)
 {
-	_native->m_collisionAlgorithmPool = value->UnmanagedPointer;
+	_native->m_collisionAlgorithmPool = value->_native;
+	_collisionAlgorithmPool = value;
 }
 #endif
 
@@ -52,11 +57,16 @@ void DefaultCollisionConstructionInfo::DefaultMaxPersistentManifoldPoolSize::set
 #ifndef DISABLE_UNCOMMON
 PoolAllocator^ DefaultCollisionConstructionInfo::PersistentManifoldPool::get()
 {
-	return gcnew PoolAllocator(_native->m_persistentManifoldPool);
+	if (_persistentManifoldPool == nullptr)
+	{
+		_persistentManifoldPool = gcnew PoolAllocator(_native->m_persistentManifoldPool);
+	}
+	return _persistentManifoldPool;
 }
 void DefaultCollisionConstructionInfo::PersistentManifoldPool::set(PoolAllocator^ value)
 {
-	_native->m_persistentManifoldPool = value->UnmanagedPointer;
+	_native->m_persistentManifoldPool = value->_native;
+	_persistentManifoldPool = value;
 }
 #endif
 

@@ -106,7 +106,7 @@ bool MultiThreaded::CriticalSection::IsDisposed::get()
 
 MultiThreaded::ThreadSupportInterface::ThreadSupportInterface(btThreadSupportInterface* threadSupport)
 {
-	_threadSupport = threadSupport;
+	_native = threadSupport;
 }
 
 MultiThreaded::ThreadSupportInterface::~ThreadSupportInterface()
@@ -121,49 +121,49 @@ MultiThreaded::ThreadSupportInterface::!ThreadSupportInterface()
 
 	OnDisposing(this, nullptr);
 
-	_threadSupport = NULL;
+	_native = NULL;
 
 	OnDisposed(this, nullptr);
 }
 
 Barrier^ MultiThreaded::ThreadSupportInterface::CreateBarrier()
 {
-	return gcnew Barrier(_threadSupport->createBarrier());
+	return gcnew Barrier(_native->createBarrier());
 }
 
 CriticalSection^ MultiThreaded::ThreadSupportInterface::CreateCriticalSection()
 {
-	return gcnew CriticalSection(_threadSupport->createCriticalSection());
+	return gcnew CriticalSection(_native->createCriticalSection());
 }
 
 void MultiThreaded::ThreadSupportInterface::DeleteBarrier(Barrier^ barrier)
 {
-	_threadSupport->deleteBarrier(barrier->_native);
+	_native->deleteBarrier(barrier->_native);
 }
 
 void MultiThreaded::ThreadSupportInterface::DeleteCriticalSection(CriticalSection^ criticalSection)
 {
-	_threadSupport->deleteCriticalSection(criticalSection->_native);
+	_native->deleteCriticalSection(criticalSection->_native);
 }
 
 IntPtr MultiThreaded::ThreadSupportInterface::GetThreadLocalMemory(int taskId)
 {
-	return IntPtr(_threadSupport->getThreadLocalMemory(taskId));
+	return IntPtr(_native->getThreadLocalMemory(taskId));
 }
 
 void MultiThreaded::ThreadSupportInterface::SendRequest(uint32_t uiCommand, ppu_address_t uiArgument0, uint32_t uiArgument1)
 {
-	_threadSupport->sendRequest(uiCommand, uiArgument0, uiArgument1);
+	_native->sendRequest(uiCommand, uiArgument0, uiArgument1);
 }
 
 void MultiThreaded::ThreadSupportInterface::StartSpu()
 {
-	_threadSupport->startSPU();
+	_native->startSPU();
 }
 
 void MultiThreaded::ThreadSupportInterface::StopSpu()
 {
-	_threadSupport->stopSPU();
+	_native->stopSPU();
 }
 
 void MultiThreaded::ThreadSupportInterface::WaitForResponse([Out] unsigned int% puiArgument0, [Out] unsigned int% puiArgument1)
@@ -171,7 +171,7 @@ void MultiThreaded::ThreadSupportInterface::WaitForResponse([Out] unsigned int% 
 	uint32_t puiArgument0Temp;
 	uint32_t puiArgument1Temp;
 
-	_threadSupport->waitForResponse(&puiArgument0Temp, &puiArgument1Temp);
+	_native->waitForResponse(&puiArgument0Temp, &puiArgument1Temp);
 
 	puiArgument0 = puiArgument0Temp;
 	puiArgument1 = puiArgument1Temp;
@@ -179,21 +179,16 @@ void MultiThreaded::ThreadSupportInterface::WaitForResponse([Out] unsigned int% 
 
 int MultiThreaded::ThreadSupportInterface::NumTasks::get()
 {
-	return _threadSupport->getNumTasks();
+	return _native->getNumTasks();
 }
 void MultiThreaded::ThreadSupportInterface::NumTasks::set(int value)
 {
-	_threadSupport->setNumTasks(value);
+	_native->setNumTasks(value);
 }
 
 bool MultiThreaded::ThreadSupportInterface::IsDisposed::get()
 {
-	return (_threadSupport == NULL);
-}
-
-btThreadSupportInterface* MultiThreaded::ThreadSupportInterface::UnmanagedPointer::get()
-{
-	return _threadSupport;
+	return (_native == NULL);
 }
 
 #endif

@@ -6,12 +6,12 @@
 
 PoolAllocator::PoolAllocator(btPoolAllocator* allocator)
 {
-	_allocator = allocator;
+	_native = allocator;
 }
 
 PoolAllocator::PoolAllocator(int elemSize, int maxElements)
 {
-	_allocator = new btPoolAllocator(elemSize, maxElements);
+	_native = new btPoolAllocator(elemSize, maxElements);
 }
 
 PoolAllocator::~PoolAllocator()
@@ -26,53 +26,44 @@ PoolAllocator::!PoolAllocator()
 
 	OnDisposing(this, nullptr);
 
-	_allocator = NULL;
+	_native = NULL;
 
 	OnDisposed(this, nullptr);
 }
 
 IntPtr PoolAllocator::Allocate(int size)
 {
-	return IntPtr(_allocator->allocate(size));
+	return IntPtr(_native->allocate(size));
 }
 
 bool PoolAllocator::ValidPtr(IntPtr ptr)
 {
-	return _allocator->validPtr(ptr.ToPointer());
+	return _native->validPtr(ptr.ToPointer());
 }
 
 void PoolAllocator::FreeMemory(IntPtr ptr)
 {
-	_allocator->freeMemory(ptr.ToPointer());
+	_native->freeMemory(ptr.ToPointer());
 }
 
 bool PoolAllocator::IsDisposed::get()
 {
-	return (_allocator == NULL);
+	return (_native == NULL);
 }
 
 int PoolAllocator::ElementSize::get()
 {
-	return _allocator->getElementSize();
+	return _native->getElementSize();
 }
 
 int PoolAllocator::FreeCount::get()
 {
-	return _allocator->getFreeCount();
+	return _native->getFreeCount();
 }
 
 int PoolAllocator::MaxCount::get()
 {
-	return _allocator->getMaxCount();
-}
-
-btPoolAllocator* PoolAllocator::UnmanagedPointer::get()
-{
-	return _allocator;
-}
-void PoolAllocator::UnmanagedPointer::set(btPoolAllocator* value)
-{
-	_allocator = value;
+	return _native->getMaxCount();
 }
 
 #endif

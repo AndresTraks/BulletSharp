@@ -45,7 +45,7 @@ bool ConvexPenetrationDepthSolver::CalcPenDepth(SimplexSolverInterface^ simplexS
 	VECTOR3_DEF(pa);
 	VECTOR3_DEF(pb);
 
-	bool ret = _native->calcPenDepth(*simplexSolver->UnmanagedPointer,
+	bool ret = _native->calcPenDepth(*simplexSolver->_native,
 		(btConvexShape*)convexA->_native, (btConvexShape*)convexB->_native,
 		*transATemp, *transBTemp, VECTOR3_USE(v), VECTOR3_USE(pa), VECTOR3_USE(pb),
 #ifndef DISABLE_DEBUGDRAW

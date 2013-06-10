@@ -61,10 +61,9 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		btPrimitiveManagerBase* _primitiveManager;
-
 	internal:
+		btPrimitiveManagerBase* _native;
+
 		PrimitiveManagerBase(btPrimitiveManagerBase* primitiveManager);
 
 	public:
@@ -90,21 +89,13 @@ namespace BulletSharp
 		{
 			virtual bool get();
 		}
-
-	internal:
-		property btPrimitiveManagerBase* UnmanagedPointer
-		{
-			virtual btPrimitiveManagerBase* get();
-			void set(btPrimitiveManagerBase* value);
-		}
 	};
 
 	public ref class GImpactBvh
 	{
-	private:
-		btGImpactBvh* _bvh;
-
 	internal:
+		btGImpactBvh* _native;
+
 		GImpactBvh(btGImpactBvh* bvh);
 
 	public:
@@ -157,13 +148,6 @@ namespace BulletSharp
 		{
 			PrimitiveManagerBase^ get();
 			void set(PrimitiveManagerBase^ value);
-		}
-
-	internal:
-		property btGImpactBvh* UnmanagedPointer
-		{
-			virtual btGImpactBvh* get();
-			void set(btGImpactBvh* value);
 		}
 	};
 };

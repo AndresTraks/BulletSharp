@@ -124,12 +124,6 @@ namespace BulletSharp
 			{
 				GImpactCompoundShape^ get();
 			}
-
-		internal:
-			property btGImpactCompoundShape::CompoundPrimitiveManager* UnmanagedPointer
-			{
-				btGImpactCompoundShape::CompoundPrimitiveManager* get() new;
-			}
 		};
 #endif
 

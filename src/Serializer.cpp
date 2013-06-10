@@ -13,35 +13,35 @@
 
 BulletSharp::Serializer::Serializer(btSerializer *serializer)
 {
-	_serializer = serializer;
+	_native = serializer;
 }
 
 void BulletSharp::Serializer::FinishSerialization()
 {
-	_serializer->finishSerialization();
+	_native->finishSerialization();
 }
 
 void BulletSharp::Serializer::SerializeName(String^ name)
 {
 	const char* nameTemp = StringConv::ManagedToUnmanaged(name);
-	_serializer->serializeName(nameTemp);
+	_native->serializeName(nameTemp);
 	StringConv::FreeUnmanagedString(nameTemp);
 }
 
 void BulletSharp::Serializer::StartSerialization()
 {
-	_serializer->startSerialization();
+	_native->startSerialization();
 }
 
 BulletSharp::DataStream^ BulletSharp::Serializer::LockBuffer()
 {
-	return gcnew DataStream((void*)_serializer->getBufferPointer(),
-		_serializer->getCurrentBufferSize(), true, false, false);
+	return gcnew DataStream((void*)_native->getBufferPointer(),
+		_native->getCurrentBufferSize(), true, false, false);
 }
 
 int BulletSharp::Serializer::CurrentBufferSize::get()
 {
-	return _serializer->getCurrentBufferSize();
+	return _native->getCurrentBufferSize();
 }
 
 void BulletSharp::Serializer::RegisterNameForObject(Object^ obj, String^ name)
@@ -51,14 +51,14 @@ void BulletSharp::Serializer::RegisterNameForObject(Object^ obj, String^ name)
 	CollisionShape^ shapeCast = dynamic_cast<CollisionShape^>(obj);
 	if (shapeCast != nullptr)
 	{
-		_serializer->registerNameForPointer(shapeCast->UnmanagedPointer, nameTemp);
+		_native->registerNameForPointer(shapeCast->_native, nameTemp);
 		return;
 	}
 
 	CollisionObject^ objCast = dynamic_cast<CollisionObject^>(obj);
 	if (objCast != nullptr)
 	{
-		_serializer->registerNameForPointer(objCast->UnmanagedPointer, nameTemp);
+		_native->registerNameForPointer(objCast->_native, nameTemp);
 		return;
 	}
 
@@ -66,7 +66,7 @@ void BulletSharp::Serializer::RegisterNameForObject(Object^ obj, String^ name)
 	TypedConstraint^ constraintCast = dynamic_cast<TypedConstraint^>(obj);
 	if (constraintCast != nullptr)
 	{
-		_serializer->registerNameForPointer(constraintCast->UnmanagedPointer, nameTemp);
+		_native->registerNameForPointer(constraintCast->_native, nameTemp);
 		return;
 	}
 #endif
@@ -74,15 +74,8 @@ void BulletSharp::Serializer::RegisterNameForObject(Object^ obj, String^ name)
 	StringConv::FreeUnmanagedString(nameTemp);
 }
 
-btSerializer* BulletSharp::Serializer::UnmanagedPointer::get()
-{
-	return _serializer;
-}
-void BulletSharp::Serializer::UnmanagedPointer::set(btSerializer* value)
-{
-	_serializer = value;
-}
 
+#define Native static_cast<btDefaultSerializer*>(_native)
 
 DefaultSerializer::DefaultSerializer()
 : Serializer(new btDefaultSerializer())
@@ -92,14 +85,9 @@ DefaultSerializer::DefaultSerializer()
 void DefaultSerializer::WriteHeader([Out] String^% buffer)
 {
 	unsigned char* bufferTemp = new unsigned char[12];
-	UnmanagedPointer->writeHeader(bufferTemp);
+	Native->writeHeader(bufferTemp);
 	buffer = gcnew String(buffer);
 	delete[] bufferTemp;
-}
-
-btDefaultSerializer* DefaultSerializer::UnmanagedPointer::get()
-{
-	return (btDefaultSerializer*)Serializer::UnmanagedPointer;
 }
 
 #endif

@@ -27,7 +27,7 @@ DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher
 	BulletSharp::ConstraintSolver^ constraintSolver,
 	#endif
 	CollisionConfiguration^ collisionConfiguration)
-: DynamicsWorld(new btDiscreteDynamicsWorld(dispatcher->UnmanagedPointer,
+: DynamicsWorld(new btDiscreteDynamicsWorld(dispatcher->_native,
 	pairCache->_native,
 	#ifndef DISABLE_CONSTRAINTS
 	GetUnmanagedNullable(constraintSolver),
@@ -49,7 +49,7 @@ void DiscreteDynamicsWorld::ApplyGravity()
 #if !defined(DISABLE_CONSTRAINTS) && !defined (DISABLE_DEBUGDRAW)
 void DiscreteDynamicsWorld::DebugDrawConstraint(TypedConstraint^ constraint)
 {
-	Native->debugDrawConstraint(constraint->UnmanagedPointer);
+	Native->debugDrawConstraint(constraint->_native);
 }
 #endif
 

@@ -24,6 +24,8 @@ btCollisionDispatcherWrapper::btCollisionDispatcherWrapper(btCollisionConfigurat
 }
 
 
+#define Native static_cast<btCollisionDispatcherWrapper*>(_native)
+
 CollisionDispatcher::CollisionDispatcher(btCollisionDispatcher* dispatcher)
 : Dispatcher(dispatcher)
 {
@@ -44,14 +46,7 @@ void CollisionDispatcher::DefaultNearCallback(BroadphasePair^ collisionPair,
 	CollisionDispatcher^ dispatcher, DispatcherInfo^ dispatchInfo)
 {
 	btCollisionDispatcherWrapper::defaultNearCallback(*collisionPair->_native,
-		*(btCollisionDispatcher*)dispatcher->_native, *dispatchInfo->UnmanagedPointer);
-}
-
-void CollisionDispatcher::DispatchAllCollisionPairs(OverlappingPairCache^ pairCache,
-	DispatcherInfo^ dispatchInfo, Dispatcher^ dispatcher)
-{
-	UnmanagedPointer->dispatchAllCollisionPairs(pairCache->UnmanagedPointer,
-		*dispatchInfo->UnmanagedPointer, dispatcher->_native);
+		*(btCollisionDispatcher*)dispatcher->_native, *dispatchInfo->_native);
 }
 
 void CollisionDispatcher::RegisterCollisionCreateFunc(BroadphaseNativeType proxyType0,
@@ -63,35 +58,35 @@ void CollisionDispatcher::RegisterCollisionCreateFunc(BroadphaseNativeType proxy
 	}
 	_collisionCreateFuncs->Add(createFunc);
 
-	UnmanagedPointer->registerCollisionCreateFunc((int)proxyType0, (int)proxyType1, createFunc->UnmanagedPointer);
+	Native->registerCollisionCreateFunc((int)proxyType0, (int)proxyType1, createFunc->_native);
 }
 
 CollisionConfiguration^ CollisionDispatcher::CollisionConfiguration::get()
 {
 	if (_collisionConfiguration == nullptr)
 	{
-		_collisionConfiguration = gcnew DefaultCollisionConfiguration((btDefaultCollisionConfiguration*)UnmanagedPointer->getCollisionConfiguration());
+		_collisionConfiguration = gcnew DefaultCollisionConfiguration((btDefaultCollisionConfiguration*)Native->getCollisionConfiguration());
 	}
 	return _collisionConfiguration;
 }
 void CollisionDispatcher::CollisionConfiguration::set(BulletSharp::CollisionConfiguration^ value)
 {
-	UnmanagedPointer->setCollisionConfiguration(value->_native);
+	Native->setCollisionConfiguration(value->_native);
 	_collisionConfiguration = value;
 }
 
 DispatcherFlags CollisionDispatcher::DispatcherFlags::get()
 {
-	return (BulletSharp::DispatcherFlags)UnmanagedPointer->getDispatcherFlags();
+	return (BulletSharp::DispatcherFlags)Native->getDispatcherFlags();
 }
 void CollisionDispatcher::DispatcherFlags::set(BulletSharp::DispatcherFlags value)
 {
-	UnmanagedPointer->setDispatcherFlags((int)value);
+	Native->setDispatcherFlags((int)value);
 }
 
 BulletSharp::NearCallback^ CollisionDispatcher::NearCallback::get()
 {
-	void* callback = UnmanagedPointer->_nearCallback;
+	void* callback = Native->_nearCallback;
 	if (callback == nullptr)
 		return nullptr;
 	
@@ -103,25 +98,20 @@ void CollisionDispatcher::NearCallback::set(BulletSharp::NearCallback^ value)
 	{
 		// Don't actually set the callback to 0 as this would crash,
 		// just revert to the original internal callback.
-		UnmanagedPointer->_nearCallback = nullptr;
-		UnmanagedPointer->setNearCallback(originalCallback);
+		Native->_nearCallback = nullptr;
+		Native->setNearCallback(originalCallback);
 		return;
 	}
 
-	void* current = UnmanagedPointer->_nearCallback;
+	void* current = Native->_nearCallback;
 	if (current != nullptr)
 		VoidPtrToGCHandle(current).Free();
 
 	GCHandle handle = GCHandle::Alloc(value);
-	UnmanagedPointer->_nearCallback = GCHandleToVoidPtr(handle);
+	Native->_nearCallback = GCHandleToVoidPtr(handle);
 
 	if (originalCallback == nullptr)
-		originalCallback = UnmanagedPointer->getNearCallback();
+		originalCallback = Native->getNearCallback();
 	
-	UnmanagedPointer->setNearCallback((btNearCallback)&NearCallbackWrapper::nearCallback);
-}
-
-btCollisionDispatcherWrapper* CollisionDispatcher::UnmanagedPointer::get()
-{
-	return (btCollisionDispatcherWrapper*)Dispatcher::UnmanagedPointer;
+	Native->setNearCallback((btNearCallback)&NearCallbackWrapper::nearCallback);
 }

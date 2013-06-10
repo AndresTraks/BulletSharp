@@ -41,7 +41,7 @@ bool TriangleCallback::IsDisposed::get()
 #ifndef DISABLE_INTERNAL
 InternalTriangleIndexCallback::InternalTriangleIndexCallback(btInternalTriangleIndexCallback* callback)
 {
-	_callback = callback;
+	_native = callback;
 }
 
 InternalTriangleIndexCallback::~InternalTriangleIndexCallback()
@@ -56,7 +56,8 @@ InternalTriangleIndexCallback::!InternalTriangleIndexCallback()
 	
 	OnDisposing(this, nullptr);
 	
-	_callback = NULL;
+	delete _native;
+	_native = NULL;
 	
 	OnDisposed(this, nullptr);
 }
@@ -65,21 +66,13 @@ InternalTriangleIndexCallback::!InternalTriangleIndexCallback()
 void InternalTriangleIndexCallback::InternalProcessTriangleIndex(Vector3 triangle, int partId, int triangleIndex)
 {
 	VECTOR3_DEF(triangle);
-	UnmanagedPointer->internalProcessTriangleIndex(VECTOR3_PTR(triangle), partId, triangleIndex);
+	_native->internalProcessTriangleIndex(VECTOR3_PTR(triangle), partId, triangleIndex);
 	VECTOR3_DEL(triangle);
 }
 
 bool InternalTriangleIndexCallback::IsDisposed::get()
 {
-	return (_callback == NULL);
+	return (_native == NULL);
 }
 
-btInternalTriangleIndexCallback* InternalTriangleIndexCallback::UnmanagedPointer::get()
-{
-	return _callback;
-}
-void InternalTriangleIndexCallback::UnmanagedPointer::set(btInternalTriangleIndexCallback* value)
-{
-	_callback = value;
-}
 #endif

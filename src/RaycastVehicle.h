@@ -16,8 +16,8 @@ namespace BulletSharp
 	public:
 		ref class VehicleTuning
 		{
-		private:
-			btRaycastVehicle::btVehicleTuning* _vehicleTuning;
+		internal:
+			btRaycastVehicle::btVehicleTuning* _native;
 
 		public:
 			VehicleTuning();
@@ -56,13 +56,6 @@ namespace BulletSharp
 			{
 				btScalar get();
 				void set(btScalar value);
-			}
-
-		internal:
-			property btRaycastVehicle::btVehicleTuning* UnmanagedPointer
-			{
-				btRaycastVehicle::btVehicleTuning* get();
-				void set(btRaycastVehicle::btVehicleTuning* value);
 			}
 		};
 

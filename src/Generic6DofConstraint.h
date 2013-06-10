@@ -10,10 +10,9 @@ namespace BulletSharp
 
 	public ref class RotationalLimitMotor
 	{
-	private:
-		btRotationalLimitMotor* motor;
-
 	internal:
+		btRotationalLimitMotor* _native;
+
 		RotationalLimitMotor(btRotationalLimitMotor* motor);
 
 	public:
@@ -129,20 +128,13 @@ namespace BulletSharp
 			btScalar get();
 			void set(btScalar value);
 		}
-
-	internal:
-		property btRotationalLimitMotor* UnmanagedPointer
-		{
-			btRotationalLimitMotor* get();
-		}
 	};
 
 	public ref class TranslationalLimitMotor
 	{
-	private:
-		btTranslationalLimitMotor* motor;
-
 	internal:
+		btTranslationalLimitMotor* _native;
+
 		TranslationalLimitMotor(btTranslationalLimitMotor* motor);
 
 	public:

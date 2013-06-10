@@ -797,7 +797,7 @@ AlignedStkNpsArray::AlignedStkNpsArray()
 
 void AlignedStkNpsArray::Add(Dbvt::StkNps^ stkNps)
 {
-	Native->push_back(*stkNps->UnmanagedPointer);
+	Native->push_back(*stkNps->_native);
 }
 
 void AlignedStkNpsArray::Clear()
@@ -862,7 +862,7 @@ void AlignedStkNpsArray::default::set(int index, Dbvt::StkNps^ value)
 {
 	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*Native)[index] = *value->UnmanagedPointer;
+	(*Native)[index] = *value->_native;
 }
 #endif
 
@@ -1905,7 +1905,7 @@ AlignedRigidContactArray::AlignedRigidContactArray()
 
 void AlignedRigidContactArray::Add(RigidContact^ rigidContact)
 {
-	Native->push_back(*rigidContact->UnmanagedPointer);
+	Native->push_back(*rigidContact->_native);
 }
 
 void AlignedRigidContactArray::Clear()
@@ -1968,7 +1968,7 @@ void AlignedRigidContactArray::default::set(int index, RigidContact^ value)
 {
 	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
-	AlignedRigidContactArray_SetDefault(Native, index, value->UnmanagedPointer);
+	AlignedRigidContactArray_SetDefault(Native, index, value->_native);
 }
 #endif
 
@@ -2179,7 +2179,7 @@ AlignedSoftContactArray::AlignedSoftContactArray()
 
 void AlignedSoftContactArray::Add(SoftContact^ softContact)
 {
-	Native->push_back(*softContact->UnmanagedPointer);
+	Native->push_back(*softContact->_native);
 }
 
 void AlignedSoftContactArray::Clear()
@@ -2242,7 +2242,7 @@ void AlignedSoftContactArray::default::set(int index, SoftContact^ value)
 {
 	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
-	AlignedSoftContactArray_SetDefault(Native, index, value->UnmanagedPointer);
+	AlignedSoftContactArray_SetDefault(Native, index, value->_native);
 }
 
 
@@ -2344,7 +2344,7 @@ AlignedTriangleMeshArray::AlignedTriangleMeshArray()
 
 void AlignedTriangleMeshArray::Add(TriangleMesh^ triangleMesh)
 {
-	Native->push_back(triangleMesh->UnmanagedPointer);
+	Native->push_back((btTriangleMesh*)triangleMesh->_native);
 }
 
 void AlignedTriangleMeshArray::Clear()

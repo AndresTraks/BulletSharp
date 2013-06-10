@@ -120,7 +120,7 @@ bool ConvexCast::CastResult::IsDisposed::get()
 
 ConvexCast::ConvexCast(btConvexCast* convexCast)
 {
-	_convexCast = convexCast;
+	_native = convexCast;
 }
 
 ConvexCast::~ConvexCast()
@@ -135,7 +135,8 @@ ConvexCast::!ConvexCast()
 
 	OnDisposing(this, nullptr);
 
-	_convexCast = NULL;
+	delete _native;
+	_native = NULL;
 
 	OnDisposed(this, nullptr);
 }
@@ -147,7 +148,7 @@ bool ConvexCast::CalcTimeOfImpact(Matrix fromA, Matrix toA, Matrix fromB, Matrix
 	btTransform* fromBTemp = Math::MatrixToBtTransform(fromB);
 	btTransform* toBTemp = Math::MatrixToBtTransform(toB);
 
-	bool ret = _convexCast->calcTimeOfImpact(*fromATemp, *toATemp, *fromBTemp, *toBTemp, *result->_native);
+	bool ret = _native->calcTimeOfImpact(*fromATemp, *toATemp, *fromBTemp, *toBTemp, *result->_native);
 
 	ALIGNED_FREE(fromATemp);
 	ALIGNED_FREE(toATemp);
@@ -159,16 +160,7 @@ bool ConvexCast::CalcTimeOfImpact(Matrix fromA, Matrix toA, Matrix fromB, Matrix
 
 bool ConvexCast::IsDisposed::get()
 {
-	return (_convexCast == NULL);
-}
-
-btConvexCast* ConvexCast::UnmanagedPointer::get()
-{
-	return _convexCast;
-}
-void ConvexCast::UnmanagedPointer::set(btConvexCast* value)
-{
-	_convexCast = value;
+	return (_native == NULL);
 }
 
 #endif

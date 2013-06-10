@@ -10,7 +10,6 @@ namespace BulletSharp
 	ref class CollisionAlgorithm;
 	ref class CollisionDispatcher;
 	ref class CollisionObjectWrapper;
-	ref class DispatcherInfo;
 	ref class OverlappingPairCache;
 	ref class PersistentManifold;
 	ref class PoolAllocator;
@@ -25,10 +24,9 @@ namespace BulletSharp
 			Continuous = btDispatcherInfo::DISPATCH_CONTINUOUS
 		};
 
-	private:
-		btDispatcherInfo* _info;
-
 	internal:
+		btDispatcherInfo* _native;
+
 		DispatcherInfo(btDispatcherInfo* info);
 
 	public:
@@ -105,13 +103,6 @@ namespace BulletSharp
 			bool get();
 			void set(bool value);
 		}
-
-	internal:
-		property btDispatcherInfo* UnmanagedPointer
-		{
-			btDispatcherInfo* get();
-			void set(btDispatcherInfo* value);
-		}
 	};
 
 	public ref class Dispatcher : BulletSharp::IDisposable
@@ -163,13 +154,6 @@ namespace BulletSharp
 		property bool IsDisposed
 		{
 			virtual bool get();
-		}
-
-	internal:
-		property btDispatcher* UnmanagedPointer
-		{
-			btDispatcher* get();
-			void set(btDispatcher* value);
 		}
 	};
 };

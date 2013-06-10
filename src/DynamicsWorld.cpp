@@ -58,17 +58,17 @@ void DynamicsWorld::AddRigidBody(RigidBody^ rigidBody)
 void DynamicsWorld::AddConstraint(TypedConstraint^ constraint,
 	bool disableCollisionsBetweenLinkedBodies)
 {
-	Native->addConstraint(constraint->UnmanagedPointer, disableCollisionsBetweenLinkedBodies);
+	Native->addConstraint(constraint->_native, disableCollisionsBetweenLinkedBodies);
 }
 
 void DynamicsWorld::AddConstraint(TypedConstraint^ constraint)
 {
-	Native->addConstraint(constraint->UnmanagedPointer);
+	Native->addConstraint(constraint->_native);
 }
 
 void DynamicsWorld::RemoveConstraint(TypedConstraint^ constraint)
 {
-	Native->removeConstraint(constraint->UnmanagedPointer);
+	Native->removeConstraint(constraint->_native);
 }
 
 TypedConstraint^ DynamicsWorld::GetConstraint(int index)

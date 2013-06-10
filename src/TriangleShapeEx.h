@@ -8,8 +8,8 @@ namespace BulletSharp
 
 	public ref class GimTriangleContact
 	{
-	private:
-		GIM_TRIANGLE_CONTACT* _contact;
+	internal:
+		GIM_TRIANGLE_CONTACT* _native;
 
 	public:
 		GimTriangleContact();
@@ -40,21 +40,13 @@ namespace BulletSharp
 			Vector4 get();
 			void set(Vector4 value);
 		}
-
-	internal:
-		property GIM_TRIANGLE_CONTACT* UnmanagedPointer
-		{
-			GIM_TRIANGLE_CONTACT* get();
-			void set(GIM_TRIANGLE_CONTACT* value);
-		}
 	};
 
 	public ref class PrimitiveTriangle
 	{
-	private:
-		btPrimitiveTriangle* _triangle;
-
 	internal:
+		btPrimitiveTriangle* _native;
+
 		PrimitiveTriangle(btPrimitiveTriangle* triangle);
 
 	public:
@@ -88,13 +80,6 @@ namespace BulletSharp
 		property Vector3Array^ Vectors
 		{
 			Vector3Array^ get();
-		}
-
-	internal:
-		property btPrimitiveTriangle* UnmanagedPointer
-		{
-			btPrimitiveTriangle* get();
-			void set(btPrimitiveTriangle* value);
 		}
 	};
 

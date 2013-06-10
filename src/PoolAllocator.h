@@ -10,10 +10,9 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		btPoolAllocator* _allocator;
-
 	internal:
+		btPoolAllocator* _native;
+
 		PoolAllocator(btPoolAllocator* allocator);
 
 	public:
@@ -46,13 +45,6 @@ namespace BulletSharp
 		property int MaxCount
 		{
 			int get();
-		}
-
-	internal:
-		property btPoolAllocator* UnmanagedPointer
-		{
-			virtual btPoolAllocator* get();
-			void set( btPoolAllocator* value );
 		}
 	};
 };

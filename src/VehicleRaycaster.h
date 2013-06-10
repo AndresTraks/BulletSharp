@@ -36,20 +36,13 @@ namespace BulletSharp
 
 	public ref class VehicleRaycaster abstract
 	{
-	private:
-		btVehicleRaycaster* _vehicleRaycaster;
+	internal:
+		btVehicleRaycaster* _native;
 
 	internal:
 		VehicleRaycaster(btVehicleRaycaster* vehicleRaycaster);
 
 	public:
 		Object^ CastRay(Vector3 from, Vector3 to, VehicleRaycasterResult^ result);
-
-	internal:
-		property btVehicleRaycaster* UnmanagedPointer
-		{
-			virtual btVehicleRaycaster* get();
-			void set(btVehicleRaycaster* value);
-		}
 	};
 };

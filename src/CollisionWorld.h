@@ -31,8 +31,8 @@ namespace BulletSharp
 	public:
 		ref class LocalShapeInfo
 		{
-		private:
-			btCollisionWorld::LocalShapeInfo* _info;
+		internal:
+			btCollisionWorld::LocalShapeInfo* _native;
 
 		internal:
 			LocalShapeInfo(btCollisionWorld::LocalShapeInfo* info);
@@ -49,19 +49,12 @@ namespace BulletSharp
 				int get();
 				void set(int value);
 			}
-
-		internal:
-			property btCollisionWorld::LocalShapeInfo* UnmanagedPointer
-			{
-				virtual btCollisionWorld::LocalShapeInfo* get();
-				void set(btCollisionWorld::LocalShapeInfo* value);
-			}
 		};
 
 		ref class LocalConvexResult
 		{
-		private:
-			btCollisionWorld::LocalConvexResult* _result;
+		internal:
+			btCollisionWorld::LocalConvexResult* _native;
 
 		public:
 			LocalConvexResult(CollisionObject^ collisionObject, LocalShapeInfo^ localShapeInfo,
@@ -89,13 +82,6 @@ namespace BulletSharp
 			{
 				CollisionWorld::LocalShapeInfo^ get();
 				void set(CollisionWorld::LocalShapeInfo^ value);
-			}
-
-		internal:
-			property btCollisionWorld::LocalConvexResult* UnmanagedPointer
-			{
-				virtual btCollisionWorld::LocalConvexResult* get();
-				void set(btCollisionWorld::LocalConvexResult* value);
 			}
 		};
 
@@ -190,10 +176,9 @@ namespace BulletSharp
 			virtual event EventHandler^ OnDisposing;
 			virtual event EventHandler^ OnDisposed;
 
-		private:
-			ContactResultCallbackWrapper* _callback;
-
 		internal:
+			ContactResultCallbackWrapper* _native;
+
 			ContactResultCallback(ContactResultCallbackWrapper* callback);
 
 		public:
@@ -224,19 +209,12 @@ namespace BulletSharp
 			{
 				virtual bool get();
 			}
-
-		internal:
-			property ContactResultCallbackWrapper* UnmanagedPointer
-			{
-				virtual ContactResultCallbackWrapper* get();
-				void set(ContactResultCallbackWrapper* value);
-			}
 		};
 
 		ref class LocalRayResult
 		{
-		private:
-			btCollisionWorld::LocalRayResult* _result;
+		internal:
+			btCollisionWorld::LocalRayResult* _native;
 
 		public:
 			LocalRayResult(CollisionObject^ collisionObject, LocalShapeInfo^ localShapeInfo,
@@ -264,13 +242,6 @@ namespace BulletSharp
 			{
 				CollisionWorld::LocalShapeInfo^ get();
 				void set(CollisionWorld::LocalShapeInfo^ value);
-			}
-
-		internal:
-			property btCollisionWorld::LocalRayResult* UnmanagedPointer
-			{
-				virtual btCollisionWorld::LocalRayResult* get();
-				void set(btCollisionWorld::LocalRayResult* value);
 			}
 		};
 

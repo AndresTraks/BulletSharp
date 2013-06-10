@@ -83,7 +83,7 @@ int StridingMeshInterface::CalculateSerializeBufferSize()
 
 String^ StridingMeshInterface::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
 {
-	const char* name = _native->serialize(dataBuffer.ToPointer(), serializer->UnmanagedPointer);
+	const char* name = _native->serialize(dataBuffer.ToPointer(), serializer->_native);
 	if (name == 0)
 		return nullptr;
 
@@ -105,7 +105,7 @@ void StridingMeshInterface::GetLockedReadOnlyVertexIndexData(
 	int numFacesTemp;
 	PHY_ScalarType indicestypeTemp;
 
-	UnmanagedPointer->getLockedReadOnlyVertexIndexBase(&vertexBaseTemp, numVertsTemp, typeTemp,
+	_native->getLockedReadOnlyVertexIndexBase(&vertexBaseTemp, numVertsTemp, typeTemp,
 		vertexStrideTemp, &indexBaseTemp, indexStrideTemp, numFacesTemp, indicestypeTemp, subpart);
 
 	numVerts = numVertsTemp;
@@ -132,7 +132,7 @@ void StridingMeshInterface::GetLockedReadOnlyVertexIndexData(
 	int numFacesTemp;
 	PHY_ScalarType indicestypeTemp;
 
-	UnmanagedPointer->getLockedReadOnlyVertexIndexBase(&vertexBaseTemp, numVertsTemp, typeTemp,
+	_native->getLockedReadOnlyVertexIndexBase(&vertexBaseTemp, numVertsTemp, typeTemp,
 		vertexStrideTemp, &indexBaseTemp, indexStrideTemp, numFacesTemp, indicestypeTemp);
 
 	numVerts = numVertsTemp;
@@ -160,7 +160,7 @@ void StridingMeshInterface::GetLockedVertexIndexData(
 	int numFacesTemp;
 	PHY_ScalarType indicestypeTemp;
 
-	UnmanagedPointer->getLockedVertexIndexBase(&vertexBaseTemp, numVertsTemp, typeTemp,
+	_native->getLockedVertexIndexBase(&vertexBaseTemp, numVertsTemp, typeTemp,
 		vertexStrideTemp, &indexBaseTemp, indexStrideTemp, numFacesTemp, indicestypeTemp, subpart);
 
 	numVerts = numVertsTemp;
@@ -187,7 +187,7 @@ void StridingMeshInterface::GetLockedVertexIndexData(
 	int numFacesTemp;
 	PHY_ScalarType indicestypeTemp;
 
-	UnmanagedPointer->getLockedVertexIndexBase(&vertexBaseTemp, numVertsTemp, typeTemp,
+	_native->getLockedVertexIndexBase(&vertexBaseTemp, numVertsTemp, typeTemp,
 		vertexStrideTemp, &indexBaseTemp, indexStrideTemp, numFacesTemp, indicestypeTemp);
 
 	numVerts = numVertsTemp;
@@ -221,7 +221,7 @@ void StridingMeshInterface::InternalProcessAllTriangles(InternalTriangleIndexCal
 	VECTOR3_DEF(aabbMin);
 	VECTOR3_DEF(aabbMax);
 	
-	_native->InternalProcessAllTriangles(callback->UnmanagedPointer, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
+	_native->InternalProcessAllTriangles(callback->_native, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
@@ -271,20 +271,11 @@ int StridingMeshInterface::NumSubParts::get()
 
 Vector3 StridingMeshInterface::Scaling::get()
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->getScaling());
+	return Math::BtVector3ToVector3(&_native->getScaling());
 }
 void StridingMeshInterface::Scaling::set(Vector3 value)
 {
 	VECTOR3_DEF(value);
-	UnmanagedPointer->setScaling(VECTOR3_USE(value));
+	_native->setScaling(VECTOR3_USE(value));
 	VECTOR3_DEL(value);
-}
-
-btStridingMeshInterface* StridingMeshInterface::UnmanagedPointer::get()
-{
-	return _native;
-}
-void StridingMeshInterface::UnmanagedPointer::set(btStridingMeshInterface* value)
-{
-	_native = value;
 }

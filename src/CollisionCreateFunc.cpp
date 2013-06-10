@@ -33,7 +33,7 @@ CollisionAlgorithmCreateFunc::!CollisionAlgorithmCreateFunc()
 CollisionAlgorithm^ CollisionAlgorithmCreateFunc::CreateCollisionAlgorithm(
 	CollisionAlgorithmConstructionInfo^ info, CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
 {
-	return gcnew CollisionAlgorithm(UnmanagedPointer->CreateCollisionAlgorithm(
+	return gcnew CollisionAlgorithm(_native->CreateCollisionAlgorithm(
 		*info->_native, body0Wrap->_native, body1Wrap->_native));
 }
 
@@ -49,13 +49,4 @@ bool CollisionAlgorithmCreateFunc::Swapped::get()
 void CollisionAlgorithmCreateFunc::Swapped::set(bool value)
 {
 	_native->m_swapped = value;
-}
-
-btCollisionAlgorithmCreateFunc* CollisionAlgorithmCreateFunc::UnmanagedPointer::get()
-{
-	return _native;
-}
-void CollisionAlgorithmCreateFunc::UnmanagedPointer::set(btCollisionAlgorithmCreateFunc* value)
-{
-	_native = value;
 }

@@ -7,17 +7,17 @@
 
 GimTriangleContact::GimTriangleContact()
 {
-	_contact = new GIM_TRIANGLE_CONTACT();
+	_native = new GIM_TRIANGLE_CONTACT();
 }
 
 GimTriangleContact::GimTriangleContact(GimTriangleContact^ other)
 {
-	_contact = new GIM_TRIANGLE_CONTACT(*other->UnmanagedPointer);
+	_native = new GIM_TRIANGLE_CONTACT(*other->_native);
 }
 
 void GimTriangleContact::CopyFrom(GimTriangleContact^ other)
 {
-	_contact->copy_from(*other->UnmanagedPointer);
+	_native->copy_from(*other->_native);
 }
 
 void GimTriangleContact::MergePoints(Vector4 plane, btScalar margin, array<Vector3>^ points)
@@ -25,7 +25,7 @@ void GimTriangleContact::MergePoints(Vector4 plane, btScalar margin, array<Vecto
 	btVector3* pointsTemp = Math::Vector3ArrayToUnmanaged(points);
 	btVector4* planeTemp = Math::Vector4ToBtVector4(plane);
 
-	_contact->merge_points(*planeTemp, margin, pointsTemp, points->Length);
+	_native->merge_points(*planeTemp, margin, pointsTemp, points->Length);
 
 	delete[] pointsTemp;
 	delete planeTemp;
@@ -33,72 +33,63 @@ void GimTriangleContact::MergePoints(Vector4 plane, btScalar margin, array<Vecto
 
 btScalar GimTriangleContact::PenetrationDepth::get()
 {
-	return _contact->m_penetration_depth;
+	return _native->m_penetration_depth;
 }
 void GimTriangleContact::PenetrationDepth::set(btScalar value)
 {
-	_contact->m_penetration_depth = value;
+	_native->m_penetration_depth = value;
 }
 
 int GimTriangleContact::PointCount::get()
 {
-	return _contact->m_point_count;
+	return _native->m_point_count;
 }
 void GimTriangleContact::PointCount::set(int value)
 {
-	_contact->m_point_count = value;
+	_native->m_point_count = value;
 }
 
 Vector3Array^ GimTriangleContact::Points::get()
 {
-	return gcnew Vector3Array(_contact->m_points, 16);
+	return gcnew Vector3Array(_native->m_points, 16);
 }
 
 Vector4 GimTriangleContact::SeparatingNormal::get()
 {
-	return Math::BtVector4ToVector4(&_contact->m_separating_normal);
+	return Math::BtVector4ToVector4(&_native->m_separating_normal);
 }
 void GimTriangleContact::SeparatingNormal::set(Vector4 value)
 {
-	Math::Vector4ToBtVector4(value, &_contact->m_separating_normal);
-}
-
-GIM_TRIANGLE_CONTACT* GimTriangleContact::UnmanagedPointer::get()
-{
-	return _contact;
-}
-void GimTriangleContact::UnmanagedPointer::set(GIM_TRIANGLE_CONTACT* value)
-{
-	_contact = value;
+	Math::Vector4ToBtVector4(value, &_native->m_separating_normal);
 }
 
 
 PrimitiveTriangle::PrimitiveTriangle()
 {
-	_triangle = new btPrimitiveTriangle();
+	_native = new btPrimitiveTriangle();
 }
 
 PrimitiveTriangle::PrimitiveTriangle(btPrimitiveTriangle* triangle)
 {
-	_triangle = triangle;
+	_native = triangle;
 }
 
 void PrimitiveTriangle::ApplyTransform(Matrix transform)
 {
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
-	_triangle->applyTransform(*transformTemp);
+	_native->applyTransform(*transformTemp);
 	ALIGNED_FREE(transformTemp);
 }
 
 void PrimitiveTriangle::BuildTriPlane()
 {
-	_triangle->buildTriPlane();
+	_native->buildTriPlane();
 }
 
 int PrimitiveTriangle::ClipTriangle(PrimitiveTriangle^ other, array<Vector3>^ clippedPoints)
 {
 	btVector3* clippedPointsTemp = Math::Vector3ArrayToUnmanaged(clippedPoints);
-	int ret = _triangle->clip_triangle(*other->UnmanagedPointer, clippedPointsTemp);
+	int ret = _native->clip_triangle(*other->_native, clippedPointsTemp);
 	delete[] clippedPointsTemp;
 	return ret;
 }
@@ -106,60 +97,51 @@ int PrimitiveTriangle::ClipTriangle(PrimitiveTriangle^ other, array<Vector3>^ cl
 void PrimitiveTriangle::GetEdgePlane(int edge_index, [Out] Vector4% plane)
 {
 	btVector4* planeTemp = new btVector4;
-	_triangle->get_edge_plane(edge_index, *planeTemp);
+	_native->get_edge_plane(edge_index, *planeTemp);
 	plane = Math::BtVector4ToVector4(planeTemp);
 	delete planeTemp;
 }
 
 bool PrimitiveTriangle::FindTriangleCollisionClipMethod(PrimitiveTriangle^ other, GimTriangleContact^ contacts)
 {
-	return _triangle->find_triangle_collision_clip_method(*other->UnmanagedPointer, *contacts->UnmanagedPointer);
+	return _native->find_triangle_collision_clip_method(*other->_native, *contacts->_native);
 }
 
 bool PrimitiveTriangle::OverlapTestConservative(PrimitiveTriangle^ other)
 {
-	return _triangle->overlap_test_conservative(*other->UnmanagedPointer);
+	return _native->overlap_test_conservative(*other->_native);
 }
 
 btScalar PrimitiveTriangle::Dummy::get()
 {
-	return _triangle->m_dummy;
+	return _native->m_dummy;
 }
 void PrimitiveTriangle::Dummy::set(btScalar value)
 {
-	_triangle->m_dummy = value;
+	_native->m_dummy = value;
 }
 
 btScalar PrimitiveTriangle::Margin::get()
 {
-	return _triangle->m_margin;
+	return _native->m_margin;
 }
 void PrimitiveTriangle::Margin::set(btScalar value)
 {
-	_triangle->m_margin = value;
+	_native->m_margin = value;
 }
 
 Vector4 PrimitiveTriangle::Plane::get()
 {
-	return Math::BtVector4ToVector4(&_triangle->m_plane);
+	return Math::BtVector4ToVector4(&_native->m_plane);
 }
 void PrimitiveTriangle::Plane::set(Vector4 value)
 {
-	Math::Vector4ToBtVector4(value, &_triangle->m_plane);
+	Math::Vector4ToBtVector4(value, &_native->m_plane);
 }
 
 Vector3Array^ PrimitiveTriangle::Vectors::get()
 {
-	return gcnew Vector3Array(_triangle->m_vertices, 3);
-}
-
-btPrimitiveTriangle* PrimitiveTriangle::UnmanagedPointer::get()
-{
-	return _triangle;
-}
-void PrimitiveTriangle::UnmanagedPointer::set(btPrimitiveTriangle* value)
-{
-	_triangle = value;
+	return gcnew Vector3Array(_native->m_vertices, 3);
 }
 
 

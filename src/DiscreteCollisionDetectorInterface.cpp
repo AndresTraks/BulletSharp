@@ -142,13 +142,13 @@ void DiscreteCollisionDetectorInterface::GetClosestPoints(
 void DiscreteCollisionDetectorInterface::GetClosestPoints(
 	ClosestPointInput^ input, Result^ output)
 {
-	_native->getClosestPoints(*input->UnmanagedPointer, *output->UnmanagedPointer, 0);
+	_native->getClosestPoints(*input->_native, *output->_native, 0);
 }
 
 void DiscreteCollisionDetectorInterface::GetClosestPoints(
 	ClosestPointInput^ input, Result^ output, bool swapResults)
 {
-	_native->getClosestPoints(*input->UnmanagedPointer, *output->UnmanagedPointer, 0, swapResults);
+	_native->getClosestPoints(*input->_native, *output->_native, 0, swapResults);
 }
 #endif
 

@@ -2,16 +2,31 @@
 
 #ifndef DISABLE_BVH
 
+#include "OptimizedBvh.h"
 #include "QuantizedBvh.h"
 
 QuantizedBvh::QuantizedBvh(btQuantizedBvh* bvh)
 {
-	_bvh = bvh;
+	_native = bvh;
+}
+
+QuantizedBvh^ QuantizedBvh::GetManaged(btQuantizedBvh* quantizedBvh)
+{
+	if (quantizedBvh == 0) {
+		return nullptr;
+	}
+
+	btOptimizedBvh* optimizedBvh = dynamic_cast<btOptimizedBvh*>(quantizedBvh);
+	if (optimizedBvh) {
+		return gcnew OptimizedBvh(optimizedBvh);
+	}
+
+	return gcnew QuantizedBvh(quantizedBvh);
 }
 
 QuantizedBvh::QuantizedBvh()
 {
-	_bvh = new btQuantizedBvh();
+	_native = new btQuantizedBvh();
 }
 
 QuantizedBvh::~QuantizedBvh()
@@ -26,20 +41,21 @@ QuantizedBvh::!QuantizedBvh()
 
 	OnDisposing(this, nullptr);
 
-	_bvh = NULL;
+	delete _native;
+	_native = NULL;
 
 	OnDisposed(this, nullptr);
 }
 
 void QuantizedBvh::BuildInternal()
 {
-	_bvh->buildInternal();
+	_native->buildInternal();
 }
 
 #ifndef DISABLE_SERIALIZE
 unsigned int QuantizedBvh::CalculateSerializeBufferSize()
 {
-	return _bvh->calculateSerializeBufferSize();
+	return _native->calculateSerializeBufferSize();
 }
 
 unsigned int QuantizedBvh::AlignmentSerializationPadding::get()
@@ -50,16 +66,7 @@ unsigned int QuantizedBvh::AlignmentSerializationPadding::get()
 
 bool QuantizedBvh::IsDisposed::get()
 {
-	return (_bvh == NULL);
-}
-
-btQuantizedBvh* QuantizedBvh::UnmanagedPointer::get()
-{
-	return _bvh;
-}
-void QuantizedBvh::UnmanagedPointer::set(btQuantizedBvh* value)
-{
-	_bvh = value;
+	return (_native == NULL);
 }
 
 #endif

@@ -24,7 +24,7 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 	BulletSharp::ConstraintSolver^ constraintSolver,
 #endif
 	CollisionConfiguration^ collisionConfiguration)
-: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->UnmanagedPointer, pairCache->_native,
+: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
 #ifndef DISABLE_CONSTRAINTS
 		GetUnmanagedNullable(constraintSolver),
 #else
@@ -42,13 +42,13 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 	BulletSharp::ConstraintSolver^ constraintSolver,
 #endif
 	CollisionConfiguration^ collisionConfiguration, SoftBodySolver^ softBodySolver)
-: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->UnmanagedPointer, pairCache->_native,
+: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
 #ifndef DISABLE_CONSTRAINTS
 		GetUnmanagedNullable(constraintSolver),
 #else
 		nullptr,
 #endif
-		collisionConfiguration->_native, softBodySolver->UnmanagedPointer))
+		collisionConfiguration->_native, softBodySolver->_native))
 {
 	_collisionConfiguration = collisionConfiguration;
 	_dispatcher = dispatcher;
@@ -81,12 +81,20 @@ void SoftRigidDynamicsWorld::RemoveSoftBody(BulletSharp::SoftBody::SoftBody^ bod
 
 AlignedSoftBodyArray^ SoftRigidDynamicsWorld::SoftBodyArray::get()
 {
-	return gcnew AlignedSoftBodyArray(&Native->getSoftBodyArray());
+	if (_softBodyArray == nullptr)
+	{
+		_softBodyArray = gcnew AlignedSoftBodyArray(&Native->getSoftBodyArray());
+	}
+	return _softBodyArray;
 }
 
 SoftBodyWorldInfo^ SoftRigidDynamicsWorld::WorldInfo::get()
 {
-	return gcnew SoftBodyWorldInfo(&Native->getWorldInfo());
+	if (_worldInfo == nullptr)
+	{
+		_worldInfo = gcnew SoftBodyWorldInfo(&Native->getWorldInfo());
+	}
+	return _worldInfo;
 }
 
 #endif

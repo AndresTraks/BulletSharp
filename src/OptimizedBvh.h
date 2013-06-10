@@ -18,11 +18,5 @@ namespace BulletSharp
 		void Refit(StridingMeshInterface^ triangles, Vector3 aabbMin, Vector3 aabbMax);
 		void RefitPartial(StridingMeshInterface^ triangles, Vector3 aabbMin, Vector3 aabbMax);
 		void UpdateBvhNodes(StridingMeshInterface^ meshInterface, int firstNode, int endNode, int index);
-
-	internal:
-		property btOptimizedBvh* UnmanagedPointer
-		{
-			btOptimizedBvh* get() new;
-		}
 	};
 };

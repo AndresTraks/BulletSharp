@@ -10,11 +10,10 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		btQuantizedBvh* _bvh;
-
 	internal:
+		btQuantizedBvh* _native;
 		QuantizedBvh(btQuantizedBvh* bvh);
+		static QuantizedBvh^ GetManaged(btQuantizedBvh* quantizedBvh);
 
 	public:
 		!QuantizedBvh();
@@ -40,13 +39,6 @@ namespace BulletSharp
 		property bool IsDisposed
 		{
 			virtual bool get();
-		}
-
-	internal:
-		property btQuantizedBvh* UnmanagedPointer
-		{
-			btQuantizedBvh* get();
-			void set(btQuantizedBvh* value);
 		}
 	};
 };

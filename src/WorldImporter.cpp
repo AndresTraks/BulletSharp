@@ -64,7 +64,7 @@ CollisionObject^ Serialize::WorldImporter::CreateCollisionObject(Matrix startTra
 	const char* bodyNameTemp = StringConv::ManagedToUnmanaged(bodyName);
 
 	CollisionObject^ ret = CollisionObject::GetManaged(
-		_native->baseCreateCollisionObject(*startTransformTemp, shape->UnmanagedPointer, bodyNameTemp));
+		_native->baseCreateCollisionObject(*startTransformTemp, shape->_native, bodyNameTemp));
 
 	ALIGNED_FREE(startTransformTemp);
 	StringConv::FreeUnmanagedString(bodyNameTemp);
@@ -78,7 +78,7 @@ RigidBody^ Serialize::WorldImporter::CreateRigidBody(bool isDynamic, btScalar ma
 	const char* bodyNameTemp = StringConv::ManagedToUnmanaged(bodyName);
 
 	RigidBody^ ret = (RigidBody^)CollisionObject::GetManaged(
-		_native->baseCreateRigidBody(isDynamic, mass, *startTransformTemp, shape->UnmanagedPointer, bodyNameTemp));
+		_native->baseCreateRigidBody(isDynamic, mass, *startTransformTemp, shape->_native, bodyNameTemp));
 
 	ALIGNED_FREE(startTransformTemp);
 	StringConv::FreeUnmanagedString(bodyNameTemp);
@@ -146,19 +146,19 @@ TriangleIndexVertexArray^ Serialize::WorldImporter::CreateTriangleMeshContainer(
 #ifndef DISABLE_BVH
 BvhTriangleMeshShape^ Serialize::WorldImporter::CreateBvhTriangleMeshShape(StridingMeshInterface^ trimesh, OptimizedBvh^ bvh)
 {
-	return gcnew BvhTriangleMeshShape(_native->baseCreateBvhTriangleMeshShape(trimesh->UnmanagedPointer, bvh->UnmanagedPointer));
+	return gcnew BvhTriangleMeshShape(_native->baseCreateBvhTriangleMeshShape(trimesh->_native, bvh->_native));
 }
 #endif
 
 CollisionShape^ Serialize::WorldImporter::CreateConvexTriangleMeshShape(StridingMeshInterface^ trimesh)
 {
-	return CollisionShape::GetManaged(_native->baseCreateConvexTriangleMeshShape(trimesh->UnmanagedPointer));
+	return CollisionShape::GetManaged(_native->baseCreateConvexTriangleMeshShape(trimesh->_native));
 }
 
 #ifndef DISABLE_GIMPACT
 GImpactMeshShape^ Serialize::WorldImporter::CreateGImpactShape(StridingMeshInterface^ trimesh)
 {
-	return gcnew GImpactMeshShape(_native->baseCreateGimpactShape(trimesh->UnmanagedPointer));
+	return gcnew GImpactMeshShape(_native->baseCreateGimpactShape(trimesh->_native));
 }
 #endif
 
@@ -177,7 +177,7 @@ ScaledBvhTriangleMeshShape^ Serialize::WorldImporter::CreateScaledTrangleMeshSha
 {
 	VECTOR3_DEF(localScaling);
 	ScaledBvhTriangleMeshShape^ ret = gcnew ScaledBvhTriangleMeshShape(
-		_native->baseCreateScaledTrangleMeshShape(meshShape->UnmanagedPointer, VECTOR3_USE(localScaling)));
+		_native->baseCreateScaledTrangleMeshShape(meshShape->_native, VECTOR3_USE(localScaling)));
 	VECTOR3_DEL(localScaling);
 	return ret;
 }
@@ -472,7 +472,7 @@ String^	Serialize::WorldImporter::GetNameForObject(Object^ obj)
 	TypedConstraint^ constraint = static_cast<TypedConstraint^>(obj);
 	if (constraint != nullptr)
 	{
-		pointer = constraint->UnmanagedPointer;
+		pointer = constraint->_native;
 		goto returnName;
 	}
 #endif
@@ -534,7 +534,7 @@ btCollisionObject* Serialize::WorldImporterWrapper::createCollisionObject(const 
 	btCollisionShape* shape, const char* bodyName)
 {
 	return _native->CreateCollisionObject(Math::BtTransformToMatrix(&startTransform),
-		CollisionShape::GetManaged(shape), StringConv::UnmanagedToManaged(bodyName))->UnmanagedPointer;
+		CollisionShape::GetManaged(shape), StringConv::UnmanagedToManaged(bodyName))->_native;
 }
 
 btRigidBody* Serialize::WorldImporterWrapper::createRigidBody(bool isDynamic, btScalar mass, const btTransform& startTransform,
@@ -546,64 +546,64 @@ btRigidBody* Serialize::WorldImporterWrapper::createRigidBody(bool isDynamic, bt
 
 btCollisionShape* Serialize::WorldImporterWrapper::createPlaneShape(const btVector3& planeNormal, btScalar planeConstant)
 {
-	return _native->CreatePlaneShape(Math::BtVector3ToVector3(&planeNormal), planeConstant)->UnmanagedPointer;
+	return _native->CreatePlaneShape(Math::BtVector3ToVector3(&planeNormal), planeConstant)->_native;
 }
 
 btCollisionShape* Serialize::WorldImporterWrapper::createBoxShape(const btVector3& halfExtents)
 {
-	return _native->CreateBoxShape(Math::BtVector3ToVector3(&halfExtents))->UnmanagedPointer;
+	return _native->CreateBoxShape(Math::BtVector3ToVector3(&halfExtents))->_native;
 }
 
 btCollisionShape* Serialize::WorldImporterWrapper::createSphereShape(btScalar radius)
 {
-	return _native->CreateSphereShape(radius)->UnmanagedPointer;
+	return _native->CreateSphereShape(radius)->_native;
 }
 
 btCollisionShape* Serialize::WorldImporterWrapper::createCapsuleShapeX(btScalar radius, btScalar height)
 {
-	return _native->CreateCapsuleShapeX(radius, height)->UnmanagedPointer;
+	return _native->CreateCapsuleShapeX(radius, height)->_native;
 }
 
 btCollisionShape* Serialize::WorldImporterWrapper::createCapsuleShapeY(btScalar radius, btScalar height)
 {
-	return _native->CreateCapsuleShapeY(radius, height)->UnmanagedPointer;
+	return _native->CreateCapsuleShapeY(radius, height)->_native;
 }
 
 btCollisionShape* Serialize::WorldImporterWrapper::createCapsuleShapeZ(btScalar radius, btScalar height)
 {
-	return _native->CreateCapsuleShapeZ(radius, height)->UnmanagedPointer;
+	return _native->CreateCapsuleShapeZ(radius, height)->_native;
 }
 
 btCollisionShape* Serialize::WorldImporterWrapper::createCylinderShapeX(btScalar radius, btScalar height)
 {
-	return _native->CreateCylinderShapeX(radius, height)->UnmanagedPointer;
+	return _native->CreateCylinderShapeX(radius, height)->_native;
 }
 
 btCollisionShape* Serialize::WorldImporterWrapper::createCylinderShapeY(btScalar radius, btScalar height)
 {
-	return _native->CreateCylinderShapeY(radius, height)->UnmanagedPointer;
+	return _native->CreateCylinderShapeY(radius, height)->_native;
 }
 
 btCollisionShape* Serialize::WorldImporterWrapper::createCylinderShapeZ(btScalar radius, btScalar height)
 {
-	return _native->CreateCylinderShapeZ(radius, height)->UnmanagedPointer;
+	return _native->CreateCylinderShapeZ(radius, height)->_native;
 }
 
 class btTriangleIndexVertexArray* Serialize::WorldImporterWrapper::createTriangleMeshContainer()
 {
-	return _native->CreateTriangleMeshContainer()->UnmanagedPointer;
+	return _native->CreateTriangleMeshContainer()->_native;
 }
 
 #ifndef DISABLE_BVH
 btBvhTriangleMeshShape* Serialize::WorldImporterWrapper::createBvhTriangleMeshShape(btStridingMeshInterface* trimesh, btOptimizedBvh* bvh)
 {
-	return _native->CreateBvhTriangleMeshShape(gcnew StridingMeshInterface(trimesh), gcnew OptimizedBvh(bvh))->UnmanagedPointer;
+	return _native->CreateBvhTriangleMeshShape(gcnew StridingMeshInterface(trimesh), OptimizedBvh::GetManaged(bvh))->_native;
 }
 #endif
 
 btCollisionShape* Serialize::WorldImporterWrapper::createConvexTriangleMeshShape(btStridingMeshInterface* trimesh)
 {
-	return _native->CreateConvexTriangleMeshShape(gcnew StridingMeshInterface(trimesh))->UnmanagedPointer;
+	return _native->CreateConvexTriangleMeshShape(gcnew StridingMeshInterface(trimesh))->_native;
 }
 
 #ifndef DISABLE_GIMPACT
@@ -626,14 +626,14 @@ class btCompoundShape* Serialize::WorldImporterWrapper::createCompoundShape()
 #ifndef DISABLE_BVH
 btOptimizedBvh* Serialize::WorldImporterWrapper::createOptimizedBvh()
 {
-	return _native->CreateOptimizedBvh()->UnmanagedPointer;
+	return _native->CreateOptimizedBvh()->_native;
 }
 #endif
 
 btTriangleInfoMap* Serialize::WorldImporterWrapper::createTriangleInfoMap()
 {
 	return baseCreateTriangleInfoMap();
-	//return _native->CreateTriangleInfoMap()->UnmanagedPointer;
+	//return _native->CreateTriangleInfoMap()->_native;
 }
 
 #ifndef DISABLE_CONSTRAINTS
@@ -643,12 +643,12 @@ btPoint2PointConstraint* Serialize::WorldImporterWrapper::createPoint2PointConst
 {
 	return _native->CreatePoint2PointConstraint(
 		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), (RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
-		Math::BtVector3ToVector3(&pivotInA), Math::BtVector3ToVector3(&pivotInB))->UnmanagedPointer;
+		Math::BtVector3ToVector3(&pivotInA), Math::BtVector3ToVector3(&pivotInB))->_native;
 }
 
 btPoint2PointConstraint* Serialize::WorldImporterWrapper::createPoint2PointConstraint(btRigidBody& rigidBodyA, const btVector3& pivotInA)
 {
-	return _native->CreatePoint2PointConstraint((RigidBody^)CollisionObject::GetManaged(&rigidBodyA), Math::BtVector3ToVector3(&pivotInA))->UnmanagedPointer;
+	return _native->CreatePoint2PointConstraint((RigidBody^)CollisionObject::GetManaged(&rigidBodyA), Math::BtVector3ToVector3(&pivotInA))->_native;
 }
 
 btHingeConstraint* Serialize::WorldImporterWrapper::createHingeConstraint(btRigidBody& rigidBodyA,btRigidBody& rigidBodyB,
@@ -656,7 +656,7 @@ btHingeConstraint* Serialize::WorldImporterWrapper::createHingeConstraint(btRigi
 {
 	return _native->CreateHingeConstraint(
 		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), (RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
-		Math::BtTransformToMatrix(&rigidBodyAFrame), Math::BtTransformToMatrix(&rigidBodyBFrame), useReferenceFrameA)->UnmanagedPointer;
+		Math::BtTransformToMatrix(&rigidBodyAFrame), Math::BtTransformToMatrix(&rigidBodyBFrame), useReferenceFrameA)->_native;
 }
 
 btHingeConstraint* Serialize::WorldImporterWrapper::createHingeConstraint(btRigidBody& rigidBodyA,btRigidBody& rigidBodyB,
@@ -664,19 +664,19 @@ btHingeConstraint* Serialize::WorldImporterWrapper::createHingeConstraint(btRigi
 {
 	return _native->CreateHingeConstraint(
 		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), (RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
-		Math::BtTransformToMatrix(&rigidBodyAFrame), Math::BtTransformToMatrix(&rigidBodyBFrame))->UnmanagedPointer;
+		Math::BtTransformToMatrix(&rigidBodyAFrame), Math::BtTransformToMatrix(&rigidBodyBFrame))->_native;
 }
 
 btHingeConstraint* Serialize::WorldImporterWrapper::createHingeConstraint(btRigidBody& rigidBodyA, const btTransform& rigidBodyAFrame, bool useReferenceFrameA)
 {
 	return _native->CreateHingeConstraint(
-		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), Math::BtTransformToMatrix(&rigidBodyAFrame), useReferenceFrameA)->UnmanagedPointer;
+		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), Math::BtTransformToMatrix(&rigidBodyAFrame), useReferenceFrameA)->_native;
 }
 
 btHingeConstraint* Serialize::WorldImporterWrapper::createHingeConstraint(btRigidBody& rigidBodyA, const btTransform& rigidBodyAFrame)
 {
 	return _native->CreateHingeConstraint(
-		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), Math::BtTransformToMatrix(&rigidBodyAFrame))->UnmanagedPointer;
+		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), Math::BtTransformToMatrix(&rigidBodyAFrame))->_native;
 }
 
 btConeTwistConstraint* Serialize::WorldImporterWrapper::createConeTwistConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
@@ -684,13 +684,13 @@ btConeTwistConstraint* Serialize::WorldImporterWrapper::createConeTwistConstrain
 {
 	return _native->CreateConeTwistConstraint(
 		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), (RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
-		Math::BtTransformToMatrix(&rigidBodyAFrame), Math::BtTransformToMatrix(&rigidBodyBFrame))->UnmanagedPointer;
+		Math::BtTransformToMatrix(&rigidBodyAFrame), Math::BtTransformToMatrix(&rigidBodyBFrame))->_native;
 }
 
 btConeTwistConstraint* Serialize::WorldImporterWrapper::createConeTwistConstraint(btRigidBody& rigidBodyA, const btTransform& rigidBodyAFrame)
 {
 	return _native->CreateConeTwistConstraint(
-		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), Math::BtTransformToMatrix(&rigidBodyAFrame))->UnmanagedPointer;
+		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), Math::BtTransformToMatrix(&rigidBodyAFrame))->_native;
 }
 
 btGeneric6DofConstraint* Serialize::WorldImporterWrapper::createGeneric6DofConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
@@ -698,14 +698,14 @@ btGeneric6DofConstraint* Serialize::WorldImporterWrapper::createGeneric6DofConst
 {
 	return _native->CreateGeneric6DofConstraint(
 		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), (RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
-		Math::BtTransformToMatrix(&frameInA), Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameA)->UnmanagedPointer;
+		Math::BtTransformToMatrix(&frameInA), Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameA)->_native;
 }
 
 btGeneric6DofConstraint* Serialize::WorldImporterWrapper::createGeneric6DofConstraint(btRigidBody& rigidBodyB,
 	const btTransform& frameInB, bool useLinearReferenceFrameB)
 {
 	return _native->CreateGeneric6DofConstraint((RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
-		Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameB)->UnmanagedPointer;
+		Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameB)->_native;
 }
 
 btSliderConstraint* Serialize::WorldImporterWrapper::createSliderConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
@@ -713,14 +713,14 @@ btSliderConstraint* Serialize::WorldImporterWrapper::createSliderConstraint(btRi
 {
 	return _native->CreateSliderConstraint(
 		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), (RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
-		Math::BtTransformToMatrix(&frameInA), Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameA)->UnmanagedPointer;
+		Math::BtTransformToMatrix(&frameInA), Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameA)->_native;
 }
 
 btSliderConstraint* Serialize::WorldImporterWrapper::createSliderConstraint(btRigidBody& rigidBodyB,
 	const btTransform& frameInB, bool useLinearReferenceFrameA)
 {
 	return _native->CreateSliderConstraint(
-		(RigidBody^)CollisionObject::GetManaged(&rigidBodyB), Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameA)->UnmanagedPointer;
+		(RigidBody^)CollisionObject::GetManaged(&rigidBodyB), Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameA)->_native;
 }
 
 #endif

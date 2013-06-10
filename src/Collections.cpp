@@ -387,8 +387,7 @@ void DbvtArray::default::set(int index, Dbvt^ value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
-	Native[index] = *value->UnmanagedPointer;
-
+	Native[index] = *value->_native;
 }
 
 

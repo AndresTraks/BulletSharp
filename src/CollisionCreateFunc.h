@@ -40,12 +40,5 @@ namespace BulletSharp
 			bool get();
 			void set(bool value);
 		}
-
-	internal:
-		property btCollisionAlgorithmCreateFunc* UnmanagedPointer
-		{
-			virtual btCollisionAlgorithmCreateFunc* get();
-			void set(btCollisionAlgorithmCreateFunc* value);
-		}
 	};
 };

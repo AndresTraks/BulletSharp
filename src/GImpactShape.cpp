@@ -146,7 +146,7 @@ void GImpactShapeInterface::UpdateBound()
 #ifndef DISABLE_BVH
 GImpactQuantizedBvh^ GImpactShapeInterface::BoxSet::get()
 {
-	return gcnew GImpactQuantizedBvh(Native->getBoxSet());
+	return gcnew GImpactQuantizedBvh((btGImpactBoxSet*)Native->getBoxSet());
 }
 #endif
 
@@ -202,18 +202,22 @@ PrimitiveManagerBase^ GImpactShapeInterface::PrimitiveManager::get()
 
 
 #ifndef DISABLE_BVH
+
+#undef Native
+#define Native (static_cast<btGImpactCompoundShape::CompoundPrimitiveManager*>(_native))
+
 GImpactCompoundShape::CompoundPrimitiveManager::CompoundPrimitiveManager(btGImpactCompoundShape::CompoundPrimitiveManager* compound)
 : PrimitiveManagerBase(compound)
 {
 }
 
 GImpactCompoundShape::CompoundPrimitiveManager::CompoundPrimitiveManager(CompoundPrimitiveManager^ compound)
-: PrimitiveManagerBase(new btGImpactCompoundShape::CompoundPrimitiveManager(*compound->UnmanagedPointer))
+: PrimitiveManagerBase(new btGImpactCompoundShape::CompoundPrimitiveManager(*(btGImpactCompoundShape::CompoundPrimitiveManager*)compound->_native))
 {
 }
 
 GImpactCompoundShape::CompoundPrimitiveManager::CompoundPrimitiveManager(GImpactCompoundShape^ compoundShape)
-: PrimitiveManagerBase(new btGImpactCompoundShape::CompoundPrimitiveManager(compoundShape->UnmanagedPointer))
+: PrimitiveManagerBase(new btGImpactCompoundShape::CompoundPrimitiveManager((btGImpactCompoundShape*)compoundShape->_native))
 {
 }
 
@@ -224,13 +228,9 @@ GImpactCompoundShape::CompoundPrimitiveManager::CompoundPrimitiveManager()
 
 GImpactCompoundShape^ GImpactCompoundShape::CompoundPrimitiveManager::CompoundShape::get()
 {
-	return gcnew GImpactCompoundShape(UnmanagedPointer->m_compoundShape);
+	return gcnew GImpactCompoundShape(Native->m_compoundShape);
 }
 
-btGImpactCompoundShape::CompoundPrimitiveManager* GImpactCompoundShape::CompoundPrimitiveManager::UnmanagedPointer::get()
-{
-	return (btGImpactCompoundShape::CompoundPrimitiveManager*)PrimitiveManagerBase::UnmanagedPointer;
-}
 #endif
 
 
@@ -268,6 +268,10 @@ GImpactCompoundShape::CompoundPrimitiveManager^ GImpactCompoundShape::GImpactCom
 
 
 #ifndef DISABLE_BVH
+
+#undef Native
+#define Native (static_cast<btGImpactMeshShapePart::TrimeshPrimitiveManager*>(_native))
+
 GImpactMeshShapePart::TrimeshPrimitiveManager::TrimeshPrimitiveManager(btGImpactMeshShapePart::TrimeshPrimitiveManager* manager)
 : PrimitiveManagerBase(manager)
 {
@@ -279,18 +283,18 @@ GImpactMeshShapePart::TrimeshPrimitiveManager::TrimeshPrimitiveManager()
 }
 
 GImpactMeshShapePart::TrimeshPrimitiveManager::TrimeshPrimitiveManager(TrimeshPrimitiveManager^ manager)
-: PrimitiveManagerBase(new btGImpactMeshShapePart::TrimeshPrimitiveManager(*manager->UnmanagedPointer))
+: PrimitiveManagerBase(new btGImpactMeshShapePart::TrimeshPrimitiveManager(*(btGImpactMeshShapePart::TrimeshPrimitiveManager*)manager->_native))
 {
 }
 
 GImpactMeshShapePart::TrimeshPrimitiveManager::TrimeshPrimitiveManager(StridingMeshInterface^ meshInterface, int part)
-: PrimitiveManagerBase(new btGImpactMeshShapePart::TrimeshPrimitiveManager(meshInterface->UnmanagedPointer, part))
+: PrimitiveManagerBase(new btGImpactMeshShapePart::TrimeshPrimitiveManager(meshInterface->_native, part))
 {
 }
 
 void GImpactMeshShapePart::TrimeshPrimitiveManager::GetBulletTriangle(int prim_index, TriangleShapeEx^ triangle)
 {
-	UnmanagedPointer->get_bullet_triangle(prim_index, *(btTriangleShapeEx*)triangle->_native);
+	Native->get_bullet_triangle(prim_index, *(btTriangleShapeEx*)triangle->_native);
 }
 
 void GImpactMeshShapePart::TrimeshPrimitiveManager::GetIndices(int face_index, unsigned int% i0, unsigned int% i1, unsigned int% i2)
@@ -299,7 +303,7 @@ void GImpactMeshShapePart::TrimeshPrimitiveManager::GetIndices(int face_index, u
 	unsigned int i1Temp;
 	unsigned int i2Temp;
 
-	UnmanagedPointer->get_indices(face_index, i0Temp, i1Temp, i2Temp);
+	Native->get_indices(face_index, i0Temp, i1Temp, i2Temp);
 
 	i0 = i0Temp;
 	i1 = i1Temp;
@@ -308,135 +312,131 @@ void GImpactMeshShapePart::TrimeshPrimitiveManager::GetIndices(int face_index, u
 
 void GImpactMeshShapePart::TrimeshPrimitiveManager::Lock()
 {
-	UnmanagedPointer->lock();
+	Native->lock();
 }
 
 void GImpactMeshShapePart::TrimeshPrimitiveManager::Unlock()
 {
-	UnmanagedPointer->unlock();
+	Native->unlock();
 }
 
 IntPtr GImpactMeshShapePart::TrimeshPrimitiveManager::IndexBase::get()
 {
-	return IntPtr((void*)UnmanagedPointer->indexbase);
+	return IntPtr((void*)Native->indexbase);
 }
 void GImpactMeshShapePart::TrimeshPrimitiveManager::IndexBase::set(IntPtr value)
 {
-	UnmanagedPointer->indexbase = (unsigned char*)value.ToPointer();
+	Native->indexbase = (unsigned char*)value.ToPointer();
 }
 
 int GImpactMeshShapePart::TrimeshPrimitiveManager::IndexStride::get()
 {
-	return UnmanagedPointer->indexstride;
+	return Native->indexstride;
 }
 void GImpactMeshShapePart::TrimeshPrimitiveManager::IndexStride::set(int value)
 {
-	UnmanagedPointer->indexstride = value;
+	Native->indexstride = value;
 }
 
 PhyScalarType GImpactMeshShapePart::TrimeshPrimitiveManager::IndicesType::get()
 {
-	return (PhyScalarType)UnmanagedPointer->indicestype;
+	return (PhyScalarType)Native->indicestype;
 }
 void GImpactMeshShapePart::TrimeshPrimitiveManager::IndicesType::set(PhyScalarType value)
 {
-	UnmanagedPointer->indicestype = (PHY_ScalarType)value;
+	Native->indicestype = (PHY_ScalarType)value;
 }
 
 int GImpactMeshShapePart::TrimeshPrimitiveManager::LockCount::get()
 {
-	return UnmanagedPointer->m_lock_count;
+	return Native->m_lock_count;
 }
 void GImpactMeshShapePart::TrimeshPrimitiveManager::LockCount::set(int value)
 {
-	UnmanagedPointer->m_lock_count = value;
+	Native->m_lock_count = value;
 }
 
 btScalar GImpactMeshShapePart::TrimeshPrimitiveManager::Margin::get()
 {
-	return UnmanagedPointer->m_margin;
+	return Native->m_margin;
 }
 void GImpactMeshShapePart::TrimeshPrimitiveManager::Margin::set(btScalar value)
 {
-	UnmanagedPointer->m_margin = value;
+	Native->m_margin = value;
 }
 
 StridingMeshInterface^ GImpactMeshShapePart::TrimeshPrimitiveManager::MeshInterface::get()
 {
-	return StridingMeshInterface::GetManaged(UnmanagedPointer->m_meshInterface);
+	return StridingMeshInterface::GetManaged(Native->m_meshInterface);
 }
 void GImpactMeshShapePart::TrimeshPrimitiveManager::MeshInterface::set(StridingMeshInterface^ value)
 {
-	UnmanagedPointer->m_meshInterface = value->UnmanagedPointer;
+	Native->m_meshInterface = value->_native;
 }
 
 int GImpactMeshShapePart::TrimeshPrimitiveManager::NumFaces::get()
 {
-	return UnmanagedPointer->numfaces;
+	return Native->numfaces;
 }
 void GImpactMeshShapePart::TrimeshPrimitiveManager::NumFaces::set(int value)
 {
-	UnmanagedPointer->numfaces = value;
+	Native->numfaces = value;
 }
 
 int GImpactMeshShapePart::TrimeshPrimitiveManager::NumVerts::get()
 {
-	return UnmanagedPointer->numverts;
+	return Native->numverts;
 }
 void GImpactMeshShapePart::TrimeshPrimitiveManager::NumVerts::set(int value)
 {
-	UnmanagedPointer->numverts = value;
+	Native->numverts = value;
 }
 
 int GImpactMeshShapePart::TrimeshPrimitiveManager::Part::get()
 {
-	return UnmanagedPointer->m_part;
+	return Native->m_part;
 }
 void GImpactMeshShapePart::TrimeshPrimitiveManager::Part::set(int value)
 {
-	UnmanagedPointer->m_part = value;
+	Native->m_part = value;
 }
 
 Vector3 GImpactMeshShapePart::TrimeshPrimitiveManager::Scale::get()
 {
-	return Math::BtVector3ToVector3(&UnmanagedPointer->m_scale);
+	return Math::BtVector3ToVector3(&Native->m_scale);
 }
 void GImpactMeshShapePart::TrimeshPrimitiveManager::Scale::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &UnmanagedPointer->m_scale);
+	Math::Vector3ToBtVector3(value, &Native->m_scale);
 }
 
 int GImpactMeshShapePart::TrimeshPrimitiveManager::Stride::get()
 {
-	return UnmanagedPointer->stride;
+	return Native->stride;
 }
 void GImpactMeshShapePart::TrimeshPrimitiveManager::Stride::set(int value)
 {
-	UnmanagedPointer->stride = value;
+	Native->stride = value;
 }
 
 PhyScalarType GImpactMeshShapePart::TrimeshPrimitiveManager::Type::get()
 {
-	return (PhyScalarType)UnmanagedPointer->type;
+	return (PhyScalarType)Native->type;
 }
 void GImpactMeshShapePart::TrimeshPrimitiveManager::Type::set(PhyScalarType value)
 {
-	UnmanagedPointer->type = (PHY_ScalarType)value;
+	Native->type = (PHY_ScalarType)value;
 }
 
 IntPtr GImpactMeshShapePart::TrimeshPrimitiveManager::VertexBase::get()
 {
-	return IntPtr((void*)UnmanagedPointer->vertexbase);
+	return IntPtr((void*)Native->vertexbase);
 }
 void GImpactMeshShapePart::TrimeshPrimitiveManager::VertexBase::set(IntPtr value)
 {
-	UnmanagedPointer->vertexbase = (unsigned char*)value.ToPointer();
+	Native->vertexbase = (unsigned char*)value.ToPointer();
 }
 
-btGImpactMeshShapePart::TrimeshPrimitiveManager* GImpactMeshShapePart::TrimeshPrimitiveManager::UnmanagedPointer::get()
-{
-	return (btGImpactMeshShapePart::TrimeshPrimitiveManager*)PrimitiveManagerBase::UnmanagedPointer;
-}
 #endif
 
 
@@ -454,7 +454,7 @@ GImpactMeshShapePart::GImpactMeshShapePart()
 }
 
 GImpactMeshShapePart::GImpactMeshShapePart(StridingMeshInterface^ meshInterface, int part)
-: GImpactShapeInterface(new btGImpactMeshShapePart(meshInterface->UnmanagedPointer, part))
+: GImpactShapeInterface(new btGImpactMeshShapePart(meshInterface->_native, part))
 {
 }
 
@@ -479,7 +479,7 @@ int GImpactMeshShapePart::VertexCount::get()
 #ifndef DISABLE_BVH
 GImpactMeshShapePart::TrimeshPrimitiveManager^ GImpactMeshShapePart::GImpactTrimeshPrimitiveManager::get()
 {
-	return gcnew TrimeshPrimitiveManager(UnmanagedPointer->getTrimeshPrimitiveManager());
+	return gcnew TrimeshPrimitiveManager(Native->getTrimeshPrimitiveManager());
 }
 #endif
 
@@ -493,7 +493,7 @@ GImpactMeshShape::GImpactMeshShape(btGImpactMeshShape* shape)
 }
 
 GImpactMeshShape::GImpactMeshShape(StridingMeshInterface^ meshInterface)
-: GImpactShapeInterface(new btGImpactMeshShape(meshInterface->UnmanagedPointer))
+: GImpactShapeInterface(new btGImpactMeshShape(meshInterface->_native))
 {
 }
 

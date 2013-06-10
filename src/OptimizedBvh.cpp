@@ -5,6 +5,8 @@
 #include "OptimizedBvh.h"
 #include "StridingMeshInterface.h"
 
+#define Native static_cast<btOptimizedBvh*>(_native)
+
 OptimizedBvh::OptimizedBvh(btOptimizedBvh* bvh)
 : QuantizedBvh(bvh)
 {
@@ -20,7 +22,7 @@ void OptimizedBvh::Build(StridingMeshInterface^ triangles, bool useQuantizedAabb
 	VECTOR3_DEF(bvhAabbMin);
 	VECTOR3_DEF(bvhAabbMax);
 
-	UnmanagedPointer->build(triangles->UnmanagedPointer, useQuantizedAabbCompression,
+	Native->build(triangles->_native, useQuantizedAabbCompression,
 		VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax));
 
 	VECTOR3_DEL(bvhAabbMin);
@@ -32,7 +34,7 @@ void OptimizedBvh::Refit(StridingMeshInterface^ triangles, Vector3 aabbMin, Vect
 	VECTOR3_DEF(aabbMin);
 	VECTOR3_DEF(aabbMax);
 
-	UnmanagedPointer->refit(triangles->UnmanagedPointer, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
+	Native->refit(triangles->_native, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
@@ -43,7 +45,7 @@ void OptimizedBvh::RefitPartial(StridingMeshInterface^ triangles, Vector3 aabbMi
 	VECTOR3_DEF(aabbMin);
 	VECTOR3_DEF(aabbMax);
 
-	UnmanagedPointer->refitPartial(triangles->UnmanagedPointer, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
+	Native->refitPartial(triangles->_native, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
@@ -51,12 +53,7 @@ void OptimizedBvh::RefitPartial(StridingMeshInterface^ triangles, Vector3 aabbMi
 
 void OptimizedBvh::UpdateBvhNodes(StridingMeshInterface^ meshInterface, int firstNode, int endNode, int index)
 {
-	UnmanagedPointer->updateBvhNodes(meshInterface->UnmanagedPointer, firstNode, endNode, index);
-}
-
-btOptimizedBvh* OptimizedBvh::UnmanagedPointer::get()
-{
-	return (btOptimizedBvh*)QuantizedBvh::UnmanagedPointer;
+	Native->updateBvhNodes(meshInterface->_native, firstNode, endNode, index);
 }
 
 #endif

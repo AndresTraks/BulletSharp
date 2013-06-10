@@ -9,8 +9,8 @@ namespace BulletSharp
 
 	public ref class MaterialProperties
 	{
-	private:
-		btMaterialProperties* _properties;
+	internal:
+		btMaterialProperties* _native;
 
 	public:
 		MaterialProperties();
@@ -62,12 +62,6 @@ namespace BulletSharp
 			PhyScalarType get();
 			void set(PhyScalarType value);
 		}
-
-	internal:
-		property btMaterialProperties* UnmanagedPointer
-		{
-			btMaterialProperties* get();
-		}
 	};
 
 	public ref class TriangleIndexVertexMaterialArray : TriangleIndexVertexArray
@@ -105,11 +99,5 @@ namespace BulletSharp
 			[Out] PhyScalarType% materialType, [Out] int% materialStride,
 			[Out] DataStream^% triangleMaterialData, [Out] int% numTriangles,
 			[Out] int% triangleMaterialStride, [Out] PhyScalarType% triangleType);
-
-	internal:
-		property btTriangleIndexVertexMaterialArray* UnmanagedPointer
-		{
-			btTriangleIndexVertexMaterialArray* get() new;
-		}
 	};
 };

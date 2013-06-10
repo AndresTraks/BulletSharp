@@ -17,7 +17,6 @@ namespace BulletSharp
 	internal:
 		btStridingMeshInterface* _native;
 
-	internal:
 		StridingMeshInterface(btStridingMeshInterface* stridingMesh);
 
 	public:
@@ -78,13 +77,6 @@ namespace BulletSharp
 		property bool IsDisposed
 		{
 			virtual bool get();
-		}
-
-	internal:
-		property btStridingMeshInterface* UnmanagedPointer
-		{
-			btStridingMeshInterface* get();
-			void set(btStridingMeshInterface* value);
 		}
 	};
 };

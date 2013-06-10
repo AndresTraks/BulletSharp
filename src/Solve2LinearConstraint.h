@@ -6,10 +6,9 @@ namespace BulletSharp
 
 	public ref class Solve2LinearConstraint
 	{
-	private:
-		btSolve2LinearConstraint* _constraint;
-
 	internal:
+		btSolve2LinearConstraint* _native;
+
 		Solve2LinearConstraint(btSolve2LinearConstraint* constraint);
 
 	public:
@@ -26,11 +25,5 @@ namespace BulletSharp
 			Vector3 invInertiaBDiag, btScalar invMassB, Vector3 linvelB, Vector3 angvelB, Vector3 rel_posA2,
 			btScalar depthA, Vector3 normalA, Vector3 rel_posB1, Vector3 rel_posB2,
 			btScalar depthB, Vector3 normalB, btScalar imp0, btScalar imp1);
-
-	internal:
-		property btSolve2LinearConstraint* UnmanagedPointer
-		{
-			virtual btSolve2LinearConstraint* get();
-		}
 	};
 };

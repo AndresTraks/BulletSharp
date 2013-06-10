@@ -6,10 +6,9 @@ namespace BulletSharp
 
 	public ref class Serializer
 	{
-	private:
-		btSerializer* _serializer;
-
 	internal:
+		btSerializer* _native;
+
 		Serializer(btSerializer* serializer);
 
 	public:
@@ -27,13 +26,6 @@ namespace BulletSharp
 		{
 			int get();
 		}
-
-	internal:
-		property btSerializer* UnmanagedPointer
-		{
-			btSerializer* get();
-			void set(btSerializer* value);
-		}
 	};
 
 	public ref class DefaultSerializer : Serializer
@@ -42,11 +34,5 @@ namespace BulletSharp
 		DefaultSerializer();
 
 		void WriteHeader([Out] String^% buffer);
-
-	internal:
-		property btDefaultSerializer* UnmanagedPointer
-		{
-			btDefaultSerializer* get();
-		}
 	};
 };

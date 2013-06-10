@@ -11,10 +11,9 @@ namespace BulletSharp
 {
 	public ref class SimplexSolverInterface
 	{
-	private:
-		btSimplexSolverInterface* _simplexSolver;
-
 	internal:
+		btSimplexSolverInterface* _native;
+
 		SimplexSolverInterface(btSimplexSolverInterface* simplexSolver);
 
 	public:
@@ -26,13 +25,6 @@ namespace BulletSharp
 		property bool IsDisposed
 		{
 			virtual bool get();
-		}
-
-	internal:
-		property btSimplexSolverInterface* UnmanagedPointer
-		{
-			virtual btSimplexSolverInterface* get();
-			void set(btSimplexSolverInterface* value);
 		}
 	};
 };

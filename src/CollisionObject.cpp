@@ -105,13 +105,13 @@ int CollisionObject::CalculateSerializeBufferSize()
 
 String^ CollisionObject::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
 {
-	const char* name = _native->serialize(dataBuffer.ToPointer(), serializer->UnmanagedPointer);
+	const char* name = _native->serialize(dataBuffer.ToPointer(), serializer->_native);
 	return gcnew String(name);
 }
 
 void CollisionObject::SerializeSingleObject(BulletSharp::Serializer^ serializer)
 {
-	_native->serializeSingleObject(serializer->UnmanagedPointer);
+	_native->serializeSingleObject(serializer->_native);
 }
 #endif
 

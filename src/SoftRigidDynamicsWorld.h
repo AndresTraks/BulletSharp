@@ -18,6 +18,10 @@ namespace BulletSharp
 
 		public ref class SoftRigidDynamicsWorld : DiscreteDynamicsWorld
 		{
+		private:
+			AlignedSoftBodyArray^ _softBodyArray;
+			SoftBodyWorldInfo^ _worldInfo;
+
 		public:
 			SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
 #ifndef DISABLE_CONSTRAINTS

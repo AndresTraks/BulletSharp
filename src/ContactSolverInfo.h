@@ -4,10 +4,9 @@ namespace BulletSharp
 {
 	public ref class ContactSolverInfoData
 	{
-	private:
-		btContactSolverInfoData* _infoData;
-
 	internal:
+		btContactSolverInfoData* _native;
+
 		ContactSolverInfoData(btContactSolverInfoData* infoData);
 
 	public:
@@ -138,13 +137,6 @@ namespace BulletSharp
 			btScalar get();
 			void set(btScalar value);
 		}
-
-	internal:
-		property btContactSolverInfoData* UnmanagedPointer
-		{
-			virtual btContactSolverInfoData* get();
-			void set(btContactSolverInfoData* value);
-		}
 	};
 
 	public ref class ContactSolverInfo : ContactSolverInfoData
@@ -154,11 +146,5 @@ namespace BulletSharp
 
 	public:
 		ContactSolverInfo();
-
-	internal:
-		property btContactSolverInfo* UnmanagedPointer
-		{
-			btContactSolverInfo* get() new;
-		}
 	};
 };

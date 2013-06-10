@@ -13,8 +13,8 @@ namespace BulletSharp
 
 	public ref class DbvtAabbMm
 	{
-	private:
-		btDbvtAabbMm* _aabbMm;
+	internal:
+		btDbvtAabbMm* _native;
 
 	internal:
 		DbvtAabbMm(btDbvtAabbMm* aabbMm);
@@ -34,24 +34,12 @@ namespace BulletSharp
 		bool Contain(DbvtAabbMm^ a);
 		int Classify(Vector3 n, btScalar o, int s);
 		btScalar ProjectMinimum(Vector3 v, unsigned signs);
-
-	internal:
-		property btDbvtAabbMm* UnmanagedPointer
-		{
-			virtual btDbvtAabbMm* get();
-			void set(btDbvtAabbMm* value);
-		}
 	};
 
 	public ref class DbvtVolume : DbvtAabbMm
 	{
 	internal:
 		DbvtVolume(btDbvtVolume* aabbMm);
-
-		property btDbvtVolume* UnmanagedPointer
-		{
-			btDbvtVolume* get() new;
-		}
 	};
 
 	public ref class DbvtNode
@@ -131,66 +119,42 @@ namespace BulletSharp
 
 		ref class StkNp
 		{
-		private:
-			btDbvt::sStkNP* _stkNp;
-
 		internal:
+			btDbvt::sStkNP* _native;
+
 			StkNp(btDbvt::sStkNP* stkNp);
 
 		public:
 			StkNp(DbvtNode^ n, unsigned m);
-
-		internal:
-			property btDbvt::sStkNP* UnmanagedPointer
-			{
-				btDbvt::sStkNP* get();
-				void set(btDbvt::sStkNP* value);
-			}
 		};
 
 		ref class StkNps
 		{
-		private:
-			btDbvt::sStkNPS* _stkNps;
-
 		internal:
+			btDbvt::sStkNPS* _native;
+
 			StkNps(btDbvt::sStkNPS* stkNps);
 
 		public:
 			StkNps();
 			StkNps(DbvtNode^ n, unsigned m, btScalar v);
-
-		internal:
-			property btDbvt::sStkNPS* UnmanagedPointer
-			{
-				btDbvt::sStkNPS* get();
-				void set(btDbvt::sStkNPS* value);
-			}
 		};
 
 		ref class StkCln
 		{
-		private:
-			btDbvt::sStkCLN* _stkCln;
-
 		internal:
+			btDbvt::sStkCLN* _native;
+
 			StkCln(btDbvt::sStkCLN* stkCln);
 
 		public:
 			StkCln(DbvtNode^ na, DbvtNode^ nb);
-
-		internal:
-			property btDbvt::sStkCLN* UnmanagedPointer
-			{
-				btDbvt::sStkCLN* get();
-				void set(btDbvt::sStkCLN* value);
-			}
 		};
 
 		ref class ICollide : BulletSharp::IDisposable
 		{
-		private:
-			btDbvt::ICollide* _iCollide;
+		internal:
+			btDbvt::ICollide* _native;
 
 		public:
 			virtual event EventHandler^ OnDisposing;
@@ -215,19 +179,12 @@ namespace BulletSharp
 			{
 				virtual bool get();
 			}
-
-		internal:
-			property btDbvt::ICollide* UnmanagedPointer
-			{
-				virtual btDbvt::ICollide* get();
-				void set(btDbvt::ICollide* value);
-			}
 		};
 
 		ref class IWriter : BulletSharp::IDisposable
 		{
-		private:
-			btDbvt::IWriter* _iWriter;
+		internal:
+			btDbvt::IWriter* _native;
 
 		public:
 			virtual event EventHandler^ OnDisposing;
@@ -250,19 +207,12 @@ namespace BulletSharp
 			{
 				virtual bool get();
 			}
-
-		internal:
-			property btDbvt::IWriter* UnmanagedPointer
-			{
-				virtual btDbvt::IWriter* get();
-				void set(btDbvt::IWriter* value);
-			}
 		};
 
 		ref class IClone : BulletSharp::IDisposable
 		{
-		private:
-			btDbvt::IClone* _iClone;
+		internal:
+			btDbvt::IClone* _native;
 
 		public:
 			virtual event EventHandler^ OnDisposing;
@@ -283,23 +233,15 @@ namespace BulletSharp
 			{
 				virtual bool get();
 			}
-
-		internal:
-			property btDbvt::IClone* UnmanagedPointer
-			{
-				virtual btDbvt::IClone* get();
-				void set(btDbvt::IClone* value);
-			}
 		};
 
 
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
-	private:
-		btDbvt* _dbvt;
-
 	internal:
+		btDbvt* _native;
+
 		Dbvt(btDbvt* dbvt);
 
 	public:
@@ -395,13 +337,6 @@ namespace BulletSharp
 		{
 			AlignedStkNnArray^ get();
 			void set(AlignedStkNnArray^ value);
-		}
-
-	internal:
-		property btDbvt* UnmanagedPointer
-		{
-			virtual btDbvt* get();
-			void set(btDbvt* value);
 		}
 	};
 };

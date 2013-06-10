@@ -7,91 +7,82 @@
 
 TriangleInfoMap::TriangleInfoMap()
 {
-	_triangleInfoMap = new btTriangleInfoMap();
+	_native = new btTriangleInfoMap();
 }
 
 void TriangleInfoMap::Clear()
 {
-	_triangleInfoMap->clear();
+	_native->clear();
 }
 
 #ifndef DISABLE_SERIALIZE
 int	TriangleInfoMap::CalculateSerializeBufferSize()
 {
-	return _triangleInfoMap->calculateSerializeBufferSize();
+	return _native->calculateSerializeBufferSize();
 }
 
 String^ TriangleInfoMap::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
 {
-	const char* name = UnmanagedPointer->serialize(dataBuffer.ToPointer(), serializer->UnmanagedPointer);
+	const char* name = _native->serialize(dataBuffer.ToPointer(), serializer->_native);
 	return gcnew String(name);
 }
 #endif
 
 btScalar TriangleInfoMap::ConvexEpsilon::get()
 {
-	return _triangleInfoMap->m_convexEpsilon;
+	return _native->m_convexEpsilon;
 }
 void TriangleInfoMap::ConvexEpsilon::set(btScalar value)
 {
-	_triangleInfoMap->m_convexEpsilon = value;
+	_native->m_convexEpsilon = value;
 }
 
 btScalar TriangleInfoMap::EdgeDistanceThreshold::get()
 {
-	return _triangleInfoMap->m_edgeDistanceThreshold;
+	return _native->m_edgeDistanceThreshold;
 }
 void TriangleInfoMap::EdgeDistanceThreshold::set(btScalar value)
 {
-	_triangleInfoMap->m_edgeDistanceThreshold = value;
+	_native->m_edgeDistanceThreshold = value;
 }
 
 btScalar TriangleInfoMap::EqualVertexThreshold::get()
 {
-	return _triangleInfoMap->m_equalVertexThreshold;
+	return _native->m_equalVertexThreshold;
 }
 void TriangleInfoMap::EqualVertexThreshold::set(btScalar value)
 {
-	_triangleInfoMap->m_equalVertexThreshold = value;
+	_native->m_equalVertexThreshold = value;
 }
 
 btScalar TriangleInfoMap::MaxEdgeAngleThreshold::get()
 {
-	return _triangleInfoMap->m_maxEdgeAngleThreshold;
+	return _native->m_maxEdgeAngleThreshold;
 }
 void TriangleInfoMap::MaxEdgeAngleThreshold::set(btScalar value)
 {
-	_triangleInfoMap->m_maxEdgeAngleThreshold = value;
+	_native->m_maxEdgeAngleThreshold = value;
 }
 
 btScalar TriangleInfoMap::PlanarEpsilon::get()
 {
-	return _triangleInfoMap->m_planarEpsilon;
+	return _native->m_planarEpsilon;
 }
 void TriangleInfoMap::PlanarEpsilon::set(btScalar value)
 {
-	_triangleInfoMap->m_planarEpsilon = value;
+	_native->m_planarEpsilon = value;
 }
 
 int TriangleInfoMap::Size::get()
 {
-	return _triangleInfoMap->size();
+	return _native->size();
 }
 
 btScalar TriangleInfoMap::ZeroAreaThreshold::get()
 {
-	return _triangleInfoMap->m_zeroAreaThreshold;
+	return _native->m_zeroAreaThreshold;
 }
 void TriangleInfoMap::ZeroAreaThreshold::set(btScalar value)
 {
-	_triangleInfoMap->m_zeroAreaThreshold = value;
-}
-
-btTriangleInfoMap* TriangleInfoMap::UnmanagedPointer::get()
-{
-	return _triangleInfoMap;
-}
-void TriangleInfoMap::UnmanagedPointer::set(btTriangleInfoMap* value)
-{
-	_triangleInfoMap = value;
+	_native->m_zeroAreaThreshold = value;
 }

@@ -22,7 +22,7 @@ void GeometryUtil::GetVerticesFromPlaneEquations(AlignedVector3Array^ planeEquat
 bool GeometryUtil::IsInside(AlignedVector3Array^ vertices, Vector3 planeNormal, btScalar margin)
 {
 	VECTOR3_DEF(planeNormal);
-	bool ret = btGeometryUtil::isInside(*vertices->UnmanagedPointer, VECTOR3_USE(planeNormal), margin);
+	bool ret = btGeometryUtil::isInside(*vertices->_native, VECTOR3_USE(planeNormal), margin);
 	VECTOR3_DEL(planeNormal);
 	return ret;
 }

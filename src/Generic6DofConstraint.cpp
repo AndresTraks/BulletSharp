@@ -8,17 +8,17 @@
 
 RotationalLimitMotor::RotationalLimitMotor()
 {
-	motor = new btRotationalLimitMotor();
+	_native = new btRotationalLimitMotor();
 }
 
-RotationalLimitMotor::RotationalLimitMotor(RotationalLimitMotor^ motor)
+RotationalLimitMotor::RotationalLimitMotor(RotationalLimitMotor^ _native)
 {
-	this->motor = new btRotationalLimitMotor(*motor->motor);
+	this->_native = new btRotationalLimitMotor(*_native->_native);
 }
 
-RotationalLimitMotor::RotationalLimitMotor(btRotationalLimitMotor* motor)
+RotationalLimitMotor::RotationalLimitMotor(btRotationalLimitMotor* _native)
 {
-	this->motor = motor;
+	this->_native = _native;
 }
 
 btScalar RotationalLimitMotor::SolveAngularLimits(btScalar timeStep, Vector3 axis,
@@ -26,7 +26,7 @@ btScalar RotationalLimitMotor::SolveAngularLimits(btScalar timeStep, Vector3 axi
 {
 	VECTOR3_DEF(axis);
 	
-	btScalar ret = motor->solveAngularLimits(timeStep, VECTOR3_USE(axis),
+	btScalar ret = _native->solveAngularLimits(timeStep, VECTOR3_USE(axis),
 		jacDiagABInv, (btRigidBody*)body0->_native, (btRigidBody*)body1->_native);
 
 	VECTOR3_DEL(axis);
@@ -35,198 +35,193 @@ btScalar RotationalLimitMotor::SolveAngularLimits(btScalar timeStep, Vector3 axi
 
 int RotationalLimitMotor::TestLimitValue(btScalar test_value)
 {
-	return motor->testLimitValue(test_value);
+	return _native->testLimitValue(test_value);
 }
 
 bool RotationalLimitMotor::IsLimited::get()
 {
-	return motor->isLimited();
+	return _native->isLimited();
 }
 
 bool RotationalLimitMotor::NeedApplyTorques::get()
 {
-	return motor->needApplyTorques();
+	return _native->needApplyTorques();
 }
 
 btScalar RotationalLimitMotor::AccumulatedImpulse::get()
 {
-	return motor->m_accumulatedImpulse;
+	return _native->m_accumulatedImpulse;
 }
 
 void RotationalLimitMotor::AccumulatedImpulse::set(btScalar value)
 {
-	motor->m_accumulatedImpulse = value;
+	_native->m_accumulatedImpulse = value;
 }
 
 btScalar RotationalLimitMotor::Bounce::get()
 {
-	return motor->m_bounce;
+	return _native->m_bounce;
 }
 
 void RotationalLimitMotor::Bounce::set(btScalar value)
 {
-	motor->m_bounce = value;
+	_native->m_bounce = value;
 }
 
 int RotationalLimitMotor::CurrentLimit::get()
 {
-	return motor->m_currentLimit;
+	return _native->m_currentLimit;
 }
 
 void RotationalLimitMotor::CurrentLimit::set(int value)
 {
-	motor->m_currentLimit = value;
+	_native->m_currentLimit = value;
 }
 
 btScalar RotationalLimitMotor::CurrentLimitError::get()
 {
-	return motor->m_currentLimitError;
+	return _native->m_currentLimitError;
 }
 
 void RotationalLimitMotor::CurrentLimitError::set(btScalar value)
 {
-	motor->m_currentLimitError = value;
+	_native->m_currentLimitError = value;
 }
 
 btScalar RotationalLimitMotor::CurrentPosition::get()
 {
-	return motor->m_currentPosition;
+	return _native->m_currentPosition;
 }
 
 void RotationalLimitMotor::CurrentPosition::set(btScalar value)
 {
-	motor->m_currentPosition = value;
+	_native->m_currentPosition = value;
 }
 
 btScalar RotationalLimitMotor::Damping::get()
 {
-	return motor->m_damping;
+	return _native->m_damping;
 }
 
 void RotationalLimitMotor::Damping::set(btScalar value)
 {
-	motor->m_damping = value;
+	_native->m_damping = value;
 }
 
 bool RotationalLimitMotor::EnableMotor::get()
 {
-	return motor->m_enableMotor;
+	return _native->m_enableMotor;
 }
 
 void RotationalLimitMotor::EnableMotor::set(bool value)
 {
-	motor->m_enableMotor = value;
+	_native->m_enableMotor = value;
 }
 
 btScalar RotationalLimitMotor::HiLimit::get()
 {
-	return motor->m_hiLimit;
+	return _native->m_hiLimit;
 }
 
 void RotationalLimitMotor::HiLimit::set(btScalar value)
 {
-	motor->m_hiLimit = value;
+	_native->m_hiLimit = value;
 }
 
 btScalar RotationalLimitMotor::LimitSoftness::get()
 {
-	return motor->m_limitSoftness;
+	return _native->m_limitSoftness;
 }
 
 void RotationalLimitMotor::LimitSoftness::set(btScalar value)
 {
-	motor->m_limitSoftness = value;
+	_native->m_limitSoftness = value;
 }
 
 btScalar RotationalLimitMotor::LoLimit::get()
 {
-	return motor->m_loLimit;
+	return _native->m_loLimit;
 }
 
 void RotationalLimitMotor::LoLimit::set(btScalar value)
 {
-	motor->m_loLimit = value;
+	_native->m_loLimit = value;
 }
 
 btScalar RotationalLimitMotor::MaxLimitForce::get()
 {
-	return motor->m_maxLimitForce;
+	return _native->m_maxLimitForce;
 }
 
 void RotationalLimitMotor::MaxLimitForce::set(btScalar value)
 {
-	motor->m_maxLimitForce = value;
+	_native->m_maxLimitForce = value;
 }
 
 btScalar RotationalLimitMotor::MaxMotorForce::get()
 {
-	return motor->m_maxMotorForce;
+	return _native->m_maxMotorForce;
 }
 
 void RotationalLimitMotor::MaxMotorForce::set(btScalar value)
 {
-	motor->m_maxMotorForce = value;
+	_native->m_maxMotorForce = value;
 }
 
 btScalar RotationalLimitMotor::NormalCFM::get()
 {
-	return motor->m_normalCFM;
+	return _native->m_normalCFM;
 }
 
 void RotationalLimitMotor::NormalCFM::set(btScalar value)
 {
-	motor->m_normalCFM = value;
+	_native->m_normalCFM = value;
 }
 
 btScalar RotationalLimitMotor::StopCFM::get()
 {
-	return motor->m_stopCFM;
+	return _native->m_stopCFM;
 }
 
 void RotationalLimitMotor::StopCFM::set(btScalar value)
 {
-	motor->m_stopCFM = value;
+	_native->m_stopCFM = value;
 }
 
 btScalar RotationalLimitMotor::StopERP::get()
 {
-	return motor->m_stopERP;
+	return _native->m_stopERP;
 }
 
 void RotationalLimitMotor::StopERP::set(btScalar value)
 {
-	motor->m_stopERP = value;
+	_native->m_stopERP = value;
 }
 
 btScalar RotationalLimitMotor::TargetVelocity::get()
 {
-	return motor->m_targetVelocity;
+	return _native->m_targetVelocity;
 }
 
 void RotationalLimitMotor::TargetVelocity::set(btScalar value)
 {
-	motor->m_targetVelocity = value;
-}
-
-btRotationalLimitMotor* RotationalLimitMotor::UnmanagedPointer::get()
-{
-	return motor;
+	_native->m_targetVelocity = value;
 }
 
 
 TranslationalLimitMotor::TranslationalLimitMotor()
 {
-	motor = new btTranslationalLimitMotor();
+	_native = new btTranslationalLimitMotor();
 }
 
-TranslationalLimitMotor::TranslationalLimitMotor(TranslationalLimitMotor^ motor)
+TranslationalLimitMotor::TranslationalLimitMotor(TranslationalLimitMotor^ _native)
 {
-	this->motor = new btTranslationalLimitMotor(*motor->motor);
+	this->_native = new btTranslationalLimitMotor(*_native->_native);
 }
 
-TranslationalLimitMotor::TranslationalLimitMotor(btTranslationalLimitMotor* motor)
+TranslationalLimitMotor::TranslationalLimitMotor(btTranslationalLimitMotor* _native)
 {
-	this->motor = motor;
+	this->_native = _native;
 }
 
 btScalar TranslationalLimitMotor::SolveLinearAxis(btScalar timeStep, btScalar jacDiagABInv,
@@ -238,7 +233,7 @@ btScalar TranslationalLimitMotor::SolveLinearAxis(btScalar timeStep, btScalar ja
 	VECTOR3_DEF(axis_normal_on_a);
 	VECTOR3_DEF(anchorPos);
 
-	btScalar ret =  motor->solveLinearAxis(timeStep, jacDiagABInv,
+	btScalar ret =  _native->solveLinearAxis(timeStep, jacDiagABInv,
 		*(btRigidBody*)body1->_native, VECTOR3_USE(pointInA),
 		*(btRigidBody*)body2->_native, VECTOR3_USE(pointInB),
 		limit_index, VECTOR3_USE(axis_normal_on_a), VECTOR3_USE(anchorPos)
@@ -254,143 +249,143 @@ btScalar TranslationalLimitMotor::SolveLinearAxis(btScalar timeStep, btScalar ja
 
 int TranslationalLimitMotor::TestLimitValue(int limitIndex, btScalar test_value)
 {
-	return motor->testLimitValue(limitIndex, test_value);
+	return _native->testLimitValue(limitIndex, test_value);
 }
 
 bool TranslationalLimitMotor::IsLimited(int limitIndex)
 {
-	return motor->isLimited(limitIndex);
+	return _native->isLimited(limitIndex);
 }
 bool TranslationalLimitMotor::NeedApplyForce(int limitIndex)
 {
-	return motor->needApplyForce(limitIndex);
+	return _native->needApplyForce(limitIndex);
 }
 
 Vector3 TranslationalLimitMotor::AccumulatedImpulse::get()
 {
-	return Math::BtVector3ToVector3(&motor->m_accumulatedImpulse);
+	return Math::BtVector3ToVector3(&_native->m_accumulatedImpulse);
 }
 void TranslationalLimitMotor::AccumulatedImpulse::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &motor->m_accumulatedImpulse);
+	Math::Vector3ToBtVector3(value, &_native->m_accumulatedImpulse);
 }
 
 IntArray^ TranslationalLimitMotor::CurrentLimit::get()
 {
-	return gcnew IntArray(motor->m_currentLimit, 3);
+	return gcnew IntArray(_native->m_currentLimit, 3);
 }
 
 Vector3 TranslationalLimitMotor::CurrentLimitError::get()
 {
-	return Math::BtVector3ToVector3(&motor->m_currentLimitError);
+	return Math::BtVector3ToVector3(&_native->m_currentLimitError);
 }
 void TranslationalLimitMotor::CurrentLimitError::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &motor->m_currentLimitError);
+	Math::Vector3ToBtVector3(value, &_native->m_currentLimitError);
 }
 
 Vector3 TranslationalLimitMotor::CurrentLinearDiff::get()
 {
-	return Math::BtVector3ToVector3(&motor->m_currentLinearDiff);
+	return Math::BtVector3ToVector3(&_native->m_currentLinearDiff);
 }
 void TranslationalLimitMotor::CurrentLinearDiff::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &motor->m_currentLinearDiff);
+	Math::Vector3ToBtVector3(value, &_native->m_currentLinearDiff);
 }
 
 btScalar TranslationalLimitMotor::Damping::get()
 {
-	return motor->m_damping;
+	return _native->m_damping;
 }
 void TranslationalLimitMotor::Damping::set(btScalar value)
 {
-	motor->m_damping = value;
+	_native->m_damping = value;
 }
 
 BoolArray^ TranslationalLimitMotor::EnableMotor::get()
 {
-	return gcnew BoolArray(motor->m_enableMotor, 3);
+	return gcnew BoolArray(_native->m_enableMotor, 3);
 }
 
 btScalar TranslationalLimitMotor::LimitSoftness::get()
 {
-	return motor->m_limitSoftness;
+	return _native->m_limitSoftness;
 }
 void TranslationalLimitMotor::LimitSoftness::set(btScalar value)
 {
-	motor->m_limitSoftness = value;
+	_native->m_limitSoftness = value;
 }
 
 Vector3 TranslationalLimitMotor::LowerLimit::get()
 {
-	return Math::BtVector3ToVector3(&motor->m_lowerLimit);
+	return Math::BtVector3ToVector3(&_native->m_lowerLimit);
 }
 void TranslationalLimitMotor::LowerLimit::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &motor->m_lowerLimit);
+	Math::Vector3ToBtVector3(value, &_native->m_lowerLimit);
 }
 
 Vector3 TranslationalLimitMotor::MaxMotorForce::get()
 {
-	return Math::BtVector3ToVector3(&motor->m_maxMotorForce);
+	return Math::BtVector3ToVector3(&_native->m_maxMotorForce);
 }
 void TranslationalLimitMotor::MaxMotorForce::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &motor->m_maxMotorForce);
+	Math::Vector3ToBtVector3(value, &_native->m_maxMotorForce);
 }
 
 Vector3 TranslationalLimitMotor::NormalCFM::get()
 {
-	return Math::BtVector3ToVector3(&motor->m_normalCFM);
+	return Math::BtVector3ToVector3(&_native->m_normalCFM);
 }
 void TranslationalLimitMotor::NormalCFM::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &motor->m_normalCFM);
+	Math::Vector3ToBtVector3(value, &_native->m_normalCFM);
 }
 
 btScalar TranslationalLimitMotor::Restitution::get()
 {
-	return motor->m_restitution;
+	return _native->m_restitution;
 }
 void TranslationalLimitMotor::Restitution::set(btScalar value)
 {
-	motor->m_restitution = value;
+	_native->m_restitution = value;
 }
 
 Vector3 TranslationalLimitMotor::StopCFM::get()
 {
-	return Math::BtVector3ToVector3(&motor->m_stopCFM);
+	return Math::BtVector3ToVector3(&_native->m_stopCFM);
 }
 void TranslationalLimitMotor::StopCFM::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &motor->m_stopCFM);
+	Math::Vector3ToBtVector3(value, &_native->m_stopCFM);
 }
 
 Vector3 TranslationalLimitMotor::StopERP::get()
 {
-	return Math::BtVector3ToVector3(&motor->m_stopERP);
+	return Math::BtVector3ToVector3(&_native->m_stopERP);
 }
 void TranslationalLimitMotor::StopERP::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &motor->m_stopERP);
+	Math::Vector3ToBtVector3(value, &_native->m_stopERP);
 }
 
 Vector3 TranslationalLimitMotor::TargetVelocity::get()
 {
-	return Math::BtVector3ToVector3(&motor->m_targetVelocity);
+	return Math::BtVector3ToVector3(&_native->m_targetVelocity);
 }
 void TranslationalLimitMotor::TargetVelocity::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &motor->m_targetVelocity);
+	Math::Vector3ToBtVector3(value, &_native->m_targetVelocity);
 }
 
 Vector3 TranslationalLimitMotor::UpperLimit::get()
 {
-	return Math::BtVector3ToVector3(&motor->m_upperLimit);
+	return Math::BtVector3ToVector3(&_native->m_upperLimit);
 }
 void TranslationalLimitMotor::UpperLimit::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &motor->m_upperLimit);
+	Math::Vector3ToBtVector3(value, &_native->m_upperLimit);
 }
 
 

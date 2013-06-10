@@ -45,32 +45,17 @@ namespace BulletSharp
 			{
 				float get();
 			}
-
-		internal:
-			property btSoftBodySolver* UnmanagedPointer
-			{
-				btSoftBodySolver* get();
-				void set(btSoftBodySolver* value);
-			}
 		};
 
 		public ref class SoftBodySolverOutput
 		{
-		private:
-			btSoftBodySolverOutput* _solverOutput;
-
 		internal:
+			btSoftBodySolverOutput* _native;
+
 			SoftBodySolverOutput(btSoftBodySolverOutput* solverOutput);
 
 		public:
 			void CopySoftBodyToVertexBuffer(SoftBody^ softBody, VertexBufferDescriptor^ vertexBuffer);
-
-		internal:
-			property btSoftBodySolverOutput* UnmanagedPointer
-			{
-				btSoftBodySolverOutput* get();
-				void set(btSoftBodySolverOutput* value);
-			}
 		};
 	};
 };

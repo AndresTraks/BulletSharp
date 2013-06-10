@@ -6,25 +6,25 @@
 
 Aabb::Aabb(btAABB* aabb)
 {
-	_aabb = aabb;
+	_native = aabb;
 }
 
 Vector3 Aabb::Max::get()
 {
-	return Math::BtVector3ToVector3(&_aabb->m_max);
+	return Math::BtVector3ToVector3(&_native->m_max);
 }
 void Aabb::Max::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_aabb->m_max);
+	Math::Vector3ToBtVector3(value, &_native->m_max);
 }
 
 Vector3 Aabb::Min::get()
 {
-	return Math::BtVector3ToVector3(&_aabb->m_min);
+	return Math::BtVector3ToVector3(&_native->m_min);
 }
 void Aabb::Min::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_aabb->m_min);
+	Math::Vector3ToBtVector3(value, &_native->m_min);
 }
 
 #endif

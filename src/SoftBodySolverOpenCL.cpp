@@ -13,11 +13,6 @@ OpenCLSoftBodySolver::OpenCLSoftBodySolver(IntPtr queue, IntPtr context)
 {
 }
 
-btOpenCLSoftBodySolver* OpenCLSoftBodySolver::UnmanagedPointer::get()
-{
-	return (btOpenCLSoftBodySolver*)SoftBodySolver::UnmanagedPointer;
-}
-
 
 SoftBody::SoftBodySolverOutputCLToCpu::SoftBodySolverOutputCLToCpu()
 : SoftBodySolverOutput(new btSoftBodySolverOutputCLtoCPU())

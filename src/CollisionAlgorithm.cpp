@@ -36,7 +36,7 @@ BulletSharp::Dispatcher^ CollisionAlgorithmConstructionInfo::Dispatcher::get()
 }
 void CollisionAlgorithmConstructionInfo::Dispatcher::set(BulletSharp::Dispatcher^ value)
 {
-	_native->m_dispatcher1 = value->UnmanagedPointer;
+	_native->m_dispatcher1 = value->_native;
 }
 
 PersistentManifold^ CollisionAlgorithmConstructionInfo::Manifold::get()
@@ -66,6 +66,7 @@ CollisionAlgorithm::!CollisionAlgorithm()
 
 	OnDisposing(this, nullptr);
 
+	delete _native;
 	_native = NULL;
 
 	OnDisposed(this, nullptr);
@@ -74,8 +75,8 @@ CollisionAlgorithm::!CollisionAlgorithm()
 btScalar CollisionAlgorithm::CalculateTimeOfImpact(CollisionObject^ body0,
 	CollisionObject^ body1, DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
 {
-	return _native->calculateTimeOfImpact(body0->UnmanagedPointer, body1->UnmanagedPointer,
-		*dispatchInfo->UnmanagedPointer, (btManifoldResult*)resultOut->_native);
+	return _native->calculateTimeOfImpact(body0->_native, body1->_native,
+		*dispatchInfo->_native, (btManifoldResult*)resultOut->_native);
 }
 
 void CollisionAlgorithm::GetAllContactManifolds(AlignedManifoldArray^ manifoldArray)
@@ -87,7 +88,7 @@ void CollisionAlgorithm::ProcessCollision(CollisionObjectWrapper^ body0Wrap, Col
 	DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
 {
 	_native->processCollision(body0Wrap->_native, body1Wrap->_native,
-		*dispatchInfo->UnmanagedPointer, (btManifoldResult*)resultOut->_native);
+		*dispatchInfo->_native, (btManifoldResult*)resultOut->_native);
 }
 
 bool CollisionAlgorithm::IsDisposed::get()

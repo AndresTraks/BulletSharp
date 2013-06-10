@@ -10,12 +10,6 @@ namespace BulletSharp
 		{
 		public:
 			OpenCLSoftBodySolver(IntPtr queue, IntPtr context);
-
-		internal:
-			property btOpenCLSoftBodySolver* UnmanagedPointer
-			{
-				btOpenCLSoftBodySolver* get() new;
-			}
 		};
 	};
 

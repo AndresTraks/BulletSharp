@@ -51,7 +51,7 @@ void VehicleRaycasterResult::HitPointInWorld::set(Vector3 value)
 
 VehicleRaycaster::VehicleRaycaster(btVehicleRaycaster* vehicleRaycaster)
 {
-	_vehicleRaycaster = vehicleRaycaster;
+	_native = vehicleRaycaster;
 }
 
 Object^ VehicleRaycaster::CastRay(Vector3 from, Vector3 to, VehicleRaycasterResult^ result)
@@ -59,21 +59,12 @@ Object^ VehicleRaycaster::CastRay(Vector3 from, Vector3 to, VehicleRaycasterResu
 	VECTOR3_DEF(from);
 	VECTOR3_DEF(to);
 
-	void* ret = _vehicleRaycaster->castRay(VECTOR3_USE(from), VECTOR3_USE(to), *result->_native);
+	void* ret = _native->castRay(VECTOR3_USE(from), VECTOR3_USE(to), *result->_native);
 
 	VECTOR3_DEL(from);
 	VECTOR3_DEL(to);
 
 	return CollisionObject::GetManaged((btRigidBody*)ret);
-}
-
-btVehicleRaycaster* VehicleRaycaster::UnmanagedPointer::get()
-{
-	return _vehicleRaycaster;
-}
-void VehicleRaycaster::UnmanagedPointer::set(btVehicleRaycaster* value)
-{
-	_vehicleRaycaster = value;
 }
 
 #endif

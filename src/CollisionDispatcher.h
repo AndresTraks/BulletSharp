@@ -42,8 +42,6 @@ namespace BulletSharp
 		static void DefaultNearCallback(BroadphasePair^ collisionPair,
 			CollisionDispatcher^ dispatcher, DispatcherInfo^ dispatchInfo);
 
-		void DispatchAllCollisionPairs(OverlappingPairCache^ pairCache,
-			DispatcherInfo^ dispatchInfo, Dispatcher^ dispatcher);
 		void RegisterCollisionCreateFunc(BroadphaseNativeType proxyType0,
 			BroadphaseNativeType proxyType1, CollisionAlgorithmCreateFunc^ createFunc);
 
@@ -63,11 +61,6 @@ namespace BulletSharp
 		{
 			BulletSharp::NearCallback^ get();
 			void set(BulletSharp::NearCallback^ value);
-		}
-
-		property btCollisionDispatcherWrapper* UnmanagedPointer
-		{
-			virtual btCollisionDispatcherWrapper* get() new;
 		}
 	};
 };

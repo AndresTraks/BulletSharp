@@ -22,8 +22,7 @@ GjkPairDetector::GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB,
 : DiscreteCollisionDetectorInterface(0)
 {
 	_native = ALIGNED_NEW(btGjkPairDetector) ((btConvexShape*)objectA->_native,
-		(btConvexShape*)objectB->_native, simplexSolver->UnmanagedPointer,
-		GetUnmanagedNullable(penetrationDepthSolver));
+		(btConvexShape*)objectB->_native, simplexSolver->_native, GetUnmanagedNullable(penetrationDepthSolver));
 }
 
 GjkPairDetector::GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB, BroadphaseNativeType shapeTypeA,
@@ -33,8 +32,7 @@ GjkPairDetector::GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB, Bro
 {
 	_native = ALIGNED_NEW(btGjkPairDetector) ((btConvexShape*)objectA->_native,
 		(btConvexShape*)objectB->_native, (int)shapeTypeA, (int)shapeTypeB,
-		marginA, marginB, simplexSolver->UnmanagedPointer,
-		GetUnmanagedNullable(penetrationDepthSolver));
+		marginA, marginB, simplexSolver->_native, GetUnmanagedNullable(penetrationDepthSolver));
 }
 
 #ifndef DISABLE_DEBUGDRAW
@@ -48,7 +46,7 @@ void GjkPairDetector::GetClosestPointsNonVirtual(
 void GjkPairDetector::GetClosestPointsNonVirtual(
 	ClosestPointInput^ input, Result^ output)
 {
-	UnmanagedPointer->getClosestPointsNonVirtual(*input->UnmanagedPointer, *output->_native, 0);
+	UnmanagedPointer->getClosestPointsNonVirtual(*input->_native, *output->_native, 0);
 }
 #endif
 

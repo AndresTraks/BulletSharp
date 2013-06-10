@@ -57,7 +57,7 @@ namespace BulletSharp
 	public ref class GImpactQuantizedBvh
 	{
 	private:
-		btGImpactQuantizedBvh* _bvh;
+		btGImpactQuantizedBvh* _native;
 
 	internal:
 		GImpactQuantizedBvh(btGImpactQuantizedBvh* bvh);

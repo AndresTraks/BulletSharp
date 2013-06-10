@@ -64,7 +64,7 @@ void GhostObject::RemoveOverlappingObjectInternal(BroadphaseProxy^ otherProxy, D
 
 GhostObject^ GhostObject::Upcast(CollisionObject^ colObj)
 {
-	btGhostObject* obj = btGhostObject::upcast(colObj->UnmanagedPointer);
+	btGhostObject* obj = btGhostObject::upcast(colObj->_native);
 	
 	if (obj == 0)
 		return nullptr;
@@ -111,11 +111,6 @@ GhostPairCallback::GhostPairCallback(btGhostPairCallback* ghostPairCallback)
 GhostPairCallback::GhostPairCallback()
 : OverlappingPairCallback(new btGhostPairCallback)
 {
-}
-
-btGhostPairCallback* GhostPairCallback::UnmanagedPointer::get()
-{
-	return (btGhostPairCallback*)OverlappingPairCallback::UnmanagedPointer;
 }
 
 #endif

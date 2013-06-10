@@ -75,11 +75,5 @@ namespace BulletSharp
 
 	public:
 		GhostPairCallback();
-
-	internal:
-		property btGhostPairCallback* UnmanagedPointer
-		{
-			btGhostPairCallback* get() new;
-		}
 	};
 }

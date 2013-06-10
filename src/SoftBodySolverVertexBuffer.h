@@ -8,8 +8,10 @@ namespace BulletSharp
 	{
 		public ref class VertexBufferDescriptor
 		{
-		private:
-			btVertexBufferDescriptor* _buffer;
+		internal:
+			btVertexBufferDescriptor* _native;
+
+			VertexBufferDescriptor(btVertexBufferDescriptor* buffer);
 
 		public:
 			property BulletSharp::BufferType BufferType
@@ -46,15 +48,6 @@ namespace BulletSharp
 			{
 				int get();
 			}
-
-		internal:
-			VertexBufferDescriptor(btVertexBufferDescriptor* buffer);
-
-			property btVertexBufferDescriptor* UnmanagedPointer
-			{
-				btVertexBufferDescriptor* get();
-				void set(btVertexBufferDescriptor* value);
-			}
 		};
 
 		public ref class CpuVertexBufferDescriptor : VertexBufferDescriptor
@@ -68,12 +61,6 @@ namespace BulletSharp
 			property FloatArray^ VertexBuffer
 			{
 				FloatArray^ get();
-			}
-
-		internal:
-			property btCPUVertexBufferDescriptor* UnmanagedPointer
-			{
-				btCPUVertexBufferDescriptor* get() new;
 			}
 		};
 	};

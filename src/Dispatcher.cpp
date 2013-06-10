@@ -14,126 +14,117 @@
 
 DispatcherInfo::DispatcherInfo(btDispatcherInfo* info)
 {
-	_info = info;
+	_native = info;
 }
 
 btScalar DispatcherInfo::AllowedCcdPenetration::get()
 {
-	return _info->m_allowedCcdPenetration;
+	return _native->m_allowedCcdPenetration;
 }
 void DispatcherInfo::AllowedCcdPenetration::set(btScalar value)
 {
-	_info->m_allowedCcdPenetration = value;
+	_native->m_allowedCcdPenetration = value;
 }
 
 btScalar DispatcherInfo::ConvexConservativeDistanceThreshold::get()
 {
-	return _info->m_convexConservativeDistanceThreshold;
+	return _native->m_convexConservativeDistanceThreshold;
 }
 void DispatcherInfo::ConvexConservativeDistanceThreshold::set(btScalar value)
 {
-	_info->m_convexConservativeDistanceThreshold = value;
+	_native->m_convexConservativeDistanceThreshold = value;
 }
 
 #ifndef DISABLE_DEBUGDRAW
 IDebugDraw^ DispatcherInfo::DebugDraw::get()
 {
-	return BulletSharp::DebugDraw::GetManaged(_info->m_debugDraw);
+	return BulletSharp::DebugDraw::GetManaged(_native->m_debugDraw);
 }
 void DispatcherInfo::DebugDraw::set(IDebugDraw^ value)
 {
-	_info->m_debugDraw = BulletSharp::DebugDraw::GetUnmanaged(value);
+	_native->m_debugDraw = BulletSharp::DebugDraw::GetUnmanaged(value);
 }
 #endif
 
 DispatcherInfo::DispatchFunc DispatcherInfo::DispatchFunction::get()
 {
-	return (DispatcherInfo::DispatchFunc)_info->m_dispatchFunc;
+	return (DispatcherInfo::DispatchFunc)_native->m_dispatchFunc;
 }
 void DispatcherInfo::DispatchFunction::set(DispatcherInfo::DispatchFunc value)
 {
-	_info->m_dispatchFunc = (int)value;
+	_native->m_dispatchFunc = (int)value;
 }
 
 bool DispatcherInfo::EnableSatConvex::get()
 {
-	return _info->m_enableSatConvex;
+	return _native->m_enableSatConvex;
 }
 void DispatcherInfo::EnableSatConvex::set(bool value)
 {
-	_info->m_enableSatConvex = value;
+	_native->m_enableSatConvex = value;
 }
 
 bool DispatcherInfo::EnableSpu::get()
 {
-	return _info->m_enableSPU;
+	return _native->m_enableSPU;
 }
 void DispatcherInfo::EnableSpu::set(bool value)
 {
-	_info->m_enableSPU = value;
+	_native->m_enableSPU = value;
 }
 
 int DispatcherInfo::StepCount::get()
 {
-	return _info->m_stepCount;
+	return _native->m_stepCount;
 }
 void DispatcherInfo::StepCount::set(int value)
 {
-	_info->m_stepCount = value;
+	_native->m_stepCount = value;
 }
 
 btScalar DispatcherInfo::TimeOfImpact::get()
 {
-	return _info->m_timeOfImpact;
+	return _native->m_timeOfImpact;
 }
 void DispatcherInfo::TimeOfImpact::set(btScalar value)
 {
-	_info->m_timeOfImpact = value;
+	_native->m_timeOfImpact = value;
 }
 
 btScalar DispatcherInfo::TimeStep::get()
 {
-	return _info->m_timeStep;
+	return _native->m_timeStep;
 }
 void DispatcherInfo::TimeStep::set(btScalar value)
 {
-	_info->m_timeStep = value;
+	_native->m_timeStep = value;
 }
 
 bool DispatcherInfo::UseContinuous::get()
 {
-	return _info->m_useContinuous;
+	return _native->m_useContinuous;
 }
 void DispatcherInfo::UseContinuous::set(bool value)
 {
-	_info->m_useContinuous = value;
+	_native->m_useContinuous = value;
 }
 
 bool DispatcherInfo::UseConvexConservativeDistanceUtil::get()
 {
-	return _info->m_useConvexConservativeDistanceUtil;
+	return _native->m_useConvexConservativeDistanceUtil;
 }
 void DispatcherInfo::UseConvexConservativeDistanceUtil::set(bool value)
 {
-	_info->m_useConvexConservativeDistanceUtil = value;
+	_native->m_useConvexConservativeDistanceUtil = value;
 }
 
 bool DispatcherInfo::UseEpa::get()
 {
-	return _info->m_useEpa;
+	return _native->m_useEpa;
 }
 void DispatcherInfo::UseEpa::set(bool value)
 {
-	_info->m_useEpa = value;
-}
-
-btDispatcherInfo* DispatcherInfo::UnmanagedPointer::get()
-{
-	return _info;
-}
-void DispatcherInfo::UnmanagedPointer::set(btDispatcherInfo* info)
-{
-	_info = info;
+	_native->m_useEpa = value;
 }
 
 
@@ -154,6 +145,7 @@ Dispatcher::!Dispatcher()
 
 	OnDisposing(this, nullptr);
 
+	delete _native;
 	_native = NULL;
 
 	OnDisposed(this, nullptr);
@@ -172,8 +164,8 @@ void Dispatcher::ClearManifold(PersistentManifold^ manifold)
 void Dispatcher::DispatchAllCollisionPairs(OverlappingPairCache^ pairCache,
 	DispatcherInfo^ dispatchInfo, Dispatcher^ dispatcher)
 {
-	_native->dispatchAllCollisionPairs(pairCache->UnmanagedPointer,
-		*dispatchInfo->UnmanagedPointer, dispatcher->_native);
+	_native->dispatchAllCollisionPairs((btOverlappingPairCache*)pairCache->_native,
+		*dispatchInfo->_native, dispatcher->_native);
 }
 
 CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
@@ -208,12 +200,12 @@ PersistentManifold^ Dispatcher::GetNewManifold(CollisionObject^ body0, Collision
 
 bool Dispatcher::NeedsCollision(CollisionObject^ body0, CollisionObject^ body1)
 {
-	return _native->needsCollision(body0->UnmanagedPointer, body1->UnmanagedPointer);
+	return _native->needsCollision(body0->_native, body1->_native);
 }
 
 bool Dispatcher::NeedsResponse(CollisionObject^ body0, CollisionObject^ body1)
 {
-	return _native->needsResponse(body0->UnmanagedPointer, body1->UnmanagedPointer);
+	return _native->needsResponse(body0->_native, body1->_native);
 }
 
 void Dispatcher::ReleaseManifold(PersistentManifold^ manifold)
@@ -237,12 +229,3 @@ PoolAllocator^ Dispatcher::InternalManifoldPool::get()
 	return gcnew PoolAllocator(_native->getInternalManifoldPool());
 }
 #endif
-
-btDispatcher* Dispatcher::UnmanagedPointer::get()
-{
-	return _native;
-}
-void Dispatcher::UnmanagedPointer::set(btDispatcher* value)
-{
-	_native = value;
-}

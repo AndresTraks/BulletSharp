@@ -43,11 +43,5 @@ namespace BulletSharp
 			btScalar get();
 			void set(btScalar value);
 		}
-
-	internal:
-		property btTriangleMesh* UnmanagedPointer
-		{
-			btTriangleMesh* get() new;
-		}
 	};
 };

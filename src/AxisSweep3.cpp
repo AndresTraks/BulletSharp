@@ -14,7 +14,7 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandle
 	VECTOR3_DEF(worldAabbMin);
 	VECTOR3_DEF(worldAabbMax);
 
-	_native = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles, pairCache->UnmanagedPointer, disableRaycastAccelerator);
+	_native = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles, (btOverlappingPairCache*)pairCache->_native, disableRaycastAccelerator);
 	_pairCache = pairCache;
 
 	VECTOR3_DEL(worldAabbMin);
@@ -27,7 +27,7 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandle
 	VECTOR3_DEF(worldAabbMin);
 	VECTOR3_DEF(worldAabbMax);
 
-	_native = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles, pairCache->UnmanagedPointer);
+	_native = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles, (btOverlappingPairCache*)pairCache->_native);
 	_pairCache = pairCache;
 
 	VECTOR3_DEL(worldAabbMin);
@@ -70,7 +70,7 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, i
 	VECTOR3_DEF(worldAabbMin);
 	VECTOR3_DEF(worldAabbMax);
 
-	_native = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles, pairCache->UnmanagedPointer, disableRaycastAccelerator);
+	_native = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles, (btOverlappingPairCache*)pairCache->_native, disableRaycastAccelerator);
 	_pairCache = pairCache;
 
 	VECTOR3_DEL(worldAabbMin);
@@ -83,7 +83,7 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, i
 	VECTOR3_DEF(worldAabbMin);
 	VECTOR3_DEF(worldAabbMax);
 
-	_native = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles, pairCache->UnmanagedPointer);
+	_native = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax), maxHandles, (btOverlappingPairCache*)pairCache->_native);
 	_pairCache = pairCache;
 
 	VECTOR3_DEL(worldAabbMin);

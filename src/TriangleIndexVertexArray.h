@@ -98,11 +98,5 @@ namespace BulletSharp
 		{
 			AlignedIndexedMeshArray^ get();
 		}
-
-	internal:
-		property btTriangleIndexVertexArray* UnmanagedPointer
-		{
-			btTriangleIndexVertexArray* get();
-		}
 	};
 };

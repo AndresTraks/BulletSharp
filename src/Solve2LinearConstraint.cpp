@@ -7,12 +7,12 @@
 
 Solve2LinearConstraint::Solve2LinearConstraint(btSolve2LinearConstraint* constraint)
 {
-	_constraint = constraint;
+	_native = constraint;
 }
 
 Solve2LinearConstraint::Solve2LinearConstraint(btScalar tau, btScalar damping)
 {
-	_constraint = new btSolve2LinearConstraint(tau, damping);
+	_native = new btSolve2LinearConstraint(tau, damping);
 }
 
 void Solve2LinearConstraint::ResolveBilateralPairConstraint(
@@ -37,7 +37,7 @@ void Solve2LinearConstraint::ResolveBilateralPairConstraint(
 	VECTOR3_DEF(rel_posB2);
 	VECTOR3_DEF(normalB);
 
-	_constraint->resolveBilateralPairConstraint(
+	_native->resolveBilateralPairConstraint(
 		(btRigidBody*)body0->_native, (btRigidBody*)body1->_native, *world2ATemp, *world2BTemp,
 		VECTOR3_USE(invInertiaADiag), invMassA, VECTOR3_USE(linvelA), VECTOR3_USE(angvelA), VECTOR3_USE(rel_posA1),
 		VECTOR3_USE(invInertiaBDiag), invMassB, VECTOR3_USE(linvelB), VECTOR3_USE(angvelB), VECTOR3_USE(rel_posA2),
@@ -80,7 +80,7 @@ void Solve2LinearConstraint::ResolveUnilateralPairConstraint(
 	VECTOR3_DEF(rel_posB2);
 	VECTOR3_DEF(normalB);
 
-	_constraint->resolveUnilateralPairConstraint(
+	_native->resolveUnilateralPairConstraint(
 		(btRigidBody*)body0->_native, (btRigidBody*)body1->_native, *world2ATemp, *world2BTemp,
 		VECTOR3_USE(invInertiaADiag), invMassA, VECTOR3_USE(linvelA), VECTOR3_USE(angvelA), VECTOR3_USE(rel_posA1),
 		VECTOR3_USE(invInertiaBDiag), invMassB, VECTOR3_USE(linvelB), VECTOR3_USE(angvelB), VECTOR3_USE(rel_posA2),
@@ -99,11 +99,6 @@ void Solve2LinearConstraint::ResolveUnilateralPairConstraint(
 	VECTOR3_DEL(rel_posB1);
 	VECTOR3_DEL(rel_posB2);
 	VECTOR3_DEL(normalB);
-}
-
-btSolve2LinearConstraint* Solve2LinearConstraint::UnmanagedPointer::get()
-{
-	return _constraint;
 }
 
 #endif

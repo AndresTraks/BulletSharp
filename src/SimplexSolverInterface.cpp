@@ -7,7 +7,7 @@
 
 SimplexSolverInterface::SimplexSolverInterface(btSimplexSolverInterface* simplexSolver)
 {
-	_simplexSolver = simplexSolver;
+	_native = simplexSolver;
 }
 
 SimplexSolverInterface::~SimplexSolverInterface()
@@ -17,22 +17,13 @@ SimplexSolverInterface::~SimplexSolverInterface()
 
 SimplexSolverInterface::!SimplexSolverInterface()
 {
-	delete _simplexSolver;
-	_simplexSolver = NULL;
+	delete _native;
+	_native = NULL;
 }
 
 bool SimplexSolverInterface::IsDisposed::get()
 {
-	return (_simplexSolver == NULL);
-}
-
-btSimplexSolverInterface* SimplexSolverInterface::UnmanagedPointer::get()
-{
-	return _simplexSolver;
-}
-void SimplexSolverInterface::UnmanagedPointer::set(btSimplexSolverInterface* value)
-{
-	_simplexSolver = value;
+	return (_native == NULL);
 }
 
 #endif

@@ -21,76 +21,67 @@ void RaycastVehicle_GetForwardVector(btRaycastVehicle* vehicle, btVector3* forwa
 
 RaycastVehicle::VehicleTuning::VehicleTuning()
 {
-	_vehicleTuning = new btRaycastVehicle::btVehicleTuning();
+	_native = new btRaycastVehicle::btVehicleTuning();
 }
 
 btScalar RaycastVehicle::VehicleTuning::FrictionSlip::get()
 {
-	return UnmanagedPointer->m_frictionSlip;
+	return _native->m_frictionSlip;
 }
 void RaycastVehicle::VehicleTuning::FrictionSlip::set(btScalar value)
 {
-	UnmanagedPointer->m_frictionSlip = value;
+	_native->m_frictionSlip = value;
 }
 
 btScalar RaycastVehicle::VehicleTuning::MaxSuspensionForce::get()
 {
-	return UnmanagedPointer->m_maxSuspensionForce;
+	return _native->m_maxSuspensionForce;
 }
 void RaycastVehicle::VehicleTuning::MaxSuspensionForce::set(btScalar value)
 {
-	UnmanagedPointer->m_maxSuspensionForce = value;
+	_native->m_maxSuspensionForce = value;
 }
 
 btScalar RaycastVehicle::VehicleTuning::MaxSuspensionTravelCm::get()
 {
-	return UnmanagedPointer->m_maxSuspensionTravelCm;
+	return _native->m_maxSuspensionTravelCm;
 }
 void RaycastVehicle::VehicleTuning::MaxSuspensionTravelCm::set(btScalar value)
 {
-	UnmanagedPointer->m_maxSuspensionTravelCm = value;
+	_native->m_maxSuspensionTravelCm = value;
 }
 
 btScalar RaycastVehicle::VehicleTuning::SuspensionCompression::get()
 {
-	return UnmanagedPointer->m_suspensionCompression;
+	return _native->m_suspensionCompression;
 }
 void RaycastVehicle::VehicleTuning::SuspensionCompression::set(btScalar value)
 {
-	UnmanagedPointer->m_suspensionCompression = value;
+	_native->m_suspensionCompression = value;
 }
 
 btScalar RaycastVehicle::VehicleTuning::SuspensionDamping::get()
 {
-	return UnmanagedPointer->m_suspensionDamping;
+	return _native->m_suspensionDamping;
 }
 void RaycastVehicle::VehicleTuning::SuspensionDamping::set(btScalar value)
 {
-	UnmanagedPointer->m_suspensionDamping = value;
+	_native->m_suspensionDamping = value;
 }
 
 btScalar RaycastVehicle::VehicleTuning::SuspensionStiffness::get()
 {
-	return UnmanagedPointer->m_suspensionStiffness;
+	return _native->m_suspensionStiffness;
 }
 void RaycastVehicle::VehicleTuning::SuspensionStiffness::set(btScalar value)
 {
-	UnmanagedPointer->m_suspensionStiffness = value;
-}
-
-btRaycastVehicle::btVehicleTuning* RaycastVehicle::VehicleTuning::UnmanagedPointer::get()
-{
-	return _vehicleTuning;
-}
-void RaycastVehicle::VehicleTuning::UnmanagedPointer::set(btRaycastVehicle::btVehicleTuning* value)
-{
-	_vehicleTuning = value;
+	_native->m_suspensionStiffness = value;
 }
 
 
 RaycastVehicle::RaycastVehicle(RaycastVehicle::VehicleTuning^ tuning, BulletSharp::RigidBody^ chassis, VehicleRaycaster^ raycaster)
 {
-	_native = new btRaycastVehicle(*tuning->UnmanagedPointer, (btRigidBody*)chassis->_native, raycaster->UnmanagedPointer);
+	_native = new btRaycastVehicle(*tuning->_native, (btRigidBody*)chassis->_native, raycaster->_native);
 	_chassisBody = chassis;
 }
 
@@ -134,7 +125,7 @@ WheelInfo^ RaycastVehicle::AddWheel(Vector3 connectionPointCS0, Vector3 wheelDir
 
 	btWheelInfo* wheelInfo = &_native->addWheel(VECTOR3_USE(connectionPointCS0),
 		VECTOR3_USE(wheelDirectionCS0), VECTOR3_USE(wheelAxleCS), suspensionRestLength, wheelRadius,
-		*tuning->UnmanagedPointer, isFrontWheel);
+		*tuning->_native, isFrontWheel);
 	
 	VECTOR3_DEL(connectionPointCS0);
 	VECTOR3_DEL(wheelDirectionCS0);

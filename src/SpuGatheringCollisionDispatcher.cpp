@@ -8,7 +8,7 @@
 
 MultiThreaded::SpuGatheringCollisionDispatcher::SpuGatheringCollisionDispatcher(ThreadSupportInterface^ threadInterface,
 	int maxNumOutstandingTasks, BulletSharp::CollisionConfiguration^ collisionConfiguration)
-: CollisionDispatcher(new ::SpuGatheringCollisionDispatcher(threadInterface->UnmanagedPointer,
+: CollisionDispatcher(new ::SpuGatheringCollisionDispatcher(threadInterface->_native,
 	maxNumOutstandingTasks, collisionConfiguration->_native))
 {
 }

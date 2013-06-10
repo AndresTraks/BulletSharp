@@ -439,10 +439,9 @@ namespace BulletSharp
 
 		public ref class Config
 		{
-		private:
-			btSoftBody::Config* _config;
-
 		internal:
+			btSoftBody::Config* _native;
+
 			Config(btSoftBody::Config* config);
 
 		public:
@@ -618,13 +617,6 @@ namespace BulletSharp
 			{
 				AlignedVSolverArray^ get();
 			}
-
-		internal:
-			property btSoftBody::Config* UnmanagedPointer
-			{
-				btSoftBody::Config* get();
-				void set(btSoftBody::Config* value);
-			};
 		};
 
 		public ref class Element
@@ -696,10 +688,9 @@ namespace BulletSharp
 
 		public ref class Impulse
 		{
-		private:
-			btSoftBody::Impulse* _impulse;
-
 		internal:
+			btSoftBody::Impulse* _native;
+
 			Impulse(btSoftBody::Impulse* impulse);
 
 		public:
@@ -731,13 +722,6 @@ namespace BulletSharp
 
 			static Impulse^ operator-(Impulse^ i);
 			static Impulse^ operator*(Impulse^ i, btScalar x);
-
-		internal:
-			property btSoftBody::Impulse* UnmanagedPointer
-			{
-				btSoftBody::Impulse* get();
-				void set(btSoftBody::Impulse* value);
-			};
 		};
 
 		public ref class ImplicitFn abstract
@@ -909,12 +893,13 @@ namespace BulletSharp
 		public:
 			ref class IControl
 			{
-			private:
-				AJointIControlWrapper* _iControl;
-				static AJoint::IControl^ def = nullptr;
-
 			internal:
+				AJointIControlWrapper* _native;
+
 				IControl(AJointIControlWrapper* iControl);
+
+			private:
+				static AJoint::IControl^ def = nullptr;
 
 			public:
 				IControl();
@@ -925,13 +910,6 @@ namespace BulletSharp
 				static property IControl^ Default
 				{
 					IControl^ get();
-				}
-
-			internal:
-				property AJointIControlWrapper* UnmanagedPointer
-				{
-					AJointIControlWrapper* get();
-					void set(AJointIControlWrapper* value);
 				}
 			};
 
@@ -1211,8 +1189,8 @@ namespace BulletSharp
 
 		public ref class Pose
 		{
-		private:
-			btSoftBody::Pose* _pose;
+		internal:
+			btSoftBody::Pose* _native;
 
 		internal:
 			Pose(btSoftBody::Pose* pose);
@@ -1271,21 +1249,13 @@ namespace BulletSharp
 			{
 				AlignedScalarArray^ get();
 			}
-
-		internal:
-			property btSoftBody::Pose* UnmanagedPointer
-			{
-				btSoftBody::Pose* get();
-				void set(btSoftBody::Pose* value);
-			};
 		};
 
 		public ref class RigidContact
 		{
-		private:
-			btSoftBody::RContact* _rigidContact;
-
 		internal:
+			btSoftBody::RContact* _native;
+
 			RigidContact(btSoftBody::RContact* rigidContact);
 
 		public:
@@ -1331,21 +1301,13 @@ namespace BulletSharp
 			{
 				BulletSharp::SoftBody::Scti^ get();
 			}
-
-		internal:
-			property btSoftBody::RContact* UnmanagedPointer
-			{
-				btSoftBody::RContact* get();
-				void set(btSoftBody::RContact* value);
-			};
 		};
 
 		public ref class Scti
 		{
-		private:
-			btSoftBody::sCti* _sCti;
-
 		internal:
+			btSoftBody::sCti* _native;
+
 			Scti(btSoftBody::sCti* sCti);
 
 		public:
@@ -1368,21 +1330,13 @@ namespace BulletSharp
 				btScalar get();
 				void set(btScalar value);
 			}
-
-		internal:
-			property btSoftBody::sCti* UnmanagedPointer
-			{
-				btSoftBody::sCti* get();
-				void set(btSoftBody::sCti* value);
-			};
 		};
 
 		public ref class SoftContact
 		{
-		private:
-			btSoftBody::SContact* _softContact;
-
 		internal:
+			btSoftBody::SContact* _native;
+
 			SoftContact(btSoftBody::SContact* softContact);
 
 		public:
@@ -1422,21 +1376,13 @@ namespace BulletSharp
 				Vector3 get();
 				void set(Vector3 value);
 			}
-
-		internal:
-			property btSoftBody::SContact* UnmanagedPointer
-			{
-				btSoftBody::SContact* get();
-				void set(btSoftBody::SContact* value);
-			};
 		};
 
 		public ref class SolverState
 		{
-		private:
-			btSoftBody::SolverState* _solverState;
-
 		internal:
+			btSoftBody::SolverState* _native;
+
 			SolverState(btSoftBody::SolverState* solverState);
 
 		public:
@@ -1469,21 +1415,13 @@ namespace BulletSharp
 				btScalar get();
 				void set(btScalar value);
 			}
-
-		internal:
-			property btSoftBody::SolverState* UnmanagedPointer
-			{
-				btSoftBody::SolverState* get();
-				void set(btSoftBody::SolverState* value);
-			};
 		};
 
 		public ref class SRayCast
 		{
-		private:
-			btSoftBody::sRayCast* _rayCast;
-
 		internal:
+			btSoftBody::sRayCast* _native;
+
 			SRayCast(btSoftBody::sRayCast* rayCast);
 
 		public:
@@ -1511,12 +1449,6 @@ namespace BulletSharp
 			{
 				int get();
 				void set(int value);
-			}
-
-		internal:
-			property btSoftBody::sRayCast* UnmanagedPointer
-			{
-				btSoftBody::sRayCast* get();
 			}
 		};
 

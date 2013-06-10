@@ -72,33 +72,15 @@ float SoftBody::SoftBodySolver::TimeScale::get()
 	return _native->getTimeScale();
 }
 
-btSoftBodySolver* SoftBody::SoftBodySolver::UnmanagedPointer::get()
-{
-	return _native;
-}
-void SoftBody::SoftBodySolver::UnmanagedPointer::set(btSoftBodySolver* value)
-{
-	_native = value;
-}
-
 
 SoftBody::SoftBodySolverOutput::SoftBodySolverOutput(btSoftBodySolverOutput* solverOutput)
 {
-	_solverOutput = solverOutput;
+	_native = solverOutput;
 }
 
 void SoftBody::SoftBodySolverOutput::CopySoftBodyToVertexBuffer(SoftBody^ softBody, VertexBufferDescriptor^ vertexBuffer)
 {
-	_solverOutput->copySoftBodyToVertexBuffer((btSoftBody*)softBody->_native, vertexBuffer->UnmanagedPointer);
-}
-
-btSoftBodySolverOutput* SoftBody::SoftBodySolverOutput::UnmanagedPointer::get()
-{
-	return _solverOutput;
-}
-void SoftBody::SoftBodySolverOutput::UnmanagedPointer::set(btSoftBodySolverOutput* value)
-{
-	_solverOutput = value;
+	_native->copySoftBodyToVertexBuffer((btSoftBody*)softBody->_native, vertexBuffer->_native);
 }
 
 #endif

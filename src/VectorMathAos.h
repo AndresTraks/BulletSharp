@@ -14,27 +14,20 @@ namespace BulletSharp
 
 			public ref class Matrix3
 			{
-			private:
-				Vectormath::Aos::Matrix3* _matrix;
+			internal:
+				Vectormath::Aos::Matrix3* _native;
 
 			public:
 				Matrix3(VMVector3^ col0, VMVector3^ col1, VMVector3^ col2);
 
 				static VMVector3^ operator*(Matrix3^ matrix, VMVector3^ vec);
-
-			internal:
-				property Vectormath::Aos::Matrix3* UnmanagedPointer
-				{
-					Vectormath::Aos::Matrix3* get();
-				}
 			};
 
 			public ref class VMVector3
 			{
-			private:
-				Vectormath::Aos::Vector3* _vector;
-
 			internal:
+				Vectormath::Aos::Vector3* _native;
+
 				VMVector3(Vectormath::Aos::Vector3* vector);
 
 			public:
@@ -54,12 +47,6 @@ namespace BulletSharp
 				property float Z
 				{
 					float get();
-				}
-
-			internal:
-				property Vectormath::Aos::Vector3* UnmanagedPointer
-				{
-					Vectormath::Aos::Vector3* get();
 				}
 			};
 		};

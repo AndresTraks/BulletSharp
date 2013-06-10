@@ -36,12 +36,5 @@ namespace BulletSharp
 		{
 			virtual bool get();
 		}
-
-	internal:
-		property btOverlappingPairCallback* UnmanagedPointer
-		{
-			virtual btOverlappingPairCallback* get();
-			void set(btOverlappingPairCallback* value);
-		}
 	};
 };

@@ -155,7 +155,7 @@ void DbvtBroadphase::SetAabbForceUpdate(BroadphaseProxy^ absproxy,
 	VECTOR3_DEF(aabbMin);
 	VECTOR3_DEF(aabbMax);
 
-	Native->setAabbForceUpdate(absproxy->UnmanagedPointer,
+	Native->setAabbForceUpdate(absproxy->_native,
 		VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), dispatcher->_native);
 
 	VECTOR3_DEL(aabbMin);
@@ -169,7 +169,7 @@ BulletSharp::OverlappingPairCache^ DbvtBroadphase::PairCache::get()
 }
 void DbvtBroadphase::PairCache::set(BulletSharp::OverlappingPairCache^ value)
 {
-	Native->m_paircache = value->UnmanagedPointer;
+	Native->m_paircache = value->_native;
 }
 
 int DbvtBroadphase::CId::get()

@@ -148,6 +148,8 @@ void IndexedMesh::VertexType::set(PhyScalarType value)
 }
 
 
+#define Native static_cast<btTriangleIndexVertexArray*>(_native)
+
 TriangleIndexVertexArray::TriangleIndexVertexArray(btTriangleIndexVertexArray* vertexArray)
 : StridingMeshInterface(vertexArray)
 {
@@ -171,7 +173,7 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(array<int>^ indices, array<Ve
 	int* indicesBase = Math::IntArrayToUnmanaged(indices);
 	btVector3* verticesBase = Math::Vector3ArrayToUnmanaged(vertices);
 
-	UnmanagedPointer = new btTriangleIndexVertexArray(indices->Length / 3, indicesBase, 3 * sizeof(int),
+	_native = new btTriangleIndexVertexArray(indices->Length / 3, indicesBase, 3 * sizeof(int),
 		vertices->Length, *verticesBase, sizeof(btVector3));
 }
 
@@ -181,26 +183,21 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(array<int>^ indices, array<bt
 	int* indicesBase = Math::IntArrayToUnmanaged(indices);
 	btScalar* verticesBase = Math::BtScalarArrayToUnmanaged(vertices);
 
-	UnmanagedPointer = new btTriangleIndexVertexArray(indices->Length / 3, indicesBase, 3 * sizeof(int),
+	_native = new btTriangleIndexVertexArray(indices->Length / 3, indicesBase, 3 * sizeof(int),
 		vertices->Length / 3, verticesBase, 3 * sizeof(btScalar));
 }
 
 void TriangleIndexVertexArray::AddIndexedMesh(IndexedMesh^ mesh)
 {
-	UnmanagedPointer->addIndexedMesh(*mesh->_native);
+	Native->addIndexedMesh(*mesh->_native);
 }
 
 void TriangleIndexVertexArray::AddIndexedMesh(IndexedMesh^ mesh, PhyScalarType indexType)
 {
-	UnmanagedPointer->addIndexedMesh(*mesh->_native, static_cast<PHY_ScalarType>(indexType));
+	Native->addIndexedMesh(*mesh->_native, static_cast<PHY_ScalarType>(indexType));
 }
 
 AlignedIndexedMeshArray^ TriangleIndexVertexArray::IndexedMeshArray::get()
 {
-	return gcnew AlignedIndexedMeshArray(&UnmanagedPointer->getIndexedMeshArray());
-}
-
-btTriangleIndexVertexArray* TriangleIndexVertexArray::UnmanagedPointer::get()
-{
-	return (btTriangleIndexVertexArray*)StridingMeshInterface::UnmanagedPointer;
+	return gcnew AlignedIndexedMeshArray(&Native->getIndexedMeshArray());
 }

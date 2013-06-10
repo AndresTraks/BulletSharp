@@ -6,211 +6,203 @@
 
 ContactSolverInfoData::ContactSolverInfoData(btContactSolverInfoData* infoData)
 {
-	_infoData = infoData;
+	_native = infoData;
 }
 
 ContactSolverInfoData::ContactSolverInfoData()
 {
-	_infoData = new btContactSolverInfoData();
+	_native = new btContactSolverInfoData();
 }
 
 btScalar ContactSolverInfoData::Erp::get()
 {
-	return _infoData->m_erp;
+	return _native->m_erp;
 }
 void ContactSolverInfoData::Erp::set(btScalar value)
 {
-	_infoData->m_erp = value;
+	_native->m_erp = value;
 }
 
 btScalar ContactSolverInfoData::Erp2::get()
 {
-	return _infoData->m_erp2;
+	return _native->m_erp2;
 }
 void ContactSolverInfoData::Erp2::set(btScalar value)
 {
-	_infoData->m_erp2 = value;
+	_native->m_erp2 = value;
 }
 
 btScalar ContactSolverInfoData::Damping::get()
 {
-	return _infoData->m_damping;
+	return _native->m_damping;
 }
 void ContactSolverInfoData::Damping::set(btScalar value)
 {
-	_infoData->m_damping = value;
+	_native->m_damping = value;
 }
 
 btScalar ContactSolverInfoData::Friction::get()
 {
-	return _infoData->m_friction;
+	return _native->m_friction;
 }
 void ContactSolverInfoData::Friction::set(btScalar value)
 {
-	_infoData->m_friction = value;
+	_native->m_friction = value;
 }
 
 btScalar ContactSolverInfoData::GlobalCfm::get()
 {
-	return _infoData->m_globalCfm;
+	return _native->m_globalCfm;
 }
 void ContactSolverInfoData::GlobalCfm::set(btScalar value)
 {
-	_infoData->m_globalCfm = value;
+	_native->m_globalCfm = value;
 }
 
 btScalar ContactSolverInfoData::LinearSlop::get()
 {
-	return _infoData->m_linearSlop;
+	return _native->m_linearSlop;
 }
 void ContactSolverInfoData::LinearSlop::set(btScalar value)
 {
-	_infoData->m_linearSlop = value;
+	_native->m_linearSlop = value;
 }
 
 btScalar ContactSolverInfoData::MaxErrorReduction::get()
 {
-	return _infoData->m_maxErrorReduction;
+	return _native->m_maxErrorReduction;
 }
 void ContactSolverInfoData::MaxErrorReduction::set(btScalar value)
 {
-	_infoData->m_maxErrorReduction = value;
+	_native->m_maxErrorReduction = value;
 }
 
 btScalar ContactSolverInfoData::MaxGyroscopicForce::get()
 {
-	return _infoData->m_maxGyroscopicForce;
+	return _native->m_maxGyroscopicForce;
 }
 void ContactSolverInfoData::MaxGyroscopicForce::set(btScalar value)
 {
-	_infoData->m_maxGyroscopicForce = value;
+	_native->m_maxGyroscopicForce = value;
 }
 
 int ContactSolverInfoData::MinimumSolverBatchSize::get()
 {
-	return _infoData->m_minimumSolverBatchSize;
+	return _native->m_minimumSolverBatchSize;
 }
 void ContactSolverInfoData::MinimumSolverBatchSize::set(int value)
 {
-	_infoData->m_minimumSolverBatchSize = value;
+	_native->m_minimumSolverBatchSize = value;
 }
 
 int ContactSolverInfoData::NumIterations::get()
 {
-	return _infoData->m_numIterations;
+	return _native->m_numIterations;
 }
 void ContactSolverInfoData::NumIterations::set(int value)
 {
-	_infoData->m_numIterations = value;
+	_native->m_numIterations = value;
 }
 
 int ContactSolverInfoData::RestingContactRestitutionThreshold::get()
 {
-	return _infoData->m_restingContactRestitutionThreshold;
+	return _native->m_restingContactRestitutionThreshold;
 }
 void ContactSolverInfoData::RestingContactRestitutionThreshold::set(int value)
 {
-	_infoData->m_restingContactRestitutionThreshold = value;
+	_native->m_restingContactRestitutionThreshold = value;
 }
 
 btScalar ContactSolverInfoData::Restitution::get()
 {
-	return _infoData->m_restitution;
+	return _native->m_restitution;
 }
 void ContactSolverInfoData::Restitution::set(btScalar value)
 {
-	_infoData->m_restitution = value;
+	_native->m_restitution = value;
 }
 
 btScalar ContactSolverInfoData::SingleAxisRollingFrictionThreshold::get()
 {
-	return _infoData->m_singleAxisRollingFrictionThreshold;
+	return _native->m_singleAxisRollingFrictionThreshold;
 }
 void ContactSolverInfoData::SingleAxisRollingFrictionThreshold::set(btScalar value)
 {
-	_infoData->m_singleAxisRollingFrictionThreshold = value;
+	_native->m_singleAxisRollingFrictionThreshold = value;
 }
 
 SolverModes ContactSolverInfoData::SolverMode::get()
 {
-	return (SolverModes)_infoData->m_solverMode;
+	return (SolverModes)_native->m_solverMode;
 }
 void ContactSolverInfoData::SolverMode::set(SolverModes value)
 {
-	_infoData->m_solverMode = (int)value;
+	_native->m_solverMode = (int)value;
 }
 
 btScalar ContactSolverInfoData::Sor::get()
 {
-	return _infoData->m_sor;
+	return _native->m_sor;
 }
 void ContactSolverInfoData::Sor::set(btScalar value)
 {
-	_infoData->m_sor = value;
+	_native->m_sor = value;
 }
 
 int ContactSolverInfoData::SplitImpulse::get()
 {
-	return _infoData->m_splitImpulse;
+	return _native->m_splitImpulse;
 }
 void ContactSolverInfoData::SplitImpulse::set(int value)
 {
-	_infoData->m_splitImpulse = value;
+	_native->m_splitImpulse = value;
 }
 
 btScalar ContactSolverInfoData::SplitImpulsePenetrationThreshold::get()
 {
-	return _infoData->m_splitImpulsePenetrationThreshold;
+	return _native->m_splitImpulsePenetrationThreshold;
 }
 void ContactSolverInfoData::SplitImpulsePenetrationThreshold::set(btScalar value)
 {
-	_infoData->m_splitImpulsePenetrationThreshold = value;
+	_native->m_splitImpulsePenetrationThreshold = value;
 }
 
 btScalar ContactSolverInfoData::SplitImpulseTurnErp::get()
 {
-	return _infoData->m_splitImpulseTurnErp;
+	return _native->m_splitImpulseTurnErp;
 }
 void ContactSolverInfoData::SplitImpulseTurnErp::set(btScalar value)
 {
-	_infoData->m_splitImpulseTurnErp = value;
+	_native->m_splitImpulseTurnErp = value;
 }
 
 btScalar ContactSolverInfoData::Tau::get()
 {
-	return _infoData->m_tau;
+	return _native->m_tau;
 }
 void ContactSolverInfoData::Tau::set(btScalar value)
 {
-	_infoData->m_tau = value;
+	_native->m_tau = value;
 }
 
 btScalar ContactSolverInfoData::TimeStep::get()
 {
-	return _infoData->m_timeStep;
+	return _native->m_timeStep;
 }
 void ContactSolverInfoData::TimeStep::set(btScalar value)
 {
-	_infoData->m_timeStep = value;
+	_native->m_timeStep = value;
 }
 
 btScalar ContactSolverInfoData::WarmstartingFactor::get()
 {
-	return _infoData->m_warmstartingFactor;
+	return _native->m_warmstartingFactor;
 }
 void ContactSolverInfoData::WarmstartingFactor::set(btScalar value)
 {
-	_infoData->m_warmstartingFactor = value;
+	_native->m_warmstartingFactor = value;
 }
 
-btContactSolverInfoData* ContactSolverInfoData::UnmanagedPointer::get()
-{
-	return _infoData;
-}
-void ContactSolverInfoData::UnmanagedPointer::set(btContactSolverInfoData* value)
-{
-	_infoData = value;
-}
 
 ContactSolverInfo::ContactSolverInfo(btContactSolverInfo *info)
 : ContactSolverInfoData(info)
@@ -220,11 +212,6 @@ ContactSolverInfo::ContactSolverInfo(btContactSolverInfo *info)
 ContactSolverInfo::ContactSolverInfo()
 : ContactSolverInfoData(new btContactSolverInfo())
 {
-}
-
-btContactSolverInfo* ContactSolverInfo::UnmanagedPointer::get()
-{
-	return (btContactSolverInfo*)ContactSolverInfoData::UnmanagedPointer;
 }
 
 //#endif
