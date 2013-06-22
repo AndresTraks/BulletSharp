@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.IO;
 using BulletSharp;
-using BulletSharp.Hacd;
 using DemoFramework;
 using SharpDX;
 

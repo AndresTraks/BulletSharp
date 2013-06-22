@@ -75,6 +75,7 @@ namespace DemoFramework.SharpDX
                 using (var data = new DataStream(vertexBufferDesc.SizeInBytes, false, true))
                 {
                     data.WriteRange(lineArray);
+                    data.Position = 0;
                     vertexBuffer = new Buffer(device, data, vertexBufferDesc);
                 }
                 vertexBufferBinding.Buffer = vertexBuffer;

@@ -56,6 +56,7 @@ namespace DemoFramework
             using (var data = new SharpDX.DataStream(vertexBufferDesc.SizeInBytes, false, true))
             {
                 data.WriteRange(vertices);
+                data.Position = 0;
                 VertexBuffer = new Buffer(device, data, vertexBufferDesc);
                 VertexBuffer.Unmap();
             }
@@ -92,6 +93,7 @@ namespace DemoFramework
                 using (var data = new SharpDX.DataStream(vertexBufferDesc.SizeInBytes, false, true))
                 {
                     data.WriteRange(vertices);
+                    data.Position = 0;
                     VertexBuffer = new Buffer(device, data, vertexBufferDesc);
                 }
 
@@ -113,6 +115,7 @@ namespace DemoFramework
             using (var data = new SharpDX.DataStream(indexBufferDesc.SizeInBytes, false, true))
             {
                 data.WriteRange(indices);
+                data.Position = 0;
                 IndexBuffer = new Buffer(device, data, indexBufferDesc);
             }
         }
@@ -131,6 +134,7 @@ namespace DemoFramework
             using (var data = new SharpDX.DataStream(indexBufferDesc.SizeInBytes, false, true))
             {
                 data.WriteRange(indices);
+                data.Position = 0;
                 IndexBuffer = new Buffer(device, data, indexBufferDesc);
             }
         }
@@ -1173,6 +1177,7 @@ namespace DemoFramework
                 data.Write(new Vector2(0, 0));
                 data.Write(new Vector3(-0.5f, -0.5f, 0));
                 data.Write(new Vector2(0, 1));
+                data.Position = 0;
                 vertexBuffer = new Buffer(device, data, vertexBufferDesc);
             }
 

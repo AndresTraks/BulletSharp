@@ -13,6 +13,7 @@ using Buffer = SharpDX.Direct3D10.Buffer;
 using Device = SharpDX.Direct3D10.Device;
 using DriverType = SharpDX.Direct3D10.DriverType;
 using Color = System.Drawing.Color;
+using Point = System.Drawing.Point;
 
 namespace DemoFramework
 {

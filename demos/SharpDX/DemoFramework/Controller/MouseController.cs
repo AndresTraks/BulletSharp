@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using SharpDX;
+using Point = System.Drawing.Point;
 
 namespace DemoFramework
 {

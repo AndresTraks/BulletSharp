@@ -6,6 +6,7 @@ using BulletSharp.SoftBody;
 using DemoFramework;
 using SharpDX;
 using Face = BulletSharp.SoftBody.Face;
+using Point = System.Drawing.Point;
 
 namespace SoftDemo
 {
