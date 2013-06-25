@@ -24,7 +24,7 @@ using namespace Mogre;
 #endif
 
 #if (defined(BT_USE_DOUBLE_PRECISION) && !defined(GRAPHICS_NONE) && !defined(GRAPHICS_OPENTK)) || \
-	(defined(BT_USE_SIMD_VECTOR3) && defined (BT_USE_SSE_IN_API) && defined (BT_USE_SSE))
+	(defined(BT_USE_SSE) )//&& defined (BT_USE_SIMD_VECTOR3) defined (BT_USE_SSE_IN_API))
 #define GRAPHICS_NO_DIRECT_CAST
 #endif
 
