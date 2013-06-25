@@ -521,11 +521,11 @@ int Serialize::BulletXmlWorldImporter::TriangleInfoMapCount::get()
 	return _importer->getNumTriangleInfoMaps();
 }
 
-bool Serialize::BulletXmlWorldImporter::VerboseMode::get()
+int Serialize::BulletXmlWorldImporter::VerboseMode::get()
 {
 	return _importer->getVerboseMode();
 }
-void Serialize::BulletXmlWorldImporter::VerboseMode::set(bool value)
+void Serialize::BulletXmlWorldImporter::VerboseMode::set(int value)
 {
 	_importer->setVerboseMode(value);
 }

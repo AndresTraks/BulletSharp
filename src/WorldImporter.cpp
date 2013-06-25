@@ -514,11 +514,11 @@ int Serialize::WorldImporter::TriangleInfoMapCount::get()
 	return _native->getNumTriangleInfoMaps();
 }
 
-bool Serialize::WorldImporter::VerboseMode::get()
+int Serialize::WorldImporter::VerboseMode::get()
 {
 	return _native->getVerboseMode();
 }
-void Serialize::WorldImporter::VerboseMode::set(bool value)
+void Serialize::WorldImporter::VerboseMode::set(int value)
 {
 	_native->setVerboseMode(value);
 }
