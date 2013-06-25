@@ -36,7 +36,7 @@ namespace MultiMaterialDemo
             return restitution0 * restitution1;
         }
 
-        static bool CustomMaterialCombinerCallback(ManifoldPoint cp,
+        static void CustomMaterialCombinerCallback(ManifoldPoint cp,
             CollisionObjectWrapper colObj0Wrap, int partId0, int index0,
             CollisionObjectWrapper colObj1Wrap, int partId1, int index1)
         {
@@ -64,8 +64,7 @@ namespace MultiMaterialDemo
                 }
             }
 
-            //this return value is currently ignored, but to be on the safe side: return false if you don't calculate friction
-            return true;
+            return;
         }
 
         void SetVertexPositions(float waveheight, float offset)
@@ -87,7 +86,7 @@ namespace MultiMaterialDemo
 
         public Physics()
         {
-            ManifoldPoint.ContactAddedCallback = CustomMaterialCombinerCallback;
+            ManifoldPoint.ContactAdded += CustomMaterialCombinerCallback;
 
             // collision configuration contains default setup for memory, collision setup
             CollisionConf = new DefaultCollisionConfiguration();

@@ -299,8 +299,8 @@ namespace VehicleDemo
             {
                 WheelInfo wheel = vehicle.GetWheelInfo(i);
                 wheel.SuspensionStiffness = suspensionStiffness;
-                wheel.WheelDampingRelaxation = suspensionDamping;
-                wheel.WheelDampingCompression = suspensionCompression;
+                wheel.WheelsDampingRelaxation = suspensionDamping;
+                wheel.WheelsDampingCompression = suspensionCompression;
                 wheel.FrictionSlip = wheelFriction;
                 wheel.RollInfluence = rollInfluence;
             }

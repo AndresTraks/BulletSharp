@@ -157,6 +157,7 @@ namespace DemoFramework
                 DisposeBuffers();
                 //apiContext.Dispose();
                 Form.Dispose();
+                PhysicsContext.Dispose();
             }
         }
 

@@ -179,6 +179,9 @@ namespace DemoFramework
                 CollisionShapes.Clear();
 
                 _world.Dispose();
+                Broadphase.Dispose();
+                Dispatcher.Dispose();
+                CollisionConf.Dispose();
             }
 
             if (Broadphase != null)
