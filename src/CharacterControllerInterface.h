@@ -28,7 +28,8 @@ namespace BulletSharp
 
 		void Jump();
 		void PlayerStep(CollisionWorld^ collisionWorld, btScalar dt);
-		void Reset();
+		void Reset(CollisionWorld^ collisionWorld);
+		void SetUpInterpolate(bool value);
 		void SetVelocityForTimeInterval(Vector3 velocity, btScalar timeInterval);
 		void SetWalkDirection(Vector3 walkDirection);
 		void Warp(Vector3 origin);

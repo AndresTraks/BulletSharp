@@ -5,6 +5,8 @@
 #include "GearConstraint.h"
 #include "RigidBody.h"
 
+#define Native static_cast<btGearConstraint*>(_native)
+
 GearConstraint::GearConstraint(btGearConstraint* constraint)
 : TypedConstraint(constraint)
 {
@@ -22,6 +24,39 @@ GearConstraint::GearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vec
 
 	VECTOR3_DEL(axisInA);
 	VECTOR3_DEL(axisInB);
+}
+
+Vector3 GearConstraint::AxisA::get()
+{
+	return Math::BtVector3ToVector3(&Native->getAxisA());
+}
+
+void GearConstraint::AxisA::set(Vector3 value)
+{
+	VECTOR3_DEF(value);
+	Native->setAxisA(VECTOR3_USE(value));
+	VECTOR3_DEL(value);
+}
+
+Vector3 GearConstraint::AxisB::get()
+{
+	return Math::BtVector3ToVector3(&Native->getAxisB());
+}
+
+void GearConstraint::AxisB::set(Vector3 value)
+{
+	VECTOR3_DEF(value);
+	Native->setAxisB(VECTOR3_USE(value));
+	VECTOR3_DEL(value);
+}
+
+btScalar GearConstraint::Ratio::get()
+{
+	return Native->getRatio();
+}
+void GearConstraint::Ratio::set(btScalar value)
+{
+	Native->setRatio(value);
 }
 
 #endif

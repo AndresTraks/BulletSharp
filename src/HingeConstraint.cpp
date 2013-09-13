@@ -263,7 +263,7 @@ void HingeConstraint::MaxMotorImpulse::set(btScalar value)
 
 btScalar HingeConstraint::MotorTargetVelocity::get()
 {
-	//return Native->getMotorTargetVelocity();
+	// FIXME: return Native->getMotorTargetVelocity();
 	return Native->getMotorTargetVelosity();
 }
 

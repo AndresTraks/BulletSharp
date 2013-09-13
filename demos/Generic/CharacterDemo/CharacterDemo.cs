@@ -100,7 +100,7 @@ namespace CharacterDemo
         {
             World.Broadphase.OverlappingPairCache.CleanProxyFromPairs(ghostObject.BroadphaseHandle, World.Dispatcher);
 
-            character.Reset();
+            character.Reset(World);
             ///WTF
             character.Warp(new Vector3(10.210001f, -2.0306311f, 16.576973f));
         }

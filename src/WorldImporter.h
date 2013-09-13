@@ -61,6 +61,9 @@ namespace BulletSharp
 			virtual CollisionShape^ CreateCylinderShapeX(btScalar radius, btScalar height);
 			virtual CollisionShape^ CreateCylinderShapeY(btScalar radius, btScalar height);
 			virtual CollisionShape^ CreateCylinderShapeZ(btScalar radius, btScalar height);
+			virtual CollisionShape^ CreateConeShapeX(btScalar radius, btScalar height);
+			virtual CollisionShape^ CreateConeShapeY(btScalar radius, btScalar height);
+			virtual CollisionShape^ CreateConeShapeZ(btScalar radius, btScalar height);
 			//virtual TriangleIndexVertexArray^ CreateMeshInterface(StridingMeshInterfaceData^ meshData);
 			virtual TriangleIndexVertexArray^ CreateTriangleMeshContainer();
 #ifndef DISABLE_BVH
@@ -183,6 +186,9 @@ namespace BulletSharp
 			virtual btCollisionShape* createCylinderShapeX(btScalar radius, btScalar height);
 			virtual btCollisionShape* createCylinderShapeY(btScalar radius, btScalar height);
 			virtual btCollisionShape* createCylinderShapeZ(btScalar radius, btScalar height);
+			virtual btCollisionShape* createConeShapeX(btScalar radius, btScalar height);
+			virtual btCollisionShape* createConeShapeY(btScalar radius, btScalar height);
+			virtual btCollisionShape* createConeShapeZ(btScalar radius, btScalar height);
 			virtual class btTriangleIndexVertexArray* createTriangleMeshContainer();
 #ifndef DISABLE_BVH
 			virtual	btBvhTriangleMeshShape* createBvhTriangleMeshShape(btStridingMeshInterface* trimesh, btOptimizedBvh* bvh);
@@ -242,6 +248,9 @@ namespace BulletSharp
 			virtual btCollisionShape* baseCreateCylinderShapeX(btScalar radius, btScalar height);
 			virtual btCollisionShape* baseCreateCylinderShapeY(btScalar radius, btScalar height);
 			virtual btCollisionShape* baseCreateCylinderShapeZ(btScalar radius, btScalar height);
+			virtual btCollisionShape* baseCreateConeShapeX(btScalar radius, btScalar height);
+			virtual btCollisionShape* baseCreateConeShapeY(btScalar radius, btScalar height);
+			virtual btCollisionShape* baseCreateConeShapeZ(btScalar radius, btScalar height);
 			virtual class btTriangleIndexVertexArray* baseCreateTriangleMeshContainer();
 #ifndef DISABLE_BVH
 			virtual	btBvhTriangleMeshShape* baseCreateBvhTriangleMeshShape(btStridingMeshInterface* trimesh, btOptimizedBvh* bvh);

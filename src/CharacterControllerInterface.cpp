@@ -53,9 +53,14 @@ void CharacterControllerInterface::Jump()
 	_native->jump();
 }
 
-void CharacterControllerInterface::Reset()
+void CharacterControllerInterface::Reset(CollisionWorld^ collisionWorld)
 {
-	_native->reset();
+	_native->reset(collisionWorld->_native);
+}
+
+void CharacterControllerInterface::SetUpInterpolate(bool value)
+{
+	_native->setUpInterpolate(value);
 }
 
 void CharacterControllerInterface::SetVelocityForTimeInterval(Vector3 velocity, btScalar timeInterval)

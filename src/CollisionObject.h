@@ -201,6 +201,17 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
+		property int UpdateRevisionInternal
+		{
+			int get();
+		}
+
+		property int UserIndex
+		{
+			int get();
+			void set(int value);
+		}
+
 		// UserPointer implemented as UserObject
 		property Object^ UserObject
 		{

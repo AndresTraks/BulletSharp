@@ -137,6 +137,21 @@ CollisionShape^ Serialize::BulletXmlWorldImporter::CreateCylinderShapeZ(btScalar
 	return CollisionShape::GetManaged(_importer->baseCreateCylinderShapeZ(radius, height));
 }
 
+CollisionShape^ Serialize::BulletXmlWorldImporter::CreateConeShapeX(btScalar radius, btScalar height)
+{
+	return CollisionShape::GetManaged(_importer->baseCreateConeShapeX(radius, height));
+}
+
+CollisionShape^ Serialize::BulletXmlWorldImporter::CreateConeShapeY(btScalar radius, btScalar height)
+{
+	return CollisionShape::GetManaged(_importer->baseCreateConeShapeY(radius, height));
+}
+
+CollisionShape^ Serialize::BulletXmlWorldImporter::CreateConeShapeZ(btScalar radius, btScalar height)
+{
+	return CollisionShape::GetManaged(_importer->baseCreateConeShapeZ(radius, height));
+}
+
 TriangleIndexVertexArray^ Serialize::BulletXmlWorldImporter::CreateTriangleMeshContainer()
 {
 	return gcnew TriangleIndexVertexArray(_importer->baseCreateTriangleMeshContainer());
@@ -596,6 +611,21 @@ btCollisionShape* Serialize::BulletXmlWorldImporterWrapper::createCylinderShapeZ
 	return _importer->CreateCylinderShapeZ(radius, height)->_native;
 }
 
+btCollisionShape* Serialize::BulletXmlWorldImporterWrapper::createConeShapeX(btScalar radius, btScalar height)
+{
+	return _importer->CreateConeShapeX(radius, height)->_native;
+}
+
+btCollisionShape* Serialize::BulletXmlWorldImporterWrapper::createConeShapeY(btScalar radius, btScalar height)
+{
+	return _importer->CreateConeShapeY(radius, height)->_native;
+}
+
+btCollisionShape* Serialize::BulletXmlWorldImporterWrapper::createConeShapeZ(btScalar radius, btScalar height)
+{
+	return _importer->CreateConeShapeZ(radius, height)->_native;
+}
+
 class btTriangleIndexVertexArray* Serialize::BulletXmlWorldImporterWrapper::createTriangleMeshContainer()
 {
 	return (btTriangleIndexVertexArray*)_importer->CreateTriangleMeshContainer()->_native;
@@ -789,6 +819,21 @@ btCollisionShape* Serialize::BulletXmlWorldImporterWrapper::baseCreateCylinderSh
 btCollisionShape* Serialize::BulletXmlWorldImporterWrapper::baseCreateCylinderShapeZ(btScalar radius, btScalar height)
 {
 	return btBulletXmlWorldImporter::createCylinderShapeZ(radius, height);
+}
+
+btCollisionShape* Serialize::BulletXmlWorldImporterWrapper::baseCreateConeShapeX(btScalar radius, btScalar height)
+{
+	return btBulletXmlWorldImporter::createConeShapeX(radius, height);
+}
+
+btCollisionShape* Serialize::BulletXmlWorldImporterWrapper::baseCreateConeShapeY(btScalar radius, btScalar height)
+{
+	return btBulletXmlWorldImporter::createConeShapeY(radius, height);
+}
+
+btCollisionShape* Serialize::BulletXmlWorldImporterWrapper::baseCreateConeShapeZ(btScalar radius, btScalar height)
+{
+	return btBulletXmlWorldImporter::createConeShapeZ(radius, height);
 }
 
 class btTriangleIndexVertexArray* Serialize::BulletXmlWorldImporterWrapper::baseCreateTriangleMeshContainer()

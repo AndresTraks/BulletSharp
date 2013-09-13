@@ -12,6 +12,8 @@ x MultiSapBroadphase (experimental)
 
 
 Collision/CollisionDispatch
+- HashedSimplePairCache
+- CompoundCompoundCollisionAlgorithm
 x SingleContactCallback (use CollisionWorld.ContactTest)
 x SingleRayCallback (use CollisionWorld.RayTest)
 x SingleSweepCallback (use CollisionWorld.ConvexSweepTest)

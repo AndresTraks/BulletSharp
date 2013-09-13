@@ -138,6 +138,21 @@ CollisionShape^ Serialize::WorldImporter::CreateCylinderShapeZ(btScalar radius, 
 	return CollisionShape::GetManaged(_native->baseCreateCylinderShapeZ(radius, height));
 }
 
+CollisionShape^ Serialize::WorldImporter::CreateConeShapeX(btScalar radius, btScalar height)
+{
+	return CollisionShape::GetManaged(_native->baseCreateConeShapeX(radius, height));
+}
+
+CollisionShape^ Serialize::WorldImporter::CreateConeShapeY(btScalar radius, btScalar height)
+{
+	return CollisionShape::GetManaged(_native->baseCreateConeShapeY(radius, height));
+}
+
+CollisionShape^ Serialize::WorldImporter::CreateConeShapeZ(btScalar radius, btScalar height)
+{
+	return CollisionShape::GetManaged(_native->baseCreateConeShapeZ(radius, height));
+}
+
 TriangleIndexVertexArray^ Serialize::WorldImporter::CreateTriangleMeshContainer()
 {
 	return gcnew TriangleIndexVertexArray(_native->baseCreateTriangleMeshContainer());
@@ -589,6 +604,21 @@ btCollisionShape* Serialize::WorldImporterWrapper::createCylinderShapeZ(btScalar
 	return _native->CreateCylinderShapeZ(radius, height)->_native;
 }
 
+btCollisionShape* Serialize::WorldImporterWrapper::createConeShapeX(btScalar radius, btScalar height)
+{
+	return _native->CreateConeShapeX(radius, height)->_native;
+}
+
+btCollisionShape* Serialize::WorldImporterWrapper::createConeShapeY(btScalar radius, btScalar height)
+{
+	return _native->CreateConeShapeY(radius, height)->_native;
+}
+
+btCollisionShape* Serialize::WorldImporterWrapper::createConeShapeZ(btScalar radius, btScalar height)
+{
+	return _native->CreateConeShapeZ(radius, height)->_native;
+}
+
 class btTriangleIndexVertexArray* Serialize::WorldImporterWrapper::createTriangleMeshContainer()
 {
 	return _native->CreateTriangleMeshContainer()->_native;
@@ -781,6 +811,21 @@ btCollisionShape* Serialize::WorldImporterWrapper::baseCreateCylinderShapeY(btSc
 btCollisionShape* Serialize::WorldImporterWrapper::baseCreateCylinderShapeZ(btScalar radius, btScalar height)
 {
 	return btWorldImporter::createCylinderShapeZ(radius, height);
+}
+
+btCollisionShape* Serialize::WorldImporterWrapper::baseCreateConeShapeX(btScalar radius, btScalar height)
+{
+	return btWorldImporter::createConeShapeX(radius, height);
+}
+
+btCollisionShape* Serialize::WorldImporterWrapper::baseCreateConeShapeY(btScalar radius, btScalar height)
+{
+	return btWorldImporter::createConeShapeY(radius, height);
+}
+
+btCollisionShape* Serialize::WorldImporterWrapper::baseCreateConeShapeZ(btScalar radius, btScalar height)
+{
+	return btWorldImporter::createConeShapeZ(radius, height);
 }
 
 class btTriangleIndexVertexArray* Serialize::WorldImporterWrapper::baseCreateTriangleMeshContainer()

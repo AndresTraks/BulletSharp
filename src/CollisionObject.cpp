@@ -351,6 +351,20 @@ void CollisionObject::RollingFriction::set(btScalar value)
 	_native->setRollingFriction(value);
 }
 
+int CollisionObject::UpdateRevisionInternal::get()
+{
+	return _native->getUpdateRevisionInternal();
+}
+
+int CollisionObject::UserIndex::get()
+{
+	return _native->getUserIndex();
+}
+void CollisionObject::UserIndex::set(int value)
+{
+	_native->setUserIndex(value);
+}
+
 Object^ CollisionObject::UserObject::get()
 {
 	return _userObject;
