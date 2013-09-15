@@ -83,6 +83,16 @@ namespace BulletSharp
 		static property Quaternion Identity { Quaternion get(); }
 
 		/// <summary>
+		/// Return the angle of rotation represented by this <see cref="Quaternion"/>.
+		/// </summary>
+		property btScalar Angle { btScalar get(); }
+
+		/// <summary>
+		/// Return the axis of rotation represented by this <see cref="Quaternion"/>.
+		/// </summary>
+		property Vector3 Axis { Vector3 get(); }
+
+		/// <summary>
 		/// Gets a value indicating whether this instance is an identity <see cref="Quaternion"/>.
 		/// </summary>
 		[System::ComponentModel::Browsable(false)]

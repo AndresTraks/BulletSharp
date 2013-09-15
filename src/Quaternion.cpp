@@ -58,6 +58,21 @@ namespace BulletSharp
 		return result;
 	}
 
+	btScalar Quaternion::Angle::get()
+	{
+		return 2.0f * System::Math::Acos(W);
+	}
+
+	Vector3 Quaternion::Axis::get()
+	{
+		btScalar sSquared = 1.0f - W * W;
+
+        if (sSquared < btScalar(10.0) * SIMD_EPSILON) //Check for divide by zero
+			return Vector3(1.0, 0.0, 0.0);  // Arbitrary
+        btScalar s = 1.0f / btSqrt(sSquared);
+        return Vector3(X * s, Y * s, Z * s);
+	}
+
 	bool Quaternion::IsIdentity::get()
 	{
 		if( X != 0.0f || Y != 0.0f || Z != 0.0f )
