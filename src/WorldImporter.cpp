@@ -20,6 +20,7 @@
 #endif
 #ifndef DISABLE_CONSTRAINTS
 #include "ConeTwistConstraint.h"
+#include "GearConstraint.h"
 #include "Generic6DofConstraint.h"
 #include "HingeConstraint.h"
 #include "Point2PointConstraint.h"
@@ -379,6 +380,20 @@ SliderConstraint^ Serialize::WorldImporter::CreateSliderConstraint(RigidBody^ ri
 		*(btRigidBody*)rigidBodyB->_native, *frameInBTemp, useLinearReferenceFrameA));
 	
 	ALIGNED_FREE(frameInBTemp);
+	return ret;
+}
+
+GearConstraint^ Serialize::WorldImporter::CreateGearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA, Vector3 axisInB, btScalar ratio)
+{
+	VECTOR3_DEF(axisInA);
+	VECTOR3_DEF(axisInB);
+
+	GearConstraint^ ret = gcnew GearConstraint(_importer->baseCreateGearConstraint(*(btRigidBody*)rigidBodyA->_native,
+		*(btRigidBody*)rigidBodyB->_native, VECTOR3_USE(axisInA), VECTOR3_USE(axisInB), ratio));
+	
+	VECTOR3_DEL(axisInA);
+	VECTOR3_DEL(axisInB);
+
 	return ret;
 }
 
@@ -753,6 +768,14 @@ btSliderConstraint* Serialize::WorldImporterWrapper::createSliderConstraint(btRi
 		(RigidBody^)CollisionObject::GetManaged(&rigidBodyB), Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameA)->_native;
 }
 
+btGearConstraint* Serialize::WorldImporterWrapper::createGearConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
+				const btVector3& axisInA, const btVector3& axisInB, btScalar ratio)
+{
+	return (btGearConstraint*)_importer->CreateGearConstraint(
+		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), (RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
+		Math::BtVector3ToVector3(&axisInA), Math::BtVector3ToVector3(&axisInB), ratio)->_native;
+}
+
 #endif
 
 
@@ -952,6 +975,12 @@ btSliderConstraint* Serialize::WorldImporterWrapper::baseCreateSliderConstraint(
 	const btTransform& frameInB, bool useLinearReferenceFrameA)
 {
 	return btWorldImporter::createSliderConstraint(rigidBodyB, frameInB, useLinearReferenceFrameA);
+}
+
+btGearConstraint* Serialize::WorldImporterWrapper::baseCreateGearConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
+	const btVector3& axisInA, const btVector3& axisInB, btScalar ratio)
+{
+	return btWorldImporter::createGearConstraint(rigidBodyA, rigidBodyB, axisInA, axisInB, ratio);
 }
 
 #endif

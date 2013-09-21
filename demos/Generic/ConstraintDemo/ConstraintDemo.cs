@@ -176,6 +176,31 @@ namespace ConstraintDemo
             }
 
 
+            RigidBody pRbA1 = LocalCreateRigidBody(mass, Matrix.Translation(-20, 0, 30), shape);
+            //RigidBody pRbA1 = LocalCreateRigidBody(0.0f, Matrix.Translation(-20, 0, 30), shape);
+            pRbA1.ActivationState = ActivationState.DisableDeactivation;
+
+            // add dynamic rigid body B1
+            RigidBody pRbB1 = LocalCreateRigidBody(mass, Matrix.Translation(-20, 0, 30), shape);
+            //RigidBody pRbB1 = LocalCreateRigidBody(0.0f, Matrix.Translation(-20, 0, 30), shape);
+            pRbB1.ActivationState = ActivationState.DisableDeactivation;
+
+            // create slider constraint between A1 and B1 and add it to world
+            SliderConstraint spSlider1 = new SliderConstraint(pRbA1, pRbB1, Matrix.Identity, Matrix.Identity, true);
+            //spSlider1 = new SliderConstraint(pRbA1, pRbB1, Matrix.Identity, Matrix.Identity, false);
+            spSlider1.LowerLinLimit = -15.0f;
+            spSlider1.UpperLinLimit = -5.0f;
+            spSlider1.LowerLinLimit = 5.0f;
+            spSlider1.UpperLinLimit = 15.0f;
+            spSlider1.LowerLinLimit = -10.0f;
+            spSlider1.UpperLinLimit = -10.0f;
+
+            spSlider1.LowerAngularLimit = -(float)Math.PI / 3.0f;
+            spSlider1.UpperAngularLimit = (float)Math.PI / 3.0f;
+
+            World.AddConstraint(spSlider1, true);
+            spSlider1.DebugDrawSize = 5.0f;
+
 
             //create a slider, using the generic D6 constraint
             Vector3 sliderWorldPos = new Vector3(0, 10, 0);

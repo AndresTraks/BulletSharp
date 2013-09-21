@@ -47,6 +47,8 @@ namespace BulletSharp
 		virtual void DrawSphere(Vector3% p, btScalar radius, BtColor color);
 		virtual void DrawSphere(btScalar radius, Matrix% transform, BtColor color);
 		virtual void DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btScalar radius, btScalar minTh, btScalar maxTh,
+			btScalar minPs, btScalar maxPs, BtColor color, btScalar stepDegrees, bool drawCenter);
+		virtual void DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btScalar radius, btScalar minTh, btScalar maxTh,
 			btScalar minPs, btScalar maxPs, BtColor color, btScalar stepDegrees);
 		virtual void DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btScalar radius, btScalar minTh, btScalar maxTh,
 			btScalar minPs, btScalar maxPs, BtColor color);
@@ -100,6 +102,8 @@ namespace BulletSharp
 		virtual void drawSphere(const btVector3& p, btScalar radius, const btVector3& color);
 		virtual void drawSphere(btScalar radius, const btTransform& transform, const btVector3& color);
 		virtual void drawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
+			btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color, btScalar stepDegrees, bool drawCenter);
+		virtual void drawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
 			btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color, btScalar stepDegrees);
 		virtual void drawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
 			btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color);
@@ -124,6 +128,8 @@ namespace BulletSharp
 		virtual void baseDrawPlane(const btVector3& planeNormal, btScalar planeConst, const btTransform& transform, const btVector3& color);
 		virtual void baseDrawSphere(const btVector3& p, btScalar radius, const btVector3& color);
 		virtual void baseDrawSphere(btScalar radius, const btTransform& transform, const btVector3& color);
+		virtual void baseDrawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
+			btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color, btScalar stepDegrees, bool drawCenter);
 		virtual void baseDrawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
 			btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color, btScalar stepDegrees);
 		virtual void baseDrawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,

@@ -19,6 +19,7 @@
 #endif
 #ifndef DISABLE_CONSTRAINTS
 #include "ConeTwistConstraint.h"
+#include "GearConstraint.h"
 #include "Generic6DofConstraint.h"
 #include "HingeConstraint.h"
 #include "Point2PointConstraint.h"
@@ -378,6 +379,20 @@ SliderConstraint^ Serialize::BulletXmlWorldImporter::CreateSliderConstraint(Rigi
 		*(btRigidBody*)rigidBodyB->_native, *frameInBTemp, useLinearReferenceFrameA));
 	
 	ALIGNED_FREE(frameInBTemp);
+	return ret;
+}
+
+GearConstraint^ Serialize::BulletXmlWorldImporter::CreateGearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA, Vector3 axisInB, btScalar ratio)
+{
+	VECTOR3_DEF(axisInA);
+	VECTOR3_DEF(axisInB);
+
+	GearConstraint^ ret = gcnew GearConstraint(_importer->baseCreateGearConstraint(*(btRigidBody*)rigidBodyA->_native,
+		*(btRigidBody*)rigidBodyB->_native, VECTOR3_USE(axisInA), VECTOR3_USE(axisInB), ratio));
+	
+	VECTOR3_DEL(axisInA);
+	VECTOR3_DEL(axisInB);
+
 	return ret;
 }
 
@@ -761,6 +776,14 @@ btSliderConstraint* Serialize::BulletXmlWorldImporterWrapper::createSliderConstr
 		(RigidBody^)CollisionObject::GetManaged(&rigidBodyB), Math::BtTransformToMatrix(&frameInB), useLinearReferenceFrameA)->_native;
 }
 
+btGearConstraint* Serialize::BulletXmlWorldImporterWrapper::createGearConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
+				const btVector3& axisInA, const btVector3& axisInB, btScalar ratio)
+{
+	return (btGearConstraint*)_importer->CreateGearConstraint(
+		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA), (RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
+		Math::BtVector3ToVector3(&axisInA), Math::BtVector3ToVector3(&axisInB), ratio)->_native;
+}
+
 #endif
 
 
@@ -960,6 +983,12 @@ btSliderConstraint* Serialize::BulletXmlWorldImporterWrapper::baseCreateSliderCo
 	const btTransform& frameInB, bool useLinearReferenceFrameA)
 {
 	return btBulletXmlWorldImporter::createSliderConstraint(rigidBodyB, frameInB, useLinearReferenceFrameA);
+}
+
+btGearConstraint* Serialize::BulletXmlWorldImporterWrapper::baseCreateGearConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
+	const btVector3& axisInA, const btVector3& axisInB, btScalar ratio)
+{
+	return btBulletXmlWorldImporter::createGearConstraint(rigidBodyA, rigidBodyB, axisInA, axisInB, ratio);
 }
 
 #endif

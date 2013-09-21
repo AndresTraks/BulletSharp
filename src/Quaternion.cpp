@@ -63,6 +63,16 @@ namespace BulletSharp
 		return 2.0f * System::Math::Acos(W);
 	}
 
+	btScalar Quaternion::AngleShortestPath::get()
+	{
+		btScalar dot = (X * X) + (Y * Y) + (Z * Z) + (W * W);
+		if (dot < 0) {
+			return 2.0f * System::Math::Acos(W);
+		} else {
+			return 2.0f * System::Math::Acos(-W);
+		}
+	}
+
 	Vector3 Quaternion::Axis::get()
 	{
 		btScalar sSquared = 1.0f - W * W;
@@ -205,7 +215,7 @@ namespace BulletSharp
 	{
 		Quaternion result;
 		btScalar inverse = 1.0f - amount;
-		btScalar dot = (left.X * right.X) + (left.Y * right.Y) + (left.Z * right.Z) + (left.W * right.W); 
+		btScalar dot = (left.X * right.X) + (left.Y * right.Y) + (left.Z * right.Z) + (left.W * right.W);
 
 		if( dot >= 0.0f )
 		{

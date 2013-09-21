@@ -24,6 +24,8 @@ namespace BulletSharp
 		virtual void DrawSphere(Vector3% p, btScalar radius, BtColor color);
 		virtual void DrawSphere(btScalar radius, Matrix% transform, BtColor color);
 		virtual void DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btScalar radius, btScalar minTh, btScalar maxTh,
+			btScalar minPs, btScalar maxPs, BtColor color, btScalar stepDegrees, bool drawSphere);
+		virtual void DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btScalar radius, btScalar minTh, btScalar maxTh,
 			btScalar minPs, btScalar maxPs, BtColor color, btScalar stepDegrees);
 		virtual void DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btScalar radius, btScalar minTh, btScalar maxTh,
 			btScalar minPs, btScalar maxPs, BtColor color);

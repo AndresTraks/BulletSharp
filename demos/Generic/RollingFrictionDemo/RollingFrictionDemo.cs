@@ -21,7 +21,7 @@ namespace RollingFrictionDemo
         {
             Freelook.SetEyeTarget(eye, target);
 
-            Graphics.SetFormText("BulletSharp - Basic Demo");
+            Graphics.SetFormText("BulletSharp - Rolling Friction Demo");
             Graphics.SetInfoText("Move using mouse and WASD+shift\n" +
                 "F3 - Toggle debug\n" +
                 //"F11 - Toggle fullscreen\n" +

@@ -11,11 +11,11 @@ namespace SimplestDemo
         {
             try
             {
-                Assembly.Load("SlimDX, Version=2.0.11.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9");
+                Assembly.Load("SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9");
             }
             catch
             {
-                MessageBox.Show("SlimDX(v2.0.11.43) not installed." +
+                MessageBox.Show("SlimDX(4.0.13.43) not installed." +
                     "Please download it from http://slimdx.org.", "Error!");
                 return;
             }

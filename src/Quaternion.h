@@ -88,6 +88,11 @@ namespace BulletSharp
 		property btScalar Angle { btScalar get(); }
 
 		/// <summary>
+		/// Return the angle of rotation represented by this <see cref="Quaternion"/> along the shortest path.
+		/// </summary>
+		property btScalar AngleShortestPath { btScalar get(); }
+
+		/// <summary>
 		/// Return the axis of rotation represented by this <see cref="Quaternion"/>.
 		/// </summary>
 		property Vector3 Axis { Vector3 get(); }

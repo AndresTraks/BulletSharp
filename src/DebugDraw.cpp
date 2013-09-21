@@ -220,6 +220,22 @@ void DebugDraw::DrawSphere(btScalar radius, Matrix% transform, BtColor color)
 }
 
 void DebugDraw::DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btScalar radius, btScalar minTh, btScalar maxTh,
+	btScalar minPs, btScalar maxPs, BtColor color, btScalar stepDegrees, bool drawCenter)
+{
+	VECTOR3_DEF(center);
+	VECTOR3_DEF(up);
+	VECTOR3_DEF(axis);
+	btVector3* colorTemp = BtColorToBtVector(color);
+
+	_native->baseDrawSpherePatch(VECTOR3_USE(center), VECTOR3_USE(up), VECTOR3_USE(axis), radius, minTh, maxTh, minPs, maxPs, *colorTemp, stepDegrees, drawCenter);
+
+	VECTOR3_DEL(center);
+	VECTOR3_DEL(up);
+	VECTOR3_DEL(axis);
+	delete colorTemp;
+}
+
+void DebugDraw::DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btScalar radius, btScalar minTh, btScalar maxTh,
 	btScalar minPs, btScalar maxPs, BtColor color, btScalar stepDegrees)
 {
 	VECTOR3_DEF(center);
@@ -394,6 +410,13 @@ void DebugDrawWrapper::drawSphere(btScalar radius, const btTransform& transform,
 }
 
 void DebugDrawWrapper::drawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
+	btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color, btScalar stepDegrees, bool drawCenter)
+{
+	_debugDraw->DrawSpherePatch(Math::BtVector3ToVector3(&center), Math::BtVector3ToVector3(&up), Math::BtVector3ToVector3(&axis),
+		radius, minTh, maxTh, minPs, maxPs, BtVectorToBtColor(color), stepDegrees, drawCenter);
+}
+
+void DebugDrawWrapper::drawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
 	btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color, btScalar stepDegrees)
 {
 	_debugDraw->DrawSpherePatch(Math::BtVector3ToVector3(&center), Math::BtVector3ToVector3(&up), Math::BtVector3ToVector3(&axis),
@@ -487,6 +510,12 @@ void DebugDrawWrapper::baseDrawSphere(const btVector3& p, btScalar radius, const
 void DebugDrawWrapper::baseDrawSphere(btScalar radius, const btTransform& transform, const btVector3& color)
 {
 	btIDebugDraw::drawSphere(radius, transform, color);
+}
+
+void DebugDrawWrapper::baseDrawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
+	btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color, btScalar stepDegrees, bool drawCenter)
+{
+	btIDebugDraw::drawSpherePatch(center, up, axis, radius, minTh, maxTh, minPs, maxPs, color, stepDegrees, drawCenter);
 }
 
 void DebugDrawWrapper::baseDrawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,

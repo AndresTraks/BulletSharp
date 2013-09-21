@@ -17,6 +17,7 @@ namespace BulletSharp
 	ref class OptimizedBvh;
 	ref class ScaledBvhTriangleMeshShape;
 	ref class ConeTwistConstraint;
+	ref class GearConstraint;
 	ref class Generic6DofConstraint;
 	ref class HingeConstraint;
 	ref class Point2PointConstraint;
@@ -101,6 +102,7 @@ namespace BulletSharp
 			virtual Generic6DofConstraint^ CreateGeneric6DofConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameB);
 			virtual SliderConstraint^ CreateSliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA);
 			virtual SliderConstraint^ CreateSliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameA);
+			virtual GearConstraint^ CreateGearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA, Vector3 axisInB, btScalar ratio);
 #endif
 
 			void DeleteAllData();
@@ -233,6 +235,8 @@ namespace BulletSharp
 				const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA);
 			virtual btSliderConstraint* createSliderConstraint(btRigidBody& rigidBodyB,
 				const btTransform& frameInB, bool useLinearReferenceFrameA);
+			virtual btGearConstraint* createGearConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
+				const btVector3& axisInA, const btVector3& axisInB, btScalar ratio);
 #endif
 
 
@@ -299,6 +303,8 @@ namespace BulletSharp
 				const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA);
 			virtual btSliderConstraint* baseCreateSliderConstraint(btRigidBody& rigidBodyB,
 				const btTransform& frameInB, bool useLinearReferenceFrameA);
+			virtual btGearConstraint* baseCreateGearConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
+				const btVector3& axisInA, const btVector3& axisInB, btScalar ratio);
 #endif
 		};
 	};
