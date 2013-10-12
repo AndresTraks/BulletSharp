@@ -5,8 +5,9 @@
 #include "ParallelConstraintSolver.h"
 
 MultiThreaded::ParallelConstraintSolver::ParallelConstraintSolver(ThreadSupportInterface^ solverThreadSupport)
-: SequentialImpulseConstraintSolver(new btParallelConstraintSolver(solverThreadSupport->_native))
+: SequentialImpulseConstraintSolver(ALIGNED_NEW(btParallelConstraintSolver) (solverThreadSupport->_native))
 {
+	_solverThreadSupport = solverThreadSupport;
 }
 
 #endif

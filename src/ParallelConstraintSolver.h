@@ -9,6 +9,9 @@ namespace BulletSharp
 	{
 		public ref class ParallelConstraintSolver : SequentialImpulseConstraintSolver
 		{
+		private:
+			ThreadSupportInterface^ _solverThreadSupport;
+
 		public:
 			ParallelConstraintSolver(ThreadSupportInterface^ solverThreadSupport);
 		};

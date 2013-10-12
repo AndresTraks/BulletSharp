@@ -121,6 +121,7 @@ MultiThreaded::ThreadSupportInterface::!ThreadSupportInterface()
 
 	OnDisposing(this, nullptr);
 
+	delete _native;
 	_native = NULL;
 
 	OnDisposed(this, nullptr);

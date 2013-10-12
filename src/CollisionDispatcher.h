@@ -27,9 +27,11 @@ namespace BulletSharp
 
 	public ref class CollisionDispatcher : Dispatcher
 	{
+	protected:
+		CollisionConfiguration^ _collisionConfiguration;
+
 	private:
 		btNearCallback originalCallback;
-		CollisionConfiguration^ _collisionConfiguration;
 		System::Collections::Generic::List<CollisionAlgorithmCreateFunc^>^ _collisionCreateFuncs;
 
 	internal:

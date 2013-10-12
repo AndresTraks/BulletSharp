@@ -11,6 +11,9 @@ namespace BulletSharp
 
 		public ref class SpuGatheringCollisionDispatcher : CollisionDispatcher
 		{
+		private:
+			ThreadSupportInterface^ _threadInterface;
+
 		public:
 			SpuGatheringCollisionDispatcher(ThreadSupportInterface^ threadInterface,
 				int maxNumOutstandingTasks, BulletSharp::CollisionConfiguration^ collisionConfiguration);
