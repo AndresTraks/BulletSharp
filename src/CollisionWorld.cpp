@@ -593,7 +593,7 @@ CollisionWorld::!CollisionWorld()
 	
 	OnDisposing(this, nullptr);
 	
-	btDynamicsWorld* dynamicsWorld = static_cast<btDynamicsWorld*>(_native);
+	btDynamicsWorld* dynamicsWorld = dynamic_cast<btDynamicsWorld*>(_native);
 	if (dynamicsWorld != 0)
 	{
 		void* userObj = dynamicsWorld->getWorldUserInfo();
