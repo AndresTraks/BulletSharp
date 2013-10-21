@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 11
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletSharp", "BulletSharp.vcxproj", "{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Axiom|Win32 = Debug Axiom|Win32
+		Debug Generic|Win32 = Debug Generic|Win32
+		Debug Mogre|Win32 = Debug Mogre|Win32
+		Debug OpenTK|Win32 = Debug OpenTK|Win32
+		Debug SharpDX|Win32 = Debug SharpDX|Win32
+		Debug SlimDX|Win32 = Debug SlimDX|Win32
+		Debug SlimMath|Win32 = Debug SlimMath|Win32
+		Debug XNA 3.1|Win32 = Debug XNA 3.1|Win32
+		Debug XNA 4.0|Win32 = Debug XNA 4.0|Win32
+		Release Axiom|Win32 = Release Axiom|Win32
+		Release Generic|Win32 = Release Generic|Win32
+		Release Mogre|Win32 = Release Mogre|Win32
+		Release OpenTK|Win32 = Release OpenTK|Win32
+		Release SharpDX|Win32 = Release SharpDX|Win32
+		Release SlimDX|Win32 = Release SlimDX|Win32
+		Release SlimMath|Win32 = Release SlimMath|Win32
+		Release XNA 3.1|Win32 = Release XNA 3.1|Win32
+		Release XNA 4.0|Win32 = Release XNA 4.0|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Axiom|Win32.ActiveCfg = Debug Axiom|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Axiom|Win32.Build.0 = Debug Axiom|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Generic|Win32.ActiveCfg = Debug Generic|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Generic|Win32.Build.0 = Debug Generic|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Mogre|Win32.ActiveCfg = Debug Mogre|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Mogre|Win32.Build.0 = Debug Mogre|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug OpenTK|Win32.ActiveCfg = Debug OpenTK|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug OpenTK|Win32.Build.0 = Debug OpenTK|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX|Win32.ActiveCfg = Debug SharpDX|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX|Win32.Build.0 = Debug SharpDX|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimDX|Win32.ActiveCfg = Debug SlimDX|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimDX|Win32.Build.0 = Debug SlimDX|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimMath|Win32.ActiveCfg = Debug SlimMath|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimMath|Win32.Build.0 = Debug SlimMath|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug XNA 3.1|Win32.ActiveCfg = Debug XNA 3.1|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug XNA 3.1|Win32.Build.0 = Debug XNA 3.1|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug XNA 4.0|Win32.ActiveCfg = Debug XNA 4.0|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug XNA 4.0|Win32.Build.0 = Debug XNA 4.0|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Axiom|Win32.ActiveCfg = Release Axiom|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Axiom|Win32.Build.0 = Release Axiom|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Generic|Win32.ActiveCfg = Release Generic|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Generic|Win32.Build.0 = Release Generic|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Mogre|Win32.ActiveCfg = Release Mogre|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Mogre|Win32.Build.0 = Release Mogre|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release OpenTK|Win32.ActiveCfg = Release OpenTK|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release OpenTK|Win32.Build.0 = Release OpenTK|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX|Win32.ActiveCfg = Release SharpDX|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX|Win32.Build.0 = Release SharpDX|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimDX|Win32.ActiveCfg = Release SlimDX|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimDX|Win32.Build.0 = Release SlimDX|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimMath|Win32.ActiveCfg = Release SlimMath|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimMath|Win32.Build.0 = Release SlimMath|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release XNA 3.1|Win32.ActiveCfg = Release XNA 3.1|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release XNA 3.1|Win32.Build.0 = Release XNA 3.1|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release XNA 4.0|Win32.ActiveCfg = Release XNA 4.0|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release XNA 4.0|Win32.Build.0 = Release XNA 4.0|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
