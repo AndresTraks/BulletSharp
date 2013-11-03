@@ -255,10 +255,12 @@ void Body::ApplyDCImpulse(Vector3 impulse)
 	VECTOR3_DEL(impulse);
 }
 
+#pragma managed(push, off)
 void Body_GetAngularVelocity(btSoftBody::Body* body, btVector3* rpos, btVector3* velocity)
 {
 	*velocity = body->angularVelocity(*rpos);
 }
+#pragma managed(pop)
 Vector3 Body::GetAngularVelocity(Vector3 rPos)
 {
 	VECTOR3_DEF(rPos);
@@ -270,10 +272,12 @@ Vector3 Body::GetAngularVelocity(Vector3 rPos)
 	return velocity;
 }
 
+#pragma managed(push, off)
 void Body_GetVelocity(btSoftBody::Body* body, btVector3* rpos, btVector3* velocity)
 {
 	*velocity = body->velocity(*rpos);
 }
+#pragma managed(pop)
 Vector3 Body::Velocity(Vector3 rPos)
 {
 	VECTOR3_DEF(rPos);
@@ -285,10 +289,12 @@ Vector3 Body::Velocity(Vector3 rPos)
 	return velocity;
 }
 
+#pragma managed(push, off)
 void Body_GetAngularVelocity(btSoftBody::Body* body, btVector3* velocity)
 {
 	*velocity = body->angularVelocity();
 }
+#pragma managed(pop)
 Vector3 Body::AngularVelocity::get()
 {
 	btVector3* velocityTemp = ALIGNED_NEW(btVector3);
@@ -317,10 +323,12 @@ Matrix Body::InvWorldInertia::get()
 	return Math::BtMatrix3x3ToMatrix(&_native->invWorldInertia());
 }
 
+#pragma managed(push, off)
 void Body_GetLinearVelocity(btSoftBody::Body* body, btVector3* velocity)
 {
 	*velocity = body->linearVelocity();
 }
+#pragma managed(pop)
 Vector3 Body::LinearVelocity::get()
 {
 	btVector3* velocityTemp = ALIGNED_NEW(btVector3);
@@ -1028,12 +1036,14 @@ Impulse^ Impulse::operator-(Impulse^ i)
 	return gcnew Impulse(Impulse_Negative(i->_native));
 }
 
+#pragma managed(push, off)
 btSoftBody::Impulse* Impulse_Multiply(btSoftBody::Impulse* impulse, btScalar x)
 {
 	btSoftBody::Impulse* impulseNew = new btSoftBody::Impulse();
 	*impulseNew = (*impulse) * x;
 	return impulseNew;
 }
+#pragma managed(pop)
 Impulse^ Impulse::operator*(Impulse^ i, btScalar x)
 {
 	return gcnew Impulse(Impulse_Multiply(i->_native, x));
@@ -2420,11 +2430,12 @@ void BulletSharp::SoftBody::SoftBody::AppendNode(Vector3 x, btScalar m)
 	VECTOR3_DEL(x);
 }
 
+#pragma managed(push, off)
 void SoftBody_AppendNote(btSoftBody* body, const char* text, btVector3* c)
 {
 	body->appendNote(text, *c);
 }
-
+#pragma managed(pop)
 void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o)
 {
 	const char* textTemp = StringConv::ManagedToUnmanaged(text);
@@ -2514,10 +2525,12 @@ void BulletSharp::SoftBody::SoftBody::CleanupClusters()
 	Native->cleanupClusters();
 }
 
+#pragma managed(push, off)
 void SoftBody_ClusterCOM(btSoftBody::Cluster* cluster, btVector3* com)
 {
 	*com = btSoftBody::clusterCom(cluster);
 }
+#pragma managed(pop)
 Vector3 BulletSharp::SoftBody::SoftBody::ClusterCom(Cluster^ cluster)
 {
 	btVector3* tempClusterCom = ALIGNED_NEW(btVector3);
@@ -2527,10 +2540,12 @@ Vector3 BulletSharp::SoftBody::SoftBody::ClusterCom(Cluster^ cluster)
 	return com;
 }
 
+#pragma managed(push, off)
 void SoftBody_ClusterCOM(btSoftBody* softBody, int cluster, btVector3* com)
 {
 	*com = softBody->clusterCom(cluster);
 }
+#pragma managed(pop)
 Vector3 BulletSharp::SoftBody::SoftBody::ClusterCom(int cluster)
 {
 	btVector3* tempClusterCom = ALIGNED_NEW(btVector3);
@@ -2540,10 +2555,12 @@ Vector3 BulletSharp::SoftBody::SoftBody::ClusterCom(int cluster)
 	return com;
 }
 
+#pragma managed(push, off)
 void SoftBody_ClusterVelocity(btSoftBody::Cluster* cluster, btVector3* rpos, btVector3* velocity)
 {
 	*velocity = btSoftBody::clusterVelocity(cluster, *rpos);
 }
+#pragma managed(pop)
 Vector3 BulletSharp::SoftBody::SoftBody::ClusterVelocity(Cluster^ cluster, Vector3 rpos)
 {
 	btVector3* tempVelocity = ALIGNED_NEW(btVector3);

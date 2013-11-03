@@ -437,11 +437,13 @@ RigidBodyConstructionInfo::!RigidBodyConstructionInfo()
 }
 
 #ifndef BT_USE_SSE_IN_API
+#pragma managed(push, off)
 btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfo(
 	btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape)
 {
 	return ALIGNED_NEW(btRigidBody::btRigidBodyConstructionInfo) (mass, motionState, collisionShape);
 }
+#pragma managed(pop)
 #endif
 
 btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfoLocalInertia(

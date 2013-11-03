@@ -326,11 +326,13 @@ CompoundShapeChild^ CompoundShapeChildArray::default::get(int index)
 	return gcnew CompoundShapeChild(&Native[index]);
 }
 
+#pragma managed(push, off)
 void CompoundShapeChildArray_SetDefault(btCompoundShapeChild* shapeArray,
 	int index, btCompoundShapeChild* shape)
 {
 	shapeArray[index] = *shape;
 }
+#pragma managed(pop)
 void CompoundShapeChildArray::default::set(int index, CompoundShapeChild^ value)
 {
 	if (_isReadOnly)

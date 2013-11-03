@@ -197,11 +197,13 @@ BulletSharp::SoftBody::Anchor^ AlignedAnchorArray::default::get(int index)
 	return gcnew Anchor(&Native->at(index));
 }
 
+#pragma managed(push, off)
 void AlignedAnchorArray_SetDefault(btSoftBody::tAnchorArray* anchorArray,
 	int index, btSoftBody::Anchor* anchor)
 {
 	(*anchorArray)[index] = *anchor;
 }
+#pragma managed(pop)
 void AlignedAnchorArray::default::set(int index, Anchor^ value)
 {
 	if (index < 0 || index >= Native->size())
@@ -298,11 +300,13 @@ BroadphasePair^ AlignedBroadphasePairArray::default::get(int index)
 	return gcnew BroadphasePair(&Native->at(index));
 }
 
+#pragma managed(push, off)
 void BroadphasePairList_SetDefault(btBroadphasePairArray* pairArray,
 	int index, btBroadphasePair* pair)
 {
 	(*pairArray)[index] = *pair;
 }
+#pragma managed(pop)
 void AlignedBroadphasePairArray::default::set(int index, BroadphasePair^ value)
 {
 	if (index < 0 || index >= Native->size())
@@ -938,11 +942,13 @@ Face^ AlignedFaceArray::default::get(int index)
 	return gcnew Face(&(*Native)[index]);
 }
 
+#pragma managed(push, off)
 void FaceArray_SetDefault(btAlignedObjectArray<btSoftBody::Face>* faceArray,
 	int index, btSoftBody::Face* node)
 {
 	(*faceArray)[index] = *node;
 }
+#pragma managed(pop)
 void AlignedFaceArray::default::set(int index, Face^ value)
 {
 	if (index < 0 || index >= Native->size())
@@ -1345,11 +1351,13 @@ IndexedMesh^ AlignedIndexedMeshArray::default::get(int index)
 	return gcnew IndexedMesh(obj);
 }
 
+#pragma managed(push, off)
 void AlignedIndexedMeshArray_SetDefault(btAlignedObjectArray<btIndexedMesh>* indexedMeshArray,
 	int index, btIndexedMesh* mesh)
 {
 	(*indexedMeshArray)[index] = *mesh;
 }
+#pragma managed(pop)
 void AlignedIndexedMeshArray::default::set(int index, IndexedMesh^ value)
 {
 	if (index < 0 || index >= Native->size())
@@ -1429,11 +1437,13 @@ BulletSharp::SoftBody::Link^ AlignedLinkArray::default::get(int index)
 	return gcnew Link(&(*Native)[index]);
 }
 
+#pragma managed(push, off)
 void AlignedLinkArray_SetDefault(btSoftBody::tLinkArray* linkArray,
 	int index, btSoftBody::Link* link)
 {
 	(*linkArray)[index] = *link;
 }
+#pragma managed(pop)
 void AlignedLinkArray::default::set(int index, BulletSharp::SoftBody::Link^ value)
 {
 	if (index < 0 || index >= Native->size())
@@ -1607,10 +1617,12 @@ BulletSharp::SoftBody::Node^ BulletSharp::SoftBody::AlignedNodeArray::default::g
 	return gcnew Node(&(*Native)[index]);
 }
 
+#pragma managed(push, off)
 void NodeArray_SetDefault(btSoftBody::tNodeArray* AlignedNodeArray, int index, btSoftBody::Node* node)
 {
 	(*AlignedNodeArray)[index] = *node;
 }
+#pragma managed(pop)
 void BulletSharp::SoftBody::AlignedNodeArray::default::set(int index, Node^ value)
 {
 	if (index < 0 || index >= Native->size())
@@ -1783,10 +1795,12 @@ BulletSharp::SoftBody::Note^ AlignedNoteArray::default::get(int index)
 	return gcnew Note(&(*Native)[index]);
 }
 
+#pragma managed(push, off)
 void NoteArray_SetDefault(btSoftBody::tNoteArray* noteArray, int index, btSoftBody::Note* note)
 {
 	(*noteArray)[index] = *note;
 }
+#pragma managed(pop)
 void AlignedNoteArray::default::set(int index, Note^ value)
 {
 	if (index < 0 || index >= Native->size())
@@ -1959,11 +1973,13 @@ BulletSharp::SoftBody::RigidContact^ AlignedRigidContactArray::default::get(int 
 	return gcnew RigidContact(&(*Native)[index]);
 }
 
+#pragma managed(push, off)
 void AlignedRigidContactArray_SetDefault(btSoftBody::tRContactArray* rigidContactArray,
 	int index, btSoftBody::RContact* rigidContact)
 {
 	(*rigidContactArray)[index] = *rigidContact;
 }
+#pragma managed(pop)
 void AlignedRigidContactArray::default::set(int index, RigidContact^ value)
 {
 	if (index < 0 || index >= Native->size())
@@ -2233,11 +2249,13 @@ BulletSharp::SoftBody::SoftContact^ AlignedSoftContactArray::default::get(int in
 	return gcnew SoftContact(&(*Native)[index]);
 }
 
+#pragma managed(push, off)
 void AlignedSoftContactArray_SetDefault(btSoftBody::tSContactArray* softContactArray,
 	int index, btSoftBody::SContact* softContact)
 {
 	(*softContactArray)[index] = *softContact;
 }
+#pragma managed(pop)
 void AlignedSoftContactArray::default::set(int index, SoftContact^ value)
 {
 	if (index < 0 || index >= Native->size())
@@ -2315,11 +2333,13 @@ Tetra^ AlignedTetraArray::default::get(int index)
 	return gcnew Tetra(&(*Native)[index]);
 }
 
+#pragma managed(push, off)
 void TetraArray_SetDefault(btAlignedObjectArray<btSoftBody::Tetra>* tetraArray,
 	int index, btSoftBody::Tetra* node)
 {
 	(*tetraArray)[index] = *node;
 }
+#pragma managed(pop)
 void AlignedTetraArray::default::set(int index, Tetra^ value)
 {
 	if (index < 0 || index >= Native->size())
@@ -2685,11 +2705,13 @@ WheelInfo^ AlignedWheelInfoArray::default::get(int index)
 	return gcnew WheelInfo(&(*Native)[index]);
 }
 
+#pragma managed(push, off)
 void WheelInfoArray_SetDefault(btAlignedObjectArray<btWheelInfo>* wheelInfoArray,
 	int index, btWheelInfo* node)
 {
 	(*wheelInfoArray)[index] = *node;
 }
+#pragma managed(pop)
 void AlignedWheelInfoArray::default::set(int index, WheelInfo^ value)
 {
 	if (index < 0 || index >= Native->size())
