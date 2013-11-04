@@ -143,7 +143,7 @@ namespace BulletSharp
 	class OverlapFilterCallbackWrapper : public btOverlapFilterCallback
 	{
 	private:
-		auto_gcroot<OverlapFilterCallback^> _callback;
+		gcroot<OverlapFilterCallback^> _callback;
 
 	public:
 		OverlapFilterCallbackWrapper(OverlapFilterCallback^ callback);

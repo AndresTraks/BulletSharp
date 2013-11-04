@@ -949,7 +949,7 @@ namespace BulletSharp
 		class AJointIControlWrapper : public btSoftBody::AJoint::IControl
 		{
 		private:
-			auto_gcroot<AJoint::IControl^> _iControl;
+			gcroot<AJoint::IControl^> _iControl;
 
 		public:
 			AJointIControlWrapper(AJoint::IControl^ iControl);

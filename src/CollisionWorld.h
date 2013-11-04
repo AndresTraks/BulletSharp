@@ -485,7 +485,7 @@ namespace BulletSharp
 	class ContactResultCallbackWrapper : public btCollisionWorld::ContactResultCallback
 	{
 	private:
-		auto_gcroot<CollisionWorld::ContactResultCallback^> _callback;
+		gcroot<CollisionWorld::ContactResultCallback^> _callback;
 
 	public:
 		ContactResultCallbackWrapper(CollisionWorld::ContactResultCallback^ callback);

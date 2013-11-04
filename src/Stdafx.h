@@ -149,7 +149,6 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#include <msclr/auto_gcroot.h>
 #include <stdio.h>
 #include <vcclr.h>
 
@@ -339,7 +338,6 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 using namespace System;
 using namespace System::Diagnostics;
 using namespace System::Runtime::InteropServices;
-using namespace msclr;
 
 #include "Math.h"
 #include "Enums.h"
