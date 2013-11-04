@@ -131,7 +131,7 @@ namespace BulletSharp
 	class btStorageResultWrapper : public btStorageResult
 	{
 	private:
-		auto_gcroot<StorageResult^> _storageResult;
+		gcroot<StorageResult^> _storageResult;
 
 	public:
 //		btStorageResultWrapper(StorageResult^ storageResult);
