@@ -28,8 +28,6 @@ namespace BulletSharp
 		void PartialRefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbMax);
 		void PerformConvexcast(TriangleCallback^ callback, Vector3 boxSource, Vector3 boxTarget, Vector3 boxMin, Vector3 boxMax);
 		void PerformRaycast(TriangleCallback^ callback, Vector3 raySource, Vector3 rayTarget);
-		void ProcessAllTriangles(TriangleCallback^ callback, Vector3 aabbMin, Vector3 aabbMax);
-		void RecalcLocalAabb();
 		void RefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbMax);
 #ifndef DISABLE_BVH
 		void SetOptimizedBvh(BulletSharp::OptimizedBvh^ bvh, Vector3 localScaling);

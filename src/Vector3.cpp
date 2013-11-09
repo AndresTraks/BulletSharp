@@ -106,6 +106,13 @@ namespace BulletSharp
 		Z *= num;
 	}
 	
+	void Vector3::SetZero()
+	{
+		X = 0;
+		Y = 0;
+		Z = 0;
+	}
+
 	Vector3 Vector3::Add( Vector3 left, Vector3 right )
 	{
 		return Vector3( left.X + right.X, left.Y + right.Y, left.Z + right.Z );

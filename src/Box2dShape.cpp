@@ -78,11 +78,6 @@ Vector3Array^ Box2dShape::Normals::get()
 	ReturnCachedObjectStaticParam(Vector3Array, _normals, normals, 4);
 }
 
-int Box2dShape::VertexCount::get()
-{
-	return Native->getVertexCount();
-}
-
 Vector3Array^ Box2dShape::Vertices::get()
 {
 	const btVector3* vertices = Native->getVertices();

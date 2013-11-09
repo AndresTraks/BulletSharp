@@ -198,6 +198,7 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #include <BulletCollision/CollisionDispatch/btConvexConcaveCollisionAlgorithm.h>
 #include <BulletCollision/CollisionDispatch/btConvexPlaneCollisionAlgorithm.h>
 #include <BulletCollision/CollisionDispatch/btCompoundCollisionAlgorithm.h>
+#include <BulletCollision/CollisionDispatch/btCompoundCompoundCollisionAlgorithm.h>
 #include <BulletCollision/CollisionDispatch/btEmptyCollisionAlgorithm.h>
 #include <BulletCollision/CollisionDispatch/btSphereBoxCollisionAlgorithm.h>
 #include <BulletCollision/CollisionDispatch/btSphereSphereCollisionAlgorithm.h>

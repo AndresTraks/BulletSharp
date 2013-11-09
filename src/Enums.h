@@ -207,7 +207,8 @@ namespace BulletSharp
 		GhostObjectType = btCollisionObject::CO_GHOST_OBJECT,
 		SoftBodyType = btCollisionObject::CO_SOFT_BODY,
 		HfFluidType = btCollisionObject::CO_HF_FLUID,
-		UserType = btCollisionObject::CO_USER_TYPE
+		UserType = btCollisionObject::CO_USER_TYPE,
+		FeatherStoneLinkType = btCollisionObject::CO_FEATHERSTONE_LINK
 	};
 
 	[Flags]
@@ -295,6 +296,8 @@ namespace BulletSharp
 		Slider = SLIDER_CONSTRAINT_TYPE,
 		Contact = CONTACT_CONSTRAINT_TYPE,
 		D6Spring = D6_SPRING_CONSTRAINT_TYPE,
+		GearConstraint = GEAR_CONSTRAINT_TYPE,
+		FixedConstraint = FIXED_CONSTRAINT_TYPE,
 		MaxConstraint = MAX_CONSTRAINT_TYPE
 	};
 

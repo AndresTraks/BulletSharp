@@ -21,7 +21,6 @@ namespace BulletSharp
 		void AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2, bool removeDuplicateVertices);
 		void AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2);
 		void PreallocateIndexes(int indexCount);
-		void PreallocateVertices(int vertexCount);
 
 		property int TriangleCount
 		{

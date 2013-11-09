@@ -42,6 +42,12 @@ namespace BulletSharp
 			void set(bool value);
 		}
 
+		property bool LatencyMotionStateInterpolation
+		{
+			bool get();
+			void set(bool value);
+		}
+
 #ifndef DISABLE_UNCOMMON
 		property SimulationIslandManager^ SimulationIslandManager
 		{

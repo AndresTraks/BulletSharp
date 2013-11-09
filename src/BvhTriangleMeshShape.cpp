@@ -96,22 +96,6 @@ void BvhTriangleMeshShape::PerformRaycast(TriangleCallback^ callback, Vector3 ra
 	VECTOR3_DEL(rayTarget);
 }
 
-void BvhTriangleMeshShape::ProcessAllTriangles(TriangleCallback^ callback, Vector3 aabbMin, Vector3 aabbMax)
-{
-	VECTOR3_DEF(aabbMin);
-	VECTOR3_DEF(aabbMax);
-
-	Native->processAllTriangles(callback->_native, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
-
-	VECTOR3_DEL(aabbMin);
-	VECTOR3_DEL(aabbMax);
-}
-
-void BvhTriangleMeshShape::RecalcLocalAabb()
-{
-	Native->recalcLocalAabb();
-}
-
 void BvhTriangleMeshShape::RefitTree(Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 {
 	VECTOR3_DEF(bvhAabbMin);

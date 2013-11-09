@@ -62,6 +62,15 @@ void DiscreteDynamicsWorld::ApplySpeculativeContactRestitution::set(bool value)
 	return Native->setApplySpeculativeContactRestitution(value);
 }
 
+bool DiscreteDynamicsWorld::LatencyMotionStateInterpolation::get()
+{
+	return Native->getLatencyMotionStateInterpolation();
+}
+void DiscreteDynamicsWorld::LatencyMotionStateInterpolation::set(bool value)
+{
+	return Native->setLatencyMotionStateInterpolation(value);
+}
+
 #ifndef DISABLE_UNCOMMON
 SimulationIslandManager^ DiscreteDynamicsWorld::SimulationIslandManager::get()
 {

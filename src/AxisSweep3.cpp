@@ -8,7 +8,7 @@ AxisSweep3::AxisSweep3(btAxisSweep3* axisSweep)
 {
 }
 
-AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles, BulletSharp::OverlappingPairCache^ pairCache, bool disableRaycastAccelerator)
+AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, unsigned short maxHandles, BulletSharp::OverlappingPairCache^ pairCache, bool disableRaycastAccelerator)
 	: BroadphaseInterface(0)
 {
 	VECTOR3_DEF(worldAabbMin);
@@ -21,7 +21,7 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandle
 	VECTOR3_DEL(worldAabbMax);
 }
 
-AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles, BulletSharp::OverlappingPairCache^ pairCache)
+AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, unsigned short maxHandles, BulletSharp::OverlappingPairCache^ pairCache)
 	: BroadphaseInterface(0)
 {
 	VECTOR3_DEF(worldAabbMin);
@@ -34,7 +34,7 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandle
 	VECTOR3_DEL(worldAabbMax);
 }
 
-AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles)
+AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, unsigned short maxHandles)
 	: BroadphaseInterface(0)
 {
 	VECTOR3_DEF(worldAabbMin);
@@ -64,7 +64,7 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(bt32BitAxisSweep3* axisSweep)
 {
 }
 
-AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles, BulletSharp::OverlappingPairCache^ pairCache, bool disableRaycastAccelerator)
+AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, unsigned int maxHandles, BulletSharp::OverlappingPairCache^ pairCache, bool disableRaycastAccelerator)
 	: BroadphaseInterface(0)
 {
 	VECTOR3_DEF(worldAabbMin);
@@ -77,7 +77,7 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, i
 	VECTOR3_DEL(worldAabbMax);
 }
 
-AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles, BulletSharp::OverlappingPairCache^ pairCache)
+AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, unsigned int maxHandles, BulletSharp::OverlappingPairCache^ pairCache)
 	: BroadphaseInterface(0)
 {
 	VECTOR3_DEF(worldAabbMin);
@@ -90,7 +90,7 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, i
 	VECTOR3_DEL(worldAabbMax);
 }
 
-AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, int maxHandles)
+AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, unsigned int maxHandles)
 	: BroadphaseInterface(0)
 {
 	VECTOR3_DEF(worldAabbMin);

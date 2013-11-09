@@ -43,11 +43,6 @@ namespace BulletSharp
 			Vector3Array^ get();
 		}
 
-		property int VertexCount
-		{
-			int get();
-		}
-
 		property Vector3Array^ Vertices
 		{
 			Vector3Array^ get();

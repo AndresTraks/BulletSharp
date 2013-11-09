@@ -6,7 +6,6 @@ x won't implement
 
 
 Collision/BroadphaseCollision
-
 x MultiSapBroadphase (experimental)
 0 QuantizedBvh
 
@@ -42,6 +41,10 @@ Dynamics/ConstraintSolver
 x JacobianEntry (internal)
 x SolverBody (internal)
 x SolverConstraint (internal)
+
+
+- Dynamics/Featherstone
+- Dynamics/MLCPSolvers
 
 
 Dynamics/Dynamics

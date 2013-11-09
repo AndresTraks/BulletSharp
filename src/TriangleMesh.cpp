@@ -70,11 +70,6 @@ void TriangleMesh::PreallocateIndexes(int indexCount)
 	Native->preallocateIndices(indexCount);
 }
 
-void TriangleMesh::PreallocateVertices(int vertexCount)
-{
-	Native->preallocateVertices(vertexCount);
-}
-
 int TriangleMesh::TriangleCount::get()
 {
 	return Native->getNumTriangles();

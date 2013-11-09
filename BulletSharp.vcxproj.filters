@@ -629,6 +629,12 @@
     <ClCompile Include="src\IActionInterface.cpp">
       <Filter>Source Files\Dynamics\Dynamics</Filter>
     </ClCompile>
+    <ClCompile Include="src\FixedConstraint.cpp">
+      <Filter>Source Files\Dynamics\ConstraintSolver</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CompoundCompoundCollisionAlgorithm.cpp">
+      <Filter>Source Files\Collision\CollisionDispatch</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\Resources.rc">
@@ -1127,6 +1133,9 @@
     </ClInclude>
     <ClInclude Include="src\IActionInterface.h">
       <Filter>Header Files\Dynamics\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FixedConstraint.h">
+      <Filter>Header Files\Dynamics\ConstraintSolver</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -49,7 +49,6 @@ namespace BulletSharp
 		void GetPrimitiveTriangle(int prim_index, [Out] PrimitiveTriangle^% triangle);
 		void LockChildShapes();
 		void PostUpdate();
-		void ProcessAllTriangles(TriangleCallback^ callback, Vector3 aabbMin, Vector3 aabbMax);
 		void ProcessAllTrianglesRay(TriangleCallback^ callback, Vector3 rayFrom, Vector3 rayTo);
 		void RayTest(Vector3 rayFrom, Vector3 rayTo, CollisionWorld::RayResultCallback^ resultCallback);
 		void SetChildTransform(int index, Matrix transform);

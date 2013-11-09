@@ -123,6 +123,11 @@ namespace BulletSharp
 		void Normalize();
 		
 		/// <summary>
+		/// Sets all components to 0.
+		/// </summary>
+		void SetZero();
+
+		/// <summary>
 		/// Adds two vectors.
 		/// </summary>
 		/// <param name="left">The first vector to add.</param>

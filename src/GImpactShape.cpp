@@ -93,17 +93,6 @@ void GImpactShapeInterface::PostUpdate()
 	Native->postUpdate();
 }
 
-void GImpactShapeInterface::ProcessAllTriangles(TriangleCallback^ callback, Vector3 aabbMin, Vector3 aabbMax)
-{
-	VECTOR3_DEF(aabbMin);
-	VECTOR3_DEF(aabbMax);
-
-	Native->processAllTriangles(callback->_native, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
-
-	VECTOR3_DEL(aabbMin);
-	VECTOR3_DEL(aabbMax);
-}
-
 void GImpactShapeInterface::ProcessAllTrianglesRay(TriangleCallback^ callback, Vector3 rayFrom, Vector3 rayTo)
 {
 	VECTOR3_DEF(rayFrom);
