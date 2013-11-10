@@ -3,6 +3,7 @@
 namespace BulletSharp
 {
 	ref class CollisionObject;
+	ref class CollisionObjectWrapper;
 
 	namespace SoftBody
 	{

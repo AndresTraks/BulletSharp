@@ -67,14 +67,13 @@
     <Compile Include="Physics.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="BulletSharp, Version=2.82.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\vs2008\Release SlimDX\BulletSharp.dll</HintPath>
+    <Reference Include="BulletSharp">
+      <HintPath>..\..\..\Release SlimDX\BulletSharp.dll</HintPath>
     </Reference>
     <Reference Include="DemoFramework">
       <HintPath>..\DemoFramework\bin\x86\Release\DemoFramework.dll</HintPath>
     </Reference>
-    <Reference Include="SlimDX, Version=2.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86" />
+    <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
