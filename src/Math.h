@@ -1,6 +1,6 @@
 #pragma once
 
-#if GRAPHICS_NONE
+#if GRAPHICS_GENERIC
 #include "Matrix.h"
 #include "Quaternion.h"
 #include "Vector3.h"
@@ -23,7 +23,7 @@ using namespace Mogre;
 #define Matrix Matrix4x4F
 #endif
 
-#if (defined(BT_USE_DOUBLE_PRECISION) && !defined(GRAPHICS_NONE) && !defined(GRAPHICS_OPENTK)) || \
+#if (defined(BT_USE_DOUBLE_PRECISION) && !defined(GRAPHICS_GENERIC) && !defined(GRAPHICS_OPENTK)) || \
 	(defined(BT_USE_SSE) )//&& defined (BT_USE_SIMD_VECTOR3) defined (BT_USE_SSE_IN_API))
 #define GRAPHICS_NO_DIRECT_CAST
 #endif

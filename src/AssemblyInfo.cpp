@@ -19,8 +19,6 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyDescriptionAttribute("BulletSharp for SlimDX")];
 #elif GRAPHICS_SHARPDX
 [assembly:AssemblyDescriptionAttribute("BulletSharp for SharpDX")];
-#elif GRAPHICS_SLIMMATH
-[assembly:AssemblyDescriptionAttribute("BulletSharp for SlimMath")];
 #elif GRAPHICS_MOGRE
 [assembly:AssemblyDescriptionAttribute("BulletSharp for Mogre")];
 #elif GRAPHICS_OPENTK
@@ -29,7 +27,7 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyDescriptionAttribute("BulletSharp for Axiom 3D")];
 #elif GRAPHICS_WAPICODEPACK
 [assembly:AssemblyDescriptionAttribute("BulletSharp for Windows API Code Pack")];
-#elif GRAPHICS_NONE
+#elif GRAPHICS_GENERIC
 [assembly:AssemblyDescriptionAttribute("BulletSharp Generic")];
 #endif
 

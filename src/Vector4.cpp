@@ -21,7 +21,7 @@
 * THE SOFTWARE.
 */
 
-#ifdef GRAPHICS_NONE
+#ifdef GRAPHICS_GENERIC
 
 #include "Matrix.h"
 #include "Quaternion.h"

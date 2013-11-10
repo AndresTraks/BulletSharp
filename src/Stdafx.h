@@ -62,9 +62,6 @@ using namespace SlimDX;
 #elif GRAPHICS_SHARPDX
 #using <SharpDX.dll>
 using namespace SharpDX;
-#elif GRAPHICS_SLIMMATH
-#using <SlimMath.dll>
-using namespace SlimMath;
 #elif GRAPHICS_MOGRE
 #if _DEBUG
 #using <Mogre_d.dll>
@@ -85,9 +82,9 @@ using namespace Axiom::Math;
 #using <x64/Microsoft.WindowsAPICodePack.DirectX.dll>
 #endif
 using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
-#elif GRAPHICS_NONE
+#elif GRAPHICS_GENERIC
 #else
-#define GRAPHICS_NONE 1
+#define GRAPHICS_GENERIC 1
 #endif
 
 
@@ -111,10 +108,6 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #define BtColor Color3
 #define BtColorToBtVector(color) new btVector3(color.Red, color.Green, color.Blue)
 #define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
-#elif GRAPHICS_SLIMMATH
-#define BtColor Color3
-#define BtColorToBtVector(color) new btVector3(color.Red, color.Green, color.Blue)
-#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
 #elif GRAPHICS_MOGRE
 #define BtColor Mogre::ColourValue
 #define BtColorToBtVector(color) new btVector3(color.r, color.g, color.b)
@@ -131,7 +124,7 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #define BtColor Color
 #define BtColorToBtVector(color) new btVector3(color.R / btScalar(255.0), color.G / btScalar(255.0), color.B / btScalar(255.0))
 #define BtVectorToBtColor(color) Color::FromArgb(0, (int)(color.getX() * btScalar(255.0)), (int)(color.getY() * btScalar(255.0)), (int)(color.getZ() * btScalar(255.0)))
-#elif GRAPHICS_NONE
+#elif GRAPHICS_GENERIC
 #define BtColor Color
 #define BtColorToBtVector(color) new btVector3(color.R / btScalar(255.0), color.G / btScalar(255.0), color.B / btScalar(255.0))
 #define BtVectorToBtColor(color) Color::FromArgb(0, (int)(color.getX() * btScalar(255.0)), (int)(color.getY() * btScalar(255.0)), (int)(color.getZ() * btScalar(255.0)))
