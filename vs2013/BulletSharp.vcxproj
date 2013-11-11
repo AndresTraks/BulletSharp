@@ -153,7 +153,7 @@
     <ProjectGuid>{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}</ProjectGuid>
     <TargetFrameworkVersion Condition="'$(Configuration)'=='Debug XNA 3.1' OR '$(Configuration)'=='Release XNA 3.1'">v2.0</TargetFrameworkVersion>
     <TargetFrameworkVersion Condition="'$(Configuration)'=='Debug XNA 4.0' OR '$(Configuration)'=='Release XNA 4.0'">v4.0</TargetFrameworkVersion>
-    <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)'==''">v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)'==''">v4.5.1</TargetFrameworkVersion>
     <RootNamespace>BulletSharp</RootNamespace>
     <Keyword>ManagedCProj</Keyword>
   </PropertyGroup>

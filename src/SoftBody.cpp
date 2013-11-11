@@ -1025,12 +1025,14 @@ void Impulse::Velocity::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &_native->m_velocity);
 }
 
+#pragma managed(push, off)
 btSoftBody::Impulse* Impulse_Negative(btSoftBody::Impulse* impulse)
 {
 	btSoftBody::Impulse* impulseNew = new btSoftBody::Impulse();
 	*impulseNew = -*impulse;
 	return impulseNew;
 }
+#pragma managed(pop)
 Impulse^ Impulse::operator-(Impulse^ i)
 {
 	return gcnew Impulse(Impulse_Negative(i->_native));

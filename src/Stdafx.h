@@ -69,6 +69,9 @@ using namespace SharpDX;
 #using <Mogre.dll>
 using namespace Mogre;
 #endif
+#elif GRAPHICS_MONOGAME
+#using <MonoGame.Framework.dll>
+using namespace Microsoft::Xna::Framework;
 #elif GRAPHICS_OPENTK
 #using <OpenTK.dll>
 using namespace OpenTK;
@@ -92,6 +95,10 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #define BtColor int
 #define BtColorToBtVector(color) new btVector3((color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff)
 #define BtVectorToBtColor(color) (((int)(color.getX()*255) << 16) + ((int)(color.getY()*255) << 8) + (int)(color.getZ()*255))
+#elif GRAPHICS_MONOGAME
+#define BtColor Microsoft::Xna::Framework::Color
+#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
+#define BtVectorToBtColor(color) BtColor((float)color.getX(), (float)color.getY(), (float)color.getZ()) // cast for DP build
 #elif GRAPHICS_XNA31
 #define BtColor Microsoft::Xna::Framework::Graphics::Color
 #define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)

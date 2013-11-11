@@ -15,6 +15,8 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyDescriptionAttribute("BulletSharp for XNA 3.1")];
 #elif GRAPHICS_XNA40
 [assembly:AssemblyDescriptionAttribute("BulletSharp for XNA 4.0")];
+#elif GRAPHICS_MONOGAME
+[assembly:AssemblyDescriptionAttribute("BulletSharp for MonoGame")];
 #elif GRAPHICS_SLIMDX
 [assembly:AssemblyDescriptionAttribute("BulletSharp for SlimDX")];
 #elif GRAPHICS_SHARPDX
