@@ -33,6 +33,7 @@ copy Generic\bin\Release\ConstraintDemo.exe bin\
 copy Generic\bin\Release\ConvexDecompositionDemo.exe bin\
 copy Generic\bin\Release\ConcaveRaycastDemo.exe bin\
 copy Generic\bin\Release\DistanceDemo.exe bin\
+copy Generic\bin\Release\FeatherStoneDemo.exe bin\
 copy Generic\bin\Release\GImpactTestDemo.exe bin\
 copy Generic\bin\Release\MotorDemo.exe bin\
 copy Generic\bin\Release\RagdollDemo.exe bin\

@@ -126,6 +126,29 @@ namespace BulletSharp
 		W = W * lengthSq;
 	}
 
+	Quaternion Quaternion::Inverse()
+	{
+		Quaternion result;
+		result.X = -X;
+		result.Y = -Y;
+		result.Z = -Z;
+		result.W = 1;
+		return result;
+	}
+
+	Vector3 Quaternion::Rotate(Vector3 v)
+	{
+		Quaternion rotation;
+		rotation.X = X;
+		rotation.Y = Y;
+		rotation.Z = Z;
+		rotation.W = W;
+		Quaternion q = rotation * v;
+		rotation.Invert();
+		q *= rotation;
+		return Vector3(q.X, q.Y, q.Z);
+	}
+
 	Quaternion Quaternion::Add( Quaternion left, Quaternion right )
 	{
 		Quaternion result;
@@ -640,6 +663,25 @@ namespace BulletSharp
 		quaternion.Y = (ly * rw + ry * lw) + (lz * rx) - (lx * rz);
 		quaternion.Z = (lz * rw + rz * lw) + (lx * ry) - (ly * rx);
 		quaternion.W = (lw * rw) - (lx * rx + ly * ry + lz * rz);
+
+		return quaternion;
+	}
+
+	Quaternion Quaternion::operator * (Quaternion left, Vector3 right)
+	{
+		Quaternion quaternion;
+		btScalar lx = left.X;
+		btScalar ly = left.Y;
+		btScalar lz = left.Z;
+		btScalar lw = left.W;
+		btScalar rx = right.X;
+		btScalar ry = right.Y;
+		btScalar rz = right.Z;
+
+		quaternion.X =  lw * rx + ly * rz - lz * ry;
+		quaternion.Y =  lw * ry + lz * rx - lx * rz;
+		quaternion.Z =  lw * rz + lx * ry - ly * rx;
+		quaternion.W = -lx * rx + ly * ry - lz * rz;
 
 		return quaternion;
 	}

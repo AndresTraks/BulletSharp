@@ -93,6 +93,7 @@ namespace BulletSharp
 
 		static Quaternion BtQuatToQuaternion(const btQuaternion*);
 		static btQuaternion* QuaternionToBtQuat(Quaternion);
+		static void QuaternionToBt(Quaternion, btQuaternion*);
 
 		static Matrix BtTransformToMatrix(const btTransform*);
 		static void BtTransformToMatrix(const btTransform*, [Out] Matrix%);

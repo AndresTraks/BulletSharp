@@ -3,6 +3,7 @@
 #include "BroadphaseProxy.h"
 #include "CollisionObject.h"
 #include "CollisionShape.h"
+#include "MultiBodyLinkCollider.h"
 #include "RigidBody.h"
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
@@ -139,6 +140,16 @@ CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
 	if (softBody)
 	{
 		SoftBody::SoftBody^ body = gcnew SoftBody::SoftBody(softBody);
+		body->_doesNotOwnObject = true;
+		return body;
+	}
+#endif
+
+#ifndef DISABLE_FEATHERSTONE
+	btMultiBodyLinkCollider* multiBody = static_cast<btMultiBodyLinkCollider*>(collisionObject);
+	if (multiBody)
+	{
+		MultiBodyLinkCollider^ body = gcnew MultiBodyLinkCollider(multiBody);
 		body->_doesNotOwnObject = true;
 		return body;
 	}

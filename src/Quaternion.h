@@ -131,6 +131,19 @@ namespace BulletSharp
 		void Invert();
 
 		/// <summary>
+		/// Return the inverse of the quaternion.
+		/// </summary>
+		/// <returns>The inverse of the quaternion.</returns>
+		Quaternion Inverse();
+
+		/// <summary>
+		/// Rotate a vector by the quaternion.
+		/// </summary>
+		/// <param name="v">The vector to rotate.</param>
+		/// <returns>The vector rotated by the quaternion.</returns>
+		Vector3 Rotate(Vector3 v);
+
+		/// <summary>
 		/// Adds two quaternions.
 		/// </summary>
 		/// <param name="left">The first quaternion to add.</param>
@@ -375,6 +388,14 @@ namespace BulletSharp
 		/// <param name="right">The second quaternion to multiply.</param>
 		/// <returns>The multiplied quaternion.</returns>
 		static Quaternion operator * ( Quaternion left, Quaternion right );
+
+		/// <summary>
+		/// Multiplies a quaternion by a vector.
+		/// </summary>
+		/// <param name="left">The quaternion to multiply.</param>
+		/// <param name="right">The vector to multiply by.</param>
+		/// <returns>The multiplied quaternion.</returns>
+		static Quaternion operator * ( Quaternion left, Vector3 right );
 
 		/// <summary>
 		/// Scales a quaternion by the given value.

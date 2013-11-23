@@ -150,6 +150,20 @@ btQuaternion* BulletSharp::Math::QuaternionToBtQuat(Quaternion quat)
 	return ALIGNED_NEW(btQuaternion) (quat.X, quat.Y, quat.Z, quat.W);
 #endif
 }
+void BulletSharp::Math::QuaternionToBt(Quaternion quat, btQuaternion* outQuat)
+{
+#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+	outQuat->setX(quat.x);
+	outQuat->setY(quat.y);
+	outQuat->setZ(quat.z);
+	outQuat->setW(quat.w);
+#else
+	outQuat->setX(quat.X);
+	outQuat->setY(quat.Y);
+	outQuat->setZ(quat.Z);
+	outQuat->setW(quat.W);
+#endif
+}
 
 
 Matrix BulletSharp::Math::BtTransformToMatrix(const btTransform* transform)

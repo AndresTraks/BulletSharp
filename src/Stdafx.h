@@ -15,6 +15,7 @@
 //#define DISABLE_CONSTRAINTS
 #define DISABLE_DBVT
 //#define DISABLE_DEBUGDRAW
+//#define DISABLE_FEATHERSTONE
 //#define DISABLE_GEOMETRY_UTIL
 //#define DISABLE_GIMPACT
 //#define DISABLE_HACD
@@ -207,6 +208,19 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 
 #ifndef DISABLE_CONSTRAINTS
 #include <BulletDynamics/ConstraintSolver/btSolve2LinearConstraint.h>
+#endif
+
+#ifndef DISABLE_FEATHERSTONE
+#include <BulletDynamics/Featherstone/btMultiBody.h>
+#include <BulletDynamics/Featherstone/btMultiBodyConstraint.h>
+#include <BulletDynamics/Featherstone/btMultiBodyConstraintSolver.h>
+#include <BulletDynamics/Featherstone/btMultiBodyDynamicsWorld.h>
+#include <BulletDynamics/Featherstone/btMultiBodyJointLimitConstraint.h>
+#include <BulletDynamics/Featherstone/btMultiBodyJointMotor.h>
+#include <BulletDynamics/Featherstone/btMultiBodyLink.h>
+#include <BulletDynamics/Featherstone/btMultiBodyLinkCollider.h>
+#include <BulletDynamics/Featherstone/btMultiBodyPoint2Point.h>
+#include <BulletDynamics/Featherstone/btMultiBodySolverConstraint.h>
 #endif
 
 #ifndef DISABLE_GEOMETRY_UTIL
@@ -402,7 +416,7 @@ inline GCHandle VoidPtrToGCHandle(void* pointer)
 #define ALIGNED_NEW_FORCE(targetClass) new (btAlignedAlloc(sizeof(targetClass), 16)) targetClass
 #define ALIGNED_FREE_FORCE(target) btAlignedFree(target)
 
-#if defined(BT_USE_SIMD_VECTOR3) && defined(BT_USE_SSE_IN_API) && defined(BT_USE_SSE)
+#if 1//defined(BT_USE_SIMD_VECTOR3) && defined(BT_USE_SSE_IN_API) && defined(BT_USE_SSE)
 #define ALIGNED_NEW(targetClass) ALIGNED_NEW_FORCE(targetClass)
 #define ALIGNED_FREE(target) ALIGNED_FREE_FORCE(target)
 #else

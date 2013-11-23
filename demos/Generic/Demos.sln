@@ -72,6 +72,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RollingFrictionDemo", "Roll
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulletXmlImportDemo", "BulletXmlImportDemo\BulletXmlImportDemo.csproj", "{8CADFD40-525F-4C72-8D38-443B094DB1BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatherStoneDemo", "FeatherStoneDemo\FeatherStoneDemo.csproj", "{82F0CD92-FD49-414A-9150-621D30FCA29D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -174,6 +176,10 @@ Global
 		{8CADFD40-525F-4C72-8D38-443B094DB1BE}.Debug|x86.Build.0 = Debug|x86
 		{8CADFD40-525F-4C72-8D38-443B094DB1BE}.Release|x86.ActiveCfg = Release|x86
 		{8CADFD40-525F-4C72-8D38-443B094DB1BE}.Release|x86.Build.0 = Release|x86
+		{82F0CD92-FD49-414A-9150-621D30FCA29D}.Debug|x86.ActiveCfg = Debug|x86
+		{82F0CD92-FD49-414A-9150-621D30FCA29D}.Debug|x86.Build.0 = Debug|x86
+		{82F0CD92-FD49-414A-9150-621D30FCA29D}.Release|x86.ActiveCfg = Release|x86
+		{82F0CD92-FD49-414A-9150-621D30FCA29D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
