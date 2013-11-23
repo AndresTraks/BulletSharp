@@ -402,6 +402,12 @@ btCollisionObject* CollisionObject::UnmanagedPointer::get()
 }
 void CollisionObject::UnmanagedPointer::set(btCollisionObject* value)
 {
+	// Inheriting classes such as SoftBody may pass 0 and then do
+	// additional processing before storing the native pointer.
+	if (value == 0) {
+		return;
+	}
+
 	_native = value;
 
 	if (_native->getUserPointer() == 0)

@@ -13,7 +13,7 @@ namespace OpenCLClothDemo
 
 	        if(ciErrNum != 0)
 	        {
-		        if(pErrNum != null) 
+		        if(pErrNum != 0) 
 			        pErrNum = ciErrNum;
 	        }
 	        return numPlatforms;
