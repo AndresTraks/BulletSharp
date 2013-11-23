@@ -4,7 +4,6 @@
 
 #include "MultiBody.h"
 #include "MultiBodySolverConstraint.h"
-#include "Vector3.h"
 
 MultiBodySolverConstraint::MultiBodySolverConstraint(btMultiBodySolverConstraint* native)
 {
