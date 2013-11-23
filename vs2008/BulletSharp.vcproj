@@ -2883,6 +2883,66 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="Featherstone"
+					>
+					<File
+						RelativePath="..\src\MultiBodyLink.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBody.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBodyConstraint.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBodySolverConstraint.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBodyConstraintSolver.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBodyDynamicsWorld.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBodyJointLimitConstraint.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBodyJointMotor.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBodyLinkCollider.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBodyPoint2Point.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="MLCPSolvers"
+					>
+					<File
+						RelativePath="..\src\MLCPSolverInterface.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\DantzigSolver.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MLCPSolver.cpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="BulletMultiThreaded"
@@ -3641,6 +3701,66 @@
 					</File>
 					<File
 						RelativePath="..\src\KinematicCharacterController.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Featherstone"
+					>
+					<File
+						RelativePath="..\src\MultiBodyLink.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBody.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBodyConstraint.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBodySolverConstraint.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBodyConstraintSolver.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBodyDynamicsWorld.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBodyJointLimitConstraint.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBodyJointMotor.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBodyLinkCollider.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MultiBodyPoint2Point.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="MLCPSolvers"
+					>
+					<File
+						RelativePath="..\src\MLCPSolverInterface.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\DantzigSolver.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\MLCPSolver.h"
 						>
 					</File>
 				</Filter>

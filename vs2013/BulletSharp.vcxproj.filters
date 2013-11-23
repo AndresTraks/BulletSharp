@@ -41,6 +41,12 @@
     <Filter Include="Header Files\BulletDynamics\Character">
       <UniqueIdentifier>{c2dfb015-5ae8-2efe-292f-fb3e4e2fa56f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\BulletDynamics\Featherstone">
+      <UniqueIdentifier>{26f9119e-9ab8-4578-3af5-31810174bd61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\BulletDynamics\MLCPSolvers">
+      <UniqueIdentifier>{9a650632-4368-a843-8775-1a2583d88810}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\BulletMultiThreaded">
       <UniqueIdentifier>{5d2ab8ca-e1ec-4582-8c79-8b7e5cecccdd}</UniqueIdentifier>
     </Filter>
@@ -120,6 +126,12 @@
     </Filter>
     <Filter Include="Source Files\BulletDynamics\Character">
       <UniqueIdentifier>{c2dfb015-5ae8-2efe-292f-fb3e4e2fa56f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\BulletDynamics\Featherstone">
+      <UniqueIdentifier>{26f9119e-9ab8-4578-3af5-31810174bd61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\BulletDynamics\MLCPSolvers">
+      <UniqueIdentifier>{9a650632-4368-a843-8775-1a2583d88810}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\BulletMultiThreaded">
       <UniqueIdentifier>{5d2ab8ca-e1ec-4582-8c79-8b7e5cecccdd}</UniqueIdentifier>
@@ -315,6 +327,9 @@
     <ClCompile Include="..\src\CylinderShape.cpp">
       <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\DantzigSolver.cpp">
+      <Filter>Source Files\BulletDynamics\MLCPSolvers</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\DataStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -429,8 +444,44 @@
     <ClCompile Include="..\src\MinkowskiSumShape.cpp">
       <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\MLCPSolver.cpp">
+      <Filter>Source Files\BulletDynamics\MLCPSolvers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MLCPSolverInterface.cpp">
+      <Filter>Source Files\BulletDynamics\MLCPSolvers</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\MotionState.cpp">
       <Filter>Source Files\LinearMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MultiBody.cpp">
+      <Filter>Source Files\BulletDynamics\Featherstone</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MultiBodyConstraint.cpp">
+      <Filter>Source Files\BulletDynamics\Featherstone</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MultiBodyConstraintSolver.cpp">
+      <Filter>Source Files\BulletDynamics\Featherstone</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MultiBodyDynamicsWorld.cpp">
+      <Filter>Source Files\BulletDynamics\Featherstone</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MultiBodyJointLimitConstraint.cpp">
+      <Filter>Source Files\BulletDynamics\Featherstone</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MultiBodyJointMotor.cpp">
+      <Filter>Source Files\BulletDynamics\Featherstone</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MultiBodyLink.cpp">
+      <Filter>Source Files\BulletDynamics\Featherstone</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MultiBodyLinkCollider.cpp">
+      <Filter>Source Files\BulletDynamics\Featherstone</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MultiBodyPoint2Point.cpp">
+      <Filter>Source Files\BulletDynamics\Featherstone</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MultiBodySolverConstraint.cpp">
+      <Filter>Source Files\BulletDynamics\Featherstone</Filter>
     </ClCompile>
     <ClCompile Include="..\src\MultimaterialTriangleMeshShape.cpp">
       <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
@@ -805,6 +856,9 @@
     <ClInclude Include="..\src\CylinderShape.h">
       <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\DantzigSolver.h">
+      <Filter>Header Files\BulletDynamics\MLCPSolvers</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\DataStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -928,8 +982,44 @@
     <ClInclude Include="..\src\MinkowskiSumShape.h">
       <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\MLCPSolver.h">
+      <Filter>Header Files\BulletDynamics\MLCPSolvers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MLCPSolverInterface.h">
+      <Filter>Header Files\BulletDynamics\MLCPSolvers</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\MotionState.h">
       <Filter>Header Files\LinearMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MultiBody.h">
+      <Filter>Header Files\BulletDynamics\Featherstone</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MultiBodyConstraint.h">
+      <Filter>Header Files\BulletDynamics\Featherstone</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MultiBodyConstraintSolver.h">
+      <Filter>Header Files\BulletDynamics\Featherstone</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MultiBodyDynamicsWorld.h">
+      <Filter>Header Files\BulletDynamics\Featherstone</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MultiBodyJointLimitConstraint.h">
+      <Filter>Header Files\BulletDynamics\Featherstone</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MultiBodyJointMotor.h">
+      <Filter>Header Files\BulletDynamics\Featherstone</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MultiBodyLink.h">
+      <Filter>Header Files\BulletDynamics\Featherstone</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MultiBodyLinkCollider.h">
+      <Filter>Header Files\BulletDynamics\Featherstone</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MultiBodyPoint2Point.h">
+      <Filter>Header Files\BulletDynamics\Featherstone</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MultiBodySolverConstraint.h">
+      <Filter>Header Files\BulletDynamics\Featherstone</Filter>
     </ClInclude>
     <ClInclude Include="..\src\MultimaterialTriangleMeshShape.h">
       <Filter>Header Files\BulletCollision\CollisionShapes</Filter>

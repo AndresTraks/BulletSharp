@@ -21,6 +21,7 @@
 //#define DISABLE_HACD
 //#define DISABLE_INTERNAL
 //#define DISABLE_INTERNAL_EDGE_UTILITY
+//#define DISABLE_MLCP
 //#define DISABLE_MULTITHREADED
 //#define DISABLE_SERIALIZE
 //#define DISABLE_SOFTBODY
@@ -250,6 +251,12 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #pragma comment(lib, "HACD_MinSizeRel.lib")
 #endif
 #include <hacdHACD.h>
+#endif
+
+#ifndef DISABLE_MLCP
+#include <BulletDynamics/MLCPSolvers/btDantzigSolver.h>
+#include <BulletDynamics/MLCPSolvers/btMLCPSolver.h>
+#include <BulletDynamics/MLCPSolvers/btMLCPSolverInterface.h>
 #endif
 
 #if defined(USE_MINICL)

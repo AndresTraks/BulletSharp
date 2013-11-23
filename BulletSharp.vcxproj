@@ -1561,6 +1561,9 @@
     <ClCompile Include="src\MultiBodyJointMotor.cpp" />
     <ClCompile Include="src\MultiBodyLinkCollider.cpp" />
     <ClCompile Include="src\MultiBodyPoint2Point.cpp" />
+    <ClCompile Include="src\MLCPSolverInterface.cpp" />
+    <ClCompile Include="src\DantzigSolver.cpp" />
+    <ClCompile Include="src\MLCPSolver.cpp" />
     <ClCompile Include="src\ParallelConstraintSolver.cpp" />
     <ClCompile Include="src\ThreadSupportInterface.cpp" />
     <ClCompile Include="src\SpuGatheringCollisionDispatcher.cpp" />
@@ -1741,6 +1744,9 @@
     <ClInclude Include="src\MultiBodyJointMotor.h" />
     <ClInclude Include="src\MultiBodyLinkCollider.h" />
     <ClInclude Include="src\MultiBodyPoint2Point.h" />
+    <ClInclude Include="src\MLCPSolverInterface.h" />
+    <ClInclude Include="src\DantzigSolver.h" />
+    <ClInclude Include="src\MLCPSolver.h" />
     <ClInclude Include="src\ParallelConstraintSolver.h" />
     <ClInclude Include="src\ThreadSupportInterface.h" />
     <ClInclude Include="src\SpuGatheringCollisionDispatcher.h" />
