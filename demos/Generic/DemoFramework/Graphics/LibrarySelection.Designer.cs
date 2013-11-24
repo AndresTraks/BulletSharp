@@ -84,7 +84,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "LibrarySelection";
-            this.Text = "Select Graphics Library";
+            this.Text = "Select Graphics Library (F8)";
             this.ResumeLayout(false);
             this.PerformLayout();
 

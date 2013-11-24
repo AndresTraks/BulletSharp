@@ -65,5 +65,4 @@ copy Generic\bin\Release\SharpDX.DXGI.dll bin\
 
 cmd /C svn export http://bulletsharp.googlecode.com/svn/trunk/demos/Generic src --force
 
-"%PROGRAMFILES%\7-Zip\7z.exe" a bulletsharp-demos.7z bin src
 "%PROGRAMFILES%\7-Zip\7z.exe" a bulletsharp-demos.zip bin src

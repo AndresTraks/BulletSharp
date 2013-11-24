@@ -26,7 +26,7 @@ namespace DemoFramework.OpenTK
         public int NormalBufferID;
         public int ElementBufferID;
         public DrawElementsType ElementsType;
-        public BeginMode BeginMode = BeginMode.Triangles;
+        public PrimitiveType PrimitiveType = PrimitiveType.Triangles;
 
         public List<InstanceData> InstanceDataList = new List<InstanceData>();
         public Vector3[] SoftBodyVertices;
@@ -433,7 +433,7 @@ namespace DemoFramework.OpenTK
                         modelLookAt = instance.WorldTransform * lookat;
                         GL.UniformMatrix4(modelViewMatrixLocation, false, ref modelLookAt);
                         GL.Uniform4(vertexColorLocation, instance.Color);
-                        GL.DrawElements(s.BeginMode, s.ElementCount, s.ElementsType, IntPtr.Zero);
+                        GL.DrawElements(s.PrimitiveType, s.ElementCount, s.ElementsType, IntPtr.Zero);
                     }
 
                     GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
@@ -445,7 +445,7 @@ namespace DemoFramework.OpenTK
                         modelLookAt = instance.WorldTransform * lookat;
                         GL.UniformMatrix4(modelViewMatrixLocation, false, ref modelLookAt);
                         GL.Uniform4(vertexColorLocation, instance.Color);
-                        GL.DrawArrays(s.BeginMode, 0, s.VertexCount);
+                        GL.DrawArrays(s.PrimitiveType, 0, s.VertexCount);
                     }
                 }
 
@@ -471,7 +471,7 @@ namespace DemoFramework.OpenTK
             else
             {
                 shapeData.SetDynamicNormalBuffer(new Vector3[shapeData.VertexCount]); // hack, should use a different shader that doesn't process normals
-                shapeData.BeginMode = BeginMode.Lines;
+                shapeData.PrimitiveType = PrimitiveType.Lines;
             }
         }
     }

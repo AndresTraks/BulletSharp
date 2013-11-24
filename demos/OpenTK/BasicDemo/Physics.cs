@@ -7,12 +7,12 @@ namespace BasicDemo
     class Physics
     {
         ///create 125 (5x5x5) dynamic objects
-        int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
+        const int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
 
         ///scaling of the objects (0.1 = 20 centimeter boxes )
-        float StartPosX = -5;
-        float StartPosY = -5;
-        float StartPosZ = -3;
+        const float StartPosX = -5;
+        const float StartPosY = -5;
+        const float StartPosZ = -3;
 
         public DiscreteDynamicsWorld World { get; set; }
         CollisionDispatcher dispatcher;
@@ -37,15 +37,15 @@ namespace BasicDemo
             ground.UserObject = "Ground";
 
             // create a few dynamic rigidbodies
-            float mass = 1.0f;
+            const float mass = 1.0f;
 
             CollisionShape colShape = new BoxShape(1);
             collisionShapes.Add(colShape);
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
-            float start_x = StartPosX - ArraySizeX / 2;
-            float start_y = StartPosY;
-            float start_z = StartPosZ - ArraySizeZ / 2;
+            const float start_x = StartPosX - ArraySizeX / 2;
+            const float start_y = StartPosY;
+            const float start_z = StartPosZ - ArraySizeZ / 2;
 
             int k, i, j;
             for (k = 0; k < ArraySizeY; k++)
@@ -91,7 +91,7 @@ namespace BasicDemo
             {
                 TypedConstraint constraint = World.GetConstraint(i);
                 World.RemoveConstraint(constraint);
-                constraint.Dispose(); ;
+                constraint.Dispose();
             }
 
             //remove the rigidbodies from the dynamics world and delete them

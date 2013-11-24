@@ -206,7 +206,7 @@ namespace DemoFramework.OpenTK
                 GL.Viewport(0, 0, glControl.Width, glControl.Height);
                 
                 perspective = Matrix4.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, 0.1f, FarPlane);
-                perspective *= Matrix4.Scale(-1.0f, 1.0f, 1.0f);
+                perspective *= Matrix4.CreateScale(-1.0f, 1.0f, 1.0f);
                 GL.UniformMatrix4(projectionMatrixLocation, false, ref perspective);
 
                 Vector3 lightDirection = Vector3.Normalize(new Vector3(1.0f, 1.0f, 1.0f));

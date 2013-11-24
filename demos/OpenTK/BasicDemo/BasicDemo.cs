@@ -84,9 +84,9 @@ namespace BasicDemo
                 }
 
                 if (body.ActivationState == ActivationState.ActiveTag)
-                    DrawCube2(Color.Orange, 1);
+                    DrawCube2(Color.Orange);
                 else
-                    DrawCube2(Color.Red, 1);
+                    DrawCube2(Color.Red);
             }
 
             UninitCube();
@@ -94,14 +94,9 @@ namespace BasicDemo
             SwapBuffers();
         }
 
-        private void DrawCube(Color color)
-        {
-            DrawCube(color, 1.0f);
-        }
-
         private void DrawCube(Color color, float size)
         {
-            GL.Begin(BeginMode.Quads);
+            GL.Begin(PrimitiveType.Quads);
 
             GL.Color3(color);
             GL.Vertex3(-size, -size, -size);
@@ -172,10 +167,10 @@ namespace BasicDemo
             GL.DisableClientState(ArrayCap.NormalArray);
         }
 
-        void DrawCube2(Color color, float size)
+        void DrawCube2(Color color)
         {
             GL.Color3(color);
-            GL.DrawElements(BeginMode.Quads, 24, DrawElementsType.UnsignedByte, indices);
+            GL.DrawElements(PrimitiveType.Quads, 24, DrawElementsType.UnsignedByte, indices);
         }
     }
 }
