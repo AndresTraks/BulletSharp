@@ -211,7 +211,7 @@ void PersistentManifold::ContactBreakingThreshold::set(btScalar value)
 	Native->setContactBreakingThreshold(value);
 }
 
-float PersistentManifold::ContactProcessingThreshold::get()
+btScalar PersistentManifold::ContactProcessingThreshold::get()
 {
 	return Native->getContactProcessingThreshold();
 }

@@ -49,7 +49,7 @@ int SoftBody::VertexBufferDescriptor::VertexStride::get()
 #define Native static_cast<btCPUVertexBufferDescriptor*>(_native)
 
 SoftBody::CpuVertexBufferDescriptor::CpuVertexBufferDescriptor(FloatArray^ array, int vertexOffset, int vertexStride, int normalOffset, int normalStride)
-: VertexBufferDescriptor(new btCPUVertexBufferDescriptor((array != nullptr) ? (btScalar*)array->_native : 0, vertexOffset, vertexStride, normalOffset, normalStride))
+: VertexBufferDescriptor(new btCPUVertexBufferDescriptor((array != nullptr) ? (float*)array->_native : 0, vertexOffset, vertexStride, normalOffset, normalStride))
 {
 	_length = (array != nullptr) ? array->Count : 0;
 }

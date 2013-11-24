@@ -316,7 +316,7 @@ Vector3 MultiBody::WorldPosToLocal(int i, Vector3 vec)
 	return dir;
 }
 
-float MultiBody::AngularDamping::get()
+btScalar MultiBody::AngularDamping::get()
 {
 	return _native->getAngularDamping();
 }
@@ -361,11 +361,11 @@ void MultiBody::BaseInertia::set(Vector3 inertia)
 	VECTOR3_DEL(inertia);
 }
 
-float MultiBody::BaseMass::get()
+btScalar MultiBody::BaseMass::get()
 {
 	return _native->getBaseMass();
 }
-void MultiBody::BaseMass::set(float mass)
+void MultiBody::BaseMass::set(btScalar mass)
 {
 	_native->setBaseMass(mass);
 }
@@ -456,25 +456,25 @@ bool MultiBody::IsAwake::get()
 	return _native->isAwake();
 }
 
-float MultiBody::KineticEnergy::get()
+btScalar MultiBody::KineticEnergy::get()
 {
 	return _native->getKineticEnergy();
 }
 
-float MultiBody::LinearDamping::get()
+btScalar MultiBody::LinearDamping::get()
 {
 	return _native->getLinearDamping();
 }
-void MultiBody::LinearDamping::set(float damp)
+void MultiBody::LinearDamping::set(btScalar damp)
 {
 	_native->setLinearDamping(damp);
 }
 
-float MultiBody::MaxAppliedImpulse::get()
+btScalar MultiBody::MaxAppliedImpulse::get()
 {
 	return _native->getMaxAppliedImpulse();
 }
-void MultiBody::MaxAppliedImpulse::set(float maxImp)
+void MultiBody::MaxAppliedImpulse::set(btScalar maxImp)
 {
 	_native->setMaxAppliedImpulse(maxImp);
 }
