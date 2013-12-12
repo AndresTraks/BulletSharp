@@ -127,7 +127,7 @@ CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
 
 	// If we reach here, then collisionObject was created from within unmanaged code,
 	// mark the wrapper object we create here so we don't try to destroy it later.
-	btRigidBody* rigidBody = static_cast<btRigidBody*>(collisionObject);
+	btRigidBody* rigidBody = dynamic_cast<btRigidBody*>(collisionObject);
 	if (rigidBody)
 	{
 		RigidBody^ body = gcnew RigidBody(rigidBody);
@@ -136,7 +136,7 @@ CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
 	}
 
 #ifndef DISABLE_SOFTBODY
-	btSoftBody* softBody = static_cast<btSoftBody*>(collisionObject);
+	btSoftBody* softBody = dynamic_cast<btSoftBody*>(collisionObject);
 	if (softBody)
 	{
 		SoftBody::SoftBody^ body = gcnew SoftBody::SoftBody(softBody);
@@ -146,7 +146,7 @@ CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
 #endif
 
 #ifndef DISABLE_FEATHERSTONE
-	btMultiBodyLinkCollider* multiBody = static_cast<btMultiBodyLinkCollider*>(collisionObject);
+	btMultiBodyLinkCollider* multiBody = dynamic_cast<btMultiBodyLinkCollider*>(collisionObject);
 	if (multiBody)
 	{
 		MultiBodyLinkCollider^ body = gcnew MultiBodyLinkCollider(multiBody);

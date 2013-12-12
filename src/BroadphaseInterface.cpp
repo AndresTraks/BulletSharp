@@ -100,25 +100,25 @@ BroadphaseInterface^ BroadphaseInterface::GetManaged(btBroadphaseInterface* broa
 	if (broadphase == 0)
 		return nullptr;
 
-	btAxisSweep3* axisSweep = static_cast<btAxisSweep3*>(broadphase);
+	btAxisSweep3* axisSweep = dynamic_cast<btAxisSweep3*>(broadphase);
 	if (axisSweep)
 	{
 		return gcnew AxisSweep3(axisSweep);
 	}
 
-	btDbvtBroadphase* dbvt = static_cast<btDbvtBroadphase*>(broadphase);
+	btDbvtBroadphase* dbvt = dynamic_cast<btDbvtBroadphase*>(broadphase);
 	if (dbvt)
 	{
 		return gcnew DbvtBroadphase(dbvt);
 	}
 
-	bt32BitAxisSweep3* axisSweep32 = static_cast<bt32BitAxisSweep3*>(broadphase);
+	bt32BitAxisSweep3* axisSweep32 = dynamic_cast<bt32BitAxisSweep3*>(broadphase);
 	if (axisSweep32)
 	{
 		return gcnew AxisSweep3_32Bit(axisSweep32);
 	}
 
-	btSimpleBroadphase* simple = static_cast<btSimpleBroadphase*>(broadphase);
+	btSimpleBroadphase* simple = dynamic_cast<btSimpleBroadphase*>(broadphase);
 	if (simple)
 	{
 		return gcnew SimpleBroadphase(simple);
