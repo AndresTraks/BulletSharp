@@ -47,5 +47,10 @@ namespace BulletSharp
 #endif
 			Dispatcher^ dispatcher);
 #endif
+
+		property ConstraintSolverType SolverType
+		{
+			ConstraintSolverType get();
+		}
 	};
 };

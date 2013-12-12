@@ -2831,6 +2831,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\NncgConstraintSolver.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\src\Solve2LinearConstraint.cpp"
 						>
 					</File>
@@ -2936,6 +2940,10 @@
 					</File>
 					<File
 						RelativePath="..\src\DantzigSolver.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\LemkeSolver.cpp"
 						>
 					</File>
 					<File
@@ -3652,6 +3660,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\NncgConstraintSolver.h"
+						>
+					</File>
+					<File
 						RelativePath="..\src\Solve2LinearConstraint.h"
 						>
 					</File>
@@ -3757,6 +3769,10 @@
 					</File>
 					<File
 						RelativePath="..\src\DantzigSolver.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\LemkeSolver.h"
 						>
 					</File>
 					<File

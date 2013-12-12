@@ -20,6 +20,11 @@ CompoundCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc()
 
 #define Native static_cast<btCompoundCollisionAlgorithm*>(_native)
 
+CompoundCollisionAlgorithm::CompoundCollisionAlgorithm(btCompoundCollisionAlgorithm* native)
+: ActivatingCollisionAlgorithm(native)
+{
+}
+
 bool compoundChildShapePairCallback(const btCollisionShape* pShape0, const btCollisionShape* pShape1)
 {
 	return CompoundCollisionAlgorithm::_compoundChildShapePairCallback(

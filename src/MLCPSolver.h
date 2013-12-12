@@ -15,6 +15,12 @@ namespace BulletSharp
 
 		void SetMLCPSolver(MLCPSolverInterface^ solver);
 
+		property btScalar Cfm
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
 		property int NumFallbacks
 		{
 			int get();

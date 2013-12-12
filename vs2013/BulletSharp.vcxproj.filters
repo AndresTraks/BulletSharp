@@ -426,6 +426,9 @@
     <ClCompile Include="..\src\KinematicCharacterController.cpp">
       <Filter>Source Files\BulletDynamics\Character</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\LemkeSolver.cpp">
+      <Filter>Source Files\BulletDynamics\MLCPSolvers</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\ManifoldPoint.cpp">
       <Filter>Source Files\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
@@ -488,6 +491,9 @@
     </ClCompile>
     <ClCompile Include="..\src\MultiSphereShape.cpp">
       <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NncgConstraintSolver.cpp">
+      <Filter>Source Files\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ObjectTable.cpp">
       <Filter>Source Files</Filter>
@@ -964,6 +970,9 @@
     <ClInclude Include="..\src\KinematicCharacterController.h">
       <Filter>Header Files\BulletDynamics\Character</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\LemkeSolver.h">
+      <Filter>Header Files\BulletDynamics\MLCPSolvers</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\ManifoldPoint.h">
       <Filter>Header Files\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
@@ -1026,6 +1035,9 @@
     </ClInclude>
     <ClInclude Include="..\src\MultiSphereShape.h">
       <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\NncgConstraintSolver.h">
+      <Filter>Header Files\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ObjectTable.h">
       <Filter>Header Files</Filter>

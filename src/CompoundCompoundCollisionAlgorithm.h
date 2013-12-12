@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ActivatingCollisionAlgorithm.h"
+#include "CompoundCollisionAlgorithm.h"
 #include "CollisionCreateFunc.h"
 
 namespace BulletSharp
@@ -10,7 +10,7 @@ namespace BulletSharp
 	ref class CollisionObjectWrapper;
 	ref class PersistentManifold;
 
-	public ref class CompoundCompoundCollisionAlgorithm : ActivatingCollisionAlgorithm
+	public ref class CompoundCompoundCollisionAlgorithm : CompoundCollisionAlgorithm
 	{
 	public:
 		ref class CreateFunc : CollisionAlgorithmCreateFunc

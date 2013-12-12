@@ -190,6 +190,7 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 //#include <BulletCollision/NarrowPhaseCollision/btVoronoiSimplexSolver.h>
 #include <BulletDynamics/Character/btCharacterControllerInterface.h>
 #include <BulletDynamics/Character/btKinematicCharacterController.h>
+//#include <BulletDynamics/MLCPSolvers/btLemkeSolver.h>
 #endif
 
 #ifndef DISABLE_COLLISION_ALGORITHMS
@@ -209,6 +210,7 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 
 #ifndef DISABLE_CONSTRAINTS
 #include <BulletDynamics/ConstraintSolver/btSolve2LinearConstraint.h>
+#include <BulletDynamics/ConstraintSolver/btNNCGConstraintSolver.h>
 #endif
 
 #ifndef DISABLE_FEATHERSTONE

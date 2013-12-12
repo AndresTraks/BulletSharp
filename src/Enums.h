@@ -238,6 +238,14 @@ namespace BulletSharp
 		PersistentManifold = BT_PERSISTENT_MANIFOLD_TYPE
 	};
 
+	[Flags]
+	public enum class ConstraintSolverType
+	{
+		SequentialImpulseSolver = BT_SEQUENTIAL_IMPULSE_SOLVER,
+		MlcpSolver = BT_MLCP_SOLVER,
+		NncgSolver = BT_NNCG_SOLVER
+	};
+
 #ifndef DISABLE_DEBUGDRAW
 	[Flags]
 	public enum class DebugDrawModes

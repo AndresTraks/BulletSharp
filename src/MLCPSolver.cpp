@@ -30,4 +30,13 @@ void MLCPSolver::NumFallbacks::set(int num)
 	Native->setNumFallbacks(num);
 }
 
+btScalar MLCPSolver::Cfm::get()
+{
+	return Native->getCfm();
+}
+void MLCPSolver::Cfm::set(btScalar value)
+{
+	Native->setCfm(value);
+}
+
 #endif

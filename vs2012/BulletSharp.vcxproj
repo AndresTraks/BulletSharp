@@ -1607,6 +1607,7 @@
     <ClCompile Include="..\src\SequentialImpulseConstraintSolver.cpp" />
     <ClCompile Include="..\src\ConstraintSolver.cpp" />
     <ClCompile Include="..\src\ContactConstraint.cpp" />
+    <ClCompile Include="..\src\NncgConstraintSolver.cpp" />
     <ClCompile Include="..\src\Solve2LinearConstraint.cpp" />
     <ClCompile Include="..\src\DynamicsWorld.cpp" />
     <ClCompile Include="..\src\DiscreteDynamicsWorld.cpp" />
@@ -1629,6 +1630,7 @@
     <ClCompile Include="..\src\MultiBodyPoint2Point.cpp" />
     <ClCompile Include="..\src\MLCPSolverInterface.cpp" />
     <ClCompile Include="..\src\DantzigSolver.cpp" />
+    <ClCompile Include="..\src\LemkeSolver.cpp" />
     <ClCompile Include="..\src\MLCPSolver.cpp" />
     <ClCompile Include="..\src\ParallelConstraintSolver.cpp" />
     <ClCompile Include="..\src\ThreadSupportInterface.cpp" />
@@ -1790,6 +1792,7 @@
     <ClInclude Include="..\src\SequentialImpulseConstraintSolver.h" />
     <ClInclude Include="..\src\ConstraintSolver.h" />
     <ClInclude Include="..\src\ContactConstraint.h" />
+    <ClInclude Include="..\src\NncgConstraintSolver.h" />
     <ClInclude Include="..\src\Solve2LinearConstraint.h" />
     <ClInclude Include="..\src\DynamicsWorld.h" />
     <ClInclude Include="..\src\DiscreteDynamicsWorld.h" />
@@ -1812,6 +1815,7 @@
     <ClInclude Include="..\src\MultiBodyPoint2Point.h" />
     <ClInclude Include="..\src\MLCPSolverInterface.h" />
     <ClInclude Include="..\src\DantzigSolver.h" />
+    <ClInclude Include="..\src\LemkeSolver.h" />
     <ClInclude Include="..\src\MLCPSolver.h" />
     <ClInclude Include="..\src\ParallelConstraintSolver.h" />
     <ClInclude Include="..\src\ThreadSupportInterface.h" />

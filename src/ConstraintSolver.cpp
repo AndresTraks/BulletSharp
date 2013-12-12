@@ -101,4 +101,9 @@ btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<Per
 	return ret;
 }
 
+ConstraintSolverType ConstraintSolver::SolverType::get()
+{
+	return (ConstraintSolverType) _native->getSolverType();
+}
+
 #endif
