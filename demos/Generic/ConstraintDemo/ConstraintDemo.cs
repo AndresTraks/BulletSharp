@@ -65,8 +65,8 @@ namespace ConstraintDemo
             float L_2 = 1 / (float)Math.Cos(THETA);
             float RATIO = L_2/L_1;
 
-	        RigidBody bodyA;
-	        RigidBody bodyB;
+            RigidBody bodyA;
+            RigidBody bodyB;
 
             CollisionShape cylA = new CylinderShape(0.2f, 0.25f, 0.2f);
             CollisionShape cylB = new CylinderShape(L_1, 0.025f, L_1);
@@ -86,37 +86,35 @@ namespace ConstraintDemo
             body.AngularFactor = new Vector3(0, 1, 0);
             bodyA = body;
 
+            cylA = new CylinderShape(0.2f, 0.26f, 0.2f);
+            cylB = new CylinderShape(L_2, 0.025f, L_2);
+            cyl0 = new CompoundShape();
+            cyl0.AddChildShape(Matrix.Identity, cylA);
+            cyl0.AddChildShape(Matrix.Identity, cylB);
 
-            cylA = new CylinderShape(0.2f, 0.26f,0.2f);
-		    cylB = new CylinderShape(L_2,0.025f,L_2);
-		    cyl0 = new CompoundShape();
-		    cyl0.AddChildShape(Matrix.Identity,cylA);
-		    cyl0.AddChildShape(Matrix.Identity,cylB);
+            mass = 6.28f;
+            cyl0.CalculateLocalInertia(mass, out localInertia);
+            ci = new RigidBodyConstructionInfo(mass, null, cyl0, localInertia);
+            Quaternion orn = Quaternion.RotationAxis(new Vector3(0, 0, 1), -THETA);
+            ci.StartWorldTransform = Matrix.RotationQuaternion(orn) * Matrix.Translation(-10, 2, -8);
 
-		    mass = 6.28f;
-		    cyl0.CalculateLocalInertia(mass, out localInertia);
-		    ci = new RigidBodyConstructionInfo(mass, null, cyl0, localInertia);
-            Quaternion orn = Quaternion.RotationAxis(new Vector3(0,0,1), -THETA);
-            ci.StartWorldTransform = Matrix.RotationQuaternion(orn) * Matrix.Translation(-10,2,-8);
+            body = new RigidBody(ci);//1,0,cyl0,localInertia);
+            body.LinearFactor = Vector3.Zero;
+            HingeConstraint hinge = new HingeConstraint(body, Vector3.Zero, new Vector3(0, 1, 0), true);
+            World.AddConstraint(hinge);
+            bodyB = body;
+            body.AngularVelocity = new Vector3(0, 3, 0);
 
-		    body = new RigidBody(ci);//1,0,cyl0,localInertia);
-		    body.LinearFactor = Vector3.Zero;
-		    HingeConstraint hinge = new HingeConstraint(body, Vector3.Zero, new Vector3(0,1,0), true);
-		    World.AddConstraint(hinge);
-		    bodyB= body;
-		    body.AngularVelocity = new Vector3(0, 3, 0);
+            World.AddRigidBody(body);
 
-		    World.AddRigidBody(body);
-
-
-	        Vector3 axisA = new Vector3(0,1,0);
-	        Vector3 axisB = new Vector3(0,1,0);
-	        orn = Quaternion.RotationAxis(new Vector3(0,0,1), -THETA);
-	        Matrix mat = Matrix.RotationQuaternion(orn);
+            Vector3 axisA = new Vector3(0, 1, 0);
+            Vector3 axisB = new Vector3(0, 1, 0);
+            orn = Quaternion.RotationAxis(new Vector3(0, 0, 1), -THETA);
+            Matrix mat = Matrix.RotationQuaternion(orn);
             axisB = new Vector3(mat.M21, mat.M22, mat.M23);
 
-	        GearConstraint gear = new GearConstraint(bodyA, bodyB, axisA, axisB, RATIO);
-	        World.AddConstraint(gear, true);
+            GearConstraint gear = new GearConstraint(bodyA, bodyB, axisA, axisB, RATIO);
+            World.AddConstraint(gear, true);
 
 
             mass = 1.0f;

@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
 using BulletSharp;
 using DemoFramework;
-using System.Windows.Forms;
-using System.Drawing;
 
 namespace ConcaveConvexCastDemo
 {
@@ -34,7 +34,7 @@ namespace ConcaveConvexCastDemo
         float sign;
 
         Vector3  boxShapeHalfExtents;
-	    BoxShape boxShape;
+        BoxShape boxShape;
 
         public ConvexcastBatch()
         {
@@ -92,7 +92,7 @@ namespace ConcaveConvexCastDemo
             for (int i = 0; i < NUMRAYS_IN_BAR; i++)
             {
                 float alpha = dalpha * i;
-                // rotate around by alpha degrees y 
+                // rotate around by alpha degrees y
                 Matrix tr = Matrix.RotationQuaternion(Quaternion.RotationAxis(new Vector3(0.0f, 1.0f, 0.0f), alpha));
                 direction[i] = new Vector3(1.0f, 0.0f, 0.0f);
                 direction[i] = Vector3.TransformCoordinate(direction[i], tr);
@@ -176,18 +176,18 @@ namespace ConcaveConvexCastDemo
             }
             Quaternion qFrom = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
             Quaternion qTo = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.7f);
-		    for (i = 0; i < NUMRAYS_IN_BAR; i++)
-		    {
-			    Matrix from = Matrix.RotationQuaternion(qFrom) * Matrix.Translation(source[i]);
+            for (i = 0; i < NUMRAYS_IN_BAR; i++)
+            {
+                Matrix from = Matrix.RotationQuaternion(qFrom) * Matrix.Translation(source[i]);
                 Matrix to = Matrix.RotationQuaternion(qTo) * Matrix.Translation(dest[i]);
-			    Vector3 linVel, angVel;
-			    TransformUtil.CalculateVelocity (from, to, 1.0f, out linVel, out angVel);
-			    Matrix T;
-			    TransformUtil.IntegrateTransform (from, linVel, angVel, hit_fraction[i], out T);
+                Vector3 linVel, angVel;
+                TransformUtil.CalculateVelocity(from, to, 1.0f, out linVel, out angVel);
+                Matrix T;
+                TransformUtil.IntegrateTransform(from, linVel, angVel, hit_fraction[i], out T);
                 Vector3 box1 = boxShapeHalfExtents;
                 Vector3 box2 = -boxShapeHalfExtents;
                 drawer.DrawBox(ref box1, ref box2, ref T, Color.Aqua);
-		    }
+            }
         }
     }
 

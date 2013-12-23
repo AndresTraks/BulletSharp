@@ -54,37 +54,37 @@ namespace RagdollDemo
             Matrix offset = Matrix.Translation(positionOffset);
             Matrix transform;
             transform = offset * Matrix.Translation(0, 1, 0);
-		    bodies[(int)BodyPart.Pelvis] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.Pelvis]);
+            bodies[(int)BodyPart.Pelvis] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.Pelvis]);
 
-		    transform = offset * Matrix.Translation(0, 1.2f, 0);
-		    bodies[(int)BodyPart.Spine] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.Spine]);
+            transform = offset * Matrix.Translation(0, 1.2f, 0);
+            bodies[(int)BodyPart.Spine] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.Spine]);
 
             transform = offset * Matrix.Translation(0, 1.6f, 0);
-		    bodies[(int)BodyPart.Head] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.Head]);
+            bodies[(int)BodyPart.Head] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.Head]);
 
             transform = offset * Matrix.Translation(-0.18f, 0.6f, 0);
-		    bodies[(int)BodyPart.LeftUpperLeg] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.LeftUpperLeg]);
+            bodies[(int)BodyPart.LeftUpperLeg] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.LeftUpperLeg]);
 
             transform = offset * Matrix.Translation(-0.18f, 0.2f, 0);
-		    bodies[(int)BodyPart.LeftLowerLeg] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.LeftLowerLeg]);
+            bodies[(int)BodyPart.LeftLowerLeg] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.LeftLowerLeg]);
 
             transform = offset * Matrix.Translation(0.18f, 0.65f, 0);
-		    bodies[(int)BodyPart.RightUpperLeg] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.RightUpperLeg]);
+            bodies[(int)BodyPart.RightUpperLeg] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.RightUpperLeg]);
 
             transform = offset * Matrix.Translation(0.18f, 0.2f, 0);
-		    bodies[(int)BodyPart.RightLowerLeg] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.RightLowerLeg]);
+            bodies[(int)BodyPart.RightLowerLeg] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.RightLowerLeg]);
 
             transform = Matrix.RotationZ(PI_2) * offset * Matrix.Translation(-0.35f, 1.45f, 0);
-		    bodies[(int)BodyPart.LeftUpperArm] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.LeftUpperArm]);
+            bodies[(int)BodyPart.LeftUpperArm] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.LeftUpperArm]);
 
             transform = Matrix.RotationZ(PI_2) * offset * Matrix.Translation(-0.7f, 1.45f, 0);
-		    bodies[(int)BodyPart.LeftLowerArm] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.LeftLowerArm]);
+            bodies[(int)BodyPart.LeftLowerArm] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.LeftLowerArm]);
 
             transform = Matrix.RotationZ(-PI_2) * offset * Matrix.Translation(0.35f, 1.45f, 0);
-		    bodies[(int)BodyPart.RightUpperArm] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.RightUpperArm]);
+            bodies[(int)BodyPart.RightUpperArm] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.RightUpperArm]);
 
-		    transform = Matrix.RotationZ(-PI_2) * offset * Matrix.Translation(0.7f, 1.45f, 0);
-		    bodies[(int)BodyPart.RightLowerArm] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.RightLowerArm]);
+            transform = Matrix.RotationZ(-PI_2) * offset * Matrix.Translation(0.7f, 1.45f, 0);
+            bodies[(int)BodyPart.RightLowerArm] = LocalCreateRigidBody(1, transform, shapes[(int)BodyPart.RightLowerArm]);
 
             // Setup some damping on the m_bodies
             foreach (RigidBody body in bodies)
@@ -104,7 +104,7 @@ namespace RagdollDemo
             localB = Matrix.RotationYawPitchRoll(PI_2, 0, 0) * Matrix.Translation(0, -0.15f, 0);
             hingeC = new HingeConstraint(bodies[(int)BodyPart.Pelvis], bodies[(int)BodyPart.Spine], localA, localB);
             hingeC.SetLimit(-PI_4, PI_2);
-	        joints[(int)Joint.PelvisSpine] = hingeC;
+            joints[(int)Joint.PelvisSpine] = hingeC;
             hingeC.DebugDrawSize = ConstraintDebugSize;
 
             ownerWorld.AddConstraint(joints[(int)Joint.PelvisSpine], true);
@@ -117,14 +117,14 @@ namespace RagdollDemo
             joints[(int)Joint.SpineHead] = coneC;
             coneC.DebugDrawSize = ConstraintDebugSize;
 
-		    ownerWorld.AddConstraint(joints[(int)Joint.SpineHead], true);
+            ownerWorld.AddConstraint(joints[(int)Joint.SpineHead], true);
 
 
             localA = Matrix.RotationYawPitchRoll(0, 0, -PI_4 * 5) * Matrix.Translation(-0.18f, -0.18f, 0);
             localB = Matrix.RotationYawPitchRoll(0, 0, -PI_4 * 5) * Matrix.Translation(0, 0.225f, 0);
             coneC = new ConeTwistConstraint(bodies[(int)BodyPart.Pelvis], bodies[(int)BodyPart.LeftUpperLeg], localA, localB);
             coneC.SetLimit(PI_4, PI_4, 0);
-		    joints[(int)Joint.LeftHip] = coneC;
+            joints[(int)Joint.LeftHip] = coneC;
             coneC.DebugDrawSize = ConstraintDebugSize;
 
             ownerWorld.AddConstraint(joints[(int)Joint.LeftHip], true);

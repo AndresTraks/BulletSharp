@@ -28,7 +28,7 @@ namespace DemoFramework.SharpDX
                 new InputElement("COLOR", 0, Format.R8G8B8A8_UNorm, 12, 0, InputClassification.PerVertexData, 0)
             };
             inputLayout = new InputLayout(device, graphics.GetDebugDrawPass().Description.Signature, elements);
-            
+
             vertexBufferDesc = new BufferDescription()
             {
                 Usage = ResourceUsage.Dynamic,

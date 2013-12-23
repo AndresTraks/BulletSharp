@@ -17,7 +17,7 @@ namespace CollisionInterfaceDemo
             Vector3 ptA = cp.PositionWorldOnA;
             Vector3 ptB = cp.PositionWorldOnB;
             world.DebugDrawer.DrawLine(ref ptA, ref ptB, System.Drawing.Color.Blue);
-		    return 0;
+            return 0;
         }
     };
 
@@ -49,7 +49,7 @@ namespace CollisionInterfaceDemo
 
             objects[0] = new CollisionObject();
             objects[1] = new CollisionObject();
-            
+
             objects[0].CollisionShape = boxA;
             objects[1].CollisionShape = boxB;
 
@@ -68,10 +68,10 @@ namespace CollisionInterfaceDemo
             World.AddCollisionObject(objects[1]);
 
             Quaternion rotA = new Quaternion(0.739f, -0.204f, 0.587f, 0.257f);
-	        rotA.Normalize();
+            rotA.Normalize();
 
-	        objects[0].WorldTransform = Matrix.RotationQuaternion(rotA) * Matrix.Translation(0, 3, 0);
-	        objects[1].WorldTransform = Matrix.Translation(0, 4.248f, 0);
+            objects[0].WorldTransform = Matrix.RotationQuaternion(rotA) * Matrix.Translation(0, 3, 0);
+            objects[1].WorldTransform = Matrix.Translation(0, 4.248f, 0);
         }
 
         public override void OnUpdate()

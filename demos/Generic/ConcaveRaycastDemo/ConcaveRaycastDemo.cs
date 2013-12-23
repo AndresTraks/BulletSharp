@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
 using BulletSharp;
 using DemoFramework;
-using System.Windows.Forms;
-using System.Drawing;
 
 namespace ConcaveRaycastDemo
 {
@@ -82,7 +82,7 @@ namespace ConcaveRaycastDemo
             for (int i = 0; i < NUMRAYS_IN_BAR; i++)
             {
                 float alpha = dalpha * i;
-                // rotate around by alpha degrees y 
+                // rotate around by alpha degrees y
                 Matrix tr = Matrix.RotationQuaternion(Quaternion.RotationAxis(new Vector3(0.0f, 1.0f, 0.0f), alpha));
                 direction[i] = new Vector3(1.0f, 0.0f, 0.0f);
                 direction[i] = Vector3.TransformCoordinate(direction[i], tr);

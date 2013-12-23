@@ -11,12 +11,12 @@ using SharpDX.Direct3D10;
 using SharpDX.DXGI;
 using SharpDX.Windows;
 using Buffer = SharpDX.Direct3D10.Buffer;
+using Color = System.Drawing.Color;
 using Device = SharpDX.Direct3D10.Device;
 using DriverType = SharpDX.Direct3D10.DriverType;
 using Matrix = SharpDX.Matrix;
 using Vector3 = SharpDX.Vector3;
 using Vector4 = SharpDX.Vector4;
-using Color = System.Drawing.Color;
 
 namespace DemoFramework.SharpDX
 {

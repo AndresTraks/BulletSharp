@@ -2,7 +2,7 @@
 
 namespace DemoFramework.SharpDX
 {
-	static class MathHelper
+    static class MathHelper
     {
         public static Matrix Convert(ref BulletSharp.Matrix m)
         {

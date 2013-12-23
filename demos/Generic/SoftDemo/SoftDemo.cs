@@ -1075,16 +1075,16 @@ namespace SoftDemo
             Solver = new SequentialImpulseConstraintSolver();
 
             softBodyWorldInfo = new SoftBodyWorldInfo
-	        {
-		        AirDensity = 1.2f,
-		        WaterDensity = 0,
-		        WaterOffset = 0,
-		        WaterNormal = Vector3.Zero,
-		        Gravity = new Vector3(0, -10, 0),
-		        Dispatcher = Dispatcher,
-		        Broadphase = Broadphase
-	        };
-	        softBodyWorldInfo.SparseSdf.Initialize();
+            {
+                AirDensity = 1.2f,
+                WaterDensity = 0,
+                WaterOffset = 0,
+                WaterNormal = Vector3.Zero,
+                Gravity = new Vector3(0, -10, 0),
+                Dispatcher = Dispatcher,
+                Broadphase = Broadphase
+            };
+            softBodyWorldInfo.SparseSdf.Initialize();
 
             World = new SoftRigidDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf);
             World.Gravity = new Vector3(0, -10, 0);
@@ -1111,6 +1111,7 @@ namespace SoftDemo
                 center = c;
                 sqradius = r * r;
             }
+
             public override float Eval(Vector3 x)
             {
                 return ((x - center).LengthSquared() - sqradius);

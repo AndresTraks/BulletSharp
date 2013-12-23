@@ -142,7 +142,7 @@ namespace FeatherStoneDemo
             Quaternion orn = new Quaternion(0, 0, 0, 1);
             body.BasePosition = settings.BasePosition;
             body.WorldToBaseRot = orn;
-	        body.BaseVelocity = Vector3.Zero;
+            body.BaseVelocity = Vector3.Zero;
 
 
             Vector3 joint_axis_hinge = new Vector3(1, 0, 0);
@@ -177,15 +177,15 @@ namespace FeatherStoneDemo
                 }
                 body.SetJointPos(child_link_num, initial_joint_angle);
                 this_link_num = i;
-                
+
                 /*if (false) //!useGroundShape && i == 4)
-			    {
+                {
                     Vector3 pivotInAworld = new Vector3(0, 20, 46);
                     Vector3 pivotInAlocal = body.WorldPosToLocal(i, pivotInAworld);
                     Vector3 pivotInBworld = pivotInAworld;
                     MultiBodyPoint2Point p2p = new MultiBodyPoint2Point(body, i, TypedConstraint.FixedBody, pivotInAlocal, pivotInBworld);
                     (World as MultiBodyDynamicsWorld).AddMultiBodyConstraint(p2p);
-			    }*/
+                }*/
 
                 if (settings.UsePrismatic)
                 {

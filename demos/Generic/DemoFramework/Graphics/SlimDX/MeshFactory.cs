@@ -7,7 +7,6 @@ using BulletSharp.SoftBody;
 using SlimDX.Direct3D9;
 using DataStream = SlimDX.DataStream;
 using Matrix = SlimDX.Matrix;
-using Vector3 = SlimDX.Vector3;
 
 namespace DemoFramework.SlimDX
 {

@@ -43,12 +43,12 @@ namespace RollingFrictionDemo
             CollisionShape groundShape = new BoxShape(20, 50, 10);
             CollisionShapes.Add(groundShape);
             CollisionObject ground = LocalCreateRigidBody(0,
-                Matrix.RotationAxis(new Vector3(0, 0, 1), (float)Math.PI * 0.03f) * Matrix.Translation(0,-50,0),
+                Matrix.RotationAxis(new Vector3(0, 0, 1), (float)Math.PI * 0.03f) * Matrix.Translation(0, -50, 0),
                 groundShape);
             ground.Friction = 1;
             ground.RollingFriction = 1;
             ground.UserObject = "Ground";
-            
+
             groundShape = new BoxShape(100, 50, 100);
             CollisionShapes.Add(groundShape);
             ground = LocalCreateRigidBody(0, Matrix.Translation(0, -54, 0), groundShape);
@@ -104,7 +104,7 @@ namespace RollingFrictionDemo
                         // and only synchronizes 'active' objects
                         DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
                         RigidBodyConstructionInfo rbInfo =
-                            new RigidBodyConstructionInfo(mass, myMotionState, colShapes[shapeIndex%NUM_SHAPES], localInertia);
+                            new RigidBodyConstructionInfo(mass, myMotionState, colShapes[shapeIndex % NUM_SHAPES], localInertia);
                         RigidBody body = new RigidBody(rbInfo);
                         rbInfo.Dispose();
 

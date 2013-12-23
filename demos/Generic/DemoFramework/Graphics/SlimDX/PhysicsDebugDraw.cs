@@ -13,7 +13,7 @@ namespace DemoFramework.SlimDX
             this.device = device;
         }
 
-	    protected override int ColorToInt(ref Color c)
+        protected override int ColorToInt(ref Color c)
         {
             return c.ToArgb();
         }
