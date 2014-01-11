@@ -91,9 +91,8 @@ TypedConstraint::!TypedConstraint()
 	
 	if (_doesNotOwnObject == false)
 	{
-		void* userObj = _native->getUserConstraintPtr();
-		if (userObj != (void*)-1)
-			VoidPtrToGCHandle(userObj).Free();
+		if (_native->getUserConstraintId() != -1)
+			VoidPtrToGCHandle(_native->getUserConstraintPtr()).Free();
 		delete _native;
 	}
 	_native = NULL;
@@ -143,9 +142,8 @@ TypedConstraint^ TypedConstraint::Upcast(btTypedConstraint* typedConstraint)
 	if (typedConstraint == 0)
 		return nullptr;
 
-	void* userObj = typedConstraint->getUserConstraintPtr();
-	if (userObj)
-		return static_cast<TypedConstraint^>(VoidPtrToGCHandle(userObj).Target);
+	if (typedConstraint->getUserConstraintId() != -1)
+		return static_cast<TypedConstraint^>(VoidPtrToGCHandle(typedConstraint->getUserConstraintPtr()).Target);
 
 	return gcnew TypedConstraint(typedConstraint, true);
 }
@@ -265,7 +263,7 @@ void TypedConstraint::UnmanagedPointer::set(btTypedConstraint* value)
 {
 	_native = value;
 
-	if (_native->getUserConstraintPtr() == (void*)-1)
+	if (_native->getUserConstraintId() == -1)
 	{
 		GCHandle handle = GCHandle::Alloc(this);
 		void* obj = GCHandleToVoidPtr(handle);
