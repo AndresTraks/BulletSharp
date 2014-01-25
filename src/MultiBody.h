@@ -18,7 +18,7 @@ namespace BulletSharp
 		MultiBody(btMultiBody* native);
 
 	public:
-		MultiBody(int nLinks, btScalar mass, Vector3 inertia, bool fixedBase, bool canSleep);
+		MultiBody(int nLinks, btScalar mass, Vector3 inertia, bool fixedBase, bool canSleep, bool multiDof);
 
 		void AddBaseForce(Vector3 f);
 		void AddBaseTorque(Vector3 t);

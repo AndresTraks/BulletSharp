@@ -26,19 +26,19 @@ namespace BulletSharp
 			Vector3 get();
 			void set(Vector3 value);
 		}
-
-		property Vector3 AxisBottom
+		/*
+		property Vector3 AxesBottom
 		{
 			Vector3 get();
 			void set(Vector3 value);
 		}
 
-		property Vector3 AxisTop
+		property Vector3 AxesTop
 		{
 			Vector3 get();
 			void set(Vector3 value);
 		}
-
+		*/
 		property Quaternion CachedRotParentToThis
 		{
 			Quaternion get();
@@ -80,25 +80,19 @@ namespace BulletSharp
 			Vector3 get();
 			void set(Vector3 value);
 		}
-
-		property bool IsRevolute
-		{
-			bool get();
-			void set(bool value);
-		}
-
+		/*
 		property float JointPos
 		{
 			float get();
 			void set(float value);
 		}
-
+		
 		property float JointTorque
 		{
 			float get();
 			void set(float value);
 		}
-
+		*/
 		property float Mass
 		{
 			float get();

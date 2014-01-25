@@ -10,6 +10,6 @@ namespace BulletSharp
 		MultiBodyJointMotor(btMultiBodyJointMotor* native);
 
 	public:
-		MultiBodyJointMotor(MultiBody^ body, int link, float desiredVelocity, float maxMotorImpulse);
+		MultiBodyJointMotor(MultiBody^ body, int link, int linkDoF, float desiredVelocity, float maxMotorImpulse);
 	};
 };

@@ -16,10 +16,10 @@ MultiBody::MultiBody(btMultiBody* native)
 	_links = gcnew array<MultibodyLink^>(_native->getNumLinks());
 }
 
-MultiBody::MultiBody(int nLinks, btScalar mass, Vector3 inertia, bool fixedBase, bool canSleep)
+MultiBody::MultiBody(int nLinks, btScalar mass, Vector3 inertia, bool fixedBase, bool canSleep, bool multiDof)
 {
 	VECTOR3_DEF(inertia);
-	_native = new btMultiBody(nLinks, mass, VECTOR3_USE(inertia), fixedBase, canSleep);
+	_native = new btMultiBody(nLinks, mass, VECTOR3_USE(inertia), fixedBase, canSleep, multiDof);
 	VECTOR3_DEL(inertia);
 
 	_links = gcnew array<MultibodyLink^>(nLinks);
