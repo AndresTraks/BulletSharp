@@ -276,7 +276,8 @@ namespace DemoFramework.Xna
                 }
                 else
                 {
-                    colObj.GetWorldTransform(out transform);
+                    transform = ((colObj as RigidBody).MotionState as DefaultMotionState).GraphicsWorldTrans;
+                    //colObj.GetWorldTransform(out transform);
                 }
                 InitInstanceData(colObj, colObj.CollisionShape, ref transform);
             }

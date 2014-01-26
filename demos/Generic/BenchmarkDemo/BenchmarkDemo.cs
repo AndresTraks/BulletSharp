@@ -1,6 +1,6 @@
 ﻿using System;
 using BulletSharp;
-using BulletSharp.MultiThreaded;
+//using BulletSharp.MultiThreaded;
 using DemoFramework;
 
 namespace BenchmarkDemo
@@ -26,7 +26,7 @@ namespace BenchmarkDemo
                 //"F11 - Toggle fullscreen\n" +
                 "Space - Shoot box");
         }
-
+        /*
         ThreadSupportInterface CreateSolverThreadSupport(int maxNumThreads)
         {
             //#define SEQUENTIAL
@@ -36,7 +36,7 @@ namespace BenchmarkDemo
                 SequentialThreadSupport* threadSupport = new SequentialThreadSupport(tci);
                 threadSupport->startSPU();
             }
-            else */
+            else * /
 
             Win32ThreadConstructionInfo threadConstructionInfo = new Win32ThreadConstructionInfo("solverThreads",
                 Win32ThreadFunc.SolverThreadFunc, Win32LSMemorySetupFunc.SolverLSMemoryFunc, maxNumThreads);
@@ -44,7 +44,7 @@ namespace BenchmarkDemo
             threadSupport.StartSpu();
             return threadSupport;
         }
-
+        */
         protected override void OnInitializePhysics()
         {
             // collision configuration contains default setup for memory, collision setup
@@ -54,14 +54,14 @@ namespace BenchmarkDemo
 
             if (UseParallelDispatcherBenchmark)
             {
-                int maxNumOutstandingTasks = 4;
+                //int maxNumOutstandingTasks = 4;
 
-                Win32ThreadConstructionInfo info = new Win32ThreadConstructionInfo("collision",
+                /*Win32ThreadConstructionInfo info = new Win32ThreadConstructionInfo("collision",
                     Win32ThreadFunc.ProcessCollisionTask, Win32LSMemorySetupFunc.CreateCollisionLocalStoreMemory,
                     maxNumOutstandingTasks);
 
                 Win32ThreadSupport threadSupportCollision = new Win32ThreadSupport(info);
-                Dispatcher = new SpuGatheringCollisionDispatcher(threadSupportCollision, 1, CollisionConf);
+                Dispatcher = new SpuGatheringCollisionDispatcher(threadSupportCollision, 1, CollisionConf);*/
             }
             else
             {
@@ -80,8 +80,8 @@ namespace BenchmarkDemo
 
             if (UseParallelDispatcherBenchmark)
             {
-                ThreadSupportInterface thread = CreateSolverThreadSupport(4);
-                Solver = new ParallelConstraintSolver(thread);
+                //ThreadSupportInterface thread = CreateSolverThreadSupport(4);
+                //Solver = new ParallelConstraintSolver(thread);
             }
             else
             {

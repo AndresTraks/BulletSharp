@@ -135,7 +135,7 @@ namespace FeatherStoneDemo
             float mass = 13.5f * Scaling;
             Vector3 inertia = new Vector3(91, 344, 253) * Scaling * Scaling;
 
-            var body = new MultiBody(nLinks, mass, inertia, settings.IsFixedBase, settings.CanSleep);
+            var body = new MultiBody(nLinks, mass, inertia, settings.IsFixedBase, settings.CanSleep, false);
             //body.HasSelfCollision = false;
 
             //Quaternion orn = new Quaternion(0, 0, 1, -0.125f * Math.PI);
@@ -201,7 +201,7 @@ namespace FeatherStoneDemo
                 {
                     //if (true)
                     {
-                        var con = new MultiBodyJointMotor(body, i, 0, 50000);
+                        var con = new MultiBodyJointMotor(body, i, 0, 0, 50000);
                         (World as MultiBodyDynamicsWorld).AddMultiBodyConstraint(con);
                     }
 
