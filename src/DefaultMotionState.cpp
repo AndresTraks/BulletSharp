@@ -2,18 +2,18 @@
 
 #include "DefaultMotionState.h"
 
-DefaultMotionState::DefaultMotionState() : BulletSharp::MotionState(0)
+#define Native static_cast<btDefaultMotionState*>(_native)
+
+DefaultMotionState::DefaultMotionState(Matrix startTrans, Matrix centerOfMassOffset) : MotionState(0)
 {
-#ifdef BT_USE_SSE_IN_API
-	btTransform* identityMatrix = Math::MatrixToBtTransform(Matrix_Identity); // default optional parameters are not aligned
-	_native = ALIGNED_NEW(btDefaultMotionState) (*identityMatrix, *identityMatrix);
-	ALIGNED_FREE(identityMatrix);
-#else
-	_native = ALIGNED_NEW(btDefaultMotionState) ();
-#endif
+	btTransform* startTransTemp = Math::MatrixToBtTransform(startTrans);
+	btTransform* centerOfMassOffsetTemp = Math::MatrixToBtTransform(centerOfMassOffset);
+	_native = ALIGNED_NEW(btDefaultMotionState) (*startTransTemp, *centerOfMassOffsetTemp);
+	ALIGNED_FREE(startTransTemp);
+	ALIGNED_FREE(centerOfMassOffsetTemp);
 }
 
-DefaultMotionState::DefaultMotionState(Matrix startTrans) : BulletSharp::MotionState(0)
+DefaultMotionState::DefaultMotionState(Matrix startTrans) : MotionState(0)
 {
 	btTransform* startTransTemp = Math::MatrixToBtTransform(startTrans);
 #ifdef BT_USE_SSE_IN_API
@@ -24,6 +24,53 @@ DefaultMotionState::DefaultMotionState(Matrix startTrans) : BulletSharp::MotionS
 	_native = ALIGNED_NEW(btDefaultMotionState) (*startTransTemp);
 #endif
 	ALIGNED_FREE(startTransTemp);
+}
+
+DefaultMotionState::DefaultMotionState() : MotionState(0)
+{
+#ifdef BT_USE_SSE_IN_API
+	btTransform* identityMatrix = Math::MatrixToBtTransform(Matrix_Identity); // default optional parameters are not aligned
+	_native = ALIGNED_NEW(btDefaultMotionState) (*identityMatrix, *identityMatrix);
+	ALIGNED_FREE(identityMatrix);
+#else
+	_native = ALIGNED_NEW(btDefaultMotionState) ();
+#endif
+}
+
+Matrix DefaultMotionState::CenterOfMassOffset::get()
+{
+	return Math::BtTransformToMatrix(&Native->m_centerOfMassOffset);
+}
+void DefaultMotionState::CenterOfMassOffset::set(Matrix value)
+{
+	Math::MatrixToBtTransform(value, &Native->m_centerOfMassOffset);
+}
+
+Matrix DefaultMotionState::GraphicsWorldTrans::get()
+{
+	return Math::BtTransformToMatrix(&Native->m_graphicsWorldTrans);
+}
+void DefaultMotionState::GraphicsWorldTrans::set(Matrix value)
+{
+	Math::MatrixToBtTransform(value, &Native->m_graphicsWorldTrans);
+}
+
+Matrix DefaultMotionState::StartWorldTrans::get()
+{
+	return Math::BtTransformToMatrix(&Native->m_startWorldTrans);
+}
+void DefaultMotionState::StartWorldTrans::set(Matrix value)
+{
+	Math::MatrixToBtTransform(value, &Native->m_startWorldTrans);
+}
+
+Object^ DefaultMotionState::UserObject::get()
+{
+	return _userObject;
+}
+void DefaultMotionState::UserObject::set(Object^ value)
+{
+	_userObject = value;
 }
 
 Matrix DefaultMotionState::WorldTransform::get()
