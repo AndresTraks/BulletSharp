@@ -8,8 +8,8 @@
 
 #define Native (static_cast<btKinematicCharacterController*>(_native))
 
-KinematicCharacterController::KinematicCharacterController(btKinematicCharacterController* characterController)
-: CharacterControllerInterface(characterController)
+KinematicCharacterController::KinematicCharacterController(btKinematicCharacterController* native)
+	: CharacterControllerInterface(native)
 {
 }
 
@@ -48,9 +48,27 @@ void KinematicCharacterController::SetUseGhostSweepTest(bool useGhostObjectSweep
 	Native->setUseGhostSweepTest(useGhostObjectSweepTest);
 }
 
-BulletSharp::GhostObject^ KinematicCharacterController::GhostObject::get()
+PairCachingGhostObject^ KinematicCharacterController::GhostObject::get()
 {
-	return static_cast<BulletSharp::GhostObject^>(CollisionObject::GetManaged(Native->getGhostObject()));
+	return static_cast<PairCachingGhostObject^>(CollisionObject::GetManaged(Native->getGhostObject()));
+}
+
+btScalar KinematicCharacterController::Gravity::get()
+{
+	return Native->getGravity();
+}
+void KinematicCharacterController::Gravity::set(btScalar gravity)
+{
+	Native->setGravity(gravity);
+}
+
+btScalar KinematicCharacterController::MaxSlope::get()
+{
+	return Native->getMaxSlope();
+}
+void KinematicCharacterController::MaxSlope::set(btScalar slopeRadians)
+{
+	Native->setMaxSlope(slopeRadians);
 }
 
 #endif
