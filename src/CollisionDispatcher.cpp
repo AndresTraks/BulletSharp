@@ -71,8 +71,8 @@ CollisionConfiguration^ CollisionDispatcher::CollisionConfiguration::get()
 }
 void CollisionDispatcher::CollisionConfiguration::set(BulletSharp::CollisionConfiguration^ value)
 {
-	Native->setCollisionConfiguration(value->_native);
 	_collisionConfiguration = value;
+	Native->setCollisionConfiguration(value->_native);
 }
 
 DispatcherFlags CollisionDispatcher::DispatcherFlags::get()

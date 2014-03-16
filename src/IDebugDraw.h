@@ -1,7 +1,5 @@
 #pragma once
 
-using namespace System::Drawing;
-
 namespace BulletSharp
 {
 	public interface class IDebugDraw

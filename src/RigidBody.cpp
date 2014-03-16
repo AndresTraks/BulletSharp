@@ -30,7 +30,7 @@ void RigidBody::AddConstraintRef(TypedConstraint^ constraint)
 
 TypedConstraint^ RigidBody::GetConstraintRef(int index)
 {
-	return TypedConstraint::Upcast(Native->getConstraintRef(index));
+	return TypedConstraint::GetManaged(Native->getConstraintRef(index));
 }
 
 void RigidBody::RemoveConstraintRef(TypedConstraint^ constraint)

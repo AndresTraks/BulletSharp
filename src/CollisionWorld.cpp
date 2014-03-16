@@ -61,11 +61,11 @@ CollisionWorld::LocalConvexResult::LocalConvexResult(BulletSharp::CollisionObjec
 	VECTOR3_DEL(hitPointLocal);
 }
 
-BulletSharp::CollisionObject^ CollisionWorld::LocalConvexResult::CollisionObject::get()
+CollisionObject^ CollisionWorld::LocalConvexResult::HitCollisionObject::get()
 {
 	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)_native->m_hitCollisionObject);
 }
-void CollisionWorld::LocalConvexResult::CollisionObject::set(BulletSharp::CollisionObject^ value)
+void CollisionWorld::LocalConvexResult::HitCollisionObject::set(CollisionObject^ value)
 {
 	_native->m_hitCollisionObject = value->_native;
 }
@@ -88,6 +88,15 @@ void CollisionWorld::LocalConvexResult::HitNormalLocal::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &_native->m_hitNormalLocal);
 }
 
+Vector3 CollisionWorld::LocalConvexResult::HitPointLocal::get()
+{
+	return Math::BtVector3ToVector3(&_native->m_hitPointLocal);
+}
+void CollisionWorld::LocalConvexResult::HitPointLocal::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_native->m_hitPointLocal);
+}
+
 CollisionWorld::LocalShapeInfo^ CollisionWorld::LocalConvexResult::LocalShapeInfo::get()
 {
 	return gcnew CollisionWorld::LocalShapeInfo(_native->m_localShapeInfo);
@@ -98,9 +107,9 @@ void CollisionWorld::LocalConvexResult::LocalShapeInfo::set(CollisionWorld::Loca
 }
 
 
-CollisionWorld::ConvexResultCallback::ConvexResultCallback(btCollisionWorld::ConvexResultCallback* callback)
+CollisionWorld::ConvexResultCallback::ConvexResultCallback(btCollisionWorld::ConvexResultCallback* native)
 {
-	_native = callback;
+	_native = native;
 }
 
 CollisionWorld::ConvexResultCallback::~ConvexResultCallback()
@@ -195,15 +204,6 @@ CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3
 	VECTOR3_DEL(convexToWorld);
 }
 
-BulletSharp::CollisionObject^ CollisionWorld::ClosestConvexResultCallback::CollisionObject::get()
-{
-	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)Native->m_hitCollisionObject);
-}
-void CollisionWorld::ClosestConvexResultCallback::CollisionObject::set(BulletSharp::CollisionObject^ value)
-{
-	Native->m_hitCollisionObject = value->_native;
-}
-
 Vector3 CollisionWorld::ClosestConvexResultCallback::ConvexFromWorld::get()
 {
 	return Math::BtVector3ToVector3(&Native->m_convexFromWorld);
@@ -220,6 +220,15 @@ Vector3 CollisionWorld::ClosestConvexResultCallback::ConvexToWorld::get()
 void CollisionWorld::ClosestConvexResultCallback::ConvexToWorld::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &Native->m_convexToWorld);
+}
+
+CollisionObject^ CollisionWorld::ClosestConvexResultCallback::HitCollisionObject::get()
+{
+	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)Native->m_hitCollisionObject);
+}
+void CollisionWorld::ClosestConvexResultCallback::HitCollisionObject::set(CollisionObject^ value)
+{
+	Native->m_hitCollisionObject = value->_native;
 }
 
 Vector3 CollisionWorld::ClosestConvexResultCallback::HitNormalWorld::get()
@@ -241,9 +250,9 @@ void CollisionWorld::ClosestConvexResultCallback::HitPointWorld::set(Vector3 val
 }
 
 
-CollisionWorld::ContactResultCallback::ContactResultCallback(ContactResultCallbackWrapper* callback)
+CollisionWorld::ContactResultCallback::ContactResultCallback(ContactResultCallbackWrapper* native)
 {
-	_native = callback;
+	_native = native;
 }
 
 CollisionWorld::ContactResultCallback::~ContactResultCallback()
@@ -352,9 +361,9 @@ void CollisionWorld::LocalRayResult::LocalShapeInfo::set(CollisionWorld::LocalSh
 }
 
 
-CollisionWorld::RayResultCallback::RayResultCallback(btCollisionWorld::RayResultCallback* callback)
+CollisionWorld::RayResultCallback::RayResultCallback(btCollisionWorld::RayResultCallback* native)
 {
-	_native = callback;
+	_native = native;
 }
 
 CollisionWorld::RayResultCallback::~RayResultCallback()
@@ -376,15 +385,6 @@ btScalar CollisionWorld::RayResultCallback::AddSingleResult(LocalRayResult^ rayR
 bool CollisionWorld::RayResultCallback::NeedsCollision(BroadphaseProxy^ proxy0)
 {
 	return _native->needsCollision(proxy0->_native);
-}
-
-BulletSharp::CollisionObject^ CollisionWorld::RayResultCallback::CollisionObject::get()
-{
-	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)_native->m_collisionObject);
-}
-void CollisionWorld::RayResultCallback::CollisionObject::set(BulletSharp::CollisionObject^ value)
-{
-	_native->m_collisionObject = value->_native;
 }
 
 btScalar CollisionWorld::RayResultCallback::ClosestHitFraction::get()
@@ -412,6 +412,15 @@ CollisionFilterGroups CollisionWorld::RayResultCallback::CollisionFilterMask::ge
 void CollisionWorld::RayResultCallback::CollisionFilterMask::set(CollisionFilterGroups value)
 {
 	_native->m_collisionFilterMask = (short int)value;
+}
+
+CollisionObject^ CollisionWorld::RayResultCallback::CollisionObject::get()
+{
+	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)_native->m_collisionObject);
+}
+void CollisionWorld::RayResultCallback::CollisionObject::set(BulletSharp::CollisionObject^ value)
+{
+	_native->m_collisionObject = value->_native;
 }
 
 unsigned int CollisionWorld::RayResultCallback::Flags::get()
@@ -568,17 +577,16 @@ void CollisionWorld::AllHitsRayResultCallback::RayToWorld::set(Vector3 value)
 }
 
 
-CollisionWorld::CollisionWorld(btCollisionWorld* world)
+CollisionWorld::CollisionWorld(btCollisionWorld* native)
 {
-	_native = world;
+	_native = native;
 }
 
-CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, CollisionConfiguration^ collisionConfiguration)
+CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphasePairCache, CollisionConfiguration^ collisionConfiguration)
 {
-	_native = new btCollisionWorld(dispatcher->_native, pairCache->_native, collisionConfiguration->_native);
-	_collisionConfiguration = collisionConfiguration;
+	_native = new btCollisionWorld(dispatcher->_native, broadphasePairCache->_native, collisionConfiguration->_native);
 	_dispatcher = dispatcher;
-	_broadphase = pairCache;
+	_broadphase = broadphasePairCache;
 }
 
 CollisionWorld::~CollisionWorld()
@@ -637,11 +645,6 @@ CollisionWorld::!CollisionWorld()
 	_native = NULL;
 	
 	OnDisposed(this, nullptr);
-}
-
-bool CollisionWorld::IsDisposed::get()
-{
-	return (_native == NULL);
 }
 
 void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject,
@@ -781,6 +784,13 @@ void CollisionWorld::RemoveCollisionObject(CollisionObject^ collisionObject)
 	_native->removeCollisionObject(collisionObject->_native);
 }
 
+#ifndef DISABLE_SERIALIZE
+void CollisionWorld::Serialize(Serializer^ serializer)
+{
+	_native->serialize(serializer->_native);
+}
+#endif
+
 void CollisionWorld::UpdateAabbs()
 {
 	_native->updateAabbs();
@@ -791,21 +801,14 @@ void CollisionWorld::UpdateSingleAabb(CollisionObject^ colObj)
 	_native->updateSingleAabb(colObj->_native);
 }
 
-#ifndef DISABLE_SERIALIZE
-void CollisionWorld::Serialize(BulletSharp::Serializer^ serializer)
-{
-	_native->serialize(serializer->_native);
-}
-#endif
-
 BroadphaseInterface^ CollisionWorld::Broadphase::get()
 {
 	return _broadphase;
 }
-void CollisionWorld::Broadphase::set(BroadphaseInterface^ value)
+void CollisionWorld::Broadphase::set(BroadphaseInterface^ pairCache)
 {
-	_native->setBroadphase(value->_native);
-	_broadphase = value;
+	_native->setBroadphase(pairCache->_native);
+	_broadphase = pairCache;
 }
 
 AlignedCollisionObjectArray^ CollisionWorld::CollisionObjectArray::get()
@@ -842,9 +845,14 @@ bool CollisionWorld::ForceUpdateAllAabbs::get()
 {
 	return _native->getForceUpdateAllAabbs();
 }
-void CollisionWorld::ForceUpdateAllAabbs::set(bool value)
+void CollisionWorld::ForceUpdateAllAabbs::set(bool forceUpdateAllAabbs)
 {
-	_native->setForceUpdateAllAabbs(value);
+	_native->setForceUpdateAllAabbs(forceUpdateAllAabbs);
+}
+
+bool CollisionWorld::IsDisposed::get()
+{
+	return (_native == NULL);
 }
 
 int CollisionWorld::NumCollisionObjects::get()

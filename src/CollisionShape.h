@@ -21,7 +21,7 @@ namespace BulletSharp
 
 	internal:
 		btCollisionShape* _native;
-		CollisionShape(btCollisionShape* collisionShape);
+		CollisionShape(btCollisionShape* native);
 		static CollisionShape^ GetManaged(btCollisionShape* collisionShape);
 
 	public:
@@ -37,7 +37,7 @@ namespace BulletSharp
 			[Out] Vector3% temporalAabbMin, [Out] Vector3% temporalAabbMax);
 		void GetAabb(Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		void GetBoundingSphere([Out] Vector3% center, [Out] btScalar% radius);
-		btScalar GetContactBreakingThreshold(btScalar defaultContactThreshold);
+		btScalar GetContactBreakingThreshold(btScalar defaultContactThresholdFactor);
 
 #ifndef DISABLE_SERIALIZE
 		int CalculateSerializeBufferSize();
@@ -45,7 +45,6 @@ namespace BulletSharp
 		void SerializeSingleShape(Serializer^ serializer);
 #endif
 
-	public:
 		property bool IsDisposed
 		{
 			virtual bool get();
@@ -82,6 +81,11 @@ namespace BulletSharp
 		}
 
 		property bool IsInfinite
+		{
+			bool get();
+		}
+
+		property bool IsNonMoving
 		{
 			bool get();
 		}

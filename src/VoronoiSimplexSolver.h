@@ -14,7 +14,7 @@ namespace BulletSharp
 	public:
 		bool IsValid();
 		void Reset();
-		void SetBarycentricCoordinates(btScalar a, btScalar b, btScalar c, btScalar	d);
+		void SetBarycentricCoordinates(btScalar a, btScalar b, btScalar c, btScalar d);
 		void SetBarycentricCoordinates(btScalar a, btScalar b, btScalar c);
 		void SetBarycentricCoordinates(btScalar a, btScalar b);
 		void SetBarycentricCoordinates(btScalar a);
@@ -28,11 +28,14 @@ namespace BulletSharp
 #endif
 	{
 	internal:
-		VoronoiSimplexSolver(btVoronoiSimplexSolver* solver);
+		VoronoiSimplexSolver(btVoronoiSimplexSolver* solver, bool preventDelete);
 
 #ifdef NO_VIRTUAL_INTERFACE
 	internal:
 		btVoronoiSimplexSolver* _native;
+		
+	private:
+		bool _preventDelete;
 
 	public:
 		!VoronoiSimplexSolver();

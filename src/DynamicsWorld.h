@@ -21,22 +21,26 @@ namespace BulletSharp
 	internal:
 		InternalTickCallback^ _callback;
 		System::Collections::Generic::List<IActionInterface^>^ _actions;
-
-		DynamicsWorld(btDynamicsWorld* world);
+		ConstraintSolver^ _constraintSolver;
+		DynamicsWorld(btDynamicsWorld* native);
 
 	public:
-		void AddAction(IActionInterface^ actionInterface);
+		void AddAction(IActionInterface^ action);
 #ifndef DISABLE_CONSTRAINTS
-		void AddConstraint(TypedConstraint^ constraint,	bool disableCollisionsBetweenLinkedBodies);
+		void AddConstraint(TypedConstraint^ constraint, bool disableCollisionsBetweenLinkedBodies);
 		void AddConstraint(TypedConstraint^ constraint);
-		void RemoveConstraint(TypedConstraint^ constraint);
-		TypedConstraint^ GetConstraint(int index);
 #endif
 		void AddRigidBody(RigidBody^ rigidBody, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask);
 		void AddRigidBody(RigidBody^ rigidBody);
 		void ClearForces();
-		void RemoveAction(IActionInterface^ actionInterface);
-		void RemoveRigidBody(RigidBody^ rigidBody);
+#ifndef DISABLE_CONSTRAINTS
+		TypedConstraint^ GetConstraint(int index);
+#endif
+		void RemoveAction(IActionInterface^ action);
+#ifndef DISABLE_CONSTRAINTS
+		void RemoveConstraint(TypedConstraint^ constraint);
+#endif
+		void RemoveRigidBody(RigidBody^ body);
 		void SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo, bool isPreTick);
 		void SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo);
 		void SetInternalTickCallback(InternalTickCallback^ cb);
@@ -51,22 +55,24 @@ namespace BulletSharp
 			BulletSharp::ConstraintSolver^ get();
 			void set(BulletSharp::ConstraintSolver^ value);
 		}
+#endif
 
-		property ContactSolverInfo^ SolverInfo
+		property Vector3 Gravity
 		{
-			ContactSolverInfo^ get();
+			Vector3 get();
+			void set(Vector3 value);
 		}
 
+#ifndef DISABLE_CONSTRAINTS
 		property int NumConstraints
 		{
 			int get();
 		}
 #endif
 
-		virtual property Vector3 Gravity
+		property ContactSolverInfo^ SolverInfo
 		{
-			Vector3 get();
-			void set(Vector3 value);
+			ContactSolverInfo^ get();
 		}
 
 		property DynamicsWorldType WorldType

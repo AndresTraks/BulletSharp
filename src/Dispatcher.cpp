@@ -12,9 +12,9 @@
 #include "PoolAllocator.h"
 #endif
 
-DispatcherInfo::DispatcherInfo(btDispatcherInfo* info)
+DispatcherInfo::DispatcherInfo(btDispatcherInfo* native)
 {
-	_native = info;
+	_native = native;
 }
 
 btScalar DispatcherInfo::AllowedCcdPenetration::get()
@@ -128,9 +128,9 @@ void DispatcherInfo::UseEpa::set(bool value)
 }
 
 
-Dispatcher::Dispatcher(btDispatcher* dispatcher)
+Dispatcher::Dispatcher(btDispatcher* native)
 {
-	_native = dispatcher;
+	_native = native;
 }
 
 Dispatcher::~Dispatcher()
@@ -212,20 +212,26 @@ void Dispatcher::ReleaseManifold(PersistentManifold^ manifold)
 {
 	_native->releaseManifold((btPersistentManifold*)manifold->_native);
 }
-
-int Dispatcher::NumManifolds::get()
+/*
+PersistentManifold^ Dispatcher::InternalManifoldPointer::get()
 {
-	return _native->getNumManifolds();
+	return _native->getInternalManifoldPointer();
 }
-
-bool Dispatcher::IsDisposed::get()
-{
-	return (_native == NULL);
-}
-
+*/
 #ifndef DISABLE_UNCOMMON
 PoolAllocator^ Dispatcher::InternalManifoldPool::get()
 {
 	return gcnew PoolAllocator(_native->getInternalManifoldPool());
 }
 #endif
+
+bool Dispatcher::IsDisposed::get()
+{
+	return (_native == NULL);
+}
+
+int Dispatcher::NumManifolds::get()
+{
+	return _native->getNumManifolds();
+}
+

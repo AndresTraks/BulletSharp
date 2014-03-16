@@ -130,10 +130,12 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #define BtColorToBtVector(color) new btVector3(color.r, color.g, color.b)
 #define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
 #elif GRAPHICS_WAPICODEPACK
+using namespace System::Drawing;
 #define BtColor Color
 #define BtColorToBtVector(color) new btVector3(color.R / btScalar(255.0), color.G / btScalar(255.0), color.B / btScalar(255.0))
 #define BtVectorToBtColor(color) Color::FromArgb(0, (int)(color.getX() * btScalar(255.0)), (int)(color.getY() * btScalar(255.0)), (int)(color.getZ() * btScalar(255.0)))
 #elif GRAPHICS_GENERIC
+using namespace System::Drawing;
 #define BtColor Color
 #define BtColorToBtVector(color) new btVector3(color.R / btScalar(255.0), color.G / btScalar(255.0), color.B / btScalar(255.0))
 #define BtVectorToBtColor(color) Color::FromArgb(0, (int)(color.getX() * btScalar(255.0)), (int)(color.getY() * btScalar(255.0)), (int)(color.getZ() * btScalar(255.0)))

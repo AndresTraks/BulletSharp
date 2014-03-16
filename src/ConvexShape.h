@@ -7,7 +7,7 @@ namespace BulletSharp
 	public ref class ConvexShape : CollisionShape
 	{
 	internal:
-		ConvexShape(btConvexShape* convexShape);
+		ConvexShape(btConvexShape* native);
 
 	public:
 		void BatchedUnitVectorGetSupportingVertexWithoutMargin(array<Vector3>^ vectors, [Out] array<Vector3>^% supportVerticesOut);

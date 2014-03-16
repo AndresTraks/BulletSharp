@@ -7,8 +7,8 @@
 
 #define Native static_cast<btFixedConstraint*>(_native)
 
-FixedConstraint::FixedConstraint(btFixedConstraint* constraint)
-: TypedConstraint(constraint)
+FixedConstraint::FixedConstraint(btFixedConstraint* native)
+	: TypedConstraint(native)
 {
 }
 

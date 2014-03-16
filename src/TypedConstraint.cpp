@@ -137,7 +137,7 @@ RigidBody^ TypedConstraint::FixedBody::get()
 	return (RigidBody^)CollisionObject::GetManaged(&btTypedConstraint::getFixedBody());
 }
 
-TypedConstraint^ TypedConstraint::Upcast(btTypedConstraint* typedConstraint)
+TypedConstraint^ TypedConstraint::GetManaged(btTypedConstraint* typedConstraint)
 {
 	if (typedConstraint == 0)
 		return nullptr;

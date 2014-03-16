@@ -12,26 +12,14 @@ namespace BulletSharp
 	{
 	internal:
 		btRotationalLimitMotor* _native;
-
-		RotationalLimitMotor(btRotationalLimitMotor* motor);
+		RotationalLimitMotor(btRotationalLimitMotor* native);
 
 	public:
-		RotationalLimitMotor(RotationalLimitMotor^ motor);
 		RotationalLimitMotor();
+		RotationalLimitMotor(RotationalLimitMotor^ limitMotor);
 
-		btScalar SolveAngularLimits(btScalar timeStep, Vector3 axis,
-			btScalar jacDiagABInv, RigidBody^ body0, RigidBody^ body1);
+		btScalar SolveAngularLimits(btScalar timeStep, Vector3 axis, btScalar jacDiagABInv, RigidBody^ body0, RigidBody^ body1);
 		int TestLimitValue(btScalar test_value);
-
-		property bool IsLimited
-		{
-			bool get();
-		}
-
-		property bool NeedApplyTorques
-		{
-			bool get();
-		}
 
 		property btScalar AccumulatedImpulse
 		{
@@ -81,6 +69,11 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
+		property bool IsLimited
+		{
+			bool get();
+		}
+
 		property btScalar LimitSoftness
 		{
 			btScalar get();
@@ -103,6 +96,11 @@ namespace BulletSharp
 		{
 			btScalar get();
 			void set(btScalar value);
+		}
+
+		property bool NeedApplyTorques
+		{
+			bool get();
 		}
 
 		property btScalar NormalCFM
@@ -134,18 +132,15 @@ namespace BulletSharp
 	{
 	internal:
 		btTranslationalLimitMotor* _native;
-
-		TranslationalLimitMotor(btTranslationalLimitMotor* motor);
+		TranslationalLimitMotor(btTranslationalLimitMotor* native);
 
 	public:
-		TranslationalLimitMotor(TranslationalLimitMotor^ motor);
 		TranslationalLimitMotor();
+		TranslationalLimitMotor(TranslationalLimitMotor^ other);
 
 		bool IsLimited(int limitIndex);
 		bool NeedApplyForce(int limitIndex);
-		btScalar SolveLinearAxis(btScalar timeStep, btScalar jacDiagABInv,
-			RigidBody^ body1, Vector3 pointInA, RigidBody^ body2, Vector3 pointInB,
-			int limit_index, Vector3 axis_normal_on_a, Vector3 anchorPos);
+		btScalar SolveLinearAxis(btScalar timeStep, btScalar jacDiagABInv, RigidBody^ body1, Vector3 pointInA, RigidBody^ body2, Vector3 pointInB, int limit_index, Vector3 axis_normal_on_a, Vector3 anchorPos);
 		int TestLimitValue(int limitIndex, btScalar test_value);
 
 		property Vector3 AccumulatedImpulse
@@ -240,19 +235,20 @@ namespace BulletSharp
 	public ref class Generic6DofConstraint : TypedConstraint
 	{
 	internal:
-		Generic6DofConstraint(btGeneric6DofConstraint* constraint);
+		Generic6DofConstraint(btGeneric6DofConstraint* native);
 
 	public:
-		Generic6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
-			Matrix frameInA, Matrix frameInB, bool useReferenceFrameA);
-		Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frameInB,
-			bool useReferenceFrameA);
+		Generic6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA);
+		Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameB);
 
 		void CalcAnchorPos();
-		void CalculateTransforms();
 		void CalculateTransforms(Matrix transA, Matrix transB);
+		void CalculateTransforms();
+		//int GetLimitMotorInfo2(RotationalLimitMotor^ limot, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, btConstraintInfo2^ info, int row, Vector3 ax1, int rotational, int rotAllowed);
+		//int GetLimitMotorInfo2(RotationalLimitMotor^ limot, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, btConstraintInfo2^ info, int row, Vector3 ax1, int rotational);
 		btScalar GetAngle(int axis_index);
 		Vector3 GetAxis(int axis_index);
+		//void GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB);
 		btScalar GetRelativePivotPosition(int axis_index);
 		RotationalLimitMotor^ GetRotationalLimitMotor(int index);
 		bool IsLimited(int limitIndex);
@@ -295,7 +291,12 @@ namespace BulletSharp
 			Matrix get();
 			void set(Matrix value);
 		}
-
+/*
+		property void Info1NonVirtual
+		{
+			void get();
+		}
+*/
 		property Vector3 LinearLowerLimit
 		{
 			Vector3 get();

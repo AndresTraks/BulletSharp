@@ -71,10 +71,22 @@ namespace BulletSharp
 		void SetAabbForceUpdate(BroadphaseProxy^ absproxy,
 			Vector3 aabbMin, Vector3 aabbMax, Dispatcher^ dispatcher);
 
+		property int CId
+		{
+			int get();
+			void set(int value);
+		}
+
 		property int CUpdates
 		{
 			int get();
 			void set(int value);
+		}
+
+		property bool DeferredCollide
+		{
+			bool get();
+			void set(bool value);
 		}
 
 		property int DUpdates
@@ -95,30 +107,6 @@ namespace BulletSharp
 			void set(int value);
 		}
 
-		property int NewPairs
-		{
-			int get();
-			void set(int value);
-		}
-
-		property BulletSharp::OverlappingPairCache^ PairCache
-		{
-			BulletSharp::OverlappingPairCache^ get();
-			void set(BulletSharp::OverlappingPairCache^ value);
-		}
-
-		property int CId
-		{
-			int get();
-			void set(int value);
-		}
-
-		property bool DeferredCollide
-		{
-			bool get();
-			void set(bool value);
-		}
-
 		property int GId
 		{
 			int get();
@@ -129,6 +117,18 @@ namespace BulletSharp
 		{
 			bool get();
 			void set(bool value);
+		}
+
+		property int NewPairs
+		{
+			int get();
+			void set(int value);
+		}
+
+		property BulletSharp::OverlappingPairCache^ PairCache
+		{
+			BulletSharp::OverlappingPairCache^ get();
+			void set(BulletSharp::OverlappingPairCache^ value);
 		}
 
 		property int PId

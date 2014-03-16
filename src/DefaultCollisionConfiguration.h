@@ -4,6 +4,8 @@
 
 namespace BulletSharp
 {
+	ref class VoronoiSimplexSolver;
+
 	public ref class DefaultCollisionConstructionInfo
 	{
 	internal:
@@ -60,17 +62,25 @@ namespace BulletSharp
 	public ref class DefaultCollisionConfiguration : CollisionConfiguration
 	{
 	internal:
-		DefaultCollisionConfiguration(btDefaultCollisionConfiguration* conf);
+		DefaultCollisionConfiguration(btDefaultCollisionConfiguration* native);
+
+	private:
+		VoronoiSimplexSolver^ _simplexSolver;
 
 	public:
 		DefaultCollisionConfiguration(DefaultCollisionConstructionInfo^ constructionInfo);
 		DefaultCollisionConfiguration();
 
-		void SetConvexConvexMultipointIterations();
-		void SetConvexConvexMultipointIterations(int numPerturbationIterations);
 		void SetConvexConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold);
-		void SetPlaneConvexMultipointIterations();
-		void SetPlaneConvexMultipointIterations(int numPerturbationIterations);
+		void SetConvexConvexMultipointIterations(int numPerturbationIterations);
+		void SetConvexConvexMultipointIterations();
 		void SetPlaneConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold);
+		void SetPlaneConvexMultipointIterations(int numPerturbationIterations);
+		void SetPlaneConvexMultipointIterations();
+
+		property VoronoiSimplexSolver^ SimplexSolver
+		{
+			VoronoiSimplexSolver^ get();
+		}
 	};
 };

@@ -5,19 +5,20 @@
 #include "AlignedObjectArray.h"
 #include "BroadphaseProxy.h"
 #include "CollisionWorld.h"
+#include "ConvexShape.h"
 #include "Dispatcher.h"
 #include "GhostObject.h"
 #include "OverlappingPairCache.h"
 
 #define Native static_cast<btGhostObject*>(_native)
 
-GhostObject::GhostObject(btGhostObject* ghostObject)
-: CollisionObject(ghostObject)
+GhostObject::GhostObject(btGhostObject* native)
+	: CollisionObject(native)
 {
 }
 
 GhostObject::GhostObject()
-: CollisionObject(new btPairCachingGhostObject())
+: CollisionObject(new btGhostObject())
 {
 }
 
@@ -33,10 +34,31 @@ void GhostObject::AddOverlappingObjectInternal(BroadphaseProxy^ otherProxy)
 }
 #endif
 
+void GhostObject::ConvexSweepTest(ConvexShape^ castShape, Matrix convexFromWorld, Matrix convexToWorld, CollisionWorld::ConvexResultCallback^ resultCallback, float allowedCcdPenetration)
+{
+	btTransform* convexFromWorldTemp = Math::MatrixToBtTransform(convexFromWorld);
+	btTransform* convexToWorldTemp = Math::MatrixToBtTransform(convexToWorld);
+
+	Native->convexSweepTest((btConvexShape*)castShape->_native, *convexFromWorldTemp, *convexToWorldTemp, *resultCallback->_native, allowedCcdPenetration);
+
+	ALIGNED_FREE(convexFromWorldTemp);
+	ALIGNED_FREE(convexToWorldTemp);
+}
+
+void GhostObject::ConvexSweepTest(ConvexShape^ castShape, Matrix convexFromWorld, Matrix convexToWorld, CollisionWorld::ConvexResultCallback^ resultCallback)
+{
+	btTransform* convexFromWorldTemp = Math::MatrixToBtTransform(convexFromWorld);
+	btTransform* convexToWorldTemp = Math::MatrixToBtTransform(convexToWorld);
+
+	Native->convexSweepTest((btConvexShape*)castShape->_native, *convexFromWorldTemp, *convexToWorldTemp, *resultCallback->_native);
+
+	ALIGNED_FREE(convexFromWorldTemp);
+	ALIGNED_FREE(convexToWorldTemp);
+}
+
 CollisionObject^ GhostObject::GetOverlappingObject(int index)
 {
 	return CollisionObject::GetManaged(Native->getOverlappingObject(index));
-
 }
 
 void GhostObject::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, CollisionWorld::RayResultCallback^ resultCallback)
@@ -65,11 +87,7 @@ void GhostObject::RemoveOverlappingObjectInternal(BroadphaseProxy^ otherProxy, D
 GhostObject^ GhostObject::Upcast(CollisionObject^ colObj)
 {
 	btGhostObject* obj = btGhostObject::upcast(colObj->_native);
-	
-	if (obj == 0)
-		return nullptr;
-
-	return gcnew GhostObject(obj);
+	return (GhostObject^) CollisionObject::GetManaged(obj);
 }
 
 int GhostObject::NumOverlappingObjects::get()

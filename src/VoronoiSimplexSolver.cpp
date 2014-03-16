@@ -19,7 +19,7 @@ void SubSimplexClosestResult::Reset()
 	_native->reset();
 }
 
-void SubSimplexClosestResult::SetBarycentricCoordinates(btScalar a, btScalar b, btScalar c, btScalar	d)
+void SubSimplexClosestResult::SetBarycentricCoordinates(btScalar a, btScalar b, btScalar c, btScalar d)
 {
 	_native->setBarycentricCoordinates(a, b, c, d);
 }
@@ -46,8 +46,9 @@ void SubSimplexClosestResult::SetBarycentricCoordinates()
 
 
 #ifdef NO_VIRTUAL_INTERFACE
-VoronoiSimplexSolver::VoronoiSimplexSolver(btVoronoiSimplexSolver* solver)
+VoronoiSimplexSolver::VoronoiSimplexSolver(btVoronoiSimplexSolver* solver, bool preventDelete)
 {
+	_preventDelete = preventDelete;
 	_native = solver;
 }
 

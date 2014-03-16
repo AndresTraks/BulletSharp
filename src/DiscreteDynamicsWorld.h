@@ -14,7 +14,7 @@ namespace BulletSharp
 	public ref class DiscreteDynamicsWorld : DynamicsWorld
 	{
 	internal:
-		DiscreteDynamicsWorld(btDiscreteDynamicsWorld* world);
+		DiscreteDynamicsWorld(btDiscreteDynamicsWorld* native);
 
 #ifndef DISABLE_UNCOMMON
 	private:

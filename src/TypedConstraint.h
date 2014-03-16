@@ -83,7 +83,7 @@ namespace BulletSharp
 		}
 
 	internal:
-		static TypedConstraint^ Upcast(btTypedConstraint* typedConstraint);
+		static TypedConstraint^ GetManaged(btTypedConstraint* typedConstraint);
 
 	public:
 		property btScalar AppliedImpulse

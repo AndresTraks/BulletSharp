@@ -45,7 +45,7 @@ void ConvexConvexAlgorithm::CreateFunc::PdSolver::set(ConvexPenetrationDepthSolv
 
 SimplexSolverInterface^ ConvexConvexAlgorithm::CreateFunc::SimplexSolver::get()
 {
-	return gcnew SimplexSolverInterface(Native->m_simplexSolver);
+	return gcnew SimplexSolverInterface(Native->m_simplexSolver, true);
 }
 void ConvexConvexAlgorithm::CreateFunc::SimplexSolver::set(SimplexSolverInterface^ value)
 {

@@ -38,12 +38,12 @@
 #include "TriangleShapeEx.h"
 #endif
 
-CollisionShape::CollisionShape(btCollisionShape* collisionShape)
+CollisionShape::CollisionShape(btCollisionShape* native)
 {
 	// UnmanagedPointer may be set later if a child constructor does
 	// extra processing, so check for NULL here.
-	if (collisionShape)
-		UnmanagedPointer = collisionShape;
+	if (native)
+		UnmanagedPointer = native;
 }
 
 CollisionShape^ CollisionShape::GetManaged(btCollisionShape* collisionShape)
@@ -341,6 +341,11 @@ bool CollisionShape::IsConvex2d::get()
 bool CollisionShape::IsInfinite::get()
 {
 	return _native->isInfinite();
+}
+
+bool CollisionShape::IsNonMoving::get()
+{
+	return _native->isNonMoving();
 }
 
 bool CollisionShape::IsPolyhedral::get()
