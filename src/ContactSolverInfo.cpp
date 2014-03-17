@@ -4,14 +4,23 @@
 
 #include "ContactSolverInfo.h"
 
-ContactSolverInfoData::ContactSolverInfoData(btContactSolverInfoData* infoData)
+ContactSolverInfoData::ContactSolverInfoData(btContactSolverInfoData* native)
 {
-	_native = infoData;
+	_native = native;
 }
 
 ContactSolverInfoData::ContactSolverInfoData()
 {
 	_native = new btContactSolverInfoData();
+}
+
+btScalar ContactSolverInfoData::Damping::get()
+{
+	return _native->m_damping;
+}
+void ContactSolverInfoData::Damping::set(btScalar value)
+{
+	_native->m_damping = value;
 }
 
 btScalar ContactSolverInfoData::Erp::get()
@@ -30,15 +39,6 @@ btScalar ContactSolverInfoData::Erp2::get()
 void ContactSolverInfoData::Erp2::set(btScalar value)
 {
 	_native->m_erp2 = value;
-}
-
-btScalar ContactSolverInfoData::Damping::get()
-{
-	return _native->m_damping;
-}
-void ContactSolverInfoData::Damping::set(btScalar value)
-{
-	_native->m_damping = value;
 }
 
 btScalar ContactSolverInfoData::Friction::get()
@@ -204,13 +204,13 @@ void ContactSolverInfoData::WarmstartingFactor::set(btScalar value)
 }
 
 
-ContactSolverInfo::ContactSolverInfo(btContactSolverInfo *info)
-: ContactSolverInfoData(info)
+ContactSolverInfo::ContactSolverInfo(btContactSolverInfo* native)
+	: ContactSolverInfoData(native)
 {
 }
 
 ContactSolverInfo::ContactSolverInfo()
-: ContactSolverInfoData(new btContactSolverInfo())
+	: ContactSolverInfoData(new btContactSolverInfo())
 {
 }
 

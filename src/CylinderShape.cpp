@@ -4,13 +4,13 @@
 
 #define Native static_cast<btCylinderShape*>(_native)
 
-CylinderShape::CylinderShape(btCylinderShape* shape)
-: ConvexInternalShape(shape)
+CylinderShape::CylinderShape(btCylinderShape* native)
+	: ConvexInternalShape(native)
 {
 }
 
 CylinderShape::CylinderShape(Vector3 halfExtents)
-: ConvexInternalShape(0)
+	: ConvexInternalShape(0)
 {
 	VECTOR3_DEF(halfExtents);
 	UnmanagedPointer = new btCylinderShape(VECTOR3_USE(halfExtents));
@@ -18,7 +18,7 @@ CylinderShape::CylinderShape(Vector3 halfExtents)
 }
 
 CylinderShape::CylinderShape(btScalar halfExtentsX, btScalar halfExtentsY, btScalar halfExtentsZ)
-: ConvexInternalShape(0)
+	: ConvexInternalShape(0)
 {
 	btVector3* halfExtentsTemp = new btVector3(halfExtentsX,halfExtentsY,halfExtentsZ);
 	UnmanagedPointer = new btCylinderShape(*halfExtentsTemp);
@@ -26,7 +26,7 @@ CylinderShape::CylinderShape(btScalar halfExtentsX, btScalar halfExtentsY, btSca
 }
 
 CylinderShape::CylinderShape(btScalar halfExtents)
-: ConvexInternalShape(0)
+	: ConvexInternalShape(0)
 {
 	btVector3* halfExtentsTemp = new btVector3(halfExtents,halfExtents,halfExtents);
 	UnmanagedPointer = new btCylinderShape(*halfExtentsTemp);
@@ -58,7 +58,7 @@ int CylinderShape::UpAxis::get()
 
 
 CylinderShapeX::CylinderShapeX(Vector3 halfExtents)
-: CylinderShape((btCylinderShape*)0)
+	: CylinderShape((btCylinderShape*)0)
 {
 	VECTOR3_DEF(halfExtents);
 	UnmanagedPointer = new btCylinderShapeX(VECTOR3_USE(halfExtents));
@@ -66,7 +66,7 @@ CylinderShapeX::CylinderShapeX(Vector3 halfExtents)
 }
 
 CylinderShapeX::CylinderShapeX(btScalar halfExtentsX, btScalar halfExtentsY, btScalar halfExtentsZ)
-: CylinderShape((btCylinderShape*)0)
+	: CylinderShape((btCylinderShape*)0)
 {
 	btVector3* halfExtentsTemp = new btVector3(halfExtentsX,halfExtentsY,halfExtentsZ);
 	UnmanagedPointer = new btCylinderShapeX(*halfExtentsTemp);
@@ -74,7 +74,7 @@ CylinderShapeX::CylinderShapeX(btScalar halfExtentsX, btScalar halfExtentsY, btS
 }
 
 CylinderShapeX::CylinderShapeX(btScalar halfExtents)
-: CylinderShape((btCylinderShape*)0)
+	: CylinderShape((btCylinderShape*)0)
 {
 	btVector3* halfExtentsTemp = new btVector3(halfExtents,halfExtents,halfExtents);
 	UnmanagedPointer = new btCylinderShapeX(*halfExtentsTemp);
@@ -83,7 +83,7 @@ CylinderShapeX::CylinderShapeX(btScalar halfExtents)
 
 
 CylinderShapeZ::CylinderShapeZ(Vector3 halfExtents)
-: CylinderShape((btCylinderShape*)0)
+	: CylinderShape((btCylinderShape*)0)
 {
 	VECTOR3_DEF(halfExtents);
 	UnmanagedPointer = new btCylinderShapeZ(VECTOR3_USE(halfExtents));
@@ -99,7 +99,7 @@ CylinderShapeZ::CylinderShapeZ(btScalar halfExtentsX, btScalar halfExtentsY, btS
 }
 
 CylinderShapeZ::CylinderShapeZ(btScalar halfExtents)
-: CylinderShape((btCylinderShape*)0)
+	: CylinderShape((btCylinderShape*)0)
 {
 	btVector3* halfExtentsTemp = new btVector3(halfExtents,halfExtents,halfExtents);
 	UnmanagedPointer = new btCylinderShapeZ(*halfExtentsTemp);

@@ -12,7 +12,7 @@ namespace BulletSharp
 		Vector3Array^ _unscaledPoints;
 
 	internal:
-		ConvexHullShape(btConvexHullShape* shape);
+		ConvexHullShape(btConvexHullShape* native);
 
 	public:
 		ConvexHullShape();
@@ -21,6 +21,8 @@ namespace BulletSharp
 		void AddPoint(Vector3 point, bool recalculateLocalAabb);
 		void AddPoint(Vector3 point);
 		Vector3 GetScaledPoint(int i);
+		void Project(Matrix trans, Vector3 dir, [Out] float% minProj, [Out] float% maxProj, [Out] Vector3% witnesPtMin,
+			[Out] Vector3% witnesPtMax);
 
 		property int NumPoints
 		{

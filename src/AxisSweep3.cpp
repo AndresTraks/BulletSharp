@@ -3,8 +3,8 @@
 #include "AxisSweep3.h"
 #include "OverlappingPairCache.h"
 
-AxisSweep3::AxisSweep3(btAxisSweep3* axisSweep)
-	: BroadphaseInterface(axisSweep)
+AxisSweep3::AxisSweep3(btAxisSweep3* native)
+	: BroadphaseInterface(native)
 {
 }
 
@@ -59,8 +59,8 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax)
 }
 
 
-AxisSweep3_32Bit::AxisSweep3_32Bit(bt32BitAxisSweep3* axisSweep)
-	: BroadphaseInterface(axisSweep)
+AxisSweep3_32Bit::AxisSweep3_32Bit(bt32BitAxisSweep3* native)
+	: BroadphaseInterface(native)
 {
 }
 

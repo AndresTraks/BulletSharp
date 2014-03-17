@@ -4,13 +4,13 @@
 
 #define Native static_cast<btConeShape*>(_native)
 
-ConeShape::ConeShape(btConeShape* shape)
-: ConvexInternalShape(shape)
+ConeShape::ConeShape(btConeShape* native)
+	: ConvexInternalShape(native)
 {
 }
 
 ConeShape::ConeShape(btScalar radius, btScalar height)
-: ConvexInternalShape(new btConeShape(radius, height))
+	: ConvexInternalShape(new btConeShape(radius, height))
 {
 }
 
@@ -35,11 +35,11 @@ btScalar ConeShape::Radius::get()
 
 
 ConeShapeX::ConeShapeX(btScalar radius, btScalar height)
-: ConeShape(new btConeShapeX(radius, height))
+	: ConeShape(new btConeShapeX(radius, height))
 {
 }
 
 ConeShapeZ::ConeShapeZ(btScalar radius, btScalar height)
-: ConeShape(new btConeShapeX(radius, height))
+	: ConeShape(new btConeShapeZ(radius, height))
 {
 }

@@ -4,8 +4,8 @@
 
 namespace BulletSharp
 {
-	ref class CollisionConfiguration;
 	ref class CollisionAlgorithmCreateFunc;
+	ref class CollisionConfiguration;
 
 	public delegate void NearCallback(BroadphasePair^ collisionPair,
 		CollisionDispatcher^ dispatcher, DispatcherInfo^ dispatchInfo);
@@ -35,7 +35,7 @@ namespace BulletSharp
 		System::Collections::Generic::List<CollisionAlgorithmCreateFunc^>^ _collisionCreateFuncs;
 
 	internal:
-		CollisionDispatcher(btCollisionDispatcher* dispatcher);
+		CollisionDispatcher(btCollisionDispatcher* native);
 
 	public:
 		CollisionDispatcher(CollisionConfiguration^ collisionConfiguration);
@@ -53,7 +53,7 @@ namespace BulletSharp
 			void set(BulletSharp::CollisionConfiguration^ value);
 		}
 
-		property DispatcherFlags DispatcherFlags
+		property BulletSharp::DispatcherFlags DispatcherFlags
 		{
 			BulletSharp::DispatcherFlags get();
 			void set(BulletSharp::DispatcherFlags value);

@@ -26,13 +26,13 @@ btCollisionDispatcherWrapper::btCollisionDispatcherWrapper(btCollisionConfigurat
 
 #define Native static_cast<btCollisionDispatcherWrapper*>(_native)
 
-CollisionDispatcher::CollisionDispatcher(btCollisionDispatcher* dispatcher)
-: Dispatcher(dispatcher)
+CollisionDispatcher::CollisionDispatcher(btCollisionDispatcher* native)
+	: Dispatcher(native)
 {
 }
 
 CollisionDispatcher::CollisionDispatcher(BulletSharp::CollisionConfiguration^ collisionConfiguration)
-: Dispatcher(new btCollisionDispatcherWrapper(collisionConfiguration->_native))
+	: Dispatcher(new btCollisionDispatcherWrapper(collisionConfiguration->_native))
 {
 	_collisionConfiguration = collisionConfiguration;
 }
@@ -42,8 +42,8 @@ CollisionDispatcher::CollisionDispatcher()
 {
 }
 
-void CollisionDispatcher::DefaultNearCallback(BroadphasePair^ collisionPair,
-	CollisionDispatcher^ dispatcher, DispatcherInfo^ dispatchInfo)
+void CollisionDispatcher::DefaultNearCallback(BroadphasePair^ collisionPair, CollisionDispatcher^ dispatcher,
+	DispatcherInfo^ dispatchInfo)
 {
 	btCollisionDispatcherWrapper::defaultNearCallback(*collisionPair->_native,
 		*(btCollisionDispatcher*)dispatcher->_native, *dispatchInfo->_native);
@@ -69,10 +69,10 @@ CollisionConfiguration^ CollisionDispatcher::CollisionConfiguration::get()
 	}
 	return _collisionConfiguration;
 }
-void CollisionDispatcher::CollisionConfiguration::set(BulletSharp::CollisionConfiguration^ value)
+void CollisionDispatcher::CollisionConfiguration::set(BulletSharp::CollisionConfiguration^ config)
 {
-	_collisionConfiguration = value;
-	Native->setCollisionConfiguration(value->_native);
+	_collisionConfiguration = config;
+	Native->setCollisionConfiguration(config->_native);
 }
 
 DispatcherFlags CollisionDispatcher::DispatcherFlags::get()

@@ -12,9 +12,9 @@
 #include "SoftBody.h"
 #endif
 
-CollisionObject::CollisionObject(btCollisionObject* collisionObject)
+CollisionObject::CollisionObject(btCollisionObject* native)
 {
-	UnmanagedPointer = collisionObject;
+	UnmanagedPointer = native;
 }
 
 CollisionObject::CollisionObject()
@@ -51,15 +51,22 @@ bool CollisionObject::IsDisposed::get()
 	return (_native == NULL);
 }
 
+void CollisionObject::Activate(bool forceActivation)
+{
+	_native->activate(forceActivation);
+}
+
 void CollisionObject::Activate()
 {
 	_native->activate();
 }
 
-void CollisionObject::Activate(bool forceActivation)
+#ifndef DISABLE_SERIALIZE
+int CollisionObject::CalculateSerializeBufferSize()
 {
-	_native->activate(forceActivation);
+	return _native->calculateSerializeBufferSize();
 }
+#endif
 
 bool CollisionObject::CheckCollideWith(CollisionObject^ collisionObject)
 {
@@ -76,14 +83,27 @@ void CollisionObject::GetWorldTransform([Out] Matrix% outTransform)
 	BtTransformToMatrixFast(_native->getWorldTransform(), outTransform);
 }
 
-bool CollisionObject::HasAnisotropicFriction()
-{
-	return _native->hasAnisotropicFriction();
-}
 bool CollisionObject::HasAnisotropicFriction(AnisotropicFrictionFlags frictionMode)
 {
 	return _native->hasAnisotropicFriction((int)frictionMode);
 }
+
+bool CollisionObject::HasAnisotropicFriction()
+{
+	return _native->hasAnisotropicFriction();
+}
+
+#ifndef DISABLE_SERIALIZE
+char^ CollisionObject::Serialize(void^ dataBuffer, Serializer^ serializer)
+{
+	return _native->serialize(dataBuffer->_native, serializer->_native);
+}
+
+void CollisionObject::SerializeSingleObject(Serializer^ serializer)
+{
+	_native->serializeSingleObject(serializer->_native);
+}
+#endif
 
 void CollisionObject::SetAnisotropicFriction(Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode)
 {
@@ -91,30 +111,13 @@ void CollisionObject::SetAnisotropicFriction(Vector3 anisotropicFriction, Anisot
 	_native->setAnisotropicFriction(VECTOR3_USE(anisotropicFriction), (int)frictionMode);
 	VECTOR3_DEL(anisotropicFriction);
 }
+
 void CollisionObject::SetAnisotropicFriction(Vector3 anisotropicFriction)
 {
 	VECTOR3_DEF(anisotropicFriction);
 	_native->setAnisotropicFriction(VECTOR3_USE(anisotropicFriction));
 	VECTOR3_DEL(anisotropicFriction);
 }
-
-#ifndef DISABLE_SERIALIZE
-int CollisionObject::CalculateSerializeBufferSize()
-{
-	return _native->calculateSerializeBufferSize();
-}
-
-String^ CollisionObject::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
-{
-	const char* name = _native->serialize(dataBuffer.ToPointer(), serializer->_native);
-	return gcnew String(name);
-}
-
-void CollisionObject::SerializeSingleObject(BulletSharp::Serializer^ serializer)
-{
-	_native->serializeSingleObject(serializer->_native);
-}
-#endif
 
 CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
 {
@@ -185,14 +188,19 @@ BroadphaseProxy^ CollisionObject::BroadphaseHandle::get()
 	btBroadphaseProxy* broadphaseHandle = _native->getBroadphaseHandle();
 	ReturnCachedObject(BroadphaseProxy, _broadphaseHandle, broadphaseHandle);
 }
+void CollisionObject::BroadphaseHandle::set(BroadphaseProxy^ handle)
+{
+	_broadphaseHandle = handle;
+	_native->setBroadphaseHandle(handle->_native);
+}
 
 btScalar CollisionObject::CcdMotionThreshold::get()
 {
 	return _native->getCcdMotionThreshold();
 }
-void CollisionObject::CcdMotionThreshold::set(btScalar value)
+void CollisionObject::CcdMotionThreshold::set(btScalar ccdMotionThreshold)
 {
-	_native->setCcdMotionThreshold(value);
+	_native->setCcdMotionThreshold(ccdMotionThreshold);
 }
 
 btScalar CollisionObject::CcdSquareMotionThreshold::get()
@@ -204,63 +212,63 @@ btScalar CollisionObject::CcdSweptSphereRadius::get()
 {
 	return _native->getCcdSweptSphereRadius();
 }
-void CollisionObject::CcdSweptSphereRadius::set(btScalar value)
+void CollisionObject::CcdSweptSphereRadius::set(btScalar radius)
 {
-	_native->setCcdSweptSphereRadius(value);
+	_native->setCcdSweptSphereRadius(radius);
 }
 
 CollisionFlags CollisionObject::CollisionFlags::get()
 {
 	return (BulletSharp::CollisionFlags)_native->getCollisionFlags();
 }
-void CollisionObject::CollisionFlags::set(BulletSharp::CollisionFlags value)
+void CollisionObject::CollisionFlags::set(BulletSharp::CollisionFlags flags)
 {
-	_native->setCollisionFlags((int)value);
+	_native->setCollisionFlags((int)flags);
 }
 
 CollisionShape^ CollisionObject::CollisionShape::get()
 {
 	return BulletSharp::CollisionShape::GetManaged(_native->getCollisionShape());
 }
-void CollisionObject::CollisionShape::set(BulletSharp::CollisionShape^ value)
+void CollisionObject::CollisionShape::set(BulletSharp::CollisionShape^ collisionShape)
 {
-	_native->setCollisionShape(value->_native);
+	_native->setCollisionShape(collisionShape->_native);
 }
 
 int CollisionObject::CompanionId::get()
 {
 	return _native->getCompanionId();
 }
-void CollisionObject::CompanionId::set(int value)
+void CollisionObject::CompanionId::set(int id)
 {
-	_native->setCompanionId(value);
+	_native->setCompanionId(id);
 }
 
 btScalar CollisionObject::ContactProcessingThreshold::get()
 {
 	return _native->getContactProcessingThreshold();
 }
-void CollisionObject::ContactProcessingThreshold::set(btScalar value)
+void CollisionObject::ContactProcessingThreshold::set(btScalar contactProcessingThreshold)
 {
-	_native->setContactProcessingThreshold(value);
+	_native->setContactProcessingThreshold(contactProcessingThreshold);
 }
 
 btScalar CollisionObject::DeactivationTime::get()
 {
 	return _native->getDeactivationTime();
 }
-void CollisionObject::DeactivationTime::set(btScalar value)
+void CollisionObject::DeactivationTime::set(btScalar time)
 {
-	_native->setDeactivationTime(value);
+	_native->setDeactivationTime(time);
 }
 
 btScalar CollisionObject::Friction::get()
 {
 	return _native->getFriction();
 }
-void CollisionObject::Friction::set(btScalar value)
+void CollisionObject::Friction::set(btScalar frict)
 {
-	_native->setFriction(value);
+	_native->setFriction(frict);
 }
 
 bool CollisionObject::HasContactResponse::get()
@@ -272,42 +280,42 @@ btScalar CollisionObject::HitFraction::get()
 {
 	return _native->getHitFraction();
 }
-void CollisionObject::HitFraction::set(btScalar value)
+void CollisionObject::HitFraction::set(btScalar hitFraction)
 {
-	_native->setHitFraction(value);
+	_native->setHitFraction(hitFraction);
 }
 
 Vector3 CollisionObject::InterpolationAngularVelocity::get()
 {
 	return Math::BtVector3ToVector3(&_native->getInterpolationAngularVelocity());
 }
-void CollisionObject::InterpolationAngularVelocity::set(Vector3 value)
+void CollisionObject::InterpolationAngularVelocity::set(Vector3 angvel)
 {
-	VECTOR3_DEF(value);
-	_native->setInterpolationAngularVelocity(VECTOR3_USE(value));
-	VECTOR3_DEL(value);
+	VECTOR3_DEF(angvel);
+	_native->setInterpolationAngularVelocity(VECTOR3_USE(angvel));
+	VECTOR3_DEL(angvel);
 }
 
 Vector3 CollisionObject::InterpolationLinearVelocity::get()
 {
 	return Math::BtVector3ToVector3(&_native->getInterpolationLinearVelocity());
 }
-void CollisionObject::InterpolationLinearVelocity::set(Vector3 value)
+void CollisionObject::InterpolationLinearVelocity::set(Vector3 linvel)
 {
-	VECTOR3_DEF(value);
-	_native->setInterpolationLinearVelocity(VECTOR3_USE(value));
-	VECTOR3_DEL(value);
+	VECTOR3_DEF(linvel);
+	_native->setInterpolationLinearVelocity(VECTOR3_USE(linvel));
+	VECTOR3_DEL(linvel);
 }
 
 Matrix CollisionObject::InterpolationWorldTransform::get()
 {
 	return Math::BtTransformToMatrix(&_native->getInterpolationWorldTransform());
 }
-void CollisionObject::InterpolationWorldTransform::set(Matrix value)
+void CollisionObject::InterpolationWorldTransform::set(Matrix trans)
 {
-	btTransform* valueTemp = Math::MatrixToBtTransform(value);
-	_native->setInterpolationWorldTransform(*valueTemp);
-	ALIGNED_FREE(valueTemp);
+	TRANSFORM_CONV(trans);
+	_native->setInterpolationWorldTransform(TRANSFORM_USE(trans));
+	TRANSFORM_DEL(trans);
 }
 
 bool CollisionObject::IsActive::get()
@@ -324,9 +332,9 @@ int CollisionObject::IslandTag::get()
 {
 	return _native->getIslandTag();
 }
-void CollisionObject::IslandTag::set(int value)
+void CollisionObject::IslandTag::set(int tag)
 {
-	_native->setIslandTag(value);
+	_native->setIslandTag(tag);
 }
 
 bool CollisionObject::IsStaticObject::get()
@@ -348,18 +356,18 @@ btScalar CollisionObject::Restitution::get()
 {
 	return _native->getRestitution();
 }
-void CollisionObject::Restitution::set(btScalar value)
+void CollisionObject::Restitution::set(btScalar rest)
 {
-	_native->setRestitution(value);
+	_native->setRestitution(rest);
 }
 
 btScalar CollisionObject::RollingFriction::get()
 {
 	return _native->getRollingFriction();
 }
-void CollisionObject::RollingFriction::set(btScalar value)
+void CollisionObject::RollingFriction::set(btScalar frict)
 {
-	_native->setRollingFriction(value);
+	_native->setRollingFriction(frict);
 }
 
 int CollisionObject::UpdateRevisionInternal::get()
@@ -371,9 +379,9 @@ int CollisionObject::UserIndex::get()
 {
 	return _native->getUserIndex();
 }
-void CollisionObject::UserIndex::set(int value)
+void CollisionObject::UserIndex::set(int index)
 {
-	_native->setUserIndex(value);
+	_native->setUserIndex(index);
 }
 
 Object^ CollisionObject::UserObject::get()
@@ -389,11 +397,11 @@ Matrix CollisionObject::WorldTransform::get()
 {
 	return Math::BtTransformToMatrix(&_native->getWorldTransform());
 }
-void CollisionObject::WorldTransform::set(Matrix value)
+void CollisionObject::WorldTransform::set(Matrix worldTrans)
 {
-	btTransform* valueTemp = Math::MatrixToBtTransform(value);
-	_native->setWorldTransform(*valueTemp);
-	ALIGNED_FREE(valueTemp);
+	TRANSFORM_CONV(worldTrans);
+	_native->setWorldTransform(TRANSFORM_USE(worldTrans));
+	TRANSFORM_DEL(worldTrans);
 }
 
 btCollisionObject* CollisionObject::UnmanagedPointer::get()

@@ -6,14 +6,14 @@
 #include "Dbvt.h"
 #endif
 
-CompoundShapeChild::CompoundShapeChild(btCompoundShapeChild* compoundShapeChild)
+CompoundShapeChild::CompoundShapeChild(btCompoundShapeChild* native)
 {
-	_native = compoundShapeChild;
+	_native = native;
 }
 
 CompoundShapeChild::CompoundShapeChild()
 {
-	_native = new btCompoundShapeChild;
+	_native = new btCompoundShapeChild();
 }
 
 btScalar CompoundShapeChild::ChildMargin::get()
@@ -68,29 +68,30 @@ void CompoundShapeChild::Transform::set(Matrix value)
 
 #define Native (static_cast<btCompoundShape*>(_native))
 
-CompoundShape::CompoundShape(btCompoundShape* compoundShape)
-: CollisionShape(compoundShape)
-{
-}
-
-CompoundShape::CompoundShape()
-: CollisionShape(new btCompoundShape())
+CompoundShape::CompoundShape(btCompoundShape* native)
+	: CollisionShape(native)
 {
 }
 
 CompoundShape::CompoundShape(bool enableDynamicAabbTree)
-: CollisionShape(new btCompoundShape(enableDynamicAabbTree))
+	: CollisionShape(new btCompoundShape(enableDynamicAabbTree))
+{
+}
+
+CompoundShape::CompoundShape()
+	: CollisionShape(new btCompoundShape())
 {
 }
 
 void CompoundShape::AddChildShape(Matrix localTransform, CollisionShape^ shape)
 {
-	btTransform* localTransformTemp = Math::MatrixToBtTransform(localTransform);
-	Native->addChildShape(*localTransformTemp, shape->_native);
-	ALIGNED_FREE(localTransformTemp);
+	TRANSFORM_CONV(localTransform);
+	Native->addChildShape(TRANSFORM_USE(localTransform), shape->_native);
+	TRANSFORM_DEL(localTransform);
 }
 
-void CompoundShape::CalculatePrincipalAxisTransform(array<btScalar>^ masses, Matrix% principal, [Out] Vector3% inertia)
+void CompoundShape::CalculatePrincipalAxisTransform(array<btScalar>^ masses, Matrix% principal,
+	[Out] Vector3% inertia)
 {
 	pin_ptr<btScalar> massesPtr = &masses[0];
 	btTransform* principalTemp = Math::MatrixToBtTransform(principal);
@@ -134,18 +135,19 @@ void CompoundShape::RemoveChildShapeByIndex(int childShapeindex)
 	Native->removeChildShapeByIndex(childShapeindex);
 }
 
-void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransform, bool shouldRecalculateLocalAabb)
+void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransform,
+	bool shouldRecalculateLocalAabb)
 {
-	btTransform* newChildTransformTemp = Math::MatrixToBtTransform(newChildTransform);
-	Native->updateChildTransform(childIndex, *newChildTransformTemp, shouldRecalculateLocalAabb);
-	ALIGNED_FREE(newChildTransformTemp);
+	TRANSFORM_CONV(newChildTransform);
+	Native->updateChildTransform(childIndex, TRANSFORM_USE(newChildTransform), shouldRecalculateLocalAabb);
+	TRANSFORM_DEL(newChildTransform);
 }
 
 void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransform)
 {
-	btTransform* newChildTransformTemp = Math::MatrixToBtTransform(newChildTransform);
-	Native->updateChildTransform(childIndex, *newChildTransformTemp);
-	ALIGNED_FREE(newChildTransformTemp);
+	TRANSFORM_CONV(newChildTransform);
+	Native->updateChildTransform(childIndex, TRANSFORM_USE(newChildTransform));
+	TRANSFORM_DEL(newChildTransform);
 }
 
 CompoundShapeChildArray^ CompoundShape::ChildList::get()

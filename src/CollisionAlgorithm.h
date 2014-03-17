@@ -4,12 +4,12 @@
 
 namespace BulletSharp
 {
-	ref class Dispatcher;
-	ref class DispatcherInfo;
+	ref class AlignedManifoldArray;
 	ref class CollisionObject;
 	ref class CollisionObjectWrapper;
+	ref class Dispatcher;
+	ref class DispatcherInfo;
 	ref class ManifoldResult;
-	ref class AlignedManifoldArray;
 	ref class PersistentManifold;
 
 	public ref class CollisionAlgorithmConstructionInfo
@@ -47,8 +47,7 @@ namespace BulletSharp
 
 	internal:
 		btCollisionAlgorithm* _native;
-
-		CollisionAlgorithm(btCollisionAlgorithm* algorithm);
+		CollisionAlgorithm(btCollisionAlgorithm* native);
 
 	public:
 		!CollisionAlgorithm();

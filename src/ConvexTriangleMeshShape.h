@@ -12,13 +12,13 @@ namespace BulletSharp
 		StridingMeshInterface^ _stridingMeshInterface;
 
 	internal:
-		ConvexTriangleMeshShape(btConvexTriangleMeshShape* meshShape);
+		ConvexTriangleMeshShape(btConvexTriangleMeshShape* native);
 
 	public:
 		ConvexTriangleMeshShape(StridingMeshInterface^ meshInterface, bool calcAabb);
 		ConvexTriangleMeshShape(StridingMeshInterface^ meshInterface);
 
-		void CalculatePrincipalAxisTransform(Matrix principal, Vector3 inertia, btScalar volume);
+		void CalculatePrincipalAxisTransform(Matrix% principal, [Out] Vector3% inertia, [Out] btScalar% volume);
 
 		property StridingMeshInterface^ MeshInterface
 		{

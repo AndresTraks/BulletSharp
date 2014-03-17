@@ -10,7 +10,7 @@ namespace BulletSharp
 		ConvexShape^ childShape;
 
 	internal:
-		Convex2DShape(btConvex2dShape* shape);
+		Convex2DShape(btConvex2dShape* native);
 
 	public:
 		Convex2DShape(ConvexShape^ convexChildShape);

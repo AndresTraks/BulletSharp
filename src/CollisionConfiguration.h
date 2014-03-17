@@ -11,7 +11,7 @@ namespace BulletSharp
 	{
 	internal:
 		btCollisionConfiguration* _native;
-		CollisionConfiguration(btCollisionConfiguration* collisionConfiguration);
+		CollisionConfiguration(btCollisionConfiguration* native);
 
 	public:
 		!CollisionConfiguration();
@@ -19,7 +19,8 @@ namespace BulletSharp
 		~CollisionConfiguration();
 
 	public:
-		CollisionAlgorithmCreateFunc^ GetCollisionAlgorithmCreateFunc(BroadphaseNativeType proxyType0, BroadphaseNativeType proxyType1);
+		CollisionAlgorithmCreateFunc^ GetCollisionAlgorithmCreateFunc(BroadphaseNativeType proxyType0,
+			BroadphaseNativeType proxyType1);
 
 		property bool IsDisposed
 		{

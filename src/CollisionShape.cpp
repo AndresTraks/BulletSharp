@@ -201,11 +201,6 @@ CollisionShape::!CollisionShape()
 	OnDisposed(this, nullptr);
 }
 
-bool CollisionShape::IsDisposed::get()
-{
-	return _flags & 1;
-}
-
 void CollisionShape::CalculateLocalInertia(btScalar mass, [Out] Vector3% inertia)
 {
 	btVector3* inertiaTemp = new btVector3;
@@ -223,42 +218,41 @@ Vector3 CollisionShape::CalculateLocalInertia(btScalar mass)
 	return inertia;
 }
 
-void CollisionShape::CalculateTemporalAabb(Matrix curTrans,
-	Vector3 linvel,	Vector3 angvel, btScalar timeStep,
-	Vector3% temporalAabbMin, Vector3% temporalAabbMax)
+#ifndef DISABLE_SERIALIZE
+int CollisionShape::CalculateSerializeBufferSize()
 {
-	btTransform* curTransTemp = Math::MatrixToBtTransform(curTrans);
-	btVector3* temporalAabbMinTemp = new btVector3;
-	btVector3* temporalAabbMaxTemp = new btVector3;
+	return _native->calculateSerializeBufferSize();
+}
+#endif
+
+void CollisionShape::CalculateTemporalAabb(Matrix curTrans, Vector3 linvel, Vector3 angvel,
+	btScalar timeStep, Vector3% temporalAabbMin, Vector3% temporalAabbMax)
+{
+	TRANSFORM_CONV(curTrans);
 	VECTOR3_DEF(linvel);
 	VECTOR3_DEF(angvel);
-
-	_native->calculateTemporalAabb(*curTransTemp, VECTOR3_USE(linvel), VECTOR3_USE(angvel),
-		timeStep, *temporalAabbMinTemp,	*temporalAabbMaxTemp
-	);
-
+	btVector3* temporalAabbMinTemp = new btVector3;
+	btVector3* temporalAabbMaxTemp = new btVector3;
+	_native->calculateTemporalAabb(TRANSFORM_USE(curTrans), VECTOR3_USE(linvel), VECTOR3_USE(angvel),
+		timeStep, *temporalAabbMinTemp,	*temporalAabbMaxTemp);
 	temporalAabbMin = Math::BtVector3ToVector3(temporalAabbMaxTemp);
 	temporalAabbMax = Math::BtVector3ToVector3(temporalAabbMaxTemp);
-
-	delete curTransTemp;
-	delete temporalAabbMinTemp;
-	delete temporalAabbMaxTemp;
+	TRANSFORM_DEL(curTrans);
 	VECTOR3_DEL(linvel);
 	VECTOR3_DEL(angvel);
+	delete temporalAabbMinTemp;
+	delete temporalAabbMaxTemp;
 }
 
 void CollisionShape::GetAabb(Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
 {
-	btTransform* tTemp = Math::MatrixToBtTransform(t);
+	TRANSFORM_CONV(t);
 	btVector3* aabbMinTemp = new btVector3;
 	btVector3* aabbMaxTemp = new btVector3;
-	
-	_native->getAabb(*tTemp, *aabbMinTemp, *aabbMaxTemp);
-
+	_native->getAabb(TRANSFORM_USE(t), *aabbMinTemp, *aabbMaxTemp);
 	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
 	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
-
-	delete tTemp;
+	TRANSFORM_DEL(t);
 	delete aabbMinTemp;
 	delete aabbMaxTemp;
 }
@@ -267,32 +261,25 @@ void CollisionShape::GetBoundingSphere([Out] Vector3% center, [Out] btScalar% ra
 {
 	btVector3* centerTemp = new btVector3;
 	btScalar radiusTemp;
-	
 	_native->getBoundingSphere(*centerTemp, radiusTemp);
-	
 	center = Math::BtVector3ToVector3(centerTemp);
 	radius = radiusTemp;
 	delete centerTemp;
 }
 
-btScalar CollisionShape::GetContactBreakingThreshold(btScalar defaultContactThreshold)
+btScalar CollisionShape::GetContactBreakingThreshold(btScalar defaultContactThresholdFactor)
 {
-	return _native->getContactBreakingThreshold(defaultContactThreshold);
+	return _native->getContactBreakingThreshold(defaultContactThresholdFactor);
 }
 
 #ifndef DISABLE_SERIALIZE
-int CollisionShape::CalculateSerializeBufferSize()
-{
-	return _native->calculateSerializeBufferSize();
-}
-
-String^ CollisionShape::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
+String^ CollisionShape::Serialize(IntPtr dataBuffer, Serializer^ serializer)
 {
 	const char* name = _native->serialize(dataBuffer.ToPointer(), serializer->_native);
 	return gcnew String(name);
 }
 
-void CollisionShape::SerializeSingleShape(BulletSharp::Serializer^ serializer)
+void CollisionShape::SerializeSingleShape(Serializer^ serializer)
 {
 	_native->serializeSingleShape(serializer->_native);
 }
@@ -338,6 +325,11 @@ bool CollisionShape::IsConvex2d::get()
 	return _native->isConvex2d();
 }
 
+bool CollisionShape::IsDisposed::get()
+{
+	return _flags & 1;
+}
+
 bool CollisionShape::IsInfinite::get()
 {
 	return _native->isInfinite();
@@ -362,11 +354,11 @@ Vector3 CollisionShape::LocalScaling::get()
 {
 	return Math::BtVector3ToVector3(&_native->getLocalScaling());
 }
-void CollisionShape::LocalScaling::set(Vector3 value)
+void CollisionShape::LocalScaling::set(Vector3 scaling)
 {
-	VECTOR3_DEF(value);
-	_native->setLocalScaling(VECTOR3_USE(value));
-	VECTOR3_DEL(value);
+	VECTOR3_DEF(scaling);
+	_native->setLocalScaling(VECTOR3_USE(scaling));
+	VECTOR3_DEL(scaling);
 }
 
 btScalar CollisionShape::Margin::get()

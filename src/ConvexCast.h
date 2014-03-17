@@ -13,7 +13,7 @@ namespace BulletSharp
 		{
 		internal:
 			btConvexCast::CastResult* _native;
-			CastResult(btConvexCast::CastResult* castResult);
+			CastResult(btConvexCast::CastResult* native);
 
 		public:
 			!CastResult();
@@ -84,8 +84,7 @@ namespace BulletSharp
 
 	internal:
 		btConvexCast* _native;
-
-		ConvexCast(btConvexCast* convexCast);
+		ConvexCast(btConvexCast* native);
 
 	public:
 		!ConvexCast();

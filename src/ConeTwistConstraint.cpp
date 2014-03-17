@@ -7,33 +7,29 @@
 
 #define Native static_cast<btConeTwistConstraint*>(_native)
 
-ConeTwistConstraint::ConeTwistConstraint(btConeTwistConstraint* constraint)
-: TypedConstraint(constraint)
+ConeTwistConstraint::ConeTwistConstraint(btConeTwistConstraint* native)
+	: TypedConstraint(native)
 {
 }
 
-ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame, Matrix rigidBodyBFrame)
-: TypedConstraint(0)
+ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame,
+	Matrix rigidBodyBFrame)
+	: TypedConstraint(0)
 {
-	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
-	btTransform* rigidBodyBFrameTemp = Math::MatrixToBtTransform(rigidBodyBFrame);
-
-	UnmanagedPointer = new btConeTwistConstraint(
-		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
-		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp);
-
-	ALIGNED_FREE(rigidBodyAFrameTemp);
-	ALIGNED_FREE(rigidBodyBFrameTemp);
+	TRANSFORM_CONV(rigidBodyAFrame);
+	TRANSFORM_CONV(rigidBodyBFrame);
+	UnmanagedPointer = new btConeTwistConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(rigidBodyAFrame),
+		TRANSFORM_USE(rigidBodyBFrame));
+	TRANSFORM_DEL(rigidBodyAFrame);
+	TRANSFORM_DEL(rigidBodyBFrame);
 }
 
 ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame)
-: TypedConstraint(0)
+	: TypedConstraint(0)
 {
-	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
-
-	UnmanagedPointer = new btConeTwistConstraint(*(btRigidBody*)rigidBodyA->_native, *rigidBodyAFrameTemp);
-
-	ALIGNED_FREE(rigidBodyAFrameTemp);
+	TRANSFORM_CONV(rigidBodyAFrame);
+	UnmanagedPointer = new btConeTwistConstraint(*(btRigidBody*)rigidBodyA->_native, TRANSFORM_USE(rigidBodyAFrame));
+	TRANSFORM_DEL(rigidBodyAFrame);
 }
 
 void ConeTwistConstraint::CalcAngleInfo()
@@ -41,35 +37,41 @@ void ConeTwistConstraint::CalcAngleInfo()
 	Native->calcAngleInfo();
 }
 
-void ConeTwistConstraint::CalcAngleInfo2(Matrix transA, Matrix transB, Matrix invInertiaWorldA, Matrix invInertiaWorldB)
+void ConeTwistConstraint::CalcAngleInfo2(Matrix transA, Matrix transB, Matrix invInertiaWorldA,
+	Matrix invInertiaWorldB)
 {
-	btTransform* transATemp = Math::MatrixToBtTransform(transA);
-	btTransform* transBTemp = Math::MatrixToBtTransform(transB);
-	btMatrix3x3* invInertiaWorldATemp = Math::MatrixToBtMatrix3x3(invInertiaWorldA);
-	btMatrix3x3* invInertiaWorldBTemp = Math::MatrixToBtMatrix3x3(invInertiaWorldB);
-
-	Native->calcAngleInfo2(*transATemp, *transBTemp, *invInertiaWorldATemp, *invInertiaWorldBTemp);
-
-	ALIGNED_FREE(transATemp);
-	ALIGNED_FREE(transBTemp);
-	delete invInertiaWorldATemp;
-	delete invInertiaWorldBTemp;
+	TRANSFORM_CONV(transA);
+	TRANSFORM_CONV(transB);
+	MATRIX3X3_CONV(invInertiaWorldA);
+	MATRIX3X3_CONV(invInertiaWorldB);
+	Native->calcAngleInfo2(TRANSFORM_USE(transA), TRANSFORM_USE(transB), MATRIX3X3_USE(invInertiaWorldA),
+		MATRIX3X3_USE(invInertiaWorldB));
+	TRANSFORM_DEL(transA);
+	TRANSFORM_DEL(transB);
+	MATRIX3X3_DEL(invInertiaWorldA);
+	MATRIX3X3_DEL(invInertiaWorldB);
 }
 
 void ConeTwistConstraint::EnableMotor(bool b)
 {
 	Native->enableMotor(b);
 }
-
-void ConeTwistConstraint::SetAngularOnly(bool angularOnly)
+/*
+void ConeTwistConstraint::GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA,
+	Matrix transB, Matrix invInertiaWorldA, Matrix invInertiaWorldB)
 {
-	Native->setAngularOnly(angularOnly);
+	TRANSFORM_CONV(transA);
+	TRANSFORM_CONV(transB);
+	MATRIX3X3_CONV(invInertiaWorldA);
+	MATRIX3X3_CONV(invInertiaWorldB);
+	Native->getInfo2NonVirtual(info->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
+		MATRIX3X3_USE(invInertiaWorldA), MATRIX3X3_USE(invInertiaWorldB));
+	TRANSFORM_DEL(transA);
+	TRANSFORM_DEL(transB);
+	MATRIX3X3_DEL(invInertiaWorldA);
+	MATRIX3X3_DEL(invInertiaWorldB);
 }
-
-void ConeTwistConstraint::SetDamping(btScalar damping)
-{
-	Native->setDamping(damping);
-}
+*/
 
 #pragma managed(push, off)
 void ConeTwistConstraint_GetPointForAngle(btConeTwistConstraint* constraint,
@@ -87,21 +89,45 @@ Vector3 ConeTwistConstraint::GetPointForAngle(btScalar fAngleInRadians, btScalar
 	return point;
 }
 
-void ConeTwistConstraint::SetLimit(btScalar _swingSpan1, btScalar _swingSpan2,
-	btScalar _twistSpan, btScalar _softness, btScalar _biasFactor, btScalar _relaxationFactor)
+void ConeTwistConstraint::SetAngularOnly(bool angularOnly)
 {
-	Native->setLimit(_swingSpan1, _swingSpan2, _twistSpan, _softness,
-		_biasFactor, _relaxationFactor);
+	Native->setAngularOnly(angularOnly);
 }
 
-void ConeTwistConstraint::SetLimit(btScalar _swingSpan1, btScalar _swingSpan2,
-	btScalar _twistSpan, btScalar _softness, btScalar _biasFactor)
+void ConeTwistConstraint::SetDamping(btScalar damping)
+{
+	Native->setDamping(damping);
+}
+
+void ConeTwistConstraint::SetFrames(Matrix frameA, Matrix frameB)
+{
+	TRANSFORM_CONV(frameA);
+	TRANSFORM_CONV(frameB);
+	Native->setFrames(TRANSFORM_USE(frameA), TRANSFORM_USE(frameB));
+	TRANSFORM_DEL(frameA);
+	TRANSFORM_DEL(frameB);
+}
+
+void ConeTwistConstraint::SetLimit(int limitIndex, btScalar limitValue)
+{
+	Native->setLimit(limitIndex, limitValue);
+}
+
+void ConeTwistConstraint::SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan,
+	btScalar _softness, btScalar _biasFactor, btScalar _relaxationFactor)
+{
+	Native->setLimit(_swingSpan1, _swingSpan2, _twistSpan, _softness, _biasFactor,
+		_relaxationFactor);
+}
+
+void ConeTwistConstraint::SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan,
+	btScalar _softness, btScalar _biasFactor)
 {
 	Native->setLimit(_swingSpan1, _swingSpan2, _twistSpan, _softness, _biasFactor);
 }
 
-void ConeTwistConstraint::SetLimit(btScalar _swingSpan1, btScalar _swingSpan2,
-	btScalar _twistSpan, btScalar _softness)
+void ConeTwistConstraint::SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan,
+	btScalar _softness)
 {
 	Native->setLimit(_swingSpan1, _swingSpan2, _twistSpan, _softness);
 }
@@ -109,11 +135,6 @@ void ConeTwistConstraint::SetLimit(btScalar _swingSpan1, btScalar _swingSpan2,
 void ConeTwistConstraint::SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan)
 {
 	Native->setLimit(_swingSpan1, _swingSpan2, _twistSpan);
-}
-
-void ConeTwistConstraint::SetLimit(int limitIndex, btScalar limitValue)
-{
-	Native->setLimit(limitIndex, limitValue);
 }
 
 void ConeTwistConstraint::SetMaxMotorImpulse(btScalar maxMotorImpulse)
@@ -128,16 +149,16 @@ void ConeTwistConstraint::SetMaxMotorImpulseNormalized(btScalar maxMotorImpulse)
 
 void ConeTwistConstraint::SetMotorTarget(Quaternion q)
 {
-	btQuaternion* qTemp = Math::QuaternionToBtQuat(q);
-	Native->setMotorTarget(*qTemp);
-	ALIGNED_FREE(qTemp);
+	QUATERNION_CONV(q);
+	Native->setMotorTarget(QUATERNION_USE(q));
+	QUATERNION_DEL(q);
 }
 
 void ConeTwistConstraint::SetMotorTargetInConstraintSpace(Quaternion q)
 {
-	btQuaternion* qTemp = Math::QuaternionToBtQuat(q);
-	Native->setMotorTargetInConstraintSpace(*qTemp);
-	ALIGNED_FREE(qTemp);
+	QUATERNION_CONV(q);
+	Native->setMotorTargetInConstraintSpace(QUATERNION_USE(q));
+	QUATERNION_DEL(q);
 }
 
 void ConeTwistConstraint::UpdateRHS(btScalar timeStep)

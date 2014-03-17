@@ -12,7 +12,7 @@ namespace BulletSharp
 	{
 	internal:
 		btCompoundShapeChild* _native;
-		CompoundShapeChild(btCompoundShapeChild* compoundShapeChild);
+		CompoundShapeChild(btCompoundShapeChild* native);
 
 	public:
 		CompoundShapeChild();
@@ -53,14 +53,14 @@ namespace BulletSharp
 	public ref class CompoundShape : CollisionShape
 	{
 	internal:
-		CompoundShape(btCompoundShape* compoundShape);
+		CompoundShape(btCompoundShape* native);
 
 	private:
 		CompoundShapeChildArray^ _childList;
 
 	public:
-		CompoundShape();
 		CompoundShape(bool enableDynamicAabbTree);
+		CompoundShape();
 
 		void AddChildShape(Matrix localTransform, CollisionShape^ shape);
 		void CalculatePrincipalAxisTransform(array<btScalar>^ masses, Matrix% principal, [Out] Vector3% inertia);

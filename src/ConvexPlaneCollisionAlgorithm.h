@@ -24,18 +24,22 @@ namespace BulletSharp
 				void set(int value);
 			}
 
-			property int PerturbationIterationsCount
+			property int NumPerturbationIterations
 			{
 				int get();
 				void set(int value);
 			}
 		};
 
-		ConvexPlaneCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
-			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped, int numPerturbationIterations,
-			int minimumPointsPerturbationThreshold);
+	internal:
+		ConvexPlaneCollisionAlgorithm(btConvexPlaneCollisionAlgorithm* native);
 
-		void CollideSingleContact(Quaternion perturbeRot, CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
-			DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut);
+	public:
+		ConvexPlaneCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
+			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
+			bool isSwapped, int numPerturbationIterations, int minimumPointsPerturbationThreshold);
+
+		void CollideSingleContact(Quaternion perturbeRot, CollisionObjectWrapper^ body0Wrap,
+			CollisionObjectWrapper^ body1Wrap, DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut);
 	};
 };

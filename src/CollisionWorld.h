@@ -4,6 +4,7 @@
 
 namespace BulletSharp
 {
+	ref class AlignedCollisionObjectArray;
 	ref class AlignedScalarArray;
 	ref class AlignedVector3Array;
 	ref class BroadphaseInterface;
@@ -11,7 +12,6 @@ namespace BulletSharp
 	ref class CollisionConfiguration;
 	ref class CollisionObject;
 	ref class CollisionObjectWrapper;
-	ref class AlignedCollisionObjectArray;
 	ref class CollisionShape;
 	ref class ConvexShape;
 	ref class Dispatcher;
@@ -399,25 +399,31 @@ namespace BulletSharp
 		~CollisionWorld();
 
 	public:
-		CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphasePairCache, CollisionConfiguration^ collisionConfiguration);
+		CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphasePairCache,
+			BulletSharp::CollisionConfiguration^ collisionConfiguration);
 
-		void AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask);
+		void AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup,
+			CollisionFilterGroups collisionFilterMask);
 		void AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup);
 		void AddCollisionObject(CollisionObject^ collisionObject);
 		void ComputeOverlappingPairs();
 		void ContactPairTest(CollisionObject^ colObjA, CollisionObject^ colObjB, ContactResultCallback^ resultCallback);
 		void ContactTest(CollisionObject^ colObj, ContactResultCallback^ resultCallback);
-		void ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback, btScalar allowedCcdPenetration);
+		void ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback,
+			btScalar allowedCcdPenetration);
 		void ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback);
 #ifndef DISABLE_DEBUGDRAW
 		void DebugDrawObject(Matrix worldTransform, CollisionShape^ shape, BtColor color);
 		void DebugDrawWorld();
 #endif
-		static void ObjectQuerySingle(ConvexShape^ castShape, Matrix rayFromTrans, Matrix rayToTrans, CollisionObject^ collisionObject, CollisionShape^ collisionShape, Matrix colObjWorldTransform, ConvexResultCallback^ resultCallback, float allowedPenetration);
+		static void ObjectQuerySingle(ConvexShape^ castShape, Matrix rayFromTrans,
+			Matrix rayToTrans, CollisionObject^ collisionObject, CollisionShape^ collisionShape,
+			Matrix colObjWorldTransform, ConvexResultCallback^ resultCallback, btScalar allowedPenetration);
 		void PerformDiscreteCollisionDetection();
 		void RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResultCallback^ resultCallback);
 		void RayTest(Vector3% rayFromWorld, Vector3% rayToWorld, RayResultCallback^ resultCallback);
-		static void RayTestSingle(Matrix rayFromTrans, Matrix rayToTrans, CollisionObject^ collisionObject, CollisionShape^ collisionShape, Matrix colObjWorldTransform, RayResultCallback^ resultCallback);
+		static void RayTestSingle(Matrix rayFromTrans, Matrix rayToTrans, CollisionObject^ collisionObject,
+			CollisionShape^ collisionShape, Matrix colObjWorldTransform, RayResultCallback^ resultCallback);
 		void RemoveCollisionObject(CollisionObject^ collisionObject);
 #ifndef DISABLE_SERIALIZE
 		void Serialize(Serializer^ serializer);
@@ -425,11 +431,10 @@ namespace BulletSharp
 		void UpdateAabbs();
 		void UpdateSingleAabb(CollisionObject^ colObj);
 
-
 		property BroadphaseInterface^ Broadphase
 		{
 			BroadphaseInterface^ get();
-			void set(BroadphaseInterface^ value);
+			void set(BroadphaseInterface^ pairCache);
 		}
 
 		property AlignedCollisionObjectArray^ CollisionObjectArray
@@ -456,7 +461,7 @@ namespace BulletSharp
 		property bool ForceUpdateAllAabbs
 		{
 			bool get();
-			void set(bool value);
+			void set(bool forceUpdateAllAabbs);
 		}
 
 		property bool IsDisposed

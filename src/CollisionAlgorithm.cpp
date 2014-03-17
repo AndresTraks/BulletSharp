@@ -24,8 +24,8 @@ CollisionAlgorithmConstructionInfo::CollisionAlgorithmConstructionInfo()
 	_native = new btCollisionAlgorithmConstructionInfo();
 }
 
-CollisionAlgorithmConstructionInfo::CollisionAlgorithmConstructionInfo(
-	BulletSharp::Dispatcher^ dispatcher, int temp)
+CollisionAlgorithmConstructionInfo::CollisionAlgorithmConstructionInfo(BulletSharp::Dispatcher^ dispatcher,
+	int temp)
 {
 	_native = new btCollisionAlgorithmConstructionInfo(dispatcher->_native, temp);
 }
@@ -49,9 +49,9 @@ void CollisionAlgorithmConstructionInfo::Manifold::set(PersistentManifold^ value
 }
 
 
-CollisionAlgorithm::CollisionAlgorithm(btCollisionAlgorithm* algorithm)
+CollisionAlgorithm::CollisionAlgorithm(btCollisionAlgorithm* native)
 {
-	_native = algorithm;
+	_native = native;
 }
 
 CollisionAlgorithm::~CollisionAlgorithm()
@@ -72,11 +72,11 @@ CollisionAlgorithm::!CollisionAlgorithm()
 	OnDisposed(this, nullptr);
 }
 
-btScalar CollisionAlgorithm::CalculateTimeOfImpact(CollisionObject^ body0,
-	CollisionObject^ body1, DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
+btScalar CollisionAlgorithm::CalculateTimeOfImpact(CollisionObject^ body0, CollisionObject^ body1,
+	DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
 {
-	return _native->calculateTimeOfImpact(body0->_native, body1->_native,
-		*dispatchInfo->_native, (btManifoldResult*)resultOut->_native);
+	return _native->calculateTimeOfImpact(body0->_native, body1->_native, *dispatchInfo->_native,
+		(btManifoldResult*)resultOut->_native);
 }
 
 void CollisionAlgorithm::GetAllContactManifolds(AlignedManifoldArray^ manifoldArray)
@@ -87,11 +87,12 @@ void CollisionAlgorithm::GetAllContactManifolds(AlignedManifoldArray^ manifoldAr
 void CollisionAlgorithm::ProcessCollision(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 	DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
 {
-	_native->processCollision(body0Wrap->_native, body1Wrap->_native,
-		*dispatchInfo->_native, (btManifoldResult*)resultOut->_native);
+	_native->processCollision(body0Wrap->_native, body1Wrap->_native, *dispatchInfo->_native,
+		(btManifoldResult*)resultOut->_native);
 }
 
 bool CollisionAlgorithm::IsDisposed::get()
 {
 	return (_native == NULL);
 }
+

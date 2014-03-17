@@ -7,6 +7,6 @@ namespace BulletSharp
 	public ref class ActivatingCollisionAlgorithm abstract : CollisionAlgorithm
 	{
 	internal:
-		ActivatingCollisionAlgorithm(btActivatingCollisionAlgorithm* algorithm);
+		ActivatingCollisionAlgorithm(btActivatingCollisionAlgorithm* native);
 	};
 };

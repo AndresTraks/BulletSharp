@@ -9,7 +9,7 @@ namespace BulletSharp
 	public ref class ConcaveShape abstract : CollisionShape
 	{
 	internal:
-		ConcaveShape(btConcaveShape* concaveShape);
+		ConcaveShape(btConcaveShape* native);
 
 	public:
 		void ProcessAllTriangles(TriangleCallback^ callback, Vector3 aabbMin, Vector3 aabbMax);

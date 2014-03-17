@@ -4,8 +4,8 @@
 
 #define Native static_cast<btConvexInternalShape*>(_native)
 
-ConvexInternalShape::ConvexInternalShape(btConvexInternalShape* convexInternalShape)
-: BulletSharp::ConvexShape(convexInternalShape)
+ConvexInternalShape::ConvexInternalShape(btConvexInternalShape* native)
+	: ConvexShape(native)
 {
 }
 
@@ -37,11 +37,11 @@ Vector3 ConvexInternalShape::ImplicitShapeDimensions::get()
 {
 	return Math::BtVector3ToVector3(&Native->getImplicitShapeDimensions());
 }
-void ConvexInternalShape::ImplicitShapeDimensions::set(Vector3 value)
+void ConvexInternalShape::ImplicitShapeDimensions::set(Vector3 dimensions)
 {
-	VECTOR3_DEF(value);
-	Native->setImplicitShapeDimensions(VECTOR3_USE(value));
-	VECTOR3_DEL(value);
+	VECTOR3_DEF(dimensions);
+	Native->setImplicitShapeDimensions(VECTOR3_USE(dimensions));
+	VECTOR3_DEL(dimensions);
 }
 
 Vector3 ConvexInternalShape::LocalScalingNV::get()
@@ -55,7 +55,15 @@ btScalar ConvexInternalShape::MarginNV::get()
 }
 
 
-ConvexInternalAabbCachingShape::ConvexInternalAabbCachingShape(btConvexInternalAabbCachingShape* convexInternalAabbCachingShape)
-: BulletSharp::ConvexInternalShape(convexInternalAabbCachingShape)
+#undef Native
+#define Native static_cast<btConvexInternalAabbCachingShape*>(_native)
+
+ConvexInternalAabbCachingShape::ConvexInternalAabbCachingShape(btConvexInternalAabbCachingShape* native)
+	: ConvexInternalShape(native)
 {
+}
+
+void ConvexInternalAabbCachingShape::RecalcLocalAabb()
+{
+	Native->recalcLocalAabb();
 }

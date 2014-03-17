@@ -13,7 +13,7 @@ namespace BulletSharp
 		Vector3Array^ _vertices;
 
 	internal:
-		Box2dShape(btBox2dShape* shape);
+		Box2dShape(btBox2dShape* native);
 
 	public:
 		Box2dShape(Vector3 boxHalfExtents);

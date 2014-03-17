@@ -7,9 +7,9 @@
 #include "DebugDraw.h"
 #endif
 
-ConvexCast::CastResult::CastResult(btConvexCast::CastResult* castResult)
+ConvexCast::CastResult::CastResult(btConvexCast::CastResult* native)
 {
-	_native = castResult;
+	_native = native;
 }
 
 ConvexCast::CastResult::CastResult()
@@ -118,9 +118,9 @@ bool ConvexCast::CastResult::IsDisposed::get()
 }
 
 
-ConvexCast::ConvexCast(btConvexCast* convexCast)
+ConvexCast::ConvexCast(btConvexCast* native)
 {
-	_native = convexCast;
+	_native = native;
 }
 
 ConvexCast::~ConvexCast()
@@ -141,20 +141,19 @@ ConvexCast::!ConvexCast()
 	OnDisposed(this, nullptr);
 }
 
-bool ConvexCast::CalcTimeOfImpact(Matrix fromA, Matrix toA, Matrix fromB, Matrix toB, CastResult^ result)
+bool ConvexCast::CalcTimeOfImpact(Matrix fromA, Matrix toA, Matrix fromB, Matrix toB,
+	CastResult^ result)
 {
-	btTransform* fromATemp = Math::MatrixToBtTransform(fromA);
-	btTransform* toATemp = Math::MatrixToBtTransform(toA);
-	btTransform* fromBTemp = Math::MatrixToBtTransform(fromB);
-	btTransform* toBTemp = Math::MatrixToBtTransform(toB);
-
-	bool ret = _native->calcTimeOfImpact(*fromATemp, *toATemp, *fromBTemp, *toBTemp, *result->_native);
-
-	ALIGNED_FREE(fromATemp);
-	ALIGNED_FREE(toATemp);
-	ALIGNED_FREE(fromBTemp);
-	ALIGNED_FREE(toBTemp);
-
+	TRANSFORM_CONV(fromA);
+	TRANSFORM_CONV(toA);
+	TRANSFORM_CONV(fromB);
+	TRANSFORM_CONV(toB);
+	bool ret = _native->calcTimeOfImpact(TRANSFORM_USE(fromA), TRANSFORM_USE(toA), TRANSFORM_USE(fromB),
+		TRANSFORM_USE(toB), *result->_native);
+	TRANSFORM_DEL(fromA);
+	TRANSFORM_DEL(toA);
+	TRANSFORM_DEL(fromB);
+	TRANSFORM_DEL(toB);
 	return ret;
 }
 

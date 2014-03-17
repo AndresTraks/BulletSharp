@@ -8,6 +8,8 @@ namespace BulletSharp
 	{
 	internal:
 		btBroadphaseProxy* _native;
+		int _uid;
+		BroadphaseProxy(btBroadphaseProxy* native);
 
 	private:
 		bool _doesNotOwnObject;
@@ -16,28 +18,31 @@ namespace BulletSharp
 		Object^ _clientObject;
 
 	internal:
-		BroadphaseProxy(btBroadphaseProxy* proxy);
-		int _uid;
-
 		static BroadphaseProxy^ GetManaged(btBroadphaseProxy* broadphaseProxy);
 
 	public:
 		BroadphaseProxy();
-		BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
-			CollisionFilterGroups collisionFilterGroup,
-			CollisionFilterGroups collisionFilterMask,
-			IntPtr multiSapParentProxy);
-		BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
-			CollisionFilterGroups collisionFilterGroup,
+		BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject, CollisionFilterGroups collisionFilterGroup,
+			CollisionFilterGroups collisionFilterMask, IntPtr multiSapParentProxy);
+		BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject, CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask);
 
-		property Vector3 AabbMin
+		static bool IsCompound(int proxyType);
+		static bool IsConcave(int proxyType);
+		static bool IsConvex(int proxyType);
+		static bool IsConvex2d(int proxyType);
+		static bool IsInfinite(int proxyType);
+		static bool IsNonMoving(int proxyType);
+		static bool IsPolyhedral(int proxyType);
+		static bool IsSoftBody(int proxyType);
+
+		property Vector3 AabbMax
 		{
 			Vector3 get();
 			void set(Vector3 value);
 		}
 
-		property Vector3 AabbMax
+		property Vector3 AabbMin
 		{
 			Vector3 get();
 			void set(Vector3 value);
@@ -49,16 +54,16 @@ namespace BulletSharp
 			void set(Object^ value);
 		}
 
-		property BulletSharp::CollisionFilterGroups CollisionFilterGroup
+		property CollisionFilterGroups CollisionFilterGroup
 		{
-			BulletSharp::CollisionFilterGroups get();
-			void set(BulletSharp::CollisionFilterGroups value);
+			CollisionFilterGroups get();
+			void set(CollisionFilterGroups value);
 		}
 
-		property BulletSharp::CollisionFilterGroups CollisionFilterMask
+		property CollisionFilterGroups CollisionFilterMask
 		{
-			BulletSharp::CollisionFilterGroups get();
-			void set(BulletSharp::CollisionFilterGroups value);
+			CollisionFilterGroups get();
+			void set(CollisionFilterGroups value);
 		}
 
 		property IntPtr MultiSapParentProxy
@@ -67,19 +72,11 @@ namespace BulletSharp
 			void set(IntPtr value);
 		}
 
-		property int Uid
+		property int UniqueID
 		{
 			int get();
 			void set(int value);
 		}
-
-		static bool IsCompound(int proxyType);
-		static bool IsConcave(int proxyType);
-		static bool IsConvex(int proxyType);
-		static bool IsConvex2d(int proxyType);
-		static bool IsInfinite(int proxyType);
-		static bool IsPolyhedral(int proxyType);
-		static bool IsSoftBody(int proxyType);
 
 	internal:
 		property btBroadphaseProxy* UnmanagedPointer

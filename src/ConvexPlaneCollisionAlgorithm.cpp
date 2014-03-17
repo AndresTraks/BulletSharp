@@ -13,7 +13,7 @@
 #define Native static_cast<btConvexPlaneCollisionAlgorithm::CreateFunc*>(_native)
 
 ConvexPlaneCollisionAlgorithm::CreateFunc::CreateFunc()
-: CollisionAlgorithmCreateFunc(new btConvexPlaneCollisionAlgorithm::CreateFunc())
+	: CollisionAlgorithmCreateFunc(new btConvexPlaneCollisionAlgorithm::CreateFunc())
 {
 }
 
@@ -26,11 +26,11 @@ void ConvexPlaneCollisionAlgorithm::CreateFunc::MinimumPointsPerturbationThresho
 	Native->m_minimumPointsPerturbationThreshold = value;
 }
 
-int ConvexPlaneCollisionAlgorithm::CreateFunc::PerturbationIterationsCount::get()
+int ConvexPlaneCollisionAlgorithm::CreateFunc::NumPerturbationIterations::get()
 {
 	return Native->m_numPerturbationIterations;
 }
-void ConvexPlaneCollisionAlgorithm::CreateFunc::PerturbationIterationsCount::set(int value)
+void ConvexPlaneCollisionAlgorithm::CreateFunc::NumPerturbationIterations::set(int value)
 {
 	Native->m_numPerturbationIterations = value;
 }
@@ -39,20 +39,27 @@ void ConvexPlaneCollisionAlgorithm::CreateFunc::PerturbationIterationsCount::set
 #undef Native
 #define Native static_cast<btConvexPlaneCollisionAlgorithm*>(_native)
 
-ConvexPlaneCollisionAlgorithm::ConvexPlaneCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
-	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
-: CollisionAlgorithm(new btConvexPlaneCollisionAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf), *ci->_native,
-	body0Wrap->_native, body1Wrap->_native, isSwapped, numPerturbationIterations, minimumPointsPerturbationThreshold))
+ConvexPlaneCollisionAlgorithm::ConvexPlaneCollisionAlgorithm(btConvexPlaneCollisionAlgorithm* native)
+	: CollisionAlgorithm(native)
 {
 }
 
-void ConvexPlaneCollisionAlgorithm::CollideSingleContact(Quaternion perturbeRot, CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
-	DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
+ConvexPlaneCollisionAlgorithm::ConvexPlaneCollisionAlgorithm(PersistentManifold^ mf,
+	CollisionAlgorithmConstructionInfo^ ci, CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
+	bool isSwapped, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
+	: CollisionAlgorithm(new btConvexPlaneCollisionAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf), *ci->_native,
+		body0Wrap->_native, body1Wrap->_native, isSwapped, numPerturbationIterations,
+		minimumPointsPerturbationThreshold))
 {
-	btQuaternion* perturbeRotTemp = Math::QuaternionToBtQuat(perturbeRot);
-	Native->collideSingleContact(*perturbeRotTemp, body0Wrap->_native, body1Wrap->_native,
-		*dispatchInfo->_native, (btManifoldResult*)resultOut->_native);
-	ALIGNED_FREE(perturbeRotTemp);
+}
+
+void ConvexPlaneCollisionAlgorithm::CollideSingleContact(Quaternion perturbeRot, CollisionObjectWrapper^ body0Wrap,
+	CollisionObjectWrapper^ body1Wrap, DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
+{
+	QUATERNION_CONV(perturbeRot);
+	Native->collideSingleContact(QUATERNION_USE(perturbeRot), body0Wrap->_native,
+		body1Wrap->_native, *dispatchInfo->_native, (btManifoldResult*)resultOut->_native);
+	QUATERNION_DEL(perturbeRot);
 }
 
 #endif

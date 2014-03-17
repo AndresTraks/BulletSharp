@@ -11,36 +11,21 @@
 
 #define Native static_cast<btRigidBody*>(_native)
 
-RigidBody::RigidBody(RigidBodyConstructionInfo^ info)
-: CollisionObject(ALIGNED_NEW(btRigidBody) (*info->_native))
+RigidBody::RigidBody(btRigidBody* native)
+	: CollisionObject(native)
 {
-	_motionState = info->_motionState;
 }
 
-RigidBody::RigidBody(btRigidBody* body)
-: CollisionObject(body)
+RigidBody::RigidBody(RigidBodyConstructionInfo^ constructionInfo)
+	: CollisionObject(ALIGNED_NEW(btRigidBody) (*constructionInfo->_native))
 {
+	_motionState = constructionInfo->_motionState;
 }
 
 #ifndef DISABLE_CONSTRAINTS
-void RigidBody::AddConstraintRef(TypedConstraint^ constraint)
+void RigidBody::AddConstraintRef(TypedConstraint^ c)
 {
-	Native->addConstraintRef(constraint->_native);
-}
-
-TypedConstraint^ RigidBody::GetConstraintRef(int index)
-{
-	return TypedConstraint::GetManaged(Native->getConstraintRef(index));
-}
-
-void RigidBody::RemoveConstraintRef(TypedConstraint^ constraint)
-{
-	Native->removeConstraintRef(constraint->_native);
-}
-
-int RigidBody::ConstraintRefCount::get()
-{
-	return Native->getNumConstraintRefs();
+	Native->addConstraintRef(c->_native);
 }
 #endif
 
@@ -163,6 +148,13 @@ void RigidBody::GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
 	ALIGNED_FREE(aabbMaxTemp);
 }
 
+#ifndef DISABLE_CONSTRAINTS
+TypedConstraint^ RigidBody::GetConstraintRef(int index)
+{
+	return TypedConstraint::GetManaged(Native->getConstraintRef(index));
+}
+#endif
+
 #pragma managed(push, off)
 void RigidBody_GetVelocityInLocalPoint(btRigidBody* body, btVector3* velocity, btVector3* rel_pos)
 {
@@ -188,11 +180,6 @@ void RigidBody::IntegrateVelocities(btScalar step)
 	Native->integrateVelocities(step);
 }
 
-bool RigidBody::IsInWorld()
-{
-	return Native->isInWorld();
-}
-
 void RigidBody::PredictIntegratedTransform(btScalar step, [Out] Matrix% predictedTransform)
 {
 	btTransform* predictedTransformTemp = ALIGNED_NEW(btTransform);
@@ -207,6 +194,13 @@ void RigidBody::ProceedToTransform(Matrix newTransform)
 	Native->proceedToTransform(*newTransformTemp);
 	ALIGNED_FREE(newTransformTemp);
 }
+
+#ifndef DISABLE_CONSTRAINTS
+void RigidBody::RemoveConstraintRef(TypedConstraint^ c)
+{
+	Native->removeConstraintRef(c->_native);
+}
+#endif
 
 void RigidBody::SaveKinematicState(btScalar step)
 {
@@ -225,9 +219,9 @@ void RigidBody::SetMassProps(btScalar mass, Vector3 inertia)
 	VECTOR3_DEL(inertia);
 }
 
-void RigidBody::SetSleepingThresholds(btScalar inertia, btScalar angular)
+void RigidBody::SetSleepingThresholds(btScalar linear, btScalar angular)
 {
-	Native->setSleepingThresholds(inertia, angular);
+	Native->setSleepingThresholds(linear, angular);
 }
 
 void RigidBody::Translate(Vector3 vector)
@@ -235,6 +229,12 @@ void RigidBody::Translate(Vector3 vector)
 	VECTOR3_DEF(vector);
 	Native->translate(VECTOR3_USE(vector));
 	VECTOR3_DEL(vector);
+}
+
+RigidBody^ RigidBody::Upcast(CollisionObject^ colObj)
+{
+	btRigidBody* body = btRigidBody::upcast(colObj->_native);
+	return (RigidBody^)CollisionObject::GetManaged(body);
 }
 
 void RigidBody::UpdateDeactivation(btScalar timeStep)
@@ -245,12 +245,6 @@ void RigidBody::UpdateDeactivation(btScalar timeStep)
 void RigidBody::UpdateInertiaTensor()
 {
 	Native->updateInertiaTensor();
-}
-
-RigidBody^ RigidBody::Upcast(CollisionObject^ colObj)
-{
-	btRigidBody* body = btRigidBody::upcast(colObj->_native);
-	return (RigidBody^)CollisionObject::GetManaged(body);
 }
 
 btScalar RigidBody::AngularDamping::get()
@@ -310,13 +304,31 @@ void RigidBody::CenterOfMassTransform::set(Matrix value)
 	ALIGNED_FREE(valueTemp);
 }
 
+int RigidBody::ContactSolverType::get()
+{
+	return Native->m_contactSolverType;
+}
+void RigidBody::ContactSolverType::set(int value)
+{
+	Native->m_contactSolverType = value;
+}
+
 RigidBodyFlags RigidBody::Flags::get()
 {
 	return (RigidBodyFlags)Native->getFlags();
 }
-void RigidBody::Flags::set(RigidBodyFlags value)
+void RigidBody::Flags::set(RigidBodyFlags flags)
 {
-	Native->setFlags((btRigidBodyFlags) value);
+	Native->setFlags((btRigidBodyFlags) flags);
+}
+
+int RigidBody::FrictionSolverType::get()
+{
+	return Native->m_frictionSolverType;
+}
+void RigidBody::FrictionSolverType::set(int value)
+{
+	Native->m_frictionSolverType = value;
 }
 
 Vector3 RigidBody::Gravity::get()
@@ -349,6 +361,11 @@ Matrix RigidBody::InvInertiaTensorWorld::get()
 btScalar RigidBody::InvMass::get()
 {
 	return Native->getInvMass();
+}
+
+bool RigidBody::IsInWorld::get()
+{
+	return Native->isInWorld();
 }
 
 btScalar RigidBody::LinearDamping::get()
@@ -391,6 +408,11 @@ void RigidBody::MotionState::set(BulletSharp::MotionState^ value)
 {
 	Native->setMotionState(value->_native);
 	_motionState = value;
+}
+
+int RigidBody::NumConstraintRefs::get()
+{
+	return Native->getNumConstraintRefs();
 }
 
 #pragma managed(push, off)

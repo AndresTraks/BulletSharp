@@ -4,13 +4,13 @@
 
 #define Native static_cast<btCapsuleShape*>(_native)
 
-CapsuleShape::CapsuleShape(btCapsuleShape* shape)
-: ConvexInternalShape(shape)
+CapsuleShape::CapsuleShape(btCapsuleShape* native)
+	: ConvexInternalShape(native)
 {
 }
 
 CapsuleShape::CapsuleShape(btScalar radius, btScalar height)
-: ConvexInternalShape(new btCapsuleShape(radius, height))
+	: ConvexInternalShape(new btCapsuleShape(radius, height))
 {
 }
 
@@ -31,11 +31,11 @@ int CapsuleShape::UpAxis::get()
 
 
 CapsuleShapeX::CapsuleShapeX(btScalar radius, btScalar height)
-: CapsuleShape(new btCapsuleShapeX(radius, height))
+	: CapsuleShape(new btCapsuleShapeX(radius, height))
 {
 }
 
 CapsuleShapeZ::CapsuleShapeZ(btScalar radius, btScalar height)
-: CapsuleShape(new btCapsuleShapeZ(radius, height))
+	: CapsuleShape(new btCapsuleShapeZ(radius, height))
 {
 }

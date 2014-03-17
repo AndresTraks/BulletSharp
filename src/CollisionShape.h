@@ -32,23 +32,18 @@ namespace BulletSharp
 	public:
 		void CalculateLocalInertia(btScalar mass, [Out] Vector3% inertia);
 		Vector3 CalculateLocalInertia(btScalar mass);
-		void CalculateTemporalAabb(Matrix curTrans,
-			Vector3 linvel,	Vector3 angvel, btScalar timeStep,
-			[Out] Vector3% temporalAabbMin, [Out] Vector3% temporalAabbMax);
+#ifndef DISABLE_SERIALIZE
+		int CalculateSerializeBufferSize();
+#endif
+		void CalculateTemporalAabb(Matrix curTrans, Vector3 linvel, Vector3 angvel,
+			btScalar timeStep, [Out] Vector3% temporalAabbMin, [Out] Vector3% temporalAabbMax);
 		void GetAabb(Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		void GetBoundingSphere([Out] Vector3% center, [Out] btScalar% radius);
 		btScalar GetContactBreakingThreshold(btScalar defaultContactThresholdFactor);
-
 #ifndef DISABLE_SERIALIZE
-		int CalculateSerializeBufferSize();
-		String^ Serialize(IntPtr dataBuffer, Serializer^ serializer);
+		String^ Serialize(void^ dataBuffer, Serializer^ serializer);
 		void SerializeSingleShape(Serializer^ serializer);
 #endif
-
-		property bool IsDisposed
-		{
-			virtual bool get();
-		}
 
 		property btScalar AngularMotionDisc
 		{
@@ -80,6 +75,11 @@ namespace BulletSharp
 			bool get();
 		}
 
+		property bool IsDisposed
+		{
+			virtual bool get();
+		}
+
 		property bool IsInfinite
 		{
 			bool get();
@@ -103,13 +103,13 @@ namespace BulletSharp
 		property Vector3 LocalScaling
 		{
 			Vector3 get();
-			void set(Vector3 value);
+			void set(Vector3 scaling);
 		}
 
 		property btScalar Margin
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar margin);
 		}
 
 		property String^ Name

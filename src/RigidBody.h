@@ -15,23 +15,16 @@ namespace BulletSharp
 		MotionState^ _motionState;
 
 	internal:
-		RigidBody(btRigidBody* body);
+		RigidBody(btRigidBody* native);
 
 	public:
-		RigidBody(RigidBodyConstructionInfo^ info);
+		RigidBody(RigidBodyConstructionInfo^ constructionInfo);
 
 #ifndef DISABLE_CONSTRAINTS
 		void AddConstraintRef(TypedConstraint^ constraint);
-		TypedConstraint^ GetConstraintRef(int index);
-		void RemoveConstraintRef(TypedConstraint^ constraint);
-
-		property int ConstraintRefCount
-		{
-			int get();
-		}
 #endif
 		void ApplyCentralForce(Vector3 force);
-		void ApplyCentralImpulse(Vector3 force);
+		void ApplyCentralImpulse(Vector3 impulse);
 		void ApplyDamping(btScalar timeStep);
 		void ApplyForce(Vector3 force, Vector3 relativePosition);
 		void ApplyGravity();
@@ -44,20 +37,24 @@ namespace BulletSharp
 		Vector3 ComputeGyroscopicForce(btScalar maxGyroscopicForce);
 		btScalar ComputeImpulseDenominator(Vector3 pos, Vector3 normal);
 		void GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
+#ifndef DISABLE_CONSTRAINTS
+		TypedConstraint^ GetConstraintRef(int index);
+#endif
 		Vector3 GetVelocityInLocalPoint(Vector3 relativePosition);
 		void IntegrateVelocities(btScalar step);
-		bool IsInWorld();
 		void PredictIntegratedTransform(btScalar step, [Out] Matrix% predictedTransform);
 		void ProceedToTransform(Matrix newTransform);
+#ifndef DISABLE_CONSTRAINTS
+		void RemoveConstraintRef(TypedConstraint^ c);
+#endif
 		void SaveKinematicState(btScalar step);
 		void SetDamping(btScalar linearDamping, btScalar angularDamping);
 		void SetMassProps(btScalar mass, Vector3 inertia);
 		void SetSleepingThresholds(btScalar linear, btScalar angular);
-		void Translate(Vector3 vector);
+		void Translate(Vector3 v);
+		static RigidBody^ Upcast(CollisionObject^ colObj);
 		void UpdateDeactivation(btScalar timeStep);
 		void UpdateInertiaTensor();
-
-		static RigidBody^ Upcast(CollisionObject^ colObj);
 
 		property btScalar AngularDamping
 		{
@@ -98,10 +95,22 @@ namespace BulletSharp
 			void set(Matrix value);
 		}
 
+		property int ContactSolverType
+		{
+			int get();
+			void set(int value);
+		}
+
 		property RigidBodyFlags Flags
 		{
 			RigidBodyFlags get();
 			void set(RigidBodyFlags value);
+		}
+
+		property int FrictionSolverType
+		{
+			int get();
+			void set(int value);
 		}
 
 		property Vector3 Gravity
@@ -124,6 +133,11 @@ namespace BulletSharp
 		property btScalar InvMass
 		{
 			btScalar get();
+		}
+
+		property bool IsInWorld
+		{
+			bool get();
 		}
 
 		property btScalar LinearDamping
@@ -153,7 +167,12 @@ namespace BulletSharp
 			BulletSharp::MotionState^ get();
 			void set(BulletSharp::MotionState^ value);
 		}
-
+#ifndef DISABLE_CONSTRAINTS
+		property int NumConstraintRefs
+		{
+			int get();
+		}
+#endif
 		property Quaternion Orientation
 		{
 			Quaternion get();
@@ -187,10 +206,9 @@ namespace BulletSharp
 		!RigidBodyConstructionInfo();
 
 	public:
-		RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState,
-			BulletSharp::CollisionShape^ collisionShape);
-		RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState,
-			BulletSharp::CollisionShape^ collisionShape, Vector3 localInertia);
+		RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, CollisionShape^ collisionShape,
+			Vector3 localInertia);
+		RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, CollisionShape^ collisionShape);
 
 		property btScalar AdditionalAngularDampingFactor
 		{

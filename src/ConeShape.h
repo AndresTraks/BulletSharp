@@ -7,7 +7,7 @@ namespace BulletSharp
 	public ref class ConeShape : ConvexInternalShape
 	{
 	internal:
-		ConeShape(btConeShape* shape);
+		ConeShape(btConeShape* native);
 
 	public:
 		ConeShape(btScalar radius, btScalar height);
@@ -15,7 +15,7 @@ namespace BulletSharp
 		property int ConeUpIndex
 		{
 			int get();
-			void set(int value);
+			void set(int upIndex);
 		}
 
 		property btScalar Height

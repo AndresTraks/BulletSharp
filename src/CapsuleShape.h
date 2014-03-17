@@ -7,7 +7,7 @@ namespace BulletSharp
 	public ref class CapsuleShape : ConvexInternalShape
 	{
 	internal:
-		CapsuleShape(btCapsuleShape* shape);
+		CapsuleShape(btCapsuleShape* native);
 
 	public:
 		CapsuleShape(btScalar radius, btScalar height);

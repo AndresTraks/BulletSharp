@@ -152,7 +152,7 @@ namespace BulletSharp
 	{
 	internal:
 		btWheelInfo* _native;
-		WheelInfo(btWheelInfo* wheelInfo);
+		WheelInfo(btWheelInfo* native);
 
 	private:
 		RaycastInfo^ _raycastInfo;
@@ -317,4 +317,4 @@ namespace BulletSharp
 			void set(Matrix value);
 		}
 	};
-}
+};

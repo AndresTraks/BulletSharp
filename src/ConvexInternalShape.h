@@ -7,7 +7,7 @@ namespace BulletSharp
 	public ref class ConvexInternalShape abstract : ConvexShape
 	{
 	internal:
-		ConvexInternalShape(btConvexInternalShape* convexInternalShape);
+		ConvexInternalShape(btConvexInternalShape* native);
 
 	public:
 		void SetSafeMargin(btScalar minDimension, btScalar defaultMarginMultiplier);
@@ -18,7 +18,7 @@ namespace BulletSharp
 		property Vector3 ImplicitShapeDimensions
 		{
 			Vector3 get();
-			void set(Vector3 value);
+			void set(Vector3 dimensions);
 		}
 
 		property Vector3 LocalScalingNV
@@ -35,6 +35,9 @@ namespace BulletSharp
 	public ref class ConvexInternalAabbCachingShape abstract : ConvexInternalShape
 	{
 	internal:
-		ConvexInternalAabbCachingShape(btConvexInternalAabbCachingShape* convexInternalAabbCachingShape);
+		ConvexInternalAabbCachingShape(btConvexInternalAabbCachingShape* native);
+
+	public:
+		void RecalcLocalAabb();
 	};
 };

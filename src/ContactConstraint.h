@@ -10,7 +10,7 @@ namespace BulletSharp
 	public ref class ContactConstraint : TypedConstraint
 	{
 	internal:
-		ContactConstraint(btContactConstraint* constraint);
+		ContactConstraint(btContactConstraint* native);
 
 	public:
 		ContactConstraint(PersistentManifold^ contactManifold, RigidBody^ rigidBodyA, RigidBody^ rigidBodyB);

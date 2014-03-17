@@ -16,7 +16,7 @@ namespace BulletSharp
 	{
 	internal:
 		btBroadphaseAabbCallback* _native;
-		BroadphaseAabbCallback(btBroadphaseAabbCallback* callback);
+		BroadphaseAabbCallback(btBroadphaseAabbCallback* native);
 
 	public:
 		BroadphaseAabbCallback();
@@ -84,7 +84,7 @@ namespace BulletSharp
 
 	internal:
 		btBroadphaseInterface* _native;
-		BroadphaseInterface(btBroadphaseInterface* broadphase);
+		BroadphaseInterface(btBroadphaseInterface* native);
 		static BroadphaseInterface^ GetManaged(btBroadphaseInterface* broadphase);
 
 	protected:

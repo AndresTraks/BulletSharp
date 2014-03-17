@@ -7,7 +7,7 @@ namespace BulletSharp
 	public ref class BoxShape : PolyhedralConvexShape
 	{
 	internal:
-		BoxShape(btBoxShape* shape);
+		BoxShape(btBoxShape* native);
 
 	public:
 		BoxShape(Vector3 boxHalfExtents);

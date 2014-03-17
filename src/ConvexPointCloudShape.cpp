@@ -7,24 +7,25 @@
 
 #define Native static_cast<btConvexPointCloudShape*>(_native)
 
-ConvexPointCloudShape::ConvexPointCloudShape(btConvexPointCloudShape* shape)
-: PolyhedralConvexAabbCachingShape(shape)
+ConvexPointCloudShape::ConvexPointCloudShape(btConvexPointCloudShape* native)
+	: PolyhedralConvexAabbCachingShape(native)
 {
 }
 
 ConvexPointCloudShape::ConvexPointCloudShape()
-: PolyhedralConvexAabbCachingShape(new btConvexPointCloudShape())
+	: PolyhedralConvexAabbCachingShape(new btConvexPointCloudShape())
 {
 }
 
-ConvexPointCloudShape::ConvexPointCloudShape(array<Vector3>^ points, Vector3 localScaling, bool computeAabb)
-: PolyhedralConvexAabbCachingShape(new btConvexPointCloudShape())
+ConvexPointCloudShape::ConvexPointCloudShape(array<Vector3>^ points, Vector3 localScaling,
+	bool computeAabb)
+	: PolyhedralConvexAabbCachingShape(new btConvexPointCloudShape())
 {
 	SetPoints(points, computeAabb, localScaling);
 }
 
 ConvexPointCloudShape::ConvexPointCloudShape(array<Vector3>^ points, Vector3 localScaling)
-: PolyhedralConvexAabbCachingShape(new btConvexPointCloudShape())
+	: PolyhedralConvexAabbCachingShape(new btConvexPointCloudShape())
 {
 	SetPoints(points, true, localScaling);
 }
@@ -44,7 +45,8 @@ Vector3 ConvexPointCloudShape::GetScaledPoint(int i)
 	return point;
 }
 
-void ConvexPointCloudShape::SetPoints(array<Vector3>^ points, bool computeAabb, Vector3 localScaling)
+void ConvexPointCloudShape::SetPoints(array<Vector3>^ points, bool computeAabb,
+	Vector3 localScaling)
 {
 	btVector3* btPoints = Math::Vector3ArrayToUnmanaged(points);
 	VECTOR3_DEF(localScaling);

@@ -4,8 +4,8 @@
 
 #include "ActivatingCollisionAlgorithm.h"
 
-ActivatingCollisionAlgorithm::ActivatingCollisionAlgorithm(btActivatingCollisionAlgorithm* algorithm)
-: CollisionAlgorithm(algorithm)
+ActivatingCollisionAlgorithm::ActivatingCollisionAlgorithm(btActivatingCollisionAlgorithm* native)
+	: CollisionAlgorithm(native)
 {
 }
 

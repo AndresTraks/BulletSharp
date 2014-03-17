@@ -16,18 +16,23 @@ namespace BulletSharp
 		ConeTwistConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame);
 
 		void CalcAngleInfo();
-		void CalcAngleInfo2(Matrix transA, Matrix transB, Matrix invInertiaWorldA, Matrix invInertiaWorldB);
+		void CalcAngleInfo2(Matrix transA, Matrix transB, Matrix invInertiaWorldA,
+			Matrix invInertiaWorldB);
 		void EnableMotor(bool b);
+		//void GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA, Matrix transB,
+		//	Matrix invInertiaWorldA, Matrix invInertiaWorldB);
 		Vector3 GetPointForAngle(btScalar fAngleInRadians, btScalar fLength);
 		void SetAngularOnly(bool angularOnly);
 		void SetDamping(btScalar damping);
-		void SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan, btScalar _softness,
-			btScalar _biasFactor, btScalar _relaxationFactor);
-		void SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan, btScalar _softness,
-			btScalar _biasFactor);
-		void SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan, btScalar _softness);
-		void SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan);
+		void SetFrames(Matrix frameA, Matrix frameB);
 		void SetLimit(int limitIndex, btScalar limitValue);
+		void SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan,
+			btScalar _softness, btScalar _biasFactor, btScalar _relaxationFactor);
+		void SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan,
+			btScalar _softness, btScalar _biasFactor);
+		void SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan,
+			btScalar _softness);
+		void SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan);
 		void SetMaxMotorImpulse(btScalar maxMotorImpulse);
 		void SetMaxMotorImpulseNormalized(btScalar maxMotorImpulse);
 		void SetMotorTarget(Quaternion q);
@@ -47,7 +52,7 @@ namespace BulletSharp
 		property btScalar FixThresh
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar fixThresh);
 		}
 
 		property Matrix FrameOffsetA

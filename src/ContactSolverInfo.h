@@ -6,11 +6,16 @@ namespace BulletSharp
 	{
 	internal:
 		btContactSolverInfoData* _native;
-
-		ContactSolverInfoData(btContactSolverInfoData* infoData);
+		ContactSolverInfoData(btContactSolverInfoData* native);
 
 	public:
 		ContactSolverInfoData();
+
+		property btScalar Damping
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
 
 		property btScalar Erp
 		{
@@ -19,12 +24,6 @@ namespace BulletSharp
 		}
 
 		property btScalar Erp2
-		{
-			btScalar get();
-			void set(btScalar value);
-		}
-
-		property btScalar Damping
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -142,7 +141,7 @@ namespace BulletSharp
 	public ref class ContactSolverInfo : ContactSolverInfoData
 	{
 	internal:
-		ContactSolverInfo(btContactSolverInfo* info);
+		ContactSolverInfo(btContactSolverInfo* native);
 
 	public:
 		ContactSolverInfo();

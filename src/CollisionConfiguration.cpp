@@ -6,9 +6,9 @@
 #include "PoolAllocator.h"
 #endif
 
-CollisionConfiguration::CollisionConfiguration(btCollisionConfiguration* collisionConfiguration)
+CollisionConfiguration::CollisionConfiguration(btCollisionConfiguration* native)
 {
-	_native = collisionConfiguration;
+	_native = native;
 }
 
 CollisionConfiguration::~CollisionConfiguration()

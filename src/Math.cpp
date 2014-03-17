@@ -424,7 +424,7 @@ Matrix BulletSharp::Math::BtMatrix3x3ToMatrix(const btMatrix3x3* matrix)
 
 btMatrix3x3* BulletSharp::Math::MatrixToBtMatrix3x3(Matrix matrix)
 {
-	btMatrix3x3* t = new btMatrix3x3;
+	btMatrix3x3* t = ALIGNED_NEW(btMatrix3x3);
 
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
 	btScalar* m = (btScalar*)t;

@@ -7,8 +7,8 @@
 
 #define Native static_cast<btBox2dShape*>(_native)
 
-Box2dShape::Box2dShape(btBox2dShape* shape)
-: PolyhedralConvexShape(shape)
+Box2dShape::Box2dShape(btBox2dShape* native)
+	: PolyhedralConvexShape(native)
 {
 }
 

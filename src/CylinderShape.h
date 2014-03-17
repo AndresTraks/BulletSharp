@@ -7,7 +7,7 @@ namespace BulletSharp
 	public ref class CylinderShape : ConvexInternalShape
 	{
 	internal:
-		CylinderShape(btCylinderShape* shape);
+		CylinderShape(btCylinderShape* native);
 
 	public:
 		CylinderShape(Vector3 halfExtents);

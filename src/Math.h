@@ -45,11 +45,32 @@ using namespace Mogre;
 #define VECTOR3_DEF(vec) btVector3* VECTOR3_NAME(vec) = Math::Vector3ToBtVector3(vec)
 #define VECTOR3_DEL(vec) ALIGNED_FREE(VECTOR3_PTR(vec))
 #else
-#define VECTOR3_DEF(vec) pin_ptr<Vector3> VECTOR3_NAME(vec) = &vec;
+#define VECTOR3_DEF(vec) pin_ptr<Vector3> VECTOR3_NAME(vec) = &vec
 #define VECTOR3_DEL(vec)
 #endif
 #endif
 #define VECTOR3_USE(vec) *VECTOR3_PTR(vec)
+
+#define TRANSFORM_NAME(t) t ## Temp
+#define TRANSFORM_DEF(t) btTransform* TRANSFORM_NAME(t)
+#define TRANSFORM_CONV(t) TRANSFORM_DEF(t) = Math::MatrixToBtTransform(t)
+#define TRANSFORM_PTR(t) TRANSFORM_NAME(t)
+#define TRANSFORM_USE(t) *TRANSFORM_PTR(t)
+#define TRANSFORM_DEL(t) ALIGNED_FREE(TRANSFORM_PTR(t))
+
+#define MATRIX3X3_NAME(t) t ## Temp
+#define MATRIX3X3_DEF(t) btMatrix3x3* MATRIX3X3_NAME(t)
+#define MATRIX3X3_CONV(t) MATRIX3X3_DEF(t) = Math::MatrixToBtMatrix3x3(t)
+#define MATRIX3X3_PTR(t) MATRIX3X3_NAME(t)
+#define MATRIX3X3_USE(t) *MATRIX3X3_PTR(t)
+#define MATRIX3X3_DEL(t) ALIGNED_FREE(MATRIX3X3_PTR(t))
+
+#define QUATERNION_NAME(t) t ## Temp
+#define QUATERNION_DEF(t) btQuaternion* QUATERNION_NAME(t)
+#define QUATERNION_CONV(t) QUATERNION_DEF(t) = Math::QuaternionToBtQuat(t)
+#define QUATERNION_PTR(t) QUATERNION_NAME(t)
+#define QUATERNION_USE(t) *QUATERNION_PTR(t)
+#define QUATERNION_DEL(t) ALIGNED_FREE(QUATERNION_PTR(t))
 
 namespace BulletSharp
 {
