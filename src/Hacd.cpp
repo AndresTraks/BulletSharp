@@ -5,6 +5,11 @@
 #include "Hacd.h"
 #include "StringConv.h"
 
+Hacd::Hacd(HACD* native)
+{
+	_native = native;
+}
+
 Hacd::Hacd()
 {
 	_native = new HACD::HACD();
@@ -27,7 +32,7 @@ bool Hacd::Compute()
 
 void Hacd::DenormalizeData()
 {
-	return _native->DenormalizeData();
+	_native->DenormalizeData();
 }
 
 bool Hacd::GetCH(int numCH, [Out] array<Vector3>^% points, [Out] array<long>^% triangles)
@@ -100,6 +105,33 @@ bool Hacd::Save(String^ fileName, bool uniColor)
 	return ret;
 }
 
+bool HACD::AddExtraDistPoints::get()
+{
+	return _native->GetAddExtraDistPoints();
+}
+void HACD::AddExtraDistPoints::set(bool addExtraDistPoints)
+{
+	_native->SetAddExtraDistPoints(addExtraDistPoints);
+}
+
+bool HACD::AddFacesPoints::get()
+{
+	return _native->GetAddFacesPoints();
+}
+void HACD::AddFacesPoints::set(bool addFacesPoints)
+{
+	_native->SetAddFacesPoints(addFacesPoints);
+}
+
+bool HACD::AddNeighboursDistPoints::get()
+{
+	return _native->GetAddNeighboursDistPoints();
+}
+void HACD::AddNeighboursDistPoints::set(bool addNeighboursDistPoints)
+{
+	_native->SetAddNeighboursDistPoints(addNeighboursDistPoints);
+}
+
 void Hacd::SetPoints(ICollection<Vector3>^ points)
 {
 	int count = points->Count, i = 0;
@@ -141,99 +173,118 @@ void Hacd::SetTriangles(ICollection<long>^ triangles)
 	_native->SetNTriangles(count / 3);
 }
 
-bool Hacd::AddExtraDistPoints::get()
+/*
+CallBackFunction Hacd::CallBack::get()
 {
-	return _native->GetAddExtraDistPoints();
+	return _native->GetCallBack();
 }
-void Hacd::AddExtraDistPoints::set(bool value)
+void Hacd::CallBack::set(CallBackFunction callBack)
 {
-	return _native->SetAddExtraDistPoints(value);
+	_native->SetCallBack(callBack->_native);
 }
-
-bool Hacd::AddFacesPoints::get()
-{
-	return _native->GetAddFacesPoints();
-}
-void Hacd::AddFacesPoints::set(bool value)
-{
-	return _native->SetAddFacesPoints(value);
-}
-
-bool Hacd::AddNeighboursDistPoints::get()
-{
-	return _native->GetAddNeighboursDistPoints();
-}
-void Hacd::AddNeighboursDistPoints::set(bool value)
-{
-	return _native->SetAddNeighboursDistPoints(value);
-}
-
+*/
 double Hacd::CompacityWeight::get()
 {
 	return _native->GetCompacityWeight();
 }
-void Hacd::CompacityWeight::set(double value)
+void Hacd::CompacityWeight::set(double alpha)
 {
-	return _native->SetCompacityWeight(value);
+	_native->SetCompacityWeight(alpha);
 }
 
 double Hacd::Concavity::get()
 {
 	return _native->GetConcavity();
 }
-void Hacd::Concavity::set(double value)
+void Hacd::Concavity::set(double concavity)
 {
-	return _native->SetConcavity(value);
+	_native->SetConcavity(concavity);
 }
 
 double Hacd::ConnectDist::get()
 {
 	return _native->GetConnectDist();
 }
-void Hacd::ConnectDist::set(double value)
+void Hacd::ConnectDist::set(double ccConnectDist)
 {
-	return _native->SetConnectDist(value);
+	_native->SetConnectDist(ccConnectDist);
 }
 
 int Hacd::NClusters::get()
 {
 	return _native->GetNClusters();
 }
-void Hacd::NClusters::set(int value)
+void Hacd::NClusters::set(int nClusters)
 {
-	return _native->SetNClusters(value);
+	_native->SetNClusters(nClusters);
 }
 
 int Hacd::NPoints::get()
 {
 	return _native->GetNPoints();
 }
+void Hacd::NPoints::set(int nPoints)
+{
+	_native->SetNPoints(nPoints);
+}
 
-int Hacd::VerticesPerConvexHull::get()
+int Hacd::NTriangles::get()
+{
+	return _native->GetNTriangles();
+}
+void Hacd::NTriangles::set(int nTriangles)
+{
+	_native->SetNTriangles(nTriangles);
+}
+
+int Hacd::NVerticesPerCH::get()
 {
 	return _native->GetNVerticesPerCH();
 }
-void Hacd::VerticesPerConvexHull::set(int value)
+void Hacd::NVerticesPerCH::set(int nVerticesPerCH)
 {
-	return _native->SetNVerticesPerCH(value);
+	_native->SetNVerticesPerCH(nVerticesPerCH);
+}
+/*
+LongArray Hacd::Partition::get()
+{
+	return _native->GetPartition();
 }
 
-double Hacd::VolumeWeight::get()
+Vec3^ Hacd::Points::get()
 {
-	return _native->GetVolumeWeight();
+	return _native->GetPoints();
 }
-void Hacd::VolumeWeight::set(double value)
+void Hacd::Points::set(Vec3^ points)
 {
-	return _native->SetVolumeWeight(value);
+	_native->SetPoints(points->_native);
 }
-
+*/
 double Hacd::ScaleFactor::get()
 {
 	return _native->GetScaleFactor();
 }
-void Hacd::ScaleFactor::set(double value)
+void Hacd::ScaleFactor::set(double scale)
 {
-	return _native->SetScaleFactor(value);
+	_native->SetScaleFactor(scale);
+}
+/*
+Vec3^ HACD::Triangles::get()
+{
+	return _native->GetTriangles();
+}
+void HACD::Triangles::set(Vec3^ triangles)
+{
+	_native->SetTriangles(triangles->_native);
+}
+*/
+double HACD::VolumeWeight::get()
+{
+	return _native->GetVolumeWeight();
+}
+void HACD::VolumeWeight::set(double beta)
+{
+	_native->SetVolumeWeight(beta);
 }
 
 #endif

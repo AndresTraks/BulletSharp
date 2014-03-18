@@ -37,7 +37,7 @@ namespace BulletSharp
 	{
 	internal:
 		btManifoldPoint* _native;
-		ManifoldPoint(btManifoldPoint* point);
+		ManifoldPoint(btManifoldPoint* native);
 
 #ifdef BT_CALLBACKS_ARE_EVENTS
 	internal:
@@ -63,6 +63,18 @@ namespace BulletSharp
 		ManifoldPoint(Vector3 pointA, Vector3 pointB, Vector3 normal, btScalar distance);
 
 		property btScalar AppliedImpulse
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property btScalar AppliedImpulseLateral1
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property btScalar AppliedImpulseLateral2
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -113,7 +125,7 @@ namespace BulletSharp
 		property btScalar Distance
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar dist);
 		}
 
 		property btScalar Distance1

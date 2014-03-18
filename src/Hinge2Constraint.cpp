@@ -7,23 +7,19 @@
 
 #define Native static_cast<btHinge2Constraint*>(_native)
 
-Hinge2Constraint::Hinge2Constraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
-	Vector3 anchor, Vector3 axis1, Vector3 axis2)
-: Generic6DofSpringConstraint(0)
+Hinge2Constraint::Hinge2Constraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 anchor,
+	Vector3 axis1, Vector3 axis2)
+	: Generic6DofSpringConstraint(0)
 {
 	VECTOR3_DEF(anchor);
 	VECTOR3_DEF(axis1);
 	VECTOR3_DEF(axis2);
-
-	UnmanagedPointer = new btHinge2Constraint(
-		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
+	UnmanagedPointer = new btHinge2Constraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		VECTOR3_USE(anchor), VECTOR3_USE(axis1), VECTOR3_USE(axis2));
-
 	VECTOR3_DEL(anchor);
 	VECTOR3_DEL(axis1);
 	VECTOR3_DEL(axis2);
 }
-
 
 void Hinge2Constraint::SetLowerLimit(btScalar ang1min)
 {

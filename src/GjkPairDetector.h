@@ -12,18 +12,18 @@ namespace BulletSharp
 	public ref class GjkPairDetector : DiscreteCollisionDetectorInterface
 	{
 	internal:
-		GjkPairDetector(btGjkPairDetector* detector);
+		GjkPairDetector(btGjkPairDetector* native);
 
 	public:
-		GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB,
-			SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ penetrationDepthSolver);
-		GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB,
-			BroadphaseNativeType shapeTypeA, BroadphaseNativeType shapeTypeB,
-			btScalar marginA, btScalar marginB,
-			SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ penetrationDepthSolver);
+		GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB, SimplexSolverInterface^ simplexSolver,
+			ConvexPenetrationDepthSolver^ penetrationDepthSolver);
+		GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB, BroadphaseNativeType shapeTypeA,
+			BroadphaseNativeType shapeTypeB, btScalar marginA, btScalar marginB, SimplexSolverInterface^ simplexSolver,
+			ConvexPenetrationDepthSolver^ penetrationDepthSolver);
 
 #ifndef DISABLE_DEBUGDRAW
-		void GetClosestPointsNonVirtual(ClosestPointInput^ input, Result^ output, IDebugDraw^ debugDraw);
+		void GetClosestPointsNonVirtual(ClosestPointInput^ input, Result^ output,
+			IDebugDraw^ debugDraw);
 #else
 		void GetClosestPointsNonVirtual(ClosestPointInput^ input, Result^ output);
 #endif

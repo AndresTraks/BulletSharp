@@ -59,12 +59,11 @@ void SoftBodyWorldInfo::Broadphase::set(BroadphaseInterface^ value)
 
 Dispatcher^ SoftBodyWorldInfo::Dispatcher::get()
 {
-	if (_native->m_dispatcher == nullptr)
-		return nullptr;
-	return gcnew BulletSharp::Dispatcher(_native->m_dispatcher);
+	return _dispatcher;
 }
 void SoftBodyWorldInfo::Dispatcher::set(BulletSharp::Dispatcher^ value)
 {
+	_dispatcher = value;
 	_native->m_dispatcher = GetUnmanagedNullable(value);
 }
 

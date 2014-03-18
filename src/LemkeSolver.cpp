@@ -8,12 +8,12 @@
 #define Native static_cast<btLemkeSolver*>(_native)
 
 LemkeSolver::LemkeSolver(btLemkeSolver* native)
-: MLCPSolverInterface(native)
+	: MLCPSolverInterface(native)
 {
 }
 
 LemkeSolver::LemkeSolver()
-: MLCPSolverInterface(new btLemkeSolver())
+	: MLCPSolverInterface(new btLemkeSolver())
 {
 }
 
@@ -35,11 +35,11 @@ void LemkeSolver::MaxLoops::set(int value)
 	Native->m_maxLoops = value;
 }
 
-float LemkeSolver::MaxValue::get()
+btScalar LemkeSolver::MaxValue::get()
 {
 	return Native->m_maxValue;
 }
-void LemkeSolver::MaxValue::set(float value)
+void LemkeSolver::MaxValue::set(btScalar value)
 {
 	Native->m_maxValue = value;
 }

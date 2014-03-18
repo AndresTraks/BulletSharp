@@ -321,17 +321,17 @@ namespace BulletSharp
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class AlignedStkNnArray : AlignedObjectArray<Dbvt::StkNn^>
+	public ref class AlignedStkNNArray : AlignedObjectArray<Dbvt::StkNN^>
 	{
 	internal:
-		AlignedStkNnArray(btAlignedObjectArray<btDbvt::sStkNN>* stkNnArray);
+		AlignedStkNNArray(btAlignedObjectArray<btDbvt::sStkNN>* stkNnArray);
 
 	public:
-		AlignedStkNnArray();
+		AlignedStkNNArray();
 
-		virtual void Add(Dbvt::StkNn^ stkNn) override;
+		virtual void Add(Dbvt::StkNN^ stkNn) override;
 		virtual void Clear() override;
-		virtual void CopyTo(array<Dbvt::StkNn^>^ array, int arrayIndex) override;
+		virtual void CopyTo(array<Dbvt::StkNN^>^ array, int arrayIndex) override;
 		virtual void PopBack() override;
 		virtual void Swap(int index0, int index1) override;
 
@@ -345,10 +345,10 @@ namespace BulletSharp
 			virtual int get() override;
 		}
 
-		property Dbvt::StkNn^ default [int]
+		property Dbvt::StkNN^ default [int]
 		{
-			virtual Dbvt::StkNn^ get (int index) override;
-			virtual void set(int index, Dbvt::StkNn^ value) override;
+			virtual Dbvt::StkNN^ get (int index) override;
+			virtual void set(int index, Dbvt::StkNN^ value) override;
 		}
 	};
 

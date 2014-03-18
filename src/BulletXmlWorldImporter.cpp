@@ -649,19 +649,19 @@ class btTriangleIndexVertexArray* Serialize::BulletXmlWorldImporterWrapper::crea
 #ifndef DISABLE_BVH
 btBvhTriangleMeshShape* Serialize::BulletXmlWorldImporterWrapper::createBvhTriangleMeshShape(btStridingMeshInterface* trimesh, btOptimizedBvh* bvh)
 {
-	return (btBvhTriangleMeshShape*)_importer->CreateBvhTriangleMeshShape(gcnew StridingMeshInterface(trimesh), gcnew OptimizedBvh(bvh))->_native;
+	return (btBvhTriangleMeshShape*)_importer->CreateBvhTriangleMeshShape(StridingMeshInterface::GetManaged(trimesh), gcnew OptimizedBvh(bvh))->_native;
 }
 #endif
 
 btCollisionShape* Serialize::BulletXmlWorldImporterWrapper::createConvexTriangleMeshShape(btStridingMeshInterface* trimesh)
 {
-	return _importer->CreateConvexTriangleMeshShape(gcnew StridingMeshInterface(trimesh))->_native;
+	return _importer->CreateConvexTriangleMeshShape(StridingMeshInterface::GetManaged(trimesh))->_native;
 }
 
 #ifndef DISABLE_GIMPACT
 btGImpactMeshShape* Serialize::BulletXmlWorldImporterWrapper::createGimpactShape(btStridingMeshInterface* trimesh)
 {
-	return (btGImpactMeshShape*)_importer->CreateGImpactShape(gcnew StridingMeshInterface(trimesh))->_native;
+	return (btGImpactMeshShape*)_importer->CreateGImpactShape(StridingMeshInterface::GetManaged(trimesh))->_native;
 }
 #endif
 

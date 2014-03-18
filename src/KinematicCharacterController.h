@@ -4,8 +4,8 @@
 
 namespace BulletSharp
 {
-	ref class PairCachingGhostObject;
 	ref class ConvexShape;
+	ref class PairCachingGhostObject;
 
 	public ref class KinematicCharacterController : CharacterControllerInterface
 	{
@@ -13,8 +13,10 @@ namespace BulletSharp
 		KinematicCharacterController(btKinematicCharacterController* native);
 
 	public:
-		KinematicCharacterController(PairCachingGhostObject^ ghostObject, ConvexShape^ convexShape, float stepHeight, int upAxis);
-		KinematicCharacterController(PairCachingGhostObject^ ghostObject, ConvexShape^ convexShape, float stepHeight);
+		KinematicCharacterController(PairCachingGhostObject^ ghostObject, ConvexShape^ convexShape,
+			btScalar stepHeight, int upAxis);
+		KinematicCharacterController(PairCachingGhostObject^ ghostObject, ConvexShape^ convexShape,
+			btScalar stepHeight);
 
 		void SetFallSpeed(btScalar fallSpeed);
 		void SetJumpSpeed(btScalar jumpSpeed);
@@ -30,13 +32,13 @@ namespace BulletSharp
 		property btScalar Gravity
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar gravity);
 		}
 
 		property btScalar MaxSlope
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar slopeRadians);
 		}
 	};
 };

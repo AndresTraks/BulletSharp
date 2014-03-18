@@ -12,8 +12,9 @@ FixedConstraint::FixedConstraint(btFixedConstraint* native)
 {
 }
 
-FixedConstraint::FixedConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB)
-: TypedConstraint(0)
+FixedConstraint::FixedConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA,
+	Matrix frameInB)
+	: TypedConstraint(0)
 {
 	btTransform* frameInATemp = Math::MatrixToBtTransform(frameInA);
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);

@@ -7,9 +7,29 @@
 #define Native static_cast<btPointCollector*>(_native)
 
 PointCollector::PointCollector()
-: DiscreteCollisionDetectorInterface::Result(0)
+	: Result(ALIGNED_NEW(btPointCollector)())
 {
-	_native = ALIGNED_NEW(btPointCollector) ();
+}
+
+void PointCollector::AddContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld,
+	btScalar depth)
+{
+	VECTOR3_DEF(normalOnBInWorld);
+	VECTOR3_DEF(pointInWorld);
+	_native->addContactPoint(VECTOR3_USE(normalOnBInWorld), VECTOR3_USE(pointInWorld),
+		depth);
+	VECTOR3_DEL(normalOnBInWorld);
+	VECTOR3_DEL(pointInWorld);
+}
+
+void PointCollector::SetShapeIdentifiersA(int partId0, int index0)
+{
+	_native->setShapeIdentifiersA(partId0, index0);
+}
+
+void PointCollector::SetShapeIdentifiersB(int partId1, int index1)
+{
+	_native->setShapeIdentifiersB(partId1, index1);
 }
 
 btScalar PointCollector::Distance::get()

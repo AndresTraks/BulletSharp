@@ -705,27 +705,27 @@ void AlignedDbvtNodeArray::default::set(int index, DbvtNode^ value)
 #undef Native
 #define Native (static_cast<btAlignedObjectArray<btDbvt::sStkNN>*>(_native))
 
-AlignedStkNnArray::AlignedStkNnArray(btAlignedObjectArray<btDbvt::sStkNN>* stkNnArray)
+AlignedStkNNArray::AlignedStkNNArray(btAlignedObjectArray<btDbvt::sStkNN>* stkNnArray)
 : AlignedObjectArray(stkNnArray)
 {
 }
 
-AlignedStkNnArray::AlignedStkNnArray()
+AlignedStkNNArray::AlignedStkNNArray()
 : AlignedObjectArray(new btAlignedObjectArray<btDbvt::sStkNN>, true)
 {
 }
 
-void AlignedStkNnArray::Add(Dbvt::StkNn^ stkNn)
+void AlignedStkNNArray::Add(Dbvt::StkNN^ stkNn)
 {
 	Native->push_back(*stkNn->_native);
 }
 
-void AlignedStkNnArray::Clear()
+void AlignedStkNNArray::Clear()
 {
 	Native->clear();
 }
 
-void AlignedStkNnArray::CopyTo(array<Dbvt::StkNn^>^ array, int arrayIndex)
+void AlignedStkNNArray::CopyTo(array<Dbvt::StkNN^>^ array, int arrayIndex)
 {
 	if (array == nullptr)
 		throw gcnew ArgumentNullException("array");
@@ -740,26 +740,26 @@ void AlignedStkNnArray::CopyTo(array<Dbvt::StkNn^>^ array, int arrayIndex)
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew Dbvt::StkNn(&(*Native)[i]);
+		array[arrayIndex+i] = gcnew Dbvt::StkNN(&(*Native)[i]);
 	}
 }
 
-void AlignedStkNnArray::PopBack()
+void AlignedStkNNArray::PopBack()
 {
 	Native->pop_back();
 }
 
-void AlignedStkNnArray::Swap(int index0, int index1)
+void AlignedStkNNArray::Swap(int index0, int index1)
 {
 	Native->swap(index0, index1);
 }
 
-int AlignedStkNnArray::Capacity::get()
+int AlignedStkNNArray::Capacity::get()
 {
 	return Native->capacity();
 }
 
-int AlignedStkNnArray::Count::get()
+int AlignedStkNNArray::Count::get()
 {
 	return Native->size();
 }
@@ -769,16 +769,16 @@ void StkNnArray_GetDefault(btAlignedObjectArray<btDbvt::sStkNN>* stkNnArray,
 {
 	*obj = (*stkNnArray)[index];
 }
-Dbvt::StkNn^ AlignedStkNnArray::default::get(int index)
+Dbvt::StkNN^ AlignedStkNNArray::default::get(int index)
 {
 	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	btDbvt::sStkNN* obj = new btDbvt::sStkNN;
 	StkNnArray_GetDefault(Native, index, obj);
-	return gcnew Dbvt::StkNn(obj);
+	return gcnew Dbvt::StkNN(obj);
 }
 
-void AlignedStkNnArray::default::set(int index, Dbvt::StkNn^ value)
+void AlignedStkNNArray::default::set(int index, Dbvt::StkNN^ value)
 {
 	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");

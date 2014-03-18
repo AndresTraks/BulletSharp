@@ -23,7 +23,6 @@ namespace BulletSharp
 		bool GetCH(int numCH, [Out] array<Vector3>^% points, [Out] array<long>^% triangles);
 		int GetNPointsCH(int numCH);
 		int GetNTrianglesCH(int numCH);
-		//LongArray GetPartition();
 		void NormalizeData();
 		bool Save(String^ fileName, bool uniColor, long numCluster);
 		bool Save(String^ fileName, bool uniColor);
@@ -33,66 +32,96 @@ namespace BulletSharp
 		property bool AddExtraDistPoints
 		{
 			bool get();
-			void set(bool value);
+			void set(bool addExtraDistPoints);
 		}
 
 		property bool AddFacesPoints
 		{
 			bool get();
-			void set(bool value);
+			void set(bool addFacesPoints);
 		}
 
 		property bool AddNeighboursDistPoints
 		{
 			bool get();
-			void set(bool value);
+			void set(bool addNeighboursDistPoints);
 		}
-
+/*
+		property CallBackFunction CallBack
+		{
+			CallBackFunction get();
+			void set(CallBackFunction callBack);
+		}
+*/
 		property double CompacityWeight
 		{
 			double get();
-			void set(double value);
+			void set(double alpha);
 		}
 
 		property double Concavity
 		{
 			double get();
-			void set(double value);
+			void set(double concavity);
 		}
 
 		property double ConnectDist
 		{
 			double get();
-			void set(double value);
+			void set(double ccConnectDist);
 		}
 
 		property int NClusters
 		{
 			int get();
-			void set(int value);
+			void set(int nClusters);
 		}
 
 		property int NPoints
 		{
 			int get();
+			void set(int nPoints);
 		}
 
+		property int NTriangles
+		{
+			int get();
+			void set(int nTriangles);
+		}
+
+		property int NVerticesPerCH
+		{
+			int get();
+			void set(int nVerticesPerCH);
+		}
+/*
+		property LongArray Partition
+		{
+			LongArray get();
+		}
+
+		property Vec3^ Points
+		{
+			Vec3^ get();
+			void set(Vec3^ points);
+		}
+*/
 		property double ScaleFactor
 		{
 			double get();
-			void set(double value);
+			void set(double scale);
 		}
-
-		property int VerticesPerConvexHull
+/*
+		property Vec3^ Triangles
 		{
-			int get();
-			void set(int value);
+			Vec3^ get();
+			void set(Vec3^ triangles);
 		}
-
+*/
 		property double VolumeWeight
 		{
 			double get();
-			void set(double value);
+			void set(double beta);
 		}
 	};
 };

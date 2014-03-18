@@ -11,25 +11,24 @@ namespace BulletSharp
 	public ref class QuantizedBvhNode
 	{
 	internal:
-		BT_QUANTIZED_BVH_NODE* _node;
+		BT_QUANTIZED_BVH_NODE* _native;
+		QuantizedBvhNode(BT_QUANTIZED_BVH_NODE* native);
 
 	public:
 		QuantizedBvhNode();
-		QuantizedBvhNode(BT_QUANTIZED_BVH_NODE* node);
-		QuantizedBvhNode(const BT_QUANTIZED_BVH_NODE* node);
 
 		bool TestQuantizedBoxOverlap(array<unsigned short>^ quantizedMin, array<unsigned short>^ quantizedMax);
 
 		property int DataIndex
 		{
 			int get();
-			void set(int value);
+			void set(int index);
 		}
 
 		property int EscapeIndex
 		{
 			int get();
-			void set(int value);
+			void set(int index);
 		}
 
 		property int EscapeIndexOrDataIndex
@@ -54,39 +53,76 @@ namespace BulletSharp
 		}
 	};
 
+	public ref class GimQuantizedBvhNodeArray // : AlignedQuantizedBvhNodeArray
+	{
+	internal:
+		GIM_QUANTIZED_BVH_NODE_ARRAY* _native;
+		GimQuantizedBvhNodeArray(GIM_QUANTIZED_BVH_NODE_ARRAY* native);
+
+	public:
+		GimQuantizedBvhNodeArray();
+	};
+
+	public ref class QuantizedBvhTree
+	{
+	internal:
+		btQuantizedBvhTree* _native;
+		QuantizedBvhTree(btQuantizedBvhTree* native);
+
+	public:
+		QuantizedBvhTree();
+
+		//void BuildTree(GimBvhDataArray^ primitive_boxes);
+		void ClearNodes();
+		//QuantizedBvhNode^ GetNodePointer(int index);
+		//QuantizedBvhNode^ GetNodePointer();
+		int GetEscapeNodeIndex(int NodeIndex);
+		int GetLeftNode(int NodeIndex);
+		void GetNodeBound(int NodeIndex, Aabb^ bound);
+		int GetNodeData(int NodeIndex);
+		int GetRightNode(int NodeIndex);
+		bool IsLeafNode(int NodeIndex);
+		void QuantizePoint(UShortArray^ quantizedpoint, Vector3 point);
+		void SetNodeBound(int NodeIndex, Aabb^ bound);
+		bool TestQuantizedBoxOverlap(int NodeIndex, UShortArray^ quantizedMin,
+			UShortArray^ quantizedMax);
+
+		property int NodeCount
+		{
+			int get();
+		}
+	};
+
 	public ref class GImpactQuantizedBvh
 	{
-	private:
-		btGImpactQuantizedBvh* _native;
-
 	internal:
-		GImpactQuantizedBvh(btGImpactQuantizedBvh* bvh);
+		btGImpactQuantizedBvh* _native;
+		GImpactQuantizedBvh(btGImpactQuantizedBvh* native);
+
+	private:
+		PrimitiveManagerBase^ _primitiveManagerBase;
 
 	public:
 		GImpactQuantizedBvh();
-		GImpactQuantizedBvh(PrimitiveManagerBase^ primitiveManager);
+		GImpactQuantizedBvh(PrimitiveManagerBase^ primitive_manager);
 
-		bool BoxQuery(Aabb^ box, [Out] AlignedIntArray^% collided_results);
-		bool BoxQueryTrans(Aabb^ box, Matrix transform, [Out] AlignedIntArray^% collided_results);
+		bool BoxQuery(Aabb^ box, AlignedIntArray^ collided_results);
+		bool BoxQueryTrans(Aabb^ box, Matrix transform, AlignedIntArray^ collided_results);
 		void BuildSet();
-		static void FindCollision(GImpactBvh^ boxset1, Matrix trans1, GImpactBvh^ boxset2, Matrix trans2, [Out] PairSet^% collision_pairs);
-		int GetEscapeNodeIndex(int nodeIndex);
-		int GetLeftNode(int nodeIndex);
-		void GetNodeBound(int nodeIndex, [Out] Aabb^% bound);
-		int GetNodeData(int nodeIndex);
-		QuantizedBvhNode^ GetNodePointer(int index);
-		QuantizedBvhNode^ GetNodePointer();
-		void GetNodeTriangle(int nodeIndex, [Out] PrimitiveTriangle^% triangle);
-		int GetRightNode(int nodeIndex);
-		bool IsLeafNode(int nodeIndex);
-		bool RayQuery(Vector3 ray_dir, Vector3 ray_origin, [Out] AlignedIntArray^% collided_results);
-		void SetNodeBound(int nodeIndex, Aabb^ bound);
+		static void FindCollision(GImpactQuantizedBvh^ boxset1, Matrix trans1, GImpactQuantizedBvh^ boxset2,
+			Matrix trans2, PairSet^ collision_pairs);
+		//QuantizedBvhNode^ GetNodePointer(int index);
+		//QuantizedBvhNode^ GetNodePointer();
+		int GetEscapeNodeIndex(int nodeindex);
+		int GetLeftNode(int nodeindex);
+		void GetNodeBound(int nodeindex, Aabb^ bound);
+		int GetNodeData(int nodeindex);
+		void GetNodeTriangle(int nodeindex, PrimitiveTriangle^ triangle);
+		int GetRightNode(int nodeindex);
+		bool IsLeafNode(int nodeindex);
+		bool RayQuery(Vector3 ray_dir, Vector3 ray_origin, AlignedIntArray^ collided_results);
+		void SetNodeBound(int nodeindex, Aabb^ bound);
 		void Update();
-
-		//property float AverageTreeCollisionTime
-		//{
-		//	static float get();
-		//}
 
 		property Aabb^ GlobalBox
 		{
@@ -111,7 +147,7 @@ namespace BulletSharp
 		property PrimitiveManagerBase^ PrimitiveManager
 		{
 			PrimitiveManagerBase^ get();
-			void set(PrimitiveManagerBase^ value);
+			void set(PrimitiveManagerBase^ primitive_manager);
 		}
 	};
 };

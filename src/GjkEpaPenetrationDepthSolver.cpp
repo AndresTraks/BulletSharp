@@ -5,7 +5,7 @@
 #include "GjkEpaPenetrationDepthSolver.h"
 
 GjkEpaPenetrationDepthSolver::GjkEpaPenetrationDepthSolver()
-: ConvexPenetrationDepthSolver(new btGjkEpaPenetrationDepthSolver())
+	: ConvexPenetrationDepthSolver(new btGjkEpaPenetrationDepthSolver())
 {
 }
 

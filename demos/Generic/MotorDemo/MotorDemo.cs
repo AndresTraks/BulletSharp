@@ -252,7 +252,7 @@ namespace MotorDemo
                 for (int i = 0; i < 2 * NumLegs; i++)
                 {
                     HingeConstraint hingeC = rig.GetJoints()[i] as HingeConstraint;
-                    float fCurAngle = hingeC.GetHingeAngle();
+                    float fCurAngle = hingeC.HingeAngle;
 
                     float fTargetPercent = ((int)(m_Time / 1000.0f) % (int)fCyclePeriod) / fCyclePeriod;
                     float fTargetAngle = (float)(0.5 * (1 + Math.Sin(2.0f * Math.PI * fTargetPercent)));

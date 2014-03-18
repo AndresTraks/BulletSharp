@@ -8,12 +8,8 @@ namespace BulletSharp
 
 	public ref class MinkowskiSumShape : ConvexInternalShape
 	{
-	private:
-		ConvexShape^ _shapeA;
-		ConvexShape^ _shapeB;
-
 	internal:
-		MinkowskiSumShape(btMinkowskiSumShape* shape);
+		MinkowskiSumShape(btMinkowskiSumShape* native);
 
 	public:
 		MinkowskiSumShape(ConvexShape^ shapeA, ConvexShape^ shapeB);
@@ -31,13 +27,13 @@ namespace BulletSharp
 		property Matrix TransformA
 		{
 			Matrix get();
-			void set(Matrix value);
+			void set(Matrix transA);
 		}
 
 		property Matrix TransformB
 		{
 			Matrix get();
-			void set(Matrix value);
+			void set(Matrix transB);
 		}
 	};
 };

@@ -27,11 +27,14 @@ namespace BulletSharp
 		void AddLinkTorque(int i, Vector3 t);
 		void ApplyDeltaVee(ScalarArray^ delta_vee, btScalar multiplier);
 		void ApplyDeltaVee(ScalarArray^ delta_vee);
-		void CalcAccelerationDeltas(ScalarArray^ force, ScalarArray^ output, AlignedScalarArray^ scratch_r, AlignedVector3Array^ scratch_v);
+		void CalcAccelerationDeltas(ScalarArray^ force, ScalarArray^ output, AlignedScalarArray^ scratch_r,
+			AlignedVector3Array^ scratch_v);
 		void CheckMotionAndSleepIfRequired(btScalar timestep);
 		void ClearForcesAndTorques();
 		void ClearVelocities();
-		//void FillContactJacobian(int link, Vector3 contact_point, Vector3 normal, ScalarArray jac, AlignedScalarArray^ scratch_r, AlignedVector3Array^ scratch_v, AlignedMatrix3x3Array^ scratch_m);
+		//void FillContactJacobian(int link, Vector3 contact_point, Vector3 normal,
+		//	ScalarArray^ jac, AlignedScalarArray^ scratch_r, AlignedVector3Array^ scratch_v,
+		//	AlignedVector3Array^ scratch_m);
 		btScalar GetJointPos(int i);
 		btScalar GetJointTorque(int i);
 		btScalar GetJointVel(int i);
@@ -49,12 +52,18 @@ namespace BulletSharp
 		void SetCanSleep(bool canSleep);
 		void SetJointPos(int i, btScalar q);
 		void SetJointVel(int i, btScalar qdot);
-		void SetupPrismatic(int i, btScalar mass, Vector3 inertia, int parent, Quaternion rotParentToThis, Vector3 joint_axis, Vector3 rVectorWhenQZero, bool disableParentCollision);
-		void SetupPrismatic(int i, btScalar mass, Vector3 inertia, int parent, Quaternion rotParentToThis, Vector3 joint_axis, Vector3 rVectorWhenQZero);
-		void SetupRevolute(int i, btScalar mass, Vector3 inertia, int parent, Quaternion zero_rot_parent_to_this, Vector3 joint_axis, Vector3 parent_axis_position, Vector3 my_axis_position, bool disableParentCollision);
-		void SetupRevolute(int i, btScalar mass, Vector3 inertia, int parent, Quaternion zero_rot_parent_to_this, Vector3 joint_axis, Vector3 parent_axis_position, Vector3 my_axis_position);
+		void SetupPrismatic(int i, btScalar mass, Vector3 inertia, int parent, Quaternion rotParentToThis,
+			Vector3 joint_axis, Vector3 rVectorWhenQZero, bool disableParentCollision);
+		void SetupPrismatic(int i, btScalar mass, Vector3 inertia, int parent, Quaternion rotParentToThis,
+			Vector3 joint_axis, Vector3 rVectorWhenQZero);
+		void SetupRevolute(int i, btScalar mass, Vector3 inertia, int parent, Quaternion zero_rot_parent_to_this,
+			Vector3 joint_axis, Vector3 parent_axis_position, Vector3 my_axis_position,
+			bool disableParentCollision);
+		void SetupRevolute(int i, btScalar mass, Vector3 inertia, int parent, Quaternion zero_rot_parent_to_this,
+			Vector3 joint_axis, Vector3 parent_axis_position, Vector3 my_axis_position);
 		void StepPositions(btScalar dt);
-		//void StepVelocities(btScalar dt, AlignedScalarArray^ scratch_r, AlignedVector3Array^ scratch_v, AlignedMatrix3x3Array^ scratch_m);
+		//void StepVelocities(btScalar dt, AlignedScalarArray^ scratch_r, AlignedVector3Array^ scratch_v,
+		//	AlignedMatrix3x3Array^ scratch_m);
 		void WakeUp();
 		Vector3 WorldDirToLocal(int i, Vector3 vec);
 		Vector3 WorldPosToLocal(int i, Vector3 vec);
@@ -72,7 +81,7 @@ namespace BulletSharp
 		property MultiBodyLinkCollider^ BaseCollider
 		{
 			MultiBodyLinkCollider^ get();
-			void set(MultiBodyLinkCollider^ value);
+			void set(MultiBodyLinkCollider^ collider);
 		}
 
 		property Vector3 BaseForce
@@ -83,25 +92,25 @@ namespace BulletSharp
 		property Vector3 BaseInertia
 		{
 			Vector3 get();
-			void set(Vector3 value);
+			void set(Vector3 inertia);
 		}
 
 		property btScalar BaseMass
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar mass);
 		}
 
 		property Vector3 BaseOmega
 		{
 			Vector3 get();
-			void set(Vector3 value);
+			void set(Vector3 omega);
 		}
 
 		property Vector3 BasePosition
 		{
 			Vector3 get();
-			void set(Vector3 value);
+			void set(Vector3 pos);
 		}
 
 		property Vector3 BaseTorque
@@ -112,13 +121,13 @@ namespace BulletSharp
 		property Vector3 BaseVelocity
 		{
 			Vector3 get();
-			void set(Vector3 value);
+			void set(Vector3 vel);
 		}
 
 		property int CompanionId
 		{
 			int get();
-			void set(int value);
+			void set(int id);
 		}
 
 		property bool HasFixedBase
@@ -129,7 +138,7 @@ namespace BulletSharp
 		property bool HasSelfCollision
 		{
 			bool get();
-			void set(bool value);
+			void set(bool hasSelfCollision);
 		}
 
 		property bool IsAwake
@@ -145,25 +154,25 @@ namespace BulletSharp
 		property btScalar LinearDamping
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar damp);
 		}
 
 		property btScalar MaxAppliedImpulse
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar maxImp);
 		}
 
 		property int NumLinks
 		{
 			int get();
-			void set(int value);
+			void set(int numLinks);
 		}
 
 		property bool UseGyroTerm
 		{
 			bool get();
-			void set(bool value);
+			void set(bool useGyro);
 		}
 
 		property ScalarArray^ VelocityVector
@@ -174,7 +183,7 @@ namespace BulletSharp
 		property Quaternion WorldToBaseRot
 		{
 			Quaternion get();
-			void set(Quaternion value);
+			void set(Quaternion rot);
 		}
 	};
 };

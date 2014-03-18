@@ -642,19 +642,19 @@ class btTriangleIndexVertexArray* Serialize::WorldImporterWrapper::createTriangl
 #ifndef DISABLE_BVH
 btBvhTriangleMeshShape* Serialize::WorldImporterWrapper::createBvhTriangleMeshShape(btStridingMeshInterface* trimesh, btOptimizedBvh* bvh)
 {
-	return _native->CreateBvhTriangleMeshShape(gcnew StridingMeshInterface(trimesh), OptimizedBvh::GetManaged(bvh))->_native;
+	return _native->CreateBvhTriangleMeshShape(StridingMeshInterface::GetManaged(trimesh), OptimizedBvh::GetManaged(bvh))->_native;
 }
 #endif
 
 btCollisionShape* Serialize::WorldImporterWrapper::createConvexTriangleMeshShape(btStridingMeshInterface* trimesh)
 {
-	return _native->CreateConvexTriangleMeshShape(gcnew StridingMeshInterface(trimesh))->_native;
+	return _native->CreateConvexTriangleMeshShape(StridingMeshInterface::GetManaged(trimesh))->_native;
 }
 
 #ifndef DISABLE_GIMPACT
 btGImpactMeshShape* Serialize::WorldImporterWrapper::createGimpactShape(btStridingMeshInterface* trimesh)
 {
-	return (btGImpactMeshShape*)_native->CreateGImpactShape(gcnew StridingMeshInterface(trimesh))->_native;
+	return (btGImpactMeshShape*)_native->CreateGImpactShape(StridingMeshInterface::GetManaged(trimesh))->_native;
 }
 #endif
 

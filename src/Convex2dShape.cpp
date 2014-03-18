@@ -18,11 +18,7 @@ Convex2DShape::Convex2DShape(ConvexShape^ convexChildShape)
 
 ConvexShape^ Convex2DShape::ChildShape::get()
 {
-	if (childShape == nullptr)
-	{
-		childShape = gcnew ConvexShape(Native->getChildShape());
-	}
-	return childShape;
+	return static_cast<ConvexShape^>(CollisionShape::GetManaged(Native->getChildShape()));
 }
 
 #endif

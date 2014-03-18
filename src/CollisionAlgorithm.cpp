@@ -27,16 +27,18 @@ CollisionAlgorithmConstructionInfo::CollisionAlgorithmConstructionInfo()
 CollisionAlgorithmConstructionInfo::CollisionAlgorithmConstructionInfo(BulletSharp::Dispatcher^ dispatcher,
 	int temp)
 {
+	_dispatcher = dispatcher;
 	_native = new btCollisionAlgorithmConstructionInfo(dispatcher->_native, temp);
 }
 
 BulletSharp::Dispatcher^ CollisionAlgorithmConstructionInfo::Dispatcher::get()
 {
-	return gcnew BulletSharp::Dispatcher(_native->m_dispatcher1);
+	return _dispatcher;
 }
 void CollisionAlgorithmConstructionInfo::Dispatcher::set(BulletSharp::Dispatcher^ value)
 {
-	_native->m_dispatcher1 = value->_native;
+	_dispatcher = value;
+	_native->m_dispatcher1 = GetUnmanagedNullable(value);
 }
 
 PersistentManifold^ CollisionAlgorithmConstructionInfo::Manifold::get()

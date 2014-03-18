@@ -7,8 +7,8 @@ namespace BulletSharp
 	public ref class Hinge2Constraint : Generic6DofSpringConstraint
 	{
 	public:
-		Hinge2Constraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
-			Vector3 anchor, Vector3 axis1, Vector3 axis2);
+		Hinge2Constraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 anchor, Vector3 axis1,
+			Vector3 axis2);
 
 		void SetLowerLimit(btScalar ang1min);
 		void SetUpperLimit(btScalar ang1max);

@@ -104,7 +104,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class Dispatcher : BulletSharp::IDisposable
+	public ref class Dispatcher abstract : BulletSharp::IDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
@@ -122,8 +122,10 @@ namespace BulletSharp
 	public:
 		IntPtr AllocateCollisionAlgorithm(int size);
 		void ClearManifold(PersistentManifold^ manifold);
-		void DispatchAllCollisionPairs(OverlappingPairCache^ pairCache, DispatcherInfo^ dispatchInfo, Dispatcher^ dispatcher);
-		CollisionAlgorithm^ FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, PersistentManifold^ sharedManifold);
+		void DispatchAllCollisionPairs(OverlappingPairCache^ pairCache, DispatcherInfo^ dispatchInfo,
+			Dispatcher^ dispatcher);
+		CollisionAlgorithm^ FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
+			PersistentManifold^ sharedManifold);
 		CollisionAlgorithm^ FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap);
 		void FreeCollisionAlgorithm(IntPtr ptr);
 		PersistentManifold^ GetManifoldByIndexInternal(int index);

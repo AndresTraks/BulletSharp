@@ -8,9 +8,7 @@ namespace BulletSharp
 	{
 	internal:
 		btMotionState* _native;
-
-	internal:
-		MotionState(btMotionState* motionState);
+		MotionState(btMotionState* native);
 
 	public:
 		~MotionState();
@@ -24,7 +22,7 @@ namespace BulletSharp
 		virtual property Matrix WorldTransform
 		{
 			Matrix get() abstract;
-			void set(Matrix value) abstract;
+			void set(Matrix worldTrans) abstract;
 		}
 	};
 

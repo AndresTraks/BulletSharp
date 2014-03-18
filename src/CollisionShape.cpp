@@ -128,8 +128,20 @@ CollisionShape^ CollisionShape::GetManaged(btCollisionShape* collisionShape)
 
 #ifndef DISABLE_GIMPACT
 	case BroadphaseNativeType::GImpactShape:
-		shape = gcnew GImpactMeshShape((btGImpactMeshShape*) collisionShape);
+		{
+		btGImpactCompoundShape* gImpactCompoundShape = dynamic_cast<btGImpactCompoundShape*>(collisionShape);
+		if (gImpactCompoundShape) {
+			shape = gcnew GImpactCompoundShape(gImpactCompoundShape);
+			break;
+		}
+		btGImpactMeshShape* gImpactMeshShape = dynamic_cast<btGImpactMeshShape*>(collisionShape);
+		if (gImpactMeshShape) {
+			shape = gcnew GImpactMeshShape(gImpactMeshShape);
+			break;
+		}
+		shape = gcnew GImpactMeshShapePart(static_cast<btGImpactMeshShapePart*>(collisionShape));
 		break;
+		}
 #endif
 
 #ifndef DISABLE_UNCOMMON

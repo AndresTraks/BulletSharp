@@ -1,11 +1,12 @@
-#include "stdafx.h"
+#include "StdAfx.h"
 
 #ifndef DISABLE_UNCOMMON
 
 #include "MinkowskiPenetrationDepthSolver.h"
 
+
 MinkowskiPenetrationDepthSolver::MinkowskiPenetrationDepthSolver()
-: ConvexPenetrationDepthSolver(new btMinkowskiPenetrationDepthSolver())
+	: ConvexPenetrationDepthSolver(new btMinkowskiPenetrationDepthSolver())
 {
 }
 

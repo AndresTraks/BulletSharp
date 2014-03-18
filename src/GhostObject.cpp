@@ -4,7 +4,7 @@
 
 #include "AlignedObjectArray.h"
 #include "BroadphaseProxy.h"
-#include "CollisionWorld.h"
+#include "CollisionObject.h"
 #include "ConvexShape.h"
 #include "Dispatcher.h"
 #include "GhostObject.h"
@@ -18,7 +18,7 @@ GhostObject::GhostObject(btGhostObject* native)
 }
 
 GhostObject::GhostObject()
-: CollisionObject(new btGhostObject())
+	: CollisionObject(new btGhostObject())
 {
 }
 
@@ -34,26 +34,26 @@ void GhostObject::AddOverlappingObjectInternal(BroadphaseProxy^ otherProxy)
 }
 #endif
 
-void GhostObject::ConvexSweepTest(ConvexShape^ castShape, Matrix convexFromWorld, Matrix convexToWorld, CollisionWorld::ConvexResultCallback^ resultCallback, float allowedCcdPenetration)
+void GhostObject::ConvexSweepTest(ConvexShape^ castShape, Matrix convexFromWorld,
+	Matrix convexToWorld, CollisionWorld::ConvexResultCallback^ resultCallback, btScalar allowedCcdPenetration)
 {
-	btTransform* convexFromWorldTemp = Math::MatrixToBtTransform(convexFromWorld);
-	btTransform* convexToWorldTemp = Math::MatrixToBtTransform(convexToWorld);
-
-	Native->convexSweepTest((btConvexShape*)castShape->_native, *convexFromWorldTemp, *convexToWorldTemp, *resultCallback->_native, allowedCcdPenetration);
-
-	ALIGNED_FREE(convexFromWorldTemp);
-	ALIGNED_FREE(convexToWorldTemp);
+	TRANSFORM_CONV(convexFromWorld);
+	TRANSFORM_CONV(convexToWorld);
+	Native->convexSweepTest((btConvexShape*)castShape->_native, TRANSFORM_USE(convexFromWorld),
+		TRANSFORM_USE(convexToWorld), *resultCallback->_native, allowedCcdPenetration);
+	TRANSFORM_DEL(convexFromWorld);
+	TRANSFORM_DEL(convexToWorld);
 }
 
-void GhostObject::ConvexSweepTest(ConvexShape^ castShape, Matrix convexFromWorld, Matrix convexToWorld, CollisionWorld::ConvexResultCallback^ resultCallback)
+void GhostObject::ConvexSweepTest(ConvexShape^ castShape, Matrix convexFromWorld,
+	Matrix convexToWorld, CollisionWorld::ConvexResultCallback^ resultCallback)
 {
-	btTransform* convexFromWorldTemp = Math::MatrixToBtTransform(convexFromWorld);
-	btTransform* convexToWorldTemp = Math::MatrixToBtTransform(convexToWorld);
-
-	Native->convexSweepTest((btConvexShape*)castShape->_native, *convexFromWorldTemp, *convexToWorldTemp, *resultCallback->_native);
-
-	ALIGNED_FREE(convexFromWorldTemp);
-	ALIGNED_FREE(convexToWorldTemp);
+	TRANSFORM_CONV(convexFromWorld);
+	TRANSFORM_CONV(convexToWorld);
+	Native->convexSweepTest((btConvexShape*)castShape->_native, TRANSFORM_USE(convexFromWorld),
+		TRANSFORM_USE(convexToWorld), *resultCallback->_native);
+	TRANSFORM_DEL(convexFromWorld);
+	TRANSFORM_DEL(convexToWorld);
 }
 
 CollisionObject^ GhostObject::GetOverlappingObject(int index)
@@ -65,17 +65,17 @@ void GhostObject::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, CollisionWor
 {
 	VECTOR3_DEF(rayFromWorld);
 	VECTOR3_DEF(rayToWorld);
-
 	Native->rayTest(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld), *resultCallback->_native);
-
 	VECTOR3_DEL(rayFromWorld);
 	VECTOR3_DEL(rayToWorld);
 }
 
 #ifndef DISABLE_INTERNAL
-void GhostObject::RemoveOverlappingObjectInternal(BroadphaseProxy^ otherProxy, Dispatcher^ dispatcher, BroadphaseProxy^ thisProxy)
+void GhostObject::RemoveOverlappingObjectInternal(BroadphaseProxy^ otherProxy, Dispatcher^ dispatcher,
+	BroadphaseProxy^ thisProxy)
 {
-	Native->removeOverlappingObjectInternal(otherProxy->_native, dispatcher->_native, thisProxy->_native);
+	Native->removeOverlappingObjectInternal(otherProxy->_native, dispatcher->_native,
+		thisProxy->_native);
 }
 
 void GhostObject::RemoveOverlappingObjectInternal(BroadphaseProxy^ otherProxy, Dispatcher^ dispatcher)
@@ -104,13 +104,13 @@ AlignedCollisionObjectArray^ GhostObject::OverlappingPairs::get()
 #undef Native
 #define Native static_cast<btPairCachingGhostObject*>(_native)
 
-PairCachingGhostObject::PairCachingGhostObject(btPairCachingGhostObject* ghostObject)
-: GhostObject(ghostObject)
+PairCachingGhostObject::PairCachingGhostObject(btPairCachingGhostObject* native)
+	: GhostObject(native)
 {
 }
 
 PairCachingGhostObject::PairCachingGhostObject()
-: GhostObject(new btPairCachingGhostObject())
+	: GhostObject(new btPairCachingGhostObject())
 {
 }
 
@@ -121,13 +121,13 @@ HashedOverlappingPairCache^ PairCachingGhostObject::OverlappingPairCache::get()
 }
 
 
-GhostPairCallback::GhostPairCallback(btGhostPairCallback* ghostPairCallback)
-: OverlappingPairCallback(ghostPairCallback)
+GhostPairCallback::GhostPairCallback(btGhostPairCallback* native)
+	: OverlappingPairCallback(native)
 {
 }
 
 GhostPairCallback::GhostPairCallback()
-: OverlappingPairCallback(new btGhostPairCallback)
+	: OverlappingPairCallback(new btGhostPairCallback())
 {
 }
 

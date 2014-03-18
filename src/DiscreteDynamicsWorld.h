@@ -22,8 +22,7 @@ namespace BulletSharp
 #endif
 
 	public:
-		DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher,
-			BroadphaseInterface^ pairCache,
+		DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
 #ifndef DISABLE_CONSTRAINTS
 			BulletSharp::ConstraintSolver^ constraintSolver,
 #endif
@@ -33,19 +32,19 @@ namespace BulletSharp
 #if !defined(DISABLE_CONSTRAINTS) && !defined (DISABLE_DEBUGDRAW)
 		void DebugDrawConstraint(TypedConstraint^ constraint);
 #endif
-		void SetNumTasks (int numTasks);
+		void SetNumTasks(int numTasks);
 		void SynchronizeSingleMotionState(RigidBody^ body);
 
 		property bool ApplySpeculativeContactRestitution
 		{
 			bool get();
-			void set(bool value);
+			void set(bool enable);
 		}
 
 		property bool LatencyMotionStateInterpolation
 		{
 			bool get();
-			void set(bool value);
+			void set(bool latencyInterpolation);
 		}
 
 #ifndef DISABLE_UNCOMMON
@@ -58,7 +57,7 @@ namespace BulletSharp
 		property bool SynchronizeAllMotionStates
 		{
 			bool get();
-			void set(bool value);
+			void set(bool synchronizeAll);
 		}
 	};
 };

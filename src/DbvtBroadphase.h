@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BroadphaseProxy.h"
 #include "BroadphaseInterface.h"
 #include "BroadphaseProxy.h"
 
@@ -17,15 +18,14 @@ namespace BulletSharp
 	public ref class DbvtProxy : BroadphaseProxy
 	{
 	internal:
-		DbvtProxy(btDbvtProxy* proxy);
+		DbvtProxy(btDbvtProxy* native);
 
 	private:
 		DbvtNode^ _leaf;
 		DbvtProxyPtrArray^ _links;
 
 	public:
-		DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
-			CollisionFilterGroups collisionFilterGroup,
+		DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPointer, CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask);
 
 		property DbvtNode^ Leaf
@@ -57,7 +57,7 @@ namespace BulletSharp
 #endif
 
 	internal:
-		DbvtBroadphase(btDbvtBroadphase* broadphase);
+		DbvtBroadphase(btDbvtBroadphase* native);
 
 	public:
 		DbvtBroadphase(BulletSharp::OverlappingPairCache^ pairCache);
@@ -68,8 +68,8 @@ namespace BulletSharp
 		void Collide(Dispatcher^ dispatcher);
 		void Optimize();
 		void PerformDeferredRemoval(Dispatcher^ dispatcher);
-		void SetAabbForceUpdate(BroadphaseProxy^ absproxy,
-			Vector3 aabbMin, Vector3 aabbMax, Dispatcher^ dispatcher);
+		void SetAabbForceUpdate(BroadphaseProxy^ absproxy, Vector3 aabbMin, Vector3 aabbMax,
+			Dispatcher^ dispatcher);
 
 		property int CId
 		{
@@ -186,8 +186,8 @@ namespace BulletSharp
 		property btScalar VelocityPrediction
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar prediction);
 		}
 #endif
 	};
-}
+};

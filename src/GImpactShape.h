@@ -28,7 +28,7 @@ namespace BulletSharp
 	public ref class TetrahedronShapeEx : BU_Simplex1to4
 	{
 	internal:
-		TetrahedronShapeEx(btTetrahedronShapeEx* shape);
+		TetrahedronShapeEx(btTetrahedronShapeEx* native);
 
 	public:
 		TetrahedronShapeEx();
@@ -36,20 +36,27 @@ namespace BulletSharp
 		void SetVertices(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 v3);
 	};
 
-	public ref class GImpactShapeInterface : ConcaveShape
+	public ref class GImpactShapeInterface abstract : ConcaveShape
 	{
+#ifndef DISABLE_BVH
+	protected:
+		PrimitiveManagerBase^ _primitiveManagerBase;
+#endif
+
 	internal:
-		GImpactShapeInterface(btGImpactShapeInterface* shapeInterface);
+		GImpactShapeInterface(btGImpactShapeInterface* native);
 
 	public:
-		void GetBulletTetrahedron(int prim_index, [Out] TetrahedronShapeEx^% tetrahedron);
+		void GetBulletTetrahedron(int prim_index, TetrahedronShapeEx^ tetrahedron);
 		void GetBulletTriangle(int prim_index, TriangleShapeEx^ triangle);
+		void GetChildAabb(int child_index, Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		CollisionShape^ GetChildShape(int index);
 		Matrix GetChildTransform(int index);
-		void GetPrimitiveTriangle(int prim_index, [Out] PrimitiveTriangle^% triangle);
+		void GetPrimitiveTriangle(int index, PrimitiveTriangle^ triangle);
 		void LockChildShapes();
 		void PostUpdate();
-		void ProcessAllTrianglesRay(TriangleCallback^ callback, Vector3 rayFrom, Vector3 rayTo);
+		void ProcessAllTrianglesRay(TriangleCallback^ callback, Vector3 rayFrom,
+			Vector3 rayTo);
 		void RayTest(Vector3 rayFrom, Vector3 rayTo, CollisionWorld::RayResultCallback^ resultCallback);
 		void SetChildTransform(int index, Matrix transform);
 		void UnlockChildShapes();
@@ -100,7 +107,7 @@ namespace BulletSharp
 #ifndef DISABLE_BVH
 		property PrimitiveManagerBase^ PrimitiveManager
 		{
-			PrimitiveManagerBase^ get();
+			virtual PrimitiveManagerBase^ get() abstract;
 		}
 #endif
 	};
@@ -112,7 +119,7 @@ namespace BulletSharp
 		ref class CompoundPrimitiveManager : PrimitiveManagerBase
 		{
 		internal:
-			CompoundPrimitiveManager(btGImpactCompoundShape::CompoundPrimitiveManager* compound);
+			CompoundPrimitiveManager(btGImpactCompoundShape::CompoundPrimitiveManager* native);
 
 		public:
 			CompoundPrimitiveManager(CompoundPrimitiveManager^ compound);
@@ -122,20 +129,30 @@ namespace BulletSharp
 			property GImpactCompoundShape^ CompoundShape
 			{
 				GImpactCompoundShape^ get();
+				void set(GImpactCompoundShape^ value);
 			}
 		};
 #endif
 
-		GImpactCompoundShape(bool childrenHasTransform);
+	internal:
+		GImpactCompoundShape(btGImpactCompoundShape* native);
+
+	public:
+		GImpactCompoundShape(bool children_has_transform);
 		GImpactCompoundShape();
 
-		void AddChildShape(CollisionShape^ shape);
 		void AddChildShape(Matrix localTransform, CollisionShape^ shape);
+		void AddChildShape(CollisionShape^ shape);
 
 #ifndef DISABLE_BVH
 		property CompoundPrimitiveManager^ GImpactCompoundPrimitiveManager
 		{
 			CompoundPrimitiveManager^ get();
+		}
+
+		property PrimitiveManagerBase^ PrimitiveManager
+		{
+			virtual PrimitiveManagerBase^ get() override;
 		}
 #endif
 	};
@@ -147,7 +164,7 @@ namespace BulletSharp
 		ref class TrimeshPrimitiveManager : PrimitiveManagerBase
 		{
 		internal:
-			TrimeshPrimitiveManager(btGImpactMeshShapePart::TrimeshPrimitiveManager* manager);
+			TrimeshPrimitiveManager(btGImpactMeshShapePart::TrimeshPrimitiveManager* native);
 
 		public:
 			TrimeshPrimitiveManager();
@@ -156,6 +173,7 @@ namespace BulletSharp
 
 			void GetBulletTriangle(int prim_index, TriangleShapeEx^ triangle);
 			void GetIndices(int face_index, unsigned int% i0, unsigned int% i1, unsigned int% i2);
+			void GetVertex(unsigned int vertex_index, [Out] Vector3% vertex);
 			void Lock();
 			void Unlock();
 
@@ -236,27 +254,22 @@ namespace BulletSharp
 				IntPtr get();
 				void set(IntPtr value);
 			}
+
+			property int VertexCount
+			{
+				int get();
+			}
 		};
 #endif
 
 	internal:
-		GImpactMeshShapePart(btGImpactMeshShapePart* shape);
+		GImpactMeshShapePart(btGImpactMeshShapePart* native);
 
 	public:
 		GImpactMeshShapePart();
 		GImpactMeshShapePart(StridingMeshInterface^ meshInterface, int part);
 
-		void GetVertex(unsigned int vertexIndex, [Out] Vector3% vertex);
-
-		property int Part
-		{
-			int get();
-		}
-
-		property int VertexCount
-		{
-			int get();
-		}
+		void GetVertex(int vertexIndex, [Out] Vector3% vertex);
 
 #ifndef DISABLE_BVH
 		property TrimeshPrimitiveManager^ GImpactTrimeshPrimitiveManager
@@ -264,12 +277,29 @@ namespace BulletSharp
 			TrimeshPrimitiveManager^ get();
 		}
 #endif
+
+		property int Part
+		{
+			int get();
+		}
+
+#ifndef DISABLE_BVH
+		property PrimitiveManagerBase^ PrimitiveManager
+		{
+			virtual PrimitiveManagerBase^ get() override;
+		}
+#endif
+
+		property int VertexCount
+		{
+			int get();
+		}
 	};
 
 	public ref class GImpactMeshShape : GImpactShapeInterface
 	{
 	internal:
-		GImpactMeshShape(btGImpactMeshShape* shape);
+		GImpactMeshShape(btGImpactMeshShape* native);
 
 	public:
 		GImpactMeshShape(StridingMeshInterface^ meshInterface);
@@ -285,5 +315,12 @@ namespace BulletSharp
 		{
 			int get();
 		}
+
+#ifndef DISABLE_BVH
+		property PrimitiveManagerBase^ PrimitiveManager
+		{
+			virtual PrimitiveManagerBase^ get() override;
+		}
+#endif
 	};
 };

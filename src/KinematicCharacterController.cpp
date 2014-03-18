@@ -13,13 +13,17 @@ KinematicCharacterController::KinematicCharacterController(btKinematicCharacterC
 {
 }
 
-KinematicCharacterController::KinematicCharacterController(PairCachingGhostObject^ ghostObject, ConvexShape^ convexShape, btScalar stepHeight, int upAxis)
-: CharacterControllerInterface(new btKinematicCharacterController((btPairCachingGhostObject*)ghostObject->_native, (btConvexShape*)convexShape->_native, stepHeight, upAxis))
+KinematicCharacterController::KinematicCharacterController(PairCachingGhostObject^ ghostObject,
+	ConvexShape^ convexShape, btScalar stepHeight, int upAxis)
+	: CharacterControllerInterface(new btKinematicCharacterController((btPairCachingGhostObject*)ghostObject->_native,
+		(btConvexShape*)convexShape->_native, stepHeight, upAxis))
 {
 }
 
-KinematicCharacterController::KinematicCharacterController(PairCachingGhostObject^ ghostObject, ConvexShape^ convexShape, btScalar stepHeight)
-: CharacterControllerInterface(new btKinematicCharacterController((btPairCachingGhostObject*)ghostObject->_native, (btConvexShape*)convexShape->_native, stepHeight))
+KinematicCharacterController::KinematicCharacterController(PairCachingGhostObject^ ghostObject,
+	ConvexShape^ convexShape, btScalar stepHeight)
+	: CharacterControllerInterface(new btKinematicCharacterController((btPairCachingGhostObject*)ghostObject->_native,
+		(btConvexShape*)convexShape->_native, stepHeight))
 {
 }
 

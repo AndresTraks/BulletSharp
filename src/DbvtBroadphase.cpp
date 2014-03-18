@@ -15,25 +15,23 @@
 
 #define Native static_cast<btDbvtProxy*>(_native)
 
-DbvtProxy::DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
-	CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
-: BroadphaseProxy(0)
+DbvtProxy::DbvtProxy(btDbvtProxy* native)
+	: BroadphaseProxy(native)
 {
-	VECTOR3_DEF(aabbMin);
-	VECTOR3_DEF(aabbMax);
-
-	_clientObject = userObject;
-
-	UnmanagedPointer = new btDbvtProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), 0,
-		(short int)collisionFilterGroup, (short int)collisionFilterMask);
-
-	VECTOR3_DEL(aabbMin);
-	VECTOR3_DEL(aabbMax);
 }
 
-DbvtProxy::DbvtProxy(btDbvtProxy* proxy)
-: BroadphaseProxy(proxy)
+DbvtProxy::DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPointer, CollisionFilterGroups collisionFilterGroup,
+	CollisionFilterGroups collisionFilterMask)
+	: BroadphaseProxy(0)
 {
+	_clientObject = userObject;
+
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
+	UnmanagedPointer = new btDbvtProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), userPtr.ToPointer(),
+		(short int)collisionFilterGroup, (short int)collisionFilterMask);
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
 }
 
 DbvtNode^ DbvtProxy::Leaf::get()
@@ -66,24 +64,23 @@ void DbvtProxy::Stage::set(int value)
 #undef Native
 #define Native static_cast<btDbvtBroadphase*>(_native)
 
-DbvtBroadphase::DbvtBroadphase(btDbvtBroadphase* broadphase)
-: BroadphaseInterface(broadphase)
-{
-}
-
-DbvtBroadphase::DbvtBroadphase()
-: BroadphaseInterface(new btDbvtBroadphase())
+DbvtBroadphase::DbvtBroadphase(btDbvtBroadphase* native)
+	: BroadphaseInterface(native)
 {
 }
 
 DbvtBroadphase::DbvtBroadphase(BulletSharp::OverlappingPairCache^ pairCache)
-: BroadphaseInterface(new btDbvtBroadphase((btOverlappingPairCache*)pairCache->_native))
+	: BroadphaseInterface(new btDbvtBroadphase((btOverlappingPairCache*)pairCache->_native))
 {
 	_pairCache = pairCache;
 }
 
-#ifndef DISABLE_DBVT
+DbvtBroadphase::DbvtBroadphase()
+	: BroadphaseInterface(new btDbvtBroadphase())
+{
+}
 
+#ifndef DISABLE_DBVT
 void DbvtBroadphase::Benchmark(BroadphaseInterface^ broadphase)
 {
 	btDbvtBroadphase::benchmark(broadphase->_native);
@@ -104,15 +101,13 @@ void DbvtBroadphase::PerformDeferredRemoval(Dispatcher^ dispatcher)
 	Native->performDeferredRemoval(dispatcher->_native);
 }
 
-void DbvtBroadphase::SetAabbForceUpdate(BroadphaseProxy^ absproxy,
-	Vector3 aabbMin, Vector3 aabbMax, Dispatcher^ dispatcher)
+void DbvtBroadphase::SetAabbForceUpdate(BroadphaseProxy^ absproxy, Vector3 aabbMin,
+	Vector3 aabbMax, Dispatcher^ dispatcher)
 {
 	VECTOR3_DEF(aabbMin);
 	VECTOR3_DEF(aabbMax);
-
-	Native->setAabbForceUpdate(absproxy->_native,
-		VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), dispatcher->_native);
-
+	_native->setAabbForceUpdate(absproxy->_native, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax),
+		dispatcher->_native);
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
 }

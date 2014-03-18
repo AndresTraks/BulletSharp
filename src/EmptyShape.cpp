@@ -8,6 +8,7 @@ EmptyShape::EmptyShape(btEmptyShape* native)
 }
 
 EmptyShape::EmptyShape()
-: ConcaveShape(new btEmptyShape())
+	: ConcaveShape(new btEmptyShape())
 {
 }
+

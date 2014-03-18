@@ -340,16 +340,28 @@ namespace DemoFramework.SharpDX
                 CollisionObject colObj = objects[i];
 
                 Matrix transform;
-                if (colObj is SoftBody)
+                if (colObj is RigidBody)
+                {
+                    DefaultMotionState motionState = (colObj as RigidBody).MotionState as DefaultMotionState;
+                    if (motionState != null)
+                    {
+                        transform = motionState.GraphicsWorldTrans;
+                        colObj.GetWorldTransform(out transform);
+                    }
+                    else
+                    {
+                        colObj.GetWorldTransform(out transform);
+                    }
+                }
+                else if (colObj is SoftBody)
                 {
                     if (demo.IsDebugDrawEnabled)
                         continue;
-                    transform = Matrix.Identity;
+                    transform = BulletSharp.Matrix.Identity;
                 }
                 else
                 {
-                    transform = ((colObj as RigidBody).MotionState as DefaultMotionState).GraphicsWorldTrans;
-                    //colObj.GetWorldTransform(out transform);
+                    colObj.GetWorldTransform(out transform);
                 }
                 InitInstanceData(colObj, colObj.CollisionShape, ref transform);
             }

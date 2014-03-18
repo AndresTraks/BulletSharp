@@ -18,7 +18,8 @@ namespace BulletSharp
 		RotationalLimitMotor();
 		RotationalLimitMotor(RotationalLimitMotor^ limitMotor);
 
-		btScalar SolveAngularLimits(btScalar timeStep, Vector3 axis, btScalar jacDiagABInv, RigidBody^ body0, RigidBody^ body1);
+		btScalar SolveAngularLimits(btScalar timeStep, Vector3 axis, btScalar jacDiagABInv,
+			RigidBody^ body0, RigidBody^ body1);
 		int TestLimitValue(btScalar test_value);
 
 		property btScalar AccumulatedImpulse
@@ -140,7 +141,9 @@ namespace BulletSharp
 
 		bool IsLimited(int limitIndex);
 		bool NeedApplyForce(int limitIndex);
-		btScalar SolveLinearAxis(btScalar timeStep, btScalar jacDiagABInv, RigidBody^ body1, Vector3 pointInA, RigidBody^ body2, Vector3 pointInB, int limit_index, Vector3 axis_normal_on_a, Vector3 anchorPos);
+		btScalar SolveLinearAxis(btScalar timeStep, btScalar jacDiagABInv, RigidBody^ body1,
+			Vector3 pointInA, RigidBody^ body2, Vector3 pointInB, int limit_index,
+			Vector3 axis_normal_on_a, Vector3 anchorPos);
 		int TestLimitValue(int limitIndex, btScalar test_value);
 
 		property Vector3 AccumulatedImpulse
@@ -238,17 +241,25 @@ namespace BulletSharp
 		Generic6DofConstraint(btGeneric6DofConstraint* native);
 
 	public:
-		Generic6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA);
-		Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameB);
+		Generic6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB,
+			bool useLinearReferenceFrameA);
+		Generic6DofConstraint(RigidBody^ rigidBodyA, Matrix frameInB, bool useLinearReferenceFrameB);
 
 		void CalcAnchorPos();
 		void CalculateTransforms(Matrix transA, Matrix transB);
 		void CalculateTransforms();
-		//int GetLimitMotorInfo2(RotationalLimitMotor^ limot, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, btConstraintInfo2^ info, int row, Vector3 ax1, int rotational, int rotAllowed);
-		//int GetLimitMotorInfo2(RotationalLimitMotor^ limot, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, btConstraintInfo2^ info, int row, Vector3 ax1, int rotational);
+/*
+		int GetLimitMotorInfo2(RotationalLimitMotor^ limot, Matrix transA, Matrix transB,
+			Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, btConstraintInfo2^ info,
+			int row, Vector3 ax1, int rotational, int rotAllowed);
+		int GetLimitMotorInfo2(RotationalLimitMotor^ limot, Matrix transA, Matrix transB,
+			Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, btConstraintInfo2^ info,
+			int row, Vector3 ax1, int rotational);
+*/
 		btScalar GetAngle(int axis_index);
 		Vector3 GetAxis(int axis_index);
-		//void GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB);
+		//void GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA, Matrix transB,
+		//	Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB);
 		btScalar GetRelativePivotPosition(int axis_index);
 		RotationalLimitMotor^ GetRotationalLimitMotor(int index);
 		bool IsLimited(int limitIndex);
@@ -317,7 +328,7 @@ namespace BulletSharp
 		property bool UseFrameOffset
 		{
 			bool get();
-			void set(bool value);
+			void set(bool frameOffsetOnOff);
 		}
 	};
 };

@@ -54,6 +54,9 @@ namespace BulletSharp
 			btSoftBodyWorldInfo* _native;
 			SoftBodyWorldInfo(btSoftBodyWorldInfo* info);
 
+		private:
+			Dispatcher^ _dispatcher;
+
 		public:
 			!SoftBodyWorldInfo();
 		protected:

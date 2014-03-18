@@ -3,9 +3,9 @@
 #include "CollisionObjectWrapper.h"
 #include "ManifoldPoint.h"
 
-ManifoldPoint::ManifoldPoint(btManifoldPoint* point)
+ManifoldPoint::ManifoldPoint(btManifoldPoint* native)
 {
-	_native = point;
+	_native = native;
 }
 
 #ifdef BT_CALLBACKS_ARE_EVENTS
@@ -81,9 +81,8 @@ ManifoldPoint::ManifoldPoint(Vector3 pointA, Vector3 pointB, Vector3 normal, btS
 	VECTOR3_DEF(pointA);
 	VECTOR3_DEF(pointB);
 	VECTOR3_DEF(normal);
-
-	_native = new btManifoldPoint(VECTOR3_USE(pointA), VECTOR3_USE(pointB), VECTOR3_USE(normal), distance);
-
+	_native = new btManifoldPoint(VECTOR3_USE(pointA), VECTOR3_USE(pointB), VECTOR3_USE(normal),
+		distance);
 	VECTOR3_DEL(pointA);
 	VECTOR3_DEL(pointB);
 	VECTOR3_DEL(normal);
@@ -96,6 +95,24 @@ btScalar ManifoldPoint::AppliedImpulse::get()
 void ManifoldPoint::AppliedImpulse::set(btScalar value)
 {
 	_native->m_appliedImpulse = value;
+}
+
+btScalar ManifoldPoint::AppliedImpulseLateral1::get()
+{
+	return _native->m_appliedImpulseLateral1;
+}
+void ManifoldPoint::AppliedImpulseLateral1::set(btScalar value)
+{
+	_native->m_appliedImpulseLateral1 = value;
+}
+
+btScalar ManifoldPoint::AppliedImpulseLateral2::get()
+{
+	return _native->m_appliedImpulseLateral2;
+}
+void ManifoldPoint::AppliedImpulseLateral2::set(btScalar value)
+{
+	_native->m_appliedImpulseLateral2 = value;
 }
 
 btScalar ManifoldPoint::CombinedFriction::get()
@@ -165,9 +182,9 @@ btScalar ManifoldPoint::Distance::get()
 {
 	return _native->getDistance();
 }
-void ManifoldPoint::Distance::set(btScalar value)
+void ManifoldPoint::Distance::set(btScalar dist)
 {
-	_native->setDistance(value);
+	_native->setDistance(dist);
 }
 
 btScalar ManifoldPoint::Distance1::get()
@@ -203,7 +220,7 @@ Vector3 ManifoldPoint::LateralFrictionDir1::get()
 }
 void ManifoldPoint::LateralFrictionDir1::set(Vector3 value)
 {
-	return Math::Vector3ToBtVector3(value, &_native->m_lateralFrictionDir1);
+	Math::Vector3ToBtVector3(value, &_native->m_lateralFrictionDir1);
 }
 
 Vector3 ManifoldPoint::LateralFrictionDir2::get()
@@ -212,7 +229,7 @@ Vector3 ManifoldPoint::LateralFrictionDir2::get()
 }
 void ManifoldPoint::LateralFrictionDir2::set(Vector3 value)
 {
-	return Math::Vector3ToBtVector3(value, &_native->m_lateralFrictionDir2);
+	Math::Vector3ToBtVector3(value, &_native->m_lateralFrictionDir2);
 }
 
 bool ManifoldPoint::LateralFrictionInitialized::get()
@@ -239,7 +256,7 @@ Vector3 ManifoldPoint::LocalPointA::get()
 }
 void ManifoldPoint::LocalPointA::set(Vector3 value)
 {
-	return Math::Vector3ToBtVector3(value, &_native->m_localPointA);
+	Math::Vector3ToBtVector3(value, &_native->m_localPointA);
 }
 
 Vector3 ManifoldPoint::LocalPointB::get()
@@ -248,7 +265,7 @@ Vector3 ManifoldPoint::LocalPointB::get()
 }
 void ManifoldPoint::LocalPointB::set(Vector3 value)
 {
-	return Math::Vector3ToBtVector3(value, &_native->m_localPointB);
+	Math::Vector3ToBtVector3(value, &_native->m_localPointB);
 }
 
 Vector3 ManifoldPoint::NormalWorldOnB::get()
@@ -257,7 +274,7 @@ Vector3 ManifoldPoint::NormalWorldOnB::get()
 }
 void ManifoldPoint::NormalWorldOnB::set(Vector3 value)
 {
-	return Math::Vector3ToBtVector3(value, &_native->m_normalWorldOnB);
+	Math::Vector3ToBtVector3(value, &_native->m_normalWorldOnB);
 }
 
 int ManifoldPoint::PartId0::get()
@@ -284,7 +301,7 @@ Vector3 ManifoldPoint::PositionWorldOnA::get()
 }
 void ManifoldPoint::PositionWorldOnA::set(Vector3 value)
 {
-	return Math::Vector3ToBtVector3(value, &_native->m_positionWorldOnA);
+	Math::Vector3ToBtVector3(value, &_native->m_positionWorldOnA);
 }
 
 Vector3 ManifoldPoint::PositionWorldOnB::get()
@@ -293,7 +310,7 @@ Vector3 ManifoldPoint::PositionWorldOnB::get()
 }
 void ManifoldPoint::PositionWorldOnB::set(Vector3 value)
 {
-	return Math::Vector3ToBtVector3(value, &_native->m_positionWorldOnB);
+	Math::Vector3ToBtVector3(value, &_native->m_positionWorldOnB);
 }
 
 Object^ ManifoldPoint::UserPersistentData::get()

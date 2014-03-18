@@ -9,6 +9,10 @@ namespace BulletSharp
 	public:
 		PointCollector();
 
+		virtual void AddContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld, btScalar depth) override;
+		virtual void SetShapeIdentifiersA(int partId0, int index0) override;
+		virtual void SetShapeIdentifiersB(int partId1, int index1) override;
+
 		property btScalar Distance
 		{
 			btScalar get();

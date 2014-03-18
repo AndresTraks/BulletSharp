@@ -21,6 +21,15 @@ void MLCPSolver::SetMLCPSolver(MLCPSolverInterface^ solver)
 	Native->setMLCPSolver(solver->_native);
 }
 
+btScalar MLCPSolver::Cfm::get()
+{
+	return Native->getCfm();
+}
+void MLCPSolver::Cfm::set(btScalar cfm)
+{
+	Native->setCfm(cfm);
+}
+
 int MLCPSolver::NumFallbacks::get()
 {
 	return Native->getNumFallbacks();
@@ -28,15 +37,6 @@ int MLCPSolver::NumFallbacks::get()
 void MLCPSolver::NumFallbacks::set(int num)
 {
 	Native->setNumFallbacks(num);
-}
-
-btScalar MLCPSolver::Cfm::get()
-{
-	return Native->getCfm();
-}
-void MLCPSolver::Cfm::set(btScalar value)
-{
-	Native->setCfm(value);
 }
 
 #endif

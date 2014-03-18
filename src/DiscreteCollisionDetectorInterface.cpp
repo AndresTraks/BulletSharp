@@ -78,27 +78,6 @@ bool DiscreteCollisionDetectorInterface::Result::IsDisposed::get()
 	return (_native == NULL);
 }
 
-void DiscreteCollisionDetectorInterface::Result::AddContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld, btScalar depth)
-{
-	VECTOR3_DEF(normalOnBInWorld);
-	VECTOR3_DEF(pointInWorld);
-	
-	_native->addContactPoint(VECTOR3_USE(normalOnBInWorld), VECTOR3_USE(pointInWorld), depth);
-	
-	VECTOR3_DEL(normalOnBInWorld);
-	VECTOR3_DEL(pointInWorld);
-}
-
-void DiscreteCollisionDetectorInterface::Result::SetShapeIdentifiersA(int partId0, int index0)
-{
-	_native->setShapeIdentifiersA(partId0, index0);
-}
-
-void DiscreteCollisionDetectorInterface::Result::SetShapeIdentifiersB(int partId1, int index1)
-{
-	_native->setShapeIdentifiersB(partId1, index1);
-}
-
 
 DiscreteCollisionDetectorInterface::DiscreteCollisionDetectorInterface(
 	btDiscreteCollisionDetectorInterface* detectorInterface)
@@ -166,19 +145,18 @@ StorageResult::StorageResult(btStorageResultWrapper* result)
 }
 
 StorageResult::StorageResult()
-: DiscreteCollisionDetectorInterface::Result(0)
+	: DiscreteCollisionDetectorInterface::Result(0)
 {
-	//_native = ALIGNED_NEW(btStorageResultWrapper);
+	_native = ALIGNED_NEW(btStorageResultWrapper)(this);
 }
 
-void StorageResult::SetShapeIdentifiersA(int partId0, int index0)
+void StorageResult::AddContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld, btScalar depth)
 {
-	Native->setShapeIdentifiersA(partId0, index0);
-}
-
-void StorageResult::SetShapeIdentifiersB(int partId1, int index1)
-{
-	Native->setShapeIdentifiersB(partId1, index1);
+	VECTOR3_DEF(normalOnBInWorld);
+	VECTOR3_DEF(pointInWorld);
+	Native->addContactPoint(VECTOR3_USE(normalOnBInWorld), VECTOR3_USE(pointInWorld), depth);
+	VECTOR3_DEL(normalOnBInWorld);
+	VECTOR3_DEL(pointInWorld);
 }
 
 Vector3 StorageResult::ClosestPointInB::get()
@@ -209,10 +187,10 @@ void StorageResult::NormalOnSurfaceB::set(Vector3 value)
 }
 
 
-//btStorageResultWrapper::btStorageResultWrapper(StorageResult^ storageResult)
-//{
-//	_storageResult = storageResult;
-//}
+btStorageResultWrapper::btStorageResultWrapper(gcroot<StorageResult^> storageResult)
+{
+	_storageResult = storageResult;
+}
 
 void btStorageResultWrapper::setShapeIdentifiersA(int partId0, int index0)
 {

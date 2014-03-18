@@ -16,25 +16,23 @@
 
 #define Native static_cast<btDiscreteDynamicsWorld*>(_native)
 
-DiscreteDynamicsWorld::DiscreteDynamicsWorld(btDiscreteDynamicsWorld* world)
-: DynamicsWorld(world)
+DiscreteDynamicsWorld::DiscreteDynamicsWorld(btDiscreteDynamicsWorld* native)
+	: DynamicsWorld(native)
 {
 }
 
-DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher,
-	BroadphaseInterface^ pairCache,
-	#ifndef DISABLE_CONSTRAINTS
+DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
+#ifndef DISABLE_CONSTRAINTS
 	BulletSharp::ConstraintSolver^ constraintSolver,
-	#endif
+#endif
 	CollisionConfiguration^ collisionConfiguration)
-: DynamicsWorld(new btDiscreteDynamicsWorld(dispatcher->_native,
-	pairCache->_native,
-	#ifndef DISABLE_CONSTRAINTS
-	GetUnmanagedNullable(constraintSolver),
-	#else
-	0,
-	#endif
-	collisionConfiguration->_native))
+	: DynamicsWorld(new btDiscreteDynamicsWorld(dispatcher->_native, pairCache->_native,
+#ifndef DISABLE_CONSTRAINTS
+		GetUnmanagedNullable(constraintSolver),
+#else
+		0,
+#endif
+		collisionConfiguration->_native))
 {
 	_dispatcher = dispatcher;
 	_broadphase = pairCache;
@@ -52,22 +50,32 @@ void DiscreteDynamicsWorld::DebugDrawConstraint(TypedConstraint^ constraint)
 }
 #endif
 
+void DiscreteDynamicsWorld::SetNumTasks(int numTasks)
+{
+	Native->setNumTasks(numTasks);
+}
+
+void DiscreteDynamicsWorld::SynchronizeSingleMotionState(RigidBody^ body)
+{
+	Native->synchronizeSingleMotionState((btRigidBody*)body->_native);
+}
+
 bool DiscreteDynamicsWorld::ApplySpeculativeContactRestitution::get()
 {
 	return Native->getApplySpeculativeContactRestitution();
 }
-void DiscreteDynamicsWorld::ApplySpeculativeContactRestitution::set(bool value)
+void DiscreteDynamicsWorld::ApplySpeculativeContactRestitution::set(bool enable)
 {
-	return Native->setApplySpeculativeContactRestitution(value);
+	Native->setApplySpeculativeContactRestitution(enable);
 }
 
 bool DiscreteDynamicsWorld::LatencyMotionStateInterpolation::get()
 {
 	return Native->getLatencyMotionStateInterpolation();
 }
-void DiscreteDynamicsWorld::LatencyMotionStateInterpolation::set(bool value)
+void DiscreteDynamicsWorld::LatencyMotionStateInterpolation::set(bool latencyInterpolation)
 {
-	return Native->setLatencyMotionStateInterpolation(value);
+	Native->setLatencyMotionStateInterpolation(latencyInterpolation);
 }
 
 #ifndef DISABLE_UNCOMMON
@@ -81,21 +89,12 @@ SimulationIslandManager^ DiscreteDynamicsWorld::SimulationIslandManager::get()
 }
 #endif
 
-void DiscreteDynamicsWorld::SetNumTasks(int numTasks)
-{
-	Native->setNumTasks(numTasks);
-}
-
 bool DiscreteDynamicsWorld::SynchronizeAllMotionStates::get()
 {
 	return Native->getSynchronizeAllMotionStates();
 }
-void DiscreteDynamicsWorld::SynchronizeAllMotionStates::set(bool value)
+void DiscreteDynamicsWorld::SynchronizeAllMotionStates::set(bool synchronizeAll)
 {
-	return Native->setSynchronizeAllMotionStates(value);
+	Native->setSynchronizeAllMotionStates(synchronizeAll);
 }
 
-void DiscreteDynamicsWorld::SynchronizeSingleMotionState(RigidBody^ body)
-{
-	Native->synchronizeSingleMotionState((btRigidBody*)body->_native);
-}

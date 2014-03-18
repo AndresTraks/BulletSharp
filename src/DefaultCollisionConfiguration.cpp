@@ -89,16 +89,17 @@ DefaultCollisionConfiguration::DefaultCollisionConfiguration(btDefaultCollisionC
 }
 
 DefaultCollisionConfiguration::DefaultCollisionConfiguration(DefaultCollisionConstructionInfo^ constructionInfo)
-: CollisionConfiguration(new btDefaultCollisionConfiguration(*constructionInfo->_native))
+	: CollisionConfiguration(new btDefaultCollisionConfiguration(*constructionInfo->_native))
 {
 }
 
 DefaultCollisionConfiguration::DefaultCollisionConfiguration()
-: CollisionConfiguration(new btDefaultCollisionConfiguration())
+	: CollisionConfiguration(new btDefaultCollisionConfiguration())
 {
 }
 
-void DefaultCollisionConfiguration::SetConvexConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold)
+void DefaultCollisionConfiguration::SetConvexConvexMultipointIterations(int numPerturbationIterations,
+	int minimumPointsPerturbationThreshold)
 {
 	Native->setConvexConvexMultipointIterations(numPerturbationIterations, minimumPointsPerturbationThreshold);
 }
@@ -113,7 +114,8 @@ void DefaultCollisionConfiguration::SetConvexConvexMultipointIterations()
 	Native->setConvexConvexMultipointIterations();
 }
 
-void DefaultCollisionConfiguration::SetPlaneConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold)
+void DefaultCollisionConfiguration::SetPlaneConvexMultipointIterations(int numPerturbationIterations,
+	int minimumPointsPerturbationThreshold)
 {
 	Native->setPlaneConvexMultipointIterations(numPerturbationIterations, minimumPointsPerturbationThreshold);
 }
@@ -135,3 +137,4 @@ VoronoiSimplexSolver^ DefaultCollisionConfiguration::SimplexSolver::get()
 	}
 	return _simplexSolver;
 }
+

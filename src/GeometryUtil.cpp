@@ -5,41 +5,43 @@
 #include "AlignedObjectArray.h"
 #include "GeometryUtil.h"
 
-void GeometryUtil::GetPlaneEquationsFromVertices(AlignedVector3Array^ vertices, [Out] AlignedVector3Array^% planeEquationsOut)
+bool GeometryUtil::AreVerticesBehindPlane(Vector3 planeNormal, AlignedVector3Array^ vertices,
+	btScalar margin)
 {
-	btAlignedObjectArray<btVector3>* planeEquationsOutTemp = new btAlignedObjectArray<btVector3>;
-	btGeometryUtil::getPlaneEquationsFromVertices(*(btAlignedObjectArray<btVector3>*)vertices->_native, *planeEquationsOutTemp);
-	planeEquationsOut = gcnew AlignedVector3Array(planeEquationsOutTemp);
+	VECTOR3_DEF(planeNormal);
+	bool ret = btGeometryUtil::areVerticesBehindPlane(VECTOR3_USE(planeNormal), *(btAlignedObjectArray<btVector3>*)vertices->_native,
+		margin);
+	VECTOR3_DEL(planeNormal);
+	return ret;
 }
 
-void GeometryUtil::GetVerticesFromPlaneEquations(AlignedVector3Array^ planeEquations, [Out] AlignedVector3Array^% verticesOut)
+void GeometryUtil::GetPlaneEquationsFromVertices(AlignedVector3Array^ vertices, AlignedVector3Array^ planeEquationsOut)
 {
-	btAlignedObjectArray<btVector3>* verticesOutTemp = new btAlignedObjectArray<btVector3>;
-	btGeometryUtil::getVerticesFromPlaneEquations(*(btAlignedObjectArray<btVector3>*)planeEquations->_native, *verticesOutTemp);
-	verticesOut = gcnew AlignedVector3Array(verticesOutTemp);
+	btGeometryUtil::getPlaneEquationsFromVertices(*(btAlignedObjectArray<btVector3>*)vertices->_native, *(btAlignedObjectArray<btVector3>*)planeEquationsOut->_native);
+}
+
+void GeometryUtil::GetVerticesFromPlaneEquations(AlignedVector3Array^ planeEquations,
+	AlignedVector3Array^ verticesOut)
+{
+	btGeometryUtil::getVerticesFromPlaneEquations(*(btAlignedObjectArray<btVector3>*)planeEquations->_native, *(btAlignedObjectArray<btVector3>*)verticesOut->_native);
 }
 /*
 bool GeometryUtil::IsInside(AlignedVector3Array^ vertices, Vector3 planeNormal, btScalar margin)
 {
 	VECTOR3_DEF(planeNormal);
-	bool ret = btGeometryUtil::isInside(*vertices->_native, VECTOR3_USE(planeNormal), margin);
+	bool ret = btGeometryUtil::isInside(*(btAlignedObjectArray<btVector3>*)vertices->_native, VECTOR3_USE(planeNormal),
+		margin);
 	VECTOR3_DEL(planeNormal);
 	return ret;
 }
 */
-bool GeometryUtil::IsPointInsidePlanes(AlignedVector3Array^ planeEquations, Vector3 point, btScalar margin)
+bool GeometryUtil::IsPointInsidePlanes(AlignedVector3Array^ planeEquations, Vector3 point,
+	btScalar margin)
 {
 	VECTOR3_DEF(point);
-	bool ret = btGeometryUtil::isPointInsidePlanes(*(btAlignedObjectArray<btVector3>*)planeEquations->_native, VECTOR3_USE(point), margin);
+	bool ret = btGeometryUtil::isPointInsidePlanes(*(btAlignedObjectArray<btVector3>*)planeEquations->_native, VECTOR3_USE(point),
+		margin);
 	VECTOR3_DEL(point);
-	return ret;
-}
-
-bool GeometryUtil::AreVerticesBehindPlane(Vector3 planeNormal, AlignedVector3Array^ vertices, btScalar margin)
-{
-	VECTOR3_DEF(planeNormal);
-	bool ret = btGeometryUtil::areVerticesBehindPlane(VECTOR3_USE(planeNormal), *(btAlignedObjectArray<btVector3>*)vertices->_native, margin);
-	VECTOR3_DEL(planeNormal);
 	return ret;
 }
 

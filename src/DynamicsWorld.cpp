@@ -15,31 +15,31 @@
 
 #define Native static_cast<btDynamicsWorld*>(_native)
 
-DynamicsWorld::DynamicsWorld(btDynamicsWorld* world)
-: CollisionWorld(world)
+DynamicsWorld::DynamicsWorld(btDynamicsWorld* native)
+	: CollisionWorld(native)
 {
 }
 
-void DynamicsWorld::AddAction(IActionInterface^ actionInterface)
+void DynamicsWorld::AddAction(IActionInterface^ action)
 {
 	if (!_actions) {
 		_actions = gcnew System::Collections::Generic::List<IActionInterface^>();
 	}
-	_actions->Add(actionInterface);
+	_actions->Add(action);
 #ifndef DISABLE_VEHICLE
-	RaycastVehicle^ vehicle = dynamic_cast<RaycastVehicle^>(actionInterface);
+	RaycastVehicle^ vehicle = dynamic_cast<RaycastVehicle^>(action);
 	if (vehicle) {
 		Native->addAction(vehicle->_native);
 		return;
 	}
 #endif
-	CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(actionInterface);
+	CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(action);
 	if (character) {
 		Native->addAction(character->_native);
 		return;
 	}
-	ActionInterfaceWrapper* wrapper = new ActionInterfaceWrapper(actionInterface, this);
-	ObjectTable::Add(actionInterface, wrapper);
+	ActionInterfaceWrapper* wrapper = new ActionInterfaceWrapper(action, this);
+	ObjectTable::Add(action, wrapper);
 	Native->addAction(wrapper);
 	return;
 }
@@ -56,14 +56,14 @@ void DynamicsWorld::AddConstraint(TypedConstraint^ constraint)
 }
 #endif
 
-void DynamicsWorld::AddRigidBody(RigidBody^ rigidBody, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
-{
-	Native->addRigidBody((btRigidBody*)rigidBody->_native, (short)collisionFilterGroup, (short)collisionFilterMask);
-}
-
 void DynamicsWorld::AddRigidBody(RigidBody^ body)
 {
 	Native->addRigidBody((btRigidBody*)body->_native);
+}
+
+void DynamicsWorld::AddRigidBody(RigidBody^ body, CollisionFilterGroups group, CollisionFilterGroups mask)
+{
+	Native->addRigidBody((btRigidBody*)body->_native, (short)group, (short)mask);
 }
 
 void DynamicsWorld::ClearForces()
@@ -120,7 +120,8 @@ void callback(btDynamicsWorld* world, btScalar timeStep)
 	dynamicsWorld->_callback(dynamicsWorld, timeStep);
 }
 
-void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo, bool isPreTick)
+void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo,
+	bool isPreTick)
 {
 	_callback = cb;
 	_userObject = worldUserInfo;
@@ -226,7 +227,7 @@ Object^ DynamicsWorld::WorldUserInfo::get()
 {
 	return _userObject;
 }
-void DynamicsWorld::WorldUserInfo::set(Object^ value)
+void DynamicsWorld::WorldUserInfo::set(Object^ worldUserInfo)
 {
-	_userObject = value;
+	_userObject = worldUserInfo;
 }

@@ -8,14 +8,12 @@
 #define Native static_cast<btManifoldResult*>(_native)
 
 ManifoldResult::ManifoldResult()
-: DiscreteCollisionDetectorInterface::Result(0)
+	: DiscreteCollisionDetectorInterface::Result(ALIGNED_NEW(btManifoldResult)())
 {
-	_native = ALIGNED_NEW(btManifoldResult) ();
 }
 
 ManifoldResult::ManifoldResult(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
-: DiscreteCollisionDetectorInterface::Result(
-	new btManifoldResult(body0Wrap->_native, body1Wrap->_native))
+	: Result(new btManifoldResult(body0Wrap->_native, body1Wrap->_native))
 {
 }
 
@@ -29,33 +27,45 @@ btScalar ManifoldResult::CalculateCombinedRestitution(CollisionObject^ body0, Co
 	return btManifoldResult::calculateCombinedRestitution(body0->_native, body1->_native);
 }
 
-CollisionObject^ ManifoldResult::Body0Internal::get()
+void ManifoldResult::RefreshContactPoints()
 {
-	const btCollisionObject* body0 = Native->getBody0Internal();
-	return CollisionObject::GetManaged((btCollisionObject*)body0);
+	Native->refreshContactPoints();
 }
 
-CollisionObject^ ManifoldResult::Body1Internal::get()
+CollisionObject^ ManifoldResult::Body0Internal::get()
 {
-	const btCollisionObject* body1 = Native->getBody1Internal();
-	return CollisionObject::GetManaged((btCollisionObject*)body1);
+	return CollisionObject::GetManaged((btCollisionObject*)Native->getBody0Internal());
 }
 
 CollisionObjectWrapper^ ManifoldResult::Body0Wrap::get()
 {
 	return gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)Native->getBody0Wrap());
 }
+void ManifoldResult::Body0Wrap::set(CollisionObjectWrapper^ obj0Wrap)
+{
+	Native->setBody0Wrap(obj0Wrap->_native);
+}
+
+CollisionObject^ ManifoldResult::Body1Internal::get()
+{
+	return CollisionObject::GetManaged((btCollisionObject*)Native->getBody1Internal());
+}
 
 CollisionObjectWrapper^ ManifoldResult::Body1Wrap::get()
 {
 	return gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)Native->getBody1Wrap());
+}
+void ManifoldResult::Body1Wrap::set(CollisionObjectWrapper^ obj1Wrap)
+{
+	Native->setBody1Wrap(obj1Wrap->_native);
 }
 
 PersistentManifold^ ManifoldResult::PersistentManifold::get()
 {
 	return gcnew BulletSharp::PersistentManifold(Native->getPersistentManifold());
 }
-void ManifoldResult::PersistentManifold::set(BulletSharp::PersistentManifold^ value)
+void ManifoldResult::PersistentManifold::set(BulletSharp::PersistentManifold^ manifold)
 {
-	Native->setPersistentManifold((btPersistentManifold*)GetUnmanagedNullable(value));
+	Native->setPersistentManifold((btPersistentManifold*)GetUnmanagedNullable(manifold));
 }
+

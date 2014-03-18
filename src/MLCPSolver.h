@@ -18,13 +18,13 @@ namespace BulletSharp
 		property btScalar Cfm
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar cfm);
 		}
 
 		property int NumFallbacks
 		{
 			int get();
-			void set(int value);
+			void set(int num);
 		}
 	};
 };

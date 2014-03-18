@@ -12,17 +12,14 @@
 MultiBody::MultiBody(btMultiBody* native)
 {
 	_native = native;
-
-	_links = gcnew array<MultibodyLink^>(_native->getNumLinks());
 }
 
-MultiBody::MultiBody(int nLinks, btScalar mass, Vector3 inertia, bool fixedBase, bool canSleep, bool multiDof)
+MultiBody::MultiBody(int nLinks, btScalar mass, Vector3 inertia, bool fixedBase,
+	bool canSleep, bool multiDof)
 {
 	VECTOR3_DEF(inertia);
 	_native = new btMultiBody(nLinks, mass, VECTOR3_USE(inertia), fixedBase, canSleep, multiDof);
 	VECTOR3_DEL(inertia);
-
-	_links = gcnew array<MultibodyLink^>(nLinks);
 }
 
 void MultiBody::AddBaseForce(Vector3 f)
@@ -68,9 +65,11 @@ void MultiBody::ApplyDeltaVee(ScalarArray^ delta_vee)
 	_native->applyDeltaVee((btScalar*)delta_vee->_native);
 }
 
-void MultiBody::CalcAccelerationDeltas(ScalarArray^ force, ScalarArray^ output, AlignedScalarArray^ scratch_r, AlignedVector3Array^ scratch_v)
+void MultiBody::CalcAccelerationDeltas(ScalarArray^ force, ScalarArray^ output, AlignedScalarArray^ scratch_r,
+	AlignedVector3Array^ scratch_v)
 {
-	_native->calcAccelerationDeltas((btScalar*)force->_native, (btScalar*)output->_native, *(btAlignedObjectArray<btScalar>*)scratch_r->_native, *(btAlignedObjectArray<btVector3>*)scratch_v->_native);
+	_native->calcAccelerationDeltas((btScalar*)force->_native, (btScalar*)output->_native, *(btAlignedObjectArray<btScalar>*)scratch_r->_native,
+		*(btAlignedObjectArray<btVector3>*)scratch_v->_native);
 }
 
 void MultiBody::CheckMotionAndSleepIfRequired(btScalar timestep)
@@ -88,9 +87,15 @@ void MultiBody::ClearVelocities()
 	_native->clearVelocities();
 }
 /*
-void MultiBody::FillContactJacobian(int link, Vector3 contact_point, Vector3 normal, ScalarArray jac, AlignedScalarArray^ scratch_r, AlignedVector3Array^ scratch_v, AlignedMatrix3x3Array^ scratch_m)
+void MultiBody::FillContactJacobian(int link, Vector3 contact_point, Vector3 normal,
+	ScalarArray^ jac, AlignedScalarArray^ scratch_r, AlignedVector3Array^ scratch_v, AlignedMatrix3x3Array^ scratch_m)
 {
-	_native->fillContactJacobian(link, contact_point->_native, normal->_native, jac->_native, scratch_r->_native, scratch_v->_native, scratch_m->_native);
+	VECTOR3_DEF(contact_point);
+	VECTOR3_DEF(normal);
+	_native->fillContactJacobian(link, VECTOR3_USE(contact_point), VECTOR3_USE(normal),
+		jac->_native, *scratch_r->_native, *scratch_v->_native, *scratch_m->_native);
+	VECTOR3_DEL(contact_point);
+	VECTOR3_DEL(normal);
 }
 */
 btScalar MultiBody::GetJointPos(int i)
@@ -110,8 +115,10 @@ btScalar MultiBody::GetJointVel(int i)
 
 MultibodyLink^ MultiBody::GetLink(int index)
 {
-	if (_links[index] == nullptr)
-	{
+	if (_links == nullptr) {
+		_links = gcnew array<MultibodyLink^>(_native->getNumLinks());
+	}
+	if (_links[index] == nullptr) {
 		_links[index] = gcnew MultibodyLink(&_native->getLink(index));
 	}
 	return _links[index];
@@ -206,65 +213,70 @@ void MultiBody::SetJointVel(int i, btScalar qdot)
 	_native->setJointVel(i, qdot);
 }
 
-void MultiBody::SetupPrismatic(int i, btScalar mass, Vector3 inertia, int parent, Quaternion rotParentToThis, Vector3 joint_axis, Vector3 rVectorWhenQZero, bool disableParentCollision)
+void MultiBody::SetupPrismatic(int i, btScalar mass, Vector3 inertia, int parent,
+	Quaternion rot_parent_to_this, Vector3 joint_axis, Vector3 rVectorWhenQZero,
+	bool disableParentCollision)
 {
 	VECTOR3_DEF(inertia);
-	btQuaternion* rotParentToThisTemp = Math::QuaternionToBtQuat(rotParentToThis);
+	QUATERNION_CONV(rot_parent_to_this);
 	VECTOR3_DEF(joint_axis);
 	VECTOR3_DEF(rVectorWhenQZero);
-	_native->setupPrismatic(i, mass, VECTOR3_USE(inertia), parent, *rotParentToThisTemp,
+	_native->setupPrismatic(i, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(rot_parent_to_this),
 		VECTOR3_USE(joint_axis), VECTOR3_USE(rVectorWhenQZero), disableParentCollision);
-	VECTOR3_DEL(rVectorWhenQZero);
-	VECTOR3_DEL(joint_axis);
-	ALIGNED_FREE(rotParentToThisTemp);
 	VECTOR3_DEL(inertia);
+	QUATERNION_DEL(rot_parent_to_this);
+	VECTOR3_DEL(joint_axis);
+	VECTOR3_DEL(rVectorWhenQZero);
 }
 
-void MultiBody::SetupPrismatic(int i, btScalar mass, Vector3 inertia, int parent, Quaternion rotParentToThis, Vector3 joint_axis, Vector3 rVectorWhenQZero)
+void MultiBody::SetupPrismatic(int i, btScalar mass, Vector3 inertia, int parent,
+	Quaternion rot_parent_to_this, Vector3 joint_axis, Vector3 rVectorWhenQZero)
 {
 	VECTOR3_DEF(inertia);
-	btQuaternion* rotParentToThisTemp = Math::QuaternionToBtQuat(rotParentToThis);
+	QUATERNION_CONV(rot_parent_to_this);
 	VECTOR3_DEF(joint_axis);
 	VECTOR3_DEF(rVectorWhenQZero);
-	_native->setupPrismatic(i, mass, VECTOR3_USE(inertia), parent, *rotParentToThisTemp,
+	_native->setupPrismatic(i, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(rot_parent_to_this),
 		VECTOR3_USE(joint_axis), VECTOR3_USE(rVectorWhenQZero));
+	VECTOR3_DEL(inertia);
+	QUATERNION_DEL(rot_parent_to_this);
+	VECTOR3_DEL(joint_axis);
 	VECTOR3_DEL(rVectorWhenQZero);
-	VECTOR3_DEL(joint_axis);
-	ALIGNED_FREE(rotParentToThisTemp);
-	VECTOR3_DEL(inertia);
 }
 
-void MultiBody::SetupRevolute(int i, btScalar mass, Vector3 inertia, int parent, Quaternion zero_rot_parent_to_this, Vector3 joint_axis, Vector3 parent_axis_position, Vector3 my_axis_position, bool disableParentCollision)
+void MultiBody::SetupRevolute(int i, btScalar mass, Vector3 inertia, int parent, Quaternion zero_rot_parent_to_this,
+	Vector3 joint_axis, Vector3 parent_axis_position, Vector3 my_axis_position, bool disableParentCollision)
 {
 	VECTOR3_DEF(inertia);
-	btQuaternion* rotParentToThisTemp = Math::QuaternionToBtQuat(zero_rot_parent_to_this);
+	QUATERNION_CONV(zero_rot_parent_to_this);
 	VECTOR3_DEF(joint_axis);
 	VECTOR3_DEF(parent_axis_position);
 	VECTOR3_DEF(my_axis_position);
-	_native->setupRevolute(i, mass, VECTOR3_USE(inertia), parent, *rotParentToThisTemp,
-		VECTOR3_USE(joint_axis), VECTOR3_USE(parent_axis_position), VECTOR3_USE(my_axis_position), 
+	_native->setupRevolute(i, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(zero_rot_parent_to_this),
+		VECTOR3_USE(joint_axis), VECTOR3_USE(parent_axis_position), VECTOR3_USE(my_axis_position),
 		disableParentCollision);
-	VECTOR3_DEL(my_axis_position);
-	VECTOR3_DEL(parent_axis_position);
-	VECTOR3_DEL(joint_axis);
-	ALIGNED_FREE(rotParentToThisTemp);
 	VECTOR3_DEL(inertia);
+	QUATERNION_DEL(zero_rot_parent_to_this);
+	VECTOR3_DEL(joint_axis);
+	VECTOR3_DEL(parent_axis_position);
+	VECTOR3_DEL(my_axis_position);
 }
 
-void MultiBody::SetupRevolute(int i, btScalar mass, Vector3 inertia, int parent, Quaternion zero_rot_parent_to_this, Vector3 joint_axis, Vector3 parent_axis_position, Vector3 my_axis_position)
+void MultiBody::SetupRevolute(int i, btScalar mass, Vector3 inertia, int parent, Quaternion zero_rot_parent_to_this,
+	Vector3 joint_axis, Vector3 parent_axis_position, Vector3 my_axis_position)
 {
 	VECTOR3_DEF(inertia);
-	btQuaternion* rotParentToThisTemp = Math::QuaternionToBtQuat(zero_rot_parent_to_this);
+	QUATERNION_CONV(zero_rot_parent_to_this);
 	VECTOR3_DEF(joint_axis);
 	VECTOR3_DEF(parent_axis_position);
 	VECTOR3_DEF(my_axis_position);
-	_native->setupRevolute(i, mass, VECTOR3_USE(inertia), parent, *rotParentToThisTemp,
+	_native->setupRevolute(i, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(zero_rot_parent_to_this),
 		VECTOR3_USE(joint_axis), VECTOR3_USE(parent_axis_position), VECTOR3_USE(my_axis_position));
-	VECTOR3_DEL(my_axis_position);
-	VECTOR3_DEL(parent_axis_position);
-	VECTOR3_DEL(joint_axis);
-	ALIGNED_FREE(rotParentToThisTemp);
 	VECTOR3_DEL(inertia);
+	QUATERNION_DEL(zero_rot_parent_to_this);
+	VECTOR3_DEL(joint_axis);
+	VECTOR3_DEL(parent_axis_position);
+	VECTOR3_DEL(my_axis_position);
 }
 
 void MultiBody::StepPositions(btScalar dt)
@@ -272,9 +284,10 @@ void MultiBody::StepPositions(btScalar dt)
 	_native->stepPositions(dt);
 }
 /*
-void MultiBody::StepVelocities(btScalar dt, AlignedScalarArray^ scratch_r, AlignedVector3Array^ scratch_v, AlignedMatrix3x3Array^ scratch_m)
+void MultiBody::StepVelocities(btScalar dt, AlignedScalarArray^ scratch_r, AlignedVector3Array^ scratch_v,
+	AlignedMatrix3x3Array^ scratch_m)
 {
-	_native->stepVelocities(dt, scratch_r->_native, scratch_v->_native, scratch_m->_native);
+	_native->stepVelocities(dt, *scratch_r->_native, *scratch_v->_native, *scratch_m->_native);
 }
 */
 void MultiBody::WakeUp()
@@ -446,9 +459,9 @@ bool MultiBody::HasSelfCollision::get()
 {
 	return _native->hasSelfCollision();
 }
-void MultiBody::HasSelfCollision::set(bool value)
+void MultiBody::HasSelfCollision::set(bool hasSelfCollision)
 {
-	_native->setHasSelfCollision(value);
+	_native->setHasSelfCollision(hasSelfCollision);
 }
 
 bool MultiBody::IsAwake::get()
@@ -508,9 +521,9 @@ Quaternion MultiBody::WorldToBaseRot::get()
 }
 void MultiBody::WorldToBaseRot::set(Quaternion rot)
 {
-	btQuaternion* rotTemp = Math::QuaternionToBtQuat(rot);
-	_native->setWorldToBaseRot(*rotTemp);
-	ALIGNED_FREE(rotTemp);
+	QUATERNION_CONV(rot);
+	_native->setWorldToBaseRot(QUATERNION_USE(rot));
+	QUATERNION_DEL(rot);
 }
 
 #endif

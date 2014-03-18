@@ -7,7 +7,7 @@ namespace BulletSharp
 	public ref class HeightfieldTerrainShape : ConcaveShape
 	{
 	internal:
-		HeightfieldTerrainShape(btHeightfieldTerrainShape* terrainShape);
+		HeightfieldTerrainShape(btHeightfieldTerrainShape* native);
 
 	public:
 		HeightfieldTerrainShape(int heightStickWidth, int heightStickLength, System::IO::Stream^ heightfieldData,

@@ -12,39 +12,34 @@
 
 #define Native static_cast<btGjkPairDetector*>(_native)
 
-GjkPairDetector::GjkPairDetector(btGjkPairDetector* detector)
-: DiscreteCollisionDetectorInterface(detector)
+GjkPairDetector::GjkPairDetector(btGjkPairDetector* native)
+	: DiscreteCollisionDetectorInterface(native)
 {
 }
 
-GjkPairDetector::GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB,
-	SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ penetrationDepthSolver)
-: DiscreteCollisionDetectorInterface(0)
+GjkPairDetector::GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB, SimplexSolverInterface^ simplexSolver,
+	ConvexPenetrationDepthSolver^ penetrationDepthSolver)
+	: DiscreteCollisionDetectorInterface(ALIGNED_NEW(btGjkPairDetector) ((btConvexShape*)objectA->_native, (btConvexShape*)objectB->_native,
+		simplexSolver->_native, GetUnmanagedNullable(penetrationDepthSolver)))
 {
-	_native = ALIGNED_NEW(btGjkPairDetector) ((btConvexShape*)objectA->_native,
-		(btConvexShape*)objectB->_native, simplexSolver->_native, GetUnmanagedNullable(penetrationDepthSolver));
 }
 
 GjkPairDetector::GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB, BroadphaseNativeType shapeTypeA,
-	BroadphaseNativeType shapeTypeB, btScalar marginA, btScalar marginB,
-	SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ penetrationDepthSolver)
-: DiscreteCollisionDetectorInterface(0)
+	BroadphaseNativeType shapeTypeB, btScalar marginA, btScalar marginB, SimplexSolverInterface^ simplexSolver,
+	ConvexPenetrationDepthSolver^ penetrationDepthSolver)
+	: DiscreteCollisionDetectorInterface(ALIGNED_NEW(btGjkPairDetector) ((btConvexShape*)objectA->_native, (btConvexShape*)objectB->_native,
+		(int)shapeTypeA, (int)shapeTypeB, marginA, marginB, simplexSolver->_native, GetUnmanagedNullable(penetrationDepthSolver)))
 {
-	_native = ALIGNED_NEW(btGjkPairDetector) ((btConvexShape*)objectA->_native,
-		(btConvexShape*)objectB->_native, (int)shapeTypeA, (int)shapeTypeB,
-		marginA, marginB, simplexSolver->_native, GetUnmanagedNullable(penetrationDepthSolver));
 }
 
 #ifndef DISABLE_DEBUGDRAW
-void GjkPairDetector::GetClosestPointsNonVirtual(
-	ClosestPointInput^ input, Result^ output, IDebugDraw^ debugDraw)
+void GjkPairDetector::GetClosestPointsNonVirtual(ClosestPointInput^ input, Result^ output,
+	IDebugDraw^ debugDraw)
 {
-	Native->getClosestPointsNonVirtual(*input->_native, *output->_native,
-		DebugDraw::GetUnmanaged(debugDraw));
+	Native->getClosestPointsNonVirtual(*input->_native, *output->_native, DebugDraw::GetUnmanaged(debugDraw));
 }
 #else
-void GjkPairDetector::GetClosestPointsNonVirtual(
-	ClosestPointInput^ input, Result^ output)
+void GjkPairDetector::GetClosestPointsNonVirtual(ClosestPointInput^ input, Result^ output)
 {
 	UnmanagedPointer->getClosestPointsNonVirtual(*input->_native, *output->_native, 0);
 }

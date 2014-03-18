@@ -4,29 +4,32 @@
 
 #define Native static_cast<btDefaultMotionState*>(_native)
 
-DefaultMotionState::DefaultMotionState(Matrix startTrans, Matrix centerOfMassOffset) : MotionState(0)
+DefaultMotionState::DefaultMotionState(Matrix startTrans, Matrix centerOfMassOffset)
+	: MotionState(0)
 {
-	btTransform* startTransTemp = Math::MatrixToBtTransform(startTrans);
-	btTransform* centerOfMassOffsetTemp = Math::MatrixToBtTransform(centerOfMassOffset);
-	_native = ALIGNED_NEW(btDefaultMotionState) (*startTransTemp, *centerOfMassOffsetTemp);
-	ALIGNED_FREE(startTransTemp);
-	ALIGNED_FREE(centerOfMassOffsetTemp);
+	TRANSFORM_CONV(startTrans);
+	TRANSFORM_CONV(centerOfMassOffset);
+	_native = ALIGNED_NEW(btDefaultMotionState) (TRANSFORM_USE(startTrans), TRANSFORM_USE(centerOfMassOffset));
+	TRANSFORM_DEL(startTrans);
+	TRANSFORM_DEL(centerOfMassOffset);
 }
 
-DefaultMotionState::DefaultMotionState(Matrix startTrans) : MotionState(0)
+DefaultMotionState::DefaultMotionState(Matrix startTrans)
+	: MotionState(0)
 {
-	btTransform* startTransTemp = Math::MatrixToBtTransform(startTrans);
+	TRANSFORM_CONV(startTrans);
 #ifdef BT_USE_SSE_IN_API
 	btTransform* centerOfMassOffset = Math::MatrixToBtTransform(Matrix_Identity); // default optional parameters are not aligned
-	_native = ALIGNED_NEW(btDefaultMotionState) (*startTransTemp, *centerOfMassOffset);
+	_native = ALIGNED_NEW(btDefaultMotionState) (TRANSFORM_USE(startTrans), *centerOfMassOffset);
 	ALIGNED_FREE(centerOfMassOffset);
 #else
-	_native = ALIGNED_NEW(btDefaultMotionState) (*startTransTemp);
+	_native = ALIGNED_NEW(btDefaultMotionState) (TRANSFORM_USE(startTrans));
 #endif
-	ALIGNED_FREE(startTransTemp);
+	TRANSFORM_DEL(startTrans);
 }
 
-DefaultMotionState::DefaultMotionState() : MotionState(0)
+DefaultMotionState::DefaultMotionState()
+	: MotionState(0)
 {
 #ifdef BT_USE_SSE_IN_API
 	btTransform* identityMatrix = Math::MatrixToBtTransform(Matrix_Identity); // default optional parameters are not aligned

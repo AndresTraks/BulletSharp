@@ -6,8 +6,18 @@
 #include "CollisionDispatcher.h"
 #include "GImpactCollisionAlgorithm.h"
 
-GImpactCollisionAlgorithm::GImpactCollisionAlgorithm(btGImpactCollisionAlgorithm* algorithm)
-: ActivatingCollisionAlgorithm(algorithm)
+GImpactCollisionAlgorithm::CreateFunc::CreateFunc(btGImpactCollisionAlgorithm::CreateFunc* native)
+	: CollisionAlgorithmCreateFunc(native)
+{
+}
+
+GImpactCollisionAlgorithm::CreateFunc::CreateFunc()
+	: CollisionAlgorithmCreateFunc(new btGImpactCollisionAlgorithm::CreateFunc())
+{
+}
+
+GImpactCollisionAlgorithm::GImpactCollisionAlgorithm(btGImpactCollisionAlgorithm* native)
+	: ActivatingCollisionAlgorithm(native)
 {
 }
 

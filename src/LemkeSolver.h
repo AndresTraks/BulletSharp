@@ -24,10 +24,10 @@ namespace BulletSharp
 			void set(int value);
 		}
 
-		property float MaxValue
+		property btScalar MaxValue
 		{
-			float get();
-			void set(float value);
+			btScalar get();
+			void set(btScalar value);
 		}
 
 		property bool UseLoHighBounds

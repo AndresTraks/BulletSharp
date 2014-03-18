@@ -7,50 +7,46 @@
 
 #define Native static_cast<btMinkowskiSumShape*>(_native)
 
-MinkowskiSumShape::MinkowskiSumShape(btMinkowskiSumShape* shape)
-: ConvexInternalShape(shape)
+MinkowskiSumShape::MinkowskiSumShape(btMinkowskiSumShape* native)
+	: ConvexInternalShape(native)
 {
 }
 
 MinkowskiSumShape::MinkowskiSumShape(ConvexShape^ shapeA, ConvexShape^ shapeB)
-: ConvexInternalShape(new btMinkowskiSumShape((btConvexShape*)shapeA->_native, (btConvexShape*)shapeB->_native))
+	: ConvexInternalShape(new btMinkowskiSumShape((btConvexShape*)shapeA->_native, (btConvexShape*)shapeB->_native))
 {
-	_shapeA = shapeA;
-	_shapeB = shapeB;
 }
 
 ConvexShape^ MinkowskiSumShape::ShapeA::get()
 {
-	btConvexShape* shapeA = (btConvexShape*)Native->getShapeA();
-	ReturnCachedObjectCast(ConvexShape, _shapeA, shapeA);
+	return static_cast<ConvexShape^>(CollisionShape::GetManaged((btCollisionShape*)Native->getShapeA()));
 }
 
 ConvexShape^ MinkowskiSumShape::ShapeB::get()
 {
-	btConvexShape* shapeB = (btConvexShape*)Native->getShapeB();
-	ReturnCachedObjectCast(ConvexShape, _shapeB, shapeB);
+	return static_cast<ConvexShape^>(CollisionShape::GetManaged((btCollisionShape*)Native->getShapeB()));
 }
 
 Matrix MinkowskiSumShape::TransformA::get()
 {
 	return Math::BtTransformToMatrix(&Native->getTransformA());
 }
-void MinkowskiSumShape::TransformA::set(Matrix value)
+void MinkowskiSumShape::TransformA::set(Matrix transA)
 {
-	btTransform* valueTemp = Math::MatrixToBtTransform(value);
-	Native->setTransformA(*valueTemp);
-	ALIGNED_FREE(valueTemp);
+	TRANSFORM_CONV(transA);
+	Native->setTransformA(TRANSFORM_USE(transA));
+	TRANSFORM_DEL(transA);
 }
 
 Matrix MinkowskiSumShape::TransformB::get()
 {
 	return Math::BtTransformToMatrix(&Native->GetTransformB());
 }
-void MinkowskiSumShape::TransformB::set(Matrix value)
+void MinkowskiSumShape::TransformB::set(Matrix transB)
 {
-	btTransform* valueTemp = Math::MatrixToBtTransform(value);
-	Native->setTransformB(*valueTemp);
-	ALIGNED_FREE(valueTemp);
+	TRANSFORM_CONV(transB);
+	Native->setTransformB(TRANSFORM_USE(transB));
+	TRANSFORM_DEL(transB);
 }
 
 #endif

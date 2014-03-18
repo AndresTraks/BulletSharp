@@ -6,12 +6,12 @@
 #include "EmptyCollisionAlgorithm.h"
 
 EmptyAlgorithm::CreateFunc::CreateFunc()
-: CollisionAlgorithmCreateFunc(new btEmptyAlgorithm::CreateFunc())
+	: CollisionAlgorithmCreateFunc(new btEmptyAlgorithm::CreateFunc())
 {
 }
 
 EmptyAlgorithm::EmptyAlgorithm(CollisionAlgorithmConstructionInfo^ ci)
-: CollisionAlgorithm(new btEmptyAlgorithm(*ci->_native))
+	: CollisionAlgorithm(new btEmptyAlgorithm(*ci->_native))
 {
 }
 
