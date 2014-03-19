@@ -8,17 +8,14 @@ namespace BulletSharp
 	ref class Dispatcher;
 	ref class UnionFind;
 
-	public ref class SimulationIslandManager : BulletSharp::IDisposable
+	public ref class SimulationIslandManager
 	{
 	public:
-		/*ref class IslandCallback : BulletSharp::IDisposable
+		/*ref class IslandCallback abstract : BulletSharp::IDisposable
 		{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
-
 		internal:
 			btSimulationIslandManager::IslandCallback* _native;
+			IslandCallback(btSimulationIslandManager::IslandCallback* native);
 
 		public:
 			!IslandCallback();
@@ -28,7 +25,8 @@ namespace BulletSharp
 		public:
 			IslandCallback();
 
-			void ProcessIsland(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifolds, int islandId);
+			void ProcessIsland(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifolds,
+				int islandId);
 
 			property bool IsDisposed
 			{
@@ -44,8 +42,7 @@ namespace BulletSharp
 
 	internal:
 		btSimulationIslandManager* _native;
-
-		SimulationIslandManager(btSimulationIslandManager* manager, bool preventDelete);
+		SimulationIslandManager(btSimulationIslandManager* native, bool preventDelete);
 
 	public:
 		!SimulationIslandManager();
@@ -55,12 +52,13 @@ namespace BulletSharp
 	public:
 		SimulationIslandManager();
 
-		//void BuildAndProcessIslands(Dispatcher^ dispatcher, CollisionWorld^ collisionWorld, IslandCallback^ callback);
+		//void BuildAndProcessIslands(Dispatcher^ dispatcher, CollisionWorld^ collisionWorld,
+		//	IslandCallback^ callback);
 		void BuildIslands(Dispatcher^ dispatcher, CollisionWorld^ colWorld);
 		void FindUnions(Dispatcher^ dispatcher, CollisionWorld^ colWorld);
 		void InitUnionFind(int n);
-		void UpdateActivationState(CollisionWorld^ colWorld, Dispatcher^ dispatcher);
 		void StoreIslandActivationState(CollisionWorld^ world);
+		void UpdateActivationState(CollisionWorld^ colWorld, Dispatcher^ dispatcher);
 
 		property bool IsDisposed
 		{
@@ -70,7 +68,7 @@ namespace BulletSharp
 		property bool SplitIslands
 		{
 			bool get();
-			void set(bool value);
+			void set(bool doSplitIslands);
 		}
 
 		property UnionFind^ UnionFind

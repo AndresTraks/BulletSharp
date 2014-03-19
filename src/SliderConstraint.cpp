@@ -7,53 +7,63 @@
 
 #define Native static_cast<btSliderConstraint*>(_native)
 
-SliderConstraint::SliderConstraint(btSliderConstraint* constraint)
-: TypedConstraint(constraint)
+SliderConstraint::SliderConstraint(btSliderConstraint* native)
+	: TypedConstraint(native)
 {
 }
 
-SliderConstraint::SliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
-: TypedConstraint(0)
+SliderConstraint::SliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA,
+	Matrix frameInB, bool useLinearReferenceFrameA)
+	: TypedConstraint(0)
 {
-	btTransform* frameInATemp = Math::MatrixToBtTransform(frameInA);
-	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
-
-	UnmanagedPointer = new btSliderConstraint(
-		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
-		*frameInATemp, *frameInBTemp, useLinearReferenceFrameA);
-
-	ALIGNED_FREE(frameInATemp);
-	ALIGNED_FREE(frameInBTemp);
+	TRANSFORM_CONV(frameInA);
+	TRANSFORM_CONV(frameInB);
+	UnmanagedPointer = new btSliderConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
+		TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB), useLinearReferenceFrameA);
+	TRANSFORM_DEL(frameInA);
+	TRANSFORM_DEL(frameInB);
 }
 
 SliderConstraint::SliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameA)
-: TypedConstraint(0)
+	: TypedConstraint(0)
 {
-	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
-	UnmanagedPointer = new btSliderConstraint(*(btRigidBody*)rigidBodyB->_native, *frameInBTemp, useLinearReferenceFrameA);
-	ALIGNED_FREE(frameInBTemp);
+	TRANSFORM_CONV(frameInB);
+	UnmanagedPointer = new btSliderConstraint(*(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(frameInB),
+		useLinearReferenceFrameA);
+	TRANSFORM_DEL(frameInB);
 }
 
 void SliderConstraint::CalculateTransforms(Matrix transA, Matrix transB)
 {
-	btTransform* transATemp = Math::MatrixToBtTransform(transA);
-	btTransform* transBTemp = Math::MatrixToBtTransform(transB);
-
-	Native->calculateTransforms(*transATemp, *transBTemp);
-
-	ALIGNED_FREE(transATemp);
-	ALIGNED_FREE(transBTemp);
+	TRANSFORM_CONV(transA);
+	TRANSFORM_CONV(transB);
+	Native->calculateTransforms(TRANSFORM_USE(transA), TRANSFORM_USE(transB));
+	TRANSFORM_DEL(transA);
+	TRANSFORM_DEL(transB);
 }
-
+/*
+void SliderConstraint::GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA,
+	Matrix transB, Vector3 linVelA, Vector3 linVelB, btScalar rbAinvMass, btScalar rbBinvMass)
+{
+	TRANSFORM_CONV(transA);
+	TRANSFORM_CONV(transB);
+	VECTOR3_DEF(linVelA);
+	VECTOR3_DEF(linVelB);
+	Native->getInfo2NonVirtual(info->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
+		VECTOR3_USE(linVelA), VECTOR3_USE(linVelB), rbAinvMass, rbBinvMass);
+	TRANSFORM_DEL(transA);
+	TRANSFORM_DEL(transB);
+	VECTOR3_DEL(linVelA);
+	VECTOR3_DEL(linVelB);
+}
+*/
 void SliderConstraint::SetFrames(Matrix frameA, Matrix frameB)
 {
-	btTransform* frameATemp = Math::MatrixToBtTransform(frameA);
-	btTransform* frameBTemp = Math::MatrixToBtTransform(frameB);
-
-	Native->setFrames(*frameATemp, *frameBTemp);
-
-	ALIGNED_FREE(frameBTemp);
-	ALIGNED_FREE(frameATemp);
+	TRANSFORM_CONV(frameA);
+	TRANSFORM_CONV(frameB);
+	Native->setFrames(TRANSFORM_USE(frameA), TRANSFORM_USE(frameB));
+	TRANSFORM_DEL(frameA);
+	TRANSFORM_DEL(frameB);
 }
 
 void SliderConstraint::TestAngularLimits()
@@ -124,54 +134,54 @@ btScalar SliderConstraint::DampingDirAngular::get()
 {
 	return Native->getDampingDirAng();
 }
-void SliderConstraint::DampingDirAngular::set(btScalar value)
+void SliderConstraint::DampingDirAngular::set(btScalar dampingDirAng)
 {
-	Native->setDampingDirAng(value);
+	Native->setDampingDirAng(dampingDirAng);
 }
 
 btScalar SliderConstraint::DampingDirLin::get()
 {
 	return Native->getDampingDirLin();
 }
-void SliderConstraint::DampingDirLin::set(btScalar value)
+void SliderConstraint::DampingDirLin::set(btScalar dampingDirLin)
 {
-	Native->setDampingDirLin(value);
+	Native->setDampingDirLin(dampingDirLin);
 }
 
 btScalar SliderConstraint::DampingLimAngular::get()
 {
 	return Native->getDampingLimAng();
 }
-void SliderConstraint::DampingLimAngular::set(btScalar value)
+void SliderConstraint::DampingLimAngular::set(btScalar dampingLimAng)
 {
-	Native->setDampingLimAng(value);
+	Native->setDampingLimAng(dampingLimAng);
 }
 
 btScalar SliderConstraint::DampingLimLin::get()
 {
 	return Native->getDampingLimLin();
 }
-void SliderConstraint::DampingLimLin::set(btScalar value)
+void SliderConstraint::DampingLimLin::set(btScalar dampingLimLin)
 {
-	Native->setDampingLimLin(value);
+	Native->setDampingLimLin(dampingLimLin);
 }
 
 btScalar SliderConstraint::DampingOrthoAngular::get()
 {
 	return Native->getDampingOrthoAng();
 }
-void SliderConstraint::DampingOrthoAngular::set(btScalar value)
+void SliderConstraint::DampingOrthoAngular::set(btScalar dampingOrthoAng)
 {
-	Native->setDampingOrthoAng(value);
+	Native->setDampingOrthoAng(dampingOrthoAng);
 }
 
 btScalar SliderConstraint::DampingOrthoLin::get()
 {
 	return Native->getDampingOrthoLin();
 }
-void SliderConstraint::DampingOrthoLin::set(btScalar value)
+void SliderConstraint::DampingOrthoLin::set(btScalar dampingOrthoLin)
 {
-	Native->setDampingOrthoLin(value);
+	Native->setDampingOrthoLin(dampingOrthoLin);
 }
 
 Matrix SliderConstraint::FrameOffsetA::get()
@@ -183,7 +193,12 @@ Matrix SliderConstraint::FrameOffsetB::get()
 {
 	return Math::BtTransformToMatrix(&Native->getFrameOffsetB());
 }
-
+/*
+void SliderConstraint::Info1NonVirtual::get(btConstraintInfo1^ info)
+{
+	_native->getInfo1NonVirtual(info->_native);
+}
+*/
 btScalar SliderConstraint::LinDepth::get()
 {
 	return Native->getLinDepth();
@@ -198,162 +213,162 @@ btScalar SliderConstraint::LowerAngularLimit::get()
 {
 	return Native->getLowerAngLimit();
 }
-void SliderConstraint::LowerAngularLimit::set(btScalar value)
+void SliderConstraint::LowerAngularLimit::set(btScalar lowerLimit)
 {
-	Native->setLowerAngLimit(value);
+	Native->setLowerAngLimit(lowerLimit);
 }
 
 btScalar SliderConstraint::LowerLinLimit::get()
 {
 	return Native->getLowerLinLimit();
 }
-void SliderConstraint::LowerLinLimit::set(btScalar value)
+void SliderConstraint::LowerLinLimit::set(btScalar lowerLimit)
 {
-	Native->setLowerLinLimit(value);
+	Native->setLowerLinLimit(lowerLimit);
 }
 
 btScalar SliderConstraint::MaxAngularMotorForce::get()
 {
 	return Native->getMaxAngMotorForce();
 }
-void SliderConstraint::MaxAngularMotorForce::set(btScalar value)
+void SliderConstraint::MaxAngularMotorForce::set(btScalar maxAngMotorForce)
 {
-	Native->setMaxAngMotorForce(value);
+	Native->setMaxAngMotorForce(maxAngMotorForce);
 }
 
 btScalar SliderConstraint::MaxLinMotorForce::get()
 {
 	return Native->getMaxLinMotorForce();
 }
-void SliderConstraint::MaxLinMotorForce::set(btScalar value)
+void SliderConstraint::MaxLinMotorForce::set(btScalar maxLinMotorForce)
 {
-	Native->setMaxLinMotorForce(value);
+	Native->setMaxLinMotorForce(maxLinMotorForce);
 }
 
 bool SliderConstraint::PoweredAngularMotor::get()
 {
 	return Native->getPoweredAngMotor();
 }
-void SliderConstraint::PoweredAngularMotor::set(bool value)
+void SliderConstraint::PoweredAngularMotor::set(bool onOff)
 {
-	Native->setPoweredAngMotor(value);
+	Native->setPoweredAngMotor(onOff);
 }
 
 bool SliderConstraint::PoweredLinMotor::get()
 {
 	return Native->getPoweredLinMotor();
 }
-void SliderConstraint::PoweredLinMotor::set(bool value)
+void SliderConstraint::PoweredLinMotor::set(bool onOff)
 {
-	Native->setPoweredLinMotor(value);
+	Native->setPoweredLinMotor(onOff);
 }
 
 btScalar SliderConstraint::RestitutionDirAngular::get()
 {
 	return Native->getRestitutionDirAng();
 }
-void SliderConstraint::RestitutionDirAngular::set(btScalar value)
+void SliderConstraint::RestitutionDirAngular::set(btScalar restitutionDirAng)
 {
-	Native->setRestitutionDirAng(value);
+	Native->setRestitutionDirAng(restitutionDirAng);
 }
 
 btScalar SliderConstraint::RestitutionDirLin::get()
 {
 	return Native->getRestitutionDirLin();
 }
-void SliderConstraint::RestitutionDirLin::set(btScalar value)
+void SliderConstraint::RestitutionDirLin::set(btScalar restitutionDirLin)
 {
-	Native->setRestitutionDirLin(value);
+	Native->setRestitutionDirLin(restitutionDirLin);
 }
 
 btScalar SliderConstraint::RestitutionLimAngular::get()
 {
 	return Native->getRestitutionLimAng();
 }
-void SliderConstraint::RestitutionLimAngular::set(btScalar value)
+void SliderConstraint::RestitutionLimAngular::set(btScalar restitutionLimAng)
 {
-	Native->setRestitutionLimAng(value);
+	Native->setRestitutionLimAng(restitutionLimAng);
 }
 
 btScalar SliderConstraint::RestitutionLimLin::get()
 {
 	return Native->getRestitutionLimLin();
 }
-void SliderConstraint::RestitutionLimLin::set(btScalar value)
+void SliderConstraint::RestitutionLimLin::set(btScalar restitutionLimLin)
 {
-	Native->setRestitutionLimLin(value);
+	Native->setRestitutionLimLin(restitutionLimLin);
 }
 
 btScalar SliderConstraint::RestitutionOrthoAngular::get()
 {
 	return Native->getRestitutionOrthoAng();
 }
-void SliderConstraint::RestitutionOrthoAngular::set(btScalar value)
+void SliderConstraint::RestitutionOrthoAngular::set(btScalar restitutionOrthoAng)
 {
-	Native->setRestitutionOrthoAng(value);
+	Native->setRestitutionOrthoAng(restitutionOrthoAng);
 }
 
 btScalar SliderConstraint::RestitutionOrthoLin::get()
 {
 	return Native->getRestitutionOrthoLin();
 }
-void SliderConstraint::RestitutionOrthoLin::set(btScalar value)
+void SliderConstraint::RestitutionOrthoLin::set(btScalar restitutionOrthoLin)
 {
-	Native->setRestitutionOrthoLin(value);
+	Native->setRestitutionOrthoLin(restitutionOrthoLin);
 }
 
 btScalar SliderConstraint::SoftnessDirAngular::get()
 {
 	return Native->getSoftnessDirAng();
 }
-void SliderConstraint::SoftnessDirAngular::set(btScalar value)
+void SliderConstraint::SoftnessDirAngular::set(btScalar softnessDirAng)
 {
-	Native->setSoftnessDirAng(value);
+	Native->setSoftnessDirAng(softnessDirAng);
 }
 
 btScalar SliderConstraint::SoftnessDirLin::get()
 {
 	return Native->getSoftnessDirLin();
 }
-void SliderConstraint::SoftnessDirLin::set(btScalar value)
+void SliderConstraint::SoftnessDirLin::set(btScalar softnessDirLin)
 {
-	Native->setSoftnessDirLin(value);
+	Native->setSoftnessDirLin(softnessDirLin);
 }
 
 btScalar SliderConstraint::SoftnessLimAngular::get()
 {
 	return Native->getSoftnessLimAng();
 }
-void SliderConstraint::SoftnessLimAngular::set(btScalar value)
+void SliderConstraint::SoftnessLimAngular::set(btScalar softnessLimAng)
 {
-	Native->setSoftnessLimAng(value);
+	Native->setSoftnessLimAng(softnessLimAng);
 }
 
 btScalar SliderConstraint::SoftnessLimLin::get()
 {
 	return Native->getSoftnessLimLin();
 }
-void SliderConstraint::SoftnessLimLin::set(btScalar value)
+void SliderConstraint::SoftnessLimLin::set(btScalar softnessLimLin)
 {
-	Native->setSoftnessLimLin(value);
+	Native->setSoftnessLimLin(softnessLimLin);
 }
 
 btScalar SliderConstraint::SoftnessOrthoAngular::get()
 {
 	return Native->getSoftnessOrthoAng();
 }
-void SliderConstraint::SoftnessOrthoAngular::set(btScalar value)
+void SliderConstraint::SoftnessOrthoAngular::set(btScalar softnessOrthoAng)
 {
-	Native->setSoftnessOrthoAng(value);
+	Native->setSoftnessOrthoAng(softnessOrthoAng);
 }
 
 btScalar SliderConstraint::SoftnessOrthoLin::get()
 {
 	return Native->getSoftnessOrthoLin();
 }
-void SliderConstraint::SoftnessOrthoLin::set(btScalar value)
+void SliderConstraint::SoftnessOrthoLin::set(btScalar softnessOrthoLin)
 {
-	Native->setSoftnessOrthoLin(value);
+	Native->setSoftnessOrthoLin(softnessOrthoLin);
 }
 
 bool SliderConstraint::SolveAngularLimit::get()
@@ -370,45 +385,45 @@ btScalar SliderConstraint::TargetAngularMotorVelocity::get()
 {
 	return Native->getTargetAngMotorVelocity();
 }
-void SliderConstraint::TargetAngularMotorVelocity::set(btScalar value)
+void SliderConstraint::TargetAngularMotorVelocity::set(btScalar targetAngMotorVelocity)
 {
-	Native->setTargetAngMotorVelocity(value);
+	Native->setTargetAngMotorVelocity(targetAngMotorVelocity);
 }
 
 btScalar SliderConstraint::TargetLinMotorVelocity::get()
 {
 	return Native->getTargetLinMotorVelocity();
 }
-void SliderConstraint::TargetLinMotorVelocity::set(btScalar value)
+void SliderConstraint::TargetLinMotorVelocity::set(btScalar targetLinMotorVelocity)
 {
-	Native->setTargetLinMotorVelocity(value);
+	Native->setTargetLinMotorVelocity(targetLinMotorVelocity);
 }
 
 btScalar SliderConstraint::UpperAngularLimit::get()
 {
 	return Native->getUpperAngLimit();
 }
-void SliderConstraint::UpperAngularLimit::set(btScalar value)
+void SliderConstraint::UpperAngularLimit::set(btScalar upperLimit)
 {
-	Native->setUpperAngLimit(value);
+	Native->setUpperAngLimit(upperLimit);
 }
 
 btScalar SliderConstraint::UpperLinLimit::get()
 {
 	return Native->getUpperLinLimit();
 }
-void SliderConstraint::UpperLinLimit::set(btScalar value)
+void SliderConstraint::UpperLinLimit::set(btScalar upperLimit)
 {
-	Native->setUpperLinLimit(value);
+	Native->setUpperLinLimit(upperLimit);
 }
 
 bool SliderConstraint::UseFrameOffset::get()
 {
 	return Native->getUseFrameOffset();
 }
-void SliderConstraint::UseFrameOffset::set(bool value)
+void SliderConstraint::UseFrameOffset::set(bool frameOffsetOnOff)
 {
-	Native->setUseFrameOffset(value);
+	Native->setUseFrameOffset(frameOffsetOnOff);
 }
 
 bool SliderConstraint::UseLinearReferenceFrameA::get()

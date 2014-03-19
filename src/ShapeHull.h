@@ -10,8 +10,9 @@ namespace BulletSharp
 
 	public ref class ShapeHull
 	{
-	private:
-		btShapeHull* _shapeHull;
+	internal:
+		btShapeHull* _native;
+		//ShapeHull(btShapeHull* native);
 
 	public:
 		ShapeHull(ConvexShape^ shape);

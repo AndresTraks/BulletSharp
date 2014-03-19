@@ -10,7 +10,7 @@ SequentialImpulseConstraintSolver::SequentialImpulseConstraintSolver(btSequentia
 }
 
 SequentialImpulseConstraintSolver::SequentialImpulseConstraintSolver()
-	: ConstraintSolver(ALIGNED_NEW(new btSequentialImpulseConstraintSolver()))
+	: ConstraintSolver(ALIGNED_NEW(btSequentialImpulseConstraintSolver)())
 {
 }
 
@@ -32,7 +32,7 @@ unsigned long SequentialImpulseConstraintSolver::RandSeed::get()
 }
 void SequentialImpulseConstraintSolver::RandSeed::set(unsigned long seed)
 {
-	Native->setRandSeed(value);
+	Native->setRandSeed(seed);
 }
 
 #endif

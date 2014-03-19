@@ -9,13 +9,16 @@ namespace BulletSharp
 	public ref class SliderConstraint : TypedConstraint
 	{
 	internal:
-		SliderConstraint(btSliderConstraint* constraint);
+		SliderConstraint(btSliderConstraint* native);
 
 	public:
-		SliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA);
+		SliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB,
+			bool useLinearReferenceFrameA);
 		SliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameA);
 
 		void CalculateTransforms(Matrix transA, Matrix transB);
+		//void GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA, Matrix transB,
+		//	Vector3 linVelA, Vector3 linVelB, btScalar rbAinvMass, btScalar rbBinvMass);
 		void SetFrames(Matrix frameA, Matrix frameB);
 		void TestAngularLimits();
 		void TestLinLimits();
@@ -53,37 +56,37 @@ namespace BulletSharp
 		property btScalar DampingDirAngular
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar dampingDirAng);
 		}
 
 		property btScalar DampingDirLin
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar dampingDirLin);
 		}
 
 		property btScalar DampingLimAngular
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar dampingLimAng);
 		}
 
 		property btScalar DampingLimLin
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar dampingLimLin);
 		}
 
 		property btScalar DampingOrthoAngular
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar dampingOrthoAng);
 		}
 
 		property btScalar DampingOrthoLin
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar dampingOrthoLin);
 		}
 
 		property Matrix FrameOffsetA
@@ -109,109 +112,109 @@ namespace BulletSharp
 		property btScalar LowerAngularLimit
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar lowerLimit);
 		}
 
 		property btScalar LowerLinLimit
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar lowerLimit);
 		}
 
 		property btScalar MaxAngularMotorForce
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar maxAngMotorForce);
 		}
 
 		property btScalar MaxLinMotorForce
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar maxLinMotorForce);
 		}
 
 		property bool PoweredAngularMotor
 		{
 			bool get();
-			void set(bool value);
+			void set(bool onOff);
 		}
 
 		property bool PoweredLinMotor
 		{
 			bool get();
-			void set(bool value);
+			void set(bool onOff);
 		}
 
 		property btScalar RestitutionDirAngular
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar restitutionDirAng);
 		}
 
 		property btScalar RestitutionDirLin
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar restitutionDirLin);
 		}
 
 		property btScalar RestitutionLimAngular
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar restitutionLimAng);
 		}
 
 		property btScalar RestitutionLimLin
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar restitutionLimLin);
 		}
 
 		property btScalar RestitutionOrthoAngular
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar restitutionOrthoAng);
 		}
 
 		property btScalar RestitutionOrthoLin
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar restitutionOrthoLin);
 		}
 
 		property btScalar SoftnessDirAngular
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar softnessDirAng);
 		}
 
 		property btScalar SoftnessDirLin
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar softnessDirLin);
 		}
 
 		property btScalar SoftnessLimAngular
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar softnessLimAng);
 		}
 
 		property btScalar SoftnessLimLin
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar softnessLimLin);
 		}
 
 		property btScalar SoftnessOrthoAngular
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar softnessOrthoAng);
 		}
 
 		property btScalar SoftnessOrthoLin
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar softnessOrthoLin);
 		}
 
 		property bool SolveAngularLimit
@@ -227,31 +230,31 @@ namespace BulletSharp
 		property btScalar TargetAngularMotorVelocity
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar targetAngMotorVelocity);
 		}
 
 		property btScalar TargetLinMotorVelocity
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar targetLinMotorVelocity);
 		}
 
 		property btScalar UpperAngularLimit
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar upperLimit);
 		}
 
 		property btScalar UpperLinLimit
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar upperLimit);
 		}
 
 		property bool UseFrameOffset
 		{
 			bool get();
-			void set(bool value);
+			void set(bool frameOffsetOnOff);
 		}
 
 		property bool UseLinearReferenceFrameA

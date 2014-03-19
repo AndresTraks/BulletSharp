@@ -1,7 +1,7 @@
 #pragma once
 
-#include "BroadphaseInterface.h"
 #include "BroadphaseProxy.h"
+#include "BroadphaseInterface.h"
 
 namespace BulletSharp
 {
@@ -10,15 +10,12 @@ namespace BulletSharp
 	public ref class SimpleBroadphaseProxy : BroadphaseProxy
 	{
 	internal:
-		SimpleBroadphaseProxy(btSimpleBroadphaseProxy* proxy);
+		SimpleBroadphaseProxy(btSimpleBroadphaseProxy* native);
 
 	public:
 		SimpleBroadphaseProxy();
-		SimpleBroadphaseProxy(Vector3 minpt, Vector3 maxpt,
-			int shapeType, Object^ userObject,
-			CollisionFilterGroups collisionFilterGroup,
-			CollisionFilterGroups collisionFilterMask,
-			IntPtr multiSapProxy);
+		SimpleBroadphaseProxy(Vector3 minpt, Vector3 maxpt, int shapeType, Object^ userObject,
+			CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask, IntPtr multiSapProxy);
 
 		property int NextFree
 		{
@@ -30,7 +27,7 @@ namespace BulletSharp
 	public ref class SimpleBroadphase : BroadphaseInterface
 	{
 	internal:
-		SimpleBroadphase(btSimpleBroadphase* broadphase);
+		SimpleBroadphase(btSimpleBroadphase* native);
 
 	public:
 		SimpleBroadphase(int maxProxies, BulletSharp::OverlappingPairCache^ overlappingPairCache);

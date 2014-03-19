@@ -7,7 +7,13 @@
 #include "PersistentManifold.h"
 #include "SimulationIslandManager.h"
 #include "UnionFind.h"
+
 /*
+SimulationIslandManager::IslandCallback::IslandCallback(IslandCallback* native)
+{
+	_native = native;
+}
+
 SimulationIslandManager::IslandCallback::~IslandCallback()
 {
 	this->!IslandCallback();
@@ -31,7 +37,8 @@ SimulationIslandManager::IslandCallback::IslandCallback()
 	_native = new btSimulationIslandManager::IslandCallback();
 }
 
-void SimulationIslandManager::IslandCallback::ProcessIsland(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifolds, int islandId)
+void SimulationIslandManager::IslandCallback::ProcessIsland(array<CollisionObject^>^ bodies,
+	array<PersistentManifold^>^ manifolds, int islandId)
 {
 	int numBodies = bodies->Length;
 	int numManifolds = manifolds->Length;
@@ -46,7 +53,6 @@ void SimulationIslandManager::IslandCallback::ProcessIsland(array<CollisionObjec
 	for(i=0; i<numManifolds; i++)
 		manifoldsTemp[i] = (btPersistentManifold*)manifolds[i]->_native;
 
-
 	_native->processIsland(bodiesTemp, numBodies, manifoldsTemp, numManifolds, islandId);
 
 	delete[] bodiesTemp;
@@ -59,14 +65,10 @@ bool SimulationIslandManager::IslandCallback::IsDisposed::get()
 }
 */
 
-SimulationIslandManager::SimulationIslandManager()
-{
-	_native = new btSimulationIslandManager();
-}
 
-SimulationIslandManager::SimulationIslandManager(btSimulationIslandManager* manager, bool preventDelete)
+SimulationIslandManager::SimulationIslandManager(btSimulationIslandManager* native, bool preventDelete)
 {
-	_native = manager;
+	_native = native;
 	_preventDelete = preventDelete;
 }
 
@@ -89,10 +91,17 @@ SimulationIslandManager::!SimulationIslandManager()
 	
 	OnDisposed(this, nullptr);
 }
-/*
-void SimulationIslandManager::BuildAndProcessIslands(Dispatcher^ dispatcher, CollisionWorld^ collisionWorld, IslandCallback^ callback)
+
+SimulationIslandManager::SimulationIslandManager()
 {
-	_native->buildAndProcessIslands(dispatcher->_native, collisionWorld->_native, callback->_native);
+	_native = new btSimulationIslandManager();
+}
+/*
+void SimulationIslandManager::BuildAndProcessIslands(Dispatcher^ dispatcher, CollisionWorld^ collisionWorld,
+	IslandCallback^ callback)
+{
+	_native->buildAndProcessIslands(dispatcher->_native, collisionWorld->_native,
+		callback->_native);
 }
 */
 void SimulationIslandManager::BuildIslands(Dispatcher^ dispatcher, CollisionWorld^ colWorld)
@@ -110,14 +119,14 @@ void SimulationIslandManager::InitUnionFind(int n)
 	_native->initUnionFind(n);
 }
 
-void SimulationIslandManager::UpdateActivationState(CollisionWorld^ colWorld, Dispatcher^ dispatcher)
-{
-	_native->updateActivationState(colWorld->_native, dispatcher->_native);
-}
-
 void SimulationIslandManager::StoreIslandActivationState(CollisionWorld^ world)
 {
 	_native->storeIslandActivationState(world->_native);
+}
+
+void SimulationIslandManager::UpdateActivationState(CollisionWorld^ colWorld, Dispatcher^ dispatcher)
+{
+	_native->updateActivationState(colWorld->_native, dispatcher->_native);
 }
 
 bool SimulationIslandManager::IsDisposed::get()
@@ -129,9 +138,9 @@ bool SimulationIslandManager::SplitIslands::get()
 {
 	return _native->getSplitIslands();
 }
-void SimulationIslandManager::SplitIslands::set(bool value)
+void SimulationIslandManager::SplitIslands::set(bool doSplitIslands)
 {
-	_native->setSplitIslands(value);
+	_native->setSplitIslands(doSplitIslands);
 }
 
 UnionFind^ SimulationIslandManager::UnionFind::get()
