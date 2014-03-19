@@ -8,9 +8,9 @@
 #include "GhostObject.h"
 #endif
 
-OverlappingPairCallback::OverlappingPairCallback(btOverlappingPairCallback* pairCallback)
+OverlappingPairCallback::OverlappingPairCallback(btOverlappingPairCallback* native)
 {
-	_native = pairCallback;
+	_native = native;
 	ObjectTable::Add(this, _native);
 }
 
@@ -61,20 +61,20 @@ OverlappingPairCallback::!OverlappingPairCallback()
 	OnDisposed(this, nullptr);
 }
 
-BroadphasePair^ OverlappingPairCallback::AddOverlappingPair(
-	BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
+BroadphasePair^ OverlappingPairCallback::AddOverlappingPair(BroadphaseProxy^ proxy0,
+	BroadphaseProxy^ proxy1)
 {
 	return gcnew BroadphasePair(_native->addOverlappingPair(proxy0->_native, proxy1->_native));
 }
 
-IntPtr OverlappingPairCallback::RemoveOverlappingPair(BroadphaseProxy^ proxy0,
-	BroadphaseProxy^ proxy1, Dispatcher^ dispatcher)
+IntPtr OverlappingPairCallback::RemoveOverlappingPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1,
+	Dispatcher^ dispatcher)
 {
 	return IntPtr(_native->removeOverlappingPair(proxy0->_native, proxy1->_native, dispatcher->_native));
 }
 
-void OverlappingPairCallback::RemoveOverlappingPairsContainingProxy(
-	BroadphaseProxy^ proxy0, Dispatcher^ dispatcher)
+void OverlappingPairCallback::RemoveOverlappingPairsContainingProxy(BroadphaseProxy^ proxy0,
+	Dispatcher^ dispatcher)
 {
 	_native->removeOverlappingPairsContainingProxy(proxy0->_native, dispatcher->_native);
 }

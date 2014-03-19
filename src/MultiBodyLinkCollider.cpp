@@ -15,13 +15,19 @@ MultiBodyLinkCollider::MultiBodyLinkCollider(btMultiBodyLinkCollider* native)
 MultiBodyLinkCollider::MultiBodyLinkCollider(BulletSharp::MultiBody^ multiBody, int link)
 	: CollisionObject(new btMultiBodyLinkCollider(multiBody->_native, link))
 {
+	_multiBody = multiBody;
 }
-/*
+
+bool MultiBodyLinkCollider::CheckCollideWithOverride(CollisionObject^ co)
+{
+	return Native->checkCollideWithOverride(co->_native);
+}
+
 MultiBodyLinkCollider^ MultiBodyLinkCollider::Upcast(CollisionObject^ colObj)
 {
-	return CollisionObject::GetManaged(Native->upcast(colObj->_native));
+	return static_cast<MultiBodyLinkCollider^>(CollisionObject::GetManaged(btMultiBodyLinkCollider::upcast(colObj->_native)));
 }
-*/
+
 int MultiBodyLinkCollider::Link::get()
 {
 	return Native->m_link;
@@ -33,10 +39,11 @@ void MultiBodyLinkCollider::Link::set(int value)
 
 MultiBody^ MultiBodyLinkCollider::MultiBody::get()
 {
-	return gcnew BulletSharp::MultiBody(Native->m_multiBody);
+	return _multiBody;
 }
 void MultiBodyLinkCollider::MultiBody::set(BulletSharp::MultiBody^ value)
 {
+	_multiBody = value;
 	Native->m_multiBody = value->_native;
 }
 

@@ -10,8 +10,10 @@ MultiBodyJointMotor::MultiBodyJointMotor(btMultiBodyJointMotor* native)
 {
 }
 
-MultiBodyJointMotor::MultiBodyJointMotor(MultiBody^ body, int link, int linkDoF, float desiredVelocity, float maxMotorImpulse)
-	: MultiBodyConstraint(new btMultiBodyJointMotor(body->_native, link, linkDoF, desiredVelocity, maxMotorImpulse))
+MultiBodyJointMotor::MultiBodyJointMotor(MultiBody^ body, int link, int linkDoF, btScalar desiredVelocity,
+	btScalar maxMotorImpulse)
+	: MultiBodyConstraint(new btMultiBodyJointMotor(body->_native, link, linkDoF, desiredVelocity,
+		maxMotorImpulse))
 {
 }
 

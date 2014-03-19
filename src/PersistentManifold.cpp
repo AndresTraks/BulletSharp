@@ -6,8 +6,8 @@
 
 #define Native static_cast<btPersistentManifold*>(_native)
 
-PersistentManifold::PersistentManifold(btPersistentManifold* manifold)
-: TypedObject(manifold)
+PersistentManifold::PersistentManifold(btPersistentManifold* native)
+	: TypedObject(native)
 {
 }
 
@@ -107,7 +107,14 @@ void PersistentManifold::ContactProcessed::set(::ContactProcessed^ value)
 #endif
 
 PersistentManifold::PersistentManifold()
-: TypedObject(new btPersistentManifold())
+	: TypedObject(new btPersistentManifold())
+{
+}
+
+PersistentManifold::PersistentManifold(CollisionObject^ body0, CollisionObject^ body1,
+	int __unnamed2, btScalar contactBreakingThreshold, btScalar contactProcessingThreshold)
+	: TypedObject(new btPersistentManifold(body0->_native, body1->_native, __unnamed2,
+		contactBreakingThreshold, contactProcessingThreshold))
 {
 }
 
@@ -123,20 +130,13 @@ int PersistentManifold::AddManifoldPoint(ManifoldPoint^ newPoint)
 
 void PersistentManifold::ClearManifold()
 {
-	return Native->clearManifold();
+	Native->clearManifold();
 }
 
 void PersistentManifold::ClearUserCache(ManifoldPoint^ pt)
 {
 	Native->clearUserCache(*pt->_native);
 }
-
-#ifdef DEBUG_PERSISTENCY
-void PersistentManifold::DebugPersistency()
-{
-	Native->DebugPersistency();
-}
-#endif
 
 int PersistentManifold::GetCacheEntry(ManifoldPoint^ newPoint)
 {
@@ -150,13 +150,11 @@ ManifoldPoint^ PersistentManifold::GetContactPoint(int index)
 
 void PersistentManifold::RefreshContactPoints(Matrix trA, Matrix trB)
 {
-	btTransform* trATemp = Math::MatrixToBtTransform(trA);
-	btTransform* trBTemp = Math::MatrixToBtTransform(trB);
-
-	Native->refreshContactPoints(*trATemp, *trBTemp);
-
-	ALIGNED_FREE(trATemp);
-	ALIGNED_FREE(trBTemp);
+	TRANSFORM_CONV(trA);
+	TRANSFORM_CONV(trB);
+	Native->refreshContactPoints(TRANSFORM_USE(trA), TRANSFORM_USE(trB));
+	TRANSFORM_DEL(trA);
+	TRANSFORM_DEL(trB);
 }
 
 void PersistentManifold::RemoveContactPoint(int index)
@@ -169,17 +167,22 @@ void PersistentManifold::ReplaceContactPoint(ManifoldPoint^ newPoint, int insert
 	Native->replaceContactPoint(*newPoint->_native, insertIndex);
 }
 
+void PersistentManifold::SetBodies(CollisionObject^ body0, CollisionObject^ body1)
+{
+	Native->setBodies(body0->_native, body1->_native);
+}
+
 bool PersistentManifold::ValidContactDistance(ManifoldPoint^ pt)
 {
 	return Native->validContactDistance(*pt->_native);
 }
 
-Object^ PersistentManifold::Body0::get()
+CollisionObject^ PersistentManifold::Body0::get()
 {
 	return CollisionObject::GetManaged((btCollisionObject*)Native->getBody0());
 }
 
-Object^ PersistentManifold::Body1::get()
+CollisionObject^ PersistentManifold::Body1::get()
 {
 	return CollisionObject::GetManaged((btCollisionObject*)Native->getBody1());
 }
@@ -206,18 +209,18 @@ btScalar PersistentManifold::ContactBreakingThreshold::get()
 {
 	return Native->getContactBreakingThreshold();
 }
-void PersistentManifold::ContactBreakingThreshold::set(btScalar value)
+void PersistentManifold::ContactBreakingThreshold::set(btScalar contactBreakingThreshold)
 {
-	Native->setContactBreakingThreshold(value);
+	Native->setContactBreakingThreshold(contactBreakingThreshold);
 }
 
 btScalar PersistentManifold::ContactProcessingThreshold::get()
 {
 	return Native->getContactProcessingThreshold();
 }
-void PersistentManifold::ContactProcessingThreshold::set(btScalar value)
+void PersistentManifold::ContactProcessingThreshold::set(btScalar contactProcessingThreshold)
 {
-	Native->setContactProcessingThreshold(value);
+	Native->setContactProcessingThreshold(contactProcessingThreshold);
 }
 
 int PersistentManifold::Index1A::get()
@@ -233,7 +236,8 @@ int PersistentManifold::NumContacts::get()
 {
 	return Native->getNumContacts();
 }
-void PersistentManifold::NumContacts::set(int value)
+void PersistentManifold::NumContacts::set(int cachedPoints)
 {
-	Native->setNumContacts(value);
+	Native->setNumContacts(cachedPoints);
 }
+

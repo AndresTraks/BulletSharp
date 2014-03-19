@@ -4,13 +4,13 @@
 
 #define Native static_cast<btSequentialImpulseConstraintSolver*>(_native)
 
-SequentialImpulseConstraintSolver::SequentialImpulseConstraintSolver(btSequentialImpulseConstraintSolver* solver)
-: ConstraintSolver(solver)
+SequentialImpulseConstraintSolver::SequentialImpulseConstraintSolver(btSequentialImpulseConstraintSolver* native)
+	: ConstraintSolver(native)
 {
 }
 
 SequentialImpulseConstraintSolver::SequentialImpulseConstraintSolver()
-: ConstraintSolver(ALIGNED_NEW(btSequentialImpulseConstraintSolver) ())
+	: ConstraintSolver(ALIGNED_NEW(new btSequentialImpulseConstraintSolver()))
 {
 }
 
@@ -30,8 +30,7 @@ unsigned long SequentialImpulseConstraintSolver::RandSeed::get()
 {
 	return Native->getRandSeed();
 }
-
-void SequentialImpulseConstraintSolver::RandSeed::set(unsigned long value)
+void SequentialImpulseConstraintSolver::RandSeed::set(unsigned long seed)
 {
 	Native->setRandSeed(value);
 }

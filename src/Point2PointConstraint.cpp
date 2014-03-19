@@ -45,51 +45,51 @@ void ConstraintSetting::Tau::set(btScalar value)
 
 #define Native static_cast<btPoint2PointConstraint*>(_native)
 
-Point2PointConstraint::Point2PointConstraint(btPoint2PointConstraint* constraint)
-: TypedConstraint(constraint)
+Point2PointConstraint::Point2PointConstraint(btPoint2PointConstraint* native)
+	: TypedConstraint(native)
 {
 }
 
-Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA, Vector3 pivotInB)
-: TypedConstraint(0)
+Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA,
+	Vector3 pivotInB)
+	: TypedConstraint(0)
 {
 	VECTOR3_DEF(pivotInA);
 	VECTOR3_DEF(pivotInB);
-
-	UnmanagedPointer = new btPoint2PointConstraint(
-		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
+	UnmanagedPointer = new btPoint2PointConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB));
-
 	VECTOR3_DEL(pivotInA);
 	VECTOR3_DEL(pivotInB);
 }
 
 Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA)
-: TypedConstraint(0)
+	: TypedConstraint(0)
 {
 	VECTOR3_DEF(pivotInA);
 	UnmanagedPointer = new btPoint2PointConstraint(*(btRigidBody*)rigidBodyA->_native, VECTOR3_USE(pivotInA));
 	VECTOR3_DEL(pivotInA);
 }
 
-btScalar Point2PointConstraint::GetParam(int num, int axis)
+/*
+void Point2PointConstraint::GetInfo1NonVirtual(btConstraintInfo1^ info)
 {
-	return Native->getParam(num, axis);
+	Native->getInfo1NonVirtual(info->_native);
 }
 
-btScalar Point2PointConstraint::GetParam(int num)
+void Point2PointConstraint::GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix body0_trans,
+	Matrix body1_trans)
 {
-	return Native->getParam(num);
+	TRANSFORM_CONV(body0_trans);
+	TRANSFORM_CONV(body1_trans);
+	Native->getInfo2NonVirtual(info->_native, TRANSFORM_USE(body0_trans), TRANSFORM_USE(body1_trans));
+	TRANSFORM_DEL(body0_trans);
+	TRANSFORM_DEL(body1_trans);
 }
+*/
 
-void Point2PointConstraint::SetParam(int num, btScalar value, int axis)
+void Point2PointConstraint::UpdateRhs(btScalar timeStep)
 {
-	Native->setParam(num, value, axis);
-}
-
-void Point2PointConstraint::SetParam(int num, btScalar value)
-{
-	Native->setParam(num, value);
+	Native->updateRHS(timeStep);
 }
 
 Vector3 Point2PointConstraint::PivotInA::get()
@@ -120,15 +120,9 @@ ConstraintSetting^ Point2PointConstraint::Setting::get()
 {
 	return gcnew ConstraintSetting(&Native->m_setting);
 }
-
 void Point2PointConstraint::Setting::set(ConstraintSetting^ setting)
 {
 	Native->m_setting = *setting->_native;
-}
-
-void Point2PointConstraint::UpdateRHS(btScalar timeStep)
-{
-	Native->updateRHS(timeStep);
 }
 
 #endif

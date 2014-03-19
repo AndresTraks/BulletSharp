@@ -15,7 +15,8 @@ namespace BulletSharp
 		MultiBodyDynamicsWorld(btMultiBodyDynamicsWorld* native);
 
 	public:
-		MultiBodyDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, MultiBodyConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration);
+		MultiBodyDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
+			MultiBodyConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration);
 
 		void AddMultiBody(MultiBody^ body, short group, short mask);
 		void AddMultiBody(MultiBody^ body, short group);

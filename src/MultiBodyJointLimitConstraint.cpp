@@ -10,9 +10,13 @@ MultiBodyJointLimitConstraint::MultiBodyJointLimitConstraint(btMultiBodyJointLim
 {
 }
 
-MultiBodyJointLimitConstraint::MultiBodyJointLimitConstraint(MultiBody^ body, int link, btScalar lower, btScalar upper)
-	: MultiBodyConstraint(new btMultiBodyJointLimitConstraint(body->_native, link, lower, upper))
+MultiBodyJointLimitConstraint::MultiBodyJointLimitConstraint(MultiBody^ body, int link,
+	btScalar lower, btScalar upper)
+	: MultiBodyConstraint(new btMultiBodyJointLimitConstraint(body->_native, link,
+		lower, upper))
 {
+	_multiBodyA = body;
+	_multiBodyB = body;
 }
 
 #endif

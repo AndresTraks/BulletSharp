@@ -17,8 +17,10 @@ MultiBodyDynamicsWorld::MultiBodyDynamicsWorld(btMultiBodyDynamicsWorld* native)
 {
 }
 
-MultiBodyDynamicsWorld::MultiBodyDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, MultiBodyConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration)
-	: DiscreteDynamicsWorld(new btMultiBodyDynamicsWorld(dispatcher->_native, pairCache->_native, (btMultiBodyConstraintSolver*)constraintSolver->_native, collisionConfiguration->_native))
+MultiBodyDynamicsWorld::MultiBodyDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
+	MultiBodyConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration)
+	: DiscreteDynamicsWorld(new btMultiBodyDynamicsWorld(dispatcher->_native, pairCache->_native,
+		(btMultiBodyConstraintSolver*)constraintSolver->_native, collisionConfiguration->_native))
 {
 	_dispatcher = dispatcher;
 	_broadphase = pairCache;

@@ -285,6 +285,12 @@ AlignedWheelInfoArray^ RaycastVehicle::WheelInfo::get()
 }
 
 
+/*
+DefaultVehicleRaycaster::DefaultVehicleRaycaster(btDefaultVehicleRaycaster* native)
+	: VehicleRaycaster(native)
+{
+}
+*/
 DefaultVehicleRaycaster::DefaultVehicleRaycaster(DynamicsWorld^ world)
 : VehicleRaycaster(new btDefaultVehicleRaycaster((btDynamicsWorld*)world->_native))
 {

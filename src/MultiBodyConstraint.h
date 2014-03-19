@@ -14,23 +14,6 @@ namespace BulletSharp
 	public:
 		MultiBodyJacobianData();
 
-		AlignedScalarArray^ GetDeltaVelocities();
-		AlignedScalarArray^ GetDeltaVelocitiesUnitImpulse();
-		int GetFixedBodyId();
-		AlignedScalarArray^ GetJacobians();
-		AlignedObjectArray<btMatrix3x3> GetScratch_m();
-		AlignedScalarArray^ GetScratch_r();
-		AlignedObjectArray<btVector3> GetScratch_v();
-		AlignedObjectArray^ GetSolverBodyPool();
-		void SetDeltaVelocities(AlignedScalarArray^ value);
-		void SetDeltaVelocitiesUnitImpulse(AlignedScalarArray^ value);
-		void SetFixedBodyId(int value);
-		void SetJacobians(AlignedScalarArray^ value);
-		void SetScratch_m(AlignedObjectArray<btMatrix3x3> value);
-		void SetScratch_r(AlignedScalarArray^ value);
-		void SetScratch_v(AlignedObjectArray<btVector3> value);
-		void SetSolverBodyPool(AlignedObjectArray^ value);
-
 		property AlignedScalarArray^ DeltaVelocities
 		{
 			AlignedScalarArray^ get();
@@ -55,22 +38,22 @@ namespace BulletSharp
 			void set(AlignedScalarArray^ value);
 		}
 
-		property AlignedObjectArray<btMatrix3x3> Scratch_m
+		property AlignedMatrix3x3Array^ ScratchM
 		{
-			AlignedObjectArray<btMatrix3x3> get();
-			void set(AlignedObjectArray<btMatrix3x3> value);
+			AlignedMatrix3x3Array^ get();
+			void set(AlignedMatrix3x3Array^ value);
 		}
 
-		property AlignedScalarArray^ Scratch_r
+		property AlignedScalarArray^ ScratchR
 		{
 			AlignedScalarArray^ get();
 			void set(AlignedScalarArray^ value);
 		}
 
-		property AlignedObjectArray<btVector3> Scratch_v
+		property AlignedVector3Array^ ScratchV
 		{
-			AlignedObjectArray<btVector3> get();
-			void set(AlignedObjectArray<btVector3> value);
+			AlignedVector3Array^ get();
+			void set(AlignedVector3Array^ value);
 		}
 
 		property AlignedObjectArray^ SolverBodyPool
@@ -80,19 +63,23 @@ namespace BulletSharp
 		}
 	};
 */
-	public ref class MultiBodyConstraint
+	public ref class MultiBodyConstraint abstract
 	{
 	internal:
 		btMultiBodyConstraint* _native;
 		MultiBodyConstraint(btMultiBodyConstraint* native);
 
+	protected:
+		MultiBody^ _multiBodyA;
+		MultiBody^ _multiBodyB;
+
 	public:
-		//void CreateConstraintRows(MultiBodyConstraintArray^ constraintRows, MultiBodyJacobianData^ data, ContactSolverInfo^ infoGlobal);
-		float GetPosition(int row);
+		//void CreateConstraintRows(MultiBodyConstraintArray^ constraintRows, MultiBodyJacobianData^ data,
+		//	ContactSolverInfo^ infoGlobal);
+		btScalar GetPosition(int row);
 		//FloatArray^ JacobianA(int row);
 		//FloatArray^ JacobianB(int row);
-		void SetMaxAppliedImpulse(float maxImp);
-		void SetPosition(int row, float pos);
+		void SetPosition(int row, btScalar pos);
 
 		property int IslandIdA
 		{
@@ -109,10 +96,10 @@ namespace BulletSharp
 			bool get();
 		}
 
-		property float MaxAppliedImpulse
+		property btScalar MaxAppliedImpulse
 		{
-			float get();
-			void set(float value);
+			btScalar get();
+			void set(btScalar maxImp);
 		}
 
 		property MultiBody^ MultiBodyA

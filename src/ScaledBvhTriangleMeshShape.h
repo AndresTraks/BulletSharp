@@ -8,11 +8,8 @@ namespace BulletSharp
 
 	public ref class ScaledBvhTriangleMeshShape : ConcaveShape
 	{
-	private:
-		BvhTriangleMeshShape^ _childShape;
-
 	internal:
-		ScaledBvhTriangleMeshShape(btScaledBvhTriangleMeshShape* shape);
+		ScaledBvhTriangleMeshShape(btScaledBvhTriangleMeshShape* native);
 
 	public:
 		ScaledBvhTriangleMeshShape(BvhTriangleMeshShape^ childShape, Vector3 localScaling);

@@ -10,6 +10,10 @@ namespace BulletSharp
 		btMultiBodySolverConstraint* _native;
 		MultiBodySolverConstraint(btMultiBodySolverConstraint* native);
 
+	private:
+		MultiBody^ _multiBodyA;
+		MultiBody^ _multiBodyB;
+
 	public:
 		MultiBodySolverConstraint();
 
@@ -125,6 +129,12 @@ namespace BulletSharp
 		{
 			BulletSharp::MultiBody^ get();
 			void set(BulletSharp::MultiBody^ value);
+		}
+
+		property IntPtr OriginalContactPoint
+		{
+			IntPtr get();
+			void set(IntPtr value);
 		}
 
 		property int OverrideNumSolverIterations

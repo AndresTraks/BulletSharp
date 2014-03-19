@@ -11,10 +11,14 @@ namespace BulletSharp
 	internal:
 		MultiBodyLinkCollider(btMultiBodyLinkCollider* native);
 
+	private:
+		MultiBody^ _multiBody;
+
 	public:
 		MultiBodyLinkCollider(MultiBody^ multiBody, int link);
 
-		//static MultiBodyLinkCollider^ Upcast(CollisionObject^ colObj);
+		bool CheckCollideWithOverride(CollisionObject^ co);
+		static MultiBodyLinkCollider^ Upcast(CollisionObject^ colObj);
 
 		property int Link
 		{

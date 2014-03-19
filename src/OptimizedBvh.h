@@ -9,14 +9,20 @@ namespace BulletSharp
 	public ref class OptimizedBvh : QuantizedBvh
 	{
 	internal:
-		OptimizedBvh(btOptimizedBvh* bvh);
+		OptimizedBvh(btOptimizedBvh* native);
 
 	public:
 		OptimizedBvh();
 
-		void Build(StridingMeshInterface^ triangles, bool useQuantizedAabbCompression, Vector3 bvhAabbMin, Vector3 bvhAabbMax);
+		void Build(StridingMeshInterface^ triangles, bool useQuantizedAabbCompression,
+			Vector3 bvhAabbMin, Vector3 bvhAabbMax);
+		static OptimizedBvh^ DeSerializeInPlace(IntPtr alignedDataBuffer, unsigned int dataBufferSize,
+			bool swapEndian);
 		void Refit(StridingMeshInterface^ triangles, Vector3 aabbMin, Vector3 aabbMax);
 		void RefitPartial(StridingMeshInterface^ triangles, Vector3 aabbMin, Vector3 aabbMax);
-		void UpdateBvhNodes(StridingMeshInterface^ meshInterface, int firstNode, int endNode, int index);
+		bool SerializeInPlace(IntPtr alignedDataBuffer, unsigned int dataBufferSize,
+			bool swapEndian);
+		void UpdateBvhNodes(StridingMeshInterface^ meshInterface, int firstNode, int endNode,
+			int index);
 	};
 };

@@ -2,7 +2,19 @@
 
 namespace BulletSharp
 {
+	ref class FloatArray;
 	ref class MultiBodyLinkCollider;
+
+	public enum FeatherstoneJointType
+	{
+		Revolute = btMultibodyLink::eRevolute,
+		Prismatic = btMultibodyLink::ePrismatic,
+		Spherical = btMultibodyLink::eSpherical,
+#ifdef BT_MULTIBODYLINK_INCLUDE_PLANAR_JOINTS
+		Planar = btMultibodyLink::ePlanar,
+#endif
+		Invalid = btMultibodyLink::eInvalid
+	};
 
 	public ref class MultibodyLink
 	{
@@ -13,7 +25,15 @@ namespace BulletSharp
 	public:
 		MultibodyLink();
 
+		Vector3 GetAxisBottom(int dof);
+		Vector3 GetAxisTop(int dof);
+		void SetAxisBottom(int dof, Vector3 axis);
+		void SetAxisBottom(int dof, float x, float y, float z);
+		void SetAxisTop(int dof, Vector3 axis);
+		void SetAxisTop(int dof, float x, float y, float z);
 		void UpdateCache();
+		void UpdateCacheMultiDof(FloatArray^ pq);
+		void UpdateCacheMultiDof();
 
 		property Vector3 AppliedForce
 		{
@@ -26,19 +46,7 @@ namespace BulletSharp
 			Vector3 get();
 			void set(Vector3 value);
 		}
-		/*
-		property Vector3 AxesBottom
-		{
-			Vector3 get();
-			void set(Vector3 value);
-		}
 
-		property Vector3 AxesTop
-		{
-			Vector3 get();
-			void set(Vector3 value);
-		}
-		*/
 		property Quaternion CachedRotParentToThis
 		{
 			Quaternion get();
@@ -51,10 +59,28 @@ namespace BulletSharp
 			void set(Vector3 value);
 		}
 
+		property int CfgOffset
+		{
+			int get();
+			void set(int value);
+		}
+
 		property MultiBodyLinkCollider^ Collider
 		{
 			MultiBodyLinkCollider^ get();
 			void set(MultiBodyLinkCollider^ value);
+		}
+
+		property int DofCount
+		{
+			int get();
+			void set(int value);
+		}
+
+		property int DofOffset
+		{
+			int get();
+			void set(int value);
 		}
 
 		property Vector3 DVector
@@ -81,25 +107,37 @@ namespace BulletSharp
 			void set(Vector3 value);
 		}
 		/*
-		property float JointPos
+		property float^ JointPos
 		{
-			float get();
-			void set(float value);
+			float^ get();
+			void set(float^ value);
 		}
-		
-		property float JointTorque
+
+		property float^ JointTorque
 		{
-			float get();
-			void set(float value);
+			float^ get();
+			void set(float^ value);
 		}
 		*/
-		property float Mass
+		property FeatherstoneJointType JointType
 		{
-			float get();
-			void set(float value);
+			FeatherstoneJointType get();
+			void set(FeatherstoneJointType value);
+		}
+
+		property btScalar Mass
+		{
+			btScalar get();
+			void set(btScalar value);
 		}
 
 		property int Parent
+		{
+			int get();
+			void set(int value);
+		}
+
+		property int PosVarCount
 		{
 			int get();
 			void set(int value);

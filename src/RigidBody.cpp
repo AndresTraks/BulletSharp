@@ -9,444 +9,6 @@
 #include "TypedConstraint.h"
 #endif
 
-#define Native static_cast<btRigidBody*>(_native)
-
-RigidBody::RigidBody(btRigidBody* native)
-	: CollisionObject(native)
-{
-}
-
-RigidBody::RigidBody(RigidBodyConstructionInfo^ constructionInfo)
-	: CollisionObject(ALIGNED_NEW(btRigidBody) (*constructionInfo->_native))
-{
-	_motionState = constructionInfo->_motionState;
-}
-
-#ifndef DISABLE_CONSTRAINTS
-void RigidBody::AddConstraintRef(TypedConstraint^ c)
-{
-	Native->addConstraintRef(c->_native);
-}
-#endif
-
-void RigidBody::ApplyCentralForce(Vector3 force)
-{
-	VECTOR3_DEF(force);
-	Native->applyCentralForce(VECTOR3_USE(force));
-	VECTOR3_DEL(force);
-}
-
-void RigidBody::ApplyCentralImpulse(Vector3 impulse)
-{
-	VECTOR3_DEF(impulse);
-	Native->applyCentralImpulse(VECTOR3_USE(impulse));
-	VECTOR3_DEL(impulse);
-}
-
-void RigidBody::ApplyDamping(btScalar timeStep)
-{
-	Native->applyDamping(timeStep);
-}
-
-void RigidBody::ApplyForce(Vector3 force, Vector3 relativePosition)
-{
-	VECTOR3_DEF(force);
-	VECTOR3_DEF(relativePosition);
-	
-	Native->applyForce(VECTOR3_USE(force), VECTOR3_USE(relativePosition));
-	
-	VECTOR3_DEL(force);
-	VECTOR3_DEL(relativePosition);
-}
-
-void RigidBody::ApplyGravity()
-{
-	Native->applyGravity();
-}
-
-void RigidBody::ApplyImpulse(Vector3 impulse, Vector3 relativePosition)
-{
-	VECTOR3_DEF(impulse);
-	VECTOR3_DEF(relativePosition);
-
-	Native->applyImpulse(VECTOR3_USE(impulse), VECTOR3_USE(relativePosition));
-	
-	VECTOR3_DEL(impulse);
-	VECTOR3_DEL(relativePosition);
-}
-
-void RigidBody::ApplyTorque(Vector3 torque)
-{
-	VECTOR3_DEF(torque);
-	Native->applyTorque(VECTOR3_USE(torque));
-	VECTOR3_DEL(torque);
-}
-
-void RigidBody::ApplyTorqueImpulse(Vector3 torque)
-{
-	VECTOR3_DEF(torque);
-	Native->applyTorqueImpulse(VECTOR3_USE(torque));
-	VECTOR3_DEL(torque);
-}
-
-bool RigidBody::CheckCollideWithOverride(CollisionObject^ co)
-{
-	return Native->checkCollideWithOverride(co->_native);
-}
-
-void RigidBody::ClearForces()
-{
-	Native->clearForces();
-}
-
-btScalar RigidBody::ComputeAngularImpulseDenominator(Vector3 axis)
-{
-	VECTOR3_DEF(axis);
-	btScalar ret = Native->computeAngularImpulseDenominator(VECTOR3_USE(axis));
-	VECTOR3_DEL(axis);
-	return ret;
-}
-
-#pragma managed(push, off)
-void RigidBody_ComputeGyroscopicForce(btRigidBody* body, btVector3* ret, btScalar maxGyroscopicForce)
-{
-	*ret = body->computeGyroscopicForce(maxGyroscopicForce);
-}
-#pragma managed(pop)
-Vector3 RigidBody::ComputeGyroscopicForce(btScalar maxGyroscopicForce)
-{
-	btVector3* retTemp = ALIGNED_NEW(btVector3);
-	RigidBody_ComputeGyroscopicForce(Native, retTemp, maxGyroscopicForce);
-	Vector3 ret = Math::BtVector3ToVector3(retTemp);
-	ALIGNED_FREE(retTemp);
-	return ret;
-}
-
-btScalar RigidBody::ComputeImpulseDenominator(Vector3 pos, Vector3 normal)
-{
-	VECTOR3_DEF(pos);
-	VECTOR3_DEF(normal);
-
-	btScalar ret = Native->computeImpulseDenominator(VECTOR3_USE(pos), VECTOR3_USE(normal));
-
-	VECTOR3_DEL(pos);
-	VECTOR3_DEL(normal);
-	return ret;
-}
-
-void RigidBody::GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
-{
-	btVector3* aabbMinTemp = ALIGNED_NEW(btVector3);
-	btVector3* aabbMaxTemp = ALIGNED_NEW(btVector3);
-
-	Native->getAabb(*aabbMinTemp, *aabbMaxTemp);
-
-	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
-	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
-
-	ALIGNED_FREE(aabbMinTemp);
-	ALIGNED_FREE(aabbMaxTemp);
-}
-
-#ifndef DISABLE_CONSTRAINTS
-TypedConstraint^ RigidBody::GetConstraintRef(int index)
-{
-	return TypedConstraint::GetManaged(Native->getConstraintRef(index));
-}
-#endif
-
-#pragma managed(push, off)
-void RigidBody_GetVelocityInLocalPoint(btRigidBody* body, btVector3* velocity, btVector3* rel_pos)
-{
-	*velocity = body->getVelocityInLocalPoint(*rel_pos);
-}
-#pragma managed(pop)
-Vector3 RigidBody::GetVelocityInLocalPoint(Vector3 relativePosition)
-{
-	VECTOR3_DEF(relativePosition);
-	btVector3* velocityTemp = ALIGNED_NEW(btVector3);
-
-	RigidBody_GetVelocityInLocalPoint(Native, velocityTemp, VECTOR3_PTR(relativePosition));
-	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
-
-	VECTOR3_DEL(relativePosition);
-	ALIGNED_FREE(velocityTemp);
-
-	return velocity;
-}
-
-void RigidBody::IntegrateVelocities(btScalar step)
-{
-	Native->integrateVelocities(step);
-}
-
-void RigidBody::PredictIntegratedTransform(btScalar step, [Out] Matrix% predictedTransform)
-{
-	btTransform* predictedTransformTemp = ALIGNED_NEW(btTransform);
-	Native->predictIntegratedTransform(step, *predictedTransformTemp);
-	Math::BtTransformToMatrix(predictedTransformTemp, predictedTransform);
-	ALIGNED_FREE(predictedTransformTemp);
-}
-
-void RigidBody::ProceedToTransform(Matrix newTransform)
-{
-	btTransform* newTransformTemp = Math::MatrixToBtTransform(newTransform);
-	Native->proceedToTransform(*newTransformTemp);
-	ALIGNED_FREE(newTransformTemp);
-}
-
-#ifndef DISABLE_CONSTRAINTS
-void RigidBody::RemoveConstraintRef(TypedConstraint^ c)
-{
-	Native->removeConstraintRef(c->_native);
-}
-#endif
-
-void RigidBody::SaveKinematicState(btScalar step)
-{
-	Native->saveKinematicState(step);
-}
-
-void RigidBody::SetDamping(btScalar linearDamping, btScalar angularDamping)
-{
-	Native->setDamping(linearDamping, angularDamping);
-}
-
-void RigidBody::SetMassProps(btScalar mass, Vector3 inertia)
-{
-	VECTOR3_DEF(inertia);
-	Native->setMassProps(mass, VECTOR3_USE(inertia));
-	VECTOR3_DEL(inertia);
-}
-
-void RigidBody::SetSleepingThresholds(btScalar linear, btScalar angular)
-{
-	Native->setSleepingThresholds(linear, angular);
-}
-
-void RigidBody::Translate(Vector3 vector)
-{
-	VECTOR3_DEF(vector);
-	Native->translate(VECTOR3_USE(vector));
-	VECTOR3_DEL(vector);
-}
-
-RigidBody^ RigidBody::Upcast(CollisionObject^ colObj)
-{
-	btRigidBody* body = btRigidBody::upcast(colObj->_native);
-	return (RigidBody^)CollisionObject::GetManaged(body);
-}
-
-void RigidBody::UpdateDeactivation(btScalar timeStep)
-{
-	Native->updateDeactivation(timeStep);
-}
-
-void RigidBody::UpdateInertiaTensor()
-{
-	Native->updateInertiaTensor();
-}
-
-btScalar RigidBody::AngularDamping::get()
-{
-	return Native->getAngularDamping();
-}
-
-Vector3 RigidBody::AngularFactor::get()
-{
-	return Math::BtVector3ToVector3(&Native->getAngularFactor());
-}
-void RigidBody::AngularFactor::set(Vector3 value)
-{
-	VECTOR3_DEF(value);
-	Native->setAngularFactor(VECTOR3_USE(value));
-	VECTOR3_DEL(value);
-}
-
-btScalar RigidBody::AngularSleepingThreshold::get()
-{
-	return Native->getAngularSleepingThreshold();
-}
-
-Vector3 RigidBody::AngularVelocity::get()
-{
-	return Math::BtVector3ToVector3(&Native->getAngularVelocity());
-}
-void RigidBody::AngularVelocity::set(Vector3 value)
-{
-	VECTOR3_DEF(value);
-	Native->setAngularVelocity(VECTOR3_USE(value));
-	VECTOR3_DEL(value);
-}
-
-BroadphaseProxy^ RigidBody::BroadphaseProxy::get()
-{
-	return BulletSharp::BroadphaseProxy::GetManaged(Native->getBroadphaseProxy());
-}
-void RigidBody::BroadphaseProxy::set(BulletSharp::BroadphaseProxy^ value)
-{
-	Native->setNewBroadphaseProxy(value->_native);
-}
-
-Vector3 RigidBody::CenterOfMassPosition::get()
-{
-	return Math::BtVector3ToVector3(&Native->getCenterOfMassPosition());
-}
-
-Matrix RigidBody::CenterOfMassTransform::get()
-{
-	return Math::BtTransformToMatrix(&Native->getCenterOfMassTransform());
-}
-void RigidBody::CenterOfMassTransform::set(Matrix value)
-{
-	btTransform* valueTemp = Math::MatrixToBtTransform(value);
-	Native->setCenterOfMassTransform(*valueTemp);
-	ALIGNED_FREE(valueTemp);
-}
-
-int RigidBody::ContactSolverType::get()
-{
-	return Native->m_contactSolverType;
-}
-void RigidBody::ContactSolverType::set(int value)
-{
-	Native->m_contactSolverType = value;
-}
-
-RigidBodyFlags RigidBody::Flags::get()
-{
-	return (RigidBodyFlags)Native->getFlags();
-}
-void RigidBody::Flags::set(RigidBodyFlags flags)
-{
-	Native->setFlags((btRigidBodyFlags) flags);
-}
-
-int RigidBody::FrictionSolverType::get()
-{
-	return Native->m_frictionSolverType;
-}
-void RigidBody::FrictionSolverType::set(int value)
-{
-	Native->m_frictionSolverType = value;
-}
-
-Vector3 RigidBody::Gravity::get()
-{
-	return Math::BtVector3ToVector3(&Native->getGravity());
-}
-void RigidBody::Gravity::set(Vector3 value)
-{
-	VECTOR3_DEF(value);
-	Native->setGravity(VECTOR3_USE(value));
-	VECTOR3_DEL(value);
-}
-
-Vector3 RigidBody::InvInertiaDiagLocal::get()
-{
-	return Math::BtVector3ToVector3(&Native->getInvInertiaDiagLocal());
-}
-void RigidBody::InvInertiaDiagLocal::set(Vector3 value)
-{
-	VECTOR3_DEF(value);
-	Native->setInvInertiaDiagLocal(VECTOR3_USE(value));
-	VECTOR3_DEL(value);
-}
-
-Matrix RigidBody::InvInertiaTensorWorld::get()
-{
-	return Math::BtMatrix3x3ToMatrix(&Native->getInvInertiaTensorWorld());
-}
-
-btScalar RigidBody::InvMass::get()
-{
-	return Native->getInvMass();
-}
-
-bool RigidBody::IsInWorld::get()
-{
-	return Native->isInWorld();
-}
-
-btScalar RigidBody::LinearDamping::get()
-{
-	return Native->getLinearDamping();
-}
-
-Vector3 RigidBody::LinearFactor::get()
-{
-	return Math::BtVector3ToVector3(&Native->getLinearFactor());
-}
-void RigidBody::LinearFactor::set(Vector3 value)
-{
-	VECTOR3_DEF(value);
-	Native->setLinearFactor(VECTOR3_USE(value));
-	VECTOR3_DEL(value);
-}
-
-btScalar RigidBody::LinearSleepingThreshold::get()
-{
-	return Native->getLinearSleepingThreshold();
-}
-
-Vector3 RigidBody::LinearVelocity::get()
-{
-	return Math::BtVector3ToVector3(&Native->getLinearVelocity());
-}
-void RigidBody::LinearVelocity::set(Vector3 value)
-{
-	VECTOR3_DEF(value);
-	Native->setLinearVelocity(VECTOR3_USE(value));
-	VECTOR3_DEL(value);
-}
-
-BulletSharp::MotionState^ RigidBody::MotionState::get()
-{
-	return _motionState;
-}
-void RigidBody::MotionState::set(BulletSharp::MotionState^ value)
-{
-	Native->setMotionState(value->_native);
-	_motionState = value;
-}
-
-int RigidBody::NumConstraintRefs::get()
-{
-	return Native->getNumConstraintRefs();
-}
-
-#pragma managed(push, off)
-void RigidBody_GetOrientation(btRigidBody* body, btQuaternion* orientation)
-{
-	//FIXME: *orientation = body->getOrientation();
-	body->getWorldTransform().getBasis().getRotation(*orientation);
-}
-#pragma managed(pop)
-Quaternion RigidBody::Orientation::get()
-{
-	btQuaternion* orientationTemp = ALIGNED_NEW(btQuaternion);
-	RigidBody_GetOrientation(Native, orientationTemp);
-	Quaternion orientation = Math::BtQuatToQuaternion(orientationTemp);
-	ALIGNED_FREE(orientationTemp);
-	return orientation;
-}
-
-Vector3 RigidBody::TotalForce::get()
-{
-	return Math::BtVector3ToVector3(&Native->getTotalForce());
-}
-
-Vector3 RigidBody::TotalTorque::get()
-{
-	return Math::BtVector3ToVector3(&Native->getTotalTorque());
-}
-
-bool RigidBody::WantsSleeping::get()
-{
-	return Native->wantsSleeping();
-}
-
-
 RigidBodyConstructionInfo::~RigidBodyConstructionInfo()
 {
 	this->!RigidBodyConstructionInfo();
@@ -650,4 +212,442 @@ Matrix RigidBodyConstructionInfo::StartWorldTransform::get()
 void RigidBodyConstructionInfo::StartWorldTransform::set(Matrix value)
 {
 	Math::MatrixToBtTransform(value, &_native->m_startWorldTransform);
+}
+
+
+#define Native static_cast<btRigidBody*>(_native)
+
+RigidBody::RigidBody(btRigidBody* native)
+	: CollisionObject(native)
+{
+}
+
+RigidBody::RigidBody(RigidBodyConstructionInfo^ constructionInfo)
+	: CollisionObject(ALIGNED_NEW(btRigidBody) (*constructionInfo->_native))
+{
+	_motionState = constructionInfo->_motionState;
+}
+
+#ifndef DISABLE_CONSTRAINTS
+void RigidBody::AddConstraintRef(TypedConstraint^ c)
+{
+	Native->addConstraintRef(c->_native);
+}
+#endif
+
+void RigidBody::ApplyCentralForce(Vector3 force)
+{
+	VECTOR3_DEF(force);
+	Native->applyCentralForce(VECTOR3_USE(force));
+	VECTOR3_DEL(force);
+}
+
+void RigidBody::ApplyCentralImpulse(Vector3 impulse)
+{
+	VECTOR3_DEF(impulse);
+	Native->applyCentralImpulse(VECTOR3_USE(impulse));
+	VECTOR3_DEL(impulse);
+}
+
+void RigidBody::ApplyDamping(btScalar timeStep)
+{
+	Native->applyDamping(timeStep);
+}
+
+void RigidBody::ApplyForce(Vector3 force, Vector3 relativePosition)
+{
+	VECTOR3_DEF(force);
+	VECTOR3_DEF(relativePosition);
+	
+	Native->applyForce(VECTOR3_USE(force), VECTOR3_USE(relativePosition));
+	
+	VECTOR3_DEL(force);
+	VECTOR3_DEL(relativePosition);
+}
+
+void RigidBody::ApplyGravity()
+{
+	Native->applyGravity();
+}
+
+void RigidBody::ApplyImpulse(Vector3 impulse, Vector3 relativePosition)
+{
+	VECTOR3_DEF(impulse);
+	VECTOR3_DEF(relativePosition);
+
+	Native->applyImpulse(VECTOR3_USE(impulse), VECTOR3_USE(relativePosition));
+	
+	VECTOR3_DEL(impulse);
+	VECTOR3_DEL(relativePosition);
+}
+
+void RigidBody::ApplyTorque(Vector3 torque)
+{
+	VECTOR3_DEF(torque);
+	Native->applyTorque(VECTOR3_USE(torque));
+	VECTOR3_DEL(torque);
+}
+
+void RigidBody::ApplyTorqueImpulse(Vector3 torque)
+{
+	VECTOR3_DEF(torque);
+	Native->applyTorqueImpulse(VECTOR3_USE(torque));
+	VECTOR3_DEL(torque);
+}
+
+bool RigidBody::CheckCollideWithOverride(CollisionObject^ co)
+{
+	return Native->checkCollideWithOverride(co->_native);
+}
+
+void RigidBody::ClearForces()
+{
+	Native->clearForces();
+}
+
+btScalar RigidBody::ComputeAngularImpulseDenominator(Vector3 axis)
+{
+	VECTOR3_DEF(axis);
+	btScalar ret = Native->computeAngularImpulseDenominator(VECTOR3_USE(axis));
+	VECTOR3_DEL(axis);
+	return ret;
+}
+
+#pragma managed(push, off)
+void RigidBody_ComputeGyroscopicForce(btRigidBody* body, btVector3* ret, btScalar maxGyroscopicForce)
+{
+	*ret = body->computeGyroscopicForce(maxGyroscopicForce);
+}
+#pragma managed(pop)
+Vector3 RigidBody::ComputeGyroscopicForce(btScalar maxGyroscopicForce)
+{
+	btVector3* retTemp = ALIGNED_NEW(btVector3);
+	RigidBody_ComputeGyroscopicForce(Native, retTemp, maxGyroscopicForce);
+	Vector3 ret = Math::BtVector3ToVector3(retTemp);
+	ALIGNED_FREE(retTemp);
+	return ret;
+}
+
+btScalar RigidBody::ComputeImpulseDenominator(Vector3 pos, Vector3 normal)
+{
+	VECTOR3_DEF(pos);
+	VECTOR3_DEF(normal);
+
+	btScalar ret = Native->computeImpulseDenominator(VECTOR3_USE(pos), VECTOR3_USE(normal));
+
+	VECTOR3_DEL(pos);
+	VECTOR3_DEL(normal);
+	return ret;
+}
+
+void RigidBody::GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
+{
+	btVector3* aabbMinTemp = ALIGNED_NEW(btVector3);
+	btVector3* aabbMaxTemp = ALIGNED_NEW(btVector3);
+
+	Native->getAabb(*aabbMinTemp, *aabbMaxTemp);
+
+	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
+	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
+
+	ALIGNED_FREE(aabbMinTemp);
+	ALIGNED_FREE(aabbMaxTemp);
+}
+
+#ifndef DISABLE_CONSTRAINTS
+TypedConstraint^ RigidBody::GetConstraintRef(int index)
+{
+	return TypedConstraint::GetManaged(Native->getConstraintRef(index));
+}
+#endif
+
+#pragma managed(push, off)
+void RigidBody_GetVelocityInLocalPoint(btRigidBody* body, btVector3* velocity, btVector3* rel_pos)
+{
+	*velocity = body->getVelocityInLocalPoint(*rel_pos);
+}
+#pragma managed(pop)
+Vector3 RigidBody::GetVelocityInLocalPoint(Vector3 relativePosition)
+{
+	VECTOR3_DEF(relativePosition);
+	btVector3* velocityTemp = ALIGNED_NEW(btVector3);
+
+	RigidBody_GetVelocityInLocalPoint(Native, velocityTemp, VECTOR3_PTR(relativePosition));
+	Vector3 velocity = Math::BtVector3ToVector3(velocityTemp);
+
+	VECTOR3_DEL(relativePosition);
+	ALIGNED_FREE(velocityTemp);
+
+	return velocity;
+}
+
+void RigidBody::IntegrateVelocities(btScalar step)
+{
+	Native->integrateVelocities(step);
+}
+
+void RigidBody::PredictIntegratedTransform(btScalar step, [Out] Matrix% predictedTransform)
+{
+	btTransform* predictedTransformTemp = ALIGNED_NEW(btTransform);
+	Native->predictIntegratedTransform(step, *predictedTransformTemp);
+	Math::BtTransformToMatrix(predictedTransformTemp, predictedTransform);
+	ALIGNED_FREE(predictedTransformTemp);
+}
+
+void RigidBody::ProceedToTransform(Matrix newTrans)
+{
+	TRANSFORM_CONV(newTrans);
+	Native->proceedToTransform(TRANSFORM_USE(newTrans));
+	TRANSFORM_DEL(newTrans);
+}
+
+#ifndef DISABLE_CONSTRAINTS
+void RigidBody::RemoveConstraintRef(TypedConstraint^ c)
+{
+	Native->removeConstraintRef(c->_native);
+}
+#endif
+
+void RigidBody::SaveKinematicState(btScalar step)
+{
+	Native->saveKinematicState(step);
+}
+
+void RigidBody::SetDamping(btScalar linearDamping, btScalar angularDamping)
+{
+	Native->setDamping(linearDamping, angularDamping);
+}
+
+void RigidBody::SetMassProps(btScalar mass, Vector3 inertia)
+{
+	VECTOR3_DEF(inertia);
+	Native->setMassProps(mass, VECTOR3_USE(inertia));
+	VECTOR3_DEL(inertia);
+}
+
+void RigidBody::SetSleepingThresholds(btScalar linear, btScalar angular)
+{
+	Native->setSleepingThresholds(linear, angular);
+}
+
+void RigidBody::Translate(Vector3 vector)
+{
+	VECTOR3_DEF(vector);
+	Native->translate(VECTOR3_USE(vector));
+	VECTOR3_DEL(vector);
+}
+
+RigidBody^ RigidBody::Upcast(CollisionObject^ colObj)
+{
+	btRigidBody* body = btRigidBody::upcast(colObj->_native);
+	return (RigidBody^)CollisionObject::GetManaged(body);
+}
+
+void RigidBody::UpdateDeactivation(btScalar timeStep)
+{
+	Native->updateDeactivation(timeStep);
+}
+
+void RigidBody::UpdateInertiaTensor()
+{
+	Native->updateInertiaTensor();
+}
+
+btScalar RigidBody::AngularDamping::get()
+{
+	return Native->getAngularDamping();
+}
+
+Vector3 RigidBody::AngularFactor::get()
+{
+	return Math::BtVector3ToVector3(&Native->getAngularFactor());
+}
+void RigidBody::AngularFactor::set(Vector3 value)
+{
+	VECTOR3_DEF(value);
+	Native->setAngularFactor(VECTOR3_USE(value));
+	VECTOR3_DEL(value);
+}
+
+btScalar RigidBody::AngularSleepingThreshold::get()
+{
+	return Native->getAngularSleepingThreshold();
+}
+
+Vector3 RigidBody::AngularVelocity::get()
+{
+	return Math::BtVector3ToVector3(&Native->getAngularVelocity());
+}
+void RigidBody::AngularVelocity::set(Vector3 value)
+{
+	VECTOR3_DEF(value);
+	Native->setAngularVelocity(VECTOR3_USE(value));
+	VECTOR3_DEL(value);
+}
+
+BroadphaseProxy^ RigidBody::BroadphaseProxy::get()
+{
+	return BulletSharp::BroadphaseProxy::GetManaged(Native->getBroadphaseProxy());
+}
+void RigidBody::BroadphaseProxy::set(BulletSharp::BroadphaseProxy^ value)
+{
+	Native->setNewBroadphaseProxy(value->_native);
+}
+
+Vector3 RigidBody::CenterOfMassPosition::get()
+{
+	return Math::BtVector3ToVector3(&Native->getCenterOfMassPosition());
+}
+
+Matrix RigidBody::CenterOfMassTransform::get()
+{
+	return Math::BtTransformToMatrix(&Native->getCenterOfMassTransform());
+}
+void RigidBody::CenterOfMassTransform::set(Matrix xform)
+{
+	TRANSFORM_CONV(xform);
+	Native->setCenterOfMassTransform(TRANSFORM_USE(xform));
+	TRANSFORM_DEL(xform);
+}
+
+int RigidBody::ContactSolverType::get()
+{
+	return Native->m_contactSolverType;
+}
+void RigidBody::ContactSolverType::set(int value)
+{
+	Native->m_contactSolverType = value;
+}
+
+RigidBodyFlags RigidBody::Flags::get()
+{
+	return (RigidBodyFlags)Native->getFlags();
+}
+void RigidBody::Flags::set(RigidBodyFlags flags)
+{
+	Native->setFlags((btRigidBodyFlags) flags);
+}
+
+int RigidBody::FrictionSolverType::get()
+{
+	return Native->m_frictionSolverType;
+}
+void RigidBody::FrictionSolverType::set(int value)
+{
+	Native->m_frictionSolverType = value;
+}
+
+Vector3 RigidBody::Gravity::get()
+{
+	return Math::BtVector3ToVector3(&Native->getGravity());
+}
+void RigidBody::Gravity::set(Vector3 acceleration)
+{
+	VECTOR3_DEF(acceleration);
+	Native->setGravity(VECTOR3_USE(acceleration));
+	VECTOR3_DEL(acceleration);
+}
+
+Vector3 RigidBody::InvInertiaDiagLocal::get()
+{
+	return Math::BtVector3ToVector3(&Native->getInvInertiaDiagLocal());
+}
+void RigidBody::InvInertiaDiagLocal::set(Vector3 diagInvInertia)
+{
+	VECTOR3_DEF(diagInvInertia);
+	Native->setInvInertiaDiagLocal(VECTOR3_USE(diagInvInertia));
+	VECTOR3_DEL(diagInvInertia);
+}
+
+Matrix RigidBody::InvInertiaTensorWorld::get()
+{
+	return Math::BtMatrix3x3ToMatrix(&Native->getInvInertiaTensorWorld());
+}
+
+btScalar RigidBody::InvMass::get()
+{
+	return Native->getInvMass();
+}
+
+bool RigidBody::IsInWorld::get()
+{
+	return Native->isInWorld();
+}
+
+btScalar RigidBody::LinearDamping::get()
+{
+	return Native->getLinearDamping();
+}
+
+Vector3 RigidBody::LinearFactor::get()
+{
+	return Math::BtVector3ToVector3(&Native->getLinearFactor());
+}
+void RigidBody::LinearFactor::set(Vector3 linearFactor)
+{
+	VECTOR3_DEF(linearFactor);
+	Native->setLinearFactor(VECTOR3_USE(linearFactor));
+	VECTOR3_DEL(linearFactor);
+}
+
+btScalar RigidBody::LinearSleepingThreshold::get()
+{
+	return Native->getLinearSleepingThreshold();
+}
+
+Vector3 RigidBody::LinearVelocity::get()
+{
+	return Math::BtVector3ToVector3(&Native->getLinearVelocity());
+}
+void RigidBody::LinearVelocity::set(Vector3 lin_vel)
+{
+	VECTOR3_DEF(lin_vel);
+	Native->setLinearVelocity(VECTOR3_USE(lin_vel));
+	VECTOR3_DEL(lin_vel);
+}
+
+BulletSharp::MotionState^ RigidBody::MotionState::get()
+{
+	return _motionState;
+}
+void RigidBody::MotionState::set(BulletSharp::MotionState^ motionState)
+{
+	Native->setMotionState(motionState->_native);
+	_motionState = motionState;
+}
+
+int RigidBody::NumConstraintRefs::get()
+{
+	return Native->getNumConstraintRefs();
+}
+
+#pragma managed(push, off)
+void RigidBody_GetOrientation(btRigidBody* body, btQuaternion* orientation)
+{
+	//FIXME: *orientation = body->getOrientation();
+	body->getWorldTransform().getBasis().getRotation(*orientation);
+}
+#pragma managed(pop)
+Quaternion RigidBody::Orientation::get()
+{
+	btQuaternion* orientationTemp = ALIGNED_NEW(btQuaternion);
+	RigidBody_GetOrientation(Native, orientationTemp);
+	Quaternion orientation = Math::BtQuatToQuaternion(orientationTemp);
+	ALIGNED_FREE(orientationTemp);
+	return orientation;
+}
+
+Vector3 RigidBody::TotalForce::get()
+{
+	return Math::BtVector3ToVector3(&Native->getTotalForce());
+}
+
+Vector3 RigidBody::TotalTorque::get()
+{
+	return Math::BtVector3ToVector3(&Native->getTotalTorque());
+}
+
+bool RigidBody::WantsSleeping::get()
+{
+	return Native->wantsSleeping();
 }

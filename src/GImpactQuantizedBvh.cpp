@@ -10,17 +10,17 @@
 #include "GImpactQuantizedBvh.h"
 #include "TriangleShapeEx.h"
 
-QuantizedBvhNode::QuantizedBvhNode(BT_QUANTIZED_BVH_NODE* native)
+GImpactQuantizedBvhNode::GImpactQuantizedBvhNode(BT_QUANTIZED_BVH_NODE* native)
 {
 	_native = native;
 }
 
-QuantizedBvhNode::QuantizedBvhNode()
+GImpactQuantizedBvhNode::GImpactQuantizedBvhNode()
 {
 	_native = new BT_QUANTIZED_BVH_NODE();
 }
 
-bool QuantizedBvhNode::TestQuantizedBoxOverlap(array<unsigned short>^ quantizedMin,
+bool GImpactQuantizedBvhNode::TestQuantizedBoxOverlap(array<unsigned short>^ quantizedMin,
 	array<unsigned short>^ quantizedMax)
 {
 	pin_ptr<unsigned short> quantizedMinPtr = &quantizedMin[0];
@@ -28,55 +28,55 @@ bool QuantizedBvhNode::TestQuantizedBoxOverlap(array<unsigned short>^ quantizedM
 	return _native->testQuantizedBoxOverlapp(quantizedMinPtr, quantizedMaxPtr);
 }
 
-int QuantizedBvhNode::DataIndex::get()
+int GImpactQuantizedBvhNode::DataIndex::get()
 {
 	return _native->getDataIndex();
 }
-void QuantizedBvhNode::DataIndex::set(int index)
+void GImpactQuantizedBvhNode::DataIndex::set(int index)
 {
 	_native->setDataIndex(index);
 }
 
-int QuantizedBvhNode::EscapeIndex::get()
+int GImpactQuantizedBvhNode::EscapeIndex::get()
 {
 	return _native->getEscapeIndex();
 }
-void QuantizedBvhNode::EscapeIndex::set(int index)
+void GImpactQuantizedBvhNode::EscapeIndex::set(int index)
 {
 	_native->setEscapeIndex(index);
 }
 
-int QuantizedBvhNode::EscapeIndexOrDataIndex::get()
+int GImpactQuantizedBvhNode::EscapeIndexOrDataIndex::get()
 {
 	return _native->m_escapeIndexOrDataIndex;
 }
-void QuantizedBvhNode::EscapeIndexOrDataIndex::set(int value)
+void GImpactQuantizedBvhNode::EscapeIndexOrDataIndex::set(int value)
 {
 	_native->m_escapeIndexOrDataIndex = value;
 }
 
-bool QuantizedBvhNode::IsLeafNode::get()
+bool GImpactQuantizedBvhNode::IsLeafNode::get()
 {
 	return _native->isLeafNode();
 }
 
-UShortArray^ QuantizedBvhNode::QuantizedAabbMax::get()
+UShortArray^ GImpactQuantizedBvhNode::QuantizedAabbMax::get()
 {
 	return gcnew UShortArray(_native->m_quantizedAabbMax, 3);
 }
 
-UShortArray^ QuantizedBvhNode::QuantizedAabbMin::get()
+UShortArray^ GImpactQuantizedBvhNode::QuantizedAabbMin::get()
 {
 	return gcnew UShortArray(_native->m_quantizedAabbMin, 3);
 }
 
 
-GimQuantizedBvhNodeArray::GimQuantizedBvhNodeArray(GIM_QUANTIZED_BVH_NODE_ARRAY* native)
+GimGImpactQuantizedBvhNodeArray::GimGImpactQuantizedBvhNodeArray(GIM_QUANTIZED_BVH_NODE_ARRAY* native)
 {
 	_native = native;
 }
 
-GimQuantizedBvhNodeArray::GimQuantizedBvhNodeArray()
+GimGImpactQuantizedBvhNodeArray::GimGImpactQuantizedBvhNodeArray()
 {
 	_native = new GIM_QUANTIZED_BVH_NODE_ARRAY();
 }
@@ -102,12 +102,12 @@ void QuantizedBvhTree::ClearNodes()
 	_native->clearNodes();
 }
 /*
-QuantizedBvhNode^ QuantizedBvhTree::GetNodePointer(int index)
+GImpactQuantizedBvhNode^ QuantizedBvhTree::GetNodePointer(int index)
 {
 	return _native->get_node_pointer(index);
 }
 
-QuantizedBvhNode^ QuantizedBvhTree::GetNodePointer()
+GImpactQuantizedBvhNode^ QuantizedBvhTree::GetNodePointer()
 {
 	return _native->get_node_pointer();
 }
@@ -211,12 +211,12 @@ void GImpactQuantizedBvh::FindCollision(GImpactQuantizedBvh^ boxset1, Matrix tra
 	TRANSFORM_DEL(trans2);
 }
 /*
-QuantizedBvhNode^ GImpactQuantizedBvh::GetNodePointer(int index)
+GImpactQuantizedBvhNode^ GImpactQuantizedBvh::GetNodePointer(int index)
 {
 	return _native->get_node_pointer(index);
 }
 
-QuantizedBvhNode^ GImpactQuantizedBvh::GetNodePointer()
+GImpactQuantizedBvhNode^ GImpactQuantizedBvh::GetNodePointer()
 {
 	return _native->get_node_pointer();
 }

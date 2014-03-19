@@ -4,8 +4,8 @@
 
 #define Native static_cast<btMultiSphereShape*>(_native)
 
-MultiSphereShape::MultiSphereShape(btMultiSphereShape* shape)
-: ConvexInternalAabbCachingShape(shape)
+MultiSphereShape::MultiSphereShape(btMultiSphereShape* native)
+	: ConvexInternalAabbCachingShape(native)
 {
 }
 

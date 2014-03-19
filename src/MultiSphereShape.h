@@ -7,7 +7,7 @@ namespace BulletSharp
 	public ref class MultiSphereShape : ConvexInternalAabbCachingShape
 	{
 	internal:
-		MultiSphereShape(btMultiSphereShape* shape);
+		MultiSphereShape(btMultiSphereShape* native);
 
 	public:
 		MultiSphereShape(array<Vector3>^ positions, array<btScalar>^ radi);

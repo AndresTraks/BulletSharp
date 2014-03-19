@@ -8,47 +8,47 @@
 
 #define Native static_cast<btMultimaterialTriangleMeshShape*>(_native)
 
-MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(btMultimaterialTriangleMeshShape* meshShape)
-: BvhTriangleMeshShape(meshShape)
+MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(btMultimaterialTriangleMeshShape* native)
+	: BvhTriangleMeshShape(native)
 {
 }
 
-MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression, bool buildBvh)
-: BvhTriangleMeshShape(new btMultimaterialTriangleMeshShape(meshInterface->_native, useQuantizedAabbCompression, buildBvh))
-{
-	_meshInterface = meshInterface;
-}
-
-MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression)
-: BvhTriangleMeshShape(new btMultimaterialTriangleMeshShape(meshInterface->_native, useQuantizedAabbCompression))
+MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface,
+	bool useQuantizedAabbCompression, bool buildBvh)
+	: BvhTriangleMeshShape(new btMultimaterialTriangleMeshShape(meshInterface->_native,
+		useQuantizedAabbCompression, buildBvh))
 {
 	_meshInterface = meshInterface;
 }
 
-MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
-	Vector3 bvhAabbMin, Vector3 bvhAabbMax, bool buildBvh)
-: BvhTriangleMeshShape(0)
+MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface,
+	bool useQuantizedAabbCompression)
+	: BvhTriangleMeshShape(new btMultimaterialTriangleMeshShape(meshInterface->_native,
+		useQuantizedAabbCompression))
+{
+	_meshInterface = meshInterface;
+}
+
+MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface,
+	bool useQuantizedAabbCompression, Vector3 bvhAabbMin, Vector3 bvhAabbMax, bool buildBvh)
+	: BvhTriangleMeshShape(0)
 {
 	VECTOR3_DEF(bvhAabbMin);
 	VECTOR3_DEF(bvhAabbMax);
-
 	UnmanagedPointer = new btMultimaterialTriangleMeshShape(meshInterface->_native, useQuantizedAabbCompression,
 		VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax), buildBvh);
-
 	VECTOR3_DEL(bvhAabbMin);
 	VECTOR3_DEL(bvhAabbMax);
 }
 
-MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
-	Vector3 bvhAabbMin, Vector3 bvhAabbMax)
-: BvhTriangleMeshShape(0)
+MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface,
+	bool useQuantizedAabbCompression, Vector3 bvhAabbMin, Vector3 bvhAabbMax)
+	: BvhTriangleMeshShape(0)
 {
 	VECTOR3_DEF(bvhAabbMin);
 	VECTOR3_DEF(bvhAabbMax);
-
 	UnmanagedPointer = new btMultimaterialTriangleMeshShape(meshInterface->_native, useQuantizedAabbCompression,
 		VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax));
-
 	VECTOR3_DEL(bvhAabbMin);
 	VECTOR3_DEL(bvhAabbMax);
 }

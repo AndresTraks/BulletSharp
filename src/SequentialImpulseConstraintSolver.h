@@ -7,7 +7,7 @@ namespace BulletSharp
 	public ref class SequentialImpulseConstraintSolver : ConstraintSolver
 	{
 	internal:
-		SequentialImpulseConstraintSolver(btSequentialImpulseConstraintSolver* solver);
+		SequentialImpulseConstraintSolver(btSequentialImpulseConstraintSolver* native);
 
 	public:
 		SequentialImpulseConstraintSolver();
@@ -20,7 +20,7 @@ namespace BulletSharp
 		property unsigned long RandSeed
 		{
 			unsigned long get();
-			void set(unsigned long value);
+			void set(unsigned long seed);
 		}
 #endif
 	};

@@ -8,7 +8,7 @@ namespace BulletSharp
 	ref class BroadphaseProxy;
 	ref class Dispatcher;
 
-	public ref class OverlappingPairCallback : BulletSharp::IDisposable
+	public ref class OverlappingPairCallback abstract : BulletSharp::IDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
@@ -16,7 +16,7 @@ namespace BulletSharp
 
 	internal:
 		btOverlappingPairCallback* _native;
-		OverlappingPairCallback(btOverlappingPairCallback* pairCallback);
+		OverlappingPairCallback(btOverlappingPairCallback* native);
 		static OverlappingPairCallback^ GetManaged(btOverlappingPairCallback* callback);
 
 	public:
@@ -25,12 +25,10 @@ namespace BulletSharp
 		~OverlappingPairCallback();
 
 	public:
-		BroadphasePair^ AddOverlappingPair(BroadphaseProxy^ proxy0,
-			BroadphaseProxy^ proxy1);
-		IntPtr RemoveOverlappingPair(BroadphaseProxy^ proxy0,
-			BroadphaseProxy^ proxy1, Dispatcher^ dispatcher);
-		void RemoveOverlappingPairsContainingProxy(BroadphaseProxy^ proxy0,
+		BroadphasePair^ AddOverlappingPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1);
+		IntPtr RemoveOverlappingPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1,
 			Dispatcher^ dispatcher);
+		void RemoveOverlappingPairsContainingProxy(BroadphaseProxy^ proxy0, Dispatcher^ dispatcher);
 
 		property bool IsDisposed
 		{

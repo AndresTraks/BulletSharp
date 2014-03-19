@@ -37,20 +37,22 @@ btScalar MultiBodySolverConstraint::AppliedImpulse::get()
 {
 	return _native->m_appliedImpulse;
 }
-/*void MultiBodySolverConstraint::AppliedImpulse::set(btScalar value)
+/*
+void MultiBodySolverConstraint::AppliedImpulse::set(btScalar value)
 {
 	_native->m_appliedImpulse = value;
-}*/
-
+}
+*/
 btScalar MultiBodySolverConstraint::AppliedPushImpulse::get()
 {
 	return _native->m_appliedPushImpulse;
 }
-/*void MultiBodySolverConstraint::AppliedPushImpulse::set(btScalar value)
+/*
+void MultiBodySolverConstraint::AppliedPushImpulse::set(btScalar value)
 {
 	_native->m_appliedPushImpulse = value;
-}*/
-
+}
+*/
 btScalar MultiBodySolverConstraint::Cfm::get()
 {
 	return _native->m_cfm;
@@ -170,20 +172,37 @@ void MultiBodySolverConstraint::LowerLimit::set(btScalar value)
 
 MultiBody^ MultiBodySolverConstraint::MultiBodyA::get()
 {
-	return gcnew MultiBody(_native->m_multiBodyA);
+	if (_multiBodyA == nullptr) {
+		_multiBodyA = gcnew MultiBody(_native->m_multiBodyA);
+	}
+	return _multiBodyA;
 }
 void MultiBodySolverConstraint::MultiBodyA::set(MultiBody^ value)
 {
+	_multiBodyA = value;
 	_native->m_multiBodyA = value->_native;
 }
 
 MultiBody^ MultiBodySolverConstraint::MultiBodyB::get()
 {
-	return gcnew MultiBody(_native->m_multiBodyB);
+	if (_multiBodyB == nullptr) {
+		_multiBodyB = gcnew MultiBody(_native->m_multiBodyB);
+	}
+	return _multiBodyB;
 }
 void MultiBodySolverConstraint::MultiBodyB::set(MultiBody^ value)
 {
+	_multiBodyB = value;
 	_native->m_multiBodyB = value->_native;
+}
+
+IntPtr MultiBodySolverConstraint::OriginalContactPoint::get()
+{
+	return IntPtr(_native->m_originalContactPoint);
+}
+void MultiBodySolverConstraint::OriginalContactPoint::set(IntPtr value)
+{
+	_native->m_originalContactPoint = value.ToPointer();
 }
 
 int MultiBodySolverConstraint::OverrideNumSolverIterations::get()

@@ -9,7 +9,7 @@ namespace BulletSharp
 	public ref class PolyhedralConvexShape abstract : ConvexInternalShape
 	{
 	internal:
-		PolyhedralConvexShape(btPolyhedralConvexShape* polyhedralConvexShape);
+		PolyhedralConvexShape(btPolyhedralConvexShape* native);
 
 #ifndef DISABLE_UNCOMMON
 	private:
@@ -31,17 +31,17 @@ namespace BulletSharp
 		}
 #endif
 
-		property int EdgeCount
+		property int NumEdges
 		{
 			int get();
 		}
 
-		property int PlaneCount
+		property int NumPlanes
 		{
 			int get();
 		}
 
-		property int VertexCount
+		property int NumVertices
 		{
 			int get();
 		}
@@ -50,7 +50,7 @@ namespace BulletSharp
 	public ref class PolyhedralConvexAabbCachingShape : PolyhedralConvexShape
 	{
 	internal:
-		PolyhedralConvexAabbCachingShape(btPolyhedralConvexAabbCachingShape* shape);
+		PolyhedralConvexAabbCachingShape(btPolyhedralConvexAabbCachingShape* native);
 
 		void GetNonvirtualAabb(Matrix trans, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax, btScalar margin);
 		void RecalcLocalAabb();

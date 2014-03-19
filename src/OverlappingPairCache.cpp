@@ -34,6 +34,16 @@ bool OverlapCallback::IsDisposed::get()
 }
 
 
+OverlapFilterCallback::OverlapFilterCallback(btOverlapFilterCallback* native)
+{
+	_native = native;
+}
+
+OverlapFilterCallback^ OverlapFilterCallback::GetManaged(btOverlapFilterCallback* callback)
+{
+	return GetObjectFromTable(OverlapFilterCallback, callback);
+}
+
 OverlapFilterCallback::~OverlapFilterCallback()
 {
 	this->!OverlapFilterCallback();
@@ -64,21 +74,11 @@ bool OverlapFilterCallback::IsDisposed::get()
 	return (_native == NULL);
 }
 
-OverlapFilterCallback::OverlapFilterCallback(btOverlapFilterCallback* callback)
-{
-	_native = callback;
-}
-
-OverlapFilterCallback^ OverlapFilterCallback::GetManaged(btOverlapFilterCallback* callback)
-{
-	return GetObjectFromTable(OverlapFilterCallback, callback);
-}
-
 
 #define Native static_cast<btOverlappingPairCache*>(_native)
 
-OverlappingPairCache::OverlappingPairCache(btOverlappingPairCache* pairCache)
-: OverlappingPairCallback(pairCache)
+OverlappingPairCache::OverlappingPairCache(btOverlappingPairCache* native)
+	: OverlappingPairCallback(native)
 {
 }
 
@@ -97,7 +97,8 @@ BroadphasePair^ OverlappingPairCache::FindPair(BroadphaseProxy^ proxy0, Broadpha
 	return gcnew BroadphasePair(Native->findPair(proxy0->_native, proxy1->_native));
 }
 
-void OverlappingPairCache::ProcessAllOverlappingPairs(array<OverlapCallback^>^ callbacks, Dispatcher^ dispatcher)
+void OverlappingPairCache::ProcessAllOverlappingPairs(array<OverlapCallback^>^ callbacks,
+	Dispatcher^ dispatcher)
 {
 	btOverlapCallback** btCallbacks = new btOverlapCallback*[callbacks->Length];
 	int i;
@@ -139,22 +140,29 @@ AlignedBroadphasePairArray^ OverlappingPairCache::OverlappingPairArray::get()
 	btBroadphasePairArray* pairArray = &Native->getOverlappingPairArray();
 	ReturnCachedObjectGcnew(AlignedBroadphasePairArray, _overlappingPairArray, pairArray);
 }
+/*
+BroadphasePair^ OverlappingPairCache::OverlappingPairArrayPtr::get()
+{
+	return Native->getOverlappingPairArrayPtr();
+}
+*/
 
 
 #undef Native
 #define Native static_cast<btHashedOverlappingPairCache*>(_native)
 
-HashedOverlappingPairCache::HashedOverlappingPairCache(btHashedOverlappingPairCache* pairCache)
-: OverlappingPairCache(pairCache)
+HashedOverlappingPairCache::HashedOverlappingPairCache(btHashedOverlappingPairCache* native)
+	: OverlappingPairCache(native)
 {
 }
 
 HashedOverlappingPairCache::HashedOverlappingPairCache()
-: OverlappingPairCache(new btHashedOverlappingPairCache)
+	: OverlappingPairCache(new btHashedOverlappingPairCache())
 {
 }
 
-bool HashedOverlappingPairCache::NeedsBroadphaseCollision(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
+bool HashedOverlappingPairCache::NeedsBroadphaseCollision(BroadphaseProxy^ proxy0,
+	BroadphaseProxy^ proxy1)
 {
 	return Native->needsBroadphaseCollision(proxy0->_native, proxy1->_native);
 }
@@ -174,17 +182,18 @@ void HashedOverlappingPairCache::OverlapFilterCallback::set(BulletSharp::Overlap
 }
 
 
-SortedOverlappingPairCache::SortedOverlappingPairCache(btSortedOverlappingPairCache* sortedPairCache)
-: OverlappingPairCache(sortedPairCache)
+SortedOverlappingPairCache::SortedOverlappingPairCache(btSortedOverlappingPairCache* native)
+	: OverlappingPairCache(native)
 {
 }
 
 SortedOverlappingPairCache::SortedOverlappingPairCache()
-: OverlappingPairCache(new btSortedOverlappingPairCache)
+	: OverlappingPairCache(new btSortedOverlappingPairCache())
 {
 }
 
-bool SortedOverlappingPairCache::NeedsBroadphaseCollision(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
+bool SortedOverlappingPairCache::NeedsBroadphaseCollision(BroadphaseProxy^ proxy0,
+	BroadphaseProxy^ proxy1)
 {
 	return Native->needsBroadphaseCollision(proxy0->_native, proxy1->_native);
 }
@@ -199,13 +208,13 @@ void SortedOverlappingPairCache::OverlapFilterCallback::set(BulletSharp::Overlap
 }
 
 
-NullPairCache::NullPairCache(btNullPairCache* nullPairCache)
-: OverlappingPairCache(nullPairCache)
+NullPairCache::NullPairCache(btNullPairCache* native)
+	: OverlappingPairCache(native)
 {
 }
 
 NullPairCache::NullPairCache()
-: OverlappingPairCache(new btNullPairCache)
+	: OverlappingPairCache(new btNullPairCache())
 {
 }
 

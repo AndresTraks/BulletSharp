@@ -10,7 +10,7 @@ namespace BulletSharp
 	{
 	internal:
 		btConstraintSetting* _native;
-		ConstraintSetting(btConstraintSetting* setting);
+		ConstraintSetting(btConstraintSetting* native);
 
 	public:
 		//ConstraintSetting();
@@ -37,17 +37,15 @@ namespace BulletSharp
 	public ref class Point2PointConstraint : TypedConstraint
 	{
 	internal:
-		Point2PointConstraint(btPoint2PointConstraint* constraint);
+		Point2PointConstraint(btPoint2PointConstraint* native);
 
 	public:
 		Point2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA, Vector3 pivotInB);
 		Point2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA);
 
-		btScalar GetParam(int num, int axis);
-		btScalar GetParam(int num);
-		void SetParam(int num, btScalar value, int axis);
-		void SetParam(int num, btScalar value);
-		void UpdateRHS(btScalar timeStep);
+		//GetInfo1NonVirtual(btConstraintInfo1^ info)
+		//void GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix body0_trans, Matrix body1_trans);
+		void UpdateRhs(btScalar timeStep);
 
 		property Vector3 PivotInA
 		{

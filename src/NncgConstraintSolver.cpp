@@ -12,8 +12,8 @@ NncgConstraintSolver::NncgConstraintSolver(btNNCGConstraintSolver* native)
 }
 
 NncgConstraintSolver::NncgConstraintSolver()
+	: SequentialImpulseConstraintSolver(new btNNCGConstraintSolver())
 {
-	_native = new btNNCGConstraintSolver();
 }
 
 bool NncgConstraintSolver::OnlyForNoneContact::get()

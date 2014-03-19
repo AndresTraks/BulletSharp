@@ -7,8 +7,8 @@
 
 #define Native static_cast<btPolyhedralConvexShape*>(_native)
 
-PolyhedralConvexShape::PolyhedralConvexShape(btPolyhedralConvexShape* polyhedralConvexShape)
-: BulletSharp::ConvexInternalShape(polyhedralConvexShape)
+PolyhedralConvexShape::PolyhedralConvexShape(btPolyhedralConvexShape* native)
+	: ConvexInternalShape(native)
 {
 }
 
@@ -76,17 +76,17 @@ ConvexPolyhedron^ PolyhedralConvexShape::ConvexPolyhedron::get()
 }
 #endif
 
-int PolyhedralConvexShape::EdgeCount::get()
+int PolyhedralConvexShape::NumEdges::get()
 {
 	return Native->getNumEdges();
 }
 
-int PolyhedralConvexShape::PlaneCount::get()
+int PolyhedralConvexShape::NumPlanes::get()
 {
 	return Native->getNumPlanes();
 }
 
-int PolyhedralConvexShape::VertexCount::get()
+int PolyhedralConvexShape::NumVertices::get()
 {
 	return Native->getNumVertices();
 }
@@ -95,28 +95,28 @@ int PolyhedralConvexShape::VertexCount::get()
 #undef Native
 #define Native static_cast<btPolyhedralConvexAabbCachingShape*>(_native)
 
-PolyhedralConvexAabbCachingShape::PolyhedralConvexAabbCachingShape(btPolyhedralConvexAabbCachingShape *shape)
-: PolyhedralConvexShape(shape)
+PolyhedralConvexAabbCachingShape::PolyhedralConvexAabbCachingShape(btPolyhedralConvexAabbCachingShape* native)
+	: PolyhedralConvexShape(native)
 {
 }
 
-void PolyhedralConvexAabbCachingShape::GetNonvirtualAabb(Matrix trans, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax, btScalar margin)
+void PolyhedralConvexAabbCachingShape::GetNonvirtualAabb(Matrix trans, [Out] Vector3% aabbMin,
+	[Out] Vector3% aabbMax, btScalar margin)
 {
-	btTransform* transTemp = Math::MatrixToBtTransform(trans);
-	VECTOR3_DEF(aabbMin);
-	VECTOR3_DEF(aabbMax);
-
-	Native->getNonvirtualAabb(*transTemp, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), margin);
-
-	Math::BtVector3ToVector3(VECTOR3_PTR(aabbMin), aabbMin);
-	Math::BtVector3ToVector3(VECTOR3_PTR(aabbMax), aabbMax);
-
-	ALIGNED_FREE(transTemp);
-	VECTOR3_DEL(aabbMin);
-	VECTOR3_DEL(aabbMax);
+	TRANSFORM_CONV(trans);
+	btVector3* aabbMinTemp = ALIGNED_NEW(btVector3);
+	btVector3* aabbMaxTemp = ALIGNED_NEW(btVector3);
+	Native->getNonvirtualAabb(TRANSFORM_USE(trans), *aabbMinTemp, *aabbMinTemp,
+		margin);
+	TRANSFORM_DEL(trans);
+	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
+	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
+	ALIGNED_FREE(aabbMinTemp);
+	ALIGNED_FREE(aabbMaxTemp);
 }
 
 void PolyhedralConvexAabbCachingShape::RecalcLocalAabb()
 {
 	Native->recalcLocalAabb();
 }
+
