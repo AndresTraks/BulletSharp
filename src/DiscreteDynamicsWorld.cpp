@@ -34,6 +34,9 @@ DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher
 #endif
 		collisionConfiguration->_native))
 {
+#ifndef DISABLE_CONSTRAINTS
+	_constraintSolver = constraintSolver;
+#endif
 	_dispatcher = dispatcher;
 	_broadphase = pairCache;
 }

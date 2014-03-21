@@ -85,13 +85,13 @@ void MaterialProperties::TriangleType::set(PhyScalarType value)
 
 #define Native static_cast<btTriangleIndexVertexMaterialArray*>(_native)
 
-TriangleIndexVertexMaterialArray::TriangleIndexVertexMaterialArray(btTriangleIndexVertexMaterialArray* triangleArray)
-: TriangleIndexVertexArray(triangleArray)
+TriangleIndexVertexMaterialArray::TriangleIndexVertexMaterialArray(btTriangleIndexVertexMaterialArray* native)
+	: TriangleIndexVertexArray(native)
 {
 }
 
 TriangleIndexVertexMaterialArray::TriangleIndexVertexMaterialArray()
-: TriangleIndexVertexArray(new btTriangleIndexVertexMaterialArray())
+	: TriangleIndexVertexArray(new btTriangleIndexVertexMaterialArray())
 {
 }
 
@@ -130,6 +130,11 @@ TriangleIndexVertexMaterialArray::TriangleIndexVertexMaterialArray(array<int>^ i
 void TriangleIndexVertexMaterialArray::AddMaterialProperties(MaterialProperties^ mat, PhyScalarType triangleType)
 {
 	Native->addMaterialProperties(*mat->_native, (PHY_ScalarType)triangleType);
+}
+
+void TriangleIndexVertexMaterialArray::AddMaterialProperties(MaterialProperties^ mat)
+{
+	Native->addMaterialProperties(*mat->_native);
 }
 
 void TriangleIndexVertexMaterialArray::GetLockedMaterialData([Out] BulletSharp::DataStream^% materialData,

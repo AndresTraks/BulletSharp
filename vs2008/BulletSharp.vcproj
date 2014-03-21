@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
@@ -2149,6 +2149,34 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			>
 			<File
+				RelativePath="..\src\AssemblyInfo.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Collections.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\DataStream.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Math.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Matrix.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\ObjectTable.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Quaternion.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\Stdafx.cpp"
 				>
 				<FileConfiguration
@@ -2265,35 +2293,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\src\AssemblyInfo.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\Collections.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\Math.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\ObjectTable.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\StringConv.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\DataStream.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\Matrix.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\Quaternion.cpp"
 				>
 			</File>
 			<File
@@ -2315,43 +2315,7 @@
 					Name="CollisionDispatch"
 					>
 					<File
-						RelativePath="..\src\CollisionWorld.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\CollisionObject.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\ManifoldResult.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\CollisionObjectWrapper.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\CollisionDispatcher.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\CollisionCreateFunc.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\src\ActivatingCollisionAlgorithm.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\SphereSphereCollisionAlgorithm.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\CollisionConfiguration.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\DefaultCollisionConfiguration.cpp"
 						>
 					</File>
 					<File
@@ -2364,6 +2328,30 @@
 					</File>
 					<File
 						RelativePath="..\src\BoxBoxDetector.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CollisionConfiguration.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CollisionCreateFunc.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CollisionDispatcher.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CollisionObject.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CollisionObjectWrapper.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CollisionWorld.cpp"
 						>
 					</File>
 					<File
@@ -2391,6 +2379,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\DefaultCollisionConfiguration.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\src\EmptyCollisionAlgorithm.cpp"
 						>
 					</File>
@@ -2399,7 +2391,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\UnionFind.cpp"
+						RelativePath="..\src\InternalEdgeUtility.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\ManifoldResult.cpp"
 						>
 					</File>
 					<File
@@ -2411,6 +2407,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\SphereSphereCollisionAlgorithm.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\src\SphereTriangleCollisionAlgorithm.cpp"
 						>
 					</File>
@@ -2419,7 +2419,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\InternalEdgeUtility.cpp"
+						RelativePath="..\src\UnionFind.cpp"
 						>
 					</File>
 				</Filter>
@@ -2427,11 +2427,7 @@
 					Name="BroadphaseCollision"
 					>
 					<File
-						RelativePath="..\src\Dispatcher.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\BroadphaseProxy.cpp"
+						RelativePath="..\src\AxisSweep3.cpp"
 						>
 					</File>
 					<File
@@ -2439,23 +2435,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\OverlappingPairCallback.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\OverlappingPairCache.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\QuantizedBvh.cpp"
+						RelativePath="..\src\BroadphaseProxy.cpp"
 						>
 					</File>
 					<File
 						RelativePath="..\src\CollisionAlgorithm.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\SimpleBroadphase.cpp"
 						>
 					</File>
 					<File
@@ -2467,7 +2451,23 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\AxisSweep3.cpp"
+						RelativePath="..\src\Dispatcher.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\OverlappingPairCache.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\OverlappingPairCallback.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\QuantizedBvh.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\SimpleBroadphase.cpp"
 						>
 					</File>
 				</Filter>
@@ -2475,23 +2475,7 @@
 					Name="NarrowPhaseCollision"
 					>
 					<File
-						RelativePath="..\src\ManifoldPoint.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\PersistentManifold.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\DiscreteCollisionDetectorInterface.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\GjkPairDetector.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\VoronoiSimplexSolver.cpp"
+						RelativePath="..\src\ContinuousConvexCollision.cpp"
 						>
 					</File>
 					<File
@@ -2499,11 +2483,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\ContinuousConvexCollision.cpp"
+						RelativePath="..\src\ConvexPenetrationDepthSolver.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\src\ConvexPenetrationDepthSolver.cpp"
+						RelativePath="..\src\DiscreteCollisionDetectorInterface.cpp"
 						>
 					</File>
 					<File
@@ -2515,7 +2499,19 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\GjkPairDetector.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\ManifoldPoint.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\src\MinkowskiPenetrationDepthSolver.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\PersistentManifold.cpp"
 						>
 					</File>
 					<File
@@ -2526,24 +2522,16 @@
 						RelativePath="..\src\SimplexSolverInterface.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\src\VoronoiSimplexSolver.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="CollisionShapes"
 					>
 					<File
-						RelativePath="..\src\CollisionShape.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\ConvexShape.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\ConvexInternalShape.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\PolyhedralConvexShape.cpp"
+						RelativePath="..\src\Box2dShape.cpp"
 						>
 					</File>
 					<File
@@ -2551,63 +2539,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\SphereShape.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\CapsuleShape.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\CylinderShape.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\ConeShape.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\TriangleCallback.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\ConcaveShape.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\StaticPlaneShape.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\ConvexHullShape.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\StridingMeshInterface.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\TriangleIndexVertexArray.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\TriangleMesh.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\ConvexTriangleMeshShape.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\TriangleMeshShape.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\OptimizedBvh.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\TriangleInfoMap.cpp"
+						RelativePath="..\src\BulletMaterial.cpp"
 						>
 					</File>
 					<File
@@ -2615,7 +2547,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\ScaledBvhTriangleMeshShape.cpp"
+						RelativePath="..\src\CapsuleShape.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CollisionShape.cpp"
 						>
 					</File>
 					<File
@@ -2623,27 +2559,23 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\TetrahedronShape.cpp"
+						RelativePath="..\src\ConcaveShape.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\src\EmptyShape.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\MultiSphereShape.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\UniformScalingShape.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\Box2dShape.cpp"
+						RelativePath="..\src\ConeShape.cpp"
 						>
 					</File>
 					<File
 						RelativePath="..\src\Convex2dShape.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\ConvexHullShape.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\ConvexInternalShape.cpp"
 						>
 					</File>
 					<File
@@ -2652,6 +2584,22 @@
 					</File>
 					<File
 						RelativePath="..\src\ConvexPolyhedron.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\ConvexShape.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\ConvexTriangleMeshShape.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CylinderShape.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\EmptyShape.cpp"
 						>
 					</File>
 					<File
@@ -2667,7 +2615,39 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\MultiSphereShape.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\OptimizedBvh.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\PolyhedralConvexShape.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\ScaledBvhTriangleMeshShape.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\src\ShapeHull.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\SphereShape.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\StaticPlaneShape.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\StridingMeshInterface.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\TetrahedronShape.cpp"
 						>
 					</File>
 					<File
@@ -2675,7 +2655,27 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\TriangleCallback.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\TriangleIndexVertexArray.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\src\TriangleIndexVertexMaterialArray.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\TriangleInfoMap.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\TriangleMesh.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\TriangleMeshShape.cpp"
 						>
 					</File>
 					<File
@@ -2683,7 +2683,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\BulletMaterial.cpp"
+						RelativePath="..\src\UniformScalingShape.cpp"
 						>
 					</File>
 				</Filter>
@@ -2695,11 +2695,15 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\TriangleShapeEx.cpp"
+						RelativePath="..\src\CompoundFromGImpact.cpp"
 						>
 					</File>
 					<File
 						RelativePath="..\src\GImpactBvh.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\GImpactCollisionAlgorithm.cpp"
 						>
 					</File>
 					<File
@@ -2711,11 +2715,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\CompoundFromGImpact.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\GImpactCollisionAlgorithm.cpp"
+						RelativePath="..\src\TriangleShapeEx.cpp"
 						>
 					</File>
 				</Filter>
@@ -2724,23 +2724,11 @@
 				Name="LinearMath"
 				>
 				<File
-					RelativePath="..\src\Scalar.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\MotionState.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\src\AlignedObjectArray.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\src\TransformUtil.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\Serializer.cpp"
+					RelativePath="..\src\DebugDraw.cpp"
 					>
 				</File>
 				<File
@@ -2748,11 +2736,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\src\Quickprof.cpp"
+					RelativePath="..\src\GeometryUtil.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\src\GeometryUtil.cpp"
+					RelativePath="..\src\MotionState.cpp"
 					>
 				</File>
 				<File
@@ -2760,7 +2748,19 @@
 					>
 				</File>
 				<File
-					RelativePath="..\src\DebugDraw.cpp"
+					RelativePath="..\src\Quickprof.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Scalar.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Serializer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\TransformUtil.cpp"
 					>
 				</File>
 			</Filter>
@@ -2771,55 +2771,7 @@
 					Name="ConstraintSolver"
 					>
 					<File
-						RelativePath="..\src\ContactSolverInfo.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\TypedConstraint.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\Point2PointConstraint.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\HingeConstraint.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\src\ConeTwistConstraint.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\Generic6DofConstraint.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\SliderConstraint.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\Generic6DofSpringConstraint.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\UniversalConstraint.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\Hinge2Constraint.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\GearConstraint.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\FixedConstraint.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\SequentialImpulseConstraintSolver.cpp"
 						>
 					</File>
 					<File
@@ -2831,11 +2783,59 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\ContactSolverInfo.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\FixedConstraint.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\GearConstraint.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Generic6DofConstraint.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Generic6DofSpringConstraint.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Hinge2Constraint.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\HingeConstraint.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\src\NncgConstraintSolver.cpp"
 						>
 					</File>
 					<File
+						RelativePath="..\src\Point2PointConstraint.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\SequentialImpulseConstraintSolver.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\SliderConstraint.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\src\Solve2LinearConstraint.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\TypedConstraint.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\UniversalConstraint.cpp"
 						>
 					</File>
 				</Filter>
@@ -2843,19 +2843,19 @@
 					Name="Dynamics"
 					>
 					<File
-						RelativePath="..\src\DynamicsWorld.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\src\DiscreteDynamicsWorld.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\src\RigidBody.cpp"
+						RelativePath="..\src\DynamicsWorld.cpp"
 						>
 					</File>
 					<File
 						RelativePath="..\src\IActionInterface.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\RigidBody.cpp"
 						>
 					</File>
 				</Filter>
@@ -2863,11 +2863,11 @@
 					Name="Vehicle"
 					>
 					<File
-						RelativePath="..\src\VehicleRaycaster.cpp"
+						RelativePath="..\src\RaycastVehicle.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\src\RaycastVehicle.cpp"
+						RelativePath="..\src\VehicleRaycaster.cpp"
 						>
 					</File>
 					<File
@@ -2891,19 +2891,11 @@
 					Name="Featherstone"
 					>
 					<File
-						RelativePath="..\src\MultiBodyLink.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\src\MultiBody.cpp"
 						>
 					</File>
 					<File
 						RelativePath="..\src\MultiBodyConstraint.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\MultiBodySolverConstraint.cpp"
 						>
 					</File>
 					<File
@@ -2923,6 +2915,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\MultiBodyLink.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\src\MultiBodyLinkCollider.cpp"
 						>
 					</File>
@@ -2930,14 +2926,14 @@
 						RelativePath="..\src\MultiBodyPoint2Point.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\src\MultiBodySolverConstraint.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="MLCPSolvers"
 					>
-					<File
-						RelativePath="..\src\MLCPSolverInterface.cpp"
-						>
-					</File>
 					<File
 						RelativePath="..\src\DantzigSolver.cpp"
 						>
@@ -2950,6 +2946,10 @@
 						RelativePath="..\src\MLCPSolver.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\src\MLCPSolverInterface.cpp"
+						>
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
@@ -2960,11 +2960,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\src\ThreadSupportInterface.cpp"
+					RelativePath="..\src\SpuGatheringCollisionDispatcher.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\src\SpuGatheringCollisionDispatcher.cpp"
+					RelativePath="..\src\ThreadSupportInterface.cpp"
 					>
 				</File>
 				<File
@@ -2976,11 +2976,7 @@
 				Name="BulletSoftBody"
 				>
 				<File
-					RelativePath="..\src\SoftBodySolverVertexBuffer.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\SparseSdf.cpp"
+					RelativePath="..\src\DefaultSoftBodySolver.cpp"
 					>
 				</File>
 				<File
@@ -3000,7 +2996,15 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\SoftBodySolverVertexBuffer.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\src\SoftRigidDynamicsWorld.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\SparseSdf.cpp"
 					>
 				</File>
 			</Filter>
@@ -3014,11 +3018,11 @@
 						Name="BulletWorldImporter"
 						>
 						<File
-							RelativePath="..\src\WorldImporter.cpp"
+							RelativePath="..\src\BulletWorldImporter.cpp"
 							>
 						</File>
 						<File
-							RelativePath="..\src\BulletWorldImporter.cpp"
+							RelativePath="..\src\WorldImporter.cpp"
 							>
 						</File>
 					</Filter>
@@ -3078,11 +3082,11 @@
 			Filter="h;hh;hpp;hxx;hm;inl;inc;xsd"
 			>
 			<File
-				RelativePath="..\src\Stdafx.h"
+				RelativePath="..\src\Collections.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\Collections.h"
+				RelativePath="..\src\DataStream.h"
 				>
 			</File>
 			<File
@@ -3098,27 +3102,23 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\ObjectTable.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\StringConv.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\Version.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\DataStream.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\Matrix.h"
 				>
 			</File>
 			<File
+				RelativePath="..\src\ObjectTable.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\Quaternion.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\StringConv.h"
 				>
 			</File>
 			<File
@@ -3133,6 +3133,10 @@
 				RelativePath="..\src\Vector4.h"
 				>
 			</File>
+			<File
+				RelativePath="..\src\Version.h"
+				>
+			</File>
 			<Filter
 				Name="BulletCollision"
 				>
@@ -3140,43 +3144,7 @@
 					Name="CollisionDispatch"
 					>
 					<File
-						RelativePath="..\src\CollisionWorld.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\CollisionObject.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\ManifoldResult.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\CollisionObjectWrapper.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\CollisionDispatcher.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\CollisionCreateFunc.h"
-						>
-					</File>
-					<File
 						RelativePath="..\src\ActivatingCollisionAlgorithm.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\SphereSphereCollisionAlgorithm.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\CollisionConfiguration.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\DefaultCollisionConfiguration.h"
 						>
 					</File>
 					<File
@@ -3189,6 +3157,30 @@
 					</File>
 					<File
 						RelativePath="..\src\BoxBoxDetector.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CollisionConfiguration.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CollisionCreateFunc.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CollisionDispatcher.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CollisionObject.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CollisionObjectWrapper.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CollisionWorld.h"
 						>
 					</File>
 					<File
@@ -3216,6 +3208,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\DefaultCollisionConfiguration.h"
+						>
+					</File>
+					<File
 						RelativePath="..\src\EmptyCollisionAlgorithm.h"
 						>
 					</File>
@@ -3224,7 +3220,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\UnionFind.h"
+						RelativePath="..\src\InternalEdgeUtility.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\ManifoldResult.h"
 						>
 					</File>
 					<File
@@ -3236,6 +3236,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\SphereSphereCollisionAlgorithm.h"
+						>
+					</File>
+					<File
 						RelativePath="..\src\SphereTriangleCollisionAlgorithm.h"
 						>
 					</File>
@@ -3244,7 +3248,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\InternalEdgeUtility.h"
+						RelativePath="..\src\UnionFind.h"
 						>
 					</File>
 				</Filter>
@@ -3252,11 +3256,7 @@
 					Name="BroadphaseCollision"
 					>
 					<File
-						RelativePath="..\src\Dispatcher.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\BroadphaseProxy.h"
+						RelativePath="..\src\AxisSweep3.h"
 						>
 					</File>
 					<File
@@ -3264,23 +3264,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\OverlappingPairCallback.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\OverlappingPairCache.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\QuantizedBvh.h"
+						RelativePath="..\src\BroadphaseProxy.h"
 						>
 					</File>
 					<File
 						RelativePath="..\src\CollisionAlgorithm.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\SimpleBroadphase.h"
 						>
 					</File>
 					<File
@@ -3292,7 +3280,23 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\AxisSweep3.h"
+						RelativePath="..\src\Dispatcher.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\OverlappingPairCache.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\OverlappingPairCallback.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\QuantizedBvh.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\SimpleBroadphase.h"
 						>
 					</File>
 				</Filter>
@@ -3300,23 +3304,7 @@
 					Name="NarrowPhaseCollision"
 					>
 					<File
-						RelativePath="..\src\ManifoldPoint.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\PersistentManifold.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\DiscreteCollisionDetectorInterface.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\GjkPairDetector.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\VoronoiSimplexSolver.h"
+						RelativePath="..\src\ContinuousConvexCollision.h"
 						>
 					</File>
 					<File
@@ -3324,11 +3312,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\ContinuousConvexCollision.h"
+						RelativePath="..\src\ConvexPenetrationDepthSolver.h"
 						>
 					</File>
 					<File
-						RelativePath="..\src\ConvexPenetrationDepthSolver.h"
+						RelativePath="..\src\DiscreteCollisionDetectorInterface.h"
 						>
 					</File>
 					<File
@@ -3340,7 +3328,19 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\GjkPairDetector.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\ManifoldPoint.h"
+						>
+					</File>
+					<File
 						RelativePath="..\src\MinkowskiPenetrationDepthSolver.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\PersistentManifold.h"
 						>
 					</File>
 					<File
@@ -3351,24 +3351,16 @@
 						RelativePath="..\src\SimplexSolverInterface.h"
 						>
 					</File>
+					<File
+						RelativePath="..\src\VoronoiSimplexSolver.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="CollisionShapes"
 					>
 					<File
-						RelativePath="..\src\CollisionShape.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\ConvexShape.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\ConvexInternalShape.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\PolyhedralConvexShape.h"
+						RelativePath="..\src\Box2dShape.h"
 						>
 					</File>
 					<File
@@ -3376,63 +3368,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\SphereShape.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\CapsuleShape.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\CylinderShape.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\ConeShape.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\TriangleCallback.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\ConcaveShape.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\StaticPlaneShape.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\ConvexHullShape.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\StridingMeshInterface.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\TriangleIndexVertexArray.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\TriangleMesh.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\ConvexTriangleMeshShape.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\TriangleMeshShape.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\OptimizedBvh.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\TriangleInfoMap.h"
+						RelativePath="..\src\BulletMaterial.h"
 						>
 					</File>
 					<File
@@ -3440,7 +3376,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\ScaledBvhTriangleMeshShape.h"
+						RelativePath="..\src\CapsuleShape.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CollisionShape.h"
 						>
 					</File>
 					<File
@@ -3448,27 +3388,23 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\TetrahedronShape.h"
+						RelativePath="..\src\ConcaveShape.h"
 						>
 					</File>
 					<File
-						RelativePath="..\src\EmptyShape.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\MultiSphereShape.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\UniformScalingShape.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\Box2dShape.h"
+						RelativePath="..\src\ConeShape.h"
 						>
 					</File>
 					<File
 						RelativePath="..\src\Convex2dShape.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\ConvexHullShape.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\ConvexInternalShape.h"
 						>
 					</File>
 					<File
@@ -3477,6 +3413,22 @@
 					</File>
 					<File
 						RelativePath="..\src\ConvexPolyhedron.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\ConvexShape.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\ConvexTriangleMeshShape.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\CylinderShape.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\EmptyShape.h"
 						>
 					</File>
 					<File
@@ -3492,7 +3444,39 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\MultiSphereShape.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\OptimizedBvh.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\PolyhedralConvexShape.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\ScaledBvhTriangleMeshShape.h"
+						>
+					</File>
+					<File
 						RelativePath="..\src\ShapeHull.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\SphereShape.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\StaticPlaneShape.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\StridingMeshInterface.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\TetrahedronShape.h"
 						>
 					</File>
 					<File
@@ -3500,7 +3484,27 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\TriangleCallback.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\TriangleIndexVertexArray.h"
+						>
+					</File>
+					<File
 						RelativePath="..\src\TriangleIndexVertexMaterialArray.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\TriangleInfoMap.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\TriangleMesh.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\TriangleMeshShape.h"
 						>
 					</File>
 					<File
@@ -3508,7 +3512,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\BulletMaterial.h"
+						RelativePath="..\src\UniformScalingShape.h"
 						>
 					</File>
 				</Filter>
@@ -3520,11 +3524,15 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\TriangleShapeEx.h"
+						RelativePath="..\src\CompoundFromGImpact.h"
 						>
 					</File>
 					<File
 						RelativePath="..\src\GImpactBvh.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\GImpactCollisionAlgorithm.h"
 						>
 					</File>
 					<File
@@ -3536,11 +3544,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\CompoundFromGImpact.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\GImpactCollisionAlgorithm.h"
+						RelativePath="..\src\TriangleShapeEx.h"
 						>
 					</File>
 				</Filter>
@@ -3549,39 +3553,7 @@
 				Name="LinearMath"
 				>
 				<File
-					RelativePath="..\src\Scalar.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\MotionState.h"
-					>
-				</File>
-				<File
 					RelativePath="..\src\AlignedObjectArray.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\TransformUtil.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\Serializer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\DefaultMotionState.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\Quickprof.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\GeometryUtil.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\PoolAllocator.h"
 					>
 				</File>
 				<File
@@ -3589,7 +3561,39 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\DefaultMotionState.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\GeometryUtil.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\IDebugDraw.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\MotionState.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\PoolAllocator.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Quickprof.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Scalar.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Serializer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\TransformUtil.h"
 					>
 				</File>
 			</Filter>
@@ -3600,55 +3604,7 @@
 					Name="ConstraintSolver"
 					>
 					<File
-						RelativePath="..\src\ContactSolverInfo.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\TypedConstraint.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\Point2PointConstraint.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\HingeConstraint.h"
-						>
-					</File>
-					<File
 						RelativePath="..\src\ConeTwistConstraint.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\Generic6DofConstraint.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\SliderConstraint.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\Generic6DofSpringConstraint.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\UniversalConstraint.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\Hinge2Constraint.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\GearConstraint.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\FixedConstraint.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\SequentialImpulseConstraintSolver.h"
 						>
 					</File>
 					<File
@@ -3660,11 +3616,59 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\ContactSolverInfo.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\FixedConstraint.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\GearConstraint.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Generic6DofConstraint.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Generic6DofSpringConstraint.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Hinge2Constraint.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\HingeConstraint.h"
+						>
+					</File>
+					<File
 						RelativePath="..\src\NncgConstraintSolver.h"
 						>
 					</File>
 					<File
+						RelativePath="..\src\Point2PointConstraint.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\SequentialImpulseConstraintSolver.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\SliderConstraint.h"
+						>
+					</File>
+					<File
 						RelativePath="..\src\Solve2LinearConstraint.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\TypedConstraint.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\UniversalConstraint.h"
 						>
 					</File>
 				</Filter>
@@ -3672,19 +3676,19 @@
 					Name="Dynamics"
 					>
 					<File
-						RelativePath="..\src\DynamicsWorld.h"
-						>
-					</File>
-					<File
 						RelativePath="..\src\DiscreteDynamicsWorld.h"
 						>
 					</File>
 					<File
-						RelativePath="..\src\RigidBody.h"
+						RelativePath="..\src\DynamicsWorld.h"
 						>
 					</File>
 					<File
 						RelativePath="..\src\IActionInterface.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\RigidBody.h"
 						>
 					</File>
 				</Filter>
@@ -3692,11 +3696,11 @@
 					Name="Vehicle"
 					>
 					<File
-						RelativePath="..\src\VehicleRaycaster.h"
+						RelativePath="..\src\RaycastVehicle.h"
 						>
 					</File>
 					<File
-						RelativePath="..\src\RaycastVehicle.h"
+						RelativePath="..\src\VehicleRaycaster.h"
 						>
 					</File>
 					<File
@@ -3720,19 +3724,11 @@
 					Name="Featherstone"
 					>
 					<File
-						RelativePath="..\src\MultiBodyLink.h"
-						>
-					</File>
-					<File
 						RelativePath="..\src\MultiBody.h"
 						>
 					</File>
 					<File
 						RelativePath="..\src\MultiBodyConstraint.h"
-						>
-					</File>
-					<File
-						RelativePath="..\src\MultiBodySolverConstraint.h"
 						>
 					</File>
 					<File
@@ -3752,6 +3748,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\MultiBodyLink.h"
+						>
+					</File>
+					<File
 						RelativePath="..\src\MultiBodyLinkCollider.h"
 						>
 					</File>
@@ -3759,14 +3759,14 @@
 						RelativePath="..\src\MultiBodyPoint2Point.h"
 						>
 					</File>
+					<File
+						RelativePath="..\src\MultiBodySolverConstraint.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="MLCPSolvers"
 					>
-					<File
-						RelativePath="..\src\MLCPSolverInterface.h"
-						>
-					</File>
 					<File
 						RelativePath="..\src\DantzigSolver.h"
 						>
@@ -3779,6 +3779,10 @@
 						RelativePath="..\src\MLCPSolver.h"
 						>
 					</File>
+					<File
+						RelativePath="..\src\MLCPSolverInterface.h"
+						>
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
@@ -3789,11 +3793,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\src\ThreadSupportInterface.h"
+					RelativePath="..\src\SpuGatheringCollisionDispatcher.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\SpuGatheringCollisionDispatcher.h"
+					RelativePath="..\src\ThreadSupportInterface.h"
 					>
 				</File>
 				<File
@@ -3805,11 +3809,7 @@
 				Name="BulletSoftBody"
 				>
 				<File
-					RelativePath="..\src\SoftBodySolverVertexBuffer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\SparseSdf.h"
+					RelativePath="..\src\DefaultSoftBodySolver.h"
 					>
 				</File>
 				<File
@@ -3829,7 +3829,15 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\SoftBodySolverVertexBuffer.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\SoftRigidDynamicsWorld.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\SparseSdf.h"
 					>
 				</File>
 			</Filter>
@@ -3843,11 +3851,11 @@
 						Name="BulletWorldImporter"
 						>
 						<File
-							RelativePath="..\src\WorldImporter.h"
+							RelativePath="..\src\BulletWorldImporter.h"
 							>
 						</File>
 						<File
-							RelativePath="..\src\BulletWorldImporter.h"
+							RelativePath="..\src\WorldImporter.h"
 							>
 						</File>
 					</Filter>

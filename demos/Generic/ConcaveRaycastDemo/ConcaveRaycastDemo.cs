@@ -54,7 +54,7 @@ namespace ConcaveRaycastDemo
             this.min_y = min_y;
             this.max_y = max_y;
             sign = 1.0f;
-            float dalpha = 4 * (float)Math.PI / NUMRAYS_IN_BAR;
+            //float dalpha = 4 * (float)Math.PI / NUMRAYS_IN_BAR;
             for (int i = 0; i < NUMRAYS_IN_BAR; i++)
             {
                 float z = (max_z - min_z) / NUMRAYS_IN_BAR * (float)i + min_z;
@@ -214,7 +214,7 @@ namespace ConcaveRaycastDemo
             indexVertexArrays = new TriangleIndexVertexArray();
 
             IndexedMesh mesh = new IndexedMesh();
-            mesh.Allocate(totalVerts, Vector3.SizeInBytes, totalTriangles * 3, 3 * sizeof(int));
+            mesh.Allocate(totalVerts, Vector3.SizeInBytes, totalTriangles, 3 * sizeof(int));
             DataStream indices = mesh.LockIndices();
             for (int i = 0; i < NUM_VERTS_X - 1; i++)
             {

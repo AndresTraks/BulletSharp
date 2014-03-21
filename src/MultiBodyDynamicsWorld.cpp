@@ -22,6 +22,7 @@ MultiBodyDynamicsWorld::MultiBodyDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 	: DiscreteDynamicsWorld(new btMultiBodyDynamicsWorld(dispatcher->_native, pairCache->_native,
 		(btMultiBodyConstraintSolver*)constraintSolver->_native, collisionConfiguration->_native))
 {
+	_constraintSolver = constraintSolver;
 	_dispatcher = dispatcher;
 	_broadphase = pairCache;
 }

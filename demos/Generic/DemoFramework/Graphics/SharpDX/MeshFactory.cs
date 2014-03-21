@@ -345,8 +345,9 @@ namespace DemoFramework.SharpDX
                     DefaultMotionState motionState = (colObj as RigidBody).MotionState as DefaultMotionState;
                     if (motionState != null)
                     {
+                        // FIXME: doesn't work with ConvexHullShape?
                         transform = motionState.GraphicsWorldTrans;
-                        colObj.GetWorldTransform(out transform);
+                        //colObj.GetWorldTransform(out transform);
                     }
                     else
                     {

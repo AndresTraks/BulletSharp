@@ -11,30 +11,35 @@ namespace BulletSharp
 		ref class SoftBody;
 		ref class VertexBufferDescriptor;
 
-		public ref class SoftBodySolver
+		public ref class SoftBodySolver abstract
 		{
 		internal:
 			btSoftBodySolver* _native;
-			SoftBodySolver(btSoftBodySolver* solver);
+			SoftBodySolver(btSoftBodySolver* native);
+			static SoftBodySolver^ GetManaged(btSoftBodySolver* native);
 
 		public:
+			bool CheckInitialized();
 			void CopyBackToSoftBodies(bool bMove);
 			void CopyBackToSoftBodies();
 			void Optimize(AlignedSoftBodyArray^ softBodies, bool forceUpdate);
 			void Optimize(AlignedSoftBodyArray^ softBodies);
+			void PredictMotion(float solverdt);
 			void ProcessCollision(SoftBody^ softBody, CollisionObjectWrapper^ collisionObjectWrapper);
 			void ProcessCollision(SoftBody^ softBody, SoftBody^ otherSoftBody);
+			void SolveConstraints(float solverdt);
+			void UpdateSoftBodies();
 
 			property int NumberOfPositionIterations
 			{
 				int get();
-				void set(int value);
+				void set(int iterations);
 			}
 
 			property int NumberOfVelocityIterations
 			{
 				int get();
-				void set(int value);
+				void set(int iterations);
 			}
 
 			property SolverType SolverType
@@ -48,12 +53,11 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class SoftBodySolverOutput
+		public ref class SoftBodySolverOutput abstract
 		{
 		internal:
 			btSoftBodySolverOutput* _native;
-
-			SoftBodySolverOutput(btSoftBodySolverOutput* solverOutput);
+			SoftBodySolverOutput(btSoftBodySolverOutput* native);
 
 		public:
 			void CopySoftBodyToVertexBuffer(SoftBody^ softBody, VertexBufferDescriptor^ vertexBuffer);

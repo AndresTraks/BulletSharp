@@ -3361,8 +3361,7 @@ BulletSharp::SoftBody::AlignedRigidContactArray^ BulletSharp::SoftBody::SoftBody
 
 SoftBodySolver^ BulletSharp::SoftBody::SoftBody::SoftBodySolver::get()
 {
-	btSoftBodySolver* solver = Native->getSoftBodySolver();
-	return solver ? gcnew BulletSharp::SoftBody::SoftBodySolver(solver) : nullptr;
+	return BulletSharp::SoftBody::SoftBodySolver::GetManaged(Native->getSoftBodySolver());
 }
 void BulletSharp::SoftBody::SoftBody::SoftBodySolver::set(BulletSharp::SoftBody::SoftBodySolver^ value)
 {

@@ -7,6 +7,7 @@ namespace BulletSharp
 	public ref class SoftBodyRigidBodyCollisionConfiguration : DefaultCollisionConfiguration
 	{
 	public:
+		SoftBodyRigidBodyCollisionConfiguration(DefaultCollisionConstructionInfo^ constructionInfo);
 		SoftBodyRigidBodyCollisionConfiguration();
 	};
 };

@@ -5,13 +5,33 @@
 #include "AlignedObjectArray.h"
 #include "CollisionObject.h"
 #include "CollisionObjectWrapper.h"
+#include "DefaultSoftBodySolver.h"
 #include "SoftBody.h"
 #include "SoftBodySolver.h"
 #include "SoftBodySolverVertexBuffer.h"
 
-SoftBody::SoftBodySolver::SoftBodySolver(btSoftBodySolver* solver)
+SoftBody::SoftBodySolver::SoftBodySolver(btSoftBodySolver* native)
 {
-	_native = solver;
+	_native = native;
+}
+
+SoftBody::SoftBodySolver^ SoftBody::SoftBodySolver::GetManaged(btSoftBodySolver* native)
+{
+	if (native == 0) {
+		return nullptr;
+	}
+
+	btDefaultSoftBodySolver* defaultSolver = dynamic_cast<btDefaultSoftBodySolver*>(native);
+	if (defaultSolver) {
+		return gcnew DefaultSoftBodySolver(defaultSolver);
+	}
+
+	throw gcnew NotImplementedException();
+}
+
+bool SoftBody::SoftBodySolver::CheckInitialized()
+{
+	return _native->checkInitialized();
 }
 
 void SoftBody::SoftBodySolver::CopyBackToSoftBodies(bool bMove)
@@ -34,6 +54,11 @@ void SoftBody::SoftBodySolver::Optimize(AlignedSoftBodyArray^ softBodies)
 	_native->optimize(*(btSoftBody::tSoftBodyArray*)softBodies->_native);
 }
 
+void SoftBody::SoftBodySolver::PredictMotion(float solverdt)
+{
+	_native->predictMotion(solverdt);
+}
+
 void SoftBody::SoftBodySolver::ProcessCollision(SoftBody^ softBody, CollisionObjectWrapper^ collisionObjectWrapper)
 {
 	_native->processCollision((btSoftBody*)softBody->_native, collisionObjectWrapper->_native);
@@ -44,22 +69,32 @@ void SoftBody::SoftBodySolver::ProcessCollision(SoftBody^ softBody, SoftBody^ ot
 	_native->processCollision((btSoftBody*)softBody->_native, (btSoftBody*)otherSoftBody->_native);
 }
 
+void SoftBody::SoftBodySolver::SolveConstraints(float solverdt)
+{
+	_native->solveConstraints(solverdt);
+}
+
+void SoftBody::SoftBodySolver::UpdateSoftBodies()
+{
+	_native->updateSoftBodies();
+}
+
 int SoftBody::SoftBodySolver::NumberOfPositionIterations::get()
 {
 	return _native->getNumberOfPositionIterations();
 }
-void SoftBody::SoftBodySolver::NumberOfPositionIterations::set(int value)
+void SoftBody::SoftBodySolver::NumberOfPositionIterations::set(int iterations)
 {
-	_native->setNumberOfPositionIterations(value);
+	_native->setNumberOfPositionIterations(iterations);
 }
 
 int SoftBody::SoftBodySolver::NumberOfVelocityIterations::get()
 {
 	return _native->getNumberOfVelocityIterations();
 }
-void SoftBody::SoftBodySolver::NumberOfVelocityIterations::set(int value)
+void SoftBody::SoftBodySolver::NumberOfVelocityIterations::set(int iterations)
 {
-	_native->setNumberOfVelocityIterations(value);
+	_native->setNumberOfVelocityIterations(iterations);
 }
 
 SolverType SoftBody::SoftBodySolver::SolverType::get()
@@ -73,9 +108,9 @@ float SoftBody::SoftBodySolver::TimeScale::get()
 }
 
 
-SoftBody::SoftBodySolverOutput::SoftBodySolverOutput(btSoftBodySolverOutput* solverOutput)
+SoftBody::SoftBodySolverOutput::SoftBodySolverOutput(btSoftBodySolverOutput* native)
 {
-	_native = solverOutput;
+	_native = native;
 }
 
 void SoftBody::SoftBodySolverOutput::CopySoftBodyToVertexBuffer(SoftBody^ softBody, VertexBufferDescriptor^ vertexBuffer)

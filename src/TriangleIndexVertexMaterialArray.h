@@ -67,7 +67,7 @@ namespace BulletSharp
 	public ref class TriangleIndexVertexMaterialArray : TriangleIndexVertexArray
 	{
 	internal:
-		TriangleIndexVertexMaterialArray(btTriangleIndexVertexMaterialArray* triangleArray);
+		TriangleIndexVertexMaterialArray(btTriangleIndexVertexMaterialArray* native);
 
 	public:
 		TriangleIndexVertexMaterialArray();
@@ -79,7 +79,7 @@ namespace BulletSharp
 			array<BulletMaterial>^ materials, array<int>^ materialIndices);
 
 		void AddMaterialProperties(MaterialProperties^ mat, PhyScalarType triangleType);
-
+		void AddMaterialProperties(MaterialProperties^ mat);
 		void GetLockedMaterialData([Out] DataStream^% materialData, [Out] int% numMaterials,
 			[Out] PhyScalarType% materialType, [Out] int% materialStride,
 			[Out] DataStream^% triangleMaterialData, [Out] int% numTriangles,

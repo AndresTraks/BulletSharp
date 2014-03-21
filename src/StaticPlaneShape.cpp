@@ -4,13 +4,13 @@
 
 #define Native static_cast<btStaticPlaneShape*>(_native)
 
-StaticPlaneShape::StaticPlaneShape(btStaticPlaneShape* shape)
-: BulletSharp::ConcaveShape(shape)
+StaticPlaneShape::StaticPlaneShape(btStaticPlaneShape* native)
+	: ConcaveShape(native)
 {
 }
 
 StaticPlaneShape::StaticPlaneShape(Vector3 planeNormal, btScalar planeConstant)
-: BulletSharp::ConcaveShape(0)
+	: ConcaveShape(0)
 {
 	VECTOR3_DEF(planeNormal);
 	UnmanagedPointer = new btStaticPlaneShape(VECTOR3_USE(planeNormal), planeConstant);

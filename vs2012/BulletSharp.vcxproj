@@ -1432,6 +1432,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\DefaultSoftBodySolver.cpp" />
     <ClCompile Include="..\src\Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug Axiom|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug Axiom|x64'">Create</PrecompiledHeader>
@@ -1655,6 +1656,7 @@
     <ResourceCompile Include="..\src\Resources.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\DefaultSoftBodySolver.h" />
     <ClInclude Include="..\src\Stdafx.h" />
     <ClInclude Include="..\src\Collections.h" />
     <ClInclude Include="..\src\Enums.h" />

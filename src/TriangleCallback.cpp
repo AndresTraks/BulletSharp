@@ -2,9 +2,9 @@
 
 #include "TriangleCallback.h"
 
-TriangleCallback::TriangleCallback(btTriangleCallback* callback)
+TriangleCallback::TriangleCallback(btTriangleCallback* native)
 {
-	_native = callback;
+	_native = native;
 }
 
 TriangleCallback::~TriangleCallback()
@@ -24,14 +24,14 @@ TriangleCallback::!TriangleCallback()
 	
 	OnDisposed(this, nullptr);
 }
-
+/*
 void TriangleCallback::ProcessTriangle(Vector3 triangle, int partId, int triangleIndex)
 {
 	VECTOR3_DEF(triangle);
-	_native->processTriangle(VECTOR3_PTR(triangle), partId, triangleIndex);
+	_native->processTriangle(VECTOR3_USE(triangle), partId, triangleIndex);
 	VECTOR3_DEL(triangle);
 }
-
+*/
 bool TriangleCallback::IsDisposed::get()
 {
 	return (_native == NULL);
@@ -39,9 +39,9 @@ bool TriangleCallback::IsDisposed::get()
 
 
 #ifndef DISABLE_INTERNAL
-InternalTriangleIndexCallback::InternalTriangleIndexCallback(btInternalTriangleIndexCallback* callback)
+InternalTriangleIndexCallback::InternalTriangleIndexCallback(btInternalTriangleIndexCallback* native)
 {
-	_native = callback;
+	_native = native;
 }
 
 InternalTriangleIndexCallback::~InternalTriangleIndexCallback()
@@ -61,15 +61,15 @@ InternalTriangleIndexCallback::!InternalTriangleIndexCallback()
 	
 	OnDisposed(this, nullptr);
 }
-
-// TODO: triangle is an array
-void InternalTriangleIndexCallback::InternalProcessTriangleIndex(Vector3 triangle, int partId, int triangleIndex)
+/*
+void InternalTriangleIndexCallback::InternalProcessTriangleIndex(Vector3 triangle,
+	int partId, int triangleIndex)
 {
 	VECTOR3_DEF(triangle);
-	_native->internalProcessTriangleIndex(VECTOR3_PTR(triangle), partId, triangleIndex);
+	_native->internalProcessTriangleIndex(VECTOR3_USE(triangle), partId, triangleIndex);
 	VECTOR3_DEL(triangle);
 }
-
+*/
 bool InternalTriangleIndexCallback::IsDisposed::get()
 {
 	return (_native == NULL);

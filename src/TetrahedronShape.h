@@ -7,7 +7,7 @@ namespace BulletSharp
 	public ref class BU_Simplex1to4 : PolyhedralConvexAabbCachingShape
 	{
 	internal:
-		BU_Simplex1to4(btBU_Simplex1to4* shape);
+		BU_Simplex1to4(btBU_Simplex1to4* native);
 
 	public:
 		BU_Simplex1to4();

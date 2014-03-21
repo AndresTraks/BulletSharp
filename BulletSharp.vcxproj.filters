@@ -702,6 +702,9 @@
     <ClCompile Include="src\VoronoiSimplexSolver.cpp">
       <Filter>Source Files\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
+    <ClCompile Include="src\DefaultSoftBodySolver.cpp">
+      <Filter>Source Files\BulletSoftBody</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\Resources.rc">
@@ -1248,6 +1251,9 @@
     </ClInclude>
     <ClInclude Include="src\VoronoiSimplexSolver.h">
       <Filter>Header Files\BulletCollision\NarrowPhaseCollision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DefaultSoftBodySolver.h">
+      <Filter>Header Files\BulletSoftBody</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

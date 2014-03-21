@@ -24,11 +24,12 @@ namespace BulletSharp
 		};
 
 	internal:
-		SoftBodyConcaveCollisionAlgorithm(btSoftBodyConcaveCollisionAlgorithm* algorithm);
+		SoftBodyConcaveCollisionAlgorithm(btSoftBodyConcaveCollisionAlgorithm* native);
 
 	public:
 		SoftBodyConcaveCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci,
-			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped);
+			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
+			bool isSwapped);
 
 		void ClearCache();
 	};

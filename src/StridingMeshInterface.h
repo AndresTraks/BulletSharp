@@ -8,7 +8,7 @@ namespace BulletSharp
 	ref class InternalTriangleIndexCallback;
 	ref class Serializer;
 
-	public ref class StridingMeshInterface : BulletSharp::IDisposable
+	public ref class StridingMeshInterface abstract : BulletSharp::IDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
@@ -16,25 +16,18 @@ namespace BulletSharp
 
 	internal:
 		btStridingMeshInterface* _native;
-
-		StridingMeshInterface(btStridingMeshInterface* stridingMesh);
-
+		StridingMeshInterface(btStridingMeshInterface* native);
+		static StridingMeshInterface^ GetManaged(btStridingMeshInterface* stridingMesh);
 	public:
 		!StridingMeshInterface();
 	protected:
 		~StridingMeshInterface();
 
-	internal:
-		static StridingMeshInterface^ GetManaged(btStridingMeshInterface* stridingMesh);
-
 	public:
+		void CalculateAabbBruteForce([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 #ifndef DISABLE_SERIALIZE
 		int CalculateSerializeBufferSize();
-		String^ Serialize(IntPtr dataBuffer, Serializer^ serializer);
 #endif
-
-		void CalculateAabbBruteForce([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
-
 		void GetLockedReadOnlyVertexIndexData([Out] DataStream^% vertexData, [Out] int% numVerts, [Out] PhyScalarType% type,
 			[Out] int% vertexStride, [Out] DataStream^% indexData, [Out] int% indexStride, [Out] int% numFaces, [Out] PhyScalarType% indicesType,
 			int subpart);
@@ -46,14 +39,16 @@ namespace BulletSharp
 			int subpart);
 		void GetLockedVertexIndexData([Out] DataStream^% vertexData, [Out] int% numVerts, [Out] PhyScalarType% type,
 			[Out] int% vertexStride, [Out] DataStream^% indexData, [Out] int% indexStride, [Out] int% numFaces, [Out] PhyScalarType% indicesType);
-
 		void GetPremadeAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 #ifndef DISABLE_INTERNAL
-		void InternalProcessAllTriangles(InternalTriangleIndexCallback^ callback, Vector3 aabbMin, Vector3 aabbMax);
+		void InternalProcessAllTriangles(InternalTriangleIndexCallback^ callback,
+			Vector3 aabbMin, Vector3 aabbMax);
 #endif
-
 		void PreallocateIndices(int numIndices);
 		void PreallocateVertices(int numVerts);
+#ifndef DISABLE_SERIALIZE
+		String^ Serialize(IntPtr dataBuffer, Serializer^ serializer);
+#endif
 		void SetPremadeAabb(Vector3 aabbMin, Vector3 aabbMax);
 		void UnlockReadOnlyVertexData(int subpart);
 		void UnlockVertexData(int subpart);
@@ -71,7 +66,7 @@ namespace BulletSharp
 		property Vector3 Scaling
 		{
 			Vector3 get();
-			void set(Vector3 value);
+			void set(Vector3 scaling);
 		}
 
 		property bool IsDisposed

@@ -17,11 +17,13 @@ namespace BulletSharp
 		};
 
 		SphereBoxCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
-			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped);
+			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
+			bool isSwapped);
 
-		bool GetSphereDistance(CollisionObjectWrapper^ boxObjWrap, Vector3 v3PointOnBox, Vector3 normal,
-			btScalar% penetrationDepth, Vector3 v3SphereCenter, btScalar fRadius, btScalar maxContactDistance);
-		btScalar GetSpherePenetration(Vector3 boxHalfExtent, Vector3 sphereRelPos, Vector3 closestPoint,
-			Vector3 normal);
+		bool GetSphereDistance(CollisionObjectWrapper^ boxObjWrap, [Out] Vector3% v3PointOnBox,
+			[Out] Vector3% normal, [Out] btScalar% penetrationDepth, Vector3 v3SphereCenter, btScalar fRadius,
+			btScalar maxContactDistance);
+		btScalar GetSpherePenetration(Vector3 boxHalfExtent, Vector3 sphereRelPos,
+			[Out] Vector3% closestPoint, [Out] Vector3% normal);
 	};
 };

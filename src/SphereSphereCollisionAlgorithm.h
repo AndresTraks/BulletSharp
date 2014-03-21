@@ -17,7 +17,7 @@ namespace BulletSharp
 		};
 
 		SphereSphereCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
-			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap);
+			CollisionObjectWrapper^ col0Wrap, CollisionObjectWrapper^ col1Wrap);
 		SphereSphereCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci);
 	};
 };

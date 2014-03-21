@@ -5,9 +5,9 @@
 #include "Collections.h"
 #include "SoftBodySolverVertexBuffer.h"
 
-SoftBody::VertexBufferDescriptor::VertexBufferDescriptor(btVertexBufferDescriptor* buffer)
+SoftBody::VertexBufferDescriptor::VertexBufferDescriptor(btVertexBufferDescriptor* native)
 {
-	_native = buffer;
+	_native = native;
 }
 
 BufferType SoftBody::VertexBufferDescriptor::BufferType::get()

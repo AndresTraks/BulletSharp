@@ -4,6 +4,7 @@
 #include "ConstraintSolver.h"
 #include "ContactSolverInfo.h"
 #include "Dispatcher.h"
+#include "SequentialImpulseConstraintSolver.h"
 #ifndef DISABLE_CONSTRAINTS
 #include "TypedConstraint.h"
 #endif
@@ -11,9 +12,27 @@
 #include "DebugDraw.h"
 #endif
 
-ConstraintSolver::ConstraintSolver(btConstraintSolver* solver)
+ConstraintSolver::ConstraintSolver(btConstraintSolver* native)
 {
-	_native = solver;
+	_native = native;
+}
+
+ConstraintSolver^ ConstraintSolver::GetManaged(btConstraintSolver* native)
+{
+	if (native == 0) {
+		return nullptr;
+	}
+	
+	ConstraintSolver^ solver;
+	btSequentialImpulseConstraintSolver* sequential = dynamic_cast<btSequentialImpulseConstraintSolver*>(native);
+	if (sequential) {
+		solver = gcnew SequentialImpulseConstraintSolver(sequential);
+	} else {
+		throw gcnew NotImplementedException();
+	}
+
+	solver->_preventDelete = true;
+	return solver;
 }
 
 ConstraintSolver::~ConstraintSolver()
@@ -28,7 +47,10 @@ ConstraintSolver::!ConstraintSolver()
 	
 	OnDisposing(this, nullptr);
 	
-	ALIGNED_FREE(_native);
+	if (!_preventDelete)
+	{
+		ALIGNED_FREE(_native);
+	}
 	_native = NULL;
 	
 	OnDisposed(this, nullptr);

@@ -8,27 +8,28 @@
 #include "CollisionObjectWrapper.h"
 
 SoftBodyConcaveCollisionAlgorithm::CreateFunc::CreateFunc()
-: CollisionAlgorithmCreateFunc(new btSoftBodyConcaveCollisionAlgorithm::CreateFunc())
+	: CollisionAlgorithmCreateFunc(new btSoftBodyConcaveCollisionAlgorithm::CreateFunc())
 {
 }
 
 
 SoftBodyConcaveCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc()
-: CollisionAlgorithmCreateFunc(new btSoftBodyConcaveCollisionAlgorithm::SwappedCreateFunc())
+	: CollisionAlgorithmCreateFunc(new btSoftBodyConcaveCollisionAlgorithm::SwappedCreateFunc())
 {
 }
 
 
 #define Native static_cast<btSoftBodyConcaveCollisionAlgorithm*>(_native)
 
-SoftBodyConcaveCollisionAlgorithm::SoftBodyConcaveCollisionAlgorithm(btSoftBodyConcaveCollisionAlgorithm* algorithm)
-: CollisionAlgorithm(algorithm)
+SoftBodyConcaveCollisionAlgorithm::SoftBodyConcaveCollisionAlgorithm(btSoftBodyConcaveCollisionAlgorithm* native)
+	: CollisionAlgorithm(native)
 {
 }
 
 SoftBodyConcaveCollisionAlgorithm::SoftBodyConcaveCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped)
-: CollisionAlgorithm(new btSoftBodyConcaveCollisionAlgorithm(*ci->_native, body0Wrap->_native, body1Wrap->_native, isSwapped))
+	: CollisionAlgorithm(new btSoftBodyConcaveCollisionAlgorithm(*ci->_native, body0Wrap->_native,
+		body1Wrap->_native, isSwapped))
 {
 }
 

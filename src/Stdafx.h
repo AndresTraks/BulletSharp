@@ -342,6 +342,7 @@ using namespace System::Drawing;
 #else
 #pragma comment(lib, "BulletSoftBody_MinSizeRel.lib")
 #endif
+#include <BulletSoftBody/btDefaultSoftBodySolver.h>
 #include <BulletSoftBody/btSoftBody.h>
 #include <BulletSoftBody/btSoftBodyHelpers.h>
 #include <BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.h>

@@ -5,8 +5,8 @@
 
 #define Native static_cast<btTriangleMeshShape*>(_native)
 
-TriangleMeshShape::TriangleMeshShape(btTriangleMeshShape* shape)
-: ConcaveShape(shape)
+TriangleMeshShape::TriangleMeshShape(btTriangleMeshShape* native)
+	: ConcaveShape(native)
 {
 }
 
@@ -25,28 +25,21 @@ void TriangleMeshShape_LocalGetSupportingVertexWithoutMargin(btTriangleMeshShape
 Vector3 TriangleMeshShape::LocalGetSupportingVertex(Vector3 vec)
 {
 	VECTOR3_DEF(vec);
-	btVector3* vecOut = new btVector3;
-	
+	btVector3* vecOut = ALIGNED_NEW(btVector3);
 	TriangleMeshShape_LocalGetSupportingVertex(Native, VECTOR3_PTR(vec), vecOut);
 	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
-	
 	VECTOR3_DEL(vec);
-	delete vecOut;
-	
+	ALIGNED_FREE(vecOut);
 	return vertex;
 }
 
 Vector3 TriangleMeshShape::LocalGetSupportingVertexWithoutMargin(Vector3 vec)
 {
 	VECTOR3_DEF(vec);
-	btVector3* vecOut = new btVector3;
-	
+	btVector3* vecOut = ALIGNED_NEW(btVector3);
 	TriangleMeshShape_LocalGetSupportingVertexWithoutMargin(Native, VECTOR3_PTR(vec), vecOut);
-	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
-	
-	VECTOR3_DEL(vec);
-	delete vecOut;
-	
+	Vector3 vertex = Math::BtVector3ToVector3(vecOut);	VECTOR3_DEL(vec);
+	ALIGNED_FREE(vecOut);
 	return vertex;
 }
 
@@ -70,3 +63,4 @@ StridingMeshInterface^ TriangleMeshShape::MeshInterface::get()
 	btStridingMeshInterface* meshInterface = Native->getMeshInterface();
 	ReturnCachedObject(StridingMeshInterface, _meshInterface, meshInterface);
 }
+

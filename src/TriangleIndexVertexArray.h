@@ -13,8 +13,8 @@ namespace BulletSharp
 	{
 	internal:
 		btIndexedMesh* _native;
+		IndexedMesh(btIndexedMesh* native);
 
-		IndexedMesh(btIndexedMesh* indexedMesh);
 
 	private:
 		IntArray^ _triangleIndices;
@@ -23,10 +23,7 @@ namespace BulletSharp
 	public:
 		IndexedMesh();
 
-		void Allocate(int numVerts, int vertexStride, int numIndices, int indexStride);
-		void AllocateVerts(int num, int stride);
-		void AllocateIndices(int num, int stride);
-
+		void Allocate(int numVertices, int vertexStride, int numTriangles, int triangleIndexStride);
 		DataStream^ LockIndices();
 		DataStream^ LockVerts();
 
@@ -54,10 +51,22 @@ namespace BulletSharp
 			void set(IntArray^ value);
 		}
 
+		property IntPtr TriangleIndexBase
+		{
+			IntPtr get();
+			void set(IntPtr value);
+		}
+
 		property int TriangleIndexStride
 		{
 			int get();
 			void set(int value);
+		}
+
+		property IntPtr VertexBase
+		{
+			IntPtr get();
+			void set(IntPtr value);
 		}
 
 		property Vector3Array^ Vertices
@@ -82,17 +91,20 @@ namespace BulletSharp
 	public ref class TriangleIndexVertexArray : StridingMeshInterface
 	{
 	internal:
-		TriangleIndexVertexArray(btTriangleIndexVertexArray* vertexArray);
+		TriangleIndexVertexArray(btTriangleIndexVertexArray* native);
+
+	private:
+		AlignedIndexedMeshArray^ _indexedMeshArray;
 
 	public:
-		TriangleIndexVertexArray();
 		TriangleIndexVertexArray(int numTriangles, IntPtr triangleIndexBase, int triangleIndexStride,
 			int numVertices, IntPtr vertexBase, int vertexStride);
 		TriangleIndexVertexArray(array<int>^ indices, array<Vector3>^ vertices);
 		TriangleIndexVertexArray(array<int>^ indices, array<btScalar>^ vertices);
+		TriangleIndexVertexArray();
 
-		void AddIndexedMesh(IndexedMesh^ mesh);
 		void AddIndexedMesh(IndexedMesh^ mesh, PhyScalarType indexType);
+		void AddIndexedMesh(IndexedMesh^ mesh);
 
 		property AlignedIndexedMeshArray^ IndexedMeshArray
 		{

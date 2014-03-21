@@ -11,7 +11,7 @@ namespace BulletSharp
 	ref class TypedConstraint;
 	interface class IDebugDraw;
 
-	public ref class ConstraintSolver : BulletSharp::IDisposable
+	public ref class ConstraintSolver abstract : BulletSharp::IDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
@@ -19,7 +19,9 @@ namespace BulletSharp
 
 	internal:
 		btConstraintSolver* _native;
-		ConstraintSolver(btConstraintSolver* solver);
+		bool _preventDelete;
+		ConstraintSolver(btConstraintSolver* native);
+		static ConstraintSolver^ GetManaged(btConstraintSolver* native);
 
 	public:
 		!ConstraintSolver();

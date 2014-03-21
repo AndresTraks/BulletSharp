@@ -7,7 +7,7 @@ namespace BulletSharp
 	public ref class TriangleMesh : TriangleIndexVertexArray
 	{
 	internal:
-		TriangleMesh(btTriangleMesh* mesh);
+		TriangleMesh(btTriangleMesh* native);
 
 	public:
 		TriangleMesh(bool use32BitIndexes, bool use4ComponentVertices);
@@ -20,21 +20,20 @@ namespace BulletSharp
 #endif
 		void AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2, bool removeDuplicateVertices);
 		void AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2);
-		void PreallocateIndexes(int indexCount);
 
-		property int TriangleCount
+		property int NumTriangles
 		{
 			int get();
 		}
 
-		property int Use32BitIndexes
+		property bool Use32BitIndexes
 		{
-			int get();
+			bool get();
 		}
 
-		property int Use4ComponentVertices
+		property bool Use4ComponentVertices
 		{
-			int get();
+			bool get();
 		}
 
 		property btScalar WeldingThreshold

@@ -7,7 +7,7 @@ namespace BulletSharp
 	public ref class StaticPlaneShape : ConcaveShape
 	{
 	internal:
-		StaticPlaneShape(btStaticPlaneShape* shape);
+		StaticPlaneShape(btStaticPlaneShape* native);
 
 	public:
 		StaticPlaneShape(Vector3 planeNormal, btScalar planeConstant);
