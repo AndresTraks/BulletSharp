@@ -18,7 +18,7 @@ void TriangleMeshShape_LocalGetSupportingVertex(btTriangleMeshShape* shape, btVe
 
 void TriangleMeshShape_LocalGetSupportingVertexWithoutMargin(btTriangleMeshShape* shape, btVector3* vec, btVector3* vecOut)
 {
-	*vecOut = shape->localGetSupportingVertex(*vec);
+	*vecOut = shape->localGetSupportingVertexWithoutMargin(*vec);
 }
 #pragma managed(pop)
 

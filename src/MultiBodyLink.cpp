@@ -33,7 +33,7 @@ void MultibodyLink::SetAxisBottom(int dof, Vector3 axis)
 	VECTOR3_DEL(axis);
 }
 
-void MultibodyLink::SetAxisBottom(int dof, float x, float y, float z)
+void MultibodyLink::SetAxisBottom(int dof, btScalar x, btScalar y, btScalar z)
 {
 	_native->setAxisBottom(dof, x, y, z);
 }
@@ -45,7 +45,7 @@ void MultibodyLink::SetAxisTop(int dof, Vector3 axis)
 	VECTOR3_DEL(axis);
 }
 
-void MultibodyLink::SetAxisTop(int dof, float x, float y, float z)
+void MultibodyLink::SetAxisTop(int dof, btScalar x, btScalar y, btScalar z)
 {
 	_native->setAxisTop(dof, x, y, z);
 }
@@ -55,7 +55,7 @@ void MultibodyLink::UpdateCache()
 	_native->updateCache();
 }
 
-void MultibodyLink::UpdateCacheMultiDof(FloatArray^ pq)
+void MultibodyLink::UpdateCacheMultiDof(ScalarArray^ pq)
 {
 	_native->updateCacheMultiDof((btScalar*)pq->_native);
 }

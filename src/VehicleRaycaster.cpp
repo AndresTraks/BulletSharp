@@ -49,9 +49,9 @@ void VehicleRaycasterResult::HitPointInWorld::set(Vector3 value)
 }
 
 
-VehicleRaycaster::VehicleRaycaster(btVehicleRaycaster* vehicleRaycaster)
+VehicleRaycaster::VehicleRaycaster(btVehicleRaycaster* native)
 {
-	_native = vehicleRaycaster;
+	_native = native;
 }
 
 Object^ VehicleRaycaster::CastRay(Vector3 from, Vector3 to, VehicleRaycasterResult^ result)

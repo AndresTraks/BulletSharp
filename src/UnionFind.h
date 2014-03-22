@@ -4,10 +4,19 @@
 
 namespace BulletSharp
 {
-	public ref class Element
+	public ref class Element : System::IDisposable
 	{
+	internal:
+		btElement* _native;
+		Element(btElement* native, bool preventDelete);
+
 	private:
-		btElement* _element;
+		bool _preventDelete;
+
+	public:
+		!Element();
+	protected:
+		~Element();
 
 	public:
 		Element();
@@ -23,45 +32,31 @@ namespace BulletSharp
 			int get();
 			void set(int value);
 		}
-
-	internal:
-		Element(btElement* element);
 	};
 
-	public ref class UnionFind : BulletSharp::IDisposable
+	public ref class UnionFind : System::IDisposable
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
-	private:
-		btUnionFind* _unionFind;
+	internal:
+		btUnionFind* _native;
+		UnionFind(btUnionFind* native);
 
 	public:
 		!UnionFind();
 	protected:
 		~UnionFind();
 
-	internal:
-		UnionFind(btUnionFind* unionFind);
-
 	public:
 		UnionFind();
 
 		void Allocate(int N);
-		int Find(int x);
 		int Find(int p, int q);
+		int Find(int x);
 		void Free();
 		Element^ GetElement(int index);
 		bool IsRoot(int x);
 		void Reset(int N);
 		void SortIslands();
 		void Unite(int p, int q);
-
-		property bool IsDisposed
-		{
-			virtual bool get();
-		}
 
 		property int NumElements
 		{

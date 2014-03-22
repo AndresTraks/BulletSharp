@@ -133,8 +133,8 @@ namespace BulletSharp
 #ifndef DISABLE_SERIALIZE
 		unsigned int CalculateSerializeBufferSize();
 		int CalculateSerializeBufferSizeNew();
-		void DeSerializeDouble(QuantizedBvhDoubleData^ quantizedBvhDoubleData);
-		void DeSerializeFloat(QuantizedBvhFloatData^ quantizedBvhFloatData);
+		//void DeSerializeDouble(QuantizedBvhDoubleData^ quantizedBvhDoubleData);
+		//void DeSerializeFloat(QuantizedBvhFloatData^ quantizedBvhFloatData);
 		static QuantizedBvh^ DeSerializeInPlace(IntPtr alignedDataBuffer, unsigned int dataBufferSize,
 			bool swapEndian);
 #endif
@@ -150,7 +150,7 @@ namespace BulletSharp
 			Vector3 rayTarget);
 #ifndef DISABLE_SERIALIZE
 		bool Serialize(IntPtr alignedDataBuffer, unsigned int dataBufferSize, bool swapEndian);
-		char^ Serialize(void^ dataBuffer, Serializer^ serializer);
+		String^ Serialize(IntPtr dataBuffer, Serializer^ serializer);
 #endif
 		void SetQuantizationValues(Vector3 bvhAabbMin, Vector3 bvhAabbMax, btScalar quantizationMargin);
 		void SetQuantizationValues(Vector3 bvhAabbMin, Vector3 bvhAabbMax);

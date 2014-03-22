@@ -4,43 +4,58 @@
 
 #include "UnionFind.h"
 
-Element::Element(btElement* element)
+Element::Element(btElement* native, bool preventDelete)
 {
-	_element = element;
+	_native = native;
+	_preventDelete = preventDelete;
+}
+
+Element::~Element()
+{
+	this->!Element();
+}
+
+Element::!Element()
+{
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
+	_native = NULL;
 }
 
 Element::Element()
 {
-	_element = new btElement();
+	_native = new btElement();
 }
 
 int Element::Id::get()
 {
-	return _element->m_id;
+	return _native->m_id;
 }
 void Element::Id::set(int value)
 {
-	_element->m_id = value;
+	_native->m_id = value;
 }
 
 int Element::Sz::get()
 {
-	return _element->m_sz;
+	return _native->m_sz;
 }
 void Element::Sz::set(int value)
 {
-	_element->m_sz = value;
+	_native->m_sz = value;
 }
 
 
-UnionFind::UnionFind(btUnionFind* unionFind)
+UnionFind::UnionFind(btUnionFind* native)
 {
-	_unionFind = unionFind;
+	_native = native;
 }
 
 UnionFind::UnionFind()
 {
-	_unionFind = new btUnionFind();
+	_native = new btUnionFind();
 }
 
 UnionFind::~UnionFind()
@@ -50,69 +65,58 @@ UnionFind::~UnionFind()
 
 UnionFind::!UnionFind()
 {
-	if (this->IsDisposed)
-		return;
-	
-	OnDisposing(this, nullptr);
-	
-	_unionFind = NULL;
-	
-	OnDisposed(this, nullptr);
+	delete _native;
+	_native = NULL;
 }
 
 void UnionFind::Allocate(int N)
 {
-	_unionFind->allocate(N);
-}
-
-int UnionFind::Find(int x)
-{
-	return _unionFind->find(x);
+	_native->allocate(N);
 }
 
 int UnionFind::Find(int p, int q)
 {
-	return _unionFind->find(p, q);
+	return _native->find(p, q);
+}
+
+int UnionFind::Find(int x)
+{
+	return _native->find(x);
 }
 
 void UnionFind::Free()
 {
-	_unionFind->Free();
+	_native->Free();
 }
 
 Element^ UnionFind::GetElement(int index)
 {
-	return gcnew Element(&_unionFind->getElement(index));
+	return gcnew Element(&_native->getElement(index), true);
 }
 
 bool UnionFind::IsRoot(int x)
 {
-	return _unionFind->isRoot(x);
+	return _native->isRoot(x);
 }
 
 void UnionFind::Reset(int N)
 {
-	return _unionFind->reset(N);
+	_native->reset(N);
 }
 
 void UnionFind::SortIslands()
 {
-	_unionFind->sortIslands();
+	_native->sortIslands();
 }
 
 void UnionFind::Unite(int p, int q)
 {
-	return _unionFind->unite(p, q);
-}
-
-bool UnionFind::IsDisposed::get()
-{
-	return (_unionFind == NULL);
+	_native->unite(p, q);
 }
 
 int UnionFind::NumElements::get()
 {
-	return _unionFind->getNumElements();
+	return _native->getNumElements();
 }
 
 #endif

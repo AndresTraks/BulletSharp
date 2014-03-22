@@ -5,6 +5,25 @@
 #include "Collections.h"
 #include "TriangleShapeEx.h"
 
+GimTriangleContact::GimTriangleContact(GIM_TRIANGLE_CONTACT* native)
+{
+	_native = native;
+}
+
+GimTriangleContact::~GimTriangleContact()
+{
+	this->!GimTriangleContact();
+}
+
+GimTriangleContact::!GimTriangleContact()
+{
+	if (_native != NULL)
+	{
+		delete _native;
+		_native = NULL;
+	}
+}
+
 GimTriangleContact::GimTriangleContact()
 {
 	_native = new GIM_TRIANGLE_CONTACT();
@@ -63,22 +82,21 @@ void GimTriangleContact::SeparatingNormal::set(Vector4 value)
 	Math::Vector4ToBtVector4(value, &_native->m_separating_normal);
 }
 
+PrimitiveTriangle::PrimitiveTriangle(btPrimitiveTriangle* native)
+{
+	_native = native;
+}
 
 PrimitiveTriangle::PrimitiveTriangle()
 {
 	_native = new btPrimitiveTriangle();
 }
 
-PrimitiveTriangle::PrimitiveTriangle(btPrimitiveTriangle* triangle)
-{
-	_native = triangle;
-}
-
 void PrimitiveTriangle::ApplyTransform(Matrix transform)
 {
-	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
-	_native->applyTransform(*transformTemp);
-	ALIGNED_FREE(transformTemp);
+	TRANSFORM_CONV(transform);
+	_native->applyTransform(TRANSFORM_USE(transform));
+	TRANSFORM_DEL(transform);
 }
 
 void PrimitiveTriangle::BuildTriPlane()
@@ -94,17 +112,18 @@ int PrimitiveTriangle::ClipTriangle(PrimitiveTriangle^ other, array<Vector3>^ cl
 	return ret;
 }
 
-void PrimitiveTriangle::GetEdgePlane(int edge_index, [Out] Vector4% plane)
-{
-	btVector4* planeTemp = new btVector4;
-	_native->get_edge_plane(edge_index, *planeTemp);
-	plane = Math::BtVector4ToVector4(planeTemp);
-	delete planeTemp;
-}
-
-bool PrimitiveTriangle::FindTriangleCollisionClipMethod(PrimitiveTriangle^ other, GimTriangleContact^ contacts)
+bool PrimitiveTriangle::FindTriangleCollisionClipMethod(PrimitiveTriangle^ other,
+	GimTriangleContact^ contacts)
 {
 	return _native->find_triangle_collision_clip_method(*other->_native, *contacts->_native);
+}
+
+void PrimitiveTriangle::GetEdgePlane(int edge_index, [Out] Vector4% plane)
+{
+	btVector4* planeTemp = ALIGNED_NEW(btVector4);
+	_native->get_edge_plane(edge_index, *planeTemp);
+	plane = Math::BtVector4ToVector4(planeTemp);
+	ALIGNED_FREE(planeTemp);
 }
 
 bool PrimitiveTriangle::OverlapTestConservative(PrimitiveTriangle^ other)
@@ -139,48 +158,46 @@ void PrimitiveTriangle::Plane::set(Vector4 value)
 	Math::Vector4ToBtVector4(value, &_native->m_plane);
 }
 
-Vector3Array^ PrimitiveTriangle::Vectors::get()
+Vector3Array^ PrimitiveTriangle::Vertices::get()
 {
-	return gcnew Vector3Array(_native->m_vertices, 3);
+	ReturnCachedObjectStaticParam(Vector3Array, _vertices, _native->m_vertices, 3)
 }
 
 
 #define Native static_cast<btTriangleShapeEx*>(_native)
 
-TriangleShapeEx::TriangleShapeEx()
-: TriangleShape(new btTriangleShapeEx())
+TriangleShapeEx::TriangleShapeEx(btTriangleShapeEx* native)
+	: TriangleShape(native)
 {
 }
 
-TriangleShapeEx::TriangleShapeEx(btTriangleShapeEx* triangle)
-: TriangleShape(triangle)
+TriangleShapeEx::TriangleShapeEx()
+	: TriangleShape(new btTriangleShapeEx())
 {
 }
 
 TriangleShapeEx::TriangleShapeEx(Vector3 p0, Vector3 p1, Vector3 p2)
-: TriangleShape()
+	: TriangleShape(0)
 {
 	VECTOR3_DEF(p0);
 	VECTOR3_DEF(p1);
 	VECTOR3_DEF(p2);
-
 	UnmanagedPointer = new btTriangleShapeEx(VECTOR3_USE(p0), VECTOR3_USE(p1), VECTOR3_USE(p2));
-
 	VECTOR3_DEL(p0);
 	VECTOR3_DEL(p1);
 	VECTOR3_DEL(p2);
 }
 
 TriangleShapeEx::TriangleShapeEx(TriangleShapeEx^ other)
-: TriangleShape(new btTriangleShapeEx(*(btTriangleShapeEx*)other->_native))
+	: TriangleShape(new btTriangleShapeEx(*(btTriangleShapeEx*)other->_native))
 {
 }
 
 void TriangleShapeEx::ApplyTransform(Matrix transform)
 {
-	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
-	Native->applyTransform(*transformTemp);
-	ALIGNED_FREE(transformTemp);
+	TRANSFORM_CONV(transform);
+	Native->applyTransform(TRANSFORM_USE(transform));
+	TRANSFORM_DEL(transform);
 }
 
 void TriangleShapeEx::BuildTriPlane(Vector4 plane)

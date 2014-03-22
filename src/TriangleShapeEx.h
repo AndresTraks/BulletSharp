@@ -6,10 +6,16 @@ namespace BulletSharp
 {
 	ref class Vector3Array;
 
-	public ref class GimTriangleContact
+	public ref class GimTriangleContact : System::IDisposable
 	{
 	internal:
 		GIM_TRIANGLE_CONTACT* _native;
+		GimTriangleContact(GIM_TRIANGLE_CONTACT* native);
+
+	public:
+		!GimTriangleContact();
+	protected:
+		~GimTriangleContact();
 
 	public:
 		GimTriangleContact();
@@ -46,8 +52,10 @@ namespace BulletSharp
 	{
 	internal:
 		btPrimitiveTriangle* _native;
+		PrimitiveTriangle(btPrimitiveTriangle* native);
 
-		PrimitiveTriangle(btPrimitiveTriangle* triangle);
+	private:
+		Vector3Array^ _vertices;
 
 	public:
 		PrimitiveTriangle();
@@ -77,7 +85,7 @@ namespace BulletSharp
 			void set(Vector4 value);
 		}
 
-		property Vector3Array^ Vectors
+		property Vector3Array^ Vertices
 		{
 			Vector3Array^ get();
 		}
@@ -86,7 +94,7 @@ namespace BulletSharp
 	public ref class TriangleShapeEx : TriangleShape
 	{
 	internal:
-		TriangleShapeEx(btTriangleShapeEx* triangle);
+		TriangleShapeEx(btTriangleShapeEx* native);
 
 	public:
 		TriangleShapeEx();

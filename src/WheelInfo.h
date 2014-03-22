@@ -8,6 +8,7 @@ namespace BulletSharp
 	{
 	internal:
 		btWheelInfoConstructionInfo* _native;
+		WheelInfoConstructionInfo(btWheelInfoConstructionInfo* native);
 
 	public:
 		!WheelInfoConstructionInfo();

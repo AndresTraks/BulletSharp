@@ -5,6 +5,11 @@
 #include "RigidBody.h"
 #include "WheelInfo.h"
 
+WheelInfoConstructionInfo::WheelInfoConstructionInfo(btWheelInfoConstructionInfo* native)
+{
+	_native = native;
+}
+
 WheelInfoConstructionInfo::!WheelInfoConstructionInfo()
 {
 	ALIGNED_FREE(_native);
@@ -23,7 +28,7 @@ WheelInfoConstructionInfo::WheelInfoConstructionInfo()
 
 Vector3 WheelInfoConstructionInfo::ChassisConnectionCS::get()
 {
-	return  Math::BtVector3ToVector3(&_native->m_chassisConnectionCS);
+	return Math::BtVector3ToVector3(&_native->m_chassisConnectionCS);
 }
 void WheelInfoConstructionInfo::ChassisConnectionCS::set(Vector3 value)
 {
@@ -86,7 +91,7 @@ void WheelInfoConstructionInfo::SuspensionStiffness::set(btScalar value)
 
 Vector3 WheelInfoConstructionInfo::WheelAxleCS::get()
 {
-	return  Math::BtVector3ToVector3(&_native->m_wheelAxleCS);
+	return Math::BtVector3ToVector3(&_native->m_wheelAxleCS);
 }
 void WheelInfoConstructionInfo::WheelAxleCS::set(Vector3 value)
 {
@@ -130,9 +135,9 @@ void WheelInfoConstructionInfo::WheelRadius::set(btScalar value)
 }
 
 
-RaycastInfo::RaycastInfo(btWheelInfo::RaycastInfo* info)
+RaycastInfo::RaycastInfo(btWheelInfo::RaycastInfo* native)
 {
-	_native = info;
+	_native = native;
 }
 
 RaycastInfo::RaycastInfo()
@@ -213,9 +218,9 @@ void RaycastInfo::WheelDirectionWS::set(Vector3 value)
 }
 
 
-WheelInfo::WheelInfo(btWheelInfo* wheelInfo)
+WheelInfo::WheelInfo(btWheelInfo* native)
 {
-	_native = wheelInfo;
+	_native = native;
 }
 
 WheelInfo::WheelInfo(WheelInfoConstructionInfo^ ci)
@@ -239,7 +244,7 @@ void WheelInfo::Brake::set(btScalar value)
 
 Vector3 WheelInfo::ChassisConnectionPointCS::get()
 {
-	return  Math::BtVector3ToVector3(&_native->m_chassisConnectionPointCS);
+	return Math::BtVector3ToVector3(&_native->m_chassisConnectionPointCS);
 }
 void WheelInfo::ChassisConnectionPointCS::set(Vector3 value)
 {
@@ -414,7 +419,7 @@ void WheelInfo::SuspensionStiffness::set(btScalar value)
 
 Vector3 WheelInfo::WheelAxleCS::get()
 {
-	return  Math::BtVector3ToVector3(&_native->m_wheelAxleCS);
+	return Math::BtVector3ToVector3(&_native->m_wheelAxleCS);
 }
 void WheelInfo::WheelAxleCS::set(Vector3 value)
 {

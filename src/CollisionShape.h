@@ -41,7 +41,7 @@ namespace BulletSharp
 		void GetBoundingSphere([Out] Vector3% center, [Out] btScalar% radius);
 		btScalar GetContactBreakingThreshold(btScalar defaultContactThresholdFactor);
 #ifndef DISABLE_SERIALIZE
-		String^ Serialize(void^ dataBuffer, Serializer^ serializer);
+		String^ Serialize(IntPtr dataBuffer, Serializer^ serializer);
 		void SerializeSingleShape(Serializer^ serializer);
 #endif
 

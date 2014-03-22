@@ -178,7 +178,7 @@ int QuantizedBvh::CalculateSerializeBufferSizeNew()
 {
 	return _native->calculateSerializeBufferSizeNew();
 }
-
+/*
 void QuantizedBvh::DeSerializeDouble(QuantizedBvhDoubleData^ quantizedBvhDoubleData)
 {
 	_native->deSerializeDouble(*quantizedBvhDoubleData->_native);
@@ -188,7 +188,7 @@ void QuantizedBvh::DeSerializeFloat(QuantizedBvhFloatData^ quantizedBvhFloatData
 {
 	_native->deSerializeFloat(*quantizedBvhFloatData->_native);
 }
-
+*/
 QuantizedBvh^ QuantizedBvh::DeSerializeInPlace(void^ i_alignedDataBuffer, unsigned int i_dataBufferSize,
 	bool i_swapEndian)
 {
@@ -255,9 +255,9 @@ bool QuantizedBvh::Serialize(IntPtr alignedDataBuffer, unsigned int dataBufferSi
 	return _native->serialize(alignedDataBuffer->_native, dataBufferSize, swapEndian);
 }
 
-char^ QuantizedBvh::Serialize(IntPtr dataBuffer, Serializer^ serializer)
+String^ QuantizedBvh::Serialize(IntPtr dataBuffer, Serializer^ serializer)
 {
-	return _native->serialize(dataBuffer.ToPointer(), serializer->_native);
+	return gcnew String(_native->serialize(dataBuffer.ToPointer(), serializer->_native));
 }
 #endif
 

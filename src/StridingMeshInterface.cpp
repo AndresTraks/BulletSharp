@@ -213,8 +213,7 @@ void StridingMeshInterface::PreallocateVertices(int numVerts)
 #ifndef DISABLE_SERIALIZE
 String^ StridingMeshInterface::Serialize(IntPtr dataBuffer, Serializer^ serializer)
 {
-	const char* name = _native->serialize(dataBuffer.ToPointer(), serializer->_native);
-	return name ? gcnew String(name) : nullptr;
+	return gcnew String(_native->serialize(dataBuffer.ToPointer(), serializer->_native));
 }
 #endif
 

@@ -2,7 +2,7 @@
 
 namespace BulletSharp
 {
-	ref class FloatArray;
+	ref class ScalarArray;
 	ref class MultiBodyLinkCollider;
 
 	public enum FeatherstoneJointType
@@ -28,11 +28,11 @@ namespace BulletSharp
 		Vector3 GetAxisBottom(int dof);
 		Vector3 GetAxisTop(int dof);
 		void SetAxisBottom(int dof, Vector3 axis);
-		void SetAxisBottom(int dof, float x, float y, float z);
+		void SetAxisBottom(int dof, btScalar x, btScalar y, btScalar z);
 		void SetAxisTop(int dof, Vector3 axis);
-		void SetAxisTop(int dof, float x, float y, float z);
+		void SetAxisTop(int dof, btScalar x, btScalar y, btScalar z);
 		void UpdateCache();
-		void UpdateCacheMultiDof(FloatArray^ pq);
+		void UpdateCacheMultiDof(ScalarArray^ pq);
 		void UpdateCacheMultiDof();
 
 		property Vector3 AppliedForce

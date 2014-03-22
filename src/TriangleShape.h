@@ -12,7 +12,7 @@ namespace BulletSharp
 		Vector3Array^ _vertices;
 
 	internal:
-		TriangleShape(btTriangleShape* triangleShape);
+		TriangleShape(btTriangleShape* native);
 
 	public:
 		TriangleShape();
@@ -20,11 +20,11 @@ namespace BulletSharp
 
 		void CalcNormal([Out] Vector3% normal);
 		void GetPlaneEquation(int index, [Out] Vector3% planeNormal, [Out] Vector3% planeSupport);
-		Vector3 GetVertexPtr(int index);
+		//IntPtr GetVertexPtr(int index);
 
 		property Vector3Array^ Vertices
 		{
 			Vector3Array^ get();
 		}
 	};
-}
+};

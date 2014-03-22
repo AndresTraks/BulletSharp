@@ -7,18 +7,20 @@
 
 #define Native static_cast<btUniversalConstraint*>(_native)
 
-UniversalConstraint::UniversalConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
-	Vector3 anchor, Vector3 axis1, Vector3 axis2)
-: Generic6DofConstraint(0)
+UniversalConstraint::UniversalConstraint(btUniversalConstraint* native)
+	: Generic6DofConstraint(native)
+{
+}
+
+UniversalConstraint::UniversalConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 anchor,
+	Vector3 axis1, Vector3 axis2)
+	: Generic6DofConstraint(0)
 {
 	VECTOR3_DEF(anchor);
 	VECTOR3_DEF(axis1);
 	VECTOR3_DEF(axis2);
-
-	UnmanagedPointer = ALIGNED_NEW(btUniversalConstraint) (
-		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
+	_native = new btUniversalConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		VECTOR3_USE(anchor), VECTOR3_USE(axis1), VECTOR3_USE(axis2));
-
 	VECTOR3_DEL(anchor);
 	VECTOR3_DEL(axis1);
 	VECTOR3_DEL(axis2);

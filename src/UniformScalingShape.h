@@ -7,7 +7,7 @@ namespace BulletSharp
 	public ref class UniformScalingShape : ConvexShape
 	{
 	internal:
-		UniformScalingShape(btUniformScalingShape* shape);
+		UniformScalingShape(btUniformScalingShape* native);
 
 	public:
 		UniformScalingShape(ConvexShape^ convexChildShape, btScalar uniformScalingFactor);

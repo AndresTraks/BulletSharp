@@ -94,9 +94,9 @@ bool CollisionObject::HasAnisotropicFriction()
 }
 
 #ifndef DISABLE_SERIALIZE
-char^ CollisionObject::Serialize(void^ dataBuffer, Serializer^ serializer)
+String^ CollisionObject::Serialize(IntPtr dataBuffer, Serializer^ serializer)
 {
-	return _native->serialize(dataBuffer->_native, serializer->_native);
+	return gcnew String(_native->serialize(dataBuffer.ToPointer(), serializer->_native));
 }
 
 void CollisionObject::SerializeSingleObject(Serializer^ serializer)

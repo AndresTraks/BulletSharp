@@ -10,8 +10,7 @@ namespace BulletSharp
 	{
 	internal:
 		btJointFeedback* _native;
-
-		JointFeedback(btJointFeedback* jointFeedback);
+		JointFeedback(btJointFeedback* native);
 
 	public:
 		!JointFeedback();
@@ -46,8 +45,126 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class TypedConstraint : BulletSharp::IDisposable
+	public ref class TypedConstraint abstract : BulletSharp::IDisposable
 	{
+	public:
+		ref class ConstraintInfo1
+		{
+		internal:
+			btTypedConstraint::btConstraintInfo1* _native;
+			ConstraintInfo1(btTypedConstraint::btConstraintInfo1* native);
+
+		public:
+			ConstraintInfo1();
+
+			property int Nub
+			{
+				int get();
+				void set(int value);
+			}
+
+			property int NumConstraintRows
+			{
+				int get();
+				void set(int value);
+			}
+		};
+
+		ref class ConstraintInfo2
+		{
+		internal:
+			btTypedConstraint::btConstraintInfo2* _native;
+			ConstraintInfo2(btTypedConstraint::btConstraintInfo2* native);
+
+		public:
+			ConstraintInfo2();
+			/*
+			property float^ Cfm
+			{
+				float^ get();
+				void set(float^ value);
+			}
+
+			property float^ ConstraintError
+			{
+				float^ get();
+				void set(float^ value);
+			}
+			*/
+			property btScalar Damping
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar Erp
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+			/*
+			property int^ Findex
+			{
+				int^ get();
+				void set(int^ value);
+			}
+			*/
+			property btScalar Fps
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+			/*
+			property float^ J1angularAxis
+			{
+				float^ get();
+				void set(float^ value);
+			}
+
+			property float^ J1linearAxis
+			{
+				float^ get();
+				void set(float^ value);
+			}
+
+			property float^ J2angularAxis
+			{
+				float^ get();
+				void set(float^ value);
+			}
+
+			property float^ J2linearAxis
+			{
+				float^ get();
+				void set(float^ value);
+			}
+
+			property float^ LowerLimit
+			{
+				float^ get();
+				void set(float^ value);
+			}
+			*/
+			property int NumIterations
+			{
+				int get();
+				void set(int value);
+			}
+
+			property int Rowskip
+			{
+				int get();
+				void set(int value);
+			}
+			/*
+			property float^ UpperLimit
+			{
+				float^ get();
+				void set(float^ value);
+			}
+			*/
+		};
+
 	public:
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
@@ -61,6 +178,7 @@ namespace BulletSharp
 		btTypedConstraint* _native;
 		TypedConstraint(btTypedConstraint* typedConstraint, bool doesNotOwnObject);
 		TypedConstraint(btTypedConstraint* typedConstraint);
+		static TypedConstraint^ GetManaged(btTypedConstraint* typedConstraint);
 
 	public:
 		!TypedConstraint();
@@ -68,24 +186,25 @@ namespace BulletSharp
 		~TypedConstraint();
 
 	public:
+		void BuildJacobian();
 #ifndef DISABLE_SERIALIZE
 		int CalculateSerializeBufferSize();
 #endif
 		void EnableFeedback(bool needsFeedback);
+		void GetInfo1(ConstraintInfo1^ info);
+		void GetInfo2(ConstraintInfo2^ info);
 		btScalar GetParam(ConstraintParam num, int axis);
 		btScalar GetParam(ConstraintParam num);
+		btScalar InternalGetAppliedImpulse();
+		void InternalSetAppliedImpulse(btScalar appliedImpulse);
+#ifndef DISABLE_SERIALIZE
+		String^ Serialize(IntPtr dataBuffer, Serializer^ serializer);
+#endif
 		void SetParam(ConstraintParam num, btScalar value, int axis);
 		void SetParam(ConstraintParam num, btScalar value);
+		//void SetupSolverConstraint(ConstraintArray^ ca, int solverBodyA, int solverBodyB,
+		//	btScalar timeStep);
 
-		static property RigidBody^ FixedBody
-		{
-			RigidBody^ get();
-		}
-
-	internal:
-		static TypedConstraint^ GetManaged(btTypedConstraint* typedConstraint);
-
-	public:
 		property btScalar AppliedImpulse
 		{
 			btScalar get();
@@ -94,7 +213,7 @@ namespace BulletSharp
 		property btScalar BreakingImpulseThreshold
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar threshold);
 		}
 
 		property TypedConstraintType ConstraintType
@@ -105,7 +224,7 @@ namespace BulletSharp
 		property btScalar DebugDrawSize
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar dbgDrawSize);
 		}
 
 		property bool IsDisposed
@@ -113,16 +232,21 @@ namespace BulletSharp
 			virtual bool get();
 		}
 
+		property RigidBody^ FixedBody
+		{
+			static RigidBody^ get();
+		}
+
 		property bool IsEnabled
 		{
 			bool get();
-			void set(bool value);
+			void set(bool enabled);
 		}
 
 		property BulletSharp::JointFeedback^ JointFeedback
 		{
 			BulletSharp::JointFeedback^ get();
-			void set(BulletSharp::JointFeedback^ value);
+			void set(BulletSharp::JointFeedback^ jointFeedback);
 		}
 
 		property bool NeedsFeedback
@@ -134,7 +258,7 @@ namespace BulletSharp
 		property int OverrideNumSolverIterations
 		{
 			int get();
-			void set(int value);
+			void set(int overideNumIterations);
 		}
 
 		property RigidBody^ RigidBodyA
@@ -177,11 +301,70 @@ namespace BulletSharp
 #ifdef IN_PARALLELL_SOLVER
 	public ref class AngularLimit
 	{
-	private:
-		btAngularLimit* _angularLimit;
+	internal:
+		btAngularLimit* _native;
+		AngularLimit(btAngularLimit* native);
 
 	public:
 		AngularLimit();
+
+		void Fit(btScalar% angle);
+		void Set(btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor,
+			btScalar _relaxationFactor);
+		void Set(btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor);
+		void Set(btScalar low, btScalar high, btScalar _softness);
+		void Set(btScalar low, btScalar high);
+		void Test(btScalar angle);
+
+		property btScalar BiasFactor
+		{
+			btScalar get();
+		}
+
+		property btScalar Correction
+		{
+			btScalar get();
+		}
+
+		property btScalar Error
+		{
+			btScalar get();
+		}
+
+		property btScalar HalfRange
+		{
+			btScalar get();
+		}
+
+		property btScalar High
+		{
+			btScalar get();
+		}
+
+		property bool IsLimit
+		{
+			bool get();
+		}
+
+		property btScalar Low
+		{
+			btScalar get();
+		}
+
+		property btScalar RelaxationFactor
+		{
+			btScalar get();
+		}
+
+		property btScalar Sign
+		{
+			btScalar get();
+		}
+
+		property btScalar Softness
+		{
+			btScalar get();
+		}
 	};
 #endif
 #endif

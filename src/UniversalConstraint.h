@@ -8,9 +8,12 @@ namespace BulletSharp
 
 	public ref class UniversalConstraint : Generic6DofConstraint
 	{
+	internal:
+		UniversalConstraint(btUniversalConstraint* native);
+
 	public:
-		UniversalConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
-			Vector3 anchor, Vector3 axis1, Vector3 axis2);
+		UniversalConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 anchor, Vector3 axis1,
+			Vector3 axis2);
 
 		void SetLowerLimit(btScalar ang1min, btScalar ang2min);
 		void SetUpperLimit(btScalar ang1max, btScalar ang2max);

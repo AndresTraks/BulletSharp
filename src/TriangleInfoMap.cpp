@@ -23,8 +23,7 @@ int	TriangleInfoMap::CalculateSerializeBufferSize()
 
 String^ TriangleInfoMap::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
 {
-	const char* name = _native->serialize(dataBuffer.ToPointer(), serializer->_native);
-	return gcnew String(name);
+	return gcnew String(_native->serialize(dataBuffer.ToPointer(), serializer->_native));
 }
 #endif
 

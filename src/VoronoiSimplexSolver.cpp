@@ -2,16 +2,17 @@
 
 #ifndef DISABLE_UNCOMMON
 
+#include "Collections.h"
 #include "VoronoiSimplexSolver.h"
 
-SubSimplexClosestResult::SubSimplexClosestResult(btSubSimplexClosestResult* result)
+SubSimplexClosestResult::SubSimplexClosestResult(btSubSimplexClosestResult* native)
 {
-	_native = result;
+	_native = native;
 }
 
-bool SubSimplexClosestResult::IsValid()
+SubSimplexClosestResult::SubSimplexClosestResult()
 {
-	return _native->isValid();
+	_native = new btSubSimplexClosestResult();
 }
 
 void SubSimplexClosestResult::Reset()
@@ -19,7 +20,8 @@ void SubSimplexClosestResult::Reset()
 	_native->reset();
 }
 
-void SubSimplexClosestResult::SetBarycentricCoordinates(btScalar a, btScalar b, btScalar c, btScalar d)
+void SubSimplexClosestResult::SetBarycentricCoordinates(btScalar a, btScalar b, btScalar c,
+	btScalar d)
 {
 	_native->setBarycentricCoordinates(a, b, c, d);
 }
@@ -44,17 +46,50 @@ void SubSimplexClosestResult::SetBarycentricCoordinates()
 	_native->setBarycentricCoordinates();
 }
 
-
-#ifdef NO_VIRTUAL_INTERFACE
-VoronoiSimplexSolver::VoronoiSimplexSolver(btVoronoiSimplexSolver* solver, bool preventDelete)
+ScalarArray^ SubSimplexClosestResult::BarycentricCoords::get()
 {
-	_preventDelete = preventDelete;
-	_native = solver;
+	return gcnew ScalarArray(_native->m_barycentricCoords, 4);
 }
 
-VoronoiSimplexSolver::VoronoiSimplexSolver()
+Vector3 SubSimplexClosestResult::ClosestPointOnSimplex::get()
 {
-	_native = new btVoronoiSimplexSolver();
+	return Math::BtVector3ToVector3(&_native->m_closestPointOnSimplex);
+}
+void SubSimplexClosestResult::ClosestPointOnSimplex::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_native->m_closestPointOnSimplex);
+}
+
+bool SubSimplexClosestResult::Degenerate::get()
+{
+	return _native->m_degenerate;
+}
+void SubSimplexClosestResult::Degenerate::set(bool value)
+{
+	_native->m_degenerate = value;
+}
+
+bool SubSimplexClosestResult::IsValid::get()
+{
+	return _native->isValid();
+}
+/*
+UsageBitfield^ SubSimplexClosestResult::UsedVertices::get()
+{
+	return _native->m_usedVertices;
+}
+void SubSimplexClosestResult::UsedVertices::set(UsageBitfield^ value)
+{
+	_native->m_usedVertices = value->_native;
+}
+*/
+
+
+#ifdef NO_VIRTUAL_INTERFACE
+VoronoiSimplexSolver::VoronoiSimplexSolver(btVoronoiSimplexSolver* native, bool preventDelete)
+{
+	_native = native;
+	_preventDelete = preventDelete;
 }
 
 VoronoiSimplexSolver::~VoronoiSimplexSolver()
@@ -64,34 +99,31 @@ VoronoiSimplexSolver::~VoronoiSimplexSolver()
 
 VoronoiSimplexSolver::!VoronoiSimplexSolver()
 {
-	delete _native;
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
 	_native = NULL;
 }
 
-bool VoronoiSimplexSolver::IsDisposed::get()
-{
-	return (_native == NULL);
-}
 #else
-VoronoiSimplexSolver::VoronoiSimplexSolver(btVoronoiSimplexSolver* solver)
-: SimplexSolverInterface(solver)
+VoronoiSimplexSolver::VoronoiSimplexSolver(btVoronoiSimplexSolver* native)
 {
-}
-
-VoronoiSimplexSolver::VoronoiSimplexSolver()
-: SimplexSolverInterface(new btVoronoiSimplexSolver())
-{
+	_native = native;
 }
 #endif
+
+VoronoiSimplexSolver::VoronoiSimplexSolver()
+{
+	_native = new btVoronoiSimplexSolver();
+}
 
 void VoronoiSimplexSolver::AddVertex(Vector3 w, Vector3 p, Vector3 q)
 {
 	VECTOR3_DEF(w);
 	VECTOR3_DEF(p);
 	VECTOR3_DEF(q);
-
 	_native->addVertex(VECTOR3_USE(w), VECTOR3_USE(p), VECTOR3_USE(q));
-
 	VECTOR3_DEL(w);
 	VECTOR3_DEL(p);
 	VECTOR3_DEL(q);
@@ -107,62 +139,47 @@ void VoronoiSimplexSolver::BackupClosest(Vector3 v)
 bool VoronoiSimplexSolver::Closest(Vector3 v)
 {
 	VECTOR3_DEF(v);
-	bool ret = _native->closest(VECTOR3_USE(v));
+	return _native->closest(VECTOR3_USE(v));
 	VECTOR3_DEL(v);
-	return ret;
 }
 
-bool VoronoiSimplexSolver::ClosestPtPointTetrahedron(Vector3 p,
-	Vector3 a, Vector3 b, Vector3 c, Vector3 d, [Out] SubSimplexClosestResult^% finalResult)
+bool VoronoiSimplexSolver::ClosestPtPointTetrahedron(Vector3 p, Vector3 a, Vector3 b,
+	Vector3 c, Vector3 d, SubSimplexClosestResult^ finalResult)
 {
 	VECTOR3_DEF(p);
 	VECTOR3_DEF(a);
 	VECTOR3_DEF(b);
 	VECTOR3_DEF(c);
 	VECTOR3_DEF(d);
-
-	btSubSimplexClosestResult* tempResult = new btSubSimplexClosestResult();
-	bool ret = _native->closestPtPointTetrahedron(VECTOR3_USE(p),
-		VECTOR3_USE(a), VECTOR3_USE(b), VECTOR3_USE(c), VECTOR3_USE(d), *tempResult);
-
+	return _native->closestPtPointTetrahedron(VECTOR3_USE(p), VECTOR3_USE(a), VECTOR3_USE(b),
+		VECTOR3_USE(c), VECTOR3_USE(d), *finalResult->_native);
 	VECTOR3_DEL(p);
 	VECTOR3_DEL(a);
 	VECTOR3_DEL(b);
 	VECTOR3_DEL(c);
 	VECTOR3_DEL(d);
-
-	finalResult = gcnew SubSimplexClosestResult(tempResult);
-	return ret;
 }
 
-bool VoronoiSimplexSolver::ClosestPtPointTriangle(Vector3 p,
-	Vector3 a, Vector3 b, Vector3 c, [Out] SubSimplexClosestResult^% result)
+bool VoronoiSimplexSolver::ClosestPtPointTriangle(Vector3 p, Vector3 a, Vector3 b,
+	Vector3 c, SubSimplexClosestResult^ result)
 {
 	VECTOR3_DEF(p);
 	VECTOR3_DEF(a);
 	VECTOR3_DEF(b);
 	VECTOR3_DEF(c);
-
-	btSubSimplexClosestResult* tempResult = new btSubSimplexClosestResult;
-	bool ret = _native->closestPtPointTriangle(VECTOR3_USE(p),
-		VECTOR3_USE(a), VECTOR3_USE(b), VECTOR3_USE(c), *tempResult);
-	
+	return _native->closestPtPointTriangle(VECTOR3_USE(p), VECTOR3_USE(a), VECTOR3_USE(b),
+		VECTOR3_USE(c), *result->_native);
 	VECTOR3_DEL(p);
 	VECTOR3_DEL(a);
 	VECTOR3_DEL(b);
 	VECTOR3_DEL(c);
-
-	result = gcnew SubSimplexClosestResult(tempResult);
-	return ret;
 }
 
 void VoronoiSimplexSolver::ComputePoints(Vector3 p1, Vector3 p2)
 {
 	VECTOR3_DEF(p1);
 	VECTOR3_DEF(p2);
-
 	_native->compute_points(VECTOR3_USE(p1), VECTOR3_USE(p2));
-
 	VECTOR3_DEL(p1);
 	VECTOR3_DEL(p2);
 }
@@ -211,32 +228,29 @@ btScalar VoronoiSimplexSolver::MaxVertex()
 	return _native->maxVertex();
 }
 
-int VoronoiSimplexSolver::PointOutsideOfPlane(Vector3 p,
-	Vector3 a, Vector3 b, Vector3 c, Vector3 d)
+int VoronoiSimplexSolver::PointOutsideOfPlane(Vector3 p, Vector3 a, Vector3 b, Vector3 c,
+	Vector3 d)
 {
 	VECTOR3_DEF(p);
 	VECTOR3_DEF(a);
 	VECTOR3_DEF(b);
 	VECTOR3_DEF(c);
 	VECTOR3_DEF(d);
-
-	int ret = _native->pointOutsideOfPlane(VECTOR3_USE(p),
-		VECTOR3_USE(a), VECTOR3_USE(b), VECTOR3_USE(c), VECTOR3_USE(d));
-
+	int ret = _native->pointOutsideOfPlane(VECTOR3_USE(p), VECTOR3_USE(a), VECTOR3_USE(b),
+		VECTOR3_USE(c), VECTOR3_USE(d));
 	VECTOR3_DEL(p);
 	VECTOR3_DEL(a);
 	VECTOR3_DEL(b);
 	VECTOR3_DEL(c);
 	VECTOR3_DEL(d);
-
 	return ret;
 }
-
-//void VoronoiSimplexSolver::ReduceVertices(UsageBitfield^ UsedVerts)
-//{
-//	_native->reduceVertices(UsedVerts->_native);
-//}
-
+/*
+void VoronoiSimplexSolver::ReduceVertices(UsageBitfield^ usedVerts)
+{
+	_native->reduceVertices(*usedVerts->_native);
+}
+*/
 void VoronoiSimplexSolver::RemoveVertex(int index)
 {
 	_native->removeVertex(index);
@@ -252,9 +266,96 @@ bool VoronoiSimplexSolver::UpdateClosestVectorAndPoints()
 	return _native->updateClosestVectorAndPoints();
 }
 
+SubSimplexClosestResult^ VoronoiSimplexSolver::CachedBC::get()
+{
+	return gcnew SubSimplexClosestResult(&_native->m_cachedBC);
+}
+
+Vector3 VoronoiSimplexSolver::CachedP1::get()
+{
+	return Math::BtVector3ToVector3(&_native->m_cachedP1);
+}
+void VoronoiSimplexSolver::CachedP1::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_native->m_cachedP1);
+}
+
+Vector3 VoronoiSimplexSolver::CachedP2::get()
+{
+	return Math::BtVector3ToVector3(&_native->m_cachedP2);
+}
+void VoronoiSimplexSolver::CachedP2::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_native->m_cachedP2);
+}
+
+Vector3 VoronoiSimplexSolver::CachedV::get()
+{
+	return Math::BtVector3ToVector3(&_native->m_cachedV);
+}
+void VoronoiSimplexSolver::CachedV::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_native->m_cachedV);
+}
+
+bool VoronoiSimplexSolver::CachedValidClosest::get()
+{
+	return _native->m_cachedValidClosest;
+}
+void VoronoiSimplexSolver::CachedValidClosest::set(bool value)
+{
+	_native->m_cachedValidClosest = value;
+}
+
+btScalar VoronoiSimplexSolver::EqualVertexThreshold::get()
+{
+	return _native->getEqualVertexThreshold();
+}
+void VoronoiSimplexSolver::EqualVertexThreshold::set(btScalar threshold)
+{
+	_native->setEqualVertexThreshold(threshold);
+}
+
+Vector3 VoronoiSimplexSolver::LastW::get()
+{
+	return Math::BtVector3ToVector3(&_native->m_lastW);
+}
+void VoronoiSimplexSolver::LastW::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_native->m_lastW);
+}
+
+bool VoronoiSimplexSolver::NeedsUpdate::get()
+{
+	return _native->m_needsUpdate;
+}
+void VoronoiSimplexSolver::NeedsUpdate::set(bool value)
+{
+	_native->m_needsUpdate = value;
+}
+
 int VoronoiSimplexSolver::NumVertices::get()
 {
-	return _native->numVertices();
+	return _native->m_numVertices;
+}
+void VoronoiSimplexSolver::NumVertices::set(int value)
+{
+	_native->m_numVertices = value;
+}
+
+Vector3Array^ VoronoiSimplexSolver::SimplexPointsP::get()
+{
+	return gcnew Vector3Array(_native->m_simplexPointsP, VORONOI_SIMPLEX_MAX_VERTS);
+}
+
+Vector3Array^ VoronoiSimplexSolver::SimplexPointsQ::get()
+{
+	return gcnew Vector3Array(_native->m_simplexPointsQ, VORONOI_SIMPLEX_MAX_VERTS);
+}
+
+Vector3Array^ VoronoiSimplexSolver::SimplexVectorW::get()
+{
+	return gcnew Vector3Array(_native->m_simplexVectorW, VORONOI_SIMPLEX_MAX_VERTS);
 }
 
 #endif

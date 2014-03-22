@@ -287,8 +287,7 @@ btScalar CollisionShape::GetContactBreakingThreshold(btScalar defaultContactThre
 #ifndef DISABLE_SERIALIZE
 String^ CollisionShape::Serialize(IntPtr dataBuffer, Serializer^ serializer)
 {
-	const char* name = _native->serialize(dataBuffer.ToPointer(), serializer->_native);
-	return gcnew String(name);
+	return gcnew String(_native->serialize(dataBuffer.ToPointer(), serializer->_native));
 }
 
 void CollisionShape::SerializeSingleShape(Serializer^ serializer)
