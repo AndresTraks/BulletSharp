@@ -1,18 +1,12 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	ref class CollisionObject;
 	ref class CollisionShape;
 
-	public ref class CollisionObjectWrapper // : BulletSharp::IDisposable
+	public ref class CollisionObjectWrapper // : IDisposable
 	{
-	public:
-		//virtual event EventHandler^ OnDisposing;
-		//virtual event EventHandler^ OnDisposed;
-
 	internal:
 		btCollisionObjectWrapper* _native;
 

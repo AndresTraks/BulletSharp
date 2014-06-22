@@ -1,12 +1,10 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	interface class IDebugDraw;
 
-	public ref class ConvexCast : BulletSharp::IDisposable
+	public ref class ConvexCast : IDisposable
 	{
 	public:
 		ref class CastResult
@@ -78,9 +76,6 @@ namespace BulletSharp
 				virtual bool get();
 			}
 		};
-
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
 
 	internal:
 		btConvexCast* _native;

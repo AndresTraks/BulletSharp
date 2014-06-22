@@ -362,6 +362,9 @@ namespace BulletSharp
 	[DebuggerTypeProxy(Vector3ListDebugView::typeid)]
 	public ref class Vector3Array : GenericList<Vector3>
 	{
+	private:
+		int _vectorStride;
+
 	internal:
 		Vector3Array(btVector3* vector3Array, int length);
 		Vector3Array(const btVector3* vector3Array, int length);
@@ -369,7 +372,6 @@ namespace BulletSharp
 	public:
 		Vector3Array(int length);
 
-		virtual bool Contains(Vector3 item) override;
 		virtual void CopyTo(array<Vector3>^ array, int arrayIndex) override;
 		virtual int IndexOf(Vector3 item) override;
 
@@ -377,6 +379,12 @@ namespace BulletSharp
 		{
 			virtual Vector3 get(int index) override;
 			virtual void set(int index, Vector3 value) override;
+		}
+
+		property int Stride
+		{
+			int get();
+			void set(int value);
 		}
 	};
 };

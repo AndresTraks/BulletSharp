@@ -2319,7 +2319,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\Box2dBox2dCollisionAlgorithm.cpp"
+						RelativePath="..\src\Box2DBox2DCollisionAlgorithm.cpp"
 						>
 					</File>
 					<File
@@ -2363,7 +2363,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\Convex2dConvex2dAlgorithm.cpp"
+						RelativePath="..\src\Convex2DConvex2DAlgorithm.cpp"
 						>
 					</File>
 					<File
@@ -2531,7 +2531,7 @@
 					Name="CollisionShapes"
 					>
 					<File
-						RelativePath="..\src\Box2dShape.cpp"
+						RelativePath="..\src\Box2DShape.cpp"
 						>
 					</File>
 					<File
@@ -2567,7 +2567,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\Convex2dShape.cpp"
+						RelativePath="..\src\Convex2DShape.cpp"
 						>
 					</File>
 					<File
@@ -3148,7 +3148,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\Box2dBox2dCollisionAlgorithm.h"
+						RelativePath="..\src\Box2DBox2DCollisionAlgorithm.h"
 						>
 					</File>
 					<File
@@ -3192,7 +3192,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\Convex2dConvex2dAlgorithm.h"
+						RelativePath="..\src\Convex2DConvex2DAlgorithm.h"
 						>
 					</File>
 					<File
@@ -3360,7 +3360,7 @@
 					Name="CollisionShapes"
 					>
 					<File
-						RelativePath="..\src\Box2dShape.h"
+						RelativePath="..\src\Box2DShape.h"
 						>
 					</File>
 					<File
@@ -3396,7 +3396,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\Convex2dShape.h"
+						RelativePath="..\src\Convex2DShape.h"
 						>
 					</File>
 					<File

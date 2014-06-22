@@ -247,10 +247,10 @@ int RaycastVehicle::ForwardAxis::get()
 
 Vector3 RaycastVehicle::ForwardVector::get()
 {
-	btVector3* vectorTemp = new btVector3;
+	btVector3* vectorTemp = ALIGNED_NEW(btVector3);
 	RaycastVehicle_GetForwardVector(_native, vectorTemp);
 	Vector3 vector = Math::BtVector3ToVector3(vectorTemp);
-	delete vectorTemp;
+	ALIGNED_FREE(vectorTemp);
 	return vector;
 }
 

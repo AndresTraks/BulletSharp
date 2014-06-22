@@ -1,13 +1,12 @@
 #pragma once
 
 #include "IDebugDraw.h"
-#include "IDisposable.h"
 
 namespace BulletSharp
 {
 	class DebugDrawWrapper;
 
-	public ref class DebugDraw abstract : public IDebugDraw, BulletSharp::IDisposable
+	public ref class DebugDraw abstract : public IDebugDraw, ITrackingDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;

@@ -4,6 +4,9 @@
 
 #include "RigidBody.h"
 #include "TypedConstraint.h"
+#ifndef DISABLE_SERIALIZE
+#include "Serializer.h"
+#endif
 
 JointFeedback::JointFeedback(btJointFeedback* native)
 {
@@ -328,7 +331,7 @@ void TypedConstraint::InternalSetAppliedImpulse(btScalar appliedImpulse)
 }
 
 #ifndef DISABLE_SERIALIZE
-String^ TypedConstraint::Serialize(IntPtr dataBuffer, Serializer^ serializer)
+String^ TypedConstraint::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
 {
 	return gcnew String(_native->serialize(dataBuffer.ToPointer(), serializer->_native));
 }

@@ -66,12 +66,8 @@ CollisionAlgorithm::!CollisionAlgorithm()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 btScalar CollisionAlgorithm::CalculateTimeOfImpact(CollisionObject^ body0, CollisionObject^ body1,
@@ -97,4 +93,3 @@ bool CollisionAlgorithm::IsDisposed::get()
 {
 	return (_native == NULL);
 }
-

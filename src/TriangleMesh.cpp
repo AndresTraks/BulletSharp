@@ -88,4 +88,3 @@ void TriangleMesh::WeldingThreshold::set(btScalar value)
 {
 	Native->m_weldingThreshold = value;
 }
-

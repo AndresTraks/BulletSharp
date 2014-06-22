@@ -95,14 +95,14 @@ void CompoundShape::CalculatePrincipalAxisTransform(array<btScalar>^ masses, Mat
 {
 	pin_ptr<btScalar> massesPtr = &masses[0];
 	btTransform* principalTemp = Math::MatrixToBtTransform(principal);
-	btVector3* inertiaTemp = new btVector3;
+	btVector3* inertiaTemp = ALIGNED_NEW(btVector3);
 	
 	Native->calculatePrincipalAxisTransform(massesPtr, *principalTemp, *inertiaTemp);
 	Math::BtTransformToMatrix(principalTemp, principal);
-	inertia = Math::BtVector3ToVector3(inertiaTemp);
+	Math::BtVector3ToVector3(inertiaTemp, inertia);
 	
 	ALIGNED_FREE(principalTemp);
-	delete inertiaTemp;
+	ALIGNED_FREE(inertiaTemp);
 }
 
 void CompoundShape::CreateAabbTreeFromChildren()

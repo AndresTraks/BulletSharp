@@ -211,7 +211,7 @@ void StridingMeshInterface::PreallocateVertices(int numVerts)
 }
 
 #ifndef DISABLE_SERIALIZE
-String^ StridingMeshInterface::Serialize(IntPtr dataBuffer, Serializer^ serializer)
+String^ StridingMeshInterface::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
 {
 	return gcnew String(_native->serialize(dataBuffer.ToPointer(), serializer->_native));
 }

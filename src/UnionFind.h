@@ -1,10 +1,8 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
-	public ref class Element : System::IDisposable
+	public ref class Element : IDisposable
 	{
 	internal:
 		btElement* _native;
@@ -34,7 +32,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class UnionFind : System::IDisposable
+	public ref class UnionFind : IDisposable
 	{
 	internal:
 		btUnionFind* _native;

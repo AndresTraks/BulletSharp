@@ -4,12 +4,12 @@
 
 #include "Hacd.h"
 #include "StringConv.h"
-
-Hacd::Hacd(HACD* native)
+/*
+Hacd::Hacd(HACD::HACD* native)
 {
 	_native = native;
 }
-
+*/
 Hacd::Hacd()
 {
 	_native = new HACD::HACD();
@@ -105,29 +105,29 @@ bool Hacd::Save(String^ fileName, bool uniColor)
 	return ret;
 }
 
-bool HACD::AddExtraDistPoints::get()
+bool Hacd::AddExtraDistPoints::get()
 {
 	return _native->GetAddExtraDistPoints();
 }
-void HACD::AddExtraDistPoints::set(bool addExtraDistPoints)
+void Hacd::AddExtraDistPoints::set(bool addExtraDistPoints)
 {
 	_native->SetAddExtraDistPoints(addExtraDistPoints);
 }
 
-bool HACD::AddFacesPoints::get()
+bool Hacd::AddFacesPoints::get()
 {
 	return _native->GetAddFacesPoints();
 }
-void HACD::AddFacesPoints::set(bool addFacesPoints)
+void Hacd::AddFacesPoints::set(bool addFacesPoints)
 {
 	_native->SetAddFacesPoints(addFacesPoints);
 }
 
-bool HACD::AddNeighboursDistPoints::get()
+bool Hacd::AddNeighboursDistPoints::get()
 {
 	return _native->GetAddNeighboursDistPoints();
 }
-void HACD::AddNeighboursDistPoints::set(bool addNeighboursDistPoints)
+void Hacd::AddNeighboursDistPoints::set(bool addNeighboursDistPoints)
 {
 	_native->SetAddNeighboursDistPoints(addNeighboursDistPoints);
 }
@@ -237,11 +237,11 @@ void Hacd::NTriangles::set(int nTriangles)
 	_native->SetNTriangles(nTriangles);
 }
 
-int Hacd::NVerticesPerCH::get()
+int Hacd::NumVerticesPerConvexHull::get()
 {
 	return _native->GetNVerticesPerCH();
 }
-void Hacd::NVerticesPerCH::set(int nVerticesPerCH)
+void Hacd::NumVerticesPerConvexHull::set(int nVerticesPerCH)
 {
 	_native->SetNVerticesPerCH(nVerticesPerCH);
 }
@@ -269,20 +269,20 @@ void Hacd::ScaleFactor::set(double scale)
 	_native->SetScaleFactor(scale);
 }
 /*
-Vec3^ HACD::Triangles::get()
+Vec3^ Hacd::Triangles::get()
 {
 	return _native->GetTriangles();
 }
-void HACD::Triangles::set(Vec3^ triangles)
+void Hacd::Triangles::set(Vec3^ triangles)
 {
 	_native->SetTriangles(triangles->_native);
 }
 */
-double HACD::VolumeWeight::get()
+double Hacd::VolumeWeight::get()
 {
 	return _native->GetVolumeWeight();
 }
-void HACD::VolumeWeight::set(double beta)
+void Hacd::VolumeWeight::set(double beta)
 {
 	_native->SetVolumeWeight(beta);
 }

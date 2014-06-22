@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	ref class AlignedManifoldArray;
@@ -42,12 +40,8 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class CollisionAlgorithm : BulletSharp::IDisposable
+	public ref class CollisionAlgorithm : IDisposable
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	internal:
 		btCollisionAlgorithm* _native;
 		CollisionAlgorithm(btCollisionAlgorithm* native);

@@ -2,7 +2,7 @@
 
 namespace BulletSharp
 {
-	public interface class IDisposable : System::IDisposable
+	public interface class ITrackingDisposable : System::IDisposable
 	{
 	public:
 		event EventHandler^ OnDisposing;

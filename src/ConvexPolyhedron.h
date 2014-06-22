@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	ref class AlignedIntArray;
@@ -35,7 +33,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class ConvexPolyhedron : BulletSharp::IDisposable
+	public ref class ConvexPolyhedron : ITrackingDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;

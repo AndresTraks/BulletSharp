@@ -5,6 +5,9 @@
 #include "Collections.h"
 #include "OptimizedBvh.h"
 #include "QuantizedBvh.h"
+#ifndef DISABLE_SERIALIZE
+#include "Serializer.h"
+#endif
 
 QuantizedBvhNode::QuantizedBvhNode(btQuantizedBvhNode* native)
 {
@@ -35,12 +38,8 @@ QuantizedBvh::!QuantizedBvh()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 QuantizedBvhNode::QuantizedBvhNode()
@@ -189,11 +188,11 @@ void QuantizedBvh::DeSerializeFloat(QuantizedBvhFloatData^ quantizedBvhFloatData
 	_native->deSerializeFloat(*quantizedBvhFloatData->_native);
 }
 */
-QuantizedBvh^ QuantizedBvh::DeSerializeInPlace(void^ i_alignedDataBuffer, unsigned int i_dataBufferSize,
+QuantizedBvh^ QuantizedBvh::DeSerializeInPlace(IntPtr i_alignedDataBuffer, unsigned int i_dataBufferSize,
 	bool i_swapEndian)
 {
-	return btQuantizedBvh::deSerializeInPlace(i_alignedDataBuffer->_native, i_dataBufferSize,
-		i_swapEndian);
+	return QuantizedBvh::GetManaged(btQuantizedBvh::deSerializeInPlace(i_alignedDataBuffer.ToPointer(), i_dataBufferSize,
+		i_swapEndian));
 }
 #endif
 /*
@@ -252,7 +251,7 @@ void QuantizedBvh::ReportRayOverlappingNodex(NodeOverlapCallback^ nodeCallback, 
 bool QuantizedBvh::Serialize(IntPtr alignedDataBuffer, unsigned int dataBufferSize,
 	bool swapEndian)
 {
-	return _native->serialize(alignedDataBuffer->_native, dataBufferSize, swapEndian);
+	return _native->serialize(alignedDataBuffer.ToPointer(), dataBufferSize, swapEndian);
 }
 
 String^ QuantizedBvh::Serialize(IntPtr dataBuffer, Serializer^ serializer)

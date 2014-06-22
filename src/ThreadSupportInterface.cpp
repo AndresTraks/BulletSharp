@@ -22,12 +22,8 @@ MultiThreaded::Barrier::!Barrier()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	//delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 void MultiThreaded::Barrier::Sync()
@@ -65,12 +61,8 @@ MultiThreaded::CriticalSection::!CriticalSection()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	//delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 UIntArray^ MultiThreaded::CriticalSection::CommonBuff::get()
@@ -119,12 +111,8 @@ MultiThreaded::ThreadSupportInterface::!ThreadSupportInterface()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 Barrier^ MultiThreaded::ThreadSupportInterface::CreateBarrier()

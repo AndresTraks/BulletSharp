@@ -36,14 +36,10 @@ AlignedObjectArray<T>::!AlignedObjectArray()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	if (_ownsObject) {
 		delete _native;
 	}
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 generic<class T>

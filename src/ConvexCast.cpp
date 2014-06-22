@@ -133,12 +133,8 @@ ConvexCast::!ConvexCast()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 bool ConvexCast::CalcTimeOfImpact(Matrix fromA, Matrix toA, Matrix fromB, Matrix toB,

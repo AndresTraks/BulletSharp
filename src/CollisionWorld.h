@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	ref class AlignedCollisionObjectArray;
@@ -24,7 +22,7 @@ namespace BulletSharp
 	class ContactResultCallbackWrapper;
 	class DebugDrawWrapper;
 
-	public ref class CollisionWorld : BulletSharp::IDisposable
+	public ref class CollisionWorld : ITrackingDisposable
 	{
 	public:
 		ref class LocalShapeInfo
@@ -87,12 +85,8 @@ namespace BulletSharp
 			}
 		};
 
-		ref class ConvexResultCallback : BulletSharp::IDisposable
+		ref class ConvexResultCallback : IDisposable
 		{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
-
 		internal:
 			btCollisionWorld::ConvexResultCallback* _native;
 			ConvexResultCallback(btCollisionWorld::ConvexResultCallback* callback);
@@ -172,12 +166,8 @@ namespace BulletSharp
 			}
 		};
 
-		ref class ContactResultCallback abstract : BulletSharp::IDisposable
+		ref class ContactResultCallback abstract : IDisposable
 		{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
-
 		internal:
 			ContactResultCallbackWrapper* _native;
 

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	struct BroadphaseAabbCallbackWrapper;
@@ -76,7 +74,7 @@ namespace BulletSharp
 		virtual bool process(const btBroadphaseProxy* proxy);
 	};
 
-	public ref class BroadphaseInterface : BulletSharp::IDisposable
+	public ref class BroadphaseInterface : ITrackingDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;

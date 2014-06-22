@@ -4,8 +4,8 @@
 
 #define Native static_cast<btBoxShape*>(_native)
 
-BoxShape::BoxShape(btBoxShape* shape)
-: PolyhedralConvexShape(shape)
+BoxShape::BoxShape(btBoxShape* native)
+: PolyhedralConvexShape(native)
 {
 }
 
@@ -20,17 +20,17 @@ BoxShape::BoxShape(Vector3 boxHalfExtents)
 BoxShape::BoxShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ)
 : PolyhedralConvexShape(0)
 {
-	btVector3* boxHalfExtentsTemp = new btVector3(boxHalfExtentsX,boxHalfExtentsY,boxHalfExtentsZ);
+	btVector3* boxHalfExtentsTemp = ALIGNED_NEW(btVector3) (boxHalfExtentsX,boxHalfExtentsY,boxHalfExtentsZ);
 	UnmanagedPointer = new btBoxShape(*boxHalfExtentsTemp);
-	delete boxHalfExtentsTemp;
+	ALIGNED_FREE(boxHalfExtentsTemp);
 }
 
 BoxShape::BoxShape(btScalar boxHalfExtents)
 : PolyhedralConvexShape(0)
 {
-	btVector3* boxHalfExtentsTemp = new btVector3(boxHalfExtents,boxHalfExtents,boxHalfExtents);
+	btVector3* boxHalfExtentsTemp = ALIGNED_NEW(btVector3) (boxHalfExtents, boxHalfExtents, boxHalfExtents);
 	UnmanagedPointer = new btBoxShape(*boxHalfExtentsTemp);
-	delete boxHalfExtentsTemp;
+	ALIGNED_FREE(boxHalfExtentsTemp);
 }
 
 Vector4 BoxShape::GetPlaneEquation(int index)

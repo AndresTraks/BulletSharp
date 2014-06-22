@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	ref class CollisionObject;
@@ -11,7 +9,7 @@ namespace BulletSharp
 	ref class TypedConstraint;
 	interface class IDebugDraw;
 
-	public ref class ConstraintSolver abstract : BulletSharp::IDisposable
+	public ref class ConstraintSolver abstract : ITrackingDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
@@ -49,10 +47,11 @@ namespace BulletSharp
 #endif
 			Dispatcher^ dispatcher);
 #endif
-
+#ifndef DISABLE_CONSTRAINTS
 		property ConstraintSolverType SolverType
 		{
 			ConstraintSolverType get();
 		}
+#endif
 	};
 };

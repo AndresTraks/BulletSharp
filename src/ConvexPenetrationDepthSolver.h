@@ -1,6 +1,5 @@
 #pragma once
 
-#include "IDisposable.h"
 #include "SimplexSolverInterface.h"
 
 namespace BulletSharp
@@ -9,7 +8,7 @@ namespace BulletSharp
 	ref class SimplexSolverInterface;
 	interface class IDebugDraw;
 
-	public ref class ConvexPenetrationDepthSolver : BulletSharp::IDisposable
+	public ref class ConvexPenetrationDepthSolver : ITrackingDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;

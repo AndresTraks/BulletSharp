@@ -73,4 +73,3 @@ bool SimpleBroadphase::TestAabbOverlap(BroadphaseProxy^ proxy0, BroadphaseProxy^
 {
 	return Native->testAabbOverlap((btSimpleBroadphaseProxy*)proxy0->_native, (btSimpleBroadphaseProxy*)proxy1->_native);
 }
-

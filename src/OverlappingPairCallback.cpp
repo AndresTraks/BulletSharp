@@ -53,12 +53,8 @@ OverlappingPairCallback::!OverlappingPairCallback()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	ObjectTable::Remove(_native);
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 BroadphasePair^ OverlappingPairCallback::AddOverlappingPair(BroadphaseProxy^ proxy0,

@@ -240,4 +240,3 @@ void PersistentManifold::NumContacts::set(int cachedPoints)
 {
 	Native->setNumContacts(cachedPoints);
 }
-

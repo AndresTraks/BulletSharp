@@ -68,4 +68,3 @@ void ManifoldResult::PersistentManifold::set(BulletSharp::PersistentManifold^ ma
 {
 	Native->setPersistentManifold((btPersistentManifold*)GetUnmanagedNullable(manifold));
 }
-

@@ -119,6 +119,7 @@ Vector3Array^ IndexedMesh::Vertices::get()
 	}
 
 	_vertices = gcnew Vector3Array(vertexBase, count);
+	_vertices->Stride = VertexStride;
 	return _vertices;
 }
 void IndexedMesh::Vertices::set(Vector3Array^ value)
@@ -143,6 +144,11 @@ int IndexedMesh::VertexStride::get()
 void IndexedMesh::VertexStride::set(int value)
 {
 	_native->m_vertexStride = value;
+
+	if (_vertices != nullptr)
+	{
+		_vertices->Stride = value;
+	}
 }
 
 PhyScalarType IndexedMesh::VertexType::get()
@@ -211,4 +217,3 @@ AlignedIndexedMeshArray^ TriangleIndexVertexArray::IndexedMeshArray::get()
 	}
 	return _indexedMeshArray;
 }
-

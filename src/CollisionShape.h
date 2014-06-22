@@ -1,12 +1,10 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	ref class Serializer;
 
-	public ref class CollisionShape : BulletSharp::IDisposable
+	public ref class CollisionShape : ITrackingDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;

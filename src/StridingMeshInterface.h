@@ -1,14 +1,12 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	ref class DataStream;
 	ref class InternalTriangleIndexCallback;
 	ref class Serializer;
 
-	public ref class StridingMeshInterface abstract : BulletSharp::IDisposable
+	public ref class StridingMeshInterface abstract : ITrackingDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;

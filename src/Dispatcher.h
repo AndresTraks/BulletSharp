@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CollisionObject.h"
-#include "IDisposable.h"
 
 namespace BulletSharp
 {
@@ -104,7 +103,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class Dispatcher abstract : BulletSharp::IDisposable
+	public ref class Dispatcher abstract : ITrackingDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
@@ -128,7 +127,9 @@ namespace BulletSharp
 			PersistentManifold^ sharedManifold);
 		CollisionAlgorithm^ FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap);
 		void FreeCollisionAlgorithm(IntPtr ptr);
+#ifndef DISABLE_INTERNAL
 		PersistentManifold^ GetManifoldByIndexInternal(int index);
+#endif
 		PersistentManifold^ GetNewManifold(CollisionObject^ body0, CollisionObject^ body1);
 		bool NeedsCollision(CollisionObject^ body0, CollisionObject^ body1);
 		bool NeedsResponse(CollisionObject^ body0, CollisionObject^ body1);

@@ -1,15 +1,9 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
-	public ref class TriangleCallback abstract : BulletSharp::IDisposable
+	public ref class TriangleCallback abstract : IDisposable
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	internal:
 		btTriangleCallback* _native;
 		TriangleCallback(btTriangleCallback* native);
@@ -29,12 +23,8 @@ namespace BulletSharp
 	};
 
 #ifndef DISABLE_INTERNAL
-	public ref class InternalTriangleIndexCallback abstract : BulletSharp::IDisposable
+	public ref class InternalTriangleIndexCallback abstract : IDisposable
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	internal:
 		btInternalTriangleIndexCallback* _native;
 		InternalTriangleIndexCallback(btInternalTriangleIndexCallback* native);

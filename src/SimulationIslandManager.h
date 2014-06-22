@@ -1,17 +1,15 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	ref class CollisionWorld;
 	ref class Dispatcher;
 	ref class UnionFind;
 
-	public ref class SimulationIslandManager
+	public ref class SimulationIslandManager : ITrackingDisposable
 	{
 	public:
-		/*ref class IslandCallback abstract : BulletSharp::IDisposable
+		/*ref class IslandCallback abstract : IDisposable
 		{
 		internal:
 			btSimulationIslandManager::IslandCallback* _native;

@@ -13,16 +13,10 @@ namespace BulletSharp
 	class btCollisionDispatcherWrapper : public btCollisionDispatcher
 	{
 	public:
-		void* _nearCallback;
+		gcroot<CollisionDispatcher^> _collisionDispatcher;
 
 	public:
-		btCollisionDispatcherWrapper (btCollisionConfiguration* collisionConfiguration);
-	};
-
-	class NearCallbackWrapper
-	{
-	public:
-		static void nearCallback (btBroadphasePair& collisionPair, btCollisionDispatcherWrapper& dispatcher, const btDispatcherInfo& dispatchInfo);
+		btCollisionDispatcherWrapper(btCollisionConfiguration* collisionConfiguration);
 	};
 
 	public ref class CollisionDispatcher : Dispatcher
@@ -31,10 +25,11 @@ namespace BulletSharp
 		CollisionConfiguration^ _collisionConfiguration;
 
 	private:
-		btNearCallback originalCallback;
 		System::Collections::Generic::List<CollisionAlgorithmCreateFunc^>^ _collisionCreateFuncs;
 
 	internal:
+		NearCallback^ _nearCallback;
+
 		CollisionDispatcher(btCollisionDispatcher* native);
 
 	public:

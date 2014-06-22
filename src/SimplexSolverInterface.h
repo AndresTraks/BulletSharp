@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IDisposable.h"
-
 #ifdef NO_VIRTUAL_INTERFACE
 #include "VoronoiSimplexSolver.h"
 #define SimplexSolverInterface VoronoiSimplexSolver

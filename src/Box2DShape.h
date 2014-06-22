@@ -6,19 +6,19 @@ namespace BulletSharp
 {
 	ref class Vector3Array;
 
-	public ref class Box2dShape : PolyhedralConvexShape
+	public ref class Box2DShape : PolyhedralConvexShape
 	{
 	private:
 		Vector3Array^ _normals;
 		Vector3Array^ _vertices;
 
 	internal:
-		Box2dShape(btBox2dShape* native);
+		Box2DShape(btBox2dShape* native);
 
 	public:
-		Box2dShape(Vector3 boxHalfExtents);
-		Box2dShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ);
-		Box2dShape(btScalar boxHalfExtent); // cube helper
+		Box2DShape(Vector3 boxHalfExtents);
+		Box2DShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ);
+		Box2DShape(btScalar boxHalfExtent); // cube helper
 
 		Vector4 GetPlaneEquation(int i);
 		Vector3 GetVertex(int i);

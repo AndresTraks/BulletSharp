@@ -50,12 +50,8 @@ Serialize::BulletWorldImporter::!BulletWorldImporter()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	delete _importer;
 	_importer = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 CollisionObject^ Serialize::BulletWorldImporter::CreateCollisionObject(Matrix startTransform, CollisionShape^ shape, String^ bodyName)
@@ -442,7 +438,7 @@ CollisionObject^ Serialize::BulletWorldImporter::GetRigidBodyByIndex(int index)
 TypedConstraint^ Serialize::BulletWorldImporter::GetConstraintByIndex(int index)
 {
 	btTypedConstraint* constraint = _importer->getConstraintByIndex(index);
-	return TypedConstraint::Upcast(constraint);
+	return TypedConstraint::GetManaged(constraint);
 }
 #endif
 
@@ -496,7 +492,7 @@ TypedConstraint^ Serialize::BulletWorldImporter::GetConstraintByName(String^ nam
 	const char* nameTemp = StringConv::ManagedToUnmanaged(name);
 
 	constraint = _importer->getConstraintByName(nameTemp);
-	ret = TypedConstraint::Upcast(constraint);
+	ret = TypedConstraint::GetManaged(constraint);
 
 	StringConv::FreeUnmanagedString(nameTemp);
 	return ret;

@@ -615,12 +615,12 @@ void RigidBody::MotionState::set(BulletSharp::MotionState^ motionState)
 	Native->setMotionState(motionState->_native);
 	_motionState = motionState;
 }
-
+#ifndef DISABLE_CONSTRAINTS
 int RigidBody::NumConstraintRefs::get()
 {
 	return Native->getNumConstraintRefs();
 }
-
+#endif
 #pragma managed(push, off)
 void RigidBody_GetOrientation(btRigidBody* body, btQuaternion* orientation)
 {

@@ -15,12 +15,8 @@ OverlapCallback::!OverlapCallback()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 bool OverlapCallback::ProcessOverlap(BroadphasePair^ pair)
@@ -54,13 +50,9 @@ OverlapFilterCallback::!OverlapFilterCallback()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	ObjectTable::Remove(_native);
 	//delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 OverlapFilterCallback::OverlapFilterCallback()

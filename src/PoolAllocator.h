@@ -1,10 +1,8 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
-	public ref class PoolAllocator : BulletSharp::IDisposable
+	public ref class PoolAllocator : ITrackingDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;

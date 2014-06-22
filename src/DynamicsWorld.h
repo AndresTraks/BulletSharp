@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CollisionWorld.h"
-#include "IDisposable.h"
 
 namespace BulletSharp
 {

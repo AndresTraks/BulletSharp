@@ -52,6 +52,7 @@ namespace BulletSharp
 	internal:
 		PolyhedralConvexAabbCachingShape(btPolyhedralConvexAabbCachingShape* native);
 
+	public:
 		void GetNonvirtualAabb(Matrix trans, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax, btScalar margin);
 		void RecalcLocalAabb();
 	};

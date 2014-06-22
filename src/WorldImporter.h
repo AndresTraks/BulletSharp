@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	ref class CollisionObject;
@@ -29,12 +27,8 @@ namespace BulletSharp
 	{
 		class WorldImporterWrapper;
 
-		public ref class WorldImporter : BulletSharp::IDisposable
+		public ref class WorldImporter : IDisposable
 		{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
-
 		internal:
 			WorldImporterWrapper* _native;
 

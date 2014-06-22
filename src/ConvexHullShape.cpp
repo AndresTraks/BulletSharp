@@ -18,7 +18,7 @@ ConvexHullShape::ConvexHullShape()
 ConvexHullShape::ConvexHullShape(System::Collections::Generic::IEnumerable<Vector3>^ points)
 : PolyhedralConvexAabbCachingShape(new btConvexHullShape())
 {
-	btVector3* pointTemp = new btVector3;
+	btVector3* pointTemp = ALIGNED_NEW(btVector3);
 
 	for each (Vector3 point in points)
 	{
@@ -27,7 +27,7 @@ ConvexHullShape::ConvexHullShape(System::Collections::Generic::IEnumerable<Vecto
 	}
 	Native->recalcLocalAabb();
 
-	delete pointTemp;
+	ALIGNED_FREE(pointTemp);
 }
 
 void ConvexHullShape::AddPoint(Vector3 point, bool recalculateLocalAabb)
@@ -52,10 +52,10 @@ void ConvexHullShape_GetScaledPoint(btConvexHullShape* shape, int i, btVector3* 
 #pragma managed(pop)
 Vector3 ConvexHullShape::GetScaledPoint(int i)
 {
-	btVector3* pointTemp = new btVector3;
+	btVector3* pointTemp = ALIGNED_NEW(btVector3);
 	ConvexHullShape_GetScaledPoint(Native, i, pointTemp);
 	Vector3 point = Math::BtVector3ToVector3(pointTemp);
-	delete pointTemp;
+	ALIGNED_FREE(pointTemp);
 	return point;
 }
 
@@ -97,4 +97,3 @@ Vector3Array^ ConvexHullShape::UnscaledPoints::get()
 
 	return _unscaledPoints;
 }
-

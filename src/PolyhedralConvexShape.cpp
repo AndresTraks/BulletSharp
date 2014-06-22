@@ -14,40 +14,40 @@ PolyhedralConvexShape::PolyhedralConvexShape(btPolyhedralConvexShape* native)
 
 void PolyhedralConvexShape::GetEdge(int index, [Out] Vector3% pointA, [Out] Vector3% pointB)
 {
-	btVector3* paTemp = new btVector3;
-	btVector3* pbTemp = new btVector3;
+	btVector3* paTemp = ALIGNED_NEW(btVector3);
+	btVector3* pbTemp = ALIGNED_NEW(btVector3);
 
 	Native->getEdge(index, *paTemp, *pbTemp);
 
 	Math::BtVector3ToVector3(paTemp, pointA);
 	Math::BtVector3ToVector3(pbTemp, pointB);
 
-	delete paTemp;
-	delete pbTemp;
+	ALIGNED_FREE(paTemp);
+	ALIGNED_FREE(pbTemp);
 }
 
 void PolyhedralConvexShape::GetPlane([Out] Vector3% planeNormal, [Out] Vector3% planeSupport, int index)
 {
-	btVector3* planeNormalTemp = new btVector3;
-	btVector3* planeSupportTemp = new btVector3;
+	btVector3* planeNormalTemp = ALIGNED_NEW(btVector3);
+	btVector3* planeSupportTemp = ALIGNED_NEW(btVector3);
 
 	Native->getPlane(*planeNormalTemp, *planeSupportTemp, index);
 
 	Math::BtVector3ToVector3(planeNormalTemp, planeNormal);
 	Math::BtVector3ToVector3(planeSupportTemp, planeSupport);
 
-	delete planeNormalTemp;
-	delete planeSupportTemp;
+	ALIGNED_FREE(planeNormalTemp);
+	ALIGNED_FREE(planeSupportTemp);
 }
 
 void PolyhedralConvexShape::GetVertex(int index, [Out] Vector3% vertex)
 {
-	btVector3* vtxTemp = new btVector3;
+	btVector3* vtxTemp = ALIGNED_NEW(btVector3);
 
 	Native->getVertex(index, *vtxTemp);
 
 	Math::BtVector3ToVector3(vtxTemp, vertex);
-	delete vtxTemp;
+	ALIGNED_FREE(vtxTemp);
 }
 
 bool PolyhedralConvexShape::InitializePolyhedralFeatures(int shiftVerticesByMargin)
@@ -119,4 +119,3 @@ void PolyhedralConvexAabbCachingShape::RecalcLocalAabb()
 {
 	Native->recalcLocalAabb();
 }
-

@@ -38,10 +38,10 @@ void ConvexPointCloudShape_GetScaledPoint(btConvexPointCloudShape* shape, int i,
 #pragma managed(pop)
 Vector3 ConvexPointCloudShape::GetScaledPoint(int i)
 {
-	btVector3* pointTemp = new btVector3;
+	btVector3* pointTemp = ALIGNED_NEW(btVector3);
 	ConvexPointCloudShape_GetScaledPoint(Native, i, pointTemp);
 	Vector3 point = Math::BtVector3ToVector3(pointTemp);
-	delete pointTemp;
+	ALIGNED_FREE(pointTemp);
 	return point;
 }
 

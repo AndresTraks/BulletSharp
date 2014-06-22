@@ -3,8 +3,10 @@
 #include "BroadphaseProxy.h"
 #include "CollisionObject.h"
 #include "CollisionShape.h"
-#include "MultiBodyLinkCollider.h"
 #include "RigidBody.h"
+#ifndef DISABLE_FEATHERSTONE
+#include "MultiBodyLinkCollider.h"
+#endif
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
 #endif
@@ -94,12 +96,12 @@ bool CollisionObject::HasAnisotropicFriction()
 }
 
 #ifndef DISABLE_SERIALIZE
-String^ CollisionObject::Serialize(IntPtr dataBuffer, Serializer^ serializer)
+String^ CollisionObject::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
 {
 	return gcnew String(_native->serialize(dataBuffer.ToPointer(), serializer->_native));
 }
 
-void CollisionObject::SerializeSingleObject(Serializer^ serializer)
+void CollisionObject::SerializeSingleObject(BulletSharp::Serializer^ serializer)
 {
 	_native->serializeSingleObject(serializer->_native);
 }

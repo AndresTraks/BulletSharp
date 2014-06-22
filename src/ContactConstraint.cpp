@@ -7,8 +7,8 @@
 #include "PersistentManifold.h"
 #include "RigidBody.h"
 
-ContactConstraint::ContactConstraint(btContactConstraint* constraint)
-: TypedConstraint(constraint)
+ContactConstraint::ContactConstraint(btContactConstraint* native)
+: TypedConstraint(native)
 {
 }
 

@@ -1,11 +1,10 @@
 #pragma once
 
 #include "IActionInterface.h"
-#include "IDisposable.h"
 
 namespace BulletSharp
 {
-	public ref class CharacterControllerInterface : IActionInterface,  BulletSharp::IDisposable
+	public ref class CharacterControllerInterface : IActionInterface,  ITrackingDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;

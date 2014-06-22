@@ -30,7 +30,7 @@
 //#define DISABLE_VEHICLE
 
 
-// When using CMake to compile Bullet and double precision is specified,
+// When using CMake to compile Bullet and USE_DOUBLE_PRECISION is specified,
 // then this setting isn't applied to BulletSharp automatically.
 // In this case, uncomment this line:
 //#define BT_USE_DOUBLE_PRECISION
@@ -196,7 +196,7 @@ using namespace System::Drawing;
 #endif
 
 #ifndef DISABLE_COLLISION_ALGORITHMS
-#include <BulletCollision/CollisionDispatch/btBox2dBox2dCollisionAlgorithm.h>
+#include <BulletCollision/CollisionDispatch/btBox2DBox2DCollisionAlgorithm.h>
 #include <BulletCollision/CollisionDispatch/btBoxBoxCollisionAlgorithm.h>
 #include <BulletCollision/CollisionDispatch/btConvex2dConvex2dAlgorithm.h>
 #include <BulletCollision/CollisionDispatch/btConvexConvexAlgorithm.h>
@@ -368,6 +368,7 @@ using namespace System::Runtime::InteropServices;
 
 #include "Math.h"
 #include "Enums.h"
+#include "ITrackingDisposable.h"
 #include "ObjectTable.h"
 
 inline void* GCHandleToVoidPtr(GCHandle handle)

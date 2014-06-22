@@ -1,10 +1,11 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	ref class UShortArray;
+	#ifndef DISABLE_SERIALIZE
+	ref class Serializer;
+	#endif
 
 	public ref class QuantizedBvhNode
 	{
@@ -102,7 +103,7 @@ namespace BulletSharp
 		void ProcessNode(int subPart, int triangleIndex);
 	};
 
-	public ref class QuantizedBvh : BulletSharp::IDisposable
+	public ref class QuantizedBvh : IDisposable
 	{
 	public:
 		enum class TraversalMode
@@ -111,10 +112,6 @@ namespace BulletSharp
 			StacklessCacheFriendly = btQuantizedBvh::TRAVERSAL_STACKLESS_CACHE_FRIENDLY,
 			Recursive = btQuantizedBvh::TRAVERSAL_RECURSIVE
 		};
-
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
 
 	internal:
 		btQuantizedBvh* _native;

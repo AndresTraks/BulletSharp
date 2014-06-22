@@ -6,7 +6,7 @@ namespace BulletSharp
 {
 	ref class Vector3Array;
 
-	public ref class GimTriangleContact : System::IDisposable
+	public ref class GimTriangleContact : IDisposable
 	{
 	internal:
 		GIM_TRIANGLE_CONTACT* _native;

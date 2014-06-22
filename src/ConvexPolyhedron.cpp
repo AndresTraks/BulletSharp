@@ -77,8 +77,8 @@ void ConvexPolyhedron::Project(Matrix transform, Vector3 direction, [Out] btScal
 	VECTOR3_DEF(direction);
 	btScalar minProjTemp;
 	btScalar maxProjTemp;
-	btVector3* witnesPtMinTemp = new btVector3;
-	btVector3* witnesPtMaxTemp = new btVector3;
+	btVector3* witnesPtMinTemp = ALIGNED_NEW(btVector3);
+	btVector3* witnesPtMaxTemp = ALIGNED_NEW(btVector3);
 	
 	_native->project(*transformTemp, VECTOR3_USE(direction), minProjTemp, maxProjTemp, VECTOR3_USE(witnesPtMin), VECTOR3_USE(witnesPtMax));
 	minProj = minProjTemp;
@@ -86,8 +86,8 @@ void ConvexPolyhedron::Project(Matrix transform, Vector3 direction, [Out] btScal
 	witnesPtMin = Math::BtVector3ToVector3(witnesPtMinTemp);
 	witnesPtMax = Math::BtVector3ToVector3(witnesPtMaxTemp);
 
-	delete witnesPtMaxTemp;
-	delete witnesPtMinTemp;
+	ALIGNED_FREE(witnesPtMaxTemp);
+	ALIGNED_FREE(witnesPtMinTemp);
 	VECTOR3_DEL(direction);
 	ALIGNED_FREE(transformTemp);
 }

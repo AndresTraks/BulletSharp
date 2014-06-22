@@ -1,19 +1,13 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	ref class UIntArray;
 
 	namespace MultiThreaded
 	{
-		public ref class Barrier : BulletSharp::IDisposable
+		public ref class Barrier : IDisposable
 		{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
-
 		internal:
 			btBarrier* _native;
 
@@ -39,12 +33,8 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class CriticalSection : BulletSharp::IDisposable
+		public ref class CriticalSection : IDisposable
 		{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
-
 		internal:
 			btCriticalSection* _native;
 
@@ -72,12 +62,8 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class ThreadSupportInterface abstract : BulletSharp::IDisposable
+		public ref class ThreadSupportInterface abstract : IDisposable
 		{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
-
 		internal:
 			btThreadSupportInterface* _native;
 

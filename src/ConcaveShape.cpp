@@ -19,4 +19,3 @@ void ConcaveShape::ProcessAllTriangles(TriangleCallback^ callback, Vector3 aabbM
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
 }
-

@@ -129,7 +129,7 @@ void DefaultCollisionConfiguration::SetPlaneConvexMultipointIterations()
 {
 	Native->setPlaneConvexMultipointIterations();
 }
-
+#ifndef DISABLE_UNCOMMON
 VoronoiSimplexSolver^ DefaultCollisionConfiguration::SimplexSolver::get()
 {
 	if (_simplexSolver == nullptr) {
@@ -137,4 +137,4 @@ VoronoiSimplexSolver^ DefaultCollisionConfiguration::SimplexSolver::get()
 	}
 	return _simplexSolver;
 }
-
+#endif

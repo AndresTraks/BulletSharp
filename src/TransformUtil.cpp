@@ -122,4 +122,3 @@ btScalar ConvexSeparatingDistanceUtil::ConservativeSeparatingDistance::get()
 {
 	return _native->getConservativeSeparatingDistance();
 }
-

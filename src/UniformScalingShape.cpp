@@ -24,4 +24,3 @@ btScalar UniformScalingShape::UniformScalingFactor::get()
 {
 	return Native->getUniformScalingFactor();
 }
-

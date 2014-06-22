@@ -8,6 +8,7 @@ namespace BulletSharp
 	{
 	internal:
 		HACD::HACD* _native;
+		//HACD(HACD::HACD* native);
 
 	private:
 		HACD::Vec3<HACD::Real>* _points;
@@ -89,7 +90,7 @@ namespace BulletSharp
 			void set(int nTriangles);
 		}
 
-		property int NVerticesPerCH
+		property int NumVerticesPerConvexHull
 		{
 			int get();
 			void set(int nVerticesPerCH);

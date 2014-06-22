@@ -21,8 +21,12 @@ namespace BulletSharp
 		void AddMultiBody(MultiBody^ body, short group, short mask);
 		void AddMultiBody(MultiBody^ body, short group);
 		void AddMultiBody(MultiBody^ body);
+#ifndef DISABLE_CONSTRAINTS
 		void AddMultiBodyConstraint(MultiBodyConstraint^ constraint);
+#endif
 		void RemoveMultiBody(MultiBody^ body);
+#ifndef DISABLE_CONSTRAINTS
 		void RemoveMultiBodyConstraint(MultiBodyConstraint^ constraint);
+#endif
 	};
 };

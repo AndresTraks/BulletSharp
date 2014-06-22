@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 
 #include "IActionInterface.h"
-#include "CharacterControllerInterface.h"
 #include "ConstraintSOlver.h"
 #include "ContactSolverInfo.h"
 #include "DynamicsWorld.h"
@@ -11,6 +10,9 @@
 #endif
 #ifndef DISABLE_VEHICLE
 #include "RaycastVehicle.h"
+#endif
+#ifndef DISABLE_UNCOMMON
+#include "CharacterControllerInterface.h"
 #endif
 
 #define Native static_cast<btDynamicsWorld*>(_native)
@@ -33,11 +35,13 @@ void DynamicsWorld::AddAction(IActionInterface^ action)
 		return;
 	}
 #endif
+#ifndef DISABLE_UNCOMMON
 	CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(action);
 	if (character) {
 		Native->addAction(character->_native);
 		return;
 	}
+#endif
 	ActionInterfaceWrapper* wrapper = new ActionInterfaceWrapper(action, this);
 	ObjectTable::Add(action, wrapper);
 	Native->addAction(wrapper);
@@ -70,12 +74,12 @@ void DynamicsWorld::ClearForces()
 {
 	Native->clearForces();
 }
-
+#ifndef DISABLE_CONSTRAINTS
 TypedConstraint^ DynamicsWorld::GetConstraint(int index)
 {
 	return TypedConstraint::GetManaged(Native->getConstraint(index));
 }
-
+#endif
 void DynamicsWorld::RemoveAction(IActionInterface^ action)
 {
 	if (!_actions) {
@@ -92,22 +96,24 @@ void DynamicsWorld::RemoveAction(IActionInterface^ action)
 		return;
 	}
 #endif
+#ifndef DISABLE_UNCOMMON
 	CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(action);
 	if (character) {
 		Native->removeAction(character->_native);
 		return;
 	}
+#endif
 	ActionInterfaceWrapper* wrapper = (ActionInterfaceWrapper*)ObjectTable::GetUnmanagedObject(action);
 	Native->removeAction(wrapper);
 	ObjectTable::Remove(wrapper);
 	delete wrapper;
 }
-
+#ifndef DISABLE_CONSTRAINTS
 void DynamicsWorld::RemoveConstraint(TypedConstraint^ constraint)
 {
 	Native->removeConstraint(constraint->_native);
 }
-
+#endif
 void DynamicsWorld::RemoveRigidBody(RigidBody^ body)
 {
 	Native->removeRigidBody((btRigidBody*)body->_native);
@@ -207,12 +213,12 @@ void DynamicsWorld::Gravity::set(Vector3 gravity)
 	Native->setGravity(VECTOR3_USE(gravity));
 	VECTOR3_DEL(gravity);
 }
-
+#ifndef DISABLE_CONSTRAINTS
 int DynamicsWorld::NumConstraints::get()
 {
 	return Native->getNumConstraints();
 }
-
+#endif
 ContactSolverInfo^ DynamicsWorld::SolverInfo::get()
 {
 	return gcnew ContactSolverInfo(&Native->getSolverInfo());

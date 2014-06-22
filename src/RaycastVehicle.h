@@ -11,7 +11,7 @@ namespace BulletSharp
 	ref class WheelInfo;
 	ref class AlignedWheelInfoArray;
 
-	public ref class RaycastVehicle : IActionInterface,  BulletSharp::IDisposable
+	public ref class RaycastVehicle : IActionInterface,  ITrackingDisposable
 	{
 	public:
 		ref class VehicleTuning

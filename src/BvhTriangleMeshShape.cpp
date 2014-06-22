@@ -102,12 +102,12 @@ void BvhTriangleMeshShape::RefitTree(Vector3 aabbMin, Vector3 aabbMax)
 }
 
 #ifndef DISABLE_SERIALIZE
-void BvhTriangleMeshShape::SerializeSingleBvh(Serializer^ serializer)
+void BvhTriangleMeshShape::SerializeSingleBvh(BulletSharp::Serializer^ serializer)
 {
 	Native->serializeSingleBvh(serializer->_native);
 }
 
-void BvhTriangleMeshShape::SerializeSingleTriangleInfoMap(Serializer^ serializer)
+void BvhTriangleMeshShape::SerializeSingleTriangleInfoMap(BulletSharp::Serializer^ serializer)
 {
 	Native->serializeSingleTriangleInfoMap(serializer->_native);
 }

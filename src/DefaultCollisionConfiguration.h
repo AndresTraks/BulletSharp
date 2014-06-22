@@ -77,10 +77,11 @@ namespace BulletSharp
 		void SetPlaneConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold);
 		void SetPlaneConvexMultipointIterations(int numPerturbationIterations);
 		void SetPlaneConvexMultipointIterations();
-
+#ifndef DISABLE_UNCOMMON
 		property VoronoiSimplexSolver^ SimplexSolver
 		{
 			VoronoiSimplexSolver^ get();
 		}
+#endif
 	};
 };

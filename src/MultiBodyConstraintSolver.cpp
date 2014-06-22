@@ -3,11 +3,15 @@
 #ifndef DISABLE_FEATHERSTONE
 
 #include "Dispatcher.h"
-#include "DebugDraw.h"
 #include "MultiBodyConstraintSolver.h"
-#include "MultiBodyConstraint.h"
 #include "PersistentManifold.h"
+#ifndef DISABLE_CONSTRAINTS
+#include "MultiBodyConstraint.h"
 #include "TypedConstraint.h"
+#endif
+#ifndef DISABLE_DEBUGDRAW
+#include "DebugDraw.h"
+#endif
 
 #define Native static_cast<btMultiBodyConstraintSolver*>(_native)
 

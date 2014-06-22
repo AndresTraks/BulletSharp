@@ -39,7 +39,7 @@ namespace BulletSharp
 		UniformScalingShape = UNIFORM_SCALING_SHAPE_PROXYTYPE,
 		MinkowskiSumShape = MINKOWSKI_SUM_SHAPE_PROXYTYPE,
 		MinkowskiDifferenceShape = MINKOWSKI_DIFFERENCE_SHAPE_PROXYTYPE,
-		Box2dShape = BOX_2D_SHAPE_PROXYTYPE,
+		Box2DShape = BOX_2D_SHAPE_PROXYTYPE,
 		Convex2DShape = CONVEX_2D_SHAPE_PROXYTYPE,
 		CustomConvexShape = CUSTOM_CONVEX_SHAPE_TYPE,
 		ConcaveShapesStartHere = CONCAVE_SHAPES_START_HERE,

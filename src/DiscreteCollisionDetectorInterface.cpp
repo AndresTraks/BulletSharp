@@ -65,12 +65,8 @@ DiscreteCollisionDetectorInterface::Result::!Result()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	ALIGNED_FREE(_native);
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 bool DiscreteCollisionDetectorInterface::Result::IsDisposed::get()

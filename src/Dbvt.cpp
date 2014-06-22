@@ -52,18 +52,19 @@ DbvtAabbMm::DbvtAabbMm()
 */
 Vector3 DbvtAabbMm::Center()
 {
-	btVector3* center = new btVector3;
+	btVector3* center = ALIGNED_NEW(btVector3);
 	DbvtAabbMm_Center(_native, center);
 	Vector3 v = Math::BtVector3ToVector3(center);
-	delete center;
+	ALIGNED_FREE(center);
 	return v;
 }
 
 int DbvtAabbMm::Classify(Vector3 n, btScalar o, int s)
 {
 	VECTOR3_DEF(n);
-	return _native->Classify(VECTOR3_USE(n), o, s);
+	int ret = _native->Classify(VECTOR3_USE(n), o, s);
 	VECTOR3_DEL(n);
+	return ret;
 }
 
 bool DbvtAabbMm::Contain(DbvtAabbMm^ a)
@@ -80,10 +81,10 @@ void DbvtAabbMm::Expand(Vector3 e)
 
 Vector3 DbvtAabbMm::Extents()
 {
-	btVector3* extents = new btVector3;
+	btVector3* extents = ALIGNED_NEW(btVector3);
 	DbvtAabbMm_Extents(_native, extents);
 	Vector3 v = Math::BtVector3ToVector3(extents);
-	delete extents;
+	ALIGNED_FREE(extents);
 	return v;
 }
 
@@ -141,10 +142,10 @@ DbvtAabbMm^ DbvtAabbMm::FromPoints(array<Vector3>^ pts)
 
 Vector3 DbvtAabbMm::Lengths()
 {
-	btVector3* lengths = new btVector3;
+	btVector3* lengths = ALIGNED_NEW(btVector3);
 	DbvtAabbMm_Lengths(_native, lengths);
 	Vector3 v = Math::BtVector3ToVector3(lengths);
-	delete lengths;
+	ALIGNED_FREE(lengths);
 	return v;
 }
 
@@ -161,8 +162,9 @@ Vector3 DbvtAabbMm::Mins()
 btScalar DbvtAabbMm::ProjectMinimum(Vector3 v, unsigned int signs)
 {
 	VECTOR3_DEF(v);
-	return _native->ProjectMinimum(VECTOR3_USE(v), signs);
+	btScalar ret = _native->ProjectMinimum(VECTOR3_USE(v), signs);
 	VECTOR3_DEL(v);
+	return ret;
 }
 
 void DbvtAabbMm::SignedExpand(Vector3 e)
@@ -387,12 +389,8 @@ Dbvt::ICollide::!ICollide()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 bool Dbvt::ICollide::AllLeaves(DbvtNode^ n)
@@ -441,12 +439,8 @@ Dbvt::IWriter::!IWriter()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 void Dbvt::IWriter::Prepare(DbvtNode^ root, int numnodes)
@@ -485,12 +479,8 @@ Dbvt::IClone::!IClone()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 /*
 Dbvt::IClone::IClone()
@@ -829,4 +819,3 @@ void Dbvt::StkStack::set(AlignedStkNNArray^ value)
 }
 
 #endif
-

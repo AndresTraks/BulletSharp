@@ -8,13 +8,12 @@
 #include "Dispatcher.h"
 #include "OverlappingPairCache.h"
 
-void NearCallbackWrapper::nearCallback (btBroadphasePair& collisionPair, btCollisionDispatcherWrapper& dispatcher, const btDispatcherInfo& dispatchInfo)
+void nearCallback(btBroadphasePair& collisionPair, btCollisionDispatcherWrapper& dispatcher, const btDispatcherInfo& dispatchInfo)
 {
-	void* callback = dispatcher._nearCallback;
-	if (callback == nullptr)
+	CollisionDispatcher^ collisionDispatcher = dispatcher._collisionDispatcher;
+	if (collisionDispatcher->IsDisposed)
 		return;
-	BulletSharp::NearCallback^ callbackManaged = static_cast<BulletSharp::NearCallback^>(VoidPtrToGCHandle(callback).Target);
-	callbackManaged(gcnew BroadphasePair(&collisionPair), gcnew CollisionDispatcher(&dispatcher), gcnew DispatcherInfo((btDispatcherInfo*)&dispatchInfo));
+	collisionDispatcher->_nearCallback(gcnew BroadphasePair(&collisionPair), collisionDispatcher, gcnew DispatcherInfo((btDispatcherInfo*)&dispatchInfo));
 }
 
 
@@ -34,12 +33,14 @@ CollisionDispatcher::CollisionDispatcher(btCollisionDispatcher* native)
 CollisionDispatcher::CollisionDispatcher(BulletSharp::CollisionConfiguration^ collisionConfiguration)
 	: Dispatcher(new btCollisionDispatcherWrapper(collisionConfiguration->_native))
 {
+	Native->_collisionDispatcher = this;
 	_collisionConfiguration = collisionConfiguration;
 }
 
 CollisionDispatcher::CollisionDispatcher()
 : Dispatcher(new btCollisionDispatcherWrapper(new btDefaultCollisionConfiguration()))
 {
+	Native->_collisionDispatcher = this;
 }
 
 void CollisionDispatcher::DefaultNearCallback(BroadphasePair^ collisionPair, CollisionDispatcher^ dispatcher,
@@ -86,32 +87,17 @@ void CollisionDispatcher::DispatcherFlags::set(BulletSharp::DispatcherFlags valu
 
 BulletSharp::NearCallback^ CollisionDispatcher::NearCallback::get()
 {
-	void* callback = Native->_nearCallback;
-	if (callback == nullptr)
-		return nullptr;
-	
-	return static_cast<BulletSharp::NearCallback^>(VoidPtrToGCHandle(callback).Target);
+	return _nearCallback;
 }
 void CollisionDispatcher::NearCallback::set(BulletSharp::NearCallback^ value)
 {
+	_nearCallback = value;
+
 	if (value == nullptr)
 	{
-		// Don't actually set the callback to 0 as this would crash,
-		// just revert to the original internal callback.
-		Native->_nearCallback = nullptr;
-		Native->setNearCallback(originalCallback);
+		Native->setNearCallback(btCollisionDispatcher::defaultNearCallback);
 		return;
 	}
 
-	void* current = Native->_nearCallback;
-	if (current != nullptr)
-		VoidPtrToGCHandle(current).Free();
-
-	GCHandle handle = GCHandle::Alloc(value);
-	Native->_nearCallback = GCHandleToVoidPtr(handle);
-
-	if (originalCallback == nullptr)
-		originalCallback = Native->getNearCallback();
-	
-	Native->setNearCallback((btNearCallback)&NearCallbackWrapper::nearCallback);
+	Native->setNearCallback((btNearCallback)nearCallback);
 }

@@ -11,4 +11,3 @@ EmptyShape::EmptyShape()
 	: ConcaveShape(new btEmptyShape())
 {
 }
-

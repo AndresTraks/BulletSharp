@@ -18,8 +18,11 @@ ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, RigidBody^ rigid
 {
 	TRANSFORM_CONV(rigidBodyAFrame);
 	TRANSFORM_CONV(rigidBodyBFrame);
-	UnmanagedPointer = new btConeTwistConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(rigidBodyAFrame),
+
+	UnmanagedPointer = new btConeTwistConstraint(*(btRigidBody*)rigidBodyA->_native,
+		*(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(rigidBodyAFrame),
 		TRANSFORM_USE(rigidBodyBFrame));
+
 	TRANSFORM_DEL(rigidBodyAFrame);
 	TRANSFORM_DEL(rigidBodyBFrame);
 }
@@ -82,10 +85,10 @@ void ConeTwistConstraint_GetPointForAngle(btConeTwistConstraint* constraint,
 #pragma managed(pop)
 Vector3 ConeTwistConstraint::GetPointForAngle(btScalar fAngleInRadians, btScalar fLength)
 {
-	btVector3* pointTemp = new btVector3;
+	btVector3* pointTemp = ALIGNED_NEW(btVector3);
 	ConeTwistConstraint_GetPointForAngle(Native, fAngleInRadians, fLength, pointTemp);
 	Vector3 point = Math::BtVector3ToVector3(pointTemp);
-	delete pointTemp;
+	ALIGNED_FREE(pointTemp);
 	return point;
 }
 

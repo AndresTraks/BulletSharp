@@ -259,12 +259,8 @@ PrimitiveManagerBase::!PrimitiveManagerBase()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 void PrimitiveManagerBase::GetPrimitiveBox(int prim_index, Aabb^ primbox)

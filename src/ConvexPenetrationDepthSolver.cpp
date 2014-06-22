@@ -8,9 +8,9 @@
 #include "DebugDraw.h"
 #endif
 
-ConvexPenetrationDepthSolver::ConvexPenetrationDepthSolver(btConvexPenetrationDepthSolver* depthSolver)
+ConvexPenetrationDepthSolver::ConvexPenetrationDepthSolver(btConvexPenetrationDepthSolver* native)
 {
-	_native = depthSolver;
+	_native = native;
 }
 
 ConvexPenetrationDepthSolver::~ConvexPenetrationDepthSolver()

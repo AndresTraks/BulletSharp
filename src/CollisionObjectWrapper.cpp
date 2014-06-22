@@ -27,16 +27,12 @@ CollisionObjectWrapper::!CollisionObjectWrapper()
 {
 	if (this->IsDisposed)
 		return;
-	
-	OnDisposing(this, nullptr);
 
 	if (_doesNotOwnObject == false)
 	{
 		delete _native;
 	}
 	_native = NULL;
-	
-	OnDisposed(this, nullptr);
 }
 */
 void CollisionObjectWrapper::GetWorldTransform([Out] Matrix% outTransform)

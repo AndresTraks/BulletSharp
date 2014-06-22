@@ -1,10 +1,11 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	ref class RigidBody;
+	#ifndef DISABLE_SERIALIZE
+	ref class Serializer;
+	#endif
 
 	public ref class JointFeedback
 	{
@@ -45,7 +46,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class TypedConstraint abstract : BulletSharp::IDisposable
+	public ref class TypedConstraint abstract: ITrackingDisposable
 	{
 	public:
 		ref class ConstraintInfo1
@@ -195,7 +196,9 @@ namespace BulletSharp
 		void GetInfo2(ConstraintInfo2^ info);
 		btScalar GetParam(ConstraintParam num, int axis);
 		btScalar GetParam(ConstraintParam num);
+#ifndef DISABLE_INTERNAL
 		btScalar InternalGetAppliedImpulse();
+#endif
 		void InternalSetAppliedImpulse(btScalar appliedImpulse);
 #ifndef DISABLE_SERIALIZE
 		String^ Serialize(IntPtr dataBuffer, Serializer^ serializer);

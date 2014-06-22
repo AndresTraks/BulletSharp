@@ -192,30 +192,30 @@ void BroadphaseInterface::DestroyProxy(BroadphaseProxy^ proxy, Dispatcher^ dispa
 
 void BroadphaseInterface::GetAabb(BroadphaseProxy^ proxy, Vector3% aabbMin, Vector3% aabbMax)
 {
-	btVector3* aabbMinTemp = new btVector3;
-	btVector3* aabbMaxTemp = new btVector3;
+	btVector3* aabbMinTemp = ALIGNED_NEW(btVector3);
+	btVector3* aabbMaxTemp = ALIGNED_NEW(btVector3);
 
 	_native->getAabb(proxy->_native, *aabbMinTemp, *aabbMaxTemp);
 
 	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
 	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
 
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	ALIGNED_FREE(aabbMinTemp);
+	ALIGNED_FREE(aabbMaxTemp);
 }
 
 void BroadphaseInterface::GetBroadphaseAabb(Vector3% aabbMin, Vector3% aabbMax)
 {
-	btVector3* aabbMinTemp = new btVector3;
-	btVector3* aabbMaxTemp = new btVector3;
+	btVector3* aabbMinTemp = ALIGNED_NEW(btVector3);
+	btVector3* aabbMaxTemp = ALIGNED_NEW(btVector3);
 
 	_native->getBroadphaseAabb(*aabbMinTemp, *aabbMaxTemp);
 
 	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
 	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
 
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	ALIGNED_FREE(aabbMinTemp);
+	ALIGNED_FREE(aabbMaxTemp);
 }
 
 void BroadphaseInterface::PrintStats()
@@ -284,4 +284,3 @@ OverlappingPairCache^ BroadphaseInterface::OverlappingPairCache::get()
 	}
 	return _pairCache;
 }
-

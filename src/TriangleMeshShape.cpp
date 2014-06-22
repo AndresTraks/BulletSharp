@@ -63,4 +63,3 @@ StridingMeshInterface^ TriangleMeshShape::MeshInterface::get()
 	btStridingMeshInterface* meshInterface = Native->getMeshInterface();
 	ReturnCachedObject(StridingMeshInterface, _meshInterface, meshInterface);
 }
-

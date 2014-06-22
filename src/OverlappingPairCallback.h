@@ -1,19 +1,13 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	ref struct BroadphasePair;
 	ref class BroadphaseProxy;
 	ref class Dispatcher;
 
-	public ref class OverlappingPairCallback abstract : BulletSharp::IDisposable
+	public ref class OverlappingPairCallback abstract : IDisposable
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	internal:
 		btOverlappingPairCallback* _native;
 		OverlappingPairCallback(btOverlappingPairCallback* native);

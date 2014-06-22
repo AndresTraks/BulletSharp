@@ -6,9 +6,11 @@
 #include "CollisionConfiguration.h"
 #include "Dispatcher.h"
 #include "MultiBody.h"
-#include "MultiBodyConstraint.h"
 #include "MultiBodyConstraintSolver.h"
 #include "MultiBodyDynamicsWorld.h"
+#ifndef DISABLE_CONSTRAINTS
+#include "MultiBodyConstraint.h"
+#endif
 
 #define Native static_cast<btMultiBodyDynamicsWorld*>(_native)
 
@@ -42,19 +44,21 @@ void MultiBodyDynamicsWorld::AddMultiBody(MultiBody^ body)
 	Native->addMultiBody(body->_native);
 }
 
+#ifndef DISABLE_CONSTRAINTS
 void MultiBodyDynamicsWorld::AddMultiBodyConstraint(MultiBodyConstraint^ constraint)
 {
 	Native->addMultiBodyConstraint(constraint->_native);
 }
-
+#endif
 void MultiBodyDynamicsWorld::RemoveMultiBody(MultiBody^ body)
 {
 	Native->removeMultiBody(body->_native);
 }
-
+#ifndef DISABLE_CONSTRAINTS
 void MultiBodyDynamicsWorld::RemoveMultiBodyConstraint(MultiBodyConstraint^ constraint)
 {
 	Native->removeMultiBodyConstraint(constraint->_native);
 }
+#endif
 
 #endif

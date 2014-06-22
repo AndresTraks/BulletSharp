@@ -4,6 +4,7 @@ namespace BulletSharp
 {
 	ref class DataStream;
 
+	// Not to be confused with Mogre::Serializer
 	public ref class Serializer
 	{
 	internal:

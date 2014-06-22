@@ -25,8 +25,8 @@ void ConvexShape::BatchedUnitVectorGetSupportingVertexWithoutMargin(array<Vector
 void ConvexShape::GetAabbNonVirtual(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
 {
 	btTransform* tTemp = Math::MatrixToBtTransform(t);
-	btVector3* aabbMinTemp = new btVector3;
-	btVector3* aabbMaxTemp = new btVector3;
+	btVector3* aabbMinTemp = ALIGNED_NEW(btVector3);
+	btVector3* aabbMaxTemp = ALIGNED_NEW(btVector3);
 	
 	Native->getAabbNonVirtual(*tTemp, *aabbMinTemp, *aabbMaxTemp);
 
@@ -34,15 +34,15 @@ void ConvexShape::GetAabbNonVirtual(Matrix t, Vector3% aabbMin, Vector3% aabbMax
 	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
 
 	ALIGNED_FREE(tTemp);
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	ALIGNED_FREE(aabbMinTemp);
+	ALIGNED_FREE(aabbMaxTemp);
 }
 
 void ConvexShape::GetAabbSlow(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
 {
 	btTransform* tTemp = Math::MatrixToBtTransform(t);
-	btVector3* aabbMinTemp = new btVector3;
-	btVector3* aabbMaxTemp = new btVector3;
+	btVector3* aabbMinTemp = ALIGNED_NEW(btVector3);
+	btVector3* aabbMaxTemp = ALIGNED_NEW(btVector3);
 	
 	Native->getAabbSlow(*tTemp, *aabbMinTemp, *aabbMaxTemp);
 
@@ -50,16 +50,16 @@ void ConvexShape::GetAabbSlow(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
 	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
 
 	ALIGNED_FREE(tTemp);
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	ALIGNED_FREE(aabbMinTemp);
+	ALIGNED_FREE(aabbMaxTemp);
 }
 
 void ConvexShape::GetPreferredPenetrationDirection(int index, [Out] Vector3% penetrationVector)
 {
-	btVector3* penetrationVectorTemp = new btVector3;
+	btVector3* penetrationVectorTemp = ALIGNED_NEW(btVector3);
 	Native->getPreferredPenetrationDirection(index, *penetrationVectorTemp);
 	Math::BtVector3ToVector3(penetrationVectorTemp, penetrationVector);
-	delete penetrationVectorTemp;
+	ALIGNED_FREE(penetrationVectorTemp);
 }
 
 #pragma managed(push, off)
@@ -83,13 +83,13 @@ void ConvexShape_LocalGetSupportVertexWithoutMarginNonVirtual(btConvexShape* sha
 Vector3 ConvexShape::LocalGetSupportingVertex(Vector3 vec)
 {
 	VECTOR3_DEF(vec);
-	btVector3* vecOut = new btVector3;
+	btVector3* vecOut = ALIGNED_NEW(btVector3);
 	
 	ConvexShape_LocalGetSupportingVertex(Native, VECTOR3_PTR(vec), vecOut);
 	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
 	
 	VECTOR3_DEL(vec);
-	delete vecOut;
+	ALIGNED_FREE(vecOut);
 	
 	return vertex;
 }
@@ -97,13 +97,13 @@ Vector3 ConvexShape::LocalGetSupportingVertex(Vector3 vec)
 Vector3 ConvexShape::LocalGetSupportingVertexWithoutMargin(Vector3 vec)
 {
 	VECTOR3_DEF(vec);
-	btVector3* vecOut = new btVector3;
+	btVector3* vecOut = ALIGNED_NEW(btVector3);
 	
 	ConvexShape_LocalGetSupportingVertexWithoutMargin(Native, VECTOR3_PTR(vec), vecOut);
 	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
 	
 	VECTOR3_DEL(vec);
-	delete vecOut;
+	ALIGNED_FREE(vecOut);
 	
 	return vertex;
 }
@@ -111,13 +111,13 @@ Vector3 ConvexShape::LocalGetSupportingVertexWithoutMargin(Vector3 vec)
 Vector3 ConvexShape::LocalGetSupportVertexNonVirtual(Vector3 vec)
 {
 	VECTOR3_DEF(vec);
-	btVector3* vecOut = new btVector3;
+	btVector3* vecOut = ALIGNED_NEW(btVector3);
 	
 	ConvexShape_LocalGetSupportVertexNonVirtual(Native, VECTOR3_PTR(vec), vecOut);
 	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
 	
 	VECTOR3_DEL(vec);
-	delete vecOut;
+	ALIGNED_FREE(vecOut);
 	
 	return vertex;
 }
@@ -125,13 +125,13 @@ Vector3 ConvexShape::LocalGetSupportVertexNonVirtual(Vector3 vec)
 Vector3 ConvexShape::LocalGetSupportVertexWithoutMarginNonVirtual(Vector3 vec)
 {
 	VECTOR3_DEF(vec);
-	btVector3* vecOut = new btVector3;
+	btVector3* vecOut = ALIGNED_NEW(btVector3);
 	
 	ConvexShape_LocalGetSupportVertexWithoutMarginNonVirtual(Native, VECTOR3_PTR(vec), vecOut);
 	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
 	
 	VECTOR3_DEL(vec);
-	delete vecOut;
+	ALIGNED_FREE(vecOut);
 	
 	return vertex;
 }
@@ -160,4 +160,3 @@ int ConvexShape::NumPreferredPenetrationDirections::get()
 {
 	return Native->getNumPreferredPenetrationDirections();
 }
-

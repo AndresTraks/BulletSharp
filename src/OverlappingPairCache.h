@@ -6,12 +6,8 @@ namespace BulletSharp
 {
 	ref class AlignedBroadphasePairArray;
 
-	public ref class OverlapCallback abstract : BulletSharp::IDisposable
+	public ref class OverlapCallback abstract : IDisposable
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	internal:
 		btOverlapCallback* _native;
 
@@ -29,12 +25,8 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class OverlapFilterCallback abstract : BulletSharp::IDisposable
+	public ref class OverlapFilterCallback abstract : IDisposable
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	internal:
 		btOverlapFilterCallback* _native;
 		OverlapFilterCallback(btOverlapFilterCallback* native);

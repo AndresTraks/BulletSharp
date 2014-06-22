@@ -17,12 +17,8 @@ TriangleCallback::!TriangleCallback()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing(this, nullptr);
-	
 	delete _native;
 	_native = NULL;
-	
-	OnDisposed(this, nullptr);
 }
 /*
 void TriangleCallback::ProcessTriangle(Vector3 triangle, int partId, int triangleIndex)
@@ -54,12 +50,8 @@ InternalTriangleIndexCallback::!InternalTriangleIndexCallback()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing(this, nullptr);
-	
 	delete _native;
 	_native = NULL;
-	
-	OnDisposed(this, nullptr);
 }
 /*
 void InternalTriangleIndexCallback::InternalProcessTriangleIndex(Vector3 triangle,

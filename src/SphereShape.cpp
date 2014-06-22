@@ -23,4 +23,3 @@ btScalar SphereShape::Radius::get()
 {
 	return Native->getRadius();
 }
-

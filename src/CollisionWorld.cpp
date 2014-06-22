@@ -3,7 +3,6 @@
 #include "AlignedObjectArray.h"
 #include "BroadphaseInterface.h"
 #include "BroadphaseProxy.h"
-#include "CharacterControllerInterface.h"
 #include "CollisionConfiguration.h"
 #include "CollisionObject.h"
 #include "CollisionObjectWrapper.h"
@@ -27,6 +26,9 @@
 #endif
 #ifndef DISABLE_SOFTBODY
 #include "SoftRigidDynamicsWorld.h"
+#endif
+#ifndef DISABLE_UNCOMMON
+#include "CharacterControllerInterface.h"
 #endif
 
 int CollisionWorld::LocalShapeInfo::ShapePart::get()
@@ -122,12 +124,8 @@ CollisionWorld::ConvexResultCallback::!ConvexResultCallback()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing(this, nullptr);
-	
 	ALIGNED_FREE(_native);
 	_native = NULL;
-	
-	OnDisposed(this, nullptr);
 }
 
 btScalar CollisionWorld::ConvexResultCallback::AddSingleResult(LocalConvexResult^ convexResult, bool normalInWorldSpace)
@@ -265,12 +263,8 @@ CollisionWorld::ContactResultCallback::!ContactResultCallback()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing(this, nullptr);
-	
 	delete _native;
 	_native = NULL;
-	
-	OnDisposed(this, nullptr);
 }
 
 CollisionWorld::ContactResultCallback::ContactResultCallback()
@@ -624,10 +618,12 @@ CollisionWorld::!CollisionWorld()
 					continue;
 				}
 #endif
+#ifndef DISABLE_UNCOMMON
 				CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(action);
 				if (character) {
 					continue;
 				}
+#endif
 				ActionInterfaceWrapper* wrapper = (ActionInterfaceWrapper*)ObjectTable::GetUnmanagedObject(action);
 				ObjectTable::Remove(wrapper);
 				delete wrapper;
@@ -777,7 +773,7 @@ void CollisionWorld::RemoveCollisionObject(CollisionObject^ collisionObject)
 }
 
 #ifndef DISABLE_SERIALIZE
-void CollisionWorld::Serialize(Serializer^ serializer)
+void CollisionWorld::Serialize(BulletSharp::Serializer^ serializer)
 {
 	_native->serialize(serializer->_native);
 }

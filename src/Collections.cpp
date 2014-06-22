@@ -937,36 +937,19 @@ void UShortArray::default::set(int index, unsigned short value)
 Vector3Array::Vector3Array(btVector3* vector3Array, int length)
 : GenericList<Vector3>(vector3Array, length)
 {
+	_vectorStride = sizeof(btVector3);
 }
 
 Vector3Array::Vector3Array(const btVector3* vector3Array, int length)
 : GenericList<Vector3>(vector3Array, length)
 {
+	_vectorStride = sizeof(btVector3);
 }
 
 Vector3Array::Vector3Array(int length)
 : GenericList<Vector3>(new btVector3[length], length)
 {
-}
-
-bool Vector3Array::Contains(Vector3 item)
-{
-	VECTOR3_DEF(item);
-
-	int i;
-	for (i=0; i<_length; i++)
-	{
-		btVector3* vector = &Native[i];
-		if (VECTOR3_PTR(item)->m_floats[0] == vector->m_floats[0] &&
-			VECTOR3_PTR(item)->m_floats[1] == vector->m_floats[1] &&
-			VECTOR3_PTR(item)->m_floats[2] == vector->m_floats[2])
-		{
-			VECTOR3_DEL(item);
-			return true;
-		}
-	}
-	VECTOR3_DEL(item);
-	return false;
+	_vectorStride = sizeof(btVector3);
 }
 
 void Vector3Array::CopyTo(array<Vector3>^ array, int arrayIndex)
@@ -981,9 +964,11 @@ void Vector3Array::CopyTo(array<Vector3>^ array, int arrayIndex)
 		throw gcnew ArgumentException("Array too small.");
 
 	int i;
+	char* p = (char*)&Native[0];
 	for (i=0; i<_length; i++)
 	{
-		Math::BtVector3ToVector3(&Native[i], array[arrayIndex+i]);
+		Math::BtVector3ToVector3((btVector3*)p, array[arrayIndex+i]);
+		p += _vectorStride;
 	}
 }
 
@@ -992,16 +977,17 @@ int Vector3Array::IndexOf(Vector3 item)
 	VECTOR3_DEF(item);
 
 	int i;
+	char* vector = (char*)&Native[0];
 	for (i=0; i<_length; i++)
 	{
-		btVector3* vector = &Native[i];
-		if (VECTOR3_PTR(item)->m_floats[0] == vector->m_floats[0] &&
-			VECTOR3_PTR(item)->m_floats[1] == vector->m_floats[1] &&
-			VECTOR3_PTR(item)->m_floats[2] == vector->m_floats[2])
+		if (VECTOR3_PTR(item)->m_floats[0] == ((btVector3*)vector)->m_floats[0] &&
+			VECTOR3_PTR(item)->m_floats[1] == ((btVector3*)vector)->m_floats[1] &&
+			VECTOR3_PTR(item)->m_floats[2] == ((btVector3*)vector)->m_floats[2])
 		{
 			VECTOR3_DEL(item);
 			return i;
 		}
+		vector += _vectorStride;
 	}
 	VECTOR3_DEL(item);
 	return -1;
@@ -1011,7 +997,8 @@ Vector3 Vector3Array::default::get(int index)
 {
 	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return Math::BtVector3ToVector3(&Native[index]);
+	btVector3* p = (btVector3*)(((char*)&Native[0]) + index * _vectorStride);
+	return Math::BtVector3ToVector3(p);
 }
 void Vector3Array::default::set(int index, Vector3 value)
 {
@@ -1019,5 +1006,15 @@ void Vector3Array::default::set(int index, Vector3 value)
 		throw gcnew InvalidOperationException("List is read-only.");
 	if (index < 0 || index >= _length)
 		throw gcnew ArgumentOutOfRangeException("index");
-	Math::Vector3ToBtVector3(value, &Native[index]);
+	btVector3* p = (btVector3*)(((char*)&Native[0]) + index * _vectorStride);
+	Math::Vector3ToBtVector3(value, p);
+}
+
+int Vector3Array::Stride::get()
+{
+	return _vectorStride;
+}
+void Vector3Array::Stride::set(int value)
+{
+	_vectorStride = value;
 }

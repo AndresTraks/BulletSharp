@@ -1,6 +1,5 @@
 #pragma once
 
-#include "IDisposable.h"
 #ifndef DISABLE_DBVT
 #include "Dbvt.h"
 #endif
@@ -41,12 +40,8 @@ namespace BulletSharp
 #endif
 
 	generic<class T>
-	public ref class AlignedObjectArray abstract : Generic::IList<T>, BulletSharp::IDisposable
+	public ref class AlignedObjectArray abstract : Generic::IList<T>, IDisposable
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	internal:
 		void* _native;
 
