@@ -12,16 +12,24 @@ Box2DShape::Box2DShape(btBox2dShape* native)
 {
 }
 
-Box2DShape::Box2DShape(Vector3 boxHalfExtents)
-: PolyhedralConvexShape(0)
+Box2DShape::Box2DShape(Vector3% boxHalfExtents)
+	: PolyhedralConvexShape(0)
 {
-	VECTOR3_DEF(boxHalfExtents);
+	VECTOR3_CONV(boxHalfExtents);
+	UnmanagedPointer = new btBox2dShape(VECTOR3_USE(boxHalfExtents));
+	VECTOR3_DEL(boxHalfExtents);
+}
+
+Box2DShape::Box2DShape(Vector3 boxHalfExtents)
+	: PolyhedralConvexShape(0)
+{
+	VECTOR3_CONV(boxHalfExtents);
 	UnmanagedPointer = new btBox2dShape(VECTOR3_USE(boxHalfExtents));
 	VECTOR3_DEL(boxHalfExtents);
 }
 
 Box2DShape::Box2DShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ)
-: PolyhedralConvexShape(0)
+	: PolyhedralConvexShape(0)
 {
 	btVector3* boxHalfExtentsTemp = ALIGNED_NEW(btVector3) (boxHalfExtentsX, boxHalfExtentsY, boxHalfExtentsZ);
 	UnmanagedPointer = new btBox2dShape(*boxHalfExtentsTemp);
@@ -29,7 +37,7 @@ Box2DShape::Box2DShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btSca
 }
 
 Box2DShape::Box2DShape(btScalar boxHalfExtents)
-: PolyhedralConvexShape(0)
+	: PolyhedralConvexShape(0)
 {
 	btVector3* boxHalfExtentsTemp = ALIGNED_NEW(btVector3) (boxHalfExtents, boxHalfExtents, boxHalfExtents);
 	UnmanagedPointer = new btBox2dShape(*boxHalfExtentsTemp);
@@ -47,10 +55,10 @@ Vector3 Box2DShape::GetVertex(int i)
 
 Vector4 Box2DShape::GetPlaneEquation(int i)
 {
-	btVector4* equationTemp = new btVector4;
+	btVector4* equationTemp = ALIGNED_NEW(btVector4);
 	Native->getPlaneEquation(*equationTemp, i);
 	Vector4 equation = Math::BtVector4ToVector4(equationTemp);
-	delete equationTemp;
+	ALIGNED_FREE(equationTemp);
 	return equation;
 }
 
@@ -74,14 +82,20 @@ Vector3 Box2DShape::HalfExtentsWithoutMargin::get()
 
 Vector3Array^ Box2DShape::Normals::get()
 {
-	const btVector3* normals = Native->getNormals();
-	ReturnCachedObjectStaticParam(Vector3Array, _normals, normals, 4);
+	if (_normals == nullptr)
+	{
+		_normals = gcnew Vector3Array(Native->getNormals(), 4);
+	}
+	return _normals;
 }
 
 Vector3Array^ Box2DShape::Vertices::get()
 {
-	const btVector3* vertices = Native->getVertices();
-	ReturnCachedObjectStaticParam(Vector3Array, _vertices, vertices, 4);
+	if (_vertices == nullptr)
+	{
+		_vertices = gcnew Vector3Array(Native->getVertices(), 4);
+	}
+	return _vertices;
 }
 
 #endif

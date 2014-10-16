@@ -2,11 +2,16 @@
 
 namespace BulletSharp
 {
-	public ref class MLCPSolverInterface abstract
+	public ref class MlcpSolverInterface abstract : IDisposable
 	{
 	internal:
 		btMLCPSolverInterface* _native;
-		MLCPSolverInterface(btMLCPSolverInterface* native);
+		MlcpSolverInterface(btMLCPSolverInterface* native);
+
+	public:
+		!MlcpSolverInterface();
+	protected:
+		~MlcpSolverInterface();
 
 	public:
 		//bool SolveMLCP(MatrixXf^ A, VectorXf^ b, VectorXf^ x, VectorXf^ lo, VectorXf^ hi,

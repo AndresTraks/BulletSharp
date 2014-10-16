@@ -14,7 +14,7 @@ namespace ConvexDecompositionDemo
         ConvexDecompositionDemo demo;
         CultureInfo floatFormat = new CultureInfo("en-US");
 
-        public AlignedCollisionShapeArray convexShapes = new AlignedCollisionShapeArray();
+        public List<CollisionShape> convexShapes = new List<CollisionShape>();
         public AlignedVector3Array convexCentroids = new AlignedVector3Array();
 
         int mHullCount = 0;
@@ -138,7 +138,7 @@ namespace ConvexDecompositionDemo
 
         public Vector3 centroid;
         Vector3 convexDecompositionObjectOffset;
-        public AlignedTriangleMeshArray trimeshes = new AlignedTriangleMeshArray();
+        public List<TriangleMesh> trimeshes = new List<TriangleMesh>();
         public bool sEnableSAT = false;
 
         protected override void OnInitialize()
@@ -327,7 +327,7 @@ namespace ConvexDecompositionDemo
                 const bool addFacesPoints = false;
 
                 myHACD.NClusters = nClusters;                     // minimum number of clusters
-                myHACD.VerticesPerConvexHull = 100;               // max of 100 vertices per convex-hull
+                myHACD.NumVerticesPerConvexHull = 100;               // max of 100 vertices per convex-hull
                 myHACD.Concavity = concavity;                     // maximum concavity
                 myHACD.AddExtraDistPoints = addExtraDistPoints;
                 myHACD.AddNeighboursDistPoints = addNeighboursDistPoints;

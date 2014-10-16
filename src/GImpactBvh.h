@@ -6,11 +6,16 @@ namespace BulletSharp
 	ref class AlignedIntArray;
 	ref class PrimitiveTriangle;
 /*
-	public ref class GimPair
+	public ref class GimPair : IDisposable
 	{
 	internal:
 		GIM_PAIR* _native;
 		GimPair(GIM_PAIR* native);
+
+	public:
+		!GimPair();
+	protected:
+		~GimPair();
 
 	public:
 		GimPair();
@@ -43,11 +48,16 @@ namespace BulletSharp
 		void PushPairInv(int index1, int index2);
 	};
 /*
-	public ref class GimBvhData
+	public ref class GimBvhData : IDisposable
 	{
 	internal:
 		GIM_BVH_DATA* _native;
 		GimBvhData(GIM_BVH_DATA* native);
+
+	public:
+		!GimBvhData();
+	protected:
+		~GimBvhData();
 
 	public:
 		GimBvhData();
@@ -65,11 +75,16 @@ namespace BulletSharp
 		}
 	};
 */
-	public ref class GimBvhTreeNode
+	public ref class GimBvhTreeNode : IDisposable
 	{
 	internal:
 		GIM_BVH_TREE_NODE* _native;
 		GimBvhTreeNode(GIM_BVH_TREE_NODE* native);
+
+	public:
+		!GimBvhTreeNode();
+	protected:
+		~GimBvhTreeNode();
 
 	public:
 		GimBvhTreeNode();
@@ -118,11 +133,16 @@ namespace BulletSharp
 		GimBvhTreeNodeArray();
 	};
 */
-	public ref class BvhTree
+	public ref class BvhTree : IDisposable
 	{
 	internal:
 		btBvhTree* _native;
 		BvhTree(btBvhTree* native);
+
+	public:
+		!BvhTree();
+	protected:
+		~BvhTree();
 
 	public:
 		BvhTree();
@@ -157,8 +177,8 @@ namespace BulletSharp
 		~PrimitiveManagerBase();
 
 	public:
-		void GetPrimitiveBox(int prim_index, Aabb^ primbox);
-		void GetPrimitiveTriangle(int prim_index, PrimitiveTriangle^ triangle);
+		void GetPrimitiveBox(int primIndex, Aabb^ primbox);
+		void GetPrimitiveTriangle(int primIndex, PrimitiveTriangle^ triangle);
 
 		property bool IsTrimesh
 		{
@@ -176,7 +196,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class GImpactBvh
+	public ref class GImpactBvh : IDisposable
 	{
 	internal:
 		btGImpactBvh* _native;
@@ -186,14 +206,19 @@ namespace BulletSharp
 		PrimitiveManagerBase^ _primitiveManagerBase;
 
 	public:
-		GImpactBvh();
-		GImpactBvh(PrimitiveManagerBase^ primitive_manager);
+		!GImpactBvh();
+	protected:
+		~GImpactBvh();
 
-		bool BoxQuery(Aabb^ box, AlignedIntArray^ collided_results);
-		bool BoxQueryTrans(Aabb^ box, Matrix transform, AlignedIntArray^ collided_results);
+	public:
+		GImpactBvh();
+		GImpactBvh(PrimitiveManagerBase^ primitiveManager);
+
+		bool BoxQuery(Aabb^ box, AlignedIntArray^ collidedResults);
+		bool BoxQueryTrans(Aabb^ box, Matrix transform, AlignedIntArray^ collidedResults);
 		void BuildSet();
 		static void FindCollision(GImpactBvh^ boxset1, Matrix trans1, GImpactBvh^ boxset2,
-			Matrix trans2, PairSet^ collision_pairs);
+			Matrix trans2, PairSet^ collisionPairs);
 		int GetEscapeNodeIndex(int nodeIndex);
 		int GetLeftNode(int nodeIndex);
 		void GetNodeBound(int nodeIndex, Aabb^ bound);
@@ -203,8 +228,8 @@ namespace BulletSharp
 		void GetNodeTriangle(int nodeIndex, PrimitiveTriangle^ triangle);
 		int GetRightNode(int nodeIndex);
 		bool IsLeafNode(int nodeIndex);
-		bool RayQuery(Vector3 ray_dir, Vector3 ray_origin, AlignedIntArray^ collided_results);
-		void SetNodeBound(int nodeIndex, Aabb^ bound);
+		bool RayQuery(Vector3 rayDir, Vector3 rayOrigin, AlignedIntArray^ collidedResults);
+		void SetNodeBound(int nodeindex, Aabb^ bound);
 		void Update();
 
 		property Aabb^ GlobalBox
@@ -230,7 +255,7 @@ namespace BulletSharp
 		property PrimitiveManagerBase^ PrimitiveManager
 		{
 			PrimitiveManagerBase^ get();
-			void set(PrimitiveManagerBase^ primitive_manager);
+			void set(PrimitiveManagerBase^ primitiveManager);
 		}
 	};
 };

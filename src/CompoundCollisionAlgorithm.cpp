@@ -9,19 +9,19 @@
 #include "PersistentManifold.h"
 
 CompoundCollisionAlgorithm::CreateFunc::CreateFunc()
-: CollisionAlgorithmCreateFunc(new btCompoundCollisionAlgorithm::CreateFunc())
+	: CollisionAlgorithmCreateFunc(new btCompoundCollisionAlgorithm::CreateFunc())
 {
 }
 
 CompoundCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc()
-: CollisionAlgorithmCreateFunc(new btCompoundCollisionAlgorithm::SwappedCreateFunc())
+	: CollisionAlgorithmCreateFunc(new btCompoundCollisionAlgorithm::SwappedCreateFunc())
 {
 }
 
 #define Native static_cast<btCompoundCollisionAlgorithm*>(_native)
 
 CompoundCollisionAlgorithm::CompoundCollisionAlgorithm(btCompoundCollisionAlgorithm* native)
-: ActivatingCollisionAlgorithm(native)
+	: ActivatingCollisionAlgorithm(native)
 {
 }
 
@@ -52,14 +52,14 @@ void CompoundCollisionAlgorithm::CompoundChildShapePairCallback::set(::CompoundC
 
 CompoundCollisionAlgorithm::CompoundCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped)
-: ActivatingCollisionAlgorithm(new btCompoundCollisionAlgorithm(*ci->_native,
-	body0Wrap->_native, body1Wrap->_native, isSwapped))
+	: ActivatingCollisionAlgorithm(new btCompoundCollisionAlgorithm(*ci->_native,
+		body0Wrap->_native, body1Wrap->_native, isSwapped))
 {
 }
 
-CollisionAlgorithm^ CompoundCollisionAlgorithm::GetChildAlgorithm (int n)
+CollisionAlgorithm^ CompoundCollisionAlgorithm::GetChildAlgorithm(int n)
 {
-	return gcnew CollisionAlgorithm(Native->getChildAlgorithm(n));
+	return CollisionAlgorithm::GetManaged(Native->getChildAlgorithm(n));
 }
 
 #endif

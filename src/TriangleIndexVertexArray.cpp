@@ -5,9 +5,24 @@
 #include "DataStream.h"
 #include "TriangleIndexVertexArray.h"
 
-IndexedMesh::IndexedMesh(btIndexedMesh* native)
+IndexedMesh::IndexedMesh(btIndexedMesh* native, bool preventDelete)
 {
 	_native = native;
+	_preventDelete = preventDelete;
+}
+
+IndexedMesh::~IndexedMesh()
+{
+	this->!IndexedMesh();
+}
+
+IndexedMesh::!IndexedMesh()
+{
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
+	_native = NULL;
 }
 
 IndexedMesh::IndexedMesh()
@@ -183,6 +198,8 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(array<int>^ indices, array<Ve
 
 	_native = new btTriangleIndexVertexArray(indices->Length / 3, indicesBase, 3 * sizeof(int),
 		vertices->Length, *verticesBase, sizeof(btVector3));
+
+	_meshes = gcnew System::Collections::Generic::List<IndexedMesh^>();
 }
 
 TriangleIndexVertexArray::TriangleIndexVertexArray(array<int>^ indices, array<btScalar>^ vertices)
@@ -193,26 +210,32 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(array<int>^ indices, array<bt
 
 	_native = new btTriangleIndexVertexArray(indices->Length / 3, indicesBase, 3 * sizeof(int),
 		vertices->Length / 3, verticesBase, 3 * sizeof(btScalar));
+
+	_meshes = gcnew System::Collections::Generic::List<IndexedMesh^>();
 }
 
 TriangleIndexVertexArray::TriangleIndexVertexArray()
 	: StridingMeshInterface(new btTriangleIndexVertexArray())
 {
+	_meshes = gcnew System::Collections::Generic::List<IndexedMesh^>();
 }
 
 void TriangleIndexVertexArray::AddIndexedMesh(IndexedMesh^ mesh, PhyScalarType indexType)
 {
 	Native->addIndexedMesh(*mesh->_native, (PHY_ScalarType)indexType);
+	_meshes->Add(mesh);
 }
 
 void TriangleIndexVertexArray::AddIndexedMesh(IndexedMesh^ mesh)
 {
 	Native->addIndexedMesh(*mesh->_native);
+	_meshes->Add(mesh);
 }
 
 AlignedIndexedMeshArray^ TriangleIndexVertexArray::IndexedMeshArray::get()
 {
-	if (_indexedMeshArray == nullptr) {
+	if (_indexedMeshArray == nullptr)
+	{
 		_indexedMeshArray = gcnew AlignedIndexedMeshArray(&Native->getIndexedMeshArray());
 	}
 	return _indexedMeshArray;

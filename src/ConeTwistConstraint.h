@@ -8,6 +8,10 @@ namespace BulletSharp
 
 	public ref class ConeTwistConstraint : TypedConstraint
 	{
+	private:
+		RigidBody^ _rigidBodyA;
+		RigidBody^ _rigidBodyB;
+
 	internal:
 		ConeTwistConstraint(btConeTwistConstraint* native);
 
@@ -19,20 +23,21 @@ namespace BulletSharp
 		void CalcAngleInfo2(Matrix transA, Matrix transB, Matrix invInertiaWorldA,
 			Matrix invInertiaWorldB);
 		void EnableMotor(bool b);
-		//void GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA, Matrix transB,
-		//	Matrix invInertiaWorldA, Matrix invInertiaWorldB);
+		void GetInfo1NonVirtual(ConstraintInfo1^ info);
+		void GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA, Matrix transB,
+			Matrix invInertiaWorldA, Matrix invInertiaWorldB);
 		Vector3 GetPointForAngle(btScalar fAngleInRadians, btScalar fLength);
 		void SetAngularOnly(bool angularOnly);
 		void SetDamping(btScalar damping);
 		void SetFrames(Matrix frameA, Matrix frameB);
+		void SetLimit(btScalar swingSpan1, btScalar swingSpan2, btScalar twistSpan,
+			btScalar softness, btScalar biasFactor, btScalar relaxationFactor);
+		void SetLimit(btScalar swingSpan1, btScalar swingSpan2, btScalar twistSpan,
+			btScalar softness, btScalar biasFactor);
+		void SetLimit(btScalar swingSpan1, btScalar swingSpan2, btScalar twistSpan,
+			btScalar softness);
+		void SetLimit(btScalar swingSpan1, btScalar swingSpan2, btScalar twistSpan);
 		void SetLimit(int limitIndex, btScalar limitValue);
-		void SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan,
-			btScalar _softness, btScalar _biasFactor, btScalar _relaxationFactor);
-		void SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan,
-			btScalar _softness, btScalar _biasFactor);
-		void SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan,
-			btScalar _softness);
-		void SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan);
 		void SetMaxMotorImpulse(btScalar maxMotorImpulse);
 		void SetMaxMotorImpulseNormalized(btScalar maxMotorImpulse);
 		void SetMotorTarget(Quaternion q);

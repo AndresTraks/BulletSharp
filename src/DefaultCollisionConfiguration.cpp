@@ -7,6 +7,17 @@
 #include "VoronoiSimplexSolver.h"
 #endif
 
+DefaultCollisionConstructionInfo::~DefaultCollisionConstructionInfo()
+{
+	this->!DefaultCollisionConstructionInfo();
+}
+
+DefaultCollisionConstructionInfo::!DefaultCollisionConstructionInfo()
+{
+	delete _native;
+	_native = NULL;
+}
+
 DefaultCollisionConstructionInfo::DefaultCollisionConstructionInfo()
 {
 	_native = new btDefaultCollisionConstructionInfo();

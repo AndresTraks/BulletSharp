@@ -62,7 +62,7 @@ bool PolyhedralConvexShape::InitializePolyhedralFeatures()
 
 bool PolyhedralConvexShape::IsInside(Vector3 point, btScalar tolerance)
 {
-	VECTOR3_DEF(point);
+	VECTOR3_CONV(point);
 	bool ret = Native->isInside(VECTOR3_USE(point), tolerance);
 	VECTOR3_DEL(point);
 	return ret;

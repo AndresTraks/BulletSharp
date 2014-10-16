@@ -14,30 +14,13 @@ QuantizedBvhNode::QuantizedBvhNode(btQuantizedBvhNode* native)
 	_native = native;
 }
 
-QuantizedBvh^ QuantizedBvh::GetManaged(btQuantizedBvh* quantizedBvh)
+QuantizedBvhNode::~QuantizedBvhNode()
 {
-	if (quantizedBvh == 0) {
-		return nullptr;
-	}
-
-	btOptimizedBvh* optimizedBvh = dynamic_cast<btOptimizedBvh*>(quantizedBvh);
-	if (optimizedBvh) {
-		return gcnew OptimizedBvh(optimizedBvh);
-	}
-
-	return gcnew QuantizedBvh(quantizedBvh);
+	this->!QuantizedBvhNode();
 }
 
-QuantizedBvh::~QuantizedBvh()
+QuantizedBvhNode::!QuantizedBvhNode()
 {
-	this->!QuantizedBvh();
-}
-
-QuantizedBvh::!QuantizedBvh()
-{
-	if (this->IsDisposed)
-		return;
-
 	delete _native;
 	_native = NULL;
 }
@@ -89,6 +72,17 @@ int QuantizedBvhNode::TriangleIndex::get()
 OptimizedBvhNode::OptimizedBvhNode(btOptimizedBvhNode* native)
 {
 	_native = native;
+}
+
+OptimizedBvhNode::~OptimizedBvhNode()
+{
+	this->!OptimizedBvhNode();
+}
+
+OptimizedBvhNode::!OptimizedBvhNode()
+{
+	delete _native;
+	_native = NULL;
 }
 
 OptimizedBvhNode::OptimizedBvhNode()
@@ -147,14 +141,54 @@ NodeOverlapCallback::NodeOverlapCallback(btNodeOverlapCallback* native)
 	_native = native;
 }
 
+NodeOverlapCallback::~NodeOverlapCallback()
+{
+	this->!NodeOverlapCallback();
+}
+
+NodeOverlapCallback::!NodeOverlapCallback()
+{
+	delete _native;
+	_native = NULL;
+}
+
 void NodeOverlapCallback::ProcessNode(int subPart, int triangleIndex)
 {
 	_native->processNode(subPart, triangleIndex);
 }
 
+
 QuantizedBvh::QuantizedBvh(btQuantizedBvh* native)
 {
 	_native = native;
+}
+
+QuantizedBvh^ QuantizedBvh::GetManaged(btQuantizedBvh* quantizedBvh)
+{
+	if (quantizedBvh == 0) {
+		return nullptr;
+	}
+
+	btOptimizedBvh* optimizedBvh = dynamic_cast<btOptimizedBvh*>(quantizedBvh);
+	if (optimizedBvh) {
+		return gcnew OptimizedBvh(optimizedBvh);
+	}
+
+	return gcnew QuantizedBvh(quantizedBvh);
+}
+
+QuantizedBvh::~QuantizedBvh()
+{
+	this->!QuantizedBvh();
+}
+
+QuantizedBvh::!QuantizedBvh()
+{
+	if (this->IsDisposed)
+		return;
+
+	delete _native;
+	_native = NULL;
 }
 
 QuantizedBvh::QuantizedBvh()
@@ -188,24 +222,24 @@ void QuantizedBvh::DeSerializeFloat(QuantizedBvhFloatData^ quantizedBvhFloatData
 	_native->deSerializeFloat(*quantizedBvhFloatData->_native);
 }
 */
-QuantizedBvh^ QuantizedBvh::DeSerializeInPlace(IntPtr i_alignedDataBuffer, unsigned int i_dataBufferSize,
-	bool i_swapEndian)
+QuantizedBvh^ QuantizedBvh::DeSerializeInPlace(IntPtr alignedDataBuffer, unsigned int dataBufferSize,
+	bool swapEndian)
 {
-	return QuantizedBvh::GetManaged(btQuantizedBvh::deSerializeInPlace(i_alignedDataBuffer.ToPointer(), i_dataBufferSize,
-		i_swapEndian));
+	return QuantizedBvh::GetManaged(btQuantizedBvh::deSerializeInPlace(alignedDataBuffer.ToPointer(), dataBufferSize,
+		swapEndian));
 }
 #endif
 /*
 void QuantizedBvh::Quantize(unsigned short^ out, Vector3 point, int isMax)
 {
-	VECTOR3_DEF(point);
+	VECTOR3_CONV(point);
 	_native->quantize(out->_native, VECTOR3_USE(point), isMax);
 	VECTOR3_DEL(point);
 }
 
 void QuantizedBvh::QuantizeWithClamp(unsigned short^ out, Vector3 point2, int isMax)
 {
-	VECTOR3_DEF(point2);
+	VECTOR3_CONV(point2);
 	_native->quantizeWithClamp(out->_native, VECTOR3_USE(point2), isMax);
 	VECTOR3_DEL(point2);
 }
@@ -213,8 +247,8 @@ void QuantizedBvh::QuantizeWithClamp(unsigned short^ out, Vector3 point2, int is
 void QuantizedBvh::ReportAabbOverlappingNodex(NodeOverlapCallback^ nodeCallback, Vector3 aabbMin,
 	Vector3 aabbMax)
 {
-	VECTOR3_DEF(aabbMin);
-	VECTOR3_DEF(aabbMax);
+	VECTOR3_CONV(aabbMin);
+	VECTOR3_CONV(aabbMax);
 	_native->reportAabbOverlappingNodex(nodeCallback->_native, VECTOR3_USE(aabbMin),
 		VECTOR3_USE(aabbMax));
 	VECTOR3_DEL(aabbMin);
@@ -224,10 +258,10 @@ void QuantizedBvh::ReportAabbOverlappingNodex(NodeOverlapCallback^ nodeCallback,
 void QuantizedBvh::ReportBoxCastOverlappingNodex(NodeOverlapCallback^ nodeCallback,
 	Vector3 raySource, Vector3 rayTarget, Vector3 aabbMin, Vector3 aabbMax)
 {
-	VECTOR3_DEF(raySource);
-	VECTOR3_DEF(rayTarget);
-	VECTOR3_DEF(aabbMin);
-	VECTOR3_DEF(aabbMax);
+	VECTOR3_CONV(raySource);
+	VECTOR3_CONV(rayTarget);
+	VECTOR3_CONV(aabbMin);
+	VECTOR3_CONV(aabbMax);
 	_native->reportBoxCastOverlappingNodex(nodeCallback->_native, VECTOR3_USE(raySource),
 		VECTOR3_USE(rayTarget), VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 	VECTOR3_DEL(raySource);
@@ -239,8 +273,8 @@ void QuantizedBvh::ReportBoxCastOverlappingNodex(NodeOverlapCallback^ nodeCallba
 void QuantizedBvh::ReportRayOverlappingNodex(NodeOverlapCallback^ nodeCallback, Vector3 raySource,
 	Vector3 rayTarget)
 {
-	VECTOR3_DEF(raySource);
-	VECTOR3_DEF(rayTarget);
+	VECTOR3_CONV(raySource);
+	VECTOR3_CONV(rayTarget);
 	_native->reportRayOverlappingNodex(nodeCallback->_native, VECTOR3_USE(raySource),
 		VECTOR3_USE(rayTarget));
 	VECTOR3_DEL(raySource);
@@ -262,8 +296,8 @@ String^ QuantizedBvh::Serialize(IntPtr dataBuffer, Serializer^ serializer)
 
 void QuantizedBvh::SetQuantizationValues(Vector3 bvhAabbMin, Vector3 bvhAabbMax, btScalar quantizationMargin)
 {
-	VECTOR3_DEF(bvhAabbMin);
-	VECTOR3_DEF(bvhAabbMax);
+	VECTOR3_CONV(bvhAabbMin);
+	VECTOR3_CONV(bvhAabbMax);
 	_native->setQuantizationValues(VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax),
 		quantizationMargin);
 	VECTOR3_DEL(bvhAabbMin);
@@ -272,8 +306,8 @@ void QuantizedBvh::SetQuantizationValues(Vector3 bvhAabbMin, Vector3 bvhAabbMax,
 
 void QuantizedBvh::SetQuantizationValues(Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 {
-	VECTOR3_DEF(bvhAabbMin);
-	VECTOR3_DEF(bvhAabbMax);
+	VECTOR3_CONV(bvhAabbMin);
+	VECTOR3_CONV(bvhAabbMax);
 	_native->setQuantizationValues(VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax));
 	VECTOR3_DEL(bvhAabbMin);
 	VECTOR3_DEL(bvhAabbMax);

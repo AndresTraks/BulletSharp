@@ -612,7 +612,7 @@ namespace BulletSharp
 		Vector3 crossed;
 		Vector3 final;
 
-		btScalar lengthSq = difference.LengthSquared();
+		btScalar lengthSq = difference.LengthSquared;
 		if (lengthSq < 0.0001f)
 			difference = -cameraForwardVector;
 		else
@@ -648,7 +648,7 @@ namespace BulletSharp
 		Vector3 crossed;
 		Vector3 final;
 
-		btScalar lengthSq = difference.LengthSquared();
+		btScalar lengthSq = difference.LengthSquared;
 		if (lengthSq < 0.0001f)
 			difference = -cameraForwardVector;
 		else
@@ -915,7 +915,7 @@ namespace BulletSharp
 
 	Matrix Matrix::RotationAxis( Vector3 axis, btScalar angle )
 	{
-		if( axis.LengthSquared() != 1.0f )
+		if( axis.LengthSquared != 1.0f )
 			axis.Normalize();
 
 		Matrix result;
@@ -953,7 +953,7 @@ namespace BulletSharp
 
 	void Matrix::RotationAxis( Vector3% axis, btScalar angle, [Out] Matrix% result )
 	{
-		if( axis.LengthSquared() != 1.0f )
+		if( axis.LengthSquared != 1.0f )
 			axis.Normalize();
 
 		btScalar x = axis.X;

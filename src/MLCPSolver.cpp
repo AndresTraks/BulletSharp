@@ -2,39 +2,42 @@
 
 #ifndef DISABLE_MLCP
 
-#include "MLCPSolver.h"
+#include "MlcpSolver.h"
+#include "MLCPSolverInterface.h"
 
 #define Native static_cast<btMLCPSolver*>(_native)
 
-MLCPSolver::MLCPSolver(btMLCPSolver* native)
+MlcpSolver::MlcpSolver(btMLCPSolver* native)
 	: SequentialImpulseConstraintSolver(native)
 {
 }
 
-MLCPSolver::MLCPSolver(MLCPSolverInterface^ solver)
+MlcpSolver::MlcpSolver(MlcpSolverInterface^ solver)
 	: SequentialImpulseConstraintSolver(new btMLCPSolver(solver->_native))
 {
+	_mlcpSolver = solver;
 }
 
-void MLCPSolver::SetMLCPSolver(MLCPSolverInterface^ solver)
+void MlcpSolver::SetMLCPSolver(MlcpSolverInterface^ solver)
 {
 	Native->setMLCPSolver(solver->_native);
+	_mlcpSolver = solver;
 }
 
-btScalar MLCPSolver::Cfm::get()
+btScalar MlcpSolver::Cfm::get()
 {
 	return Native->getCfm();
 }
-void MLCPSolver::Cfm::set(btScalar cfm)
+void MlcpSolver::Cfm::set(btScalar cfm)
 {
 	Native->setCfm(cfm);
 }
 
-int MLCPSolver::NumFallbacks::get()
+int MlcpSolver::NumFallbacks::get()
 {
 	return Native->getNumFallbacks();
 }
-void MLCPSolver::NumFallbacks::set(int num)
+void MlcpSolver::NumFallbacks::set(int num)
 {
 	Native->setNumFallbacks(num);
 }

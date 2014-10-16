@@ -70,7 +70,7 @@ namespace DemoFramework
                     Eye -= Vector3.Cross(relDirection, Up);
                 }
             }
-            Target = Eye + (Eye - Target).Length() * direction;
+            Target = Eye + (Eye - Target).Length * direction;
 
             return true;
         }

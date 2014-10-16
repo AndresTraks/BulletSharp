@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using BulletSharp;
 using BulletSharp.SoftBody;
@@ -9,9 +8,9 @@ using SharpDX.Direct3D;
 using SharpDX.Direct3D10;
 using SharpDX.DXGI;
 using Buffer = SharpDX.Direct3D10.Buffer;
+using Color = System.Drawing.Color;
 using Device = SharpDX.Direct3D10.Device;
 using Mesh = SharpDX.Direct3D10.Mesh;
-using Color = System.Drawing.Color;
 
 namespace DemoFramework
 {
@@ -429,46 +428,7 @@ namespace DemoFramework
 
             return shapeData;
         }
-        /*
-        Mesh CreateGImpactMeshShape(GImpactMeshShape shape)
-        {
-            BulletSharp.DataStream verts, indices;
-            int numVerts, numFaces;
-            PhyScalarType vertsType, indicesType;
-            int vertexStride, indexStride;
-            shape.MeshInterface.GetLockedReadOnlyVertexIndexData(out verts, out numVerts, out vertsType, out vertexStride,
-                out indices, out indexStride, out numFaces, out indicesType);
 
-            bool index32 = numVerts > 65536;
-
-            Mesh mesh = new Mesh(device, numFaces, numVerts,
-                MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0), VertexFormat.Position | VertexFormat.Normal);
-
-            SlimDX.DataStream vertexBuffer = mesh.LockVertexBuffer(LockFlags.Discard);
-            while (vertexBuffer.Position < vertexBuffer.Length)
-            {
-                vertexBuffer.Write(verts.Read<Vector3>());
-                vertexBuffer.Position += 12;
-            }
-            mesh.UnlockVertexBuffer();
-
-            SlimDX.DataStream indexBuffer = mesh.LockIndexBuffer(LockFlags.Discard);
-            if (index32)
-            {
-                while (indexBuffer.Position < indexBuffer.Length)
-                    indexBuffer.Write(indices.Read<int>());
-            }
-            else
-            {
-                while (indexBuffer.Position < indexBuffer.Length)
-                    indexBuffer.Write((ushort)indices.Read<int>());
-            }
-            mesh.UnlockIndexBuffer();
-
-            mesh.ComputeNormals();
-            return mesh;
-        }
-        */
         ShapeData CreateConvexHullShape(ConvexHullShape shape)
         {
             ConvexPolyhedron poly = shape.ConvexPolyhedron;
@@ -702,10 +662,8 @@ namespace DemoFramework
         }
         */
 
-        ShapeData CreateTriangleMeshShape(TriangleMeshShape shape)
+        ShapeData CreateTriangleMeshShape(StridingMeshInterface meshInterface)
         {
-            StridingMeshInterface meshInterface = shape.MeshInterface;
-
             BulletSharp.DataStream vertexStream, indexStream;
             int numVerts, numFaces;
             PhyScalarType vertsType, indicesType;
@@ -782,11 +740,14 @@ namespace DemoFramework
                     case BroadphaseNativeType.ConvexHullShape:
                         shapeData = CreateConvexHullShape(shape as ConvexHullShape);
                         break;
+                    case BroadphaseNativeType.GImpactShape:
+                        shapeData = CreateTriangleMeshShape((shape as GImpactMeshShape).MeshInterface);
+                        break;
                     case BroadphaseNativeType.SphereShape:
                         shapeData = CreateSphereShape(shape as SphereShape);
                         break;
                     case BroadphaseNativeType.TriangleMeshShape:
-                        shapeData = CreateTriangleMeshShape(shape as TriangleMeshShape);
+                        shapeData = CreateTriangleMeshShape((shape as TriangleMeshShape).MeshInterface);
                         break;
                     default:
                         throw new NotImplementedException();

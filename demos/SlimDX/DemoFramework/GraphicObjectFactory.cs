@@ -179,12 +179,6 @@ namespace DemoFramework
 
         Mesh CreateConvexHullShape(ConvexHullShape shape)
         {
-            ConvexPolyhedron poly = shape.ConvexPolyhedron;
-            if (poly != null)
-            {
-                throw new NotImplementedException();
-            }
-
             ShapeHull hull = new ShapeHull(shape);
             hull.BuildHull(shape.Margin);
 

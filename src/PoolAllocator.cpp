@@ -9,11 +9,6 @@ PoolAllocator::PoolAllocator(btPoolAllocator* native)
 	_native = native;
 }
 
-PoolAllocator::PoolAllocator(int elemSize, int maxElements)
-{
-	_native = new btPoolAllocator(elemSize, maxElements);
-}
-
 PoolAllocator::~PoolAllocator()
 {
 	this->!PoolAllocator();
@@ -26,9 +21,15 @@ PoolAllocator::!PoolAllocator()
 
 	OnDisposing(this, nullptr);
 
+	delete _native;
 	_native = NULL;
 
 	OnDisposed(this, nullptr);
+}
+
+PoolAllocator::PoolAllocator(int elemSize, int maxElements)
+{
+	_native = new btPoolAllocator(elemSize, maxElements);
 }
 
 IntPtr PoolAllocator::Allocate(int size)

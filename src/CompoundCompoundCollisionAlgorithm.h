@@ -26,6 +26,7 @@ namespace BulletSharp
 		};
 
 		CompoundCompoundCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci,
-			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped);
+			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
+			bool isSwapped);
 	};
 };

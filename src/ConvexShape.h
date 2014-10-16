@@ -4,7 +4,7 @@
 
 namespace BulletSharp
 {
-	public ref class ConvexShape : CollisionShape
+	public ref class ConvexShape : CollisionShape // abstract
 	{
 	internal:
 		ConvexShape(btConvexShape* native);

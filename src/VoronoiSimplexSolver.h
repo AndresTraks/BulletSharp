@@ -7,11 +7,16 @@ namespace BulletSharp
 	ref class ScalarArray;
 	ref class Vector3Array;
 
-	public ref class SubSimplexClosestResult
+	public ref class SubSimplexClosestResult : IDisposable
 	{
 	internal:
 		btSubSimplexClosestResult* _native;
 		SubSimplexClosestResult(btSubSimplexClosestResult* native);
+
+	public:
+		!SubSimplexClosestResult();
+	protected:
+		~SubSimplexClosestResult();
 
 	public:
 		SubSimplexClosestResult();
@@ -54,7 +59,7 @@ namespace BulletSharp
 	};
 
 #ifdef NO_VIRTUAL_INTERFACE
-	public ref class VoronoiSimplexSolver
+	public ref class VoronoiSimplexSolver : IDisposable
 #else
 	public ref class VoronoiSimplexSolver : SimplexSolverInterface
 #endif

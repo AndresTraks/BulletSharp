@@ -15,15 +15,17 @@ ConvexTriangleMeshShape::ConvexTriangleMeshShape(StridingMeshInterface^ meshInte
 	: PolyhedralConvexAabbCachingShape(new btConvexTriangleMeshShape(meshInterface->_native,
 		calcAabb))
 {
+	_meshInterface = meshInterface;
 }
 
 ConvexTriangleMeshShape::ConvexTriangleMeshShape(StridingMeshInterface^ meshInterface)
 	: PolyhedralConvexAabbCachingShape(new btConvexTriangleMeshShape(meshInterface->_native))
 {
+	_meshInterface = meshInterface;
 }
 
-void ConvexTriangleMeshShape::CalculatePrincipalAxisTransform(Matrix% principal, Vector3% inertia,
-	btScalar% volume)
+void ConvexTriangleMeshShape::CalculatePrincipalAxisTransform(Matrix% principal, [Out] Vector3% inertia,
+	[Out] btScalar% volume)
 {
 	TRANSFORM_CONV(principal);
 	btVector3* inertiaTemp = ALIGNED_NEW(btVector3);
@@ -31,7 +33,7 @@ void ConvexTriangleMeshShape::CalculatePrincipalAxisTransform(Matrix% principal,
 	Native->calculatePrincipalAxisTransform(TRANSFORM_USE(principal), *inertiaTemp,
 		volumeTemp);
 	Math::BtTransformToMatrix(TRANSFORM_PTR(principal), principal);
-	Math::BtVector3ToVector3(VECTOR3_PTR(inertia), inertia);
+	Math::BtVector3ToVector3(inertiaTemp, inertia);
 	volume = volumeTemp;
 	TRANSFORM_DEL(principal);
 	ALIGNED_FREE(inertiaTemp);
@@ -39,6 +41,6 @@ void ConvexTriangleMeshShape::CalculatePrincipalAxisTransform(Matrix% principal,
 
 StridingMeshInterface^ ConvexTriangleMeshShape::MeshInterface::get()
 {
-	btStridingMeshInterface* stridingMeshInterface = Native->getMeshInterface();
-	ReturnCachedObject(StridingMeshInterface, _stridingMeshInterface, stridingMeshInterface);
+	btStridingMeshInterface* meshInterface = Native->getMeshInterface();
+	ReturnCachedObject(StridingMeshInterface, _meshInterface, meshInterface);
 }

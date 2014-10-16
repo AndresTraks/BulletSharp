@@ -10,6 +10,17 @@ MultiBodySolverConstraint::MultiBodySolverConstraint(btMultiBodySolverConstraint
 	_native = native;
 }
 
+MultiBodySolverConstraint::~MultiBodySolverConstraint()
+{
+	this->!MultiBodySolverConstraint();
+}
+
+MultiBodySolverConstraint::!MultiBodySolverConstraint()
+{
+	delete _native;
+	_native = NULL;
+}
+
 MultiBodySolverConstraint::MultiBodySolverConstraint()
 {
 	_native = new btMultiBodySolverConstraint();

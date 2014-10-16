@@ -22,8 +22,8 @@ namespace BulletSharp
 			SwappedCreateFunc();
 		};
 
-		ConvexConcaveCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci,
-			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped);
+		ConvexConcaveCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci, CollisionObjectWrapper^ body0Wrap,
+			CollisionObjectWrapper^ body1Wrap, bool isSwapped);
 
 		void ClearCache();
 	};

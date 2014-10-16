@@ -164,20 +164,20 @@ void Dispatcher::ClearManifold(PersistentManifold^ manifold)
 void Dispatcher::DispatchAllCollisionPairs(OverlappingPairCache^ pairCache, DispatcherInfo^ dispatchInfo,
 	Dispatcher^ dispatcher)
 {
-	_native->dispatchAllCollisionPairs((btOverlappingPairCache*)pairCache->_native, *dispatchInfo->_native,
-		dispatcher->_native);
+	_native->dispatchAllCollisionPairs((btOverlappingPairCache*)pairCache->_native,
+		*dispatchInfo->_native, dispatcher->_native);
 }
 
 CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 	PersistentManifold^ sharedManifold)
 {
-	return gcnew CollisionAlgorithm(_native->findAlgorithm(
+	return CollisionAlgorithm::GetManaged(_native->findAlgorithm(
 		body0Wrap->_native, body1Wrap->_native, (btPersistentManifold*)sharedManifold->_native));
 }
 
 CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
 {
-	return gcnew CollisionAlgorithm(_native->findAlgorithm(body0Wrap->_native, body1Wrap->_native));
+	return CollisionAlgorithm::GetManaged(_native->findAlgorithm(body0Wrap->_native, body1Wrap->_native));
 }
 
 void Dispatcher::FreeCollisionAlgorithm(IntPtr ptr)
@@ -234,4 +234,3 @@ int Dispatcher::NumManifolds::get()
 {
 	return _native->getNumManifolds();
 }
-

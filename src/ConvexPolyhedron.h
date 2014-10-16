@@ -6,10 +6,20 @@ namespace BulletSharp
 	ref class AlignedVector3Array;
 	ref class ScalarArray;
 
-	public ref class Face
+	public ref class Face : IDisposable
 	{
 	internal:
 		btFace* _native;
+		Face(btFace* native);
+
+	private:
+		ScalarArray^ _plane;
+		AlignedIntArray^ _indices;
+
+	public:
+		!Face();
+	protected:
+		~Face();
 
 	public:
 		Face();
@@ -33,16 +43,15 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class ConvexPolyhedron : ITrackingDisposable
+	public ref class ConvexPolyhedron : IDisposable
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	internal:
 		btConvexPolyhedron* _native;
+		ConvexPolyhedron(btConvexPolyhedron* native);
 
-		ConvexPolyhedron(btConvexPolyhedron* convexPolyhedron);
+	private:
+		AlignedVector3Array^ _uniqueEdges;
+		AlignedVector3Array^ _vertices;
 
 	public:
 		!ConvexPolyhedron();
@@ -53,7 +62,10 @@ namespace BulletSharp
 		ConvexPolyhedron();
 
 		void Initialize();
-		void Project(Matrix transform, Vector3 direction, [Out] btScalar% minProj, [Out] btScalar% maxProj, [Out] Vector3% witnesPtMin, [Out] Vector3% witnesPtMax);
+		void Project(Matrix% transform, Vector3% direction, [Out] btScalar% minProj, [Out] btScalar% maxProj, [Out] Vector3% witnesPtMin,
+			[Out] Vector3% witnesPtMax);
+		void Project(Matrix transform, Vector3 direction, [Out] btScalar% minProj, [Out] btScalar% maxProj, [Out] Vector3% witnesPtMin,
+			[Out] Vector3% witnesPtMax);
 		bool TestContainment();
 
 		property Vector3 C
@@ -73,7 +85,13 @@ namespace BulletSharp
 			Vector3 get();
 			void set(Vector3 value);
 		}
-
+		/*
+		property AlignedFaceArray^ Faces
+		{
+			AlignedFaceArray^ get();
+			void set(AlignedFaceArray^ value);
+		}
+		*/
 		property bool IsDisposed
 		{
 			virtual bool get();

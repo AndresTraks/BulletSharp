@@ -9,7 +9,7 @@ namespace BulletSharp
 	public ref class ConvexTriangleMeshShape : PolyhedralConvexAabbCachingShape
 	{
 	private:
-		StridingMeshInterface^ _stridingMeshInterface;
+		StridingMeshInterface^ _meshInterface;
 
 	internal:
 		ConvexTriangleMeshShape(btConvexTriangleMeshShape* native);

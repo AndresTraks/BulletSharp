@@ -33,11 +33,14 @@ namespace BulletSharp
 		CollisionObjectWrapper^ colObj1Wrap, int partId1, int index1);
 #endif
 
-	public ref class ManifoldPoint
+	public ref class ManifoldPoint : IDisposable
 	{
 	internal:
 		btManifoldPoint* _native;
-		ManifoldPoint(btManifoldPoint* native);
+		ManifoldPoint(btManifoldPoint* native, bool preventDelete);
+
+	private:
+		bool _preventDelete;
 
 #ifdef BT_CALLBACKS_ARE_EVENTS
 	internal:
@@ -59,6 +62,12 @@ namespace BulletSharp
 		}
 #endif
 
+	public:
+		!ManifoldPoint();
+	protected:
+		~ManifoldPoint();
+
+	public:
 		ManifoldPoint();
 		ManifoldPoint(Vector3 pointA, Vector3 pointB, Vector3 normal, btScalar distance);
 

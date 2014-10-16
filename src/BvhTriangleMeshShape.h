@@ -7,6 +7,7 @@ namespace BulletSharp
 	ref class OptimizedBvh;
 	ref class StridingMeshInterface;
 	ref class TriangleCallback;
+	ref class TriangleInfoMap;
 
 	public ref class BvhTriangleMeshShape : TriangleMeshShape
 	{
@@ -14,6 +15,7 @@ namespace BulletSharp
 #ifndef DISABLE_BVH
 		OptimizedBvh^ _optimizedBvh;
 #endif
+		TriangleInfoMap^ _triangleInfoMap;
 
 	internal:
 		BvhTriangleMeshShape(btBvhTriangleMeshShape* native);
@@ -23,15 +25,24 @@ namespace BulletSharp
 			bool buildBvh);
 		BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression);
 		BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
+			Vector3% bvhAabbMin, Vector3% bvhAabbMax, bool buildBvh);
+		BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
 			Vector3 bvhAabbMin, Vector3 bvhAabbMax, bool buildBvh);
+		BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
+			Vector3% bvhAabbMin, Vector3% bvhAabbMax);
 		BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
 			Vector3 bvhAabbMin, Vector3 bvhAabbMax);
 
 		void BuildOptimizedBvh();
+		void PartialRefitTree(Vector3% aabbMin, Vector3% aabbMax);
 		void PartialRefitTree(Vector3 aabbMin, Vector3 aabbMax);
-		void PerformConvexcast(TriangleCallback^ callback, Vector3 boxSource,
-			Vector3 boxTarget, Vector3 boxMin, Vector3 boxMax);
+		void PerformConvexcast(TriangleCallback^ callback, Vector3% boxSource, Vector3% boxTarget,
+			Vector3% boxMin, Vector3% boxMax);
+		void PerformConvexcast(TriangleCallback^ callback, Vector3 boxSource, Vector3 boxTarget,
+			Vector3 boxMin, Vector3 boxMax);
+		void PerformRaycast(TriangleCallback^ callback, Vector3% raySource, Vector3% rayTarget);
 		void PerformRaycast(TriangleCallback^ callback, Vector3 raySource, Vector3 rayTarget);
+		void RefitTree(Vector3% aabbMin, Vector3% aabbMax);
 		void RefitTree(Vector3 aabbMin, Vector3 aabbMax);
 #ifndef DISABLE_SERIALIZE
 		void SerializeSingleBvh(Serializer^ serializer);
@@ -53,13 +64,13 @@ namespace BulletSharp
 		{
 			bool get();
 		}
-/*
-		property TriangleInfoMap^ TriangleInfoMap
+
+		property BulletSharp::TriangleInfoMap^ TriangleInfoMap
 		{
-			TriangleInfoMap^ get();
-			void set(TriangleInfoMap^ value);
+			BulletSharp::TriangleInfoMap^ get();
+			void set(BulletSharp::TriangleInfoMap^ triangleInfoMap);
 		}
-*/
+
 		property bool UsesQuantizedAabbCompression
 		{
 			bool get();

@@ -18,9 +18,9 @@ int ConeShape::ConeUpIndex::get()
 {
 	return Native->getConeUpIndex();
 }
-void ConeShape::ConeUpIndex::set(int value)
+void ConeShape::ConeUpIndex::set(int upIndex)
 {
-	Native->setConeUpIndex(value);
+	Native->setConeUpIndex(upIndex);
 }
 
 btScalar ConeShape::Height::get()
@@ -34,8 +34,19 @@ btScalar ConeShape::Radius::get()
 }
 
 
+ConeShapeX::ConeShapeX(btConeShapeX* native)
+	: ConeShape(native)
+{
+}
+
 ConeShapeX::ConeShapeX(btScalar radius, btScalar height)
 	: ConeShape(new btConeShapeX(radius, height))
+{
+}
+
+
+ConeShapeZ::ConeShapeZ(btConeShapeZ* native)
+	: ConeShape(native)
 {
 }
 

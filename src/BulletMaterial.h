@@ -13,7 +13,7 @@ namespace BulletSharp
 		int pad2;
 
 	internal:
-		BulletMaterial(btMaterial* material);
+		BulletMaterial(btMaterial* native);
 
 	public:
 		BulletMaterial(btScalar fric, btScalar rest);

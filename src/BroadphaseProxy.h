@@ -27,14 +27,14 @@ namespace BulletSharp
 		BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject, CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask);
 
-		static bool IsCompound(int proxyType);
-		static bool IsConcave(int proxyType);
-		static bool IsConvex(int proxyType);
-		static bool IsConvex2d(int proxyType);
-		static bool IsInfinite(int proxyType);
-		static bool IsNonMoving(int proxyType);
-		static bool IsPolyhedral(int proxyType);
-		static bool IsSoftBody(int proxyType);
+		static bool IsCompound(BroadphaseNativeType proxyType);
+		static bool IsConcave(BroadphaseNativeType proxyType);
+		static bool IsConvex(BroadphaseNativeType proxyType);
+		static bool IsConvex2D(BroadphaseNativeType proxyType);
+		static bool IsInfinite(BroadphaseNativeType proxyType);
+		static bool IsNonMoving(BroadphaseNativeType proxyType);
+		static bool IsPolyhedral(BroadphaseNativeType proxyType);
+		static bool IsSoftBody(BroadphaseNativeType proxyType);
 
 		property Vector3 AabbMax
 		{

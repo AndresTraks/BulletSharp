@@ -20,8 +20,8 @@ OptimizedBvh::OptimizedBvh()
 void OptimizedBvh::Build(StridingMeshInterface^ triangles, bool useQuantizedAabbCompression,
 	Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 {
-	VECTOR3_DEF(bvhAabbMin);
-	VECTOR3_DEF(bvhAabbMax);
+	VECTOR3_CONV(bvhAabbMin);
+	VECTOR3_CONV(bvhAabbMax);
 	Native->build(triangles->_native, useQuantizedAabbCompression, VECTOR3_USE(bvhAabbMin),
 		VECTOR3_USE(bvhAabbMax));
 	VECTOR3_DEL(bvhAabbMin);
@@ -37,8 +37,8 @@ OptimizedBvh^ OptimizedBvh::DeSerializeInPlace(IntPtr alignedDataBuffer, unsigne
 
 void OptimizedBvh::Refit(StridingMeshInterface^ triangles, Vector3 aabbMin, Vector3 aabbMax)
 {
-	VECTOR3_DEF(aabbMin);
-	VECTOR3_DEF(aabbMax);
+	VECTOR3_CONV(aabbMin);
+	VECTOR3_CONV(aabbMax);
 	Native->refit(triangles->_native, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
@@ -47,8 +47,8 @@ void OptimizedBvh::Refit(StridingMeshInterface^ triangles, Vector3 aabbMin, Vect
 void OptimizedBvh::RefitPartial(StridingMeshInterface^ triangles, Vector3 aabbMin,
 	Vector3 aabbMax)
 {
-	VECTOR3_DEF(aabbMin);
-	VECTOR3_DEF(aabbMax);
+	VECTOR3_CONV(aabbMin);
+	VECTOR3_CONV(aabbMax);
 	Native->refitPartial(triangles->_native, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);

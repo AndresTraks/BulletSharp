@@ -5,9 +5,9 @@
 #include "CollisionShape.h"
 #include "SparseSdf.h"
 
-SparseSdf::SparseSdf(btSparseSdf<3>* sdf)
+SparseSdf::SparseSdf(btSparseSdf<3>* native)
 {
-	_native = sdf;
+	_native = native;
 }
 
 void SparseSdf::GarbageCollect(int lifetime)

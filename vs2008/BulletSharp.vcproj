@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+﻿<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
@@ -499,7 +499,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\bullet3\src;..\..\bullet3\Extras\HACD;..\..\bullet3\Extras\Serialize\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;"
-				AdditionalUsingDirectories="$(USERPROFILE)\My Documents\OpenTK\1.0\Binaries\OpenTK\Release"
+				AdditionalUsingDirectories="$(USERPROFILE)\My Documents\OpenTK\1.1\Binaries\OpenTK\Release"
 				PreprocessorDefinitions="GRAPHICS_OPENTK;WIN32;_DEBUG;"
 				RuntimeLibrary="3"
 				FloatingPointModel="0"
@@ -575,7 +575,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\bullet3\src;..\..\bullet3\Extras\HACD;..\..\bullet3\Extras\Serialize\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;"
-				AdditionalUsingDirectories="$(USERPROFILE)\My Documents\OpenTK\1.0\Binaries\OpenTK\Release"
+				AdditionalUsingDirectories="$(USERPROFILE)\My Documents\OpenTK\1.1\Binaries\OpenTK\Release"
 				PreprocessorDefinitions="GRAPHICS_OPENTK;WIN32;_DEBUG;"
 				RuntimeLibrary="3"
 				FloatingPointModel="0"
@@ -651,7 +651,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\bullet3\src;..\..\bullet3\Extras\HACD;..\..\bullet3\Extras\Serialize\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;"
-				AdditionalUsingDirectories="..\..\sharpdx\Source\SharpDX\bin\Net20Debug"
+				AdditionalUsingDirectories="..\..\SharpDX\Bin\DirectX11-net20"
 				PreprocessorDefinitions="GRAPHICS_SHARPDX;WIN32;_DEBUG;"
 				RuntimeLibrary="3"
 				FloatingPointModel="0"
@@ -727,7 +727,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\bullet3\src;..\..\bullet3\Extras\HACD;..\..\bullet3\Extras\Serialize\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;"
-				AdditionalUsingDirectories="..\..\sharpdx\Source\SharpDX\bin\Net20Debug"
+				AdditionalUsingDirectories="..\..\SharpDX\Bin\DirectX11-net20"
 				PreprocessorDefinitions="GRAPHICS_SHARPDX;WIN32;_DEBUG;"
 				RuntimeLibrary="3"
 				FloatingPointModel="0"
@@ -1559,7 +1559,7 @@
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="..\..\bullet3\src;..\..\bullet3\Extras\HACD;..\..\bullet3\Extras\Serialize\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;"
-				AdditionalUsingDirectories="$(USERPROFILE)\My Documents\OpenTK\1.0\Binaries\OpenTK\Release"
+				AdditionalUsingDirectories="$(USERPROFILE)\My Documents\OpenTK\1.1\Binaries\OpenTK\Release"
 				PreprocessorDefinitions="GRAPHICS_OPENTK;WIN32;NDEBUG;"
 				RuntimeLibrary="2"
 				FloatingPointModel="0"
@@ -1634,7 +1634,7 @@
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="..\..\bullet3\src;..\..\bullet3\Extras\HACD;..\..\bullet3\Extras\Serialize\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;"
-				AdditionalUsingDirectories="$(USERPROFILE)\My Documents\OpenTK\1.0\Binaries\OpenTK\Release"
+				AdditionalUsingDirectories="$(USERPROFILE)\My Documents\OpenTK\1.1\Binaries\OpenTK\Release"
 				PreprocessorDefinitions="GRAPHICS_OPENTK;WIN32;NDEBUG;"
 				RuntimeLibrary="2"
 				FloatingPointModel="0"
@@ -1709,7 +1709,7 @@
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="..\..\bullet3\src;..\..\bullet3\Extras\HACD;..\..\bullet3\Extras\Serialize\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;"
-				AdditionalUsingDirectories="..\..\sharpdx\Source\SharpDX\bin\Net20Release"
+				AdditionalUsingDirectories="..\..\SharpDX\Bin\DirectX11-net20"
 				PreprocessorDefinitions="GRAPHICS_SHARPDX;WIN32;NDEBUG;"
 				RuntimeLibrary="2"
 				FloatingPointModel="0"
@@ -1784,7 +1784,7 @@
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="..\..\bullet3\src;..\..\bullet3\Extras\HACD;..\..\bullet3\Extras\Serialize\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;"
-				AdditionalUsingDirectories="..\..\sharpdx\Source\SharpDX\bin\Net20Release"
+				AdditionalUsingDirectories="..\..\SharpDX\Bin\DirectX11-net20"
 				PreprocessorDefinitions="GRAPHICS_SHARPDX;WIN32;NDEBUG;"
 				RuntimeLibrary="2"
 				FloatingPointModel="0"
@@ -2943,11 +2943,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\MLCPSolver.cpp"
+						RelativePath="..\src\MlcpSolver.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\src\MLCPSolverInterface.cpp"
+						RelativePath="..\src\MlcpSolverInterface.cpp"
 						>
 					</File>
 				</Filter>
@@ -3094,7 +3094,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\IDisposable.h"
+				RelativePath="..\src\ITrackingDisposable.h"
 				>
 			</File>
 			<File
@@ -3776,11 +3776,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\MLCPSolver.h"
+						RelativePath="..\src\MlcpSolver.h"
 						>
 					</File>
 					<File
-						RelativePath="..\src\MLCPSolverInterface.h"
+						RelativePath="..\src\MlcpSolverInterface.h"
 						>
 					</File>
 				</Filter>

@@ -25,7 +25,7 @@ namespace BulletSharp
 		TrimeshShape = CONST_GIMPACT_TRIMESH_SHAPE
 	};
 
-	public ref class TetrahedronShapeEx : BU_Simplex1to4
+	public ref class TetrahedronShapeEx : BuSimplex1To4
 	{
 	internal:
 		TetrahedronShapeEx(btTetrahedronShapeEx* native);
@@ -47,9 +47,9 @@ namespace BulletSharp
 		GImpactShapeInterface(btGImpactShapeInterface* native);
 
 	public:
-		void GetBulletTetrahedron(int prim_index, TetrahedronShapeEx^ tetrahedron);
-		void GetBulletTriangle(int prim_index, TriangleShapeEx^ triangle);
-		void GetChildAabb(int child_index, Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
+		void GetBulletTetrahedron(int primIndex, TetrahedronShapeEx^ tetrahedron);
+		void GetBulletTriangle(int primIndex, TriangleShapeEx^ triangle);
+		void GetChildAabb(int childIndex, Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		CollisionShape^ GetChildShape(int index);
 		Matrix GetChildTransform(int index);
 		void GetPrimitiveTriangle(int index, PrimitiveTriangle^ triangle);
@@ -138,7 +138,7 @@ namespace BulletSharp
 		GImpactCompoundShape(btGImpactCompoundShape* native);
 
 	public:
-		GImpactCompoundShape(bool children_has_transform);
+		GImpactCompoundShape(bool childrenHasTransform);
 		GImpactCompoundShape();
 
 		void AddChildShape(Matrix localTransform, CollisionShape^ shape);
@@ -167,13 +167,13 @@ namespace BulletSharp
 			TrimeshPrimitiveManager(btGImpactMeshShapePart::TrimeshPrimitiveManager* native);
 
 		public:
-			TrimeshPrimitiveManager();
-			TrimeshPrimitiveManager(TrimeshPrimitiveManager^ manager);
 			TrimeshPrimitiveManager(StridingMeshInterface^ meshInterface, int part);
+			TrimeshPrimitiveManager(TrimeshPrimitiveManager^ manager);
+			TrimeshPrimitiveManager();
 
-			void GetBulletTriangle(int prim_index, TriangleShapeEx^ triangle);
-			void GetIndices(int face_index, unsigned int% i0, unsigned int% i1, unsigned int% i2);
-			void GetVertex(unsigned int vertex_index, [Out] Vector3% vertex);
+			void GetBulletTriangle(int primIndex, TriangleShapeEx^ triangle);
+			void GetIndices(int faceIndex, unsigned int% i0, unsigned int% i1, unsigned int% i2);
+			void GetVertex(unsigned int vertexIndex, [Out] Vector3% vertex);
 			void Lock();
 			void Unlock();
 
@@ -300,6 +300,9 @@ namespace BulletSharp
 	{
 	internal:
 		GImpactMeshShape(btGImpactMeshShape* native);
+
+	private:
+		StridingMeshInterface^ _meshInterface;
 
 	public:
 		GImpactMeshShape(StridingMeshInterface^ meshInterface);

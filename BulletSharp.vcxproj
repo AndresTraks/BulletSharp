@@ -784,7 +784,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\bullet3\src;..\bullet3\Extras\HACD;..\bullet3\Extras\Serialize\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>..\sharpdx\Source\SharpDX\bin\Net40Debug;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>..\SharpDX\Bin\DirectX11-net40;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_SHARPDX;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <FloatingPointModel>Precise</FloatingPointModel>
@@ -805,7 +805,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\bullet3\src;..\bullet3\Extras\HACD;..\bullet3\Extras\Serialize\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>..\sharpdx\Source\SharpDX\bin\Net40Debug;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>..\SharpDX\Bin\DirectX11-net40;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_SHARPDX;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <FloatingPointModel>Precise</FloatingPointModel>
@@ -1175,7 +1175,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>..\bullet3\src;..\bullet3\Extras\HACD;..\bullet3\Extras\Serialize\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>..\sharpdx\Source\SharpDX\bin\Net40Release;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>..\SharpDX\Bin\DirectX11-net40;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_SHARPDX;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -1194,7 +1194,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>..\bullet3\src;..\bullet3\Extras\HACD;..\bullet3\Extras\Serialize\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>..\sharpdx\Source\SharpDX\bin\Net40Release;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>..\SharpDX\Bin\DirectX11-net40;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_SHARPDX;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -1366,11 +1366,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Box2DBox2DCollisionAlgorithm.cpp" />
-    <ClCompile Include="src\Box2DShape.cpp" />
-    <ClCompile Include="src\Convex2DConvex2DAlgorithm.cpp" />
-    <ClCompile Include="src\Convex2DShape.cpp" />
-    <ClCompile Include="src\DefaultSoftBodySolver.cpp" />
     <ClCompile Include="src\Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug Axiom|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug Axiom|x64'">Create</PrecompiledHeader>
@@ -1434,10 +1429,12 @@
     <ClCompile Include="src\SphereSphereCollisionAlgorithm.cpp" />
     <ClCompile Include="src\CollisionConfiguration.cpp" />
     <ClCompile Include="src\DefaultCollisionConfiguration.cpp" />
+    <ClCompile Include="src\Box2DBox2DCollisionAlgorithm.cpp" />
     <ClCompile Include="src\BoxBoxCollisionAlgorithm.cpp" />
     <ClCompile Include="src\BoxBoxDetector.cpp" />
     <ClCompile Include="src\CompoundCollisionAlgorithm.cpp" />
     <ClCompile Include="src\CompoundCompoundCollisionAlgorithm.cpp" />
+    <ClCompile Include="src\Convex2DConvex2DAlgorithm.cpp" />
     <ClCompile Include="src\ConvexConcaveCollisionAlgorithm.cpp" />
     <ClCompile Include="src\ConvexConvexAlgorithm.cpp" />
     <ClCompile Include="src\ConvexPlaneCollisionAlgorithm.cpp" />
@@ -1500,6 +1497,8 @@
     <ClCompile Include="src\EmptyShape.cpp" />
     <ClCompile Include="src\MultiSphereShape.cpp" />
     <ClCompile Include="src\UniformScalingShape.cpp" />
+    <ClCompile Include="src\Box2DShape.cpp" />
+    <ClCompile Include="src\Convex2DShape.cpp" />
     <ClCompile Include="src\ConvexPointCloudShape.cpp" />
     <ClCompile Include="src\ConvexPolyhedron.cpp" />
     <ClCompile Include="src\HeightfieldTerrainShape.cpp" />
@@ -1563,15 +1562,16 @@
     <ClCompile Include="src\MultiBodyJointMotor.cpp" />
     <ClCompile Include="src\MultiBodyLinkCollider.cpp" />
     <ClCompile Include="src\MultiBodyPoint2Point.cpp" />
-    <ClCompile Include="src\MLCPSolverInterface.cpp" />
+    <ClCompile Include="src\MlcpSolverInterface.cpp" />
     <ClCompile Include="src\DantzigSolver.cpp" />
     <ClCompile Include="src\LemkeSolver.cpp" />
-    <ClCompile Include="src\MLCPSolver.cpp" />
+    <ClCompile Include="src\MlcpSolver.cpp" />
     <ClCompile Include="src\ParallelConstraintSolver.cpp" />
     <ClCompile Include="src\ThreadSupportInterface.cpp" />
     <ClCompile Include="src\SpuGatheringCollisionDispatcher.cpp" />
     <ClCompile Include="src\Win32ThreadSupport.cpp" />
     <ClCompile Include="src\SoftBodySolverVertexBuffer.cpp" />
+    <ClCompile Include="src\DefaultSoftBodySolver.cpp" />
     <ClCompile Include="src\SparseSdf.cpp" />
     <ClCompile Include="src\SoftBody.cpp" />
     <ClCompile Include="src\SoftBodyConcaveCollisionAlgorithm.cpp" />
@@ -1590,15 +1590,10 @@
     <ResourceCompile Include="src\Resources.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Box2DBox2DCollisionAlgorithm.h" />
-    <ClInclude Include="src\Box2DShape.h" />
-    <ClInclude Include="src\Convex2DConvex2DAlgorithm.h" />
-    <ClInclude Include="src\Convex2DShape.h" />
-    <ClInclude Include="src\DefaultSoftBodySolver.h" />
-    <ClInclude Include="src\ITrackingDisposable.h" />
     <ClInclude Include="src\Stdafx.h" />
     <ClInclude Include="src\Collections.h" />
     <ClInclude Include="src\Enums.h" />
+    <ClInclude Include="src\ITrackingDisposable.h" />
     <ClInclude Include="src\Math.h" />
     <ClInclude Include="src\ObjectTable.h" />
     <ClInclude Include="src\StringConv.h" />
@@ -1619,10 +1614,12 @@
     <ClInclude Include="src\SphereSphereCollisionAlgorithm.h" />
     <ClInclude Include="src\CollisionConfiguration.h" />
     <ClInclude Include="src\DefaultCollisionConfiguration.h" />
+    <ClInclude Include="src\Box2DBox2DCollisionAlgorithm.h" />
     <ClInclude Include="src\BoxBoxCollisionAlgorithm.h" />
     <ClInclude Include="src\BoxBoxDetector.h" />
     <ClInclude Include="src\CompoundCollisionAlgorithm.h" />
     <ClInclude Include="src\CompoundCompoundCollisionAlgorithm.h" />
+    <ClInclude Include="src\Convex2DConvex2DAlgorithm.h" />
     <ClInclude Include="src\ConvexConcaveCollisionAlgorithm.h" />
     <ClInclude Include="src\ConvexConvexAlgorithm.h" />
     <ClInclude Include="src\ConvexPlaneCollisionAlgorithm.h" />
@@ -1685,6 +1682,8 @@
     <ClInclude Include="src\EmptyShape.h" />
     <ClInclude Include="src\MultiSphereShape.h" />
     <ClInclude Include="src\UniformScalingShape.h" />
+    <ClInclude Include="src\Box2DShape.h" />
+    <ClInclude Include="src\Convex2DShape.h" />
     <ClInclude Include="src\ConvexPointCloudShape.h" />
     <ClInclude Include="src\ConvexPolyhedron.h" />
     <ClInclude Include="src\HeightfieldTerrainShape.h" />
@@ -1749,15 +1748,16 @@
     <ClInclude Include="src\MultiBodyJointMotor.h" />
     <ClInclude Include="src\MultiBodyLinkCollider.h" />
     <ClInclude Include="src\MultiBodyPoint2Point.h" />
-    <ClInclude Include="src\MLCPSolverInterface.h" />
+    <ClInclude Include="src\MlcpSolverInterface.h" />
     <ClInclude Include="src\DantzigSolver.h" />
     <ClInclude Include="src\LemkeSolver.h" />
-    <ClInclude Include="src\MLCPSolver.h" />
+    <ClInclude Include="src\MlcpSolver.h" />
     <ClInclude Include="src\ParallelConstraintSolver.h" />
     <ClInclude Include="src\ThreadSupportInterface.h" />
     <ClInclude Include="src\SpuGatheringCollisionDispatcher.h" />
     <ClInclude Include="src\Win32ThreadSupport.h" />
     <ClInclude Include="src\SoftBodySolverVertexBuffer.h" />
+    <ClInclude Include="src\DefaultSoftBodySolver.h" />
     <ClInclude Include="src\SparseSdf.h" />
     <ClInclude Include="src\SoftBody.h" />
     <ClInclude Include="src\SoftBodyConcaveCollisionAlgorithm.h" />

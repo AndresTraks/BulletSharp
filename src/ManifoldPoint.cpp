@@ -3,9 +3,10 @@
 #include "CollisionObjectWrapper.h"
 #include "ManifoldPoint.h"
 
-ManifoldPoint::ManifoldPoint(btManifoldPoint* native)
+ManifoldPoint::ManifoldPoint(btManifoldPoint* native, bool preventDelete)
 {
 	_native = native;
+	_preventDelete = preventDelete;
 }
 
 #ifdef BT_CALLBACKS_ARE_EVENTS
@@ -14,7 +15,7 @@ bool onContactAdded(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0
 {
 	/*
 	ContactAddedEventArgs^ args = gcnew ContactAddedEventArgs();
-	args->ContactPoint = gcnew ManifoldPoint(&cp);
+	args->ContactPoint = gcnew ManifoldPoint(&cp, true);
 	args->CollisionObject0Wrapper = gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap);
 	args->PartID0 = partId0;
 	args->Index0 = index0;
@@ -24,7 +25,7 @@ bool onContactAdded(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0
 	ManifoldPoint::_contactAdded(nullptr, args);
 	return args->IsContactModified;
 	*/
-	ManifoldPoint::_contactAdded(gcnew ManifoldPoint(&cp),
+	ManifoldPoint::_contactAdded(gcnew ManifoldPoint(&cp, true),
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap), partId0, index0,
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj1Wrap), partId1, index1);
 	return false;
@@ -47,7 +48,7 @@ void ManifoldPoint::ContactAdded::remove(ContactAddedEventHandler^ callback)
 bool onContactAdded(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap,
 	int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
 {
-	return ManifoldPoint::_contactAdded(gcnew ManifoldPoint(&cp),
+	return ManifoldPoint::_contactAdded(gcnew ManifoldPoint(&cp, true),
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap), partId0, index0,
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj1Wrap), partId1, index1);
 }
@@ -71,6 +72,20 @@ void ManifoldPoint::ContactAdded::set(::ContactAdded^ value)
 }
 #endif
 
+ManifoldPoint::~ManifoldPoint()
+{
+	this->!ManifoldPoint();
+}
+
+ManifoldPoint::!ManifoldPoint()
+{
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
+	_native = NULL;
+}
+
 ManifoldPoint::ManifoldPoint()
 {
 	_native = new btManifoldPoint();
@@ -78,9 +93,9 @@ ManifoldPoint::ManifoldPoint()
 
 ManifoldPoint::ManifoldPoint(Vector3 pointA, Vector3 pointB, Vector3 normal, btScalar distance)
 {
-	VECTOR3_DEF(pointA);
-	VECTOR3_DEF(pointB);
-	VECTOR3_DEF(normal);
+	VECTOR3_CONV(pointA);
+	VECTOR3_CONV(pointB);
+	VECTOR3_CONV(normal);
 	_native = new btManifoldPoint(VECTOR3_USE(pointA), VECTOR3_USE(pointB), VECTOR3_USE(normal),
 		distance);
 	VECTOR3_DEL(pointA);

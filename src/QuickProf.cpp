@@ -12,6 +12,17 @@ Clock::Clock(btClock* native)
 	_native = native;
 }
 
+Clock::~Clock()
+{
+	this->!Clock();
+}
+
+Clock::!Clock()
+{
+	delete _native;
+	_native = NULL;
+}
+
 Clock::Clock()
 {
 	_native = new btClock();
@@ -209,6 +220,17 @@ bool BulletSharp::CProfileIterator::IsRoot::get()
 BulletSharp::CProfileManager::CProfileManager(::CProfileManager* native)
 {
 	_native = native;
+}
+
+BulletSharp::CProfileManager::~CProfileManager()
+{
+	this->!CProfileManager();
+}
+
+BulletSharp::CProfileManager::!CProfileManager()
+{
+	delete _native;
+	_native = NULL;
 }
 
 BulletSharp::CProfileManager::CProfileManager()

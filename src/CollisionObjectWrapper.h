@@ -11,7 +11,7 @@ namespace BulletSharp
 		btCollisionObjectWrapper* _native;
 
 	private:
-		//bool _doesNotOwnObject;
+		//bool _preventDelete;
 
 	internal:
 		CollisionObjectWrapper(btCollisionObjectWrapper* collisionObjectWrapper);

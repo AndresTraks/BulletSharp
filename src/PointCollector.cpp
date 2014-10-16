@@ -14,8 +14,8 @@ PointCollector::PointCollector()
 void PointCollector::AddContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld,
 	btScalar depth)
 {
-	VECTOR3_DEF(normalOnBInWorld);
-	VECTOR3_DEF(pointInWorld);
+	VECTOR3_CONV(normalOnBInWorld);
+	VECTOR3_CONV(pointInWorld);
 	_native->addContactPoint(VECTOR3_USE(normalOnBInWorld), VECTOR3_USE(pointInWorld),
 		depth);
 	VECTOR3_DEL(normalOnBInWorld);

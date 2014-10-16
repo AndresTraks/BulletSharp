@@ -50,18 +50,10 @@ DbvtAabbMm::DbvtAabbMm()
 	_native = new btDbvtAabbMm();
 }
 */
-Vector3 DbvtAabbMm::Center()
-{
-	btVector3* center = ALIGNED_NEW(btVector3);
-	DbvtAabbMm_Center(_native, center);
-	Vector3 v = Math::BtVector3ToVector3(center);
-	ALIGNED_FREE(center);
-	return v;
-}
 
 int DbvtAabbMm::Classify(Vector3 n, btScalar o, int s)
 {
-	VECTOR3_DEF(n);
+	VECTOR3_CONV(n);
 	int ret = _native->Classify(VECTOR3_USE(n), o, s);
 	VECTOR3_DEL(n);
 	return ret;
@@ -74,24 +66,15 @@ bool DbvtAabbMm::Contain(DbvtAabbMm^ a)
 
 void DbvtAabbMm::Expand(Vector3 e)
 {
-	VECTOR3_DEF(e);
+	VECTOR3_CONV(e);
 	_native->Expand(VECTOR3_USE(e));
 	VECTOR3_DEL(e);
 }
 
-Vector3 DbvtAabbMm::Extents()
-{
-	btVector3* extents = ALIGNED_NEW(btVector3);
-	DbvtAabbMm_Extents(_native, extents);
-	Vector3 v = Math::BtVector3ToVector3(extents);
-	ALIGNED_FREE(extents);
-	return v;
-}
-
 DbvtAabbMm^ DbvtAabbMm::FromCE(Vector3 c, Vector3 e)
 {
-	VECTOR3_DEF(c);
-	VECTOR3_DEF(e);
+	VECTOR3_CONV(c);
+	VECTOR3_CONV(e);
 
 	btDbvtAabbMm* aabbMmTemp = new btDbvtAabbMm;
 	DbvtAabbMm_FromCE(aabbMmTemp, VECTOR3_PTR(c), VECTOR3_PTR(e));
@@ -105,7 +88,7 @@ DbvtAabbMm^ DbvtAabbMm::FromCE(Vector3 c, Vector3 e)
 
 DbvtAabbMm^ DbvtAabbMm::FromCR(Vector3 c, btScalar r)
 {
-	VECTOR3_DEF(c);
+	VECTOR3_CONV(c);
 
 	btDbvtAabbMm* aabbMmTemp = new btDbvtAabbMm;
 	DbvtAabbMm_FromCR(aabbMmTemp, VECTOR3_PTR(c), r);
@@ -118,8 +101,8 @@ DbvtAabbMm^ DbvtAabbMm::FromCR(Vector3 c, btScalar r)
 
 DbvtAabbMm^ DbvtAabbMm::FromMM(Vector3 mi, Vector3 mx)
 {
-	VECTOR3_DEF(mi);
-	VECTOR3_DEF(mx);
+	VECTOR3_CONV(mi);
+	VECTOR3_CONV(mx);
 
 	btDbvtAabbMm* aabbMmTemp = new btDbvtAabbMm;
 	DbvtAabbMm_FromMM(aabbMmTemp, VECTOR3_PTR(mi), VECTOR3_PTR(mx));
@@ -140,7 +123,40 @@ DbvtAabbMm^ DbvtAabbMm::FromPoints(array<Vector3>^ pts)
 	return gcnew DbvtAabbMm(aabbMm);
 }
 
-Vector3 DbvtAabbMm::Lengths()
+btScalar DbvtAabbMm::ProjectMinimum(Vector3 v, unsigned int signs)
+{
+	VECTOR3_CONV(v);
+	btScalar ret = _native->ProjectMinimum(VECTOR3_USE(v), signs);
+	VECTOR3_DEL(v);
+	return ret;
+}
+
+void DbvtAabbMm::SignedExpand(Vector3 e)
+{
+	VECTOR3_CONV(e);
+	_native->SignedExpand(VECTOR3_USE(e));
+	VECTOR3_DEL(e);
+}
+
+Vector3 DbvtAabbMm::Center::get()
+{
+	btVector3* center = ALIGNED_NEW(btVector3);
+	DbvtAabbMm_Center(_native, center);
+	Vector3 v = Math::BtVector3ToVector3(center);
+	ALIGNED_FREE(center);
+	return v;
+}
+
+Vector3 DbvtAabbMm::Extents::get()
+{
+	btVector3* extents = ALIGNED_NEW(btVector3);
+	DbvtAabbMm_Extents(_native, extents);
+	Vector3 v = Math::BtVector3ToVector3(extents);
+	ALIGNED_FREE(extents);
+	return v;
+}
+
+Vector3 DbvtAabbMm::Lengths::get()
 {
 	btVector3* lengths = ALIGNED_NEW(btVector3);
 	DbvtAabbMm_Lengths(_native, lengths);
@@ -149,37 +165,22 @@ Vector3 DbvtAabbMm::Lengths()
 	return v;
 }
 
-Vector3 DbvtAabbMm::Maxs()
+Vector3 DbvtAabbMm::Maxs::get()
 {
 	return Math::BtVector3ToVector3(&_native->Maxs());
 }
 
-Vector3 DbvtAabbMm::Mins()
+Vector3 DbvtAabbMm::Mins::get()
 {
 	return Math::BtVector3ToVector3(&_native->Mins());
 }
 
-btScalar DbvtAabbMm::ProjectMinimum(Vector3 v, unsigned int signs)
-{
-	VECTOR3_DEF(v);
-	btScalar ret = _native->ProjectMinimum(VECTOR3_USE(v), signs);
-	VECTOR3_DEL(v);
-	return ret;
-}
-
-void DbvtAabbMm::SignedExpand(Vector3 e)
-{
-	VECTOR3_DEF(e);
-	_native->SignedExpand(VECTOR3_USE(e));
-	VECTOR3_DEL(e);
-}
-
-Vector3 DbvtAabbMm::TMaxs()
+Vector3 DbvtAabbMm::TMaxs::get()
 {
 	return Math::BtVector3ToVector3(&_native->tMaxs());
 }
 
-Vector3 DbvtAabbMm::TMins()
+Vector3 DbvtAabbMm::TMins::get()
 {
 	return Math::BtVector3ToVector3(&_native->tMins());
 }
@@ -236,9 +237,7 @@ bool DbvtNode::IsLeaf::get()
 
 DbvtNode^ DbvtNode::Parent::get()
 {
-	if (_native->parent != 0)
-		return nullptr;
-	return gcnew DbvtNode(_native->parent);
+	ReturnCachedObjectGcnewNullable(DbvtNode, _parent, _native->parent);
 }
 void DbvtNode::Parent::set(DbvtNode^ value)
 {
@@ -499,9 +498,10 @@ bool Dbvt::IClone::IsDisposed::get()
 }
 
 
-Dbvt::Dbvt(btDbvt* native)
+Dbvt::Dbvt(btDbvt* native, bool preventDelete)
 {
 	_native = native;
+	_preventDelete = preventDelete;
 }
 
 Dbvt::~Dbvt()
@@ -567,7 +567,7 @@ void Dbvt::CollideOcl(DbvtNode^ root, array<Vector3>^ normals, array<btScalar>^ 
 {
 	btVector3* btNormals = Math::Vector3ArrayToUnmanaged(normals);
 	btScalar* btOffsets = Math::BtScalarArrayToUnmanaged(offsets);
-	VECTOR3_DEF(sortaxis);
+	VECTOR3_CONV(sortaxis);
 	btDbvt::collideOCL(root->_native, btNormals, btOffsets, VECTOR3_USE(sortaxis),
 		count, *policy->_native, fullsort);
 	delete[] btNormals;
@@ -580,7 +580,7 @@ void Dbvt::CollideOcl(DbvtNode^ root, array<Vector3>^ normals, array<btScalar>^ 
 {
 	btVector3* btNormals = Math::Vector3ArrayToUnmanaged(normals);
 	btScalar* btOffsets = Math::BtScalarArrayToUnmanaged(offsets);
-	VECTOR3_DEF(sortaxis);
+	VECTOR3_CONV(sortaxis);
 	btDbvt::collideOCL(root->_native, btNormals, btOffsets, VECTOR3_USE(sortaxis),
 		count, *policy->_native);
 	delete[] btNormals;
@@ -671,8 +671,8 @@ void Dbvt::OptimizeTopDown()
 
 void Dbvt::RayTest(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, ICollide^ policy)
 {
-	VECTOR3_DEF(rayFrom);
-	VECTOR3_DEF(rayTo);
+	VECTOR3_CONV(rayFrom);
+	VECTOR3_CONV(rayTo);
 	btDbvt::rayTest(root->_native, VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo), *policy->_native);
 	VECTOR3_DEL(rayFrom);
 	VECTOR3_DEL(rayTo);
@@ -682,20 +682,15 @@ void Dbvt::RayTest(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, ICollide^ pol
 void Dbvt::RayTestInternal(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, Vector3 rayDirectionInverse,
 	array<unsigned int>^ signs, btScalar lambda_max, Vector3 aabbMin, Vector3 aabbMax, ICollide^ policy)
 {
-	unsigned int* btSigns = new unsigned int[3];
-	btSigns[0] = signs[0];
-	btSigns[1] = signs[1];
-	btSigns[2] = signs[2];
-
-	VECTOR3_DEF(rayFrom);
-	VECTOR3_DEF(rayTo);
-	VECTOR3_DEF(rayDirectionInverse);
-	VECTOR3_DEF(aabbMin);
-	VECTOR3_DEF(aabbMax);
+	pin_ptr<unsigned int> btSigns = &signs[0];
+	VECTOR3_CONV(rayFrom);
+	VECTOR3_CONV(rayTo);
+	VECTOR3_CONV(rayDirectionInverse);
+	VECTOR3_CONV(aabbMin);
+	VECTOR3_CONV(aabbMax);
 	_native->rayTestInternal(root->_native, VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo),
 		VECTOR3_USE(rayDirectionInverse), btSigns, lambda_max, VECTOR3_USE(aabbMin),
 		VECTOR3_USE(aabbMax), *policy->_native);
-	delete[] btSigns;
 	VECTOR3_DEL(rayFrom);
 	VECTOR3_DEL(rayTo);
 	VECTOR3_DEL(rayDirectionInverse);
@@ -716,7 +711,7 @@ bool Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume, btScalar margin)
 
 bool Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume, Vector3 velocity)
 {
-	VECTOR3_DEF(velocity);
+	VECTOR3_CONV(velocity);
 	bool ret = _native->update(leaf->_native, *volume->_native, VECTOR3_USE(velocity));
 	VECTOR3_DEL(velocity);
 	return ret;
@@ -724,7 +719,7 @@ bool Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume, Vector3 velocity)
 
 bool Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume, Vector3 velocity, btScalar margin)
 {
-	VECTOR3_DEF(velocity);
+	VECTOR3_CONV(velocity);
 	bool ret = _native->update(leaf->_native, *volume->_native, VECTOR3_USE(velocity), margin);
 	VECTOR3_DEL(velocity);
 	return ret;
@@ -812,10 +807,6 @@ void Dbvt::Root::set(DbvtNode^ value)
 AlignedStkNNArray^ Dbvt::StkStack::get()
 {
 	return gcnew AlignedStkNNArray(&_native->m_stkStack);
-}
-void Dbvt::StkStack::set(AlignedStkNNArray^ value)
-{
-	_native->m_stkStack = *(btAlignedObjectArray<btDbvt::sStkNN>*)value->_native;
 }
 
 #endif

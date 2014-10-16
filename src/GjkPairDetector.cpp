@@ -19,16 +19,17 @@ GjkPairDetector::GjkPairDetector(btGjkPairDetector* native)
 
 GjkPairDetector::GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB, SimplexSolverInterface^ simplexSolver,
 	ConvexPenetrationDepthSolver^ penetrationDepthSolver)
-	: DiscreteCollisionDetectorInterface(ALIGNED_NEW(btGjkPairDetector) ((btConvexShape*)objectA->_native, (btConvexShape*)objectB->_native,
-		simplexSolver->_native, GetUnmanagedNullable(penetrationDepthSolver)))
+	: DiscreteCollisionDetectorInterface(ALIGNED_NEW(btGjkPairDetector) ((btConvexShape*)objectA->_native,
+		(btConvexShape*)objectB->_native, simplexSolver->_native, GetUnmanagedNullable(penetrationDepthSolver)))
 {
 }
 
 GjkPairDetector::GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB, BroadphaseNativeType shapeTypeA,
 	BroadphaseNativeType shapeTypeB, btScalar marginA, btScalar marginB, SimplexSolverInterface^ simplexSolver,
 	ConvexPenetrationDepthSolver^ penetrationDepthSolver)
-	: DiscreteCollisionDetectorInterface(ALIGNED_NEW(btGjkPairDetector) ((btConvexShape*)objectA->_native, (btConvexShape*)objectB->_native,
-		(int)shapeTypeA, (int)shapeTypeB, marginA, marginB, simplexSolver->_native, GetUnmanagedNullable(penetrationDepthSolver)))
+	: DiscreteCollisionDetectorInterface(ALIGNED_NEW(btGjkPairDetector) ((btConvexShape*)objectA->_native,
+		(btConvexShape*)objectB->_native, (int)shapeTypeA, (int)shapeTypeB, marginA, marginB,
+		simplexSolver->_native, GetUnmanagedNullable(penetrationDepthSolver)))
 {
 }
 
@@ -41,10 +42,15 @@ void GjkPairDetector::GetClosestPointsNonVirtual(ClosestPointInput^ input, Resul
 #else
 void GjkPairDetector::GetClosestPointsNonVirtual(ClosestPointInput^ input, Result^ output)
 {
-	UnmanagedPointer->getClosestPointsNonVirtual(*input->_native, *output->_native, 0);
+	Native->getClosestPointsNonVirtual(*input->_native, *output->_native, 0);
 }
 #endif
-
+#ifndef DISABLE_INTERNAL
+void GjkPairDetector::SetIgnoreMargin(bool ignoreMargin)
+{
+	Native->setIgnoreMargin(ignoreMargin);
+}
+#endif
 void GjkPairDetector::SetMinkowskiA(ConvexShape^ minkA)
 {
 	Native->setMinkowskiA((btConvexShape*)minkA->_native);
@@ -66,7 +72,7 @@ Vector3 GjkPairDetector::CachedSeparatingAxis::get()
 }
 void GjkPairDetector::CachedSeparatingAxis::set(Vector3 value)
 {
-	VECTOR3_DEF(value);
+	VECTOR3_CONV(value);
 	Native->setCachedSeperatingAxis(VECTOR3_USE(value));
 	VECTOR3_DEL(value);
 }

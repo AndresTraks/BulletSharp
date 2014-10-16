@@ -49,10 +49,20 @@ RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp:
 #endif
 	_motionState = motionState;
 }
-
+/*
+RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape, Vector3% localInertia)
+{
+	VECTOR3_CONV(localInertia);
+	_native = RigidBody_GetUnmanagedConstructionInfoLocalInertia(mass,
+		GetUnmanagedNullable(motionState), GetUnmanagedNullable(collisionShape),
+		VECTOR3_PTR(localInertia));
+	VECTOR3_DEL(localInertia);
+	_motionState = motionState;
+}
+*/
 RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape, Vector3 localInertia)
 {
-	VECTOR3_DEF(localInertia);
+	VECTOR3_CONV(localInertia);
 	_native = RigidBody_GetUnmanagedConstructionInfoLocalInertia(mass,
 		GetUnmanagedNullable(motionState), GetUnmanagedNullable(collisionShape),
 		VECTOR3_PTR(localInertia));
@@ -220,11 +230,13 @@ void RigidBodyConstructionInfo::StartWorldTransform::set(Matrix value)
 RigidBody::RigidBody(btRigidBody* native)
 	: CollisionObject(native)
 {
+	_collisionShape = BulletSharp::CollisionShape::GetManaged(native->getCollisionShape());
 }
 
 RigidBody::RigidBody(RigidBodyConstructionInfo^ constructionInfo)
 	: CollisionObject(ALIGNED_NEW(btRigidBody) (*constructionInfo->_native))
 {
+	_collisionShape = constructionInfo->CollisionShape;
 	_motionState = constructionInfo->_motionState;
 }
 
@@ -237,14 +249,14 @@ void RigidBody::AddConstraintRef(TypedConstraint^ c)
 
 void RigidBody::ApplyCentralForce(Vector3 force)
 {
-	VECTOR3_DEF(force);
+	VECTOR3_CONV(force);
 	Native->applyCentralForce(VECTOR3_USE(force));
 	VECTOR3_DEL(force);
 }
 
 void RigidBody::ApplyCentralImpulse(Vector3 impulse)
 {
-	VECTOR3_DEF(impulse);
+	VECTOR3_CONV(impulse);
 	Native->applyCentralImpulse(VECTOR3_USE(impulse));
 	VECTOR3_DEL(impulse);
 }
@@ -256,11 +268,9 @@ void RigidBody::ApplyDamping(btScalar timeStep)
 
 void RigidBody::ApplyForce(Vector3 force, Vector3 relativePosition)
 {
-	VECTOR3_DEF(force);
-	VECTOR3_DEF(relativePosition);
-	
+	VECTOR3_CONV(force);
+	VECTOR3_CONV(relativePosition);
 	Native->applyForce(VECTOR3_USE(force), VECTOR3_USE(relativePosition));
-	
 	VECTOR3_DEL(force);
 	VECTOR3_DEL(relativePosition);
 }
@@ -272,25 +282,23 @@ void RigidBody::ApplyGravity()
 
 void RigidBody::ApplyImpulse(Vector3 impulse, Vector3 relativePosition)
 {
-	VECTOR3_DEF(impulse);
-	VECTOR3_DEF(relativePosition);
-
+	VECTOR3_CONV(impulse);
+	VECTOR3_CONV(relativePosition);
 	Native->applyImpulse(VECTOR3_USE(impulse), VECTOR3_USE(relativePosition));
-	
 	VECTOR3_DEL(impulse);
 	VECTOR3_DEL(relativePosition);
 }
 
 void RigidBody::ApplyTorque(Vector3 torque)
 {
-	VECTOR3_DEF(torque);
+	VECTOR3_CONV(torque);
 	Native->applyTorque(VECTOR3_USE(torque));
 	VECTOR3_DEL(torque);
 }
 
 void RigidBody::ApplyTorqueImpulse(Vector3 torque)
 {
-	VECTOR3_DEF(torque);
+	VECTOR3_CONV(torque);
 	Native->applyTorqueImpulse(VECTOR3_USE(torque));
 	VECTOR3_DEL(torque);
 }
@@ -307,7 +315,7 @@ void RigidBody::ClearForces()
 
 btScalar RigidBody::ComputeAngularImpulseDenominator(Vector3 axis)
 {
-	VECTOR3_DEF(axis);
+	VECTOR3_CONV(axis);
 	btScalar ret = Native->computeAngularImpulseDenominator(VECTOR3_USE(axis));
 	VECTOR3_DEL(axis);
 	return ret;
@@ -330,11 +338,9 @@ Vector3 RigidBody::ComputeGyroscopicForce(btScalar maxGyroscopicForce)
 
 btScalar RigidBody::ComputeImpulseDenominator(Vector3 pos, Vector3 normal)
 {
-	VECTOR3_DEF(pos);
-	VECTOR3_DEF(normal);
-
+	VECTOR3_CONV(pos);
+	VECTOR3_CONV(normal);
 	btScalar ret = Native->computeImpulseDenominator(VECTOR3_USE(pos), VECTOR3_USE(normal));
-
 	VECTOR3_DEL(pos);
 	VECTOR3_DEL(normal);
 	return ret;
@@ -369,7 +375,7 @@ void RigidBody_GetVelocityInLocalPoint(btRigidBody* body, btVector3* velocity, b
 #pragma managed(pop)
 Vector3 RigidBody::GetVelocityInLocalPoint(Vector3 relativePosition)
 {
-	VECTOR3_DEF(relativePosition);
+	VECTOR3_CONV(relativePosition);
 	btVector3* velocityTemp = ALIGNED_NEW(btVector3);
 
 	RigidBody_GetVelocityInLocalPoint(Native, velocityTemp, VECTOR3_PTR(relativePosition));
@@ -420,7 +426,7 @@ void RigidBody::SetDamping(btScalar linearDamping, btScalar angularDamping)
 
 void RigidBody::SetMassProps(btScalar mass, Vector3 inertia)
 {
-	VECTOR3_DEF(inertia);
+	VECTOR3_CONV(inertia);
 	Native->setMassProps(mass, VECTOR3_USE(inertia));
 	VECTOR3_DEL(inertia);
 }
@@ -432,7 +438,7 @@ void RigidBody::SetSleepingThresholds(btScalar linear, btScalar angular)
 
 void RigidBody::Translate(Vector3 vector)
 {
-	VECTOR3_DEF(vector);
+	VECTOR3_CONV(vector);
 	Native->translate(VECTOR3_USE(vector));
 	VECTOR3_DEL(vector);
 }
@@ -464,7 +470,7 @@ Vector3 RigidBody::AngularFactor::get()
 }
 void RigidBody::AngularFactor::set(Vector3 value)
 {
-	VECTOR3_DEF(value);
+	VECTOR3_CONV(value);
 	Native->setAngularFactor(VECTOR3_USE(value));
 	VECTOR3_DEL(value);
 }
@@ -478,11 +484,11 @@ Vector3 RigidBody::AngularVelocity::get()
 {
 	return Math::BtVector3ToVector3(&Native->getAngularVelocity());
 }
-void RigidBody::AngularVelocity::set(Vector3 value)
+void RigidBody::AngularVelocity::set(Vector3 angVel)
 {
-	VECTOR3_DEF(value);
-	Native->setAngularVelocity(VECTOR3_USE(value));
-	VECTOR3_DEL(value);
+	VECTOR3_CONV(angVel);
+	Native->setAngularVelocity(VECTOR3_USE(angVel));
+	VECTOR3_DEL(angVel);
 }
 
 BroadphaseProxy^ RigidBody::BroadphaseProxy::get()
@@ -543,7 +549,7 @@ Vector3 RigidBody::Gravity::get()
 }
 void RigidBody::Gravity::set(Vector3 acceleration)
 {
-	VECTOR3_DEF(acceleration);
+	VECTOR3_CONV(acceleration);
 	Native->setGravity(VECTOR3_USE(acceleration));
 	VECTOR3_DEL(acceleration);
 }
@@ -554,7 +560,7 @@ Vector3 RigidBody::InvInertiaDiagLocal::get()
 }
 void RigidBody::InvInertiaDiagLocal::set(Vector3 diagInvInertia)
 {
-	VECTOR3_DEF(diagInvInertia);
+	VECTOR3_CONV(diagInvInertia);
 	Native->setInvInertiaDiagLocal(VECTOR3_USE(diagInvInertia));
 	VECTOR3_DEL(diagInvInertia);
 }
@@ -585,7 +591,7 @@ Vector3 RigidBody::LinearFactor::get()
 }
 void RigidBody::LinearFactor::set(Vector3 linearFactor)
 {
-	VECTOR3_DEF(linearFactor);
+	VECTOR3_CONV(linearFactor);
 	Native->setLinearFactor(VECTOR3_USE(linearFactor));
 	VECTOR3_DEL(linearFactor);
 }
@@ -599,11 +605,11 @@ Vector3 RigidBody::LinearVelocity::get()
 {
 	return Math::BtVector3ToVector3(&Native->getLinearVelocity());
 }
-void RigidBody::LinearVelocity::set(Vector3 lin_vel)
+void RigidBody::LinearVelocity::set(Vector3 linVel)
 {
-	VECTOR3_DEF(lin_vel);
-	Native->setLinearVelocity(VECTOR3_USE(lin_vel));
-	VECTOR3_DEL(lin_vel);
+	VECTOR3_CONV(linVel);
+	Native->setLinearVelocity(VECTOR3_USE(linVel));
+	VECTOR3_DEL(linVel);
 }
 
 BulletSharp::MotionState^ RigidBody::MotionState::get()

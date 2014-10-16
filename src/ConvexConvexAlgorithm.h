@@ -43,8 +43,9 @@ namespace BulletSharp
 		};
 
 		ConvexConvexAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
-			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, SimplexSolverInterface^ simplexSolver,
-			ConvexPenetrationDepthSolver^ pdSolver, int numPerturbationIterations, int minimumPointsPerturbationThreshold);
+			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
+			SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ pdSolver,
+			int numPerturbationIterations, int minimumPointsPerturbationThreshold);
 
 		void SetLowLevelOfDetail(bool useLowLevel);
 

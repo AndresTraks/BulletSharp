@@ -8,11 +8,16 @@ namespace BulletSharp
 	ref class PrimitiveTriangle;
 	ref class UShortArray;
 
-	public ref class GImpactQuantizedBvhNode
+	public ref class GImpactQuantizedBvhNode : IDisposable
 	{
 	internal:
 		BT_QUANTIZED_BVH_NODE* _native;
 		GImpactQuantizedBvhNode(BT_QUANTIZED_BVH_NODE* native);
+
+	public:
+		!GImpactQuantizedBvhNode();
+	protected:
+		~GImpactQuantizedBvhNode();
 
 	public:
 		GImpactQuantizedBvhNode();
@@ -63,11 +68,16 @@ namespace BulletSharp
 		GimGImpactQuantizedBvhNodeArray();
 	};
 
-	public ref class QuantizedBvhTree
+	public ref class QuantizedBvhTree : IDisposable
 	{
 	internal:
 		btQuantizedBvhTree* _native;
 		QuantizedBvhTree(btQuantizedBvhTree* native);
+
+	public:
+		!QuantizedBvhTree();
+	protected:
+		~QuantizedBvhTree();
 
 	public:
 		QuantizedBvhTree();
@@ -76,15 +86,15 @@ namespace BulletSharp
 		void ClearNodes();
 		//GImpactQuantizedBvhNode^ GetNodePointer(int index);
 		//GImpactQuantizedBvhNode^ GetNodePointer();
-		int GetEscapeNodeIndex(int NodeIndex);
-		int GetLeftNode(int NodeIndex);
-		void GetNodeBound(int NodeIndex, Aabb^ bound);
-		int GetNodeData(int NodeIndex);
-		int GetRightNode(int NodeIndex);
-		bool IsLeafNode(int NodeIndex);
+		int GetEscapeNodeIndex(int nodeIndex);
+		int GetLeftNode(int nodeIndex);
+		void GetNodeBound(int nodeIndex, Aabb^ bound);
+		int GetNodeData(int nodeIndex);
+		int GetRightNode(int nodeIndex);
+		bool IsLeafNode(int nodeIndex);
 		void QuantizePoint(UShortArray^ quantizedpoint, Vector3 point);
-		void SetNodeBound(int NodeIndex, Aabb^ bound);
-		bool TestQuantizedBoxOverlap(int NodeIndex, UShortArray^ quantizedMin,
+		void SetNodeBound(int nodeIndex, Aabb^ bound);
+		bool TestQuantizedBoxOverlap(int nodeIndex, UShortArray^ quantizedMin,
 			UShortArray^ quantizedMax);
 
 		property int NodeCount
@@ -93,24 +103,29 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class GImpactQuantizedBvh
+	public ref class GImpactQuantizedBvh : IDisposable
 	{
 	internal:
 		btGImpactQuantizedBvh* _native;
 		GImpactQuantizedBvh(btGImpactQuantizedBvh* native);
 
 	private:
-		PrimitiveManagerBase^ _primitiveManagerBase;
+		PrimitiveManagerBase^ _primitiveManager;
+
+	public:
+		!GImpactQuantizedBvh();
+	protected:
+		~GImpactQuantizedBvh();
 
 	public:
 		GImpactQuantizedBvh();
-		GImpactQuantizedBvh(PrimitiveManagerBase^ primitive_manager);
+		GImpactQuantizedBvh(PrimitiveManagerBase^ primitiveManager);
 
-		bool BoxQuery(Aabb^ box, AlignedIntArray^ collided_results);
-		bool BoxQueryTrans(Aabb^ box, Matrix transform, AlignedIntArray^ collided_results);
+		bool BoxQuery(Aabb^ box, AlignedIntArray^ collidedResults);
+		bool BoxQueryTrans(Aabb^ box, Matrix transform, AlignedIntArray^ collidedResults);
 		void BuildSet();
 		static void FindCollision(GImpactQuantizedBvh^ boxset1, Matrix trans1, GImpactQuantizedBvh^ boxset2,
-			Matrix trans2, PairSet^ collision_pairs);
+			Matrix trans2, PairSet^ collisionPairs);
 		//GImpactQuantizedBvhNode^ GetNodePointer(int index);
 		//GImpactQuantizedBvhNode^ GetNodePointer();
 		int GetEscapeNodeIndex(int nodeindex);
@@ -120,7 +135,7 @@ namespace BulletSharp
 		void GetNodeTriangle(int nodeindex, PrimitiveTriangle^ triangle);
 		int GetRightNode(int nodeindex);
 		bool IsLeafNode(int nodeindex);
-		bool RayQuery(Vector3 ray_dir, Vector3 ray_origin, AlignedIntArray^ collided_results);
+		bool RayQuery(Vector3 rayDir, Vector3 rayOrigin, AlignedIntArray^ collidedResults);
 		void SetNodeBound(int nodeindex, Aabb^ bound);
 		void Update();
 
@@ -147,7 +162,7 @@ namespace BulletSharp
 		property PrimitiveManagerBase^ PrimitiveManager
 		{
 			PrimitiveManagerBase^ get();
-			void set(PrimitiveManagerBase^ primitive_manager);
+			void set(PrimitiveManagerBase^ primitiveManager);
 		}
 	};
 };

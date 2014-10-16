@@ -65,8 +65,8 @@ DebugDrawWrapper* DebugDraw::GetUnmanaged(IDebugDraw^ debugDraw)
 
 void DebugDraw::DrawAabb(Vector3% from, Vector3% to, BtColor color)
 {
-	VECTOR3_DEF(from);
-	VECTOR3_DEF(to);
+	VECTOR3_CONV(from);
+	VECTOR3_CONV(to);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
 	_native->baseDrawAabb(VECTOR3_USE(from), VECTOR3_USE(to), *colorTemp);
@@ -79,9 +79,9 @@ void DebugDraw::DrawAabb(Vector3% from, Vector3% to, BtColor color)
 void DebugDraw::DrawArc(Vector3% center, Vector3% normal, Vector3% axis, btScalar radiusA, btScalar radiusB,
 	btScalar minAngle, btScalar maxAngle, BtColor color, bool drawSect, btScalar stepDegrees)
 {
-	VECTOR3_DEF(center);
-	VECTOR3_DEF(normal);
-	VECTOR3_DEF(axis);
+	VECTOR3_CONV(center);
+	VECTOR3_CONV(normal);
+	VECTOR3_CONV(axis);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
 	_native->baseDrawArc(VECTOR3_USE(center), VECTOR3_USE(normal), VECTOR3_USE(axis), radiusA, radiusB, minAngle, maxAngle, *colorTemp, drawSect, stepDegrees);
@@ -95,9 +95,9 @@ void DebugDraw::DrawArc(Vector3% center, Vector3% normal, Vector3% axis, btScala
 void DebugDraw::DrawArc(Vector3% center, Vector3% normal, Vector3% axis, btScalar radiusA, btScalar radiusB,
 	btScalar minAngle, btScalar maxAngle, BtColor color, bool drawSect)
 {
-	VECTOR3_DEF(center);
-	VECTOR3_DEF(normal);
-	VECTOR3_DEF(axis);
+	VECTOR3_CONV(center);
+	VECTOR3_CONV(normal);
+	VECTOR3_CONV(axis);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
 	_native->baseDrawArc(VECTOR3_USE(center), VECTOR3_USE(normal), VECTOR3_USE(axis), radiusA, radiusB, minAngle, maxAngle, *colorTemp, drawSect);
@@ -110,8 +110,8 @@ void DebugDraw::DrawArc(Vector3% center, Vector3% normal, Vector3% axis, btScala
 
 void DebugDraw::DrawBox(Vector3% bbMin, Vector3% bbMax, Matrix% trans, BtColor color)
 {
-	VECTOR3_DEF(bbMin);
-	VECTOR3_DEF(bbMax);
+	VECTOR3_CONV(bbMin);
+	VECTOR3_CONV(bbMax);
 	btTransform* transTemp = Math::MatrixToBtTransform(trans);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
@@ -125,8 +125,8 @@ void DebugDraw::DrawBox(Vector3% bbMin, Vector3% bbMax, Matrix% trans, BtColor c
 
 void DebugDraw::DrawBox(Vector3% bbMin, Vector3% bbMax, BtColor color)
 {
-	VECTOR3_DEF(bbMin);
-	VECTOR3_DEF(bbMax);
+	VECTOR3_CONV(bbMin);
+	VECTOR3_CONV(bbMax);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
 	_native->baseDrawBox(VECTOR3_USE(bbMin), VECTOR3_USE(bbMax), *colorTemp);
@@ -171,8 +171,8 @@ void DebugDraw::DrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, M
 
 void DebugDraw::DrawLine(Vector3% from, Vector3% to, BtColor fromColor, BtColor toColor)
 {
-	VECTOR3_DEF(from);
-	VECTOR3_DEF(to);
+	VECTOR3_CONV(from);
+	VECTOR3_CONV(to);
 	btVector3* fromColorTemp = BtColorToBtVector(fromColor);
 	btVector3* toColorTemp = BtColorToBtVector(toColor);
 
@@ -186,7 +186,7 @@ void DebugDraw::DrawLine(Vector3% from, Vector3% to, BtColor fromColor, BtColor 
 
 void DebugDraw::DrawPlane(Vector3% planeNormal, btScalar planeConst, Matrix% transform, BtColor color)
 {
-	VECTOR3_DEF(planeNormal);
+	VECTOR3_CONV(planeNormal);
 	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
@@ -199,7 +199,7 @@ void DebugDraw::DrawPlane(Vector3% planeNormal, btScalar planeConst, Matrix% tra
 
 void DebugDraw::DrawSphere(Vector3% p, btScalar radius, BtColor color)
 {
-	VECTOR3_DEF(p);
+	VECTOR3_CONV(p);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
 	_native->baseDrawSphere(VECTOR3_USE(p), radius, *colorTemp);
@@ -222,9 +222,9 @@ void DebugDraw::DrawSphere(btScalar radius, Matrix% transform, BtColor color)
 void DebugDraw::DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btScalar radius, btScalar minTh, btScalar maxTh,
 	btScalar minPs, btScalar maxPs, BtColor color, btScalar stepDegrees, bool drawCenter)
 {
-	VECTOR3_DEF(center);
-	VECTOR3_DEF(up);
-	VECTOR3_DEF(axis);
+	VECTOR3_CONV(center);
+	VECTOR3_CONV(up);
+	VECTOR3_CONV(axis);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
 	_native->baseDrawSpherePatch(VECTOR3_USE(center), VECTOR3_USE(up), VECTOR3_USE(axis), radius, minTh, maxTh, minPs, maxPs, *colorTemp, stepDegrees, drawCenter);
@@ -238,9 +238,9 @@ void DebugDraw::DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btS
 void DebugDraw::DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btScalar radius, btScalar minTh, btScalar maxTh,
 	btScalar minPs, btScalar maxPs, BtColor color, btScalar stepDegrees)
 {
-	VECTOR3_DEF(center);
-	VECTOR3_DEF(up);
-	VECTOR3_DEF(axis);
+	VECTOR3_CONV(center);
+	VECTOR3_CONV(up);
+	VECTOR3_CONV(axis);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
 	_native->baseDrawSpherePatch(VECTOR3_USE(center), VECTOR3_USE(up), VECTOR3_USE(axis), radius, minTh, maxTh, minPs, maxPs, *colorTemp, stepDegrees);
@@ -254,9 +254,9 @@ void DebugDraw::DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btS
 void DebugDraw::DrawSpherePatch(Vector3% center, Vector3% up, Vector3% axis, btScalar radius, btScalar minTh, btScalar maxTh,
 	btScalar minPs, btScalar maxPs, BtColor color)
 {
-	VECTOR3_DEF(center);
-	VECTOR3_DEF(up);
-	VECTOR3_DEF(axis);
+	VECTOR3_CONV(center);
+	VECTOR3_CONV(up);
+	VECTOR3_CONV(axis);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
 	_native->baseDrawSpherePatch(VECTOR3_USE(center), VECTOR3_USE(up), VECTOR3_USE(axis), radius, minTh, maxTh, minPs, maxPs, *colorTemp);
@@ -276,9 +276,9 @@ void DebugDraw::DrawTransform(Matrix% transform, btScalar orthoLen)
 
 void DebugDraw::DrawTriangle(Vector3% v0, Vector3% v1, Vector3% v2, BtColor color, btScalar)
 {
-	VECTOR3_DEF(v0);
-	VECTOR3_DEF(v1);
-	VECTOR3_DEF(v2);
+	VECTOR3_CONV(v0);
+	VECTOR3_CONV(v1);
+	VECTOR3_CONV(v2);
 	btVector3* colorTemp = BtColorToBtVector(color);
 
 	_native->baseDrawTriangle(VECTOR3_USE(v0), VECTOR3_USE(v1), VECTOR3_USE(v2), *colorTemp, 0);
@@ -291,9 +291,9 @@ void DebugDraw::DrawTriangle(Vector3% v0, Vector3% v1, Vector3% v2, BtColor colo
 
 void DebugDraw::DrawTriangle(Vector3% v0, Vector3% v1, Vector3% v2, Vector3%, Vector3%, Vector3%, BtColor color, btScalar alpha)
 {
-	VECTOR3_DEF(v0);
-	VECTOR3_DEF(v1);
-	VECTOR3_DEF(v2);
+	VECTOR3_CONV(v0);
+	VECTOR3_CONV(v1);
+	VECTOR3_CONV(v2);
 	btVector3* colorTemp = BtColorToBtVector(color);
 	btVector3* none = new btVector3();
 

@@ -5,7 +5,6 @@
 #include "AlignedObjectArray.h"
 #include "BroadphaseInterface.h"
 #include "CollisionConfiguration.h"
-#include "CollisionShape.h"
 #include "ConstraintSolver.h"
 #include "Dispatcher.h"
 #include "SoftRigidDynamicsWorld.h"
@@ -23,28 +22,8 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 #ifndef DISABLE_CONSTRAINTS
 	BulletSharp::ConstraintSolver^ constraintSolver,
 #endif
-	CollisionConfiguration^ collisionConfiguration)
-: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
-#ifndef DISABLE_CONSTRAINTS
-		GetUnmanagedNullable(constraintSolver),
-#else
-		nullptr,
-#endif
-		collisionConfiguration->_native))
-{
-#ifndef DISABLE_CONSTRAINTS
-	_constraintSolver = constraintSolver;
-#endif
-	_dispatcher = dispatcher;
-	_broadphase = pairCache;
-}
-
-SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
-#ifndef DISABLE_CONSTRAINTS
-	BulletSharp::ConstraintSolver^ constraintSolver,
-#endif
 	CollisionConfiguration^ collisionConfiguration, SoftBodySolver^ softBodySolver)
-: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
+	: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
 #ifndef DISABLE_CONSTRAINTS
 		GetUnmanagedNullable(constraintSolver),
 #else
@@ -59,28 +38,55 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 	_broadphase = pairCache;
 }
 
-void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body,
-	CollisionFilterGroups collisionFilterGroup,	CollisionFilterGroups collisionFilterMask)
+SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
+#ifndef DISABLE_CONSTRAINTS
+	BulletSharp::ConstraintSolver^ constraintSolver,
+#endif
+	CollisionConfiguration^ collisionConfiguration)
+	: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
+#ifndef DISABLE_CONSTRAINTS
+		GetUnmanagedNullable(constraintSolver),
+#else
+		nullptr,
+#endif
+		collisionConfiguration->_native))
 {
-	Native->addSoftBody((btSoftBody*)body->_native,
-		(short int)collisionFilterGroup, (short int)collisionFilterMask);
+#ifndef DISABLE_CONSTRAINTS
+	_constraintSolver = constraintSolver;
+#endif
+	_dispatcher = dispatcher;
+	_broadphase = pairCache;
 }
 
 void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body,
-	CollisionFilterGroups collisionFilterGroup)
+	CollisionFilterGroups collisionFilterGroup,	CollisionFilterGroups collisionFilterMask)
 {
-	Native->addSoftBody((btSoftBody*)body->_native,
-		(short int)collisionFilterGroup);
+	_collisionObjectArray->Add(body, (short)collisionFilterGroup, (short)collisionFilterMask);
+}
+
+void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body,
+	short collisionFilterGroup, short collisionFilterMask)
+{
+	_collisionObjectArray->Add(body, collisionFilterGroup, collisionFilterMask);
 }
 
 void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body)
 {
-	Native->addSoftBody((btSoftBody*)body->_native);
+	_collisionObjectArray->Add(body);
 }
 
 void SoftRigidDynamicsWorld::RemoveSoftBody(BulletSharp::SoftBody::SoftBody^ body)
 {
-	Native->removeSoftBody((btSoftBody*)body->_native);
+	_collisionObjectArray->Remove(body);
+}
+
+BulletSharp::SoftBody::DrawFlags SoftRigidDynamicsWorld::DrawFlags::get()
+{
+	return (BulletSharp::SoftBody::DrawFlags)Native->getDrawFlags();
+}
+void SoftRigidDynamicsWorld::DrawFlags::set(BulletSharp::SoftBody::DrawFlags f)
+{
+	Native->setDrawFlags((int)f);
 }
 
 AlignedSoftBodyArray^ SoftRigidDynamicsWorld::SoftBodyArray::get()

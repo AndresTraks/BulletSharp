@@ -4,10 +4,10 @@
 
 #include "BulletMaterial.h"
 
-BulletMaterial::BulletMaterial(btMaterial* material)
+BulletMaterial::BulletMaterial(btMaterial* native)
 {
-	friction = material->m_friction;
-	restitution = material->m_restitution;
+	friction = native->m_friction;
+	restitution = native->m_restitution;
 }
 
 BulletMaterial::BulletMaterial(btScalar fric, btScalar rest)

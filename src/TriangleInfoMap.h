@@ -4,10 +4,19 @@ namespace BulletSharp
 {
 	ref class Serializer;
 
-	public ref class TriangleInfoMap
+	public ref class TriangleInfoMap : IDisposable
 	{
 	internal:
 		btTriangleInfoMap* _native;
+		TriangleInfoMap(btTriangleInfoMap* native, bool preventDelete);
+
+	private:
+		bool _preventDelete;
+
+	public:
+		!TriangleInfoMap();
+	protected:
+		~TriangleInfoMap();
 
 	public:
 		TriangleInfoMap();

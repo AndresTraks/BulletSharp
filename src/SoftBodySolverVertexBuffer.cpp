@@ -10,6 +10,17 @@ SoftBody::VertexBufferDescriptor::VertexBufferDescriptor(btVertexBufferDescripto
 	_native = native;
 }
 
+SoftBody::VertexBufferDescriptor::~VertexBufferDescriptor()
+{
+	this->!VertexBufferDescriptor();
+}
+
+SoftBody::VertexBufferDescriptor::!VertexBufferDescriptor()
+{
+	delete _native;
+	_native = NULL;
+}
+
 BufferType SoftBody::VertexBufferDescriptor::BufferType::get()
 {
 	return (BulletSharp::BufferType)_native->getBufferType();
@@ -48,15 +59,30 @@ int SoftBody::VertexBufferDescriptor::VertexStride::get()
 
 #define Native static_cast<btCPUVertexBufferDescriptor*>(_native)
 
-SoftBody::CpuVertexBufferDescriptor::CpuVertexBufferDescriptor(FloatArray^ array, int vertexOffset, int vertexStride, int normalOffset, int normalStride)
-: VertexBufferDescriptor(new btCPUVertexBufferDescriptor((array != nullptr) ? (float*)array->_native : 0, vertexOffset, vertexStride, normalOffset, normalStride))
+SoftBody::CpuVertexBufferDescriptor::CpuVertexBufferDescriptor(FloatArray^ array, int vertexOffset,
+	int vertexStride)
+	: VertexBufferDescriptor(new btCPUVertexBufferDescriptor((float*)array->_native,
+		vertexOffset, vertexStride))
 {
-	_length = (array != nullptr) ? array->Count : 0;
+	_vertexBuffer = array;
+}
+
+SoftBody::CpuVertexBufferDescriptor::CpuVertexBufferDescriptor(FloatArray^ array, int vertexOffset,
+	int vertexStride, int normalOffset, int normalStride)
+	: VertexBufferDescriptor(new btCPUVertexBufferDescriptor((float*)array->_native,
+		vertexOffset, vertexStride, normalOffset, normalStride))
+{
+	_vertexBuffer = array;
+}
+
+IntPtr SoftBody::CpuVertexBufferDescriptor::BasePointer::get()
+{
+	return IntPtr(Native->getBasePointer());
 }
 
 FloatArray^ SoftBody::CpuVertexBufferDescriptor::VertexBuffer::get()
 {
-	return gcnew FloatArray(Native->getBasePointer(), _length);
+	return _vertexBuffer;
 }
 
 #endif

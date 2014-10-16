@@ -52,6 +52,18 @@ namespace DemoFramework.OpenTK
             glControl = (Form as GLForm).GLControl;
         }
 
+        public static bool CheckGLError(string caller)
+        {
+            ErrorCode err = GL.GetError();
+            if (err != ErrorCode.NoError)
+            {
+                //MessageBox.Show(string.Format("GL error {0} at {1}", err, caller));
+                Console.WriteLine("GL error {0} at {1}", err, caller);
+                return true;
+            }
+            return false;
+        }
+
         int CreateShaderFromResource(ShaderType type, string resourceName)
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
@@ -73,17 +85,36 @@ namespace DemoFramework.OpenTK
 
         int CreateShaderFromString(ShaderType type, string shaderSource)
         {
+            if (!GL.GetBoolean(GetPName.ShaderCompiler))
+            {
+                Console.WriteLine("OpenGL shader compiler not available");
+                return 0;
+            }
+
             int shaderHandle = GL.CreateShader(type);
-            if (GL.GetError() != ErrorCode.NoError)
+            if (CheckGLError("CreateShader"))
                 return 0;
 
             GL.ShaderSource(shaderHandle, shaderSource);
-            if (GL.GetError() != ErrorCode.NoError)
+            if (CheckGLError("ShaderSource"))
                 return 0;
 
             GL.CompileShader(shaderHandle);
-            if (GL.GetError() != ErrorCode.NoError)
+            if (CheckGLError("CompileShader"))
                 return 0;
+
+            int success;
+            GL.GetShader(shaderHandle, ShaderParameter.CompileStatus, out success);
+            if (success == 0)
+            {
+                string programInfoLog = GL.GetShaderInfoLog(shaderHandle);
+                GL.GetShaderInfoLog(shaderHandle, out programInfoLog);
+                if (CheckGLError("GetShaderInfoLog"))
+                    return 0;
+
+                Console.WriteLine(programInfoLog);
+                return 0;
+            }
 
             return shaderHandle;
         }
@@ -109,10 +140,10 @@ namespace DemoFramework.OpenTK
         public void InitializeDevice()
         {
             Version ver = new Version(GL.GetString(StringName.Version).Split(' ')[0]);
-            Version req = new Version(3, 1, 0, 0);
+            Version req = new Version(2, 1);
 
             if (ver < req)
-                MessageBox.Show(string.Format("Need OpenGL {0:0.0} or newer to run.", req.ToString()));
+                MessageBox.Show(string.Format("Need OpenGL {0} or newer to run. Have {1}.", req, ver));
 
             GL.ClearColor(Color.Gray);
 
@@ -126,26 +157,23 @@ namespace DemoFramework.OpenTK
             }
 
             shaderProgram = GL.CreateProgram();
-            if (GL.GetError() != ErrorCode.NoError)
+            if (CheckGLError("CreateProgram"))
                 return;
 
             GL.AttachShader(shaderProgram, vertexShaderHandle);
-            if (GL.GetError() != ErrorCode.NoError)
+            if (CheckGLError("AttachShader"))
                 return;
             
             GL.AttachShader(shaderProgram, fragmentShaderHandle);
-            if (GL.GetError() != ErrorCode.NoError)
+            if (CheckGLError("AttachShader"))
                 return;
             
             GL.LinkProgram(shaderProgram);
-            if (GL.GetError() != ErrorCode.NoError)
+            if (CheckGLError("LinkProgram"))
                 return;
 
-            //string programInfoLog;
-            //GL.GetProgramInfoLog(shaderProgram, out programInfoLog);
-
             GL.UseProgram(shaderProgram);
-            if (GL.GetError() != ErrorCode.NoError)
+            if (CheckGLError("UseProgram"))
                 return;
 
             projectionMatrixLocation = GL.GetUniformLocation(shaderProgram, "projection_matrix");
@@ -220,6 +248,15 @@ namespace DemoFramework.OpenTK
         public override void SetInfoText(string text)
         {
             info.Text = text;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                info.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

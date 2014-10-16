@@ -44,8 +44,8 @@ namespace BspDemo
                             }
                             if (isValidBrush)
                             {
-                                AlignedVector3Array vertices;
-                                GeometryUtil.GetVerticesFromPlaneEquations(planeEquations, out vertices);
+                                AlignedVector3Array vertices = new AlignedVector3Array();
+                                GeometryUtil.GetVerticesFromPlaneEquations(planeEquations, vertices);
 
                                 bool isEntity = false;
                                 Vector3 entityTarget = Vector3.Zero;

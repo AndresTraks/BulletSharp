@@ -4,6 +4,7 @@ using namespace System::Collections;
 
 namespace BulletSharp
 {
+	ref class CollisionShape;
 	ref class CompoundShapeChild;
 	ref class Dbvt;
 	ref class DbvtNode;
@@ -157,17 +158,30 @@ namespace BulletSharp
 	[DebuggerTypeProxy(ListDebugView::typeid)]
 	public ref class CompoundShapeChildArray : GenericList<CompoundShapeChild^>
 	{
+	private:
+		System::Collections::Generic::List<CompoundShapeChild^>^ _backingList;
+		int _updateRevision;
+
 	internal:
-		CompoundShapeChildArray(btCompoundShapeChild* shapeArray, int length);
-		CompoundShapeChildArray(const btCompoundShapeChild* shapeArray, int length);
+		CompoundShapeChildArray(btCompoundShape* compoundShape);
+
+		void BuildBackingList();
 
 	public:
+		void AddChildShape(Matrix% localTransform, CollisionShape^ shape);
 		virtual void CopyTo(array<CompoundShapeChild^>^ array, int arrayIndex) override;
+		void RemoveChildShape(CollisionShape^ shape);
+		void RemoveChildShapeByIndex(int childShapeIndex);
 
 		property CompoundShapeChild^ default[int]
 		{
 			virtual CompoundShapeChild^ get(int index) override;
 			virtual void set(int index, CompoundShapeChild^ value) override;
+		}
+
+		property int Count
+		{
+			virtual int get() override;
 		}
 	};
 

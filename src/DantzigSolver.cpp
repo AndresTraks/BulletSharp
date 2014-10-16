@@ -5,12 +5,12 @@
 #include "DantzigSolver.h"
 
 DantzigSolver::DantzigSolver(btDantzigSolver* native)
-	: MLCPSolverInterface(native)
+	: MlcpSolverInterface(native)
 {
 }
 
 DantzigSolver::DantzigSolver()
-	: MLCPSolverInterface(new btDantzigSolver())
+	: MlcpSolverInterface(new btDantzigSolver())
 {
 }
 

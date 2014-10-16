@@ -1114,7 +1114,7 @@ namespace SoftDemo
 
             public override float Eval(Vector3 x)
             {
-                return ((x - center).LengthSquared() - sqradius);
+                return ((x - center).LengthSquared - sqradius);
             }
         };
 
@@ -1141,7 +1141,7 @@ namespace SoftDemo
                 }
                 Vector3 delta = goal - node.X;
                 const float maxdrag = 10;
-                if (delta.LengthSquared() > (maxdrag * maxdrag))
+                if (delta.LengthSquared > (maxdrag * maxdrag))
                 {
                     delta.Normalize();
                     delta *= maxdrag;
@@ -1208,7 +1208,7 @@ namespace SoftDemo
                         }
                         else
                         {
-                            //res.Dispose();
+                            res.Dispose();
                         }
                     }
                     if (results.Fraction < 1)
@@ -1225,8 +1225,8 @@ namespace SoftDemo
                                     node = tet.Nodes[0];
                                     for (int i = 1; i < 4; ++i)
                                     {
-                                        if ((node.X - impact).LengthSquared() >
-                                            (tet.Nodes[i].X - impact).LengthSquared())
+                                        if ((node.X - impact).LengthSquared >
+                                            (tet.Nodes[i].X - impact).LengthSquared)
                                         {
                                             node = tet.Nodes[i];
                                         }
@@ -1239,8 +1239,8 @@ namespace SoftDemo
                                     node = f.N[0];
                                     for (int i = 1; i < 3; ++i)
                                     {
-                                        if ((node.X - impact).LengthSquared() >
-                                            (f.N[i].X - impact).LengthSquared())
+                                        if ((node.X - impact).LengthSquared >
+                                            (f.N[i].X - impact).LengthSquared)
                                         {
                                             node = f.N[i];
                                         }
@@ -1258,8 +1258,10 @@ namespace SoftDemo
             {
                 if ((!drag) && cutting && (results.Fraction < 1))
                 {
-                    ImplicitSphere isphere = new ImplicitSphere(impact, 1);
-                    results.Body.Refine(isphere, 0.0001f, true);
+                    using (ImplicitSphere isphere = new ImplicitSphere(impact, 1))
+                    {
+                        results.Body.Refine(isphere, 0.0001f, true);
+                    }
                 }
                 results.Fraction = 1;
                 drag = false;

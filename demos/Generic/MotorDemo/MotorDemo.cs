@@ -270,6 +270,7 @@ namespace MotorDemo
             {
                 testRig.Dispose();
             }
+            rigs.Clear();
             base.ExitPhysics();
         }
     }

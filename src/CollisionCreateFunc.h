@@ -6,14 +6,14 @@ namespace BulletSharp
 	ref class CollisionAlgorithmConstructionInfo;
 	ref class CollisionObjectWrapper;
 
-	public ref class CollisionAlgorithmCreateFunc
+	public ref class CollisionAlgorithmCreateFunc : IDisposable
 	{
 	internal:
 		btCollisionAlgorithmCreateFunc* _native;
 		CollisionAlgorithmCreateFunc(btCollisionAlgorithmCreateFunc* native);
 
 	private:
-		bool _deleteObject;
+		bool _preventDelete;
 
 	public:
 		!CollisionAlgorithmCreateFunc();

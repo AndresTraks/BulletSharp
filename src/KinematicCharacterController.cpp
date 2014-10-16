@@ -6,7 +6,7 @@
 #include "GhostObject.h"
 #include "KinematicCharacterController.h"
 
-#define Native (static_cast<btKinematicCharacterController*>(_native))
+#define Native static_cast<btKinematicCharacterController*>(_native)
 
 KinematicCharacterController::KinematicCharacterController(btKinematicCharacterController* native)
 	: CharacterControllerInterface(native)

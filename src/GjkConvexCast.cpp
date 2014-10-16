@@ -6,7 +6,8 @@
 #include "GjkConvexCast.h"
 
 GjkConvexCast::GjkConvexCast(ConvexShape^ convexA, ConvexShape^ convexB, SimplexSolverInterface^ simplexSolver)
-	: ConvexCast(new btGjkConvexCast((btConvexShape*)convexA->_native, (btConvexShape*)convexB->_native, simplexSolver->_native))
+	: ConvexCast(new btGjkConvexCast((btConvexShape*)convexA->_native, (btConvexShape*)convexB->_native,
+		simplexSolver->_native))
 {
 }
 

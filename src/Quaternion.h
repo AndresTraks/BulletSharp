@@ -107,13 +107,19 @@ namespace BulletSharp
 		/// Calculates the length of the quaternion.
 		/// </summary>
 		/// <returns>The length of the quaternion.</returns>
-		btScalar Length();
+		property btScalar Length
+		{
+			btScalar get();
+		}
 
 		/// <summary>
 		/// Calculates the squared length of the quaternion.
 		/// </summary>
 		/// <returns>The squared length of the quaternion.</returns>
-		btScalar LengthSquared();
+		property btScalar LengthSquared
+		{
+			btScalar get();
+		}
 
 		/// <summary>
 		/// Converts the quaternion into a unit quaternion.

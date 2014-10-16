@@ -12,7 +12,7 @@ StaticPlaneShape::StaticPlaneShape(btStaticPlaneShape* native)
 StaticPlaneShape::StaticPlaneShape(Vector3 planeNormal, btScalar planeConstant)
 	: ConcaveShape(0)
 {
-	VECTOR3_DEF(planeNormal);
+	VECTOR3_CONV(planeNormal);
 	UnmanagedPointer = new btStaticPlaneShape(VECTOR3_USE(planeNormal), planeConstant);
 	VECTOR3_DEL(planeNormal);
 }

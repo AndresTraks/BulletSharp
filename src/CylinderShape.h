@@ -10,6 +10,7 @@ namespace BulletSharp
 		CylinderShape(btCylinderShape* native);
 
 	public:
+		CylinderShape(Vector3% halfExtents);
 		CylinderShape(Vector3 halfExtents);
 		CylinderShape(btScalar halfExtentsX, btScalar halfExtentsY, btScalar halfExtentsZ);
 		CylinderShape(btScalar halfExtents);
@@ -37,6 +38,9 @@ namespace BulletSharp
 
 	public ref class CylinderShapeX : CylinderShape
 	{
+	internal:
+		CylinderShapeX(btCylinderShapeX* native);
+
 	public:
 		CylinderShapeX(Vector3 halfExtents);
 		CylinderShapeX(btScalar halfExtentsX, btScalar halfExtentsY, btScalar halfExtentsZ);
@@ -45,6 +49,9 @@ namespace BulletSharp
 
 	public ref class CylinderShapeZ : CylinderShape
 	{
+	internal:
+		CylinderShapeZ(btCylinderShapeZ* native);
+
 	public:
 		CylinderShapeZ(Vector3 halfExtents);
 		CylinderShapeZ(btScalar halfExtentsX, btScalar halfExtentsY, btScalar halfExtentsZ);

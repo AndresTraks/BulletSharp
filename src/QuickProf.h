@@ -3,11 +3,16 @@
 namespace BulletSharp
 {
 #ifdef USE_BT_CLOCK
-	public ref class Clock
+	public ref class Clock : IDisposable
 	{
 	internal:
 		btClock* _native;
 		Clock(btClock* native);
+
+	public:
+		!Clock();
+	protected:
+		~Clock();
 
 	public:
 		Clock();
@@ -142,11 +147,16 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class CProfileManager
+	public ref class CProfileManager : IDisposable
 	{
 	internal:
 		::CProfileManager* _native;
 		CProfileManager(::CProfileManager* native);
+
+	public:
+		!CProfileManager();
+	protected:
+		~CProfileManager();
 
 	public:
 		CProfileManager();

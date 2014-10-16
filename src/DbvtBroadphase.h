@@ -1,6 +1,5 @@
 #pragma once
 
-#include "BroadphaseProxy.h"
 #include "BroadphaseInterface.h"
 #include "BroadphaseProxy.h"
 
@@ -25,6 +24,8 @@ namespace BulletSharp
 		DbvtProxyPtrArray^ _links;
 
 	public:
+		DbvtProxy(Vector3% aabbMin, Vector3% aabbMax, IntPtr userPointer, CollisionFilterGroups collisionFilterGroup,
+			CollisionFilterGroups collisionFilterMask);
 		DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPointer, CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask);
 
@@ -68,6 +69,8 @@ namespace BulletSharp
 		void Collide(Dispatcher^ dispatcher);
 		void Optimize();
 		void PerformDeferredRemoval(Dispatcher^ dispatcher);
+		void SetAabbForceUpdate(BroadphaseProxy^ absproxy, Vector3% aabbMin, Vector3% aabbMax,
+			Dispatcher^ dispatcher);
 		void SetAabbForceUpdate(BroadphaseProxy^ absproxy, Vector3 aabbMin, Vector3 aabbMax,
 			Dispatcher^ dispatcher);
 

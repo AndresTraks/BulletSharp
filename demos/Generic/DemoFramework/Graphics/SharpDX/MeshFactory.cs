@@ -54,7 +54,7 @@ namespace DemoFramework.SharpDX
         {
             BufferDescription vertexBufferDesc = new BufferDescription()
             {
-                SizeInBytes = Marshal.SizeOf(typeof(Vector3)) * vectors.Length,
+                SizeInBytes = Vector3.SizeInBytes * vectors.Length,
                 Usage = ResourceUsage.Default,
                 BindFlags = BindFlags.VertexBuffer
             };
@@ -89,7 +89,7 @@ namespace DemoFramework.SharpDX
 
                 BufferDescription vertexBufferDesc = new BufferDescription()
                 {
-                    SizeInBytes = Marshal.SizeOf(typeof(Vector3)) * vectors.Length,
+                    SizeInBytes = Vector3.SizeInBytes * vectors.Length,
                     Usage = ResourceUsage.Dynamic,
                     BindFlags = BindFlags.VertexBuffer,
                     CpuAccessFlags = CpuAccessFlags.Write
@@ -102,6 +102,7 @@ namespace DemoFramework.SharpDX
                     VertexBuffer = new Buffer(device, data, vertexBufferDesc);
                 }
 
+                VertexCount = vectors.Length / 2;
                 BufferBindings[0] = new VertexBufferBinding(VertexBuffer, 24, 0);
             }
         }
@@ -332,7 +333,6 @@ namespace DemoFramework.SharpDX
             // Clear instance data
             foreach (ShapeData s in shapes.Values)
                 s.InstanceDataList.Clear();
-            removeList.Clear();
 
             int i = objects.Count - 1;
             for (; i >= 0; i--)
@@ -340,25 +340,11 @@ namespace DemoFramework.SharpDX
                 CollisionObject colObj = objects[i];
 
                 Matrix transform;
-                if (colObj is RigidBody)
-                {
-                    DefaultMotionState motionState = (colObj as RigidBody).MotionState as DefaultMotionState;
-                    if (motionState != null)
-                    {
-                        // FIXME: doesn't work with ConvexHullShape?
-                        transform = motionState.GraphicsWorldTrans;
-                        //colObj.GetWorldTransform(out transform);
-                    }
-                    else
-                    {
-                        colObj.GetWorldTransform(out transform);
-                    }
-                }
-                else if (colObj is SoftBody)
+                if (colObj is SoftBody)
                 {
                     if (demo.IsDebugDrawEnabled)
                         continue;
-                    transform = BulletSharp.Matrix.Identity;
+                    transform = Matrix.Identity;
                 }
                 else
                 {
@@ -414,6 +400,7 @@ namespace DemoFramework.SharpDX
                 {
                     shapes.Remove(removeList[i]);
                 }
+                removeList.Clear();
             }
         }
 
@@ -447,7 +434,7 @@ namespace DemoFramework.SharpDX
         {
             // Could just allocate a Vector3 array here at each frame, but reusing shapeData.SoftBodyData is faster.
             // Probably uses more memory though.
-            shapeData.VertexCount = softBody.GetVertexNormalData(out shapeData.SoftBodyData);
+            softBody.GetVertexNormalData(out shapeData.SoftBodyData);
             shapeData.SetDynamicVertexBuffer(device, shapeData.SoftBodyData);
 
             if (softBody.Faces.Count == 0 && softBody.Tetras.Count == 0)
@@ -502,33 +489,5 @@ namespace DemoFramework.SharpDX
             }
         }
          * */
-
-        public static Buffer CreateScreenQuad(Device device)
-        {
-            Buffer vertexBuffer;
-
-            BufferDescription vertexBufferDesc = new BufferDescription()
-            {
-                SizeInBytes = sizeof(float) * 5 * 4,
-                Usage = ResourceUsage.Default,
-                BindFlags = BindFlags.VertexBuffer,
-            };
-
-            using (var data = new DataStream(vertexBufferDesc.SizeInBytes, false, true))
-            {
-                data.Write(new Vector3(0.5f, 0.5f, 0));
-                data.Write(new Vector2(1, 0));
-                data.Write(new Vector3(0.5f, -0.5f, 0));
-                data.Write(new Vector2(1, 1));
-                data.Write(new Vector3(-0.5f, 0.5f, 0));
-                data.Write(new Vector2(0, 0));
-                data.Write(new Vector3(-0.5f, -0.5f, 0));
-                data.Write(new Vector2(0, 1));
-                data.Position = 0;
-                vertexBuffer = new Buffer(device, data, vertexBufferDesc);
-            }
-
-            return vertexBuffer;
-        }
     }
 }

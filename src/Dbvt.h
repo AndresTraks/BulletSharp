@@ -18,22 +18,50 @@ namespace BulletSharp
 	public:
 		//DbvtAabbMm();
 
-		Vector3 Center();
 		int Classify(Vector3 n, btScalar o, int s);
 		bool Contain(DbvtAabbMm^ a);
 		void Expand(Vector3 e);
-		Vector3 Extents();
 		static DbvtAabbMm^ FromCE(Vector3 c, Vector3 e);
 		static DbvtAabbMm^ FromCR(Vector3 c, btScalar r);
 		static DbvtAabbMm^ FromMM(Vector3 mi, Vector3 mx);
 		static DbvtAabbMm^ FromPoints(array<Vector3>^ pts);
-		Vector3 Lengths();
-		Vector3 Maxs();
-		Vector3 Mins();
 		btScalar ProjectMinimum(Vector3 v, unsigned int signs);
 		void SignedExpand(Vector3 e);
-		Vector3 TMaxs();
-		Vector3 TMins();
+
+		property Vector3 Center
+		{
+			Vector3 get();
+		}
+
+		property Vector3 Extents
+		{
+			Vector3 get();
+		}
+
+		property Vector3 Lengths
+		{
+			Vector3 get();
+		}
+
+		property Vector3 Maxs
+		{
+			Vector3 get();
+		}
+
+		property Vector3 Mins
+		{
+			Vector3 get();
+		}
+
+		property Vector3 TMaxs
+		{
+			Vector3 get();
+		}
+
+		property Vector3 TMins
+		{
+			Vector3 get();
+		}
 	};
 
 	public ref class DbvtVolume : DbvtAabbMm
@@ -47,6 +75,9 @@ namespace BulletSharp
 	internal:
 		btDbvtNode* _native;
 		DbvtNode(btDbvtNode* native);
+
+	private:
+		DbvtNode^ _parent;
 
 	public:
 		//DbvtNode();
@@ -261,7 +292,10 @@ namespace BulletSharp
 
 	internal:
 		btDbvt* _native;
-		Dbvt(btDbvt* native);
+		Dbvt(btDbvt* native, bool preventDelete);
+
+	private:
+		bool _preventDelete;
 
 	public:
 		!Dbvt();
@@ -357,7 +391,6 @@ namespace BulletSharp
 		property AlignedStkNNArray^ StkStack
 		{
 			AlignedStkNNArray^ get();
-			void set(AlignedStkNNArray^ value);
 		}
 	};
 };

@@ -30,7 +30,7 @@ BulletTriangle::BulletTriangle(const BulletTriangle^ &triangle)
 #define Native static_cast<btTriangleBuffer*>(_native)
 
 TriangleBuffer::TriangleBuffer()
-: TriangleCallback(new btTriangleBuffer())
+	: TriangleCallback(new btTriangleBuffer())
 {
 }
 
@@ -47,7 +47,7 @@ BulletTriangle^ TriangleBuffer::GetTriangle(int index)
 	return gcnew BulletTriangle(triangle);
 }
 
-int TriangleBuffer::TriangleCount::get()
+int TriangleBuffer::NumTriangles::get()
 {
 	return Native->getNumTriangles();
 }

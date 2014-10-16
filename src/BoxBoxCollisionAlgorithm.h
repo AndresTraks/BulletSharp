@@ -6,7 +6,6 @@
 namespace BulletSharp
 {
 	ref class CollisionAlgorithmConstructionInfo;
-	ref class CollisionObject;
 	ref class CollisionObjectWrapper;
 	ref class PersistentManifold;
 

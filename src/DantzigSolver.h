@@ -1,10 +1,10 @@
 #pragma once
 
-#include "MLCPSolverInterface.h"
+#include "MlcpSolverInterface.h"
 
 namespace BulletSharp
 {
-	public ref class DantzigSolver : MLCPSolverInterface
+	public ref class DantzigSolver : MlcpSolverInterface
 	{
 	internal:
 		DantzigSolver(btDantzigSolver* native);

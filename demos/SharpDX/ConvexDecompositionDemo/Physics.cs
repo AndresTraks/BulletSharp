@@ -53,7 +53,7 @@ namespace ConvexDecompositionDemo
             {
                 foreach (Vector3 vertex in result.mHullVertices)
                 {
-                    demo.centroid += Vector3.Modulate(vertex, localScaling);
+                    demo.centroid += Vector3.Multiply(vertex, localScaling);
                 }
             }
 
@@ -63,7 +63,7 @@ namespace ConvexDecompositionDemo
             {
                 foreach (Vector3 vertex in result.mHullVertices)
                 {
-                    vertices.Add(Vector3.Modulate(vertex, localScaling) - demo.centroid);
+                    vertices.Add(Vector3.Multiply(vertex, localScaling) - demo.centroid);
                 }
             }
 
@@ -77,9 +77,9 @@ namespace ConvexDecompositionDemo
                     int index2 = src[i + 2];
 
 
-                    Vector3 vertex0 = Vector3.Modulate(result.mHullVertices[index0], localScaling) - demo.centroid;
-                    Vector3 vertex1 = Vector3.Modulate(result.mHullVertices[index1], localScaling) - demo.centroid;
-                    Vector3 vertex2 = Vector3.Modulate(result.mHullVertices[index2], localScaling) - demo.centroid;
+                    Vector3 vertex0 = Vector3.Multiply(result.mHullVertices[index0], localScaling) - demo.centroid;
+                    Vector3 vertex1 = Vector3.Multiply(result.mHullVertices[index1], localScaling) - demo.centroid;
+                    Vector3 vertex2 = Vector3.Multiply(result.mHullVertices[index2], localScaling) - demo.centroid;
 
                     trimesh.AddTriangle(vertex0, vertex1, vertex2);
 
@@ -130,7 +130,7 @@ namespace ConvexDecompositionDemo
     {
         public Vector3 centroid;
         Vector3 convexDecompositionObjectOffset;
-        public AlignedTriangleMeshArray trimeshes = new AlignedTriangleMeshArray();
+        public List<TriangleMesh> trimeshes = new List<TriangleMesh>();
 
         // MyContactCallback is just an example to show how to get access to the child shape that collided
         bool MyContactCallback(ManifoldPoint cp, CollisionObject colObj0, int partId0, int index0, CollisionObject colObj1, int partId1, int index1)
@@ -200,9 +200,9 @@ namespace ConvexDecompositionDemo
                     int index1 = indices[i * 3 + 1];
                     int index2 = indices[i * 3 + 2];
 
-                    Vector3 vertex0 = Vector3.Modulate(vertices[index0], localScaling);
-                    Vector3 vertex1 = Vector3.Modulate(vertices[index1], localScaling);
-                    Vector3 vertex2 = Vector3.Modulate(vertices[index2], localScaling);
+                    Vector3 vertex0 = Vector3.Multiply(vertices[index0], localScaling);
+                    Vector3 vertex1 = Vector3.Multiply(vertices[index1], localScaling);
+                    Vector3 vertex2 = Vector3.Multiply(vertices[index2], localScaling);
 
                     trimesh.AddTriangle(vertex0, vertex1, vertex2);
                 }
@@ -275,7 +275,7 @@ namespace ConvexDecompositionDemo
                 bool addFacesPoints = false;
 
                 myHACD.NClusters = nClusters;                     // minimum number of clusters
-                myHACD.VerticesPerConvexHull = 100;               // max of 100 vertices per convex-hull
+                myHACD.NumVerticesPerConvexHull = 100;               // max of 100 vertices per convex-hull
                 myHACD.Concavity = concavity;                     // maximum concavity
                 myHACD.AddExtraDistPoints = addExtraDistPoints;
                 myHACD.AddNeighboursDistPoints = addNeighboursDistPoints;

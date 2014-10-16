@@ -268,19 +268,7 @@ namespace DemoFramework.Xna
                 CollisionObject colObj = objects[i];
 
                 BulletSharp.Matrix transform;
-                if (colObj is RigidBody)
-                {
-                    DefaultMotionState motionState = (colObj as RigidBody).MotionState as DefaultMotionState;
-                    if (motionState != null)
-                    {
-                        transform = motionState.GraphicsWorldTrans;
-                    }
-                    else
-                    {
-                        colObj.GetWorldTransform(out transform);
-                    }
-                }
-                else if (colObj is SoftBody)
+                if (colObj is SoftBody)
                 {
                     if (demo.IsDebugDrawEnabled)
                         continue;

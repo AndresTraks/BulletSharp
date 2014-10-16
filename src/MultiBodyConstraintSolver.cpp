@@ -32,7 +32,8 @@ void MultiBodyConstraintSolver::SolveMultiBodyGroup(CollisionObject^ bodies, int
 {
 	Native->solveMultiBodyGroup(bodies->_native, numBodies, manifold->_native, numManifolds,
 		constraints->_native, numConstraints, multiBodyConstraints->_native, numMultiBodyConstraints,
-		*(btContactSolverInfo*)info->_native, DebugDraw::GetUnmanaged(debugDrawer), dispatcher->_native);
+		*(btContactSolverInfo*)info->_native, DebugDraw::GetUnmanaged(debugDrawer),
+		dispatcher->_native);
 }
 */
 #endif

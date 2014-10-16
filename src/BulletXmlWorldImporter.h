@@ -17,11 +17,13 @@ namespace BulletSharp
 	ref class ConeTwistConstraint;
 	ref class GearConstraint;
 	ref class Generic6DofConstraint;
+	ref class Generic6DofSpringConstraint;
 	ref class HingeConstraint;
 	ref class Point2PointConstraint;
 	ref class SliderConstraint;
 	ref class TypedConstraint;
 	ref class GImpactMeshShape;
+	ref class TriangleInfoMap;
 
 	namespace Serialize
 	{
@@ -30,7 +32,17 @@ namespace BulletSharp
 		public ref class BulletXmlWorldImporter : IDisposable
 		{
 		private:
-			BulletXmlWorldImporterWrapper* _importer;
+			BulletXmlWorldImporterWrapper* _native;
+			DynamicsWorld^ _world;
+			System::Collections::Generic::Dictionary<Object^, String^>^ _objectNameMap;
+			System::Collections::Generic::Dictionary<String^, RigidBody^>^ _nameBodyMap;
+
+		internal:
+			System::Collections::Generic::List<CollisionObject^>^ _allocatedRigidBodies;
+			System::Collections::Generic::List<CollisionShape^>^ _allocatedCollisionShapes;
+#ifndef DISABLE_CONSTRAINTS
+			System::Collections::Generic::List<TypedConstraint^>^ _allocatedConstraints;
+#endif
 
 		public:
 			!BulletXmlWorldImporter();
@@ -80,7 +92,7 @@ namespace BulletSharp
 #ifndef DISABLE_BVH
 			virtual OptimizedBvh^ CreateOptimizedBvh();
 #endif
-			//virtual TriangleInfoMap^ CreateTriangleInfoMap();
+			virtual TriangleInfoMap^ CreateTriangleInfoMap();
 
 #ifndef DISABLE_CONSTRAINTS
 			// constraints
@@ -94,6 +106,7 @@ namespace BulletSharp
 			virtual ConeTwistConstraint^ CreateConeTwistConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame);
 			virtual Generic6DofConstraint^ CreateGeneric6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA);
 			virtual Generic6DofConstraint^ CreateGeneric6DofConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameB);
+			virtual Generic6DofSpringConstraint^ CreateGeneric6DofSpringConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA);
 			virtual SliderConstraint^ CreateSliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA);
 			virtual SliderConstraint^ CreateSliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameA);
 			virtual GearConstraint^ CreateGearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA, Vector3 axisInB, btScalar ratio);
@@ -111,7 +124,7 @@ namespace BulletSharp
 #ifndef DISABLE_BVH
 			OptimizedBvh^ GetBvhByIndex(int index);
 #endif
-			//TriangleInfoMap^ GetTriangleInfoMapByIndex(int index);
+			TriangleInfoMap^ GetTriangleInfoMapByIndex(int index);
 
 			// queries involving named objects
 			CollisionShape^ GetCollisionShapeByName(String^ name);
@@ -196,6 +209,11 @@ namespace BulletSharp
 #endif
 			virtual class btConvexHullShape* createConvexHullShape();
 			virtual class btCompoundShape* createCompoundShape();
+#ifndef DISABLE_BVH
+			virtual class btScaledBvhTriangleMeshShape* createScaledTrangleMeshShape(btBvhTriangleMeshShape* meshShape, const btVector3& localScalingbtBvhTriangleMeshShape);
+#endif
+			virtual class btMultiSphereShape* createMultiSphereShape(const btVector3* positions, const btScalar* radi, int numSpheres);
+			//virtual btTriangleIndexVertexArray* createMeshInterface(btStridingMeshInterfaceData& meshData);
 
 			// acceleration and connectivity structures
 #ifndef DISABLE_BVH
@@ -221,6 +239,8 @@ namespace BulletSharp
 				const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA);
 			virtual btGeneric6DofConstraint* createGeneric6DofConstraint(btRigidBody& rigidBodyB,
 				const btTransform& frameInB, bool useLinearReferenceFrameB);
+			virtual btGeneric6DofSpringConstraint* createGeneric6DofSpringConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
+				const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA);
 			virtual btSliderConstraint* createSliderConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
 				const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA);
 			virtual btSliderConstraint* createSliderConstraint(btRigidBody& rigidBodyB,
@@ -289,6 +309,8 @@ namespace BulletSharp
 				const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA);
 			virtual btGeneric6DofConstraint* baseCreateGeneric6DofConstraint(btRigidBody& rigidBodyB,
 				const btTransform& frameInB, bool useLinearReferenceFrameB);
+			virtual btGeneric6DofSpringConstraint* baseCreateGeneric6DofSpringConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
+				const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA);
 			virtual btSliderConstraint* baseCreateSliderConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
 				const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA);
 			virtual btSliderConstraint* baseCreateSliderConstraint(btRigidBody& rigidBodyB,

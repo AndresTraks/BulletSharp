@@ -8,6 +8,10 @@ namespace BulletSharp
 
 	public ref class HingeConstraint : TypedConstraint
 	{
+	private:
+		RigidBody^ _rigidBodyA;
+		RigidBody^ _rigidBodyB;
+
 	internal:
 		HingeConstraint(btHingeConstraint* native);
 
@@ -26,23 +30,19 @@ namespace BulletSharp
 
 		void EnableAngularMotor(bool enableMotor, btScalar targetVelocity, btScalar maxMotorImpulse);
 		btScalar GetHingeAngle(Matrix transA, Matrix transB);
-		//GetInfo1NonVirtual(btConstraintInfo1^ info);
-/*
-#ifndef DISABLE_INTERNAL
-		void GetInfo2Internal(btConstraintInfo2^ info, Matrix transA, Matrix transB,
+		void GetInfo1NonVirtual(ConstraintInfo1^ info);
+		void GetInfo2Internal(ConstraintInfo2^ info, Matrix transA, Matrix transB,
 			Vector3 angVelA, Vector3 angVelB);
-		void GetInfo2InternalUsingFrameOffset(btConstraintInfo2^ info, Matrix transA,
+		void GetInfo2InternalUsingFrameOffset(ConstraintInfo2^ info, Matrix transA,
 			Matrix transB, Vector3 angVelA, Vector3 angVelB);
-		void GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA, Matrix transB,
+		void GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA, Matrix transB,
 			Vector3 angVelA, Vector3 angVelB);
-#endif
-*/
 		void SetAxis(Vector3 axisInA);
 		void SetFrames(Matrix frameA, Matrix frameB);
-		void SetLimit(btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor,
-			btScalar _relaxationFactor);
-		void SetLimit(btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor);
-		void SetLimit(btScalar low, btScalar high, btScalar _softness);
+		void SetLimit(btScalar low, btScalar high, btScalar softness, btScalar biasFactor,
+			btScalar relaxationFactor);
+		void SetLimit(btScalar low, btScalar high, btScalar softness, btScalar biasFactor);
+		void SetLimit(btScalar low, btScalar high, btScalar softness);
 		void SetLimit(btScalar low, btScalar high);
 		void SetMotorTarget(btScalar targetAngle, btScalar dt);
 		void SetMotorTarget(Quaternion qAinB, btScalar dt);

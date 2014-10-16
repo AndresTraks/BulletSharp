@@ -20,12 +20,10 @@ TriangleShape::TriangleShape()
 TriangleShape::TriangleShape(Vector3 point0, Vector3 point1, Vector3 point2)
 	: PolyhedralConvexShape(0)
 {
-	VECTOR3_DEF(point0);
-	VECTOR3_DEF(point1);
-	VECTOR3_DEF(point2);
-
+	VECTOR3_CONV(point0);
+	VECTOR3_CONV(point1);
+	VECTOR3_CONV(point2);
 	UnmanagedPointer = new btTriangleShape(VECTOR3_USE(point0), VECTOR3_USE(point1), VECTOR3_USE(point2));
-
 	VECTOR3_DEL(point0);
 	VECTOR3_DEL(point1);
 	VECTOR3_DEL(point2);
@@ -57,8 +55,11 @@ IntPtr TriangleShape::GetVertexPtr(int index)
 */
 Vector3Array^ TriangleShape::Vertices::get()
 {
-	btVector3* vertices = Native->m_vertices1;
-	ReturnCachedObjectStaticParam(Vector3Array, _vertices, vertices, 3);
+	if (_vertices == nullptr)
+	{
+		_vertices = gcnew Vector3Array(Native->m_vertices1, 3);
+	}
+	return _vertices;
 }
 
 #endif

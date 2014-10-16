@@ -4,29 +4,9 @@
 
 #include "UnionFind.h"
 
-Element::Element(btElement* native, bool preventDelete)
+Element::Element(btElement* native)
 {
 	_native = native;
-	_preventDelete = preventDelete;
-}
-
-Element::~Element()
-{
-	this->!Element();
-}
-
-Element::!Element()
-{
-	if (!_preventDelete)
-	{
-		delete _native;
-	}
-	_native = NULL;
-}
-
-Element::Element()
-{
-	_native = new btElement();
 }
 
 int Element::Id::get()
@@ -53,11 +33,6 @@ UnionFind::UnionFind(btUnionFind* native)
 	_native = native;
 }
 
-UnionFind::UnionFind()
-{
-	_native = new btUnionFind();
-}
-
 UnionFind::~UnionFind()
 {
 	this->!UnionFind();
@@ -67,6 +42,11 @@ UnionFind::!UnionFind()
 {
 	delete _native;
 	_native = NULL;
+}
+
+UnionFind::UnionFind()
+{
+	_native = new btUnionFind();
 }
 
 void UnionFind::Allocate(int N)
@@ -91,7 +71,7 @@ void UnionFind::Free()
 
 Element^ UnionFind::GetElement(int index)
 {
-	return gcnew Element(&_native->getElement(index), true);
+	return gcnew Element(&_native->getElement(index));
 }
 
 bool UnionFind::IsRoot(int x)

@@ -16,15 +16,15 @@ FixedConstraint::FixedConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, M
 	Matrix frameInB)
 	: TypedConstraint(0)
 {
-	btTransform* frameInATemp = Math::MatrixToBtTransform(frameInA);
-	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
+	TRANSFORM_CONV(frameInA);
+	TRANSFORM_CONV(frameInB);
+	UnmanagedPointer = new btFixedConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
+		TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB));
+	TRANSFORM_DEL(frameInA);
+	TRANSFORM_DEL(frameInB);
 
-	UnmanagedPointer = new btFixedConstraint(
-		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
-		*frameInATemp, *frameInBTemp);
-
-	ALIGNED_FREE(frameInATemp);
-	ALIGNED_FREE(frameInBTemp);
+	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = rigidBodyB;
 }
 
 #endif

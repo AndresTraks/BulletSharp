@@ -12,6 +12,17 @@ ShapeHull::ShapeHull(btShapeHull* native)
 	_native = native;
 }
 */
+ShapeHull::~ShapeHull()
+{
+	this->!ShapeHull();
+}
+
+ShapeHull::!ShapeHull()
+{
+	delete _native;
+	_native = NULL;
+}
+
 ShapeHull::ShapeHull(ConvexShape^ shape)
 {
 	_native = new btShapeHull((btConvexShape*)shape->_native);

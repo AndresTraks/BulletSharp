@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 
+#include "AlignedObjectArray.h"
 #include "IActionInterface.h"
 #include "ConstraintSOlver.h"
 #include "ContactSolverInfo.h"
@@ -20,6 +21,7 @@
 DynamicsWorld::DynamicsWorld(btDynamicsWorld* native)
 	: CollisionWorld(native)
 {
+	_constraints = gcnew System::Collections::Generic::List<TypedConstraint^>();
 }
 
 void DynamicsWorld::AddAction(IActionInterface^ action)
@@ -51,23 +53,30 @@ void DynamicsWorld::AddAction(IActionInterface^ action)
 #ifndef DISABLE_CONSTRAINTS
 void DynamicsWorld::AddConstraint(TypedConstraint^ constraint, bool disableCollisionsBetweenLinkedBodies)
 {
+	_constraints->Add(constraint);
 	Native->addConstraint(constraint->_native, disableCollisionsBetweenLinkedBodies);
 }
 
 void DynamicsWorld::AddConstraint(TypedConstraint^ constraint)
 {
+	_constraints->Add(constraint);
 	Native->addConstraint(constraint->_native);
 }
 #endif
 
 void DynamicsWorld::AddRigidBody(RigidBody^ body)
 {
-	Native->addRigidBody((btRigidBody*)body->_native);
+	_collisionObjectArray->Add(body);
 }
 
 void DynamicsWorld::AddRigidBody(RigidBody^ body, CollisionFilterGroups group, CollisionFilterGroups mask)
 {
-	Native->addRigidBody((btRigidBody*)body->_native, (short)group, (short)mask);
+	_collisionObjectArray->Add(body, (short)group, (short)mask);
+}
+
+void DynamicsWorld::AddRigidBody(RigidBody^ body, short group, short mask)
+{
+	_collisionObjectArray->Add(body, group, mask);
 }
 
 void DynamicsWorld::ClearForces()
@@ -77,9 +86,18 @@ void DynamicsWorld::ClearForces()
 #ifndef DISABLE_CONSTRAINTS
 TypedConstraint^ DynamicsWorld::GetConstraint(int index)
 {
+	//TODO: Enable this once deserialization of constraints is handled.
+	//System::Diagnostics::Debug::Assert(((btDynamicsWorld*)_native)->getConstraint(index) == _constraints[index]->_native);
+    //return _constraints[index];
 	return TypedConstraint::GetManaged(Native->getConstraint(index));
 }
 #endif
+
+void DynamicsWorld::InternalTickCallbackUnmanaged(IntPtr world, btScalar timeStep)
+{
+    _callback(this, timeStep);
+}
+
 void DynamicsWorld::RemoveAction(IActionInterface^ action)
 {
 	if (!_actions) {
@@ -111,40 +129,40 @@ void DynamicsWorld::RemoveAction(IActionInterface^ action)
 #ifndef DISABLE_CONSTRAINTS
 void DynamicsWorld::RemoveConstraint(TypedConstraint^ constraint)
 {
+	//int itemIndex = _constraints->IndexOf(constraint);
+    //int lastIndex = _constraints->Count - 1;
+    //_constraints[itemIndex] = _constraints[lastIndex];
+    //_constraints->RemoveAt(lastIndex);
 	Native->removeConstraint(constraint->_native);
+	_constraints->Remove(constraint);
 }
 #endif
 void DynamicsWorld::RemoveRigidBody(RigidBody^ body)
 {
-	Native->removeRigidBody((btRigidBody*)body->_native);
-}
-
-void callback(btDynamicsWorld* world, btScalar timeStep)
-{
-	void* userInfo = world->getWorldUserInfo();
-	DynamicsWorld^ dynamicsWorld = static_cast<DynamicsWorld^>(VoidPtrToGCHandle(userInfo).Target);
-	dynamicsWorld->_callback(dynamicsWorld, timeStep);
+	_collisionObjectArray->Remove(body);
 }
 
 void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo,
 	bool isPreTick)
 {
-	_callback = cb;
-	_userObject = worldUserInfo;
-
-	void* nativeUserInfo = Native->getWorldUserInfo();
-	if (cb != nullptr) {
-		if (!nativeUserInfo) {
-			GCHandle handle = GCHandle::Alloc(this, GCHandleType::Weak);
-			nativeUserInfo = GCHandleToVoidPtr(handle);
+	if (_callback != cb)
+	{
+		_callback = cb;
+		if (cb != nullptr)
+		{
+			if (_callbackUnmanaged == nullptr)
+			{
+				_callbackUnmanaged = gcnew InternalTickCallbackUnmanagedDelegate(this, &DynamicsWorld::InternalTickCallbackUnmanaged);
+			}
+			Native->setInternalTickCallback((btInternalTickCallback)Marshal::GetFunctionPointerForDelegate(_callbackUnmanaged).ToPointer(), 0, isPreTick);
 		}
-		Native->setInternalTickCallback(callback, nativeUserInfo, isPreTick);
-	} else {
-		if (nativeUserInfo) {
-			VoidPtrToGCHandle(nativeUserInfo).Free();
+		else
+		{
+			_callbackUnmanaged = nullptr;
+			Native->setInternalTickCallback(0, 0, isPreTick);
 		}
-		Native->setInternalTickCallback(0, 0, isPreTick);
 	}
+	_userObject = worldUserInfo;
 }
 
 void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo)
@@ -209,7 +227,7 @@ Vector3 DynamicsWorld::Gravity::get()
 }
 void DynamicsWorld::Gravity::set(Vector3 gravity)
 {
-	VECTOR3_DEF(gravity);
+	VECTOR3_CONV(gravity);
 	Native->setGravity(VECTOR3_USE(gravity));
 	VECTOR3_DEL(gravity);
 }
@@ -221,7 +239,7 @@ int DynamicsWorld::NumConstraints::get()
 #endif
 ContactSolverInfo^ DynamicsWorld::SolverInfo::get()
 {
-	return gcnew ContactSolverInfo(&Native->getSolverInfo());
+	return gcnew ContactSolverInfo(&Native->getSolverInfo(), true);
 }
 
 DynamicsWorldType DynamicsWorld::WorldType::get()

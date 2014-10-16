@@ -16,10 +16,10 @@ UniversalConstraint::UniversalConstraint(RigidBody^ rigidBodyA, RigidBody^ rigid
 	Vector3 axis1, Vector3 axis2)
 	: Generic6DofConstraint(0)
 {
-	VECTOR3_DEF(anchor);
-	VECTOR3_DEF(axis1);
-	VECTOR3_DEF(axis2);
-	_native = new btUniversalConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
+	VECTOR3_CONV(anchor);
+	VECTOR3_CONV(axis1);
+	VECTOR3_CONV(axis2);
+	UnmanagedPointer = new btUniversalConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		VECTOR3_USE(anchor), VECTOR3_USE(axis1), VECTOR3_USE(axis2));
 	VECTOR3_DEL(anchor);
 	VECTOR3_DEL(axis1);

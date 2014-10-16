@@ -11,39 +11,52 @@
 #include "TypedConstraint.h"
 #endif
 
-BulletSharp::Serializer::Serializer(btSerializer *serializer)
+BulletSharp::Serializer::Serializer(btSerializer* native)
 {
-	_native = serializer;
+	_native = native;
 }
 
+BulletSharp::Serializer::~Serializer()
+{
+	this->!Serializer();
+}
+
+BulletSharp::Serializer::!Serializer()
+{
+	delete _native;
+	_native = NULL;
+}
+/*
+Chunk^ BulletSharp::Serializer::Allocate(int size, int numElements)
+{
+	return _native->allocate(size, numElements);
+}
+
+void BulletSharp::Serializer::FinalizeChunk(Chunk^ chunk, char^ structType, int chunkCode, IntPtr oldPtr)
+{
+	_native->finalizeChunk(chunk->_native, structType->_native, chunkCode, oldPtr.ToPointer());
+}
+
+String^ BulletSharp::Serializer::FindNameForPointer(IntPtr ptr)
+{
+	return _native->findNameForPointer(ptr.ToPointer());
+}
+
+IntPtr BulletSharp::Serializer::FindPointer(IntPtr oldPtr)
+{
+	return _native->findPointer(oldPtr.ToPointer());
+}
+*/
 void BulletSharp::Serializer::FinishSerialization()
 {
 	_native->finishSerialization();
 }
-
-void BulletSharp::Serializer::SerializeName(String^ name)
+/*
+IntPtr BulletSharp::Serializer::GetUniquePointer(IntPtr oldPtr)
 {
-	const char* nameTemp = StringConv::ManagedToUnmanaged(name);
-	_native->serializeName(nameTemp);
-	StringConv::FreeUnmanagedString(nameTemp);
+	return _native->getUniquePointer(oldPtr.ToPointer());
 }
-
-void BulletSharp::Serializer::StartSerialization()
-{
-	_native->startSerialization();
-}
-
-BulletSharp::DataStream^ BulletSharp::Serializer::LockBuffer()
-{
-	return gcnew DataStream((void*)_native->getBufferPointer(),
-		_native->getCurrentBufferSize(), true, false, false);
-}
-
-int BulletSharp::Serializer::CurrentBufferSize::get()
-{
-	return _native->getCurrentBufferSize();
-}
-
+*/
 void BulletSharp::Serializer::RegisterNameForObject(Object^ obj, String^ name)
 {
 	const char* nameTemp = StringConv::ManagedToUnmanaged(name);
@@ -74,14 +87,62 @@ void BulletSharp::Serializer::RegisterNameForObject(Object^ obj, String^ name)
 	StringConv::FreeUnmanagedString(nameTemp);
 }
 
+void BulletSharp::Serializer::SerializeName(String^ name)
+{
+	const char* nameTemp = StringConv::ManagedToUnmanaged(name);
+	_native->serializeName(nameTemp);
+	StringConv::FreeUnmanagedString(nameTemp);
+}
+
+void BulletSharp::Serializer::StartSerialization()
+{
+	_native->startSerialization();
+}
+
+BulletSharp::DataStream^ BulletSharp::Serializer::LockBuffer()
+{
+	return gcnew DataStream((void*)_native->getBufferPointer(),
+		_native->getCurrentBufferSize(), true, false, false);
+}
+
+IntPtr BulletSharp::Serializer::BufferPointer::get()
+{
+	return IntPtr((void*)_native->getBufferPointer());
+}
+
+int BulletSharp::Serializer::CurrentBufferSize::get()
+{
+	return _native->getCurrentBufferSize();
+}
+
+int BulletSharp::Serializer::SerializationFlags::get()
+{
+	return _native->getSerializationFlags();
+}
+void BulletSharp::Serializer::SerializationFlags::set(int flags)
+{
+	_native->setSerializationFlags(flags);
+}
+
+
 
 #define Native static_cast<btDefaultSerializer*>(_native)
 
-DefaultSerializer::DefaultSerializer()
-: Serializer(new btDefaultSerializer())
+DefaultSerializer::DefaultSerializer(int totalSize)
+	: Serializer(new btDefaultSerializer(totalSize))
 {
 }
 
+DefaultSerializer::DefaultSerializer()
+	: Serializer(new btDefaultSerializer())
+{
+}
+/*
+IntPtr DefaultSerializer::InternalAlloc(int size)
+{
+	return Native->internalAlloc(size);
+}
+*/
 void DefaultSerializer::WriteHeader([Out] String^% buffer)
 {
 	unsigned char* bufferTemp = new unsigned char[12];

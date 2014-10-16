@@ -13,9 +13,10 @@ JointFeedback::JointFeedback(btJointFeedback* native)
 	_native = native;
 }
 
-JointFeedback::JointFeedback()
+JointFeedback::JointFeedback(btJointFeedback* native, bool preventDelete)
 {
-	_native = new btJointFeedback();
+	_native = native;
+	_preventDelete = preventDelete;
 }
 
 JointFeedback::~JointFeedback()
@@ -25,8 +26,16 @@ JointFeedback::~JointFeedback()
 
 JointFeedback::!JointFeedback()
 {
-	delete _native;
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
 	_native = NULL;
+}
+
+JointFeedback::JointFeedback()
+{
+	_native = new btJointFeedback();
 }
 
 Vector3 JointFeedback::AppliedForceBodyA::get()
@@ -66,9 +75,24 @@ void JointFeedback::AppliedTorqueBodyB::set(Vector3 value)
 }
 
 
-TypedConstraint::ConstraintInfo1::ConstraintInfo1(btTypedConstraint::btConstraintInfo1* native)
+TypedConstraint::ConstraintInfo1::ConstraintInfo1(btTypedConstraint::btConstraintInfo1* native, bool preventDelete)
 {
 	_native = native;
+	_preventDelete = preventDelete;
+}
+
+TypedConstraint::ConstraintInfo1::~ConstraintInfo1()
+{
+	this->!ConstraintInfo1();
+}
+
+TypedConstraint::ConstraintInfo1::!ConstraintInfo1()
+{
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
+	_native = NULL;
 }
 
 TypedConstraint::ConstraintInfo1::ConstraintInfo1()
@@ -94,10 +118,24 @@ void TypedConstraint::ConstraintInfo1::NumConstraintRows::set(int value)
 	_native->m_numConstraintRows = value;
 }
 
-
-TypedConstraint::ConstraintInfo2::ConstraintInfo2(btTypedConstraint::btConstraintInfo2* native)
+TypedConstraint::ConstraintInfo2::ConstraintInfo2(btTypedConstraint::btConstraintInfo2* native, bool preventDelete)
 {
 	_native = native;
+	_preventDelete = preventDelete;
+}
+
+TypedConstraint::ConstraintInfo2::~ConstraintInfo2()
+{
+	this->!ConstraintInfo2();
+}
+
+TypedConstraint::ConstraintInfo2::!ConstraintInfo2()
+{
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
+	_native = NULL;
 }
 
 TypedConstraint::ConstraintInfo2::ConstraintInfo2()
@@ -233,14 +271,6 @@ void TypedConstraint::ConstraintInfo2::UpperLimit::set(float^ value)
 */
 
 
-TypedConstraint::TypedConstraint(btTypedConstraint* native, bool doesNotOwnObject)
-{
-	_doesNotOwnObject = doesNotOwnObject;
-
-	if (native)
-		UnmanagedPointer = native;
-}
-
 TypedConstraint::TypedConstraint(btTypedConstraint* native)
 {
 	if (native)
@@ -269,11 +299,14 @@ TypedConstraint::!TypedConstraint()
 		return;
 	
 	OnDisposing(this, nullptr);
-	
-	if (_doesNotOwnObject == false)
+
+	if (_native->getUserConstraintId() != -1)
 	{
-		if (_native->getUserConstraintId() != -1)
-			VoidPtrToGCHandle(_native->getUserConstraintPtr()).Free();
+		VoidPtrToGCHandle(_native->getUserConstraintPtr()).Free();
+	}
+
+	if (!_preventDelete)
+	{
 		delete _native;
 	}
 	_native = NULL;
@@ -482,9 +515,24 @@ void TypedConstraint::UnmanagedPointer::set(btTypedConstraint* value)
 #ifdef _BT_USE_CENTER_LIMIT_
 #ifdef IN_PARALLELL_SOLVER
 
-AngularLimit::AngularLimit(btAngularLimit* native)
+AngularLimit::AngularLimit(btAngularLimit* native, bool preventDelete)
 {
 	_native = native;
+	_preventDelete = preventDelete;
+}
+
+AngularLimit::~AngularLimit()
+{
+	this->!AngularLimit();
+}
+
+AngularLimit::!AngularLimit()
+{
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
+	_native = NULL;
 }
 
 AngularLimit::AngularLimit()
@@ -499,20 +547,20 @@ void AngularLimit::Fit(btScalar% angle)
 	angle = angleTemp;
 }
 
-void AngularLimit::Set(btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor,
-	btScalar _relaxationFactor)
+void AngularLimit::Set(btScalar low, btScalar high, btScalar softness, btScalar biasFactor,
+	btScalar relaxationFactor)
 {
-	_native->set(low, high, _softness, _biasFactor, _relaxationFactor);
+	_native->set(low, high, softness, biasFactor, relaxationFactor);
 }
 
-void AngularLimit::Set(btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor)
+void AngularLimit::Set(btScalar low, btScalar high, btScalar softness, btScalar biasFactor)
 {
-	_native->set(low, high, _softness, _biasFactor);
+	_native->set(low, high, softness, biasFactor);
 }
 
-void AngularLimit::Set(btScalar low, btScalar high, btScalar _softness)
+void AngularLimit::Set(btScalar low, btScalar high, btScalar softness)
 {
-	_native->set(low, high, _softness);
+	_native->set(low, high, softness);
 }
 
 void AngularLimit::Set(btScalar low, btScalar high)

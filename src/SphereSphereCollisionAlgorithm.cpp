@@ -2,12 +2,9 @@
 
 #ifndef DISABLE_COLLISION_ALGORITHMS
 
-#include "CollisionObject.h"
 #include "CollisionObjectWrapper.h"
 #include "PersistentManifold.h"
 #include "SphereSphereCollisionAlgorithm.h"
-
-#define Native static_cast<btSphereSphereCollisionAlgorithm::CreateFunc*>(_native)
 
 SphereSphereCollisionAlgorithm::CreateFunc::CreateFunc()
 	: CollisionAlgorithmCreateFunc(new btSphereSphereCollisionAlgorithm::CreateFunc())

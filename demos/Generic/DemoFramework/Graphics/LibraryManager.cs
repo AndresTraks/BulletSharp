@@ -18,7 +18,8 @@ namespace DemoFramework
             set;
         }
 
-        static string[] supportedLibraries = new string[] { "SharpDX (DirectX 10)", "SlimDX (DirectX 9)", "OpenTK (OpenGL)", "XNA (DirectX 9)" };
+        static string[] supportedLibraries = new string[] {
+            "SharpDX (DirectX 11)", "SharpDX (DirectX 10)", "SlimDX (DirectX 9)", "OpenTK (OpenGL)", "XNA (DirectX 9)" };
         public static string[] GetSupportedLibraries()
         {
             return supportedLibraries;
@@ -29,6 +30,9 @@ namespace DemoFramework
             string[] assemblyNames;
             switch (library)
             {
+                case "SharpDX (DirectX 11)":
+                    assemblyNames = new string[] { "DemoFramework.SharpDX11", "SharpDX", "SharpDX.Direct3D11", "SharpDX.Direct3D11.Effects", "SharpDX.DXGI", "SharpDX.D3DCompiler" };
+                    break;
                 case "SharpDX (DirectX 10)":
                     assemblyNames = new string[] { "DemoFramework.SharpDX", "SharpDX", "SharpDX.Direct3D10", "SharpDX.DXGI", "SharpDX.D3DCompiler" };
                     break;
@@ -66,6 +70,10 @@ namespace DemoFramework
             Assembly assembly;
             switch (LibraryManager.GraphicsLibraryName)
             {
+                case "SharpDX (DirectX 11)":
+                    assembly = Assembly.Load("DemoFramework.SharpDX11");
+                    graphicsType = assembly.GetType("DemoFramework.SharpDX11.SharpDX11Graphics");
+                    break;
                 case "SharpDX (DirectX 10)":
                     assembly = Assembly.Load("DemoFramework.SharpDX");
                     graphicsType = assembly.GetType("DemoFramework.SharpDX.SharpDXGraphics");

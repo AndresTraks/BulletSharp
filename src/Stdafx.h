@@ -18,15 +18,14 @@
 //#define DISABLE_FEATHERSTONE
 //#define DISABLE_GEOMETRY_UTIL
 //#define DISABLE_GIMPACT
-#define DISABLE_HACD
+//#define DISABLE_HACD
 //#define DISABLE_INTERNAL
 //#define DISABLE_INTERNAL_EDGE_UTILITY
 //#define DISABLE_MLCP
 #define DISABLE_MULTITHREADED
-#define DISABLE_SERIALIZE
+//#define DISABLE_SERIALIZE
 //#define DISABLE_SOFTBODY
 //#define DISABLE_UNCOMMON
-#define DISABLE_VECTORMATH_AOS
 //#define DISABLE_VEHICLE
 
 
@@ -196,7 +195,7 @@ using namespace System::Drawing;
 #endif
 
 #ifndef DISABLE_COLLISION_ALGORITHMS
-#include <BulletCollision/CollisionDispatch/btBox2DBox2DCollisionAlgorithm.h>
+#include <BulletCollision/CollisionDispatch/btBox2dBox2dCollisionAlgorithm.h>
 #include <BulletCollision/CollisionDispatch/btBoxBoxCollisionAlgorithm.h>
 #include <BulletCollision/CollisionDispatch/btConvex2dConvex2dAlgorithm.h>
 #include <BulletCollision/CollisionDispatch/btConvexConvexAlgorithm.h>
@@ -407,16 +406,6 @@ inline GCHandle VoidPtrToGCHandle(void* pointer)
 	if (managedObj != nullptr && managedObj->_native == unmanagedPtr) \
 	return managedObj; \
 	managedObj = static_cast<type^>(type::GetManaged(unmanagedPtr)); \
-	return managedObj; }
-
-#define ReturnCachedObjectStatic(type, managedObj, unmanagedPtr) { \
-	if (managedObj == nullptr) \
-	managedObj = gcnew type(unmanagedPtr); \
-	return managedObj; }
-
-#define ReturnCachedObjectStaticParam(type, managedObj, unmanagedPtr, param) { \
-	if (managedObj == nullptr) \
-	managedObj = gcnew type(unmanagedPtr, param); \
 	return managedObj; }
 
 #define GetObjectFromTable(type, unmanagedPtr) ( \

@@ -4,7 +4,7 @@ namespace BulletSharp
 {
 	ref class Serializer;
 
-	public ref class CollisionShape : ITrackingDisposable
+	public ref class CollisionShape : ITrackingDisposable // abstract
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
@@ -13,11 +13,11 @@ namespace BulletSharp
 	private:
 		Object^ _userObject;
 		BroadphaseNativeType _shapeType;
-
-		// 1 = is disposed; 2 = does not own object (can't delete btCollisionShape ourselves)
-		int _flags;
+		bool _isDisposed;
 
 	internal:
+		bool _preventDelete;
+
 		btCollisionShape* _native;
 		CollisionShape(btCollisionShape* native);
 		static CollisionShape^ GetManaged(btCollisionShape* collisionShape);
@@ -33,11 +33,16 @@ namespace BulletSharp
 #ifndef DISABLE_SERIALIZE
 		int CalculateSerializeBufferSize();
 #endif
+		void CalculateTemporalAabb(Matrix% curTrans, Vector3% linvel, Vector3% angvel,
+			btScalar timeStep, [Out] Vector3% temporalAabbMin, [Out] Vector3% temporalAabbMax);
 		void CalculateTemporalAabb(Matrix curTrans, Vector3 linvel, Vector3 angvel,
 			btScalar timeStep, [Out] Vector3% temporalAabbMin, [Out] Vector3% temporalAabbMax);
+		virtual bool Equals(Object^ obj) override;
+		void GetAabb(Matrix% t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		void GetAabb(Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		void GetBoundingSphere([Out] Vector3% center, [Out] btScalar% radius);
 		btScalar GetContactBreakingThreshold(btScalar defaultContactThresholdFactor);
+		virtual int GetHashCode() override;
 #ifndef DISABLE_SERIALIZE
 		String^ Serialize(IntPtr dataBuffer, Serializer^ serializer);
 		void SerializeSingleShape(Serializer^ serializer);
@@ -68,7 +73,7 @@ namespace BulletSharp
 			bool get();
 		}
 
-		property bool IsConvex2d
+		property bool IsConvex2D
 		{
 			bool get();
 		}

@@ -10,23 +10,25 @@ namespace BulletSharp
 		TriangleMesh(btTriangleMesh* native);
 
 	public:
-		TriangleMesh(bool use32BitIndexes, bool use4ComponentVertices);
-		TriangleMesh(bool use32BitIndexes);
+		TriangleMesh(bool use32BitIndices, bool use4ComponentVertices);
+		TriangleMesh(bool use32BitIndices);
 		TriangleMesh();
 
 #ifndef DISABLE_INTERNAL
 		void AddIndex(int index);
-		int FindOrAddVertex(Vector3 vertex, bool removeDuplicateVertices);
 #endif
 		void AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2, bool removeDuplicateVertices);
 		void AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2);
+#ifndef DISABLE_INTERNAL
+		int FindOrAddVertex(Vector3 vertex, bool removeDuplicateVertices);
+#endif
 
 		property int NumTriangles
 		{
 			int get();
 		}
 
-		property bool Use32BitIndexes
+		property bool Use32BitIndices
 		{
 			bool get();
 		}

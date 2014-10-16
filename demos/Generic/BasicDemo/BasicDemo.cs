@@ -59,6 +59,9 @@ namespace BasicDemo
             const float start_y = StartPosY;
             const float start_z = StartPosZ - ArraySizeZ / 2;
 
+            RigidBodyConstructionInfo rbInfo =
+                new RigidBodyConstructionInfo(mass, null, colShape, localInertia);
+
             int k, i, j;
             for (k = 0; k < ArraySizeY; k++)
             {
@@ -74,11 +77,8 @@ namespace BasicDemo
 
                         // using motionstate is recommended, it provides interpolation capabilities
                         // and only synchronizes 'active' objects
-                        DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
-                        RigidBodyConstructionInfo rbInfo =
-                            new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
+                        rbInfo.MotionState = new DefaultMotionState(startTransform);
                         RigidBody body = new RigidBody(rbInfo);
-                        rbInfo.Dispose();
 
                         // make it drop from a height
                         body.Translate(new Vector3(0, 20, 0));
@@ -87,6 +87,8 @@ namespace BasicDemo
                     }
                 }
             }
+
+            rbInfo.Dispose();
         }
     }
 

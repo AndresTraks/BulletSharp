@@ -66,11 +66,14 @@ namespace DemoFramework
                     return CreateConvexHull(shape as ConvexHullShape);
                 case BroadphaseNativeType.ConeShape:
                     return CreateCone(shape as ConeShape, out indices);
+                case BroadphaseNativeType.ConvexTriangleMeshShape:
+                    indices = null;
+                    return CreateTriangleMesh((shape as ConvexTriangleMeshShape).MeshInterface);
                 case BroadphaseNativeType.CylinderShape:
                     return CreateCylinder(shape as CylinderShape, out indices);
                 case BroadphaseNativeType.GImpactShape:
                     indices = null;
-                    return CreateGImpactMesh(shape as GImpactMeshShape);
+                    return CreateTriangleMesh((shape as GImpactMeshShape).MeshInterface);
                 case BroadphaseNativeType.MultiSphereShape:
                     return CreateMultiSphere(shape as MultiSphereShape, out indices);
                 case BroadphaseNativeType.SphereShape:
@@ -79,7 +82,7 @@ namespace DemoFramework
                     return CreateStaticPlane(shape as StaticPlaneShape, out indices);
                 case BroadphaseNativeType.TriangleMeshShape:
                     indices = null;
-                    return CreateTriangleMesh(shape as TriangleMeshShape);
+                    return CreateTriangleMesh((shape as TriangleMeshShape).MeshInterface);
                 default:
                     throw new NotImplementedException();
             }
@@ -502,47 +505,6 @@ namespace DemoFramework
             return vertices;
         }
 
-        public static Vector3[] CreateGImpactMesh(GImpactMeshShape shape)
-        {
-            DataStream vertexBuffer, indexBuffer;
-            int numVerts, numFaces;
-            PhyScalarType vertsType, indicesType;
-            int vertexStride, indexStride;
-            shape.MeshInterface.GetLockedReadOnlyVertexIndexData(out vertexBuffer, out numVerts, out vertsType, out vertexStride,
-                out indexBuffer, out indexStride, out numFaces, out indicesType);
-
-            Vector3[] vertices = new Vector3[numFaces * 3 * 2];
-
-            // Need to un-index the vertex buffer to make the normals right.
-            int v = 0;
-            while (indexBuffer.Position < indexBuffer.Length)
-            {
-                uint i = indexBuffer.Read<uint>();
-                vertexBuffer.Position = vertexStride * i;
-                Vector3 v0 = vertexBuffer.Read<Vector3>();
-                i = indexBuffer.Read<uint>();
-                vertexBuffer.Position = vertexStride * i;
-                Vector3 v1 = vertexBuffer.Read<Vector3>();
-                i = indexBuffer.Read<uint>();
-                vertexBuffer.Position = vertexStride * i;
-                Vector3 v2 = vertexBuffer.Read<Vector3>();
-
-                Vector3 v01 = v0 - v1;
-                Vector3 v02 = v0 - v2;
-                Vector3 normal = Vector3.Cross(v01, v02);
-                normal.Normalize();
-
-                vertices[v++] = v0;
-                vertices[v++] = normal;
-                vertices[v++] = v1;
-                vertices[v++] = normal;
-                vertices[v++] = v2;
-                vertices[v++] = normal;
-            }
-
-            return vertices;
-        }
-
         public static Vector3[] CreateMultiSphere(MultiSphereShape shape, out uint[] indices)
         {
             List<Vector3[]> allVertices = new List<Vector3[]>();
@@ -740,10 +702,8 @@ namespace DemoFramework
             };
         }
 
-        static Vector3[] CreateTriangleMesh(TriangleMeshShape shape)
+        static Vector3[] CreateTriangleMesh(StridingMeshInterface meshInterface)
         {
-            StridingMeshInterface meshInterface = shape.MeshInterface;
-
             BulletSharp.DataStream vertexBuffer, indexBuffer;
             int numVerts, numFaces;
             PhyScalarType vertsType, indicesType;

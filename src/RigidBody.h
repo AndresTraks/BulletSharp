@@ -8,19 +8,20 @@ namespace BulletSharp
 	ref class MotionState;
 	ref class TypedConstraint;
 
-	public ref class RigidBodyConstructionInfo
+	public ref class RigidBodyConstructionInfo : IDisposable
 	{
 	internal:
 		btRigidBody::btRigidBodyConstructionInfo* _native;
 		BulletSharp::MotionState^ _motionState;
-		//RigidBodyConstructionInfo(btRigidBodyConstructionInfo* native);
 
 	public:
-		~RigidBodyConstructionInfo();
-	protected:
 		!RigidBodyConstructionInfo();
+	protected:
+		~RigidBodyConstructionInfo();
 
 	public:
+		//RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, CollisionShape^ collisionShape,
+		//	Vector3% localInertia); // Causes ambiguous call in in BulletWorldImporter
 		RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, CollisionShape^ collisionShape,
 			Vector3 localInertia);
 		RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, CollisionShape^ collisionShape);
@@ -130,11 +131,11 @@ namespace BulletSharp
 
 	public ref class RigidBody : CollisionObject
 	{
-	private:
-		MotionState^ _motionState;
-
 	internal:
 		RigidBody(btRigidBody* native);
+
+	private:
+		MotionState^ _motionState;
 
 	public:
 		RigidBody(RigidBodyConstructionInfo^ constructionInfo);
@@ -194,7 +195,7 @@ namespace BulletSharp
 		property Vector3 AngularVelocity
 		{
 			Vector3 get();
-			void set(Vector3 ang_vel);
+			void set(Vector3 angVel);
 		}
 
 		property BroadphaseProxy^ BroadphaseProxy
@@ -278,7 +279,7 @@ namespace BulletSharp
 		property Vector3 LinearVelocity
 		{
 			Vector3 get();
-			void set(Vector3 lin_vel);
+			void set(Vector3 linVel);
 		}
 
 		property BulletSharp::MotionState^ MotionState

@@ -85,7 +85,7 @@ namespace BulletSharp
 			}
 		};
 
-		ref class ConvexResultCallback : IDisposable
+		ref class ConvexResultCallback abstract : IDisposable
 		{
 		internal:
 			btCollisionWorld::ConvexResultCallback* _native;
@@ -237,7 +237,7 @@ namespace BulletSharp
 			}
 		};
 
-		ref class RayResultCallback
+		ref class RayResultCallback abstract
 		{
 		internal:
 			btCollisionWorld::RayResultCallback* _native;
@@ -376,10 +376,8 @@ namespace BulletSharp
 		btCollisionWorld* _native;
 		CollisionWorld(btCollisionWorld* native);
 
-	private:
-		AlignedCollisionObjectArray^ _collisionObjectArray;
-
 	protected:
+		AlignedCollisionObjectArray^ _collisionObjectArray;
 		Dispatcher^ _dispatcher;
 		BroadphaseInterface^ _broadphase;
 
@@ -394,7 +392,7 @@ namespace BulletSharp
 
 		void AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask);
-		void AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup);
+		void AddCollisionObject(CollisionObject^ collisionObject, short collisionFilterGroup, short collisionFilterMask);
 		void AddCollisionObject(CollisionObject^ collisionObject);
 		void ComputeOverlappingPairs();
 		void ContactPairTest(CollisionObject^ colObjA, CollisionObject^ colObjB, ContactResultCallback^ resultCallback);
@@ -435,7 +433,7 @@ namespace BulletSharp
 		property IDebugDraw^ DebugDrawer
 		{
 			IDebugDraw^ get();
-			void set(IDebugDraw^ value);
+			void set(IDebugDraw^ debugDrawer);
 		}
 #endif
 		property BulletSharp::Dispatcher^ Dispatcher

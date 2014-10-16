@@ -20,7 +20,6 @@ namespace DemoFramework.OpenTK
         int texture;
         Rectangle dirty_region;
         bool graphicsInitialized = false;
-        bool disposed;
         float fps = -1;
         string textString = "";
         CultureInfo culture = CultureInfo.InvariantCulture;
@@ -148,19 +147,22 @@ namespace DemoFramework.OpenTK
 
         #region IDisposable Members
 
-        void Dispose(bool manual)
+        void Dispose(bool disposing)
         {
-            if (!disposed)
+            if (disposing)
             {
-                if (manual)
+                if (bmp != null)
                 {
                     bmp.Dispose();
-                    gfx.Dispose();
-                    if (GraphicsContext.CurrentContext != null)
-                        GL.DeleteTexture(texture);
+                    bmp = null;
                 }
-
-                disposed = true;
+                if (gfx != null)
+                {
+                    gfx.Dispose();
+                    gfx = null;
+                }
+                if (GraphicsContext.CurrentContext != null)
+                    GL.DeleteTexture(texture);
             }
         }
 

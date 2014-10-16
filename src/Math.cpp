@@ -52,15 +52,7 @@ btScalar* BulletSharp::Math::BtScalarArrayToUnmanaged(array<btScalar>^ s, int le
 }
 
 
-btVector3* BulletSharp::Math::Vector3ToBtVector3(Vector3 vector)
-{
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	return ALIGNED_NEW(btVector3) (vector.x, vector.y, vector.z);
-#else
-	return ALIGNED_NEW(btVector3) (vector.X, vector.Y, vector.Z);
-#endif
-}
-btVector3* BulletSharp::Math::Vector3ToBtVector3Ref(Vector3% vector)
+btVector3* BulletSharp::Math::Vector3ToBtVector3(Vector3% vector)
 {
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
 	btScalar x = vector.x;
@@ -73,12 +65,17 @@ btVector3* BulletSharp::Math::Vector3ToBtVector3Ref(Vector3% vector)
 #endif
 	return ALIGNED_NEW(btVector3) (x, y, z);
 }
-void BulletSharp::Math::Vector3ToBtVector3(Vector3 vector, btVector3* vectorOut)
+void BulletSharp::Math::Vector3ToBtVector3(Vector3% vector, btVector3* vectorOut)
 {
+	btScalar* vo = (btScalar*)vectorOut;
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	vectorOut->setValue(vector.x, vector.y, vector.z);
+	vo[0] = vector.x;
+	vo[1] = vector.y;
+	vo[2] = vector.z;
 #else
-	vectorOut->setValue(vector.X, vector.Y, vector.Z);
+	vo[0] = vector.X;
+	vo[1] = vector.Y;
+	vo[2] = vector.Z;
 #endif
 }
 

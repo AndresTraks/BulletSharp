@@ -10,13 +10,14 @@ namespace BulletSharp
 	ref class ManifoldResult;
 	ref class PersistentManifold;
 
-	public ref class CollisionAlgorithmConstructionInfo
+	public ref class CollisionAlgorithmConstructionInfo : IDisposable
 	{
 	internal:
 		btCollisionAlgorithmConstructionInfo* _native;
 
 	private:
 		Dispatcher^ _dispatcher;
+		PersistentManifold^ _manifold;
 
 	public:
 		!CollisionAlgorithmConstructionInfo();
@@ -40,11 +41,12 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class CollisionAlgorithm : IDisposable
+	public ref class CollisionAlgorithm : IDisposable // abstract
 	{
 	internal:
 		btCollisionAlgorithm* _native;
 		CollisionAlgorithm(btCollisionAlgorithm* native);
+		static CollisionAlgorithm^ GetManaged(btCollisionAlgorithm* native);
 
 	public:
 		!CollisionAlgorithm();

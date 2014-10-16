@@ -4,7 +4,7 @@
 
 #include "HeightfieldTerrainShape.h"
 
-#define Native (static_cast<btHeightfieldTerrainShape*>(_native))
+#define Native static_cast<btHeightfieldTerrainShape*>(_native)
 
 HeightfieldTerrainShape::HeightfieldTerrainShape(btHeightfieldTerrainShape* native)
 	: ConcaveShape(native)

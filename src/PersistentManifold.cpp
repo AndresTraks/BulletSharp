@@ -21,7 +21,7 @@ bool onContactDestroyed(void* userPersistentData)
 
 bool onContactProcessed(btManifoldPoint& cp, void* body0, void* body1)
 {
-	PersistentManifold::_contactProcessed(gcnew ManifoldPoint(&cp),
+	PersistentManifold::_contactProcessed(gcnew ManifoldPoint(&cp, true),
 		CollisionObject::GetManaged((btCollisionObject*)body0),
 		CollisionObject::GetManaged((btCollisionObject*)body1));
 	return false;
@@ -64,7 +64,7 @@ bool onContactDestroyed(void* userPersistentData)
 
 bool onContactProcessed(btManifoldPoint& cp, void* body0, void* body1)
 {
-	return PersistentManifold::_contactProcessed(gcnew ManifoldPoint(&cp),
+	return PersistentManifold::_contactProcessed(gcnew ManifoldPoint(&cp, true),
 		CollisionObject::GetManaged((btCollisionObject*)body0),
 		CollisionObject::GetManaged((btCollisionObject*)body1));
 }
@@ -145,7 +145,7 @@ int PersistentManifold::GetCacheEntry(ManifoldPoint^ newPoint)
 
 ManifoldPoint^ PersistentManifold::GetContactPoint(int index)
 {
-	return gcnew ManifoldPoint(&Native->getContactPoint(index));
+	return gcnew ManifoldPoint(&Native->getContactPoint(index), true);
 }
 
 void PersistentManifold::RefreshContactPoints(Matrix trA, Matrix trB)

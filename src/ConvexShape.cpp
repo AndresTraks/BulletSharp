@@ -24,32 +24,26 @@ void ConvexShape::BatchedUnitVectorGetSupportingVertexWithoutMargin(array<Vector
 
 void ConvexShape::GetAabbNonVirtual(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
 {
-	btTransform* tTemp = Math::MatrixToBtTransform(t);
+	TRANSFORM_CONV(t);
 	btVector3* aabbMinTemp = ALIGNED_NEW(btVector3);
 	btVector3* aabbMaxTemp = ALIGNED_NEW(btVector3);
-	
-	Native->getAabbNonVirtual(*tTemp, *aabbMinTemp, *aabbMaxTemp);
-
+	Native->getAabbNonVirtual(TRANSFORM_USE(t), *aabbMinTemp, *aabbMaxTemp);
+	TRANSFORM_DEL(t);
 	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
 	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
-
-	ALIGNED_FREE(tTemp);
 	ALIGNED_FREE(aabbMinTemp);
 	ALIGNED_FREE(aabbMaxTemp);
 }
 
 void ConvexShape::GetAabbSlow(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
 {
-	btTransform* tTemp = Math::MatrixToBtTransform(t);
+	TRANSFORM_CONV(t);
 	btVector3* aabbMinTemp = ALIGNED_NEW(btVector3);
 	btVector3* aabbMaxTemp = ALIGNED_NEW(btVector3);
-	
-	Native->getAabbSlow(*tTemp, *aabbMinTemp, *aabbMaxTemp);
-
+	Native->getAabbSlow(TRANSFORM_USE(t), *aabbMinTemp, *aabbMaxTemp);
+	TRANSFORM_DEL(t);
 	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
 	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
-
-	ALIGNED_FREE(tTemp);
 	ALIGNED_FREE(aabbMinTemp);
 	ALIGNED_FREE(aabbMaxTemp);
 }
@@ -82,73 +76,59 @@ void ConvexShape_LocalGetSupportVertexWithoutMarginNonVirtual(btConvexShape* sha
 #pragma managed(pop)
 Vector3 ConvexShape::LocalGetSupportingVertex(Vector3 vec)
 {
-	VECTOR3_DEF(vec);
+	VECTOR3_CONV(vec);
 	btVector3* vecOut = ALIGNED_NEW(btVector3);
-	
 	ConvexShape_LocalGetSupportingVertex(Native, VECTOR3_PTR(vec), vecOut);
-	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
-	
 	VECTOR3_DEL(vec);
+	Vector3 ret = Math::BtVector3ToVector3(vecOut);
 	ALIGNED_FREE(vecOut);
-	
-	return vertex;
+	return ret;
 }
 
 Vector3 ConvexShape::LocalGetSupportingVertexWithoutMargin(Vector3 vec)
 {
-	VECTOR3_DEF(vec);
+	VECTOR3_CONV(vec);
 	btVector3* vecOut = ALIGNED_NEW(btVector3);
-	
 	ConvexShape_LocalGetSupportingVertexWithoutMargin(Native, VECTOR3_PTR(vec), vecOut);
-	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
-	
 	VECTOR3_DEL(vec);
+	Vector3 ret = Math::BtVector3ToVector3(vecOut);
 	ALIGNED_FREE(vecOut);
-	
-	return vertex;
+	return ret;
 }
 
 Vector3 ConvexShape::LocalGetSupportVertexNonVirtual(Vector3 vec)
 {
-	VECTOR3_DEF(vec);
+	VECTOR3_CONV(vec);
 	btVector3* vecOut = ALIGNED_NEW(btVector3);
-	
 	ConvexShape_LocalGetSupportVertexNonVirtual(Native, VECTOR3_PTR(vec), vecOut);
-	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
-	
 	VECTOR3_DEL(vec);
+	Vector3 ret = Math::BtVector3ToVector3(vecOut);
 	ALIGNED_FREE(vecOut);
-	
-	return vertex;
+	return ret;
 }
 
 Vector3 ConvexShape::LocalGetSupportVertexWithoutMarginNonVirtual(Vector3 vec)
 {
-	VECTOR3_DEF(vec);
+	VECTOR3_CONV(vec);
 	btVector3* vecOut = ALIGNED_NEW(btVector3);
-	
 	ConvexShape_LocalGetSupportVertexWithoutMarginNonVirtual(Native, VECTOR3_PTR(vec), vecOut);
-	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
-	
 	VECTOR3_DEL(vec);
+	Vector3 ret = Math::BtVector3ToVector3(vecOut);
 	ALIGNED_FREE(vecOut);
-	
-	return vertex;
+	return ret;
 }
 
 void ConvexShape::Project(Matrix transform, Vector3 direction, [Out] btScalar% min, [Out] btScalar% max)
 {
-	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
-	VECTOR3_DEF(direction);
+	TRANSFORM_CONV(transform);
+	VECTOR3_CONV(direction);
 	btScalar minTemp;
 	btScalar maxTemp;
-	
-	Native->project(*transformTemp, VECTOR3_USE(direction), minTemp, maxTemp);
+	Native->project(TRANSFORM_USE(transform), VECTOR3_USE(direction), minTemp, maxTemp);
+	TRANSFORM_DEL(transform);
+	VECTOR3_DEL(direction);
 	min = minTemp;
 	max = maxTemp;
-	
-	VECTOR3_DEL(direction);
-	ALIGNED_FREE(transformTemp);
 }
 
 btScalar ConvexShape::MarginNonVirtual::get()

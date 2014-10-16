@@ -6,17 +6,11 @@ namespace BulletSharp
 
 	namespace MultiThreaded
 	{
-		public ref class Barrier : IDisposable
+		public ref class Barrier //abstract
 		{
 		internal:
 			btBarrier* _native;
-
-			Barrier(btBarrier* barrier);
-
-		public:
-			!Barrier();
-		protected:
-			~Barrier();
+			Barrier(btBarrier* native);
 
 		public:
 			void Sync();
@@ -24,7 +18,7 @@ namespace BulletSharp
 			property int MaxCount
 			{
 				int get();
-				void set(int value);
+				void set(int n);
 			}
 
 			property bool IsDisposed
@@ -33,22 +27,16 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class CriticalSection : IDisposable
+		public ref class CriticalSection //abstract
 		{
 		internal:
 			btCriticalSection* _native;
-
-			CriticalSection(btCriticalSection* criticalSection);
-
-		public:
-			!CriticalSection();
-		protected:
-			~CriticalSection();
+			CriticalSection(btCriticalSection* native);
 
 		public:
 			unsigned int GetSharedParam(int i);
-			void SetSharedParam(int i, unsigned int p);
 			void Lock();
+			void SetSharedParam(int i, unsigned int p);
 			void Unlock();
 
 			property UIntArray^ CommonBuff
@@ -66,8 +54,7 @@ namespace BulletSharp
 		{
 		internal:
 			btThreadSupportInterface* _native;
-
-			ThreadSupportInterface(btThreadSupportInterface* threadSupport);
+			ThreadSupportInterface(btThreadSupportInterface* native);
 
 		public:
 			!ThreadSupportInterface();
@@ -88,7 +75,7 @@ namespace BulletSharp
 			property int NumTasks
 			{
 				int get();
-				void set(int value);
+				void set(int numTasks);
 			}
 
 			property bool IsDisposed

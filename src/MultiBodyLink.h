@@ -16,15 +16,13 @@ namespace BulletSharp
 		Invalid = btMultibodyLink::eInvalid
 	};
 
-	public ref class MultibodyLink
+	public ref class MultiBodyLink
 	{
 	internal:
 		btMultibodyLink* _native;
-		MultibodyLink(btMultibodyLink* native);
+		MultiBodyLink(btMultibodyLink* native);
 
 	public:
-		MultibodyLink();
-
 		Vector3 GetAxisBottom(int dof);
 		Vector3 GetAxisTop(int dof);
 		void SetAxisBottom(int dof, Vector3 axis);

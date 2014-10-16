@@ -5,6 +5,75 @@
 #include "StringConv.h"
 #include "Win32ThreadSupport.h"
 
+MultiThreaded::Win32ThreadConstructionInfo::~Win32ThreadConstructionInfo()
+{
+	this->!Win32ThreadConstructionInfo();
+}
+
+MultiThreaded::Win32ThreadConstructionInfo::!Win32ThreadConstructionInfo()
+{
+	if (_native) {
+		StringConv::FreeUnmanagedString(_uniqueName);
+		delete _native;
+		_native = NULL;
+	}
+}
+
+MultiThreaded::Win32ThreadConstructionInfo::Win32ThreadConstructionInfo(String^ uniqueName,
+	BulletSharp::Win32ThreadFunc userThreadFunc, BulletSharp::Win32LSMemorySetupFunc lsMemoryFunc, int numThreads,
+	int threadStackSize)
+{
+	_uniqueName = StringConv::ManagedToUnmanaged(uniqueName);
+	::Win32ThreadFunc threadFunc;
+	::Win32lsMemorySetupFunc memorySetupFunc;
+
+	if (userThreadFunc == Win32ThreadFunc::ProcessCollisionTask) {
+		threadFunc = processCollisionTask;
+	} else if (userThreadFunc == Win32ThreadFunc::SolverThreadFunc) {
+		threadFunc = SolverThreadFunc;
+	} else {
+		throw gcnew NotImplementedException();
+	}
+
+	if (lsMemoryFunc == Win32LSMemorySetupFunc::CreateCollisionLocalStoreMemory) {
+		memorySetupFunc = createCollisionLocalStoreMemory;
+	} else if (lsMemoryFunc == Win32LSMemorySetupFunc::SolverLSMemoryFunc) {
+		memorySetupFunc = SolverlsMemoryFunc;
+	} else {
+		throw gcnew NotImplementedException();
+	}
+
+	_native = new ::Win32ThreadSupport::Win32ThreadConstructionInfo((char*)_uniqueName,
+		threadFunc, memorySetupFunc, numThreads, threadStackSize);
+}
+
+MultiThreaded::Win32ThreadConstructionInfo::Win32ThreadConstructionInfo(String^ uniqueName,
+	BulletSharp::Win32ThreadFunc userThreadFunc, BulletSharp::Win32LSMemorySetupFunc lsMemoryFunc, int numThreads)
+{
+	_uniqueName = StringConv::ManagedToUnmanaged(uniqueName);
+	::Win32ThreadFunc threadFunc;
+	::Win32lsMemorySetupFunc memorySetupFunc;
+
+	if (userThreadFunc == Win32ThreadFunc::ProcessCollisionTask) {
+		threadFunc = processCollisionTask;
+	} else if (userThreadFunc == Win32ThreadFunc::SolverThreadFunc) {
+		threadFunc = SolverThreadFunc;
+	} else {
+		throw gcnew NotImplementedException();
+	}
+
+	if (lsMemoryFunc == Win32LSMemorySetupFunc::CreateCollisionLocalStoreMemory) {
+		memorySetupFunc = createCollisionLocalStoreMemory;
+	} else if (lsMemoryFunc == Win32LSMemorySetupFunc::SolverLSMemoryFunc) {
+		memorySetupFunc = SolverlsMemoryFunc;
+	} else {
+		throw gcnew NotImplementedException();
+	}
+
+	_native = new ::Win32ThreadSupport::Win32ThreadConstructionInfo((char*)_uniqueName,
+		threadFunc, memorySetupFunc, numThreads);
+}
+
 MultiThreaded::Win32ThreadConstructionInfo::Win32ThreadConstructionInfo(String^ uniqueName,
 	BulletSharp::Win32ThreadFunc userThreadFunc, BulletSharp::Win32LSMemorySetupFunc lsMemoryFunc)
 {
@@ -28,47 +97,8 @@ MultiThreaded::Win32ThreadConstructionInfo::Win32ThreadConstructionInfo(String^ 
 		throw gcnew NotImplementedException();
 	}
 
-	_native = new ::Win32ThreadSupport::Win32ThreadConstructionInfo((char*)_uniqueName, threadFunc, memorySetupFunc);
-}
-
-MultiThreaded::Win32ThreadConstructionInfo::Win32ThreadConstructionInfo(String^ uniqueName,
-	BulletSharp::Win32ThreadFunc userThreadFunc, BulletSharp::Win32LSMemorySetupFunc lsMemoryFunc, int threadCount)
-{
-	_uniqueName = StringConv::ManagedToUnmanaged(uniqueName);
-	::Win32ThreadFunc threadFunc;
-	::Win32lsMemorySetupFunc memorySetupFunc;
-
-	if (userThreadFunc == Win32ThreadFunc::ProcessCollisionTask) {
-		threadFunc = processCollisionTask;
-	} else if (userThreadFunc == Win32ThreadFunc::SolverThreadFunc) {
-		threadFunc = SolverThreadFunc;
-	} else {
-		throw gcnew NotImplementedException();
-	}
-
-	if (lsMemoryFunc == Win32LSMemorySetupFunc::CreateCollisionLocalStoreMemory) {
-		memorySetupFunc = createCollisionLocalStoreMemory;
-	} else if (lsMemoryFunc == Win32LSMemorySetupFunc::SolverLSMemoryFunc) {
-		memorySetupFunc = SolverlsMemoryFunc;
-	} else {
-		throw gcnew NotImplementedException();
-	}
-
-	_native = new ::Win32ThreadSupport::Win32ThreadConstructionInfo((char*)_uniqueName, threadFunc, memorySetupFunc, threadCount);
-}
-
-MultiThreaded::Win32ThreadConstructionInfo::~Win32ThreadConstructionInfo()
-{
-	this->!Win32ThreadConstructionInfo();
-}
-
-MultiThreaded::Win32ThreadConstructionInfo::!Win32ThreadConstructionInfo()
-{
-	if (_native) {
-		StringConv::FreeUnmanagedString(_uniqueName);
-		delete _native;
-		_native = NULL;
-	}
+	_native = new ::Win32ThreadSupport::Win32ThreadConstructionInfo((char*)_uniqueName,
+		threadFunc, memorySetupFunc);
 }
 
 BulletSharp::Win32LSMemorySetupFunc MultiThreaded::Win32ThreadConstructionInfo::LSMemorySetupFunc::get()
@@ -136,9 +166,22 @@ void MultiThreaded::Win32ThreadConstructionInfo::UserThreadFunc::set(BulletSharp
 }
 
 
-MultiThreaded::Win32ThreadSupport::Win32ThreadSupport(Win32ThreadConstructionInfo^ info)
-: ThreadSupportInterface(new ::Win32ThreadSupport(*info->_native))
+#define Native static_cast<::Win32ThreadSupport*>(_native)
+
+MultiThreaded::Win32ThreadSupport::Win32ThreadSupport(Win32ThreadConstructionInfo^ threadConstructionInfo)
+	: ThreadSupportInterface(new ::Win32ThreadSupport(*threadConstructionInfo->_native))
 {
+}
+/*
+bool MultiThreaded::Win32ThreadSupport::IsTaskCompleted(unsigned int^ puiArgument0, unsigned int^ puiArgument1,
+	int timeOutInMilliseconds)
+{
+	return Native->isTaskCompleted(puiArgument0->_native, puiArgument1->_native, timeOutInMilliseconds);
+}
+*/
+void MultiThreaded::Win32ThreadSupport::StartThreads(Win32ThreadConstructionInfo^ threadInfo)
+{
+	Native->startThreads(*threadInfo->_native);
 }
 
 #endif

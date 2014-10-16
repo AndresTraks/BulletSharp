@@ -14,12 +14,23 @@ GimPair::GimPair(GIM_PAIR* native)
 	_native = native;
 }
 
+GimPair::~GimPair()
+{
+	this->!GimPair();
+}
+
+GimPair::!GimPair()
+{
+	delete _native;
+	_native = NULL;
+}
+
 GimPair::GimPair()
 {
 	_native = new GIM_PAIR();
 }
 
-GimPair::GimPair(GIM_PAIR^ p)
+GimPair::GimPair(GimPair^ p)
 {
 	_native = new GIM_PAIR(*p->_native);
 }
@@ -75,6 +86,17 @@ GimBvhData::GimBvhData(GIM_BVH_DATA* native)
 	_native = native;
 }
 
+GimBvhData::~GimBvhData()
+{
+	this->!GimBvhData();
+}
+
+GimBvhData::!GimBvhData()
+{
+	delete _native;
+	_native = NULL;
+}
+
 GimBvhData::GimBvhData()
 {
 	_native = new GIM_BVH_DATA();
@@ -105,6 +127,17 @@ GimBvhTreeNode::GimBvhTreeNode(GIM_BVH_TREE_NODE* native)
 	_native = native;
 }
 
+GimBvhTreeNode::~GimBvhTreeNode()
+{
+	this->!GimBvhTreeNode();
+}
+
+GimBvhTreeNode::!GimBvhTreeNode()
+{
+	delete _native;
+	_native = NULL;
+}
+
 GimBvhTreeNode::GimBvhTreeNode()
 {
 	_native = new GIM_BVH_TREE_NODE();
@@ -118,7 +151,7 @@ void GImpactQuantizedBvh_SetBound(GIM_BVH_TREE_NODE* node, btAABB* aabb)
 #pragma managed(pop)
 Aabb^ GimBvhTreeNode::Bound::get()
 {
-	return gcnew Aabb(&_native->m_bound);
+	return gcnew Aabb(&_native->m_bound, true);
 }
 void GimBvhTreeNode::Bound::set(Aabb^ value)
 {
@@ -178,14 +211,25 @@ BvhTree::BvhTree(btBvhTree* native)
 	_native = native;
 }
 
+BvhTree::~BvhTree()
+{
+	this->!BvhTree();
+}
+
+BvhTree::!BvhTree()
+{
+	delete _native;
+	_native = NULL;
+}
+
 BvhTree::BvhTree()
 {
 	_native = new btBvhTree();
 }
 /*
-void BvhTree::BuildTree(GimBvhDataArray^ primitive_boxes)
+void BvhTree::BuildTree(GimBvhDataArray^ primitiveBoxes)
 {
-	_native->build_tree(*primitive_boxes->_native);
+	_native->build_tree(*(GIM_BVH_DATA_ARRAY*)primitiveBoxes->_native);
 }
 */
 void BvhTree::ClearNodes()
@@ -263,14 +307,14 @@ PrimitiveManagerBase::!PrimitiveManagerBase()
 	_native = NULL;
 }
 
-void PrimitiveManagerBase::GetPrimitiveBox(int prim_index, Aabb^ primbox)
+void PrimitiveManagerBase::GetPrimitiveBox(int primIndex, Aabb^ primbox)
 {
-	_native->get_primitive_box(prim_index, *primbox->_native);
+	_native->get_primitive_box(primIndex, *primbox->_native);
 }
 
-void PrimitiveManagerBase::GetPrimitiveTriangle(int prim_index, PrimitiveTriangle^ triangle)
+void PrimitiveManagerBase::GetPrimitiveTriangle(int primIndex, PrimitiveTriangle^ triangle)
 {
-	_native->get_primitive_triangle(prim_index, *triangle->_native);
+	_native->get_primitive_triangle(primIndex, *triangle->_native);
 }
 
 bool PrimitiveManagerBase::IsDisposed::get()
@@ -294,26 +338,37 @@ GImpactBvh::GImpactBvh(btGImpactBvh* native)
 	_native = native;
 }
 
+GImpactBvh::~GImpactBvh()
+{
+	this->!GImpactBvh();
+}
+
+GImpactBvh::!GImpactBvh()
+{
+	delete _native;
+	_native = NULL;
+}
+
 GImpactBvh::GImpactBvh()
 {
 	_native = new btGImpactBvh();
 }
 
-GImpactBvh::GImpactBvh(PrimitiveManagerBase^ primitive_manager)
+GImpactBvh::GImpactBvh(PrimitiveManagerBase^ primitiveManager)
 {
-	_primitiveManagerBase = primitive_manager;
-	_native = new btGImpactBvh(GetUnmanagedNullable(primitive_manager));
+	_primitiveManagerBase = primitiveManager;
+	_native = new btGImpactBvh(GetUnmanagedNullable(primitiveManager));
 }
 
-bool GImpactBvh::BoxQuery(Aabb^ box, AlignedIntArray^ collided_results)
+bool GImpactBvh::BoxQuery(Aabb^ box, AlignedIntArray^ collidedResults)
 {
-	return _native->boxQuery(*box->_native, *(btAlignedObjectArray<int>*)collided_results->_native);
+	return _native->boxQuery(*box->_native, *(btAlignedObjectArray<int>*)collidedResults->_native);
 }
 
-bool GImpactBvh::BoxQueryTrans(Aabb^ box, Matrix transform, AlignedIntArray^ collided_results)
+bool GImpactBvh::BoxQueryTrans(Aabb^ box, Matrix transform, AlignedIntArray^ collidedResults)
 {
 	TRANSFORM_CONV(transform);
-	bool ret = _native->boxQueryTrans(*box->_native, TRANSFORM_USE(transform), *(btAlignedObjectArray<int>*)collided_results->_native);
+	bool ret = _native->boxQueryTrans(*box->_native, TRANSFORM_USE(transform), *(btAlignedObjectArray<int>*)collidedResults->_native);
 	TRANSFORM_DEL(transform);
 	return ret;
 }
@@ -324,12 +379,12 @@ void GImpactBvh::BuildSet()
 }
 
 void GImpactBvh::FindCollision(GImpactBvh^ boxset1, Matrix trans1, GImpactBvh^ boxset2,
-	Matrix trans2, PairSet^ collision_pairs)
+	Matrix trans2, PairSet^ collisionPairs)
 {
 	TRANSFORM_CONV(trans1);
 	TRANSFORM_CONV(trans2);
 	btGImpactBvh::find_collision(boxset1->_native, TRANSFORM_USE(trans1), boxset2->_native,
-		TRANSFORM_USE(trans2), *collision_pairs->_native);
+		TRANSFORM_USE(trans2), *collisionPairs->_native);
 	TRANSFORM_DEL(trans1);
 	TRANSFORM_DEL(trans2);
 }
@@ -389,13 +444,13 @@ bool GImpactBvh::IsLeafNode(int nodeIndex)
 	return _native->isLeafNode(nodeIndex);
 }
 
-bool GImpactBvh::RayQuery(Vector3 ray_dir, Vector3 ray_origin, AlignedIntArray^ collided_results)
+bool GImpactBvh::RayQuery(Vector3 rayDir, Vector3 rayOrigin, AlignedIntArray^ collidedResults)
 {
-	VECTOR3_DEF(ray_dir);
-	VECTOR3_DEF(ray_origin);
-	bool ret = _native->rayQuery(VECTOR3_USE(ray_dir), VECTOR3_USE(ray_origin), *(btAlignedObjectArray<int>*)collided_results->_native);
-	VECTOR3_DEL(ray_dir);
-	VECTOR3_DEL(ray_origin);
+	VECTOR3_CONV(rayDir);
+	VECTOR3_CONV(rayOrigin);
+	bool ret = _native->rayQuery(VECTOR3_USE(rayDir), VECTOR3_USE(rayOrigin), *(btAlignedObjectArray<int>*)collidedResults->_native);
+	VECTOR3_DEL(rayDir);
+	VECTOR3_DEL(rayOrigin);
 	return ret;
 }
 
@@ -419,7 +474,7 @@ Aabb^ GImpactBvh::GlobalBox::get()
 {
 	btAABB* aabb = new btAABB;
 	GImpactBvh_GlobalBox(_native, aabb);
-	return gcnew Aabb(aabb);
+	return gcnew Aabb(aabb, false);
 }
 
 bool GImpactBvh::HasHierarchy::get()
@@ -441,10 +496,10 @@ PrimitiveManagerBase^ GImpactBvh::PrimitiveManager::get()
 {
 	return _primitiveManagerBase;
 }
-void GImpactBvh::PrimitiveManager::set(PrimitiveManagerBase^ primitive_manager)
+void GImpactBvh::PrimitiveManager::set(PrimitiveManagerBase^ primitiveManager)
 {
-	_primitiveManagerBase = primitive_manager;
-	_native->setPrimitiveManager(GetUnmanagedNullable(primitive_manager));
+	_primitiveManagerBase = primitiveManager;
+	_native->setPrimitiveManager(GetUnmanagedNullable(primitiveManager));
 }
 
 #endif

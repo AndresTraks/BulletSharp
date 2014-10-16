@@ -37,7 +37,7 @@ X PolyhedralContactClipping (internal)
 
 
 Dynamics/ConstraintSolver
-0 ContactConstraint (abstract?)
+0 ContactConstraint (abstract, not used)
 x JacobianEntry (internal)
 x SolverBody (internal)
 x SolverConstraint (internal)

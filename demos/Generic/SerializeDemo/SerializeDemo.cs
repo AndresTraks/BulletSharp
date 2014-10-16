@@ -40,6 +40,8 @@ namespace SerializeDemo
         float StartPosY = -5;
         float StartPosZ = -3;
 
+        BulletWorldImporter fileLoader;
+
         protected override void OnInitialize()
         {
             Freelook.SetEyeTarget(eye, target);
@@ -75,7 +77,7 @@ namespace SerializeDemo
                 bulletFile = args[1];
             }
 
-            BulletWorldImporter fileLoader = new CustomBulletWorldImporter(World);
+            fileLoader = new CustomBulletWorldImporter(World);
             if (!fileLoader.LoadFile(bulletFile))
             {
                 CollisionShape groundShape = new BoxShape(50);
@@ -154,6 +156,13 @@ namespace SerializeDemo
                 file.Write(dataBytes, 0, dataBytes.Length);
                 file.Close();
             }
+        }
+
+        public override void ExitPhysics()
+        {
+            fileLoader.DeleteAllData();
+            fileLoader.Dispose();
+            base.ExitPhysics();
         }
     }
 

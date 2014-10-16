@@ -8,11 +8,19 @@ namespace BulletSharp
 	ref class IntArray;
 	ref class RigidBody;
 
-	public ref class RotationalLimitMotor
+	public ref class RotationalLimitMotor : IDisposable
 	{
 	internal:
 		btRotationalLimitMotor* _native;
-		RotationalLimitMotor(btRotationalLimitMotor* native);
+		RotationalLimitMotor(btRotationalLimitMotor* native, bool preventDelete);
+
+	private:
+		bool _preventDelete;
+
+	public:
+		!RotationalLimitMotor();
+	protected:
+		~RotationalLimitMotor();
 
 	public:
 		RotationalLimitMotor();
@@ -104,19 +112,19 @@ namespace BulletSharp
 			bool get();
 		}
 
-		property btScalar NormalCFM
+		property btScalar NormalCfm
 		{
 			btScalar get();
 			void set(btScalar value);
 		}
 
-		property btScalar StopCFM
+		property btScalar StopCfm
 		{
 			btScalar get();
 			void set(btScalar value);
 		}
 
-		property btScalar StopERP
+		property btScalar StopErp
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -129,11 +137,19 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class TranslationalLimitMotor
+	public ref class TranslationalLimitMotor : IDisposable
 	{
 	internal:
 		btTranslationalLimitMotor* _native;
-		TranslationalLimitMotor(btTranslationalLimitMotor* native);
+		TranslationalLimitMotor(btTranslationalLimitMotor* native, bool preventDelete);
+
+	private:
+		bool _preventDelete;
+
+	public:
+		!TranslationalLimitMotor();
+	protected:
+		~TranslationalLimitMotor();
 
 	public:
 		TranslationalLimitMotor();
@@ -237,6 +253,10 @@ namespace BulletSharp
 
 	public ref class Generic6DofConstraint : TypedConstraint
 	{
+	protected:
+		RigidBody^ _rigidBodyA;
+		RigidBody^ _rigidBodyB;
+
 	internal:
 		Generic6DofConstraint(btGeneric6DofConstraint* native);
 
@@ -250,15 +270,15 @@ namespace BulletSharp
 		void CalculateTransforms();
 /*
 		int GetLimitMotorInfo2(RotationalLimitMotor^ limot, Matrix transA, Matrix transB,
-			Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, btConstraintInfo2^ info,
+			Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2^ info,
 			int row, Vector3 ax1, int rotational, int rotAllowed);
 		int GetLimitMotorInfo2(RotationalLimitMotor^ limot, Matrix transA, Matrix transB,
-			Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, btConstraintInfo2^ info,
+			Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2^ info,
 			int row, Vector3 ax1, int rotational);
 */
 		btScalar GetAngle(int axis_index);
 		Vector3 GetAxis(int axis_index);
-		//void GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA, Matrix transB,
+		//void GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA, Matrix transB,
 		//	Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB);
 		btScalar GetRelativePivotPosition(int axis_index);
 		RotationalLimitMotor^ GetRotationalLimitMotor(int index);
@@ -272,13 +292,13 @@ namespace BulletSharp
 		property Vector3 AngularLowerLimit
 		{
 			Vector3 get();
-			void set(Vector3 value);
+			void set(Vector3 angularLower);
 		}
 
 		property Vector3 AngularUpperLimit
 		{
 			Vector3 get();
-			void set(Vector3 value);
+			void set(Vector3 angularUpper);
 		}
 
 		property Matrix CalculatedTransformA
@@ -311,13 +331,13 @@ namespace BulletSharp
 		property Vector3 LinearLowerLimit
 		{
 			Vector3 get();
-			void set(Vector3 value);
+			void set(Vector3 linearLower);
 		}
 
 		property Vector3 LinearUpperLimit
 		{
 			Vector3 get();
-			void set(Vector3 value);
+			void set(Vector3 linearUpper);
 		}
 
 		property TranslationalLimitMotor^ TranslationalLimitMotor

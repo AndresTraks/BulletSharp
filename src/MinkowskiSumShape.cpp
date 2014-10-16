@@ -13,7 +13,8 @@ MinkowskiSumShape::MinkowskiSumShape(btMinkowskiSumShape* native)
 }
 
 MinkowskiSumShape::MinkowskiSumShape(ConvexShape^ shapeA, ConvexShape^ shapeB)
-	: ConvexInternalShape(new btMinkowskiSumShape((btConvexShape*)shapeA->_native, (btConvexShape*)shapeB->_native))
+	: ConvexInternalShape(new btMinkowskiSumShape((btConvexShape*)shapeA->_native,
+		(btConvexShape*)shapeB->_native))
 {
 }
 

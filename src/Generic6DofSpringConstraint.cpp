@@ -22,6 +22,9 @@ Generic6DofSpringConstraint::Generic6DofSpringConstraint(RigidBody^ rigidBodyA, 
 		TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB), useLinearReferenceFrameA);
 	TRANSFORM_DEL(frameInA);
 	TRANSFORM_DEL(frameInB);
+
+	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = rigidBodyB;
 }
 
 Generic6DofSpringConstraint::Generic6DofSpringConstraint(RigidBody^ rigidBodyB, Matrix frameInB,
@@ -32,6 +35,8 @@ Generic6DofSpringConstraint::Generic6DofSpringConstraint(RigidBody^ rigidBodyB, 
 	UnmanagedPointer = new btGeneric6DofSpringConstraint(*(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(frameInB),
 		useLinearReferenceFrameB);
 	TRANSFORM_DEL(frameInB);
+
+	_rigidBodyB = rigidBodyB;
 }
 
 void Generic6DofSpringConstraint::EnableSpring(int index, bool onOff)

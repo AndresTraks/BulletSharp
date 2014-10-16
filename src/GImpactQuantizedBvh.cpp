@@ -15,6 +15,17 @@ GImpactQuantizedBvhNode::GImpactQuantizedBvhNode(BT_QUANTIZED_BVH_NODE* native)
 	_native = native;
 }
 
+GImpactQuantizedBvhNode::~GImpactQuantizedBvhNode()
+{
+	this->!GImpactQuantizedBvhNode();
+}
+
+GImpactQuantizedBvhNode::!GImpactQuantizedBvhNode()
+{
+	delete _native;
+	_native = NULL;
+}
+
 GImpactQuantizedBvhNode::GImpactQuantizedBvhNode()
 {
 	_native = new BT_QUANTIZED_BVH_NODE();
@@ -87,14 +98,25 @@ QuantizedBvhTree::QuantizedBvhTree(btQuantizedBvhTree* native)
 	_native = native;
 }
 
+QuantizedBvhTree::~QuantizedBvhTree()
+{
+	this->!QuantizedBvhTree();
+}
+
+QuantizedBvhTree::!QuantizedBvhTree()
+{
+	delete _native;
+	_native = NULL;
+}
+
 QuantizedBvhTree::QuantizedBvhTree()
 {
 	_native = new btQuantizedBvhTree();
 }
 /*
-void QuantizedBvhTree::BuildTree(GimBvhDataArray^ primitive_boxes)
+void QuantizedBvhTree::BuildTree(GimBvhDataArray^ primitiveBoxes)
 {
-	_native->build_tree(*(GIM_BVH_DATA_ARRAY*)primitive_boxes->_native);
+	_native->build_tree(*(GIM_BVH_DATA_ARRAY*)primitiveBoxes->_native);
 }
 */
 void QuantizedBvhTree::ClearNodes()
@@ -112,52 +134,52 @@ GImpactQuantizedBvhNode^ QuantizedBvhTree::GetNodePointer()
 	return _native->get_node_pointer();
 }
 */
-int QuantizedBvhTree::GetEscapeNodeIndex(int NodeIndex)
+int QuantizedBvhTree::GetEscapeNodeIndex(int nodeIndex)
 {
-	return _native->getEscapeNodeIndex(NodeIndex);
+	return _native->getEscapeNodeIndex(nodeIndex);
 }
 
-int QuantizedBvhTree::GetLeftNode(int NodeIndex)
+int QuantizedBvhTree::GetLeftNode(int nodeIndex)
 {
-	return _native->getLeftNode(NodeIndex);
+	return _native->getLeftNode(nodeIndex);
 }
 
-void QuantizedBvhTree::GetNodeBound(int NodeIndex, Aabb^ bound)
+void QuantizedBvhTree::GetNodeBound(int nodeIndex, Aabb^ bound)
 {
-	_native->getNodeBound(NodeIndex, *bound->_native);
+	_native->getNodeBound(nodeIndex, *bound->_native);
 }
 
-int QuantizedBvhTree::GetNodeData(int NodeIndex)
+int QuantizedBvhTree::GetNodeData(int nodeIndex)
 {
-	return _native->getNodeData(NodeIndex);
+	return _native->getNodeData(nodeIndex);
 }
 
-int QuantizedBvhTree::GetRightNode(int NodeIndex)
+int QuantizedBvhTree::GetRightNode(int nodeIndex)
 {
-	return _native->getRightNode(NodeIndex);
+	return _native->getRightNode(nodeIndex);
 }
 
-bool QuantizedBvhTree::IsLeafNode(int NodeIndex)
+bool QuantizedBvhTree::IsLeafNode(int nodeIndex)
 {
-	return _native->isLeafNode(NodeIndex);
+	return _native->isLeafNode(nodeIndex);
 }
 
 void QuantizedBvhTree::QuantizePoint(UShortArray^ quantizedpoint, Vector3 point)
 {
-	VECTOR3_DEF(point);
+	VECTOR3_CONV(point);
 	_native->quantizePoint((unsigned short*)quantizedpoint->_native, VECTOR3_USE(point));
 	VECTOR3_DEL(point);
 }
 
-void QuantizedBvhTree::SetNodeBound(int NodeIndex, Aabb^ bound)
+void QuantizedBvhTree::SetNodeBound(int nodeIndex, Aabb^ bound)
 {
-	_native->setNodeBound(NodeIndex, *bound->_native);
+	_native->setNodeBound(nodeIndex, *bound->_native);
 }
 
-bool QuantizedBvhTree::TestQuantizedBoxOverlap(int NodeIndex, UShortArray^ quantizedMin,
+bool QuantizedBvhTree::TestQuantizedBoxOverlap(int nodeIndex, UShortArray^ quantizedMin,
 	UShortArray^ quantizedMax)
 {
-	return _native->testQuantizedBoxOverlapp(NodeIndex, (unsigned short*)quantizedMin->_native, (unsigned short*)quantizedMax->_native);
+	return _native->testQuantizedBoxOverlapp(nodeIndex, (unsigned short*)quantizedMin->_native, (unsigned short*)quantizedMax->_native);
 }
 
 int QuantizedBvhTree::NodeCount::get()
@@ -171,26 +193,37 @@ GImpactQuantizedBvh::GImpactQuantizedBvh(btGImpactQuantizedBvh* native)
 	_native = native;
 }
 
+GImpactQuantizedBvh::~GImpactQuantizedBvh()
+{
+	this->!GImpactQuantizedBvh();
+}
+
+GImpactQuantizedBvh::!GImpactQuantizedBvh()
+{
+	delete _native;
+	_native = NULL;
+}
+
 GImpactQuantizedBvh::GImpactQuantizedBvh()
 {
 	_native = new btGImpactQuantizedBvh();
 }
 
-GImpactQuantizedBvh::GImpactQuantizedBvh(PrimitiveManagerBase^ primitive_manager)
+GImpactQuantizedBvh::GImpactQuantizedBvh(PrimitiveManagerBase^ primitiveManager)
 {
-	_primitiveManagerBase = primitive_manager;
-	_native = new btGImpactQuantizedBvh(primitive_manager->_native);
+	_primitiveManager = primitiveManager;
+	_native = new btGImpactQuantizedBvh(primitiveManager->_native);
 }
 
-bool GImpactQuantizedBvh::BoxQuery(Aabb^ box, AlignedIntArray^ collided_results)
+bool GImpactQuantizedBvh::BoxQuery(Aabb^ box, AlignedIntArray^ collidedResults)
 {
-	return _native->boxQuery(*box->_native, *(btAlignedObjectArray<int>*)collided_results->_native);
+	return _native->boxQuery(*box->_native, *(btAlignedObjectArray<int>*)collidedResults->_native);
 }
 
-bool GImpactQuantizedBvh::BoxQueryTrans(Aabb^ box, Matrix transform, AlignedIntArray^ collided_results)
+bool GImpactQuantizedBvh::BoxQueryTrans(Aabb^ box, Matrix transform, AlignedIntArray^ collidedResults)
 {
 	TRANSFORM_CONV(transform);
-	bool ret = _native->boxQueryTrans(*box->_native, TRANSFORM_USE(transform), *(btAlignedObjectArray<int>*)collided_results->_native);
+	bool ret = _native->boxQueryTrans(*box->_native, TRANSFORM_USE(transform), *(btAlignedObjectArray<int>*)collidedResults->_native);
 	TRANSFORM_DEL(transform);
 	return ret;
 }
@@ -201,12 +234,12 @@ void GImpactQuantizedBvh::BuildSet()
 }
 
 void GImpactQuantizedBvh::FindCollision(GImpactQuantizedBvh^ boxset1, Matrix trans1,
-	GImpactQuantizedBvh^ boxset2, Matrix trans2, PairSet^ collision_pairs)
+	GImpactQuantizedBvh^ boxset2, Matrix trans2, PairSet^ collisionPairs)
 {
 	TRANSFORM_CONV(trans1);
 	TRANSFORM_CONV(trans2);
 	btGImpactQuantizedBvh::find_collision(boxset1->_native, TRANSFORM_USE(trans1),
-		boxset2->_native, TRANSFORM_USE(trans2), *collision_pairs->_native);
+		boxset2->_native, TRANSFORM_USE(trans2), *collisionPairs->_native);
 	TRANSFORM_DEL(trans1);
 	TRANSFORM_DEL(trans2);
 }
@@ -256,13 +289,14 @@ bool GImpactQuantizedBvh::IsLeafNode(int nodeindex)
 	return _native->isLeafNode(nodeindex);
 }
 
-bool GImpactQuantizedBvh::RayQuery(Vector3 ray_dir, Vector3 ray_origin, AlignedIntArray^ collided_results)
+bool GImpactQuantizedBvh::RayQuery(Vector3 rayDir, Vector3 rayOrigin, AlignedIntArray^ collidedResults)
 {
-	VECTOR3_DEF(ray_dir);
-	VECTOR3_DEF(ray_origin);
-	return _native->rayQuery(VECTOR3_USE(ray_dir), VECTOR3_USE(ray_origin), *(btAlignedObjectArray<int>*)collided_results->_native);
-	VECTOR3_DEL(ray_dir);
-	VECTOR3_DEL(ray_origin);
+	VECTOR3_CONV(rayDir);
+	VECTOR3_CONV(rayOrigin);
+	bool ret = _native->rayQuery(VECTOR3_USE(rayDir), VECTOR3_USE(rayOrigin), *(btAlignedObjectArray<int>*)collidedResults->_native);
+	VECTOR3_DEL(rayDir);
+	VECTOR3_DEL(rayOrigin);
+	return ret;
 }
 
 void GImpactQuantizedBvh::SetNodeBound(int nodeindex, Aabb^ bound)
@@ -285,7 +319,7 @@ Aabb^ GImpactQuantizedBvh::GlobalBox::get()
 {
 	btAABB* aabb = new btAABB;
 	GImpactQuantizedBvh_GlobalBox(_native, aabb);
-	return gcnew Aabb(aabb);
+	return gcnew Aabb(aabb, false);
 }
 
 bool GImpactQuantizedBvh::HasHierarchy::get()
@@ -305,12 +339,12 @@ int GImpactQuantizedBvh::NodeCount::get()
 
 PrimitiveManagerBase^ GImpactQuantizedBvh::PrimitiveManager::get()
 {
-	return _primitiveManagerBase;
+	return _primitiveManager;
 }
-void GImpactQuantizedBvh::PrimitiveManager::set(PrimitiveManagerBase^ primitive_manager)
+void GImpactQuantizedBvh::PrimitiveManager::set(PrimitiveManagerBase^ primitiveManager)
 {
-	_primitiveManagerBase = primitive_manager;
-	_native->setPrimitiveManager(primitive_manager->_native);
+	_primitiveManager = primitiveManager;
+	_native->setPrimitiveManager(primitiveManager->_native);
 }
 
 #endif

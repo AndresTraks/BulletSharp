@@ -5,6 +5,26 @@
 #include "Serializer.h"
 #endif
 
+TriangleInfoMap::TriangleInfoMap(btTriangleInfoMap* native, bool preventDelete)
+{
+	_native = native;
+	_preventDelete = preventDelete;
+}
+
+TriangleInfoMap::~TriangleInfoMap()
+{
+	this->!TriangleInfoMap();
+}
+
+TriangleInfoMap::!TriangleInfoMap()
+{
+	if (!_preventDelete)
+	{
+		delete _native;
+		_native = NULL;
+	}
+}
+
 TriangleInfoMap::TriangleInfoMap()
 {
 	_native = new btTriangleInfoMap();

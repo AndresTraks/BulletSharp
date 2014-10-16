@@ -2,23 +2,13 @@
 
 namespace BulletSharp
 {
-	public ref class Element : IDisposable
+	public ref class Element
 	{
 	internal:
 		btElement* _native;
-		Element(btElement* native, bool preventDelete);
-
-	private:
-		bool _preventDelete;
+		Element(btElement* native);
 
 	public:
-		!Element();
-	protected:
-		~Element();
-
-	public:
-		Element();
-
 		property int Id
 		{
 			int get();

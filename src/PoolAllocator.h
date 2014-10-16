@@ -10,8 +10,7 @@ namespace BulletSharp
 
 	internal:
 		btPoolAllocator* _native;
-
-		PoolAllocator(btPoolAllocator* allocator);
+		PoolAllocator(btPoolAllocator* native);
 
 	public:
 		!PoolAllocator();
@@ -22,8 +21,8 @@ namespace BulletSharp
 		PoolAllocator(int elemSize, int maxElements);
 
 		IntPtr Allocate(int size);
-		bool ValidPtr(IntPtr ptr);
 		void FreeMemory(IntPtr ptr);
+		bool ValidPtr(IntPtr ptr);
 
 		property int ElementSize
 		{

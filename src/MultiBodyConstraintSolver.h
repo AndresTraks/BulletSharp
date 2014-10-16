@@ -1,7 +1,5 @@
 #pragma once
 
-#ifndef DISABLE_FEATHERSTONE
-
 #include "SequentialImpulseConstraintSolver.h"
 
 namespace BulletSharp
@@ -29,5 +27,3 @@ namespace BulletSharp
 */
 	};
 };
-
-#endif

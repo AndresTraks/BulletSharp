@@ -5,11 +5,16 @@ namespace BulletSharp
 	ref class AlignedScalarArray;
 	ref class MultiBody;
 /*
-	public ref class MultiBodyJacobianData
+	public ref class MultiBodyJacobianData : IDisposable
 	{
 	internal:
 		btMultiBodyJacobianData* _native;
 		MultiBodyJacobianData(btMultiBodyJacobianData* native);
+
+	public:
+		!MultiBodyJacobianData();
+	protected:
+		~MultiBodyJacobianData();
 
 	public:
 		MultiBodyJacobianData();
@@ -63,11 +68,16 @@ namespace BulletSharp
 		}
 	};
 */
-	public ref class MultiBodyConstraint abstract
+	public ref class MultiBodyConstraint abstract : IDisposable
 	{
 	internal:
 		btMultiBodyConstraint* _native;
 		MultiBodyConstraint(btMultiBodyConstraint* native);
+
+	public:
+		!MultiBodyConstraint();
+	protected:
+		~MultiBodyConstraint();
 
 	protected:
 		MultiBody^ _multiBodyA;

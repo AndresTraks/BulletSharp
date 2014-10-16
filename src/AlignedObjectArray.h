@@ -210,54 +210,27 @@ namespace BulletSharp
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class AlignedCollisionShapeArray : AlignedObjectArray<CollisionShape^>
-	{
-	public:
-		AlignedCollisionShapeArray();
-
-		virtual void Add(CollisionShape^ shape) override;
-		virtual void Clear() override;
-		virtual bool Contains(CollisionShape^ shape) override;
-		virtual void CopyTo(array<CollisionShape^>^ array, int arrayIndex) override;
-		virtual int IndexOf(CollisionShape^ shape) override;
-		virtual void PopBack() override;
-		virtual bool Remove(CollisionShape^ shape) override;
-		virtual void Swap(int index0, int index1) override;
-
-		property int Capacity
-		{
-			int get();
-		}
-
-		property int Count
-		{
-			virtual int get() override;
-		}
-
-		property CollisionShape^ default [int]
-		{
-			virtual CollisionShape^ get (int index) override;
-			virtual void set(int index, CollisionShape^ value) override;
-		}
-	};
-
-	[DebuggerDisplay("Count = {Count}")]
-	[DebuggerTypeProxy(ListDebugView::typeid)]
 	public ref class AlignedCollisionObjectArray : AlignedObjectArray<CollisionObject^>, IEnumerable
 	{
 	internal:
 		AlignedCollisionObjectArray(btCollisionObjectArray* collisionObjectArray);
+		AlignedCollisionObjectArray(btCollisionObjectArray* collisionObjectArray, btCollisionWorld* collisionWorld);
+
+	private:
+		btCollisionWorld* _collisionWorld;
+		System::Collections::Generic::List<CollisionObject^>^ _backingList;
 
 	public:
-		AlignedCollisionObjectArray();
-
-		virtual void Add(CollisionObject^ obj) override;
+		virtual void Add(CollisionObject^ item) override;
+		void Add(CollisionObject^ item, short collisionFilterGroup, short collisionFilterMask);
 		virtual void Clear() override;
-		virtual bool Contains(CollisionObject^ obj) override;
+		virtual bool Contains(CollisionObject^ item) override;
 		virtual void CopyTo(array<CollisionObject^>^ array, int arrayIndex) override;
-		virtual int IndexOf(CollisionObject^ obj) override;
+		virtual IEnumerator^ GetEnumerator() override;
+		virtual Generic::IEnumerator<CollisionObject^>^ GetSpecializedEnumerator() override;
+		virtual int IndexOf(CollisionObject^ item) override;
 		virtual void PopBack() override;
-		virtual bool Remove(CollisionObject^ obj) override;
+		virtual bool Remove(CollisionObject^ item) override;
 		virtual void Swap(int index0, int index1) override;
 
 		property int Capacity

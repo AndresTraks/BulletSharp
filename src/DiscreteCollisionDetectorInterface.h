@@ -6,10 +6,10 @@ namespace BulletSharp
 
 	interface class IDebugDraw;
 
-	public ref class DiscreteCollisionDetectorInterface : ITrackingDisposable
+	public ref class DiscreteCollisionDetectorInterface abstract : IDisposable
 	{
 	public:
-		ref class ClosestPointInput
+		ref class ClosestPointInput : IDisposable
 		{
 		internal:
 			btDiscreteCollisionDetectorInterface::ClosestPointInput* _native;
@@ -45,7 +45,7 @@ namespace BulletSharp
 		{
 		internal:
 			btDiscreteCollisionDetectorInterface::Result* _native;
-			Result(btDiscreteCollisionDetectorInterface::Result* result);
+			Result(btDiscreteCollisionDetectorInterface::Result* native);
 
 		public:
 			!Result();
@@ -63,18 +63,16 @@ namespace BulletSharp
 			}
 		};
 
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
 
 	internal:
 		btDiscreteCollisionDetectorInterface* _native;
-		DiscreteCollisionDetectorInterface(btDiscreteCollisionDetectorInterface* dispatcher);
+		DiscreteCollisionDetectorInterface(btDiscreteCollisionDetectorInterface* native);
 
 	public:
 		!DiscreteCollisionDetectorInterface();
 	protected:
 		~DiscreteCollisionDetectorInterface();
+
 	public:
 #ifndef DISABLE_DEBUGDRAW
 		void GetClosestPoints(ClosestPointInput^ input, Result^ output, IDebugDraw^ debugDraw);

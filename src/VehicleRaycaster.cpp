@@ -5,11 +5,6 @@
 #include "RigidBody.h"
 #include "VehicleRaycaster.h"
 
-VehicleRaycasterResult::VehicleRaycasterResult()
-{
-	_native = ALIGNED_NEW(btVehicleRaycaster::btVehicleRaycasterResult) ();
-}
-
 VehicleRaycasterResult::~VehicleRaycasterResult()
 {
 	this->!VehicleRaycasterResult();
@@ -19,6 +14,11 @@ VehicleRaycasterResult::!VehicleRaycasterResult()
 {
 	ALIGNED_FREE(_native);
 	_native = NULL;
+}
+
+VehicleRaycasterResult::VehicleRaycasterResult()
+{
+	_native = ALIGNED_NEW(btVehicleRaycaster::btVehicleRaycasterResult) ();
 }
 
 btScalar VehicleRaycasterResult::DistFraction::get()
@@ -54,16 +54,24 @@ VehicleRaycaster::VehicleRaycaster(btVehicleRaycaster* native)
 	_native = native;
 }
 
+VehicleRaycaster::~VehicleRaycaster()
+{
+	this->!VehicleRaycaster();
+}
+
+VehicleRaycaster::!VehicleRaycaster()
+{
+	delete _native;
+	_native = NULL;
+}
+
 Object^ VehicleRaycaster::CastRay(Vector3 from, Vector3 to, VehicleRaycasterResult^ result)
 {
-	VECTOR3_DEF(from);
-	VECTOR3_DEF(to);
-
+	VECTOR3_CONV(from);
+	VECTOR3_CONV(to);
 	void* ret = _native->castRay(VECTOR3_USE(from), VECTOR3_USE(to), *result->_native);
-
 	VECTOR3_DEL(from);
 	VECTOR3_DEL(to);
-
 	return CollisionObject::GetManaged((btRigidBody*)ret);
 }
 

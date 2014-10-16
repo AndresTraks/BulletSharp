@@ -27,6 +27,9 @@ namespace BulletSharp
 #else
 		void GetClosestPointsNonVirtual(ClosestPointInput^ input, Result^ output);
 #endif
+#ifndef DISABLE_INTERNAL
+		void SetIgnoreMargin(bool ignoreMargin);
+#endif
 		void SetMinkowskiA(ConvexShape^ minkA);
 		void SetMinkowskiB(ConvexShape^ minkB);
 		void SetPenetrationDepthSolver(ConvexPenetrationDepthSolver^ penetrationDepthSolver);

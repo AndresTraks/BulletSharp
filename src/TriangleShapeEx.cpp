@@ -43,9 +43,7 @@ void GimTriangleContact::MergePoints(Vector4 plane, btScalar margin, array<Vecto
 {
 	btVector3* pointsTemp = Math::Vector3ArrayToUnmanaged(points);
 	btVector4* planeTemp = Math::Vector4ToBtVector4(plane);
-
 	_native->merge_points(*planeTemp, margin, pointsTemp, points->Length);
-
 	delete[] pointsTemp;
 	delete planeTemp;
 }
@@ -85,6 +83,17 @@ void GimTriangleContact::SeparatingNormal::set(Vector4 value)
 PrimitiveTriangle::PrimitiveTriangle(btPrimitiveTriangle* native)
 {
 	_native = native;
+}
+
+PrimitiveTriangle::~PrimitiveTriangle()
+{
+	this->!PrimitiveTriangle();
+}
+
+PrimitiveTriangle::!PrimitiveTriangle()
+{
+	delete _native;
+	_native = NULL;
 }
 
 PrimitiveTriangle::PrimitiveTriangle()
@@ -160,7 +169,11 @@ void PrimitiveTriangle::Plane::set(Vector4 value)
 
 Vector3Array^ PrimitiveTriangle::Vertices::get()
 {
-	ReturnCachedObjectStaticParam(Vector3Array, _vertices, _native->m_vertices, 3)
+	if (_vertices == nullptr)
+	{
+		_vertices = gcnew Vector3Array(_native->m_vertices, 3);
+	}
+	return _vertices;
 }
 
 
@@ -179,9 +192,9 @@ TriangleShapeEx::TriangleShapeEx()
 TriangleShapeEx::TriangleShapeEx(Vector3 p0, Vector3 p1, Vector3 p2)
 	: TriangleShape(0)
 {
-	VECTOR3_DEF(p0);
-	VECTOR3_DEF(p1);
-	VECTOR3_DEF(p2);
+	VECTOR3_CONV(p0);
+	VECTOR3_CONV(p1);
+	VECTOR3_CONV(p2);
 	UnmanagedPointer = new btTriangleShapeEx(VECTOR3_USE(p0), VECTOR3_USE(p1), VECTOR3_USE(p2));
 	VECTOR3_DEL(p0);
 	VECTOR3_DEL(p1);

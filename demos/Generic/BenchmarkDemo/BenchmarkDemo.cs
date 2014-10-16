@@ -323,7 +323,7 @@ namespace BenchmarkDemo
 
         void CreatePyramid(Vector3 offsetPosition, int stackSize, Vector3 boxSize)
         {
-            float space = 0.0001f;
+            const float space = 0.0001f;
             Vector3 pos = new Vector3(0.0f, boxSize[1], 0.0f);
 
             BoxShape blockShape = new BoxShape(boxSize[0] - collisionRadius, boxSize[1] - collisionRadius, boxSize[2] - collisionRadius);

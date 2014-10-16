@@ -36,21 +36,21 @@ CollisionObject::!CollisionObject()
 	
 	OnDisposing(this, nullptr);
 
-	if (_doesNotOwnObject == false)
+	if (!_preventDelete)
 	{
 		void* userObj = _native->getUserPointer();
 		if (userObj)
 			VoidPtrToGCHandle(userObj).Free();
 		delete _native;
 	}
-	_native = NULL;
+	_isDisposed = true;
 	
 	OnDisposed(this, nullptr);
 }
 
 bool CollisionObject::IsDisposed::get()
 {
-	return (_native == NULL);
+	return _isDisposed;
 }
 
 void CollisionObject::Activate(bool forceActivation)
@@ -78,6 +78,11 @@ bool CollisionObject::CheckCollideWith(CollisionObject^ collisionObject)
 void CollisionObject::ForceActivationState(BulletSharp::ActivationState newState)
 {
 	_native->forceActivationState((int)newState);
+}
+
+int CollisionObject::GetHashCode()
+{
+	return (int)_native;
 }
 
 void CollisionObject::GetWorldTransform([Out] Matrix% outTransform)
@@ -109,14 +114,14 @@ void CollisionObject::SerializeSingleObject(BulletSharp::Serializer^ serializer)
 
 void CollisionObject::SetAnisotropicFriction(Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode)
 {
-	VECTOR3_DEF(anisotropicFriction);
+	VECTOR3_CONV(anisotropicFriction);
 	_native->setAnisotropicFriction(VECTOR3_USE(anisotropicFriction), (int)frictionMode);
 	VECTOR3_DEL(anisotropicFriction);
 }
 
 void CollisionObject::SetAnisotropicFriction(Vector3 anisotropicFriction)
 {
-	VECTOR3_DEF(anisotropicFriction);
+	VECTOR3_CONV(anisotropicFriction);
 	_native->setAnisotropicFriction(VECTOR3_USE(anisotropicFriction));
 	VECTOR3_DEL(anisotropicFriction);
 }
@@ -136,7 +141,7 @@ CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
 	if (rigidBody)
 	{
 		RigidBody^ body = gcnew RigidBody(rigidBody);
-		body->_doesNotOwnObject = true;
+		body->_preventDelete = true;
 		return body;
 	}
 
@@ -145,7 +150,7 @@ CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
 	if (softBody)
 	{
 		SoftBody::SoftBody^ body = gcnew SoftBody::SoftBody(softBody);
-		body->_doesNotOwnObject = true;
+		body->_preventDelete = true;
 		return body;
 	}
 #endif
@@ -155,13 +160,13 @@ CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
 	if (multiBody)
 	{
 		MultiBodyLinkCollider^ body = gcnew MultiBodyLinkCollider(multiBody);
-		body->_doesNotOwnObject = true;
+		body->_preventDelete = true;
 		return body;
 	}
 #endif
 
 	CollisionObject^ colObject = gcnew CollisionObject(collisionObject);
-	colObject->_doesNotOwnObject = true;
+	colObject->_preventDelete = true;
 	return colObject;
 }
 
@@ -180,7 +185,7 @@ Vector3 CollisionObject::AnisotropicFriction::get()
 }
 void CollisionObject::AnisotropicFriction::set(Vector3 value)
 {
-	VECTOR3_DEF(value);
+	VECTOR3_CONV(value);
 	_native->setAnisotropicFriction(VECTOR3_USE(value));
 	VECTOR3_DEL(value);
 }
@@ -230,11 +235,12 @@ void CollisionObject::CollisionFlags::set(BulletSharp::CollisionFlags flags)
 
 CollisionShape^ CollisionObject::CollisionShape::get()
 {
-	return BulletSharp::CollisionShape::GetManaged(_native->getCollisionShape());
+	return _collisionShape;
 }
 void CollisionObject::CollisionShape::set(BulletSharp::CollisionShape^ collisionShape)
 {
 	_native->setCollisionShape(collisionShape->_native);
+	_collisionShape = collisionShape;
 }
 
 int CollisionObject::CompanionId::get()
@@ -293,7 +299,7 @@ Vector3 CollisionObject::InterpolationAngularVelocity::get()
 }
 void CollisionObject::InterpolationAngularVelocity::set(Vector3 angvel)
 {
-	VECTOR3_DEF(angvel);
+	VECTOR3_CONV(angvel);
 	_native->setInterpolationAngularVelocity(VECTOR3_USE(angvel));
 	VECTOR3_DEL(angvel);
 }
@@ -304,7 +310,7 @@ Vector3 CollisionObject::InterpolationLinearVelocity::get()
 }
 void CollisionObject::InterpolationLinearVelocity::set(Vector3 linvel)
 {
-	VECTOR3_DEF(linvel);
+	VECTOR3_CONV(linvel);
 	_native->setInterpolationLinearVelocity(VECTOR3_USE(linvel));
 	VECTOR3_DEL(linvel);
 }
@@ -422,7 +428,7 @@ void CollisionObject::UnmanagedPointer::set(btCollisionObject* value)
 
 	if (_native->getUserPointer() == 0)
 	{
-		GCHandle handle = GCHandle::Alloc(this);
+		GCHandle handle = GCHandle::Alloc(this, GCHandleType::Weak);
 		void* obj = GCHandleToVoidPtr(handle);
 		_native->setUserPointer(obj);
 	}

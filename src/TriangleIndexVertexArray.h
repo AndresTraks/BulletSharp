@@ -9,16 +9,21 @@ namespace BulletSharp
 	ref class IntArray;
 	ref class Vector3Array;
 
-	public ref class IndexedMesh
+	public ref class IndexedMesh : IDisposable
 	{
 	internal:
 		btIndexedMesh* _native;
-		IndexedMesh(btIndexedMesh* native);
-
+		IndexedMesh(btIndexedMesh* native, bool preventDelete);
 
 	private:
+		bool _preventDelete;
 		IntArray^ _triangleIndices;
 		Vector3Array^ _vertices;
+
+	public:
+		!IndexedMesh();
+	protected:
+		~IndexedMesh();
 
 	public:
 		IndexedMesh();
@@ -95,6 +100,7 @@ namespace BulletSharp
 
 	private:
 		AlignedIndexedMeshArray^ _indexedMeshArray;
+		System::Collections::Generic::List<IndexedMesh^>^ _meshes;
 
 	public:
 		TriangleIndexVertexArray(int numTriangles, IntPtr triangleIndexBase, int triangleIndexStride,

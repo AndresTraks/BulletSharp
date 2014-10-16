@@ -63,8 +63,8 @@ CollisionObject^ GhostObject::GetOverlappingObject(int index)
 
 void GhostObject::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, CollisionWorld::RayResultCallback^ resultCallback)
 {
-	VECTOR3_DEF(rayFromWorld);
-	VECTOR3_DEF(rayToWorld);
+	VECTOR3_CONV(rayFromWorld);
+	VECTOR3_CONV(rayToWorld);
 	Native->rayTest(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld), *resultCallback->_native);
 	VECTOR3_DEL(rayFromWorld);
 	VECTOR3_DEL(rayToWorld);

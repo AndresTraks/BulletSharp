@@ -21,8 +21,8 @@ SimpleBroadphaseProxy::SimpleBroadphaseProxy(Vector3 minpt, Vector3 maxpt, int s
 {
 	_clientObject = userObject;
 
-	VECTOR3_DEF(minpt);
-	VECTOR3_DEF(maxpt);
+	VECTOR3_CONV(minpt);
+	VECTOR3_CONV(maxpt);
 	UnmanagedPointer = new btSimpleBroadphaseProxy(VECTOR3_USE(minpt), VECTOR3_USE(maxpt),
 		shapeType, 0, (short int)collisionFilterGroup, (short int)collisionFilterMask, multiSapProxy.ToPointer());
 	VECTOR3_DEL(minpt);

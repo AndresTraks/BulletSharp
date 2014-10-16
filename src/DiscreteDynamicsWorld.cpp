@@ -100,4 +100,3 @@ void DiscreteDynamicsWorld::SynchronizeAllMotionStates::set(bool synchronizeAll)
 {
 	Native->setSynchronizeAllMotionStates(synchronizeAll);
 }
-

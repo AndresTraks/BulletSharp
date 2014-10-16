@@ -2,7 +2,7 @@
 
 #ifndef DISABLE_CONSTRAINTS
 
-#include "NNCGConstraintSolver.h"
+#include "NncgConstraintSolver.h"
 
 #define Native static_cast<btNNCGConstraintSolver*>(_native)
 

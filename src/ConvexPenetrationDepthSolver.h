@@ -8,12 +8,8 @@ namespace BulletSharp
 	ref class SimplexSolverInterface;
 	interface class IDebugDraw;
 
-	public ref class ConvexPenetrationDepthSolver : ITrackingDisposable
+	public ref class ConvexPenetrationDepthSolver : IDisposable // abstract
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	internal:
 		btConvexPenetrationDepthSolver* _native;
 		ConvexPenetrationDepthSolver(btConvexPenetrationDepthSolver* native);
@@ -24,9 +20,9 @@ namespace BulletSharp
 		~ConvexPenetrationDepthSolver();
 
 	public:
-		bool CalcPenDepth(SimplexSolverInterface^ simplexSolver,
-			ConvexShape^ convexA, ConvexShape^ convexB, Matrix transA, Matrix transB,
-			Vector3 v, Vector3 pa, Vector3 pb
+		bool CalcPenDepth(SimplexSolverInterface^ simplexSolver, ConvexShape^ convexA,
+			ConvexShape^ convexB, Matrix transA, Matrix transB, [Out] Vector3% v, [Out] Vector3% pa,
+			[Out] Vector3% pb
 #ifndef DISABLE_DEBUGDRAW
 			, IDebugDraw^ debugDraw
 #endif

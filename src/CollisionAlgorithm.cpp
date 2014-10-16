@@ -28,7 +28,7 @@ CollisionAlgorithmConstructionInfo::CollisionAlgorithmConstructionInfo(BulletSha
 	int temp)
 {
 	_dispatcher = dispatcher;
-	_native = new btCollisionAlgorithmConstructionInfo(dispatcher->_native, temp);
+	_native = new btCollisionAlgorithmConstructionInfo(GetUnmanagedNullable(dispatcher), temp);
 }
 
 BulletSharp::Dispatcher^ CollisionAlgorithmConstructionInfo::Dispatcher::get()
@@ -43,17 +43,28 @@ void CollisionAlgorithmConstructionInfo::Dispatcher::set(BulletSharp::Dispatcher
 
 PersistentManifold^ CollisionAlgorithmConstructionInfo::Manifold::get()
 {
-	return gcnew PersistentManifold(_native->m_manifold);
+	return _manifold;
 }
 void CollisionAlgorithmConstructionInfo::Manifold::set(PersistentManifold^ value)
 {
-	_native->m_manifold = (btPersistentManifold*)value->_native;
+	_manifold = value;
+	_native->m_manifold = (btPersistentManifold*)GetUnmanagedNullable(value);
 }
 
 
 CollisionAlgorithm::CollisionAlgorithm(btCollisionAlgorithm* native)
 {
 	_native = native;
+}
+
+CollisionAlgorithm^ CollisionAlgorithm::GetManaged(btCollisionAlgorithm* native)
+{
+	if (!native)
+	{
+		return nullptr;
+	}
+
+	return gcnew CollisionAlgorithm(native);
 }
 
 CollisionAlgorithm::~CollisionAlgorithm()

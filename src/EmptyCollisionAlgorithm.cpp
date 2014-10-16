@@ -2,7 +2,6 @@
 
 #ifndef DISABLE_COLLISION_ALGORITHMS
 
-#include "CollisionObject.h"
 #include "EmptyCollisionAlgorithm.h"
 
 EmptyAlgorithm::CreateFunc::CreateFunc()

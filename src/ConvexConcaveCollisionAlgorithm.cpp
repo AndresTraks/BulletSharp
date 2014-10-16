@@ -7,21 +7,22 @@
 #include "ConvexConcaveCollisionAlgorithm.h"
 
 ConvexConcaveCollisionAlgorithm::CreateFunc::CreateFunc()
-: CollisionAlgorithmCreateFunc(new btConvexConcaveCollisionAlgorithm::CreateFunc())
+	: CollisionAlgorithmCreateFunc(new btConvexConcaveCollisionAlgorithm::CreateFunc())
 {
 }
 
 ConvexConcaveCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc()
-: CollisionAlgorithmCreateFunc(new btConvexConcaveCollisionAlgorithm::SwappedCreateFunc())
+	: CollisionAlgorithmCreateFunc(new btConvexConcaveCollisionAlgorithm::SwappedCreateFunc())
 {
 }
+
 
 #define Native static_cast<btConvexConcaveCollisionAlgorithm*>(_native)
 
 ConvexConcaveCollisionAlgorithm::ConvexConcaveCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped)
-: ActivatingCollisionAlgorithm(new btConvexConcaveCollisionAlgorithm(*ci->_native,
-	body0Wrap->_native, body1Wrap->_native, isSwapped))
+	: ActivatingCollisionAlgorithm(new btConvexConcaveCollisionAlgorithm(*ci->_native,
+		body0Wrap->_native, body1Wrap->_native, isSwapped))
 {
 }
 

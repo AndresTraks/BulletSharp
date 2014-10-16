@@ -18,7 +18,7 @@ Convex2DShape::Convex2DShape(ConvexShape^ convexChildShape)
 
 ConvexShape^ Convex2DShape::ChildShape::get()
 {
-	return static_cast<ConvexShape^>(CollisionShape::GetManaged(Native->getChildShape()));
+	return dynamic_cast<ConvexShape^>(CollisionShape::GetManaged(Native->getChildShape()));
 }
 
 #endif

@@ -6,6 +6,22 @@
 #include "Collections.h"
 #include "ConvexPolyhedron.h"
 
+Face::Face(btFace* native)
+{
+	_native = native;
+}
+
+Face::~Face()
+{
+	this->!Face();
+}
+
+Face::!Face()
+{
+	delete _native;
+	_native = NULL;
+}
+
 Face::Face()
 {
 	_native = new btFace();
@@ -16,31 +32,30 @@ AlignedIntArray^ Face::ConnectedFaces::get()
 {
 	return gcnew AlignedIntArray(&_native->m_connectedFaces);
 }
-void Face::ConnectedFaces::set(AlignedIntArray^ value)
-{
-	_native->m_connectedFaces = *(btAlignedObjectArray<int>*)value->_native;
-}
 */
 
 AlignedIntArray^ Face::Indices::get()
 {
-	return gcnew AlignedIntArray(&_native->m_indices);
+	if (_indices == nullptr)
+	{
+		_indices = gcnew AlignedIntArray(&_native->m_indices);
+	}
+	return _indices;
 }
 
 ScalarArray^ Face::Plane::get()
 {
-	return gcnew ScalarArray(_native->m_plane, 4);
+	if (_plane == nullptr)
+	{
+		_plane = gcnew ScalarArray(_native->m_plane, 4);
+	}
+	return _plane;
 }
 
 
-ConvexPolyhedron::ConvexPolyhedron(btConvexPolyhedron* convexPolyhedron)
+ConvexPolyhedron::ConvexPolyhedron(btConvexPolyhedron* native)
 {
-	_native = convexPolyhedron;
-}
-
-ConvexPolyhedron::ConvexPolyhedron()
-{
-	_native = new btConvexPolyhedron();
+	_native = native;
 }
 
 ConvexPolyhedron::~ConvexPolyhedron()
@@ -50,20 +65,13 @@ ConvexPolyhedron::~ConvexPolyhedron()
 
 ConvexPolyhedron::!ConvexPolyhedron()
 {
-	if (this->IsDisposed)
-		return;
-
-	OnDisposing(this, nullptr);
-
-	//delete _native;
+	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
-bool ConvexPolyhedron::IsDisposed::get()
+ConvexPolyhedron::ConvexPolyhedron()
 {
-	return _native == NULL;
+	_native = new btConvexPolyhedron();
 }
 
 void ConvexPolyhedron::Initialize()
@@ -71,25 +79,46 @@ void ConvexPolyhedron::Initialize()
 	_native->initialize();
 }
 
-void ConvexPolyhedron::Project(Matrix transform, Vector3 direction, [Out] btScalar% minProj, [Out] btScalar% maxProj, [Out] Vector3% witnesPtMin, [Out] Vector3% witnesPtMax)
+void ConvexPolyhedron::Project(Matrix% transform, Vector3% direction, [Out] btScalar% minProj, [Out] btScalar% maxProj,
+	[Out] Vector3% witnesPtMin, [Out] Vector3% witnesPtMax)
 {
-	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
-	VECTOR3_DEF(direction);
+	TRANSFORM_CONV(transform);
+	VECTOR3_CONV(direction);
 	btScalar minProjTemp;
 	btScalar maxProjTemp;
 	btVector3* witnesPtMinTemp = ALIGNED_NEW(btVector3);
 	btVector3* witnesPtMaxTemp = ALIGNED_NEW(btVector3);
-	
-	_native->project(*transformTemp, VECTOR3_USE(direction), minProjTemp, maxProjTemp, VECTOR3_USE(witnesPtMin), VECTOR3_USE(witnesPtMax));
+	_native->project(TRANSFORM_USE(transform), VECTOR3_USE(direction), minProjTemp, maxProjTemp,
+		VECTOR3_USE(witnesPtMin), VECTOR3_USE(witnesPtMax));
 	minProj = minProjTemp;
 	maxProj = maxProjTemp;
 	witnesPtMin = Math::BtVector3ToVector3(witnesPtMinTemp);
 	witnesPtMax = Math::BtVector3ToVector3(witnesPtMaxTemp);
-
+	VECTOR3_DEL(direction);
+	TRANSFORM_DEL(transform);
 	ALIGNED_FREE(witnesPtMaxTemp);
 	ALIGNED_FREE(witnesPtMinTemp);
+}
+
+void ConvexPolyhedron::Project(Matrix transform, Vector3 direction, [Out] btScalar% minProj, [Out] btScalar% maxProj,
+	[Out] Vector3% witnesPtMin, [Out] Vector3% witnesPtMax)
+{
+	TRANSFORM_CONV(transform);
+	VECTOR3_CONV(direction);
+	btScalar minProjTemp;
+	btScalar maxProjTemp;
+	btVector3* witnesPtMinTemp = ALIGNED_NEW(btVector3);
+	btVector3* witnesPtMaxTemp = ALIGNED_NEW(btVector3);
+	_native->project(TRANSFORM_USE(transform), VECTOR3_USE(direction), minProjTemp, maxProjTemp,
+		VECTOR3_USE(witnesPtMin), VECTOR3_USE(witnesPtMax));
+	minProj = minProjTemp;
+	maxProj = maxProjTemp;
+	witnesPtMin = Math::BtVector3ToVector3(witnesPtMinTemp);
+	witnesPtMax = Math::BtVector3ToVector3(witnesPtMaxTemp);
 	VECTOR3_DEL(direction);
-	ALIGNED_FREE(transformTemp);
+	TRANSFORM_DEL(transform);
+	ALIGNED_FREE(witnesPtMaxTemp);
+	ALIGNED_FREE(witnesPtMinTemp);
 }
 
 bool ConvexPolyhedron::TestContainment()
@@ -123,6 +152,16 @@ void ConvexPolyhedron::Extents::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_native->m_extents);
 }
+/*
+AlignedFaceArray^ ConvexPolyhedron::Faces::get()
+{
+	return _native->m_faces;
+}
+*/
+bool ConvexPolyhedron::IsDisposed::get()
+{
+	return _native == NULL;
+}
 
 Vector3 ConvexPolyhedron::LocalCenter::get()
 {
@@ -144,12 +183,20 @@ void ConvexPolyhedron::Radius::set(btScalar value)
 
 AlignedVector3Array^ ConvexPolyhedron::UniqueEdges::get()
 {
-	return gcnew AlignedVector3Array(&_native->m_uniqueEdges);
+	if (_uniqueEdges == nullptr)
+	{
+		_uniqueEdges = gcnew AlignedVector3Array(&_native->m_uniqueEdges);
+	}
+	return _uniqueEdges;
 }
 
 AlignedVector3Array^ ConvexPolyhedron::Vertices::get()
 {
-	return gcnew AlignedVector3Array(&_native->m_vertices);
+	if (_vertices == nullptr)
+	{
+		_vertices = gcnew AlignedVector3Array(&_native->m_vertices);
+	}
+	return _vertices;
 }
 
 #endif

@@ -29,27 +29,37 @@ using namespace Mogre;
 #endif
 
 // Macros for passing Vector3 parameters.
-// VECTOR3_DEF and VECTOR3_PTR convert Vector3 to btVector3, but allow pinned pointers to be passed
+// VECTOR3_CONV and VECTOR3_PTR convert Vector3 to btVector3, but allow pinned pointers to be passed
 // if the structure of Vector3 and btVector3 is compatible.
 // VECTOR3_DEL cleans up the btVector3 if pinning is not possible.
 // VECTOR3_USE is used to dereference the btVector3* pointer.
 // FIXME: is it safe to cast Vector3 to btVector3 given that btVector3 has padding?
 #define VECTOR3_NAME(vec) vec ## Temp
+#define VECTOR4_NAME(vec) vec ## Temp
 #ifdef GRAPHICS_NO_DIRECT_CAST
-#define VECTOR3_DEF(vec) btVector3* VECTOR3_NAME(vec) = Math::Vector3ToBtVector3(vec)
+#define VECTOR3_CONV(vec) btVector3* VECTOR3_NAME(vec) = Math::Vector3ToBtVector3(vec)
 #define VECTOR3_PTR(vec) VECTOR3_NAME(vec)
 #define VECTOR3_DEL(vec) ALIGNED_FREE(VECTOR3_PTR(vec))
+#define VECTOR4_CONV(vec) btVector4* VECTOR4_NAME(vec) = Math::Vector4ToBtVector4(vec)
+#define VECTOR4_PTR(vec) VECTOR4_NAME(vec)
+#define VECTOR4_DEL(vec) ALIGNED_FREE(VECTOR4_PTR(vec))
 #else
 #define VECTOR3_PTR(vec) ((btVector3*) VECTOR3_NAME(vec))
+#define VECTOR4_PTR(vec) ((btVector4*) VECTOR3_NAME(vec))
 #ifdef BT_USE_SSE_IN_API
-#define VECTOR3_DEF(vec) btVector3* VECTOR3_NAME(vec) = Math::Vector3ToBtVector3(vec)
+#define VECTOR3_CONV(vec) btVector3* VECTOR3_NAME(vec) = Math::Vector3ToBtVector3(vec)
 #define VECTOR3_DEL(vec) ALIGNED_FREE(VECTOR3_PTR(vec))
+#define VECTOR4_CONV(vec) btVector4* VECTOR4_NAME(vec) = Math::Vector4ToBtVector4(vec)
+#define VECTOR4_DEL(vec) ALIGNED_FREE(VECTOR4_PTR(vec))
 #else
-#define VECTOR3_DEF(vec) pin_ptr<Vector3> VECTOR3_NAME(vec) = &vec
+#define VECTOR3_CONV(vec) pin_ptr<Vector3> VECTOR3_NAME(vec) = &vec
 #define VECTOR3_DEL(vec)
+#define VECTOR4_CONV(vec) pin_ptr<Vector4> VECTOR4_NAME(vec) = &vec
+#define VECTOR4_DEL(vec)
 #endif
 #endif
 #define VECTOR3_USE(vec) *VECTOR3_PTR(vec)
+#define VECTOR4_USE(vec) *VECTOR4_PTR(vec)
 
 #define TRANSFORM_NAME(t) t ## Temp
 #define TRANSFORM_DEF(t) btTransform* TRANSFORM_NAME(t)
@@ -99,9 +109,8 @@ namespace BulletSharp
 			vectorOut.Z = vector->m_floats[2];
 #endif
 		}
-		static btVector3* Vector3ToBtVector3(Vector3);
-		static btVector3* Vector3ToBtVector3Ref(Vector3%);
-		static void Vector3ToBtVector3(Vector3, btVector3*);
+		static btVector3* Vector3ToBtVector3(Vector3%);
+		static void Vector3ToBtVector3(Vector3%, btVector3*);
 		static btVector3* Vector3ArrayToUnmanaged(array<Vector3>^);
 		static array<Vector3>^ Vector3ArrayToManaged(btVector3*, int);
 

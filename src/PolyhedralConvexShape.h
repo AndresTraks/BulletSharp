@@ -47,7 +47,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class PolyhedralConvexAabbCachingShape : PolyhedralConvexShape
+	public ref class PolyhedralConvexAabbCachingShape abstract : PolyhedralConvexShape
 	{
 	internal:
 		PolyhedralConvexAabbCachingShape(btPolyhedralConvexAabbCachingShape* native);

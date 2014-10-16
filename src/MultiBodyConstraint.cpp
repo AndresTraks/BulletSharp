@@ -11,6 +11,17 @@ MultiBodyJacobianData::MultiBodyJacobianData(btMultiBodyJacobianData* native)
 	_native = native;
 }
 
+MultiBodyJacobianData::~MultiBodyJacobianData()
+{
+	this->!MultiBodyJacobianData();
+}
+
+MultiBodyJacobianData::!MultiBodyJacobianData()
+{
+	delete _native;
+	_native = NULL;
+}
+
 MultiBodyJacobianData::MultiBodyJacobianData()
 {
 	_native = new btMultiBodyJacobianData();
@@ -93,6 +104,17 @@ void MultiBodyJacobianData::SolverBodyPool::set(AlignedObjectArray^ value)
 MultiBodyConstraint::MultiBodyConstraint(btMultiBodyConstraint* native)
 {
 	_native = native;
+}
+
+MultiBodyConstraint::~MultiBodyConstraint()
+{
+	this->!MultiBodyConstraint();
+}
+
+MultiBodyConstraint::!MultiBodyConstraint()
+{
+	delete _native;
+	_native = NULL;
 }
 /*
 void MultiBodyConstraint::CreateConstraintRows(MultiBodyConstraintArray^ constraintRows,

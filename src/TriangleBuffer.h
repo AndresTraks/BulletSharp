@@ -28,7 +28,7 @@ namespace BulletSharp
 		void ClearBuffer();
 		BulletTriangle^ GetTriangle(int index);
 
-		property int TriangleCount
+		property int NumTriangles
 		{
 			int get();
 		}

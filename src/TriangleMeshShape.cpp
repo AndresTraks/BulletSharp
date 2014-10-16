@@ -24,7 +24,7 @@ void TriangleMeshShape_LocalGetSupportingVertexWithoutMargin(btTriangleMeshShape
 
 Vector3 TriangleMeshShape::LocalGetSupportingVertex(Vector3 vec)
 {
-	VECTOR3_DEF(vec);
+	VECTOR3_CONV(vec);
 	btVector3* vecOut = ALIGNED_NEW(btVector3);
 	TriangleMeshShape_LocalGetSupportingVertex(Native, VECTOR3_PTR(vec), vecOut);
 	Vector3 vertex = Math::BtVector3ToVector3(vecOut);
@@ -35,7 +35,7 @@ Vector3 TriangleMeshShape::LocalGetSupportingVertex(Vector3 vec)
 
 Vector3 TriangleMeshShape::LocalGetSupportingVertexWithoutMargin(Vector3 vec)
 {
-	VECTOR3_DEF(vec);
+	VECTOR3_CONV(vec);
 	btVector3* vecOut = ALIGNED_NEW(btVector3);
 	TriangleMeshShape_LocalGetSupportingVertexWithoutMargin(Native, VECTOR3_PTR(vec), vecOut);
 	Vector3 vertex = Math::BtVector3ToVector3(vecOut);	VECTOR3_DEL(vec);

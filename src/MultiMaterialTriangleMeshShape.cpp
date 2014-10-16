@@ -33,24 +33,28 @@ MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInter
 	bool useQuantizedAabbCompression, Vector3 bvhAabbMin, Vector3 bvhAabbMax, bool buildBvh)
 	: BvhTriangleMeshShape(0)
 {
-	VECTOR3_DEF(bvhAabbMin);
-	VECTOR3_DEF(bvhAabbMax);
+	VECTOR3_CONV(bvhAabbMin);
+	VECTOR3_CONV(bvhAabbMax);
 	UnmanagedPointer = new btMultimaterialTriangleMeshShape(meshInterface->_native, useQuantizedAabbCompression,
 		VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax), buildBvh);
 	VECTOR3_DEL(bvhAabbMin);
 	VECTOR3_DEL(bvhAabbMax);
+
+	_meshInterface = meshInterface;
 }
 
 MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface,
 	bool useQuantizedAabbCompression, Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 	: BvhTriangleMeshShape(0)
 {
-	VECTOR3_DEF(bvhAabbMin);
-	VECTOR3_DEF(bvhAabbMax);
+	VECTOR3_CONV(bvhAabbMin);
+	VECTOR3_CONV(bvhAabbMax);
 	UnmanagedPointer = new btMultimaterialTriangleMeshShape(meshInterface->_native, useQuantizedAabbCompression,
 		VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax));
 	VECTOR3_DEL(bvhAabbMin);
 	VECTOR3_DEL(bvhAabbMax);
+
+	_meshInterface = meshInterface;
 }
 
 BulletMaterial MultimaterialTriangleMeshShape::GetMaterialProperties(int partID, int triIndex)

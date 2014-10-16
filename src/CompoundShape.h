@@ -10,13 +10,14 @@ namespace BulletSharp
 
 	public ref class CompoundShapeChild
 	{
+	private:
+		CollisionShape^ _childShape;
+
 	internal:
 		btCompoundShapeChild* _native;
-		CompoundShapeChild(btCompoundShapeChild* native);
+		CompoundShapeChild(btCompoundShapeChild* native, CollisionShape^ shape);
 
 	public:
-		CompoundShapeChild();
-
 		property btScalar ChildMargin
 		{
 			btScalar get();
@@ -62,6 +63,7 @@ namespace BulletSharp
 		CompoundShape(bool enableDynamicAabbTree);
 		CompoundShape();
 
+		void AddChildShape(Matrix% localTransform, CollisionShape^ shape);
 		void AddChildShape(Matrix localTransform, CollisionShape^ shape);
 		void CalculatePrincipalAxisTransform(array<btScalar>^ masses, Matrix% principal, [Out] Vector3% inertia);
 		void CreateAabbTreeFromChildren();

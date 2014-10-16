@@ -16,6 +16,7 @@ namespace BulletSharp
 		btStridingMeshInterface* _native;
 		StridingMeshInterface(btStridingMeshInterface* native);
 		static StridingMeshInterface^ GetManaged(btStridingMeshInterface* stridingMesh);
+
 	public:
 		!StridingMeshInterface();
 	protected:

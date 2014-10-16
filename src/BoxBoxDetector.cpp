@@ -7,15 +7,10 @@
 
 #define Native static_cast<btBoxBoxDetector*>(_native)
 
-BoxBoxDetector::BoxBoxDetector(btBoxBoxDetector* detector)
-: DiscreteCollisionDetectorInterface(detector)
-{
-}
-
 BoxBoxDetector::BoxBoxDetector(BoxShape^ box1, BoxShape^ box2)
-: DiscreteCollisionDetectorInterface(0)
+	: DiscreteCollisionDetectorInterface(ALIGNED_NEW(btBoxBoxDetector) ((btBoxShape*)box1->_native,
+		(btBoxShape*)box2->_native))
 {
-	_native = ALIGNED_NEW(btBoxBoxDetector) ((btBoxShape*)box1->_native, (btBoxShape*)box2->_native);
 }
 
 BoxShape^ BoxBoxDetector::Box1::get()

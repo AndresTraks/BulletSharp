@@ -43,6 +43,8 @@ namespace DistanceDemo
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, null, CollisionConf);
             World.Gravity = new Vector3(0, -10, 0);
             IsDebugDrawEnabled = true;
+            Vector3 a = Vector3.Zero;
+            World.DebugDrawWorld();
 
             // ground
             CollisionShape groundShape = new BoxShape(50, 1, 50);

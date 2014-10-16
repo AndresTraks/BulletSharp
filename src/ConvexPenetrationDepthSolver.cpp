@@ -23,44 +23,40 @@ ConvexPenetrationDepthSolver::!ConvexPenetrationDepthSolver()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 bool ConvexPenetrationDepthSolver::CalcPenDepth(SimplexSolverInterface^ simplexSolver,
 	ConvexShape^ convexA, ConvexShape^ convexB, Matrix transA, Matrix transB,
-	Vector3 v, Vector3 pa, Vector3 pb
+	[Out] Vector3% v, [Out] Vector3% pa, [Out] Vector3% pb
 #ifndef DISABLE_DEBUGDRAW
 	, IDebugDraw^ debugDraw
 #endif
 	)
 {
-	btTransform* transATemp = Math::MatrixToBtTransform(transA);
-	btTransform* transBTemp = Math::MatrixToBtTransform(transB);
-	VECTOR3_DEF(v);
-	VECTOR3_DEF(pa);
-	VECTOR3_DEF(pb);
-
-	bool ret = _native->calcPenDepth(*simplexSolver->_native,
-		(btConvexShape*)convexA->_native, (btConvexShape*)convexB->_native,
-		*transATemp, *transBTemp, VECTOR3_USE(v), VECTOR3_USE(pa), VECTOR3_USE(pb),
+	TRANSFORM_CONV(transA);
+	TRANSFORM_CONV(transB);
+	btVector3* vTemp = ALIGNED_NEW(btVector3);
+	btVector3* paTemp = ALIGNED_NEW(btVector3);
+	btVector3* pbTemp = ALIGNED_NEW(btVector3);
+	bool ret = _native->calcPenDepth(*simplexSolver->_native, (btConvexShape*)convexA->_native,
+		(btConvexShape*)convexB->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
+		*vTemp, *paTemp, *pbTemp
 #ifndef DISABLE_DEBUGDRAW
-		DebugDraw::GetUnmanaged(debugDraw)
+		, DebugDraw::GetUnmanaged(debugDraw)
 #else
-		0
+		, 0
 #endif
 		);
-
-	ALIGNED_FREE(transATemp);
-	ALIGNED_FREE(transBTemp);
-	VECTOR3_DEL(v);
-	VECTOR3_DEL(pa);
-	VECTOR3_DEL(pb);
-
+	TRANSFORM_DEL(transA);
+	TRANSFORM_DEL(transB);
+	Math::BtVector3ToVector3(vTemp, v);
+	Math::BtVector3ToVector3(paTemp, pa);
+	Math::BtVector3ToVector3(pbTemp, pb);
+	ALIGNED_FREE(vTemp);
+	ALIGNED_FREE(paTemp);
+	ALIGNED_FREE(pbTemp);
 	return ret;
 }
 

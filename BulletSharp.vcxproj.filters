@@ -183,6 +183,12 @@
     <ClCompile Include="src\AxisSweep3.cpp">
       <Filter>Source Files\BulletCollision\BroadphaseCollision</Filter>
     </ClCompile>
+    <ClCompile Include="src\Box2DBox2DCollisionAlgorithm.cpp">
+      <Filter>Source Files\BulletCollision\CollisionDispatch</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Box2DShape.cpp">
+      <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
+    </ClCompile>
     <ClCompile Include="src\BoxBoxCollisionAlgorithm.cpp">
       <Filter>Source Files\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
@@ -279,6 +285,12 @@
     <ClCompile Include="src\ContinuousConvexCollision.cpp">
       <Filter>Source Files\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
+    <ClCompile Include="src\Convex2DConvex2DAlgorithm.cpp">
+      <Filter>Source Files\BulletCollision\CollisionDispatch</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Convex2DShape.cpp">
+      <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
+    </ClCompile>
     <ClCompile Include="src\ConvexCast.cpp">
       <Filter>Source Files\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
@@ -335,6 +347,9 @@
     </ClCompile>
     <ClCompile Include="src\DefaultMotionState.cpp">
       <Filter>Source Files\LinearMath</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DefaultSoftBodySolver.cpp">
+      <Filter>Source Files\BulletSoftBody</Filter>
     </ClCompile>
     <ClCompile Include="src\DiscreteCollisionDetectorInterface.cpp">
       <Filter>Source Files\BulletCollision\NarrowPhaseCollision</Filter>
@@ -435,10 +450,10 @@
     <ClCompile Include="src\MinkowskiSumShape.cpp">
       <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
-    <ClCompile Include="src\MLCPSolver.cpp">
+    <ClCompile Include="src\MlcpSolver.cpp">
       <Filter>Source Files\BulletDynamics\MLCPSolvers</Filter>
     </ClCompile>
-    <ClCompile Include="src\MLCPSolverInterface.cpp">
+    <ClCompile Include="src\MlcpSolverInterface.cpp">
       <Filter>Source Files\BulletDynamics\MLCPSolvers</Filter>
     </ClCompile>
     <ClCompile Include="src\MotionState.cpp">
@@ -690,21 +705,6 @@
     <ClCompile Include="src\VoronoiSimplexSolver.cpp">
       <Filter>Source Files\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
-    <ClCompile Include="src\DefaultSoftBodySolver.cpp">
-      <Filter>Source Files\BulletSoftBody</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Box2DShape.cpp">
-      <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Convex2DShape.cpp">
-      <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Box2DBox2DCollisionAlgorithm.cpp">
-      <Filter>Source Files\BulletCollision\CollisionDispatch</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Convex2DConvex2DAlgorithm.cpp">
-      <Filter>Source Files\BulletCollision\CollisionDispatch</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\Resources.rc">
@@ -720,6 +720,12 @@
     </ClInclude>
     <ClInclude Include="src\AxisSweep3.h">
       <Filter>Header Files\BulletCollision\BroadphaseCollision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Box2DBox2DCollisionAlgorithm.h">
+      <Filter>Header Files\BulletCollision\CollisionDispatch</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Box2DShape.h">
+      <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="src\BoxBoxCollisionAlgorithm.h">
       <Filter>Header Files\BulletCollision\CollisionDispatch</Filter>
@@ -817,6 +823,12 @@
     <ClInclude Include="src\ContinuousConvexCollision.h">
       <Filter>Header Files\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
+    <ClInclude Include="src\Convex2DConvex2DAlgorithm.h">
+      <Filter>Header Files\BulletCollision\CollisionDispatch</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Convex2DShape.h">
+      <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
+    </ClInclude>
     <ClInclude Include="src\ConvexCast.h">
       <Filter>Header Files\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
@@ -873,6 +885,9 @@
     </ClInclude>
     <ClInclude Include="src\DefaultMotionState.h">
       <Filter>Header Files\LinearMath</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DefaultSoftBodySolver.h">
+      <Filter>Header Files\BulletSoftBody</Filter>
     </ClInclude>
     <ClInclude Include="src\DiscreteCollisionDetectorInterface.h">
       <Filter>Header Files\BulletCollision\NarrowPhaseCollision</Filter>
@@ -955,6 +970,9 @@
     <ClInclude Include="src\InternalEdgeUtility.h">
       <Filter>Header Files\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
+    <ClInclude Include="src\ITrackingDisposable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\KinematicCharacterController.h">
       <Filter>Header Files\BulletDynamics\Character</Filter>
     </ClInclude>
@@ -979,10 +997,10 @@
     <ClInclude Include="src\MinkowskiSumShape.h">
       <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
-    <ClInclude Include="src\MLCPSolver.h">
+    <ClInclude Include="src\MlcpSolver.h">
       <Filter>Header Files\BulletDynamics\MLCPSolvers</Filter>
     </ClInclude>
-    <ClInclude Include="src\MLCPSolverInterface.h">
+    <ClInclude Include="src\MlcpSolverInterface.h">
       <Filter>Header Files\BulletDynamics\MLCPSolvers</Filter>
     </ClInclude>
     <ClInclude Include="src\MotionState.h">
@@ -1236,24 +1254,6 @@
     </ClInclude>
     <ClInclude Include="src\VoronoiSimplexSolver.h">
       <Filter>Header Files\BulletCollision\NarrowPhaseCollision</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DefaultSoftBodySolver.h">
-      <Filter>Header Files\BulletSoftBody</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ITrackingDisposable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Box2DShape.h">
-      <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Convex2DShape.h">
-      <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Box2DBox2DCollisionAlgorithm.h">
-      <Filter>Header Files\BulletCollision\CollisionDispatch</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Convex2DConvex2DAlgorithm.h">
-      <Filter>Header Files\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

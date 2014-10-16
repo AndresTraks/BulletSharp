@@ -4,12 +4,18 @@
 
 #include "Hacd.h"
 #include "StringConv.h"
-/*
-Hacd::Hacd(HACD::HACD* native)
+
+Hacd::~Hacd()
 {
-	_native = native;
+	this->!Hacd();
 }
-*/
+
+Hacd::!Hacd()
+{
+	delete _native;
+	_native = NULL;
+}
+
 Hacd::Hacd()
 {
 	_native = new HACD::HACD();
@@ -86,7 +92,7 @@ int Hacd::GetNTrianglesCH(int numCH)
 
 void Hacd::NormalizeData()
 {
-	return _native->NormalizeData();
+	_native->NormalizeData();
 }
 
 bool Hacd::Save(String^ fileName, bool uniColor, long numCluster)

@@ -12,11 +12,6 @@ ConvexCast::CastResult::CastResult(btConvexCast::CastResult* native)
 	_native = native;
 }
 
-ConvexCast::CastResult::CastResult()
-{
-	_native = new btConvexCast::CastResult();
-}
-
 ConvexCast::CastResult::~CastResult()
 {
 	this->!CastResult();
@@ -28,6 +23,11 @@ ConvexCast::CastResult::!CastResult()
 	_native = NULL;
 }
 
+ConvexCast::CastResult::CastResult()
+{
+	_native = new btConvexCast::CastResult();
+}
+
 #ifndef DISABLE_DEBUGDRAW
 void ConvexCast::CastResult::DebugDraw (btScalar fraction)
 {
@@ -35,11 +35,11 @@ void ConvexCast::CastResult::DebugDraw (btScalar fraction)
 }
 #endif
 
-void ConvexCast::CastResult::DrawCoordSystem (Matrix trans)
+void ConvexCast::CastResult::DrawCoordSystem(Matrix trans)
 {
-	btTransform* transTemp = Math::MatrixToBtTransform(trans);
-	_native->drawCoordSystem(*transTemp);
-	ALIGNED_FREE(transTemp);
+	TRANSFORM_CONV(trans);
+	_native->drawCoordSystem(TRANSFORM_USE(trans));
+	TRANSFORM_DEL(trans);
 }
 
 void ConvexCast::CastResult::ReportFailure(int errNo, int numIterations)
@@ -144,8 +144,8 @@ bool ConvexCast::CalcTimeOfImpact(Matrix fromA, Matrix toA, Matrix fromB, Matrix
 	TRANSFORM_CONV(toA);
 	TRANSFORM_CONV(fromB);
 	TRANSFORM_CONV(toB);
-	bool ret = _native->calcTimeOfImpact(TRANSFORM_USE(fromA), TRANSFORM_USE(toA), TRANSFORM_USE(fromB),
-		TRANSFORM_USE(toB), *result->_native);
+	bool ret = _native->calcTimeOfImpact(TRANSFORM_USE(fromA), TRANSFORM_USE(toA),
+		TRANSFORM_USE(fromB), TRANSFORM_USE(toB), *result->_native);
 	TRANSFORM_DEL(fromA);
 	TRANSFORM_DEL(toA);
 	TRANSFORM_DEL(fromB);

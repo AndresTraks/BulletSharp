@@ -4,9 +4,10 @@
 
 namespace BulletSharp
 {
+	ref class CollisionConfiguration;
+
 	namespace MultiThreaded
 	{
-		ref class CollisionConfiguration;
 		ref class ThreadSupportInterface;
 
 		public ref class SpuGatheringCollisionDispatcher : CollisionDispatcher
@@ -15,8 +16,10 @@ namespace BulletSharp
 			ThreadSupportInterface^ _threadInterface;
 
 		public:
-			SpuGatheringCollisionDispatcher(ThreadSupportInterface^ threadInterface,
-				int maxNumOutstandingTasks, BulletSharp::CollisionConfiguration^ collisionConfiguration);
+			SpuGatheringCollisionDispatcher(ThreadSupportInterface^ threadInterface, unsigned int maxNumOutstandingTasks,
+				BulletSharp::CollisionConfiguration^ collisionConfiguration);
+
+			bool SupportsDispatchPairOnSpu(int proxyType0, int proxyType1);
 		};
 	};
 };

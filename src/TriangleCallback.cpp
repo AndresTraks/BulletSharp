@@ -23,7 +23,7 @@ TriangleCallback::!TriangleCallback()
 /*
 void TriangleCallback::ProcessTriangle(Vector3 triangle, int partId, int triangleIndex)
 {
-	VECTOR3_DEF(triangle);
+	VECTOR3_CONV(triangle);
 	_native->processTriangle(VECTOR3_USE(triangle), partId, triangleIndex);
 	VECTOR3_DEL(triangle);
 }
@@ -57,7 +57,7 @@ InternalTriangleIndexCallback::!InternalTriangleIndexCallback()
 void InternalTriangleIndexCallback::InternalProcessTriangleIndex(Vector3 triangle,
 	int partId, int triangleIndex)
 {
-	VECTOR3_DEF(triangle);
+	VECTOR3_CONV(triangle);
 	_native->internalProcessTriangleIndex(VECTOR3_USE(triangle), partId, triangleIndex);
 	VECTOR3_DEL(triangle);
 }

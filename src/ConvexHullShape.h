@@ -15,8 +15,8 @@ namespace BulletSharp
 		ConvexHullShape(btConvexHullShape* native);
 
 	public:
-		ConvexHullShape();
 		ConvexHullShape(System::Collections::Generic::IEnumerable<Vector3>^ points);
+		ConvexHullShape();
 
 		void AddPoint(Vector3 point, bool recalculateLocalAabb);
 		void AddPoint(Vector3 point);

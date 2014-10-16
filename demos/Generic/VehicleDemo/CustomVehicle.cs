@@ -91,10 +91,11 @@ namespace VehicleDemo
 
         static CustomVehicle()
         {
-            var ci = new RigidBodyConstructionInfo(0, null, null);
-            fixedBody = new RigidBody(ci);
-            fixedBody.SetMassProps(0, Vector3.Zero);
-            ci.Dispose();
+            using (var ci = new RigidBodyConstructionInfo(0, null, null))
+            {
+                fixedBody = new RigidBody(ci);
+                fixedBody.SetMassProps(0, Vector3.Zero);
+            }
         }
 
         public CustomVehicle(RaycastVehicle.VehicleTuning tuning, RigidBody chassis, VehicleRaycaster raycaster)
@@ -288,7 +289,7 @@ namespace VehicleDemo
 
         private void ResolveSingleBilateral(RigidBody body1, Vector3 pos1, RigidBody body2, Vector3 pos2, float distance, Vector3 normal, ref float impulse, float timeStep)
         {
-            float normalLenSqr = normal.LengthSquared();
+            float normalLenSqr = normal.LengthSquared;
             Debug.Assert(Math.Abs(normalLenSqr) < 1.1f);
             if (normalLenSqr > 1.1f)
             {
@@ -560,7 +561,7 @@ namespace VehicleDemo
                 UpdateWheelTransform(i, false);
             }
 
-            currentVehicleSpeedKmHour = 3.6f * RigidBody.LinearVelocity.Length();
+            currentVehicleSpeedKmHour = 3.6f * RigidBody.LinearVelocity.Length;
 
             Matrix chassisTrans = ChassisWorldTransform;
 

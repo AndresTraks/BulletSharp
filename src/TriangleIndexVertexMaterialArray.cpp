@@ -5,6 +5,17 @@
 #include "DataStream.h"
 #include "TriangleIndexVertexMaterialArray.h"
 
+MaterialProperties::~MaterialProperties()
+{
+	this->!MaterialProperties();
+}
+
+MaterialProperties::!MaterialProperties()
+{
+	delete _native;
+	_native = NULL;
+}
+
 MaterialProperties::MaterialProperties()
 {
 	_native = new btMaterialProperties();

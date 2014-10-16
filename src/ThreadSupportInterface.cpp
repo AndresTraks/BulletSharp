@@ -7,37 +7,23 @@
 
 using namespace BulletSharp::MultiThreaded;
 
-MultiThreaded::Barrier::Barrier(btBarrier* barrier)
+MultiThreaded::Barrier::Barrier(btBarrier* native)
 {
-	_native = barrier;
-}
-
-MultiThreaded::Barrier::~Barrier()
-{
-	this->!Barrier();
-}
-
-MultiThreaded::Barrier::!Barrier()
-{
-	if (this->IsDisposed)
-		return;
-
-	//delete _native;
-	_native = NULL;
+	_native = native;
 }
 
 void MultiThreaded::Barrier::Sync()
 {
-	return _native->sync();
+	_native->sync();
 }
 
 int MultiThreaded::Barrier::MaxCount::get()
 {
 	return _native->getMaxCount();
 }
-void MultiThreaded::Barrier::MaxCount::set(int value)
+void MultiThreaded::Barrier::MaxCount::set(int n)
 {
-	_native->setMaxCount(value);
+	_native->setMaxCount(n);
 }
 
 bool MultiThreaded::Barrier::IsDisposed::get()
@@ -46,28 +32,9 @@ bool MultiThreaded::Barrier::IsDisposed::get()
 }
 
 
-MultiThreaded::CriticalSection::CriticalSection(btCriticalSection* criticalSection)
+MultiThreaded::CriticalSection::CriticalSection(btCriticalSection* native)
 {
-	_native = criticalSection;
-}
-
-MultiThreaded::CriticalSection::~CriticalSection()
-{
-	this->!CriticalSection();
-}
-
-MultiThreaded::CriticalSection::!CriticalSection()
-{
-	if (this->IsDisposed)
-		return;
-
-	//delete _native;
-	_native = NULL;
-}
-
-UIntArray^ MultiThreaded::CriticalSection::CommonBuff::get()
-{
-	return gcnew UIntArray(_native->mCommonBuff, 32);
+	_native = native;
 }
 
 unsigned int MultiThreaded::CriticalSection::GetSharedParam(int i)
@@ -75,19 +42,24 @@ unsigned int MultiThreaded::CriticalSection::GetSharedParam(int i)
 	return _native->getSharedParam(i);
 }
 
-void MultiThreaded::CriticalSection::SetSharedParam(int i, unsigned int p)
-{
-	return _native->setSharedParam(i, p);
-}
-
 void MultiThreaded::CriticalSection::Lock()
 {
 	_native->lock();
 }
 
+void MultiThreaded::CriticalSection::SetSharedParam(int i, unsigned int p)
+{
+	_native->setSharedParam(i, p);
+}
+
 void MultiThreaded::CriticalSection::Unlock()
 {
 	_native->unlock();
+}
+
+UIntArray^ MultiThreaded::CriticalSection::CommonBuff::get()
+{
+	return gcnew UIntArray(_native->mCommonBuff, 32);
 }
 
 bool MultiThreaded::CriticalSection::IsDisposed::get()
@@ -96,9 +68,9 @@ bool MultiThreaded::CriticalSection::IsDisposed::get()
 }
 
 
-MultiThreaded::ThreadSupportInterface::ThreadSupportInterface(btThreadSupportInterface* threadSupport)
+MultiThreaded::ThreadSupportInterface::ThreadSupportInterface(btThreadSupportInterface* native)
 {
-	_native = threadSupport;
+	_native = native;
 }
 
 MultiThreaded::ThreadSupportInterface::~ThreadSupportInterface()
@@ -108,9 +80,6 @@ MultiThreaded::ThreadSupportInterface::~ThreadSupportInterface()
 
 MultiThreaded::ThreadSupportInterface::!ThreadSupportInterface()
 {
-	if (this->IsDisposed)
-		return;
-
 	delete _native;
 	_native = NULL;
 }
@@ -140,7 +109,8 @@ IntPtr MultiThreaded::ThreadSupportInterface::GetThreadLocalMemory(int taskId)
 	return IntPtr(_native->getThreadLocalMemory(taskId));
 }
 
-void MultiThreaded::ThreadSupportInterface::SendRequest(uint32_t uiCommand, ppu_address_t uiArgument0, uint32_t uiArgument1)
+void MultiThreaded::ThreadSupportInterface::SendRequest(uint32_t uiCommand, ppu_address_t uiArgument0,
+	uint32_t uiArgument1)
 {
 	_native->sendRequest(uiCommand, uiArgument0, uiArgument1);
 }
@@ -170,9 +140,9 @@ int MultiThreaded::ThreadSupportInterface::NumTasks::get()
 {
 	return _native->getNumTasks();
 }
-void MultiThreaded::ThreadSupportInterface::NumTasks::set(int value)
+void MultiThreaded::ThreadSupportInterface::NumTasks::set(int numTasks)
 {
-	_native->setNumTasks(value);
+	_native->setNumTasks(numTasks);
 }
 
 bool MultiThreaded::ThreadSupportInterface::IsDisposed::get()

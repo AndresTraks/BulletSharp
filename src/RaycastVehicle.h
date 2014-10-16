@@ -14,11 +14,15 @@ namespace BulletSharp
 	public ref class RaycastVehicle : IActionInterface,  ITrackingDisposable
 	{
 	public:
-		ref class VehicleTuning
+		ref class VehicleTuning : IDisposable
 		{
 		internal:
 			btRaycastVehicle::btVehicleTuning* _native;
-			//VehicleTuning(btVehicleTuning* native);
+
+		public:
+			!VehicleTuning();
+		protected:
+			~VehicleTuning();
 
 		public:
 			VehicleTuning();
@@ -66,7 +70,6 @@ namespace BulletSharp
 
 	internal:
 		btRaycastVehicle* _native;
-		//RaycastVehicle(btRaycastVehicle* native);
 
 	private:
 		RigidBody^ _chassisBody;
@@ -148,19 +151,7 @@ namespace BulletSharp
 		{
 			int get();
 		}
-/*
-		property int UserConstraintId
-		{
-			int get();
-			void set(int uid);
-		}
 
-		property int UserConstraintType
-		{
-			int get();
-			void set(int userConstraintType);
-		}
-*/
 		property AlignedWheelInfoArray^ WheelInfo
 		{
 			AlignedWheelInfoArray^ get();
@@ -169,9 +160,6 @@ namespace BulletSharp
 
 	public ref class DefaultVehicleRaycaster : VehicleRaycaster
 	{
-	internal:
-		//DefaultVehicleRaycaster(btDefaultVehicleRaycaster* native);
-
 	public:
 		DefaultVehicleRaycaster(DynamicsWorld^ world);
 	};

@@ -53,8 +53,8 @@ void CollisionWorld::LocalShapeInfo::TriangleIndex::set(int value)
 CollisionWorld::LocalConvexResult::LocalConvexResult(BulletSharp::CollisionObject^ collisionObject, CollisionWorld::LocalShapeInfo^ localShapeInfo,
 	Vector3 hitNormalLocal, Vector3 hitPointLocal, btScalar hitFraction)
 {
-	VECTOR3_DEF(hitNormalLocal);
-	VECTOR3_DEF(hitPointLocal);
+	VECTOR3_CONV(hitNormalLocal);
+	VECTOR3_CONV(hitPointLocal);
 
 	_native = new btCollisionWorld::LocalConvexResult(collisionObject->_native, localShapeInfo->_native,
 		VECTOR3_USE(hitNormalLocal), VECTOR3_USE(hitPointLocal), hitFraction);
@@ -181,8 +181,8 @@ bool CollisionWorld::ConvexResultCallback::IsDisposed::get()
 CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3 convexFromWorld, Vector3 convexToWorld)
 : ConvexResultCallback(0)
 {
-	VECTOR3_DEF(convexFromWorld);
-	VECTOR3_DEF(convexToWorld);
+	VECTOR3_CONV(convexFromWorld);
+	VECTOR3_CONV(convexToWorld);
 
 	_native = ALIGNED_NEW(btCollisionWorld::ClosestConvexResultCallback) (VECTOR3_USE(convexFromWorld), VECTOR3_USE(convexToWorld));
 
@@ -193,8 +193,8 @@ CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3
 CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3% convexFromWorld, Vector3% convexToWorld)
 : ConvexResultCallback(0)
 {
-	VECTOR3_DEF(convexFromWorld);
-	VECTOR3_DEF(convexToWorld);
+	VECTOR3_CONV(convexFromWorld);
+	VECTOR3_CONV(convexToWorld);
 
 	_native = ALIGNED_NEW(btCollisionWorld::ClosestConvexResultCallback) (VECTOR3_USE(convexFromWorld), VECTOR3_USE(convexToWorld));
 
@@ -310,7 +310,7 @@ CollisionWorld::LocalShapeInfo::LocalShapeInfo(btCollisionWorld::LocalShapeInfo*
 CollisionWorld::LocalRayResult::LocalRayResult(BulletSharp::CollisionObject^ collisionObject, CollisionWorld::LocalShapeInfo^ localShapeInfo,
 	Vector3 hitNormalLocal, btScalar hitFraction)
 {
-	VECTOR3_DEF(hitNormalLocal);
+	VECTOR3_CONV(hitNormalLocal);
 
 	_native = new btCollisionWorld::LocalRayResult(collisionObject->_native, localShapeInfo->_native,
 		VECTOR3_USE(hitNormalLocal), hitFraction);
@@ -443,8 +443,8 @@ bool CollisionWorld::RayResultCallback::IsDisposed::get()
 CollisionWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld)
 : RayResultCallback(0)
 {
-	VECTOR3_DEF(rayFromWorld);
-	VECTOR3_DEF(rayToWorld);
+	VECTOR3_CONV(rayFromWorld);
+	VECTOR3_CONV(rayToWorld);
 
 	_native = ALIGNED_NEW(btCollisionWorld::ClosestRayResultCallback) (VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld));
 
@@ -455,8 +455,8 @@ CollisionWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3 rayFr
 CollisionWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3% rayFromWorld, Vector3% rayToWorld)
 : RayResultCallback(0)
 {
-	VECTOR3_DEF(rayFromWorld);
-	VECTOR3_DEF(rayToWorld);
+	VECTOR3_CONV(rayFromWorld);
+	VECTOR3_CONV(rayToWorld);
 
 	_native = ALIGNED_NEW(btCollisionWorld::ClosestRayResultCallback) (VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld));
 
@@ -507,8 +507,8 @@ void CollisionWorld::ClosestRayResultCallback::RayToWorld::set(Vector3 value)
 CollisionWorld::AllHitsRayResultCallback::AllHitsRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld)
 : RayResultCallback(0)
 {
-	VECTOR3_DEF(rayFromWorld);
-	VECTOR3_DEF(rayToWorld);
+	VECTOR3_CONV(rayFromWorld);
+	VECTOR3_CONV(rayToWorld);
 
 	_native = new btCollisionWorld::AllHitsRayResultCallback(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld));
 
@@ -574,6 +574,7 @@ void CollisionWorld::AllHitsRayResultCallback::RayToWorld::set(Vector3 value)
 CollisionWorld::CollisionWorld(btCollisionWorld* native)
 {
 	_native = native;
+	_collisionObjectArray = gcnew AlignedCollisionObjectArray(&_native->getCollisionObjectArray(), native);
 }
 
 CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphasePairCache,
@@ -581,6 +582,7 @@ CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseIn
 {
 	_native = new btCollisionWorld(dispatcher->_native, broadphasePairCache->_native,
 		collisionConfiguration->_native);
+	_collisionObjectArray = gcnew AlignedCollisionObjectArray(&_native->getCollisionObjectArray(), _native);
 	_dispatcher = dispatcher;
 	_broadphase = broadphasePairCache;
 }
@@ -648,17 +650,17 @@ CollisionWorld::!CollisionWorld()
 void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup,
 	CollisionFilterGroups collisionFilterMask)
 {
-	_native->addCollisionObject(collisionObject->_native, (short int)collisionFilterGroup, (short int)collisionFilterMask);
+	_collisionObjectArray->Add(collisionObject, (short)collisionFilterGroup, (short)collisionFilterMask);
 }
 
-void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup)
+void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject, short collisionFilterGroup, short collisionFilterMask)
 {
-	_native->addCollisionObject(collisionObject->_native, (short int)collisionFilterGroup);
+	_collisionObjectArray->Add(collisionObject, collisionFilterGroup, collisionFilterMask);
 }
 
 void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject)
 {
-	_native->addCollisionObject(collisionObject->_native);
+	_collisionObjectArray->Add(collisionObject);
 }
 
 void CollisionWorld::ComputeOverlappingPairs()
@@ -682,8 +684,8 @@ void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix
 {
 	TRANSFORM_CONV(from);
 	TRANSFORM_CONV(to);
-	_native->convexSweepTest((btConvexShape*)castShape->_native, TRANSFORM_USE(from), TRANSFORM_USE(to),
-		*resultCallback->_native, allowedCcdPenetration);
+	_native->convexSweepTest((btConvexShape*)castShape->_native, TRANSFORM_USE(from),
+		TRANSFORM_USE(to), *resultCallback->_native, allowedCcdPenetration);
 	TRANSFORM_DEL(from);
 	TRANSFORM_DEL(to);
 }
@@ -693,8 +695,8 @@ void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix
 {
 	TRANSFORM_CONV(from);
 	TRANSFORM_CONV(to);
-	_native->convexSweepTest((btConvexShape*)castShape->_native, TRANSFORM_USE(from), TRANSFORM_USE(to),
-		*resultCallback->_native);
+	_native->convexSweepTest((btConvexShape*)castShape->_native, TRANSFORM_USE(from),
+		TRANSFORM_USE(to), *resultCallback->_native);
 	TRANSFORM_DEL(from);
 	TRANSFORM_DEL(to);
 }
@@ -737,8 +739,8 @@ void CollisionWorld::PerformDiscreteCollisionDetection()
 
 void CollisionWorld::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResultCallback^ resultCallback)
 {
-	VECTOR3_DEF(rayFromWorld);
-	VECTOR3_DEF(rayToWorld);
+	VECTOR3_CONV(rayFromWorld);
+	VECTOR3_CONV(rayToWorld);
 	_native->rayTest(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld), *resultCallback->_native);
 	VECTOR3_DEL(rayFromWorld);
 	VECTOR3_DEL(rayToWorld);
@@ -746,8 +748,8 @@ void CollisionWorld::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResult
 
 void CollisionWorld::RayTest(Vector3% rayFromWorld, Vector3% rayToWorld, RayResultCallback^ resultCallback)
 {
-	VECTOR3_DEF(rayFromWorld);
-	VECTOR3_DEF(rayToWorld);
+	VECTOR3_CONV(rayFromWorld);
+	VECTOR3_CONV(rayToWorld);
 	_native->rayTest(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld), *resultCallback->_native);
 	VECTOR3_DEL(rayFromWorld);
 	VECTOR3_DEL(rayToWorld);
@@ -769,7 +771,7 @@ void CollisionWorld::RayTestSingle(Matrix rayFromTrans, Matrix rayToTrans, Colli
 
 void CollisionWorld::RemoveCollisionObject(CollisionObject^ collisionObject)
 {
-	_native->removeCollisionObject(collisionObject->_native);
+	_collisionObjectArray->Remove(collisionObject);
 }
 
 #ifndef DISABLE_SERIALIZE
@@ -801,10 +803,6 @@ void CollisionWorld::Broadphase::set(BroadphaseInterface^ pairCache)
 
 AlignedCollisionObjectArray^ CollisionWorld::CollisionObjectArray::get()
 {
-	if (_collisionObjectArray == nullptr)
-	{
-		_collisionObjectArray = gcnew AlignedCollisionObjectArray(&_native->getCollisionObjectArray());
-	}
 	return _collisionObjectArray;
 }
 
@@ -813,9 +811,9 @@ IDebugDraw^ CollisionWorld::DebugDrawer::get()
 {
 	return DebugDraw::GetManaged(_native->getDebugDrawer());
 }
-void CollisionWorld::DebugDrawer::set(IDebugDraw^ value)
+void CollisionWorld::DebugDrawer::set(IDebugDraw^ debugDrawer)
 {
-	_native->setDebugDrawer(DebugDraw::GetUnmanaged(value));
+	_native->setDebugDrawer(DebugDraw::GetUnmanaged(debugDrawer));
 }
 #endif
 
@@ -868,7 +866,7 @@ btScalar ContactResultCallbackWrapper::addSingleResult(btManifoldPoint& cp,
 	const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0,
 	const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
 {
-	return _callback->AddSingleResult(gcnew ManifoldPoint(&cp),
+	return _callback->AddSingleResult(gcnew ManifoldPoint(&cp, true),
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap), partId0, index0,
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj1Wrap), partId1, index1);
 }

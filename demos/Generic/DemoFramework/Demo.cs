@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using BulletSharp;
@@ -54,7 +55,7 @@ namespace DemoFramework
         protected CollisionDispatcher Dispatcher;
         protected BroadphaseInterface Broadphase;
         protected ConstraintSolver Solver;
-        public AlignedCollisionShapeArray CollisionShapes { get; private set; }
+        public List<CollisionShape> CollisionShapes { get; private set; }
 
         protected BoxShape shootBoxShape;
         protected float shootBoxInitialSpeed = 40;
@@ -69,15 +70,13 @@ namespace DemoFramework
             {
                 if (_world == null || _world.DebugDrawer == null)
                     return debugDrawMode;
-                else
-                    return _world.DebugDrawer.DebugMode;
+                return _world.DebugDrawer.DebugMode;
             }
             set
             {
-                if (_world == null || _world.DebugDrawer == null)
-                    debugDrawMode = value;
-                else
+                if (_world != null && _world.DebugDrawer != null)
                     _world.DebugDrawer.DebugMode = value;
+                debugDrawMode = value;
             }
         }
 
@@ -111,7 +110,7 @@ namespace DemoFramework
 
         public Demo()
         {
-            CollisionShapes = new AlignedCollisionShapeArray();
+            CollisionShapes = new List<CollisionShape>();
         }
 
         public void Run()
@@ -157,7 +156,7 @@ namespace DemoFramework
                 {
                     TypedConstraint constraint = _world.GetConstraint(i);
                     _world.RemoveConstraint(constraint);
-                    constraint.Dispose(); ;
+                    constraint.Dispose();
                 }
 
                 //remove the rigidbodies from the dynamics world and delete them
@@ -341,7 +340,7 @@ namespace DemoFramework
                                         */
                                     }
 
-                                    oldPickingDist = (pickPos - rayFrom).Length();
+                                    oldPickingDist = (pickPos - rayFrom).Length;
                                 }
                             }
                         }

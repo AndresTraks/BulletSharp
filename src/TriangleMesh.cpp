@@ -9,13 +9,13 @@ TriangleMesh::TriangleMesh(btTriangleMesh* native)
 {
 }
 
-TriangleMesh::TriangleMesh(bool use32BitIndexes, bool use4ComponentVertices)
-	: TriangleIndexVertexArray(new btTriangleMesh(use32BitIndexes, use4ComponentVertices))
+TriangleMesh::TriangleMesh(bool use32BitIndices, bool use4ComponentVertices)
+	: TriangleIndexVertexArray(new btTriangleMesh(use32BitIndices, use4ComponentVertices))
 {
 }
 
-TriangleMesh::TriangleMesh(bool use32BitIndexes)
-	: TriangleIndexVertexArray(new btTriangleMesh(use32BitIndexes))
+TriangleMesh::TriangleMesh(bool use32BitIndices)
+	: TriangleIndexVertexArray(new btTriangleMesh(use32BitIndices))
 {
 }
 
@@ -34,9 +34,9 @@ void TriangleMesh::AddIndex(int index)
 void TriangleMesh::AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2,
 	bool removeDuplicateVertices)
 {
-	VECTOR3_DEF(vertex0);
-	VECTOR3_DEF(vertex1);
-	VECTOR3_DEF(vertex2);
+	VECTOR3_CONV(vertex0);
+	VECTOR3_CONV(vertex1);
+	VECTOR3_CONV(vertex2);
 	Native->addTriangle(VECTOR3_USE(vertex0), VECTOR3_USE(vertex1), VECTOR3_USE(vertex2),
 		removeDuplicateVertices);
 	VECTOR3_DEL(vertex0);
@@ -46,9 +46,9 @@ void TriangleMesh::AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2
 
 void TriangleMesh::AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2)
 {
-	VECTOR3_DEF(vertex0);
-	VECTOR3_DEF(vertex1);
-	VECTOR3_DEF(vertex2);
+	VECTOR3_CONV(vertex0);
+	VECTOR3_CONV(vertex1);
+	VECTOR3_CONV(vertex2);
 	Native->addTriangle(VECTOR3_USE(vertex0), VECTOR3_USE(vertex1), VECTOR3_USE(vertex2));
 	VECTOR3_DEL(vertex0);
 	VECTOR3_DEL(vertex1);
@@ -58,7 +58,7 @@ void TriangleMesh::AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2
 #ifndef DISABLE_INTERNAL
 int TriangleMesh::FindOrAddVertex(Vector3 vertex, bool removeDuplicateVertices)
 {
-	VECTOR3_DEF(vertex);
+	VECTOR3_CONV(vertex);
 	int ret = Native->findOrAddVertex(VECTOR3_USE(vertex), removeDuplicateVertices);
 	VECTOR3_DEL(vertex);
 	return ret;
@@ -70,7 +70,7 @@ int TriangleMesh::NumTriangles::get()
 	return Native->getNumTriangles();
 }
 
-bool TriangleMesh::Use32BitIndexes::get()
+bool TriangleMesh::Use32BitIndices::get()
 {
 	return Native->getUse32bitIndices();
 }

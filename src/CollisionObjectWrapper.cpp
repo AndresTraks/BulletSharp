@@ -4,18 +4,18 @@
 #include "CollisionObjectWrapper.h"
 #include "CollisionShape.h"
 
-CollisionObjectWrapper::CollisionObjectWrapper(btCollisionObjectWrapper* collisionObject)
+CollisionObjectWrapper::CollisionObjectWrapper(btCollisionObjectWrapper* native)
 {
-	_native = collisionObject;
+	_native = native;
 }
-
 /*
-CollisionObjectWrapper::CollisionObjectWrapper(CollisionObjectWrapper^ parent, CollisionShape^ shape, CollisionObject^ collisionObject, Matrix worldTransform, int partId, int index)
+CollisionObjectWrapper::CollisionObjectWrapper(CollisionObjectWrapper^ parent, CollisionShape^ shape,
+	CollisionObject^ collisionObject, Matrix worldTransform, int partId, int index)
 {
-	btTransform* worldTransformTemp = Math::MatrixToBtTransform(worldTransform);
+	TRANSFORM_CONV(worldTransform);
 	_native = &btCollisionObjectWrapper(GetUnmanagedNullable(parent), GetUnmanagedNullable(shape),
-		GetUnmanagedNullable(collisionObject), *worldTransformTemp, partId, index);
-	delete worldTransformTemp;
+		GetUnmanagedNullable(collisionObject), TRANSFORM_USE(worldTransform), partId, index);
+	TRANSFORM_DEL(worldTransform);
 }
 
 CollisionObjectWrapper::~CollisionObjectWrapper()
@@ -28,7 +28,7 @@ CollisionObjectWrapper::!CollisionObjectWrapper()
 	if (this->IsDisposed)
 		return;
 
-	if (_doesNotOwnObject == false)
+	if (!_preventDelete)
 	{
 		delete _native;
 	}

@@ -4,7 +4,7 @@ namespace BulletSharp
 {
 	ref class RigidBody;
 
-	public ref class WheelInfoConstructionInfo
+	public ref class WheelInfoConstructionInfo : IDisposable
 	{
 	internal:
 		btWheelInfoConstructionInfo* _native;
@@ -66,18 +66,6 @@ namespace BulletSharp
 			void set(Vector3 value);
 		}
 
-		property btScalar WheelsDampingCompression
-		{
-			btScalar get();
-			void set(btScalar value);
-		}
-
-		property btScalar WheelsDampingRelaxation
-		{
-			btScalar get();
-			void set(btScalar value);
-		}
-
 		property Vector3 WheelDirectionCS
 		{
 			Vector3 get();
@@ -85,6 +73,18 @@ namespace BulletSharp
 		}
 
 		property btScalar WheelRadius
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property btScalar WheelsDampingCompression
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property btScalar WheelsDampingRelaxation
 		{
 			btScalar get();
 			void set(btScalar value);
@@ -98,8 +98,6 @@ namespace BulletSharp
 		RaycastInfo(btWheelInfo::RaycastInfo* native);
 
 	public:
-		RaycastInfo();
-
 		property Vector3 ContactNormalWS
 		{
 			Vector3 get();
@@ -153,10 +151,16 @@ namespace BulletSharp
 	{
 	internal:
 		btWheelInfo* _native;
-		WheelInfo(btWheelInfo* native);
+		WheelInfo(btWheelInfo* native, bool preventDelete);
 
 	private:
+		bool _preventDelete;
 		RaycastInfo^ _raycastInfo;
+
+	public:
+		!WheelInfo();
+	protected:
+		~WheelInfo();
 
 	public:
 		WheelInfo(WheelInfoConstructionInfo^ ci);
@@ -226,7 +230,6 @@ namespace BulletSharp
 		property ::RaycastInfo^ RaycastInfo
 		{
 			::RaycastInfo^ get();
-			void set(::RaycastInfo^ value);
 		}
 
 		property btScalar RollInfluence
@@ -282,6 +285,12 @@ namespace BulletSharp
 			void set(Vector3 value);
 		}
 
+		property Vector3 WheelDirectionCS
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
 		property btScalar WheelsDampingCompression
 		{
 			btScalar get();
@@ -292,12 +301,6 @@ namespace BulletSharp
 		{
 			btScalar get();
 			void set(btScalar value);
-		}
-
-		property Vector3 WheelDirectionCS
-		{
-			Vector3 get();
-			void set(Vector3 value);
 		}
 
 		property btScalar WheelsRadius

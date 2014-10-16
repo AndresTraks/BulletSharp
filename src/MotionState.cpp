@@ -2,6 +2,13 @@
 
 #include "MotionState.h"
 
+MotionState::MotionState(btMotionState* native)
+{
+	if (native) {
+		_native = native;
+	}
+}
+
 MotionState::MotionState()
 {
 	MotionStateWrapper* state = new MotionStateWrapper();
@@ -9,14 +16,8 @@ MotionState::MotionState()
 	_native = state;
 }
 
-MotionState::MotionState(btMotionState* motionState)
-{
-	if (motionState) {
-		_native = motionState;
-	}
-}
-
 MotionState::~MotionState()
+
 {
 	this->!MotionState();
 }
@@ -24,5 +25,5 @@ MotionState::~MotionState()
 MotionState::!MotionState()
 {
 	delete _native;
-	_native = 0;
+	_native = NULL;
 }

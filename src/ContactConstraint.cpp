@@ -8,13 +8,17 @@
 #include "RigidBody.h"
 
 ContactConstraint::ContactConstraint(btContactConstraint* native)
-: TypedConstraint(native)
+	: TypedConstraint(native)
 {
 }
 
-ContactConstraint::ContactConstraint(PersistentManifold^ contactManifold, RigidBody^ rigidBodyA, RigidBody^ rigidBodyB)
-: TypedConstraint(new btContactConstraint(contactManifold->_native, *rigidBodyA->_native, *rigidBodyB->_native))
+PersistentManifold^ ContactConstraint::ContactManifold::get()
 {
+	return gcnew PersistentManifold(Native->getContactManifold());
+}
+void ContactConstraint::ContactManifold::set(PersistentManifold^ contactManifold)
+{
+	Native->setContactManifold((btPersistentManifold*)contactManifold->_native);
 }
 
 #endif

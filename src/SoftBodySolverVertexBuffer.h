@@ -6,12 +6,16 @@ namespace BulletSharp
 
 	namespace SoftBody
 	{
-		public ref class VertexBufferDescriptor
+		public ref class VertexBufferDescriptor abstract : IDisposable
 		{
 		internal:
 			btVertexBufferDescriptor* _native;
-
 			VertexBufferDescriptor(btVertexBufferDescriptor* native);
+
+		public:
+			!VertexBufferDescriptor();
+		protected:
+			~VertexBufferDescriptor();
 
 		public:
 			property BulletSharp::BufferType BufferType
@@ -53,11 +57,18 @@ namespace BulletSharp
 		public ref class CpuVertexBufferDescriptor : VertexBufferDescriptor
 		{
 		private:
-			int _length;
+			FloatArray^ _vertexBuffer;
 
 		public:
-			CpuVertexBufferDescriptor(FloatArray^ array, int vertexOffset, int vertexStride, int normalOffset, int normalStride);
-			
+			CpuVertexBufferDescriptor(FloatArray^ array, int vertexOffset, int vertexStride);
+			CpuVertexBufferDescriptor(FloatArray^ array, int vertexOffset, int vertexStride,
+				int normalOffset, int normalStride);
+
+			property IntPtr BasePointer
+			{
+				IntPtr get();
+			}
+
 			property FloatArray^ VertexBuffer
 			{
 				FloatArray^ get();

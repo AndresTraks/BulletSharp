@@ -1,10 +1,10 @@
 #pragma once
 
-#include "MLCPSolverInterface.h"
+#include "MlcpSolverInterface.h"
 
 namespace BulletSharp
 {
-	public ref class LemkeSolver : MLCPSolverInterface
+	public ref class LemkeSolver : MlcpSolverInterface
 	{
 	internal:
 		LemkeSolver(btLemkeSolver* native);

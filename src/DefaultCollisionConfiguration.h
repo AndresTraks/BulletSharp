@@ -6,7 +6,7 @@ namespace BulletSharp
 {
 	ref class VoronoiSimplexSolver;
 
-	public ref class DefaultCollisionConstructionInfo
+	public ref class DefaultCollisionConstructionInfo : IDisposable
 	{
 	internal:
 		btDefaultCollisionConstructionInfo* _native;
@@ -14,6 +14,11 @@ namespace BulletSharp
 	private:
 		PoolAllocator^ _collisionAlgorithmPool;
 		PoolAllocator^ _persistentManifoldPool;
+
+	public:
+		!DefaultCollisionConstructionInfo();
+	protected:
+		~DefaultCollisionConstructionInfo();
 
 	public:
 		DefaultCollisionConstructionInfo();

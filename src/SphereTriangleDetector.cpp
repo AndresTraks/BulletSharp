@@ -2,8 +2,8 @@
 
 #ifndef DISABLE_UNCOMMON
 
-#include "SphereTriangleDetector.h"
 #include "SphereShape.h"
+#include "SphereTriangleDetector.h"
 #include "TriangleShape.h"
 
 #define Native static_cast<::SphereTriangleDetector*>(_native)
@@ -23,7 +23,7 @@ BulletSharp::SphereTriangleDetector::SphereTriangleDetector(SphereShape^ sphere,
 bool BulletSharp::SphereTriangleDetector::Collide(Vector3 sphereCenter, Vector3% point, Vector3% resultNormal,
 	btScalar% depth, btScalar% timeOfImpact, btScalar contactBreakingThreshold)
 {
-	VECTOR3_DEF(sphereCenter);
+	VECTOR3_CONV(sphereCenter);
 	btVector3* pointTemp = ALIGNED_NEW(btVector3);
 	btVector3* resultNormalTemp = ALIGNED_NEW(btVector3);
 	btScalar depthTemp;

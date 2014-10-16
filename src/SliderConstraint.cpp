@@ -22,6 +22,9 @@ SliderConstraint::SliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 		TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB), useLinearReferenceFrameA);
 	TRANSFORM_DEL(frameInA);
 	TRANSFORM_DEL(frameInB);
+
+	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = rigidBodyB;
 }
 
 SliderConstraint::SliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameA)
@@ -31,6 +34,8 @@ SliderConstraint::SliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool 
 	UnmanagedPointer = new btSliderConstraint(*(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(frameInB),
 		useLinearReferenceFrameA);
 	TRANSFORM_DEL(frameInB);
+
+	_rigidBodyB = rigidBodyB;
 }
 
 void SliderConstraint::CalculateTransforms(Matrix transA, Matrix transB)
@@ -41,14 +46,19 @@ void SliderConstraint::CalculateTransforms(Matrix transA, Matrix transB)
 	TRANSFORM_DEL(transA);
 	TRANSFORM_DEL(transB);
 }
-/*
-void SliderConstraint::GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA,
-	Matrix transB, Vector3 linVelA, Vector3 linVelB, btScalar rbAinvMass, btScalar rbBinvMass)
+
+void SliderConstraint::GetInfo1NonVirtual(ConstraintInfo1^ info)
+{
+	Native->getInfo1NonVirtual(info->_native);
+}
+
+void SliderConstraint::GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA, Matrix transB,
+	Vector3 linVelA, Vector3 linVelB, btScalar rbAinvMass, btScalar rbBinvMass)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);
-	VECTOR3_DEF(linVelA);
-	VECTOR3_DEF(linVelB);
+	VECTOR3_CONV(linVelA);
+	VECTOR3_CONV(linVelB);
 	Native->getInfo2NonVirtual(info->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
 		VECTOR3_USE(linVelA), VECTOR3_USE(linVelB), rbAinvMass, rbBinvMass);
 	TRANSFORM_DEL(transA);
@@ -56,7 +66,7 @@ void SliderConstraint::GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA
 	VECTOR3_DEL(linVelA);
 	VECTOR3_DEL(linVelB);
 }
-*/
+
 void SliderConstraint::SetFrames(Matrix frameA, Matrix frameB)
 {
 	TRANSFORM_CONV(frameA);
@@ -194,9 +204,9 @@ Matrix SliderConstraint::FrameOffsetB::get()
 	return Math::BtTransformToMatrix(&Native->getFrameOffsetB());
 }
 /*
-void SliderConstraint::Info1NonVirtual::get(btConstraintInfo1^ info)
+void SliderConstraint::Info1NonVirtual::get(ConstraintInfo1^ info)
 {
-	_native->getInfo1NonVirtual(info->_native);
+	Native->getInfo1NonVirtual(info->_native);
 }
 */
 btScalar SliderConstraint::LinDepth::get()

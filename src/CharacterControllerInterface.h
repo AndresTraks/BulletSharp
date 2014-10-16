@@ -4,7 +4,7 @@
 
 namespace BulletSharp
 {
-	public ref class CharacterControllerInterface : IActionInterface,  ITrackingDisposable
+	public ref class CharacterControllerInterface abstract : IActionInterface,  ITrackingDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
@@ -12,7 +12,7 @@ namespace BulletSharp
 
 	internal:
 		btCharacterControllerInterface* _native;
-		CharacterControllerInterface(btCharacterControllerInterface* controllerInterface);
+		CharacterControllerInterface(btCharacterControllerInterface* native);
 
 	public:
 		!CharacterControllerInterface();
@@ -27,6 +27,7 @@ namespace BulletSharp
 
 		void Jump();
 		void PlayerStep(CollisionWorld^ collisionWorld, btScalar dt);
+		void PreStep(CollisionWorld^ collisionWorld);
 		void Reset(CollisionWorld^ collisionWorld);
 		void SetUpInterpolate(bool value);
 		void SetVelocityForTimeInterval(Vector3 velocity, btScalar timeInterval);

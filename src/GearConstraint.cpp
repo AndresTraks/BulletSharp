@@ -16,23 +16,29 @@ GearConstraint::GearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vec
 	btScalar ratio)
 	: TypedConstraint(0)
 {
-	VECTOR3_DEF(axisInA);
-	VECTOR3_DEF(axisInB);
+	VECTOR3_CONV(axisInA);
+	VECTOR3_CONV(axisInB);
 	UnmanagedPointer = new btGearConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native, VECTOR3_USE(axisInA),
 		VECTOR3_USE(axisInB), ratio);
 	VECTOR3_DEL(axisInA);
 	VECTOR3_DEL(axisInB);
+
+	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = rigidBodyB;
 }
 
 GearConstraint::GearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA, Vector3 axisInB)
 	: TypedConstraint(0)
 {
-	VECTOR3_DEF(axisInA);
-	VECTOR3_DEF(axisInB);
+	VECTOR3_CONV(axisInA);
+	VECTOR3_CONV(axisInB);
 	UnmanagedPointer = new btGearConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native, VECTOR3_USE(axisInA),
 		VECTOR3_USE(axisInB));
 	VECTOR3_DEL(axisInA);
 	VECTOR3_DEL(axisInB);
+
+	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = rigidBodyB;
 }
 
 Vector3 GearConstraint::AxisA::get()
@@ -41,7 +47,7 @@ Vector3 GearConstraint::AxisA::get()
 }
 void GearConstraint::AxisA::set(Vector3 axisA)
 {
-	VECTOR3_DEF(axisA);
+	VECTOR3_CONV(axisA);
 	Native->setAxisA(VECTOR3_USE(axisA));
 	VECTOR3_DEL(axisA);
 }
@@ -52,7 +58,7 @@ Vector3 GearConstraint::AxisB::get()
 }
 void GearConstraint::AxisB::set(Vector3 axisB)
 {
-	VECTOR3_DEF(axisB);
+	VECTOR3_CONV(axisB);
 	Native->setAxisB(VECTOR3_USE(axisB));
 	VECTOR3_DEL(axisB);
 }

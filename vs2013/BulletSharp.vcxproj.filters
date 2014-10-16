@@ -348,6 +348,9 @@
     <ClCompile Include="..\src\DefaultMotionState.cpp">
       <Filter>Source Files\LinearMath</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\DefaultSoftBodySolver.cpp">
+      <Filter>Source Files\BulletSoftBody</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\DiscreteCollisionDetectorInterface.cpp">
       <Filter>Source Files\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
@@ -447,10 +450,10 @@
     <ClCompile Include="..\src\MinkowskiSumShape.cpp">
       <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MLCPSolver.cpp">
+    <ClCompile Include="..\src\MlcpSolver.cpp">
       <Filter>Source Files\BulletDynamics\MLCPSolvers</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MLCPSolverInterface.cpp">
+    <ClCompile Include="..\src\MlcpSolverInterface.cpp">
       <Filter>Source Files\BulletDynamics\MLCPSolvers</Filter>
     </ClCompile>
     <ClCompile Include="..\src\MotionState.cpp">
@@ -702,9 +705,6 @@
     <ClCompile Include="..\src\VoronoiSimplexSolver.cpp">
       <Filter>Source Files\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\DefaultSoftBodySolver.cpp">
-      <Filter>Source Files\BulletSoftBody</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\Resources.rc">
@@ -886,6 +886,9 @@
     <ClInclude Include="..\src\DefaultMotionState.h">
       <Filter>Header Files\LinearMath</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\DefaultSoftBodySolver.h">
+      <Filter>Header Files\BulletSoftBody</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\DiscreteCollisionDetectorInterface.h">
       <Filter>Header Files\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
@@ -964,11 +967,11 @@
     <ClInclude Include="..\src\IDebugDraw.h">
       <Filter>Header Files\LinearMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ITrackingDisposable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\InternalEdgeUtility.h">
       <Filter>Header Files\BulletCollision\CollisionDispatch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ITrackingDisposable.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\KinematicCharacterController.h">
       <Filter>Header Files\BulletDynamics\Character</Filter>
@@ -994,10 +997,10 @@
     <ClInclude Include="..\src\MinkowskiSumShape.h">
       <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\MLCPSolver.h">
+    <ClInclude Include="..\src\MlcpSolver.h">
       <Filter>Header Files\BulletDynamics\MLCPSolvers</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\MLCPSolverInterface.h">
+    <ClInclude Include="..\src\MlcpSolverInterface.h">
       <Filter>Header Files\BulletDynamics\MLCPSolvers</Filter>
     </ClInclude>
     <ClInclude Include="..\src\MotionState.h">
@@ -1251,9 +1254,6 @@
     </ClInclude>
     <ClInclude Include="..\src\VoronoiSimplexSolver.h">
       <Filter>Header Files\BulletCollision\NarrowPhaseCollision</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DefaultSoftBodySolver.h">
-      <Filter>Header Files\BulletSoftBody</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

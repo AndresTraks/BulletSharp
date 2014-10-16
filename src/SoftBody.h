@@ -52,10 +52,11 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBodyWorldInfo* _native;
-			SoftBodyWorldInfo(btSoftBodyWorldInfo* info);
+			SoftBodyWorldInfo(btSoftBodyWorldInfo* native);
 
 		private:
 			Dispatcher^ _dispatcher;
+			SparseSdf^ _sparseSdf;
 
 		public:
 			!SoftBodyWorldInfo();
@@ -87,6 +88,12 @@ namespace BulletSharp
 			{
 				Vector3 get();
 				void set(Vector3 value);
+			}
+
+			property btScalar MaxDisplacement
+			{
+				btScalar get();
+				void set(btScalar value);
 			}
 
 			property BulletSharp::SparseSdf^ SparseSdf
@@ -171,11 +178,12 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBody::Anchor* _native;
-			Anchor(btSoftBody::Anchor* anchor);
+			Anchor(btSoftBody::Anchor* native);
+
+		private:
+			BulletSharp::SoftBody::Node^ _node;
 
 		public:
-			Anchor();
-
 			property RigidBody^ Body
 			{
 				RigidBody^ get();
@@ -206,37 +214,46 @@ namespace BulletSharp
 				void set(btScalar value);
 			}
 
-			property BulletSharp::SoftBody::Node^ Node
-			{
-				BulletSharp::SoftBody::Node^ get();
-				void set(BulletSharp::SoftBody::Node^ value);
-			}
-
 			property Vector3 Local
 			{
 				Vector3 get();
 				void set(Vector3 value);
 			}
+
+			property BulletSharp::SoftBody::Node^ Node
+			{
+				BulletSharp::SoftBody::Node^ get();
+				void set(BulletSharp::SoftBody::Node^ value);
+			}
 		};
 
-		public ref class Body
+		public ref class Body : IDisposable
 		{
 		internal:
 			btSoftBody::Body* _native;
-			Body(btSoftBody::Body* body);
+			Body(btSoftBody::Body* native);
+
+		private:
+			Cluster^ _soft;
+
+		public:
+			!Body();
+		protected:
+			~Body();
 
 		public:
 			Body();
-			Body(Cluster^ p);
 			Body(CollisionObject^ colObj);
+			Body(Cluster^ p);
 
 			void Activate();
+			void ApplyAImpulse(Impulse^ impulse);
+			void ApplyDAImpulse(Vector3 impulse);
+			void ApplyDCImpulse(Vector3 impulse);
 			void ApplyDImpulse(Vector3 impulse, Vector3 rPos);
 			void ApplyImpulse(Impulse^ impulse, Vector3 rPos);
 			void ApplyVAImpulse(Vector3 impulse);
-			void ApplyDAImpulse(Vector3 impulse);
-			void ApplyAImpulse(Impulse^ impulse);
-			void ApplyDCImpulse(Vector3 impulse);
+			void ApplyVImpulse(Vector3 impulse, Vector3 rPos);
 			Vector3 GetAngularVelocity(Vector3 rPos);
 			Vector3 Velocity(Vector3 rPos);
 
@@ -284,16 +301,24 @@ namespace BulletSharp
 			}
 		};
 
-		[DebuggerDisplay("ClusterIndex = {ClusterIndex}")]
+		[DebuggerDisplay("Index = {ClusterIndex}")]
 		public ref class Cluster
 		{
 		internal:
 			btSoftBody::Cluster* _native;
-			Cluster(btSoftBody::Cluster* cluster);
+			Cluster(btSoftBody::Cluster* native);
+
+		private:
+			Vector3Array^ _dImpulses;
+			AlignedVector3Array^ _frameRefs;
+#ifndef DISABLE_DBVT
+			DbvtNode^ _leaf;
+#endif
+			AlignedScalarArray^ _masses;
+			AlignedNodePtrArray^ _nodes;
+			Vector3Array^ _vImpulses;
 
 		public:
-			Cluster();
-
 			property btScalar AngularDamping
 			{
 				btScalar get();
@@ -444,12 +469,14 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBody::Config* _native;
+			Config(btSoftBody::Config* native);
 
-			Config(btSoftBody::Config* config);
+		private:
+			AlignedPSolverArray^ _dSequence;
+			AlignedPSolverArray^ _pSequence;
+			AlignedVSolverArray^ _vSequence;
 
 		public:
-			Config();
-
 			property AeroModel AeroModel
 			{
 				BulletSharp::SoftBody::AeroModel get();
@@ -626,26 +653,25 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBody::Element* _native;
-			Element(btSoftBody::Element* element);
+			Element(btSoftBody::Element* native);
 
 		public:
-			Element();
-
-			property Object^ Tag
+			property IntPtr Tag
 			{
-				Object^ get();
-				void set(Object^ value);
+				IntPtr get();
+				void set(IntPtr value);
 			}
 		};
 
 		public ref class Feature : Element
 		{
 		internal:
-			Feature(btSoftBody::Feature* feature);
+			Feature(btSoftBody::Feature* native);
+
+		private:
+			BulletSharp::SoftBody::Material^ _material;
 
 		public:
-			Feature();
-
 			property BulletSharp::SoftBody::Material^ Material
 			{
 				BulletSharp::SoftBody::Material^ get();
@@ -656,14 +682,15 @@ namespace BulletSharp
 		public ref class Face : Feature
 		{
 		internal:
-			Face(btSoftBody::Face* face);
+			Face(btSoftBody::Face* native);
 
 		private:
+#ifndef DISABLE_DBVT
+			DbvtNode^ _leaf;
+#endif
 			NodePtrArray^ _n;
 
 		public:
-			Face();
-
 #ifndef DISABLE_DBVT
 			property DbvtNode^ Leaf
 			{
@@ -679,7 +706,7 @@ namespace BulletSharp
 			property Vector3 Normal
 			{
 				Vector3 get();
-				void set(Vector3 set);
+				void set(Vector3 value);
 			}
 
 			property btScalar RestArea
@@ -689,15 +716,51 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class Impulse
+		public ref class ImplicitFn abstract : IDisposable
+		{
+		internal:
+			ImplicitFnWrapper* _native;
+
+		public:
+			!ImplicitFn();
+		protected:
+			~ImplicitFn();
+
+		protected:
+			ImplicitFn();
+
+		public:
+			virtual btScalar Eval(Vector3 x) = 0;
+		};
+
+		class ImplicitFnWrapper : public btSoftBody::ImplicitFn
+		{
+		public:
+			GCHandle _implicitFn;
+
+		public:
+			ImplicitFnWrapper(BulletSharp::SoftBody::ImplicitFn^ implicitFn);
+			~ImplicitFnWrapper();
+
+			virtual btScalar Eval(const btVector3& x);
+		};
+
+		public ref class Impulse : IDisposable
 		{
 		internal:
 			btSoftBody::Impulse* _native;
+			Impulse(btSoftBody::Impulse* native);
 
-			Impulse(btSoftBody::Impulse* impulse);
+		public:
+			!Impulse();
+		protected:
+			~Impulse();
 
 		public:
 			Impulse();
+
+			static Impulse^ operator-(Impulse^ i);
+			static Impulse^ operator*(Impulse^ i, btScalar x);
 
 			property bool AsDrift
 			{
@@ -722,47 +785,16 @@ namespace BulletSharp
 				Vector3 get();
 				void set(Vector3 value);
 			}
-
-			static Impulse^ operator-(Impulse^ i);
-			static Impulse^ operator*(Impulse^ i, btScalar x);
 		};
 
-		public ref class ImplicitFn abstract
-		{
-		internal:
-			ImplicitFnWrapper* _native;
-
-		public:
-			!ImplicitFn();
-		protected:
-			~ImplicitFn();
-
-		public:
-			ImplicitFn();
-
-			virtual btScalar Eval(Vector3 x) = 0;
-		};
-
-		class ImplicitFnWrapper : public btSoftBody::ImplicitFn
+		public ref class Joint abstract
 		{
 		public:
-			GCHandle _implicitFn;
-
-		public:
-			ImplicitFnWrapper(BulletSharp::SoftBody::ImplicitFn^ implicitFn);
-			~ImplicitFnWrapper();
-
-			virtual btScalar Eval(const btVector3& x);
-		};
-
-		public ref class Joint
-		{
-		public:
-			ref class Specs
+			ref class Specs abstract : IDisposable
 			{
 			internal:
 				btSoftBody::Joint::Specs* _native;
-				//static Specs^ GetManaged(btSoftBody::Joint::Specs* specs);
+				Specs(btSoftBody::Joint::Specs* native);
 
 			public:
 				!Specs();
@@ -796,11 +828,14 @@ namespace BulletSharp
 
 		internal:
 			btSoftBody::Joint* _native;
+			Joint(btSoftBody::Joint* native);
 			static Joint^ GetManaged(btSoftBody::Joint* joint);
 
-		public:
-			Joint(btSoftBody::Joint* joint);
+		private:
+			BodyArray^ _bodies;
+			Vector3Array^ _refs;
 
+		public:
 			void Prepare(btScalar dt, int iterations);
 			void Solve(btScalar dt, btScalar sor);
 			void Terminate(btScalar dt);
@@ -863,46 +898,23 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class LJoint : Joint
-		{
-		public:
-			[DebuggerDisplay("Position = {Position}")]
-			ref class Specs : Joint::Specs
-			{
-			public:
-				Specs();
-
-				property Vector3 Position
-				{
-					Vector3 get();
-					void set(Vector3 value);
-				}
-			};
-
-		internal:
-			LJoint(btSoftBody::LJoint* joint);
-
-		public:
-			LJoint();
-
-			property Vector3Array^ RPos
-			{
-				Vector3Array^ get();
-			}
-		};
-
 		public ref class AJoint : Joint
 		{
 		public:
-			ref class IControl
+			ref class IControl : IDisposable
 			{
 			internal:
-				AJointIControlWrapper* _native;
-
-				IControl(AJointIControlWrapper* iControl);
+				btSoftBody::AJoint::IControl* _native;
+				IControl(btSoftBody::AJoint::IControl* native, bool preventDelete);
 
 			private:
-				static AJoint::IControl^ def = nullptr;
+				static AJoint::IControl^ _default;
+				bool _preventDelete;
+
+			public:
+				!IControl();
+			protected:
+				~IControl();
 
 			public:
 				IControl();
@@ -918,6 +930,9 @@ namespace BulletSharp
 
 			ref class Specs : Joint::Specs
 			{
+			private:
+				AJoint::IControl^ _iControl;
+
 			public:
 				Specs();
 
@@ -935,8 +950,13 @@ namespace BulletSharp
 			};
 
 		internal:
-			AJoint(btSoftBody::AJoint* joint);
+			AJoint::IControl^ _iControl;
+			AJoint(btSoftBody::AJoint* native);
 
+		private:
+			Vector3Array^ _axis;
+
+		public:
 			property Vector3Array^ Axis
 			{
 				Vector3Array^ get();
@@ -959,16 +979,17 @@ namespace BulletSharp
 
 			virtual void Prepare(btSoftBody::AJoint* joint);
 			virtual btScalar Speed(btSoftBody::AJoint* joint, btScalar current);
-
-			virtual void basePrepare(btSoftBody::AJoint* joint);
-			virtual btScalar baseSpeed(btSoftBody::AJoint* joint, btScalar current);
 		};
 
 		public ref class CJoint : Joint
 		{
-		public:
-			CJoint(btSoftBody::CJoint* joint);
+		internal:
+			CJoint(btSoftBody::CJoint* native);
 
+		private:
+			Vector3Array^ _rPos;
+
+		public:
 			property btScalar Friction
 			{
 				btScalar get();
@@ -1002,14 +1023,12 @@ namespace BulletSharp
 		public ref class Link : Feature
 		{
 		internal:
-			Link(btSoftBody::Link* link);
+			Link(btSoftBody::Link* native);
 
 		private:
-			NodePtrArray^ _nodePtrArray;
+			NodePtrArray^ _nodes;
 
 		public:
-			Link();
-
 			property btScalar C0
 			{
 				btScalar get();
@@ -1052,14 +1071,42 @@ namespace BulletSharp
 			}
 		};
 
+		public ref class LJoint : Joint
+		{
+		public:
+			[DebuggerDisplay("Position = {Position}")]
+			ref class Specs : Joint::Specs
+			{
+			public:
+				Specs();
+
+				property Vector3 Position
+				{
+					Vector3 get();
+					void set(Vector3 value);
+				}
+			};
+
+		internal:
+			LJoint(btSoftBody::LJoint* native);
+
+		private:
+			Vector3Array^ _rPos;
+
+		public:
+			property Vector3Array^ RPos
+			{
+				Vector3Array^ get();
+			}
+		};
+
+		// Not to be confused with Mogre::Material
 		public ref class Material : Element
 		{
 		internal:
-			Material(btSoftBody::Material* material);
+			Material(btSoftBody::Material* native);
 
 		public:
-			Material();
-
 			property btScalar Ast
 			{
 				btScalar get();
@@ -1085,14 +1132,19 @@ namespace BulletSharp
 			}
 		};
 
+		// Not to be confused with Mogre::Node
 		[DebuggerDisplay("{X}")]
 		public ref class Node : Feature
 		{
 		internal:
-			Node(btSoftBody::Node* node);
+			Node(btSoftBody::Node* native);
+
+		private:
+#ifndef DISABLE_DBVT
+			DbvtNode^ _leaf;
+#endif
 
 		public:
-			Node();
 			void GetNormal([Out] Vector3% normal);
 			void GetX([Out] Vector3% x);
 
@@ -1156,11 +1208,13 @@ namespace BulletSharp
 		public ref class Note : Element
 		{
 		internal:
-			Note(btSoftBody::Note* note);
+			Note(btSoftBody::Note* native);
+
+		private:
+			ScalarArray^ _coords;
+			NodePtrArray^ _nodes;
 
 		public:
-			Note();
-
 			property ScalarArray^ Coords
 			{
 				ScalarArray^ get();
@@ -1190,17 +1244,17 @@ namespace BulletSharp
 			}
 		};
 
+		// Not to be confused with Mogre::Pose
 		public ref class Pose
 		{
 		internal:
 			btSoftBody::Pose* _native;
+			Pose(btSoftBody::Pose* native);
 
-		internal:
-			Pose(btSoftBody::Pose* pose);
+		private:
+			AlignedVector3Array^ _positions;
 
 		public:
-			Pose();
-
 			property Matrix Aqq
 			{
 				Matrix get();
@@ -1253,16 +1307,73 @@ namespace BulletSharp
 				AlignedScalarArray^ get();
 			}
 		};
+/*
+		public ref class RayFromToCaster : ICollide
+		{
+		internal:
+			RayFromToCaster(btSoftBody::RayFromToCaster* native);
 
-		public ref class RigidContact
+		public:
+			RayFromToCaster(Vector3 rayFrom, Vector3 rayTo, btScalar mxt);
+
+			static btScalar RayFromToTriangle(Vector3 rayFrom, Vector3 rayTo, Vector3 rayNormalizedDirection,
+				Vector3 a, Vector3 b, Vector3 c, btScalar maxt);
+			static btScalar RayFromToTriangle(Vector3 rayFrom, Vector3 rayTo, Vector3 rayNormalizedDirection,
+				Vector3 a, Vector3 b, Vector3 c);
+
+			property Face^ Face
+			{
+				Face^ get();
+				void set(Face^ value);
+			}
+
+			property btScalar Mint
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property Vector3 RayFrom
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property Vector3 RayNormalizedDirection
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property Vector3 RayTo
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property int Tests
+			{
+				int get();
+				void set(int value);
+			}
+		};
+*/
+		public ref class RigidContact //: IDisposable
 		{
 		internal:
 			btSoftBody::RContact* _native;
+			RigidContact(btSoftBody::RContact* native);
 
-			RigidContact(btSoftBody::RContact* rigidContact);
-
+		private:
+			BulletSharp::SoftBody::Node^ _node;
+			/*
 		public:
-			RigidContact();
+			!RigidContact();
+		protected:
+			~RigidContact();
+			*/
+		public:
+			//RigidContact();
 
 			property Matrix C0
 			{
@@ -1306,12 +1417,16 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class Scti
+		public ref class Scti : IDisposable
 		{
 		internal:
 			btSoftBody::sCti* _native;
+			Scti(btSoftBody::sCti* native);
 
-			Scti(btSoftBody::sCti* sCti);
+		public:
+			!Scti();
+		protected:
+			~Scti();
 
 		public:
 			Scti();
@@ -1335,16 +1450,25 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class SoftContact
+		public ref class SoftContact //: IDisposable
 		{
 		internal:
 			btSoftBody::SContact* _native;
+			SoftContact(btSoftBody::SContact* native);
 
-			SoftContact(btSoftBody::SContact* softContact);
+		private:
+			ScalarArray^ _cfm;
+			BulletSharp::SoftBody::Face^ _face;
+			BulletSharp::SoftBody::Node^ _node;
+			/*
+		public:
+			!SoftContact();
+		protected:
+			~SoftContact();
 
 		public:
 			SoftContact();
-
+			*/
 			property ScalarArray^ Cfm
 			{
 				ScalarArray^ get();
@@ -1357,6 +1481,12 @@ namespace BulletSharp
 			}
 
 			property btScalar Friction
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar Margin
 			{
 				btScalar get();
 				void set(btScalar value);
@@ -1380,15 +1510,54 @@ namespace BulletSharp
 				void set(Vector3 value);
 			}
 		};
+/*
+		ref class sMedium : IDisposable
+		{
+		internal:
+			btSoftBody::sMedium* _native;
+			sMedium(btSoftBody::sMedium* native);
 
-		public ref class SolverState
+		public:
+			!sMedium();
+		protected:
+			~sMedium();
+
+		public:
+			sMedium();
+
+			property btScalar Density
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property btScalar Pressure
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+
+			property Vector3 Velocity
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+		};
+*/
+		public ref class SolverState //: IDisposable
 		{
 		internal:
 			btSoftBody::SolverState* _native;
-
-			SolverState(btSoftBody::SolverState* solverState);
-
+			SolverState(btSoftBody::SolverState* native);
+			/*
 		public:
+			!SolverState();
+		protected:
+			~SolverState();
+			*/
+		public:
+			//SolverState();
+
 			property btScalar InverseSdt
 			{
 				btScalar get();
@@ -1420,12 +1589,16 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class SRayCast
+		public ref class SRayCast : IDisposable
 		{
 		internal:
 			btSoftBody::sRayCast* _native;
+			SRayCast(btSoftBody::sRayCast* native);
 
-			SRayCast(btSoftBody::sRayCast* rayCast);
+		public:
+			!SRayCast();
+		protected:
+			~SRayCast();
 
 		public:
 			SRayCast();
@@ -1458,11 +1631,16 @@ namespace BulletSharp
 		public ref class Tetra : Feature
 		{
 		internal:
-			Tetra(btSoftBody::Tetra* tetra);
+			Tetra(btSoftBody::Tetra* native);
+
+		private:
+			Vector3Array^ _c0;
+#ifndef DISABLE_DBVT
+			DbvtNode^ _leaf;
+#endif
+			NodePtrArray^ _nodes;
 
 		public:
-			Tetra();
-
 			property Vector3Array^ C0
 			{
 				Vector3Array^ get();
@@ -1503,17 +1681,38 @@ namespace BulletSharp
 		public ref class SoftBody : CollisionObject
 		{
 		internal:
-			SoftBody(btSoftBody* body);
+			SoftBody(btSoftBody* native);
 
 		private:
+#ifndef DISABLE_DBVT
+			Dbvt^ _clusterDbvt;
+			Dbvt^ _faceDbvt;
+			Dbvt^ _nodeDbvt;
+#endif
+			AlignedCollisionObjectArray^ _collisionDisabledObjects;
+			Config^ _config;
+			BulletSharp::SoftBody::Pose^ _pose;
+			SoftBodySolver^ _softBodySolver;
+			SolverState^ _solverState;
 			SoftBodyWorldInfo^ _worldInfo;
+			AlignedAnchorArray^ _anchors;
+			Vector3Array^ _bounds;
+			AlignedClusterArray^ _clusters;
 			AlignedFaceArray^ _faces;
 			AlignedJointArray^ _joints;
 			AlignedLinkArray^ _links;
 			AlignedMaterialArray^ _materials;
 			AlignedNodeArray^ _nodes;
 			AlignedNoteArray^ _notes;
+			AlignedRigidContactArray^ _rigidContacts;
+			AlignedSoftContactArray^ _softContacts;
 			AlignedTetraArray^ _tetras;
+			AlignedIntArray^ _userIndexMapping;
+
+		public:
+			!SoftBody();
+		protected:
+			~SoftBody();
 
 		public:
 			SoftBody(SoftBodyWorldInfo^ worldInfo, array<Vector3>^ x, array<btScalar>^ m);
@@ -1522,72 +1721,77 @@ namespace BulletSharp
 
 			void AddAeroForceToFace(Vector3 windVelocity, int faceIndex);
 			void AddAeroForceToNode(Vector3 windVelocity, int nodeIndex);
-			void AddForce(Vector3 force, int node);
 			void AddForce(Vector3 force);
+			void AddForce(Vector3 force, int node);
 			void AddVelocity(Vector3 velocity, int node);
 			void AddVelocity(Vector3 velocity);
-			void AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies, btScalar influence);
-			void AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies);
-			void AppendAnchor(int node, RigidBody^ body);
+			void AppendAnchor(int node, RigidBody^ body, Vector3 localPivot, bool disableCollisionBetweenLinkedBodies,
+				btScalar influence);
 			void AppendAnchor(int node, RigidBody^ body, Vector3 localPivot, bool disableCollisionBetweenLinkedBodies);
 			void AppendAnchor(int node, RigidBody^ body, Vector3 localPivot);
-			void AppendFace(int node0, int node1, int node2, Material^ material);
-			void AppendFace(int node0, int node1, int node2);
+			void AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies,
+				btScalar influence);
+			void AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies);
+			void AppendAnchor(int node, RigidBody^ body);
+			void AppendAngularJoint(AJoint::Specs^ specs, Body^ body);
+			void AppendAngularJoint(AJoint::Specs^ specs);
+			void AppendAngularJoint(AJoint::Specs^ specs, Cluster^ body0, Body^ body1);
+			void AppendAngularJoint(AJoint::Specs^ specs, SoftBody^ body);
 			void AppendFace(int model, Material^ material);
 			void AppendFace(int model);
 			void AppendFace();
-			void AppendLinearJoint(LJoint::Specs^ specs, Cluster^ body0, Body^ body1);
-			void AppendLinearJoint(LJoint::Specs^ specs, Body^ body1);
+			void AppendFace(int node0, int node1, int node2, Material^ material);
+			void AppendFace(int node0, int node1, int node2);
+			void AppendLinearJoint(LJoint::Specs^ specs, SoftBody^ body);
+			void AppendLinearJoint(LJoint::Specs^ specs, Body^ body);
 			void AppendLinearJoint(LJoint::Specs^ specs);
-			void AppendLinearJoint(LJoint::Specs^ specs, SoftBody^ body1);
-			void AppendAngularJoint(AJoint::Specs^ specs, Cluster^ body0, Body^ body1);
-			void AppendAngularJoint(AJoint::Specs^ specs, Body^ body1);
-			void AppendAngularJoint(AJoint::Specs^ specs);
-			void AppendAngularJoint(AJoint::Specs^ specs, SoftBody^ body1);
-			void AppendLink(int node0, int node1, Material^ material, bool bCheckExist);
+			void AppendLinearJoint(LJoint::Specs^ specs, Cluster^ body0, Body^ body1);
+			void AppendLink(int node0, int node1, Material^ material, bool bcheckexist);
 			void AppendLink(int node0, int node1, Material^ material);
 			void AppendLink(int node0, int node1);
-			void AppendLink(Node^ node0, Node^ node1, Material^ material, bool bCheckExist);
-			void AppendLink(Node^ node0, Node^ node1, Material^ material);
-			void AppendLink(Node^ node0, Node^ node1);
 			void AppendLink(int model, Material^ material);
 			void AppendLink(int model);
 			void AppendLink();
+			void AppendLink(Node^ node0, Node^ node1, Material^ material, bool bcheckexist);
+			void AppendLink(Node^ node0, Node^ node1, Material^ material);
+			void AppendLink(Node^ node0, Node^ node1);
 			Material^ AppendMaterial();
 			void AppendNode(Vector3 x, btScalar m);
-			void AppendNote(String^ text, Vector3 o, Vector4 c, Node^ n0, Node^ n1, Node^ n2, Node^ n3);
+			void AppendNote(String^ text, Vector3 o, Face^ feature);
+			void AppendNote(String^ text, Vector3 o, Link^ feature);
+			void AppendNote(String^ text, Vector3 o, Node^ feature);
+			void AppendNote(String^ text, Vector3 o, Vector4 c, Node^ n0, Node^ n1, Node^ n2,
+				Node^ n3);
 			void AppendNote(String^ text, Vector3 o, Vector4 c, Node^ n0, Node^ n1, Node^ n2);
 			void AppendNote(String^ text, Vector3 o, Vector4 c, Node^ n0, Node^ n1);
 			void AppendNote(String^ text, Vector3 o, Vector4 c, Node^ n0);
 			void AppendNote(String^ text, Vector3 o, Vector4 c);
 			void AppendNote(String^ text, Vector3 o);
-			void AppendNote(String^ text, Vector3 o, Node^ feature);
-			void AppendNote(String^ text, Vector3 o, Link^ feature);
-			void AppendNote(String^ text, Vector3 o, Face^ feature);
 			void AppendTetra(int model, Material^ material);
 			void AppendTetra(int node0, int node1, int node2, int node3, Material^ material);
 			void AppendTetra(int node0, int node1, int node2, int node3);
 			void ApplyClusters(bool drift);
 			void ApplyForces();
-			//bool CheckContact(CollisionObject^ colObj, Vector3 x, btScalar margin, SoftBody::sCti cti);
+			bool CheckContact(CollisionObjectWrapper^ colObjWrap, Vector3 x, btScalar margin,
+				Scti^ cti);
 			bool CheckFace(int node0, int node1, int node2);
-			bool CheckLink(int node0, int node1);
 			bool CheckLink(Node^ node0, Node^ node1);
+			bool CheckLink(int node0, int node1);
 			void CleanupClusters();
+			static void ClusterAImpulse(Cluster^ cluster, Impulse^ impulse);
 			static Vector3 ClusterCom(Cluster^ cluster);
 			Vector3 ClusterCom(int cluster);
-			static Vector3 ClusterVelocity(Cluster^ cluster, Vector3 rpos);
-			static void ClusterVImpulse(Cluster^ cluster, Vector3 rpos, Vector3 impulse);
+			static void ClusterDAImpulse(Cluster^ cluster, Vector3 impulse);
+			static void ClusterDCImpulse(Cluster^ cluster, Vector3 impulse);
 			static void ClusterDImpulse(Cluster^ cluster, Vector3 rpos, Vector3 impulse);
 			static void ClusterImpulse(Cluster^ cluster, Vector3 rpos, Impulse^ impulse);
 			static void ClusterVAImpulse(Cluster^ cluster, Vector3 impulse);
-			static void ClusterDAImpulse(Cluster^ cluster, Vector3 impulse);
-			static void ClusterAImpulse(Cluster^ cluster, Impulse^ impulse);
-			static void ClusterDCImpulse(Cluster^ cluster, Vector3 impulse);
+			static Vector3 ClusterVelocity(Cluster^ cluster, Vector3 rpos);
+			static void ClusterVImpulse(Cluster^ cluster, Vector3 rpos, Vector3 impulse);
 			bool CutLink(int node0, int node1, btScalar position);
 			bool CutLink(Node^ node0, Node^ node1, btScalar position);
 			void DampClusters();
-			void DefaultCollisionHandler(CollisionObjectWrapper^ pco);
+			void DefaultCollisionHandler(CollisionObjectWrapper^ pcoWrap);
 			void DefaultCollisionHandler(SoftBody^ psb);
 			Vector3 EvaluateCom();
 			int GenerateBendingConstraints(int distance, Material^ material);
@@ -1601,6 +1805,8 @@ namespace BulletSharp
 			int GetLinkVertexData([Out] array<Vector3>^% vertices); // helper
 			int GetLinkVertexNormalData([Out] array<Vector3>^% data); // helper
 			btScalar GetMass(int node);
+			//static psolver_t GetSolver(btSoftBody::ePSolver::_ solver);
+			//static vsolver_t GetSolver(btSoftBody::eVSolver::_ solver);
 			int GetTetraVertexData([Out] array<Vector3>^% vertices); // helper
 			int GetTetraVertexNormalData([Out] array<Vector3>^% data); // helper
 			int GetTetraVertexNormalData([Out] array<Vector3>^% vertices, [Out] array<Vector3>^% normals); // helper
@@ -1609,13 +1815,19 @@ namespace BulletSharp
 			//void IndicesToPointers(array<int>^ map);
 			void IndicesToPointers();
 			void InitDefaults();
-			void IntegrateMotion();
 			void InitializeClusters();
 			void InitializeFaceTree();
+			void IntegrateMotion();
 			void PointersToIndices();
 			void PredictMotion(btScalar dt);
 			void PrepareClusters(int iterations);
+			static void PSolve_Anchors(SoftBody^ psb, btScalar kst, btScalar ti);
+			static void PSolve_Links(SoftBody^ psb, btScalar kst, btScalar ti);
+			static void PSolve_RContacts(SoftBody^ psb, btScalar kst, btScalar ti);
+			static void PSolve_SContacts(SoftBody^ psb, btScalar __unnamed1, btScalar ti);
 			void RandomizeConstraints();
+			int RayTest(Vector3 rayFrom, Vector3 rayTo, [Out] btScalar% mint, EFeature feature,
+				[Out] int% index, bool bcountonly);
 			bool RayTest(Vector3 rayFrom, Vector3 rayTo, SRayCast^ results);
 			void Refine(ImplicitFn^ ifn, btScalar accurary, bool cut);
 			void ReleaseCluster(int index);
@@ -1632,14 +1844,15 @@ namespace BulletSharp
 			void SetVelocity(Vector3 velocity);
 			void SetVolumeDensity(btScalar density);
 			void SetVolumeMass(btScalar mass);
-			void SolveClusters(btScalar sor);
 			static void SolveClusters(AlignedSoftBodyArray^ bodies);
+			void SolveClusters(btScalar sor);
 			static void SolveCommonConstraints(array<SoftBody^>^ bodies, int iterations);
 			void SolveConstraints();
 			void StaticSolve(int iterations);
 			void Transform(Matrix transform);
 			void Translate(Vector3 translation);
 			void Translate(btScalar x, btScalar y, btScalar z); // helper
+			static SoftBody^ Upcast(CollisionObject^ colObj);
 			void UpdateArea(bool averageArea);
 			void UpdateArea();
 			void UpdateBounds();
@@ -1648,8 +1861,7 @@ namespace BulletSharp
 			void UpdateLinkConstants();
 			void UpdateNormals();
 			void UpdatePose();
-
-			static SoftBody^ Upcast(CollisionObject^ colObj);
+			static void VSolve_Links(SoftBody^ psb, btScalar kst);
 
 			property AlignedAnchorArray^ Anchors
 			{
@@ -1661,19 +1873,29 @@ namespace BulletSharp
 				Vector3Array^ get();
 			}
 
-			property AlignedClusterArray^ Clusters
-			{
-				AlignedClusterArray^ get();
-			}
-
 			property Config^ Cfg
 			{
 				Config^ get();
 			}
-
+			/*
+			property AlignedBoolArray^ ClusterConnectivity
+			{
+				AlignedBoolArray^ get();
+			}
+			*/
 			property int ClusterCount
 			{
 				int get();
+			}
+#ifndef DISABLE_DBVT
+			property Dbvt^ ClusterDbvt
+			{
+				Dbvt^ get();
+			}
+#endif
+			property AlignedClusterArray^ Clusters
+			{
+				AlignedClusterArray^ get();
 			}
 
 			property AlignedCollisionObjectArray^ CollisionDisabledObjects
@@ -1685,7 +1907,12 @@ namespace BulletSharp
 			{
 				AlignedFaceArray^ get();
 			}
-
+#ifndef DISABLE_DBVT
+			property Dbvt^ FaceDbvt
+			{
+				Dbvt^ get();
+			}
+#endif
 			property Matrix InitialWorldTransform
 			{
 				Matrix get();
@@ -1706,7 +1933,12 @@ namespace BulletSharp
 			{
 				AlignedMaterialArray^ get();
 			}
-
+#ifndef DISABLE_DBVT
+			property Dbvt^ NodeDbvt
+			{
+				Dbvt^ get();
+			}
+#endif
 			property AlignedNodeArray^ Nodes
 			{
 				AlignedNodeArray^ get();
@@ -1747,7 +1979,6 @@ namespace BulletSharp
 			property SolverState^ SolverState
 			{
 				BulletSharp::SoftBody::SolverState^ get();
-				void set(BulletSharp::SoftBody::SolverState^ value);
 			}
 
 			property Object^ Tag
@@ -1801,25 +2032,6 @@ namespace BulletSharp
 				void set(SoftBodyWorldInfo^ value);
 			}
 
-#ifndef DISABLE_DBVT
-			property Dbvt^ ClusterDbvt
-			{
-				Dbvt^ get();
-				void set(Dbvt^ value);
-			}
-
-			property Dbvt^ FaceDbvt
-			{
-				Dbvt^ get();
-				void set(Dbvt^ value);
-			}
-
-			property Dbvt^ NodeDbvt
-			{
-				Dbvt^ get();
-				void set(Dbvt^ value);
-			}
-#endif
 		};
 	};
 };

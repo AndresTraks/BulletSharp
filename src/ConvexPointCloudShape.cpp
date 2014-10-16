@@ -17,11 +17,24 @@ ConvexPointCloudShape::ConvexPointCloudShape()
 {
 }
 
+ConvexPointCloudShape::ConvexPointCloudShape(array<Vector3>^ points, Vector3% localScaling,
+	bool computeAabb)
+	: PolyhedralConvexAabbCachingShape(new btConvexPointCloudShape())
+{
+	SetPoints(points, computeAabb, localScaling);
+}
+
 ConvexPointCloudShape::ConvexPointCloudShape(array<Vector3>^ points, Vector3 localScaling,
 	bool computeAabb)
 	: PolyhedralConvexAabbCachingShape(new btConvexPointCloudShape())
 {
 	SetPoints(points, computeAabb, localScaling);
+}
+
+ConvexPointCloudShape::ConvexPointCloudShape(array<Vector3>^ points, Vector3% localScaling)
+	: PolyhedralConvexAabbCachingShape(new btConvexPointCloudShape())
+{
+	SetPoints(points, true, localScaling);
 }
 
 ConvexPointCloudShape::ConvexPointCloudShape(array<Vector3>^ points, Vector3 localScaling)
@@ -49,10 +62,8 @@ void ConvexPointCloudShape::SetPoints(array<Vector3>^ points, bool computeAabb,
 	Vector3 localScaling)
 {
 	btVector3* btPoints = Math::Vector3ArrayToUnmanaged(points);
-	VECTOR3_DEF(localScaling);
-	
+	VECTOR3_CONV(localScaling);
 	Native->setPoints(btPoints, points->Length, computeAabb, VECTOR3_USE(localScaling));
-
 	VECTOR3_DEL(localScaling);
 	// Don't delete btPoints, they'll be used by btConvexPointCloudShape.
 }

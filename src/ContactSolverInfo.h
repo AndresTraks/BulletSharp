@@ -2,11 +2,19 @@
 
 namespace BulletSharp
 {
-	public ref class ContactSolverInfoData
+	public ref class ContactSolverInfoData : IDisposable
 	{
 	internal:
 		btContactSolverInfoData* _native;
-		ContactSolverInfoData(btContactSolverInfoData* native);
+		ContactSolverInfoData(btContactSolverInfoData* native, bool preventDelete);
+
+	private:
+		bool _preventDelete;
+
+	public:
+		!ContactSolverInfoData();
+	protected:
+		~ContactSolverInfoData();
 
 	public:
 		ContactSolverInfoData();
@@ -141,7 +149,7 @@ namespace BulletSharp
 	public ref class ContactSolverInfo : ContactSolverInfoData
 	{
 	internal:
-		ContactSolverInfo(btContactSolverInfo* native);
+		ContactSolverInfo(btContactSolverInfo* native, bool preventDelete);
 
 	public:
 		ContactSolverInfo();

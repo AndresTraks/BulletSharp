@@ -2,7 +2,6 @@
 
 #ifndef DISABLE_COLLISION_ALGORITHMS
 
-#include "CollisionObject.h"
 #include "CollisionObjectWrapper.h"
 #include "PersistentManifold.h"
 #include "SphereTriangleCollisionAlgorithm.h"

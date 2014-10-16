@@ -48,7 +48,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class PrimitiveTriangle
+	public ref class PrimitiveTriangle : IDisposable
 	{
 	internal:
 		btPrimitiveTriangle* _native;
@@ -56,6 +56,11 @@ namespace BulletSharp
 
 	private:
 		Vector3Array^ _vertices;
+
+	public:
+		!PrimitiveTriangle();
+	protected:
+		~PrimitiveTriangle();
 
 	public:
 		PrimitiveTriangle();

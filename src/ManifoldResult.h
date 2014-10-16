@@ -8,11 +8,11 @@ namespace BulletSharp
 	ref class CollisionObjectWrapper;
 	ref class PersistentManifold;
 
-	public ref class ManifoldResult : DiscreteCollisionDetectorInterface::Result
+	public ref class ManifoldResult abstract : DiscreteCollisionDetectorInterface::Result
 	{
 	public:
 		ManifoldResult();
-		ManifoldResult(CollisionObjectWrapper^ body0, CollisionObjectWrapper^ body1);
+		ManifoldResult(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap);
 
 		static btScalar CalculateCombinedFriction(CollisionObject^ body0, CollisionObject^ body1);
 		static btScalar CalculateCombinedRestitution(CollisionObject^ body0, CollisionObject^ body1);

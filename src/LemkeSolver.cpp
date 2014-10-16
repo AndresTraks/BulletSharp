@@ -8,12 +8,12 @@
 #define Native static_cast<btLemkeSolver*>(_native)
 
 LemkeSolver::LemkeSolver(btLemkeSolver* native)
-	: MLCPSolverInterface(native)
+	: MlcpSolverInterface(native)
 {
 }
 
 LemkeSolver::LemkeSolver()
-	: MLCPSolverInterface(new btLemkeSolver())
+	: MlcpSolverInterface(new btLemkeSolver())
 {
 }
 

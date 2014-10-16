@@ -40,12 +40,14 @@ namespace BulletSharp
 		W = w;
 	}
 
-	Quaternion::Quaternion( Vector3 value, btScalar w )
+	Quaternion::Quaternion(Vector3 axis, btScalar angle)
 	{
-		X = value.X;
-		Y = value.Y;
-		Z = value.Z;
-		W = w;
+		btScalar angle2 = angle * 0.5f;
+        btScalar s = btSin(angle2) / axis.Length;
+        X = axis.X * s;
+        Y = axis.Y * s;
+        Z = axis.Z * s;
+        W = (float)btCos(angle2);
 	}
 
 	Quaternion Quaternion::Identity::get()
@@ -91,19 +93,19 @@ namespace BulletSharp
 		return (W == 1.0f);
 	}
 
-	btScalar Quaternion::Length()
+	btScalar Quaternion::Length::get()
 	{
 		return static_cast<btScalar>( System::Math::Sqrt( (X * X) + (Y * Y) + (Z * Z) + (W * W) ) );
 	}
 	
-	btScalar Quaternion::LengthSquared()
+	btScalar Quaternion::LengthSquared::get()
 	{
 		return (X * X) + (Y * Y) + (Z * Z) + (W * W);
 	}
 
 	void Quaternion::Normalize()
 	{
-		btScalar length = 1.0f / Length();
+		btScalar length = 1.0f / Length;
 		X *= length;
 		Y *= length;
 		Z *= length;
@@ -255,7 +257,7 @@ namespace BulletSharp
 			result.W = (inverse * left.W) - (amount * right.W);
 		}
 
-		btScalar invLength = 1.0f / result.Length();
+		btScalar invLength = 1.0f / result.Length;
 
 		result.X *= invLength;
 		result.Y *= invLength;
@@ -285,7 +287,7 @@ namespace BulletSharp
 			result.W = (inverse * left.W) - (amount * right.W);
 		}
 
-		btScalar invLength = 1.0f / result.Length();
+		btScalar invLength = 1.0f / result.Length;
 
 		result.X *= invLength;
 		result.Y *= invLength;
@@ -374,7 +376,7 @@ namespace BulletSharp
 
 	void Quaternion::Normalize( Quaternion% quat, [Out] Quaternion% result )
 	{
-		btScalar length = 1.0f / quat.Length();
+		btScalar length = 1.0f / quat.Length;
 		result.X = quat.X * length;
 		result.Y = quat.Y * length;
 		result.Z = quat.Z * length;

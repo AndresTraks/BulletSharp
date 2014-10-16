@@ -4,15 +4,19 @@ using namespace System::Collections::Generic;
 
 namespace BulletSharp
 {
-	public ref class Hacd
+	public ref class Hacd : IDisposable
 	{
 	internal:
 		HACD::HACD* _native;
-		//HACD(HACD::HACD* native);
 
 	private:
 		HACD::Vec3<HACD::Real>* _points;
 		HACD::Vec3<long>* _triangles;
+
+	public:
+		!Hacd();
+	protected:
+		~Hacd();
 
 	public:
 		Hacd();

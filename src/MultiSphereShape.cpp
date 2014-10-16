@@ -10,7 +10,7 @@ MultiSphereShape::MultiSphereShape(btMultiSphereShape* native)
 }
 
 MultiSphereShape::MultiSphereShape(array<Vector3>^ positions, array<btScalar>^ radi)
-: ConvexInternalAabbCachingShape(0)
+	: ConvexInternalAabbCachingShape(0)
 {
 	int numSpheres = (positions->Length < radi->Length) ? positions->Length : radi->Length;
 

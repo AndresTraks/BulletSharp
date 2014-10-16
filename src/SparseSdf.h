@@ -11,7 +11,7 @@ namespace BulletSharp
 	{
 	internal:
 		btSparseSdf<3>* _native;
-		SparseSdf(btSparseSdf<3>* sdf);
+		SparseSdf(btSparseSdf<3>* native);
 
 	public:
 		void GarbageCollect(int lifetime);

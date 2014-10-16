@@ -10,11 +10,6 @@ ConvexHullShape::ConvexHullShape(btConvexHullShape* native)
 {
 }
 
-ConvexHullShape::ConvexHullShape()
-	: PolyhedralConvexAabbCachingShape(new btConvexHullShape())
-{
-}
-
 ConvexHullShape::ConvexHullShape(System::Collections::Generic::IEnumerable<Vector3>^ points)
 : PolyhedralConvexAabbCachingShape(new btConvexHullShape())
 {
@@ -30,16 +25,21 @@ ConvexHullShape::ConvexHullShape(System::Collections::Generic::IEnumerable<Vecto
 	ALIGNED_FREE(pointTemp);
 }
 
+ConvexHullShape::ConvexHullShape()
+	: PolyhedralConvexAabbCachingShape(new btConvexHullShape())
+{
+}
+
 void ConvexHullShape::AddPoint(Vector3 point, bool recalculateLocalAabb)
 {
-	VECTOR3_DEF(point);
+	VECTOR3_CONV(point);
 	Native->addPoint(VECTOR3_USE(point), recalculateLocalAabb);
 	VECTOR3_DEL(point);
 }
 
 void ConvexHullShape::AddPoint(Vector3 point)
 {
-	VECTOR3_DEF(point);
+	VECTOR3_CONV(point);
 	Native->addPoint(VECTOR3_USE(point));
 	VECTOR3_DEL(point);
 }
@@ -63,7 +63,7 @@ void ConvexHullShape::Project(Matrix trans, Vector3 dir, btScalar% minProj, btSc
 	Vector3% witnesPtMin, Vector3% witnesPtMax)
 {
 	TRANSFORM_CONV(trans);
-	VECTOR3_DEF(dir);
+	VECTOR3_CONV(dir);
 	btScalar minProjTemp;
 	btScalar maxProjTemp;
 	btVector3* witnesPtMinTemp = ALIGNED_NEW(btVector3);

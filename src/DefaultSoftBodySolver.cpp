@@ -6,7 +6,7 @@
 #include "SoftBody.h"
 #include "SoftBodySolverVertexBuffer.h"
 
-#define Native (static_cast<btDefaultSoftBodySolver*>(_native))
+#define Native static_cast<btDefaultSoftBodySolver*>(_native)
 
 SoftBody::DefaultSoftBodySolver::DefaultSoftBodySolver(btDefaultSoftBodySolver* native)
 	: SoftBodySolver(native)

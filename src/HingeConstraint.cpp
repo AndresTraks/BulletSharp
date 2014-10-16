@@ -16,10 +16,10 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, V
 	Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB, bool useReferenceFrameA)
 	: TypedConstraint(0)
 {
-	VECTOR3_DEF(pivotInA);
-	VECTOR3_DEF(pivotInB);
-	VECTOR3_DEF(axisInA);
-	VECTOR3_DEF(axisInB);
+	VECTOR3_CONV(pivotInA);
+	VECTOR3_CONV(pivotInB);
+	VECTOR3_CONV(axisInA);
+	VECTOR3_CONV(axisInB);
 	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB), VECTOR3_USE(axisInA), VECTOR3_USE(axisInB),
 		useReferenceFrameA);
@@ -27,69 +27,85 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, V
 	VECTOR3_DEL(pivotInB);
 	VECTOR3_DEL(axisInA);
 	VECTOR3_DEL(axisInB);
+
+	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = rigidBodyB;
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA,
 	Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB)
 	: TypedConstraint(0)
 {
-	VECTOR3_DEF(pivotInA);
-	VECTOR3_DEF(pivotInB);
-	VECTOR3_DEF(axisInA);
-	VECTOR3_DEF(axisInB);
+	VECTOR3_CONV(pivotInA);
+	VECTOR3_CONV(pivotInB);
+	VECTOR3_CONV(axisInA);
+	VECTOR3_CONV(axisInB);
 	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB), VECTOR3_USE(axisInA), VECTOR3_USE(axisInB));
 	VECTOR3_DEL(pivotInA);
 	VECTOR3_DEL(pivotInB);
 	VECTOR3_DEL(axisInA);
 	VECTOR3_DEL(axisInB);
+
+	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = rigidBodyB;
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector3 axisInA,
 	bool useReferenceFrameA)
 	: TypedConstraint(0)
 {
-	VECTOR3_DEF(pivotInA);
-	VECTOR3_DEF(axisInA);
+	VECTOR3_CONV(pivotInA);
+	VECTOR3_CONV(axisInA);
 	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_native, VECTOR3_USE(pivotInA),
 		VECTOR3_USE(axisInA), useReferenceFrameA);
 	VECTOR3_DEL(pivotInA);
 	VECTOR3_DEL(axisInA);
+
+	_rigidBodyA = rigidBodyA;
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector3 axisInA)
 	: TypedConstraint(0)
 {
-	VECTOR3_DEF(pivotInA);
-	VECTOR3_DEF(axisInA);
+	VECTOR3_CONV(pivotInA);
+	VECTOR3_CONV(axisInA);
 	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_native, VECTOR3_USE(pivotInA),
 		VECTOR3_USE(axisInA));
 	VECTOR3_DEL(pivotInA);
 	VECTOR3_DEL(axisInA);
+
+	_rigidBodyA = rigidBodyA;
 }
 
-HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rbB, Matrix rbAFrame,
+HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rbAFrame,
 	Matrix rbBFrame, bool useReferenceFrameA)
 	: TypedConstraint(0)
 {
 	TRANSFORM_CONV(rbAFrame);
 	TRANSFORM_CONV(rbBFrame);
-	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rbB->_native,
+	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		TRANSFORM_USE(rbAFrame), TRANSFORM_USE(rbBFrame), useReferenceFrameA);
 	TRANSFORM_DEL(rbAFrame);
 	TRANSFORM_DEL(rbBFrame);
+
+	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = rigidBodyB;
 }
 
-HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rbB, Matrix rbAFrame,
+HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rbAFrame,
 	Matrix rbBFrame)
 	: TypedConstraint(0)
 {
 	TRANSFORM_CONV(rbAFrame);
 	TRANSFORM_CONV(rbBFrame);
-	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rbB->_native,
+	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		TRANSFORM_USE(rbAFrame), TRANSFORM_USE(rbBFrame));
 	TRANSFORM_DEL(rbAFrame);
 	TRANSFORM_DEL(rbBFrame);
+
+	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = rigidBodyB;
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Matrix rbAFrame, bool useReferenceFrameA)
@@ -99,6 +115,8 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Matrix rbAFrame, bool us
 	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_native, TRANSFORM_USE(rbAFrame),
 		useReferenceFrameA);
 	TRANSFORM_DEL(rbAFrame);
+
+	_rigidBodyA = rigidBodyA;
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Matrix rbAFrame)
@@ -107,6 +125,8 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Matrix rbAFrame)
 	TRANSFORM_CONV(rbAFrame);
 	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_native, TRANSFORM_USE(rbAFrame));
 	TRANSFORM_DEL(rbAFrame);
+
+	_rigidBodyA = rigidBodyA;
 }
 
 void HingeConstraint::EnableAngularMotor(bool enableMotor, btScalar targetVelocity,
@@ -119,26 +139,25 @@ btScalar HingeConstraint::GetHingeAngle(Matrix transA, Matrix transB)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);
-	btScalar angle = Native->getHingeAngle(TRANSFORM_USE(transA), TRANSFORM_USE(transB));
+	btScalar ret = Native->getHingeAngle(TRANSFORM_USE(transA), TRANSFORM_USE(transB));
 	TRANSFORM_DEL(transA);
 	TRANSFORM_DEL(transB);
-	return angle;
+	return ret;
 }
-/*
-void HingeConstraint::GetInfo1NonVirtual(btConstraintInfo1^ info)
+
+void HingeConstraint::GetInfo1NonVirtual(ConstraintInfo1^ info)
 {
 	Native->getInfo1NonVirtual(info->_native);
 }
-*/
-/*
+
 #ifndef DISABLE_INTERNAL
-void HingeConstraint::GetInfo2Internal(btConstraintInfo2^ info, Matrix transA, Matrix transB,
+void HingeConstraint::GetInfo2Internal(ConstraintInfo2^ info, Matrix transA, Matrix transB,
 	Vector3 angVelA, Vector3 angVelB)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);
-	VECTOR3_DEF(angVelA);
-	VECTOR3_DEF(angVelB);
+	VECTOR3_CONV(angVelA);
+	VECTOR3_CONV(angVelB);
 	Native->getInfo2Internal(info->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
 		VECTOR3_USE(angVelA), VECTOR3_USE(angVelB));
 	TRANSFORM_DEL(transA);
@@ -147,13 +166,13 @@ void HingeConstraint::GetInfo2Internal(btConstraintInfo2^ info, Matrix transA, M
 	VECTOR3_DEL(angVelB);
 }
 
-void HingeConstraint::GetInfo2InternalUsingFrameOffset(btConstraintInfo2^ info, Matrix transA,
+void HingeConstraint::GetInfo2InternalUsingFrameOffset(ConstraintInfo2^ info, Matrix transA,
 	Matrix transB, Vector3 angVelA, Vector3 angVelB)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);
-	VECTOR3_DEF(angVelA);
-	VECTOR3_DEF(angVelB);
+	VECTOR3_CONV(angVelA);
+	VECTOR3_CONV(angVelB);
 	Native->getInfo2InternalUsingFrameOffset(info->_native, TRANSFORM_USE(transA),
 		TRANSFORM_USE(transB), VECTOR3_USE(angVelA), VECTOR3_USE(angVelB));
 	TRANSFORM_DEL(transA);
@@ -162,13 +181,13 @@ void HingeConstraint::GetInfo2InternalUsingFrameOffset(btConstraintInfo2^ info, 
 	VECTOR3_DEL(angVelB);
 }
 
-void HingeConstraint::GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA, Matrix transB,
+void HingeConstraint::GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA, Matrix transB,
 	Vector3 angVelA, Vector3 angVelB)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);
-	VECTOR3_DEF(angVelA);
-	VECTOR3_DEF(angVelB);
+	VECTOR3_CONV(angVelA);
+	VECTOR3_CONV(angVelB);
 	Native->getInfo2NonVirtual(info->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
 		VECTOR3_USE(angVelA), VECTOR3_USE(angVelB));
 	TRANSFORM_DEL(transA);
@@ -177,11 +196,10 @@ void HingeConstraint::GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA,
 	VECTOR3_DEL(angVelB);
 }
 #endif
-*/
 
 void HingeConstraint::SetAxis(Vector3 axisInA)
 {
-	VECTOR3_DEF(axisInA);
+	VECTOR3_CONV(axisInA);
 	Native->setAxis(VECTOR3_USE(axisInA));
 	VECTOR3_DEL(axisInA);
 }
@@ -195,20 +213,20 @@ void HingeConstraint::SetFrames(Matrix frameA, Matrix frameB)
 	TRANSFORM_DEL(frameB);
 }
 
-void HingeConstraint::SetLimit(btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor,
-	btScalar _relaxationFactor)
+void HingeConstraint::SetLimit(btScalar low, btScalar high, btScalar softness, btScalar biasFactor,
+	btScalar relaxationFactor)
 {
-	Native->setLimit(low, high, _softness, _biasFactor, _relaxationFactor);
+	Native->setLimit(low, high, softness, biasFactor, relaxationFactor);
 }
 
-void HingeConstraint::SetLimit(btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor)
+void HingeConstraint::SetLimit(btScalar low, btScalar high, btScalar softness, btScalar biasFactor)
 {
-	Native->setLimit(low, high, _softness, _biasFactor);
+	Native->setLimit(low, high, softness, biasFactor);
 }
 
-void HingeConstraint::SetLimit(btScalar low, btScalar high, btScalar _softness)
+void HingeConstraint::SetLimit(btScalar low, btScalar high, btScalar softness)
 {
-	Native->setLimit(low, high, _softness);
+	Native->setLimit(low, high, softness);
 }
 
 void HingeConstraint::SetLimit(btScalar low, btScalar high)

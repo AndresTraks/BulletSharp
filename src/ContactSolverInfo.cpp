@@ -4,9 +4,24 @@
 
 #include "ContactSolverInfo.h"
 
-ContactSolverInfoData::ContactSolverInfoData(btContactSolverInfoData* native)
+ContactSolverInfoData::ContactSolverInfoData(btContactSolverInfoData* native, bool preventDelete)
 {
 	_native = native;
+	_preventDelete = preventDelete;
+}
+
+ContactSolverInfoData::~ContactSolverInfoData()
+{
+	this->!ContactSolverInfoData();
+}
+
+ContactSolverInfoData::!ContactSolverInfoData()
+{
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
+	_native = NULL;
 }
 
 ContactSolverInfoData::ContactSolverInfoData()
@@ -204,13 +219,13 @@ void ContactSolverInfoData::WarmstartingFactor::set(btScalar value)
 }
 
 
-ContactSolverInfo::ContactSolverInfo(btContactSolverInfo* native)
-	: ContactSolverInfoData(native)
+ContactSolverInfo::ContactSolverInfo(btContactSolverInfo* native, bool preventDelete)
+	: ContactSolverInfoData(native, preventDelete)
 {
 }
 
 ContactSolverInfo::ContactSolverInfo()
-	: ContactSolverInfoData(new btContactSolverInfo())
+	: ContactSolverInfoData(new btContactSolverInfo(), false)
 {
 }
 

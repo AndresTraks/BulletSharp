@@ -10,6 +10,7 @@ namespace BulletSharp
 		BoxShape(btBoxShape* native);
 
 	public:
+		BoxShape(Vector3% boxHalfExtents);
 		BoxShape(Vector3 boxHalfExtents);
 		BoxShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ);
 		BoxShape(btScalar boxHalfExtent); // cube helper

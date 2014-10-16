@@ -5,15 +5,14 @@
 #include "CollisionObject.h"
 #include "CollisionObjectWrapper.h"
 
+CollisionAlgorithmCreateFunc::CollisionAlgorithmCreateFunc(btCollisionAlgorithmCreateFunc* native)
+{
+	_native = native;
+}
+
 CollisionAlgorithmCreateFunc::CollisionAlgorithmCreateFunc()
 {
 	_native = new btCollisionAlgorithmCreateFunc();
-	_deleteObject = true;
-}
-
-CollisionAlgorithmCreateFunc::CollisionAlgorithmCreateFunc(btCollisionAlgorithmCreateFunc* createFunc)
-{
-	_native = createFunc;
 }
 
 CollisionAlgorithmCreateFunc::~CollisionAlgorithmCreateFunc()
@@ -23,17 +22,16 @@ CollisionAlgorithmCreateFunc::~CollisionAlgorithmCreateFunc()
 
 CollisionAlgorithmCreateFunc::!CollisionAlgorithmCreateFunc()
 {
-	if (_deleteObject)
+	if (!_preventDelete)
 	{
 		delete _native;
-		_native = NULL;
 	}
-}
+	_native = NULL;}
 
-CollisionAlgorithm^ CollisionAlgorithmCreateFunc::CreateCollisionAlgorithm(
-	CollisionAlgorithmConstructionInfo^ info, CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
+CollisionAlgorithm^ CollisionAlgorithmCreateFunc::CreateCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ info,
+	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
 {
-	return gcnew CollisionAlgorithm(_native->CreateCollisionAlgorithm(
+	return CollisionAlgorithm::GetManaged(_native->CreateCollisionAlgorithm(
 		*info->_native, body0Wrap->_native, body1Wrap->_native));
 }
 

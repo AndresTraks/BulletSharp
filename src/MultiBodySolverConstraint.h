@@ -4,7 +4,7 @@ namespace BulletSharp
 {
 	ref class MultiBody;
 
-	public ref class MultiBodySolverConstraint
+	public ref class MultiBodySolverConstraint : IDisposable
 	{
 	internal:
 		btMultiBodySolverConstraint* _native;
@@ -13,6 +13,11 @@ namespace BulletSharp
 	private:
 		MultiBody^ _multiBodyA;
 		MultiBody^ _multiBodyB;
+
+	public:
+		!MultiBodySolverConstraint();
+	protected:
+		~MultiBodySolverConstraint();
 
 	public:
 		MultiBodySolverConstraint();
@@ -119,16 +124,16 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property BulletSharp::MultiBody^ MultiBodyA
+		property MultiBody^ MultiBodyA
 		{
-			BulletSharp::MultiBody^ get();
-			void set(BulletSharp::MultiBody^ value);
+			MultiBody^ get();
+			void set(MultiBody^ value);
 		}
 
-		property BulletSharp::MultiBody^ MultiBodyB
+		property MultiBody^ MultiBodyB
 		{
-			BulletSharp::MultiBody^ get();
-			void set(BulletSharp::MultiBody^ value);
+			MultiBody^ get();
+			void set(MultiBody^ value);
 		}
 
 		property IntPtr OriginalContactPoint

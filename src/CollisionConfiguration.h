@@ -5,7 +5,7 @@ namespace BulletSharp
 	ref class CollisionAlgorithmCreateFunc;
 	ref class PoolAllocator;
 
-	public ref class CollisionConfiguration
+	public ref class CollisionConfiguration abstract : IDisposable
 	{
 	internal:
 		btCollisionConfiguration* _native;

@@ -30,8 +30,19 @@ int CapsuleShape::UpAxis::get()
 }
 
 
+CapsuleShapeX::CapsuleShapeX(btCapsuleShapeX* native)
+	: CapsuleShape(native)
+{
+}
+
 CapsuleShapeX::CapsuleShapeX(btScalar radius, btScalar height)
 	: CapsuleShape(new btCapsuleShapeX(radius, height))
+{
+}
+
+
+CapsuleShapeZ::CapsuleShapeZ(btCapsuleShapeZ* native)
+	: CapsuleShape(native)
 {
 }
 
