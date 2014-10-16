@@ -1,5 +1,4 @@
 ﻿using BulletSharp;
-using BulletSharp.MultiThreaded;
 using DemoFramework;
 using SlimDX;
 

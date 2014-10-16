@@ -3,6 +3,7 @@ using BulletSharp;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
 
 namespace BasicDemo
 {
@@ -40,8 +41,11 @@ namespace BasicDemo
         {
             physics.Update((float)e.Time);
 
-            if (Keyboard[OpenTK.Input.Key.Escape] || Keyboard[OpenTK.Input.Key.Q])
+            KeyboardState state = OpenTK.Input.Keyboard.GetState();
+            if (state.IsKeyDown(Key.Escape) || state.IsKeyDown(Key.Q))
+            {
                 Exit();
+            }
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)

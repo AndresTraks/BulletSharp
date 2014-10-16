@@ -213,14 +213,18 @@ namespace BulletSharp
 
 #ifdef GRAPHICS_AXIOM
 #define Vector3_Cross(left, right, result) result = left.Cross(right)
+#define Vector3_Zero Vector3::Zero
 #define Matrix_Identity Matrix4::Identity
 #elif defined(GRAPHICS_MOGRE)
 #define Vector3_Cross(left, right, result) result = left.CrossProduct(right)
+#define Vector3_Zero Vector3::ZERO
 #define Matrix_Identity Matrix4::IDENTITY
 #elif defined(GRAPHICS_WAPICODEPACK)
 #define Vector3_Cross(left, right, result) result = Vector3::Cross(left, right)
+#define Vector3_Zero Vector3(0,0,0)
 #define Matrix_Identity Matrix::Identity
 #else
 #define Vector3_Cross(left, right, result) Vector3::Cross(left, right, result)
+#define Vector3_Zero Vector3::Zero
 #define Matrix_Identity Matrix::Identity
 #endif

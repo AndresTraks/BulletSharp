@@ -13,7 +13,7 @@ namespace ConvexDecompositionDemo
         Physics demo;
         CultureInfo floatFormat = new CultureInfo("en-US");
 
-        public AlignedCollisionShapeArray convexShapes = new AlignedCollisionShapeArray();
+        public List<CollisionShape> convexShapes = new List<CollisionShape>();
         public AlignedVector3Array convexCentroids = new AlignedVector3Array();
 
         int mHullCount = 0;

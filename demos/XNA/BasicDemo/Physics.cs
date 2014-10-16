@@ -1,7 +1,8 @@
-﻿using BulletSharp;
+using BulletSharp;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 
 namespace BasicDemo
 {
@@ -12,7 +13,7 @@ namespace BasicDemo
         CollisionDispatcher Dispatcher;
         BroadphaseInterface Broadphase;
         //ConstraintSolver Solver;
-        AlignedCollisionShapeArray CollisionShapes;
+        List<CollisionShape> CollisionShapes;
         CollisionConfiguration collisionConf;
 
         ///create 125 (5x5x5) dynamic objects
@@ -34,7 +35,7 @@ namespace BasicDemo
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, null, collisionConf);
             World.Gravity = new Vector3(0, -10, 0);
 
-            CollisionShapes = new AlignedCollisionShapeArray();
+            CollisionShapes = new List<CollisionShape>();
 
             // create the ground
             CollisionShape groundShape = new BoxShape(50, 1, 50);

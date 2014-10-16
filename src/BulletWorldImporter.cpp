@@ -95,7 +95,7 @@ RigidBody^ Serialize::BulletWorldImporter::CreateRigidBody(bool isDynamic, btSca
 	}
 	else
 	{
-		localInertia = Vector3::Zero;
+		localInertia = Vector3_Zero;
 	}
 
 	RigidBodyConstructionInfo^ info = gcnew RigidBodyConstructionInfo(mass, nullptr, shape, localInertia);

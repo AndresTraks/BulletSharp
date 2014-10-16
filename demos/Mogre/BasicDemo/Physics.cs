@@ -1,4 +1,5 @@
-﻿using BulletSharp;
+﻿using System.Collections.Generic;
+using BulletSharp;
 using Mogre;
 
 namespace BasicDemo
@@ -51,7 +52,7 @@ namespace BasicDemo
 
         CollisionDispatcher Dispatcher;
         BroadphaseInterface Broadphase;
-        AlignedCollisionShapeArray CollisionShapes = new AlignedCollisionShapeArray();
+        List<CollisionShape> CollisionShapes = new List<CollisionShape>();
         CollisionConfiguration collisionConf;
 
         ///create 125 (5x5x5) dynamic objects

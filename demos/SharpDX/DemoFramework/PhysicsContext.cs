@@ -1,4 +1,5 @@
-﻿using BulletSharp;
+﻿using System.Collections.Generic;
+using BulletSharp;
 using SharpDX;
 
 namespace DemoFramework
@@ -16,14 +17,14 @@ namespace DemoFramework
         protected CollisionDispatcher Dispatcher;
         protected BroadphaseInterface Broadphase;
         protected ConstraintSolver Solver;
-        public AlignedCollisionShapeArray CollisionShapes { get; private set; }
+        public List<CollisionShape> CollisionShapes { get; private set; }
 
         protected BoxShape shootBoxShape;
         protected float shootBoxInitialSpeed = 40;
 
         public PhysicsContext()
         {
-            CollisionShapes = new AlignedCollisionShapeArray();
+            CollisionShapes = new List<CollisionShape>();
 
             InitPhysics();
         }
@@ -76,7 +77,6 @@ namespace DemoFramework
         public virtual void Dispose()
         {
             ExitPhysics();
-            CollisionShapes.Dispose();
         }
 
         public virtual int Update(float elapsedTime)

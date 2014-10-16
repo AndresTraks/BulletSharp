@@ -74,7 +74,6 @@ using namespace Mogre;
 #using <MonoGame.Framework.dll>
 using namespace Microsoft::Xna::Framework;
 #elif GRAPHICS_OPENTK
-#using <OpenTK.dll>
 using namespace OpenTK;
 #elif GRAPHICS_AXIOM
 #using <Axiom.dll>

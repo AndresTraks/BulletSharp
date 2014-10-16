@@ -1,4 +1,5 @@
-﻿using BulletSharp;
+﻿using System.Collections.Generic;
+using BulletSharp;
 using OpenTK;
 //using OpenTK.Graphics;
 
@@ -17,7 +18,7 @@ namespace BasicDemo
         public DiscreteDynamicsWorld World { get; set; }
         CollisionDispatcher dispatcher;
         DbvtBroadphase broadphase;
-        AlignedCollisionShapeArray collisionShapes = new AlignedCollisionShapeArray();
+        List<CollisionShape> collisionShapes = new List<CollisionShape>();
         CollisionConfiguration collisionConf;
 
         public Physics()
