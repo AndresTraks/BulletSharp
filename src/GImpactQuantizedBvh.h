@@ -12,6 +12,7 @@ namespace BulletSharp
 	{
 	internal:
 		BT_QUANTIZED_BVH_NODE* _native;
+
 		GImpactQuantizedBvhNode(BT_QUANTIZED_BVH_NODE* native);
 
 	public:
@@ -72,6 +73,7 @@ namespace BulletSharp
 	{
 	internal:
 		btQuantizedBvhTree* _native;
+
 		QuantizedBvhTree(btQuantizedBvhTree* native);
 
 	public:
@@ -107,6 +109,7 @@ namespace BulletSharp
 	{
 	internal:
 		btGImpactQuantizedBvh* _native;
+
 		GImpactQuantizedBvh(btGImpactQuantizedBvh* native);
 
 	private:

@@ -13,6 +13,7 @@ namespace BulletSharp
 	{
 	internal:
 		btDbvtAabbMm* _native;
+
 		DbvtAabbMm(btDbvtAabbMm* native);
 
 	public:
@@ -74,6 +75,7 @@ namespace BulletSharp
 	{
 	internal:
 		btDbvtNode* _native;
+
 		DbvtNode(btDbvtNode* native);
 
 	private:
@@ -128,6 +130,7 @@ namespace BulletSharp
 		{
 		internal:
 			btDbvt::sStkNN* _native;
+
 			StkNN(btDbvt::sStkNN* native);
 
 		public:
@@ -151,6 +154,7 @@ namespace BulletSharp
 		{
 		internal:
 			btDbvt::sStkNP* _native;
+
 			StkNP(btDbvt::sStkNP* native);
 
 		public:
@@ -172,6 +176,7 @@ namespace BulletSharp
 		{
 		internal:
 			btDbvt::sStkNPS* _native;
+
 			StkNps(btDbvt::sStkNPS* native);
 
 		public:
@@ -200,6 +205,7 @@ namespace BulletSharp
 		{
 		internal:
 			btDbvt::sStkCLN* _native;
+
 			StkCln(btDbvt::sStkCLN* native);
 
 		public:
@@ -221,6 +227,7 @@ namespace BulletSharp
 		{
 		internal:
 			btDbvt::ICollide* _native;
+
 			ICollide(btDbvt::ICollide* native);
 
 		public:
@@ -245,6 +252,7 @@ namespace BulletSharp
 		{
 		internal:
 			btDbvt::IWriter* _native;
+
 			IWriter(btDbvt::IWriter* native);
 
 		public:
@@ -268,6 +276,7 @@ namespace BulletSharp
 		{
 		internal:
 			btDbvt::IClone* _native;
+
 			IClone(btDbvt::IClone* native);
 
 		public:
@@ -286,16 +295,17 @@ namespace BulletSharp
 			}
 		};
 
-
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
 	internal:
 		btDbvt* _native;
-		Dbvt(btDbvt* native, bool preventDelete);
 
 	private:
 		bool _preventDelete;
+
+	internal:
+		Dbvt(btDbvt* native, bool preventDelete);
 
 	public:
 		!Dbvt();
@@ -331,12 +341,12 @@ namespace BulletSharp
 		static int Nearest(array<int>^ i, StkNps^ a, btScalar v, int l, int h);
 		void OptimizeBottomUp();
 		void OptimizeIncremental(int passes);
-		void OptimizeTopDown(int bu_treshold);
+		void OptimizeTopDown(int buTreshold);
 		void OptimizeTopDown();
 		static void RayTest(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, ICollide^ policy);
 #ifndef DISABLE_INTERNAL
 		void RayTestInternal(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, Vector3 rayDirectionInverse,
-			array<unsigned int>^ signs, btScalar lambda_max, Vector3 aabbMin, Vector3 aabbMax,
+			array<unsigned int>^ signs, btScalar lambdaMax, Vector3 aabbMin, Vector3 aabbMax,
 			ICollide^ policy);
 #endif
 		void Remove(DbvtNode^ leaf);

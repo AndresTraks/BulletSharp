@@ -2,10 +2,8 @@
 
 #ifndef DISABLE_COLLISION_ALGORITHMS
 
-#include "CompoundCompoundCollisionAlgorithm.h"
-#include "CollisionObject.h"
 #include "CollisionObjectWrapper.h"
-#include "PersistentManifold.h"
+#include "CompoundCompoundCollisionAlgorithm.h"
 
 CompoundCompoundCollisionAlgorithm::CreateFunc::CreateFunc()
 	: CollisionAlgorithmCreateFunc(new btCompoundCompoundCollisionAlgorithm::CreateFunc())

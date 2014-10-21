@@ -45,6 +45,7 @@ namespace BulletSharp
 		{
 		internal:
 			btDiscreteCollisionDetectorInterface::Result* _native;
+
 			Result(btDiscreteCollisionDetectorInterface::Result* native);
 
 		public:
@@ -66,6 +67,7 @@ namespace BulletSharp
 
 	internal:
 		btDiscreteCollisionDetectorInterface* _native;
+
 		DiscreteCollisionDetectorInterface(btDiscreteCollisionDetectorInterface* native);
 
 	public:

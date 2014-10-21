@@ -14,7 +14,7 @@ namespace BulletSharp
 		//bool _preventDelete;
 
 	internal:
-		CollisionObjectWrapper(btCollisionObjectWrapper* collisionObjectWrapper);
+		CollisionObjectWrapper(btCollisionObjectWrapper* native);
 
 /*
 	public:
@@ -24,7 +24,8 @@ namespace BulletSharp
 */
 
 	public:
-		//CollisionObjectWrapper(CollisionObjectWrapper^ parent, CollisionShape^ shape, CollisionObject^ collisionObject, Matrix worldTransform, int partId, int index);
+		//CollisionObjectWrapper(CollisionObjectWrapper^ parent, CollisionShape^ shape,
+		//	CollisionObject^ collisionObject, Matrix worldTransform, int partId, int index);
 
 		void GetWorldTransform([Out] Matrix% outTransform);
 /*

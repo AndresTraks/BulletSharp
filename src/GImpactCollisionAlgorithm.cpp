@@ -22,6 +22,8 @@ GImpactCollisionAlgorithm::CreateFunc::CreateFunc()
 	: CollisionAlgorithmCreateFunc(new btGImpactCollisionAlgorithm::CreateFunc())
 {
 }
+
+
 #define Native static_cast<btGImpactCollisionAlgorithm*>(_native)
 
 GImpactCollisionAlgorithm::GImpactCollisionAlgorithm(btGImpactCollisionAlgorithm* native)

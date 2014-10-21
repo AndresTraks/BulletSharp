@@ -4,7 +4,6 @@
 
 #include "MinkowskiPenetrationDepthSolver.h"
 
-
 MinkowskiPenetrationDepthSolver::MinkowskiPenetrationDepthSolver()
 	: ConvexPenetrationDepthSolver(new btMinkowskiPenetrationDepthSolver())
 {

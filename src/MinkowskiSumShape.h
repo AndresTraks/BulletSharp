@@ -8,6 +8,10 @@ namespace BulletSharp
 
 	public ref class MinkowskiSumShape : ConvexInternalShape
 	{
+	private:
+		ConvexShape^ _shapeA;
+		ConvexShape^ _shapeB;
+
 	internal:
 		MinkowskiSumShape(btMinkowskiSumShape* native);
 

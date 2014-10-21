@@ -17,7 +17,6 @@ namespace BulletSharp
 	public:
 		MultiBodyLinkCollider(MultiBody^ multiBody, int link);
 
-		bool CheckCollideWithOverride(CollisionObject^ co);
 		static MultiBodyLinkCollider^ Upcast(CollisionObject^ colObj);
 
 		property int Link

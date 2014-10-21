@@ -58,6 +58,11 @@ void MultiBodyDynamicsWorld::AddMultiBodyConstraint(MultiBodyConstraint^ constra
 	_constraints->Add(constraint);
 }
 #endif
+void MultiBodyDynamicsWorld::IntegrateTransforms(btScalar timeStep)
+{
+	Native->integrateTransforms(timeStep);
+}
+
 void MultiBodyDynamicsWorld::RemoveMultiBody(MultiBody^ body)
 {
 	Native->removeMultiBody(body->_native);

@@ -48,7 +48,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BulletSharp">
-      <HintPath>..\vs2012\Release Generic\BulletSharp.dll</HintPath>
+      <HintPath>..\Release Generic\BulletSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>

@@ -7,6 +7,8 @@
 #include "PersistentManifold.h"
 #include "RigidBody.h"
 
+#define Native static_cast<btContactConstraint*>(_native)
+
 ContactConstraint::ContactConstraint(btContactConstraint* native)
 	: TypedConstraint(native)
 {

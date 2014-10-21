@@ -16,13 +16,13 @@
 #define Native static_cast<btDbvtProxy*>(_native)
 
 DbvtProxy::DbvtProxy(btDbvtProxy* native)
-	: BroadphaseProxy(native)
+	: BroadphaseProxy(native, false)
 {
 }
 
 DbvtProxy::DbvtProxy(Vector3% aabbMin, Vector3% aabbMax, IntPtr userPointer, CollisionFilterGroups collisionFilterGroup,
 	CollisionFilterGroups collisionFilterMask)
-	: BroadphaseProxy(0)
+	: BroadphaseProxy(0, false)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
@@ -34,7 +34,7 @@ DbvtProxy::DbvtProxy(Vector3% aabbMin, Vector3% aabbMax, IntPtr userPointer, Col
 
 DbvtProxy::DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPointer, CollisionFilterGroups collisionFilterGroup,
 	CollisionFilterGroups collisionFilterMask)
-	: BroadphaseProxy(0)
+	: BroadphaseProxy(0, false)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);

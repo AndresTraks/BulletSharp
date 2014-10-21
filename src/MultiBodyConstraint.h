@@ -72,6 +72,7 @@ namespace BulletSharp
 	{
 	internal:
 		btMultiBodyConstraint* _native;
+
 		MultiBodyConstraint(btMultiBodyConstraint* native);
 
 	public:

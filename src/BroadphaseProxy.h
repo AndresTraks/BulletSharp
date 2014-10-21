@@ -4,21 +4,26 @@ namespace BulletSharp
 {
 	ref class CollisionAlgorithm;
 
-	public ref class BroadphaseProxy
+	public ref class BroadphaseProxy : IDisposable
 	{
 	internal:
 		btBroadphaseProxy* _native;
 		int _uid;
-		BroadphaseProxy(btBroadphaseProxy* native);
 
 	private:
-		bool _doesNotOwnObject;
+		bool _preventDelete;
 
 	protected:
 		Object^ _clientObject;
 
 	internal:
+		BroadphaseProxy(btBroadphaseProxy* native, bool preventDelete);
 		static BroadphaseProxy^ GetManaged(btBroadphaseProxy* broadphaseProxy);
+
+	public:
+		!BroadphaseProxy();
+	protected:
+		~BroadphaseProxy();
 
 	public:
 		BroadphaseProxy();

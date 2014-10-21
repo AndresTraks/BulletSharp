@@ -8,9 +8,24 @@
 #include "DbvtBroadphase.h"
 #endif
 
-BroadphaseProxy::BroadphaseProxy(btBroadphaseProxy* native)
+BroadphaseProxy::BroadphaseProxy(btBroadphaseProxy* native, bool preventDelete)
 {
 	UnmanagedPointer = native;
+	_preventDelete = preventDelete;
+}
+
+BroadphaseProxy::~BroadphaseProxy()
+{
+	this->!BroadphaseProxy();
+}
+
+BroadphaseProxy::!BroadphaseProxy()
+{
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
+	_native = NULL;
 }
 
 BroadphaseProxy::BroadphaseProxy()
@@ -70,7 +85,7 @@ BroadphaseProxy^ BroadphaseProxy::GetManaged(btBroadphaseProxy* broadphaseProxy)
 	if (dbvtProxy)
 	{
 		proxy = gcnew DbvtProxy(dbvtProxy);
-		proxy->_doesNotOwnObject = true;
+		proxy->_preventDelete = true;
 		return proxy;
 	}
 #endif
@@ -79,12 +94,11 @@ BroadphaseProxy^ BroadphaseProxy::GetManaged(btBroadphaseProxy* broadphaseProxy)
 	if (simpleProxy)
 	{
 		proxy = gcnew SimpleBroadphaseProxy(simpleProxy);
-		proxy->_doesNotOwnObject = true;
+		proxy->_preventDelete = true;
 		return proxy;
 	}
 
-	proxy = gcnew BroadphaseProxy(broadphaseProxy);
-	proxy->_doesNotOwnObject = true;
+	proxy = gcnew BroadphaseProxy(broadphaseProxy, true);
 	return proxy;
 }
 

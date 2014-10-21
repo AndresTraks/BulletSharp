@@ -25,6 +25,7 @@ namespace BulletSharp
 
 	internal:
 		btDispatcherInfo* _native;
+
 		DispatcherInfo(btDispatcherInfo* native);
 
 	public:
@@ -111,6 +112,7 @@ namespace BulletSharp
 
 	internal:
 		btDispatcher* _native;
+
 		Dispatcher(btDispatcher* native);
 
 	public:

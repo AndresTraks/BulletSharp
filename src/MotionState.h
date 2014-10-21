@@ -8,6 +8,7 @@ namespace BulletSharp
 	{
 	internal:
 		btMotionState* _native;
+
 		MotionState(btMotionState* native);
 
 	public:

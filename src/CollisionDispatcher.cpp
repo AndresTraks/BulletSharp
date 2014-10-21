@@ -49,10 +49,6 @@ void CollisionDispatcher::RegisterCollisionCreateFunc(BroadphaseNativeType proxy
 
 CollisionConfiguration^ CollisionDispatcher::CollisionConfiguration::get()
 {
-	if (_collisionConfiguration == nullptr)
-	{
-		_collisionConfiguration = gcnew DefaultCollisionConfiguration((btDefaultCollisionConfiguration*)Native->getCollisionConfiguration());
-	}
 	return _collisionConfiguration;
 }
 void CollisionDispatcher::CollisionConfiguration::set(BulletSharp::CollisionConfiguration^ config)

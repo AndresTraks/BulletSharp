@@ -12,10 +12,12 @@ namespace BulletSharp
 	{
 	internal:
 		btRotationalLimitMotor* _native;
-		RotationalLimitMotor(btRotationalLimitMotor* native, bool preventDelete);
 
 	private:
 		bool _preventDelete;
+
+	internal:
+		RotationalLimitMotor(btRotationalLimitMotor* native, bool preventDelete);
 
 	public:
 		!RotationalLimitMotor();
@@ -28,7 +30,7 @@ namespace BulletSharp
 
 		btScalar SolveAngularLimits(btScalar timeStep, Vector3 axis, btScalar jacDiagABInv,
 			RigidBody^ body0, RigidBody^ body1);
-		int TestLimitValue(btScalar test_value);
+		int TestLimitValue(btScalar testValue);
 
 		property btScalar AccumulatedImpulse
 		{
@@ -141,10 +143,12 @@ namespace BulletSharp
 	{
 	internal:
 		btTranslationalLimitMotor* _native;
-		TranslationalLimitMotor(btTranslationalLimitMotor* native, bool preventDelete);
 
 	private:
 		bool _preventDelete;
+
+	internal:
+		TranslationalLimitMotor(btTranslationalLimitMotor* native, bool preventDelete);
 
 	public:
 		!TranslationalLimitMotor();
@@ -158,9 +162,9 @@ namespace BulletSharp
 		bool IsLimited(int limitIndex);
 		bool NeedApplyForce(int limitIndex);
 		btScalar SolveLinearAxis(btScalar timeStep, btScalar jacDiagABInv, RigidBody^ body1,
-			Vector3 pointInA, RigidBody^ body2, Vector3 pointInB, int limit_index,
-			Vector3 axis_normal_on_a, Vector3 anchorPos);
-		int TestLimitValue(int limitIndex, btScalar test_value);
+			Vector3 pointInA, RigidBody^ body2, Vector3 pointInB, int limitIndex,
+			Vector3 axisNormalOnA, Vector3 anchorPos);
+		int TestLimitValue(int limitIndex, btScalar testValue);
 
 		property Vector3 AccumulatedImpulse
 		{

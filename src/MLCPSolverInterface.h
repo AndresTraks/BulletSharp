@@ -6,6 +6,7 @@ namespace BulletSharp
 	{
 	internal:
 		btMLCPSolverInterface* _native;
+
 		MlcpSolverInterface(btMLCPSolverInterface* native);
 
 	public:

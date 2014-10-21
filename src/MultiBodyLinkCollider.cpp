@@ -18,11 +18,6 @@ MultiBodyLinkCollider::MultiBodyLinkCollider(BulletSharp::MultiBody^ multiBody, 
 	_multiBody = multiBody;
 }
 
-bool MultiBodyLinkCollider::CheckCollideWithOverride(CollisionObject^ co)
-{
-	return Native->checkCollideWithOverride(co->_native);
-}
-
 MultiBodyLinkCollider^ MultiBodyLinkCollider::Upcast(CollisionObject^ colObj)
 {
 	return static_cast<MultiBodyLinkCollider^>(CollisionObject::GetManaged(btMultiBodyLinkCollider::upcast(colObj->_native)));

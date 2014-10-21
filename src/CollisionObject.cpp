@@ -19,11 +19,6 @@ CollisionObject::CollisionObject(btCollisionObject* native)
 	UnmanagedPointer = native;
 }
 
-CollisionObject::CollisionObject()
-{
-	UnmanagedPointer = new btCollisionObject();
-}
-
 CollisionObject::~CollisionObject()
 {
 	this->!CollisionObject();
@@ -33,7 +28,7 @@ CollisionObject::!CollisionObject()
 {
 	if (this->IsDisposed)
 		return;
-	
+
 	OnDisposing(this, nullptr);
 
 	if (!_preventDelete)
@@ -44,13 +39,13 @@ CollisionObject::!CollisionObject()
 		delete _native;
 	}
 	_isDisposed = true;
-	
+
 	OnDisposed(this, nullptr);
 }
 
-bool CollisionObject::IsDisposed::get()
+CollisionObject::CollisionObject()
 {
-	return _isDisposed;
+	UnmanagedPointer = new btCollisionObject();
 }
 
 void CollisionObject::Activate(bool forceActivation)
@@ -73,6 +68,11 @@ int CollisionObject::CalculateSerializeBufferSize()
 bool CollisionObject::CheckCollideWith(CollisionObject^ collisionObject)
 {
 	return _native->checkCollideWith(collisionObject->_native);
+}
+
+bool CollisionObject::CheckCollideWithOverride(CollisionObject^ collisionObject)
+{
+	return _native->checkCollideWithOverride(collisionObject->_native);
 }
 
 void CollisionObject::ForceActivationState(BulletSharp::ActivationState newState)
@@ -124,6 +124,11 @@ void CollisionObject::SetAnisotropicFriction(Vector3 anisotropicFriction)
 	VECTOR3_CONV(anisotropicFriction);
 	_native->setAnisotropicFriction(VECTOR3_USE(anisotropicFriction));
 	VECTOR3_DEL(anisotropicFriction);
+}
+
+void CollisionObject::SetIgnoreCollisionCheck(CollisionObject^ collisionObject, bool ignoreCollisionCheck)
+{
+	_native->setIgnoreCollisionCheck(collisionObject->_native, ignoreCollisionCheck);
 }
 
 CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
@@ -329,6 +334,11 @@ void CollisionObject::InterpolationWorldTransform::set(Matrix trans)
 bool CollisionObject::IsActive::get()
 {
 	return _native->isActive();
+}
+
+bool CollisionObject::IsDisposed::get()
+{
+	return _isDisposed;
 }
 
 bool CollisionObject::IsKinematicObject::get()

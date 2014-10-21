@@ -6,18 +6,18 @@
 #define Native static_cast<btSimpleBroadphaseProxy*>(_native)
 
 SimpleBroadphaseProxy::SimpleBroadphaseProxy(btSimpleBroadphaseProxy* native)
-	: BroadphaseProxy(native)
+	: BroadphaseProxy(native, false)
 {
 }
 
 SimpleBroadphaseProxy::SimpleBroadphaseProxy()
-	: BroadphaseProxy(new btSimpleBroadphaseProxy())
+	: BroadphaseProxy(new btSimpleBroadphaseProxy(), false)
 {
 }
 
 SimpleBroadphaseProxy::SimpleBroadphaseProxy(Vector3 minpt, Vector3 maxpt, int shapeType,
 	Object^ userObject, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask, IntPtr multiSapProxy)
-	: BroadphaseProxy(0)
+	: BroadphaseProxy(0, false)
 {
 	_clientObject = userObject;
 

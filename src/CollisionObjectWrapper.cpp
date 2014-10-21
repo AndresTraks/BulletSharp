@@ -9,15 +9,6 @@ CollisionObjectWrapper::CollisionObjectWrapper(btCollisionObjectWrapper* native)
 	_native = native;
 }
 /*
-CollisionObjectWrapper::CollisionObjectWrapper(CollisionObjectWrapper^ parent, CollisionShape^ shape,
-	CollisionObject^ collisionObject, Matrix worldTransform, int partId, int index)
-{
-	TRANSFORM_CONV(worldTransform);
-	_native = &btCollisionObjectWrapper(GetUnmanagedNullable(parent), GetUnmanagedNullable(shape),
-		GetUnmanagedNullable(collisionObject), TRANSFORM_USE(worldTransform), partId, index);
-	TRANSFORM_DEL(worldTransform);
-}
-
 CollisionObjectWrapper::~CollisionObjectWrapper()
 {
 	this->!CollisionObjectWrapper();
@@ -34,17 +25,20 @@ CollisionObjectWrapper::!CollisionObjectWrapper()
 	}
 	_native = NULL;
 }
+
+CollisionObjectWrapper::CollisionObjectWrapper(CollisionObjectWrapper^ parent, CollisionShape^ shape,
+	CollisionObject^ collisionObject, Matrix worldTransform, int partId, int index)
+{
+	TRANSFORM_CONV(worldTransform);
+	_native = new btCollisionObjectWrapper(GetUnmanagedNullable(parent), GetUnmanagedNullable(shape), GetUnmanagedNullable(collisionObject),
+		TRANSFORM_USE(worldTransform), partId, index);
+	TRANSFORM_DEL(worldTransform);
+}
 */
 void CollisionObjectWrapper::GetWorldTransform([Out] Matrix% outTransform)
 {
 	BtTransformToMatrixFast(_native->getWorldTransform(), outTransform);
 }
-/*
-bool CollisionObjectWrapper::IsDisposed::get()
-{
-	return (_native == NULL);
-}
-*/
 
 CollisionObject^ CollisionObjectWrapper::CollisionObject::get()
 {
@@ -64,6 +58,13 @@ void CollisionObjectWrapper::Index::set(int value)
 {
 	_native->m_index = value;
 }
+
+/*
+bool CollisionObjectWrapper::IsDisposed::get()
+{
+	return (_native == NULL);
+}
+*/
 
 int CollisionObjectWrapper::PartID::get()
 {

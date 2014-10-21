@@ -11,6 +11,7 @@ ConvexConcaveCollisionAlgorithm::CreateFunc::CreateFunc()
 {
 }
 
+
 ConvexConcaveCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc()
 	: CollisionAlgorithmCreateFunc(new btConvexConcaveCollisionAlgorithm::SwappedCreateFunc())
 {

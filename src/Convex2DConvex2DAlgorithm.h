@@ -21,6 +21,30 @@ namespace BulletSharp
 
 		public:
 			CreateFunc(SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ pdSolver);
+
+			property int MinimumPointsPerturbationThreshold
+			{
+				int get();
+				void set(int value);
+			}
+
+			property int NumPerturbationIterations
+			{
+				int get();
+				void set(int value);
+			}
+			/*
+			property ConvexPenetrationDepthSolver^ PdSolver
+			{
+				ConvexPenetrationDepthSolver^ get();
+				void set(ConvexPenetrationDepthSolver^ value);
+			}
+
+			property VoronoiSimplexSolver^ SimplexSolver
+			{
+				VoronoiSimplexSolver^ get();
+				void set(VoronoiSimplexSolver^ value);
+			}*/
 		};
 
 		Convex2DConvex2DAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,

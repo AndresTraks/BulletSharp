@@ -10,6 +10,7 @@ namespace BulletSharp
 	{
 	internal:
 		btFace* _native;
+
 		Face(btFace* native);
 
 	private:
@@ -47,6 +48,7 @@ namespace BulletSharp
 	{
 	internal:
 		btConvexPolyhedron* _native;
+
 		ConvexPolyhedron(btConvexPolyhedron* native);
 
 	private:

@@ -516,7 +516,10 @@ Dbvt::!Dbvt()
 
 	OnDisposing(this, nullptr);
 
-	_native = NULL;
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
 
 	OnDisposed(this, nullptr);
 }
@@ -659,9 +662,9 @@ void Dbvt::OptimizeIncremental(int passes)
 	_native->optimizeIncremental(passes);
 }
 
-void Dbvt::OptimizeTopDown(int bu_treshold)
+void Dbvt::OptimizeTopDown(int buTreshold)
 {
-	_native->optimizeTopDown(bu_treshold);
+	_native->optimizeTopDown(buTreshold);
 }
 
 void Dbvt::OptimizeTopDown()
@@ -680,7 +683,7 @@ void Dbvt::RayTest(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, ICollide^ pol
 
 #ifndef DISABLE_INTERNAL
 void Dbvt::RayTestInternal(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, Vector3 rayDirectionInverse,
-	array<unsigned int>^ signs, btScalar lambda_max, Vector3 aabbMin, Vector3 aabbMax, ICollide^ policy)
+	array<unsigned int>^ signs, btScalar lambdaMax, Vector3 aabbMin, Vector3 aabbMax, ICollide^ policy)
 {
 	pin_ptr<unsigned int> btSigns = &signs[0];
 	VECTOR3_CONV(rayFrom);
@@ -689,7 +692,7 @@ void Dbvt::RayTestInternal(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, Vecto
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
 	_native->rayTestInternal(root->_native, VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo),
-		VECTOR3_USE(rayDirectionInverse), btSigns, lambda_max, VECTOR3_USE(aabbMin),
+		VECTOR3_USE(rayDirectionInverse), btSigns, lambdaMax, VECTOR3_USE(aabbMin),
 		VECTOR3_USE(aabbMax), *policy->_native);
 	VECTOR3_DEL(rayFrom);
 	VECTOR3_DEL(rayTo);

@@ -25,6 +25,15 @@ MultiBody::!MultiBody()
 	_native = NULL;
 }
 
+MultiBody::MultiBody(int nLinks, btScalar mass, Vector3 inertia, bool fixedBase, bool canSleep,
+	bool multiDof)
+{
+	VECTOR3_CONV(inertia);
+	_native = new btMultiBody(nLinks, mass, VECTOR3_USE(inertia), fixedBase, canSleep,
+		multiDof);
+	VECTOR3_DEL(inertia);
+}
+
 MultiBody::MultiBody(int nLinks, btScalar mass, Vector3 inertia, bool fixedBase, bool canSleep)
 {
 	VECTOR3_CONV(inertia);
@@ -342,6 +351,10 @@ btScalar MultiBody::AngularDamping::get()
 {
 	return _native->getAngularDamping();
 }
+void MultiBody::AngularDamping::set(btScalar damp)
+{
+	_native->setAngularDamping(damp);
+}
 
 #pragma managed(push, off)
 void MultiBody_GetAngularMomentum(btMultiBody* body, btVector3* result)
@@ -450,6 +463,15 @@ void MultiBody::BaseVelocity::set(Vector3 vel)
 	VECTOR3_DEL(vel);
 }
 
+bool MultiBody::CanSleep::get()
+{
+	return _native->getCanSleep();
+}
+void MultiBody::CanSleep::set(bool canSleep)
+{
+	_native->setCanSleep(canSleep);
+}
+
 int MultiBody::CompanionId::get()
 {
 	return _native->getCompanionId();
@@ -478,6 +500,34 @@ bool MultiBody::IsAwake::get()
 	return _native->isAwake();
 }
 
+bool MultiBody::IsMultiDof::get()
+{
+	return _native->isMultiDof();
+}
+
+bool MultiBody::IsPosUpdated::get()
+{
+	return _native->isPosUpdated();
+}
+
+bool MultiBody::IsUsingGlobalVelocities::get()
+{
+	return _native->isUsingGlobalVelocities();
+}
+void MultiBody::IsUsingGlobalVelocities::set(bool use)
+{
+	_native->useGlobalVelocities(use);
+}
+
+bool MultiBody::IsUsingRK4Integration::get()
+{
+	return _native->isUsingRK4Integration();
+}
+void MultiBody::IsUsingRK4Integration::set(bool use)
+{
+	_native->useRK4Integration(use);
+}
+
 btScalar MultiBody::KineticEnergy::get()
 {
 	return _native->getKineticEnergy();
@@ -501,6 +551,20 @@ void MultiBody::MaxAppliedImpulse::set(btScalar maxImp)
 	_native->setMaxAppliedImpulse(maxImp);
 }
 
+btScalar MultiBody::MaxCoordinateVelocity::get()
+{
+	return _native->getMaxCoordinateVelocity();
+}
+void MultiBody::MaxCoordinateVelocity::set(btScalar maxVel)
+{
+	_native->setMaxCoordinateVelocity(maxVel);
+}
+
+int MultiBody::NumDofs::get()
+{
+	return _native->getNumDofs();
+}
+
 int MultiBody::NumLinks::get()
 {
 	return _native->getNumLinks();
@@ -512,6 +576,11 @@ void MultiBody::NumLinks::set(int numLinks)
 	{
 		Array::Resize(_links, numLinks);
 	}
+}
+
+int MultiBody::NumPosVars::get()
+{
+	return _native->getNumPosVars();
 }
 
 bool MultiBody::UseGyroTerm::get()

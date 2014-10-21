@@ -10,6 +10,8 @@
 #include "PersistentManifold.h"
 #include "SimplexSolverInterface.h"
 
+#define Native static_cast<btConvex2dConvex2dAlgorithm::CreateFunc*>(_native)
+
 Convex2DConvex2DAlgorithm::CreateFunc::CreateFunc(SimplexSolverInterface^ simplexSolver,
 	ConvexPenetrationDepthSolver^ pdSolver)
 	: CollisionAlgorithmCreateFunc(new btConvex2dConvex2dAlgorithm::CreateFunc(simplexSolver->_native,
@@ -19,7 +21,45 @@ Convex2DConvex2DAlgorithm::CreateFunc::CreateFunc(SimplexSolverInterface^ simple
 	_pdSolver = pdSolver;
 }
 
+int Convex2DConvex2DAlgorithm::CreateFunc::MinimumPointsPerturbationThreshold::get()
+{
+	return Native->m_minimumPointsPerturbationThreshold;
+}
+void Convex2DConvex2DAlgorithm::CreateFunc::MinimumPointsPerturbationThreshold::set(int value)
+{
+	Native->m_minimumPointsPerturbationThreshold = value;
+}
 
+int Convex2DConvex2DAlgorithm::CreateFunc::NumPerturbationIterations::get()
+{
+	return Native->m_numPerturbationIterations;
+}
+void Convex2DConvex2DAlgorithm::CreateFunc::NumPerturbationIterations::set(int value)
+{
+	Native->m_numPerturbationIterations = value;
+}
+/*
+ConvexPenetrationDepthSolver^ Convex2DConvex2DAlgorithm::CreateFunc::PdSolver::get()
+{
+	return Native->m_pdSolver;
+}
+void Convex2DConvex2DAlgorithm::CreateFunc::PdSolver::set(ConvexPenetrationDepthSolver^ value)
+{
+	Native->m_pdSolver = value->_native;
+}
+
+VoronoiSimplexSolver^ Convex2DConvex2DAlgorithm::CreateFunc::SimplexSolver::get()
+{
+	return Native->m_simplexSolver;
+}
+void Convex2DConvex2DAlgorithm::CreateFunc::SimplexSolver::set(VoronoiSimplexSolver^ value)
+{
+	Native->m_simplexSolver = value->_native;
+}
+*/
+
+
+#undef Native
 #define Native static_cast<btConvex2dConvex2dAlgorithm*>(_native)
 
 Convex2DConvex2DAlgorithm::Convex2DConvex2DAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,

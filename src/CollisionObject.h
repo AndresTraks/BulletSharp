@@ -16,16 +16,16 @@ namespace BulletSharp
 		btCollisionObject* _native;
 		bool _preventDelete;
 
-		CollisionObject(btCollisionObject* native);
-
 	private:
 		bool _isDisposed;
-		
 		BroadphaseProxy^ _broadphaseHandle;
 		Object^ _userObject;
 
 	protected:
 		CollisionShape^ _collisionShape;
+
+	internal:
+		CollisionObject(btCollisionObject* native);
 
 	public:
 		!CollisionObject();
@@ -41,6 +41,7 @@ namespace BulletSharp
 		int CalculateSerializeBufferSize();
 #endif
 		bool CheckCollideWith(CollisionObject^ collisionObject);
+		bool CheckCollideWithOverride(CollisionObject^ collisionObject);
 		void ForceActivationState(BulletSharp::ActivationState newState);
 		virtual int GetHashCode() override;
 		void GetWorldTransform([Out] Matrix% transform);
@@ -52,6 +53,7 @@ namespace BulletSharp
 #endif
 		void SetAnisotropicFriction(Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode);
 		void SetAnisotropicFriction(Vector3 anisotropicFriction);
+		void SetIgnoreCollisionCheck(CollisionObject^ collisionObject, bool ignoreCollisionCheck);
 
 	internal:
 		static CollisionObject^ GetManaged(btCollisionObject* collisionObject);

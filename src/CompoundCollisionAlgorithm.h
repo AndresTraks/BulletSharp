@@ -6,10 +6,8 @@
 namespace BulletSharp
 {
 	ref class CollisionAlgorithmConstructionInfo;
-	ref class CollisionObject;
 	ref class CollisionObjectWrapper;
 	ref class CollisionShape;
-	ref class PersistentManifold;
 
 	public delegate bool CompoundChildShapePairCallback(CollisionShape^ pShape0, CollisionShape^ pShape);
 

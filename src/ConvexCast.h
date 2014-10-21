@@ -79,6 +79,7 @@ namespace BulletSharp
 
 	internal:
 		btConvexCast* _native;
+
 		ConvexCast(btConvexCast* native);
 
 	public:

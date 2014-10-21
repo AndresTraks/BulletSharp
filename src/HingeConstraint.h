@@ -123,4 +123,31 @@ namespace BulletSharp
 			void set(bool frameOffsetOnOff);
 		}
 	};
+
+	public ref class HingeAccumulatedAngleConstraint : HingeConstraint
+	{
+	internal:
+		HingeAccumulatedAngleConstraint(btHingeAccumulatedAngleConstraint* native);
+
+	public:
+		HingeAccumulatedAngleConstraint(RigidBody^ rbA, RigidBody^ rbB, Vector3 pivotInA,
+			Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB, bool useReferenceFrameA);
+		HingeAccumulatedAngleConstraint(RigidBody^ rbA, RigidBody^ rbB, Vector3 pivotInA,
+			Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB);
+		HingeAccumulatedAngleConstraint(RigidBody^ rbA, Vector3 pivotInA, Vector3 axisInA,
+			bool useReferenceFrameA);
+		HingeAccumulatedAngleConstraint(RigidBody^ rbA, Vector3 pivotInA, Vector3 axisInA);
+		HingeAccumulatedAngleConstraint(RigidBody^ rbA, RigidBody^ rbB, Matrix rbAFrame,
+			Matrix rbBFrame, bool useReferenceFrameA);
+		HingeAccumulatedAngleConstraint(RigidBody^ rbA, RigidBody^ rbB, Matrix rbAFrame,
+			Matrix rbBFrame);
+		HingeAccumulatedAngleConstraint(RigidBody^ rbA, Matrix rbAFrame, bool useReferenceFrameA);
+		HingeAccumulatedAngleConstraint(RigidBody^ rbA, Matrix rbAFrame);
+
+		property btScalar AccumulatedHingeAngle
+		{
+			btScalar get();
+			void set(btScalar accAngle);
+		}
+	};
 };

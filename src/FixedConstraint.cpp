@@ -5,8 +5,6 @@
 #include "FixedConstraint.h"
 #include "RigidBody.h"
 
-#define Native static_cast<btFixedConstraint*>(_native)
-
 FixedConstraint::FixedConstraint(btFixedConstraint* native)
 	: TypedConstraint(native)
 {

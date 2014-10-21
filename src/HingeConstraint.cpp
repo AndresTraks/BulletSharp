@@ -346,4 +346,120 @@ void HingeConstraint::UseFrameOffset::set(bool frameOffsetOnOff)
 	Native->setUseFrameOffset(frameOffsetOnOff);
 }
 
+
+#define Native static_cast<btHingeAccumulatedAngleConstraint*>(_native)
+
+HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(btHingeAccumulatedAngleConstraint* native)
+	: HingeConstraint(native)
+{
+}
+
+HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rbA, RigidBody^ rbB,
+	Vector3 pivotInA, Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB, bool useReferenceFrameA)
+	: HingeConstraint(0)
+{
+	VECTOR3_CONV(pivotInA);
+	VECTOR3_CONV(pivotInB);
+	VECTOR3_CONV(axisInA);
+	VECTOR3_CONV(axisInB);
+	UnmanagedPointer = new btHingeAccumulatedAngleConstraint(*(btRigidBody*)rbA->_native, *(btRigidBody*)rbB->_native,
+		VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB), VECTOR3_USE(axisInA), VECTOR3_USE(axisInB),
+		useReferenceFrameA);
+	VECTOR3_DEL(pivotInA);
+	VECTOR3_DEL(pivotInB);
+	VECTOR3_DEL(axisInA);
+	VECTOR3_DEL(axisInB);
+}
+
+HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rbA, RigidBody^ rbB,
+	Vector3 pivotInA, Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB)
+	: HingeConstraint(0)
+{
+	VECTOR3_CONV(pivotInA);
+	VECTOR3_CONV(pivotInB);
+	VECTOR3_CONV(axisInA);
+	VECTOR3_CONV(axisInB);
+	UnmanagedPointer = new btHingeAccumulatedAngleConstraint(*(btRigidBody*)rbA->_native, *(btRigidBody*)rbB->_native,
+		VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB), VECTOR3_USE(axisInA), VECTOR3_USE(axisInB));
+	VECTOR3_DEL(pivotInA);
+	VECTOR3_DEL(pivotInB);
+	VECTOR3_DEL(axisInA);
+	VECTOR3_DEL(axisInB);
+}
+
+HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rbA, Vector3 pivotInA,
+	Vector3 axisInA, bool useReferenceFrameA)
+	: HingeConstraint(0)
+{
+	VECTOR3_CONV(pivotInA);
+	VECTOR3_CONV(axisInA);
+	UnmanagedPointer = new btHingeAccumulatedAngleConstraint(*(btRigidBody*)rbA->_native, VECTOR3_USE(pivotInA),
+		VECTOR3_USE(axisInA), useReferenceFrameA);
+	VECTOR3_DEL(pivotInA);
+	VECTOR3_DEL(axisInA);
+}
+
+HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rbA, Vector3 pivotInA,
+	Vector3 axisInA)
+	: HingeConstraint(0)
+{
+	VECTOR3_CONV(pivotInA);
+	VECTOR3_CONV(axisInA);
+	UnmanagedPointer = new btHingeAccumulatedAngleConstraint(*(btRigidBody*)rbA->_native, VECTOR3_USE(pivotInA),
+		VECTOR3_USE(axisInA));
+	VECTOR3_DEL(pivotInA);
+	VECTOR3_DEL(axisInA);
+}
+
+HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rbA, RigidBody^ rbB,
+	Matrix rbAFrame, Matrix rbBFrame, bool useReferenceFrameA)
+	: HingeConstraint(0)
+{
+	TRANSFORM_CONV(rbAFrame);
+	TRANSFORM_CONV(rbBFrame);
+	UnmanagedPointer = new btHingeAccumulatedAngleConstraint(*(btRigidBody*)rbA->_native, *(btRigidBody*)rbB->_native,
+		TRANSFORM_USE(rbAFrame), TRANSFORM_USE(rbBFrame), useReferenceFrameA);
+	TRANSFORM_DEL(rbAFrame);
+	TRANSFORM_DEL(rbBFrame);
+}
+
+HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rbA, RigidBody^ rbB,
+	Matrix rbAFrame, Matrix rbBFrame)
+	: HingeConstraint(0)
+{
+	TRANSFORM_CONV(rbAFrame);
+	TRANSFORM_CONV(rbBFrame);
+	UnmanagedPointer = new btHingeAccumulatedAngleConstraint(*(btRigidBody*)rbA->_native, *(btRigidBody*)rbB->_native,
+		TRANSFORM_USE(rbAFrame), TRANSFORM_USE(rbBFrame));
+	TRANSFORM_DEL(rbAFrame);
+	TRANSFORM_DEL(rbBFrame);
+}
+
+HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rbA, Matrix rbAFrame,
+	bool useReferenceFrameA)
+	: HingeConstraint(0)
+{
+	TRANSFORM_CONV(rbAFrame);
+	UnmanagedPointer = new btHingeAccumulatedAngleConstraint(*(btRigidBody*)rbA->_native, TRANSFORM_USE(rbAFrame),
+		useReferenceFrameA);
+	TRANSFORM_DEL(rbAFrame);
+}
+
+HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rbA, Matrix rbAFrame)
+	: HingeConstraint(0)
+{
+	TRANSFORM_CONV(rbAFrame);
+	UnmanagedPointer = new btHingeAccumulatedAngleConstraint(*(btRigidBody*)rbA->_native, TRANSFORM_USE(rbAFrame));
+	TRANSFORM_DEL(rbAFrame);
+}
+
+btScalar HingeAccumulatedAngleConstraint::AccumulatedHingeAngle::get()
+{
+	return Native->getAccumulatedHingeAngle();
+}
+void HingeAccumulatedAngleConstraint::AccumulatedHingeAngle::set(btScalar accAngle)
+{
+	Native->setAccumulatedHingeAngle(accAngle);
+}
+
 #endif

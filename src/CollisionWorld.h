@@ -368,7 +368,6 @@ namespace BulletSharp
 			}
 		};
 
-	public:
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 

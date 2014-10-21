@@ -19,7 +19,10 @@ RotationalLimitMotor::~RotationalLimitMotor()
 
 RotationalLimitMotor::!RotationalLimitMotor()
 {
-	delete _native;
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
 	_native = NULL;
 }
 
@@ -43,9 +46,9 @@ btScalar RotationalLimitMotor::SolveAngularLimits(btScalar timeStep, Vector3 axi
 	return ret;
 }
 
-int RotationalLimitMotor::TestLimitValue(btScalar test_value)
+int RotationalLimitMotor::TestLimitValue(btScalar testValue)
 {
-	return _native->testLimitValue(test_value);
+	return _native->testLimitValue(testValue);
 }
 
 btScalar RotationalLimitMotor::AccumulatedImpulse::get()
@@ -244,26 +247,26 @@ bool TranslationalLimitMotor::NeedApplyForce(int limitIndex)
 }
 
 btScalar TranslationalLimitMotor::SolveLinearAxis(btScalar timeStep, btScalar jacDiagABInv,
-	RigidBody^ body1, Vector3 pointInA, RigidBody^ body2, Vector3 pointInB, int limit_index,
-	Vector3 axis_normal_on_a, Vector3 anchorPos)
+	RigidBody^ body1, Vector3 pointInA, RigidBody^ body2, Vector3 pointInB, int limitIndex,
+	Vector3 axisNormalOnA, Vector3 anchorPos)
 {
 	VECTOR3_CONV(pointInA);
 	VECTOR3_CONV(pointInB);
-	VECTOR3_CONV(axis_normal_on_a);
+	VECTOR3_CONV(axisNormalOnA);
 	VECTOR3_CONV(anchorPos);
 	btScalar ret = _native->solveLinearAxis(timeStep, jacDiagABInv, *(btRigidBody*)body1->_native,
 		VECTOR3_USE(pointInA), *(btRigidBody*)body2->_native, VECTOR3_USE(pointInB),
-		limit_index, VECTOR3_USE(axis_normal_on_a), VECTOR3_USE(anchorPos));
+		limitIndex, VECTOR3_USE(axisNormalOnA), VECTOR3_USE(anchorPos));
 	VECTOR3_DEL(pointInA);
 	VECTOR3_DEL(pointInB);
-	VECTOR3_DEL(axis_normal_on_a);
+	VECTOR3_DEL(axisNormalOnA);
 	VECTOR3_DEL(anchorPos);
 	return ret;
 }
 
-int TranslationalLimitMotor::TestLimitValue(int limitIndex, btScalar test_value)
+int TranslationalLimitMotor::TestLimitValue(int limitIndex, btScalar testValue)
 {
-	return _native->testLimitValue(limitIndex, test_value);
+	return _native->testLimitValue(limitIndex, testValue);
 }
 
 Vector3 TranslationalLimitMotor::AccumulatedImpulse::get()
@@ -494,9 +497,9 @@ int Generic6DofConstraint::GetLimitMotorInfo2(RotationalLimitMotor^ limitMotor, 
 	return ret;
 }
 */
-btScalar Generic6DofConstraint::GetAngle(int axis_index)
+btScalar Generic6DofConstraint::GetAngle(int axisIndex)
 {
-	return Native->getAngle(axis_index);
+	return Native->getAngle(axisIndex);
 }
 
 #pragma managed(push, off)

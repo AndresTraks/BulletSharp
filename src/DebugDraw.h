@@ -55,6 +55,7 @@ namespace BulletSharp
 		virtual void DrawTriangle(Vector3% v0, Vector3% v1, Vector3% v2, BtColor color, btScalar);
 		virtual void DrawTriangle(Vector3% v0, Vector3% v1, Vector3% v2, Vector3%, Vector3%, Vector3%, BtColor color, btScalar alpha);
 
+		virtual void FlushLines();
 		virtual void ReportErrorWarning(String^ warningString) = 0;
 
 		property bool IsDisposed
@@ -138,6 +139,7 @@ namespace BulletSharp
 		virtual void baseDrawTriangle(const btVector3& v0, const btVector3& v1, const btVector3& v2,
 			const btVector3&, const btVector3&, const btVector3&, const btVector3& color, btScalar alpha);
 
+		virtual void flushLines();
 		virtual void reportErrorWarning(const char* warningString);
 
 		virtual void setDebugMode(int debugMode);

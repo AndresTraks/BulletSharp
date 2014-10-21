@@ -14,11 +14,12 @@ Convex2DShape::Convex2DShape(btConvex2dShape* native)
 Convex2DShape::Convex2DShape(ConvexShape^ convexChildShape)
 	: ConvexShape(new btConvex2dShape((btConvexShape*)convexChildShape->_native))
 {
+	_convexChildShape = convexChildShape;
 }
 
 ConvexShape^ Convex2DShape::ChildShape::get()
 {
-	return dynamic_cast<ConvexShape^>(CollisionShape::GetManaged(Native->getChildShape()));
+	return _convexChildShape;
 }
 
 #endif

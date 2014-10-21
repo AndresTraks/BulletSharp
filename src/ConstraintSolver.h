@@ -17,11 +17,13 @@ namespace BulletSharp
 
 	internal:
 		btConstraintSolver* _native;
-		ConstraintSolver(btConstraintSolver* native);
-		static ConstraintSolver^ GetManaged(btConstraintSolver* native);
 
 	private:
 		bool _preventDelete;
+
+	internal:
+		ConstraintSolver(btConstraintSolver* native);
+		static ConstraintSolver^ GetManaged(btConstraintSolver* native);
 
 	public:
 		!ConstraintSolver();
@@ -29,11 +31,6 @@ namespace BulletSharp
 		~ConstraintSolver();
 
 	public:
-		property bool IsDisposed
-		{
-			virtual bool get();
-		}
-
 #ifndef DISABLE_CONSTRAINTS
 		void AllSolved(ContactSolverInfo^ info
 #ifndef DISABLE_DEBUGDRAW
@@ -49,6 +46,11 @@ namespace BulletSharp
 #endif
 			Dispatcher^ dispatcher);
 #endif
+
+		property bool IsDisposed
+		{
+			virtual bool get();
+		}
 #ifndef DISABLE_CONSTRAINTS
 		property ConstraintSolverType SolverType
 		{

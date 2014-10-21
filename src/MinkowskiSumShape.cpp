@@ -16,16 +16,26 @@ MinkowskiSumShape::MinkowskiSumShape(ConvexShape^ shapeA, ConvexShape^ shapeB)
 	: ConvexInternalShape(new btMinkowskiSumShape((btConvexShape*)shapeA->_native,
 		(btConvexShape*)shapeB->_native))
 {
+	_shapeA = shapeA;
+	_shapeB = shapeB;
 }
 
 ConvexShape^ MinkowskiSumShape::ShapeA::get()
 {
-	return static_cast<ConvexShape^>(CollisionShape::GetManaged((btCollisionShape*)Native->getShapeA()));
+	if (_shapeA == nullptr)
+	{
+		return static_cast<ConvexShape^>(CollisionShape::GetManaged((btCollisionShape*)Native->getShapeA()));
+	}
+	return _shapeA;
 }
 
 ConvexShape^ MinkowskiSumShape::ShapeB::get()
 {
-	return static_cast<ConvexShape^>(CollisionShape::GetManaged((btCollisionShape*)Native->getShapeB()));
+	if (_shapeB == nullptr)
+	{
+		return static_cast<ConvexShape^>(CollisionShape::GetManaged((btCollisionShape*)Native->getShapeB()));
+	}
+	return _shapeB;
 }
 
 Matrix MinkowskiSumShape::TransformA::get()

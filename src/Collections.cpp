@@ -470,7 +470,7 @@ void DbvtArray::CopyTo(array<Dbvt^>^ array, int arrayIndex)
 	int i;
 	for (i=0; i<_length; i++)
 	{
-		array[arrayIndex+i] = gcnew Dbvt(&Native[i]);
+		array[arrayIndex+i] = gcnew Dbvt(&Native[i], true);
 	}
 }
 
@@ -479,7 +479,7 @@ Dbvt^ DbvtArray::default::get(int index)
 	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 
-	return gcnew Dbvt(&Native[index]);
+	return gcnew Dbvt(&Native[index], true);
 }
 void DbvtArray::default::set(int index, Dbvt^ value)
 {

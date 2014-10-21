@@ -6,10 +6,12 @@ namespace BulletSharp
 	{
 	internal:
 		btContactSolverInfoData* _native;
-		ContactSolverInfoData(btContactSolverInfoData* native, bool preventDelete);
 
 	private:
 		bool _preventDelete;
+
+	internal:
+		ContactSolverInfoData(btContactSolverInfoData* native, bool preventDelete);
 
 	public:
 		!ContactSolverInfoData();

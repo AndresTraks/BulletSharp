@@ -79,6 +79,7 @@ namespace BulletSharp
 	{
 	internal:
 		GIM_BVH_TREE_NODE* _native;
+
 		GimBvhTreeNode(GIM_BVH_TREE_NODE* native);
 
 	public:
@@ -169,6 +170,7 @@ namespace BulletSharp
 	{
 	internal:
 		btPrimitiveManagerBase* _native;
+
 		PrimitiveManagerBase(btPrimitiveManagerBase* native);
 
 	public:
@@ -200,6 +202,7 @@ namespace BulletSharp
 	{
 	internal:
 		btGImpactBvh* _native;
+
 		GImpactBvh(btGImpactBvh* native);
 
 	private:

@@ -10,15 +10,16 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
+	internal:
+		btCollisionShape* _native;
+		bool _preventDelete;
+
 	private:
 		Object^ _userObject;
 		BroadphaseNativeType _shapeType;
 		bool _isDisposed;
 
 	internal:
-		bool _preventDelete;
-
-		btCollisionShape* _native;
 		CollisionShape(btCollisionShape* native);
 		static CollisionShape^ GetManaged(btCollisionShape* collisionShape);
 

@@ -306,6 +306,10 @@ void DebugDraw::DrawTriangle(Vector3% v0, Vector3% v1, Vector3% v2, Vector3%, Ve
 	delete none;
 }
 
+void DebugDraw::FlushLines()
+{
+}
+
 bool DebugDraw::IsDisposed::get()
 {
 	return ( _native == NULL );
@@ -544,6 +548,11 @@ void DebugDrawWrapper::baseDrawTriangle(const btVector3& v0, const btVector3& v1
 	const btVector3& n0, const btVector3& n1, const btVector3& n2, const btVector3& color, btScalar alpha)
 {
 	btIDebugDraw::drawTriangle(v0, v1, v2, n0, n1, n2, color, alpha);
+}
+
+void DebugDrawWrapper::flushLines()
+{
+	_debugDraw->FlushLines();
 }
 
 void DebugDrawWrapper::reportErrorWarning(const char* warningString)

@@ -15,6 +15,7 @@ namespace BulletSharp
 
 	internal:
 		btMultiBody* _native;
+
 		MultiBody(btMultiBody* native);
 
 	public:
@@ -23,6 +24,8 @@ namespace BulletSharp
 		~MultiBody();
 
 	public:
+		MultiBody(int nLinks, btScalar mass, Vector3 inertia, bool fixedBase, bool canSleep,
+			bool multiDof);
 		MultiBody(int nLinks, btScalar mass, Vector3 inertia, bool fixedBase, bool canSleep);
 
 		void AddBaseForce(Vector3 f);
@@ -75,6 +78,7 @@ namespace BulletSharp
 		property btScalar AngularDamping
 		{
 			btScalar get();
+			void set(btScalar damp);
 		}
 
 		property Vector3 AngularMomentum
@@ -128,6 +132,12 @@ namespace BulletSharp
 			void set(Vector3 vel);
 		}
 
+		property bool CanSleep
+		{
+			bool get();
+			void set(bool canSleep);
+		}
+
 		property int CompanionId
 		{
 			int get();
@@ -150,6 +160,28 @@ namespace BulletSharp
 			bool get();
 		}
 
+		property bool IsMultiDof
+		{
+			bool get();
+		}
+
+		property bool IsPosUpdated
+		{
+			bool get();
+		}
+
+		property bool IsUsingGlobalVelocities
+		{
+			bool get();
+			void set(bool use);
+		}
+
+		property bool IsUsingRK4Integration
+		{
+			bool get();
+			void set(bool use);
+		}
+
 		property btScalar KineticEnergy
 		{
 			btScalar get();
@@ -167,10 +199,26 @@ namespace BulletSharp
 			void set(btScalar maxImp);
 		}
 
+		property btScalar MaxCoordinateVelocity
+		{
+			btScalar get();
+			void set(btScalar maxVel);
+		}
+
+		property int NumDofs
+		{
+			int get();
+		}
+
 		property int NumLinks
 		{
 			int get();
 			void set(int numLinks);
+		}
+
+		property int NumPosVars
+		{
+			int get();
 		}
 
 		property bool UseGyroTerm
