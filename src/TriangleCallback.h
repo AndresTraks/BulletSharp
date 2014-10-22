@@ -6,6 +6,7 @@ namespace BulletSharp
 	{
 	internal:
 		btTriangleCallback* _native;
+
 		TriangleCallback(btTriangleCallback* native);
 
 	public:
@@ -27,6 +28,7 @@ namespace BulletSharp
 	{
 	internal:
 		btInternalTriangleIndexCallback* _native;
+
 		InternalTriangleIndexCallback(btInternalTriangleIndexCallback* native);
 
 	public:

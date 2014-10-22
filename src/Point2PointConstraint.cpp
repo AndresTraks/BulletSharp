@@ -90,7 +90,6 @@ Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivo
 	_rigidBodyA = rigidBodyA;
 }
 
-
 void Point2PointConstraint::GetInfo1NonVirtual(ConstraintInfo1^ info)
 {
 	Native->getInfo1NonVirtual(info->_native);
@@ -115,24 +114,22 @@ Vector3 Point2PointConstraint::PivotInA::get()
 {
 	return Math::BtVector3ToVector3(&Native->getPivotInA());
 }
-
-void Point2PointConstraint::PivotInA::set(Vector3 value)
+void Point2PointConstraint::PivotInA::set(Vector3 pivotA)
 {
-	VECTOR3_CONV(value);
-	Native->setPivotA(VECTOR3_USE(value));
-	VECTOR3_DEL(value);
+	VECTOR3_CONV(pivotA);
+	Native->setPivotA(VECTOR3_USE(pivotA));
+	VECTOR3_DEL(pivotA);
 }
 
 Vector3 Point2PointConstraint::PivotInB::get()
 {
 	return Math::BtVector3ToVector3(&Native->getPivotInB());
 }
-
-void Point2PointConstraint::PivotInB::set(Vector3 value)
+void Point2PointConstraint::PivotInB::set(Vector3 pivotB)
 {
-	VECTOR3_CONV(value);
-	Native->setPivotB(VECTOR3_USE(value));
-	VECTOR3_DEL(value);
+	VECTOR3_CONV(pivotB);
+	Native->setPivotB(VECTOR3_USE(pivotB));
+	VECTOR3_DEL(pivotB);
 }
 
 ConstraintSetting^ Point2PointConstraint::Setting::get()

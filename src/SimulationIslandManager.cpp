@@ -2,8 +2,8 @@
 
 #ifndef DISABLE_UNCOMMON
 
-#include "Dispatcher.h"
 #include "CollisionWorld.h"
+#include "Dispatcher.h"
 #include "PersistentManifold.h"
 #include "SimulationIslandManager.h"
 #include "UnionFind.h"
@@ -26,11 +26,6 @@ SimulationIslandManager::IslandCallback::!IslandCallback()
 	
 	delete _native;
 	_native = NULL;
-}
-
-SimulationIslandManager::IslandCallback::IslandCallback()
-{
-	_native = new btSimulationIslandManager::IslandCallback();
 }
 
 void SimulationIslandManager::IslandCallback::ProcessIsland(array<CollisionObject^>^ bodies,
@@ -77,15 +72,12 @@ SimulationIslandManager::!SimulationIslandManager()
 {
 	if (this->IsDisposed)
 		return;
-	
-	OnDisposing(this, nullptr);
-	
-	if (!_preventDelete) {
+
+	if (!_preventDelete)
+	{
 		delete _native;
 	}
 	_native = NULL;
-	
-	OnDisposed(this, nullptr);
 }
 
 SimulationIslandManager::SimulationIslandManager()

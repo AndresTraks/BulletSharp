@@ -257,10 +257,6 @@ namespace BulletSharp
 
 	public ref class Generic6DofConstraint : TypedConstraint
 	{
-	protected:
-		RigidBody^ _rigidBodyA;
-		RigidBody^ _rigidBodyB;
-
 	internal:
 		Generic6DofConstraint(btGeneric6DofConstraint* native);
 

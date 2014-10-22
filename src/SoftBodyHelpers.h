@@ -82,6 +82,7 @@ namespace BulletSharp
 			static void DrawNodeTree(SoftBody^ psb, IDebugDraw^ iDraw, int minDepth);
 			static void DrawNodeTree(SoftBody^ psb, IDebugDraw^ iDraw);
 #endif
+			static void ReoptimizeLinkOrder(SoftBody^ psb);
 		};
 	};
 };

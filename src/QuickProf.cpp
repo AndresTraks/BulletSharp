@@ -53,6 +53,11 @@ unsigned long Clock::TimeMilliseconds::get()
 	return _native->getTimeMilliseconds();
 }
 
+btScalar Clock::TimeSeconds::get()
+{
+	return _native->getTimeSeconds();
+}
+
 #endif
 
 
@@ -166,11 +171,6 @@ void BulletSharp::CProfileIterator::Next()
 	_native->Next();
 }
 
-void BulletSharp::CProfileIterator::SetCurrentUserPointer(IntPtr ptr)
-{
-	_native->Set_Current_UserPointer(ptr.ToPointer());
-}
-
 String^ BulletSharp::CProfileIterator::CurrentName::get()
 {
 	return StringConv::UnmanagedToManaged(_native->Get_Current_Name());
@@ -204,6 +204,10 @@ float BulletSharp::CProfileIterator::CurrentTotalTime::get()
 IntPtr BulletSharp::CProfileIterator::CurrentUserPointer::get()
 {
 	return IntPtr(_native->Get_Current_UserPointer());
+}
+void BulletSharp::CProfileIterator::CurrentUserPointer::set(IntPtr ptr)
+{
+	_native->Set_Current_UserPointer(ptr.ToPointer());
 }
 
 bool BulletSharp::CProfileIterator::IsDone::get()

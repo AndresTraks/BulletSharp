@@ -33,9 +33,9 @@ int SimpleBroadphaseProxy::NextFree::get()
 {
 	return Native->GetNextFree();
 }
-void SimpleBroadphaseProxy::NextFree::set(int value)
+void SimpleBroadphaseProxy::NextFree::set(int next)
 {
-	Native->SetNextFree(value);
+	Native->SetNextFree(next);
 }
 
 

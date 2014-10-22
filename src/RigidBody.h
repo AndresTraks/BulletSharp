@@ -151,7 +151,6 @@ namespace BulletSharp
 		void ApplyImpulse(Vector3 impulse, Vector3 relativePosition);
 		void ApplyTorque(Vector3 torque);
 		void ApplyTorqueImpulse(Vector3 torque);
-		bool CheckCollideWithOverride(CollisionObject^ co);
 		void ClearForces();
 		btScalar ComputeAngularImpulseDenominator(Vector3 axis);
 		Vector3 ComputeGyroscopicForce(btScalar maxGyroscopicForce);

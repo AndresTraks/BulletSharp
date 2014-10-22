@@ -10,6 +10,7 @@ namespace BulletSharp
 		{
 		internal:
 			btVertexBufferDescriptor* _native;
+
 			VertexBufferDescriptor(btVertexBufferDescriptor* native);
 
 		public:

@@ -7,7 +7,6 @@ namespace BulletSharp
 {
 	ref class DynamicsWorld;
 	ref class RigidBody;
-	ref class VehicleRaycaster;
 	ref class WheelInfo;
 	ref class AlignedWheelInfoArray;
 

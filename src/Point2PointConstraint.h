@@ -10,10 +10,12 @@ namespace BulletSharp
 	{
 	internal:
 		btConstraintSetting* _native;
-		ConstraintSetting(btConstraintSetting* native, bool preventDelete);
 
 	private:
 		bool _preventDelete;
+
+	internal:
+		ConstraintSetting(btConstraintSetting* native, bool preventDelete);
 
 	public:
 		!ConstraintSetting();
@@ -44,10 +46,6 @@ namespace BulletSharp
 
 	public ref class Point2PointConstraint : TypedConstraint
 	{
-	private:
-		RigidBody^ _rigidBodyA;
-		RigidBody^ _rigidBodyB;
-
 	internal:
 		Point2PointConstraint(btPoint2PointConstraint* native);
 
@@ -62,13 +60,13 @@ namespace BulletSharp
 		property Vector3 PivotInA
 		{
 			Vector3 get();
-			void set(Vector3 value);
+			void set(Vector3 pivotA);
 		}
 
 		property Vector3 PivotInB
 		{
 			Vector3 get();
-			void set(Vector3 value);
+			void set(Vector3 pivotB);
 		}
 
 		property ConstraintSetting^ Setting

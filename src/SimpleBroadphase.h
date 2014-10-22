@@ -20,7 +20,7 @@ namespace BulletSharp
 		property int NextFree
 		{
 			int get();
-			void set(int value);
+			void set(int next);
 		}
 	};
 

@@ -11,6 +11,7 @@ namespace BulletSharp
 	{
 	internal:
 		btQuantizedBvhNode* _native;
+
 		QuantizedBvhNode(btQuantizedBvhNode* native);
 
 	public:
@@ -62,6 +63,7 @@ namespace BulletSharp
 	{
 	internal:
 		btOptimizedBvhNode* _native;
+
 		OptimizedBvhNode(btOptimizedBvhNode* native);
 
 	public:
@@ -107,6 +109,7 @@ namespace BulletSharp
 	{
 	internal:
 		btNodeOverlapCallback* _native;
+
 		NodeOverlapCallback(btNodeOverlapCallback* native);
 
 	public:
@@ -134,6 +137,7 @@ namespace BulletSharp
 
 	internal:
 		btQuantizedBvh* _native;
+
 		QuantizedBvh(btQuantizedBvh* native);
 		static QuantizedBvh^ GetManaged(btQuantizedBvh* quantizedBvh);
 

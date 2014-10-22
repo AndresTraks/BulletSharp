@@ -280,14 +280,14 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatch(SoftBodyWorldInfo^
 	VECTOR3_CONV(corner10);
 	VECTOR3_CONV(corner01);
 	VECTOR3_CONV(corner11);
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatch(*worldInfo->_native, VECTOR3_USE(corner00),
+	SoftBody^ ret = gcnew SoftBody(btSoftBodyHelpers::CreatePatch(*worldInfo->_native, VECTOR3_USE(corner00),
 		VECTOR3_USE(corner10), VECTOR3_USE(corner01), VECTOR3_USE(corner11), resx,
 		resy, fixeds, gendiags));
 	VECTOR3_DEL(corner00);
 	VECTOR3_DEL(corner10);
 	VECTOR3_DEL(corner01);
 	VECTOR3_DEL(corner11);
-	return body;
+	return ret;
 }
 
 BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatchUV(SoftBodyWorldInfo^ worldInfo, Vector3 corner00,
@@ -299,14 +299,14 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatchUV(SoftBodyWorldInf
 	VECTOR3_CONV(corner01);
 	VECTOR3_CONV(corner11);
 	pin_ptr<float> texCoordsPtr = &texCoords[0];
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatchUV(*worldInfo->_native, VECTOR3_USE(corner00),
+	SoftBody^ ret = gcnew SoftBody(btSoftBodyHelpers::CreatePatchUV(*worldInfo->_native, VECTOR3_USE(corner00),
 		VECTOR3_USE(corner10), VECTOR3_USE(corner01), VECTOR3_USE(corner11), resx,
 		resy, fixeds, gendiags, texCoordsPtr));
 	VECTOR3_DEL(corner00);
 	VECTOR3_DEL(corner10);
 	VECTOR3_DEL(corner01);
 	VECTOR3_DEL(corner11);
-	return body;
+	return ret;
 }
 
 BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatchUV(SoftBodyWorldInfo^ worldInfo, Vector3 corner00,
@@ -317,14 +317,14 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreatePatchUV(SoftBodyWorldInf
 	VECTOR3_CONV(corner10);
 	VECTOR3_CONV(corner01);
 	VECTOR3_CONV(corner11);
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreatePatchUV(*worldInfo->_native, VECTOR3_USE(corner00),
+	SoftBody^ ret = gcnew SoftBody(btSoftBodyHelpers::CreatePatchUV(*worldInfo->_native, VECTOR3_USE(corner00),
 		VECTOR3_USE(corner10), VECTOR3_USE(corner01), VECTOR3_USE(corner11), resx,
 		resy, fixeds, gendiags));
 	VECTOR3_DEL(corner00);
 	VECTOR3_DEL(corner10);
 	VECTOR3_DEL(corner01);
 	VECTOR3_DEL(corner11);
-	return body;
+	return ret;
 }
 
 BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateRope(SoftBodyWorldInfo^ worldInfo, Vector3 from,
@@ -332,11 +332,11 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateRope(SoftBodyWorldInfo^ 
 {
 	VECTOR3_CONV(from);
 	VECTOR3_CONV(to);
-	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateRope(*worldInfo->_native, VECTOR3_USE(from), VECTOR3_USE(to),
+	SoftBody^ ret = gcnew SoftBody(btSoftBodyHelpers::CreateRope(*worldInfo->_native, VECTOR3_USE(from), VECTOR3_USE(to),
 		res, fixeds));
 	VECTOR3_DEL(from);
 	VECTOR3_DEL(to);
-	return body;
+	return ret;
 }
 
 #ifndef DISABLE_DEBUGDRAW
@@ -417,5 +417,10 @@ void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugD
 	btSoftBodyHelpers::DrawNodeTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw));
 }
 #endif
+
+void SoftBodyHelpers::ReoptimizeLinkOrder(BulletSharp::SoftBody::SoftBody^ psb)
+{
+	btSoftBodyHelpers::ReoptimizeLinkOrder((btSoftBody*)psb->_native);
+}
 
 #endif

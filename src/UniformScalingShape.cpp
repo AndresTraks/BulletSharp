@@ -13,11 +13,12 @@ UniformScalingShape::UniformScalingShape(ConvexShape^ convexChildShape, btScalar
 	: ConvexShape(new btUniformScalingShape((btConvexShape*)convexChildShape->_native,
 		uniformScalingFactor))
 {
+	_childShape = convexChildShape;
 }
 
 ConvexShape^ UniformScalingShape::ChildShape::get()
 {
-	return (ConvexShape^)CollisionShape::GetManaged(Native->getChildShape());
+	return _childShape;
 }
 
 btScalar UniformScalingShape::UniformScalingFactor::get()

@@ -7,6 +7,7 @@ namespace BulletSharp
 	{
 	internal:
 		btClock* _native;
+
 		Clock(btClock* native);
 
 	public:
@@ -29,6 +30,11 @@ namespace BulletSharp
 		property unsigned long TimeMilliseconds
 		{
 			unsigned long get();
+		}
+
+		property btScalar TimeSeconds
+		{
+			btScalar get();
 		}
 	};
 #endif
@@ -99,7 +105,6 @@ namespace BulletSharp
 		void EnterParent();
 		void First();
 		void Next();
-		void SetCurrentUserPointer(IntPtr ptr);
 
 		property String^ CurrentName
 		{
@@ -134,6 +139,7 @@ namespace BulletSharp
 		property IntPtr CurrentUserPointer
 		{
 			IntPtr get();
+			void set(IntPtr ptr);
 		}
 
 		property bool IsDone
@@ -151,6 +157,7 @@ namespace BulletSharp
 	{
 	internal:
 		::CProfileManager* _native;
+
 		CProfileManager(::CProfileManager* native);
 
 	public:
@@ -190,6 +197,7 @@ namespace BulletSharp
 	{
 	internal:
 		::CProfileSample* _native;
+
 		CProfileSample(::CProfileSample* native);
 
 	public:

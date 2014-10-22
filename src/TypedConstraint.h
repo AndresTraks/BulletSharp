@@ -11,11 +11,12 @@ namespace BulletSharp
 	{
 	internal:
 		btJointFeedback* _native;
-		JointFeedback(btJointFeedback* native);
-		JointFeedback(btJointFeedback* native, bool preventDelete);
 
-	public:
+	private:
 		bool _preventDelete;
+
+	internal:
+		JointFeedback(btJointFeedback* native, bool preventDelete);
 
 	public:
 		!JointFeedback();
@@ -57,10 +58,12 @@ namespace BulletSharp
 		{
 		internal:
 			btTypedConstraint::btConstraintInfo1* _native;
-			ConstraintInfo1(btTypedConstraint::btConstraintInfo1* native, bool preventDelete);
 
-		public:
+		private:
 			bool _preventDelete;
+
+		internal:
+			ConstraintInfo1(btTypedConstraint::btConstraintInfo1* native, bool preventDelete);
 
 		public:
 			!ConstraintInfo1();
@@ -87,10 +90,12 @@ namespace BulletSharp
 		{
 		internal:
 			btTypedConstraint::btConstraintInfo2* _native;
-			ConstraintInfo2(btTypedConstraint::btConstraintInfo2* native, bool preventDelete);
 
-		public:
+		private:
 			bool _preventDelete;
+
+		internal:
+			ConstraintInfo2(btTypedConstraint::btConstraintInfo2* native, bool preventDelete);
 
 		public:
 			!ConstraintInfo2();
@@ -191,14 +196,21 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposed;
 
 	private:
+		bool _isDisposed;
+		//bool _preventDelete;
 		Object^ _userObject;
 		JointFeedback^ _jointFeedback;
+
+	protected:
+		RigidBody^ _rigidBodyA;
+		RigidBody^ _rigidBodyB;
 
 	internal:
 		btTypedConstraint* _native;
 		bool _preventDelete;
 
-		TypedConstraint(btTypedConstraint* typedConstraint);
+		TypedConstraint(btTypedConstraint* native);
+
 		static TypedConstraint^ GetManaged(btTypedConstraint* native);
 
 	public:
@@ -326,10 +338,12 @@ namespace BulletSharp
 	{
 	internal:
 		btAngularLimit* _native;
-		AngularLimit(btAngularLimit* native, bool preventDelete);
 
-	public:
+	private:
 		bool _preventDelete;
+
+	internal:
+		AngularLimit(btAngularLimit* native, bool preventDelete);
 
 	public:
 		!AngularLimit();

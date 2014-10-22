@@ -10,6 +10,7 @@ namespace BulletSharp
 	{
 	internal:
 		btOverlappingPairCallback* _native;
+
 		OverlappingPairCallback(btOverlappingPairCallback* native);
 		static OverlappingPairCallback^ GetManaged(btOverlappingPairCallback* callback);
 

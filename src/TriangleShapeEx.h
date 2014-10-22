@@ -10,6 +10,7 @@ namespace BulletSharp
 	{
 	internal:
 		GIM_TRIANGLE_CONTACT* _native;
+
 		GimTriangleContact(GIM_TRIANGLE_CONTACT* native);
 
 	public:
@@ -52,6 +53,7 @@ namespace BulletSharp
 	{
 	internal:
 		btPrimitiveTriangle* _native;
+
 		PrimitiveTriangle(btPrimitiveTriangle* native);
 
 	private:

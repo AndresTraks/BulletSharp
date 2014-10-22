@@ -6,13 +6,14 @@ namespace BulletSharp
 	ref class Dispatcher;
 	ref class UnionFind;
 
-	public ref class SimulationIslandManager : ITrackingDisposable
+	public ref class SimulationIslandManager : IDisposable
 	{
 	public:
 		/*ref class IslandCallback abstract : IDisposable
 		{
 		internal:
 			btSimulationIslandManager::IslandCallback* _native;
+
 			IslandCallback(btSimulationIslandManager::IslandCallback* native);
 
 		public:
@@ -21,8 +22,6 @@ namespace BulletSharp
 			~IslandCallback();
 
 		public:
-			IslandCallback();
-
 			void ProcessIsland(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifolds,
 				int islandId);
 
@@ -32,14 +31,15 @@ namespace BulletSharp
 			}
 		};
 		*/
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
+
+
+	internal:
+		btSimulationIslandManager* _native;
 
 	private:
 		bool _preventDelete;
 
 	internal:
-		btSimulationIslandManager* _native;
 		SimulationIslandManager(btSimulationIslandManager* native, bool preventDelete);
 
 	public:

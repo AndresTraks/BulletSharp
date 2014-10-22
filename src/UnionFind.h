@@ -6,6 +6,7 @@ namespace BulletSharp
 	{
 	internal:
 		btElement* _native;
+
 		Element(btElement* native);
 
 	public:
@@ -26,6 +27,7 @@ namespace BulletSharp
 	{
 	internal:
 		btUnionFind* _native;
+
 		UnionFind(btUnionFind* native);
 
 	public:

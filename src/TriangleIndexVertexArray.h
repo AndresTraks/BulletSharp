@@ -13,12 +13,14 @@ namespace BulletSharp
 	{
 	internal:
 		btIndexedMesh* _native;
-		IndexedMesh(btIndexedMesh* native, bool preventDelete);
 
 	private:
 		bool _preventDelete;
 		IntArray^ _triangleIndices;
 		Vector3Array^ _vertices;
+
+	internal:
+		IndexedMesh(btIndexedMesh* native, bool preventDelete);
 
 	public:
 		!IndexedMesh();

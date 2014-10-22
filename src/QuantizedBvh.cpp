@@ -69,6 +69,7 @@ int QuantizedBvhNode::TriangleIndex::get()
 	return _native->getTriangleIndex();
 }
 
+
 OptimizedBvhNode::OptimizedBvhNode(btOptimizedBvhNode* native)
 {
 	_native = native;
@@ -187,8 +188,12 @@ QuantizedBvh::!QuantizedBvh()
 	if (this->IsDisposed)
 		return;
 
+	OnDisposing(this, nullptr);
+
 	delete _native;
 	_native = NULL;
+
+	OnDisposed(this, nullptr);
 }
 
 QuantizedBvh::QuantizedBvh()

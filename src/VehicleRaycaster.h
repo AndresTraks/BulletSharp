@@ -38,6 +38,7 @@ namespace BulletSharp
 	{
 	internal:
 		btVehicleRaycaster* _native;
+
 		VehicleRaycaster(btVehicleRaycaster* native);
 
 	public:

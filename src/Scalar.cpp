@@ -2,9 +2,20 @@
 
 #include "Scalar.h"
 
-TypedObject::TypedObject(btTypedObject* typedObject)
+TypedObject::TypedObject(btTypedObject* native)
 {
-	_native = typedObject;
+	_native = native;
+}
+
+TypedObject::~TypedObject()
+{
+	this->!TypedObject();
+}
+
+TypedObject::!TypedObject()
+{
+	delete _native;
+	_native = NULL;
 }
 
 ObjectType TypedObject::ObjectType::get()

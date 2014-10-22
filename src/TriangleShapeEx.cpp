@@ -17,11 +17,11 @@ GimTriangleContact::~GimTriangleContact()
 
 GimTriangleContact::!GimTriangleContact()
 {
-	if (_native != NULL)
-	{
-		delete _native;
-		_native = NULL;
-	}
+	if (_native == NULL)
+		return;
+
+	delete _native;
+	_native = NULL;
 }
 
 GimTriangleContact::GimTriangleContact()
@@ -79,6 +79,7 @@ void GimTriangleContact::SeparatingNormal::set(Vector4 value)
 {
 	Math::Vector4ToBtVector4(value, &_native->m_separating_normal);
 }
+
 
 PrimitiveTriangle::PrimitiveTriangle(btPrimitiveTriangle* native)
 {

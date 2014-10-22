@@ -8,6 +8,7 @@ namespace BulletSharp
 	{
 	internal:
 		btWheelInfoConstructionInfo* _native;
+
 		WheelInfoConstructionInfo(btWheelInfoConstructionInfo* native);
 
 	public:
@@ -95,6 +96,7 @@ namespace BulletSharp
 	{
 	internal:
 		btWheelInfo::RaycastInfo* _native;
+
 		RaycastInfo(btWheelInfo::RaycastInfo* native);
 
 	public:
@@ -151,11 +153,13 @@ namespace BulletSharp
 	{
 	internal:
 		btWheelInfo* _native;
-		WheelInfo(btWheelInfo* native, bool preventDelete);
 
 	private:
 		bool _preventDelete;
 		RaycastInfo^ _raycastInfo;
+
+	internal:
+		WheelInfo(btWheelInfo* native, bool preventDelete);
 
 	public:
 		!WheelInfo();

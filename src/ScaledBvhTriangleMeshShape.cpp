@@ -20,11 +20,12 @@ ScaledBvhTriangleMeshShape::ScaledBvhTriangleMeshShape(BvhTriangleMeshShape^ chi
 	UnmanagedPointer = new btScaledBvhTriangleMeshShape((btBvhTriangleMeshShape*)childShape->_native,
 		VECTOR3_USE(localScaling));
 	VECTOR3_DEL(localScaling);
+	_childShape = childShape;
 }
 
 BvhTriangleMeshShape^ ScaledBvhTriangleMeshShape::ChildShape::get()
 {
-	return static_cast<BvhTriangleMeshShape^>(CollisionShape::GetManaged(Native->getChildShape()));
+	return _childShape;
 }
 
 #endif

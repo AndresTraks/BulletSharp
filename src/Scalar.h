@@ -2,11 +2,17 @@
 
 namespace BulletSharp
 {
-	public ref class TypedObject
+	public ref class TypedObject : IDisposable
 	{
 	internal:
 		btTypedObject* _native;
-		TypedObject(btTypedObject* typedObject);
+
+		TypedObject(btTypedObject* native);
+
+	public:
+		!TypedObject();
+	protected:
+		~TypedObject();
 
 	public:
 		property ObjectType ObjectType

@@ -303,11 +303,6 @@ void RigidBody::ApplyTorqueImpulse(Vector3 torque)
 	VECTOR3_DEL(torque);
 }
 
-bool RigidBody::CheckCollideWithOverride(CollisionObject^ co)
-{
-	return Native->checkCollideWithOverride(co->_native);
-}
-
 void RigidBody::ClearForces()
 {
 	Native->clearForces();

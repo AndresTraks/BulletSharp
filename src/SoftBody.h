@@ -1788,8 +1788,8 @@ namespace BulletSharp
 			static void ClusterVAImpulse(Cluster^ cluster, Vector3 impulse);
 			static Vector3 ClusterVelocity(Cluster^ cluster, Vector3 rpos);
 			static void ClusterVImpulse(Cluster^ cluster, Vector3 rpos, Vector3 impulse);
-			bool CutLink(int node0, int node1, btScalar position);
 			bool CutLink(Node^ node0, Node^ node1, btScalar position);
+			bool CutLink(int node0, int node1, btScalar position);
 			void DampClusters();
 			void DefaultCollisionHandler(CollisionObjectWrapper^ pcoWrap);
 			void DefaultCollisionHandler(SoftBody^ psb);

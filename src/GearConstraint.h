@@ -8,10 +8,6 @@ namespace BulletSharp
 
 	public ref class GearConstraint : TypedConstraint
 	{
-	private:
-		RigidBody^ _rigidBodyA;
-		RigidBody^ _rigidBodyB;
-
 	internal:
 		GearConstraint(btGearConstraint* native);
 

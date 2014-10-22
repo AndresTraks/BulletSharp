@@ -49,12 +49,8 @@ StridingMeshInterface::!StridingMeshInterface()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing(this, nullptr);
-
 	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 void StridingMeshInterface::CalculateAabbBruteForce(Vector3% aabbMin, Vector3% aabbMax)

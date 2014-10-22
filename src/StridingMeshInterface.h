@@ -6,14 +6,11 @@ namespace BulletSharp
 	ref class InternalTriangleIndexCallback;
 	ref class Serializer;
 
-	public ref class StridingMeshInterface abstract : ITrackingDisposable
+	public ref class StridingMeshInterface abstract : IDisposable
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	internal:
 		btStridingMeshInterface* _native;
+
 		StridingMeshInterface(btStridingMeshInterface* native);
 		static StridingMeshInterface^ GetManaged(btStridingMeshInterface* stridingMesh);
 

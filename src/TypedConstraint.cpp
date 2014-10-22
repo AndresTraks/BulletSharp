@@ -8,11 +8,6 @@
 #include "Serializer.h"
 #endif
 
-JointFeedback::JointFeedback(btJointFeedback* native)
-{
-	_native = native;
-}
-
 JointFeedback::JointFeedback(btJointFeedback* native, bool preventDelete)
 {
 	_native = native;
@@ -436,7 +431,12 @@ void TypedConstraint::IsEnabled::set(bool enabled)
 BulletSharp::JointFeedback^ TypedConstraint::JointFeedback::get()
 {
 	btJointFeedback* jointFeedback = _native->getJointFeedback();
-	ReturnCachedObjectGcnewNullable(BulletSharp::JointFeedback, _jointFeedback, jointFeedback);
+	if (_jointFeedback != nullptr && _jointFeedback->_native == jointFeedback)
+		return _jointFeedback;
+	if (jointFeedback == 0)
+		return nullptr;
+	_jointFeedback = gcnew BulletSharp::JointFeedback(jointFeedback, true);
+	return _jointFeedback;
 }
 void TypedConstraint::JointFeedback::set(BulletSharp::JointFeedback^ jointFeedback)
 {

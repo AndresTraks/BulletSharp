@@ -6,12 +6,13 @@ namespace BulletSharp
 
 	public ref class TriangleInfoMap : IDisposable
 	{
-	internal:
-		btTriangleInfoMap* _native;
-		TriangleInfoMap(btTriangleInfoMap* native, bool preventDelete);
-
 	private:
 		bool _preventDelete;
+
+	internal:
+		btTriangleInfoMap* _native;
+
+		TriangleInfoMap(btTriangleInfoMap* native, bool preventDelete);
 
 	public:
 		!TriangleInfoMap();

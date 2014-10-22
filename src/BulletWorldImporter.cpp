@@ -221,11 +221,7 @@ CompoundShape^ Serialize::BulletWorldImporter::CreateCompoundShape()
 #ifndef DISABLE_BVH
 ScaledBvhTriangleMeshShape^ Serialize::BulletWorldImporter::CreateScaledTrangleMeshShape(BvhTriangleMeshShape^ meshShape, Vector3 localScaling)
 {
-	VECTOR3_CONV(localScaling);
-	ScaledBvhTriangleMeshShape^ shape = gcnew ScaledBvhTriangleMeshShape(
-		_native->baseCreateScaledTrangleMeshShape((btBvhTriangleMeshShape*)meshShape->_native, VECTOR3_USE(localScaling)));
-	VECTOR3_DEL(localScaling);
-	return shape;
+	return gcnew ScaledBvhTriangleMeshShape(meshShape, localScaling);
 }
 
 OptimizedBvh^ Serialize::BulletWorldImporter::CreateOptimizedBvh()

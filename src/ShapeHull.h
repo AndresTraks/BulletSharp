@@ -12,6 +12,7 @@ namespace BulletSharp
 	{
 	internal:
 		btShapeHull* _native;
+
 		//ShapeHull(btShapeHull* native);
 
 	public:

@@ -6,7 +6,6 @@
 #include "DynamicsWorld.h"
 #include "RaycastVehicle.h"
 #include "RigidBody.h"
-#include "VehicleRaycaster.h"
 #include "WheelInfo.h"
 #ifndef DISABLE_DEBUGDRAW
 #include "DebugDraw.h"

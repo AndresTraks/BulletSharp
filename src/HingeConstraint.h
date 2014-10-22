@@ -8,10 +8,6 @@ namespace BulletSharp
 
 	public ref class HingeConstraint : TypedConstraint
 	{
-	private:
-		RigidBody^ _rigidBodyA;
-		RigidBody^ _rigidBodyB;
-
 	internal:
 		HingeConstraint(btHingeConstraint* native);
 
@@ -130,19 +126,19 @@ namespace BulletSharp
 		HingeAccumulatedAngleConstraint(btHingeAccumulatedAngleConstraint* native);
 
 	public:
-		HingeAccumulatedAngleConstraint(RigidBody^ rbA, RigidBody^ rbB, Vector3 pivotInA,
+		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA,
 			Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB, bool useReferenceFrameA);
-		HingeAccumulatedAngleConstraint(RigidBody^ rbA, RigidBody^ rbB, Vector3 pivotInA,
+		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA,
 			Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB);
-		HingeAccumulatedAngleConstraint(RigidBody^ rbA, Vector3 pivotInA, Vector3 axisInA,
+		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector3 axisInA,
 			bool useReferenceFrameA);
-		HingeAccumulatedAngleConstraint(RigidBody^ rbA, Vector3 pivotInA, Vector3 axisInA);
-		HingeAccumulatedAngleConstraint(RigidBody^ rbA, RigidBody^ rbB, Matrix rbAFrame,
-			Matrix rbBFrame, bool useReferenceFrameA);
-		HingeAccumulatedAngleConstraint(RigidBody^ rbA, RigidBody^ rbB, Matrix rbAFrame,
-			Matrix rbBFrame);
-		HingeAccumulatedAngleConstraint(RigidBody^ rbA, Matrix rbAFrame, bool useReferenceFrameA);
-		HingeAccumulatedAngleConstraint(RigidBody^ rbA, Matrix rbAFrame);
+		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector3 axisInA);
+		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame,
+			Matrix rigidBodyBFrame, bool useReferenceFrameA);
+		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame,
+			Matrix rigidBodyBFrame);
+		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame, bool useReferenceFrameA);
+		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame);
 
 		property btScalar AccumulatedHingeAngle
 		{
