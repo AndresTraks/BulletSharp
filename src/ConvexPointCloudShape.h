@@ -11,9 +11,6 @@ namespace BulletSharp
 	private:
 		Vector3Array^ _unscaledPoints;
 
-	internal:
-		ConvexPointCloudShape(btConvexPointCloudShape* native);
-
 	public:
 		ConvexPointCloudShape();
 		ConvexPointCloudShape(array<Vector3>^ points, Vector3% localScaling, bool computeAabb);

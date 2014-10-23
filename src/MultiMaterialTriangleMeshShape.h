@@ -9,9 +9,6 @@ namespace BulletSharp
 
 	public ref class MultimaterialTriangleMeshShape : BvhTriangleMeshShape
 	{
-	internal:
-		MultimaterialTriangleMeshShape(btMultimaterialTriangleMeshShape* native);
-
 	public:
 		MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
 			bool buildBvh);

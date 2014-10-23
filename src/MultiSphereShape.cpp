@@ -4,11 +4,6 @@
 
 #define Native static_cast<btMultiSphereShape*>(_native)
 
-MultiSphereShape::MultiSphereShape(btMultiSphereShape* native)
-	: ConvexInternalAabbCachingShape(native)
-{
-}
-
 MultiSphereShape::MultiSphereShape(array<Vector3>^ positions, array<btScalar>^ radi)
 	: ConvexInternalAabbCachingShape(0)
 {

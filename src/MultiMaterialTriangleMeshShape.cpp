@@ -8,11 +8,6 @@
 
 #define Native static_cast<btMultimaterialTriangleMeshShape*>(_native)
 
-MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(btMultimaterialTriangleMeshShape* native)
-	: BvhTriangleMeshShape(native)
-{
-}
-
 MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface,
 	bool useQuantizedAabbCompression, bool buildBvh)
 	: BvhTriangleMeshShape(new btMultimaterialTriangleMeshShape(meshInterface->_native,

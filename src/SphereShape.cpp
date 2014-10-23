@@ -4,11 +4,6 @@
 
 #define Native static_cast<btSphereShape*>(_native)
 
-SphereShape::SphereShape(btSphereShape* native)
-	: ConvexInternalShape(native)
-{
-}
-
 SphereShape::SphereShape(btScalar radius)
 	: ConvexInternalShape(new btSphereShape(radius))
 {

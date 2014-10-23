@@ -30,18 +30,12 @@ namespace BulletSharp
 
 	public ref class CapsuleShapeX : CapsuleShape
 	{
-	internal:
-		CapsuleShapeX(btCapsuleShapeX* native);
-
 	public:
 		CapsuleShapeX(btScalar radius, btScalar height);
 	};
 
 	public ref class CapsuleShapeZ : CapsuleShape
 	{
-	internal:
-		CapsuleShapeZ(btCapsuleShapeZ* native);
-
 	public:
 		CapsuleShapeZ(btScalar radius, btScalar height);
 	};

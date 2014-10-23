@@ -256,34 +256,7 @@ namespace BulletSharp
 				btCollisionShape* shape, const char* bodyName);
 
 			// shapes
-			virtual btCollisionShape* baseCreatePlaneShape(const btVector3& planeNormal, btScalar planeConstant);
-			virtual btCollisionShape* baseCreateBoxShape(const btVector3& halfExtents);
-			virtual btCollisionShape* baseCreateSphereShape(btScalar radius);
-			virtual btCollisionShape* baseCreateCapsuleShapeX(btScalar radius, btScalar height);
-			virtual btCollisionShape* baseCreateCapsuleShapeY(btScalar radius, btScalar height);
-			virtual btCollisionShape* baseCreateCapsuleShapeZ(btScalar radius, btScalar height);
-
-			virtual btCollisionShape* baseCreateCylinderShapeX(btScalar radius, btScalar height);
-			virtual btCollisionShape* baseCreateCylinderShapeY(btScalar radius, btScalar height);
-			virtual btCollisionShape* baseCreateCylinderShapeZ(btScalar radius, btScalar height);
-			virtual btCollisionShape* baseCreateConeShapeX(btScalar radius, btScalar height);
-			virtual btCollisionShape* baseCreateConeShapeY(btScalar radius, btScalar height);
-			virtual btCollisionShape* baseCreateConeShapeZ(btScalar radius, btScalar height);
 			virtual class btTriangleIndexVertexArray* baseCreateTriangleMeshContainer();
-#ifndef DISABLE_BVH
-			virtual	btBvhTriangleMeshShape* baseCreateBvhTriangleMeshShape(btStridingMeshInterface* trimesh, btOptimizedBvh* bvh);
-#endif
-			virtual btCollisionShape* baseCreateConvexTriangleMeshShape(btStridingMeshInterface* trimesh);
-#ifndef DISABLE_GIMPACT
-			virtual btGImpactMeshShape* baseCreateGimpactShape(btStridingMeshInterface* trimesh);
-#endif
-			virtual class btConvexHullShape* baseCreateConvexHullShape();
-			virtual class btCompoundShape* baseCreateCompoundShape();
-#ifndef DISABLE_BVH
-			virtual class btScaledBvhTriangleMeshShape* baseCreateScaledTrangleMeshShape(btBvhTriangleMeshShape* meshShape,const btVector3& localScalingbtBvhTriangleMeshShape);
-#endif
-			virtual class btMultiSphereShape* baseCreateMultiSphereShape(const btVector3* positions, const btScalar* radi, int numSpheres);
-
 			// acceleration and connectivity structures
 #ifndef DISABLE_BVH
 			virtual btOptimizedBvh* baseCreateOptimizedBvh();

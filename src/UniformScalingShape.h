@@ -9,9 +9,6 @@ namespace BulletSharp
 	private:
 		ConvexShape^ _childShape;
 
-	internal:
-		UniformScalingShape(btUniformScalingShape* native);
-
 	public:
 		UniformScalingShape(ConvexShape^ convexChildShape, btScalar uniformScalingFactor);
 

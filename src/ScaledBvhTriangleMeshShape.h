@@ -11,9 +11,6 @@ namespace BulletSharp
 	private:
 		BvhTriangleMeshShape^ _childShape;
 
-	internal:
-		ScaledBvhTriangleMeshShape(btScaledBvhTriangleMeshShape* native);
-
 	public:
 		ScaledBvhTriangleMeshShape(BvhTriangleMeshShape^ childShape, Vector3 localScaling);
 

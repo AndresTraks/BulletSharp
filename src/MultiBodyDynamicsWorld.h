@@ -29,8 +29,8 @@ namespace BulletSharp
 		void AddMultiBody(MultiBody^ body);
 #ifndef DISABLE_CONSTRAINTS
 		void AddMultiBodyConstraint(MultiBodyConstraint^ constraint);
-		void IntegrateTransforms(btScalar timeStep);
 #endif
+		void IntegrateTransforms(btScalar timeStep);
 		void RemoveMultiBody(MultiBody^ body);
 #ifndef DISABLE_CONSTRAINTS
 		void RemoveMultiBodyConstraint(MultiBodyConstraint^ constraint);

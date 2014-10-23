@@ -5,11 +5,6 @@
 
 #define Native static_cast<btConvexHullShape*>(_native)
 
-ConvexHullShape::ConvexHullShape(btConvexHullShape* native)
-	: PolyhedralConvexAabbCachingShape(native)
-{
-}
-
 ConvexHullShape::ConvexHullShape(System::Collections::Generic::IEnumerable<Vector3>^ points)
 : PolyhedralConvexAabbCachingShape(new btConvexHullShape())
 {

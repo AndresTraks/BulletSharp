@@ -31,18 +31,12 @@ namespace BulletSharp
 
 	public ref class ConeShapeX : ConeShape
 	{
-	internal:
-		ConeShapeX(btConeShapeX* native);
-
 	public:
 		ConeShapeX(btScalar radius, btScalar height);
 	};
 
 	public ref class ConeShapeZ : ConeShape
 	{
-	internal:
-		ConeShapeZ(btConeShapeZ* native);
-
 	public:
 		ConeShapeZ(btScalar radius, btScalar height);
 	};

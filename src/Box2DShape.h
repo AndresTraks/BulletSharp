@@ -12,9 +12,6 @@ namespace BulletSharp
 		Vector3Array^ _normals;
 		Vector3Array^ _vertices;
 
-	internal:
-		Box2DShape(btBox2dShape* native);
-
 	public:
 		Box2DShape(Vector3% boxHalfExtents);
 		Box2DShape(Vector3 boxHalfExtents);

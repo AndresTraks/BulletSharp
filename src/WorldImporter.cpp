@@ -96,7 +96,7 @@ RigidBody^ Serialize::WorldImporter::CreateRigidBody(bool isDynamic, btScalar ma
 	}
 	else
 	{
-		localInertia = Vector3::Zero;
+		localInertia = Vector3_Zero;
 	}
 
 	RigidBodyConstructionInfo^ info = gcnew RigidBodyConstructionInfo(mass, nullptr, shape, localInertia);
@@ -119,70 +119,62 @@ RigidBody^ Serialize::WorldImporter::CreateRigidBody(bool isDynamic, btScalar ma
 
 CollisionShape^ Serialize::WorldImporter::CreatePlaneShape(Vector3 planeNormal, btScalar planeConstant)
 {
-	VECTOR3_CONV(planeNormal);
-	CollisionShape^ shape =
-		gcnew StaticPlaneShape(static_cast<btStaticPlaneShape*>(_native->baseCreatePlaneShape(VECTOR3_USE(planeNormal), planeConstant)));
-	VECTOR3_DEL(planeNormal);
-	return shape;
+	return gcnew StaticPlaneShape(planeNormal, planeConstant);
 }
 
 CollisionShape^ Serialize::WorldImporter::CreateBoxShape(Vector3 halfExtents)
 {
-	VECTOR3_CONV(halfExtents);
-	CollisionShape^ shape =
-		gcnew BoxShape(static_cast<btBoxShape*>(_native->baseCreateBoxShape(VECTOR3_USE(halfExtents))));
-	VECTOR3_DEL(halfExtents);
-	return shape;
+	return gcnew BoxShape(halfExtents.X, halfExtents.Y, halfExtents.Z);
 }
 
 CollisionShape^ Serialize::WorldImporter::CreateSphereShape(btScalar radius)
 {
-	return gcnew SphereShape(static_cast<btSphereShape*>(_native->baseCreateSphereShape(radius)));
+	return gcnew SphereShape(radius);
 }
 
 CollisionShape^ Serialize::WorldImporter::CreateCapsuleShapeX(btScalar radius, btScalar height)
 {
-	return gcnew CapsuleShapeX(static_cast<btCapsuleShapeX*>(_native->baseCreateCapsuleShapeX(radius, height)));
+	return gcnew CapsuleShapeX(radius, height);
 }
 
 CollisionShape^ Serialize::WorldImporter::CreateCapsuleShapeY(btScalar radius, btScalar height)
 {
-	return gcnew CapsuleShape(static_cast<btCapsuleShape*>(_native->baseCreateCapsuleShapeY(radius, height)));
+	return gcnew CapsuleShape(radius, height);
 }
 
 CollisionShape^ Serialize::WorldImporter::CreateCapsuleShapeZ(btScalar radius, btScalar height)
 {
-	return gcnew CapsuleShapeZ(static_cast<btCapsuleShapeZ*>(_native->baseCreateCapsuleShapeZ(radius, height)));
+	return gcnew CapsuleShapeZ(radius, height);
 }
 
 CollisionShape^ Serialize::WorldImporter::CreateCylinderShapeX(btScalar radius, btScalar height)
 {
-	return gcnew CylinderShapeX(static_cast<btCylinderShapeX*>(_native->baseCreateCylinderShapeX(radius, height)));
+	return gcnew CylinderShapeX(height, radius, radius);
 }
 
 CollisionShape^ Serialize::WorldImporter::CreateCylinderShapeY(btScalar radius, btScalar height)
 {
-	return gcnew CylinderShape(static_cast<btCylinderShape*>(_native->baseCreateCylinderShapeY(radius, height)));
+	return gcnew CylinderShape(radius, height, radius);
 }
 
 CollisionShape^ Serialize::WorldImporter::CreateCylinderShapeZ(btScalar radius, btScalar height)
 {
-	return gcnew CylinderShapeZ(static_cast<btCylinderShapeZ*>(_native->baseCreateCylinderShapeZ(radius, height)));
+	return gcnew CylinderShapeZ(radius, radius, height);
 }
 
 CollisionShape^ Serialize::WorldImporter::CreateConeShapeX(btScalar radius, btScalar height)
 {
-	return gcnew ConeShapeX(static_cast<btConeShapeX*>(_native->baseCreateConeShapeX(radius, height)));
+	return gcnew ConeShapeX(radius, height);
 }
 
 CollisionShape^ Serialize::WorldImporter::CreateConeShapeY(btScalar radius, btScalar height)
 {
-	return gcnew ConeShape(static_cast<btConeShape*>(_native->baseCreateConeShapeY(radius, height)));
+	return gcnew ConeShape(radius, height);
 }
 
 CollisionShape^ Serialize::WorldImporter::CreateConeShapeZ(btScalar radius, btScalar height)
 {
-	return gcnew ConeShapeZ(static_cast<btConeShapeZ*>(_native->baseCreateConeShapeZ(radius, height)));
+	return gcnew ConeShapeZ(radius, height);
 }
 
 TriangleIndexVertexArray^ Serialize::WorldImporter::CreateTriangleMeshContainer()
@@ -193,40 +185,36 @@ TriangleIndexVertexArray^ Serialize::WorldImporter::CreateTriangleMeshContainer(
 #ifndef DISABLE_BVH
 BvhTriangleMeshShape^ Serialize::WorldImporter::CreateBvhTriangleMeshShape(StridingMeshInterface^ trimesh, OptimizedBvh^ bvh)
 {
-	return gcnew BvhTriangleMeshShape(_native->baseCreateBvhTriangleMeshShape(trimesh->_native, (btOptimizedBvh*)bvh->_native));
+	return gcnew BvhTriangleMeshShape(trimesh, bvh);
 }
 #endif
 
 CollisionShape^ Serialize::WorldImporter::CreateConvexTriangleMeshShape(StridingMeshInterface^ trimesh)
 {
-	return gcnew ConvexTriangleMeshShape(static_cast<btConvexTriangleMeshShape*>(_native->baseCreateConvexTriangleMeshShape(trimesh->_native)));
+	return gcnew ConvexTriangleMeshShape(trimesh);
 }
 
 #ifndef DISABLE_GIMPACT
 GImpactMeshShape^ Serialize::WorldImporter::CreateGImpactShape(StridingMeshInterface^ trimesh)
 {
-	return gcnew GImpactMeshShape(_native->baseCreateGimpactShape(trimesh->_native));
+	return gcnew GImpactMeshShape(trimesh);
 }
 #endif
 
 ConvexHullShape^ Serialize::WorldImporter::CreateConvexHullShape()
 {
-	return gcnew ConvexHullShape(_native->baseCreateConvexHullShape());
+	return gcnew ConvexHullShape();
 }
 
 CompoundShape^ Serialize::WorldImporter::CreateCompoundShape()
 {
-	return gcnew CompoundShape(_native->baseCreateCompoundShape());
+	return gcnew CompoundShape();
 }
 
 #ifndef DISABLE_BVH
 ScaledBvhTriangleMeshShape^ Serialize::WorldImporter::CreateScaledTrangleMeshShape(BvhTriangleMeshShape^ meshShape, Vector3 localScaling)
 {
-	VECTOR3_CONV(localScaling);
-	ScaledBvhTriangleMeshShape^ shape = gcnew ScaledBvhTriangleMeshShape(
-		_native->baseCreateScaledTrangleMeshShape((btBvhTriangleMeshShape*)meshShape->_native, VECTOR3_USE(localScaling)));
-	VECTOR3_DEL(localScaling);
-	return shape;
+	return gcnew ScaledBvhTriangleMeshShape(meshShape, localScaling);
 }
 
 OptimizedBvh^ Serialize::WorldImporter::CreateOptimizedBvh()
@@ -237,18 +225,7 @@ OptimizedBvh^ Serialize::WorldImporter::CreateOptimizedBvh()
 
 MultiSphereShape^ Serialize::WorldImporter::CreateMultiSphereShape(array<Vector3>^ positions, array<btScalar>^ radi)
 {
-	int numSpheres = (positions->Length < radi->Length) ? positions->Length : radi->Length;
-
-	btVector3* positionsTemp = Math::Vector3ArrayToUnmanaged(positions);
-	btScalar* radiTemp = Math::BtScalarArrayToUnmanaged(radi, numSpheres);
-
-	MultiSphereShape^ shape = gcnew MultiSphereShape(
-		_native->baseCreateMultiSphereShape(positionsTemp, radiTemp, numSpheres));
-
-	delete[] positionsTemp;
-	delete[] radiTemp;
-
-	return shape;
+	return gcnew MultiSphereShape(positions, radi);
 }
 
 TriangleInfoMap^ Serialize::WorldImporter::CreateTriangleInfoMap()
@@ -650,6 +627,8 @@ btCollisionShape* Serialize::WorldImporterWrapper::createPlaneShape(const btVect
 {
 	CollisionShape^ shape = _importer->CreatePlaneShape(Math::BtVector3ToVector3(&planeNormal), planeConstant);
 	shape->_preventDelete = true; // btWorldImporter will delete these shapes
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return shape->_native;
 }
@@ -658,6 +637,8 @@ btCollisionShape* Serialize::WorldImporterWrapper::createBoxShape(const btVector
 {
 	CollisionShape^ shape = _importer->CreateBoxShape(Math::BtVector3ToVector3(&halfExtents));
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return shape->_native;
 }
@@ -666,6 +647,8 @@ btCollisionShape* Serialize::WorldImporterWrapper::createSphereShape(btScalar ra
 {
 	CollisionShape^ shape = _importer->CreateSphereShape(radius);
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return shape->_native;
 }
@@ -674,6 +657,8 @@ btCollisionShape* Serialize::WorldImporterWrapper::createCapsuleShapeX(btScalar 
 {
 	CollisionShape^ shape = _importer->CreateCapsuleShapeX(radius, height);
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return shape->_native;
 }
@@ -682,6 +667,8 @@ btCollisionShape* Serialize::WorldImporterWrapper::createCapsuleShapeY(btScalar 
 {
 	CollisionShape^ shape = _importer->CreateCapsuleShapeY(radius, height);
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return shape->_native;
 }
@@ -690,6 +677,8 @@ btCollisionShape* Serialize::WorldImporterWrapper::createCapsuleShapeZ(btScalar 
 {
 	CollisionShape^ shape = _importer->CreateCapsuleShapeZ(radius, height);
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return shape->_native;
 }
@@ -698,6 +687,8 @@ btCollisionShape* Serialize::WorldImporterWrapper::createCylinderShapeX(btScalar
 {
 	CollisionShape^ shape = _importer->CreateCylinderShapeX(radius, height);
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return shape->_native;
 }
@@ -706,6 +697,8 @@ btCollisionShape* Serialize::WorldImporterWrapper::createCylinderShapeY(btScalar
 {
 	CollisionShape^ shape = _importer->CreateCylinderShapeY(radius, height);
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return shape->_native;
 }
@@ -714,6 +707,8 @@ btCollisionShape* Serialize::WorldImporterWrapper::createCylinderShapeZ(btScalar
 {
 	CollisionShape^ shape = _importer->CreateCylinderShapeZ(radius, height);
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return shape->_native;
 }
@@ -722,6 +717,8 @@ btCollisionShape* Serialize::WorldImporterWrapper::createConeShapeX(btScalar rad
 {
 	CollisionShape^ shape = _importer->CreateConeShapeX(radius, height);
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return shape->_native;
 }
@@ -730,6 +727,8 @@ btCollisionShape* Serialize::WorldImporterWrapper::createConeShapeY(btScalar rad
 {
 	CollisionShape^ shape = _importer->CreateConeShapeY(radius, height);
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return shape->_native;
 }
@@ -738,6 +737,8 @@ btCollisionShape* Serialize::WorldImporterWrapper::createConeShapeZ(btScalar rad
 {
 	CollisionShape^ shape = _importer->CreateConeShapeZ(radius, height);
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return shape->_native;
 }
@@ -752,6 +753,8 @@ btBvhTriangleMeshShape* Serialize::WorldImporterWrapper::createBvhTriangleMeshSh
 {
 	CollisionShape^ shape = _importer->CreateBvhTriangleMeshShape(StridingMeshInterface::GetManaged(trimesh), gcnew OptimizedBvh(bvh));
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return static_cast<btBvhTriangleMeshShape*>(shape->_native);
 }
@@ -761,6 +764,8 @@ btCollisionShape* Serialize::WorldImporterWrapper::createConvexTriangleMeshShape
 {
 	CollisionShape^ shape = _importer->CreateConvexTriangleMeshShape(StridingMeshInterface::GetManaged(trimesh));
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return shape->_native;
 }
@@ -770,6 +775,8 @@ btGImpactMeshShape* Serialize::WorldImporterWrapper::createGimpactShape(btStridi
 {
 	GImpactMeshShape^ shape = _importer->CreateGImpactShape(StridingMeshInterface::GetManaged(trimesh));
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return static_cast<btGImpactMeshShape*>(shape->_native);
 }
@@ -779,6 +786,8 @@ class btConvexHullShape* Serialize::WorldImporterWrapper::createConvexHullShape(
 {
 	ConvexHullShape^ shape = _importer->CreateConvexHullShape();
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return static_cast<btConvexHullShape*>(shape->_native);
 }
@@ -787,6 +796,8 @@ class btCompoundShape* Serialize::WorldImporterWrapper::createCompoundShape()
 {
 	CompoundShape^ shape = _importer->CreateCompoundShape();
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return static_cast<btCompoundShape*>(shape->_native);
 }
@@ -800,6 +811,8 @@ class btScaledBvhTriangleMeshShape* Serialize::WorldImporterWrapper::createScale
 			Math::BtVector3ToVector3(&localScalingbtBvhTriangleMeshShape)
 		);
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return static_cast<btScaledBvhTriangleMeshShape*>(shape->_native);
 }
@@ -816,6 +829,8 @@ class btMultiSphereShape* Serialize::WorldImporterWrapper::createMultiSphereShap
 	}
 	MultiSphereShape^ shape = _importer->CreateMultiSphereShape(positionsTemp, radiTemp);
 	shape->_preventDelete = true;
+	btCollisionShape* shapePtr = shape->_native;
+	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return static_cast<btMultiSphereShape*>(shape->_native);
 }
@@ -992,98 +1007,9 @@ btRigidBody* Serialize::WorldImporterWrapper::baseCreateRigidBody(bool isDynamic
 	return btWorldImporter::createRigidBody(isDynamic, mass, startTransform, shape, bodyName);
 }
 
-btCollisionShape* Serialize::WorldImporterWrapper::baseCreatePlaneShape(const btVector3& planeNormal, btScalar planeConstant)
-{
-	return btWorldImporter::createPlaneShape(planeNormal, planeConstant);
-}
-
-btCollisionShape* Serialize::WorldImporterWrapper::baseCreateBoxShape(const btVector3& halfExtents)
-{
-	return btWorldImporter::createBoxShape(halfExtents);
-}
-
-btCollisionShape* Serialize::WorldImporterWrapper::baseCreateSphereShape(btScalar radius)
-{
-	return btWorldImporter::createSphereShape(radius);
-}
-
-btCollisionShape* Serialize::WorldImporterWrapper::baseCreateCapsuleShapeX(btScalar radius, btScalar height)
-{
-	return btWorldImporter::createCapsuleShapeX(radius, height);
-}
-
-btCollisionShape* Serialize::WorldImporterWrapper::baseCreateCapsuleShapeY(btScalar radius, btScalar height)
-{
-	return btWorldImporter::createCapsuleShapeY(radius, height);
-}
-
-btCollisionShape* Serialize::WorldImporterWrapper::baseCreateCapsuleShapeZ(btScalar radius, btScalar height)
-{
-	return btWorldImporter::createCapsuleShapeZ(radius, height);
-}
-
-btCollisionShape* Serialize::WorldImporterWrapper::baseCreateCylinderShapeX(btScalar radius, btScalar height)
-{
-	return btWorldImporter::createCylinderShapeX(radius, height);
-}
-
-btCollisionShape* Serialize::WorldImporterWrapper::baseCreateCylinderShapeY(btScalar radius, btScalar height)
-{
-	return btWorldImporter::createCylinderShapeY(radius, height);
-}
-
-btCollisionShape* Serialize::WorldImporterWrapper::baseCreateCylinderShapeZ(btScalar radius, btScalar height)
-{
-	return btWorldImporter::createCylinderShapeZ(radius, height);
-}
-
-btCollisionShape* Serialize::WorldImporterWrapper::baseCreateConeShapeX(btScalar radius, btScalar height)
-{
-	return btWorldImporter::createConeShapeX(radius, height);
-}
-
-btCollisionShape* Serialize::WorldImporterWrapper::baseCreateConeShapeY(btScalar radius, btScalar height)
-{
-	return btWorldImporter::createConeShapeY(radius, height);
-}
-
-btCollisionShape* Serialize::WorldImporterWrapper::baseCreateConeShapeZ(btScalar radius, btScalar height)
-{
-	return btWorldImporter::createConeShapeZ(radius, height);
-}
-
 class btTriangleIndexVertexArray* Serialize::WorldImporterWrapper::baseCreateTriangleMeshContainer()
 {
 	return btWorldImporter::createTriangleMeshContainer();
-}
-
-#ifndef DISABLE_BVH
-btBvhTriangleMeshShape* Serialize::WorldImporterWrapper::baseCreateBvhTriangleMeshShape(btStridingMeshInterface* trimesh, btOptimizedBvh* bvh)
-{
-	return btWorldImporter::createBvhTriangleMeshShape(trimesh, bvh);
-}
-#endif
-
-btCollisionShape* Serialize::WorldImporterWrapper::baseCreateConvexTriangleMeshShape(btStridingMeshInterface* trimesh)
-{
-	return btWorldImporter::createConvexTriangleMeshShape(trimesh);
-}
-
-#ifndef DISABLE_GIMPACT
-btGImpactMeshShape* Serialize::WorldImporterWrapper::baseCreateGimpactShape(btStridingMeshInterface* trimesh)
-{
-	return btWorldImporter::createGimpactShape(trimesh);
-}
-#endif
-
-class btConvexHullShape* Serialize::WorldImporterWrapper::baseCreateConvexHullShape()
-{
-	return btWorldImporter::createConvexHullShape();
-}
-
-class btCompoundShape* Serialize::WorldImporterWrapper::baseCreateCompoundShape()
-{
-	return btWorldImporter::createCompoundShape();
 }
 
 #ifndef DISABLE_BVH
@@ -1092,16 +1018,7 @@ btOptimizedBvh* Serialize::WorldImporterWrapper::baseCreateOptimizedBvh()
 	return btWorldImporter::createOptimizedBvh();
 }
 
-btScaledBvhTriangleMeshShape* Serialize::WorldImporterWrapper::baseCreateScaledTrangleMeshShape(btBvhTriangleMeshShape* meshShape,const btVector3& localScalingbtBvhTriangleMeshShape)
-{
-	return btWorldImporter::createScaledTrangleMeshShape(meshShape, localScalingbtBvhTriangleMeshShape);
-}
 #endif
-
-btMultiSphereShape* Serialize::WorldImporterWrapper::baseCreateMultiSphereShape(const btVector3* positions, const btScalar* radi, int numSpheres)
-{
-	return btWorldImporter::createMultiSphereShape(positions, radi, numSpheres);
-}
 
 btTriangleInfoMap* Serialize::WorldImporterWrapper::baseCreateTriangleInfoMap()
 {

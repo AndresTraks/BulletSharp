@@ -7,11 +7,6 @@
 
 #define Native static_cast<btMinkowskiSumShape*>(_native)
 
-MinkowskiSumShape::MinkowskiSumShape(btMinkowskiSumShape* native)
-	: ConvexInternalShape(native)
-{
-}
-
 MinkowskiSumShape::MinkowskiSumShape(ConvexShape^ shapeA, ConvexShape^ shapeB)
 	: ConvexInternalShape(new btMinkowskiSumShape((btConvexShape*)shapeA->_native,
 		(btConvexShape*)shapeB->_native))

@@ -7,11 +7,6 @@
 
 #define Native static_cast<btScaledBvhTriangleMeshShape*>(_native)
 
-ScaledBvhTriangleMeshShape::ScaledBvhTriangleMeshShape(btScaledBvhTriangleMeshShape* native)
-	: ConcaveShape(native)
-{
-}
-
 ScaledBvhTriangleMeshShape::ScaledBvhTriangleMeshShape(BvhTriangleMeshShape^ childShape,
 	Vector3 localScaling)
 	: ConcaveShape(0)

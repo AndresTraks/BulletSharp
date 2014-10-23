@@ -6,11 +6,6 @@
 
 #define Native static_cast<btHeightfieldTerrainShape*>(_native)
 
-HeightfieldTerrainShape::HeightfieldTerrainShape(btHeightfieldTerrainShape* native)
-	: ConcaveShape(native)
-{
-}
-
 HeightfieldTerrainShape::HeightfieldTerrainShape(int heightStickWidth, int heightStickLength,
 	System::IO::Stream^ heightfieldData, btScalar heightScale, btScalar minHeight, btScalar maxHeight,
 	int upAxis, PhyScalarType heightDataType, bool flipQuadEdges)

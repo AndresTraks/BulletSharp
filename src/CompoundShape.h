@@ -53,9 +53,6 @@ namespace BulletSharp
 
 	public ref class CompoundShape : CollisionShape
 	{
-	internal:
-		CompoundShape(btCompoundShape* native);
-
 	private:
 		CompoundShapeChildArray^ _childList;
 

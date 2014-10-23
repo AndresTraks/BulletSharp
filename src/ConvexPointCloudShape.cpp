@@ -7,11 +7,6 @@
 
 #define Native static_cast<btConvexPointCloudShape*>(_native)
 
-ConvexPointCloudShape::ConvexPointCloudShape(btConvexPointCloudShape* native)
-	: PolyhedralConvexAabbCachingShape(native)
-{
-}
-
 ConvexPointCloudShape::ConvexPointCloudShape()
 	: PolyhedralConvexAabbCachingShape(new btConvexPointCloudShape())
 {

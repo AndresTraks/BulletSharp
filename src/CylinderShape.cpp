@@ -65,11 +65,6 @@ int CylinderShape::UpAxis::get()
 }
 
 
-CylinderShapeX::CylinderShapeX(btCylinderShapeX* native)
-	: CylinderShape(native)
-{
-}
-
 CylinderShapeX::CylinderShapeX(Vector3 halfExtents)
 	: CylinderShape((btCylinderShape*)0)
 {
@@ -94,11 +89,6 @@ CylinderShapeX::CylinderShapeX(btScalar halfExtents)
 	ALIGNED_FREE(halfExtentsTemp);
 }
 
-
-CylinderShapeZ::CylinderShapeZ(btCylinderShapeZ* native)
-	: CylinderShape(native)
-{
-}
 
 CylinderShapeZ::CylinderShapeZ(Vector3 halfExtents)
 	: CylinderShape((btCylinderShape*)0)

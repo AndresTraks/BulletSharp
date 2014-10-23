@@ -11,9 +11,6 @@ namespace BulletSharp
 	private:
 		Vector3Array^ _unscaledPoints;
 
-	internal:
-		ConvexHullShape(btConvexHullShape* native);
-
 	public:
 		ConvexHullShape(System::Collections::Generic::IEnumerable<Vector3>^ points);
 		ConvexHullShape();

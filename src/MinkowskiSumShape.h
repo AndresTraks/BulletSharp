@@ -12,9 +12,6 @@ namespace BulletSharp
 		ConvexShape^ _shapeA;
 		ConvexShape^ _shapeB;
 
-	internal:
-		MinkowskiSumShape(btMinkowskiSumShape* native);
-
 	public:
 		MinkowskiSumShape(ConvexShape^ shapeA, ConvexShape^ shapeB);
 

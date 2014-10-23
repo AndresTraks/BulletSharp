@@ -9,9 +9,6 @@ namespace BulletSharp
 	private:
 		ConvexShape^ _convexChildShape;
 
-	internal:
-		Convex2DShape(btConvex2dShape* native);
-
 	public:
 		Convex2DShape(ConvexShape^ convexChildShape);
 

@@ -6,9 +6,6 @@ namespace BulletSharp
 {
 	public ref class SphereShape : ConvexInternalShape
 	{
-	internal:
-		SphereShape(btSphereShape* native);
-
 	public:
 		SphereShape(btScalar radius);
 
