@@ -11,6 +11,7 @@ Box2DBox2DCollisionAlgorithm::CreateFunc::CreateFunc()
 {
 }
 
+
 Box2DBox2DCollisionAlgorithm::Box2DBox2DCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci)
 	: ActivatingCollisionAlgorithm(new btBox2dBox2dCollisionAlgorithm(*ci->_native))
 {

@@ -10,10 +10,12 @@ CompoundCompoundCollisionAlgorithm::CreateFunc::CreateFunc()
 {
 }
 
+
 CompoundCompoundCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc()
 	: CollisionAlgorithmCreateFunc(new btCompoundCompoundCollisionAlgorithm::SwappedCreateFunc())
 {
 }
+
 
 CompoundCompoundCollisionAlgorithm::CompoundCompoundCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped)

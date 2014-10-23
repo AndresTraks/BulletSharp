@@ -44,15 +44,15 @@ ConstraintSolver::!ConstraintSolver()
 {
 	if (this->IsDisposed)
 		return;
-	
+
 	OnDisposing(this, nullptr);
-	
+
 	if (!_preventDelete)
 	{
 		ALIGNED_FREE(_native);
 	}
 	_native = NULL;
-	
+
 	OnDisposed(this, nullptr);
 }
 

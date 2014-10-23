@@ -6,10 +6,12 @@ namespace BulletSharp
 	{
 	internal:
 		btAABB* _native;
-		Aabb(btAABB* native, bool preventDelete);
 
 	private:
 		bool _preventDelete;
+
+	internal:
+		Aabb(btAABB* native, bool preventDelete);
 
 	public:
 		!Aabb();
@@ -37,8 +39,8 @@ namespace BulletSharp
 		void Merge(Aabb^ box);
 		//bool OverlappingTransCache(Aabb^ box, BT_BOX_BOX_TRANSFORM_CACHE^ transcache,
 		//	bool fulltest);
-		bool OverlappingTransConservative(Aabb^ box, Matrix trans1_to_0);
-		//bool OverlappingTransConservative2(Aabb^ box, BT_BOX_BOX_TRANSFORM_CACHE^ trans1_to_0);
+		bool OverlappingTransConservative(Aabb^ box, Matrix trans1To0);
+		//bool OverlappingTransConservative2(Aabb^ box, BT_BOX_BOX_TRANSFORM_CACHE^ trans1To0);
 		//eBT_PLANE_INTERSECTION_TYPE PlaneClassify(Vector4 plane);
 		void ProjectionInterval(Vector3 direction, [Out] btScalar% vmin, [Out] btScalar% vmax);
 

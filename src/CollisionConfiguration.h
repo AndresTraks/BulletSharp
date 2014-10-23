@@ -9,6 +9,7 @@ namespace BulletSharp
 	{
 	internal:
 		btCollisionConfiguration* _native;
+
 		CollisionConfiguration(btCollisionConfiguration* native);
 
 	public:

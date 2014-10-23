@@ -11,6 +11,7 @@ namespace BulletSharp
 		{
 		internal:
 			btConvexCast::CastResult* _native;
+
 			CastResult(btConvexCast::CastResult* native);
 
 		public:

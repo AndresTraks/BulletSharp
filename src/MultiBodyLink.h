@@ -20,6 +20,7 @@ namespace BulletSharp
 	{
 	internal:
 		btMultibodyLink* _native;
+
 		MultiBodyLink(btMultibodyLink* native);
 
 	public:

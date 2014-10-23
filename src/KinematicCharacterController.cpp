@@ -18,6 +18,7 @@ KinematicCharacterController::KinematicCharacterController(PairCachingGhostObjec
 	: CharacterControllerInterface(new btKinematicCharacterController((btPairCachingGhostObject*)ghostObject->_native,
 		(btConvexShape*)convexShape->_native, stepHeight, upAxis))
 {
+	_ghostObject = ghostObject;
 }
 
 KinematicCharacterController::KinematicCharacterController(PairCachingGhostObject^ ghostObject,
@@ -25,6 +26,7 @@ KinematicCharacterController::KinematicCharacterController(PairCachingGhostObjec
 	: CharacterControllerInterface(new btKinematicCharacterController((btPairCachingGhostObject*)ghostObject->_native,
 		(btConvexShape*)convexShape->_native, stepHeight))
 {
+	_ghostObject = ghostObject;
 }
 
 void KinematicCharacterController::SetFallSpeed(btScalar fallSpeed)
@@ -54,7 +56,7 @@ void KinematicCharacterController::SetUseGhostSweepTest(bool useGhostObjectSweep
 
 PairCachingGhostObject^ KinematicCharacterController::GhostObject::get()
 {
-	return static_cast<PairCachingGhostObject^>(CollisionObject::GetManaged(Native->getGhostObject()));
+	return _ghostObject;
 }
 
 btScalar KinematicCharacterController::Gravity::get()

@@ -9,6 +9,9 @@ namespace BulletSharp
 
 	public ref class KinematicCharacterController : CharacterControllerInterface
 	{
+	private:
+		PairCachingGhostObject^ _ghostObject;
+
 	internal:
 		KinematicCharacterController(btKinematicCharacterController* native);
 

@@ -26,7 +26,8 @@ CollisionAlgorithmCreateFunc::!CollisionAlgorithmCreateFunc()
 	{
 		delete _native;
 	}
-	_native = NULL;}
+	_native = NULL;
+}
 
 CollisionAlgorithm^ CollisionAlgorithmCreateFunc::CreateCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ info,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)

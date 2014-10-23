@@ -11,6 +11,7 @@ BoxBoxCollisionAlgorithm::CreateFunc::CreateFunc()
 {
 }
 
+
 BoxBoxCollisionAlgorithm::BoxBoxCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci)
 	: ActivatingCollisionAlgorithm(new btBoxBoxCollisionAlgorithm(*ci->_native))
 {

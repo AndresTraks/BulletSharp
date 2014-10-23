@@ -6,15 +6,18 @@
 #include "CollisionObjectWrapper.h"
 #include "CompoundCollisionAlgorithm.h"
 
+
 CompoundCollisionAlgorithm::CreateFunc::CreateFunc()
 	: CollisionAlgorithmCreateFunc(new btCompoundCollisionAlgorithm::CreateFunc())
 {
 }
 
+
 CompoundCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc()
 	: CollisionAlgorithmCreateFunc(new btCompoundCollisionAlgorithm::SwappedCreateFunc())
 {
 }
+
 
 #define Native static_cast<btCompoundCollisionAlgorithm*>(_native)
 

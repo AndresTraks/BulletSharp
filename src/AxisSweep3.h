@@ -5,6 +5,7 @@
 namespace BulletSharp
 {
 	ref class OverlappingPairCache;
+	ref class OverlappingPairCallback;
 
 	public ref class AxisSweep3 : BroadphaseInterface
 	{
@@ -29,7 +30,7 @@ namespace BulletSharp
 			short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy);
 		unsigned short AddHandle(Vector3 aabbMin, Vector3 aabbMax, IntPtr pOwner, CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy);
-		//Handle GetHandle(unsigned short index);
+		//Handle^ GetHandle(unsigned short index);
 		//void ProcessAllOverlappingPairs(OverlapCallback^ callback);
 		void Quantize([Out] unsigned short% out, Vector3 point, int isMax);
 		void RemoveHandle(unsigned short handle, Dispatcher^ dispatcher);
@@ -41,12 +42,12 @@ namespace BulletSharp
 		{
 			unsigned short get();
 		}
-		/*
+
 		property OverlappingPairCallback^ OverlappingPairUserCallback
 		{
 			OverlappingPairCallback^ get();
 			void set(OverlappingPairCallback^ pairCallback);
-		}*/
+		}
 	};
 
 	public ref class AxisSweep3_32Bit : BroadphaseInterface
@@ -72,7 +73,7 @@ namespace BulletSharp
 			short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy);
 		unsigned int AddHandle(Vector3 aabbMin, Vector3 aabbMax, IntPtr pOwner, CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy);
-		//Handle GetHandle(unsigned short index);
+		//Handle^ GetHandle(unsigned short index);
 		//void ProcessAllOverlappingPairs(OverlapCallback^ callback);
 		void Quantize([Out] unsigned int% out, Vector3 point, int isMax);
 		void RemoveHandle(unsigned int handle, Dispatcher^ dispatcher);
@@ -84,11 +85,11 @@ namespace BulletSharp
 		{
 			unsigned int get();
 		}
-		/*
+
 		property OverlappingPairCallback^ OverlappingPairUserCallback
 		{
 			OverlappingPairCallback^ get();
 			void set(OverlappingPairCallback^ pairCallback);
-		}*/
+		}
 	};
 };

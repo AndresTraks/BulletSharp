@@ -8,11 +8,11 @@ namespace BulletSharp
 
 	public ref class MlcpSolver : SequentialImpulseConstraintSolver
 	{
-	internal:
-		MlcpSolver(btMLCPSolver* native);
-
 	private:
 		MlcpSolverInterface^ _mlcpSolver;
+
+	internal:
+		MlcpSolver(btMLCPSolver* native);
 
 	public:
 		MlcpSolver(MlcpSolverInterface^ solver);

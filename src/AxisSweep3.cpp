@@ -131,7 +131,7 @@ unsigned short AxisSweep3::AddHandle(Vector3 aabbMin, Vector3 aabbMax, IntPtr pO
 	return ret;
 }
 /*
-Handle AxisSweep3::GetHandle(unsigned short index)
+Handle^ AxisSweep3::GetHandle(unsigned short index)
 {
 	return Native->getHandle(index->_native);
 }
@@ -183,16 +183,15 @@ unsigned short AxisSweep3::NumHandles::get()
 {
 	return Native->getNumHandles();
 }
-/*
+
 OverlappingPairCallback^ AxisSweep3::OverlappingPairUserCallback::get()
 {
-	return Native->getOverlappingPairUserCallback();
+	return OverlappingPairCallback::GetManaged((btOverlappingPairCallback*)Native->getOverlappingPairUserCallback());
 }
 void AxisSweep3::OverlappingPairUserCallback::set(OverlappingPairCallback^ pairCallback)
 {
 	Native->setOverlappingPairUserCallback(pairCallback->_native);
 }
-*/
 
 
 #undef Native
@@ -320,7 +319,7 @@ unsigned int AxisSweep3_32Bit::AddHandle(Vector3 aabbMin, Vector3 aabbMax, IntPt
 	return ret;
 }
 /*
-Handle AxisSweep3_32Bit::GetHandle(unsigned short index)
+Handle^ AxisSweep3_32Bit::GetHandle(unsigned short index)
 {
 	return Native->getHandle(index->_native);
 }
@@ -372,13 +371,12 @@ unsigned int AxisSweep3_32Bit::NumHandles::get()
 {
 	return Native->getNumHandles();
 }
-/*
+
 OverlappingPairCallback^ AxisSweep3_32Bit::OverlappingPairUserCallback::get()
 {
-	return Native->getOverlappingPairUserCallback();
+	return OverlappingPairCallback::GetManaged((btOverlappingPairCallback*)Native->getOverlappingPairUserCallback());
 }
 void AxisSweep3_32Bit::OverlappingPairUserCallback::set(OverlappingPairCallback^ pairCallback)
 {
 	Native->setOverlappingPairUserCallback(pairCallback->_native);
 }
-*/

@@ -29,6 +29,7 @@ namespace BulletSharp
 	{
 	internal:
 		btOverlapFilterCallback* _native;
+
 		OverlapFilterCallback(btOverlapFilterCallback* native);
 		static OverlapFilterCallback^ GetManaged(btOverlapFilterCallback* callback);
 

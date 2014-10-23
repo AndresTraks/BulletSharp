@@ -77,6 +77,11 @@ namespace BulletSharp
 			Matrix get();
 		}
 
+		property bool HasLimit
+		{
+			bool get();
+		}
+
 		property btScalar HingeAngle
 		{
 			btScalar get();

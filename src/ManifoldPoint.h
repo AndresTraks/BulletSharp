@@ -37,13 +37,13 @@ namespace BulletSharp
 	{
 	internal:
 		btManifoldPoint* _native;
-		ManifoldPoint(btManifoldPoint* native, bool preventDelete);
 
 	private:
 		bool _preventDelete;
 
-#ifdef BT_CALLBACKS_ARE_EVENTS
 	internal:
+		ManifoldPoint(btManifoldPoint* native, bool preventDelete);
+#ifdef BT_CALLBACKS_ARE_EVENTS
 		static ContactAddedEventHandler^ _contactAdded;
 	public:
 		static event ContactAddedEventHandler^ ContactAdded
@@ -52,7 +52,6 @@ namespace BulletSharp
 			void remove(ContactAddedEventHandler^ callback);
 		}
 #else
-	internal:
 		static ContactAdded^ _contactAdded;
 	public:
 		static property ContactAdded^ ContactAdded

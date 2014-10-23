@@ -298,6 +298,11 @@ Matrix HingeConstraint::FrameOffsetB::get()
 	return Math::BtTransformToMatrix(&Native->getFrameOffsetB());
 }
 
+bool HingeConstraint::HasLimit::get()
+{
+	return Native->hasLimit();
+}
+
 btScalar HingeConstraint::HingeAngle::get()
 {
 	return Native->getHingeAngle();

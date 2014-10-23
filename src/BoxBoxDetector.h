@@ -8,6 +8,10 @@ namespace BulletSharp
 
 	public ref class BoxBoxDetector : DiscreteCollisionDetectorInterface
 	{
+	private:
+		BoxShape^ _box1;
+		BoxShape^ _box2;
+
 	public:
 		BoxBoxDetector(BoxShape^ box1, BoxShape^ box2);
 

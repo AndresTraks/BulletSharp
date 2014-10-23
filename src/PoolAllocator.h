@@ -10,6 +10,7 @@ namespace BulletSharp
 
 	internal:
 		btPoolAllocator* _native;
+
 		PoolAllocator(btPoolAllocator* native);
 
 	public:
