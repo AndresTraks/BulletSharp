@@ -184,7 +184,13 @@ TriangleIndexVertexArray^ Serialize::BulletXmlWorldImporter::CreateTriangleMeshC
 #ifndef DISABLE_BVH
 BvhTriangleMeshShape^ Serialize::BulletXmlWorldImporter::CreateBvhTriangleMeshShape(StridingMeshInterface^ trimesh, OptimizedBvh^ bvh)
 {
-	return gcnew BvhTriangleMeshShape(trimesh, bvh);
+	if (bvh)
+	{
+		BvhTriangleMeshShape^ shape = gcnew BvhTriangleMeshShape(trimesh, bvh->IsQuantized, false);
+		shape->OptimizedBvh = bvh;
+		return shape;
+	}
+	return gcnew BvhTriangleMeshShape(trimesh, true);
 }
 #endif
 
