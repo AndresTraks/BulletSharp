@@ -2,9 +2,10 @@
 
 #include "Scalar.h"
 
-TypedObject::TypedObject(btTypedObject* native)
+TypedObject::TypedObject(btTypedObject* native, bool preventDelete)
 {
 	_native = native;
+	_preventDelete = preventDelete;
 }
 
 TypedObject::~TypedObject()
@@ -14,7 +15,8 @@ TypedObject::~TypedObject()
 
 TypedObject::!TypedObject()
 {
-	delete _native;
+	if (!_preventDelete)
+		delete _native;
 	_native = NULL;
 }
 
