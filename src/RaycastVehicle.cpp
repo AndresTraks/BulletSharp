@@ -86,6 +86,8 @@ RaycastVehicle::RaycastVehicle(RaycastVehicle::VehicleTuning^ tuning, BulletShar
 {
 	_native = new btRaycastVehicle(*tuning->_native, (btRigidBody*)chassis->_native, raycaster->_native);
 	_chassisBody = chassis;
+	_tuning = tuning;
+	_raycaster = raycaster;
 }
 
 RaycastVehicle::~RaycastVehicle()
@@ -268,6 +270,16 @@ int RaycastVehicle::RightAxis::get()
 RigidBody^ RaycastVehicle::RigidBody::get()
 {
 	return _chassisBody;
+}
+
+RaycastVehicle::VehicleTuning^ RaycastVehicle::Tuning::get()
+{
+	return _tuning;
+}
+
+VehicleRaycaster^ RaycastVehicle::Raycaster::get()
+{
+	return _raycaster;
 }
 
 int RaycastVehicle::UpAxis::get()

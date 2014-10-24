@@ -72,6 +72,8 @@ namespace BulletSharp
 
 	private:
 		RigidBody^ _chassisBody;
+		RaycastVehicle::VehicleTuning^ _tuning;
+		VehicleRaycaster^ _raycaster;
 
 	public:
 		!RaycastVehicle();
@@ -144,6 +146,16 @@ namespace BulletSharp
 		property RigidBody^ RigidBody
 		{
 			BulletSharp::RigidBody^ get();
+		}
+
+		property RaycastVehicle::VehicleTuning^ Tuning
+		{
+			RaycastVehicle::VehicleTuning^ get();
+		}
+
+		property VehicleRaycaster^ Raycaster
+		{
+			VehicleRaycaster^ get();
 		}
 
 		property int UpAxis
