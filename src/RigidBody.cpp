@@ -613,7 +613,7 @@ BulletSharp::MotionState^ RigidBody::MotionState::get()
 }
 void RigidBody::MotionState::set(BulletSharp::MotionState^ motionState)
 {
-	Native->setMotionState(motionState->_native);
+	Native->setMotionState(GetUnmanagedNullable(motionState));
 	_motionState = motionState;
 }
 #ifndef DISABLE_CONSTRAINTS
