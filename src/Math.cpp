@@ -54,29 +54,17 @@ btScalar* BulletSharp::Math::BtScalarArrayToUnmanaged(array<btScalar>^ s, int le
 
 btVector3* BulletSharp::Math::Vector3ToBtVector3(Vector3% vector)
 {
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	btScalar x = vector.x;
-	btScalar y = vector.y;
-	btScalar z = vector.x;
-#else
-	btScalar x = vector.X;
-	btScalar y = vector.Y;
-	btScalar z = vector.Z;
-#endif
+	btScalar x = Vector_X(vector);
+	btScalar y = Vector_Y(vector);
+	btScalar z = Vector_Z(vector);
 	return ALIGNED_NEW(btVector3) (x, y, z);
 }
 void BulletSharp::Math::Vector3ToBtVector3(Vector3% vector, btVector3* vectorOut)
 {
 	btScalar* vo = (btScalar*)vectorOut;
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	vo[0] = vector.x;
-	vo[1] = vector.y;
-	vo[2] = vector.z;
-#else
-	vo[0] = vector.X;
-	vo[1] = vector.Y;
-	vo[2] = vector.Z;
-#endif
+	vo[0] = Vector_X(vector);
+	vo[1] = Vector_Y(vector);
+	vo[2] = Vector_Z(vector);
 }
 
 btVector3* BulletSharp::Math::Vector3ArrayToUnmanaged(array<Vector3>^ v)
@@ -114,19 +102,11 @@ array<Vector3>^ BulletSharp::Math::Vector3ArrayToManaged(btVector3* v, int lengt
 
 btVector4* BulletSharp::Math::Vector4ToBtVector4(Vector4 vector)
 {
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	return new btVector4(vector.x, vector.y, vector.z, vector.w);
-#else
-	return new btVector4(vector.X, vector.Y, vector.Z, vector.W);
-#endif
+	return new btVector4(Vector_X(vector), Vector_Y(vector), Vector_Z(vector), Vector_W(vector));
 }
 void BulletSharp::Math::Vector4ToBtVector4(Vector4 vector, btVector4* vectorOut)
 {
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	vectorOut->setValue(vector.x, vector.y, vector.z, vector.w);
-#else
-	vectorOut->setValue(vector.X, vector.Y, vector.Z, vector.W);
-#endif
+	vectorOut->setValue(Vector_X(vector), Vector_Y(vector), Vector_Z(vector), Vector_W(vector));
 }
 
 
@@ -141,25 +121,14 @@ Quaternion BulletSharp::Math::BtQuatToQuaternion(const btQuaternion* quat)
 }
 btQuaternion* BulletSharp::Math::QuaternionToBtQuat(Quaternion quat)
 {
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	return ALIGNED_NEW(btQuaternion) (quat.x, quat.y, quat.z, quat.w);
-#else
-	return ALIGNED_NEW(btQuaternion) (quat.X, quat.Y, quat.Z, quat.W);
-#endif
+	return ALIGNED_NEW(btQuaternion) (Vector_X(quat), Vector_Y(quat), Vector_Z(quat), Vector_W(quat));
 }
 void BulletSharp::Math::QuaternionToBtQuat(Quaternion quat, btQuaternion* outQuat)
 {
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	outQuat->setX(quat.x);
-	outQuat->setY(quat.y);
-	outQuat->setZ(quat.z);
-	outQuat->setW(quat.w);
-#else
-	outQuat->setX(quat.X);
-	outQuat->setY(quat.Y);
-	outQuat->setZ(quat.Z);
-	outQuat->setW(quat.W);
-#endif
+	outQuat->setX(Vector_X(quat));
+	outQuat->setY(Vector_Y(quat));
+	outQuat->setZ(Vector_Z(quat));
+	outQuat->setW(Vector_W(quat));
 }
 
 

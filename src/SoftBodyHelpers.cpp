@@ -226,15 +226,9 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorl
 	int len = vertices->Length;
 	btScalar* btVertices = new btScalar[len*3];
 	for(int i=0; i<len; i++) {
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-		btVertices[i*3] = vertices[i].x;
-		btVertices[i*3+1] = vertices[i].y;
-		btVertices[i*3+2] = vertices[i].z;
-#else
-		btVertices[i*3] = vertices[i].X;
-		btVertices[i*3+1] = vertices[i].Y;
-		btVertices[i*3+2] = vertices[i].Z;
-#endif
+		btVertices[i*3] = Vector_X(vertices[i]);
+		btVertices[i*3+1] = Vector_Y(vertices[i]);
+		btVertices[i*3+2] = Vector_Z(vertices[i]);
 	}
 	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_native,
 		btVertices, trianglesPtr, triangles->Length / 3, randomizeConstraints));
@@ -256,15 +250,9 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateFromTriMesh(SoftBodyWorl
 	int len = vertices->Length;
 	btScalar* btVertices = new btScalar[len*3];
 	for(int i=0; i<len; i++) {
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-		btVertices[i*3] = vertices[i].x;
-		btVertices[i*3+1] = vertices[i].y;
-		btVertices[i*3+2] = vertices[i].z;
-#else
-		btVertices[i*3] = vertices[i].X;
-		btVertices[i*3+1] = vertices[i].Y;
-		btVertices[i*3+2] = vertices[i].Z;
-#endif
+		btVertices[i*3] = Vector_X(vertices[i]);
+		btVertices[i*3+1] = Vector_Y(vertices[i]);
+		btVertices[i*3+2] = Vector_Z(vertices[i]);
 	}
 	SoftBody^ body = gcnew SoftBody(btSoftBodyHelpers::CreateFromTriMesh(*worldInfo->_native,
 		btVertices, trianglesPtr, triangles->Length / 3));

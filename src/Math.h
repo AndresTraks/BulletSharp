@@ -82,6 +82,18 @@ using namespace Mogre;
 #define QUATERNION_USE(t) *QUATERNION_PTR(t)
 #define QUATERNION_DEL(t) ALIGNED_FREE(QUATERNION_PTR(t))
 
+#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+#define Vector_X(v) v.x
+#define Vector_Y(v) v.y
+#define Vector_Z(v) v.z
+#define Vector_W(v) v.w
+#else
+#define Vector_X(v) v.X
+#define Vector_Y(v) v.Y
+#define Vector_Z(v) v.Z
+#define Vector_W(v) v.W
+#endif
+
 namespace BulletSharp
 {
 	private ref class Math
@@ -211,32 +223,36 @@ namespace BulletSharp
 #endif
 #endif
 
+#if defined(GRAPHICS_WAPICODEPACK)
+#define Vector3_Neg(v) Vector3(-v.X, -v.Y, -v.Z)
+#define Vector3_Scale(v, s) Vector3(v.X * s, v.Y * s, v.Z * s)
+#else
+#define Vector3_Neg(v) -v
+#define Vector3_Scale(v, s) v * s
+#endif
+
 #ifdef GRAPHICS_AXIOM
 #define Vector3_Cross(left, right, result) result = left.Cross(right)
 #define Vector3_Dot(left, right) left.Vector3::Dot(right)
 #define Vector3_Normalize(v) v.Normalize()
-#define Vector3_Scale(v, s) v * s
 #define Vector3_Zero Vector3::Zero
 #define Matrix_Identity Matrix4::Identity
 #elif defined(GRAPHICS_MOGRE)
 #define Vector3_Cross(left, right, result) result = left.CrossProduct(right)
 #define Vector3_Dot(left, right) left.DotProduct(right)
 #define Vector3_Normalize(v) v.Normalise()
-#define Vector3_Scale(v, s) v * s
 #define Vector3_Zero Vector3::ZERO
 #define Matrix_Identity Matrix4::IDENTITY
 #elif defined(GRAPHICS_WAPICODEPACK)
 #define Vector3_Cross(left, right, result) result = Vector3::Cross(left, right)
 #define Vector3_Dot(left, right) Vector3::Dot(left, right)
 #define Vector3_Normalize(v) v.Normalize()
-#define Vector3_Scale(v, s) Vector3(v.X * s, v.Y * s, v.Z * s)
 #define Vector3_Zero Vector3(0,0,0)
 #define Matrix_Identity Matrix::Identity
 #else
 #define Vector3_Cross(left, right, result) Vector3::Cross(left, right, result)
 #define Vector3_Dot(left, right) Vector3::Dot(left, right)
 #define Vector3_Normalize(v) v.Normalize()
-#define Vector3_Scale(v, s) v * s
 #define Vector3_Zero Vector3::Zero
 #define Matrix_Identity Matrix::Identity
 #endif

@@ -163,7 +163,7 @@ void WheelInfo::UpdateWheel(RigidBody^ chassis, ::RaycastInfo^ raycastInfo)
 	{
 		RaycastInfo.SuspensionLength = SuspensionRestLength;
 		_suspensionRelativeVelocity = btScalar(0.0);
-		RaycastInfo.ContactNormalWS = -RaycastInfo.WheelDirectionWS;
+		RaycastInfo.ContactNormalWS = Vector3_Neg(RaycastInfo.WheelDirectionWS);
 		_clippedInvContactDotSuspension = btScalar(1.0);
 	}
 }

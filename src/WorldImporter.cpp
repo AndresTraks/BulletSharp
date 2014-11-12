@@ -124,7 +124,7 @@ CollisionShape^ Serialize::WorldImporter::CreatePlaneShape(Vector3 planeNormal, 
 
 CollisionShape^ Serialize::WorldImporter::CreateBoxShape(Vector3 halfExtents)
 {
-	return gcnew BoxShape(halfExtents.X, halfExtents.Y, halfExtents.Z);
+	return gcnew BoxShape(Vector_X(halfExtents), Vector_Y(halfExtents), Vector_Z(halfExtents));
 }
 
 CollisionShape^ Serialize::WorldImporter::CreateSphereShape(btScalar radius)

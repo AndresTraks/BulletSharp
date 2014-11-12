@@ -147,11 +147,7 @@ void Hacd::SetPoints(ICollection<Vector3>^ points)
 	while(enumerator->MoveNext())
 	{
 		Vector3 point = enumerator->Current;
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-		_points[i] = HACD::Vec3<HACD::Real>(point.x, point.y, point.z);
-#else
-		_points[i] = HACD::Vec3<HACD::Real>(point.X, point.Y, point.Z);
-#endif
+		_points[i] = HACD::Vec3<HACD::Real>(Vector_X(point), Vector_Y(point), Vector_Z(point));
 		i++;
 	}
 
