@@ -342,11 +342,11 @@ void TranslationalLimitMotor::MaxMotorForce::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &_native->m_maxMotorForce);
 }
 
-Vector3 TranslationalLimitMotor::NormalCFM::get()
+Vector3 TranslationalLimitMotor::NormalCfm::get()
 {
 	return Math::BtVector3ToVector3(&_native->m_normalCFM);
 }
-void TranslationalLimitMotor::NormalCFM::set(Vector3 value)
+void TranslationalLimitMotor::NormalCfm::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_native->m_normalCFM);
 }
@@ -360,20 +360,20 @@ void TranslationalLimitMotor::Restitution::set(btScalar value)
 	_native->m_restitution = value;
 }
 
-Vector3 TranslationalLimitMotor::StopCFM::get()
+Vector3 TranslationalLimitMotor::StopCfm::get()
 {
 	return Math::BtVector3ToVector3(&_native->m_stopCFM);
 }
-void TranslationalLimitMotor::StopCFM::set(Vector3 value)
+void TranslationalLimitMotor::StopCfm::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_native->m_stopCFM);
 }
 
-Vector3 TranslationalLimitMotor::StopERP::get()
+Vector3 TranslationalLimitMotor::StopErp::get()
 {
 	return Math::BtVector3ToVector3(&_native->m_stopERP);
 }
-void TranslationalLimitMotor::StopERP::set(Vector3 value)
+void TranslationalLimitMotor::StopErp::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_native->m_stopERP);
 }
@@ -402,6 +402,7 @@ void TranslationalLimitMotor::UpperLimit::set(Vector3 value)
 Generic6DofConstraint::Generic6DofConstraint(btGeneric6DofConstraint* native)
 	: TypedConstraint(native)
 {
+	_angularLimits = gcnew array<RotationalLimitMotor^>(3);
 }
 
 Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA,
@@ -415,6 +416,7 @@ Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ r
 	TRANSFORM_DEL(frameInA);
 	TRANSFORM_DEL(frameInB);
 
+	_angularLimits = gcnew array<RotationalLimitMotor^>(3);
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = rigidBodyB;
 }
@@ -427,6 +429,7 @@ Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frame
 		useLinearReferenceFrameB);
 	TRANSFORM_DEL(frameInB);
 
+	_angularLimits = gcnew array<RotationalLimitMotor^>(3);
 	_rigidBodyB = rigidBodyB;
 }
 
@@ -508,9 +511,9 @@ btVector3* Generic6DofConstraint_GetAxis(btGeneric6DofConstraint* constraint, in
 	return &constraint->getAxis(axis_index);
 }
 #pragma managed(pop)
-Vector3 Generic6DofConstraint::GetAxis(int axis_index)
+Vector3 Generic6DofConstraint::GetAxis(int axisIndex)
 {
-	return Math::BtVector3ToVector3(Generic6DofConstraint_GetAxis(Native, axis_index));
+	return Math::BtVector3ToVector3(Generic6DofConstraint_GetAxis(Native, axisIndex));
 }
 /*
 void Generic6DofConstraint::GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA,
@@ -539,7 +542,11 @@ btScalar Generic6DofConstraint::GetRelativePivotPosition(int axis_index)
 
 RotationalLimitMotor^ Generic6DofConstraint::GetRotationalLimitMotor(int index)
 {
-	return gcnew RotationalLimitMotor(Native->getRotationalLimitMotor(index), true);
+	if (_angularLimits[index] == nullptr)
+    {
+        _angularLimits[index] = gcnew RotationalLimitMotor(Native->getRotationalLimitMotor(index), true);
+    }
+    return _angularLimits[index];
 }
 
 bool Generic6DofConstraint::IsLimited(int limitIndex)
@@ -690,7 +697,11 @@ void Generic6DofConstraint::LinearUpperLimit::set(Vector3 linearUpper)
 
 BulletSharp::TranslationalLimitMotor^ Generic6DofConstraint::TranslationalLimitMotor::get()
 {
-	return gcnew BulletSharp::TranslationalLimitMotor(Native->getTranslationalLimitMotor(), true);
+	if (_linearLimits == nullptr)
+    {
+        _linearLimits = gcnew BulletSharp::TranslationalLimitMotor(Native->getTranslationalLimitMotor(), true);
+    }
+    return _linearLimits;
 }
 
 bool Generic6DofConstraint::UseFrameOffset::get()

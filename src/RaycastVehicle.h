@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IActionInterface.h"
+#include "IAction.h"
 #include "VehicleRaycaster.h"
 
 namespace BulletSharp
@@ -8,20 +8,19 @@ namespace BulletSharp
 	ref class DynamicsWorld;
 	ref class RigidBody;
 	ref class WheelInfo;
-	ref class AlignedWheelInfoArray;
 
-	public ref class RaycastVehicle : IActionInterface,  ITrackingDisposable
+	public ref class RaycastVehicle : IAction
 	{
 	public:
-		ref class VehicleTuning : IDisposable
+		ref class VehicleTuning
 		{
-		internal:
-			btRaycastVehicle::btVehicleTuning* _native;
-
-		public:
-			!VehicleTuning();
-		protected:
-			~VehicleTuning();
+		private:
+			btScalar _frictionSlip;
+			btScalar _maxSuspensionForce;
+			btScalar _maxSuspensionTravelCm;
+			btScalar _suspensionCompression;
+			btScalar _suspensionDamping;
+			btScalar _suspensionStiffness;
 
 		public:
 			VehicleTuning();
@@ -63,27 +62,33 @@ namespace BulletSharp
 			}
 		};
 
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
+	private:
+		array<Vector3>^ _forwardWS;
+		array<Vector3>^ _axle;
+		array<btScalar>^ _forwardImpulse;
+		array<btScalar>^ _sideImpulse;
 
-	internal:
-		btRaycastVehicle* _native;
+		System::Collections::Generic::List<WheelInfo^>^ _wheelInfo;
+
+		VehicleRaycaster^ _vehicleRaycaster;
+		btScalar _pitchControl;
+		btScalar _steeringValue; 
+		btScalar _currentVehicleSpeedKmHour;
+
+		int _indexRightAxis;
+		int _indexUpAxis;
+		int	_indexForwardAxis;
 
 	private:
 		RigidBody^ _chassisBody;
-		RaycastVehicle::VehicleTuning^ _tuning;
-		VehicleRaycaster^ _raycaster;
+		static RigidBody^ _fixedBody ;
 
-	public:
-		!RaycastVehicle();
-	protected:
-		~RaycastVehicle();
+		static RaycastVehicle();
 
 	public:
 		RaycastVehicle(VehicleTuning^ tuning, RigidBody^ chassis, VehicleRaycaster^ raycaster);
 
-		WheelInfo^ AddWheel(Vector3 connectionPointCS0, Vector3 wheelDirectionCS0,
+		WheelInfo^ AddWheel(Vector3 connectionPointCS, Vector3 wheelDirectionCS0,
 			Vector3 wheelAxleCS, btScalar suspensionRestLength, btScalar wheelRadius,
 			VehicleTuning^ tuning, bool isFrontWheel);
 		void ApplyEngineForce(btScalar force, int wheel);
@@ -96,13 +101,13 @@ namespace BulletSharp
 		btScalar RayCast(WheelInfo^ wheel);
 		void ResetSuspension();
 		void SetBrake(btScalar brake, int wheelIndex);
-		void SetCoordinateSystem(int rightIndex, int upIndex, int forwardIndex);
+		virtual void SetCoordinateSystem(int rightIndex, int upIndex, int forwardIndex);
 		void SetPitchControl(btScalar pitch);
 		void SetSteeringValue(btScalar steering, int wheel);
 		virtual void UpdateAction(CollisionWorld^ collisionWorld, btScalar deltaTimeStep);
-		void UpdateFriction(btScalar timeStep);
+		virtual void UpdateFriction(btScalar timeStep);
 		void UpdateSuspension(btScalar deltaTime);
-		void UpdateVehicle(btScalar step);
+		virtual void UpdateVehicle(btScalar step);
 		void UpdateWheelTransform(int wheelIndex, bool interpolatedTransform);
 		void UpdateWheelTransform(int wheelIndex);
 		void UpdateWheelTransformsWS(WheelInfo^ wheel, bool interpolatedTransform);
@@ -128,11 +133,6 @@ namespace BulletSharp
 			Vector3 get();
 		}
 
-		property bool IsDisposed
-		{
-			virtual bool get();
-		}
-
 		property int NumWheels
 		{
 			int get();
@@ -148,24 +148,14 @@ namespace BulletSharp
 			BulletSharp::RigidBody^ get();
 		}
 
-		property RaycastVehicle::VehicleTuning^ Tuning
-		{
-			RaycastVehicle::VehicleTuning^ get();
-		}
-
-		property VehicleRaycaster^ Raycaster
-		{
-			VehicleRaycaster^ get();
-		}
-
 		property int UpAxis
 		{
 			int get();
 		}
 
-		property AlignedWheelInfoArray^ WheelInfo
+		property System::Collections::Generic::IList<WheelInfo^>^ WheelInfo
 		{
-			AlignedWheelInfoArray^ get();
+			System::Collections::Generic::IList<BulletSharp::WheelInfo^>^ get();
 		}
 	};
 

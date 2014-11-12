@@ -12,7 +12,7 @@ namespace BulletSharp
 	};
 
 	[Flags]
-	public enum class  AnisotropicFrictionFlags
+	public enum class AnisotropicFrictionFlags
 	{
 		//None = btCollisionObject::CF_ANISOTROPIC_FRICTION_DISABLED,
 		AnisotropicFrictionDisabled = btCollisionObject::CF_ANISOTROPIC_FRICTION_DISABLED,

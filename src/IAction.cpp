@@ -1,12 +1,12 @@
 #include "StdAfx.h"
 
-#include "IActionInterface.h"
+#include "IAction.h"
 #include "CollisionWorld.h"
 #ifndef DISABLE_DEBUGDRAW
 #include "DebugDraw.h"
 #endif
 
-ActionInterfaceWrapper::ActionInterfaceWrapper(IActionInterface^ actionInterface, CollisionWorld^ collisionWorld)
+ActionInterfaceWrapper::ActionInterfaceWrapper(IAction^ actionInterface, CollisionWorld^ collisionWorld)
 {
 	_actionInterface = actionInterface;
 	_collisionWorld = collisionWorld;

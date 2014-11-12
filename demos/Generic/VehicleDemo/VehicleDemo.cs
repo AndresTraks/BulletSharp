@@ -28,7 +28,7 @@ namespace VehicleDemo
         float gEngineForce = 0.0f;
         float gBreakingForce = 0.0f;
 
-        const float maxEngineForce = 2000.0f;//this should be engine/velocity dependent
+        const float maxEngineForce = 1500.0f;//this should be engine/velocity dependent
         const float maxBreakingForce = 100.0f;
 
         float gVehicleSteering = 0.0f;
@@ -45,8 +45,8 @@ namespace VehicleDemo
         const float suspensionRestLength = 0.6f;
         const float CUBE_HALF_EXTENTS = 1;
 
-        //public RaycastVehicle vehicle;
-        public CustomVehicle vehicle;
+        public RaycastVehicle vehicle;
+        //public CustomVehicle vehicle;
 
         protected override void OnInitialize()
         {
@@ -286,8 +286,8 @@ namespace VehicleDemo
             // create vehicle
             RaycastVehicle.VehicleTuning tuning = new RaycastVehicle.VehicleTuning();
             VehicleRaycaster vehicleRayCaster = new DefaultVehicleRaycaster(World);
-            //vehicle = new RaycastVehicle(tuning, carChassis, vehicleRayCaster);
-            vehicle = new CustomVehicle(tuning, carChassis, vehicleRayCaster);
+            vehicle = new RaycastVehicle(tuning, carChassis, vehicleRayCaster);
+            //vehicle = new CustomVehicle(tuning, carChassis, vehicleRayCaster);
 
             carChassis.ActivationState = ActivationState.DisableDeactivation;
             World.AddAction(vehicle);
@@ -345,17 +345,6 @@ namespace VehicleDemo
         {
             if (Input.KeysDown.Contains(Keys.Left))
             {
-                gVehicleSteering += FrameDelta * steeringIncrement;
-                if (gVehicleSteering > steeringClamp)
-                    gVehicleSteering = steeringClamp;
-            }
-            else if ((gVehicleSteering - float.Epsilon) > 0)
-            {
-                gVehicleSteering -= FrameDelta * steeringIncrement;
-            }
-
-            if (Input.KeysDown.Contains(Keys.Right))
-            {
                 gVehicleSteering -= FrameDelta * steeringIncrement;
                 if (gVehicleSteering < -steeringClamp)
                     gVehicleSteering = -steeringClamp;
@@ -363,6 +352,17 @@ namespace VehicleDemo
             else if ((gVehicleSteering + float.Epsilon) < 0)
             {
                 gVehicleSteering += FrameDelta * steeringIncrement;
+            }
+
+            if (Input.KeysDown.Contains(Keys.Right))
+            {
+                gVehicleSteering += FrameDelta * steeringIncrement;
+                if (gVehicleSteering > steeringClamp)
+                    gVehicleSteering = steeringClamp;
+            }
+            else if ((gVehicleSteering - float.Epsilon) > 0)
+            {
+                gVehicleSteering -= FrameDelta * steeringIncrement;
             }
 
             if (Input.KeysDown.Contains(Keys.Up))

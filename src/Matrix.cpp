@@ -616,7 +616,7 @@ namespace BulletSharp
 		if (lengthSq < 0.0001f)
 			difference = -cameraForwardVector;
 		else
-			difference *= static_cast<btScalar>( 1.0f / System::Math::Sqrt( lengthSq ) );
+			difference *= static_cast<btScalar>( 1.0f / btSqrt( lengthSq ) );
 
 		Vector3::Cross( cameraUpVector, difference, crossed );
 		crossed.Normalize();
@@ -652,7 +652,7 @@ namespace BulletSharp
 		if (lengthSq < 0.0001f)
 			difference = -cameraForwardVector;
 		else
-			difference *= static_cast<btScalar>( 1.0f / System::Math::Sqrt( lengthSq ) );
+			difference *= static_cast<btScalar>( 1.0f / btSqrt( lengthSq ) );
 
 		Vector3::Cross( cameraUpVector, difference, crossed );
 		crossed.Normalize();

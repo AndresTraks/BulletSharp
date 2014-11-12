@@ -8,8 +8,8 @@ using BulletSharp;
 
 namespace VehicleDemo
 {
-    // This class is equivalent to btRaycastVehicle, but is used to test IActionInterface
-    class CustomVehicle : IActionInterface
+    // This class is equivalent to btRaycastVehicle, but is used to test the IAction interface
+    class CustomVehicle : IAction
     {
         List<WheelInfo> wheelInfo = new List<WheelInfo>();
 
@@ -122,7 +122,6 @@ namespace VehicleDemo
             ci.MaxSuspensionForce = tuning.MaxSuspensionForce;
 
             wheelInfo.Add(new WheelInfo(ci));
-            ci.Dispose();
 
             WheelInfo wheel = wheelInfo[NumWheels - 1];
 
@@ -287,7 +286,7 @@ namespace VehicleDemo
             return depth;
         }
 
-        private void ResolveSingleBilateral(RigidBody body1, Vector3 pos1, RigidBody body2, Vector3 pos2, float distance, Vector3 normal, ref float impulse, float timeStep)
+        private void ResolveSingleBilateral(RigidBody body1, Vector3 pos1, RigidBody body2, Vector3 pos2, float distance, Vector3 normal, out float impulse, float timeStep)
         {
             float normalLenSqr = normal.LengthSquared;
             Debug.Assert(Math.Abs(normalLenSqr) < 1.1f);
@@ -384,7 +383,7 @@ namespace VehicleDemo
 
                     ResolveSingleBilateral(chassisBody, wheel.RaycastInfo.ContactPointWS,
                               groundObject, wheel.RaycastInfo.ContactPointWS,
-                              0, axle[i], ref sideImpulse[i], timeStep);
+                              0, axle[i], out sideImpulse[i], timeStep);
 
                     sideImpulse[i] *= sideFrictionStiffness2;
                 }
@@ -419,11 +418,11 @@ namespace VehicleDemo
                 //switch between active rolling (throttle), braking and non-active rolling friction (no throttle/break)
 
                 forwardImpulse[i] = 0;
-                wheelInfo[i].SkidInfo = 1.0f;
+                wheel.SkidInfo = 1.0f;
 
                 if (groundObject != null)
                 {
-                    wheelInfo[i].SkidInfo = 1.0f;
+                    wheel.SkidInfo = 1.0f;
 
                     float maximp = wheel.WheelsSuspensionForce * timeStep * wheel.FrictionSlip;
                     float maximpSide = maximp;
@@ -431,7 +430,7 @@ namespace VehicleDemo
                     float maximpSquared = maximp * maximpSide;
 
 
-                    forwardImpulse[i] = rollingFriction;//wheel.EngineForce* timeStep;
+                    forwardImpulse[i] = rollingFriction;//wheel.EngineForce * timeStep;
 
                     float x = forwardImpulse[i] * fwdFactor;
                     float y = sideImpulse[i] * sideFactor;
@@ -444,7 +443,7 @@ namespace VehicleDemo
 
                         float factor = maximp / (float)Math.Sqrt(impulseSquared);
 
-                        wheelInfo[i].SkidInfo *= factor;
+                        wheel.SkidInfo *= factor;
                     }
                 }
             }

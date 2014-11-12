@@ -4,11 +4,6 @@
 
 #define Native static_cast<btStaticPlaneShape*>(_native)
 
-StaticPlaneShape::StaticPlaneShape(btStaticPlaneShape* native)
-	: ConcaveShape(native)
-{
-}
-
 StaticPlaneShape::StaticPlaneShape(Vector3 planeNormal, btScalar planeConstant)
 	: ConcaveShape(0)
 {

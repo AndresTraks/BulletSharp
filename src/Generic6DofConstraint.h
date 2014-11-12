@@ -218,7 +218,7 @@ namespace BulletSharp
 			void set(Vector3 value);
 		}
 
-		property Vector3 NormalCFM
+		property Vector3 NormalCfm
 		{
 			Vector3 get();
 			void set(Vector3 value);
@@ -230,13 +230,13 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
-		property Vector3 StopCFM
+		property Vector3 StopCfm
 		{
 			Vector3 get();
 			void set(Vector3 value);
 		}
 
-		property Vector3 StopERP
+		property Vector3 StopErp
 		{
 			Vector3 get();
 			void set(Vector3 value);
@@ -257,6 +257,10 @@ namespace BulletSharp
 
 	public ref class Generic6DofConstraint : TypedConstraint
 	{
+	private:
+		array<RotationalLimitMotor^>^ _angularLimits;
+		TranslationalLimitMotor^ _linearLimits;
+
 	internal:
 		Generic6DofConstraint(btGeneric6DofConstraint* native);
 
@@ -280,7 +284,7 @@ namespace BulletSharp
 		Vector3 GetAxis(int axis_index);
 		//void GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA, Matrix transB,
 		//	Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB);
-		btScalar GetRelativePivotPosition(int axis_index);
+		btScalar GetRelativePivotPosition(int axisIndex);
 		RotationalLimitMotor^ GetRotationalLimitMotor(int index);
 		bool IsLimited(int limitIndex);
 		void SetAxis(Vector3 axis1, Vector3 axis2);

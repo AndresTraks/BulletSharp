@@ -8,7 +8,8 @@ namespace BulletSharp
 	ref class ContactSolverInfo;
 	ref class RigidBody;
 	ref class TypedConstraint;
-	interface class IActionInterface;
+	interface class IAction;
+	class ActionInterfaceWrapper;
 
 	public ref class DynamicsWorld abstract : CollisionWorld
 	{
@@ -24,13 +25,13 @@ namespace BulletSharp
 	internal:
 		InternalTickCallback^ _callback;
 		InternalTickCallbackUnmanagedDelegate^ _callbackUnmanaged;
-		System::Collections::Generic::List<IActionInterface^>^ _actions;
+		System::Collections::Generic::Dictionary<IAction^, IntPtr>^ _actions;
 		System::Collections::Generic::List<TypedConstraint^>^ _constraints;
 		ConstraintSolver^ _constraintSolver;
 		DynamicsWorld(btDynamicsWorld* native);
 
 	public:
-		void AddAction(IActionInterface^ action);
+		void AddAction(IAction^ action);
 #ifndef DISABLE_CONSTRAINTS
 		void AddConstraint(TypedConstraint^ constraint, bool disableCollisionsBetweenLinkedBodies);
 		void AddConstraint(TypedConstraint^ constraint);
@@ -43,7 +44,7 @@ namespace BulletSharp
 		TypedConstraint^ GetConstraint(int index);
 #endif
 		void InternalTickCallbackUnmanaged(IntPtr world, btScalar timeStep);
-		void RemoveAction(IActionInterface^ action);
+		void RemoveAction(IAction^ action);
 #ifndef DISABLE_CONSTRAINTS
 		void RemoveConstraint(TypedConstraint^ constraint);
 #endif

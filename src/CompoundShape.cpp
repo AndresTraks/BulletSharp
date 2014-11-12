@@ -65,6 +65,12 @@ void CompoundShapeChild::Transform::set(Matrix value)
 
 #define Native static_cast<btCompoundShape*>(_native)
 
+CompoundShape::CompoundShape(btCompoundShape* native)
+	: CollisionShape(native)
+{
+	_childList = gcnew CompoundShapeChildArray(Native);
+}
+
 CompoundShape::CompoundShape(bool enableDynamicAabbTree)
 	: CollisionShape(new btCompoundShape(enableDynamicAabbTree))
 {

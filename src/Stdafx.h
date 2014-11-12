@@ -209,8 +209,10 @@ using namespace System::Drawing;
 #endif
 
 #ifndef DISABLE_CONSTRAINTS
-#include <BulletDynamics/ConstraintSolver/btSolve2LinearConstraint.h>
+#include "BulletDynamics/ConstraintSolver/btContactConstraint.h"
+#include <BulletDynamics/ConstraintSolver/btGeneric6DofSpring2Constraint.h>
 #include <BulletDynamics/ConstraintSolver/btNNCGConstraintSolver.h>
+#include <BulletDynamics/ConstraintSolver/btSolve2LinearConstraint.h>
 #endif
 
 #ifndef DISABLE_FEATHERSTONE

@@ -1043,39 +1043,4 @@ namespace BulletSharp
 		};
 	};
 #endif
-
-#ifndef DISABLE_VEHICLE
-	[DebuggerDisplay("Count = {Count}")]
-	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class AlignedWheelInfoArray : AlignedObjectArray<WheelInfo^>
-	{
-	internal:
-		AlignedWheelInfoArray(btAlignedObjectArray<btWheelInfo>* wheelInfoArray);
-
-	public:
-		AlignedWheelInfoArray();
-
-		virtual void Add(WheelInfo^ wheelInfo) override;
-		virtual void Clear() override;
-		virtual void CopyTo(array<WheelInfo^>^ array, int arrayIndex) override;
-		virtual void PopBack() override;
-		virtual void Swap(int index0, int index1) override;
-
-		property int Capacity
-		{
-			int get();
-		}
-
-		property int Count
-		{
-			virtual int get() override;
-		}
-
-		property WheelInfo^ default [int]
-		{
-			virtual WheelInfo^ get (int index) override;
-			virtual void set(int index, WheelInfo^ value) override;
-		}
-	};
-#endif
 };

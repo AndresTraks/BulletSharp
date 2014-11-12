@@ -1,16 +1,13 @@
 #include "StdAfx.h"
 
 #include "AlignedObjectArray.h"
-#include "IActionInterface.h"
+#include "IAction.h"
 #include "ConstraintSOlver.h"
 #include "ContactSolverInfo.h"
 #include "DynamicsWorld.h"
 #include "RigidBody.h"
 #ifndef DISABLE_CONSTRAINTS
 #include "TypedConstraint.h"
-#endif
-#ifndef DISABLE_VEHICLE
-#include "RaycastVehicle.h"
 #endif
 #ifndef DISABLE_UNCOMMON
 #include "CharacterControllerInterface.h"
@@ -24,28 +21,20 @@ DynamicsWorld::DynamicsWorld(btDynamicsWorld* native)
 	_constraints = gcnew System::Collections::Generic::List<TypedConstraint^>();
 }
 
-void DynamicsWorld::AddAction(IActionInterface^ action)
+void DynamicsWorld::AddAction(IAction^ action)
 {
 	if (!_actions) {
-		_actions = gcnew System::Collections::Generic::List<IActionInterface^>();
+		_actions = gcnew System::Collections::Generic::Dictionary<IAction^, IntPtr>();
 	}
-	_actions->Add(action);
-#ifndef DISABLE_VEHICLE
-	RaycastVehicle^ vehicle = dynamic_cast<RaycastVehicle^>(action);
-	if (vehicle) {
-		Native->addAction(vehicle->_native);
-		return;
-	}
-#endif
 #ifndef DISABLE_UNCOMMON
 	CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(action);
 	if (character) {
 		Native->addAction(character->_native);
+		_actions->Add(action, IntPtr(character->_native));
 		return;
 	}
 #endif
 	ActionInterfaceWrapper* wrapper = new ActionInterfaceWrapper(action, this);
-	ObjectTable::Add(action, wrapper);
 	Native->addAction(wrapper);
 	return;
 }
@@ -98,7 +87,7 @@ void DynamicsWorld::InternalTickCallbackUnmanaged(IntPtr world, btScalar timeSte
     _callback(this, timeStep);
 }
 
-void DynamicsWorld::RemoveAction(IActionInterface^ action)
+void DynamicsWorld::RemoveAction(IAction^ action)
 {
 	if (!_actions) {
 		// No shapes have been added
@@ -106,14 +95,6 @@ void DynamicsWorld::RemoveAction(IActionInterface^ action)
 	}
 
 	_actions->Remove(action);
-
-#ifndef DISABLE_VEHICLE
-	RaycastVehicle^ vehicle = dynamic_cast<RaycastVehicle^>(action);
-	if (vehicle) {
-		Native->removeAction(vehicle->_native);
-		return;
-	}
-#endif
 #ifndef DISABLE_UNCOMMON
 	CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(action);
 	if (character) {
@@ -121,9 +102,8 @@ void DynamicsWorld::RemoveAction(IActionInterface^ action)
 		return;
 	}
 #endif
-	ActionInterfaceWrapper* wrapper = (ActionInterfaceWrapper*)ObjectTable::GetUnmanagedObject(action);
+	ActionInterfaceWrapper* wrapper = (ActionInterfaceWrapper*)_actions[action].ToPointer();
 	Native->removeAction(wrapper);
-	ObjectTable::Remove(wrapper);
 	delete wrapper;
 }
 #ifndef DISABLE_CONSTRAINTS

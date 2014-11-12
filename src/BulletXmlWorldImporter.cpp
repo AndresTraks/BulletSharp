@@ -123,7 +123,11 @@ CollisionShape^ Serialize::BulletXmlWorldImporter::CreatePlaneShape(Vector3 plan
 
 CollisionShape^ Serialize::BulletXmlWorldImporter::CreateBoxShape(Vector3 halfExtents)
 {
+#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+	return gcnew BoxShape(halfExtents.x, halfExtents.y, halfExtents.z);
+#else
 	return gcnew BoxShape(halfExtents.X, halfExtents.Y, halfExtents.Z);
+#endif
 }
 
 CollisionShape^ Serialize::BulletXmlWorldImporter::CreateSphereShape(btScalar radius)

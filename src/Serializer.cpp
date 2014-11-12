@@ -115,7 +115,7 @@ int BulletSharp::Serializer::CurrentBufferSize::get()
 	return _native->getCurrentBufferSize();
 }
 
-int Serializer::NumChunks::get()
+int BulletSharp::Serializer::NumChunks::get()
 {
 	return _native->getNumChunks();
 }

@@ -5,7 +5,7 @@ namespace BulletSharp
 	ref class CollisionWorld;
 	interface class IDebugDraw;
 
-	public interface class IActionInterface
+	public interface class IAction
 	{
 	public:
 #ifndef DISABLE_DEBUGDRAW
@@ -14,14 +14,14 @@ namespace BulletSharp
 		virtual void UpdateAction(CollisionWorld^ collisionWorld, btScalar deltaTimeStep);
 	};
 
-	// Wrapper for classes that are not RaycastVehicle or CharacterControllerInterface.
+	// Wrapper for classes other than CharacterControllerInterface.
 	class ActionInterfaceWrapper : public btActionInterface
 	{
 	public:
-		gcroot<IActionInterface^> _actionInterface;
+		gcroot<IAction^> _actionInterface;
 		gcroot<CollisionWorld^> _collisionWorld;
 
-		ActionInterfaceWrapper(IActionInterface^ actionInterface, CollisionWorld^ collisionWorld);
+		ActionInterfaceWrapper(IAction^ actionInterface, CollisionWorld^ collisionWorld);
 		virtual ~ActionInterfaceWrapper();
 
 		virtual void debugDraw(btIDebugDraw* debugDrawer);

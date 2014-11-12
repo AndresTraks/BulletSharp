@@ -11,15 +11,12 @@
 #include "ConvexShape.h"
 #include "DynamicsWorld.h"
 #include "Dispatcher.h"
-#include "IActionInterface.h"
+#include "IAction.h"
 #include "ManifoldPoint.h"
 #include "OverlappingPairCache.h"
 #ifndef DISABLE_DEBUGDRAW
 #include "DebugDraw.h"
 #include "IDebugDraw.h"
-#endif
-#ifndef DISABLE_VEHICLE
-#include "RaycastVehicle.h"
 #endif
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
@@ -612,22 +609,15 @@ CollisionWorld::!CollisionWorld()
 		DynamicsWorld^ world = static_cast<DynamicsWorld^>(this);
 		if (world->_actions)
 		{
-			for each (IActionInterface^ action in world->_actions)
+			for each (IAction^ action in world->_actions->Keys)
 			{
-#ifndef DISABLE_VEHICLE
-				RaycastVehicle^ vehicle = dynamic_cast<RaycastVehicle^>(action);
-				if (vehicle) {
-					continue;
-				}
-#endif
 #ifndef DISABLE_UNCOMMON
 				CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(action);
 				if (character) {
 					continue;
 				}
 #endif
-				ActionInterfaceWrapper* wrapper = (ActionInterfaceWrapper*)ObjectTable::GetUnmanagedObject(action);
-				ObjectTable::Remove(wrapper);
+				ActionInterfaceWrapper* wrapper = (ActionInterfaceWrapper*)world->_actions[action].ToPointer();
 				delete wrapper;
 			}
 		}

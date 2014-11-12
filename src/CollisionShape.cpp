@@ -55,7 +55,7 @@ CollisionShape::!CollisionShape()
 {
 	if (this->IsDisposed)
 		return;
-	
+
 	OnDisposing(this, nullptr);
 
 	void* userObj = _native->getUserPointer();

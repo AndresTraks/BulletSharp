@@ -2799,6 +2799,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\Generic6DofSpring2Constraint.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\src\Generic6DofSpringConstraint.cpp"
 						>
 					</File>
@@ -2851,7 +2855,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\IActionInterface.cpp"
+						RelativePath="..\src\IAction.cpp"
 						>
 					</File>
 					<File
@@ -3632,6 +3636,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\Generic6DofSpring2Constraint.h"
+						>
+					</File>
+					<File
 						RelativePath="..\src\Generic6DofSpringConstraint.h"
 						>
 					</File>
@@ -3684,7 +3692,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\IActionInterface.h"
+						RelativePath="..\src\IAction.h"
 						>
 					</File>
 					<File

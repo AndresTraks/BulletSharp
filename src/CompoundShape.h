@@ -56,6 +56,9 @@ namespace BulletSharp
 	private:
 		CompoundShapeChildArray^ _childList;
 
+	internal:
+		CompoundShape(btCompoundShape* native);
+
 	public:
 		CompoundShape(bool enableDynamicAabbTree);
 		CompoundShape();

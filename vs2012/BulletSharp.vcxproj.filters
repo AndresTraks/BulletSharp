@@ -378,6 +378,9 @@
     <ClCompile Include="..\src\Generic6DofConstraint.cpp">
       <Filter>Source Files\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Generic6DofSpring2Constraint.cpp">
+      <Filter>Source Files\BulletDynamics\ConstraintSolver</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\Generic6DofSpringConstraint.cpp">
       <Filter>Source Files\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
@@ -420,7 +423,7 @@
     <ClCompile Include="..\src\HingeConstraint.cpp">
       <Filter>Source Files\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\IActionInterface.cpp">
+    <ClCompile Include="..\src\IAction.cpp">
       <Filter>Source Files\BulletDynamics\Dynamics</Filter>
     </ClCompile>
     <ClCompile Include="..\src\InternalEdgeUtility.cpp">
@@ -919,6 +922,9 @@
     <ClInclude Include="..\src\Generic6DofConstraint.h">
       <Filter>Header Files\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Generic6DofSpring2Constraint.h">
+      <Filter>Header Files\BulletDynamics\ConstraintSolver</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\Generic6DofSpringConstraint.h">
       <Filter>Header Files\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
@@ -961,7 +967,7 @@
     <ClInclude Include="..\src\HingeConstraint.h">
       <Filter>Header Files\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\IActionInterface.h">
+    <ClInclude Include="..\src\IAction.h">
       <Filter>Header Files\BulletDynamics\Dynamics</Filter>
     </ClInclude>
     <ClInclude Include="..\src\IDebugDraw.h">

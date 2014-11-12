@@ -213,18 +213,30 @@ namespace BulletSharp
 
 #ifdef GRAPHICS_AXIOM
 #define Vector3_Cross(left, right, result) result = left.Cross(right)
+#define Vector3_Dot(left, right) left.Vector3::Dot(right)
+#define Vector3_Normalize(v) v.Normalize()
+#define Vector3_Scale(v, s) v * s
 #define Vector3_Zero Vector3::Zero
 #define Matrix_Identity Matrix4::Identity
 #elif defined(GRAPHICS_MOGRE)
 #define Vector3_Cross(left, right, result) result = left.CrossProduct(right)
+#define Vector3_Dot(left, right) left.DotProduct(right)
+#define Vector3_Normalize(v) v.Normalise()
+#define Vector3_Scale(v, s) v * s
 #define Vector3_Zero Vector3::ZERO
 #define Matrix_Identity Matrix4::IDENTITY
 #elif defined(GRAPHICS_WAPICODEPACK)
 #define Vector3_Cross(left, right, result) result = Vector3::Cross(left, right)
+#define Vector3_Dot(left, right) Vector3::Dot(left, right)
+#define Vector3_Normalize(v) v.Normalize()
+#define Vector3_Scale(v, s) Vector3(v.X * s, v.Y * s, v.Z * s)
 #define Vector3_Zero Vector3(0,0,0)
 #define Matrix_Identity Matrix::Identity
 #else
 #define Vector3_Cross(left, right, result) Vector3::Cross(left, right, result)
+#define Vector3_Dot(left, right) Vector3::Dot(left, right)
+#define Vector3_Normalize(v) v.Normalize()
+#define Vector3_Scale(v, s) v * s
 #define Vector3_Zero Vector3::Zero
 #define Matrix_Identity Matrix::Identity
 #endif
