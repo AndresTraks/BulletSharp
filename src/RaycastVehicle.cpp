@@ -81,7 +81,6 @@ static RaycastVehicle::RaycastVehicle()
 {
 	RigidBodyConstructionInfo^ info = gcnew RigidBodyConstructionInfo(0, nullptr, nullptr);
 	_fixedBody = gcnew BulletSharp::RigidBody(info);
-	delete info;
 	_fixedBody->SetMassProps(0, Vector3_Zero);
 }
 
@@ -641,7 +640,7 @@ void RaycastVehicle::UpdateVehicle(btScalar step)
 		if (wheel->RaycastInfo.IsInContact)
 		{
 			Math::MatrixToBtTransform(ChassisWorldTransform, chassisWorldTransformTemp);
-			RaycastVehicle_GetBasisAxle(chassisWorldTransformTemp, RightAxis, fwdTemp);
+			RaycastVehicle_GetBasisAxle(chassisWorldTransformTemp, ForwardAxis, fwdTemp);
 			Vector3 fwd = Math::BtVector3ToVector3(fwdTemp);
 			
 			btScalar proj = Vector3_Dot(fwd, wheel->RaycastInfo.ContactNormalWS);
