@@ -641,7 +641,7 @@ void RaycastVehicle::UpdateVehicle(btScalar step)
 		if (wheel->RaycastInfo.IsInContact)
 		{
 			Math::MatrixToBtTransform(ChassisWorldTransform, chassisWorldTransformTemp);
-			RaycastVehicle_GetBasisAxle(chassisWorldTransformTemp, RightAxis, fwdTemp);
+			RaycastVehicle_GetBasisAxle(chassisWorldTransformTemp, ForwardAxis, fwdTemp);
 			Vector3 fwd = Math::BtVector3ToVector3(fwdTemp);
 			
 			btScalar proj = Vector3_Dot(fwd, wheel->RaycastInfo.ContactNormalWS);
