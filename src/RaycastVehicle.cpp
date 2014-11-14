@@ -81,7 +81,6 @@ static RaycastVehicle::RaycastVehicle()
 {
 	RigidBodyConstructionInfo^ info = gcnew RigidBodyConstructionInfo(0, nullptr, nullptr);
 	_fixedBody = gcnew BulletSharp::RigidBody(info);
-	delete info;
 	_fixedBody->SetMassProps(0, Vector3_Zero);
 }
 
