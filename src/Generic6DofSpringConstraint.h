@@ -10,8 +10,8 @@ namespace BulletSharp
 		Generic6DofSpringConstraint(btGeneric6DofSpringConstraint* native);
 
 	public:
-		Generic6DofSpringConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA,
-			Matrix frameInB, bool useLinearReferenceFrameA);
+		Generic6DofSpringConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
+			Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA);
 		Generic6DofSpringConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameB);
 
 		void EnableSpring(int index, bool onOff);

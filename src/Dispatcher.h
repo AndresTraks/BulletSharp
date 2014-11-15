@@ -40,7 +40,6 @@ namespace BulletSharp
 			btScalar get();
 			void set(btScalar value);
 		}
-
 #ifndef DISABLE_DEBUGDRAW
 		property IDebugDraw^ DebugDraw
 		{

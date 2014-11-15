@@ -9,12 +9,12 @@
 Convex2DShape::Convex2DShape(ConvexShape^ convexChildShape)
 	: ConvexShape(new btConvex2dShape((btConvexShape*)convexChildShape->_native))
 {
-	_convexChildShape = convexChildShape;
+	_childShape = convexChildShape;
 }
 
 ConvexShape^ Convex2DShape::ChildShape::get()
 {
-	return _convexChildShape;
+	return _childShape;
 }
 
 #endif

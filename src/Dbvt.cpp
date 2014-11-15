@@ -250,6 +250,157 @@ DbvtVolume^ DbvtNode::Volume::get()
 }
 
 
+Dbvt::IClone::IClone(btDbvt::IClone* native)
+{
+	_native = native;
+}
+
+Dbvt::IClone::~IClone()
+{
+	this->!IClone();
+}
+
+Dbvt::IClone::!IClone()
+{
+	if (this->IsDisposed)
+		return;
+
+	delete _native;
+	_native = NULL;
+}
+/*
+Dbvt::IClone::IClone()
+{
+	_native = new btDbvt::IClone();
+}
+*/
+void Dbvt::IClone::CloneLeaf(DbvtNode^ __unnamed0)
+{
+	_native->CloneLeaf(__unnamed0->_native);
+}
+
+bool Dbvt::IClone::IsDisposed::get()
+{
+	return (_native == NULL);
+}
+
+
+Dbvt::ICollide::ICollide(btDbvt::ICollide* native)
+{
+	_native = native;
+}
+
+Dbvt::ICollide::~ICollide()
+{
+	this->!ICollide();
+}
+
+Dbvt::ICollide::!ICollide()
+{
+	if (this->IsDisposed)
+		return;
+
+	delete _native;
+	_native = NULL;
+}
+
+bool Dbvt::ICollide::AllLeaves(DbvtNode^ n)
+{
+	return _native->AllLeaves(n->_native);
+}
+
+bool Dbvt::ICollide::Descent(DbvtNode^ n)
+{
+	return _native->Descent(n->_native);
+}
+
+void Dbvt::ICollide::Process(DbvtNode^ na, DbvtNode^ nb)
+{
+	_native->Process(na->_native, nb->_native);
+}
+
+void Dbvt::ICollide::Process(DbvtNode^ n)
+{
+	_native->Process(n->_native);
+}
+
+void Dbvt::ICollide::Process(DbvtNode^ n, btScalar s)
+{
+	_native->Process(n->_native, s);
+}
+
+bool Dbvt::ICollide::IsDisposed::get()
+{
+	return (_native == NULL);
+}
+
+
+Dbvt::IWriter::IWriter(btDbvt::IWriter* native)
+{
+	_native = native;
+}
+
+Dbvt::IWriter::~IWriter()
+{
+	this->!IWriter();
+}
+
+Dbvt::IWriter::!IWriter()
+{
+	if (this->IsDisposed)
+		return;
+
+	delete _native;
+	_native = NULL;
+}
+
+void Dbvt::IWriter::Prepare(DbvtNode^ root, int numnodes)
+{
+	_native->Prepare(root->_native, numnodes);
+}
+
+void Dbvt::IWriter::WriteLeaf(DbvtNode^ n, int index, int parent)
+{
+	_native->WriteLeaf(n->_native, index, parent);
+}
+
+void Dbvt::IWriter::WriteNode(DbvtNode^ n, int index, int parent, int child0,
+	int child1)
+{
+	_native->WriteNode(n->_native, index, parent, child0, child1);
+}
+
+bool Dbvt::IWriter::IsDisposed::get()
+{
+	return (_native == NULL);
+}
+
+
+Dbvt::StkCln::StkCln(btDbvt::sStkCLN* native)
+{
+	_native = native;
+}
+
+Dbvt::StkCln::StkCln(DbvtNode^ n, DbvtNode^ p)
+{
+	_native = new btDbvt::sStkCLN(n->_native, p->_native);
+}
+
+DbvtNode^ Dbvt::StkCln::Node::get()
+{
+	return gcnew DbvtNode((btDbvtNode*)_native->node);
+}
+
+DbvtNode^ Dbvt::StkCln::Parent::get()
+{
+	return gcnew DbvtNode(_native->parent);
+}
+void Dbvt::StkCln::Parent::set(DbvtNode^ value)
+{
+	_native->parent = value->_native;
+}
+
+
 Dbvt::StkNN::StkNN(btDbvt::sStkNN* native)
 {
 	_native = native;
@@ -346,157 +497,6 @@ void Dbvt::StkNps::Value::set(btScalar value)
 {
 	_native->value = value;
 }
-
-
-Dbvt::StkCln::StkCln(btDbvt::sStkCLN* native)
-{
-	_native = native;
-}
-
-Dbvt::StkCln::StkCln(DbvtNode^ n, DbvtNode^ p)
-{
-	_native = new btDbvt::sStkCLN(n->_native, p->_native);
-}
-
-DbvtNode^ Dbvt::StkCln::Node::get()
-{
-	return gcnew DbvtNode((btDbvtNode*)_native->node);
-}
-
-DbvtNode^ Dbvt::StkCln::Parent::get()
-{
-	return gcnew DbvtNode(_native->parent);
-}
-void Dbvt::StkCln::Parent::set(DbvtNode^ value)
-{
-	_native->parent = value->_native;
-}
-
-
-Dbvt::ICollide::ICollide(btDbvt::ICollide* native)
-{
-	_native = native;
-}
-
-Dbvt::ICollide::~ICollide()
-{
-	this->!ICollide();
-}
-
-Dbvt::ICollide::!ICollide()
-{
-	if (this->IsDisposed)
-		return;
-
-	delete _native;
-	_native = NULL;
-}
-
-bool Dbvt::ICollide::AllLeaves(DbvtNode^ n)
-{
-	return _native->AllLeaves(n->_native);
-}
-
-bool Dbvt::ICollide::Descent(DbvtNode^ n)
-{
-	return _native->Descent(n->_native);
-}
-
-void Dbvt::ICollide::Process(DbvtNode^ na, DbvtNode^ nb)
-{
-	_native->Process(na->_native, nb->_native);
-}
-
-void Dbvt::ICollide::Process(DbvtNode^ n)
-{
-	_native->Process(n->_native);
-}
-
-void Dbvt::ICollide::Process(DbvtNode^ n, btScalar s)
-{
-	_native->Process(n->_native, s);
-}
-
-bool Dbvt::ICollide::IsDisposed::get()
-{
-	return (_native == NULL);
-}
-
-
-Dbvt::IWriter::IWriter(btDbvt::IWriter* native)
-{
-	_native = native;
-}
-
-Dbvt::IWriter::~IWriter()
-{
-	this->!IWriter();
-}
-
-Dbvt::IWriter::!IWriter()
-{
-	if (this->IsDisposed)
-		return;
-
-	delete _native;
-	_native = NULL;
-}
-
-void Dbvt::IWriter::Prepare(DbvtNode^ root, int numnodes)
-{
-	_native->Prepare(root->_native, numnodes);
-}
-
-void Dbvt::IWriter::WriteLeaf(DbvtNode^ n, int index, int parent)
-{
-	_native->WriteLeaf(n->_native, index, parent);
-}
-
-void Dbvt::IWriter::WriteNode(DbvtNode^ n, int index, int parent, int child0,
-	int child1)
-{
-	_native->WriteNode(n->_native, index, parent, child0, child1);
-}
-
-bool Dbvt::IWriter::IsDisposed::get()
-{
-	return (_native == NULL);
-}
-
-Dbvt::IClone::IClone(btDbvt::IClone* native)
-{
-	_native = native;
-}
-
-Dbvt::IClone::~IClone()
-{
-	this->!IClone();
-}
-
-Dbvt::IClone::!IClone()
-{
-	if (this->IsDisposed)
-		return;
-
-	delete _native;
-	_native = NULL;
-}
-/*
-Dbvt::IClone::IClone()
-{
-	_native = new btDbvt::IClone();
-}
-*/
-void Dbvt::IClone::CloneLeaf(DbvtNode^ __unnamed0)
-{
-	_native->CloneLeaf(__unnamed0->_native);
-}
-
-bool Dbvt::IClone::IsDisposed::get()
-{
-	return (_native == NULL);
-}
-
 
 Dbvt::Dbvt(btDbvt* native, bool preventDelete)
 {

@@ -12,6 +12,7 @@ namespace BulletSharp
 		FixedConstraint(btFixedConstraint* native);
 
 	public:
-		FixedConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB);
+		FixedConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA,
+			Matrix frameInB);
 	};
 };

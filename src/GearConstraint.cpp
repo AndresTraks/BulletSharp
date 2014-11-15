@@ -12,8 +12,8 @@ GearConstraint::GearConstraint(btGearConstraint* native)
 {
 }
 
-GearConstraint::GearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA, Vector3 axisInB,
-	btScalar ratio)
+GearConstraint::GearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA,
+	Vector3 axisInB, btScalar ratio)
 	: TypedConstraint(0)
 {
 	VECTOR3_CONV(axisInA);
@@ -27,7 +27,8 @@ GearConstraint::GearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vec
 	_rigidBodyB = rigidBodyB;
 }
 
-GearConstraint::GearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA, Vector3 axisInB)
+GearConstraint::GearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA,
+	Vector3 axisInB)
 	: TypedConstraint(0)
 {
 	VECTOR3_CONV(axisInA);

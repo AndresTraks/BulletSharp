@@ -59,7 +59,11 @@ void SubSimplexClosestResult::SetBarycentricCoordinates()
 
 ScalarArray^ SubSimplexClosestResult::BarycentricCoords::get()
 {
-	return gcnew ScalarArray(_native->m_barycentricCoords, 4);
+	if (_barycentricCoords == nullptr)
+	{
+		_barycentricCoords = gcnew ScalarArray(_native->m_barycentricCoords, 4);
+	}
+	return _barycentricCoords;
 }
 
 Vector3 SubSimplexClosestResult::ClosestPointOnSimplex::get()

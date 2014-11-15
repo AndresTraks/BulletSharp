@@ -3,6 +3,7 @@
 namespace BulletSharp
 {
 	ref class RigidBody;
+	ref class ScalarArray;
 	#ifndef DISABLE_SERIALIZE
 	ref class Serializer;
 	#endif
@@ -93,6 +94,14 @@ namespace BulletSharp
 
 		private:
 			bool _preventDelete;
+			ScalarArray^ _cfm;
+			ScalarArray^ _constraintError;
+			ScalarArray^ _j1angularAxis;
+			ScalarArray^ _j1linearAxis;
+			ScalarArray^ _j2angularAxis;
+			ScalarArray^ _j2linearAxis;
+			ScalarArray^ _lowerLimit;
+			ScalarArray^ _upperLimit;
 
 		internal:
 			ConstraintInfo2(btTypedConstraint::btConstraintInfo2* native, bool preventDelete);
@@ -104,19 +113,17 @@ namespace BulletSharp
 
 		public:
 			ConstraintInfo2();
-			/*
-			property float^ Cfm
+
+			property ScalarArray^ Cfm
 			{
-				float^ get();
-				void set(float^ value);
+				ScalarArray^ get();
 			}
 
-			property float^ ConstraintError
+			property ScalarArray^ ConstraintError
 			{
-				float^ get();
-				void set(float^ value);
+				ScalarArray^ get();
 			}
-			*/
+
 			property btScalar Damping
 			{
 				btScalar get();
@@ -140,37 +147,32 @@ namespace BulletSharp
 				btScalar get();
 				void set(btScalar value);
 			}
-			/*
-			property float^ J1angularAxis
+
+			property ScalarArray^ J1angularAxis
 			{
-				float^ get();
-				void set(float^ value);
+				ScalarArray^ get();
 			}
 
-			property float^ J1linearAxis
+			property ScalarArray^ J1linearAxis
 			{
-				float^ get();
-				void set(float^ value);
+				ScalarArray^ get();
 			}
 
-			property float^ J2angularAxis
+			property ScalarArray^ J2angularAxis
 			{
-				float^ get();
-				void set(float^ value);
+				ScalarArray^ get();
 			}
 
-			property float^ J2linearAxis
+			property ScalarArray^ J2linearAxis
 			{
-				float^ get();
-				void set(float^ value);
+				ScalarArray^ get();
 			}
 
-			property float^ LowerLimit
+			property ScalarArray^ LowerLimit
 			{
-				float^ get();
-				void set(float^ value);
+				ScalarArray^ get();
 			}
-			*/
+
 			property int NumIterations
 			{
 				int get();
@@ -182,13 +184,11 @@ namespace BulletSharp
 				int get();
 				void set(int value);
 			}
-			/*
-			property float^ UpperLimit
+
+			property ScalarArray^ UpperLimit
 			{
-				float^ get();
-				void set(float^ value);
+				ScalarArray^ get();
 			}
-			*/
 		};
 
 	public:

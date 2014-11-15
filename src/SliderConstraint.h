@@ -12,8 +12,8 @@ namespace BulletSharp
 		SliderConstraint(btSliderConstraint* native);
 
 	public:
-		SliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB,
-			bool useLinearReferenceFrameA);
+		SliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA,
+			Matrix frameInB, bool useLinearReferenceFrameA);
 		SliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameA);
 
 		void CalculateTransforms(Matrix transA, Matrix transB);

@@ -2,7 +2,7 @@
 
 #include "AlignedObjectArray.h"
 #include "IAction.h"
-#include "ConstraintSOlver.h"
+#include "ConstraintSolver.h"
 #include "ContactSolverInfo.h"
 #include "DynamicsWorld.h"
 #include "RigidBody.h"

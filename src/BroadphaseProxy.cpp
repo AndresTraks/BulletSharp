@@ -222,9 +222,9 @@ void BroadphaseProxy::UnmanagedPointer::set(btBroadphaseProxy* value)
 }
 
 
-BroadphasePair::BroadphasePair(btBroadphasePair* pair)
+BroadphasePair::BroadphasePair(btBroadphasePair* native)
 {
-	_native = pair;
+	_native = native;
 }
 /*
 BroadphasePair::BroadphasePair()
@@ -232,9 +232,9 @@ BroadphasePair::BroadphasePair()
 	_native = new btBroadphasePair();
 }
 
-BroadphasePair::BroadphasePair(BroadphasePair^ pair)
+BroadphasePair::BroadphasePair(BroadphasePair^ other)
 {
-	_native = pair->_native;
+	_native = new btBroadphasePair(*other->_native);
 }
 
 BroadphasePair::BroadphasePair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)

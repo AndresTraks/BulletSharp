@@ -61,20 +61,20 @@ DispatcherFlags CollisionDispatcher::DispatcherFlags::get()
 {
 	return (BulletSharp::DispatcherFlags)Native->getDispatcherFlags();
 }
-void CollisionDispatcher::DispatcherFlags::set(BulletSharp::DispatcherFlags value)
+void CollisionDispatcher::DispatcherFlags::set(BulletSharp::DispatcherFlags flags)
 {
-	Native->setDispatcherFlags((int)value);
+	Native->setDispatcherFlags((int)flags);
 }
 
 BulletSharp::NearCallback^ CollisionDispatcher::NearCallback::get()
 {
 	return _nearCallback;
 }
-void CollisionDispatcher::NearCallback::set(BulletSharp::NearCallback^ value)
+void CollisionDispatcher::NearCallback::set(BulletSharp::NearCallback^ nearCallback)
 {
-	_nearCallback = value;
+	_nearCallback = nearCallback;
 
-	if (value == nullptr)
+	if (nearCallback == nullptr)
 	{
 		Native->setNearCallback(btCollisionDispatcher::defaultNearCallback);
 		_nearCallbackUnmanaged = nullptr;

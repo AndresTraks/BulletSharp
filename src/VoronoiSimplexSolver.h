@@ -11,6 +11,11 @@ namespace BulletSharp
 	{
 	internal:
 		btSubSimplexClosestResult* _native;
+
+	private:
+		ScalarArray^ _barycentricCoords;
+
+	internal:
 		SubSimplexClosestResult(btSubSimplexClosestResult* native);
 
 	public:
@@ -135,7 +140,7 @@ namespace BulletSharp
 		property btScalar EqualVertexThreshold
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar threshold);
 		}
 
 		property Vector3 LastW

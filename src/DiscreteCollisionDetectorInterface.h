@@ -77,11 +77,12 @@ namespace BulletSharp
 
 	public:
 #ifndef DISABLE_DEBUGDRAW
+		void GetClosestPoints(ClosestPointInput^ input, Result^ output, IDebugDraw^ debugDraw,
+			bool swapResults);
 		void GetClosestPoints(ClosestPointInput^ input, Result^ output, IDebugDraw^ debugDraw);
-		void GetClosestPoints(ClosestPointInput^ input, Result^ output, IDebugDraw^ debugDraw, bool swapResults);
 #else
-		void GetClosestPoints(ClosestPointInput^ input, Result^ output);
 		void GetClosestPoints(ClosestPointInput^ input, Result^ output, bool swapResults);
+		void GetClosestPoints(ClosestPointInput^ input, Result^ output);
 #endif
 
 		property bool IsDisposed

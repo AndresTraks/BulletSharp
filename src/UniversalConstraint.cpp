@@ -12,8 +12,8 @@ UniversalConstraint::UniversalConstraint(btUniversalConstraint* native)
 {
 }
 
-UniversalConstraint::UniversalConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 anchor,
-	Vector3 axis1, Vector3 axis2)
+UniversalConstraint::UniversalConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
+	Vector3 anchor, Vector3 axis1, Vector3 axis2)
 	: Generic6DofConstraint(0)
 {
 	VECTOR3_CONV(anchor);

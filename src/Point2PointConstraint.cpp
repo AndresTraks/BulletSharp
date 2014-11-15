@@ -65,8 +65,8 @@ Point2PointConstraint::Point2PointConstraint(btPoint2PointConstraint* native)
 {
 }
 
-Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA,
-	Vector3 pivotInB)
+Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
+	Vector3 pivotInA, Vector3 pivotInB)
 	: TypedConstraint(0)
 {
 	VECTOR3_CONV(pivotInA);

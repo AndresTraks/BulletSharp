@@ -26,14 +26,26 @@ namespace BulletSharp
 	public:
 		Vector3 GetAxisBottom(int dof);
 		Vector3 GetAxisTop(int dof);
-		void SetAxisBottom(int dof, Vector3 axis);
 		void SetAxisBottom(int dof, btScalar x, btScalar y, btScalar z);
+		void SetAxisBottom(int dof, Vector3 axis);
 		void SetAxisTop(int dof, Vector3 axis);
 		void SetAxisTop(int dof, btScalar x, btScalar y, btScalar z);
 		void UpdateCache();
 		void UpdateCacheMultiDof(ScalarArray^ pq);
 		void UpdateCacheMultiDof();
+/*
+		property SpatialMotionVector AbsFrameLocVelocity
+		{
+			SpatialMotionVector get();
+			void set(SpatialMotionVector value);
+		}
 
+		property SpatialMotionVector AbsFrameTotVelocity
+		{
+			SpatialMotionVector get();
+			void set(SpatialMotionVector value);
+		}
+*/
 		property Vector3 AppliedForce
 		{
 			Vector3 get();
@@ -45,7 +57,12 @@ namespace BulletSharp
 			Vector3 get();
 			void set(Vector3 value);
 		}
-
+/*
+		property SpatialMotionVector^ Axes
+		{
+			SpatialMotionVector^ get();
+		}
+*/
 		property Quaternion CachedRotParentToThis
 		{
 			Quaternion get();
@@ -106,16 +123,14 @@ namespace BulletSharp
 			void set(Vector3 value);
 		}
 		/*
-		property float^ JointPos
+		property array<btScalar>^ JointPos
 		{
-			float^ get();
-			void set(float^ value);
+			array<btScalar>^ get();
 		}
 
-		property float^ JointTorque
+		property array<btScalar>^ JointTorque
 		{
-			float^ get();
-			void set(float^ value);
+			array<btScalar>^ get();
 		}
 		*/
 		property FeatherstoneJointType JointType

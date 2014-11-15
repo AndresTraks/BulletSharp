@@ -178,6 +178,7 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBody::Anchor* _native;
+
 			Anchor(btSoftBody::Anchor* native);
 
 		private:
@@ -231,6 +232,7 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBody::Body* _native;
+
 			Body(btSoftBody::Body* native);
 
 		private:
@@ -306,6 +308,7 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBody::Cluster* _native;
+
 			Cluster(btSoftBody::Cluster* native);
 
 		private:
@@ -469,6 +472,7 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBody::Config* _native;
+
 			Config(btSoftBody::Config* native);
 
 		private:
@@ -653,6 +657,7 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBody::Element* _native;
+
 			Element(btSoftBody::Element* native);
 
 		public:
@@ -749,6 +754,7 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBody::Impulse* _native;
+
 			Impulse(btSoftBody::Impulse* native);
 
 		public:
@@ -794,6 +800,7 @@ namespace BulletSharp
 			{
 			internal:
 				btSoftBody::Joint::Specs* _native;
+
 				Specs(btSoftBody::Joint::Specs* native);
 
 			public:
@@ -828,6 +835,7 @@ namespace BulletSharp
 
 		internal:
 			btSoftBody::Joint* _native;
+
 			Joint(btSoftBody::Joint* native);
 			static Joint^ GetManaged(btSoftBody::Joint* joint);
 
@@ -905,6 +913,7 @@ namespace BulletSharp
 			{
 			internal:
 				btSoftBody::AJoint::IControl* _native;
+
 				IControl(btSoftBody::AJoint::IControl* native, bool preventDelete);
 
 			private:
@@ -1249,6 +1258,7 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBody::Pose* _native;
+
 			Pose(btSoftBody::Pose* native);
 
 		private:
@@ -1323,8 +1333,8 @@ namespace BulletSharp
 
 			property Face^ Face
 			{
-				Face^ get();
-				void set(Face^ value);
+				BulletSharp::Face^ get();
+				void set(BulletSharp::Face^ value);
 			}
 
 			property btScalar Mint
@@ -1362,6 +1372,7 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBody::RContact* _native;
+
 			RigidContact(btSoftBody::RContact* native);
 
 		private:
@@ -1421,6 +1432,7 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBody::sCti* _native;
+
 			Scti(btSoftBody::sCti* native);
 
 		public:
@@ -1454,6 +1466,7 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBody::SContact* _native;
+
 			SoftContact(btSoftBody::SContact* native);
 
 		private:
@@ -1515,6 +1528,7 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBody::sMedium* _native;
+
 			sMedium(btSoftBody::sMedium* native);
 
 		public:
@@ -1548,6 +1562,7 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBody::SolverState* _native;
+
 			SolverState(btSoftBody::SolverState* native);
 			/*
 		public:
@@ -1593,6 +1608,7 @@ namespace BulletSharp
 		{
 		internal:
 			btSoftBody::sRayCast* _native;
+
 			SRayCast(btSoftBody::sRayCast* native);
 
 		public:
@@ -1657,7 +1673,6 @@ namespace BulletSharp
 				btScalar get();
 				void set(btScalar value);
 			}
-
 #ifndef DISABLE_DBVT
 			property DbvtNode^ Leaf
 			{
@@ -2031,7 +2046,6 @@ namespace BulletSharp
 				SoftBodyWorldInfo^ get();
 				void set(SoftBodyWorldInfo^ value);
 			}
-
 		};
 	};
 };

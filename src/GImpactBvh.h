@@ -10,6 +10,7 @@ namespace BulletSharp
 	{
 	internal:
 		GIM_PAIR* _native;
+
 		GimPair(GIM_PAIR* native);
 
 	public:
@@ -52,6 +53,7 @@ namespace BulletSharp
 	{
 	internal:
 		GIM_BVH_DATA* _native;
+
 		GimBvhData(GIM_BVH_DATA* native);
 
 	public:
@@ -128,6 +130,7 @@ namespace BulletSharp
 	{
 	internal:
 		GIM_BVH_TREE_NODE_ARRAY* _native;
+
 		GimBvhTreeNodeArray(GIM_BVH_TREE_NODE_ARRAY* native);
 
 	public:
@@ -138,6 +141,7 @@ namespace BulletSharp
 	{
 	internal:
 		btBvhTree* _native;
+
 		BvhTree(btBvhTree* native);
 
 	public:
@@ -148,7 +152,7 @@ namespace BulletSharp
 	public:
 		BvhTree();
 
-		//void BuildTree(GimBvhDataArray^ primitive_boxes);
+		//void BuildTree(GimBvhDataArray^ primitiveBoxes);
 		void ClearNodes();
 		int GetEscapeNodeIndex(int nodeIndex);
 		int GetLeftNode(int nodeIndex);

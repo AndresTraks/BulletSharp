@@ -46,7 +46,6 @@ namespace BulletSharp
 			bool get();
 			void set(bool latencyInterpolation);
 		}
-
 #ifndef DISABLE_UNCOMMON
 		property SimulationIslandManager^ SimulationIslandManager
 		{

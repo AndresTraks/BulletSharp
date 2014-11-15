@@ -50,7 +50,8 @@ namespace BulletSharp
 		Point2PointConstraint(btPoint2PointConstraint* native);
 
 	public:
-		Point2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA, Vector3 pivotInB);
+		Point2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA,
+			Vector3 pivotInB);
 		Point2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA);
 
 		void GetInfo1NonVirtual(ConstraintInfo1^ info);

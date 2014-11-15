@@ -2,6 +2,7 @@
 
 #ifndef DISABLE_CONSTRAINTS
 
+#include "Collections.h"
 #include "RigidBody.h"
 #include "TypedConstraint.h"
 #ifndef DISABLE_SERIALIZE
@@ -113,6 +114,7 @@ void TypedConstraint::ConstraintInfo1::NumConstraintRows::set(int value)
 	_native->m_numConstraintRows = value;
 }
 
+
 TypedConstraint::ConstraintInfo2::ConstraintInfo2(btTypedConstraint::btConstraintInfo2* native, bool preventDelete)
 {
 	_native = native;
@@ -137,25 +139,25 @@ TypedConstraint::ConstraintInfo2::ConstraintInfo2()
 {
 	_native = new btTypedConstraint::btConstraintInfo2();
 }
-/*
-float^ TypedConstraint::ConstraintInfo2::Cfm::get()
+
+ScalarArray^ TypedConstraint::ConstraintInfo2::Cfm::get()
 {
-	return _native->cfm;
-}
-void TypedConstraint::ConstraintInfo2::Cfm::set(float^ value)
-{
-	_native->cfm = value->_native;
+	if (_cfm == nullptr)
+	{
+		_cfm = gcnew ScalarArray(_native->cfm, 3);
+	}
+	return _cfm;
 }
 
-float^ TypedConstraint::ConstraintInfo2::ConstraintError::get()
+ScalarArray^ TypedConstraint::ConstraintInfo2::ConstraintError::get()
 {
-	return _native->m_constraintError;
+	if (_constraintError == nullptr)
+	{
+		_constraintError = gcnew ScalarArray(_native->m_constraintError, 3);
+	}
+	return _constraintError;
 }
-void TypedConstraint::ConstraintInfo2::ConstraintError::set(float^ value)
-{
-	_native->m_constraintError = value->_native;
-}
-*/
+
 btScalar TypedConstraint::ConstraintInfo2::Damping::get()
 {
 	return _native->m_damping;
@@ -191,52 +193,52 @@ void TypedConstraint::ConstraintInfo2::Fps::set(btScalar value)
 {
 	_native->fps = value;
 }
-/*
-float^ TypedConstraint::ConstraintInfo2::J1angularAxis::get()
+
+ScalarArray^ TypedConstraint::ConstraintInfo2::J1angularAxis::get()
 {
-	return _native->m_J1angularAxis;
-}
-void TypedConstraint::ConstraintInfo2::J1angularAxis::set(float^ value)
-{
-	_native->m_J1angularAxis = value->_native;
+	if (_j1angularAxis == nullptr)
+	{
+		_j1angularAxis = gcnew ScalarArray(_native->m_J1angularAxis, 3);
+	}
+	return _j1angularAxis;
 }
 
-float^ TypedConstraint::ConstraintInfo2::J1linearAxis::get()
+ScalarArray^ TypedConstraint::ConstraintInfo2::J1linearAxis::get()
 {
-	return _native->m_J1linearAxis;
-}
-void TypedConstraint::ConstraintInfo2::J1linearAxis::set(float^ value)
-{
-	_native->m_J1linearAxis = value->_native;
-}
-
-float^ TypedConstraint::ConstraintInfo2::J2angularAxis::get()
-{
-	return _native->m_J2angularAxis;
-}
-void TypedConstraint::ConstraintInfo2::J2angularAxis::set(float^ value)
-{
-	_native->m_J2angularAxis = value->_native;
+	if (_j1linearAxis == nullptr)
+	{
+		_j1linearAxis = gcnew ScalarArray(_native->m_J1linearAxis, 3);
+	}
+	return _j1linearAxis;
 }
 
-float^ TypedConstraint::ConstraintInfo2::J2linearAxis::get()
+ScalarArray^ TypedConstraint::ConstraintInfo2::J2angularAxis::get()
 {
-	return _native->m_J2linearAxis;
-}
-void TypedConstraint::ConstraintInfo2::J2linearAxis::set(float^ value)
-{
-	_native->m_J2linearAxis = value->_native;
+	if (_j2angularAxis == nullptr)
+	{
+		_j2angularAxis = gcnew ScalarArray(_native->m_J2angularAxis, 3);
+	}
+	return _j2angularAxis;
 }
 
-float^ TypedConstraint::ConstraintInfo2::LowerLimit::get()
+ScalarArray^ TypedConstraint::ConstraintInfo2::J2linearAxis::get()
 {
-	return _native->m_lowerLimit;
+	if (_j2linearAxis == nullptr)
+	{
+		_j2linearAxis = gcnew ScalarArray(_native->m_J2angularAxis, 3);
+	}
+	return _j2linearAxis;
 }
-void TypedConstraint::ConstraintInfo2::LowerLimit::set(float^ value)
+
+ScalarArray^ TypedConstraint::ConstraintInfo2::LowerLimit::get()
 {
-	_native->m_lowerLimit = value->_native;
+	if (_lowerLimit == nullptr)
+	{
+		_lowerLimit = gcnew ScalarArray(_native->m_lowerLimit, 3);
+	}
+	return _lowerLimit;
 }
-*/
+
 int TypedConstraint::ConstraintInfo2::NumIterations::get()
 {
 	return _native->m_numIterations;
@@ -254,16 +256,15 @@ void TypedConstraint::ConstraintInfo2::Rowskip::set(int value)
 {
 	_native->rowskip = value;
 }
-/*
-float^ TypedConstraint::ConstraintInfo2::UpperLimit::get()
+
+ScalarArray^ TypedConstraint::ConstraintInfo2::UpperLimit::get()
 {
-	return _native->m_upperLimit;
+	if (_upperLimit == nullptr)
+	{
+		_upperLimit = gcnew ScalarArray(_native->m_upperLimit, 3);
+	}
+	return _upperLimit;
 }
-void TypedConstraint::ConstraintInfo2::UpperLimit::set(float^ value)
-{
-	_native->m_upperLimit = value->_native;
-}
-*/
 
 
 TypedConstraint::TypedConstraint(btTypedConstraint* native)

@@ -12,7 +12,8 @@ namespace BulletSharp
 		ConeTwistConstraint(btConeTwistConstraint* native);
 
 	public:
-		ConeTwistConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame, Matrix rigidBodyBFrame);
+		ConeTwistConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame,
+			Matrix rigidBodyBFrame);
 		ConeTwistConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame);
 
 		void CalcAngleInfo();

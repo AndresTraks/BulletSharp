@@ -10,11 +10,6 @@ CollisionAlgorithmCreateFunc::CollisionAlgorithmCreateFunc(btCollisionAlgorithmC
 	_native = native;
 }
 
-CollisionAlgorithmCreateFunc::CollisionAlgorithmCreateFunc()
-{
-	_native = new btCollisionAlgorithmCreateFunc();
-}
-
 CollisionAlgorithmCreateFunc::~CollisionAlgorithmCreateFunc()
 {
 	this->!CollisionAlgorithmCreateFunc();
@@ -27,6 +22,11 @@ CollisionAlgorithmCreateFunc::!CollisionAlgorithmCreateFunc()
 		delete _native;
 	}
 	_native = NULL;
+}
+
+CollisionAlgorithmCreateFunc::CollisionAlgorithmCreateFunc()
+{
+	_native = new btCollisionAlgorithmCreateFunc();
 }
 
 CollisionAlgorithm^ CollisionAlgorithmCreateFunc::CreateCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ info,

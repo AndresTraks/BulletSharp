@@ -44,19 +44,19 @@ namespace BulletSharp
 		property CollisionConfiguration^ CollisionConfiguration
 		{
 			BulletSharp::CollisionConfiguration^ get();
-			void set(BulletSharp::CollisionConfiguration^ value);
+			void set(BulletSharp::CollisionConfiguration^ config);
 		}
 
 		property BulletSharp::DispatcherFlags DispatcherFlags
 		{
 			BulletSharp::DispatcherFlags get();
-			void set(BulletSharp::DispatcherFlags value);
+			void set(BulletSharp::DispatcherFlags flags);
 		}
 
 		property BulletSharp::NearCallback^ NearCallback
 		{
 			BulletSharp::NearCallback^ get();
-			void set(BulletSharp::NearCallback^ value);
+			void set(BulletSharp::NearCallback^ nearCallback);
 		}
 	};
 };

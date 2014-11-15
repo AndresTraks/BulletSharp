@@ -6,7 +6,6 @@
 #include "CollisionObjectWrapper.h"
 #include "CompoundCollisionAlgorithm.h"
 
-
 CompoundCollisionAlgorithm::CreateFunc::CreateFunc()
 	: CollisionAlgorithmCreateFunc(new btCompoundCollisionAlgorithm::CreateFunc())
 {

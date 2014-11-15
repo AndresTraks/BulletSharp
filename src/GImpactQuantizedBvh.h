@@ -84,7 +84,7 @@ namespace BulletSharp
 	public:
 		QuantizedBvhTree();
 
-		//void BuildTree(GimBvhDataArray^ primitive_boxes);
+		//void BuildTree(GimBvhDataArray^ primitiveBoxes);
 		void ClearNodes();
 		//GImpactQuantizedBvhNode^ GetNodePointer(int index);
 		//GImpactQuantizedBvhNode^ GetNodePointer();

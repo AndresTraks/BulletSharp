@@ -18,8 +18,9 @@ Generic6DofSpringConstraint::Generic6DofSpringConstraint(RigidBody^ rigidBodyA, 
 {
 	TRANSFORM_CONV(frameInA);
 	TRANSFORM_CONV(frameInB);
-	UnmanagedPointer = new btGeneric6DofSpringConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
-		TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB), useLinearReferenceFrameA);
+	UnmanagedPointer = new btGeneric6DofSpringConstraint(*(btRigidBody*)rigidBodyA->_native,
+		*(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB),
+		useLinearReferenceFrameA);
 	TRANSFORM_DEL(frameInA);
 	TRANSFORM_DEL(frameInB);
 
@@ -32,8 +33,8 @@ Generic6DofSpringConstraint::Generic6DofSpringConstraint(RigidBody^ rigidBodyB, 
 	: Generic6DofConstraint(0)
 {
 	TRANSFORM_CONV(frameInB);
-	UnmanagedPointer = new btGeneric6DofSpringConstraint(*(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(frameInB),
-		useLinearReferenceFrameB);
+	UnmanagedPointer = new btGeneric6DofSpringConstraint(*(btRigidBody*)rigidBodyB->_native,
+		TRANSFORM_USE(frameInB), useLinearReferenceFrameB);
 	TRANSFORM_DEL(frameInB);
 
 	_rigidBodyB = rigidBodyB;

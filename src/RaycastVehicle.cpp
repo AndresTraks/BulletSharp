@@ -2,6 +2,7 @@
 
 #ifndef DISABLE_VEHICLE
 
+#include <BulletDynamics/ConstraintSolver/btContactConstraint.h> // resolveSingleBilateral
 #include "AlignedObjectArray.h"
 #include "DynamicsWorld.h"
 #include "MotionState.h"

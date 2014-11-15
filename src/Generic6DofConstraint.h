@@ -265,32 +265,33 @@ namespace BulletSharp
 		Generic6DofConstraint(btGeneric6DofConstraint* native);
 
 	public:
-		Generic6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB,
-			bool useLinearReferenceFrameA);
-		Generic6DofConstraint(RigidBody^ rigidBodyA, Matrix frameInB, bool useLinearReferenceFrameB);
+		Generic6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA,
+			Matrix frameInB, bool useLinearReferenceFrameA);
+		Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameB);
 
 		void CalcAnchorPos();
 		void CalculateTransforms(Matrix transA, Matrix transB);
 		void CalculateTransforms();
-/*
+
 		int GetLimitMotorInfo2(RotationalLimitMotor^ limot, Matrix transA, Matrix transB,
 			Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2^ info,
 			int row, Vector3 ax1, int rotational, int rotAllowed);
 		int GetLimitMotorInfo2(RotationalLimitMotor^ limot, Matrix transA, Matrix transB,
 			Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2^ info,
 			int row, Vector3 ax1, int rotational);
-*/
-		btScalar GetAngle(int axis_index);
-		Vector3 GetAxis(int axis_index);
-		//void GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA, Matrix transB,
-		//	Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB);
+
+		btScalar GetAngle(int axisIndex);
+		Vector3 GetAxis(int axisIndex);
+		void GetInfo1NonVirtual(ConstraintInfo1^ info);
+		void GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA, Matrix transB,
+			Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB);
 		btScalar GetRelativePivotPosition(int axisIndex);
 		RotationalLimitMotor^ GetRotationalLimitMotor(int index);
 		bool IsLimited(int limitIndex);
 		void SetAxis(Vector3 axis1, Vector3 axis2);
 		void SetFrames(Matrix frameA, Matrix frameB);
 		void SetLimit(int axis, btScalar lo, btScalar hi);
-		bool TestAngularLimitMotor(int axis_index);
+		bool TestAngularLimitMotor(int axisIndex);
 		void UpdateRHS(btScalar timeStep);
 
 		property Vector3 AngularLowerLimit
@@ -326,12 +327,7 @@ namespace BulletSharp
 			Matrix get();
 			void set(Matrix value);
 		}
-/*
-		property void Info1NonVirtual
-		{
-			void get();
-		}
-*/
+
 		property Vector3 LinearLowerLimit
 		{
 			Vector3 get();

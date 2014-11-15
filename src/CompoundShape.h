@@ -79,7 +79,6 @@ namespace BulletSharp
 		{
 			CompoundShapeChildArray^ get();
 		}
-
 #ifndef DISABLE_DBVT
 		property Dbvt^ DynamicAabbTree
 		{

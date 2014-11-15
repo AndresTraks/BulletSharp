@@ -126,6 +126,100 @@ namespace BulletSharp
 	public ref class Dbvt : ITrackingDisposable
 	{
 	public:
+		ref class IClone : IDisposable
+		{
+		internal:
+			btDbvt::IClone* _native;
+
+			IClone(btDbvt::IClone* native);
+
+		public:
+			!IClone();
+		protected:
+			~IClone();
+
+		public:
+			//IClone();
+
+			void CloneLeaf(DbvtNode^ n);
+
+			property bool IsDisposed
+			{
+				virtual bool get();
+			}
+		};
+
+		ref class ICollide : IDisposable
+		{
+		internal:
+			btDbvt::ICollide* _native;
+
+			ICollide(btDbvt::ICollide* native);
+
+		public:
+			!ICollide();
+		protected:
+			~ICollide();
+
+		public:
+			bool AllLeaves(DbvtNode^ n);
+			bool Descent(DbvtNode^ n);
+			void Process(DbvtNode^ na, DbvtNode^ nb);
+			void Process(DbvtNode^ n);
+			void Process(DbvtNode^ n, btScalar s);
+
+			property bool IsDisposed
+			{
+				virtual bool get();
+			}
+		};
+
+		ref class IWriter abstract : IDisposable
+		{
+		internal:
+			btDbvt::IWriter* _native;
+
+			IWriter(btDbvt::IWriter* native);
+
+		public:
+			!IWriter();
+		protected:
+			~IWriter();
+
+		public:
+			void Prepare(DbvtNode^ root, int numnodes);
+			void WriteLeaf(DbvtNode^ n, int index, int parent);
+			void WriteNode(DbvtNode^ n, int index, int parent, int child0,
+				int child1);
+
+			property bool IsDisposed
+			{
+				virtual bool get();
+			}
+		};
+
+		ref class StkCln
+		{
+		internal:
+			btDbvt::sStkCLN* _native;
+
+			StkCln(btDbvt::sStkCLN* native);
+
+		public:
+			StkCln(DbvtNode^ n, DbvtNode^ p);
+
+			property DbvtNode^ Node
+			{
+				DbvtNode^ get();
+			}
+
+			property DbvtNode^ Parent
+			{
+				DbvtNode^ get();
+				void set(DbvtNode^ value);
+			}
+		};
+
 		ref class StkNN
 		{
 		internal:
@@ -198,100 +292,6 @@ namespace BulletSharp
 			{
 				btScalar get();
 				void set(btScalar value);
-			}
-		};
-
-		ref class StkCln
-		{
-		internal:
-			btDbvt::sStkCLN* _native;
-
-			StkCln(btDbvt::sStkCLN* native);
-
-		public:
-			StkCln(DbvtNode^ n, DbvtNode^ p);
-
-			property DbvtNode^ Node
-			{
-				DbvtNode^ get();
-			}
-
-			property DbvtNode^ Parent
-			{
-				DbvtNode^ get();
-				void set(DbvtNode^ value);
-			}
-		};
-
-		ref class ICollide : IDisposable
-		{
-		internal:
-			btDbvt::ICollide* _native;
-
-			ICollide(btDbvt::ICollide* native);
-
-		public:
-			!ICollide();
-		protected:
-			~ICollide();
-
-		public:
-			bool AllLeaves(DbvtNode^ n);
-			bool Descent(DbvtNode^ n);
-			void Process(DbvtNode^ na, DbvtNode^ nb);
-			void Process(DbvtNode^ n);
-			void Process(DbvtNode^ n, btScalar s);
-
-			property bool IsDisposed
-			{
-				virtual bool get();
-			}
-		};
-
-		ref class IWriter abstract : IDisposable
-		{
-		internal:
-			btDbvt::IWriter* _native;
-
-			IWriter(btDbvt::IWriter* native);
-
-		public:
-			!IWriter();
-		protected:
-			~IWriter();
-
-		public:
-			void Prepare(DbvtNode^ root, int numnodes);
-			void WriteLeaf(DbvtNode^ n, int index, int parent);
-			void WriteNode(DbvtNode^ n, int index, int parent, int child0,
-				int child1);
-
-			property bool IsDisposed
-			{
-				virtual bool get();
-			}
-		};
-
-		ref class IClone : IDisposable
-		{
-		internal:
-			btDbvt::IClone* _native;
-
-			IClone(btDbvt::IClone* native);
-
-		public:
-			!IClone();
-		protected:
-			~IClone();
-
-		public:
-			//IClone();
-
-			void CloneLeaf(DbvtNode^ n);
-
-			property bool IsDisposed
-			{
-				virtual bool get();
 			}
 		};
 

@@ -21,16 +21,16 @@ Vector3 MultiBodyLink::GetAxisTop(int dof)
 	return Math::BtVector3ToVector3(&_native->getAxisTop(dof));
 }
 
+void MultiBodyLink::SetAxisBottom(int dof, btScalar x, btScalar y, btScalar z)
+{
+	_native->setAxisBottom(dof, x, y, z);
+}
+
 void MultiBodyLink::SetAxisBottom(int dof, Vector3 axis)
 {
 	VECTOR3_CONV(axis);
 	_native->setAxisBottom(dof, VECTOR3_USE(axis));
 	VECTOR3_DEL(axis);
-}
-
-void MultiBodyLink::SetAxisBottom(int dof, btScalar x, btScalar y, btScalar z)
-{
-	_native->setAxisBottom(dof, x, y, z);
 }
 
 void MultiBodyLink::SetAxisTop(int dof, Vector3 axis)
@@ -59,7 +59,25 @@ void MultiBodyLink::UpdateCacheMultiDof()
 {
 	_native->updateCacheMultiDof();
 }
+/*
+SpatialMotionVector MultiBodyLink::AbsFrameLocVelocity::get()
+{
+	return _native->m_absFrameLocVelocity;
+}
+void MultiBodyLink::AbsFrameLocVelocity::set(SpatialMotionVector value)
+{
+	_native->m_absFrameLocVelocity = value->_native;
+}
 
+SpatialMotionVector MultiBodyLink::AbsFrameTotVelocity::get()
+{
+	return _native->m_absFrameTotVelocity;
+}
+void MultiBodyLink::AbsFrameTotVelocity::set(SpatialMotionVector value)
+{
+	_native->m_absFrameTotVelocity = value->_native;
+}
+*/
 Vector3 MultiBodyLink::AppliedForce::get()
 {
 	return Math::BtVector3ToVector3(&_native->m_appliedForce);
@@ -77,7 +95,12 @@ void MultiBodyLink::AppliedTorque::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_native->m_appliedTorque);
 }
-
+/*
+SpatialMotionVector^ MultiBodyLink::Axes::get()
+{
+	return _native->m_axes;
+}
+*/
 Quaternion MultiBodyLink::CachedRotParentToThis::get()
 {
 	return Math::BtQuatToQuaternion(&_native->m_cachedRotParentToThis);
@@ -168,22 +191,14 @@ void MultiBodyLink::Inertia::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &_native->m_inertia);
 }
 /*
-float^ MultiBodyLink::JointPos::get()
+array<btScalar>^ MultiBodyLink::JointPos::get()
 {
 	return _native->m_jointPos;
 }
-void MultiBodyLink::JointPos::set(float^ value)
-{
-	_native->m_jointPos = value->_native;
-}
 
-float^ MultiBodyLink::JointTorque::get()
+array<btScalar>^ MultiBodyLink::JointTorque::get()
 {
 	return _native->m_jointTorque;
-}
-void MultiBodyLink::JointTorque::set(float^ value)
-{
-	_native->m_jointTorque = value->_native;
 }
 */
 FeatherstoneJointType MultiBodyLink::JointType::get()

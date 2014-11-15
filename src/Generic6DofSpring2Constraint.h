@@ -316,12 +316,12 @@ namespace BulletSharp
 		Generic6DofSpring2Constraint(btGeneric6DofSpring2Constraint* native);
 
 	public:
-		Generic6DofSpring2Constraint(RigidBody^ rbA, RigidBody^ rbB, Matrix frameInA,
-			Matrix frameInB, RotateOrder rotOrder);
-		Generic6DofSpring2Constraint(RigidBody^ rbA, RigidBody^ rbB, Matrix frameInA,
-			Matrix frameInB);
-		Generic6DofSpring2Constraint(RigidBody^ rbB, Matrix frameInB, RotateOrder rotOrder);
-		Generic6DofSpring2Constraint(RigidBody^ rbB, Matrix frameInB);
+		Generic6DofSpring2Constraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
+			Matrix frameInA, Matrix frameInB, RotateOrder rotOrder);
+		Generic6DofSpring2Constraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
+			Matrix frameInA, Matrix frameInB);
+		Generic6DofSpring2Constraint(RigidBody^ rigidBodyB, Matrix frameInB, RotateOrder rotOrder);
+		Generic6DofSpring2Constraint(RigidBody^ rigidBodyB, Matrix frameInB);
 
 		void CalculateTransforms(Matrix transA, Matrix transB);
 		void CalculateTransforms();

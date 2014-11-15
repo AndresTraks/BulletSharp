@@ -12,8 +12,8 @@ ConeTwistConstraint::ConeTwistConstraint(btConeTwistConstraint* native)
 {
 }
 
-ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame,
-	Matrix rigidBodyBFrame)
+ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
+	Matrix rigidBodyAFrame, Matrix rigidBodyBFrame)
 	: TypedConstraint(0)
 {
 	TRANSFORM_CONV(rigidBodyAFrame);

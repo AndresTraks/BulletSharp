@@ -12,9 +12,10 @@ namespace BulletSharp
 		GearConstraint(btGearConstraint* native);
 
 	public:
-		GearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA, Vector3 axisInB,
-			btScalar ratio);
-		GearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA, Vector3 axisInB);
+		GearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA,
+			Vector3 axisInB, btScalar ratio);
+		GearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA,
+			Vector3 axisInB);
 
 		property Vector3 AxisA
 		{

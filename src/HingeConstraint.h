@@ -12,15 +12,17 @@ namespace BulletSharp
 		HingeConstraint(btHingeConstraint* native);
 
 	public:
-		HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA, Vector3 pivotInB,
-			Vector3 axisInA, Vector3 axisInB, bool useReferenceFrameA);
-		HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA, Vector3 pivotInB,
-			Vector3 axisInA, Vector3 axisInB);
-		HingeConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector3 axisInA, bool useReferenceFrameA);
-		HingeConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector3 axisInA);
-		HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame, Matrix rigidBodyBFrame,
+		HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA,
+			Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB, bool useReferenceFrameA);
+		HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA,
+			Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB);
+		HingeConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector3 axisInA,
 			bool useReferenceFrameA);
-		HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame, Matrix rigidBodyBFrame);
+		HingeConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector3 axisInA);
+		HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame,
+			Matrix rigidBodyBFrame, bool useReferenceFrameA);
+		HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame,
+			Matrix rigidBodyBFrame);
 		HingeConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame, bool useReferenceFrameA);
 		HingeConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame);
 
@@ -131,18 +133,20 @@ namespace BulletSharp
 		HingeAccumulatedAngleConstraint(btHingeAccumulatedAngleConstraint* native);
 
 	public:
-		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA,
-			Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB, bool useReferenceFrameA);
-		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA,
-			Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB);
+		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
+			Vector3 pivotInA, Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB,
+			bool useReferenceFrameA);
+		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
+			Vector3 pivotInA, Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB);
 		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector3 axisInA,
 			bool useReferenceFrameA);
 		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector3 axisInA);
-		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame,
-			Matrix rigidBodyBFrame, bool useReferenceFrameA);
-		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame,
-			Matrix rigidBodyBFrame);
-		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame, bool useReferenceFrameA);
+		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
+			Matrix rigidBodyAFrame, Matrix rigidBodyBFrame, bool useReferenceFrameA);
+		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
+			Matrix rigidBodyAFrame, Matrix rigidBodyBFrame);
+		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame,
+			bool useReferenceFrameA);
 		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame);
 
 		property btScalar AccumulatedHingeAngle

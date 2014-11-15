@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#ifndef DISABLE_CONSTRAINTS
+
 #include "Collections.h"
 #include "Generic6DofSpring2Constraint.h"
 #include "RigidBody.h"
@@ -29,9 +31,9 @@ RotationalLimitMotor2::RotationalLimitMotor2()
 	_native = new btRotationalLimitMotor2();
 }
 
-RotationalLimitMotor2::RotationalLimitMotor2(RotationalLimitMotor2^ limot)
+RotationalLimitMotor2::RotationalLimitMotor2(RotationalLimitMotor2^ limitMotor)
 {
-	_native = new btRotationalLimitMotor2(*limot->_native);
+	_native = new btRotationalLimitMotor2(*limitMotor->_native);
 }
 
 void RotationalLimitMotor2::TestLimitValue(btScalar testValue)
@@ -438,14 +440,15 @@ Generic6DofSpring2Constraint::Generic6DofSpring2Constraint(btGeneric6DofSpring2C
 	_angularLimits = gcnew array<RotationalLimitMotor2^>(3);
 }
 
-Generic6DofSpring2Constraint::Generic6DofSpring2Constraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
-	Matrix frameInA, Matrix frameInB, BulletSharp::RotateOrder rotOrder)
+Generic6DofSpring2Constraint::Generic6DofSpring2Constraint(RigidBody^ rigidBodyA,
+	RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, BulletSharp::RotateOrder rotOrder)
 	: TypedConstraint(0)
 {
 	TRANSFORM_CONV(frameInA);
 	TRANSFORM_CONV(frameInB);
-	_native = new btGeneric6DofSpring2Constraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
-		TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB), (::RotateOrder)rotOrder);
+	UnmanagedPointer = new btGeneric6DofSpring2Constraint(*(btRigidBody*)rigidBodyA->_native,
+		*(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB),
+		(::RotateOrder)rotOrder);
 	TRANSFORM_DEL(frameInA);
 	TRANSFORM_DEL(frameInB);
 
@@ -454,14 +457,14 @@ Generic6DofSpring2Constraint::Generic6DofSpring2Constraint(RigidBody^ rigidBodyA
 	_rigidBodyB = rigidBodyB;
 }
 
-Generic6DofSpring2Constraint::Generic6DofSpring2Constraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
-	Matrix frameInA, Matrix frameInB)
+Generic6DofSpring2Constraint::Generic6DofSpring2Constraint(RigidBody^ rigidBodyA,
+	RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB)
 	: TypedConstraint(0)
 {
 	TRANSFORM_CONV(frameInA);
 	TRANSFORM_CONV(frameInB);
-	_native = new btGeneric6DofSpring2Constraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
-		TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB));
+	UnmanagedPointer = new btGeneric6DofSpring2Constraint(*(btRigidBody*)rigidBodyA->_native,
+		*(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB));
 	TRANSFORM_DEL(frameInA);
 	TRANSFORM_DEL(frameInB);
 
@@ -469,24 +472,26 @@ Generic6DofSpring2Constraint::Generic6DofSpring2Constraint(RigidBody^ rigidBodyA
 	_rigidBodyB = rigidBodyB;
 }
 
-Generic6DofSpring2Constraint::Generic6DofSpring2Constraint(RigidBody^ rigidBodyB, Matrix frameInB,
-	BulletSharp::RotateOrder rotOrder)
+Generic6DofSpring2Constraint::Generic6DofSpring2Constraint(RigidBody^ rigidBodyB,
+	Matrix frameInB, BulletSharp::RotateOrder rotOrder)
 	: TypedConstraint(0)
 {
 	TRANSFORM_CONV(frameInB);
-	_native = new btGeneric6DofSpring2Constraint(*(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(frameInB),
-		(::RotateOrder)rotOrder);
+	UnmanagedPointer = new btGeneric6DofSpring2Constraint(*(btRigidBody*)rigidBodyB->_native,
+		TRANSFORM_USE(frameInB), (::RotateOrder)rotOrder);
 	TRANSFORM_DEL(frameInB);
 
 	_angularLimits = gcnew array<RotationalLimitMotor2^>(3);
 	_rigidBodyB = rigidBodyB;
 }
 
-Generic6DofSpring2Constraint::Generic6DofSpring2Constraint(RigidBody^ rigidBodyB, Matrix frameInB)
+Generic6DofSpring2Constraint::Generic6DofSpring2Constraint(RigidBody^ rigidBodyB,
+	Matrix frameInB)
 	: TypedConstraint(0)
 {
 	TRANSFORM_CONV(frameInB);
-	_native = new btGeneric6DofSpring2Constraint(*(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(frameInB));
+	UnmanagedPointer = new btGeneric6DofSpring2Constraint(*(btRigidBody*)rigidBodyB->_native,
+		TRANSFORM_USE(frameInB));
 	TRANSFORM_DEL(frameInB);
 
 	_angularLimits = gcnew array<RotationalLimitMotor2^>(3);
@@ -751,3 +756,5 @@ TranslationalLimitMotor2^ Generic6DofSpring2Constraint::TranslationalLimitMotor:
     }
     return _linearLimits;
 }
+
+#endif

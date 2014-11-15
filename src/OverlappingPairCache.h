@@ -105,7 +105,7 @@ namespace BulletSharp
 			int get();
 		}
 
-		property BulletSharp::OverlapFilterCallback^ OverlapFilterCallback
+		property OverlapFilterCallback^ OverlapFilterCallback
 		{
 			BulletSharp::OverlapFilterCallback^ get();
 			void set(BulletSharp::OverlapFilterCallback^ value);
@@ -122,7 +122,7 @@ namespace BulletSharp
 
 		bool NeedsBroadphaseCollision(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1);
 
-		property BulletSharp::OverlapFilterCallback^ OverlapFilterCallback
+		property OverlapFilterCallback^ OverlapFilterCallback
 		{
 			BulletSharp::OverlapFilterCallback^ get();
 			void set(BulletSharp::OverlapFilterCallback^ value);

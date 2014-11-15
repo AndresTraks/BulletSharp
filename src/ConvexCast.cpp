@@ -29,7 +29,7 @@ ConvexCast::CastResult::CastResult()
 }
 
 #ifndef DISABLE_DEBUGDRAW
-void ConvexCast::CastResult::DebugDraw (btScalar fraction)
+void ConvexCast::CastResult::DebugDraw(btScalar fraction)
 {
 	_native->DebugDraw(fraction);
 }

@@ -40,7 +40,7 @@ namespace BulletSharp
 			void set(CollisionObjectWrapper^ obj1Wrap);
 		}
 
-		property BulletSharp::PersistentManifold^ PersistentManifold
+		property PersistentManifold^ PersistentManifold
 		{
 			BulletSharp::PersistentManifold^ get();
 			void set(BulletSharp::PersistentManifold^ manifoldPtr);

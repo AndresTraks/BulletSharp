@@ -48,7 +48,6 @@ namespace BulletSharp
 			int get();
 			void set(int value);
 		}
-
 #ifndef DISABLE_UNCOMMON
 		property PoolAllocator^ PersistentManifoldPool
 		{
