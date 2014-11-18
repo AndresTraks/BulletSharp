@@ -199,7 +199,7 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(array<int>^ indices, array<Ve
 	_native = new btTriangleIndexVertexArray(indices->Length / 3, indicesBase, 3 * sizeof(int),
 		vertices->Length, *verticesBase, sizeof(btVector3));
 
-	_meshes = gcnew System::Collections::Generic::List<IndexedMesh^>();
+	_meshes = gcnew List<IndexedMesh^>();
 }
 
 TriangleIndexVertexArray::TriangleIndexVertexArray(array<int>^ indices, array<btScalar>^ vertices)
@@ -211,13 +211,13 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(array<int>^ indices, array<bt
 	_native = new btTriangleIndexVertexArray(indices->Length / 3, indicesBase, 3 * sizeof(int),
 		vertices->Length / 3, verticesBase, 3 * sizeof(btScalar));
 
-	_meshes = gcnew System::Collections::Generic::List<IndexedMesh^>();
+	_meshes = gcnew List<IndexedMesh^>();
 }
 
 TriangleIndexVertexArray::TriangleIndexVertexArray()
 	: StridingMeshInterface(new btTriangleIndexVertexArray())
 {
-	_meshes = gcnew System::Collections::Generic::List<IndexedMesh^>();
+	_meshes = gcnew List<IndexedMesh^>();
 }
 
 void TriangleIndexVertexArray::AddIndexedMesh(IndexedMesh^ mesh, PhyScalarType indexType)

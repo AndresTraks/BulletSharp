@@ -87,7 +87,7 @@ static RaycastVehicle::RaycastVehicle()
 
 RaycastVehicle::RaycastVehicle(RaycastVehicle::VehicleTuning^ tuning, BulletSharp::RigidBody^ chassis, VehicleRaycaster^ raycaster)
 {
-	_wheelInfo = gcnew System::Collections::Generic::List<BulletSharp::WheelInfo^>();
+	_wheelInfo = gcnew List<BulletSharp::WheelInfo^>();
 	_chassisBody = chassis;
 	_vehicleRaycaster = raycaster;
 	_indexRightAxis = 0;
@@ -807,7 +807,7 @@ int RaycastVehicle::UpAxis::get()
 	return _indexUpAxis;
 }
 
-System::Collections::Generic::IList<WheelInfo^>^ RaycastVehicle::WheelInfo::get()
+IList<WheelInfo^>^ RaycastVehicle::WheelInfo::get()
 {
 	return _wheelInfo;
 }

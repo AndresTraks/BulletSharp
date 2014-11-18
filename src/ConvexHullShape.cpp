@@ -5,7 +5,7 @@
 
 #define Native static_cast<btConvexHullShape*>(_native)
 
-ConvexHullShape::ConvexHullShape(System::Collections::Generic::IEnumerable<Vector3>^ points)
+ConvexHullShape::ConvexHullShape(IEnumerable<Vector3>^ points)
 : PolyhedralConvexAabbCachingShape(new btConvexHullShape())
 {
 	btVector3* pointTemp = ALIGNED_NEW(btVector3);

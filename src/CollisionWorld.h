@@ -22,376 +22,422 @@ namespace BulletSharp
 	class ContactResultCallbackWrapper;
 	class DebugDrawWrapper;
 
+	public ref class LocalShapeInfo : IDisposable
+	{
+	internal:
+		btCollisionWorld::LocalShapeInfo* _native;
+
+	public:
+		!LocalShapeInfo();
+	protected:
+		~LocalShapeInfo();
+
+	public:
+		LocalShapeInfo();
+
+		property int ShapePart
+		{
+			int get();
+			void set(int value);
+		}
+
+		property int TriangleIndex
+		{
+			int get();
+			void set(int value);
+		}
+	};
+
+	public ref class LocalRayResult : IDisposable
+	{
+	internal:
+		btCollisionWorld::LocalRayResult* _native;
+
+	private:
+		bool _preventDelete;
+		LocalShapeInfo^ _localShapeInfo;
+
+	internal:
+		LocalRayResult(btCollisionWorld::LocalRayResult* native, bool preventDelete);
+
+	public:
+		!LocalRayResult();
+	protected:
+		~LocalRayResult();
+
+	public:
+		LocalRayResult(CollisionObject^ collisionObject, LocalShapeInfo^ localShapeInfo,
+			Vector3 hitNormalLocal, btScalar hitFraction);
+
+		property CollisionObject^ CollisionObject
+		{
+			BulletSharp::CollisionObject^ get();
+			void set(BulletSharp::CollisionObject^ value);
+		}
+
+		property btScalar HitFraction
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property Vector3 HitNormalLocal
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property LocalShapeInfo^ LocalShapeInfo
+		{
+			BulletSharp::LocalShapeInfo^ get();
+			void set(BulletSharp::LocalShapeInfo^ value);
+		}
+	};
+
+	public ref class RayResultCallback abstract : IDisposable
+	{
+	internal:
+		btCollisionWorld::RayResultCallback* _native;
+
+	public:
+		!RayResultCallback();
+	protected:
+		~RayResultCallback();
+
+	protected:
+		RayResultCallback();
+
+	public:
+		virtual btScalar AddSingleResult(LocalRayResult^ rayResult, bool normalInWorldSpace) = 0;
+		virtual bool NeedsCollision(BroadphaseProxy^ proxy0);
+
+		property btScalar ClosestHitFraction
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property CollisionFilterGroups CollisionFilterGroup
+		{
+			CollisionFilterGroups get();
+			void set(CollisionFilterGroups value);
+		}
+
+		property CollisionFilterGroups CollisionFilterMask
+		{
+			CollisionFilterGroups get();
+			void set(CollisionFilterGroups value);
+		}
+
+		property CollisionObject^ CollisionObject
+		{
+			BulletSharp::CollisionObject^ get();
+			void set(BulletSharp::CollisionObject^ value);
+		}
+
+		property unsigned int Flags
+		{
+			unsigned int get();
+			void set(unsigned int value);
+		}
+
+		property bool HasHit
+		{
+			bool get();
+		}
+
+		property bool IsDisposed
+		{
+			virtual bool get();
+		}
+	};
+
+	class RayResultCallbackWrapper : public btCollisionWorld::RayResultCallback
+	{
+	private:
+		void* _callback;
+
+	public:
+		RayResultCallbackWrapper(BulletSharp::RayResultCallback^ callback);
+		~RayResultCallbackWrapper();
+
+		virtual bool needsCollision(btBroadphaseProxy* proxy0) const;
+		virtual btScalar addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace);
+	};
+
+	public ref class AllHitsRayResultCallback : RayResultCallback
+	{
+	private:
+		List<BulletSharp::CollisionObject^>^ _collisionObjects;
+		List<btScalar>^ _hitFractions;
+		List<Vector3>^ _hitNormalWorld;
+		List<Vector3>^ _hitPointWorld;
+		Vector3 _rayFromWorld;
+		Vector3 _rayToWorld;
+
+	public:
+		AllHitsRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld);
+
+		virtual btScalar AddSingleResult(LocalRayResult^ rayResult, bool normalInWorldSpace) override;
+
+		property IList<BulletSharp::CollisionObject^>^ CollisionObjects
+		{
+			IList<BulletSharp::CollisionObject^>^ get();
+		}
+
+		property IList<btScalar>^ HitFractions
+		{
+			IList<btScalar>^ get();
+		}
+
+		property IList<Vector3>^ HitNormalWorld
+		{
+			IList<Vector3>^ get();
+		}
+
+		property IList<Vector3>^ HitPointWorld
+		{
+			IList<Vector3>^ get();
+		}
+
+		property Vector3 RayFromWorld
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property Vector3 RayToWorld
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+	};
+
+	public ref class LocalConvexResult : IDisposable
+	{
+	internal:
+		btCollisionWorld::LocalConvexResult* _native;
+
+	private:
+		BulletSharp::LocalShapeInfo^ _localShapeInfo;
+
+	public:
+		!LocalConvexResult();
+	protected:
+		~LocalConvexResult();
+
+	public:
+		LocalConvexResult(CollisionObject^ hitCollisionObject, LocalShapeInfo^ localShapeInfo,
+			Vector3 hitNormalLocal, Vector3 hitPointLocal, btScalar hitFraction);
+
+		property CollisionObject^ HitCollisionObject
+		{
+			CollisionObject^ get();
+			void set(CollisionObject^ value);
+		}
+
+		property btScalar HitFraction
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property Vector3 HitNormalLocal
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property Vector3 HitPointLocal
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property LocalShapeInfo^ LocalShapeInfo
+		{
+			BulletSharp::LocalShapeInfo^ get();
+			void set(BulletSharp::LocalShapeInfo^ value);
+		}
+	};
+
+	public ref class ConvexResultCallback abstract : IDisposable
+	{
+	internal:
+		btCollisionWorld::ConvexResultCallback* _native;
+
+		ConvexResultCallback(btCollisionWorld::ConvexResultCallback* native);
+
+	public:
+		!ConvexResultCallback();
+	protected:
+		~ConvexResultCallback();
+
+	public:
+		btScalar AddSingleResult(LocalConvexResult^ convexResult, bool normalInWorldSpace);
+		bool NeedsCollision(BroadphaseProxy^ proxy0);
+
+		property btScalar ClosestHitFraction
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
+
+		property CollisionFilterGroups CollisionFilterGroup
+		{
+			CollisionFilterGroups get();
+			void set(CollisionFilterGroups value);
+		}
+
+		property CollisionFilterGroups CollisionFilterMask
+		{
+			CollisionFilterGroups get();
+			void set(CollisionFilterGroups value);
+		}
+
+		property bool HasHit
+		{
+			bool get();
+		}
+
+		property bool IsDisposed
+		{
+			virtual bool get();
+		}
+	};
+
+	public ref class ClosestConvexResultCallback : ConvexResultCallback
+	{
+	public:
+		ClosestConvexResultCallback(Vector3 convexFromWorld, Vector3 convexToWorld);
+		ClosestConvexResultCallback(Vector3% convexFromWorld, Vector3% convexToWorld);
+
+		property Vector3 ConvexFromWorld
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property Vector3 ConvexToWorld
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property CollisionObject^ HitCollisionObject
+		{
+			CollisionObject^ get();
+			void set(CollisionObject^ value);
+		}
+
+		property Vector3 HitNormalWorld
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property Vector3 HitPointWorld
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+	};
+
+	public ref class ClosestRayResultCallback : RayResultCallback
+	{
+	private:
+		Vector3 _hitNormalWorld;
+		Vector3 _hitPointWorld;
+		Vector3 _rayFromWorld;
+		Vector3 _rayToWorld;
+
+	public:
+		ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld);
+		ClosestRayResultCallback(Vector3% rayFromWorld, Vector3% rayToWorld);
+
+		virtual btScalar AddSingleResult(LocalRayResult^ rayResult, bool normalInWorldSpace) override;
+
+		property Vector3 HitNormalWorld
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property Vector3 HitPointWorld
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property Vector3 RayFromWorld
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property Vector3 RayToWorld
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+	};
+
+	public ref class ContactResultCallback abstract : IDisposable
+	{
+	internal:
+		ContactResultCallbackWrapper* _native;
+
+		ContactResultCallback(ContactResultCallbackWrapper* callback);
+
+	public:
+		!ContactResultCallback();
+	protected:
+		~ContactResultCallback();
+
+	public:
+		ContactResultCallback();
+
+		virtual btScalar AddSingleResult(ManifoldPoint^ cp, CollisionObjectWrapper^ colObj0Wrap, int partId0, int index0,
+			CollisionObjectWrapper^ colObj1Wrap, int partId1, int index1) = 0;
+		virtual bool NeedsCollision(BroadphaseProxy^ proxy0);
+
+		property CollisionFilterGroups CollisionFilterGroup
+		{
+			CollisionFilterGroups get();
+			void set(CollisionFilterGroups value);
+		}
+
+		property CollisionFilterGroups CollisionFilterMask
+		{
+			CollisionFilterGroups get();
+			void set(CollisionFilterGroups value);
+		}
+
+		property bool IsDisposed
+		{
+			virtual bool get();
+		}
+	};
+
+	class ContactResultCallbackWrapper : public btCollisionWorld::ContactResultCallback
+	{
+	private:
+		gcroot<BulletSharp::ContactResultCallback^> _callback;
+
+	public:
+		ContactResultCallbackWrapper(BulletSharp::ContactResultCallback^ callback);
+
+		virtual bool needsCollision(btBroadphaseProxy* proxy0) const;
+		virtual btScalar addSingleResult(btManifoldPoint& cp,
+			const btCollisionObjectWrapper* colObj0, int partId0, int index0,
+			const btCollisionObjectWrapper* colObj1, int partId1, int index1);
+
+		virtual bool baseNeedsCollision(btBroadphaseProxy* proxy0) const;
+	};
+
 	public ref class CollisionWorld : ITrackingDisposable
 	{
 	public:
-		ref class LocalShapeInfo : IDisposable
-		{
-		internal:
-			btCollisionWorld::LocalShapeInfo* _native;
-
-		public:
-			!LocalShapeInfo();
-		protected:
-			~LocalShapeInfo();
-
-		public:
-			LocalShapeInfo();
-
-			property int ShapePart
-			{
-				int get();
-				void set(int value);
-			}
-
-			property int TriangleIndex
-			{
-				int get();
-				void set(int value);
-			}
-		};
-
-		ref class LocalRayResult : IDisposable
-		{
-		internal:
-			btCollisionWorld::LocalRayResult* _native;
-
-		private:
-			LocalShapeInfo^ _localShapeInfo;
-
-		public:
-			!LocalRayResult();
-		protected:
-			~LocalRayResult();
-
-		public:
-			LocalRayResult(CollisionObject^ collisionObject, LocalShapeInfo^ localShapeInfo,
-				Vector3 hitNormalLocal, btScalar hitFraction);
-
-			property CollisionObject^ CollisionObject
-			{
-				BulletSharp::CollisionObject^ get();
-				void set(BulletSharp::CollisionObject^ value);
-			}
-
-			property btScalar HitFraction
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
-
-			property Vector3 HitNormalLocal
-			{
-				Vector3 get();
-				void set(Vector3 value);
-			}
-
-			property LocalShapeInfo^ LocalShapeInfo
-			{
-				CollisionWorld::LocalShapeInfo^ get();
-				void set(CollisionWorld::LocalShapeInfo^ value);
-			}
-		};
-
-		ref class RayResultCallback abstract : IDisposable
-		{
-		internal:
-			btCollisionWorld::RayResultCallback* _native;
-
-			RayResultCallback(btCollisionWorld::RayResultCallback* native);
-
-		public:
-			!RayResultCallback();
-		protected:
-			~RayResultCallback();
-
-		public:
-			btScalar AddSingleResult(LocalRayResult^ rayResult, bool normalInWorldSpace);
-			bool NeedsCollision(BroadphaseProxy^ proxy0);
-
-			property btScalar ClosestHitFraction
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
-
-			property CollisionFilterGroups CollisionFilterGroup
-			{
-				CollisionFilterGroups get();
-				void set(CollisionFilterGroups value);
-			}
-
-			property CollisionFilterGroups CollisionFilterMask
-			{
-				CollisionFilterGroups get();
-				void set(CollisionFilterGroups value);
-			}
-
-			property CollisionObject^ CollisionObject
-			{
-				BulletSharp::CollisionObject^ get();
-				void set(BulletSharp::CollisionObject^ value);
-			}
-
-			property unsigned int Flags
-			{
-				unsigned int get();
-				void set(unsigned int value);
-			}
-
-			property bool HasHit
-			{
-				bool get();
-			}
-
-			property bool IsDisposed
-			{
-				virtual bool get();
-			}
-		};
-
-		ref class AllHitsRayResultCallback : RayResultCallback
-		{
-		private:
-			AlignedCollisionObjectArray^ _collisionObjects;
-			AlignedScalarArray^ _hitFractions;
-			AlignedVector3Array^ _hitNormalWorld;
-			AlignedVector3Array^ _hitPointWorld;
-
-		public:
-			AllHitsRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld);
-
-			property AlignedCollisionObjectArray^ CollisionObjects
-			{
-				AlignedCollisionObjectArray^ get();
-			}
-
-			property AlignedScalarArray^ HitFractions
-			{
-				AlignedScalarArray^ get();
-			}
-
-			property AlignedVector3Array^ HitNormalWorld
-			{
-				AlignedVector3Array^ get();
-			}
-
-			property AlignedVector3Array^ HitPointWorld
-			{
-				AlignedVector3Array^ get();
-			}
-
-			property Vector3 RayFromWorld
-			{
-				Vector3 get();
-				void set(Vector3 value);
-			}
-
-			property Vector3 RayToWorld
-			{
-				Vector3 get();
-				void set(Vector3 value);
-			}
-		};
-
-		ref class LocalConvexResult : IDisposable
-		{
-		internal:
-			btCollisionWorld::LocalConvexResult* _native;
-
-		private:
-			LocalShapeInfo^ _localShapeInfo;
-
-		public:
-			!LocalConvexResult();
-		protected:
-			~LocalConvexResult();
-
-		public:
-			LocalConvexResult(CollisionObject^ hitCollisionObject, LocalShapeInfo^ localShapeInfo,
-				Vector3 hitNormalLocal, Vector3 hitPointLocal, btScalar hitFraction);
-
-			property CollisionObject^ HitCollisionObject
-			{
-				CollisionObject^ get();
-				void set(CollisionObject^ value);
-			}
-
-			property btScalar HitFraction
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
-
-			property Vector3 HitNormalLocal
-			{
-				Vector3 get();
-				void set(Vector3 value);
-			}
-
-			property Vector3 HitPointLocal
-			{
-				Vector3 get();
-				void set(Vector3 value);
-			}
-
-			property LocalShapeInfo^ LocalShapeInfo
-			{
-				CollisionWorld::LocalShapeInfo^ get();
-				void set(CollisionWorld::LocalShapeInfo^ value);
-			}
-		};
-
-		ref class ConvexResultCallback abstract : IDisposable
-		{
-		internal:
-			btCollisionWorld::ConvexResultCallback* _native;
-
-			ConvexResultCallback(btCollisionWorld::ConvexResultCallback* native);
-
-		public:
-			!ConvexResultCallback();
-		protected:
-			~ConvexResultCallback();
-
-		public:
-			btScalar AddSingleResult(LocalConvexResult^ convexResult, bool normalInWorldSpace);
-			bool NeedsCollision(BroadphaseProxy^ proxy0);
-
-			property btScalar ClosestHitFraction
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
-
-			property CollisionFilterGroups CollisionFilterGroup
-			{
-				CollisionFilterGroups get();
-				void set(CollisionFilterGroups value);
-			}
-
-			property CollisionFilterGroups CollisionFilterMask
-			{
-				CollisionFilterGroups get();
-				void set(CollisionFilterGroups value);
-			}
-
-			property bool HasHit
-			{
-				bool get();
-			}
-
-			property bool IsDisposed
-			{
-				virtual bool get();
-			}
-		};
-
-		ref class ClosestConvexResultCallback : ConvexResultCallback
-		{
-		public:
-			ClosestConvexResultCallback(Vector3 convexFromWorld, Vector3 convexToWorld);
-			ClosestConvexResultCallback(Vector3% convexFromWorld, Vector3% convexToWorld);
-
-			property Vector3 ConvexFromWorld
-			{
-				Vector3 get();
-				void set(Vector3 value);
-			}
-
-			property Vector3 ConvexToWorld
-			{
-				Vector3 get();
-				void set(Vector3 value);
-			}
-
-			property CollisionObject^ HitCollisionObject
-			{
-				CollisionObject^ get();
-				void set(CollisionObject^ value);
-			}
-
-			property Vector3 HitNormalWorld
-			{
-				Vector3 get();
-				void set(Vector3 value);
-			}
-
-			property Vector3 HitPointWorld
-			{
-				Vector3 get();
-				void set(Vector3 value);
-			}
-		};
-
-		ref class ClosestRayResultCallback : RayResultCallback
-		{
-		public:
-			ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld);
-			ClosestRayResultCallback(Vector3% rayFromWorld, Vector3% rayToWorld);
-
-			property Vector3 HitNormalWorld
-			{
-				Vector3 get();
-				void set(Vector3 value);
-			}
-
-			property Vector3 HitPointWorld
-			{
-				Vector3 get();
-				void set(Vector3 value);
-			}
-
-			property Vector3 RayFromWorld
-			{
-				Vector3 get();
-				void set(Vector3 value);
-			}
-
-			property Vector3 RayToWorld
-			{
-				Vector3 get();
-				void set(Vector3 value);
-			}
-		};
-
-		ref class ContactResultCallback abstract : IDisposable
-		{
-		internal:
-			ContactResultCallbackWrapper* _native;
-
-			ContactResultCallback(ContactResultCallbackWrapper* callback);
-
-		public:
-			!ContactResultCallback();
-		protected:
-			~ContactResultCallback();
-
-		public:
-			ContactResultCallback();
-
-			virtual btScalar AddSingleResult(ManifoldPoint^ cp, CollisionObjectWrapper^ colObj0Wrap, int partId0, int index0,
-				CollisionObjectWrapper^ colObj1Wrap, int partId1, int index1) = 0;
-			virtual bool NeedsCollision(BroadphaseProxy^ proxy0);
-
-			property CollisionFilterGroups CollisionFilterGroup
-			{
-				CollisionFilterGroups get();
-				void set(CollisionFilterGroups value);
-			}
-
-			property CollisionFilterGroups CollisionFilterMask
-			{
-				CollisionFilterGroups get();
-				void set(CollisionFilterGroups value);
-			}
-
-			property bool IsDisposed
-			{
-				virtual bool get();
-			}
-		};
-
 		virtual event EventHandler^ OnDisposing;
 		virtual event EventHandler^ OnDisposed;
 
@@ -489,21 +535,5 @@ namespace BulletSharp
 		{
 			OverlappingPairCache^ get();
 		}
-	};
-
-	class ContactResultCallbackWrapper : public btCollisionWorld::ContactResultCallback
-	{
-	private:
-		gcroot<CollisionWorld::ContactResultCallback^> _callback;
-
-	public:
-		ContactResultCallbackWrapper(CollisionWorld::ContactResultCallback^ callback);
-
-		virtual bool needsCollision(btBroadphaseProxy* proxy0) const;
-		virtual btScalar addSingleResult(btManifoldPoint& cp,
-			const btCollisionObjectWrapper* colObj0, int partId0, int index0,
-			const btCollisionObjectWrapper* colObj1, int partId1, int index1);
-
-		virtual bool baseNeedsCollision(btBroadphaseProxy* proxy0) const;
 	};
 };

@@ -30,6 +30,15 @@ namespace BulletSharpTest
             dynamicObject.Translate(new Vector3(0, 2, 0));
             world.AddRigidBody(dynamicObject);
 
+            Vector3 rayFromWorld = new Vector3(0, 1, -1);
+            Vector3 rayToWorld = new Vector3(0, 1, 1);
+            var rayCallback = new CustomRayCallback(rayFromWorld, rayToWorld);
+            world.RayTest(ref rayFromWorld, ref rayToWorld, rayCallback);
+            if (rayCallback.CollisionObject != dynamicObject)
+            {
+                Console.WriteLine("Raycast FAILED!");
+            }
+
             AddToDisposeQueue(conf);
             AddToDisposeQueue(dispatcher);
             AddToDisposeQueue(broadphase);
@@ -39,6 +48,7 @@ namespace BulletSharpTest
             AddToDisposeQueue(groundObject);
             AddToDisposeQueue(constInfo.CollisionShape);
             AddToDisposeQueue(dynamicObject);
+            AddToDisposeQueue(rayCallback);
 
             //conf.Dispose();
             conf = null;
@@ -65,6 +75,8 @@ namespace BulletSharpTest
             constInfo = null;
             groundObject = null;
             dynamicObject = null;
+
+            rayCallback = null;
 
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
             GC.WaitForPendingFinalizers();
@@ -141,7 +153,21 @@ namespace BulletSharpTest
         {
             TestGCCollection();
 
+            Console.WriteLine("Finished");
             Console.ReadKey();
+        }
+    }
+
+    class CustomRayCallback : AllHitsRayResultCallback
+    {
+        public CustomRayCallback(Vector3 rayFrom, Vector3 rayTo)
+            : base(rayFrom, rayTo)
+        {
+        }
+
+        public override float AddSingleResult(LocalRayResult rayResult, bool normalInWorldSpace)
+        {
+            return base.AddSingleResult(rayResult, normalInWorldSpace);
         }
     }
 }

@@ -50,13 +50,13 @@ AlignedObjectArray<T>::~AlignedObjectArray()
 }
 
 generic<class T>
-IEnumerator^ AlignedObjectArray<T>::GetEnumerator()
+System::Collections::IEnumerator^ AlignedObjectArray<T>::GetEnumerator()
 {
 	return gcnew ListEnumerator<T>(this);
 }
 
 generic<class T>
-Generic::IEnumerator<T>^ AlignedObjectArray<T>::GetSpecializedEnumerator()
+IEnumerator<T>^ AlignedObjectArray<T>::GetSpecializedEnumerator()
 {
 	return gcnew ListEnumerator<T>(this);
 }
@@ -428,7 +428,7 @@ AlignedCollisionObjectArray::AlignedCollisionObjectArray(btCollisionObjectArray*
 	if (collisionWorld)
 	{
 		_collisionWorld = collisionWorld;
-		_backingList = gcnew System::Collections::Generic::List<CollisionObject^>();
+		_backingList = gcnew List<CollisionObject^>();
 	}
 }
 
@@ -526,7 +526,7 @@ void AlignedCollisionObjectArray::CopyTo(array<CollisionObject^>^ array, int arr
 	}
 }
 
-IEnumerator^ AlignedCollisionObjectArray::GetEnumerator()
+System::Collections::IEnumerator^ AlignedCollisionObjectArray::GetEnumerator()
 {
 	if (_backingList)
 	{
@@ -538,7 +538,7 @@ IEnumerator^ AlignedCollisionObjectArray::GetEnumerator()
 	}
 }
 
-Generic::IEnumerator<CollisionObject^>^ AlignedCollisionObjectArray::GetSpecializedEnumerator()
+IEnumerator<CollisionObject^>^ AlignedCollisionObjectArray::GetSpecializedEnumerator()
 {
 	if (_backingList)
 	{

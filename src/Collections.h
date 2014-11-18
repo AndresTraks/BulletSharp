@@ -1,7 +1,5 @@
 #pragma once
 
-using namespace System::Collections;
-
 namespace BulletSharp
 {
 	ref class CollisionShape;
@@ -13,25 +11,25 @@ namespace BulletSharp
 	public ref class ListDebugView
 	{
 	private:
-		IEnumerable^ _list;
+		System::Collections::IEnumerable^ _list;
 
 	public:
-		ListDebugView(IEnumerable^ list);
+		ListDebugView(System::Collections::IEnumerable^ list);
 
 		[DebuggerBrowsable(DebuggerBrowsableState::RootHidden)]
-		property ArrayList^ Items
+		property System::Collections::ArrayList^ Items
 		{
-			ArrayList^ get();
+			System::Collections::ArrayList^ get();
 		}
 	};
 
 	public ref class Vector3ListDebugView
 	{
 	private:
-		Generic::IList<Vector3>^ _list;
+		IList<Vector3>^ _list;
 
 	public:
-		Vector3ListDebugView(Generic::IList<Vector3>^ list);
+		Vector3ListDebugView(IList<Vector3>^ list);
 
 		[DebuggerBrowsable(DebuggerBrowsableState::RootHidden)]
 		property array<Vector3>^ Items
@@ -41,20 +39,20 @@ namespace BulletSharp
 	};
 
 	generic<class T>
-	public ref class ListEnumerator : IEnumerator, Generic::IEnumerator<T>
+	public ref class ListEnumerator : System::Collections::IEnumerator, IEnumerator<T>
 	{
 	private:
-		Generic::IList<T>^ _list;
+		IList<T>^ _list;
 		int i;
 		int _count;
 
 	public:
-		ListEnumerator(Generic::IList<T>^ list);
+		ListEnumerator(IList<T>^ list);
 		~ListEnumerator(){}
 
 		property T GenericCurrent
 		{
-			virtual T get() = Generic::IEnumerator<T>::Current::get;
+			virtual T get() = IEnumerator<T>::Current::get;
 		}
 
 		property Object^ Current
@@ -67,7 +65,7 @@ namespace BulletSharp
 	};
 
 	generic<class T>
-	public ref class GenericList abstract : Generic::IList<T>
+	public ref class GenericList abstract : IList<T>
 	{
 	internal:
 		void* _native;
@@ -85,8 +83,8 @@ namespace BulletSharp
 		virtual void Clear();
 		virtual bool Contains(T item);
 		virtual void CopyTo(array<T>^ array, int arrayIndex) = 0;
-		virtual IEnumerator^ GetEnumerator() = IEnumerable::GetEnumerator;
-		virtual Generic::IEnumerator<T>^ GetSpecializedEnumerator() = Generic::IEnumerable<T>::GetEnumerator;
+		virtual System::Collections::IEnumerator^ GetEnumerator() = System::Collections::IEnumerable::GetEnumerator;
+		virtual IEnumerator<T>^ GetSpecializedEnumerator() = IEnumerable<T>::GetEnumerator;
 		virtual int IndexOf(T item);
 		virtual void Insert(int index, T item);
 		virtual bool Remove(T item);
@@ -159,7 +157,7 @@ namespace BulletSharp
 	public ref class CompoundShapeChildArray : GenericList<CompoundShapeChild^>
 	{
 	private:
-		System::Collections::Generic::List<CompoundShapeChild^>^ _backingList;
+		List<CompoundShapeChild^>^ _backingList;
 		int _updateRevision;
 
 	internal:

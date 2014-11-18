@@ -280,7 +280,7 @@ namespace DemoFramework
                     {
                         Vector3 rayFrom = _freelook.Eye;
 
-                        CollisionWorld.ClosestRayResultCallback rayCallback = new CollisionWorld.ClosestRayResultCallback(ref rayFrom, ref rayTo);
+                        ClosestRayResultCallback rayCallback = new ClosestRayResultCallback(ref rayFrom, ref rayTo);
                         _world.RayTest(ref rayFrom, ref rayTo, rayCallback);
                         if (rayCallback.HasHit)
                         {

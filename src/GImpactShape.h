@@ -57,7 +57,7 @@ namespace BulletSharp
 		void PostUpdate();
 		void ProcessAllTrianglesRay(TriangleCallback^ callback, Vector3 rayFrom,
 			Vector3 rayTo);
-		void RayTest(Vector3 rayFrom, Vector3 rayTo, CollisionWorld::RayResultCallback^ resultCallback);
+		void RayTest(Vector3 rayFrom, Vector3 rayTo, RayResultCallback^ resultCallback);
 		void SetChildTransform(int index, Matrix transform);
 		void UnlockChildShapes();
 		void UpdateBound();

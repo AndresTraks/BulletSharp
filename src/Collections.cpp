@@ -11,21 +11,21 @@
 #include "SoftBody.h"
 #endif
 
-ListDebugView::ListDebugView(IEnumerable^ list)
+ListDebugView::ListDebugView(System::Collections::IEnumerable^ list)
 {
 	_list = list;
 }
 
-ArrayList^ ListDebugView::Items::get()
+System::Collections::ArrayList^ ListDebugView::Items::get()
 {
-	ArrayList^ list = gcnew ArrayList();
+	System::Collections::ArrayList^ list = gcnew System::Collections::ArrayList();
 	for each(Object^ o in _list)
 		list->Add(o);
 	return list;
 }
 
 
-Vector3ListDebugView::Vector3ListDebugView(Generic::IList<Vector3>^ list)
+Vector3ListDebugView::Vector3ListDebugView(IList<Vector3>^ list)
 {
 	_list = list;
 }
@@ -39,7 +39,7 @@ array<Vector3>^ Vector3ListDebugView::Items::get()
 
 
 generic<class T>
-ListEnumerator<T>::ListEnumerator(Generic::IList<T>^ list)
+ListEnumerator<T>::ListEnumerator(IList<T>^ list)
 {
 	_list = list;
 	i=-1;
@@ -101,13 +101,13 @@ void GenericList<T>::Clear()
 }
 
 generic<class T>
-IEnumerator^ GenericList<T>::GetEnumerator()
+System::Collections::IEnumerator^ GenericList<T>::GetEnumerator()
 {
 	return gcnew ListEnumerator<T>(this);
 }
 
 generic<class T>
-Generic::IEnumerator<T>^ GenericList<T>::GetSpecializedEnumerator()
+IEnumerator<T>^ GenericList<T>::GetSpecializedEnumerator()
 {
 	return gcnew ListEnumerator<T>(this);
 }
@@ -295,7 +295,7 @@ void SoftBody::BodyArray::default::set(int index, Body^ value)
 CompoundShapeChildArray::CompoundShapeChildArray(btCompoundShape* compoundShape)
 	: GenericList<CompoundShapeChild^>(compoundShape, compoundShape->getNumChildShapes())
 {
-	_backingList = gcnew System::Collections::Generic::List<CompoundShapeChild^>();
+	_backingList = gcnew List<CompoundShapeChild^>();
 	BuildBackingList();
 }
 

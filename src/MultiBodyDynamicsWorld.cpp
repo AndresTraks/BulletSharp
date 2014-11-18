@@ -28,9 +28,9 @@ MultiBodyDynamicsWorld::MultiBodyDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 	_dispatcher = dispatcher;
 	_broadphase = pairCache;
 
-	_bodies = gcnew System::Collections::Generic::List<MultiBody^>();
+	_bodies = gcnew List<MultiBody^>();
 #ifndef DISABLE_CONSTRAINTS
-	_constraints = gcnew System::Collections::Generic::List<MultiBodyConstraint^>();
+	_constraints = gcnew List<MultiBodyConstraint^>();
 #endif
 }
 

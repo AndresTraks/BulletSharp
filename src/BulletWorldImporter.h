@@ -34,14 +34,14 @@ namespace BulletSharp
 		private:
 			BulletWorldImporterWrapper* _native;
 			DynamicsWorld^ _world;
-			System::Collections::Generic::Dictionary<Object^, String^>^ _objectNameMap;
-			System::Collections::Generic::Dictionary<String^, RigidBody^>^ _nameBodyMap;
+			Dictionary<Object^, String^>^ _objectNameMap;
+			Dictionary<String^, RigidBody^>^ _nameBodyMap;
 
 		internal:
-			System::Collections::Generic::List<CollisionObject^>^ _allocatedRigidBodies;
-			System::Collections::Generic::List<CollisionShape^>^ _allocatedCollisionShapes;
+			List<CollisionObject^>^ _allocatedRigidBodies;
+			List<CollisionShape^>^ _allocatedCollisionShapes;
 #ifndef DISABLE_CONSTRAINTS
-			System::Collections::Generic::List<TypedConstraint^>^ _allocatedConstraints;
+			List<TypedConstraint^>^ _allocatedConstraints;
 #endif
 
 		public:

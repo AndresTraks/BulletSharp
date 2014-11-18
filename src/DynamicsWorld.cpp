@@ -18,13 +18,13 @@
 DynamicsWorld::DynamicsWorld(btDynamicsWorld* native)
 	: CollisionWorld(native)
 {
-	_constraints = gcnew System::Collections::Generic::List<TypedConstraint^>();
+	_constraints = gcnew List<TypedConstraint^>();
 }
 
 void DynamicsWorld::AddAction(IAction^ action)
 {
 	if (!_actions) {
-		_actions = gcnew System::Collections::Generic::Dictionary<IAction^, IntPtr>();
+		_actions = gcnew Dictionary<IAction^, IntPtr>();
 	}
 #ifndef DISABLE_UNCOMMON
 	CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(action);

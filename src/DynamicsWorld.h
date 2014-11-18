@@ -25,8 +25,8 @@ namespace BulletSharp
 	internal:
 		InternalTickCallback^ _callback;
 		InternalTickCallbackUnmanagedDelegate^ _callbackUnmanaged;
-		System::Collections::Generic::Dictionary<IAction^, IntPtr>^ _actions;
-		System::Collections::Generic::List<TypedConstraint^>^ _constraints;
+		Dictionary<IAction^, IntPtr>^ _actions;
+		List<TypedConstraint^>^ _constraints;
 		ConstraintSolver^ _constraintSolver;
 		DynamicsWorld(btDynamicsWorld* native);
 

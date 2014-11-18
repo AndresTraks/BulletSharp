@@ -102,7 +102,7 @@ namespace BulletSharp
 
 	private:
 		AlignedIndexedMeshArray^ _indexedMeshArray;
-		System::Collections::Generic::List<IndexedMesh^>^ _meshes;
+		List<IndexedMesh^>^ _meshes;
 
 	public:
 		TriangleIndexVertexArray(int numTriangles, IntPtr triangleIndexBase, int triangleIndexStride,

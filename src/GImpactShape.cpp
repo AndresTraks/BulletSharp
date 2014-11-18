@@ -111,7 +111,7 @@ void GImpactShapeInterface::ProcessAllTrianglesRay(TriangleCallback^ callback, V
 	VECTOR3_DEL(rayTo);
 }
 
-void GImpactShapeInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, CollisionWorld::RayResultCallback^ resultCallback)
+void GImpactShapeInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, RayResultCallback^ resultCallback)
 {
 	VECTOR3_CONV(rayFrom);
 	VECTOR3_CONV(rayTo);

@@ -122,7 +122,7 @@ namespace ConcaveConvexCastDemo
         {
             for (int i = 0; i < NUMRAYS_IN_BAR; i++)
             {
-                using (var cb = new CollisionWorld.ClosestConvexResultCallback(ref source[i], ref dest[i]))
+                using (var cb = new ClosestConvexResultCallback(ref source[i], ref dest[i]))
                 {
                     Quaternion qFrom = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
                     Quaternion qTo = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.7f);

@@ -4,7 +4,7 @@ using DemoFramework;
 
 namespace CollisionInterfaceDemo
 {
-    class DrawingResult : CollisionWorld.ContactResultCallback
+    class DrawingResult : ContactResultCallback
     {
         DynamicsWorld world;
         public DrawingResult(DynamicsWorld world)

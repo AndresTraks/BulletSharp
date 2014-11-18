@@ -1,7 +1,5 @@
 #pragma once
 
-using namespace System::Collections::Generic;
-
 namespace BulletSharp
 {
 	public ref class Hacd : IDisposable

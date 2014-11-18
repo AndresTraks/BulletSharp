@@ -40,7 +40,7 @@ void CollisionDispatcher::RegisterCollisionCreateFunc(BroadphaseNativeType proxy
 {
 	if (_collisionCreateFuncs == nullptr)
 	{
-		_collisionCreateFuncs = gcnew System::Collections::Generic::List<CollisionAlgorithmCreateFunc^>();
+		_collisionCreateFuncs = gcnew List<CollisionAlgorithmCreateFunc^>();
 	}
 	_collisionCreateFuncs->Add(createFunc);
 

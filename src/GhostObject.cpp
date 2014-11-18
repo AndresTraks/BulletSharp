@@ -35,7 +35,7 @@ void GhostObject::AddOverlappingObjectInternal(BroadphaseProxy^ otherProxy)
 #endif
 
 void GhostObject::ConvexSweepTest(ConvexShape^ castShape, Matrix convexFromWorld,
-	Matrix convexToWorld, CollisionWorld::ConvexResultCallback^ resultCallback, btScalar allowedCcdPenetration)
+	Matrix convexToWorld, ConvexResultCallback^ resultCallback, btScalar allowedCcdPenetration)
 {
 	TRANSFORM_CONV(convexFromWorld);
 	TRANSFORM_CONV(convexToWorld);
@@ -46,7 +46,7 @@ void GhostObject::ConvexSweepTest(ConvexShape^ castShape, Matrix convexFromWorld
 }
 
 void GhostObject::ConvexSweepTest(ConvexShape^ castShape, Matrix convexFromWorld,
-	Matrix convexToWorld, CollisionWorld::ConvexResultCallback^ resultCallback)
+	Matrix convexToWorld, ConvexResultCallback^ resultCallback)
 {
 	TRANSFORM_CONV(convexFromWorld);
 	TRANSFORM_CONV(convexToWorld);
@@ -61,7 +61,7 @@ CollisionObject^ GhostObject::GetOverlappingObject(int index)
 	return CollisionObject::GetManaged(Native->getOverlappingObject(index));
 }
 
-void GhostObject::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, CollisionWorld::RayResultCallback^ resultCallback)
+void GhostObject::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResultCallback^ resultCallback)
 {
 	VECTOR3_CONV(rayFromWorld);
 	VECTOR3_CONV(rayToWorld);

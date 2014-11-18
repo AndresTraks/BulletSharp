@@ -2,8 +2,6 @@
 
 #include "ObjectTable.h"
 
-using namespace System::Collections::Generic;
-
 static BulletSharp::ObjectTable::ObjectTable()
 {
 	objectTable = gcnew Dictionary<intptr_t, Object^>();

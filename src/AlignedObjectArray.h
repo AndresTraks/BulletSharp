@@ -6,8 +6,6 @@
 #ifndef DISABLE_SOFTBODY
 #endif
 
-using namespace System::Collections;
-
 namespace BulletSharp
 {
 	ref struct BroadphasePair;
@@ -40,7 +38,7 @@ namespace BulletSharp
 #endif
 
 	generic<class T>
-	public ref class AlignedObjectArray abstract : Generic::IList<T>, IDisposable
+	public ref class AlignedObjectArray abstract : IList<T>, IDisposable
 	{
 	internal:
 		void* _native;
@@ -62,8 +60,8 @@ namespace BulletSharp
 		virtual void Clear() = 0;
 		virtual bool Contains(T item);
 		virtual void CopyTo(array<T>^ array, int arrayIndex) = 0;
-		virtual IEnumerator^ GetEnumerator() = IEnumerable::GetEnumerator;
-		virtual Generic::IEnumerator<T>^ GetSpecializedEnumerator() = Generic::IEnumerable<T>::GetEnumerator;
+		virtual System::Collections::IEnumerator^ GetEnumerator() = System::Collections::IEnumerable::GetEnumerator;
+		virtual IEnumerator<T>^ GetSpecializedEnumerator() = IEnumerable<T>::GetEnumerator;
 		virtual int IndexOf(T item);
 		virtual void Insert(int index, T item);
 		virtual void PopBack() = 0;
@@ -210,7 +208,7 @@ namespace BulletSharp
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class AlignedCollisionObjectArray : AlignedObjectArray<CollisionObject^>, IEnumerable
+	public ref class AlignedCollisionObjectArray : AlignedObjectArray<CollisionObject^>, System::Collections::IEnumerable
 	{
 	internal:
 		AlignedCollisionObjectArray(btCollisionObjectArray* collisionObjectArray);
@@ -218,7 +216,7 @@ namespace BulletSharp
 
 	private:
 		btCollisionWorld* _collisionWorld;
-		System::Collections::Generic::List<CollisionObject^>^ _backingList;
+		List<CollisionObject^>^ _backingList;
 
 	public:
 		virtual void Add(CollisionObject^ item) override;
@@ -226,8 +224,8 @@ namespace BulletSharp
 		virtual void Clear() override;
 		virtual bool Contains(CollisionObject^ item) override;
 		virtual void CopyTo(array<CollisionObject^>^ array, int arrayIndex) override;
-		virtual IEnumerator^ GetEnumerator() override;
-		virtual Generic::IEnumerator<CollisionObject^>^ GetSpecializedEnumerator() override;
+		virtual System::Collections::IEnumerator^ GetEnumerator() override;
+		virtual IEnumerator<CollisionObject^>^ GetSpecializedEnumerator() override;
 		virtual int IndexOf(CollisionObject^ item) override;
 		virtual void PopBack() override;
 		virtual bool Remove(CollisionObject^ item) override;
@@ -359,7 +357,7 @@ namespace BulletSharp
 	{
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
-		public ref class AlignedFaceArray : AlignedObjectArray<Face^>, Generic::IList<Face^>
+		public ref class AlignedFaceArray : AlignedObjectArray<Face^>, IList<Face^>
 		{
 		internal:
 			AlignedFaceArray(btAlignedObjectArray<btSoftBody::Face>* faceArray);
@@ -468,7 +466,7 @@ namespace BulletSharp
 	{
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
-		public ref class AlignedJointArray : AlignedObjectArray<Joint^>, IEnumerable
+		public ref class AlignedJointArray : AlignedObjectArray<Joint^>, System::Collections::IEnumerable
 		{
 		internal:
 			AlignedJointArray(btSoftBody::tJointArray* jointArray);
@@ -545,7 +543,7 @@ namespace BulletSharp
 	{
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
-		public ref class AlignedLinkArray : AlignedObjectArray<Link^>, IEnumerable
+		public ref class AlignedLinkArray : AlignedObjectArray<Link^>, System::Collections::IEnumerable
 		{
 		internal:
 			AlignedLinkArray(btSoftBody::tLinkArray* linkArray);
@@ -900,7 +898,7 @@ namespace BulletSharp
 
 		[DebuggerDisplay("Count = {Count}")]
 		[DebuggerTypeProxy(ListDebugView::typeid)]
-		public ref class AlignedTetraArray : AlignedObjectArray<Tetra^>, Generic::IList<Tetra^>
+		public ref class AlignedTetraArray : AlignedObjectArray<Tetra^>, IList<Tetra^>
 		{
 		internal:
 			AlignedTetraArray(btAlignedObjectArray<btSoftBody::Tetra>* tetraArray);

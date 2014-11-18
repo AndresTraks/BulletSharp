@@ -151,7 +151,7 @@ namespace CharacterDemo
 
             //use the convex sweep test to find a safe position for the camera (not blocked by static geometry)
             SphereShape cameraSphere = new SphereShape(0.2f);
-            CollisionWorld.ClosestConvexResultCallback cb = new CollisionWorld.ClosestConvexResultCallback(pos, cameraPos);
+            ClosestConvexResultCallback cb = new ClosestConvexResultCallback(pos, cameraPos);
             cb.CollisionFilterMask = CollisionFilterGroups.StaticFilter;
             World.ConvexSweepTest(cameraSphere, Matrix.Translation(pos), Matrix.Translation(cameraPos), cb);
             cameraSphere.Dispose();

@@ -131,7 +131,7 @@ namespace ConcaveRaycastDemo
 #else
             for (int i = 0; i < NUMRAYS_IN_BAR; i++)
             {
-                using (var cb = new CollisionWorld.ClosestRayResultCallback(ref source[i], ref dest[i]))
+                using (var cb = new ClosestRayResultCallback(ref source[i], ref dest[i]))
                 {
                     cw.RayTest(ref source[i], ref dest[i], cb);
                     if (cb.HasHit)

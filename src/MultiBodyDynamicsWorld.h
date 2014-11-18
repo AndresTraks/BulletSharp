@@ -15,9 +15,9 @@ namespace BulletSharp
 		MultiBodyDynamicsWorld(btMultiBodyDynamicsWorld* native);
 
 	private:
-		System::Collections::Generic::List<MultiBody^>^ _bodies;
+		List<MultiBody^>^ _bodies;
 #ifndef DISABLE_CONSTRAINTS
-		System::Collections::Generic::List<MultiBodyConstraint^>^ _constraints;
+		List<MultiBodyConstraint^>^ _constraints;
 #endif
 
 	public:

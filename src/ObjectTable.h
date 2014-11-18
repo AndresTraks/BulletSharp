@@ -5,7 +5,7 @@ namespace BulletSharp
 	ref class ObjectTable sealed
 	{
 	private:
-		static System::Collections::Generic::Dictionary<intptr_t, Object^>^ objectTable;
+		static Dictionary<intptr_t, Object^>^ objectTable;
 
 		static ObjectTable();
 

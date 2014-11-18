@@ -28,11 +28,11 @@ namespace BulletSharp
 		void AddOverlappingObjectInternal(BroadphaseProxy^ otherProxy);
 #endif
 		void ConvexSweepTest(ConvexShape^ castShape, Matrix convexFromWorld, Matrix convexToWorld,
-			CollisionWorld::ConvexResultCallback^ resultCallback, btScalar allowedCcdPenetration);
+			ConvexResultCallback^ resultCallback, btScalar allowedCcdPenetration);
 		void ConvexSweepTest(ConvexShape^ castShape, Matrix convexFromWorld, Matrix convexToWorld,
-			CollisionWorld::ConvexResultCallback^ resultCallback);
+			ConvexResultCallback^ resultCallback);
 		CollisionObject^ GetOverlappingObject(int index);
-		void RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, CollisionWorld::RayResultCallback^ resultCallback);
+		void RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResultCallback^ resultCallback);
 #ifndef DISABLE_INTERNAL
 		void RemoveOverlappingObjectInternal(BroadphaseProxy^ otherProxy, Dispatcher^ dispatcher,
 			BroadphaseProxy^ thisProxy);

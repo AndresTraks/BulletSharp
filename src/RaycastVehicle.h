@@ -68,7 +68,7 @@ namespace BulletSharp
 		array<btScalar>^ _forwardImpulse;
 		array<btScalar>^ _sideImpulse;
 
-		System::Collections::Generic::List<WheelInfo^>^ _wheelInfo;
+		List<WheelInfo^>^ _wheelInfo;
 
 		VehicleRaycaster^ _vehicleRaycaster;
 		btScalar _pitchControl;
@@ -153,9 +153,9 @@ namespace BulletSharp
 			int get();
 		}
 
-		property System::Collections::Generic::IList<WheelInfo^>^ WheelInfo
+		property IList<WheelInfo^>^ WheelInfo
 		{
-			System::Collections::Generic::IList<BulletSharp::WheelInfo^>^ get();
+			IList<BulletSharp::WheelInfo^>^ get();
 		}
 	};
 

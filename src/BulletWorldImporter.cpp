@@ -42,13 +42,13 @@
 Serialize::BulletWorldImporter::BulletWorldImporter(DynamicsWorld^ world)
 {
 	_world = world;
-	_allocatedRigidBodies = gcnew System::Collections::Generic::List<CollisionObject^>();
-	_allocatedCollisionShapes = gcnew System::Collections::Generic::List<CollisionShape^>();
+	_allocatedRigidBodies = gcnew List<CollisionObject^>();
+	_allocatedCollisionShapes = gcnew List<CollisionShape^>();
 #ifndef DISABLE_CONSTRAINTS
-	_allocatedConstraints = gcnew System::Collections::Generic::List<TypedConstraint^>();
+	_allocatedConstraints = gcnew List<TypedConstraint^>();
 #endif
-	_objectNameMap = gcnew System::Collections::Generic::Dictionary<Object^, String^>();
-	_nameBodyMap = gcnew System::Collections::Generic::Dictionary<String^, RigidBody^>();
+	_objectNameMap = gcnew Dictionary<Object^, String^>();
+	_nameBodyMap = gcnew Dictionary<String^, RigidBody^>();
 	_native = new BulletWorldImporterWrapper((btDynamicsWorld*)GetUnmanagedNullable(world), this);
 }
 

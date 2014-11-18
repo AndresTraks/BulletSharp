@@ -21,7 +21,7 @@ namespace BulletSharp
 		CollisionConfiguration^ _collisionConfiguration;
 
 	private:
-		System::Collections::Generic::List<CollisionAlgorithmCreateFunc^>^ _collisionCreateFuncs;
+		List<CollisionAlgorithmCreateFunc^>^ _collisionCreateFuncs;
 		NearCallbackUnmanagedDelegate^ _nearCallbackUnmanaged;
 		IntPtr _nearCallbackUnmanagedPtr;
 
