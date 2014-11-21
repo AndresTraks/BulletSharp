@@ -530,7 +530,7 @@ System::Collections::IEnumerator^ AlignedCollisionObjectArray::GetEnumerator()
 {
 	if (_backingList)
 	{
-		return gcnew ListEnumerator<CollisionObject^>(_backingList);
+		return _backingList->GetEnumerator();
 	}
 	else
 	{
@@ -542,7 +542,7 @@ IEnumerator<CollisionObject^>^ AlignedCollisionObjectArray::GetSpecializedEnumer
 {
 	if (_backingList)
 	{
-		return gcnew ListEnumerator<CollisionObject^>(_backingList);
+		return _backingList->GetEnumerator();
 	}
 	else
 	{
