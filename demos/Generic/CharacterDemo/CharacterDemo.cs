@@ -150,16 +150,18 @@ namespace CharacterDemo
             Vector3 cameraPos = pos - forwardDir * 12 + upDir * 5;
 
             //use the convex sweep test to find a safe position for the camera (not blocked by static geometry)
-            SphereShape cameraSphere = new SphereShape(0.2f);
-            ClosestConvexResultCallback cb = new ClosestConvexResultCallback(pos, cameraPos);
-            cb.CollisionFilterMask = CollisionFilterGroups.StaticFilter;
-            World.ConvexSweepTest(cameraSphere, Matrix.Translation(pos), Matrix.Translation(cameraPos), cb);
-            cameraSphere.Dispose();
-            if (cb.HasHit)
+            using (var cb = new ClosestConvexResultCallback(pos, cameraPos))
             {
-                cameraPos = Vector3.Lerp(pos, cameraPos, cb.ClosestHitFraction);
+                using (var cameraSphere = new SphereShape(0.2f))
+                {
+                    cb.CollisionFilterMask = CollisionFilterGroups.StaticFilter;
+                    World.ConvexSweepTest(cameraSphere, Matrix.Translation(pos), Matrix.Translation(cameraPos), cb);
+                }
+                if (cb.HasHit)
+                {
+                    cameraPos = Vector3.Lerp(pos, cameraPos, cb.ClosestHitFraction);
+                }
             }
-            cb.Dispose();
             Freelook.SetEyeTarget(cameraPos, pos);
 
             character.SetWalkDirection(walkDirection * walkSpeed);

@@ -320,6 +320,12 @@ void AllHitsRayResultCallback::RayToWorld::set(Vector3 value)
 }
 
 
+LocalConvexResult::LocalConvexResult(btCollisionWorld::LocalConvexResult* native, bool preventDelete)
+{
+	_native = native;
+	_preventDelete = preventDelete;
+}
+
 LocalConvexResult::~LocalConvexResult()
 {
 	this->!LocalConvexResult();
@@ -327,7 +333,10 @@ LocalConvexResult::~LocalConvexResult()
 
 LocalConvexResult::!LocalConvexResult()
 {
-	delete _native;
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
 	_native = NULL;
 }
 
@@ -393,11 +402,6 @@ void LocalConvexResult::LocalShapeInfo::set(BulletSharp::LocalShapeInfo^ value)
 }
 
 
-ConvexResultCallback::ConvexResultCallback(btCollisionWorld::ConvexResultCallback* native)
-{
-	_native = native;
-}
-
 ConvexResultCallback::~ConvexResultCallback()
 {
 	this->!ConvexResultCallback();
@@ -409,15 +413,16 @@ ConvexResultCallback::!ConvexResultCallback()
 	_native = NULL;
 }
 
-btScalar ConvexResultCallback::AddSingleResult(LocalConvexResult^ convexResult,
-	bool normalInWorldSpace)
+ConvexResultCallback::ConvexResultCallback()
 {
-	return _native->addSingleResult(*convexResult->_native, normalInWorldSpace);
+	_native = ALIGNED_NEW(ConvexResultCallbackWrapper) (this);
 }
 
 bool ConvexResultCallback::NeedsCollision(BroadphaseProxy^ proxy0)
 {
-	return _native->needsCollision(proxy0->_native);
+	bool collides = (proxy0->CollisionFilterGroup & CollisionFilterMask) != CollisionFilterGroups::None;
+	collides = collides && (CollisionFilterGroup & proxy0->CollisionFilterMask) != CollisionFilterGroups::None;
+	return collides;
 }
 
 btScalar ConvexResultCallback::ClosestHitFraction::get()
@@ -458,91 +463,130 @@ bool ConvexResultCallback::IsDisposed::get()
 }
 
 
-#undef Native
-#define Native static_cast<btCollisionWorld::ClosestConvexResultCallback*>(_native)
+ConvexResultCallbackWrapper::ConvexResultCallbackWrapper(BulletSharp::ConvexResultCallback^ callback)
+{
+	_callback = GCHandleToVoidPtr(GCHandle::Alloc(callback, GCHandleType::Weak));
+}
+
+ConvexResultCallbackWrapper::~ConvexResultCallbackWrapper()
+{
+	VoidPtrToGCHandle(_callback).Free();
+}
+
+bool ConvexResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) const
+{
+	return static_cast<BulletSharp::RayResultCallback^>(VoidPtrToGCHandle(_callback).Target)->NeedsCollision(BroadphaseProxy::GetManaged(proxy0));
+}
+
+btScalar ConvexResultCallbackWrapper::addSingleResult(btCollisionWorld::LocalConvexResult& rayResult, bool normalInWorldSpace)
+{
+	return static_cast<BulletSharp::ConvexResultCallback^>(VoidPtrToGCHandle(_callback).Target)->AddSingleResult(gcnew LocalConvexResult(&rayResult, true), normalInWorldSpace);
+}
+
 
 ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3 convexFromWorld,
 	Vector3 convexToWorld)
-	: ConvexResultCallback(0)
 {
-	VECTOR3_CONV(convexFromWorld);
-	VECTOR3_CONV(convexToWorld);
-	_native = ALIGNED_NEW(btCollisionWorld::ClosestConvexResultCallback) (VECTOR3_USE(convexFromWorld),
-		VECTOR3_USE(convexToWorld));
-	VECTOR3_DEL(convexFromWorld);
-	VECTOR3_DEL(convexToWorld);
+	_convexFromWorld = convexFromWorld;
+	_convexToWorld = convexToWorld;
 }
 
 ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3% convexFromWorld,
 	Vector3% convexToWorld)
-	: ConvexResultCallback(0)
 {
-	VECTOR3_CONV(convexFromWorld);
-	VECTOR3_CONV(convexToWorld);
-	_native = ALIGNED_NEW(btCollisionWorld::ClosestConvexResultCallback) (VECTOR3_USE(convexFromWorld),
-		VECTOR3_USE(convexToWorld));
-	VECTOR3_DEL(convexFromWorld);
-	VECTOR3_DEL(convexToWorld);
+	_convexFromWorld = convexFromWorld;
+	_convexToWorld = convexToWorld;
+}
+
+#pragma managed(push, off)
+void ClosestConvexResultCallback_AddSingleResult(btCollisionWorld::LocalConvexResult* convexResult, bool normalInWorldSpace,
+	btVector3* hitNormalWorld)
+{
+	if (normalInWorldSpace)
+	{
+		*hitNormalWorld = convexResult->m_hitNormalLocal;
+	}
+	else
+	{
+		// need to transform normal into worldspace
+		*hitNormalWorld = convexResult->m_hitCollisionObject->getWorldTransform().getBasis()*convexResult->m_hitNormalLocal;
+	}
+}
+#pragma managed(pop)
+btScalar ClosestConvexResultCallback::AddSingleResult(LocalConvexResult^ convexResult, bool normalInWorldSpace)
+{
+	//caller already does the filter on the ClosestHitFraction
+	System::Diagnostics::Debug::Assert(convexResult->HitFraction <= ClosestHitFraction);
+
+	ClosestHitFraction = convexResult->HitFraction;
+	_hitCollisionObject = convexResult->HitCollisionObject;
+	btVector3* hitNormalWorldTemp = ALIGNED_NEW(btVector3);
+	ClosestConvexResultCallback_AddSingleResult(convexResult->_native, normalInWorldSpace,
+		hitNormalWorldTemp);
+	Math::BtVector3ToVector3(hitNormalWorldTemp, _hitNormalWorld);
+	ALIGNED_FREE(hitNormalWorldTemp);
+	_hitPointWorld = convexResult->HitPointLocal;
+	return convexResult->HitFraction;
 }
 
 Vector3 ClosestConvexResultCallback::ConvexFromWorld::get()
 {
-	return Math::BtVector3ToVector3(&Native->m_convexFromWorld);
+	return _convexFromWorld;
 }
 void ClosestConvexResultCallback::ConvexFromWorld::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &Native->m_convexFromWorld);
+	_convexFromWorld = value;
 }
 
 Vector3 ClosestConvexResultCallback::ConvexToWorld::get()
 {
-	return Math::BtVector3ToVector3(&Native->m_convexToWorld);
+	return _convexToWorld;
 }
 void ClosestConvexResultCallback::ConvexToWorld::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &Native->m_convexToWorld);
+	_convexToWorld = value;
 }
 
 CollisionObject^ ClosestConvexResultCallback::HitCollisionObject::get()
 {
-	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)Native->m_hitCollisionObject);
+	return _hitCollisionObject;
 }
 void ClosestConvexResultCallback::HitCollisionObject::set(CollisionObject^ value)
 {
-	Native->m_hitCollisionObject = value->_native;
+	_hitCollisionObject = value;
 }
 
 Vector3 ClosestConvexResultCallback::HitNormalWorld::get()
 {
-	return Math::BtVector3ToVector3(&Native->m_hitNormalWorld);
+	return _hitNormalWorld;
 }
 void ClosestConvexResultCallback::HitNormalWorld::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &Native->m_hitNormalWorld);
+	_hitNormalWorld = value;
 }
 
 Vector3 ClosestConvexResultCallback::HitPointWorld::get()
 {
-	return Math::BtVector3ToVector3(&Native->m_hitPointWorld);
+	return _hitPointWorld;
 }
 void ClosestConvexResultCallback::HitPointWorld::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &Native->m_hitPointWorld);
+	_hitPointWorld = value;
 }
 
 
 ClosestRayResultCallback::ClosestRayResultCallback(Vector3 rayFromWorld,
 	Vector3 rayToWorld)
 {
-	RayFromWorld = rayFromWorld;
-	RayToWorld = rayToWorld;
+	_rayFromWorld = rayFromWorld;
+	_rayToWorld = rayToWorld;
 }
 
 ClosestRayResultCallback::ClosestRayResultCallback(Vector3% rayFromWorld,
 	Vector3% rayToWorld)
 {
-	RayFromWorld = rayFromWorld;
-	RayToWorld = rayToWorld;
+	_rayFromWorld = rayFromWorld;
+	_rayToWorld = rayToWorld;
 }
 
 btScalar ClosestRayResultCallback::AddSingleResult(LocalRayResult^ rayResult, bool normalInWorldSpace)
@@ -554,8 +598,8 @@ btScalar ClosestRayResultCallback::AddSingleResult(LocalRayResult^ rayResult, bo
 	CollisionObject = rayResult->CollisionObject;
 	btVector3* hitNormalWorldTemp = ALIGNED_NEW(btVector3);
 	btVector3* hitPointWorldTemp = ALIGNED_NEW(btVector3);
-	btVector3* rayFromWorld = Math::Vector3ToBtVector3(RayFromWorld);
-	btVector3* rayToWorld = Math::Vector3ToBtVector3(RayToWorld);
+	btVector3* rayFromWorld = Math::Vector3ToBtVector3(_rayFromWorld);
+	btVector3* rayToWorld = Math::Vector3ToBtVector3(_rayToWorld);
 	RayResultCallback_AddSingleResult(rayResult->_native, normalInWorldSpace,
 		rayFromWorld, rayToWorld, hitNormalWorldTemp, hitPointWorldTemp);
 	Math::BtVector3ToVector3(hitNormalWorldTemp, _hitNormalWorld);
@@ -604,11 +648,6 @@ void ClosestRayResultCallback::RayToWorld::set(Vector3 value)
 }
 
 
-ContactResultCallback::ContactResultCallback(ContactResultCallbackWrapper* native)
-{
-	_native = native;
-}
-
 ContactResultCallback::~ContactResultCallback()
 {
 	this->!ContactResultCallback();
@@ -630,7 +669,9 @@ ContactResultCallback::ContactResultCallback()
 
 bool ContactResultCallback::NeedsCollision(BroadphaseProxy^ proxy0)
 {
-	return _native->baseNeedsCollision(proxy0->_native);
+	bool collides = (proxy0->CollisionFilterGroup & CollisionFilterMask) != CollisionFilterGroups::None;
+	collides = collides && (CollisionFilterGroup & proxy0->CollisionFilterMask) != CollisionFilterGroups::None;
+	return collides;
 }
 
 CollisionFilterGroups ContactResultCallback::CollisionFilterGroup::get()
@@ -674,11 +715,6 @@ btScalar ContactResultCallbackWrapper::addSingleResult(btManifoldPoint& cp,
 	return _callback->AddSingleResult(gcnew ManifoldPoint(&cp, true),
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap), partId0, index0,
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj1Wrap), partId1, index1);
-}
-
-bool ContactResultCallbackWrapper::baseNeedsCollision(btBroadphaseProxy* proxy0) const
-{
-	return btCollisionWorld::ContactResultCallback::needsCollision(proxy0);
 }
 
 

@@ -219,7 +219,11 @@ namespace BulletSharp
 		btCollisionWorld::LocalConvexResult* _native;
 
 	private:
+		bool _preventDelete;
 		BulletSharp::LocalShapeInfo^ _localShapeInfo;
+
+	internal:
+		LocalConvexResult(btCollisionWorld::LocalConvexResult* native, bool preventDelete);
 
 	public:
 		!LocalConvexResult();
@@ -266,16 +270,17 @@ namespace BulletSharp
 	internal:
 		btCollisionWorld::ConvexResultCallback* _native;
 
-		ConvexResultCallback(btCollisionWorld::ConvexResultCallback* native);
-
 	public:
 		!ConvexResultCallback();
 	protected:
 		~ConvexResultCallback();
 
+	protected:
+		ConvexResultCallback();
+
 	public:
-		btScalar AddSingleResult(LocalConvexResult^ convexResult, bool normalInWorldSpace);
-		bool NeedsCollision(BroadphaseProxy^ proxy0);
+		virtual btScalar AddSingleResult(LocalConvexResult^ convexResult, bool normalInWorldSpace) = 0;
+		virtual bool NeedsCollision(BroadphaseProxy^ proxy0);
 
 		property btScalar ClosestHitFraction
 		{
@@ -306,11 +311,33 @@ namespace BulletSharp
 		}
 	};
 
+	class ConvexResultCallbackWrapper : public btCollisionWorld::ConvexResultCallback
+	{
+	private:
+		void* _callback;
+
+	public:
+		ConvexResultCallbackWrapper(BulletSharp::ConvexResultCallback^ callback);
+		~ConvexResultCallbackWrapper();
+
+		virtual bool needsCollision(btBroadphaseProxy* proxy0) const;
+		virtual btScalar addSingleResult(btCollisionWorld::LocalConvexResult& rayResult, bool normalInWorldSpace);
+	};
+
 	public ref class ClosestConvexResultCallback : ConvexResultCallback
 	{
+	private:
+		Vector3 _convexFromWorld;
+		Vector3 _convexToWorld;
+		CollisionObject^ _hitCollisionObject;
+		Vector3 _hitNormalWorld;
+		Vector3 _hitPointWorld;
+
 	public:
 		ClosestConvexResultCallback(Vector3 convexFromWorld, Vector3 convexToWorld);
 		ClosestConvexResultCallback(Vector3% convexFromWorld, Vector3% convexToWorld);
+
+		virtual btScalar AddSingleResult(LocalConvexResult^ convexResult, bool normalInWorldSpace) override;
 
 		property Vector3 ConvexFromWorld
 		{
@@ -387,16 +414,15 @@ namespace BulletSharp
 	internal:
 		ContactResultCallbackWrapper* _native;
 
-		ContactResultCallback(ContactResultCallbackWrapper* callback);
-
 	public:
 		!ContactResultCallback();
 	protected:
 		~ContactResultCallback();
 
-	public:
+	protected:
 		ContactResultCallback();
 
+	public:
 		virtual btScalar AddSingleResult(ManifoldPoint^ cp, CollisionObjectWrapper^ colObj0Wrap, int partId0, int index0,
 			CollisionObjectWrapper^ colObj1Wrap, int partId1, int index1) = 0;
 		virtual bool NeedsCollision(BroadphaseProxy^ proxy0);
@@ -431,8 +457,6 @@ namespace BulletSharp
 		virtual btScalar addSingleResult(btManifoldPoint& cp,
 			const btCollisionObjectWrapper* colObj0, int partId0, int index0,
 			const btCollisionObjectWrapper* colObj1, int partId1, int index1);
-
-		virtual bool baseNeedsCollision(btBroadphaseProxy* proxy0) const;
 	};
 
 	public ref class CollisionWorld : ITrackingDisposable
