@@ -485,11 +485,11 @@ void AlignedCollisionObjectArray::Add(CollisionObject^ item, short collisionFilt
 
 void AlignedCollisionObjectArray::Clear()
 {
+	Native->resizeNoInitialize(0);
 	if (_backingList)
     {
         _backingList->Clear();
     }
-	Native->resizeNoInitialize(0);
 }
 
 bool AlignedCollisionObjectArray::Contains(CollisionObject^ item)
@@ -577,13 +577,13 @@ bool AlignedCollisionObjectArray::Remove(CollisionObject^ item)
     {
         if (_backingList[i]->_native == itemPtr)
         {
-            if (dynamic_cast<SoftBody::SoftBody^>(item) != nullptr)
-            {
-                static_cast<btSoftRigidDynamicsWorld*>(_collisionWorld)->removeSoftBody((btSoftBody*)itemPtr);
-            }
-            else if (dynamic_cast<RigidBody^>(item) != nullptr)
+            if (dynamic_cast<RigidBody^>(item) != nullptr)
             {
                 static_cast<btDynamicsWorld*>(_collisionWorld)->removeRigidBody((btRigidBody*)itemPtr);
+            }
+            else if (dynamic_cast<SoftBody::SoftBody^>(item) != nullptr)
+            {
+                static_cast<btSoftRigidDynamicsWorld*>(_collisionWorld)->removeSoftBody((btSoftBody*)itemPtr);
             }
             else
             {
@@ -591,7 +591,7 @@ bool AlignedCollisionObjectArray::Remove(CollisionObject^ item)
             }
             count--;
 
-            // Swap the last item with the item to be removed like Bullet does.
+            // Swap the removed item with the last item like Bullet does.
             if (i != count)
             {
                 _backingList[i] = _backingList[count];

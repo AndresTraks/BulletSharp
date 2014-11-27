@@ -8,6 +8,28 @@ namespace BulletSharpTest
     {
         static DiscreteDynamicsWorld world;
 
+        static RigidBody CreateBody(float mass, CollisionShape shape, Vector3 offset)
+        {
+            var constInfo = new RigidBodyConstructionInfo(mass, new DefaultMotionState(), shape, Vector3.Zero);
+            if (mass != 0.0f)
+            {
+                constInfo.LocalInertia = constInfo.CollisionShape.CalculateLocalInertia(mass);
+            }
+            var collisionObject = new RigidBody(constInfo);
+            collisionObject.Translate(offset);
+            world.AddRigidBody(collisionObject);
+
+            AddToDisposeQueue(constInfo);
+            AddToDisposeQueue(constInfo.MotionState);
+            AddToDisposeQueue(collisionObject);
+            AddToDisposeQueue(shape);
+
+            collisionObject.OnDisposing += onDisposing;
+            collisionObject.OnDisposed += onDisposed;
+
+            return collisionObject;
+        }
+
         static void TestGCCollection()
         {
             var conf = new DefaultCollisionConfiguration();
@@ -17,38 +39,14 @@ namespace BulletSharpTest
             world.Gravity = new Vector3(0, -10, 0);
             dispatcher.NearCallback = DispatcherNearCallback;
 
-            var groundShape = new BoxShape(50, 1, 50);
-            var constInfo = new RigidBodyConstructionInfo(0.0f, new DefaultMotionState(), groundShape, Vector3.Zero);
-            var groundObject = new RigidBody(constInfo);
-            world.AddRigidBody(groundObject);
-
-            constInfo.Mass = 1.0f;
-            constInfo.CollisionShape = new SphereShape(1.0f);
-            constInfo.LocalInertia = constInfo.CollisionShape.CalculateLocalInertia(constInfo.Mass);
-            constInfo.MotionState = new DefaultMotionState();
-            var dynamicObject = new RigidBody(constInfo);
-            dynamicObject.Translate(new Vector3(0, 2, 0));
-            world.AddRigidBody(dynamicObject);
-
-            Vector3 rayFromWorld = new Vector3(0, 1, -1);
-            Vector3 rayToWorld = new Vector3(0, 1, 1);
-            var rayCallback = new CustomRayCallback(rayFromWorld, rayToWorld);
-            world.RayTest(ref rayFromWorld, ref rayToWorld, rayCallback);
-            if (rayCallback.CollisionObject != dynamicObject)
-            {
-                Console.WriteLine("Raycast FAILED!");
-            }
+            CreateBody(0.0f, new BoxShape(50, 1, 50), Vector3.Zero);
+            CreateBody(10.0f, new SphereShape(1.0f), new Vector3(2, 2, 0));
+            var dynamicObject = CreateBody(1.0f, new SphereShape(1.0f), new Vector3(0, 2, 0));
 
             AddToDisposeQueue(conf);
             AddToDisposeQueue(dispatcher);
             AddToDisposeQueue(broadphase);
             AddToDisposeQueue(world);
-            AddToDisposeQueue(groundShape);
-            AddToDisposeQueue(constInfo);
-            AddToDisposeQueue(groundObject);
-            AddToDisposeQueue(constInfo.CollisionShape);
-            AddToDisposeQueue(dynamicObject);
-            AddToDisposeQueue(rayCallback);
 
             //conf.Dispose();
             conf = null;
@@ -63,25 +61,61 @@ namespace BulletSharpTest
             world.OnDisposing += onDisposing;
             world.OnDisposed += onDisposed;
             world.SetInternalTickCallback(WorldPreTickCallback);
-            for (int i = 0; i < 60; i++)
+            for (int i = 0; i < 600; i++)
             {
                 world.StepSimulation(1.0f / 60.0f);
             }
+
+            TestRayCast(dynamicObject);
+            TestManifoldPoints();
+
             //world.SetInternalTickCallback(null);
             //world.Dispose();
             world = null;
 
-            groundShape = null;
-            constInfo = null;
-            groundObject = null;
             dynamicObject = null;
-
-            rayCallback = null;
 
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
             GC.WaitForPendingFinalizers();
 
             TestWeakRefs();
+        }
+
+        static void TestManifoldPoints()
+        {
+            int numManifolds = world.Dispatcher.NumManifolds;
+            for (int i = 0; i < numManifolds; i++)
+            {
+                PersistentManifold contactManifold = world.Dispatcher.GetManifoldByIndexInternal(i);
+                CollisionObject obA = contactManifold.Body0 as CollisionObject;
+                CollisionObject obB = contactManifold.Body1 as CollisionObject;
+
+                int numContacts = contactManifold.NumContacts;
+                for (int j = 0; j < numContacts; j++)
+                {
+                    ManifoldPoint pt = contactManifold.GetContactPoint(j);
+                    if (pt.Distance < 0.0f)
+                    {
+                        Vector3 ptA = pt.PositionWorldOnA;
+                        Vector3 ptB = pt.PositionWorldOnB;
+                        Vector3 normalOnB = pt.NormalWorldOnB;
+                    }
+                }
+            }
+        }
+
+        static void TestRayCast(CollisionObject testObject)
+        {
+            Vector3 rayFromWorld = testObject.WorldTransform.Origin + new Vector3(0, 0, -2);
+            Vector3 rayToWorld = testObject.WorldTransform.Origin + new Vector3(0, 0, 2);
+            var rayCallback = new CustomRayCallback(ref rayFromWorld, ref rayToWorld);
+            world.RayTest(ref rayFromWorld, ref rayToWorld, rayCallback);
+            if (rayCallback.CollisionObject != testObject)
+            {
+                Console.WriteLine("Raycast FAILED!");
+            }
+
+            AddToDisposeQueue(rayCallback);
         }
 
         static void TestWeakRefs()
@@ -101,7 +135,7 @@ namespace BulletSharpTest
             }
             else
             {
-                Console.WriteLine(name + " GC collection OK");
+                //Console.WriteLine(name + " GC collection OK");
             }
         }
 
@@ -136,6 +170,8 @@ namespace BulletSharpTest
 
         static void WorldPreTickCallback(DynamicsWorld world2, float timeStep)
         {
+            TestManifoldPoints();
+
             //Console.WriteLine("WorldPreTickCallback");
             if (!object.ReferenceEquals(world, world2))
             {
@@ -146,6 +182,7 @@ namespace BulletSharpTest
         static void DispatcherNearCallback(BroadphasePair collisionPair, CollisionDispatcher dispatcher,
 			DispatcherInfo dispatchInfo)
         {
+            TestManifoldPoints();
             //Console.WriteLine("DispatcherNearCallback");
         }
 
@@ -158,9 +195,9 @@ namespace BulletSharpTest
         }
     }
 
-    class CustomRayCallback : AllHitsRayResultCallback
+    class CustomRayCallback : ClosestRayResultCallback
     {
-        public CustomRayCallback(Vector3 rayFrom, Vector3 rayTo)
+        public CustomRayCallback(ref Vector3 rayFrom, ref Vector3 rayTo)
             : base(rayFrom, rayTo)
         {
         }

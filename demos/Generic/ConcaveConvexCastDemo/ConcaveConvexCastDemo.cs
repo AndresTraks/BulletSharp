@@ -120,10 +120,14 @@ namespace ConcaveConvexCastDemo
 
         public void Cast(CollisionWorld cw)
         {
-            for (int i = 0; i < NUMRAYS_IN_BAR; i++)
+            using (var cb = new ClosestConvexResultCallback(Vector3.Zero, Vector3.Zero))
             {
-                using (var cb = new ClosestConvexResultCallback(ref source[i], ref dest[i]))
+                for (int i = 0; i < NUMRAYS_IN_BAR; i++)
                 {
+                    cb.ClosestHitFraction = 1.0f;
+                    cb.ConvexFromWorld = source[i];
+                    cb.ConvexToWorld = dest[i];
+
                     Quaternion qFrom = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
                     Quaternion qTo = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.7f);
                     Matrix from = Matrix.RotationQuaternion(qFrom) * Matrix.Translation(source[i]);
