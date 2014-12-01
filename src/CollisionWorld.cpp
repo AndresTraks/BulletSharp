@@ -746,12 +746,14 @@ CollisionWorld::!CollisionWorld()
 
 	OnDisposing(this, nullptr);
 
+#ifndef DISABLE_DEBUGDRAW
 	// Clear IDebugDraw wrapper
 	DebugDrawer = nullptr;
 	if (_dispatchInfo && _dispatchInfo->_debugDrawWrapper) {
 		delete _dispatchInfo->_debugDrawWrapper;
 		_dispatchInfo->_debugDrawWrapper = 0;
 	}
+#endif
 
 	btDynamicsWorld* dynamicsWorld = dynamic_cast<btDynamicsWorld*>(_native);
 	if (dynamicsWorld != 0)

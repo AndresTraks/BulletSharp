@@ -25,12 +25,16 @@ namespace BulletSharp
 			Continuous = btDispatcherInfo::DISPATCH_CONTINUOUS
 		};
 
+#ifndef DISABLE_DEBUGDRAW
 	private:
 		IDebugDraw^ _debugDraw;
+#endif
 
 	internal:
 		btDispatcherInfo* _native;
+#ifndef DISABLE_DEBUGDRAW
 		DebugDrawWrapper* _debugDrawWrapper;
+#endif
 
 		DispatcherInfo(btDispatcherInfo* native);
 

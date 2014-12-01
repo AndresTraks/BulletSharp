@@ -477,8 +477,10 @@ namespace BulletSharp
 		Dispatcher^ _dispatcher;
 		BroadphaseInterface^ _broadphase;
 
+#ifndef DISABLE_DEBUGDRAW
 	internal:
 		IDebugDraw^ _debugDrawer;
+#endif
 
 	public:
 		!CollisionWorld();
