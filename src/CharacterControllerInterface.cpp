@@ -34,7 +34,15 @@ CharacterControllerInterface::!CharacterControllerInterface()
 #ifndef DISABLE_DEBUGDRAW
 void CharacterControllerInterface::DebugDraw(IDebugDraw^ debugDrawer)
 {
-	_native->debugDraw(DebugDraw::GetUnmanaged(debugDrawer));
+	BulletSharp::DebugDraw^ cast = dynamic_cast<BulletSharp::DebugDraw^>(debugDrawer);
+	if (cast) {
+		_native->debugDraw(cast->_native);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDrawer, false);
+		_native->debugDraw(wrapper);
+		delete wrapper;
+	}
 }
 #endif
 

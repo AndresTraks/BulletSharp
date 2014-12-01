@@ -17,8 +17,6 @@ namespace BulletSharp
 
 	internal:
 		DebugDraw(DebugDrawWrapper* debugDraw);
-		static IDebugDraw^ GetManaged(btIDebugDraw* debugDraw);
-		static DebugDrawWrapper* GetUnmanaged(IDebugDraw^ debugDraw);
 
 	public:
 		!DebugDraw();
@@ -77,9 +75,9 @@ namespace BulletSharp
 	class DebugDrawWrapper : public btIDebugDraw
 	{
 	public:
-		gcroot<IDebugDraw^> _debugDraw;
+		GCHandle _debugDraw;
 
-		DebugDrawWrapper(IDebugDraw^ debugDraw);
+		DebugDrawWrapper(IDebugDraw^ debugDraw, bool weakReference);
 		virtual ~DebugDrawWrapper();
 
 		virtual void draw3dText(const btVector3& location, const char* textString);

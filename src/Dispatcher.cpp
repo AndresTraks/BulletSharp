@@ -38,11 +38,51 @@ void DispatcherInfo::ConvexConservativeDistanceThreshold::set(btScalar value)
 #ifndef DISABLE_DEBUGDRAW
 IDebugDraw^ DispatcherInfo::DebugDraw::get()
 {
-	return BulletSharp::DebugDraw::GetManaged(_native->m_debugDraw);
+	if (_debugDrawWrapper) {
+		if (_debugDrawWrapper == _native->m_debugDraw) {
+			return _debugDraw;
+		} else {
+			delete _debugDrawWrapper;
+			_debugDrawWrapper = 0;
+		}
+	}
+
+	if (_native->m_debugDraw) {
+		DebugDrawWrapper* wrapper = dynamic_cast<DebugDrawWrapper*>(_native->m_debugDraw);
+		DebugDraw = static_cast<IDebugDraw^>(wrapper->_debugDraw.Target);
+		return _debugDraw;
+	}
+
+	return nullptr;
 }
 void DispatcherInfo::DebugDraw::set(IDebugDraw^ value)
 {
-	_native->m_debugDraw = BulletSharp::DebugDraw::GetUnmanaged(value);
+	if (_debugDrawWrapper) {
+		if (_debugDrawWrapper == _native->m_debugDraw && _debugDrawWrapper->_debugDraw.Target == value) {
+			return;
+		}
+
+		// Clear IDebugDraw wrapper
+		delete _debugDrawWrapper;
+		_debugDrawWrapper = 0;
+	}
+
+	_debugDraw = value;
+	if (!value) {
+		_debugDrawWrapper = 0;
+		_native->m_debugDraw = 0;
+		return;
+	}
+
+	BulletSharp::DebugDraw^ cast = dynamic_cast<BulletSharp::DebugDraw^>(value);
+	if (cast) {
+		_debugDrawWrapper = 0;
+		_native->m_debugDraw = cast->_native;
+	} else {
+		// Create IDebugDraw wrapper, remember to delete it
+		_debugDrawWrapper = new DebugDrawWrapper(value, false);
+		_native->m_debugDraw = _debugDrawWrapper;
+	}
 }
 #endif
 

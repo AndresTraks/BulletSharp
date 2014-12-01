@@ -59,11 +59,36 @@ void ConvexCast::CastResult::AllowedPenetration::set(btScalar value)
 #ifndef DISABLE_DEBUGDRAW
 IDebugDraw^ ConvexCast::CastResult::DebugDrawer::get()
 {
-	return DebugDraw::GetManaged(_native->m_debugDrawer);
+	return _debugDrawer;
 }
 void ConvexCast::CastResult::DebugDrawer::set(IDebugDraw^ value)
 {
-	_native->m_debugDrawer = DebugDraw::GetUnmanaged(value);
+	if (_debugDrawer)
+	{
+		if (_debugDrawer == value) {
+			return;
+		}
+
+		// Clear IDebugDraw wrapper
+		if (!dynamic_cast<BulletSharp::DebugDraw^>(_debugDrawer)) {
+			delete _native->m_debugDrawer;
+		}
+	}
+
+	_debugDrawer = value;
+	if (!value) {
+		_native->m_debugDrawer = 0;
+		return;
+	}
+
+	BulletSharp::DebugDraw^ cast = dynamic_cast<BulletSharp::DebugDraw^>(value);
+	if (cast != nullptr) {
+		_native->m_debugDrawer = cast->_native;
+	} else {
+		// Create IDebugDraw wrapper, remember to delete it
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(value, false);
+		_native->m_debugDrawer = wrapper;
+	}
 }
 #endif
 

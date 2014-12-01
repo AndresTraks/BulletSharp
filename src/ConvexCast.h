@@ -14,6 +14,9 @@ namespace BulletSharp
 
 			CastResult(btConvexCast::CastResult* native);
 
+		private:
+			IDebugDraw^ _debugDrawer;
+
 		public:
 			!CastResult();
 		protected:

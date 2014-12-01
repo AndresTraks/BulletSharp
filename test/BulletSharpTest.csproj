@@ -51,8 +51,11 @@
       <HintPath>..\Release Generic\BulletSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DebugDrawTest.cs" />
+    <Compile Include="DebugDrawTest2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

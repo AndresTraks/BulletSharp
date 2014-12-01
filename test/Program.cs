@@ -60,11 +60,29 @@ namespace BulletSharpTest
             broadphase = null;
             world.OnDisposing += onDisposing;
             world.OnDisposed += onDisposed;
+            world.DebugDrawer = new DebugDrawTest();
+            AddToDisposeQueue(world.DebugDrawer);
             world.SetInternalTickCallback(WorldPreTickCallback);
             for (int i = 0; i < 600; i++)
             {
                 world.StepSimulation(1.0f / 60.0f);
             }
+
+            world.DispatchInfo.DebugDraw = new DebugDrawTest2();
+            AddToDisposeQueue(world.DispatchInfo.DebugDraw);
+            world.DispatchInfo.DebugDraw = world.DispatchInfo.DebugDraw;
+            AddToDisposeQueue(world.DispatchInfo.DebugDraw);
+            world.DispatchInfo.DebugDraw = null;
+            world.DebugDrawer = null;
+            world.DebugDrawer = new DebugDrawTest2();
+            world.StepSimulation(1.0f / 60.0f);
+            world.DebugDrawWorld();
+            AddToDisposeQueue(world.DispatchInfo.DebugDraw);
+
+            world.DebugDrawer = new DebugDrawTest();
+            world.DebugDrawWorld();
+            AddToDisposeQueue(world.DebugDrawer);
+            world.DebugDrawer = null;
 
             TestRayCast(dynamicObject);
             TestManifoldPoints();

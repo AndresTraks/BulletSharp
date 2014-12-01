@@ -307,6 +307,7 @@ namespace BulletSharp
 		D6Spring = D6_SPRING_CONSTRAINT_TYPE,
 		GearConstraint = GEAR_CONSTRAINT_TYPE,
 		FixedConstraint = FIXED_CONSTRAINT_TYPE,
+		D6Spring2 = D6_SPRING_2_CONSTRAINT_TYPE,
 		MaxConstraint = MAX_CONSTRAINT_TYPE
 	};
 

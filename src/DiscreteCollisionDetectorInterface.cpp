@@ -97,14 +97,29 @@ DiscreteCollisionDetectorInterface::!DiscreteCollisionDetectorInterface()
 void DiscreteCollisionDetectorInterface::GetClosestPoints(ClosestPointInput^ input,
 	Result^ output, IDebugDraw^ debugDraw, bool swapResults)
 {
-	_native->getClosestPoints(*input->_native, *output->_native, DebugDraw::GetUnmanaged(debugDraw),
-		swapResults);
+	DebugDraw^ debugDrawer = dynamic_cast<DebugDraw^>(debugDraw);
+	if (debugDrawer) {
+		_native->getClosestPoints(*input->_native, *output->_native, debugDrawer->_native, swapResults);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDraw, false);
+		_native->getClosestPoints(*input->_native, *output->_native, wrapper, swapResults);
+		delete wrapper;
+	}
 }
 
 void DiscreteCollisionDetectorInterface::GetClosestPoints(ClosestPointInput^ input,
 	Result^ output, IDebugDraw^ debugDraw)
 {
-	_native->getClosestPoints(*input->_native, *output->_native, DebugDraw::GetUnmanaged(debugDraw));
+	DebugDraw^ debugDrawer = dynamic_cast<DebugDraw^>(debugDraw);
+	if (debugDrawer) {
+		_native->getClosestPoints(*input->_native, *output->_native, debugDrawer->_native);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDraw, false);
+		_native->getClosestPoints(*input->_native, *output->_native, wrapper);
+		delete wrapper;
+	}
 }
 #else
 void DiscreteCollisionDetectorInterface::GetClosestPoints(ClosestPointInput^ input,

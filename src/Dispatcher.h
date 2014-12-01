@@ -9,10 +9,12 @@ namespace BulletSharp
 	ref class CollisionAlgorithm;
 	ref class CollisionDispatcher;
 	ref class CollisionObjectWrapper;
+	ref class CollisionWorld;
 	ref class OverlappingPairCache;
 	ref class PersistentManifold;
 	ref class PoolAllocator;
 	interface class IDebugDraw;
+	class DebugDrawWrapper;
 
 	public ref class DispatcherInfo
 	{
@@ -23,8 +25,12 @@ namespace BulletSharp
 			Continuous = btDispatcherInfo::DISPATCH_CONTINUOUS
 		};
 
+	private:
+		IDebugDraw^ _debugDraw;
+
 	internal:
 		btDispatcherInfo* _native;
+		DebugDrawWrapper* _debugDrawWrapper;
 
 		DispatcherInfo(btDispatcherInfo* native);
 

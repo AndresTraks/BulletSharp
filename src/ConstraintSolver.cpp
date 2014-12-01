@@ -69,13 +69,19 @@ void ConstraintSolver::AllSolved(ContactSolverInfo^ info
 #endif
 	)
 {
-	_native->allSolved(*(btContactSolverInfo*)info->_native,
 #ifndef DISABLE_DEBUGDRAW
-		DebugDraw::GetUnmanaged(debugDrawer)
+	DebugDraw^ cast = dynamic_cast<DebugDraw^>(debugDrawer);
+	if (cast) {
+		_native->allSolved(*(btContactSolverInfo*)info->_native, cast->_native);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDrawer, false);
+		_native->allSolved(*(btContactSolverInfo*)info->_native, wrapper);
+		delete wrapper;
+	}
 #else
-		0
+	_native->allSolved(*(btContactSolverInfo*)info->_native, 0);
 #endif
-	);
 }
 
 void ConstraintSolver::PrepareSolve(int numBodies, int numManifolds)
@@ -107,14 +113,23 @@ btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<Per
 	for (i=0; i<numBodies; i++)
 		bodiesTemp[i] = bodies[i]->_native;
 
-	btScalar ret = _native->solveGroup(bodiesTemp, numBodies, manifoldsTemp, numManifolds,
-		constraintsTemp, numConstraints, *(btContactSolverInfo*)info->_native,
+	btScalar ret;
 #ifndef DISABLE_DEBUGDRAW
-		DebugDraw::GetUnmanaged(debugDrawer),
+	DebugDraw^ cast = dynamic_cast<DebugDraw^>(debugDrawer);
+	if (cast) {
+		ret = _native->solveGroup(bodiesTemp, numBodies, manifoldsTemp, numManifolds,
+			constraintsTemp, numConstraints, *(btContactSolverInfo*)info->_native, cast->_native, dispatcher->_native);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDrawer, false);
+		ret = _native->solveGroup(bodiesTemp, numBodies, manifoldsTemp, numManifolds,
+			constraintsTemp, numConstraints, *(btContactSolverInfo*)info->_native, wrapper, dispatcher->_native);
+		delete wrapper;
+	}
 #else
-		0,
+	ret = _native->solveGroup(bodiesTemp, numBodies, manifoldsTemp, numManifolds,
+		constraintsTemp, numConstraints, *(btContactSolverInfo*)info->_native, 0, dispatcher->_native);
 #endif
-		dispatcher->_native);
 
 	delete[] bodiesTemp;
 	delete[] manifoldsTemp;

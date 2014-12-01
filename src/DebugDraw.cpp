@@ -7,7 +7,7 @@
 
 DebugDraw::DebugDraw()
 {
-	_native = new DebugDrawWrapper(this);
+	_native = new DebugDrawWrapper(this, true);
 	_native->setDebugMode(0);
 }
 
@@ -32,35 +32,6 @@ DebugDraw::!DebugDraw()
 	_native = NULL;
 
 	OnDisposed(this, nullptr);
-}
-
-IDebugDraw^ DebugDraw::GetManaged(btIDebugDraw* debugDraw)
-{
-	if (debugDraw == 0)
-		return nullptr;
-
-	if (ObjectTable::Contains((intptr_t)debugDraw))
-		return ObjectTable::GetObject<IDebugDraw^>((intptr_t)debugDraw);
-
-	return ((DebugDrawWrapper*)debugDraw)->_debugDraw;
-}
-
-DebugDrawWrapper* DebugDraw::GetUnmanaged(IDebugDraw^ debugDraw)
-{
-	if (debugDraw == nullptr)
-		return 0;
-
-	DebugDraw^ cast = dynamic_cast<DebugDraw^>(debugDraw);
-	if (cast != nullptr)
-		return cast->_native;
-
-	if (ObjectTable::Contains(debugDraw))
-		return (BulletSharp::DebugDrawWrapper*)ObjectTable::GetUnmanagedObject(debugDraw);
-
-	DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDraw);
-	ObjectTable::Add(debugDraw, wrapper);
-
-	return wrapper;
 }
 
 void DebugDraw::DrawAabb(Vector3% from, Vector3% to, BtColor color)
@@ -316,24 +287,26 @@ bool DebugDraw::IsDisposed::get()
 }
 
 
-DebugDrawWrapper::DebugDrawWrapper(IDebugDraw^ debugDraw)
+#define Managed static_cast<IDebugDraw^>(_debugDraw.Target)
+
+DebugDrawWrapper::DebugDrawWrapper(IDebugDraw^ debugDraw, bool weakReference)
 {
-	_debugDraw = debugDraw;
+	_debugDraw = GCHandle::Alloc(debugDraw, weakReference ? GCHandleType::Weak : GCHandleType::Normal);
 }
 
 DebugDrawWrapper::~DebugDrawWrapper()
 {
-	ObjectTable::Remove(this);
+	_debugDraw.Free();
 }
 
 void DebugDrawWrapper::draw3dText(const btVector3& location, const char* textString)
 {
-	_debugDraw->Draw3dText(Math::BtVector3ToVector3(&location), StringConv::UnmanagedToManaged(textString));
+	Managed->Draw3dText(Math::BtVector3ToVector3(&location), StringConv::UnmanagedToManaged(textString));
 }
 
 void DebugDrawWrapper::drawAabb(const btVector3& from, const btVector3& to, const btVector3& color)
 {
-	_debugDraw->DrawAabb(
+	Managed->DrawAabb(
 		Math::BtVector3ToVector3(&from), Math::BtVector3ToVector3(&to), BtVectorToBtColor(color));
 }
 
@@ -341,7 +314,7 @@ void DebugDrawWrapper::drawArc(const btVector3& center, const btVector3& normal,
 	btScalar radiusA, btScalar radiusB, btScalar minAngle, btScalar maxAngle,
 	const btVector3& color, bool drawSect, btScalar stepDegrees)
 {
-	_debugDraw->DrawArc(Math::BtVector3ToVector3(&center), Math::BtVector3ToVector3(&normal), Math::BtVector3ToVector3(&axis),
+	Managed->DrawArc(Math::BtVector3ToVector3(&center), Math::BtVector3ToVector3(&normal), Math::BtVector3ToVector3(&axis),
 		radiusA, radiusB, minAngle, maxAngle, BtVectorToBtColor(color), drawSect, stepDegrees);
 }
 
@@ -349,106 +322,106 @@ void DebugDrawWrapper::drawArc(const btVector3& center, const btVector3& normal,
 	btScalar radiusA, btScalar radiusB, btScalar minAngle, btScalar maxAngle,
 	const btVector3& color, bool drawSect)
 {
-	_debugDraw->DrawArc(Math::BtVector3ToVector3(&center), Math::BtVector3ToVector3(&normal), Math::BtVector3ToVector3(&axis),
+	Managed->DrawArc(Math::BtVector3ToVector3(&center), Math::BtVector3ToVector3(&normal), Math::BtVector3ToVector3(&axis),
 		radiusA, radiusB, minAngle, maxAngle, BtVectorToBtColor(color), drawSect);
 }
 
 void DebugDrawWrapper::drawBox(const btVector3& bbMin, const btVector3& bbMax, const btTransform& trans, const btVector3& color)
 {
-	_debugDraw->DrawBox(
+	Managed->DrawBox(
 		Math::BtVector3ToVector3(&bbMin), Math::BtVector3ToVector3(&bbMax),	Math::BtTransformToMatrix(&trans), BtVectorToBtColor(color));
 }
 
 void DebugDrawWrapper::drawBox(const btVector3& bbMin, const btVector3& bbMax, const btVector3& color)
 {
-	_debugDraw->DrawBox(
+	Managed->DrawBox(
 		Math::BtVector3ToVector3(&bbMin), Math::BtVector3ToVector3(&bbMax),	BtVectorToBtColor(color));
 }
 
 void DebugDrawWrapper::drawCapsule(btScalar radius, btScalar halfHeight, int upAxis, const btTransform& transform, const btVector3& color)
 {
-	_debugDraw->DrawCapsule(radius, halfHeight, upAxis, Math::BtTransformToMatrix(&transform), BtVectorToBtColor(color));
+	Managed->DrawCapsule(radius, halfHeight, upAxis, Math::BtTransformToMatrix(&transform), BtVectorToBtColor(color));
 }
 
 void DebugDrawWrapper::drawCone(btScalar radius, btScalar height, int upAxis, const btTransform& transform, const btVector3& color)
 {
-	_debugDraw->DrawCone(radius, height, upAxis, Math::BtTransformToMatrix(&transform), BtVectorToBtColor(color));
+	Managed->DrawCone(radius, height, upAxis, Math::BtTransformToMatrix(&transform), BtVectorToBtColor(color));
 }
 
 void DebugDrawWrapper::drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color)
 {
-	_debugDraw->DrawContactPoint(Math::BtVector3ToVector3(&PointOnB), Math::BtVector3ToVector3(&normalOnB),
+	Managed->DrawContactPoint(Math::BtVector3ToVector3(&PointOnB), Math::BtVector3ToVector3(&normalOnB),
 		distance, lifeTime, BtVectorToBtColor(color));
 }
 
 void DebugDrawWrapper::drawCylinder(btScalar radius, btScalar halfHeight, int upAxis, const btTransform& transform, const btVector3& color)
 {
-	_debugDraw->DrawCylinder(radius, halfHeight, upAxis, Math::BtTransformToMatrix(&transform), BtVectorToBtColor(color));
+	Managed->DrawCylinder(radius, halfHeight, upAxis, Math::BtTransformToMatrix(&transform), BtVectorToBtColor(color));
 }
 
 void DebugDrawWrapper::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
 {
-	_debugDraw->DrawLine(
+	Managed->DrawLine(
 		Math::BtVector3ToVector3(&from), Math::BtVector3ToVector3(&to), BtVectorToBtColor(color));
 }
 
 void DebugDrawWrapper::drawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor)
 {
-	_debugDraw->DrawLine(
+	Managed->DrawLine(
 		Math::BtVector3ToVector3(&from), Math::BtVector3ToVector3(&to), BtVectorToBtColor(fromColor), BtVectorToBtColor(toColor));
 }
 
 void DebugDrawWrapper::drawPlane(const btVector3& planeNormal, btScalar planeConst, const btTransform& transform, const btVector3& color)
 {
-	_debugDraw->DrawPlane(Math::BtVector3ToVector3(&planeNormal), planeConst, Math::BtTransformToMatrix(&transform), BtVectorToBtColor(color));
+	Managed->DrawPlane(Math::BtVector3ToVector3(&planeNormal), planeConst, Math::BtTransformToMatrix(&transform), BtVectorToBtColor(color));
 }
 
 void DebugDrawWrapper::drawSphere(const btVector3& p, btScalar radius, const btVector3& color)
 {
-	_debugDraw->DrawSphere(Math::BtVector3ToVector3(&p), radius, BtVectorToBtColor(color));
+	Managed->DrawSphere(Math::BtVector3ToVector3(&p), radius, BtVectorToBtColor(color));
 }
 
 void DebugDrawWrapper::drawSphere(btScalar radius, const btTransform& transform, const btVector3& color)
 {
-	_debugDraw->DrawSphere(radius, Math::BtTransformToMatrix(&transform), BtVectorToBtColor(color));
+	Managed->DrawSphere(radius, Math::BtTransformToMatrix(&transform), BtVectorToBtColor(color));
 }
 
 void DebugDrawWrapper::drawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
 	btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color, btScalar stepDegrees, bool drawCenter)
 {
-	_debugDraw->DrawSpherePatch(Math::BtVector3ToVector3(&center), Math::BtVector3ToVector3(&up), Math::BtVector3ToVector3(&axis),
+	Managed->DrawSpherePatch(Math::BtVector3ToVector3(&center), Math::BtVector3ToVector3(&up), Math::BtVector3ToVector3(&axis),
 		radius, minTh, maxTh, minPs, maxPs, BtVectorToBtColor(color), stepDegrees, drawCenter);
 }
 
 void DebugDrawWrapper::drawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
 	btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color, btScalar stepDegrees)
 {
-	_debugDraw->DrawSpherePatch(Math::BtVector3ToVector3(&center), Math::BtVector3ToVector3(&up), Math::BtVector3ToVector3(&axis),
+	Managed->DrawSpherePatch(Math::BtVector3ToVector3(&center), Math::BtVector3ToVector3(&up), Math::BtVector3ToVector3(&axis),
 		radius, minTh, maxTh, minPs, maxPs, BtVectorToBtColor(color), stepDegrees);
 }
 
 void DebugDrawWrapper::drawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
 	btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color)
 {
-	_debugDraw->DrawSpherePatch(Math::BtVector3ToVector3(&center), Math::BtVector3ToVector3(&up), Math::BtVector3ToVector3(&axis),
+	Managed->DrawSpherePatch(Math::BtVector3ToVector3(&center), Math::BtVector3ToVector3(&up), Math::BtVector3ToVector3(&axis),
 		radius, minTh, maxTh, minPs, maxPs, BtVectorToBtColor(color));
 }
 
 void DebugDrawWrapper::drawTransform(const btTransform& transform, btScalar orthoLen)
 {
-	_debugDraw->DrawTransform(Math::BtTransformToMatrix(&transform), orthoLen);
+	Managed->DrawTransform(Math::BtTransformToMatrix(&transform), orthoLen);
 }
 
 void DebugDrawWrapper::drawTriangle(const btVector3& v0, const btVector3& v1, const btVector3& v2, const btVector3& color, btScalar)
 {
-	_debugDraw->DrawTriangle(Math::BtVector3ToVector3(&v0), Math::BtVector3ToVector3(&v1), Math::BtVector3ToVector3(&v2),
+	Managed->DrawTriangle(Math::BtVector3ToVector3(&v0), Math::BtVector3ToVector3(&v1), Math::BtVector3ToVector3(&v2),
 		BtVectorToBtColor(color), 0);
 }
 
 void DebugDrawWrapper::drawTriangle(const btVector3& v0, const btVector3& v1, const btVector3& v2,
 	const btVector3& n0, const btVector3& n1, const btVector3& n2, const btVector3& color, btScalar alpha)
 {
-	_debugDraw->DrawTriangle(Math::BtVector3ToVector3(&v0), Math::BtVector3ToVector3(&v1), Math::BtVector3ToVector3(&v2),
+	Managed->DrawTriangle(Math::BtVector3ToVector3(&v0), Math::BtVector3ToVector3(&v1), Math::BtVector3ToVector3(&v2),
 		Math::BtVector3ToVector3(&n0), Math::BtVector3ToVector3(&n1), Math::BtVector3ToVector3(&n2), BtVectorToBtColor(color), alpha);
 }
 
@@ -552,21 +525,23 @@ void DebugDrawWrapper::baseDrawTriangle(const btVector3& v0, const btVector3& v1
 
 void DebugDrawWrapper::flushLines()
 {
-	_debugDraw->FlushLines();
+	Managed->FlushLines();
 }
 
 void DebugDrawWrapper::reportErrorWarning(const char* warningString)
 {
-	_debugDraw->ReportErrorWarning(StringConv::UnmanagedToManaged(warningString));
+	Managed->ReportErrorWarning(StringConv::UnmanagedToManaged(warningString));
 }
 
 void DebugDrawWrapper::setDebugMode(int debugMode)
 {
-	_debugDraw->DebugMode = (BulletSharp::DebugDrawModes)debugMode;
+	Managed->DebugMode = (BulletSharp::DebugDrawModes)debugMode;
 }
 int	DebugDrawWrapper::getDebugMode() const
 {
-	return (int)_debugDraw->DebugMode;
+	// TODO: Why is this method const?
+	DebugDrawWrapper* wrapper = (DebugDrawWrapper*)this;
+	return (int)(static_cast<IDebugDraw^>(wrapper->_debugDraw.Target)->DebugMode);
 }
 
 #endif

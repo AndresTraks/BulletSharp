@@ -469,10 +469,16 @@ namespace BulletSharp
 		btCollisionWorld* _native;
 		CollisionWorld(btCollisionWorld* native);
 
+	private:
+		DispatcherInfo^ _dispatchInfo;
+
 	protected:
 		AlignedCollisionObjectArray^ _collisionObjectArray;
 		Dispatcher^ _dispatcher;
 		BroadphaseInterface^ _broadphase;
+
+	internal:
+		IDebugDraw^ _debugDrawer;
 
 	public:
 		!CollisionWorld();

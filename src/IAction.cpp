@@ -19,7 +19,14 @@ ActionInterfaceWrapper::~ActionInterfaceWrapper()
 void ActionInterfaceWrapper::debugDraw(btIDebugDraw* debugDrawer)
 {
 #ifndef DISABLE_DEBUGDRAW
-	_actionInterface->DebugDraw(DebugDraw::GetManaged(debugDrawer));
+	DebugDrawWrapper* wrapper = dynamic_cast<DebugDrawWrapper*>(debugDrawer);
+	if (wrapper) {
+		_actionInterface->DebugDraw(static_cast<IDebugDraw^>(wrapper->_debugDraw.Target));
+	} else if (_collisionWorld->_native->getDebugDrawer() == debugDrawer) {
+		_actionInterface->DebugDraw(_collisionWorld->_debugDrawer);
+	} else {
+		throw gcnew NotImplementedException("Unknown debug drawer!");
+	}
 #endif
 }
 

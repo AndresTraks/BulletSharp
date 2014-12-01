@@ -40,15 +40,28 @@ bool ConvexPenetrationDepthSolver::CalcPenDepth(SimplexSolverInterface^ simplexS
 	btVector3* vTemp = ALIGNED_NEW(btVector3);
 	btVector3* paTemp = ALIGNED_NEW(btVector3);
 	btVector3* pbTemp = ALIGNED_NEW(btVector3);
-	bool ret = _native->calcPenDepth(*simplexSolver->_native, (btConvexShape*)convexA->_native,
-		(btConvexShape*)convexB->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
-		*vTemp, *paTemp, *pbTemp
+
+	bool ret;
 #ifndef DISABLE_DEBUGDRAW
-		, DebugDraw::GetUnmanaged(debugDraw)
+	DebugDraw^ debugDrawer = dynamic_cast<DebugDraw^>(debugDraw);
+	if (debugDrawer) {
+		ret = _native->calcPenDepth(*simplexSolver->_native, (btConvexShape*)convexA->_native,
+			(btConvexShape*)convexB->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
+			*vTemp, *paTemp, *pbTemp, debugDrawer->_native);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDraw, false);
+		ret = _native->calcPenDepth(*simplexSolver->_native, (btConvexShape*)convexA->_native,
+			(btConvexShape*)convexB->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
+			*vTemp, *paTemp, *pbTemp, wrapper);
+		delete wrapper;
+	}
 #else
-		, 0
+	ret = _native->calcPenDepth(*simplexSolver->_native, (btConvexShape*)convexA->_native,
+		(btConvexShape*)convexB->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
+		*vTemp, *paTemp, *pbTemp, 0);
 #endif
-		);
+
 	TRANSFORM_DEL(transA);
 	TRANSFORM_DEL(transB);
 	Math::BtVector3ToVector3(vTemp, v);

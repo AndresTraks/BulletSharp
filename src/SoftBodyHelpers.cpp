@@ -330,79 +330,177 @@ BulletSharp::SoftBody::SoftBody^ SoftBodyHelpers::CreateRope(SoftBodyWorldInfo^ 
 #ifndef DISABLE_DEBUGDRAW
 void SoftBodyHelpers::Draw(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, DrawFlags drawFlags)
 {
-	btSoftBodyHelpers::Draw((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw),
-		(int)drawFlags);
+	DebugDraw^ debugDrawer = dynamic_cast<DebugDraw^>(iDraw);
+	if (debugDrawer) {
+		btSoftBodyHelpers::Draw((btSoftBody*)psb->_native, debugDrawer->_native, (int)drawFlags);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDrawer, false);
+		btSoftBodyHelpers::Draw((btSoftBody*)psb->_native, wrapper, (int)drawFlags);
+		delete wrapper;
+	}
 }
 
 void SoftBodyHelpers::Draw(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw)
 {
-	btSoftBodyHelpers::Draw((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw));
+	DebugDraw^ debugDrawer = dynamic_cast<DebugDraw^>(iDraw);
+	if (debugDrawer) {
+		btSoftBodyHelpers::Draw((btSoftBody*)psb->_native, debugDrawer->_native);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDrawer, false);
+		btSoftBodyHelpers::Draw((btSoftBody*)psb->_native, wrapper);
+		delete wrapper;
+	}
 }
 
-void SoftBodyHelpers::DrawClusterTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int mindepth,
-	int maxdepth)
+void SoftBodyHelpers::DrawClusterTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth,
+	int maxDepth)
 {
-	btSoftBodyHelpers::DrawClusterTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw),
-		mindepth, maxdepth);
+	DebugDraw^ debugDrawer = dynamic_cast<DebugDraw^>(iDraw);
+	if (debugDrawer) {
+		btSoftBodyHelpers::DrawClusterTree((btSoftBody*)psb->_native, debugDrawer->_native, minDepth, maxDepth);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDrawer, false);
+		btSoftBodyHelpers::DrawClusterTree((btSoftBody*)psb->_native, wrapper, minDepth, maxDepth);
+		delete wrapper;
+	}
 }
 
-void SoftBodyHelpers::DrawClusterTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int mindepth)
+void SoftBodyHelpers::DrawClusterTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth)
 {
-	btSoftBodyHelpers::DrawClusterTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw),
-		mindepth);
+	DebugDraw^ debugDrawer = dynamic_cast<DebugDraw^>(iDraw);
+	if (debugDrawer) {
+		btSoftBodyHelpers::DrawClusterTree((btSoftBody*)psb->_native, debugDrawer->_native, minDepth);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDrawer, false);
+		btSoftBodyHelpers::DrawClusterTree((btSoftBody*)psb->_native, wrapper, minDepth);
+		delete wrapper;
+	}
 }
 
 void SoftBodyHelpers::DrawClusterTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw)
 {
-	btSoftBodyHelpers::DrawClusterTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw));
+	DebugDraw^ debugDrawer = dynamic_cast<DebugDraw^>(iDraw);
+	if (debugDrawer) {
+		btSoftBodyHelpers::DrawClusterTree((btSoftBody*)psb->_native, debugDrawer->_native);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDrawer, false);
+		btSoftBodyHelpers::DrawClusterTree((btSoftBody*)psb->_native, wrapper);
+		delete wrapper;
+	}
 }
 
-void SoftBodyHelpers::DrawFaceTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int mindepth,
-	int maxdepth)
+void SoftBodyHelpers::DrawFaceTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth,
+	int maxDepth)
 {
-	btSoftBodyHelpers::DrawFaceTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw),
-		mindepth, maxdepth);
+	DebugDraw^ debugDrawer = dynamic_cast<DebugDraw^>(iDraw);
+	if (debugDrawer) {
+		btSoftBodyHelpers::DrawFaceTree((btSoftBody*)psb->_native, debugDrawer->_native, minDepth, maxDepth);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDrawer, false);
+		btSoftBodyHelpers::DrawFaceTree((btSoftBody*)psb->_native, wrapper, minDepth, maxDepth);
+		delete wrapper;
+	}
 }
 
-void SoftBodyHelpers::DrawFaceTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int mindepth)
+void SoftBodyHelpers::DrawFaceTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth)
 {
-	btSoftBodyHelpers::DrawFaceTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw),
-		mindepth);
+	DebugDraw^ debugDrawer = dynamic_cast<DebugDraw^>(iDraw);
+	if (debugDrawer) {
+		btSoftBodyHelpers::DrawFaceTree((btSoftBody*)psb->_native, debugDrawer->_native, minDepth);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDrawer, false);
+		btSoftBodyHelpers::DrawFaceTree((btSoftBody*)psb->_native, wrapper, minDepth);
+		delete wrapper;
+	}
 }
 
 void SoftBodyHelpers::DrawFaceTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw)
 {
-	btSoftBodyHelpers::DrawFaceTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw));
+	DebugDraw^ debugDrawer = dynamic_cast<DebugDraw^>(iDraw);
+	if (debugDrawer) {
+		btSoftBodyHelpers::DrawFaceTree((btSoftBody*)psb->_native, debugDrawer->_native);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDrawer, false);
+		btSoftBodyHelpers::DrawFaceTree((btSoftBody*)psb->_native, wrapper);
+		delete wrapper;
+	}
 }
 
 void SoftBodyHelpers::DrawFrame(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw)
 {
-	btSoftBodyHelpers::DrawFrame((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw));
+	DebugDraw^ debugDrawer = dynamic_cast<DebugDraw^>(iDraw);
+	if (debugDrawer) {
+		btSoftBodyHelpers::DrawFrame((btSoftBody*)psb->_native, debugDrawer->_native);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDrawer, false);
+		btSoftBodyHelpers::DrawFrame((btSoftBody*)psb->_native, wrapper);
+		delete wrapper;
+	}
 }
 
 void SoftBodyHelpers::DrawInfos(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, bool masses, bool areas,
 	bool stress)
 {
-	btSoftBodyHelpers::DrawInfos((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw),
-		masses, areas, stress);
+	DebugDraw^ debugDrawer = dynamic_cast<DebugDraw^>(iDraw);
+	if (debugDrawer) {
+		btSoftBodyHelpers::DrawInfos((btSoftBody*)psb->_native, debugDrawer->_native,
+			masses, areas, stress);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDrawer, false);
+		btSoftBodyHelpers::DrawInfos((btSoftBody*)psb->_native, wrapper,
+			masses, areas, stress);
+		delete wrapper;
+	}
 }
 
-void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int mindepth,
-	int maxdepth)
+void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth,
+	int maxDepth)
 {
-	btSoftBodyHelpers::DrawNodeTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw),
-		mindepth, maxdepth);
+	DebugDraw^ debugDrawer = dynamic_cast<DebugDraw^>(iDraw);
+	if (debugDrawer) {
+		btSoftBodyHelpers::DrawNodeTree((btSoftBody*)psb->_native, debugDrawer->_native, minDepth, maxDepth);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDrawer, false);
+		btSoftBodyHelpers::DrawNodeTree((btSoftBody*)psb->_native, wrapper, minDepth, maxDepth);
+		delete wrapper;
+	}
 }
 
-void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int mindepth)
+void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw, int minDepth)
 {
-	btSoftBodyHelpers::DrawNodeTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw),
-		mindepth);
+	DebugDraw^ debugDrawer = dynamic_cast<DebugDraw^>(iDraw);
+	if (debugDrawer) {
+		btSoftBodyHelpers::DrawNodeTree((btSoftBody*)psb->_native, debugDrawer->_native, minDepth);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDrawer, false);
+		btSoftBodyHelpers::DrawNodeTree((btSoftBody*)psb->_native, wrapper, minDepth);
+		delete wrapper;
+	}
 }
 
 void SoftBodyHelpers::DrawNodeTree(BulletSharp::SoftBody::SoftBody^ psb, IDebugDraw^ iDraw)
 {
-	btSoftBodyHelpers::DrawNodeTree((btSoftBody*)psb->_native, DebugDraw::GetUnmanaged(iDraw));
+	DebugDraw^ debugDrawer = dynamic_cast<DebugDraw^>(iDraw);
+	if (debugDrawer) {
+		btSoftBodyHelpers::DrawNodeTree((btSoftBody*)psb->_native, debugDrawer->_native);
+	} else {
+		// Temporary IDebugDraw wrapper
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDrawer, false);
+		btSoftBodyHelpers::DrawNodeTree((btSoftBody*)psb->_native, wrapper);
+		delete wrapper;
+	}
 }
 #endif
 

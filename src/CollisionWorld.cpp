@@ -746,6 +746,13 @@ CollisionWorld::!CollisionWorld()
 
 	OnDisposing(this, nullptr);
 
+	// Clear IDebugDraw wrapper
+	DebugDrawer = nullptr;
+	if (_dispatchInfo && _dispatchInfo->_debugDrawWrapper) {
+		delete _dispatchInfo->_debugDrawWrapper;
+		_dispatchInfo->_debugDrawWrapper = 0;
+	}
+
 	btDynamicsWorld* dynamicsWorld = dynamic_cast<btDynamicsWorld*>(_native);
 	if (dynamicsWorld != 0)
 	{
@@ -949,11 +956,36 @@ AlignedCollisionObjectArray^ CollisionWorld::CollisionObjectArray::get()
 #ifndef DISABLE_DEBUGDRAW
 IDebugDraw^ CollisionWorld::DebugDrawer::get()
 {
-	return DebugDraw::GetManaged(_native->getDebugDrawer());
+	return _debugDrawer;
 }
 void CollisionWorld::DebugDrawer::set(IDebugDraw^ debugDrawer)
 {
-	_native->setDebugDrawer(DebugDraw::GetUnmanaged(debugDrawer));
+	if (_debugDrawer)
+	{
+		if (_debugDrawer == debugDrawer) {
+			return;
+		}
+
+		// Clear IDebugDraw wrapper
+		if (!dynamic_cast<DebugDraw^>(_debugDrawer)) {
+			delete _native->getDebugDrawer();
+		}
+	}
+
+	_debugDrawer = debugDrawer;
+	if (!debugDrawer) {
+		_native->setDebugDrawer(0);
+		return;
+	}
+
+	DebugDraw^ cast = dynamic_cast<DebugDraw^>(debugDrawer);
+	if (cast != nullptr) {
+		_native->setDebugDrawer(cast->_native);
+	} else {
+		// Create IDebugDraw wrapper, remember to delete it
+		DebugDrawWrapper* wrapper = new DebugDrawWrapper(debugDrawer, false);
+		_native->setDebugDrawer(wrapper);
+	}
 }
 #endif
 
@@ -964,7 +996,10 @@ BulletSharp::Dispatcher^ CollisionWorld::Dispatcher::get()
 
 DispatcherInfo^ CollisionWorld::DispatchInfo::get()
 {
-	return gcnew DispatcherInfo(&_native->getDispatchInfo());
+	if (!_dispatchInfo) {
+		_dispatchInfo = gcnew DispatcherInfo(&_native->getDispatchInfo());
+	}
+	return _dispatchInfo;
 }
 
 bool CollisionWorld::ForceUpdateAllAabbs::get()
