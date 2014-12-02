@@ -121,6 +121,7 @@ namespace BulletSharp
 
 	internal:
 		btDispatcher* _native;
+		Dictionary<IntPtr, DispatcherInfo^>^ _dispatcherInfoRefs;
 
 		Dispatcher(btDispatcher* native);
 

@@ -171,6 +171,7 @@ void DispatcherInfo::UseEpa::set(bool value)
 Dispatcher::Dispatcher(btDispatcher* native)
 {
 	_native = native;
+	_dispatcherInfoRefs = gcnew Dictionary<IntPtr, DispatcherInfo^>();
 }
 
 Dispatcher::~Dispatcher()

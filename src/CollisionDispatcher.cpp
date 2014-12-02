@@ -17,9 +17,16 @@ CollisionDispatcher::CollisionDispatcher(btCollisionDispatcher* native)
 
 void CollisionDispatcher::NearCallbackUnmanaged(IntPtr collisionPair, IntPtr dispatcher, IntPtr dispatchInfo)
 {
+	DispatcherInfo^ dispatcherInfoRef;
+	if (_dispatcherInfoRefs->ContainsKey(dispatchInfo)) {
+		dispatcherInfoRef = _dispatcherInfoRefs[dispatchInfo];
+	} else {
+		dispatcherInfoRef = gcnew DispatcherInfo(static_cast<btDispatcherInfo*>(dispatchInfo.ToPointer()));
+	}
+
 	_nearCallback(
 		gcnew BroadphasePair(static_cast<btBroadphasePair*>(collisionPair.ToPointer())), this,
-		gcnew DispatcherInfo(static_cast<btDispatcherInfo*>(dispatchInfo.ToPointer())));
+		dispatcherInfoRef);
 }
 
 CollisionDispatcher::CollisionDispatcher(BulletSharp::CollisionConfiguration^ collisionConfiguration)

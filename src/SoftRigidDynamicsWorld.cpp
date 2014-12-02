@@ -34,7 +34,7 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 #ifndef DISABLE_CONSTRAINTS
 	_constraintSolver = constraintSolver;
 #endif
-	_dispatcher = dispatcher;
+	Dispatcher = dispatcher;
 	_broadphase = pairCache;
 }
 
@@ -54,7 +54,7 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 #ifndef DISABLE_CONSTRAINTS
 	_constraintSolver = constraintSolver;
 #endif
-	_dispatcher = dispatcher;
+	Dispatcher = dispatcher;
 	_broadphase = pairCache;
 }
 

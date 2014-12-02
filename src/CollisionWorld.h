@@ -471,10 +471,10 @@ namespace BulletSharp
 
 	private:
 		DispatcherInfo^ _dispatchInfo;
+		Dispatcher^ _dispatcher;
 
 	protected:
 		AlignedCollisionObjectArray^ _collisionObjectArray;
-		Dispatcher^ _dispatcher;
 		BroadphaseInterface^ _broadphase;
 
 #ifndef DISABLE_DEBUGDRAW
@@ -540,6 +540,8 @@ namespace BulletSharp
 		property Dispatcher^ Dispatcher
 		{
 			BulletSharp::Dispatcher^ get();
+		internal:
+			void set(BulletSharp::Dispatcher^ value);
 		}
 
 		property DispatcherInfo^ DispatchInfo

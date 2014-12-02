@@ -37,7 +37,7 @@ DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher
 #ifndef DISABLE_CONSTRAINTS
 	_constraintSolver = constraintSolver;
 #endif
-	_dispatcher = dispatcher;
+	Dispatcher = dispatcher;
 	_broadphase = pairCache;
 }
 

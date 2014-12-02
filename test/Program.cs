@@ -200,6 +200,7 @@ namespace BulletSharpTest
         static void DispatcherNearCallback(BroadphasePair collisionPair, CollisionDispatcher dispatcher,
 			DispatcherInfo dispatchInfo)
         {
+            //AddToDisposeQueue(dispatchInfo.DebugDraw);
             TestManifoldPoints();
             //Console.WriteLine("DispatcherNearCallback");
         }

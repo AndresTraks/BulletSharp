@@ -730,7 +730,7 @@ CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseIn
 	_native = new btCollisionWorld(dispatcher->_native, broadphasePairCache->_native,
 		collisionConfiguration->_native);
 	_collisionObjectArray = gcnew AlignedCollisionObjectArray(&_native->getCollisionObjectArray(), _native);
-	_dispatcher = dispatcher;
+	Dispatcher = dispatcher;
 	_broadphase = broadphasePairCache;
 }
 
@@ -754,6 +754,7 @@ CollisionWorld::!CollisionWorld()
 		_dispatchInfo->_debugDrawWrapper = 0;
 	}
 #endif
+	Dispatcher = nullptr;
 
 	btDynamicsWorld* dynamicsWorld = dynamic_cast<btDynamicsWorld*>(_native);
 	if (dynamicsWorld != 0)
@@ -994,6 +995,17 @@ void CollisionWorld::DebugDrawer::set(IDebugDraw^ debugDrawer)
 BulletSharp::Dispatcher^ CollisionWorld::Dispatcher::get()
 {
 	return _dispatcher;
+}
+// Internal setter, registers the world with the Dispatcher, for NearCallback parameters
+void CollisionWorld::Dispatcher::set(BulletSharp::Dispatcher^ dispatcher)
+{
+	if (_dispatcher) {
+		_dispatcher->_dispatcherInfoRefs->Remove(IntPtr(DispatchInfo->_native));
+	}
+	_dispatcher = dispatcher;
+	if (dispatcher) {
+		dispatcher->_dispatcherInfoRefs->Add(IntPtr(DispatchInfo->_native), DispatchInfo);
+	}
 }
 
 DispatcherInfo^ CollisionWorld::DispatchInfo::get()

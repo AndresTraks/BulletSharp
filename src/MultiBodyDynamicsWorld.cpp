@@ -25,7 +25,7 @@ MultiBodyDynamicsWorld::MultiBodyDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 		(btMultiBodyConstraintSolver*)constraintSolver->_native, collisionConfiguration->_native))
 {
 	_constraintSolver = constraintSolver;
-	_dispatcher = dispatcher;
+	Dispatcher = dispatcher;
 	_broadphase = pairCache;
 
 	_bodies = gcnew List<MultiBody^>();
