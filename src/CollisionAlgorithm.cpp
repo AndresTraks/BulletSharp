@@ -57,6 +57,12 @@ CollisionAlgorithm::CollisionAlgorithm(btCollisionAlgorithm* native)
 	_native = native;
 }
 
+CollisionAlgorithm::CollisionAlgorithm(btCollisionAlgorithm* native, bool preventDelete)
+{
+	_native = native;
+	_preventDelete = preventDelete;
+}
+
 CollisionAlgorithm^ CollisionAlgorithm::GetManaged(btCollisionAlgorithm* native)
 {
 	if (!native)
@@ -64,7 +70,7 @@ CollisionAlgorithm^ CollisionAlgorithm::GetManaged(btCollisionAlgorithm* native)
 		return nullptr;
 	}
 
-	return gcnew CollisionAlgorithm(native);
+	return gcnew CollisionAlgorithm(native, true);
 }
 
 CollisionAlgorithm::~CollisionAlgorithm()
@@ -77,7 +83,9 @@ CollisionAlgorithm::!CollisionAlgorithm()
 	if (this->IsDisposed)
 		return;
 
-	delete _native;
+	if (!_preventDelete) {
+		delete _native;
+	}
 	_native = NULL;
 }
 

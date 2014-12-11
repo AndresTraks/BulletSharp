@@ -46,7 +46,12 @@ namespace BulletSharp
 	internal:
 		btCollisionAlgorithm* _native;
 
+	private:
+		bool _preventDelete;
+
+	internal:
 		CollisionAlgorithm(btCollisionAlgorithm* native);
+		CollisionAlgorithm(btCollisionAlgorithm* native, bool preventDelete);
 		static CollisionAlgorithm^ GetManaged(btCollisionAlgorithm* native);
 
 	public:

@@ -48,6 +48,10 @@ namespace BulletSharpTest
             broadphase.OverlappingPairCache.SetInternalGhostPairCallback(ghostPairCallback);
             AddToDisposeQueue(ghostPairCallback);
             ghostPairCallback = null;
+            var ghostObject = new PairCachingGhostObject();
+            ghostObject.CollisionShape = new BoxShape(2);
+            ghostObject.WorldTransform = Matrix.Translation(2,2,0);
+            world.AddCollisionObject(ghostObject);
 
             AddToDisposeQueue(conf);
             AddToDisposeQueue(dispatcher);
@@ -88,6 +92,8 @@ namespace BulletSharpTest
             AddToDisposeQueue(world.DebugDrawer);
             world.DebugDrawer = null;
 
+            TestGhostObjectPairs(ghostObject);
+
             TestRayCast(dynamicObject);
             dynamicObject = null;
 
@@ -99,6 +105,45 @@ namespace BulletSharpTest
             GC.WaitForPendingFinalizers();
 
             TestWeakRefs();
+        }
+
+        static void TestGhostObjectPairs(PairCachingGhostObject ghostObject)
+        {
+            AlignedManifoldArray manifoldArray = new AlignedManifoldArray();
+            AlignedBroadphasePairArray pairArray = ghostObject.OverlappingPairCache.OverlappingPairArray;
+            int numPairs = pairArray.Count;
+
+            for (int i = 0; i < numPairs; i++)
+            {
+                manifoldArray.Clear();
+
+                BroadphasePair pair = pairArray[i];
+
+                //unless we manually perform collision detection on this pair, the contacts are in the dynamics world paircache:
+                BroadphasePair collisionPair = world.PairCache.FindPair(pair.Proxy0, pair.Proxy1);
+                if (collisionPair == null)
+                    continue;
+
+                if (collisionPair.Algorithm != null)
+                    collisionPair.Algorithm.GetAllContactManifolds(manifoldArray);
+
+                for (int j = 0; j < manifoldArray.Count; j++)
+                {
+                    PersistentManifold manifold = manifoldArray[j];
+                    float directionSign = manifold.Body0 == ghostObject ? -1.0f : 1.0f;
+                    for (int p = 0; p < manifold.NumContacts; p++)
+                    {
+                        ManifoldPoint pt = manifold.GetContactPoint(p);
+                        if (pt.Distance < 0.0f)
+                        {
+                            Vector3 ptA = pt.PositionWorldOnA;
+                            Vector3 ptB = pt.PositionWorldOnB;
+                            Vector3 normalOnB = pt.NormalWorldOnB;
+                            /// work here
+                        }
+                    }
+                }
+            }
         }
 
         static void TestManifoldPoints()
