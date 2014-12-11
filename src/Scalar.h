@@ -5,9 +5,10 @@ namespace BulletSharp
 	public ref class TypedObject : IDisposable
 	{
 	internal:
+		bool _preventDelete;
 		btTypedObject* _native;
 
-		TypedObject(btTypedObject* native);
+		TypedObject(btTypedObject* native, bool preventDelete);
 
 	public:
 		!TypedObject();

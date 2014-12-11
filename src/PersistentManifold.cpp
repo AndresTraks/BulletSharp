@@ -7,7 +7,7 @@
 #define Native static_cast<btPersistentManifold*>(_native)
 
 PersistentManifold::PersistentManifold(btPersistentManifold* native)
-	: TypedObject(native)
+	: TypedObject(native, true) //prevent delete
 {
 }
 
@@ -107,14 +107,14 @@ void PersistentManifold::ContactProcessed::set(::ContactProcessed^ value)
 #endif
 
 PersistentManifold::PersistentManifold()
-	: TypedObject(new btPersistentManifold())
+	: TypedObject(new btPersistentManifold(), false)	//delete on destruct
 {
 }
 
 PersistentManifold::PersistentManifold(CollisionObject^ body0, CollisionObject^ body1,
 	int __unnamed2, btScalar contactBreakingThreshold, btScalar contactProcessingThreshold)
 	: TypedObject(new btPersistentManifold(body0->_native, body1->_native, __unnamed2,
-		contactBreakingThreshold, contactProcessingThreshold))
+				  contactBreakingThreshold, contactProcessingThreshold), false)	//delete on destruct
 {
 }
 
