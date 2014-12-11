@@ -22,13 +22,20 @@ namespace BulletSharp
 
 	private:
 		Object^ _userObject;
-	internal:
 		InternalTickCallback^ _callback;
 		InternalTickCallbackUnmanagedDelegate^ _callbackUnmanaged;
 		Dictionary<IAction^, IntPtr>^ _actions;
 		List<TypedConstraint^>^ _constraints;
+
+	internal:
 		ConstraintSolver^ _constraintSolver;
+
 		DynamicsWorld(btDynamicsWorld* native);
+
+	public:
+		!DynamicsWorld();
+	protected:
+		~DynamicsWorld();
 
 	public:
 		void AddAction(IAction^ action);

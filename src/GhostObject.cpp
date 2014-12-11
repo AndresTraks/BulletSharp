@@ -122,12 +122,12 @@ HashedOverlappingPairCache^ PairCachingGhostObject::OverlappingPairCache::get()
 
 
 GhostPairCallback::GhostPairCallback(btGhostPairCallback* native)
-	: OverlappingPairCallback(native)
+	: OverlappingPairCallback(native, true)
 {
 }
 
 GhostPairCallback::GhostPairCallback()
-	: OverlappingPairCallback(new btGhostPairCallback())
+	: OverlappingPairCallback(new btGhostPairCallback(), false)
 {
 }
 

@@ -744,8 +744,6 @@ CollisionWorld::!CollisionWorld()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 #ifndef DISABLE_DEBUGDRAW
 	// Clear IDebugDraw wrapper
 	DebugDrawer = nullptr;
@@ -756,31 +754,15 @@ CollisionWorld::!CollisionWorld()
 #endif
 	Dispatcher = nullptr;
 
-	btDynamicsWorld* dynamicsWorld = dynamic_cast<btDynamicsWorld*>(_native);
-	if (dynamicsWorld != 0)
-	{
-		void* userObj = dynamicsWorld->getWorldUserInfo();
-		if (userObj != 0)
-		{
-			VoidPtrToGCHandle(userObj).Free();
-		}
-
-		// Delete ActionInterfaceWrappers
-		DynamicsWorld^ world = static_cast<DynamicsWorld^>(this);
-		if (world->_actions)
-		{
-			for each (IAction^ action in world->_actions->Keys)
-			{
-#ifndef DISABLE_UNCOMMON
-				CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(action);
-				if (character) {
-					continue;
-				}
-#endif
-				ActionInterfaceWrapper* wrapper = (ActionInterfaceWrapper*)world->_actions[action].ToPointer();
-				delete wrapper;
-			}
-		}
+#if _DEBUG
+	if (_collisionObjectArray->_native == 0) {
+		// Reference to this world has been lost and
+		// _collisionObjectArray has been arbitrarily finalized by the GC.
+		Console::WriteLine("!CollisionWorld(): Warning: world is implicitly disposed!");
+	}
+	else if (_collisionObjectArray->Count != 0) {
+		Console::WriteLine(
+			"!CollisionWorld(): {0} collision objects are still in the world!", _collisionObjectArray->Count);
 	}
 
 	if (_broadphase->IsDisposed) {
@@ -788,13 +770,15 @@ CollisionWorld::!CollisionWorld()
 		Console::WriteLine(
 			"The BroadphaseInterface was disposed before the CollisionWorld. "
 			"It is required for CollisionWorld cleanup, so dispose it later than the world.");
+	}
+#endif
+
+	if (_broadphase->IsDisposed) {
 		return;
 	}
 
 	delete _native;
 	_native = NULL;
-	
-	OnDisposed(this, nullptr);
 }
 
 void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup,

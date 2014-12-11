@@ -8,17 +8,14 @@
 #include "GhostObject.h"
 #endif
 
-OverlappingPairCallback::OverlappingPairCallback(btOverlappingPairCallback* native)
+OverlappingPairCallback::OverlappingPairCallback(btOverlappingPairCallback* native, bool preventDelete)
 {
 	_native = native;
-	ObjectTable::Add(this, _native);
+	_preventDelete = preventDelete;
 }
 
 OverlappingPairCallback^ OverlappingPairCallback::GetManaged(btOverlappingPairCallback* pairCallback)
 {
-	if (ObjectTable::Contains((intptr_t)pairCallback))
-		return ObjectTable::GetObject<OverlappingPairCallback^>((intptr_t)pairCallback);
-
 	if (pairCallback == 0)
 		return nullptr;
 
@@ -53,7 +50,9 @@ OverlappingPairCallback::!OverlappingPairCallback()
 	if (this->IsDisposed)
 		return;
 
-	ObjectTable::Remove(_native);
+	if (!_preventDelete) {
+		delete _native;
+	}
 	_native = NULL;
 }
 

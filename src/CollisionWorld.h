@@ -459,12 +459,8 @@ namespace BulletSharp
 			const btCollisionObjectWrapper* colObj1, int partId1, int index1);
 	};
 
-	public ref class CollisionWorld : ITrackingDisposable
+	public ref class CollisionWorld
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	internal:
 		btCollisionWorld* _native;
 		CollisionWorld(btCollisionWorld* native);

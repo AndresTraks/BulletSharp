@@ -69,8 +69,8 @@ bool OverlapFilterCallback::IsDisposed::get()
 
 #define Native static_cast<btOverlappingPairCache*>(_native)
 
-OverlappingPairCache::OverlappingPairCache(btOverlappingPairCache* native)
-	: OverlappingPairCallback(native)
+OverlappingPairCache::OverlappingPairCache(btOverlappingPairCache* native, bool preventDelete)
+	: OverlappingPairCallback(native, preventDelete)
 {
 }
 
@@ -103,6 +103,7 @@ void OverlappingPairCache::ProcessAllOverlappingPairs(array<OverlapCallback^>^ c
 #ifndef DISABLE_INTERNAL
 void OverlappingPairCache::SetInternalGhostPairCallback(OverlappingPairCallback^ ghostPairCallback)
 {
+	_ghostPairCallback = ghostPairCallback;
 	Native->setInternalGhostPairCallback(ghostPairCallback->_native);
 }
 #endif
@@ -144,12 +145,12 @@ BroadphasePair^ OverlappingPairCache::OverlappingPairArrayPtr::get()
 #define Native static_cast<btHashedOverlappingPairCache*>(_native)
 
 HashedOverlappingPairCache::HashedOverlappingPairCache(btHashedOverlappingPairCache* native)
-	: OverlappingPairCache(native)
+	: OverlappingPairCache(native, true)
 {
 }
 
 HashedOverlappingPairCache::HashedOverlappingPairCache()
-	: OverlappingPairCache(new btHashedOverlappingPairCache())
+	: OverlappingPairCache(new btHashedOverlappingPairCache(), false)
 {
 }
 
@@ -175,12 +176,12 @@ void HashedOverlappingPairCache::OverlapFilterCallback::set(BulletSharp::Overlap
 
 
 SortedOverlappingPairCache::SortedOverlappingPairCache(btSortedOverlappingPairCache* native)
-	: OverlappingPairCache(native)
+	: OverlappingPairCache(native, true)
 {
 }
 
 SortedOverlappingPairCache::SortedOverlappingPairCache()
-	: OverlappingPairCache(new btSortedOverlappingPairCache())
+	: OverlappingPairCache(new btSortedOverlappingPairCache(), false)
 {
 }
 
@@ -201,12 +202,12 @@ void SortedOverlappingPairCache::OverlapFilterCallback::set(BulletSharp::Overlap
 
 
 NullPairCache::NullPairCache(btNullPairCache* native)
-	: OverlappingPairCache(native)
+	: OverlappingPairCache(native, true)
 {
 }
 
 NullPairCache::NullPairCache()
-	: OverlappingPairCache(new btNullPairCache())
+	: OverlappingPairCache(new btNullPairCache(), false)
 {
 }
 

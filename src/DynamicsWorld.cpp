@@ -21,6 +21,30 @@ DynamicsWorld::DynamicsWorld(btDynamicsWorld* native)
 	_constraints = gcnew List<TypedConstraint^>();
 }
 
+DynamicsWorld::~DynamicsWorld()
+{
+	this->!DynamicsWorld();
+}
+
+DynamicsWorld::!DynamicsWorld()
+{
+	// Delete ActionInterfaceWrappers
+	if (_actions)
+	{
+		for each (IAction^ action in _actions->Keys)
+		{
+#ifndef DISABLE_UNCOMMON
+			CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(action);
+			if (character) {
+				continue;
+			}
+#endif
+			ActionInterfaceWrapper* wrapper = (ActionInterfaceWrapper*)_actions[action].ToPointer();
+			delete wrapper;
+		}
+	}
+}
+
 void DynamicsWorld::AddAction(IAction^ action)
 {
 	if (!_actions) {

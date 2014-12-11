@@ -35,6 +35,7 @@ namespace BulletSharpTest
             var conf = new DefaultCollisionConfiguration();
             var dispatcher = new CollisionDispatcher(conf);
             var broadphase = new DbvtBroadphase();
+            //var broadphase = new AxisSweep3(new Vector3(-1000, -1000, -1000), new Vector3(1000, 1000, 1000));
             world = new DiscreteDynamicsWorld(dispatcher, broadphase, null, conf);
             world.Gravity = new Vector3(0, -10, 0);
             dispatcher.NearCallback = DispatcherNearCallback;
@@ -42,6 +43,11 @@ namespace BulletSharpTest
             CreateBody(0.0f, new BoxShape(50, 1, 50), Vector3.Zero);
             CreateBody(10.0f, new SphereShape(1.0f), new Vector3(2, 2, 0));
             var dynamicObject = CreateBody(1.0f, new SphereShape(1.0f), new Vector3(0, 2, 0));
+
+            var ghostPairCallback = new GhostPairCallback();
+            broadphase.OverlappingPairCache.SetInternalGhostPairCallback(ghostPairCallback);
+            AddToDisposeQueue(ghostPairCallback);
+            ghostPairCallback = null;
 
             AddToDisposeQueue(conf);
             AddToDisposeQueue(dispatcher);
@@ -58,8 +64,6 @@ namespace BulletSharpTest
             broadphase.OnDisposed += onDisposed;
             //broadphase.Dispose();
             broadphase = null;
-            world.OnDisposing += onDisposing;
-            world.OnDisposed += onDisposed;
             world.DebugDrawer = new DebugDrawTest();
             AddToDisposeQueue(world.DebugDrawer);
             world.SetInternalTickCallback(WorldPreTickCallback);
@@ -85,13 +89,11 @@ namespace BulletSharpTest
             world.DebugDrawer = null;
 
             TestRayCast(dynamicObject);
-            TestManifoldPoints();
+            dynamicObject = null;
 
             //world.SetInternalTickCallback(null);
-            //world.Dispose();
+            world.Dispose();
             world = null;
-
-            dynamicObject = null;
 
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
             GC.WaitForPendingFinalizers();

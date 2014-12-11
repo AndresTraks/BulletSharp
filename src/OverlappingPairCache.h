@@ -52,10 +52,13 @@ namespace BulletSharp
 	public ref class OverlappingPairCache abstract : OverlappingPairCallback
 	{
 	internal:
-		OverlappingPairCache(btOverlappingPairCache* native);
+		OverlappingPairCache(btOverlappingPairCache* native, bool preventDelete);
 
 	private:
 		AlignedBroadphasePairArray^ _overlappingPairArray;
+#ifndef DISABLE_INTERNAL
+		OverlappingPairCallback^ _ghostPairCallback;
+#endif
 
 	public:
 		void CleanOverlappingPair(BroadphasePair^ pair, Dispatcher^ dispatcher);
