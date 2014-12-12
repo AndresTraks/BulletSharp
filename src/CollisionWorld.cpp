@@ -188,7 +188,7 @@ CollisionObject^ RayResultCallback::CollisionObject::get()
 }
 void RayResultCallback::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
-	_native->m_collisionObject = value->_native;
+	_native->m_collisionObject = GetUnmanagedNullable(value);
 }
 
 unsigned int RayResultCallback::Flags::get()
