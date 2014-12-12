@@ -100,7 +100,7 @@ CollisionObject^ LocalRayResult::CollisionObject::get()
 }
 void LocalRayResult::CollisionObject::set(BulletSharp::CollisionObject^ value)
 {
-	_native->m_collisionObject = value->_native;
+	_native->m_collisionObject = GetUnmanagedNullable(value);
 }
 
 btScalar LocalRayResult::HitFraction::get()
@@ -128,7 +128,7 @@ BulletSharp::LocalShapeInfo^ LocalRayResult::LocalShapeInfo::get()
 void LocalRayResult::LocalShapeInfo::set(BulletSharp::LocalShapeInfo^ value)
 {
 	_localShapeInfo = value;
-	_native->m_localShapeInfo = value->_native;
+	_native->m_localShapeInfo = GetUnmanagedNullable(value);
 }
 
 
@@ -361,7 +361,7 @@ CollisionObject^ LocalConvexResult::HitCollisionObject::get()
 }
 void LocalConvexResult::HitCollisionObject::set(CollisionObject^ value)
 {
-	_native->m_hitCollisionObject = value->_native;
+	_native->m_hitCollisionObject = GetUnmanagedNullable(value);
 }
 
 btScalar LocalConvexResult::HitFraction::get()
@@ -398,7 +398,7 @@ LocalShapeInfo^ LocalConvexResult::LocalShapeInfo::get()
 void LocalConvexResult::LocalShapeInfo::set(BulletSharp::LocalShapeInfo^ value)
 {
 	_localShapeInfo = value;
-	_native->m_localShapeInfo = value->_native;
+	_native->m_localShapeInfo = GetUnmanagedNullable(value);
 }
 
 
