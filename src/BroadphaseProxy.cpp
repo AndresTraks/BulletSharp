@@ -10,6 +10,7 @@
 
 BroadphaseProxy::BroadphaseProxy(btBroadphaseProxy* native, bool preventDelete)
 {
+	_uid = native->getUid();
 	UnmanagedPointer = native;
 	_preventDelete = preventDelete;
 }
@@ -31,6 +32,7 @@ BroadphaseProxy::!BroadphaseProxy()
 BroadphaseProxy::BroadphaseProxy()
 {
 	UnmanagedPointer = new btBroadphaseProxy();
+	_uid = UnmanagedPointer->getUid();
 }
 
 BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
@@ -46,6 +48,7 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userO
 		(short int)collisionFilterGroup, (short int)collisionFilterMask,
 		multiSapParentProxy.ToPointer()
 		);
+	_uid = UnmanagedPointer->getUid();
 
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
@@ -62,6 +65,7 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userO
 	UnmanagedPointer = new btBroadphaseProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), 0,
 		(short int)collisionFilterGroup, (short int)collisionFilterMask
 		);
+	_uid = UnmanagedPointer->getUid();
 
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
