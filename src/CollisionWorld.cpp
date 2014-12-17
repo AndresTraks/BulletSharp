@@ -720,6 +720,9 @@ btScalar ContactResultCallbackWrapper::addSingleResult(btManifoldPoint& cp,
 
 CollisionWorld::CollisionWorld(btCollisionWorld* native)
 {
+	if (!native) {
+		return;
+	}
 	_native = native;
 	_collisionObjectArray = gcnew AlignedCollisionObjectArray(&_native->getCollisionObjectArray(), native);
 }
@@ -758,11 +761,11 @@ CollisionWorld::!CollisionWorld()
 	if (_collisionObjectArray->_native == 0) {
 		// Reference to this world has been lost and
 		// _collisionObjectArray has been arbitrarily finalized by the GC.
-		Console::WriteLine("!CollisionWorld(): Warning: world is implicitly disposed!");
+		Console::WriteLine("!" + ToString() + "(): Warning: world is implicitly disposed!");
 	}
 	else if (_collisionObjectArray->Count != 0) {
 		Console::WriteLine(
-			"!CollisionWorld(): {0} collision objects are still in the world!", _collisionObjectArray->Count);
+			"!" + ToString() + "(): {0} collision objects are still in the world!", _collisionObjectArray->Count);
 	}
 
 	if (_broadphase->IsDisposed) {

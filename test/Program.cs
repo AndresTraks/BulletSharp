@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using BulletSharp;
+using BulletSharp.SoftBody;
 
 namespace BulletSharpTest
 {
@@ -105,6 +106,7 @@ namespace BulletSharpTest
             GC.WaitForPendingFinalizers();
 
             TestWeakRefs();
+            disposeQueue.Clear();
         }
 
         static void TestGhostObjectPairs(PairCachingGhostObject ghostObject)
@@ -183,6 +185,47 @@ namespace BulletSharpTest
             AddToDisposeQueue(rayCallback);
         }
 
+        static void TestSoftBody()
+        {
+            var softBodyWorldInfo = new SoftBodyWorldInfo();
+            var softBody = new SoftBody(softBodyWorldInfo);
+            var softBodyCollisionConf = new SoftBodyRigidBodyCollisionConfiguration();
+            var softBodySolver = new DefaultSoftBodySolver();
+            var dispatcher = new CollisionDispatcher(softBodyCollisionConf);
+            var broadphase = new AxisSweep3(new Vector3(-1000, -1000, -1000),
+                new Vector3(1000, 1000, 1000));
+            var softBodyWorld = new SoftRigidDynamicsWorld(dispatcher, broadphase, null, softBodyCollisionConf, softBodySolver);
+            softBodyWorld.AddSoftBody(softBody);
+
+            if (!object.ReferenceEquals(softBody.SoftBodySolver, softBodySolver))
+            {
+                Console.WriteLine("SoftBody: body and world SoftBodySolvers don't match!");
+            }
+            
+            AddToDisposeQueue(softBodyWorldInfo);
+            AddToDisposeQueue(softBody);
+            AddToDisposeQueue(softBodyCollisionConf);
+            AddToDisposeQueue(softBodySolver);
+            AddToDisposeQueue(dispatcher);
+            AddToDisposeQueue(broadphase);
+            AddToDisposeQueue(softBodyWorld);
+
+            softBodyWorldInfo = null;
+            softBody = null;
+            softBodyCollisionConf = null;
+            softBodySolver = null;
+            dispatcher = null;
+            broadphase = null;
+            softBodyWorld.Dispose();
+            softBodyWorld = null;
+
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+            GC.WaitForPendingFinalizers();
+
+            TestWeakRefs();
+            disposeQueue.Clear();
+        }
+
         static void TestWeakRefs()
         {
             foreach (var r in disposeQueue)
@@ -225,12 +268,12 @@ namespace BulletSharpTest
 
         static void onDisposed(object sender, EventArgs e)
         {
-            Console.WriteLine("OnDisposed: " + sender.ToString());
+            //Console.WriteLine("OnDisposed: " + sender.ToString());
         }
 
         static void onDisposing(object sender, EventArgs e)
         {
-            Console.WriteLine("OnDisposing: " + sender.ToString());
+            //Console.WriteLine("OnDisposing: " + sender.ToString());
         }
 
         static void WorldPreTickCallback(DynamicsWorld world2, float timeStep)
@@ -255,6 +298,7 @@ namespace BulletSharpTest
         static void Main(string[] args)
         {
             TestGCCollection();
+            TestSoftBody();
 
             Console.WriteLine("Finished");
             Console.ReadKey();

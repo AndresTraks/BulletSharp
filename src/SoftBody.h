@@ -48,13 +48,14 @@ namespace BulletSharp
 		ref class SoftBody;
 		ref class SoftBodySolver;
 
-		public ref class SoftBodyWorldInfo : IDisposable
+		public ref class SoftBodyWorldInfo
 		{
 		internal:
 			btSoftBodyWorldInfo* _native;
 			SoftBodyWorldInfo(btSoftBodyWorldInfo* native);
 
 		private:
+			bool _preventDelete;
 			Dispatcher^ _dispatcher;
 			SparseSdf^ _sparseSdf;
 

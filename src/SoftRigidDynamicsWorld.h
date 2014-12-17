@@ -21,7 +21,14 @@ namespace BulletSharp
 		{
 		private:
 			AlignedSoftBodyArray^ _softBodyArray;
+			SoftBodySolver^ _softBodySolver; // private ref passed to bodies during AddSoftBody
+			bool _ownsSolver;
 			SoftBodyWorldInfo^ _worldInfo;
+
+		public:
+			!SoftRigidDynamicsWorld();
+		protected:
+			~SoftRigidDynamicsWorld();
 
 		public:
 			SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
@@ -58,6 +65,8 @@ namespace BulletSharp
 			property SoftBodyWorldInfo^ WorldInfo
 			{
 				SoftBodyWorldInfo^ get();
+			internal:
+				void set(SoftBodyWorldInfo^ value);
 			}
 		};
 	};

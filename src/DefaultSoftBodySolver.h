@@ -11,9 +11,6 @@ namespace BulletSharp
 
 		public ref class DefaultSoftBodySolver : SoftBodySolver
 		{
-		internal:
-			DefaultSoftBodySolver(btDefaultSoftBodySolver* native);
-
 		public:
 			DefaultSoftBodySolver();
 

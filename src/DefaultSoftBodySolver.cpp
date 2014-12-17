@@ -8,11 +8,6 @@
 
 #define Native static_cast<btDefaultSoftBodySolver*>(_native)
 
-SoftBody::DefaultSoftBodySolver::DefaultSoftBodySolver(btDefaultSoftBodySolver* native)
-	: SoftBodySolver(native)
-{
-}
-
 SoftBody::DefaultSoftBodySolver::DefaultSoftBodySolver()
 	: SoftBodySolver(new btDefaultSoftBodySolver())
 {

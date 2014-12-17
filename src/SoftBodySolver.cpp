@@ -15,18 +15,15 @@ SoftBody::SoftBodySolver::SoftBodySolver(btSoftBodySolver* native)
 	_native = native;
 }
 
-SoftBody::SoftBodySolver^ SoftBody::SoftBodySolver::GetManaged(btSoftBodySolver* native)
+SoftBody::SoftBodySolver::~SoftBodySolver()
 {
-	if (native == 0) {
-		return nullptr;
-	}
+	this->!SoftBodySolver();
+}
 
-	btDefaultSoftBodySolver* defaultSolver = dynamic_cast<btDefaultSoftBodySolver*>(native);
-	if (defaultSolver) {
-		return gcnew DefaultSoftBodySolver(defaultSolver);
-	}
-
-	throw gcnew NotImplementedException();
+SoftBody::SoftBodySolver::!SoftBodySolver()
+{
+	delete _native;
+	_native = NULL;
 }
 
 bool SoftBody::SoftBodySolver::CheckInitialized()

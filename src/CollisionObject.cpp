@@ -140,6 +140,8 @@ CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
 	if (userObj)
 		return static_cast<CollisionObject^>(VoidPtrToGCHandle(userObj).Target);
 
+	throw gcnew InvalidOperationException("Unknown collision object!");
+	/*
 	// If we reach here, then collisionObject was created from within unmanaged code,
 	// mark the wrapper object we create here so we don't try to destroy it later.
 	btRigidBody* rigidBody = dynamic_cast<btRigidBody*>(collisionObject);
@@ -155,6 +157,7 @@ CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
 	if (softBody)
 	{
 		SoftBody::SoftBody^ body = gcnew SoftBody::SoftBody(softBody);
+		body->WorldInfo = gcnew SoftBody::SoftBodyWorldInfo(static_cast<btSoftBody*>(body->_native)->getWorldInfo());
 		body->_preventDelete = true;
 		return body;
 	}
@@ -172,7 +175,7 @@ CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
 
 	CollisionObject^ colObject = gcnew CollisionObject(collisionObject);
 	colObject->_preventDelete = true;
-	return colObject;
+	return colObject;*/
 }
 
 BulletSharp::ActivationState CollisionObject::ActivationState::get()

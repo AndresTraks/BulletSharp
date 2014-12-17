@@ -14,6 +14,13 @@ namespace BulletSharp
 	ref class OverlappingPairCache;
 
 #ifndef DISABLE_DBVT
+	public enum class DbvtBroadphaseStage
+	{
+		DynamicSet = btDbvtBroadphase::DYNAMIC_SET,
+		FixedSet = btDbvtBroadphase::FIXED_SET,
+		StageCount = btDbvtBroadphase::STAGECOUNT
+	};
+
 	public ref class DbvtProxy : BroadphaseProxy
 	{
 	internal:
@@ -40,10 +47,10 @@ namespace BulletSharp
 			DbvtProxyPtrArray^ get();
 		}
 
-		property int Stage
+		property DbvtBroadphaseStage Stage
 		{
-			int get();
-			void set(int value);
+			DbvtBroadphaseStage get();
+			void set(DbvtBroadphaseStage value);
 		}
 	};
 #endif
@@ -51,10 +58,9 @@ namespace BulletSharp
 	public ref class DbvtBroadphase : BroadphaseInterface
 	{
 #ifndef DISABLE_DBVT
-	public:
-		static int DynamicSet = btDbvtBroadphase::DYNAMIC_SET;
-		static int FixedSet = btDbvtBroadphase::FIXED_SET;
-		static int StageCount = btDbvtBroadphase::STAGECOUNT;
+	private:
+		DbvtArray^ _sets;
+		DbvtProxyPtrArray^ _stageRoots;
 #endif
 
 	internal:
@@ -157,10 +163,10 @@ namespace BulletSharp
 			DbvtArray^ get();
 		}
 
-		property int StageCurrent
+		property DbvtBroadphaseStage StageCurrent
 		{
-			int get();
-			void set(int value);
+			DbvtBroadphaseStage get();
+			void set(DbvtBroadphaseStage value);
 		}
 
 		property DbvtProxyPtrArray^ StageRoots

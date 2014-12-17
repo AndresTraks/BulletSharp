@@ -59,13 +59,13 @@ DbvtProxyPtrArray^ DbvtProxy::Links::get()
 	return gcnew DbvtProxyPtrArray(Native->links, 2);
 }
 
-int DbvtProxy::Stage::get()
+DbvtBroadphaseStage DbvtProxy::Stage::get()
 {
-	return Native->stage;
+	return (DbvtBroadphaseStage)Native->stage;
 }
-void DbvtProxy::Stage::set(int value)
+void DbvtProxy::Stage::set(DbvtBroadphaseStage value)
 {
-	Native->stage = value;
+	Native->stage = (int)value;
 }
 
 #endif
@@ -253,21 +253,27 @@ void DbvtBroadphase::ReleasePairCache::set(bool value)
 
 DbvtArray^ DbvtBroadphase::Sets::get()
 {
-	return gcnew DbvtArray(Native->m_sets, 2);
+	if (!_sets) {
+		_sets = gcnew DbvtArray(Native->m_sets, 2);
+	}
+	return _sets;
 }
 
-int DbvtBroadphase::StageCurrent::get()
+DbvtBroadphaseStage DbvtBroadphase::StageCurrent::get()
 {
-	return Native->m_stageCurrent;
+	return (DbvtBroadphaseStage)Native->m_stageCurrent;
 }
-void DbvtBroadphase::StageCurrent::set(int value)
+void DbvtBroadphase::StageCurrent::set(DbvtBroadphaseStage value)
 {
-	Native->m_stageCurrent = value;
+	Native->m_stageCurrent = (int)value;
 }
 
 DbvtProxyPtrArray^ DbvtBroadphase::StageRoots::get()
 {
-	return gcnew DbvtProxyPtrArray(Native->m_stageRoots, StageCount+1);
+	if (!_stageRoots) {
+		_stageRoots = gcnew DbvtProxyPtrArray(Native->m_stageRoots, sizeof(Native->m_stageRoots) / sizeof(btDbvtProxy*));
+	}
+	return _stageRoots;
 }
 
 unsigned int DbvtBroadphase::UpdatesCall::get()

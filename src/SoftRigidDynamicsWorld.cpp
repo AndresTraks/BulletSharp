@@ -6,6 +6,7 @@
 #include "BroadphaseInterface.h"
 #include "CollisionConfiguration.h"
 #include "ConstraintSolver.h"
+#include "DefaultSoftBodySolver.h"
 #include "Dispatcher.h"
 #include "SoftRigidDynamicsWorld.h"
 #include "SoftBody.h"
@@ -23,14 +24,25 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 	BulletSharp::ConstraintSolver^ constraintSolver,
 #endif
 	CollisionConfiguration^ collisionConfiguration, SoftBodySolver^ softBodySolver)
-	: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
+	: DiscreteDynamicsWorld(0)
+{
+	if (softBodySolver) {
+		_softBodySolver = softBodySolver;
+		_ownsSolver = false;
+	} else {
+		_softBodySolver = gcnew DefaultSoftBodySolver();
+		_ownsSolver = true;
+	}
+
+	_native = new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
 #ifndef DISABLE_CONSTRAINTS
 		GetUnmanagedNullable(constraintSolver),
 #else
 		nullptr,
 #endif
-		collisionConfiguration->_native, softBodySolver->_native))
-{
+		collisionConfiguration->_native, _softBodySolver->_native);
+	_collisionObjectArray = gcnew AlignedCollisionObjectArray(&_native->getCollisionObjectArray(), _native);
+
 #ifndef DISABLE_CONSTRAINTS
 	_constraintSolver = constraintSolver;
 #endif
@@ -43,14 +55,20 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 	BulletSharp::ConstraintSolver^ constraintSolver,
 #endif
 	CollisionConfiguration^ collisionConfiguration)
-	: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
+	: DiscreteDynamicsWorld(0)
+{
+	_softBodySolver = gcnew DefaultSoftBodySolver();
+	_ownsSolver = true;
+
+	_native = new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
 #ifndef DISABLE_CONSTRAINTS
 		GetUnmanagedNullable(constraintSolver),
 #else
 		nullptr,
 #endif
-		collisionConfiguration->_native))
-{
+		collisionConfiguration->_native, _softBodySolver->_native);
+	_collisionObjectArray = gcnew AlignedCollisionObjectArray(&_native->getCollisionObjectArray(), _native);
+
 #ifndef DISABLE_CONSTRAINTS
 	_constraintSolver = constraintSolver;
 #endif
@@ -58,20 +76,36 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 	_broadphase = pairCache;
 }
 
+SoftRigidDynamicsWorld::~SoftRigidDynamicsWorld()
+{
+	this->!SoftRigidDynamicsWorld();
+}
+
+SoftRigidDynamicsWorld::!SoftRigidDynamicsWorld()
+{
+	if (_ownsSolver)
+	{
+		delete _softBodySolver;
+	}
+}
+
 void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body,
 	CollisionFilterGroups collisionFilterGroup,	CollisionFilterGroups collisionFilterMask)
 {
+	body->SoftBodySolver = _softBodySolver;
 	_collisionObjectArray->Add(body, (short)collisionFilterGroup, (short)collisionFilterMask);
 }
 
 void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body,
 	short collisionFilterGroup, short collisionFilterMask)
 {
+	body->SoftBodySolver = _softBodySolver;
 	_collisionObjectArray->Add(body, collisionFilterGroup, collisionFilterMask);
 }
 
 void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body)
 {
+	body->SoftBodySolver = _softBodySolver;
 	_collisionObjectArray->Add(body);
 }
 
@@ -105,6 +139,10 @@ SoftBodyWorldInfo^ SoftRigidDynamicsWorld::WorldInfo::get()
 		_worldInfo = gcnew SoftBodyWorldInfo(&Native->getWorldInfo());
 	}
 	return _worldInfo;
+}
+void SoftRigidDynamicsWorld::WorldInfo::set(SoftBodyWorldInfo^ value)
+{
+	_worldInfo = value;
 }
 
 #endif

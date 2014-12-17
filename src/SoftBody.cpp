@@ -22,6 +22,7 @@ using namespace BulletSharp::SoftBody;
 SoftBodyWorldInfo::SoftBodyWorldInfo(btSoftBodyWorldInfo* native)
 {
 	_native = native;
+	_preventDelete = true;
 }
 
 SoftBodyWorldInfo::~SoftBodyWorldInfo()
@@ -31,13 +32,16 @@ SoftBodyWorldInfo::~SoftBodyWorldInfo()
 
 SoftBodyWorldInfo::!SoftBodyWorldInfo()
 {
-	ALIGNED_FREE(_native);
+	if (!_preventDelete) {
+		ALIGNED_FREE(_native);
+	}
 	_native = NULL;
 }
 
 SoftBodyWorldInfo::SoftBodyWorldInfo()
 {
 	_native = ALIGNED_NEW(btSoftBodyWorldInfo) ();
+	_preventDelete = false;
 }
 
 btScalar SoftBodyWorldInfo::AirDensity::get()
@@ -2453,6 +2457,7 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, array<Ve
 
 	_collisionShape = gcnew BulletSharp::CollisionShape(_native->getCollisionShape());
 	_collisionShape->_preventDelete = true;
+	_worldInfo = worldInfo;
 }
 
 BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3Array^ x, ScalarArray^ m)
@@ -2480,6 +2485,7 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3A
 
 	_collisionShape = gcnew BulletSharp::CollisionShape(_native->getCollisionShape());
 	_collisionShape->_preventDelete = true;
+	_worldInfo = worldInfo;
 }
 
 BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo)
@@ -2487,6 +2493,7 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo)
 {
 	_collisionShape = gcnew BulletSharp::CollisionShape(_native->getCollisionShape());
 	_collisionShape->_preventDelete = true;
+	_worldInfo = worldInfo;
 }
 
 BulletSharp::SoftBody::SoftBody::~SoftBody()
@@ -3847,10 +3854,6 @@ BulletSharp::SoftBody::AlignedRigidContactArray^ BulletSharp::SoftBody::SoftBody
 
 SoftBodySolver^ BulletSharp::SoftBody::SoftBody::SoftBodySolver::get()
 {
-	if (_softBodySolver == nullptr)
-	{
-		_softBodySolver = BulletSharp::SoftBody::SoftBodySolver::GetManaged(Native->getSoftBodySolver());
-	}
 	return _softBodySolver;
 }
 void BulletSharp::SoftBody::SoftBody::SoftBodySolver::set(BulletSharp::SoftBody::SoftBodySolver^ value)
@@ -3955,10 +3958,6 @@ btScalar BulletSharp::SoftBody::SoftBody::Volume::get()
 
 SoftBodyWorldInfo^ BulletSharp::SoftBody::SoftBody::WorldInfo::get()
 {
-	if (_worldInfo == nullptr)
-	{
-		_worldInfo = gcnew SoftBodyWorldInfo(Native->getWorldInfo());
-	}
 	return _worldInfo;
 }
 void BulletSharp::SoftBody::SoftBody::WorldInfo::set(SoftBodyWorldInfo^ value)

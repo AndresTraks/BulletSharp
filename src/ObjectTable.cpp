@@ -19,7 +19,7 @@ void BulletSharp::ObjectTable::Add(Object^ obj, void* unmanagedPointer)
 		else
 		{
 			//something when wrong here, so inform in debug mode
-			Debug:assert(false, "ObjectTable key already exists.");
+			Debug::Assert(false, "ObjectTable key already exists.");
 			//key already exists.. try to handle this by updating/overwriting key entry to newest value
 			//this should protect us against a wrapper that did not unregister from object table, and race conditions that try to write the same key.
 			objectTable[(intptr_t)unmanagedPointer] = obj;

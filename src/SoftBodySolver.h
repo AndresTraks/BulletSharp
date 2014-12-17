@@ -16,7 +16,11 @@ namespace BulletSharp
 		internal:
 			btSoftBodySolver* _native;
 			SoftBodySolver(btSoftBodySolver* native);
-			static SoftBodySolver^ GetManaged(btSoftBodySolver* native);
+
+		public:
+			!SoftBodySolver();
+		protected:
+			~SoftBodySolver();
 
 		public:
 			bool CheckInitialized();
