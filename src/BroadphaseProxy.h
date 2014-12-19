@@ -4,33 +4,27 @@ namespace BulletSharp
 {
 	ref class CollisionAlgorithm;
 
-	public ref class BroadphaseProxy : IDisposable
+	public ref class BroadphaseProxy
 	{
 	internal:
 		btBroadphaseProxy* _native;
 		int _uid;
 
-	private:
-		bool _preventDelete;
-
 	protected:
 		Object^ _clientObject;
 
 	internal:
-		BroadphaseProxy(btBroadphaseProxy* native, bool preventDelete);
+		BroadphaseProxy(btBroadphaseProxy* native);
 		static BroadphaseProxy^ GetManaged(btBroadphaseProxy* broadphaseProxy);
 
 	public:
-		!BroadphaseProxy();
-	protected:
-		~BroadphaseProxy();
-
-	public:
+		/*
 		BroadphaseProxy();
 		BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject, CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask, IntPtr multiSapParentProxy);
 		BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject, CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask);
+		*/
 
 		static bool IsCompound(BroadphaseNativeType proxyType);
 		static bool IsConcave(BroadphaseNativeType proxyType);
@@ -81,13 +75,6 @@ namespace BulletSharp
 		{
 			int get();
 			void set(int value);
-		}
-
-	internal:
-		property btBroadphaseProxy* UnmanagedPointer
-		{
-			virtual btBroadphaseProxy* get();
-			void set(btBroadphaseProxy* value);
 		}
 	};
 

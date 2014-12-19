@@ -31,10 +31,12 @@ namespace BulletSharp
 		DbvtProxyPtrArray^ _links;
 
 	public:
+		/*
 		DbvtProxy(Vector3% aabbMin, Vector3% aabbMax, IntPtr userPointer, CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask);
 		DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPointer, CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask);
+		*/
 
 		property DbvtNode^ Leaf
 		{

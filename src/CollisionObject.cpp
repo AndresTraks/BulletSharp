@@ -200,13 +200,12 @@ void CollisionObject::AnisotropicFriction::set(Vector3 value)
 
 BroadphaseProxy^ CollisionObject::BroadphaseHandle::get()
 {
-	btBroadphaseProxy* broadphaseHandle = _native->getBroadphaseHandle();
-	ReturnCachedObject(BroadphaseProxy, _broadphaseHandle, broadphaseHandle);
+	return _broadphaseHandle;
 }
 void CollisionObject::BroadphaseHandle::set(BroadphaseProxy^ handle)
 {
 	_broadphaseHandle = handle;
-	_native->setBroadphaseHandle(handle->_native);
+	_native->setBroadphaseHandle(GetUnmanagedNullable(handle));
 }
 
 btScalar CollisionObject::CcdMotionThreshold::get()

@@ -13,9 +13,11 @@ namespace BulletSharp
 		SimpleBroadphaseProxy(btSimpleBroadphaseProxy* native);
 
 	public:
+		/*
 		SimpleBroadphaseProxy();
 		SimpleBroadphaseProxy(Vector3 minpt, Vector3 maxpt, int shapeType, Object^ userObject,
 			CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask, IntPtr multiSapProxy);
+		*/
 
 		property int NextFree
 		{

@@ -174,31 +174,18 @@ void BroadphaseInterface::CalculateOverlappingPairs(Dispatcher^ dispatcher)
 }
 
 BroadphaseProxy^ BroadphaseInterface::CreateProxy(Vector3% aabbMin, Vector3% aabbMax,
-	int shapeType, IntPtr userPtr, CollisionFilterGroups collisionFilterGroup,
-	CollisionFilterGroups collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
+	BroadphaseNativeType shapeType, IntPtr userPtr, short collisionFilterGroup,
+	short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
 	btBroadphaseProxy* proxy = _native->createProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax),
-		shapeType, userPtr.ToPointer(), (short int)collisionFilterGroup, (short int)collisionFilterMask,
+		(int)shapeType, userPtr.ToPointer(), collisionFilterGroup, collisionFilterMask,
 		dispatcher->_native, multiSapProxy.ToPointer());
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
-	return BroadphaseProxy::GetManaged(proxy);
-}
-
-BroadphaseProxy^ BroadphaseInterface::CreateProxy(Vector3 aabbMin, Vector3 aabbMax,
-	int shapeType, IntPtr userPtr, CollisionFilterGroups collisionFilterGroup,
-	CollisionFilterGroups collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
-{
-	VECTOR3_CONV(aabbMin);
-	VECTOR3_CONV(aabbMax);
-	btBroadphaseProxy* ret = _native->createProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax),
-		shapeType, userPtr.ToPointer(), (short int)collisionFilterGroup, (short int)collisionFilterMask,
-		dispatcher->_native, multiSapProxy.ToPointer());
-	VECTOR3_DEL(aabbMin);
-	VECTOR3_DEL(aabbMax);
-	return BroadphaseProxy::GetManaged(ret);
+	//userPtr->BroadphaseHandle = proxy;
+	return gcnew BroadphaseProxy(proxy);
 }
 
 void BroadphaseInterface::DestroyProxy(BroadphaseProxy^ proxy, Dispatcher^ dispatcher)

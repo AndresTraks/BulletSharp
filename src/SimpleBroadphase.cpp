@@ -6,10 +6,10 @@
 #define Native static_cast<btSimpleBroadphaseProxy*>(_native)
 
 SimpleBroadphaseProxy::SimpleBroadphaseProxy(btSimpleBroadphaseProxy* native)
-	: BroadphaseProxy(native, false)
+	: BroadphaseProxy(native)
 {
 }
-
+/*
 SimpleBroadphaseProxy::SimpleBroadphaseProxy()
 	: BroadphaseProxy(new btSimpleBroadphaseProxy(), false)
 {
@@ -23,12 +23,12 @@ SimpleBroadphaseProxy::SimpleBroadphaseProxy(Vector3 minpt, Vector3 maxpt, int s
 
 	VECTOR3_CONV(minpt);
 	VECTOR3_CONV(maxpt);
-	UnmanagedPointer = new btSimpleBroadphaseProxy(VECTOR3_USE(minpt), VECTOR3_USE(maxpt),
+	_native = new btSimpleBroadphaseProxy(VECTOR3_USE(minpt), VECTOR3_USE(maxpt),
 		shapeType, 0, (short int)collisionFilterGroup, (short int)collisionFilterMask, multiSapProxy.ToPointer());
 	VECTOR3_DEL(minpt);
 	VECTOR3_DEL(maxpt);
 }
-
+*/
 int SimpleBroadphaseProxy::NextFree::get()
 {
 	return Native->GetNextFree();

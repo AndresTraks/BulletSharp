@@ -16,17 +16,17 @@
 #define Native static_cast<btDbvtProxy*>(_native)
 
 DbvtProxy::DbvtProxy(btDbvtProxy* native)
-	: BroadphaseProxy(native, false)
+	: BroadphaseProxy(native)
 {
 }
-
+/*
 DbvtProxy::DbvtProxy(Vector3% aabbMin, Vector3% aabbMax, IntPtr userPointer, CollisionFilterGroups collisionFilterGroup,
 	CollisionFilterGroups collisionFilterMask)
 	: BroadphaseProxy(0, false)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
-	UnmanagedPointer = new btDbvtProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), userPointer.ToPointer(),
+	_native = new btDbvtProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), userPointer.ToPointer(),
 		(short int)collisionFilterGroup, (short int)collisionFilterMask);
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
@@ -38,12 +38,12 @@ DbvtProxy::DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPointer, Colli
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
-	UnmanagedPointer = new btDbvtProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), userPointer.ToPointer(),
+	_native = new btDbvtProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), userPointer.ToPointer(),
 		(short int)collisionFilterGroup, (short int)collisionFilterMask);
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
 }
-
+*/
 DbvtNode^ DbvtProxy::Leaf::get()
 {
 	btDbvtNode* leaf = Native->leaf;

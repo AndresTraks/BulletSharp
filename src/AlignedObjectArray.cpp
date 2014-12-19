@@ -8,8 +8,12 @@
 #include "CompoundShape.h"
 #include "RigidBody.h"
 #include "PersistentManifold.h"
+#include "SimpleBroadphase.h"
 #include "TriangleIndexVertexArray.h"
 #include "TriangleMesh.h"
+#ifndef DISABLE_DBVT
+#include "DbvtBroadphase.h"
+#endif
 #ifndef DISABLE_SOFTBODY
 #include "SoftBody.h"
 using namespace BulletSharp::SoftBody;
@@ -432,6 +436,29 @@ AlignedCollisionObjectArray::AlignedCollisionObjectArray(btCollisionObjectArray*
 	}
 }
 
+void SetBodyBroadphaseHandle(CollisionObject^ item, btBroadphaseInterface* broadphase)
+{
+#ifndef DISABLE_DBVT
+	if (dynamic_cast<btDbvtBroadphase*>(broadphase)) {
+		item->BroadphaseHandle = gcnew DbvtProxy((btDbvtProxy*)item->_native->getBroadphaseHandle());
+	}
+	else
+#endif
+	// TODO: implement AxisSweep3::Handle
+	/*
+	if (dynamic_cast<btAxisSweep3*>(broadphase)) {
+		item->BroadphaseHandle = gcnew BroadphaseProxy(item->_native->getBroadphaseHandle());
+	}
+	else if (dynamic_cast<bt32BitAxisSweep3*>(broadphase)) {
+		item->BroadphaseHandle = gcnew BroadphaseProxy(item->_native->getBroadphaseHandle());
+	}*/
+	if (dynamic_cast<btSimpleBroadphase*>(broadphase)) {
+		item->BroadphaseHandle = gcnew SimpleBroadphaseProxy((btSimpleBroadphaseProxy*)item->_native->getBroadphaseHandle());
+	} else {
+		item->BroadphaseHandle = gcnew BroadphaseProxy(item->_native->getBroadphaseHandle());
+	}
+}
+
 void AlignedCollisionObjectArray::Add(CollisionObject^ item)
 {
 	if (_collisionWorld)
@@ -452,7 +479,8 @@ void AlignedCollisionObjectArray::Add(CollisionObject^ item)
         {
 			_collisionWorld->addCollisionObject(item->_native);
         }
-		
+
+		SetBodyBroadphaseHandle(item, _collisionWorld->getBroadphase());
 		_backingList->Add(item);
 	}
 	else
@@ -479,7 +507,8 @@ void AlignedCollisionObjectArray::Add(CollisionObject^ item, short collisionFilt
     {
 		_collisionWorld->addCollisionObject(item->_native, collisionFilterGroup, collisionFilterMask);
     }
-		
+
+	SetBodyBroadphaseHandle(item, _collisionWorld->getBroadphase());
 	_backingList->Add(item);
 }
 
@@ -589,6 +618,7 @@ bool AlignedCollisionObjectArray::Remove(CollisionObject^ item)
             {
                 _collisionWorld->removeCollisionObject(itemPtr);
             }
+			_backingList[i]->BroadphaseHandle = nullptr;
             count--;
 
             // Swap the removed item with the last item like Bullet does.

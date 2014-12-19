@@ -8,30 +8,15 @@
 #include "DbvtBroadphase.h"
 #endif
 
-BroadphaseProxy::BroadphaseProxy(btBroadphaseProxy* native, bool preventDelete)
+BroadphaseProxy::BroadphaseProxy(btBroadphaseProxy* native)
 {
 	_uid = native->getUid();
-	UnmanagedPointer = native;
-	_preventDelete = preventDelete;
+	_native = native;
 }
-
-BroadphaseProxy::~BroadphaseProxy()
-{
-	this->!BroadphaseProxy();
-}
-
-BroadphaseProxy::!BroadphaseProxy()
-{
-	if (!_preventDelete)
-	{
-		delete _native;
-	}
-	_native = NULL;
-}
-
+/*
 BroadphaseProxy::BroadphaseProxy()
 {
-	UnmanagedPointer = new btBroadphaseProxy();
+	_native = new btBroadphaseProxy();
 	_uid = UnmanagedPointer->getUid();
 }
 
@@ -44,7 +29,7 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userO
 
 	_clientObject = userObject;
 
-	UnmanagedPointer = new btBroadphaseProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), 0,
+	_native = new btBroadphaseProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), 0,
 		(short int)collisionFilterGroup, (short int)collisionFilterMask,
 		multiSapParentProxy.ToPointer()
 		);
@@ -62,7 +47,7 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userO
 
 	_clientObject = userObject;
 
-	UnmanagedPointer = new btBroadphaseProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), 0,
+	_native = new btBroadphaseProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), 0,
 		(short int)collisionFilterGroup, (short int)collisionFilterMask
 		);
 	_uid = UnmanagedPointer->getUid();
@@ -70,40 +55,19 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userO
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
 }
-
+*/
 BroadphaseProxy^ BroadphaseProxy::GetManaged(btBroadphaseProxy* broadphaseProxy)
 {
 	if (broadphaseProxy == 0)
 		return nullptr;
 
-	BroadphaseProxy^ proxy = GetObjectFromTable(BroadphaseProxy, broadphaseProxy);
-	if (proxy != nullptr) {
-		if (broadphaseProxy->getUid() == proxy->_uid) {
-			return proxy;
-		}
-		ObjectTable::Remove(broadphaseProxy);
+	if (broadphaseProxy->m_clientObject) {
+		CollisionObject^ clientObject = CollisionObject::GetManaged((btCollisionObject*)broadphaseProxy->m_clientObject);
+		return clientObject->BroadphaseHandle;
 	}
 
-#ifndef DISABLE_DBVT
-	btDbvtProxy* dbvtProxy = static_cast<btDbvtProxy*>(broadphaseProxy);
-	if (dbvtProxy)
-	{
-		proxy = gcnew DbvtProxy(dbvtProxy);
-		proxy->_preventDelete = true;
-		return proxy;
-	}
-#endif
-
-	btSimpleBroadphaseProxy* simpleProxy = static_cast<btSimpleBroadphaseProxy*>(broadphaseProxy);
-	if (simpleProxy)
-	{
-		proxy = gcnew SimpleBroadphaseProxy(simpleProxy);
-		proxy->_preventDelete = true;
-		return proxy;
-	}
-
-	proxy = gcnew BroadphaseProxy(broadphaseProxy, true);
-	return proxy;
+	throw gcnew InvalidOperationException("Unknown broadphase proxy!");
+	//return gcnew BroadphaseProxy(broadphaseProxy);
 }
 
 bool BroadphaseProxy::IsCompound(BroadphaseNativeType proxyType)
@@ -213,16 +177,6 @@ void BroadphaseProxy::UniqueID::set(int value)
 {
 	_uid = value;
 	_native->m_uniqueId = value;
-}
-
-btBroadphaseProxy* BroadphaseProxy::UnmanagedPointer::get()
-{
-	return _native;
-}
-void BroadphaseProxy::UnmanagedPointer::set(btBroadphaseProxy* value)
-{
-	_native = value;
-	ObjectTable::Add(this, _native);
 }
 
 
