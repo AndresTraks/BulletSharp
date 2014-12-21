@@ -389,7 +389,7 @@ void RaycastVehicle::UpdateFriction(btScalar timeStep)
 			Vector3_Cross(surfNormalWS, _axle[i], _forwardWS[i]);
 			Vector3_Normalize(_forwardWS[i]);
 
-			Math::Vector3ToBtVector3(wheelInfo->RaycastInfo.HardPointWS, contactPointWSTemp);
+			Math::Vector3ToBtVector3(wheelInfo->RaycastInfo.ContactPointWS, contactPointWSTemp);
 			Math::Vector3ToBtVector3(_axle[i], axleTemp);
 			btScalar sideImpulseTemp;
 			resolveSingleBilateral(
