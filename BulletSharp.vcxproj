@@ -1559,7 +1559,6 @@
     <ClCompile Include="src\VehicleRaycaster.cpp" />
     <ClCompile Include="src\RaycastVehicle.cpp" />
     <ClCompile Include="src\WheelInfo.cpp" />
-    <ClCompile Include="src\CharacterControllerInterface.cpp" />
     <ClCompile Include="src\KinematicCharacterController.cpp" />
     <ClCompile Include="src\MultiBodyLink.cpp" />
     <ClCompile Include="src\MultiBody.cpp" />
@@ -1599,6 +1598,7 @@
     <ResourceCompile Include="src\Resources.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ICharacterController.h" />
     <ClInclude Include="src\Stdafx.h" />
     <ClInclude Include="src\Collections.h" />
     <ClInclude Include="src\Enums.h" />
@@ -1747,7 +1747,6 @@
     <ClInclude Include="src\RaycastVehicle.h" />
     <ClInclude Include="src\WheelInfo.h" />
     <ClInclude Include="src\CharacterControllerInterface.h" />
-    <ClInclude Include="src\KinematicCharacterController.h" />
     <ClInclude Include="src\MultiBodyLink.h" />
     <ClInclude Include="src\MultiBody.h" />
     <ClInclude Include="src\MultiBodyConstraint.h" />

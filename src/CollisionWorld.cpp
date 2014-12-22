@@ -25,7 +25,7 @@
 #include "SoftRigidDynamicsWorld.h"
 #endif
 #ifndef DISABLE_UNCOMMON
-#include "CharacterControllerInterface.h"
+#include "ICharacterController.h"
 #endif
 
 LocalShapeInfo::~LocalShapeInfo()
@@ -490,14 +490,14 @@ ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3 convexFromWorld
 	_convexFromWorld = convexFromWorld;
 	_convexToWorld = convexToWorld;
 }
-
+/*
 ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3% convexFromWorld,
 	Vector3% convexToWorld)
 {
 	_convexFromWorld = convexFromWorld;
 	_convexToWorld = convexToWorld;
 }
-
+*/
 #pragma managed(push, off)
 void ClosestConvexResultCallback_AddSingleResult(btCollisionWorld::LocalConvexResult* convexResult, bool normalInWorldSpace,
 	btVector3* hitNormalWorld)

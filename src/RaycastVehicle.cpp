@@ -507,13 +507,13 @@ void RaycastVehicle::UpdateFriction(btScalar timeStep)
 			switch (_indexUpAxis)
 			{
 			case 0:
-				Vector_X(rel_pos) *= wheelInfo->RollInfluence;
+				Vector_SetX(rel_pos, Vector_X(rel_pos) * wheelInfo->RollInfluence);
 				break;
 			case 1:
-				Vector_Y(rel_pos) *= wheelInfo->RollInfluence;
+				Vector_SetY(rel_pos, Vector_Y(rel_pos) * wheelInfo->RollInfluence);
 				break;
 			case 2:
-				Vector_Z(rel_pos) *= wheelInfo->RollInfluence;
+				Vector_SetZ(rel_pos, Vector_Z(rel_pos) * wheelInfo->RollInfluence);
 				break;
 			}
 #else

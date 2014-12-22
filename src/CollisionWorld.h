@@ -335,7 +335,7 @@ namespace BulletSharp
 
 	public:
 		ClosestConvexResultCallback(Vector3 convexFromWorld, Vector3 convexToWorld);
-		ClosestConvexResultCallback(Vector3% convexFromWorld, Vector3% convexToWorld);
+		//ClosestConvexResultCallback(Vector3% convexFromWorld, Vector3% convexToWorld); // This is ambiguous to the above constructor in C++/CLI
 
 		virtual btScalar AddSingleResult(LocalConvexResult^ convexResult, bool normalInWorldSpace) override;
 

@@ -222,9 +222,6 @@
     <ClCompile Include="..\src\CapsuleShape.cpp">
       <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\CharacterControllerInterface.cpp">
-      <Filter>Source Files\BulletDynamics\Character</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Collections.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -763,9 +760,6 @@
     <ClInclude Include="..\src\CapsuleShape.h">
       <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\CharacterControllerInterface.h">
-      <Filter>Header Files\BulletDynamics\Character</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Collections.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -969,6 +963,9 @@
     </ClInclude>
     <ClInclude Include="..\src\IAction.h">
       <Filter>Header Files\BulletDynamics\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ICharacterController.h">
+      <Filter>Header Files\BulletDynamics\Character</Filter>
     </ClInclude>
     <ClInclude Include="..\src\IDebugDraw.h">
       <Filter>Header Files\LinearMath</Filter>

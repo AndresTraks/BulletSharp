@@ -83,15 +83,27 @@ using namespace Mogre;
 #define QUATERNION_DEL(t) ALIGNED_FREE(QUATERNION_PTR(t))
 
 #if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-#define Vector_X(v) v.x
-#define Vector_Y(v) v.y
-#define Vector_Z(v) v.z
-#define Vector_W(v) v.w
+#define Vector_X(v) btScalar((v).x)
+#define Vector_Y(v) btScalar((v).y)
+#define Vector_Z(v) btScalar((v).z)
+#define Vector_W(v) btScalar((v).w)
 #else
-#define Vector_X(v) v.X
-#define Vector_Y(v) v.Y
-#define Vector_Z(v) v.Z
-#define Vector_W(v) v.W
+#define Vector_X(v) btScalar((v).X)
+#define Vector_Y(v) btScalar((v).Y)
+#define Vector_Z(v) btScalar((v).Z)
+#define Vector_W(v) btScalar((v).W)
+#endif
+
+#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+#define Vector_SetX(v, s) (v).x = s
+#define Vector_SetY(v, s) (v).y = s
+#define Vector_SetZ(v, s) (v).z = s
+#define Vector_SetW(v, s) (v).w = s
+#else
+#define Vector_SetX(v, s) (v).X = s
+#define Vector_SetY(v, s) (v).Y = s
+#define Vector_SetZ(v, s) (v).Z = s
+#define Vector_SetW(v, s) (v).W = s
 #endif
 
 namespace BulletSharp
@@ -223,36 +235,60 @@ namespace BulletSharp
 #endif
 #endif
 
+#define Vector3_IsFuzzyZero(v) btFuzzyZero(Vector_X(v)) && btFuzzyZero(Vector_Y(v)) && btFuzzyZero(Vector_Z(v))
+
 #if defined(GRAPHICS_WAPICODEPACK)
-#define Vector3_Neg(v) Vector3(-v.X, -v.Y, -v.Z)
-#define Vector3_Scale(v, s) Vector3(v.X * s, v.Y * s, v.Z * s)
+#define Vector3_Neg(v) Vector3(-(v).X, -(v).Y, -(v).Z)
+#define Vector3_Scale(v, s) Vector3((v).X * (s), (v).Y * (s), (v).Z * (s))
 #else
-#define Vector3_Neg(v) -v
-#define Vector3_Scale(v, s) v * s
+#define Vector3_Neg(v) -(v)
+#define Vector3_Scale(v, s) (v) * (s)
+#endif
+
+#if defined(GRAPHICS_XNA30) || defined(GRAPHICS_XNA40) || defined(GRAPHICS_MONOGAME) || defined(GRAPHICS_SHARPDX) || defined(GRAPHICS_SLIMDX)
+#define Vector3_Length(v) (v).Length()
+#elif defined(GRAPHICS_WAPICODEPACK)
+#define Vector3_Length(v) btSqrt(((v).X * (v).X) + ((v).Y * (v).Y) + ((v).Z * (v).Z))
+#else
+#define Vector3_Length(v) (v).Length
 #endif
 
 #ifdef GRAPHICS_AXIOM
-#define Vector3_Cross(left, right, result) result = left.Cross(right)
-#define Vector3_Dot(left, right) left.Vector3::Dot(right)
+#define Vector3_Cross(left, right, result) result = (left).Cross(right)
+#define Vector3_Dot(left, right) btScalar((left).Vector3::Dot(right))
 #define Vector3_Normalize(v) v.Normalize()
 #define Vector3_Zero Vector3::Zero
 #define Matrix_Identity Matrix4::Identity
+#define Matrix_Origin(m) (m)->Translation
 #elif defined(GRAPHICS_MOGRE)
-#define Vector3_Cross(left, right, result) result = left.CrossProduct(right)
-#define Vector3_Dot(left, right) left.DotProduct(right)
+#define Vector3_Cross(left, right, result) result = (left).CrossProduct(right)
+#define Vector3_Dot(left, right) (left).DotProduct(right)
 #define Vector3_Normalize(v) v.Normalise()
 #define Vector3_Zero Vector3::ZERO
 #define Matrix_Identity Matrix4::IDENTITY
+#define Matrix_Origin(m) (m)->GetTrans()
 #elif defined(GRAPHICS_WAPICODEPACK)
 #define Vector3_Cross(left, right, result) result = Vector3::Cross(left, right)
 #define Vector3_Dot(left, right) Vector3::Dot(left, right)
-#define Vector3_Normalize(v) v.Normalize()
+#define Vector3_Normalize(v) v.NormalizeInPlace()
 #define Vector3_Zero Vector3(0,0,0)
 #define Matrix_Identity Matrix::Identity
+#define Matrix_Origin(m) Vector3((m).M41, (m).M42, (m).M43)
 #else
 #define Vector3_Cross(left, right, result) Vector3::Cross(left, right, result)
 #define Vector3_Dot(left, right) Vector3::Dot(left, right)
 #define Vector3_Normalize(v) v.Normalize()
 #define Vector3_Zero Vector3::Zero
 #define Matrix_Identity Matrix::Identity
+#ifdef GRAPHICS_OPENTK
+#define Matrix_Origin(m) (m).ExtractTranslation()
+#elif defined(GRAPHICS_GENERIC) || defined(GRAPHICS_OPENTK)
+#define Matrix_Origin(m) (m).Origin
+#elif defined(GRAPHICS_SHARPDX)
+#define Matrix_Origin(m) (m).TranslationVector
+#elif defined(GRAPHICS_XNA30) || defined(GRAPHICS_XNA40) || defined(GRAPHICS_MONOGAME)
+#define Matrix_Origin(m) (m).Translation
+#else
+#define Matrix_Origin(m) Vector3((m).M41, (m).M42, (m).M43)
+#endif
 #endif

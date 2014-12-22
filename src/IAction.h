@@ -7,7 +7,6 @@ namespace BulletSharp
 
 	public interface class IAction
 	{
-	public:
 #ifndef DISABLE_DEBUGDRAW
 		virtual void DebugDraw(IDebugDraw^ debugDrawer);
 #endif

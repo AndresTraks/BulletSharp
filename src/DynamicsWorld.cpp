@@ -10,7 +10,7 @@
 #include "TypedConstraint.h"
 #endif
 #ifndef DISABLE_UNCOMMON
-#include "CharacterControllerInterface.h"
+#include "ICharacterController.h"
 #endif
 
 #define Native static_cast<btDynamicsWorld*>(_native)
@@ -33,12 +33,6 @@ DynamicsWorld::!DynamicsWorld()
 	{
 		for each (IAction^ action in _actions->Keys)
 		{
-#ifndef DISABLE_UNCOMMON
-			CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(action);
-			if (character) {
-				continue;
-			}
-#endif
 			ActionInterfaceWrapper* wrapper = (ActionInterfaceWrapper*)_actions[action].ToPointer();
 			delete wrapper;
 		}
@@ -50,14 +44,6 @@ void DynamicsWorld::AddAction(IAction^ action)
 	if (!_actions) {
 		_actions = gcnew Dictionary<IAction^, IntPtr>();
 	}
-#ifndef DISABLE_UNCOMMON
-	CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(action);
-	if (character) {
-		Native->addAction(character->_native);
-		_actions->Add(action, IntPtr(character->_native));
-		return;
-	}
-#endif
 	ActionInterfaceWrapper* wrapper = new ActionInterfaceWrapper(action, this);
 	Native->addAction(wrapper);
 	return;
@@ -119,13 +105,6 @@ void DynamicsWorld::RemoveAction(IAction^ action)
 	}
 
 	_actions->Remove(action);
-#ifndef DISABLE_UNCOMMON
-	CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(action);
-	if (character) {
-		Native->removeAction(character->_native);
-		return;
-	}
-#endif
 	ActionInterfaceWrapper* wrapper = (ActionInterfaceWrapper*)_actions[action].ToPointer();
 	Native->removeAction(wrapper);
 	delete wrapper;

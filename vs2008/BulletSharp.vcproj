@@ -2883,10 +2883,6 @@
 					Name="Character"
 					>
 					<File
-						RelativePath="..\src\CharacterControllerInterface.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\src\KinematicCharacterController.cpp"
 						>
 					</File>
@@ -3720,7 +3716,7 @@
 					Name="Character"
 					>
 					<File
-						RelativePath="..\src\CharacterControllerInterface.h"
+						RelativePath="..\src\ICharacterController.h"
 						>
 					</File>
 					<File
