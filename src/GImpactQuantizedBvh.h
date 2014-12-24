@@ -48,12 +48,12 @@ namespace BulletSharp
 			bool get();
 		}
 
-		property UShortArray^ QuantizedAabbMin
+		property UShortArray^ QuantizedAabbMax
 		{
 			UShortArray^ get();
 		}
 
-		property UShortArray^ QuantizedAabbMax
+		property UShortArray^ QuantizedAabbMin
 		{
 			UShortArray^ get();
 		}
@@ -131,15 +131,15 @@ namespace BulletSharp
 			Matrix trans2, PairSet^ collisionPairs);
 		//GImpactQuantizedBvhNode^ GetNodePointer(int index);
 		//GImpactQuantizedBvhNode^ GetNodePointer();
-		int GetEscapeNodeIndex(int nodeindex);
-		int GetLeftNode(int nodeindex);
-		void GetNodeBound(int nodeindex, Aabb^ bound);
-		int GetNodeData(int nodeindex);
-		void GetNodeTriangle(int nodeindex, PrimitiveTriangle^ triangle);
-		int GetRightNode(int nodeindex);
-		bool IsLeafNode(int nodeindex);
+		int GetEscapeNodeIndex(int nodeIndex);
+		int GetLeftNode(int nodeIndex);
+		void GetNodeBound(int nodeIndex, Aabb^ bound);
+		int GetNodeData(int nodeIndex);
+		void GetNodeTriangle(int nodeIndex, PrimitiveTriangle^ triangle);
+		int GetRightNode(int nodeIndex);
+		bool IsLeafNode(int nodeIndex);
 		bool RayQuery(Vector3 rayDir, Vector3 rayOrigin, AlignedIntArray^ collidedResults);
-		void SetNodeBound(int nodeindex, Aabb^ bound);
+		void SetNodeBound(int nodeIndex, Aabb^ bound);
 		void Update();
 
 		property Aabb^ GlobalBox

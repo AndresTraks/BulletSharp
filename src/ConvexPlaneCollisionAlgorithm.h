@@ -2,12 +2,10 @@
 
 #include "CollisionAlgorithm.h"
 #include "CollisionCreateFunc.h"
-#include "SimplexSolverInterface.h"
 
 namespace BulletSharp
 {
 	ref class CollisionObjectWrapper;
-	ref class ConvexPenetrationDepthSolver;
 	ref class PersistentManifold;
 
 	public ref class ConvexPlaneCollisionAlgorithm : CollisionAlgorithm

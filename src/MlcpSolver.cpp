@@ -3,7 +3,7 @@
 #ifndef DISABLE_MLCP
 
 #include "MlcpSolver.h"
-#include "MLCPSolverInterface.h"
+#include "MlcpSolverInterface.h"
 
 #define Native static_cast<btMLCPSolver*>(_native)
 

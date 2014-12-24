@@ -254,39 +254,39 @@ GImpactQuantizedBvhNode^ GImpactQuantizedBvh::GetNodePointer()
 	return _native->get_node_pointer();
 }
 */
-int GImpactQuantizedBvh::GetEscapeNodeIndex(int nodeindex)
+int GImpactQuantizedBvh::GetEscapeNodeIndex(int nodeIndex)
 {
-	return _native->getEscapeNodeIndex(nodeindex);
+	return _native->getEscapeNodeIndex(nodeIndex);
 }
 
-int GImpactQuantizedBvh::GetLeftNode(int nodeindex)
+int GImpactQuantizedBvh::GetLeftNode(int nodeIndex)
 {
-	return _native->getLeftNode(nodeindex);
+	return _native->getLeftNode(nodeIndex);
 }
 
-void GImpactQuantizedBvh::GetNodeBound(int nodeindex, Aabb^ bound)
+void GImpactQuantizedBvh::GetNodeBound(int nodeIndex, Aabb^ bound)
 {
-	_native->getNodeBound(nodeindex, *bound->_native);
+	_native->getNodeBound(nodeIndex, *bound->_native);
 }
 
-int GImpactQuantizedBvh::GetNodeData(int nodeindex)
+int GImpactQuantizedBvh::GetNodeData(int nodeIndex)
 {
-	return _native->getNodeData(nodeindex);
+	return _native->getNodeData(nodeIndex);
 }
 
-void GImpactQuantizedBvh::GetNodeTriangle(int nodeindex, PrimitiveTriangle^ triangle)
+void GImpactQuantizedBvh::GetNodeTriangle(int nodeIndex, PrimitiveTriangle^ triangle)
 {
-	_native->getNodeTriangle(nodeindex, *triangle->_native);
+	_native->getNodeTriangle(nodeIndex, *triangle->_native);
 }
 
-int GImpactQuantizedBvh::GetRightNode(int nodeindex)
+int GImpactQuantizedBvh::GetRightNode(int nodeIndex)
 {
-	return _native->getRightNode(nodeindex);
+	return _native->getRightNode(nodeIndex);
 }
 
-bool GImpactQuantizedBvh::IsLeafNode(int nodeindex)
+bool GImpactQuantizedBvh::IsLeafNode(int nodeIndex)
 {
-	return _native->isLeafNode(nodeindex);
+	return _native->isLeafNode(nodeIndex);
 }
 
 bool GImpactQuantizedBvh::RayQuery(Vector3 rayDir, Vector3 rayOrigin, AlignedIntArray^ collidedResults)
@@ -299,9 +299,9 @@ bool GImpactQuantizedBvh::RayQuery(Vector3 rayDir, Vector3 rayOrigin, AlignedInt
 	return ret;
 }
 
-void GImpactQuantizedBvh::SetNodeBound(int nodeindex, Aabb^ bound)
+void GImpactQuantizedBvh::SetNodeBound(int nodeIndex, Aabb^ bound)
 {
-	_native->setNodeBound(nodeindex, *bound->_native);
+	_native->setNodeBound(nodeIndex, *bound->_native);
 }
 
 void GImpactQuantizedBvh::Update()

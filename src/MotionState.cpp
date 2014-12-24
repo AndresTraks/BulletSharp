@@ -17,7 +17,6 @@ MotionState::MotionState()
 }
 
 MotionState::~MotionState()
-
 {
 	this->!MotionState();
 }

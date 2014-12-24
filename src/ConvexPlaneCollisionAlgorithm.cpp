@@ -3,7 +3,6 @@
 #ifndef DISABLE_UNCOMMON
 #ifndef DISABLE_COLLISION_ALGORITHMS
 
-#include "CollisionObject.h"
 #include "CollisionObjectWrapper.h"
 #include "ConvexPlaneCollisionAlgorithm.h"
 #include "Dispatcher.h"

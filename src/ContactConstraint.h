@@ -5,7 +5,6 @@
 namespace BulletSharp
 {
 	ref class PersistentManifold;
-	ref class RigidBody;
 
 	public ref class ContactConstraint abstract : TypedConstraint
 	{

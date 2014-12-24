@@ -65,7 +65,7 @@ namespace BulletSharp
 		virtual void PlayerStep(CollisionWorld^ collisionWorld, btScalar dt);
 		virtual void PreStep(CollisionWorld^ collisionWorld);
 		virtual void Reset(CollisionWorld^ collisionWorld);
-		virtual void SetFallSpeed(btScalar fallSpeed);
+		void SetFallSpeed(btScalar fallSpeed);
 		void SetJumpSpeed(btScalar jumpSpeed);
 		void SetMaxJumpHeight(btScalar maxJumpHeight);
 		void SetUpAxis(int axis);
