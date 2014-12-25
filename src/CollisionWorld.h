@@ -22,7 +22,7 @@ namespace BulletSharp
 	class ContactResultCallbackWrapper;
 	class DebugDrawWrapper;
 
-	public ref class LocalShapeInfo : IDisposable
+	public ref class LocalShapeInfo
 	{
 	internal:
 		btCollisionWorld::LocalShapeInfo* _native;
@@ -48,7 +48,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class LocalRayResult : IDisposable
+	public ref class LocalRayResult
 	{
 	internal:
 		btCollisionWorld::LocalRayResult* _native;
@@ -94,7 +94,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class RayResultCallback abstract : IDisposable
+	public ref class RayResultCallback abstract
 	{
 	internal:
 		btCollisionWorld::RayResultCallback* _native;
@@ -213,7 +213,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class LocalConvexResult : IDisposable
+	public ref class LocalConvexResult
 	{
 	internal:
 		btCollisionWorld::LocalConvexResult* _native;
@@ -265,7 +265,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class ConvexResultCallback abstract : IDisposable
+	public ref class ConvexResultCallback abstract
 	{
 	internal:
 		btCollisionWorld::ConvexResultCallback* _native;
@@ -409,7 +409,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class ContactResultCallback abstract : IDisposable
+	public ref class ContactResultCallback abstract
 	{
 	internal:
 		ContactResultCallbackWrapper* _native;
@@ -448,10 +448,11 @@ namespace BulletSharp
 	class ContactResultCallbackWrapper : public btCollisionWorld::ContactResultCallback
 	{
 	private:
-		gcroot<BulletSharp::ContactResultCallback^> _callback;
+		void* _callback;
 
 	public:
 		ContactResultCallbackWrapper(BulletSharp::ContactResultCallback^ callback);
+		~ContactResultCallbackWrapper();
 
 		virtual bool needsCollision(btBroadphaseProxy* proxy0) const;
 		virtual btScalar addSingleResult(btManifoldPoint& cp,

@@ -700,19 +700,24 @@ bool ContactResultCallback::IsDisposed::get()
 
 ContactResultCallbackWrapper::ContactResultCallbackWrapper(BulletSharp::ContactResultCallback^ callback)
 {
-	_callback = callback;
+	_callback = GCHandleToVoidPtr(GCHandle::Alloc(callback, GCHandleType::Weak));
+}
+
+ContactResultCallbackWrapper::~ContactResultCallbackWrapper()
+{
+	VoidPtrToGCHandle(_callback).Free();
 }
 
 bool ContactResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) const
 {
-	return _callback->NeedsCollision(BroadphaseProxy::GetManaged(proxy0));
+	return static_cast<BulletSharp::ContactResultCallback^>(VoidPtrToGCHandle(_callback).Target)->NeedsCollision(BroadphaseProxy::GetManaged(proxy0));
 }
 
 btScalar ContactResultCallbackWrapper::addSingleResult(btManifoldPoint& cp,
 	const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0,
 	const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
 {
-	return _callback->AddSingleResult(gcnew ManifoldPoint(&cp, true),
+	return static_cast<BulletSharp::ContactResultCallback^>(VoidPtrToGCHandle(_callback).Target)->AddSingleResult(gcnew ManifoldPoint(&cp, true),
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap), partId0, index0,
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj1Wrap), partId1, index1);
 }
