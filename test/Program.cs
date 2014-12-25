@@ -31,11 +31,17 @@ namespace BulletSharpTest
             return collisionObject;
         }
 
-        static void TestContactTest(RigidBody testBody)
+        static void TestContactTest(RigidBody testBody, RigidBody testBody2)
         {
             object context = "your context";
             ContactSensorCallback contactCallback = new ContactSensorCallback(testBody, context);
             world.ContactTest(testBody, contactCallback);
+
+            testBody.CollisionFlags |= CollisionFlags.CustomMaterialCallback;
+            testBody2.CollisionFlags |= CollisionFlags.CustomMaterialCallback;
+            world.ContactPairTest(testBody, testBody2, contactCallback);
+            testBody.CollisionFlags &= ~CollisionFlags.CustomMaterialCallback;
+            testBody2.CollisionFlags &= ~CollisionFlags.CustomMaterialCallback;
 
             AddToDisposeQueue(contactCallback);
         }
@@ -51,8 +57,8 @@ namespace BulletSharpTest
             dispatcher.NearCallback = DispatcherNearCallback;
 
             CreateBody(0.0f, new BoxShape(50, 1, 50), Vector3.Zero);
-            CreateBody(10.0f, new SphereShape(1.0f), new Vector3(2, 2, 0));
-            var dynamicObject = CreateBody(1.0f, new SphereShape(1.0f), new Vector3(0, 2, 0));
+            var dynamicObject = CreateBody(10.0f, new SphereShape(1.0f), new Vector3(2, 2, 0));
+            var dynamicObject2 = CreateBody(1.0f, new SphereShape(1.0f), new Vector3(0, 2, 0));
 
             var ghostPairCallback = new GhostPairCallback();
             broadphase.OverlappingPairCache.SetInternalGhostPairCallback(ghostPairCallback);
@@ -102,10 +108,11 @@ namespace BulletSharpTest
             AddToDisposeQueue(world.DebugDrawer);
             world.DebugDrawer = null;
 
-            TestContactTest(dynamicObject);
+            TestContactTest(dynamicObject, dynamicObject2);
             TestGhostObjectPairs(ghostObject);
             TestRayCast(dynamicObject);
             dynamicObject = null;
+            dynamicObject2 = null;
 
             //world.SetInternalTickCallback(null);
             world.Dispose();
@@ -363,6 +370,7 @@ namespace BulletSharpTest
             if (colObj0.CollisionObject == body)
             {
                 pt = cp.LocalPointA;
+                //Console.WriteLine("ContactSensorCallback");
             }
             else
             {
