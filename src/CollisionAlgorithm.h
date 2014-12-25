@@ -10,7 +10,7 @@ namespace BulletSharp
 	ref class ManifoldResult;
 	ref class PersistentManifold;
 
-	public ref class CollisionAlgorithmConstructionInfo : IDisposable
+	public ref class CollisionAlgorithmConstructionInfo
 	{
 	internal:
 		btCollisionAlgorithmConstructionInfo* _native;
@@ -41,7 +41,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class CollisionAlgorithm : IDisposable // abstract
+	public ref class CollisionAlgorithm // abstract
 	{
 	internal:
 		btCollisionAlgorithm* _native;

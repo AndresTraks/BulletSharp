@@ -6,7 +6,7 @@ namespace BulletSharp
 
 	namespace SoftBody
 	{
-		public ref class VertexBufferDescriptor abstract : IDisposable
+		public ref class VertexBufferDescriptor abstract
 		{
 		internal:
 			btVertexBufferDescriptor* _native;

@@ -18,7 +18,7 @@ namespace BulletSharp
 		ZYX = RO_ZYX
 	};
 
-	public ref class RotationalLimitMotor2 : IDisposable
+	public ref class RotationalLimitMotor2
 	{
 	internal:
 		btRotationalLimitMotor2* _native;
@@ -166,7 +166,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class TranslationalLimitMotor2 : IDisposable
+	public ref class TranslationalLimitMotor2
 	{
 	internal:
 		btTranslationalLimitMotor2* _native;

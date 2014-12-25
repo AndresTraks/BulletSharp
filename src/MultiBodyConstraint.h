@@ -5,7 +5,7 @@ namespace BulletSharp
 	ref class AlignedScalarArray;
 	ref class MultiBody;
 /*
-	public ref class MultiBodyJacobianData : IDisposable
+	public ref class MultiBodyJacobianData
 	{
 	internal:
 		btMultiBodyJacobianData* _native;
@@ -68,7 +68,7 @@ namespace BulletSharp
 		}
 	};
 */
-	public ref class MultiBodyConstraint abstract : IDisposable
+	public ref class MultiBodyConstraint abstract
 	{
 	internal:
 		btMultiBodyConstraint* _native;

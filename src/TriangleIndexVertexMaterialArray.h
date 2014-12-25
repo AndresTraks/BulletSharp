@@ -7,7 +7,7 @@ namespace BulletSharp
 {
 	ref class DataStream;
 
-	public ref class MaterialProperties : IDisposable
+	public ref class MaterialProperties
 	{
 	internal:
 		btMaterialProperties* _native;

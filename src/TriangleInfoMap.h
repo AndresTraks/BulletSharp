@@ -4,7 +4,7 @@ namespace BulletSharp
 {
 	ref class Serializer;
 
-	public ref class TriangleInfoMap : IDisposable
+	public ref class TriangleInfoMap
 	{
 	private:
 		bool _preventDelete;

@@ -8,7 +8,7 @@ namespace BulletSharp
 	ref class MultiBodyLinkCollider;
 	ref class ScalarArray;
 
-	public ref class MultiBody : IDisposable
+	public ref class MultiBody
 	{
 	private:
 		array<MultiBodyLink^>^ _links;

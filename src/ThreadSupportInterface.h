@@ -50,7 +50,7 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class ThreadSupportInterface abstract : IDisposable
+		public ref class ThreadSupportInterface abstract
 		{
 		internal:
 			btThreadSupportInterface* _native;

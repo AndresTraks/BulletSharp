@@ -6,7 +6,7 @@ namespace BulletSharp
 	ref class BroadphaseProxy;
 	ref class Dispatcher;
 
-	public ref class OverlappingPairCallback abstract : IDisposable
+	public ref class OverlappingPairCallback abstract
 	{
 	internal:
 		btOverlappingPairCallback* _native;

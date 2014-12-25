@@ -20,7 +20,7 @@ namespace BulletSharp
 			btScalar timeStep, [Out] Matrix% predictedTransform);
 	};
 
-	public ref class ConvexSeparatingDistanceUtil : IDisposable
+	public ref class ConvexSeparatingDistanceUtil
 	{
 	internal:
 		btConvexSeparatingDistanceUtil* _native;

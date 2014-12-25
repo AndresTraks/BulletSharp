@@ -8,7 +8,7 @@ namespace BulletSharp
 	ref class SimplexSolverInterface;
 	interface class IDebugDraw;
 
-	public ref class ConvexPenetrationDepthSolver : IDisposable // abstract
+	public ref class ConvexPenetrationDepthSolver // abstract
 	{
 	internal:
 		btConvexPenetrationDepthSolver* _native;

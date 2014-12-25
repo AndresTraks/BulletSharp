@@ -8,7 +8,7 @@ namespace BulletSharp
 	ref class PrimitiveTriangle;
 	ref class UShortArray;
 
-	public ref class GImpactQuantizedBvhNode : IDisposable
+	public ref class GImpactQuantizedBvhNode
 	{
 	internal:
 		BT_QUANTIZED_BVH_NODE* _native;
@@ -69,7 +69,7 @@ namespace BulletSharp
 		GimGImpactQuantizedBvhNodeArray();
 	};
 
-	public ref class QuantizedBvhTree : IDisposable
+	public ref class QuantizedBvhTree
 	{
 	internal:
 		btQuantizedBvhTree* _native;
@@ -105,7 +105,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class GImpactQuantizedBvh : IDisposable
+	public ref class GImpactQuantizedBvh
 	{
 	internal:
 		btGImpactQuantizedBvh* _native;

@@ -2,7 +2,7 @@
 
 namespace BulletSharp
 {
-	public ref class Hacd : IDisposable
+	public ref class Hacd
 	{
 	internal:
 		HACD::HACD* _native;

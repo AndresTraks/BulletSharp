@@ -6,10 +6,10 @@ namespace BulletSharp
 	ref class Dispatcher;
 	ref class UnionFind;
 
-	public ref class SimulationIslandManager : IDisposable
+	public ref class SimulationIslandManager
 	{
 	public:
-		/*ref class IslandCallback abstract : IDisposable
+		/*ref class IslandCallback abstract
 		{
 		internal:
 			btSimulationIslandManager::IslandCallback* _native;

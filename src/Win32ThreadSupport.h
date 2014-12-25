@@ -6,7 +6,7 @@ namespace BulletSharp
 {
 	namespace MultiThreaded
 	{
-		public ref class Win32ThreadConstructionInfo : IDisposable
+		public ref class Win32ThreadConstructionInfo
 		{
 		private:
 			const char* _uniqueName;

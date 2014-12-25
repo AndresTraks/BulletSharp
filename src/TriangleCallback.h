@@ -2,7 +2,7 @@
 
 namespace BulletSharp
 {
-	public ref class TriangleCallback abstract : IDisposable
+	public ref class TriangleCallback abstract
 	{
 	internal:
 		btTriangleCallback* _native;
@@ -24,7 +24,7 @@ namespace BulletSharp
 	};
 
 #ifndef DISABLE_INTERNAL
-	public ref class InternalTriangleIndexCallback abstract : IDisposable
+	public ref class InternalTriangleIndexCallback abstract
 	{
 	internal:
 		btInternalTriangleIndexCallback* _native;

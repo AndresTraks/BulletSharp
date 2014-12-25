@@ -6,10 +6,10 @@ namespace BulletSharp
 
 	interface class IDebugDraw;
 
-	public ref class DiscreteCollisionDetectorInterface abstract : IDisposable
+	public ref class DiscreteCollisionDetectorInterface abstract
 	{
 	public:
-		ref class ClosestPointInput : IDisposable
+		ref class ClosestPointInput
 		{
 		internal:
 			btDiscreteCollisionDetectorInterface::ClosestPointInput* _native;
@@ -41,7 +41,7 @@ namespace BulletSharp
 			}
 		};
 
-		ref class Result abstract : IDisposable
+		ref class Result abstract
 		{
 		internal:
 			btDiscreteCollisionDetectorInterface::Result* _native;

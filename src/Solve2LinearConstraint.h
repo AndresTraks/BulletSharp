@@ -4,7 +4,7 @@ namespace BulletSharp
 {
 	ref class RigidBody;
 
-	public ref class Solve2LinearConstraint : IDisposable
+	public ref class Solve2LinearConstraint
 	{
 	internal:
 		btSolve2LinearConstraint* _native;

@@ -6,7 +6,7 @@ namespace BulletSharp
 {
 	ref class RigidBody;
 
-	public ref class ConstraintSetting : IDisposable
+	public ref class ConstraintSetting
 	{
 	internal:
 		btConstraintSetting* _native;

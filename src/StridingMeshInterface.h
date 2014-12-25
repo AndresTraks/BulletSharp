@@ -6,7 +6,7 @@ namespace BulletSharp
 	ref class InternalTriangleIndexCallback;
 	ref class Serializer;
 
-	public ref class StridingMeshInterface abstract : IDisposable
+	public ref class StridingMeshInterface abstract
 	{
 	internal:
 		btStridingMeshInterface* _native;

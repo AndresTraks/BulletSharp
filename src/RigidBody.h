@@ -8,7 +8,7 @@ namespace BulletSharp
 	ref class MotionState;
 	ref class TypedConstraint;
 
-	public ref class RigidBodyConstructionInfo : IDisposable
+	public ref class RigidBodyConstructionInfo
 	{
 	internal:
 		btRigidBody::btRigidBodyConstructionInfo* _native;

@@ -33,7 +33,7 @@ namespace BulletSharp
 		CollisionObjectWrapper^ colObj1Wrap, int partId1, int index1);
 #endif
 
-	public ref class ManifoldPoint : IDisposable
+	public ref class ManifoldPoint
 	{
 	internal:
 		btManifoldPoint* _native;

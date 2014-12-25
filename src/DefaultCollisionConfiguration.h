@@ -6,7 +6,7 @@ namespace BulletSharp
 {
 	ref class VoronoiSimplexSolver;
 
-	public ref class DefaultCollisionConstructionInfo : IDisposable
+	public ref class DefaultCollisionConstructionInfo
 	{
 	internal:
 		btDefaultCollisionConstructionInfo* _native;

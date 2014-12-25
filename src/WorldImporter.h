@@ -29,7 +29,7 @@ namespace BulletSharp
 	{
 		class WorldImporterWrapper;
 
-		public ref class WorldImporter : IDisposable
+		public ref class WorldImporter
 		{
 		private:
 			WorldImporterWrapper* _native;

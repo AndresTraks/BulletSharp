@@ -2,7 +2,7 @@
 
 namespace BulletSharp
 {
-	public ref class ContactSolverInfoData : IDisposable
+	public ref class ContactSolverInfoData
 	{
 	internal:
 		btContactSolverInfoData* _native;

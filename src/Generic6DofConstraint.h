@@ -8,7 +8,7 @@ namespace BulletSharp
 	ref class IntArray;
 	ref class RigidBody;
 
-	public ref class RotationalLimitMotor : IDisposable
+	public ref class RotationalLimitMotor
 	{
 	internal:
 		btRotationalLimitMotor* _native;
@@ -139,7 +139,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class TranslationalLimitMotor : IDisposable
+	public ref class TranslationalLimitMotor
 	{
 	internal:
 		btTranslationalLimitMotor* _native;

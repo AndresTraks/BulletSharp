@@ -4,10 +4,10 @@ namespace BulletSharp
 {
 	interface class IDebugDraw;
 
-	public ref class ConvexCast abstract : IDisposable
+	public ref class ConvexCast abstract
 	{
 	public:
-		ref class CastResult : IDisposable
+		ref class CastResult
 		{
 		internal:
 			btConvexCast::CastResult* _native;

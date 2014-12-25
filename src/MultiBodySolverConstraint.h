@@ -4,7 +4,7 @@ namespace BulletSharp
 {
 	ref class MultiBody;
 
-	public ref class MultiBodySolverConstraint : IDisposable
+	public ref class MultiBodySolverConstraint
 	{
 	internal:
 		btMultiBodySolverConstraint* _native;

@@ -6,7 +6,7 @@ namespace BulletSharp
 {
 	ref class AlignedBroadphasePairArray;
 
-	public ref class OverlapCallback abstract : IDisposable
+	public ref class OverlapCallback abstract
 	{
 	internal:
 		btOverlapCallback* _native;
@@ -25,7 +25,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class OverlapFilterCallback abstract : IDisposable
+	public ref class OverlapFilterCallback abstract
 	{
 	internal:
 		btOverlapFilterCallback* _native;

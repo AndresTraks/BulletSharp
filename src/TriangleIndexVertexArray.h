@@ -9,7 +9,7 @@ namespace BulletSharp
 	ref class IntArray;
 	ref class Vector3Array;
 
-	public ref class IndexedMesh : IDisposable
+	public ref class IndexedMesh
 	{
 	internal:
 		btIndexedMesh* _native;

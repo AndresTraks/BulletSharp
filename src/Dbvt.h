@@ -126,7 +126,7 @@ namespace BulletSharp
 	public ref class Dbvt : ITrackingDisposable
 	{
 	public:
-		ref class IClone : IDisposable
+		ref class IClone
 		{
 		internal:
 			btDbvt::IClone* _native;
@@ -149,7 +149,7 @@ namespace BulletSharp
 			}
 		};
 
-		ref class ICollide : IDisposable
+		ref class ICollide
 		{
 		internal:
 			btDbvt::ICollide* _native;
@@ -174,7 +174,7 @@ namespace BulletSharp
 			}
 		};
 
-		ref class IWriter abstract : IDisposable
+		ref class IWriter abstract
 		{
 		internal:
 			btDbvt::IWriter* _native;

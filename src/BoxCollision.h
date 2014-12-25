@@ -2,7 +2,7 @@
 
 namespace BulletSharp
 {
-	public ref class Aabb : IDisposable
+	public ref class Aabb
 	{
 	internal:
 		btAABB* _native;

@@ -4,7 +4,7 @@ namespace BulletSharp
 {
 	class MotionStateWrapper;
 
-	public ref class MotionState abstract : IDisposable
+	public ref class MotionState abstract
 	{
 	internal:
 		btMotionState* _native;

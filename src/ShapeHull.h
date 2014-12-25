@@ -8,7 +8,7 @@ namespace BulletSharp
 	ref class UIntArray;
 	ref class Vector3Array;
 
-	public ref class ShapeHull : IDisposable
+	public ref class ShapeHull
 	{
 	internal:
 		btShapeHull* _native;

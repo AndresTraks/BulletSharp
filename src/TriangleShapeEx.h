@@ -6,7 +6,7 @@ namespace BulletSharp
 {
 	ref class Vector3Array;
 
-	public ref class GimTriangleContact : IDisposable
+	public ref class GimTriangleContact
 	{
 	internal:
 		GIM_TRIANGLE_CONTACT* _native;
@@ -49,7 +49,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class PrimitiveTriangle : IDisposable
+	public ref class PrimitiveTriangle
 	{
 	internal:
 		btPrimitiveTriangle* _native;

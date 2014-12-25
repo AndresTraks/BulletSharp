@@ -36,7 +36,7 @@ namespace BulletSharp
 	/// Provides a stream interface to a buffer located in unmanaged memory.
 	/// </summary>
 	/// <unmanaged>None</unmanaged>
-	public ref class DataStream : public System::IO::Stream, System::IDisposable
+	public ref class DataStream : public System::IO::Stream
 	{
 	private:
 		char* m_Buffer;

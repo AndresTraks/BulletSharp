@@ -23,7 +23,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class UnionFind : IDisposable
+	public ref class UnionFind
 	{
 	internal:
 		btUnionFind* _native;

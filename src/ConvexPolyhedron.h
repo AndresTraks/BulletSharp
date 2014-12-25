@@ -6,7 +6,7 @@ namespace BulletSharp
 	ref class AlignedVector3Array;
 	ref class ScalarArray;
 
-	public ref class Face : IDisposable
+	public ref class Face
 	{
 	internal:
 		btFace* _native;
@@ -44,7 +44,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class ConvexPolyhedron : IDisposable
+	public ref class ConvexPolyhedron
 	{
 	internal:
 		btConvexPolyhedron* _native;

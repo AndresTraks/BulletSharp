@@ -2,7 +2,7 @@
 
 namespace BulletSharp
 {
-	public ref class VehicleRaycasterResult : IDisposable
+	public ref class VehicleRaycasterResult
 	{
 	internal:
 		btVehicleRaycaster::btVehicleRaycasterResult* _native;
@@ -34,7 +34,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class VehicleRaycaster abstract : IDisposable
+	public ref class VehicleRaycaster abstract
 	{
 	internal:
 		btVehicleRaycaster* _native;

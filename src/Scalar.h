@@ -2,7 +2,7 @@
 
 namespace BulletSharp
 {
-	public ref class TypedObject : IDisposable
+	public ref class TypedObject
 	{
 	internal:
 		bool _preventDelete;

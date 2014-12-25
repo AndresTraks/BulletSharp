@@ -38,7 +38,7 @@ namespace BulletSharp
 #endif
 
 	generic<class T>
-	public ref class AlignedObjectArray abstract : IList<T>, IDisposable
+	public ref class AlignedObjectArray abstract : IList<T>
 	{
 	internal:
 		void* _native;

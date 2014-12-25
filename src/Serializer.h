@@ -5,7 +5,7 @@ namespace BulletSharp
 	ref class DataStream;
 
 	// Not to be confused with Mogre::Serializer
-	public ref class Serializer abstract : IDisposable
+	public ref class Serializer abstract
 	{
 	internal:
 		btSerializer* _native;
@@ -52,7 +52,7 @@ namespace BulletSharp
 		}
 	};
 /*
-	public ref class BulletSerializedArrays : IDisposable
+	public ref class BulletSerializedArrays
 	{
 	internal:
 		btBulletSerializedArrays* _native;

@@ -8,7 +8,7 @@ namespace BulletSharp
 	ref class Serializer;
 	#endif
 
-	public ref class JointFeedback : IDisposable
+	public ref class JointFeedback
 	{
 	internal:
 		btJointFeedback* _native;
@@ -55,7 +55,7 @@ namespace BulletSharp
 	public ref class TypedConstraint abstract : ITrackingDisposable
 	{
 	public:
-		ref class ConstraintInfo1 : IDisposable
+		ref class ConstraintInfo1
 		{
 		internal:
 			btTypedConstraint::btConstraintInfo1* _native;
@@ -87,7 +87,7 @@ namespace BulletSharp
 			}
 		};
 
-		ref class ConstraintInfo2 : IDisposable
+		ref class ConstraintInfo2
 		{
 		internal:
 			btTypedConstraint::btConstraintInfo2* _native;
@@ -334,7 +334,7 @@ namespace BulletSharp
 
 #ifdef _BT_USE_CENTER_LIMIT_
 #ifdef IN_PARALLELL_SOLVER
-	public ref class AngularLimit : IDisposable
+	public ref class AngularLimit
 	{
 	internal:
 		btAngularLimit* _native;

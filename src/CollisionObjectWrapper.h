@@ -5,7 +5,7 @@ namespace BulletSharp
 	ref class CollisionObject;
 	ref class CollisionShape;
 
-	public ref class CollisionObjectWrapper // : IDisposable
+	public ref class CollisionObjectWrapper //
 	{
 	internal:
 		btCollisionObjectWrapper* _native;

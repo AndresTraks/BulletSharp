@@ -229,7 +229,7 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class Body : IDisposable
+		public ref class Body
 		{
 		internal:
 			btSoftBody::Body* _native;
@@ -722,7 +722,7 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class ImplicitFn abstract : IDisposable
+		public ref class ImplicitFn abstract
 		{
 		internal:
 			ImplicitFnWrapper* _native;
@@ -751,7 +751,7 @@ namespace BulletSharp
 			virtual btScalar Eval(const btVector3& x);
 		};
 
-		public ref class Impulse : IDisposable
+		public ref class Impulse
 		{
 		internal:
 			btSoftBody::Impulse* _native;
@@ -797,7 +797,7 @@ namespace BulletSharp
 		public ref class Joint abstract
 		{
 		public:
-			ref class Specs abstract : IDisposable
+			ref class Specs abstract
 			{
 			internal:
 				btSoftBody::Joint::Specs* _native;
@@ -910,7 +910,7 @@ namespace BulletSharp
 		public ref class AJoint : Joint
 		{
 		public:
-			ref class IControl : IDisposable
+			ref class IControl
 			{
 			internal:
 				btSoftBody::AJoint::IControl* _native;
@@ -1369,7 +1369,7 @@ namespace BulletSharp
 			}
 		};
 */
-		public ref class RigidContact //: IDisposable
+		public ref class RigidContact
 		{
 		internal:
 			btSoftBody::RContact* _native;
@@ -1429,7 +1429,7 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class Scti : IDisposable
+		public ref class Scti
 		{
 		internal:
 			btSoftBody::sCti* _native;
@@ -1463,7 +1463,7 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class SoftContact //: IDisposable
+		public ref class SoftContact
 		{
 		internal:
 			btSoftBody::SContact* _native;
@@ -1525,7 +1525,7 @@ namespace BulletSharp
 			}
 		};
 /*
-		ref class sMedium : IDisposable
+		ref class sMedium
 		{
 		internal:
 			btSoftBody::sMedium* _native;
@@ -1559,7 +1559,7 @@ namespace BulletSharp
 			}
 		};
 */
-		public ref class SolverState //: IDisposable
+		public ref class SolverState
 		{
 		internal:
 			btSoftBody::SolverState* _native;
@@ -1605,7 +1605,7 @@ namespace BulletSharp
 			}
 		};
 
-		public ref class SRayCast : IDisposable
+		public ref class SRayCast
 		{
 		internal:
 			btSoftBody::sRayCast* _native;

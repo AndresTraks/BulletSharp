@@ -6,7 +6,7 @@ namespace BulletSharp
 	ref class AlignedIntArray;
 	ref class PrimitiveTriangle;
 /*
-	public ref class GimPair : IDisposable
+	public ref class GimPair
 	{
 	internal:
 		GIM_PAIR* _native;
@@ -49,7 +49,7 @@ namespace BulletSharp
 		void PushPairInv(int index1, int index2);
 	};
 /*
-	public ref class GimBvhData : IDisposable
+	public ref class GimBvhData
 	{
 	internal:
 		GIM_BVH_DATA* _native;
@@ -77,7 +77,7 @@ namespace BulletSharp
 		}
 	};
 */
-	public ref class GimBvhTreeNode : IDisposable
+	public ref class GimBvhTreeNode
 	{
 	internal:
 		GIM_BVH_TREE_NODE* _native;
@@ -137,7 +137,7 @@ namespace BulletSharp
 		GimBvhTreeNodeArray();
 	};
 */
-	public ref class BvhTree : IDisposable
+	public ref class BvhTree
 	{
 	internal:
 		btBvhTree* _native;
@@ -170,7 +170,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class PrimitiveManagerBase abstract : IDisposable
+	public ref class PrimitiveManagerBase abstract
 	{
 	internal:
 		btPrimitiveManagerBase* _native;
@@ -202,7 +202,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class GImpactBvh : IDisposable
+	public ref class GImpactBvh
 	{
 	internal:
 		btGImpactBvh* _native;
