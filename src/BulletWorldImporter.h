@@ -38,11 +38,16 @@ namespace BulletSharp
 			Dictionary<String^, RigidBody^>^ _nameBodyMap;
 
 		internal:
+			List<OptimizedBvh^>^ _allocatedBvhs;
+			Dictionary<IntPtr, OptimizedBvh^>^ _allocatedBvhsMap;
 			List<CollisionObject^>^ _allocatedRigidBodies;
 			List<CollisionShape^>^ _allocatedCollisionShapes;
 #ifndef DISABLE_CONSTRAINTS
 			List<TypedConstraint^>^ _allocatedConstraints;
 #endif
+			List<TriangleIndexVertexArray^>^ _allocatedTriangleIndexArrays;
+			Dictionary<IntPtr, TriangleIndexVertexArray^>^ _allocatedTriangleIndexArraysMap;
+			List<TriangleInfoMap^>^ _allocatedTriangleInfoMaps;
 
 		public:
 			!BulletWorldImporter();
@@ -73,9 +78,7 @@ namespace BulletSharp
 			virtual CollisionShape^ CreateConeShapeZ(btScalar radius, btScalar height);
 			//virtual TriangleIndexVertexArray^ CreateMeshInterface(StridingMeshInterfaceData^ meshData);
 			virtual TriangleIndexVertexArray^ CreateTriangleMeshContainer();
-#ifndef DISABLE_BVH
 			virtual BvhTriangleMeshShape^ CreateBvhTriangleMeshShape(StridingMeshInterface^ trimesh, OptimizedBvh^ bvh);
-#endif
 			virtual CollisionShape^ CreateConvexTriangleMeshShape(StridingMeshInterface^ trimesh);
 #ifndef DISABLE_GIMPACT
 			virtual GImpactMeshShape^ CreateGImpactShape(StridingMeshInterface^ trimesh);
@@ -83,15 +86,11 @@ namespace BulletSharp
 			//virtual StridingMeshInterfaceData^ CreateStridingMeshInterfaceData(StridingMeshInterfaceData^ interfaceData);
 			virtual ConvexHullShape^ CreateConvexHullShape();
 			virtual CompoundShape^ CreateCompoundShape();
-#ifndef DISABLE_BVH
 			virtual ScaledBvhTriangleMeshShape^ CreateScaledTrangleMeshShape(BvhTriangleMeshShape^ meshShape, Vector3 localScaling);
-#endif
 			virtual MultiSphereShape^ CreateMultiSphereShape(array<Vector3>^ positions, array<btScalar>^ radi);
 
 			// acceleration and connectivity structures
-#ifndef DISABLE_BVH
 			virtual OptimizedBvh^ CreateOptimizedBvh();
-#endif
 			virtual TriangleInfoMap^ CreateTriangleInfoMap();
 
 #ifndef DISABLE_CONSTRAINTS
@@ -125,9 +124,7 @@ namespace BulletSharp
 #ifndef DISABLE_CONSTRAINTS
 			TypedConstraint^ GetConstraintByIndex(int index);
 #endif
-#ifndef DISABLE_BVH
 			OptimizedBvh^ GetBvhByIndex(int index);
-#endif
 			TriangleInfoMap^ GetTriangleInfoMapByIndex(int index);
 
 			// queries involving named objects
@@ -204,25 +201,19 @@ namespace BulletSharp
 			virtual btCollisionShape* createConeShapeY(btScalar radius, btScalar height);
 			virtual btCollisionShape* createConeShapeZ(btScalar radius, btScalar height);
 			virtual class btTriangleIndexVertexArray* createTriangleMeshContainer();
-#ifndef DISABLE_BVH
 			virtual	btBvhTriangleMeshShape* createBvhTriangleMeshShape(btStridingMeshInterface* trimesh, btOptimizedBvh* bvh);
-#endif
 			virtual btCollisionShape* createConvexTriangleMeshShape(btStridingMeshInterface* trimesh);
 #ifndef DISABLE_GIMPACT
 			virtual btGImpactMeshShape* createGimpactShape(btStridingMeshInterface* trimesh);
 #endif
 			virtual class btConvexHullShape* createConvexHullShape();
 			virtual class btCompoundShape* createCompoundShape();
-#ifndef DISABLE_BVH
 			virtual class btScaledBvhTriangleMeshShape* createScaledTrangleMeshShape(btBvhTriangleMeshShape* meshShape, const btVector3& localScalingbtBvhTriangleMeshShape);
-#endif
 			virtual class btMultiSphereShape* createMultiSphereShape(const btVector3* positions, const btScalar* radi, int numSpheres);
 			//virtual btTriangleIndexVertexArray* createMeshInterface(btStridingMeshInterfaceData& meshData);
 
 			// acceleration and connectivity structures
-#ifndef DISABLE_BVH
 			virtual btOptimizedBvh* createOptimizedBvh();
-#endif
 			virtual btTriangleInfoMap* createTriangleInfoMap();
 
 #ifndef DISABLE_CONSTRAINTS
@@ -259,42 +250,6 @@ namespace BulletSharp
 				btCollisionShape* shape, const char* bodyName);
 			virtual btRigidBody* baseCreateRigidBody(bool isDynamic, btScalar mass, const btTransform& startTransform,
 				btCollisionShape* shape, const char* bodyName);
-
-			// shapes
-			virtual class btTriangleIndexVertexArray* baseCreateTriangleMeshContainer();
-			// acceleration and connectivity structures
-#ifndef DISABLE_BVH
-			virtual btOptimizedBvh* baseCreateOptimizedBvh();
-#endif
-			virtual btTriangleInfoMap* baseCreateTriangleInfoMap();
-
-#ifndef DISABLE_CONSTRAINTS
-			// constraints
-			virtual btPoint2PointConstraint* baseCreatePoint2PointConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
-				const btVector3& pivotInA, const btVector3& pivotInB);
-			virtual btPoint2PointConstraint* baseCreatePoint2PointConstraint(btRigidBody& rigidBodyA, const btVector3& pivotInA);
-			virtual btHingeConstraint* baseCreateHingeConstraint(btRigidBody& rigidBodyA,btRigidBody& rigidBodyB,
-				const btTransform& rigidBodyAFrame, const btTransform& rigidBodyBFrame, bool useReferenceFrameA);
-			virtual btHingeConstraint* baseCreateHingeConstraint(btRigidBody& rigidBodyA,btRigidBody& rigidBodyB,
-				const btTransform& rigidBodyAFrame, const btTransform& rigidBodyBFrame);
-			virtual btHingeConstraint* baseCreateHingeConstraint(btRigidBody& rigidBodyA, const btTransform& rigidBodyAFrame, bool useReferenceFrameA);
-			virtual btHingeConstraint* baseCreateHingeConstraint(btRigidBody& rigidBodyA, const btTransform& rigidBodyAFrame);
-			virtual btConeTwistConstraint* baseCreateConeTwistConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
-				const btTransform& rigidBodyAFrame, const btTransform& rigidBodyBFrame);
-			virtual btConeTwistConstraint* baseCreateConeTwistConstraint(btRigidBody& rigidBodyA, const btTransform& rigidBodyAFrame);
-			virtual btGeneric6DofConstraint* baseCreateGeneric6DofConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
-				const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA);
-			virtual btGeneric6DofConstraint* baseCreateGeneric6DofConstraint(btRigidBody& rigidBodyB,
-				const btTransform& frameInB, bool useLinearReferenceFrameB);
-			virtual btGeneric6DofSpringConstraint* baseCreateGeneric6DofSpringConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
-				const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA);
-			virtual btSliderConstraint* baseCreateSliderConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
-				const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA);
-			virtual btSliderConstraint* baseCreateSliderConstraint(btRigidBody& rigidBodyB,
-				const btTransform& frameInB, bool useLinearReferenceFrameA);
-			virtual btGearConstraint* baseCreateGearConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
-				const btVector3& axisInA, const btVector3& axisInB, btScalar ratio);
-#endif
 		};
 	};
 };

@@ -197,9 +197,9 @@ namespace BulletSharp
 
 	private:
 		bool _isDisposed;
-		//bool _preventDelete;
 		Object^ _userObject;
 		JointFeedback^ _jointFeedback;
+		static RigidBody^ _fixedBody;
 
 	protected:
 		RigidBody^ _rigidBodyA;

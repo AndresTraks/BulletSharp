@@ -8,9 +8,6 @@ namespace BulletSharp
 
 	public ref class ContactConstraint abstract : TypedConstraint
 	{
-	internal:
-		ContactConstraint(btContactConstraint* native);
-
 	public:
 		property PersistentManifold^ ContactManifold
 		{

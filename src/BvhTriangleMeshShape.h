@@ -12,9 +12,7 @@ namespace BulletSharp
 	public ref class BvhTriangleMeshShape : TriangleMeshShape
 	{
 	private:
-#ifndef DISABLE_BVH
 		OptimizedBvh^ _optimizedBvh;
-#endif
 		TriangleInfoMap^ _triangleInfoMap;
 
 	internal:
@@ -48,17 +46,13 @@ namespace BulletSharp
 		void SerializeSingleBvh(Serializer^ serializer);
 		void SerializeSingleTriangleInfoMap(Serializer^ serializer);
 #endif
-#ifndef DISABLE_BVH
 		void SetOptimizedBvh(OptimizedBvh^ bvh, Vector3 localScaling);
-#endif
 
-#ifndef DISABLE_BVH
 		property BulletSharp::OptimizedBvh^ OptimizedBvh
 		{
 			BulletSharp::OptimizedBvh^ get();
 			void set(BulletSharp::OptimizedBvh^ value);
 		}
-#endif
 
 		property bool OwnsBvh
 		{

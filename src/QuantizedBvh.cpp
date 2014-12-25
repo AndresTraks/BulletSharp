@@ -1,13 +1,13 @@
 #include "StdAfx.h"
 
-#ifndef DISABLE_BVH
-
 #include "Collections.h"
 #include "OptimizedBvh.h"
 #include "QuantizedBvh.h"
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
 #endif
+
+#ifndef DISABLE_BVH
 
 QuantizedBvhNode::QuantizedBvhNode(btQuantizedBvhNode* native)
 {
@@ -157,6 +157,7 @@ void NodeOverlapCallback::ProcessNode(int subPart, int triangleIndex)
 {
 	_native->processNode(subPart, triangleIndex);
 }
+#endif
 
 
 QuantizedBvh::QuantizedBvh(btQuantizedBvh* native)
@@ -196,6 +197,7 @@ QuantizedBvh::!QuantizedBvh()
 	OnDisposed(this, nullptr);
 }
 
+#ifndef DISABLE_BVH
 QuantizedBvh::QuantizedBvh()
 {
 	_native = new btQuantizedBvh();
@@ -334,7 +336,7 @@ unsigned int QuantizedBvh::AlignmentSerializationPadding::get()
 	return btQuantizedBvh::getAlignmentSerializationPadding();
 }
 #endif
-
+#endif
 bool QuantizedBvh::IsDisposed::get()
 {
 	return (_native == NULL);
@@ -344,6 +346,7 @@ bool QuantizedBvh::IsQuantized::get()
 {
 	return _native->isQuantized();
 }
+#ifndef DISABLE_BVH
 /*
 QuantizedNodeArray^ QuantizedBvh::LeafNodeArray::get()
 {

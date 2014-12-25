@@ -7,11 +7,6 @@
 
 #define Native static_cast<btUniversalConstraint*>(_native)
 
-UniversalConstraint::UniversalConstraint(btUniversalConstraint* native)
-	: Generic6DofConstraint(native)
-{
-}
-
 UniversalConstraint::UniversalConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	Vector3 anchor, Vector3 axis1, Vector3 axis2)
 	: Generic6DofConstraint(0)

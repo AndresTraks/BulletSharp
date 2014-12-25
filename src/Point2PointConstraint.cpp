@@ -60,11 +60,6 @@ void ConstraintSetting::Tau::set(btScalar value)
 
 #define Native static_cast<btPoint2PointConstraint*>(_native)
 
-Point2PointConstraint::Point2PointConstraint(btPoint2PointConstraint* native)
-	: TypedConstraint(native)
-{
-}
-
 Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	Vector3 pivotInA, Vector3 pivotInB)
 	: TypedConstraint(0)
@@ -88,6 +83,7 @@ Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivo
 	VECTOR3_DEL(pivotInA);
 
 	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = FixedBody;
 }
 
 void Point2PointConstraint::GetInfo1NonVirtual(ConstraintInfo1^ info)

@@ -7,11 +7,6 @@
 
 #define Native static_cast<btGearConstraint*>(_native)
 
-GearConstraint::GearConstraint(btGearConstraint* native)
-	: TypedConstraint(native)
-{
-}
-
 GearConstraint::GearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA,
 	Vector3 axisInB, btScalar ratio)
 	: TypedConstraint(0)

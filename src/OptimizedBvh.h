@@ -13,7 +13,7 @@ namespace BulletSharp
 
 	public:
 		OptimizedBvh();
-
+#ifndef DISABLE_BVH
 		void Build(StridingMeshInterface^ triangles, bool useQuantizedAabbCompression,
 			Vector3 bvhAabbMin, Vector3 bvhAabbMax);
 		static OptimizedBvh^ DeSerializeInPlace(IntPtr alignedDataBuffer, unsigned int dataBufferSize,
@@ -24,5 +24,6 @@ namespace BulletSharp
 			bool swapEndian);
 		void UpdateBvhNodes(StridingMeshInterface^ meshInterface, int firstNode, int endNode,
 			int index);
+#endif
 	};
 };

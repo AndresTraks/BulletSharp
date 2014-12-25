@@ -1,12 +1,10 @@
 #include "StdAfx.h"
 
 #include "BvhTriangleMeshShape.h"
+#include "OptimizedBvh.h"
 #include "StridingMeshInterface.h"
 #include "TriangleCallback.h"
 #include "TriangleInfoMap.h"
-#ifndef DISABLE_BVH
-#include "OptimizedBvh.h"
-#endif
 #ifndef DISABLE_SERIALIZE
 #include "Serializer.h"
 #endif
@@ -191,7 +189,6 @@ void BvhTriangleMeshShape::SerializeSingleTriangleInfoMap(BulletSharp::Serialize
 }
 #endif
 
-#ifndef DISABLE_BVH
 void BvhTriangleMeshShape::SetOptimizedBvh(BulletSharp::OptimizedBvh^ bvh, Vector3 localScaling)
 {
 	VECTOR3_CONV(localScaling);
@@ -213,9 +210,9 @@ OptimizedBvh^ BvhTriangleMeshShape::OptimizedBvh::get()
 }
 void BvhTriangleMeshShape::OptimizedBvh::set(BulletSharp::OptimizedBvh^ value)
 {
+	_optimizedBvh = value;
 	BvhTriangleMeshShape_SetOptimizedBvh(Native, (btOptimizedBvh*)value->_native);
 }
-#endif
 
 bool BvhTriangleMeshShape::OwnsBvh::get()
 {

@@ -8,9 +8,6 @@ namespace BulletSharp
 
 	public ref class FixedConstraint : TypedConstraint
 	{
-	internal:
-		FixedConstraint(btFixedConstraint* native);
-
 	public:
 		FixedConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA,
 			Matrix frameInB);

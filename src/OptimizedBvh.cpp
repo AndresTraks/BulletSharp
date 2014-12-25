@@ -1,7 +1,5 @@
 #include "StdAfx.h"
 
-#ifndef DISABLE_BVH
-
 #include "OptimizedBvh.h"
 #include "StridingMeshInterface.h"
 
@@ -16,7 +14,7 @@ OptimizedBvh::OptimizedBvh()
 	: QuantizedBvh(new btOptimizedBvh())
 {
 }
-
+#ifndef DISABLE_BVH
 void OptimizedBvh::Build(StridingMeshInterface^ triangles, bool useQuantizedAabbCompression,
 	Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 {

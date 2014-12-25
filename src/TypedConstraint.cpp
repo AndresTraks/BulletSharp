@@ -412,7 +412,12 @@ void TypedConstraint::DebugDrawSize::set(btScalar dbgDrawSize)
 
 RigidBody^ TypedConstraint::FixedBody::get()
 {
-	return (RigidBody^)CollisionObject::GetManaged(&btTypedConstraint::getFixedBody());
+	if (!_fixedBody)
+	{
+		_fixedBody = gcnew RigidBody(&btTypedConstraint::getFixedBody());
+		_fixedBody->_preventDelete = true;
+	}
+	return _fixedBody;
 }
 
 bool TypedConstraint::IsDisposed::get()

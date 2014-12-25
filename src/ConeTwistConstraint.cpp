@@ -7,11 +7,6 @@
 
 #define Native static_cast<btConeTwistConstraint*>(_native)
 
-ConeTwistConstraint::ConeTwistConstraint(btConeTwistConstraint* native)
-	: TypedConstraint(native)
-{
-}
-
 ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	Matrix rigidBodyAFrame, Matrix rigidBodyBFrame)
 	: TypedConstraint(0)
@@ -36,6 +31,7 @@ ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, Matrix rigidBody
 	TRANSFORM_DEL(rigidBodyAFrame);
 
 	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = FixedBody;
 }
 
 void ConeTwistConstraint::CalcAngleInfo()

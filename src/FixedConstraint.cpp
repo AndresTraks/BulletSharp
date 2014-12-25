@@ -5,11 +5,6 @@
 #include "FixedConstraint.h"
 #include "RigidBody.h"
 
-FixedConstraint::FixedConstraint(btFixedConstraint* native)
-	: TypedConstraint(native)
-{
-}
-
 FixedConstraint::FixedConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA,
 	Matrix frameInB)
 	: TypedConstraint(0)

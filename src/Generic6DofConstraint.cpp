@@ -431,6 +431,7 @@ Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frame
 	TRANSFORM_DEL(frameInB);
 
 	_angularLimits = gcnew array<RotationalLimitMotor^>(3);
+	_rigidBodyA = FixedBody;
 	_rigidBodyB = rigidBodyB;
 }
 

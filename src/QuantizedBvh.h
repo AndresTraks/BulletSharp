@@ -2,12 +2,13 @@
 
 namespace BulletSharp
 {
+#ifndef DISABLE_BVH
 	ref class UShortArray;
 	#ifndef DISABLE_SERIALIZE
 	ref class Serializer;
 	#endif
 
-	public ref class QuantizedBvhNode : IDisposable
+	public ref class QuantizedBvhNode
 	{
 	internal:
 		btQuantizedBvhNode* _native;
@@ -59,7 +60,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class OptimizedBvhNode : IDisposable
+	public ref class OptimizedBvhNode
 	{
 	internal:
 		btOptimizedBvhNode* _native;
@@ -105,7 +106,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class NodeOverlapCallback abstract : IDisposable
+	public ref class NodeOverlapCallback abstract
 	{
 	internal:
 		btNodeOverlapCallback* _native;
@@ -120,7 +121,7 @@ namespace BulletSharp
 	public:
 		void ProcessNode(int subPart, int triangleIndex);
 	};
-
+#endif
 	public ref class QuantizedBvh : ITrackingDisposable
 	{
 	public:
@@ -147,6 +148,7 @@ namespace BulletSharp
 		~QuantizedBvh();
 
 	public:
+#ifndef DISABLE_BVH
 		QuantizedBvh();
 
 		void BuildInternal();
@@ -183,7 +185,7 @@ namespace BulletSharp
 			static unsigned int get();
 		}
 #endif
-
+#endif
 		property bool IsDisposed
 		{
 			virtual bool get();
@@ -193,6 +195,7 @@ namespace BulletSharp
 		{
 			bool get();
 		}
+#ifndef DISABLE_BVH
 /*
 		property QuantizedNodeArray^ LeafNodeArray
 		{
@@ -209,5 +212,6 @@ namespace BulletSharp
 			BvhSubtreeInfoArray^ get();
 		}
 */
+#endif
 	};
 };

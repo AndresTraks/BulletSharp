@@ -8,9 +8,6 @@ namespace BulletSharp
 
 	public ref class SliderConstraint : TypedConstraint
 	{
-	internal:
-		SliderConstraint(btSliderConstraint* native);
-
 	public:
 		SliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA,
 			Matrix frameInB, bool useLinearReferenceFrameA);
