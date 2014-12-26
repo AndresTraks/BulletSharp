@@ -249,7 +249,7 @@ void KinematicCharacterController::StepDown(CollisionWorld^ collisionWorld, btSc
 			_targetPosition = orig_position;
 			downVelocity = _stepHeight;
 
-			Vector3 step_drop2 = GetUpAxisDirection(_upAxis) * (_currentStepOffset + downVelocity);
+			Vector3 step_drop2 = Vector3_Scale(GetUpAxisDirection(_upAxis), _currentStepOffset + downVelocity);
 			_targetPosition -= step_drop2;
 			runonce = true;
 			continue; //re-run previous tests

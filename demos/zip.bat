@@ -29,9 +29,9 @@ copy Generic\bin\Release\CcdPhysicsDemo.exe bin\
 copy Generic\bin\Release\CharacterDemo.exe bin\
 copy Generic\bin\Release\CollisionInterfaceDemo.exe bin\
 copy Generic\bin\Release\ConcaveConvexCastDemo.exe bin\
+copy Generic\bin\Release\ConcaveRaycastDemo.exe bin\
 copy Generic\bin\Release\ConstraintDemo.exe bin\
 copy Generic\bin\Release\ConvexDecompositionDemo.exe bin\
-copy Generic\bin\Release\ConcaveRaycastDemo.exe bin\
 copy Generic\bin\Release\DistanceDemo.exe bin\
 copy Generic\bin\Release\FeatherStoneDemo.exe bin\
 copy Generic\bin\Release\GImpactTestDemo.exe bin\
@@ -63,6 +63,8 @@ copy Generic\bin\Release\SharpDX.D3DCompiler.dll bin\
 copy Generic\bin\Release\SharpDX.Direct3D10.dll bin\
 copy Generic\bin\Release\SharpDX.DXGI.dll bin\
 
-cmd /C svn export http://bulletsharp.googlecode.com/svn/trunk/demos/Generic src --force
+cmd /C git clone https://github.com/AndresTraks/BulletSharp.git repo
+move repo\demos\Generic src
+rmdir /s /q repo
 
 "%PROGRAMFILES%\7-Zip\7z.exe" a bulletsharp-demos.zip bin src
