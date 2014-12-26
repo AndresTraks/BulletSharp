@@ -34,7 +34,14 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class VehicleRaycaster abstract
+
+	public interface class IVehicleRaycaster
+	{
+		virtual Object^ CastRay(Vector3 from, Vector3 to, VehicleRaycasterResult^ result);
+	};
+
+
+	public ref class VehicleRaycaster abstract : IVehicleRaycaster
 	{
 	internal:
 		btVehicleRaycaster* _native;
@@ -47,6 +54,6 @@ namespace BulletSharp
 		~VehicleRaycaster();
 
 	public:
-		Object^ CastRay(Vector3 from, Vector3 to, VehicleRaycasterResult^ result);
+		virtual Object^ CastRay(Vector3 from, Vector3 to, VehicleRaycasterResult^ result);
 	};
 };
