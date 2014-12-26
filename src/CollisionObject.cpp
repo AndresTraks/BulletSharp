@@ -246,7 +246,7 @@ CollisionShape^ CollisionObject::CollisionShape::get()
 }
 void CollisionObject::CollisionShape::set(BulletSharp::CollisionShape^ collisionShape)
 {
-	_native->setCollisionShape(collisionShape->_native);
+	_native->setCollisionShape(GetUnmanagedNullable(collisionShape));
 	_collisionShape = collisionShape;
 }
 
