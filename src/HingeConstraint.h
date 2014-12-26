@@ -72,11 +72,13 @@ namespace BulletSharp
 		property Matrix FrameOffsetA
 		{
 			Matrix get();
+			void set(Matrix value);
 		}
 
 		property Matrix FrameOffsetB
 		{
 			Matrix get();
+			void set(Matrix value);
 		}
 
 		property bool HasLimit
