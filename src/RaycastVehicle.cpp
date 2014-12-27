@@ -85,7 +85,7 @@ static RaycastVehicle::RaycastVehicle()
 	_fixedBody->SetMassProps(0, Vector3_Zero);
 }
 
-RaycastVehicle::RaycastVehicle(RaycastVehicle::VehicleTuning^ tuning, BulletSharp::RigidBody^ chassis, VehicleRaycaster^ raycaster)
+RaycastVehicle::RaycastVehicle(RaycastVehicle::VehicleTuning^ tuning, BulletSharp::RigidBody^ chassis, IVehicleRaycaster^ raycaster)
 {
 	_wheelInfo = gcnew List<BulletSharp::WheelInfo^>();
 	_chassisBody = chassis;

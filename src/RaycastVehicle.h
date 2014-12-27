@@ -70,7 +70,7 @@ namespace BulletSharp
 
 		List<WheelInfo^>^ _wheelInfo;
 
-		VehicleRaycaster^ _vehicleRaycaster;
+		IVehicleRaycaster^ _vehicleRaycaster;
 		btScalar _pitchControl;
 		btScalar _steeringValue; 
 		btScalar _currentVehicleSpeedKmHour;
@@ -86,7 +86,7 @@ namespace BulletSharp
 		static RaycastVehicle();
 
 	public:
-		RaycastVehicle(VehicleTuning^ tuning, RigidBody^ chassis, VehicleRaycaster^ raycaster);
+		RaycastVehicle(VehicleTuning^ tuning, RigidBody^ chassis, IVehicleRaycaster^ raycaster);
 
 		WheelInfo^ AddWheel(Vector3 connectionPointCS, Vector3 wheelDirectionCS0,
 			Vector3 wheelAxleCS, btScalar suspensionRestLength, btScalar wheelRadius,
