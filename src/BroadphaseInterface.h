@@ -85,7 +85,6 @@ namespace BulletSharp
 		btBroadphaseInterface* _native;
 
 		BroadphaseInterface(btBroadphaseInterface* native);
-		static BroadphaseInterface^ GetManaged(btBroadphaseInterface* broadphase);
 
 	protected:
 		OverlappingPairCache^ _pairCache;

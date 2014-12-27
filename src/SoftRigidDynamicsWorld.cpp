@@ -48,6 +48,9 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 #endif
 	Dispatcher = dispatcher;
 	_broadphase = pairCache;
+	_worldInfo = gcnew SoftBodyWorldInfo(&Native->getWorldInfo());
+	_worldInfo->Dispatcher = dispatcher;
+	_worldInfo->Broadphase = pairCache;
 }
 
 SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
@@ -74,6 +77,9 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 #endif
 	Dispatcher = dispatcher;
 	_broadphase = pairCache;
+	_worldInfo = gcnew SoftBodyWorldInfo(&Native->getWorldInfo());
+	_worldInfo->Dispatcher = dispatcher;
+	_worldInfo->Broadphase = pairCache;
 }
 
 SoftRigidDynamicsWorld::~SoftRigidDynamicsWorld()
@@ -134,15 +140,7 @@ AlignedSoftBodyArray^ SoftRigidDynamicsWorld::SoftBodyArray::get()
 
 SoftBodyWorldInfo^ SoftRigidDynamicsWorld::WorldInfo::get()
 {
-	if (_worldInfo == nullptr)
-	{
-		_worldInfo = gcnew SoftBodyWorldInfo(&Native->getWorldInfo());
-	}
 	return _worldInfo;
-}
-void SoftRigidDynamicsWorld::WorldInfo::set(SoftBodyWorldInfo^ value)
-{
-	_worldInfo = value;
 }
 
 #endif

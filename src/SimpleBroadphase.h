@@ -28,9 +28,6 @@ namespace BulletSharp
 
 	public ref class SimpleBroadphase : BroadphaseInterface
 	{
-	internal:
-		SimpleBroadphase(btSimpleBroadphase* native);
-
 	public:
 		SimpleBroadphase(int maxProxies, BulletSharp::OverlappingPairCache^ overlappingPairCache);
 		SimpleBroadphase(int maxProxies);

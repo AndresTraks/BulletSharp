@@ -96,12 +96,16 @@ namespace BulletSharp
 	public ref class HashedOverlappingPairCache : OverlappingPairCache
 	{
 	internal:
-		HashedOverlappingPairCache(btHashedOverlappingPairCache* native);
+		HashedOverlappingPairCache(btHashedOverlappingPairCache* native, bool preventDelete);
 
 	public:
 		HashedOverlappingPairCache();
 
+		virtual BroadphasePair^ AddOverlappingPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1) override;
 		bool NeedsBroadphaseCollision(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1);
+		virtual IntPtr RemoveOverlappingPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1,
+			Dispatcher^ dispatcher) override;
+		virtual void RemoveOverlappingPairsContainingProxy(BroadphaseProxy^ proxy0, Dispatcher^ dispatcher) override;
 
 		property int Count
 		{
@@ -123,7 +127,11 @@ namespace BulletSharp
 	public:
 		SortedOverlappingPairCache();
 
+		virtual BroadphasePair^ AddOverlappingPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1) override;
 		bool NeedsBroadphaseCollision(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1);
+		virtual IntPtr RemoveOverlappingPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1,
+			Dispatcher^ dispatcher) override;
+		virtual void RemoveOverlappingPairsContainingProxy(BroadphaseProxy^ proxy0, Dispatcher^ dispatcher) override;
 
 		property OverlapFilterCallback^ OverlapFilterCallback
 		{
@@ -139,6 +147,11 @@ namespace BulletSharp
 
 	public:
 		NullPairCache();
+
+		virtual BroadphasePair^ AddOverlappingPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1) override;
+		virtual IntPtr RemoveOverlappingPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1,
+			Dispatcher^ dispatcher) override;
+		virtual void RemoveOverlappingPairsContainingProxy(BroadphaseProxy^ proxy0, Dispatcher^ dispatcher) override;
 	};
 
 	class OverlapFilterCallbackWrapper : public btOverlapFilterCallback

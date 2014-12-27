@@ -74,20 +74,18 @@ void DbvtProxy::Stage::set(DbvtBroadphaseStage value)
 #undef Native
 #define Native static_cast<btDbvtBroadphase*>(_native)
 
-DbvtBroadphase::DbvtBroadphase(btDbvtBroadphase* native)
-	: BroadphaseInterface(native)
-{
-}
-
 DbvtBroadphase::DbvtBroadphase(BulletSharp::OverlappingPairCache^ pairCache)
 	: BroadphaseInterface(new btDbvtBroadphase((btOverlappingPairCache*)pairCache->_native))
 {
-	_pairCache = pairCache;
+	_pairCache = pairCache ? pairCache : gcnew HashedOverlappingPairCache(
+		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
 DbvtBroadphase::DbvtBroadphase()
 	: BroadphaseInterface(new btDbvtBroadphase())
 {
+	_pairCache = gcnew HashedOverlappingPairCache(
+		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
 #ifndef DISABLE_DBVT

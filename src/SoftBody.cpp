@@ -41,7 +41,6 @@ SoftBodyWorldInfo::!SoftBodyWorldInfo()
 SoftBodyWorldInfo::SoftBodyWorldInfo()
 {
 	_native = ALIGNED_NEW(btSoftBodyWorldInfo) ();
-	_preventDelete = false;
 }
 
 btScalar SoftBodyWorldInfo::AirDensity::get()
@@ -55,10 +54,11 @@ void SoftBodyWorldInfo::AirDensity::set(btScalar value)
 
 BroadphaseInterface^ SoftBodyWorldInfo::Broadphase::get()
 {
-	return BroadphaseInterface::GetManaged(_native->m_broadphase);
+	return _broadphase;
 }
 void SoftBodyWorldInfo::Broadphase::set(BroadphaseInterface^ value)
 {
+	_broadphase = value;
 	_native->m_broadphase = GetUnmanagedNullable(value);
 }
 

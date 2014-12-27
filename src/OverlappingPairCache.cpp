@@ -144,8 +144,8 @@ BroadphasePair^ OverlappingPairCache::OverlappingPairArrayPtr::get()
 #undef Native
 #define Native static_cast<btHashedOverlappingPairCache*>(_native)
 
-HashedOverlappingPairCache::HashedOverlappingPairCache(btHashedOverlappingPairCache* native)
-	: OverlappingPairCache(native, true)
+HashedOverlappingPairCache::HashedOverlappingPairCache(btHashedOverlappingPairCache* native, bool preventDelete)
+	: OverlappingPairCache(native, preventDelete)
 {
 }
 
@@ -154,10 +154,28 @@ HashedOverlappingPairCache::HashedOverlappingPairCache()
 {
 }
 
+BroadphasePair^ HashedOverlappingPairCache::AddOverlappingPair(BroadphaseProxy^ proxy0,
+	BroadphaseProxy^ proxy1)
+{
+	return gcnew BroadphasePair(_native->addOverlappingPair(proxy0->_native, proxy1->_native));
+}
+
 bool HashedOverlappingPairCache::NeedsBroadphaseCollision(BroadphaseProxy^ proxy0,
 	BroadphaseProxy^ proxy1)
 {
 	return Native->needsBroadphaseCollision(proxy0->_native, proxy1->_native);
+}
+
+IntPtr HashedOverlappingPairCache::RemoveOverlappingPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1,
+	Dispatcher^ dispatcher)
+{
+	return IntPtr(_native->removeOverlappingPair(proxy0->_native, proxy1->_native, dispatcher->_native));
+}
+
+void HashedOverlappingPairCache::RemoveOverlappingPairsContainingProxy(BroadphaseProxy^ proxy0,
+	Dispatcher^ dispatcher)
+{
+	_native->removeOverlappingPairsContainingProxy(proxy0->_native, dispatcher->_native);
 }
 
 int HashedOverlappingPairCache::Count::get()
@@ -185,10 +203,28 @@ SortedOverlappingPairCache::SortedOverlappingPairCache()
 {
 }
 
+BroadphasePair^ SortedOverlappingPairCache::AddOverlappingPair(BroadphaseProxy^ proxy0,
+	BroadphaseProxy^ proxy1)
+{
+	return gcnew BroadphasePair(_native->addOverlappingPair(proxy0->_native, proxy1->_native));
+}
+
 bool SortedOverlappingPairCache::NeedsBroadphaseCollision(BroadphaseProxy^ proxy0,
 	BroadphaseProxy^ proxy1)
 {
 	return Native->needsBroadphaseCollision(proxy0->_native, proxy1->_native);
+}
+
+IntPtr SortedOverlappingPairCache::RemoveOverlappingPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1,
+	Dispatcher^ dispatcher)
+{
+	return IntPtr(_native->removeOverlappingPair(proxy0->_native, proxy1->_native, dispatcher->_native));
+}
+
+void SortedOverlappingPairCache::RemoveOverlappingPairsContainingProxy(BroadphaseProxy^ proxy0,
+	Dispatcher^ dispatcher)
+{
+	_native->removeOverlappingPairsContainingProxy(proxy0->_native, dispatcher->_native);
 }
 
 OverlapFilterCallback^ SortedOverlappingPairCache::OverlapFilterCallback::get()
@@ -209,6 +245,24 @@ NullPairCache::NullPairCache(btNullPairCache* native)
 NullPairCache::NullPairCache()
 	: OverlappingPairCache(new btNullPairCache(), false)
 {
+}
+
+BroadphasePair^ NullPairCache::AddOverlappingPair(BroadphaseProxy^ proxy0,
+	BroadphaseProxy^ proxy1)
+{
+	return gcnew BroadphasePair(_native->addOverlappingPair(proxy0->_native, proxy1->_native));
+}
+
+IntPtr NullPairCache::RemoveOverlappingPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1,
+	Dispatcher^ dispatcher)
+{
+	return IntPtr(_native->removeOverlappingPair(proxy0->_native, proxy1->_native, dispatcher->_native));
+}
+
+void NullPairCache::RemoveOverlappingPairsContainingProxy(BroadphaseProxy^ proxy0,
+	Dispatcher^ dispatcher)
+{
+	_native->removeOverlappingPairsContainingProxy(proxy0->_native, dispatcher->_native);
 }
 
 

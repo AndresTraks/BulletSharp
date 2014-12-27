@@ -42,25 +42,25 @@ void SimpleBroadphaseProxy::NextFree::set(int next)
 #undef Native
 #define Native static_cast<btSimpleBroadphase*>(_native)
 
-SimpleBroadphase::SimpleBroadphase(btSimpleBroadphase* native)
-	: BroadphaseInterface(native)
-{
-}
-
 SimpleBroadphase::SimpleBroadphase(int maxProxies, BulletSharp::OverlappingPairCache^ overlappingPairCache)
 	: BroadphaseInterface(new btSimpleBroadphase(maxProxies, (btOverlappingPairCache*)GetUnmanagedNullable(overlappingPairCache)))
 {
-	_pairCache = overlappingPairCache;
+	_pairCache = overlappingPairCache ? overlappingPairCache : gcnew HashedOverlappingPairCache(
+		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
 SimpleBroadphase::SimpleBroadphase(int maxProxies)
 	: BroadphaseInterface(new btSimpleBroadphase(maxProxies))
 {
+	_pairCache = gcnew HashedOverlappingPairCache(
+		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
 SimpleBroadphase::SimpleBroadphase()
 	: BroadphaseInterface(new btSimpleBroadphase())
 {
+	_pairCache = gcnew HashedOverlappingPairCache(
+		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
 bool SimpleBroadphase::AabbOverlap(SimpleBroadphaseProxy^ proxy0, SimpleBroadphaseProxy^ proxy1)

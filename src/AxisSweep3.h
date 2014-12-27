@@ -9,8 +9,8 @@ namespace BulletSharp
 
 	public ref class AxisSweep3 : BroadphaseInterface
 	{
-	internal:
-		AxisSweep3(btAxisSweep3* native);
+	private:
+		OverlappingPairCallback^ _overlappingPairUserCallback;
 
 	public:
 		AxisSweep3(Vector3% worldAabbMin, Vector3% worldAabbMax, unsigned short maxHandles,
@@ -52,8 +52,8 @@ namespace BulletSharp
 
 	public ref class AxisSweep3_32Bit : BroadphaseInterface
 	{
-	internal:
-		AxisSweep3_32Bit(bt32BitAxisSweep3* native);
+	private:
+		OverlappingPairCallback^ _overlappingPairUserCallback;
 
 	public:
 		AxisSweep3_32Bit(Vector3% worldAabbMin, Vector3% worldAabbMax, unsigned int maxHandles,

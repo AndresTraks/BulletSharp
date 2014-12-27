@@ -31,6 +31,32 @@ namespace BulletSharpTest
             return collisionObject;
         }
 
+        static void TestAxisSweepOverlapCallback()
+        {
+            var conf = new DefaultCollisionConfiguration();
+            var dispatcher = new CollisionDispatcher(conf);
+            var broadphase = new AxisSweep3(new Vector3(-1000, -1000, -1000), new Vector3(1000, 1000, 1000));
+            world = new DiscreteDynamicsWorld(dispatcher, broadphase, null, conf);
+
+            broadphase.OverlappingPairUserCallback = new AxisSweepUserCallback();
+            AddToDisposeQueue(broadphase.OverlappingPairUserCallback);
+            broadphase = null;
+
+            CreateBody(10.0f, new SphereShape(1.0f), new Vector3(2, 2, 0));
+            CreateBody(1.0f, new SphereShape(1.0f), new Vector3(0, 2, 0));
+            
+            world.StepSimulation(1.0f / 60.0f);
+
+            world.Dispose();
+            world = null;
+
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+            GC.WaitForPendingFinalizers();
+
+            TestWeakRefs();
+            disposeQueue.Clear();
+        }
+
         static void TestContactTest(RigidBody testBody, RigidBody testBody2)
         {
             object context = "your context";
@@ -313,6 +339,7 @@ namespace BulletSharpTest
 
         static void Main(string[] args)
         {
+            TestAxisSweepOverlapCallback();
             TestGCCollection();
             TestSoftBody();
 
@@ -334,52 +361,25 @@ namespace BulletSharpTest
         }
     }
 
-    class ContactSensorCallback : ContactResultCallback
+    class AxisSweepUserCallback : OverlappingPairCallback
     {
-        //! Constructor, pass whatever context you want to have available when processing contacts
-        /*! You may also want to set CollisionFilterGroups and CollisionFilterMask
-         *  (supplied by the superclass) for NeedsCollision() */
-        public ContactSensorCallback(RigidBody tgtBody, object context /*, ... */)
+        public AxisSweepUserCallback()
         {
-            body = tgtBody;
-            ctxt = context;
         }
 
-        private RigidBody body; //!< The body the sensor is monitoring
-        private object ctxt; //!< External information for contact processing
-
-        //! If you don't want to consider collisions where the bodies are joined by a constraint, override NeedsCollision:
-        /*! However, if you use a CollisionObject for #body instead of a RigidBody,
-         *  then this is unnecessary—CheckCollideWithOverride isn't available */
-        public override bool NeedsCollision(BroadphaseProxy proxy)
+        public override BroadphasePair AddOverlappingPair(BroadphaseProxy proxy0, BroadphaseProxy proxy1)
         {
-            // superclass will check CollisionFilterGroup and CollisionFilterMask
-            if (!base.NeedsCollision(proxy))
-                return false;
-
-            // if passed filters, may also want to avoid contacts between constraints
-            return body.CheckCollideWithOverride(proxy.ClientObject as CollisionObject);
+            return null;
         }
 
-        //! Called with each contact for your own processing (e.g. test if contacts fall in within sensor parameters)
-        public override float AddSingleResult(ManifoldPoint cp,
-            CollisionObjectWrapper colObj0, int partId0, int index0,
-            CollisionObjectWrapper colObj1, int partId1, int index1)
+        public override IntPtr RemoveOverlappingPair(BroadphaseProxy proxy0, BroadphaseProxy proxy1, Dispatcher dispatcher)
         {
-            Vector3 pt; // will be set to point of collision relative to body
-            if (colObj0.CollisionObject == body)
-            {
-                pt = cp.LocalPointA;
-                //Console.WriteLine("ContactSensorCallback");
-            }
-            else
-            {
-                System.Diagnostics.Debug.Assert(colObj1.CollisionObject == body);
-                pt = cp.LocalPointB;
-            }
+            return IntPtr.Zero;
+        }
 
-            // do stuff with the collision point
-            return 0; // not actually sure if return value is used for anything...?
+        public override void RemoveOverlappingPairsContainingProxy(BroadphaseProxy proxy0, Dispatcher dispatcher)
+        {
+            throw new NotImplementedException();
         }
     }
 }

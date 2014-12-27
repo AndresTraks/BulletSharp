@@ -116,8 +116,11 @@ PairCachingGhostObject::PairCachingGhostObject()
 
 HashedOverlappingPairCache^ PairCachingGhostObject::OverlappingPairCache::get()
 {
-	btHashedOverlappingPairCache* cache = Native->getOverlappingPairCache();
-	ReturnCachedObjectCast(HashedOverlappingPairCache, _overlappingPairCache, cache);
+	if (!_hashPairCache)
+	{
+		_hashPairCache = gcnew HashedOverlappingPairCache(Native->getOverlappingPairCache(), true);
+	}
+	return _hashPairCache;
 }
 
 
@@ -129,6 +132,24 @@ GhostPairCallback::GhostPairCallback(btGhostPairCallback* native)
 GhostPairCallback::GhostPairCallback()
 	: OverlappingPairCallback(new btGhostPairCallback(), false)
 {
+}
+
+BroadphasePair^ GhostPairCallback::AddOverlappingPair(BroadphaseProxy^ proxy0,
+	BroadphaseProxy^ proxy1)
+{
+	return gcnew BroadphasePair(_native->addOverlappingPair(proxy0->_native, proxy1->_native));
+}
+
+IntPtr GhostPairCallback::RemoveOverlappingPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1,
+	Dispatcher^ dispatcher)
+{
+	return IntPtr(_native->removeOverlappingPair(proxy0->_native, proxy1->_native, dispatcher->_native));
+}
+
+void GhostPairCallback::RemoveOverlappingPairsContainingProxy(BroadphaseProxy^ proxy0,
+	Dispatcher^ dispatcher)
+{
+	_native->removeOverlappingPairsContainingProxy(proxy0->_native, dispatcher->_native);
 }
 
 #endif

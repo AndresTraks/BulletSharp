@@ -57,7 +57,7 @@ namespace BulletSharp
 		PairCachingGhostObject(btPairCachingGhostObject* native);
 
 	private:
-		HashedOverlappingPairCache^ _overlappingPairCache;
+		HashedOverlappingPairCache^ _hashPairCache;
 
 	public:
 		PairCachingGhostObject();
@@ -75,5 +75,10 @@ namespace BulletSharp
 
 	public:
 		GhostPairCallback();
+
+		virtual BroadphasePair^ AddOverlappingPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1) override;
+		virtual IntPtr RemoveOverlappingPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1,
+			Dispatcher^ dispatcher) override;
+		virtual void RemoveOverlappingPairsContainingProxy(BroadphaseProxy^ proxy0, Dispatcher^ dispatcher) override;
 	};
 };

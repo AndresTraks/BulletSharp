@@ -211,6 +211,8 @@ bool RayResultCallback::IsDisposed::get()
 }
 
 
+#define Callback static_cast<BulletSharp::RayResultCallback^>(VoidPtrToGCHandle(_callback).Target)
+
 RayResultCallbackWrapper::RayResultCallbackWrapper(BulletSharp::RayResultCallback^ callback)
 {
 	_callback = GCHandleToVoidPtr(GCHandle::Alloc(callback, GCHandleType::Weak));
@@ -223,12 +225,12 @@ RayResultCallbackWrapper::~RayResultCallbackWrapper()
 
 bool RayResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) const
 {
-	return static_cast<BulletSharp::RayResultCallback^>(VoidPtrToGCHandle(_callback).Target)->NeedsCollision(BroadphaseProxy::GetManaged(proxy0));
+	return Callback->NeedsCollision(BroadphaseProxy::GetManaged(proxy0));
 }
 
 btScalar RayResultCallbackWrapper::addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace)
 {
-	return static_cast<BulletSharp::RayResultCallback^>(VoidPtrToGCHandle(_callback).Target)->AddSingleResult(gcnew LocalRayResult(&rayResult, true), normalInWorldSpace);
+	return Callback->AddSingleResult(gcnew LocalRayResult(&rayResult, true), normalInWorldSpace);
 }
 
 
@@ -463,6 +465,9 @@ bool ConvexResultCallback::IsDisposed::get()
 }
 
 
+#undef Callback
+#define Callback static_cast<BulletSharp::ConvexResultCallback^>(VoidPtrToGCHandle(_callback).Target)
+
 ConvexResultCallbackWrapper::ConvexResultCallbackWrapper(BulletSharp::ConvexResultCallback^ callback)
 {
 	_callback = GCHandleToVoidPtr(GCHandle::Alloc(callback, GCHandleType::Weak));
@@ -475,12 +480,12 @@ ConvexResultCallbackWrapper::~ConvexResultCallbackWrapper()
 
 bool ConvexResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) const
 {
-	return static_cast<BulletSharp::RayResultCallback^>(VoidPtrToGCHandle(_callback).Target)->NeedsCollision(BroadphaseProxy::GetManaged(proxy0));
+	return Callback->NeedsCollision(BroadphaseProxy::GetManaged(proxy0));
 }
 
 btScalar ConvexResultCallbackWrapper::addSingleResult(btCollisionWorld::LocalConvexResult& rayResult, bool normalInWorldSpace)
 {
-	return static_cast<BulletSharp::ConvexResultCallback^>(VoidPtrToGCHandle(_callback).Target)->AddSingleResult(gcnew LocalConvexResult(&rayResult, true), normalInWorldSpace);
+	return Callback->AddSingleResult(gcnew LocalConvexResult(&rayResult, true), normalInWorldSpace);
 }
 
 
@@ -698,6 +703,9 @@ bool ContactResultCallback::IsDisposed::get()
 }
 
 
+#undef Callback
+#define Callback static_cast<BulletSharp::ContactResultCallback^>(VoidPtrToGCHandle(_callback).Target)
+
 ContactResultCallbackWrapper::ContactResultCallbackWrapper(BulletSharp::ContactResultCallback^ callback)
 {
 	_callback = GCHandleToVoidPtr(GCHandle::Alloc(callback, GCHandleType::Weak));
@@ -710,14 +718,14 @@ ContactResultCallbackWrapper::~ContactResultCallbackWrapper()
 
 bool ContactResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) const
 {
-	return static_cast<BulletSharp::ContactResultCallback^>(VoidPtrToGCHandle(_callback).Target)->NeedsCollision(BroadphaseProxy::GetManaged(proxy0));
+	return Callback->NeedsCollision(BroadphaseProxy::GetManaged(proxy0));
 }
 
 btScalar ContactResultCallbackWrapper::addSingleResult(btManifoldPoint& cp,
 	const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0,
 	const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
 {
-	return static_cast<BulletSharp::ContactResultCallback^>(VoidPtrToGCHandle(_callback).Target)->AddSingleResult(gcnew ManifoldPoint(&cp, true),
+	return Callback->AddSingleResult(gcnew ManifoldPoint(&cp, true),
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap), partId0, index0,
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj1Wrap), partId1, index1);
 }
@@ -1029,5 +1037,5 @@ int CollisionWorld::NumCollisionObjects::get()
 
 OverlappingPairCache^ CollisionWorld::PairCache::get()
 {
-	return dynamic_cast<OverlappingPairCache^>(OverlappingPairCache::GetManaged(_native->getPairCache()));
+	return Broadphase->OverlappingPairCache;
 }

@@ -56,6 +56,7 @@ namespace BulletSharp
 
 		private:
 			bool _preventDelete;
+			BroadphaseInterface^ _broadphase;
 			Dispatcher^ _dispatcher;
 			SparseSdf^ _sparseSdf;
 

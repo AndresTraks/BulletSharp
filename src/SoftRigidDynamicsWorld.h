@@ -65,8 +65,6 @@ namespace BulletSharp
 			property SoftBodyWorldInfo^ WorldInfo
 			{
 				SoftBodyWorldInfo^ get();
-			internal:
-				void set(SoftBodyWorldInfo^ value);
 			}
 		};
 	};

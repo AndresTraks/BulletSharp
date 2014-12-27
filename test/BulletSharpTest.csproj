@@ -54,6 +54,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContactSensorCallback.cs" />
     <Compile Include="DebugDrawTest.cs" />
     <Compile Include="DebugDrawTest2.cs" />
     <Compile Include="Program.cs" />

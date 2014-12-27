@@ -65,9 +65,6 @@ namespace BulletSharp
 		DbvtProxyPtrArray^ _stageRoots;
 #endif
 
-	internal:
-		DbvtBroadphase(btDbvtBroadphase* native);
-
 	public:
 		DbvtBroadphase(BulletSharp::OverlappingPairCache^ pairCache);
 		DbvtBroadphase();
