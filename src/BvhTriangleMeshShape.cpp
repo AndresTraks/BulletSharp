@@ -192,8 +192,9 @@ void BvhTriangleMeshShape::SerializeSingleTriangleInfoMap(BulletSharp::Serialize
 void BvhTriangleMeshShape::SetOptimizedBvh(BulletSharp::OptimizedBvh^ bvh, Vector3 localScaling)
 {
 	VECTOR3_CONV(localScaling);
-	Native->setOptimizedBvh((btOptimizedBvh*)bvh->_native, VECTOR3_USE(localScaling));
+	Native->setOptimizedBvh((btOptimizedBvh*)GetUnmanagedNullable(bvh), VECTOR3_USE(localScaling));
 	VECTOR3_DEL(localScaling);
+	_optimizedBvh = bvh;
 }
 
 #pragma managed(push, off)
@@ -205,13 +206,20 @@ void BvhTriangleMeshShape_SetOptimizedBvh(btBvhTriangleMeshShape* shape, btOptim
 
 OptimizedBvh^ BvhTriangleMeshShape::OptimizedBvh::get()
 {
-	btOptimizedBvh* optimizedBvh = Native->getOptimizedBvh();
-	ReturnCachedObjectCast(BulletSharp::OptimizedBvh, _optimizedBvh, optimizedBvh)
+	if (!_optimizedBvh)
+	{
+		btOptimizedBvh* optimizedBvh = Native->getOptimizedBvh();
+		if (optimizedBvh)
+		{
+			_optimizedBvh = gcnew BulletSharp::OptimizedBvh(optimizedBvh);
+		}
+	}
+	return _optimizedBvh;
 }
 void BvhTriangleMeshShape::OptimizedBvh::set(BulletSharp::OptimizedBvh^ value)
 {
 	_optimizedBvh = value;
-	BvhTriangleMeshShape_SetOptimizedBvh(Native, (btOptimizedBvh*)value->_native);
+	BvhTriangleMeshShape_SetOptimizedBvh(Native, (btOptimizedBvh*)GetUnmanagedNullable(value));
 }
 
 bool BvhTriangleMeshShape::OwnsBvh::get()
@@ -223,14 +231,18 @@ BulletSharp::TriangleInfoMap^ BvhTriangleMeshShape::TriangleInfoMap::get()
 {
 	if (_triangleInfoMap == nullptr)
 	{
-		_triangleInfoMap = gcnew BulletSharp::TriangleInfoMap(Native->getTriangleInfoMap(), true);
+		const btTriangleInfoMap* triangleInfoMap = Native->getTriangleInfoMap();
+		if (triangleInfoMap)
+		{
+			_triangleInfoMap = gcnew BulletSharp::TriangleInfoMap((btTriangleInfoMap*)triangleInfoMap, true);
+		}
 	}
 	return _triangleInfoMap;
 }
 void BvhTriangleMeshShape::TriangleInfoMap::set(BulletSharp::TriangleInfoMap^ triangleInfoMap)
 {
 	_triangleInfoMap = triangleInfoMap;
-	Native->setTriangleInfoMap(triangleInfoMap->_native);
+	Native->setTriangleInfoMap(GetUnmanagedNullable(triangleInfoMap));
 }
 
 bool BvhTriangleMeshShape::UsesQuantizedAabbCompression::get()

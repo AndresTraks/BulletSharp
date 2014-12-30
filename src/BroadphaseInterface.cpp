@@ -31,14 +31,21 @@ BroadphaseAabbCallback::!BroadphaseAabbCallback()
 }
 
 
+#define Callback static_cast<BroadphaseAabbCallback^>(VoidPtrToGCHandle(_aabbCallback).Target)
+
 BroadphaseAabbCallbackWrapper::BroadphaseAabbCallbackWrapper(BroadphaseAabbCallback^ aabbCallback)
 {
-	_aabbCallback = aabbCallback;
+	_aabbCallback = GCHandleToVoidPtr(GCHandle::Alloc(aabbCallback, GCHandleType::Weak));
+}
+
+BroadphaseAabbCallbackWrapper::~BroadphaseAabbCallbackWrapper()
+{
+	VoidPtrToGCHandle(_aabbCallback).Free();
 }
 
 bool BroadphaseAabbCallbackWrapper::process(const btBroadphaseProxy* proxy)
 {
-	return _aabbCallback->Process(BroadphaseProxy::GetManaged((btBroadphaseProxy*)proxy));
+	return Callback->Process(BroadphaseProxy::GetManaged((btBroadphaseProxy*)proxy));
 }
 
 
@@ -52,7 +59,7 @@ BroadphaseRayCallback::BroadphaseRayCallback(BroadphaseRayCallbackWrapper* nativ
 BroadphaseRayCallback::BroadphaseRayCallback()
 	: BroadphaseAabbCallback(0)
 {
-	_native = new BroadphaseRayCallbackWrapper(this);
+	_native = new BroadphaseRayCallbackWrapper(GCHandleToVoidPtr(GCHandle::Alloc(this, GCHandleType::Weak)));
 }
 
 btScalar BroadphaseRayCallback::LambdaMax::get()
@@ -75,18 +82,30 @@ void BroadphaseRayCallback::RayDirectionInverse::set(Vector3 value)
 
 UIntArray^ BroadphaseRayCallback::Signs::get()
 {
-	return gcnew UIntArray(&Native->m_signs[0], 3);
+	if (!_signs)
+	{
+		_signs = gcnew UIntArray(&Native->m_signs[0], 3);
+	}
+	return _signs;
 }
 
 
-BroadphaseRayCallbackWrapper::BroadphaseRayCallbackWrapper(gcroot<BroadphaseRayCallback^> rayCallback)
+#undef Callback
+#define Callback static_cast<BroadphaseRayCallback^>(VoidPtrToGCHandle(_rayCallback).Target)
+
+BroadphaseRayCallbackWrapper::BroadphaseRayCallbackWrapper(void* rayCallbackHandle)
 {
-	_rayCallback = rayCallback;
+	_rayCallback = rayCallbackHandle;
+}
+
+BroadphaseRayCallbackWrapper::~BroadphaseRayCallbackWrapper()
+{
+	VoidPtrToGCHandle(_rayCallback).Free();
 }
 
 bool BroadphaseRayCallbackWrapper::process(const btBroadphaseProxy* proxy)
 {
-	return _rayCallback->Process(BroadphaseProxy::GetManaged((btBroadphaseProxy*)proxy));
+	return Callback->Process(BroadphaseProxy::GetManaged((btBroadphaseProxy*)proxy));
 }
 
 
@@ -111,11 +130,6 @@ BroadphaseInterface::!BroadphaseInterface()
 	_native = NULL;
 
 	OnDisposed(this, nullptr);
-}
-
-bool BroadphaseInterface::IsDisposed::get()
-{
-	return (_native == NULL);
 }
 
 void BroadphaseInterface::AabbTest(Vector3% aabbMin, Vector3% aabbMax, BroadphaseAabbCallback^ callback)
@@ -267,6 +281,11 @@ void BroadphaseInterface::SetAabb(BroadphaseProxy^ proxy, Vector3 aabbMin, Vecto
 	_native->setAabb(proxy->_native, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), dispatcher->_native);
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
+}
+
+bool BroadphaseInterface::IsDisposed::get()
+{
+	return (_native == NULL);
 }
 
 OverlappingPairCache^ BroadphaseInterface::OverlappingPairCache::get()

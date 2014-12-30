@@ -62,16 +62,16 @@ namespace BulletSharp
 
 	btScalar Quaternion::Angle::get()
 	{
-		return 2.0f * System::Math::Acos(W);
+		return 2 * System::Math::Acos(W);
 	}
 
 	btScalar Quaternion::AngleShortestPath::get()
 	{
 		btScalar dot = (X * X) + (Y * Y) + (Z * Z) + (W * W);
 		if (dot < 0) {
-			return 2.0f * System::Math::Acos(W);
+			return 2 * System::Math::Acos(W);
 		} else {
-			return 2.0f * System::Math::Acos(-W);
+			return 2 * System::Math::Acos(-W);
 		}
 	}
 

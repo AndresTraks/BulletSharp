@@ -40,11 +40,23 @@ namespace BulletSharpTest
 
             broadphase.OverlappingPairUserCallback = new AxisSweepUserCallback();
             AddToDisposeQueue(broadphase.OverlappingPairUserCallback);
-            broadphase = null;
 
             CreateBody(10.0f, new SphereShape(1.0f), new Vector3(2, 2, 0));
             CreateBody(1.0f, new SphereShape(1.0f), new Vector3(0, 2, 0));
-            
+
+            CustomBroadphaseAabbCallback aabbCallback = new CustomBroadphaseAabbCallback();
+            broadphase.AabbTest(new Vector3(-1000, -1000, -1000), new Vector3(1000, 1000, 1000), aabbCallback);
+            AddToDisposeQueue(aabbCallback);
+            aabbCallback = null;
+
+            // FIXME: RayTest crashes for DbvtBroadphase
+            CustomBroadphaseRayTestCallback rayCallback = new CustomBroadphaseRayTestCallback();
+            //broadphase.RayTest(new Vector3(0, 2, 0), new Vector3(2, 2, 0), rayCallback);
+            AddToDisposeQueue(rayCallback);
+            rayCallback = null;
+
+            broadphase = null;
+
             world.StepSimulation(1.0f / 60.0f);
 
             world.Dispose();
@@ -380,6 +392,22 @@ namespace BulletSharpTest
         public override void RemoveOverlappingPairsContainingProxy(BroadphaseProxy proxy0, Dispatcher dispatcher)
         {
             throw new NotImplementedException();
+        }
+    }
+
+    class CustomBroadphaseAabbCallback : BroadphaseAabbCallback
+    {
+        public override bool Process(BroadphaseProxy proxy)
+        {
+            return true;
+        }
+    }
+
+    class CustomBroadphaseRayTestCallback : BroadphaseRayCallback
+    {
+        public override bool Process(BroadphaseProxy proxy)
+        {
+            return true;
         }
     }
 }

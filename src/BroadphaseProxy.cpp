@@ -139,6 +139,15 @@ Object^ BroadphaseProxy::ClientObject::get()
 }
 void BroadphaseProxy::ClientObject::set(Object^ value)
 {
+	CollisionObject^ collisionObject = dynamic_cast<CollisionObject^>(value);
+	if (collisionObject)
+	{
+		_native->m_clientObject = collisionObject->_native;
+	}
+	else if (value == nullptr)
+	{
+		_native->m_clientObject = 0;
+	}
 	_clientObject = value;
 }
 

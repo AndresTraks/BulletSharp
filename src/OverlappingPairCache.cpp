@@ -3,6 +3,7 @@
 #include "AlignedObjectArray.h"
 #include "BroadphaseProxy.h"
 #include "Dispatcher.h"
+#include "ObjectTable.h"
 #include "OverlappingPairCache.h"
 
 OverlapCallback::~OverlapCallback()
@@ -37,7 +38,14 @@ OverlapFilterCallback::OverlapFilterCallback(btOverlapFilterCallback* native)
 
 OverlapFilterCallback^ OverlapFilterCallback::GetManaged(btOverlapFilterCallback* callback)
 {
-	return GetObjectFromTable(OverlapFilterCallback, callback);
+	if (!callback) {
+		return nullptr;
+	}
+	if (BulletSharp::ObjectTable::Contains((intptr_t)callback))
+	{
+		return BulletSharp::ObjectTable::GetObject<OverlapFilterCallback^>((intptr_t)callback);
+	}
+	return nullptr;
 }
 
 OverlapFilterCallback::~OverlapFilterCallback()

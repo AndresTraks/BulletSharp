@@ -17,8 +17,10 @@ namespace BulletSharp
 
 		BroadphaseAabbCallback(btBroadphaseAabbCallback* native);
 
-	public:
+	protected:
 		BroadphaseAabbCallback();
+
+	public:
 		virtual bool Process(BroadphaseProxy^ proxy) = 0;
 
 	public:
@@ -30,22 +32,27 @@ namespace BulletSharp
 	struct BroadphaseAabbCallbackWrapper : public btBroadphaseAabbCallback
 	{
 	protected:
-		gcroot<BroadphaseAabbCallback^> _aabbCallback;
+		void* _aabbCallback;
 
 	public:
 		BroadphaseAabbCallbackWrapper(BroadphaseAabbCallback^ aabbCallback);
+		~BroadphaseAabbCallbackWrapper();
 
 		virtual bool process(const btBroadphaseProxy* proxy);
 	};
 
 	public ref class BroadphaseRayCallback abstract : BroadphaseAabbCallback
 	{
+	private:
+		UIntArray^ _signs;
+
 	internal:
 		BroadphaseRayCallback(BroadphaseRayCallbackWrapper* native);
 
-	public:
+	protected:
 		BroadphaseRayCallback();
 
+	public:
 		property btScalar LambdaMax
 		{
 			btScalar get();
@@ -67,10 +74,11 @@ namespace BulletSharp
 	struct BroadphaseRayCallbackWrapper : public btBroadphaseRayCallback
 	{
 	protected:
-		gcroot<BroadphaseRayCallback^> _rayCallback;
+		void* _rayCallback;
 
 	public:
-		BroadphaseRayCallbackWrapper(gcroot<BroadphaseRayCallback^> rayCallback);
+		BroadphaseRayCallbackWrapper(void* rayCallbackHandle);
+		~BroadphaseRayCallbackWrapper();
 
 		virtual bool process(const btBroadphaseProxy* proxy);
 	};
@@ -93,11 +101,6 @@ namespace BulletSharp
 		!BroadphaseInterface();
 	protected:
 		~BroadphaseInterface();
-	public:
-		property bool IsDisposed
-		{
-			virtual bool get();
-		}
 
 	public:
 		void AabbTest(Vector3% aabbMin, Vector3% aabbMax, BroadphaseAabbCallback^ callback);
@@ -119,6 +122,11 @@ namespace BulletSharp
 		void ResetPool(Dispatcher^ dispatcher);
 		void SetAabb(BroadphaseProxy^ proxy, Vector3% aabbMin, Vector3% aabbMax, Dispatcher^ dispatcher);
 		void SetAabb(BroadphaseProxy^ proxy, Vector3 aabbMin, Vector3 aabbMax, Dispatcher^ dispatcher);
+
+		property bool IsDisposed
+		{
+			virtual bool get();
+		}
 
 		property BulletSharp::OverlappingPairCache^ OverlappingPairCache
 		{

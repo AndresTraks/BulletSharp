@@ -370,7 +370,6 @@ using namespace System::Runtime::InteropServices;
 #include "Math.h"
 #include "Enums.h"
 #include "ITrackingDisposable.h"
-#include "ObjectTable.h"
 
 inline void* GCHandleToVoidPtr(GCHandle handle)
 {
@@ -403,19 +402,6 @@ inline GCHandle VoidPtrToGCHandle(void* pointer)
 	return nullptr; \
 	managedObj = gcnew type(unmanagedPtr); \
 	return managedObj; }
-
-#define ReturnCachedObjectCast(type, managedObj, unmanagedPtr) { \
-	if (managedObj != nullptr && managedObj->_native == unmanagedPtr) \
-	return managedObj; \
-	managedObj = static_cast<type^>(type::GetManaged(unmanagedPtr)); \
-	return managedObj; }
-
-#define GetObjectFromTable(type, unmanagedPtr) ( \
-	(unmanagedPtr == 0) ? \
-	nullptr : \
-	(BulletSharp::ObjectTable::Contains((intptr_t)unmanagedPtr) == false) ? \
-	nullptr : BulletSharp::ObjectTable::GetObject<type^>((intptr_t)unmanagedPtr) \
-	)
 
 #define ALIGNED_NEW_FORCE(targetClass) new (btAlignedAlloc(sizeof(targetClass), 16)) targetClass
 #define ALIGNED_FREE_FORCE(target) btAlignedFree(target)

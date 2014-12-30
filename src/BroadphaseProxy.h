@@ -10,7 +10,7 @@ namespace BulletSharp
 		btBroadphaseProxy* _native;
 		int _uid;
 
-	protected:
+	private:
 		Object^ _clientObject;
 
 	internal:
