@@ -24,6 +24,7 @@ namespace BulletSharp
 		Object^ _userObject;
 		InternalTickCallback^ _callback;
 		InternalTickCallbackUnmanagedDelegate^ _callbackUnmanaged;
+		ContactSolverInfo^ _solverInfo;
 		Dictionary<IAction^, IntPtr>^ _actions;
 		List<TypedConstraint^>^ _constraints;
 

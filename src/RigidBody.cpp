@@ -47,6 +47,7 @@ RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp:
 	_native = RigidBody_GetUnmanagedConstructionInfo(mass,
 		GetUnmanagedNullable(motionState), GetUnmanagedNullable(collisionShape));
 #endif
+	_collisionShape = collisionShape;
 	_motionState = motionState;
 }
 /*
@@ -57,6 +58,7 @@ RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp:
 		GetUnmanagedNullable(motionState), GetUnmanagedNullable(collisionShape),
 		VECTOR3_PTR(localInertia));
 	VECTOR3_DEL(localInertia);
+	_collisionShape = collisionShape;
 	_motionState = motionState;
 }
 */
@@ -67,6 +69,7 @@ RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp:
 		GetUnmanagedNullable(motionState), GetUnmanagedNullable(collisionShape),
 		VECTOR3_PTR(localInertia));
 	VECTOR3_DEL(localInertia);
+	_collisionShape = collisionShape;
 	_motionState = motionState;
 }
 
@@ -135,10 +138,11 @@ void RigidBodyConstructionInfo::AngularSleepingThreshold::set(btScalar value)
 
 CollisionShape^ RigidBodyConstructionInfo::CollisionShape::get()
 {
-	return BulletSharp::CollisionShape::GetManaged(_native->m_collisionShape);
+	return _collisionShape;
 }
 void RigidBodyConstructionInfo::CollisionShape::set(BulletSharp::CollisionShape^ value)
 {
+	_collisionShape = value;
 	_native->m_collisionShape = GetUnmanagedNullable(value);
 }
 

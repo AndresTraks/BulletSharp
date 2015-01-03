@@ -52,7 +52,7 @@ namespace VehicleDemo
             get { return chassisBody; }
         }
 
-        VehicleRaycaster vehicleRaycaster;
+        IVehicleRaycaster vehicleRaycaster;
 
         static RigidBody fixedBody;
 
@@ -98,7 +98,7 @@ namespace VehicleDemo
             }
         }
 
-        public CustomVehicle(RaycastVehicle.VehicleTuning tuning, RigidBody chassis, VehicleRaycaster raycaster)
+        public CustomVehicle(RaycastVehicle.VehicleTuning tuning, RigidBody chassis, IVehicleRaycaster raycaster)
         {
             chassisBody = chassis;
             vehicleRaycaster = raycaster;

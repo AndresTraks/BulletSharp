@@ -1712,6 +1712,7 @@ namespace BulletSharp
 			SoftBodySolver^ _softBodySolver;
 			SolverState^ _solverState;
 			SoftBodyWorldInfo^ _worldInfo;
+			List<AJoint::IControl^>^ _aJointControls;
 			AlignedAnchorArray^ _anchors;
 			Vector3Array^ _bounds;
 			AlignedClusterArray^ _clusters;
@@ -1750,6 +1751,7 @@ namespace BulletSharp
 				btScalar influence);
 			void AppendAnchor(int node, RigidBody^ body, bool disableCollisionBetweenLinkedBodies);
 			void AppendAnchor(int node, RigidBody^ body);
+			void StoreAngularJointControlRef(AJoint::Specs^ specs);
 			void AppendAngularJoint(AJoint::Specs^ specs, Body^ body);
 			void AppendAngularJoint(AJoint::Specs^ specs);
 			void AppendAngularJoint(AJoint::Specs^ specs, Cluster^ body0, Body^ body1);

@@ -2419,6 +2419,7 @@ BulletSharp::SoftBody::SoftBody::SoftBody(btSoftBody* native)
 {
 	_collisionShape = gcnew BulletSharp::CollisionShape(_native->getCollisionShape());
 	_collisionShape->_preventDelete = true;
+	_aJointControls = gcnew List<AJoint::IControl^>();
 }
 
 BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, array<Vector3>^ x, array<btScalar>^ m)
@@ -2591,24 +2592,36 @@ void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body)
 	Native->appendAnchor(node, (btRigidBody*)body->_native);
 }
 
+void BulletSharp::SoftBody::SoftBody::StoreAngularJointControlRef(AJoint::Specs^ specs)
+{
+	if (specs->IControl != nullptr && specs->IControl != AJoint::IControl::Default)
+	{
+		_aJointControls->Add(specs->IControl);
+	}
+}
+
 void BulletSharp::SoftBody::SoftBody::AppendAngularJoint(AJoint::Specs^ specs, Body^ body)
 {
+	StoreAngularJointControlRef(specs);
 	Native->appendAngularJoint(*(btSoftBody::AJoint::Specs*)specs->_native, *body->_native);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendAngularJoint(AJoint::Specs^ specs)
 {
+	StoreAngularJointControlRef(specs);
 	Native->appendAngularJoint(*(btSoftBody::AJoint::Specs*)specs->_native);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendAngularJoint(AJoint::Specs^ specs, Cluster^ body0, Body^ body1)
 {
+	StoreAngularJointControlRef(specs);
 	Native->appendAngularJoint(*(btSoftBody::AJoint::Specs*)specs->_native, body0->_native,
 		*body1->_native);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendAngularJoint(AJoint::Specs^ specs, SoftBody^ body)
 {
+	StoreAngularJointControlRef(specs);
 	Native->appendAngularJoint(*(btSoftBody::AJoint::Specs*)specs->_native, (btSoftBody*)body->_native);
 }
 
@@ -2869,6 +2882,7 @@ bool BulletSharp::SoftBody::SoftBody::CheckLink(int node0, int node1)
 
 void BulletSharp::SoftBody::SoftBody::CleanupClusters()
 {
+	_aJointControls->Clear();
 	Native->cleanupClusters();
 }
 

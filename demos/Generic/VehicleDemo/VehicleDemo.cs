@@ -285,7 +285,7 @@ namespace VehicleDemo
 
             // create vehicle
             RaycastVehicle.VehicleTuning tuning = new RaycastVehicle.VehicleTuning();
-            VehicleRaycaster vehicleRayCaster = new DefaultVehicleRaycaster(World);
+            DefaultVehicleRaycaster vehicleRayCaster = new DefaultVehicleRaycaster(World);
             vehicle = new RaycastVehicle(tuning, carChassis, vehicleRayCaster);
             //vehicle = new CustomVehicle(tuning, carChassis, vehicleRayCaster);
 

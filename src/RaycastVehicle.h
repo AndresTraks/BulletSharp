@@ -81,7 +81,7 @@ namespace BulletSharp
 
 	private:
 		RigidBody^ _chassisBody;
-		static RigidBody^ _fixedBody ;
+		static RigidBody^ _fixedBody;
 
 		static RaycastVehicle();
 
@@ -159,9 +159,19 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class DefaultVehicleRaycaster : VehicleRaycaster
+	public ref class DefaultVehicleRaycaster : IVehicleRaycaster
 	{
+	internal:
+		btDefaultVehicleRaycaster* _native;
+
+	public:
+		!DefaultVehicleRaycaster();
+	protected:
+		~DefaultVehicleRaycaster();
+
 	public:
 		DefaultVehicleRaycaster(DynamicsWorld^ world);
+
+		virtual Object^ CastRay(Vector3 from, Vector3 to, VehicleRaycasterResult^ result);
 	};
 };

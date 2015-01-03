@@ -14,6 +14,9 @@ namespace BulletSharp
 		btRigidBody::btRigidBodyConstructionInfo* _native;
 		BulletSharp::MotionState^ _motionState;
 
+	private:
+		BulletSharp::CollisionShape^ _collisionShape;
+
 	public:
 		!RigidBodyConstructionInfo();
 	protected:

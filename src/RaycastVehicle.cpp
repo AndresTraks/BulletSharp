@@ -2,6 +2,8 @@
 
 #ifndef DISABLE_VEHICLE
 
+#define ROLLING_INFLUENCE_FIX
+
 #include <BulletDynamics/ConstraintSolver/btContactConstraint.h> // resolveSingleBilateral
 #include "AlignedObjectArray.h"
 #include "DynamicsWorld.h"
@@ -116,9 +118,8 @@ WheelInfo^ RaycastVehicle::AddWheel(Vector3 connectionPointCS, Vector3 wheelDire
 	ci->MaxSuspensionTravelCm = tuning->MaxSuspensionTravelCm;
 	ci->MaxSuspensionForce = tuning->MaxSuspensionForce;
 
-	_wheelInfo->Add(gcnew BulletSharp::WheelInfo(ci));
-
-	BulletSharp::WheelInfo^ wheel = _wheelInfo[NumWheels - 1];
+	BulletSharp::WheelInfo^ wheel = gcnew BulletSharp::WheelInfo(ci);
+	_wheelInfo->Add(wheel);
 
 	UpdateWheelTransformsWS(wheel, false);
 	UpdateWheelTransform(NumWheels - 1, false);
@@ -466,9 +467,9 @@ void RaycastVehicle::UpdateFriction(btScalar timeStep)
 	{
 		for (i = 0; i < numWheel; i++)
 		{
-			BulletSharp::WheelInfo^ wheelInfo = _wheelInfo[i];
 			if (_sideImpulse[i] != btScalar(0.))
 			{
+				BulletSharp::WheelInfo^ wheelInfo = _wheelInfo[i];
 				if (wheelInfo->SkidInfo < btScalar(1.))
 				{
 					_forwardImpulse[i] *= wheelInfo->SkidInfo;
@@ -500,8 +501,11 @@ void RaycastVehicle::UpdateFriction(btScalar timeStep)
 			Vector3 sideImp = Vector3_Scale(_axle[i], _sideImpulse[i]);
 
 #if defined ROLLING_INFLUENCE_FIX // fix. It only worked if car's up was along Y - VT.
-			//Vector3 vChassisWorldUp = RigidBody->CenterOfMassTransform.getBasis().getColumn(_indexUpAxis);
-			//rel_pos -= vChassisWorldUp * (Vector3_Dot(vChassisWorldUp, rel_pos) * (1.f-wheelInfo->RollInfluence));
+			btVector3* chassisWorldUpTemp = ALIGNED_NEW(btVector3);
+			RaycastVehicle_GetBasisAxle(&static_cast<btRigidBody*>(RigidBody->_native)->getCenterOfMassTransform(), _indexUpAxis, chassisWorldUpTemp);
+			Vector3 chassisWorldUp = Math::BtVector3ToVector3(chassisWorldUpTemp);
+			ALIGNED_FREE(chassisWorldUpTemp);
+			rel_pos -= Vector3_Scale(chassisWorldUp, Vector3_Dot(chassisWorldUp, rel_pos) * (1.f-wheelInfo->RollInfluence));
 #else
 #if defined(GRAPHICS_XNA31) || defined(GRAPHICS_XNA40) || defined(GRAPHICS_MONOGAME) || defined(GRAPHICS_WAPICODEPACK)
 			switch (_indexUpAxis)
@@ -630,7 +634,6 @@ void RaycastVehicle::UpdateVehicle(btScalar step)
 
 	UpdateFriction(step);
 
-	btTransform* chassisWorldTransformTemp = ALIGNED_NEW(btTransform);
 	btVector3* fwdTemp = ALIGNED_NEW(btVector3);
 	for (i = 0; i < numWheels; i++)
 	{
@@ -640,8 +643,7 @@ void RaycastVehicle::UpdateVehicle(btScalar step)
 
 		if (wheel->RaycastInfo.IsInContact)
 		{
-			Math::MatrixToBtTransform(ChassisWorldTransform, chassisWorldTransformTemp);
-			RaycastVehicle_GetBasisAxle(chassisWorldTransformTemp, ForwardAxis, fwdTemp);
+			RaycastVehicle_GetBasisAxle(&static_cast<btRigidBody*>(RigidBody->_native)->getCenterOfMassTransform(), ForwardAxis, fwdTemp);
 			Vector3 fwd = Math::BtVector3ToVector3(fwdTemp);
 			
 			btScalar proj = Vector3_Dot(fwd, wheel->RaycastInfo.ContactNormalWS);
@@ -658,7 +660,6 @@ void RaycastVehicle::UpdateVehicle(btScalar step)
 
 		wheel->DeltaRotation *= btScalar(0.99);//damping of rotation when not in contact
 	}
-	ALIGNED_FREE(chassisWorldTransformTemp);
 	ALIGNED_FREE(fwdTemp);
 }
 
@@ -813,9 +814,30 @@ IList<WheelInfo^>^ RaycastVehicle::WheelInfo::get()
 }
 
 
-DefaultVehicleRaycaster::DefaultVehicleRaycaster(DynamicsWorld^ world)
-	: VehicleRaycaster(new btDefaultVehicleRaycaster((btDynamicsWorld*)world->_native))
+DefaultVehicleRaycaster::~DefaultVehicleRaycaster()
 {
+	this->!DefaultVehicleRaycaster();
+}
+
+DefaultVehicleRaycaster::!DefaultVehicleRaycaster()
+{
+	delete _native;
+	_native = NULL;
+}
+
+DefaultVehicleRaycaster::DefaultVehicleRaycaster(DynamicsWorld^ world)
+{
+	_native = new btDefaultVehicleRaycaster((btDynamicsWorld*)world->_native);
+}
+
+Object^ DefaultVehicleRaycaster::CastRay(Vector3 from, Vector3 to, VehicleRaycasterResult^ result)
+{
+	VECTOR3_CONV(from);
+	VECTOR3_CONV(to);
+	void* ret = _native->castRay(VECTOR3_USE(from), VECTOR3_USE(to), *result->_native);
+	VECTOR3_DEL(from);
+	VECTOR3_DEL(to);
+	return CollisionObject::GetManaged((btRigidBody*)ret);
 }
 
 #endif

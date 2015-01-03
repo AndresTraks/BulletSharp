@@ -111,7 +111,6 @@ namespace BenchmarkDemo
             float spacing = cubeSize;
             float mass = 1.0f;
             int size = 8;
-            Vector3 localInertia;
             Vector3 pos = new Vector3(0.0f, cubeSize * 2, 0.0f);
             float offset = -size * (cubeSize * 2.0f + spacing) * 0.5f;
 
@@ -122,7 +121,6 @@ namespace BenchmarkDemo
 
                     BoxShape blockShape = new BoxShape(cubeSize - collisionRadius);
                     mass = 2.0f;
-                    blockShape.CalculateLocalInertia(mass, out localInertia);
 
                     for (int k = 0; k < 47; k++)
                     {
@@ -170,8 +168,6 @@ namespace BenchmarkDemo
 
                     //this will enable polyhedral contact clipping, better quality, slightly slower
                     convexHullShape.InitializePolyhedralFeatures();
-
-                    convexHullShape.CalculateLocalInertia(mass, out localInertia);
 
                     for (int k = 0; k < 15; k++)
                     {
@@ -279,9 +275,6 @@ namespace BenchmarkDemo
                         convexHullShape.AddPoint(vtx);
                     }
 
-                    convexHullShape.CalculateLocalInertia(mass, out localInertia);
-
-
                     size = 10;
                     height = 10;
 
@@ -329,8 +322,6 @@ namespace BenchmarkDemo
             BoxShape blockShape = new BoxShape(boxSize[0] - collisionRadius, boxSize[1] - collisionRadius, boxSize[2] - collisionRadius);
 
             float mass = 1.0f;
-            Vector3 localInertia;
-            blockShape.CalculateLocalInertia(mass, out localInertia);
 
             float diffX = boxSize[0] * 1.02f;
             float diffY = boxSize[1] * 1.02f;
@@ -361,8 +352,6 @@ namespace BenchmarkDemo
             BoxShape blockShape = new BoxShape(boxSize[0] - collisionRadius, boxSize[1] - collisionRadius, boxSize[2] - collisionRadius);
 
             float mass = 1.0f;
-            Vector3 localInertia;
-            blockShape.CalculateLocalInertia(mass, out localInertia);
 
             //	float diffX = boxSize[0] * 1.0f;
             float diffY = boxSize[1] * 1.0f;
@@ -389,9 +378,6 @@ namespace BenchmarkDemo
             BoxShape blockShape = new BoxShape(boxSize[0] - collisionRadius, boxSize[1] - collisionRadius, boxSize[2] - collisionRadius);
 
             float mass = 1.0f;
-            Vector3 localInertia;
-            blockShape.CalculateLocalInertia(mass, out localInertia);
-
             float radius = 1.3f * rotSize * boxSize[0] / (float)Math.PI;
 
             // create active boxes
