@@ -53,9 +53,6 @@ namespace BulletSharp
 
 	public ref class PairCachingGhostObject : GhostObject
 	{
-	internal:
-		PairCachingGhostObject(btPairCachingGhostObject* native);
-
 	private:
 		HashedOverlappingPairCache^ _hashPairCache;
 

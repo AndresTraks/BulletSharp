@@ -194,13 +194,14 @@ void KinematicCharacterController::StepDown(CollisionWorld^ collisionWorld, btSc
 	endTemp->setIdentity();
 	endDoubleTemp->setIdentity();
 
+	BroadphaseProxy^ ghostProxy = GhostObject->BroadphaseHandle;
 	KinematicClosestNotMeConvexResultCallback^ callback = gcnew KinematicClosestNotMeConvexResultCallback(_ghostObject, GetUpAxisDirection(_upAxis), _maxSlopeCosine);
-	callback->CollisionFilterGroup = GhostObject->BroadphaseHandle->CollisionFilterGroup;
-	callback->CollisionFilterMask = GhostObject->BroadphaseHandle->CollisionFilterMask;
+	callback->CollisionFilterGroup = ghostProxy->CollisionFilterGroup;
+	callback->CollisionFilterMask = ghostProxy->CollisionFilterMask;
 
 	KinematicClosestNotMeConvexResultCallback^ callback2 = gcnew KinematicClosestNotMeConvexResultCallback(_ghostObject, GetUpAxisDirection(_upAxis), _maxSlopeCosine);
-	callback2->CollisionFilterGroup = GhostObject->BroadphaseHandle->CollisionFilterGroup;
-	callback2->CollisionFilterMask = GhostObject->BroadphaseHandle->CollisionFilterMask;
+	callback2->CollisionFilterGroup = ghostProxy->CollisionFilterGroup;
+	callback2->CollisionFilterMask = ghostProxy->CollisionFilterMask;
 
 	while (true)
 	{
@@ -334,8 +335,9 @@ void KinematicCharacterController::StepForwardAndStrafe(CollisionWorld^ collisio
 		Matrix end = Math::BtTransformToMatrix(endTemp);
 
 		KinematicClosestNotMeConvexResultCallback^ callback = gcnew KinematicClosestNotMeConvexResultCallback(_ghostObject, GetUpAxisDirection(_upAxis), 0);
-		callback->CollisionFilterGroup = GhostObject->BroadphaseHandle->CollisionFilterGroup;
-		callback->CollisionFilterMask = GhostObject->BroadphaseHandle->CollisionFilterMask;
+		BroadphaseProxy^ ghostProxy = GhostObject->BroadphaseHandle;
+		callback->CollisionFilterGroup = ghostProxy->CollisionFilterGroup;
+		callback->CollisionFilterMask = ghostProxy->CollisionFilterMask;
 
 		btScalar margin = _convexShape->Margin;
 		_convexShape->Margin = margin + _addedMargin;
@@ -397,8 +399,9 @@ void KinematicCharacterController::StepUp(CollisionWorld^ world)
 	ALIGNED_FREE(endTemp);
 
 	KinematicClosestNotMeConvexResultCallback^ callback = gcnew KinematicClosestNotMeConvexResultCallback(_ghostObject, Vector3_Neg(GetUpAxisDirection(_upAxis)), btScalar(0.7071));
-	callback->CollisionFilterGroup = GhostObject->BroadphaseHandle->CollisionFilterGroup;
-	callback->CollisionFilterMask = GhostObject->BroadphaseHandle->CollisionFilterMask;
+	BroadphaseProxy^ ghostProxy = GhostObject->BroadphaseHandle;
+	callback->CollisionFilterGroup = ghostProxy->CollisionFilterGroup;
+	callback->CollisionFilterMask = ghostProxy->CollisionFilterMask;
 
 	if (_useGhostObjectSweepTest)
 	{

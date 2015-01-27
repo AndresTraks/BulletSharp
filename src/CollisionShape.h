@@ -126,6 +126,12 @@ namespace BulletSharp
 			BroadphaseNativeType get();
 		}
 
+		property int UserIndex
+		{
+			int get();
+			void set(int index);
+		}
+
 		// UserPointer implemented as UserObject
 		property Object^ UserObject
 		{

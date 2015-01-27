@@ -2287,11 +2287,6 @@ void SolverState::VelocityMargin::set(btScalar value)
 }
 
 
-SRayCast::SRayCast(btSoftBody::sRayCast* native)
-{
-	_native = native;
-}
-
 SRayCast::~SRayCast()
 {
 	this->!SRayCast();
@@ -2673,12 +2668,12 @@ void BulletSharp::SoftBody::SoftBody::AppendLinearJoint(LJoint::Specs^ specs, Cl
 
 void BulletSharp::SoftBody::SoftBody::AppendLink(int node0, int node1, Material^ material, bool bcheckexist)
 {
-	Native->appendLink(node0, node1, (btSoftBody::Material*)material->_native, bcheckexist);
+	Native->appendLink(node0, node1, (btSoftBody::Material*)GetUnmanagedNullable(material), bcheckexist);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendLink(int node0, int node1, Material^ material)
 {
-	Native->appendLink(node0, node1, (btSoftBody::Material*)material->_native);
+	Native->appendLink(node0, node1, (btSoftBody::Material*)GetUnmanagedNullable(material));
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendLink(int node0, int node1)
@@ -2688,7 +2683,7 @@ void BulletSharp::SoftBody::SoftBody::AppendLink(int node0, int node1)
 
 void BulletSharp::SoftBody::SoftBody::AppendLink(int model, Material^ material)
 {
-	Native->appendLink(model, (btSoftBody::Material*)material->_native);
+	Native->appendLink(model, (btSoftBody::Material*)GetUnmanagedNullable(material));
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendLink(int model)
@@ -2704,13 +2699,13 @@ void BulletSharp::SoftBody::SoftBody::AppendLink()
 void BulletSharp::SoftBody::SoftBody::AppendLink(Node^ node0, Node^ node1, Material^ material, bool bcheckexist)
 {
 	Native->appendLink((btSoftBody::Node*)node0->_native, (btSoftBody::Node*)node1->_native,
-		(btSoftBody::Material*)material->_native, bcheckexist);
+		(btSoftBody::Material*)GetUnmanagedNullable(material), bcheckexist);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendLink(Node^ node0, Node^ node1, Material^ material)
 {
 	Native->appendLink((btSoftBody::Node*)node0->_native, (btSoftBody::Node*)node1->_native,
-		(btSoftBody::Material*)material->_native);
+		(btSoftBody::Material*)GetUnmanagedNullable(material));
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendLink(Node^ node0, Node^ node1)

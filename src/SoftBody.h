@@ -1611,8 +1611,6 @@ namespace BulletSharp
 		internal:
 			btSoftBody::sRayCast* _native;
 
-			SRayCast(btSoftBody::sRayCast* native);
-
 		public:
 			!SRayCast();
 		protected:

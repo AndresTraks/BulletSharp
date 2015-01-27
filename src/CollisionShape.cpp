@@ -296,6 +296,15 @@ BroadphaseNativeType CollisionShape::ShapeType::get()
 	return _shapeType;
 }
 
+int CollisionShape::UserIndex::get()
+{
+	return _native->getUserIndex();
+}
+void CollisionShape::UserIndex::set(int index)
+{
+	_native->setUserIndex(index);
+}
+
 Object^ CollisionShape::UserObject::get()
 {
 	return _userObject;

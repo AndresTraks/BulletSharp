@@ -104,11 +104,6 @@ AlignedCollisionObjectArray^ GhostObject::OverlappingPairs::get()
 #undef Native
 #define Native static_cast<btPairCachingGhostObject*>(_native)
 
-PairCachingGhostObject::PairCachingGhostObject(btPairCachingGhostObject* native)
-	: GhostObject(native)
-{
-}
-
 PairCachingGhostObject::PairCachingGhostObject()
 	: GhostObject(new btPairCachingGhostObject())
 {
