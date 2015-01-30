@@ -268,7 +268,7 @@ namespace VehicleDemo
 
             // create vehicle
             RaycastVehicle.VehicleTuning tuning = new RaycastVehicle.VehicleTuning();
-            VehicleRaycaster vehicleRayCaster = new DefaultVehicleRaycaster(World);
+            IVehicleRaycaster vehicleRayCaster = new DefaultVehicleRaycaster(World);
             vehicle = new RaycastVehicle(tuning, carChassis, vehicleRayCaster);
 
             carChassis.ActivationState = ActivationState.DisableDeactivation;

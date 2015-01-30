@@ -1,6 +1,5 @@
 ﻿using System;
 using BulletSharp;
-using BulletSharp.MultiThreaded;
 using DemoFramework;
 using SlimDX;
 
@@ -8,29 +7,10 @@ namespace BenchmarkDemo
 {
     class Physics : PhysicsContext
     {
-        bool UseParallelDispatcherBenchmark = false;
         int benchmark = 2;
 
         float collisionRadius = 0.0f;
         float defaultContactProcessingThreshold = 0.0f;
-
-        ThreadSupportInterface CreateSolverThreadSupport(int maxNumThreads)
-        {
-            //#define SEQUENTIAL
-            /* if (SEQUENTIAL)
-            {
-                SequentialThreadSupport::SequentialThreadConstructionInfo tci("solverThreads",SolverThreadFunc,SolverlsMemoryFunc);
-                SequentialThreadSupport* threadSupport = new SequentialThreadSupport(tci);
-                threadSupport->startSPU();
-            }
-            else */
-
-            Win32ThreadConstructionInfo threadConstructionInfo = new Win32ThreadConstructionInfo("solverThreads",
-                Win32ThreadFunc.SolverThreadFunc, Win32LSMemorySetupFunc.SolverLSMemoryFunc, maxNumThreads);
-            Win32ThreadSupport threadSupport = new Win32ThreadSupport(threadConstructionInfo);
-            threadSupport.StartSpu();
-            return threadSupport;
-        }
 
         public Physics()
         {
@@ -39,22 +19,8 @@ namespace BenchmarkDemo
             cci.DefaultMaxPersistentManifoldPoolSize = 32768;
             CollisionConf = new DefaultCollisionConfiguration(cci);
 
-            if (UseParallelDispatcherBenchmark)
-            {
-                int maxNumOutstandingTasks = 4;
-
-                Win32ThreadConstructionInfo info = new Win32ThreadConstructionInfo("collision",
-                    Win32ThreadFunc.ProcessCollisionTask, Win32LSMemorySetupFunc.CreateCollisionLocalStoreMemory,
-                    maxNumOutstandingTasks);
-
-                Win32ThreadSupport threadSupportCollision = new Win32ThreadSupport(info);
-                Dispatcher = new SpuGatheringCollisionDispatcher(threadSupportCollision, 1, CollisionConf);
-            }
-            else
-            {
-                Dispatcher = new CollisionDispatcher(CollisionConf);
-                Dispatcher.DispatcherFlags = DispatcherFlags.DisableContactPoolDynamicAllocation;
-            }
+            Dispatcher = new CollisionDispatcher(CollisionConf);
+            Dispatcher.DispatcherFlags = DispatcherFlags.DisableContactPoolDynamicAllocation;
 
             // the maximum size of the collision world. Make sure objects stay within these boundaries
             // Don't make the world AABB size too large, it will harm simulation quality and performance
@@ -65,23 +31,11 @@ namespace BenchmarkDemo
             Broadphase = new AxisSweep3(worldAabbMin, worldAabbMax, 3500, pairCache);
             //Broadphase = new DbvtBroadphase();
 
-            if (UseParallelDispatcherBenchmark)
-            {
-                ThreadSupportInterface thread = CreateSolverThreadSupport(4);
-                Solver = new ParallelConstraintSolver(thread);
-            }
-            else
-            {
-                Solver = new SequentialImpulseConstraintSolver();
-            }
+            Solver = new SequentialImpulseConstraintSolver();
 
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf);
             World.Gravity = new Vector3(0, -10, 0);
 
-            if (UseParallelDispatcherBenchmark)
-            {
-                ((DiscreteDynamicsWorld)World).SimulationIslandManager.SplitIslands = false;
-            }
             World.SolverInfo.SolverMode |= SolverModes.EnableFrictionDirectionCaching;
             World.SolverInfo.NumIterations = 5;
 
