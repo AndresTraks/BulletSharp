@@ -4,6 +4,8 @@
 
 namespace BulletSharp
 {
+	interface class IDebugDraw;
+
 	public ref class MultiBodyJointMotor : MultiBodyConstraint
 	{
 	internal:
@@ -14,6 +16,9 @@ namespace BulletSharp
 		MultiBodyJointMotor(MultiBody^ body, int link, int linkDoF, btScalar desiredVelocity,
 			btScalar maxMotorImpulse);
 
+#ifndef DISABLE_DEBUGDRAW
+		virtual void DebugDraw(IDebugDraw^ drawer) override;
+#endif
 		void SetVelocityTarget(btScalar velTarget);
 	};
 };

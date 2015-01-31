@@ -2169,10 +2169,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\ObjectTable.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\Quaternion.cpp"
 				>
 			</File>
@@ -3103,10 +3099,6 @@
 			</File>
 			<File
 				RelativePath="..\src\Matrix.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\ObjectTable.h"
 				>
 			</File>
 			<File

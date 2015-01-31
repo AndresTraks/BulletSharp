@@ -58,6 +58,12 @@ void MultiBodyDynamicsWorld::AddMultiBodyConstraint(MultiBodyConstraint^ constra
 	_constraints->Add(constraint);
 }
 #endif
+#ifndef DISABLE_DEBUGDRAW
+void MultiBodyDynamicsWorld::DebugDrawMultiBodyConstraint(MultiBodyConstraint^ constraint)
+{
+	Native->debugDrawMultiBodyConstraint(constraint->_native);
+}
+#endif
 void MultiBodyDynamicsWorld::IntegrateTransforms(btScalar timeStep)
 {
 	Native->integrateTransforms(timeStep);

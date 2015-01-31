@@ -1485,7 +1485,6 @@
     <ClCompile Include="..\src\AssemblyInfo.cpp" />
     <ClCompile Include="..\src\Collections.cpp" />
     <ClCompile Include="..\src\Math.cpp" />
-    <ClCompile Include="..\src\ObjectTable.cpp" />
     <ClCompile Include="..\src\StringConv.cpp" />
     <ClCompile Include="..\src\DataStream.cpp" />
     <ClCompile Include="..\src\Matrix.cpp" />
@@ -1669,7 +1668,6 @@
     <ClInclude Include="..\src\Enums.h" />
     <ClInclude Include="..\src\ITrackingDisposable.h" />
     <ClInclude Include="..\src\Math.h" />
-    <ClInclude Include="..\src\ObjectTable.h" />
     <ClInclude Include="..\src\StringConv.h" />
     <ClInclude Include="..\src\Version.h" />
     <ClInclude Include="..\src\DataStream.h" />

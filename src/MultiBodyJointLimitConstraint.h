@@ -11,5 +11,9 @@ namespace BulletSharp
 
 	public:
 		MultiBodyJointLimitConstraint(MultiBody^ body, int link, btScalar lower, btScalar upper);
+
+#ifndef DISABLE_DEBUGDRAW
+		virtual void DebugDraw(IDebugDraw^ drawer) override;
+#endif
 	};
 };

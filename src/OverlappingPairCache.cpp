@@ -3,7 +3,6 @@
 #include "AlignedObjectArray.h"
 #include "BroadphaseProxy.h"
 #include "Dispatcher.h"
-#include "ObjectTable.h"
 #include "OverlappingPairCache.h"
 
 OverlapCallback::~OverlapCallback()
@@ -36,18 +35,6 @@ OverlapFilterCallback::OverlapFilterCallback(btOverlapFilterCallback* native)
 	_native = native;
 }
 
-OverlapFilterCallback^ OverlapFilterCallback::GetManaged(btOverlapFilterCallback* callback)
-{
-	if (!callback) {
-		return nullptr;
-	}
-	if (BulletSharp::ObjectTable::Contains((intptr_t)callback))
-	{
-		return BulletSharp::ObjectTable::GetObject<OverlapFilterCallback^>((intptr_t)callback);
-	}
-	return nullptr;
-}
-
 OverlapFilterCallback::~OverlapFilterCallback()
 {
 	this->!OverlapFilterCallback();
@@ -58,15 +45,13 @@ OverlapFilterCallback::!OverlapFilterCallback()
 	if (this->IsDisposed)
 		return;
 
-	ObjectTable::Remove(_native);
-	//delete _native;
+	delete _native;
 	_native = NULL;
 }
 
 OverlapFilterCallback::OverlapFilterCallback()
 {
 	_native = new OverlapFilterCallbackWrapper(this);
-	BulletSharp::ObjectTable::Add(this, _native);
 }
 
 bool OverlapFilterCallback::IsDisposed::get()
@@ -193,10 +178,11 @@ int HashedOverlappingPairCache::Count::get()
 
 OverlapFilterCallback^ HashedOverlappingPairCache::OverlapFilterCallback::get()
 {
-	return BulletSharp::OverlapFilterCallback::GetManaged(Native->getOverlapFilterCallback());
+	return _overlapFilterCallback;
 }
 void HashedOverlappingPairCache::OverlapFilterCallback::set(BulletSharp::OverlapFilterCallback^ value)
 {
+	_overlapFilterCallback = value;
 	Native->setOverlapFilterCallback(value->_native);
 }
 
@@ -237,10 +223,11 @@ void SortedOverlappingPairCache::RemoveOverlappingPairsContainingProxy(Broadphas
 
 OverlapFilterCallback^ SortedOverlappingPairCache::OverlapFilterCallback::get()
 {
-	return BulletSharp::OverlapFilterCallback::GetManaged(Native->getOverlapFilterCallback());
+	return _overlapFilterCallback;
 }
 void SortedOverlappingPairCache::OverlapFilterCallback::set(BulletSharp::OverlapFilterCallback^ value)
 {
+	_overlapFilterCallback = value;
 	Native->setOverlapFilterCallback(value->_native);
 }
 

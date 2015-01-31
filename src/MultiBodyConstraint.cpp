@@ -5,101 +5,6 @@
 #include "AlignedObjectArray.h"
 #include "MultiBody.h"
 #include "MultiBodyConstraint.h"
-/*
-MultiBodyJacobianData::MultiBodyJacobianData(btMultiBodyJacobianData* native)
-{
-	_native = native;
-}
-
-MultiBodyJacobianData::~MultiBodyJacobianData()
-{
-	this->!MultiBodyJacobianData();
-}
-
-MultiBodyJacobianData::!MultiBodyJacobianData()
-{
-	delete _native;
-	_native = NULL;
-}
-
-MultiBodyJacobianData::MultiBodyJacobianData()
-{
-	_native = new btMultiBodyJacobianData();
-}
-
-AlignedScalarArray^ MultiBodyJacobianData::DeltaVelocities::get()
-{
-	return _native->m_deltaVelocities;
-}
-void MultiBodyJacobianData::DeltaVelocities::set(AlignedScalarArray^ value)
-{
-	_native->m_deltaVelocities = value->_native;
-}
-
-AlignedScalarArray^ MultiBodyJacobianData::DeltaVelocitiesUnitImpulse::get()
-{
-	return _native->m_deltaVelocitiesUnitImpulse;
-}
-void MultiBodyJacobianData::DeltaVelocitiesUnitImpulse::set(AlignedScalarArray^ value)
-{
-	_native->m_deltaVelocitiesUnitImpulse = value->_native;
-}
-
-int MultiBodyJacobianData::FixedBodyId::get()
-{
-	return _native->m_fixedBodyId;
-}
-void MultiBodyJacobianData::FixedBodyId::set(int value)
-{
-	_native->m_fixedBodyId = value;
-}
-
-AlignedScalarArray^ MultiBodyJacobianData::Jacobians::get()
-{
-	return _native->m_jacobians;
-}
-void MultiBodyJacobianData::Jacobians::set(AlignedScalarArray^ value)
-{
-	_native->m_jacobians = value->_native;
-}
-
-AlignedMatrix3x3Array^ MultiBodyJacobianData::ScratchM::get()
-{
-	return _native->scratch_m;
-}
-void MultiBodyJacobianData::ScratchM::set(AlignedMatrix3x3Array^ value)
-{
-	_native->scratch_m = value->_native;
-}
-
-AlignedScalarArray^ MultiBodyJacobianData::ScratchR::get()
-{
-	return _native->scratch_r;
-}
-void MultiBodyJacobianData::ScratchR::set(AlignedScalarArray^ value)
-{
-	_native->scratch_r = value->_native;
-}
-
-AlignedVector3Array^ MultiBodyJacobianData::ScratchV::get()
-{
-	return _native->scratch_v;
-}
-void MultiBodyJacobianData::ScratchV::set(AlignedVector3Array^ value)
-{
-	_native->scratch_v = value->_native;
-}
-
-AlignedObjectArray^ MultiBodyJacobianData::SolverBodyPool::get()
-{
-	return _native->m_solverBodyPool;
-}
-void MultiBodyJacobianData::SolverBodyPool::set(AlignedObjectArray^ value)
-{
-	_native->m_solverBodyPool = value->_native;
-}
-*/
-
 
 MultiBodyConstraint::MultiBodyConstraint(btMultiBodyConstraint* native)
 {
@@ -117,11 +22,13 @@ MultiBodyConstraint::!MultiBodyConstraint()
 	_native = NULL;
 }
 /*
+#ifndef DISABLE_CONSTRAINTS
 void MultiBodyConstraint::CreateConstraintRows(MultiBodyConstraintArray^ constraintRows,
 	MultiBodyJacobianData^ data, ContactSolverInfo^ infoGlobal)
 {
 	_native->createConstraintRows(*constraintRows->_native, *data->_native, *(btContactSolverInfo*)infoGlobal->_native);
 }
+#endif
 */
 btScalar MultiBodyConstraint::GetPosition(int row)
 {

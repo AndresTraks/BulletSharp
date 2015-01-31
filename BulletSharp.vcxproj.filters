@@ -498,9 +498,6 @@
     <ClCompile Include="src\NncgConstraintSolver.cpp">
       <Filter>Source Files\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
-    <ClCompile Include="src\ObjectTable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\OpenCL.cpp">
       <Filter>Source Files\OpenCL</Filter>
     </ClCompile>
@@ -1044,9 +1041,6 @@
     </ClInclude>
     <ClInclude Include="src\NncgConstraintSolver.h">
       <Filter>Header Files\BulletDynamics\ConstraintSolver</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ObjectTable.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\OpenCL.h">
       <Filter>Header Files\OpenCL</Filter>

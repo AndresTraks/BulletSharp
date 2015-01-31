@@ -19,4 +19,11 @@ MultiBodyJointLimitConstraint::MultiBodyJointLimitConstraint(MultiBody^ body, in
 	_multiBodyB = body;
 }
 
+#ifndef DISABLE_DEBUGDRAW
+void MultiBodyJointLimitConstraint::DebugDraw(IDebugDraw^ drawer)
+{
+	// TODO
+}
+#endif
+
 #endif

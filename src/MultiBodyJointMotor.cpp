@@ -30,6 +30,13 @@ MultiBodyJointMotor::MultiBodyJointMotor(MultiBody^ body, int link, int linkDoF,
 	_multiBodyB = body;
 }
 
+#ifndef DISABLE_DEBUGDRAW
+void MultiBodyJointMotor::DebugDraw(IDebugDraw^ drawer)
+{
+	// TODO
+}
+#endif
+
 void MultiBodyJointMotor::SetVelocityTarget(btScalar velTarget)
 {
 	Native->setVelocityTarget(velTarget);

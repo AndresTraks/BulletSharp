@@ -31,16 +31,16 @@ namespace BulletSharp
 		btOverlapFilterCallback* _native;
 
 		OverlapFilterCallback(btOverlapFilterCallback* native);
-		static OverlapFilterCallback^ GetManaged(btOverlapFilterCallback* callback);
 
 	public:
 		!OverlapFilterCallback();
 	protected:
 		~OverlapFilterCallback();
 
-	public:
+	protected:
 		OverlapFilterCallback();
-
+	
+	public:
 		virtual bool NeedBroadphaseCollision(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1) abstract;
 
 		property bool IsDisposed
@@ -95,6 +95,9 @@ namespace BulletSharp
 
 	public ref class HashedOverlappingPairCache : OverlappingPairCache
 	{
+	private:
+		OverlapFilterCallback^ _overlapFilterCallback;
+
 	internal:
 		HashedOverlappingPairCache(btHashedOverlappingPairCache* native, bool preventDelete);
 
@@ -121,6 +124,9 @@ namespace BulletSharp
 
 	public ref class SortedOverlappingPairCache : OverlappingPairCache
 	{
+	private:
+		OverlapFilterCallback^ _overlapFilterCallback;
+
 	internal:
 		SortedOverlappingPairCache(btSortedOverlappingPairCache* native);
 

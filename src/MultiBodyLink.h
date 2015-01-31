@@ -117,7 +117,7 @@ namespace BulletSharp
 			void set(int value);
 		}
 
-		property Vector3 Inertia
+		property Vector3 InertiaLocal
 		{
 			Vector3 get();
 			void set(Vector3 value);

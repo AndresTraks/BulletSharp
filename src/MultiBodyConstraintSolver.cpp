@@ -25,6 +25,16 @@ MultiBodyConstraintSolver::MultiBodyConstraintSolver()
 {
 }
 /*
+#ifndef DISABLE_CONSTRAINTS
+btScalar MultiBodyConstraintSolver::SolveGroupCacheFriendlyFinish(CollisionObject^ bodies,
+	int numBodies, ContactSolverInfo^ infoGlobal)
+{
+	return Native->solveGroupCacheFriendlyFinish(bodies->_native, numBodies, *(btContactSolverInfo*)infoGlobal->_native);
+}
+#endif
+
+#ifndef DISABLE_CONSTRAINTS
+#ifndef DISABLE_DEBUGDRAW
 void MultiBodyConstraintSolver::SolveMultiBodyGroup(CollisionObject^ bodies, int numBodies,
 	PersistentManifold^ manifold, int numManifolds, TypedConstraint^ constraints,
 	int numConstraints, MultiBodyConstraint^ multiBodyConstraints, int numMultiBodyConstraints,
@@ -35,5 +45,7 @@ void MultiBodyConstraintSolver::SolveMultiBodyGroup(CollisionObject^ bodies, int
 		*(btContactSolverInfo*)info->_native, DebugDraw::GetUnmanaged(debugDrawer),
 		dispatcher->_native);
 }
+#endif
+#endif
 */
 #endif

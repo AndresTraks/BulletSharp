@@ -4,70 +4,8 @@ namespace BulletSharp
 {
 	ref class AlignedScalarArray;
 	ref class MultiBody;
-/*
-	public ref class MultiBodyJacobianData
-	{
-	internal:
-		btMultiBodyJacobianData* _native;
-		MultiBodyJacobianData(btMultiBodyJacobianData* native);
+	interface class IDebugDraw;
 
-	public:
-		!MultiBodyJacobianData();
-	protected:
-		~MultiBodyJacobianData();
-
-	public:
-		MultiBodyJacobianData();
-
-		property AlignedScalarArray^ DeltaVelocities
-		{
-			AlignedScalarArray^ get();
-			void set(AlignedScalarArray^ value);
-		}
-
-		property AlignedScalarArray^ DeltaVelocitiesUnitImpulse
-		{
-			AlignedScalarArray^ get();
-			void set(AlignedScalarArray^ value);
-		}
-
-		property int FixedBodyId
-		{
-			int get();
-			void set(int value);
-		}
-
-		property AlignedScalarArray^ Jacobians
-		{
-			AlignedScalarArray^ get();
-			void set(AlignedScalarArray^ value);
-		}
-
-		property AlignedMatrix3x3Array^ ScratchM
-		{
-			AlignedMatrix3x3Array^ get();
-			void set(AlignedMatrix3x3Array^ value);
-		}
-
-		property AlignedScalarArray^ ScratchR
-		{
-			AlignedScalarArray^ get();
-			void set(AlignedScalarArray^ value);
-		}
-
-		property AlignedVector3Array^ ScratchV
-		{
-			AlignedVector3Array^ get();
-			void set(AlignedVector3Array^ value);
-		}
-
-		property AlignedObjectArray^ SolverBodyPool
-		{
-			AlignedObjectArray^ get();
-			void set(AlignedObjectArray^ value);
-		}
-	};
-*/
 	public ref class MultiBodyConstraint abstract
 	{
 	internal:
@@ -85,8 +23,13 @@ namespace BulletSharp
 		MultiBody^ _multiBodyB;
 
 	public:
+#ifndef DISABLE_CONSTRAINTS
 		//void CreateConstraintRows(MultiBodyConstraintArray^ constraintRows, MultiBodyJacobianData^ data,
 		//	ContactSolverInfo^ infoGlobal);
+#endif
+#ifndef DISABLE_DEBUGDRAW
+		virtual void DebugDraw(IDebugDraw^ drawer) = 0;
+#endif
 		btScalar GetPosition(int row);
 		//FloatArray^ JacobianA(int row);
 		//FloatArray^ JacobianB(int row);

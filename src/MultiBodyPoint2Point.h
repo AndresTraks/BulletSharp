@@ -6,6 +6,7 @@ namespace BulletSharp
 {
 	ref class MultiBody;
 	ref class RigidBody;
+	interface class IDebugDraw;
 
 	public ref class MultiBodyPoint2Point : MultiBodyConstraint
 	{
@@ -17,6 +18,10 @@ namespace BulletSharp
 			Vector3 pivotInB);
 		MultiBodyPoint2Point(MultiBody^ bodyA, int linkA, MultiBody^ bodyB, int linkB,
 			Vector3 pivotInA, Vector3 pivotInB);
+
+#ifndef DISABLE_DEBUGDRAW
+		virtual void DebugDraw(IDebugDraw^ drawer) override;
+#endif
 
 		property Vector3 PivotInB
 		{

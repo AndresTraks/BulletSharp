@@ -182,13 +182,13 @@ void MultiBodyLink::Flags::set(int value)
 	_native->m_flags = value;
 }
 
-Vector3 MultiBodyLink::Inertia::get()
+Vector3 MultiBodyLink::InertiaLocal::get()
 {
-	return Math::BtVector3ToVector3(&_native->m_inertia);
+	return Math::BtVector3ToVector3(&_native->m_inertiaLocal);
 }
-void MultiBodyLink::Inertia::set(Vector3 value)
+void MultiBodyLink::InertiaLocal::set(Vector3 value)
 {
-	Math::Vector3ToBtVector3(value, &_native->m_inertia);
+	Math::Vector3ToBtVector3(value, &_native->m_inertiaLocal);
 }
 /*
 array<btScalar>^ MultiBodyLink::JointPos::get()

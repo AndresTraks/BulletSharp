@@ -42,6 +42,13 @@ MultiBodyPoint2Point::MultiBodyPoint2Point(MultiBody^ bodyA, int linkA, MultiBod
 	_multiBodyB = bodyB;
 }
 
+#ifndef DISABLE_DEBUGDRAW
+void MultiBodyPoint2Point::DebugDraw(IDebugDraw^ drawer)
+{
+	// TODO
+}
+#endif
+
 Vector3 MultiBodyPoint2Point::PivotInB::get()
 {
 	return Math::BtVector3ToVector3(&Native->getPivotInB());
