@@ -59,17 +59,35 @@ namespace BulletSharp
 		void SetCanSleep(bool canSleep);
 		void SetJointPos(int i, btScalar q);
 		void SetJointVel(int i, btScalar qdot);
-		void SetupPrismatic(int i, btScalar mass, Vector3 inertia, int parent, Quaternion rotParentToThis,
-			Vector3 jointAxis, Vector3 rVectorWhenQZero, bool disableParentCollision);
-		void SetupPrismatic(int i, btScalar mass, Vector3 inertia, int parent, Quaternion rotParentToThis,
-			Vector3 jointAxis, Vector3 rVectorWhenQZero);
-		void SetupRevolute(int i, btScalar mass, Vector3 inertia, int parent, Quaternion zeroRotParentToThis,
-			Vector3 jointAxis, Vector3 parentAxisPosition, Vector3 myAxisPosition,
+		void SetPosUpdated(bool updated);
+		void SetupFixed(int linkIndex, btScalar mass, Vector3 inertia, int parent,
+			Quaternion rotParentToThis, Vector3 parentComToThisPivotOffset, Vector3 thisPivotToThisComOffset,
 			bool disableParentCollision);
-		void SetupRevolute(int i, btScalar mass, Vector3 inertia, int parent, Quaternion zeroRotParentToThis,
-			Vector3 jointAxis, Vector3 parentAxisPosition, Vector3 myAxisPosition);
+		void SetupPlanar(int i, btScalar mass, Vector3 inertia, int parent, Quaternion rotParentToThis,
+			Vector3 rotationAxis, Vector3 parentComToThisComOffset, bool disableParentCollision);
+		void SetupPlanar(int i, btScalar mass, Vector3 inertia, int parent, Quaternion rotParentToThis,
+			Vector3 rotationAxis, Vector3 parentComToThisComOffset);
+		void SetupPrismatic(int i, btScalar mass, Vector3 inertia, int parent, Quaternion rotParentToThis,
+			Vector3 jointAxis, Vector3 parentComToThisComOffset, Vector3 thisPivotToThisComOffset,
+			bool disableParentCollision);
+		void SetupRevolute(int linkIndex, btScalar mass, Vector3 inertia, int parentIndex,
+			Quaternion rotParentToThis, Vector3 jointAxis, Vector3 parentComToThisPivotOffset,
+			Vector3 thisPivotToThisComOffset, bool disableParentCollision);
+		void SetupRevolute(int linkIndex, btScalar mass, Vector3 inertia, int parentIndex,
+			Quaternion rotParentToThis, Vector3 jointAxis, Vector3 parentComToThisPivotOffset,
+			Vector3 thisPivotToThisComOffset);
+		void SetupSpherical(int linkIndex, btScalar mass, Vector3 inertia, int parent,
+			Quaternion rotParentToThis, Vector3 parentComToThisPivotOffset, Vector3 thisPivotToThisComOffset,
+			bool disableParentCollision);
+		void SetupSpherical(int linkIndex, btScalar mass, Vector3 inertia, int parent,
+			Quaternion rotParentToThis, Vector3 parentComToThisPivotOffset, Vector3 thisPivotToThisComOffset);
 		void StepPositions(btScalar dt);
+		//void StepPositionsMultiDof(btScalar dt, array<btScalar>^ pq, array<btScalar>^ pqd);
+		//void StepPositionsMultiDof(btScalar dt, array<btScalar>^ pq);
+		void StepPositionsMultiDof(btScalar dt);
 		//void StepVelocities(btScalar dt, AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV,
+		//	AlignedMatrix3x3Array^ scratchM);
+		//void StepVelocitiesMultiDof(btScalar dt, AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV,
 		//	AlignedMatrix3x3Array^ scratchM);
 		void WakeUp();
 		Vector3 WorldDirToLocal(int i, Vector3 vec);

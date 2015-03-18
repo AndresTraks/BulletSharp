@@ -12,6 +12,25 @@ Hacd::~Hacd()
 
 Hacd::!Hacd()
 {
+	if (_native == 0)
+	{
+		return;
+	}
+
+	const HACD::Vec3<HACD::Real>* pointsPtr = _native->GetPoints();
+    if (pointsPtr)
+    {
+        delete[] pointsPtr;
+        _native->SetPoints(0);
+    }
+
+    const HACD::Vec3<long>* trianglesPtr = _native->GetTriangles();
+    if (trianglesPtr)
+    {
+        delete[] trianglesPtr;
+        _native->SetTriangles(0);
+    }
+
 	delete _native;
 	_native = NULL;
 }
@@ -90,6 +109,32 @@ int Hacd::GetNTrianglesCH(int numCH)
 	return _native->GetNTrianglesCH(numCH);
 }
 
+array<HACD::Real>^ Hacd::GetPoints()
+{
+    const HACD::Vec3<HACD::Real>* pointsPtr = _native->GetPoints();
+    int pointsLen = NPoints * 3;
+    if (pointsLen == 0 || pointsPtr == 0)
+    {
+        return gcnew array<double>(0);
+    }
+    array<HACD::Real>^ pointsArray = gcnew array<HACD::Real>(pointsLen);
+    Marshal::Copy(IntPtr((void*)pointsPtr), pointsArray, 0, pointsLen);
+    return pointsArray;
+}
+
+array<Int64>^ Hacd::GetTriangles()
+{
+    const HACD::Vec3<long>* trianglesPtr = _native->GetTriangles();
+    int trianglesLen = NTriangles * 3;
+    if (trianglesLen == 0 || trianglesPtr == 0)
+    {
+        return gcnew array<Int64>(0);
+    }
+    array<Int64>^ trianglesArray = gcnew array<Int64>(trianglesLen);
+    Marshal::Copy(IntPtr((void*)trianglesPtr), trianglesArray, 0, trianglesLen);
+    return trianglesArray;
+}
+
 void Hacd::NormalizeData()
 {
 	_native->NormalizeData();
@@ -138,21 +183,41 @@ void Hacd::AddNeighboursDistPoints::set(bool addNeighboursDistPoints)
 	_native->SetAddNeighboursDistPoints(addNeighboursDistPoints);
 }
 
+void Hacd::SetPoints(ICollection<HACD::Real>^ points)
+{
+	array<HACD::Real>^ pointsArray = dynamic_cast<array<HACD::Real>^>(points);
+    int arrayLen = points->Count;
+    if (!pointsArray)
+    {
+        pointsArray = gcnew array<HACD::Real>(arrayLen);
+        points->CopyTo(pointsArray, 0);
+    }
+
+    HACD::Vec3<HACD::Real>* pointsPtr = (HACD::Vec3<HACD::Real>*)_native->GetPoints();
+    if (pointsPtr)
+    {
+        delete[] pointsPtr;
+    }
+
+    int nPoints = arrayLen / 3;
+    pointsPtr = new HACD::Vec3<HACD::Real>[nPoints];
+    Marshal::Copy(pointsArray, 0, IntPtr(pointsPtr), arrayLen);
+    _native->SetPoints(pointsPtr);
+    _native->SetNPoints(nPoints);
+}
+
 void Hacd::SetPoints(ICollection<Vector3>^ points)
 {
-	int count = points->Count, i = 0;
+	int nPoints = points->Count, i = 0;
 
-	_points = new HACD::Vec3<HACD::Real>[count];
-	IEnumerator<Vector3>^ enumerator = points->GetEnumerator();
-	while(enumerator->MoveNext())
+	_points = new HACD::Vec3<HACD::Real>[nPoints];
+	for each(Vector3 point in points)
 	{
-		Vector3 point = enumerator->Current;
-		_points[i] = HACD::Vec3<HACD::Real>(Vector_X(point), Vector_Y(point), Vector_Z(point));
-		i++;
+		_points[i++] = HACD::Vec3<HACD::Real>(Vector_X(point), Vector_Y(point), Vector_Z(point));
 	}
 
 	_native->SetPoints(_points);
-	_native->SetNPoints(count);
+	_native->SetNPoints(nPoints);
 }
 
 void Hacd::SetTriangles(ICollection<long>^ triangles)
@@ -161,6 +226,26 @@ void Hacd::SetTriangles(ICollection<long>^ triangles)
 
 	_triangles = new HACD::Vec3<long>[count];
 	IEnumerator<long>^ enumerator = triangles->GetEnumerator();
+	while(enumerator->MoveNext())
+	{
+		long x = enumerator->Current;
+		enumerator->MoveNext();
+		long y = enumerator->Current;
+		enumerator->MoveNext();
+		long z = enumerator->Current;
+		_triangles[i++] = HACD::Vec3<long>(x, y, z);
+	}
+
+	_native->SetTriangles(_triangles);
+	_native->SetNTriangles(count / 3);
+}
+
+void Hacd::SetTriangles(ICollection<int>^ triangles)
+{
+	int count = triangles->Count, i = 0;
+
+	_triangles = new HACD::Vec3<long>[count];
+	IEnumerator<int>^ enumerator = triangles->GetEnumerator();
 	while(enumerator->MoveNext())
 	{
 		int x = enumerator->Current;
@@ -252,15 +337,6 @@ LongArray Hacd::Partition::get()
 {
 	return _native->GetPartition();
 }
-
-Vec3^ Hacd::Points::get()
-{
-	return _native->GetPoints();
-}
-void Hacd::Points::set(Vec3^ points)
-{
-	_native->SetPoints(points->_native);
-}
 */
 double Hacd::ScaleFactor::get()
 {
@@ -270,16 +346,7 @@ void Hacd::ScaleFactor::set(double scale)
 {
 	_native->SetScaleFactor(scale);
 }
-/*
-Vec3^ Hacd::Triangles::get()
-{
-	return _native->GetTriangles();
-}
-void Hacd::Triangles::set(Vec3^ triangles)
-{
-	_native->SetTriangles(triangles->_native);
-}
-*/
+
 double Hacd::VolumeWeight::get()
 {
 	return _native->GetVolumeWeight();

@@ -232,69 +232,144 @@ void MultiBody::SetJointVel(int i, btScalar qdot)
 	_native->setJointVel(i, qdot);
 }
 
-void MultiBody::SetupPrismatic(int i, btScalar mass, Vector3 inertia, int parent,
-	Quaternion rotParentToThis, Vector3 jointAxis, Vector3 rVectorWhenQZero, bool disableParentCollision)
+void MultiBody::SetPosUpdated(bool updated)
+{
+	_native->setPosUpdated(updated);
+}
+
+void MultiBody::SetupFixed(int linkIndex, btScalar mass, Vector3 inertia, int parent,
+	Quaternion rotParentToThis, Vector3 parentComToThisPivotOffset, Vector3 thisPivotToThisComOffset,
+	bool disableParentCollision)
 {
 	VECTOR3_CONV(inertia);
 	QUATERNION_CONV(rotParentToThis);
-	VECTOR3_CONV(jointAxis);
-	VECTOR3_CONV(rVectorWhenQZero);
-	_native->setupPrismatic(i, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(rotParentToThis),
-		VECTOR3_USE(jointAxis), VECTOR3_USE(rVectorWhenQZero), disableParentCollision);
-	VECTOR3_DEL(inertia);
-	QUATERNION_DEL(rotParentToThis);
-	VECTOR3_DEL(jointAxis);
-	VECTOR3_DEL(rVectorWhenQZero);
-}
-
-void MultiBody::SetupPrismatic(int i, btScalar mass, Vector3 inertia, int parent,
-	Quaternion rotParentToThis, Vector3 jointAxis, Vector3 rVectorWhenQZero)
-{
-	VECTOR3_CONV(inertia);
-	QUATERNION_CONV(rotParentToThis);
-	VECTOR3_CONV(jointAxis);
-	VECTOR3_CONV(rVectorWhenQZero);
-	_native->setupPrismatic(i, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(rotParentToThis),
-		VECTOR3_USE(jointAxis), VECTOR3_USE(rVectorWhenQZero));
-	VECTOR3_DEL(inertia);
-	QUATERNION_DEL(rotParentToThis);
-	VECTOR3_DEL(jointAxis);
-	VECTOR3_DEL(rVectorWhenQZero);
-}
-
-void MultiBody::SetupRevolute(int i, btScalar mass, Vector3 inertia, int parent, Quaternion zeroRotParentToThis,
-	Vector3 jointAxis, Vector3 parentAxisPosition, Vector3 myAxisPosition, bool disableParentCollision)
-{
-	VECTOR3_CONV(inertia);
-	QUATERNION_CONV(zeroRotParentToThis);
-	VECTOR3_CONV(jointAxis);
-	VECTOR3_CONV(parentAxisPosition);
-	VECTOR3_CONV(myAxisPosition);
-	_native->setupRevolute(i, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(zeroRotParentToThis),
-		VECTOR3_USE(jointAxis), VECTOR3_USE(parentAxisPosition), VECTOR3_USE(myAxisPosition),
+	VECTOR3_CONV(parentComToThisPivotOffset);
+	VECTOR3_CONV(thisPivotToThisComOffset);
+	_native->setupFixed(linkIndex, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(rotParentToThis),
+		VECTOR3_USE(parentComToThisPivotOffset), VECTOR3_USE(thisPivotToThisComOffset),
 		disableParentCollision);
 	VECTOR3_DEL(inertia);
-	QUATERNION_DEL(zeroRotParentToThis);
-	VECTOR3_DEL(jointAxis);
-	VECTOR3_DEL(parentAxisPosition);
-	VECTOR3_DEL(myAxisPosition);
+	QUATERNION_DEL(rotParentToThis);
+	VECTOR3_DEL(parentComToThisPivotOffset);
+	VECTOR3_DEL(thisPivotToThisComOffset);
 }
 
-void MultiBody::SetupRevolute(int i, btScalar mass, Vector3 inertia, int parent, Quaternion zeroRotParentToThis,
-	Vector3 jointAxis, Vector3 parentAxisPosition, Vector3 myAxisPosition)
+void MultiBody::SetupPlanar(int i, btScalar mass, Vector3 inertia, int parent, Quaternion rotParentToThis,
+	Vector3 rotationAxis, Vector3 parentComToThisComOffset, bool disableParentCollision)
 {
 	VECTOR3_CONV(inertia);
-	QUATERNION_CONV(zeroRotParentToThis);
-	VECTOR3_CONV(jointAxis);
-	VECTOR3_CONV(parentAxisPosition);
-	VECTOR3_CONV(myAxisPosition);
-	_native->setupRevolute(i, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(zeroRotParentToThis),
-		VECTOR3_USE(jointAxis), VECTOR3_USE(parentAxisPosition), VECTOR3_USE(myAxisPosition));
+	QUATERNION_CONV(rotParentToThis);
+	VECTOR3_CONV(rotationAxis);
+	VECTOR3_CONV(parentComToThisComOffset);
+	_native->setupPlanar(i, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(rotParentToThis),
+		VECTOR3_USE(rotationAxis), VECTOR3_USE(parentComToThisComOffset), disableParentCollision);
 	VECTOR3_DEL(inertia);
-	QUATERNION_DEL(zeroRotParentToThis);
+	QUATERNION_DEL(rotParentToThis);
+	VECTOR3_DEL(rotationAxis);
+	VECTOR3_DEL(parentComToThisComOffset);
+}
+
+void MultiBody::SetupPlanar(int i, btScalar mass, Vector3 inertia, int parent, Quaternion rotParentToThis,
+	Vector3 rotationAxis, Vector3 parentComToThisComOffset)
+{
+	VECTOR3_CONV(inertia);
+	QUATERNION_CONV(rotParentToThis);
+	VECTOR3_CONV(rotationAxis);
+	VECTOR3_CONV(parentComToThisComOffset);
+	_native->setupPlanar(i, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(rotParentToThis),
+		VECTOR3_USE(rotationAxis), VECTOR3_USE(parentComToThisComOffset));
+	VECTOR3_DEL(inertia);
+	QUATERNION_DEL(rotParentToThis);
+	VECTOR3_DEL(rotationAxis);
+	VECTOR3_DEL(parentComToThisComOffset);
+}
+
+void MultiBody::SetupPrismatic(int i, btScalar mass, Vector3 inertia, int parent,
+	Quaternion rotParentToThis, Vector3 jointAxis, Vector3 parentComToThisComOffset,
+	Vector3 thisPivotToThisComOffset, bool disableParentCollision)
+{
+	VECTOR3_CONV(inertia);
+	QUATERNION_CONV(rotParentToThis);
+	VECTOR3_CONV(jointAxis);
+	VECTOR3_CONV(parentComToThisComOffset);
+	VECTOR3_CONV(thisPivotToThisComOffset);
+	_native->setupPrismatic(i, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(rotParentToThis),
+		VECTOR3_USE(jointAxis), VECTOR3_USE(parentComToThisComOffset), VECTOR3_USE(thisPivotToThisComOffset),
+		disableParentCollision);
+	VECTOR3_DEL(inertia);
+	QUATERNION_DEL(rotParentToThis);
 	VECTOR3_DEL(jointAxis);
-	VECTOR3_DEL(parentAxisPosition);
-	VECTOR3_DEL(myAxisPosition);
+	VECTOR3_DEL(parentComToThisComOffset);
+	VECTOR3_DEL(thisPivotToThisComOffset);
+}
+
+void MultiBody::SetupRevolute(int linkIndex, btScalar mass, Vector3 inertia, int parentIndex,
+	Quaternion rotParentToThis, Vector3 jointAxis, Vector3 parentComToThisPivotOffset,
+	Vector3 thisPivotToThisComOffset, bool disableParentCollision)
+{
+	VECTOR3_CONV(inertia);
+	QUATERNION_CONV(rotParentToThis);
+	VECTOR3_CONV(jointAxis);
+	VECTOR3_CONV(parentComToThisPivotOffset);
+	VECTOR3_CONV(thisPivotToThisComOffset);
+	_native->setupRevolute(linkIndex, mass, VECTOR3_USE(inertia), parentIndex, QUATERNION_USE(rotParentToThis),
+		VECTOR3_USE(jointAxis), VECTOR3_USE(parentComToThisPivotOffset), VECTOR3_USE(thisPivotToThisComOffset),
+		disableParentCollision);
+	VECTOR3_DEL(inertia);
+	QUATERNION_DEL(rotParentToThis);
+	VECTOR3_DEL(jointAxis);
+	VECTOR3_DEL(parentComToThisPivotOffset);
+	VECTOR3_DEL(thisPivotToThisComOffset);
+}
+
+void MultiBody::SetupRevolute(int linkIndex, btScalar mass, Vector3 inertia, int parentIndex,
+	Quaternion rotParentToThis, Vector3 jointAxis, Vector3 parentComToThisPivotOffset,
+	Vector3 thisPivotToThisComOffset)
+{
+	VECTOR3_CONV(inertia);
+	QUATERNION_CONV(rotParentToThis);
+	VECTOR3_CONV(jointAxis);
+	VECTOR3_CONV(parentComToThisPivotOffset);
+	VECTOR3_CONV(thisPivotToThisComOffset);
+	_native->setupRevolute(linkIndex, mass, VECTOR3_USE(inertia), parentIndex, QUATERNION_USE(rotParentToThis),
+		VECTOR3_USE(jointAxis), VECTOR3_USE(parentComToThisPivotOffset), VECTOR3_USE(thisPivotToThisComOffset));
+	VECTOR3_DEL(inertia);
+	QUATERNION_DEL(rotParentToThis);
+	VECTOR3_DEL(jointAxis);
+	VECTOR3_DEL(parentComToThisPivotOffset);
+	VECTOR3_DEL(thisPivotToThisComOffset);
+}
+
+void MultiBody::SetupSpherical(int linkIndex, btScalar mass, Vector3 inertia, int parent,
+	Quaternion rotParentToThis, Vector3 parentComToThisPivotOffset, Vector3 thisPivotToThisComOffset,
+	bool disableParentCollision)
+{
+	VECTOR3_CONV(inertia);
+	QUATERNION_CONV(rotParentToThis);
+	VECTOR3_CONV(parentComToThisPivotOffset);
+	VECTOR3_CONV(thisPivotToThisComOffset);
+	_native->setupSpherical(linkIndex, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(rotParentToThis),
+		VECTOR3_USE(parentComToThisPivotOffset), VECTOR3_USE(thisPivotToThisComOffset),
+		disableParentCollision);
+	VECTOR3_DEL(inertia);
+	QUATERNION_DEL(rotParentToThis);
+	VECTOR3_DEL(parentComToThisPivotOffset);
+	VECTOR3_DEL(thisPivotToThisComOffset);
+}
+
+void MultiBody::SetupSpherical(int linkIndex, btScalar mass, Vector3 inertia, int parent,
+	Quaternion rotParentToThis, Vector3 parentComToThisPivotOffset, Vector3 thisPivotToThisComOffset)
+{
+	VECTOR3_CONV(inertia);
+	QUATERNION_CONV(rotParentToThis);
+	VECTOR3_CONV(parentComToThisPivotOffset);
+	VECTOR3_CONV(thisPivotToThisComOffset);
+	_native->setupSpherical(linkIndex, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(rotParentToThis),
+		VECTOR3_USE(parentComToThisPivotOffset), VECTOR3_USE(thisPivotToThisComOffset));
+	VECTOR3_DEL(inertia);
+	QUATERNION_DEL(rotParentToThis);
+	VECTOR3_DEL(parentComToThisPivotOffset);
+	VECTOR3_DEL(thisPivotToThisComOffset);
 }
 
 void MultiBody::StepPositions(btScalar dt)
@@ -302,10 +377,31 @@ void MultiBody::StepPositions(btScalar dt)
 	_native->stepPositions(dt);
 }
 /*
+void MultiBody::StepPositionsMultiDof(btScalar dt, array<btScalar>^ pq, array<btScalar>^ pqd)
+{
+	_native->stepPositionsMultiDof(dt, pq->_native, pqd->_native);
+}
+
+void MultiBody::StepPositionsMultiDof(btScalar dt, array<btScalar>^ pq)
+{
+	_native->stepPositionsMultiDof(dt, pq->_native);
+}
+*/
+void MultiBody::StepPositionsMultiDof(btScalar dt)
+{
+	_native->stepPositionsMultiDof(dt);
+}
+/*
 void MultiBody::StepVelocities(btScalar dt, AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV,
 	AlignedMatrix3x3Array^ scratchM)
 {
 	_native->stepVelocities(dt, *scratchR->_native, *scratchV->_native, *scratchM->_native);
+}
+
+void MultiBody::StepVelocitiesMultiDof(btScalar dt, AlignedScalarArray^ scratchR,
+	AlignedVector3Array^ scratchV, AlignedMatrix3x3Array^ scratchM)
+{
+	_native->stepVelocitiesMultiDof(dt, *scratchR->_native, *scratchV->_native, *scratchM->_native);
 }
 */
 void MultiBody::WakeUp()

@@ -26,11 +26,15 @@ namespace BulletSharp
 		bool GetCH(int numCH, [Out] array<Vector3>^% points, [Out] array<long>^% triangles);
 		int GetNPointsCH(int numCH);
 		int GetNTrianglesCH(int numCH);
+		array<HACD::Real>^ GetPoints();
+		array<Int64>^ GetTriangles();
 		void NormalizeData();
 		bool Save(String^ fileName, bool uniColor, long numCluster);
 		bool Save(String^ fileName, bool uniColor);
+		void SetPoints(ICollection<HACD::Real>^ points);
 		void SetPoints(ICollection<Vector3>^ points);
 		void SetTriangles(ICollection<long>^ points);
+		void SetTriangles(ICollection<int>^ points);
 
 		property bool AddExtraDistPoints
 		{
@@ -102,25 +106,13 @@ namespace BulletSharp
 		{
 			LongArray get();
 		}
-
-		property Vec3^ Points
-		{
-			Vec3^ get();
-			void set(Vec3^ points);
-		}
 */
 		property double ScaleFactor
 		{
 			double get();
 			void set(double scale);
 		}
-/*
-		property Vec3^ Triangles
-		{
-			Vec3^ get();
-			void set(Vec3^ triangles);
-		}
-*/
+
 		property double VolumeWeight
 		{
 			double get();
