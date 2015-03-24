@@ -35,6 +35,12 @@ Hacd::!Hacd()
 	_native = NULL;
 }
 
+bool Hacd::CallbackFunctionUnmanaged(IntPtr msg, double progress, double globalConcavity, IntPtr n)
+{
+    String^ msg2 = Marshal::PtrToStringAnsi(msg);
+    return _callbackFunction(msg2, progress, globalConcavity, n.ToInt32());
+}
+
 Hacd::Hacd()
 {
 	_native = new HACD::HACD();
@@ -260,16 +266,27 @@ void Hacd::SetTriangles(ICollection<int>^ triangles)
 	_native->SetNTriangles(count / 3);
 }
 
-/*
-CallBackFunction Hacd::CallBack::get()
+Hacd::CallBackFunction^ Hacd::CallBack::get()
 {
-	return _native->GetCallBack();
+    return _callbackFunction;
 }
-void Hacd::CallBack::set(CallBackFunction callBack)
+void Hacd::CallBack::set(CallBackFunction^ callBack)
 {
-	_native->SetCallBack(callBack->_native);
+    if (!_callbackFunctionUnmanaged)
+    {
+        _callbackFunctionUnmanaged = gcnew CallbackFunctionUnmanagedDelegate(this, &Hacd::CallbackFunctionUnmanaged);
+    }
+    _callbackFunction = callBack;
+    if (_callbackFunction)
+    {
+        _native->SetCallBack((HACD::CallBackFunction)Marshal::GetFunctionPointerForDelegate(_callbackFunctionUnmanaged).ToPointer());
+    }
+    else
+    {
+        _native->SetCallBack(0);
+    }
 }
-*/
+
 double Hacd::CompacityWeight::get()
 {
 	return _native->GetCompacityWeight();

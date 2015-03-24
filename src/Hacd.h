@@ -8,13 +8,25 @@ namespace BulletSharp
 		HACD::HACD* _native;
 
 	private:
+		[UnmanagedFunctionPointer(CallingConvention::Cdecl)]
+		delegate bool CallbackFunctionUnmanagedDelegate(IntPtr msg,
+			double progress, double globalConcavity, IntPtr n);
+	public:
+		delegate bool CallBackFunction(String^ msg, double progress, double globalConcativity, int n);
+
+	private:
 		HACD::Vec3<HACD::Real>* _points;
 		HACD::Vec3<long>* _triangles;
+        CallbackFunctionUnmanagedDelegate^ _callbackFunctionUnmanaged;
+        CallBackFunction^ _callbackFunction;
 
 	public:
 		!Hacd();
 	protected:
 		~Hacd();
+
+	private:
+		bool CallbackFunctionUnmanaged(IntPtr msg, double progress, double globalConcavity, IntPtr n);
 
 	public:
 		Hacd();
@@ -53,13 +65,13 @@ namespace BulletSharp
 			bool get();
 			void set(bool addNeighboursDistPoints);
 		}
-/*
-		property CallBackFunction CallBack
+
+		property CallBackFunction^ CallBack
 		{
-			CallBackFunction get();
-			void set(CallBackFunction callBack);
+			CallBackFunction^ get();
+			void set(CallBackFunction^ callBack);
 		}
-*/
+
 		property double CompacityWeight
 		{
 			double get();
