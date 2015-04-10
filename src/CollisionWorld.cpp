@@ -140,7 +140,7 @@ BulletSharp::LocalShapeInfo^ LocalRayResult::LocalShapeInfo::get()
 	{
 		return nullptr;
 	}
-	_localShapeInfo = gcnew BulletSharp::LocalShapeInfo(_localShapeInfo->_native, true);
+	_localShapeInfo = gcnew BulletSharp::LocalShapeInfo(_native->m_localShapeInfo, true);
 	return _localShapeInfo;
 }
 void LocalRayResult::LocalShapeInfo::set(BulletSharp::LocalShapeInfo^ value)
