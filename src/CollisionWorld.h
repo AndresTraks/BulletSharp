@@ -26,6 +26,10 @@ namespace BulletSharp
 	{
 	internal:
 		btCollisionWorld::LocalShapeInfo* _native;
+		LocalShapeInfo(btCollisionWorld::LocalShapeInfo* native, bool preventDelete);
+
+	private:
+		bool _preventDelete;
 
 	public:
 		!LocalShapeInfo();

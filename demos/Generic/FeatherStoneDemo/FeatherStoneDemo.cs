@@ -168,7 +168,7 @@ namespace FeatherStoneDemo
                 if (settings.UsePrismatic) // i == (nLinks - 1))
                 {
                     body.SetupPrismatic(child_link_num, mass, inertia, this_link_num,
-                        parent_to_child, joint_axis_child_prismatic, parent_to_child.Rotate(pos), settings.DisableParentCollision);
+                        parent_to_child, joint_axis_child_prismatic, parent_to_child.Rotate(pos), Vector3.Zero, settings.DisableParentCollision);
                 }
                 else
                 {

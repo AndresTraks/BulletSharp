@@ -28,6 +28,12 @@
 #include "ICharacterController.h"
 #endif
 
+LocalShapeInfo::LocalShapeInfo(btCollisionWorld::LocalShapeInfo* native, bool preventDelete)
+{
+	_native = native;
+	_preventDelete = preventDelete;
+}
+
 LocalShapeInfo::~LocalShapeInfo()
 {
 	this->!LocalShapeInfo();
@@ -35,7 +41,10 @@ LocalShapeInfo::~LocalShapeInfo()
 
 LocalShapeInfo::!LocalShapeInfo()
 {
-	delete _native;
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
 	_native = NULL;
 }
 
@@ -123,6 +132,15 @@ void LocalRayResult::HitNormalLocal::set(Vector3 value)
 
 BulletSharp::LocalShapeInfo^ LocalRayResult::LocalShapeInfo::get()
 {
+	if (_localShapeInfo && _localShapeInfo->_native == _native->m_localShapeInfo)
+	{
+		return _localShapeInfo;
+	}
+	if (!_native->m_localShapeInfo)
+	{
+		return nullptr;
+	}
+	_localShapeInfo = gcnew BulletSharp::LocalShapeInfo(_localShapeInfo->_native, true);
 	return _localShapeInfo;
 }
 void LocalRayResult::LocalShapeInfo::set(BulletSharp::LocalShapeInfo^ value)

@@ -369,6 +369,10 @@ namespace BulletSharpTest
 
         public override float AddSingleResult(LocalRayResult rayResult, bool normalInWorldSpace)
         {
+            if (rayResult.LocalShapeInfo == null)
+            {
+                Console.WriteLine("Missing rayResult.LocalShapeInfo");
+            }
             return base.AddSingleResult(rayResult, normalInWorldSpace);
         }
     }

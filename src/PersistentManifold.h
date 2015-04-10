@@ -38,6 +38,7 @@ namespace BulletSharp
 		static ContactDestroyed^ _contactDestroyed;
 		static ContactProcessed^ _contactProcessed;
 
+	public:
 		static property ContactDestroyed^ ContactDestroyed
 		{
 			::ContactDestroyed^ get();
