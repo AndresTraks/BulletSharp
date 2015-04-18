@@ -340,6 +340,9 @@ namespace BulletSharp
 	{
 		None = 0,
 		DisableWorldGravity = BT_DISABLE_WORLD_GRAVITY,
+		EnableGyroscopicForceExplicit = BT_ENABLE_GYROSCOPIC_FORCE_EXPLICIT,
+		EnableGyroscopicForceImplicitWorld = BT_ENABLE_GYROSCOPIC_FORCE_IMPLICIT_WORLD,
+		EnableGyroscopicForceImplicitBody = BT_ENABLE_GYROSCOPIC_FORCE_IMPLICIT_BODY,
 		EnableGyroscopicForce = BT_ENABLE_GYROPSCOPIC_FORCE
 	};
 

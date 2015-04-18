@@ -75,7 +75,7 @@ namespace BulletSharpTest
 
         public void DrawLine(ref Vector3 from, ref Vector3 to, System.Drawing.Color color)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         public void DrawPlane(ref Vector3 planeNormal, float planeConst, ref Matrix transform, System.Drawing.Color color)

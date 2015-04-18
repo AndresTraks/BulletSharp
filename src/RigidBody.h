@@ -156,7 +156,9 @@ namespace BulletSharp
 		void ApplyTorqueImpulse(Vector3 torque);
 		void ClearForces();
 		btScalar ComputeAngularImpulseDenominator(Vector3 axis);
-		Vector3 ComputeGyroscopicForce(btScalar maxGyroscopicForce);
+		Vector3 ComputeGyroscopicForceExplicit(btScalar maxGyroscopicForce);
+		Vector3 ComputeGyroscopicImpulseImplicitBody(btScalar step);
+		Vector3 ComputeGyroscopicImpulseImplicitWorld(btScalar dt);
 		btScalar ComputeImpulseDenominator(Vector3 pos, Vector3 normal);
 		void GetAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 #ifndef DISABLE_CONSTRAINTS
@@ -282,6 +284,11 @@ namespace BulletSharp
 		{
 			Vector3 get();
 			void set(Vector3 linVel);
+		}
+
+		property Vector3 LocalInertia
+		{
+			Vector3 get();
 		}
 
 		property BulletSharp::MotionState^ MotionState

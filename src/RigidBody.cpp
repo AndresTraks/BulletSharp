@@ -321,15 +321,45 @@ btScalar RigidBody::ComputeAngularImpulseDenominator(Vector3 axis)
 }
 
 #pragma managed(push, off)
-void RigidBody_ComputeGyroscopicForce(btRigidBody* body, btVector3* ret, btScalar maxGyroscopicForce)
+void RigidBody_ComputeGyroscopicForceExplicit(btRigidBody* body, btVector3* ret, btScalar maxGyroscopicForce)
 {
-	*ret = body->computeGyroscopicForce(maxGyroscopicForce);
+	*ret = body->computeGyroscopicForceExplicit(maxGyroscopicForce);
 }
 #pragma managed(pop)
-Vector3 RigidBody::ComputeGyroscopicForce(btScalar maxGyroscopicForce)
+Vector3 RigidBody::ComputeGyroscopicForceExplicit(btScalar maxGyroscopicForce)
 {
 	btVector3* retTemp = ALIGNED_NEW(btVector3);
-	RigidBody_ComputeGyroscopicForce(Native, retTemp, maxGyroscopicForce);
+	RigidBody_ComputeGyroscopicForceExplicit(Native, retTemp, maxGyroscopicForce);
+	Vector3 ret = Math::BtVector3ToVector3(retTemp);
+	ALIGNED_FREE(retTemp);
+	return ret;
+}
+
+#pragma managed(push, off)
+void RigidBody_ComputeGyroscopicImpulseImplicit_Body(btRigidBody* body, btVector3* ret, btScalar step)
+{
+	*ret = body->computeGyroscopicImpulseImplicit_Body(step);
+}
+#pragma managed(pop)
+Vector3 RigidBody::ComputeGyroscopicImpulseImplicitBody(btScalar step)
+{
+	btVector3* retTemp = ALIGNED_NEW(btVector3);
+	RigidBody_ComputeGyroscopicImpulseImplicit_Body(Native, retTemp, step);
+	Vector3 ret = Math::BtVector3ToVector3(retTemp);
+	ALIGNED_FREE(retTemp);
+	return ret;
+}
+
+#pragma managed(push, off)
+void RigidBody_ComputeGyroscopicImpulseImplicit_World(btRigidBody* body, btVector3* ret, btScalar dt)
+{
+	*ret = body->computeGyroscopicImpulseImplicit_World(dt);
+}
+#pragma managed(pop)
+Vector3 RigidBody::ComputeGyroscopicImpulseImplicitWorld(btScalar dt)
+{
+	btVector3* retTemp = ALIGNED_NEW(btVector3);
+	RigidBody_ComputeGyroscopicImpulseImplicit_World(Native, retTemp, dt);
 	Vector3 ret = Math::BtVector3ToVector3(retTemp);
 	ALIGNED_FREE(retTemp);
 	return ret;
@@ -609,6 +639,21 @@ void RigidBody::LinearVelocity::set(Vector3 linVel)
 	VECTOR3_CONV(linVel);
 	Native->setLinearVelocity(VECTOR3_USE(linVel));
 	VECTOR3_DEL(linVel);
+}
+
+#pragma managed(push, off)
+void RigidBody_GetLocalInertia(btRigidBody* body, btVector3* ret)
+{
+	*ret = body->getLocalInertia();
+}
+#pragma managed(pop)
+Vector3 RigidBody::LocalInertia::get()
+{
+	btVector3* retTemp = ALIGNED_NEW(btVector3);
+	RigidBody_GetLocalInertia(Native, retTemp);
+	Vector3 ret = Math::BtVector3ToVector3(retTemp);
+	ALIGNED_FREE(retTemp);
+	return ret;
 }
 
 BulletSharp::MotionState^ RigidBody::MotionState::get()

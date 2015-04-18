@@ -104,8 +104,23 @@ namespace BulletSharpTest
             ghostPairCallback = null;
             var ghostObject = new PairCachingGhostObject();
             ghostObject.CollisionShape = new BoxShape(2);
-            ghostObject.WorldTransform = Matrix.Translation(2,2,0);
+            ghostObject.WorldTransform = Matrix.Translation(2, 2, 0);
             world.AddCollisionObject(ghostObject);
+
+            var trimesh = new TriangleMesh();
+            Vector3 v0 = new Vector3(0, 0, 0);
+            Vector3 v1 = new Vector3(1, 0, 0);
+            Vector3 v2 = new Vector3(0, 1, 0);
+            Vector3 v3 = new Vector3(1, 1, 0);
+            trimesh.AddTriangle(v0, v1, v2);
+            trimesh.AddTriangle(v1, v3, v2);
+            var triangleMeshShape = new BvhTriangleMeshShape(trimesh, false);
+            var triMeshObject = CreateBody(0, triangleMeshShape, new Vector3(20, 0, 20));
+            AddToDisposeQueue(triangleMeshShape);
+            AddToDisposeQueue(trimesh);
+            AddToDisposeQueue(triMeshObject);
+            triangleMeshShape = null;
+            trimesh = null;
 
             AddToDisposeQueue(conf);
             AddToDisposeQueue(dispatcher);
@@ -149,8 +164,10 @@ namespace BulletSharpTest
             TestContactTest(dynamicObject, dynamicObject2);
             TestGhostObjectPairs(ghostObject);
             TestRayCast(dynamicObject);
+            TestTriangleMeshRayCast(triMeshObject);
             dynamicObject = null;
             dynamicObject2 = null;
+            triMeshObject = null;
 
             //world.SetInternalTickCallback(null);
             world.Dispose();
@@ -239,6 +256,18 @@ namespace BulletSharpTest
             AddToDisposeQueue(rayCallback);
         }
 
+        static void TestTriangleMeshRayCast(RigidBody triMeshObject)
+        {
+            Vector3 rayFromWorld = triMeshObject.WorldTransform.Origin + new Vector3(0, 0, -2);
+            Vector3 rayToWorld = triMeshObject.WorldTransform.Origin + new Vector3(0, 0, 2);
+            var cb = new TriangleMeshRayCastCallback(ref rayFromWorld, ref rayToWorld);
+            world.RayTest(ref rayFromWorld, ref rayToWorld, cb);
+            if (!cb.Success)
+            {
+                Console.WriteLine("Triangle mesh raycast fail!");
+            }
+        }
+
         static void TestSoftBody()
         {
             var softBodyWorldInfo = new SoftBodyWorldInfo();
@@ -255,7 +284,7 @@ namespace BulletSharpTest
             {
                 Console.WriteLine("SoftBody: body and world SoftBodySolvers don't match!");
             }
-            
+
             AddToDisposeQueue(softBodyWorldInfo);
             AddToDisposeQueue(softBody);
             AddToDisposeQueue(softBodyCollisionConf);
@@ -342,7 +371,7 @@ namespace BulletSharpTest
         }
 
         static void DispatcherNearCallback(BroadphasePair collisionPair, CollisionDispatcher dispatcher,
-			DispatcherInfo dispatchInfo)
+            DispatcherInfo dispatchInfo)
         {
             //AddToDisposeQueue(dispatchInfo.DebugDraw);
             TestManifoldPoints();
@@ -369,10 +398,6 @@ namespace BulletSharpTest
 
         public override float AddSingleResult(LocalRayResult rayResult, bool normalInWorldSpace)
         {
-            if (rayResult.LocalShapeInfo == null)
-            {
-                Console.WriteLine("Missing rayResult.LocalShapeInfo");
-            }
             return base.AddSingleResult(rayResult, normalInWorldSpace);
         }
     }
@@ -412,6 +437,27 @@ namespace BulletSharpTest
         public override bool Process(BroadphaseProxy proxy)
         {
             return true;
+        }
+    }
+
+    public class TriangleMeshRayCastCallback : ClosestRayResultCallback
+    {
+        public int TriangleIndex { get; private set; }
+        public bool Success { get; private set; }
+
+        public TriangleMeshRayCastCallback(ref Vector3 from, ref Vector3 to)
+            : base(ref from, ref to)
+        {
+        }
+
+        public override float AddSingleResult(LocalRayResult rayResult, bool normalInWorldSpace)
+        {
+            if (rayResult.LocalShapeInfo != null)
+            {
+                Success = true;
+                TriangleIndex = rayResult.LocalShapeInfo.TriangleIndex;
+            }
+            return base.AddSingleResult(rayResult, normalInWorldSpace);
         }
     }
 }
