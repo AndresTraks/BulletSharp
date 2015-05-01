@@ -8,13 +8,13 @@
 #define Native static_cast<btHinge2Constraint*>(_native)
 
 Hinge2Constraint::Hinge2Constraint(btHinge2Constraint* native)
-	: Generic6DofSpringConstraint(native)
+	: Generic6DofSpring2Constraint(native)
 {
 }
 
 Hinge2Constraint::Hinge2Constraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 anchor,
 	Vector3 axis1, Vector3 axis2)
-	: Generic6DofSpringConstraint(0)
+	: Generic6DofSpring2Constraint(0)
 {
 	VECTOR3_CONV(anchor);
 	VECTOR3_CONV(axis1);

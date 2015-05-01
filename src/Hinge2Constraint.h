@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Generic6DofSpringConstraint.h"
+#include "Generic6DofSpring2Constraint.h"
 
 namespace BulletSharp
 {
-	public ref class Hinge2Constraint : Generic6DofSpringConstraint
+	public ref class Hinge2Constraint : Generic6DofSpring2Constraint
 	{
 	internal:
 		Hinge2Constraint(btHinge2Constraint* native);
