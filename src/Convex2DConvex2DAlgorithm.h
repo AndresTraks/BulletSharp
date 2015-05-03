@@ -8,7 +8,7 @@ namespace BulletSharp
 {
 	ref class CollisionObjectWrapper;
 	ref class ConvexPenetrationDepthSolver;
-	ref class PersistentManifold;
+	value struct PersistentManifold;
 
 	public ref class Convex2DConvex2DAlgorithm : ActivatingCollisionAlgorithm
 	{
@@ -47,16 +47,16 @@ namespace BulletSharp
 			}*/
 		};
 
-		Convex2DConvex2DAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
+		Convex2DConvex2DAlgorithm(PersistentManifold mf, CollisionAlgorithmConstructionInfo^ ci,
 			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 			SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ pdSolver,
 			int numPerturbationIterations, int minimumPointsPerturbationThreshold);
 
 		void SetLowLevelOfDetail(bool useLowLevel);
 
-		property PersistentManifold^ Manifold
+		property PersistentManifold Manifold
 		{
-			PersistentManifold^ get();
+			PersistentManifold get();
 		}
 	};
 };

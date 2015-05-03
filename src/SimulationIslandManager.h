@@ -22,7 +22,7 @@ namespace BulletSharp
 			~IslandCallback();
 
 		public:
-			void ProcessIsland(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifolds,
+			void ProcessIsland(array<CollisionObject^>^ bodies, array<PersistentManifold>^ manifolds,
 				int islandId);
 
 			property bool IsDisposed

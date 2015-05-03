@@ -5,6 +5,7 @@
 namespace BulletSharp
 {
 	ref class ManifoldPoint;
+	ref class CollisionObject;
 	
 #ifdef BT_CALLBACKS_ARE_EVENTS
 	public delegate void ContactDestroyedEventHandler(Object^ userPersistantData);
@@ -14,9 +15,11 @@ namespace BulletSharp
 	public delegate bool ContactProcessed(ManifoldPoint^ cp, CollisionObject^ body0, CollisionObject^ body1);
 #endif
 
-	public ref class PersistentManifold : TypedObject
+	public value struct PersistentManifold
 	{
 	internal:
+		btPersistentManifold* _native;
+
 		PersistentManifold(btPersistentManifold* native);
 
 #ifdef BT_CALLBACKS_ARE_EVENTS
@@ -51,22 +54,26 @@ namespace BulletSharp
 			void set(::ContactProcessed^ value);
 		}
 #endif
-
+/*
 		PersistentManifold();
 		PersistentManifold(CollisionObject^ body0, CollisionObject^ body1, int __unnamed2,
 			btScalar contactBreakingThreshold, btScalar contactProcessingThreshold);
-
+*/
 		int AddManifoldPoint(ManifoldPoint^ newPoint, bool isPredictive);
 		int AddManifoldPoint(ManifoldPoint^ newPoint);
 		void ClearManifold();
 		void ClearUserCache(ManifoldPoint^ pt);
+		virtual bool Equals(Object^ obj) override;
 		int GetCacheEntry(ManifoldPoint^ newPoint);
+		virtual int GetHashCode() override;
 		ManifoldPoint^ GetContactPoint(int index);
 		void RefreshContactPoints(Matrix trA, Matrix trB);
 		void RemoveContactPoint(int index);
 		void ReplaceContactPoint(ManifoldPoint^ newPoint, int insertIndex);
 		void SetBodies(CollisionObject^ body0, CollisionObject^ body1);
 		bool ValidContactDistance(ManifoldPoint^ pt);
+		static bool operator== (PersistentManifold value1, PersistentManifold value2);
+		static bool operator!= (PersistentManifold value1, PersistentManifold value2);
 
 		property CollisionObject^ Body0
 		{
@@ -113,5 +120,7 @@ namespace BulletSharp
 			int get();
 			void set(int cachedPoints);
 		}
+
+		static PersistentManifold Zero;
 	};
 };

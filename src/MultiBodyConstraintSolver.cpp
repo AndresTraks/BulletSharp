@@ -36,7 +36,7 @@ btScalar MultiBodyConstraintSolver::SolveGroupCacheFriendlyFinish(CollisionObjec
 #ifndef DISABLE_CONSTRAINTS
 #ifndef DISABLE_DEBUGDRAW
 void MultiBodyConstraintSolver::SolveMultiBodyGroup(CollisionObject^ bodies, int numBodies,
-	PersistentManifold^ manifold, int numManifolds, TypedConstraint^ constraints,
+	PersistentManifold manifold, int numManifolds, TypedConstraint^ constraints,
 	int numConstraints, MultiBodyConstraint^ multiBodyConstraints, int numMultiBodyConstraints,
 	ContactSolverInfo^ info, IDebugDraw^ debugDrawer, Dispatcher^ dispatcher)
 {

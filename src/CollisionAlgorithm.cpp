@@ -41,14 +41,13 @@ void CollisionAlgorithmConstructionInfo::Dispatcher::set(BulletSharp::Dispatcher
 	_native->m_dispatcher1 = GetUnmanagedNullable(value);
 }
 
-PersistentManifold^ CollisionAlgorithmConstructionInfo::Manifold::get()
+PersistentManifold CollisionAlgorithmConstructionInfo::Manifold::get()
 {
-	return _manifold;
+	return PersistentManifold(_native->m_manifold);
 }
-void CollisionAlgorithmConstructionInfo::Manifold::set(PersistentManifold^ value)
+void CollisionAlgorithmConstructionInfo::Manifold::set(PersistentManifold value)
 {
-	_manifold = value;
-	_native->m_manifold = (btPersistentManifold*)GetUnmanagedNullable(value);
+	_native->m_manifold = value._native;
 }
 
 

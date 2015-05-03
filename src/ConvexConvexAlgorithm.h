@@ -42,16 +42,16 @@ namespace BulletSharp
 			}
 		};
 
-		ConvexConvexAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
+		ConvexConvexAlgorithm(PersistentManifold mf, CollisionAlgorithmConstructionInfo^ ci,
 			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 			SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ pdSolver,
 			int numPerturbationIterations, int minimumPointsPerturbationThreshold);
 
 		void SetLowLevelOfDetail(bool useLowLevel);
 
-		property PersistentManifold^ Manifold
+		property PersistentManifold Manifold
 		{
-			PersistentManifold^ get();
+			PersistentManifold get();
 		}
 	};
 };

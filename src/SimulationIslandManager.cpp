@@ -29,7 +29,7 @@ SimulationIslandManager::IslandCallback::!IslandCallback()
 }
 
 void SimulationIslandManager::IslandCallback::ProcessIsland(array<CollisionObject^>^ bodies,
-	array<PersistentManifold^>^ manifolds, int islandId)
+	array<PersistentManifold>^ manifolds, int islandId)
 {
 	int numBodies = bodies->Length;
 	int numManifolds = manifolds->Length;
@@ -42,7 +42,7 @@ void SimulationIslandManager::IslandCallback::ProcessIsland(array<CollisionObjec
 		bodiesTemp[i] = bodies[i]->_native;
 
 	for(i=0; i<numManifolds; i++)
-		manifoldsTemp[i] = (btPersistentManifold*)manifolds[i]->_native;
+		manifoldsTemp[i] = manifolds[i]._native;
 
 	_native->processIsland(bodiesTemp, numBodies, manifoldsTemp, numManifolds, islandId);
 

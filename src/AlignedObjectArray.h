@@ -3,8 +3,7 @@
 #ifndef DISABLE_DBVT
 #include "Dbvt.h"
 #endif
-#ifndef DISABLE_SOFTBODY
-#endif
+#include "PersistentManifold.h"
 
 namespace BulletSharp
 {
@@ -14,7 +13,6 @@ namespace BulletSharp
 	ref class CompoundShapeChild;
 	ref class IndexedMesh;
 	ref class ListDebugView;
-	ref class PersistentManifold;
 	ref class TriangleMesh;
 	ref class Vector3ListDebugView;
 	ref class WheelInfo;
@@ -504,7 +502,7 @@ namespace BulletSharp
 
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class AlignedManifoldArray : AlignedObjectArray<PersistentManifold^>
+	public ref class AlignedManifoldArray : AlignedObjectArray<PersistentManifold>
 	{
 	internal:
 		AlignedManifoldArray(btManifoldArray* manifoldArray);
@@ -512,13 +510,13 @@ namespace BulletSharp
 	public:
 		AlignedManifoldArray();
 
-		virtual void Add(PersistentManifold^ manifold) override;
+		virtual void Add(PersistentManifold manifold) override;
 		virtual void Clear() override;
-		virtual bool Contains(PersistentManifold^ manifold) override;
-		virtual void CopyTo(array<PersistentManifold^>^ array, int arrayIndex) override;
-		virtual int IndexOf(PersistentManifold^ manifold) override;
+		virtual bool Contains(PersistentManifold manifold) override;
+		virtual void CopyTo(array<PersistentManifold>^ array, int arrayIndex) override;
+		virtual int IndexOf(PersistentManifold manifold) override;
 		virtual void PopBack() override;
-		virtual bool Remove(PersistentManifold^ manifold) override;
+		virtual bool Remove(PersistentManifold manifold) override;
 		virtual void Swap(int index0, int index1) override;
 
 		property int Capacity
@@ -531,10 +529,10 @@ namespace BulletSharp
 			virtual int get() override;
 		}
 
-		property PersistentManifold^ default [int]
+		property PersistentManifold default [int]
 		{
-			virtual PersistentManifold^ get (int index) override;
-			virtual void set(int index, PersistentManifold^ value) override;
+			virtual PersistentManifold get (int index) override;
+			virtual void set(int index, PersistentManifold value) override;
 		}
 	};
 

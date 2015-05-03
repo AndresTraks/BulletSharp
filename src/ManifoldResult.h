@@ -6,7 +6,7 @@ namespace BulletSharp
 {
 	ref class CollisionObject;
 	ref class CollisionObjectWrapper;
-	ref class PersistentManifold;
+	value struct PersistentManifold;
 
 	public ref class ManifoldResult abstract : DiscreteCollisionDetectorInterface::Result
 	{
@@ -40,10 +40,10 @@ namespace BulletSharp
 			void set(CollisionObjectWrapper^ obj1Wrap);
 		}
 
-		property PersistentManifold^ PersistentManifold
+		property PersistentManifold PersistentManifold
 		{
-			BulletSharp::PersistentManifold^ get();
-			void set(BulletSharp::PersistentManifold^ manifoldPtr);
+			BulletSharp::PersistentManifold get();
+			void set(BulletSharp::PersistentManifold manifoldPtr);
 		}
 	};
 };

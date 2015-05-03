@@ -7,7 +7,7 @@ namespace BulletSharp
 {
 	ref class CollisionAlgorithmConstructionInfo;
 	ref class CollisionObjectWrapper;
-	ref class PersistentManifold;
+	value struct PersistentManifold;
 
 	public ref class BoxBoxCollisionAlgorithm : ActivatingCollisionAlgorithm
 	{
@@ -19,7 +19,7 @@ namespace BulletSharp
 		};
 
 		BoxBoxCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci);
-		BoxBoxCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
+		BoxBoxCollisionAlgorithm(PersistentManifold mf, CollisionAlgorithmConstructionInfo^ ci,
 			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap);
 	};
 };

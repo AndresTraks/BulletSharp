@@ -94,7 +94,7 @@ void ConstraintSolver::Reset()
 	_native->reset();
 }
 
-btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifold,
+btScalar ConstraintSolver::SolveGroup(array<CollisionObject^>^ bodies, array<PersistentManifold>^ manifold,
 	array<TypedConstraint^>^ constraints, ContactSolverInfo^ info,
 #ifndef DISABLE_DEBUGDRAW
 	IDebugDraw^ debugDrawer,

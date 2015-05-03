@@ -197,9 +197,9 @@ IntPtr Dispatcher::AllocateCollisionAlgorithm(int size)
 	return IntPtr(_native->allocateCollisionAlgorithm(size));
 }
 
-void Dispatcher::ClearManifold(PersistentManifold^ manifold)
+void Dispatcher::ClearManifold(PersistentManifold manifold)
 {
-	_native->clearManifold((btPersistentManifold*)manifold->_native);
+	_native->clearManifold(manifold._native);
 }
 
 void Dispatcher::DispatchAllCollisionPairs(OverlappingPairCache^ pairCache, DispatcherInfo^ dispatchInfo,
@@ -210,10 +210,10 @@ void Dispatcher::DispatchAllCollisionPairs(OverlappingPairCache^ pairCache, Disp
 }
 
 CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
-	PersistentManifold^ sharedManifold)
+	PersistentManifold sharedManifold)
 {
 	return CollisionAlgorithm::GetManaged(_native->findAlgorithm(
-		body0Wrap->_native, body1Wrap->_native, (btPersistentManifold*)sharedManifold->_native));
+		body0Wrap->_native, body1Wrap->_native, sharedManifold._native));
 }
 
 CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
@@ -227,15 +227,15 @@ void Dispatcher::FreeCollisionAlgorithm(IntPtr ptr)
 }
 
 #ifndef DISABLE_INTERNAL
-PersistentManifold^ Dispatcher::GetManifoldByIndexInternal(int index)
+PersistentManifold Dispatcher::GetManifoldByIndexInternal(int index)
 {
-	return gcnew PersistentManifold(_native->getManifoldByIndexInternal(index));
+	return PersistentManifold(_native->getManifoldByIndexInternal(index));
 }
 #endif
 
-PersistentManifold^ Dispatcher::GetNewManifold(CollisionObject^ body0, CollisionObject^ body1)
+PersistentManifold Dispatcher::GetNewManifold(CollisionObject^ body0, CollisionObject^ body1)
 {
-	return gcnew PersistentManifold(_native->getNewManifold(
+	return PersistentManifold(_native->getNewManifold(
 		body0->_native, body1->_native));
 }
 
@@ -249,12 +249,12 @@ bool Dispatcher::NeedsResponse(CollisionObject^ body0, CollisionObject^ body1)
 	return _native->needsResponse(body0->_native, body1->_native);
 }
 
-void Dispatcher::ReleaseManifold(PersistentManifold^ manifold)
+void Dispatcher::ReleaseManifold(PersistentManifold manifold)
 {
-	_native->releaseManifold((btPersistentManifold*)manifold->_native);
+	_native->releaseManifold(manifold._native);
 }
 /*
-PersistentManifold^ Dispatcher::InternalManifoldPointer::get()
+PersistentManifold Dispatcher::InternalManifoldPointer::get()
 {
 	return _native->getInternalManifoldPointer();
 }

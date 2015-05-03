@@ -17,9 +17,9 @@ Box2DBox2DCollisionAlgorithm::Box2DBox2DCollisionAlgorithm(CollisionAlgorithmCon
 {
 }
 
-Box2DBox2DCollisionAlgorithm::Box2DBox2DCollisionAlgorithm(PersistentManifold^ mf,
+Box2DBox2DCollisionAlgorithm::Box2DBox2DCollisionAlgorithm(PersistentManifold mf,
 	CollisionAlgorithmConstructionInfo^ ci, CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
-	: ActivatingCollisionAlgorithm(new btBox2dBox2dCollisionAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf),
+	: ActivatingCollisionAlgorithm(new btBox2dBox2dCollisionAlgorithm(mf._native,
 		*ci->_native, body0Wrap->_native, body1Wrap->_native))
 {
 }

@@ -1,11 +1,12 @@
 #pragma once
 
+#include "PersistentManifold.h"
+
 namespace BulletSharp
 {
 	ref class CollisionObject;
 	ref class ContactSolverInfo;
 	ref class Dispatcher;
-	ref class PersistentManifold;
 	ref class TypedConstraint;
 	interface class IDebugDraw;
 
@@ -39,7 +40,7 @@ namespace BulletSharp
 			);
 		void PrepareSolve(int numBodies, int numManifolds);
 		void Reset();
-		btScalar SolveGroup(array<CollisionObject^>^ bodies, array<PersistentManifold^>^ manifold,
+		btScalar SolveGroup(array<CollisionObject^>^ bodies, array<PersistentManifold>^ manifold,
 			array<TypedConstraint^>^ constraints, ContactSolverInfo^ info,
 #ifndef DISABLE_DEBUGDRAW
 			IDebugDraw^ debugDrawer,

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "PersistentManifold.h"
+
 namespace BulletSharp
 {
 	ref class AlignedManifoldArray;
@@ -8,7 +10,6 @@ namespace BulletSharp
 	ref class Dispatcher;
 	ref class DispatcherInfo;
 	ref class ManifoldResult;
-	ref class PersistentManifold;
 
 	public ref class CollisionAlgorithmConstructionInfo
 	{
@@ -17,7 +18,6 @@ namespace BulletSharp
 
 	private:
 		Dispatcher^ _dispatcher;
-		PersistentManifold^ _manifold;
 
 	public:
 		!CollisionAlgorithmConstructionInfo();
@@ -34,10 +34,10 @@ namespace BulletSharp
 			void set(BulletSharp::Dispatcher^ value);
 		}
 
-		property PersistentManifold^ Manifold
+		property PersistentManifold Manifold
 		{
-			PersistentManifold^ get();
-			void set(PersistentManifold^ value);
+			PersistentManifold get();
+			void set(PersistentManifold value);
 		}
 	};
 

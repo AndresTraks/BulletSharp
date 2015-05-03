@@ -43,10 +43,10 @@ ConvexPlaneCollisionAlgorithm::ConvexPlaneCollisionAlgorithm(btConvexPlaneCollis
 {
 }
 
-ConvexPlaneCollisionAlgorithm::ConvexPlaneCollisionAlgorithm(PersistentManifold^ mf,
+ConvexPlaneCollisionAlgorithm::ConvexPlaneCollisionAlgorithm(PersistentManifold mf,
 	CollisionAlgorithmConstructionInfo^ ci, CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 	bool isSwapped, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
-	: CollisionAlgorithm(new btConvexPlaneCollisionAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf), *ci->_native,
+	: CollisionAlgorithm(new btConvexPlaneCollisionAlgorithm(mf._native, *ci->_native,
 		body0Wrap->_native, body1Wrap->_native, isSwapped, numPerturbationIterations,
 		minimumPointsPerturbationThreshold))
 {

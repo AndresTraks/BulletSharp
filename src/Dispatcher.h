@@ -11,7 +11,7 @@ namespace BulletSharp
 	ref class CollisionObjectWrapper;
 	ref class CollisionWorld;
 	ref class OverlappingPairCache;
-	ref class PersistentManifold;
+	value struct PersistentManifold;
 	ref class PoolAllocator;
 	interface class IDebugDraw;
 	class DebugDrawWrapper;
@@ -132,25 +132,25 @@ namespace BulletSharp
 
 	public:
 		IntPtr AllocateCollisionAlgorithm(int size);
-		void ClearManifold(PersistentManifold^ manifold);
+		void ClearManifold(PersistentManifold manifold);
 		void DispatchAllCollisionPairs(OverlappingPairCache^ pairCache, DispatcherInfo^ dispatchInfo,
 			Dispatcher^ dispatcher);
 		CollisionAlgorithm^ FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
-			PersistentManifold^ sharedManifold);
+			PersistentManifold sharedManifold);
 		CollisionAlgorithm^ FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap);
 		void FreeCollisionAlgorithm(IntPtr ptr);
 #ifndef DISABLE_INTERNAL
-		PersistentManifold^ GetManifoldByIndexInternal(int index);
+		PersistentManifold GetManifoldByIndexInternal(int index);
 #endif
-		PersistentManifold^ GetNewManifold(CollisionObject^ body0, CollisionObject^ body1);
+		PersistentManifold GetNewManifold(CollisionObject^ body0, CollisionObject^ body1);
 		bool NeedsCollision(CollisionObject^ body0, CollisionObject^ body1);
 		bool NeedsResponse(CollisionObject^ body0, CollisionObject^ body1);
-		void ReleaseManifold(PersistentManifold^ manifold);
+		void ReleaseManifold(PersistentManifold manifold);
 /*
 #ifndef DISABLE_INTERNAL
-		property PersistentManifold^ InternalManifoldPointer
+		property PersistentManifold InternalManifoldPointer
 		{
-			PersistentManifold^ get();
+			PersistentManifold get();
 		}
 #endif
 */

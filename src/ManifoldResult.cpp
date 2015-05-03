@@ -60,11 +60,11 @@ void ManifoldResult::Body1Wrap::set(CollisionObjectWrapper^ obj1Wrap)
 	Native->setBody1Wrap(obj1Wrap->_native);
 }
 
-PersistentManifold^ ManifoldResult::PersistentManifold::get()
+PersistentManifold ManifoldResult::PersistentManifold::get()
 {
-	return gcnew BulletSharp::PersistentManifold(Native->getPersistentManifold());
+	return BulletSharp::PersistentManifold(Native->getPersistentManifold());
 }
-void ManifoldResult::PersistentManifold::set(BulletSharp::PersistentManifold^ manifold)
+void ManifoldResult::PersistentManifold::set(BulletSharp::PersistentManifold manifold)
 {
-	Native->setPersistentManifold((btPersistentManifold*)GetUnmanagedNullable(manifold));
+	Native->setPersistentManifold(manifold._native);
 }

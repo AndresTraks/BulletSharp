@@ -6,7 +6,7 @@
 namespace BulletSharp
 {
 	ref class CollisionObjectWrapper;
-	ref class PersistentManifold;
+	value struct PersistentManifold;
 
 	public ref class ConvexPlaneCollisionAlgorithm : CollisionAlgorithm
 	{
@@ -33,7 +33,7 @@ namespace BulletSharp
 		ConvexPlaneCollisionAlgorithm(btConvexPlaneCollisionAlgorithm* native);
 
 	public:
-		ConvexPlaneCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
+		ConvexPlaneCollisionAlgorithm(PersistentManifold mf, CollisionAlgorithmConstructionInfo^ ci,
 			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 			bool isSwapped, int numPerturbationIterations, int minimumPointsPerturbationThreshold);
 

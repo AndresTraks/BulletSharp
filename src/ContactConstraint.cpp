@@ -9,13 +9,13 @@
 
 #define Native static_cast<btContactConstraint*>(_native)
 
-PersistentManifold^ ContactConstraint::ContactManifold::get()
+PersistentManifold ContactConstraint::ContactManifold::get()
 {
-	return gcnew PersistentManifold(Native->getContactManifold());
+	return PersistentManifold(Native->getContactManifold());
 }
-void ContactConstraint::ContactManifold::set(PersistentManifold^ contactManifold)
+void ContactConstraint::ContactManifold::set(PersistentManifold contactManifold)
 {
-	Native->setContactManifold((btPersistentManifold*)contactManifold->_native);
+	Native->setContactManifold(contactManifold._native);
 }
 
 #endif

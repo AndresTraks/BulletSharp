@@ -58,10 +58,10 @@ void ConvexConvexAlgorithm::CreateFunc::SimplexSolver::set(SimplexSolverInterfac
 #undef Native
 #define Native static_cast<btConvexConvexAlgorithm*>(_native)
 
-ConvexConvexAlgorithm::ConvexConvexAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
+ConvexConvexAlgorithm::ConvexConvexAlgorithm(PersistentManifold mf, CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, SimplexSolverInterface^ simplexSolver,
 	ConvexPenetrationDepthSolver^ pdSolver, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
-	: ActivatingCollisionAlgorithm(new btConvexConvexAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf),
+	: ActivatingCollisionAlgorithm(new btConvexConvexAlgorithm(mf._native,
 		*ci->_native, body0Wrap->_native, body1Wrap->_native, simplexSolver->_native,
 		pdSolver->_native, numPerturbationIterations, minimumPointsPerturbationThreshold))
 {
@@ -72,9 +72,9 @@ void ConvexConvexAlgorithm::SetLowLevelOfDetail(bool useLowLevel)
 	Native->setLowLevelOfDetail(useLowLevel);
 }
 
-PersistentManifold^ ConvexConvexAlgorithm::Manifold::get()
+PersistentManifold ConvexConvexAlgorithm::Manifold::get()
 {
-	return gcnew PersistentManifold((btPersistentManifold*)Native->getManifold());
+	return PersistentManifold((btPersistentManifold*)Native->getManifold());
 }
 
 #endif

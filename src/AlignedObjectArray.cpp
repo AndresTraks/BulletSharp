@@ -1259,9 +1259,9 @@ AlignedManifoldArray::AlignedManifoldArray()
 {
 }
 
-void AlignedManifoldArray::Add(PersistentManifold^ manifold)
+void AlignedManifoldArray::Add(PersistentManifold manifold)
 {
-	Native->push_back((btPersistentManifold*)manifold->_native);
+	Native->push_back(manifold._native);
 }
 
 void AlignedManifoldArray::Clear()
@@ -1269,13 +1269,13 @@ void AlignedManifoldArray::Clear()
 	Native->clear();
 }
 
-bool AlignedManifoldArray::Contains(PersistentManifold^ manifold)
+bool AlignedManifoldArray::Contains(PersistentManifold manifold)
 {
-	return Native->findLinearSearch((btPersistentManifold*)manifold->_native)
+	return Native->findLinearSearch(manifold._native)
 		!= Native->size();
 }
 
-void AlignedManifoldArray::CopyTo(array<PersistentManifold^>^ array, int arrayIndex)
+void AlignedManifoldArray::CopyTo(array<PersistentManifold>^ array, int arrayIndex)
 {
 	if (array == nullptr)
 		throw gcnew ArgumentNullException("array");
@@ -1290,13 +1290,13 @@ void AlignedManifoldArray::CopyTo(array<PersistentManifold^>^ array, int arrayIn
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew PersistentManifold((*Native)[i]);
+		array[arrayIndex+i] = PersistentManifold((*Native)[i]);
 	}
 }
 
-int AlignedManifoldArray::IndexOf(PersistentManifold^ manifold)
+int AlignedManifoldArray::IndexOf(PersistentManifold manifold)
 {
-	int i = Native->findLinearSearch((btPersistentManifold*)manifold->_native);
+	int i = Native->findLinearSearch(manifold._native);
 	return i != Native->size() ? i : -1;
 }
 
@@ -1305,10 +1305,10 @@ void AlignedManifoldArray::PopBack()
 	Native->pop_back();
 }
 
-bool AlignedManifoldArray::Remove(PersistentManifold^ manifold)
+bool AlignedManifoldArray::Remove(PersistentManifold manifold)
 {
 	int sizeBefore = Native->size();
-	Native->remove((btPersistentManifold*)manifold->_native);
+	Native->remove(manifold._native);
 	return sizeBefore != Native->size();
 }
 
@@ -1327,20 +1327,20 @@ void AlignedManifoldArray::Swap(int index0, int index1)
 	Native->swap(index0, index1);
 }
 
-PersistentManifold^ AlignedManifoldArray::default::get(int index)
+PersistentManifold AlignedManifoldArray::default::get(int index)
 {
 	if ((unsigned int)index >= (unsigned int)Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
 	btPersistentManifold* obj = (*Native)[index];
 	if (obj == nullptr)
-		return nullptr;
-	return gcnew PersistentManifold(obj);
+		return PersistentManifold::Zero;
+	return PersistentManifold(obj);
 }
-void AlignedManifoldArray::default::set(int index, PersistentManifold^ value)
+void AlignedManifoldArray::default::set(int index, PersistentManifold value)
 {
 	if ((unsigned int)index >= (unsigned int)Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
-	(*Native)[index] = (btPersistentManifold*)GetUnmanagedNullable(value);
+	(*Native)[index] = value._native;
 }
 
 
