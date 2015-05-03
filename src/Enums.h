@@ -346,6 +346,18 @@ namespace BulletSharp
 		EnableGyroscopicForce = BT_ENABLE_GYROPSCOPIC_FORCE
 	};
 
+#ifndef DISABLE_CONSTRAINTS
+	public enum class RotateOrder
+	{
+		XYZ = RO_XYZ,
+		XZY = RO_XZY,
+		YXZ = RO_YXZ,
+		YZX = RO_YZX,
+		ZXY = RO_ZXY,
+		ZYX = RO_ZYX
+	};
+#endif
+
 	[Flags]
 	public enum class SolverModes
 	{

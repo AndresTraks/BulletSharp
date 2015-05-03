@@ -8,16 +8,6 @@ namespace BulletSharp
 	ref class IntArray;
 	ref class RigidBody;
 
-	public enum class RotateOrder
-	{
-		XYZ = RO_XYZ,
-		XZY = RO_XZY,
-		YXZ = RO_YXZ,
-		YZX = RO_YZX,
-		ZXY = RO_ZXY,
-		ZYX = RO_ZYX
-	};
-
 	public ref class RotationalLimitMotor2
 	{
 	internal:

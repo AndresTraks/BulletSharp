@@ -18,6 +18,7 @@ namespace BulletSharp
 	ref class GearConstraint;
 	ref class Generic6DofConstraint;
 	ref class Generic6DofSpringConstraint;
+	ref class Generic6DofSpring2Constraint;
 	ref class HingeConstraint;
 	ref class Point2PointConstraint;
 	ref class SliderConstraint;
@@ -106,6 +107,7 @@ namespace BulletSharp
 			virtual Generic6DofConstraint^ CreateGeneric6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA);
 			virtual Generic6DofConstraint^ CreateGeneric6DofConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameB);
 			virtual Generic6DofSpringConstraint^ CreateGeneric6DofSpringConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA);
+			virtual Generic6DofSpring2Constraint^ CreateGeneric6DofSpring2Constraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, RotateOrder rotateOrder);
 			virtual SliderConstraint^ CreateSliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA);
 			virtual SliderConstraint^ CreateSliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameA);
 			virtual GearConstraint^ CreateGearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA, Vector3 axisInB, btScalar ratio);
@@ -236,6 +238,8 @@ namespace BulletSharp
 				const btTransform& frameInB, bool useLinearReferenceFrameB);
 			virtual btGeneric6DofSpringConstraint* createGeneric6DofSpringConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
 				const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA);
+			virtual btGeneric6DofSpring2Constraint* createGeneric6DofSpring2Constraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
+				const btTransform& frameInA, const btTransform& frameInB, int rotateOrder);
 			virtual btSliderConstraint* createSliderConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
 				const btTransform& frameInA, const btTransform& frameInB, bool useLinearReferenceFrameA);
 			virtual btSliderConstraint* createSliderConstraint(btRigidBody& rigidBodyB,

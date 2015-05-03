@@ -298,6 +298,11 @@ Generic6DofSpringConstraint^ Serialize::WorldImporter::CreateGeneric6DofSpringCo
 	return gcnew Generic6DofSpringConstraint(rigidBodyA, rigidBodyB, frameInA, frameInB, useLinearReferenceFrameA);
 }
 
+Generic6DofSpring2Constraint^ Serialize::WorldImporter::CreateGeneric6DofSpring2Constraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, BulletSharp::RotateOrder rotateOrder)
+{
+	return gcnew Generic6DofSpring2Constraint(rigidBodyA, rigidBodyB, frameInA, frameInB, rotateOrder);
+}
+
 SliderConstraint^ Serialize::WorldImporter::CreateSliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
 {
 	return gcnew SliderConstraint(rigidBodyA, rigidBodyB, frameInA, frameInB, useLinearReferenceFrameA);
@@ -897,6 +902,21 @@ btGeneric6DofSpringConstraint* Serialize::WorldImporterWrapper::createGeneric6Do
 	constraint->_preventDelete = true;
 	_importer->_allocatedConstraints->Add(constraint);
 	return static_cast<btGeneric6DofSpringConstraint*>(constraint->_native);
+}
+
+btGeneric6DofSpring2Constraint* Serialize::WorldImporterWrapper::createGeneric6DofSpring2Constraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
+	const btTransform& frameInA, const btTransform& frameInB, int rotateOrder)
+{
+	Generic6DofSpring2Constraint^ constraint = _importer->CreateGeneric6DofSpring2Constraint(
+		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA),
+		(RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
+		Math::BtTransformToMatrix(&frameInA),
+		Math::BtTransformToMatrix(&frameInB),
+		(RotateOrder)rotateOrder
+	);
+	constraint->_preventDelete = true;
+	_importer->_allocatedConstraints->Add(constraint);
+	return static_cast<btGeneric6DofSpring2Constraint*>(constraint->_native);
 }
 
 btSliderConstraint* Serialize::WorldImporterWrapper::createSliderConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,

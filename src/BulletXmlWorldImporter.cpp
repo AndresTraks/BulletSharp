@@ -28,6 +28,7 @@
 #include "GearConstraint.h"
 #include "Generic6DofConstraint.h"
 #include "Generic6DofSpringConstraint.h"
+#include "Generic6DofSpring2Constraint.h"
 #include "HingeConstraint.h"
 #include "Point2PointConstraint.h"
 #include "SliderConstraint.h"
@@ -295,6 +296,11 @@ Generic6DofConstraint^ Serialize::BulletXmlWorldImporter::CreateGeneric6DofConst
 Generic6DofSpringConstraint^ Serialize::BulletXmlWorldImporter::CreateGeneric6DofSpringConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
 {
 	return gcnew Generic6DofSpringConstraint(rigidBodyA, rigidBodyB, frameInA, frameInB, useLinearReferenceFrameA);
+}
+
+Generic6DofSpring2Constraint^ Serialize::BulletXmlWorldImporter::CreateGeneric6DofSpring2Constraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, BulletSharp::RotateOrder rotateOrder)
+{
+	return gcnew Generic6DofSpring2Constraint(rigidBodyA, rigidBodyB, frameInA, frameInB, rotateOrder);
 }
 
 SliderConstraint^ Serialize::BulletXmlWorldImporter::CreateSliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
@@ -904,6 +910,21 @@ btGeneric6DofSpringConstraint* Serialize::BulletXmlWorldImporterWrapper::createG
 	constraint->_preventDelete = true;
 	_importer->_allocatedConstraints->Add(constraint);
 	return static_cast<btGeneric6DofSpringConstraint*>(constraint->_native);
+}
+
+btGeneric6DofSpring2Constraint* Serialize::BulletXmlWorldImporterWrapper::createGeneric6DofSpring2Constraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
+	const btTransform& frameInA, const btTransform& frameInB, int rotateOrder)
+{
+	Generic6DofSpring2Constraint^ constraint = _importer->CreateGeneric6DofSpring2Constraint(
+		(RigidBody^)CollisionObject::GetManaged(&rigidBodyA),
+		(RigidBody^)CollisionObject::GetManaged(&rigidBodyB),
+		Math::BtTransformToMatrix(&frameInA),
+		Math::BtTransformToMatrix(&frameInB),
+		(RotateOrder)rotateOrder
+	);
+	constraint->_preventDelete = true;
+	_importer->_allocatedConstraints->Add(constraint);
+	return static_cast<btGeneric6DofSpring2Constraint*>(constraint->_native);
 }
 
 btSliderConstraint* Serialize::BulletXmlWorldImporterWrapper::createSliderConstraint(btRigidBody& rigidBodyA, btRigidBody& rigidBodyB,
