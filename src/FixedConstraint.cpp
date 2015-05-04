@@ -7,7 +7,7 @@
 
 FixedConstraint::FixedConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA,
 	Matrix frameInB)
-	: TypedConstraint(0)
+	: Generic6DofSpring2Constraint(0)
 {
 	TRANSFORM_CONV(frameInA);
 	TRANSFORM_CONV(frameInB);
