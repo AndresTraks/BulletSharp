@@ -677,12 +677,7 @@ void Generic6DofConstraint::FrameOffsetB::set(Matrix value)
 	ALIGNED_FREE(a);
 #endif
 }
-/*
-void Generic6DofConstraint::Info1NonVirtual::get(btConstraintInfo1^ info)
-{
-	_native->getInfo1NonVirtual(info->_native);
-}
-*/
+
 Vector3 Generic6DofConstraint::LinearLowerLimit::get()
 {
 	btVector3* limitTemp = ALIGNED_NEW(btVector3);

@@ -530,34 +530,6 @@ btScalar Generic6DofSpring2Constraint::GetAngle(int axisIndex)
 	return Native->getAngle(axisIndex);
 }
 
-void Generic6DofSpring2Constraint::GetAngularLowerLimit(Vector3 angularLower)
-{
-	VECTOR3_CONV(angularLower);
-	Native->getAngularLowerLimit(VECTOR3_USE(angularLower));
-	VECTOR3_DEL(angularLower);
-}
-
-void Generic6DofSpring2Constraint::GetAngularLowerLimitReversed(Vector3 angularLower)
-{
-	VECTOR3_CONV(angularLower);
-	Native->getAngularLowerLimitReversed(VECTOR3_USE(angularLower));
-	VECTOR3_DEL(angularLower);
-}
-
-void Generic6DofSpring2Constraint::GetAngularUpperLimit(Vector3 angularUpper)
-{
-	VECTOR3_CONV(angularUpper);
-	Native->getAngularUpperLimit(VECTOR3_USE(angularUpper));
-	VECTOR3_DEL(angularUpper);
-}
-
-void Generic6DofSpring2Constraint::GetAngularUpperLimitReversed(Vector3 angularUpper)
-{
-	VECTOR3_CONV(angularUpper);
-	Native->getAngularUpperLimitReversed(VECTOR3_USE(angularUpper));
-	VECTOR3_DEL(angularUpper);
-}
-
 #pragma managed(push, off)
 btVector3* Generic6DofSpring2Constraint_GetAxis(btGeneric6DofSpring2Constraint* constraint, int axis_index)
 {
@@ -567,20 +539,6 @@ btVector3* Generic6DofSpring2Constraint_GetAxis(btGeneric6DofSpring2Constraint* 
 Vector3 Generic6DofSpring2Constraint::GetAxis(int axisIndex)
 {
 	return Math::BtVector3ToVector3(Generic6DofSpring2Constraint_GetAxis(Native, axisIndex));
-}
-
-void Generic6DofSpring2Constraint::GetLinearLowerLimit(Vector3 linearLower)
-{
-	VECTOR3_CONV(linearLower);
-	Native->getLinearLowerLimit(VECTOR3_USE(linearLower));
-	VECTOR3_DEL(linearLower);
-}
-
-void Generic6DofSpring2Constraint::GetLinearUpperLimit(Vector3 linearUpper)
-{
-	VECTOR3_CONV(linearUpper);
-	Native->getLinearUpperLimit(VECTOR3_USE(linearUpper));
-	VECTOR3_DEL(linearUpper);
 }
 
 btScalar Generic6DofSpring2Constraint::GetRelativePivotPosition(int axisIndex)
@@ -600,34 +558,6 @@ RotationalLimitMotor2^ Generic6DofSpring2Constraint::GetRotationalLimitMotor(int
 bool Generic6DofSpring2Constraint::IsLimited(int limitIndex)
 {
 	return Native->isLimited(limitIndex);
-}
-
-void Generic6DofSpring2Constraint::SetAngularLowerLimit(Vector3 angularLower)
-{
-	VECTOR3_CONV(angularLower);
-	Native->setAngularLowerLimit(VECTOR3_USE(angularLower));
-	VECTOR3_DEL(angularLower);
-}
-
-void Generic6DofSpring2Constraint::SetAngularLowerLimitReversed(Vector3 angularLower)
-{
-	VECTOR3_CONV(angularLower);
-	Native->setAngularLowerLimitReversed(VECTOR3_USE(angularLower));
-	VECTOR3_DEL(angularLower);
-}
-
-void Generic6DofSpring2Constraint::SetAngularUpperLimit(Vector3 angularUpper)
-{
-	VECTOR3_CONV(angularUpper);
-	Native->setAngularUpperLimit(VECTOR3_USE(angularUpper));
-	VECTOR3_DEL(angularUpper);
-}
-
-void Generic6DofSpring2Constraint::SetAngularUpperLimitReversed(Vector3 angularUpper)
-{
-	VECTOR3_CONV(angularUpper);
-	Native->setAngularUpperLimitReversed(VECTOR3_USE(angularUpper));
-	VECTOR3_DEL(angularUpper);
 }
 
 void Generic6DofSpring2Constraint::SetAxis(Vector3 axis1, Vector3 axis2)
@@ -683,20 +613,6 @@ void Generic6DofSpring2Constraint::SetLimitReversed(int axis, btScalar lo, btSca
 	Native->setLimitReversed(axis, lo, hi);
 }
 
-void Generic6DofSpring2Constraint::SetLinearLowerLimit(Vector3 linearLower)
-{
-	VECTOR3_CONV(linearLower);
-	Native->setLinearLowerLimit(VECTOR3_USE(linearLower));
-	VECTOR3_DEL(linearLower);
-}
-
-void Generic6DofSpring2Constraint::SetLinearUpperLimit(Vector3 linearUpper)
-{
-	VECTOR3_CONV(linearUpper);
-	Native->setLinearUpperLimit(VECTOR3_USE(linearUpper));
-	VECTOR3_DEL(linearUpper);
-}
-
 void Generic6DofSpring2Constraint::SetMaxMotorForce(int index, btScalar force)
 {
 	Native->setMaxMotorForce(index, force);
@@ -722,6 +638,66 @@ void Generic6DofSpring2Constraint::SetTargetVelocity(int index, btScalar velocit
 	Native->setTargetVelocity(index, velocity);
 }
 
+Vector3 Generic6DofSpring2Constraint::AngularLowerLimit::get()
+{
+	btVector3* angularLowerTemp = ALIGNED_NEW(btVector3);
+	Native->getAngularLowerLimit(*angularLowerTemp);
+	Vector3 ret = Math::BtVector3ToVector3(angularLowerTemp);
+	ALIGNED_FREE(angularLowerTemp);
+	return ret;
+}
+void Generic6DofSpring2Constraint::AngularLowerLimit::set(Vector3 angularLower)
+{
+	VECTOR3_CONV(angularLower);
+	Native->setAngularLowerLimit(VECTOR3_USE(angularLower));
+	VECTOR3_DEL(angularLower);
+}
+
+Vector3 Generic6DofSpring2Constraint::AngularLowerLimitReversed::get()
+{
+	btVector3* angularLowerTemp = ALIGNED_NEW(btVector3);
+	Native->getAngularLowerLimitReversed(*angularLowerTemp);
+	Vector3 ret = Math::BtVector3ToVector3(angularLowerTemp);
+	ALIGNED_FREE(angularLowerTemp);
+	return ret;
+}
+void Generic6DofSpring2Constraint::AngularLowerLimitReversed::set(Vector3 angularLower)
+{
+	VECTOR3_CONV(angularLower);
+	Native->setAngularLowerLimitReversed(VECTOR3_USE(angularLower));
+	VECTOR3_DEL(angularLower);
+}
+
+Vector3 Generic6DofSpring2Constraint::AngularUpperLimit::get()
+{
+	btVector3* angularUpperTemp = ALIGNED_NEW(btVector3);
+	Native->getAngularUpperLimit(*angularUpperTemp);
+	Vector3 ret = Math::BtVector3ToVector3(angularUpperTemp);
+	ALIGNED_FREE(angularUpperTemp);
+	return ret;
+}
+void Generic6DofSpring2Constraint::AngularUpperLimit::set(Vector3 angularUpper)
+{
+	VECTOR3_CONV(angularUpper);
+	Native->setAngularUpperLimit(VECTOR3_USE(angularUpper));
+	VECTOR3_DEL(angularUpper);
+}
+
+Vector3 Generic6DofSpring2Constraint::AngularUpperLimitReversed::get()
+{
+	btVector3* angularUpperTemp = ALIGNED_NEW(btVector3);
+	Native->getAngularUpperLimitReversed(*angularUpperTemp);
+	Vector3 ret = Math::BtVector3ToVector3(angularUpperTemp);
+	ALIGNED_FREE(angularUpperTemp);
+	return ret;
+}
+void Generic6DofSpring2Constraint::AngularUpperLimitReversed::set(Vector3 angularUpper)
+{
+	VECTOR3_CONV(angularUpper);
+	Native->setAngularUpperLimitReversed(VECTOR3_USE(angularUpper));
+	VECTOR3_DEL(angularUpper);
+}
+
 Matrix Generic6DofSpring2Constraint::CalculatedTransformA::get()
 {
 	return Math::BtTransformToMatrix(&Native->getCalculatedTransformA());
@@ -740,6 +716,36 @@ Matrix Generic6DofSpring2Constraint::FrameOffsetA::get()
 Matrix Generic6DofSpring2Constraint::FrameOffsetB::get()
 {
 	return Math::BtTransformToMatrix(&Native->getFrameOffsetB());
+}
+
+Vector3 Generic6DofSpring2Constraint::LinearLowerLimit::get()
+{
+	btVector3* linearLowerTemp = ALIGNED_NEW(btVector3);
+	Native->getLinearLowerLimit(*linearLowerTemp);
+	Vector3 ret = Math::BtVector3ToVector3(linearLowerTemp);
+	ALIGNED_FREE(linearLowerTemp);
+	return ret;
+}
+void Generic6DofSpring2Constraint::LinearLowerLimit::set(Vector3 linearLower)
+{
+	VECTOR3_CONV(linearLower);
+	Native->setLinearLowerLimit(VECTOR3_USE(linearLower));
+	VECTOR3_DEL(linearLower);
+}
+
+Vector3 Generic6DofSpring2Constraint::LinearUpperLimit::get()
+{
+	btVector3* linearUpperTemp = ALIGNED_NEW(btVector3);
+	Native->getLinearUpperLimit(*linearUpperTemp);
+	Vector3 ret = Math::BtVector3ToVector3(linearUpperTemp);
+	ALIGNED_FREE(linearUpperTemp);
+	return ret;
+}
+void Generic6DofSpring2Constraint::LinearUpperLimit::set(Vector3 linearUpper)
+{
+	VECTOR3_CONV(linearUpper);
+	Native->setLinearUpperLimit(VECTOR3_USE(linearUpper));
+	VECTOR3_DEL(linearUpper);
 }
 
 BulletSharp::RotateOrder Generic6DofSpring2Constraint::RotationOrder::get()

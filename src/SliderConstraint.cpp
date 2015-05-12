@@ -199,12 +199,7 @@ Matrix SliderConstraint::FrameOffsetB::get()
 {
 	return Math::BtTransformToMatrix(&Native->getFrameOffsetB());
 }
-/*
-void SliderConstraint::Info1NonVirtual::get(ConstraintInfo1^ info)
-{
-	Native->getInfo1NonVirtual(info->_native);
-}
-*/
+
 btScalar SliderConstraint::LinDepth::get()
 {
 	return Native->getLinDepth();
