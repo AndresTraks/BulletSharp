@@ -263,3 +263,8 @@ void PersistentManifold::NumContacts::set(int cachedPoints)
 {
 	_native->setNumContacts(cachedPoints);
 }
+
+ContactManifoldType PersistentManifold::ObjectType::get()
+{
+	return ContactManifoldType::PersistentManifold;
+}

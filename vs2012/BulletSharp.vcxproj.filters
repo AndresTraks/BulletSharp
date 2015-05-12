@@ -47,9 +47,6 @@
     <Filter Include="Header Files\BulletDynamics\MLCPSolvers">
       <UniqueIdentifier>{9a650632-4368-a843-8775-1a2583d88810}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\BulletMultiThreaded">
-      <UniqueIdentifier>{5d2ab8ca-e1ec-4582-8c79-8b7e5cecccdd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\BulletSoftBody">
       <UniqueIdentifier>{d91eebd2-5a14-40fd-2d88-6c8cbd9de469}</UniqueIdentifier>
     </Filter>
@@ -59,6 +56,9 @@
     <Filter Include="Header Files\Extras\Serialize">
       <UniqueIdentifier>{e6b294ff-8cdf-a841-f9df-e07a9f44b026}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Extras\Serialize\BulletFileLoader">
+      <UniqueIdentifier>{1d7834cb-90c4-49fb-c584-f9f349e561f7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\Extras\Serialize\BulletWorldImporter">
       <UniqueIdentifier>{c99a05e8-b250-141c-1f6e-7a572970fb91}</UniqueIdentifier>
     </Filter>
@@ -67,18 +67,6 @@
     </Filter>
     <Filter Include="Header Files\Extras\HACD">
       <UniqueIdentifier>{d486259d-b689-020b-4c6d-ab8e59efe17e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\MultiThreaded">
-      <UniqueIdentifier>{6e3b35b3-80dd-76e0-3596-7c5219856698}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\MultiThreaded\GpuSoftBodySolvers">
-      <UniqueIdentifier>{cd17d9a3-1e76-de34-fc33-f73c0461c98e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\MultiThreaded\GpuSoftBodySolvers\OpenCL">
-      <UniqueIdentifier>{ccf58587-218d-cc2a-18c0-f24754e6a32e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\OpenCL">
-      <UniqueIdentifier>{ccf58587-218d-cc2a-18c0-f24754e6a32e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\SoftBody">
       <UniqueIdentifier>{ea3068bb-f904-725b-d6a5-5d607a357e24}</UniqueIdentifier>
@@ -133,9 +121,6 @@
     <Filter Include="Source Files\BulletDynamics\MLCPSolvers">
       <UniqueIdentifier>{9a650632-4368-a843-8775-1a2583d88810}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\BulletMultiThreaded">
-      <UniqueIdentifier>{5d2ab8ca-e1ec-4582-8c79-8b7e5cecccdd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\BulletSoftBody">
       <UniqueIdentifier>{d91eebd2-5a14-40fd-2d88-6c8cbd9de469}</UniqueIdentifier>
     </Filter>
@@ -145,6 +130,9 @@
     <Filter Include="Source Files\Extras\Serialize">
       <UniqueIdentifier>{e6b294ff-8cdf-a841-f9df-e07a9f44b026}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Extras\Serialize\BulletFileLoader">
+      <UniqueIdentifier>{1d7834cb-90c4-49fb-c584-f9f349e561f7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Extras\Serialize\BulletWorldImporter">
       <UniqueIdentifier>{c99a05e8-b250-141c-1f6e-7a572970fb91}</UniqueIdentifier>
     </Filter>
@@ -153,18 +141,6 @@
     </Filter>
     <Filter Include="Source Files\Extras\HACD">
       <UniqueIdentifier>{d486259d-b689-020b-4c6d-ab8e59efe17e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\MultiThreaded">
-      <UniqueIdentifier>{6e3b35b3-80dd-76e0-3596-7c5219856698}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\MultiThreaded\GpuSoftBodySolvers">
-      <UniqueIdentifier>{cd17d9a3-1e76-de34-fc33-f73c0461c98e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\MultiThreaded\GpuSoftBodySolvers\OpenCL">
-      <UniqueIdentifier>{ccf58587-218d-cc2a-18c0-f24754e6a32e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\OpenCL">
-      <UniqueIdentifier>{ccf58587-218d-cc2a-18c0-f24754e6a32e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\SoftBody">
       <UniqueIdentifier>{ea3068bb-f904-725b-d6a5-5d607a357e24}</UniqueIdentifier>
@@ -498,9 +474,6 @@
     <ClCompile Include="..\src\NncgConstraintSolver.cpp">
       <Filter>Source Files\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\OpenCL.cpp">
-      <Filter>Source Files\OpenCL</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\OptimizedBvh.cpp">
       <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
@@ -509,9 +482,6 @@
     </ClCompile>
     <ClCompile Include="..\src\OverlappingPairCallback.cpp">
       <Filter>Source Files\BulletCollision\BroadphaseCollision</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ParallelConstraintSolver.cpp">
-      <Filter>Source Files\BulletMultiThreaded</Filter>
     </ClCompile>
     <ClCompile Include="..\src\PersistentManifold.cpp">
       <Filter>Source Files\BulletCollision\NarrowPhaseCollision</Filter>
@@ -585,9 +555,6 @@
     <ClCompile Include="..\src\SoftBodySolver.cpp">
       <Filter>Source Files\SoftBody</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoftBodySolverOpenCL.cpp">
-      <Filter>Source Files\MultiThreaded\GpuSoftBodySolvers\OpenCL</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoftBodySolverVertexBuffer.cpp">
       <Filter>Source Files\BulletSoftBody</Filter>
     </ClCompile>
@@ -615,9 +582,6 @@
     <ClCompile Include="..\src\SphereTriangleDetector.cpp">
       <Filter>Source Files\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SpuGatheringCollisionDispatcher.cpp">
-      <Filter>Source Files\BulletMultiThreaded</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\StaticPlaneShape.cpp">
       <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
@@ -632,9 +596,6 @@
     </ClCompile>
     <ClCompile Include="..\src\TetrahedronShape.cpp">
       <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ThreadSupportInterface.cpp">
-      <Filter>Source Files\BulletMultiThreaded</Filter>
     </ClCompile>
     <ClCompile Include="..\src\TransformUtil.cpp">
       <Filter>Source Files\LinearMath</Filter>
@@ -692,9 +653,6 @@
     </ClCompile>
     <ClCompile Include="..\src\WheelInfo.cpp">
       <Filter>Source Files\BulletDynamics\Vehicle</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Win32ThreadSupport.cpp">
-      <Filter>Source Files\BulletMultiThreaded</Filter>
     </ClCompile>
     <ClCompile Include="..\src\WorldImporter.cpp">
       <Filter>Source Files\Extras\Serialize\BulletWorldImporter</Filter>
@@ -1045,9 +1003,6 @@
     <ClInclude Include="..\src\NncgConstraintSolver.h">
       <Filter>Header Files\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\OpenCL.h">
-      <Filter>Header Files\OpenCL</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\OptimizedBvh.h">
       <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
@@ -1056,9 +1011,6 @@
     </ClInclude>
     <ClInclude Include="..\src\OverlappingPairCallback.h">
       <Filter>Header Files\BulletCollision\BroadphaseCollision</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ParallelConstraintSolver.h">
-      <Filter>Header Files\BulletMultiThreaded</Filter>
     </ClInclude>
     <ClInclude Include="..\src\PersistentManifold.h">
       <Filter>Header Files\BulletCollision\NarrowPhaseCollision</Filter>
@@ -1132,9 +1084,6 @@
     <ClInclude Include="..\src\SoftBodySolver.h">
       <Filter>Header Files\SoftBody</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoftBodySolverOpenCL.h">
-      <Filter>Header Files\MultiThreaded\GpuSoftBodySolvers\OpenCL</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SoftBodySolverVertexBuffer.h">
       <Filter>Header Files\BulletSoftBody</Filter>
     </ClInclude>
@@ -1162,9 +1111,6 @@
     <ClInclude Include="..\src\SphereTriangleDetector.h">
       <Filter>Header Files\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SpuGatheringCollisionDispatcher.h">
-      <Filter>Header Files\BulletMultiThreaded</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\StaticPlaneShape.h">
       <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
@@ -1179,9 +1125,6 @@
     </ClInclude>
     <ClInclude Include="..\src\TetrahedronShape.h">
       <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ThreadSupportInterface.h">
-      <Filter>Header Files\BulletMultiThreaded</Filter>
     </ClInclude>
     <ClInclude Include="..\src\TransformUtil.h">
       <Filter>Header Files\LinearMath</Filter>
@@ -1242,9 +1185,6 @@
     </ClInclude>
     <ClInclude Include="..\src\WheelInfo.h">
       <Filter>Header Files\BulletDynamics\Vehicle</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Win32ThreadSupport.h">
-      <Filter>Header Files\BulletMultiThreaded</Filter>
     </ClInclude>
     <ClInclude Include="..\src\WorldImporter.h">
       <Filter>Header Files\Extras\Serialize\BulletWorldImporter</Filter>

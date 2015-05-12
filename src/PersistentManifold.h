@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Scalar.h"
-
 namespace BulletSharp
 {
 	ref class ManifoldPoint;
@@ -119,6 +117,11 @@ namespace BulletSharp
 		{
 			int get();
 			void set(int cachedPoints);
+		}
+
+		property ContactManifoldType ObjectType
+		{
+			ContactManifoldType get();
 		}
 
 		static PersistentManifold Zero;

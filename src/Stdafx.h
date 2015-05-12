@@ -22,7 +22,6 @@
 //#define DISABLE_INTERNAL
 //#define DISABLE_INTERNAL_EDGE_UTILITY
 //#define DISABLE_MLCP
-#define DISABLE_MULTITHREADED
 //#define DISABLE_SERIALIZE
 //#define DISABLE_SOFTBODY
 //#define DISABLE_UNCOMMON
@@ -297,25 +296,6 @@ using namespace System::Drawing;
 #pragma comment(lib, "BulletSoftBodySolvers_OpenCL_NVidia_Debug.lib")
 #else
 #pragma comment(lib, "BulletSoftBodySolvers_OpenCL_NVidia_MinsizeRel.lib")
-#endif
-#endif
-
-#ifndef DISABLE_MULTITHREADED
-#if _DEBUG
-#pragma comment(lib, "BulletMultiThreaded_Debug.lib")
-#else
-#pragma comment(lib, "BulletMultiThreaded_MinSizeRel.lib")
-#endif
-#define __BT_SKIP_UINT64_H 1
-#include <BulletMultiThreaded/btParallelConstraintSolver.h>
-#include <BulletMultiThreaded/btThreadSupportInterface.h>
-#include <BulletMultiThreaded/SpuGatheringCollisionDispatcher.h>
-#include <BulletMultiThreaded/SpuNarrowPhaseCollisionTask/SpuGatheringCollisionTask.h>
-#include <BulletMultiThreaded/Win32ThreadSupport.h>
-#ifndef DISABLE_SOFTBODY
-#ifdef __OPENCL_CL_H
-#include <BulletMultiThreaded/GpuSoftBodySolvers/OpenCL/btSoftBodySolver_OpenCL.h>
-#endif
 #endif
 #endif
 

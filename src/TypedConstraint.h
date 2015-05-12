@@ -290,6 +290,11 @@ namespace BulletSharp
 			void set(bool value);
 		}
 
+		property TypedConstraintType ObjectType
+		{
+			TypedConstraintType get();
+		}
+
 		property int OverrideNumSolverIterations
 		{
 			int get();

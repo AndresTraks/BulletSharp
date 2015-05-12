@@ -1589,7 +1589,6 @@
     <ClCompile Include="..\src\GImpactShape.cpp" />
     <ClCompile Include="..\src\CompoundFromGImpact.cpp" />
     <ClCompile Include="..\src\GImpactCollisionAlgorithm.cpp" />
-    <ClCompile Include="..\src\Scalar.cpp" />
     <ClCompile Include="..\src\MotionState.cpp" />
     <ClCompile Include="..\src\AlignedObjectArray.cpp" />
     <ClCompile Include="..\src\TransformUtil.cpp" />
@@ -1608,13 +1607,13 @@
     <ClCompile Include="..\src\SliderConstraint.cpp" />
     <ClCompile Include="..\src\Generic6DofSpringConstraint.cpp" />
     <ClCompile Include="..\src\UniversalConstraint.cpp" />
+    <ClCompile Include="..\src\Generic6DofSpring2Constraint.cpp" />
     <ClCompile Include="..\src\Hinge2Constraint.cpp" />
     <ClCompile Include="..\src\GearConstraint.cpp" />
     <ClCompile Include="..\src\FixedConstraint.cpp" />
     <ClCompile Include="..\src\SequentialImpulseConstraintSolver.cpp" />
     <ClCompile Include="..\src\ConstraintSolver.cpp" />
     <ClCompile Include="..\src\ContactConstraint.cpp" />
-    <ClCompile Include="..\src\Generic6DofSpring2Constraint.cpp" />
     <ClCompile Include="..\src\NncgConstraintSolver.cpp" />
     <ClCompile Include="..\src\Solve2LinearConstraint.cpp" />
     <ClCompile Include="..\src\DynamicsWorld.cpp" />
@@ -1639,10 +1638,6 @@
     <ClCompile Include="..\src\DantzigSolver.cpp" />
     <ClCompile Include="..\src\LemkeSolver.cpp" />
     <ClCompile Include="..\src\MlcpSolver.cpp" />
-    <ClCompile Include="..\src\ParallelConstraintSolver.cpp" />
-    <ClCompile Include="..\src\ThreadSupportInterface.cpp" />
-    <ClCompile Include="..\src\SpuGatheringCollisionDispatcher.cpp" />
-    <ClCompile Include="..\src\Win32ThreadSupport.cpp" />
     <ClCompile Include="..\src\SoftBodySolverVertexBuffer.cpp" />
     <ClCompile Include="..\src\DefaultSoftBodySolver.cpp" />
     <ClCompile Include="..\src\SparseSdf.cpp" />
@@ -1655,8 +1650,6 @@
     <ClCompile Include="..\src\BulletWorldImporter.cpp" />
     <ClCompile Include="..\src\BulletXmlWorldImporter.cpp" />
     <ClCompile Include="..\src\Hacd.cpp" />
-    <ClCompile Include="..\src\SoftBodySolverOpenCL.cpp" />
-    <ClCompile Include="..\src\OpenCL.cpp" />
     <ClCompile Include="..\src\SoftBodySolver.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -1773,7 +1766,6 @@
     <ClInclude Include="..\src\GImpactShape.h" />
     <ClInclude Include="..\src\CompoundFromGImpact.h" />
     <ClInclude Include="..\src\GImpactCollisionAlgorithm.h" />
-    <ClInclude Include="..\src\Scalar.h" />
     <ClInclude Include="..\src\MotionState.h" />
     <ClInclude Include="..\src\AlignedObjectArray.h" />
     <ClInclude Include="..\src\TransformUtil.h" />
@@ -1793,13 +1785,13 @@
     <ClInclude Include="..\src\SliderConstraint.h" />
     <ClInclude Include="..\src\Generic6DofSpringConstraint.h" />
     <ClInclude Include="..\src\UniversalConstraint.h" />
+    <ClInclude Include="..\src\Generic6DofSpring2Constraint.h" />
     <ClInclude Include="..\src\Hinge2Constraint.h" />
     <ClInclude Include="..\src\GearConstraint.h" />
     <ClInclude Include="..\src\FixedConstraint.h" />
     <ClInclude Include="..\src\SequentialImpulseConstraintSolver.h" />
     <ClInclude Include="..\src\ConstraintSolver.h" />
     <ClInclude Include="..\src\ContactConstraint.h" />
-    <ClInclude Include="..\src\Generic6DofSpring2Constraint.h" />
     <ClInclude Include="..\src\NncgConstraintSolver.h" />
     <ClInclude Include="..\src\Solve2LinearConstraint.h" />
     <ClInclude Include="..\src\DynamicsWorld.h" />
@@ -1825,10 +1817,6 @@
     <ClInclude Include="..\src\DantzigSolver.h" />
     <ClInclude Include="..\src\LemkeSolver.h" />
     <ClInclude Include="..\src\MlcpSolver.h" />
-    <ClInclude Include="..\src\ParallelConstraintSolver.h" />
-    <ClInclude Include="..\src\ThreadSupportInterface.h" />
-    <ClInclude Include="..\src\SpuGatheringCollisionDispatcher.h" />
-    <ClInclude Include="..\src\Win32ThreadSupport.h" />
     <ClInclude Include="..\src\SoftBodySolverVertexBuffer.h" />
     <ClInclude Include="..\src\DefaultSoftBodySolver.h" />
     <ClInclude Include="..\src\SparseSdf.h" />
@@ -1841,8 +1829,6 @@
     <ClInclude Include="..\src\BulletWorldImporter.h" />
     <ClInclude Include="..\src\BulletXmlWorldImporter.h" />
     <ClInclude Include="..\src\Hacd.h" />
-    <ClInclude Include="..\src\SoftBodySolverOpenCL.h" />
-    <ClInclude Include="..\src\OpenCL.h" />
     <ClInclude Include="..\src\SoftBodySolver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

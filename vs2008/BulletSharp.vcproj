@@ -2949,26 +2949,6 @@
 				</Filter>
 			</Filter>
 			<Filter
-				Name="BulletMultiThreaded"
-				>
-				<File
-					RelativePath="..\src\ParallelConstraintSolver.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\SpuGatheringCollisionDispatcher.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\ThreadSupportInterface.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\Win32ThreadSupport.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="BulletSoftBody"
 				>
 				<File
@@ -3039,30 +3019,6 @@
 						>
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="MultiThreaded"
-				>
-				<Filter
-					Name="GpuSoftBodySolvers"
-					>
-					<Filter
-						Name="OpenCL"
-						>
-						<File
-							RelativePath="..\src\SoftBodySolverOpenCL.cpp"
-							>
-						</File>
-					</Filter>
-				</Filter>
-			</Filter>
-			<Filter
-				Name="OpenCL"
-				>
-				<File
-					RelativePath="..\src\OpenCL.cpp"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="SoftBody"
@@ -3782,25 +3738,6 @@
 				</Filter>
 			</Filter>
 			<Filter
-				Name="BulletMultiThreaded"
-				>
-				<File
-					RelativePath="..\src\ParallelConstraintSolver.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\SpuGatheringCollisionDispatcher.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\ThreadSupportInterface.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\Win32ThreadSupport.h"
-					>
-				</File>
-			</Filter>
 			<Filter
 				Name="BulletSoftBody"
 				>
@@ -3872,30 +3809,6 @@
 						>
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="MultiThreaded"
-				>
-				<Filter
-					Name="GpuSoftBodySolvers"
-					>
-					<Filter
-						Name="OpenCL"
-						>
-						<File
-							RelativePath="..\src\SoftBodySolverOpenCL.h"
-							>
-						</File>
-					</Filter>
-				</Filter>
-			</Filter>
-			<Filter
-				Name="OpenCL"
-				>
-				<File
-					RelativePath="..\src\OpenCL.h"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="SoftBody"

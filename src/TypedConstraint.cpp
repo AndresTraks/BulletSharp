@@ -459,6 +459,11 @@ void TypedConstraint::NeedsFeedback::set(bool value)
 	return _native->enableFeedback(value);
 }
 
+TypedConstraintType TypedConstraint::ObjectType::get()
+{
+	return (TypedConstraintType)_native->getObjectType();
+}
+
 int TypedConstraint::OverrideNumSolverIterations::get()
 {
 	return _native->getOverrideNumSolverIterations();
