@@ -8,7 +8,7 @@ namespace BulletSharp
 		HACD::HACD* _native;
 
 	private:
-		[UnmanagedFunctionPointer(CallingConvention::Cdecl)]
+		[UnmanagedFunctionPointer(CallingConvention::Cdecl), SuppressUnmanagedCodeSecurity]
 		delegate bool CallbackFunctionUnmanagedDelegate(IntPtr msg,
 			double progress, double globalConcavity, IntPtr n);
 	public:

@@ -17,7 +17,7 @@ namespace BulletSharp
 		delegate void InternalTickCallback(DynamicsWorld^ world, btScalar timeStep);
 
 	private:
-		[UnmanagedFunctionPointerAttribute(CallingConvention::Cdecl)]
+		[UnmanagedFunctionPointer(CallingConvention::Cdecl), SuppressUnmanagedCodeSecurity]
         delegate void InternalTickCallbackUnmanagedDelegate(IntPtr world, btScalar timeStep);
 
 	private:

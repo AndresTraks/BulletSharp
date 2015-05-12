@@ -13,7 +13,7 @@ namespace BulletSharp
 	public ref class CollisionDispatcher : Dispatcher
 	{
 	private:
-		[UnmanagedFunctionPointer(CallingConvention::Cdecl)]
+		[UnmanagedFunctionPointer(CallingConvention::Cdecl), SuppressUnmanagedCodeSecurity]
 		delegate void NearCallbackUnmanagedDelegate(IntPtr collisionPair,
 			IntPtr dispatcher, IntPtr dispatchInfo);
 
