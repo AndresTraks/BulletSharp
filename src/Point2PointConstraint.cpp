@@ -83,7 +83,7 @@ Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivo
 	VECTOR3_DEL(pivotInA);
 
 	_rigidBodyA = rigidBodyA;
-	_rigidBodyB = FixedBody;
+	_rigidBodyB = GetFixedBody();
 }
 
 void Point2PointConstraint::GetInfo1NonVirtual(ConstraintInfo1^ info)

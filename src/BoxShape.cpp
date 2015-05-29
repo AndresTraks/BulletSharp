@@ -4,14 +4,6 @@
 
 #define Native static_cast<btBoxShape*>(_native)
 
-BoxShape::BoxShape(Vector3% boxHalfExtents)
-	: PolyhedralConvexShape(0)
-{
-	VECTOR3_CONV(boxHalfExtents);
-	UnmanagedPointer = new btBoxShape(VECTOR3_USE(boxHalfExtents));
-	VECTOR3_DEL(boxHalfExtents);
-}
-
 BoxShape::BoxShape(Vector3 boxHalfExtents)
 	: PolyhedralConvexShape(0)
 {

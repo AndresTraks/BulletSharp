@@ -134,9 +134,6 @@ namespace BulletSharp
 
 	public ref class RigidBody : CollisionObject
 	{
-	internal:
-		RigidBody(btRigidBody* native);
-
 	private:
 		MotionState^ _motionState;
 

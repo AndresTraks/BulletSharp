@@ -24,7 +24,6 @@ namespace BulletSharp
 
 	internal:
 		ConstraintSolver(btConstraintSolver* native);
-		static ConstraintSolver^ GetManaged(btConstraintSolver* native);
 
 	public:
 		!ConstraintSolver();

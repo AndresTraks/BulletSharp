@@ -7,7 +7,6 @@ namespace BulletSharp
 	public ref class BoxShape : PolyhedralConvexShape
 	{
 	public:
-		BoxShape(Vector3% boxHalfExtents);
 		BoxShape(Vector3 boxHalfExtents);
 		BoxShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ);
 		BoxShape(btScalar boxHalfExtent); // cube helper

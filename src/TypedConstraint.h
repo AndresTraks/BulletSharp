@@ -224,6 +224,7 @@ namespace BulletSharp
 		int CalculateSerializeBufferSize();
 #endif
 		void EnableFeedback(bool needsFeedback);
+		static RigidBody^ GetFixedBody();
 		void GetInfo1(ConstraintInfo1^ info);
 		void GetInfo2(ConstraintInfo2^ info);
 		btScalar GetParam(ConstraintParam num, int axis);
@@ -265,11 +266,6 @@ namespace BulletSharp
 		property bool IsDisposed
 		{
 			virtual bool get();
-		}
-
-		property RigidBody^ FixedBody
-		{
-			static RigidBody^ get();
 		}
 
 		property bool IsEnabled

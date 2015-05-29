@@ -8,21 +8,6 @@
 
 #define Native static_cast<btAxisSweep3*>(_native)
 
-AxisSweep3::AxisSweep3(Vector3% worldAabbMin, Vector3% worldAabbMax, unsigned short maxHandles,
-	BulletSharp::OverlappingPairCache^ pairCache, bool disableRaycastAccelerator)
-	: BroadphaseInterface(0)
-{
-	VECTOR3_CONV(worldAabbMin);
-	VECTOR3_CONV(worldAabbMax);
-	_native = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax),
-		maxHandles, (btOverlappingPairCache*)GetUnmanagedNullable(pairCache), disableRaycastAccelerator);
-	VECTOR3_DEL(worldAabbMin);
-	VECTOR3_DEL(worldAabbMax);
-
-	_pairCache = pairCache ? pairCache : gcnew HashedOverlappingPairCache(
-		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
-}
-
 AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, unsigned short maxHandles,
 	BulletSharp::OverlappingPairCache^ pairCache, bool disableRaycastAccelerator)
 	: BroadphaseInterface(0)
@@ -31,21 +16,6 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, unsigned shor
 	VECTOR3_CONV(worldAabbMax);
 	_native = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax),
 		maxHandles, (btOverlappingPairCache*)GetUnmanagedNullable(pairCache), disableRaycastAccelerator);
-	VECTOR3_DEL(worldAabbMin);
-	VECTOR3_DEL(worldAabbMax);
-
-	_pairCache = pairCache ? pairCache : gcnew HashedOverlappingPairCache(
-		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
-}
-
-AxisSweep3::AxisSweep3(Vector3% worldAabbMin, Vector3% worldAabbMax, unsigned short maxHandles,
-	 BulletSharp::OverlappingPairCache^ pairCache)
-	: BroadphaseInterface(0)
-{
-	VECTOR3_CONV(worldAabbMin);
-	VECTOR3_CONV(worldAabbMax);
-	_native = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax),
-		maxHandles, (btOverlappingPairCache*)GetUnmanagedNullable(pairCache));
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
 
@@ -65,20 +35,6 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, unsigned shor
 	VECTOR3_DEL(worldAabbMax);
 
 	_pairCache = pairCache ? pairCache : gcnew HashedOverlappingPairCache(
-		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
-}
-
-AxisSweep3::AxisSweep3(Vector3% worldAabbMin, Vector3% worldAabbMax, unsigned short maxHandles)
-	: BroadphaseInterface(0)
-{
-	VECTOR3_CONV(worldAabbMin);
-	VECTOR3_CONV(worldAabbMax);
-	_native = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax),
-		maxHandles);
-	VECTOR3_DEL(worldAabbMin);
-	VECTOR3_DEL(worldAabbMax);
-
-	_pairCache = gcnew HashedOverlappingPairCache(
 		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
@@ -89,19 +45,6 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, unsigned shor
 	VECTOR3_CONV(worldAabbMax);
 	_native = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax),
 		maxHandles);
-	VECTOR3_DEL(worldAabbMin);
-	VECTOR3_DEL(worldAabbMax);
-
-	_pairCache = gcnew HashedOverlappingPairCache(
-		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
-}
-
-AxisSweep3::AxisSweep3(Vector3% worldAabbMin, Vector3% worldAabbMax)
-	: BroadphaseInterface(0)
-{
-	VECTOR3_CONV(worldAabbMin);
-	VECTOR3_CONV(worldAabbMax);
-	_native = new btAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax));
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
 
@@ -144,6 +87,20 @@ unsigned short AxisSweep3::AddHandle(Vector3 aabbMin, Vector3 aabbMax, IntPtr pO
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
 	return ret;
+}
+
+BroadphaseProxy^ AxisSweep3::CreateProxy(Vector3% aabbMin, Vector3% aabbMax,
+	BroadphaseNativeType shapeType, IntPtr userPtr, short collisionFilterGroup,
+	short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
+{
+	VECTOR3_CONV(aabbMin);
+	VECTOR3_CONV(aabbMax);
+	btBroadphaseProxy* proxy = _native->createProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax),
+		(int)shapeType, userPtr.ToPointer(), collisionFilterGroup, collisionFilterMask,
+		dispatcher->_native, multiSapProxy.ToPointer());
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
+	return gcnew BroadphaseProxy(proxy);
 }
 /*
 Handle^ AxisSweep3::GetHandle(unsigned short index)
@@ -206,28 +163,13 @@ OverlappingPairCallback^ AxisSweep3::OverlappingPairUserCallback::get()
 void AxisSweep3::OverlappingPairUserCallback::set(OverlappingPairCallback^ pairCallback)
 {
 	_overlappingPairUserCallback = pairCallback;
-	Native->setOverlappingPairUserCallback(pairCallback->_native);
+	Native->setOverlappingPairUserCallback(GetUnmanagedNullable(pairCallback));
 }
 
 
 #undef Native
 #define Native static_cast<bt32BitAxisSweep3*>(_native)
 
-AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3% worldAabbMin, Vector3% worldAabbMax, unsigned int maxHandles,
-	BulletSharp::OverlappingPairCache^ pairCache, bool disableRaycastAccelerator)
-	: BroadphaseInterface(0)
-{
-	VECTOR3_CONV(worldAabbMin);
-	VECTOR3_CONV(worldAabbMax);
-	_native = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax),
-		maxHandles, (btOverlappingPairCache*)pairCache->_native, disableRaycastAccelerator);
-	VECTOR3_DEL(worldAabbMin);
-	VECTOR3_DEL(worldAabbMax);
-
-	_pairCache = pairCache ? pairCache : gcnew HashedOverlappingPairCache(
-		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
-}
-
 AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, unsigned int maxHandles,
 	BulletSharp::OverlappingPairCache^ pairCache, bool disableRaycastAccelerator)
 	: BroadphaseInterface(0)
@@ -236,21 +178,6 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, u
 	VECTOR3_CONV(worldAabbMax);
 	_native = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax),
 		maxHandles, (btOverlappingPairCache*)pairCache->_native, disableRaycastAccelerator);
-	VECTOR3_DEL(worldAabbMin);
-	VECTOR3_DEL(worldAabbMax);
-
-	_pairCache = pairCache ? pairCache : gcnew HashedOverlappingPairCache(
-		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
-}
-
-AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3% worldAabbMin, Vector3% worldAabbMax, unsigned int maxHandles,
-	BulletSharp::OverlappingPairCache^ pairCache)
-	: BroadphaseInterface(0)
-{
-	VECTOR3_CONV(worldAabbMin);
-	VECTOR3_CONV(worldAabbMax);
-	_native = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax),
-		maxHandles, (btOverlappingPairCache*)pairCache->_native);
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
 
@@ -273,19 +200,6 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, u
 		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
-AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3% worldAabbMin, Vector3% worldAabbMax, unsigned int maxHandles)
-	: BroadphaseInterface(0)
-{
-	VECTOR3_CONV(worldAabbMin);
-	VECTOR3_CONV(worldAabbMax);
-	_native = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax),
-		maxHandles);
-	VECTOR3_DEL(worldAabbMin);
-	VECTOR3_DEL(worldAabbMax);
-
-	_pairCache = gcnew HashedOverlappingPairCache(
-		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
-}
 AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, unsigned int maxHandles)
 	: BroadphaseInterface(0)
 {
@@ -293,19 +207,6 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, u
 	VECTOR3_CONV(worldAabbMax);
 	_native = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax),
 		maxHandles);
-	VECTOR3_DEL(worldAabbMin);
-	VECTOR3_DEL(worldAabbMax);
-
-	_pairCache = gcnew HashedOverlappingPairCache(
-		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
-}
-
-AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3% worldAabbMin, Vector3% worldAabbMax)
-	: BroadphaseInterface(0)
-{
-	VECTOR3_CONV(worldAabbMin);
-	VECTOR3_CONV(worldAabbMax);
-	_native = new bt32BitAxisSweep3(VECTOR3_USE(worldAabbMin), VECTOR3_USE(worldAabbMax));
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
 
@@ -348,6 +249,20 @@ unsigned int AxisSweep3_32Bit::AddHandle(Vector3 aabbMin, Vector3 aabbMax, IntPt
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
 	return ret;
+}
+
+BroadphaseProxy^ AxisSweep3_32Bit::CreateProxy(Vector3% aabbMin, Vector3% aabbMax,
+	BroadphaseNativeType shapeType, IntPtr userPtr, short collisionFilterGroup,
+	short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
+{
+	VECTOR3_CONV(aabbMin);
+	VECTOR3_CONV(aabbMax);
+	btBroadphaseProxy* proxy = _native->createProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax),
+		(int)shapeType, userPtr.ToPointer(), collisionFilterGroup, collisionFilterMask,
+		dispatcher->_native, multiSapProxy.ToPointer());
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
+	return gcnew BroadphaseProxy(proxy);
 }
 /*
 Handle^ AxisSweep3_32Bit::GetHandle(unsigned short index)
@@ -410,5 +325,5 @@ OverlappingPairCallback^ AxisSweep3_32Bit::OverlappingPairUserCallback::get()
 void AxisSweep3_32Bit::OverlappingPairUserCallback::set(OverlappingPairCallback^ pairCallback)
 {
 	_overlappingPairUserCallback = pairCallback;
-	Native->setOverlappingPairUserCallback(pairCallback->_native);
+	Native->setOverlappingPairUserCallback(GetUnmanagedNullable(pairCallback));
 }

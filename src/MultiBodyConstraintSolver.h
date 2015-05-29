@@ -14,9 +14,6 @@ namespace BulletSharp
 
 	public ref class MultiBodyConstraintSolver : SequentialImpulseConstraintSolver
 	{
-	internal:
-		MultiBodyConstraintSolver(btMultiBodyConstraintSolver* native);
-
 	public:
 		MultiBodyConstraintSolver();
 /*

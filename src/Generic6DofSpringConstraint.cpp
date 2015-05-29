@@ -37,7 +37,7 @@ Generic6DofSpringConstraint::Generic6DofSpringConstraint(RigidBody^ rigidBodyB, 
 		TRANSFORM_USE(frameInB), useLinearReferenceFrameB);
 	TRANSFORM_DEL(frameInB);
 
-	_rigidBodyA = FixedBody;
+	_rigidBodyA = GetFixedBody();
 	_rigidBodyB = rigidBodyB;
 }
 

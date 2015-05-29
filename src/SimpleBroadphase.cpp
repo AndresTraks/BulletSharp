@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 
+#include "Dispatcher.h"
 #include "OverlappingPairCache.h"
 #include "SimpleBroadphase.h"
 
@@ -9,26 +10,7 @@ SimpleBroadphaseProxy::SimpleBroadphaseProxy(btSimpleBroadphaseProxy* native)
 	: BroadphaseProxy(native)
 {
 }
-/*
-SimpleBroadphaseProxy::SimpleBroadphaseProxy()
-	: BroadphaseProxy(new btSimpleBroadphaseProxy(), false)
-{
-}
 
-SimpleBroadphaseProxy::SimpleBroadphaseProxy(Vector3 minpt, Vector3 maxpt, int shapeType,
-	Object^ userObject, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask, IntPtr multiSapProxy)
-	: BroadphaseProxy(0, false)
-{
-	_clientObject = userObject;
-
-	VECTOR3_CONV(minpt);
-	VECTOR3_CONV(maxpt);
-	_native = new btSimpleBroadphaseProxy(VECTOR3_USE(minpt), VECTOR3_USE(maxpt),
-		shapeType, 0, (short int)collisionFilterGroup, (short int)collisionFilterMask, multiSapProxy.ToPointer());
-	VECTOR3_DEL(minpt);
-	VECTOR3_DEL(maxpt);
-}
-*/
 int SimpleBroadphaseProxy::NextFree::get()
 {
 	return Native->GetNextFree();
@@ -67,6 +49,20 @@ bool SimpleBroadphase::AabbOverlap(SimpleBroadphaseProxy^ proxy0, SimpleBroadpha
 {
 	return btSimpleBroadphase::aabbOverlap((btSimpleBroadphaseProxy*)proxy0->_native,
 		(btSimpleBroadphaseProxy*)proxy1->_native);
+}
+
+BroadphaseProxy^ SimpleBroadphase::CreateProxy(Vector3% aabbMin, Vector3% aabbMax,
+	BroadphaseNativeType shapeType, IntPtr userPtr, short collisionFilterGroup,
+	short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
+{
+	VECTOR3_CONV(aabbMin);
+	VECTOR3_CONV(aabbMax);
+	btSimpleBroadphaseProxy* proxy = (btSimpleBroadphaseProxy*)_native->createProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax),
+		(int)shapeType, userPtr.ToPointer(), collisionFilterGroup, collisionFilterMask,
+		dispatcher->_native, multiSapProxy.ToPointer());
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
+	return gcnew SimpleBroadphaseProxy(proxy);
 }
 
 bool SimpleBroadphase::TestAabbOverlap(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)

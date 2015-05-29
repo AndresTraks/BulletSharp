@@ -65,7 +65,7 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector
 	VECTOR3_DEL(axisInA);
 
 	_rigidBodyA = rigidBodyA;
-	_rigidBodyB = FixedBody;
+	_rigidBodyB = GetFixedBody();
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector3 axisInA)
@@ -79,7 +79,7 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector
 	VECTOR3_DEL(axisInA);
 
 	_rigidBodyA = rigidBodyA;
-	_rigidBodyB = FixedBody;
+	_rigidBodyB = GetFixedBody();
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix rigidBodyAFrame,
@@ -121,7 +121,7 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame, 
 	TRANSFORM_DEL(rigidBodyAFrame);
 
 	_rigidBodyA = rigidBodyA;
-	_rigidBodyB = FixedBody;
+	_rigidBodyB = GetFixedBody();
 }
 
 HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame)
@@ -132,7 +132,7 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame)
 	TRANSFORM_DEL(rigidBodyAFrame);
 
 	_rigidBodyA = rigidBodyA;
-	_rigidBodyB = FixedBody;
+	_rigidBodyB = GetFixedBody();
 }
 
 void HingeConstraint::EnableAngularMotor(bool enableMotor, btScalar targetVelocity,

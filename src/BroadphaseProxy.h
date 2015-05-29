@@ -18,14 +18,6 @@ namespace BulletSharp
 		static BroadphaseProxy^ GetManaged(btBroadphaseProxy* broadphaseProxy);
 
 	public:
-		/*
-		BroadphaseProxy();
-		BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject, CollisionFilterGroups collisionFilterGroup,
-			CollisionFilterGroups collisionFilterMask, IntPtr multiSapParentProxy);
-		BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject, CollisionFilterGroups collisionFilterGroup,
-			CollisionFilterGroups collisionFilterMask);
-		*/
-
 		static bool IsCompound(BroadphaseNativeType proxyType);
 		static bool IsConcave(BroadphaseNativeType proxyType);
 		static bool IsConvex(BroadphaseNativeType proxyType);
@@ -86,10 +78,6 @@ namespace BulletSharp
 		BroadphasePair(btBroadphasePair* native);
 
 	public:
-		//BroadphasePair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy);
-		//BroadphasePair(BroadphasePair^ other);
-		//BroadphasePair();
-
 		property CollisionAlgorithm^ Algorithm
 		{
 			CollisionAlgorithm^ get();

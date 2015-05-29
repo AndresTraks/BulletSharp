@@ -3,59 +3,13 @@
 #include "BroadphaseProxy.h"
 #include "CollisionAlgorithm.h"
 #include "CollisionObject.h"
-#include "SimpleBroadphase.h"
-#ifndef DISABLE_DBVT
-#include "DbvtBroadphase.h"
-#endif
 
 BroadphaseProxy::BroadphaseProxy(btBroadphaseProxy* native)
 {
 	_uid = native->getUid();
 	_native = native;
 }
-/*
-BroadphaseProxy::BroadphaseProxy()
-{
-	_native = new btBroadphaseProxy();
-	_uid = UnmanagedPointer->getUid();
-}
 
-BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
-	CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask,
-	IntPtr multiSapParentProxy)
-{
-	VECTOR3_CONV(aabbMin);
-	VECTOR3_CONV(aabbMax);
-
-	_clientObject = userObject;
-
-	_native = new btBroadphaseProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), 0,
-		(short int)collisionFilterGroup, (short int)collisionFilterMask,
-		multiSapParentProxy.ToPointer()
-		);
-	_uid = UnmanagedPointer->getUid();
-
-	VECTOR3_DEL(aabbMin);
-	VECTOR3_DEL(aabbMax);
-}
-
-BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
-	CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
-{
-	VECTOR3_CONV(aabbMin);
-	VECTOR3_CONV(aabbMax);
-
-	_clientObject = userObject;
-
-	_native = new btBroadphaseProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), 0,
-		(short int)collisionFilterGroup, (short int)collisionFilterMask
-		);
-	_uid = UnmanagedPointer->getUid();
-
-	VECTOR3_DEL(aabbMin);
-	VECTOR3_DEL(aabbMax);
-}
-*/
 BroadphaseProxy^ BroadphaseProxy::GetManaged(btBroadphaseProxy* broadphaseProxy)
 {
 	if (broadphaseProxy == 0)
@@ -193,22 +147,7 @@ BroadphasePair::BroadphasePair(btBroadphasePair* native)
 {
 	_native = native;
 }
-/*
-BroadphasePair::BroadphasePair()
-{
-	_native = new btBroadphasePair();
-}
 
-BroadphasePair::BroadphasePair(BroadphasePair^ other)
-{
-	_native = new btBroadphasePair(*other->_native);
-}
-
-BroadphasePair::BroadphasePair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
-{
-	_native = new btBroadphasePair(*proxy0->_native, *proxy1->_native);
-}
-*/
 CollisionAlgorithm^ BroadphasePair::Algorithm::get()
 {
 	return CollisionAlgorithm::GetManaged(_native->m_algorithm);

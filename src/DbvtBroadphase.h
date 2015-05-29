@@ -31,13 +31,6 @@ namespace BulletSharp
 		DbvtProxyPtrArray^ _links;
 
 	public:
-		/*
-		DbvtProxy(Vector3% aabbMin, Vector3% aabbMax, IntPtr userPointer, CollisionFilterGroups collisionFilterGroup,
-			CollisionFilterGroups collisionFilterMask);
-		DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPointer, CollisionFilterGroups collisionFilterGroup,
-			CollisionFilterGroups collisionFilterMask);
-		*/
-
 		property DbvtNode^ Leaf
 		{
 			DbvtNode^ get();
@@ -72,6 +65,11 @@ namespace BulletSharp
 #ifndef DISABLE_DBVT
 		static void Benchmark(BroadphaseInterface^ broadphase);
 		void Collide(Dispatcher^ dispatcher);
+#endif
+		virtual BroadphaseProxy^ CreateProxy(Vector3% aabbMin, Vector3% aabbMax,
+			BroadphaseNativeType shapeType, IntPtr userPtr, short collisionFilterGroup,
+			short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy) override;
+#ifndef DISABLE_DBVT
 		void Optimize();
 		void PerformDeferredRemoval(Dispatcher^ dispatcher);
 		void SetAabbForceUpdate(BroadphaseProxy^ absproxy, Vector3% aabbMin, Vector3% aabbMax,

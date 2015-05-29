@@ -13,12 +13,6 @@ namespace BulletSharp
 		SimpleBroadphaseProxy(btSimpleBroadphaseProxy* native);
 
 	public:
-		/*
-		SimpleBroadphaseProxy();
-		SimpleBroadphaseProxy(Vector3 minpt, Vector3 maxpt, int shapeType, Object^ userObject,
-			CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask, IntPtr multiSapProxy);
-		*/
-
 		property int NextFree
 		{
 			int get();
@@ -34,6 +28,9 @@ namespace BulletSharp
 		SimpleBroadphase();
 
 		static bool AabbOverlap(SimpleBroadphaseProxy^ proxy0, SimpleBroadphaseProxy^ proxy1);
+		virtual BroadphaseProxy^ CreateProxy(Vector3% aabbMin, Vector3% aabbMax,
+			BroadphaseNativeType shapeType, IntPtr userPtr, short collisionFilterGroup,
+			short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy) override;
 		bool TestAabbOverlap(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1);
 	};
 };

@@ -6,9 +6,6 @@ namespace BulletSharp
 {
 	public ref class NncgConstraintSolver : SequentialImpulseConstraintSolver
 	{
-	internal:
-		NncgConstraintSolver(btNNCGConstraintSolver* native);
-
 	public:
 		NncgConstraintSolver();
 

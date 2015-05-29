@@ -30,7 +30,7 @@ SliderConstraint::SliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool 
 		useLinearReferenceFrameA);
 	TRANSFORM_DEL(frameInB);
 
-	_rigidBodyA = FixedBody;
+	_rigidBodyA = GetFixedBody();
 	_rigidBodyB = rigidBodyB;
 }
 

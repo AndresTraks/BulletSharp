@@ -31,7 +31,7 @@ ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, Matrix rigidBody
 	TRANSFORM_DEL(rigidBodyAFrame);
 
 	_rigidBodyA = rigidBodyA;
-	_rigidBodyB = FixedBody;
+	_rigidBodyB = GetFixedBody();
 }
 
 void ConeTwistConstraint::CalcAngleInfo()

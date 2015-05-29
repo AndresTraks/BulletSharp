@@ -19,31 +19,7 @@ DbvtProxy::DbvtProxy(btDbvtProxy* native)
 	: BroadphaseProxy(native)
 {
 }
-/*
-DbvtProxy::DbvtProxy(Vector3% aabbMin, Vector3% aabbMax, IntPtr userPointer, CollisionFilterGroups collisionFilterGroup,
-	CollisionFilterGroups collisionFilterMask)
-	: BroadphaseProxy(0, false)
-{
-	VECTOR3_CONV(aabbMin);
-	VECTOR3_CONV(aabbMax);
-	_native = new btDbvtProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), userPointer.ToPointer(),
-		(short int)collisionFilterGroup, (short int)collisionFilterMask);
-	VECTOR3_DEL(aabbMin);
-	VECTOR3_DEL(aabbMax);
-}
 
-DbvtProxy::DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPointer, CollisionFilterGroups collisionFilterGroup,
-	CollisionFilterGroups collisionFilterMask)
-	: BroadphaseProxy(0, false)
-{
-	VECTOR3_CONV(aabbMin);
-	VECTOR3_CONV(aabbMax);
-	_native = new btDbvtProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), userPointer.ToPointer(),
-		(short int)collisionFilterGroup, (short int)collisionFilterMask);
-	VECTOR3_DEL(aabbMin);
-	VECTOR3_DEL(aabbMax);
-}
-*/
 DbvtNode^ DbvtProxy::Leaf::get()
 {
 	btDbvtNode* leaf = Native->leaf;
@@ -98,7 +74,27 @@ void DbvtBroadphase::Collide(Dispatcher^ dispatcher)
 {
 	Native->collide(dispatcher->_native);
 }
+#endif
 
+BroadphaseProxy^ DbvtBroadphase::CreateProxy(Vector3% aabbMin, Vector3% aabbMax,
+	BroadphaseNativeType shapeType, IntPtr userPtr, short collisionFilterGroup,
+	short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
+{
+	VECTOR3_CONV(aabbMin);
+	VECTOR3_CONV(aabbMax);
+	btBroadphaseProxy* proxy = _native->createProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax),
+		(int)shapeType, userPtr.ToPointer(), collisionFilterGroup, collisionFilterMask,
+		dispatcher->_native, multiSapProxy.ToPointer());
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
+#ifndef DISABLE_DBVT
+	return gcnew DbvtProxy(proxy);
+#else
+	return gcnew BroadphaseProxy(proxy);
+#endif
+}
+
+#ifndef DISABLE_DBVT
 void DbvtBroadphase::Optimize()
 {
 	Native->optimize();

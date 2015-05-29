@@ -181,9 +181,6 @@ void DynamicsWorld::SynchronizeMotionStates()
 #ifndef DISABLE_CONSTRAINTS
 ConstraintSolver^ DynamicsWorld::ConstraintSolver::get()
 {
-	if (_constraintSolver == nullptr) {
-		_constraintSolver = BulletSharp::ConstraintSolver::GetManaged(Native->getConstraintSolver());
-	}
 	return _constraintSolver;
 }
 void DynamicsWorld::ConstraintSolver::set(BulletSharp::ConstraintSolver^ solver)

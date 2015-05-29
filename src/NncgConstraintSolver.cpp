@@ -6,11 +6,6 @@
 
 #define Native static_cast<btNNCGConstraintSolver*>(_native)
 
-NncgConstraintSolver::NncgConstraintSolver(btNNCGConstraintSolver* native)
-	: SequentialImpulseConstraintSolver(native)
-{
-}
-
 NncgConstraintSolver::NncgConstraintSolver()
 	: SequentialImpulseConstraintSolver(new btNNCGConstraintSolver())
 {

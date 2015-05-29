@@ -13,7 +13,6 @@ namespace BulletSharp
 		Vector3Array^ _vertices;
 
 	public:
-		Box2DShape(Vector3% boxHalfExtents);
 		Box2DShape(Vector3 boxHalfExtents);
 		Box2DShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ);
 		Box2DShape(btScalar boxHalfExtent); // cube helper

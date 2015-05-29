@@ -327,6 +327,17 @@ void TypedConstraint::EnableFeedback(bool needsFeedback)
 	_native->enableFeedback(needsFeedback);
 }
 
+RigidBody^ TypedConstraint::GetFixedBody()
+{
+	if (!_fixedBody)
+	{
+		RigidBodyConstructionInfo cinfo(0, nullptr, nullptr);
+		_fixedBody = gcnew RigidBody(%cinfo);
+		_fixedBody->SetMassProps(0, Vector3_Zero);
+	}
+	return _fixedBody;
+}
+
 void TypedConstraint::GetInfo1(ConstraintInfo1^ info)
 {
 	_native->getInfo1(info->_native);
@@ -410,16 +421,6 @@ void TypedConstraint::DebugDrawSize::set(btScalar dbgDrawSize)
 	_native->setDbgDrawSize(dbgDrawSize);
 }
 
-RigidBody^ TypedConstraint::FixedBody::get()
-{
-	if (!_fixedBody)
-	{
-		_fixedBody = gcnew RigidBody(&btTypedConstraint::getFixedBody());
-		_fixedBody->_preventDelete = true;
-	}
-	return _fixedBody;
-}
-
 bool TypedConstraint::IsDisposed::get()
 {
 	return (_native == NULL);
@@ -475,12 +476,12 @@ void TypedConstraint::OverrideNumSolverIterations::set(int overideNumIterations)
 
 RigidBody^ TypedConstraint::RigidBodyA::get()
 {
-	return (RigidBody^)CollisionObject::GetManaged(&_native->getRigidBodyA());
+	return _rigidBodyA;
 }
 
 RigidBody^ TypedConstraint::RigidBodyB::get()
 {
-	return (RigidBody^)CollisionObject::GetManaged(&_native->getRigidBodyB());
+	return _rigidBodyB;
 }
 
 int TypedConstraint::Uid::get()

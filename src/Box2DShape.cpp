@@ -7,14 +7,6 @@
 
 #define Native static_cast<btBox2dShape*>(_native)
 
-Box2DShape::Box2DShape(Vector3% boxHalfExtents)
-	: PolyhedralConvexShape(0)
-{
-	VECTOR3_CONV(boxHalfExtents);
-	UnmanagedPointer = new btBox2dShape(VECTOR3_USE(boxHalfExtents));
-	VECTOR3_DEL(boxHalfExtents);
-}
-
 Box2DShape::Box2DShape(Vector3 boxHalfExtents)
 	: PolyhedralConvexShape(0)
 {
