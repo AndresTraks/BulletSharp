@@ -83,7 +83,7 @@ CompoundShape::CompoundShape()
 	_childList = gcnew CompoundShapeChildArray(Native);
 }
 
-void CompoundShape::AddChildShape(Matrix% localTransform, CollisionShape^ shape)
+void CompoundShape::AddChildShapeRef(Matrix% localTransform, CollisionShape^ shape)
 {
 	_childList->AddChildShape(localTransform, shape);
 }

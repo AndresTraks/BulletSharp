@@ -12,8 +12,15 @@ namespace BulletSharp
 
 	public ref class BroadphaseAabbCallback abstract
 	{
+	private:
+		[UnmanagedFunctionPointer(CallingConvention::Cdecl), SuppressUnmanagedCodeSecurity]
+        delegate bool ProcessUnmanagedDelegate(IntPtr proxy);
+
+		bool ProcessUnmanaged(IntPtr proxy);
+
 	internal:
 		btBroadphaseAabbCallback* _native;
+		ProcessUnmanagedDelegate^ _process;
 
 		BroadphaseAabbCallback(btBroadphaseAabbCallback* native);
 
@@ -29,14 +36,15 @@ namespace BulletSharp
 		!BroadphaseAabbCallback();
 	};
 
+	typedef bool (*pBroadphaseAabbCallback_Process)(const btBroadphaseProxy* proxy);
+
 	struct BroadphaseAabbCallbackWrapper : public btBroadphaseAabbCallback
 	{
-	protected:
-		void* _aabbCallback;
+	private:
+		pBroadphaseAabbCallback_Process _processCallback;
 
 	public:
-		BroadphaseAabbCallbackWrapper(BroadphaseAabbCallback^ aabbCallback);
-		~BroadphaseAabbCallbackWrapper();
+		BroadphaseAabbCallbackWrapper(pBroadphaseAabbCallback_Process processCallback);
 
 		virtual bool process(const btBroadphaseProxy* proxy);
 	};
@@ -45,9 +53,6 @@ namespace BulletSharp
 	{
 	private:
 		UIntArray^ _signs;
-
-	internal:
-		BroadphaseRayCallback(BroadphaseRayCallbackWrapper* native);
 
 	protected:
 		BroadphaseRayCallback();
@@ -73,22 +78,17 @@ namespace BulletSharp
 
 	struct BroadphaseRayCallbackWrapper : public btBroadphaseRayCallback
 	{
-	protected:
-		void* _rayCallback;
+	private:
+		pBroadphaseAabbCallback_Process _processCallback;
 
 	public:
-		BroadphaseRayCallbackWrapper(void* rayCallbackHandle);
-		~BroadphaseRayCallbackWrapper();
+		BroadphaseRayCallbackWrapper(pBroadphaseAabbCallback_Process processCallback);
 
 		virtual bool process(const btBroadphaseProxy* proxy);
 	};
 
-	public ref class BroadphaseInterface : ITrackingDisposable // abstract
+	public ref class BroadphaseInterface abstract
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	internal:
 		btBroadphaseInterface* _native;
 

@@ -49,9 +49,14 @@ namespace BulletSharpTest
             AddToDisposeQueue(aabbCallback);
             aabbCallback = null;
 
-            // FIXME: RayTest crashes for DbvtBroadphase
-            CustomBroadphaseRayTestCallback rayCallback = new CustomBroadphaseRayTestCallback();
-            //broadphase.RayTest(new Vector3(0, 2, 0), new Vector3(2, 2, 0), rayCallback);
+            var rayFromWorld = new Vector3(-2, 2, 0);
+            var rayToWorld = new Vector3(4, 2, 0);
+            CustomBroadphaseRayTestCallback rayCallback = new CustomBroadphaseRayTestCallback(ref rayFromWorld, ref rayToWorld);
+            broadphase.RayTest(rayFromWorld, rayToWorld, rayCallback, Vector3.Zero, Vector3.Zero);
+            if (!rayCallback.HasHit)
+            {
+                Console.WriteLine("Broadphase ray test FAILED!");
+            }
             AddToDisposeQueue(rayCallback);
             rayCallback = null;
 
@@ -133,8 +138,6 @@ namespace BulletSharpTest
             dispatcher.OnDisposed += onDisposed;
             //dispatcher.Dispose();
             dispatcher = null;
-            broadphase.OnDisposing += onDisposing;
-            broadphase.OnDisposed += onDisposed;
             //broadphase.Dispose();
             broadphase = null;
             world.DebugDrawer = new DebugDrawTest();
@@ -434,8 +437,26 @@ namespace BulletSharpTest
 
     class CustomBroadphaseRayTestCallback : BroadphaseRayCallback
     {
+        public bool HasHit { get; private set; }
+
+        public CustomBroadphaseRayTestCallback(ref Vector3 rayFromWorld, ref Vector3 rayToWorld)
+        {
+            Vector3 rayDir = (rayToWorld - rayFromWorld);
+            rayDir.Normalize();
+            RayDirectionInverse = new Vector3(
+                rayDir[0] == 0 ? float.MaxValue : 1 / rayDir[0],
+                rayDir[1] == 0 ? float.MaxValue : 1 / rayDir[1],
+                rayDir[2] == 0 ? float.MaxValue : 1 / rayDir[2]);
+            Signs[0] = (RayDirectionInverse[0] < 0) ? 1U : 0U;
+            Signs[1] = (RayDirectionInverse[1] < 0) ? 1U : 0U;
+            Signs[2] = (RayDirectionInverse[2] < 0) ? 1U : 0U;
+
+            LambdaMax = rayDir.Dot(rayToWorld - rayFromWorld);
+        }
+
         public override bool Process(BroadphaseProxy proxy)
         {
+            HasHit = true;
             return true;
         }
     }

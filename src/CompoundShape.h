@@ -63,9 +63,10 @@ namespace BulletSharp
 		CompoundShape(bool enableDynamicAabbTree);
 		CompoundShape();
 
-		void AddChildShape(Matrix% localTransform, CollisionShape^ shape);
+		void AddChildShapeRef(Matrix% localTransform, CollisionShape^ shape);
 		void AddChildShape(Matrix localTransform, CollisionShape^ shape);
-		void CalculatePrincipalAxisTransform(array<btScalar>^ masses, Matrix% principal, [Out] Vector3% inertia);
+		void CalculatePrincipalAxisTransform(array<btScalar>^ masses, Matrix% principal,
+			[Out] Vector3% inertia);
 		void CreateAabbTreeFromChildren();
 		CollisionShape^ GetChildShape(int index);
 		Matrix GetChildTransform(int index);

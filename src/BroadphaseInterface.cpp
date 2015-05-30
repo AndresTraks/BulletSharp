@@ -11,12 +11,20 @@
 
 BroadphaseAabbCallback::BroadphaseAabbCallback(btBroadphaseAabbCallback* native)
 {
+	_process = gcnew ProcessUnmanagedDelegate(this, &BroadphaseAabbCallback::ProcessUnmanaged);
 	_native = native;
 }
 
 BroadphaseAabbCallback::BroadphaseAabbCallback()
 {
-	_native = new BroadphaseAabbCallbackWrapper(this);
+	_process = gcnew ProcessUnmanagedDelegate(this, &BroadphaseAabbCallback::ProcessUnmanaged);
+	_native = new BroadphaseAabbCallbackWrapper(
+		(pBroadphaseAabbCallback_Process) Marshal::GetFunctionPointerForDelegate(_process).ToPointer());
+}
+
+bool BroadphaseAabbCallback::ProcessUnmanaged(IntPtr proxy)
+{
+    return Process(BroadphaseProxy::GetManaged(static_cast<btBroadphaseProxy*>(proxy.ToPointer())));
 }
 
 BroadphaseAabbCallback::~BroadphaseAabbCallback()
@@ -31,35 +39,25 @@ BroadphaseAabbCallback::!BroadphaseAabbCallback()
 }
 
 
-#define Callback static_cast<BroadphaseAabbCallback^>(VoidPtrToGCHandle(_aabbCallback).Target)
-
-BroadphaseAabbCallbackWrapper::BroadphaseAabbCallbackWrapper(BroadphaseAabbCallback^ aabbCallback)
+BroadphaseAabbCallbackWrapper::BroadphaseAabbCallbackWrapper(pBroadphaseAabbCallback_Process processCallback)
+	: _processCallback(processCallback)
 {
-	_aabbCallback = GCHandleToVoidPtr(GCHandle::Alloc(aabbCallback, GCHandleType::Weak));
-}
-
-BroadphaseAabbCallbackWrapper::~BroadphaseAabbCallbackWrapper()
-{
-	VoidPtrToGCHandle(_aabbCallback).Free();
+	_processCallback = processCallback;
 }
 
 bool BroadphaseAabbCallbackWrapper::process(const btBroadphaseProxy* proxy)
 {
-	return Callback->Process(BroadphaseProxy::GetManaged((btBroadphaseProxy*)proxy));
+	return _processCallback(proxy);
 }
 
 
 #define Native static_cast<btBroadphaseRayCallback*>(_native)
 
-BroadphaseRayCallback::BroadphaseRayCallback(BroadphaseRayCallbackWrapper* native)
-	: BroadphaseAabbCallback(native)
-{
-}
-
 BroadphaseRayCallback::BroadphaseRayCallback()
 	: BroadphaseAabbCallback(0)
 {
-	_native = new BroadphaseRayCallbackWrapper(GCHandleToVoidPtr(GCHandle::Alloc(this, GCHandleType::Weak)));
+	_native = new BroadphaseRayCallbackWrapper(
+		(pBroadphaseAabbCallback_Process) Marshal::GetFunctionPointerForDelegate(_process).ToPointer());
 }
 
 btScalar BroadphaseRayCallback::LambdaMax::get()
@@ -90,22 +88,14 @@ UIntArray^ BroadphaseRayCallback::Signs::get()
 }
 
 
-#undef Callback
-#define Callback static_cast<BroadphaseRayCallback^>(VoidPtrToGCHandle(_rayCallback).Target)
-
-BroadphaseRayCallbackWrapper::BroadphaseRayCallbackWrapper(void* rayCallbackHandle)
+BroadphaseRayCallbackWrapper::BroadphaseRayCallbackWrapper(pBroadphaseAabbCallback_Process processCallback)
 {
-	_rayCallback = rayCallbackHandle;
-}
-
-BroadphaseRayCallbackWrapper::~BroadphaseRayCallbackWrapper()
-{
-	VoidPtrToGCHandle(_rayCallback).Free();
+	_processCallback = processCallback;
 }
 
 bool BroadphaseRayCallbackWrapper::process(const btBroadphaseProxy* proxy)
 {
-	return Callback->Process(BroadphaseProxy::GetManaged((btBroadphaseProxy*)proxy));
+	return _processCallback(proxy);
 }
 
 
@@ -124,12 +114,8 @@ BroadphaseInterface::!BroadphaseInterface()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 void BroadphaseInterface::AabbTestRef(Vector3% aabbMin, Vector3% aabbMax, BroadphaseAabbCallback^ callback)
@@ -187,14 +173,6 @@ void BroadphaseInterface::PrintStats()
 	_native->printStats();
 }
 
-#pragma managed(push, off)
-void BroadphaseInterface_RayTest(btBroadphaseInterface* broadphase, btVector3* rayFrom, btVector3* rayTo,
-	btBroadphaseRayCallback* rayCallback)
-{
-	broadphase->rayTest(*rayFrom, *rayTo, *rayCallback);
-}
-#pragma managed(pop)
-
 void BroadphaseInterface::RayTestRef(Vector3% rayFrom, Vector3% rayTo, BroadphaseRayCallback^ rayCallback,
 	Vector3% aabbMin, Vector3% aabbMax)
 {
@@ -224,6 +202,14 @@ void BroadphaseInterface::RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayC
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
 }
+
+#pragma managed(push, off)
+void BroadphaseInterface_RayTest(btBroadphaseInterface* broadphase, btVector3* rayFrom, btVector3* rayTo,
+	btBroadphaseRayCallback* rayCallback)
+{
+	broadphase->rayTest(*rayFrom, *rayTo, *rayCallback);
+}
+#pragma managed(pop)
 
 void BroadphaseInterface::RayTestRef(Vector3% rayFrom, Vector3% rayTo, BroadphaseRayCallback^ rayCallback)
 {

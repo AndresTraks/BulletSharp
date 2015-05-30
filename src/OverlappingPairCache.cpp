@@ -85,9 +85,10 @@ BroadphasePair^ OverlappingPairCache::FindPair(BroadphaseProxy^ proxy0, Broadpha
 void OverlappingPairCache::ProcessAllOverlappingPairs(array<OverlapCallback^>^ callbacks,
 	Dispatcher^ dispatcher)
 {
-	btOverlapCallback** btCallbacks = new btOverlapCallback*[callbacks->Length];
+	int nCallbacks = callbacks->Length;
+	btOverlapCallback** btCallbacks = new btOverlapCallback*[nCallbacks];
 	int i;
-	for (i=0; i<callbacks->Length; i++)
+	for (i = 0; i<nCallbacks; i++)
 		btCallbacks[i] = callbacks[i]->_native;
 	Native->processAllOverlappingPairs(*btCallbacks, dispatcher->_native);
 	delete[] btCallbacks;
