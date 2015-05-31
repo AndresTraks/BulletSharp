@@ -130,7 +130,7 @@ namespace DemoFramework.MonoGame
 
             Device.RasterizerState = RasterizerState.CullNone;
 
-            UpdateView();
+            OnResetDevice();
             LibraryManager.LibraryStarted();
 
             Info.SetDevice(Device);

@@ -134,8 +134,6 @@ namespace BulletSharpTest
 
             //conf.Dispose();
             conf = null;
-            dispatcher.OnDisposing += onDisposing;
-            dispatcher.OnDisposed += onDisposed;
             //dispatcher.Dispose();
             dispatcher = null;
             //broadphase.Dispose();

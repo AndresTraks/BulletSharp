@@ -54,7 +54,7 @@ copy Generic\bin\Release\DemoFramework.dll bin\
 copy Generic\bin\Release\DemoFramework.OpenTK.dll bin\
 copy Generic\bin\Release\DemoFramework.SharpDX.dll bin\
 copy Generic\bin\Release\DemoFramework.SlimDX.dll bin\
-copy Generic\bin\Release\DemoFramework.Xna.dll bin\
+copy Generic\bin\Release\DemoFramework.MonoGame.dll bin\
 
 copy Generic\bin\Release\OpenTK.dll bin\
 copy Generic\bin\Release\OpenTK.GLControl.dll bin\

@@ -36,7 +36,7 @@
             this.graphicsDeviceControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.graphicsDeviceControl1.Location = new System.Drawing.Point(0, 0);
             this.graphicsDeviceControl1.Name = "graphicsDeviceControl1";
-            this.graphicsDeviceControl1.Size = new System.Drawing.Size(284, 262);
+            this.graphicsDeviceControl1.Size = new System.Drawing.Size(1024, 768);
             this.graphicsDeviceControl1.TabIndex = 0;
             this.graphicsDeviceControl1.Text = "graphicsDeviceControl1";
             // 
@@ -44,7 +44,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(1024, 768);
             this.Controls.Add(this.graphicsDeviceControl1);
             this.Name = "XnaForm";
             this.Text = "XnaForm";

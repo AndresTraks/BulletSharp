@@ -44,8 +44,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConstraintDemo", "Constrain
 		{3DDE3767-7DA8-4700-A74B-EC34146AB688} = {3DDE3767-7DA8-4700-A74B-EC34146AB688}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xna", "DemoFramework\Graphics\Xna\Xna.csproj", "{19C540EC-556A-4834-BA97-6EF07AC5EF58}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvexDecompositionDemo", "ConvexDecompositionDemo\ConvexDecompositionDemo.csproj", "{6E5A81BA-E9B2-4C38-92B2-CCB660690DA4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RagdollDemo", "RagdollDemo\RagdollDemo.csproj", "{712ED1AC-EC4E-49E8-8B48-25FFFBFCD5D9}"
@@ -76,7 +74,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatherStoneDemo", "Feather
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpDX11", "DemoFramework\Graphics\SharpDX11\SharpDX11.csproj", "{540E0C60-3FBD-4166-933D-D80284D1CA0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame", "MonoGame\MonoGame.csproj", "{B28E9718-3EE5-4C48-BAC6-E2BAE94AB9D1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xna", "DemoFramework\Graphics\MonoGame\Xna.csproj", "{19C540EC-556A-4834-BA97-6EF07AC5EF58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -124,10 +122,6 @@ Global
 		{E53D74AE-3F31-41A5-9046-57109CC9CBD5}.Debug|x86.Build.0 = Debug|x86
 		{E53D74AE-3F31-41A5-9046-57109CC9CBD5}.Release|x86.ActiveCfg = Release|x86
 		{E53D74AE-3F31-41A5-9046-57109CC9CBD5}.Release|x86.Build.0 = Release|x86
-		{19C540EC-556A-4834-BA97-6EF07AC5EF58}.Debug|x86.ActiveCfg = Debug|x86
-		{19C540EC-556A-4834-BA97-6EF07AC5EF58}.Debug|x86.Build.0 = Debug|x86
-		{19C540EC-556A-4834-BA97-6EF07AC5EF58}.Release|x86.ActiveCfg = Release|x86
-		{19C540EC-556A-4834-BA97-6EF07AC5EF58}.Release|x86.Build.0 = Release|x86
 		{6E5A81BA-E9B2-4C38-92B2-CCB660690DA4}.Debug|x86.ActiveCfg = Debug|x86
 		{6E5A81BA-E9B2-4C38-92B2-CCB660690DA4}.Debug|x86.Build.0 = Debug|x86
 		{6E5A81BA-E9B2-4C38-92B2-CCB660690DA4}.Release|x86.ActiveCfg = Release|x86
@@ -188,10 +182,10 @@ Global
 		{540E0C60-3FBD-4166-933D-D80284D1CA0E}.Debug|x86.Build.0 = Debug|x86
 		{540E0C60-3FBD-4166-933D-D80284D1CA0E}.Release|x86.ActiveCfg = Release|x86
 		{540E0C60-3FBD-4166-933D-D80284D1CA0E}.Release|x86.Build.0 = Release|x86
-		{B28E9718-3EE5-4C48-BAC6-E2BAE94AB9D1}.Debug|x86.ActiveCfg = Debug|x86
-		{B28E9718-3EE5-4C48-BAC6-E2BAE94AB9D1}.Debug|x86.Build.0 = Debug|x86
-		{B28E9718-3EE5-4C48-BAC6-E2BAE94AB9D1}.Release|x86.ActiveCfg = Release|x86
-		{B28E9718-3EE5-4C48-BAC6-E2BAE94AB9D1}.Release|x86.Build.0 = Release|x86
+		{19C540EC-556A-4834-BA97-6EF07AC5EF58}.Debug|x86.ActiveCfg = Debug|x86
+		{19C540EC-556A-4834-BA97-6EF07AC5EF58}.Debug|x86.Build.0 = Debug|x86
+		{19C540EC-556A-4834-BA97-6EF07AC5EF58}.Release|x86.ActiveCfg = Release|x86
+		{19C540EC-556A-4834-BA97-6EF07AC5EF58}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

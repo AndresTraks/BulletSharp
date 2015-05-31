@@ -135,7 +135,7 @@ namespace DemoFramework.MonoGame
                                                                 ClientSize.Height);
 
                 //GraphicsDevice.Present(sourceRectangle, null, this.Handle);
-                GraphicsDevice.PlatformPresent();
+                GraphicsDevice.Present();
             }
             catch
             {
