@@ -38,13 +38,13 @@ namespace BulletSharp
 	public:
 		UnionFind();
 
-		void Allocate(int N);
+		void Allocate(int n);
 		int Find(int p, int q);
 		int Find(int x);
 		void Free();
 		Element^ GetElement(int index);
 		bool IsRoot(int x);
-		void Reset(int N);
+		void Reset(int n);
 		void SortIslands();
 		void Unite(int p, int q);
 

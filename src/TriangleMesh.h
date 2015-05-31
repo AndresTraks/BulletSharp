@@ -20,6 +20,7 @@ namespace BulletSharp
 		void AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2, bool removeDuplicateVertices);
 		void AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2);
 #ifndef DISABLE_INTERNAL
+		void AddTriangleIndices(int index1, int index2, int index3);
 		int FindOrAddVertex(Vector3 vertex, bool removeDuplicateVertices);
 #endif
 

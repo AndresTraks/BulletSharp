@@ -119,11 +119,6 @@ namespace BulletSharp
 			void set(int cachedPoints);
 		}
 
-		property ContactManifoldType ObjectType
-		{
-			ContactManifoldType get();
-		}
-
 		static PersistentManifold Zero;
 	};
 };

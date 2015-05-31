@@ -55,6 +55,11 @@ void TriangleMesh::AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2
 	VECTOR3_DEL(vertex2);
 }
 
+void TriangleMesh::AddTriangleIndices(int index1, int index2, int index3)
+{
+	Native->addTriangleIndices(index1, index2, index3);
+}
+
 #ifndef DISABLE_INTERNAL
 int TriangleMesh::FindOrAddVertex(Vector3 vertex, bool removeDuplicateVertices)
 {

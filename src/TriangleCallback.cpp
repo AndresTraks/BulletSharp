@@ -14,9 +14,6 @@ TriangleCallback::~TriangleCallback()
 
 TriangleCallback::!TriangleCallback()
 {
-	if (this->IsDisposed)
-		return;
-	
 	delete _native;
 	_native = NULL;
 }
@@ -47,9 +44,6 @@ InternalTriangleIndexCallback::~InternalTriangleIndexCallback()
 
 InternalTriangleIndexCallback::!InternalTriangleIndexCallback()
 {
-	if (this->IsDisposed)
-		return;
-	
 	delete _native;
 	_native = NULL;
 }

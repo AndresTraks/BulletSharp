@@ -116,12 +116,6 @@ namespace BulletSharp
 		StopCfm = BT_CONSTRAINT_STOP_CFM
 	};
 
-	public enum class ContactManifoldType
-	{
-		MinContactManifold = MIN_CONTACT_MANIFOLD_TYPE,
-		PersistentManifold = BT_PERSISTENT_MANIFOLD_TYPE
-	};
-
 	[Flags]
 	public enum class ConstraintSolverType
 	{

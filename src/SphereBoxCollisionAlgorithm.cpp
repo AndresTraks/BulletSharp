@@ -11,6 +11,8 @@ SphereBoxCollisionAlgorithm::CreateFunc::CreateFunc()
 	: CollisionAlgorithmCreateFunc(new btSphereBoxCollisionAlgorithm::CreateFunc())
 {
 }
+
+
 #define Native static_cast<btSphereBoxCollisionAlgorithm*>(_native)
 
 SphereBoxCollisionAlgorithm::SphereBoxCollisionAlgorithm(PersistentManifold mf, CollisionAlgorithmConstructionInfo^ ci,

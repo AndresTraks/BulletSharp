@@ -9,12 +9,6 @@
 #include "Serializer.h"
 #endif
 
-JointFeedback::JointFeedback(btJointFeedback* native, bool preventDelete)
-{
-	_native = native;
-	_preventDelete = preventDelete;
-}
-
 JointFeedback::~JointFeedback()
 {
 	this->!JointFeedback();
@@ -22,10 +16,7 @@ JointFeedback::~JointFeedback()
 
 JointFeedback::!JointFeedback()
 {
-	if (!_preventDelete)
-	{
-		delete _native;
-	}
+	delete _native;
 	_native = NULL;
 }
 
@@ -71,12 +62,6 @@ void JointFeedback::AppliedTorqueBodyB::set(Vector3 value)
 }
 
 
-TypedConstraint::ConstraintInfo1::ConstraintInfo1(btTypedConstraint::btConstraintInfo1* native, bool preventDelete)
-{
-	_native = native;
-	_preventDelete = preventDelete;
-}
-
 TypedConstraint::ConstraintInfo1::~ConstraintInfo1()
 {
 	this->!ConstraintInfo1();
@@ -84,10 +69,7 @@ TypedConstraint::ConstraintInfo1::~ConstraintInfo1()
 
 TypedConstraint::ConstraintInfo1::!ConstraintInfo1()
 {
-	if (!_preventDelete)
-	{
-		delete _native;
-	}
+	delete _native;
 	_native = NULL;
 }
 
@@ -115,12 +97,6 @@ void TypedConstraint::ConstraintInfo1::NumConstraintRows::set(int value)
 }
 
 
-TypedConstraint::ConstraintInfo2::ConstraintInfo2(btTypedConstraint::btConstraintInfo2* native, bool preventDelete)
-{
-	_native = native;
-	_preventDelete = preventDelete;
-}
-
 TypedConstraint::ConstraintInfo2::~ConstraintInfo2()
 {
 	this->!ConstraintInfo2();
@@ -128,10 +104,7 @@ TypedConstraint::ConstraintInfo2::~ConstraintInfo2()
 
 TypedConstraint::ConstraintInfo2::!ConstraintInfo2()
 {
-	if (!_preventDelete)
-	{
-		delete _native;
-	}
+	delete _native;
 	_native = NULL;
 }
 
@@ -437,12 +410,6 @@ void TypedConstraint::IsEnabled::set(bool enabled)
 
 BulletSharp::JointFeedback^ TypedConstraint::JointFeedback::get()
 {
-	btJointFeedback* jointFeedback = _native->getJointFeedback();
-	if (_jointFeedback != nullptr && _jointFeedback->_native == jointFeedback)
-		return _jointFeedback;
-	if (jointFeedback == 0)
-		return nullptr;
-	_jointFeedback = gcnew BulletSharp::JointFeedback(jointFeedback, true);
 	return _jointFeedback;
 }
 void TypedConstraint::JointFeedback::set(BulletSharp::JointFeedback^ jointFeedback)
@@ -458,11 +425,6 @@ bool TypedConstraint::NeedsFeedback::get()
 void TypedConstraint::NeedsFeedback::set(bool value)
 {
 	return _native->enableFeedback(value);
-}
-
-TypedConstraintType TypedConstraint::ObjectType::get()
-{
-	return (TypedConstraintType)_native->getObjectType();
 }
 
 int TypedConstraint::OverrideNumSolverIterations::get()

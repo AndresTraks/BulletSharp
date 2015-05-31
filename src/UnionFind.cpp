@@ -49,9 +49,9 @@ UnionFind::UnionFind()
 	_native = new btUnionFind();
 }
 
-void UnionFind::Allocate(int N)
+void UnionFind::Allocate(int n)
 {
-	_native->allocate(N);
+	_native->allocate(n);
 }
 
 int UnionFind::Find(int p, int q)
@@ -79,9 +79,9 @@ bool UnionFind::IsRoot(int x)
 	return _native->isRoot(x);
 }
 
-void UnionFind::Reset(int N)
+void UnionFind::Reset(int n)
 {
-	_native->reset(N);
+	_native->reset(n);
 }
 
 void UnionFind::SortIslands()

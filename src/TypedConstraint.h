@@ -13,12 +13,6 @@ namespace BulletSharp
 	internal:
 		btJointFeedback* _native;
 
-	private:
-		bool _preventDelete;
-
-	internal:
-		JointFeedback(btJointFeedback* native, bool preventDelete);
-
 	public:
 		!JointFeedback();
 	protected:
@@ -60,12 +54,6 @@ namespace BulletSharp
 		internal:
 			btTypedConstraint::btConstraintInfo1* _native;
 
-		private:
-			bool _preventDelete;
-
-		internal:
-			ConstraintInfo1(btTypedConstraint::btConstraintInfo1* native, bool preventDelete);
-
 		public:
 			!ConstraintInfo1();
 		protected:
@@ -93,7 +81,6 @@ namespace BulletSharp
 			btTypedConstraint::btConstraintInfo2* _native;
 
 		private:
-			bool _preventDelete;
 			ScalarArray^ _cfm;
 			ScalarArray^ _constraintError;
 			ScalarArray^ _j1angularAxis;
@@ -102,9 +89,6 @@ namespace BulletSharp
 			ScalarArray^ _j2linearAxis;
 			ScalarArray^ _lowerLimit;
 			ScalarArray^ _upperLimit;
-
-		internal:
-			ConstraintInfo2(btTypedConstraint::btConstraintInfo2* native, bool preventDelete);
 
 		public:
 			!ConstraintInfo2();
@@ -284,11 +268,6 @@ namespace BulletSharp
 		{
 			bool get();
 			void set(bool value);
-		}
-
-		property TypedConstraintType ObjectType
-		{
-			TypedConstraintType get();
 		}
 
 		property int OverrideNumSolverIterations

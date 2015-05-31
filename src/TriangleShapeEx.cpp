@@ -17,9 +17,6 @@ GimTriangleContact::~GimTriangleContact()
 
 GimTriangleContact::!GimTriangleContact()
 {
-	if (_native == NULL)
-		return;
-
 	delete _native;
 	_native = NULL;
 }
