@@ -350,12 +350,12 @@ namespace BulletSharp
 			ICollide^ policy);
 #endif
 		void Remove(DbvtNode^ leaf);
+		void Update(DbvtNode^ leaf, DbvtVolume^ volume);
+		void Update(DbvtNode^ leaf, int lookAhead);
+		void Update(DbvtNode^ leaf);
 		bool Update(DbvtNode^ leaf, DbvtVolume^ volume, btScalar margin);
 		bool Update(DbvtNode^ leaf, DbvtVolume^ volume, Vector3 velocity);
 		bool Update(DbvtNode^ leaf, DbvtVolume^ volume, Vector3 velocity, btScalar margin);
-		void Update(DbvtNode^ leaf, DbvtVolume^ volume);
-		void Update(DbvtNode^ leaf, int lookahead);
-		void Update(DbvtNode^ leaf);
 		void Write(IWriter^ iwriter);
 
 		property DbvtNode^ Free

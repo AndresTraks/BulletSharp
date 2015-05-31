@@ -100,6 +100,18 @@ namespace BulletSharp
 
 	public ref class RayResultCallback abstract
 	{
+	private:
+		[UnmanagedFunctionPointer(CallingConvention::Cdecl), SuppressUnmanagedCodeSecurity]
+        delegate float AddSingleResultUnmanagedDelegate(IntPtr rayResult, bool normalInWorldSpace);
+		[UnmanagedFunctionPointer(CallingConvention::Cdecl), SuppressUnmanagedCodeSecurity]
+		delegate bool NeedsCollisionUnmanagedDelegate(IntPtr proxy0);
+
+		AddSingleResultUnmanagedDelegate^ _addSingleResult;
+		NeedsCollisionUnmanagedDelegate^ _needsCollision;
+
+		float AddSingleResultUnmanaged(IntPtr rayResult, bool normalInWorldSpace);
+		bool NeedsCollisionUnmanaged(IntPtr proxy0);
+
 	internal:
 		btCollisionWorld::RayResultCallback* _native;
 
@@ -156,14 +168,19 @@ namespace BulletSharp
 		}
 	};
 
+	typedef btScalar (*pRayResultCallback_AddSingleResult)(btCollisionWorld::LocalRayResult& rayResult,
+		bool normalInWorldSpace);
+	typedef bool (*pRayResultCallback_NeedsCollision)(btBroadphaseProxy* proxy0);
+
 	class RayResultCallbackWrapper : public btCollisionWorld::RayResultCallback
 	{
 	private:
-		void* _callback;
+		pRayResultCallback_AddSingleResult _addSingleResultCallback;
+		pRayResultCallback_NeedsCollision _needsCollisionCallback;
 
 	public:
-		RayResultCallbackWrapper(BulletSharp::RayResultCallback^ callback);
-		~RayResultCallbackWrapper();
+		RayResultCallbackWrapper(pRayResultCallback_AddSingleResult addSingleResultCallback,
+			pRayResultCallback_NeedsCollision needsCollisionCallback);
 
 		virtual bool needsCollision(btBroadphaseProxy* proxy0) const;
 		virtual btScalar addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace);

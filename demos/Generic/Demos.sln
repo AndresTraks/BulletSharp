@@ -76,6 +76,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatherStoneDemo", "Feather
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpDX11", "DemoFramework\Graphics\SharpDX11\SharpDX11.csproj", "{540E0C60-3FBD-4166-933D-D80284D1CA0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame", "MonoGame\MonoGame.csproj", "{B28E9718-3EE5-4C48-BAC6-E2BAE94AB9D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -186,6 +188,10 @@ Global
 		{540E0C60-3FBD-4166-933D-D80284D1CA0E}.Debug|x86.Build.0 = Debug|x86
 		{540E0C60-3FBD-4166-933D-D80284D1CA0E}.Release|x86.ActiveCfg = Release|x86
 		{540E0C60-3FBD-4166-933D-D80284D1CA0E}.Release|x86.Build.0 = Release|x86
+		{B28E9718-3EE5-4C48-BAC6-E2BAE94AB9D1}.Debug|x86.ActiveCfg = Debug|x86
+		{B28E9718-3EE5-4C48-BAC6-E2BAE94AB9D1}.Debug|x86.Build.0 = Debug|x86
+		{B28E9718-3EE5-4C48-BAC6-E2BAE94AB9D1}.Release|x86.ActiveCfg = Release|x86
+		{B28E9718-3EE5-4C48-BAC6-E2BAE94AB9D1}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

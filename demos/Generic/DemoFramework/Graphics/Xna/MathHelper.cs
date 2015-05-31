@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace DemoFramework.Xna
+namespace DemoFramework.MonoGame
 {
     class MathHelper
     {

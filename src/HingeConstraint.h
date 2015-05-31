@@ -45,7 +45,7 @@ namespace BulletSharp
 		void SetMotorTarget(btScalar targetAngle, btScalar dt);
 		void SetMotorTarget(Quaternion qAinB, btScalar dt);
 		void TestLimit(Matrix transA, Matrix transB);
-		void UpdateRHS(btScalar timeStep);
+		void UpdateRhs(btScalar timeStep);
 
 		property Matrix AFrame
 		{
@@ -131,9 +131,6 @@ namespace BulletSharp
 
 	public ref class HingeAccumulatedAngleConstraint : HingeConstraint
 	{
-	internal:
-		HingeAccumulatedAngleConstraint(btHingeAccumulatedAngleConstraint* native);
-
 	public:
 		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 			Vector3 pivotInA, Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB,

@@ -6,7 +6,6 @@
 #include "HingeConstraint.h"
 #include "RigidBody.h"
 
-
 #define Native static_cast<btHingeConstraint*>(_native)
 
 HingeConstraint::HingeConstraint(btHingeConstraint* native)
@@ -261,7 +260,7 @@ void HingeConstraint::TestLimit(Matrix transA, Matrix transB)
 	TRANSFORM_DEL(transB);
 }
 
-void HingeConstraint::UpdateRHS(btScalar timeStep)
+void HingeConstraint::UpdateRhs(btScalar timeStep)
 {
 	Native->updateRHS(timeStep);
 }
@@ -395,13 +394,9 @@ void HingeConstraint::UseFrameOffset::set(bool frameOffsetOnOff)
 #undef Native
 #define Native static_cast<btHingeAccumulatedAngleConstraint*>(_native)
 
-HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(btHingeAccumulatedAngleConstraint* native)
-	: HingeConstraint(native)
-{
-}
-
-HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
-	Vector3 pivotInA, Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB, bool useReferenceFrameA)
+HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA,
+	RigidBody^ rigidBodyB, Vector3 pivotInA, Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB,
+	bool useReferenceFrameA)
 	: HingeConstraint(0)
 {
 	VECTOR3_CONV(pivotInA);

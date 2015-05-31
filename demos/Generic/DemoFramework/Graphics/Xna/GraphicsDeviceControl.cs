@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace DemoFramework.Xna
+namespace DemoFramework.MonoGame
 {
     // System.Drawing and the XNA Framework both define Color and Rectangle
     // types. To avoid conflicts, we specify exactly which ones to use.
@@ -19,7 +19,7 @@ namespace DemoFramework.Xna
     public class GraphicsDeviceControl : Control
     {
         GraphicsDeviceService graphicsDeviceService;
-        XnaGraphics graphics;
+        MonoGameGraphics graphics;
 
         /// <summary>
         /// Gets a GraphicsDevice that can be used to draw onto this control.
@@ -134,7 +134,8 @@ namespace DemoFramework.Xna
                 Rectangle sourceRectangle = new Rectangle(0, 0, ClientSize.Width,
                                                                 ClientSize.Height);
 
-                GraphicsDevice.Present(sourceRectangle, null, this.Handle);
+                //GraphicsDevice.Present(sourceRectangle, null, this.Handle);
+                GraphicsDevice.PlatformPresent();
             }
             catch
             {
@@ -229,7 +230,7 @@ namespace DemoFramework.Xna
         #endregion
 
 
-        public void SetGraphics(XnaGraphics graphics)
+        public void SetGraphics(MonoGameGraphics graphics)
         {
             this.graphics = graphics;
         }

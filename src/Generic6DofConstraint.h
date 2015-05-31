@@ -272,14 +272,12 @@ namespace BulletSharp
 		void CalcAnchorPos();
 		void CalculateTransforms(Matrix transA, Matrix transB);
 		void CalculateTransforms();
-
-		int GetLimitMotorInfo2(RotationalLimitMotor^ limot, Matrix transA, Matrix transB,
+		int GetLimitMotorInfo2(RotationalLimitMotor^ limitMotor, Matrix transA, Matrix transB,
 			Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2^ info,
 			int row, Vector3 ax1, int rotational, int rotAllowed);
-		int GetLimitMotorInfo2(RotationalLimitMotor^ limot, Matrix transA, Matrix transB,
+		int GetLimitMotorInfo2(RotationalLimitMotor^ limitMotor, Matrix transA, Matrix transB,
 			Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2^ info,
 			int row, Vector3 ax1, int rotational);
-
 		btScalar GetAngle(int axisIndex);
 		Vector3 GetAxis(int axisIndex);
 		void GetInfo1NonVirtual(ConstraintInfo1^ info);
@@ -292,7 +290,7 @@ namespace BulletSharp
 		void SetFrames(Matrix frameA, Matrix frameB);
 		void SetLimit(int axis, btScalar lo, btScalar hi);
 		bool TestAngularLimitMotor(int axisIndex);
-		void UpdateRHS(btScalar timeStep);
+		void UpdateRhs(btScalar timeStep);
 
 		property Vector3 AngularLowerLimit
 		{

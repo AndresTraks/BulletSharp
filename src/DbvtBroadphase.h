@@ -72,7 +72,7 @@ namespace BulletSharp
 #ifndef DISABLE_DBVT
 		void Optimize();
 		void PerformDeferredRemoval(Dispatcher^ dispatcher);
-		void SetAabbForceUpdate(BroadphaseProxy^ absproxy, Vector3% aabbMin, Vector3% aabbMax,
+		void SetAabbForceUpdateRef(BroadphaseProxy^ absproxy, Vector3% aabbMin, Vector3% aabbMax,
 			Dispatcher^ dispatcher);
 		void SetAabbForceUpdate(BroadphaseProxy^ absproxy, Vector3 aabbMin, Vector3 aabbMax,
 			Dispatcher^ dispatcher);

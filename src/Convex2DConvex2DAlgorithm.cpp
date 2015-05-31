@@ -38,25 +38,26 @@ void Convex2DConvex2DAlgorithm::CreateFunc::NumPerturbationIterations::set(int v
 {
 	Native->m_numPerturbationIterations = value;
 }
-/*
+
 ConvexPenetrationDepthSolver^ Convex2DConvex2DAlgorithm::CreateFunc::PdSolver::get()
 {
-	return Native->m_pdSolver;
+	return _pdSolver;
 }
 void Convex2DConvex2DAlgorithm::CreateFunc::PdSolver::set(ConvexPenetrationDepthSolver^ value)
 {
+	_pdSolver = value;
 	Native->m_pdSolver = value->_native;
 }
 
-VoronoiSimplexSolver^ Convex2DConvex2DAlgorithm::CreateFunc::SimplexSolver::get()
+SimplexSolverInterface^ Convex2DConvex2DAlgorithm::CreateFunc::SimplexSolver::get()
 {
-	return Native->m_simplexSolver;
+	return _simplexSolver;
 }
-void Convex2DConvex2DAlgorithm::CreateFunc::SimplexSolver::set(VoronoiSimplexSolver^ value)
+void Convex2DConvex2DAlgorithm::CreateFunc::SimplexSolver::set(SimplexSolverInterface^ value)
 {
+	_simplexSolver = value;
 	Native->m_simplexSolver = value->_native;
 }
-*/
 
 
 #undef Native

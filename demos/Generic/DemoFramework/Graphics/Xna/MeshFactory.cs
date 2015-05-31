@@ -5,7 +5,7 @@ using BulletSharp.SoftBody;
 using Microsoft.Xna.Framework.Graphics;
 using Color = Microsoft.Xna.Framework.Color;
 
-namespace DemoFramework.Xna
+namespace DemoFramework.MonoGame
 {
     public struct InstanceData
     {
@@ -144,7 +144,7 @@ namespace DemoFramework.Xna
         Microsoft.Xna.Framework.Vector3 softBodyColor = Color.LightBlue.ToVector3();
         Microsoft.Xna.Framework.Vector3 linkColor = Color.Black.ToVector3();
 
-        public MeshFactory(XnaGraphics graphics)
+        public MeshFactory(MonoGameGraphics graphics)
         {
             this.demo = graphics.Demo;
             this.device = graphics.Device;

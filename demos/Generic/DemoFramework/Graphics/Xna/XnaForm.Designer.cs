@@ -1,4 +1,4 @@
-﻿namespace DemoFramework.Xna
+﻿namespace DemoFramework.MonoGame
 {
     partial class XnaForm
     {
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.graphicsDeviceControl1 = new DemoFramework.Xna.GraphicsDeviceControl();
+            this.graphicsDeviceControl1 = new DemoFramework.MonoGame.GraphicsDeviceControl();
             this.SuspendLayout();
             // 
             // graphicsDeviceControl1

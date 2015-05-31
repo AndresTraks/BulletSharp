@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 // we don't care so we just disable this warning.
 #pragma warning disable 67
 
-namespace DemoFramework.Xna
+namespace DemoFramework.MonoGame
 {
     /// <summary>
     /// Helper class responsible for creating and managing the GraphicsDevice.
@@ -82,7 +82,7 @@ namespace DemoFramework.Xna
             parameters.BackBufferWidth = Math.Max(parameters.BackBufferWidth, width);
             parameters.BackBufferHeight = Math.Max(parameters.BackBufferHeight, height);
 
-            graphicsDevice.Reset(parameters);
+            //graphicsDevice.Reset(parameters);
 
             if (DeviceReset != null)
                 DeviceReset(this, EventArgs.Empty);

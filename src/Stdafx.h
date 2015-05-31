@@ -34,13 +34,6 @@
 //#define BT_USE_DOUBLE_PRECISION
 
 
-// Choose one of these for CL
-//#define USE_MINICL
-//#define USE_INTEL_OPENCL
-//#define USE_AMD_OPENCL
-//#define USE_NVIDIA_OPENCL
-
-
 // This makes ManifoldPoint.ContactAdded, PersistentManifold.ContactProcessed and PersistentManifold.ContactDestroyed
 // events instead of delegate properties
 #define BT_CALLBACKS_ARE_EVENTS
@@ -260,43 +253,6 @@ using namespace System::Drawing;
 #include <BulletDynamics/MLCPSolvers/btDantzigSolver.h>
 #include <BulletDynamics/MLCPSolvers/btMLCPSolver.h>
 #include <BulletDynamics/MLCPSolvers/btMLCPSolverInterface.h>
-#endif
-
-#if defined(USE_MINICL)
-#include <MiniCL/cl.h>
-#if _DEBUG
-#pragma comment(lib, "MiniCL_Debug.lib")
-#pragma comment(lib, "BulletSoftBodySolvers_OpenCL_Mini_Debug.lib")
-#else
-#pragma comment(lib, "MiniCL_MinsizeRel.lib")
-#pragma comment(lib, "BulletSoftBodySolvers_OpenCL_Mini_MinsizeRel.lib")
-#endif
-#endif
-
-#if defined(USE_INTEL_OPENCL)
-#include <CL/cl.h>
-#pragma comment(lib, "OpenCL.lib")
-#if _DEBUG
-#pragma comment(lib, "BulletSoftBodySolvers_OpenCL_Intel_Debug.lib")
-#else
-#pragma comment(lib, "BulletSoftBodySolvers_OpenCL_Intel_MinsizeRel.lib")
-#endif
-#elif defined(USE_AMD_OPENCL)
-#include <CL/cl.h>
-#pragma comment(lib, "OpenCL.lib")
-#if _DEBUG
-#pragma comment(lib, "BulletSoftBodySolvers_OpenCL_AMD_Debug.lib")
-#else
-#pragma comment(lib, "BulletSoftBodySolvers_OpenCL_AMD_MinsizeRel.lib")
-#endif
-#elif defined(USE_NVIDIA_OPENCL)
-#include <CL/cl.h>
-#pragma comment(lib, "OpenCL.lib")
-#if _DEBUG
-#pragma comment(lib, "BulletSoftBodySolvers_OpenCL_NVidia_Debug.lib")
-#else
-#pragma comment(lib, "BulletSoftBodySolvers_OpenCL_NVidia_MinsizeRel.lib")
-#endif
 #endif
 
 #ifndef DISABLE_SERIALIZE

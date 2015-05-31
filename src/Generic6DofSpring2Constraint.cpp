@@ -190,6 +190,15 @@ void RotationalLimitMotor2::SpringDamping::set(btScalar value)
 	_native->m_springDamping = value;
 }
 
+bool RotationalLimitMotor2::SpringDampingLimited::get()
+{
+	return _native->m_springDampingLimited;
+}
+void RotationalLimitMotor2::SpringDampingLimited::set(bool value)
+{
+	_native->m_springDampingLimited = value;
+}
+
 btScalar RotationalLimitMotor2::SpringStiffness::get()
 {
 	return _native->m_springStiffness;
@@ -197,6 +206,15 @@ btScalar RotationalLimitMotor2::SpringStiffness::get()
 void RotationalLimitMotor2::SpringStiffness::set(btScalar value)
 {
 	_native->m_springStiffness = value;
+}
+
+bool RotationalLimitMotor2::SpringStiffnessLimited::get()
+{
+	return _native->m_springStiffnessLimited;
+}
+void RotationalLimitMotor2::SpringStiffnessLimited::set(bool value)
+{
+	_native->m_springStiffnessLimited = value;
 }
 
 btScalar RotationalLimitMotor2::StopCfm::get()
@@ -386,6 +404,11 @@ void TranslationalLimitMotor2::SpringDamping::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &_native->m_springDamping);
 }
 
+BoolArray^ TranslationalLimitMotor2::SpringDampingLimited::get()
+{
+	return gcnew BoolArray(_native->m_springDampingLimited, 3);
+}
+
 Vector3 TranslationalLimitMotor2::SpringStiffness::get()
 {
 	return Math::BtVector3ToVector3(&_native->m_springStiffness);
@@ -393,6 +416,11 @@ Vector3 TranslationalLimitMotor2::SpringStiffness::get()
 void TranslationalLimitMotor2::SpringStiffness::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_native->m_springStiffness);
+}
+
+BoolArray^ TranslationalLimitMotor2::SpringStiffnessLimited::get()
+{
+	return gcnew BoolArray(_native->m_springStiffnessLimited, 3);
 }
 
 Vector3 TranslationalLimitMotor2::StopCfm::get()
@@ -574,6 +602,11 @@ void Generic6DofSpring2Constraint::SetBounce(int index, btScalar bounce)
 	Native->setBounce(index, bounce);
 }
 
+void Generic6DofSpring2Constraint::SetDamping(int index, btScalar damping, bool limitIfNeeded)
+{
+	Native->setDamping(index, damping, limitIfNeeded);
+}
+
 void Generic6DofSpring2Constraint::SetDamping(int index, btScalar damping)
 {
 	Native->setDamping(index, damping);
@@ -626,6 +659,11 @@ void Generic6DofSpring2Constraint::SetServo(int index, bool onOff)
 void Generic6DofSpring2Constraint::SetServoTarget(int index, btScalar target)
 {
 	Native->setServoTarget(index, target);
+}
+
+void Generic6DofSpring2Constraint::SetStiffness(int index, btScalar stiffness, bool limitIfNeeded)
+{
+	Native->setStiffness(index, stiffness, limitIfNeeded);
 }
 
 void Generic6DofSpring2Constraint::SetStiffness(int index, btScalar stiffness)

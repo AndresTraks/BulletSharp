@@ -6,9 +6,9 @@ using Color = Microsoft.Xna.Framework.Color;
 using Matrix = Microsoft.Xna.Framework.Matrix;
 using Vector3 = Microsoft.Xna.Framework.Vector3;
 
-namespace DemoFramework.Xna
+namespace DemoFramework.MonoGame
 {
-    public class XnaGraphics : DemoFramework.Graphics
+    public class MonoGameGraphics : DemoFramework.Graphics
     {
         public GraphicsDevice Device;
 
@@ -62,7 +62,7 @@ namespace DemoFramework.Xna
             return new PhysicsDebugDraw(this);
         }
 
-        public XnaGraphics(Demo demo)
+        public MonoGameGraphics(Demo demo)
             : base(demo)
         {
             Form = new XnaForm(this);
@@ -83,7 +83,7 @@ namespace DemoFramework.Xna
         /// <summary>
         /// Performs object finalization.
         /// </summary>
-        ~XnaGraphics()
+        ~MonoGameGraphics()
         {
             Dispose(false);
         }

@@ -58,6 +58,7 @@ BroadphaseRayCallback::BroadphaseRayCallback()
 {
 	_native = new BroadphaseRayCallbackWrapper(
 		(pBroadphaseAabbCallback_Process) Marshal::GetFunctionPointerForDelegate(_process).ToPointer());
+	_signs = gcnew UIntArray(&Native->m_signs[0], 3);
 }
 
 btScalar BroadphaseRayCallback::LambdaMax::get()
@@ -80,10 +81,6 @@ void BroadphaseRayCallback::RayDirectionInverse::set(Vector3 value)
 
 UIntArray^ BroadphaseRayCallback::Signs::get()
 {
-	if (!_signs)
-	{
-		_signs = gcnew UIntArray(&Native->m_signs[0], 3);
-	}
 	return _signs;
 }
 

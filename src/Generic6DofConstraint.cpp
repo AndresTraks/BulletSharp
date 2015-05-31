@@ -589,7 +589,7 @@ bool Generic6DofConstraint::TestAngularLimitMotor(int axisIndex)
 	return Native->testAngularLimitMotor(axisIndex);
 }
 
-void Generic6DofConstraint::UpdateRHS(btScalar timeStep)
+void Generic6DofConstraint::UpdateRhs(btScalar timeStep)
 {
 	Native->updateRHS(timeStep);
 }

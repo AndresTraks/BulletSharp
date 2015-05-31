@@ -916,7 +916,7 @@ namespace SoftDemo
             }
             AJoint.Specs aj = new AJoint.Specs();
             aj.Axis = new Vector3(0, 0, 1);
-            aj.IControl = motorControl;
+            aj.Control = motorControl;
             psb0.AppendAngularJoint(aj, psb1);
 
             LJoint.Specs lj = new LJoint.Specs();
@@ -965,11 +965,11 @@ namespace SoftDemo
             aspecs.Erp = 1;
             aspecs.Axis = new Vector3(1, 0, 0);
 
-            aspecs.IControl = steerControlF;
+            aspecs.Control = steerControlF;
             pa.AppendAngularJoint(aspecs, pfl);
             pa.AppendAngularJoint(aspecs, pfr);
 
-            aspecs.IControl = motorControl;
+            aspecs.Control = motorControl;
             pa.AppendAngularJoint(aspecs, prl);
             pa.AppendAngularJoint(aspecs, prr);
 

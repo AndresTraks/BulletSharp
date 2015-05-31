@@ -122,7 +122,7 @@ namespace BulletSharp
 		void ProcessNode(int subPart, int triangleIndex);
 	};
 #endif
-	public ref class QuantizedBvh : ITrackingDisposable
+	public ref class QuantizedBvh
 	{
 	public:
 		enum class TraversalMode
@@ -131,10 +131,6 @@ namespace BulletSharp
 			StacklessCacheFriendly = btQuantizedBvh::TRAVERSAL_STACKLESS_CACHE_FRIENDLY,
 			Recursive = btQuantizedBvh::TRAVERSAL_RECURSIVE
 		};
-
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
 
 	internal:
 		btQuantizedBvh* _native;

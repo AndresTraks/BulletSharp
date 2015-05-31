@@ -127,9 +127,6 @@ namespace BulletSharp
 	private:
 		OverlapFilterCallback^ _overlapFilterCallback;
 
-	internal:
-		SortedOverlappingPairCache(btSortedOverlappingPairCache* native);
-
 	public:
 		SortedOverlappingPairCache();
 
@@ -148,9 +145,6 @@ namespace BulletSharp
 
 	public ref class NullPairCache : OverlappingPairCache
 	{
-	internal:
-		NullPairCache(btNullPairCache* native);
-
 	public:
 		NullPairCache();
 

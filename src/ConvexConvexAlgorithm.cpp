@@ -16,6 +16,8 @@ ConvexConvexAlgorithm::CreateFunc::CreateFunc(SimplexSolverInterface^ simplexSol
 	: CollisionAlgorithmCreateFunc(new btConvexConvexAlgorithm::CreateFunc(simplexSolver->_native,
 		pdSolver->_native))
 {
+	_simplexSolver = simplexSolver;
+	_pdSolver = pdSolver;
 }
 
 int ConvexConvexAlgorithm::CreateFunc::MinimumPointsPerturbationThreshold::get()
@@ -38,19 +40,21 @@ void ConvexConvexAlgorithm::CreateFunc::NumPerturbationIterations::set(int value
 
 ConvexPenetrationDepthSolver^ ConvexConvexAlgorithm::CreateFunc::PdSolver::get()
 {
-	return gcnew ConvexPenetrationDepthSolver(Native->m_pdSolver);
+	return _pdSolver;
 }
 void ConvexConvexAlgorithm::CreateFunc::PdSolver::set(ConvexPenetrationDepthSolver^ value)
 {
+	_pdSolver = value;
 	Native->m_pdSolver = value->_native;
 }
 
 SimplexSolverInterface^ ConvexConvexAlgorithm::CreateFunc::SimplexSolver::get()
 {
-	return gcnew SimplexSolverInterface(Native->m_simplexSolver, true);
+	return _simplexSolver;
 }
 void ConvexConvexAlgorithm::CreateFunc::SimplexSolver::set(SimplexSolverInterface^ value)
 {
+	_simplexSolver = value;
 	Native->m_simplexSolver = value->_native;
 }
 

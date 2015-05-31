@@ -16,15 +16,8 @@ PoolAllocator::~PoolAllocator()
 
 PoolAllocator::!PoolAllocator()
 {
-	if (this->IsDisposed)
-		return;
-
-	OnDisposing(this, nullptr);
-
 	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 PoolAllocator::PoolAllocator(int elemSize, int maxElements)

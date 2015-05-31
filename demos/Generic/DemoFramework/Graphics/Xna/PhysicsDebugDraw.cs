@@ -2,15 +2,15 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace DemoFramework.Xna
+namespace DemoFramework.MonoGame
 {
     public class PhysicsDebugDraw : BufferedDebugDraw
     {
-        XnaGraphics graphics;
+        MonoGameGraphics graphics;
         BasicEffect effect;
         EffectPass pass;
 
-        public PhysicsDebugDraw(XnaGraphics graphics)
+        public PhysicsDebugDraw(MonoGameGraphics graphics)
         {
             this.graphics = graphics;
         }

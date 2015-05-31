@@ -64,7 +64,7 @@ namespace BulletSharp
 		ConvexPolyhedron();
 
 		void Initialize();
-		void Project(Matrix% transform, Vector3% direction, [Out] btScalar% minProj, [Out] btScalar% maxProj, [Out] Vector3% witnesPtMin,
+		void ProjectRef(Matrix% transform, Vector3% direction, [Out] btScalar% minProj, [Out] btScalar% maxProj, [Out] Vector3% witnesPtMin,
 			[Out] Vector3% witnesPtMax);
 		void Project(Matrix transform, Vector3 direction, [Out] btScalar% minProj, [Out] btScalar% maxProj, [Out] Vector3% witnesPtMin,
 			[Out] Vector3% witnesPtMax);

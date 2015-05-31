@@ -1,1 +1,0 @@
-"%PROGRAMFILES%\7-Zip\7z.exe" a bulletsharp-net2.zip "Release SlimDX\bulletsharp.dll" "Release Generic\bulletsharp.dll" "Release Axiom\bulletsharp.dll" "Release OpenTK\bulletsharp.dll" "Release SharpDX\bulletsharp.dll" "Release Mogre\bulletsharp.dll" "Release XNA 3.1\bulletsharp.dll"

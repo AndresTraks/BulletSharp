@@ -13,9 +13,7 @@ namespace BulletSharp
 
 	public:
 		ConvexPointCloudShape();
-		ConvexPointCloudShape(array<Vector3>^ points, Vector3% localScaling, bool computeAabb);
 		ConvexPointCloudShape(array<Vector3>^ points, Vector3 localScaling, bool computeAabb);
-		ConvexPointCloudShape(array<Vector3>^ points, Vector3% localScaling);
 		ConvexPointCloudShape(array<Vector3>^ points, Vector3 localScaling);
 
 		Vector3 GetScaledPoint(int index);

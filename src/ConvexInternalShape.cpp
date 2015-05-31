@@ -19,7 +19,7 @@ void ConvexInternalShape::SetSafeMargin(btScalar minDimension)
 	Native->setSafeMargin(minDimension);
 }
 
-void ConvexInternalShape::SetSafeMargin(Vector3% halfExtents, btScalar defaultMarginMultiplier)
+void ConvexInternalShape::SetSafeMarginRef(Vector3% halfExtents, btScalar defaultMarginMultiplier)
 {
 	VECTOR3_CONV(halfExtents);
 	Native->setSafeMargin(VECTOR3_USE(halfExtents), defaultMarginMultiplier);
@@ -33,7 +33,7 @@ void ConvexInternalShape::SetSafeMargin(Vector3 halfExtents, btScalar defaultMar
 	VECTOR3_DEL(halfExtents);
 }
 
-void ConvexInternalShape::SetSafeMargin(Vector3% halfExtents)
+void ConvexInternalShape::SetSafeMarginRef(Vector3% halfExtents)
 {
 	VECTOR3_CONV(halfExtents);
 	Native->setSafeMargin(VECTOR3_USE(halfExtents));

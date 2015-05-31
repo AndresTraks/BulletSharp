@@ -3,7 +3,7 @@ using System.Globalization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace DemoFramework.Xna
+namespace DemoFramework.MonoGame
 {
     public class InfoText : IDisposable
     {

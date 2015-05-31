@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace DemoFramework.Xna
+namespace DemoFramework.MonoGame
 {
     public partial class XnaForm : Form
     {
@@ -9,7 +9,7 @@ namespace DemoFramework.Xna
             get { return graphicsDeviceControl1; }
         }
 
-        public XnaForm(XnaGraphics graphics)
+        public XnaForm(MonoGameGraphics graphics)
         {
             InitializeComponent();
             

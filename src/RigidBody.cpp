@@ -50,18 +50,7 @@ RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp:
 	_collisionShape = collisionShape;
 	_motionState = motionState;
 }
-/*
-RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape, Vector3% localInertia)
-{
-	VECTOR3_CONV(localInertia);
-	_native = RigidBody_GetUnmanagedConstructionInfoLocalInertia(mass,
-		GetUnmanagedNullable(motionState), GetUnmanagedNullable(collisionShape),
-		VECTOR3_PTR(localInertia));
-	VECTOR3_DEL(localInertia);
-	_collisionShape = collisionShape;
-	_motionState = motionState;
-}
-*/
+
 RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape, Vector3 localInertia)
 {
 	VECTOR3_CONV(localInertia);

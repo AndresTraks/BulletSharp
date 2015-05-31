@@ -23,8 +23,6 @@ namespace BulletSharp
 		~RigidBodyConstructionInfo();
 
 	public:
-		//RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, CollisionShape^ collisionShape,
-		//	Vector3% localInertia); // Causes ambiguous call in in BulletWorldImporter
 		RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, CollisionShape^ collisionShape,
 			Vector3 localInertia);
 		RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, CollisionShape^ collisionShape);

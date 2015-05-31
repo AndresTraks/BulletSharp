@@ -181,15 +181,8 @@ Dispatcher::~Dispatcher()
 
 Dispatcher::!Dispatcher()
 {
-	if (this->IsDisposed)
-		return;
-
-	OnDisposing(this, nullptr);
-
 	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 IntPtr Dispatcher::AllocateCollisionAlgorithm(int size)

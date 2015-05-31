@@ -9,14 +9,6 @@ CylinderShape::CylinderShape(btCylinderShape* native)
 {
 }
 
-CylinderShape::CylinderShape(Vector3% halfExtents)
-	: ConvexInternalShape(0)
-{
-	VECTOR3_CONV(halfExtents);
-	UnmanagedPointer = new btCylinderShape(VECTOR3_USE(halfExtents));
-	VECTOR3_DEL(halfExtents);
-}
-
 CylinderShape::CylinderShape(Vector3 halfExtents)
 	: ConvexInternalShape(0)
 {

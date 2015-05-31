@@ -113,12 +113,8 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class Dispatcher abstract : ITrackingDisposable
+	public ref class Dispatcher abstract
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	internal:
 		btDispatcher* _native;
 		Dictionary<IntPtr, DispatcherInfo^>^ _dispatcherInfoRefs;

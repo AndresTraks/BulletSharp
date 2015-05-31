@@ -707,6 +707,21 @@ void Dbvt::Remove(DbvtNode^ leaf)
 	_native->remove(leaf->_native);
 }
 
+void Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume)
+{
+	_native->update(leaf->_native, *volume->_native);
+}
+
+void Dbvt::Update(DbvtNode^ leaf, int lookAhead)
+{
+	_native->update(leaf->_native, lookAhead);
+}
+
+void Dbvt::Update(DbvtNode^ leaf)
+{
+	_native->update(leaf->_native);
+}
+
 bool Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume, btScalar margin)
 {
 	return _native->update(leaf->_native, *volume->_native, margin);
@@ -723,24 +738,10 @@ bool Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume, Vector3 velocity)
 bool Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume, Vector3 velocity, btScalar margin)
 {
 	VECTOR3_CONV(velocity);
-	bool ret = _native->update(leaf->_native, *volume->_native, VECTOR3_USE(velocity), margin);
+	bool ret = _native->update(leaf->_native, *volume->_native, VECTOR3_USE(velocity),
+		margin);
 	VECTOR3_DEL(velocity);
 	return ret;
-}
-
-void Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume)
-{
-	_native->update(leaf->_native, *volume->_native);
-}
-
-void Dbvt::Update(DbvtNode^ leaf, int lookahead)
-{
-	_native->update(leaf->_native, lookahead);
-}
-
-void Dbvt::Update(DbvtNode^ leaf)
-{
-	_native->update(leaf->_native);
 }
 
 void Dbvt::Write(IWriter^ iwriter)

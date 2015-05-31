@@ -19,7 +19,7 @@ namespace DemoFramework
         }
 
         static string[] supportedLibraries = new string[] {
-            "SharpDX (DirectX 11)", "SharpDX (DirectX 10)", "SlimDX (DirectX 9)", "OpenTK (OpenGL)", "XNA (DirectX 9)" };
+            "SharpDX (DirectX 11)", "SharpDX (DirectX 10)", "SlimDX (DirectX 9)", "OpenTK (OpenGL)", "MonoGame (OpenGL)" };
         public static string[] GetSupportedLibraries()
         {
             return supportedLibraries;
@@ -42,8 +42,8 @@ namespace DemoFramework
                 case "OpenTK (OpenGL)":
                     assemblyNames = new string[] { "DemoFramework.OpenTK", "OpenTK" };
                     break;
-                case "XNA (DirectX 9)":
-                    assemblyNames = new string[] { "DemoFramework.Xna" };
+                case "MonoGame (OpenGL)":
+                    assemblyNames = new string[] { "DemoFramework.MonoGame" };
                     break;
                 default:
                     return false;
@@ -86,9 +86,9 @@ namespace DemoFramework
                     assembly = Assembly.Load("DemoFramework.OpenTK");
                     graphicsType = assembly.GetType("DemoFramework.OpenTK.OpenTKGraphics");
                     break;
-                case "XNA (DirectX 9)":
-                    assembly = Assembly.Load("DemoFramework.Xna");
-                    graphicsType = assembly.GetType("DemoFramework.Xna.XnaGraphics");
+                case "MonoGame (OpenGL)":
+                    assembly = Assembly.Load("DemoFramework.MonoGame");
+                    graphicsType = assembly.GetType("DemoFramework.MonoGame.MonoGameGraphics");
                     break;
                 default:
                     return null;

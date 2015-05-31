@@ -7,11 +7,6 @@
 
 #define Native static_cast<btHinge2Constraint*>(_native)
 
-Hinge2Constraint::Hinge2Constraint(btHinge2Constraint* native)
-	: Generic6DofSpring2Constraint(native)
-{
-}
-
 Hinge2Constraint::Hinge2Constraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 anchor,
 	Vector3 axis1, Vector3 axis2)
 	: Generic6DofSpring2Constraint(0)

@@ -33,7 +33,7 @@ namespace BulletSharp
 				int get();
 				void set(int value);
 			}
-			/*
+
 			property ConvexPenetrationDepthSolver^ PdSolver
 			{
 				ConvexPenetrationDepthSolver^ get();
@@ -44,7 +44,7 @@ namespace BulletSharp
 			{
 				VoronoiSimplexSolver^ get();
 				void set(VoronoiSimplexSolver^ value);
-			}*/
+			}
 		};
 
 		Convex2DConvex2DAlgorithm(PersistentManifold mf, CollisionAlgorithmConstructionInfo^ ci,

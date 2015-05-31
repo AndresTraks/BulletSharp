@@ -36,7 +36,7 @@ namespace BulletSharp
 		void SetMaxMotorImpulseNormalized(btScalar maxMotorImpulse);
 		void SetMotorTarget(Quaternion q);
 		void SetMotorTargetInConstraintSpace(Quaternion q);
-		void UpdateRHS(btScalar timeStep);
+		void UpdateRhs(btScalar timeStep);
 
 		property Matrix AFrame
 		{

@@ -105,7 +105,7 @@ void DbvtBroadphase::PerformDeferredRemoval(Dispatcher^ dispatcher)
 	Native->performDeferredRemoval(dispatcher->_native);
 }
 
-void DbvtBroadphase::SetAabbForceUpdate(BroadphaseProxy^ absproxy, Vector3% aabbMin,
+void DbvtBroadphase::SetAabbForceUpdateRef(BroadphaseProxy^ absproxy, Vector3% aabbMin,
 	Vector3% aabbMax, Dispatcher^ dispatcher)
 {
 	VECTOR3_CONV(aabbMin);

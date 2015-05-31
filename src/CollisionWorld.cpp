@@ -150,9 +150,23 @@ void LocalRayResult::LocalShapeInfo::set(BulletSharp::LocalShapeInfo^ value)
 }
 
 
+float RayResultCallback::AddSingleResultUnmanaged(IntPtr rayResult, bool normalInWorldSpace)
+{
+	return AddSingleResult(gcnew LocalRayResult(static_cast<btCollisionWorld::LocalRayResult*>(rayResult.ToPointer()), true), normalInWorldSpace);
+}
+
+bool RayResultCallback::NeedsCollisionUnmanaged(IntPtr proxy0)
+{
+	return NeedsCollision(BroadphaseProxy::GetManaged(static_cast<btBroadphaseProxy*>(proxy0.ToPointer())));
+}
+
 RayResultCallback::RayResultCallback()
 {
-	_native = ALIGNED_NEW(RayResultCallbackWrapper) (this);
+	_addSingleResult = gcnew AddSingleResultUnmanagedDelegate(this, &RayResultCallback::AddSingleResultUnmanaged);
+	_needsCollision = gcnew NeedsCollisionUnmanagedDelegate(this, &RayResultCallback::NeedsCollisionUnmanaged);
+	_native = ALIGNED_NEW(RayResultCallbackWrapper) (
+		(pRayResultCallback_AddSingleResult) Marshal::GetFunctionPointerForDelegate(_addSingleResult).ToPointer(),
+		(pRayResultCallback_NeedsCollision) Marshal::GetFunctionPointerForDelegate(_needsCollision).ToPointer());
 }
 
 RayResultCallback::~RayResultCallback()
@@ -231,24 +245,21 @@ bool RayResultCallback::IsDisposed::get()
 
 #define Callback static_cast<BulletSharp::RayResultCallback^>(VoidPtrToGCHandle(_callback).Target)
 
-RayResultCallbackWrapper::RayResultCallbackWrapper(BulletSharp::RayResultCallback^ callback)
+RayResultCallbackWrapper::RayResultCallbackWrapper(pRayResultCallback_AddSingleResult addSingleResultCallback,
+	pRayResultCallback_NeedsCollision needsCollisionCallback)
 {
-	_callback = GCHandleToVoidPtr(GCHandle::Alloc(callback, GCHandleType::Weak));
-}
-
-RayResultCallbackWrapper::~RayResultCallbackWrapper()
-{
-	VoidPtrToGCHandle(_callback).Free();
+	_addSingleResultCallback = addSingleResultCallback;
+	_needsCollisionCallback = needsCollisionCallback;
 }
 
 bool RayResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) const
 {
-	return Callback->NeedsCollision(BroadphaseProxy::GetManaged(proxy0));
+	return _needsCollisionCallback(proxy0);
 }
 
 btScalar RayResultCallbackWrapper::addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace)
 {
-	return Callback->AddSingleResult(gcnew LocalRayResult(&rayResult, true), normalInWorldSpace);
+	return _addSingleResultCallback(rayResult, normalInWorldSpace);
 }
 
 

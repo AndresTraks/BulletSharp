@@ -127,6 +127,295 @@ void SoftBodyWorldInfo::WaterOffset::set(btScalar value)
 }
 
 
+Joint::Specs::Specs(btSoftBody::Joint::Specs* native)
+{
+	_native = native;
+}
+
+Joint::Specs::~Specs()
+{
+	this->!Specs();
+}
+
+Joint::Specs::!Specs()
+{
+	ALIGNED_FREE(_native);
+	_native = NULL;
+}
+
+btScalar Joint::Specs::Cfm::get()
+{
+	return _native->cfm;
+}
+void Joint::Specs::Cfm::set(btScalar value)
+{
+	_native->cfm = value;
+}
+
+btScalar Joint::Specs::Erp::get()
+{
+	return _native->erp;
+}
+void Joint::Specs::Erp::set(btScalar value)
+{
+	_native->erp = value;
+}
+
+btScalar Joint::Specs::Split::get()
+{
+	return _native->split;
+}
+void Joint::Specs::Split::set(btScalar value)
+{
+	_native->split = value;
+}
+
+
+Joint::Joint(btSoftBody::Joint* native)
+{
+	_native = native;
+}
+
+void Joint::Prepare(btScalar dt, int iterations)
+{
+	_native->Prepare(dt, iterations);
+}
+
+void Joint::Solve(btScalar dt, btScalar sor)
+{
+	_native->Solve(dt, sor);
+}
+
+void Joint::Terminate(btScalar dt)
+{
+	_native->Terminate(dt);
+}
+
+BodyArray^ Joint::Bodies::get()
+{
+	if (_bodies == nullptr)
+	{
+		_bodies = gcnew BodyArray(_native->m_bodies, 2);
+	}
+	return _bodies;
+}
+
+btScalar Joint::Cfm::get()
+{
+	return _native->m_cfm;
+}
+void Joint::Cfm::set(btScalar value)
+{
+	_native->m_cfm = value;
+}
+
+bool Joint::Delete::get()
+{
+	return _native->m_delete;
+}
+void Joint::Delete::set(bool value)
+{
+	_native->m_delete = value;
+}
+
+Vector3 Joint::Drift::get()
+{
+	return Math::BtVector3ToVector3(&_native->m_drift);
+}
+void Joint::Drift::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_native->m_drift);
+}
+
+btScalar Joint::Erp::get()
+{
+	return _native->m_erp;
+}
+void Joint::Erp::set(btScalar value)
+{
+	_native->m_erp = value;
+}
+
+Matrix Joint::MassMatrix::get()
+{
+	return Math::BtMatrix3x3ToMatrix(&_native->m_massmatrix);
+}
+void Joint::MassMatrix::set(Matrix value)
+{
+	Math::MatrixToBtMatrix3x3(value, &_native->m_massmatrix);
+}
+
+Vector3Array^ BulletSharp::SoftBody::Joint::Refs::get()
+{
+	if (_refs == nullptr)
+	{
+		_refs = gcnew Vector3Array(_native->m_refs, 2);
+	}
+	return _refs;
+}
+
+Vector3 Joint::SDrift::get()
+{
+	return Math::BtVector3ToVector3(&_native->m_sdrift);
+}
+void Joint::SDrift::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_native->m_sdrift);
+}
+
+btScalar Joint::Split::get()
+{
+	return _native->m_split;
+}
+void Joint::Split::set(btScalar value)
+{
+	_native->m_split = value;
+}
+
+Joint::JointType BulletSharp::SoftBody::Joint::Type::get()
+{
+	return (JointType)_native->Type();
+}
+
+
+void AJoint::IControl::PrepareUnmanaged(IntPtr aJoint)
+{
+    Prepare(gcnew AJoint(static_cast<btSoftBody::AJoint*>(aJoint.ToPointer())));
+}
+
+btScalar AJoint::IControl::SpeedUnmanaged(IntPtr aJoint, btScalar current)
+{
+    return Speed(gcnew AJoint(static_cast<btSoftBody::AJoint*>(aJoint.ToPointer())), current);
+}
+
+AJoint::IControl::IControl(btSoftBody::AJoint::IControl* native, bool preventDelete)
+{
+	_native = native;
+	_preventDelete = preventDelete;
+}
+
+AJoint::IControl::~IControl()
+{
+	this->!IControl();
+}
+
+AJoint::IControl::!IControl()
+{
+	if (!_preventDelete)
+	{
+		ALIGNED_FREE(_native);
+	}
+	_native = NULL;
+}
+
+AJoint::IControl::IControl()
+{
+	_prepare = gcnew PrepareUnmanagedDelegate(this, &IControl::PrepareUnmanaged);
+	_speed = gcnew SpeedUnmanagedDelegate(this, &IControl::SpeedUnmanaged);
+	_native = ALIGNED_NEW(AJointIControlWrapper) (
+		(pIControl_Prepare) Marshal::GetFunctionPointerForDelegate(_prepare).ToPointer(),
+		(pIControl_Speed) Marshal::GetFunctionPointerForDelegate(_speed).ToPointer());
+}
+
+AJoint::IControl^ AJoint::IControl::Default()
+{
+	if (_default == nullptr)
+	{
+		_default = gcnew IControl(btSoftBody::AJoint::IControl::Default(), true);
+	}
+	return _default;
+}
+
+void AJoint::IControl::Prepare(AJoint^ joint)
+{
+}
+
+btScalar AJoint::IControl::Speed(AJoint^ joint, btScalar current)
+{
+	return current;
+}
+
+
+AJointIControlWrapper::AJointIControlWrapper(pIControl_Prepare PrepareCallback, pIControl_Speed SpeedCallback)
+{
+	_prepareCallback = PrepareCallback;
+	_speedCallback = SpeedCallback;
+}
+
+void AJointIControlWrapper::Prepare(btSoftBody::AJoint* joint)
+{
+	_prepareCallback(joint);
+}
+
+btScalar AJointIControlWrapper::Speed(btSoftBody::AJoint* joint, btScalar current)
+{
+	return _speedCallback(joint, current);
+}
+
+
+#define Native static_cast<btSoftBody::AJoint::Specs*>(_native)
+
+AJoint::Specs::Specs()
+	: Joint::Specs(ALIGNED_NEW(btSoftBody::AJoint::Specs)())
+{
+}
+
+Vector3 AJoint::Specs::Axis::get()
+{
+	return Math::BtVector3ToVector3(&Native->axis);
+}
+void AJoint::Specs::Axis::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &Native->axis);
+}
+
+AJoint::IControl^ AJoint::Specs::Control::get()
+{
+	if (_iControl == nullptr)
+	{
+		_iControl = gcnew AJoint::IControl(Native->icontrol, true);
+	}
+	return _iControl;
+}
+void AJoint::Specs::Control::set(IControl^ value)
+{
+	_iControl = value;
+	Native->icontrol = value->_native;
+}
+
+
+#undef Native
+#define Native static_cast<btSoftBody::AJoint*>(_native)
+
+AJoint::AJoint(btSoftBody::AJoint* native)
+	: Joint(native)
+{
+}
+
+Vector3Array^ AJoint::Axis::get()
+{
+	if (_axis == nullptr)
+	{
+		_axis = gcnew Vector3Array(Native->m_axis, 2);
+	}
+	return _axis;
+}
+
+AJoint::IControl^ AJoint::Control::get()
+{
+	if (_iControl == nullptr)
+	{
+		_iControl = gcnew AJoint::IControl(Native->m_icontrol, true);
+	}
+	return _iControl;
+}
+void AJoint::Control::set(IControl^ value)
+{
+	_iControl = value;
+	Native->m_icontrol = value->_native;
+}
+
+
 Anchor::Anchor(btSoftBody::Anchor* native)
 {
 	_native = native;
@@ -399,6 +688,60 @@ Matrix Body::XForm::get()
 }
 
 
+#undef Native
+#define Native static_cast<btSoftBody::CJoint*>(_native)
+
+CJoint::CJoint(btSoftBody::CJoint* native)
+	: Joint(native)
+{
+}
+
+btScalar CJoint::Friction::get()
+{
+	return Native->m_friction;
+}
+void CJoint::Friction::set(btScalar value)
+{
+	Native->m_friction = value;
+}
+
+int CJoint::Life::get()
+{
+	return Native->m_life;
+}
+void CJoint::Life::set(int value)
+{
+	Native->m_life = value;
+}
+
+int CJoint::MaxLife::get()
+{
+	return Native->m_maxlife;
+}
+void CJoint::MaxLife::set(int value)
+{
+	Native->m_maxlife = value;
+}
+
+Vector3 CJoint::Normal::get()
+{
+	return Math::BtVector3ToVector3(&Native->m_normal);
+}
+void CJoint::Normal::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &Native->m_normal);
+}
+
+Vector3Array^ CJoint::RPos::get()
+{
+	if (_rPos == nullptr)
+	{
+		_rPos = gcnew Vector3Array(Native->m_rpos, 2);
+	}
+	return _rPos;
+}
+
+
 Cluster::Cluster(btSoftBody::Cluster* native)
 {
 	_native = native;
@@ -476,11 +819,11 @@ AlignedVector3Array^ Cluster::FrameRefs::get()
 	return _frameRefs;
 }
 
-Matrix Cluster::FrameXForm::get()
+Matrix Cluster::FrameTransform::get()
 {
 	return Math::BtTransformToMatrix(&_native->m_framexform);
 }
-void Cluster::FrameXForm::set(Matrix value)
+void Cluster::FrameTransform::set(Matrix value)
 {
 	Math::MatrixToBtTransform(value, &_native->m_framexform);
 }
@@ -907,6 +1250,7 @@ void Element::Tag::set(IntPtr value)
 }
 
 
+#undef Native
 #define Native static_cast<btSoftBody::Feature*>(_native)
 
 Feature::Feature(btSoftBody::Feature* native)
@@ -975,7 +1319,14 @@ void Face::RestArea::set(btScalar value)
 
 ImplicitFn::ImplicitFn()
 {
-	_native = new ImplicitFnWrapper(this);
+	_eval = gcnew EvalUnmanagedDelegate(this, &ImplicitFn::EvalUnmanaged);
+	_native = new ImplicitFnWrapper(
+		(pImplicitFn_Eval) Marshal::GetFunctionPointerForDelegate(_eval).ToPointer());
+}
+
+btScalar ImplicitFn::EvalUnmanaged(IntPtr x)
+{
+	return Eval(Math::BtVector3ToVector3(static_cast<btVector3*>(x.ToPointer())));
 }
 
 ImplicitFn::~ImplicitFn()
@@ -990,20 +1341,14 @@ ImplicitFn::!ImplicitFn()
 }
 
 
-ImplicitFnWrapper::ImplicitFnWrapper(BulletSharp::SoftBody::ImplicitFn^ implicitFn)
+ImplicitFnWrapper::ImplicitFnWrapper(pImplicitFn_Eval evalCallback)
 {
-	_implicitFn = GCHandle::Alloc(implicitFn);
-}
-
-ImplicitFnWrapper::~ImplicitFnWrapper()
-{
-	_implicitFn.Free();
-	//_implicitFn = 0;
+	_evalCallback = evalCallback;
 }
 
 btScalar ImplicitFnWrapper::Eval(const btVector3& x)
 {
-	return static_cast<BulletSharp::SoftBody::ImplicitFn^>(_implicitFn.Target)->Eval(Math::BtVector3ToVector3(&x));
+	return _evalCallback(x);
 }
 
 
@@ -1088,352 +1433,6 @@ Vector3 Impulse::Velocity::get()
 void Impulse::Velocity::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_native->m_velocity);
-}
-
-
-Joint::Specs::Specs(btSoftBody::Joint::Specs* native)
-{
-	_native = native;
-}
-
-Joint::Specs::~Specs()
-{
-	this->!Specs();
-}
-
-Joint::Specs::!Specs()
-{
-	ALIGNED_FREE(_native);
-	_native = NULL;
-}
-
-btScalar Joint::Specs::Cfm::get()
-{
-	return _native->cfm;
-}
-void Joint::Specs::Cfm::set(btScalar value)
-{
-	_native->cfm = value;
-}
-
-btScalar Joint::Specs::Erp::get()
-{
-	return _native->erp;
-}
-void Joint::Specs::Erp::set(btScalar value)
-{
-	_native->erp = value;
-}
-
-btScalar Joint::Specs::Split::get()
-{
-	return _native->split;
-}
-void Joint::Specs::Split::set(btScalar value)
-{
-	_native->split = value;
-}
-
-
-Joint::Joint(btSoftBody::Joint* native)
-{
-	_native = native;
-}
-
-Joint^ BulletSharp::SoftBody::Joint::GetManaged(btSoftBody::Joint* joint)
-{
-	if (joint == 0)
-		return nullptr;
-
-	switch(joint->Type())
-	{
-	case btSoftBody::Joint::eType::Angular:
-		return gcnew AJoint((btSoftBody::AJoint*)joint);
-	case btSoftBody::Joint::eType::Contact:
-		return gcnew CJoint((btSoftBody::CJoint*)joint);
-	case btSoftBody::Joint::eType::Linear:
-		return gcnew LJoint((btSoftBody::LJoint*)joint);
-	};
-	throw gcnew NotImplementedException();
-}
-
-void Joint::Prepare(btScalar dt, int iterations)
-{
-	_native->Prepare(dt, iterations);
-}
-
-void Joint::Solve(btScalar dt, btScalar sor)
-{
-	_native->Solve(dt, sor);
-}
-
-void Joint::Terminate(btScalar dt)
-{
-	_native->Terminate(dt);
-}
-
-BodyArray^ Joint::Bodies::get()
-{
-	if (_bodies == nullptr)
-	{
-		_bodies = gcnew BodyArray(_native->m_bodies, 2);
-	}
-	return _bodies;
-}
-
-btScalar Joint::Cfm::get()
-{
-	return _native->m_cfm;
-}
-void Joint::Cfm::set(btScalar value)
-{
-	_native->m_cfm = value;
-}
-
-bool Joint::Delete::get()
-{
-	return _native->m_delete;
-}
-void Joint::Delete::set(bool value)
-{
-	_native->m_delete = value;
-}
-
-Vector3 Joint::Drift::get()
-{
-	return Math::BtVector3ToVector3(&_native->m_drift);
-}
-void Joint::Drift::set(Vector3 value)
-{
-	Math::Vector3ToBtVector3(value, &_native->m_drift);
-}
-
-btScalar Joint::Erp::get()
-{
-	return _native->m_erp;
-}
-void Joint::Erp::set(btScalar value)
-{
-	_native->m_erp = value;
-}
-
-Matrix Joint::MassMatrix::get()
-{
-	return Math::BtMatrix3x3ToMatrix(&_native->m_massmatrix);
-}
-void Joint::MassMatrix::set(Matrix value)
-{
-	Math::MatrixToBtMatrix3x3(value, &_native->m_massmatrix);
-}
-
-Vector3Array^ BulletSharp::SoftBody::Joint::Refs::get()
-{
-	if (_refs == nullptr)
-	{
-		_refs = gcnew Vector3Array(_native->m_refs, 2);
-	}
-	return _refs;
-}
-
-Vector3 Joint::SDrift::get()
-{
-	return Math::BtVector3ToVector3(&_native->m_sdrift);
-}
-void Joint::SDrift::set(Vector3 value)
-{
-	Math::Vector3ToBtVector3(value, &_native->m_sdrift);
-}
-
-btScalar Joint::Split::get()
-{
-	return _native->m_split;
-}
-void Joint::Split::set(btScalar value)
-{
-	_native->m_split = value;
-}
-
-Joint::JointType BulletSharp::SoftBody::Joint::Type::get()
-{
-	return (JointType)_native->Type();
-}
-
-
-AJoint::IControl::IControl(btSoftBody::AJoint::IControl* native, bool preventDelete)
-{
-	_native = native;
-	_preventDelete = preventDelete;
-}
-
-AJoint::IControl::~IControl()
-{
-	this->!IControl();
-}
-
-AJoint::IControl::!IControl()
-{
-	if (!_preventDelete)
-	{
-		ALIGNED_FREE(_native);
-	}
-	_native = NULL;
-}
-
-AJoint::IControl::IControl()
-{
-	_native = ALIGNED_NEW(AJointIControlWrapper) (this);
-}
-
-void AJoint::IControl::Prepare(AJoint^ joint)
-{
-}
-
-btScalar AJoint::IControl::Speed(AJoint^ joint, btScalar current)
-{
-	return current;
-}
-
-AJoint::IControl^ AJoint::IControl::Default::get()
-{
-	if (_default == nullptr)
-	{
-		_default = gcnew IControl(btSoftBody::AJoint::IControl::Default(), true);
-	}
-	return _default;
-}
-
-
-#undef Native
-#define Native static_cast<btSoftBody::AJoint::Specs*>(_native)
-
-AJoint::Specs::Specs()
-	: Joint::Specs(ALIGNED_NEW(btSoftBody::AJoint::Specs)())
-{
-}
-
-Vector3 AJoint::Specs::Axis::get()
-{
-	return Math::BtVector3ToVector3(&Native->axis);
-}
-void AJoint::Specs::Axis::set(Vector3 value)
-{
-	Math::Vector3ToBtVector3(value, &Native->axis);
-}
-
-AJoint::IControl^ AJoint::Specs::IControl::get()
-{
-	if (_iControl == nullptr)
-	{
-		_iControl = gcnew AJoint::IControl(Native->icontrol, true);
-	}
-	return _iControl;
-}
-void AJoint::Specs::IControl::set(AJoint::IControl^ value)
-{
-	_iControl = value;
-	Native->icontrol = value->_native;
-}
-
-
-#undef Native
-#define Native static_cast<btSoftBody::AJoint*>(_native)
-
-AJoint::AJoint(btSoftBody::AJoint* native)
-	: Joint(native)
-{
-}
-
-Vector3Array^ AJoint::Axis::get()
-{
-	if (_axis == nullptr)
-	{
-		_axis = gcnew Vector3Array(Native->m_axis, 2);
-	}
-	return _axis;
-}
-
-AJoint::IControl^ AJoint::Control::get()
-{
-	if (_iControl == nullptr)
-	{
-		_iControl = gcnew AJoint::IControl(Native->m_icontrol, true);
-	}
-	return _iControl;
-}
-void AJoint::Control::set(IControl^ value)
-{
-	_iControl = value;
-	Native->m_icontrol = value->_native;
-}
-
-
-AJointIControlWrapper::AJointIControlWrapper(AJoint::IControl^ iControl)
-{
-	_iControl = iControl;
-}
-
-void AJointIControlWrapper::Prepare(btSoftBody::AJoint* joint)
-{
-	_iControl->Prepare(gcnew AJoint(joint));
-}
-
-btScalar AJointIControlWrapper::Speed(btSoftBody::AJoint* joint, btScalar current)
-{
-	return _iControl->Speed(gcnew AJoint(joint), current);
-}
-
-
-#undef Native
-#define Native static_cast<btSoftBody::CJoint*>(_native)
-
-CJoint::CJoint(btSoftBody::CJoint* native)
-	: Joint(native)
-{
-}
-
-btScalar CJoint::Friction::get()
-{
-	return Native->m_friction;
-}
-void CJoint::Friction::set(btScalar value)
-{
-	Native->m_friction = value;
-}
-
-int CJoint::Life::get()
-{
-	return Native->m_life;
-}
-void CJoint::Life::set(int value)
-{
-	Native->m_life = value;
-}
-
-int CJoint::MaxLife::get()
-{
-	return Native->m_maxlife;
-}
-void CJoint::MaxLife::set(int value)
-{
-	Native->m_maxlife = value;
-}
-
-Vector3 CJoint::Normal::get()
-{
-	return Math::BtVector3ToVector3(&Native->m_normal);
-}
-void CJoint::Normal::set(Vector3 value)
-{
-	Math::Vector3ToBtVector3(value, &Native->m_normal);
-}
-
-Vector3Array^ CJoint::RPos::get()
-{
-	if (_rPos == nullptr)
-	{
-		_rPos = gcnew Vector3Array(Native->m_rpos, 2);
-	}
-	return _rPos;
 }
 
 
@@ -2224,23 +2223,7 @@ SolverState::SolverState(btSoftBody::SolverState* native)
 {
 	_native = native;
 }
-/*
-SolverState::~SolverState()
-{
-	this->!SolverState();
-}
 
-SolverState::!SolverState()
-{
-	delete _native;
-	_native = NULL;
-}
-
-SolverState::SolverState()
-{
-	_native = new btSoftBody::SolverState();
-}
-*/
 btScalar SolverState::InverseSdt::get()
 {
 	return _native->isdt;
@@ -2589,9 +2572,9 @@ void BulletSharp::SoftBody::SoftBody::AppendAnchor(int node, RigidBody^ body)
 
 void BulletSharp::SoftBody::SoftBody::StoreAngularJointControlRef(AJoint::Specs^ specs)
 {
-	if (specs->IControl != nullptr && specs->IControl != AJoint::IControl::Default)
+	if (specs->Control != nullptr && specs->Control != AJoint::IControl::Default())
 	{
-		_aJointControls->Add(specs->IControl);
+		_aJointControls->Add(specs->Control);
 	}
 }
 
@@ -2752,8 +2735,8 @@ void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Node^ 
 	VECTOR3_DEL(o);
 }
 
-void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Vector4 c, Node^ n0, Node^ n1, Node^ n2,
-	Node^ n3)
+void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Vector4 c, Node^ n0, Node^ n1,
+	Node^ n2, Node^ n3)
 {
 	const char* textTemp = StringConv::ManagedToUnmanaged(text);
 	VECTOR3_CONV(o);
@@ -2765,7 +2748,8 @@ void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Vector
 	VECTOR4_DEL(c);
 }
 
-void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Vector4 c, Node^ n0, Node^ n1, Node^ n2)
+void BulletSharp::SoftBody::SoftBody::AppendNote(String^ text, Vector3 o, Vector4 c, Node^ n0, Node^ n1,
+	Node^ n2)
 {
 	const char* textTemp = StringConv::ManagedToUnmanaged(text);
 	VECTOR3_CONV(o);
@@ -2887,21 +2871,6 @@ void BulletSharp::SoftBody::SoftBody::ClusterAImpulse(Cluster^ cluster, Impulse^
 }
 
 #pragma managed(push, off)
-void SoftBody_ClusterCOM(btSoftBody::Cluster* cluster, btVector3* com)
-{
-	*com = btSoftBody::clusterCom(cluster);
-}
-#pragma managed(pop)
-Vector3 BulletSharp::SoftBody::SoftBody::ClusterCom(Cluster^ cluster)
-{
-	btVector3* tempClusterCom = ALIGNED_NEW(btVector3);
-	SoftBody_ClusterCOM(cluster->_native, tempClusterCom);
-	Vector3 com = Math::BtVector3ToVector3(tempClusterCom);
-	ALIGNED_FREE(tempClusterCom);
-	return com;
-}
-
-#pragma managed(push, off)
 void SoftBody_ClusterCOM(btSoftBody* softBody, int cluster, btVector3* com)
 {
 	*com = softBody->clusterCom(cluster);
@@ -2911,6 +2880,21 @@ Vector3 BulletSharp::SoftBody::SoftBody::ClusterCom(int cluster)
 {
 	btVector3* tempClusterCom = ALIGNED_NEW(btVector3);
 	SoftBody_ClusterCOM(Native, cluster, tempClusterCom);
+	Vector3 com = Math::BtVector3ToVector3(tempClusterCom);
+	ALIGNED_FREE(tempClusterCom);
+	return com;
+}
+
+#pragma managed(push, off)
+void SoftBody_ClusterCOM(btSoftBody::Cluster* cluster, btVector3* com)
+{
+	*com = btSoftBody::clusterCom(cluster);
+}
+#pragma managed(pop)
+Vector3 BulletSharp::SoftBody::SoftBody::ClusterCom(Cluster^ cluster)
+{
+	btVector3* tempClusterCom = ALIGNED_NEW(btVector3);
+	SoftBody_ClusterCOM(cluster->_native, tempClusterCom);
 	Vector3 com = Math::BtVector3ToVector3(tempClusterCom);
 	ALIGNED_FREE(tempClusterCom);
 	return com;
@@ -3445,22 +3429,22 @@ void BulletSharp::SoftBody::SoftBody::PrepareClusters(int iterations)
 	Native->prepareClusters(iterations);
 }
 
-void BulletSharp::SoftBody::SoftBody::PSolve_Anchors(SoftBody^ psb, btScalar kst, btScalar ti)
+void BulletSharp::SoftBody::SoftBody::PSolveAnchors(SoftBody^ psb, btScalar kst, btScalar ti)
 {
 	btSoftBody::PSolve_Anchors((btSoftBody*)psb->_native, kst, ti);
 }
 
-void BulletSharp::SoftBody::SoftBody::PSolve_Links(SoftBody^ psb, btScalar kst, btScalar ti)
+void BulletSharp::SoftBody::SoftBody::PSolveLinks(SoftBody^ psb, btScalar kst, btScalar ti)
 {
 	btSoftBody::PSolve_Links((btSoftBody*)psb->_native, kst, ti);
 }
 
-void BulletSharp::SoftBody::SoftBody::PSolve_RContacts(SoftBody^ psb, btScalar kst, btScalar ti)
+void BulletSharp::SoftBody::SoftBody::PSolveRContacts(SoftBody^ psb, btScalar kst, btScalar ti)
 {
 	btSoftBody::PSolve_RContacts((btSoftBody*)psb->_native, kst, ti);
 }
 
-void BulletSharp::SoftBody::SoftBody::PSolve_SContacts(SoftBody^ psb, btScalar __unnamed1, btScalar ti)
+void BulletSharp::SoftBody::SoftBody::PSolveSContacts(SoftBody^ psb, btScalar __unnamed1, btScalar ti)
 {
 	btSoftBody::PSolve_SContacts((btSoftBody*)psb->_native, __unnamed1, ti);
 }
@@ -3678,7 +3662,7 @@ void BulletSharp::SoftBody::SoftBody::UpdatePose()
 	Native->updatePose();
 }
 
-void BulletSharp::SoftBody::SoftBody::VSolve_Links(SoftBody^ psb, btScalar kst)
+void BulletSharp::SoftBody::SoftBody::VSolveLinks(SoftBody^ psb, btScalar kst)
 {
 	btSoftBody::VSolve_Links((btSoftBody*)psb->_native, kst);
 }
@@ -3847,9 +3831,9 @@ btScalar BulletSharp::SoftBody::SoftBody::RestLengthScale::get()
 {
 	return Native->getRestLengthScale();
 }
-void BulletSharp::SoftBody::SoftBody::RestLengthScale::set(btScalar value)
+void BulletSharp::SoftBody::SoftBody::RestLengthScale::set(btScalar restLength)
 {
-	Native->setRestLengthScale(value);
+	Native->setRestLengthScale(restLength);
 }
 
 BulletSharp::SoftBody::AlignedRigidContactArray^ BulletSharp::SoftBody::SoftBody::RigidContacts::get()
@@ -3865,10 +3849,10 @@ SoftBodySolver^ BulletSharp::SoftBody::SoftBody::SoftBodySolver::get()
 {
 	return _softBodySolver;
 }
-void BulletSharp::SoftBody::SoftBody::SoftBodySolver::set(BulletSharp::SoftBody::SoftBodySolver^ value)
+void BulletSharp::SoftBody::SoftBody::SoftBodySolver::set(BulletSharp::SoftBody::SoftBodySolver^ softBodySolver)
 {
-	_softBodySolver = value;
-	Native->setSoftBodySolver(GetUnmanagedNullable(value));
+	_softBodySolver = softBodySolver;
+	Native->setSoftBodySolver(GetUnmanagedNullable(softBodySolver));
 }
 
 BulletSharp::SoftBody::AlignedSoftContactArray^ BulletSharp::SoftBody::SoftBody::SoftContacts::get()
@@ -3891,19 +3875,11 @@ SolverState^ BulletSharp::SoftBody::SoftBody::SolverState::get()
 
 Object^ BulletSharp::SoftBody::SoftBody::Tag::get()
 {
-	void* obj = Native->m_tag;
-	if (obj == nullptr)
-		return nullptr;
-	return static_cast<Object^>(VoidPtrToGCHandle(obj).Target);
+	return _tag;
 }
 void BulletSharp::SoftBody::SoftBody::Tag::set(Object^ value)
 {
-	void* obj = Native->m_tag;
-	if (obj != nullptr)
-		VoidPtrToGCHandle(obj).Free();
-
-	GCHandle handle = GCHandle::Alloc(value);
-	Native->m_tag = GCHandleToVoidPtr(handle);
+	_tag = value;
 }
 
 BulletSharp::SoftBody::AlignedTetraArray^ BulletSharp::SoftBody::SoftBody::Tetras::get()

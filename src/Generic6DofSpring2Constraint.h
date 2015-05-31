@@ -131,10 +131,22 @@ namespace BulletSharp
 			void set(btScalar value);
 		}
 
+		property bool SpringDampingLimited
+		{
+			bool get();
+			void set(bool value);
+		}
+
 		property btScalar SpringStiffness
 		{
 			btScalar get();
 			void set(btScalar value);
+		}
+
+		property bool SpringStiffnessLimited
+		{
+			bool get();
+			void set(bool value);
 		}
 
 		property btScalar StopCfm
@@ -265,10 +277,20 @@ namespace BulletSharp
 			void set(Vector3 value);
 		}
 
+		property BoolArray^ SpringDampingLimited
+		{
+			BoolArray^ get();
+		}
+
 		property Vector3 SpringStiffness
 		{
 			Vector3 get();
 			void set(Vector3 value);
+		}
+
+		property BoolArray^ SpringStiffnessLimited
+		{
+			BoolArray^ get();
 		}
 
 		property Vector3 StopCfm
@@ -324,6 +346,7 @@ namespace BulletSharp
 		bool IsLimited(int limitIndex);
 		void SetAxis(Vector3 axis1, Vector3 axis2);
 		void SetBounce(int index, btScalar bounce);
+		void SetDamping(int index, btScalar damping, bool limitIfNeeded);
 		void SetDamping(int index, btScalar damping);
 		void SetEquilibriumPoint();
 		void SetEquilibriumPoint(int index, btScalar val);
@@ -334,6 +357,7 @@ namespace BulletSharp
 		void SetMaxMotorForce(int index, btScalar force);
 		void SetServo(int index, bool onOff);
 		void SetServoTarget(int index, btScalar target);
+		void SetStiffness(int index, btScalar stiffness, bool limitIfNeeded);
 		void SetStiffness(int index, btScalar stiffness);
 		void SetTargetVelocity(int index, btScalar velocity);
 

@@ -12,24 +12,11 @@ ConvexPointCloudShape::ConvexPointCloudShape()
 {
 }
 
-ConvexPointCloudShape::ConvexPointCloudShape(array<Vector3>^ points, Vector3% localScaling,
-	bool computeAabb)
-	: PolyhedralConvexAabbCachingShape(new btConvexPointCloudShape())
-{
-	SetPoints(points, computeAabb, localScaling);
-}
-
 ConvexPointCloudShape::ConvexPointCloudShape(array<Vector3>^ points, Vector3 localScaling,
 	bool computeAabb)
 	: PolyhedralConvexAabbCachingShape(new btConvexPointCloudShape())
 {
 	SetPoints(points, computeAabb, localScaling);
-}
-
-ConvexPointCloudShape::ConvexPointCloudShape(array<Vector3>^ points, Vector3% localScaling)
-	: PolyhedralConvexAabbCachingShape(new btConvexPointCloudShape())
-{
-	SetPoints(points, true, localScaling);
 }
 
 ConvexPointCloudShape::ConvexPointCloudShape(array<Vector3>^ points, Vector3 localScaling)

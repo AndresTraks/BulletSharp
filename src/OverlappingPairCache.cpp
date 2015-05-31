@@ -188,11 +188,6 @@ void HashedOverlappingPairCache::OverlapFilterCallback::set(BulletSharp::Overlap
 }
 
 
-SortedOverlappingPairCache::SortedOverlappingPairCache(btSortedOverlappingPairCache* native)
-	: OverlappingPairCache(native, true)
-{
-}
-
 SortedOverlappingPairCache::SortedOverlappingPairCache()
 	: OverlappingPairCache(new btSortedOverlappingPairCache(), false)
 {
@@ -232,11 +227,6 @@ void SortedOverlappingPairCache::OverlapFilterCallback::set(BulletSharp::Overlap
 	Native->setOverlapFilterCallback(value->_native);
 }
 
-
-NullPairCache::NullPairCache(btNullPairCache* native)
-	: OverlappingPairCache(native, true)
-{
-}
 
 NullPairCache::NullPairCache()
 	: OverlappingPairCache(new btNullPairCache(), false)

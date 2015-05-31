@@ -4,11 +4,10 @@
 
 namespace BulletSharp
 {
+	ref class RigidBody;
+
 	public ref class Hinge2Constraint : Generic6DofSpring2Constraint
 	{
-	internal:
-		Hinge2Constraint(btHinge2Constraint* native);
-
 	public:
 		Hinge2Constraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 anchor,
 			Vector3 axis1, Vector3 axis2);

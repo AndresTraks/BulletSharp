@@ -166,7 +166,7 @@ void ConeTwistConstraint::SetMotorTargetInConstraintSpace(Quaternion q)
 	QUATERNION_DEL(q);
 }
 
-void ConeTwistConstraint::UpdateRHS(btScalar timeStep)
+void ConeTwistConstraint::UpdateRhs(btScalar timeStep)
 {
 	Native->updateRHS(timeStep);
 }

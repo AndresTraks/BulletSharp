@@ -79,7 +79,7 @@ void ConvexPolyhedron::Initialize()
 	_native->initialize();
 }
 
-void ConvexPolyhedron::Project(Matrix% transform, Vector3% direction, [Out] btScalar% minProj, [Out] btScalar% maxProj,
+void ConvexPolyhedron::ProjectRef(Matrix% transform, Vector3% direction, [Out] btScalar% minProj, [Out] btScalar% maxProj,
 	[Out] Vector3% witnesPtMin, [Out] Vector3% witnesPtMax)
 {
 	TRANSFORM_CONV(transform);
