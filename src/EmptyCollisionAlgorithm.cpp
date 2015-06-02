@@ -4,8 +4,13 @@
 
 #include "EmptyCollisionAlgorithm.h"
 
+EmptyAlgorithm::CreateFunc::CreateFunc(btEmptyAlgorithm::CreateFunc* native)
+	: CollisionAlgorithmCreateFunc(native, true)
+{
+}
+
 EmptyAlgorithm::CreateFunc::CreateFunc()
-	: CollisionAlgorithmCreateFunc(new btEmptyAlgorithm::CreateFunc())
+	: CollisionAlgorithmCreateFunc(new btEmptyAlgorithm::CreateFunc(), false)
 {
 }
 

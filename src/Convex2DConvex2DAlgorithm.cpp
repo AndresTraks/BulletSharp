@@ -15,7 +15,7 @@
 Convex2DConvex2DAlgorithm::CreateFunc::CreateFunc(SimplexSolverInterface^ simplexSolver,
 	ConvexPenetrationDepthSolver^ pdSolver)
 	: CollisionAlgorithmCreateFunc(new btConvex2dConvex2dAlgorithm::CreateFunc(simplexSolver->_native,
-		pdSolver->_native))
+		pdSolver->_native), false)
 {
 	_simplexSolver = simplexSolver;
 	_pdSolver = pdSolver;

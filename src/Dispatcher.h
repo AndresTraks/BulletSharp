@@ -121,6 +121,9 @@ namespace BulletSharp
 
 		Dispatcher(btDispatcher* native);
 
+	private:
+		PoolAllocator^ _internalManifoldPool;
+
 	public:
 		!Dispatcher();
 	protected:

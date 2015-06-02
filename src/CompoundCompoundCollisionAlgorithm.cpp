@@ -5,14 +5,24 @@
 #include "CollisionObjectWrapper.h"
 #include "CompoundCompoundCollisionAlgorithm.h"
 
+CompoundCompoundCollisionAlgorithm::CreateFunc::CreateFunc(btCompoundCompoundCollisionAlgorithm::CreateFunc* native)
+	: CollisionAlgorithmCreateFunc(native, true)
+{
+}
+
 CompoundCompoundCollisionAlgorithm::CreateFunc::CreateFunc()
-	: CollisionAlgorithmCreateFunc(new btCompoundCompoundCollisionAlgorithm::CreateFunc())
+	: CollisionAlgorithmCreateFunc(new btCompoundCompoundCollisionAlgorithm::CreateFunc(), false)
 {
 }
 
 
+CompoundCompoundCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc(btCompoundCompoundCollisionAlgorithm::SwappedCreateFunc* native)
+	: CollisionAlgorithmCreateFunc(native, true)
+{
+}
+
 CompoundCompoundCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc()
-	: CollisionAlgorithmCreateFunc(new btCompoundCompoundCollisionAlgorithm::SwappedCreateFunc())
+	: CollisionAlgorithmCreateFunc(new btCompoundCompoundCollisionAlgorithm::SwappedCreateFunc(), false)
 {
 }
 

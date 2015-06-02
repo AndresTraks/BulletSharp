@@ -39,13 +39,7 @@
 #define BT_CALLBACKS_ARE_EVENTS
 
 
-#if GRAPHICS_XNA31
-#using <Microsoft.Xna.Framework.dll>
-using namespace Microsoft::Xna::Framework;
-#elif GRAPHICS_XNA40
-#using <Microsoft.Xna.Framework.dll>
-using namespace Microsoft::Xna::Framework;
-#elif GRAPHICS_SLIMDX
+#if GRAPHICS_SLIMDX
 #if WIN32
 #using <x86/SlimDX.dll>
 #elif WIN64
@@ -88,14 +82,6 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #define BtColorToBtVector(color) new btVector3((color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff)
 #define BtVectorToBtColor(color) (((int)(color.getX()*255) << 16) + ((int)(color.getY()*255) << 8) + (int)(color.getZ()*255))
 #elif GRAPHICS_MONOGAME
-#define BtColor Microsoft::Xna::Framework::Color
-#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
-#define BtVectorToBtColor(color) BtColor((float)color.getX(), (float)color.getY(), (float)color.getZ()) // cast for DP build
-#elif GRAPHICS_XNA31
-#define BtColor Microsoft::Xna::Framework::Graphics::Color
-#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
-#define BtVectorToBtColor(color) BtColor((float)color.getX(), (float)color.getY(), (float)color.getZ()) // cast for DP build
-#elif GRAPHICS_XNA40
 #define BtColor Microsoft::Xna::Framework::Color
 #define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
 #define BtVectorToBtColor(color) BtColor((float)color.getX(), (float)color.getY(), (float)color.getZ()) // cast for DP build

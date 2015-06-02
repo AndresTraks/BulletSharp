@@ -245,7 +245,7 @@ namespace BulletSharp
 #define Vector3_Scale(v, s) (v) * (s)
 #endif
 
-#if defined(GRAPHICS_XNA30) || defined(GRAPHICS_XNA40) || defined(GRAPHICS_MONOGAME) || defined(GRAPHICS_SHARPDX) || defined(GRAPHICS_SLIMDX)
+#if defined(GRAPHICS_MONOGAME) || defined(GRAPHICS_SHARPDX) || defined(GRAPHICS_SLIMDX)
 #define Vector3_Length(v) (v).Length()
 #elif defined(GRAPHICS_WAPICODEPACK)
 #define Vector3_Length(v) btSqrt(((v).X * (v).X) + ((v).Y * (v).Y) + ((v).Z * (v).Z))
@@ -286,7 +286,7 @@ namespace BulletSharp
 #define Matrix_Origin(m) (m).Origin
 #elif defined(GRAPHICS_SHARPDX)
 #define Matrix_Origin(m) (m).TranslationVector
-#elif defined(GRAPHICS_XNA30) || defined(GRAPHICS_XNA40) || defined(GRAPHICS_MONOGAME)
+#elif defined(GRAPHICS_MONOGAME)
 #define Matrix_Origin(m) (m).Translation
 #else
 #define Matrix_Origin(m) Vector3((m).M41, (m).M42, (m).M43)

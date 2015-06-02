@@ -11,8 +11,13 @@
 
 #define Native static_cast<btConvexPlaneCollisionAlgorithm::CreateFunc*>(_native)
 
+ConvexPlaneCollisionAlgorithm::CreateFunc::CreateFunc(btConvexPlaneCollisionAlgorithm::CreateFunc* native)
+	: CollisionAlgorithmCreateFunc(native, true)
+{
+}
+
 ConvexPlaneCollisionAlgorithm::CreateFunc::CreateFunc()
-	: CollisionAlgorithmCreateFunc(new btConvexPlaneCollisionAlgorithm::CreateFunc())
+	: CollisionAlgorithmCreateFunc(new btConvexPlaneCollisionAlgorithm::CreateFunc(), false)
 {
 }
 

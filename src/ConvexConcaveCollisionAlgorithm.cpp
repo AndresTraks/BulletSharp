@@ -6,14 +6,24 @@
 #include "CollisionObjectWrapper.h"
 #include "ConvexConcaveCollisionAlgorithm.h"
 
+ConvexConcaveCollisionAlgorithm::CreateFunc::CreateFunc(btConvexConcaveCollisionAlgorithm::CreateFunc* native)
+	: CollisionAlgorithmCreateFunc(native, true)
+{
+}
+
 ConvexConcaveCollisionAlgorithm::CreateFunc::CreateFunc()
-	: CollisionAlgorithmCreateFunc(new btConvexConcaveCollisionAlgorithm::CreateFunc())
+	: CollisionAlgorithmCreateFunc(new btConvexConcaveCollisionAlgorithm::CreateFunc(), false)
 {
 }
 
 
+ConvexConcaveCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc(btConvexConcaveCollisionAlgorithm::SwappedCreateFunc* native)
+	: CollisionAlgorithmCreateFunc(native, true)
+{
+}
+
 ConvexConcaveCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc()
-	: CollisionAlgorithmCreateFunc(new btConvexConcaveCollisionAlgorithm::SwappedCreateFunc())
+	: CollisionAlgorithmCreateFunc(new btConvexConcaveCollisionAlgorithm::SwappedCreateFunc(), false)
 {
 }
 

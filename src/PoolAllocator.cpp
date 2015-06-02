@@ -4,9 +4,10 @@
 
 #include "PoolAllocator.h"
 
-PoolAllocator::PoolAllocator(btPoolAllocator* native)
+PoolAllocator::PoolAllocator(btPoolAllocator* native, bool preventDelete)
 {
 	_native = native;
+	_preventDelete = preventDelete;
 }
 
 PoolAllocator::~PoolAllocator()
@@ -16,7 +17,10 @@ PoolAllocator::~PoolAllocator()
 
 PoolAllocator::!PoolAllocator()
 {
-	delete _native;
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
 	_native = NULL;
 }
 

@@ -14,6 +14,9 @@ namespace BulletSharp
 	public:
 		ref class CreateFunc : CollisionAlgorithmCreateFunc
 		{
+		internal:
+			CreateFunc(btBox2dBox2dCollisionAlgorithm::CreateFunc* native);
+
 		public:
 			CreateFunc();
 		};

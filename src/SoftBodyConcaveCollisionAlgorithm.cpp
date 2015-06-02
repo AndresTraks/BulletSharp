@@ -7,14 +7,24 @@
 #include "CollisionObject.h"
 #include "CollisionObjectWrapper.h"
 
+SoftBodyConcaveCollisionAlgorithm::CreateFunc::CreateFunc(btSoftBodyConcaveCollisionAlgorithm::CreateFunc* native)
+	: CollisionAlgorithmCreateFunc(native, true)
+{
+}
+
 SoftBodyConcaveCollisionAlgorithm::CreateFunc::CreateFunc()
-	: CollisionAlgorithmCreateFunc(new btSoftBodyConcaveCollisionAlgorithm::CreateFunc())
+	: CollisionAlgorithmCreateFunc(new btSoftBodyConcaveCollisionAlgorithm::CreateFunc(), false)
 {
 }
 
 
+SoftBodyConcaveCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc(btSoftBodyConcaveCollisionAlgorithm::SwappedCreateFunc* native)
+	: CollisionAlgorithmCreateFunc(native, true)
+{
+}
+
 SoftBodyConcaveCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc()
-	: CollisionAlgorithmCreateFunc(new btSoftBodyConcaveCollisionAlgorithm::SwappedCreateFunc())
+	: CollisionAlgorithmCreateFunc(new btSoftBodyConcaveCollisionAlgorithm::SwappedCreateFunc(), false)
 {
 }
 

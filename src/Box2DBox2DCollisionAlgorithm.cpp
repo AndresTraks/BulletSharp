@@ -6,8 +6,13 @@
 #include "CollisionObjectWrapper.h"
 #include "PersistentManifold.h"
 
+Box2DBox2DCollisionAlgorithm::CreateFunc::CreateFunc(btBox2dBox2dCollisionAlgorithm::CreateFunc* native)
+	: CollisionAlgorithmCreateFunc(native, true)
+{
+}
+
 Box2DBox2DCollisionAlgorithm::CreateFunc::CreateFunc()
-	: CollisionAlgorithmCreateFunc(new btBox2dBox2dCollisionAlgorithm::CreateFunc())
+	: CollisionAlgorithmCreateFunc(new btBox2dBox2dCollisionAlgorithm::CreateFunc(), false)
 {
 }
 

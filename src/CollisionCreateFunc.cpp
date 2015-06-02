@@ -5,9 +5,10 @@
 #include "CollisionObject.h"
 #include "CollisionObjectWrapper.h"
 
-CollisionAlgorithmCreateFunc::CollisionAlgorithmCreateFunc(btCollisionAlgorithmCreateFunc* native)
+CollisionAlgorithmCreateFunc::CollisionAlgorithmCreateFunc(btCollisionAlgorithmCreateFunc* native, bool preventDelete)
 {
 	_native = native;
+	_preventDelete = preventDelete;
 }
 
 CollisionAlgorithmCreateFunc::~CollisionAlgorithmCreateFunc()

@@ -6,8 +6,13 @@
 #include "PersistentManifold.h"
 #include "SphereSphereCollisionAlgorithm.h"
 
+SphereSphereCollisionAlgorithm::CreateFunc::CreateFunc(btSphereSphereCollisionAlgorithm::CreateFunc* native)
+	: CollisionAlgorithmCreateFunc(native, true)
+{
+}
+
 SphereSphereCollisionAlgorithm::CreateFunc::CreateFunc()
-	: CollisionAlgorithmCreateFunc(new btSphereSphereCollisionAlgorithm::CreateFunc())
+	: CollisionAlgorithmCreateFunc(new btSphereSphereCollisionAlgorithm::CreateFunc(), false)
 {
 }
 

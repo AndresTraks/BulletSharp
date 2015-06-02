@@ -13,12 +13,18 @@ namespace BulletSharp
 	public:
 		ref class CreateFunc : CollisionAlgorithmCreateFunc
 		{
+		internal:
+			CreateFunc(btCompoundCompoundCollisionAlgorithm::CreateFunc* native);
+
 		public:
 			CreateFunc();
 		};
 
 		ref class SwappedCreateFunc : CollisionAlgorithmCreateFunc
 		{
+		internal:
+			SwappedCreateFunc(btCompoundCompoundCollisionAlgorithm::SwappedCreateFunc* native);
+
 		public:
 			SwappedCreateFunc();
 		};

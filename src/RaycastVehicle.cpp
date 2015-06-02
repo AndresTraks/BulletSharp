@@ -507,7 +507,7 @@ void RaycastVehicle::UpdateFriction(btScalar timeStep)
 			ALIGNED_FREE(chassisWorldUpTemp);
 			rel_pos -= Vector3_Scale(chassisWorldUp, Vector3_Dot(chassisWorldUp, rel_pos) * (1.f-wheelInfo->RollInfluence));
 #else
-#if defined(GRAPHICS_XNA31) || defined(GRAPHICS_XNA40) || defined(GRAPHICS_MONOGAME) || defined(GRAPHICS_WAPICODEPACK)
+#if defined(GRAPHICS_MONOGAME) || defined(GRAPHICS_WAPICODEPACK)
 			switch (_indexUpAxis)
 			{
 			case 0:

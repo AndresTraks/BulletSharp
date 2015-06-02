@@ -28,7 +28,7 @@ PoolAllocator^ DefaultCollisionConstructionInfo::CollisionAlgorithmPool::get()
 {
 	if (_collisionAlgorithmPool == nullptr)
 	{
-		_collisionAlgorithmPool = gcnew PoolAllocator(_native->m_collisionAlgorithmPool);
+		_collisionAlgorithmPool = gcnew PoolAllocator(_native->m_collisionAlgorithmPool, true);
 	}
 	return _collisionAlgorithmPool;
 }
@@ -71,7 +71,7 @@ PoolAllocator^ DefaultCollisionConstructionInfo::PersistentManifoldPool::get()
 {
 	if (_persistentManifoldPool == nullptr)
 	{
-		_persistentManifoldPool = gcnew PoolAllocator(_native->m_persistentManifoldPool);
+		_persistentManifoldPool = gcnew PoolAllocator(_native->m_persistentManifoldPool, true);
 	}
 	return _persistentManifoldPool;
 }

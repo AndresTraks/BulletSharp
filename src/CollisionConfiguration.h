@@ -12,6 +12,10 @@ namespace BulletSharp
 
 		CollisionConfiguration(btCollisionConfiguration* native);
 
+	private:
+		PoolAllocator^ _collisionAlgorithmPool;
+		PoolAllocator^ _persistentManifoldPool;
+
 	public:
 		!CollisionConfiguration();
 	protected:

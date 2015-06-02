@@ -50,7 +50,7 @@ namespace BulletSharp
 		GImpactShape = GIMPACT_SHAPE_PROXYTYPE, 
 		MultiMaterialTriangleMesh = MULTIMATERIAL_TRIANGLE_MESH_PROXYTYPE,
 		EmptyShape = EMPTY_SHAPE_PROXYTYPE,
-		StaticPlane = STATIC_PLANE_PROXYTYPE,
+		StaticPlaneShape = STATIC_PLANE_PROXYTYPE,
 		CustomConcaveShape = CUSTOM_CONCAVE_SHAPE_TYPE,
 		ConcaveShapesEndHere = CONCAVE_SHAPES_END_HERE,
 		CompoundShape = COMPOUND_SHAPE_PROXYTYPE,

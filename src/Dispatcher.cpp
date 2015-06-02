@@ -255,7 +255,11 @@ PersistentManifold Dispatcher::InternalManifoldPointer::get()
 #ifndef DISABLE_UNCOMMON
 PoolAllocator^ Dispatcher::InternalManifoldPool::get()
 {
-	return gcnew PoolAllocator(_native->getInternalManifoldPool());
+	if (!_internalManifoldPool)
+	{
+		_internalManifoldPool = gcnew PoolAllocator(_native->getInternalManifoldPool(), true);
+	}
+	return _internalManifoldPool;
 }
 #endif
 

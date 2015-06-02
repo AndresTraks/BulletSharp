@@ -11,10 +11,15 @@
 
 #define Native static_cast<btConvexConvexAlgorithm::CreateFunc*>(_native)
 
+ConvexConvexAlgorithm::CreateFunc::CreateFunc(btConvexConvexAlgorithm::CreateFunc* native)
+	: CollisionAlgorithmCreateFunc(native, true)
+{
+}
+
 ConvexConvexAlgorithm::CreateFunc::CreateFunc(SimplexSolverInterface^ simplexSolver,
 	ConvexPenetrationDepthSolver^ pdSolver)
 	: CollisionAlgorithmCreateFunc(new btConvexConvexAlgorithm::CreateFunc(simplexSolver->_native,
-		pdSolver->_native))
+		pdSolver->_native), false)
 {
 	_simplexSolver = simplexSolver;
 	_pdSolver = pdSolver;
