@@ -37,6 +37,9 @@ CollisionShape^ CollisionShape::GetManaged(btCollisionShape* collisionShape)
 	case BroadphaseNativeType::TetrahedralShape: // Required for CompoundFromGImpact.Create
 		shape = gcnew BuSimplex1To4((btBU_Simplex1to4*) collisionShape);
 		break;
+	case BroadphaseNativeType::GImpactShape: // Required for GImpactMeshShape.GetMeshPart
+		shape = gcnew GImpactMeshShapePart((btGImpactMeshShapePart*) collisionShape);
+		break;
 	default:
 		//throw gcnew NotImplementedException();
 		shape = gcnew CollisionShape(collisionShape);
