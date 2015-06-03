@@ -41,6 +41,28 @@ GImpactShapeInterface::GImpactShapeInterface(btGImpactShapeInterface* native)
 {
 }
 
+void GImpactShapeInterface::GetAabb(Matrix% t, Vector3% aabbMin, Vector3% aabbMax)
+{
+	// Override required because inlined code doesn't work in C++/CLI (btAABB not aligned)
+	btAABB* transformedBox = ALIGNED_NEW(btAABB) (Native->getLocalBox());
+	TRANSFORM_CONV(t);
+	transformedBox->appy_transform(TRANSFORM_USE(t));
+	Math::BtVector3ToVector3(&transformedBox->m_min, aabbMin);
+	Math::BtVector3ToVector3(&transformedBox->m_max, aabbMax);
+	ALIGNED_FREE(transformedBox);
+}
+
+void GImpactShapeInterface::GetAabb(Matrix t, Vector3% aabbMin, Vector3% aabbMax)
+{
+	// Override required because inlined code doesn't work in C++/CLI (btAABB doesn't get aligned)
+	btAABB* transformedBox = ALIGNED_NEW(btAABB) (Native->getLocalBox());
+	TRANSFORM_CONV(t);
+	transformedBox->appy_transform(TRANSFORM_USE(t));
+	Math::BtVector3ToVector3(&transformedBox->m_min, aabbMin);
+	Math::BtVector3ToVector3(&transformedBox->m_max, aabbMax);
+	ALIGNED_FREE(transformedBox);
+}
+
 void GImpactShapeInterface::GetBulletTetrahedron(int primIndex, TetrahedronShapeEx^ tetrahedron)
 {
 	Native->getBulletTetrahedron(primIndex, *(btTetrahedronShapeEx*)tetrahedron->_native);
@@ -523,7 +545,17 @@ GImpactMeshShape::GImpactMeshShape(StridingMeshInterface^ meshInterface)
 
 GImpactMeshShapePart^ GImpactMeshShape::GetMeshPart(int index)
 {
-	return (GImpactMeshShapePart^)CollisionShape::GetManaged(Native->getMeshPart(index));
+	if (!_meshParts)
+	{
+		_meshParts = gcnew array<GImpactMeshShapePart^>(MeshPartCount);
+	}
+	GImpactMeshShapePart^ meshPart = _meshParts[index];
+	if (!meshPart)
+	{
+		meshPart = (GImpactMeshShapePart^)CollisionShape::GetManaged(Native->getMeshPart(index));
+		_meshParts[index] = meshPart;
+	}
+	return meshPart;
 }
 
 StridingMeshInterface^ GImpactMeshShape::MeshInterface::get()

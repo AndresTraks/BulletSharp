@@ -47,6 +47,8 @@ namespace BulletSharp
 		GImpactShapeInterface(btGImpactShapeInterface* native);
 
 	public:
+		virtual void GetAabb(Matrix% t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax) override;
+		virtual void GetAabb(Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax) override;
 		void GetBulletTetrahedron(int primIndex, TetrahedronShapeEx^ tetrahedron);
 		void GetBulletTriangle(int primIndex, TriangleShapeEx^ triangle);
 		void GetChildAabb(int childIndex, Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
@@ -303,6 +305,7 @@ namespace BulletSharp
 
 	private:
 		StridingMeshInterface^ _meshInterface;
+		array<GImpactMeshShapePart^>^ _meshParts;
 
 	public:
 		GImpactMeshShape(StridingMeshInterface^ meshInterface);
