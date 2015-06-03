@@ -887,7 +887,7 @@ namespace DemoFramework
         {
             switch (shape.ShapeType)
             {
-                case BroadphaseNativeType.StaticPlane:
+                case BroadphaseNativeType.StaticPlaneShape:
                     //RenderStaticPlaneShape(mesh);
                     break;
                 case BroadphaseNativeType.CapsuleShape:

@@ -20,7 +20,7 @@ namespace SerializeDemo
             if (bodyName != null && bodyName.Equals("GroundName"))
                 body.UserObject = "Ground";
 
-            if (shape.ShapeType == BroadphaseNativeType.StaticPlane)
+            if (shape.ShapeType == BroadphaseNativeType.StaticPlaneShape)
                 body.UserObject = "Ground";
 
             return body;

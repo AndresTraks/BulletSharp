@@ -452,7 +452,7 @@ namespace DemoFramework
                 case BroadphaseNativeType.MultiSphereShape:
                     mesh = CreateMultiSphereShape(shape as MultiSphereShape);
                     break;
-                case BroadphaseNativeType.StaticPlane:
+                case BroadphaseNativeType.StaticPlaneShape:
                     mesh = CreateStaticPlaneShape(shape as StaticPlaneShape);
                     break;
             }
@@ -464,7 +464,7 @@ namespace DemoFramework
         {
             switch (shape.ShapeType)
             {
-                case BroadphaseNativeType.StaticPlane:
+                case BroadphaseNativeType.StaticPlaneShape:
                     RenderStaticPlaneShape(mesh);
                     break;
                 case BroadphaseNativeType.CapsuleShape:

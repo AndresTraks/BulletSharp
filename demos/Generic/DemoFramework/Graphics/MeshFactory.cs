@@ -78,7 +78,7 @@ namespace DemoFramework
                     return CreateMultiSphere(shape as MultiSphereShape, out indices);
                 case BroadphaseNativeType.SphereShape:
                     return CreateSphere(shape as SphereShape, out indices);
-                case BroadphaseNativeType.StaticPlane:
+                case BroadphaseNativeType.StaticPlaneShape:
                     return CreateStaticPlane(shape as StaticPlaneShape, out indices);
                 case BroadphaseNativeType.TriangleMeshShape:
                     indices = null;
