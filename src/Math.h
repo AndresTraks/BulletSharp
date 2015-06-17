@@ -12,6 +12,8 @@
 using namespace Mogre;
 #elif GRAPHICS_OPENTK
 #ifdef BT_USE_DOUBLE_PRECISION
+#define Vector3 Vector3d
+#define Vector4 Vector4d
 #define Matrix Matrix4d
 #else
 #define Matrix Matrix4
@@ -256,28 +258,28 @@ namespace BulletSharp
 #ifdef GRAPHICS_AXIOM
 #define Vector3_Cross(left, right, result) result = (left).Cross(right)
 #define Vector3_Dot(left, right) btScalar((left).Vector3::Dot(right))
-#define Vector3_Normalize(v) v.Normalize()
+#define Vector3_Normalize(v) (v).Normalize()
 #define Vector3_Zero Vector3::Zero
 #define Matrix_Identity Matrix4::Identity
 #define Matrix_Origin(m) (m)->Translation
 #elif defined(GRAPHICS_MOGRE)
 #define Vector3_Cross(left, right, result) result = (left).CrossProduct(right)
 #define Vector3_Dot(left, right) (left).DotProduct(right)
-#define Vector3_Normalize(v) v.Normalise()
+#define Vector3_Normalize(v) (v).Normalise()
 #define Vector3_Zero Vector3::ZERO
 #define Matrix_Identity Matrix4::IDENTITY
 #define Matrix_Origin(m) (m)->GetTrans()
 #elif defined(GRAPHICS_WAPICODEPACK)
 #define Vector3_Cross(left, right, result) result = Vector3::Cross(left, right)
 #define Vector3_Dot(left, right) Vector3::Dot(left, right)
-#define Vector3_Normalize(v) v.NormalizeInPlace()
+#define Vector3_Normalize(v) (v).NormalizeInPlace()
 #define Vector3_Zero Vector3(0,0,0)
 #define Matrix_Identity Matrix::Identity
 #define Matrix_Origin(m) Vector3((m).M41, (m).M42, (m).M43)
 #else
 #define Vector3_Cross(left, right, result) Vector3::Cross(left, right, result)
 #define Vector3_Dot(left, right) Vector3::Dot(left, right)
-#define Vector3_Normalize(v) v.Normalize()
+#define Vector3_Normalize(v) (v).Normalize()
 #define Vector3_Zero Vector3::Zero
 #define Matrix_Identity Matrix::Identity
 #ifdef GRAPHICS_OPENTK

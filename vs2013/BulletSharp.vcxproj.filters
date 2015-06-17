@@ -513,9 +513,6 @@
     <ClCompile Include="..\src\RigidBody.cpp">
       <Filter>Source Files\BulletDynamics\Dynamics</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Scalar.cpp">
-      <Filter>Source Files\LinearMath</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ScaledBvhTriangleMeshShape.cpp">
       <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
@@ -1041,9 +1038,6 @@
     </ClInclude>
     <ClInclude Include="..\src\RigidBody.h">
       <Filter>Header Files\BulletDynamics\Dynamics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Scalar.h">
-      <Filter>Header Files\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ScaledBvhTriangleMeshShape.h">
       <Filter>Header Files\BulletCollision\CollisionShapes</Filter>

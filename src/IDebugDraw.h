@@ -18,7 +18,7 @@ namespace BulletSharp
 			BtColor color);
 		virtual void DrawCone(btScalar radius, btScalar height, int upAxis, Matrix% transform,
 			BtColor color);
-		virtual void DrawContactPoint(Vector3% PointOnB, Vector3% normalOnB, btScalar distance,
+		virtual void DrawContactPoint(Vector3% pointOnB, Vector3% normalOnB, btScalar distance,
 			int lifeTime, BtColor color);
 		virtual void DrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, Matrix% transform,
 			BtColor color);

@@ -100,7 +100,7 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #elif GRAPHICS_OPENTK
 #define BtColor OpenTK::Graphics::Color4
 #define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
-#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ(),1)
+#define BtVectorToBtColor(color) BtColor((float)color.getX(), (float)color.getY(), (float)color.getZ(), 1) // cast for DP build
 #elif GRAPHICS_AXIOM
 #define BtColor Axiom::Core::ColorEx
 #define BtColorToBtVector(color) new btVector3(color.r, color.g, color.b)
