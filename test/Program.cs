@@ -16,6 +16,9 @@ namespace BulletSharpTest
             CollisionAlgorithmTests test3 = new CollisionAlgorithmTests();
             test3.Run();
 
+            TriangleMeshTest test4 = new TriangleMeshTest();
+            test4.Run();
+
             Console.WriteLine("Finished");
             Console.ReadKey();
         }
