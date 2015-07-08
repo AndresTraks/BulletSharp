@@ -126,7 +126,10 @@ namespace DemoFramework
 
             _graphics.Initialize();
             OnInitialize();
-            OnInitializePhysics();
+            if (World == null)
+            {
+                OnInitializePhysics();
+            }
             _graphics.UpdateView();
 
             clock.Start();
