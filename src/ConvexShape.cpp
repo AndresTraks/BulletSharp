@@ -9,7 +9,8 @@ ConvexShape::ConvexShape(btConvexShape* native)
 {
 }
 
-void ConvexShape::BatchedUnitVectorGetSupportingVertexWithoutMargin(array<Vector3>^ vectors, [Out] array<Vector3>^% supportVerticesOut)
+void ConvexShape::BatchedUnitVectorGetSupportingVertexWithoutMargin(array<Vector3>^ vectors,
+	[Out] array<Vector3>^% supportVerticesOut)
 {
 	int numVertices = vectors->Length;
 	btVector3* vectorsTemp = Math::Vector3ArrayToUnmanaged(vectors);
@@ -118,17 +119,21 @@ Vector3 ConvexShape::LocalGetSupportVertexWithoutMarginNonVirtual(Vector3 vec)
 	return ret;
 }
 
-void ConvexShape::Project(Matrix transform, Vector3 direction, [Out] btScalar% min, [Out] btScalar% max)
+void ConvexShape::Project(Matrix% transform, Vector3% direction, [Out] btScalar% minProj, [Out] btScalar% maxProj,
+	[Out] Vector3% witnesPtMin, [Out] Vector3% witnesPtMax)
 {
 	TRANSFORM_CONV(transform);
 	VECTOR3_CONV(direction);
-	btScalar minTemp;
-	btScalar maxTemp;
-	Native->project(TRANSFORM_USE(transform), VECTOR3_USE(direction), minTemp, maxTemp);
+	btScalar minProjTemp;
+	btScalar maxProjTemp;
+	btVector3* witnesPtMinTemp = ALIGNED_NEW(btVector3);
+	btVector3* witnesPtMaxTemp = ALIGNED_NEW(btVector3);
+	Native->project(TRANSFORM_USE(transform), VECTOR3_USE(direction), minProjTemp, maxProjTemp,
+		*witnesPtMinTemp, *witnesPtMaxTemp);
 	TRANSFORM_DEL(transform);
 	VECTOR3_DEL(direction);
-	min = minTemp;
-	max = maxTemp;
+	minProj = minProjTemp;
+	maxProj = maxProjTemp;
 }
 
 btScalar ConvexShape::MarginNonVirtual::get()
