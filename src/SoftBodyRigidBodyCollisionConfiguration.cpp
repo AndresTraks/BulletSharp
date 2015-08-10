@@ -14,4 +14,11 @@ SoftBodyRigidBodyCollisionConfiguration::SoftBodyRigidBodyCollisionConfiguration
 {
 }
 
+CollisionAlgorithmCreateFunc^ SoftBodyRigidBodyCollisionConfiguration::GetCollisionAlgorithmCreateFunc(BroadphaseNativeType proxyType0, BroadphaseNativeType proxyType1)
+{
+	// TODO
+
+	return DefaultCollisionConfiguration::GetCollisionAlgorithmCreateFunc(proxyType0, proxyType1);
+}
+
 #endif

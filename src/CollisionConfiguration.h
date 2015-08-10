@@ -22,8 +22,8 @@ namespace BulletSharp
 		~CollisionConfiguration();
 
 	public:
-		CollisionAlgorithmCreateFunc^ GetCollisionAlgorithmCreateFunc(BroadphaseNativeType proxyType0,
-			BroadphaseNativeType proxyType1);
+		virtual CollisionAlgorithmCreateFunc^ GetCollisionAlgorithmCreateFunc(BroadphaseNativeType proxyType0,
+			BroadphaseNativeType proxyType1) = 0;
 
 		property bool IsDisposed
 		{
