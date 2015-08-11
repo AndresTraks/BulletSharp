@@ -6,12 +6,6 @@
 #include "ConvexShape.h"
 #include "ShapeHull.h"
 
-/*
-ShapeHull::ShapeHull(btShapeHull* native)
-{
-	_native = native;
-}
-*/
 ShapeHull::~ShapeHull()
 {
 	this->!ShapeHull();
@@ -26,6 +20,7 @@ ShapeHull::!ShapeHull()
 ShapeHull::ShapeHull(ConvexShape^ shape)
 {
 	_native = new btShapeHull((btConvexShape*)shape->_native);
+	_shape = shape;
 }
 
 bool ShapeHull::BuildHull(btScalar margin)

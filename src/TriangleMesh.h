@@ -17,7 +17,9 @@ namespace BulletSharp
 #ifndef DISABLE_INTERNAL
 		void AddIndex(int index);
 #endif
+		void AddTriangleRef(Vector3% vertex0, Vector3% vertex1, Vector3% vertex2, bool removeDuplicateVertices);
 		void AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2, bool removeDuplicateVertices);
+		void AddTriangleRef(Vector3% vertex0, Vector3% vertex1, Vector3% vertex2);
 		void AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2);
 		void AddTriangleIndices(int index1, int index2, int index3);
 #ifndef DISABLE_INTERNAL

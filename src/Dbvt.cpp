@@ -712,9 +712,9 @@ void Dbvt::Update(DbvtNode^ leaf, DbvtVolume^ volume)
 	_native->update(leaf->_native, *volume->_native);
 }
 
-void Dbvt::Update(DbvtNode^ leaf, int lookAhead)
+void Dbvt::Update(DbvtNode^ leaf, int lookahead)
 {
-	_native->update(leaf->_native, lookAhead);
+	_native->update(leaf->_native, lookahead);
 }
 
 void Dbvt::Update(DbvtNode^ leaf)
