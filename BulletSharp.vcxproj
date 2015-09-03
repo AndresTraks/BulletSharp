@@ -1393,6 +1393,7 @@
     <ClCompile Include="src\Quickprof.cpp" />
     <ClCompile Include="src\GeometryUtil.cpp" />
     <ClCompile Include="src\PoolAllocator.cpp" />
+    <ClCompile Include="src\CpuFeatureUtility.cpp" />
     <ClCompile Include="src\DebugDraw.cpp" />
     <ClCompile Include="src\ContactSolverInfo.cpp" />
     <ClCompile Include="src\TypedConstraint.cpp" />
@@ -1571,6 +1572,7 @@
     <ClInclude Include="src\Quickprof.h" />
     <ClInclude Include="src\GeometryUtil.h" />
     <ClInclude Include="src\PoolAllocator.h" />
+    <ClInclude Include="src\CpuFeatureUtility.h" />
     <ClInclude Include="src\DebugDraw.h" />
     <ClInclude Include="src\IDebugDraw.h" />
     <ClInclude Include="src\ContactSolverInfo.h" />

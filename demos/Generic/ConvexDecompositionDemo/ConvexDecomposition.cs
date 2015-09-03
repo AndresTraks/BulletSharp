@@ -12,7 +12,7 @@ namespace ConvexDecompositionDemo
         CultureInfo floatFormat = new CultureInfo("en-US");
         int mBaseCount = 0;
 
-        public List<CollisionShape> convexShapes = new List<CollisionShape>();
+        public List<ConvexHullShape> convexShapes = new List<ConvexHullShape>();
         public List<Vector3> convexCentroids = new List<Vector3>();
 
         public Vector3 LocalScaling { get; set; }

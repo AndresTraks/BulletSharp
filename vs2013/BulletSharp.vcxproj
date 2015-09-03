@@ -1313,6 +1313,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug OpenTK|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug SharpDX|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug SharpDX|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug SharpDX Signed|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug SharpDX Signed|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug SlimDX|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug SlimDX|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug Windows API Code Pack|Win32'">Create</PrecompiledHeader>
@@ -1329,6 +1331,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release OpenTK|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release SharpDX|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release SharpDX|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release SharpDX Signed|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release SharpDX Signed|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release SlimDX|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release SlimDX|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Windows API Code Pack|Win32'">Create</PrecompiledHeader>
@@ -1448,6 +1452,7 @@
     <ClCompile Include="..\src\DefaultMotionState.cpp" />
     <ClCompile Include="..\src\Quickprof.cpp" />
     <ClCompile Include="..\src\GeometryUtil.cpp" />
+    <ClCompile Include="..\src\CpuFeatureUtility.cpp" />
     <ClCompile Include="..\src\PoolAllocator.cpp" />
     <ClCompile Include="..\src\DebugDraw.cpp" />
     <ClCompile Include="..\src\ContactSolverInfo.cpp" />
@@ -1625,6 +1630,7 @@
     <ClInclude Include="..\src\DefaultMotionState.h" />
     <ClInclude Include="..\src\Quickprof.h" />
     <ClInclude Include="..\src\GeometryUtil.h" />
+    <ClInclude Include="..\src\CpuFeatureUtility.h" />
     <ClInclude Include="..\src\PoolAllocator.h" />
     <ClInclude Include="..\src\DebugDraw.h" />
     <ClInclude Include="..\src\IDebugDraw.h" />

@@ -291,6 +291,9 @@
     <ClCompile Include="src\ConvexTriangleMeshShape.cpp">
       <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
+    <ClCompile Include="src\CpuFeatureUtility.cpp">
+      <Filter>Source Files\LinearMath</Filter>
+    </ClCompile>
     <ClCompile Include="src\CylinderShape.cpp">
       <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
@@ -810,6 +813,9 @@
     </ClInclude>
     <ClInclude Include="src\ConvexTriangleMeshShape.h">
       <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CpuFeatureUtility.h">
+      <Filter>Header Files\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="src\CylinderShape.h">
       <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
