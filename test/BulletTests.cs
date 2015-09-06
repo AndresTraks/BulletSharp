@@ -1,5 +1,5 @@
-﻿using System;
-using BulletSharp;
+﻿using BulletSharp;
+using System;
 
 namespace BulletSharpTest
 {
@@ -9,7 +9,6 @@ namespace BulletSharpTest
 
         public override void Run()
         {
-            TestAxisSweepOverlapCallback();
             TestGCCollection();
         }
 
@@ -33,47 +32,6 @@ namespace BulletSharpTest
             collisionObject.OnDisposed += onDisposed;
 
             return collisionObject;
-        }
-
-        void TestAxisSweepOverlapCallback()
-        {
-            var conf = new DefaultCollisionConfiguration();
-            var dispatcher = new CollisionDispatcher(conf);
-            var broadphase = new AxisSweep3(new Vector3(-1000, -1000, -1000), new Vector3(1000, 1000, 1000));
-            world = new DiscreteDynamicsWorld(dispatcher, broadphase, null, conf);
-
-            broadphase.OverlappingPairUserCallback = new AxisSweepUserCallback();
-            AddToDisposeQueue(broadphase.OverlappingPairUserCallback);
-
-            CreateBody(10.0f, new SphereShape(1.0f), new Vector3(2, 2, 0));
-            CreateBody(1.0f, new SphereShape(1.0f), new Vector3(0, 2, 0));
-
-            CustomBroadphaseAabbCallback aabbCallback = new CustomBroadphaseAabbCallback();
-            broadphase.AabbTest(new Vector3(-1000, -1000, -1000), new Vector3(1000, 1000, 1000), aabbCallback);
-            AddToDisposeQueue(aabbCallback);
-            aabbCallback = null;
-
-            var rayFromWorld = new Vector3(-2, 2, 0);
-            var rayToWorld = new Vector3(4, 2, 0);
-            CustomBroadphaseRayTestCallback rayCallback = new CustomBroadphaseRayTestCallback(ref rayFromWorld, ref rayToWorld);
-            broadphase.RayTest(rayFromWorld, rayToWorld, rayCallback, Vector3.Zero, Vector3.Zero);
-            if (!rayCallback.HasHit)
-            {
-                Console.WriteLine("Broadphase ray test FAILED!");
-            }
-            AddToDisposeQueue(rayCallback);
-            rayCallback = null;
-
-            broadphase = null;
-
-            world.StepSimulation(1.0f / 60.0f);
-
-            world.Dispose();
-            world = null;
-
-            ForceGC();
-            TestWeakRefs();
-            ClearRefs();
         }
 
         void TestContactTest(RigidBody testBody, RigidBody testBody2)
@@ -270,11 +228,6 @@ namespace BulletSharpTest
             }
         }
 
-        void TestSoftBody()
-        {
-
-        }
-
         void onDisposed(object sender, EventArgs e)
         {
             //Console.WriteLine("OnDisposed: " + sender.ToString());
@@ -315,62 +268,6 @@ namespace BulletSharpTest
         public override float AddSingleResult(LocalRayResult rayResult, bool normalInWorldSpace)
         {
             return base.AddSingleResult(rayResult, normalInWorldSpace);
-        }
-    }
-
-    class AxisSweepUserCallback : OverlappingPairCallback
-    {
-        public AxisSweepUserCallback()
-        {
-        }
-
-        public override BroadphasePair AddOverlappingPair(BroadphaseProxy proxy0, BroadphaseProxy proxy1)
-        {
-            return null;
-        }
-
-        public override IntPtr RemoveOverlappingPair(BroadphaseProxy proxy0, BroadphaseProxy proxy1, Dispatcher dispatcher)
-        {
-            return IntPtr.Zero;
-        }
-
-        public override void RemoveOverlappingPairsContainingProxy(BroadphaseProxy proxy0, Dispatcher dispatcher)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    class CustomBroadphaseAabbCallback : BroadphaseAabbCallback
-    {
-        public override bool Process(BroadphaseProxy proxy)
-        {
-            return true;
-        }
-    }
-
-    class CustomBroadphaseRayTestCallback : BroadphaseRayCallback
-    {
-        public bool HasHit { get; private set; }
-
-        public CustomBroadphaseRayTestCallback(ref Vector3 rayFromWorld, ref Vector3 rayToWorld)
-        {
-            Vector3 rayDir = (rayToWorld - rayFromWorld);
-            rayDir.Normalize();
-            RayDirectionInverse = new Vector3(
-                rayDir[0] == 0 ? float.MaxValue : 1 / rayDir[0],
-                rayDir[1] == 0 ? float.MaxValue : 1 / rayDir[1],
-                rayDir[2] == 0 ? float.MaxValue : 1 / rayDir[2]);
-            Signs[0] = (RayDirectionInverse[0] < 0) ? 1U : 0U;
-            Signs[1] = (RayDirectionInverse[1] < 0) ? 1U : 0U;
-            Signs[2] = (RayDirectionInverse[2] < 0) ? 1U : 0U;
-
-            LambdaMax = rayDir.Dot(rayToWorld - rayFromWorld);
-        }
-
-        public override bool Process(BroadphaseProxy proxy)
-        {
-            HasHit = true;
-            return true;
         }
     }
 

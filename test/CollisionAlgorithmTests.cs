@@ -1,104 +1,68 @@
 ﻿using BulletSharp;
-using System;
+using NUnit.Framework;
 
 namespace BulletSharpTest
 {
-    class CollisionAlgorithmTests : TestContext
+    [TestFixture]
+    class CollisionAlgorithmTests
     {
-        public override void Run()
+        DefaultCollisionConfiguration conf;
+
+        [Test]
+        public void CollisionAlgorithmTest()
         {
-            var conf = new DefaultCollisionConfiguration();
+            Assert.NotNull(conf.CollisionAlgorithmPool);
+            Assert.NotNull(conf.PersistentManifoldPool);
+            Assert.NotNull(conf.SimplexSolver);
 
-            // Test CollisionConfiguration methods
-            var pool = conf.CollisionAlgorithmPool;
-            AddToDisposeQueue(pool);
-            pool = conf.PersistentManifoldPool;
-            AddToDisposeQueue(pool);
-            pool = null;
-            var simplexSolver = conf.SimplexSolver;
-            //var simplexResult = simplexSolver.CachedBC;
-            //AddToDisposeQueue(simplexResult);
-            //simplexResult = null;
-            AddToDisposeQueue(simplexSolver);
-            simplexSolver = null;
+            // Test that the correct collision algorithms are returned in GetCollisionAlgorithmCreateFunc
             var createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.BoxShape, BroadphaseNativeType.BoxShape);
-            if (!(createFunc is BoxBoxCollisionAlgorithm.CreateFunc))
-            {
-                Console.WriteLine("BoxBoxCollisionAlgorithm ERROR!");
-            }
-            AddToDisposeQueue(createFunc);
-            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.SphereShape, BroadphaseNativeType.SphereShape);
-            if (!(createFunc is SphereSphereCollisionAlgorithm.CreateFunc))
-            {
-                Console.WriteLine("SphereSphereCollisionAlgorithm ERROR!");
-            }
-            AddToDisposeQueue(createFunc);
-            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.SphereShape, BroadphaseNativeType.TriangleShape);
-            if (!(createFunc is SphereTriangleCollisionAlgorithm.CreateFunc))
-            {
-                Console.WriteLine("SphereTriangleCollisionAlgorithm ERROR!");
-            }
-            AddToDisposeQueue(createFunc);
-            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.TriangleShape, BroadphaseNativeType.SphereShape);
-            if (!(createFunc is SphereTriangleCollisionAlgorithm.CreateFunc))
-            {
-                Console.WriteLine("SphereTriangleCollisionAlgorithm ERROR!");
-            }
-            AddToDisposeQueue(createFunc);
-            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.BoxShape, BroadphaseNativeType.StaticPlaneShape);
-            if (!(createFunc is ConvexPlaneCollisionAlgorithm.CreateFunc))
-            {
-                Console.WriteLine("ConvexPlaneCollisionAlgorithm ERROR!");
-            }
-            AddToDisposeQueue(createFunc);
-            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.StaticPlaneShape, BroadphaseNativeType.BoxShape);
-            if (!(createFunc is ConvexPlaneCollisionAlgorithm.CreateFunc))
-            {
-                Console.WriteLine("ConvexPlaneCollisionAlgorithm ERROR!");
-            }
-            AddToDisposeQueue(createFunc);
-            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.CylinderShape, BroadphaseNativeType.CylinderShape);
-            if (!(createFunc is ConvexConvexAlgorithm.CreateFunc))
-            {
-                Console.WriteLine("ConvexConvexAlgorithm ERROR!");
-            }
-            AddToDisposeQueue(createFunc);
-            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.CylinderShape, BroadphaseNativeType.TerrainShape);
-            if (!(createFunc is ConvexConcaveCollisionAlgorithm.CreateFunc))
-            {
-                Console.WriteLine("ConvexConcaveCollisionAlgorithm ERROR!");
-            }
-            AddToDisposeQueue(createFunc);
-            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.TerrainShape, BroadphaseNativeType.CylinderShape);
-            if (!(createFunc is ConvexConcaveCollisionAlgorithm.SwappedCreateFunc))
-            {
-                Console.WriteLine("ConvexConcaveCollisionAlgorithm ERROR!");
-            }
-            AddToDisposeQueue(createFunc);
-            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.CompoundShape, BroadphaseNativeType.CompoundShape);
-            if (!(createFunc is CompoundCompoundCollisionAlgorithm.CreateFunc))
-            {
-                Console.WriteLine("CompoundCompoundCollisionAlgorithm ERROR!");
-            }
-            AddToDisposeQueue(createFunc);
-            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.CompoundShape, BroadphaseNativeType.BoxShape);
-            if (!(createFunc is CompoundCompoundCollisionAlgorithm.CreateFunc))
-            {
-                Console.WriteLine("CompoundCompoundCollisionAlgorithm ERROR!");
-            }
-            AddToDisposeQueue(createFunc);
-            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.BoxShape, BroadphaseNativeType.CompoundShape);
-            if (!(createFunc is CompoundCompoundCollisionAlgorithm.SwappedCreateFunc))
-            {
-                Console.WriteLine("CompoundCompoundCollisionAlgorithm ERROR!");
-            }
-            AddToDisposeQueue(createFunc);
-            createFunc = null;
-            conf = null;
+            Assert.IsInstanceOf(typeof(BoxBoxCollisionAlgorithm.CreateFunc), createFunc);
 
-            ForceGC();
-            TestWeakRefs();
-            ClearRefs();
+            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.SphereShape, BroadphaseNativeType.SphereShape);
+            Assert.IsInstanceOf(typeof(SphereSphereCollisionAlgorithm.CreateFunc), createFunc);
+
+            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.SphereShape, BroadphaseNativeType.TriangleShape);
+            Assert.IsInstanceOf(typeof(SphereTriangleCollisionAlgorithm.CreateFunc), createFunc);
+
+            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.TriangleShape, BroadphaseNativeType.SphereShape);
+            Assert.IsInstanceOf(typeof(SphereTriangleCollisionAlgorithm.CreateFunc), createFunc);
+
+            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.BoxShape, BroadphaseNativeType.StaticPlaneShape);
+            Assert.IsInstanceOf(typeof(ConvexPlaneCollisionAlgorithm.CreateFunc), createFunc);
+
+            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.StaticPlaneShape, BroadphaseNativeType.BoxShape);
+            Assert.IsInstanceOf(typeof(ConvexPlaneCollisionAlgorithm.CreateFunc), createFunc);
+
+            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.CylinderShape, BroadphaseNativeType.CylinderShape);
+            Assert.IsInstanceOf(typeof(ConvexConvexAlgorithm.CreateFunc), createFunc);
+
+            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.CylinderShape, BroadphaseNativeType.TerrainShape);
+            Assert.IsInstanceOf(typeof(ConvexConcaveCollisionAlgorithm.CreateFunc), createFunc);
+
+            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.TerrainShape, BroadphaseNativeType.CylinderShape);
+            Assert.IsInstanceOf(typeof(ConvexConcaveCollisionAlgorithm.SwappedCreateFunc), createFunc);
+
+            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.CompoundShape, BroadphaseNativeType.CompoundShape);
+            Assert.IsInstanceOf(typeof(CompoundCompoundCollisionAlgorithm.CreateFunc), createFunc);
+
+            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.CompoundShape, BroadphaseNativeType.BoxShape);
+            Assert.IsInstanceOf(typeof(CompoundCompoundCollisionAlgorithm.CreateFunc), createFunc);
+
+            createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.BoxShape, BroadphaseNativeType.CompoundShape);
+            Assert.IsInstanceOf(typeof(CompoundCompoundCollisionAlgorithm.SwappedCreateFunc), createFunc);
+        }
+
+        [TestFixtureSetUp]
+        public void SetUp()
+        {
+            conf = new DefaultCollisionConfiguration();
+        }
+
+        [TestFixtureTearDown]
+        public void TearDown()
+        {
+            conf.Dispose();
         }
     }
 }

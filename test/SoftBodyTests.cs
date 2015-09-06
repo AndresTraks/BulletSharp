@@ -1,48 +1,53 @@
-﻿using System;
-using BulletSharp;
+﻿using BulletSharp;
 using BulletSharp.SoftBody;
+using NUnit.Framework;
 
 namespace BulletSharpTest
 {
-    class SoftBodyTests : TestContext
+    [TestFixture]
+    class SoftBodyTests
     {
-        public override void Run()
+        SoftBodyRigidBodyCollisionConfiguration conf;
+        SoftBodyWorldInfo softBodyWorldInfo;
+        CollisionDispatcher dispatcher;
+        AxisSweep3 broadphase;
+        DefaultSoftBodySolver solver;
+        SoftRigidDynamicsWorld world;
+        SoftBody softBody;
+
+        [Test]
+        public void SoftBodyTest()
         {
-            var softBodyWorldInfo = new SoftBodyWorldInfo();
-            var softBody = new SoftBody(softBodyWorldInfo);
-            var softBodyCollisionConf = new SoftBodyRigidBodyCollisionConfiguration();
-            var softBodySolver = new DefaultSoftBodySolver();
-            var dispatcher = new CollisionDispatcher(softBodyCollisionConf);
-            var broadphase = new AxisSweep3(new Vector3(-1000, -1000, -1000),
+            Assert.AreSame(softBody.SoftBodySolver, solver, "body and world SoftBodySolvers don't match");
+        }
+
+        [TestFixtureSetUp]
+        public void SetUp()
+        {
+            conf = new SoftBodyRigidBodyCollisionConfiguration();
+            dispatcher = new CollisionDispatcher(conf);
+            broadphase = new AxisSweep3(new Vector3(-1000, -1000, -1000),
                 new Vector3(1000, 1000, 1000));
-            var softBodyWorld = new SoftRigidDynamicsWorld(dispatcher, broadphase, null, softBodyCollisionConf, softBodySolver);
-            softBodyWorld.AddSoftBody(softBody);
+            solver = new DefaultSoftBodySolver();
+            world = new SoftRigidDynamicsWorld(dispatcher, broadphase, null, conf, solver);
 
-            if (!object.ReferenceEquals(softBody.SoftBodySolver, softBodySolver))
-            {
-                Console.WriteLine("SoftBody: body and world SoftBodySolvers don't match!");
-            }
+            softBodyWorldInfo = new SoftBodyWorldInfo();
+            softBody = new SoftBody(softBodyWorldInfo);
+            world.AddSoftBody(softBody);
+        }
 
-            AddToDisposeQueue(softBodyWorldInfo);
-            AddToDisposeQueue(softBody);
-            AddToDisposeQueue(softBodyCollisionConf);
-            AddToDisposeQueue(softBodySolver);
-            AddToDisposeQueue(dispatcher);
-            AddToDisposeQueue(broadphase);
-            AddToDisposeQueue(softBodyWorld);
+        [TestFixtureTearDown]
+        public void TearDown()
+        {
+            world.RemoveSoftBody(softBody);
+            softBody.Dispose();
+            softBodyWorldInfo.Dispose();
 
-            softBodyWorldInfo = null;
-            softBody = null;
-            softBodyCollisionConf = null;
-            softBodySolver = null;
-            dispatcher = null;
-            broadphase = null;
-            softBodyWorld.Dispose();
-            softBodyWorld = null;
-
-            ForceGC();
-            TestWeakRefs();
-            ClearRefs();
+            world.Dispose();
+            solver.Dispose();
+            broadphase.Dispose();
+            dispatcher.Dispose();
+            conf.Dispose();
         }
     }
 }

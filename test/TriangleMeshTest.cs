@@ -1,85 +1,90 @@
 ﻿using BulletSharp;
+using NUnit.Framework;
 
 namespace BulletSharpTest
 {
-    class TriangleMeshTest : TestContext
+    [TestFixture]
+    class TriangleMeshTest
     {
+        DefaultCollisionConfiguration conf;
+        CollisionDispatcher dispatcher;
+        AxisSweep3 broadphase;
         DiscreteDynamicsWorld world;
 
-        public override void Run()
-        {
-            var conf = new DefaultCollisionConfiguration();
-            var dispatcher = new CollisionDispatcher(conf);
-            var broadphase = new AxisSweep3(new Vector3(-1000, -1000, -1000), new Vector3(1000, 1000, 1000));
-            world = new DiscreteDynamicsWorld(dispatcher, broadphase, null, conf);
+        TriangleIndexVertexArray indexVertexArray;
+        GImpactMeshShape gImpactMeshShape;
+        BvhTriangleMeshShape triangleMeshShape;
+        RigidBody gImpactMesh, triangleMesh;
 
-            var indexVertexArray = new TriangleIndexVertexArray(TorusMesh.Indices, TorusMesh.Vertices);
+        [Test]
+        public void TriangleMeshTest1()
+        {
             foreach (var indexedMesh in indexVertexArray.IndexedMeshArray)
             {
-                indexedMesh.ToString();
+                Assert.NotNull(indexedMesh);
             }
-            AddToDisposeQueue(indexVertexArray);
 
-            var gImpactMesh = new GImpactMeshShape(indexVertexArray);
             Vector3 aabbMin, aabbMax;
-            gImpactMesh.GetAabb(Matrix.Identity, out aabbMin, out aabbMax);
-            CreateBody(1.0f, gImpactMesh, Vector3.Zero);
-            AddToDisposeQueue(gImpactMesh);
-            gImpactMesh = null;
+            gImpactMeshShape.GetAabb(Matrix.Identity, out aabbMin, out aabbMax);
+            triangleMeshShape.GetAabb(Matrix.Identity, out aabbMin, out aabbMax);
 
-            var triangleMesh = new BvhTriangleMeshShape(indexVertexArray, true);
-            triangleMesh.CalculateLocalInertia(1.0f);
-            triangleMesh.GetAabb(Matrix.Identity, out aabbMin, out aabbMax);
-            CreateBody(1.0f, triangleMesh, Vector3.Zero);
-            AddToDisposeQueue(triangleMesh);
-            triangleMesh = null;
-
-            indexVertexArray = null;
-
-
-            AddToDisposeQueue(conf);
-            AddToDisposeQueue(dispatcher);
-            AddToDisposeQueue(broadphase);
-            AddToDisposeQueue(world);
-
-            //conf.Dispose();
-            conf = null;
-            //dispatcher.Dispose();
-            dispatcher = null;
-            //broadphase.Dispose();
-            broadphase = null;
             for (int i = 0; i < 600; i++)
             {
                 world.StepSimulation(1.0f / 60.0f);
             }
-            world.Dispose();
-            world = null;
+        }
 
-            ForceGC();
-            TestWeakRefs();
-            ClearRefs();
+        [TestFixtureSetUp]
+        public void SetUp()
+        {
+            conf = new DefaultCollisionConfiguration();
+            dispatcher = new CollisionDispatcher(conf);
+            broadphase = new AxisSweep3(new Vector3(-1000, -1000, -1000), new Vector3(1000, 1000, 1000));
+            world = new DiscreteDynamicsWorld(dispatcher, broadphase, null, conf);
+
+            indexVertexArray = new TriangleIndexVertexArray(TorusMesh.Indices, TorusMesh.Vertices);
+
+            gImpactMeshShape = new GImpactMeshShape(indexVertexArray);
+
+            triangleMeshShape = new BvhTriangleMeshShape(indexVertexArray, true);
+            triangleMeshShape.CalculateLocalInertia(1.0f);
+
+            gImpactMesh = CreateBody(1.0f, gImpactMeshShape, Vector3.Zero);
+            triangleMesh = CreateBody(1.0f, triangleMeshShape, Vector3.Zero);
+        }
+
+        [TestFixtureTearDown]
+        public void TearDown()
+        {
+            world.RemoveRigidBody(gImpactMesh);
+            world.RemoveRigidBody(gImpactMesh);
+            gImpactMesh.MotionState.Dispose();
+            triangleMesh.MotionState.Dispose();
+            gImpactMesh.Dispose();
+            triangleMesh.Dispose();
+            gImpactMeshShape.Dispose();
+            triangleMeshShape.Dispose();
+            indexVertexArray.Dispose();
+
+            world.Dispose();
+            dispatcher.Dispose();
+            broadphase.Dispose();
+            conf.Dispose();
         }
 
         RigidBody CreateBody(float mass, CollisionShape shape, Vector3 offset)
         {
-            var constInfo = new RigidBodyConstructionInfo(mass, new DefaultMotionState(), shape, Vector3.Zero);
-            if (mass != 0.0f)
+            using (var info = new RigidBodyConstructionInfo(mass, new DefaultMotionState(), shape, Vector3.Zero))
             {
-                constInfo.LocalInertia = constInfo.CollisionShape.CalculateLocalInertia(mass);
+                if (mass != 0.0f)
+                {
+                    info.LocalInertia = info.CollisionShape.CalculateLocalInertia(mass);
+                }
+                var collisionObject = new RigidBody(info);
+                collisionObject.Translate(offset);
+                world.AddRigidBody(collisionObject);
+                return collisionObject;
             }
-            var collisionObject = new RigidBody(constInfo);
-            collisionObject.Translate(offset);
-            world.AddRigidBody(collisionObject);
-
-            AddToDisposeQueue(constInfo);
-            AddToDisposeQueue(constInfo.MotionState);
-            AddToDisposeQueue(collisionObject);
-            AddToDisposeQueue(shape);
-
-            //collisionObject.OnDisposing += onDisposing;
-            //collisionObject.OnDisposed += onDisposed;
-
-            return collisionObject;
         }
     }
 }
