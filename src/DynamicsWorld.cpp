@@ -44,9 +44,12 @@ void DynamicsWorld::AddAction(IAction^ action)
 	if (!_actions) {
 		_actions = gcnew Dictionary<IAction^, IntPtr>();
 	}
+	else if (_actions->ContainsKey(action)) {
+		return;
+	}
 	ActionInterfaceWrapper* wrapper = new ActionInterfaceWrapper(action, this);
+	_actions->Add(action, IntPtr(wrapper));
 	Native->addAction(wrapper);
-	return;
 }
 
 #ifndef DISABLE_CONSTRAINTS
@@ -104,10 +107,14 @@ void DynamicsWorld::RemoveAction(IAction^ action)
 		return;
 	}
 
-	_actions->Remove(action);
-	ActionInterfaceWrapper* wrapper = (ActionInterfaceWrapper*)_actions[action].ToPointer();
-	Native->removeAction(wrapper);
-	delete wrapper;
+	IntPtr wrapperPtr;
+	if (_actions->TryGetValue(action, wrapperPtr))
+	{
+		ActionInterfaceWrapper* wrapper = (ActionInterfaceWrapper*)wrapperPtr.ToPointer();
+		Native->removeAction(wrapper);
+		_actions->Remove(action);
+		delete wrapper;
+	}
 }
 #ifndef DISABLE_CONSTRAINTS
 void DynamicsWorld::RemoveConstraint(TypedConstraint^ constraint)
