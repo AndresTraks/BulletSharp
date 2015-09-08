@@ -13,7 +13,6 @@ namespace BulletSharp
 		virtual void UpdateAction(CollisionWorld^ collisionWorld, btScalar deltaTimeStep);
 	};
 
-	// Wrapper for classes other than CharacterControllerInterface.
 	class ActionInterfaceWrapper : public btActionInterface
 	{
 	public:

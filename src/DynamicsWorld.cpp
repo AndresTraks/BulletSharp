@@ -37,6 +37,7 @@ DynamicsWorld::!DynamicsWorld()
 			delete wrapper;
 		}
 	}
+	_actions = nullptr;
 }
 
 void DynamicsWorld::AddAction(IAction^ action)

@@ -80,6 +80,7 @@
     <Compile Include="ContactSensorCallback.cs" />
     <Compile Include="DebugDrawTest.cs" />
     <Compile Include="DebugDrawTest2.cs" />
+    <Compile Include="IActionTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoftBodyTests.cs" />
