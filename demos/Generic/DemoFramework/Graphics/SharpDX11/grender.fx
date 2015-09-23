@@ -18,7 +18,6 @@ matrix InverseView;
 matrix LightInverseViewProjection;
 float4 LightPosition;
 float4 EyePosition;
-float4 EyeZAxis;
 float TanHalfFOVX;
 float TanHalfFOVY;
 float ProjectionA;
@@ -26,13 +25,13 @@ float ProjectionB;
 
 struct VS_OUT
 {
-    float4 Pos : SV_POSITION;
+	float4 Pos : SV_POSITION;
 	float2 texCoord : TEXCOORD;
 };
 
 VS_OUT VS(uint id : SV_VertexID)
 {
-    VS_OUT output = (VS_OUT)0;
+	VS_OUT output = (VS_OUT)0;
 
 	// Construct full-screen triangle
 	output.texCoord = float2((id << 1) & 2, id & 2);
@@ -58,33 +57,38 @@ float4 PS( VS_OUT input ) : SV_Target
 		linearDepth * screenPos.x*TanHalfFOVX,
 		linearDepth * screenPos.y*TanHalfFOVY,
 		linearDepth, 1);
-	float4 worldPosition = mul(viewSpacePosition, InverseView);
+	float3 worldPosition = mul(viewSpacePosition, InverseView).xyz;
 
-	// Project the view ray onto the camera's z-axis
-	//float viewZDist = dot(EyeZAxis.xyz, viewSpacePosition);
-	//float3 worldPosition = EyePosition.xyz + viewSpacePosition * (linearDepth/viewZDist);
-
-	float3 light = LightPosition.xyz - worldPosition;
-	//float3 light = normalize(LightPosition.xyz);
-	light = normalize(light);
 	float3 normal = normalize((normalSample.xyz - 0.5) * 2); // from 0...1 to -1...1
-	float3 vhalf = normalize(light + EyePosition);
+	float3 lightDirection = normalize(LightPosition.xyz - worldPosition);
+	float3 viewDirection = normalize(EyePosition.xyz - worldPosition);
 
-	float3 specularMaterial = float3(0.8, 0.8, 1.0);
-	//float3 specularMaterial = float3(1.0, 1.0, 1.0);
-	float diffuse = 0.5 + 0.5 * dot(normal, light);
-    float specular = saturate(dot(normal, vhalf));
-    specular = 0.3f * pow(specular, 16);
+	// Ambient term
+	float3 ambientColor = diffuseSample;//float3(1,1,1);
+	float3 ambient = 0.15 * ambientColor;
+
+	// Diffuse term
+	float3 diffuse = 0.7 * saturate(dot(normal, lightDirection)) * diffuseSample;
+
+	// Specular term
+	float3 specularColor = float3(1.0, 1.0, 1.0);
+	float specularIntensity = saturate(dot(reflect(-lightDirection, normal), viewDirection));
+	specularIntensity = pow(specularIntensity, 16);
+	float3 specular = 0.15 * specularIntensity * specularColor;
 
 	//float shade *= GetShadowAmount(input.LPos);
 	//diffuse *= shade;
 
-	return float4(diffuse * diffuseSample + specular * specularMaterial, 1);
+	// Debugging
+	//return float4(worldPosition * 0.01 + 0.25, 1);
+	//return float4(normal, 1);
+
+	return float4(ambient + diffuse + specular, 1);
 }
 
 VS_OUT Overlay_VS(uint id : SV_VertexID)
 {
-    VS_OUT output = (VS_OUT)0;
+	VS_OUT output = (VS_OUT)0;
 
 	// Construct overlay quad
 	output.texCoord = float2((id << 1) & 2, id & 2);
@@ -101,17 +105,17 @@ float4 Overlay_PS( VS_OUT input ) : SV_Target
 
 technique10 Render
 {
-    pass P1
-    {
-        SetVertexShader( CompileShader( vs_4_0, VS() ) );
-        SetGeometryShader( NULL );
-        SetPixelShader( CompileShader( ps_4_0, PS() ) );
-    }
+	pass P1
+	{
+		SetVertexShader( CompileShader( vs_4_0, VS() ) );
+		SetGeometryShader( NULL );
+		SetPixelShader( CompileShader( ps_4_0, PS() ) );
+	}
 
 	pass Overlay
-    {
-        SetVertexShader( CompileShader( vs_4_0, Overlay_VS() ) );
-        SetGeometryShader( NULL );
-        SetPixelShader( CompileShader( ps_4_0, Overlay_PS() ) );
-    }
+	{
+		SetVertexShader( CompileShader( vs_4_0, Overlay_VS() ) );
+		SetGeometryShader( NULL );
+		SetPixelShader( CompileShader( ps_4_0, Overlay_PS() ) );
+	}
 }

@@ -470,7 +470,6 @@ namespace DemoFramework.SharpDX11
             effect2.GetVariableByName("LightInverseViewProjection").AsMatrix().SetMatrix(Matrix.Invert(sceneConstants.LightViewProjection));
             effect2.GetVariableByName("LightPosition").AsVector().Set(new Vector4(light, 1));
             effect2.GetVariableByName("EyePosition").AsVector().Set(new Vector4(MathHelper.Convert(freelook.Eye), 1));
-            effect2.GetVariableByName("EyeZAxis").AsVector().Set(new Vector4(Vector3.Normalize(MathHelper.Convert(freelook.Target - freelook.Eye)), 1));
 
             float tanHalfFOVY = (float)Math.Tan(FieldOfView * 0.5f);
             effect2.GetVariableByName("TanHalfFOVX").AsScalar().Set(tanHalfFOVY * AspectRatio);
