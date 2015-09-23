@@ -101,13 +101,13 @@ void GenericList<T>::Clear()
 }
 
 generic<class T>
-System::Collections::IEnumerator^ GenericList<T>::GetEnumerator()
+System::Collections::IEnumerator^ GenericList<T>::GetObjectEnumerator()
 {
 	return gcnew ListEnumerator<T>(this);
 }
 
 generic<class T>
-IEnumerator<T>^ GenericList<T>::GetSpecializedEnumerator()
+IEnumerator<T>^ GenericList<T>::GetEnumerator()
 {
 	return gcnew ListEnumerator<T>(this);
 }

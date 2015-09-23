@@ -83,8 +83,8 @@ namespace BulletSharp
 		virtual void Clear();
 		virtual bool Contains(T item);
 		virtual void CopyTo(array<T>^ array, int arrayIndex) = 0;
-		virtual System::Collections::IEnumerator^ GetEnumerator() = System::Collections::IEnumerable::GetEnumerator;
-		virtual IEnumerator<T>^ GetSpecializedEnumerator() = IEnumerable<T>::GetEnumerator;
+		virtual System::Collections::IEnumerator^ GetObjectEnumerator() = System::Collections::IEnumerable::GetEnumerator;
+		virtual IEnumerator<T>^ GetEnumerator() = IEnumerable<T>::GetEnumerator;
 		virtual int IndexOf(T item);
 		virtual void Insert(int index, T item);
 		virtual bool Remove(T item);
