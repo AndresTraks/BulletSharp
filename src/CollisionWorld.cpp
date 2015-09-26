@@ -433,64 +433,61 @@ void LocalConvexResult::LocalShapeInfo::set(BulletSharp::LocalShapeInfo^ value)
 }
 
 
-ConvexResultCallback::~ConvexResultCallback()
-{
-	this->!ConvexResultCallback();
-}
-
-ConvexResultCallback::!ConvexResultCallback()
-{
-	ALIGNED_FREE(_native);
-	_native = NULL;
-}
-
 ConvexResultCallback::ConvexResultCallback()
 {
-	_native = ALIGNED_NEW(ConvexResultCallbackWrapper) (this);
+	_closestHitFraction = btScalar(1.0);
+	_collisionFilterGroup = CollisionFilterGroups::DefaultFilter;
+	_collisionFilterMask = CollisionFilterGroups::AllFilter;
 }
 
 bool ConvexResultCallback::NeedsCollision(BroadphaseProxy^ proxy0)
 {
-	bool collides = (proxy0->CollisionFilterGroup & CollisionFilterMask) != CollisionFilterGroups::None;
-	collides = collides && (CollisionFilterGroup & proxy0->CollisionFilterMask) != CollisionFilterGroups::None;
+	bool collides = (proxy0->CollisionFilterGroup & _collisionFilterMask) != CollisionFilterGroups::None;
+	collides = collides && (_collisionFilterGroup & proxy0->CollisionFilterMask) != CollisionFilterGroups::None;
 	return collides;
 }
 
 btScalar ConvexResultCallback::ClosestHitFraction::get()
 {
-	return _native->m_closestHitFraction;
+	if (_native)
+	{
+		return _native->m_closestHitFraction;
+	}
+	return _closestHitFraction;
 }
 void ConvexResultCallback::ClosestHitFraction::set(btScalar value)
 {
-	_native->m_closestHitFraction = value;
+	if (_native)
+	{
+		_native->m_closestHitFraction = value;
+	}
+	else
+	{
+		_closestHitFraction = value;
+	}
 }
 
 CollisionFilterGroups ConvexResultCallback::CollisionFilterGroup::get()
 {
-	return (CollisionFilterGroups)_native->m_collisionFilterGroup;
+	return _collisionFilterGroup;
 }
 void ConvexResultCallback::CollisionFilterGroup::set(CollisionFilterGroups value)
 {
-	_native->m_collisionFilterGroup = (short int)value;
+	_collisionFilterGroup = value;
 }
 
 CollisionFilterGroups ConvexResultCallback::CollisionFilterMask::get()
 {
-	return (CollisionFilterGroups)_native->m_collisionFilterMask;
+	return _collisionFilterMask;
 }
 void ConvexResultCallback::CollisionFilterMask::set(CollisionFilterGroups value)
 {
-	_native->m_collisionFilterMask = (short int)value;
+	_collisionFilterMask = value;
 }
 
 bool ConvexResultCallback::HasHit::get()
 {
-	return _native->hasHit();
-}
-
-bool ConvexResultCallback::IsDisposed::get()
-{
-	return (_native == NULL);
+	return ClosestHitFraction < btScalar(1.0);
 }
 
 
@@ -499,12 +496,18 @@ bool ConvexResultCallback::IsDisposed::get()
 
 ConvexResultCallbackWrapper::ConvexResultCallbackWrapper(BulletSharp::ConvexResultCallback^ callback)
 {
-	_callback = GCHandleToVoidPtr(GCHandle::Alloc(callback, GCHandleType::Weak));
+	m_closestHitFraction = callback->ClosestHitFraction;
+	callback->_native = this;
+	_callback = GCHandleToVoidPtr(GCHandle::Alloc(callback));
 }
 
 ConvexResultCallbackWrapper::~ConvexResultCallbackWrapper()
 {
-	VoidPtrToGCHandle(_callback).Free();
+	GCHandle handle = VoidPtrToGCHandle(_callback);
+	BulletSharp::ConvexResultCallback^ callback = static_cast<BulletSharp::ConvexResultCallback^>(handle.Target);
+	callback->_native = 0;
+	callback->ClosestHitFraction = m_closestHitFraction;
+	handle.Free();
 }
 
 bool ConvexResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) const
@@ -847,8 +850,9 @@ void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix
 {
 	TRANSFORM_CONV(from);
 	TRANSFORM_CONV(to);
+	ConvexResultCallbackWrapper result = ConvexResultCallbackWrapper(resultCallback);
 	_native->convexSweepTest((btConvexShape*)castShape->_native, TRANSFORM_USE(from),
-		TRANSFORM_USE(to), *resultCallback->_native, allowedCcdPenetration);
+		TRANSFORM_USE(to), result, allowedCcdPenetration);
 	TRANSFORM_DEL(from);
 	TRANSFORM_DEL(to);
 }
@@ -858,8 +862,9 @@ void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix
 {
 	TRANSFORM_CONV(from);
 	TRANSFORM_CONV(to);
+	ConvexResultCallbackWrapper result = ConvexResultCallbackWrapper(resultCallback);
 	_native->convexSweepTest((btConvexShape*)castShape->_native, TRANSFORM_USE(from),
-		TRANSFORM_USE(to), *resultCallback->_native);
+		TRANSFORM_USE(to), result);
 	TRANSFORM_DEL(from);
 	TRANSFORM_DEL(to);
 }
@@ -887,9 +892,10 @@ void CollisionWorld::ObjectQuerySingle(ConvexShape^ castShape, Matrix rayFromTra
 	TRANSFORM_CONV(rayFromTrans);
 	TRANSFORM_CONV(rayToTrans);
 	TRANSFORM_CONV(colObjWorldTransform);
+	ConvexResultCallbackWrapper result = ConvexResultCallbackWrapper(resultCallback);
 	btCollisionWorld::objectQuerySingle((btConvexShape*)castShape->_native, TRANSFORM_USE(rayFromTrans),
 		TRANSFORM_USE(rayToTrans), collisionObject->_native, collisionShape->_native,
-		TRANSFORM_USE(colObjWorldTransform), *resultCallback->_native, allowedPenetration);
+		TRANSFORM_USE(colObjWorldTransform), result, allowedPenetration);
 	TRANSFORM_DEL(rayFromTrans);
 	TRANSFORM_DEL(rayToTrans);
 	TRANSFORM_DEL(colObjWorldTransform);

@@ -39,8 +39,9 @@ void GhostObject::ConvexSweepTest(ConvexShape^ castShape, Matrix convexFromWorld
 {
 	TRANSFORM_CONV(convexFromWorld);
 	TRANSFORM_CONV(convexToWorld);
+	ConvexResultCallbackWrapper result = ConvexResultCallbackWrapper(resultCallback);
 	Native->convexSweepTest((btConvexShape*)castShape->_native, TRANSFORM_USE(convexFromWorld),
-		TRANSFORM_USE(convexToWorld), *resultCallback->_native, allowedCcdPenetration);
+		TRANSFORM_USE(convexToWorld), result, allowedCcdPenetration);
 	TRANSFORM_DEL(convexFromWorld);
 	TRANSFORM_DEL(convexToWorld);
 }
@@ -50,8 +51,9 @@ void GhostObject::ConvexSweepTest(ConvexShape^ castShape, Matrix convexFromWorld
 {
 	TRANSFORM_CONV(convexFromWorld);
 	TRANSFORM_CONV(convexToWorld);
+	ConvexResultCallbackWrapper result = ConvexResultCallbackWrapper(resultCallback);
 	Native->convexSweepTest((btConvexShape*)castShape->_native, TRANSFORM_USE(convexFromWorld),
-		TRANSFORM_USE(convexToWorld), *resultCallback->_native);
+		TRANSFORM_USE(convexToWorld), result);
 	TRANSFORM_DEL(convexFromWorld);
 	TRANSFORM_DEL(convexToWorld);
 }

@@ -46,6 +46,8 @@ namespace CharacterDemo
 
         PairCachingGhostObject ghostObject;
         KinematicCharacterController character;
+        ClosestConvexResultCallback convexResultCallback;
+        SphereShape cameraSphere;
 
         protected override void OnInitialize()
         {
@@ -94,6 +96,10 @@ namespace CharacterDemo
             World.AddCollisionObject(ghostObject, CollisionFilterGroups.CharacterFilter, CollisionFilterGroups.StaticFilter | CollisionFilterGroups.DefaultFilter);
 
             World.AddAction(character);
+
+            convexResultCallback = new ClosestConvexResultCallback(Vector3.Zero, Vector3.Zero);
+            convexResultCallback.CollisionFilterMask = CollisionFilterGroups.StaticFilter;
+            cameraSphere = new SphereShape(0.2f);
         }
 
         public override void ClientResetScene()
@@ -149,17 +155,13 @@ namespace CharacterDemo
             Vector3 cameraPos = pos - forwardDir * 12 + upDir * 5;
 
             //use the convex sweep test to find a safe position for the camera (not blocked by static geometry)
-            using (var cb = new ClosestConvexResultCallback(pos, cameraPos))
+            convexResultCallback.ConvexFromWorld = pos;
+            convexResultCallback.ConvexToWorld = cameraPos;
+            convexResultCallback.ClosestHitFraction = 1.0f;
+            World.ConvexSweepTest(cameraSphere, Matrix.Translation(pos), Matrix.Translation(cameraPos), convexResultCallback);
+            if (convexResultCallback.HasHit)
             {
-                using (var cameraSphere = new SphereShape(0.2f))
-                {
-                    cb.CollisionFilterMask = CollisionFilterGroups.StaticFilter;
-                    World.ConvexSweepTest(cameraSphere, Matrix.Translation(pos), Matrix.Translation(cameraPos), cb);
-                }
-                if (cb.HasHit)
-                {
-                    cameraPos = Vector3.Lerp(pos, cameraPos, cb.ClosestHitFraction);
-                }
+                cameraPos = Vector3.Lerp(pos, cameraPos, convexResultCallback.ClosestHitFraction);
             }
             Freelook.SetEyeTarget(cameraPos, pos);
 
@@ -172,6 +174,13 @@ namespace CharacterDemo
             }
 
             base.OnHandleInput();
+        }
+
+        public override void ExitPhysics()
+        {
+            cameraSphere.Dispose();
+
+            base.ExitPhysics();
         }
     }
 

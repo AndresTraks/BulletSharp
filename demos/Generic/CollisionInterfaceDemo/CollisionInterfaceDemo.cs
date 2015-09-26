@@ -90,8 +90,6 @@ namespace CollisionInterfaceDemo
         {
             base.OnUpdate();
 
-            World.ContactTest(objects[0], renderCallback);
-
             Matrix t = objects[0].WorldTransform;
             Vector4 pos = t.get_Rows(3);
             t.set_Rows(3, new Vector4(0, 0, 0, 1));
@@ -102,6 +100,7 @@ namespace CollisionInterfaceDemo
             if (IsDebugDrawEnabled)
             {
                 World.DebugDrawer.DrawBox(ref boxMin, ref boxMax, ref t, System.Drawing.Color.White);
+                World.ContactTest(objects[0], renderCallback);
             }
         }
     }

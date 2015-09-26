@@ -27,11 +27,12 @@ namespace DemoFramework.MonoGame
                 effect = new BasicEffect(graphics.Device);
                 effect.World = Microsoft.Xna.Framework.Matrix.Identity;
                 effect.VertexColorEnabled = true;
-                pass = effect.CurrentTechnique.Passes[0];
             }
 
             effect.Projection = graphics.GetEffect().Projection;
             effect.View = graphics.GetEffect().View;
+
+            pass = effect.CurrentTechnique.Passes[0];
             pass.Apply();
 
             int pointCount = lines.Count;

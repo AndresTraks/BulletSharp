@@ -91,7 +91,7 @@ VS_OUT Overlay_VS(uint id : SV_VertexID)
 	VS_OUT output = (VS_OUT)0;
 
 	// Construct overlay quad
-	output.texCoord = float2((id << 1) & 2, id & 2);
+	output.texCoord = 0.5 * float2((id << 1) & 2, id & 2);
 	output.Pos = float4(output.texCoord * float2(2.0f, -2.0f) + float2(-1.0f, 1.0f), 0.0f, 1.0f);
 	output.Pos = mul(output.Pos, OverlayViewProjection);
 

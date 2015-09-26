@@ -291,10 +291,9 @@ namespace BulletSharp
 	internal:
 		btCollisionWorld::ConvexResultCallback* _native;
 
-	public:
-		!ConvexResultCallback();
-	protected:
-		~ConvexResultCallback();
+	private:
+		btScalar _closestHitFraction;
+		CollisionFilterGroups _collisionFilterGroup, _collisionFilterMask;
 
 	protected:
 		ConvexResultCallback();
@@ -324,11 +323,6 @@ namespace BulletSharp
 		property bool HasHit
 		{
 			bool get();
-		}
-
-		property bool IsDisposed
-		{
-			virtual bool get();
 		}
 	};
 

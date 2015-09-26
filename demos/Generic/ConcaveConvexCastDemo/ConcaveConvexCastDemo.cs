@@ -120,34 +120,32 @@ namespace ConcaveConvexCastDemo
 
         public void Cast(CollisionWorld cw)
         {
-            using (var cb = new ClosestConvexResultCallback(Vector3.Zero, Vector3.Zero))
+            var cb = new ClosestConvexResultCallback(Vector3.Zero, Vector3.Zero);
+            for (int i = 0; i < NUMRAYS_IN_BAR; i++)
             {
-                for (int i = 0; i < NUMRAYS_IN_BAR; i++)
-                {
-                    cb.ClosestHitFraction = 1.0f;
-                    cb.ConvexFromWorld = source[i];
-                    cb.ConvexToWorld = dest[i];
+                cb.ClosestHitFraction = 1.0f;
+                cb.ConvexFromWorld = source[i];
+                cb.ConvexToWorld = dest[i];
 
-                    Quaternion qFrom = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
-                    Quaternion qTo = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.7f);
-                    Matrix from = Matrix.RotationQuaternion(qFrom) * Matrix.Translation(source[i]);
-                    Matrix to = Matrix.RotationQuaternion(qTo) * Matrix.Translation(dest[i]);
-                    cw.ConvexSweepTest(boxShape, from, to, cb);
-                    if (cb.HasHit)
-                    {
-                        hit_surface[i] = cb.HitPointWorld;
-                        hit_com[i] = Vector3.Lerp(source[i], dest[i], cb.ClosestHitFraction);
-                        hit_fraction[i] = cb.ClosestHitFraction;
-                        normal[i] = cb.HitNormalWorld;
-                        normal[i].Normalize();
-                    }
-                    else
-                    {
-                        hit_com[i] = dest[i];
-                        hit_surface[i] = dest[i];
-                        hit_fraction[i] = 1.0f;
-                        normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
-                    }
+                Quaternion qFrom = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
+                Quaternion qTo = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.7f);
+                Matrix from = Matrix.RotationQuaternion(qFrom) * Matrix.Translation(source[i]);
+                Matrix to = Matrix.RotationQuaternion(qTo) * Matrix.Translation(dest[i]);
+                cw.ConvexSweepTest(boxShape, from, to, cb);
+                if (cb.HasHit)
+                {
+                    hit_surface[i] = cb.HitPointWorld;
+                    hit_com[i] = Vector3.Lerp(source[i], dest[i], cb.ClosestHitFraction);
+                    hit_fraction[i] = cb.ClosestHitFraction;
+                    normal[i] = cb.HitNormalWorld;
+                    normal[i].Normalize();
+                }
+                else
+                {
+                    hit_com[i] = dest[i];
+                    hit_surface[i] = dest[i];
+                    hit_fraction[i] = 1.0f;
+                    normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
                 }
             }
 
