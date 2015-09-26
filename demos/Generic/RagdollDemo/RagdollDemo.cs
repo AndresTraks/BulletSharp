@@ -65,7 +65,7 @@ namespace RagdollDemo
         {
             using (Demo demo = new RagdollDemo())
             {
-                LibraryManager.Initialize(demo);
+                GraphicsLibraryManager.Run(demo);
             }
         }
     }

@@ -6,17 +6,15 @@ using System.Xml;
 
 namespace DemoFramework
 {
-    public class LibraryManager
+    public class GraphicsLibraryManager
     {
         static LibrarySelection librarySelection;
 
         const string SettingsFilename = "settings.xml";
 
-        public static string GraphicsLibraryName
-        {
-            get;
-            set;
-        }
+        public static string GraphicsLibraryName { get; set; }
+
+        public static bool ExitWithReload { get; set; }
 
         static string[] supportedLibraries = new string[] {
             "SharpDX (DirectX 11)", "SharpDX (DirectX 10)", "SlimDX (DirectX 9)", "OpenTK (OpenGL)", "MonoGame (OpenGL)" };
@@ -68,7 +66,7 @@ namespace DemoFramework
         {
             Type graphicsType;
             Assembly assembly;
-            switch (LibraryManager.GraphicsLibraryName)
+            switch (GraphicsLibraryManager.GraphicsLibraryName)
             {
                 case "SharpDX (DirectX 11)":
                     assembly = Assembly.Load("DemoFramework.SharpDX11");
@@ -116,7 +114,7 @@ namespace DemoFramework
             return root;
         }
 
-        public static void Initialize(Demo demo)
+        public static void Run(Demo demo)
         {
             Application.EnableVisualStyles();
 
@@ -190,12 +188,6 @@ namespace DemoFramework
             graphics.SetAttribute("value", GraphicsLibraryName);
             root.AppendChild(graphics);
             root.OwnerDocument.Save(SettingsFilename);
-        }
-
-        public static bool ExitWithReload
-        {
-            get;
-            set;
         }
     }
 }

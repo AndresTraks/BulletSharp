@@ -32,6 +32,7 @@ namespace ConstraintDemo
                 //"F11 - Toggle fullscreen\n" +
                 "Space - Shoot box");
 
+            IsDebugDrawEnabled = true;
             DebugDrawMode = debugMode;
         }
 
@@ -48,7 +49,6 @@ namespace ConstraintDemo
         protected override void OnInitializePhysics()
         {
             SetupEmptyDynamicsWorld();
-            IsDebugDrawEnabled = true;
 
             CollisionShape groundShape = new BoxShape(50, 1, 50);
             //CollisionShape groundShape = new StaticPlaneShape(Vector3.UnitY, 40);
@@ -463,7 +463,7 @@ namespace ConstraintDemo
         {
             using (Demo demo = new ConstraintDemo())
             {
-                LibraryManager.Initialize(demo);
+                GraphicsLibraryManager.Run(demo);
             }
         }
     }

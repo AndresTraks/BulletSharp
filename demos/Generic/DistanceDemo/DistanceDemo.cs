@@ -31,6 +31,8 @@ namespace DistanceDemo
                 "F3 - Toggle debug\n" +
                 //"F11 - Toggle fullscreen\n" +
                 "Space - Shoot box");
+
+            IsDebugDrawEnabled = true;
         }
 
         protected override void OnInitializePhysics()
@@ -42,8 +44,6 @@ namespace DistanceDemo
 
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, null, CollisionConf);
             World.Gravity = new Vector3(0, -10, 0);
-            IsDebugDrawEnabled = true;
-            Vector3 a = Vector3.Zero;
             World.DebugDrawWorld();
 
             // ground
@@ -106,7 +106,7 @@ namespace DistanceDemo
         {
             using (Demo demo = new DistanceDemo())
             {
-                LibraryManager.Initialize(demo);
+                GraphicsLibraryManager.Run(demo);
             }
         }
     }

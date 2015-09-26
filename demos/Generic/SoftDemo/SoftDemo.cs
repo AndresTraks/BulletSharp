@@ -1299,7 +1299,7 @@ namespace SoftDemo
         {
             using (Demo demo = new SoftDemo())
             {
-                LibraryManager.Initialize(demo);
+                GraphicsLibraryManager.Run(demo);
             }
         }
     }

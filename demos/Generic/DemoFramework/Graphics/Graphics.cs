@@ -7,29 +7,11 @@ namespace DemoFramework
 {
     public abstract class Graphics : System.IDisposable
     {
-        public Demo Demo
-        {
-            get;
-            protected set;
-        }
+        public Demo Demo { get; protected set; }
+        public Form Form { get; protected set; }
 
-        public Form Form
-        {
-            get;
-            protected set;
-        }
-
-        public virtual float FarPlane
-        {
-            get;
-            set;
-        }
-
-        public float FieldOfView
-        {
-            get;
-            protected set;
-        }
+        public virtual float FarPlane { get; set; }
+        public float FieldOfView { get; protected set; }
 
         public virtual float AspectRatio
         {
@@ -40,11 +22,8 @@ namespace DemoFramework
             }
         }
 
-        public virtual bool IsFullScreen
-        {
-            get;
-            set;
-        }
+        public virtual bool IsFullScreen { get; set; }
+        public virtual bool CullingEnabled { get; set; }
 
         public MeshFactory MeshFactory;
 
@@ -55,6 +34,7 @@ namespace DemoFramework
             Demo = demo;
             FarPlane = 400.0f;
             FieldOfView = (float)Math.PI / 4;
+            CullingEnabled = true;
         }
 
         public virtual void Initialize()

@@ -37,9 +37,11 @@ namespace MotorDemo
 
                 //using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
                 DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
-                RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
-                RigidBody body = new RigidBody(rbInfo);
-                rbInfo.Dispose();
+                RigidBody body;
+                using (var rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia))
+                {
+                    body = new RigidBody(rbInfo);
+                }
 
                 ownerWorld.AddRigidBody(body);
 
@@ -282,7 +284,7 @@ namespace MotorDemo
         {
             using (Demo demo = new MotorDemo())
             {
-                LibraryManager.Initialize(demo);
+                GraphicsLibraryManager.Run(demo);
             }
         }
     }

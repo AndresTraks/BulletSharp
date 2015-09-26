@@ -45,6 +45,17 @@ namespace DemoFramework.SharpDX11
         EffectShaderResourceVariable depthMapVar;
         EffectShaderResourceVariable lightDepthMapVar;
 
+        EffectMatrixVariable inverseProjectionVar;
+        EffectMatrixVariable inverseViewVar;
+        EffectMatrixVariable lightInverseViewProjectionVar;
+        EffectVectorVariable lightPositionVar;
+        EffectVectorVariable eyePositionVar;
+        EffectScalarVariable tanHalfFOVXVar;
+        EffectScalarVariable tanHalfFOVYVar;
+        EffectScalarVariable projectionAVar;
+        EffectScalarVariable projectionBVar;
+        EffectMatrixVariable overlayViewProjectionVar;
+
         RenderTargetView renderView;
         DepthStencilView depthView;
         DepthStencilView lightDepthView;
@@ -87,6 +98,7 @@ namespace DemoFramework.SharpDX11
         ShaderSceneConstants sceneConstants;
         Buffer sceneConstantsBuffer;
         BlendState alphaBlendState;
+        RasterizerStateDescription _rasterizerStateDesc;
 
         InfoText info;
 
@@ -117,6 +129,25 @@ namespace DemoFramework.SharpDX11
             set
             {
                 _swapChain.SetFullscreenState(value, null);
+            }
+        }
+
+        public override bool CullingEnabled
+        {
+            get
+            {
+                return base.CullingEnabled;
+            }
+            set
+            {
+                if (_immediateContext != null)
+                {
+                    _rasterizerStateDesc.CullMode = value ? CullMode.Back : CullMode.None;
+                    _immediateContext.Rasterizer.State.Dispose();
+                    _immediateContext.Rasterizer.State = new RasterizerState(_device, _rasterizerStateDesc);
+                }
+
+                base.CullingEnabled = value;
             }
         }
 
@@ -322,6 +353,19 @@ namespace DemoFramework.SharpDX11
             depthMapVar = effect2.GetVariableByName("depthMap").AsShaderResource();
             lightDepthMapVar = effect2.GetVariableByName("lightDepthMap").AsShaderResource();
 
+            inverseProjectionVar = effect2.GetVariableByName("InverseProjection").AsMatrix();
+            inverseViewVar = effect2.GetVariableByName("InverseView").AsMatrix();
+            lightInverseViewProjectionVar = effect2.GetVariableByName("LightInverseViewProjection").AsMatrix();
+            lightPositionVar = effect2.GetVariableByName("LightPosition").AsVector();
+            eyePositionVar = effect2.GetVariableByName("EyePosition").AsVector();
+
+            tanHalfFOVXVar = effect2.GetVariableByName("TanHalfFOVX").AsScalar();
+            tanHalfFOVYVar = effect2.GetVariableByName("TanHalfFOVY").AsScalar();
+            projectionAVar = effect2.GetVariableByName("ProjectionA").AsScalar();
+            projectionBVar = effect2.GetVariableByName("ProjectionB").AsScalar();
+
+            overlayViewProjectionVar = effect2.GetVariableByName("OverlayViewProjection").AsMatrix();
+
             _immediateContext.Rasterizer.SetViewport(new ViewportF(0, 0, _width, _height));
         }
 
@@ -397,17 +441,16 @@ namespace DemoFramework.SharpDX11
             EffectConstantBuffer effectConstantBuffer = effect.GetConstantBufferByName("scene");
             effectConstantBuffer.SetConstantBuffer(sceneConstantsBuffer);
 
-            RasterizerStateDescription desc = new RasterizerStateDescription()
+            _rasterizerStateDesc = new RasterizerStateDescription()
             {
-                CullMode = CullMode.None,
+                CullMode = CullingEnabled ? CullMode.Back : CullMode.None,
                 FillMode = FillMode.Solid,
-                IsFrontCounterClockwise = true,
                 DepthBias = 0,
                 DepthBiasClamp = 0,
                 SlopeScaledDepthBias = 0,
                 IsDepthClipEnabled = true,
             };
-            _immediateContext.Rasterizer.State = new RasterizerState(_device, desc);
+            _immediateContext.Rasterizer.State = new RasterizerState(_device, _rasterizerStateDesc);
 
             DepthStencilStateDescription depthDesc = new DepthStencilStateDescription()
             {
@@ -442,7 +485,7 @@ namespace DemoFramework.SharpDX11
             MeshFactory = _meshFactory;
 
             CreateBuffers();
-            LibraryManager.LibraryStarted();
+            GraphicsLibraryManager.LibraryStarted();
         }
 
         void SetSceneConstants()
@@ -465,23 +508,23 @@ namespace DemoFramework.SharpDX11
             _immediateContext.UnmapSubresource(sceneConstantsBuffer, 0);
             data.Dispose();
 
-            effect2.GetVariableByName("InverseProjection").AsMatrix().SetMatrix(Matrix.Invert(sceneConstants.Projection));
-            effect2.GetVariableByName("InverseView").AsMatrix().SetMatrix(sceneConstants.ViewInverse);
-            effect2.GetVariableByName("LightInverseViewProjection").AsMatrix().SetMatrix(Matrix.Invert(sceneConstants.LightViewProjection));
-            effect2.GetVariableByName("LightPosition").AsVector().Set(new Vector4(light, 1));
-            effect2.GetVariableByName("EyePosition").AsVector().Set(new Vector4(MathHelper.Convert(freelook.Eye), 1));
+            inverseProjectionVar.SetMatrix(Matrix.Invert(sceneConstants.Projection));
+            inverseViewVar.SetMatrix(sceneConstants.ViewInverse);
+            lightInverseViewProjectionVar.SetMatrix(Matrix.Invert(sceneConstants.LightViewProjection));
+            lightPositionVar.Set(new Vector4(light, 1));
+            eyePositionVar.Set(new Vector4(MathHelper.Convert(freelook.Eye), 1));
 
             float tanHalfFOVY = (float)Math.Tan(FieldOfView * 0.5f);
-            effect2.GetVariableByName("TanHalfFOVX").AsScalar().Set(tanHalfFOVY * AspectRatio);
-            effect2.GetVariableByName("TanHalfFOVY").AsScalar().Set(tanHalfFOVY);
+            tanHalfFOVXVar.Set(tanHalfFOVY * AspectRatio);
+            tanHalfFOVYVar.Set(tanHalfFOVY);
             float projectionA = FarPlane / (FarPlane - _nearPlane);
             float projectionB = -projectionA * _nearPlane;
-            effect2.GetVariableByName("ProjectionA").AsScalar().Set(projectionA);
-            effect2.GetVariableByName("ProjectionB").AsScalar().Set(projectionB);
+            projectionAVar.Set(projectionA);
+            projectionBVar.Set(projectionB);
 
             Matrix overlayMatrix = Matrix.Scaling(info.Width / _width, info.Height / _height, 1.0f);
             overlayMatrix *= Matrix.Translation(-(_width - info.Width) / _width, (_height - info.Height) / _height, 0.0f);
-            effect2.GetVariableByName("OverlayViewProjection").AsMatrix().SetMatrix(overlayMatrix);
+            overlayViewProjectionVar.SetMatrix(overlayMatrix);
         }
 
         void Render()

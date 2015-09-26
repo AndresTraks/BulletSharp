@@ -103,10 +103,12 @@ namespace RollingFrictionDemo
                         // using motionstate is recommended, it provides interpolation capabilities
                         // and only synchronizes 'active' objects
                         DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
-                        RigidBodyConstructionInfo rbInfo =
-                            new RigidBodyConstructionInfo(mass, myMotionState, colShapes[shapeIndex % NUM_SHAPES], localInertia);
-                        RigidBody body = new RigidBody(rbInfo);
-                        rbInfo.Dispose();
+                        RigidBody body;
+                        using (var rbInfo =
+                            new RigidBodyConstructionInfo(mass, myMotionState, colShapes[shapeIndex % NUM_SHAPES], localInertia))
+                        {
+                            body = new RigidBody(rbInfo);
+                        }
 
                         body.Friction = 1;
                         body.RollingFriction = 0.3f;
@@ -126,7 +128,7 @@ namespace RollingFrictionDemo
         {
             using (Demo demo = new RollingFrictionDemo())
             {
-                LibraryManager.Initialize(demo);
+                GraphicsLibraryManager.Run(demo);
             }
         }
     }

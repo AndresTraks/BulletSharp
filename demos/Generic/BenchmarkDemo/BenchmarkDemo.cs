@@ -431,7 +431,7 @@ namespace BenchmarkDemo
         {
             using (Demo demo = new BenchmarkDemo())
             {
-                LibraryManager.Initialize(demo);
+                GraphicsLibraryManager.Run(demo);
             }
         }
     }

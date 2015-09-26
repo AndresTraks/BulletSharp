@@ -68,7 +68,7 @@ namespace DemoFramework.SharpDX11
                     SharpDX.Direct2D1.AlphaMode.Premultiplied), 0, 0, RenderTargetUsage.None,
                     SharpDX.Direct2D1.FeatureLevel.Level_DEFAULT);
             factoryWic.Dispose();
-            
+
             var factory2D = new SharpDX.Direct2D1.Factory();
             _wicRenderTarget = new WicRenderTarget(factory2D, _wicBitmap, renderTargetProperties);
             _wicRenderTarget.TextAntialiasMode = TextAntialiasMode.Default;
@@ -77,7 +77,7 @@ namespace DemoFramework.SharpDX11
             var factoryDWrite = new SharpDX.DirectWrite.Factory(SharpDX.DirectWrite.FactoryType.Shared);
             _textFormat = new TextFormat(factoryDWrite, "Tahoma", 20);
             factoryDWrite.Dispose();
-            
+
             _sceneColorBrush = new SolidColorBrush(_wicRenderTarget, color);
             clearColor = color;
             clearColor.Alpha = 0;
@@ -95,7 +95,7 @@ namespace DemoFramework.SharpDX11
                 SampleDescription = new SampleDescription(1, 0),
                 Usage = ResourceUsage.Dynamic
             });
-            
+
             OverlayBufferRes = new ShaderResourceView(device, _renderTexture, new ShaderResourceViewDescription()
             {
                 Format = _renderTexture.Description.Format,
@@ -139,7 +139,7 @@ namespace DemoFramework.SharpDX11
                 OverlayBufferRes.Dispose();
                 OverlayBufferRes = null;
             }
-            
+
             if (_textFormat != null)
             {
                 _textFormat.Dispose();
@@ -156,7 +156,7 @@ namespace DemoFramework.SharpDX11
             {
                 fps = framesPerSecond;
                 textString = string.Format("FPS: {0}\n{1}", fps.ToString("0.00", culture), _text);
-                
+
                 _wicRenderTarget.BeginDraw();
                 _wicRenderTarget.Clear(clearColor);
                 _wicRenderTarget.DrawText(textString, _textFormat, rect, _sceneColorBrush);

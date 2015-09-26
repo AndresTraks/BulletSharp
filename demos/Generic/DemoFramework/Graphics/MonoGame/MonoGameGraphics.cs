@@ -57,6 +57,23 @@ namespace DemoFramework.MonoGame
             }
         }
 
+        public override bool CullingEnabled
+        {
+            get
+            {
+                return base.CullingEnabled;
+            }
+            set
+            {
+                if (Device != null)
+                {
+                    Device.RasterizerState = value ? RasterizerState.CullCounterClockwise : RasterizerState.CullNone;
+                }
+
+                base.CullingEnabled = value;
+            }
+        }
+
         public override IDebugDraw GetPhysicsDebugDrawer()
         {
             return new PhysicsDebugDraw(this);
@@ -128,10 +145,13 @@ namespace DemoFramework.MonoGame
             //effect.DirectionalLight0.DiffuseColor = Color.LemonChiffon.ToVector3();
             effect.EnableDefaultLighting();
 
-            Device.RasterizerState = RasterizerState.CullNone;
+            if (CullingEnabled)
+            {
+                Device.RasterizerState = RasterizerState.CullCounterClockwise;
+            }
 
             OnResetDevice();
-            LibraryManager.LibraryStarted();
+            GraphicsLibraryManager.LibraryStarted();
 
             Info.SetDevice(Device);
         }

@@ -259,7 +259,7 @@ namespace ConvexDecompositionDemo
         {
             using (Demo demo = new ConvexDecompositionDemo())
             {
-                LibraryManager.Initialize(demo);
+                GraphicsLibraryManager.Run(demo);
             }
         }
     }

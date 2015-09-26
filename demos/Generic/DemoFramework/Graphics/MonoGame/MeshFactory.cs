@@ -25,7 +25,7 @@ namespace DemoFramework.MonoGame
         public int IndexCount;
 
         //public Buffer InstanceDataBuffer;
-        public List<InstanceData> InstanceDataList;
+        public List<InstanceData> Instances;
 
         public PrimitiveType PrimitiveType;
         //public VertexBufferBinding[] BufferBindings;
@@ -34,7 +34,7 @@ namespace DemoFramework.MonoGame
 
         public ShapeData()
         {
-            InstanceDataList = new List<InstanceData>();
+            Instances = new List<InstanceData>();
             PrimitiveType = PrimitiveType.TriangleList;
             //BufferBindings = new VertexBufferBinding[2];
         }
@@ -179,12 +179,6 @@ namespace DemoFramework.MonoGame
             return shapeData;
         }
 
-        public ShapeData CreateSoftBody()
-        {
-            // Soft body geometry is recreated each frame. Nothing to do here.
-            return new ShapeData();
-        }
-
         public override void RemoveShape(CollisionShape shape)
         {
             if (shapes.ContainsKey(shape))
@@ -200,16 +194,13 @@ namespace DemoFramework.MonoGame
 
             if (shapes.TryGetValue(shape, out shapeData) == false)
             {
-                switch (shape.ShapeType)
+                if (shape.ShapeType == BroadphaseNativeType.SoftBodyShape)
                 {
-                    case BroadphaseNativeType.SoftBodyShape:
-                        shapeData = CreateSoftBody();
-                        break;
-                    case BroadphaseNativeType.Convex2DShape:
-                        return InitShapeData((shape as Convex2DShape).ChildShape);
-                    default:
-                        shapeData = CreateShape(shape);
-                        break;
+                    shapeData = new ShapeData();
+                }
+                else
+                {
+                    shapeData = CreateShape(shape);
                 }
 
                 // Create an initial instance data buffer for a single instance
@@ -223,81 +214,87 @@ namespace DemoFramework.MonoGame
             return shapeData;
         }
 
-        void InitInstanceData(CollisionObject colObj, CollisionShape shape, ref BulletSharp.Matrix transform)
+        void InitRigidBodyInstance(CollisionObject colObj, CollisionShape shape, ref Matrix transform)
         {
-            switch (shape.ShapeType)
+            if (shape.ShapeType == BroadphaseNativeType.CompoundShape)
             {
-                case BroadphaseNativeType.CompoundShape:
-                    foreach (CompoundShapeChild child in (shape as CompoundShape).ChildList)
-                    {
-                        BulletSharp.Matrix childTransform = child.Transform * transform;
-                        InitInstanceData(colObj, child.ChildShape, ref childTransform);
-                    }
-                    break;
-                case BroadphaseNativeType.SoftBodyShape:
-                    ShapeData shapeData = InitShapeData(shape);
-                    UpdateSoftBody(colObj as SoftBody, shapeData);
-
-                    shapeData.InstanceDataList.Add(new InstanceData()
-                    {
-                        WorldTransform = MathHelper.Convert(transform),
-                        Color = softBodyColor
-                    });
-                    break;
-                default:
-                    InitShapeData(shape).InstanceDataList.Add(new InstanceData()
-                    {
-                        WorldTransform = MathHelper.Convert(transform),
-                        Color = "Ground".Equals(colObj.UserObject) ? groundColor :
-                            colObj.ActivationState == ActivationState.ActiveTag ? activeColor : passiveColor
-                    });
-                    break;
+                foreach (var child in (shape as CompoundShape).ChildList)
+                {
+                    Matrix childTransform = child.Transform * transform;
+                    InitRigidBodyInstance(colObj, child.ChildShape, ref childTransform);
+                }
             }
+            else
+            {
+                var shapeData = InitShapeData(shape);
+                shapeData.Instances.Add(new InstanceData()
+                {
+                    WorldTransform = MathHelper.Convert(transform),
+                    Color = "Ground".Equals(colObj.UserObject) ? groundColor :
+                        colObj.ActivationState == ActivationState.ActiveTag ? activeColor : passiveColor
+                });
+            }
+        }
+
+        void InitSoftBodyInstance(SoftBody softBody, CollisionShape shape)
+        {
+            var shapeData = InitShapeData(shape);
+            shapeData.Instances.Add(new InstanceData()
+            {
+                WorldTransform = Microsoft.Xna.Framework.Matrix.Identity,
+                Color = softBodyColor
+            });
+
+            UpdateSoftBody(softBody, shapeData);
         }
 
         public void InitInstancedRender(AlignedCollisionObjectArray objects)
         {
             // Clear instance data
             foreach (ShapeData s in shapes.Values)
-                s.InstanceDataList.Clear();
-            removeList.Clear();
+                s.Instances.Clear();
 
+            // Gather instance data
             int i = objects.Count - 1;
             for (; i >= 0; i--)
             {
-                CollisionObject colObj = objects[i];
+                var colObj = objects[i];
+                var shape = colObj.CollisionShape;
 
-                BulletSharp.Matrix transform;
-                if (colObj is SoftBody)
+                if (shape.ShapeType == BroadphaseNativeType.SoftBodyShape)
                 {
                     if (demo.IsDebugDrawEnabled)
                         continue;
-                    transform = BulletSharp.Matrix.Identity;
+                    InitSoftBodyInstance(colObj as SoftBody, shape);
                 }
                 else
                 {
+                    Matrix transform;
                     colObj.GetWorldTransform(out transform);
+                    InitRigidBodyInstance(colObj, shape, ref transform);
                 }
-                InitInstanceData(colObj, colObj.CollisionShape, ref transform);
             }
 
             foreach (KeyValuePair<CollisionShape, ShapeData> sh in shapes)
             {
                 ShapeData s = sh.Value;
+                int instanceCount = s.Instances.Count;
 
-                if (s.InstanceDataList.Count == 0)
+                if (s.Instances.Count == 0)
                 {
                     removeList.Add(sh.Key);
                 }
 
                 /*
                 // Is the instance buffer the right size?
-                if (s.InstanceDataBuffer.Description.SizeInBytes != s.InstanceDataList.Count * InstanceData.SizeInBytes)
+                if (s.InstanceDataBuffer.Description.SizeInBytes != instanceCount * InstanceData.SizeInBytes)
                 {
                     // No, recreate it
                     s.InstanceDataBuffer.Dispose();
 
-                    if (s.InstanceDataList.Count == 0)
+                    // Remember shapes that have no instances,
+                    // shape is removed after iteration over shapes
+                    if (instanceCount == 0)
                     {
                         if (s.IndexBuffer != null)
                             s.IndexBuffer.Dispose();
@@ -306,7 +303,7 @@ namespace DemoFramework.MonoGame
                         continue;
                     }
 
-                    instanceDataDesc.SizeInBytes = s.InstanceDataList.Count * InstanceData.SizeInBytes;
+                    instanceDataDesc.SizeInBytes = instanceCount * InstanceData.SizeInBytes;
                     s.InstanceDataBuffer = new Buffer(device, instanceDataDesc);
                     s.BufferBindings[1] = new VertexBufferBinding(s.InstanceDataBuffer, InstanceData.SizeInBytes, 0);
                 }
@@ -314,18 +311,20 @@ namespace DemoFramework.MonoGame
                 // Copy the instance data over to the instance buffer
                 using (var data = s.InstanceDataBuffer.Map(MapMode.WriteDiscard))
                 {
-                    data.WriteRange(s.InstanceDataList.ToArray());
+                    data.WriteRange(s.Instances.ToArray());
                     s.InstanceDataBuffer.Unmap();
                 }
                 */
             }
 
+            // Remove shapes that had no instances
             if (removeList.Count != 0)
             {
-                for (i = removeList.Count - 1; i >= 0; i--)
+                foreach (var shape in removeList)
                 {
-                    shapes.Remove(removeList[i]);
+                    shapes.Remove(shape);
                 }
+                removeList.Clear();
             }
         }
 
@@ -336,7 +335,7 @@ namespace DemoFramework.MonoGame
             foreach (ShapeData s in shapes.Values)
             {
                 device.SetVertexBuffer(s.VertexBuffer);
-                foreach (InstanceData instance in s.InstanceDataList)
+                foreach (InstanceData instance in s.Instances)
                 {
                     effect.DiffuseColor = instance.Color;
                     effect.World = instance.WorldTransform;

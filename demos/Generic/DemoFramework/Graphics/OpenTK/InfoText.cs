@@ -137,9 +137,9 @@ namespace DemoFramework.OpenTK
 
             GL.Begin(PrimitiveType.Quads);
             GL.TexCoord2(0.0f, 1.0f); GL.Vertex2(0, 0);
-            GL.TexCoord2(1.0f, 1.0f); GL.Vertex2(width, 0);
-            GL.TexCoord2(1.0f, 0.0f); GL.Vertex2(width, height);
             GL.TexCoord2(0.0f, 0.0f); GL.Vertex2(0, height);
+            GL.TexCoord2(1.0f, 0.0f); GL.Vertex2(width, height);
+            GL.TexCoord2(1.0f, 1.0f); GL.Vertex2(width, 0);
             GL.End();
 
             GL.Disable(EnableCap.Texture2D);

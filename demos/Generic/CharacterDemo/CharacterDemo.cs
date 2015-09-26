@@ -56,7 +56,7 @@ namespace CharacterDemo
             Graphics.SetInfoText("Move using arrow keys\n" +
                 "F3 - Toggle debug\n" +
                 //"F11 - Toggle fullscreen\n" +
-                "Space - Shoot box");
+                "Space - Jump");
         }
 
         protected override void OnInitializePhysics()
@@ -101,7 +101,6 @@ namespace CharacterDemo
             World.Broadphase.OverlappingPairCache.CleanProxyFromPairs(ghostObject.BroadphaseHandle, World.Dispatcher);
 
             character.Reset(World);
-            ///WTF
             character.Warp(new Vector3(10.210001f, -2.0306311f, 16.576973f));
         }
 
@@ -166,6 +165,12 @@ namespace CharacterDemo
 
             character.SetWalkDirection(walkDirection * walkSpeed);
 
+            if (Input.KeysDown.Contains(Keys.Space))
+            {
+                character.Jump();
+                return;
+            }
+
             base.OnHandleInput();
         }
     }
@@ -177,7 +182,7 @@ namespace CharacterDemo
         {
             using (Demo demo = new CharacterDemo())
             {
-                LibraryManager.Initialize(demo);
+                GraphicsLibraryManager.Run(demo);
             }
         }
     }

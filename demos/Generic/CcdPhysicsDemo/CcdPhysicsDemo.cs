@@ -149,32 +149,34 @@ namespace CcdPhysicsDemo
 
         public override void ShootBox(Vector3 camPos, Vector3 destination)
         {
-            if (World != null)
+            if (World == null)
             {
-                const float mass = 1.0f;
+                return;
+            }
 
-                if (shootBoxShape == null)
-                {
-                    shootBoxShape = new BoxShape(1.0f);
-                    shootBoxShape.InitializePolyhedralFeatures();
-                }
+            const float mass = 1.0f;
 
-                RigidBody body = LocalCreateRigidBody(mass, Matrix.Translation(camPos), shootBoxShape);
-                body.LinearFactor = new Vector3(1, 1, 1);
-                //body->setRestitution(1);
+            if (shootBoxShape == null)
+            {
+                shootBoxShape = new BoxShape(1.0f);
+                shootBoxShape.InitializePolyhedralFeatures();
+            }
 
-                Vector3 linVel = destination - camPos;
-                linVel.Normalize();
-                body.LinearVelocity = linVel * shootBoxInitialSpeed;
-                body.AngularVelocity = Vector3.Zero;
-                body.ContactProcessingThreshold = 1e30f;
+            RigidBody body = LocalCreateRigidBody(mass, Matrix.Translation(camPos), shootBoxShape);
+            body.LinearFactor = new Vector3(1, 1, 1);
+            //body->setRestitution(1);
 
-                // when using m_ccdMode, disable regular CCD
-                if (ccdMode)
-                {
-                    body.CcdMotionThreshold = 0.0001f;
-                    body.CcdSweptSphereRadius = 0.4f;
-                }
+            Vector3 linVel = destination - camPos;
+            linVel.Normalize();
+            body.LinearVelocity = linVel * shootBoxInitialSpeed;
+            body.AngularVelocity = Vector3.Zero;
+            body.ContactProcessingThreshold = 1e30f;
+
+            // when using m_ccdMode, disable regular CCD
+            if (ccdMode)
+            {
+                body.CcdMotionThreshold = 0.0001f;
+                body.CcdSweptSphereRadius = 0.4f;
             }
         }
     }
@@ -186,7 +188,7 @@ namespace CcdPhysicsDemo
         {
             using (Demo demo = new CcdPhysicsDemo())
             {
-                LibraryManager.Initialize(demo);
+                GraphicsLibraryManager.Run(demo);
             }
         }
     }

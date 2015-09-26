@@ -99,7 +99,7 @@ namespace BasicDemo
         {
             using (Demo demo = new BasicDemo())
             {
-                LibraryManager.Initialize(demo);
+                GraphicsLibraryManager.Run(demo);
             }
         }
     }

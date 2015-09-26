@@ -226,34 +226,8 @@ namespace ConcaveConvexCastDemo
                 //"F11 - Toggle fullscreen\n" +
                 "Space - Shoot box");
 
+            IsDebugDrawEnabled = true;
             DebugDrawMode = debugMode;
-
-            const int totalVerts = NumVertsX * NumVertsY;
-            const int totalTriangles = 2 * (NumVertsX - 1) * (NumVertsY - 1);
-            indexVertexArrays = new TriangleIndexVertexArray();
-
-            IndexedMesh mesh = new IndexedMesh();
-            mesh.Allocate(totalVerts, Vector3.SizeInBytes, totalTriangles, 3 * sizeof(int));
-            DataStream indices = mesh.LockIndices();
-            for (int i = 0; i < NumVertsX - 1; i++)
-            {
-                for (int j = 0; j < NumVertsY - 1; j++)
-                {
-                    indices.Write(j * NumVertsX + i);
-                    indices.Write(j * NumVertsX + i + 1);
-                    indices.Write((j + 1) * NumVertsX + i + 1);
-
-                    indices.Write(j * NumVertsX + i);
-                    indices.Write((j + 1) * NumVertsX + i + 1);
-                    indices.Write((j + 1) * NumVertsX + i);
-                }
-            }
-            indices.Dispose();
-
-            indexVertexArrays.AddIndexedMesh(mesh);
-
-            convexcastBatch = new ConvexcastBatch(40.0f, 0.0f, -10.0f, 80.0f);
-            //convexcastBatch = new ConvexcastBatch(true, 40.0f, -50.0f, 50.0f);
         }
 
         void SetVertexPositions(float waveheight, float offset)
@@ -293,7 +267,34 @@ namespace ConcaveConvexCastDemo
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf);
             World.SolverInfo.SplitImpulse = 1;
             World.Gravity = new Vector3(0, -10, 0);
-            IsDebugDrawEnabled = true;
+
+
+            const int totalVerts = NumVertsX * NumVertsY;
+            const int totalTriangles = 2 * (NumVertsX - 1) * (NumVertsY - 1);
+            indexVertexArrays = new TriangleIndexVertexArray();
+
+            IndexedMesh mesh = new IndexedMesh();
+            mesh.Allocate(totalVerts, Vector3.SizeInBytes, totalTriangles, 3 * sizeof(int));
+            DataStream indices = mesh.LockIndices();
+            for (int i = 0; i < NumVertsX - 1; i++)
+            {
+                for (int j = 0; j < NumVertsY - 1; j++)
+                {
+                    indices.Write(j * NumVertsX + i);
+                    indices.Write(j * NumVertsX + i + 1);
+                    indices.Write((j + 1) * NumVertsX + i + 1);
+
+                    indices.Write(j * NumVertsX + i);
+                    indices.Write((j + 1) * NumVertsX + i + 1);
+                    indices.Write((j + 1) * NumVertsX + i);
+                }
+            }
+            indices.Dispose();
+
+            indexVertexArrays.AddIndexedMesh(mesh);
+
+            convexcastBatch = new ConvexcastBatch(40.0f, 0.0f, -10.0f, 80.0f);
+            //convexcastBatch = new ConvexcastBatch(true, 40.0f, -50.0f, 50.0f);
 
 
             CollisionShape colShape = new BoxShape(1);
@@ -371,7 +372,7 @@ namespace ConcaveConvexCastDemo
         {
             using (Demo demo = new ConcaveConvexCastDemo())
             {
-                LibraryManager.Initialize(demo);
+                GraphicsLibraryManager.Run(demo);
             }
         }
     }

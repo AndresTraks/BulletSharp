@@ -363,7 +363,8 @@ namespace DemoFramework.SlimDX
                     }
                 }
             }
-            LibraryManager.LibraryStarted();
+
+            GraphicsLibraryManager.LibraryStarted();
         }
 
         protected virtual void OnResetDevice()
@@ -375,6 +376,7 @@ namespace DemoFramework.SlimDX
             UpdateView();
 
             Device.SetRenderState(RenderState.Ambient, Ambient);
+            Device.SetRenderState(RenderState.CullMode, CullingEnabled ? Cull.Counterclockwise : Cull.None);
 
             Device.SetLight(0, light);
             Device.EnableLight(0, true);

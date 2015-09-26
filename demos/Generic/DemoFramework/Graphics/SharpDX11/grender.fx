@@ -48,7 +48,7 @@ float4 PS( VS_OUT input ) : SV_Target
 	float depthSample = depthMap.Sample(defaultSampler, input.texCoord).x;
 	float lightDepthSample = lightDepthMap.Sample(defaultSampler, input.texCoord).x;
 
-	// from 0...1 to -1...1; also take advantage of mad (mul + add)
+	// from 0...1 to -1...1
 	float2 screenPos = (input.texCoord * float2(2,-2)) + float2(-1,1);
 
 	float linearDepth = ProjectionB / (depthSample - ProjectionA);
@@ -64,17 +64,17 @@ float4 PS( VS_OUT input ) : SV_Target
 	float3 viewDirection = normalize(EyePosition.xyz - worldPosition);
 
 	// Ambient term
-	float3 ambientColor = diffuseSample;//float3(1,1,1);
-	float3 ambient = 0.15 * ambientColor;
+	float3 ambientColor = 0.15 * diffuseSample;//float3(1,1,1);
+	float3 ambient = ambientColor;
 
 	// Diffuse term
-	float3 diffuse = 0.7 * saturate(dot(normal, lightDirection)) * diffuseSample;
+	float3 diffuse = saturate(dot(normal, lightDirection)) * diffuseSample;
 
 	// Specular term
 	float3 specularColor = float3(1.0, 1.0, 1.0);
 	float specularIntensity = saturate(dot(reflect(-lightDirection, normal), viewDirection));
-	specularIntensity = pow(specularIntensity, 16);
-	float3 specular = 0.15 * specularIntensity * specularColor;
+	specularIntensity = pow(specularIntensity, 64);
+	float3 specular = specularIntensity * specularColor;
 
 	//float shade *= GetShadowAmount(input.LPos);
 	//diffuse *= shade;
@@ -83,7 +83,7 @@ float4 PS( VS_OUT input ) : SV_Target
 	//return float4(worldPosition * 0.01 + 0.25, 1);
 	//return float4(normal, 1);
 
-	return float4(ambient + diffuse + specular, 1);
+	return float4(ambient + diffuse + 0.2 * specular, 1);
 }
 
 VS_OUT Overlay_VS(uint id : SV_VertexID)

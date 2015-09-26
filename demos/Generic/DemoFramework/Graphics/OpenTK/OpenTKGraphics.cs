@@ -12,13 +12,16 @@ namespace DemoFramework.OpenTK
     {
         GLControl glControl;
         Matrix4 lookat, perspective;
+        bool viewChanged;
 
         MeshFactory _meshFactory;
         InfoText info;
 
         int shaderProgram;
+        int viewMatrixLocation;
         int projectionMatrixLocation;
-        int lightDirectionVectorLocation;
+        int lightPositionVectorLocation;
+        int eyePositionVectorLocation;
 
         public override float AspectRatio
         {
@@ -146,6 +149,11 @@ namespace DemoFramework.OpenTK
                 MessageBox.Show(string.Format("Need OpenGL {0} or newer to run. Have {1}.", req, ver));
 
             GL.ClearColor(Color.Gray);
+            GL.FrontFace(FrontFaceDirection.Cw);
+            if (CullingEnabled)
+            {
+                GL.Enable(EnableCap.CullFace);
+            }
 
             int vertexShaderHandle = CreateShaderFromResource(ShaderType.VertexShader, "vp.cg");
             int fragmentShaderHandle = CreateShaderFromResource(ShaderType.FragmentShader, "fp.cg");
@@ -176,9 +184,12 @@ namespace DemoFramework.OpenTK
             if (CheckGLError("UseProgram"))
                 return;
 
+            viewMatrixLocation = GL.GetUniformLocation(shaderProgram, "view_matrix");
             projectionMatrixLocation = GL.GetUniformLocation(shaderProgram, "projection_matrix");
-            lightDirectionVectorLocation = GL.GetUniformLocation(shaderProgram, "light_direction");
-            _meshFactory.SetShaderLocations(GL.GetUniformLocation(shaderProgram, "modelview_matrix"),
+            lightPositionVectorLocation = GL.GetUniformLocation(shaderProgram, "light_position");
+            eyePositionVectorLocation = GL.GetUniformLocation(shaderProgram, "eye_position");
+            _meshFactory.SetShaderLocations(
+                GL.GetUniformLocation(shaderProgram, "world_matrix"),
                 GL.GetAttribLocation(shaderProgram, "position"),
                 GL.GetAttribLocation(shaderProgram, "normal"),
                 GL.GetUniformLocation(shaderProgram, "color")
@@ -196,7 +207,7 @@ namespace DemoFramework.OpenTK
 
         public override void Run()
         {
-            LibraryManager.LibraryStarted();
+            GraphicsLibraryManager.LibraryStarted();
             Form.ShowDialog();
         }
 
@@ -208,9 +219,31 @@ namespace DemoFramework.OpenTK
             GL.UseProgram(shaderProgram);
             GL.Enable(EnableCap.DepthTest);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            
+            if (viewChanged)
+            {
+                GL.Viewport(0, 0, glControl.Width, glControl.Height);
 
-            _meshFactory.InitInstancedRender(Demo.World.CollisionObjectArray);
-            _meshFactory.RenderInstanced(ref lookat);
+                FreeLook freelook = Demo.Freelook;
+                lookat = Matrix4.LookAt(MathHelper.Convert(freelook.Eye), MathHelper.Convert(freelook.Target), MathHelper.Convert(freelook.Up));
+                GL.UniformMatrix4(viewMatrixLocation, false, ref lookat);
+
+                Matrix4.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, 0.1f, FarPlane, out perspective);
+                perspective *= Matrix4.CreateScale(-1.0f, 1.0f, 1.0f);
+                GL.UniformMatrix4(projectionMatrixLocation, false, ref perspective);
+
+                Vector3 lightPosition = new Vector3(30, 20, 10);
+                GL.Uniform3(lightPositionVectorLocation, lightPosition);
+                GL.Uniform3(eyePositionVectorLocation, MathHelper.Convert(freelook.Eye));
+
+                viewChanged = false;
+            }
+
+            if (Demo.World != null)
+            {
+                _meshFactory.InitInstancedRender(Demo.World.CollisionObjectArray);
+                _meshFactory.RenderInstanced();
+            }
 
             GL.UseProgram(0);
             if (Demo.IsDebugDrawEnabled)
@@ -229,20 +262,9 @@ namespace DemoFramework.OpenTK
 
         public override void UpdateView()
         {
-            if (shaderProgram != 0)
-            {
-                GL.Viewport(0, 0, glControl.Width, glControl.Height);
-                
-                perspective = Matrix4.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, 0.1f, FarPlane);
-                perspective *= Matrix4.CreateScale(-1.0f, 1.0f, 1.0f);
-                GL.UniformMatrix4(projectionMatrixLocation, false, ref perspective);
-
-                Vector3 lightDirection = Vector3.Normalize(new Vector3(1.0f, 1.0f, 1.0f));
-                GL.Uniform3(lightDirectionVectorLocation, lightDirection);
-            }
-
-            FreeLook freelook = Demo.Freelook;
-            lookat = Matrix4.LookAt(MathHelper.Convert(freelook.Eye), MathHelper.Convert(freelook.Target), MathHelper.Convert(freelook.Up));
+            // Can't update program variables here,
+            // wait until Render().
+            viewChanged = true;
         }
 
         public override void SetInfoText(string text)

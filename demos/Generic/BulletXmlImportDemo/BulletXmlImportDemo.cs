@@ -10,6 +10,8 @@ namespace BulletXmlImportDemo
         Vector3 eye = new Vector3(30, 20, 10);
         Vector3 target = new Vector3(0, 5, -4);
 
+        BulletXmlWorldImporter importer;
+
         protected override void OnInitialize()
         {
             Freelook.SetEyeTarget(eye, target);
@@ -33,11 +35,19 @@ namespace BulletXmlImportDemo
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf);
             World.Gravity = new Vector3(0, -10, 0);
 
-            BulletXmlWorldImporter importer = new BulletXmlWorldImporter(World);
+            importer = new BulletXmlWorldImporter(World);
             if (!importer.LoadFile("data\\bullet_basic.xml"))
             {
                 //throw new FileNotFoundException();
             }
+        }
+
+        public override void ExitPhysics()
+        {
+            importer.DeleteAllData();
+            importer.Dispose();
+
+            base.ExitPhysics();
         }
     }
 
@@ -48,7 +58,7 @@ namespace BulletXmlImportDemo
         {
             using (Demo demo = new BulletXmlImportDemo())
             {
-                LibraryManager.Initialize(demo);
+                GraphicsLibraryManager.Run(demo);
             }
         }
     }

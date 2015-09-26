@@ -8,27 +8,9 @@ namespace DemoFramework
 {
     public abstract class Demo : System.IDisposable
     {
-        Graphics _graphics;
-        protected Graphics Graphics
-        {
-            get { return _graphics; }
-            private set { _graphics = value; }
-        }
-
-        FreeLook _freelook;
-        public FreeLook Freelook
-        {
-            get { return _freelook; }
-            private set { _freelook = value; }
-        }
-
-        Input _input;
-        public Input Input
-        {
-            get { return _input; }
-            set { _input = value; }
-        }
-
+        protected Graphics Graphics { get; set; }
+        public FreeLook Freelook { get; set; }
+        public Input Input { get; set; }
 
         // Frame counting
         Clock clock = new Clock();
@@ -63,48 +45,61 @@ namespace DemoFramework
         protected TypedConstraint pickConstraint;
         float oldPickingDist;
 
-        DebugDrawModes debugDrawMode = DebugDrawModes.DrawWireframe;
+        // Debug drawing
+        bool _isDebugDrawEnabled;
+        DebugDrawModes _debugDrawMode = DebugDrawModes.DrawWireframe;
+        IDebugDraw _debugDrawer;
+
         public DebugDrawModes DebugDrawMode
         {
             get
             {
-                if (_world == null || _world.DebugDrawer == null)
-                    return debugDrawMode;
-                return _world.DebugDrawer.DebugMode;
+                return _debugDrawMode;
             }
             set
             {
-                if (_world != null && _world.DebugDrawer != null)
-                    _world.DebugDrawer.DebugMode = value;
-                debugDrawMode = value;
+                _debugDrawMode = value;
+                if (_debugDrawer != null)
+                    _debugDrawer.DebugMode = value;
             }
         }
 
-        bool isDebugDrawEnabled = false;
         public bool IsDebugDrawEnabled
         {
             get
             {
-                if (!isDebugDrawEnabled)
-                    return false;
-
-                if (_world.DebugDrawer == null)
-                {
-                    DebugDrawModes debugDrawMode = DebugDrawMode;
-                    _world.DebugDrawer = Graphics.GetPhysicsDebugDrawer();
-                    _world.DebugDrawer.DebugMode = debugDrawMode;
-                }
-                return true;
+                return _isDebugDrawEnabled;
             }
             set
             {
-                if (value == true && _world.DebugDrawer == null)
+                if (value)
                 {
-                    DebugDrawModes debugDrawMode = DebugDrawMode;
-                    _world.DebugDrawer = Graphics.GetPhysicsDebugDrawer();
-                    _world.DebugDrawer.DebugMode = debugDrawMode;
+                    if (_debugDrawer == null)
+                    {
+                        _debugDrawer = Graphics.GetPhysicsDebugDrawer();
+                        _debugDrawer.DebugMode = _debugDrawMode;
+                        if (_world != null)
+                        {
+                            _world.DebugDrawer = _debugDrawer;
+                        }
+                    }
                 }
-                isDebugDrawEnabled = value;
+                else
+                {
+                    if (_debugDrawer != null)
+                    {
+                        if (_world != null)
+                        {
+                            _world.DebugDrawer = null;
+                        }
+                        if (_debugDrawer is IDisposable)
+                        {
+                            (_debugDrawer as IDisposable).Dispose();
+                        }
+                        _debugDrawer = null;
+                    }
+                }
+                _isDebugDrawEnabled = value;
             }
         }
 
@@ -115,25 +110,48 @@ namespace DemoFramework
 
         public void Run()
         {
-            if (_graphics != null)
+            using (Graphics = GraphicsLibraryManager.GetGraphics(this))
             {
-                _graphics.Form.Close();
+                Input = new Input(Graphics.Form);
+                Freelook = new FreeLook(Input);
+
+                Graphics.Initialize();
+                OnInitialize();
+                if (World == null)
+                {
+                    OnInitializePhysics();
+                }
+                if (_isDebugDrawEnabled)
+                {
+                    if (_debugDrawer == null)
+                    {
+                        _debugDrawer = Graphics.GetPhysicsDebugDrawer();
+                        _debugDrawer.DebugMode = DebugDrawMode;
+                    }
+                    if (World != null)
+                    {
+                        World.DebugDrawer = _debugDrawer;
+                    }
+                }
+                Graphics.UpdateView();
+
+                clock.Start();
+                Graphics.Run();
+
+                if (_debugDrawer != null)
+                {
+                    if (World != null)
+                    {
+                        World.DebugDrawer = null;
+                    }
+                    if (_debugDrawer is IDisposable)
+                    {
+                        (_debugDrawer as IDisposable).Dispose();
+                    }
+                    _debugDrawer = null;
+                }
             }
-            _graphics = LibraryManager.GetGraphics(this);
-
-            _input = new Input(Graphics.Form);
-            Freelook = new FreeLook(_input);
-
-            _graphics.Initialize();
-            OnInitialize();
-            if (World == null)
-            {
-                OnInitializePhysics();
-            }
-            _graphics.UpdateView();
-
-            clock.Start();
-            _graphics.Run();
+            Graphics = null;
         }
 
         protected virtual void OnInitialize()
@@ -147,6 +165,10 @@ namespace DemoFramework
             RemovePickingConstraint();
             ExitPhysics();
             OnInitializePhysics();
+            if (World != null && _debugDrawer != null)
+            {
+                World.DebugDrawer = _debugDrawer;
+            }
         }
 
         public virtual void ExitPhysics()
@@ -213,12 +235,15 @@ namespace DemoFramework
                 frameCount = 0;
             }
 
-            _world.StepSimulation(_frameDelta);
+            if (_world != null)
+            {
+                _world.StepSimulation(_frameDelta);
+            }
 
-            if (_freelook.Update(_frameDelta))
-                _graphics.UpdateView();
+            if (Freelook.Update(_frameDelta))
+                Graphics.UpdateView();
 
-            _input.ClearKeyCache();
+            Input.ClearKeyCache();
         }
 
         public void Dispose()
@@ -231,20 +256,15 @@ namespace DemoFramework
         {
             if (disposing)
             {
-                if (_graphics != null)
-                {
-                    _graphics.Dispose();
-                    _graphics = null;
-                }
                 ExitPhysics();
             }
         }
 
         public virtual void OnHandleInput()
         {
-            if (_input.KeysPressed.Count != 0)
+            if (Input.KeysPressed.Count != 0)
             {
-                switch (_input.KeysPressed[0])
+                switch (Input.KeysPressed[0])
                 {
                     case Keys.Escape:
                     case Keys.Q:
@@ -255,7 +275,7 @@ namespace DemoFramework
                         break;
                     case Keys.F8:
                         Input.ClearKeyCache();
-                        LibraryManager.ExitWithReload = true;
+                        GraphicsLibraryManager.ExitWithReload = true;
                         Graphics.Form.Close();
                         break;
                     case Keys.F11:
@@ -265,7 +285,7 @@ namespace DemoFramework
                         //shadowsEnabled = !shadowsEnabled;
                         break;
                     case Keys.Space:
-                        ShootBox(_freelook.Eye, GetRayTo(_input.MousePoint, _freelook.Eye, _freelook.Target, Graphics.FieldOfView));
+                        ShootBox(Freelook.Eye, GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, Graphics.FieldOfView));
                         break;
                     case Keys.Return:
                         ClientResetScene();
@@ -273,15 +293,15 @@ namespace DemoFramework
                 }
             }
 
-            if (_input.MousePressed != MouseButtons.None)
+            if (Input.MousePressed != MouseButtons.None)
             {
-                Vector3 rayTo = GetRayTo(_input.MousePoint, _freelook.Eye, _freelook.Target, Graphics.FieldOfView);
+                Vector3 rayTo = GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, Graphics.FieldOfView);
 
-                if (_input.MousePressed == MouseButtons.Right)
+                if (Input.MousePressed == MouseButtons.Right)
                 {
                     if (_world != null)
                     {
-                        Vector3 rayFrom = _freelook.Eye;
+                        Vector3 rayFrom = Freelook.Eye;
 
                         ClosestRayResultCallback rayCallback = new ClosestRayResultCallback(ref rayFrom, ref rayTo);
                         _world.RayTest(ref rayFrom, ref rayTo, rayCallback);
@@ -298,7 +318,7 @@ namespace DemoFramework
                                     Vector3 pickPos = rayCallback.HitPointWorld;
                                     Vector3 localPivot = Vector3.TransformCoordinate(pickPos, Matrix.Invert(body.CenterOfMassTransform));
 
-                                    if (_input.KeysDown.Contains(Keys.ShiftKey))
+                                    if (Input.KeysDown.Contains(Keys.ShiftKey))
                                     {
                                         Generic6DofConstraint dof6 = new Generic6DofConstraint(body, Matrix.Translation(localPivot), false)
                                         {
@@ -351,24 +371,24 @@ namespace DemoFramework
                     }
                 }
             }
-            else if (_input.MouseReleased == MouseButtons.Right)
+            else if (Input.MouseReleased == MouseButtons.Right)
             {
                 RemovePickingConstraint();
             }
 
             // Mouse movement
-            if (_input.MouseDown == MouseButtons.Right)
+            if (Input.MouseDown == MouseButtons.Right)
             {
                 if (pickConstraint != null)
                 {
-                    Vector3 newRayTo = GetRayTo(_input.MousePoint, _freelook.Eye, _freelook.Target, Graphics.FieldOfView);
+                    Vector3 newRayTo = GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, Graphics.FieldOfView);
 
                     if (pickConstraint.ConstraintType == TypedConstraintType.D6)
                     {
                         Generic6DofConstraint pickCon = pickConstraint as Generic6DofConstraint;
 
                         //keep it at the same picking distance
-                        Vector3 rayFrom = _freelook.Eye;
+                        Vector3 rayFrom = Freelook.Eye;
                         Vector3 dir = newRayTo - rayFrom;
                         dir.Normalize();
                         dir *= oldPickingDist;
@@ -385,7 +405,7 @@ namespace DemoFramework
                         Point2PointConstraint pickCon = pickConstraint as Point2PointConstraint;
 
                         //keep it at the same picking distance
-                        Vector3 rayFrom = _freelook.Eye;
+                        Vector3 rayFrom = Freelook.Eye;
                         Vector3 dir = newRayTo - rayFrom;
                         dir.Normalize();
                         dir *= oldPickingDist;
@@ -417,7 +437,7 @@ namespace DemoFramework
             const float farPlane = 10000.0f;
             rayForward *= farPlane;
 
-            Vector3 vertical = _freelook.Up;
+            Vector3 vertical = Freelook.Up;
 
             Vector3 hor = Vector3.Cross(rayForward, vertical);
             hor.Normalize();
@@ -428,7 +448,7 @@ namespace DemoFramework
             hor *= 2.0f * farPlane * tanFov;
             vertical *= 2.0f * farPlane * tanFov;
 
-            Size clientSize = _graphics.Form.ClientSize;
+            Size clientSize = Graphics.Form.ClientSize;
             if (clientSize.Width > clientSize.Height)
             {
                 aspect = (float)clientSize.Width / (float)clientSize.Height;

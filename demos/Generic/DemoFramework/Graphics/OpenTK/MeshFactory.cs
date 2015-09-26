@@ -198,13 +198,13 @@ namespace DemoFramework.OpenTK
         Dictionary<CollisionShape, ShapeData> shapes = new Dictionary<CollisionShape, ShapeData>();
         List<CollisionShape> removeList = new List<CollisionShape>();
 
-        Color groundColor = Color.Green;
-        Color activeColor = Color.Orange;
-        Color passiveColor = Color.Red;
-        Color softBodyColor = Color.LightBlue;
-        Color linkColor = Color.Black;
+        static Color groundColor = Color.Green;
+        static Color activeColor = Color.Orange;
+        static Color passiveColor = Color.Red;
+        static Color softBodyColor = Color.LightBlue;
+        static Color linkColor = Color.Black;
 
-        int modelViewMatrixLocation;
+        int worldMatrixLocation;
         int vertexPositionLocation;
         int vertexNormalLocation;
         int vertexColorLocation;
@@ -214,9 +214,9 @@ namespace DemoFramework.OpenTK
             this.demo = demo;
         }
 
-        public void SetShaderLocations(int modelViewMatrix, int position, int normal, int color)
+        public void SetShaderLocations(int worldMatrix, int position, int normal, int color)
         {
-            modelViewMatrixLocation = modelViewMatrix;
+            worldMatrixLocation = worldMatrix;
             vertexPositionLocation = position;
             vertexNormalLocation = normal;
             vertexColorLocation = color;
@@ -225,22 +225,33 @@ namespace DemoFramework.OpenTK
         ShapeData CreateShape(CollisionShape shape)
         {
             ShapeData shapeData = new ShapeData();
-            uint[] indices;
-            BulletSharp.Vector3[] vertexBuffer = CreateShape(shape, out indices);
-            shapeData.VertexCount = vertexBuffer.Length / 2;
 
-            Vector3[] vertices = new Vector3[shapeData.VertexCount];
-            Vector3[] normals = new Vector3[shapeData.VertexCount];
-
-            int i;
-            for (i = 0; i < shapeData.VertexCount; i++)
+            if (shape.ShapeType == BroadphaseNativeType.SoftBodyShape)
             {
-                vertices[i] = vertexBuffer[i * 2];
-                normals[i] = vertexBuffer[i * 2 + 1];
+                // Soft body geometry is recreated each frame. Nothing to do here.
+                return shapeData;
             }
 
-            shapeData.SetVertexBuffer(vertices);
-            shapeData.SetNormalBuffer(normals);
+            uint[] indices;
+            BulletSharp.Vector3[] vertexBuffer = CreateShape(shape, out indices);
+
+            if (vertexBuffer != null)
+            {
+                shapeData.VertexCount = vertexBuffer.Length / 2;
+
+                Vector3[] vertices = new Vector3[shapeData.VertexCount];
+                Vector3[] normals = new Vector3[shapeData.VertexCount];
+
+                int i;
+                for (i = 0; i < shapeData.VertexCount; i++)
+                {
+                    vertices[i] = vertexBuffer[i * 2];
+                    normals[i] = vertexBuffer[i * 2 + 1];
+                }
+
+                shapeData.SetVertexBuffer(vertices);
+                shapeData.SetNormalBuffer(normals);
+            }
 
             if (indices != null)
             {
@@ -259,12 +270,6 @@ namespace DemoFramework.OpenTK
             return shapeData;
         }
 
-        public ShapeData CreateSoftBody()
-        {
-            // Soft body geometry is recreated each frame. Nothing to do here.
-            return new ShapeData();
-        }
-
         public override void RemoveShape(CollisionShape shape)
         {
             if (shapes.ContainsKey(shape))
@@ -280,17 +285,7 @@ namespace DemoFramework.OpenTK
 
             if (shapes.TryGetValue(shape, out shapeData) == false)
             {
-                switch (shape.ShapeType)
-                {
-                    case BroadphaseNativeType.SoftBodyShape:
-                        shapeData = CreateSoftBody();
-                        break;
-                    case BroadphaseNativeType.Convex2DShape:
-                        return InitShapeData((shape as Convex2DShape).ChildShape);
-                    default:
-                        shapeData = CreateShape(shape);
-                        break;
-                }
+                shapeData = CreateShape(shape);
 
                 // Create an initial instance data buffer for a single instance
                 //instanceDataDesc.SizeInBytes = Marshal.SizeOf(typeof(InstanceData));
@@ -409,7 +404,7 @@ namespace DemoFramework.OpenTK
             }
         }
 
-        public void RenderInstanced(ref Matrix4 lookat)
+        public void RenderInstanced()
         {
             GL.EnableVertexAttribArray(vertexPositionLocation);
 
@@ -427,7 +422,7 @@ namespace DemoFramework.OpenTK
                 GL.BindBuffer(BufferTarget.ArrayBuffer, s.VertexBufferID);
                 GL.VertexAttribPointer(vertexPositionLocation, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, IntPtr.Zero);
 
-                Matrix4 modelLookAt;
+                Matrix4 worldMatrix;
 
                 // Index (element) buffer
                 if (s.ElementCount != 0)
@@ -436,8 +431,8 @@ namespace DemoFramework.OpenTK
 
                     foreach (InstanceData instance in s.InstanceDataList)
                     {
-                        modelLookAt = instance.WorldTransform * lookat;
-                        GL.UniformMatrix4(modelViewMatrixLocation, false, ref modelLookAt);
+                        worldMatrix = instance.WorldTransform;
+                        GL.UniformMatrix4(worldMatrixLocation, false, ref worldMatrix);
                         GL.Uniform4(vertexColorLocation, instance.Color);
                         GL.DrawElements(s.PrimitiveType, s.ElementCount, s.ElementsType, IntPtr.Zero);
                     }
@@ -448,8 +443,8 @@ namespace DemoFramework.OpenTK
                 {
                     foreach (InstanceData instance in s.InstanceDataList)
                     {
-                        modelLookAt = instance.WorldTransform * lookat;
-                        GL.UniformMatrix4(modelViewMatrixLocation, false, ref modelLookAt);
+                        worldMatrix = instance.WorldTransform;
+                        GL.UniformMatrix4(worldMatrixLocation, false, ref worldMatrix);
                         GL.Uniform4(vertexColorLocation, instance.Color);
                         GL.DrawArrays(s.PrimitiveType, 0, s.VertexCount);
                     }

@@ -34,8 +34,8 @@ namespace DemoFramework.SharpDX
         public Format IndexFormat;
 
         public Buffer InstanceDataBuffer;
-        public List<InstanceData> InstanceDataList;
-        public InstanceData[] InstanceDataListArray;
+        public List<InstanceData> Instances;
+        public InstanceData[] InstanceArray;
 
         public PrimitiveTopology PrimitiveTopology;
         public VertexBufferBinding[] BufferBindings;
@@ -44,8 +44,8 @@ namespace DemoFramework.SharpDX
 
         public ShapeData()
         {
-            InstanceDataList = new List<InstanceData>();
-            InstanceDataListArray = new InstanceData[0];
+            Instances = new List<InstanceData>();
+            InstanceArray = new InstanceData[0];
             PrimitiveTopology = PrimitiveTopology.TriangleList;
             BufferBindings = new VertexBufferBinding[2];
         }
@@ -176,13 +176,13 @@ namespace DemoFramework.SharpDX
 
         BufferDescription instanceDataDesc;
         InputLayout inputLayout;
-        uint groundColor;
-        uint activeColor;
-        uint passiveColor;
-        uint softBodyColor;
-        int linkColor = Color.Black.ToArgb();
+        static uint groundColor = ColorToUint(Color.Green);
+        static uint activeColor = ColorToUint(Color.Orange);
+        static uint passiveColor = ColorToUint(Color.OrangeRed);
+        static uint softBodyColor = ColorToUint(Color.LightBlue);
+        static int linkColor = Color.Black.ToArgb();
 
-        uint ColorToUint(Color c)
+        static uint ColorToUint(Color c)
         {
             return (uint)c.R + ((uint)c.G << 8) + ((uint)c.B << 16) + ((uint)c.A << 24);
         }
@@ -212,11 +212,6 @@ namespace DemoFramework.SharpDX
                 new InputElement("COLOR", 0, Format.R8G8B8A8_UNorm, 64, 1, InputClassification.PerInstanceData, 1)
             };
             inputLayout = new InputLayout(device, graphics.GetEffectPass().Description.Signature, elements);
-
-            groundColor = ColorToUint(Color.Green);
-            activeColor = ColorToUint(Color.Orange);
-            passiveColor = ColorToUint(Color.OrangeRed);
-            softBodyColor = ColorToUint(Color.LightBlue);
         }
 
         public override void RemoveShape(CollisionShape shape)
@@ -273,16 +268,13 @@ namespace DemoFramework.SharpDX
 
             if (shapes.TryGetValue(shape, out shapeData) == false)
             {
-                switch (shape.ShapeType)
+                if (shape.ShapeType == BroadphaseNativeType.SoftBodyShape)
                 {
-                    case BroadphaseNativeType.SoftBodyShape:
-                        shapeData = CreateSoftBody();
-                        break;
-                    case BroadphaseNativeType.Convex2DShape:
-                        return InitShapeData((shape as Convex2DShape).ChildShape);
-                    default:
-                        shapeData = CreateShape(shape);
-                        break;
+                    shapeData = new ShapeData();
+                }
+                else
+                {
+                    shapeData = CreateShape(shape);
                 }
 
                 // Create an initial instance data buffer for a single instance
@@ -296,30 +288,20 @@ namespace DemoFramework.SharpDX
             return shapeData;
         }
 
-        void InitInstanceData(CollisionObject colObj, CollisionShape shape, ref Matrix transform)
+        void InitRigidBodyInstance(CollisionObject colObj, CollisionShape shape, ref Matrix transform)
         {
             if (shape.ShapeType == BroadphaseNativeType.CompoundShape)
             {
-                foreach (CompoundShapeChild child in (shape as CompoundShape).ChildList)
+                foreach (var child in (shape as CompoundShape).ChildList)
                 {
                     Matrix childTransform = child.Transform * transform;
-                    InitInstanceData(colObj, child.ChildShape, ref childTransform);
+                    InitRigidBodyInstance(colObj, child.ChildShape, ref childTransform);
                 }
-            }
-            else if (shape.ShapeType == BroadphaseNativeType.SoftBodyShape)
-            {
-                ShapeData shapeData = InitShapeData(shape);
-                UpdateSoftBody(colObj as SoftBody, shapeData);
-
-                shapeData.InstanceDataList.Add(new InstanceData()
-                {
-                    WorldTransform = transform,
-                    Color = softBodyColor
-                });
             }
             else
             {
-                InitShapeData(shape).InstanceDataList.Add(new InstanceData()
+                var shapeData = InitShapeData(shape);
+                shapeData.Instances.Add(new InstanceData()
                 {
                     WorldTransform = transform,
                     Color = "Ground".Equals(colObj.UserObject) ? groundColor :
@@ -328,35 +310,49 @@ namespace DemoFramework.SharpDX
             }
         }
 
+        void InitSoftBodyInstance(SoftBody softBody, CollisionShape shape)
+        {
+            var shapeData = InitShapeData(shape);
+            shapeData.Instances.Add(new InstanceData()
+            {
+                WorldTransform = Matrix.Identity,
+                Color = softBodyColor
+            });
+
+            UpdateSoftBody(softBody, shapeData);
+        }
+
         public void InitInstancedRender(AlignedCollisionObjectArray objects)
         {
             // Clear instance data
             foreach (ShapeData s in shapes.Values)
-                s.InstanceDataList.Clear();
+                s.Instances.Clear();
 
+            // Gather instance data
             int i = objects.Count - 1;
             for (; i >= 0; i--)
             {
-                CollisionObject colObj = objects[i];
+                var colObj = objects[i];
+                var shape = colObj.CollisionShape;
 
-                Matrix transform;
-                if (colObj is SoftBody)
+                if (shape.ShapeType == BroadphaseNativeType.SoftBodyShape)
                 {
                     if (demo.IsDebugDrawEnabled)
                         continue;
-                    transform = Matrix.Identity;
+                    InitSoftBodyInstance(colObj as SoftBody, shape);
                 }
                 else
                 {
+                    Matrix transform;
                     colObj.GetWorldTransform(out transform);
+                    InitRigidBodyInstance(colObj, shape, ref transform);
                 }
-                InitInstanceData(colObj, colObj.CollisionShape, ref transform);
             }
 
             foreach (KeyValuePair<CollisionShape, ShapeData> sh in shapes)
             {
                 ShapeData s = sh.Value;
-                int instanceCount = s.InstanceDataList.Count;
+                int instanceCount = s.Instances.Count;
 
                 // Is the instance buffer the right size?
                 if (s.InstanceDataBuffer.Description.SizeInBytes != instanceCount * InstanceData.SizeInBytes)
@@ -364,6 +360,8 @@ namespace DemoFramework.SharpDX
                     // No, recreate it
                     s.InstanceDataBuffer.Dispose();
 
+                    // Remember shapes that have no instances,
+                    // shape is removed after iteration over shapes
                     if (instanceCount == 0)
                     {
                         if (s.IndexBuffer != null)
@@ -378,14 +376,14 @@ namespace DemoFramework.SharpDX
                     s.BufferBindings[1] = new VertexBufferBinding(s.InstanceDataBuffer, InstanceData.SizeInBytes, 0);
                 }
 
-                // Copy the instance data over to the instance buffer
-                InstanceData[] instanceArray = s.InstanceDataListArray;
+                // Copy the instance list over to the instance array
+                InstanceData[] instanceArray = s.InstanceArray;
                 if (instanceArray.Length != instanceCount)
                 {
                     instanceArray = new InstanceData[instanceCount];
-                    s.InstanceDataListArray = instanceArray;
+                    s.InstanceArray = instanceArray;
                 }
-                s.InstanceDataList.CopyTo(instanceArray);
+                s.Instances.CopyTo(instanceArray);
 
                 using (var data = s.InstanceDataBuffer.Map(MapMode.WriteDiscard, global::SharpDX.Direct3D10.MapFlags.None))
                 {
@@ -394,11 +392,12 @@ namespace DemoFramework.SharpDX
                 }
             }
 
+            // Remove shapes that had no instances
             if (removeList.Count != 0)
             {
-                for (i = removeList.Count - 1; i >= 0; i--)
+                foreach (var shape in removeList)
                 {
-                    shapes.Remove(removeList[i]);
+                    shapes.Remove(shape);
                 }
                 removeList.Clear();
             }
@@ -415,19 +414,13 @@ namespace DemoFramework.SharpDX
                 if (s.IndexBuffer != null)
                 {
                     inputAssembler.SetIndexBuffer(s.IndexBuffer, s.IndexFormat, 0);
-                    device.DrawIndexedInstanced(s.IndexCount, s.InstanceDataList.Count, 0, 0, 0);
+                    device.DrawIndexedInstanced(s.IndexCount, s.Instances.Count, 0, 0, 0);
                 }
                 else
                 {
-                    device.DrawInstanced(s.VertexCount, s.InstanceDataList.Count, 0, 0);
+                    device.DrawInstanced(s.VertexCount, s.Instances.Count, 0, 0);
                 }
             }
-        }
-
-        public ShapeData CreateSoftBody()
-        {
-            // Soft body geometry is recreated each frame. Nothing to do here.
-            return new ShapeData();
         }
 
         public void UpdateSoftBody(SoftBody softBody, ShapeData shapeData)

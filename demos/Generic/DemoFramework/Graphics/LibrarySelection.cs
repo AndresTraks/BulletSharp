@@ -12,15 +12,15 @@ namespace DemoFramework
             AcceptButton = runButton;
             CancelButton = cancelButton;
 
-            string[] supportedLibraries = LibraryManager.GetSupportedLibraries();
+            string[] supportedLibraries = GraphicsLibraryManager.GetSupportedLibraries();
             int selectLibrary = 0;
             foreach (string library in supportedLibraries)
             {
-                if (LibraryManager.IsLibraryAvailable(library))
+                if (GraphicsLibraryManager.IsLibraryAvailable(library))
                 {
                     int index = libraryList.Items.Add(library);
                     logText.Text += library + " OK\r\n";
-                    if (library.Equals(LibraryManager.GraphicsLibraryName))
+                    if (library.Equals(GraphicsLibraryManager.GraphicsLibraryName))
                     {
                         selectLibrary = index;
                     }
@@ -36,20 +36,20 @@ namespace DemoFramework
                 runButton.Enabled = true;
                 libraryList.SelectedIndex = selectLibrary;
             }
-            LibraryManager.GraphicsLibraryName = null;
+            GraphicsLibraryManager.GraphicsLibraryName = null;
 
             libraryList.DoubleClick += new EventHandler(libraryList_DoubleClick);
         }
 
         void libraryList_DoubleClick(object sender, EventArgs e)
         {
-            LibraryManager.GraphicsLibraryName = libraryList.SelectedItem as string;
+            GraphicsLibraryManager.GraphicsLibraryName = libraryList.SelectedItem as string;
             Close();
         }
 
         private void runButton_Click(object sender, EventArgs e)
         {
-            LibraryManager.GraphicsLibraryName = libraryList.SelectedItem as string;
+            GraphicsLibraryManager.GraphicsLibraryName = libraryList.SelectedItem as string;
             Close();
         }
 
