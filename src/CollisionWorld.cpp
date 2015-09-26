@@ -682,53 +682,35 @@ void ClosestRayResultCallback::RayToWorld::set(Vector3 value)
 }
 
 
-ContactResultCallback::~ContactResultCallback()
-{
-	this->!ContactResultCallback();
-}
-
-ContactResultCallback::!ContactResultCallback()
-{
-	if (this->IsDisposed)
-		return;
-	
-	delete _native;
-	_native = NULL;
-}
-
 ContactResultCallback::ContactResultCallback()
 {
-	_native = new ContactResultCallbackWrapper(this);
+	_collisionFilterGroup = CollisionFilterGroups::DefaultFilter;
+	_collisionFilterMask = CollisionFilterGroups::AllFilter;
 }
 
 bool ContactResultCallback::NeedsCollision(BroadphaseProxy^ proxy0)
 {
-	bool collides = (proxy0->CollisionFilterGroup & CollisionFilterMask) != CollisionFilterGroups::None;
-	collides = collides && (CollisionFilterGroup & proxy0->CollisionFilterMask) != CollisionFilterGroups::None;
+	bool collides = (proxy0->CollisionFilterGroup & _collisionFilterMask) != CollisionFilterGroups::None;
+	collides = collides && (_collisionFilterGroup & proxy0->CollisionFilterMask) != CollisionFilterGroups::None;
 	return collides;
 }
 
 CollisionFilterGroups ContactResultCallback::CollisionFilterGroup::get()
 {
-	return (CollisionFilterGroups)_native->m_collisionFilterGroup;
+	return _collisionFilterGroup;
 }
 void ContactResultCallback::CollisionFilterGroup::set(CollisionFilterGroups value)
 {
-	_native->m_collisionFilterGroup = (short int)value;
+	_collisionFilterGroup = value;
 }
 
 CollisionFilterGroups ContactResultCallback::CollisionFilterMask::get()
 {
-	return (CollisionFilterGroups)_native->m_collisionFilterMask;
+	return _collisionFilterMask;
 }
 void ContactResultCallback::CollisionFilterMask::set(CollisionFilterGroups value)
 {
-	_native->m_collisionFilterMask = (short int)value;
-}
-
-bool ContactResultCallback::IsDisposed::get()
-{
-	return (_native == NULL);
+	_collisionFilterMask = value;
 }
 
 
@@ -850,12 +832,14 @@ void CollisionWorld::ComputeOverlappingPairs()
 void CollisionWorld::ContactPairTest(CollisionObject^ colObjA, CollisionObject^ colObjB,
 	ContactResultCallback^ resultCallback)
 {
-	_native->contactPairTest(colObjA->_native, colObjB->_native, *resultCallback->_native);
+	ContactResultCallbackWrapper result = ContactResultCallbackWrapper(resultCallback);
+	_native->contactPairTest(colObjA->_native, colObjB->_native, result);
 }
 
 void CollisionWorld::ContactTest(CollisionObject^ colObj, ContactResultCallback^ resultCallback)
 {
-	_native->contactTest(colObj->_native, *resultCallback->_native);
+	ContactResultCallbackWrapper result = ContactResultCallbackWrapper(resultCallback);
+	_native->contactTest(colObj->_native, result);
 }
 
 void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to,

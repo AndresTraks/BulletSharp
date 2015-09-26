@@ -432,13 +432,8 @@ namespace BulletSharp
 
 	public ref class ContactResultCallback abstract
 	{
-	internal:
-		ContactResultCallbackWrapper* _native;
-
-	public:
-		!ContactResultCallback();
-	protected:
-		~ContactResultCallback();
+	private:
+		CollisionFilterGroups _collisionFilterGroup, _collisionFilterMask;
 
 	protected:
 		ContactResultCallback();
@@ -458,11 +453,6 @@ namespace BulletSharp
 		{
 			CollisionFilterGroups get();
 			void set(CollisionFilterGroups value);
-		}
-
-		property bool IsDisposed
-		{
-			virtual bool get();
 		}
 	};
 

@@ -99,15 +99,10 @@ namespace CollisionInterfaceDemo
             t.set_Rows(3, pos);
             objects[0].WorldTransform = t;
 
-            World.DebugDrawer.DrawBox(ref boxMin, ref boxMax, ref t, System.Drawing.Color.White);
-        }
-
-        public override void ExitPhysics()
-        {
-            renderCallback.Dispose();
-            renderCallback = null;
-
-            base.ExitPhysics();
+            if (IsDebugDrawEnabled)
+            {
+                World.DebugDrawer.DrawBox(ref boxMin, ref boxMax, ref t, System.Drawing.Color.White);
+            }
         }
     }
 
