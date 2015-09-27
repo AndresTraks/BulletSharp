@@ -25,10 +25,7 @@ namespace DemoFramework.OpenTK
 
         public override float AspectRatio
         {
-            get
-            {
-                return (float)glControl.Width / (float)glControl.Height;
-            }
+            get { return glControl.AspectRatio; }
         }
 
         public override float FarPlane
@@ -40,6 +37,19 @@ namespace DemoFramework.OpenTK
                 {
                     UpdateView();
                 }
+            }
+        }
+
+        public override bool CullingEnabled
+        {
+            get
+            {
+                return base.CullingEnabled;
+            }
+            set
+            {
+                viewChanged = true;
+                base.CullingEnabled = value;
             }
         }
 
@@ -150,10 +160,6 @@ namespace DemoFramework.OpenTK
 
             GL.ClearColor(Color.Gray);
             GL.FrontFace(FrontFaceDirection.Cw);
-            if (CullingEnabled)
-            {
-                GL.Enable(EnableCap.CullFace);
-            }
 
             int vertexShaderHandle = CreateShaderFromResource(ShaderType.VertexShader, "vp.cg");
             int fragmentShaderHandle = CreateShaderFromResource(ShaderType.FragmentShader, "fp.cg");
@@ -235,6 +241,15 @@ namespace DemoFramework.OpenTK
                 Vector3 lightPosition = new Vector3(30, 20, 10);
                 GL.Uniform3(lightPositionVectorLocation, lightPosition);
                 GL.Uniform3(eyePositionVectorLocation, MathHelper.Convert(freelook.Eye));
+
+                if (CullingEnabled)
+                {
+                    GL.Enable(EnableCap.CullFace);
+                }
+                else
+                {
+                    GL.Disable(EnableCap.CullFace);
+                }
 
                 viewChanged = false;
             }

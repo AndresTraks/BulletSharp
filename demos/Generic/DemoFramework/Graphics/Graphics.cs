@@ -34,7 +34,6 @@ namespace DemoFramework
             Demo = demo;
             FarPlane = 400.0f;
             FieldOfView = (float)Math.PI / 4;
-            CullingEnabled = true;
         }
 
         public virtual void Initialize()

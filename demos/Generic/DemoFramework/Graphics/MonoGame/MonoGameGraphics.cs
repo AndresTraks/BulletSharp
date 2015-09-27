@@ -149,6 +149,10 @@ namespace DemoFramework.MonoGame
             {
                 Device.RasterizerState = RasterizerState.CullCounterClockwise;
             }
+            else
+            {
+                Device.RasterizerState = RasterizerState.CullNone;
+            }
 
             OnResetDevice();
             GraphicsLibraryManager.LibraryStarted();

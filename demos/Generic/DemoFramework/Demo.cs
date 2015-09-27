@@ -103,6 +103,20 @@ namespace DemoFramework
             }
         }
 
+        bool isCullingEnabled = true;
+        public bool CullingEnabled
+        {
+            get
+            {
+                return isCullingEnabled;
+            }
+            set
+            {
+                Graphics.CullingEnabled = value;
+                isCullingEnabled = value;
+            }
+        }
+
         public Demo()
         {
             CollisionShapes = new List<CollisionShape>();
@@ -116,6 +130,7 @@ namespace DemoFramework
                 Freelook = new FreeLook(Input);
 
                 Graphics.Initialize();
+                Graphics.CullingEnabled = isCullingEnabled;
                 OnInitialize();
                 if (World == null)
                 {

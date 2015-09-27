@@ -74,7 +74,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatherStoneDemo", "Feather
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpDX11", "DemoFramework\Graphics\SharpDX11\SharpDX11.csproj", "{540E0C60-3FBD-4166-933D-D80284D1CA0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xna", "DemoFramework\Graphics\MonoGame\Xna.csproj", "{19C540EC-556A-4834-BA97-6EF07AC5EF58}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame", "DemoFramework\Graphics\MonoGame\MonoGame.csproj", "{19C540EC-556A-4834-BA97-6EF07AC5EF58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

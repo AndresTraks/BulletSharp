@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using OpenTK;
+using OpenTK.Graphics;
 
 namespace DemoFramework.OpenTK
 {
@@ -20,7 +21,7 @@ namespace DemoFramework.OpenTK
 
             InitializeComponent();
 
-            glControl = new GLControl();
+            glControl = new GLControl(new GraphicsMode(new ColorFormat(24), 24, 0, 4));
             glControl.BackColor = System.Drawing.Color.Black;
             glControl.Dock = DockStyle.Fill;
             glControl.TabIndex = 0;

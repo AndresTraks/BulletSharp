@@ -28,7 +28,7 @@ namespace DemoFramework.OpenTK
         public DrawElementsType ElementsType;
         public PrimitiveType PrimitiveType = PrimitiveType.Triangles;
 
-        public List<InstanceData> InstanceDataList = new List<InstanceData>();
+        public List<InstanceData> Instances = new List<InstanceData>();
         public Vector3[] SoftBodyVertices;
         public Vector3[] SoftBodyNormals;
 
@@ -225,13 +225,6 @@ namespace DemoFramework.OpenTK
         ShapeData CreateShape(CollisionShape shape)
         {
             ShapeData shapeData = new ShapeData();
-
-            if (shape.ShapeType == BroadphaseNativeType.SoftBodyShape)
-            {
-                // Soft body geometry is recreated each frame. Nothing to do here.
-                return shapeData;
-            }
-
             uint[] indices;
             BulletSharp.Vector3[] vertexBuffer = CreateShape(shape, out indices);
 
@@ -285,7 +278,14 @@ namespace DemoFramework.OpenTK
 
             if (shapes.TryGetValue(shape, out shapeData) == false)
             {
-                shapeData = CreateShape(shape);
+                if (shape.ShapeType == BroadphaseNativeType.SoftBodyShape)
+                {
+                    shapeData = new ShapeData();
+                }
+                else
+                {
+                    shapeData = CreateShape(shape);
+                }
 
                 // Create an initial instance data buffer for a single instance
                 //instanceDataDesc.SizeInBytes = Marshal.SizeOf(typeof(InstanceData));
@@ -298,68 +298,70 @@ namespace DemoFramework.OpenTK
             return shapeData;
         }
 
-        void InitInstanceData(CollisionObject colObj, CollisionShape shape, ref BulletSharp.Matrix transform)
+        void InitRigidBodyInstance(CollisionObject colObj, CollisionShape shape, ref BulletSharp.Matrix transform)
         {
-            switch (shape.ShapeType)
+            if (shape.ShapeType == BroadphaseNativeType.CompoundShape)
             {
-                case BroadphaseNativeType.CompoundShape:
-                    foreach (CompoundShapeChild child in (shape as CompoundShape).ChildList)
-                    {
-                        BulletSharp.Matrix childTransform = child.Transform * transform;
-                        InitInstanceData(colObj, child.ChildShape, ref childTransform);
-                    }
-                    break;
-                case BroadphaseNativeType.SoftBodyShape:
-                    ShapeData shapeData = InitShapeData(shape);
-                    UpdateSoftBody(colObj as SoftBody, shapeData);
-
-                    shapeData.InstanceDataList.Add(new InstanceData()
-                    {
-                        WorldTransform = MathHelper.Convert(ref transform),
-                        Color = softBodyColor
-                    });
-                    break;
-                default:
-                    InitShapeData(shape).InstanceDataList.Add(new InstanceData()
-                    {
-                        WorldTransform = MathHelper.Convert(ref transform),
-                        Color = "Ground".Equals(colObj.UserObject) ? groundColor :
-                            colObj.ActivationState == ActivationState.ActiveTag ? activeColor : passiveColor
-                    });
-                    break;
+                foreach (CompoundShapeChild child in (shape as CompoundShape).ChildList)
+                {
+                    BulletSharp.Matrix childTransform = child.Transform * transform;
+                    InitRigidBodyInstance(colObj, child.ChildShape, ref childTransform);
+                }
             }
+            else
+            {
+                InitShapeData(shape).Instances.Add(new InstanceData()
+                {
+                    WorldTransform = MathHelper.Convert(ref transform),
+                    Color = "Ground".Equals(colObj.UserObject) ? groundColor :
+                        colObj.ActivationState == ActivationState.ActiveTag ? activeColor : passiveColor
+                });
+            }
+        }
+
+        void InitSoftBodyInstance(SoftBody softBody, CollisionShape shape)
+        {
+            var shapeData = InitShapeData(shape);
+            shapeData.Instances.Add(new InstanceData()
+            {
+                WorldTransform = Matrix4.Identity,
+                Color = softBodyColor
+            });
+
+            UpdateSoftBody(softBody, shapeData);
         }
 
         public void InitInstancedRender(AlignedCollisionObjectArray objects)
         {
             // Clear instance data
             foreach (ShapeData s in shapes.Values)
-                s.InstanceDataList.Clear();
+                s.Instances.Clear();
 
             int i = objects.Count - 1;
             for (; i >= 0; i--)
             {
-                CollisionObject colObj = objects[i];
+                var colObj = objects[i];
+                var shape = colObj.CollisionShape;
 
-                BulletSharp.Matrix transform;
                 if (colObj is SoftBody)
                 {
                     if (demo.IsDebugDrawEnabled)
                         continue;
-                    transform = BulletSharp.Matrix.Identity;
+                    InitSoftBodyInstance(colObj as SoftBody, shape);
                 }
                 else
                 {
+                    BulletSharp.Matrix transform;
                     colObj.GetWorldTransform(out transform);
+                    InitRigidBodyInstance(colObj, colObj.CollisionShape, ref transform);
                 }
-                InitInstanceData(colObj, colObj.CollisionShape, ref transform);
             }
 
             foreach (KeyValuePair<CollisionShape, ShapeData> sh in shapes)
             {
                 ShapeData s = sh.Value;
 
-                if (s.InstanceDataList.Count == 0)
+                if (s.Instances.Count == 0)
                 {
                     removeList.Add(sh.Key);
                 }
@@ -429,7 +431,7 @@ namespace DemoFramework.OpenTK
                 {
                     GL.BindBuffer(BufferTarget.ElementArrayBuffer, s.ElementBufferID);
 
-                    foreach (InstanceData instance in s.InstanceDataList)
+                    foreach (InstanceData instance in s.Instances)
                     {
                         worldMatrix = instance.WorldTransform;
                         GL.UniformMatrix4(worldMatrixLocation, false, ref worldMatrix);
@@ -441,7 +443,7 @@ namespace DemoFramework.OpenTK
                 }
                 else
                 {
-                    foreach (InstanceData instance in s.InstanceDataList)
+                    foreach (InstanceData instance in s.Instances)
                     {
                         worldMatrix = instance.WorldTransform;
                         GL.UniformMatrix4(worldMatrixLocation, false, ref worldMatrix);
