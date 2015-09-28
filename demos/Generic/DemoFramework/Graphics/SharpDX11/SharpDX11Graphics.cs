@@ -531,8 +531,8 @@ namespace DemoFramework.SharpDX11
         {
             // Clear targets
             _immediateContext.ClearDepthStencilView(depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
-            _immediateContext.ClearRenderTargetView(renderView, ambient);
-            _immediateContext.ClearRenderTargetView(gBufferLightView, ambient);
+            //_immediateContext.ClearRenderTargetView(renderView, ambient);
+            //_immediateContext.ClearRenderTargetView(gBufferLightView, ambient);
             _immediateContext.ClearRenderTargetView(gBufferNormalView, ambient);
             _immediateContext.ClearRenderTargetView(gBufferDiffuseView, ambient);
 

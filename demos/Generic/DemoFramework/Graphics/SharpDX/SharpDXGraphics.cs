@@ -518,8 +518,8 @@ namespace DemoFramework.SharpDX
         {
             // Clear targets
             _device.ClearDepthStencilView(depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
-            _device.ClearRenderTargetView(renderView, ambient);
-            _device.ClearRenderTargetView(gBufferLightView, ambient);
+            //_device.ClearRenderTargetView(renderView, ambient);
+            //_device.ClearRenderTargetView(gBufferLightView, ambient);
             _device.ClearRenderTargetView(gBufferNormalView, ambient);
             _device.ClearRenderTargetView(gBufferDiffuseView, ambient);
 
