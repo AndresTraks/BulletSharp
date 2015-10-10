@@ -44,6 +44,8 @@ namespace BasicDemo
             collisionShapes.Add(colShape);
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
+            var rbInfo = new RigidBodyConstructionInfo(mass, null, colShape, localInertia);
+
             const float start_x = StartPosX - ArraySizeX / 2;
             const float start_y = StartPosY;
             const float start_z = StartPosZ - ArraySizeZ / 2;
@@ -65,9 +67,8 @@ namespace BasicDemo
 
                         // using motionstate is recommended, it provides interpolation capabilities
                         // and only synchronizes 'active' objects
-                        DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
-                        RigidBodyConstructionInfo rbInfo =
-                            new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
+                        rbInfo.MotionState = new DefaultMotionState(startTransform);
+
                         RigidBody body = new RigidBody(rbInfo);
                         
                         // make it drop from a height
@@ -77,6 +78,8 @@ namespace BasicDemo
                     }
                 }
             }
+
+            rbInfo.Dispose();
         }
 
         public virtual void Update(float elapsedTime)

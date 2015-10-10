@@ -255,22 +255,23 @@ namespace ConcaveRaycastDemo
             indexVertexArrays = new TriangleIndexVertexArray();
 
             IndexedMesh mesh = new IndexedMesh();
-            mesh.Allocate(totalVerts, Vector3.SizeInBytes, totalTriangles, 3 * sizeof(int));
-            DataStream indices = mesh.LockIndices();
-            for (int i = 0; i < NUM_VERTS_X - 1; i++)
+            mesh.Allocate(totalVerts, totalTriangles, 3 * sizeof(int), Vector3.SizeInBytes, PhyScalarType.Int32, PhyScalarType.Single);
+            using (var indices = mesh.LockIndices())
             {
-                for (int j = 0; j < NUM_VERTS_Y - 1; j++)
+                for (int i = 0; i < NUM_VERTS_X - 1; i++)
                 {
-                    indices.Write(j * NUM_VERTS_X + i);
-                    indices.Write(j * NUM_VERTS_X + i + 1);
-                    indices.Write((j + 1) * NUM_VERTS_X + i + 1);
+                    for (int j = 0; j < NUM_VERTS_Y - 1; j++)
+                    {
+                        indices.Write(j * NUM_VERTS_X + i);
+                        indices.Write(j * NUM_VERTS_X + i + 1);
+                        indices.Write((j + 1) * NUM_VERTS_X + i + 1);
 
-                    indices.Write(j * NUM_VERTS_X + i);
-                    indices.Write((j + 1) * NUM_VERTS_X + i + 1);
-                    indices.Write((j + 1) * NUM_VERTS_X + i);
+                        indices.Write(j * NUM_VERTS_X + i);
+                        indices.Write((j + 1) * NUM_VERTS_X + i + 1);
+                        indices.Write((j + 1) * NUM_VERTS_X + i);
+                    }
                 }
             }
-            indices.Dispose();
 
             indexVertexArrays.AddIndexedMesh(mesh);
 

@@ -23,6 +23,20 @@ namespace BulletSharpTest
             {
                 Assert.NotNull(indexedMesh);
             }
+            var initialMesh = indexVertexArray.IndexedMeshArray[0];
+            Assert.AreEqual(initialMesh.IndexType, PhyScalarType.Int32);
+            Assert.AreEqual(initialMesh.VertexType, PhyScalarType.Single);
+            Assert.AreEqual(initialMesh.NumVertices, TorusMesh.Vertices.Length / 3);
+            Assert.AreEqual(initialMesh.NumTriangles, TorusMesh.Indices.Length / 3);
+            Assert.AreEqual(initialMesh.VertexStride, sizeof(float) * 3);
+            Assert.AreEqual(initialMesh.TriangleIndexStride, sizeof(int) * 3);
+
+            var triangleIndices = initialMesh.TriangleIndices;
+            Assert.AreEqual(triangleIndices.Count, TorusMesh.Indices.Length);
+            for (int i = 0; i < triangleIndices.Count; i++)
+            {
+                Assert.AreEqual(triangleIndices[i], TorusMesh.Indices[i]);
+            }
 
             Vector3 aabbMin, aabbMax;
             gImpactMeshShape.GetAabb(Matrix.Identity, out aabbMin, out aabbMax);
@@ -45,12 +59,14 @@ namespace BulletSharpTest
             indexVertexArray = new TriangleIndexVertexArray(TorusMesh.Indices, TorusMesh.Vertices);
 
             gImpactMeshShape = new GImpactMeshShape(indexVertexArray);
+            gImpactMeshShape.CalculateLocalInertia(1.0f);
 
             triangleMeshShape = new BvhTriangleMeshShape(indexVertexArray, true);
-            triangleMeshShape.CalculateLocalInertia(1.0f);
+            // CalculateLocalInertia must fail for static shapes (shapes based on TriangleMeshShape)
+            //triangleMeshShape.CalculateLocalInertia(1.0f);
 
             gImpactMesh = CreateBody(1.0f, gImpactMeshShape, Vector3.Zero);
-            triangleMesh = CreateBody(1.0f, triangleMeshShape, Vector3.Zero);
+            triangleMesh = CreateBody(0.0f, triangleMeshShape, Vector3.Zero);
         }
 
         [TestFixtureTearDown]

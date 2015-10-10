@@ -173,12 +173,12 @@ namespace BulletSharp
 
 	public enum class PhyScalarType
 	{
-		PhyFloat = PHY_FLOAT,
-		PhyDouble = PHY_DOUBLE,
-		PhyInteger = PHY_INTEGER,
-		PhyShort = PHY_SHORT,
-		PhyFixedPoint88 = PHY_FIXEDPOINT88,
-		PhyUChar = PHY_UCHAR
+		Single = PHY_FLOAT,
+		Double = PHY_DOUBLE,
+		Int32 = PHY_INTEGER,
+		Int16 = PHY_SHORT,
+		FixedPoint88 = PHY_FIXEDPOINT88,
+		Byte = PHY_UCHAR
 	};
 
 #ifndef DISABLE_SOFTBODY

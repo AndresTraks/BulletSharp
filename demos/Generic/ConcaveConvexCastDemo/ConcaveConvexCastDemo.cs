@@ -272,7 +272,7 @@ namespace ConcaveConvexCastDemo
             indexVertexArrays = new TriangleIndexVertexArray();
 
             IndexedMesh mesh = new IndexedMesh();
-            mesh.Allocate(totalVerts, Vector3.SizeInBytes, totalTriangles, 3 * sizeof(int));
+            mesh.Allocate(totalTriangles, totalVerts, 3 * sizeof(int), Vector3.SizeInBytes, PhyScalarType.Int32, PhyScalarType.Single);
             DataStream indices = mesh.LockIndices();
             for (int i = 0; i < NumVertsX - 1; i++)
             {

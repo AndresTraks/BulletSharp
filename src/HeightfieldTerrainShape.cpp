@@ -14,13 +14,13 @@ HeightfieldTerrainShape::HeightfieldTerrainShape(int heightStickWidth, int heigh
 	int typeSize;
 	switch (heightDataType)
 	{
-	case PhyScalarType::PhyUChar:
+	case PhyScalarType::Byte:
 		typeSize = 1;
 		break;
-	case PhyScalarType::PhyShort:
+	case PhyScalarType::Int16:
 		typeSize = 2;
 		break;
-	case PhyScalarType::PhyFloat:
+	case PhyScalarType::Single:
 		typeSize = 4;
 		break;
 	default:

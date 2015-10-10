@@ -99,19 +99,21 @@ namespace VehicleDemo
 
                 TriangleIndexVertexArray vertexArray = new TriangleIndexVertexArray();
                 IndexedMesh mesh = new IndexedMesh();
-                mesh.Allocate(totalVerts, vertStride, totalTriangles, indexStride);
+                mesh.Allocate(totalTriangles, totalVerts, indexStride, vertStride, PhyScalarType.Int32, PhyScalarType.Single);
 
-                BulletSharp.DataStream data = mesh.LockVerts();
-                for (i = 0; i < NUM_VERTS_X; i++)
+                using (var data = mesh.LockVerts())
                 {
-                    for (int j = 0; j < NUM_VERTS_Y; j++)
+                    for (i = 0; i < NUM_VERTS_X; i++)
                     {
-                        float wl = .2f;
-                        float height = 20.0f * (float)(Math.Sin(i * wl) * Math.Cos(j * wl));
+                        for (int j = 0; j < NUM_VERTS_Y; j++)
+                        {
+                            float wl = .2f;
+                            float height = 20.0f * (float)(Math.Sin(i * wl) * Math.Cos(j * wl));
 
-                        data.Write((i - NUM_VERTS_X * 0.5f) * scale);
-                        data.Write(height);
-                        data.Write((j - NUM_VERTS_Y * 0.5f) * scale);
+                            data.Write((i - NUM_VERTS_X * 0.5f) * scale);
+                            data.Write(height);
+                            data.Write((j - NUM_VERTS_Y * 0.5f) * scale);
+                        }
                     }
                 }
 

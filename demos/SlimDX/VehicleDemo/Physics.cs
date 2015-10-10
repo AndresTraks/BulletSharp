@@ -82,7 +82,7 @@ namespace VehicleDemo
 
                 TriangleIndexVertexArray vertexArray = new TriangleIndexVertexArray();
                 IndexedMesh mesh = new IndexedMesh();
-                mesh.Allocate(totalVerts, vertStride, totalTriangles, indexStride);
+                mesh.Allocate(totalVerts, vertStride, totalTriangles, indexStride, PhyScalarType.Int32, PhyScalarType.Single);
 
                 BulletSharp.DataStream data = mesh.LockVerts();
                 for (i = 0; i < NUM_VERTS_X; i++)
@@ -134,7 +134,7 @@ namespace VehicleDemo
                 //FileStream file = new FileStream(heightfieldFile, FileMode.Open, FileAccess.Read);
 
                 // Use float data
-                PhyScalarType scalarType = PhyScalarType.PhyFloat;
+                PhyScalarType scalarType = PhyScalarType.Single;
                 byte[] terr = new byte[width * length * 4];
                 MemoryStream file = new MemoryStream(terr);
                 BinaryWriter writer = new BinaryWriter(file);
@@ -171,12 +171,12 @@ namespace VehicleDemo
                     for (int j = 0; j < length; j++)
                     {
                         float height;
-                        if (scalarType == PhyScalarType.PhyFloat)
+                        if (scalarType == PhyScalarType.Single)
                         {
                             // heightScale isn't applied internally for float data
                             height = reader.ReadSingle();
                         }
-                        else if (scalarType == PhyScalarType.PhyUChar)
+                        else if (scalarType == PhyScalarType.Byte)
                         {
                             height = file.ReadByte() * heightScale;
                         }

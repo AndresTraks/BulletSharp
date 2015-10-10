@@ -16,6 +16,7 @@ namespace BulletSharp
 
 	private:
 		bool _preventDelete;
+		bool _ownsData;
 		IntArray^ _triangleIndices;
 		Vector3Array^ _vertices;
 
@@ -30,7 +31,9 @@ namespace BulletSharp
 	public:
 		IndexedMesh();
 
-		void Allocate(int numVertices, int vertexStride, int numTriangles, int triangleIndexStride);
+		void Allocate(int numTriangles, int numVertices, int triangleIndexStride, int vertexStride,
+			PhyScalarType indexType, PhyScalarType vertexType);
+		void Free();
 		DataStream^ LockIndices();
 		DataStream^ LockVerts();
 
@@ -102,13 +105,14 @@ namespace BulletSharp
 
 	private:
 		AlignedIndexedMeshArray^ _indexedMeshArray;
+		IndexedMesh^ _initialMesh;
 		List<IndexedMesh^>^ _meshes;
 
 	public:
 		TriangleIndexVertexArray(int numTriangles, IntPtr triangleIndexBase, int triangleIndexStride,
 			int numVertices, IntPtr vertexBase, int vertexStride);
-		TriangleIndexVertexArray(array<int>^ indices, array<Vector3>^ vertices);
-		TriangleIndexVertexArray(array<int>^ indices, array<btScalar>^ vertices);
+		TriangleIndexVertexArray(ICollection<int>^ indices, ICollection<Vector3>^ vertices);
+		TriangleIndexVertexArray(ICollection<int>^ indices, ICollection<btScalar>^ vertices);
 		TriangleIndexVertexArray();
 
 		void AddIndexedMesh(IndexedMesh^ mesh, PhyScalarType indexType);

@@ -87,6 +87,8 @@ namespace BasicDemo
             CollisionShapes.Add(colShape);
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
+            var rbInfo = new RigidBodyConstructionInfo(mass, null, colShape, localInertia);
+
             float start_x = StartPosX - ArraySizeX / 2;
             float start_y = StartPosY;
             float start_z = StartPosZ - ArraySizeZ / 2;
@@ -115,12 +117,11 @@ namespace BasicDemo
                         SceneNode boxNode = sceneMgr.RootSceneNode.CreateChildSceneNode("BoxNode" + index.ToString());
                         boxNode.AttachObject(box);
                         boxNode.Scale(new Vector3(2, 2, 2));
-                        MogreMotionState myMotionState = new MogreMotionState(box, boxNode, startTransform);
+                        var mogreMotionState = new MogreMotionState(box, boxNode, startTransform);
+                        rbInfo.MotionState = mogreMotionState;
 
-                        RigidBodyConstructionInfo rbInfo =
-                            new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
                         RigidBody body = new RigidBody(rbInfo);
-                        myMotionState.Body = body;
+                        mogreMotionState.Body = body;
 
                         // make it drop from a height
                         body.Translate(new Vector3(0, 20, 0));
@@ -129,6 +130,8 @@ namespace BasicDemo
                     }
                 }
             }
+
+            rbInfo.Dispose();
         }
 
         public virtual void Update(float elapsedTime)
@@ -183,8 +186,11 @@ namespace BasicDemo
 
             DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
 
-            RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
-            RigidBody body = new RigidBody(rbInfo);
+            RigidBody body;
+            using (var rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia))
+            {
+                body = new RigidBody(rbInfo);
+            }
 
             World.AddRigidBody(body);
 

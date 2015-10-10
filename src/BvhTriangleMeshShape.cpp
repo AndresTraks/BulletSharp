@@ -18,15 +18,18 @@ BvhTriangleMeshShape::BvhTriangleMeshShape(btBvhTriangleMeshShape* native)
 
 BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
 	bool buildBvh)
-	: TriangleMeshShape(new btBvhTriangleMeshShape(meshInterface->_native, useQuantizedAabbCompression,
-		buildBvh))
+	: TriangleMeshShape(0)
 {
+	UnmanagedPointer = new btBvhTriangleMeshShape(meshInterface->_native, useQuantizedAabbCompression, buildBvh);
+
 	_meshInterface = meshInterface;
 }
 
 BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression)
-	: TriangleMeshShape(new btBvhTriangleMeshShape(meshInterface->_native, useQuantizedAabbCompression))
+	: TriangleMeshShape(0)
 {
+	UnmanagedPointer = new btBvhTriangleMeshShape(meshInterface->_native, useQuantizedAabbCompression);
+
 	_meshInterface = meshInterface;
 }
 

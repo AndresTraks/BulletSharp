@@ -96,8 +96,11 @@ namespace DemoFramework
             //using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
             DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
 
-            RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
-            RigidBody body = new RigidBody(rbInfo);
+            RigidBody body;
+            using (var rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia))
+            {
+                body = new RigidBody(rbInfo);
+            }
 
             _world.AddRigidBody(body);
 
