@@ -10,17 +10,21 @@
 
 MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface,
 	bool useQuantizedAabbCompression, bool buildBvh)
-	: BvhTriangleMeshShape(new btMultimaterialTriangleMeshShape(meshInterface->_native,
-		useQuantizedAabbCompression, buildBvh))
+	: BvhTriangleMeshShape(0)
 {
+	UnmanagedPointer = new btMultimaterialTriangleMeshShape(meshInterface->_native,
+		useQuantizedAabbCompression, buildBvh);
+
 	_meshInterface = meshInterface;
 }
 
 MultimaterialTriangleMeshShape::MultimaterialTriangleMeshShape(StridingMeshInterface^ meshInterface,
 	bool useQuantizedAabbCompression)
-	: BvhTriangleMeshShape(new btMultimaterialTriangleMeshShape(meshInterface->_native,
-		useQuantizedAabbCompression))
+	: BvhTriangleMeshShape(0)
 {
+	UnmanagedPointer = new btMultimaterialTriangleMeshShape(meshInterface->_native,
+		useQuantizedAabbCompression);
+
 	_meshInterface = meshInterface;
 }
 

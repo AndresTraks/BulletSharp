@@ -12,13 +12,18 @@ namespace BulletSharp
 	internal:
 		btMaterialProperties* _native;
 
-	public:
+	private:
+		bool _ownsData;
+
 		!MaterialProperties();
-	protected:
 		~MaterialProperties();
 
 	public:
 		MaterialProperties();
+
+		void Allocate(int numMaterials, int numTriangles, int materialStride, int materialIndexStride,
+			PhyScalarType materialType, PhyScalarType triangleType);
+		void Free();
 
 		property IntPtr MaterialBase
 		{
@@ -71,8 +76,16 @@ namespace BulletSharp
 
 	public ref class TriangleIndexVertexMaterialArray : TriangleIndexVertexArray
 	{
+	private:
+		MaterialProperties^ _initialMaterialProperties;
+		List<MaterialProperties^>^ _materialProperties;
+		IndexedMesh^ _initialMesh;
+
 	internal:
 		TriangleIndexVertexMaterialArray(btTriangleIndexVertexMaterialArray* native);
+
+		!TriangleIndexVertexMaterialArray();
+		~TriangleIndexVertexMaterialArray();
 
 	public:
 		TriangleIndexVertexMaterialArray();
@@ -80,8 +93,8 @@ namespace BulletSharp
 			int triangleIndexStride, int numVertices, IntPtr vertexBase, int vertexStride,
 			int numMaterials, IntPtr materialBase, int materialStride, IntPtr triangleMaterialsBase,
 			int materialIndexStride);
-		TriangleIndexVertexMaterialArray(array<int>^ indices, array<Vector3>^ vertices,
-			array<BulletMaterial>^ materials, array<int>^ materialIndices);
+		TriangleIndexVertexMaterialArray(ICollection<int>^ indices, ICollection<Vector3>^ vertices,
+			ICollection<BulletMaterial>^ materials, ICollection<int>^ materialIndices);
 
 		void AddMaterialProperties(MaterialProperties^ mat, PhyScalarType triangleType);
 		void AddMaterialProperties(MaterialProperties^ mat);

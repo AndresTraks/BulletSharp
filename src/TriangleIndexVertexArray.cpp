@@ -212,6 +212,20 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(btTriangleIndexVertexArray* n
 	_meshes = gcnew List<IndexedMesh^>();
 }
 
+TriangleIndexVertexArray::~TriangleIndexVertexArray()
+{
+	this->!TriangleIndexVertexArray();
+}
+
+TriangleIndexVertexArray::!TriangleIndexVertexArray()
+{
+	if (_initialMesh)
+	{
+		delete _initialMesh;
+		_initialMesh = nullptr;
+	}
+}
+
 TriangleIndexVertexArray::TriangleIndexVertexArray(int numTriangles, IntPtr triangleIndexBase,
 	int triangleIndexStride, int numVertices, IntPtr vertexBase, int vertexStride)
 	: StridingMeshInterface(new btTriangleIndexVertexArray(numTriangles, (int*)triangleIndexBase.ToPointer(),
@@ -244,7 +258,7 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(ICollection<int>^ indices, IC
 		vertexArray[i + 2] = Vector_Z(v);
 		i += 3;
 	}
-	Marshal::Copy(vertexArray, 0, _initialMesh->VertexBase, vertices->Count);
+	Marshal::Copy(vertexArray, 0, _initialMesh->VertexBase, vertexArray->Length);
 
 	_meshes = gcnew List<IndexedMesh^>();
 	AddIndexedMesh(_initialMesh);
@@ -263,7 +277,7 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(ICollection<int>^ indices, IC
 		indexArray = gcnew array<int>(indices->Count);
 		indices->CopyTo(indexArray, 0);
 	}
-	Marshal::Copy(indexArray, 0, _initialMesh->TriangleIndexBase, indices->Count);
+	Marshal::Copy(indexArray, 0, _initialMesh->TriangleIndexBase, indexArray->Length);
 
 	array<float>^ vertexArray = dynamic_cast<array<float>^>(vertices);
 	if (!vertexArray)
@@ -271,7 +285,7 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(ICollection<int>^ indices, IC
 		vertexArray = gcnew array<float>(vertices->Count);
 		vertices->CopyTo(vertexArray, 0);
 	}
-	Marshal::Copy(vertexArray, 0, _initialMesh->VertexBase, vertices->Count);
+	Marshal::Copy(vertexArray, 0, _initialMesh->VertexBase, vertexArray->Length);
 
 	_meshes = gcnew List<IndexedMesh^>();
 	AddIndexedMesh(_initialMesh);
@@ -290,7 +304,7 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(ICollection<int>^ indices, IC
 		indexArray = gcnew array<int>(indices->Count);
 		indices->CopyTo(indexArray, 0);
 	}
-	Marshal::Copy(indexArray, 0, _initialMesh->TriangleIndexBase, indices->Count);
+	Marshal::Copy(indexArray, 0, _initialMesh->TriangleIndexBase, indexArray->Length);
 
 	array<double>^ vertexArray = dynamic_cast<array<double>^>(vertices);
 	if (!vertexArray)
@@ -298,7 +312,7 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(ICollection<int>^ indices, IC
 		vertexArray = gcnew array<double>(vertices->Count);
 		vertices->CopyTo(vertexArray, 0);
 	}
-	Marshal::Copy(vertexArray, 0, _initialMesh->VertexBase, vertices->Count);
+	Marshal::Copy(vertexArray, 0, _initialMesh->VertexBase, vertexArray->Length);
 
 	_meshes = gcnew List<IndexedMesh^>();
 	AddIndexedMesh(_initialMesh);

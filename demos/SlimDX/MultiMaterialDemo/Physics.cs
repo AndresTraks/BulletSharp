@@ -63,23 +63,18 @@ namespace MultiMaterialDemo
                     cp.CombinedRestitution = props.Restitution * colObj0Wrap.CollisionObject.Restitution;
                 }
             }
-
-            return;
         }
 
         void SetVertexPositions(float waveheight, float offset)
         {
-            int i;
-            int j;
-
-            for (i = 0; i < NumVertsX; i++)
+            for (int y = 0; y < NumVertsY; y++)
             {
-                for (j = 0; j < NumVertsY; j++)
+                for (int x = 0; x < NumVertsX; x++)
                 {
-                    gVertices[i + j * NumVertsX] = new Vector3((i - NumVertsX * 0.5f) * TriangleSize,
-                        //0.f,
-                        waveheight * (float)Math.Sin((float)i + offset) * (float)Math.Cos((float)j + offset),
-                        (j - NumVertsY * 0.5f) * TriangleSize);
+                    gVertices[y * NumVertsX + x] = new Vector3(
+                        x * TriangleSize,
+                        waveheight * (float)Math.Sin((float)x + offset) * (float)Math.Cos((float)y + offset),
+                        y * TriangleSize);
                 }
             }
         }
@@ -102,37 +97,36 @@ namespace MultiMaterialDemo
             const int totalVerts = NumVertsX * NumVertsY;
             const int totalTriangles = 2 * (NumVertsX - 1) * (NumVertsY - 1);
 
+            // Set up the vertex data
             gVertices = new Vector3[totalVerts];
+            SetVertexPositions(waveheight, 0.0f);
+
+            // Set up the face data
+            int index = 0;
             int[] gIndices = new int[totalTriangles * 3];
-            BulletMaterial[] gMaterials = new BulletMaterial[2];
-            int[] gFaceMaterialIndices = new int[totalTriangles];
+            for (int y = 0; y < NumVertsY - 1; y++)
+            {
+                for (int x = 0; x < NumVertsX - 1; x++)
+                {
+                    gIndices[index++] = y * NumVertsX + x;
+                    gIndices[index++] = y * NumVertsX + x + 1;
+                    gIndices[index++] = (y + 1) * NumVertsX + x;
+
+                    gIndices[index++] = y * NumVertsX + x + 1;
+                    gIndices[index++] = (y + 1) * NumVertsX + x + 1;
+                    gIndices[index++] = (y + 1) * NumVertsX + x;
+                }
+            }
 
             // Explicitly set up the materials.  It's a small array so let's do it bit by bit.
+            BulletMaterial[] gMaterials = new BulletMaterial[2];
             gMaterials[0].Friction = 0;
             gMaterials[0].Restitution = 0.9f;
             gMaterials[1].Friction = 0.9f;
             gMaterials[1].Restitution = 0.1f;
 
-            int i;
-            // Set up the vertex data
-            SetVertexPositions(waveheight, 0.0f);
-            int index = 0;
-            // Set up the face data
-            for (i = 0; i < NumVertsX - 1; i++)
-            {
-                for (int j = 0; j < NumVertsY - 1; j++)
-                {
-                    gIndices[index++] = j * NumVertsX + i;
-                    gIndices[index++] = j * NumVertsX + i + 1;
-                    gIndices[index++] = (j + 1) * NumVertsX + i + 1;
-
-                    gIndices[index++] = j * NumVertsX + i;
-                    gIndices[index++] = (j + 1) * NumVertsX + i + 1;
-                    gIndices[index++] = (j + 1) * NumVertsX + i;
-                }
-            }
-
             // Set up the face->material index data
+            int[] gFaceMaterialIndices = new int[totalTriangles];
             for (int a = 0; a < totalTriangles; a++)
             {
                 // This will give the first half of the faces low friction and high restitution
@@ -154,16 +148,15 @@ namespace MultiMaterialDemo
             // create the ground
             //CollisionShape groundShape = new BoxShape(50, 1, 50);
             //CollisionShapes.PushBack(groundShape);
-            CollisionObject ground = LocalCreateRigidBody(0, Matrix.Identity, trimeshShape);
+            CollisionObject ground = LocalCreateRigidBody(0, Matrix.Translation(-15, 0, -30), trimeshShape);
             ground.UserObject = "Ground";
-            ground.CollisionFlags |= CollisionFlags.StaticObject | CollisionFlags.CustomMaterialCallback;
-
+            ground.CollisionFlags |= CollisionFlags.CustomMaterialCallback;
 
 
             CollisionShape colShape = new BoxShape(0.5f);
             CollisionShapes.Add(colShape);
 
-            for (i = 0; i < 12; i++)
+            for (int i = 0; i < 12; i++)
             {
                 RigidBody body = LocalCreateRigidBody(1, Matrix.Translation(10 - i, 10, -20 + i * 3), colShape);
                 body.CollisionFlags |= CollisionFlags.CustomMaterialCallback;

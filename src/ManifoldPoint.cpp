@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #include "CollisionObjectWrapper.h"
+#include "CollisionShape.h"
 #include "ManifoldPoint.h"
 
 ManifoldPoint::ManifoldPoint(btManifoldPoint* native, bool preventDelete)
@@ -25,9 +26,33 @@ bool onContactAdded(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0
 	ManifoldPoint::_contactAdded(nullptr, args);
 	return args->IsContactModified;
 	*/
+	CollisionObjectWrapper^ colObj0WrapManaged = gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap);
+	CollisionObjectWrapper^ colObj1WrapManaged = gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj1Wrap);
+
 	ManifoldPoint::_contactAdded(gcnew ManifoldPoint(&cp, true),
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap), partId0, index0,
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj1Wrap), partId1, index1);
+
+	// Bullet may use temporary btTriangleShapes that can be destroyed before before non-deterministic disposal.
+	// Check if these collision shapes were referenced in managed code and clean up any references here.
+	btCollisionShape* collisionShape0 = (btCollisionShape*)colObj0Wrap->getCollisionShape();
+	btCollisionShape* collisionShape1 = (btCollisionShape*)colObj1Wrap->getCollisionShape();
+	
+	if (collisionShape0->getUserPointer() &&
+		collisionShape0->getShapeType() == TRIANGLE_SHAPE_PROXYTYPE &&
+		colObj0Wrap->getCollisionObject()->getCollisionShape() != collisionShape0)
+	{
+		delete CollisionShape::GetManaged(collisionShape0);
+		collisionShape0->setUserPointer(0);
+	}
+	if (collisionShape1->getUserPointer() &&
+		collisionShape1->getShapeType() == TRIANGLE_SHAPE_PROXYTYPE &&
+		colObj1Wrap->getCollisionObject()->getCollisionShape() != collisionShape1)
+	{
+		delete CollisionShape::GetManaged(collisionShape1);
+		collisionShape1->setUserPointer(0);
+	}
+
 	return false;
 }
 
@@ -48,9 +73,31 @@ void ManifoldPoint::ContactAdded::remove(ContactAddedEventHandler^ callback)
 bool onContactAdded(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap,
 	int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
 {
-	return ManifoldPoint::_contactAdded(gcnew ManifoldPoint(&cp, true),
+	bool ret = ManifoldPoint::_contactAdded(gcnew ManifoldPoint(&cp, true),
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap), partId0, index0,
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj1Wrap), partId1, index1);
+
+	// Bullet may use temporary btTriangleShapes that can be destroyed before before non-deterministic disposal.
+	// Check if these collision shapes were referenced in managed code and clean up any references here.
+	btCollisionShape* collisionShape0 = (btCollisionShape*)colObj0Wrap->getCollisionShape();
+	btCollisionShape* collisionShape1 = (btCollisionShape*)colObj1Wrap->getCollisionShape();
+	
+	if (collisionShape0->getUserPointer() &&
+		collisionShape0->getShapeType() == TRIANGLE_SHAPE_PROXYTYPE &&
+		colObj0Wrap->getCollisionObject()->getCollisionShape() != collisionShape0)
+	{
+		delete CollisionShape::GetManaged(collisionShape0);
+		collisionShape0->setUserPointer(0);
+	}
+	if (collisionShape1->getUserPointer() &&
+		collisionShape1->getShapeType() == TRIANGLE_SHAPE_PROXYTYPE &&
+		colObj1Wrap->getCollisionObject()->getCollisionShape() != collisionShape1)
+	{
+		delete CollisionShape::GetManaged(collisionShape1);
+		collisionShape1->setUserPointer(0);
+	}
+
+	return ret;
 }
 
 ContactAdded^ ManifoldPoint::ContactAdded::get()

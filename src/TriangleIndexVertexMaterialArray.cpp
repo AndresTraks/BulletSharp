@@ -12,13 +12,52 @@ MaterialProperties::~MaterialProperties()
 
 MaterialProperties::!MaterialProperties()
 {
-	delete _native;
-	_native = NULL;
+	if (_native)
+	{
+		Free();
+		delete _native;
+		_native = NULL;
+	}
 }
 
 MaterialProperties::MaterialProperties()
 {
 	_native = new btMaterialProperties();
+}
+
+void MaterialProperties::Allocate(int numMaterials, int numTriangles, int materialStride, int materialIndexStride,
+	PhyScalarType materialType, PhyScalarType triangleType)
+{
+	if (_ownsData)
+	{
+		Free();
+	}
+	else
+	{
+		_ownsData = true;
+	}
+
+	_native->m_numMaterials = numMaterials;
+	_native->m_materialBase = new unsigned char[numMaterials * materialStride];
+	_native->m_materialStride = materialStride;
+	_native->m_materialType = (PHY_ScalarType)materialType;
+
+	_native->m_numTriangles = numTriangles;
+	_native->m_triangleMaterialsBase = new unsigned char[numTriangles * materialIndexStride];
+	_native->m_triangleMaterialStride = materialIndexStride;
+	_native->m_triangleType = (PHY_ScalarType)triangleType;
+}
+
+void MaterialProperties::Free()
+{
+	if (_ownsData)
+	{
+		delete[] _native->m_materialBase;
+		delete[] _native->m_triangleMaterialsBase;
+		_native->m_materialBase = 0;
+		_native->m_triangleMaterialsBase = 0;
+		_ownsData = false;
+	}
 }
 
 IntPtr MaterialProperties::MaterialBase::get()
@@ -99,11 +138,33 @@ void MaterialProperties::TriangleType::set(PhyScalarType value)
 TriangleIndexVertexMaterialArray::TriangleIndexVertexMaterialArray(btTriangleIndexVertexMaterialArray* native)
 	: TriangleIndexVertexArray(native)
 {
+	_materialProperties = gcnew List<MaterialProperties^>();
+}
+
+TriangleIndexVertexMaterialArray::~TriangleIndexVertexMaterialArray()
+{
+	this->!TriangleIndexVertexMaterialArray();
+}
+
+TriangleIndexVertexMaterialArray::!TriangleIndexVertexMaterialArray()
+{
+	if (_initialMesh)
+	{
+		delete _initialMesh;
+		_initialMesh = nullptr;
+	}
+
+	if (_initialMaterialProperties)
+	{
+		delete _initialMaterialProperties;
+		_initialMaterialProperties = nullptr;
+	}
 }
 
 TriangleIndexVertexMaterialArray::TriangleIndexVertexMaterialArray()
 	: TriangleIndexVertexArray(new btTriangleIndexVertexMaterialArray())
 {
+	_materialProperties = gcnew List<MaterialProperties^>();
 }
 
 TriangleIndexVertexMaterialArray::TriangleIndexVertexMaterialArray(int numTriangles, IntPtr triangleIndexBase,
@@ -113,38 +174,73 @@ TriangleIndexVertexMaterialArray::TriangleIndexVertexMaterialArray(int numTriang
 	triangleIndexStride, numVertices, (btScalar*)vertexBase.ToPointer(), vertexStride, numMaterials,
 	(unsigned char*)materialBase.ToPointer(), materialStride, (int*)triangleMaterialsBase.ToPointer(), materialIndexStride))
 {
+	_materialProperties = gcnew List<MaterialProperties^>();
 }
 
-TriangleIndexVertexMaterialArray::TriangleIndexVertexMaterialArray(array<int>^ indices, array<Vector3>^ vertices,
-	array<BulletMaterial>^ materials, array<int>^ materialIndices)
-: TriangleIndexVertexArray(0)
+TriangleIndexVertexMaterialArray::TriangleIndexVertexMaterialArray(ICollection<int>^ indices, ICollection<Vector3>^ vertices,
+	ICollection<BulletMaterial>^ materials, ICollection<int>^ materialIndices)
+: TriangleIndexVertexArray(new btTriangleIndexVertexMaterialArray())
 {
-	int* indicesArray = Math::IntArrayToUnmanaged(indices);
-	btVector3* verticesArray = Math::Vector3ArrayToUnmanaged(vertices);
+	_initialMesh = gcnew IndexedMesh();
+	_initialMesh->Allocate(indices->Count / 3, vertices->Count, sizeof(int) * 3, sizeof(float) * 3,
+		PhyScalarType::Int32, PhyScalarType::Single);
 
-	// Materials
-	pin_ptr<BulletMaterial> materialsBase = &materials[0];
-	unsigned char* materialsArray = new unsigned char[materials->Length * BulletMaterial::SizeInBytes];
-	memcpy(materialsArray, (unsigned char*)materialsBase, materials->Length * BulletMaterial::SizeInBytes);
-	int* materialIndicesArray = Math::IntArrayToUnmanaged(indices, indices->Length / 3);
+	array<int>^ indexArray = dynamic_cast<array<int>^>(indices);
+	if (!indexArray)
+	{
+		indexArray = gcnew array<int>(indices->Count);
+		indices->CopyTo(indexArray, 0);
+	}
+	Marshal::Copy(indexArray, 0, _initialMesh->TriangleIndexBase, indexArray->Length);
 
-	_native = new btTriangleIndexVertexMaterialArray(
-		indices->Length / 3, indicesArray, 3 * sizeof(int),
-		vertices->Length, verticesArray[0], sizeof(btVector3),
-		materials->Length, materialsArray, materials[0].SizeInBytes,
-		materialIndicesArray, sizeof(int)
-	);
+	array<float>^ vertexArray = gcnew array<float>(vertices->Count * 3);
+	int i = 0;
+	for each (Vector3 v in vertices)
+	{
+		vertexArray[i] = Vector_X(v);
+		vertexArray[i + 1] = Vector_Y(v);
+		vertexArray[i + 2] = Vector_Z(v);
+		i += 3;
+	}
+	Marshal::Copy(vertexArray, 0, _initialMesh->VertexBase, vertexArray->Length);
 
-	// Don't delete[] the arrays here, the object will use them.
+	AddIndexedMesh(_initialMesh);
+
+
+	_initialMaterialProperties = gcnew MaterialProperties();
+	_initialMaterialProperties->Allocate(materials->Count, materialIndices->Count, sizeof(btMaterial), sizeof(int),
+		PhyScalarType::Single, PhyScalarType::Int32);
+
+	array<BulletMaterial>^ materialArray = dynamic_cast<array<BulletMaterial>^>(materials);
+	if (!materialArray)
+	{
+		materialArray = gcnew array<BulletMaterial>(materials->Count);
+		materials->CopyTo(materialArray, 0);
+	}
+	pin_ptr<BulletMaterial> materialsBase = &materialArray[0];
+	memcpy(_initialMaterialProperties->MaterialBase.ToPointer(), (unsigned char*)materialsBase, materialArray->Length * sizeof(btMaterial));
+
+	array<int>^ materialIndexArray = dynamic_cast<array<int>^>(materialIndices);
+	if (!materialIndexArray)
+	{
+		materialIndexArray = gcnew array<int>(materialIndices->Count);
+		materialIndices->CopyTo(materialIndexArray, 0);
+	}
+	Marshal::Copy(materialIndexArray, 0, _initialMaterialProperties->TriangleMaterialsBase, materialIndexArray->Length);
+
+	_materialProperties = gcnew List<MaterialProperties^>();
+	AddMaterialProperties(_initialMaterialProperties);
 }
 
 void TriangleIndexVertexMaterialArray::AddMaterialProperties(MaterialProperties^ mat, PhyScalarType triangleType)
 {
+	_materialProperties->Add(mat);
 	Native->addMaterialProperties(*mat->_native, (PHY_ScalarType)triangleType);
 }
 
 void TriangleIndexVertexMaterialArray::AddMaterialProperties(MaterialProperties^ mat)
 {
+	_materialProperties->Add(mat);
 	Native->addMaterialProperties(*mat->_native);
 }
 

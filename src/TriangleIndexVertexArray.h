@@ -23,9 +23,7 @@ namespace BulletSharp
 	internal:
 		IndexedMesh(btIndexedMesh* native, bool preventDelete);
 
-	public:
 		!IndexedMesh();
-	protected:
 		~IndexedMesh();
 
 	public:
@@ -102,13 +100,16 @@ namespace BulletSharp
 
 	public ref class TriangleIndexVertexArray : StridingMeshInterface
 	{
-	internal:
-		TriangleIndexVertexArray(btTriangleIndexVertexArray* native);
-
 	private:
 		AlignedIndexedMeshArray^ _indexedMeshArray;
 		IndexedMesh^ _initialMesh;
 		List<IndexedMesh^>^ _meshes;
+
+	internal:
+		TriangleIndexVertexArray(btTriangleIndexVertexArray* native);
+
+		!TriangleIndexVertexArray();
+		~TriangleIndexVertexArray();
 
 	public:
 		TriangleIndexVertexArray(int numTriangles, IntPtr triangleIndexBase, int triangleIndexStride,
