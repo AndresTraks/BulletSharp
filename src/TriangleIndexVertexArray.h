@@ -40,7 +40,9 @@ namespace BulletSharp
 		property PhyScalarType IndexType
 		{
 			PhyScalarType get();
-			void set(PhyScalarType value);
+			//The index type is set when adding an indexed mesh to the
+			// btTriangleIndexVertexArray, do not set it manually
+			//void set(PhyScalarType value);
 		}
 
 		property int NumTriangles
@@ -112,7 +114,8 @@ namespace BulletSharp
 		TriangleIndexVertexArray(int numTriangles, IntPtr triangleIndexBase, int triangleIndexStride,
 			int numVertices, IntPtr vertexBase, int vertexStride);
 		TriangleIndexVertexArray(ICollection<int>^ indices, ICollection<Vector3>^ vertices);
-		TriangleIndexVertexArray(ICollection<int>^ indices, ICollection<btScalar>^ vertices);
+		TriangleIndexVertexArray(ICollection<int>^ indices, ICollection<float>^ vertices);
+		TriangleIndexVertexArray(ICollection<int>^ indices, ICollection<double>^ vertices);
 		TriangleIndexVertexArray();
 
 		void AddIndexedMesh(IndexedMesh^ mesh, PhyScalarType indexType);

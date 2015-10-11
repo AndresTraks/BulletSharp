@@ -238,7 +238,11 @@ namespace BulletSharpTest
             //Console.WriteLine("OnDisposing: " + sender.ToString());
         }
 
+#if BT_USE_DOUBLE_PRECISION
+        void WorldPreTickCallback(DynamicsWorld world2, double timeStep)
+#else
         void WorldPreTickCallback(DynamicsWorld world2, float timeStep)
+#endif
         {
             TestManifoldPoints();
 
@@ -265,7 +269,11 @@ namespace BulletSharpTest
         {
         }
 
+#if BT_USE_DOUBLE_PRECISION
+        public override double AddSingleResult(LocalRayResult rayResult, bool normalInWorldSpace)
+#else
         public override float AddSingleResult(LocalRayResult rayResult, bool normalInWorldSpace)
+#endif
         {
             return base.AddSingleResult(rayResult, normalInWorldSpace);
         }
@@ -281,7 +289,11 @@ namespace BulletSharpTest
         {
         }
 
+#if BT_USE_DOUBLE_PRECISION
+        public override double AddSingleResult(LocalRayResult rayResult, bool normalInWorldSpace)
+#else
         public override float AddSingleResult(LocalRayResult rayResult, bool normalInWorldSpace)
+#endif
         {
             if (rayResult.LocalShapeInfo != null)
             {

@@ -12,18 +12,20 @@ namespace BulletSharpTest
         DiscreteDynamicsWorld world;
 
         TriangleIndexVertexArray indexVertexArray;
+        TriangleIndexVertexArray indexVertexArray2;
         GImpactMeshShape gImpactMeshShape;
         BvhTriangleMeshShape triangleMeshShape;
         RigidBody gImpactMesh, triangleMesh;
 
-        [Test]
-        public void TriangleMeshTest1()
+        private void TestTriangleArray(TriangleIndexVertexArray triangleArray)
         {
-            foreach (var indexedMesh in indexVertexArray.IndexedMeshArray)
+            Assert.AreSame(triangleArray.IndexedMeshArray, triangleArray.IndexedMeshArray); // check caching
+
+            foreach (var indexedMesh in triangleArray.IndexedMeshArray)
             {
                 Assert.NotNull(indexedMesh);
             }
-            var initialMesh = indexVertexArray.IndexedMeshArray[0];
+            var initialMesh = triangleArray.IndexedMeshArray[0];
             Assert.AreEqual(initialMesh.IndexType, PhyScalarType.Int32);
             Assert.AreEqual(initialMesh.VertexType, PhyScalarType.Single);
             Assert.AreEqual(initialMesh.NumVertices, TorusMesh.Vertices.Length / 3);
@@ -37,6 +39,13 @@ namespace BulletSharpTest
             {
                 Assert.AreEqual(triangleIndices[i], TorusMesh.Indices[i]);
             }
+        }
+
+        [Test]
+        public void TriangleMeshTest1()
+        {
+            TestTriangleArray(indexVertexArray);
+            TestTriangleArray(indexVertexArray2);
 
             Vector3 aabbMin, aabbMax;
             gImpactMeshShape.GetAabb(Matrix.Identity, out aabbMin, out aabbMax);
@@ -56,16 +65,26 @@ namespace BulletSharpTest
             broadphase = new AxisSweep3(new Vector3(-1000, -1000, -1000), new Vector3(1000, 1000, 1000));
             world = new DiscreteDynamicsWorld(dispatcher, broadphase, null, conf);
 
+            // Initialize TriangleIndexVertexArray with float array
             indexVertexArray = new TriangleIndexVertexArray(TorusMesh.Indices, TorusMesh.Vertices);
-
             gImpactMeshShape = new GImpactMeshShape(indexVertexArray);
             gImpactMeshShape.CalculateLocalInertia(1.0f);
+            gImpactMesh = CreateBody(1.0f, gImpactMeshShape, Vector3.Zero);
 
-            triangleMeshShape = new BvhTriangleMeshShape(indexVertexArray, true);
+
+            // Initialize TriangleIndexVertexArray with Vector3 array
+            Vector3[] torusVertices = new Vector3[TorusMesh.Vertices.Length / 3];
+            for (int i = 0; i < torusVertices.Length; i++)
+            {
+                torusVertices[i] = new Vector3(
+                    TorusMesh.Vertices[i * 3],
+                    TorusMesh.Vertices[i * 3 + 1],
+                    TorusMesh.Vertices[i * 3 + 2]);
+            }
+            indexVertexArray2 = new TriangleIndexVertexArray(TorusMesh.Indices, torusVertices);
+            triangleMeshShape = new BvhTriangleMeshShape(indexVertexArray2, true);
             // CalculateLocalInertia must fail for static shapes (shapes based on TriangleMeshShape)
             //triangleMeshShape.CalculateLocalInertia(1.0f);
-
-            gImpactMesh = CreateBody(1.0f, gImpactMeshShape, Vector3.Zero);
             triangleMesh = CreateBody(0.0f, triangleMeshShape, Vector3.Zero);
         }
 
@@ -81,6 +100,7 @@ namespace BulletSharpTest
             gImpactMeshShape.Dispose();
             triangleMeshShape.Dispose();
             indexVertexArray.Dispose();
+            indexVertexArray2.Dispose();
 
             world.Dispose();
             dispatcher.Dispose();

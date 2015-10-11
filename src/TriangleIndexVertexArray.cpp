@@ -85,10 +85,12 @@ PhyScalarType IndexedMesh::IndexType::get()
 {
 	return (PhyScalarType)_native->m_indexType;
 }
+/*
 void IndexedMesh::IndexType::set(PhyScalarType value)
 {
 	_native->m_indexType = (PHY_ScalarType)value;
 }
+*/
 
 int IndexedMesh::NumTriangles::get()
 {
@@ -207,6 +209,7 @@ void IndexedMesh::VertexType::set(PhyScalarType value)
 TriangleIndexVertexArray::TriangleIndexVertexArray(btTriangleIndexVertexArray* native)
 	: StridingMeshInterface(native)
 {
+	_meshes = gcnew List<IndexedMesh^>();
 }
 
 TriangleIndexVertexArray::TriangleIndexVertexArray(int numTriangles, IntPtr triangleIndexBase,
@@ -214,6 +217,7 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(int numTriangles, IntPtr tria
 	: StridingMeshInterface(new btTriangleIndexVertexArray(numTriangles, (int*)triangleIndexBase.ToPointer(),
 		triangleIndexStride, numVertices, (btScalar*)vertexBase.ToPointer(), vertexStride))
 {
+	_meshes = gcnew List<IndexedMesh^>();
 }
 
 TriangleIndexVertexArray::TriangleIndexVertexArray(ICollection<int>^ indices, ICollection<Vector3>^ vertices)
@@ -246,11 +250,11 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(ICollection<int>^ indices, IC
 	AddIndexedMesh(_initialMesh);
 }
 
-TriangleIndexVertexArray::TriangleIndexVertexArray(ICollection<int>^ indices, ICollection<btScalar>^ vertices)
+TriangleIndexVertexArray::TriangleIndexVertexArray(ICollection<int>^ indices, ICollection<float>^ vertices)
 : StridingMeshInterface(new btTriangleIndexVertexArray())
 {
 	_initialMesh = gcnew IndexedMesh();
-	_initialMesh->Allocate(indices->Count / 3, vertices->Count / 3, sizeof(int) * 3, sizeof(btScalar) * 3,
+	_initialMesh->Allocate(indices->Count / 3, vertices->Count / 3, sizeof(int) * 3, sizeof(float) * 3,
 		PhyScalarType::Int32, PhyScalarType::Single);
 
 	array<int>^ indexArray = dynamic_cast<array<int>^>(indices);
@@ -261,10 +265,37 @@ TriangleIndexVertexArray::TriangleIndexVertexArray(ICollection<int>^ indices, IC
 	}
 	Marshal::Copy(indexArray, 0, _initialMesh->TriangleIndexBase, indices->Count);
 
-	array<btScalar>^ vertexArray = dynamic_cast<array<btScalar>^>(vertices);
+	array<float>^ vertexArray = dynamic_cast<array<float>^>(vertices);
 	if (!vertexArray)
 	{
-		vertexArray = gcnew array<btScalar>(vertices->Count);
+		vertexArray = gcnew array<float>(vertices->Count);
+		vertices->CopyTo(vertexArray, 0);
+	}
+	Marshal::Copy(vertexArray, 0, _initialMesh->VertexBase, vertices->Count);
+
+	_meshes = gcnew List<IndexedMesh^>();
+	AddIndexedMesh(_initialMesh);
+}
+
+TriangleIndexVertexArray::TriangleIndexVertexArray(ICollection<int>^ indices, ICollection<double>^ vertices)
+: StridingMeshInterface(new btTriangleIndexVertexArray())
+{
+	_initialMesh = gcnew IndexedMesh();
+	_initialMesh->Allocate(indices->Count / 3, vertices->Count / 3, sizeof(int) * 3, sizeof(double) * 3,
+		PhyScalarType::Int32, PhyScalarType::Double);
+
+	array<int>^ indexArray = dynamic_cast<array<int>^>(indices);
+	if (!indexArray)
+	{
+		indexArray = gcnew array<int>(indices->Count);
+		indices->CopyTo(indexArray, 0);
+	}
+	Marshal::Copy(indexArray, 0, _initialMesh->TriangleIndexBase, indices->Count);
+
+	array<double>^ vertexArray = dynamic_cast<array<double>^>(vertices);
+	if (!vertexArray)
+	{
+		vertexArray = gcnew array<double>(vertices->Count);
 		vertices->CopyTo(vertexArray, 0);
 	}
 	Marshal::Copy(vertexArray, 0, _initialMesh->VertexBase, vertices->Count);
@@ -293,6 +324,8 @@ void TriangleIndexVertexArray::AddIndexedMesh(IndexedMesh^ mesh)
 
 AlignedIndexedMeshArray^ TriangleIndexVertexArray::IndexedMeshArray::get()
 {
+	// _indexedMeshArray is not the same as _meshes,
+	// btTriangleIndexVertexArray stores it's own copy of the btIndexedMesh structures.
 	if (_indexedMeshArray == nullptr)
 	{
 		_indexedMeshArray = gcnew AlignedIndexedMeshArray(&Native->getIndexedMeshArray());

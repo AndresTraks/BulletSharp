@@ -17,6 +17,11 @@ namespace BulletSharpTest
         {
             Updated = true;
         }
+
+        public void UpdateAction(CollisionWorld collisionWorld, double deltaTimeStep)
+        {
+            Updated = true;
+        }
     }
 
     [TestFixture]

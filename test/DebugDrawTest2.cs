@@ -22,8 +22,11 @@ namespace BulletSharpTest
         {
             throw new System.NotImplementedException();
         }
-
+#if BT_USE_DOUBLE_PRECISION
+        public override void DrawContactPoint(ref Vector3 pointOnB, ref Vector3 normalOnB, double distance, int lifeTime, System.Drawing.Color color)
+#else
         public override void DrawContactPoint(ref Vector3 pointOnB, ref Vector3 normalOnB, float distance, int lifeTime, System.Drawing.Color color)
+#endif
         {
             throw new System.NotImplementedException();
         }

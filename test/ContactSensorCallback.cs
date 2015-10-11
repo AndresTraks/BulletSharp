@@ -30,7 +30,11 @@ namespace BulletSharpTest
         }
 
         //! Called with each contact for your own processing (e.g. test if contacts fall in within sensor parameters)
+#if BT_USE_DOUBLE_PRECISION
+        public override double AddSingleResult(ManifoldPoint cp,
+#else
         public override float AddSingleResult(ManifoldPoint cp,
+#endif
             CollisionObjectWrapper colObj0, int partId0, int index0,
             CollisionObjectWrapper colObj1, int partId1, int index1)
         {
