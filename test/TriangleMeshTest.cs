@@ -26,15 +26,15 @@ namespace BulletSharpTest
                 Assert.NotNull(indexedMesh);
             }
             var initialMesh = triangleArray.IndexedMeshArray[0];
-            Assert.AreEqual(initialMesh.IndexType, PhyScalarType.Int32);
-            Assert.AreEqual(initialMesh.VertexType, PhyScalarType.Single);
-            Assert.AreEqual(initialMesh.NumVertices, TorusMesh.Vertices.Length / 3);
-            Assert.AreEqual(initialMesh.NumTriangles, TorusMesh.Indices.Length / 3);
-            Assert.AreEqual(initialMesh.VertexStride, sizeof(float) * 3);
-            Assert.AreEqual(initialMesh.TriangleIndexStride, sizeof(int) * 3);
+            Assert.AreEqual(PhyScalarType.Int32, initialMesh.IndexType);
+            Assert.AreEqual(PhyScalarType.Single, initialMesh.VertexType);
+            Assert.AreEqual(TorusMesh.Vertices.Length / 3, initialMesh.NumVertices);
+            Assert.AreEqual(TorusMesh.Indices.Length / 3, initialMesh.NumTriangles);
+            Assert.AreEqual(sizeof(float) * 3, initialMesh.VertexStride);
+            Assert.AreEqual(sizeof(int) * 3, initialMesh.TriangleIndexStride);
 
             var triangleIndices = initialMesh.TriangleIndices;
-            Assert.AreEqual(triangleIndices.Count, TorusMesh.Indices.Length);
+            Assert.AreEqual(TorusMesh.Indices.Length, triangleIndices.Count);
             for (int i = 0; i < triangleIndices.Count; i++)
             {
                 Assert.AreEqual(triangleIndices[i], TorusMesh.Indices[i]);
@@ -92,7 +92,7 @@ namespace BulletSharpTest
         public void TearDown()
         {
             world.RemoveRigidBody(gImpactMesh);
-            world.RemoveRigidBody(gImpactMesh);
+            world.RemoveRigidBody(triangleMesh);
             gImpactMesh.MotionState.Dispose();
             triangleMesh.MotionState.Dispose();
             gImpactMesh.Dispose();

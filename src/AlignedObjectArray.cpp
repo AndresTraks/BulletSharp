@@ -101,6 +101,7 @@ bool AlignedObjectArray<T>::Remove(T item)
 	int i = IndexOf(item);
 	if (i != -1)
 	{
+		// Swap the removed item with the last item and pop it like Bullet does.
 		Swap(i, Count-1);
 		PopBack();
 		return true;
@@ -111,8 +112,13 @@ bool AlignedObjectArray<T>::Remove(T item)
 generic<class T>
 void AlignedObjectArray<T>::RemoveAt(int index)
 {
-	throw gcnew NotImplementedException();
-	//throw gcnew System::NotSupportedException("Cannot resize list.");
+	unsigned int count = Count;
+	if ((unsigned int)index >= count)
+		throw gcnew ArgumentOutOfRangeException("index");
+
+	// Swap the removed item with the last item and pop it like Bullet does.
+	Swap(index, count-1);
+	PopBack();
 }
 
 generic<class T>
@@ -461,52 +467,56 @@ void SetBodyBroadphaseHandle(CollisionObject^ item, btBroadphaseInterface* broad
 
 void AlignedCollisionObjectArray::Add(CollisionObject^ item)
 {
+	btCollisionObject* itemPtr = item->_native;
+
 	if (_collisionWorld)
 	{
-		if (dynamic_cast<RigidBody^>(item) != nullptr)
+		switch (itemPtr->getInternalType())
 		{
+		case btCollisionObject::CO_RIGID_BODY:
 			if (item->CollisionShape == nullptr)
             {
                 return;
             }
-			static_cast<btDynamicsWorld*>(_collisionWorld)->addRigidBody(static_cast<btRigidBody*>(item->_native));
+			static_cast<btDynamicsWorld*>(_collisionWorld)->addRigidBody(static_cast<btRigidBody*>(itemPtr));
+			break;
+		case btCollisionObject::CO_SOFT_BODY:
+			static_cast<btSoftRigidDynamicsWorld*>(_collisionWorld)->addSoftBody(static_cast<btSoftBody*>(itemPtr));
+			break;
+		default:
+			_collisionWorld->addCollisionObject(itemPtr);
+			break;
 		}
-		else if (dynamic_cast<SoftBody::SoftBody^>(item) != nullptr)
-        {
-			static_cast<btSoftRigidDynamicsWorld*>(_collisionWorld)->addSoftBody(static_cast<btSoftBody*>(item->_native));
-        }
-        else
-        {
-			_collisionWorld->addCollisionObject(item->_native);
-        }
 
 		SetBodyBroadphaseHandle(item, _collisionWorld->getBroadphase());
 		_backingList->Add(item);
 	}
 	else
 	{
-		Native->push_back(item->UnmanagedPointer);
+		Native->push_back(itemPtr);
 	}
 }
 
 void AlignedCollisionObjectArray::Add(CollisionObject^ item, short collisionFilterGroup, short collisionFilterMask)
 {
-	if (dynamic_cast<RigidBody^>(item) != nullptr)
+	btCollisionObject* itemPtr = item->_native;
+
+	switch (itemPtr->getInternalType())
 	{
+	case btCollisionObject::CO_RIGID_BODY:
 		if (item->CollisionShape == nullptr)
         {
             return;
         }
-		static_cast<btDynamicsWorld*>(_collisionWorld)->addRigidBody(static_cast<btRigidBody*>(item->_native), collisionFilterGroup, collisionFilterMask);
+		static_cast<btDynamicsWorld*>(_collisionWorld)->addRigidBody(static_cast<btRigidBody*>(itemPtr), collisionFilterGroup, collisionFilterMask);
+		break;
+	case btCollisionObject::CO_SOFT_BODY:
+		static_cast<btSoftRigidDynamicsWorld*>(_collisionWorld)->addSoftBody(static_cast<btSoftBody*>(itemPtr), collisionFilterGroup, collisionFilterMask);
+		break;
+	default:
+		_collisionWorld->addCollisionObject(itemPtr, collisionFilterGroup, collisionFilterMask);
+		break;
 	}
-	else if (dynamic_cast<SoftBody::SoftBody^>(item) != nullptr)
-    {
-		static_cast<btSoftRigidDynamicsWorld*>(_collisionWorld)->addSoftBody(static_cast<btSoftBody*>(item->_native), collisionFilterGroup, collisionFilterMask);
-    }
-    else
-    {
-		_collisionWorld->addCollisionObject(item->_native, collisionFilterGroup, collisionFilterMask);
-    }
 
 	SetBodyBroadphaseHandle(item, _collisionWorld->getBroadphase());
 	_backingList->Add(item);
@@ -514,11 +524,15 @@ void AlignedCollisionObjectArray::Add(CollisionObject^ item, short collisionFilt
 
 void AlignedCollisionObjectArray::Clear()
 {
-	Native->resizeNoInitialize(0);
-	if (_backingList)
-    {
-        _backingList->Clear();
-    }
+	if (_backingList) {
+		int count = Count;
+		while(count != 0) {
+			count -= 1;
+			RemoveAt(count);
+		}
+	} else {
+		Native->resizeNoInitialize(0);
+	}
 }
 
 bool AlignedCollisionObjectArray::Contains(CollisionObject^ item)
@@ -581,60 +595,105 @@ IEnumerator<CollisionObject^>^ AlignedCollisionObjectArray::GetEnumerator()
 
 int AlignedCollisionObjectArray::IndexOf(CollisionObject^ item)
 {
-	int i = Native->findLinearSearch(item->UnmanagedPointer);
+	btCollisionObject* itemPtr = GetUnmanagedNullable(item);
+	int i = Native->findLinearSearch(itemPtr);
 	return i != Native->size() ? i : -1;
 }
 
 void AlignedCollisionObjectArray::PopBack()
 {
-	Native->pop_back();
+	if (_backingList)
+    {
+        RemoveAt(Count - 1);
+    }
+	else
+	{
+		Native->pop_back();
+	}
 }
 
 bool AlignedCollisionObjectArray::Remove(CollisionObject^ item)
 {
 	btCollisionObject* itemPtr = item->_native;
 
-    if (_backingList == nullptr)
+    if (_backingList)
     {
-        int sizeBefore = Native->size();
-		Native->remove(itemPtr);
-		return sizeBefore != Native->size();
+        int index = IndexOf(item);
+		if (index != -1)
+		{
+			RemoveAt(index);
+			return true;
+		}
+		return false;
     }
 
-    int count = _backingList->Count;
-    for (int i = 0; i < count; i++)
-    {
-        if (_backingList[i]->_native == itemPtr)
+	int sizeBefore = Native->size();
+	Native->remove(itemPtr);
+	return sizeBefore != Native->size();
+}
+
+void AlignedCollisionObjectArray::RemoveAt(int index)
+{
+	unsigned int count = Count;
+	CollisionObject^ item = this[index];
+
+	if (_backingList)
+	{
+		btCollisionObject* itemPtr = item->_native;
+
+		switch (itemPtr->getInternalType())
+		{
+		case btCollisionObject::CO_RIGID_BODY:
+			if (item->CollisionShape == nullptr)
+            {
+                return;
+            }
+			static_cast<btDynamicsWorld*>(_collisionWorld)->removeRigidBody(static_cast<btRigidBody*>(itemPtr));
+			break;
+		case btCollisionObject::CO_SOFT_BODY:
+			static_cast<btSoftRigidDynamicsWorld*>(_collisionWorld)->removeSoftBody(static_cast<btSoftBody*>(itemPtr));
+			break;
+		default:
+			_collisionWorld->removeCollisionObject(itemPtr);
+			break;
+		}
+		_backingList[index]->BroadphaseHandle = nullptr;
+
+		// Swap the removed item with the last item like Bullet does.
+		count--;
+        if (index != count)
         {
-            if (dynamic_cast<RigidBody^>(item) != nullptr)
-            {
-                static_cast<btDynamicsWorld*>(_collisionWorld)->removeRigidBody((btRigidBody*)itemPtr);
-            }
-            else if (dynamic_cast<SoftBody::SoftBody^>(item) != nullptr)
-            {
-                static_cast<btSoftRigidDynamicsWorld*>(_collisionWorld)->removeSoftBody((btSoftBody*)itemPtr);
-            }
-            else
-            {
-                _collisionWorld->removeCollisionObject(itemPtr);
-            }
-			_backingList[i]->BroadphaseHandle = nullptr;
-            count--;
-
-            // Swap the removed item with the last item like Bullet does.
-            if (i != count)
-            {
-                _backingList[i] = _backingList[count];
-            }
-            _backingList->RemoveAt(count);
-            return true;
+            _backingList[index] = _backingList[count];
         }
-    }
-    return false;
+		_backingList->RemoveAt(index);
+	}
+	else
+	{
+		if ((unsigned int)index >= count)
+			throw gcnew ArgumentOutOfRangeException("index");
+
+		Swap(index, count-1);
+		PopBack();
+	}
 }
 
 void AlignedCollisionObjectArray::Swap(int index0, int index1)
 {
+	if (_backingList)
+	{
+		CollisionObject^ temp = _backingList[index0];
+		_backingList[index0] = _backingList[index1];
+		_backingList[index1] = temp;
+	}
+	else
+	{
+		unsigned int count = Count;
+		if ((unsigned int)index0 >= count)
+			throw gcnew ArgumentOutOfRangeException("index0");
+		if ((unsigned int)index1 >= count)
+			throw gcnew ArgumentOutOfRangeException("index1");
+	}
+
 	Native->swap(index0, index1);
 }
 
@@ -662,9 +721,20 @@ CollisionObject^ AlignedCollisionObjectArray::default::get(int index)
 }
 void AlignedCollisionObjectArray::default::set(int index, CollisionObject^ value)
 {
-	if ((unsigned int)index >= (unsigned int)Native->size())
-		throw gcnew ArgumentOutOfRangeException("index");
-	(*Native)[index] = GetUnmanagedNullable(value);
+	if (_backingList)
+	{
+		// Is there another instance of the existing value
+		// tied to the collision world?
+		//_backingList[index]->BroadphaseHandle = nullptr;
+
+		_backingList[index] = value;
+	}
+	else
+	{
+		if ((unsigned int)index >= (unsigned int)Native->size())
+			throw gcnew ArgumentOutOfRangeException("index");
+		(*Native)[index] = GetUnmanagedNullable(value);
+	}
 }
 
 
@@ -2156,11 +2226,6 @@ void AlignedScalarArray::default::set(int index, btScalar value)
 
 BulletSharp::SoftBody::AlignedSoftBodyArray::AlignedSoftBodyArray(btSoftBody::tSoftBodyArray* softBodyArray)
 : AlignedObjectArray(softBodyArray)
-{
-}
-
-BulletSharp::SoftBody::AlignedSoftBodyArray::AlignedSoftBodyArray()
-: AlignedObjectArray(new btSoftBody::tSoftBodyArray(), true)
 {
 }
 

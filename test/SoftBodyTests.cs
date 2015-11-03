@@ -19,6 +19,11 @@ namespace BulletSharpTest
         public void SoftBodyTest()
         {
             Assert.AreSame(softBody.SoftBodySolver, solver, "body and world SoftBodySolvers don't match");
+
+            //Assert.AreSame(dispatcher, softBodyWorldInfo.Dispatcher);
+            //Assert.AreSame(broadphase, softBodyWorldInfo.Broadphase);
+
+            Assert.AreEqual(1, world.SoftBodyArray.Count);
         }
 
         [TestFixtureSetUp]

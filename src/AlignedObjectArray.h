@@ -227,6 +227,7 @@ namespace BulletSharp
 		virtual int IndexOf(CollisionObject^ item) override;
 		virtual void PopBack() override;
 		virtual bool Remove(CollisionObject^ item) override;
+		virtual void RemoveAt(int index) override;
 		virtual void Swap(int index0, int index1) override;
 
 		property int Capacity
@@ -833,8 +834,6 @@ namespace BulletSharp
 			AlignedSoftBodyArray(btSoftBody::tSoftBodyArray* softBodyArray);
 
 		public:
-			AlignedSoftBodyArray();
-
 			virtual void Add(SoftBody^ softBody) override;
 			virtual void Clear() override;
 			virtual bool Contains(SoftBody^ softBody) override;

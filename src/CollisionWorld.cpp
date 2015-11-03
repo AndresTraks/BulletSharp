@@ -823,6 +823,10 @@ CollisionWorld::!CollisionWorld()
 			"The BroadphaseInterface was disposed before the CollisionWorld. "
 			"It is required for CollisionWorld cleanup, so dispose it later than the world.");
 	}
+#else
+	if (_collisionObjectArray->_native != 0) {
+		_collisionObjectArray->Clear();
+	}
 #endif
 
 	if (_broadphase->IsDisposed) {

@@ -41,7 +41,9 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 		nullptr,
 #endif
 		collisionConfiguration->_native, _softBodySolver->_native);
+
 	_collisionObjectArray = gcnew AlignedCollisionObjectArray(&_native->getCollisionObjectArray(), _native);
+	_softBodyArray = gcnew AlignedSoftBodyArray(&Native->getSoftBodyArray());
 
 #ifndef DISABLE_CONSTRAINTS
 	_constraintSolver = constraintSolver;
@@ -70,7 +72,9 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 		nullptr,
 #endif
 		collisionConfiguration->_native, _softBodySolver->_native);
+
 	_collisionObjectArray = gcnew AlignedCollisionObjectArray(&_native->getCollisionObjectArray(), _native);
+	_softBodyArray = gcnew AlignedSoftBodyArray(&Native->getSoftBodyArray());
 
 #ifndef DISABLE_CONSTRAINTS
 	_constraintSolver = constraintSolver;
@@ -131,10 +135,6 @@ void SoftRigidDynamicsWorld::DrawFlags::set(BulletSharp::SoftBody::DrawFlags f)
 
 AlignedSoftBodyArray^ SoftRigidDynamicsWorld::SoftBodyArray::get()
 {
-	if (_softBodyArray == nullptr)
-	{
-		_softBodyArray = gcnew AlignedSoftBodyArray(&Native->getSoftBodyArray());
-	}
 	return _softBodyArray;
 }
 
