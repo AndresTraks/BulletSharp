@@ -79,7 +79,7 @@ namespace BulletSharp
 		String^ Serialize(IntPtr dataBuffer, Serializer^ serializer);
 #endif
 		void SetJointPos(int i, btScalar q);
-		//void SetJointPosMultiDof(int i, array<btScalar>^ q);
+		void SetJointPosMultiDof(int i, array<btScalar>^ q);
 		void SetJointVel(int i, btScalar qdot);
 		//void SetJointVelMultiDof(int i, array<btScalar>^ qdot);
 		void SetPosUpdated(bool updated);

@@ -4,21 +4,10 @@ using DemoFramework;
 
 namespace FeatherStoneDemo
 {
-    class MultiBodySettings
-    {
-        public Vector3 BasePosition { get; set; }
-        public bool CanSleep { get; set; }
-        public bool CreateConstraints { get; set; }
-        public bool DisableParentCollision { get; set; }
-        public bool IsFixedBase { get; set; }
-        public int NumLinks { get; set; }
-        public bool UsePrismatic { get; set; }
-    }
-
     class FeatherStoneDemo : Demo
     {
-        Vector3 eye = new Vector3(-50, 25, 35);
-        Vector3 target = new Vector3(0, 5, -10);
+        Vector3 eye = new Vector3(0, 5, 10);
+        Vector3 target = new Vector3(0, 0, 0);
 
         // create 125 (5x5x5) dynamic objects
         const int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
@@ -28,7 +17,6 @@ namespace FeatherStoneDemo
         const float StartPosY = 2;
         const float StartPosZ = -3;
 
-        const float Scaling = 0.4f;
         const float Friction = 1.0f;
 
         protected override void OnInitialize()
@@ -60,9 +48,116 @@ namespace FeatherStoneDemo
             //CollisionShape groundShape = new StaticPlaneShape(new Vector3(0,1,0), 50);
 
             CollisionShapes.Add(groundShape);
-            CollisionObject ground = LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
+            CollisionObject ground = LocalCreateRigidBody(0, Matrix.Translation(0, -51.55f, 0), groundShape);
             ground.UserObject = "Ground";
 
+
+            int numLinks = 5;
+            bool spherical = true;
+            bool floatingBase = false;
+            Vector3 basePosition = new Vector3(-0.4f, 3.0f, 0.0f);
+            Vector3 baseHalfExtents = new Vector3(0.05f, 0.37f, 0.1f);
+            Vector3 linkHalfExtents = new Vector3(0.05f, 0.37f, 0.1f);
+            var mb = CreateFeatherstoneMultiBody(World as MultiBodyDynamicsWorld, numLinks, basePosition, baseHalfExtents, linkHalfExtents, spherical, floatingBase);
+
+            floatingBase = !floatingBase;
+
+            mb.CanSleep = true;
+            mb.HasSelfCollision = false;
+            mb.UseGyroTerm = true;
+
+            bool damping = true;
+            if (damping)
+            {
+                mb.LinearDamping = 0.1f;
+                mb.AngularDamping = 0.9f;
+            }
+            else
+            {
+                mb.LinearDamping = 0;
+                mb.AngularDamping = 0;
+            }
+
+            if (numLinks > 0)
+            {
+                float q0 = 45.0f * (float)Math.PI / 180.0f;
+                if (spherical)
+                {
+                    Quaternion quat0 = Quaternion.RotationAxis(new Vector3(1, 1, 0).Normalized, q0);
+                    quat0.Normalize();
+                    mb.SetJointPosMultiDof(0, new float[] { quat0.X, quat0.Y, quat0.Z, quat0.W });
+                }
+                else
+                {
+                    mb.SetJointPosMultiDof(0, new float[] { q0 });
+                }
+            }
+            AddColliders(mb, baseHalfExtents, linkHalfExtents);
+
+
+            LocalCreateRigidBody(1, Matrix.Translation(0, -0.95f, 0), new BoxShape(0.5f, 0.5f, 0.5f));
+        }
+
+        MultiBody CreateFeatherstoneMultiBody(MultiBodyDynamicsWorld world, int numLinks,
+            Vector3 basePosition, Vector3 baseHalfExtents, Vector3 linkHalfExtents, bool spherical, bool floating)
+        {
+            float mass = 1;
+            Vector3 inertia = Vector3.Zero;
+            if (mass != 0)
+            {
+                using (var box = new BoxShape(baseHalfExtents))
+                {
+                    box.CalculateLocalInertia(mass, out inertia);
+                }
+            }
+
+            var mb = new MultiBody(numLinks, mass, inertia, !floating, false);
+            //body.HasSelfCollision = false;
+
+            //body.BaseVelocity = Vector3.Zero;
+            mb.BasePosition = basePosition;
+            //body.WorldToBaseRot = new Quaternion(0, 0, 1, -0.125f * (float)Math.PI);
+            mb.WorldToBaseRot = Quaternion.Identity;
+
+            float linkMass = 1;
+            Vector3 linkInertia = Vector3.Zero;
+            if (linkMass != 0)
+            {
+                using (var box = new BoxShape(linkHalfExtents))
+                {
+                    box.CalculateLocalInertia(linkMass, out linkInertia);
+                }
+            }
+
+            //y-axis assumed up
+            Vector3 parentComToCurrentCom = new Vector3(0, -linkHalfExtents[1] * 2.0f, 0);       //par body's COM to cur body's COM offset	
+            Vector3 currentPivotToCurrentCom = new Vector3(0, -linkHalfExtents[1], 0);          //cur body's COM to cur body's PIV offset
+            Vector3 parentComToCurrentPivot = parentComToCurrentCom - currentPivotToCurrentCom; //par body's COM to cur body's PIV offset
+
+            for (int i = 0; i < numLinks; i++)
+            {
+                if (spherical)
+                {
+                    mb.SetupSpherical(i, linkMass, linkInertia, i - 1,
+                        Quaternion.Identity, parentComToCurrentPivot, currentPivotToCurrentCom, false);
+                }
+                else
+                {
+                    Vector3 hingeJointAxis = new Vector3(1, 0, 0);
+                    mb.SetupRevolute(i, linkMass, linkInertia, i - 1,
+                        Quaternion.Identity, hingeJointAxis, parentComToCurrentPivot, currentPivotToCurrentCom, false);
+                }
+            }
+
+            mb.FinalizeMultiDof();
+
+            (World as MultiBodyDynamicsWorld).AddMultiBody(mb);
+
+            return mb;
+        }
+
+        void AddBoxes()
+        {
             // create a few dynamic rigidbodies
             const float mass = 1.0f;
 
@@ -70,9 +165,9 @@ namespace FeatherStoneDemo
             CollisionShapes.Add(colShape);
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
-            const float start_x = StartPosX - ArraySizeX / 2;
-            const float start_y = StartPosY;
-            const float start_z = StartPosZ - ArraySizeZ / 2;
+            const float startX = StartPosX - ArraySizeX / 2;
+            const float startY = StartPosY;
+            const float startZ = StartPosZ - ArraySizeZ / 2;
 
             int k, i, j;
             for (k = 0; k < ArraySizeY; k++)
@@ -82,9 +177,9 @@ namespace FeatherStoneDemo
                     for (j = 0; j < ArraySizeZ; j++)
                     {
                         Matrix startTransform = Matrix.Translation(
-                            3 * i + start_x,
-                            3 * k + start_y,
-                            3 * j + start_z
+                            3 * i + startX,
+                            3 * k + startY,
+                            3 * j + startZ
                         );
 
                         // using motionstate is recommended, it provides interpolation capabilities
@@ -98,174 +193,51 @@ namespace FeatherStoneDemo
                     }
                 }
             }
-
-            var settings = new MultiBodySettings()
-            {
-                BasePosition = new Vector3(60, 29.5f, -2) * Scaling,
-                CanSleep = true,
-                CreateConstraints = true,
-                DisableParentCollision = true, // the self-collision has conflicting/non-resolvable contact normals
-                IsFixedBase = false,
-                NumLinks = 2,
-                UsePrismatic = true
-            };
-            var multiBodyA = CreateFeatherstoneMultiBody(World as MultiBodyDynamicsWorld, settings);
-
-            settings.NumLinks = 10;
-            settings.BasePosition = new Vector3(0, 29.5f, -settings.NumLinks * 4);
-            settings.IsFixedBase = true;
-            settings.UsePrismatic = false;
-            var multiBodyB = CreateFeatherstoneMultiBody(World as MultiBodyDynamicsWorld, settings);
-
-            settings.BasePosition = new Vector3(-20 * Scaling, 29.5f * Scaling, -settings.NumLinks * 4 * Scaling);
-            settings.IsFixedBase = false;
-            var multiBodyC = CreateFeatherstoneMultiBody(World as MultiBodyDynamicsWorld, settings);
-
-            settings.BasePosition = new Vector3(-20, 9.5f, -settings.NumLinks * 4);
-            settings.IsFixedBase = true;
-            settings.UsePrismatic = true;
-            settings.DisableParentCollision = true;
-            var multiBodyPrim = CreateFeatherstoneMultiBody(World as MultiBodyDynamicsWorld, settings);
         }
 
-        MultiBody CreateFeatherstoneMultiBody(MultiBodyDynamicsWorld world, MultiBodySettings settings)
+        void AddColliders(MultiBody multiBody, Vector3 baseHalfExtents, Vector3 linkHalfExtents)
         {
-            int nLinks = settings.NumLinks;
-            float mass = 13.5f * Scaling;
-            Vector3 inertia = new Vector3(91, 344, 253) * Scaling * Scaling;
-
-            var body = new MultiBody(nLinks, mass, inertia, settings.IsFixedBase, settings.CanSleep);
-            //body.HasSelfCollision = false;
-
-            //Quaternion orn = new Quaternion(0, 0, 1, -0.125f * Math.PI);
-            Quaternion orn = new Quaternion(0, 0, 0, 1);
-            body.BasePosition = settings.BasePosition;
-            body.WorldToBaseRot = orn;
-            body.BaseVelocity = Vector3.Zero;
-
-
-            Vector3 joint_axis_hinge = new Vector3(1, 0, 0);
-            Vector3 joint_axis_prismatic = new Vector3(0, 0, 1);
-            Quaternion parent_to_child = orn.Inverse();
-            Vector3 joint_axis_child_prismatic = parent_to_child.Rotate(joint_axis_prismatic);
-            Vector3 joint_axis_child_hinge = parent_to_child.Rotate(joint_axis_hinge);
-
-            int this_link_num = -1;
-            int link_num_counter = 0;
-
-            Vector3 pos = new Vector3(0, 0, 9.0500002f) * Scaling;
-            Vector3 joint_axis_position = new Vector3(0, 0, 4.5250001f) * Scaling;
-
-            for (int i = 0; i < nLinks; i++)
-            {
-                float initial_joint_angle = 0.3f;
-                if (i > 0)
-                    initial_joint_angle = -0.06f;
-
-                int child_link_num = link_num_counter++;
-
-                if (settings.UsePrismatic) // i == (nLinks - 1))
-                {
-                    body.SetupPrismatic(child_link_num, mass, inertia, this_link_num,
-                        parent_to_child, joint_axis_child_prismatic, parent_to_child.Rotate(pos), Vector3.Zero, settings.DisableParentCollision);
-                }
-                else
-                {
-                    body.SetupRevolute(child_link_num, mass, inertia, this_link_num,
-                        parent_to_child, joint_axis_child_hinge, joint_axis_position, parent_to_child.Rotate(pos - joint_axis_position), settings.DisableParentCollision);
-                }
-                body.SetJointPos(child_link_num, initial_joint_angle);
-                this_link_num = i;
-
-                /*if (false) //!useGroundShape && i == 4)
-                {
-                    Vector3 pivotInAworld = new Vector3(0, 20, 46);
-                    Vector3 pivotInAlocal = body.WorldPosToLocal(i, pivotInAworld);
-                    Vector3 pivotInBworld = pivotInAworld;
-                    MultiBodyPoint2Point p2p = new MultiBodyPoint2Point(body, i, TypedConstraint.FixedBody, pivotInAlocal, pivotInBworld);
-                    (World as MultiBodyDynamicsWorld).AddMultiBodyConstraint(p2p);
-                }*/
-
-                if (settings.UsePrismatic)
-                {
-                    //MultiBodyConstraint con = new MultiBodyJointLimitConstraint(body, nLinks - 1, 2, 3);
-
-                    if (settings.CreateConstraints)
-                    {
-                        MultiBodyConstraint con = new MultiBodyJointLimitConstraint(body, i, -1, 1);
-                        (World as MultiBodyDynamicsWorld).AddMultiBodyConstraint(con);
-                    }
-                }
-                else
-                {
-                    //if (true)
-                    {
-                        var con = new MultiBodyJointMotor(body, i, 0, 50000);
-                        (World as MultiBodyDynamicsWorld).AddMultiBodyConstraint(con);
-                    }
-
-                    var con2 = new MultiBodyJointLimitConstraint(body, i, -1, 1);
-                    (World as MultiBodyDynamicsWorld).AddMultiBodyConstraint(con2);
-                }
-            }
-
             // Add a collider for the base
-            Quaternion[] worldToLocal = new Quaternion[nLinks + 1];
-            Vector3[] localOrigin = new Vector3[nLinks + 1];
+            Quaternion[] worldToLocal = new Quaternion[multiBody.NumLinks + 1];
+            Vector3[] localOrigin = new Vector3[multiBody.NumLinks + 1];
 
-            worldToLocal[0] = body.WorldToBaseRot;
-            localOrigin[0] = body.BasePosition;
-
-            //Vector3 halfExtents = new Vector3(7.5f, 0.05f, 4.5f);
-            Vector3 halfExtents = new Vector3(7.5f, 0.45f, 4.5f);
-
-            float[] posB = new float[] { localOrigin[0].X, localOrigin[0].Y, localOrigin[0].Z, 1 };
-            //float[] quatB = new float[] { worldToLocal[0].X, worldToLocal[0].Y, worldToLocal[0].Z, worldToLocal[0].W };
+            worldToLocal[0] = multiBody.WorldToBaseRot;
+            localOrigin[0] = multiBody.BasePosition;
 
             //if (true)
             {
-                CollisionShape box = new BoxShape(halfExtents * Scaling);
-                var bodyInfo = new RigidBodyConstructionInfo(mass, null, box, inertia);
-                RigidBody bodyB = new RigidBody(bodyInfo);
-                var collider = new MultiBodyLinkCollider(body, -1);
+                var collider = new MultiBodyLinkCollider(multiBody, -1);
+                collider.CollisionShape = new BoxShape(baseHalfExtents);
 
-                collider.CollisionShape = box;
-                Matrix tr = Matrix.RotationQuaternion(worldToLocal[0].Inverse()) * Matrix.Translation(localOrigin[0]);
+                Matrix tr = Matrix.RotationQuaternion(worldToLocal[0].Inverse());
+                tr.Origin = localOrigin[0];
                 collider.WorldTransform = tr;
-                bodyB.WorldTransform = tr;
 
                 World.AddCollisionObject(collider, CollisionFilterGroups.StaticFilter,
                     CollisionFilterGroups.DefaultFilter | CollisionFilterGroups.StaticFilter);
                 collider.Friction = Friction;
-                body.BaseCollider = collider;
+                multiBody.BaseCollider = collider;
             }
 
-
-            for (int i = 0; i < body.NumLinks; i++)
+            for (int i = 0; i < multiBody.NumLinks; i++)
             {
-                int parent = body.GetParent(i);
-                worldToLocal[i + 1] = body.GetParentToLocalRot(i) * worldToLocal[parent + 1];
-                localOrigin[i + 1] = localOrigin[parent + 1] + (worldToLocal[i + 1].Inverse().Rotate(body.GetRVector(i)));
+                int parent = multiBody.GetParent(i);
+                worldToLocal[i + 1] = multiBody.GetParentToLocalRot(i) * worldToLocal[parent + 1];
+                localOrigin[i + 1] = localOrigin[parent + 1] + (worldToLocal[i + 1].Inverse().Rotate(multiBody.GetRVector(i)));
             }
 
-            for (int i = 0; i < body.NumLinks; i++)
+            for (int i = 0; i < multiBody.NumLinks; i++)
             {
-                CollisionShape box = new BoxShape(halfExtents * Scaling);
-                var collider = new MultiBodyLinkCollider(body, i);
-
-                collider.CollisionShape = box;
+                var collider = new MultiBodyLinkCollider(multiBody, i);
+                collider.CollisionShape = new BoxShape(linkHalfExtents);
                 Matrix tr = Matrix.RotationQuaternion(worldToLocal[i + 1].Inverse()) * Matrix.Translation(localOrigin[i + 1]);
                 collider.WorldTransform = tr;
                 World.AddCollisionObject(collider, CollisionFilterGroups.StaticFilter,
                     CollisionFilterGroups.DefaultFilter | CollisionFilterGroups.StaticFilter);
                 collider.Friction = Friction;
 
-                body.GetLink(i).Collider = collider;
-                //World.DebugDrawer.DrawBox(halfExtents, pos, quat);
+                multiBody.GetLink(i).Collider = collider;
             }
-
-            (World as MultiBodyDynamicsWorld).AddMultiBody(body);
-            return body;
         }
 
         public override RigidBody LocalCreateRigidBody(float mass, Matrix startTransform, CollisionShape shape)

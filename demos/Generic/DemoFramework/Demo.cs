@@ -44,6 +44,8 @@ namespace DemoFramework
         RigidBody pickedBody;
         protected TypedConstraint pickConstraint;
         float oldPickingDist;
+        bool prevCanSleep;
+        MultiBodyPoint2Point pickingMultiBodyPoint2Point;
 
         // Debug drawing
         bool _isDebugDrawEnabled;
@@ -322,6 +324,7 @@ namespace DemoFramework
                         _world.RayTest(ref rayFrom, ref rayTo, rayCallback);
                         if (rayCallback.HasHit)
                         {
+                            Vector3 pickPos = rayCallback.HitPointWorld;
                             RigidBody body = rayCallback.CollisionObject as RigidBody;
                             if (body != null)
                             {
@@ -330,7 +333,6 @@ namespace DemoFramework
                                     pickedBody = body;
                                     pickedBody.ActivationState = ActivationState.DisableDeactivation;
 
-                                    Vector3 pickPos = rayCallback.HitPointWorld;
                                     Vector3 localPivot = Vector3.TransformCoordinate(pickPos, Matrix.Invert(body.CenterOfMassTransform));
 
                                     if (Input.KeysDown.Contains(Keys.ShiftKey))
@@ -377,10 +379,27 @@ namespace DemoFramework
                                         p2p.SetParam(ConstraintParams.Erp, 0.1f, 2);
                                         */
                                     }
-
-                                    oldPickingDist = (pickPos - rayFrom).Length;
                                 }
                             }
+                            else
+                            {
+                                MultiBodyLinkCollider multiCol = rayCallback.CollisionObject as MultiBodyLinkCollider;
+                                if (multiCol != null && multiCol.MultiBody != null)
+                                {
+                                    MultiBody mb = multiCol.MultiBody;
+
+                                    prevCanSleep = mb.CanSleep;
+                                    mb.CanSleep = false;
+                                    Vector3 pivotInA = mb.WorldPosToLocal(multiCol.Link, pickPos);
+
+                                    MultiBodyPoint2Point p2p = new MultiBodyPoint2Point(mb, multiCol.Link, null, pivotInA, pickPos);
+                                    p2p.MaxAppliedImpulse = 2;
+
+                                    (World as MultiBodyDynamicsWorld).AddMultiBodyConstraint(p2p);
+                                    pickingMultiBodyPoint2Point = p2p;
+                                }
+                            }
+                            oldPickingDist = (pickPos - rayFrom).Length;
                         }
                         rayCallback.Dispose();
                     }
@@ -394,39 +413,48 @@ namespace DemoFramework
             // Mouse movement
             if (Input.MouseDown == MouseButtons.Right)
             {
-                if (pickConstraint != null)
+                MovePickedBody();
+            }
+        }
+
+        void MovePickedBody()
+        {
+            if (pickConstraint != null)
+            {
+                Vector3 rayFrom = Freelook.Eye;
+                Vector3 newRayTo = GetRayTo(Input.MousePoint, rayFrom, Freelook.Target, Graphics.FieldOfView);
+
+                //keep it at the same picking distance
+                Vector3 dir = newRayTo - rayFrom;
+                dir.Normalize();
+                dir *= oldPickingDist;
+
+                if (pickConstraint.ConstraintType == TypedConstraintType.D6)
                 {
-                    Vector3 newRayTo = GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, Graphics.FieldOfView);
+                    Generic6DofConstraint pickCon = pickConstraint as Generic6DofConstraint;
 
-                    if (pickConstraint.ConstraintType == TypedConstraintType.D6)
-                    {
-                        Generic6DofConstraint pickCon = pickConstraint as Generic6DofConstraint;
-
-                        //keep it at the same picking distance
-                        Vector3 rayFrom = Freelook.Eye;
-                        Vector3 dir = newRayTo - rayFrom;
-                        dir.Normalize();
-                        dir *= oldPickingDist;
-                        Vector3 newPivotB = rayFrom + dir;
-
-                        Matrix tempFrameOffsetA = pickCon.FrameOffsetA;
-                        tempFrameOffsetA.M41 = newPivotB.X;
-                        tempFrameOffsetA.M42 = newPivotB.Y;
-                        tempFrameOffsetA.M43 = newPivotB.Z;
-                        pickCon.FrameOffsetA = tempFrameOffsetA;
-                    }
-                    else
-                    {
-                        Point2PointConstraint pickCon = pickConstraint as Point2PointConstraint;
-
-                        //keep it at the same picking distance
-                        Vector3 rayFrom = Freelook.Eye;
-                        Vector3 dir = newRayTo - rayFrom;
-                        dir.Normalize();
-                        dir *= oldPickingDist;
-                        pickCon.PivotInB = rayFrom + dir;
-                    }
+                    //keep it at the same picking distance
+                    Matrix tempFrameOffsetA = pickCon.FrameOffsetA;
+                    tempFrameOffsetA.Origin = rayFrom + dir;
+                    pickCon.FrameOffsetA = tempFrameOffsetA;
                 }
+                else
+                {
+                    Point2PointConstraint pickCon = pickConstraint as Point2PointConstraint;
+
+                    //keep it at the same picking distance
+                    pickCon.PivotInB = rayFrom + dir;
+                }
+            }
+            else if (pickingMultiBodyPoint2Point != null)
+            {
+                Vector3 rayFrom = Freelook.Eye;
+                Vector3 newRayTo = GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, Graphics.FieldOfView);
+
+                Vector3 dir = (newRayTo - rayFrom);
+                dir.Normalize();
+                dir *= oldPickingDist;
+                pickingMultiBodyPoint2Point.PivotInB = rayFrom + dir;
             }
         }
 
@@ -440,6 +468,14 @@ namespace DemoFramework
                 pickedBody.ForceActivationState(ActivationState.ActiveTag);
                 pickedBody.DeactivationTime = 0;
                 pickedBody = null;
+            }
+
+            if (pickingMultiBodyPoint2Point != null)
+            {
+                pickingMultiBodyPoint2Point.MultiBodyA.CanSleep = prevCanSleep;
+                (World as MultiBodyDynamicsWorld).RemoveMultiBodyConstraint(pickingMultiBodyPoint2Point);
+                pickingMultiBodyPoint2Point.Dispose();
+                pickingMultiBodyPoint2Point = null;
             }
         }
 

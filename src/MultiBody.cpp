@@ -339,12 +339,13 @@ void MultiBody::SetJointPos(int i, btScalar q)
 {
 	_native->setJointPos(i, q);
 }
-/*
+
 void MultiBody::SetJointPosMultiDof(int i, array<btScalar>^ q)
 {
-	_native->setJointPosMultiDof(i, q->_native);
+	pin_ptr<btScalar> qPtr = &q[0];
+	_native->setJointPosMultiDof(i, qPtr);
 }
-*/
+
 void MultiBody::SetJointVel(int i, btScalar qdot)
 {
 	_native->setJointVel(i, qdot);

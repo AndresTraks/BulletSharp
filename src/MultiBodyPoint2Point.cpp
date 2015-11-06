@@ -19,7 +19,7 @@ MultiBodyPoint2Point::MultiBodyPoint2Point(MultiBody^ body, int link, RigidBody^
 {
 	VECTOR3_CONV(pivotInA);
 	VECTOR3_CONV(pivotInB);
-	_native = new btMultiBodyPoint2Point(body->_native, link, (btRigidBody*)bodyB->_native,
+	_native = new btMultiBodyPoint2Point(body->_native, link, (btRigidBody*)GetUnmanagedNullable(bodyB),
 		VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB));
 	VECTOR3_DEL(pivotInA);
 	VECTOR3_DEL(pivotInB);
