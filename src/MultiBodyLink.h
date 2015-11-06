@@ -30,7 +30,6 @@ namespace BulletSharp
 		void SetAxisBottom(int dof, Vector3 axis);
 		void SetAxisTop(int dof, Vector3 axis);
 		void SetAxisTop(int dof, btScalar x, btScalar y, btScalar z);
-		void UpdateCache();
 		void UpdateCacheMultiDof(ScalarArray^ pq);
 		void UpdateCacheMultiDof();
 /*

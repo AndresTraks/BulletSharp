@@ -45,11 +45,6 @@ void MultiBodyLink::SetAxisTop(int dof, btScalar x, btScalar y, btScalar z)
 	_native->setAxisTop(dof, x, y, z);
 }
 
-void MultiBodyLink::UpdateCache()
-{
-	_native->updateCache();
-}
-
 void MultiBodyLink::UpdateCacheMultiDof(ScalarArray^ pq)
 {
 	_native->updateCacheMultiDof((btScalar*)pq->_native);

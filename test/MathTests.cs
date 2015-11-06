@@ -16,6 +16,8 @@ namespace BulletSharpTest
         BoxShape boxShape;
         RigidBody body1, body2;
 
+        GhostObject ghostObject;
+
         [TestFixtureSetUp]
         public void SetUp()
         {
@@ -30,6 +32,11 @@ namespace BulletSharpTest
 
             body1 = CreateBody(10.0f, new SphereShape(1.0f), new Vector3(2, 2, 0));
             body2 = CreateBody(1.0f, new SphereShape(1.0f), new Vector3(0, 2, 0));
+
+            ghostObject = new PairCachingGhostObject();
+            ghostObject.WorldTransform = Matrix.Translation(-1, 2, 0);
+            ghostObject.CollisionShape = boxShape;
+            broadphase.OverlappingPairCache.SetInternalGhostPairCallback(new GhostPairCallback());
         }
 
         [Test]
@@ -49,7 +56,7 @@ namespace BulletSharpTest
         }
 
         [Test]
-        public void AlignedObjectArrayTest()
+        public void AlignedObjectArray_World()
         {
             // World's object array has a backing list
             var objects = world.CollisionObjectArray;
@@ -129,8 +136,27 @@ namespace BulletSharpTest
         }
 
         [Test]
+        public void AlignedObjectArray_GhostObject()
+        {
+            var pairs = ghostObject.OverlappingPairs;
+            Assert.AreEqual(0, pairs.Count);
+
+            // Ghost object's object array does not have a backing list
+            world.AddCollisionObject(ghostObject);
+            Assert.AreEqual(3, world.NumCollisionObjects);
+
+            world.StepSimulation(1 / 60.0f);
+
+            Assert.AreEqual(1, pairs.Count);
+            Assert.AreSame(pairs[0].CollisionShape, body2.CollisionShape);
+
+            world.RemoveCollisionObject(ghostObject);
+            Assert.AreEqual(2, world.NumCollisionObjects);
+        }
+
+        [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void AlignedObjectArrayTest2()
+        public void AlignedObjectArray_ArgumentOutOfRange()
         {
             world.CollisionObjectArray[2] = null;
         }
@@ -145,6 +171,7 @@ namespace BulletSharpTest
             body2.MotionState.Dispose();
             body1.Dispose();
             body2.Dispose();
+            ghostObject.Dispose();
 
             world.Dispose();
             dispatcher.Dispose();

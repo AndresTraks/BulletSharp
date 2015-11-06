@@ -7,6 +7,7 @@ namespace BulletSharp
 	ref class MultiBodyLink;
 	ref class MultiBodyLinkCollider;
 	ref class ScalarArray;
+	ref class Serializer;
 
 	public ref class MultiBody
 	{
@@ -17,34 +18,50 @@ namespace BulletSharp
 		btMultiBody* _native;
 
 		MultiBody(btMultiBody* native);
-
-	public:
 		!MultiBody();
-	protected:
 		~MultiBody();
 
 	public:
-		MultiBody(int nLinks, btScalar mass, Vector3 inertia, bool fixedBase, bool canSleep,
-			bool multiDof);
 		MultiBody(int nLinks, btScalar mass, Vector3 inertia, bool fixedBase, bool canSleep);
 
+		void AddBaseConstraintForce(Vector3 f);
+		void AddBaseConstraintTorque(Vector3 t);
 		void AddBaseForce(Vector3 f);
 		void AddBaseTorque(Vector3 t);
-		void AddJointTorque(int i, btScalar Q);
+		void AddJointTorque(int i, btScalar q);
+		//void AddJointTorqueMultiDof(int i, ScalarArray^ q);
+		void AddJointTorqueMultiDof(int i, int dof, btScalar q);
+		void AddLinkConstraintForce(int i, Vector3 f);
+		void AddLinkConstraintTorque(int i, Vector3 t);
 		void AddLinkForce(int i, Vector3 f);
 		void AddLinkTorque(int i, Vector3 t);
 		void ApplyDeltaVee(ScalarArray^ deltaVee, btScalar multiplier);
 		void ApplyDeltaVee(ScalarArray^ deltaVee);
-		void CalcAccelerationDeltas(ScalarArray^ force, ScalarArray^ output, AlignedScalarArray^ scratchR,
-			AlignedVector3Array^ scratchV);
+		void ApplyDeltaVeeMultiDof(ScalarArray^ deltaVee, btScalar multiplier);
+		void ApplyDeltaVeeMultiDof2(ScalarArray^ deltaVee, btScalar multiplier);
+		void CalcAccelerationDeltas(ScalarArray^ force, ScalarArray^ output,
+			AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV);
+		void CalcAccelerationDeltasMultiDof(ScalarArray^ force, ScalarArray^ output,
+			AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV);
+		int CalculateSerializeBufferSize();
 		void CheckMotionAndSleepIfRequired(btScalar timestep);
+		void ClearConstraintForces();
 		void ClearForcesAndTorques();
 		void ClearVelocities();
-		//void FillContactJacobian(int link, Vector3 contactPoint, Vector3 normal, ScalarArray^ jac,
-		//	AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV, AlignedMatrix3x3Array^ scratchM);
+		/*void FilConstraintJacobianMultiDof(int link, Vector3 contactPoint, Vector3 normalAng,
+			Vector3 normalLin, ScalarArray^ jac, AlignedScalarArray^ scratchR,
+			AlignedVector3Array^ scratchV, AlignedMatrix3x3Array^ scratchM);
+		void FillContactJacobianMultiDof(int link, Vector3 contactPoint, Vector3 normal,
+			array<btScalar>^ jac, ScalarArray^ scratchR, AlignedVector3Array^ scratchV,
+			AlignedMatrix3x3Array^ scratchM);*/
+		void FinalizeMultiDof();
+		//void ForwardKinematics(AlignedQuaternionArray^ scratchQ, AlignedMatrix3x3Array^ scratchM);
 		btScalar GetJointPos(int i);
+		//array<btScalar>^ GetJointPosMultiDof(int i);
 		btScalar GetJointTorque(int i);
+		//array<btScalar>^ GetJointTorqueMultiDof(int i);
 		btScalar GetJointVel(int i);
+		//array<btScalar>^ GetJointVelMultiDof(int i);
 		MultiBodyLink^ GetLink(int index);
 		Vector3 GetLinkForce(int i);
 		Vector3 GetLinkInertia(int i);
@@ -54,21 +71,26 @@ namespace BulletSharp
 		Quaternion GetParentToLocalRot(int i);
 		Vector3 GetRVector(int i);
 		void GoToSleep();
+		bool InternalNeedsJointFeedback();
 		Vector3 LocalDirToWorld(int i, Vector3 vec);
 		Vector3 LocalPosToWorld(int i, Vector3 vec);
-		void SetCanSleep(bool canSleep);
+		void ProcessDeltaVeeMultiDof2();
+#ifndef DISABLE_SERIALIZE
+		String^ Serialize(IntPtr dataBuffer, Serializer^ serializer);
+#endif
 		void SetJointPos(int i, btScalar q);
+		//void SetJointPosMultiDof(int i, array<btScalar>^ q);
 		void SetJointVel(int i, btScalar qdot);
+		//void SetJointVelMultiDof(int i, array<btScalar>^ qdot);
 		void SetPosUpdated(bool updated);
 		void SetupFixed(int linkIndex, btScalar mass, Vector3 inertia, int parent,
-			Quaternion rotParentToThis, Vector3 parentComToThisPivotOffset, Vector3 thisPivotToThisComOffset,
-			bool disableParentCollision);
+			Quaternion rotParentToThis, Vector3 parentComToThisPivotOffset, Vector3 thisPivotToThisComOffset);
 		void SetupPlanar(int i, btScalar mass, Vector3 inertia, int parent, Quaternion rotParentToThis,
 			Vector3 rotationAxis, Vector3 parentComToThisComOffset, bool disableParentCollision);
 		void SetupPlanar(int i, btScalar mass, Vector3 inertia, int parent, Quaternion rotParentToThis,
 			Vector3 rotationAxis, Vector3 parentComToThisComOffset);
 		void SetupPrismatic(int i, btScalar mass, Vector3 inertia, int parent, Quaternion rotParentToThis,
-			Vector3 jointAxis, Vector3 parentComToThisComOffset, Vector3 thisPivotToThisComOffset,
+			Vector3 jointAxis, Vector3 parentComToThisPivotOffset, Vector3 thisPivotToThisComOffset,
 			bool disableParentCollision);
 		void SetupRevolute(int linkIndex, btScalar mass, Vector3 inertia, int parentIndex,
 			Quaternion rotParentToThis, Vector3 jointAxis, Vector3 parentComToThisPivotOffset,
@@ -81,14 +103,16 @@ namespace BulletSharp
 			bool disableParentCollision);
 		void SetupSpherical(int linkIndex, btScalar mass, Vector3 inertia, int parent,
 			Quaternion rotParentToThis, Vector3 parentComToThisPivotOffset, Vector3 thisPivotToThisComOffset);
-		void StepPositions(btScalar dt);
-		//void StepPositionsMultiDof(btScalar dt, array<btScalar>^ pq, array<btScalar>^ pqd);
-		//void StepPositionsMultiDof(btScalar dt, array<btScalar>^ pq);
-		void StepPositionsMultiDof(btScalar dt);
-		//void StepVelocities(btScalar dt, AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV,
-		//	AlignedMatrix3x3Array^ scratchM);
-		//void StepVelocitiesMultiDof(btScalar dt, AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV,
-		//	AlignedMatrix3x3Array^ scratchM);
+		//void StepPositionsMultiDof(btScalar deltaTime, array<btScalar>^ pq, array<btScalar>^ pqd);
+		//void StepPositionsMultiDof(btScalar deltaTime, array<btScalar>^ pq);
+		void StepPositionsMultiDof(btScalar deltaTime);
+		/*void StepVelocities(btScalar deltaTime, AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV,
+			AlignedMatrix3x3Array^ scratchM);
+		void StepVelocitiesMultiDof(btScalar deltaTime, AlignedScalarArray^ scratchR,
+			AlignedVector3Array^ scratchV, AlignedMatrix3x3Array^ scratchM, bool isConstraintPass);
+		void StepVelocitiesMultiDof(btScalar deltaTime, AlignedScalarArray^ scratchR,
+			AlignedVector3Array^ scratchV, AlignedMatrix3x3Array^ scratchM);
+		void UpdateCollisionObjectWorldTransforms(AlignedQuaternionArray^ scratchQ, AlignedMatrix3x3Array^ scratchM);*/
 		void WakeUp();
 		Vector3 WorldDirToLocal(int i, Vector3 vec);
 		Vector3 WorldPosToLocal(int i, Vector3 vec);
@@ -127,6 +151,12 @@ namespace BulletSharp
 			void set(btScalar mass);
 		}
 
+		property String^ BaseName
+		{
+			String^ get();
+			//void set(String^ name);
+		}
+
 		property Vector3 BaseOmega
 		{
 			Vector3 get();
@@ -149,7 +179,13 @@ namespace BulletSharp
 			Vector3 get();
 			void set(Vector3 vel);
 		}
-
+		/*
+		property Matrix BaseWorldTransform
+		{
+			Matrix get();
+			void set(Matrix tr);
+		}
+		*/
 		property bool CanSleep
 		{
 			bool get();
@@ -174,11 +210,6 @@ namespace BulletSharp
 		}
 
 		property bool IsAwake
-		{
-			bool get();
-		}
-
-		property bool IsMultiDof
 		{
 			bool get();
 		}
