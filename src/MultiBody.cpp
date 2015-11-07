@@ -107,16 +107,6 @@ void MultiBody::AddLinkTorque(int i, Vector3 t)
 	VECTOR3_DEL(t);
 }
 
-void MultiBody::ApplyDeltaVee(ScalarArray^ deltaVee, btScalar multiplier)
-{
-	_native->applyDeltaVee((btScalar*)deltaVee->_native, multiplier);
-}
-
-void MultiBody::ApplyDeltaVee(ScalarArray^ deltaVee)
-{
-	_native->applyDeltaVee((btScalar*)deltaVee->_native);
-}
-
 void MultiBody::ApplyDeltaVeeMultiDof(ScalarArray^ deltaVee, btScalar multiplier)
 {
 	_native->applyDeltaVeeMultiDof((btScalar*)deltaVee->_native, multiplier);
@@ -125,13 +115,6 @@ void MultiBody::ApplyDeltaVeeMultiDof(ScalarArray^ deltaVee, btScalar multiplier
 void MultiBody::ApplyDeltaVeeMultiDof2(ScalarArray^ deltaVee, btScalar multiplier)
 {
 	_native->applyDeltaVeeMultiDof2((btScalar*)deltaVee->_native, multiplier);
-}
-
-void MultiBody::CalcAccelerationDeltas(ScalarArray^ force, ScalarArray^ output,
-	AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV)
-{
-	_native->calcAccelerationDeltas((btScalar*)force->_native, (btScalar*)output->_native, *(btAlignedObjectArray<btScalar>*)scratchR->_native,
-		*(btAlignedObjectArray<btVector3>*)scratchV->_native);
 }
 
 void MultiBody::CalcAccelerationDeltasMultiDof(ScalarArray^ force, ScalarArray^ output,

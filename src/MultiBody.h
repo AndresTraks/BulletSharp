@@ -35,12 +35,8 @@ namespace BulletSharp
 		void AddLinkConstraintTorque(int i, Vector3 t);
 		void AddLinkForce(int i, Vector3 f);
 		void AddLinkTorque(int i, Vector3 t);
-		void ApplyDeltaVee(ScalarArray^ deltaVee, btScalar multiplier);
-		void ApplyDeltaVee(ScalarArray^ deltaVee);
 		void ApplyDeltaVeeMultiDof(ScalarArray^ deltaVee, btScalar multiplier);
 		void ApplyDeltaVeeMultiDof2(ScalarArray^ deltaVee, btScalar multiplier);
-		void CalcAccelerationDeltas(ScalarArray^ force, ScalarArray^ output,
-			AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV);
 		void CalcAccelerationDeltasMultiDof(ScalarArray^ force, ScalarArray^ output,
 			AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV);
 		int CalculateSerializeBufferSize();
