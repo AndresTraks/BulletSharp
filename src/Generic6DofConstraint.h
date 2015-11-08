@@ -8,6 +8,15 @@ namespace BulletSharp
 	ref class IntArray;
 	ref class RigidBody;
 
+	[Flags]
+	public enum class SixDofFlags
+	{
+		None = 0,
+		CfmNormal = BT_6DOF_FLAGS_CFM_NORM,
+		CfmStop = BT_6DOF_FLAGS_CFM_STOP,
+		ErpStop = BT_6DOF_FLAGS_ERP_STOP
+	};
+
 	public ref class RotationalLimitMotor
 	{
 	internal:
@@ -19,9 +28,7 @@ namespace BulletSharp
 	internal:
 		RotationalLimitMotor(btRotationalLimitMotor* native, bool preventDelete);
 
-	public:
 		!RotationalLimitMotor();
-	protected:
 		~RotationalLimitMotor();
 
 	public:
@@ -150,9 +157,7 @@ namespace BulletSharp
 	internal:
 		TranslationalLimitMotor(btTranslationalLimitMotor* native, bool preventDelete);
 
-	public:
 		!TranslationalLimitMotor();
-	protected:
 		~TranslationalLimitMotor();
 
 	public:
@@ -314,6 +319,11 @@ namespace BulletSharp
 			Matrix get();
 		}
 
+		property SixDofFlags Flags
+		{
+			SixDofFlags get();
+		}
+
 		property Matrix FrameOffsetA
 		{
 			Matrix get();
@@ -347,6 +357,12 @@ namespace BulletSharp
 		{
 			bool get();
 			void set(bool frameOffsetOnOff);
+		}
+
+		property bool UseLinearReferenceFrameA
+		{
+			bool get();
+			void set(bool linearReferenceFrameA);
 		}
 	};
 };

@@ -19,9 +19,7 @@ namespace BulletSharp
 	internal:
 		RotationalLimitMotor2(btRotationalLimitMotor2* native, bool preventDelete);
 
-	public:
 		!RotationalLimitMotor2();
-	protected:
 		~RotationalLimitMotor2();
 
 	public:
@@ -179,9 +177,7 @@ namespace BulletSharp
 	internal:
 		TranslationalLimitMotor2(btTranslationalLimitMotor2* native, bool preventDelete);
 
-	public:
 		!TranslationalLimitMotor2();
-	protected:
 		~TranslationalLimitMotor2();
 
 	public:

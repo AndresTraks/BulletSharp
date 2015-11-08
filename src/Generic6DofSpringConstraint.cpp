@@ -7,11 +7,6 @@
 
 #define Native static_cast<btGeneric6DofSpringConstraint*>(_native)
 
-Generic6DofSpringConstraint::Generic6DofSpringConstraint(btGeneric6DofSpringConstraint* native)
-	: Generic6DofConstraint(native)
-{
-}
-
 Generic6DofSpringConstraint::Generic6DofSpringConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
 	: Generic6DofConstraint(0)
@@ -44,6 +39,26 @@ Generic6DofSpringConstraint::Generic6DofSpringConstraint(RigidBody^ rigidBodyB, 
 void Generic6DofSpringConstraint::EnableSpring(int index, bool onOff)
 {
 	Native->enableSpring(index, onOff);
+}
+
+btScalar Generic6DofSpringConstraint::GetDamping(int index)
+{
+	return Native->getDamping(index);
+}
+
+btScalar Generic6DofSpringConstraint::GetEquilibriumPoint(int index)
+{
+	return Native->getEquilibriumPoint(index);
+}
+
+btScalar Generic6DofSpringConstraint::GetStiffness(int index)
+{
+	return Native->getStiffness(index);
+}
+
+bool Generic6DofSpringConstraint::IsSpringEnabled(int index)
+{
+	return Native->isSpringEnabled(index);
 }
 
 void Generic6DofSpringConstraint::SetDamping(int index, btScalar damping)

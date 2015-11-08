@@ -634,6 +634,11 @@ Matrix Generic6DofConstraint::CalculatedTransformB::get()
 	return Math::BtTransformToMatrix(&Native->getCalculatedTransformB());
 }
 
+SixDofFlags Generic6DofConstraint::Flags::get()
+{
+	return (SixDofFlags) Native->getFlags();
+}
+
 Matrix Generic6DofConstraint::FrameOffsetA::get()
 {
 	return Math::BtTransformToMatrix(&Native->getFrameOffsetA());
@@ -724,6 +729,15 @@ bool Generic6DofConstraint::UseFrameOffset::get()
 void Generic6DofConstraint::UseFrameOffset::set(bool frameOffsetOnOff)
 {
 	Native->setUseFrameOffset(frameOffsetOnOff);
+}
+
+bool Generic6DofConstraint::UseLinearReferenceFrameA::get()
+{
+	return Native->getUseLinearReferenceFrameA();
+}
+void Generic6DofConstraint::UseLinearReferenceFrameA::set(bool linearReferenceFrameA)
+{
+	Native->setUseLinearReferenceFrameA(linearReferenceFrameA);
 }
 
 #endif

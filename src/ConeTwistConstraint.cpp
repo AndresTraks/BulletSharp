@@ -13,9 +13,8 @@ ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, RigidBody^ rigid
 {
 	TRANSFORM_CONV(rigidBodyAFrame);
 	TRANSFORM_CONV(rigidBodyBFrame);
-	UnmanagedPointer = new btConeTwistConstraint(*(btRigidBody*)rigidBodyA->_native,
-		*(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(rigidBodyAFrame),
-		TRANSFORM_USE(rigidBodyBFrame));
+	UnmanagedPointer = new btConeTwistConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
+		TRANSFORM_USE(rigidBodyAFrame), TRANSFORM_USE(rigidBodyBFrame));
 	TRANSFORM_DEL(rigidBodyAFrame);
 	TRANSFORM_DEL(rigidBodyBFrame);
 
@@ -79,6 +78,11 @@ void ConeTwistConstraint::GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix trans
 	MATRIX3X3_DEL(invInertiaWorldB);
 }
 
+btScalar ConeTwistConstraint::GetLimit(int limitIndex)
+{
+	return Native->getLimit(limitIndex);
+}
+
 #pragma managed(push, off)
 void ConeTwistConstraint_GetPointForAngle(btConeTwistConstraint* constraint,
 	btScalar fAngleInRadians, btScalar fLength, btVector3* point)
@@ -95,16 +99,6 @@ Vector3 ConeTwistConstraint::GetPointForAngle(btScalar fAngleInRadians, btScalar
 	return point;
 }
 
-void ConeTwistConstraint::SetAngularOnly(bool angularOnly)
-{
-	Native->setAngularOnly(angularOnly);
-}
-
-void ConeTwistConstraint::SetDamping(btScalar damping)
-{
-	Native->setDamping(damping);
-}
-
 void ConeTwistConstraint::SetFrames(Matrix frameA, Matrix frameB)
 {
 	TRANSFORM_CONV(frameA);
@@ -112,6 +106,11 @@ void ConeTwistConstraint::SetFrames(Matrix frameA, Matrix frameB)
 	Native->setFrames(TRANSFORM_USE(frameA), TRANSFORM_USE(frameB));
 	TRANSFORM_DEL(frameA);
 	TRANSFORM_DEL(frameB);
+}
+
+void ConeTwistConstraint::SetLimit(int limitIndex, btScalar limitValue)
+{
+	Native->setLimit(limitIndex, limitValue);
 }
 
 void ConeTwistConstraint::SetLimit(btScalar swingSpan1, btScalar swingSpan2, btScalar twistSpan,
@@ -137,26 +136,9 @@ void ConeTwistConstraint::SetLimit(btScalar swingSpan1, btScalar swingSpan2, btS
 	Native->setLimit(swingSpan1, swingSpan2, twistSpan);
 }
 
-void ConeTwistConstraint::SetLimit(int limitIndex, btScalar limitValue)
-{
-	Native->setLimit(limitIndex, limitValue);
-}
-
-void ConeTwistConstraint::SetMaxMotorImpulse(btScalar maxMotorImpulse)
-{
-	Native->setMaxMotorImpulse(maxMotorImpulse);
-}
-
 void ConeTwistConstraint::SetMaxMotorImpulseNormalized(btScalar maxMotorImpulse)
 {
 	Native->setMaxMotorImpulseNormalized(maxMotorImpulse);
-}
-
-void ConeTwistConstraint::SetMotorTarget(Quaternion q)
-{
-	QUATERNION_CONV(q);
-	Native->setMotorTarget(QUATERNION_USE(q));
-	QUATERNION_DEL(q);
 }
 
 void ConeTwistConstraint::SetMotorTargetInConstraintSpace(Quaternion q)
@@ -176,9 +158,32 @@ Matrix ConeTwistConstraint::AFrame::get()
 	return Math::BtTransformToMatrix(&Native->getAFrame());
 }
 
+bool ConeTwistConstraint::AngularOnly::get()
+{
+	return Native->getAngularOnly();
+}
+void ConeTwistConstraint::AngularOnly::set(bool angularOnly)
+{
+	Native->setAngularOnly(angularOnly);
+}
+
 Matrix ConeTwistConstraint::BFrame::get()
 {
 	return Math::BtTransformToMatrix(&Native->getBFrame());
+}
+
+btScalar ConeTwistConstraint::BiasFactor::get()
+{
+	return Native->getBiasFactor();
+}
+
+btScalar ConeTwistConstraint::Damping::get()
+{
+	return Native->getDamping();
+}
+void ConeTwistConstraint::Damping::set(btScalar damping)
+{
+	Native->setDamping(damping);
 }
 
 btScalar ConeTwistConstraint::FixThresh::get()
@@ -188,6 +193,11 @@ btScalar ConeTwistConstraint::FixThresh::get()
 void ConeTwistConstraint::FixThresh::set(btScalar fixThresh)
 {
 	Native->setFixThresh(fixThresh);
+}
+
+ConeTwistFlags ConeTwistConstraint::Flags::get()
+{
+	return (ConeTwistFlags) Native->getFlags();
 }
 
 Matrix ConeTwistConstraint::FrameOffsetA::get()
@@ -200,9 +210,49 @@ Matrix ConeTwistConstraint::FrameOffsetB::get()
 	return Math::BtTransformToMatrix(&Native->getFrameOffsetB());
 }
 
+bool ConeTwistConstraint::IsMaxMotorImpulseNormalized::get()
+{
+	return Native->isMaxMotorImpulseNormalized();
+}
+
+bool ConeTwistConstraint::IsMotorEnabled::get()
+{
+	return Native->isMotorEnabled();
+}
+
 bool ConeTwistConstraint::IsPastSwingLimit::get()
 {
 	return Native->isPastSwingLimit();
+}
+
+btScalar ConeTwistConstraint::LimitSoftness::get()
+{
+	return Native->getLimitSoftness();
+}
+
+btScalar ConeTwistConstraint::MaxMotorImpulse::get()
+{
+	return Native->getMaxMotorImpulse();
+}
+void ConeTwistConstraint::MaxMotorImpulse::set(btScalar maxMotorImpulse)
+{
+	Native->setMaxMotorImpulse(maxMotorImpulse);
+}
+
+Quaternion ConeTwistConstraint::MotorTarget::get()
+{
+	return Math::BtQuatToQuaternion(&Native->getMotorTarget());
+}
+void ConeTwistConstraint::MotorTarget::set(Quaternion q)
+{
+	QUATERNION_CONV(q);
+	Native->setMotorTarget(QUATERNION_USE(q));
+	QUATERNION_DEL(q);
+}
+
+btScalar ConeTwistConstraint::RelaxationFactor::get()
+{
+	return Native->getRelaxationFactor();
 }
 
 int ConeTwistConstraint::SolveSwingLimit::get()

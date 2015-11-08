@@ -13,9 +13,7 @@ namespace BulletSharp
 	internal:
 		btJointFeedback* _native;
 
-	public:
 		!JointFeedback();
-	protected:
 		~JointFeedback();
 
 	public:
@@ -54,9 +52,7 @@ namespace BulletSharp
 		internal:
 			btTypedConstraint::btConstraintInfo1* _native;
 
-		public:
 			!ConstraintInfo1();
-		protected:
 			~ConstraintInfo1();
 
 		public:
@@ -90,9 +86,7 @@ namespace BulletSharp
 			ScalarArray^ _lowerLimit;
 			ScalarArray^ _upperLimit;
 
-		public:
 			!ConstraintInfo2();
-		protected:
 			~ConstraintInfo2();
 
 		public:
@@ -197,9 +191,7 @@ namespace BulletSharp
 
 		static TypedConstraint^ GetManaged(btTypedConstraint* native);
 
-	public:
 		!TypedConstraint();
-	protected:
 		~TypedConstraint();
 
 	public:
@@ -325,9 +317,7 @@ namespace BulletSharp
 	internal:
 		AngularLimit(btAngularLimit* native, bool preventDelete);
 
-	public:
 		!AngularLimit();
-	protected:
 		~AngularLimit();
 
 	public:

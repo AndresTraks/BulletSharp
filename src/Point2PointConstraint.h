@@ -6,6 +6,14 @@ namespace BulletSharp
 {
 	ref class RigidBody;
 
+	[Flags]
+	public enum class Point2PointFlags
+	{
+		None = 0,
+		Erp = BT_P2P_FLAGS_ERP,
+		Cfm = BT_P2P_FLAGS_CFM
+	};
+
 	public ref class ConstraintSetting
 	{
 	internal:
@@ -17,9 +25,7 @@ namespace BulletSharp
 	internal:
 		ConstraintSetting(btConstraintSetting* native, bool preventDelete);
 
-	public:
 		!ConstraintSetting();
-	protected:
 		~ConstraintSetting();
 
 	public:
@@ -54,6 +60,11 @@ namespace BulletSharp
 		void GetInfo1NonVirtual(ConstraintInfo1^ info);
 		void GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix body0Trans, Matrix body1Trans);
 		void UpdateRhs(btScalar timeStep);
+
+		property Point2PointFlags Flags
+		{
+			Point2PointFlags get();
+		}
 
 		property Vector3 PivotInA
 		{

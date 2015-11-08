@@ -15,9 +15,7 @@ namespace BulletSharp
 	internal:
 		Solve2LinearConstraint(btSolve2LinearConstraint* native, bool preventDelete);
 
-	public:
 		!Solve2LinearConstraint();
-	protected:
 		~Solve2LinearConstraint();
 
 	public:

@@ -6,6 +6,24 @@ namespace BulletSharp
 {
 	ref class RigidBody;
 
+	[Flags]
+	public enum class SliderFlags
+	{
+		None = 0,
+		CfmDirLinear = BT_SLIDER_FLAGS_CFM_DIRLIN,
+		ErpDirLinear = BT_SLIDER_FLAGS_ERP_DIRLIN,
+		CfmDirAngular = BT_SLIDER_FLAGS_CFM_DIRANG,
+		ErpDirAngular = BT_SLIDER_FLAGS_ERP_DIRANG,
+		CfmOrthoLinear = BT_SLIDER_FLAGS_CFM_ORTLIN,
+		ErpOrthoLinear = BT_SLIDER_FLAGS_ERP_ORTLIN,
+		CfmOrthoAngular = BT_SLIDER_FLAGS_CFM_ORTANG,
+		ErpOrthoAngular = BT_SLIDER_FLAGS_ERP_ORTANG,
+		CfmLimLinear = BT_SLIDER_FLAGS_CFM_LIMLIN,
+		ErpLimLinear = BT_SLIDER_FLAGS_ERP_LIMLIN,
+		CfmLimAngular = BT_SLIDER_FLAGS_CFM_LIMANG,
+		ErpLimAngular = BT_SLIDER_FLAGS_ERP_LIMANG
+	};
+
 	public ref class SliderConstraint : TypedConstraint
 	{
 	public:
@@ -85,6 +103,11 @@ namespace BulletSharp
 		{
 			btScalar get();
 			void set(btScalar dampingOrthoLin);
+		}
+
+		property SliderFlags Flags
+		{
+			SliderFlags get();
 		}
 
 		property Matrix FrameOffsetA

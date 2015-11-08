@@ -21,9 +21,7 @@ namespace BulletSharp
 	internal:
 		ConstraintSolver(btConstraintSolver* native);
 
-	public:
 		!ConstraintSolver();
-	protected:
 		~ConstraintSolver();
 
 	public:

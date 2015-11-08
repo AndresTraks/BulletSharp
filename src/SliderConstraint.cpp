@@ -190,6 +190,11 @@ void SliderConstraint::DampingOrthoLin::set(btScalar dampingOrthoLin)
 	Native->setDampingOrthoLin(dampingOrthoLin);
 }
 
+SliderFlags SliderConstraint::Flags::get()
+{
+	return (SliderFlags) Native->getFlags();
+}
+
 Matrix SliderConstraint::FrameOffsetA::get()
 {
 	return Math::BtTransformToMatrix(&Native->getFrameOffsetA());
