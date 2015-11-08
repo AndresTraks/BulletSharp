@@ -444,6 +444,9 @@
     <ClCompile Include="src\MultiBodyDynamicsWorld.cpp">
       <Filter>Source Files\BulletDynamics\Featherstone</Filter>
     </ClCompile>
+    <ClCompile Include="src\MultiBodyJointFeedback.cpp">
+      <Filter>Source Files\BulletDynamics\Featherstone</Filter>
+    </ClCompile>
     <ClCompile Include="src\MultiBodyJointLimitConstraint.cpp">
       <Filter>Source Files\BulletDynamics\Featherstone</Filter>
     </ClCompile>
@@ -971,6 +974,9 @@
       <Filter>Header Files\BulletDynamics\Featherstone</Filter>
     </ClInclude>
     <ClInclude Include="src\MultiBodyDynamicsWorld.h">
+      <Filter>Header Files\BulletDynamics\Featherstone</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MultiBodyJointFeedback.h">
       <Filter>Header Files\BulletDynamics\Featherstone</Filter>
     </ClInclude>
     <ClInclude Include="src\MultiBodyJointLimitConstraint.h">

@@ -15,9 +15,7 @@ namespace BulletSharp
 		MultiBody^ _multiBodyA;
 		MultiBody^ _multiBodyB;
 
-	public:
 		!MultiBodySolverConstraint();
-	protected:
 		~MultiBodySolverConstraint();
 
 	public:
@@ -135,6 +133,18 @@ namespace BulletSharp
 		{
 			MultiBody^ get();
 			void set(MultiBody^ value);
+		}
+/*
+		property MultiBodyConstraint^ OrgConstraint
+		{
+			MultiBodyConstraint^ get();
+			void set(MultiBodyConstraint^ value);
+		}
+*/
+		property int OrgDofIndex
+		{
+			int get();
+			void set(int value);
 		}
 
 		property IntPtr OriginalContactPoint

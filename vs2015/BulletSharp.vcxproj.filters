@@ -297,6 +297,9 @@
     <ClCompile Include="..\src\ConvexTriangleMeshShape.cpp">
       <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\CpuFeatureUtility.cpp">
+      <Filter>Source Files\LinearMath</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\CylinderShape.cpp">
       <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
@@ -445,6 +448,9 @@
       <Filter>Source Files\BulletDynamics\Featherstone</Filter>
     </ClCompile>
     <ClCompile Include="..\src\MultiBodyDynamicsWorld.cpp">
+      <Filter>Source Files\BulletDynamics\Featherstone</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MultiBodyJointFeedback.cpp">
       <Filter>Source Files\BulletDynamics\Featherstone</Filter>
     </ClCompile>
     <ClCompile Include="..\src\MultiBodyJointLimitConstraint.cpp">
@@ -811,6 +817,9 @@
     <ClInclude Include="..\src\ConvexTriangleMeshShape.h">
       <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\CpuFeatureUtility.h">
+      <Filter>Header Files\LinearMath</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\CylinderShape.h">
       <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
@@ -971,6 +980,9 @@
       <Filter>Header Files\BulletDynamics\Featherstone</Filter>
     </ClInclude>
     <ClInclude Include="..\src\MultiBodyDynamicsWorld.h">
+      <Filter>Header Files\BulletDynamics\Featherstone</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MultiBodyJointFeedback.h">
       <Filter>Header Files\BulletDynamics\Featherstone</Filter>
     </ClInclude>
     <ClInclude Include="..\src\MultiBodyJointLimitConstraint.h">

@@ -2,7 +2,7 @@
 
 namespace BulletSharp
 {
-	ref class ScalarArray;
+	ref class MultiBodyJointFeedback;
 	ref class MultiBodyLinkCollider;
 
 	public enum FeatherstoneJointType
@@ -28,9 +28,9 @@ namespace BulletSharp
 		Vector3 GetAxisTop(int dof);
 		void SetAxisBottom(int dof, btScalar x, btScalar y, btScalar z);
 		void SetAxisBottom(int dof, Vector3 axis);
-		void SetAxisTop(int dof, Vector3 axis);
 		void SetAxisTop(int dof, btScalar x, btScalar y, btScalar z);
-		void UpdateCacheMultiDof(ScalarArray^ pq);
+		void SetAxisTop(int dof, Vector3 axis);
+		void UpdateCacheMultiDof(array<btScalar>^ pq);
 		void UpdateCacheMultiDof();
 /*
 		property SpatialMotionVector AbsFrameLocVelocity
@@ -45,6 +45,18 @@ namespace BulletSharp
 			void set(SpatialMotionVector value);
 		}
 */
+		property Vector3 AppliedConstraintForce
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property Vector3 AppliedConstraintTorque
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
 		property Vector3 AppliedForce
 		{
 			Vector3 get();
@@ -72,6 +84,12 @@ namespace BulletSharp
 		{
 			Vector3 get();
 			void set(Vector3 value);
+		}
+
+		property Matrix CachedWorldTransform
+		{
+			Matrix get();
+			void set(Matrix value);
 		}
 
 		property int CfgOffset
@@ -122,6 +140,18 @@ namespace BulletSharp
 			void set(Vector3 value);
 		}
 		/*
+		property MultiBodyJointFeedback^ JointFeedback
+		{
+			MultiBodyJointFeedback^ get();
+			void set(MultiBodyJointFeedback^ value);
+		}
+		*/
+		property String^ JointName
+		{
+			String^ get();
+			//void set(String^ value);
+		}
+		/*
 		property array<btScalar>^ JointPos
 		{
 			array<btScalar>^ get();
@@ -136,6 +166,12 @@ namespace BulletSharp
 		{
 			FeatherstoneJointType get();
 			void set(FeatherstoneJointType value);
+		}
+
+		property String^ LinkName
+		{
+			String^ get();
+			//void set(String^ value);
 		}
 
 		property btScalar Mass

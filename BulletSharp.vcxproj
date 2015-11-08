@@ -1427,6 +1427,7 @@
     <ClCompile Include="src\MultiBodySolverConstraint.cpp" />
     <ClCompile Include="src\MultiBodyConstraintSolver.cpp" />
     <ClCompile Include="src\MultiBodyDynamicsWorld.cpp" />
+    <ClCompile Include="src\MultiBodyJointFeedback.cpp" />
     <ClCompile Include="src\MultiBodyJointLimitConstraint.cpp" />
     <ClCompile Include="src\MultiBodyJointMotor.cpp" />
     <ClCompile Include="src\MultiBodyLinkCollider.cpp" />
@@ -1607,6 +1608,7 @@
     <ClInclude Include="src\MultiBodySolverConstraint.h" />
     <ClInclude Include="src\MultiBodyConstraintSolver.h" />
     <ClInclude Include="src\MultiBodyDynamicsWorld.h" />
+    <ClInclude Include="src\MultiBodyJointFeedback.h" />
     <ClInclude Include="src\MultiBodyJointLimitConstraint.h" />
     <ClInclude Include="src\MultiBodyJointMotor.h" />
     <ClInclude Include="src\MultiBodyLinkCollider.h" />

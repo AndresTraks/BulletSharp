@@ -14,11 +14,6 @@
 
 #define Native static_cast<btMultiBodyDynamicsWorld*>(_native)
 
-MultiBodyDynamicsWorld::MultiBodyDynamicsWorld(btMultiBodyDynamicsWorld* native)
-	: DiscreteDynamicsWorld(native)
-{
-}
-
 MultiBodyDynamicsWorld::MultiBodyDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
 	MultiBodyConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration)
 	: DiscreteDynamicsWorld(new btMultiBodyDynamicsWorld(dispatcher->_native, pairCache->_native,
@@ -57,6 +52,17 @@ void MultiBodyDynamicsWorld::AddMultiBodyConstraint(MultiBodyConstraint^ constra
 	Native->addMultiBodyConstraint(constraint->_native);
 	_constraints->Add(constraint);
 }
+
+void MultiBodyDynamicsWorld::ClearMultiBodyConstraintForces()
+{
+	Native->clearMultiBodyConstraintForces();
+}
+
+void MultiBodyDynamicsWorld::ClearMultiBodyForces()
+{
+	Native->clearMultiBodyForces();
+}
+
 #ifndef DISABLE_DEBUGDRAW
 void MultiBodyDynamicsWorld::DebugDrawMultiBodyConstraint(MultiBodyConstraint^ constraint)
 {
@@ -64,6 +70,22 @@ void MultiBodyDynamicsWorld::DebugDrawMultiBodyConstraint(MultiBodyConstraint^ c
 }
 #endif
 #endif
+
+void MultiBodyDynamicsWorld::ForwardKinematics()
+{
+	Native->forwardKinematics();
+}
+
+MultiBody^ MultiBodyDynamicsWorld::GetMultiBody(int mbIndex)
+{
+	return _bodies[mbIndex];
+}
+
+MultiBodyConstraint^ MultiBodyDynamicsWorld::GetMultiBodyConstraint(int constraintIndex)
+{
+	return _constraints[constraintIndex];
+}
+
 void MultiBodyDynamicsWorld::IntegrateTransforms(btScalar timeStep)
 {
 	Native->integrateTransforms(timeStep);
@@ -81,5 +103,15 @@ void MultiBodyDynamicsWorld::RemoveMultiBodyConstraint(MultiBodyConstraint^ cons
 	_constraints->Remove(constraint);
 }
 #endif
+
+int MultiBodyDynamicsWorld::NumMultibodies::get()
+{
+	return Native->getNumMultibodies();
+}
+
+int MultiBodyDynamicsWorld::NumMultiBodyConstraints::get()
+{
+	return Native->getNumMultiBodyConstraints();
+}
 
 #endif

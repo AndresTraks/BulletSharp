@@ -5,7 +5,6 @@
 #include "StringConv.h"
 #include "AlignedObjectArray.h"
 #include "Collections.h"
-#include "CollisionObject.h"
 #include "MultiBody.h"
 #include "MultiBodyLink.h"
 #include "MultiBodyLinkCollider.h"
@@ -68,12 +67,13 @@ void MultiBody::AddJointTorque(int i, btScalar q)
 {
 	_native->addJointTorque(i, q);
 }
-/*
+
 void MultiBody::AddJointTorqueMultiDof(int i, array<btScalar>^ q)
 {
-	_native->addJointTorqueMultiDof(i, q->_native);
+	pin_ptr<btScalar> qPtr = &q[0];
+	_native->addJointTorqueMultiDof(i, qPtr);
 }
-*/
+
 void MultiBody::AddJointTorqueMultiDof(int i, int dof, btScalar q)
 {
 	_native->addJointTorqueMultiDof(i, dof, q);
@@ -107,20 +107,24 @@ void MultiBody::AddLinkTorque(int i, Vector3 t)
 	VECTOR3_DEL(t);
 }
 
-void MultiBody::ApplyDeltaVeeMultiDof(ScalarArray^ deltaVee, btScalar multiplier)
+void MultiBody::ApplyDeltaVeeMultiDof(array<btScalar>^ deltaVee, btScalar multiplier)
 {
-	_native->applyDeltaVeeMultiDof((btScalar*)deltaVee->_native, multiplier);
+	pin_ptr<btScalar> deltaVeePtr = &deltaVee[0];
+	_native->applyDeltaVeeMultiDof(deltaVeePtr, multiplier);
 }
 
-void MultiBody::ApplyDeltaVeeMultiDof2(ScalarArray^ deltaVee, btScalar multiplier)
+void MultiBody::ApplyDeltaVeeMultiDof2(array<btScalar>^ deltaVee, btScalar multiplier)
 {
-	_native->applyDeltaVeeMultiDof2((btScalar*)deltaVee->_native, multiplier);
+	pin_ptr<btScalar> deltaVeePtr = &deltaVee[0];
+	_native->applyDeltaVeeMultiDof2(deltaVeePtr, multiplier);
 }
 
-void MultiBody::CalcAccelerationDeltasMultiDof(ScalarArray^ force, ScalarArray^ output,
+void MultiBody::CalcAccelerationDeltasMultiDof(array<btScalar>^ force, array<btScalar>^ output,
 	AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV)
 {
-	_native->calcAccelerationDeltasMultiDof((btScalar*)force->_native, (btScalar*)output->_native, *(btAlignedObjectArray<btScalar>*)scratchR->_native,
+	pin_ptr<btScalar> forcePtr = &force[0];
+	pin_ptr<btScalar> outputPtr = &output[0];
+	_native->calcAccelerationDeltasMultiDof(forcePtr, outputPtr, *(btAlignedObjectArray<btScalar>*)scratchR->_native,
 		*(btAlignedObjectArray<btVector3>*)scratchV->_native);
 }
 
@@ -149,16 +153,32 @@ void MultiBody::ClearVelocities()
 	_native->clearVelocities();
 }
 /*
-void MultiBody::FilConstraintJacobianMultiDof(int link, Vector3 contactPoint, Vector3 normalAng,
+void MultiBody::ComputeAccelerationsArticulatedBodyAlgorithmMultiDof(btScalar deltaTime,
+	AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV, AlignedMatrix3x3Array^ scratchM,
+	bool isConstraintPass)
+{
+	_native->computeAccelerationsArticulatedBodyAlgorithmMultiDof(deltaTime, **(btAlignedObjectArray<btScalar>*)scratchR->_native,
+		*(btAlignedObjectArray<btVector3>*)scratchV->_native, *(btAlignedObjectArray<btMatrix3x3>*)scratchM->_native, isConstraintPass);
+}
+
+void MultiBody::ComputeAccelerationsArticulatedBodyAlgorithmMultiDof(btScalar deltaTime,
+	AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV, AlignedMatrix3x3Array^ scratchM)
+{
+	_native->computeAccelerationsArticulatedBodyAlgorithmMultiDof(deltaTime, **(btAlignedObjectArray<btScalar>*)scratchR->_native,
+		*(btAlignedObjectArray<btVector3>*)scratchV->_native, *(btAlignedObjectArray<btMatrix3x3>*)scratchM->_native);
+}
+
+void MultiBody::FillConstraintJacobianMultiDof(int link, Vector3 contactPoint, Vector3 normalAng,
 	Vector3 normalLin, array<btScalar>^ jac, AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV,
 	AlignedMatrix3x3Array^ scratchM)
 {
 	VECTOR3_CONV(contactPoint);
 	VECTOR3_CONV(normalAng);
 	VECTOR3_CONV(normalLin);
-	_native->filConstraintJacobianMultiDof(link, VECTOR3_USE(contactPoint), VECTOR3_USE(normalAng),
-		VECTOR3_USE(normalLin), jac->_native, *scratchR->_native, *scratchV->_native,
-		*scratchM->_native);
+	pin_ptr<btScalar> jacPtr = &jac[0];
+	_native->fillConstraintJacobianMultiDof(link, VECTOR3_USE(contactPoint), VECTOR3_USE(normalAng),
+		VECTOR3_USE(normalLin), jacPtr, *(btAlignedObjectArray<btScalar>*)scratchR->_native, *(btAlignedObjectArray<btVector3>*)scratchV->_native,
+		*(btAlignedObjectArray<btMatrix3x3>*)scratchM->_native);
 	VECTOR3_DEL(contactPoint);
 	VECTOR3_DEL(normalAng);
 	VECTOR3_DEL(normalLin);
@@ -170,8 +190,9 @@ void MultiBody::FillContactJacobianMultiDof(int link, Vector3 contactPoint, Vect
 {
 	VECTOR3_CONV(contactPoint);
 	VECTOR3_CONV(normal);
+	pin_ptr<btScalar> jacPtr = &jac[0];
 	_native->fillContactJacobianMultiDof(link, VECTOR3_USE(contactPoint), VECTOR3_USE(normal),
-		(btScalar*)jac->_native, *(btAlignedObjectArray<btScalar>*)scratchR->_native, *(btAlignedObjectArray<btVector3>*)scratchV->_native, *(btAlignedObjectArray<btMatrix3x3>*)scratchM->_native);
+		jacPtr, *(btAlignedObjectArray<btScalar>*)scratchR->_native, *(btAlignedObjectArray<btVector3>*)scratchV->_native, *(btAlignedObjectArray<btMatrix3x3>*)scratchM->_native);
 	VECTOR3_DEL(contactPoint);
 	VECTOR3_DEL(normal);
 }
@@ -183,7 +204,7 @@ void MultiBody::FinalizeMultiDof()
 /*
 void MultiBody::ForwardKinematics(AlignedQuaternionArray^ scratchQ, AlignedMatrix3x3Array^ scratchM)
 {
-	_native->forwardKinematics(*scratchQ->_native, *scratchM->_native);
+	_native->forwardKinematics(*(btAlignedObjectArray<btQuaternion>*)scratchQ->_native, *(btAlignedObjectArray<btMatrix3x3>*)scratchM->_native);
 }
 */
 btScalar MultiBody::GetJointPos(int i)
@@ -333,12 +354,13 @@ void MultiBody::SetJointVel(int i, btScalar qdot)
 {
 	_native->setJointVel(i, qdot);
 }
-/*
+
 void MultiBody::SetJointVelMultiDof(int i, array<btScalar>^ qdot)
 {
-	_native->setJointVelMultiDof(i, qdot->_native);
+	pin_ptr<btScalar> qdotPtr = &qdot[0];
+	_native->setJointVelMultiDof(i, qdotPtr);
 }
-*/
+
 void MultiBody::SetPosUpdated(bool updated)
 {
 	_native->setPosUpdated(updated);
@@ -476,46 +498,29 @@ void MultiBody::SetupSpherical(int linkIndex, btScalar mass, Vector3 inertia, in
 	VECTOR3_DEL(parentComToThisPivotOffset);
 	VECTOR3_DEL(thisPivotToThisComOffset);
 }
-/*
+
 void MultiBody::StepPositionsMultiDof(btScalar deltaTime, array<btScalar>^ pq, array<btScalar>^ pqd)
 {
-	_native->stepPositionsMultiDof(deltaTime, pq->_native, pqd->_native);
+	pin_ptr<btScalar> pqPtr = &pq[0];
+	pin_ptr<btScalar> pqdPtr = &pqd[0];
+	_native->stepPositionsMultiDof(deltaTime, pqPtr, pqdPtr);
 }
 
 void MultiBody::StepPositionsMultiDof(btScalar deltaTime, array<btScalar>^ pq)
 {
-	_native->stepPositionsMultiDof(deltaTime, pq->_native);
+	pin_ptr<btScalar> pqPtr = &pq[0];
+	_native->stepPositionsMultiDof(deltaTime, pqPtr);
 }
-*/
+
 void MultiBody::StepPositionsMultiDof(btScalar deltaTime)
 {
 	_native->stepPositionsMultiDof(deltaTime);
 }
 /*
-void MultiBody::StepVelocities(btScalar deltaTime, AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV,
-	AlignedMatrix3x3Array^ scratchM)
-{
-	_native->stepVelocities(deltaTime, *scratchR->_native, *scratchV->_native, *scratchM->_native);
-}
-
-void MultiBody::StepVelocitiesMultiDof(btScalar deltaTime, AlignedScalarArray^ scratchR,
-	AlignedVector3Array^ scratchV, AlignedMatrix3x3Array^ scratchM, bool isConstraintPass)
-{
-	_native->stepVelocitiesMultiDof(deltaTime, *scratchR->_native, *scratchV->_native,
-		*scratchM->_native, isConstraintPass);
-}
-
-void MultiBody::StepVelocitiesMultiDof(btScalar deltaTime, AlignedScalarArray^ scratchR,
-	AlignedVector3Array^ scratchV, AlignedMatrix3x3Array^ scratchM)
-{
-	_native->stepVelocitiesMultiDof(deltaTime, *scratchR->_native, *scratchV->_native,
-		*scratchM->_native);
-}
-
 void MultiBody::UpdateCollisionObjectWorldTransforms(AlignedQuaternionArray^ scratchQ,
 	AlignedMatrix3x3Array^ scratchM)
 {
-	_native->updateCollisionObjectWorldTransforms(*scratchQ->_native, *scratchM->_native);
+	_native->updateCollisionObjectWorldTransforms(*(btAlignedObjectArray<btQuaternion>*)scratchQ->_native, *(btAlignedObjectArray<btMatrix3x3>*)scratchM->_native);
 }
 */
 void MultiBody::WakeUp()

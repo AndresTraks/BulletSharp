@@ -3,8 +3,12 @@
 #ifndef DISABLE_FEATHERSTONE
 
 #include "AlignedObjectArray.h"
+#ifndef DISABLE_CONSTRAINTS
+#include "ContactSolverInfo.h"
+#endif
 #include "MultiBody.h"
 #include "MultiBodyConstraint.h"
+#include "MultiBodySolverConstraint.h"
 
 MultiBodyConstraint::MultiBodyConstraint(btMultiBodyConstraint* native)
 {
@@ -21,6 +25,11 @@ MultiBodyConstraint::!MultiBodyConstraint()
 	delete _native;
 	_native = NULL;
 }
+
+void MultiBodyConstraint::AllocateJacobiansMultiDof()
+{
+	_native->allocateJacobiansMultiDof();
+}
 /*
 #ifndef DISABLE_CONSTRAINTS
 void MultiBodyConstraint::CreateConstraintRows(MultiBodyConstraintArray^ constraintRows,
@@ -30,24 +39,44 @@ void MultiBodyConstraint::CreateConstraintRows(MultiBodyConstraintArray^ constra
 }
 #endif
 */
+void MultiBodyConstraint::FinalizeMultiDof()
+{
+	_native->finalizeMultiDof();
+}
+
+btScalar MultiBodyConstraint::GetAppliedImpulse(int dof)
+{
+	return _native->getAppliedImpulse(dof);
+}
+
 btScalar MultiBodyConstraint::GetPosition(int row)
 {
 	return _native->getPosition(row);
 }
-/*
-FloatArray^ MultiBodyConstraint::JacobianA(int row)
+
+void MultiBodyConstraint::InternalSetAppliedImpulse(int dof, btScalar appliedImpulse)
 {
-	_native->jacobianA(row);
+	_native->internalSetAppliedImpulse(dof, appliedImpulse);
+}
+/*
+ScalarArray^ MultiBodyConstraint::JacobianA(int row)
+{
+	return _native->jacobianA(row);
 }
 
-FloatArray^ MultiBodyConstraint::JacobianB(int row)
+ScalarArray^ MultiBodyConstraint::JacobianB(int row)
 {
-	_native->jacobianB(row);
+	return _native->jacobianB(row);
 }
 */
 void MultiBodyConstraint::SetPosition(int row, btScalar pos)
 {
 	_native->setPosition(row, pos);
+}
+
+void MultiBodyConstraint::UpdateJacobianSizes()
+{
+	_native->updateJacobianSizes();
 }
 
 int MultiBodyConstraint::IslandIdA::get()

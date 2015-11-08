@@ -11,9 +11,6 @@ namespace BulletSharp
 
 	public ref class MultiBodyDynamicsWorld : DiscreteDynamicsWorld
 	{
-	internal:
-		MultiBodyDynamicsWorld(btMultiBodyDynamicsWorld* native);
-
 	private:
 		List<MultiBody^>^ _bodies;
 #ifndef DISABLE_CONSTRAINTS
@@ -33,10 +30,24 @@ namespace BulletSharp
 		void DebugDrawMultiBodyConstraint(MultiBodyConstraint^ constraint);
 #endif
 #endif
+		void ClearMultiBodyConstraintForces();
+		void ClearMultiBodyForces();
+		void ForwardKinematics();
+		MultiBody^ GetMultiBody(int mbIndex);
+		MultiBodyConstraint^ GetMultiBodyConstraint(int constraintIndex);
 		void IntegrateTransforms(btScalar timeStep);
 		void RemoveMultiBody(MultiBody^ body);
 #ifndef DISABLE_CONSTRAINTS
 		void RemoveMultiBodyConstraint(MultiBodyConstraint^ constraint);
 #endif
+		property int NumMultibodies
+		{
+			int get();
+		}
+
+		property int NumMultiBodyConstraints
+		{
+			int get();
+		}
 	};
 };

@@ -47,8 +47,7 @@ void MultiBodySolverConstraint::AngularComponentB::set(Vector3 value)
 btScalar MultiBodySolverConstraint::AppliedImpulse::get()
 {
 	return _native->m_appliedImpulse;
-}
-/*
+}/*
 void MultiBodySolverConstraint::AppliedImpulse::set(btScalar value)
 {
 	_native->m_appliedImpulse = value;
@@ -57,8 +56,7 @@ void MultiBodySolverConstraint::AppliedImpulse::set(btScalar value)
 btScalar MultiBodySolverConstraint::AppliedPushImpulse::get()
 {
 	return _native->m_appliedPushImpulse;
-}
-/*
+}/*
 void MultiBodySolverConstraint::AppliedPushImpulse::set(btScalar value)
 {
 	_native->m_appliedPushImpulse = value;
@@ -205,6 +203,24 @@ void MultiBodySolverConstraint::MultiBodyB::set(MultiBody^ value)
 {
 	_multiBodyB = value;
 	_native->m_multiBodyB = value->_native;
+}
+/*
+MultiBodyConstraint^ MultiBodySolverConstraint::OrgConstraint::get()
+{
+	return _native->m_orgConstraint;
+}
+void MultiBodySolverConstraint::OrgConstraint::set(MultiBodyConstraint^ value)
+{
+	_native->m_orgConstraint = value->_native;
+}
+*/
+int MultiBodySolverConstraint::OrgDofIndex::get()
+{
+	return _native->m_orgDofIndex;
+}
+void MultiBodySolverConstraint::OrgDofIndex::set(int value)
+{
+	_native->m_orgDofIndex = value;
 }
 
 IntPtr MultiBodySolverConstraint::OriginalContactPoint::get()

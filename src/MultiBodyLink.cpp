@@ -2,7 +2,8 @@
 
 #ifndef DISABLE_FEATHERSTONE
 
-#include "Collections.h"
+#include "StringConv.h"
+#include "MultiBodyJointFeedback.h"
 #include "MultiBodyLink.h"
 #include "MultiBodyLinkCollider.h"
 
@@ -33,6 +34,11 @@ void MultiBodyLink::SetAxisBottom(int dof, Vector3 axis)
 	VECTOR3_DEL(axis);
 }
 
+void MultiBodyLink::SetAxisTop(int dof, btScalar x, btScalar y, btScalar z)
+{
+	_native->setAxisTop(dof, x, y, z);
+}
+
 void MultiBodyLink::SetAxisTop(int dof, Vector3 axis)
 {
 	VECTOR3_CONV(axis);
@@ -40,14 +46,10 @@ void MultiBodyLink::SetAxisTop(int dof, Vector3 axis)
 	VECTOR3_DEL(axis);
 }
 
-void MultiBodyLink::SetAxisTop(int dof, btScalar x, btScalar y, btScalar z)
+void MultiBodyLink::UpdateCacheMultiDof(array<btScalar>^ pq)
 {
-	_native->setAxisTop(dof, x, y, z);
-}
-
-void MultiBodyLink::UpdateCacheMultiDof(ScalarArray^ pq)
-{
-	_native->updateCacheMultiDof((btScalar*)pq->_native);
+	pin_ptr<btScalar> pqPtr = &pq[0];
+	_native->updateCacheMultiDof(pqPtr);
 }
 
 void MultiBodyLink::UpdateCacheMultiDof()
@@ -73,6 +75,24 @@ void MultiBodyLink::AbsFrameTotVelocity::set(SpatialMotionVector value)
 	_native->m_absFrameTotVelocity = value->_native;
 }
 */
+Vector3 MultiBodyLink::AppliedConstraintForce::get()
+{
+	return Math::BtVector3ToVector3(&_native->m_appliedConstraintForce);
+}
+void MultiBodyLink::AppliedConstraintForce::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_native->m_appliedConstraintForce);
+}
+
+Vector3 MultiBodyLink::AppliedConstraintTorque::get()
+{
+	return Math::BtVector3ToVector3(&_native->m_appliedConstraintTorque);
+}
+void MultiBodyLink::AppliedConstraintTorque::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_native->m_appliedConstraintTorque);
+}
+
 Vector3 MultiBodyLink::AppliedForce::get()
 {
 	return Math::BtVector3ToVector3(&_native->m_appliedForce);
@@ -112,6 +132,15 @@ Vector3 MultiBodyLink::CachedRVector::get()
 void MultiBodyLink::CachedRVector::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_native->m_cachedRVector);
+}
+
+Matrix MultiBodyLink::CachedWorldTransform::get()
+{
+	return Math::BtTransformToMatrix(&_native->m_cachedWorldTransform);
+}
+void MultiBodyLink::CachedWorldTransform::set(Matrix value)
+{
+	Math::MatrixToBtTransform(value, &_native->m_cachedWorldTransform);
 }
 
 int MultiBodyLink::CfgOffset::get()
@@ -186,6 +215,25 @@ void MultiBodyLink::InertiaLocal::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &_native->m_inertiaLocal);
 }
 /*
+MultiBodyJointFeedback^ MultiBodyLink::JointFeedback::get()
+{
+	return _native->m_jointFeedback;
+}
+void MultiBodyLink::JointFeedback::set(MultiBodyJointFeedback^ value)
+{
+	_native->m_jointFeedback = value->_native;
+}
+*/
+String^ MultiBodyLink::JointName::get()
+{
+	return StringConv::UnmanagedToManaged(_native->m_jointName);
+}
+/*
+void MultiBodyLink::JointName::set(String^ value)
+{
+	_native->m_jointName = value->_native;
+}
+
 array<btScalar>^ MultiBodyLink::JointPos::get()
 {
 	return _native->m_jointPos;
@@ -205,6 +253,16 @@ void MultiBodyLink::JointType::set(FeatherstoneJointType value)
 	_native->m_jointType = (btMultibodyLink::eFeatherstoneJointType)value;
 }
 
+String^ MultiBodyLink::LinkName::get()
+{
+	return StringConv::UnmanagedToManaged(_native->m_linkName);
+}
+/*
+void MultiBodyLink::LinkName::set(String^ value)
+{
+	_native->m_linkName = value->_native;
+}
+*/
 btScalar MultiBodyLink::Mass::get()
 {
 	return _native->m_mass;

@@ -2,8 +2,9 @@
 
 namespace BulletSharp
 {
-	ref class AlignedScalarArray;
+	ref class ContactSolverInfo;
 	ref class MultiBody;
+	ref class MultiBodyConstraintArray;
 	interface class IDebugDraw;
 
 	public ref class MultiBodyConstraint abstract
@@ -13,9 +14,7 @@ namespace BulletSharp
 
 		MultiBodyConstraint(btMultiBodyConstraint* native);
 
-	public:
 		!MultiBodyConstraint();
-	protected:
 		~MultiBodyConstraint();
 
 	protected:
@@ -23,6 +22,7 @@ namespace BulletSharp
 		MultiBody^ _multiBodyB;
 
 	public:
+		void AllocateJacobiansMultiDof();
 #ifndef DISABLE_CONSTRAINTS
 		//void CreateConstraintRows(MultiBodyConstraintArray^ constraintRows, MultiBodyJacobianData^ data,
 		//	ContactSolverInfo^ infoGlobal);
@@ -30,10 +30,14 @@ namespace BulletSharp
 #ifndef DISABLE_DEBUGDRAW
 		virtual void DebugDraw(IDebugDraw^ drawer) = 0;
 #endif
+		void FinalizeMultiDof();
+		btScalar GetAppliedImpulse(int dof);
 		btScalar GetPosition(int row);
-		//FloatArray^ JacobianA(int row);
-		//FloatArray^ JacobianB(int row);
+		void InternalSetAppliedImpulse(int dof, btScalar appliedImpulse);
+		//ScalarArray^ JacobianA(int row);
+		//ScalarArray^ JacobianB(int row);
 		void SetPosition(int row, btScalar pos);
+		void UpdateJacobianSizes();
 
 		property int IslandIdA
 		{
