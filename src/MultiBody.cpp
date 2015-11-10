@@ -202,9 +202,9 @@ void MultiBody::FinalizeMultiDof()
 	_native->finalizeMultiDof();
 }
 /*
-void MultiBody::ForwardKinematics(AlignedQuaternionArray^ scratchQ, AlignedMatrix3x3Array^ scratchM)
+void MultiBody::ForwardKinematics(AlignedQuaternionArray^ scratchQ, AlignedVector3Array^ scratchM)
 {
-	_native->forwardKinematics(*(btAlignedObjectArray<btQuaternion>*)scratchQ->_native, *(btAlignedObjectArray<btMatrix3x3>*)scratchM->_native);
+	_native->forwardKinematics(*(btAlignedObjectArray<btQuaternion>*)scratchQ->_native, *(btAlignedObjectArray<btVector3>*)scratchM->_native);
 }
 */
 btScalar MultiBody::GetJointPos(int i)
@@ -518,9 +518,9 @@ void MultiBody::StepPositionsMultiDof(btScalar deltaTime)
 }
 /*
 void MultiBody::UpdateCollisionObjectWorldTransforms(AlignedQuaternionArray^ scratchQ,
-	AlignedMatrix3x3Array^ scratchM)
+	AlignedVector3Array^ scratchM)
 {
-	_native->updateCollisionObjectWorldTransforms(*(btAlignedObjectArray<btQuaternion>*)scratchQ->_native, *(btAlignedObjectArray<btMatrix3x3>*)scratchM->_native);
+	_native->updateCollisionObjectWorldTransforms(*(btAlignedObjectArray<btQuaternion>*)scratchQ->_native, *(btAlignedObjectArray<btVector3>*)scratchM->_native);
 }
 */
 void MultiBody::WakeUp()

@@ -11,9 +11,7 @@ namespace BulletSharp
 	internal:
 		btOverlapCallback* _native;
 
-	public:
 		!OverlapCallback();
-	protected:
 		~OverlapCallback();
 
 	public:
@@ -32,9 +30,7 @@ namespace BulletSharp
 
 		OverlapFilterCallback(btOverlapFilterCallback* native);
 
-	public:
 		!OverlapFilterCallback();
-	protected:
 		~OverlapFilterCallback();
 
 	protected:

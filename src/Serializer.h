@@ -12,9 +12,7 @@ namespace BulletSharp
 
 		Serializer(btSerializer* native);
 
-	public:
 		!Serializer();
-	protected:
 		~Serializer();
 
 	public:
@@ -59,9 +57,7 @@ namespace BulletSharp
 
 		BulletSerializedArrays(btBulletSerializedArrays* native);
 
-	public:
 		!BulletSerializedArrays();
-	protected:
 		~BulletSerializedArrays();
 
 	public:

@@ -125,10 +125,10 @@ bool PrimitiveTriangle::FindTriangleCollisionClipMethod(PrimitiveTriangle^ other
 	return _native->find_triangle_collision_clip_method(*other->_native, *contacts->_native);
 }
 
-void PrimitiveTriangle::GetEdgePlane(int edge_index, [Out] Vector4% plane)
+void PrimitiveTriangle::GetEdgePlane(int edgeIndex, [Out] Vector4% plane)
 {
 	btVector4* planeTemp = ALIGNED_NEW(btVector4);
-	_native->get_edge_plane(edge_index, *planeTemp);
+	_native->get_edge_plane(edgeIndex, *planeTemp);
 	plane = Math::BtVector4ToVector4(planeTemp);
 	ALIGNED_FREE(planeTemp);
 }

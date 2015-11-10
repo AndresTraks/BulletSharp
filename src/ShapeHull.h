@@ -16,9 +16,7 @@ namespace BulletSharp
 	private:
 		ConvexShape^ _shape;
 
-	public:
 		!ShapeHull();
-	protected:
 		~ShapeHull();
 
 	public:

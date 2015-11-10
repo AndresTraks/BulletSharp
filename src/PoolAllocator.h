@@ -13,9 +13,7 @@ namespace BulletSharp
 	internal:
 		PoolAllocator(btPoolAllocator* native, bool preventDelete);
 
-	public:
 		!PoolAllocator();
-	protected:
 		~PoolAllocator();
 
 	public:

@@ -17,9 +17,7 @@ namespace BulletSharp
 		CollisionObjectWrapper(btCollisionObjectWrapper* native);
 
 /*
-	public:
 		!CollisionObjectWrapper();
-	protected:
 		~CollisionObjectWrapper();
 */
 

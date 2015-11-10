@@ -25,9 +25,7 @@ namespace BulletSharp
 	internal:
 		btConvexSeparatingDistanceUtil* _native;
 
-	public:
 		!ConvexSeparatingDistanceUtil();
-	protected:
 		~ConvexSeparatingDistanceUtil();
 
 	public:

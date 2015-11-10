@@ -13,9 +13,7 @@ namespace BulletSharp
 
 		GimTriangleContact(GIM_TRIANGLE_CONTACT* native);
 
-	public:
 		!GimTriangleContact();
-	protected:
 		~GimTriangleContact();
 
 	public:
@@ -59,9 +57,7 @@ namespace BulletSharp
 	private:
 		Vector3Array^ _vertices;
 
-	public:
 		!PrimitiveTriangle();
-	protected:
 		~PrimitiveTriangle();
 
 	public:
@@ -71,7 +67,7 @@ namespace BulletSharp
 		void BuildTriPlane();
 		int ClipTriangle(PrimitiveTriangle^ other, array<Vector3>^ clippedPoints);
 		bool FindTriangleCollisionClipMethod(PrimitiveTriangle^ other, GimTriangleContact^ contacts);
-		void GetEdgePlane(int edge_index, [Out] Vector4% plane);
+		void GetEdgePlane(int edgeIndex, [Out] Vector4% plane);
 		bool OverlapTestConservative(PrimitiveTriangle^ other);
 
 		property btScalar Dummy

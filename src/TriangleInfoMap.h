@@ -14,9 +14,7 @@ namespace BulletSharp
 
 		TriangleInfoMap(btTriangleInfoMap* native, bool preventDelete);
 
-	public:
 		!TriangleInfoMap();
-	protected:
 		~TriangleInfoMap();
 
 	public:

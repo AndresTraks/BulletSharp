@@ -30,9 +30,7 @@ namespace BulletSharp
 	public:
 		virtual bool Process(BroadphaseProxy^ proxy) = 0;
 
-	public:
 		~BroadphaseAabbCallback();
-	protected:
 		!BroadphaseAabbCallback();
 	};
 
@@ -97,9 +95,7 @@ namespace BulletSharp
 	protected:
 		OverlappingPairCache^ _pairCache;
 
-	public:
 		!BroadphaseInterface();
-	protected:
 		~BroadphaseInterface();
 
 	public:

@@ -9,9 +9,7 @@ namespace BulletSharp
 
 		TriangleCallback(btTriangleCallback* native);
 
-	public:
 		!TriangleCallback();
-	protected:
 		~TriangleCallback();
 
 	public:
@@ -31,9 +29,7 @@ namespace BulletSharp
 
 		InternalTriangleIndexCallback(btInternalTriangleIndexCallback* native);
 
-	public:
 		!InternalTriangleIndexCallback();
-	protected:
 		~InternalTriangleIndexCallback();
 
 	public:

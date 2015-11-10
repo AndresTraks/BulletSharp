@@ -57,7 +57,7 @@ namespace BulletSharp
 			array<btScalar>^ jac, AlignedScalarArray^ scratchR, AlignedVector3Array^ scratchV,
 			AlignedMatrix3x3Array^ scratchM);*/
 		void FinalizeMultiDof();
-		//void ForwardKinematics(AlignedQuaternionArray^ scratchQ, AlignedMatrix3x3Array^ scratchM);
+		//void ForwardKinematics(AlignedQuaternionArray^ scratchQ, AlignedVector3Array^ scratchM);
 		btScalar GetJointPos(int i);
 		//array<btScalar>^ GetJointPosMultiDof(int i);
 		btScalar GetJointTorque(int i);
@@ -108,7 +108,7 @@ namespace BulletSharp
 		void StepPositionsMultiDof(btScalar deltaTime, array<btScalar>^ pq, array<btScalar>^ pqd);
 		void StepPositionsMultiDof(btScalar deltaTime, array<btScalar>^ pq);
 		void StepPositionsMultiDof(btScalar deltaTime);
-		//void UpdateCollisionObjectWorldTransforms(AlignedQuaternionArray^ scratchQ, AlignedMatrix3x3Array^ scratchM);
+		//void UpdateCollisionObjectWorldTransforms(AlignedQuaternionArray^ scratchQ, AlignedVector3Array^ scratchM);
 		void WakeUp();
 		Vector3 WorldDirToLocal(int i, Vector3 vec);
 		Vector3 WorldPosToLocal(int i, Vector3 vec);

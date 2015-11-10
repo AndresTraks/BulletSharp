@@ -16,9 +16,7 @@ namespace BulletSharp
 
 			IslandCallback(btSimulationIslandManager::IslandCallback* native);
 
-		public:
 			!IslandCallback();
-		protected:
 			~IslandCallback();
 
 		public:
@@ -42,9 +40,7 @@ namespace BulletSharp
 	internal:
 		SimulationIslandManager(btSimulationIslandManager* native, bool preventDelete);
 
-	public:
 		!SimulationIslandManager();
-	protected:
 		~SimulationIslandManager();
 
 	public:

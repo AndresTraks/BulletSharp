@@ -61,9 +61,7 @@ namespace BulletSharp
 		}
 #endif
 
-	public:
 		!ManifoldPoint();
-	protected:
 		~ManifoldPoint();
 
 	public:

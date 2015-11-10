@@ -17,9 +17,7 @@ namespace BulletSharp
 	internal:
 		OverlappingPairCallback(btOverlappingPairCallback* native, bool preventDelete);
 
-	public:
 		!OverlappingPairCallback();
-	protected:
 		~OverlappingPairCallback();
 
 	protected:

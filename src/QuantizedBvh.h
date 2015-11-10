@@ -15,9 +15,7 @@ namespace BulletSharp
 
 		QuantizedBvhNode(btQuantizedBvhNode* native);
 
-	public:
 		!QuantizedBvhNode();
-	protected:
 		~QuantizedBvhNode();
 
 	public:
@@ -67,9 +65,7 @@ namespace BulletSharp
 
 		OptimizedBvhNode(btOptimizedBvhNode* native);
 
-	public:
 		!OptimizedBvhNode();
-	protected:
 		~OptimizedBvhNode();
 
 	public:
@@ -113,9 +109,7 @@ namespace BulletSharp
 
 		NodeOverlapCallback(btNodeOverlapCallback* native);
 
-	public:
 		!NodeOverlapCallback();
-	protected:
 		~NodeOverlapCallback();
 
 	public:
@@ -138,9 +132,7 @@ namespace BulletSharp
 		QuantizedBvh(btQuantizedBvh* native);
 		static QuantizedBvh^ GetManaged(btQuantizedBvh* quantizedBvh);
 
-	public:
 		!QuantizedBvh();
-	protected:
 		~QuantizedBvh();
 
 	public:

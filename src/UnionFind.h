@@ -30,9 +30,7 @@ namespace BulletSharp
 
 		UnionFind(btUnionFind* native);
 
-	public:
 		!UnionFind();
-	protected:
 		~UnionFind();
 
 	public:

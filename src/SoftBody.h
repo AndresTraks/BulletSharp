@@ -61,9 +61,7 @@ namespace BulletSharp
 			Dispatcher^ _dispatcher;
 			SparseSdf^ _sparseSdf;
 
-		public:
 			!SoftBodyWorldInfo();
-		protected:
 			~SoftBodyWorldInfo();
 
 		public:
@@ -187,9 +185,7 @@ namespace BulletSharp
 
 				Specs(btSoftBody::Joint::Specs* native);
 
-			public:
 				!Specs();
-			protected:
 				~Specs();
 
 			public:
@@ -315,9 +311,7 @@ namespace BulletSharp
 				static AJoint::IControl^ _default;
 				bool _preventDelete;
 
-			public:
 				!IControl();
-			protected:
 				~IControl();
 
 			public:
@@ -449,9 +443,7 @@ namespace BulletSharp
 		private:
 			Cluster^ _soft;
 
-		public:
 			!Body();
-		protected:
 			~Body();
 
 		public:
@@ -984,9 +976,7 @@ namespace BulletSharp
 		internal:
 			ImplicitFnWrapper* _native;
 
-		public:
 			!ImplicitFn();
-		protected:
 			~ImplicitFn();
 
 		protected:
@@ -1016,9 +1006,7 @@ namespace BulletSharp
 
 			Impulse(btSoftBody::Impulse* native);
 
-		public:
 			!Impulse();
-		protected:
 			~Impulse();
 
 		public:
@@ -1401,9 +1389,7 @@ namespace BulletSharp
 		private:
 			BulletSharp::SoftBody::Node^ _node;
 			/*
-		public:
 			!RigidContact();
-		protected:
 			~RigidContact();
 			*/
 		public:
@@ -1458,9 +1444,7 @@ namespace BulletSharp
 
 			Scti(btSoftBody::sCti* native);
 
-		public:
 			!Scti();
-		protected:
 			~Scti();
 
 		public:
@@ -1497,9 +1481,7 @@ namespace BulletSharp
 			BulletSharp::SoftBody::Face^ _face;
 			BulletSharp::SoftBody::Node^ _node;
 			/*
-		public:
 			!SoftContact();
-		protected:
 			~SoftContact();
 
 		public:
@@ -1554,9 +1536,7 @@ namespace BulletSharp
 
 			sMedium(btSoftBody::sMedium* native);
 
-		public:
 			!sMedium();
-		protected:
 			~sMedium();
 
 		public:
@@ -1625,9 +1605,7 @@ namespace BulletSharp
 		internal:
 			btSoftBody::sRayCast* _native;
 
-		public:
 			!SRayCast();
-		protected:
 			~SRayCast();
 
 		public:
@@ -1740,9 +1718,7 @@ namespace BulletSharp
 			AlignedIntArray^ _userIndexMapping;
 			Object^ _tag;
 
-		public:
 			!SoftBody();
-		protected:
 			~SoftBody();
 
 		public:

@@ -18,9 +18,7 @@ namespace BulletSharp
 	internal:
 		SubSimplexClosestResult(btSubSimplexClosestResult* native);
 
-	public:
 		!SubSimplexClosestResult();
-	protected:
 		~SubSimplexClosestResult();
 
 	public:
@@ -81,9 +79,7 @@ namespace BulletSharp
 	private:
 		bool _preventDelete;
 
-	public:
 		!VoronoiSimplexSolver();
-	protected:
 		~VoronoiSimplexSolver();
 #endif
 

@@ -13,9 +13,7 @@ namespace BulletSharp
 
 			VertexBufferDescriptor(btVertexBufferDescriptor* native);
 
-		public:
 			!VertexBufferDescriptor();
-		protected:
 			~VertexBufferDescriptor();
 
 		public:

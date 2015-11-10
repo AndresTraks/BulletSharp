@@ -19,9 +19,7 @@ namespace BulletSharp
 			IDebugDraw^ _debugDrawer;
 #endif
 
-		public:
 			!CastResult();
-		protected:
 			~CastResult();
 
 		public:
@@ -88,9 +86,7 @@ namespace BulletSharp
 
 		ConvexCast(btConvexCast* native);
 
-	public:
 		!ConvexCast();
-	protected:
 		~ConvexCast();
 
 	public:

@@ -25,9 +25,7 @@ namespace BulletSharp
 			bool _ownsSolver;
 			SoftBodyWorldInfo^ _worldInfo;
 
-		public:
 			!SoftRigidDynamicsWorld();
-		protected:
 			~SoftRigidDynamicsWorld();
 
 		public:

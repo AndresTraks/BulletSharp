@@ -133,9 +133,7 @@ namespace BulletSharp
 
 			IClone(btDbvt::IClone* native);
 
-		public:
 			!IClone();
-		protected:
 			~IClone();
 
 		public:
@@ -156,9 +154,7 @@ namespace BulletSharp
 
 			ICollide(btDbvt::ICollide* native);
 
-		public:
 			!ICollide();
-		protected:
 			~ICollide();
 
 		public:
@@ -181,9 +177,7 @@ namespace BulletSharp
 
 			IWriter(btDbvt::IWriter* native);
 
-		public:
 			!IWriter();
-		protected:
 			~IWriter();
 
 		public:
@@ -307,9 +301,7 @@ namespace BulletSharp
 	internal:
 		Dbvt(btDbvt* native, bool preventDelete);
 
-	public:
 		!Dbvt();
-	protected:
 		~Dbvt();
 
 	public:

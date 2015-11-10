@@ -23,9 +23,7 @@ namespace BulletSharp
 		CollisionShape(btCollisionShape* native);
 		static CollisionShape^ GetManaged(btCollisionShape* collisionShape);
 
-	public:
 		!CollisionShape();
-	protected:
 		~CollisionShape();
 
 	public:

@@ -15,9 +15,7 @@ namespace BulletSharp
 		PoolAllocator^ _collisionAlgorithmPool;
 		PoolAllocator^ _persistentManifoldPool;
 
-	public:
 		!DefaultCollisionConstructionInfo();
-	protected:
 		~DefaultCollisionConstructionInfo();
 
 	public:

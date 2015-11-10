@@ -14,9 +14,7 @@ namespace BulletSharp
 		internal:
 			btDiscreteCollisionDetectorInterface::ClosestPointInput* _native;
 
-		public:
 			!ClosestPointInput();
-		protected:
 			~ClosestPointInput();
 
 		public:
@@ -48,9 +46,7 @@ namespace BulletSharp
 
 			Result(btDiscreteCollisionDetectorInterface::Result* native);
 
-		public:
 			!Result();
-		protected:
 			~Result();
 
 		public:
@@ -70,9 +66,7 @@ namespace BulletSharp
 
 		DiscreteCollisionDetectorInterface(btDiscreteCollisionDetectorInterface* native);
 
-	public:
 		!DiscreteCollisionDetectorInterface();
-	protected:
 		~DiscreteCollisionDetectorInterface();
 
 	public:

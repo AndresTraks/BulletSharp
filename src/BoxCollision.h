@@ -13,9 +13,7 @@ namespace BulletSharp
 	internal:
 		Aabb(btAABB* native, bool preventDelete);
 
-	public:
 		!Aabb();
-	protected:
 		~Aabb();
 
 	public:

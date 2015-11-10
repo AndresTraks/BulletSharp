@@ -13,9 +13,7 @@ namespace BulletSharp
 	internal:
 		ContactSolverInfoData(btContactSolverInfoData* native, bool preventDelete);
 
-	public:
 		!ContactSolverInfoData();
-	protected:
 		~ContactSolverInfoData();
 
 	public:

@@ -17,9 +17,7 @@ namespace BulletSharp
 		ScalarArray^ _plane;
 		AlignedIntArray^ _indices;
 
-	public:
 		!Face();
-	protected:
 		~Face();
 
 	public:
@@ -55,9 +53,7 @@ namespace BulletSharp
 		AlignedVector3Array^ _uniqueEdges;
 		AlignedVector3Array^ _vertices;
 
-	public:
 		!ConvexPolyhedron();
-	protected:
 		~ConvexPolyhedron();
 
 	public:

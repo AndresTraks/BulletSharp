@@ -20,9 +20,7 @@ namespace BulletSharp
         CallbackFunctionUnmanagedDelegate^ _callbackFunctionUnmanaged;
         CallBackFunction^ _callbackFunction;
 
-	public:
 		!Hacd();
-	protected:
 		~Hacd();
 
 	private:

@@ -9,9 +9,7 @@ namespace BulletSharp
 
 		MlcpSolverInterface(btMLCPSolverInterface* native);
 
-	public:
 		!MlcpSolverInterface();
-	protected:
 		~MlcpSolverInterface();
 
 	public:

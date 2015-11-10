@@ -10,9 +10,7 @@ namespace BulletSharp
 
 		Clock(btClock* native);
 
-	public:
 		!Clock();
-	protected:
 		~Clock();
 
 	public:
@@ -160,9 +158,7 @@ namespace BulletSharp
 
 		CProfileManager(::CProfileManager* native);
 
-	public:
 		!CProfileManager();
-	protected:
 		~CProfileManager();
 
 	public:

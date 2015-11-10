@@ -13,9 +13,7 @@ namespace BulletSharp
 
 		GimPair(GIM_PAIR* native);
 
-	public:
 		!GimPair();
-	protected:
 		~GimPair();
 
 	public:
@@ -56,9 +54,7 @@ namespace BulletSharp
 
 		GimBvhData(GIM_BVH_DATA* native);
 
-	public:
 		!GimBvhData();
-	protected:
 		~GimBvhData();
 
 	public:
@@ -84,9 +80,7 @@ namespace BulletSharp
 
 		GimBvhTreeNode(GIM_BVH_TREE_NODE* native);
 
-	public:
 		!GimBvhTreeNode();
-	protected:
 		~GimBvhTreeNode();
 
 	public:
@@ -144,9 +138,7 @@ namespace BulletSharp
 
 		BvhTree(btBvhTree* native);
 
-	public:
 		!BvhTree();
-	protected:
 		~BvhTree();
 
 	public:
@@ -177,9 +169,7 @@ namespace BulletSharp
 
 		PrimitiveManagerBase(btPrimitiveManagerBase* native);
 
-	public:
 		!PrimitiveManagerBase();
-	protected:
 		~PrimitiveManagerBase();
 
 	public:
@@ -212,9 +202,7 @@ namespace BulletSharp
 	private:
 		PrimitiveManagerBase^ _primitiveManagerBase;
 
-	public:
 		!GImpactBvh();
-	protected:
 		~GImpactBvh();
 
 	public:
@@ -236,7 +224,7 @@ namespace BulletSharp
 		int GetRightNode(int nodeIndex);
 		bool IsLeafNode(int nodeIndex);
 		bool RayQuery(Vector3 rayDir, Vector3 rayOrigin, AlignedIntArray^ collidedResults);
-		void SetNodeBound(int nodeindex, Aabb^ bound);
+		void SetNodeBound(int nodeIndex, Aabb^ bound);
 		void Update();
 
 		property Aabb^ GlobalBox

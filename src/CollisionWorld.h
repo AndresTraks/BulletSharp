@@ -31,9 +31,7 @@ namespace BulletSharp
 	private:
 		bool _preventDelete;
 
-	public:
 		!LocalShapeInfo();
-	protected:
 		~LocalShapeInfo();
 
 	public:
@@ -64,9 +62,7 @@ namespace BulletSharp
 	internal:
 		LocalRayResult(btCollisionWorld::LocalRayResult* native, bool preventDelete);
 
-	public:
 		!LocalRayResult();
-	protected:
 		~LocalRayResult();
 
 	public:
@@ -115,9 +111,7 @@ namespace BulletSharp
 	internal:
 		btCollisionWorld::RayResultCallback* _native;
 
-	public:
 		!RayResultCallback();
-	protected:
 		~RayResultCallback();
 
 	protected:
@@ -246,9 +240,7 @@ namespace BulletSharp
 	internal:
 		LocalConvexResult(btCollisionWorld::LocalConvexResult* native, bool preventDelete);
 
-	public:
 		!LocalConvexResult();
-	protected:
 		~LocalConvexResult();
 
 	public:
@@ -484,9 +476,7 @@ namespace BulletSharp
 		IDebugDraw^ _debugDrawer;
 #endif
 
-	public:
 		!CollisionWorld();
-	protected:
 		~CollisionWorld();
 
 	public:
