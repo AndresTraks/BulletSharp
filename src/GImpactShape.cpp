@@ -41,7 +41,7 @@ GImpactShapeInterface::GImpactShapeInterface(btGImpactShapeInterface* native)
 {
 }
 
-void GImpactShapeInterface::GetAabb(Matrix% t, Vector3% aabbMin, Vector3% aabbMax)
+void GImpactShapeInterface::GetAabbRef(Matrix% t, Vector3% aabbMin, Vector3% aabbMax)
 {
 	// Override required because inlined code doesn't work in C++/CLI (btAABB not aligned)
 	btAABB* transformedBox = ALIGNED_NEW(btAABB) (Native->getLocalBox());
@@ -301,6 +301,7 @@ GImpactMeshShapePart::TrimeshPrimitiveManager::TrimeshPrimitiveManager(StridingM
 	: PrimitiveManagerBase(new btGImpactMeshShapePart::TrimeshPrimitiveManager(meshInterface->_native,
 		part))
 {
+	_meshInterface = meshInterface;
 }
 
 GImpactMeshShapePart::TrimeshPrimitiveManager::TrimeshPrimitiveManager(TrimeshPrimitiveManager^ manager)
@@ -397,11 +398,12 @@ void GImpactMeshShapePart::TrimeshPrimitiveManager::Margin::set(btScalar value)
 
 StridingMeshInterface^ GImpactMeshShapePart::TrimeshPrimitiveManager::MeshInterface::get()
 {
-	return StridingMeshInterface::GetManaged(Native->m_meshInterface);
+	return _meshInterface;
 }
 void GImpactMeshShapePart::TrimeshPrimitiveManager::MeshInterface::set(StridingMeshInterface^ value)
 {
 	Native->m_meshInterface = value->_native;
+	_meshInterface = value;
 }
 
 int GImpactMeshShapePart::TrimeshPrimitiveManager::NumFaces::get()

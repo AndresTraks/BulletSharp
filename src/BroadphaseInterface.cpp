@@ -15,6 +15,17 @@ BroadphaseAabbCallback::BroadphaseAabbCallback(btBroadphaseAabbCallback* native)
 	_native = native;
 }
 
+BroadphaseAabbCallback::~BroadphaseAabbCallback()
+{
+	this->!BroadphaseAabbCallback();
+}
+
+BroadphaseAabbCallback::!BroadphaseAabbCallback()
+{
+	delete _native;
+	_native = NULL;
+}
+
 BroadphaseAabbCallback::BroadphaseAabbCallback()
 {
 	_process = gcnew ProcessUnmanagedDelegate(this, &BroadphaseAabbCallback::ProcessUnmanaged);
@@ -25,17 +36,6 @@ BroadphaseAabbCallback::BroadphaseAabbCallback()
 bool BroadphaseAabbCallback::ProcessUnmanaged(IntPtr proxy)
 {
     return Process(BroadphaseProxy::GetManaged(static_cast<btBroadphaseProxy*>(proxy.ToPointer())));
-}
-
-BroadphaseAabbCallback::~BroadphaseAabbCallback()
-{
-	this->!BroadphaseAabbCallback();
-}
-
-BroadphaseAabbCallback::!BroadphaseAabbCallback()
-{
-	delete _native;
-	_native = NULL;
 }
 
 
@@ -258,5 +258,5 @@ bool BroadphaseInterface::IsDisposed::get()
 
 OverlappingPairCache^ BroadphaseInterface::OverlappingPairCache::get()
 {
-	return _pairCache;
+	return _overlappingPairCache;
 }

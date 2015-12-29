@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CollisionObject.h"
+#include "ConvexShape.h"
 
 namespace BulletSharp
 {
@@ -48,18 +49,25 @@ namespace BulletSharp
 		ref class SoftBody;
 		ref class SoftBodySolver;
 
+		public ref class SoftBodyCollisionShape : ConvexShape
+		{
+		internal:
+			SoftBodyCollisionShape(btConvexShape* native);
+		};
+
 		public ref class SoftBodyWorldInfo
 		{
 		internal:
 			btSoftBodyWorldInfo* _native;
-
-			SoftBodyWorldInfo(btSoftBodyWorldInfo* native);
 
 		private:
 			bool _preventDelete;
 			BroadphaseInterface^ _broadphase;
 			Dispatcher^ _dispatcher;
 			SparseSdf^ _sparseSdf;
+
+		internal:
+			SoftBodyWorldInfo(btSoftBodyWorldInfo* native);
 
 			!SoftBodyWorldInfo();
 			~SoftBodyWorldInfo();
@@ -216,16 +224,17 @@ namespace BulletSharp
 		internal:
 			btSoftBody::Joint* _native;
 
-			Joint(btSoftBody::Joint* native);
-
 		private:
 			BodyArray^ _bodies;
 			Vector3Array^ _refs;
 
+		internal:
+			Joint(btSoftBody::Joint* native);
+
 		public:
-			void Prepare(btScalar dt, int iterations);
-			void Solve(btScalar dt, btScalar sor);
-			void Terminate(btScalar dt);
+			void Prepare(btScalar deltaTime, int iterations);
+			void Solve(btScalar deltaTime, btScalar sor);
+			void Terminate(btScalar deltaTime);
 
 			property BodyArray^ Bodies
 			{
@@ -302,14 +311,13 @@ namespace BulletSharp
 				void PrepareUnmanaged(IntPtr aJoint);
 				btScalar SpeedUnmanaged(IntPtr aJoint, btScalar current);
 
+				static AJoint::IControl^ _default;
+				bool _preventDelete;
+
 			internal:
 				btSoftBody::AJoint::IControl* _native;
 
 				IControl(btSoftBody::AJoint::IControl* native, bool preventDelete);
-
-			private:
-				static AJoint::IControl^ _default;
-				bool _preventDelete;
 
 				!IControl();
 				~IControl();
@@ -324,7 +332,6 @@ namespace BulletSharp
 
 			ref class Specs : Joint::Specs
 			{
-			private:
 				AJoint::IControl^ _iControl;
 
 			public:
@@ -345,10 +352,12 @@ namespace BulletSharp
 
 		internal:
 			AJoint::IControl^ _iControl;
-			AJoint(btSoftBody::AJoint* native);
 
 		private:
 			Vector3Array^ _axis;
+
+		internal:
+			AJoint(btSoftBody::AJoint* native);
 
 		public:
 			property Vector3Array^ Axis
@@ -384,10 +393,12 @@ namespace BulletSharp
 		internal:
 			btSoftBody::Anchor* _native;
 
-			Anchor(btSoftBody::Anchor* native);
 
 		private:
 			BulletSharp::SoftBody::Node^ _node;
+
+		internal:
+			Anchor(btSoftBody::Anchor* native);
 
 		public:
 			property RigidBody^ Body
@@ -438,10 +449,11 @@ namespace BulletSharp
 		internal:
 			btSoftBody::Body* _native;
 
-			Body(btSoftBody::Body* native);
-
 		private:
 			Cluster^ _soft;
+
+		internal:
+			Body(btSoftBody::Body* native);
 
 			!Body();
 			~Body();
@@ -551,8 +563,6 @@ namespace BulletSharp
 		internal:
 			btSoftBody::Cluster* _native;
 
-			Cluster(btSoftBody::Cluster* native);
-
 		private:
 			Vector3Array^ _dImpulses;
 			AlignedVector3Array^ _frameRefs;
@@ -562,6 +572,9 @@ namespace BulletSharp
 			AlignedScalarArray^ _masses;
 			AlignedNodePtrArray^ _nodes;
 			Vector3Array^ _vImpulses;
+
+		internal:
+			Cluster(btSoftBody::Cluster* native);
 
 		public:
 			property btScalar AngularDamping
@@ -715,12 +728,13 @@ namespace BulletSharp
 		internal:
 			btSoftBody::Config* _native;
 
-			Config(btSoftBody::Config* native);
-
 		private:
 			AlignedPSolverArray^ _dSequence;
 			AlignedPSolverArray^ _pSequence;
 			AlignedVSolverArray^ _vSequence;
+
+		internal:
+			Config(btSoftBody::Config* native);
 
 		public:
 			property AeroModel AeroModel
@@ -912,11 +926,10 @@ namespace BulletSharp
 
 		public ref class Feature : Element
 		{
+			BulletSharp::SoftBody::Material^ _material;
+
 		internal:
 			Feature(btSoftBody::Feature* native);
-
-		private:
-			BulletSharp::SoftBody::Material^ _material;
 
 		public:
 			property BulletSharp::SoftBody::Material^ Material
@@ -928,14 +941,13 @@ namespace BulletSharp
 
 		public ref class Face : Feature
 		{
-		internal:
-			Face(btSoftBody::Face* native);
-
-		private:
 #ifndef DISABLE_DBVT
 			DbvtNode^ _leaf;
 #endif
 			NodePtrArray^ _n;
+
+		internal:
+			Face(btSoftBody::Face* native);
 
 		public:
 #ifndef DISABLE_DBVT
@@ -1042,11 +1054,10 @@ namespace BulletSharp
 
 		public ref class Link : Feature
 		{
+			NodePtrArray^ _nodes;
+
 		internal:
 			Link(btSoftBody::Link* native);
-
-		private:
-			NodePtrArray^ _nodes;
 
 		public:
 			property btScalar C0
@@ -1107,11 +1118,11 @@ namespace BulletSharp
 				}
 			};
 
-		internal:
-			LJoint(btSoftBody::LJoint* native);
-
 		private:
 			Vector3Array^ _rPos;
+
+		internal:
+			LJoint(btSoftBody::LJoint* native);
 
 		public:
 			property Vector3Array^ RPos
@@ -1156,13 +1167,12 @@ namespace BulletSharp
 		[DebuggerDisplay("{X}")]
 		public ref class Node : Feature
 		{
-		internal:
-			Node(btSoftBody::Node* native);
-
-		private:
 #ifndef DISABLE_DBVT
 			DbvtNode^ _leaf;
 #endif
+
+		internal:
+			Node(btSoftBody::Node* native);
 
 		public:
 			void GetNormal([Out] Vector3% normal);
@@ -1227,12 +1237,11 @@ namespace BulletSharp
 
 		public ref class Note : Element
 		{
-		internal:
-			Note(btSoftBody::Note* native);
-
-		private:
 			ScalarArray^ _coords;
 			NodePtrArray^ _nodes;
+
+		internal:
+			Note(btSoftBody::Note* native);
 
 		public:
 			property ScalarArray^ Coords
@@ -1270,10 +1279,11 @@ namespace BulletSharp
 		internal:
 			btSoftBody::Pose* _native;
 
-			Pose(btSoftBody::Pose* native);
-
 		private:
 			AlignedVector3Array^ _positions;
+
+		internal:
+			Pose(btSoftBody::Pose* native);
 
 		public:
 			property Matrix Aqq
@@ -1384,10 +1394,12 @@ namespace BulletSharp
 		internal:
 			btSoftBody::RContact* _native;
 
-			RigidContact(btSoftBody::RContact* native);
-
 		private:
 			BulletSharp::SoftBody::Node^ _node;
+
+		internal:
+			RigidContact(btSoftBody::RContact* native);
+
 			/*
 			!RigidContact();
 			~RigidContact();
@@ -1474,12 +1486,14 @@ namespace BulletSharp
 		internal:
 			btSoftBody::SContact* _native;
 
-			SoftContact(btSoftBody::SContact* native);
-
 		private:
 			ScalarArray^ _cfm;
 			BulletSharp::SoftBody::Face^ _face;
 			BulletSharp::SoftBody::Node^ _node;
+
+		internal:
+			SoftContact(btSoftBody::SContact* native);
+
 			/*
 			!SoftContact();
 			~SoftContact();
@@ -1638,15 +1652,14 @@ namespace BulletSharp
 
 		public ref class Tetra : Feature
 		{
-		internal:
-			Tetra(btSoftBody::Tetra* native);
-
-		private:
 			Vector3Array^ _c0;
 #ifndef DISABLE_DBVT
 			DbvtNode^ _leaf;
 #endif
 			NodePtrArray^ _nodes;
+
+		internal:
+			Tetra(btSoftBody::Tetra* native);
 
 		public:
 			property Vector3Array^ C0
@@ -1687,36 +1700,40 @@ namespace BulletSharp
 
 		public ref class SoftBody : CollisionObject
 		{
-		internal:
-			SoftBody(btSoftBody* native);
-
-		private:
-#ifndef DISABLE_DBVT
-			Dbvt^ _clusterDbvt;
-			Dbvt^ _faceDbvt;
-			Dbvt^ _nodeDbvt;
-#endif
-			AlignedCollisionObjectArray^ _collisionDisabledObjects;
-			Config^ _config;
-			BulletSharp::SoftBody::Pose^ _pose;
-			SoftBodySolver^ _softBodySolver;
-			SolverState^ _solverState;
-			SoftBodyWorldInfo^ _worldInfo;
 			List<AJoint::IControl^>^ _aJointControls;
 			AlignedAnchorArray^ _anchors;
 			Vector3Array^ _bounds;
+#ifndef DISABLE_DBVT
+			Dbvt^ _clusterDbvt;
+#endif
+			Config^ _config;
+			//AlignedBoolArray^ _clusterConnectivity;
 			AlignedClusterArray^ _clusters;
+			AlignedCollisionObjectArray^ _collisionDisabledObjects;
 			AlignedFaceArray^ _faces;
+#ifndef DISABLE_DBVT
+			Dbvt^ _faceDbvt;
+#endif
 			AlignedJointArray^ _joints;
 			AlignedLinkArray^ _links;
 			AlignedMaterialArray^ _materials;
+#ifndef DISABLE_DBVT
+			Dbvt^ _nodeDbvt;
+#endif
 			AlignedNodeArray^ _nodes;
 			AlignedNoteArray^ _notes;
+			BulletSharp::SoftBody::Pose^ _pose;
 			AlignedRigidContactArray^ _rigidContacts;
+			SoftBodySolver^ _softBodySolver;
 			AlignedSoftContactArray^ _softContacts;
+			SolverState^ _solverState;
+			Object^ _tag;
 			AlignedTetraArray^ _tetras;
 			AlignedIntArray^ _userIndexMapping;
-			Object^ _tag;
+			SoftBodyWorldInfo^ _worldInfo;
+
+		internal:
+			SoftBody(btSoftBody* native);
 
 			!SoftBody();
 			~SoftBody();
@@ -1742,8 +1759,8 @@ namespace BulletSharp
 			void AppendAnchor(int node, RigidBody^ body);
 			void AppendAngularJoint(AJoint::Specs^ specs, Body^ body);
 			void AppendAngularJoint(AJoint::Specs^ specs);
-			void AppendAngularJoint(AJoint::Specs^ specs, Cluster^ body0, Body^ body1);
 			void AppendAngularJoint(AJoint::Specs^ specs, SoftBody^ body);
+			void AppendAngularJoint(AJoint::Specs^ specs, Cluster^ body0, Body^ body1);
 			void AppendFace(int model, Material^ material);
 			void AppendFace(int model);
 			void AppendFace();
@@ -1826,16 +1843,16 @@ namespace BulletSharp
 			void InitializeFaceTree();
 			void IntegrateMotion();
 			void PointersToIndices();
-			void PredictMotion(btScalar dt);
+			void PredictMotion(btScalar deltaTime);
 			void PrepareClusters(int iterations);
 			static void PSolveAnchors(SoftBody^ psb, btScalar kst, btScalar ti);
 			static void PSolveLinks(SoftBody^ psb, btScalar kst, btScalar ti);
 			static void PSolveRContacts(SoftBody^ psb, btScalar kst, btScalar ti);
 			static void PSolveSContacts(SoftBody^ psb, btScalar __unnamed1, btScalar ti);
 			void RandomizeConstraints();
-			int RayTest(Vector3 rayFrom, Vector3 rayTo, [Out] btScalar% mint, EFeature feature,
-				[Out] int% index, bool bcountonly);
 			bool RayTest(Vector3 rayFrom, Vector3 rayTo, SRayCast^ results);
+			int RayTest(Vector3 rayFrom, Vector3 rayTo, [Out] btScalar% mint, EFeature feature,
+				[Out] int% index, bool countOnly);
 			void Refine(ImplicitFn^ ifn, btScalar accurary, bool cut);
 			void ReleaseCluster(int index);
 			void ReleaseClusters();
@@ -1843,7 +1860,7 @@ namespace BulletSharp
 			void Rotate(Quaternion rotation);
 			void Scale(Vector3 scale);
 			void SetMass(int node, btScalar mass);
-			void SetPose(bool bVolume, bool bFrame);
+			void SetPose(bool volume, bool frame);
 			void SetSolver(ESolverPresets preset);
 			void SetTotalDensity(btScalar density);
 			void SetTotalMass(btScalar mass, bool fromFaces);
@@ -2034,7 +2051,7 @@ namespace BulletSharp
 			property Vector3 WindVelocity
 			{
 				Vector3 get();
-				void set(Vector3 value);
+				void set(Vector3 velocity);
 			}
 
 			property SoftBodyWorldInfo^ WorldInfo

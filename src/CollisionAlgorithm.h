@@ -17,7 +17,7 @@ namespace BulletSharp
 		btCollisionAlgorithmConstructionInfo* _native;
 
 	private:
-		Dispatcher^ _dispatcher;
+		Dispatcher^ _dispatcher1;
 
 		!CollisionAlgorithmConstructionInfo();
 		~CollisionAlgorithmConstructionInfo();

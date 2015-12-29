@@ -24,14 +24,14 @@ namespace BulletSharp
 
 		BroadphaseAabbCallback(btBroadphaseAabbCallback* native);
 
+		!BroadphaseAabbCallback();
+		~BroadphaseAabbCallback();
+
 	protected:
 		BroadphaseAabbCallback();
 
 	public:
 		virtual bool Process(BroadphaseProxy^ proxy) = 0;
-
-		~BroadphaseAabbCallback();
-		!BroadphaseAabbCallback();
 	};
 
 	typedef bool (*pBroadphaseAabbCallback_Process)(const btBroadphaseProxy* proxy);
@@ -90,10 +90,11 @@ namespace BulletSharp
 	internal:
 		btBroadphaseInterface* _native;
 
-		BroadphaseInterface(btBroadphaseInterface* native);
-
 	protected:
-		OverlappingPairCache^ _pairCache;
+		OverlappingPairCache^ _overlappingPairCache;
+
+	internal:
+		BroadphaseInterface(btBroadphaseInterface* native);
 
 		!BroadphaseInterface();
 		~BroadphaseInterface();

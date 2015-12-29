@@ -33,15 +33,10 @@ namespace BulletSharp
 
 		void BuildOptimizedBvh();
 		void PartialRefitTree(Vector3% aabbMin, Vector3% aabbMax);
-		void PartialRefitTree(Vector3 aabbMin, Vector3 aabbMax);
 		void PerformConvexcast(TriangleCallback^ callback, Vector3% boxSource, Vector3% boxTarget,
 			Vector3% boxMin, Vector3% boxMax);
-		void PerformConvexcast(TriangleCallback^ callback, Vector3 boxSource, Vector3 boxTarget,
-			Vector3 boxMin, Vector3 boxMax);
 		void PerformRaycast(TriangleCallback^ callback, Vector3% raySource, Vector3% rayTarget);
-		void PerformRaycast(TriangleCallback^ callback, Vector3 raySource, Vector3 rayTarget);
 		void RefitTree(Vector3% aabbMin, Vector3% aabbMax);
-		void RefitTree(Vector3 aabbMin, Vector3 aabbMax);
 #ifndef DISABLE_SERIALIZE
 		void SerializeSingleBvh(Serializer^ serializer);
 		void SerializeSingleTriangleInfoMap(Serializer^ serializer);

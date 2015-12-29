@@ -169,8 +169,8 @@ BroadphaseProxy^ CollisionObject::BroadphaseHandle::get()
 }
 void CollisionObject::BroadphaseHandle::set(BroadphaseProxy^ handle)
 {
-	_broadphaseHandle = handle;
 	_native->setBroadphaseHandle(GetUnmanagedNullable(handle));
+	_broadphaseHandle = handle;
 }
 
 btScalar CollisionObject::CcdMotionThreshold::get()

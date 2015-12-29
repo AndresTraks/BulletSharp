@@ -521,20 +521,17 @@ btScalar ConvexResultCallbackWrapper::addSingleResult(btCollisionWorld::LocalCon
 }
 
 
-ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3 convexFromWorld,
-	Vector3 convexToWorld)
+ClosestConvexResultCallback::ClosestConvexResultCallback()
 {
-	_convexFromWorld = convexFromWorld;
-	_convexToWorld = convexToWorld;
 }
-/*
+
 ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3% convexFromWorld,
 	Vector3% convexToWorld)
 {
 	_convexFromWorld = convexFromWorld;
 	_convexToWorld = convexToWorld;
 }
-*/
+
 #pragma managed(push, off)
 void ClosestConvexResultCallback_AddSingleResult(btCollisionWorld::LocalConvexResult* convexResult, bool normalInWorldSpace,
 	btVector3* hitNormalWorld)
@@ -612,11 +609,8 @@ void ClosestConvexResultCallback::HitPointWorld::set(Vector3 value)
 }
 
 
-ClosestRayResultCallback::ClosestRayResultCallback(Vector3 rayFromWorld,
-	Vector3 rayToWorld)
+ClosestRayResultCallback::ClosestRayResultCallback()
 {
-	_rayFromWorld = rayFromWorld;
-	_rayToWorld = rayToWorld;
 }
 
 ClosestRayResultCallback::ClosestRayResultCallback(Vector3% rayFromWorld,

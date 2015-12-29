@@ -9,11 +9,12 @@ namespace BulletSharp
 	internal:
 		btMultiBodySolverConstraint* _native;
 
-		MultiBodySolverConstraint(btMultiBodySolverConstraint* native);
-
 	private:
 		MultiBody^ _multiBodyA;
 		MultiBody^ _multiBodyB;
+
+	internal:
+		MultiBodySolverConstraint(btMultiBodySolverConstraint* native);
 
 		!MultiBodySolverConstraint();
 		~MultiBodySolverConstraint();

@@ -8,11 +8,11 @@ namespace BulletSharp
 
 	public ref class TriangleMeshShape : ConcaveShape
 	{
-	internal:
-		TriangleMeshShape(btTriangleMeshShape* native);
-
 	protected:
 		StridingMeshInterface^ _meshInterface;
+
+	internal:
+		TriangleMeshShape(btTriangleMeshShape* native);
 
 	public:
 		Vector3 LocalGetSupportingVertex(Vector3 vec);

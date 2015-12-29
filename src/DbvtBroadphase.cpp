@@ -53,14 +53,14 @@ void DbvtProxy::Stage::set(DbvtBroadphaseStage value)
 DbvtBroadphase::DbvtBroadphase(BulletSharp::OverlappingPairCache^ pairCache)
 	: BroadphaseInterface(new btDbvtBroadphase((btOverlappingPairCache*)pairCache->_native))
 {
-	_pairCache = pairCache ? pairCache : gcnew HashedOverlappingPairCache(
+	_overlappingPairCache = pairCache ? pairCache : gcnew HashedOverlappingPairCache(
 		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
 DbvtBroadphase::DbvtBroadphase()
 	: BroadphaseInterface(new btDbvtBroadphase())
 {
-	_pairCache = gcnew HashedOverlappingPairCache(
+	_overlappingPairCache = gcnew HashedOverlappingPairCache(
 		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
@@ -88,7 +88,7 @@ BroadphaseProxy^ DbvtBroadphase::CreateProxy(Vector3% aabbMin, Vector3% aabbMax,
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
 #ifndef DISABLE_DBVT
-	return gcnew DbvtProxy(proxy);
+	return gcnew DbvtProxy(static_cast<btDbvtProxy*>(proxy));
 #else
 	return gcnew BroadphaseProxy(proxy);
 #endif
@@ -210,12 +210,12 @@ void DbvtBroadphase::NewPairs::set(int value)
 
 OverlappingPairCache^ DbvtBroadphase::PairCache::get()
 {
-	return dynamic_cast<BulletSharp::OverlappingPairCache^>(
-		BulletSharp::OverlappingPairCache::GetManaged(Native->m_paircache));
+	return OverlappingPairCache;
 }
 void DbvtBroadphase::PairCache::set(BulletSharp::OverlappingPairCache^ value)
 {
 	Native->m_paircache = (btOverlappingPairCache*)value->_native;
+	_overlappingPairCache = value;
 }
 
 int DbvtBroadphase::PId::get()

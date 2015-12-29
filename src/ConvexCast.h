@@ -12,12 +12,13 @@ namespace BulletSharp
 		internal:
 			btConvexCast::CastResult* _native;
 
-			CastResult(btConvexCast::CastResult* native);
-
 #ifndef DISABLE_DEBUGDRAW
 		private:
 			IDebugDraw^ _debugDrawer;
 #endif
+
+		internal:
+			CastResult(btConvexCast::CastResult* native);
 
 			!CastResult();
 			~CastResult();

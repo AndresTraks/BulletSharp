@@ -97,7 +97,7 @@ namespace CharacterDemo
 
             World.AddAction(character);
 
-            convexResultCallback = new ClosestConvexResultCallback(Vector3.Zero, Vector3.Zero);
+            convexResultCallback = new ClosestConvexResultCallback();
             convexResultCallback.CollisionFilterMask = CollisionFilterGroups.StaticFilter;
             cameraSphere = new SphereShape(0.2f);
         }

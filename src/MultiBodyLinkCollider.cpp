@@ -38,8 +38,8 @@ MultiBody^ MultiBodyLinkCollider::MultiBody::get()
 }
 void MultiBodyLinkCollider::MultiBody::set(BulletSharp::MultiBody^ value)
 {
-	_multiBody = value;
 	Native->m_multiBody = value->_native;
+	_multiBody = value;
 }
 
 #endif

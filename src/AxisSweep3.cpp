@@ -19,7 +19,7 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, unsigned shor
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
 
-	_pairCache = pairCache ? pairCache : gcnew HashedOverlappingPairCache(
+	_overlappingPairCache = pairCache ? pairCache : gcnew HashedOverlappingPairCache(
 		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
@@ -34,7 +34,7 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, unsigned shor
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
 
-	_pairCache = pairCache ? pairCache : gcnew HashedOverlappingPairCache(
+	_overlappingPairCache = pairCache ? pairCache : gcnew HashedOverlappingPairCache(
 		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
@@ -48,7 +48,7 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, unsigned shor
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
 
-	_pairCache = gcnew HashedOverlappingPairCache(
+	_overlappingPairCache = gcnew HashedOverlappingPairCache(
 		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
@@ -61,7 +61,7 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax)
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
 
-	_pairCache = gcnew HashedOverlappingPairCache(
+	_overlappingPairCache = gcnew HashedOverlappingPairCache(
 		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
@@ -181,7 +181,7 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, u
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
 
-	_pairCache = pairCache ? pairCache : gcnew HashedOverlappingPairCache(
+	_overlappingPairCache = pairCache ? pairCache : gcnew HashedOverlappingPairCache(
 		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
@@ -196,7 +196,7 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, u
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
 
-	_pairCache = pairCache ? pairCache : gcnew HashedOverlappingPairCache(
+	_overlappingPairCache = pairCache ? pairCache : gcnew HashedOverlappingPairCache(
 		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
@@ -210,7 +210,7 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax, u
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
 
-	_pairCache = gcnew HashedOverlappingPairCache(
+	_overlappingPairCache = gcnew HashedOverlappingPairCache(
 		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
@@ -223,7 +223,7 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax)
 	VECTOR3_DEL(worldAabbMin);
 	VECTOR3_DEL(worldAabbMax);
 
-	_pairCache = gcnew HashedOverlappingPairCache(
+	_overlappingPairCache = gcnew HashedOverlappingPairCache(
 		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 

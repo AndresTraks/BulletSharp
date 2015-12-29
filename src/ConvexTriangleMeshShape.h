@@ -8,7 +8,6 @@ namespace BulletSharp
 
 	public ref class ConvexTriangleMeshShape : PolyhedralConvexAabbCachingShape
 	{
-	private:
 		StridingMeshInterface^ _meshInterface;
 
 	internal:

@@ -339,10 +339,10 @@ void RigidBody_ComputeGyroscopicImpulseImplicit_World(btRigidBody* body, btVecto
 	*ret = body->computeGyroscopicImpulseImplicit_World(dt);
 }
 #pragma managed(pop)
-Vector3 RigidBody::ComputeGyroscopicImpulseImplicitWorld(btScalar dt)
+Vector3 RigidBody::ComputeGyroscopicImpulseImplicitWorld(btScalar deltaTime)
 {
 	btVector3* retTemp = ALIGNED_NEW(btVector3);
-	RigidBody_ComputeGyroscopicImpulseImplicit_World(Native, retTemp, dt);
+	RigidBody_ComputeGyroscopicImpulseImplicit_World(Native, retTemp, deltaTime);
 	Vector3 ret = Math::BtVector3ToVector3(retTemp);
 	ALIGNED_FREE(retTemp);
 	return ret;

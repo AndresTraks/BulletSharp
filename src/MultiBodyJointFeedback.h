@@ -8,6 +8,7 @@ namespace BulletSharp
 		btMultiBodyJointFeedback* _native;
 
 		MultiBodyJointFeedback(btMultiBodyJointFeedback* native);
+
 		!MultiBodyJointFeedback();
 		~MultiBodyJointFeedback();
 

@@ -14,12 +14,11 @@ namespace BulletSharp
 	public:
 		ref class CreateFunc : CollisionAlgorithmCreateFunc
 		{
+			ConvexPenetrationDepthSolver^ _pdSolver;
+			VoronoiSimplexSolver^ _simplexSolver;
+
 		internal:
 			CreateFunc(btConvexConvexAlgorithm::CreateFunc* native);
-
-		private:
-			VoronoiSimplexSolver^ _simplexSolver;
-            ConvexPenetrationDepthSolver^ _pdSolver;
 
 		public:
 			CreateFunc(SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ pdSolver);

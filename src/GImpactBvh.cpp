@@ -356,8 +356,8 @@ GImpactBvh::GImpactBvh()
 
 GImpactBvh::GImpactBvh(PrimitiveManagerBase^ primitiveManager)
 {
-	_primitiveManagerBase = primitiveManager;
 	_native = new btGImpactBvh(GetUnmanagedNullable(primitiveManager));
+	_primitiveManager = primitiveManager;
 }
 
 bool GImpactBvh::BoxQuery(Aabb^ box, AlignedIntArray^ collidedResults)
@@ -494,12 +494,12 @@ int GImpactBvh::NodeCount::get()
 
 PrimitiveManagerBase^ GImpactBvh::PrimitiveManager::get()
 {
-	return _primitiveManagerBase;
+	return _primitiveManager;
 }
 void GImpactBvh::PrimitiveManager::set(PrimitiveManagerBase^ primitiveManager)
 {
-	_primitiveManagerBase = primitiveManager;
 	_native->setPrimitiveManager(GetUnmanagedNullable(primitiveManager));
+	_primitiveManager = primitiveManager;
 }
 
 #endif

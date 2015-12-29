@@ -17,8 +17,8 @@ namespace BulletSharp
 	private:
 		HACD::Vec3<HACD::Real>* _points;
 		HACD::Vec3<long>* _triangles;
-        CallbackFunctionUnmanagedDelegate^ _callbackFunctionUnmanaged;
-        CallBackFunction^ _callbackFunction;
+		CallbackFunctionUnmanagedDelegate^ _callbackFunctionUnmanaged;
+		CallBackFunction^ _callbackFunction;
 
 		!Hacd();
 		~Hacd();

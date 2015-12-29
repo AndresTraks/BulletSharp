@@ -98,7 +98,7 @@ namespace BulletSharp
 	{
 	private:
 		[UnmanagedFunctionPointer(CallingConvention::Cdecl), SuppressUnmanagedCodeSecurity]
-        delegate float AddSingleResultUnmanagedDelegate(IntPtr rayResult, bool normalInWorldSpace);
+		delegate float AddSingleResultUnmanagedDelegate(IntPtr rayResult, bool normalInWorldSpace);
 		[UnmanagedFunctionPointer(CallingConvention::Cdecl), SuppressUnmanagedCodeSecurity]
 		delegate bool NeedsCollisionUnmanagedDelegate(IntPtr proxy0);
 
@@ -182,7 +182,6 @@ namespace BulletSharp
 
 	public ref class AllHitsRayResultCallback : RayResultCallback
 	{
-	private:
 		List<BulletSharp::CollisionObject^>^ _collisionObjects;
 		List<btScalar>^ _hitFractions;
 		List<Vector3>^ _hitNormalWorld;
@@ -333,7 +332,6 @@ namespace BulletSharp
 
 	public ref class ClosestConvexResultCallback : ConvexResultCallback
 	{
-	private:
 		Vector3 _convexFromWorld;
 		Vector3 _convexToWorld;
 		CollisionObject^ _hitCollisionObject;
@@ -341,8 +339,8 @@ namespace BulletSharp
 		Vector3 _hitPointWorld;
 
 	public:
-		ClosestConvexResultCallback(Vector3 convexFromWorld, Vector3 convexToWorld);
-		//ClosestConvexResultCallback(Vector3% convexFromWorld, Vector3% convexToWorld); // This is ambiguous to the above constructor in C++/CLI
+		ClosestConvexResultCallback(Vector3% convexFromWorld, Vector3% convexToWorld);
+		ClosestConvexResultCallback();
 
 		virtual btScalar AddSingleResult(LocalConvexResult^ convexResult, bool normalInWorldSpace) override;
 
@@ -379,14 +377,14 @@ namespace BulletSharp
 
 	public ref class ClosestRayResultCallback : RayResultCallback
 	{
-	private:
 		Vector3 _hitNormalWorld;
 		Vector3 _hitPointWorld;
 		Vector3 _rayFromWorld;
 		Vector3 _rayToWorld;
 
 	public:
-		ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld);
+		ClosestRayResultCallback();
+		//ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld);
 		ClosestRayResultCallback(Vector3% rayFromWorld, Vector3% rayToWorld);
 
 		virtual btScalar AddSingleResult(LocalRayResult^ rayResult, bool normalInWorldSpace) override;
@@ -461,20 +459,22 @@ namespace BulletSharp
 	{
 	internal:
 		btCollisionWorld* _native;
-		CollisionWorld(btCollisionWorld* native);
 
 	private:
 		DispatcherInfo^ _dispatchInfo;
 		Dispatcher^ _dispatcher;
 
 	protected:
-		AlignedCollisionObjectArray^ _collisionObjectArray;
 		BroadphaseInterface^ _broadphase;
+		AlignedCollisionObjectArray^ _collisionObjectArray;
 
 #ifndef DISABLE_DEBUGDRAW
 	internal:
 		IDebugDraw^ _debugDrawer;
 #endif
+
+	internal:
+		CollisionWorld(btCollisionWorld* native);
 
 		!CollisionWorld();
 		~CollisionWorld();
@@ -529,6 +529,7 @@ namespace BulletSharp
 			void set(IDebugDraw^ debugDrawer);
 		}
 #endif
+
 		property Dispatcher^ Dispatcher
 		{
 			BulletSharp::Dispatcher^ get();

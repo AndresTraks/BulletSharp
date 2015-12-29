@@ -45,8 +45,8 @@ CollisionShape^ CollisionShape::GetManaged(btCollisionShape* collisionShape)
 		shape = gcnew GImpactMeshShapePart((btGImpactMeshShapePart*) collisionShape);
 		break;
 	default:
-		//throw gcnew NotImplementedException();
-		shape = gcnew CollisionShape(collisionShape);
+		throw gcnew NotImplementedException();
+		//shape = gcnew CollisionShape(collisionShape);
 	}
 
 	shape->_preventDelete = true;
@@ -148,7 +148,7 @@ bool CollisionShape::Equals(Object^ obj)
 	return Object::ReferenceEquals(this, obj);
 }
 
-void CollisionShape::GetAabb(Matrix% t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
+void CollisionShape::GetAabbRef(Matrix% t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
 {
 	TRANSFORM_CONV(t);
 	btVector3* aabbMinTemp = ALIGNED_NEW(btVector3);

@@ -23,7 +23,7 @@ SimulationIslandManager::IslandCallback::!IslandCallback()
 {
 	if (this->IsDisposed)
 		return;
-	
+
 	delete _native;
 	_native = NULL;
 }

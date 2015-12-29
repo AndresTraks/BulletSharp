@@ -27,21 +27,21 @@ void SimpleBroadphaseProxy::NextFree::set(int next)
 SimpleBroadphase::SimpleBroadphase(int maxProxies, BulletSharp::OverlappingPairCache^ overlappingPairCache)
 	: BroadphaseInterface(new btSimpleBroadphase(maxProxies, (btOverlappingPairCache*)GetUnmanagedNullable(overlappingPairCache)))
 {
-	_pairCache = overlappingPairCache ? overlappingPairCache : gcnew HashedOverlappingPairCache(
+	_overlappingPairCache = overlappingPairCache ? overlappingPairCache : gcnew HashedOverlappingPairCache(
 		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
 SimpleBroadphase::SimpleBroadphase(int maxProxies)
 	: BroadphaseInterface(new btSimpleBroadphase(maxProxies))
 {
-	_pairCache = gcnew HashedOverlappingPairCache(
+	_overlappingPairCache = gcnew HashedOverlappingPairCache(
 		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 
 SimpleBroadphase::SimpleBroadphase()
 	: BroadphaseInterface(new btSimpleBroadphase())
 {
-	_pairCache = gcnew HashedOverlappingPairCache(
+	_overlappingPairCache = gcnew HashedOverlappingPairCache(
 		(btHashedOverlappingPairCache*)_native->getOverlappingPairCache(), true);
 }
 

@@ -76,10 +76,11 @@ namespace BulletSharp
 	internal:
 		btDbvtNode* _native;
 
-		DbvtNode(btDbvtNode* native);
-
 	private:
 		DbvtNode^ _parent;
+
+	internal:
+		DbvtNode(btDbvtNode* native);
 
 	public:
 		//DbvtNode();

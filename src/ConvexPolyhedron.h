@@ -8,14 +8,13 @@ namespace BulletSharp
 
 	public ref class Face
 	{
+		ScalarArray^ _plane;
+		AlignedIntArray^ _indices;
+
 	internal:
 		btFace* _native;
 
 		Face(btFace* native);
-
-	private:
-		ScalarArray^ _plane;
-		AlignedIntArray^ _indices;
 
 		!Face();
 		~Face();
@@ -47,11 +46,12 @@ namespace BulletSharp
 	internal:
 		btConvexPolyhedron* _native;
 
-		ConvexPolyhedron(btConvexPolyhedron* native);
-
 	private:
 		AlignedVector3Array^ _uniqueEdges;
 		AlignedVector3Array^ _vertices;
+
+	internal:
+		ConvexPolyhedron(btConvexPolyhedron* native);
 
 		!ConvexPolyhedron();
 		~ConvexPolyhedron();

@@ -27,8 +27,8 @@ CollisionShape^ CompoundShapeChild::ChildShape::get()
 }
 void CompoundShapeChild::ChildShape::set(CollisionShape^ value)
 {
-	_childShape = value;
 	_native->m_childShape = value->_native;
+	_childShape = value;
 }
 
 BroadphaseNativeType CompoundShapeChild::ChildShapeType::get()
@@ -67,6 +67,12 @@ void CompoundShapeChild::Transform::set(Matrix value)
 
 CompoundShape::CompoundShape(btCompoundShape* native)
 	: CollisionShape(native)
+{
+	_childList = gcnew CompoundShapeChildArray(Native);
+}
+
+CompoundShape::CompoundShape(bool enableDynamicAabbTree, int initialChildCapacity)
+	: CollisionShape(new btCompoundShape(enableDynamicAabbTree, initialChildCapacity))
 {
 	_childList = gcnew CompoundShapeChildArray(Native);
 }
@@ -133,9 +139,9 @@ void CompoundShape::RemoveChildShape(CollisionShape^ shape)
 	_childList->RemoveChildShape(shape);
 }
 
-void CompoundShape::RemoveChildShapeByIndex(int childShapeindex)
+void CompoundShape::RemoveChildShapeByIndex(int childShapeIndex)
 {
-	_childList->RemoveChildShapeByIndex(childShapeindex);
+	_childList->RemoveChildShapeByIndex(childShapeIndex);
 }
 
 void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransform,

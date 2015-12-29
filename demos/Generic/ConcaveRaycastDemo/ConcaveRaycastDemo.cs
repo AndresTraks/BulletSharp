@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using BulletSharp;
 using DemoFramework;
@@ -54,7 +55,6 @@ namespace ConcaveRaycastDemo
             this.min_y = min_y;
             this.max_y = max_y;
             sign = 1.0f;
-            //float dalpha = 4 * (float)Math.PI / NUMRAYS_IN_BAR;
             for (int i = 0; i < NUMRAYS_IN_BAR; i++)
             {
                 float z = (max_z - min_z) / NUMRAYS_IN_BAR * (float)i + min_z;
@@ -185,9 +185,9 @@ namespace ConcaveRaycastDemo
 
         const DebugDrawModes debugMode = DebugDrawModes.None;
 
-        const float TRIANGLE_SIZE = 8.0f;
-        const int NUM_VERTS_X = 30;
-        const int NUM_VERTS_Y = 30;
+        const float TriangleSize = 8.0f;
+        const int NumVertsX = 30;
+        const int NumVertsY = 30;
         const float waveHeight = 5.0f;
         static float offset = 0.0f;
         bool animatedMesh = false;
@@ -220,13 +220,16 @@ namespace ConcaveRaycastDemo
             indexVertexArrays.GetLockedVertexIndexData(out vertexBuffer, out numVerts, out vertsType, out vertexStride,
                 out indexBuffer, out indexStride, out numFaces, out indicesType);
 
-            for (int i = 0; i < NUM_VERTS_X; i++)
+            using (var vertexWriter = new BinaryWriter(vertexBuffer))
             {
-                for (int j = 0; j < NUM_VERTS_Y; j++)
+                for (int i = 0; i < NumVertsX; i++)
                 {
-                    vertexBuffer.Write((i - NUM_VERTS_X * 0.5f) * TRIANGLE_SIZE);
-                    vertexBuffer.Write(waveheight * (float)Math.Sin((float)i + offset) * (float)Math.Cos((float)j + offset));
-                    vertexBuffer.Write((j - NUM_VERTS_Y * 0.5f) * TRIANGLE_SIZE);
+                    for (int j = 0; j < NumVertsY; j++)
+                    {
+                        vertexWriter.Write((i - NumVertsX * 0.5f) * TriangleSize);
+                        vertexWriter.Write(waveheight * (float)Math.Sin((float)i + offset) * (float)Math.Cos((float)j + offset));
+                        vertexWriter.Write((j - NumVertsY * 0.5f) * TriangleSize);
+                    }
                 }
             }
 
@@ -250,25 +253,34 @@ namespace ConcaveRaycastDemo
             World.Gravity = new Vector3(0, -10, 0);
 
 
-            const int totalVerts = NUM_VERTS_X * NUM_VERTS_Y;
-            const int totalTriangles = 2 * (NUM_VERTS_X - 1) * (NUM_VERTS_Y - 1);
+            const int totalVerts = NumVertsX * NumVertsY;
+            const int totalTriangles = 2 * (NumVertsX - 1) * (NumVertsY - 1);
             indexVertexArrays = new TriangleIndexVertexArray();
 
             IndexedMesh mesh = new IndexedMesh();
-            mesh.Allocate(totalVerts, totalTriangles, 3 * sizeof(int), Vector3.SizeInBytes, PhyScalarType.Int32, PhyScalarType.Single);
-            using (var indices = mesh.LockIndices())
+            mesh.Allocate(totalTriangles, totalVerts, 3 * sizeof(int), Vector3.SizeInBytes, PhyScalarType.Int32, PhyScalarType.Single);
+            //mesh.NumTriangles = totalTriangles;
+            //mesh.NumVertices = totalVerts;
+            //mesh.TriangleIndexStride = 3 * sizeof(int);
+            //mesh.VertexStride = Vector3.SizeInBytes;
+            //mesh.TriangleIndexBase = Marshal.AllocHGlobal(mesh.TriangleIndexStride * totalTriangles);
+            //mesh.VertexBase = Marshal.AllocHGlobal(mesh.VertexStride * totalVerts);
+            using (var indicesStream = mesh.LockIndices())
             {
-                for (int i = 0; i < NUM_VERTS_X - 1; i++)
+                using (var indices = new BinaryWriter(indicesStream))
                 {
-                    for (int j = 0; j < NUM_VERTS_Y - 1; j++)
+                    for (int i = 0; i < NumVertsX - 1; i++)
                     {
-                        indices.Write(j * NUM_VERTS_X + i);
-                        indices.Write(j * NUM_VERTS_X + i + 1);
-                        indices.Write((j + 1) * NUM_VERTS_X + i + 1);
+                        for (int j = 0; j < NumVertsY - 1; j++)
+                        {
+                            indices.Write(j * NumVertsX + i);
+                            indices.Write(j * NumVertsX + i + 1);
+                            indices.Write((j + 1) * NumVertsX + i + 1);
 
-                        indices.Write(j * NUM_VERTS_X + i);
-                        indices.Write((j + 1) * NUM_VERTS_X + i + 1);
-                        indices.Write((j + 1) * NUM_VERTS_X + i);
+                            indices.Write(j * NumVertsX + i);
+                            indices.Write((j + 1) * NumVertsX + i + 1);
+                            indices.Write((j + 1) * NumVertsX + i);
+                        }
                     }
                 }
             }
@@ -312,7 +324,7 @@ namespace ConcaveRaycastDemo
                 Vector3 worldMin = new Vector3(-1000, -1000, -1000);
                 Vector3 worldMax = new Vector3(1000, 1000, 1000);
 
-                groundShape.RefitTree(worldMin, worldMax);
+                groundShape.RefitTree(ref worldMin, ref worldMax);
 
                 //clear all contact points involving mesh proxy. Note: this is a slow/unoptimized operation.
                 Broadphase.OverlappingPairCache.CleanProxyFromPairs(staticBody.BroadphaseHandle, Dispatcher);
@@ -320,7 +332,10 @@ namespace ConcaveRaycastDemo
 
             raycastBar.Move(FrameDelta);
             raycastBar.Cast(World);
-            raycastBar.Draw(World.DebugDrawer);
+            if (IsDebugDrawEnabled)
+            {
+                raycastBar.Draw(World.DebugDrawer);
+            }
 
             base.OnUpdate();
         }

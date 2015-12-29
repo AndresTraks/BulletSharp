@@ -2259,7 +2259,7 @@ void BulletSharp::SoftBody::AlignedSoftBodyArray::CopyTo(array<SoftBody^>^ array
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = (SoftBody^)CollisionObject::GetManaged((*Native)[i]);
+		array[arrayIndex+i] = dynamic_cast<SoftBody^>(CollisionObject::GetManaged((*Native)[i]));
 	}
 }
 

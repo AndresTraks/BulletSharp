@@ -6,7 +6,6 @@ namespace BulletSharp
 {
 	public ref class Convex2DShape : ConvexShape
 	{
-	private:
 		ConvexShape^ _childShape;
 
 	public:

@@ -14,11 +14,10 @@ namespace BulletSharp
 
 	public ref class GhostObject : CollisionObject
 	{
+		AlignedCollisionObjectArray^ _overlappingPairs;
+
 	internal:
 		GhostObject(btGhostObject* native);
-
-	private:
-		AlignedCollisionObjectArray^ _overlappingPairs;
 
 	public:
 		GhostObject();
@@ -53,7 +52,6 @@ namespace BulletSharp
 
 	public ref class PairCachingGhostObject : GhostObject
 	{
-	private:
 		HashedOverlappingPairCache^ _hashPairCache;
 
 	public:

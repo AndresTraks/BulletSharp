@@ -19,6 +19,12 @@
 
 using namespace BulletSharp::SoftBody;
 
+SoftBodyCollisionShape::SoftBodyCollisionShape(btConvexShape* native)
+	: ConvexShape(native)
+{
+}
+
+
 SoftBodyWorldInfo::SoftBodyWorldInfo(btSoftBodyWorldInfo* native)
 {
 	_native = native;
@@ -58,8 +64,8 @@ BroadphaseInterface^ SoftBodyWorldInfo::Broadphase::get()
 }
 void SoftBodyWorldInfo::Broadphase::set(BroadphaseInterface^ value)
 {
-	_broadphase = value;
 	_native->m_broadphase = GetUnmanagedNullable(value);
+	_broadphase = value;
 }
 
 Dispatcher^ SoftBodyWorldInfo::Dispatcher::get()
@@ -68,8 +74,8 @@ Dispatcher^ SoftBodyWorldInfo::Dispatcher::get()
 }
 void SoftBodyWorldInfo::Dispatcher::set(BulletSharp::Dispatcher^ value)
 {
-	_dispatcher = value;
 	_native->m_dispatcher = GetUnmanagedNullable(value);
+	_dispatcher = value;
 }
 
 Vector3 SoftBodyWorldInfo::Gravity::get()
@@ -379,8 +385,8 @@ AJoint::IControl^ AJoint::Specs::Control::get()
 }
 void AJoint::Specs::Control::set(IControl^ value)
 {
-	_iControl = value;
 	Native->icontrol = value->_native;
+	_iControl = value;
 }
 
 
@@ -411,8 +417,8 @@ AJoint::IControl^ AJoint::Control::get()
 }
 void AJoint::Control::set(IControl^ value)
 {
-	_iControl = value;
 	Native->m_icontrol = value->_native;
+	_iControl = value;
 }
 
 
@@ -481,8 +487,8 @@ BulletSharp::SoftBody::Node^ Anchor::Node::get()
 }
 void Anchor::Node::set(BulletSharp::SoftBody::Node^ value)
 {
-	_node = value;
 	_native->m_node = (btSoftBody::Node*)GetUnmanagedNullable(value);
+	_node = value;
 }
 
 
@@ -1264,8 +1270,8 @@ BulletSharp::SoftBody::Material^ Feature::Material::get()
 }
 void Feature::Material::set(BulletSharp::SoftBody::Material^ value)
 {
-	_material = value;
 	Native->m_material = (btSoftBody::Material*)value->_native;
+	_material = value;
 }
 
 
@@ -1284,8 +1290,8 @@ DbvtNode^ Face::Leaf::get()
 }
 void Face::Leaf::set(DbvtNode^ value)
 {
-	_leaf = value;
 	Native->m_leaf = GetUnmanagedNullable(value);
+	_leaf = value;
 }
 #endif
 
@@ -1650,8 +1656,8 @@ DbvtNode^ BulletSharp::SoftBody::Node::Leaf::get()
 }
 void BulletSharp::SoftBody::Node::Leaf::set(DbvtNode^ value)
 {
-	_leaf = value;
 	Native->m_leaf = GetUnmanagedNullable(value);
+	_leaf = value;
 }
 #endif
 
@@ -2019,8 +2025,8 @@ BulletSharp::SoftBody::Node^ RigidContact::Node::get()
 }
 void RigidContact::Node::set(BulletSharp::SoftBody::Node^ value)
 {
-	_node = value;
 	_native->m_node = (btSoftBody::Node*)GetUnmanagedNullable(value);
+	_node = value;
 }
 
 Scti^ RigidContact::Scti::get()
@@ -2365,8 +2371,8 @@ DbvtNode^ Tetra::Leaf::get()
 }
 void Tetra::Leaf::set(DbvtNode^ value)
 {
-	_leaf = value;
 	Native->m_leaf = GetUnmanagedNullable(value);
+	_leaf = value;
 }
 #endif
 
@@ -2395,7 +2401,7 @@ void Tetra::RestVolume::set(btScalar value)
 BulletSharp::SoftBody::SoftBody::SoftBody(btSoftBody* native)
 	: CollisionObject(native)
 {
-	_collisionShape = gcnew BulletSharp::CollisionShape(_native->getCollisionShape());
+	_collisionShape = gcnew SoftBodyCollisionShape(static_cast<btConvexShape*>(_native->getCollisionShape()));
 	_collisionShape->_preventDelete = true;
 	_aJointControls = gcnew List<AJoint::IControl^>();
 }
@@ -2434,7 +2440,7 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, array<Ve
 
 	UnmanagedPointer = new btSoftBody(worldInfo->_native, length, (btVector3*)x_ptr, m_ptr);
 
-	_collisionShape = gcnew BulletSharp::CollisionShape(_native->getCollisionShape());
+	_collisionShape = gcnew SoftBodyCollisionShape(static_cast<btConvexShape*>(_native->getCollisionShape()));
 	_collisionShape->_preventDelete = true;
 	_worldInfo = worldInfo;
 }
@@ -2462,7 +2468,7 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3A
 	UnmanagedPointer = new btSoftBody(worldInfo->_native, length,
 		(btVector3*)GetUnmanagedNullable(x), (btScalar*)GetUnmanagedNullable(m));
 
-	_collisionShape = gcnew BulletSharp::CollisionShape(_native->getCollisionShape());
+	_collisionShape = gcnew SoftBodyCollisionShape(static_cast<btConvexShape*>(_native->getCollisionShape()));
 	_collisionShape->_preventDelete = true;
 	_worldInfo = worldInfo;
 }
@@ -2470,7 +2476,7 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3A
 BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo)
 	: CollisionObject(new btSoftBody(worldInfo->_native))
 {
-	_collisionShape = gcnew BulletSharp::CollisionShape(_native->getCollisionShape());
+	_collisionShape = gcnew SoftBodyCollisionShape(static_cast<btConvexShape*>(_native->getCollisionShape()));
 	_collisionShape->_preventDelete = true;
 	_worldInfo = worldInfo;
 }
@@ -2590,17 +2596,17 @@ void BulletSharp::SoftBody::SoftBody::AppendAngularJoint(AJoint::Specs^ specs)
 	Native->appendAngularJoint(*(btSoftBody::AJoint::Specs*)specs->_native);
 }
 
+void BulletSharp::SoftBody::SoftBody::AppendAngularJoint(AJoint::Specs^ specs, SoftBody^ body)
+{
+	StoreAngularJointControlRef(specs);
+	Native->appendAngularJoint(*(btSoftBody::AJoint::Specs*)specs->_native, (btSoftBody*)body->_native);
+}
+
 void BulletSharp::SoftBody::SoftBody::AppendAngularJoint(AJoint::Specs^ specs, Cluster^ body0, Body^ body1)
 {
 	StoreAngularJointControlRef(specs);
 	Native->appendAngularJoint(*(btSoftBody::AJoint::Specs*)specs->_native, body0->_native,
 		*body1->_native);
-}
-
-void BulletSharp::SoftBody::SoftBody::AppendAngularJoint(AJoint::Specs^ specs, SoftBody^ body)
-{
-	StoreAngularJointControlRef(specs);
-	Native->appendAngularJoint(*(btSoftBody::AJoint::Specs*)specs->_native, (btSoftBody*)body->_native);
 }
 
 void BulletSharp::SoftBody::SoftBody::AppendFace(int model, Material^ material)
@@ -3419,9 +3425,9 @@ void BulletSharp::SoftBody::SoftBody::PointersToIndices()
 	Native->pointersToIndices();
 }
 
-void BulletSharp::SoftBody::SoftBody::PredictMotion(btScalar dt)
+void BulletSharp::SoftBody::SoftBody::PredictMotion(btScalar deltaTime)
 {
-	Native->predictMotion(dt);
+	Native->predictMotion(deltaTime);
 }
 
 void BulletSharp::SoftBody::SoftBody::PrepareClusters(int iterations)
@@ -3455,7 +3461,7 @@ void BulletSharp::SoftBody::SoftBody::RandomizeConstraints()
 }
 
 int BulletSharp::SoftBody::SoftBody::RayTest(Vector3 rayFrom, Vector3 rayTo, [Out] btScalar% mint, EFeature feature,
-	[Out] int% index, bool bcountonly)
+	[Out] int% index, bool countOnly)
 {
 	VECTOR3_CONV(rayFrom);
 	VECTOR3_CONV(rayTo);
@@ -3463,7 +3469,7 @@ int BulletSharp::SoftBody::SoftBody::RayTest(Vector3 rayFrom, Vector3 rayTo, [Ou
 	btSoftBody::eFeature::_ featureTemp;
 	int indexTemp;
 	int ret = Native->rayTest(VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo), mintTemp,
-		featureTemp, indexTemp, bcountonly);
+		featureTemp, indexTemp, countOnly);
 	VECTOR3_DEL(rayFrom);
 	VECTOR3_DEL(rayTo);
 	mint = mintTemp;
@@ -3521,9 +3527,9 @@ void BulletSharp::SoftBody::SoftBody::SetMass(int node, btScalar mass)
 	Native->setMass(node, mass);
 }
 
-void BulletSharp::SoftBody::SoftBody::SetPose(bool bVolume, bool bFrame)
+void BulletSharp::SoftBody::SoftBody::SetPose(bool volume, bool frame)
 {
-	Native->setPose(bVolume, bFrame);
+	Native->setPose(volume, frame);
 }
 
 void BulletSharp::SoftBody::SoftBody::SetSolver(ESolverPresets preset)
@@ -3851,8 +3857,8 @@ SoftBodySolver^ BulletSharp::SoftBody::SoftBody::SoftBodySolver::get()
 }
 void BulletSharp::SoftBody::SoftBody::SoftBodySolver::set(BulletSharp::SoftBody::SoftBodySolver^ softBodySolver)
 {
-	_softBodySolver = softBodySolver;
 	Native->setSoftBodySolver(GetUnmanagedNullable(softBodySolver));
+	_softBodySolver = softBodySolver;
 }
 
 BulletSharp::SoftBody::AlignedSoftContactArray^ BulletSharp::SoftBody::SoftBody::SoftContacts::get()
@@ -3931,9 +3937,9 @@ Vector3 BulletSharp::SoftBody::SoftBody::WindVelocity::get()
 {
 	return Math::BtVector3ToVector3(&Native->getWindVelocity());
 }
-void BulletSharp::SoftBody::SoftBody::WindVelocity::set(Vector3 value)
+void BulletSharp::SoftBody::SoftBody::WindVelocity::set(Vector3 velocity)
 {
-	Math::Vector3ToBtVector3(value, &Native->m_windVelocity);
+	Math::Vector3ToBtVector3(velocity, &Native->m_windVelocity);
 }
 
 btScalar BulletSharp::SoftBody::SoftBody::Volume::get()
@@ -3947,8 +3953,8 @@ SoftBodyWorldInfo^ BulletSharp::SoftBody::SoftBody::WorldInfo::get()
 }
 void BulletSharp::SoftBody::SoftBody::WorldInfo::set(SoftBodyWorldInfo^ value)
 {
-	_worldInfo = value;
 	Native->m_worldInfo = value->_native;
+	_worldInfo = value;
 }
 
 #endif

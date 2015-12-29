@@ -18,7 +18,7 @@ namespace BulletSharp
 
 	private:
 		[UnmanagedFunctionPointer(CallingConvention::Cdecl), SuppressUnmanagedCodeSecurity]
-        delegate void InternalTickCallbackUnmanagedDelegate(IntPtr world, btScalar timeStep);
+		delegate void InternalTickCallbackUnmanagedDelegate(IntPtr world, btScalar timeStep);
 
 	private:
 		Object^ _userObject;
@@ -28,14 +28,13 @@ namespace BulletSharp
 		Dictionary<IAction^, IntPtr>^ _actions;
 		List<TypedConstraint^>^ _constraints;
 
-	internal:
+	protected:
 		ConstraintSolver^ _constraintSolver;
 
+	internal:
 		DynamicsWorld(btDynamicsWorld* native);
 
-	public:
 		!DynamicsWorld();
-	protected:
 		~DynamicsWorld();
 
 	public:

@@ -8,13 +8,12 @@ namespace BulletSharp
 
 	public ref class OverlappingPairCallback abstract
 	{
-	internal:
-		btOverlappingPairCallback* _native;
-
 	private:
 		bool _preventDelete;
 
 	internal:
+		btOverlappingPairCallback* _native;
+
 		OverlappingPairCallback(btOverlappingPairCallback* native, bool preventDelete);
 
 		!OverlappingPairCallback();

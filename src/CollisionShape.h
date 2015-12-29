@@ -4,7 +4,7 @@ namespace BulletSharp
 {
 	ref class Serializer;
 
-	public ref class CollisionShape : ITrackingDisposable // abstract
+	public ref class CollisionShape abstract : ITrackingDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
@@ -37,7 +37,7 @@ namespace BulletSharp
 		void CalculateTemporalAabb(Matrix curTrans, Vector3 linvel, Vector3 angvel,
 			btScalar timeStep, [Out] Vector3% temporalAabbMin, [Out] Vector3% temporalAabbMax);
 		virtual bool Equals(Object^ obj) override;
-		virtual void GetAabb(Matrix% t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
+		virtual void GetAabbRef(Matrix% t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		virtual void GetAabb(Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		void GetBoundingSphere([Out] Vector3% center, [Out] btScalar% radius);
 		btScalar GetContactBreakingThreshold(btScalar defaultContactThresholdFactor);

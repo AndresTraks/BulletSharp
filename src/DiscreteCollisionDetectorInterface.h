@@ -88,7 +88,7 @@ namespace BulletSharp
 	public ref class StorageResult abstract : DiscreteCollisionDetectorInterface::Result
 	{
 	internal:
-		StorageResult(btStorageResultWrapper* result);
+		StorageResult(btStorageResultWrapper* native);
 
 	public:
 		StorageResult();

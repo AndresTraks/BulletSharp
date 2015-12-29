@@ -143,8 +143,8 @@ bool DiscreteCollisionDetectorInterface::IsDisposed::get()
 
 #define Native static_cast<btStorageResultWrapper*>(_native)
 
-StorageResult::StorageResult(btStorageResultWrapper* result)
-: DiscreteCollisionDetectorInterface::Result(result)
+StorageResult::StorageResult(btStorageResultWrapper* native)
+	: DiscreteCollisionDetectorInterface::Result(native)
 {
 }
 

@@ -7,9 +7,7 @@ namespace BulletSharp
 	internal:
 		btVehicleRaycaster::btVehicleRaycasterResult* _native;
 
-	public:
 		!VehicleRaycasterResult();
-	protected:
 		~VehicleRaycasterResult();
 
 	public:

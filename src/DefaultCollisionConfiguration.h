@@ -10,7 +10,7 @@ namespace BulletSharp
 	{
 	internal:
 		btDefaultCollisionConstructionInfo* _native;
-		
+
 	private:
 		PoolAllocator^ _collisionAlgorithmPool;
 		PoolAllocator^ _persistentManifoldPool;

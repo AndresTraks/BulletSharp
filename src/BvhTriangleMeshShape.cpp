@@ -103,32 +103,8 @@ void BvhTriangleMeshShape::PartialRefitTree(Vector3% aabbMin, Vector3% aabbMax)
 	VECTOR3_DEL(aabbMax);
 }
 
-void BvhTriangleMeshShape::PartialRefitTree(Vector3 aabbMin, Vector3 aabbMax)
-{
-	VECTOR3_CONV(aabbMin);
-	VECTOR3_CONV(aabbMax);
-	Native->partialRefitTree(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
-	VECTOR3_DEL(aabbMin);
-	VECTOR3_DEL(aabbMax);
-}
-
 void BvhTriangleMeshShape::PerformConvexcast(TriangleCallback^ callback, Vector3% boxSource,
 	Vector3% boxTarget, Vector3% boxMin, Vector3% boxMax)
-{
-	VECTOR3_CONV(boxSource);
-	VECTOR3_CONV(boxTarget);
-	VECTOR3_CONV(boxMin);
-	VECTOR3_CONV(boxMax);
-	Native->performConvexcast(callback->_native, VECTOR3_USE(boxSource), VECTOR3_USE(boxTarget),
-		VECTOR3_USE(boxMin), VECTOR3_USE(boxMax));
-	VECTOR3_DEL(boxSource);
-	VECTOR3_DEL(boxTarget);
-	VECTOR3_DEL(boxMin);
-	VECTOR3_DEL(boxMax);
-}
-
-void BvhTriangleMeshShape::PerformConvexcast(TriangleCallback^ callback, Vector3 boxSource,
-	Vector3 boxTarget, Vector3 boxMin, Vector3 boxMax)
 {
 	VECTOR3_CONV(boxSource);
 	VECTOR3_CONV(boxTarget);
@@ -152,26 +128,7 @@ void BvhTriangleMeshShape::PerformRaycast(TriangleCallback^ callback, Vector3% r
 	VECTOR3_DEL(rayTarget);
 }
 
-void BvhTriangleMeshShape::PerformRaycast(TriangleCallback^ callback, Vector3 raySource,
-	Vector3 rayTarget)
-{
-	VECTOR3_CONV(raySource);
-	VECTOR3_CONV(rayTarget);
-	Native->performRaycast(callback->_native, VECTOR3_USE(raySource), VECTOR3_USE(rayTarget));
-	VECTOR3_DEL(raySource);
-	VECTOR3_DEL(rayTarget);
-}
-
 void BvhTriangleMeshShape::RefitTree(Vector3% aabbMin, Vector3% aabbMax)
-{
-	VECTOR3_CONV(aabbMin);
-	VECTOR3_CONV(aabbMax);
-	Native->refitTree(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
-	VECTOR3_DEL(aabbMin);
-	VECTOR3_DEL(aabbMax);
-}
-
-void BvhTriangleMeshShape::RefitTree(Vector3 aabbMin, Vector3 aabbMax)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);

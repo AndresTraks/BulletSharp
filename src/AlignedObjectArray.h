@@ -48,9 +48,7 @@ namespace BulletSharp
 		AlignedObjectArray(void* alignedObjectArray, bool ownsObject);
 		AlignedObjectArray(void* alignedObjectArray);
 
-	public:
 		!AlignedObjectArray();
-	protected:
 		~AlignedObjectArray();
 
 	public:

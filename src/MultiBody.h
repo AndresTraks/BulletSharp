@@ -11,12 +11,13 @@ namespace BulletSharp
 
 	public ref class MultiBody
 	{
+	internal:
+		btMultiBody* _native;
+
 	private:
 		array<MultiBodyLink^>^ _links;
 
 	internal:
-		btMultiBody* _native;
-
 		MultiBody(btMultiBody* native);
 
 		!MultiBody();

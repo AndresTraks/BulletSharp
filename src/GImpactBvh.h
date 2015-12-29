@@ -197,10 +197,11 @@ namespace BulletSharp
 	internal:
 		btGImpactBvh* _native;
 
-		GImpactBvh(btGImpactBvh* native);
-
 	private:
-		PrimitiveManagerBase^ _primitiveManagerBase;
+		PrimitiveManagerBase^ _primitiveManager;
+
+	internal:
+		GImpactBvh(btGImpactBvh* native);
 
 		!GImpactBvh();
 		~GImpactBvh();
