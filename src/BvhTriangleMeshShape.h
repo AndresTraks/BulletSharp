@@ -11,7 +11,6 @@ namespace BulletSharp
 
 	public ref class BvhTriangleMeshShape : TriangleMeshShape
 	{
-	private:
 		OptimizedBvh^ _optimizedBvh;
 		TriangleInfoMap^ _triangleInfoMap;
 

@@ -18,7 +18,6 @@ namespace BulletSharp
 		Box2DShape(btScalar boxHalfExtent); // cube helper
 
 		Vector4 GetPlaneEquation(int i);
-		Vector3 GetVertex(int i);
 
 		property Vector3 Centroid
 		{

@@ -29,26 +29,26 @@ Aabb::Aabb()
 	_native = new btAABB();
 }
 
-Aabb::Aabb(Vector3 V1, Vector3 V2, Vector3 V3)
+Aabb::Aabb(Vector3 v1, Vector3 v2, Vector3 v3)
 {
-	VECTOR3_CONV(V1);
-	VECTOR3_CONV(V2);
-	VECTOR3_CONV(V3);
-	_native = new btAABB(VECTOR3_USE(V1), VECTOR3_USE(V2), VECTOR3_USE(V3));
-	VECTOR3_DEL(V1);
-	VECTOR3_DEL(V2);
-	VECTOR3_DEL(V3);
+	VECTOR3_CONV(v1);
+	VECTOR3_CONV(v2);
+	VECTOR3_CONV(v3);
+	_native = new btAABB(VECTOR3_USE(v1), VECTOR3_USE(v2), VECTOR3_USE(v3));
+	VECTOR3_DEL(v1);
+	VECTOR3_DEL(v2);
+	VECTOR3_DEL(v3);
 }
 
-Aabb::Aabb(Vector3 V1, Vector3 V2, Vector3 V3, btScalar margin)
+Aabb::Aabb(Vector3 v1, Vector3 v2, Vector3 v3, btScalar margin)
 {
-	VECTOR3_CONV(V1);
-	VECTOR3_CONV(V2);
-	VECTOR3_CONV(V3);
-	_native = new btAABB(VECTOR3_USE(V1), VECTOR3_USE(V2), VECTOR3_USE(V3), margin);
-	VECTOR3_DEL(V1);
-	VECTOR3_DEL(V2);
-	VECTOR3_DEL(V3);
+	VECTOR3_CONV(v1);
+	VECTOR3_CONV(v2);
+	VECTOR3_CONV(v3);
+	_native = new btAABB(VECTOR3_USE(v1), VECTOR3_USE(v2), VECTOR3_USE(v3), margin);
+	VECTOR3_DEL(v1);
+	VECTOR3_DEL(v2);
+	VECTOR3_DEL(v3);
 }
 
 Aabb::Aabb(Aabb^ other)

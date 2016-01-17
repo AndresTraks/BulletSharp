@@ -13,8 +13,8 @@ namespace BulletSharp
 
 	public ref class CpuFeatureUtility sealed
 	{
-	private:
 		CpuFeatureUtility() {}
+
 	public:
 		property BulletSharp::CpuFeatures CpuFeatures
 		{

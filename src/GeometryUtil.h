@@ -6,7 +6,6 @@ namespace BulletSharp
 
 	public ref class GeometryUtil sealed
 	{
-	private:
 		GeometryUtil() {}
 
 	public:

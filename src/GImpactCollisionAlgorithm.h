@@ -33,7 +33,7 @@ namespace BulletSharp
 		GImpactCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci, CollisionObjectWrapper^ body0Wrap,
 			CollisionObjectWrapper^ body1Wrap);
 
-		void GImpactVsCompoundshape(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
+		void GImpactVsCompoundShape(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 			GImpactShapeInterface^ shape0, CompoundShape^ shape1, bool swapped);
 		void GImpactVsConcave(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 			GImpactShapeInterface^ shape0, ConcaveShape^ shape1, bool swapped);

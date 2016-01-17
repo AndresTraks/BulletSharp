@@ -497,7 +497,7 @@ Generic6DofSpring2Constraint::Generic6DofSpring2Constraint(RigidBody^ rigidBodyA
 	TRANSFORM_DEL(frameInB);
 
 	_angularLimits = gcnew array<RotationalLimitMotor2^>(3);
-	_rigidBodyA = GetFixedBody();
+	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = rigidBodyB;
 }
 

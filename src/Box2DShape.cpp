@@ -31,15 +31,6 @@ Box2DShape::Box2DShape(btScalar boxHalfExtents)
 	ALIGNED_FREE(boxHalfExtentsTemp);
 }
 
-Vector3 Box2DShape::GetVertex(int i)
-{
-	btVector3* vertexTemp = ALIGNED_NEW(btVector3);
-	Native->getVertex(i, *vertexTemp);
-	Vector3 vertex = Math::BtVector3ToVector3(vertexTemp);
-	ALIGNED_FREE(vertexTemp);
-	return vertex;
-}
-
 Vector4 Box2DShape::GetPlaneEquation(int i)
 {
 	btVector4* equationTemp = ALIGNED_NEW(btVector4);
