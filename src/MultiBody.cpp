@@ -333,7 +333,7 @@ void MultiBody::ProcessDeltaVeeMultiDof2()
 }
 
 #ifndef DISABLE_SERIALIZE
-String^ MultiBody::Serialize(IntPtr dataBuffer, Serializer^ serializer)
+String^ MultiBody::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
 {
 	return gcnew String(_native->serialize(dataBuffer.ToPointer(), serializer->_native));
 }

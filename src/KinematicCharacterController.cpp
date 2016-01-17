@@ -684,7 +684,7 @@ bool KinematicCharacterController::OnGround::get()
 
 
 KinematicClosestNotMeConvexResultCallback::KinematicClosestNotMeConvexResultCallback(CollisionObject^ me, Vector3 up, btScalar minSlopeDot)
-	: ClosestConvexResultCallback(Vector3_Zero, Vector3_Zero)
+	: ClosestConvexResultCallback()
 {
 	_me = me;
 	_up = up;
