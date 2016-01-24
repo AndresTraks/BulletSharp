@@ -21,8 +21,6 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyDescriptionAttribute("BulletSharp for Mogre")];
 #elif GRAPHICS_OPENTK
 [assembly:AssemblyDescriptionAttribute("BulletSharp for OpenTK")];
-#elif GRAPHICS_AXIOM
-[assembly:AssemblyDescriptionAttribute("BulletSharp for Axiom 3D")];
 #elif GRAPHICS_WAPICODEPACK
 [assembly:AssemblyDescriptionAttribute("BulletSharp for Windows API Code Pack")];
 #elif GRAPHICS_GENERIC

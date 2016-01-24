@@ -112,7 +112,7 @@ void BulletSharp::Math::Vector4ToBtVector4(Vector4 vector, btVector4* vectorOut)
 
 Quaternion BulletSharp::Math::BtQuatToQuaternion(const btQuaternion* quat)
 {
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+#ifdef GRAPHICS_MOGRE
 	return Quaternion(quat->getW(), quat->getX(), quat->getY(), quat->getZ());
 #else
 	return Quaternion(quat->getX(), quat->getY(), quat->getZ(), quat->getW());
@@ -134,13 +134,9 @@ void BulletSharp::Math::QuaternionToBtQuat(Quaternion quat, btQuaternion* outQua
 
 Matrix BulletSharp::Math::BtTransformToMatrix(const btTransform* transform)
 {
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
-	btScalar* m = (btScalar*)transform;
 #ifdef GRAPHICS_MOGRE
+	btScalar* m = (btScalar*)transform;
 	Matrix t = gcnew Mogre::Matrix4();
-#else
-	Matrix t = gcnew Axiom::Math::Matrix4();
-#endif
 	t->m00 = m[0];
 	t->m01 = m[1];
 	t->m02 = m[2];
@@ -188,12 +184,8 @@ Matrix BulletSharp::Math::BtTransformToMatrix(const btTransform* transform)
 
 void BulletSharp::Math::BtTransformToMatrix(const btTransform* transform, [Out] Matrix% t)
 {
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
 #ifdef GRAPHICS_MOGRE
 	t = gcnew Mogre::Matrix4();
-#else
-	t = gcnew Axiom::Math::Matrix4();
-#endif
 	btScalar* m = (btScalar*)transform;
 	t->m00 = m[0];
 	t->m01 = m[1];
@@ -241,7 +233,7 @@ btTransform* BulletSharp::Math::MatrixToBtTransform(Matrix matrix)
 {
 	btTransform* t = ALIGNED_NEW(btTransform);
 
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+#ifdef GRAPHICS_MOGRE
 	btScalar* m = (btScalar*)t;
 	m[0] = matrix->m00;
 	m[1] = matrix->m01;
@@ -291,7 +283,7 @@ btTransform* BulletSharp::Math::MatrixToBtTransform(Matrix matrix)
 
 void BulletSharp::Math::MatrixToBtTransform(Matrix matrix, btTransform* t)
 {
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+#ifdef GRAPHICS_MOGRE
 	btScalar* m = (btScalar*)t;
 	m[0] = matrix->m00;
 	m[1] = matrix->m01;
@@ -340,12 +332,8 @@ void BulletSharp::Math::MatrixToBtTransform(Matrix matrix, btTransform* t)
 
 Matrix BulletSharp::Math::BtMatrix3x3ToMatrix(const btMatrix3x3* matrix)
 {
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
 #ifdef GRAPHICS_MOGRE
 	Matrix t = gcnew Mogre::Matrix4();
-#else
-	Matrix t = gcnew Axiom::Math::Matrix4();
-#endif
 	btScalar* m = (btScalar*)matrix;
 	t->m00 = m[0];
 	t->m10 = m[4];
@@ -392,7 +380,7 @@ btMatrix3x3* BulletSharp::Math::MatrixToBtMatrix3x3(Matrix matrix)
 {
 	btMatrix3x3* t = ALIGNED_NEW(btMatrix3x3);
 
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+#ifdef GRAPHICS_MOGRE
 	btScalar* m = (btScalar*)t;
 	m[0] = matrix->m00;
 	m[1] = matrix->m01;
@@ -427,7 +415,7 @@ btMatrix3x3* BulletSharp::Math::MatrixToBtMatrix3x3(Matrix matrix)
 
 void BulletSharp::Math::MatrixToBtMatrix3x3(Matrix matrix, btMatrix3x3* t)
 {
-#if defined(GRAPHICS_MOGRE) || defined(GRAPHICS_AXIOM)
+#ifdef GRAPHICS_MOGRE
 	btScalar* m = (btScalar*)t;
 	m[0] = matrix->m00;
 	m[1] = matrix->m01;

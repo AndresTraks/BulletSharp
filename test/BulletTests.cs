@@ -265,7 +265,7 @@ namespace BulletSharpTest
     class CustomRayCallback : ClosestRayResultCallback
     {
         public CustomRayCallback(ref Vector3 rayFrom, ref Vector3 rayTo)
-            : base(rayFrom, rayTo)
+            : base(ref rayFrom, ref rayTo)
         {
         }
 

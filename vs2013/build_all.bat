@@ -10,8 +10,8 @@ set VCPATH=%ProgramFiles%
 
 set VCPATH="%VCPATH%\Microsoft Visual Studio 12.0\VC\vcpackages"
 set OPTS=BulletSharp.vcxproj /p:VCBuildToolPath=%VCPATH% /p:VisualStudioVersion=12.0
+rem set OPTS=%OPTS% /p:Platform=x64
 
-%MSBUILD% %OPTS% /p:Configuration="Release Axiom"
 %MSBUILD% %OPTS% /p:Configuration="Release Generic"
 %MSBUILD% %OPTS% /p:Configuration="Release Mogre"
 %MSBUILD% %OPTS% /p:Configuration="Release OpenTK"

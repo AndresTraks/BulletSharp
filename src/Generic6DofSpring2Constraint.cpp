@@ -559,14 +559,18 @@ btScalar Generic6DofSpring2Constraint::GetAngle(int axisIndex)
 }
 
 #pragma managed(push, off)
-btVector3* Generic6DofSpring2Constraint_GetAxis(btGeneric6DofSpring2Constraint* constraint, int axis_index)
+void Generic6DofSpring2Constraint_GetAxis(btGeneric6DofSpring2Constraint* constraint, int axis_index, btVector3* axis)
 {
-	return &constraint->getAxis(axis_index);
+	axis = &constraint->getAxis(axis_index);
 }
 #pragma managed(pop)
 Vector3 Generic6DofSpring2Constraint::GetAxis(int axisIndex)
 {
-	return Math::BtVector3ToVector3(Generic6DofSpring2Constraint_GetAxis(Native, axisIndex));
+	btVector3* axisTemp = ALIGNED_NEW(btVector3);
+	Generic6DofSpring2Constraint_GetAxis(Native, axisIndex, axisTemp);
+	Vector3 ret = Math::BtVector3ToVector3(axisTemp);
+	ALIGNED_FREE(axisTemp);
+	return ret;
 }
 
 btScalar Generic6DofSpring2Constraint::GetRelativePivotPosition(int axisIndex)

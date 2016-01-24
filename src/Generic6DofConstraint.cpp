@@ -508,14 +508,18 @@ btScalar Generic6DofConstraint::GetAngle(int axisIndex)
 }
 
 #pragma managed(push, off)
-btVector3* Generic6DofConstraint_GetAxis(btGeneric6DofConstraint* constraint, int axisIndex)
+void Generic6DofConstraint_GetAxis(btGeneric6DofConstraint* constraint, int axis_index, btVector3* axis)
 {
-	return &constraint->getAxis(axisIndex);
+	axis = &constraint->getAxis(axis_index);
 }
 #pragma managed(pop)
 Vector3 Generic6DofConstraint::GetAxis(int axisIndex)
 {
-	return Math::BtVector3ToVector3(Generic6DofConstraint_GetAxis(Native, axisIndex));
+	btVector3* axisTemp = ALIGNED_NEW(btVector3);
+	Generic6DofConstraint_GetAxis(Native, axisIndex, axisTemp);
+	Vector3 ret = Math::BtVector3ToVector3(axisTemp);
+	ALIGNED_FREE(axisTemp);
+	return ret;
 }
 
 void Generic6DofConstraint::GetInfo1NonVirtual(ConstraintInfo1^ info)

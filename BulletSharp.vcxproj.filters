@@ -579,9 +579,6 @@
     <ClCompile Include="src\SphereTriangleDetector.cpp">
       <Filter>Source Files\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
-    <ClCompile Include="src\SpuGatheringCollisionDispatcher.cpp">
-      <Filter>Source Files\BulletMultiThreaded</Filter>
-    </ClCompile>
     <ClCompile Include="src\StaticPlaneShape.cpp">
       <Filter>Source Files\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
@@ -714,9 +711,6 @@
     </ClInclude>
     <ClInclude Include="src\CapsuleShape.h">
       <Filter>Header Files\BulletCollision\CollisionShapes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CharacterControllerInterface.h">
-      <Filter>Header Files\BulletDynamics\Character</Filter>
     </ClInclude>
     <ClInclude Include="src\Collections.h">
       <Filter>Header Files</Filter>
@@ -925,6 +919,9 @@
     <ClInclude Include="src\IAction.h">
       <Filter>Header Files\BulletDynamics\Dynamics</Filter>
     </ClInclude>
+    <ClInclude Include="src\ICharacterController.h">
+      <Filter>Header Files\BulletDynamics\Character</Filter>
+    </ClInclude>
     <ClInclude Include="src\IDebugDraw.h">
       <Filter>Header Files\LinearMath</Filter>
     </ClInclude>
@@ -933,6 +930,9 @@
     </ClInclude>
     <ClInclude Include="src\ITrackingDisposable.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\KinematicCharacterController.h">
+      <Filter>Header Files\BulletDynamics\Character</Filter>
     </ClInclude>
     <ClInclude Include="src\LemkeSolver.h">
       <Filter>Header Files\BulletDynamics\MLCPSolvers</Filter>
@@ -1191,9 +1191,6 @@
     </ClInclude>
     <ClInclude Include="src\VoronoiSimplexSolver.h">
       <Filter>Header Files\BulletCollision\NarrowPhaseCollision</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ICharacterController.h">
-      <Filter>Header Files\BulletDynamics\Character</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

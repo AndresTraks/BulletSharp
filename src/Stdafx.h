@@ -61,9 +61,6 @@ using namespace Mogre;
 using namespace Microsoft::Xna::Framework;
 #elif GRAPHICS_OPENTK
 using namespace OpenTK;
-#elif GRAPHICS_AXIOM
-#using <Axiom.dll>
-using namespace Axiom::Math;
 #elif GRAPHICS_WAPICODEPACK
 #if WIN32
 #using <x86/Microsoft.WindowsAPICodePack.DirectX.dll>
@@ -101,10 +98,6 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #define BtColor OpenTK::Graphics::Color4
 #define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
 #define BtVectorToBtColor(color) BtColor((float)color.getX(), (float)color.getY(), (float)color.getZ(), 1) // cast for DP build
-#elif GRAPHICS_AXIOM
-#define BtColor Axiom::Core::ColorEx
-#define BtColorToBtVector(color) new btVector3(color.r, color.g, color.b)
-#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
 #elif GRAPHICS_WAPICODEPACK
 using namespace System::Drawing;
 #define BtColor Color

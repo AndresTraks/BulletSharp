@@ -1,12 +1,12 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletSharp", "BulletSharp.vcxproj", "{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug Axiom|Win32 = Debug Axiom|Win32
-		Debug Axiom|x64 = Debug Axiom|x64
 		Debug Generic|Win32 = Debug Generic|Win32
 		Debug Generic|x64 = Debug Generic|x64
 		Debug Mogre|Win32 = Debug Mogre|Win32
@@ -19,12 +19,8 @@ Global
 		Debug SharpDX|x64 = Debug SharpDX|x64
 		Debug SharpDX Signed|Win32 = Debug SharpDX Signed|Win32
 		Debug SharpDX Signed|x64 = Debug SharpDX Signed|x64
-		Debug SlimDX|Win32 = Debug SlimDX|Win32
-		Debug SlimDX|x64 = Debug SlimDX|x64
 		Debug Windows API Code Pack|Win32 = Debug Windows API Code Pack|Win32
 		Debug Windows API Code Pack|x64 = Debug Windows API Code Pack|x64
-		Release Axiom|Win32 = Release Axiom|Win32
-		Release Axiom|x64 = Release Axiom|x64
 		Release Generic|Win32 = Release Generic|Win32
 		Release Generic|x64 = Release Generic|x64
 		Release Mogre|Win32 = Release Mogre|Win32
@@ -37,16 +33,10 @@ Global
 		Release SharpDX|x64 = Release SharpDX|x64
 		Release SharpDX Signed|Win32 = Release SharpDX Signed|Win32
 		Release SharpDX Signed|x64 = Release SharpDX Signed|x64
-		Release SlimDX|Win32 = Release SlimDX|Win32
-		Release SlimDX|x64 = Release SlimDX|x64
 		Release Windows API Code Pack|Win32 = Release Windows API Code Pack|Win32
 		Release Windows API Code Pack|x64 = Release Windows API Code Pack|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Axiom|Win32.ActiveCfg = Debug Axiom|Win32
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Axiom|Win32.Build.0 = Debug Axiom|Win32
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Axiom|x64.ActiveCfg = Debug Axiom|x64
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Axiom|x64.Build.0 = Debug Axiom|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Generic|Win32.ActiveCfg = Debug Generic|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Generic|Win32.Build.0 = Debug Generic|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Generic|x64.ActiveCfg = Debug Generic|x64
@@ -71,18 +61,10 @@ Global
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX Signed|Win32.Build.0 = Debug SharpDX Signed|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX Signed|x64.ActiveCfg = Debug SharpDX Signed|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX Signed|x64.Build.0 = Debug SharpDX Signed|x64
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimDX|Win32.ActiveCfg = Debug SlimDX|Win32
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimDX|Win32.Build.0 = Debug SlimDX|Win32
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimDX|x64.ActiveCfg = Debug SlimDX|x64
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SlimDX|x64.Build.0 = Debug SlimDX|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Windows API Code Pack|Win32.ActiveCfg = Debug Windows API Code Pack|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Windows API Code Pack|Win32.Build.0 = Debug Windows API Code Pack|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Windows API Code Pack|x64.ActiveCfg = Debug Windows API Code Pack|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Windows API Code Pack|x64.Build.0 = Debug Windows API Code Pack|x64
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Axiom|Win32.ActiveCfg = Release Axiom|Win32
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Axiom|Win32.Build.0 = Release Axiom|Win32
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Axiom|x64.ActiveCfg = Release Axiom|x64
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Axiom|x64.Build.0 = Release Axiom|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Generic|Win32.ActiveCfg = Release Generic|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Generic|Win32.Build.0 = Release Generic|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Generic|x64.ActiveCfg = Release Generic|x64
@@ -107,10 +89,6 @@ Global
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX Signed|Win32.Build.0 = Release SharpDX Signed|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX Signed|x64.ActiveCfg = Release SharpDX Signed|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX Signed|x64.Build.0 = Release SharpDX Signed|x64
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimDX|Win32.ActiveCfg = Release SlimDX|Win32
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimDX|Win32.Build.0 = Release SlimDX|Win32
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimDX|x64.ActiveCfg = Release SlimDX|x64
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SlimDX|x64.Build.0 = Release SlimDX|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Windows API Code Pack|Win32.ActiveCfg = Release Windows API Code Pack|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Windows API Code Pack|Win32.Build.0 = Release Windows API Code Pack|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Windows API Code Pack|x64.ActiveCfg = Release Windows API Code Pack|x64

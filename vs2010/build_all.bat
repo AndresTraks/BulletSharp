@@ -8,10 +8,10 @@ goto checkdone
 set VCPATH=%ProgramFiles%
 :checkdone
 
-set VCPATH="%VCPATH%\Microsoft Visual Studio 11.0\VC\vcpackages"
-set OPTS=BulletSharp.vcxproj /p:VCBuildToolPath=%VCPATH% /p:VisualStudioVersion=11.0
+set VCPATH="%VCPATH%\Microsoft Visual Studio 10.0\VC\vcpackages"
+set OPTS=BulletSharp.vcxproj /p:VCBuildToolPath=%VCPATH%
+rem set OPTS=%OPTS% /p:Platform=x64
 
-%MSBUILD% %OPTS% /p:Configuration="Release Axiom"
 %MSBUILD% %OPTS% /p:Configuration="Release Generic"
 %MSBUILD% %OPTS% /p:Configuration="Release Mogre"
 %MSBUILD% %OPTS% /p:Configuration="Release OpenTK"

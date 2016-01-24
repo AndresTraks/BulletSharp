@@ -56,9 +56,6 @@
     <Filter Include="Header Files\Extras\Serialize">
       <UniqueIdentifier>{e6b294ff-8cdf-a841-f9df-e07a9f44b026}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Extras\Serialize\BulletFileLoader">
-      <UniqueIdentifier>{1d7834cb-90c4-49fb-c584-f9f349e561f7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Extras\Serialize\BulletWorldImporter">
       <UniqueIdentifier>{c99a05e8-b250-141c-1f6e-7a572970fb91}</UniqueIdentifier>
     </Filter>
@@ -129,9 +126,6 @@
     </Filter>
     <Filter Include="Source Files\Extras\Serialize">
       <UniqueIdentifier>{e6b294ff-8cdf-a841-f9df-e07a9f44b026}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Extras\Serialize\BulletFileLoader">
-      <UniqueIdentifier>{1d7834cb-90c4-49fb-c584-f9f349e561f7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Extras\Serialize\BulletWorldImporter">
       <UniqueIdentifier>{c99a05e8-b250-141c-1f6e-7a572970fb91}</UniqueIdentifier>
