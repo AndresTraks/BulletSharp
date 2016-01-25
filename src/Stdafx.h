@@ -47,7 +47,6 @@
 #endif
 using namespace SlimDX;
 #elif GRAPHICS_SHARPDX
-#using <SharpDX.dll>
 using namespace SharpDX;
 #elif GRAPHICS_MOGRE
 #if _DEBUG

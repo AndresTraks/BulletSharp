@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using BulletSharp;
+﻿using BulletSharp;
 using DemoFramework;
 using SharpDX;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 
 namespace ConvexDecompositionDemo
 {

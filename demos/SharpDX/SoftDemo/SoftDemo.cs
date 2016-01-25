@@ -22,12 +22,6 @@ namespace SoftDemo
         Vector3 goal;
         bool drag;
 
-        protected override void OnInitializeDevice()
-        {
-            Form.Text = "BulletSharp - SoftBody Demo";
-            base.OnInitializeDevice();
-        }
-
         protected override void OnInitialize()
         {
             PhysicsContext = new Physics();
@@ -39,8 +33,10 @@ namespace SoftDemo
                 "Space - Shoot box\n\n" +
                 "B - Previous Demo\n" +
                 "N - Next Demo";
+            Form.Text = "BulletSharp - SoftBody Demo";
 
             Freelook.SetEyeTarget(eye, target);
+            CullingEnabled = false;
 
             base.OnInitialize();
         }

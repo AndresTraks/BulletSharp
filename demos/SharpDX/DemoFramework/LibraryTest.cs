@@ -8,62 +8,18 @@ namespace DemoFramework
     {
         public static bool Test()
         {
-            try
+            foreach (string assemblyName in new[] { "SharpDX", "SharpDX.D3DCompiler", "SharpDX.Direct3D11", "SharpDX.DXGI" })
             {
-                Assembly.Load("SharpDX");
+                try
+                {
+                    Assembly.Load(assemblyName);
+                }
+                catch
+                {
+                    MessageBox.Show(assemblyName + ".dll not found.", "Error!");
+                    return false;
+                }
             }
-            catch
-            {
-                MessageBox.Show("SharpDX.dll not found. " +
-                    "Please download it from http://code.google.com/p/sharpdx.", "Error!");
-                return false;
-            }
-
-            try
-            {
-                Assembly.Load("SharpDX.D3DCompiler");
-            }
-            catch
-            {
-                MessageBox.Show("SharpDX.D3DCompiler.dll not found. " +
-                    "Please download it from http://code.google.com/p/sharpdx.", "Error!");
-                return false;
-            }
-
-            try
-            {
-                Assembly.Load("SharpDX.Direct3D10");
-            }
-            catch
-            {
-                MessageBox.Show("SharpDX.Direct3D10.dll not found. " +
-                    "Please download it from http://code.google.com/p/sharpdx.", "Error!");
-                return false;
-            }
-
-            try
-            {
-                Assembly.Load("SharpDX.DXGI");
-            }
-            catch
-            {
-                MessageBox.Show("SharpDX.DXGI.dll not found. " +
-                    "Please download it from http://code.google.com/p/sharpdx.", "Error!");
-                return false;
-            }
-
-            /*
-            try
-            {
-                Assembly.Load("SharpDX.Error");
-            }
-            catch
-            {
-                MessageBox.Show("SharpDX.Error.dll not found. " +
-                    "Please download it from http://code.google.com/p/sharpdx.", "Error!");
-                return false;
-            }
-            */
 
             try
             {

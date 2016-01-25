@@ -20,12 +20,6 @@ namespace CcdPhysicsDemo
             //"F11 - Toggle fullscreen\n" +
             "Space - Shoot box";
 
-        protected override void OnInitializeDevice()
-        {
-            Form.Text = "BulletSharp - CCD Demo";
-            base.OnInitializeDevice();
-        }
-
         protected override void OnInitialize()
         {
             PhysicsContext = new Physics();
@@ -33,6 +27,7 @@ namespace CcdPhysicsDemo
             Freelook.SetEyeTarget(eye, target);
 
             Info.Text = infoText + "\nCCD enabled (P to disable)";
+            Form.Text = "BulletSharp - CCD Demo";
 
             base.OnInitialize();
         }
@@ -42,7 +37,6 @@ namespace CcdPhysicsDemo
             if (Input.KeysPressed.Contains(Keys.P))
             {
                 Physics.ToggleCcdMode();
-                GetMeshFactory().Clear();
 
                 if (Physics.CcdMode)
                 {

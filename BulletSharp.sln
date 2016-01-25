@@ -17,8 +17,6 @@ Global
 		Debug OpenTK|x64 = Debug OpenTK|x64
 		Debug SharpDX|Win32 = Debug SharpDX|Win32
 		Debug SharpDX|x64 = Debug SharpDX|x64
-		Debug SharpDX Signed|Win32 = Debug SharpDX Signed|Win32
-		Debug SharpDX Signed|x64 = Debug SharpDX Signed|x64
 		Debug Windows API Code Pack|Win32 = Debug Windows API Code Pack|Win32
 		Debug Windows API Code Pack|x64 = Debug Windows API Code Pack|x64
 		Release Generic|Win32 = Release Generic|Win32
@@ -31,8 +29,6 @@ Global
 		Release OpenTK|x64 = Release OpenTK|x64
 		Release SharpDX|Win32 = Release SharpDX|Win32
 		Release SharpDX|x64 = Release SharpDX|x64
-		Release SharpDX Signed|Win32 = Release SharpDX Signed|Win32
-		Release SharpDX Signed|x64 = Release SharpDX Signed|x64
 		Release Windows API Code Pack|Win32 = Release Windows API Code Pack|Win32
 		Release Windows API Code Pack|x64 = Release Windows API Code Pack|x64
 	EndGlobalSection
@@ -57,10 +53,6 @@ Global
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX|Win32.Build.0 = Debug SharpDX|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX|x64.ActiveCfg = Debug SharpDX|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX|x64.Build.0 = Debug SharpDX|x64
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX Signed|Win32.ActiveCfg = Debug SharpDX Signed|Win32
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX Signed|Win32.Build.0 = Debug SharpDX Signed|Win32
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX Signed|x64.ActiveCfg = Debug SharpDX Signed|x64
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX Signed|x64.Build.0 = Debug SharpDX Signed|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Windows API Code Pack|Win32.ActiveCfg = Debug Windows API Code Pack|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Windows API Code Pack|Win32.Build.0 = Debug Windows API Code Pack|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Windows API Code Pack|x64.ActiveCfg = Debug Windows API Code Pack|x64
@@ -85,10 +77,6 @@ Global
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX|Win32.Build.0 = Release SharpDX|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX|x64.ActiveCfg = Release SharpDX|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX|x64.Build.0 = Release SharpDX|x64
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX Signed|Win32.ActiveCfg = Release SharpDX Signed|Win32
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX Signed|Win32.Build.0 = Release SharpDX Signed|Win32
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX Signed|x64.ActiveCfg = Release SharpDX Signed|x64
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX Signed|x64.Build.0 = Release SharpDX Signed|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Windows API Code Pack|Win32.ActiveCfg = Release Windows API Code Pack|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Windows API Code Pack|Win32.Build.0 = Release Windows API Code Pack|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Windows API Code Pack|x64.ActiveCfg = Release Windows API Code Pack|x64

@@ -51,15 +51,14 @@ namespace DemoFramework
         /// <returns>The time, in seconds, that elapsed since the previous update.</returns>
         public float Update()
         {
-            float result = 0.0f;
             if (isRunning)
             {
                 long last = count;
                 count = Stopwatch.GetTimestamp();
-                result = (float)(count - last) / frequency;
+                return (float)(count - last) / frequency;
             }
 
-            return result;
+            return 0.0f;
         }
 
         #endregion

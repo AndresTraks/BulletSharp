@@ -10,12 +10,6 @@ namespace ConvexDecompositionDemo
         Vector3 eye = new Vector3(30, 15, 20);
         Vector3 target = new Vector3(0, 0, -4);
 
-        protected override void OnInitializeDevice()
-        {
-            Form.Text = "BulletSharp - Convex Decomposition Demo";
-            base.OnInitializeDevice();
-        }
-
         protected override void OnInitialize()
         {
             PhysicsContext = new Physics();
@@ -26,6 +20,7 @@ namespace ConvexDecompositionDemo
                 //"F3 - Toggle debug\n" +
                 //"F11 - Toggle fullscreen\n" +
                 "Space - Shoot box";
+            Form.Text = "BulletSharp - Convex Decomposition Demo";
 
             base.OnInitialize();
         }

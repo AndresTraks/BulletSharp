@@ -16,6 +16,11 @@ using namespace Mogre;
 #else
 #define Matrix Matrix4
 #endif
+#elif GRAPHICS_SHARPDX
+#define Matrix SharpDX::Matrix
+#define Quaternion SharpDX::Quaternion
+#define Vector3 SharpDX::Vector3
+#define Vector4 SharpDX::Vector4
 #elif GRAPHICS_WAPICODEPACK
 #define Vector3 Vector3F
 #define Vector4 Vector4F

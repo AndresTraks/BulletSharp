@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using BulletSharp;
+﻿using BulletSharp;
 using SharpDX;
+using System.Collections.Generic;
 
 namespace DemoFramework
 {

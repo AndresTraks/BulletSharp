@@ -1193,4 +1193,7 @@
       <Filter>Header Files\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>
