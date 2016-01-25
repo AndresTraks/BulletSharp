@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
-using DemoFramework;
+﻿using DemoFramework;
 using SharpDX;
+using System;
+using System.Windows.Forms;
 
 namespace BasicDemo
 {
@@ -15,11 +15,6 @@ namespace BasicDemo
             PhysicsContext = new Physics();
 
             Freelook.SetEyeTarget(eye, target);
-
-            Info.Text = "Move using mouse and WASD+shift\n" +
-                //"F3 - Toggle debug\n" +
-                //"F11 - Toggle fullscreen\n" +
-                "Space - Shoot box";
             Form.Text = "BulletSharp - Basic Demo";
 
             base.OnInitialize();
@@ -34,11 +29,6 @@ namespace BasicDemo
             if (LibraryTest.Test() == false)
                 return;
 
-            RunDemo();
-        }
-
-        static void RunDemo()
-        {
             using (Demo demo = new BasicDemo())
             {
                 demo.Run();

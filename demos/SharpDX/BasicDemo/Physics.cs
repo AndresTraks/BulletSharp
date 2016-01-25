@@ -7,12 +7,12 @@ namespace BasicDemo
     class Physics : PhysicsContext
     {
         // create 125 (5x5x5) dynamic objects
-        int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
+        const int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
 
         // scaling of the objects (0.1 = 20 centimeter boxes )
-        float StartPosX = -5;
-        float StartPosY = -5;
-        float StartPosZ = -3;
+        const float StartPosX = -5;
+        const float StartPosY = -5;
+        const float StartPosZ = -3;
 
         public Physics()
         {
@@ -26,23 +26,27 @@ namespace BasicDemo
             World.Gravity = new Vector3(0, -10, 0);
 
             // create the ground
-            CollisionShape groundShape = new BoxShape(50, 1, 50);
+            BoxShape groundShape = new BoxShape(50, 1, 50);
+            //groundShape.InitializePolyhedralFeatures();
+            //CollisionShape groundShape = new StaticPlaneShape(new Vector3(0,1,0), 50);
+
             CollisionShapes.Add(groundShape);
             CollisionObject ground = LocalCreateRigidBody(0, Matrix.Identity, groundShape);
             ground.UserObject = "Ground";
 
             // create a few dynamic rigidbodies
-            float mass = 1.0f;
+            const float mass = 1.0f;
 
-            CollisionShape colShape = new BoxShape(1);
+            BoxShape colShape = new BoxShape(1);
             CollisionShapes.Add(colShape);
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
-            var rbInfo = new RigidBodyConstructionInfo(mass, null, colShape, localInertia);
+            const float startX = StartPosX - ArraySizeX / 2;
+            const float startY = StartPosY;
+            const float startZ = StartPosZ - ArraySizeZ / 2;
 
-            float start_x = StartPosX - ArraySizeX / 2;
-            float start_y = StartPosY;
-            float start_z = StartPosZ - ArraySizeZ / 2;
+            RigidBodyConstructionInfo rbInfo =
+                new RigidBodyConstructionInfo(mass, null, colShape, localInertia);
 
             int k, i, j;
             for (k = 0; k < ArraySizeY; k++)
@@ -52,15 +56,14 @@ namespace BasicDemo
                     for (j = 0; j < ArraySizeZ; j++)
                     {
                         Matrix startTransform = Matrix.Translation(
-                            2 * i + start_x,
-                            2 * k + start_y,
-                            2 * j + start_z
+                            2 * i + startX,
+                            2 * k + startY,
+                            2 * j + startZ
                         );
 
                         // using motionstate is recommended, it provides interpolation capabilities
                         // and only synchronizes 'active' objects
                         rbInfo.MotionState = new DefaultMotionState(startTransform);
-
                         RigidBody body = new RigidBody(rbInfo);
 
                         // make it drop from a height

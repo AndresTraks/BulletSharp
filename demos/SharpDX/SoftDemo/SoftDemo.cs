@@ -27,11 +27,7 @@ namespace SoftDemo
             PhysicsContext = new Physics();
             PhysicsContext.World.SetInternalTickCallback(PickingPreTickCallback, this, true);
 
-            Info.Text = "Move using mouse and WASD+shift\n" +
-                //"F3 - Toggle debug\n" +
-                //"F11 - Toggle fullscreen\n" +
-                "Space - Shoot box\n\n" +
-                "B - Previous Demo\n" +
+            Info.DemoText = "B - Previous Demo\n" +
                 "N - Next Demo";
             Form.Text = "BulletSharp - SoftBody Demo";
 
@@ -199,11 +195,6 @@ namespace SoftDemo
             if (LibraryTest.Test() == false)
                 return;
 
-            RunDemo();
-        }
-
-        static void RunDemo()
-        {
             using (Demo demo = new SoftDemo())
             {
                 demo.Run();

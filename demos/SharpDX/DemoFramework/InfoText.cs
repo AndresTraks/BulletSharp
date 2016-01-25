@@ -5,7 +5,6 @@ using SharpDX.Direct3D11;
 using SharpDX.DirectWrite;
 using SharpDX.DXGI;
 using System;
-using System.Globalization;
 using TextAntialiasMode = SharpDX.Direct2D1.TextAntialiasMode;
 
 namespace DemoFramework
@@ -14,10 +13,7 @@ namespace DemoFramework
     {
         Color4 color = new Color4(1, 1, 1, 1);
         Color4 clearColor;
-        float fps = -1;
-        string textString = "";
         RectangleF rect;
-        CultureInfo culture = CultureInfo.InvariantCulture;
         Guid pixelFormat = SharpDX.WIC.PixelFormat.Format32bppPRGBA;
 
         TextFormat _textFormat;
@@ -35,14 +31,27 @@ namespace DemoFramework
             set { _isEnabled = value; }
         }
 
-        string _text = "";
-        public string Text
+        bool _isDirty;
+
+        string _demoText = "";
+        public string DemoText
         {
-            get { return _text; }
+            get { return _demoText; }
             set
             {
-                _text = value;
-                textString = string.Format("FPS: {0}\n{1}", fps.ToString("0.00", culture), value);
+                _demoText = value;
+                _isDirty = true;
+            }
+        }
+
+        string _graphicsText = "";
+        public string GraphicsText
+        {
+            get { return _graphicsText; }
+            set
+            {
+                _graphicsText = value;
+                _isDirty = true;
             }
         }
 
@@ -148,29 +157,25 @@ namespace DemoFramework
             }
         }
 
-        public void OnRender(float framesPerSecond)
+        public void OnRender()
         {
-            if (_isEnabled == false)
-                return;
+            if (!_isEnabled) return;
+            if (!_isDirty) return;
 
-            if (fps != framesPerSecond)
-            {
-                fps = framesPerSecond;
-                textString = string.Format("FPS: {0}\n{1}", fps.ToString("0.00", culture), _text);
+            string textString = string.Format("{0}\n{1}", _graphicsText, _demoText);
 
-                _wicRenderTarget.BeginDraw();
-                _wicRenderTarget.Clear(clearColor);
-                _wicRenderTarget.DrawText(textString, _textFormat, rect, _sceneColorBrush);
-                _wicRenderTarget.EndDraw();
+            _wicRenderTarget.BeginDraw();
+            _wicRenderTarget.Clear(clearColor);
+            _wicRenderTarget.DrawText(textString, _textFormat, rect, _sceneColorBrush);
+            _wicRenderTarget.EndDraw();
 
-                var bitmapLock = _wicBitmap.Lock(SharpDX.WIC.BitmapLockFlags.Read);
-                DataStream stream;
-                _immediateContext.MapSubresource(_renderTexture, 0, 0, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out stream);
-                stream.WriteRange(bitmapLock.Data.DataPointer, _width * _height * 4);
-                _immediateContext.UnmapSubresource(_renderTexture, 0);
-                stream.Dispose();
-                bitmapLock.Dispose();
-            }
+            var bitmapLock = _wicBitmap.Lock(SharpDX.WIC.BitmapLockFlags.Read);
+            DataStream stream;
+            _immediateContext.MapSubresource(_renderTexture, 0, 0, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out stream);
+            stream.WriteRange(bitmapLock.Data.DataPointer, _width * _height * 4);
+            _immediateContext.UnmapSubresource(_renderTexture, 0);
+            stream.Dispose();
+            bitmapLock.Dispose();
         }
     }
 }

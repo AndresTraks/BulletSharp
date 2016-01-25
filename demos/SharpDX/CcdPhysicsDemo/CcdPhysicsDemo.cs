@@ -15,18 +15,12 @@ namespace CcdPhysicsDemo
             get { return (Physics)PhysicsContext; }
         }
 
-        string infoText = "Move using mouse and WASD+shift\n" +
-            //"F3 - Toggle debug\n" +
-            //"F11 - Toggle fullscreen\n" +
-            "Space - Shoot box";
-
         protected override void OnInitialize()
         {
             PhysicsContext = new Physics();
 
             Freelook.SetEyeTarget(eye, target);
-
-            Info.Text = infoText + "\nCCD enabled (P to disable)";
+            Info.DemoText = "CCD enabled (P to disable)";
             Form.Text = "BulletSharp - CCD Demo";
 
             base.OnInitialize();
@@ -40,11 +34,11 @@ namespace CcdPhysicsDemo
 
                 if (Physics.CcdMode)
                 {
-                    Info.Text = infoText + "\nCCD enabled (P to disable)";
+                    Info.DemoText = "CCD enabled (P to disable)";
                 }
                 else
                 {
-                    Info.Text = infoText + "\nCCD disabled (P to enable)";
+                    Info.DemoText = "CCD disabled (P to enable)";
                 }
             }
 
@@ -60,11 +54,6 @@ namespace CcdPhysicsDemo
             if (LibraryTest.Test() == false)
                 return;
 
-            RunDemo();
-        }
-
-        static void RunDemo()
-        {
             using (Demo demo = new CcdPhysicsDemo())
             {
                 demo.Run();

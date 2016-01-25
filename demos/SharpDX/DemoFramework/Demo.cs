@@ -8,6 +8,7 @@ using SharpDX.Windows;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -17,7 +18,7 @@ using Point = System.Drawing.Point;
 
 namespace DemoFramework
 {
-    public class Demo : System.IDisposable
+    public class Demo : IDisposable
     {
         bool shadowsEnabled = true;
         bool depthOfFieldEnabled = false;
@@ -146,6 +147,7 @@ namespace DemoFramework
         VertexBufferBinding pointLightVolumeVertexBufferBinding;
 
         protected InfoText Info { get; set; }
+        CultureInfo culture = CultureInfo.InvariantCulture;
 
         MeshFactory _meshFactory;
 
@@ -155,7 +157,7 @@ namespace DemoFramework
         // Frame counting
         Clock clock = new Clock();
         float frameAccumulator;
-        int frameCount;
+        int _interpolatedSteps;
 
         float _frameDelta;
         public float FrameDelta
@@ -708,15 +710,18 @@ namespace DemoFramework
             }
             */
             UpdateView();
-
-            clock.Start();
+            SetInfoText();
 
             RenderLoop.Run(Form, () =>
             {
                 OnHandleInput();
                 OnUpdate();
                 if (Form.WindowState != FormWindowState.Minimized)
+                {
+                    clock.StartRender();
                     Render();
+                    clock.StopRender();
+                }
             });
         }
 
@@ -724,22 +729,43 @@ namespace DemoFramework
         {
         }
 
+        void SetInfoText()
+        {
+            //FramesPerSecond = clock.FrameCount / frameAccumulator;
+
+            Info.GraphicsText = string.Format("Physics: {0} ms\n" +
+                "Render: {1} ms\n" +
+                "Interpolated: {2}/{3}\n" +
+                "Move using mouse and WASD + shift\n" +
+                "Space - Shoot box",
+                clock.PhysicsAverage.ToString("0.000", culture),
+                clock.RenderAverage.ToString("0.000", culture),
+                _interpolatedSteps,
+                clock.FrameCount);
+        }
+
         protected virtual void OnUpdate()
         {
-            _frameDelta = clock.Update();
+            _frameDelta = clock.GetFrameDelta();
             frameAccumulator += _frameDelta;
-            ++frameCount;
             if (frameAccumulator >= 1.0f)
             {
-                FramesPerSecond = frameCount / frameAccumulator;
+                SetInfoText();
 
                 frameAccumulator = 0.0f;
-                frameCount = 0;
+                _interpolatedSteps = 0;
+                clock.Reset();
             }
 
             if (PhysicsContext.World != null)
             {
-                PhysicsContext.World.StepSimulation(_frameDelta);
+                clock.StartPhysics();
+                int steps = PhysicsContext.World.StepSimulation(_frameDelta);
+                clock.StopPhysics();
+                if (steps == 0)
+                {
+                    _interpolatedSteps++;
+                }
             }
 
             if (Freelook.Update(_frameDelta))
@@ -901,7 +927,7 @@ namespace DemoFramework
 
 
             // Render overlay
-            Info.OnRender(FramesPerSecond);
+            Info.OnRender();
             outputMerger.SetBlendState(alphaBlendState);
             diffuseBufferVar.SetResource(Info.OverlayBufferRes);
             gBufferOverlayPass.Apply(_immediateContext);
