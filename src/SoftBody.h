@@ -1616,38 +1616,11 @@ namespace BulletSharp
 
 		public ref class SRayCast
 		{
-		internal:
-			btSoftBody::sRayCast* _native;
-
-			!SRayCast();
-			~SRayCast();
-
 		public:
-			SRayCast();
-
-			property BulletSharp::SoftBody::SoftBody^ Body
-			{
-				SoftBody^ get();
-				void set(SoftBody^ value);
-			}
-
-			property EFeature Feature
-			{
-				EFeature get();
-				void set(EFeature value);
-			}
-
-			property btScalar Fraction
-			{
-				btScalar get();
-				void set(btScalar value);
-			}
-
-			property int Index
-			{
-				int get();
-				void set(int value);
-			}
+			property BulletSharp::SoftBody::SoftBody^ Body;
+			property EFeature Feature;
+			property btScalar Fraction;
+			property int Index;
 		};
 
 		public ref class Tetra : Feature
@@ -1851,7 +1824,7 @@ namespace BulletSharp
 			static void PSolveSContacts(SoftBody^ psb, btScalar __unnamed1, btScalar ti);
 			void RandomizeConstraints();
 			bool RayTest(Vector3 rayFrom, Vector3 rayTo, SRayCast^ results);
-			int RayTest(Vector3 rayFrom, Vector3 rayTo, [Out] btScalar% mint, EFeature feature,
+			int RayTest(Vector3 rayFrom, Vector3 rayTo, [Out] btScalar% mint, [Out] EFeature% feature,
 				[Out] int% index, bool countOnly);
 			void Refine(ImplicitFn^ ifn, btScalar accurary, bool cut);
 			void ReleaseCluster(int index);

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
-using DemoFramework;
+﻿using DemoFramework;
 using SharpDX;
+using System;
+using System.Windows.Forms;
 
 namespace CcdPhysicsDemo
 {
@@ -20,7 +20,7 @@ namespace CcdPhysicsDemo
             PhysicsContext = new Physics();
 
             Freelook.SetEyeTarget(eye, target);
-            Info.DemoText = "CCD enabled (P to disable)";
+            DemoText = "CCD enabled (P to disable)";
             Form.Text = "BulletSharp - CCD Demo";
 
             base.OnInitialize();
@@ -34,11 +34,11 @@ namespace CcdPhysicsDemo
 
                 if (Physics.CcdMode)
                 {
-                    Info.DemoText = "CCD enabled (P to disable)";
+                    DemoText = "CCD enabled (P to disable)";
                 }
                 else
                 {
-                    Info.DemoText = "CCD disabled (P to enable)";
+                    DemoText = "CCD disabled (P to enable)";
                 }
             }
 

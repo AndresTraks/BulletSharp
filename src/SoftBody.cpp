@@ -2276,59 +2276,6 @@ void SolverState::VelocityMargin::set(btScalar value)
 }
 
 
-SRayCast::~SRayCast()
-{
-	this->!SRayCast();
-}
-
-SRayCast::!SRayCast()
-{
-	delete _native;
-	_native = NULL;
-}
-
-SRayCast::SRayCast()
-{
-	_native = new btSoftBody::sRayCast();
-}
-
-BulletSharp::SoftBody::SoftBody^ SRayCast::Body::get()
-{
-	return (BulletSharp::SoftBody::SoftBody^)CollisionObject::GetManaged(_native->body);
-}
-void SRayCast::Body::set(BulletSharp::SoftBody::SoftBody^ value)
-{
-	_native->body = (btSoftBody*)GetUnmanagedNullable(value);
-}
-
-EFeature SRayCast::Feature::get()
-{
-	return (EFeature)_native->feature;
-}
-void SRayCast::Feature::set(EFeature value)
-{
-	_native->feature = (btSoftBody::eFeature::_)value;
-}
-
-btScalar SRayCast::Fraction::get()
-{
-	return _native->fraction;
-}
-void SRayCast::Fraction::set(btScalar value)
-{
-	_native->fraction = value;
-}
-
-int SRayCast::Index::get()
-{
-	return _native->index;
-}
-void SRayCast::Index::set(int value)
-{
-	_native->index = value;
-}
-
-
 #undef Native
 #define Native static_cast<btSoftBody::Tetra*>(_native)
 
@@ -3460,7 +3407,7 @@ void BulletSharp::SoftBody::SoftBody::RandomizeConstraints()
 	Native->randomizeConstraints();
 }
 
-int BulletSharp::SoftBody::SoftBody::RayTest(Vector3 rayFrom, Vector3 rayTo, [Out] btScalar% mint, EFeature feature,
+int BulletSharp::SoftBody::SoftBody::RayTest(Vector3 rayFrom, Vector3 rayTo, [Out] btScalar% mint, [Out] EFeature% feature,
 	[Out] int% index, bool countOnly)
 {
 	VECTOR3_CONV(rayFrom);
@@ -3480,11 +3427,17 @@ int BulletSharp::SoftBody::SoftBody::RayTest(Vector3 rayFrom, Vector3 rayTo, [Ou
 
 bool BulletSharp::SoftBody::SoftBody::RayTest(Vector3 rayFrom, Vector3 rayTo, SRayCast^ results)
 {
+	btSoftBody::sRayCast* rayCast = new btSoftBody::sRayCast();
 	VECTOR3_CONV(rayFrom);
 	VECTOR3_CONV(rayTo);
-	bool ret = Native->rayTest(VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo), *results->_native);
+	bool ret = Native->rayTest(VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo), *rayCast);
 	VECTOR3_DEL(rayFrom);
 	VECTOR3_DEL(rayTo);
+	results->Body = this;
+	results->Feature = (EFeature)rayCast->feature;
+	results->Fraction = rayCast->fraction;
+	results->Index = rayCast->index;
+	delete rayCast;
 	return ret;
 }
 

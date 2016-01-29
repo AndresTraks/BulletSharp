@@ -1,15 +1,31 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using BulletSharp;
+﻿using BulletSharp;
 using BulletSharp.SoftBody;
 using DemoFramework;
 using SharpDX;
-using Face = BulletSharp.SoftBody.Face;
+using System;
+using System.Linq;
+using System.Windows.Forms;
 using Point = System.Drawing.Point;
 
 namespace SoftDemo
 {
+    class ImplicitSphere : ImplicitFn
+    {
+        Vector3 _center;
+        float _sqRadius;
+
+        public ImplicitSphere(Vector3 center, float radius)
+        {
+            _center = center;
+            _sqRadius = radius * radius;
+        }
+
+        public override float Eval(Vector3 x)
+        {
+            return (x - _center).LengthSquared() - _sqRadius;
+        }
+    };
+
     public class SoftDemo : Demo
     {
         Vector3 eye = new Vector3(20, 20, 80);
@@ -27,7 +43,7 @@ namespace SoftDemo
             PhysicsContext = new Physics();
             PhysicsContext.World.SetInternalTickCallback(PickingPreTickCallback, this, true);
 
-            Info.DemoText = "B - Previous Demo\n" +
+            DemoText = "B - Previous Demo\n" +
                 "N - Next Demo";
             Form.Text = "BulletSharp - SoftBody Demo";
 
@@ -37,52 +53,35 @@ namespace SoftDemo
             base.OnInitialize();
         }
 
-        class ImplicitSphere : ImplicitFn
-        {
-            Vector3 center;
-            float sqradius;
-
-            public ImplicitSphere(Vector3 c, float r)
-            {
-                center = c;
-                sqradius = r * r;
-            }
-            public override float Eval(Vector3 x)
-            {
-                return ((x - center).LengthSquared() - sqradius);
-            }
-        };
-
         void PickingPreTickCallback(DynamicsWorld world, float timeStep)
         {
-            if (drag)
+            if (!drag) return;
+
+            Vector3 rayFrom = Freelook.Eye;
+            Vector3 rayTo = GetRayTo(lastMousePos, Freelook.Eye, Freelook.Target, FieldOfView);
+            Vector3 rayDir = rayTo - rayFrom;
+            rayDir.Normalize();
+            Vector3 N = Freelook.Target - rayFrom;
+            N.Normalize();
+            float O = Vector3.Dot(impact, N);
+            float den = Vector3.Dot(N, rayDir);
+            if ((den * den) > 0)
             {
-                Vector3 rayFrom = Freelook.Eye;
-                Vector3 rayTo = GetRayTo(lastMousePos, Freelook.Eye, Freelook.Target, FieldOfView);
-                Vector3 rayDir = (rayTo - rayFrom);
-                rayDir.Normalize();
-                Vector3 N = (Freelook.Target - Freelook.Eye);
-                N.Normalize();
-                float O = Vector3.Dot(impact, N);
-                float den = Vector3.Dot(N, rayDir);
-                if ((den * den) > 0)
+                float num = O - Vector3.Dot(N, rayFrom);
+                float hit = num / den;
+                if (hit > 0 && hit < 1500)
                 {
-                    float num = O - Vector3.Dot(N, rayFrom);
-                    float hit = num / den;
-                    if ((hit > 0) && (hit < 1500))
-                    {
-                        goal = rayFrom + rayDir * hit;
-                    }
+                    goal = rayFrom + rayDir * hit;
                 }
-                Vector3 delta = goal - node.X;
-                float maxdrag = 10;
-                if (delta.LengthSquared() > (maxdrag * maxdrag))
-                {
-                    delta.Normalize();
-                    delta *= maxdrag;
-                }
-                node.Velocity += delta / timeStep;
             }
+            Vector3 delta = goal - node.X;
+            float maxDrag = 10;
+            if (delta.LengthSquared() > (maxDrag * maxDrag))
+            {
+                delta.Normalize();
+                delta *= maxDrag;
+            }
+            node.Velocity += delta / timeStep;
         }
 
         protected override void OnHandleInput()
@@ -96,67 +95,54 @@ namespace SoftDemo
                 {
                     Vector3 rayFrom = Freelook.Eye;
                     Vector3 rayTo = GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView);
-                    Vector3 rayDir = (rayTo - rayFrom);
+                    Vector3 rayDir = rayTo - rayFrom;
                     rayDir.Normalize();
-                    AlignedSoftBodyArray sbs = ((SoftRigidDynamicsWorld)PhysicsContext.World).SoftBodyArray;
-                    for (int ib = 0; ib < sbs.Count; ++ib)
+
+                    SRayCast res = new SRayCast();
+                    var softBodies = (PhysicsContext.World as SoftRigidDynamicsWorld).SoftBodyArray;
+                    if (softBodies.Any(b => b.RayTest(rayFrom, rayTo, res)))
                     {
-                        SoftBody psb = sbs[ib];
-                        SRayCast res = new SRayCast();
-                        if (psb.RayTest(rayFrom, rayTo, res))
-                        {
-                            results = res;
-                        }
-                    }
-                    if (results.Fraction < 1)
-                    {
+                        results = res;
                         impact = rayFrom + (rayTo - rayFrom) * results.Fraction;
                         drag = !(PhysicsContext as Physics).cutting;
                         lastMousePos = Input.MousePoint;
-                        node = null;
+
+                        NodePtrArray nodes;
                         switch (results.Feature)
                         {
-                            case EFeature.Tetra:
-                                {
-                                    Tetra tet = results.Body.Tetras[results.Index];
-                                    node = tet.Nodes[0];
-                                    for (int i = 1; i < 4; ++i)
-                                    {
-                                        if ((node.X - impact).LengthSquared() >
-                                            (tet.Nodes[i].X - impact).LengthSquared())
-                                        {
-                                            node = tet.Nodes[i];
-                                        }
-                                    }
-                                    break;
-                                }
                             case EFeature.Face:
-                                {
-                                    Face f = results.Body.Faces[results.Index];
-                                    node = f.N[0];
-                                    for (int i = 1; i < 3; ++i)
-                                    {
-                                        if ((node.X - impact).LengthSquared() >
-                                            (f.N[i].X - impact).LengthSquared())
-                                        {
-                                            node = f.N[i];
-                                        }
-                                    }
-                                }
+                                nodes = results.Body.Faces[results.Index].N;
+                                break;
+                            case EFeature.Tetra:
+                                nodes = results.Body.Tetras[results.Index].Nodes;
+                                break;
+                            default:
+                                nodes = null;
                                 break;
                         }
-                        if (node != null)
+                        if (nodes != null)
+                        {
+                            node = nodes.Aggregate((min, n) =>
+                                (n.X - impact).LengthSquared() <
+                                (min.X - impact).LengthSquared() ? n : min
+                            );
                             goal = node.X;
-                        //return;
+                        }
+                        else
+                        {
+                            node = null;
+                        }
                     }
                 }
             }
             else if (Input.MouseReleased == MouseButtons.Right)
             {
-                if ((!drag) && (PhysicsContext as Physics).cutting && (results.Fraction < 1))
+                if (!drag && (PhysicsContext as Physics).cutting && results.Fraction < 1)
                 {
-                    ImplicitSphere isphere = new ImplicitSphere(impact, 1);
-                    results.Body.Refine(isphere, 0.0001f, true);
+                    using (var isphere = new ImplicitSphere(impact, 1))
+                    {
+                        results.Body.Refine(isphere, 0.0001f, true);
+                    }
                 }
                 results.Fraction = 1;
                 drag = false;
@@ -165,7 +151,7 @@ namespace SoftDemo
             // Mouse movement
             if (Input.MouseDown == MouseButtons.Right)
             {
-                if (node != null && (results.Fraction < 1))
+                if (node != null && results.Fraction < 1)
                 {
                     if (!drag)
                     {

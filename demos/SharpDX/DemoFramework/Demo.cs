@@ -22,6 +22,7 @@ namespace DemoFramework
     {
         bool shadowsEnabled = true;
         bool depthOfFieldEnabled = false;
+        bool deferredLightingEnabled = true;
 
         public Form Form
         {
@@ -146,8 +147,20 @@ namespace DemoFramework
         Buffer pointLightVolumeIndexBuffer;
         VertexBufferBinding pointLightVolumeVertexBufferBinding;
 
+        // Info text
         protected InfoText Info { get; set; }
         CultureInfo culture = CultureInfo.InvariantCulture;
+
+        string _demoText = "";
+        protected string DemoText
+        {
+            get { return _demoText; }
+            set
+            {
+                _demoText = value;
+                SetInfoText();
+            }
+        }
 
         MeshFactory _meshFactory;
 
@@ -624,7 +637,7 @@ namespace DemoFramework
             //lights.Add(new Light(new Vector3(-10, 5, -10), 20, new Vector4(1, 0, 1, 1)));
 
 
-            Info = new InfoText(_device);
+            Info = new InfoText(_device, 256, 256);
             _meshFactory = new MeshFactory(this);
 
             CreateBuffers();
@@ -733,15 +746,16 @@ namespace DemoFramework
         {
             //FramesPerSecond = clock.FrameCount / frameAccumulator;
 
-            Info.GraphicsText = string.Format("Physics: {0} ms\n" +
+            Info.Text = string.Format("Physics: {0} ms\n" +
                 "Render: {1} ms\n" +
                 "Interpolated: {2}/{3}\n" +
-                "Move using mouse and WASD + shift\n" +
-                "Space - Shoot box",
+                "F1 - Help\n" +
+                "{4}",
                 clock.PhysicsAverage.ToString("0.000", culture),
                 clock.RenderAverage.ToString("0.000", culture),
                 _interpolatedSteps,
-                clock.FrameCount);
+                clock.FrameCount,
+                _demoText);
         }
 
         protected virtual void OnUpdate()
@@ -839,9 +853,9 @@ namespace DemoFramework
 
 
             // Light depth map pass
+            _immediateContext.ClearDepthStencilView(lightDepthView, DepthStencilClearFlags.Depth, 1.0f, 0);
             if (shadowsEnabled)
             {
-                _immediateContext.ClearDepthStencilView(lightDepthView, DepthStencilClearFlags.Depth, 1.0f, 0);
                 outputMerger.SetDepthStencilState(lightDepthStencilState);
                 outputMerger.SetRenderTargets(lightDepthView);
                 shadowGenPass.Apply(_immediateContext);
@@ -863,12 +877,15 @@ namespace DemoFramework
             */
 
             // Light accumulation to G-buffer
-            outputMerger.SetBlendState(additiveBlendState);
-            // Can't set depthView as render target and shader variable at the same time,
-            // so early HW depth test is not available for light volumes.
-            //outputMerger.SetTargets(depthView, gBufferLightView);
-            outputMerger.SetTargets(gBufferLightView);
-            RenderLights();
+            if (deferredLightingEnabled)
+            {
+                outputMerger.SetBlendState(additiveBlendState);
+                // Can't set depthView as render target and shader variable at the same time,
+                // so early HW depth test is not available for light volumes.
+                //outputMerger.SetTargets(depthView, gBufferLightView);
+                outputMerger.SetTargets(gBufferLightView);
+                RenderLights();
+            }
 
 
             // Render G-buffer
@@ -927,7 +944,7 @@ namespace DemoFramework
 
 
             // Render overlay
-            Info.OnRender();
+            Info.Render();
             outputMerger.SetBlendState(alphaBlendState);
             diffuseBufferVar.SetResource(Info.OverlayBufferRes);
             gBufferOverlayPass.Apply(_immediateContext);
@@ -965,6 +982,15 @@ namespace DemoFramework
                     case Keys.Q:
                         Form.Close();
                         return;
+                    case Keys.F1:
+                        MessageBox.Show(
+                            "Move using mouse and WASD + shift\n" +
+                            "Space - Shoot box\n" +
+                            "Q - Quit\n\n" +
+                            "G - Toggle shadows\n" +
+                            "L - Toggle deferred lighting\n",
+                            "Help");
+                        return;
                     case Keys.F3:
                         //IsDebugDrawEnabled = !IsDebugDrawEnabled;
                         break;
@@ -985,6 +1011,9 @@ namespace DemoFramework
                         break;
                     case Keys.G:
                         shadowsEnabled = !shadowsEnabled;
+                        break;
+                    case Keys.L:
+                        deferredLightingEnabled = !deferredLightingEnabled;
                         break;
                     case Keys.Space:
                         PhysicsContext.ShootBox(Freelook.Eye, GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, FieldOfView));

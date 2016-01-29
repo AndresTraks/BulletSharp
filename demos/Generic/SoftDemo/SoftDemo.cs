@@ -1,23 +1,81 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using BulletSharp;
+﻿using BulletSharp;
 using BulletSharp.SoftBody;
 using DemoFramework;
-using Face = BulletSharp.SoftBody.Face;
+using System;
+using System.Linq;
+using System.Windows.Forms;
+using Point = System.Drawing.Point;
 
 namespace SoftDemo
 {
+    class ImplicitSphere : ImplicitFn
+    {
+        Vector3 _center;
+        float _sqRadius;
+
+        public ImplicitSphere(Vector3 center, float radius)
+        {
+            _center = center;
+            _sqRadius = radius * radius;
+        }
+
+        public override float Eval(Vector3 x)
+        {
+            return (x - _center).LengthSquared - _sqRadius;
+        }
+    };
+
+    class MotorControl : AJoint.IControl
+    {
+        float goal = 0;
+        float maxTorque = 0;
+
+        public float Goal
+        {
+            get { return goal; }
+            set { goal = value; }
+        }
+
+        public float MaxTorque
+        {
+            get { return maxTorque; }
+            set { maxTorque = value; }
+        }
+
+        public override float Speed(AJoint joint, float current)
+        {
+            return current + Math.Min(maxTorque, Math.Max(-maxTorque, goal - current));
+        }
+    }
+
+    class SteerControl : AJoint.IControl
+    {
+        float sign;
+        MotorControl _motorControl;
+
+        public float Angle { get; set; }
+
+        public SteerControl(float sign, MotorControl motorControl)
+        {
+            this.sign = sign;
+            _motorControl = motorControl;
+        }
+
+        public override void Prepare(AJoint joint)
+        {
+            joint.Refs[0] = new Vector3((float)Math.Cos(Angle * sign), 0, (float)Math.Sin(Angle * sign));
+        }
+
+        public override float Speed(AJoint joint, float current)
+        {
+            return _motorControl.Speed(joint, current);
+        }
+    }
+
     class SoftDemo : Demo
     {
         Vector3 eye = new Vector3(20, 20, 80);
         Vector3 target = new Vector3(0, 0, 10);
-
-        //int numObjects = 1;
-        //float waveHeight = 5;
-        //float triangleHeight=8;
-        //float CubeHalfExtents = 1.5f;
-        //float extraHeight = -10.0f;
 
         Point lastMousePos;
         Vector3 impact;
@@ -34,8 +92,8 @@ namespace SoftDemo
         const int maxProxies = 32766;
 
         static MotorControl motorControl = new MotorControl();
-        static SteerControl steerControlF = new SteerControl(1);
-        static SteerControl steerControlR = new SteerControl(-1);
+        static SteerControl steerControlF = new SteerControl(1, motorControl);
+        static SteerControl steerControlR = new SteerControl(-1, motorControl);
 
         SoftRigidDynamicsWorld SoftWorld
         {
@@ -61,13 +119,9 @@ namespace SoftDemo
         {
             Freelook.SetEyeTarget(eye, target);
 
-            Graphics.SetFormText("BulletSharp - SoftBody Demo");
-            Graphics.SetInfoText("Move using mouse and WASD+shift\n" +
-                "F3 - Toggle debug\n" +
-                //"F11 - Toggle fullscreen\n" +
-                "Space - Shoot box\n" +
-                "B - Previous Demo\n" +
+            Graphics.SetInfoText("B - Previous Demo\n" +
                 "N - Next Demo");
+            Graphics.SetFormText("BulletSharp - SoftBody Demo");
         }
 
         void NextDemo()
@@ -114,25 +168,6 @@ namespace SoftDemo
         {
             return new Vector3((float)random.NextDouble(),
                     (float)random.NextDouble(), (float)random.NextDouble());
-        }
-
-        void CreateStack(CollisionShape boxShape, float halfCubeSize, int size, float zPos)
-        {
-            Matrix trans;
-            float mass = 1;
-            for (int i = 0; i < size; i++)
-            {
-                // This constructs a row, from left to right
-                int rowSize = size - i;
-                for (int j = 0; j < rowSize; j++)
-                {
-                    trans = Matrix.Translation(
-                        -rowSize * halfCubeSize + halfCubeSize + j * 2.0f * halfCubeSize,
-                        halfCubeSize + i * halfCubeSize * 2.0f, zPos);
-
-                    RigidBody body = LocalCreateRigidBody(mass, trans, boxShape);
-                }
-            }
         }
 
         SoftBody Create_SoftBox(Vector3 p, Vector3 s)
@@ -446,7 +481,6 @@ namespace SoftDemo
 
         void Init_Aero2()
         {
-            //TRACEDEMO
             const float s = 5;
             const int segments = 10;
             const int count = 5;
@@ -867,56 +901,6 @@ namespace SoftDemo
             psb.AppendAngularJoint(aj, new Body(prb));
         }
 
-        class MotorControl : AJoint.IControl
-        {
-            float goal = 0;
-            float maxTorque = 0;
-
-            public float Goal
-            {
-                get { return goal; }
-                set { goal = value; }
-            }
-
-            public float MaxTorque
-            {
-                get { return maxTorque; }
-                set { maxTorque = value; }
-            }
-
-            public override float Speed(AJoint joint, float current)
-            {
-                return current + Math.Min(maxTorque, Math.Max(-maxTorque, goal - current));
-            }
-        }
-
-        class SteerControl : AJoint.IControl
-        {
-            float angle = 0;
-            float sign;
-
-            public float Angle
-            {
-                get { return angle; }
-                set { angle = value; }
-            }
-
-            public SteerControl(float sign)
-            {
-                this.sign = sign;
-            }
-
-            public override void Prepare(AJoint joint)
-            {
-                joint.Refs[0] = new Vector3((float)Math.Cos(angle * sign), 0, (float)Math.Sin(angle * sign));
-            }
-
-            public override float Speed(AJoint joint, float current)
-            {
-                return motorControl.Speed(joint, current);
-            }
-        }
-
         void Init_ClusterCombine()
         {
             Vector3 sz = new Vector3(2, 4, 2);
@@ -1134,34 +1118,33 @@ namespace SoftDemo
 
         void PickingPreTickCallback(DynamicsWorld world, float timeStep)
         {
-            if (drag)
+            if (!drag) return;
+
+            Vector3 rayFrom = Freelook.Eye;
+            Vector3 rayTo = GetRayTo(lastMousePos, Freelook.Eye, Freelook.Target, Graphics.FieldOfView);
+            Vector3 rayDir = rayTo - rayFrom;
+            rayDir.Normalize();
+            Vector3 N = Freelook.Target - rayFrom;
+            N.Normalize();
+            float O = Vector3.Dot(impact, N);
+            float den = Vector3.Dot(N, rayDir);
+            if ((den * den) > 0)
             {
-                Vector3 rayFrom = Freelook.Eye;
-                Vector3 rayTo = GetRayTo(lastMousePos, Freelook.Eye, Freelook.Target, Graphics.FieldOfView);
-                Vector3 rayDir = (rayTo - rayFrom);
-                rayDir.Normalize();
-                Vector3 N = (Freelook.Target - Freelook.Eye);
-                N.Normalize();
-                float O = Vector3.Dot(impact, N);
-                float den = Vector3.Dot(N, rayDir);
-                if ((den * den) > 0)
+                float num = O - Vector3.Dot(N, rayFrom);
+                float hit = num / den;
+                if (hit > 0 && hit < 1500)
                 {
-                    float num = O - Vector3.Dot(N, rayFrom);
-                    float hit = num / den;
-                    if ((hit > 0) && (hit < 1500))
-                    {
-                        goal = rayFrom + rayDir * hit;
-                    }
+                    goal = rayFrom + rayDir * hit;
                 }
-                Vector3 delta = goal - node.X;
-                const float maxdrag = 10;
-                if (delta.LengthSquared > (maxdrag * maxdrag))
-                {
-                    delta.Normalize();
-                    delta *= maxdrag;
-                }
-                node.Velocity += delta / timeStep;
             }
+            Vector3 delta = goal - node.X;
+            float maxDrag = 10;
+            if (delta.LengthSquared > (maxDrag * maxDrag))
+            {
+                delta.Normalize();
+                delta *= maxDrag;
+            }
+            node.Velocity += delta / timeStep;
         }
 
         public override void OnHandleInput()
@@ -1209,70 +1192,51 @@ namespace SoftDemo
                 {
                     Vector3 rayFrom = Freelook.Eye;
                     Vector3 rayTo = GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, Graphics.FieldOfView);
-                    Vector3 rayDir = (rayTo - rayFrom);
+                    Vector3 rayDir = rayTo - rayFrom;
                     rayDir.Normalize();
-                    AlignedSoftBodyArray sbs = (World as SoftRigidDynamicsWorld).SoftBodyArray;
-                    for (int ib = 0; ib < sbs.Count; ++ib)
+
+                    SRayCast res = new SRayCast();
+                    var softBodies = (World as SoftRigidDynamicsWorld).SoftBodyArray;
+                    if (softBodies.Any(b => b.RayTest(rayFrom, rayTo, res)))
                     {
-                        SoftBody psb = sbs[ib];
-                        SRayCast res = new SRayCast();
-                        if (psb.RayTest(rayFrom, rayTo, res))
-                        {
-                            results = res;
-                        }
-                        else
-                        {
-                            res.Dispose();
-                        }
-                    }
-                    if (results.Fraction < 1)
-                    {
+                        results = res;
                         impact = rayFrom + (rayTo - rayFrom) * results.Fraction;
                         drag = !cutting;
                         lastMousePos = Input.MousePoint;
-                        node = null;
+
+                        NodePtrArray nodes;
                         switch (results.Feature)
                         {
-                            case EFeature.Tetra:
-                                {
-                                    Tetra tet = results.Body.Tetras[results.Index];
-                                    node = tet.Nodes[0];
-                                    for (int i = 1; i < 4; ++i)
-                                    {
-                                        if ((node.X - impact).LengthSquared >
-                                            (tet.Nodes[i].X - impact).LengthSquared)
-                                        {
-                                            node = tet.Nodes[i];
-                                        }
-                                    }
-                                    break;
-                                }
                             case EFeature.Face:
-                                {
-                                    Face f = results.Body.Faces[results.Index];
-                                    node = f.N[0];
-                                    for (int i = 1; i < 3; ++i)
-                                    {
-                                        if ((node.X - impact).LengthSquared >
-                                            (f.N[i].X - impact).LengthSquared)
-                                        {
-                                            node = f.N[i];
-                                        }
-                                    }
-                                }
+                                nodes = results.Body.Faces[results.Index].N;
+                                break;
+                            case EFeature.Tetra:
+                                nodes = results.Body.Tetras[results.Index].Nodes;
+                                break;
+                            default:
+                                nodes = null;
                                 break;
                         }
-                        if (node != null)
+                        if (nodes != null)
+                        {
+                            node = nodes.Aggregate((min, n) =>
+                                (n.X - impact).LengthSquared <
+                                (min.X - impact).LengthSquared ? n : min
+                            );
                             goal = node.X;
-                        //return;
+                        }
+                        else
+                        {
+                            node = null;
+                        }
                     }
                 }
             }
             else if (Input.MouseReleased == MouseButtons.Right)
             {
-                if ((!drag) && cutting && (results.Fraction < 1))
+                if (!drag && cutting && results.Fraction < 1)
                 {
-                    using (ImplicitSphere isphere = new ImplicitSphere(impact, 1))
+                    using (var isphere = new ImplicitSphere(impact, 1))
                     {
                         results.Body.Refine(isphere, 0.0001f, true);
                     }
@@ -1284,7 +1248,7 @@ namespace SoftDemo
             // Mouse movement
             if (Input.MouseDown == MouseButtons.Right)
             {
-                if (node != null && (results.Fraction < 1))
+                if (node != null && results.Fraction < 1)
                 {
                     if (!drag)
                     {

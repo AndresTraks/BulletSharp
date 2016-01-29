@@ -275,26 +275,117 @@ namespace DemoFramework
 
             return shapeData;
         }
-        /*
-        Mesh CreateCapsuleShape(CapsuleShape shape)
-        {
-            // Combine a cylinder and two spheres.
-            Vector3 size = shape.ImplicitShapeDimensions;
-            Mesh cylinder = Mesh.CreateCylinder(device, size.X, size.X, size.Y * 2, 8, 1);
-            Mesh sphere = Mesh.CreateSphere(device, size.Z, 8, 4);
-            Mesh[] meshes = new Mesh[] { sphere, cylinder, sphere };
-            Matrix[] transforms = new Matrix[] {
-                    Matrix.Translation(0, -size.Y, 0),
-                    Matrix.RotationX((float)Math.PI / 2),
-                    Matrix.Translation(0, size.Y, 0)};
-            Mesh mesh = Mesh.Concatenate(device, meshes, MeshFlags.Managed, transforms, null);
-            cylinder.Dispose();
-            sphere.Dispose();
 
-            complexShapes.Add(shape, mesh);
-            return mesh;
+        public ShapeData CreateCapsule(CapsuleShape shape)
+        {
+            int up = shape.UpAxis;
+            float radius = shape.Radius;
+            float cylinderHalfHeight = shape.HalfHeight;
+
+            int slices = (int)(radius * 10.0f);
+            int stacks = (int)(radius * 10.0f);
+            slices = (slices > 16) ? 16 : (slices < 3) ? 3 : slices;
+            stacks = (stacks > 16) ? 16 : (stacks < 3) ? 3 : stacks;
+
+            float hAngleStep = (float)Math.PI * 2 / slices;
+            float vAngleStep = (float)Math.PI / stacks;
+
+            ShapeData shapeData = new ShapeData();
+            shapeData.VertexCount = 2 + slices * (stacks - 1);
+            shapeData.IndexCount = 6 * slices * (stacks - 1);
+
+            Vector3[] vertices = new Vector3[shapeData.VertexCount * 2];
+            ushort[] indices = new ushort[shapeData.IndexCount];
+
+            int i = 0, v = 0;
+
+
+            // Vertices
+            // Top and bottom
+            vertices[v++] = GetVectorByAxis(0, -cylinderHalfHeight - radius, 0, up);
+            vertices[v++] = GetVectorByAxis(-Vector3.UnitY, up);
+            vertices[v++] = GetVectorByAxis(0, cylinderHalfHeight + radius, 0, up);
+            vertices[v++] = GetVectorByAxis(Vector3.UnitY, up);
+
+            // Stacks
+            int j, k;
+            float angle = 0;
+            float vAngle = -(float)Math.PI / 2;
+            Vector3 vTemp;
+            Vector3 cylinderOffset = GetVectorByAxis(0, -cylinderHalfHeight, 0, up);
+            for (j = 0; j < stacks - 1; j++)
+            {
+                float prevAngle = vAngle;
+                vAngle += vAngleStep;
+
+                if (vAngle > 0 && prevAngle < 0)
+                {
+                    cylinderOffset = GetVectorByAxis(0, cylinderHalfHeight, 0, up);
+                }
+
+                for (k = 0; k < slices; k++)
+                {
+                    angle += hAngleStep;
+
+                    vTemp = GetVectorByAxis((float)Math.Cos(vAngle) * (float)Math.Sin(angle),
+                        (float)Math.Sin(vAngle),
+                        (float)Math.Cos(vAngle) * (float)Math.Cos(angle), up);
+                    vertices[v++] = vTemp * radius + cylinderOffset;
+                    vertices[v++] = Vector3.Normalize(vTemp);
+                }
+            }
+
+
+            // Indices
+            // Top cap
+            ushort index = 2;
+            for (k = 0; k < slices; k++)
+            {
+                indices[i++] = index++;
+                indices[i++] = 0;
+                indices[i++] = index;
+            }
+            indices[i - 1] = 2;
+
+            // Stacks
+            int sliceDiff = slices * 3;
+            for (j = 0; j < stacks - 2; j++)
+            {
+                for (k = 0; k < slices; k++)
+                {
+                    indices[i] = indices[i - sliceDiff + 2];
+                    indices[i + 1] = index++;
+                    indices[i + 2] = indices[i - sliceDiff];
+                    i += 3;
+                }
+
+                for (k = 0; k < slices; k++)
+                {
+                    indices[i] = indices[i - sliceDiff + 1];
+                    indices[i + 1] = indices[i - sliceDiff];
+                    indices[i + 2] = indices[i - sliceDiff + 4];
+                    i += 3;
+                }
+                indices[i - 1] = indices[i - sliceDiff];
+            }
+
+            // Bottom cap
+            index--;
+            for (k = 0; k < slices; k++)
+            {
+                indices[i++] = index--;
+                indices[i++] = 1;
+                indices[i++] = index;
+            }
+            indices[i - 1] = indices[i - sliceDiff];
+
+            shapeData.SetVertexBuffer(device, vertices);
+            shapeData.SetIndexBuffer(device, indices);
+
+            return shapeData;
         }
 
+        /*
         Mesh CreateConeShape(ConeShape shape)
         {
             Mesh mesh = Mesh.CreateCylinder(device, 0, shape.Radius, shape.Height, 16, 1);
@@ -734,6 +825,9 @@ namespace DemoFramework
                         break;
                     case BroadphaseNativeType.BoxShape:
                         shapeData = CreateBoxShape(shape as BoxShape);
+                        break;
+                    case BroadphaseNativeType.CapsuleShape:
+                        shapeData = CreateCapsule(shape as CapsuleShape);
                         break;
                     case BroadphaseNativeType.CylinderShape:
                         shapeData = CreateCylinderShape(shape as CylinderShape);

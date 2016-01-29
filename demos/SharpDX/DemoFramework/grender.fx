@@ -43,6 +43,33 @@ SCREEN_VS_OUT Screen_VS(uint id : SV_VertexID)
 	return output;
 }
 
+float GetShadowTerm(float2 texCoord)
+{
+	float depthSample = depthMap.Sample(defaultSampler, texCoord).x;
+	float2 projection = ViewParameters.zw;
+	float linearDepth = projection.y / (depthSample - projection.x);
+
+	float2 screenPos = (texCoord * float2(2, -2)) + float2(-1, 1); // from 0...1 to -1...1
+	float2 tanHalfFOV = ViewParameters.xy;
+	float4 viewSpacePosition = float4(linearDepth * float3(screenPos * tanHalfFOV, 1), 1);
+	float3 worldPosition = mul(ViewInverse, viewSpacePosition).xyz;
+	float4 lightScreenPosition = mul(LightViewProjection, float4(worldPosition, 1));
+
+	float2 lightScreenPos = lightScreenPosition.xy / lightScreenPosition.w;
+
+	if (lightScreenPos.x >= -1 && lightScreenPos.x <= 1 && lightScreenPos.y >= -1 && lightScreenPos.y <= 1)
+	{
+		float lightDepthActual = lightScreenPosition.z / lightScreenPosition.w;
+		lightScreenPos = (lightScreenPos - float2(-1, 1)) * float2(0.5, -0.5); // from -1...1 to 0...1
+		float lightDepthSample = lightDepthMap.Sample(shadowSampler, lightScreenPos).x;
+
+		float shadowMul = ((lightDepthActual - lightDepthSample) > 0.00006) ? 0.8 : 1;
+		return shadowMul;
+	}
+
+	return 1;
+}
+
 float4 PS(SCREEN_VS_OUT input) : SV_Target
 {
 	float3 diffuseSample = diffuseBuffer.Sample(defaultSampler, input.texCoord).rgb;
@@ -63,31 +90,9 @@ float4 PS(SCREEN_VS_OUT input) : SV_Target
 	float4 lightSample = lightBuffer.Sample(defaultSampler, input.texCoord);
 	float3 dirLight = 0.5 * saturate(dot(normal, -SunLightDirection.xyz)) * diffuseSample;
 
-	// Shadow
-	float depthSample = depthMap.Sample(defaultSampler, input.texCoord).x;
-	float2 projection = ViewParameters.zw;
-	float linearDepth = projection.y / (depthSample - projection.x);
-
-	float2 screenPos = (input.texCoord * float2(2,-2)) + float2(-1,1); // from 0...1 to -1...1
-	float2 tanHalfFOV = ViewParameters.xy;
-	float4 viewSpacePosition = float4(linearDepth * float3(screenPos * tanHalfFOV, 1), 1);
-	float3 worldPosition = mul(ViewInverse, viewSpacePosition).xyz;
-	float4 lightScreenPosition = mul(LightViewProjection, float4(worldPosition, 1));
-
-	float2 lightScreenPos = lightScreenPosition.xy / lightScreenPosition.w;
-
-	if (lightScreenPos.x >= -1 && lightScreenPos.x <= 1 && lightScreenPos.y >= -1 && lightScreenPos.y <= 1)
-	{
-		float lightDepthActual = lightScreenPosition.z / lightScreenPosition.w;
-		lightScreenPos = (lightScreenPos - float2(-1, 1)) * float2(0.5, -0.5); // from -1...1 to 0...1
-		float lightDepthSample = lightDepthMap.Sample(shadowSampler, lightScreenPos).x;
-
-		float shadowMul = ((lightDepthActual - lightDepthSample) > 0.00006) ? 0.8 : 1;
-		dirLight *= shadowMul;
-	}
+	dirLight *= GetShadowTerm(input.texCoord);
 
 	// Debugging
-	//return float4(depthSample, depthSample, depthSample, 1);
 	//return float4(normal, 1);
 
 	return float4(lightSample.xyz + ambient + dirLight, 1);
