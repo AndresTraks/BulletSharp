@@ -1,13 +1,10 @@
 #pragma once
 
-#if GRAPHICS_GENERIC
-#include "Matrix.h"
-#include "Quaternion.h"
-#include "Vector3.h"
-#include "Vector4.h"
-#elif GRAPHICS_MOGRE
+#if GRAPHICS_MOGRE
 #define Matrix Matrix4^
 using namespace Mogre;
+#elif GRAPHICS_NUMERICS
+#define Matrix Matrix4x4
 #elif GRAPHICS_OPENTK
 #ifdef BT_USE_DOUBLE_PRECISION
 #define Vector3 Vector3d
@@ -21,11 +18,11 @@ using namespace Mogre;
 #define Quaternion SharpDX::Quaternion
 #define Vector3 SharpDX::Vector3
 #define Vector4 SharpDX::Vector4
-#elif GRAPHICS_WAPICODEPACK
-#define Vector3 Vector3F
-#define Vector4 Vector4F
-#define Quaternion Vector4
-#define Matrix Matrix4x4F
+#elif GRAPHICS_GENERIC
+#include "Matrix.h"
+#include "Quaternion.h"
+#include "Vector3.h"
+#include "Vector4.h"
 #endif
 
 #if (defined(BT_USE_DOUBLE_PRECISION) && !defined(GRAPHICS_GENERIC) && !defined(GRAPHICS_OPENTK)) || \
@@ -206,18 +203,8 @@ namespace BulletSharp
 
 #define Vector3_IsFuzzyZero(v) btFuzzyZero(Vector_X(v)) && btFuzzyZero(Vector_Y(v)) && btFuzzyZero(Vector_Z(v))
 
-#if defined(GRAPHICS_WAPICODEPACK)
-#define Vector3_Neg(v) Vector3(-(v).X, -(v).Y, -(v).Z)
-#define Vector3_Scale(v, s) Vector3((v).X * (s), (v).Y * (s), (v).Z * (s))
-#else
-#define Vector3_Neg(v) -(v)
-#define Vector3_Scale(v, s) (v) * (s)
-#endif
-
-#if defined(GRAPHICS_MONOGAME) || defined(GRAPHICS_SHARPDX) || defined(GRAPHICS_SLIMDX)
+#if defined(GRAPHICS_MONOGAME) || defined(GRAPHICS_NUMERICS) || defined(GRAPHICS_SHARPDX) || defined(GRAPHICS_SLIMDX)
 #define Vector3_Length(v) (v).Length()
-#elif defined(GRAPHICS_WAPICODEPACK)
-#define Vector3_Length(v) btSqrt(((v).X * (v).X) + ((v).Y * (v).Y) + ((v).Z * (v).Z))
 #else
 #define Vector3_Length(v) (v).Length
 #endif
@@ -229,13 +216,13 @@ namespace BulletSharp
 #define Vector3_Zero Vector3::ZERO
 #define Matrix_Identity Matrix4::IDENTITY
 #define Matrix_Origin(m) (m)->GetTrans()
-#elif defined(GRAPHICS_WAPICODEPACK)
+#elif defined(GRAPHICS_NUMERICS)
 #define Vector3_Cross(left, right, result) result = Vector3::Cross(left, right)
 #define Vector3_Dot(left, right) Vector3::Dot(left, right)
-#define Vector3_Normalize(v) (v).NormalizeInPlace()
-#define Vector3_Zero Vector3(0,0,0)
-#define Matrix_Identity Matrix::Identity
-#define Matrix_Origin(m) Vector3((m).M41, (m).M42, (m).M43)
+#define Vector3_Normalize(v) Vector3::Normalize(v)
+#define Vector3_Zero Vector3::Zero
+#define Matrix_Identity Matrix4x4::Identity
+#define Matrix_Origin(m) (m).Translation
 #else
 #define Vector3_Cross(left, right, result) Vector3::Cross(left, right, result)
 #define Vector3_Dot(left, right) Vector3::Dot(left, right)

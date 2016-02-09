@@ -13,24 +13,24 @@ Global
 		Debug Mogre|x64 = Debug Mogre|x64
 		Debug MonoGame|Win32 = Debug MonoGame|Win32
 		Debug MonoGame|x64 = Debug MonoGame|x64
+		Debug Numerics|Win32 = Debug Numerics|Win32
+		Debug Numerics|x64 = Debug Numerics|x64
 		Debug OpenTK|Win32 = Debug OpenTK|Win32
 		Debug OpenTK|x64 = Debug OpenTK|x64
 		Debug SharpDX|Win32 = Debug SharpDX|Win32
 		Debug SharpDX|x64 = Debug SharpDX|x64
-		Debug Windows API Code Pack|Win32 = Debug Windows API Code Pack|Win32
-		Debug Windows API Code Pack|x64 = Debug Windows API Code Pack|x64
 		Release Generic|Win32 = Release Generic|Win32
 		Release Generic|x64 = Release Generic|x64
 		Release Mogre|Win32 = Release Mogre|Win32
 		Release Mogre|x64 = Release Mogre|x64
 		Release MonoGame|Win32 = Release MonoGame|Win32
 		Release MonoGame|x64 = Release MonoGame|x64
+		Release Numerics|Win32 = Release Numerics|Win32
+		Release Numerics|x64 = Release Numerics|x64
 		Release OpenTK|Win32 = Release OpenTK|Win32
 		Release OpenTK|x64 = Release OpenTK|x64
 		Release SharpDX|Win32 = Release SharpDX|Win32
 		Release SharpDX|x64 = Release SharpDX|x64
-		Release Windows API Code Pack|Win32 = Release Windows API Code Pack|Win32
-		Release Windows API Code Pack|x64 = Release Windows API Code Pack|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Generic|Win32.ActiveCfg = Debug Generic|Win32
@@ -45,6 +45,10 @@ Global
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug MonoGame|Win32.Build.0 = Debug MonoGame|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug MonoGame|x64.ActiveCfg = Debug MonoGame|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug MonoGame|x64.Build.0 = Debug MonoGame|x64
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Numerics|Win32.ActiveCfg = Release Numerics|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Numerics|Win32.Build.0 = Release Numerics|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Numerics|x64.ActiveCfg = Debug Numerics|x64
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Numerics|x64.Build.0 = Debug Numerics|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug OpenTK|Win32.ActiveCfg = Debug OpenTK|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug OpenTK|Win32.Build.0 = Debug OpenTK|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug OpenTK|x64.ActiveCfg = Debug OpenTK|x64
@@ -53,10 +57,6 @@ Global
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX|Win32.Build.0 = Debug SharpDX|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX|x64.ActiveCfg = Debug SharpDX|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug SharpDX|x64.Build.0 = Debug SharpDX|x64
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Windows API Code Pack|Win32.ActiveCfg = Debug Windows API Code Pack|Win32
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Windows API Code Pack|Win32.Build.0 = Debug Windows API Code Pack|Win32
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Windows API Code Pack|x64.ActiveCfg = Debug Windows API Code Pack|x64
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Debug Windows API Code Pack|x64.Build.0 = Debug Windows API Code Pack|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Generic|Win32.ActiveCfg = Release Generic|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Generic|Win32.Build.0 = Release Generic|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Generic|x64.ActiveCfg = Release Generic|x64
@@ -69,6 +69,10 @@ Global
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release MonoGame|Win32.Build.0 = Release MonoGame|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release MonoGame|x64.ActiveCfg = Release MonoGame|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release MonoGame|x64.Build.0 = Release MonoGame|x64
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Numerics|Win32.ActiveCfg = Release Numerics|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Numerics|Win32.Build.0 = Release Numerics|Win32
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Numerics|x64.ActiveCfg = Release Numerics|x64
+		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Numerics|x64.Build.0 = Release Numerics|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release OpenTK|Win32.ActiveCfg = Release OpenTK|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release OpenTK|Win32.Build.0 = Release OpenTK|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release OpenTK|x64.ActiveCfg = Release OpenTK|x64
@@ -77,10 +81,6 @@ Global
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX|Win32.Build.0 = Release SharpDX|Win32
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX|x64.ActiveCfg = Release SharpDX|x64
 		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release SharpDX|x64.Build.0 = Release SharpDX|x64
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Windows API Code Pack|Win32.ActiveCfg = Release Windows API Code Pack|Win32
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Windows API Code Pack|Win32.Build.0 = Release Windows API Code Pack|Win32
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Windows API Code Pack|x64.ActiveCfg = Release Windows API Code Pack|x64
-		{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}.Release Windows API Code Pack|x64.Build.0 = Release Windows API Code Pack|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

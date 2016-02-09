@@ -11,18 +11,18 @@ using namespace System::Security::Permissions;
 
 [assembly:AssemblyVersionAttribute(BULLETSHARP_VERSION_STRING)];
 
-#if GRAPHICS_MONOGAME
+#if GRAPHICS_MOGRE
+[assembly:AssemblyDescriptionAttribute("BulletSharp for Mogre")];
+#elif GRAPHICS_MONOGAME
 [assembly:AssemblyDescriptionAttribute("BulletSharp for MonoGame")];
+#elif GRAPHICS_NUMERICS
+[assembly:AssemblyDescriptionAttribute("BulletSharp for System.Numerics")];
+#elif GRAPHICS_OPENTK
+[assembly:AssemblyDescriptionAttribute("BulletSharp for OpenTK")];
 #elif GRAPHICS_SLIMDX
 [assembly:AssemblyDescriptionAttribute("BulletSharp for SlimDX")];
 #elif GRAPHICS_SHARPDX
 [assembly:AssemblyDescriptionAttribute("BulletSharp for SharpDX")];
-#elif GRAPHICS_MOGRE
-[assembly:AssemblyDescriptionAttribute("BulletSharp for Mogre")];
-#elif GRAPHICS_OPENTK
-[assembly:AssemblyDescriptionAttribute("BulletSharp for OpenTK")];
-#elif GRAPHICS_WAPICODEPACK
-[assembly:AssemblyDescriptionAttribute("BulletSharp for Windows API Code Pack")];
 #elif GRAPHICS_GENERIC
 [assembly:AssemblyDescriptionAttribute("BulletSharp Generic")];
 #endif

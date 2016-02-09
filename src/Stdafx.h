@@ -39,16 +39,7 @@
 #define BT_CALLBACKS_ARE_EVENTS
 
 
-#if GRAPHICS_SLIMDX
-#if WIN32
-#using <x86/SlimDX.dll>
-#elif WIN64
-#using <x64/SlimDX.dll>
-#endif
-using namespace SlimDX;
-#elif GRAPHICS_SHARPDX
-using namespace SharpDX;
-#elif GRAPHICS_MOGRE
+#if GRAPHICS_MOGRE
 #if _DEBUG
 #using <Mogre_d.dll>
 #else
@@ -58,15 +49,19 @@ using namespace Mogre;
 #elif GRAPHICS_MONOGAME
 #using <MonoGame.Framework.dll>
 using namespace Microsoft::Xna::Framework;
+#elif GRAPHICS_NUMERICS
+using namespace System::Numerics;
 #elif GRAPHICS_OPENTK
 using namespace OpenTK;
-#elif GRAPHICS_WAPICODEPACK
+#elif GRAPHICS_SLIMDX
 #if WIN32
-#using <x86/Microsoft.WindowsAPICodePack.DirectX.dll>
-#else
-#using <x64/Microsoft.WindowsAPICodePack.DirectX.dll>
+#using <x86/SlimDX.dll>
+#elif WIN64
+#using <x64/SlimDX.dll>
 #endif
-using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
+using namespace SlimDX;
+#elif GRAPHICS_SHARPDX
+using namespace SharpDX;
 #elif GRAPHICS_GENERIC
 #else
 #define GRAPHICS_GENERIC 1
@@ -77,10 +72,23 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #define BtColor int
 #define BtColorToBtVector(color) new btVector3((color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff)
 #define BtVectorToBtColor(color) (((int)(color.getX()*255) << 16) + ((int)(color.getY()*255) << 8) + (int)(color.getZ()*255))
+#elif GRAPHICS_MOGRE
+#define BtColor Mogre::ColourValue
+#define BtColorToBtVector(color) new btVector3(color.r, color.g, color.b)
+#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
 #elif GRAPHICS_MONOGAME
 #define BtColor Microsoft::Xna::Framework::Color
 #define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
 #define BtVectorToBtColor(color) BtColor((float)color.getX(), (float)color.getY(), (float)color.getZ()) // cast for DP build
+#elif GRAPHICS_NUMERICS
+using namespace System::Drawing;
+#define BtColor Color
+#define BtColorToBtVector(color) new btVector3(color.R / btScalar(255.0), color.G / btScalar(255.0), color.B / btScalar(255.0))
+#define BtVectorToBtColor(color) Color::FromArgb(0, (int)(color.getX() * btScalar(255.0)), (int)(color.getY() * btScalar(255.0)), (int)(color.getZ() * btScalar(255.0)))
+#elif GRAPHICS_OPENTK
+#define BtColor OpenTK::Graphics::Color4
+#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
+#define BtVectorToBtColor(color) BtColor((float)color.getX(), (float)color.getY(), (float)color.getZ(), 1) // cast for DP build
 #elif GRAPHICS_SLIMDX
 #define BtColor Color4
 #define BtColorToBtVector(color) new btVector3(color.Red, color.Green, color.Blue)
@@ -89,19 +97,6 @@ using namespace Microsoft::WindowsAPICodePack::DirectX::Direct3D;
 #define BtColor Color3
 #define BtColorToBtVector(color) new btVector3(color.Red, color.Green, color.Blue)
 #define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
-#elif GRAPHICS_MOGRE
-#define BtColor Mogre::ColourValue
-#define BtColorToBtVector(color) new btVector3(color.r, color.g, color.b)
-#define BtVectorToBtColor(color) BtColor(color.getX(), color.getY(), color.getZ())
-#elif GRAPHICS_OPENTK
-#define BtColor OpenTK::Graphics::Color4
-#define BtColorToBtVector(color) new btVector3(color.R, color.G, color.B)
-#define BtVectorToBtColor(color) BtColor((float)color.getX(), (float)color.getY(), (float)color.getZ(), 1) // cast for DP build
-#elif GRAPHICS_WAPICODEPACK
-using namespace System::Drawing;
-#define BtColor Color
-#define BtColorToBtVector(color) new btVector3(color.R / btScalar(255.0), color.G / btScalar(255.0), color.B / btScalar(255.0))
-#define BtVectorToBtColor(color) Color::FromArgb(0, (int)(color.getX() * btScalar(255.0)), (int)(color.getY() * btScalar(255.0)), (int)(color.getZ() * btScalar(255.0)))
 #elif GRAPHICS_GENERIC
 using namespace System::Drawing;
 #define BtColor Color

@@ -15,7 +15,8 @@ rem set OPTS=%OPTS% /p:Platform=x64
 
 %MSBUILD% %OPTS% /p:Configuration="Release Generic"
 %MSBUILD% %OPTS% /p:Configuration="Release Mogre"
+%MSBUILD% %OPTS% /p:Configuration="Release MonoGame"
+%MSBUILD% %OPTS% /p:Configuration="Release Numerics"
 %MSBUILD% %OPTS% /p:Configuration="Release OpenTK"
 %MSBUILD% %OPTS% /p:Configuration="Release SharpDX"
-%MSBUILD% %OPTS% /p:Configuration="Release MonoGame"
 %MSBUILD% %OPTS% /p:Configuration="Release Windows API Code Pack"

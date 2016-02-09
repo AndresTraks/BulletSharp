@@ -49,7 +49,7 @@ KinematicCharacterController::KinematicCharacterController(PairCachingGhostObjec
 
 Vector3 KinematicCharacterController::ComputeReflectionDirection(Vector3% direction, Vector3% normal)
 {
-	return direction - Vector3_Scale(normal, Vector3_Dot(direction, normal) * 2);
+	return direction - normal * (Vector3_Dot(direction, normal) * 2);
 }
 
 Vector3 KinematicCharacterController::GetUpAxisDirection(int upAxis)
@@ -65,7 +65,7 @@ Vector3 KinematicCharacterController::GetUpAxisDirection(int upAxis)
 
 Vector3 KinematicCharacterController::ParallelComponent(Vector3% direction, Vector3% normal)
 {
-	return Vector3_Scale(normal, Vector3_Dot(direction, normal));
+	return normal * Vector3_Dot(direction, normal);
 }
 
 Vector3 KinematicCharacterController::PerpindicularComponent(Vector3% direction, Vector3% normal)
@@ -184,7 +184,7 @@ void KinematicCharacterController::StepDown(CollisionWorld^ collisionWorld, btSc
 		&& (_wasOnGround || !_wasJumping))
 		downVelocity = _fallSpeed;
 
-	Vector3 step_drop = Vector3_Scale(GetUpAxisDirection(_upAxis), _currentStepOffset + downVelocity);
+	Vector3 step_drop = GetUpAxisDirection(_upAxis) * (_currentStepOffset + downVelocity);
 	_targetPosition -= step_drop;
 
 	btTransform* startTemp = ALIGNED_NEW(btTransform);
@@ -250,7 +250,7 @@ void KinematicCharacterController::StepDown(CollisionWorld^ collisionWorld, btSc
 			_targetPosition = orig_position;
 			downVelocity = _stepHeight;
 
-			Vector3 step_drop2 = Vector3_Scale(GetUpAxisDirection(_upAxis), _currentStepOffset + downVelocity);
+			Vector3 step_drop2 = GetUpAxisDirection(_upAxis) * (_currentStepOffset + downVelocity);
 			_targetPosition -= step_drop2;
 			runonce = true;
 			continue; //re-run previous tests
@@ -301,7 +301,7 @@ void KinematicCharacterController::StepDown(CollisionWorld^ collisionWorld, btSc
 			{
 				_targetPosition += step_drop; //undo previous target change
 				downVelocity = _fallSpeed;
-				step_drop = Vector3_Scale(GetUpAxisDirection(_upAxis), _currentStepOffset + downVelocity);
+				step_drop = GetUpAxisDirection(_upAxis) * (_currentStepOffset + downVelocity);
 				_targetPosition -= step_drop;
 			}
 		}
@@ -385,20 +385,20 @@ void KinematicCharacterController::StepForwardAndStrafe(CollisionWorld^ collisio
 
 void KinematicCharacterController::StepUp(CollisionWorld^ world)
 {
-	_targetPosition = _currentPosition + Vector3_Scale(GetUpAxisDirection(_upAxis), _stepHeight + (_verticalOffset > 0 ? _verticalOffset : 0));
+	_targetPosition = _currentPosition + GetUpAxisDirection(_upAxis) * (_stepHeight + (_verticalOffset > 0 ? _verticalOffset : 0));
 
 	btTransform* startTemp = ALIGNED_NEW(btTransform);
 	btTransform* endTemp = ALIGNED_NEW(btTransform);
 	startTemp->setIdentity();
 	endTemp->setIdentity();
-	Math::Vector3ToBtVector3(_currentPosition + Vector3_Scale(GetUpAxisDirection(_upAxis), _convexShape->Margin + _addedMargin), &startTemp->getOrigin());
+	Math::Vector3ToBtVector3(_currentPosition + GetUpAxisDirection(_upAxis) * (_convexShape->Margin + _addedMargin), &startTemp->getOrigin());
 	Math::Vector3ToBtVector3(_targetPosition, &endTemp->getOrigin());
 	Matrix start = Math::BtTransformToMatrix(startTemp);
 	Matrix end = Math::BtTransformToMatrix(endTemp);
 	ALIGNED_FREE(startTemp);
 	ALIGNED_FREE(endTemp);
 
-	KinematicClosestNotMeConvexResultCallback^ callback = gcnew KinematicClosestNotMeConvexResultCallback(_ghostObject, Vector3_Neg(GetUpAxisDirection(_upAxis)), btScalar(0.7071));
+	KinematicClosestNotMeConvexResultCallback^ callback = gcnew KinematicClosestNotMeConvexResultCallback(_ghostObject, -GetUpAxisDirection(_upAxis), btScalar(0.7071));
 	BroadphaseProxy^ ghostProxy = GhostObject->BroadphaseHandle;
 	callback->CollisionFilterGroup = ghostProxy->CollisionFilterGroup;
 	callback->CollisionFilterMask = ghostProxy->CollisionFilterMask;
@@ -460,14 +460,14 @@ void KinematicCharacterController::UpdateTargetPositionBasedOnCollision(Vector3 
 		if (0)//tangentMag != 0.0)
 		{
 			//Vector3 parComponent = Vector3_Scale(parallelDir, tangentMag * movementLength);
-//			printf("parComponent=%f,%f,%f\n",parComponent[0],parComponent[1],parComponent[2]);
+			//Console::WriteLine(parComponent);
 			//_targetPosition += parComponent;
 		}
 
 		if (normalMag != 0.0)
 		{
-			Vector3 perpComponent = Vector3_Scale(perpindicularDir, normalMag * movementLength);
-//			printf("perpComponent=%f,%f,%f\n",perpComponent[0],perpComponent[1],perpComponent[2]);
+			Vector3 perpComponent = perpindicularDir * (normalMag * movementLength);
+			//Console::WriteLine(perpComponent);
 			_targetPosition += perpComponent;
 		}
 	}
@@ -528,7 +528,7 @@ void KinematicCharacterController::PlayerStep(CollisionWorld^ collisionWorld, bt
 		_velocityTimeInterval -= dt;
 
 		// how far will we move while we are moving?
-		Vector3 move = Vector3_Scale(_walkDirection, dtMoving);
+		Vector3 move = _walkDirection * dtMoving;
 
 		StepForwardAndStrafe(collisionWorld, move);
 	}

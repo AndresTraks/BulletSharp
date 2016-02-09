@@ -202,7 +202,7 @@ btScalar RaycastVehicle::RayCast(BulletSharp::WheelInfo^ wheel)
 
 	btScalar raylen = wheel->SuspensionRestLength + wheel->WheelsRadius;
 
-	Vector3 rayvector = Vector3_Scale(wheel->RaycastInfo.WheelDirectionWS, raylen);
+	Vector3 rayvector = wheel->RaycastInfo.WheelDirectionWS * raylen;
 	Vector3 source = wheel->RaycastInfo.HardPointWS;
 	wheel->RaycastInfo.ContactPointWS = source + rayvector;
 	Vector3 target = wheel->RaycastInfo.ContactPointWS;
@@ -266,7 +266,7 @@ btScalar RaycastVehicle::RayCast(BulletSharp::WheelInfo^ wheel)
 		//put wheel info as in rest position
 		wheel->RaycastInfo.SuspensionLength = wheel->SuspensionRestLength;
 		wheel->SuspensionRelativeVelocity = btScalar(0.0);
-		wheel->RaycastInfo.ContactNormalWS = Vector3_Scale(wheel->RaycastInfo.WheelDirectionWS, -1.0f);
+		wheel->RaycastInfo.ContactNormalWS = -wheel->RaycastInfo.WheelDirectionWS;
 		wheel->ClippedInvContactDotSuspension = btScalar(1.0);
 	}
 
@@ -283,7 +283,7 @@ void RaycastVehicle::ResetSuspension()
 		wheel->RaycastInfo.SuspensionLength = wheel->SuspensionRestLength;
 		wheel->SuspensionRelativeVelocity = btScalar(0.0);
 
-		wheel->RaycastInfo.ContactNormalWS = Vector3_Neg(wheel->RaycastInfo.WheelDirectionWS);
+		wheel->RaycastInfo.ContactNormalWS = -wheel->RaycastInfo.WheelDirectionWS;
 		//wheel->ContactFriction = btScalar(0.0);
 		wheel->ClippedInvContactDotSuspension = btScalar(1.0);
 	}
@@ -384,7 +384,7 @@ void RaycastVehicle::UpdateFriction(btScalar timeStep)
 
 			Vector3 surfNormalWS = wheelInfo->RaycastInfo.ContactNormalWS;
 			btScalar proj = Vector3_Dot(_axle[i], surfNormalWS);
-			_axle[i] -= Vector3_Scale(surfNormalWS, proj);
+			_axle[i] -= surfNormalWS * proj;
 			Vector3_Normalize(_axle[i]);
 
 			Vector3_Cross(surfNormalWS, _axle[i], _forwardWS[i]);
@@ -488,7 +488,7 @@ void RaycastVehicle::UpdateFriction(btScalar timeStep)
 
 		if (_forwardImpulse[i] != btScalar(0.))
 		{
-			_chassisBody->ApplyImpulse(Vector3_Scale(_forwardWS[i], _forwardImpulse[i]), rel_pos);
+			_chassisBody->ApplyImpulse(_forwardWS[i] * _forwardImpulse[i], rel_pos);
 		}
 		if (_sideImpulse[i] != btScalar(0.))
 		{
@@ -498,16 +498,16 @@ void RaycastVehicle::UpdateFriction(btScalar timeStep)
 				groundObject->CenterOfMassPosition;
 
 					
-			Vector3 sideImp = Vector3_Scale(_axle[i], _sideImpulse[i]);
+			Vector3 sideImp = _axle[i] * _sideImpulse[i];
 
 #if defined ROLLING_INFLUENCE_FIX // fix. It only worked if car's up was along Y - VT.
 			btVector3* chassisWorldUpTemp = ALIGNED_NEW(btVector3);
 			RaycastVehicle_GetBasisAxle(&static_cast<btRigidBody*>(RigidBody->_native)->getCenterOfMassTransform(), _indexUpAxis, chassisWorldUpTemp);
 			Vector3 chassisWorldUp = Math::BtVector3ToVector3(chassisWorldUpTemp);
 			ALIGNED_FREE(chassisWorldUpTemp);
-			rel_pos -= Vector3_Scale(chassisWorldUp, Vector3_Dot(chassisWorldUp, rel_pos) * (1.f-wheelInfo->RollInfluence));
+			rel_pos -= chassisWorldUp * (Vector3_Dot(chassisWorldUp, rel_pos) * (1.f-wheelInfo->RollInfluence));
 #else
-#if defined(GRAPHICS_MONOGAME) || defined(GRAPHICS_WAPICODEPACK)
+#if defined(GRAPHICS_MONOGAME)
 			switch (_indexUpAxis)
 			{
 			case 0:
@@ -527,7 +527,7 @@ void RaycastVehicle::UpdateFriction(btScalar timeStep)
 			_chassisBody->ApplyImpulse(sideImp, rel_pos);
 
 			//apply friction impulse on the ground
-			groundObject->ApplyImpulse(Vector3_Neg(sideImp), rel_pos2);
+			groundObject->ApplyImpulse(-sideImp, rel_pos2);
 		}
 	}
 }
@@ -627,7 +627,7 @@ void RaycastVehicle::UpdateVehicle(btScalar step)
 		{
 			suspensionForce = wheel->MaxSuspensionForce;
 		}
-		Vector3 impulse = Vector3_Scale(wheel->RaycastInfo.ContactNormalWS, suspensionForce * step);
+		Vector3 impulse = wheel->RaycastInfo.ContactNormalWS * (suspensionForce * step);
 		Vector3 relpos = wheel->RaycastInfo.ContactPointWS - RigidBody->CenterOfMassPosition;
 		RigidBody->ApplyImpulse(impulse, relpos);
 	}
@@ -647,7 +647,7 @@ void RaycastVehicle::UpdateVehicle(btScalar step)
 			Vector3 fwd = Math::BtVector3ToVector3(fwdTemp);
 			
 			btScalar proj = Vector3_Dot(fwd, wheel->RaycastInfo.ContactNormalWS);
-			fwd -= Vector3_Scale(wheel->RaycastInfo.ContactNormalWS, proj);
+			fwd -= wheel->RaycastInfo.ContactNormalWS * proj;
 
 			btScalar proj2 = Vector3_Dot(fwd, vel);
 			wheel->DeltaRotation = (proj2 * step) / (wheel->WheelsRadius);
