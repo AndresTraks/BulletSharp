@@ -129,8 +129,11 @@ namespace BulletSharp
 	internal:
 		btQuantizedBvh* _native;
 
-		QuantizedBvh(btQuantizedBvh* native);
-		static QuantizedBvh^ GetManaged(btQuantizedBvh* quantizedBvh);
+	private:
+		bool _preventDelete;
+
+	internal:
+		QuantizedBvh(btQuantizedBvh* native, bool preventDelete);
 
 		!QuantizedBvh();
 		~QuantizedBvh();
@@ -192,7 +195,7 @@ namespace BulletSharp
 
 		property QuantizedNodeArray^ QuantizedNodeArray
 		{
-			QuantizedNodeArray^ get();
+			BulletSharp::QuantizedNodeArray^ get();
 		}
 
 		property BvhSubtreeInfoArray^ SubtreeInfoArray

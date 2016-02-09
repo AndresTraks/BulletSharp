@@ -160,23 +160,10 @@ void NodeOverlapCallback::ProcessNode(int subPart, int triangleIndex)
 #endif
 
 
-QuantizedBvh::QuantizedBvh(btQuantizedBvh* native)
+QuantizedBvh::QuantizedBvh(btQuantizedBvh* native, bool preventDelete)
 {
 	_native = native;
-}
-
-QuantizedBvh^ QuantizedBvh::GetManaged(btQuantizedBvh* quantizedBvh)
-{
-	if (quantizedBvh == 0) {
-		return nullptr;
-	}
-
-	btOptimizedBvh* optimizedBvh = dynamic_cast<btOptimizedBvh*>(quantizedBvh);
-	if (optimizedBvh) {
-		return gcnew OptimizedBvh(optimizedBvh);
-	}
-
-	return gcnew QuantizedBvh(quantizedBvh);
+	_preventDelete = preventDelete;
 }
 
 QuantizedBvh::~QuantizedBvh()
@@ -186,7 +173,10 @@ QuantizedBvh::~QuantizedBvh()
 
 QuantizedBvh::!QuantizedBvh()
 {
-	delete _native;
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
 	_native = NULL;
 }
 
@@ -225,8 +215,19 @@ void QuantizedBvh::DeSerializeFloat(QuantizedBvhFloatData^ quantizedBvhFloatData
 QuantizedBvh^ QuantizedBvh::DeSerializeInPlace(IntPtr alignedDataBuffer, unsigned int dataBufferSize,
 	bool swapEndian)
 {
-	return QuantizedBvh::GetManaged(btQuantizedBvh::deSerializeInPlace(alignedDataBuffer.ToPointer(), dataBufferSize,
-		swapEndian));
+	if (alignedDataBuffer == IntPtr::Zero) {
+		return nullptr;
+	}
+
+	btQuantizedBvh* quantizedBvhPtr = btQuantizedBvh::deSerializeInPlace(alignedDataBuffer.ToPointer(), dataBufferSize,
+		swapEndian);
+
+	btOptimizedBvh* optimizedBvh = dynamic_cast<btOptimizedBvh*>(quantizedBvhPtr);
+	if (optimizedBvh) {
+		return gcnew OptimizedBvh(optimizedBvh, true);
+	}
+
+	return gcnew QuantizedBvh(quantizedBvhPtr, true);
 }
 #endif
 /*

@@ -9,7 +9,7 @@ namespace BulletSharp
 	public ref class OptimizedBvh : QuantizedBvh
 	{
 	internal:
-		OptimizedBvh(btOptimizedBvh* native);
+		OptimizedBvh(btOptimizedBvh* native, bool preventDelete);
 
 	public:
 		OptimizedBvh();

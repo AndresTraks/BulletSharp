@@ -5,13 +5,13 @@
 
 #define Native static_cast<btOptimizedBvh*>(_native)
 
-OptimizedBvh::OptimizedBvh(btOptimizedBvh* native)
-	: QuantizedBvh(native)
+OptimizedBvh::OptimizedBvh(btOptimizedBvh* native, bool preventDelete)
+	: QuantizedBvh(native, preventDelete)
 {
 }
 
 OptimizedBvh::OptimizedBvh()
-	: QuantizedBvh(new btOptimizedBvh())
+	: QuantizedBvh(new btOptimizedBvh(), false)
 {
 }
 #ifndef DISABLE_BVH
@@ -29,8 +29,14 @@ void OptimizedBvh::Build(StridingMeshInterface^ triangles, bool useQuantizedAabb
 OptimizedBvh^ OptimizedBvh::DeSerializeInPlace(IntPtr alignedDataBuffer, unsigned int dataBufferSize,
 	bool swapEndian)
 {
-	return gcnew OptimizedBvh(btOptimizedBvh::deSerializeInPlace(alignedDataBuffer.ToPointer(), dataBufferSize,
-		swapEndian));
+	if (alignedDataBuffer == IntPtr::Zero) {
+		return nullptr;
+	}
+
+	btOptimizedBvh* quantizedBvhPtr = btOptimizedBvh::deSerializeInPlace(alignedDataBuffer.ToPointer(), dataBufferSize,
+		swapEndian);
+
+	return gcnew OptimizedBvh(quantizedBvhPtr, true);
 }
 
 void OptimizedBvh::Refit(StridingMeshInterface^ triangles, Vector3 aabbMin, Vector3 aabbMax)

@@ -92,6 +92,7 @@ BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface,
 void BvhTriangleMeshShape::BuildOptimizedBvh()
 {
 	Native->buildOptimizedBvh();
+	_optimizedBvh = nullptr;
 }
 
 void BvhTriangleMeshShape::PartialRefitTree(Vector3% aabbMin, Vector3% aabbMax)
@@ -151,6 +152,7 @@ void BvhTriangleMeshShape::SerializeSingleTriangleInfoMap(BulletSharp::Serialize
 
 void BvhTriangleMeshShape::SetOptimizedBvh(BulletSharp::OptimizedBvh^ bvh, Vector3 localScaling)
 {
+	System::Diagnostics::Debug::Assert(!OwnsBvh);
 	VECTOR3_CONV(localScaling);
 	Native->setOptimizedBvh((btOptimizedBvh*)GetUnmanagedNullable(bvh), VECTOR3_USE(localScaling));
 	VECTOR3_DEL(localScaling);
@@ -166,20 +168,18 @@ void BvhTriangleMeshShape_SetOptimizedBvh(btBvhTriangleMeshShape* shape, btOptim
 
 OptimizedBvh^ BvhTriangleMeshShape::OptimizedBvh::get()
 {
-	if (!_optimizedBvh)
+	if (!_optimizedBvh && OwnsBvh)
 	{
 		btOptimizedBvh* optimizedBvh = Native->getOptimizedBvh();
-		if (optimizedBvh)
-		{
-			_optimizedBvh = gcnew BulletSharp::OptimizedBvh(optimizedBvh);
-		}
+		_optimizedBvh = gcnew BulletSharp::OptimizedBvh(optimizedBvh, true);
 	}
 	return _optimizedBvh;
 }
 void BvhTriangleMeshShape::OptimizedBvh::set(BulletSharp::OptimizedBvh^ value)
 {
-	_optimizedBvh = value;
+	System::Diagnostics::Debug::Assert(!OwnsBvh);
 	BvhTriangleMeshShape_SetOptimizedBvh(Native, (btOptimizedBvh*)GetUnmanagedNullable(value));
+	_optimizedBvh = value;
 }
 
 bool BvhTriangleMeshShape::OwnsBvh::get()
