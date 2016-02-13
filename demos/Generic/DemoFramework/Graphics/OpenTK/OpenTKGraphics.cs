@@ -8,7 +8,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace DemoFramework.OpenTK
 {
-    public class OpenTKGraphics : DemoFramework.Graphics
+    public class OpenTKGraphics : Graphics
     {
         GLControl glControl;
         Matrix4 lookat, perspective;
@@ -132,24 +132,6 @@ namespace DemoFramework.OpenTK
             return shaderHandle;
         }
 
-        int CreateShaderFromFile(ShaderType type, string filename)
-        {
-            string shaderSource;
-            StreamReader reader;
-            try
-            {
-                reader = new StreamReader(filename);
-                shaderSource = reader.ReadToEnd();
-                reader.Close();
-            }
-            catch
-            {
-                return 0;
-            }
-
-            return CreateShaderFromString(type, shaderSource);
-        }
-
         public void InitializeDevice()
         {
             Version ver = new Version(GL.GetString(StringName.Version).Split(' ')[0]);
@@ -217,11 +199,18 @@ namespace DemoFramework.OpenTK
             Form.ShowDialog();
         }
 
-        public void Render()
+        public void Paint()
         {
             Demo.OnHandleInput();
             Demo.OnUpdate();
 
+            Demo.Clock.StartRender();
+            Render();
+            Demo.Clock.StopRender();
+        }
+
+        public void Render()
+        {
             GL.UseProgram(shaderProgram);
             GL.Enable(EnableCap.DepthTest);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -256,7 +245,7 @@ namespace DemoFramework.OpenTK
 
             if (Demo.World != null)
             {
-                _meshFactory.InitInstancedRender(Demo.World.CollisionObjectArray);
+                _meshFactory.InitInstancedRender();
                 _meshFactory.RenderInstanced();
             }
 
@@ -270,7 +259,7 @@ namespace DemoFramework.OpenTK
                 (Demo.World.DebugDrawer as PhysicsDebugDraw).DrawDebugWorld(Demo.World);
             }
 
-            info.OnRender(Demo.FramesPerSecond);
+            info.OnRender();
 
             glControl.SwapBuffers();
         }

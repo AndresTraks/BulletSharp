@@ -16,7 +16,7 @@ namespace DemoFramework
 
         public static bool ExitWithReload { get; set; }
 
-        static string[] supportedLibraries = new string[] {
+        static string[] supportedLibraries = {
             "SharpDX (DirectX 11)", "SharpDX (DirectX 10)", "SlimDX (DirectX 9)", "OpenTK (OpenGL)", "MonoGame (OpenGL)" };
         public static string[] GetSupportedLibraries()
         {
@@ -29,19 +29,19 @@ namespace DemoFramework
             switch (library)
             {
                 case "SharpDX (DirectX 11)":
-                    assemblyNames = new string[] { "DemoFramework.SharpDX11", "SharpDX", "SharpDX.Direct3D11", "SharpDX.Direct3D11.Effects", "SharpDX.DXGI", "SharpDX.D3DCompiler" };
+                    assemblyNames = new[] { "DemoFramework.SharpDX11", "SharpDX", "SharpDX.Direct3D11", "SharpDX.Direct3D11.Effects", "SharpDX.DXGI", "SharpDX.D3DCompiler" };
                     break;
                 case "SharpDX (DirectX 10)":
-                    assemblyNames = new string[] { "DemoFramework.SharpDX", "SharpDX", "SharpDX.Direct3D10", "SharpDX.DXGI", "SharpDX.D3DCompiler" };
+                    assemblyNames = new[] { "DemoFramework.SharpDX", "SharpDX", "SharpDX.Direct3D10", "SharpDX.DXGI", "SharpDX.D3DCompiler" };
                     break;
                 case "SlimDX (DirectX 9)":
-                    assemblyNames = new string[] { "DemoFramework.SlimDX", "SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9" };
+                    assemblyNames = new[] { "DemoFramework.SlimDX", "SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9" };
                     break;
                 case "OpenTK (OpenGL)":
-                    assemblyNames = new string[] { "DemoFramework.OpenTK", "OpenTK" };
+                    assemblyNames = new[] { "DemoFramework.OpenTK", "OpenTK" };
                     break;
                 case "MonoGame (OpenGL)":
-                    assemblyNames = new string[] { "DemoFramework.MonoGame" };
+                    assemblyNames = new[] { "DemoFramework.MonoGame" };
                     break;
                 default:
                     return false;
@@ -66,7 +66,7 @@ namespace DemoFramework
         {
             Type graphicsType;
             Assembly assembly;
-            switch (GraphicsLibraryManager.GraphicsLibraryName)
+            switch (GraphicsLibraryName)
             {
                 case "SharpDX (DirectX 11)":
                     assembly = Assembly.Load("DemoFramework.SharpDX11");

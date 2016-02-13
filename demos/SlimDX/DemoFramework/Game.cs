@@ -12,7 +12,7 @@ using Device = SlimDX.Direct3D9.Device;
 
 namespace DemoFramework
 {
-    public class Game : System.IDisposable
+    public class Game : IDisposable
     {
         public RenderForm Form
         {
@@ -83,10 +83,9 @@ namespace DemoFramework
         {
             get
             {
-                if (DebugDrawer == null)
-                    return debugDrawMode;
-                else
-                    return DebugDrawer.DebugMode;
+                if (DebugDrawer == null) return debugDrawMode;
+
+                return DebugDrawer.DebugMode;
             }
             set
             {

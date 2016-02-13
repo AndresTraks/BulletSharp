@@ -18,7 +18,7 @@ namespace ConcaveRaycastDemo
         Vector3[] hit = new Vector3[NUMRAYS_IN_BAR];
         Vector3[] normal = new Vector3[NUMRAYS_IN_BAR];
 
-        int frame_counter;
+        int frameCounter;
         int ms;
         int sum_ms;
         int sum_ms_samples;
@@ -41,9 +41,9 @@ namespace ConcaveRaycastDemo
             sum_ms = 0;
         }
 
-        public RaycastBar(bool unused, float ray_length, float min_z, float max_z, float min_y = -10, float max_y = 10)
+        public RaycastBar(bool unused, float rayLength, float min_z, float max_z, float min_y = -10, float max_y = 10)
         {
-            frame_counter = 0;
+            frameCounter = 0;
             ms = 0;
             max_ms = 0;
             min_ms = 9999;
@@ -59,14 +59,14 @@ namespace ConcaveRaycastDemo
             {
                 float z = (max_z - min_z) / NUMRAYS_IN_BAR * (float)i + min_z;
                 source[i] = new Vector3(min_x, max_y, z);
-                dest[i] = new Vector3(min_x + ray_length, min_y, z);
+                dest[i] = new Vector3(min_x + rayLength, min_y, z);
                 normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
             }
         }
 
-        public RaycastBar(float ray_length, float z, float min_y = -1000, float max_y = 10)
+        public RaycastBar(float rayLength, float z, float min_y = -1000, float max_y = 10)
         {
-            frame_counter = 0;
+            frameCounter = 0;
             ms = 0;
             max_ms = 0;
             min_ms = 9999;
@@ -86,7 +86,7 @@ namespace ConcaveRaycastDemo
                 Matrix tr = Matrix.RotationQuaternion(Quaternion.RotationAxis(new Vector3(0.0f, 1.0f, 0.0f), alpha));
                 direction[i] = new Vector3(1.0f, 0.0f, 0.0f);
                 direction[i] = Vector3.TransformCoordinate(direction[i], tr);
-                direction[i] = direction[i] * ray_length;
+                direction[i] = direction[i] * rayLength;
                 source[i] = new Vector3(min_x, max_y, z);
                 dest[i] = source[i] + direction[i];
                 dest[i][1] = min_y;
@@ -148,17 +148,17 @@ namespace ConcaveRaycastDemo
                 }
             }
 
-            frame_counter++;
-            if (frame_counter > 50)
+            frameCounter++;
+            if (frameCounter > 50)
             {
                 min_ms = ms < min_ms ? ms : min_ms;
                 max_ms = ms > max_ms ? ms : max_ms;
                 sum_ms += ms;
                 sum_ms_samples++;
                 float mean_ms = (float)sum_ms / (float)sum_ms_samples;
-                Console.WriteLine("{0} rays in {1} ms {2} {3} {4}", NUMRAYS_IN_BAR * frame_counter, ms, min_ms, max_ms, mean_ms);
+                Console.WriteLine("{0} rays in {1} ms {2} {3} {4}", NUMRAYS_IN_BAR * frameCounter, ms, min_ms, max_ms, mean_ms);
                 ms = 0;
-                frame_counter = 0;
+                frameCounter = 0;
             }
 #endif
         }
@@ -202,10 +202,6 @@ namespace ConcaveRaycastDemo
             Freelook.SetEyeTarget(eye, target);
 
             Graphics.SetFormText("BulletSharp - Concave Raycast Demo");
-            Graphics.SetInfoText("Move using mouse and WASD+shift\n" +
-                "F3 - Toggle debug\n" +
-                //"F11 - Toggle fullscreen\n" +
-                "Space - Shoot box");
 
             IsDebugDrawEnabled = true;
             DebugDrawMode = debugMode;

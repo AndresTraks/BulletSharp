@@ -14,7 +14,15 @@ namespace GImpactTestDemo
         Vector3 target = new Vector3(0, 10, -4);
         DebugDrawModes debugMode = DebugDrawModes.DrawAabb | DebugDrawModes.DrawWireframe;
 
-        Light light;
+        Light _light = new Light
+        {
+            Type = LightType.Directional,
+            Range = 500,
+            Position = new Vector3(50, 50, 0),
+            Direction = new Vector3(0, -1, 0),
+            Diffuse = Color.LemonChiffon,
+            Attenuation0 = 0.5f
+        };
 
         Physics Physics
         {
@@ -31,14 +39,7 @@ namespace GImpactTestDemo
         protected override void OnInitialize()
         {
             Physics = new Physics();
-
-            light = new Light();
-            light.Type = LightType.Directional;
-            light.Range = 500;
-            light.Position = new Vector3(50, 50, 0);
-            light.Direction = new Vector3(0, -1, 0);
-            light.Diffuse = Color.LemonChiffon;
-            light.Attenuation0 = 0.5f;
+            DebugDrawMode = debugMode;
 
             FarPlane = 800f;
             Freelook.SetEyeTarget(eye, target);
@@ -56,7 +57,7 @@ namespace GImpactTestDemo
         {
             base.OnResetDevice();
 
-            Device.SetLight(0, light);
+            Device.SetLight(0, _light);
             Device.EnableLight(0, true);
         }
 
@@ -100,11 +101,6 @@ namespace GImpactTestDemo
             if (LibraryTest.Test() == false)
                 return;
 
-            RunGame();
-        }
-
-        static void RunGame()
-        {
             using (GImpactTestDemo game = new GImpactTestDemo())
             {
                 game.Run();

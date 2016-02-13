@@ -30,12 +30,12 @@ namespace SerializeDemo
     class Physics : PhysicsContext
     {
         ///create 125 (5x5x5) dynamic objects
-        int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
+        const int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
 
         ///scaling of the objects (0.1 = 20 centimeter boxes )
-        float StartPosX = -5;
-        float StartPosY = -5;
-        float StartPosZ = -3;
+        const float StartPosX = -5;
+        const float StartPosY = -5;
+        const float StartPosZ = -3;
 
         public Physics()
         {
@@ -75,28 +75,27 @@ namespace SerializeDemo
 
                 Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
-                float start_x = StartPosX - ArraySizeX / 2;
-                float start_y = StartPosY;
-                float start_z = StartPosZ - ArraySizeZ / 2;
+                var rbInfo = new RigidBodyConstructionInfo(mass, null, colShape, localInertia);
 
-                int k, i, j;
-                for (k = 0; k < ArraySizeY; k++)
+                const float startX = StartPosX - ArraySizeX / 2;
+                const float startY = StartPosY;
+                const float startZ = StartPosZ - ArraySizeZ / 2;
+
+                for (int k = 0; k < ArraySizeY; k++)
                 {
-                    for (i = 0; i < ArraySizeX; i++)
+                    for (int i = 0; i < ArraySizeX; i++)
                     {
-                        for (j = 0; j < ArraySizeZ; j++)
+                        for (int j = 0; j < ArraySizeZ; j++)
                         {
                             Matrix startTransform = Matrix.Translation(
-                                2 * i + start_x,
-                                2 * k + start_y,
-                                2 * j + start_z
+                                2 * i + startX,
+                                2 * k + startY,
+                                2 * j + startZ
                             );
 
                             // using motionstate is recommended, it provides interpolation capabilities
                             // and only synchronizes 'active' objects
-                            DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
-                            RigidBodyConstructionInfo rbInfo =
-                                new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
+                            rbInfo.MotionState = new DefaultMotionState(startTransform);
                             RigidBody body = new RigidBody(rbInfo);
 
                             // make it drop from a height
@@ -111,7 +110,7 @@ namespace SerializeDemo
 
                 serializer.RegisterNameForObject(ground, "GroundName");
 
-                for (i = 0; i < CollisionShapes.Count; i++)
+                for (int i = 0; i < CollisionShapes.Count; i++)
                     serializer.RegisterNameForObject(CollisionShapes[i], "name" + i.ToString());
 
                 Point2PointConstraint p2p = new Point2PointConstraint((RigidBody)World.CollisionObjectArray[2], new Vector3(0, 1, 0));

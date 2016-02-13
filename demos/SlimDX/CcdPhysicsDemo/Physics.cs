@@ -7,11 +7,7 @@ namespace CcdPhysicsDemo
     class Physics : PhysicsContext
     {
         bool ccdMode = true;
-
-        public bool CcdMode
-        {
-            get { return ccdMode; }
-        }
+        public bool CcdMode => ccdMode;
 
         float CubeHalfExtents = 0.5f;
         //Vector3 comOffsetVec = new Vector3(0, 2, 0);
@@ -22,28 +18,6 @@ namespace CcdPhysicsDemo
             ccdMode = !ccdMode;
 
             ClientResetScene();
-        }
-
-        void CreateStack(CollisionShape boxShape, int size, float zPos)
-        {
-            Matrix trans;
-            float mass = 1.0f;
-
-            for (int i = 0; i < size; i++)
-            {
-                // This constructs a row, from left to right
-                int rowSize = size - i;
-                for (int j = 0; j < rowSize; j++)
-                {
-                    trans = Matrix.Translation(
-                        -rowSize * CubeHalfExtents + CubeHalfExtents + j * 2.0f * CubeHalfExtents,
-                        CubeHalfExtents + i * CubeHalfExtents * 2.0f,
-                        zPos);
-
-                    RigidBody body = LocalCreateRigidBody(mass, trans, boxShape);
-                    body.ActivationState = ActivationState.IslandSleeping;
-                }
-            }
         }
 
         public override void InitPhysics()

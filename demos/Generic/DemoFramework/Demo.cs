@@ -1,43 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 using BulletSharp;
 
 namespace DemoFramework
 {
-    public abstract class Demo : System.IDisposable
+    public abstract class Demo : IDisposable
     {
         protected Graphics Graphics { get; set; }
         public FreeLook Freelook { get; set; }
         public Input Input { get; set; }
 
-        // Frame counting
-        Clock clock = new Clock();
-        float frameAccumulator;
-        int frameCount;
-
-        float _frameDelta;
-        public float FrameDelta
+        // Info text
+        CultureInfo _culture = CultureInfo.InvariantCulture;
+        string _demoText = "";
+        protected string DemoText
         {
-            get { return _frameDelta; }
+            get { return _demoText; }
+            set
+            {
+                _demoText = value;
+                SetInfoText();
+            }
         }
-        public float FramesPerSecond { get; private set; }
 
+        // Frame counting
+        public Clock Clock { get; } = new Clock();
+
+        public float FrameDelta { get; private set; }
+        public float FramesPerSecond { get; private set; }
+        float _frameAccumulator;
 
         // Physics
-        DynamicsWorld _world;
-        public DynamicsWorld World
-        {
-            get { return _world; }
-            protected set { _world = value; }
-        }
+        public DynamicsWorld World { get; protected set; }
 
         protected CollisionConfiguration CollisionConf;
         protected CollisionDispatcher Dispatcher;
         protected BroadphaseInterface Broadphase;
         protected ConstraintSolver Solver;
-        public List<CollisionShape> CollisionShapes { get; private set; }
+        public List<CollisionShape> CollisionShapes { get; } = new List<CollisionShape>();
 
         protected BoxShape shootBoxShape;
         protected float shootBoxInitialSpeed = 40;
@@ -80,9 +83,9 @@ namespace DemoFramework
                     {
                         _debugDrawer = Graphics.GetPhysicsDebugDrawer();
                         _debugDrawer.DebugMode = _debugDrawMode;
-                        if (_world != null)
+                        if (World != null)
                         {
-                            _world.DebugDrawer = _debugDrawer;
+                            World.DebugDrawer = _debugDrawer;
                         }
                     }
                 }
@@ -90,9 +93,9 @@ namespace DemoFramework
                 {
                     if (_debugDrawer != null)
                     {
-                        if (_world != null)
+                        if (World != null)
                         {
-                            _world.DebugDrawer = null;
+                            World.DebugDrawer = null;
                         }
                         if (_debugDrawer is IDisposable)
                         {
@@ -117,11 +120,6 @@ namespace DemoFramework
                 Graphics.CullingEnabled = value;
                 isCullingEnabled = value;
             }
-        }
-
-        public Demo()
-        {
-            CollisionShapes = new List<CollisionShape>();
         }
 
         public void Run()
@@ -151,8 +149,8 @@ namespace DemoFramework
                     }
                 }
                 Graphics.UpdateView();
+                SetInfoText();
 
-                clock.Start();
                 Graphics.Run();
 
                 if (_debugDrawer != null)
@@ -190,27 +188,27 @@ namespace DemoFramework
 
         public virtual void ExitPhysics()
         {
-            if (_world != null)
+            if (World != null)
             {
                 //remove/dispose constraints
                 int i;
-                for (i = _world.NumConstraints - 1; i >= 0; i--)
+                for (i = World.NumConstraints - 1; i >= 0; i--)
                 {
-                    TypedConstraint constraint = _world.GetConstraint(i);
-                    _world.RemoveConstraint(constraint);
+                    TypedConstraint constraint = World.GetConstraint(i);
+                    World.RemoveConstraint(constraint);
                     constraint.Dispose();
                 }
 
                 //remove the rigidbodies from the dynamics world and delete them
-                for (i = _world.NumCollisionObjects - 1; i >= 0; i--)
+                for (i = World.NumCollisionObjects - 1; i >= 0; i--)
                 {
-                    CollisionObject obj = _world.CollisionObjectArray[i];
+                    CollisionObject obj = World.CollisionObjectArray[i];
                     RigidBody body = obj as RigidBody;
                     if (body != null && body.MotionState != null)
                     {
                         body.MotionState.Dispose();
                     }
-                    _world.RemoveCollisionObject(obj);
+                    World.RemoveCollisionObject(obj);
                     obj.Dispose();
                 }
 
@@ -219,7 +217,7 @@ namespace DemoFramework
                     shape.Dispose();
                 CollisionShapes.Clear();
 
-                _world.Dispose();
+                World.Dispose();
                 Broadphase.Dispose();
                 Dispatcher.Dispose();
                 CollisionConf.Dispose();
@@ -239,25 +237,37 @@ namespace DemoFramework
             }
         }
 
+        void SetInfoText()
+        {
+            Graphics.SetInfoText(
+                $"Physics: {Clock.PhysicsAverage.ToString("0.000", _culture)} ms\n" +
+                $"Render: {Clock.RenderAverage.ToString("0.000", _culture)} ms\n" +
+                $"{Clock.FrameCount} FPS\n" +
+                "F1 - Help\n" +
+                $"{_demoText}");
+        }
+
         public virtual void OnUpdate()
         {
-            _frameDelta = clock.Update();
-            frameAccumulator += _frameDelta;
-            ++frameCount;
-            if (frameAccumulator >= 1.0f)
+            FrameDelta = Clock.GetFrameDelta();
+            _frameAccumulator += FrameDelta;
+            if (_frameAccumulator >= 1.0f)
             {
-                FramesPerSecond = frameCount / frameAccumulator;
+                FramesPerSecond = Clock.FrameCount / _frameAccumulator;
+                SetInfoText();
 
-                frameAccumulator = 0.0f;
-                frameCount = 0;
+                _frameAccumulator = 0.0f;
+                Clock.Reset();
             }
 
-            if (_world != null)
+            if (World != null)
             {
-                _world.StepSimulation(_frameDelta);
+                Clock.StartPhysics();
+                World.StepSimulation(FrameDelta);
+                Clock.StopPhysics();
             }
 
-            if (Freelook.Update(_frameDelta))
+            if (Freelook.Update(FrameDelta))
                 Graphics.UpdateView();
 
             Input.ClearKeyCache();
@@ -287,6 +297,16 @@ namespace DemoFramework
                     case Keys.Q:
                         Graphics.Form.Close();
                         return;
+                    case Keys.F1:
+                        MessageBox.Show(
+                            "Move camera using mouse and WASD + shift\n" +
+                            "Space - Shoot box\n" +
+                            "Q - Quit\n" +
+                            Graphics.InfoText,
+                            "Help");
+                        // Key release won't be captured
+                        Input.KeysDown.Remove(Keys.F1);
+                        break;
                     case Keys.F3:
                         IsDebugDrawEnabled = !IsDebugDrawEnabled;
                         break;
@@ -316,12 +336,12 @@ namespace DemoFramework
 
                 if (Input.MousePressed == MouseButtons.Right)
                 {
-                    if (_world != null)
+                    if (World != null)
                     {
                         Vector3 rayFrom = Freelook.Eye;
 
                         ClosestRayResultCallback rayCallback = new ClosestRayResultCallback(ref rayFrom, ref rayTo);
-                        _world.RayTest(ref rayFrom, ref rayTo, rayCallback);
+                        World.RayTest(ref rayFrom, ref rayTo, rayCallback);
                         if (rayCallback.HasHit)
                         {
                             Vector3 pickPos = rayCallback.HitPointWorld;
@@ -345,7 +365,7 @@ namespace DemoFramework
                                             AngularUpperLimit = Vector3.Zero
                                         };
 
-                                        _world.AddConstraint(dof6);
+                                        World.AddConstraint(dof6);
                                         pickConstraint = dof6;
 
                                         dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 0);
@@ -365,7 +385,7 @@ namespace DemoFramework
                                     else
                                     {
                                         Point2PointConstraint p2p = new Point2PointConstraint(body, localPivot);
-                                        _world.AddConstraint(p2p);
+                                        World.AddConstraint(p2p);
                                         pickConstraint = p2p;
                                         p2p.Setting.ImpulseClamp = 30;
                                         //very weak constraint for picking
@@ -460,9 +480,9 @@ namespace DemoFramework
 
         void RemovePickingConstraint()
         {
-            if (pickConstraint != null && _world != null)
+            if (pickConstraint != null && World != null)
             {
-                _world.RemoveConstraint(pickConstraint);
+                World.RemoveConstraint(pickConstraint);
                 pickConstraint.Dispose();
                 pickConstraint = null;
                 pickedBody.ForceActivationState(ActivationState.ActiveTag);
@@ -523,7 +543,7 @@ namespace DemoFramework
 
         public virtual void ShootBox(Vector3 camPos, Vector3 destination)
         {
-            if (_world == null)
+            if (World == null)
                 return;
 
             const float mass = 1.0f;
@@ -562,7 +582,7 @@ namespace DemoFramework
             RigidBody body = new RigidBody(rbInfo);
             rbInfo.Dispose();
 
-            _world.AddRigidBody(body);
+            World.AddRigidBody(body);
 
             return body;
         }

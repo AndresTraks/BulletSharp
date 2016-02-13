@@ -1,48 +1,27 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoFramework", "DemoFramework\DemoFramework.csproj", "{7F50B160-6C4D-467A-9AAB-10C516326BD1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicDemo", "BasicDemo\BasicDemo.csproj", "{8B5B1C14-C924-42FD-ABAB-4CD851F06DF9}"
-	ProjectSection(ProjectDependencies) = postProject
-		{3DDE3767-7DA8-4700-A74B-EC34146AB688} = {3DDE3767-7DA8-4700-A74B-EC34146AB688}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpDX", "DemoFramework\Graphics\SharpDX\SharpDX.csproj", "{3DDE3767-7DA8-4700-A74B-EC34146AB688}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlimDX", "DemoFramework\Graphics\SlimDX\SlimDX.csproj", "{67DF42D4-C318-4E52-9017-43A2EFD7790B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenTK", "DemoFramework\Graphics\OpenTK\OpenTK.csproj", "{3CD13788-CD50-451F-8267-AF7578403621}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CcdPhysicsDemo", "CcdPhysicsDemo\CcdPhysicsDemo.csproj", "{60FB11CC-8D7D-4EBE-80AF-D4914BC88759}"
-	ProjectSection(ProjectDependencies) = postProject
-		{3DDE3767-7DA8-4700-A74B-EC34146AB688} = {3DDE3767-7DA8-4700-A74B-EC34146AB688}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BenchmarkDemo", "BenchmarkDemo\BenchmarkDemo.csproj", "{8712106F-F6B3-4196-B124-6516936451C3}"
-	ProjectSection(ProjectDependencies) = postProject
-		{3DDE3767-7DA8-4700-A74B-EC34146AB688} = {3DDE3767-7DA8-4700-A74B-EC34146AB688}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Box2DDemo", "Box2DDemo\Box2DDemo.csproj", "{C47829F1-A1BC-440F-8879-63B41E5176F6}"
-	ProjectSection(ProjectDependencies) = postProject
-		{3DDE3767-7DA8-4700-A74B-EC34146AB688} = {3DDE3767-7DA8-4700-A74B-EC34146AB688}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftDemo", "SoftDemo\SoftDemo.csproj", "{99135BBD-934C-411D-9DB0-1157BA35EDB6}"
-	ProjectSection(ProjectDependencies) = postProject
-		{3DDE3767-7DA8-4700-A74B-EC34146AB688} = {3DDE3767-7DA8-4700-A74B-EC34146AB688}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BspDemo", "BspDemo\BspDemo.csproj", "{AD666B32-ADA7-46EF-9546-4CBD680B7E18}"
-	ProjectSection(ProjectDependencies) = postProject
-		{3DDE3767-7DA8-4700-A74B-EC34146AB688} = {3DDE3767-7DA8-4700-A74B-EC34146AB688}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConstraintDemo", "ConstraintDemo\ConstraintDemo.csproj", "{E53D74AE-3F31-41A5-9046-57109CC9CBD5}"
-	ProjectSection(ProjectDependencies) = postProject
-		{3DDE3767-7DA8-4700-A74B-EC34146AB688} = {3DDE3767-7DA8-4700-A74B-EC34146AB688}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvexDecompositionDemo", "ConvexDecompositionDemo\ConvexDecompositionDemo.csproj", "{6E5A81BA-E9B2-4C38-92B2-CCB660690DA4}"
 EndProject
@@ -89,9 +68,6 @@ Global
 		{8B5B1C14-C924-42FD-ABAB-4CD851F06DF9}.Debug|x86.Build.0 = Debug|x86
 		{8B5B1C14-C924-42FD-ABAB-4CD851F06DF9}.Release|x86.ActiveCfg = Release|x86
 		{8B5B1C14-C924-42FD-ABAB-4CD851F06DF9}.Release|x86.Build.0 = Release|x86
-		{3DDE3767-7DA8-4700-A74B-EC34146AB688}.Debug|x86.ActiveCfg = Debug|x86
-		{3DDE3767-7DA8-4700-A74B-EC34146AB688}.Release|x86.ActiveCfg = Release|x86
-		{3DDE3767-7DA8-4700-A74B-EC34146AB688}.Release|x86.Build.0 = Release|x86
 		{67DF42D4-C318-4E52-9017-43A2EFD7790B}.Debug|x86.ActiveCfg = Debug|x86
 		{67DF42D4-C318-4E52-9017-43A2EFD7790B}.Release|x86.ActiveCfg = Release|x86
 		{67DF42D4-C318-4E52-9017-43A2EFD7790B}.Release|x86.Build.0 = Release|x86

@@ -46,7 +46,7 @@ namespace ConcaveConvexCastDemo
             sum_ms = 0;
         }
 
-        public ConvexcastBatch(bool unused, float ray_length, float min_z, float max_z, float min_y, float max_y)
+        public ConvexcastBatch(bool unused, float rayLength, float min_z, float max_z, float min_y, float max_y)
         {
             boxShapeHalfExtents = new Vector3(1.0f, 1.0f, 1.0f);
             boxShape = new BoxShape(boxShapeHalfExtents);
@@ -67,12 +67,12 @@ namespace ConcaveConvexCastDemo
             {
                 float z = (max_z - min_z) / NUMRAYS_IN_BAR * i + min_z;
                 source[i] = new Vector3(min_x, max_y, z);
-                dest[i] = new Vector3(min_x + ray_length, min_y, z);
+                dest[i] = new Vector3(min_x + rayLength, min_y, z);
                 normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
             }
         }
 
-        public ConvexcastBatch(float ray_length, float z, float min_y = -1000, float max_y = 10)
+        public ConvexcastBatch(float rayLength, float z, float min_y = -1000, float max_y = 10)
         {
             boxShapeHalfExtents = new Vector3(1.0f, 1.0f, 1.0f);
             boxShape = new BoxShape(boxShapeHalfExtents);
@@ -97,7 +97,7 @@ namespace ConcaveConvexCastDemo
                 direction[i] = new Vector3(1.0f, 0.0f, 0.0f);
                 direction[i] = Vector3.TransformCoordinate(direction[i], tr);
                 source[i] = new Vector3(min_x, max_y, z);
-                dest[i] = source[i] + direction[i] * ray_length;
+                dest[i] = source[i] + direction[i] * rayLength;
                 dest[i][1] = min_y;
                 normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
             }
@@ -219,10 +219,6 @@ namespace ConcaveConvexCastDemo
             Freelook.SetEyeTarget(eye, target);
 
             Graphics.SetFormText("BulletSharp - Concave Convexcast Demo");
-            Graphics.SetInfoText("Move using mouse and WASD+shift\n" +
-                "F3 - Toggle debug\n" +
-                //"F11 - Toggle fullscreen\n" +
-                "Space - Shoot box");
 
             IsDebugDrawEnabled = true;
             DebugDrawMode = debugMode;

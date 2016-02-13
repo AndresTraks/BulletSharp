@@ -8,8 +8,8 @@
     <ProjectGuid>{85D6063A-E3BF-4D49-ADDD-4DD9CD02D062}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Box2dDemo</RootNamespace>
-    <AssemblyName>Box2dDemo</AssemblyName>
+    <RootNamespace>Box2DDemo</RootNamespace>
+    <AssemblyName>Box2DDemo</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>
@@ -49,7 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BulletSharp">
-      <HintPath>..\..\..\Release SlimDX\BulletSharp.dll</HintPath>
+      <HintPath>..\..\..\vs2010\Release SlimDX\BulletSharp.dll</HintPath>
     </Reference>
     <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86" />
     <Reference Include="System" />

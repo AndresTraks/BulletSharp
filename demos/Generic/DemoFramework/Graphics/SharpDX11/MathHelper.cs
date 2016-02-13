@@ -15,12 +15,25 @@ namespace DemoFramework.SharpDX11
 
         public static BulletSharp.Matrix Convert(ref Matrix m)
         {
-            BulletSharp.Matrix r = new BulletSharp.Matrix();
-            r.M11 = m.M11; r.M12 = m.M12; r.M13 = m.M13; r.M14 = m.M14;
-            r.M21 = m.M21; r.M22 = m.M22; r.M23 = m.M23; r.M24 = m.M24;
-            r.M31 = m.M31; r.M32 = m.M32; r.M33 = m.M33; r.M34 = m.M34;
-            r.M41 = m.M41; r.M42 = m.M42; r.M43 = m.M43; r.M44 = m.M44;
-            return r;
+            return new BulletSharp.Matrix
+            {
+                M11 = m.M11,
+                M12 = m.M12,
+                M13 = m.M13,
+                M14 = m.M14,
+                M21 = m.M21,
+                M22 = m.M22,
+                M23 = m.M23,
+                M24 = m.M24,
+                M31 = m.M31,
+                M32 = m.M32,
+                M33 = m.M33,
+                M34 = m.M34,
+                M41 = m.M41,
+                M42 = m.M42,
+                M43 = m.M43,
+                M44 = m.M44
+            };
         }
 
         public static Vector3 Convert(BulletSharp.Vector3 v)

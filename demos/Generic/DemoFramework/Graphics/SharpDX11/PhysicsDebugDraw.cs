@@ -21,8 +21,7 @@ namespace DemoFramework.SharpDX11
             device = graphics.Device;
             inputAssembler = device.ImmediateContext.InputAssembler;
 
-            InputElement[] elements = new InputElement[]
-            {
+            InputElement[] elements = {
                 new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
                 new InputElement("COLOR", 0, Format.R8G8B8A8_UNorm, 12, 0, InputClassification.PerVertexData, 0)
             };

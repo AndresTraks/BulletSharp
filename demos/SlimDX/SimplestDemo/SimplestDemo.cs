@@ -88,12 +88,14 @@ namespace SimplestDemo
             box = Mesh.CreateBox(Device, 2, 2, 2);
             groundBox = Mesh.CreateBox(Device, 100, 2, 100);
 
-            light = new Light();
-            light.Type = LightType.Point;
-            light.Range = 70;
-            light.Position = new Vector3(10, 25, 10);
-            light.Diffuse = Color.LemonChiffon;
-            light.Attenuation0 = 1.0f;
+            light = new Light
+            {
+                Type = LightType.Point,
+                Range = 70,
+                Position = new Vector3(10, 25, 10),
+                Diffuse = Color.LemonChiffon,
+                Attenuation0 = 1.0f
+            };
 
             boxMaterial = new Material();
             boxMaterial.Diffuse = Color.Orange;

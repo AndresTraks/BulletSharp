@@ -172,11 +172,7 @@ namespace DemoFramework
         float frameAccumulator;
         int _interpolatedSteps;
 
-        float _frameDelta;
-        public float FrameDelta
-        {
-            get { return _frameDelta; }
-        }
+        public float FrameDelta { get; private set; }
         public float FramesPerSecond { get; private set; }
 
         public PhysicsContext PhysicsContext { get; set; }
@@ -359,6 +355,7 @@ namespace DemoFramework
                 SampleDescription = new SampleDescription(1, 0),
                 Usage = ResourceUsage.Default
             };
+
             gBufferLight = new Texture2D(_device, gBufferDesc);
             gBufferLightView = new RenderTargetView(_device, gBufferLight);
 
@@ -380,7 +377,7 @@ namespace DemoFramework
                 gBufferPostProcessViewBlur2 = new RenderTargetView(_device, gBufferPostProcessBlur2);
             }
 
-            gBufferViews = new RenderTargetView[] { gBufferNormalView, gBufferDiffuseView };
+            gBufferViews = new[] { gBufferNormalView, gBufferDiffuseView };
 
             ShaderResourceViewDescription gBufferResourceDesc = new ShaderResourceViewDescription()
             {
@@ -678,11 +675,11 @@ namespace DemoFramework
             lightViewportHeightVar.Set(Height);
             lightEyePositionVar.Set(ref eyePosition);
 
-            float tanHalfFOVY = (float)Math.Tan(FieldOfView * 0.5f);
-            float tanHalfFOVX = tanHalfFOVY * AspectRatio;
+            float tanHalfFovY = (float)Math.Tan(FieldOfView * 0.5f);
+            float tanHalfFovX = tanHalfFovY * AspectRatio;
             float projectionA = FarPlane / (FarPlane - NearPlane);
             float projectionB = -projectionA * NearPlane;
-            Vector4 viewParameters = new Vector4(tanHalfFOVX, tanHalfFOVY, projectionA, projectionB);
+            Vector4 viewParameters = new Vector4(tanHalfFovX, tanHalfFovY, projectionA, projectionB);
             lightViewParametersVar.Set(ref viewParameters);
 
 
@@ -760,8 +757,8 @@ namespace DemoFramework
 
         protected virtual void OnUpdate()
         {
-            _frameDelta = clock.GetFrameDelta();
-            frameAccumulator += _frameDelta;
+            FrameDelta = clock.GetFrameDelta();
+            frameAccumulator += FrameDelta;
             if (frameAccumulator >= 1.0f)
             {
                 SetInfoText();
@@ -774,7 +771,7 @@ namespace DemoFramework
             if (PhysicsContext.World != null)
             {
                 clock.StartPhysics();
-                int steps = PhysicsContext.World.StepSimulation(_frameDelta);
+                int steps = PhysicsContext.World.StepSimulation(FrameDelta);
                 clock.StopPhysics();
                 if (steps == 0)
                 {
@@ -782,7 +779,7 @@ namespace DemoFramework
                 }
             }
 
-            if (Freelook.Update(_frameDelta))
+            if (Freelook.Update(FrameDelta))
                 UpdateView();
 
             Input.ClearKeyCache();
@@ -999,15 +996,17 @@ namespace DemoFramework
                         break;
                     case (Keys.Control | Keys.F):
                         const int maxSerializeBufferSize = 1024 * 1024 * 5;
-                        DefaultSerializer serializer = new DefaultSerializer(maxSerializeBufferSize);
-                        PhysicsContext.World.Serialize(serializer);
+                        using (var serializer = new DefaultSerializer(maxSerializeBufferSize))
+                        {
+                            PhysicsContext.World.Serialize(serializer);
 
-                        byte[] dataBytes = new byte[serializer.CurrentBufferSize];
-                        System.Runtime.InteropServices.Marshal.Copy(serializer.BufferPointer, dataBytes, 0, dataBytes.Length);
-
-                        System.IO.FileStream file = new System.IO.FileStream("world.bullet", System.IO.FileMode.Create);
-                        file.Write(dataBytes, 0, dataBytes.Length);
-                        file.Dispose();
+                            byte[] dataBytes = new byte[serializer.CurrentBufferSize];
+                            Marshal.Copy(serializer.BufferPointer, dataBytes, 0, dataBytes.Length);
+                            using (var file = new System.IO.FileStream("world.bullet", System.IO.FileMode.Create))
+                            {
+                                file.Write(dataBytes, 0, dataBytes.Length);
+                            }
+                        }
                         break;
                     case Keys.G:
                         shadowsEnabled = !shadowsEnabled;
@@ -1031,7 +1030,7 @@ namespace DemoFramework
                     {
                         Vector3 rayFrom = Freelook.Eye;
 
-                        ClosestRayResultCallback rayCallback = new ClosestRayResultCallback(ref rayFrom, ref rayTo);
+                        var rayCallback = new ClosestRayResultCallback(ref rayFrom, ref rayTo);
                         PhysicsContext.World.RayTest(rayFrom, rayTo, rayCallback);
                         if (rayCallback.HasHit)
                         {
@@ -1145,15 +1144,15 @@ namespace DemoFramework
 
         void RemovePickingConstraint()
         {
-            if (pickConstraint != null && PhysicsContext.World != null)
-            {
-                PhysicsContext.World.RemoveConstraint(pickConstraint);
-                pickConstraint.Dispose();
-                pickConstraint = null;
-                pickedBody.ForceActivationState(ActivationState.ActiveTag);
-                pickedBody.DeactivationTime = 0;
-                pickedBody = null;
-            }
+            if (pickConstraint == null) return;
+            if (PhysicsContext.World == null) return;
+
+            PhysicsContext.World.RemoveConstraint(pickConstraint);
+            pickConstraint.Dispose();
+            pickConstraint = null;
+            pickedBody.ForceActivationState(ActivationState.ActiveTag);
+            pickedBody.DeactivationTime = 0;
+            pickedBody = null;
         }
 
         protected Vector3 GetRayTo(Point point, Vector3 eye, Vector3 target, float fov)

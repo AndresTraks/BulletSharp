@@ -193,7 +193,7 @@ namespace DemoFramework.OpenTK
 
     class MeshFactory : DemoFramework.MeshFactory
     {
-        Demo demo;
+        Demo _demo;
 
         Dictionary<CollisionShape, ShapeData> shapes = new Dictionary<CollisionShape, ShapeData>();
         List<CollisionShape> removeList = new List<CollisionShape>();
@@ -211,7 +211,7 @@ namespace DemoFramework.OpenTK
 
         public MeshFactory(Demo demo)
         {
-            this.demo = demo;
+            _demo = demo;
         }
 
         public void SetShaderLocations(int worldMatrix, int position, int normal, int color)
@@ -331,29 +331,28 @@ namespace DemoFramework.OpenTK
             UpdateSoftBody(softBody, shapeData);
         }
 
-        public void InitInstancedRender(AlignedCollisionObjectArray objects)
+        public void InitInstancedRender()
         {
             // Clear instance data
             foreach (ShapeData s in shapes.Values)
                 s.Instances.Clear();
 
-            int i = objects.Count - 1;
-            for (; i >= 0; i--)
+            // Gather instance data
+            foreach (var colObj in _demo.World.CollisionObjectArray)
             {
-                var colObj = objects[i];
                 var shape = colObj.CollisionShape;
 
                 if (colObj is SoftBody)
                 {
-                    if (demo.IsDebugDrawEnabled)
+                    if (_demo.IsDebugDrawEnabled)
                         continue;
                     InitSoftBodyInstance(colObj as SoftBody, shape);
                 }
                 else
                 {
-                    BulletSharp.Matrix transform;
+                    Matrix transform;
                     colObj.GetWorldTransform(out transform);
-                    InitRigidBodyInstance(colObj, colObj.CollisionShape, ref transform);
+                    InitRigidBodyInstance(colObj, shape, ref transform);
                 }
             }
 
@@ -396,11 +395,12 @@ namespace DemoFramework.OpenTK
                 */
             }
 
+            // Remove shapes that had no instances
             if (removeList.Count != 0)
             {
-                for (i = removeList.Count - 1; i >= 0; i--)
+                foreach (var shape in removeList)
                 {
-                    shapes.Remove(removeList[i]);
+                    shapes.Remove(shape);
                 }
                 removeList.Clear();
             }

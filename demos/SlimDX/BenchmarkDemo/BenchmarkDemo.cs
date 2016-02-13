@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
 using BulletSharp;
 using DemoFramework;
 using SlimDX;
@@ -13,7 +12,14 @@ namespace BenchmarkDemo
         Vector3 eye = new Vector3(60, 40, 20);
         Vector3 target = new Vector3(0, 5, -4);
 
-        Light light;
+        Light _light = new Light
+        {
+            Type = LightType.Point,
+            Range = 350,
+            Position = new Vector3(10, 50, 10),
+            Diffuse = Color.LemonChiffon,
+            Attenuation0 = 0.6f
+        };
 
         protected override void OnInitializeDevice()
         {
@@ -25,12 +31,6 @@ namespace BenchmarkDemo
         {
             PhysicsContext = new Physics();
 
-            light = new Light();
-            light.Type = LightType.Point;
-            light.Range = 350;
-            light.Position = new Vector3(10, 50, 10);
-            light.Diffuse = Color.LemonChiffon;
-            light.Attenuation0 = 0.6f;
             FarPlane = 400;
 
             Freelook.SetEyeTarget(eye, target);
@@ -47,7 +47,7 @@ namespace BenchmarkDemo
         {
             base.OnResetDevice();
 
-            Device.SetLight(0, light);
+            Device.SetLight(0, _light);
             Device.EnableLight(0, true);
         }
 
@@ -80,12 +80,7 @@ namespace BenchmarkDemo
             if (LibraryTest.Test() == false)
                 return;
 
-            RunGame();
-        }
-
-        static void RunGame()
-        {
-            using (BenchmarkDemo game = new BenchmarkDemo())
+            using (var game = new BenchmarkDemo())
             {
                 game.Run();
             }

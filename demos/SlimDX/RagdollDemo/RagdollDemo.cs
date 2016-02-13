@@ -3,7 +3,6 @@
 
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using BulletSharp;
 using DemoFramework;
 using SlimDX;
@@ -16,7 +15,14 @@ namespace RagdollDemo
         Vector3 eye = new Vector3(1, 1, 10);
         Vector3 target = new Vector3(0, 1, 0);
 
-        Light light;
+        Light _light = new Light
+        {
+            Type = LightType.Point,
+            Range = 150,
+            Position = new Vector3(10, 25, 10),
+            Diffuse = Color.LemonChiffon,
+            Attenuation0 = 0.9f
+        };
 
         protected override void OnInitializeDevice()
         {
@@ -27,13 +33,6 @@ namespace RagdollDemo
         protected override void OnInitialize()
         {
             PhysicsContext = new Physics();
-
-            light = new Light();
-            light.Type = LightType.Point;
-            light.Range = 150;
-            light.Position = new Vector3(10, 25, 10);
-            light.Diffuse = Color.LemonChiffon;
-            light.Attenuation0 = 0.9f;
 
             Freelook.SetEyeTarget(eye, target);
 
@@ -49,7 +48,7 @@ namespace RagdollDemo
         {
             base.OnResetDevice();
 
-            Device.SetLight(0, light);
+            Device.SetLight(0, _light);
             Device.EnableLight(0, true);
         }
 

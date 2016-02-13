@@ -2,12 +2,12 @@
 using DemoFramework;
 using SlimDX;
 
-namespace Box2dDemo
+namespace Box2DDemo
 {
     class Physics : PhysicsContext
     {
         ///create 25 (5x5) dynamic objects
-        int ArraySizeX = 5, ArraySizeY = 5;
+        const int ArraySizeX = 5, ArraySizeY = 5;
         public float Depth = 0.04f;
 
         public Physics()
@@ -18,14 +18,14 @@ namespace Box2dDemo
             // Use the default collision dispatcher. For parallel processing you can use a diffent dispatcher.
             Dispatcher = new CollisionDispatcher(CollisionConf);
 
-            VoronoiSimplexSolver simplex = new VoronoiSimplexSolver();
-            MinkowskiPenetrationDepthSolver pdSolver = new MinkowskiPenetrationDepthSolver();
+            var simplex = new VoronoiSimplexSolver();
+            var pdSolver = new MinkowskiPenetrationDepthSolver();
 
-            Convex2DConvex2DAlgorithm.CreateFunc convexAlgo2d = new Convex2DConvex2DAlgorithm.CreateFunc(simplex, pdSolver);
+            var convexAlgo2D = new Convex2DConvex2DAlgorithm.CreateFunc(simplex, pdSolver);
 
-            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2DShape, BroadphaseNativeType.Convex2DShape, convexAlgo2d);
-            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Box2DShape, BroadphaseNativeType.Convex2DShape, convexAlgo2d);
-            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2DShape, BroadphaseNativeType.Box2DShape, convexAlgo2d);
+            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2DShape, BroadphaseNativeType.Convex2DShape, convexAlgo2D);
+            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Box2DShape, BroadphaseNativeType.Convex2DShape, convexAlgo2D);
+            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2DShape, BroadphaseNativeType.Box2DShape, convexAlgo2D);
             Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Box2DShape, BroadphaseNativeType.Box2DShape, new Box2DBox2DCollisionAlgorithm.CreateFunc());
 
             Broadphase = new DbvtBroadphase();
@@ -46,14 +46,22 @@ namespace Box2dDemo
             // Re-using the same collision is better for memory usage and performance
             float u = 0.96f;
             Vector3[] points = { new Vector3(0, u, 0), new Vector3(-u, -u, 0), new Vector3(u, -u, 0) };
-            ConvexShape colShape = new Convex2DShape(new BoxShape(1, 1, Depth));
-            ConvexShape colShape2 = new Convex2DShape(new ConvexHullShape(points));
-            ConvexShape colShape3 = new Convex2DShape(new CylinderShapeZ(1, 1, Depth));
+            ConvexShape childShape0 = new BoxShape(1, 1, Depth);
+            ConvexShape colShape = new Convex2DShape(childShape0);
+            ConvexShape childShape1 = new ConvexHullShape(points);
+            ConvexShape colShape2 = new Convex2DShape(childShape1);
+            ConvexShape childShape2 = new CylinderShapeZ(1, 1, Depth);
+            ConvexShape colShape3 = new Convex2DShape(childShape2);
 
-            colShape.Margin = 0.03f;
             CollisionShapes.Add(colShape);
             CollisionShapes.Add(colShape2);
             CollisionShapes.Add(colShape3);
+
+            CollisionShapes.Add(childShape0);
+            CollisionShapes.Add(childShape1);
+            CollisionShapes.Add(childShape2);
+
+            colShape.Margin = 0.03f;
 
             float mass = 1.0f;
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
@@ -65,11 +73,10 @@ namespace Box2dDemo
             Vector3 deltaX = new Vector3(1, 2, 0);
             Vector3 deltaY = new Vector3(2, 0, 0);
 
-            int i, j;
-            for (i = 0; i < ArraySizeY; i++)
+            for (int i = 0; i < ArraySizeY; i++)
             {
                 y = x;
-                for (j = 0; j < ArraySizeX; j++)
+                for (int j = 0; j < ArraySizeX; j++)
                 {
                     startTransform = Matrix.Translation(y - new Vector3(-10, 0, 0));
 
@@ -90,6 +97,7 @@ namespace Box2dDemo
                             break;
                     }
                     RigidBody body = new RigidBody(rbInfo);
+                    rbInfo.Dispose();
                     //body.ActivationState = ActivationState.IslandSleeping;
                     body.LinearFactor = new Vector3(1, 1, 0);
                     body.AngularFactor = new Vector3(0, 0, 1);

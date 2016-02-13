@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using BulletSharp;
+﻿using BulletSharp;
 using BulletSharp.SoftBody;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Buffer = SharpDX.Direct3D11.Buffer;
 using Color = System.Drawing.Color;
 using DataStream = SharpDX.DataStream;
@@ -319,17 +319,15 @@ namespace DemoFramework.SharpDX11
             UpdateSoftBody(softBody, shapeData);
         }
 
-        public void InitInstancedRender(AlignedCollisionObjectArray objects)
+        public void InitInstancedRender()
         {
             // Clear instance data
             foreach (ShapeData s in shapes.Values)
                 s.Instances.Clear();
 
             // Gather instance data
-            int i = objects.Count - 1;
-            for (; i >= 0; i--)
+            foreach (var colObj in demo.World.CollisionObjectArray)
             {
-                var colObj = objects[i];
                 var shape = colObj.CollisionShape;
 
                 if (shape.ShapeType == BroadphaseNativeType.SoftBodyShape)
@@ -350,9 +348,10 @@ namespace DemoFramework.SharpDX11
             {
                 ShapeData s = sh.Value;
                 int instanceCount = s.Instances.Count;
+                var instanceArray = s.InstanceArray;
 
                 // Is the instance buffer the right size?
-                if (s.InstanceDataBuffer.Description.SizeInBytes != instanceCount * InstanceData.SizeInBytes)
+                if (instanceArray.Length != instanceCount)
                 {
                     // No, recreate it
                     s.InstanceDataBuffer.Dispose();
@@ -371,15 +370,12 @@ namespace DemoFramework.SharpDX11
                     instanceDataDesc.SizeInBytes = instanceCount * InstanceData.SizeInBytes;
                     s.InstanceDataBuffer = new Buffer(device, instanceDataDesc);
                     s.BufferBindings[1] = new VertexBufferBinding(s.InstanceDataBuffer, InstanceData.SizeInBytes, 0);
-                }
 
-                // Copy the instance list over to the instance array
-                InstanceData[] instanceArray = s.InstanceArray;
-                if (instanceArray.Length != instanceCount)
-                {
                     instanceArray = new InstanceData[instanceCount];
                     s.InstanceArray = instanceArray;
                 }
+
+                // Copy the instance list over to the instance array
                 s.Instances.CopyTo(instanceArray);
 
                 DataBox db = device.ImmediateContext.MapSubresource(s.InstanceDataBuffer, 0, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None);

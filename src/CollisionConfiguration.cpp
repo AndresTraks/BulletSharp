@@ -5,9 +5,12 @@
 #include "PoolAllocator.h"
 #endif
 
-CollisionConfiguration::CollisionConfiguration(btCollisionConfiguration* native)
+CollisionConfiguration::CollisionConfiguration(btCollisionConfiguration* native,
+	PoolAllocator^ collisionAlgorithmPool, PoolAllocator^ persistentManifoldPool)
 {
 	_native = native;
+	_collisionAlgorithmPool = collisionAlgorithmPool;
+	_persistentManifoldPool = persistentManifoldPool;
 }
 
 CollisionConfiguration::~CollisionConfiguration()

@@ -16,7 +16,14 @@ namespace SoftDemo
         Vector3 eye = new Vector3(20, 20, 80);
         Vector3 target = new Vector3(0, 0, 10);
 
-        Light light;
+        Light _light = new Light
+        {
+            Type = LightType.Point,
+            Range = 75,
+            Position = new Vector3(10, 25, 0),
+            Diffuse = Color.LemonChiffon,
+            Attenuation0 = 1.0f
+        };
         SlimDX.Direct3D9.Material softBodyMaterial;
 
         Point lastMousePos;
@@ -43,13 +50,6 @@ namespace SoftDemo
             Physics = new Physics();
             Physics.World.SetInternalTickCallback(PickingPreTickCallback, this, true);
 
-            light = new Light();
-            light.Type = LightType.Point;
-            light.Range = 75;
-            light.Position = new Vector3(10, 25, 0);
-            light.Diffuse = Color.LemonChiffon;
-            light.Attenuation0 = 1.0f;
-
             softBodyMaterial = new SlimDX.Direct3D9.Material();
             softBodyMaterial.Diffuse = Color.White;
             softBodyMaterial.Ambient = new Color4(Ambient);
@@ -70,7 +70,7 @@ namespace SoftDemo
         {
             base.OnResetDevice();
 
-            Device.SetLight(0, light);
+            Device.SetLight(0, _light);
             Device.EnableLight(0, true);
 
             Device.SetRenderState(RenderState.CullMode, Cull.None);
@@ -268,11 +268,6 @@ namespace SoftDemo
             if (LibraryTest.Test() == false)
                 return;
 
-            RunGame();
-        }
-
-        static void RunGame()
-        {
             using (SoftDemo game = new SoftDemo())
             {
                 game.Run();

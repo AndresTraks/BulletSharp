@@ -47,10 +47,6 @@ namespace SerializeDemo
             Freelook.SetEyeTarget(eye, target);
 
             Graphics.SetFormText("BulletSharp - Serialize Demo");
-            Graphics.SetInfoText("Move using mouse and WASD+shift\n" +
-                "F3 - Toggle debug\n" +
-                //"F11 - Toggle fullscreen\n" +
-                "Space - Shoot box");
         }
 
         protected override void OnInitializePhysics()
@@ -105,12 +101,11 @@ namespace SerializeDemo
                 float start_y = StartPosY;
                 float start_z = StartPosZ - ArraySizeZ / 2;
 
-                int k, i, j;
-                for (k = 0; k < ArraySizeY; k++)
+                for (int k = 0; k < ArraySizeY; k++)
                 {
-                    for (i = 0; i < ArraySizeX; i++)
+                    for (int i = 0; i < ArraySizeX; i++)
                     {
-                        for (j = 0; j < ArraySizeZ; j++)
+                        for (int j = 0; j < ArraySizeZ; j++)
                         {
                             Matrix startTransform = Matrix.Translation(
                                 2 * i + start_x,
@@ -138,8 +133,8 @@ namespace SerializeDemo
 
                 serializer.RegisterNameForObject(ground, "GroundName");
 
-                for (i = 0; i < CollisionShapes.Count; i++)
-                    serializer.RegisterNameForObject(CollisionShapes[i], "name" + i.ToString());
+                for (int i = 0; i < CollisionShapes.Count; i++)
+                    serializer.RegisterNameForObject(CollisionShapes[i], $"name{i}");
 
                 Point2PointConstraint p2p = new Point2PointConstraint((RigidBody)World.CollisionObjectArray[2], new Vector3(0, 1, 0));
                 World.AddConstraint(p2p);

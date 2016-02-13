@@ -37,7 +37,7 @@ DefaultCollisionConstructionInfo::DefaultCollisionConstructionInfo()
 #ifndef DISABLE_UNCOMMON
 PoolAllocator^ DefaultCollisionConstructionInfo::CollisionAlgorithmPool::get()
 {
-	if (_collisionAlgorithmPool == nullptr)
+	if (!_collisionAlgorithmPool && _native->m_collisionAlgorithmPool)
 	{
 		_collisionAlgorithmPool = gcnew PoolAllocator(_native->m_collisionAlgorithmPool, true);
 	}
@@ -80,7 +80,7 @@ void DefaultCollisionConstructionInfo::DefaultMaxPersistentManifoldPoolSize::set
 #ifndef DISABLE_UNCOMMON
 PoolAllocator^ DefaultCollisionConstructionInfo::PersistentManifoldPool::get()
 {
-	if (_persistentManifoldPool == nullptr)
+	if (!_persistentManifoldPool && _native->m_persistentManifoldPool)
 	{
 		_persistentManifoldPool = gcnew PoolAllocator(_native->m_persistentManifoldPool, true);
 	}
@@ -105,18 +105,20 @@ void DefaultCollisionConstructionInfo::UseEpaPenetrationAlgorithm::set(int value
 
 #define Native static_cast<btDefaultCollisionConfiguration*>(_native)
 
-DefaultCollisionConfiguration::DefaultCollisionConfiguration(btDefaultCollisionConfiguration* native)
-	: CollisionConfiguration(native)
+DefaultCollisionConfiguration::DefaultCollisionConfiguration(btDefaultCollisionConfiguration* native,
+	PoolAllocator^ collisionAlgorithmPool, PoolAllocator^ persistentManifoldPool)
+	: CollisionConfiguration(native, collisionAlgorithmPool, persistentManifoldPool)
 {
 }
 
 DefaultCollisionConfiguration::DefaultCollisionConfiguration(DefaultCollisionConstructionInfo^ constructionInfo)
-	: CollisionConfiguration(new btDefaultCollisionConfiguration(*constructionInfo->_native))
+	: CollisionConfiguration(new btDefaultCollisionConfiguration(*constructionInfo->_native),
+		constructionInfo->CollisionAlgorithmPool, constructionInfo->PersistentManifoldPool)
 {
 }
 
 DefaultCollisionConfiguration::DefaultCollisionConfiguration()
-	: CollisionConfiguration(new btDefaultCollisionConfiguration())
+	: CollisionConfiguration(new btDefaultCollisionConfiguration(), nullptr, nullptr)
 {
 }
 

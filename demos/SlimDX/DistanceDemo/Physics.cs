@@ -37,10 +37,10 @@ namespace DistanceDemo
 
             // Objects
             //colShape = new BoxShape(1);
-            Vector3[] points0 = new Vector3[] {
+            Vector3[] points0 = {
                 new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1)
             };
-            Vector3[] points1 = new Vector3[] {
+            Vector3[] points1 = {
                 new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1), new Vector3(0,0,-1), new Vector3(-1,-1,0)
             };
             colShape0 = new ConvexHullShape(points0);
@@ -62,15 +62,19 @@ namespace DistanceDemo
             rotation += elapsedTime;
             rotBody.CenterOfMassTransform = Matrix.RotationX(rotation) * rotBodyPosition;
 
-            GjkPairDetector detector = new GjkPairDetector(colShape0, colShape1, sGjkSimplexSolver, null);
-            detector.CachedSeparatingAxis = new Vector3(0.00000000f, 0.059727669f, 0.29259586f);
+            var input = new DiscreteCollisionDetectorInterface.ClosestPointInput
+            {
+                TransformA = rotBody.CenterOfMassTransform,
+                TransformB = body2Position
+            };
 
-            GjkPairDetector.ClosestPointInput input = new GjkPairDetector.ClosestPointInput();
-            input.TransformA = rotBody.CenterOfMassTransform;
-            input.TransformB = body2Position;
+            var result = new PointCollector();
 
-            PointCollector result = new PointCollector();
-            detector.GetClosestPoints(input, result, null);
+            using (var detector = new GjkPairDetector(colShape0, colShape1, sGjkSimplexSolver, null))
+            {
+                detector.CachedSeparatingAxis = new Vector3(0.00000000f, 0.059727669f, 0.29259586f);
+                detector.GetClosestPoints(input, result, null);
+            }
 
             if (result.HasResult)
             {
@@ -83,6 +87,7 @@ namespace DistanceDemo
             {
                 HasDistanceResult = false;
             }
+            result.Dispose();
 
             return subSteps;
         }

@@ -20,9 +20,6 @@ namespace DemoFramework.OpenTK
         int texture;
         Rectangle dirty_region;
         bool graphicsInitialized = false;
-        float fps = -1;
-        string textString = "";
-        CultureInfo culture = CultureInfo.InvariantCulture;
         int width = 270;
         int height = 150;
         GLControl glControl;
@@ -34,6 +31,7 @@ namespace DemoFramework.OpenTK
             set { _isEnabled = value; }
         }
 
+        bool _isDirty;
         string _text = "";
         public string Text
         {
@@ -41,8 +39,7 @@ namespace DemoFramework.OpenTK
             set
             {
                 _text = value;
-                textString = string.Format("{0} fps / {1} ms\nF8 - Graphics engine\n{2}",
-                    fps.ToString("0.00", culture), (1000.0f / fps).ToString("0.00", culture), value);
+                _isDirty = true;
             }
         }
 
@@ -79,25 +76,18 @@ namespace DemoFramework.OpenTK
             dirty_region = new Rectangle(0, 0, bmp.Width, bmp.Height);
         }
 
-        public void OnRender(float framesPerSecond)
+        public void OnRender()
         {
-            if (_isEnabled == false)
+            if (!_isEnabled || !_isDirty)
                 return;
 
             if (!graphicsInitialized)
                 InitializeGraphics();
 
-            if (fps != framesPerSecond)
-            {
-                fps = framesPerSecond;
-                textString = string.Format("{0} fps / {1} ms\nF8 - Graphics engine\n{2}",
-                    fps.ToString("0.00", culture), (1000.0f / fps).ToString("0.00", culture), _text);
-            }
-
             Clear();
-            gfx.DrawString(textString, font, brush, 0, 0);
+            gfx.DrawString(_text, font, brush, 0, 0);
 
-            SizeF size = gfx.MeasureString(textString, font);
+            SizeF size = gfx.MeasureString(_text, font);
             dirty_region = Rectangle.Round(RectangleF.Union(dirty_region, new RectangleF(0, 0, size.Width, size.Height)));
             dirty_region = Rectangle.Intersect(dirty_region, new Rectangle(0, 0, bmp.Width, bmp.Height));
 
@@ -145,8 +135,6 @@ namespace DemoFramework.OpenTK
             GL.Disable(EnableCap.Texture2D);
         }
 
-        #region IDisposable Members
-
         void Dispose(bool disposing)
         {
             if (disposing)
@@ -176,7 +164,5 @@ namespace DemoFramework.OpenTK
         {
             Console.WriteLine("[Warning] Resource leaked: {0}.", typeof(TextRenderer));
         }
-
-        #endregion
     }
 }

@@ -14,7 +14,15 @@ namespace VehicleDemo
         Vector3 target = Vector3.Zero;
         int ViewMode = 1;
 
-        Light light;
+        Light _light = new Light
+        {
+            Type = LightType.Point,
+            Range = 500,
+            Position = new Vector3(0, 100, 0),
+            Direction = -Vector3.UnitY,
+            Diffuse = Color.White,
+            Attenuation0 = 0.75f
+        };
         Material bodyMaterial, wheelMaterial;
         Mesh wheel;
         public Mesh groundMesh;
@@ -38,14 +46,6 @@ namespace VehicleDemo
             wheel = Mesh.CreateCylinder(Device, Physics.wheelRadius, Physics.wheelRadius, Physics.wheelWidth, 10, 10);
 
             Ambient = Color.Black.ToArgb();
-
-            light = new Light();
-            light.Type = LightType.Point;
-            light.Range = 500;
-            light.Position = new Vector3(0, 100, 0);
-            light.Direction = -Vector3.UnitY;
-            light.Diffuse = Color.White;
-            light.Attenuation0 = 0.75f;
 
             bodyMaterial = new Material();
             bodyMaterial.Diffuse = Color.Blue;
@@ -80,7 +80,7 @@ namespace VehicleDemo
         {
             base.OnResetDevice();
 
-            Device.SetLight(0, light);
+            Device.SetLight(0, _light);
             Device.EnableLight(0, true);
 
             Device.SetRenderState(RenderState.CullMode, Cull.None);
@@ -212,11 +212,6 @@ namespace VehicleDemo
             if (LibraryTest.Test() == false)
                 return;
 
-            RunGame();
-        }
-
-        static void RunGame()
-        {
             using (VehicleDemo game = new VehicleDemo())
             {
                 game.Run();

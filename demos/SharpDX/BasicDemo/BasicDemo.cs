@@ -1,7 +1,6 @@
 ﻿using DemoFramework;
 using SharpDX;
 using System;
-using System.Windows.Forms;
 
 namespace BasicDemo
 {

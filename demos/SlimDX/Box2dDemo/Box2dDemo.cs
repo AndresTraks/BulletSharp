@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
 using BulletSharp;
 using DemoFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
 
-namespace Box2dDemo
+namespace Box2DDemo
 {
-    public class Box2dDemo : Game
+    public class Box2DDemo : Game
     {
         Vector3 eye = new Vector3(0, 15, 20);
         Vector3 target = new Vector3(10, 10, 0);
 
-        Light light;
+        Light _light = new Light
+        {
+            Type = LightType.Point,
+            Range = 250,
+            Position = new Vector3(10, 25, 10),
+            Diffuse = Color.LemonChiffon,
+            Attenuation0 = 1.0f
+        };
 
         protected override void OnInitializeDevice()
         {
@@ -24,13 +30,6 @@ namespace Box2dDemo
         protected override void OnInitialize()
         {
             PhysicsContext = new Physics();
-
-            light = new Light();
-            light.Type = LightType.Point;
-            light.Range = 250;
-            light.Position = new Vector3(10, 25, 10);
-            light.Diffuse = Color.LemonChiffon;
-            light.Attenuation0 = 1.0f;
 
             Freelook.SetEyeTarget(eye, target);
 
@@ -46,7 +45,7 @@ namespace Box2dDemo
         {
             base.OnResetDevice();
 
-            Device.SetLight(0, light);
+            Device.SetLight(0, _light);
             Device.EnableLight(0, true);
 
             Device.SetRenderState(RenderState.CullMode, Cull.None);
@@ -82,12 +81,7 @@ namespace Box2dDemo
             if (LibraryTest.Test() == false)
                 return;
 
-            RunGame();
-        }
-
-        static void RunGame()
-        {
-            using (Box2dDemo game = new Box2dDemo())
+            using (var game = new Box2DDemo())
             {
                 game.Run();
             }

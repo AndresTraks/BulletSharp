@@ -53,11 +53,8 @@ namespace VehicleDemo
             Freelook.SetEyeTarget(eye, target);
 
             Graphics.SetFormText("BulletSharp - Vehicle Demo");
-            Graphics.SetInfoText("Move using mouse and WASD+shift\n" +
-                "F3 - Toggle debug\n" +
-                //"F11 - Toggle fullscreen\n" +
-                "Space - Shoot box, break\n" +
-                "Drive with arrow keys");
+            DemoText = "Drive with arrow keys\n" +
+                "Space - break";
 
             Graphics.FarPlane = 600.0f;
             //DebugDrawMode = DebugDrawModes.DrawAabb;

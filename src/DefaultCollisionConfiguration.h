@@ -64,7 +64,8 @@ namespace BulletSharp
 	public ref class DefaultCollisionConfiguration : CollisionConfiguration
 	{
 	internal:
-		DefaultCollisionConfiguration(btDefaultCollisionConfiguration* native);
+		DefaultCollisionConfiguration(btDefaultCollisionConfiguration* native, PoolAllocator^ collisionAlgorithmPool,
+			PoolAllocator^ persistentManifoldPool);
 
 	private:
 		VoronoiSimplexSolver^ _simplexSolver;

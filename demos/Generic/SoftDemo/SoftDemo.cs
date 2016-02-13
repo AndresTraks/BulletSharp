@@ -119,9 +119,9 @@ namespace SoftDemo
         {
             Freelook.SetEyeTarget(eye, target);
 
-            Graphics.SetInfoText("B - Previous Demo\n" +
-                "N - Next Demo");
             Graphics.SetFormText("BulletSharp - SoftBody Demo");
+            DemoText = "B - Previous Demo\n" +
+                "N - Next Demo";
         }
 
         void NextDemo()

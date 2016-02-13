@@ -15,9 +15,10 @@ namespace BenchmarkDemo
         public Physics()
         {
             // collision configuration contains default setup for memory, collision setup
-            DefaultCollisionConstructionInfo cci = new DefaultCollisionConstructionInfo();
-            cci.DefaultMaxPersistentManifoldPoolSize = 32768;
-            CollisionConf = new DefaultCollisionConfiguration(cci);
+            using (var cci = new DefaultCollisionConstructionInfo { DefaultMaxPersistentManifoldPoolSize = 32768 })
+            {
+                CollisionConf = new DefaultCollisionConfiguration(cci);
+            }
 
             Dispatcher = new CollisionDispatcher(CollisionConf);
             Dispatcher.DispatcherFlags = DispatcherFlags.DisableContactPoolDynamicAllocation;
@@ -27,7 +28,7 @@ namespace BenchmarkDemo
             Vector3 worldAabbMin = new Vector3(-1000, -1000, -1000);
             Vector3 worldAabbMax = new Vector3(1000, 1000, 1000);
 
-            HashedOverlappingPairCache pairCache = new HashedOverlappingPairCache();
+            var pairCache = new HashedOverlappingPairCache();
             Broadphase = new AxisSweep3(worldAabbMin, worldAabbMax, 3500, pairCache);
             //Broadphase = new DbvtBroadphase();
 
@@ -367,8 +368,11 @@ namespace BenchmarkDemo
 
             //using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 
-            RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, null, shape, localInertia);
-            RigidBody body = new RigidBody(rbInfo);
+            RigidBody body;
+            using (var rbInfo = new RigidBodyConstructionInfo(mass, null, shape, localInertia))
+            {
+                body = new RigidBody(rbInfo);
+            }
             body.ContactProcessingThreshold = defaultContactProcessingThreshold;
             body.WorldTransform = startTransform;
 

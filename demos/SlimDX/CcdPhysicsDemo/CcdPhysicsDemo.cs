@@ -13,7 +13,14 @@ namespace CcdPhysicsDemo
         Vector3 eye = new Vector3(0, 10, 40);
         Vector3 target = Vector3.Zero;
 
-        Light light;
+        Light _light = new Light
+        {
+            Type = LightType.Point,
+            Range = 400,
+            Position = new Vector3(10, 25, 10),
+            Diffuse = Color.LemonChiffon,
+            Attenuation0 = 1.0f
+        };
 
         string fpsText = "Move using mouse and WASD+shift\n" +
             "F3 - Toggle debug\n" +
@@ -37,16 +44,9 @@ namespace CcdPhysicsDemo
         {
             Physics = new Physics();
 
-            light = new Light();
-            light.Type = LightType.Point;
-            light.Range = 400;
-            light.Position = new Vector3(10, 25, 10);
-            light.Diffuse = Color.LemonChiffon;
-            light.Attenuation0 = 1.0f;
-
             Fps.Text = fpsText + "\nCCD enabled (P to disable)";
 
-            Freelook.SetEyeTarget(eye, Vector3.Zero);
+            Freelook.SetEyeTarget(eye, target);
 
             base.OnInitialize();
         }
@@ -74,7 +74,7 @@ namespace CcdPhysicsDemo
         {
             base.OnResetDevice();
 
-            Device.SetLight(0, light);
+            Device.SetLight(0, _light);
             Device.EnableLight(0, true);
         }
 
@@ -108,11 +108,6 @@ namespace CcdPhysicsDemo
             if (LibraryTest.Test() == false)
                 return;
 
-            RunGame();
-        }
-
-        static void RunGame()
-        {
             using (CcdPhysicsDemo game = new CcdPhysicsDemo())
             {
                 game.Run();

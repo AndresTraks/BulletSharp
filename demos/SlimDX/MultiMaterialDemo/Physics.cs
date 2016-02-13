@@ -65,7 +65,7 @@ namespace MultiMaterialDemo
             }
         }
 
-        void SetVertexPositions(float waveheight, float offset)
+        void SetVertexPositions(float waveHeight, float offset)
         {
             for (int y = 0; y < NumVertsY; y++)
             {
@@ -73,7 +73,7 @@ namespace MultiMaterialDemo
                 {
                     gVertices[y * NumVertsX + x] = new Vector3(
                         x * TriangleSize,
-                        waveheight * (float)Math.Sin((float)x + offset) * (float)Math.Cos((float)y + offset),
+                        waveHeight * (float)Math.Sin((float)x + offset) * (float)Math.Cos((float)y + offset),
                         y * TriangleSize);
                 }
             }

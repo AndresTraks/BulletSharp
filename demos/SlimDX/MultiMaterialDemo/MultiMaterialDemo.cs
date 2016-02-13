@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
 using BulletSharp;
 using DemoFramework;
 using SlimDX;
@@ -14,7 +13,14 @@ namespace MultiMaterialDemo
         Vector3 target = new Vector3(0, 5, 0);
         DebugDrawModes debugMode = DebugDrawModes.DrawAabb | DebugDrawModes.DrawWireframe;
 
-        Light light;
+        Light _light = new Light
+        {
+            Type = LightType.Point,
+            Range = 70,
+            Position = new Vector3(10, 25, 10),
+            Diffuse = Color.LemonChiffon,
+            Attenuation0 = 1.0f
+        };
 
         protected override void OnInitializeDevice()
         {
@@ -43,13 +49,6 @@ namespace MultiMaterialDemo
             DebugDrawMode = debugMode;
             IsDebugDrawEnabled = true;
 
-            light = new Light();
-            light.Type = LightType.Point;
-            light.Range = 70;
-            light.Position = new Vector3(10, 25, 10);
-            light.Diffuse = Color.LemonChiffon;
-            light.Attenuation0 = 1.0f;
-
             Freelook.SetEyeTarget(eye, target);
 
             Fps.Text = "Move using mouse and WASD+shift\n" +
@@ -64,7 +63,7 @@ namespace MultiMaterialDemo
         {
             base.OnResetDevice();
 
-            Device.SetLight(0, light);
+            Device.SetLight(0, _light);
             Device.EnableLight(0, true);
         }
 
@@ -98,11 +97,6 @@ namespace MultiMaterialDemo
             if (LibraryTest.Test() == false)
                 return;
 
-            RunGame();
-        }
-
-        static void RunGame()
-        {
             using (MultiMaterialDemo game = new MultiMaterialDemo())
             {
                 game.Run();

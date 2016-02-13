@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
 using BulletSharp;
 using DemoFramework;
 using SlimDX;
@@ -13,7 +12,14 @@ namespace DistanceDemo
         Vector3 eye = new Vector3(10, 10, 5);
         Vector3 target = new Vector3(0, 8, 0);
 
-        Light light;
+        Light _light = new Light
+        {
+            Type = LightType.Point,
+            Range = 70,
+            Position = new Vector3(10, 25, 10),
+            Diffuse = Color.LemonChiffon,
+            Attenuation0 = 0.5f
+        };
 
         Physics Physics
         {
@@ -32,13 +38,6 @@ namespace DistanceDemo
             Physics = new Physics();
             IsDebugDrawEnabled = true;
 
-            light = new Light();
-            light.Type = LightType.Point;
-            light.Range = 70;
-            light.Position = new Vector3(10, 25, 10);
-            light.Diffuse = Color.LemonChiffon;
-            light.Attenuation0 = 0.5f;
-
             Freelook.SetEyeTarget(eye, target);
 
             base.OnInitialize();
@@ -48,7 +47,7 @@ namespace DistanceDemo
         {
             base.OnResetDevice();
 
-            Device.SetLight(0, light);
+            Device.SetLight(0, _light);
             Device.EnableLight(0, true);
 
             //Device.SetRenderState(RenderState.CullMode, Cull.None);
@@ -70,9 +69,11 @@ namespace DistanceDemo
                 {
                     Device.Material = ActiveMaterial;
                     Device.SetTransform(TransformState.World, Matrix.Identity);
-                    PositionColored[] vertices = new PositionColored[2];
-                    vertices[0] = new PositionColored(Physics.distanceFrom, -1);
-                    vertices[1] = new PositionColored(Physics.distanceTo, -1);
+                    var vertices = new[]
+                    {
+                        new PositionColored(Physics.distanceFrom, -1),
+                        new PositionColored(Physics.distanceTo, -1)
+                    };
                     Device.DrawUserPrimitives(PrimitiveType.LineList, 1, vertices);
                 }
             }
@@ -99,11 +100,6 @@ namespace DistanceDemo
             if (LibraryTest.Test() == false)
                 return;
 
-            RunGame();
-        }
-
-        static void RunGame()
-        {
             using (DistanceDemo game = new DistanceDemo())
             {
                 game.Run();

@@ -21,10 +21,6 @@ namespace ConvexDecompositionDemo
             Freelook.SetEyeTarget(eye, target);
 
             Graphics.SetFormText("BulletSharp - Convex Decomposition Demo");
-            Graphics.SetInfoText("Move using mouse and WASD+shift\n" +
-                "F3 - Toggle debug\n" +
-                //"F11 - Toggle fullscreen\n" +
-                "Space - Shoot box");
         }
 
         bool MyCompoundChildShapeCallback(CollisionShape shape0, CollisionShape shape1)

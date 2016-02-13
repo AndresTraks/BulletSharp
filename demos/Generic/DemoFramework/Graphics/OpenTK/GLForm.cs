@@ -63,7 +63,7 @@ namespace DemoFramework.OpenTK
 
         void glControl_Paint(object sender, PaintEventArgs e)
         {
-            graphics.Render();
+            graphics.Paint();
         }
 
         protected override void OnLoad(EventArgs e)

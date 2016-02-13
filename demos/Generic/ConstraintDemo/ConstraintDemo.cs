@@ -26,10 +26,6 @@ namespace ConstraintDemo
             Freelook.SetEyeTarget(eye, target);
 
             Graphics.SetFormText("BulletSharp - Constraints Demo");
-            Graphics.SetInfoText("Move using mouse and WASD+shift\n" +
-                "F3 - Toggle debug\n" +
-                //"F11 - Toggle fullscreen\n" +
-                "Space - Shoot box");
 
             IsDebugDrawEnabled = true;
             DebugDrawMode = debugMode;

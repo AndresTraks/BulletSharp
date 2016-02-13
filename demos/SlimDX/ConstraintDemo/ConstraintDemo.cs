@@ -14,7 +14,14 @@ namespace ConstraintDemo
         Vector3 target = new Vector3(0, 5, 0);
         DebugDrawModes debugMode = DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits;
 
-        Light light;
+        Light _light = new Light
+        {
+            Type = LightType.Point,
+            Range = 70,
+            Position = new Vector3(10, 25, 10),
+            Diffuse = Color.LemonChiffon,
+            Attenuation0 = 1.0f
+        };
 
         protected override void OnInitializeDevice()
         {
@@ -27,13 +34,6 @@ namespace ConstraintDemo
             PhysicsContext = new Physics();
             DebugDrawMode = debugMode;
             IsDebugDrawEnabled = true;
-
-            light = new Light();
-            light.Type = LightType.Point;
-            light.Range = 70;
-            light.Position = new Vector3(10, 25, 10);
-            light.Diffuse = Color.LemonChiffon;
-            light.Attenuation0 = 1.0f;
 
             Freelook.SetEyeTarget(eye, target);
 
@@ -49,7 +49,7 @@ namespace ConstraintDemo
         {
             base.OnResetDevice();
 
-            Device.SetLight(0, light);
+            Device.SetLight(0, _light);
             Device.EnableLight(0, true);
         }
 
@@ -83,12 +83,7 @@ namespace ConstraintDemo
             if (LibraryTest.Test() == false)
                 return;
 
-            RunGame();
-        }
-
-        static void RunGame()
-        {
-            using (ConstraintDemo game = new ConstraintDemo())
+            using (var game = new ConstraintDemo())
             {
                 game.Run();
             }

@@ -55,10 +55,7 @@ namespace CharacterDemo
             Freelook.SetEyeTarget(eye, target);
 
             Graphics.SetFormText("BulletSharp - Character Demo");
-            Graphics.SetInfoText("Move using arrow keys\n" +
-                "F3 - Toggle debug\n" +
-                //"F11 - Toggle fullscreen\n" +
-                "Space - Jump");
+            DemoText = "Space - Jump";
         }
 
         protected override void OnInitializePhysics()
