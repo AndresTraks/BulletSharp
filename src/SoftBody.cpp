@@ -1241,6 +1241,59 @@ AlignedVSolverArray^ Config::VSequence::get()
 }
 
 
+ContactInfo::ContactInfo(btSoftBody::sCti* native, bool preventDelete)
+{
+	_native = native;
+	_preventDelete = preventDelete;
+}
+
+ContactInfo::~ContactInfo()
+{
+	this->!ContactInfo();
+}
+
+ContactInfo::!ContactInfo()
+{
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
+	_native = NULL;
+}
+
+ContactInfo::ContactInfo()
+{
+	_native = new btSoftBody::sCti();
+}
+
+CollisionObject^ ContactInfo::CollisionObject::get()
+{
+	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)_native->m_colObj);
+}
+void ContactInfo::CollisionObject::set(BulletSharp::CollisionObject^ value)
+{
+	_native->m_colObj = GetUnmanagedNullable(value);
+}
+
+Vector3 ContactInfo::Normal::get()
+{
+	return Math::BtVector3ToVector3(&_native->m_normal);
+}
+void ContactInfo::Normal::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_native->m_normal);
+}
+
+btScalar ContactInfo::Offset::get()
+{
+	return _native->m_offset;
+}
+void ContactInfo::Offset::set(btScalar value)
+{
+	_native->m_offset = value;
+}
+
+
 Element::Element(btSoftBody::Element* native)
 {
 	_native = native;
@@ -2029,58 +2082,9 @@ void RigidContact::Node::set(BulletSharp::SoftBody::Node^ value)
 	_node = value;
 }
 
-Scti^ RigidContact::Scti::get()
+ContactInfo^ RigidContact::ContactInfo::get()
 {
-	return gcnew BulletSharp::SoftBody::Scti(&_native->m_cti);
-}
-
-
-Scti::Scti(btSoftBody::sCti* native)
-{
-	_native = native;
-}
-
-Scti::~Scti()
-{
-	this->!Scti();
-}
-
-Scti::!Scti()
-{
-	delete _native;
-	_native = NULL;
-}
-
-Scti::Scti()
-{
-	_native = new btSoftBody::sCti();
-}
-
-CollisionObject^ Scti::CollisionObject::get()
-{
-	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)_native->m_colObj);
-}
-void Scti::CollisionObject::set(BulletSharp::CollisionObject^ value)
-{
-	_native->m_colObj = GetUnmanagedNullable(value);
-}
-
-Vector3 Scti::Normal::get()
-{
-	return Math::BtVector3ToVector3(&_native->m_normal);
-}
-void Scti::Normal::set(Vector3 value)
-{
-	Math::Vector3ToBtVector3(value, &_native->m_normal);
-}
-
-btScalar Scti::Offset::get()
-{
-	return _native->m_offset;
-}
-void Scti::Offset::set(btScalar value)
-{
-	_native->m_offset = value;
+	return gcnew BulletSharp::SoftBody::ContactInfo(&_native->m_cti, true);
 }
 
 
@@ -2789,7 +2793,7 @@ void BulletSharp::SoftBody::SoftBody::ApplyForces()
 }
 
 bool BulletSharp::SoftBody::SoftBody::CheckContact(CollisionObjectWrapper^ colObjWrap, Vector3 x, btScalar margin,
-	Scti^ cti)
+	ContactInfo^ cti)
 {
 	VECTOR3_CONV(x);
 	bool ret = Native->checkContact(colObjWrap->_native, VECTOR3_USE(x), margin, *cti->_native);

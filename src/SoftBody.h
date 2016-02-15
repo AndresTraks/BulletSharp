@@ -909,6 +909,42 @@ namespace BulletSharp
 			}
 		};
 
+		public ref class ContactInfo
+		{
+		internal:
+			btSoftBody::sCti* _native;
+
+		private:
+			bool _preventDelete;
+
+		internal:
+			ContactInfo(btSoftBody::sCti* native, bool preventDelete);
+
+			!ContactInfo();
+			~ContactInfo();
+
+		public:
+			ContactInfo();
+
+			property CollisionObject^ CollisionObject
+			{
+				BulletSharp::CollisionObject^ get();
+				void set(BulletSharp::CollisionObject^ value);
+			}
+
+			property Vector3 Normal
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property btScalar Offset
+			{
+				btScalar get();
+				void set(btScalar value);
+			}
+		};
+
 		public ref class Element
 		{
 		internal:
@@ -1443,41 +1479,9 @@ namespace BulletSharp
 				void set(BulletSharp::SoftBody::Node^ value);
 			}
 
-			property Scti^ Scti
+			property ContactInfo^ ContactInfo
 			{
-				BulletSharp::SoftBody::Scti^ get();
-			}
-		};
-
-		public ref class Scti
-		{
-		internal:
-			btSoftBody::sCti* _native;
-
-			Scti(btSoftBody::sCti* native);
-
-			!Scti();
-			~Scti();
-
-		public:
-			Scti();
-
-			property CollisionObject^ CollisionObject
-			{
-				BulletSharp::CollisionObject^ get();
-				void set(BulletSharp::CollisionObject^ value);
-			}
-
-			property Vector3 Normal
-			{
-				Vector3 get();
-				void set(Vector3 value);
-			}
-
-			property btScalar Offset
-			{
-				btScalar get();
-				void set(btScalar value);
+				BulletSharp::SoftBody::ContactInfo^ get();
 			}
 		};
 
@@ -1770,7 +1774,7 @@ namespace BulletSharp
 			void ApplyClusters(bool drift);
 			void ApplyForces();
 			bool CheckContact(CollisionObjectWrapper^ colObjWrap, Vector3 x, btScalar margin,
-				Scti^ cti);
+				ContactInfo^ cti);
 			bool CheckFace(int node0, int node1, int node2);
 			bool CheckLink(Node^ node0, Node^ node1);
 			bool CheckLink(int node0, int node1);
