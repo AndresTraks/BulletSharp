@@ -27,6 +27,7 @@ copy Generic\bin\Release\BspDemo.exe bin\
 copy Generic\bin\Release\BulletXmlImportDemo.exe bin\
 copy Generic\bin\Release\CcdPhysicsDemo.exe bin\
 copy Generic\bin\Release\CharacterDemo.exe bin\
+copy Generic\bin\Release\CollisionFeedbackDemo.exe bin\
 copy Generic\bin\Release\CollisionInterfaceDemo.exe bin\
 copy Generic\bin\Release\ConcaveConvexCastDemo.exe bin\
 copy Generic\bin\Release\ConcaveRaycastDemo.exe bin\

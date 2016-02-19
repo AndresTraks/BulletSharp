@@ -43,7 +43,7 @@
   <ItemGroup>
     <Reference Include="BulletSharp, Version=2.83.7.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Debug Generic\BulletSharp.dll</HintPath>
+      <HintPath>..\..\..\Release Generic\BulletSharp.dll</HintPath>
     </Reference>
     <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
