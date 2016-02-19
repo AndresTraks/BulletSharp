@@ -51,24 +51,23 @@ namespace BasicDemo
             CollisionShapes.Add(colShape);
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
-            const float start_x = StartPosX - ArraySizeX / 2;
-            const float start_y = StartPosY;
-            const float start_z = StartPosZ - ArraySizeZ / 2;
+            const float startX = StartPosX - ArraySizeX / 2;
+            const float startY = StartPosY;
+            const float startZ = StartPosZ - ArraySizeZ / 2;
 
             RigidBodyConstructionInfo rbInfo =
                 new RigidBodyConstructionInfo(mass, null, colShape, localInertia);
 
-            int k, i, j;
-            for (k = 0; k < ArraySizeY; k++)
+            for (int k = 0; k < ArraySizeY; k++)
             {
-                for (i = 0; i < ArraySizeX; i++)
+                for (int i = 0; i < ArraySizeX; i++)
                 {
-                    for (j = 0; j < ArraySizeZ; j++)
+                    for (int j = 0; j < ArraySizeZ; j++)
                     {
                         Matrix startTransform = Matrix.Translation(
-                            2 * i + start_x,
-                            2 * k + start_y,
-                            2 * j + start_z
+                            2 * i + startX,
+                            2 * k + startY,
+                            2 * j + startZ
                         );
 
                         // using motionstate is recommended, it provides interpolation capabilities

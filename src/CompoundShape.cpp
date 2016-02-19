@@ -159,6 +159,33 @@ void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransfor
 	TRANSFORM_DEL(newChildTransform);
 }
 
+CollisionShape^ CompoundShape::GetChildShapeByPtr(btCollisionShape* shapePtr, int index)
+{
+	int numChildren = _childList->Count;
+	btCompoundShapeChild* childListPtr = Native->getChildList();
+
+	// index may refer to a child shape or to a child shape inside another child compound shape
+	if (index < numChildren && childListPtr[index].m_childShape == shapePtr)
+	{
+		return _childList[index]->ChildShape;
+	}
+
+	for (int i = 0; i < numChildren; i++)
+	{
+		btCompoundShapeChild* compoundShapeChildPtr = &childListPtr[i];
+		if (compoundShapeChildPtr->m_childShape == shapePtr) return _childList[i]->ChildShape;
+
+		if (compoundShapeChildPtr->m_childShapeType == BroadphaseNativeTypes::COMPOUND_SHAPE_PROXYTYPE)
+		{
+			BulletSharp::CollisionShape^ childShape =
+				static_cast<CompoundShape^>(_childList[i]->ChildShape)->GetChildShapeByPtr(shapePtr, index);
+			if (childShape) return childShape;
+		}
+	}
+
+	return nullptr;
+}
+
 CompoundShapeChildArray^ CompoundShape::ChildList::get()
 {
 	return _childList;

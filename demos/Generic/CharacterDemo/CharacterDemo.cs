@@ -126,17 +126,17 @@ namespace CharacterDemo
             if (Input.KeysDown.Contains(Keys.Left))
             {
                 Matrix orn = xform;
-                orn.set_Rows(3, new Vector4(0, 0, 0, 1));
+                orn.Origin = Vector3.Zero;
                 orn *= Matrix.RotationAxis(upDir, -turnSpeed);
-                orn.set_Rows(3, new Vector4(pos.X, pos.Y, pos.Z, 1));
+                orn.Origin = pos;
                 ghostObject.WorldTransform = orn;
             }
             if (Input.KeysDown.Contains(Keys.Right))
             {
                 Matrix orn = xform;
-                orn.set_Rows(3, new Vector4(0, 0, 0, 1));
+                orn.Origin = Vector3.Zero;
                 orn *= Matrix.RotationAxis(upDir, turnSpeed);
-                orn.set_Rows(3, new Vector4(pos.X, pos.Y, pos.Z, 1));
+                orn.Origin = pos;
                 ghostObject.WorldTransform = orn;
             }
 

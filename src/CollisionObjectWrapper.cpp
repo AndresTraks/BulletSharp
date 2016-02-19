@@ -1,8 +1,10 @@
 #include "StdAfx.h"
 
+#include "Collections.h"
 #include "CollisionObject.h"
 #include "CollisionObjectWrapper.h"
 #include "CollisionShape.h"
+#include "CompoundShape.h"
 
 CollisionObjectWrapper::CollisionObjectWrapper(btCollisionObjectWrapper* native)
 {
@@ -47,6 +49,19 @@ CollisionObject^ CollisionObjectWrapper::CollisionObject::get()
 
 CollisionShape^ CollisionObjectWrapper::CollisionShape::get()
 {
+	btCollisionShape* collisionShapePtr = (btCollisionShape*)_native->getCollisionShape();
+	BulletSharp::CollisionShape^ collisionShape = CollisionObject->CollisionShape;
+	if (collisionShape->_native == collisionShapePtr)
+		return collisionShape;
+
+	// Recursively look for compound shape child shape
+	if (collisionShape->_native->getShapeType() == COMPOUND_SHAPE_PROXYTYPE)
+	{
+		BulletSharp::CollisionShape^ childShape = static_cast<CompoundShape^>(collisionShape)->GetChildShapeByPtr(collisionShapePtr, _native->m_index);
+		if (childShape) return childShape;
+	}
+
+	//throw gcnew NotImplementedException();
 	return BulletSharp::CollisionShape::GetManaged((btCollisionShape*)_native->getCollisionShape());
 }
 

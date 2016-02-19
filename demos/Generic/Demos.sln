@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpDX11", "DemoFramework\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame", "DemoFramework\Graphics\MonoGame\MonoGame.csproj", "{19C540EC-556A-4834-BA97-6EF07AC5EF58}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollisionFeedbackDemo", "CollisionFeedbackDemo\CollisionFeedbackDemo.csproj", "{3E1D8BC6-560D-4EB0-8305-5B3E2D4CE001}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -162,6 +164,10 @@ Global
 		{19C540EC-556A-4834-BA97-6EF07AC5EF58}.Debug|x86.Build.0 = Debug|x86
 		{19C540EC-556A-4834-BA97-6EF07AC5EF58}.Release|x86.ActiveCfg = Release|x86
 		{19C540EC-556A-4834-BA97-6EF07AC5EF58}.Release|x86.Build.0 = Release|x86
+		{3E1D8BC6-560D-4EB0-8305-5B3E2D4CE001}.Debug|x86.ActiveCfg = Debug|x86
+		{3E1D8BC6-560D-4EB0-8305-5B3E2D4CE001}.Debug|x86.Build.0 = Debug|x86
+		{3E1D8BC6-560D-4EB0-8305-5B3E2D4CE001}.Release|x86.ActiveCfg = Release|x86
+		{3E1D8BC6-560D-4EB0-8305-5B3E2D4CE001}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

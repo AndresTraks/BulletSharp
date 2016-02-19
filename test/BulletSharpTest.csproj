@@ -78,6 +78,7 @@
     <Compile Include="AxisSweepTests.cs" />
     <Compile Include="BulletTests.cs" />
     <Compile Include="CollisionAlgorithmTests.cs" />
+    <Compile Include="CollisionFeedbackTests.cs" />
     <Compile Include="ContactSensorCallback.cs" />
     <Compile Include="DebugDrawTest.cs" />
     <Compile Include="DebugDrawTest2.cs" />

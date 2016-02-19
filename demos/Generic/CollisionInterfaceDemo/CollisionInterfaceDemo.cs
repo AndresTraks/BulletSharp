@@ -87,10 +87,10 @@ namespace CollisionInterfaceDemo
             base.OnUpdate();
 
             Matrix t = objects[0].WorldTransform;
-            Vector4 pos = t.get_Rows(3);
-            t.set_Rows(3, new Vector4(0, 0, 0, 1));
+            Vector3 pos = t.Origin;
+            t.Origin = Vector3.Zero;
             t *= Matrix.RotationYawPitchRoll(0.1f * FrameDelta, 0.05f * FrameDelta, 0);
-            t.set_Rows(3, pos);
+            t.Origin = pos;
             objects[0].WorldTransform = t;
 
             if (IsDebugDrawEnabled)

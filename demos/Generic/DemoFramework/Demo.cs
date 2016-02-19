@@ -299,9 +299,12 @@ namespace DemoFramework
                         return;
                     case Keys.F1:
                         MessageBox.Show(
-                            "Move camera using mouse and WASD + shift\n" +
-                            "Space - Shoot box\n" +
-                            "Q - Quit\n" +
+                            "Move using WASD + shift\n" +
+                            "Left click - point camera\n" +
+                            "Right click - pick up an object using a Point2PointConstraint\n" +
+                            "Right click + shift - pick up an object using a fixed Generic6DofConstraint\n" +
+                            "Space - shoot box\n" +
+                            "Q - quit\n" +
                             Graphics.InfoText,
                             "Help");
                         // Key release won't be captured

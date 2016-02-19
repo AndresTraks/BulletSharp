@@ -77,6 +77,10 @@ namespace BulletSharp
 		void UpdateChildTransform(int childIndex, Matrix newChildTransform, bool shouldRecalculateLocalAabb);
 		void UpdateChildTransform(int childIndex, Matrix newChildTransform);
 
+	internal:
+		CollisionShape^ GetChildShapeByPtr(btCollisionShape* shapePtr, int index);
+
+	public:
 		property CompoundShapeChildArray^ ChildList
 		{
 			CompoundShapeChildArray^ get();
