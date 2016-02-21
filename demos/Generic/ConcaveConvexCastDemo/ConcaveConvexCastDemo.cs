@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 using BulletSharp;
 using DemoFramework;
@@ -9,186 +10,141 @@ namespace ConcaveConvexCastDemo
     // Scrolls back and forth over terrain
     class ConvexcastBatch
     {
-        const int NUMRAYS_IN_BAR = 100;
+        const int NumRays = 100;
 
-        Vector3[] source = new Vector3[NUMRAYS_IN_BAR];
-        Vector3[] dest = new Vector3[NUMRAYS_IN_BAR];
-        Vector3[] direction = new Vector3[NUMRAYS_IN_BAR];
-        Vector3[] hit_com = new Vector3[NUMRAYS_IN_BAR];
-        Vector3[] hit_surface = new Vector3[NUMRAYS_IN_BAR];
-        float[] hit_fraction = new float[NUMRAYS_IN_BAR];
-        Vector3[] normal = new Vector3[NUMRAYS_IN_BAR];
+        Vector3[] _source = new Vector3[NumRays];
+        Vector3[] _destination = new Vector3[NumRays];
+        Vector3[] _direction = new Vector3[NumRays];
+        Vector3[] _hitCenterOfMass = new Vector3[NumRays];
+        Vector3[] _hitPoint = new Vector3[NumRays];
+        float[] _hitFraction = new float[NumRays];
+        Vector3[] _normal = new Vector3[NumRays];
 
-        int frame_counter;
-        int ms;
-        int sum_ms;
-        int sum_ms_samples;
-        int min_ms;
-        int max_ms;
+        int _frameCount;
+        float _time;
+        float _timeMin = float.MaxValue;
+        float _timeMax;
+        float _timeTotal;
+        int _sampleCount;
 
-        float dx;
-        float min_x;
-        float max_x;
-        float min_y;
-        float max_y;
-        float sign;
+        float _dx = 10;
+        float _minX = -40;
+        float _maxX = 20;
+        float _sign = 1;
 
-        Vector3  boxShapeHalfExtents;
-        BoxShape boxShape;
+        Vector3 _boxBoundMin;
+        Vector3  _boxBoundMax;
+        BoxShape _boxShape;
 
-        public ConvexcastBatch()
+        const float NormalScale = 10.0f; // easier to see if this is big
+
+        Matrix _fromRotation = Matrix.Identity; //Matrix.RotationX(0.7f);
+        Matrix _toRotation = Matrix.RotationX(0.7f);
+
+        public ConvexcastBatch(float rayLength, float z, float minY, float maxY)
         {
-            boxShape = new BoxShape(0);
-            ms = 0;
-            max_ms = 0;
-            min_ms = 9999;
-            sum_ms_samples = 0;
-            sum_ms = 0;
-        }
+            _boxBoundMax = new Vector3(1.0f, 1.0f, 1.0f);
+            _boxBoundMin = -_boxBoundMax;
+            _boxShape = new BoxShape(_boxBoundMax);
 
-        public ConvexcastBatch(bool unused, float rayLength, float min_z, float max_z, float min_y, float max_y)
-        {
-            boxShapeHalfExtents = new Vector3(1.0f, 1.0f, 1.0f);
-            boxShape = new BoxShape(boxShapeHalfExtents);
-            frame_counter = 0;
-            ms = 0;
-            max_ms = 0;
-            min_ms = 9999;
-            sum_ms_samples = 0;
-            sum_ms = 0;
-            dx = 10.0f;
-            min_x = -40;
-            max_x = 20;
-            this.min_y = min_y;
-            this.max_y = max_y;
-            sign = 1.0f;
-            //const float dalpha = 4 * (float)Math.PI / NUMRAYS_IN_BAR;
-            for (int i = 0; i < NUMRAYS_IN_BAR; i++)
-            {
-                float z = (max_z - min_z) / NUMRAYS_IN_BAR * i + min_z;
-                source[i] = new Vector3(min_x, max_y, z);
-                dest[i] = new Vector3(min_x + rayLength, min_y, z);
-                normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
-            }
-        }
-
-        public ConvexcastBatch(float rayLength, float z, float min_y = -1000, float max_y = 10)
-        {
-            boxShapeHalfExtents = new Vector3(1.0f, 1.0f, 1.0f);
-            boxShape = new BoxShape(boxShapeHalfExtents);
-            frame_counter = 0;
-            ms = 0;
-            max_ms = 0;
-            min_ms = 9999;
-            sum_ms_samples = 0;
-            sum_ms = 0;
-            dx = 10.0f;
-            min_x = -40;
-            max_x = 20;
-            this.min_y = min_y;
-            this.max_y = max_y;
-            sign = 1.0f;
-            const float dalpha = 4 * (float)Math.PI / NUMRAYS_IN_BAR;
-            for (int i = 0; i < NUMRAYS_IN_BAR; i++)
+            const float dalpha = 4 * (float)Math.PI / NumRays;
+            for (int i = 0; i < NumRays; i++)
             {
                 float alpha = dalpha * i;
                 // rotate around by alpha degrees y
-                Matrix tr = Matrix.RotationQuaternion(Quaternion.RotationAxis(new Vector3(0.0f, 1.0f, 0.0f), alpha));
-                direction[i] = new Vector3(1.0f, 0.0f, 0.0f);
-                direction[i] = Vector3.TransformCoordinate(direction[i], tr);
-                source[i] = new Vector3(min_x, max_y, z);
-                dest[i] = source[i] + direction[i] * rayLength;
-                dest[i][1] = min_y;
-                normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
+                Matrix transform = Matrix.RotationY(alpha);
+                _direction[i] = new Vector3(1.0f, 0.0f, 0.0f);
+                _direction[i] = Vector3.TransformCoordinate(_direction[i], transform);
+                _source[i] = new Vector3(_minX, maxY, z);
+                _destination[i] = _source[i] + _direction[i] * rayLength;
+                _destination[i].Y = minY;
+                _normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
             }
         }
 
-        public void Move(float dt)
+        public void Move(float frameDelta)
         {
-            if (dt > (1.0f / 60.0f))
-                dt = 1.0f / 60.0f;
-            for (int i = 0; i < NUMRAYS_IN_BAR; i++)
+            if (frameDelta > 1.0f / 60.0f)
+                frameDelta = 1.0f / 60.0f;
+
+            float move = _sign * _dx * frameDelta;
+            for (int i = 0; i < NumRays; i++)
             {
-                source[i][0] += dx * dt * sign;
-                dest[i][0] += dx * dt * sign;
+                _source[i].X += move;
+                _destination[i].X += move;
             }
-            if (source[0][0] < min_x)
-                sign = 1.0f;
-            else if (source[0][0] > max_x)
-                sign = -1.0f;
+
+            if (_source[0].X < _minX)
+                _sign = 1.0f;
+            else if (_source[0].X > _maxX)
+                _sign = -1.0f;
         }
 
-        public void Cast(CollisionWorld cw)
+        public void Cast(CollisionWorld cw, float frameDelta)
         {
             var cb = new ClosestConvexResultCallback();
-            for (int i = 0; i < NUMRAYS_IN_BAR; i++)
+            for (int i = 0; i < NumRays; i++)
             {
                 cb.ClosestHitFraction = 1.0f;
-                cb.ConvexFromWorld = source[i];
-                cb.ConvexToWorld = dest[i];
+                cb.ConvexFromWorld = _source[i];
+                cb.ConvexToWorld = _destination[i];
 
-                Quaternion qFrom = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
-                Quaternion qTo = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.7f);
-                Matrix from = Matrix.RotationQuaternion(qFrom) * Matrix.Translation(source[i]);
-                Matrix to = Matrix.RotationQuaternion(qTo) * Matrix.Translation(dest[i]);
-                cw.ConvexSweepTest(boxShape, from, to, cb);
+                Matrix from = _fromRotation * Matrix.Translation(_source[i]);
+                Matrix to = _toRotation * Matrix.Translation(_destination[i]);
+                cw.ConvexSweepTest(_boxShape, from, to, cb);
                 if (cb.HasHit)
                 {
-                    hit_surface[i] = cb.HitPointWorld;
-                    hit_com[i] = Vector3.Lerp(source[i], dest[i], cb.ClosestHitFraction);
-                    hit_fraction[i] = cb.ClosestHitFraction;
-                    normal[i] = cb.HitNormalWorld;
-                    normal[i].Normalize();
+                    _hitPoint[i] = cb.HitPointWorld;
+                    Vector3.Lerp(ref _source[i], ref _destination[i], cb.ClosestHitFraction, out _hitCenterOfMass[i]);
+                    _hitFraction[i] = cb.ClosestHitFraction;
+                    _normal[i] = cb.HitNormalWorld;
+                    _normal[i].Normalize();
                 }
                 else
                 {
-                    hit_com[i] = dest[i];
-                    hit_surface[i] = dest[i];
-                    hit_fraction[i] = 1.0f;
-                    normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
+                    _hitCenterOfMass[i] = _destination[i];
+                    _hitPoint[i] = _destination[i];
+                    _hitFraction[i] = 1.0f;
+                    _normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
                 }
             }
 
-            frame_counter++;
-            if (frame_counter > 50)
+            _time += frameDelta;
+            _frameCount++;
+            if (_frameCount > 50)
             {
-                min_ms = ms < min_ms ? ms : min_ms;
-                max_ms = ms > max_ms ? ms : max_ms;
-                sum_ms += ms;
-                sum_ms_samples++;
-                float mean_ms = (float)sum_ms / (float)sum_ms_samples;
-                Console.WriteLine("{0} rays in {1} ms {2} {3} {4}", NUMRAYS_IN_BAR * frame_counter, ms, min_ms, max_ms, mean_ms);
-                ms = 0;
-                frame_counter = 0;
+                if (_time < _timeMin) _timeMin = _time;
+                if (_time > _timeMax) _timeMax = _time;
+                _timeTotal += _time;
+                _sampleCount++;
+                float timeMean = _timeTotal / _sampleCount;
+                Console.WriteLine("{0} rays in {1} s, min {2}, max {3}, mean {4}",
+                    NumRays * _frameCount,
+                    _time.ToString("0.000", CultureInfo.InvariantCulture),
+                    _timeMin.ToString("0.000", CultureInfo.InvariantCulture),
+                    _timeMax.ToString("0.000", CultureInfo.InvariantCulture),
+                    timeMean.ToString("0.000", CultureInfo.InvariantCulture));
+                _time = 0;
+                _frameCount = 0;
             }
         }
 
         public void Draw(IDebugDraw drawer)
         {
-            int i;
-            for (i = 0; i < NUMRAYS_IN_BAR; i++)
+            for (int i = 0; i < NumRays; i++)
             {
-                drawer.DrawLine(ref source[i], ref hit_com[i], Color.Lime);
-            }
-            const float normalScale = 10.0f; // easier to see if this is big
-            for (i = 0; i < NUMRAYS_IN_BAR; i++)
-            {
-                Vector3 to = hit_surface[i] + normalScale * normal[i];
-                drawer.DrawLine(ref hit_surface[i], ref to, Color.White);
-            }
-            Quaternion qFrom = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
-            Quaternion qTo = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.7f);
-            for (i = 0; i < NUMRAYS_IN_BAR; i++)
-            {
-                Matrix from = Matrix.RotationQuaternion(qFrom) * Matrix.Translation(source[i]);
-                Matrix to = Matrix.RotationQuaternion(qTo) * Matrix.Translation(dest[i]);
+                drawer.DrawLine(ref _source[i], ref _hitCenterOfMass[i], Color.Lime);
+
+                Vector3 to = _hitPoint[i] + NormalScale * _normal[i];
+                drawer.DrawLine(ref _hitPoint[i], ref to, Color.White);
+
+                Matrix fromTransform = _fromRotation * Matrix.Translation(_source[i]);
+                Matrix toTransform = _toRotation * Matrix.Translation(_destination[i]);
                 Vector3 linVel, angVel;
-                TransformUtil.CalculateVelocity(from, to, 1.0f, out linVel, out angVel);
-                Matrix T;
-                TransformUtil.IntegrateTransform(from, linVel, angVel, hit_fraction[i], out T);
-                Vector3 box1 = boxShapeHalfExtents;
-                Vector3 box2 = -boxShapeHalfExtents;
-                drawer.DrawBox(ref box1, ref box2, ref T, Color.Aqua);
+                TransformUtil.CalculateVelocity(fromTransform, toTransform, 1.0f, out linVel, out angVel);
+                Matrix transform;
+                TransformUtil.IntegrateTransform(fromTransform, linVel, angVel, _hitFraction[i], out transform);
+                drawer.DrawBox(ref _boxBoundMin, ref _boxBoundMax, ref transform, Color.Aqua);
             }
         }
     }
@@ -333,8 +289,11 @@ namespace ConcaveConvexCastDemo
             }
 
             convexcastBatch.Move(FrameDelta);
-            convexcastBatch.Cast(World);
-            convexcastBatch.Draw(World.DebugDrawer);
+            convexcastBatch.Cast(World, FrameDelta);
+            if (IsDebugDrawEnabled)
+            {
+                convexcastBatch.Draw(World.DebugDrawer);
+            }
 
             base.OnUpdate();
         }

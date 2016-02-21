@@ -18,7 +18,7 @@ namespace DemoFramework.OpenTK
         Bitmap bmp;
         System.Drawing.Graphics gfx;
         int texture;
-        Rectangle dirty_region;
+        Rectangle dirtyRegion;
         bool graphicsInitialized = false;
         int width = 270;
         int height = 150;
@@ -73,42 +73,46 @@ namespace DemoFramework.OpenTK
         public void Clear()
         {
             gfx.Clear(Color.FromArgb(0));
-            dirty_region = new Rectangle(0, 0, bmp.Width, bmp.Height);
+            dirtyRegion = new Rectangle(0, 0, bmp.Width, bmp.Height);
         }
 
         public void OnRender()
         {
-            if (!_isEnabled || !_isDirty)
-                return;
+            if (!_isEnabled) return;
 
             if (!graphicsInitialized)
                 InitializeGraphics();
 
-            Clear();
-            gfx.DrawString(_text, font, brush, 0, 0);
-
-            SizeF size = gfx.MeasureString(_text, font);
-            dirty_region = Rectangle.Round(RectangleF.Union(dirty_region, new RectangleF(0, 0, size.Width, size.Height)));
-            dirty_region = Rectangle.Intersect(dirty_region, new Rectangle(0, 0, bmp.Width, bmp.Height));
-
-
-            // Update bitmap
-            if (dirty_region != RectangleF.Empty)
+            if (_isDirty)
             {
-                System.Drawing.Imaging.BitmapData data = bmp.LockBits(dirty_region,
-                    System.Drawing.Imaging.ImageLockMode.ReadOnly,
-                    System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                Clear();
+                gfx.DrawString(_text, font, brush, 0, 0);
 
-                GL.BindTexture(TextureTarget.Texture2D, texture);
-                GL.TexSubImage2D(TextureTarget.Texture2D, 0,
-                    dirty_region.X, dirty_region.Y, dirty_region.Width, dirty_region.Height,
-                    PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+                SizeF size = gfx.MeasureString(_text, font);
+                dirtyRegion =
+                    Rectangle.Round(RectangleF.Union(dirtyRegion, new RectangleF(0, 0, size.Width, size.Height)));
+                dirtyRegion = Rectangle.Intersect(dirtyRegion, new Rectangle(0, 0, bmp.Width, bmp.Height));
 
-                bmp.UnlockBits(data);
 
-                dirty_region = Rectangle.Empty;
+                // Update bitmap
+                if (dirtyRegion != RectangleF.Empty)
+                {
+                    System.Drawing.Imaging.BitmapData data = bmp.LockBits(dirtyRegion,
+                        System.Drawing.Imaging.ImageLockMode.ReadOnly,
+                        System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+                    GL.BindTexture(TextureTarget.Texture2D, texture);
+                    GL.TexSubImage2D(TextureTarget.Texture2D, 0,
+                        dirtyRegion.X, dirtyRegion.Y, dirtyRegion.Width, dirtyRegion.Height,
+                        PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+
+                    bmp.UnlockBits(data);
+
+                    dirtyRegion = Rectangle.Empty;
+                }
+
+                _isDirty = false;
             }
-
 
             //Render bitmap
             GL.MatrixMode(MatrixMode.Projection);

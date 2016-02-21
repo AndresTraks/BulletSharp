@@ -305,12 +305,13 @@ namespace DemoFramework
                 vertices[v++] = normal;
 
                 indices[i++] = baseIndex;
+                indices[i++] = index;
                 indices[i++] = index - 1;
-                indices[i++] = index++;
+                index++;
             }
             indices[i++] = baseIndex;
-            indices[i++] = index - 1;
             indices[i++] = baseIndex + 1;
+            indices[i++] = index - 1;
 
 
             normal = GetVectorByAxis(0, 0, radius, up);
@@ -401,14 +402,14 @@ namespace DemoFramework
                     if (side == 1)
                     {
                         indices[i++] = index - 1;
-                        indices[i++] = index++;
+                        indices[i++] = index;
                     }
                     else
                     {
                         indices[i++] = index;
                         indices[i++] = index - 1;
-                        index++;
                     }
+                    index++;
                 }
                 indices[i++] = baseIndex;
                 if (side == 1)

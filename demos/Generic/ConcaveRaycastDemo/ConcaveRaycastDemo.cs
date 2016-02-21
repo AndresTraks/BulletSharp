@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using BulletSharp;
@@ -10,155 +11,119 @@ namespace ConcaveRaycastDemo
     // Scrolls back and forth over terrain
     class RaycastBar
     {
-        const int NUMRAYS_IN_BAR = 100;
+        const int NumRays = 100;
 
-        Vector3[] source = new Vector3[NUMRAYS_IN_BAR];
-        Vector3[] dest = new Vector3[NUMRAYS_IN_BAR];
-        Vector3[] direction = new Vector3[NUMRAYS_IN_BAR];
-        Vector3[] hit = new Vector3[NUMRAYS_IN_BAR];
-        Vector3[] normal = new Vector3[NUMRAYS_IN_BAR];
+        Vector3[] _source = new Vector3[NumRays];
+        Vector3[] _destination = new Vector3[NumRays];
+        Vector3[] _direction = new Vector3[NumRays];
+        Vector3[] _hitCenterOfMass = new Vector3[NumRays];
+        Vector3[] _hitPoint = new Vector3[NumRays];
+        float[] _hitFraction = new float[NumRays];
+        Vector3[] _normal = new Vector3[NumRays];
 
-        int frameCounter;
-        int ms;
-        int sum_ms;
-        int sum_ms_samples;
-        int min_ms;
-        int max_ms;
+        int _frameCount;
+        float _time;
+        float _timeMin = float.MaxValue;
+        float _timeMax;
+        float _timeTotal;
+        int _sampleCount;
 
-        float dx;
-        float min_x;
-        float max_x;
-        float min_y;
-        float max_y;
-        float sign;
+        float _dx = 10;
+        float _minX = -40;
+        float _maxX = 20;
+        float _sign = 1;
 
-        public RaycastBar()
+        public RaycastBar(float rayLength, float z, float minY, float maxY)
         {
-            ms = 0;
-            max_ms = 0;
-            min_ms = 9999;
-            sum_ms_samples = 0;
-            sum_ms = 0;
-        }
-
-        public RaycastBar(bool unused, float rayLength, float min_z, float max_z, float min_y = -10, float max_y = 10)
-        {
-            frameCounter = 0;
-            ms = 0;
-            max_ms = 0;
-            min_ms = 9999;
-            sum_ms_samples = 0;
-            sum_ms = 0;
-            dx = 10.0f;
-            min_x = -40;
-            max_x = 20;
-            this.min_y = min_y;
-            this.max_y = max_y;
-            sign = 1.0f;
-            for (int i = 0; i < NUMRAYS_IN_BAR; i++)
-            {
-                float z = (max_z - min_z) / NUMRAYS_IN_BAR * (float)i + min_z;
-                source[i] = new Vector3(min_x, max_y, z);
-                dest[i] = new Vector3(min_x + rayLength, min_y, z);
-                normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
-            }
-        }
-
-        public RaycastBar(float rayLength, float z, float min_y = -1000, float max_y = 10)
-        {
-            frameCounter = 0;
-            ms = 0;
-            max_ms = 0;
-            min_ms = 9999;
-            sum_ms_samples = 0;
-            sum_ms = 0;
-            dx = 10.0f;
-            min_x = -40;
-            max_x = 20;
-            this.min_y = min_y;
-            this.max_y = max_y;
-            sign = 1.0f;
-            float dalpha = 4 * (float)Math.PI / NUMRAYS_IN_BAR;
-            for (int i = 0; i < NUMRAYS_IN_BAR; i++)
+            const float dalpha = 4 * (float)Math.PI / NumRays;
+            for (int i = 0; i < NumRays; i++)
             {
                 float alpha = dalpha * i;
                 // rotate around by alpha degrees y
-                Matrix tr = Matrix.RotationQuaternion(Quaternion.RotationAxis(new Vector3(0.0f, 1.0f, 0.0f), alpha));
-                direction[i] = new Vector3(1.0f, 0.0f, 0.0f);
-                direction[i] = Vector3.TransformCoordinate(direction[i], tr);
-                direction[i] = direction[i] * rayLength;
-                source[i] = new Vector3(min_x, max_y, z);
-                dest[i] = source[i] + direction[i];
-                dest[i][1] = min_y;
-                normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
+                Matrix transform = Matrix.RotationY(alpha);
+                _direction[i] = new Vector3(1.0f, 0.0f, 0.0f);
+                _direction[i] = Vector3.TransformCoordinate(_direction[i], transform);
+                _source[i] = new Vector3(_minX, maxY, z);
+                _destination[i] = _source[i] + _direction[i] * rayLength;
+                _destination[i].Y = minY;
+                _normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
             }
         }
 
-        public void Move(float dt)
+        public void Move(float frameDelta)
         {
-            if (dt > (1.0f / 60.0f))
-                dt = 1.0f / 60.0f;
-            for (int i = 0; i < NUMRAYS_IN_BAR; i++)
+            if (frameDelta > 1.0f / 60.0f)
+                frameDelta = 1.0f / 60.0f;
+
+            float move = _sign * _dx * frameDelta;
+            for (int i = 0; i < NumRays; i++)
             {
-                source[i][0] += dx * dt * sign;
-                dest[i][0] += dx * dt * sign;
+                _source[i].X += move;
+                _destination[i].X += move;
             }
-            if (source[0][0] < min_x)
-                sign = 1.0f;
-            else if (source[0][0] > max_x)
-                sign = -1.0f;
+
+            if (_source[0].X < _minX)
+                _sign = 1.0f;
+            else if (_source[0].X > _maxX)
+                _sign = -1.0f;
         }
 
-        public void Cast(CollisionWorld cw)
+        public void Cast(CollisionWorld cw, float frameDelta)
         {
 #if BATCH_RAYCASTER
 		    if (!gBatchRaycaster)
 			    return;
 
 		    gBatchRaycaster->clearRays ();
-		    for (int i = 0; i < NUMRAYS_IN_BAR; i++)
+		    for (int i = 0; i < NumRays; i++)
 		    {
 			    gBatchRaycaster->addRay (source[i], dest[i]);
 		    }
 		    gBatchRaycaster->performBatchRaycast ();
-		    for (int i = 0; i < gBatchRaycaster->getNumRays (); i++)
+		    for (int i = 0; i < gBatchRaycaster->getNumRays(); i++)
 		    {
 				    const SpuRaycastTaskWorkUnitOut& out = (*gBatchRaycaster)[i];
-				    hit[i].setInterpolate3(source[i],dest[i],out.HitFraction);
-				    normal[i] = out.hitNormal;
-				    normal[i].Normalize();
+				    _hitPoint[i].setInterpolate3(_source[i], _destination[i], out.HitFraction);
+				    _normal[i] = out.hitNormal;
+				    _normal[i].Normalize();
 		    }
 #else
-            for (int i = 0; i < NUMRAYS_IN_BAR; i++)
+            for (int i = 0; i < NumRays; i++)
             {
-                using (var cb = new ClosestRayResultCallback(ref source[i], ref dest[i]))
+                using (var cb = new ClosestRayResultCallback(ref _source[i], ref _destination[i]))
                 {
-                    cw.RayTest(ref source[i], ref dest[i], cb);
+                    cw.RayTest(ref _source[i], ref _destination[i], cb);
                     if (cb.HasHit)
                     {
-                        hit[i] = cb.HitPointWorld;
-                        normal[i] = cb.HitNormalWorld;
-                        normal[i].Normalize();
+                        _hitPoint[i] = cb.HitPointWorld;
+                        _normal[i] = cb.HitNormalWorld;
+                        _normal[i].Normalize();
                     }
                     else
                     {
-                        hit[i] = dest[i];
-                        normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
+                        _hitPoint[i] = _destination[i];
+                        _normal[i] = new Vector3(1.0f, 0.0f, 0.0f);
                     }
                 }
             }
 
-            frameCounter++;
-            if (frameCounter > 50)
+            _time += frameDelta;
+            _frameCount++;
+            if (_frameCount > 50)
             {
-                min_ms = ms < min_ms ? ms : min_ms;
-                max_ms = ms > max_ms ? ms : max_ms;
-                sum_ms += ms;
-                sum_ms_samples++;
-                float mean_ms = (float)sum_ms / (float)sum_ms_samples;
-                Console.WriteLine("{0} rays in {1} ms {2} {3} {4}", NUMRAYS_IN_BAR * frameCounter, ms, min_ms, max_ms, mean_ms);
-                ms = 0;
-                frameCounter = 0;
+                if (_time < _timeMin) _timeMin = _time;
+                if (_time > _timeMax) _timeMax = _time;
+                _timeTotal += _time;
+                _sampleCount++;
+                float timeMean = _timeTotal / _sampleCount;
+                Console.WriteLine("{0} rays in {1} s, min {2}, max {3}, mean {4}",
+                    NumRays * _frameCount,
+                    _time.ToString("0.000", CultureInfo.InvariantCulture),
+                    _timeMin.ToString("0.000", CultureInfo.InvariantCulture),
+                    _timeMax.ToString("0.000", CultureInfo.InvariantCulture),
+                    timeMean.ToString("0.000", CultureInfo.InvariantCulture));
+                _time = 0;
+                _frameCount = 0;
             }
 #endif
         }
@@ -166,14 +131,14 @@ namespace ConcaveRaycastDemo
         public void Draw(IDebugDraw drawer)
         {
             int i;
-            for (i = 0; i < NUMRAYS_IN_BAR; i++)
+            for (i = 0; i < NumRays; i++)
             {
-                drawer.DrawLine(ref source[i], ref hit[i], Color.Lime);
+                drawer.DrawLine(ref _source[i], ref _hitPoint[i], Color.Lime);
             }
-            for (i = 0; i < NUMRAYS_IN_BAR; i++)
+            for (i = 0; i < NumRays; i++)
             {
-                Vector3 to = hit[i] + normal[i];
-                drawer.DrawLine(ref hit[i], ref to, Color.White);
+                Vector3 to = _hitPoint[i] + _normal[i];
+                drawer.DrawLine(ref _hitPoint[i], ref to, Color.White);
             }
         }
     }
@@ -283,7 +248,7 @@ namespace ConcaveRaycastDemo
 
             indexVertexArrays.AddIndexedMesh(mesh);
 
-            raycastBar = new RaycastBar(4000.0f, 0.0f);
+            raycastBar = new RaycastBar(4000, 0, -1000, 10);
             //raycastBar = new RaycastBar(true, 40.0f, -50.0f, 50.0f);
 
 
@@ -327,7 +292,7 @@ namespace ConcaveRaycastDemo
             }
 
             raycastBar.Move(FrameDelta);
-            raycastBar.Cast(World);
+            raycastBar.Cast(World, FrameDelta);
             if (IsDebugDrawEnabled)
             {
                 raycastBar.Draw(World.DebugDrawer);

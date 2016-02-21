@@ -7,8 +7,8 @@ namespace ConvexDecompositionDemo
 {
     class WavefrontObj
     {
-        readonly char[] faceSplitSchars = new char[] { '/' };
-        readonly char[] lineSplitChars = new char[] { ' ' };
+        readonly char[] faceSplitSchars = { '/' };
+        readonly char[] lineSplitChars = { ' ' };
 
         //Vector2 ToVector2(string f0, string f1)
         //{

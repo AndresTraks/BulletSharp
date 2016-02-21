@@ -138,6 +138,8 @@ namespace DemoFramework.SharpDX11
             _immediateContext.UnmapSubresource(_renderTexture, 0);
             stream.Dispose();
             bitmapLock.Dispose();
+
+            _isDirty = false;
         }
     }
 }

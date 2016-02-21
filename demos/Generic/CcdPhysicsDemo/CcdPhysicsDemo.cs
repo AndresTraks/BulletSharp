@@ -142,7 +142,7 @@ namespace CcdPhysicsDemo
             body.AngularVelocity = Vector3.Zero;
             body.ContactProcessingThreshold = 1e30f;
 
-            // when using m_ccdMode, disable regular CCD
+            // when using ccdMode, disable regular CCD
             if (ccdMode)
             {
                 body.CcdMotionThreshold = 0.0001f;

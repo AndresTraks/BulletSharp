@@ -539,7 +539,6 @@ void DebugDrawWrapper::setDebugMode(int debugMode)
 }
 int	DebugDrawWrapper::getDebugMode() const
 {
-	// TODO: Why is this method const?
 	DebugDrawWrapper* wrapper = (DebugDrawWrapper*)this;
 	return (int)(static_cast<IDebugDraw^>(wrapper->_debugDraw.Target)->DebugMode);
 }

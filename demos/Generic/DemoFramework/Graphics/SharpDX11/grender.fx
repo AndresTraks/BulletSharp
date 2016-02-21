@@ -83,7 +83,7 @@ float4 PS(SCREEN_VS_OUT input) : SV_Target
 
 	float3 normal = normalize((normalSample.xyz - 0.5) * 2); // from 0...1 to -1...1
 
-															 // Ambient term
+	// Ambient term
 	float3 ambientColor = float3(0.4, 0.4, 0.4);
 	float3 ambient = ambientColor * diffuseSample;
 
@@ -102,22 +102,22 @@ float4 PS(SCREEN_VS_OUT input) : SV_Target
 float4 Blur_PS(SCREEN_VS_OUT input) : SV_Target
 {
 	float radius = 2;
-float dx = radius / ViewportWidth;
-float dy = radius / ViewportHeight;
-float dx2 = dx + dx;
-float dy2 = dy + dy;
+	float dx = radius / ViewportWidth;
+	float dy = radius / ViewportHeight;
+	float dx2 = dx + dx;
+	float dy2 = dy + dy;
 
-float4 diffuse = 0;
-diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord);
-diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord + float2(-dx, 0));
-diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord + float2(-dx2, 0));
-diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord + float2(+dx, 0));
-diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord + float2(+dx2, 0));
-diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord + float2(0, -dy));
-diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord + float2(0, -dy2));
-diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord + float2(0, +dy));
-diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord + float2(0, +dy2));
-return diffuse / 9;
+	float4 diffuse = 0;
+	diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord);
+	diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord + float2(-dx, 0));
+	diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord + float2(-dx2, 0));
+	diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord + float2(+dx, 0));
+	diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord + float2(+dx2, 0));
+	diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord + float2(0, -dy));
+	diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord + float2(0, -dy2));
+	diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord + float2(0, +dy));
+	diffuse += diffuseBuffer.Sample(blurSampler, input.texCoord + float2(0, +dy2));
+	return diffuse / 9;
 }
 
 float4 PostProcess_PS(SCREEN_VS_OUT input) : SV_Target

@@ -491,33 +491,31 @@ bool ConvexResultCallback::HasHit::get()
 }
 
 
-#undef Callback
-#define Callback static_cast<BulletSharp::ConvexResultCallback^>(VoidPtrToGCHandle(_callback).Target)
-
 ConvexResultCallbackWrapper::ConvexResultCallbackWrapper(BulletSharp::ConvexResultCallback^ callback)
 {
 	m_closestHitFraction = callback->ClosestHitFraction;
 	callback->_native = this;
-	_callback = GCHandleToVoidPtr(GCHandle::Alloc(callback));
+	_callback = GCHandle::Alloc(callback);
+	_callbackPtr = GCHandleToVoidPtr(_callback);
 }
 
 ConvexResultCallbackWrapper::~ConvexResultCallbackWrapper()
 {
-	GCHandle handle = VoidPtrToGCHandle(_callback);
-	BulletSharp::ConvexResultCallback^ callback = static_cast<BulletSharp::ConvexResultCallback^>(handle.Target);
+	BulletSharp::ConvexResultCallback^ callback = static_cast<BulletSharp::ConvexResultCallback^>(_callback.Target);
 	callback->_native = 0;
 	callback->ClosestHitFraction = m_closestHitFraction;
-	handle.Free();
+	_callback.Free();
 }
 
 bool ConvexResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) const
 {
-	return Callback->NeedsCollision(BroadphaseProxy::GetManaged(proxy0));
+	// const method cannot access this->GCHandle directly, use void pointer
+	return static_cast<BulletSharp::ConvexResultCallback^>(VoidPtrToGCHandle(_callbackPtr).Target)->NeedsCollision(BroadphaseProxy::GetManaged(proxy0));
 }
 
 btScalar ConvexResultCallbackWrapper::addSingleResult(btCollisionWorld::LocalConvexResult& rayResult, bool normalInWorldSpace)
 {
-	return Callback->AddSingleResult(gcnew LocalConvexResult(&rayResult, true), normalInWorldSpace);
+	return static_cast<BulletSharp::ConvexResultCallback^>(_callback.Target)->AddSingleResult(gcnew LocalConvexResult(&rayResult, true), normalInWorldSpace);
 }
 
 

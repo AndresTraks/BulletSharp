@@ -244,7 +244,7 @@ namespace DemoFramework
                 $"Render: {Clock.RenderAverage.ToString("0.000", _culture)} ms\n" +
                 $"{Clock.FrameCount} FPS\n" +
                 "F1 - Help\n" +
-                $"{_demoText}");
+                _demoText);
         }
 
         public virtual void OnUpdate()
@@ -320,6 +320,20 @@ namespace DemoFramework
                         break;
                     case Keys.F11:
                         Graphics.IsFullScreen = !Graphics.IsFullScreen;
+                        break;
+                    case (Keys.Control | Keys.F):
+                        const int maxSerializeBufferSize = 1024 * 1024 * 5;
+                        using (var serializer = new DefaultSerializer(maxSerializeBufferSize))
+                        {
+                            World.Serialize(serializer);
+                            byte[] dataBytes = new byte[serializer.CurrentBufferSize];
+                            System.Runtime.InteropServices.Marshal.Copy(serializer.BufferPointer, dataBytes, 0,
+                                dataBytes.Length);
+                            using (var file = new System.IO.FileStream("world.bullet", System.IO.FileMode.Create))
+                            {
+                                file.Write(dataBytes, 0, dataBytes.Length);
+                            }
+                        }
                         break;
                     case Keys.G:
                         //shadowsEnabled = !shadowsEnabled;

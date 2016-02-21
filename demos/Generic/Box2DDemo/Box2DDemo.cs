@@ -31,11 +31,11 @@ namespace Box2DDemo
             VoronoiSimplexSolver simplex = new VoronoiSimplexSolver();
             MinkowskiPenetrationDepthSolver pdSolver = new MinkowskiPenetrationDepthSolver();
 
-            Convex2DConvex2DAlgorithm.CreateFunc convexAlgo2d = new Convex2DConvex2DAlgorithm.CreateFunc(simplex, pdSolver);
+            Convex2DConvex2DAlgorithm.CreateFunc convexAlgo2D = new Convex2DConvex2DAlgorithm.CreateFunc(simplex, pdSolver);
 
-            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2DShape, BroadphaseNativeType.Convex2DShape, convexAlgo2d);
-            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Box2DShape, BroadphaseNativeType.Convex2DShape, convexAlgo2d);
-            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2DShape, BroadphaseNativeType.Box2DShape, convexAlgo2d);
+            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2DShape, BroadphaseNativeType.Convex2DShape, convexAlgo2D);
+            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Box2DShape, BroadphaseNativeType.Convex2DShape, convexAlgo2D);
+            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2DShape, BroadphaseNativeType.Box2DShape, convexAlgo2D);
             Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Box2DShape, BroadphaseNativeType.Box2DShape, new Box2DBox2DCollisionAlgorithm.CreateFunc());
 
             Broadphase = new DbvtBroadphase();

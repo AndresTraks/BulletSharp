@@ -320,7 +320,8 @@ namespace BulletSharp
 	class ConvexResultCallbackWrapper : public btCollisionWorld::ConvexResultCallback
 	{
 	private:
-		void* _callback;
+		GCHandle _callback;
+		void* _callbackPtr;
 
 	public:
 		ConvexResultCallbackWrapper(BulletSharp::ConvexResultCallback^ callback);
