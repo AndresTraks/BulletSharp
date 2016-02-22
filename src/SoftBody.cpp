@@ -2092,23 +2092,7 @@ SoftContact::SoftContact(btSoftBody::SContact* native)
 {
 	_native = native;
 }
-/*
-SoftContact::~SoftContact()
-{
-	this->!SoftContact();
-}
 
-SoftContact::!SoftContact()
-{
-	delete _native;
-	_native = NULL;
-}
-
-SoftContact::SoftContact()
-{
-	_native = new btSoftBody::SContact();
-}
-*/
 ScalarArray^ SoftContact::Cfm::get()
 {
 	if (_cfm == nullptr)
