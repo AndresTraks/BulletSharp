@@ -1498,13 +1498,7 @@ namespace BulletSharp
 		internal:
 			SoftContact(btSoftBody::SContact* native);
 
-			/*
-			!SoftContact();
-			~SoftContact();
-
 		public:
-			SoftContact();
-			*/
 			property ScalarArray^ Cfm
 			{
 				ScalarArray^ get();
