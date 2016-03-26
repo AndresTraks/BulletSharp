@@ -126,8 +126,8 @@ namespace BulletSharp
 	private:
 		PoolAllocator^ _internalManifoldPool;
 
-		!Dispatcher();
 		~Dispatcher();
+		!Dispatcher();
 
 	public:
 		IntPtr AllocateCollisionAlgorithm(int size);

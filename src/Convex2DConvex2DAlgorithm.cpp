@@ -17,8 +17,8 @@ Convex2DConvex2DAlgorithm::CreateFunc::CreateFunc(SimplexSolverInterface^ simple
 	: CollisionAlgorithmCreateFunc(new btConvex2dConvex2dAlgorithm::CreateFunc(simplexSolver->_native,
 		pdSolver->_native), false)
 {
-	_simplexSolver = simplexSolver;
 	_pdSolver = pdSolver;
+	_simplexSolver = simplexSolver;
 }
 
 int Convex2DConvex2DAlgorithm::CreateFunc::MinimumPointsPerturbationThreshold::get()

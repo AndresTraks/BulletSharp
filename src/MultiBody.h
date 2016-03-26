@@ -20,8 +20,8 @@ namespace BulletSharp
 	internal:
 		MultiBody(btMultiBody* native);
 
-		!MultiBody();
 		~MultiBody();
+		!MultiBody();
 
 	public:
 		MultiBody(int nLinks, btScalar mass, Vector3 inertia, bool fixedBase, bool canSleep);

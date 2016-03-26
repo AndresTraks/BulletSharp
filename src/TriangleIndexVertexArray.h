@@ -23,8 +23,8 @@ namespace BulletSharp
 	internal:
 		IndexedMesh(btIndexedMesh* native, bool preventDelete);
 
-		!IndexedMesh();
 		~IndexedMesh();
+		!IndexedMesh();
 
 	public:
 		IndexedMesh();

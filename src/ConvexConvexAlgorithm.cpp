@@ -21,8 +21,8 @@ ConvexConvexAlgorithm::CreateFunc::CreateFunc(SimplexSolverInterface^ simplexSol
 	: CollisionAlgorithmCreateFunc(new btConvexConvexAlgorithm::CreateFunc(simplexSolver->_native,
 		pdSolver->_native), false)
 {
-	_simplexSolver = simplexSolver;
 	_pdSolver = pdSolver;
+	_simplexSolver = simplexSolver;
 }
 
 int ConvexConvexAlgorithm::CreateFunc::MinimumPointsPerturbationThreshold::get()

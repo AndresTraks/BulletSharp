@@ -20,8 +20,8 @@ namespace BulletSharp
 		internal:
 			CastResult(btConvexCast::CastResult* native);
 
-			!CastResult();
 			~CastResult();
+			!CastResult();
 
 		public:
 			CastResult();
@@ -87,8 +87,8 @@ namespace BulletSharp
 
 		ConvexCast(btConvexCast* native);
 
-		!ConvexCast();
 		~ConvexCast();
+		!ConvexCast();
 
 	public:
 		bool CalcTimeOfImpact(Matrix fromA, Matrix toA, Matrix fromB, Matrix toB,

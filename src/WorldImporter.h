@@ -50,10 +50,8 @@ namespace BulletSharp
 			Dictionary<IntPtr, TriangleIndexVertexArray^>^ _allocatedTriangleIndexArraysMap;
 			List<TriangleInfoMap^>^ _allocatedTriangleInfoMaps;
 
-		public:
-			!WorldImporter();
-		protected:
 			~WorldImporter();
+			!WorldImporter();
 
 		public:
 			WorldImporter(DynamicsWorld^ world);

@@ -13,8 +13,8 @@ namespace BulletSharp
 	internal:
 		PoolAllocator(btPoolAllocator* native, bool preventDelete);
 
-		!PoolAllocator();
 		~PoolAllocator();
+		!PoolAllocator();
 
 	public:
 		PoolAllocator(int elemSize, int maxElements);

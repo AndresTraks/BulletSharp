@@ -37,8 +37,8 @@ namespace BulletSharp
 
 	public:
 		ConvexPlaneCollisionAlgorithm(PersistentManifold mf, CollisionAlgorithmConstructionInfo^ ci,
-			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
-			bool isSwapped, int numPerturbationIterations, int minimumPointsPerturbationThreshold);
+			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped,
+			int numPerturbationIterations, int minimumPointsPerturbationThreshold);
 
 		void CollideSingleContact(Quaternion perturbeRot, CollisionObjectWrapper^ body0Wrap,
 			CollisionObjectWrapper^ body1Wrap, DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut);

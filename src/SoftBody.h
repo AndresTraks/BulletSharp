@@ -69,8 +69,8 @@ namespace BulletSharp
 		internal:
 			SoftBodyWorldInfo(btSoftBodyWorldInfo* native);
 
-			!SoftBodyWorldInfo();
 			~SoftBodyWorldInfo();
+			!SoftBodyWorldInfo();
 
 		public:
 			SoftBodyWorldInfo();
@@ -193,8 +193,8 @@ namespace BulletSharp
 
 				Specs(btSoftBody::Joint::Specs* native);
 
-				!Specs();
 				~Specs();
+				!Specs();
 
 			public:
 				property btScalar Cfm
@@ -319,8 +319,8 @@ namespace BulletSharp
 
 				IControl(btSoftBody::AJoint::IControl* native, bool preventDelete);
 
-				!IControl();
 				~IControl();
+				!IControl();
 
 			public:
 				IControl();
@@ -455,8 +455,8 @@ namespace BulletSharp
 		internal:
 			Body(btSoftBody::Body* native);
 
-			!Body();
 			~Body();
+			!Body();
 
 		public:
 			Body();
@@ -920,8 +920,8 @@ namespace BulletSharp
 		internal:
 			ContactInfo(btSoftBody::sCti* native, bool preventDelete);
 
-			!ContactInfo();
 			~ContactInfo();
+			!ContactInfo();
 
 		public:
 			ContactInfo();
@@ -1024,8 +1024,8 @@ namespace BulletSharp
 		internal:
 			ImplicitFnWrapper* _native;
 
-			!ImplicitFn();
 			~ImplicitFn();
+			!ImplicitFn();
 
 		protected:
 			ImplicitFn();
@@ -1054,8 +1054,8 @@ namespace BulletSharp
 
 			Impulse(btSoftBody::Impulse* native);
 
-			!Impulse();
 			~Impulse();
+			!Impulse();
 
 		public:
 			Impulse();
@@ -1437,8 +1437,8 @@ namespace BulletSharp
 			RigidContact(btSoftBody::RContact* native);
 
 			/*
-			!RigidContact();
 			~RigidContact();
+			!RigidContact();
 			*/
 		public:
 			//RigidContact();
@@ -1548,8 +1548,8 @@ namespace BulletSharp
 
 			sMedium(btSoftBody::sMedium* native);
 
-			!sMedium();
 			~sMedium();
+			!sMedium();
 
 		public:
 			sMedium();
@@ -1706,8 +1706,8 @@ namespace BulletSharp
 		internal:
 			SoftBody(btSoftBody* native);
 
-			!SoftBody();
 			~SoftBody();
+			!SoftBody();
 
 		public:
 			SoftBody(SoftBodyWorldInfo^ worldInfo, array<Vector3>^ x, array<btScalar>^ m);

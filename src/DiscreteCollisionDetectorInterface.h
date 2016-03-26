@@ -14,8 +14,8 @@ namespace BulletSharp
 		internal:
 			btDiscreteCollisionDetectorInterface::ClosestPointInput* _native;
 
-			!ClosestPointInput();
 			~ClosestPointInput();
+			!ClosestPointInput();
 
 		public:
 			ClosestPointInput();
@@ -46,8 +46,8 @@ namespace BulletSharp
 
 			Result(btDiscreteCollisionDetectorInterface::Result* native);
 
-			!Result();
 			~Result();
+			!Result();
 
 		public:
 			virtual void AddContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld, btScalar depth) abstract;
@@ -66,8 +66,8 @@ namespace BulletSharp
 
 		DiscreteCollisionDetectorInterface(btDiscreteCollisionDetectorInterface* native);
 
-		!DiscreteCollisionDetectorInterface();
 		~DiscreteCollisionDetectorInterface();
+		!DiscreteCollisionDetectorInterface();
 
 	public:
 #ifndef DISABLE_DEBUGDRAW

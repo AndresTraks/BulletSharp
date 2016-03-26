@@ -15,8 +15,8 @@ namespace BulletSharp
 
 		ConvexPenetrationDepthSolver(btConvexPenetrationDepthSolver* native);
 
-		!ConvexPenetrationDepthSolver();
 		~ConvexPenetrationDepthSolver();
+		!ConvexPenetrationDepthSolver();
 
 	public:
 		bool CalcPenDepth(SimplexSolverInterface^ simplexSolver, ConvexShape^ convexA,

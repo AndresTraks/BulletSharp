@@ -14,8 +14,8 @@ namespace BulletSharp
 		StridingMeshInterface(btStridingMeshInterface* native);
 		static StridingMeshInterface^ GetManaged(btStridingMeshInterface* stridingMesh);
 
-		!StridingMeshInterface();
 		~StridingMeshInterface();
+		!StridingMeshInterface();
 
 	public:
 		void CalculateAabbBruteForce([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);

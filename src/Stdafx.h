@@ -47,7 +47,6 @@
 using namespace Mogre;
 #endif
 #elif GRAPHICS_MONOGAME
-#using <MonoGame.Framework.dll>
 using namespace Microsoft::Xna::Framework;
 #elif GRAPHICS_NUMERICS
 using namespace System::Numerics;

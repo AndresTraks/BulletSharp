@@ -13,8 +13,8 @@ namespace BulletSharp
 
 		GimTriangleContact(GIM_TRIANGLE_CONTACT* native);
 
-		!GimTriangleContact();
 		~GimTriangleContact();
+		!GimTriangleContact();
 
 	public:
 		GimTriangleContact();
@@ -57,8 +57,8 @@ namespace BulletSharp
 	private:
 		Vector3Array^ _vertices;
 
-		!PrimitiveTriangle();
 		~PrimitiveTriangle();
+		!PrimitiveTriangle();
 
 	public:
 		PrimitiveTriangle();

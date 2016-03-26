@@ -134,8 +134,8 @@ namespace BulletSharp
 
 			IClone(btDbvt::IClone* native);
 
-			!IClone();
 			~IClone();
+			!IClone();
 
 		public:
 			//IClone();
@@ -155,8 +155,8 @@ namespace BulletSharp
 
 			ICollide(btDbvt::ICollide* native);
 
-			!ICollide();
 			~ICollide();
+			!ICollide();
 
 		public:
 			bool AllLeaves(DbvtNode^ n);
@@ -178,8 +178,8 @@ namespace BulletSharp
 
 			IWriter(btDbvt::IWriter* native);
 
-			!IWriter();
 			~IWriter();
+			!IWriter();
 
 		public:
 			void Prepare(DbvtNode^ root, int numnodes);
@@ -302,8 +302,8 @@ namespace BulletSharp
 	internal:
 		Dbvt(btDbvt* native, bool preventDelete);
 
-		!Dbvt();
 		~Dbvt();
+		!Dbvt();
 
 	public:
 		Dbvt();

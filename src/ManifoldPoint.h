@@ -70,8 +70,8 @@ namespace BulletSharp
 		}
 #endif
 
-		!ManifoldPoint();
 		~ManifoldPoint();
+		!ManifoldPoint();
 
 	public:
 		ManifoldPoint();

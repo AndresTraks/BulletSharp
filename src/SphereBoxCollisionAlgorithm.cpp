@@ -20,8 +20,9 @@ SphereBoxCollisionAlgorithm::CreateFunc::CreateFunc()
 
 #define Native static_cast<btSphereBoxCollisionAlgorithm*>(_native)
 
-SphereBoxCollisionAlgorithm::SphereBoxCollisionAlgorithm(PersistentManifold mf, CollisionAlgorithmConstructionInfo^ ci,
-	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, bool isSwapped)
+SphereBoxCollisionAlgorithm::SphereBoxCollisionAlgorithm(PersistentManifold mf,
+	CollisionAlgorithmConstructionInfo^ ci, CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
+	bool isSwapped)
 	: ActivatingCollisionAlgorithm(new btSphereBoxCollisionAlgorithm(mf._native,
 		*ci->_native, body0Wrap->_native, body1Wrap->_native, isSwapped))
 {

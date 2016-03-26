@@ -15,7 +15,6 @@ FixedConstraint::FixedConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, M
 		TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB));
 	TRANSFORM_DEL(frameInA);
 	TRANSFORM_DEL(frameInB);
-
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = rigidBodyB;
 }

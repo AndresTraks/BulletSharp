@@ -4,24 +4,11 @@ using System.Windows.Forms;
 
 namespace BasicDemo
 {
-#if WINDOWS || XBOX
-    static class Program
+    public static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        static void Main(string[] args)
+        [STAThread]
+        static void Main()
         {
-            try
-            {
-                Assembly.Load("MonoGame.Framework, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null");
-            }
-            catch
-            {
-                MessageBox.Show("MonoGame 3.0.1 redistributable not installed.", "Error!");
-                return;
-            }
-
             try
             {
                 Assembly.Load("BulletSharp");
@@ -32,11 +19,8 @@ namespace BasicDemo
                 return;
             }
 
-            using (BasicDemo game = new BasicDemo())
-            {
+            using (var game = new BasicDemo())
                 game.Run();
-            }
         }
     }
-#endif
 }

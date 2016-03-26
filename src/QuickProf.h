@@ -10,8 +10,8 @@ namespace BulletSharp
 
 		Clock(btClock* native);
 
-		!Clock();
 		~Clock();
+		!Clock();
 
 	public:
 		Clock();
@@ -151,19 +151,11 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class CProfileManager
+	public ref class CProfileManager sealed
 	{
-	internal:
-		::CProfileManager* _native;
-
-		CProfileManager(::CProfileManager* native);
-
-		!CProfileManager();
-		~CProfileManager();
+		CProfileManager() {}
 
 	public:
-		CProfileManager();
-
 		static void CleanupMemory();
 		static void DumpAll();
 		static void DumpRecursive(CProfileIterator^ profileIterator, int spacing);

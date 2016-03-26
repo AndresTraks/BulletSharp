@@ -14,8 +14,8 @@ namespace BulletSharp
 
 		MultiBodyConstraint(btMultiBodyConstraint* native);
 
-		!MultiBodyConstraint();
 		~MultiBodyConstraint();
+		!MultiBodyConstraint();
 
 	protected:
 		MultiBody^ _multiBodyA;

@@ -13,8 +13,8 @@ namespace BulletSharp
 
 		GimPair(GIM_PAIR* native);
 
-		!GimPair();
 		~GimPair();
+		!GimPair();
 
 	public:
 		GimPair();
@@ -38,6 +38,7 @@ namespace BulletSharp
 	{
 	internal:
 		btPairSet* _native;
+
 		PairSet(btPairSet* native);
 
 	public:
@@ -54,8 +55,8 @@ namespace BulletSharp
 
 		GimBvhData(GIM_BVH_DATA* native);
 
-		!GimBvhData();
 		~GimBvhData();
+		!GimBvhData();
 
 	public:
 		GimBvhData();
@@ -80,8 +81,8 @@ namespace BulletSharp
 
 		GimBvhTreeNode(GIM_BVH_TREE_NODE* native);
 
-		!GimBvhTreeNode();
 		~GimBvhTreeNode();
+		!GimBvhTreeNode();
 
 	public:
 		GimBvhTreeNode();
@@ -138,8 +139,8 @@ namespace BulletSharp
 
 		BvhTree(btBvhTree* native);
 
-		!BvhTree();
 		~BvhTree();
+		!BvhTree();
 
 	public:
 		BvhTree();
@@ -169,8 +170,8 @@ namespace BulletSharp
 
 		PrimitiveManagerBase(btPrimitiveManagerBase* native);
 
-		!PrimitiveManagerBase();
 		~PrimitiveManagerBase();
+		!PrimitiveManagerBase();
 
 	public:
 		void GetPrimitiveBox(int primIndex, Aabb^ primbox);
@@ -203,8 +204,8 @@ namespace BulletSharp
 	internal:
 		GImpactBvh(btGImpactBvh* native);
 
-		!GImpactBvh();
 		~GImpactBvh();
+		!GImpactBvh();
 
 	public:
 		GImpactBvh();

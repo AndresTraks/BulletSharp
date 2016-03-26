@@ -15,8 +15,8 @@ namespace BulletSharp
 
 		GImpactQuantizedBvhNode(BT_QUANTIZED_BVH_NODE* native);
 
-		!GImpactQuantizedBvhNode();
 		~GImpactQuantizedBvhNode();
+		!GImpactQuantizedBvhNode();
 
 	public:
 		GImpactQuantizedBvhNode();
@@ -61,6 +61,7 @@ namespace BulletSharp
 	{
 	internal:
 		GIM_QUANTIZED_BVH_NODE_ARRAY* _native;
+
 		GimGImpactQuantizedBvhNodeArray(GIM_QUANTIZED_BVH_NODE_ARRAY* native);
 
 	public:
@@ -74,8 +75,8 @@ namespace BulletSharp
 
 		QuantizedBvhTree(btQuantizedBvhTree* native);
 
-		!QuantizedBvhTree();
 		~QuantizedBvhTree();
+		!QuantizedBvhTree();
 
 	public:
 		QuantizedBvhTree();
@@ -111,8 +112,8 @@ namespace BulletSharp
 	private:
 		PrimitiveManagerBase^ _primitiveManager;
 
-		!GImpactQuantizedBvh();
 		~GImpactQuantizedBvh();
+		!GImpactQuantizedBvh();
 
 	public:
 		GImpactQuantizedBvh();

@@ -23,8 +23,8 @@ namespace BulletSharp
 		CollisionShape(btCollisionShape* native);
 		static CollisionShape^ GetManaged(btCollisionShape* collisionShape);
 
-		!CollisionShape();
 		~CollisionShape();
+		!CollisionShape();
 
 	public:
 		void CalculateLocalInertia(btScalar mass, [Out] Vector3% inertia);

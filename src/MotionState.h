@@ -11,8 +11,8 @@ namespace BulletSharp
 
 		MotionState(btMotionState* native);
 
-		!MotionState();
 		~MotionState();
+		!MotionState();
 
 	protected:
 		MotionState();

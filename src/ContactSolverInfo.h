@@ -13,8 +13,8 @@ namespace BulletSharp
 	internal:
 		ContactSolverInfoData(btContactSolverInfoData* native, bool preventDelete);
 
-		!ContactSolverInfoData();
 		~ContactSolverInfoData();
+		!ContactSolverInfoData();
 
 	public:
 		ContactSolverInfoData();

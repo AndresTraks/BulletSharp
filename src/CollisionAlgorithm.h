@@ -19,8 +19,8 @@ namespace BulletSharp
 	private:
 		Dispatcher^ _dispatcher1;
 
-		!CollisionAlgorithmConstructionInfo();
 		~CollisionAlgorithmConstructionInfo();
+		!CollisionAlgorithmConstructionInfo();
 
 	public:
 		CollisionAlgorithmConstructionInfo();
@@ -52,8 +52,8 @@ namespace BulletSharp
 		CollisionAlgorithm(btCollisionAlgorithm* native, bool preventDelete);
 		static CollisionAlgorithm^ GetManaged(btCollisionAlgorithm* native);
 
-		!CollisionAlgorithm();
 		~CollisionAlgorithm();
+		!CollisionAlgorithm();
 
 	public:
 		btScalar CalculateTimeOfImpact(CollisionObject^ body0, CollisionObject^ body1,

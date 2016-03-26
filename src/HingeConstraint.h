@@ -170,13 +170,13 @@ namespace BulletSharp
 	{
 	public:
 		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
-			Vector3 pivotInA, Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB,
-			bool useReferenceFrameA);
+			Vector3 pivotInA, Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB, bool useReferenceFrameA);
 		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 			Vector3 pivotInA, Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB);
-		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector3 axisInA,
-			bool useReferenceFrameA);
-		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector3 axisInA);
+		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA,
+			Vector3 axisInA, bool useReferenceFrameA);
+		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA,
+			Vector3 axisInA);
 		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 			Matrix rigidBodyAFrame, Matrix rigidBodyBFrame, bool useReferenceFrameA);
 		HingeAccumulatedAngleConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,

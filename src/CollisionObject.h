@@ -27,8 +27,8 @@ namespace BulletSharp
 	internal:
 		CollisionObject(btCollisionObject* native);
 
-		!CollisionObject();
 		~CollisionObject();
+		!CollisionObject();
 
 	public:
 		CollisionObject();

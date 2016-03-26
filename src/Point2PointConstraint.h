@@ -25,8 +25,8 @@ namespace BulletSharp
 	internal:
 		ConstraintSetting(btConstraintSetting* native, bool preventDelete);
 
-		!ConstraintSetting();
 		~ConstraintSetting();
+		!ConstraintSetting();
 
 	public:
 		ConstraintSetting();

@@ -132,6 +132,10 @@ void ConvexShape::Project(Matrix% transform, Vector3% direction, [Out] btScalar%
 		*witnesPtMinTemp, *witnesPtMaxTemp);
 	TRANSFORM_DEL(transform);
 	VECTOR3_DEL(direction);
+	Math::BtVector3ToVector3(witnesPtMinTemp, witnesPtMin);
+	Math::BtVector3ToVector3(witnesPtMaxTemp, witnesPtMax);
+	ALIGNED_FREE(witnesPtMinTemp);
+	ALIGNED_FREE(witnesPtMaxTemp);
 	minProj = minProjTemp;
 	maxProj = maxProjTemp;
 }

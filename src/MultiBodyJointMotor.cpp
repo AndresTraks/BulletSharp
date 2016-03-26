@@ -21,8 +21,8 @@ MultiBodyJointMotor::MultiBodyJointMotor(MultiBody^ body, int link, btScalar des
 	_multiBodyB = body;
 }
 
-MultiBodyJointMotor::MultiBodyJointMotor(MultiBody^ body, int link, int linkDoF, btScalar desiredVelocity,
-	btScalar maxMotorImpulse)
+MultiBodyJointMotor::MultiBodyJointMotor(MultiBody^ body, int link, int linkDoF,
+	btScalar desiredVelocity, btScalar maxMotorImpulse)
 	: MultiBodyConstraint(new btMultiBodyJointMotor(body->_native, link, linkDoF,
 		desiredVelocity, maxMotorImpulse))
 {

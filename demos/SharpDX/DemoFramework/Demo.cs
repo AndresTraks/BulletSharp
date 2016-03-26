@@ -24,11 +24,7 @@ namespace DemoFramework
         bool depthOfFieldEnabled = false;
         bool deferredLightingEnabled = true;
 
-        public Form Form
-        {
-            get;
-            private set;
-        }
+        public Form Form { get; }
 
         Device _device;
         public Device Device
@@ -486,7 +482,7 @@ namespace DemoFramework
             const ShaderFlags shaderFlags = ShaderFlags.None;
             //const ShaderFlags shaderFlags = ShaderFlags.Debug | ShaderFlags.SkipOptimization;
 
-            string[] sources = new[] { "shader.fx", "grender.fx" };
+            string[] sources = { "shader.fx", "grender.fx" };
             using (var shaderByteCode = ShaderLoader.FromResource(Assembly.GetExecutingAssembly(), sources, shaderFlags))
             {
                 effect = new Effect(_device, shaderByteCode);
@@ -589,8 +585,7 @@ namespace DemoFramework
             lightEyePositionVar = lightShader.GetVariableByName("EyePosition").AsVector();
             lightViewParametersVar = lightShader.GetVariableByName("ViewParameters").AsVector();
 
-            InputElement[] elements = new InputElement[]
-            {
+            InputElement[] elements = {
                 new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
             };
             lightVolumeInputLayout = new InputLayout(Device, lightShader.GetTechniqueByIndex(0).GetPassByName("Light").Description.Signature, elements);
@@ -1054,8 +1049,6 @@ namespace DemoFramework
                                             AngularLowerLimit = Vector3.Zero,
                                             AngularUpperLimit = Vector3.Zero
                                         };
-
-                                        PhysicsContext.World.AddConstraint(dof6);
                                         pickConstraint = dof6;
 
                                         dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 0);
@@ -1074,8 +1067,7 @@ namespace DemoFramework
                                     }
                                     else
                                     {
-                                        Point2PointConstraint p2p = new Point2PointConstraint(body, localPivot);
-                                        PhysicsContext.World.AddConstraint(p2p);
+                                        var p2p = new Point2PointConstraint(body, localPivot);
                                         pickConstraint = p2p;
                                         p2p.Setting.ImpulseClamp = 30;
                                         //very weak constraint for picking
@@ -1089,6 +1081,7 @@ namespace DemoFramework
                                         p2p.SetParam(ConstraintParams.Erp, 0.1f, 2);
                                         */
                                     }
+                                    PhysicsContext.World.AddConstraint(pickConstraint);
 
                                     oldPickingDist = (pickPos - rayFrom).Length();
                                 }

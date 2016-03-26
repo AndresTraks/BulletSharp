@@ -12,8 +12,8 @@ namespace BulletSharp
 
 		Serializer(btSerializer* native);
 
-		!Serializer();
 		~Serializer();
+		!Serializer();
 
 	public:
 		//Chunk^ Allocate(int size, int numElements);
@@ -57,8 +57,8 @@ namespace BulletSharp
 
 		BulletSerializedArrays(btBulletSerializedArrays* native);
 
-		!BulletSerializedArrays();
 		~BulletSerializedArrays();
+		!BulletSerializedArrays();
 
 	public:
 		BulletSerializedArrays();

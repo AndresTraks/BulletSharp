@@ -70,7 +70,6 @@ Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ r
 		VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB));
 	VECTOR3_DEL(pivotInA);
 	VECTOR3_DEL(pivotInB);
-
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = rigidBodyB;
 }
@@ -81,7 +80,6 @@ Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivo
 	VECTOR3_CONV(pivotInA);
 	UnmanagedPointer = new btPoint2PointConstraint(*(btRigidBody*)rigidBodyA->_native, VECTOR3_USE(pivotInA));
 	VECTOR3_DEL(pivotInA);
-
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = GetFixedBody();
 }

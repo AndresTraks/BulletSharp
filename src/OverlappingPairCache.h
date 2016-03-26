@@ -11,8 +11,8 @@ namespace BulletSharp
 	internal:
 		btOverlapCallback* _native;
 
-		!OverlapCallback();
 		~OverlapCallback();
+		!OverlapCallback();
 
 	public:
 		bool ProcessOverlap(BroadphasePair^ pair);
@@ -30,8 +30,8 @@ namespace BulletSharp
 
 		OverlapFilterCallback(btOverlapFilterCallback* native);
 
-		!OverlapFilterCallback();
 		~OverlapFilterCallback();
+		!OverlapFilterCallback();
 
 	protected:
 		OverlapFilterCallback();

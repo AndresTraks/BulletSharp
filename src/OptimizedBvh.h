@@ -22,8 +22,8 @@ namespace BulletSharp
 		void RefitPartial(StridingMeshInterface^ triangles, Vector3 aabbMin, Vector3 aabbMax);
 		bool SerializeInPlace(IntPtr alignedDataBuffer, unsigned int dataBufferSize,
 			bool swapEndian);
-		void UpdateBvhNodes(StridingMeshInterface^ meshInterface, int firstNode, int endNode,
-			int index);
+		void UpdateBvhNodes(StridingMeshInterface^ meshInterface, int firstNode,
+			int endNode, int index);
 #endif
 	};
 };

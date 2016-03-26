@@ -9,8 +9,8 @@ namespace BulletSharp
 
 		TriangleCallback(btTriangleCallback* native);
 
-		!TriangleCallback();
 		~TriangleCallback();
+		!TriangleCallback();
 
 	public:
 		//void ProcessTriangle(Vector3 triangle, int partId, int triangleIndex);
@@ -29,8 +29,8 @@ namespace BulletSharp
 
 		InternalTriangleIndexCallback(btInternalTriangleIndexCallback* native);
 
-		!InternalTriangleIndexCallback();
 		~InternalTriangleIndexCallback();
+		!InternalTriangleIndexCallback();
 
 	public:
 		//void InternalProcessTriangleIndex(Vector3 triangle, int partId, int triangleIndex);

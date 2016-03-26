@@ -15,10 +15,9 @@ namespace BulletSharp
 
 	internal:
 		CollisionObjectWrapper(btCollisionObjectWrapper* native);
-
 /*
-		!CollisionObjectWrapper();
 		~CollisionObjectWrapper();
+		!CollisionObjectWrapper();
 */
 
 	public:

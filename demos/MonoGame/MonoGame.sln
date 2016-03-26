@@ -1,7 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame", "MonoGame.csproj", "{7FBDA3AE-CF61-4407-93F3-AF2547BAF05E}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame", "MonoGame.csproj", "{B14B3355-54F3-4D72-A94D-4623BC3C88C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +11,10 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7FBDA3AE-CF61-4407-93F3-AF2547BAF05E}.Debug|x86.ActiveCfg = Debug|x86
-		{7FBDA3AE-CF61-4407-93F3-AF2547BAF05E}.Debug|x86.Build.0 = Debug|x86
-		{7FBDA3AE-CF61-4407-93F3-AF2547BAF05E}.Release|x86.ActiveCfg = Release|x86
-		{7FBDA3AE-CF61-4407-93F3-AF2547BAF05E}.Release|x86.Build.0 = Release|x86
+		{B14B3355-54F3-4D72-A94D-4623BC3C88C1}.Debug|x86.ActiveCfg = Debug|x86
+		{B14B3355-54F3-4D72-A94D-4623BC3C88C1}.Debug|x86.Build.0 = Debug|x86
+		{B14B3355-54F3-4D72-A94D-4623BC3C88C1}.Release|x86.ActiveCfg = Release|x86
+		{B14B3355-54F3-4D72-A94D-4623BC3C88C1}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BulletSharp;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,74 +9,61 @@ namespace BasicDemo
 {
     class Physics
     {
-        public DynamicsWorld World;
+        public DynamicsWorld World { get; }
 
-        CollisionDispatcher Dispatcher;
-        BroadphaseInterface Broadphase;
-        //ConstraintSolver Solver;
-        List<CollisionShape> CollisionShapes;
-        CollisionConfiguration collisionConf;
+        CollisionDispatcher _dispatcher;
+        BroadphaseInterface _broadphase;
+        List<CollisionShape> _collisionShapes = new List<CollisionShape>();
+        CollisionConfiguration _collisionConf;
 
         ///create 125 (5x5x5) dynamic objects
-        int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
+        const int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
 
-        ///scaling of the objects (0.1 = 20 centimeter boxes )
-        float StartPosX = -5;
-        float StartPosY = -5;
-        float StartPosZ = -3;
+        Vector3 _start = new Vector3(
+            -5 - ArraySizeX / 2,
+            -5,
+            -3 - ArraySizeZ / 2);
 
         public Physics()
         {
             // collision configuration contains default setup for memory, collision setup
-            collisionConf = new DefaultCollisionConfiguration();
-            Dispatcher = new CollisionDispatcher(collisionConf);
+            _collisionConf = new DefaultCollisionConfiguration();
+            _dispatcher = new CollisionDispatcher(_collisionConf);
 
-            Broadphase = new DbvtBroadphase();
+            _broadphase = new DbvtBroadphase();
 
-            World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, null, collisionConf);
+            World = new DiscreteDynamicsWorld(_dispatcher, _broadphase, null, _collisionConf);
             World.Gravity = new Vector3(0, -10, 0);
 
-            CollisionShapes = new List<CollisionShape>();
-
             // create the ground
-            CollisionShape groundShape = new BoxShape(50, 1, 50);
-            CollisionShapes.Add(groundShape);
+            var groundShape = new BoxShape(50, 1, 50);
+            _collisionShapes.Add(groundShape);
             CollisionObject ground = LocalCreateRigidBody(0, Matrix.Identity, groundShape);
             ground.UserObject = "Ground";
 
             // create a few dynamic rigidbodies
-            float mass = 1.0f;
+            const float mass = 1.0f;
 
-            CollisionShape colShape = new BoxShape(1);
-            CollisionShapes.Add(colShape);
-            Vector3 localInertia = colShape.CalculateLocalInertia(mass);
+            var colShape = new BoxShape(1);
+            _collisionShapes.Add(colShape);
 
-            var rbInfo = new RigidBodyConstructionInfo(mass, null, colShape, localInertia);
+            var rbInfo = new RigidBodyConstructionInfo(mass, null, colShape);
+            rbInfo.LocalInertia = colShape.CalculateLocalInertia(mass);
 
-            float start_x = StartPosX - ArraySizeX / 2;
-            float start_y = StartPosY;
-            float start_z = StartPosZ - ArraySizeZ / 2;
-
-            int k, i, j;
-            for (k = 0; k < ArraySizeY; k++)
+            for (int k = 0; k < ArraySizeY; k++)
             {
-                for (i = 0; i < ArraySizeX; i++)
+                for (int i = 0; i < ArraySizeX; i++)
                 {
-                    for (j = 0; j < ArraySizeZ; j++)
+                    for (int j = 0; j < ArraySizeZ; j++)
                     {
                         Matrix startTransform = Matrix.CreateTranslation(
-                            new Vector3(
-                                2*i + start_x,
-                                2*k + start_y,
-                                2*j + start_z
-                                )
-                            );
+                            _start + new Vector3(2 * i, 2 * k, 2 * j));
 
                         // using motionstate is recommended, it provides interpolation capabilities
                         // and only synchronizes 'active' objects
                         rbInfo.MotionState = new DefaultMotionState(startTransform);
 
-                        RigidBody body = new RigidBody(rbInfo);
+                        var body = new RigidBody(rbInfo);
                         
                         // make it drop from a height
                         body.Translate(new Vector3(0, 20, 0));
@@ -95,20 +83,19 @@ namespace BasicDemo
 
         public void ExitPhysics()
         {
-            //remove/dispose constraints
-            int i;
-            for (i = World.NumConstraints - 1; i >= 0; i--)
+            // Remove/dispose constraints
+            for (int i = World.NumConstraints - 1; i >= 0; i--)
             {
-                TypedConstraint constraint = World.GetConstraint(i);
+                var constraint = World.GetConstraint(i);
                 World.RemoveConstraint(constraint);
-                constraint.Dispose(); ;
+                constraint.Dispose();
             }
 
-            //remove the rigidbodies from the dynamics world and delete them
-            for (i = World.NumCollisionObjects - 1; i >= 0; i--)
+            // Remove/dispose rigid bodies
+            for (int i = World.NumCollisionObjects - 1; i >= 0; i--)
             {
-                CollisionObject obj = World.CollisionObjectArray[i];
-                RigidBody body = obj as RigidBody;
+                var obj = World.CollisionObjectArray[i];
+                var body = obj as RigidBody;
                 if (body != null && body.MotionState != null)
                 {
                     body.MotionState.Dispose();
@@ -118,54 +105,45 @@ namespace BasicDemo
             }
 
             //delete collision shapes
-            foreach (CollisionShape shape in CollisionShapes)
+            foreach (var shape in _collisionShapes)
                 shape.Dispose();
-            CollisionShapes.Clear();
+            _collisionShapes.Clear();
 
             World.Dispose();
-            Broadphase.Dispose();
-            if (Dispatcher != null)
+            _broadphase.Dispose();
+            if (_dispatcher != null)
             {
-                Dispatcher.Dispose();
+                _dispatcher.Dispose();
             }
-            collisionConf.Dispose();
+            _collisionConf.Dispose();
         }
 
         public RigidBody LocalCreateRigidBody(float mass, Matrix startTransform, CollisionShape shape)
         {
-            bool isDynamic = (mass != 0.0f);
-
-            Vector3 localInertia = Vector3.Zero;
-            if (isDynamic)
-                shape.CalculateLocalInertia(mass, out localInertia);
-
-            DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
-
-            RigidBody body;
-            using (var rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia))
+            using (var rbInfo = new RigidBodyConstructionInfo(mass, null, shape))
             {
-                body = new RigidBody(rbInfo);
+                bool isDynamic = mass != 0.0f;
+                if (isDynamic)
+                {
+                    rbInfo.LocalInertia = shape.CalculateLocalInertia(mass);
+                    rbInfo.MotionState = new DefaultMotionState(startTransform);
+                }
+
+                var body = new RigidBody(rbInfo);
+                World.AddRigidBody(body);
+                return body;
             }
-
-            World.AddRigidBody(body);
-
-            return body;
         }
 
         public class PhysicsDebugDraw : DebugDraw
         {
-            GraphicsDevice device;
+            GraphicsDevice _device;
 
-            DebugDrawModes _debugMode;
-            public override DebugDrawModes DebugMode
-            {
-                get { return _debugMode; }
-                set { _debugMode = value; }
-            }
+            public override DebugDrawModes DebugMode { get; set; }
 
-            public PhysicsDebugDraw(GraphicsDevice device, BasicEffect effect)
+            public PhysicsDebugDraw(GraphicsDevice device)
             {
-                this.device = device;
+                _device = device;
             }
 
             public override void Draw3dText(ref Vector3 location, string textString)
@@ -175,18 +153,22 @@ namespace BasicDemo
 
             public override void DrawContactPoint(ref Vector3 pointOnB, ref Vector3 normalOnB, float distance, int lifeTime, Color color)
             {
-                VertexPositionColor[] vertices = new VertexPositionColor[2];
-                vertices[0] = new VertexPositionColor(pointOnB, color);
-                vertices[1] = new VertexPositionColor(pointOnB + normalOnB, color);
-                device.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.LineList, vertices, 0, 1);
+                var vertices = new[]
+                {
+                    new VertexPositionColor(pointOnB, color),
+                    new VertexPositionColor(pointOnB + normalOnB, color)
+                };
+                _device.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, 1);
             }
 
             public override void DrawLine(ref Vector3 from, ref Vector3 to, Color color)
             {
-                VertexPositionColor[] vertices = new VertexPositionColor[2];
-                vertices[0] = new VertexPositionColor(from, color);
-                vertices[1] = new VertexPositionColor(to, color);
-                device.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.LineList, vertices, 0, 1);
+                var vertices = new[]
+                {
+                    new VertexPositionColor(from, color),
+                    new VertexPositionColor(to, color)
+                };
+                _device.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, 1);
             }
 
             public void DrawDebugWorld(DynamicsWorld world)

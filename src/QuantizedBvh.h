@@ -15,8 +15,8 @@ namespace BulletSharp
 
 		QuantizedBvhNode(btQuantizedBvhNode* native);
 
-		!QuantizedBvhNode();
 		~QuantizedBvhNode();
+		!QuantizedBvhNode();
 
 	public:
 		QuantizedBvhNode();
@@ -65,8 +65,8 @@ namespace BulletSharp
 
 		OptimizedBvhNode(btOptimizedBvhNode* native);
 
-		!OptimizedBvhNode();
 		~OptimizedBvhNode();
+		!OptimizedBvhNode();
 
 	public:
 		OptimizedBvhNode();
@@ -109,8 +109,8 @@ namespace BulletSharp
 
 		NodeOverlapCallback(btNodeOverlapCallback* native);
 
-		!NodeOverlapCallback();
 		~NodeOverlapCallback();
+		!NodeOverlapCallback();
 
 	public:
 		void ProcessNode(int subPart, int triangleIndex);
@@ -135,8 +135,8 @@ namespace BulletSharp
 	internal:
 		QuantizedBvh(btQuantizedBvh* native, bool preventDelete);
 
-		!QuantizedBvh();
 		~QuantizedBvh();
+		!QuantizedBvh();
 
 	public:
 #ifndef DISABLE_BVH

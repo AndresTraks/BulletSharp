@@ -54,7 +54,8 @@ int DefaultCollisionConstructionInfo::CustomCollisionAlgorithmMaxElementSize::ge
 {
 	return _native->m_customCollisionAlgorithmMaxElementSize;
 }
-void DefaultCollisionConstructionInfo::CustomCollisionAlgorithmMaxElementSize::set(int value)
+void DefaultCollisionConstructionInfo::CustomCollisionAlgorithmMaxElementSize::set(
+	int value)
 {
 	_native->m_customCollisionAlgorithmMaxElementSize = value;
 }
@@ -63,7 +64,8 @@ int DefaultCollisionConstructionInfo::DefaultMaxCollisionAlgorithmPoolSize::get(
 {
 	return _native->m_defaultMaxCollisionAlgorithmPoolSize;
 }
-void DefaultCollisionConstructionInfo::DefaultMaxCollisionAlgorithmPoolSize::set(int value)
+void DefaultCollisionConstructionInfo::DefaultMaxCollisionAlgorithmPoolSize::set(
+	int value)
 {
 	_native->m_defaultMaxCollisionAlgorithmPoolSize = value;
 }
@@ -72,7 +74,8 @@ int DefaultCollisionConstructionInfo::DefaultMaxPersistentManifoldPoolSize::get(
 {
 	return _native->m_defaultMaxPersistentManifoldPoolSize;
 }
-void DefaultCollisionConstructionInfo::DefaultMaxPersistentManifoldPoolSize::set(int value)
+void DefaultCollisionConstructionInfo::DefaultMaxPersistentManifoldPoolSize::set(
+	int value)
 {
 	_native->m_defaultMaxPersistentManifoldPoolSize = value;
 }

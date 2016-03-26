@@ -15,8 +15,8 @@ namespace BulletSharp
 	private:
 		bool _ownsData;
 
-		!MaterialProperties();
 		~MaterialProperties();
+		!MaterialProperties();
 
 	public:
 		MaterialProperties();

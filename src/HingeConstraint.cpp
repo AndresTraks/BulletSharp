@@ -28,7 +28,6 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, V
 	VECTOR3_DEL(pivotInB);
 	VECTOR3_DEL(axisInA);
 	VECTOR3_DEL(axisInB);
-
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = rigidBodyB;
 }
@@ -47,7 +46,6 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, V
 	VECTOR3_DEL(pivotInB);
 	VECTOR3_DEL(axisInA);
 	VECTOR3_DEL(axisInB);
-
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = rigidBodyB;
 }
@@ -62,7 +60,6 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector
 		VECTOR3_USE(axisInA), useReferenceFrameA);
 	VECTOR3_DEL(pivotInA);
 	VECTOR3_DEL(axisInA);
-
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = GetFixedBody();
 }
@@ -76,7 +73,6 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA, Vector
 		VECTOR3_USE(axisInA));
 	VECTOR3_DEL(pivotInA);
 	VECTOR3_DEL(axisInA);
-
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = GetFixedBody();
 }
@@ -91,7 +87,6 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, M
 		TRANSFORM_USE(rigidBodyAFrame), TRANSFORM_USE(rigidBodyBFrame), useReferenceFrameA);
 	TRANSFORM_DEL(rigidBodyAFrame);
 	TRANSFORM_DEL(rigidBodyBFrame);
-
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = rigidBodyB;
 }
@@ -106,7 +101,6 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, M
 		TRANSFORM_USE(rigidBodyAFrame), TRANSFORM_USE(rigidBodyBFrame));
 	TRANSFORM_DEL(rigidBodyAFrame);
 	TRANSFORM_DEL(rigidBodyBFrame);
-
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = rigidBodyB;
 }
@@ -118,7 +112,6 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame, 
 	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_native, TRANSFORM_USE(rigidBodyAFrame),
 		useReferenceFrameA);
 	TRANSFORM_DEL(rigidBodyAFrame);
-
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = GetFixedBody();
 }
@@ -129,7 +122,6 @@ HingeConstraint::HingeConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame)
 	TRANSFORM_CONV(rigidBodyAFrame);
 	UnmanagedPointer = new btHingeConstraint(*(btRigidBody*)rigidBodyA->_native, TRANSFORM_USE(rigidBodyAFrame));
 	TRANSFORM_DEL(rigidBodyAFrame);
-
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = GetFixedBody();
 }
@@ -442,7 +434,6 @@ HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rigi
 	VECTOR3_DEL(pivotInB);
 	VECTOR3_DEL(axisInA);
 	VECTOR3_DEL(axisInB);
-
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = rigidBodyB;
 }
@@ -462,7 +453,6 @@ HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rigi
 	VECTOR3_DEL(pivotInB);
 	VECTOR3_DEL(axisInA);
 	VECTOR3_DEL(axisInB);
-
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = rigidBodyB;
 }
@@ -477,7 +467,6 @@ HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rigi
 		VECTOR3_USE(pivotInA), VECTOR3_USE(axisInA), useReferenceFrameA);
 	VECTOR3_DEL(pivotInA);
 	VECTOR3_DEL(axisInA);
-
 	_rigidBodyA = rigidBodyA;
 }
 
@@ -491,7 +480,6 @@ HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rigi
 		VECTOR3_USE(pivotInA), VECTOR3_USE(axisInA));
 	VECTOR3_DEL(pivotInA);
 	VECTOR3_DEL(axisInA);
-
 	_rigidBodyA = rigidBodyA;
 }
 
@@ -506,7 +494,6 @@ HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rigi
 		useReferenceFrameA);
 	TRANSFORM_DEL(rigidBodyAFrame);
 	TRANSFORM_DEL(rigidBodyBFrame);
-
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = rigidBodyB;
 }
@@ -521,7 +508,6 @@ HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rigi
 		*(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(rigidBodyAFrame), TRANSFORM_USE(rigidBodyBFrame));
 	TRANSFORM_DEL(rigidBodyAFrame);
 	TRANSFORM_DEL(rigidBodyBFrame);
-
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = rigidBodyB;
 }
@@ -534,7 +520,6 @@ HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rigi
 	UnmanagedPointer = new btHingeAccumulatedAngleConstraint(*(btRigidBody*)rigidBodyA->_native,
 		TRANSFORM_USE(rigidBodyAFrame), useReferenceFrameA);
 	TRANSFORM_DEL(rigidBodyAFrame);
-
 	_rigidBodyA = rigidBodyA;
 }
 
@@ -546,7 +531,6 @@ HingeAccumulatedAngleConstraint::HingeAccumulatedAngleConstraint(RigidBody^ rigi
 	UnmanagedPointer = new btHingeAccumulatedAngleConstraint(*(btRigidBody*)rigidBodyA->_native,
 		TRANSFORM_USE(rigidBodyAFrame));
 	TRANSFORM_DEL(rigidBodyAFrame);
-
 	_rigidBodyA = rigidBodyA;
 }
 

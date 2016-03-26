@@ -9,8 +9,8 @@ namespace BulletSharp
 
 		MlcpSolverInterface(btMLCPSolverInterface* native);
 
-		!MlcpSolverInterface();
 		~MlcpSolverInterface();
+		!MlcpSolverInterface();
 
 	public:
 		//bool SolveMLCP(MatrixXf^ A, VectorXf^ b, VectorXf^ x, VectorXf^ lo, VectorXf^ hi,

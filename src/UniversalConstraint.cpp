@@ -19,7 +19,6 @@ UniversalConstraint::UniversalConstraint(RigidBody^ rigidBodyA, RigidBody^ rigid
 	VECTOR3_DEL(anchor);
 	VECTOR3_DEL(axis1);
 	VECTOR3_DEL(axis2);
-
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = rigidBodyB;
 }

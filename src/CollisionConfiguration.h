@@ -17,8 +17,8 @@ namespace BulletSharp
 		PoolAllocator^ _collisionAlgorithmPool;
 		PoolAllocator^ _persistentManifoldPool;
 
-		!CollisionConfiguration();
 		~CollisionConfiguration();
+		!CollisionConfiguration();
 
 	public:
 		virtual CollisionAlgorithmCreateFunc^ GetCollisionAlgorithmCreateFunc(BroadphaseNativeType proxyType0,

@@ -18,8 +18,6 @@ namespace BulletSharp
 		void AddPoint(Vector3 point, bool recalculateLocalAabb);
 		void AddPoint(Vector3 point);
 		Vector3 GetScaledPoint(int i);
-		void Project(Matrix trans, Vector3 dir, [Out] btScalar% minProj, [Out] btScalar% maxProj,
-			[Out] Vector3% witnesPtMin, [Out] Vector3% witnesPtMax);
 
 		property int NumPoints
 		{

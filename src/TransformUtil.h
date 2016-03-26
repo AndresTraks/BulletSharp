@@ -4,12 +4,11 @@ namespace BulletSharp
 {
 	public ref class TransformUtil sealed
 	{
-	private:
 		TransformUtil() {}
 
 	public:
-		static void CalculateDiffAxisAngle(Matrix transform0, Matrix transform1, [Out] Vector3% axis,
-			[Out] btScalar% angle);
+		static void CalculateDiffAxisAngle(Matrix transform0, Matrix transform1,
+			[Out] Vector3% axis, [Out] btScalar% angle);
 		static void CalculateDiffAxisAngleQuaternion(Quaternion orn0, Quaternion orn1a,
 			[Out] Vector3% axis, [Out] btScalar% angle);
 		static void CalculateVelocity(Matrix transform0, Matrix transform1, btScalar timeStep,
@@ -25,8 +24,8 @@ namespace BulletSharp
 	internal:
 		btConvexSeparatingDistanceUtil* _native;
 
-		!ConvexSeparatingDistanceUtil();
 		~ConvexSeparatingDistanceUtil();
+		!ConvexSeparatingDistanceUtil();
 
 	public:
 		ConvexSeparatingDistanceUtil(btScalar boundingRadiusA, btScalar boundingRadiusB);

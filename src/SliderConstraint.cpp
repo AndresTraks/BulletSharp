@@ -7,8 +7,8 @@
 
 #define Native static_cast<btSliderConstraint*>(_native)
 
-SliderConstraint::SliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA,
-	Matrix frameInB, bool useLinearReferenceFrameA)
+SliderConstraint::SliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
+	Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
 	: TypedConstraint(0)
 {
 	TRANSFORM_CONV(frameInA);
@@ -17,7 +17,6 @@ SliderConstraint::SliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 		TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB), useLinearReferenceFrameA);
 	TRANSFORM_DEL(frameInA);
 	TRANSFORM_DEL(frameInB);
-
 	_rigidBodyA = rigidBodyA;
 	_rigidBodyB = rigidBodyB;
 }
@@ -29,7 +28,6 @@ SliderConstraint::SliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool 
 	UnmanagedPointer = new btSliderConstraint(*(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(frameInB),
 		useLinearReferenceFrameA);
 	TRANSFORM_DEL(frameInB);
-
 	_rigidBodyA = GetFixedBody();
 	_rigidBodyB = rigidBodyB;
 }

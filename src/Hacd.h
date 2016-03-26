@@ -20,8 +20,8 @@ namespace BulletSharp
 		CallbackFunctionUnmanagedDelegate^ _callbackFunctionUnmanaged;
 		CallBackFunction^ _callbackFunction;
 
-		!Hacd();
 		~Hacd();
+		!Hacd();
 
 	private:
 		bool CallbackFunctionUnmanaged(IntPtr msg, double progress, double globalConcavity, IntPtr n);

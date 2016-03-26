@@ -490,7 +490,8 @@ GImpactMeshShapePart::GImpactMeshShapePart()
 {
 }
 
-GImpactMeshShapePart::GImpactMeshShapePart(StridingMeshInterface^ meshInterface, int part)
+GImpactMeshShapePart::GImpactMeshShapePart(StridingMeshInterface^ meshInterface,
+	int part)
 	: GImpactShapeInterface(new btGImpactMeshShapePart(meshInterface->_native, part))
 {
 }

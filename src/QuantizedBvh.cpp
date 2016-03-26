@@ -245,8 +245,8 @@ void QuantizedBvh::QuantizeWithClamp(unsigned short^ out, Vector3 point2, int is
 	VECTOR3_DEL(point2);
 }
 */
-void QuantizedBvh::ReportAabbOverlappingNodex(NodeOverlapCallback^ nodeCallback, Vector3 aabbMin,
-	Vector3 aabbMax)
+void QuantizedBvh::ReportAabbOverlappingNodex(NodeOverlapCallback^ nodeCallback,
+	Vector3 aabbMin, Vector3 aabbMax)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
@@ -295,7 +295,8 @@ String^ QuantizedBvh::Serialize(IntPtr dataBuffer, Serializer^ serializer)
 }
 #endif
 
-void QuantizedBvh::SetQuantizationValues(Vector3 bvhAabbMin, Vector3 bvhAabbMax, btScalar quantizationMargin)
+void QuantizedBvh::SetQuantizationValues(Vector3 bvhAabbMin, Vector3 bvhAabbMax,
+	btScalar quantizationMargin)
 {
 	VECTOR3_CONV(bvhAabbMin);
 	VECTOR3_CONV(bvhAabbMax);

@@ -24,8 +24,8 @@ namespace BulletSharp
 
 		BroadphaseAabbCallback(btBroadphaseAabbCallback* native);
 
-		!BroadphaseAabbCallback();
 		~BroadphaseAabbCallback();
+		!BroadphaseAabbCallback();
 
 	protected:
 		BroadphaseAabbCallback();
@@ -96,8 +96,8 @@ namespace BulletSharp
 	internal:
 		BroadphaseInterface(btBroadphaseInterface* native);
 
-		!BroadphaseInterface();
 		~BroadphaseInterface();
+		!BroadphaseInterface();
 
 	public:
 		void AabbTestRef(Vector3% aabbMin, Vector3% aabbMax, BroadphaseAabbCallback^ callback);

@@ -25,7 +25,8 @@ int ConvexPlaneCollisionAlgorithm::CreateFunc::MinimumPointsPerturbationThreshol
 {
 	return Native->m_minimumPointsPerturbationThreshold;
 }
-void ConvexPlaneCollisionAlgorithm::CreateFunc::MinimumPointsPerturbationThreshold::set(int value)
+void ConvexPlaneCollisionAlgorithm::CreateFunc::MinimumPointsPerturbationThreshold::set(
+	int value)
 {
 	Native->m_minimumPointsPerturbationThreshold = value;
 }
@@ -51,14 +52,15 @@ ConvexPlaneCollisionAlgorithm::ConvexPlaneCollisionAlgorithm(btConvexPlaneCollis
 ConvexPlaneCollisionAlgorithm::ConvexPlaneCollisionAlgorithm(PersistentManifold mf,
 	CollisionAlgorithmConstructionInfo^ ci, CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 	bool isSwapped, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
-	: CollisionAlgorithm(new btConvexPlaneCollisionAlgorithm(mf._native, *ci->_native,
-		body0Wrap->_native, body1Wrap->_native, isSwapped, numPerturbationIterations,
+	: CollisionAlgorithm(new btConvexPlaneCollisionAlgorithm(mf._native,
+		*ci->_native, body0Wrap->_native, body1Wrap->_native, isSwapped, numPerturbationIterations,
 		minimumPointsPerturbationThreshold))
 {
 }
 
-void ConvexPlaneCollisionAlgorithm::CollideSingleContact(Quaternion perturbeRot, CollisionObjectWrapper^ body0Wrap,
-	CollisionObjectWrapper^ body1Wrap, DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
+void ConvexPlaneCollisionAlgorithm::CollideSingleContact(Quaternion perturbeRot,
+	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, DispatcherInfo^ dispatchInfo,
+	ManifoldResult^ resultOut)
 {
 	QUATERNION_CONV(perturbeRot);
 	Native->collideSingleContact(QUATERNION_USE(perturbeRot), body0Wrap->_native,

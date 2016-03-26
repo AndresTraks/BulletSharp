@@ -13,8 +13,8 @@ namespace BulletSharp
 
 			VertexBufferDescriptor(btVertexBufferDescriptor* native);
 
-			!VertexBufferDescriptor();
 			~VertexBufferDescriptor();
+			!VertexBufferDescriptor();
 
 		public:
 			property BulletSharp::BufferType BufferType

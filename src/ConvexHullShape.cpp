@@ -54,27 +54,6 @@ Vector3 ConvexHullShape::GetScaledPoint(int i)
 	return point;
 }
 
-void ConvexHullShape::Project(Matrix trans, Vector3 dir, btScalar% minProj, btScalar% maxProj,
-	Vector3% witnesPtMin, Vector3% witnesPtMax)
-{
-	TRANSFORM_CONV(trans);
-	VECTOR3_CONV(dir);
-	btScalar minProjTemp;
-	btScalar maxProjTemp;
-	btVector3* witnesPtMinTemp = ALIGNED_NEW(btVector3);
-	btVector3* witnesPtMaxTemp = ALIGNED_NEW(btVector3);
-	Native->project(TRANSFORM_USE(trans), VECTOR3_USE(dir), minProjTemp, maxProjTemp,
-		*witnesPtMinTemp, *witnesPtMaxTemp);
-	minProj = minProjTemp;
-	maxProj = maxProjTemp;
-	Math::BtVector3ToVector3(witnesPtMinTemp, witnesPtMin);
-	Math::BtVector3ToVector3(witnesPtMaxTemp, witnesPtMax);
-	TRANSFORM_DEL(trans);
-	VECTOR3_DEL(dir);
-	ALIGNED_FREE(witnesPtMinTemp);
-	ALIGNED_FREE(witnesPtMaxTemp);
-}
-
 int ConvexHullShape::NumPoints::get()
 {
 	return Native->getNumPoints();

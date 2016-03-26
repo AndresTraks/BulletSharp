@@ -16,8 +16,8 @@ namespace BulletSharp
 
 		Face(btFace* native);
 
-		!Face();
 		~Face();
+		!Face();
 
 	public:
 		Face();
@@ -53,17 +53,17 @@ namespace BulletSharp
 	internal:
 		ConvexPolyhedron(btConvexPolyhedron* native);
 
-		!ConvexPolyhedron();
 		~ConvexPolyhedron();
+		!ConvexPolyhedron();
 
 	public:
 		ConvexPolyhedron();
 
 		void Initialize();
-		void ProjectRef(Matrix% transform, Vector3% direction, [Out] btScalar% minProj, [Out] btScalar% maxProj, [Out] Vector3% witnesPtMin,
-			[Out] Vector3% witnesPtMax);
-		void Project(Matrix transform, Vector3 direction, [Out] btScalar% minProj, [Out] btScalar% maxProj, [Out] Vector3% witnesPtMin,
-			[Out] Vector3% witnesPtMax);
+		void ProjectRef(Matrix% transform, Vector3% direction, [Out] btScalar% minProj,
+			[Out] btScalar% maxProj, [Out] Vector3% witnesPtMin, [Out] Vector3% witnesPtMax);
+		void Project(Matrix transform, Vector3 direction, [Out] btScalar% minProj,
+			[Out] btScalar% maxProj, [Out] Vector3% witnesPtMin, [Out] Vector3% witnesPtMax);
 		bool TestContainment();
 
 		property Vector3 C

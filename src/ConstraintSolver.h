@@ -21,8 +21,8 @@ namespace BulletSharp
 	internal:
 		ConstraintSolver(btConstraintSolver* native);
 
-		!ConstraintSolver();
 		~ConstraintSolver();
+		!ConstraintSolver();
 
 	public:
 #ifndef DISABLE_CONSTRAINTS

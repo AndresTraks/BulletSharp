@@ -8,7 +8,6 @@ namespace BulletSharp
 
 	public ref class MultiBodyLinkCollider : CollisionObject
 	{
-	private:
 		MultiBody^ _multiBody;
 
 	internal:

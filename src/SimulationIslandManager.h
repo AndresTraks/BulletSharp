@@ -16,8 +16,8 @@ namespace BulletSharp
 
 			IslandCallback(btSimulationIslandManager::IslandCallback* native);
 
-			!IslandCallback();
 			~IslandCallback();
+			!IslandCallback();
 
 		public:
 			void ProcessIsland(array<CollisionObject^>^ bodies, array<PersistentManifold>^ manifolds,
@@ -40,8 +40,8 @@ namespace BulletSharp
 	internal:
 		SimulationIslandManager(btSimulationIslandManager* native, bool preventDelete);
 
-		!SimulationIslandManager();
 		~SimulationIslandManager();
+		!SimulationIslandManager();
 
 	public:
 		SimulationIslandManager();

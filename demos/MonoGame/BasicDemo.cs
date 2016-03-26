@@ -7,13 +7,13 @@ using Microsoft.Xna.Framework.Input;
 namespace BasicDemo
 {
     /// <summary>
-    /// This is the main type for your game
+    /// This is the main type for your game.
     /// </summary>
     public class BasicDemo : Game
     {
-        Color activeColor = Color.Orange;
-        Color passiveColor = Color.DarkOrange;
-        Color groundColor = Color.Green;
+        Vector3 _activeColor = Color.Orange.ToVector3();
+        Vector3 _passiveColor = Color.DarkOrange.ToVector3();
+        Vector3 _groundColor = Color.Green.ToVector3();
 
         Vector3 eye = new Vector3(30, 20, 10);
         Vector3 target = new Vector3(0, 5, 0);
@@ -30,7 +30,6 @@ namespace BasicDemo
         VertexBuffer groundBox, box;
 
         public BasicDemo()
-            : base()
         {
             graphics = new GraphicsDeviceManager(this);
 
@@ -55,9 +54,10 @@ namespace BasicDemo
         {
             physics = new Physics();
 
-            DebugDrawer = new Physics.PhysicsDebugDraw(graphics.GraphicsDevice, basicEffect);
+            DebugDrawer = new Physics.PhysicsDebugDraw(graphics.GraphicsDevice);
             physics.World.DebugDrawer = DebugDrawer;
 
+            IsMouseVisible = true;
             base.Initialize();
         }
 
@@ -90,7 +90,7 @@ namespace BasicDemo
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
+        /// game-specific content.
         /// </summary>
         protected override void UnloadContent()
         {
@@ -127,7 +127,7 @@ namespace BasicDemo
                     }
                 }
             }
-            if (f3KeyPressed == true)
+            if (f3KeyPressed)
             {
                 if (ns.IsKeyUp(Keys.F3))
                     f3KeyPressed = false;
@@ -164,23 +164,23 @@ namespace BasicDemo
             basicEffect.VertexColorEnabled = false;
             basicEffect.LightingEnabled = true;
 
-            foreach (CollisionObject colObj in physics.World.CollisionObjectArray)
+            foreach (var colObj in physics.World.CollisionObjectArray)
             {
-                RigidBody body = RigidBody.Upcast(colObj);
-                basicEffect.World = body.MotionState.WorldTransform;
+                var body = colObj as RigidBody;
+                basicEffect.World = body.WorldTransform;
 
                 if ("Ground".Equals(colObj.UserObject))
                 {
-                    basicEffect.DiffuseColor = groundColor.ToVector3();
+                    basicEffect.DiffuseColor = _groundColor;
                     basicEffect.CurrentTechnique.Passes[0].Apply();
                     VertexHelper.DrawBox(device, groundBox);
                     continue;
                 }
 
                 if (colObj.ActivationState == ActivationState.ActiveTag)
-                    basicEffect.DiffuseColor = activeColor.ToVector3();
+                    basicEffect.DiffuseColor = _activeColor;
                 else
-                    basicEffect.DiffuseColor = passiveColor.ToVector3();
+                    basicEffect.DiffuseColor = _passiveColor;
 
                 basicEffect.CurrentTechnique.Passes[0].Apply();
                 VertexHelper.DrawBox(device, box);

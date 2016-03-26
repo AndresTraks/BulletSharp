@@ -102,6 +102,7 @@
     <ProjectGuid>{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}</ProjectGuid>
     <RootNamespace>BulletSharp</RootNamespace>
     <Keyword>ManagedCProj</Keyword>
+    <TargetFrameworkVersion Condition="'$(Configuration)'=='Debug MonoGame' OR '$(Configuration)'=='Release MonoGame'">v4.5</TargetFrameworkVersion>
     <TargetFrameworkVersion Condition="'$(Configuration)'=='Debug Numerics' OR '$(Configuration)'=='Release Numerics'">v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkVersion Condition="'$(Configuration)'=='Debug SharpDX' OR '$(Configuration)'=='Release SharpDX'">v4.6.1</TargetFrameworkVersion>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
@@ -474,7 +475,6 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\bullet3\src;..\bullet3\Extras\HACD;..\bullet3\Extras\Serialize\BulletWorldImporter;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>$(ProgramFiles)\MonoGame\v3.0\Assemblies\WindowsGL\;$(ProgramFiles(x86))\MonoGame\v3.0\Assemblies\WindowsGL\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_MONOGAME;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <FloatingPointModel>Precise</FloatingPointModel>
@@ -495,7 +495,6 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\bullet3\src;..\bullet3\Extras\HACD;..\bullet3\Extras\Serialize\BulletWorldImporter;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>$(ProgramFiles)\MonoGame\v3.0\Assemblies\WindowsGL\;$(ProgramFiles(x86))\MonoGame\v3.0\Assemblies\WindowsGL\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_MONOGAME;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <FloatingPointModel>Precise</FloatingPointModel>
@@ -705,7 +704,6 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>..\bullet3\src;..\bullet3\Extras\HACD;..\bullet3\Extras\Serialize\BulletWorldImporter;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>$(ProgramFiles)\MonoGame\v3.0\Assemblies\WindowsGL\;$(ProgramFiles(x86))\MonoGame\v3.0\Assemblies\WindowsGL\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_MONOGAME;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -724,7 +722,6 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>..\bullet3\src;..\bullet3\Extras\HACD;..\bullet3\Extras\Serialize\BulletWorldImporter;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>$(ProgramFiles)\MonoGame\v3.0\Assemblies\WindowsGL\;$(ProgramFiles(x86))\MonoGame\v3.0\Assemblies\WindowsGL\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>GRAPHICS_MONOGAME;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -852,6 +849,16 @@
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </Reference>
   </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='Debug MonoGame'">
+    <Reference Include="MonoGame.Framework">
+      <HintPath>packages\MonoGame.Framework.DesktopGL.3.5.0.1678\lib\net40\MonoGame.Framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='Release MonoGame'">
+    <Reference Include="MonoGame.Framework">
+      <HintPath>packages\MonoGame.Framework.DesktopGL.3.5.0.1678\lib\net40\MonoGame.Framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Debug Numerics'">
     <Reference Include="System.Numerics" />
   </ItemGroup>
@@ -860,18 +867,18 @@
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Debug SharpDX'">
     <Reference Include="SharpDX">
-      <HintPath>packages\SharpDX.3.0.1\lib\net45\SharpDX.dll</HintPath>
+      <HintPath>packages\SharpDX.3.0.2\lib\net45\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>packages\SharpDX.Mathematics.3.0.1\lib\net45\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>packages\SharpDX.Mathematics.3.0.2\lib\net45\SharpDX.Mathematics.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Release SharpDX'">
     <Reference Include="SharpDX">
-      <HintPath>packages\SharpDX.3.0.1\lib\net45\SharpDX.dll</HintPath>
+      <HintPath>packages\SharpDX.3.0.2\lib\net45\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>packages\SharpDX.Mathematics.3.0.1\lib\net45\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>packages\SharpDX.Mathematics.3.0.2\lib\net45\SharpDX.Mathematics.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Debug OpenTK'">

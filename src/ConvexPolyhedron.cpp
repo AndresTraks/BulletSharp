@@ -79,8 +79,8 @@ void ConvexPolyhedron::Initialize()
 	_native->initialize();
 }
 
-void ConvexPolyhedron::ProjectRef(Matrix% transform, Vector3% direction, [Out] btScalar% minProj, [Out] btScalar% maxProj,
-	[Out] Vector3% witnesPtMin, [Out] Vector3% witnesPtMax)
+void ConvexPolyhedron::ProjectRef(Matrix% transform, Vector3% direction, [Out] btScalar% minProj,
+	[Out] btScalar% maxProj, [Out] Vector3% witnesPtMin, [Out] Vector3% witnesPtMax)
 {
 	TRANSFORM_CONV(transform);
 	VECTOR3_CONV(direction);
@@ -90,12 +90,10 @@ void ConvexPolyhedron::ProjectRef(Matrix% transform, Vector3% direction, [Out] b
 	btVector3* witnesPtMaxTemp = ALIGNED_NEW(btVector3);
 	_native->project(TRANSFORM_USE(transform), VECTOR3_USE(direction), minProjTemp, maxProjTemp,
 		VECTOR3_USE(witnesPtMin), VECTOR3_USE(witnesPtMax));
-	minProj = minProjTemp;
-	maxProj = maxProjTemp;
-	witnesPtMin = Math::BtVector3ToVector3(witnesPtMinTemp);
-	witnesPtMax = Math::BtVector3ToVector3(witnesPtMaxTemp);
 	VECTOR3_DEL(direction);
 	TRANSFORM_DEL(transform);
+	witnesPtMin = Math::BtVector3ToVector3(witnesPtMinTemp);
+	witnesPtMax = Math::BtVector3ToVector3(witnesPtMaxTemp);
 	ALIGNED_FREE(witnesPtMaxTemp);
 	ALIGNED_FREE(witnesPtMinTemp);
 }
@@ -111,14 +109,14 @@ void ConvexPolyhedron::Project(Matrix transform, Vector3 direction, [Out] btScal
 	btVector3* witnesPtMaxTemp = ALIGNED_NEW(btVector3);
 	_native->project(TRANSFORM_USE(transform), VECTOR3_USE(direction), minProjTemp, maxProjTemp,
 		VECTOR3_USE(witnesPtMin), VECTOR3_USE(witnesPtMax));
-	minProj = minProjTemp;
-	maxProj = maxProjTemp;
-	witnesPtMin = Math::BtVector3ToVector3(witnesPtMinTemp);
-	witnesPtMax = Math::BtVector3ToVector3(witnesPtMaxTemp);
 	VECTOR3_DEL(direction);
 	TRANSFORM_DEL(transform);
+	witnesPtMin = Math::BtVector3ToVector3(witnesPtMinTemp);
+	witnesPtMax = Math::BtVector3ToVector3(witnesPtMaxTemp);
 	ALIGNED_FREE(witnesPtMaxTemp);
 	ALIGNED_FREE(witnesPtMinTemp);
+	minProj = minProjTemp;
+	maxProj = maxProjTemp;
 }
 
 bool ConvexPolyhedron::TestContainment()
