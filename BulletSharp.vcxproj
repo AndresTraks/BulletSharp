@@ -851,12 +851,12 @@
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Debug MonoGame'">
     <Reference Include="MonoGame.Framework">
-      <HintPath>packages\MonoGame.Framework.DesktopGL.3.5.0.1678\lib\net40\MonoGame.Framework.dll</HintPath>
+      <HintPath>packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Release MonoGame'">
     <Reference Include="MonoGame.Framework">
-      <HintPath>packages\MonoGame.Framework.DesktopGL.3.5.0.1678\lib\net40\MonoGame.Framework.dll</HintPath>
+      <HintPath>packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Debug Numerics'">
