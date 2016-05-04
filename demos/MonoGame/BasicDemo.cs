@@ -20,14 +20,14 @@ namespace BasicDemo
 
         GraphicsDeviceManager graphics;
         GraphicsDevice device;
-        BasicEffect basicEffect;
+        BasicEffect _debugEffect;
         Physics physics;
         Physics.PhysicsDebugDraw DebugDrawer;
         bool IsDebugDrawEnabled;
         bool f3KeyPressed;
 
-        Matrix viewMatrix;
-        VertexBuffer groundBox, box;
+        private Matrix _view, _projection;
+        private Model _ground, _box;
 
         public BasicDemo()
         {
@@ -36,12 +36,18 @@ namespace BasicDemo
             Window.Title = "BulletSharp - MonoGame Basic Demo";
             Window.AllowUserResizing = true;
             Window.ClientSizeChanged += Window_ClientSizeChanged;
+
+            Content.RootDirectory = "Content";
         }
 
         void Window_ClientSizeChanged(object sender, EventArgs e)
         {
-            basicEffect.Projection = Matrix.CreatePerspectiveFieldOfView(
+            _projection = Matrix.CreatePerspectiveFieldOfView(
                 MathHelper.PiOver4, device.Viewport.AspectRatio, 1.0f, 200.0f);
+
+            _debugEffect.Projection = _projection;
+            UpdateModel(_ground);
+            UpdateModel(_box);
         }
 
         /// <summary>
@@ -74,18 +80,29 @@ namespace BasicDemo
         protected override void LoadContent()
         {
             device = graphics.GraphicsDevice;
-            basicEffect = new BasicEffect(device);
 
-            basicEffect.Projection = Matrix.CreatePerspectiveFieldOfView(
+            _debugEffect = new BasicEffect(device);
+            _debugEffect.World = Matrix.Identity;
+
+            _projection = Matrix.CreatePerspectiveFieldOfView(
                 MathHelper.PiOver4, device.Viewport.AspectRatio, 1.0f, 200.0f);
 
-            // Set light
-            basicEffect.AmbientLightColor = Color.Gray.ToVector3();
-            basicEffect.DirectionalLight0.Enabled = true;
-            basicEffect.DirectionalLight0.DiffuseColor = Color.LemonChiffon.ToVector3();
+            _ground = Content.Load<Model>("ground");
+            _box = Content.Load<Model>("cube");
+            LoadModel(_ground);
+            LoadModel(_box);
+        }
 
-            box = VertexHelper.CreateBox(device, new Vector3(1, 1, 1));
-            groundBox = VertexHelper.CreateBox(device, new Vector3(50, 1, 50));
+        private void LoadModel(Model model)
+        {
+            foreach (var mesh in model.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.EnableDefaultLighting();
+                    effect.PreferPerPixelLighting = true;
+                }
+            }
         }
 
         /// <summary>
@@ -94,6 +111,22 @@ namespace BasicDemo
         /// </summary>
         protected override void UnloadContent()
         {
+        }
+
+        private void UpdateModel(Model model)
+        {
+            foreach (var mesh in model.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.AmbientLightColor = Color.Gray.ToVector3();
+                    effect.DirectionalLight0.Enabled = true;
+                    effect.DirectionalLight0.DiffuseColor = Color.LemonChiffon.ToVector3();
+
+                    effect.View = _view;
+                    effect.Projection = _projection;
+                }
+            }
         }
 
         /// <summary>
@@ -133,11 +166,27 @@ namespace BasicDemo
                     f3KeyPressed = false;
             }
 
-            viewMatrix = Matrix.CreateLookAt(eye, target, Vector3.UnitY);
+            _view = Matrix.CreateLookAt(eye, target, Vector3.UnitY);
+            _debugEffect.View = _view;
+            UpdateModel(_ground);
+            UpdateModel(_box);
 
             physics.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             base.Update(gameTime);
+        }
+
+        private void DrawModel(Model model, Matrix worldTransform)
+        {
+            foreach (var mesh in model.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.World = worldTransform;
+                }
+
+                mesh.Draw();
+            }
         }
 
         /// <summary>
@@ -148,42 +197,35 @@ namespace BasicDemo
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            basicEffect.View = viewMatrix;
-
 
             // Debug draw
-            basicEffect.VertexColorEnabled = true;
-            basicEffect.LightingEnabled = false;
-
-            basicEffect.World = Matrix.Identity;
-            basicEffect.CurrentTechnique.Passes[0].Apply();
+            _debugEffect.LightingEnabled = false;
+            _debugEffect.VertexColorEnabled = true;
+            _debugEffect.CurrentTechnique.Passes[0].Apply();
             DebugDrawer.DrawDebugWorld(physics.World);
 
 
             // Draw shapes
-            basicEffect.VertexColorEnabled = false;
-            basicEffect.LightingEnabled = true;
+            _debugEffect.VertexColorEnabled = false;
+            _debugEffect.LightingEnabled = true;
 
             foreach (var colObj in physics.World.CollisionObjectArray)
             {
-                var body = colObj as RigidBody;
-                basicEffect.World = body.WorldTransform;
-
                 if ("Ground".Equals(colObj.UserObject))
                 {
-                    basicEffect.DiffuseColor = _groundColor;
-                    basicEffect.CurrentTechnique.Passes[0].Apply();
-                    VertexHelper.DrawBox(device, groundBox);
+                    DrawModel(_ground, Matrix.Identity);
                     continue;
                 }
 
+                var body = colObj as RigidBody;
+                /*
                 if (colObj.ActivationState == ActivationState.ActiveTag)
                     basicEffect.DiffuseColor = _activeColor;
                 else
                     basicEffect.DiffuseColor = _passiveColor;
-
-                basicEffect.CurrentTechnique.Passes[0].Apply();
-                VertexHelper.DrawBox(device, box);
+                */
+                _debugEffect.CurrentTechnique.Passes[0].Apply();
+                DrawModel(_box, body.WorldTransform);
             }
 
             base.Draw(gameTime);
