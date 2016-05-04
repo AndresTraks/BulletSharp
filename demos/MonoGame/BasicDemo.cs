@@ -11,27 +11,29 @@ namespace BasicDemo
     /// </summary>
     public class BasicDemo : Game
     {
-        Vector3 _activeColor = Color.Orange.ToVector3();
-        Vector3 _passiveColor = Color.DarkOrange.ToVector3();
-        Vector3 _groundColor = Color.Green.ToVector3();
+        private Vector3 _activeColor = Color.Orange.ToVector3();
+        private Vector3 _passiveColor = Color.DarkOrange.ToVector3();
 
-        Vector3 eye = new Vector3(30, 20, 10);
-        Vector3 target = new Vector3(0, 5, 0);
+        private Vector3 _eye = new Vector3(30, 20, 10);
+        private Vector3 _target = new Vector3(0, 5, 0);
 
-        GraphicsDeviceManager graphics;
-        GraphicsDevice device;
-        BasicEffect _debugEffect;
-        Physics physics;
-        Physics.PhysicsDebugDraw DebugDrawer;
-        bool IsDebugDrawEnabled;
-        bool f3KeyPressed;
+        private GraphicsDeviceManager _graphics;
+        private GraphicsDevice _device;
+        private BasicEffect _debugEffect;
+        private Physics _physics;
+        private Physics.PhysicsDebugDraw _debugDrawer;
+        private bool _isDebugDrawEnabled;
+        private bool _f3KeyPressed;
 
+        private Clock _clock;
+        private Input _input;
+        private FreeLook _freelook;
         private Matrix _view, _projection;
         private Model _ground, _box;
 
         public BasicDemo()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
 
             Window.Title = "BulletSharp - MonoGame Basic Demo";
             Window.AllowUserResizing = true;
@@ -43,7 +45,7 @@ namespace BasicDemo
         void Window_ClientSizeChanged(object sender, EventArgs e)
         {
             _projection = Matrix.CreatePerspectiveFieldOfView(
-                MathHelper.PiOver4, device.Viewport.AspectRatio, 1.0f, 200.0f);
+                MathHelper.PiOver4, _device.Viewport.AspectRatio, 1.0f, 200.0f);
 
             _debugEffect.Projection = _projection;
             UpdateModel(_ground);
@@ -58,10 +60,15 @@ namespace BasicDemo
         /// </summary>
         protected override void Initialize()
         {
-            physics = new Physics();
+            _physics = new Physics();
 
-            DebugDrawer = new Physics.PhysicsDebugDraw(graphics.GraphicsDevice);
-            physics.World.DebugDrawer = DebugDrawer;
+            _debugDrawer = new Physics.PhysicsDebugDraw(_graphics.GraphicsDevice);
+            _physics.World.DebugDrawer = _debugDrawer;
+
+            _clock = new Clock();
+            _input = new Input();
+            _freelook = new FreeLook(_input);
+            _freelook.SetEyeTarget(ref _eye, ref _target);
 
             IsMouseVisible = true;
             base.Initialize();
@@ -69,7 +76,7 @@ namespace BasicDemo
 
         protected override void EndRun()
         {
-            physics.ExitPhysics();
+            _physics.ExitPhysics();
             base.EndRun();
         }
 
@@ -79,13 +86,13 @@ namespace BasicDemo
         /// </summary>
         protected override void LoadContent()
         {
-            device = graphics.GraphicsDevice;
+            _device = _graphics.GraphicsDevice;
 
-            _debugEffect = new BasicEffect(device);
+            _debugEffect = new BasicEffect(_device);
             _debugEffect.World = Matrix.Identity;
 
             _projection = Matrix.CreatePerspectiveFieldOfView(
-                MathHelper.PiOver4, device.Viewport.AspectRatio, 1.0f, 200.0f);
+                MathHelper.PiOver4, _device.Viewport.AspectRatio, 1.0f, 200.0f);
 
             _ground = Content.Load<Model>("ground");
             _box = Content.Load<Model>("cube");
@@ -145,33 +152,37 @@ namespace BasicDemo
             // Toggle debug
             if (ns.IsKeyDown(Keys.F3))
             {
-                if (f3KeyPressed == false)
+                if (_f3KeyPressed == false)
                 {
-                    f3KeyPressed = true;
-                    if (IsDebugDrawEnabled == false)
+                    _f3KeyPressed = true;
+                    if (_isDebugDrawEnabled == false)
                     {
-                        DebugDrawer.DebugMode = DebugDrawModes.DrawAabb;
-                        IsDebugDrawEnabled = true;
+                        _debugDrawer.DebugMode = DebugDrawModes.DrawAabb;
+                        _isDebugDrawEnabled = true;
                     }
                     else
                     {
-                        DebugDrawer.DebugMode = DebugDrawModes.None;
-                        IsDebugDrawEnabled = false;
+                        _debugDrawer.DebugMode = DebugDrawModes.None;
+                        _isDebugDrawEnabled = false;
                     }
                 }
             }
-            if (f3KeyPressed)
+            if (_f3KeyPressed)
             {
                 if (ns.IsKeyUp(Keys.F3))
-                    f3KeyPressed = false;
+                    _f3KeyPressed = false;
             }
 
-            _view = Matrix.CreateLookAt(eye, target, Vector3.UnitY);
-            _debugEffect.View = _view;
-            UpdateModel(_ground);
-            UpdateModel(_box);
+            _input.Update();
+            if (_freelook.Update(_clock.GetFrameDelta()))
+            {
+                _view = Matrix.CreateLookAt(_freelook.Eye, _freelook.Target, Vector3.UnitY);
+                _debugEffect.View = _view;
+                UpdateModel(_ground);
+                UpdateModel(_box);
+            }
 
-            physics.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            _physics.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             base.Update(gameTime);
         }
@@ -202,14 +213,14 @@ namespace BasicDemo
             _debugEffect.LightingEnabled = false;
             _debugEffect.VertexColorEnabled = true;
             _debugEffect.CurrentTechnique.Passes[0].Apply();
-            DebugDrawer.DrawDebugWorld(physics.World);
+            _debugDrawer.DrawDebugWorld(_physics.World);
 
 
             // Draw shapes
             _debugEffect.VertexColorEnabled = false;
             _debugEffect.LightingEnabled = true;
 
-            foreach (var colObj in physics.World.CollisionObjectArray)
+            foreach (var colObj in _physics.World.CollisionObjectArray)
             {
                 if ("Ground".Equals(colObj.UserObject))
                 {
