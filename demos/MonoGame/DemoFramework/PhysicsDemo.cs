@@ -2,8 +2,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 namespace DemoFramework
 {
@@ -13,9 +13,9 @@ namespace DemoFramework
     public class PhysicsDemo : DemoGame
     {
         private BasicEffect _debugEffect;
-        private PhysicsDebugDraw _debugDrawer;
         private bool _isDebugDrawEnabled;
         private bool _f3KeyPressed;
+        public PhysicsDebugDraw DebugDrawer { get; private set; }
 
         public CollisionConfiguration CollisionConf { get; set; }
         public CollisionDispatcher Dispatcher { get; set; }
@@ -27,15 +27,13 @@ namespace DemoFramework
         protected override void Initialize()
         {
             base.Initialize();
-
-            _debugDrawer = new PhysicsDebugDraw(Device);
-            World.DebugDrawer = _debugDrawer;
         }
 
         protected override void LoadContent()
         {
             base.LoadContent();
 
+            DebugDrawer = new PhysicsDebugDraw(Device);
             _debugEffect = new BasicEffect(Device);
             _debugEffect.World = Matrix.Identity;
         }
@@ -54,7 +52,7 @@ namespace DemoFramework
             _debugEffect.LightingEnabled = false;
             _debugEffect.VertexColorEnabled = true;
             _debugEffect.CurrentTechnique.Passes[0].Apply();
-            _debugDrawer.DrawDebugWorld(World);
+            DebugDrawer.DrawDebugWorld(World);
 
             // Draw shapes
             foreach (RigidBody body in World.CollisionObjectArray)
@@ -75,12 +73,12 @@ namespace DemoFramework
                     _f3KeyPressed = true;
                     if (_isDebugDrawEnabled == false)
                     {
-                        _debugDrawer.DebugMode = DebugDrawModes.DrawAabb;
+                        DebugDrawer.DebugMode = DebugDrawModes.DrawAabb;
                         _isDebugDrawEnabled = true;
                     }
                     else
                     {
-                        _debugDrawer.DebugMode = DebugDrawModes.None;
+                        DebugDrawer.DebugMode = DebugDrawModes.None;
                         _isDebugDrawEnabled = false;
                     }
                 }

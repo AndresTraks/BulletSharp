@@ -25,9 +25,9 @@ namespace DemoFramework
         {
             var vertices = new[]
             {
-                    new VertexPositionColor(pointOnB, color),
-                    new VertexPositionColor(pointOnB + normalOnB, color)
-                };
+                new VertexPositionColor(pointOnB, color),
+                new VertexPositionColor(pointOnB + normalOnB, color)
+            };
             _device.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, 1);
         }
 
@@ -35,9 +35,9 @@ namespace DemoFramework
         {
             var vertices = new[]
             {
-                    new VertexPositionColor(from, color),
-                    new VertexPositionColor(to, color)
-                };
+                new VertexPositionColor(from, color),
+                new VertexPositionColor(to, color)
+            };
             _device.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, 1);
         }
 

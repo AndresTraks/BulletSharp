@@ -26,6 +26,8 @@ namespace BasicDemo
 
         protected override void Initialize()
         {
+            base.Initialize();
+
             // collision configuration contains default setup for memory, collision setup
             CollisionConf = new DefaultCollisionConfiguration();
             Dispatcher = new CollisionDispatcher(CollisionConf);
@@ -34,9 +36,11 @@ namespace BasicDemo
 
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, null, CollisionConf);
             World.Gravity = new Vector3(0, -10, 0);
+            World.DebugDrawer = DebugDrawer;
 
             // create the ground
             _groundShape = new BoxShape(50, 1, 50);
+            LoadModel("ground", _groundShape);
             CollisionShapes.Add(_groundShape);
             CollisionObject ground = LocalCreateRigidBody(0, Matrix.Identity, _groundShape);
 
@@ -44,6 +48,7 @@ namespace BasicDemo
             const float mass = 1.0f;
 
             _boxShape = new BoxShape(1);
+            LoadModel("cube", _boxShape);
             CollisionShapes.Add(_boxShape);
 
             var rbInfo = new RigidBodyConstructionInfo(mass, null, _boxShape);
@@ -74,17 +79,7 @@ namespace BasicDemo
 
             rbInfo.Dispose();
 
-            base.Initialize();
-
             FreeLook.SetEyeTarget(ref _eye, ref _target);
-        }
-
-        protected override void LoadContent()
-        {
-            LoadModel("ground", _groundShape);
-            LoadModel("cube", _boxShape);
-
-            base.LoadContent();
         }
     }
 }
