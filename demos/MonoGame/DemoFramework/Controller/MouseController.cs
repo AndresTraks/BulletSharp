@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 
-namespace BasicDemo
+namespace DemoFramework
 {
     public class MouseController
     {

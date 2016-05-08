@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using System;
 
-namespace BasicDemo
+namespace DemoFramework
 {
     public class FreeLook
     {
