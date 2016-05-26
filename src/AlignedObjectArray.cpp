@@ -614,20 +614,16 @@ void AlignedCollisionObjectArray::PopBack()
 
 bool AlignedCollisionObjectArray::Remove(CollisionObject^ item)
 {
-	btCollisionObject* itemPtr = item->_native;
-
     if (_backingList)
     {
         int index = IndexOf(item);
-		if (index != -1)
-		{
-			RemoveAt(index);
-			return true;
-		}
-		return false;
+		if (index == -1) return false;
+		RemoveAt(index);
+		return true;
     }
 
 	int sizeBefore = Native->size();
+	btCollisionObject* itemPtr = item->_native;
 	Native->remove(itemPtr);
 	return sizeBefore != Native->size();
 }

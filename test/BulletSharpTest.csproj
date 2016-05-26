@@ -83,6 +83,7 @@
     <Compile Include="DebugDrawTest.cs" />
     <Compile Include="DebugDrawTest2.cs" />
     <Compile Include="IActionTests.cs" />
+    <Compile Include="CollisionObjectArrayTests.cs" />
     <Compile Include="MathTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
