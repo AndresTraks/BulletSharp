@@ -32,23 +32,23 @@ using namespace System::Globalization;
 
 namespace BulletSharp
 {
-	Vector3::Vector3( btScalar value )
+	Vector3::Vector3(btScalar value)
 	{
 		X = value;
 		Y = value;
 		Z = value;
 	}
 
-	Vector3::Vector3( btScalar x, btScalar y, btScalar z )
+	Vector3::Vector3(btScalar x, btScalar y, btScalar z)
 	{
 		X = x;
 		Y = y;
 		Z = z;
 	}
 
-	btScalar Vector3::default::get( int index )
+	btScalar Vector3::default::get(int index)
 	{
-		switch( index )
+		switch (index)
 		{
 		case 0:
 			return X;
@@ -60,13 +60,13 @@ namespace BulletSharp
 			return Z;
 
 		default:
-			throw gcnew ArgumentOutOfRangeException( "index", "Indices for Vector3 run from 0 to 2, inclusive." );
+			throw gcnew ArgumentOutOfRangeException("index", "Indices for Vector3 run from 0 to 2, inclusive.");
 		}
 	}
 
-	void Vector3::default::set( int index, btScalar value )
+	void Vector3::default::set(int index, btScalar value)
 	{
-		switch( index )
+		switch (index)
 		{
 		case 0:
 			X = value;
@@ -81,18 +81,18 @@ namespace BulletSharp
 			break;
 
 		default:
-			throw gcnew ArgumentOutOfRangeException( "index", "Indices for Vector3 run from 0 to 2, inclusive." );
+			throw gcnew ArgumentOutOfRangeException("index", "Indices for Vector3 run from 0 to 2, inclusive.");
 		}
 	}
 
-	Vector3 Vector3::Add( Vector3 left, Vector3 right )
+	Vector3 Vector3::Add(Vector3 left, Vector3 right)
 	{
-		return Vector3( left.X + right.X, left.Y + right.Y, left.Z + right.Z );
+		return Vector3(left.X + right.X, left.Y + right.Y, left.Z + right.Z);
 	}
 
-	void Vector3::Add( Vector3% left, Vector3% right, [Out] Vector3% result )
+	void Vector3::Add(Vector3% left, Vector3% right, [Out] Vector3% result)
 	{
-		result = Vector3( left.X + right.X, left.Y + right.Y, left.Z + right.Z );
+		result = Vector3(left.X + right.X, left.Y + right.Y, left.Z + right.Z);
 	}
 
 	btScalar Vector3::Angle(Vector3 v)
@@ -102,7 +102,7 @@ namespace BulletSharp
 		return btAcos(Dot(v) / s);
 	}
 
-	Vector3 Vector3::Barycentric( Vector3 value1, Vector3 value2, Vector3 value3, btScalar amount1, btScalar amount2 )
+	Vector3 Vector3::Barycentric(Vector3 value1, Vector3 value2, Vector3 value3, btScalar amount1, btScalar amount2)
 	{
 		Vector3 vector;
 		vector.X = (value1.X + (amount1 * (value2.X - value1.X))) + (amount2 * (value3.X - value1.X));
@@ -110,58 +110,58 @@ namespace BulletSharp
 		vector.Z = (value1.Z + (amount1 * (value2.Z - value1.Z))) + (amount2 * (value3.Z - value1.Z));
 		return vector;
 	}
-	
-	void Vector3::Barycentric( Vector3% value1, Vector3% value2, Vector3% value3, btScalar amount1, btScalar amount2, [Out] Vector3% result )
+
+	void Vector3::Barycentric(Vector3% value1, Vector3% value2, Vector3% value3, btScalar amount1, btScalar amount2, [Out] Vector3% result)
 	{
 		result = Vector3((value1.X + (amount1 * (value2.X - value1.X))) + (amount2 * (value3.X - value1.X)),
 			(value1.Y + (amount1 * (value2.Y - value1.Y))) + (amount2 * (value3.Y - value1.Y)),
-			(value1.Z + (amount1 * (value2.Z - value1.Z))) + (amount2 * (value3.Z - value1.Z)) );
+			(value1.Z + (amount1 * (value2.Z - value1.Z))) + (amount2 * (value3.Z - value1.Z)));
 	}
 
-	Vector3 Vector3::CatmullRom( Vector3 value1, Vector3 value2, Vector3 value3, Vector3 value4, btScalar amount )
+	Vector3 Vector3::CatmullRom(Vector3 value1, Vector3 value2, Vector3 value3, Vector3 value4, btScalar amount)
 	{
 		Vector3 vector;
 		btScalar squared = amount * amount;
 		btScalar cubed = amount * squared;
 
-		vector.X = 0.5f * ((((2.0f * value2.X) + ((-value1.X + value3.X) * amount)) + 
-			(((((2.0f * value1.X) - (5.0f * value2.X)) + (4.0f * value3.X)) - value4.X) * squared)) + 
+		vector.X = 0.5f * ((((2.0f * value2.X) + ((-value1.X + value3.X) * amount)) +
+			(((((2.0f * value1.X) - (5.0f * value2.X)) + (4.0f * value3.X)) - value4.X) * squared)) +
 			((((-value1.X + (3.0f * value2.X)) - (3.0f * value3.X)) + value4.X) * cubed));
 
-		vector.Y = 0.5f * ((((2.0f * value2.Y) + ((-value1.Y + value3.Y) * amount)) + 
-			(((((2.0f * value1.Y) - (5.0f * value2.Y)) + (4.0f * value3.Y)) - value4.Y) * squared)) + 
+		vector.Y = 0.5f * ((((2.0f * value2.Y) + ((-value1.Y + value3.Y) * amount)) +
+			(((((2.0f * value1.Y) - (5.0f * value2.Y)) + (4.0f * value3.Y)) - value4.Y) * squared)) +
 			((((-value1.Y + (3.0f * value2.Y)) - (3.0f * value3.Y)) + value4.Y) * cubed));
 
-		vector.Z = 0.5f * ((((2.0f * value2.Z) + ((-value1.Z + value3.Z) * amount)) + 
-			(((((2.0f * value1.Z) - (5.0f * value2.Z)) + (4.0f * value3.Z)) - value4.Z) * squared)) + 
+		vector.Z = 0.5f * ((((2.0f * value2.Z) + ((-value1.Z + value3.Z) * amount)) +
+			(((((2.0f * value1.Z) - (5.0f * value2.Z)) + (4.0f * value3.Z)) - value4.Z) * squared)) +
 			((((-value1.Z + (3.0f * value2.Z)) - (3.0f * value3.Z)) + value4.Z) * cubed));
 
 		return vector;
 	}
 
-	void Vector3::CatmullRom( Vector3% value1, Vector3% value2, Vector3% value3, Vector3% value4, btScalar amount, [Out] Vector3% result )
+	void Vector3::CatmullRom(Vector3% value1, Vector3% value2, Vector3% value3, Vector3% value4, btScalar amount, [Out] Vector3% result)
 	{
 		btScalar squared = amount * amount;
 		btScalar cubed = amount * squared;
-		
+
 		Vector3 r;
 
-		r.X = 0.5f * ((((2.0f * value2.X) + ((-value1.X + value3.X) * amount)) + 
-			(((((2.0f * value1.X) - (5.0f * value2.X)) + (4.0f * value3.X)) - value4.X) * squared)) + 
+		r.X = 0.5f * ((((2.0f * value2.X) + ((-value1.X + value3.X) * amount)) +
+			(((((2.0f * value1.X) - (5.0f * value2.X)) + (4.0f * value3.X)) - value4.X) * squared)) +
 			((((-value1.X + (3.0f * value2.X)) - (3.0f * value3.X)) + value4.X) * cubed));
 
-		r.Y = 0.5f * ((((2.0f * value2.Y) + ((-value1.Y + value3.Y) * amount)) + 
-			(((((2.0f * value1.Y) - (5.0f * value2.Y)) + (4.0f * value3.Y)) - value4.Y) * squared)) + 
+		r.Y = 0.5f * ((((2.0f * value2.Y) + ((-value1.Y + value3.Y) * amount)) +
+			(((((2.0f * value1.Y) - (5.0f * value2.Y)) + (4.0f * value3.Y)) - value4.Y) * squared)) +
 			((((-value1.Y + (3.0f * value2.Y)) - (3.0f * value3.Y)) + value4.Y) * cubed));
 
-		r.Z = 0.5f * ((((2.0f * value2.Z) + ((-value1.Z + value3.Z) * amount)) + 
-			(((((2.0f * value1.Z) - (5.0f * value2.Z)) + (4.0f * value3.Z)) - value4.Z) * squared)) + 
+		r.Z = 0.5f * ((((2.0f * value2.Z) + ((-value1.Z + value3.Z) * amount)) +
+			(((((2.0f * value1.Z) - (5.0f * value2.Z)) + (4.0f * value3.Z)) - value4.Z) * squared)) +
 			((((-value1.Z + (3.0f * value2.Z)) - (3.0f * value3.Z)) + value4.Z) * cubed));
 
 		result = r;
 	}
 
-	Vector3 Vector3::Clamp( Vector3 value, Vector3 min, Vector3 max )
+	Vector3 Vector3::Clamp(Vector3 value, Vector3 min, Vector3 max)
 	{
 		btScalar x = value.X;
 		x = (x > max.X) ? max.X : x;
@@ -175,10 +175,10 @@ namespace BulletSharp
 		z = (z > max.Z) ? max.Z : z;
 		z = (z < min.Z) ? min.Z : z;
 
-		return Vector3( x, y, z );
+		return Vector3(x, y, z);
 	}
 
-	void Vector3::Clamp( Vector3% value, Vector3% min, Vector3% max, [Out] Vector3% result )
+	void Vector3::Clamp(Vector3% value, Vector3% min, Vector3% max, [Out] Vector3% result)
 	{
 		btScalar x = value.X;
 		x = (x > max.X) ? max.X : x;
@@ -192,7 +192,7 @@ namespace BulletSharp
 		z = (z > max.Z) ? max.Z : z;
 		z = (z < min.Z) ? min.Z : z;
 
-		result = Vector3( x, y, z );
+		result = Vector3(x, y, z);
 	}
 
 	Vector3 Vector3::Cross(Vector3 v)
@@ -204,7 +204,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	Vector3 Vector3::Cross( Vector3 left, Vector3 right )
+	Vector3 Vector3::Cross(Vector3 left, Vector3 right)
 	{
 		Vector3 result;
 		result.X = left.Y * right.Z - left.Z * right.Y;
@@ -213,11 +213,11 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Vector3::Cross( Vector3% left, Vector3% right, [Out] Vector3% result )
+	void Vector3::Cross(Vector3% left, Vector3% right, [Out] Vector3% result)
 	{
 		result.X = left.Y * right.Z - left.Z * right.Y;
 		result.Y = left.Z * right.X - left.X * right.Z;
-		result.Z = left.X * right.Y - left.Y * right.X; 
+		result.Z = left.X * right.Y - left.Y * right.X;
 	}
 
 	btScalar Vector3::Distance(Vector3 v)
@@ -225,13 +225,13 @@ namespace BulletSharp
 		return (v - *this).Length;
 	}
 
-	btScalar Vector3::Distance( Vector3 value1, Vector3 value2 )
+	btScalar Vector3::Distance(Vector3 value1, Vector3 value2)
 	{
 		btScalar x = value1.X - value2.X;
 		btScalar y = value1.Y - value2.Y;
 		btScalar z = value1.Z - value2.Z;
 
-		return static_cast<btScalar>( System::Math::Sqrt( (x * x) + (y * y) + (z * z) ) );
+		return btSqrt((x * x) + (y * y) + (z * z));
 	}
 
 	btScalar Vector3::DistanceSquared(Vector3 v)
@@ -239,7 +239,7 @@ namespace BulletSharp
 		return (v - *this).LengthSquared;
 	}
 
-	btScalar Vector3::DistanceSquared( Vector3 value1, Vector3 value2 )
+	btScalar Vector3::DistanceSquared(Vector3 value1, Vector3 value2)
 	{
 		btScalar x = value1.X - value2.X;
 		btScalar y = value1.Y - value2.Y;
@@ -248,14 +248,14 @@ namespace BulletSharp
 		return (x * x) + (y * y) + (z * z);
 	}
 
-	Vector3 Vector3::Divide( Vector3 value, btScalar scale )
+	Vector3 Vector3::Divide(Vector3 value, btScalar scale)
 	{
-		return Vector3( value.X / scale, value.Y / scale, value.Z / scale );
+		return Vector3(value.X / scale, value.Y / scale, value.Z / scale);
 	}
 
-	void Vector3::Divide( Vector3% value, btScalar scale, [Out] Vector3% result )
+	void Vector3::Divide(Vector3% value, btScalar scale, [Out] Vector3% result)
 	{
-		result = Vector3( value.X / scale, value.Y / scale, value.Z / scale );
+		result = Vector3(value.X / scale, value.Y / scale, value.Z / scale);
 	}
 
 	btScalar Vector3::Dot(Vector3 v)
@@ -263,7 +263,7 @@ namespace BulletSharp
 		return X * v.X + Y * v.Y + Z * v.Z;
 	}
 
-	btScalar Vector3::Dot( Vector3 left, Vector3 right )
+	btScalar Vector3::Dot(Vector3 left, Vector3 right)
 	{
 		return (left.X * right.X + left.Y * right.Y + left.Z * right.Z);
 	}
@@ -284,7 +284,7 @@ namespace BulletSharp
 		v2 = Vector3(-Y, X, 0);
 	}
 
-	Vector3 Vector3::Hermite( Vector3 value1, Vector3 tangent1, Vector3 value2, Vector3 tangent2, btScalar amount )
+	Vector3 Vector3::Hermite(Vector3 value1, Vector3 tangent1, Vector3 value2, Vector3 tangent2, btScalar amount)
 	{
 		Vector3 vector;
 		btScalar squared = amount * amount;
@@ -301,7 +301,7 @@ namespace BulletSharp
 		return vector;
 	}
 
-	void Vector3::Hermite( Vector3% value1, Vector3% tangent1, Vector3% value2, Vector3% tangent2, btScalar amount, [Out] Vector3% result )
+	void Vector3::Hermite(Vector3% value1, Vector3% tangent1, Vector3% value2, Vector3% tangent2, btScalar amount, [Out] Vector3% result)
 	{
 		btScalar squared = amount * amount;
 		btScalar cubed = amount * squared;
@@ -324,7 +324,7 @@ namespace BulletSharp
 		return vector;
 	}
 
-	Vector3 Vector3::Lerp( Vector3 start, Vector3 end, btScalar factor )
+	Vector3 Vector3::Lerp(Vector3 start, Vector3 end, btScalar factor)
 	{
 		Vector3 vector;
 		vector.X = start.X + ((end.X - start.X) * factor);
@@ -333,14 +333,14 @@ namespace BulletSharp
 		return vector;
 	}
 
-	void Vector3::Lerp( Vector3% start, Vector3% end, btScalar factor, [Out] Vector3% result )
+	void Vector3::Lerp(Vector3% start, Vector3% end, btScalar factor, [Out] Vector3% result)
 	{
 		result.X = start.X + ((end.X - start.X) * factor);
 		result.Y = start.Y + ((end.Y - start.Y) * factor);
 		result.Z = start.Z + ((end.Z - start.Z) * factor);
 	}
 
-	Vector3 Vector3::Maximize( Vector3 left, Vector3 right )
+	Vector3 Vector3::Maximize(Vector3 left, Vector3 right)
 	{
 		Vector3 vector;
 		vector.X = (left.X > right.X) ? left.X : right.X;
@@ -349,14 +349,14 @@ namespace BulletSharp
 		return vector;
 	}
 
-	void Vector3::Maximize( Vector3% left, Vector3% right, [Out] Vector3% result )
+	void Vector3::Maximize(Vector3% left, Vector3% right, [Out] Vector3% result)
 	{
 		result.X = (left.X > right.X) ? left.X : right.X;
 		result.Y = (left.Y > right.Y) ? left.Y : right.Y;
 		result.Z = (left.Z > right.Z) ? left.Z : right.Z;
 	}
 
-	Vector3 Vector3::Minimize( Vector3 left, Vector3 right )
+	Vector3 Vector3::Minimize(Vector3 left, Vector3 right)
 	{
 		Vector3 vector;
 		vector.X = (left.X < right.X) ? left.X : right.X;
@@ -365,47 +365,47 @@ namespace BulletSharp
 		return vector;
 	}
 
-	void Vector3::Minimize( Vector3% left, Vector3% right, [Out] Vector3% result )
+	void Vector3::Minimize(Vector3% left, Vector3% right, [Out] Vector3% result)
 	{
 		result.X = (left.X < right.X) ? left.X : right.X;
 		result.Y = (left.Y < right.Y) ? left.Y : right.Y;
 		result.Z = (left.Z < right.Z) ? left.Z : right.Z;
 	}
 
-	Vector3 Vector3::Modulate( Vector3 left, Vector3 right )
+	Vector3 Vector3::Modulate(Vector3 left, Vector3 right)
 	{
-		return Vector3( left.X * right.X, left.Y * right.Y, left.Z * right.Z );
+		return Vector3(left.X * right.X, left.Y * right.Y, left.Z * right.Z);
 	}
 
-	void Vector3::Modulate( Vector3% left, Vector3% right, [Out] Vector3% result )
+	void Vector3::Modulate(Vector3% left, Vector3% right, [Out] Vector3% result)
 	{
-		result = Vector3( left.X * right.X, left.Y * right.Y, left.Z * right.Z );
+		result = Vector3(left.X * right.X, left.Y * right.Y, left.Z * right.Z);
 	}
 
-	Vector3 Vector3::Multiply( Vector3 value, btScalar scale )
+	Vector3 Vector3::Multiply(Vector3 value, btScalar scale)
 	{
-		return Vector3( value.X * scale, value.Y * scale, value.Z * scale );
+		return Vector3(value.X * scale, value.Y * scale, value.Z * scale);
 	}
 
-	void Vector3::Multiply( Vector3% value, btScalar scale, [Out] Vector3% result )
+	void Vector3::Multiply(Vector3% value, btScalar scale, [Out] Vector3% result)
 	{
-		result = Vector3( value.X * scale, value.Y * scale, value.Z * scale );
+		result = Vector3(value.X * scale, value.Y * scale, value.Z * scale);
 	}
 
-	Vector3 Vector3::Negate( Vector3 value )
+	Vector3 Vector3::Negate(Vector3 value)
 	{
-		return Vector3( -value.X, -value.Y, -value.Z );
+		return Vector3(-value.X, -value.Y, -value.Z);
 	}
 
-	void Vector3::Negate( Vector3% value, [Out] Vector3% result )
+	void Vector3::Negate(Vector3% value, [Out] Vector3% result)
 	{
-		result = Vector3( -value.X, -value.Y, -value.Z );
+		result = Vector3(-value.X, -value.Y, -value.Z);
 	}
 
 	void Vector3::Normalize()
 	{
 		btScalar length = Length;
-		if( length == 0 )
+		if (length == 0)
 			return;
 		btScalar num = 1 / length;
 		X *= num;
@@ -413,33 +413,33 @@ namespace BulletSharp
 		Z *= num;
 	}
 
-	Vector3 Vector3::Normalize( Vector3 vector )
+	Vector3 Vector3::Normalize(Vector3 vector)
 	{
 		vector.Normalize();
 		return vector;
 	}
 
-	void Vector3::Normalize( Vector3% vector, [Out] Vector3% result )
+	void Vector3::Normalize(Vector3% vector, [Out] Vector3% result)
 	{
 		result = Vector3(vector);
 		result.Normalize();
 	}
 
-	Vector3 Vector3::Project( Vector3 vector, btScalar x, btScalar y, btScalar width, btScalar height, btScalar minZ, btScalar maxZ, Matrix worldViewProjection )
+	Vector3 Vector3::Project(Vector3 vector, btScalar x, btScalar y, btScalar width, btScalar height, btScalar minZ, btScalar maxZ, Matrix worldViewProjection)
 	{
-		Vector3::TransformCoordinate( vector, worldViewProjection, vector );
-		return Vector3( ( ( 1.0f + vector.X ) * 0.5f * width ) + x, ( ( 1.0f - vector.Y ) * 0.5f * height ) + y, ( vector.Z * ( maxZ - minZ ) ) + minZ );
+		Vector3::TransformCoordinate(vector, worldViewProjection, vector);
+		return Vector3(((1.0f + vector.X) * 0.5f * width) + x, ((1.0f - vector.Y) * 0.5f * height) + y, (vector.Z * (maxZ - minZ)) + minZ);
 	}
 
-	void Vector3::Project( Vector3% vector, btScalar x, btScalar y, btScalar width, btScalar height, btScalar minZ, btScalar maxZ, Matrix% worldViewProjection, [Out] Vector3% result )
+	void Vector3::Project(Vector3% vector, btScalar x, btScalar y, btScalar width, btScalar height, btScalar minZ, btScalar maxZ, Matrix% worldViewProjection, [Out] Vector3% result)
 	{
 		Vector3 v;
-		Vector3::TransformCoordinate( vector, worldViewProjection, v );
+		Vector3::TransformCoordinate(vector, worldViewProjection, v);
 
-		result = Vector3( ( ( 1.0f + v.X ) * 0.5f * width ) + x, ( ( 1.0f - v.Y ) * 0.5f * height ) + y, ( v.Z * ( maxZ - minZ ) ) + minZ );
+		result = Vector3(((1.0f + v.X) * 0.5f * width) + x, ((1.0f - v.Y) * 0.5f * height) + y, (v.Z * (maxZ - minZ)) + minZ);
 	}
 
-	Vector3 Vector3::Reflect( Vector3 vector, Vector3 normal )
+	Vector3 Vector3::Reflect(Vector3 vector, Vector3 normal)
 	{
 		Vector3 result;
 		btScalar dot = ((vector.X * normal.X) + (vector.Y * normal.Y)) + (vector.Z * normal.Z);
@@ -451,7 +451,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Vector3::Reflect( Vector3% vector, Vector3% normal, [Out] Vector3% result )
+	void Vector3::Reflect(Vector3% vector, Vector3% normal, [Out] Vector3% result)
 	{
 		btScalar dot = ((vector.X * normal.X) + (vector.Y * normal.Y)) + (vector.Z * normal.Z);
 
@@ -504,7 +504,7 @@ namespace BulletSharp
 		Z = z;
 	}
 
-	Vector3 Vector3::SmoothStep( Vector3 start, Vector3 end, btScalar amount )
+	Vector3 Vector3::SmoothStep(Vector3 start, Vector3 end, btScalar amount)
 	{
 		Vector3 vector;
 
@@ -518,7 +518,7 @@ namespace BulletSharp
 		return vector;
 	}
 
-	void Vector3::SmoothStep( Vector3% start, Vector3% end, btScalar amount, [Out] Vector3% result )
+	void Vector3::SmoothStep(Vector3% start, Vector3% end, btScalar amount, [Out] Vector3% result)
 	{
 		amount = (amount > 1.0f) ? 1.0f : ((amount < 0.0f) ? 0.0f : amount);
 		amount = (amount * amount) * (3.0f - (2.0f * amount));
@@ -528,17 +528,17 @@ namespace BulletSharp
 		result.Z = start.Z + ((end.Z - start.Z) * amount);
 	}
 
-	Vector3 Vector3::Subtract( Vector3 left, Vector3 right )
+	Vector3 Vector3::Subtract(Vector3 left, Vector3 right)
 	{
-		return Vector3( left.X - right.X, left.Y - right.Y, left.Z - right.Z );
-	}
-	
-	void Vector3::Subtract( Vector3% left, Vector3% right, [Out] Vector3% result )
-	{
-		result = Vector3( left.X - right.X, left.Y - right.Y, left.Z - right.Z );
+		return Vector3(left.X - right.X, left.Y - right.Y, left.Z - right.Z);
 	}
 
-	Vector4 Vector3::Transform( Vector3 vector, Matrix transform )
+	void Vector3::Subtract(Vector3% left, Vector3% right, [Out] Vector3% result)
+	{
+		result = Vector3(left.X - right.X, left.Y - right.Y, left.Z - right.Z);
+	}
+
+	Vector4 Vector3::Transform(Vector3 vector, Matrix transform)
 	{
 		Vector4 result;
 
@@ -550,7 +550,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Vector3::Transform( Vector3% vector, Matrix% transform, [Out] Vector4% result )
+	void Vector3::Transform(Vector3% vector, Matrix% transform, [Out] Vector4% result)
 	{
 		result = Vector4();
 		result.X = (((vector.X * transform.M11) + (vector.Y * transform.M21)) + (vector.Z * transform.M31)) + transform.M41;
@@ -559,26 +559,26 @@ namespace BulletSharp
 		result.W = (((vector.X * transform.M14) + (vector.Y * transform.M24)) + (vector.Z * transform.M34)) + transform.M44;
 	}
 
-	array<Vector4>^ Vector3::Transform( array<Vector3>^ vectors, Matrix% transform )
+	array<Vector4>^ Vector3::Transform(array<Vector3>^ vectors, Matrix% transform)
 	{
 		int count = vectors->Length;
-		array<Vector4>^ results = gcnew array<Vector4>( count );
+		array<Vector4>^ results = gcnew array<Vector4>(count);
 
-		for( int i = 0; i < count; i++ )
+		for (int i = 0; i < count; i++)
 		{
 			Vector4 r;
 			r.X = (((vectors[i].X * transform.M11) + (vectors[i].Y * transform.M21)) + (vectors[i].Z * transform.M31)) + transform.M41;
 			r.Y = (((vectors[i].X * transform.M12) + (vectors[i].Y * transform.M22)) + (vectors[i].Z * transform.M32)) + transform.M42;
 			r.Z = (((vectors[i].X * transform.M13) + (vectors[i].Y * transform.M23)) + (vectors[i].Z * transform.M33)) + transform.M43;
 			r.W = (((vectors[i].X * transform.M14) + (vectors[i].Y * transform.M24)) + (vectors[i].Z * transform.M34)) + transform.M44;
-		
+
 			results[i] = r;
 		}
-		
+
 		return results;
 	}
 
-	Vector4 Vector3::Transform( Vector3 value, Quaternion rotation )
+	Vector4 Vector3::Transform(Vector3 value, Quaternion rotation)
 	{
 		Vector4 vector;
 		btScalar x = rotation.X + rotation.X;
@@ -602,7 +602,7 @@ namespace BulletSharp
 		return vector;
 	}
 
-	void Vector3::Transform( Vector3% value, Quaternion% rotation, [Out] Vector4% result )
+	void Vector3::Transform(Vector3% value, Quaternion% rotation, [Out] Vector4% result)
 	{
 		btScalar x = rotation.X + rotation.X;
 		btScalar y = rotation.Y + rotation.Y;
@@ -624,13 +624,13 @@ namespace BulletSharp
 		result.W = 1.0f;
 	}
 
-	array<Vector4>^ Vector3::Transform( array<Vector3>^ vectors, Quaternion% rotation )
+	array<Vector4>^ Vector3::Transform(array<Vector3>^ vectors, Quaternion% rotation)
 	{
-		if( vectors == nullptr )
-			throw gcnew ArgumentNullException( "vectors" );
+		if (vectors == nullptr)
+			throw gcnew ArgumentNullException("vectors");
 
 		int count = vectors->Length;
-		array<Vector4>^ results = gcnew array<Vector4>( count );
+		array<Vector4>^ results = gcnew array<Vector4>(count);
 
 		btScalar x = rotation.X + rotation.X;
 		btScalar y = rotation.Y + rotation.Y;
@@ -645,7 +645,7 @@ namespace BulletSharp
 		btScalar yz = rotation.Y * z;
 		btScalar zz = rotation.Z * z;
 
-		for( int i = 0; i < count; i++ )
+		for (int i = 0; i < count; i++)
 		{
 			Vector4 r;
 			r.X = ((vectors[i].X * ((1.0f - yy) - zz)) + (vectors[i].Y * (xy - wz))) + (vectors[i].Z * (xz + wy));
@@ -659,7 +659,7 @@ namespace BulletSharp
 		return results;
 	}
 
-	Vector3 Vector3::TransformCoordinate( Vector3 coord, Matrix transform )
+	Vector3 Vector3::TransformCoordinate(Vector3 coord, Matrix transform)
 	{
 		Vector4 vector;
 
@@ -668,10 +668,10 @@ namespace BulletSharp
 		vector.Z = (((coord.X * transform.M13) + (coord.Y * transform.M23)) + (coord.Z * transform.M33)) + transform.M43;
 		vector.W = 1 / ((((coord.X * transform.M14) + (coord.Y * transform.M24)) + (coord.Z * transform.M34)) + transform.M44);
 
-		return Vector3( vector.X * vector.W, vector.Y * vector.W, vector.Z * vector.W );
+		return Vector3(vector.X * vector.W, vector.Y * vector.W, vector.Z * vector.W);
 	}
 
-	void Vector3::TransformCoordinate( Vector3% coord, Matrix% transform, [Out] Vector3% result )
+	void Vector3::TransformCoordinate(Vector3% coord, Matrix% transform, [Out] Vector3% result)
 	{
 		Vector4 vector;
 
@@ -680,10 +680,10 @@ namespace BulletSharp
 		vector.Z = (((coord.X * transform.M13) + (coord.Y * transform.M23)) + (coord.Z * transform.M33)) + transform.M43;
 		vector.W = 1 / ((((coord.X * transform.M14) + (coord.Y * transform.M24)) + (coord.Z * transform.M34)) + transform.M44);
 
-		result = Vector3( vector.X * vector.W, vector.Y * vector.W, vector.Z * vector.W );
+		result = Vector3(vector.X * vector.W, vector.Y * vector.W, vector.Z * vector.W);
 	}
 
-	Vector3 Vector3::TransformNormal( Vector3 normal, Matrix transform )
+	Vector3 Vector3::TransformNormal(Vector3 normal, Matrix transform)
 	{
 		Vector3 vector;
 
@@ -694,7 +694,7 @@ namespace BulletSharp
 		return vector;
 	}
 
-	void Vector3::TransformNormal( Vector3% normal, Matrix% transform, [Out] Vector3% result )
+	void Vector3::TransformNormal(Vector3% normal, Matrix% transform, [Out] Vector3% result)
 	{
 		result.X = ((normal.X * transform.M11) + (normal.Y * transform.M21)) + (normal.Z * transform.M31);
 		result.Y = ((normal.X * transform.M12) + (normal.Y * transform.M22)) + (normal.Z * transform.M32);
@@ -742,7 +742,7 @@ namespace BulletSharp
 	{
 		return btSqrt(LengthSquared);
 	}
-	
+
 	btScalar Vector3::LengthSquared::get()
 	{
 		return (X * X) + (Y * Y) + (Z * Z);
@@ -765,54 +765,54 @@ namespace BulletSharp
 		return result;
 	}
 
-	Vector3 Vector3::operator + ( Vector3 left, Vector3 right )
+	Vector3 Vector3::operator + (Vector3 left, Vector3 right)
 	{
-		return Vector3( left.X + right.X, left.Y + right.Y, left.Z + right.Z );
-	}
-	
-	Vector3 Vector3::operator - ( Vector3 left, Vector3 right )
-	{
-		return Vector3( left.X - right.X, left.Y - right.Y, left.Z - right.Z );
-	}
-	
-	Vector3 Vector3::operator - ( Vector3 value )
-	{
-		return Vector3( -value.X, -value.Y, -value.Z );
+		return Vector3(left.X + right.X, left.Y + right.Y, left.Z + right.Z);
 	}
 
-	Vector3 Vector3::operator * ( Vector3 value, btScalar scale )
+	Vector3 Vector3::operator - (Vector3 left, Vector3 right)
 	{
-		return Vector3( value.X * scale, value.Y * scale, value.Z * scale );
+		return Vector3(left.X - right.X, left.Y - right.Y, left.Z - right.Z);
 	}
 
-	Vector3 Vector3::operator * ( btScalar scale, Vector3 vec )
+	Vector3 Vector3::operator - (Vector3 value)
+	{
+		return Vector3(-value.X, -value.Y, -value.Z);
+	}
+
+	Vector3 Vector3::operator * (Vector3 value, btScalar scale)
+	{
+		return Vector3(value.X * scale, value.Y * scale, value.Z * scale);
+	}
+
+	Vector3 Vector3::operator * (btScalar scale, Vector3 vec)
 	{
 		return vec * scale;
 	}
-	
-	Vector3 Vector3::operator * ( Vector3 left, Vector3 right )
+
+	Vector3 Vector3::operator * (Vector3 left, Vector3 right)
 	{
-		return Vector3( left.X * right.X, left.Y * right.Y, left.Z * right.Z );
+		return Vector3(left.X * right.X, left.Y * right.Y, left.Z * right.Z);
 	}
 
-	Vector3 Vector3::operator / ( Vector3 value, btScalar scale )
+	Vector3 Vector3::operator / (Vector3 value, btScalar scale)
 	{
-		return Vector3( value.X / scale, value.Y / scale, value.Z / scale );
+		return Vector3(value.X / scale, value.Y / scale, value.Z / scale);
 	}
-	
-	bool Vector3::operator == ( Vector3 left, Vector3 right )
+
+	bool Vector3::operator == (Vector3 left, Vector3 right)
 	{
-		return Vector3::Equals( left, right );
+		return Vector3::Equals(left, right);
 	}
-	
-	bool Vector3::operator != ( Vector3 left, Vector3 right )
+
+	bool Vector3::operator != (Vector3 left, Vector3 right)
 	{
-		return !Vector3::Equals( left, right );
+		return !Vector3::Equals(left, right);
 	}
 
 	String^ Vector3::ToString()
 	{
-		return String::Format( CultureInfo::CurrentCulture, "X:{0} Y:{1} Z:{2}", X.ToString(CultureInfo::CurrentCulture), Y.ToString(CultureInfo::CurrentCulture), Z.ToString(CultureInfo::CurrentCulture) );
+		return String::Format(CultureInfo::CurrentCulture, "X:{0} Y:{1} Z:{2}", X.ToString(CultureInfo::CurrentCulture), Y.ToString(CultureInfo::CurrentCulture), Z.ToString(CultureInfo::CurrentCulture));
 	}
 
 	int Vector3::GetHashCode()
@@ -820,25 +820,25 @@ namespace BulletSharp
 		return X.GetHashCode() + Y.GetHashCode() + Z.GetHashCode();
 	}
 
-	bool Vector3::Equals( Object^ value )
+	bool Vector3::Equals(Object^ value)
 	{
-		if( value == nullptr )
+		if (value == nullptr)
 			return false;
 
-		if( value->GetType() != GetType() )
+		if (value->GetType() != GetType())
 			return false;
 
-		return Equals( safe_cast<Vector3>( value ) );
+		return Equals(safe_cast<Vector3>(value));
 	}
 
-	bool Vector3::Equals( Vector3 value )
+	bool Vector3::Equals(Vector3 value)
 	{
-		return ( X == value.X && Y == value.Y && Z == value.Z );
+		return (X == value.X && Y == value.Y && Z == value.Z);
 	}
 
-	bool Vector3::Equals( Vector3% value1, Vector3% value2 )
+	bool Vector3::Equals(Vector3% value1, Vector3% value2)
 	{
-		return ( value1.X == value2.X && value1.Y == value2.Y && value1.Z == value2.Z );
+		return (value1.X == value2.X && value1.Y == value2.Y && value1.Z == value2.Z);
 	}
 }
 

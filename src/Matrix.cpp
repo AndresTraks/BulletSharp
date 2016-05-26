@@ -32,16 +32,16 @@ using namespace System::Globalization;
 
 namespace BulletSharp
 {
-	btScalar Matrix::default::get( int row, int column )
+	btScalar Matrix::default::get(int row, int column)
 	{
-		if( row < 0 || row > 3 )
-			throw gcnew ArgumentOutOfRangeException( "row", "Rows and columns for matrices run from 0 to 3, inclusive." );
+		if (row < 0 || row > 3)
+			throw gcnew ArgumentOutOfRangeException("row", "Rows and columns for matrices run from 0 to 3, inclusive.");
 
-		if( column < 0 || column > 3 )
-			throw gcnew ArgumentOutOfRangeException( "column", "Rows and columns for matrices run from 0 to 3, inclusive." );
+		if (column < 0 || column > 3)
+			throw gcnew ArgumentOutOfRangeException("column", "Rows and columns for matrices run from 0 to 3, inclusive.");
 
 		int index = row * 4 + column;
-		switch( index )
+		switch (index)
 		{
 		case 0:  return M11;
 		case 1:  return M12;
@@ -63,17 +63,17 @@ namespace BulletSharp
 
 		return 0.0f;
 	}
-	
-	void Matrix::default::set( int row, int column, btScalar value ) 
-	{
-		if( row < 0 || row > 3 )
-			throw gcnew ArgumentOutOfRangeException( "row", "Rows and columns for matrices run from 0 to 3, inclusive." );
 
-		if( column < 0 || column > 3 )
-			throw gcnew ArgumentOutOfRangeException( "column", "Rows and columns for matrices run from 0 to 3, inclusive." );
+	void Matrix::default::set(int row, int column, btScalar value)
+	{
+		if (row < 0 || row > 3)
+			throw gcnew ArgumentOutOfRangeException("row", "Rows and columns for matrices run from 0 to 3, inclusive.");
+
+		if (column < 0 || column > 3)
+			throw gcnew ArgumentOutOfRangeException("column", "Rows and columns for matrices run from 0 to 3, inclusive.");
 
 		int index = row * 4 + column;
-		switch( index )
+		switch (index)
 		{
 		case 0:  M11 = value; break;
 		case 1:  M12 = value; break;
@@ -94,12 +94,12 @@ namespace BulletSharp
 		}
 	}
 
-	Vector4 Matrix::Rows::get( int row )
+	Vector4 Matrix::Rows::get(int row)
 	{
-		return Vector4( default[row, 0], default[row, 1], default[row, 2], default[row, 3] );
+		return Vector4(default[row, 0], default[row, 1], default[row, 2], default[row, 3]);
 	}
 
-	void Matrix::Rows::set( int row, Vector4 value )
+	void Matrix::Rows::set(int row, Vector4 value)
 	{
 		default[row, 0] = value.X;
 		default[row, 1] = value.Y;
@@ -107,12 +107,12 @@ namespace BulletSharp
 		default[row, 3] = value.W;
 	}
 
-	Vector4 Matrix::Columns::get( int column )
+	Vector4 Matrix::Columns::get(int column)
 	{
-		return Vector4( default[0, column], default[1, column], default[2, column], default[3, column] );
+		return Vector4(default[0, column], default[1, column], default[2, column], default[3, column]);
 	}
 
-	void Matrix::Columns::set( int column, Vector4 value )
+	void Matrix::Columns::set(int column, Vector4 value)
 	{
 		default[0, column] = value.X;
 		default[1, column] = value.Y;
@@ -145,13 +145,13 @@ namespace BulletSharp
 
 	bool Matrix::IsIdentity::get()
 	{
-		if( M11 != 1.0f|| M22 != 1.0f || M33 != 1.0f || M44 != 1.0f )
+		if (M11 != 1.0f || M22 != 1.0f || M33 != 1.0f || M44 != 1.0f)
 			return false;
 
-		if( M12 != 0.0f || M13 != 0.0f || M14 != 0.0f ||
+		if (M12 != 0.0f || M13 != 0.0f || M14 != 0.0f ||
 			M21 != 0.0f || M23 != 0.0f || M24 != 0.0f ||
 			M31 != 0.0f || M32 != 0.0f || M34 != 0.0f ||
-			M41 != 0.0f || M42 != 0.0f || M43 != 0.0f )
+			M41 != 0.0f || M42 != 0.0f || M43 != 0.0f)
 			return false;
 
 		return true;
@@ -159,7 +159,7 @@ namespace BulletSharp
 
 	array<btScalar>^ Matrix::ToArray()
 	{
-		array<btScalar>^ result = gcnew array<btScalar>( 16 );
+		array<btScalar>^ result = gcnew array<btScalar>(16);
 		result[0] = M11;
 		result[1] = M12;
 		result[2] = M13;
@@ -188,13 +188,13 @@ namespace BulletSharp
 		btScalar temp4 = (M31 * M44) - (M34 * M41);
 		btScalar temp5 = (M31 * M43) - (M33 * M41);
 		btScalar temp6 = (M31 * M42) - (M32 * M41);
-		
-		return ((((M11 * (((M22 * temp1) - (M23 * temp2)) + (M24 * temp3))) - (M12 * (((M21 * temp1) - 
-			(M23 * temp4)) + (M24 * temp5)))) + (M13 * (((M21 * temp2) - (M22 * temp4)) + (M24 * temp6)))) - 
+
+		return ((((M11 * (((M22 * temp1) - (M23 * temp2)) + (M24 * temp3))) - (M12 * (((M21 * temp1) -
+			(M23 * temp4)) + (M24 * temp5)))) + (M13 * (((M21 * temp2) - (M22 * temp4)) + (M24 * temp6)))) -
 			(M14 * (((M21 * temp3) - (M22 * temp5)) + (M23 * temp6))));
 	}
 
-	Matrix Matrix::Add( Matrix left, Matrix right )
+	Matrix Matrix::Add(Matrix left, Matrix right)
 	{
 		Matrix result;
 		result.M11 = left.M11 + right.M11;
@@ -216,7 +216,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::Add( Matrix% left, Matrix% right, [Out] Matrix% result )
+	void Matrix::Add(Matrix% left, Matrix% right, [Out] Matrix% result)
 	{
 		Matrix r;
 		r.M11 = left.M11 + right.M11;
@@ -239,7 +239,7 @@ namespace BulletSharp
 		result = r;
 	}
 
-	Matrix Matrix::Subtract( Matrix left, Matrix right )
+	Matrix Matrix::Subtract(Matrix left, Matrix right)
 	{
 		Matrix result;
 		result.M11 = left.M11 - right.M11;
@@ -261,7 +261,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::Subtract( Matrix% left, Matrix% right, [Out] Matrix% result )
+	void Matrix::Subtract(Matrix% left, Matrix% right, [Out] Matrix% result)
 	{
 		Matrix r;
 		r.M11 = left.M11 - right.M11;
@@ -284,7 +284,7 @@ namespace BulletSharp
 		result = r;
 	}
 
-	Matrix Matrix::Negate( Matrix matrix )
+	Matrix Matrix::Negate(Matrix matrix)
 	{
 		Matrix result;
 		result.M11 = -matrix.M11;
@@ -306,7 +306,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::Negate( Matrix% matrix, [Out] Matrix% result )
+	void Matrix::Negate(Matrix% matrix, [Out] Matrix% result)
 	{
 		Matrix r;
 		r.M11 = -matrix.M11;
@@ -329,7 +329,7 @@ namespace BulletSharp
 		result = r;
 	}
 
-	Matrix Matrix::Multiply( Matrix left, Matrix right )
+	Matrix Matrix::Multiply(Matrix left, Matrix right)
 	{
 		Matrix result;
 		result.M11 = (left.M11 * right.M11) + (left.M12 * right.M21) + (left.M13 * right.M31) + (left.M14 * right.M41);
@@ -351,7 +351,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::Multiply( Matrix% left, Matrix% right, [Out] Matrix% result )
+	void Matrix::Multiply(Matrix% left, Matrix% right, [Out] Matrix% result)
 	{
 		Matrix r;
 		r.M11 = (left.M11 * right.M11) + (left.M12 * right.M21) + (left.M13 * right.M31) + (left.M14 * right.M41);
@@ -370,11 +370,11 @@ namespace BulletSharp
 		r.M42 = (left.M41 * right.M12) + (left.M42 * right.M22) + (left.M43 * right.M32) + (left.M44 * right.M42);
 		r.M43 = (left.M41 * right.M13) + (left.M42 * right.M23) + (left.M43 * right.M33) + (left.M44 * right.M43);
 		r.M44 = (left.M41 * right.M14) + (left.M42 * right.M24) + (left.M43 * right.M34) + (left.M44 * right.M44);
-	
+
 		result = r;
 	}
 
-	Matrix Matrix::Multiply( Matrix left, btScalar right )
+	Matrix Matrix::Multiply(Matrix left, btScalar right)
 	{
 		Matrix result;
 		result.M11 = left.M11 * right;
@@ -396,7 +396,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::Multiply( Matrix% left, btScalar right, [Out] Matrix% result )
+	void Matrix::Multiply(Matrix% left, btScalar right, [Out] Matrix% result)
 	{
 		Matrix r;
 		r.M11 = left.M11 * right;
@@ -419,7 +419,7 @@ namespace BulletSharp
 		result = r;
 	}
 
-	Matrix Matrix::Divide( Matrix left, Matrix right )
+	Matrix Matrix::Divide(Matrix left, Matrix right)
 	{
 		Matrix result;
 		result.M11 = left.M11 / right.M11;
@@ -441,7 +441,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::Divide( Matrix% left, Matrix% right, [Out] Matrix% result )
+	void Matrix::Divide(Matrix% left, Matrix% right, [Out] Matrix% result)
 	{
 		Matrix r;
 		r.M11 = left.M11 / right.M11;
@@ -464,7 +464,7 @@ namespace BulletSharp
 		result = r;
 	}
 
-	Matrix Matrix::Divide( Matrix left, btScalar right )
+	Matrix Matrix::Divide(Matrix left, btScalar right)
 	{
 		Matrix result;
 		btScalar inv = 1.0f / right;
@@ -488,7 +488,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::Divide( Matrix% left, btScalar right, [Out] Matrix% result )
+	void Matrix::Divide(Matrix% left, btScalar right, [Out] Matrix% result)
 	{
 		btScalar inv = 1.0f / right;
 
@@ -513,43 +513,43 @@ namespace BulletSharp
 		result = r;
 	}
 
-	Matrix Matrix::Invert( Matrix m )
+	Matrix Matrix::Invert(Matrix m)
 	{
 		Matrix inv;
 		btScalar det;
 
 		inv.M11 = m.M22*m.M33*m.M44 - m.M22*m.M34*m.M43 - m.M32*m.M23*m.M44
-				+ m.M32*m.M24*m.M43 + m.M42*m.M23*m.M34 - m.M42*m.M24*m.M33;
-		inv.M21 =-m.M21*m.M33*m.M44 + m.M21*m.M34*m.M43 + m.M31*m.M23*m.M44
-				- m.M31*m.M24*m.M43 - m.M41*m.M23*m.M34 + m.M41*m.M24*m.M33;
+			+ m.M32*m.M24*m.M43 + m.M42*m.M23*m.M34 - m.M42*m.M24*m.M33;
+		inv.M21 = -m.M21*m.M33*m.M44 + m.M21*m.M34*m.M43 + m.M31*m.M23*m.M44
+			- m.M31*m.M24*m.M43 - m.M41*m.M23*m.M34 + m.M41*m.M24*m.M33;
 		inv.M31 = m.M21*m.M32*m.M44 - m.M21*m.M34*m.M42 - m.M31*m.M22*m.M44
-				+ m.M31*m.M24*m.M42 + m.M41*m.M22*m.M34 - m.M41*m.M24*m.M32;
-		inv.M41 =-m.M21*m.M32*m.M43 + m.M21*m.M33*m.M42 + m.M31*m.M22*m.M43
-				- m.M31*m.M23*m.M42 - m.M41*m.M22*m.M33 + m.M41*m.M23*m.M32;
-		inv.M12 =-m.M12*m.M33*m.M44 + m.M12*m.M34*m.M43 + m.M32*m.M13*m.M44
-				- m.M32*m.M14*m.M43 - m.M42*m.M13*m.M34 + m.M42*m.M14*m.M33;
+			+ m.M31*m.M24*m.M42 + m.M41*m.M22*m.M34 - m.M41*m.M24*m.M32;
+		inv.M41 = -m.M21*m.M32*m.M43 + m.M21*m.M33*m.M42 + m.M31*m.M22*m.M43
+			- m.M31*m.M23*m.M42 - m.M41*m.M22*m.M33 + m.M41*m.M23*m.M32;
+		inv.M12 = -m.M12*m.M33*m.M44 + m.M12*m.M34*m.M43 + m.M32*m.M13*m.M44
+			- m.M32*m.M14*m.M43 - m.M42*m.M13*m.M34 + m.M42*m.M14*m.M33;
 		inv.M22 = m.M11*m.M33*m.M44 - m.M11*m.M34*m.M43 - m.M31*m.M13*m.M44
-				+ m.M31*m.M14*m.M43 + m.M41*m.M13*m.M34 - m.M41*m.M14*m.M33;
-		inv.M32 =-m.M11*m.M32*m.M44 + m.M11*m.M34*m.M42 + m.M31*m.M12*m.M44
-				- m.M31*m.M14*m.M42 - m.M41*m.M12*m.M34 + m.M41*m.M14*m.M32;
+			+ m.M31*m.M14*m.M43 + m.M41*m.M13*m.M34 - m.M41*m.M14*m.M33;
+		inv.M32 = -m.M11*m.M32*m.M44 + m.M11*m.M34*m.M42 + m.M31*m.M12*m.M44
+			- m.M31*m.M14*m.M42 - m.M41*m.M12*m.M34 + m.M41*m.M14*m.M32;
 		inv.M42 = m.M11*m.M32*m.M43 - m.M11*m.M33*m.M42 - m.M31*m.M12*m.M43
-				+ m.M31*m.M13*m.M42 + m.M41*m.M12*m.M33 - m.M41*m.M13*m.M32;
+			+ m.M31*m.M13*m.M42 + m.M41*m.M12*m.M33 - m.M41*m.M13*m.M32;
 		inv.M13 = m.M12*m.M23*m.M44 - m.M12*m.M24*m.M43 - m.M22*m.M13*m.M44
-				+ m.M22*m.M14*m.M43 + m.M42*m.M13*m.M24 - m.M42*m.M14*m.M23;
-		inv.M23 =-m.M11*m.M23*m.M44 + m.M11*m.M24*m.M43 + m.M21*m.M13*m.M44
-				- m.M21*m.M14*m.M43 - m.M41*m.M13*m.M24 + m.M41*m.M14*m.M23;
+			+ m.M22*m.M14*m.M43 + m.M42*m.M13*m.M24 - m.M42*m.M14*m.M23;
+		inv.M23 = -m.M11*m.M23*m.M44 + m.M11*m.M24*m.M43 + m.M21*m.M13*m.M44
+			- m.M21*m.M14*m.M43 - m.M41*m.M13*m.M24 + m.M41*m.M14*m.M23;
 		inv.M33 = m.M11*m.M22*m.M44 - m.M11*m.M24*m.M42 - m.M21*m.M12*m.M44
-				+ m.M21*m.M14*m.M42 + m.M41*m.M12*m.M24 - m.M41*m.M14*m.M22;
-		inv.M43 =-m.M11*m.M22*m.M43 + m.M11*m.M23*m.M42 + m.M21*m.M12*m.M43
-				- m.M21*m.M13*m.M42 - m.M41*m.M12*m.M23 + m.M41*m.M13*m.M22;
-		inv.M14 =-m.M12*m.M23*m.M34 + m.M12*m.M24*m.M33 + m.M22*m.M13*m.M34
-				- m.M22*m.M14*m.M33 - m.M32*m.M13*m.M24 + m.M32*m.M14*m.M23;
+			+ m.M21*m.M14*m.M42 + m.M41*m.M12*m.M24 - m.M41*m.M14*m.M22;
+		inv.M43 = -m.M11*m.M22*m.M43 + m.M11*m.M23*m.M42 + m.M21*m.M12*m.M43
+			- m.M21*m.M13*m.M42 - m.M41*m.M12*m.M23 + m.M41*m.M13*m.M22;
+		inv.M14 = -m.M12*m.M23*m.M34 + m.M12*m.M24*m.M33 + m.M22*m.M13*m.M34
+			- m.M22*m.M14*m.M33 - m.M32*m.M13*m.M24 + m.M32*m.M14*m.M23;
 		inv.M24 = m.M11*m.M23*m.M34 - m.M11*m.M24*m.M33 - m.M21*m.M13*m.M34
-				+ m.M21*m.M14*m.M33 + m.M31*m.M13*m.M24 - m.M31*m.M14*m.M23;
-		inv.M34 =-m.M11*m.M22*m.M34 + m.M11*m.M24*m.M32 + m.M21*m.M12*m.M34
-				- m.M21*m.M14*m.M32 - m.M31*m.M12*m.M24 + m.M31*m.M14*m.M22;
+			+ m.M21*m.M14*m.M33 + m.M31*m.M13*m.M24 - m.M31*m.M14*m.M23;
+		inv.M34 = -m.M11*m.M22*m.M34 + m.M11*m.M24*m.M32 + m.M21*m.M12*m.M34
+			- m.M21*m.M14*m.M32 - m.M31*m.M12*m.M24 + m.M31*m.M14*m.M22;
 		inv.M44 = m.M11*m.M22*m.M33 - m.M11*m.M23*m.M32 - m.M21*m.M12*m.M33
-				+ m.M21*m.M13*m.M32 + m.M31*m.M12*m.M23 - m.M31*m.M13*m.M22;
+			+ m.M21*m.M13*m.M32 + m.M31*m.M12*m.M23 - m.M31*m.M13*m.M22;
 
 		det = m.M11*inv.M11 + m.M12*inv.M21 + m.M13*inv.M31 + m.M14*inv.M41;
 		if (det == 0)
@@ -560,7 +560,7 @@ namespace BulletSharp
 		return inv * det;
 	}
 
-	Matrix Matrix::Lerp( Matrix value1, Matrix value2, btScalar amount )
+	Matrix Matrix::Lerp(Matrix value1, Matrix value2, btScalar amount)
 	{
 		Matrix result;
 		result.M11 = value1.M11 + ((value2.M11 - value1.M11) * amount);
@@ -582,7 +582,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::Lerp( Matrix% value1, Matrix% value2, btScalar amount, [Out] Matrix% result )
+	void Matrix::Lerp(Matrix% value1, Matrix% value2, btScalar amount, [Out] Matrix% result)
 	{
 		Matrix r;
 		r.M11 = value1.M11 + ((value2.M11 - value1.M11) * amount);
@@ -605,7 +605,7 @@ namespace BulletSharp
 		result = r;
 	}
 
-	Matrix Matrix::Billboard( Vector3 objectPosition, Vector3 cameraPosition, Vector3 cameraUpVector, Vector3 cameraForwardVector )
+	Matrix Matrix::Billboard(Vector3 objectPosition, Vector3 cameraPosition, Vector3 cameraUpVector, Vector3 cameraForwardVector)
 	{
 		Matrix result;
 		Vector3 difference = objectPosition - cameraPosition;
@@ -616,11 +616,11 @@ namespace BulletSharp
 		if (lengthSq < 0.0001f)
 			difference = -cameraForwardVector;
 		else
-			difference *= static_cast<btScalar>( 1.0f / btSqrt( lengthSq ) );
+			difference *= static_cast<btScalar>(1.0f / btSqrt(lengthSq));
 
-		Vector3::Cross( cameraUpVector, difference, crossed );
+		Vector3::Cross(cameraUpVector, difference, crossed);
 		crossed.Normalize();
-		Vector3::Cross( difference, crossed, final );
+		Vector3::Cross(difference, crossed, final);
 
 		result.M11 = final.X;
 		result.M12 = final.Y;
@@ -642,7 +642,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::Billboard( Vector3% objectPosition, Vector3% cameraPosition, Vector3% cameraUpVector, Vector3% cameraForwardVector, [Out] Matrix% result )
+	void Matrix::Billboard(Vector3% objectPosition, Vector3% cameraPosition, Vector3% cameraUpVector, Vector3% cameraForwardVector, [Out] Matrix% result)
 	{
 		Vector3 difference = objectPosition - cameraPosition;
 		Vector3 crossed;
@@ -652,11 +652,11 @@ namespace BulletSharp
 		if (lengthSq < 0.0001f)
 			difference = -cameraForwardVector;
 		else
-			difference *= static_cast<btScalar>( 1.0f / btSqrt( lengthSq ) );
+			difference *= static_cast<btScalar>(1.0f / btSqrt(lengthSq));
 
-		Vector3::Cross( cameraUpVector, difference, crossed );
+		Vector3::Cross(cameraUpVector, difference, crossed);
 		crossed.Normalize();
-		Vector3::Cross( difference, crossed, final );
+		Vector3::Cross(difference, crossed, final);
 
 		result.M11 = final.X;
 		result.M12 = final.Y;
@@ -676,7 +676,7 @@ namespace BulletSharp
 		result.M44 = 1.0f;
 	}
 
-	Matrix Matrix::LookAtLH( Vector3 eye, Vector3 target, Vector3 up )
+	Matrix Matrix::LookAtLH(Vector3 eye, Vector3 target, Vector3 up)
 	{
 		Matrix result;
 
@@ -704,11 +704,11 @@ namespace BulletSharp
 		return result;
 	}
 
-	Matrix Matrix::RotationX( btScalar angle )
+	Matrix Matrix::RotationX(btScalar angle)
 	{
 		Matrix result;
-		btScalar cos = static_cast<btScalar>( System::Math::Cos( static_cast<double>( angle ) ) );
-		btScalar sin = static_cast<btScalar>( System::Math::Sin( static_cast<double>( angle ) ) );
+		btScalar cos = btCos(angle);
+		btScalar sin = btSin(angle);
 
 		result.M11 = 1.0f;
 		result.M12 = 0.0f;
@@ -730,10 +730,10 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::RotationX( btScalar angle, [Out] Matrix% result )
+	void Matrix::RotationX(btScalar angle, [Out] Matrix% result)
 	{
-		btScalar cos = static_cast<btScalar>( System::Math::Cos( static_cast<double>( angle ) ) );
-		btScalar sin = static_cast<btScalar>( System::Math::Sin( static_cast<double>( angle ) ) );
+		btScalar cos = btCos(angle);
+		btScalar sin = btSin(angle);
 
 		result.M11 = 1.0f;
 		result.M12 = 0.0f;
@@ -752,12 +752,12 @@ namespace BulletSharp
 		result.M43 = 0.0f;
 		result.M44 = 1.0f;
 	}
-	
-	Matrix Matrix::RotationY( btScalar angle )
+
+	Matrix Matrix::RotationY(btScalar angle)
 	{
 		Matrix result;
-		btScalar cos = static_cast<btScalar>( System::Math::Cos( static_cast<double>( angle ) ) );
-		btScalar sin = static_cast<btScalar>( System::Math::Sin( static_cast<double>( angle ) ) );
+		btScalar cos = btCos(angle);
+		btScalar sin = btSin(angle);
 
 		result.M11 = cos;
 		result.M12 = 0.0f;
@@ -779,10 +779,10 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::RotationY( btScalar angle, [Out] Matrix% result )
+	void Matrix::RotationY(btScalar angle, [Out] Matrix% result)
 	{
-		btScalar cos = static_cast<btScalar>( System::Math::Cos( static_cast<double>( angle ) ) );
-		btScalar sin = static_cast<btScalar>( System::Math::Sin( static_cast<double>( angle ) ) );
+		btScalar cos = btCos(angle);
+		btScalar sin = btSin(angle);
 
 		result.M11 = cos;
 		result.M12 = 0.0f;
@@ -801,12 +801,12 @@ namespace BulletSharp
 		result.M43 = 0.0f;
 		result.M44 = 1.0f;
 	}
-	
-	Matrix Matrix::RotationZ( btScalar angle )
+
+	Matrix Matrix::RotationZ(btScalar angle)
 	{
 		Matrix result;
-		btScalar cos = static_cast<btScalar>( System::Math::Cos( static_cast<double>( angle ) ) );
-		btScalar sin = static_cast<btScalar>( System::Math::Sin( static_cast<double>( angle ) ) );
+		btScalar cos = btCos(angle);
+		btScalar sin = btSin(angle);
 
 		result.M11 = cos;
 		result.M12 = sin;
@@ -828,10 +828,10 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::RotationZ( btScalar angle, [Out] Matrix% result )
+	void Matrix::RotationZ(btScalar angle, [Out] Matrix% result)
 	{
-		btScalar cos = static_cast<btScalar>( System::Math::Cos( static_cast<double>( angle ) ) );
-		btScalar sin = static_cast<btScalar>( System::Math::Sin( static_cast<double>( angle ) ) );
+		btScalar cos = btCos(angle);
+		btScalar sin = btSin(angle);
 
 		result.M11 = cos;
 		result.M12 = sin;
@@ -851,7 +851,7 @@ namespace BulletSharp
 		result.M44 = 1.0f;
 	}
 
-	Matrix Matrix::RotationQuaternion( Quaternion quaternion )
+	Matrix Matrix::RotationQuaternion(Quaternion quaternion)
 	{
 		Matrix result;
 
@@ -884,7 +884,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::RotationQuaternion( Quaternion% rotation, [Out] Matrix% result )
+	void Matrix::RotationQuaternion(Quaternion% rotation, [Out] Matrix% result)
 	{
 		btScalar xx = rotation.X * rotation.X;
 		btScalar yy = rotation.Y * rotation.Y;
@@ -913,17 +913,17 @@ namespace BulletSharp
 		result.M44 = 1.0f;
 	}
 
-	Matrix Matrix::RotationAxis( Vector3 axis, btScalar angle )
+	Matrix Matrix::RotationAxis(Vector3 axis, btScalar angle)
 	{
-		if( axis.LengthSquared != 1.0f )
+		if (axis.LengthSquared != 1.0f)
 			axis.Normalize();
 
 		Matrix result;
 		btScalar x = axis.X;
 		btScalar y = axis.Y;
 		btScalar z = axis.Z;
-		btScalar cos = static_cast<btScalar>( System::Math::Cos( static_cast<double>( angle ) ) );
-		btScalar sin = static_cast<btScalar>( System::Math::Sin( static_cast<double>( angle ) ) );
+		btScalar cos = btCos(angle);
+		btScalar sin = btSin(angle);
 		btScalar xx = x * x;
 		btScalar yy = y * y;
 		btScalar zz = z * z;
@@ -951,16 +951,16 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::RotationAxis( Vector3% axis, btScalar angle, [Out] Matrix% result )
+	void Matrix::RotationAxis(Vector3% axis, btScalar angle, [Out] Matrix% result)
 	{
-		if( axis.LengthSquared != 1.0f )
+		if (axis.LengthSquared != 1.0f)
 			axis.Normalize();
 
 		btScalar x = axis.X;
 		btScalar y = axis.Y;
 		btScalar z = axis.Z;
-		btScalar cos = static_cast<btScalar>( System::Math::Cos( static_cast<double>( angle ) ) );
-		btScalar sin = static_cast<btScalar>( System::Math::Sin( static_cast<double>( angle ) ) );
+		btScalar cos = btCos(angle);
+		btScalar sin = btSin(angle);
 		btScalar xx = x * x;
 		btScalar yy = y * y;
 		btScalar zz = z * z;
@@ -986,23 +986,23 @@ namespace BulletSharp
 		result.M44 = 1.0f;
 	}
 
-	Matrix Matrix::RotationYawPitchRoll( btScalar yaw, btScalar pitch, btScalar roll )
+	Matrix Matrix::RotationYawPitchRoll(btScalar yaw, btScalar pitch, btScalar roll)
 	{
 		Matrix result;
 		Quaternion quaternion;
-		Quaternion::RotationYawPitchRoll( yaw, pitch, roll, quaternion );
-		RotationQuaternion( quaternion, result );
+		Quaternion::RotationYawPitchRoll(yaw, pitch, roll, quaternion);
+		RotationQuaternion(quaternion, result);
 		return result;
 	}
 
-	void Matrix::RotationYawPitchRoll( btScalar yaw, btScalar pitch, btScalar roll, [Out] Matrix% result )
+	void Matrix::RotationYawPitchRoll(btScalar yaw, btScalar pitch, btScalar roll, [Out] Matrix% result)
 	{
 		Quaternion quaternion;
-		Quaternion::RotationYawPitchRoll( yaw, pitch, roll, quaternion );
-		RotationQuaternion( quaternion, result );
+		Quaternion::RotationYawPitchRoll(yaw, pitch, roll, quaternion);
+		RotationQuaternion(quaternion, result);
 	}
 
-	Matrix Matrix::Translation( btScalar x, btScalar y, btScalar z )
+	Matrix Matrix::Translation(btScalar x, btScalar y, btScalar z)
 	{
 		Matrix result;
 		result.M11 = 1.0f;
@@ -1024,7 +1024,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::Translation( btScalar x, btScalar y, btScalar z, [Out] Matrix% result )
+	void Matrix::Translation(btScalar x, btScalar y, btScalar z, [Out] Matrix% result)
 	{
 		result.M11 = 1.0f;
 		result.M12 = 0.0f;
@@ -1044,7 +1044,7 @@ namespace BulletSharp
 		result.M44 = 1.0f;
 	}
 
-	Matrix Matrix::Translation( Vector3 translation )
+	Matrix Matrix::Translation(Vector3 translation)
 	{
 		Matrix result;
 		result.M11 = 1.0f;
@@ -1066,7 +1066,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::Translation( Vector3% translation, [Out] Matrix% result )
+	void Matrix::Translation(Vector3% translation, [Out] Matrix% result)
 	{
 		result.M11 = 1.0f;
 		result.M12 = 0.0f;
@@ -1086,7 +1086,7 @@ namespace BulletSharp
 		result.M44 = 1.0f;
 	}
 
-	Matrix Matrix::Scaling ( btScalar x, btScalar y, btScalar z )
+	Matrix Matrix::Scaling(btScalar x, btScalar y, btScalar z)
 	{
 		Matrix result;
 		result.M11 = x;
@@ -1108,7 +1108,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::Scaling( btScalar x, btScalar y, btScalar z, [Out] Matrix% result )
+	void Matrix::Scaling(btScalar x, btScalar y, btScalar z, [Out] Matrix% result)
 	{
 		result.M11 = x;
 		result.M12 = 0.0f;
@@ -1128,7 +1128,7 @@ namespace BulletSharp
 		result.M44 = 1.0f;
 	}
 
-	Matrix Matrix::Scaling ( Vector3 scaling )
+	Matrix Matrix::Scaling(Vector3 scaling)
 	{
 		Matrix result;
 		result.M11 = scaling.X;
@@ -1150,7 +1150,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::Scaling( Vector3% scaling, [Out] Matrix% result )
+	void Matrix::Scaling(Vector3% scaling, [Out] Matrix% result)
 	{
 		result.M11 = scaling.X;
 		result.M12 = 0.0f;
@@ -1170,7 +1170,7 @@ namespace BulletSharp
 		result.M44 = 1.0f;
 	}
 
-	Matrix Matrix::Transpose( Matrix mat )
+	Matrix Matrix::Transpose(Matrix mat)
 	{
 		Matrix result;
 		result.M11 = mat.M11;
@@ -1192,7 +1192,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Matrix::Transpose( Matrix% mat, [Out] Matrix% result )
+	void Matrix::Transpose(Matrix% mat, [Out] Matrix% result)
 	{
 		Matrix r;
 		r.M11 = mat.M11;
@@ -1215,7 +1215,7 @@ namespace BulletSharp
 		result = r;
 	}
 
-	Matrix Matrix::operator * ( Matrix left, Matrix right )
+	Matrix Matrix::operator * (Matrix left, Matrix right)
 	{
 		Matrix result;
 		result.M11 = (left.M11 * right.M11) + (left.M12 * right.M21) + (left.M13 * right.M31) + (left.M14 * right.M41);
@@ -1237,7 +1237,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	Matrix Matrix::operator * ( Matrix left, btScalar right )
+	Matrix Matrix::operator * (Matrix left, btScalar right)
 	{
 		Matrix result;
 		result.M11 = left.M11 * right;
@@ -1259,12 +1259,12 @@ namespace BulletSharp
 		return result;
 	}
 
-	Matrix Matrix::operator * ( btScalar right, Matrix left )
+	Matrix Matrix::operator * (btScalar right, Matrix left)
 	{
 		return left * right;
 	}
 
-	Matrix Matrix::operator / ( Matrix left, Matrix right )
+	Matrix Matrix::operator / (Matrix left, Matrix right)
 	{
 		Matrix result;
 		result.M11 = left.M11 / right.M11;
@@ -1286,7 +1286,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	Matrix Matrix::operator / ( Matrix left, btScalar right )
+	Matrix Matrix::operator / (Matrix left, btScalar right)
 	{
 		Matrix result;
 		result.M11 = left.M11 / right;
@@ -1308,7 +1308,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	Matrix Matrix::operator + ( Matrix left, Matrix right )
+	Matrix Matrix::operator + (Matrix left, Matrix right)
 	{
 		Matrix result;
 		result.M11 = left.M11 + right.M11;
@@ -1330,7 +1330,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	Matrix Matrix::operator - ( Matrix left, Matrix right )
+	Matrix Matrix::operator - (Matrix left, Matrix right)
 	{
 		Matrix result;
 		result.M11 = left.M11 - right.M11;
@@ -1352,7 +1352,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	Matrix Matrix::operator - ( Matrix matrix )
+	Matrix Matrix::operator - (Matrix matrix)
 	{
 		Matrix result;
 		result.M11 = -matrix.M11;
@@ -1374,58 +1374,58 @@ namespace BulletSharp
 		return result;
 	}
 
-	bool Matrix::operator == ( Matrix left, Matrix right )
+	bool Matrix::operator == (Matrix left, Matrix right)
 	{
-		return Matrix::Equals( left, right );
+		return Matrix::Equals(left, right);
 	}
 
-	bool Matrix::operator != ( Matrix left, Matrix right )
+	bool Matrix::operator != (Matrix left, Matrix right)
 	{
-		return !Matrix::Equals( left, right );
+		return !Matrix::Equals(left, right);
 	}
 
 	String^ Matrix::ToString()
 	{
-		return String::Format( CultureInfo::CurrentCulture, "[[M11:{0} M12:{1} M13:{2} M14:{3}] [M21:{4} M22:{5} M23:{6} M24:{7}] [M31:{8} M32:{9} M33:{10} M34:{11}] [M41:{12} M42:{13} M43:{14} M44:{15}]]",
+		return String::Format(CultureInfo::CurrentCulture, "[[M11:{0} M12:{1} M13:{2} M14:{3}] [M21:{4} M22:{5} M23:{6} M24:{7}] [M31:{8} M32:{9} M33:{10} M34:{11}] [M41:{12} M42:{13} M43:{14} M44:{15}]]",
 			M11.ToString(CultureInfo::CurrentCulture), M12.ToString(CultureInfo::CurrentCulture), M13.ToString(CultureInfo::CurrentCulture), M14.ToString(CultureInfo::CurrentCulture),
 			M21.ToString(CultureInfo::CurrentCulture), M22.ToString(CultureInfo::CurrentCulture), M23.ToString(CultureInfo::CurrentCulture), M24.ToString(CultureInfo::CurrentCulture),
 			M31.ToString(CultureInfo::CurrentCulture), M32.ToString(CultureInfo::CurrentCulture), M33.ToString(CultureInfo::CurrentCulture), M34.ToString(CultureInfo::CurrentCulture),
-			M41.ToString(CultureInfo::CurrentCulture), M42.ToString(CultureInfo::CurrentCulture), M43.ToString(CultureInfo::CurrentCulture), M44.ToString(CultureInfo::CurrentCulture) );
+			M41.ToString(CultureInfo::CurrentCulture), M42.ToString(CultureInfo::CurrentCulture), M43.ToString(CultureInfo::CurrentCulture), M44.ToString(CultureInfo::CurrentCulture));
 	}
 
 	int Matrix::GetHashCode()
 	{
 		return M11.GetHashCode() + M12.GetHashCode() + M13.GetHashCode() + M14.GetHashCode() +
-			   M21.GetHashCode() + M22.GetHashCode() + M23.GetHashCode() + M24.GetHashCode() +
-			   M31.GetHashCode() + M32.GetHashCode() + M33.GetHashCode() + M34.GetHashCode() +
-			   M41.GetHashCode() + M42.GetHashCode() + M43.GetHashCode() + M44.GetHashCode();
+			M21.GetHashCode() + M22.GetHashCode() + M23.GetHashCode() + M24.GetHashCode() +
+			M31.GetHashCode() + M32.GetHashCode() + M33.GetHashCode() + M34.GetHashCode() +
+			M41.GetHashCode() + M42.GetHashCode() + M43.GetHashCode() + M44.GetHashCode();
 	}
 
-	bool Matrix::Equals( Object^ value )
+	bool Matrix::Equals(Object^ value)
 	{
-		if( value == nullptr )
+		if (value == nullptr)
 			return false;
 
-		if( value->GetType() != GetType() )
+		if (value->GetType() != GetType())
 			return false;
 
-		return Equals( safe_cast<Matrix>( value ) );
+		return Equals(safe_cast<Matrix>(value));
 	}
 
-	bool Matrix::Equals( Matrix value )
+	bool Matrix::Equals(Matrix value)
 	{
-		return ( M11 == value.M11 && M12 == value.M12 && M13 == value.M13 && M14 == value.M14 &&
-				 M21 == value.M21 && M22 == value.M22 && M23 == value.M23 && M24 == value.M24 &&
-				 M31 == value.M31 && M32 == value.M32 && M33 == value.M33 && M34 == value.M34 &&
-				 M41 == value.M41 && M42 == value.M42 && M43 == value.M43 && M44 == value.M44 );
+		return (M11 == value.M11 && M12 == value.M12 && M13 == value.M13 && M14 == value.M14 &&
+			M21 == value.M21 && M22 == value.M22 && M23 == value.M23 && M24 == value.M24 &&
+			M31 == value.M31 && M32 == value.M32 && M33 == value.M33 && M34 == value.M34 &&
+			M41 == value.M41 && M42 == value.M42 && M43 == value.M43 && M44 == value.M44);
 	}
 
-	bool Matrix::Equals( Matrix% value1, Matrix% value2 )
+	bool Matrix::Equals(Matrix% value1, Matrix% value2)
 	{
-		return ( value1.M11 == value2.M11 && value1.M12 == value2.M12 && value1.M13 == value2.M13 && value1.M14 == value2.M14 &&
-				 value1.M21 == value2.M21 && value1.M22 == value2.M22 && value1.M23 == value2.M23 && value1.M24 == value2.M24 &&
-				 value1.M31 == value2.M31 && value1.M32 == value2.M32 && value1.M33 == value2.M33 && value1.M34 == value2.M34 &&
-				 value1.M41 == value2.M41 && value1.M42 == value2.M42 && value1.M43 == value2.M43 && value1.M44 == value2.M44 );
+		return (value1.M11 == value2.M11 && value1.M12 == value2.M12 && value1.M13 == value2.M13 && value1.M14 == value2.M14 &&
+			value1.M21 == value2.M21 && value1.M22 == value2.M22 && value1.M23 == value2.M23 && value1.M24 == value2.M24 &&
+			value1.M31 == value2.M31 && value1.M32 == value2.M32 && value1.M33 == value2.M33 && value1.M34 == value2.M34 &&
+			value1.M41 == value2.M41 && value1.M42 == value2.M42 && value1.M43 == value2.M43 && value1.M44 == value2.M44);
 	}
 }
 

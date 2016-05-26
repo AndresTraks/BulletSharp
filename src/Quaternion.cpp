@@ -43,35 +43,36 @@ namespace BulletSharp
 	Quaternion::Quaternion(Vector3 axis, btScalar angle)
 	{
 		btScalar angle2 = angle * 0.5f;
-        btScalar s = btSin(angle2) / axis.Length;
-        X = axis.X * s;
-        Y = axis.Y * s;
-        Z = axis.Z * s;
-        W = (float)btCos(angle2);
+		btScalar s = btSin(angle2) / axis.Length;
+		X = axis.X * s;
+		Y = axis.Y * s;
+		Z = axis.Z * s;
+		W = btCos(angle2);
 	}
 
 	Quaternion Quaternion::Identity::get()
 	{
 		Quaternion result;
-		result.X = 0.0f;
-		result.Y = 0.0f;
-		result.Z = 0.0f;
-		result.W = 1.0f;
+		result.X = btScalar(0);
+		result.Y = btScalar(0);
+		result.Z = btScalar(0);
+		result.W = btScalar(1);
 		return result;
 	}
 
 	btScalar Quaternion::Angle::get()
 	{
-		return 2 * System::Math::Acos(W);
+		return 2 * btAcos(W);
 	}
 
 	btScalar Quaternion::AngleShortestPath::get()
 	{
 		btScalar dot = (X * X) + (Y * Y) + (Z * Z) + (W * W);
 		if (dot < 0) {
-			return 2 * System::Math::Acos(W);
-		} else {
-			return 2 * System::Math::Acos(-W);
+			return 2 * btAcos(W);
+		}
+		else {
+			return 2 * btAcos(-W);
 		}
 	}
 
@@ -79,15 +80,15 @@ namespace BulletSharp
 	{
 		btScalar sSquared = 1.0f - W * W;
 
-        if (sSquared < btScalar(10.0) * SIMD_EPSILON) //Check for divide by zero
+		if (sSquared < btScalar(10.0) * SIMD_EPSILON) //Check for divide by zero
 			return Vector3(1.0, 0.0, 0.0);  // Arbitrary
-        btScalar s = 1.0f / btSqrt(sSquared);
-        return Vector3(X * s, Y * s, Z * s);
+		btScalar s = 1.0f / btSqrt(sSquared);
+		return Vector3(X * s, Y * s, Z * s);
 	}
 
 	bool Quaternion::IsIdentity::get()
 	{
-		if( X != 0.0f || Y != 0.0f || Z != 0.0f )
+		if (X != 0.0f || Y != 0.0f || Z != 0.0f)
 			return false;
 
 		return (W == 1.0f);
@@ -95,9 +96,9 @@ namespace BulletSharp
 
 	btScalar Quaternion::Length::get()
 	{
-		return static_cast<btScalar>( System::Math::Sqrt( (X * X) + (Y * Y) + (Z * Z) + (W * W) ) );
+		return btSqrt((X * X) + (Y * Y) + (Z * Z) + (W * W));
 	}
-	
+
 	btScalar Quaternion::LengthSquared::get()
 	{
 		return (X * X) + (Y * Y) + (Z * Z) + (W * W);
@@ -121,7 +122,7 @@ namespace BulletSharp
 
 	void Quaternion::Invert()
 	{
-		btScalar lengthSq = 1.0f / ( (X * X) + (Y * Y) + (Z * Z) + (W * W) );
+		btScalar lengthSq = 1.0f / ((X * X) + (Y * Y) + (Z * Z) + (W * W));
 		X = -X * lengthSq;
 		Y = -Y * lengthSq;
 		Z = -Z * lengthSq;
@@ -151,7 +152,7 @@ namespace BulletSharp
 		return Vector3(q.X, q.Y, q.Z);
 	}
 
-	Quaternion Quaternion::Add( Quaternion left, Quaternion right )
+	Quaternion Quaternion::Add(Quaternion left, Quaternion right)
 	{
 		Quaternion result;
 		result.X = left.X + right.X;
@@ -161,7 +162,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Quaternion::Add( Quaternion% left, Quaternion% right, [Out] Quaternion% result )
+	void Quaternion::Add(Quaternion% left, Quaternion% right, [Out] Quaternion% result)
 	{
 		Quaternion r;
 		r.X = left.X + right.X;
@@ -172,7 +173,7 @@ namespace BulletSharp
 		result = r;
 	}
 
-	Quaternion Quaternion::Conjugate( Quaternion quat )
+	Quaternion Quaternion::Conjugate(Quaternion quat)
 	{
 		Quaternion result;
 		result.X = -quat.X;
@@ -182,7 +183,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Quaternion::Conjugate( Quaternion% quat, [Out] Quaternion% result )
+	void Quaternion::Conjugate(Quaternion% quat, [Out] Quaternion% result)
 	{
 		result.X = -quat.X;
 		result.Y = -quat.Y;
@@ -190,7 +191,7 @@ namespace BulletSharp
 		result.W = quat.W;
 	}
 
-	Quaternion Quaternion::Divide( Quaternion left, Quaternion right )
+	Quaternion Quaternion::Divide(Quaternion left, Quaternion right)
 	{
 		Quaternion result;
 		result.X = left.X / right.X;
@@ -200,23 +201,23 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Quaternion::Divide( Quaternion% left, Quaternion% right, [Out] Quaternion% result )
+	void Quaternion::Divide(Quaternion% left, Quaternion% right, [Out] Quaternion% result)
 	{
 		result.X = left.X / right.X;
 		result.Y = left.Y / right.Y;
 		result.Z = left.Z / right.Z;
 		result.W = left.W / right.W;
 	}
-	
-	btScalar Quaternion::Dot( Quaternion left, Quaternion right )
+
+	btScalar Quaternion::Dot(Quaternion left, Quaternion right)
 	{
-		return (left.X * right.X) + (left.Y * right.Y) + (left.Z * right.Z) + (left.W * right.W); 
+		return (left.X * right.X) + (left.Y * right.Y) + (left.Z * right.Z) + (left.W * right.W);
 	}
 
-	Quaternion Quaternion::Invert( Quaternion quaternion )
+	Quaternion Quaternion::Invert(Quaternion quaternion)
 	{
 		Quaternion result;
-		btScalar lengthSq = 1.0f / ( (quaternion.X * quaternion.X) + (quaternion.Y * quaternion.Y) + (quaternion.Z * quaternion.Z) + (quaternion.W * quaternion.W) );
+		btScalar lengthSq = 1.0f / ((quaternion.X * quaternion.X) + (quaternion.Y * quaternion.Y) + (quaternion.Z * quaternion.Z) + (quaternion.W * quaternion.W));
 
 		result.X = -quaternion.X * lengthSq;
 		result.Y = -quaternion.Y * lengthSq;
@@ -226,9 +227,9 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Quaternion::Invert( Quaternion% quaternion, [Out] Quaternion% result )
+	void Quaternion::Invert(Quaternion% quaternion, [Out] Quaternion% result)
 	{
-		btScalar lengthSq = 1.0f / ( (quaternion.X * quaternion.X) + (quaternion.Y * quaternion.Y) + (quaternion.Z * quaternion.Z) + (quaternion.W * quaternion.W) );
+		btScalar lengthSq = 1.0f / ((quaternion.X * quaternion.X) + (quaternion.Y * quaternion.Y) + (quaternion.Z * quaternion.Z) + (quaternion.W * quaternion.W));
 
 		result.X = -quaternion.X * lengthSq;
 		result.Y = -quaternion.Y * lengthSq;
@@ -236,13 +237,13 @@ namespace BulletSharp
 		result.W = quaternion.W * lengthSq;
 	}
 
-	Quaternion Quaternion::Lerp( Quaternion left, Quaternion right, btScalar amount )
+	Quaternion Quaternion::Lerp(Quaternion left, Quaternion right, btScalar amount)
 	{
 		Quaternion result;
 		btScalar inverse = 1.0f - amount;
 		btScalar dot = (left.X * right.X) + (left.Y * right.Y) + (left.Z * right.Z) + (left.W * right.W);
 
-		if( dot >= 0.0f )
+		if (dot >= 0.0f)
 		{
 			result.X = (inverse * left.X) + (amount * right.X);
 			result.Y = (inverse * left.Y) + (amount * right.Y);
@@ -267,12 +268,12 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Quaternion::Lerp( Quaternion% left, Quaternion% right, btScalar amount, [Out] Quaternion% result )
+	void Quaternion::Lerp(Quaternion% left, Quaternion% right, btScalar amount, [Out] Quaternion% result)
 	{
 		btScalar inverse = 1.0f - amount;
-		btScalar dot = (left.X * right.X) + (left.Y * right.Y) + (left.Z * right.Z) + (left.W * right.W); 
+		btScalar dot = (left.X * right.X) + (left.Y * right.Y) + (left.Z * right.Z) + (left.W * right.W);
 
-		if( dot >= 0.0f )
+		if (dot >= 0.0f)
 		{
 			result.X = (inverse * left.X) + (amount * right.X);
 			result.Y = (inverse * left.Y) + (amount * right.Y);
@@ -295,7 +296,7 @@ namespace BulletSharp
 		result.W *= invLength;
 	}
 
-	Quaternion Quaternion::Multiply( Quaternion left, Quaternion right )
+	Quaternion Quaternion::Multiply(Quaternion left, Quaternion right)
 	{
 		Quaternion quaternion;
 		btScalar lx = left.X;
@@ -315,7 +316,7 @@ namespace BulletSharp
 		return quaternion;
 	}
 
-	void Quaternion::Multiply( Quaternion% left, Quaternion% right, [Out] Quaternion% result )
+	void Quaternion::Multiply(Quaternion% left, Quaternion% right, [Out] Quaternion% result)
 	{
 		btScalar lx = left.X;
 		btScalar ly = left.Y;
@@ -332,7 +333,7 @@ namespace BulletSharp
 		result.W = (lw * rw) - (lx * rx + ly * ry + lz * rz);
 	}
 
-	Quaternion Quaternion::Multiply( Quaternion quaternion, btScalar scale )
+	Quaternion Quaternion::Multiply(Quaternion quaternion, btScalar scale)
 	{
 		Quaternion result;
 		result.X = quaternion.X * scale;
@@ -342,7 +343,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Quaternion::Multiply( Quaternion% quaternion, btScalar scale, [Out] Quaternion% result )
+	void Quaternion::Multiply(Quaternion% quaternion, btScalar scale, [Out] Quaternion% result)
 	{
 		result.X = quaternion.X * scale;
 		result.Y = quaternion.Y * scale;
@@ -350,7 +351,7 @@ namespace BulletSharp
 		result.W = quaternion.W * scale;
 	}
 
-	Quaternion Quaternion::Negate( Quaternion quat )
+	Quaternion Quaternion::Negate(Quaternion quat)
 	{
 		Quaternion result;
 		result.X = -quat.X;
@@ -360,7 +361,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Quaternion::Negate( Quaternion% quat, [Out] Quaternion% result )
+	void Quaternion::Negate(Quaternion% quat, [Out] Quaternion% result)
 	{
 		result.X = -quat.X;
 		result.Y = -quat.Y;
@@ -368,13 +369,13 @@ namespace BulletSharp
 		result.W = -quat.W;
 	}
 
-	Quaternion Quaternion::Normalize( Quaternion quat )
+	Quaternion Quaternion::Normalize(Quaternion quat)
 	{
 		quat.Normalize();
 		return quat;
 	}
 
-	void Quaternion::Normalize( Quaternion% quat, [Out] Quaternion% result )
+	void Quaternion::Normalize(Quaternion% quat, [Out] Quaternion% result)
 	{
 		btScalar length = 1.0f / quat.Length;
 		result.X = quat.X * length;
@@ -383,15 +384,15 @@ namespace BulletSharp
 		result.W = quat.W * length;
 	}
 
-	Quaternion Quaternion::RotationAxis( Vector3 axis, btScalar angle )
+	Quaternion Quaternion::RotationAxis(Vector3 axis, btScalar angle)
 	{
 		Quaternion result;
 
-		Vector3::Normalize( axis, axis );
+		Vector3::Normalize(axis, axis);
 
 		btScalar half = angle * 0.5f;
-		btScalar sin = static_cast<btScalar>( System::Math::Sin( static_cast<double>( half ) ) );
-		btScalar cos = static_cast<btScalar>( System::Math::Cos( static_cast<double>( half ) ) );
+		btScalar sin = btSin(half);
+		btScalar cos = btCos(half);
 
 		result.X = axis.X * sin;
 		result.Y = axis.Y * sin;
@@ -401,28 +402,28 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Quaternion::RotationAxis( Vector3% axis, btScalar angle, [Out] Quaternion% result )
+	void Quaternion::RotationAxis(Vector3% axis, btScalar angle, [Out] Quaternion% result)
 	{
-		Vector3::Normalize( axis, axis );
+		Vector3::Normalize(axis, axis);
 
 		btScalar half = angle * 0.5f;
-		btScalar sin = static_cast<btScalar>( System::Math::Sin( static_cast<double>( half ) ) );
-		btScalar cos = static_cast<btScalar>( System::Math::Cos( static_cast<double>( half ) ) );
+		btScalar sin = btSin(half);
+		btScalar cos = btCos(half);
 
 		result.X = axis.X * sin;
 		result.Y = axis.Y * sin;
 		result.Z = axis.Z * sin;
 		result.W = cos;
 	}
-	
-	Quaternion Quaternion::RotationMatrix( Matrix matrix )
+
+	Quaternion Quaternion::RotationMatrix(Matrix matrix)
 	{
 		Quaternion result;
 		btScalar scale = matrix.M11 + matrix.M22 + matrix.M33;
 
-		if( scale > 0.0f )
+		if (scale > 0.0f)
 		{
-			btScalar sqrt = static_cast<btScalar>( System::Math::Sqrt( static_cast<double>(scale + 1.0f) ) );
+			btScalar sqrt = btSqrt(scale + btScalar(1));
 
 			result.W = sqrt * 0.5f;
 			sqrt = 0.5f / sqrt;
@@ -434,9 +435,9 @@ namespace BulletSharp
 			return result;
 		}
 
-		if( (matrix.M11 >= matrix.M22) && (matrix.M11 >= matrix.M33) )
+		if ((matrix.M11 >= matrix.M22) && (matrix.M11 >= matrix.M33))
 		{
-			btScalar sqrt = static_cast<btScalar>( System::Math::Sqrt( static_cast<double>(1.0f + matrix.M11 - matrix.M22 - matrix.M33) ) );
+			btScalar sqrt = btSqrt(btScalar(1) + matrix.M11 - matrix.M22 - matrix.M33);
 			btScalar half = 0.5f / sqrt;
 
 			result.X = 0.5f * sqrt;
@@ -447,9 +448,9 @@ namespace BulletSharp
 			return result;
 		}
 
-		if( matrix.M22 > matrix.M33 )
+		if (matrix.M22 > matrix.M33)
 		{
-			btScalar sqrt = static_cast<btScalar>( System::Math::Sqrt( static_cast<double>(1.0f + matrix.M22 - matrix.M11 - matrix.M33) ) );
+			btScalar sqrt = btSqrt(btScalar(1) + matrix.M22 - matrix.M11 - matrix.M33);
 			btScalar half = 0.5f / sqrt;
 
 			result.X = (matrix.M21 + matrix.M12) * half;
@@ -460,7 +461,7 @@ namespace BulletSharp
 			return result;
 		}
 
-		btScalar sqrt = static_cast<btScalar>( System::Math::Sqrt( static_cast<double>(1.0f + matrix.M33 - matrix.M11 - matrix.M22) ) );
+		btScalar sqrt = btSqrt(btScalar(1) + matrix.M33 - matrix.M11 - matrix.M22);
 		btScalar half = 0.5f / sqrt;
 
 		result.X = (matrix.M31 + matrix.M13) * half;
@@ -471,13 +472,13 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Quaternion::RotationMatrix( Matrix% matrix, [Out] Quaternion% result )
+	void Quaternion::RotationMatrix(Matrix% matrix, [Out] Quaternion% result)
 	{
 		btScalar scale = matrix.M11 + matrix.M22 + matrix.M33;
 
-		if( scale > 0.0f )
+		if (scale > 0.0f)
 		{
-			btScalar sqrt = static_cast<btScalar>( System::Math::Sqrt( static_cast<double>(scale + 1.0f) ) );
+			btScalar sqrt = btSqrt(scale + btScalar(1));
 
 			result.W = sqrt * 0.5f;
 			sqrt = 0.5f / sqrt;
@@ -488,9 +489,9 @@ namespace BulletSharp
 			return;
 		}
 
-		if( (matrix.M11 >= matrix.M22) && (matrix.M11 >= matrix.M33) )
+		if ((matrix.M11 >= matrix.M22) && (matrix.M11 >= matrix.M33))
 		{
-			btScalar sqrt = static_cast<btScalar>( System::Math::Sqrt( static_cast<double>(1.0f + matrix.M11 - matrix.M22 - matrix.M33) ) );
+			btScalar sqrt = btSqrt(btScalar(1) + matrix.M11 - matrix.M22 - matrix.M33);
 			btScalar half = 0.5f / sqrt;
 
 			result.X = 0.5f * sqrt;
@@ -500,9 +501,9 @@ namespace BulletSharp
 			return;
 		}
 
-		if( matrix.M22 > matrix.M33 )
+		if (matrix.M22 > matrix.M33)
 		{
-			btScalar sqrt = static_cast<btScalar>( System::Math::Sqrt( static_cast<double>(1.0f + matrix.M22 - matrix.M11 - matrix.M33) ) );
+			btScalar sqrt = btSqrt(btScalar(1) + matrix.M22 - matrix.M11 - matrix.M33);
 			btScalar half = 0.5f / sqrt;
 
 			result.X = (matrix.M21 + matrix.M12) * half;
@@ -512,7 +513,7 @@ namespace BulletSharp
 			return;
 		}
 
-		btScalar sqrt = static_cast<btScalar>( System::Math::Sqrt( static_cast<double>(1.0f + matrix.M33 - matrix.M11 - matrix.M22) ) );
+		btScalar sqrt = btSqrt(btScalar(1) + matrix.M33 - matrix.M11 - matrix.M22);
 		btScalar half = 0.5f / sqrt;
 
 		result.X = (matrix.M31 + matrix.M13) * half;
@@ -521,19 +522,19 @@ namespace BulletSharp
 		result.W = (matrix.M12 - matrix.M21) * half;
 	}
 
-	Quaternion Quaternion::RotationYawPitchRoll( btScalar yaw, btScalar pitch, btScalar roll )
+	Quaternion Quaternion::RotationYawPitchRoll(btScalar yaw, btScalar pitch, btScalar roll)
 	{
 		Quaternion result;
 
 		btScalar halfRoll = roll * 0.5f;
-		btScalar sinRoll = static_cast<btScalar>( System::Math::Sin( static_cast<double>( halfRoll ) ) );
-		btScalar cosRoll = static_cast<btScalar>( System::Math::Cos( static_cast<double>( halfRoll ) ) );
+		btScalar sinRoll = btSin(halfRoll);
+		btScalar cosRoll = btCos(halfRoll);
 		btScalar halfPitch = pitch * 0.5f;
-		btScalar sinPitch = static_cast<btScalar>( System::Math::Sin( static_cast<double>( halfPitch ) ) );
-		btScalar cosPitch = static_cast<btScalar>( System::Math::Cos( static_cast<double>( halfPitch ) ) );
+		btScalar sinPitch = btSin(halfPitch);
+		btScalar cosPitch = btCos(halfPitch);
 		btScalar halfYaw = yaw * 0.5f;
-		btScalar sinYaw = static_cast<btScalar>( System::Math::Sin( static_cast<double>( halfYaw ) ) );
-		btScalar cosYaw = static_cast<btScalar>( System::Math::Cos( static_cast<double>( halfYaw ) ) );
+		btScalar sinYaw = btSin(halfYaw);
+		btScalar cosYaw = btCos(halfYaw);
 
 		result.X = (cosYaw * sinPitch * cosRoll) + (sinYaw * cosPitch * sinRoll);
 		result.Y = (sinYaw * cosPitch * cosRoll) - (cosYaw * sinPitch * sinRoll);
@@ -543,17 +544,17 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Quaternion::RotationYawPitchRoll( btScalar yaw, btScalar pitch, btScalar roll, [Out] Quaternion% result )
+	void Quaternion::RotationYawPitchRoll(btScalar yaw, btScalar pitch, btScalar roll, [Out] Quaternion% result)
 	{
 		btScalar halfRoll = roll * 0.5f;
-		btScalar sinRoll = static_cast<btScalar>( System::Math::Sin( static_cast<double>( halfRoll ) ) );
-		btScalar cosRoll = static_cast<btScalar>( System::Math::Cos( static_cast<double>( halfRoll ) ) );
+		btScalar sinRoll = btSin(halfRoll);
+		btScalar cosRoll = btCos(halfRoll);
 		btScalar halfPitch = pitch * 0.5f;
-		btScalar sinPitch = static_cast<btScalar>( System::Math::Sin( static_cast<double>( halfPitch ) ) );
-		btScalar cosPitch = static_cast<btScalar>( System::Math::Cos( static_cast<double>( halfPitch ) ) );
+		btScalar sinPitch = btSin(halfPitch);
+		btScalar cosPitch = btCos(halfPitch);
 		btScalar halfYaw = yaw * 0.5f;
-		btScalar sinYaw = static_cast<btScalar>( System::Math::Sin( static_cast<double>( halfYaw ) ) );
-		btScalar cosYaw = static_cast<btScalar>( System::Math::Cos( static_cast<double>( halfYaw ) ) );
+		btScalar sinYaw = btSin(halfYaw);
+		btScalar cosYaw = btCos(halfYaw);
 
 		result.X = (cosYaw * sinPitch * cosRoll) + (sinYaw * cosPitch * sinRoll);
 		result.Y = (sinYaw * cosPitch * cosRoll) - (cosYaw * sinPitch * sinRoll);
@@ -561,7 +562,7 @@ namespace BulletSharp
 		result.W = (cosYaw * cosPitch * cosRoll) + (sinYaw * sinPitch * sinRoll);
 	}
 
-	Quaternion Quaternion::Slerp( Quaternion q1, Quaternion q2, btScalar t )
+	Quaternion Quaternion::Slerp(Quaternion q1, Quaternion q2, btScalar t)
 	{
 		Quaternion result;
 
@@ -570,24 +571,24 @@ namespace BulletSharp
 		btScalar dot = (q1.X * q2.X) + (q1.Y * q2.Y) + (q1.Z * q2.Z) + (q1.W * q2.W);
 		bool flag = false;
 
-		if( dot < 0.0f )
+		if (dot < 0.0f)
 		{
 			flag = true;
 			dot = -dot;
 		}
 
-		if( dot > 0.999999f )
+		if (dot > 0.999999f)
 		{
 			inverse = 1.0f - t;
 			opposite = flag ? -t : t;
 		}
 		else
 		{
-			btScalar acos = static_cast<btScalar>( System::Math::Acos( static_cast<double>( dot ) ) );
-			btScalar invSin = static_cast<btScalar>( ( 1.0f / System::Math::Sin( static_cast<double>( acos ) ) ) );
+			btScalar acos = btAcos(dot);
+			btScalar invSin = 1.0f / btSin(acos);
 
-			inverse = ( static_cast<btScalar>( System::Math::Sin( static_cast<double>( (1.0f - t) * acos ) ) ) ) * invSin;
-			opposite = flag ? ( ( static_cast<btScalar>( -System::Math::Sin( static_cast<double>( t * acos ) ) ) ) * invSin ) : ( ( static_cast<btScalar>( System::Math::Sin( static_cast<double>( t * acos ) ) ) ) * invSin );
+			inverse = (btSin((1.0f - t) * acos)) * invSin;
+			opposite = flag ? ((-btSin(t * acos)) * invSin) : ((btSin(t * acos)) * invSin);
 		}
 
 		result.X = (inverse * q1.X) + (opposite * q2.X);
@@ -598,31 +599,31 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Quaternion::Slerp( Quaternion% q1, Quaternion% q2, btScalar t, [Out] Quaternion% result )
+	void Quaternion::Slerp(Quaternion% q1, Quaternion% q2, btScalar t, [Out] Quaternion% result)
 	{
 		btScalar opposite;
 		btScalar inverse;
 		btScalar dot = (q1.X * q2.X) + (q1.Y * q2.Y) + (q1.Z * q2.Z) + (q1.W * q2.W);
 		bool flag = false;
 
-		if( dot < 0.0f )
+		if (dot < 0.0f)
 		{
 			flag = true;
 			dot = -dot;
 		}
 
-		if( dot > 0.999999f )
+		if (dot > 0.999999f)
 		{
 			inverse = 1.0f - t;
 			opposite = flag ? -t : t;
 		}
 		else
 		{
-			btScalar acos = static_cast<btScalar>( System::Math::Acos( static_cast<double>( dot ) ) );
-			btScalar invSin = static_cast<btScalar>( ( 1.0f / System::Math::Sin( static_cast<double>( acos ) ) ) );
+			btScalar acos = btAcos(dot);
+			btScalar invSin = 1.0f / btSin(acos);
 
-			inverse = ( static_cast<btScalar>( System::Math::Sin( static_cast<double>( (1.0f - t) * acos ) ) ) ) * invSin;
-			opposite = flag ? ( ( static_cast<btScalar>( -System::Math::Sin( static_cast<double>( t * acos ) ) ) ) * invSin ) : ( ( static_cast<btScalar>( System::Math::Sin( static_cast<double>( t * acos ) ) ) ) * invSin );
+			inverse = (btSin((1.0f - t) * acos)) * invSin;
+			opposite = flag ? ((-btSin(t * acos)) * invSin) : ((btSin(t * acos)) * invSin);
 		}
 
 		result.X = (inverse * q1.X) + (opposite * q2.X);
@@ -631,7 +632,7 @@ namespace BulletSharp
 		result.W = (inverse * q1.W) + (opposite * q2.W);
 	}
 
-	Quaternion Quaternion::Subtract( Quaternion left, Quaternion right )
+	Quaternion Quaternion::Subtract(Quaternion left, Quaternion right)
 	{
 		Quaternion result;
 		result.X = left.X - right.X;
@@ -641,7 +642,7 @@ namespace BulletSharp
 		return result;
 	}
 
-	void Quaternion::Subtract( Quaternion% left, Quaternion% right, [Out] Quaternion% result )
+	void Quaternion::Subtract(Quaternion% left, Quaternion% right, [Out] Quaternion% result)
 	{
 		result.X = left.X - right.X;
 		result.Y = left.Y - right.Y;
@@ -680,9 +681,9 @@ namespace BulletSharp
 		btScalar ry = right.Y;
 		btScalar rz = right.Z;
 
-		quaternion.X =  lw * rx + ly * rz - lz * ry;
-		quaternion.Y =  lw * ry + lz * rx - lx * rz;
-		quaternion.Z =  lw * rz + lx * ry - ly * rx;
+		quaternion.X = lw * rx + ly * rz - lz * ry;
+		quaternion.Y = lw * ry + lz * rx - lx * rz;
+		quaternion.Z = lw * rz + lx * ry - ly * rx;
 		quaternion.W = -lx * rx + ly * ry - lz * rz;
 
 		return quaternion;
@@ -748,21 +749,21 @@ namespace BulletSharp
 		return result;
 	}
 
-	bool Quaternion::operator == ( Quaternion left, Quaternion right )
+	bool Quaternion::operator == (Quaternion left, Quaternion right)
 	{
-		return Quaternion::Equals( left, right );
+		return Quaternion::Equals(left, right);
 	}
 
-	bool Quaternion::operator != ( Quaternion left, Quaternion right )
+	bool Quaternion::operator != (Quaternion left, Quaternion right)
 	{
-		return !Quaternion::Equals( left, right );
+		return !Quaternion::Equals(left, right);
 	}
 
 	String^ Quaternion::ToString()
 	{
-		return String::Format( CultureInfo::CurrentCulture, "X:{0} Y:{1} Z:{2} W:{3}", X.ToString(CultureInfo::CurrentCulture), 
+		return String::Format(CultureInfo::CurrentCulture, "X:{0} Y:{1} Z:{2} W:{3}", X.ToString(CultureInfo::CurrentCulture),
 			Y.ToString(CultureInfo::CurrentCulture), Z.ToString(CultureInfo::CurrentCulture),
-			W.ToString(CultureInfo::CurrentCulture) );
+			W.ToString(CultureInfo::CurrentCulture));
 	}
 
 	int Quaternion::GetHashCode()
@@ -770,25 +771,25 @@ namespace BulletSharp
 		return X.GetHashCode() + Y.GetHashCode() + Z.GetHashCode() + W.GetHashCode();
 	}
 
-	bool Quaternion::Equals( Object^ value )
+	bool Quaternion::Equals(Object^ value)
 	{
-		if( value == nullptr )
+		if (value == nullptr)
 			return false;
 
-		if( value->GetType() != GetType() )
+		if (value->GetType() != GetType())
 			return false;
 
-		return Equals( safe_cast<Quaternion>( value ) );
+		return Equals(safe_cast<Quaternion>(value));
 	}
 
-	bool Quaternion::Equals( Quaternion value )
+	bool Quaternion::Equals(Quaternion value)
 	{
-		return ( X == value.X && Y == value.Y && Z == value.Z && W == value.W );
+		return (X == value.X && Y == value.Y && Z == value.Z && W == value.W);
 	}
 
-	bool Quaternion::Equals( Quaternion% value1, Quaternion% value2 )
+	bool Quaternion::Equals(Quaternion% value1, Quaternion% value2)
 	{
-		return ( value1.X == value2.X && value1.Y == value2.Y && value1.Z == value2.Z && value1.W == value2.W );
+		return (value1.X == value2.X && value1.Y == value2.Y && value1.Z == value2.Z && value1.W == value2.W);
 	}
 }
 
