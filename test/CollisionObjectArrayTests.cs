@@ -36,7 +36,7 @@ namespace BulletSharpTest
         {
             // Allocate bodies
             var bodies = new List<RigidBody>();
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 100; i++)
             {
                 bodies.Add(CreateBody(10.0f, boxShape, new Vector3(i * 2, 2, 0)));
             }
@@ -60,7 +60,7 @@ namespace BulletSharpTest
             // Allocate second set of bodies
             // that may have the same address
             var bodies2 = new List<RigidBody>();
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 100; i++)
             {
                 bodies2.Add(CreateBody(10.0f, boxShape, new Vector3(i * 2, 2, 0)));
             }
@@ -70,7 +70,7 @@ namespace BulletSharpTest
                 foreach (var body2 in bodies2)
                 {
                     // Bodies with the same address should not be the same
-                    Assert.AreNotSame(body, body2);
+                    Assert.AreNotEqual(body, body2);
                 }
             }
 
