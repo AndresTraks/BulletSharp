@@ -113,13 +113,7 @@ namespace BulletSharp
 				btScalar get();
 				void set(btScalar value);
 			}
-			/*
-			property int^ Findex
-			{
-				int^ get();
-				void set(int^ value);
-			}
-			*/
+
 			property btScalar Fps
 			{
 				btScalar get();

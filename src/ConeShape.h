@@ -21,11 +21,13 @@ namespace BulletSharp
 		property btScalar Height
 		{
 			btScalar get();
+			void set(btScalar height);
 		}
 
 		property btScalar Radius
 		{
 			btScalar get();
+			void set(btScalar radius);
 		}
 	};
 

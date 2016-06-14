@@ -148,16 +148,7 @@ void TypedConstraint::ConstraintInfo2::Erp::set(btScalar value)
 {
 	_native->erp = value;
 }
-/*
-int^ TypedConstraint::ConstraintInfo2::Findex::get()
-{
-	return _native->findex;
-}
-void TypedConstraint::ConstraintInfo2::Findex::set(int^ value)
-{
-	_native->findex = value->_native;
-}
-*/
+
 btScalar TypedConstraint::ConstraintInfo2::Fps::get()
 {
 	return _native->fps;

@@ -27,10 +27,18 @@ btScalar ConeShape::Height::get()
 {
 	return Native->getHeight();
 }
+void ConeShape::Height::set(btScalar height)
+{
+	Native->setHeight(height);
+}
 
 btScalar ConeShape::Radius::get()
 {
 	return Native->getRadius();
+}
+void ConeShape::Radius::set(btScalar radius)
+{
+	Native->setRadius(radius);
 }
 
 
