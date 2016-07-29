@@ -98,7 +98,9 @@ namespace DemoFramework.OpenTK
 
         int CreateShaderFromString(ShaderType type, string shaderSource)
         {
-            if (!GL.GetBoolean(GetPName.ShaderCompiler))
+            bool shaderCompiler;
+            GL.GetBoolean(GetPName.ShaderCompiler, out shaderCompiler);
+            if (!shaderCompiler)
             {
                 Console.WriteLine("OpenGL shader compiler not available");
                 return 0;
