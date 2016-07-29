@@ -100,7 +100,7 @@ namespace BasicDemo
 
         private void DrawCube(Color color, float size)
         {
-            GL.Begin(PrimitiveType.Quads);
+            GL.Begin(BeginMode.Quads);
 
             GL.Color3(color);
             GL.Vertex3(-size, -size, -size);
@@ -174,7 +174,7 @@ namespace BasicDemo
         void DrawCube2(Color color)
         {
             GL.Color3(color);
-            GL.DrawElements(PrimitiveType.Quads, 24, DrawElementsType.UnsignedByte, indices);
+            GL.DrawElements(BeginMode.Quads, 24, DrawElementsType.UnsignedByte, indices);
         }
     }
 }

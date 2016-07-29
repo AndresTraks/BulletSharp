@@ -865,6 +865,16 @@
   <ItemGroup Condition="'$(Configuration)'=='Release Numerics'">
     <Reference Include="System.Numerics" />
   </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='Debug OpenTK'">
+    <Reference Include="OpenTK">
+      <HintPath>packages\OpenTK.1.1.2349.61993\OpenTK.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='Release OpenTK'">
+    <Reference Include="OpenTK">
+      <HintPath>packages\OpenTK.1.1.2349.61993\OpenTK.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Debug SharpDX'">
     <Reference Include="SharpDX">
       <HintPath>packages\SharpDX.3.0.2\lib\net45\SharpDX.dll</HintPath>
@@ -879,14 +889,6 @@
     </Reference>
     <Reference Include="SharpDX.Mathematics">
       <HintPath>packages\SharpDX.Mathematics.3.0.2\lib\net45\SharpDX.Mathematics.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)'=='Debug OpenTK'">
-    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4">
-    </Reference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)'=='Release OpenTK'">
-    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4">
     </Reference>
   </ItemGroup>
   <ItemGroup>
