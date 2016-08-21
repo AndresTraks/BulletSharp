@@ -61,7 +61,7 @@ Aabb::Aabb(Aabb^ other, btScalar margin)
 	_native = new btAABB(*other->_native, margin);
 }
 
-void Aabb::AppyTransform(Matrix trans)
+void Aabb::ApplyTransform(Matrix trans)
 {
 	TRANSFORM_CONV(trans);
 	_native->appy_transform(TRANSFORM_USE(trans));

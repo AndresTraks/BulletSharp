@@ -139,6 +139,12 @@ namespace BulletSharp
 			Vector3 get();
 			void set(Vector3 value);
 		}
+
+		property btScalar JointDamping
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
 		/*
 		property MultiBodyJointFeedback^ JointFeedback
 		{
@@ -146,6 +152,11 @@ namespace BulletSharp
 			void set(MultiBodyJointFeedback^ value);
 		}
 		*/
+		property btScalar JointFriction
+		{
+			btScalar get();
+			void set(btScalar value);
+		}
 		property String^ JointName
 		{
 			String^ get();

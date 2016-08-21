@@ -16,8 +16,8 @@ BvhTriangleMeshShape::BvhTriangleMeshShape(btBvhTriangleMeshShape* native)
 {
 }
 
-BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
-	bool buildBvh)
+BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface,
+	bool useQuantizedAabbCompression, bool buildBvh)
 	: TriangleMeshShape(0)
 {
 	UnmanagedPointer = new btBvhTriangleMeshShape(meshInterface->_native, useQuantizedAabbCompression, buildBvh);
@@ -25,7 +25,8 @@ BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface,
 	_meshInterface = meshInterface;
 }
 
-BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression)
+BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface,
+	bool useQuantizedAabbCompression)
 	: TriangleMeshShape(0)
 {
 	UnmanagedPointer = new btBvhTriangleMeshShape(meshInterface->_native, useQuantizedAabbCompression);
@@ -33,8 +34,8 @@ BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface,
 	_meshInterface = meshInterface;
 }
 
-BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
-	Vector3% bvhAabbMin, Vector3% bvhAabbMax, bool buildBvh)
+BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface,
+	bool useQuantizedAabbCompression, Vector3 bvhAabbMin, Vector3 bvhAabbMax, bool buildBvh)
 	: TriangleMeshShape(0)
 {
 	VECTOR3_CONV(bvhAabbMin);
@@ -47,36 +48,8 @@ BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface,
 	_meshInterface = meshInterface;
 }
 
-BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
-	Vector3 bvhAabbMin, Vector3 bvhAabbMax, bool buildBvh)
-	: TriangleMeshShape(0)
-{
-	VECTOR3_CONV(bvhAabbMin);
-	VECTOR3_CONV(bvhAabbMax);
-	UnmanagedPointer = new btBvhTriangleMeshShape(meshInterface->_native, useQuantizedAabbCompression,
-		VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax), buildBvh);
-	VECTOR3_DEL(bvhAabbMin);
-	VECTOR3_DEL(bvhAabbMax);
-
-	_meshInterface = meshInterface;
-}
-
-BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
-	Vector3% bvhAabbMin, Vector3% bvhAabbMax)
-	: TriangleMeshShape(0)
-{
-	VECTOR3_CONV(bvhAabbMin);
-	VECTOR3_CONV(bvhAabbMax);
-	UnmanagedPointer = new btBvhTriangleMeshShape(meshInterface->_native, useQuantizedAabbCompression,
-		VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax));
-	VECTOR3_DEL(bvhAabbMin);
-	VECTOR3_DEL(bvhAabbMax);
-
-	_meshInterface = meshInterface;
-}
-
-BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
-	Vector3 bvhAabbMin, Vector3 bvhAabbMax)
+BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface,
+	bool useQuantizedAabbCompression, Vector3 bvhAabbMin, Vector3 bvhAabbMax)
 	: TriangleMeshShape(0)
 {
 	VECTOR3_CONV(bvhAabbMin);

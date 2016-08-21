@@ -214,6 +214,15 @@ void MultiBodyLink::InertiaLocal::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_native->m_inertiaLocal);
 }
+
+btScalar MultiBodyLink::JointDamping::get()
+{
+	return _native->m_jointDamping;
+}
+void MultiBodyLink::JointDamping::set(btScalar value)
+{
+	_native->m_jointDamping = value;
+}
 /*
 MultiBodyJointFeedback^ MultiBodyLink::JointFeedback::get()
 {
@@ -224,6 +233,15 @@ void MultiBodyLink::JointFeedback::set(MultiBodyJointFeedback^ value)
 	_native->m_jointFeedback = value->_native;
 }
 */
+btScalar MultiBodyLink::JointFriction::get()
+{
+	return _native->m_jointFriction;
+}
+void MultiBodyLink::JointFriction::set(btScalar value)
+{
+	_native->m_jointFriction = value;
+}
+
 String^ MultiBodyLink::JointName::get()
 {
 	return StringConv::UnmanagedToManaged(_native->m_jointName);

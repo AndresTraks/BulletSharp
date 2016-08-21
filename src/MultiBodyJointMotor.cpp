@@ -37,6 +37,21 @@ void MultiBodyJointMotor::DebugDraw(IDebugDraw^ drawer)
 }
 #endif
 
+void MultiBodyJointMotor::SetPositionTarget(btScalar posTarget, btScalar kp)
+{
+	Native->setPositionTarget(posTarget, kp);
+}
+
+void MultiBodyJointMotor::SetPositionTarget(btScalar posTarget)
+{
+	Native->setPositionTarget(posTarget);
+}
+
+void MultiBodyJointMotor::SetVelocityTarget(btScalar velTarget, btScalar kd)
+{
+	Native->setVelocityTarget(velTarget, kd);
+}
+
 void MultiBodyJointMotor::SetVelocityTarget(btScalar velTarget)
 {
 	Native->setVelocityTarget(velTarget);

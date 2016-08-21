@@ -20,6 +20,10 @@ namespace BulletSharp
 #ifndef DISABLE_DEBUGDRAW
 		virtual void DebugDraw(IDebugDraw^ drawer) override;
 #endif
+
+		void SetPositionTarget(btScalar posTarget, btScalar kp);
+		void SetPositionTarget(btScalar posTarget);
+		void SetVelocityTarget(btScalar velTarget, btScalar kd);
 		void SetVelocityTarget(btScalar velTarget);
 	};
 };

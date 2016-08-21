@@ -296,7 +296,7 @@ bool MultiBody::InternalNeedsJointFeedback()
 #pragma managed(push, off)
 void MultiBody_LocalDirToWorld(btMultiBody* body, int i, btVector3* vec, btVector3* result)
 {
-	result = &body->localDirToWorld(i, *vec);
+	*result = body->localDirToWorld(i, *vec);
 }
 #pragma managed(pop)
 Vector3 MultiBody::LocalDirToWorld(int i, Vector3 vec)
@@ -311,9 +311,26 @@ Vector3 MultiBody::LocalDirToWorld(int i, Vector3 vec)
 }
 
 #pragma managed(push, off)
+void MultiBody_LocalFrameToWorld(btMultiBody* body, int i, btMatrix3x3* mat, btMatrix3x3* result)
+{
+	*result = body->localFrameToWorld(i, *mat);
+}
+#pragma managed(pop)
+Matrix MultiBody::LocalFrameToWorld(int i, Matrix mat)
+{
+	MATRIX3X3_CONV(mat);
+	btMatrix3x3* resultTemp = ALIGNED_NEW(btMatrix3x3);
+	MultiBody_LocalFrameToWorld(_native, i, MATRIX3X3_PTR(mat), resultTemp);
+	Matrix result = Math::BtMatrix3x3ToMatrix(resultTemp);
+	MATRIX3X3_DEL(mat);
+	ALIGNED_FREE(resultTemp);
+	return result;
+}
+
+#pragma managed(push, off)
 void MultiBody_LocalPosToWorld(btMultiBody* body, int i, btVector3* vec, btVector3* result)
 {
-	result = &body->localPosToWorld(i, *vec);
+	*result = body->localPosToWorld(i, *vec);
 }
 #pragma managed(pop)
 Vector3 MultiBody::LocalPosToWorld(int i, Vector3 vec)

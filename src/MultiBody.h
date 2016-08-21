@@ -76,6 +76,7 @@ namespace BulletSharp
 		void GoToSleep();
 		bool InternalNeedsJointFeedback();
 		Vector3 LocalDirToWorld(int i, Vector3 vec);
+		Matrix LocalFrameToWorld(int i, Matrix mat);
 		Vector3 LocalPosToWorld(int i, Vector3 vec);
 		void ProcessDeltaVeeMultiDof2();
 #ifndef DISABLE_SERIALIZE

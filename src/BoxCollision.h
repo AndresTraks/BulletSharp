@@ -23,7 +23,7 @@ namespace BulletSharp
 		Aabb(Aabb^ other);
 		Aabb(Aabb^ other, btScalar margin);
 
-		void AppyTransform(Matrix trans);
+		void ApplyTransform(Matrix trans);
 		//void AppyTransformTransCache(BT_BOX_BOX_TRANSFORM_CACHE^ trans);
 		bool CollidePlane(Vector4 plane);
 		bool CollideRay(Vector3 vorigin, Vector3 vdir);

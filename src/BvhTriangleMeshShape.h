@@ -22,11 +22,7 @@ namespace BulletSharp
 			bool buildBvh);
 		BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression);
 		BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
-			Vector3% bvhAabbMin, Vector3% bvhAabbMax, bool buildBvh);
-		BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
 			Vector3 bvhAabbMin, Vector3 bvhAabbMax, bool buildBvh);
-		BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
-			Vector3% bvhAabbMin, Vector3% bvhAabbMax);
 		BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
 			Vector3 bvhAabbMin, Vector3 bvhAabbMax);
 
