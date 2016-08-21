@@ -1056,7 +1056,7 @@
       <WarningLevel>Level1</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath_Release.lib;BulletCollision_Release.lib;BulletDynamics_Release.lib</AdditionalDependencies>
+      <AdditionalDependencies>LinearMath.lib;BulletCollision.lib;BulletDynamics.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\bullet3\msvc\2015\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -1093,7 +1093,7 @@
       <WarningLevel>Level1</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath_Release.lib;BulletCollision_Release.lib;BulletDynamics_Release.lib</AdditionalDependencies>
+      <AdditionalDependencies>LinearMath.lib;BulletCollision.lib;BulletDynamics.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\bullet3\msvc\2015\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -1128,7 +1128,7 @@
       <WarningLevel>Level1</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath_Release.lib;BulletCollision_Release.lib;BulletDynamics_Release.lib</AdditionalDependencies>
+      <AdditionalDependencies>LinearMath.lib;BulletCollision.lib;BulletDynamics.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\bullet3\msvc\2015\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -1163,7 +1163,7 @@
       <WarningLevel>Level1</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath_Release.lib;BulletCollision_Release.lib;BulletDynamics_Release.lib</AdditionalDependencies>
+      <AdditionalDependencies>LinearMath.lib;BulletCollision.lib;BulletDynamics.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\bullet3\msvc\2015\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -1198,7 +1198,7 @@
       <WarningLevel>Level1</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath_Release.lib;BulletCollision_Release.lib;BulletDynamics_Release.lib</AdditionalDependencies>
+      <AdditionalDependencies>LinearMath.lib;BulletCollision.lib;BulletDynamics.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\bullet3\msvc\2015\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -1233,7 +1233,7 @@
       <WarningLevel>Level1</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>LinearMath_Release.lib;BulletCollision_Release.lib;BulletDynamics_Release.lib</AdditionalDependencies>
+      <AdditionalDependencies>LinearMath.lib;BulletCollision.lib;BulletDynamics.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\bullet3\msvc\2015\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

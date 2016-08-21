@@ -48,6 +48,7 @@ copy Generic\bin\Release\data\file.obj bin\data\
 copy Generic\bin\Release\data\cube.ele bin\data\
 copy Generic\bin\Release\data\cube.node bin\data\
 copy Generic\bin\Release\data\bullet_basic.xml bin\data\
+copy Generic\bin\Release\file_convex.obj bin\
 copy Generic\bin\Release\testFile.bullet bin\
 rem copy Generic\bin\Release\data\heightfield128x128.raw bin\data\
 
@@ -58,17 +59,20 @@ copy Generic\bin\Release\DemoFramework.SharpDX11.dll bin\
 copy Generic\bin\Release\DemoFramework.SlimDX.dll bin\
 copy Generic\bin\Release\DemoFramework.MonoGame.dll bin\
 
+copy Generic\bin\Release\NAudio.dll bin\
 copy Generic\bin\Release\OpenTK.dll bin\
 copy Generic\bin\Release\OpenTK.GLControl.dll bin\
 copy Generic\bin\Release\SharpDX.dll bin\
 copy Generic\bin\Release\SharpDX.D3DCompiler.dll bin\
+copy Generic\bin\Release\SharpDX.Desktop.dll bin\
 copy Generic\bin\Release\SharpDX.Direct2D1.dll bin\
 copy Generic\bin\Release\SharpDX.Direct3D10.dll bin\
 copy Generic\bin\Release\SharpDX.Direct3D11.dll bin\
 copy Generic\bin\Release\SharpDX.Direct3D11.Effects.dll bin\
 copy Generic\bin\Release\SharpDX.DXGI.dll bin\
-copy Generic\bin\Release\sharpdx_direct3d11_effects_x64.dll bin\
-copy Generic\bin\Release\sharpdx_direct3d11_effects_x86.dll bin\
+copy Generic\bin\Release\SharpDX.Mathematics.dll bin\
+copy Generic\bin\Release\sharpdx_direct3d11_1_effects_x64.dll bin\
+copy Generic\bin\Release\sharpdx_direct3d11_1_effects_x86.dll bin\
 
 cmd /C git clone https://github.com/AndresTraks/BulletSharp.git repo
 move repo\demos\Generic src
