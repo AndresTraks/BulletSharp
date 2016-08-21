@@ -215,8 +215,10 @@ using namespace System::Drawing;
 #ifndef DISABLE_HACD
 #if _DEBUG
 #pragma comment(lib, "HACD_Debug.lib")
-#else
+#elif defined(MINSIZEREL)
 #pragma comment(lib, "HACD_MinSizeRel.lib")
+#else
+#pragma comment(lib, "HACD.lib")
 #endif
 #include <hacdHACD.h>
 #endif
@@ -232,10 +234,14 @@ using namespace System::Drawing;
 #pragma comment(lib, "BulletWorldImporter_Debug.lib")
 #pragma comment(lib, "BulletXmlWorldImporter_Debug.lib")
 #pragma comment(lib, "BulletFileLoader_Debug.lib")
-#else
+#elif defined(MINSIZEREL)
 #pragma comment(lib, "BulletWorldImporter_MinSizeRel.lib")
 #pragma comment(lib, "BulletXmlWorldImporter_MinSizeRel.lib")
 #pragma comment(lib, "BulletFileLoader_MinSizeRel.lib")
+#else
+#pragma comment(lib, "BulletWorldImporter.lib")
+#pragma comment(lib, "BulletXmlWorldImporter.lib")
+#pragma comment(lib, "BulletFileLoader.lib")
 #endif
 #ifdef DISABLE_GIMPACT
 #include <BulletCollision/GImpact/btGImpactShape.h>
@@ -247,8 +253,10 @@ using namespace System::Drawing;
 #ifndef DISABLE_SOFTBODY
 #if _DEBUG
 #pragma comment(lib, "BulletSoftBody_Debug.lib")
-#else
+#elif defined(MINSIZEREL)
 #pragma comment(lib, "BulletSoftBody_MinSizeRel.lib")
+#else
+#pragma comment(lib, "BulletSoftBody.lib")
 #endif
 #include <BulletSoftBody/btDefaultSoftBodySolver.h>
 #include <BulletSoftBody/btSoftBody.h>
