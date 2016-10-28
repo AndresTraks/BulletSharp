@@ -49,6 +49,9 @@
     <Compile Include="Controller\Input.cs" />
     <Compile Include="Controller\MouseController.cs" />
     <Compile Include="Demo.cs" />
+    <Compile Include="FileLoaders\BspConverter.cs" />
+    <Compile Include="FileLoaders\BspLoader.cs" />
+    <Compile Include="FileLoaders\Wavefront.cs" />
     <Compile Include="Graphics\BufferedDebugDraw.cs" />
     <Compile Include="Graphics\GraphicsLibraryManager.cs" />
     <Compile Include="Graphics\LibrarySelection.cs">
@@ -59,6 +62,9 @@
     </Compile>
     <Compile Include="Graphics\Graphics.cs" />
     <Compile Include="Graphics\MeshFactory.cs" />
+    <Compile Include="Meshes\Bunny.cs" />
+    <Compile Include="Meshes\Taru.cs" />
+    <Compile Include="Meshes\Torus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

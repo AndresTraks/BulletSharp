@@ -75,7 +75,7 @@ namespace BulletSharp
 			void set(btScalar dampingDirAng);
 		}
 
-		property btScalar DampingDirLin
+		property btScalar DampingDirLinear
 		{
 			btScalar get();
 			void set(btScalar dampingDirLin);
@@ -87,7 +87,7 @@ namespace BulletSharp
 			void set(btScalar dampingLimAng);
 		}
 
-		property btScalar DampingLimLin
+		property btScalar DampingLimLinear
 		{
 			btScalar get();
 			void set(btScalar dampingLimLin);
@@ -99,7 +99,7 @@ namespace BulletSharp
 			void set(btScalar dampingOrthoAng);
 		}
 
-		property btScalar DampingOrthoLin
+		property btScalar DampingOrthoLinear
 		{
 			btScalar get();
 			void set(btScalar dampingOrthoLin);
@@ -120,12 +120,12 @@ namespace BulletSharp
 			Matrix get();
 		}
 
-		property btScalar LinDepth
+		property btScalar LinearDepth
 		{
 			btScalar get();
 		}
 
-		property btScalar LinearPos
+		property btScalar LinearPosition
 		{
 			btScalar get();
 		}
@@ -136,7 +136,7 @@ namespace BulletSharp
 			void set(btScalar lowerLimit);
 		}
 
-		property btScalar LowerLinLimit
+		property btScalar LowerLinearLimit
 		{
 			btScalar get();
 			void set(btScalar lowerLimit);
@@ -148,7 +148,7 @@ namespace BulletSharp
 			void set(btScalar maxAngMotorForce);
 		}
 
-		property btScalar MaxLinMotorForce
+		property btScalar MaxLinearMotorForce
 		{
 			btScalar get();
 			void set(btScalar maxLinMotorForce);
@@ -172,7 +172,7 @@ namespace BulletSharp
 			void set(btScalar restitutionDirAng);
 		}
 
-		property btScalar RestitutionDirLin
+		property btScalar RestitutionDirLinear
 		{
 			btScalar get();
 			void set(btScalar restitutionDirLin);
@@ -184,7 +184,7 @@ namespace BulletSharp
 			void set(btScalar restitutionLimAng);
 		}
 
-		property btScalar RestitutionLimLin
+		property btScalar RestitutionLimLinear
 		{
 			btScalar get();
 			void set(btScalar restitutionLimLin);
@@ -196,7 +196,7 @@ namespace BulletSharp
 			void set(btScalar restitutionOrthoAng);
 		}
 
-		property btScalar RestitutionOrthoLin
+		property btScalar RestitutionOrthoLinear
 		{
 			btScalar get();
 			void set(btScalar restitutionOrthoLin);
@@ -208,7 +208,7 @@ namespace BulletSharp
 			void set(btScalar softnessDirAng);
 		}
 
-		property btScalar SoftnessDirLin
+		property btScalar SoftnessDirLinear
 		{
 			btScalar get();
 			void set(btScalar softnessDirLin);
@@ -220,7 +220,7 @@ namespace BulletSharp
 			void set(btScalar softnessLimAng);
 		}
 
-		property btScalar SoftnessLimLin
+		property btScalar SoftnessLimLinear
 		{
 			btScalar get();
 			void set(btScalar softnessLimLin);
@@ -232,7 +232,7 @@ namespace BulletSharp
 			void set(btScalar softnessOrthoAng);
 		}
 
-		property btScalar SoftnessOrthoLin
+		property btScalar SoftnessOrthoLinear
 		{
 			btScalar get();
 			void set(btScalar softnessOrthoLin);
@@ -243,7 +243,7 @@ namespace BulletSharp
 			bool get();
 		}
 
-		property bool SolveLinLimit
+		property bool SolveLinearLimit
 		{
 			bool get();
 		}
@@ -254,7 +254,7 @@ namespace BulletSharp
 			void set(btScalar targetAngMotorVelocity);
 		}
 
-		property btScalar TargetLinMotorVelocity
+		property btScalar TargetLinearMotorVelocity
 		{
 			btScalar get();
 			void set(btScalar targetLinMotorVelocity);
@@ -266,7 +266,7 @@ namespace BulletSharp
 			void set(btScalar upperLimit);
 		}
 
-		property btScalar UpperLinLimit
+		property btScalar UpperLinearLimit
 		{
 			btScalar get();
 			void set(btScalar upperLimit);

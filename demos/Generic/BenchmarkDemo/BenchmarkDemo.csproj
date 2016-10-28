@@ -38,7 +38,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BenchmarkDemo.cs" />
-    <Compile Include="Taru.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BulletSharp, Version=2.80.0.0, Culture=neutral, processorArchitecture=x86">

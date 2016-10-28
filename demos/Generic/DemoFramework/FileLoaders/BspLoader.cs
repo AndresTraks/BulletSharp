@@ -1,3 +1,4 @@
+using BulletSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -5,9 +6,8 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using BulletSharp;
 
-namespace CharacterDemo
+namespace DemoFramework.FileLoaders
 {
     public struct BspBrush
     {
@@ -162,7 +162,7 @@ namespace CharacterDemo
     {
         public BspBrush[] Brushes { get; set; }
         public BspBrushSide[] BrushSides { get; set; }
-        public List<BspEntity> Entities { get; set; }
+        public Dictionary<string, BspEntity> Entities { get; set; }
         public BspLeaf[] Leaves { get; set; }
         public int[] LeafBrushes { get; set; }
         public BspPlane[] Planes { get; set; }
@@ -256,7 +256,7 @@ namespace CharacterDemo
 
 
             // read entities
-            Entities = new List<BspEntity>();
+            Entities = new Dictionary<string, BspEntity>();
             buffer.Position = lumps[(int)IBspLumpType.Entities].Offset;
             length = lumps[(int)IBspLumpType.Entities].Length;
 
@@ -279,7 +279,7 @@ namespace CharacterDemo
                         break;
 
                     case "}":
-                        Entities.Add(bspEntity);
+                        Entities.Add(bspEntity.ClassName, bspEntity);
                         break;
 
                     default:
@@ -434,22 +434,6 @@ namespace CharacterDemo
             }
 
             return true;
-        }
-
-        public bool FindVectorByName(string name, ref Vector3 outVector)
-        {
-            foreach (BspEntity entity in Entities)
-            {
-                if (entity.ClassName == name &&
-                    (entity.ClassName == "info_player_start" ||
-                    entity.ClassName == "info_player_deathmatch"))
-                {
-                    outVector = entity.Origin;
-                    return true;
-                }
-            }
-
-            return false;
         }
     }
 }

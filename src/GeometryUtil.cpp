@@ -20,10 +20,60 @@ void GeometryUtil::GetPlaneEquationsFromVertices(AlignedVector3Array^ vertices, 
 	btGeometryUtil::getPlaneEquationsFromVertices(*(btAlignedObjectArray<btVector3>*)vertices->_native, *(btAlignedObjectArray<btVector3>*)planeEquationsOut->_native);
 }
 
-void GeometryUtil::GetVerticesFromPlaneEquations(AlignedVector3Array^ planeEquations,
-	AlignedVector3Array^ verticesOut)
+List<Vector3>^ GeometryUtil::GetVerticesFromPlaneEquations(ICollection<Vector4>^ planeEquations)
 {
-	btGeometryUtil::getVerticesFromPlaneEquations(*(btAlignedObjectArray<btVector3>*)planeEquations->_native, *(btAlignedObjectArray<btVector3>*)verticesOut->_native);
+	int numPlanes = planeEquations->Count;
+	array<Vector3>^ planeNormals = gcnew array<Vector3>(numPlanes);
+	array<btScalar>^ planeConstants = gcnew array<btScalar>(numPlanes);
+	int i = 0;
+	for each (Vector4 plane in planeEquations)
+	{
+		planeNormals[i] = Vector3(Vector_X(plane), Vector_Y(plane), Vector_Z(plane));
+		planeConstants[i] = Vector_W(plane);
+		i++;
+	}
+
+	List<Vector3>^ vertices = gcnew List<Vector3>();
+	for (int i = 0; i < numPlanes; i++)
+	{
+		for (int j = i + 1; j < numPlanes; j++)
+		{
+			for (int k = j + 1; k < numPlanes; k++)
+			{
+				Vector3 n2n3 = planeNormals[j].Cross(planeNormals[k]);
+				Vector3 n3n1 = planeNormals[k].Cross(planeNormals[i]);
+				Vector3 n1n2 = planeNormals[i].Cross(planeNormals[j]);
+
+				if ((n2n3.LengthSquared > 0.0001f) &&
+					(n3n1.LengthSquared > 0.0001f) &&
+					(n1n2.LengthSquared > 0.0001f))
+				{
+					//point P out of 3 plane equations:
+
+					//	  d1 ( N2 * N3 ) + d2 ( N3 * N1 ) + d3 ( N1 * N2 )  
+					//P = ------------------------------------------------
+					//	N1 . ( N2 * N3 )  
+
+					float quotient = planeNormals[i].Dot(n2n3);
+					if (btFabs(quotient) > 0.000001)
+					{
+						quotient = -1.0f / quotient;
+						n2n3 *= planeConstants[i];
+						n3n1 *= planeConstants[j];
+						n1n2 *= planeConstants[k];
+						Vector3 potentialPoint = quotient * (n2n3 + n3n1 + n1n2);
+
+						//check if inside, and replace supportingVertexOut if needed
+						if (IsPointInsidePlanes(planeEquations, potentialPoint, 0.01f))
+						{
+							vertices->Add(potentialPoint);
+						}
+					}
+				}
+			}
+		}
+	}
+	return vertices;
 }
 /*
 bool GeometryUtil::IsInside(AlignedVector3Array^ vertices, Vector3 planeNormal, btScalar margin)
@@ -35,14 +85,19 @@ bool GeometryUtil::IsInside(AlignedVector3Array^ vertices, Vector3 planeNormal, 
 	return ret;
 }
 */
-bool GeometryUtil::IsPointInsidePlanes(AlignedVector3Array^ planeEquations, Vector3 point,
+bool GeometryUtil::IsPointInsidePlanes(ICollection<Vector4>^ planeEquations, Vector3 point,
 	btScalar margin)
 {
-	VECTOR3_CONV(point);
-	bool ret = btGeometryUtil::isPointInsidePlanes(*(btAlignedObjectArray<btVector3>*)planeEquations->_native, VECTOR3_USE(point),
-		margin);
-	VECTOR3_DEL(point);
-	return ret;
+	for each (Vector4 plane in planeEquations)
+	{
+		Vector3 normal = Vector3(Vector_X(plane), Vector_Y(plane), Vector_Z(plane));
+		btScalar dist = normal.Dot(point) + Vector_W(plane);
+		if (dist > margin)
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 #endif

@@ -143,11 +143,11 @@ void SliderConstraint::DampingDirAngular::set(btScalar dampingDirAng)
 	Native->setDampingDirAng(dampingDirAng);
 }
 
-btScalar SliderConstraint::DampingDirLin::get()
+btScalar SliderConstraint::DampingDirLinear::get()
 {
 	return Native->getDampingDirLin();
 }
-void SliderConstraint::DampingDirLin::set(btScalar dampingDirLin)
+void SliderConstraint::DampingDirLinear::set(btScalar dampingDirLin)
 {
 	Native->setDampingDirLin(dampingDirLin);
 }
@@ -161,11 +161,11 @@ void SliderConstraint::DampingLimAngular::set(btScalar dampingLimAng)
 	Native->setDampingLimAng(dampingLimAng);
 }
 
-btScalar SliderConstraint::DampingLimLin::get()
+btScalar SliderConstraint::DampingLimLinear::get()
 {
 	return Native->getDampingLimLin();
 }
-void SliderConstraint::DampingLimLin::set(btScalar dampingLimLin)
+void SliderConstraint::DampingLimLinear::set(btScalar dampingLimLin)
 {
 	Native->setDampingLimLin(dampingLimLin);
 }
@@ -179,11 +179,11 @@ void SliderConstraint::DampingOrthoAngular::set(btScalar dampingOrthoAng)
 	Native->setDampingOrthoAng(dampingOrthoAng);
 }
 
-btScalar SliderConstraint::DampingOrthoLin::get()
+btScalar SliderConstraint::DampingOrthoLinear::get()
 {
 	return Native->getDampingOrthoLin();
 }
-void SliderConstraint::DampingOrthoLin::set(btScalar dampingOrthoLin)
+void SliderConstraint::DampingOrthoLinear::set(btScalar dampingOrthoLin)
 {
 	Native->setDampingOrthoLin(dampingOrthoLin);
 }
@@ -203,12 +203,12 @@ Matrix SliderConstraint::FrameOffsetB::get()
 	return Math::BtTransformToMatrix(&Native->getFrameOffsetB());
 }
 
-btScalar SliderConstraint::LinDepth::get()
+btScalar SliderConstraint::LinearDepth::get()
 {
 	return Native->getLinDepth();
 }
 
-btScalar SliderConstraint::LinearPos::get()
+btScalar SliderConstraint::LinearPosition::get()
 {
 	return Native->getLinearPos();
 }
@@ -222,11 +222,11 @@ void SliderConstraint::LowerAngularLimit::set(btScalar lowerLimit)
 	Native->setLowerAngLimit(lowerLimit);
 }
 
-btScalar SliderConstraint::LowerLinLimit::get()
+btScalar SliderConstraint::LowerLinearLimit::get()
 {
 	return Native->getLowerLinLimit();
 }
-void SliderConstraint::LowerLinLimit::set(btScalar lowerLimit)
+void SliderConstraint::LowerLinearLimit::set(btScalar lowerLimit)
 {
 	Native->setLowerLinLimit(lowerLimit);
 }
@@ -240,11 +240,11 @@ void SliderConstraint::MaxAngularMotorForce::set(btScalar maxAngMotorForce)
 	Native->setMaxAngMotorForce(maxAngMotorForce);
 }
 
-btScalar SliderConstraint::MaxLinMotorForce::get()
+btScalar SliderConstraint::MaxLinearMotorForce::get()
 {
 	return Native->getMaxLinMotorForce();
 }
-void SliderConstraint::MaxLinMotorForce::set(btScalar maxLinMotorForce)
+void SliderConstraint::MaxLinearMotorForce::set(btScalar maxLinMotorForce)
 {
 	Native->setMaxLinMotorForce(maxLinMotorForce);
 }
@@ -276,11 +276,11 @@ void SliderConstraint::RestitutionDirAngular::set(btScalar restitutionDirAng)
 	Native->setRestitutionDirAng(restitutionDirAng);
 }
 
-btScalar SliderConstraint::RestitutionDirLin::get()
+btScalar SliderConstraint::RestitutionDirLinear::get()
 {
 	return Native->getRestitutionDirLin();
 }
-void SliderConstraint::RestitutionDirLin::set(btScalar restitutionDirLin)
+void SliderConstraint::RestitutionDirLinear::set(btScalar restitutionDirLin)
 {
 	Native->setRestitutionDirLin(restitutionDirLin);
 }
@@ -294,11 +294,11 @@ void SliderConstraint::RestitutionLimAngular::set(btScalar restitutionLimAng)
 	Native->setRestitutionLimAng(restitutionLimAng);
 }
 
-btScalar SliderConstraint::RestitutionLimLin::get()
+btScalar SliderConstraint::RestitutionLimLinear::get()
 {
 	return Native->getRestitutionLimLin();
 }
-void SliderConstraint::RestitutionLimLin::set(btScalar restitutionLimLin)
+void SliderConstraint::RestitutionLimLinear::set(btScalar restitutionLimLin)
 {
 	Native->setRestitutionLimLin(restitutionLimLin);
 }
@@ -312,11 +312,11 @@ void SliderConstraint::RestitutionOrthoAngular::set(btScalar restitutionOrthoAng
 	Native->setRestitutionOrthoAng(restitutionOrthoAng);
 }
 
-btScalar SliderConstraint::RestitutionOrthoLin::get()
+btScalar SliderConstraint::RestitutionOrthoLinear::get()
 {
 	return Native->getRestitutionOrthoLin();
 }
-void SliderConstraint::RestitutionOrthoLin::set(btScalar restitutionOrthoLin)
+void SliderConstraint::RestitutionOrthoLinear::set(btScalar restitutionOrthoLin)
 {
 	Native->setRestitutionOrthoLin(restitutionOrthoLin);
 }
@@ -330,11 +330,11 @@ void SliderConstraint::SoftnessDirAngular::set(btScalar softnessDirAng)
 	Native->setSoftnessDirAng(softnessDirAng);
 }
 
-btScalar SliderConstraint::SoftnessDirLin::get()
+btScalar SliderConstraint::SoftnessDirLinear::get()
 {
 	return Native->getSoftnessDirLin();
 }
-void SliderConstraint::SoftnessDirLin::set(btScalar softnessDirLin)
+void SliderConstraint::SoftnessDirLinear::set(btScalar softnessDirLin)
 {
 	Native->setSoftnessDirLin(softnessDirLin);
 }
@@ -348,11 +348,11 @@ void SliderConstraint::SoftnessLimAngular::set(btScalar softnessLimAng)
 	Native->setSoftnessLimAng(softnessLimAng);
 }
 
-btScalar SliderConstraint::SoftnessLimLin::get()
+btScalar SliderConstraint::SoftnessLimLinear::get()
 {
 	return Native->getSoftnessLimLin();
 }
-void SliderConstraint::SoftnessLimLin::set(btScalar softnessLimLin)
+void SliderConstraint::SoftnessLimLinear::set(btScalar softnessLimLin)
 {
 	Native->setSoftnessLimLin(softnessLimLin);
 }
@@ -366,11 +366,11 @@ void SliderConstraint::SoftnessOrthoAngular::set(btScalar softnessOrthoAng)
 	Native->setSoftnessOrthoAng(softnessOrthoAng);
 }
 
-btScalar SliderConstraint::SoftnessOrthoLin::get()
+btScalar SliderConstraint::SoftnessOrthoLinear::get()
 {
 	return Native->getSoftnessOrthoLin();
 }
-void SliderConstraint::SoftnessOrthoLin::set(btScalar softnessOrthoLin)
+void SliderConstraint::SoftnessOrthoLinear::set(btScalar softnessOrthoLin)
 {
 	Native->setSoftnessOrthoLin(softnessOrthoLin);
 }
@@ -380,7 +380,7 @@ bool SliderConstraint::SolveAngularLimit::get()
 	return Native->getSolveAngLimit();
 }
 
-bool SliderConstraint::SolveLinLimit::get()
+bool SliderConstraint::SolveLinearLimit::get()
 {
 	return Native->getSolveLinLimit();
 }
@@ -394,11 +394,11 @@ void SliderConstraint::TargetAngularMotorVelocity::set(btScalar targetAngMotorVe
 	Native->setTargetAngMotorVelocity(targetAngMotorVelocity);
 }
 
-btScalar SliderConstraint::TargetLinMotorVelocity::get()
+btScalar SliderConstraint::TargetLinearMotorVelocity::get()
 {
 	return Native->getTargetLinMotorVelocity();
 }
-void SliderConstraint::TargetLinMotorVelocity::set(btScalar targetLinMotorVelocity)
+void SliderConstraint::TargetLinearMotorVelocity::set(btScalar targetLinMotorVelocity)
 {
 	Native->setTargetLinMotorVelocity(targetLinMotorVelocity);
 }
@@ -412,11 +412,11 @@ void SliderConstraint::UpperAngularLimit::set(btScalar upperLimit)
 	Native->setUpperAngLimit(upperLimit);
 }
 
-btScalar SliderConstraint::UpperLinLimit::get()
+btScalar SliderConstraint::UpperLinearLimit::get()
 {
 	return Native->getUpperLinLimit();
 }
-void SliderConstraint::UpperLinLimit::set(btScalar upperLimit)
+void SliderConstraint::UpperLinearLimit::set(btScalar upperLimit)
 {
 	Native->setUpperLinLimit(upperLimit);
 }

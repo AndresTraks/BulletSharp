@@ -1,7 +1,8 @@
-﻿using System;
-using BulletSharp;
+﻿using BulletSharp;
 using BulletSharp.Serialize;
 using DemoFramework;
+using System;
+using System.IO;
 
 namespace BulletXmlImportDemo
 {
@@ -32,7 +33,7 @@ namespace BulletXmlImportDemo
             World.Gravity = new Vector3(0, -10, 0);
 
             importer = new BulletXmlWorldImporter(World);
-            if (!importer.LoadFile("data\\bullet_basic.xml"))
+            if (!importer.LoadFile(Path.Combine("data", "bullet_basic.xml")))
             {
                 //throw new FileNotFoundException();
             }

@@ -59,6 +59,9 @@ namespace DemoFramework
                 case BroadphaseNativeType.BoxShape:
                     indices = null;
                     return CreateBox(shape as BoxShape);
+                case BroadphaseNativeType.Box2DShape:
+                    indices = null;
+                    return CreateBox2DShape(shape as Box2DShape);
                 case BroadphaseNativeType.CapsuleShape:
                     return CreateCapsule(shape as CapsuleShape, out indices);
                 case BroadphaseNativeType.Convex2DShape:
@@ -68,9 +71,6 @@ namespace DemoFramework
                     return CreateConvexHull(shape as ConvexHullShape);
                 case BroadphaseNativeType.ConeShape:
                     return CreateCone(shape as ConeShape, out indices);
-                case BroadphaseNativeType.ConvexTriangleMeshShape:
-                    indices = null;
-                    return CreateTriangleMesh((shape as ConvexTriangleMeshShape).MeshInterface);
                 case BroadphaseNativeType.CylinderShape:
                     return CreateCylinder(shape as CylinderShape, out indices);
                 case BroadphaseNativeType.GImpactShape:
@@ -88,6 +88,11 @@ namespace DemoFramework
                 default:
                     throw new NotImplementedException();
             }
+            if (shape is PolyhedralConvexShape)
+            {
+                return CreatePolyhedralConvexShape((shape as PolyhedralConvexShape), out indices);
+            }
+            throw new NotImplementedException();
         }
 
         public static ushort[] CompactIndexBuffer(uint[] indices)
@@ -132,6 +137,20 @@ namespace DemoFramework
             }
 
             return vertices;
+        }
+
+        private static Vector3[] CreateBox2DShape(Box2DShape box2DShape)
+        {
+            Vector3Array v = box2DShape.Vertices;
+            return new Vector3[12]
+            {
+                v[0], Vector3.UnitZ,
+                v[1], Vector3.UnitZ,
+                v[2], Vector3.UnitZ,
+                v[0], Vector3.UnitZ,
+                v[2], Vector3.UnitZ,
+                v[3], Vector3.UnitZ,
+            };
         }
 
         public static Vector3[] CreateCapsule(CapsuleShape shape, out uint[] indices)
@@ -470,12 +489,6 @@ namespace DemoFramework
 
         public static Vector3[] CreateConvexHull(ConvexHullShape shape)
         {
-            ConvexPolyhedron poly = shape.ConvexPolyhedron;
-            if (poly != null)
-            {
-                throw new NotImplementedException();
-            }
-
             ShapeHull hull = new ShapeHull(shape);
             hull.BuildHull(shape.Margin);
 
@@ -561,6 +574,39 @@ namespace DemoFramework
             }
 
             return finalVertices;
+        }
+
+        private static Vector3[] CreatePolyhedralConvexShape(PolyhedralConvexShape polyhedralConvexShape, out uint[] indices)
+        {
+            int numVertices = polyhedralConvexShape.NumVertices;
+            Vector3[] vertices = new Vector3[numVertices * 3];
+            for (int i = 0; i < numVertices; i += 4)
+            {
+                Vector3 v0, v1, v2, v3;
+                polyhedralConvexShape.GetVertex(i, out v0);
+                polyhedralConvexShape.GetVertex(i + 1, out v1);
+                polyhedralConvexShape.GetVertex(i + 2, out v2);
+                polyhedralConvexShape.GetVertex(i + 3, out v3);
+
+                Vector3 v01 = v0 - v1;
+                Vector3 v02 = v0 - v2;
+                Vector3 normal = Vector3.Cross(v01, v02);
+
+                int i3 = i * 3;
+                vertices[i3] = v0;
+                vertices[i3 + 1] = normal;
+                vertices[i3 + 2] = v1;
+                vertices[i3 + 3] = normal;
+                vertices[i3 + 4] = v2;
+                vertices[i3 + 5] = normal;
+                vertices[i3 + 6] = v0;
+                vertices[i3 + 7] = normal;
+                vertices[i3 + 8] = v2;
+                vertices[i3 + 9] = normal;
+                vertices[i3 + 10] = v3;
+            }
+            indices = null;
+            return vertices;
         }
 
         public static Vector3[] CreateSphere(SphereShape shape, out uint[] indices)

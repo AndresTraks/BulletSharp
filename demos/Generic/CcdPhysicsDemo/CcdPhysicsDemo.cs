@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
-using BulletSharp;
+﻿using BulletSharp;
 using DemoFramework;
+using System;
+using System.Windows.Forms;
 
 namespace CcdPhysicsDemo
 {
@@ -51,8 +51,6 @@ namespace CcdPhysicsDemo
 
         protected override void OnInitializePhysics()
         {
-            int i;
-
             shootBoxInitialSpeed = 4000;
 
             // collision configuration contains default setup for memory, collision setup
@@ -64,8 +62,7 @@ namespace CcdPhysicsDemo
 
             Broadphase = new DbvtBroadphase();
 
-
-            // the default constraint solver.
+            // the default constraint solver
             Solver = new SequentialImpulseConstraintSolver();
 
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf);
@@ -77,6 +74,12 @@ namespace CcdPhysicsDemo
 
             World.Gravity = new Vector3(0, -10, 0);
 
+            CreateGround();
+            CreateBoxStack();
+        }
+
+        private void CreateGround()
+        {
             BoxShape ground = new BoxShape(200, 1, 200);
             ground.InitializePolyhedralFeatures();
             CollisionShapes.Add(ground);
@@ -84,13 +87,16 @@ namespace CcdPhysicsDemo
             body.Friction = 0.5f;
             //body.RollingFriction = 0.3f;
             body.UserObject = "Ground";
+        }
 
-            //CollisionShape shape = new CylinderShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents);
-            CollisionShape shape = new BoxShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents);
+        private void CreateBoxStack()
+        {
+            //var shape = new CylinderShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents);
+            var shape = new BoxShape(CubeHalfExtents);
             CollisionShapes.Add(shape);
 
             const int numObjects = 120;
-            for (i = 0; i < numObjects; i++)
+            for (int i = 0; i < numObjects; i++)
             {
                 //stack them
                 const int colsize = 10;
@@ -107,7 +113,7 @@ namespace CcdPhysicsDemo
                 Matrix trans = Matrix.Translation(col * 2 * CubeHalfExtents + (row2 % 2) * CubeHalfExtents,
                     row * 2 * CubeHalfExtents + CubeHalfExtents + ExtraHeight, 0);
 
-                body = LocalCreateRigidBody(1, trans, shape);
+                RigidBody body = LocalCreateRigidBody(1, trans, shape);
                 body.SetAnisotropicFriction(shape.AnisotropicRollingFrictionDirection, AnisotropicFrictionFlags.AnisotropicRollingFriction);
                 body.Friction = 0.5f;
                 //body.RollingFriction = 0.3f;
@@ -122,8 +128,6 @@ namespace CcdPhysicsDemo
 
         public override void ShootBox(Vector3 camPos, Vector3 destination)
         {
-            if (World == null) return;
-
             const float mass = 1.0f;
 
             if (shootBoxShape == null)
