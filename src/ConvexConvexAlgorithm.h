@@ -2,7 +2,6 @@
 
 #include "ActivatingCollisionAlgorithm.h"
 #include "CollisionCreateFunc.h"
-#include "SimplexSolverInterface.h"
 
 namespace BulletSharp
 {
@@ -15,13 +14,12 @@ namespace BulletSharp
 		ref class CreateFunc : CollisionAlgorithmCreateFunc
 		{
 			ConvexPenetrationDepthSolver^ _pdSolver;
-			VoronoiSimplexSolver^ _simplexSolver;
 
 		internal:
 			CreateFunc(btConvexConvexAlgorithm::CreateFunc* native);
 
 		public:
-			CreateFunc(SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ pdSolver);
+			CreateFunc(ConvexPenetrationDepthSolver^ pdSolver);
 
 			property int MinimumPointsPerturbationThreshold
 			{
@@ -40,18 +38,12 @@ namespace BulletSharp
 				ConvexPenetrationDepthSolver^ get();
 				void set(ConvexPenetrationDepthSolver^ value);
 			}
-
-			property SimplexSolverInterface^ SimplexSolver
-			{
-				SimplexSolverInterface^ get();
-				void set(SimplexSolverInterface^ value);
-			}
 		};
 
 		ConvexConvexAlgorithm(PersistentManifold mf, CollisionAlgorithmConstructionInfo^ ci,
 			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
-			SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ pdSolver,
-			int numPerturbationIterations, int minimumPointsPerturbationThreshold);
+			ConvexPenetrationDepthSolver^ pdSolver, int numPerturbationIterations,
+			int minimumPointsPerturbationThreshold);
 
 		void SetLowLevelOfDetail(bool useLowLevel);
 

@@ -15,7 +15,6 @@
 #include "SphereTriangleCollisionAlgorithm.h"
 #ifndef DISABLE_UNCOMMON
 #include "PoolAllocator.h"
-#include "VoronoiSimplexSolver.h"
 #endif
 
 DefaultCollisionConstructionInfo::~DefaultCollisionConstructionInfo()
@@ -206,12 +205,3 @@ void DefaultCollisionConfiguration::SetPlaneConvexMultipointIterations()
 {
 	Native->setPlaneConvexMultipointIterations();
 }
-#ifndef DISABLE_UNCOMMON
-VoronoiSimplexSolver^ DefaultCollisionConfiguration::SimplexSolver::get()
-{
-	if (_simplexSolver == nullptr) {
-		_simplexSolver = gcnew VoronoiSimplexSolver(Native->getSimplexSolver(), true);
-	}
-	return _simplexSolver;
-}
-#endif
