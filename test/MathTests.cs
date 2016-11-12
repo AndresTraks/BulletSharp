@@ -18,7 +18,7 @@ namespace BulletSharpTest
 
         GhostObject ghostObject;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             conf = new DefaultCollisionConfiguration();
@@ -155,13 +155,12 @@ namespace BulletSharpTest
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void AlignedObjectArray_ArgumentOutOfRange()
         {
-            world.CollisionObjectArray[2] = null;
+            Assert.Throws<ArgumentOutOfRangeException>(() => world.CollisionObjectArray[2] = null);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             world.RemoveRigidBody(body1);

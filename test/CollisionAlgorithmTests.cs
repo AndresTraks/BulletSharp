@@ -13,7 +13,6 @@ namespace BulletSharpTest
         {
             Assert.NotNull(conf.CollisionAlgorithmPool);
             Assert.NotNull(conf.PersistentManifoldPool);
-            Assert.NotNull(conf.SimplexSolver);
 
             // Test that the correct collision algorithms are returned in GetCollisionAlgorithmCreateFunc
             var createFunc = conf.GetCollisionAlgorithmCreateFunc(BroadphaseNativeType.BoxShape, BroadphaseNativeType.BoxShape);
