@@ -73,6 +73,8 @@ namespace BulletSharp
 
 		virtual CollisionAlgorithmCreateFunc^ GetCollisionAlgorithmCreateFunc(BroadphaseNativeType proxyType0,
 			BroadphaseNativeType proxyType1) override;
+		CollisionAlgorithmCreateFunc^ GetClosestPointsAlgorithmCreateFunc(BroadphaseNativeType proxyType0,
+			BroadphaseNativeType proxyType1);
 		void SetConvexConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold);
 		void SetConvexConvexMultipointIterations(int numPerturbationIterations);
 		void SetConvexConvexMultipointIterations();

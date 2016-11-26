@@ -41,16 +41,19 @@ namespace BulletSharp
 		bool CheckCollideWith(CollisionObject^ collisionObject);
 		bool CheckCollideWithOverride(CollisionObject^ collisionObject);
 		void ForceActivationState(BulletSharp::ActivationState newState);
+		bool GetCustomDebugColor([Out] Vector3% colorRgb);
 		virtual int GetHashCode() override;
 		void GetWorldTransform([Out] Matrix% transform);
 		bool HasAnisotropicFriction(AnisotropicFrictionFlags frictionMode);
 		bool HasAnisotropicFriction();
+		void RemoveCustomDebugColor();
 #ifndef DISABLE_SERIALIZE
 		String^ Serialize(IntPtr dataBuffer, Serializer^ serializer);
 		void SerializeSingleObject(Serializer^ serializer);
 #endif
 		void SetAnisotropicFriction(Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode);
 		void SetAnisotropicFriction(Vector3 anisotropicFriction);
+		void SetCustomDebugColor(Vector3 colorRgb);
 		void SetIgnoreCollisionCheck(CollisionObject^ collisionObject, bool ignoreCollisionCheck);
 
 	internal:

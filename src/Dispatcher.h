@@ -135,8 +135,7 @@ namespace BulletSharp
 		void DispatchAllCollisionPairs(OverlappingPairCache^ pairCache, DispatcherInfo^ dispatchInfo,
 			Dispatcher^ dispatcher);
 		CollisionAlgorithm^ FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
-			PersistentManifold sharedManifold);
-		CollisionAlgorithm^ FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap);
+			PersistentManifold sharedManifold, DispatcherQueryType queryType);
 		void FreeCollisionAlgorithm(IntPtr ptr);
 #ifndef DISABLE_INTERNAL
 		PersistentManifold GetManifoldByIndexInternal(int index);

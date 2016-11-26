@@ -203,15 +203,10 @@ void Dispatcher::DispatchAllCollisionPairs(OverlappingPairCache^ pairCache, Disp
 }
 
 CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
-	PersistentManifold sharedManifold)
+	PersistentManifold sharedManifold, DispatcherQueryType queryType)
 {
 	return CollisionAlgorithm::GetManaged(_native->findAlgorithm(
-		body0Wrap->_native, body1Wrap->_native, sharedManifold._native));
-}
-
-CollisionAlgorithm^ Dispatcher::FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
-{
-	return CollisionAlgorithm::GetManaged(_native->findAlgorithm(body0Wrap->_native, body1Wrap->_native));
+		body0Wrap->_native, body1Wrap->_native, sharedManifold._native, (ebtDispatcherQueryType)queryType));
 }
 
 void Dispatcher::FreeCollisionAlgorithm(IntPtr ptr)

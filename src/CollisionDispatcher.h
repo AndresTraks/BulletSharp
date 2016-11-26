@@ -40,6 +40,8 @@ namespace BulletSharp
 			DispatcherInfo^ dispatchInfo);
 		void RegisterCollisionCreateFunc(BroadphaseNativeType proxyType0,
 			BroadphaseNativeType proxyType1, CollisionAlgorithmCreateFunc^ createFunc);
+		void RegisterClosestPointsCreateFunc(BroadphaseNativeType proxyType0,
+			BroadphaseNativeType proxyType1, CollisionAlgorithmCreateFunc^ createFunc);
 
 		property CollisionConfiguration^ CollisionConfiguration
 		{

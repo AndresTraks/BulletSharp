@@ -79,7 +79,10 @@ namespace BulletSharp
 		NoContactResponse = btCollisionObject::CF_NO_CONTACT_RESPONSE,
 		CustomMaterialCallback = btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK,
 		CharacterObject = btCollisionObject::CF_CHARACTER_OBJECT,
-		DisableVisualizeObject = btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT
+		DisableVisualizeObject = btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT,
+		DisableSpuCollisionProcessing = btCollisionObject::CF_DISABLE_SPU_COLLISION_PROCESSING,
+		HasContactStiffnessDamping = btCollisionObject::CF_HAS_CONTACT_STIFFNESS_DAMPING,
+		HasCustomDebugRenderingColor = btCollisionObject::CF_HAS_CUSTOM_DEBUG_RENDERING_COLOR
 	};
 
 	[Flags]
@@ -161,6 +164,12 @@ namespace BulletSharp
 		DisableContactPoolDynamicAllocation = btCollisionDispatcher::DispatcherFlags::CD_DISABLE_CONTACTPOOL_DYNAMIC_ALLOCATION
 	};
 #pragma warning(pop)
+
+	public enum class DispatcherQueryType
+	{
+		ContactPointAlgorithms = ebtDispatcherQueryType::BT_CONTACT_POINT_ALGORITHMS,
+		ClosestPointAlgorithms = ebtDispatcherQueryType::BT_CLOSEST_POINT_ALGORITHMS
+	};
 
 	public enum class DynamicsWorldType
 	{

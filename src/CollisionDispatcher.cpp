@@ -54,6 +54,18 @@ void CollisionDispatcher::RegisterCollisionCreateFunc(BroadphaseNativeType proxy
 	Native->registerCollisionCreateFunc((int)proxyType0, (int)proxyType1, createFunc->_native);
 }
 
+void BulletSharp::CollisionDispatcher::RegisterClosestPointsCreateFunc(BroadphaseNativeType proxyType0,
+	BroadphaseNativeType proxyType1, CollisionAlgorithmCreateFunc ^ createFunc)
+{
+	if (_collisionCreateFuncs == nullptr)
+	{
+		_collisionCreateFuncs = gcnew List<CollisionAlgorithmCreateFunc^>();
+	}
+	_collisionCreateFuncs->Add(createFunc);
+
+	Native->registerClosestPointsCreateFunc((int)proxyType0, (int)proxyType1, createFunc->_native);
+}
+
 CollisionConfiguration^ CollisionDispatcher::CollisionConfiguration::get()
 {
 	return _collisionConfiguration;

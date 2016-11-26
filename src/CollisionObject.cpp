@@ -80,6 +80,14 @@ void CollisionObject::ForceActivationState(BulletSharp::ActivationState newState
 	_native->forceActivationState((int)newState);
 }
 
+bool BulletSharp::CollisionObject::GetCustomDebugColor([Out] Vector3% colorRgb)
+{
+	btVector3* colorRgbTemp = ALIGNED_NEW(btVector3);
+	bool ret = _native->getCustomDebugColor(*colorRgbTemp);
+	ALIGNED_FREE(colorRgbTemp);
+	return ret;
+}
+
 int CollisionObject::GetHashCode()
 {
 	return (int)_native;
@@ -98,6 +106,11 @@ bool CollisionObject::HasAnisotropicFriction(AnisotropicFrictionFlags frictionMo
 bool CollisionObject::HasAnisotropicFriction()
 {
 	return _native->hasAnisotropicFriction();
+}
+
+void BulletSharp::CollisionObject::RemoveCustomDebugColor()
+{
+	_native->removeCustomDebugColor();
 }
 
 #ifndef DISABLE_SERIALIZE
@@ -124,6 +137,13 @@ void CollisionObject::SetAnisotropicFriction(Vector3 anisotropicFriction)
 	VECTOR3_CONV(anisotropicFriction);
 	_native->setAnisotropicFriction(VECTOR3_USE(anisotropicFriction));
 	VECTOR3_DEL(anisotropicFriction);
+}
+
+void BulletSharp::CollisionObject::SetCustomDebugColor(Vector3 colorRgb)
+{
+	VECTOR3_CONV(colorRgb);
+	_native->setCustomDebugColor(VECTOR3_USE(colorRgb));
+	VECTOR3_DEL(colorRgb);
 }
 
 void CollisionObject::SetIgnoreCollisionCheck(CollisionObject^ collisionObject, bool ignoreCollisionCheck)

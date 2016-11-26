@@ -174,6 +174,56 @@ CollisionAlgorithmCreateFunc^ DefaultCollisionConfiguration::GetCollisionAlgorit
 	return gcnew EmptyAlgorithm::CreateFunc(static_cast<btEmptyAlgorithm::CreateFunc*>(createFunc));
 }
 
+CollisionAlgorithmCreateFunc ^ BulletSharp::DefaultCollisionConfiguration::GetClosestPointsAlgorithmCreateFunc(BroadphaseNativeType proxyType0, BroadphaseNativeType proxyType1)
+{
+	btCollisionAlgorithmCreateFunc* createFunc = _native->getClosestPointsAlgorithmCreateFunc((int)proxyType0, (int)proxyType1);
+	if (proxyType0 == BroadphaseNativeType::BoxShape && proxyType1 == BroadphaseNativeType::BoxShape)
+	{
+		return gcnew BoxBoxCollisionAlgorithm::CreateFunc(static_cast<btBoxBoxCollisionAlgorithm::CreateFunc*>(createFunc));
+	}
+	if (proxyType0 == BroadphaseNativeType::SphereShape && proxyType1 == BroadphaseNativeType::SphereShape)
+	{
+		return gcnew SphereSphereCollisionAlgorithm::CreateFunc(static_cast<btSphereSphereCollisionAlgorithm::CreateFunc*>(createFunc));
+	}
+	if (proxyType0 == BroadphaseNativeType::SphereShape && proxyType1 == BroadphaseNativeType::TriangleShape)
+	{
+		return gcnew SphereTriangleCollisionAlgorithm::CreateFunc(static_cast<btSphereTriangleCollisionAlgorithm::CreateFunc*>(createFunc));
+	}
+	if (proxyType0 == BroadphaseNativeType::TriangleShape && proxyType1 == BroadphaseNativeType::SphereShape)
+	{
+		return gcnew SphereTriangleCollisionAlgorithm::CreateFunc(static_cast<btSphereTriangleCollisionAlgorithm::CreateFunc*>(createFunc));
+	}
+	if (proxyType0 == BroadphaseNativeType::StaticPlaneShape && BroadphaseProxy::IsConvex(proxyType1))
+	{
+		return gcnew ConvexPlaneCollisionAlgorithm::CreateFunc(static_cast<btConvexPlaneCollisionAlgorithm::CreateFunc*>(createFunc));
+	}
+	if (proxyType1 == BroadphaseNativeType::StaticPlaneShape && BroadphaseProxy::IsConvex(proxyType0))
+	{
+		return gcnew ConvexPlaneCollisionAlgorithm::CreateFunc(static_cast<btConvexPlaneCollisionAlgorithm::CreateFunc*>(createFunc));
+	}
+	if (BroadphaseProxy::IsConvex(proxyType0) && BroadphaseProxy::IsConvex(proxyType1))
+	{
+		return gcnew ConvexConvexAlgorithm::CreateFunc(static_cast<btConvexConvexAlgorithm::CreateFunc*>(createFunc));
+	}
+	if (BroadphaseProxy::IsConvex(proxyType0) && BroadphaseProxy::IsConcave(proxyType1))
+	{
+		return gcnew ConvexConcaveCollisionAlgorithm::CreateFunc(static_cast<btConvexConcaveCollisionAlgorithm::CreateFunc*>(createFunc));
+	}
+	if (BroadphaseProxy::IsConvex(proxyType1) && BroadphaseProxy::IsConcave(proxyType0))
+	{
+		return gcnew ConvexConcaveCollisionAlgorithm::SwappedCreateFunc(static_cast<btConvexConcaveCollisionAlgorithm::SwappedCreateFunc*>(createFunc));
+	}
+	if (BroadphaseProxy::IsCompound(proxyType0))
+	{
+		return gcnew CompoundCompoundCollisionAlgorithm::CreateFunc(static_cast<btCompoundCompoundCollisionAlgorithm::CreateFunc*>(createFunc));
+	}
+	if (BroadphaseProxy::IsCompound(proxyType1))
+	{
+		return gcnew CompoundCompoundCollisionAlgorithm::SwappedCreateFunc(static_cast<btCompoundCompoundCollisionAlgorithm::SwappedCreateFunc*>(createFunc));
+	}
+	return gcnew EmptyAlgorithm::CreateFunc(static_cast<btEmptyAlgorithm::CreateFunc*>(createFunc));
+}
+
 void DefaultCollisionConfiguration::SetConvexConvexMultipointIterations(int numPerturbationIterations,
 	int minimumPointsPerturbationThreshold)
 {
