@@ -96,9 +96,14 @@ TypedConstraint^ DynamicsWorld::GetConstraint(int index)
 }
 #endif
 
-void DynamicsWorld::InternalTickCallbackUnmanaged(IntPtr world, btScalar timeStep)
+void DynamicsWorld::InternalPreTickCallbackUnmanaged(IntPtr world, btScalar timeStep)
 {
-    _callback(this, timeStep);
+	_preTickCallback(this, timeStep);
+}
+
+void DynamicsWorld::InternalPostTickCallbackUnmanaged(IntPtr world, btScalar timeStep)
+{
+	_postTickCallback(this, timeStep);
 }
 
 void DynamicsWorld::RemoveAction(IAction^ action)
@@ -133,37 +138,29 @@ void DynamicsWorld::RemoveRigidBody(RigidBody^ body)
 	_collisionObjectArray->Remove(body);
 }
 
-void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo,
+void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ callback, Object^ worldUserInfo,
 	bool isPreTick)
 {
-	if (_callback != cb)
+	if (isPreTick)
 	{
-		_callback = cb;
-		if (cb != nullptr)
-		{
-			if (_callbackUnmanaged == nullptr)
-			{
-				_callbackUnmanaged = gcnew InternalTickCallbackUnmanagedDelegate(this, &DynamicsWorld::InternalTickCallbackUnmanaged);
-			}
-			Native->setInternalTickCallback((btInternalTickCallback)Marshal::GetFunctionPointerForDelegate(_callbackUnmanaged).ToPointer(), 0, isPreTick);
-		}
-		else
-		{
-			_callbackUnmanaged = nullptr;
-			Native->setInternalTickCallback(0, 0, isPreTick);
-		}
+		SetInternalPreTickCallback(callback);
+	}
+	else
+	{
+		SetInternalPostTickCallback(callback);
 	}
 	_userObject = worldUserInfo;
 }
 
-void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo)
+void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ callback, Object^ worldUserInfo)
 {
-	SetInternalTickCallback(cb, worldUserInfo, false);
+	SetInternalPostTickCallback(callback);
+	_userObject = worldUserInfo;
 }
 
-void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb)
+void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ callback)
 {
-	SetInternalTickCallback(cb, _userObject, false);
+	SetInternalPostTickCallback(callback);
 }
 
 int DynamicsWorld::StepSimulation(btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep)
@@ -184,6 +181,48 @@ int DynamicsWorld::StepSimulation(btScalar timeStep)
 void DynamicsWorld::SynchronizeMotionStates()
 {
 	Native->synchronizeMotionStates();
+}
+
+void BulletSharp::DynamicsWorld::SetInternalPreTickCallback(InternalTickCallback^ callback)
+{
+	if (_preTickCallback != callback)
+	{
+		_preTickCallback = callback;
+		if (callback != nullptr)
+		{
+			if (_preTickCallbackUnmanaged == nullptr)
+			{
+				_preTickCallbackUnmanaged = gcnew InternalTickCallbackUnmanagedDelegate(this, &DynamicsWorld::InternalPreTickCallbackUnmanaged);
+			}
+			Native->setInternalTickCallback((btInternalTickCallback)Marshal::GetFunctionPointerForDelegate(_preTickCallbackUnmanaged).ToPointer(), 0, true);
+		}
+		else
+		{
+			_preTickCallbackUnmanaged = nullptr;
+			Native->setInternalTickCallback(0, 0, true);
+		}
+	}
+}
+
+void BulletSharp::DynamicsWorld::SetInternalPostTickCallback(InternalTickCallback^ callback)
+{
+	if (_postTickCallback != callback)
+	{
+		_postTickCallback = callback;
+		if (callback != nullptr)
+		{
+			if (_postTickCallbackUnmanaged == nullptr)
+			{
+				_postTickCallbackUnmanaged = gcnew InternalTickCallbackUnmanagedDelegate(this, &DynamicsWorld::InternalPostTickCallbackUnmanaged);
+			}
+			Native->setInternalTickCallback((btInternalTickCallback)Marshal::GetFunctionPointerForDelegate(_postTickCallbackUnmanaged).ToPointer(), 0, false);
+		}
+		else
+		{
+			_postTickCallbackUnmanaged = nullptr;
+			Native->setInternalTickCallback(0, 0, false);
+		}
+	}
 }
 
 #ifndef DISABLE_CONSTRAINTS

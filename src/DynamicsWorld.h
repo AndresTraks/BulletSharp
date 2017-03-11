@@ -22,8 +22,10 @@ namespace BulletSharp
 
 	private:
 		Object^ _userObject;
-		InternalTickCallback^ _callback;
-		InternalTickCallbackUnmanagedDelegate^ _callbackUnmanaged;
+		InternalTickCallback^ _preTickCallback;
+		InternalTickCallback^ _postTickCallback;
+		InternalTickCallbackUnmanagedDelegate^ _preTickCallbackUnmanaged;
+		InternalTickCallbackUnmanagedDelegate^ _postTickCallbackUnmanaged;
 		ContactSolverInfo^ _solverInfo;
 		Dictionary<IAction^, IntPtr>^ _actions;
 		List<TypedConstraint^>^ _constraints;
@@ -50,21 +52,27 @@ namespace BulletSharp
 #ifndef DISABLE_CONSTRAINTS
 		TypedConstraint^ GetConstraint(int index);
 #endif
-		void InternalTickCallbackUnmanaged(IntPtr world, btScalar timeStep);
+		void InternalPreTickCallbackUnmanaged(IntPtr world, btScalar timeStep);
+		void InternalPostTickCallbackUnmanaged(IntPtr world, btScalar timeStep);
 		void RemoveAction(IAction^ action);
 #ifndef DISABLE_CONSTRAINTS
 		void RemoveConstraint(TypedConstraint^ constraint);
 #endif
 		void RemoveRigidBody(RigidBody^ body);
-		void SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo,
+		void SetInternalTickCallback(InternalTickCallback^ callback, Object^ worldUserInfo,
 			bool isPreTick);
-		void SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo);
-		void SetInternalTickCallback(InternalTickCallback^ cb);
+		void SetInternalTickCallback(InternalTickCallback^ callback, Object^ worldUserInfo);
+		void SetInternalTickCallback(InternalTickCallback^ callback);
 		int StepSimulation(btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep);
 		int StepSimulation(btScalar timeStep, int maxSubSteps);
 		int StepSimulation(btScalar timeStep);
 		void SynchronizeMotionStates();
 
+	private:
+		void SetInternalPreTickCallback(InternalTickCallback^ callback);
+		void SetInternalPostTickCallback(InternalTickCallback^ callback);
+
+	public:
 #ifndef DISABLE_CONSTRAINTS
 		property ConstraintSolver^ ConstraintSolver
 		{
