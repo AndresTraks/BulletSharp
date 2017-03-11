@@ -57,7 +57,7 @@ namespace BulletSharpTest
             }
         }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             conf = new DefaultCollisionConfiguration();
@@ -88,7 +88,7 @@ namespace BulletSharpTest
             triangleMesh = CreateBody(0.0f, triangleMeshShape, Vector3.Zero);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             world.RemoveRigidBody(gImpactMesh);

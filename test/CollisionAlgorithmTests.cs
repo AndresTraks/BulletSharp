@@ -52,13 +52,13 @@ namespace BulletSharpTest
             Assert.IsInstanceOf(typeof(CompoundCompoundCollisionAlgorithm.SwappedCreateFunc), createFunc);
         }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             conf = new DefaultCollisionConfiguration();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             conf.Dispose();

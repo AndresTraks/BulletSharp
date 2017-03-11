@@ -1,6 +1,5 @@
 ﻿using BulletSharp;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 
 namespace BulletSharpTest
@@ -16,7 +15,7 @@ namespace BulletSharpTest
 
         BoxShape boxShape;
         
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             conf = new DefaultCollisionConfiguration();
@@ -77,7 +76,7 @@ namespace BulletSharpTest
             bodies.Clear();
         }
         
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             boxShape.Dispose();

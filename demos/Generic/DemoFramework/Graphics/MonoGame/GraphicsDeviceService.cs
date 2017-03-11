@@ -84,8 +84,7 @@ namespace DemoFramework.MonoGame
 
             //graphicsDevice.Reset(parameters);
 
-            if (DeviceReset != null)
-                DeviceReset(this, EventArgs.Empty);
+            DeviceReset?.Invoke(this, EventArgs.Empty);
         }
 
         

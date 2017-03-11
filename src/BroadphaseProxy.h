@@ -57,12 +57,6 @@ namespace BulletSharp
 			void set(CollisionFilterGroups value);
 		}
 
-		property IntPtr MultiSapParentProxy
-		{
-			IntPtr get();
-			void set(IntPtr value);
-		}
-
 		property int UniqueID
 		{
 			int get();

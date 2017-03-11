@@ -97,7 +97,7 @@ namespace BulletSharpTest
             }
         }
         
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             conf = new DefaultCollisionConfiguration();
@@ -111,7 +111,7 @@ namespace BulletSharpTest
             body2 = CreateBody(1.0f, new SphereShape(1.0f), new Vector3(0, 2, 0));
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             world.RemoveRigidBody(body1);

@@ -44,7 +44,7 @@ namespace BulletSharpTest
             Assert.True(action.Updated);
         }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             conf = new DefaultCollisionConfiguration();
@@ -60,7 +60,7 @@ namespace BulletSharpTest
             world.AddAction(action);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             world.Dispose();

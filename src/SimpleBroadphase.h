@@ -30,7 +30,7 @@ namespace BulletSharp
 		static bool AabbOverlap(SimpleBroadphaseProxy^ proxy0, SimpleBroadphaseProxy^ proxy1);
 		virtual BroadphaseProxy^ CreateProxy(Vector3% aabbMin, Vector3% aabbMax,
 			BroadphaseNativeType shapeType, IntPtr userPtr, short collisionFilterGroup,
-			short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy) override;
+			short collisionFilterMask, Dispatcher^ dispatcher) override;
 		bool TestAabbOverlap(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1);
 	};
 };

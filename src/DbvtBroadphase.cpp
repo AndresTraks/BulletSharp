@@ -78,13 +78,13 @@ void DbvtBroadphase::Collide(Dispatcher^ dispatcher)
 
 BroadphaseProxy^ DbvtBroadphase::CreateProxy(Vector3% aabbMin, Vector3% aabbMax,
 	BroadphaseNativeType shapeType, IntPtr userPtr, short collisionFilterGroup,
-	short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
+	short collisionFilterMask, Dispatcher^ dispatcher)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
 	btBroadphaseProxy* proxy = _native->createProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax),
 		(int)shapeType, userPtr.ToPointer(), collisionFilterGroup, collisionFilterMask,
-		dispatcher->_native, multiSapProxy.ToPointer());
+		dispatcher->_native);
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
 #ifndef DISABLE_DBVT

@@ -68,7 +68,7 @@ namespace BulletSharp
 #endif
 		virtual BroadphaseProxy^ CreateProxy(Vector3% aabbMin, Vector3% aabbMax,
 			BroadphaseNativeType shapeType, IntPtr userPtr, short collisionFilterGroup,
-			short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy) override;
+			short collisionFilterMask, Dispatcher^ dispatcher) override;
 #ifndef DISABLE_DBVT
 		void Optimize();
 		void PerformDeferredRemoval(Dispatcher^ dispatcher);

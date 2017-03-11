@@ -123,15 +123,6 @@ void BroadphaseProxy::CollisionFilterMask::set(CollisionFilterGroups value)
 	_native->m_collisionFilterMask = (short int)value;
 }
 
-IntPtr BroadphaseProxy::MultiSapParentProxy::get()
-{
-	return IntPtr(_native->m_multiSapParentProxy);
-}
-void BroadphaseProxy::MultiSapParentProxy::set(IntPtr value)
-{
-	_native->m_multiSapParentProxy = value.ToPointer();
-}
-
 int BroadphaseProxy::UniqueID::get()
 {
 	return _native->getUid();

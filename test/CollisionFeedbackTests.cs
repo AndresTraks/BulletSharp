@@ -17,7 +17,9 @@ namespace BulletSharpTest
         RigidBody ground;
         RigidBody compound;
 
-        [TestFixtureSetUp]
+        private bool _contactAddedCalled;
+
+        [OneTimeSetUp]
         public void SetUp()
         {
             conf = new DefaultCollisionConfiguration();
@@ -54,6 +56,8 @@ namespace BulletSharpTest
             Assert.AreSame(ground, colObj1Wrap.CollisionObject);
             Assert.AreSame(boxShape3, colObj0Wrap.CollisionShape);
             Assert.AreSame(groundShape, colObj1Wrap.CollisionShape);
+
+            _contactAddedCalled = true;
         }
 
         [Test]
@@ -63,15 +67,19 @@ namespace BulletSharpTest
             {
                 world.StepSimulation(1.0f / 60.0f);
             }
+            Assert.IsTrue(_contactAddedCalled);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
-            world.RemoveRigidBody(compound);
-            compound.MotionState.Dispose();
+            world.RemoveRigidBody(ground);
+            ground.MotionState.Dispose();
             ground.Dispose();
             groundShape.Dispose();
+
+            world.RemoveRigidBody(compound);
+            compound.MotionState.Dispose();
             compound.Dispose();
             boxShape.Dispose();
             boxShape2.Dispose();

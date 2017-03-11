@@ -444,24 +444,25 @@ AlignedCollisionObjectArray::AlignedCollisionObjectArray(btCollisionObjectArray*
 
 void SetBodyBroadphaseHandle(CollisionObject^ item, btBroadphaseInterface* broadphase)
 {
+	btBroadphaseProxy* handle = item->_native->getBroadphaseHandle();
 #ifndef DISABLE_DBVT
 	if (dynamic_cast<btDbvtBroadphase*>(broadphase)) {
-		item->BroadphaseHandle = gcnew DbvtProxy((btDbvtProxy*)item->_native->getBroadphaseHandle());
+		item->BroadphaseHandle = gcnew DbvtProxy((btDbvtProxy*)handle);
 	}
 	else
 #endif
 	// TODO: implement AxisSweep3::Handle
 	/*
 	if (dynamic_cast<btAxisSweep3*>(broadphase)) {
-		item->BroadphaseHandle = gcnew BroadphaseProxy(item->_native->getBroadphaseHandle());
+		item->BroadphaseHandle = gcnew BroadphaseProxy(handle);
 	}
 	else if (dynamic_cast<bt32BitAxisSweep3*>(broadphase)) {
-		item->BroadphaseHandle = gcnew BroadphaseProxy(item->_native->getBroadphaseHandle());
+		item->BroadphaseHandle = gcnew BroadphaseProxy(handle);
 	}*/
 	if (dynamic_cast<btSimpleBroadphase*>(broadphase)) {
-		item->BroadphaseHandle = gcnew SimpleBroadphaseProxy((btSimpleBroadphaseProxy*)item->_native->getBroadphaseHandle());
+		item->BroadphaseHandle = gcnew SimpleBroadphaseProxy((btSimpleBroadphaseProxy*)handle);
 	} else {
-		item->BroadphaseHandle = gcnew BroadphaseProxy(item->_native->getBroadphaseHandle());
+		item->BroadphaseHandle = gcnew BroadphaseProxy(handle);
 	}
 }
 

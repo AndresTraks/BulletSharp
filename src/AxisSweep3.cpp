@@ -66,24 +66,24 @@ AxisSweep3::AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax)
 }
 
 unsigned short AxisSweep3::AddHandle(Vector3 aabbMin, Vector3 aabbMax, IntPtr pOwner, short collisionFilterGroup,
-	short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
+	short collisionFilterMask, Dispatcher^ dispatcher)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
 	unsigned short ret = Native->addHandle(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), pOwner.ToPointer(),
-		collisionFilterGroup, collisionFilterMask, dispatcher->_native, multiSapProxy.ToPointer());
+		collisionFilterGroup, collisionFilterMask, dispatcher->_native);
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
 	return ret;
 }
 
 unsigned short AxisSweep3::AddHandle(Vector3 aabbMin, Vector3 aabbMax, IntPtr pOwner, CollisionFilterGroups collisionFilterGroup,
-	CollisionFilterGroups collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
+	CollisionFilterGroups collisionFilterMask, Dispatcher^ dispatcher)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
 	unsigned short ret = Native->addHandle(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), pOwner.ToPointer(),
-		(short)collisionFilterGroup, (short)collisionFilterMask, dispatcher->_native, multiSapProxy.ToPointer());
+		(short)collisionFilterGroup, (short)collisionFilterMask, dispatcher->_native);
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
 	return ret;
@@ -91,13 +91,13 @@ unsigned short AxisSweep3::AddHandle(Vector3 aabbMin, Vector3 aabbMax, IntPtr pO
 
 BroadphaseProxy^ AxisSweep3::CreateProxy(Vector3% aabbMin, Vector3% aabbMax,
 	BroadphaseNativeType shapeType, IntPtr userPtr, short collisionFilterGroup,
-	short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
+	short collisionFilterMask, Dispatcher^ dispatcher)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
 	btBroadphaseProxy* proxy = _native->createProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax),
 		(int)shapeType, userPtr.ToPointer(), collisionFilterGroup, collisionFilterMask,
-		dispatcher->_native, multiSapProxy.ToPointer());
+		dispatcher->_native);
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
 	return gcnew BroadphaseProxy(proxy);
@@ -228,24 +228,24 @@ AxisSweep3_32Bit::AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax)
 }
 
 unsigned int AxisSweep3_32Bit::AddHandle(Vector3 aabbMin, Vector3 aabbMax, IntPtr pOwner, short collisionFilterGroup,
-	short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
+	short collisionFilterMask, Dispatcher^ dispatcher)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
 	unsigned int ret = Native->addHandle(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), pOwner.ToPointer(),
-		collisionFilterGroup, collisionFilterMask, dispatcher->_native, multiSapProxy.ToPointer());
+		collisionFilterGroup, collisionFilterMask, dispatcher->_native);
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
 	return ret;
 }
 
 unsigned int AxisSweep3_32Bit::AddHandle(Vector3 aabbMin, Vector3 aabbMax, IntPtr pOwner, CollisionFilterGroups collisionFilterGroup,
-	CollisionFilterGroups collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
+	CollisionFilterGroups collisionFilterMask, Dispatcher^ dispatcher)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
 	unsigned int ret = Native->addHandle(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), pOwner.ToPointer(),
-		(short)collisionFilterGroup, (short)collisionFilterMask, dispatcher->_native, multiSapProxy.ToPointer());
+		(short)collisionFilterGroup, (short)collisionFilterMask, dispatcher->_native);
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
 	return ret;
@@ -253,13 +253,13 @@ unsigned int AxisSweep3_32Bit::AddHandle(Vector3 aabbMin, Vector3 aabbMax, IntPt
 
 BroadphaseProxy^ AxisSweep3_32Bit::CreateProxy(Vector3% aabbMin, Vector3% aabbMax,
 	BroadphaseNativeType shapeType, IntPtr userPtr, short collisionFilterGroup,
-	short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy)
+	short collisionFilterMask, Dispatcher^ dispatcher)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
 	btBroadphaseProxy* proxy = _native->createProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax),
 		(int)shapeType, userPtr.ToPointer(), collisionFilterGroup, collisionFilterMask,
-		dispatcher->_native, multiSapProxy.ToPointer());
+		dispatcher->_native);
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
 	return gcnew BroadphaseProxy(proxy);

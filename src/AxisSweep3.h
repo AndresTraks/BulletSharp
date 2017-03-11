@@ -21,14 +21,13 @@ namespace BulletSharp
 		AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax);
 
 		unsigned short AddHandle(Vector3 aabbMin, Vector3 aabbMax, IntPtr pOwner,
-			short collisionFilterGroup, short collisionFilterMask, Dispatcher^ dispatcher,
-			IntPtr multiSapProxy);
+			short collisionFilterGroup, short collisionFilterMask, Dispatcher^ dispatcher);
 		unsigned short AddHandle(Vector3 aabbMin, Vector3 aabbMax, IntPtr pOwner,
 			CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask,
-			Dispatcher^ dispatcher, IntPtr multiSapProxy);
+			Dispatcher^ dispatcher);
 		virtual BroadphaseProxy^ CreateProxy(Vector3% aabbMin, Vector3% aabbMax,
 			BroadphaseNativeType shapeType, IntPtr userPtr, short collisionFilterGroup,
-			short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy) override;
+			short collisionFilterMask, Dispatcher^ dispatcher) override;
 		//Handle^ GetHandle(unsigned short index);
 		//void ProcessAllOverlappingPairs(OverlapCallback^ callback);
 		void Quantize([Out] unsigned short% out, Vector3 point, int isMax);
@@ -64,12 +63,12 @@ namespace BulletSharp
 		AxisSweep3_32Bit(Vector3 worldAabbMin, Vector3 worldAabbMax);
 
 		unsigned int AddHandle(Vector3 aabbMin, Vector3 aabbMax, IntPtr pOwner, short collisionFilterGroup,
-			short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy);
+			short collisionFilterMask, Dispatcher^ dispatcher);
 		unsigned int AddHandle(Vector3 aabbMin, Vector3 aabbMax, IntPtr pOwner, CollisionFilterGroups collisionFilterGroup,
-			CollisionFilterGroups collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy);
+			CollisionFilterGroups collisionFilterMask, Dispatcher^ dispatcher);
 		virtual BroadphaseProxy^ CreateProxy(Vector3% aabbMin, Vector3% aabbMax,
 			BroadphaseNativeType shapeType, IntPtr userPtr, short collisionFilterGroup,
-			short collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy) override;
+			short collisionFilterMask, Dispatcher^ dispatcher) override;
 		//Handle^ GetHandle(unsigned short index);
 		//void ProcessAllOverlappingPairs(OverlapCallback^ callback);
 		void Quantize([Out] unsigned int% out, Vector3 point, int isMax);

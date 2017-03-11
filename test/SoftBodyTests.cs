@@ -26,7 +26,7 @@ namespace BulletSharpTest
             Assert.AreEqual(1, world.SoftBodyArray.Count);
         }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             conf = new SoftBodyRigidBodyCollisionConfiguration();
@@ -41,7 +41,7 @@ namespace BulletSharpTest
             world.AddSoftBody(softBody);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             world.RemoveSoftBody(softBody);
