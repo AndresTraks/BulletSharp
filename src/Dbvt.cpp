@@ -683,7 +683,8 @@ void Dbvt::RayTest(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, ICollide^ pol
 
 #ifndef DISABLE_INTERNAL
 void Dbvt::RayTestInternal(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, Vector3 rayDirectionInverse,
-	array<unsigned int>^ signs, btScalar lambdaMax, Vector3 aabbMin, Vector3 aabbMax, ICollide^ policy)
+	array<unsigned int>^ signs, btScalar lambdaMax, Vector3 aabbMin, Vector3 aabbMax, AlignedDbvtNodeArray^ leaves,
+	ICollide^ policy)
 {
 	pin_ptr<unsigned int> btSigns = &signs[0];
 	VECTOR3_CONV(rayFrom);
@@ -693,7 +694,8 @@ void Dbvt::RayTestInternal(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, Vecto
 	VECTOR3_CONV(aabbMax);
 	_native->rayTestInternal(root->_native, VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo),
 		VECTOR3_USE(rayDirectionInverse), btSigns, lambdaMax, VECTOR3_USE(aabbMin),
-		VECTOR3_USE(aabbMax), *policy->_native);
+		VECTOR3_USE(aabbMax), *(btAlignedObjectArray<const btDbvtNode*>*)leaves->_native,
+		*policy->_native);
 	VECTOR3_DEL(rayFrom);
 	VECTOR3_DEL(rayTo);
 	VECTOR3_DEL(rayDirectionInverse);
@@ -790,11 +792,6 @@ unsigned int Dbvt::Opath::get()
 void Dbvt::Opath::set(unsigned int value)
 {
 	_native->m_opath = value;
-}
-
-AlignedDbvtNodeArray^ Dbvt::RayTestStack::get()
-{
-	return gcnew AlignedDbvtNodeArray(&_native->m_rayTestStack);
 }
 
 DbvtNode^ Dbvt::Root::get()

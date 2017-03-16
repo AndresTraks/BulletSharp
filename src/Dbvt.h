@@ -340,7 +340,7 @@ namespace BulletSharp
 #ifndef DISABLE_INTERNAL
 		void RayTestInternal(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, Vector3 rayDirectionInverse,
 			array<unsigned int>^ signs, btScalar lambdaMax, Vector3 aabbMin, Vector3 aabbMax,
-			ICollide^ policy);
+			AlignedDbvtNodeArray^ leaves, ICollide^ policy);
 #endif
 		void Remove(DbvtNode^ leaf);
 		void Update(DbvtNode^ leaf, DbvtVolume^ volume);
@@ -378,11 +378,6 @@ namespace BulletSharp
 		{
 			unsigned int get();
 			void set(unsigned int value);
-		}
-
-		property AlignedDbvtNodeArray^ RayTestStack
-		{
-			AlignedDbvtNodeArray^ get();
 		}
 
 		property DbvtNode^ Root

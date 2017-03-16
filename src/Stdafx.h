@@ -10,10 +10,10 @@
 
 // These flags can be used to disable parts of the library that are not needed.
 
-#define DISABLE_BVH
+//#define DISABLE_BVH
 //#define DISABLE_COLLISION_ALGORITHMS
 //#define DISABLE_CONSTRAINTS
-#define DISABLE_DBVT
+//#define DISABLE_DBVT
 //#define DISABLE_DEBUGDRAW
 //#define DISABLE_FEATHERSTONE
 //#define DISABLE_GEOMETRY_UTIL
