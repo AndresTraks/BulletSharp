@@ -82,7 +82,9 @@ namespace BulletSharp
 		DisableVisualizeObject = btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT,
 		DisableSpuCollisionProcessing = btCollisionObject::CF_DISABLE_SPU_COLLISION_PROCESSING,
 		HasContactStiffnessDamping = btCollisionObject::CF_HAS_CONTACT_STIFFNESS_DAMPING,
-		HasCustomDebugRenderingColor = btCollisionObject::CF_HAS_CUSTOM_DEBUG_RENDERING_COLOR
+		HasCustomDebugRenderingColor = btCollisionObject::CF_HAS_CUSTOM_DEBUG_RENDERING_COLOR,
+		HasFrictionAnchor = btCollisionObject::CF_HAS_FRICTION_ANCHOR,
+		HasCollisionSoundTrigger = btCollisionObject::CF_HAS_COLLISION_SOUND_TRIGGER
 	};
 
 	[Flags]
