@@ -4,7 +4,6 @@
 
 namespace BulletSharp
 {
-	ref class CollisionWorld;
 	ref class ConstraintSolver;
 	ref class Dispatcher;
 	ref class RigidBody;

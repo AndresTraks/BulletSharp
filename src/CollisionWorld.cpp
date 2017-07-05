@@ -765,7 +765,7 @@ CollisionWorld::CollisionWorld(btCollisionWorld* native)
 		return;
 	}
 	_native = native;
-	_collisionObjectArray = gcnew AlignedCollisionObjectArray(&_native->getCollisionObjectArray(), native);
+	_collisionObjectArray = gcnew AlignedCollisionObjectArray(this);
 }
 
 CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphasePairCache,
@@ -773,7 +773,7 @@ CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseIn
 {
 	_native = new btCollisionWorld(dispatcher->_native, broadphasePairCache->_native,
 		collisionConfiguration->_native);
-	_collisionObjectArray = gcnew AlignedCollisionObjectArray(&_native->getCollisionObjectArray(), _native);
+	_collisionObjectArray = gcnew AlignedCollisionObjectArray(this);
 	Dispatcher = dispatcher;
 	_broadphase = broadphasePairCache;
 }

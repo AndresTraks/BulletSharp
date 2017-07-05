@@ -10,6 +10,7 @@ namespace BulletSharp
 	ref struct BroadphasePair;
 	ref class CollisionObject;
 	ref class CollisionShape;
+	ref class CollisionWorld;
 	ref class CompoundShapeChild;
 	ref class IndexedMesh;
 	ref class ListDebugView;
@@ -208,10 +209,10 @@ namespace BulletSharp
 	{
 	internal:
 		AlignedCollisionObjectArray(btCollisionObjectArray* collisionObjectArray);
-		AlignedCollisionObjectArray(btCollisionObjectArray* collisionObjectArray, btCollisionWorld* collisionWorld);
+		AlignedCollisionObjectArray(CollisionWorld^ collisionWorld);
 
 	private:
-		btCollisionWorld* _collisionWorld;
+		CollisionWorld^ _collisionWorld;
 		List<CollisionObject^>^ _backingList;
 
 	public:

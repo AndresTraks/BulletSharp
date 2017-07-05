@@ -42,7 +42,7 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 #endif
 		collisionConfiguration->_native, _softBodySolver->_native);
 
-	_collisionObjectArray = gcnew AlignedCollisionObjectArray(&_native->getCollisionObjectArray(), _native);
+	_collisionObjectArray = gcnew AlignedCollisionObjectArray(this);
 	_softBodyArray = gcnew AlignedSoftBodyArray(&Native->getSoftBodyArray());
 
 #ifndef DISABLE_CONSTRAINTS
@@ -73,7 +73,7 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 #endif
 		collisionConfiguration->_native, _softBodySolver->_native);
 
-	_collisionObjectArray = gcnew AlignedCollisionObjectArray(&_native->getCollisionObjectArray(), _native);
+	_collisionObjectArray = gcnew AlignedCollisionObjectArray(this);
 	_softBodyArray = gcnew AlignedSoftBodyArray(&Native->getSoftBodyArray());
 
 #ifndef DISABLE_CONSTRAINTS

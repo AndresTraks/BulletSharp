@@ -5,6 +5,7 @@
 #include "Collections.h"
 #include "CollisionObject.h"
 #include "CollisionShape.h"
+#include "CollisionWorld.h"
 #include "CompoundShape.h"
 #include "RigidBody.h"
 #include "PersistentManifold.h"
@@ -432,34 +433,31 @@ AlignedCollisionObjectArray::AlignedCollisionObjectArray(btCollisionObjectArray*
 {
 }
 
-AlignedCollisionObjectArray::AlignedCollisionObjectArray(btCollisionObjectArray* objectArray, btCollisionWorld* collisionWorld)
-: AlignedObjectArray(objectArray)
+AlignedCollisionObjectArray::AlignedCollisionObjectArray(CollisionWorld^ collisionWorld)
+: AlignedObjectArray(&collisionWorld->_native->getCollisionObjectArray())
 {
-	if (collisionWorld)
-	{
-		_collisionWorld = collisionWorld;
-		_backingList = gcnew List<CollisionObject^>();
-	}
+	_collisionWorld = collisionWorld;
+	_backingList = gcnew List<CollisionObject^>();
 }
 
-void SetBodyBroadphaseHandle(CollisionObject^ item, btBroadphaseInterface* broadphase)
+void SetBodyBroadphaseHandle(CollisionObject^ item, BroadphaseInterface^ broadphase)
 {
 	btBroadphaseProxy* handle = item->_native->getBroadphaseHandle();
 #ifndef DISABLE_DBVT
-	if (dynamic_cast<btDbvtBroadphase*>(broadphase)) {
+	if (dynamic_cast<DbvtBroadphase^>(broadphase)) {
 		item->BroadphaseHandle = gcnew DbvtProxy((btDbvtProxy*)handle);
 	}
 	else
 #endif
 	// TODO: implement AxisSweep3::Handle
 	/*
-	if (dynamic_cast<btAxisSweep3*>(broadphase)) {
+	if (dynamic_cast<AxisSweep3^>(broadphase)) {
 		item->BroadphaseHandle = gcnew BroadphaseProxy(handle);
 	}
-	else if (dynamic_cast<bt32BitAxisSweep3*>(broadphase)) {
+	else if (dynamic_cast<AxisSweep3_32Bit^>(broadphase)) {
 		item->BroadphaseHandle = gcnew BroadphaseProxy(handle);
 	}*/
-	if (dynamic_cast<btSimpleBroadphase*>(broadphase)) {
+	if (dynamic_cast<SimpleBroadphase^>(broadphase)) {
 		item->BroadphaseHandle = gcnew SimpleBroadphaseProxy((btSimpleBroadphaseProxy*)handle);
 	} else {
 		item->BroadphaseHandle = gcnew BroadphaseProxy(handle);
@@ -476,17 +474,17 @@ void AlignedCollisionObjectArray::Add(CollisionObject^ item)
 		{
 		case btCollisionObject::CO_RIGID_BODY:
 			if (item->CollisionShape == nullptr) return;
-			static_cast<btDynamicsWorld*>(_collisionWorld)->addRigidBody(static_cast<btRigidBody*>(itemPtr));
+			static_cast<btDynamicsWorld*>(_collisionWorld->_native)->addRigidBody(static_cast<btRigidBody*>(itemPtr));
 			break;
 		case btCollisionObject::CO_SOFT_BODY:
-			static_cast<btSoftRigidDynamicsWorld*>(_collisionWorld)->addSoftBody(static_cast<btSoftBody*>(itemPtr));
+			static_cast<btSoftRigidDynamicsWorld*>(_collisionWorld->_native)->addSoftBody(static_cast<btSoftBody*>(itemPtr));
 			break;
 		default:
-			_collisionWorld->addCollisionObject(itemPtr);
+			_collisionWorld->_native->addCollisionObject(itemPtr);
 			break;
 		}
 
-		SetBodyBroadphaseHandle(item, _collisionWorld->getBroadphase());
+		SetBodyBroadphaseHandle(item, _collisionWorld->Broadphase);
 		_backingList->Add(item);
 	}
 	else
@@ -503,17 +501,17 @@ void AlignedCollisionObjectArray::Add(CollisionObject^ item, short collisionFilt
 	{
 	case btCollisionObject::CO_RIGID_BODY:
 		if (item->CollisionShape == nullptr) return;
-		static_cast<btDynamicsWorld*>(_collisionWorld)->addRigidBody(static_cast<btRigidBody*>(itemPtr), collisionFilterGroup, collisionFilterMask);
+		static_cast<btDynamicsWorld*>(_collisionWorld->_native)->addRigidBody(static_cast<btRigidBody*>(itemPtr), collisionFilterGroup, collisionFilterMask);
 		break;
 	case btCollisionObject::CO_SOFT_BODY:
-		static_cast<btSoftRigidDynamicsWorld*>(_collisionWorld)->addSoftBody(static_cast<btSoftBody*>(itemPtr), collisionFilterGroup, collisionFilterMask);
+		static_cast<btSoftRigidDynamicsWorld*>(_collisionWorld->_native)->addSoftBody(static_cast<btSoftBody*>(itemPtr), collisionFilterGroup, collisionFilterMask);
 		break;
 	default:
-		_collisionWorld->addCollisionObject(itemPtr, collisionFilterGroup, collisionFilterMask);
+		_collisionWorld->_native->addCollisionObject(itemPtr, collisionFilterGroup, collisionFilterMask);
 		break;
 	}
 
-	SetBodyBroadphaseHandle(item, _collisionWorld->getBroadphase());
+	SetBodyBroadphaseHandle(item, _collisionWorld->Broadphase);
 	_backingList->Add(item);
 }
 
@@ -639,13 +637,13 @@ void AlignedCollisionObjectArray::RemoveAt(int index)
 			{
 				return;
 			}
-			static_cast<btDynamicsWorld*>(_collisionWorld)->removeRigidBody(static_cast<btRigidBody*>(itemPtr));
+			static_cast<btDynamicsWorld*>(_collisionWorld->_native)->removeRigidBody(static_cast<btRigidBody*>(itemPtr));
 			break;
 		case btCollisionObject::CO_SOFT_BODY:
-			static_cast<btSoftRigidDynamicsWorld*>(_collisionWorld)->removeSoftBody(static_cast<btSoftBody*>(itemPtr));
+			static_cast<btSoftRigidDynamicsWorld*>(_collisionWorld->_native)->removeSoftBody(static_cast<btSoftBody*>(itemPtr));
 			break;
 		default:
-			_collisionWorld->removeCollisionObject(itemPtr);
+			_collisionWorld->_native->removeCollisionObject(itemPtr);
 			break;
 		}
 		_backingList[index]->BroadphaseHandle = nullptr;
