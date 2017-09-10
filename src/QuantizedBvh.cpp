@@ -289,7 +289,7 @@ bool QuantizedBvh::Serialize(IntPtr alignedDataBuffer, unsigned int dataBufferSi
 	return _native->serialize(alignedDataBuffer.ToPointer(), dataBufferSize, swapEndian);
 }
 
-String^ QuantizedBvh::Serialize(IntPtr dataBuffer, Serializer^ serializer)
+String^ QuantizedBvh::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
 {
 	return gcnew String(_native->serialize(dataBuffer.ToPointer(), serializer->_native));
 }

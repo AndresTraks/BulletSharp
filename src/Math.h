@@ -212,6 +212,7 @@ namespace BulletSharp
 #if defined(GRAPHICS_MOGRE)
 #define Vector3_Cross(left, right, result) result = (left).CrossProduct(right)
 #define Vector3_Dot(left, right) (left).DotProduct(right)
+#define Vector3_LengthSquared(v) (v).SquaredLength
 #define Vector3_Normalize(v) (v).Normalise()
 #define Vector3_Zero Vector3::ZERO
 #define Matrix_Identity Matrix4::IDENTITY
@@ -219,6 +220,7 @@ namespace BulletSharp
 #elif defined(GRAPHICS_NUMERICS)
 #define Vector3_Cross(left, right, result) result = Vector3::Cross(left, right)
 #define Vector3_Dot(left, right) Vector3::Dot(left, right)
+#define Vector3_LengthSquared(v) (v).LengthSquared
 #define Vector3_Normalize(v) Vector3::Normalize(v)
 #define Vector3_Zero Vector3::Zero
 #define Matrix_Identity Matrix4x4::Identity
@@ -230,14 +232,19 @@ namespace BulletSharp
 #define Vector3_Zero Vector3::Zero
 #define Matrix_Identity Matrix::Identity
 #ifdef GRAPHICS_OPENTK
+#define Vector3_LengthSquared(v) (v).LengthSquared
 #define Matrix_Origin(m) (m).ExtractTranslation()
 #elif defined(GRAPHICS_GENERIC) || defined(GRAPHICS_OPENTK)
+#define Vector3_LengthSquared(v) (v).LengthSquared
 #define Matrix_Origin(m) (m).Origin
 #elif defined(GRAPHICS_SHARPDX)
+#define Vector3_LengthSquared(v) (v).LengthSquared()
 #define Matrix_Origin(m) (m).TranslationVector
 #elif defined(GRAPHICS_MONOGAME)
+#define Vector3_LengthSquared(v) (v).LengthSquared()
 #define Matrix_Origin(m) (m).Translation
 #else
+#define Vector3_LengthSquared(v) (v).LengthSquared
 #define Matrix_Origin(m) Vector3((m).M41, (m).M42, (m).M43)
 #endif
 #endif

@@ -40,13 +40,17 @@ List<Vector3>^ GeometryUtil::GetVerticesFromPlaneEquations(ICollection<Vector4>^
 		{
 			for (int k = j + 1; k < numPlanes; k++)
 			{
-				Vector3 n2n3 = planeNormals[j].Cross(planeNormals[k]);
-				Vector3 n3n1 = planeNormals[k].Cross(planeNormals[i]);
-				Vector3 n1n2 = planeNormals[i].Cross(planeNormals[j]);
+				Vector3 n2n3;
+				Vector3 n3n1;
+				Vector3 n1n2;
 
-				if ((n2n3.LengthSquared > 0.0001f) &&
-					(n3n1.LengthSquared > 0.0001f) &&
-					(n1n2.LengthSquared > 0.0001f))
+				Vector3_Cross(planeNormals[j], planeNormals[k], n2n3);
+				Vector3_Cross(planeNormals[k], planeNormals[i], n3n1);
+				Vector3_Cross(planeNormals[i], planeNormals[j], n1n2);
+
+				if ((Vector3_LengthSquared(n2n3) > 0.0001f) &&
+					(Vector3_LengthSquared(n3n1) > 0.0001f) &&
+					(Vector3_LengthSquared(n1n2) > 0.0001f))
 				{
 					//point P out of 3 plane equations:
 
@@ -54,7 +58,7 @@ List<Vector3>^ GeometryUtil::GetVerticesFromPlaneEquations(ICollection<Vector4>^
 					//P = ------------------------------------------------
 					//	N1 . ( N2 * N3 )  
 
-					float quotient = planeNormals[i].Dot(n2n3);
+					float quotient = Vector3_Dot(planeNormals[i], n2n3);
 					if (btFabs(quotient) > 0.000001)
 					{
 						quotient = -1.0f / quotient;
@@ -91,7 +95,7 @@ bool GeometryUtil::IsPointInsidePlanes(ICollection<Vector4>^ planeEquations, Vec
 	for each (Vector4 plane in planeEquations)
 	{
 		Vector3 normal = Vector3(Vector_X(plane), Vector_Y(plane), Vector_Z(plane));
-		btScalar dist = normal.Dot(point) + Vector_W(plane);
+		btScalar dist = Vector3_Dot(normal, point) + Vector_W(plane);
 		if (dist > margin)
 		{
 			return false;
