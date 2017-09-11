@@ -1249,17 +1249,17 @@
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Debug MonoGame'">
     <Reference Include="MonoGame.Framework">
-      <HintPath>packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
+      <HintPath>packages\MonoGame.Framework.DesktopGL.3.6.0.1625\lib\net40\MonoGame.Framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='MinSizeRel MonoGame'">
     <Reference Include="MonoGame.Framework">
-      <HintPath>packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
+      <HintPath>packages\MonoGame.Framework.DesktopGL.3.6.0.1625\lib\net40\MonoGame.Framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Release MonoGame'">
     <Reference Include="MonoGame.Framework">
-      <HintPath>packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
+      <HintPath>packages\MonoGame.Framework.DesktopGL.3.6.0.1625\lib\net40\MonoGame.Framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Debug Numerics'">
@@ -1288,10 +1288,10 @@
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Debug SharpDX'">
     <Reference Include="SharpDX">
-      <HintPath>packages\SharpDX.3.0.2\lib\net45\SharpDX.dll</HintPath>
+      <HintPath>packages\SharpDX.4.0.1\lib\net45\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>packages\SharpDX.Mathematics.3.0.2\lib\net45\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>packages\SharpDX.Mathematics.4.0.1\lib\net45\SharpDX.Mathematics.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='MinSizeRel SharpDX'">
@@ -1304,10 +1304,10 @@
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Release SharpDX'">
     <Reference Include="SharpDX">
-      <HintPath>packages\SharpDX.3.0.2\lib\net45\SharpDX.dll</HintPath>
+      <HintPath>packages\SharpDX.4.0.1\lib\net45\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>packages\SharpDX.Mathematics.3.0.2\lib\net45\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>packages\SharpDX.Mathematics.4.0.1\lib\net45\SharpDX.Mathematics.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

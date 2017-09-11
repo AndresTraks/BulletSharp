@@ -50,16 +50,8 @@
     <Reference Include="BulletSharp">
       <HintPath>..\..\Release MonoGame\BulletSharp.dll</HintPath>
     </Reference>
-    <Reference Include="MonoGame.Framework">
-      <HintPath>packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NVorbis">
-      <HintPath>packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\NVorbis.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="OpenTK">
-      <HintPath>packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\OpenTK.dll</HintPath>
+    <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MonoGame.Framework.DesktopGL.3.6.0.1625\lib\net40\MonoGame.Framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -81,6 +73,7 @@
     <Content Include="Content\ground.fbx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="MonoGame.Framework.dll.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

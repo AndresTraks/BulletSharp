@@ -220,7 +220,7 @@ namespace BulletSharp
 #elif defined(GRAPHICS_NUMERICS)
 #define Vector3_Cross(left, right, result) result = Vector3::Cross(left, right)
 #define Vector3_Dot(left, right) Vector3::Dot(left, right)
-#define Vector3_LengthSquared(v) (v).LengthSquared
+#define Vector3_LengthSquared(v) (v).LengthSquared()
 #define Vector3_Normalize(v) Vector3::Normalize(v)
 #define Vector3_Zero Vector3::Zero
 #define Matrix_Identity Matrix4x4::Identity

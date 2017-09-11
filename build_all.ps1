@@ -21,3 +21,8 @@ $opts = "/p:VCBuildToolPath=$vcPath /p:VisualStudioVersion=15.0 $project"
 $conf = "Release"
 
 iex '& "$msBuild" $opts /p:Configuration="$conf Generic"'
+iex '& "$msBuild" $opts /p:Configuration="$conf Mogre"'
+iex '& "$msBuild" $opts /p:Configuration="$conf MonoGame"'
+iex '& "$msBuild" $opts /p:Configuration="$conf Numerics"'
+iex '& "$msBuild" $opts /p:Configuration="$conf OpenTK"'
+iex '& "$msBuild" $opts /p:Configuration="$conf SharpDX"'
