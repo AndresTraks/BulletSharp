@@ -759,7 +759,7 @@ btScalar ContactResultCallbackWrapper::addSingleResult(btManifoldPoint& cp,
 }
 
 
-CollisionWorld::CollisionWorld(btCollisionWorld* native)
+CollisionWorld::CollisionWorld(btCollisionWorld* native, BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphase)
 {
 	if (!native) {
 		return;

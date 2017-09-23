@@ -29,12 +29,14 @@ namespace BulletSharp
 #ifndef DISABLE_DEBUGDRAW
 		void DebugDrawMultiBodyConstraint(MultiBodyConstraint^ constraint);
 #endif
-#endif
 		void ClearMultiBodyConstraintForces();
+#endif
 		void ClearMultiBodyForces();
 		void ForwardKinematics();
 		MultiBody^ GetMultiBody(int mbIndex);
+#ifndef DISABLE_CONSTRAINTS
 		MultiBodyConstraint^ GetMultiBodyConstraint(int constraintIndex);
+#endif
 		void IntegrateTransforms(btScalar timeStep);
 		void RemoveMultiBody(MultiBody^ body);
 #ifndef DISABLE_CONSTRAINTS

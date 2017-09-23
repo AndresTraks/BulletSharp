@@ -7,7 +7,11 @@
 SoftBodyRigidBodyCollisionConfiguration::SoftBodyRigidBodyCollisionConfiguration(
 	DefaultCollisionConstructionInfo^ constructionInfo)
 	: DefaultCollisionConfiguration(new btSoftBodyRigidBodyCollisionConfiguration(*constructionInfo->_native),
+#ifndef DISABLE_UNCOMMON
 		constructionInfo->CollisionAlgorithmPool, constructionInfo->PersistentManifoldPool)
+#else
+	nullptr, nullptr)
+#endif
 {
 }
 
@@ -16,11 +20,13 @@ SoftBodyRigidBodyCollisionConfiguration::SoftBodyRigidBodyCollisionConfiguration
 {
 }
 
+#ifndef DISABLE_COLLISION_ALGORITHMS
 CollisionAlgorithmCreateFunc^ SoftBodyRigidBodyCollisionConfiguration::GetCollisionAlgorithmCreateFunc(BroadphaseNativeType proxyType0, BroadphaseNativeType proxyType1)
 {
 	// TODO
 
 	return DefaultCollisionConfiguration::GetCollisionAlgorithmCreateFunc(proxyType0, proxyType1);
 }
+#endif
 
 #endif

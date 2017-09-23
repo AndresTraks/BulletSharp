@@ -154,6 +154,7 @@ using namespace System::Drawing;
 //#include <BulletCollision/NarrowPhaseCollision/btVoronoiSimplexSolver.h>
 #include <BulletDynamics/Character/btCharacterControllerInterface.h>
 #include <BulletDynamics/Character/btKinematicCharacterController.h>
+#include <BulletDynamics/Dynamics/btDiscreteDynamicsWorldMt.h>
 //#include <BulletDynamics/MLCPSolvers/btLemkeSolver.h>
 #endif
 

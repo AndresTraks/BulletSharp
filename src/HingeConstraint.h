@@ -39,10 +39,12 @@ namespace BulletSharp
 		void EnableAngularMotor(bool enableMotor, btScalar targetVelocity, btScalar maxMotorImpulse);
 		btScalar GetHingeAngle(Matrix transA, Matrix transB);
 		void GetInfo1NonVirtual(ConstraintInfo1^ info);
+#ifndef DISABLE_INTERNAL
 		void GetInfo2Internal(ConstraintInfo2^ info, Matrix transA, Matrix transB,
 			Vector3 angVelA, Vector3 angVelB);
 		void GetInfo2InternalUsingFrameOffset(ConstraintInfo2^ info, Matrix transA,
 			Matrix transB, Vector3 angVelA, Vector3 angVelB);
+#endif
 		void GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA, Matrix transB,
 			Vector3 angVelA, Vector3 angVelB);
 		void SetAxis(Vector3 axisInA);

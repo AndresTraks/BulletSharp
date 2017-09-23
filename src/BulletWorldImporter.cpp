@@ -17,7 +17,6 @@
 #include "OptimizedBvh.h"
 #include "RigidBody.h"
 #include "SphereShape.h"
-#include "ScaledBvhTriangleMeshShape.h"
 #include "StaticPlaneShape.h"
 #include "StridingMeshInterface.h"
 #include "StringConv.h"
@@ -36,6 +35,9 @@
 #endif
 #ifndef DISABLE_GIMPACT
 #include "GImpactShape.h"
+#endif
+#ifndef DISABLE_UNCOMMON
+#include "ScaledBvhTriangleMeshShape.h"
 #endif
 
 Serialize::BulletWorldImporter::BulletWorldImporter(DynamicsWorld^ world)
@@ -218,10 +220,12 @@ CompoundShape^ Serialize::BulletWorldImporter::CreateCompoundShape()
 	return gcnew CompoundShape();
 }
 
+#ifndef DISABLE_UNCOMMON
 ScaledBvhTriangleMeshShape^ Serialize::BulletWorldImporter::CreateScaledTrangleMeshShape(BvhTriangleMeshShape^ meshShape, Vector3 localScaling)
 {
 	return gcnew ScaledBvhTriangleMeshShape(meshShape, localScaling);
 }
+#endif
 
 OptimizedBvh^ Serialize::BulletWorldImporter::CreateOptimizedBvh()
 {
@@ -766,6 +770,7 @@ class btCompoundShape* Serialize::BulletWorldImporterWrapper::createCompoundShap
 
 class btScaledBvhTriangleMeshShape* Serialize::BulletWorldImporterWrapper::createScaledTrangleMeshShape(btBvhTriangleMeshShape* meshShape, const btVector3& localScalingbtBvhTriangleMeshShape)
 {
+#ifndef DISABLE_UNCOMMON
 	ScaledBvhTriangleMeshShape^ shape =
 		_importer->CreateScaledTrangleMeshShape(
 			static_cast<BvhTriangleMeshShape^>(CollisionShape::GetManaged(meshShape)),
@@ -776,6 +781,9 @@ class btScaledBvhTriangleMeshShape* Serialize::BulletWorldImporterWrapper::creat
 	m_allocatedCollisionShapes.push_back(shapePtr);
 	_importer->_allocatedCollisionShapes->Add(shape);
 	return static_cast<btScaledBvhTriangleMeshShape*>(shape->_native);
+#else
+	throw gcnew NotSupportedException();
+#endif
 }
 
 class btMultiSphereShape* Serialize::BulletWorldImporterWrapper::createMultiSphereShape(const btVector3* positions, const btScalar* radi, int numSpheres)

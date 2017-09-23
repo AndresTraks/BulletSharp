@@ -34,7 +34,7 @@ namespace BulletSharp
 		ConstraintSolver^ _constraintSolver;
 
 	internal:
-		DynamicsWorld(btDynamicsWorld* native);
+		DynamicsWorld(btDynamicsWorld* native, BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphase);
 
 		!DynamicsWorld();
 		~DynamicsWorld();

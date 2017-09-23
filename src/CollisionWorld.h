@@ -462,11 +462,11 @@ namespace BulletSharp
 		btCollisionWorld* _native;
 
 	private:
+		BroadphaseInterface^ _broadphase;
 		DispatcherInfo^ _dispatchInfo;
 		Dispatcher^ _dispatcher;
 
 	protected:
-		BroadphaseInterface^ _broadphase;
 		AlignedCollisionObjectArray^ _collisionObjectArray;
 
 #ifndef DISABLE_DEBUGDRAW
@@ -475,7 +475,7 @@ namespace BulletSharp
 #endif
 
 	internal:
-		CollisionWorld(btCollisionWorld* native);
+		CollisionWorld(btCollisionWorld* native, BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphase);
 
 		~CollisionWorld();
 		!CollisionWorld();

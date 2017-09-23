@@ -177,6 +177,7 @@ void HingeConstraint::GetInfo2InternalUsingFrameOffset(ConstraintInfo2^ info, Ma
 	VECTOR3_DEL(angVelA);
 	VECTOR3_DEL(angVelB);
 }
+#endif
 
 void HingeConstraint::GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA, Matrix transB,
 	Vector3 angVelA, Vector3 angVelB)
@@ -192,7 +193,6 @@ void HingeConstraint::GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA, M
 	VECTOR3_DEL(angVelA);
 	VECTOR3_DEL(angVelB);
 }
-#endif
 
 void HingeConstraint::SetAxis(Vector3 axisInA)
 {

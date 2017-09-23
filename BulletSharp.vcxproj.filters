@@ -327,6 +327,9 @@
     <ClCompile Include="src\DiscreteDynamicsWorld.cpp">
       <Filter>Source Files\BulletDynamics\Dynamics</Filter>
     </ClCompile>
+    <ClCompile Include="src\DiscreteDynamicsWorldMultiThreaded.cpp">
+      <Filter>Source Files\BulletDynamics\Dynamics</Filter>
+    </ClCompile>
     <ClCompile Include="src\Dispatcher.cpp">
       <Filter>Source Files\BulletCollision\BroadphaseCollision</Filter>
     </ClCompile>
@@ -845,6 +848,9 @@
       <Filter>Header Files\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="src\DiscreteDynamicsWorld.h">
+      <Filter>Header Files\BulletDynamics\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DiscreteDynamicsWorldMultiThreaded.h">
       <Filter>Header Files\BulletDynamics\Dynamics</Filter>
     </ClInclude>
     <ClInclude Include="src\Dispatcher.h">

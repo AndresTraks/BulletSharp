@@ -2,17 +2,21 @@
 
 #include "CollisionConfiguration.h"
 #include "CollisionCreateFunc.h"
-#include "BoxBoxCollisionAlgorithm.h"
 #include "BroadphaseProxy.h"
+#include "DefaultCollisionConfiguration.h"
+#ifndef DISABLE_COLLISION_ALGORITHMS
+#ifndef DISABLE_UNCOMMON
 #include "ConvexPlaneCollisionAlgorithm.h"
 #include "ConvexConvexAlgorithm.h"
+#endif
+#include "BoxBoxCollisionAlgorithm.h"
 #include "ConvexConcaveCollisionAlgorithm.h"
 #include "CompoundCollisionAlgorithm.h"
 #include "CompoundCompoundCollisionAlgorithm.h"
-#include "DefaultCollisionConfiguration.h"
 #include "EmptyCollisionAlgorithm.h"
 #include "SphereSphereCollisionAlgorithm.h"
 #include "SphereTriangleCollisionAlgorithm.h"
+#endif
 #ifndef DISABLE_UNCOMMON
 #include "PoolAllocator.h"
 #endif
@@ -115,7 +119,11 @@ DefaultCollisionConfiguration::DefaultCollisionConfiguration(btDefaultCollisionC
 
 DefaultCollisionConfiguration::DefaultCollisionConfiguration(DefaultCollisionConstructionInfo^ constructionInfo)
 	: CollisionConfiguration(new btDefaultCollisionConfiguration(*constructionInfo->_native),
+#ifndef DISABLE_UNCOMMON
 		constructionInfo->CollisionAlgorithmPool, constructionInfo->PersistentManifoldPool)
+#else
+		nullptr, nullptr)
+#endif
 {
 }
 
@@ -124,6 +132,7 @@ DefaultCollisionConfiguration::DefaultCollisionConfiguration()
 {
 }
 
+#ifndef DISABLE_COLLISION_ALGORITHMS
 CollisionAlgorithmCreateFunc^ DefaultCollisionConfiguration::GetCollisionAlgorithmCreateFunc(BroadphaseNativeType proxyType0, BroadphaseNativeType proxyType1)
 {
 	btCollisionAlgorithmCreateFunc* createFunc = _native->getCollisionAlgorithmCreateFunc((int)proxyType0, (int)proxyType1);
@@ -143,6 +152,7 @@ CollisionAlgorithmCreateFunc^ DefaultCollisionConfiguration::GetCollisionAlgorit
 	{
 		return gcnew SphereTriangleCollisionAlgorithm::CreateFunc(static_cast<btSphereTriangleCollisionAlgorithm::CreateFunc*>(createFunc));
 	}
+#ifndef DISABLE_UNCOMMON
 	if (proxyType0 == BroadphaseNativeType::StaticPlaneShape && BroadphaseProxy::IsConvex(proxyType1))
 	{
 		return gcnew ConvexPlaneCollisionAlgorithm::CreateFunc(static_cast<btConvexPlaneCollisionAlgorithm::CreateFunc*>(createFunc));
@@ -155,6 +165,20 @@ CollisionAlgorithmCreateFunc^ DefaultCollisionConfiguration::GetCollisionAlgorit
 	{
 		return gcnew ConvexConvexAlgorithm::CreateFunc(static_cast<btConvexConvexAlgorithm::CreateFunc*>(createFunc));
 	}
+#else
+	if (proxyType0 == BroadphaseNativeType::StaticPlaneShape && BroadphaseProxy::IsConvex(proxyType1))
+	{
+		throw gcnew NotSupportedException();
+	}
+	if (proxyType1 == BroadphaseNativeType::StaticPlaneShape && BroadphaseProxy::IsConvex(proxyType0))
+	{
+		throw gcnew NotSupportedException();
+	}
+	if (BroadphaseProxy::IsConvex(proxyType0) && BroadphaseProxy::IsConvex(proxyType1))
+	{
+		throw gcnew NotSupportedException();
+	}
+#endif
 	if (BroadphaseProxy::IsConvex(proxyType0) && BroadphaseProxy::IsConcave(proxyType1))
 	{
 		return gcnew ConvexConcaveCollisionAlgorithm::CreateFunc(static_cast<btConvexConcaveCollisionAlgorithm::CreateFunc*>(createFunc));
@@ -174,7 +198,7 @@ CollisionAlgorithmCreateFunc^ DefaultCollisionConfiguration::GetCollisionAlgorit
 	return gcnew EmptyAlgorithm::CreateFunc(static_cast<btEmptyAlgorithm::CreateFunc*>(createFunc));
 }
 
-CollisionAlgorithmCreateFunc ^ BulletSharp::DefaultCollisionConfiguration::GetClosestPointsAlgorithmCreateFunc(BroadphaseNativeType proxyType0, BroadphaseNativeType proxyType1)
+CollisionAlgorithmCreateFunc^ BulletSharp::DefaultCollisionConfiguration::GetClosestPointsAlgorithmCreateFunc(BroadphaseNativeType proxyType0, BroadphaseNativeType proxyType1)
 {
 	btCollisionAlgorithmCreateFunc* createFunc = _native->getClosestPointsAlgorithmCreateFunc((int)proxyType0, (int)proxyType1);
 	if (proxyType0 == BroadphaseNativeType::BoxShape && proxyType1 == BroadphaseNativeType::BoxShape)
@@ -193,6 +217,7 @@ CollisionAlgorithmCreateFunc ^ BulletSharp::DefaultCollisionConfiguration::GetCl
 	{
 		return gcnew SphereTriangleCollisionAlgorithm::CreateFunc(static_cast<btSphereTriangleCollisionAlgorithm::CreateFunc*>(createFunc));
 	}
+#ifndef DISABLE_UNCOMMON
 	if (proxyType0 == BroadphaseNativeType::StaticPlaneShape && BroadphaseProxy::IsConvex(proxyType1))
 	{
 		return gcnew ConvexPlaneCollisionAlgorithm::CreateFunc(static_cast<btConvexPlaneCollisionAlgorithm::CreateFunc*>(createFunc));
@@ -205,6 +230,20 @@ CollisionAlgorithmCreateFunc ^ BulletSharp::DefaultCollisionConfiguration::GetCl
 	{
 		return gcnew ConvexConvexAlgorithm::CreateFunc(static_cast<btConvexConvexAlgorithm::CreateFunc*>(createFunc));
 	}
+#else
+	if (proxyType0 == BroadphaseNativeType::StaticPlaneShape && BroadphaseProxy::IsConvex(proxyType1))
+	{
+		throw gcnew NotSupportedException();
+	}
+	if (proxyType1 == BroadphaseNativeType::StaticPlaneShape && BroadphaseProxy::IsConvex(proxyType0))
+	{
+		throw gcnew NotSupportedException();
+	}
+	if (BroadphaseProxy::IsConvex(proxyType0) && BroadphaseProxy::IsConvex(proxyType1))
+	{
+		throw gcnew NotSupportedException();
+	}
+#endif
 	if (BroadphaseProxy::IsConvex(proxyType0) && BroadphaseProxy::IsConcave(proxyType1))
 	{
 		return gcnew ConvexConcaveCollisionAlgorithm::CreateFunc(static_cast<btConvexConcaveCollisionAlgorithm::CreateFunc*>(createFunc));
@@ -223,6 +262,7 @@ CollisionAlgorithmCreateFunc ^ BulletSharp::DefaultCollisionConfiguration::GetCl
 	}
 	return gcnew EmptyAlgorithm::CreateFunc(static_cast<btEmptyAlgorithm::CreateFunc*>(createFunc));
 }
+#endif
 
 void DefaultCollisionConfiguration::SetConvexConvexMultipointIterations(int numPerturbationIterations,
 	int minimumPointsPerturbationThreshold)

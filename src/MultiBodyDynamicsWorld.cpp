@@ -17,11 +17,10 @@
 MultiBodyDynamicsWorld::MultiBodyDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
 	MultiBodyConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration)
 	: DiscreteDynamicsWorld(new btMultiBodyDynamicsWorld(dispatcher->_native, pairCache->_native,
-		(btMultiBodyConstraintSolver*)constraintSolver->_native, collisionConfiguration->_native))
+		(btMultiBodyConstraintSolver*)constraintSolver->_native, collisionConfiguration->_native),
+		dispatcher, pairCache)
 {
 	_constraintSolver = constraintSolver;
-	Dispatcher = dispatcher;
-	_broadphase = pairCache;
 
 	_bodies = gcnew List<MultiBody^>();
 #ifndef DISABLE_CONSTRAINTS
@@ -57,12 +56,14 @@ void MultiBodyDynamicsWorld::ClearMultiBodyConstraintForces()
 {
 	Native->clearMultiBodyConstraintForces();
 }
+#endif
 
 void MultiBodyDynamicsWorld::ClearMultiBodyForces()
 {
 	Native->clearMultiBodyForces();
 }
 
+#ifndef DISABLE_CONSTRAINTS
 #ifndef DISABLE_DEBUGDRAW
 void MultiBodyDynamicsWorld::DebugDrawMultiBodyConstraint(MultiBodyConstraint^ constraint)
 {
@@ -81,10 +82,12 @@ MultiBody^ MultiBodyDynamicsWorld::GetMultiBody(int mbIndex)
 	return _bodies[mbIndex];
 }
 
+#ifndef DISABLE_CONSTRAINTS
 MultiBodyConstraint^ MultiBodyDynamicsWorld::GetMultiBodyConstraint(int constraintIndex)
 {
 	return _constraints[constraintIndex];
 }
+#endif
 
 void MultiBodyDynamicsWorld::IntegrateTransforms(btScalar timeStep)
 {

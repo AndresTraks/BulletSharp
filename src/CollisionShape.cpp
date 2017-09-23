@@ -35,15 +35,19 @@ CollisionShape^ CollisionShape::GetManaged(btCollisionShape* collisionShape)
 	CollisionShape^ shape;
 	switch(type)
 	{
+#ifndef DISABLE_GIMPACT
 	case BroadphaseNativeType::TetrahedralShape: // Required for CompoundFromGImpact.Create
 		shape = gcnew BuSimplex1To4((btBU_Simplex1to4*) collisionShape);
 		break;
+#endif
 	case BroadphaseNativeType::TriangleShape: // Required for ContactCallback from convex-concave algorithm
 		shape = gcnew TriangleShape((btTriangleShape*) collisionShape);
 		break;
+#ifndef DISABLE_GIMPACT
 	case BroadphaseNativeType::GImpactShape: // Required for GImpactMeshShape.GetMeshPart
 		shape = gcnew GImpactMeshShapePart((btGImpactMeshShapePart*) collisionShape);
 		break;
+#endif
 	default:
 		throw gcnew NotImplementedException();
 		//shape = gcnew CollisionShape(collisionShape);

@@ -87,7 +87,9 @@ namespace BulletSharp
 			//virtual StridingMeshInterfaceData^ CreateStridingMeshInterfaceData(StridingMeshInterfaceData^ interfaceData);
 			virtual ConvexHullShape^ CreateConvexHullShape();
 			virtual CompoundShape^ CreateCompoundShape();
+#ifndef DISABLE_UNCOMMON
 			virtual ScaledBvhTriangleMeshShape^ CreateScaledTrangleMeshShape(BvhTriangleMeshShape^ meshShape, Vector3 localScaling);
+#endif
 			virtual MultiSphereShape^ CreateMultiSphereShape(array<Vector3>^ positions, array<btScalar>^ radi);
 
 			// acceleration and connectivity structures

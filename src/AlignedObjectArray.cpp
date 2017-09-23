@@ -476,9 +476,11 @@ void AlignedCollisionObjectArray::Add(CollisionObject^ item)
 			if (item->CollisionShape == nullptr) return;
 			static_cast<btDynamicsWorld*>(_collisionWorld->_native)->addRigidBody(static_cast<btRigidBody*>(itemPtr));
 			break;
+#ifndef DISABLE_SOFTBODY
 		case btCollisionObject::CO_SOFT_BODY:
 			static_cast<btSoftRigidDynamicsWorld*>(_collisionWorld->_native)->addSoftBody(static_cast<btSoftBody*>(itemPtr));
 			break;
+#endif
 		default:
 			_collisionWorld->_native->addCollisionObject(itemPtr);
 			break;
@@ -503,9 +505,11 @@ void AlignedCollisionObjectArray::Add(CollisionObject^ item, short collisionFilt
 		if (item->CollisionShape == nullptr) return;
 		static_cast<btDynamicsWorld*>(_collisionWorld->_native)->addRigidBody(static_cast<btRigidBody*>(itemPtr), collisionFilterGroup, collisionFilterMask);
 		break;
+#ifndef DISABLE_SOFTBODY
 	case btCollisionObject::CO_SOFT_BODY:
 		static_cast<btSoftRigidDynamicsWorld*>(_collisionWorld->_native)->addSoftBody(static_cast<btSoftBody*>(itemPtr), collisionFilterGroup, collisionFilterMask);
 		break;
+#endif
 	default:
 		_collisionWorld->_native->addCollisionObject(itemPtr, collisionFilterGroup, collisionFilterMask);
 		break;
@@ -639,9 +643,11 @@ void AlignedCollisionObjectArray::RemoveAt(int index)
 			}
 			static_cast<btDynamicsWorld*>(_collisionWorld->_native)->removeRigidBody(static_cast<btRigidBody*>(itemPtr));
 			break;
+#ifndef DISABLE_SOFTBODY
 		case btCollisionObject::CO_SOFT_BODY:
 			static_cast<btSoftRigidDynamicsWorld*>(_collisionWorld->_native)->removeSoftBody(static_cast<btSoftBody*>(itemPtr));
 			break;
+#endif
 		default:
 			_collisionWorld->_native->removeCollisionObject(itemPtr);
 			break;

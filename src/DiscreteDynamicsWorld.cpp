@@ -16,8 +16,9 @@
 
 #define Native static_cast<btDiscreteDynamicsWorld*>(_native)
 
-DiscreteDynamicsWorld::DiscreteDynamicsWorld(btDiscreteDynamicsWorld* native)
-	: DynamicsWorld(native)
+DiscreteDynamicsWorld::DiscreteDynamicsWorld(btDiscreteDynamicsWorld* native, BulletSharp::Dispatcher^ dispatcher,
+	BroadphaseInterface^ pairCache)
+	: DynamicsWorld(native, dispatcher, pairCache)
 {
 }
 
@@ -32,13 +33,14 @@ DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher
 #else
 		0,
 #endif
-		collisionConfiguration->_native))
+		collisionConfiguration->_native),
+		dispatcher,
+		pairCache)
 {
 #ifndef DISABLE_CONSTRAINTS
 	_constraintSolver = constraintSolver;
 #endif
 	Dispatcher = dispatcher;
-	_broadphase = pairCache;
 }
 
 void DiscreteDynamicsWorld::ApplyGravity()

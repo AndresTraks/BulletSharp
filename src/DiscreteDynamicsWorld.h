@@ -13,7 +13,8 @@ namespace BulletSharp
 	public ref class DiscreteDynamicsWorld : DynamicsWorld
 	{
 	internal:
-		DiscreteDynamicsWorld(btDiscreteDynamicsWorld* native);
+		DiscreteDynamicsWorld(btDiscreteDynamicsWorld* native, BulletSharp::Dispatcher^ dispatcher,
+			BroadphaseInterface^ pairCache);
 
 #ifndef DISABLE_UNCOMMON
 	private:

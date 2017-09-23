@@ -70,11 +70,12 @@ namespace BulletSharp
 	public:
 		DefaultCollisionConfiguration(DefaultCollisionConstructionInfo^ constructionInfo);
 		DefaultCollisionConfiguration();
-
+#ifndef DISABLE_COLLISION_ALGORITHMS
 		virtual CollisionAlgorithmCreateFunc^ GetCollisionAlgorithmCreateFunc(BroadphaseNativeType proxyType0,
 			BroadphaseNativeType proxyType1) override;
 		CollisionAlgorithmCreateFunc^ GetClosestPointsAlgorithmCreateFunc(BroadphaseNativeType proxyType0,
 			BroadphaseNativeType proxyType1);
+#endif
 		void SetConvexConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold);
 		void SetConvexConvexMultipointIterations(int numPerturbationIterations);
 		void SetConvexConvexMultipointIterations();

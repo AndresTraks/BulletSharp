@@ -15,8 +15,8 @@
 
 #define Native static_cast<btDynamicsWorld*>(_native)
 
-DynamicsWorld::DynamicsWorld(btDynamicsWorld* native)
-	: CollisionWorld(native)
+DynamicsWorld::DynamicsWorld(btDynamicsWorld* native, BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphase)
+	: CollisionWorld(native, dispatcher, broadphase)
 {
 	_constraints = gcnew List<TypedConstraint^>();
 }
