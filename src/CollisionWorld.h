@@ -534,7 +534,7 @@ namespace BulletSharp
 		property Dispatcher^ Dispatcher
 		{
 			BulletSharp::Dispatcher^ get();
-		internal:
+		private:
 			void set(BulletSharp::Dispatcher^ value);
 		}
 

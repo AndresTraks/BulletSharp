@@ -40,7 +40,6 @@ DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher
 #ifndef DISABLE_CONSTRAINTS
 	_constraintSolver = constraintSolver;
 #endif
-	Dispatcher = dispatcher;
 }
 
 void DiscreteDynamicsWorld::ApplyGravity()

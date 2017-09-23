@@ -761,6 +761,9 @@ btScalar ContactResultCallbackWrapper::addSingleResult(btManifoldPoint& cp,
 
 CollisionWorld::CollisionWorld(btCollisionWorld* native, BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphase)
 {
+	Dispatcher = dispatcher;
+	Broadphase = broadphase;
+
 	if (!native) {
 		return;
 	}
@@ -984,7 +987,11 @@ BroadphaseInterface^ CollisionWorld::Broadphase::get()
 }
 void CollisionWorld::Broadphase::set(BroadphaseInterface^ pairCache)
 {
-	_native->setBroadphase(pairCache->_native);
+	// _native can be zero from a constructor argument
+	if (_native != nullptr)
+	{
+		_native->setBroadphase(pairCache->_native);
+	}
 	_broadphase = pairCache;
 }
 
