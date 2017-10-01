@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoFramework", "DemoFramework\DemoFramework.csproj", "{7F50B160-6C4D-467A-9AAB-10C516326BD1}"
 EndProject
@@ -189,6 +189,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollisionFeedbackDemo", "Co
 		{19C540EC-556A-4834-BA97-6EF07AC5EF58} = {19C540EC-556A-4834-BA97-6EF07AC5EF58}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiThreadedDemo", "MultiThreadedDemo\MultiThreadedDemo.csproj", "{B6C5D213-F281-4B5C-B6E8-02E1BB184B93}"
+	ProjectSection(ProjectDependencies) = postProject
+		{540E0C60-3FBD-4166-933D-D80284D1CA0E} = {540E0C60-3FBD-4166-933D-D80284D1CA0E}
+		{3CD13788-CD50-451F-8267-AF7578403621} = {3CD13788-CD50-451F-8267-AF7578403621}
+		{67DF42D4-C318-4E52-9017-43A2EFD7790B} = {67DF42D4-C318-4E52-9017-43A2EFD7790B}
+		{19C540EC-556A-4834-BA97-6EF07AC5EF58} = {19C540EC-556A-4834-BA97-6EF07AC5EF58}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -300,6 +308,10 @@ Global
 		{3E1D8BC6-560D-4EB0-8305-5B3E2D4CE001}.Debug|x86.Build.0 = Debug|x86
 		{3E1D8BC6-560D-4EB0-8305-5B3E2D4CE001}.Release|x86.ActiveCfg = Release|x86
 		{3E1D8BC6-560D-4EB0-8305-5B3E2D4CE001}.Release|x86.Build.0 = Release|x86
+		{B6C5D213-F281-4B5C-B6E8-02E1BB184B93}.Debug|x86.ActiveCfg = Debug|x86
+		{B6C5D213-F281-4B5C-B6E8-02E1BB184B93}.Debug|x86.Build.0 = Debug|x86
+		{B6C5D213-F281-4B5C-B6E8-02E1BB184B93}.Release|x86.ActiveCfg = Release|x86
+		{B6C5D213-F281-4B5C-B6E8-02E1BB184B93}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
