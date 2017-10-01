@@ -22,6 +22,7 @@
 //#define DISABLE_INTERNAL
 //#define DISABLE_INTERNAL_EDGE_UTILITY
 //#define DISABLE_MLCP
+//#define DISABLE_MULTITHREADING
 //#define DISABLE_SERIALIZE
 //#define DISABLE_SOFTBODY
 //#define DISABLE_UNCOMMON
@@ -154,7 +155,6 @@ using namespace System::Drawing;
 //#include <BulletCollision/NarrowPhaseCollision/btVoronoiSimplexSolver.h>
 #include <BulletDynamics/Character/btCharacterControllerInterface.h>
 #include <BulletDynamics/Character/btKinematicCharacterController.h>
-#include <BulletDynamics/Dynamics/btDiscreteDynamicsWorldMt.h>
 //#include <BulletDynamics/MLCPSolvers/btLemkeSolver.h>
 #endif
 
@@ -228,6 +228,12 @@ using namespace System::Drawing;
 #include <BulletDynamics/MLCPSolvers/btDantzigSolver.h>
 #include <BulletDynamics/MLCPSolvers/btMLCPSolver.h>
 #include <BulletDynamics/MLCPSolvers/btMLCPSolverInterface.h>
+#endif
+
+#ifndef DISABLE_MULTITHREADING
+#include <BulletDynamics/Dynamics/btDiscreteDynamicsWorldMt.h>
+#include <BulletCollision/CollisionDispatch/btCollisionDispatcherMt.h>
+#include <LinearMath/btThreads.h>
 #endif
 
 #ifndef DISABLE_SERIALIZE

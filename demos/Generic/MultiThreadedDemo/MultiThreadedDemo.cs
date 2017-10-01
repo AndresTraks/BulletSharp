@@ -27,15 +27,11 @@ namespace MultiThreadedDemo
             Freelook.SetEyeTarget(eye, target);
 
             Graphics.SetFormText("BulletSharp - Multi-threaded Demo");
-            SetDemoText();
-
-            var scheduler = Threads.TaskScheduler;
         }
 
         public override void OnHandleInput()
         {
             base.OnHandleInput();
-
 
             if (Input.KeysPressed.Count != 0)
             {
@@ -59,6 +55,7 @@ namespace MultiThreadedDemo
         {
             CreateSchedulers();
             NextTaskScheduler();
+            SetDemoText();
 
             using (var collisionConfigurationInfo = new DefaultCollisionConstructionInfo
             {

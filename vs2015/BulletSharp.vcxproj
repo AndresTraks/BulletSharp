@@ -1020,6 +1020,7 @@
     <ClCompile Include="..\src\DataStream.cpp" />
     <ClCompile Include="..\src\Matrix.cpp" />
     <ClCompile Include="..\src\Quaternion.cpp" />
+    <ClCompile Include="..\src\Threads.cpp" />
     <ClCompile Include="..\src\Utilities.cpp" />
     <ClCompile Include="..\src\Vector3.cpp" />
     <ClCompile Include="..\src\Vector4.cpp" />
@@ -1028,6 +1029,7 @@
     <ClCompile Include="..\src\ManifoldResult.cpp" />
     <ClCompile Include="..\src\CollisionObjectWrapper.cpp" />
     <ClCompile Include="..\src\CollisionDispatcher.cpp" />
+    <ClCompile Include="..\src\CollisionDispatcherMultiThreaded.cpp" />
     <ClCompile Include="..\src\CollisionCreateFunc.cpp" />
     <ClCompile Include="..\src\ActivatingCollisionAlgorithm.cpp" />
     <ClCompile Include="..\src\SphereSphereCollisionAlgorithm.cpp" />
@@ -1196,6 +1198,7 @@
     <ClInclude Include="..\src\ITrackingDisposable.h" />
     <ClInclude Include="..\src\Math.h" />
     <ClInclude Include="..\src\StringConv.h" />
+    <ClInclude Include="..\src\Threads.h" />
     <ClInclude Include="..\src\Version.h" />
     <ClInclude Include="..\src\DataStream.h" />
     <ClInclude Include="..\src\Matrix.h" />
@@ -1208,6 +1211,7 @@
     <ClInclude Include="..\src\ManifoldResult.h" />
     <ClInclude Include="..\src\CollisionObjectWrapper.h" />
     <ClInclude Include="..\src\CollisionDispatcher.h" />
+    <ClInclude Include="..\src\CollisionDispatcherMultiThreaded.h" />
     <ClInclude Include="..\src\CollisionCreateFunc.h" />
     <ClInclude Include="..\src\ActivatingCollisionAlgorithm.h" />
     <ClInclude Include="..\src\SphereSphereCollisionAlgorithm.h" />
