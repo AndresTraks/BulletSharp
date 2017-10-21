@@ -21,11 +21,13 @@ namespace DemoFramework.OpenTK
 
             InitializeComponent();
 
-            glControl = new GLControl(new GraphicsMode(new ColorFormat(24), 24, 0, 4));
-            glControl.BackColor = System.Drawing.Color.Black;
-            glControl.Dock = DockStyle.Fill;
-            glControl.TabIndex = 0;
-            glControl.VSync = false;
+            GLControl = new GLControl
+            {
+                BackColor = System.Drawing.Color.Black,
+                Dock = DockStyle.Fill,
+                TabIndex = 0,
+                VSync = true
+            };
 
             Controls.Add(glControl);
 
