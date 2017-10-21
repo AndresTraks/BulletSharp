@@ -7,7 +7,7 @@
 #define Native static_cast<btNNCGConstraintSolver*>(_native)
 
 NncgConstraintSolver::NncgConstraintSolver()
-	: SequentialImpulseConstraintSolver(new btNNCGConstraintSolver())
+	: SequentialImpulseConstraintSolver(ALIGNED_NEW(btNNCGConstraintSolver)())
 {
 }
 

@@ -15,9 +15,6 @@ namespace BulletSharp
 	internal:
 		btConstraintSolver* _native;
 
-	private:
-		bool _preventDelete;
-
 	internal:
 		ConstraintSolver(btConstraintSolver* native);
 

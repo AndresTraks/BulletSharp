@@ -30,15 +30,10 @@ namespace BulletSharp
 
 		public:
 			SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
-#ifndef DISABLE_CONSTRAINTS
-				BulletSharp::ConstraintSolver^ constraintSolver,
-#endif
-				CollisionConfiguration^ collisionConfiguration, SoftBodySolver^ softBodySolver);
+				BulletSharp::ConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration,
+				SoftBodySolver^ softBodySolver);
 			SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
-#ifndef DISABLE_CONSTRAINTS
-				BulletSharp::ConstraintSolver^ constraintSolver,
-#endif
-				CollisionConfiguration^ collisionConfiguration);
+				BulletSharp::ConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration);
 
 			void AddSoftBody(SoftBody^ body,
 				CollisionFilterGroups collisionFilterGroup,

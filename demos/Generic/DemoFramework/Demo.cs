@@ -44,11 +44,7 @@ namespace DemoFramework
 
         protected BoxShape shootBoxShape;
         protected float shootBoxInitialSpeed = 40;
-        RigidBody pickedBody;
-        protected TypedConstraint pickConstraint;
-        float oldPickingDist;
-        bool prevCanSleep;
-        MultiBodyPoint2Point pickingMultiBodyPoint2Point;
+        private BodyPicker _bodyPicker;
 
         // Debug drawing
         bool _isDebugDrawEnabled;
@@ -129,6 +125,8 @@ namespace DemoFramework
                 Input = new Input(Graphics.Form);
                 Freelook = new FreeLook(Input);
 
+                _bodyPicker = new BodyPicker(this);
+
                 Graphics.Initialize();
                 Graphics.CullingEnabled = isCullingEnabled;
                 OnInitialize();
@@ -177,7 +175,7 @@ namespace DemoFramework
 
         public virtual void ClientResetScene()
         {
-            RemovePickingConstraint();
+            _bodyPicker.RemovePickingConstraint();
             ExitPhysics();
             OnInitializePhysics();
             if (World != null && _debugDrawer != null)
@@ -268,7 +266,9 @@ namespace DemoFramework
             }
 
             if (Freelook.Update(FrameDelta))
+            {
                 Graphics.UpdateView();
+            }
 
             Input.ClearKeyCache();
         }
@@ -339,7 +339,7 @@ namespace DemoFramework
                         //shadowsEnabled = !shadowsEnabled;
                         break;
                     case Keys.Space:
-                        ShootBox(Freelook.Eye, GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, Graphics.FieldOfView));
+                        ShootBox(Freelook.Eye, GetCameraRayTo());
                         break;
                     case Keys.Return:
                         ClientResetScene();
@@ -347,173 +347,12 @@ namespace DemoFramework
                 }
             }
 
-            if (Input.MousePressed != MouseButtons.None)
-            {
-                Vector3 rayTo = GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, Graphics.FieldOfView);
-
-                if (Input.MousePressed == MouseButtons.Right)
-                {
-                    if (World != null)
-                    {
-                        Vector3 rayFrom = Freelook.Eye;
-
-                        ClosestRayResultCallback rayCallback = new ClosestRayResultCallback(ref rayFrom, ref rayTo);
-                        World.RayTest(ref rayFrom, ref rayTo, rayCallback);
-                        if (rayCallback.HasHit)
-                        {
-                            Vector3 pickPos = rayCallback.HitPointWorld;
-                            RigidBody body = rayCallback.CollisionObject as RigidBody;
-                            if (body != null)
-                            {
-                                if (!(body.IsStaticObject || body.IsKinematicObject))
-                                {
-                                    pickedBody = body;
-                                    pickedBody.ActivationState = ActivationState.DisableDeactivation;
-
-                                    Vector3 localPivot = Vector3.TransformCoordinate(pickPos, Matrix.Invert(body.CenterOfMassTransform));
-
-                                    if (Input.KeysDown.Contains(Keys.ShiftKey))
-                                    {
-                                        Generic6DofConstraint dof6 = new Generic6DofConstraint(body, Matrix.Translation(localPivot), false)
-                                        {
-                                            LinearLowerLimit = Vector3.Zero,
-                                            LinearUpperLimit = Vector3.Zero,
-                                            AngularLowerLimit = Vector3.Zero,
-                                            AngularUpperLimit = Vector3.Zero
-                                        };
-
-                                        World.AddConstraint(dof6);
-                                        pickConstraint = dof6;
-
-                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 0);
-                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 1);
-                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 2);
-                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 3);
-                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 4);
-                                        dof6.SetParam(ConstraintParam.StopCfm, 0.8f, 5);
-
-                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 0);
-                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 1);
-                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 2);
-                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 3);
-                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 4);
-                                        dof6.SetParam(ConstraintParam.StopErp, 0.1f, 5);
-                                    }
-                                    else
-                                    {
-                                        Point2PointConstraint p2p = new Point2PointConstraint(body, localPivot);
-                                        World.AddConstraint(p2p);
-                                        pickConstraint = p2p;
-                                        p2p.Setting.ImpulseClamp = 30;
-                                        //very weak constraint for picking
-                                        p2p.Setting.Tau = 0.001f;
-                                        /*
-                                        p2p.SetParam(ConstraintParams.Cfm, 0.8f, 0);
-                                        p2p.SetParam(ConstraintParams.Cfm, 0.8f, 1);
-                                        p2p.SetParam(ConstraintParams.Cfm, 0.8f, 2);
-                                        p2p.SetParam(ConstraintParams.Erp, 0.1f, 0);
-                                        p2p.SetParam(ConstraintParams.Erp, 0.1f, 1);
-                                        p2p.SetParam(ConstraintParams.Erp, 0.1f, 2);
-                                        */
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                MultiBodyLinkCollider multiCol = rayCallback.CollisionObject as MultiBodyLinkCollider;
-                                if (multiCol != null && multiCol.MultiBody != null)
-                                {
-                                    MultiBody mb = multiCol.MultiBody;
-
-                                    prevCanSleep = mb.CanSleep;
-                                    mb.CanSleep = false;
-                                    Vector3 pivotInA = mb.WorldPosToLocal(multiCol.Link, pickPos);
-
-                                    MultiBodyPoint2Point p2p = new MultiBodyPoint2Point(mb, multiCol.Link, null, pivotInA, pickPos);
-                                    p2p.MaxAppliedImpulse = 2;
-
-                                    (World as MultiBodyDynamicsWorld).AddMultiBodyConstraint(p2p);
-                                    pickingMultiBodyPoint2Point = p2p;
-                                }
-                            }
-                            oldPickingDist = (pickPos - rayFrom).Length;
-                        }
-                        rayCallback.Dispose();
-                    }
-                }
-            }
-            else if (Input.MouseReleased == MouseButtons.Right)
-            {
-                RemovePickingConstraint();
-            }
-
-            // Mouse movement
-            if (Input.MouseDown == MouseButtons.Right)
-            {
-                MovePickedBody();
-            }
+            _bodyPicker.Update();
         }
 
-        void MovePickedBody()
+        public Vector3 GetCameraRayTo()
         {
-            if (pickConstraint != null)
-            {
-                Vector3 rayFrom = Freelook.Eye;
-                Vector3 newRayTo = GetRayTo(Input.MousePoint, rayFrom, Freelook.Target, Graphics.FieldOfView);
-
-                //keep it at the same picking distance
-                Vector3 dir = newRayTo - rayFrom;
-                dir.Normalize();
-                dir *= oldPickingDist;
-
-                if (pickConstraint.ConstraintType == TypedConstraintType.D6)
-                {
-                    Generic6DofConstraint pickCon = pickConstraint as Generic6DofConstraint;
-
-                    //keep it at the same picking distance
-                    Matrix tempFrameOffsetA = pickCon.FrameOffsetA;
-                    tempFrameOffsetA.Origin = rayFrom + dir;
-                    pickCon.FrameOffsetA = tempFrameOffsetA;
-                }
-                else
-                {
-                    Point2PointConstraint pickCon = pickConstraint as Point2PointConstraint;
-
-                    //keep it at the same picking distance
-                    pickCon.PivotInB = rayFrom + dir;
-                }
-            }
-            else if (pickingMultiBodyPoint2Point != null)
-            {
-                Vector3 rayFrom = Freelook.Eye;
-                Vector3 newRayTo = GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, Graphics.FieldOfView);
-
-                Vector3 dir = (newRayTo - rayFrom);
-                dir.Normalize();
-                dir *= oldPickingDist;
-                pickingMultiBodyPoint2Point.PivotInB = rayFrom + dir;
-            }
-        }
-
-        void RemovePickingConstraint()
-        {
-            if (pickConstraint != null && World != null)
-            {
-                World.RemoveConstraint(pickConstraint);
-                pickConstraint.Dispose();
-                pickConstraint = null;
-                pickedBody.ForceActivationState(ActivationState.ActiveTag);
-                pickedBody.DeactivationTime = 0;
-                pickedBody = null;
-            }
-
-            if (pickingMultiBodyPoint2Point != null)
-            {
-                pickingMultiBodyPoint2Point.MultiBodyA.CanSleep = prevCanSleep;
-                (World as MultiBodyDynamicsWorld).RemoveMultiBodyConstraint(pickingMultiBodyPoint2Point);
-                pickingMultiBodyPoint2Point.Dispose();
-                pickingMultiBodyPoint2Point = null;
-            }
+            return GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, Graphics.FieldOfView);
         }
 
         protected Vector3 GetRayTo(Point point, Vector3 eye, Vector3 target, float fov)

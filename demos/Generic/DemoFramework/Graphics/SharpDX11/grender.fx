@@ -63,7 +63,7 @@ float GetShadowTerm(float2 texCoord)
 		lightScreenPos = (lightScreenPos - float2(-1, 1)) * float2(0.5, -0.5); // from -1...1 to 0...1
 		float lightDepthSample = lightDepthMap.Sample(shadowSampler, lightScreenPos).x;
 
-		float shadowMul = ((lightDepthActual - lightDepthSample) > 0.00006) ? 0.8 : 1;
+		float shadowMul = ((lightDepthActual - lightDepthSample) > 0.000006) ? 0.8 : 1;
 		return shadowMul;
 	}
 

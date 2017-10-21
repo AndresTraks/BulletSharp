@@ -74,7 +74,11 @@ Dispatcher^ SoftBodyWorldInfo::Dispatcher::get()
 }
 void SoftBodyWorldInfo::Dispatcher::set(BulletSharp::Dispatcher^ value)
 {
-	_native->m_dispatcher = GetUnmanagedNullable(value);
+	if (!value)
+	{
+		throw gcnew ArgumentNullException("value");
+	}
+	_native->m_dispatcher = value->_native;
 	_dispatcher = value;
 }
 

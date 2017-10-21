@@ -7,14 +7,12 @@ namespace RagdollDemo
 {
     class RagdollDemo : Demo
     {
-        Vector3 eye = new Vector3(0, 1, 5);
-        Vector3 target = new Vector3(0, 1, 0);
-
         List<Ragdoll> ragdolls = new List<Ragdoll>();
 
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(0, 1, 5);
+            Freelook.Target = new Vector3(0, 1, 0);
 
             Graphics.SetFormText("BulletSharp - Ragdoll Demo");
         }

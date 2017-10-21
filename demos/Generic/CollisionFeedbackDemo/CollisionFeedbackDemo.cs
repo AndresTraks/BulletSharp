@@ -6,16 +6,14 @@ namespace CollisionFeedbackDemo
 {
     class CollisionFeedbackDemo : Demo
     {
-        Vector3 eye = new Vector3(0, 20, 50);
-        Vector3 target = new Vector3(10, 0, 0);
-
         AudioEngine _audioEngine = new AudioEngine();
 
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(0, 20, 50);
+            Freelook.Target = new Vector3(10, 0, 0);
 
-            Graphics.SetFormText("BulletSharp - Collision Interface Demo");
+            Graphics.SetFormText("BulletSharp - Collision Feedback Demo");
         }
 
         protected override void OnInitializePhysics()

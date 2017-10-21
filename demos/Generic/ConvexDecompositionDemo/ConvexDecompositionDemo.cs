@@ -9,16 +9,14 @@ namespace ConvexDecompositionDemo
 {
     class ConvexDecompositionDemo : Demo
     {
-        Vector3 eye = new Vector3(35, 10, 35);
-        Vector3 target = new Vector3(0, 5, 0);
-
         Vector3 convexDecompositionObjectOffset;
         List<TriangleMesh> trimeshes = new List<TriangleMesh>();
         public bool sEnableSAT = false;
 
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(35, 10, 35);
+            Freelook.Target = new Vector3(0, 5, 0);
 
             Graphics.SetFormText("BulletSharp - Convex Decomposition Demo");
         }

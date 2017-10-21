@@ -8,7 +8,7 @@
 #define Native static_cast<btMLCPSolver*>(_native)
 
 MlcpSolver::MlcpSolver(MlcpSolverInterface^ solver)
-	: SequentialImpulseConstraintSolver(new btMLCPSolver(solver->_native))
+	: SequentialImpulseConstraintSolver(ALIGNED_NEW(btMLCPSolver)(solver->_native))
 {
 	_mlcpSolver = solver;
 }

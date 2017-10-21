@@ -74,9 +74,6 @@ namespace SoftDemo
 
     class SoftDemo : Demo
     {
-        Vector3 eye = new Vector3(20, 20, 80);
-        Vector3 target = new Vector3(0, 0, 10);
-
         Point lastMousePos;
         Vector3 impact;
         SRayCast results = new SRayCast();
@@ -117,7 +114,8 @@ namespace SoftDemo
 
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(20, 20, 80);
+            Freelook.Target = new Vector3(0, 0, 10);
 
             Graphics.SetFormText("BulletSharp - SoftBody Demo");
             DemoText = "B - Previous Demo\n" +
@@ -1192,7 +1190,7 @@ namespace SoftDemo
             if (Input.MousePressed == MouseButtons.Right)
             {
                 results.Fraction = 1;
-                if (pickConstraint == null)
+                //if (pickConstraint == null)
                 {
                     Vector3 rayFrom = Freelook.Eye;
                     Vector3 rayTo = GetRayTo(Input.MousePoint, Freelook.Eye, Freelook.Target, Graphics.FieldOfView);

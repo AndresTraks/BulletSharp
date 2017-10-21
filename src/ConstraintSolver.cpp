@@ -27,10 +27,7 @@ ConstraintSolver::!ConstraintSolver()
 	if (this->IsDisposed)
 		return;
 
-	if (!_preventDelete)
-	{
-		ALIGNED_FREE(_native);
-	}
+	ALIGNED_FREE(_native);
 	_native = NULL;
 }
 

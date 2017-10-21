@@ -7,9 +7,6 @@ namespace BenchmarkDemo
 {
     class BenchmarkDemo : Demo
     {
-        Vector3 eye = new Vector3(60, 40, 20);
-        Vector3 target = new Vector3(0, 5, -4);
-
         const float defaultContactProcessingThreshold = 0.0f;
 
         int scene = 1;
@@ -24,7 +21,8 @@ namespace BenchmarkDemo
 
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(60, 40, 20);
+            Freelook.Target = new Vector3(0, 5, -4);
 
             Graphics.SetFormText("BulletSharp - Benchmark Demo");
             Graphics.SetInfoText("Move using mouse and WASD+shift\n" +

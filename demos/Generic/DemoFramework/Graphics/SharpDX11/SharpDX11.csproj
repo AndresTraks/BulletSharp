@@ -61,6 +61,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="InfoText.cs" />
+    <Compile Include="InstanceData.cs" />
     <Compile Include="Light.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="MeshFactory.cs" />

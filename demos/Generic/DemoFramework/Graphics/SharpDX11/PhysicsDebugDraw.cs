@@ -1,7 +1,7 @@
 ﻿using BulletSharp;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
-using DataStream = global::SharpDX.DataStream;
+using DataStream = SharpDX.DataStream;
 using Device = SharpDX.Direct3D11.Device;
 
 namespace DemoFramework.SharpDX11
@@ -89,7 +89,7 @@ namespace DemoFramework.SharpDX11
             }
 
             inputAssembler.SetVertexBuffers(0, vertexBufferBinding);
-            inputAssembler.PrimitiveTopology = global::SharpDX.Direct3D.PrimitiveTopology.LineList;
+            inputAssembler.PrimitiveTopology = SharpDX.Direct3D.PrimitiveTopology.LineList;
 
             device.ImmediateContext.Draw(lines.Count, 0);
 

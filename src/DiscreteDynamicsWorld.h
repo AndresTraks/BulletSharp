@@ -13,8 +13,7 @@ namespace BulletSharp
 	public ref class DiscreteDynamicsWorld : DynamicsWorld
 	{
 	internal:
-		DiscreteDynamicsWorld(btDiscreteDynamicsWorld* native, BulletSharp::Dispatcher^ dispatcher,
-			BroadphaseInterface^ pairCache);
+		DiscreteDynamicsWorld();
 
 #ifndef DISABLE_UNCOMMON
 	private:
@@ -23,10 +22,7 @@ namespace BulletSharp
 
 	public:
 		DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
-#ifndef DISABLE_CONSTRAINTS
-			BulletSharp::ConstraintSolver^ constraintSolver,
-#endif
-			CollisionConfiguration^ collisionConfiguration);
+			BulletSharp::ConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration);
 
 		void ApplyGravity();
 #if !defined(DISABLE_CONSTRAINTS) && !defined (DISABLE_DEBUGDRAW)

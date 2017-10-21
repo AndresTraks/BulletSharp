@@ -9,13 +9,11 @@ namespace BspDemo
 {
     class BspDemo : Demo
     {
-        Vector3 eye = new Vector3(10, 10, 10);
-        Vector3 target = new Vector3(0, 0, 0);
-
         protected override void OnInitialize()
         {
             Freelook.Up = Vector3.UnitZ;
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(10, 10, 10);
+            Freelook.Target = new Vector3(0, 0, 0);
 
             Graphics.SetFormText("BulletSharp - Quake BSP Physics Viewer");
         }

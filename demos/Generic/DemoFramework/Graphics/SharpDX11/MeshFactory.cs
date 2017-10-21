@@ -4,8 +4,8 @@ using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
+using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Buffer = SharpDX.Direct3D11.Buffer;
 using Color = System.Drawing.Color;
 using DataStream = SharpDX.DataStream;
@@ -15,16 +15,8 @@ using Vector3 = BulletSharp.Vector3;
 
 namespace DemoFramework.SharpDX11
 {
-    public struct InstanceData
-    {
-        public Matrix WorldTransform;
-        public uint Color;
-
-        public static readonly int SizeInBytes = Marshal.SizeOf(typeof(InstanceData));
-    }
-
     // Contains the geometry buffers and information of all instances of a particular shape.
-    public class ShapeData : System.IDisposable
+    public class ShapeData : IDisposable
     {
         public Buffer VertexBuffer;
         public int VertexCount;
@@ -34,25 +26,17 @@ namespace DemoFramework.SharpDX11
         public Format IndexFormat;
 
         public Buffer InstanceDataBuffer;
-        public List<InstanceData> Instances;
-        public InstanceData[] InstanceArray;
+        public int InstanceDataBufferCount;
+        public InstanceDataList Instances = new InstanceDataList();
 
-        public PrimitiveTopology PrimitiveTopology;
-        public VertexBufferBinding[] BufferBindings;
+        public PrimitiveTopology PrimitiveTopology = PrimitiveTopology.TriangleList;
+        public VertexBufferBinding[] BufferBindings = new VertexBufferBinding[2];
 
         public Vector3[] SoftBodyData;
 
-        public ShapeData()
-        {
-            Instances = new List<InstanceData>();
-            InstanceArray = new InstanceData[0];
-            PrimitiveTopology = PrimitiveTopology.TriangleList;
-            BufferBindings = new VertexBufferBinding[2];
-        }
-
         public void SetVertexBuffer(Device device, Vector3[] vectors)
         {
-            BufferDescription vertexBufferDesc = new BufferDescription()
+            var vertexBufferDesc = new BufferDescription
             {
                 SizeInBytes = Vector3.SizeInBytes * vectors.Length,
                 Usage = ResourceUsage.Default,
@@ -84,7 +68,7 @@ namespace DemoFramework.SharpDX11
                 if (VertexBuffer != null)
                     VertexBuffer.Dispose();
 
-                BufferDescription vertexBufferDesc = new BufferDescription()
+                var vertexBufferDesc = new BufferDescription
                 {
                     SizeInBytes = Vector3.SizeInBytes * vectors.Length,
                     Usage = ResourceUsage.Dynamic,
@@ -127,7 +111,7 @@ namespace DemoFramework.SharpDX11
         {
             IndexFormat = Format.R32_UInt;
 
-            BufferDescription indexBufferDesc = new BufferDescription()
+            var indexBufferDesc = new BufferDescription
             {
                 SizeInBytes = sizeof(uint) * indices.Length,
                 Usage = ResourceUsage.Default,
@@ -198,7 +182,7 @@ namespace DemoFramework.SharpDX11
                 OptionFlags = ResourceOptionFlags.None,
             };
 
-            InputElement[] elements = new InputElement[]
+            var elements = new InputElement[]
             {
                 new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
                 new InputElement("NORMAL", 0, Format.R32G32B32_Float, 12, 0, InputClassification.PerVertexData, 0),
@@ -236,9 +220,10 @@ namespace DemoFramework.SharpDX11
 
         ShapeData CreateShape(CollisionShape shape)
         {
-            ShapeData shapeData = new ShapeData();
             uint[] indices;
             Vector3[] vertices = CreateShape(shape, out indices);
+
+            var shapeData = new ShapeData();
             shapeData.VertexCount = vertices.Length / 2;
             shapeData.SetVertexBuffer(device, vertices);
 
@@ -276,6 +261,7 @@ namespace DemoFramework.SharpDX11
 
                 // Create an initial instance data buffer for a single instance
                 instanceDataDesc.SizeInBytes = InstanceData.SizeInBytes;
+                shapeData.InstanceDataBufferCount = 1;
                 shapeData.InstanceDataBuffer = new Buffer(device, instanceDataDesc);
                 shapeData.BufferBindings[1] = new VertexBufferBinding(shapeData.InstanceDataBuffer, instanceDataDesc.SizeInBytes, 0);
 
@@ -298,23 +284,16 @@ namespace DemoFramework.SharpDX11
             else
             {
                 var shapeData = InitShapeData(shape);
-                shapeData.Instances.Add(new InstanceData()
-                {
-                    WorldTransform = transform,
-                    Color = "Ground".Equals(colObj.UserObject) ? groundColor :
-                        colObj.ActivationState == ActivationState.ActiveTag ? activeColor : passiveColor
-                });
+                uint color = "Ground".Equals(colObj.UserObject) ? groundColor :
+                        colObj.ActivationState == ActivationState.ActiveTag ? activeColor : passiveColor;
+                shapeData.Instances.Add(ref transform, color);
             }
         }
 
         void InitSoftBodyInstance(SoftBody softBody, CollisionShape shape)
         {
             var shapeData = InitShapeData(shape);
-            shapeData.Instances.Add(new InstanceData()
-            {
-                WorldTransform = Matrix.Identity,
-                Color = softBodyColor
-            });
+            shapeData.Instances.Add(softBodyColor);
 
             UpdateSoftBody(softBody, shapeData);
         }
@@ -322,8 +301,10 @@ namespace DemoFramework.SharpDX11
         public void InitInstancedRender()
         {
             // Clear instance data
-            foreach (ShapeData s in shapes.Values)
-                s.Instances.Clear();
+            foreach (ShapeData shapeData in shapes.Values)
+            {
+                shapeData.Instances.Clear();
+            }
 
             // Gather instance data
             foreach (var colObj in demo.World.CollisionObjectArray)
@@ -332,9 +313,10 @@ namespace DemoFramework.SharpDX11
 
                 if (shape.ShapeType == BroadphaseNativeType.SoftBodyShape)
                 {
-                    if (demo.IsDebugDrawEnabled)
-                        continue;
-                    InitSoftBodyInstance(colObj as SoftBody, shape);
+                    if (!demo.IsDebugDrawEnabled)
+                    {
+                        InitSoftBodyInstance(colObj as SoftBody, shape);
+                    }
                 }
                 else
                 {
@@ -344,43 +326,37 @@ namespace DemoFramework.SharpDX11
                 }
             }
 
-            foreach (KeyValuePair<CollisionShape, ShapeData> sh in shapes)
+            foreach (KeyValuePair<CollisionShape, ShapeData> shape in shapes)
             {
-                ShapeData s = sh.Value;
-                int instanceCount = s.Instances.Count;
-                var instanceArray = s.InstanceArray;
+                ShapeData shapeData = shape.Value;
+                int instanceCount = shapeData.Instances.Count;
 
                 // Is the instance buffer the right size?
-                if (instanceArray.Length != instanceCount)
+                if (shapeData.InstanceDataBufferCount != instanceCount)
                 {
                     // No, recreate it
-                    s.InstanceDataBuffer.Dispose();
+                    shapeData.InstanceDataBuffer.Dispose();
 
                     // Remember shapes that have no instances,
                     // shape is removed after iteration over shapes
                     if (instanceCount == 0)
                     {
-                        if (s.IndexBuffer != null)
-                            s.IndexBuffer.Dispose();
-                        s.VertexBuffer.Dispose();
-                        removeList.Add(sh.Key);
+                        if (shapeData.IndexBuffer != null)
+                            shapeData.IndexBuffer.Dispose();
+                        shapeData.VertexBuffer.Dispose();
+                        removeList.Add(shape.Key);
                         continue;
                     }
 
                     instanceDataDesc.SizeInBytes = instanceCount * InstanceData.SizeInBytes;
-                    s.InstanceDataBuffer = new Buffer(device, instanceDataDesc);
-                    s.BufferBindings[1] = new VertexBufferBinding(s.InstanceDataBuffer, InstanceData.SizeInBytes, 0);
-
-                    instanceArray = new InstanceData[instanceCount];
-                    s.InstanceArray = instanceArray;
+                    shapeData.InstanceDataBufferCount = instanceCount;
+                    shapeData.InstanceDataBuffer = new Buffer(device, instanceDataDesc);
+                    shapeData.BufferBindings[1] = new VertexBufferBinding(shapeData.InstanceDataBuffer, InstanceData.SizeInBytes, 0);
                 }
 
-                // Copy the instance list over to the instance array
-                s.Instances.CopyTo(instanceArray);
-
-                DataBox db = device.ImmediateContext.MapSubresource(s.InstanceDataBuffer, 0, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None);
-                SharpDX.Utilities.Write(db.DataPointer, instanceArray, 0, instanceArray.Length);
-                device.ImmediateContext.UnmapSubresource(s.InstanceDataBuffer, 0);
+                DataBox db = device.ImmediateContext.MapSubresource(shapeData.InstanceDataBuffer, 0, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None);
+                Utilities.Write(db.DataPointer, shapeData.Instances.Array, 0, instanceCount);
+                device.ImmediateContext.UnmapSubresource(shapeData.InstanceDataBuffer, 0);
             }
 
             // Remove shapes that had no instances
@@ -398,18 +374,18 @@ namespace DemoFramework.SharpDX11
         {
             inputAssembler.InputLayout = inputLayout;
 
-            foreach (ShapeData s in shapes.Values)
+            foreach (ShapeData shapeData in shapes.Values)
             {
-                inputAssembler.SetVertexBuffers(0, s.BufferBindings);
-                inputAssembler.PrimitiveTopology = s.PrimitiveTopology;
-                if (s.IndexBuffer != null)
+                inputAssembler.SetVertexBuffers(0, shapeData.BufferBindings);
+                inputAssembler.PrimitiveTopology = shapeData.PrimitiveTopology;
+                if (shapeData.IndexBuffer != null)
                 {
-                    inputAssembler.SetIndexBuffer(s.IndexBuffer, s.IndexFormat, 0);
-                    device.ImmediateContext.DrawIndexedInstanced(s.IndexCount, s.Instances.Count, 0, 0, 0);
+                    inputAssembler.SetIndexBuffer(shapeData.IndexBuffer, shapeData.IndexFormat, 0);
+                    device.ImmediateContext.DrawIndexedInstanced(shapeData.IndexCount, shapeData.Instances.Count, 0, 0, 0);
                 }
                 else
                 {
-                    device.ImmediateContext.DrawInstanced(s.VertexCount, s.Instances.Count, 0, 0);
+                    device.ImmediateContext.DrawInstanced(shapeData.VertexCount, shapeData.Instances.Count, 0, 0);
                 }
             }
         }
@@ -426,52 +402,5 @@ namespace DemoFramework.SharpDX11
                 shapeData.PrimitiveTopology = PrimitiveTopology.LineList;
             }
         }
-
-        /*
-        public void RenderSoftBodyTextured(SoftBody softBody)
-        {
-            if (!(softBody.UserObject is Array))
-                return;
-
-            object[] userObjArr = softBody.UserObject as object[];
-            FloatArray vertexBuffer = userObjArr[0] as FloatArray;
-            IntArray indexBuffer = userObjArr[1] as IntArray;
-
-            int vertexCount = (vertexBuffer.Count / 8);
-
-            if (vertexCount > 0)
-            {
-                int faceCount = indexBuffer.Count / 2;
-
-                bool index32 = vertexCount > 65536;
-
-                Mesh mesh = new Mesh(device, faceCount, vertexCount,
-                    MeshFlags.SystemMemory | (index32 ? MeshFlags.Use32Bit : 0),
-                    VertexFormat.Position | VertexFormat.Normal | VertexFormat.Texture1);
-
-                SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.Discard);
-                if (index32)
-                {
-                    foreach (int i in indexBuffer)
-                        indices.Write(i);
-                }
-                else
-                {
-                    foreach (int i in indexBuffer)
-                        indices.Write((ushort)i);
-                }
-                mesh.UnlockIndexBuffer();
-
-                SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.Discard);
-                foreach (float f in vertexBuffer)
-                    verts.Write(f);
-                mesh.UnlockVertexBuffer();
-
-                mesh.ComputeNormals();
-                mesh.DrawSubset(0);
-                mesh.Dispose();
-            }
-        }
-         * */
     }
 }

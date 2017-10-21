@@ -8,14 +8,12 @@ namespace BulletXmlImportDemo
 {
     class BulletXmlImportDemo : Demo
     {
-        Vector3 eye = new Vector3(30, 20, 10);
-        Vector3 target = new Vector3(0, 5, -4);
-
         BulletXmlWorldImporter importer;
 
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(30, 20, 10);
+            Freelook.Target = new Vector3(0, 5, -4);
 
             Graphics.SetFormText("BulletSharp - XML Import Demo");
         }

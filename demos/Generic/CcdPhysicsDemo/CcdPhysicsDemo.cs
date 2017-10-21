@@ -9,9 +9,6 @@ namespace CcdPhysicsDemo
     {
         bool ccdMode = true;
 
-        Vector3 eye = new Vector3(0, 20, 80);
-        Vector3 target = Vector3.Zero;
-
         const float CubeHalfExtents = 1.0f;
         const float ExtraHeight = 1.0f;
 
@@ -33,7 +30,8 @@ namespace CcdPhysicsDemo
 
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(0, 20, 80);
+            Freelook.Target = Vector3.Zero;
 
             Graphics.SetFormText("BulletSharp - CCD Demo");
             DemoText = "CCD enabled (P to disable)";

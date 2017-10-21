@@ -31,10 +31,11 @@ namespace BulletSharp
 		List<TypedConstraint^>^ _constraints;
 
 	protected:
+		bool _ownsConstraintSolver;
 		ConstraintSolver^ _constraintSolver;
 
 	internal:
-		DynamicsWorld(btDynamicsWorld* native, BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphase);
+		DynamicsWorld();
 
 		!DynamicsWorld();
 		~DynamicsWorld();

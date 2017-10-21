@@ -16,7 +16,7 @@
 #define Native static_cast<btMultiBodyConstraintSolver*>(_native)
 
 MultiBodyConstraintSolver::MultiBodyConstraintSolver()
-	: SequentialImpulseConstraintSolver(new btMultiBodyConstraintSolver())
+	: SequentialImpulseConstraintSolver(ALIGNED_NEW(btMultiBodyConstraintSolver)())
 {
 }
 /*

@@ -44,6 +44,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BodyPicker.cs" />
     <Compile Include="Clock.cs" />
     <Compile Include="Controller\FreeLook.cs" />
     <Compile Include="Controller\Input.cs" />

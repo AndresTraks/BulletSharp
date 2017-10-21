@@ -15,8 +15,7 @@
 
 #define Native static_cast<btDynamicsWorld*>(_native)
 
-DynamicsWorld::DynamicsWorld(btDynamicsWorld* native, BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphase)
-	: CollisionWorld(native, dispatcher, broadphase)
+DynamicsWorld::DynamicsWorld()
 {
 	_constraints = gcnew List<TypedConstraint^>();
 }
@@ -28,6 +27,12 @@ DynamicsWorld::~DynamicsWorld()
 
 DynamicsWorld::!DynamicsWorld()
 {
+	if (_ownsConstraintSolver)
+	{
+		delete _constraintSolver;
+		_ownsConstraintSolver = false;
+	}
+
 	// Delete ActionInterfaceWrappers
 	if (_actions)
 	{
@@ -232,6 +237,17 @@ ConstraintSolver^ DynamicsWorld::ConstraintSolver::get()
 }
 void DynamicsWorld::ConstraintSolver::set(BulletSharp::ConstraintSolver^ solver)
 {
+	if (solver == _constraintSolver)
+	{
+		return;
+	}
+
+	if (_ownsConstraintSolver)
+	{
+		delete _constraintSolver;
+		_ownsConstraintSolver = false;
+	}
+
 	_constraintSolver = solver;
 	Native->setConstraintSolver(solver->_native);
 }

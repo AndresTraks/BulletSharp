@@ -7,9 +7,6 @@ namespace CollisionInterfaceDemo
 {
     class CollisionInterfaceDemo : Demo
     {
-        Vector3 eye = new Vector3(6, 4, 1);
-        Vector3 target = new Vector3(0, 3, 0);
-
         CollisionObject objectA, objectB;
         DrawingResult renderCallback;
 
@@ -19,7 +16,8 @@ namespace CollisionInterfaceDemo
 
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(6, 4, 1);
+            Freelook.Target = new Vector3(0, 3, 0);
 
             Graphics.SetFormText("BulletSharp - Collision Interface Demo");
 

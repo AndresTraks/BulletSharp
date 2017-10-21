@@ -759,16 +759,28 @@ btScalar ContactResultCallbackWrapper::addSingleResult(btManifoldPoint& cp,
 }
 
 
-CollisionWorld::CollisionWorld(btCollisionWorld* native, BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphase)
+CollisionWorld::CollisionWorld()
 {
-	Dispatcher = dispatcher;
-	Broadphase = broadphase;
+}
 
-	if (!native) {
+void CollisionWorld::SetInternalReferences(btCollisionWorld* native, BulletSharp::Dispatcher^ dispatcher,
+	BroadphaseInterface^ broadphase)
+{
+	if (_native)
+	{
 		return;
 	}
 	_native = native;
+
 	_collisionObjectArray = gcnew AlignedCollisionObjectArray(this);
+
+	_dispatcher = dispatcher;
+	_broadphase = broadphase;
+
+	// Store a World.DispatchInfo reference to the Dispatcher, for NearCallback parameters
+	if (dispatcher) {
+		dispatcher->_dispatcherInfoRefs->Add(IntPtr(DispatchInfo->_native), DispatchInfo);
+	}
 }
 
 CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphasePairCache,
@@ -776,9 +788,7 @@ CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseIn
 {
 	_native = new btCollisionWorld(dispatcher->_native, broadphasePairCache->_native,
 		collisionConfiguration->_native);
-	_collisionObjectArray = gcnew AlignedCollisionObjectArray(this);
-	Dispatcher = dispatcher;
-	_broadphase = broadphasePairCache;
+	SetInternalReferences(_native, dispatcher, broadphasePairCache);
 }
 
 CollisionWorld::~CollisionWorld()
@@ -799,7 +809,7 @@ CollisionWorld::!CollisionWorld()
 		_dispatchInfo->_debugDrawWrapper = 0;
 	}
 #endif
-	Dispatcher = nullptr;
+	_dispatcher = nullptr;
 
 #if _DEBUG
 	if (_collisionObjectArray->_native == 0) {
@@ -936,7 +946,7 @@ void CollisionWorld::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResult
 	VECTOR3_DEL(rayToWorld);
 }
 
-void CollisionWorld::RayTest(Vector3% rayFromWorld, Vector3% rayToWorld, RayResultCallback^ resultCallback)
+void CollisionWorld::RayTestRef(Vector3% rayFromWorld, Vector3% rayToWorld, RayResultCallback^ resultCallback)
 {
 	VECTOR3_CONV(rayFromWorld);
 	VECTOR3_CONV(rayToWorld);
@@ -987,11 +997,7 @@ BroadphaseInterface^ CollisionWorld::Broadphase::get()
 }
 void CollisionWorld::Broadphase::set(BroadphaseInterface^ pairCache)
 {
-	// _native can be zero from a constructor argument
-	if (_native != nullptr)
-	{
-		_native->setBroadphase(pairCache->_native);
-	}
+	_native->setBroadphase(pairCache->_native);
 	_broadphase = pairCache;
 }
 
@@ -1040,21 +1046,10 @@ BulletSharp::Dispatcher^ CollisionWorld::Dispatcher::get()
 {
 	return _dispatcher;
 }
-// Internal setter, registers the world with the Dispatcher, for NearCallback parameters
-void CollisionWorld::Dispatcher::set(BulletSharp::Dispatcher^ dispatcher)
-{
-	if (_dispatcher) {
-		_dispatcher->_dispatcherInfoRefs->Remove(IntPtr(DispatchInfo->_native));
-	}
-	_dispatcher = dispatcher;
-	if (dispatcher) {
-		dispatcher->_dispatcherInfoRefs->Add(IntPtr(DispatchInfo->_native), DispatchInfo);
-	}
-}
 
 DispatcherInfo^ CollisionWorld::DispatchInfo::get()
 {
-	if (!_dispatchInfo) {
+	if (!_dispatchInfo && _native) {
 		_dispatchInfo = gcnew DispatcherInfo(&_native->getDispatchInfo());
 	}
 	return _dispatchInfo;

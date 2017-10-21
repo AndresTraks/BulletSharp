@@ -36,9 +36,6 @@ namespace CharacterDemo
 
     class CharacterDemo : Demo
     {
-        Vector3 eye = new Vector3(10, 0, 10);
-        Vector3 target = new Vector3(0, 0, 0);
-
         PairCachingGhostObject ghostObject;
         KinematicCharacterController character;
         ClosestConvexResultCallback convexResultCallback;
@@ -47,7 +44,8 @@ namespace CharacterDemo
         protected override void OnInitialize()
         {
             Freelook.Up = Vector3.UnitY;
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(10, 0, 10);
+            Freelook.Target = Vector3.Zero;
 
             Graphics.SetFormText("BulletSharp - Character Demo");
             DemoText = "Space - Jump";
@@ -154,7 +152,8 @@ namespace CharacterDemo
             {
                 cameraPos = Vector3.Lerp(position, cameraPos, convexResultCallback.ClosestHitFraction);
             }
-            Freelook.SetEyeTarget(cameraPos, position);
+            Freelook.Eye = cameraPos;
+            Freelook.Target = position;
 
             character.SetWalkDirection(walkDirection * walkSpeed);
 

@@ -19,12 +19,10 @@ namespace MultiThreadedDemo
         private List<TaskScheduler> _schedulers = new List<TaskScheduler>();
         private int _currentScheduler = 0;
 
-        private Vector3 eye = new Vector3(-100, 100, -100) * Scale;
-        private Vector3 target = new Vector3(0, 50, -30) * Scale;
-
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(-100, 100, -100) * Scale;
+            Freelook.Target = new Vector3(0, 50, -30) * Scale;
 
             Graphics.SetFormText("BulletSharp - Multi-threaded Demo");
         }

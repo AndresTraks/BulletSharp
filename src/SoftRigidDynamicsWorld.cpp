@@ -8,6 +8,7 @@
 #include "ConstraintSolver.h"
 #include "DefaultSoftBodySolver.h"
 #include "Dispatcher.h"
+#include "SequentialImpulseConstraintSolver.h"
 #include "SoftRigidDynamicsWorld.h"
 #include "SoftBody.h"
 #include "SoftBodySolver.h"
@@ -20,11 +21,8 @@ using namespace BulletSharp::SoftBody;
 #define Native static_cast<btSoftRigidDynamicsWorld*>(_native)
 
 SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
-#ifndef DISABLE_CONSTRAINTS
 	BulletSharp::ConstraintSolver^ constraintSolver,
-#endif
 	CollisionConfiguration^ collisionConfiguration, SoftBodySolver^ softBodySolver)
-	: DiscreteDynamicsWorld(0, dispatcher, pairCache)
 {
 	if (softBodySolver) {
 		_softBodySolver = softBodySolver;
@@ -34,50 +32,55 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 		_ownsSolver = true;
 	}
 
-	_native = new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
-#ifndef DISABLE_CONSTRAINTS
-		GetUnmanagedNullable(constraintSolver),
-#else
-		nullptr,
-#endif
-		collisionConfiguration->_native, _softBodySolver->_native);
+	if (constraintSolver)
+	{
+		_ownsConstraintSolver = false;
+	}
+	else
+	{
+		constraintSolver = gcnew SequentialImpulseConstraintSolver();
+		_ownsConstraintSolver = true;
+	}
 
-	_collisionObjectArray = gcnew AlignedCollisionObjectArray(this);
-	_softBodyArray = gcnew AlignedSoftBodyArray(&Native->getSoftBodyArray());
+	auto native = new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
+		constraintSolver->_native, collisionConfiguration->_native, _softBodySolver->_native);
 
-#ifndef DISABLE_CONSTRAINTS
 	_constraintSolver = constraintSolver;
-#endif
-	_worldInfo = gcnew SoftBodyWorldInfo(&Native->getWorldInfo());
+	SetInternalReferences(native, dispatcher, pairCache);
+
+	_softBodyArray = gcnew AlignedSoftBodyArray(&native->getSoftBodyArray());
+
+	_worldInfo = gcnew SoftBodyWorldInfo(&native->getWorldInfo());
 	_worldInfo->Dispatcher = dispatcher;
 	_worldInfo->Broadphase = pairCache;
 }
 
 SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
-#ifndef DISABLE_CONSTRAINTS
 	BulletSharp::ConstraintSolver^ constraintSolver,
-#endif
 	CollisionConfiguration^ collisionConfiguration)
-	: DiscreteDynamicsWorld(0, dispatcher, pairCache)
 {
 	_softBodySolver = gcnew DefaultSoftBodySolver();
 	_ownsSolver = true;
 
-	_native = new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
-#ifndef DISABLE_CONSTRAINTS
-		GetUnmanagedNullable(constraintSolver),
-#else
-		nullptr,
-#endif
-		collisionConfiguration->_native, _softBodySolver->_native);
+	if (constraintSolver)
+	{
+		_ownsConstraintSolver = false;
+	}
+	else
+	{
+		constraintSolver = gcnew SequentialImpulseConstraintSolver();
+		_ownsConstraintSolver = true;
+	}
 
-	_collisionObjectArray = gcnew AlignedCollisionObjectArray(this);
-	_softBodyArray = gcnew AlignedSoftBodyArray(&Native->getSoftBodyArray());
+	auto native = new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
+		constraintSolver->_native, collisionConfiguration->_native, _softBodySolver->_native);
 
-#ifndef DISABLE_CONSTRAINTS
 	_constraintSolver = constraintSolver;
-#endif
-	_worldInfo = gcnew SoftBodyWorldInfo(&Native->getWorldInfo());
+	SetInternalReferences(native, dispatcher, pairCache);
+
+	_softBodyArray = gcnew AlignedSoftBodyArray(&native->getSoftBodyArray());
+
+	_worldInfo = gcnew SoftBodyWorldInfo(&native->getWorldInfo());
 	_worldInfo->Dispatcher = dispatcher;
 	_worldInfo->Broadphase = pairCache;
 }

@@ -475,7 +475,10 @@ namespace BulletSharp
 #endif
 
 	internal:
-		CollisionWorld(btCollisionWorld* native, BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphase);
+		CollisionWorld();
+
+		void SetInternalReferences(btCollisionWorld* native, BulletSharp::Dispatcher^ dispatcher,
+			BroadphaseInterface^ broadphase);
 
 		~CollisionWorld();
 		!CollisionWorld();
@@ -503,7 +506,7 @@ namespace BulletSharp
 			Matrix colObjWorldTransform, ConvexResultCallback^ resultCallback, btScalar allowedPenetration);
 		void PerformDiscreteCollisionDetection();
 		void RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResultCallback^ resultCallback);
-		void RayTest(Vector3% rayFromWorld, Vector3% rayToWorld, RayResultCallback^ resultCallback);
+		void RayTestRef(Vector3% rayFromWorld, Vector3% rayToWorld, RayResultCallback^ resultCallback);
 		static void RayTestSingle(Matrix rayFromTrans, Matrix rayToTrans, CollisionObject^ collisionObject,
 			CollisionShape^ collisionShape, Matrix colObjWorldTransform, RayResultCallback^ resultCallback);
 		void RemoveCollisionObject(CollisionObject^ collisionObject);
@@ -534,8 +537,6 @@ namespace BulletSharp
 		property Dispatcher^ Dispatcher
 		{
 			BulletSharp::Dispatcher^ get();
-		private:
-			void set(BulletSharp::Dispatcher^ value);
 		}
 
 		property DispatcherInfo^ DispatchInfo

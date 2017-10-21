@@ -10,9 +10,6 @@ namespace ConcaveRaycastDemo
 {
     class ConcaveRaycastDemo : Demo
     {
-        Vector3 eye = new Vector3(0, 15, 60);
-        Vector3 target = new Vector3(-5, 5, 0);
-
         const DebugDrawModes debugMode = DebugDrawModes.None;
 
         const float TriangleSize = 8.0f;
@@ -32,7 +29,8 @@ namespace ConcaveRaycastDemo
 
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(0, 15, 60);
+            Freelook.Target = new Vector3(-5, 5, 0);
 
             Graphics.SetFormText("BulletSharp - Concave Raycast Demo");
             Graphics.SetInfoText("Move using mouse and WASD+shift\n" +
@@ -266,7 +264,7 @@ namespace ConcaveRaycastDemo
             {
                 using (var cb = new ClosestRayResultCallback(ref ray.Source, ref ray.Destination))
                 {
-                    cw.RayTest(ref ray.Source, ref ray.Destination, cb);
+                    cw.RayTestRef(ref ray.Source, ref ray.Destination, cb);
                     if (cb.HasHit)
                     {
                         ray.HitPoint = cb.HitPointWorld;

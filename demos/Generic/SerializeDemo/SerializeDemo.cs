@@ -29,9 +29,6 @@ namespace SerializeDemo
 
     class SerializeDemo : Demo
     {
-        Vector3 eye = new Vector3(30, 20, 10);
-        Vector3 target = new Vector3(0, 5, 0);
-
         ///create 125 (5x5x5) dynamic objects
         int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
 
@@ -44,7 +41,8 @@ namespace SerializeDemo
 
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(30, 20, 10);
+            Freelook.Target = new Vector3(0, 5, 0);
 
             Graphics.SetFormText("BulletSharp - Serialize Demo");
         }

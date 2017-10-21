@@ -6,9 +6,6 @@ namespace ConstraintDemo
 {
     class ConstraintDemo : Demo
     {
-        Vector3 eye = new Vector3(35, 10, 35);
-        Vector3 target = new Vector3(0, 5, 0);
-
         const DebugDrawModes debugMode = DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits;
 
         private const float CubeHalfExtent = 1.0f;
@@ -16,7 +13,8 @@ namespace ConstraintDemo
 
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(35, 10, 35);
+            Freelook.Target = new Vector3(0, 5, 0);
 
             Graphics.SetFormText("BulletSharp - Constraints Demo");
 

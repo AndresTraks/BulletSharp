@@ -9,9 +9,6 @@ namespace ConcaveConvexCastDemo
 {
     class ConcaveConvexCastDemo : Demo
     {
-        Vector3 eye = new Vector3(0, 15, 60);
-        Vector3 target = new Vector3(-5, 5, 0);
-
         const DebugDrawModes debugMode = DebugDrawModes.None;
 
         const float TriangleSize = 8.0f;
@@ -34,7 +31,8 @@ namespace ConcaveConvexCastDemo
 
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(0, 15, 60);
+            Freelook.Target = new Vector3(-5, 5, 0);
 
             Graphics.SetFormText("BulletSharp - Concave Convexcast Demo");
 

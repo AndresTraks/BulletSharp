@@ -16,16 +16,17 @@
 
 MultiBodyDynamicsWorld::MultiBodyDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
 	MultiBodyConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration)
-	: DiscreteDynamicsWorld(new btMultiBodyDynamicsWorld(dispatcher->_native, pairCache->_native,
-		(btMultiBodyConstraintSolver*)constraintSolver->_native, collisionConfiguration->_native),
-		dispatcher, pairCache)
 {
-	_constraintSolver = constraintSolver;
-
 	_bodies = gcnew List<MultiBody^>();
 #ifndef DISABLE_CONSTRAINTS
 	_constraints = gcnew List<MultiBodyConstraint^>();
 #endif
+
+	auto native = new btMultiBodyDynamicsWorld(dispatcher->_native, pairCache->_native,
+		(btMultiBodyConstraintSolver*)constraintSolver->_native, collisionConfiguration->_native);
+
+	_constraintSolver = constraintSolver;
+	SetInternalReferences(native, dispatcher, pairCache);
 }
 
 void MultiBodyDynamicsWorld::AddMultiBody(MultiBody^ body, CollisionFilterGroups group, CollisionFilterGroups mask)

@@ -6,16 +6,14 @@ namespace Box2DDemo
 {
     class Box2DDemo : Demo
     {
-        Vector3 eye = new Vector3(0, 15, 20);
-        Vector3 target = new Vector3(10, 10, 0);
-
         ///create 25 (5x5) dynamic objects
         const int ArraySizeX = 5, ArraySizeY = 5;
         public float Depth = 0.04f;
 
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(0, 15, 20);
+            Freelook.Target = new Vector3(10, 10, 0);
 
             Graphics.SetFormText("BulletSharp - Box 2D Demo");
         }

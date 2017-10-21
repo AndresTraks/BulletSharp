@@ -6,16 +6,14 @@ namespace BasicDemo
 {
     class BasicDemo : Demo
     {
-        Vector3 eye = new Vector3(30, 20, 15);
-        Vector3 target = new Vector3(0, 3, 0);
-
         // create 125 (5x5x5) dynamic objects
         const int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
         Vector3 startPosition = new Vector3(0, 2, 0);
 
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(30, 20, 15);
+            Freelook.Target = new Vector3(0, 3, 0);
 
             Graphics.SetFormText("BulletSharp - Basic Demo");
         }

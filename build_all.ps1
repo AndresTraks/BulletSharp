@@ -1,5 +1,11 @@
-# Install the Visual Studio Setup PowerShell Module like so:
-#Install-Module VSSetup -Scope CurrentUser
+if (-not (Get-Module -Name VSSetup)) {
+	Write-Host "Installing VSSetup module"
+	Install-Module VSSetup -Scope CurrentUser
+}
+
+$conf = "Release"
+$targetLibs = @("Generic", "Mogre", "MonoGame", "Numerics", "OpenTK", "SharpDX")
+
 
 $vs = Get-VSSetupInstance -All | Select-VSSetupInstance -Require 'Microsoft.VisualStudio.Workload.ManagedDesktop' -Latest
 
@@ -18,11 +24,17 @@ $project = "BulletSharp.vcxproj"
 $vcPath = "%PROGFILES%\Microsoft Visual Studio 15.0\VC\vcpackages"
 $opts = "/p:VCBuildToolPath=$vcPath /p:VisualStudioVersion=15.0 $project"
 
-$conf = "Release"
+foreach ($lib in $targetLibs) {
+	#iex '& "$msBuild" $opts /p:Configuration="$conf $lib"'
+}
 
-iex '& "$msBuild" $opts /p:Configuration="$conf Generic"'
-iex '& "$msBuild" $opts /p:Configuration="$conf Mogre"'
-iex '& "$msBuild" $opts /p:Configuration="$conf MonoGame"'
-iex '& "$msBuild" $opts /p:Configuration="$conf Numerics"'
-iex '& "$msBuild" $opts /p:Configuration="$conf OpenTK"'
-iex '& "$msBuild" $opts /p:Configuration="$conf SharpDX"'
+
+$szip = "$env:programfiles\7-Zip\7z.exe"
+if (test-path $szip) {
+	set-alias 7z $szip
+	$binaries = ($targetLibs | foreach { """$conf $_\BulletSharp.dll"""})
+    7z a BulletSharp.7z $binaries
+    7z a BulletSharp.zip $binaries
+} else {
+	Write-Host "7-zip not found, skipping packaging"
+}

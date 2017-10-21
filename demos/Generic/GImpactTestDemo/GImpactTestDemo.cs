@@ -12,9 +12,6 @@ namespace GImpactTestDemo
 {
     class GImpactTestDemo : Demo
     {
-        Vector3 eye = new Vector3(0, 10, 50);
-        Vector3 target = new Vector3(0, 10, -4);
-
         CollisionShape trimeshShape;
         CollisionShape trimeshShape2;
 
@@ -29,7 +26,8 @@ namespace GImpactTestDemo
 
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(0, 10, 50);
+            Freelook.Target = new Vector3(0, 10, -4);
 
             Graphics.SetFormText("BulletSharp - GImpact Test Demo");
             DemoText = ". - Shoot Bunny";

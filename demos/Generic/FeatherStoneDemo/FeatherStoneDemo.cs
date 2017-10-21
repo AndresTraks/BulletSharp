@@ -6,9 +6,6 @@ namespace FeatherStoneDemo
 {
     class FeatherStoneDemo : Demo
     {
-        Vector3 eye = new Vector3(0, 5, 10);
-        Vector3 target = new Vector3(0, 0, 0);
-
         // create 125 (5x5x5) dynamic objects
         const int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
 
@@ -21,7 +18,8 @@ namespace FeatherStoneDemo
 
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(0, 5, 10);
+            Freelook.Target = new Vector3(0, 0, 0);
 
             Graphics.SetFormText("BulletSharp - FeatherStone Demo");
         }

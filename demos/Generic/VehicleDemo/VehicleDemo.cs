@@ -7,9 +7,6 @@ namespace VehicleDemo
 {
     class VehicleDemo : Demo
     {
-        Vector3 eye = new Vector3(35, 45, -55);
-        Vector3 target = Vector3.Zero;
-
         //bool UseTrimeshGround = false;
         //string heightfieldFile = "data/heightfield128x128.raw";
 
@@ -50,7 +47,8 @@ namespace VehicleDemo
 
         protected override void OnInitialize()
         {
-            Freelook.SetEyeTarget(eye, target);
+            Freelook.Eye = new Vector3(35, 45, -55);
+            Freelook.Target = Vector3.Zero;
 
             Graphics.SetFormText("BulletSharp - Vehicle Demo");
             DemoText = "Drive with arrow keys\n" +

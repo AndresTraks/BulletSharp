@@ -1,82 +1,109 @@
-﻿using System;
+﻿using BulletSharp;
+using System;
 using System.Windows.Forms;
-using BulletSharp;
 
 namespace DemoFramework
 {
-    public class FreeLook
+    public sealed class FreeLook
     {
-        public Vector3 Eye { get; private set; }
-        public Vector3 Target { get; private set; }
-        public Vector3 Up { get; set; }
-
-        Input input;
-        MouseController mouseController;
-        bool doUpdate;
+        private Input _input;
+        private MouseController _mouseController;
+        private bool _doUpdate;
+        private Matrix _yToUpTransform, _upToYTransform;
+        private Vector3 _eye, _target, _up;
 
         public FreeLook(Input input)
         {
+            _input = input;
+            _mouseController = new MouseController(input);
             Target = Vector3.UnitX;
             Up = Vector3.UnitY;
-            this.input = input;
-            mouseController = new MouseController(input);
         }
 
-        public void SetEyeTarget(Vector3 eye, Vector3 target)
+        public Vector3 Eye
         {
-            Eye = eye;
-            Target = target;
+            get { return _eye; }
+            set
+            {
+                _eye = value;
+                UpdateMouseController();
+            }
+        }
 
-            // Convert direction vector to Y-up for MouseController
-            Matrix swapAxis = Matrix.RotationAxis(Vector3.Cross(Up, Vector3.UnitY), Angle(Up, Vector3.UnitY));
-            mouseController.Vector = Vector3.TransformCoordinate(Vector3.Normalize(eye - target), swapAxis);
+        public Vector3 Target
+        {
+            get { return _target; }
+            set
+            {
+                _target = value;
+                UpdateMouseController();
+            }
+        }
 
-            doUpdate = true;
+        public Vector3 Up
+        {
+            get { return _up; }
+            set
+            {
+                _up = value;
+
+                // MouseController uses UnitY as the up-vector,
+                // create transforms for converting between UnitY-up and Up-up
+                _yToUpTransform = Matrix.RotationAxis(Vector3.Cross(Vector3.UnitY, _up), Angle(_up, Vector3.UnitY));
+                _upToYTransform = Matrix.Invert(_yToUpTransform);
+                UpdateMouseController();
+            }
         }
 
         public bool Update(float frameDelta)
         {
-            if (mouseController.Update() == false && input.KeysDown.Count == 0)
+            if (!_mouseController.Update() && _input.KeysDown.Count == 0)
             {
-                if (!doUpdate)
+                if (!_doUpdate)
                     return false;
-                doUpdate = false;
+                _doUpdate = false;
             }
 
-            // MouseController is Y-up, convert to Up-up
-            Matrix swapAxis = Matrix.RotationAxis(Vector3.Cross(Vector3.UnitY, Up), Angle(Vector3.UnitY, Up));
-            Vector3 direction = Vector3.TransformCoordinate(-mouseController.Vector, swapAxis);
+            Vector3 direction = Vector3.TransformCoordinate(-_mouseController.Vector, _yToUpTransform);
 
-            if (input.KeysDown.Count != 0)
+            if (_input.KeysDown.Count != 0)
             {
                 Vector3 relDirection = frameDelta * direction;
-                float flySpeed = input.KeysDown.Contains(Keys.ShiftKey) ? 15 : 5;
+                float flySpeed = _input.KeysDown.Contains(Keys.ShiftKey) ? 15 : 5;
 
-                if (input.KeysDown.Contains(Keys.W))
+                if (_input.KeysDown.Contains(Keys.W))
                 {
-                    Eye += flySpeed * relDirection;
+                    _eye += flySpeed * relDirection;
                 }
-                if (input.KeysDown.Contains(Keys.S))
+                if (_input.KeysDown.Contains(Keys.S))
                 {
-                    Eye -= flySpeed * relDirection;
+                    _eye -= flySpeed * relDirection;
                 }
 
-                if (input.KeysDown.Contains(Keys.A))
+                if (_input.KeysDown.Contains(Keys.A))
                 {
-                    Eye += Vector3.Cross(relDirection, Up);
+                    _eye += Vector3.Cross(relDirection, _up);
                 }
-                if (input.KeysDown.Contains(Keys.D))
+                if (_input.KeysDown.Contains(Keys.D))
                 {
-                    Eye -= Vector3.Cross(relDirection, Up);
+                    _eye -= Vector3.Cross(relDirection, _up);
                 }
             }
-            Target = Eye + (Eye - Target).Length * direction;
+            _target = _eye + (_eye - _target).Length * direction;
 
             return true;
         }
 
+        private void UpdateMouseController()
+        {
+            Vector3 direction = _eye - _target;
+            direction.Normalize();
+            _mouseController.Vector = Vector3.TransformCoordinate(direction, _upToYTransform);
+            _doUpdate = true;
+        }
+
         // vertices must be normalized
-        float Angle(Vector3 v1, Vector3 v2)
+        private static float Angle(Vector3 v1, Vector3 v2)
         {
             return (float)Math.Acos(Vector3.Dot(v1, v2));
         }

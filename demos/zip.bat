@@ -48,13 +48,11 @@ copy Generic\bin\Release\data\file.obj bin\data\
 copy Generic\bin\Release\data\cube.ele bin\data\
 copy Generic\bin\Release\data\cube.node bin\data\
 copy Generic\bin\Release\data\bullet_basic.xml bin\data\
-copy Generic\bin\Release\file_convex.obj bin\
 copy Generic\bin\Release\testFile.bullet bin\
 rem copy Generic\bin\Release\data\heightfield128x128.raw bin\data\
 
 copy Generic\bin\Release\DemoFramework.dll bin\
 copy Generic\bin\Release\DemoFramework.OpenTK.dll bin\
-copy Generic\bin\Release\DemoFramework.SharpDX.dll bin\
 copy Generic\bin\Release\DemoFramework.SharpDX11.dll bin\
 copy Generic\bin\Release\DemoFramework.SlimDX.dll bin\
 copy Generic\bin\Release\DemoFramework.MonoGame.dll bin\
@@ -66,7 +64,6 @@ copy Generic\bin\Release\SharpDX.dll bin\
 copy Generic\bin\Release\SharpDX.D3DCompiler.dll bin\
 copy Generic\bin\Release\SharpDX.Desktop.dll bin\
 copy Generic\bin\Release\SharpDX.Direct2D1.dll bin\
-copy Generic\bin\Release\SharpDX.Direct3D10.dll bin\
 copy Generic\bin\Release\SharpDX.Direct3D11.dll bin\
 copy Generic\bin\Release\SharpDX.Direct3D11.Effects.dll bin\
 copy Generic\bin\Release\SharpDX.DXGI.dll bin\

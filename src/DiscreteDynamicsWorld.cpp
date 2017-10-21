@@ -6,6 +6,7 @@
 #include "DiscreteDynamicsWorld.h"
 #include "Dispatcher.h"
 #include "RigidBody.h"
+#include "SequentialImpulseConstraintSolver.h"
 #ifndef DISABLE_UNCOMMON
 #include "SimulationIslandManager.h"
 #endif
@@ -16,30 +17,28 @@
 
 #define Native static_cast<btDiscreteDynamicsWorld*>(_native)
 
-DiscreteDynamicsWorld::DiscreteDynamicsWorld(btDiscreteDynamicsWorld* native, BulletSharp::Dispatcher^ dispatcher,
-	BroadphaseInterface^ pairCache)
-	: DynamicsWorld(native, dispatcher, pairCache)
+DiscreteDynamicsWorld::DiscreteDynamicsWorld()
 {
 }
 
 DiscreteDynamicsWorld::DiscreteDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
-#ifndef DISABLE_CONSTRAINTS
-	BulletSharp::ConstraintSolver^ constraintSolver,
-#endif
-	CollisionConfiguration^ collisionConfiguration)
-	: DynamicsWorld(new btDiscreteDynamicsWorld(dispatcher->_native, pairCache->_native,
-#ifndef DISABLE_CONSTRAINTS
-		GetUnmanagedNullable(constraintSolver),
-#else
-		0,
-#endif
-		collisionConfiguration->_native),
-		dispatcher,
-		pairCache)
+	BulletSharp::ConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration)
 {
-#ifndef DISABLE_CONSTRAINTS
+	if (constraintSolver)
+	{
+		_ownsConstraintSolver = false;
+	}
+	else
+	{
+		constraintSolver = gcnew SequentialImpulseConstraintSolver();
+		_ownsConstraintSolver = true;
+	}
+
+	auto native = new btDiscreteDynamicsWorld(dispatcher->_native, pairCache->_native, constraintSolver->_native,
+		collisionConfiguration->_native);
+
 	_constraintSolver = constraintSolver;
-#endif
+	SetInternalReferences(native, dispatcher, pairCache);
 }
 
 void DiscreteDynamicsWorld::ApplyGravity()

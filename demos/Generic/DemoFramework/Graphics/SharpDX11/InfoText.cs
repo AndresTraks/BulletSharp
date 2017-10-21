@@ -23,9 +23,10 @@ namespace DemoFramework.SharpDX11
         SharpDX.WIC.Bitmap _wicBitmap;
         SolidColorBrush _sceneColorBrush;
         Texture2D _renderTexture;
-        public ShaderResourceView OverlayBufferRes;
 
-        public bool IsEnabled { get; set; } = true;
+        public ShaderResourceView OverlayBufferView { get; }
+
+        public bool IsEnabled { get; set; }
 
         bool _isDirty;
         string _text = "";
@@ -39,14 +40,15 @@ namespace DemoFramework.SharpDX11
             }
         }
 
-        public float Height => _rect.Height;
         public float Width => _rect.Width;
+        public float Height => _rect.Height;
 
         public InfoText(SharpDX.Direct3D11.Device device, int width, int height)
         {
             _immediateContext = device.ImmediateContext;
             _rect.Size = new Size2F(width, height);
             _bitmapSize = width * height * 4;
+            IsEnabled = true;
 
             using (var factoryWic = new SharpDX.WIC.ImagingFactory())
             {
@@ -89,7 +91,7 @@ namespace DemoFramework.SharpDX11
                 Usage = ResourceUsage.Dynamic
             });
 
-            OverlayBufferRes = new ShaderResourceView(device, _renderTexture, new ShaderResourceViewDescription()
+            OverlayBufferView = new ShaderResourceView(device, _renderTexture, new ShaderResourceViewDescription()
             {
                 Format = _renderTexture.Description.Format,
                 Dimension = ShaderResourceViewDimension.Texture2D,
@@ -115,7 +117,7 @@ namespace DemoFramework.SharpDX11
             _wicBitmap.Dispose();
             _wicRenderTarget.Dispose();
             _sceneColorBrush.Dispose();
-            OverlayBufferRes.Dispose();
+            OverlayBufferView.Dispose();
             _textFormat.Dispose();
 
             _isDisposed = true;
