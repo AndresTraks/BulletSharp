@@ -7,9 +7,6 @@ namespace BulletSharp
 {
 	public ref class ConstraintSolverPoolMultiThreaded : ConstraintSolver
 	{
-	internal:
-		btConstraintSolverPoolMt* _native;
-
 	public:
 		ConstraintSolverPoolMultiThreaded(int numSolvers);
 	};

@@ -5,4 +5,6 @@ x64
 
 *.suo
 *.sdf
-*.vcxproj.user
+*.user
+packages
+*.VC.db

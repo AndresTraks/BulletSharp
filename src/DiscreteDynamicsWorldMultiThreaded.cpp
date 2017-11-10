@@ -9,7 +9,7 @@
 #include "SequentialImpulseConstraintSolver.h"
 
 ConstraintSolverPoolMultiThreaded::ConstraintSolverPoolMultiThreaded(int numSolvers)
-	: ConstraintSolver(new btConstraintSolverPoolMt(numSolvers))
+	: ConstraintSolver(ALIGNED_NEW(btConstraintSolverPoolMt)(numSolvers))
 {
 }
 
@@ -32,7 +32,7 @@ DiscreteDynamicsWorldMultiThreaded::DiscreteDynamicsWorldMultiThreaded(BulletSha
 	}
 
 	auto native = new btDiscreteDynamicsWorldMt(dispatcher->_native,
-		pairCache->_native, constraintSolver->_native,
+		pairCache->_native, (btConstraintSolverPoolMt*)constraintSolver->_native,
 		collisionConfiguration != nullptr ? collisionConfiguration->_native : nullptr);
 
 	_constraintSolver = constraintSolver;
