@@ -15,6 +15,7 @@ namespace BulletSharp
 	{
 	public:
 		DiscreteDynamicsWorldMultiThreaded(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
-			ConstraintSolverPoolMultiThreaded^ constraintSolver, CollisionConfiguration^ collisionConfiguration);
+			ConstraintSolverPoolMultiThreaded^ constraintSolver, BulletSharp::ConstraintSolver^ constraintSolverMultiThreaded,
+			CollisionConfiguration^ collisionConfiguration);
 	};
 }

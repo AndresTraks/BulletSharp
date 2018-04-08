@@ -16,7 +16,7 @@ ConstraintSolverPoolMultiThreaded::ConstraintSolverPoolMultiThreaded(int numSolv
 
 DiscreteDynamicsWorldMultiThreaded::DiscreteDynamicsWorldMultiThreaded(BulletSharp::Dispatcher^ dispatcher,
 	BroadphaseInterface^ pairCache, ConstraintSolverPoolMultiThreaded^ constraintSolver,
-	CollisionConfiguration^ collisionConfiguration)
+	BulletSharp::ConstraintSolver^ constraintSolverMultiThreaded, CollisionConfiguration^ collisionConfiguration)
 {
 	if (!dispatcher)
 	{
@@ -33,7 +33,8 @@ DiscreteDynamicsWorldMultiThreaded::DiscreteDynamicsWorldMultiThreaded(BulletSha
 
 	auto native = new btDiscreteDynamicsWorldMt(dispatcher->_native,
 		pairCache->_native, (btConstraintSolverPoolMt*)constraintSolver->_native,
-		collisionConfiguration != nullptr ? collisionConfiguration->_native : nullptr);
+		GetUnmanagedNullable(constraintSolverMultiThreaded),
+		GetUnmanagedNullable(collisionConfiguration));
 
 	_constraintSolver = constraintSolver;
 	SetInternalReferences(native, dispatcher, pairCache);

@@ -516,6 +516,9 @@ void KinematicCharacterController::PlayerStep(CollisionWorld^ collisionWorld, bt
 	}
 	_verticalOffset = _verticalVelocity * dt;
 
+	btTransform* xformTemp = ALIGNED_NEW(btTransform);
+	xformTemp = &_ghostObject->_native->getWorldTransform();
+
 	StepUp(collisionWorld);
 	if (_useWalkDirection) {
 		StepForwardAndStrafe(collisionWorld, _walkDirection);
@@ -531,10 +534,11 @@ void KinematicCharacterController::PlayerStep(CollisionWorld^ collisionWorld, bt
 	}
 	StepDown(collisionWorld, dt);
 
-	btTransform& xform = _ghostObject->_native->getWorldTransform();
-	xform.getOrigin().setX(Vector_X(_currentPosition));
-	xform.getOrigin().setY(Vector_Y(_currentPosition));
-	xform.getOrigin().setZ(Vector_Z(_currentPosition));
+	xformTemp->getOrigin().setX(Vector_X(_currentPosition));
+	xformTemp->getOrigin().setY(Vector_Y(_currentPosition));
+	xformTemp->getOrigin().setZ(Vector_Z(_currentPosition));
+    _ghostObject->_native->setWorldTransform(*xformTemp);
+	ALIGNED_FREE(xformTemp);
 }
 
 void KinematicCharacterController::PreStep(CollisionWorld^ collisionWorld)
