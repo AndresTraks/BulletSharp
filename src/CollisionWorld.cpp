@@ -786,9 +786,9 @@ void CollisionWorld::SetInternalReferences(btCollisionWorld* native, BulletSharp
 CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphasePairCache,
 	BulletSharp::CollisionConfiguration^ collisionConfiguration)
 {
-	_native = new btCollisionWorld(dispatcher->_native, broadphasePairCache->_native,
+	btCollisionWorld* native = new btCollisionWorld(dispatcher->_native, broadphasePairCache->_native,
 		collisionConfiguration->_native);
-	SetInternalReferences(_native, dispatcher, broadphasePairCache);
+	SetInternalReferences(native, dispatcher, broadphasePairCache);
 }
 
 CollisionWorld::~CollisionWorld()

@@ -66,7 +66,7 @@ namespace MultiThreadedDemo
             Dispatcher = new CollisionDispatcherMultiThreaded(CollisionConf);
             Broadphase = new DbvtBroadphase();
             _constraintSolver = new ConstraintSolverPoolMultiThreaded(MaxThreadCount);
-            World = new DiscreteDynamicsWorldMultiThreaded(Dispatcher, Broadphase, _constraintSolver, CollisionConf);
+            World = new DiscreteDynamicsWorldMultiThreaded(Dispatcher, Broadphase, _constraintSolver, null, CollisionConf);
             World.SolverInfo.SolverMode = SolverModes.Simd | SolverModes.UseWarmStarting;
 
             CreateGround();
