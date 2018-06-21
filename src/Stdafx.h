@@ -142,6 +142,7 @@ using namespace System::Drawing;
 #include <BulletCollision/CollisionShapes/btTriangleBuffer.h>
 #include <BulletCollision/CollisionShapes/btTriangleIndexVertexMaterialArray.h>
 #include <BulletCollision/CollisionShapes/btTriangleShape.h>
+#include <LinearMath/btAlignedAllocator.h>
 #include <LinearMath/btPoolAllocator.h>
 #include <BulletCollision/NarrowPhaseCollision/btContinuousConvexCollision.h>
 #include <BulletCollision/NarrowPhaseCollision/btGjkConvexCast.h>

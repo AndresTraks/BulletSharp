@@ -144,6 +144,9 @@
     <ClCompile Include="src\ActivatingCollisionAlgorithm.cpp">
       <Filter>Source Files\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
+    <ClCompile Include="src\AlignedAllocator.cpp">
+      <Filter>Source Files\LinearMath</Filter>
+    </ClCompile>
     <ClCompile Include="src\AlignedObjectArray.cpp">
       <Filter>Source Files\LinearMath</Filter>
     </ClCompile>
@@ -675,6 +678,9 @@
   <ItemGroup>
     <ClInclude Include="src\ActivatingCollisionAlgorithm.h">
       <Filter>Header Files\BulletCollision\CollisionDispatch</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AlignedAllocator.h">
+      <Filter>Header Files\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="src\AlignedObjectArray.h">
       <Filter>Header Files\LinearMath</Filter>

@@ -1349,6 +1349,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release SharpDX|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release SharpDX|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\AlignedAllocator.cpp" />
     <ClCompile Include="src\AssemblyInfo.cpp" />
     <ClCompile Include="src\Collections.cpp" />
     <ClCompile Include="src\Math.cpp" />
@@ -1529,6 +1530,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Stdafx.h" />
+    <ClInclude Include="src\AlignedAllocator.h" />
     <ClInclude Include="src\Collections.h" />
     <ClInclude Include="src\Enums.h" />
     <ClInclude Include="src\ITrackingDisposable.h" />
