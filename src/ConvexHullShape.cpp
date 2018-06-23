@@ -13,7 +13,7 @@ ConvexHullShape::ConvexHullShape(IEnumerable<Vector3>^ points)
 	for each (Vector3 point in points)
 	{
 		Math::Vector3ToBtVector3(point, pointTemp);
-		Native->addPoint(*pointTemp);
+		Native->addPoint(*pointTemp, false);
 	}
 	Native->recalcLocalAabb();
 
