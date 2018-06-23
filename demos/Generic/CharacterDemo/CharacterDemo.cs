@@ -25,7 +25,6 @@ namespace CharacterDemo
             //ConvexHullShape creates an internal copy of the vertices
             var verticesTransformed = vertices.Select(v => new Vector3(0.5f * v.X, 0.375f * v.Z, -0.5f * v.Y));
             var shape = new ConvexHullShape(verticesTransformed);
-            _demo.CollisionShapes.Add(shape);
 
             const float mass = 0.0f;
             //can use a shift
@@ -34,12 +33,13 @@ namespace CharacterDemo
         }
     }
 
-    class CharacterDemo : Demo
+    sealed class CharacterDemo : Demo
     {
-        PairCachingGhostObject ghostObject;
-        KinematicCharacterController character;
-        ClosestConvexResultCallback convexResultCallback;
-        SphereShape cameraSphere;
+        private PairCachingGhostObject _ghostObject;
+        private KinematicCharacterController _character;
+        private ClosestConvexResultCallback _convexResultCallback;
+        private SphereShape _cameraSphere;
+        private CapsuleShape _capsuleShape;
 
         protected override void OnInitialize()
         {
@@ -68,41 +68,41 @@ namespace CharacterDemo
 
             const float characterHeight = 1.75f;
             const float characterWidth = 1.75f;
-            var capsule = new CapsuleShape(characterWidth, characterHeight);
-            ghostObject = new PairCachingGhostObject()
+            _capsuleShape = new CapsuleShape(characterWidth, characterHeight);
+            _ghostObject = new PairCachingGhostObject()
             {
-                CollisionShape = capsule,
+                CollisionShape = _capsuleShape,
                 CollisionFlags = CollisionFlags.CharacterObject,
                 WorldTransform = Matrix.Translation(10.210098f, -1.6433364f, 16.453260f)
             };
-            World.AddCollisionObject(ghostObject, CollisionFilterGroups.CharacterFilter, CollisionFilterGroups.StaticFilter | CollisionFilterGroups.DefaultFilter);
+            World.AddCollisionObject(_ghostObject, CollisionFilterGroups.CharacterFilter, CollisionFilterGroups.StaticFilter | CollisionFilterGroups.DefaultFilter);
 
             const float stepHeight = 0.35f;
-            character = new KinematicCharacterController(ghostObject, capsule, stepHeight);
-            World.AddAction(character);
+            _character = new KinematicCharacterController(_ghostObject, _capsuleShape, stepHeight);
+            World.AddAction(_character);
 
             var bspLoader = new BspLoader();
             bspLoader.LoadBspFile(Path.Combine("data", "BspDemo.bsp"));
             var bsp2Bullet = new BspToBulletConverter(this);
             bsp2Bullet.ConvertBsp(bspLoader, 0.1f);
 
-            convexResultCallback = new ClosestConvexResultCallback();
-            convexResultCallback.CollisionFilterMask = CollisionFilterGroups.StaticFilter;
-            cameraSphere = new SphereShape(0.2f);
+            _convexResultCallback = new ClosestConvexResultCallback();
+            _convexResultCallback.CollisionFilterMask = CollisionFilterGroups.StaticFilter;
+            _cameraSphere = new SphereShape(0.2f);
         }
 
         public override void ClientResetScene()
         {
-            World.Broadphase.OverlappingPairCache.CleanProxyFromPairs(ghostObject.BroadphaseHandle, World.Dispatcher);
+            World.Broadphase.OverlappingPairCache.CleanProxyFromPairs(_ghostObject.BroadphaseHandle, World.Dispatcher);
 
-            character.Reset(World);
+            _character.Reset(World);
             Vector3 warp = new Vector3(10.210001f, -2.0306311f, 16.576973f);
-            character.Warp(warp);
+            _character.Warp(warp);
         }
 
         public override void OnHandleInput()
         {
-            Matrix transform = ghostObject.WorldTransform;
+            Matrix transform = _ghostObject.WorldTransform;
 
             Vector3 forwardDir = new Vector3(transform.M31, transform.M32, transform.M33);
             forwardDir.Normalize();
@@ -122,14 +122,14 @@ namespace CharacterDemo
                 transform.Origin = Vector3.Zero;
                 transform *= Matrix.RotationAxis(upDir, -turnSpeed);
                 transform.Origin = position;
-                ghostObject.WorldTransform = transform;
+                _ghostObject.WorldTransform = transform;
             }
             if (Input.KeysDown.Contains(Keys.Right))
             {
                 transform.Origin = Vector3.Zero;
                 transform *= Matrix.RotationAxis(upDir, turnSpeed);
                 transform.Origin = position;
-                ghostObject.WorldTransform = transform;
+                _ghostObject.WorldTransform = transform;
             }
 
             if (Input.KeysDown.Contains(Keys.Up))
@@ -144,22 +144,22 @@ namespace CharacterDemo
             Vector3 cameraPos = position - forwardDir * 12 + upDir * 5;
 
             //use the convex sweep test to find a safe position for the camera (not blocked by static geometry)
-            convexResultCallback.ConvexFromWorld = position;
-            convexResultCallback.ConvexToWorld = cameraPos;
-            convexResultCallback.ClosestHitFraction = 1.0f;
-            World.ConvexSweepTest(cameraSphere, Matrix.Translation(position), Matrix.Translation(cameraPos), convexResultCallback);
-            if (convexResultCallback.HasHit)
+            _convexResultCallback.ConvexFromWorld = position;
+            _convexResultCallback.ConvexToWorld = cameraPos;
+            _convexResultCallback.ClosestHitFraction = 1.0f;
+            World.ConvexSweepTest(_cameraSphere, Matrix.Translation(position), Matrix.Translation(cameraPos), _convexResultCallback);
+            if (_convexResultCallback.HasHit)
             {
-                cameraPos = Vector3.Lerp(position, cameraPos, convexResultCallback.ClosestHitFraction);
+                cameraPos = Vector3.Lerp(position, cameraPos, _convexResultCallback.ClosestHitFraction);
             }
             Freelook.Eye = cameraPos;
             Freelook.Target = position;
 
-            character.SetWalkDirection(walkDirection * walkSpeed);
+            _character.SetWalkDirection(walkDirection * walkSpeed);
 
             if (Input.KeysDown.Contains(Keys.Space))
             {
-                character.Jump();
+                _character.Jump();
                 return;
             }
 
@@ -168,7 +168,8 @@ namespace CharacterDemo
 
         public override void ExitPhysics()
         {
-            cameraSphere.Dispose();
+            _cameraSphere.Dispose();
+            _capsuleShape.Dispose();
 
             base.ExitPhysics();
         }

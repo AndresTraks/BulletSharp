@@ -146,7 +146,6 @@ namespace SoftDemo
             motorControl.MaxTorque = 0;
 
             CollisionShape groundShape = new BoxShape(50, 50, 50);
-            CollisionShapes.Add(groundShape);
             RigidBody body = LocalCreateRigidBody(0, Matrix.Translation(0, -62, 0), groundShape);
             body.UserObject = "Ground";
 

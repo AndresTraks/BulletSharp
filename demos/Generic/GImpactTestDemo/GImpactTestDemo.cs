@@ -57,23 +57,18 @@ namespace GImpactTestDemo
             float mass = 0.0f;
 
             CollisionShape staticboxShape1 = new BoxShape(200, 1, 200);//floor
-            CollisionShapes.Add(staticboxShape1);
             LocalCreateRigidBody(mass, Matrix.Translation(0, -10, 0), staticboxShape1);
 
             CollisionShape staticboxShape2 = new BoxShape(1, 50, 200);//left wall
-            CollisionShapes.Add(staticboxShape2);
             LocalCreateRigidBody(mass, Matrix.Translation(-200, 15, 0), staticboxShape2);
 
             CollisionShape staticboxShape3 = new BoxShape(1, 50, 200);//right wall
-            CollisionShapes.Add(staticboxShape3);
             LocalCreateRigidBody(mass, Matrix.Translation(200, 15, 0), staticboxShape3);
 
             CollisionShape staticboxShape4 = new BoxShape(200, 50, 1);//front wall
-            CollisionShapes.Add(staticboxShape4);
             LocalCreateRigidBody(mass, Matrix.Translation(0, 15, 200), staticboxShape4);
 
             CollisionShape staticboxShape5 = new BoxShape(200, 50, 1);//back wall
-            CollisionShapes.Add(staticboxShape5);
             LocalCreateRigidBody(mass, Matrix.Translation(0, 15, -200), staticboxShape5);
 
 
@@ -82,7 +77,6 @@ namespace GImpactTestDemo
             Vector3 normal = new Vector3(-0.5f, 0.5f, 0.0f);
             normal.Normalize();
             CollisionShape staticplaneShape6 = new StaticPlaneShape(normal, 0.5f);// A plane
-            CollisionShapes.Add(staticplaneShape6);
             RigidBody staticBody2 = LocalCreateRigidBody(mass, Matrix.Translation(0, -9, 0), staticplaneShape6);
 
 
@@ -91,7 +85,6 @@ namespace GImpactTestDemo
             normal = new Vector3(0.5f, 0.7f, 0.0f);
             //normal.Normalize();
             CollisionShape staticplaneShape7 = new StaticPlaneShape(normal, 0.0f);// A plane
-            CollisionShapes.Add(staticplaneShape7);
             staticBody2 = LocalCreateRigidBody(mass, Matrix.Translation(0, -10, 0), staticplaneShape7);
 
 
@@ -163,7 +156,6 @@ namespace GImpactTestDemo
             for (int i = 0; i < 8; i++)
             {
                 CollisionShape boxShape = new BoxShape(new Vector3(1, 1, 1));
-                CollisionShapes.Add(boxShape);
                 LocalCreateRigidBody(1, Matrix.Translation(2 * i - 5, 2, -3), boxShape);
             }
         }
@@ -194,7 +186,6 @@ namespace GImpactTestDemo
 #else
             //trimeshShape = new GImpactMeshData(indexVertexArrays);
 #endif
-            CollisionShapes.Add(trimeshShape);
 
 
             // Create Bunny Shape
@@ -221,7 +212,6 @@ namespace GImpactTestDemo
 #else
             //trimeshShape2 = new GImpactMeshData(indexVertexArrays2);
 #endif
-            CollisionShapes.Add(trimeshShape2);
 
             //register GIMPACT algorithm
 #if BULLET_GIMPACT

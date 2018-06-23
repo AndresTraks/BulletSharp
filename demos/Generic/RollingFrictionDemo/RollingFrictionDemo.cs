@@ -4,15 +4,15 @@ using DemoFramework;
 
 namespace RollingFrictionDemo
 {
-    class RollingFrictionDemo : Demo
+    sealed class RollingFrictionDemo : Demo
     {
         // create 125 (5x5x5) dynamic objects
-        const int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
+        private const int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
 
         // scaling of the objects (0.1 = 20 centimeter boxes )
-        const float StartPosX = -5;
-        const float StartPosY = -5;
-        const float StartPosZ = -3;
+        private const float StartPosX = -5;
+        private const float StartPosY = -5;
+        private const float StartPosZ = -3;
 
         protected override void OnInitialize()
         {
@@ -35,7 +35,6 @@ namespace RollingFrictionDemo
 
             // create the ground
             CollisionShape groundShape = new BoxShape(20, 50, 10);
-            CollisionShapes.Add(groundShape);
             CollisionObject ground = LocalCreateRigidBody(0,
                 Matrix.RotationAxis(new Vector3(0, 0, 1), (float)Math.PI * 0.03f) * Matrix.Translation(0, -50, 0),
                 groundShape);
@@ -44,7 +43,6 @@ namespace RollingFrictionDemo
             ground.UserObject = "Ground";
 
             groundShape = new BoxShape(100, 50, 100);
-            CollisionShapes.Add(groundShape);
             ground = LocalCreateRigidBody(0, Matrix.Translation(0, -54, 0), groundShape);
             ground.Friction = 1;
             ground.RollingFriction = 1;
@@ -63,15 +61,10 @@ namespace RollingFrictionDemo
 			    new CylinderShapeX(new Vector3(1,0.5f,0.5f)),
 			    new CylinderShapeZ(new Vector3(0.5f,0.5f,1)),
 		    };
-            foreach (var collisionShape in colShapes)
-            {
-                CollisionShapes.Add(collisionShape);
-            }
 
             const float mass = 1.0f;
 
             CollisionShape colShape = new BoxShape(1);
-            CollisionShapes.Add(colShape);
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
             var rbInfo = new RigidBodyConstructionInfo(mass, null, null, localInertia);

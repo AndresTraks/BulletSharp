@@ -5,19 +5,16 @@ using DemoFramework;
 
 namespace DistanceDemo
 {
-    class DistanceDemo : Demo
+    sealed class DistanceDemo : Demo
     {
-        Vector3 distanceFrom, distanceTo;
-        float distance;
+        private readonly Matrix _rotBodyPosition = Matrix.Translation(0, 10, 0);
+        private Matrix _staticBodyPosition = Matrix.Translation(0, 5, 0);
+        private RigidBody _rotatingBody, _staticBody;
+        private ConvexShape _rotatingShape, _staticShape;
 
-        Matrix rotBodyPosition = Matrix.Translation(0, 10, 0);
-        Matrix body2Position = Matrix.Translation(0, 5, 0);
-        RigidBody rotBody, body2;
-        ConvexShape colShape0, colShape1;
+        private VoronoiSimplexSolver _gjkSimplexSolver = new VoronoiSimplexSolver();
 
-        VoronoiSimplexSolver sGjkSimplexSolver = new VoronoiSimplexSolver();
-
-        float rotation = 0;
+        private float _rotation = 0;
 
         protected override void OnInitialize()
         {
@@ -39,61 +36,85 @@ namespace DistanceDemo
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, null, CollisionConf);
             World.Gravity = new Vector3(0, -10, 0);
 
-            // ground
-            CollisionShape groundShape = new BoxShape(50, 1, 50);
-            CollisionShapes.Add(groundShape);
-            CollisionObject ground = LocalCreateRigidBody(0, Matrix.Identity, groundShape);
-            ground.UserObject = "Ground";
+            CreateGround();
 
-            // Objects
-            //colShape = new BoxShape(1);
-            Vector3[] points0 = {
+            Vector3[] rotatingPoints = {
                 new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1)
             };
-            Vector3[] points1 = {
+            _rotatingShape = new ConvexHullShape(rotatingPoints);
+            _rotatingBody = LocalCreateRigidBody(0, _rotBodyPosition, _rotatingShape);
+            _rotatingBody.CollisionFlags |= CollisionFlags.KinematicObject;
+            _rotatingBody.ActivationState = ActivationState.DisableDeactivation;
+
+            Vector3[] staticPoints = {
                 new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1), new Vector3(0,0,-1), new Vector3(-1,-1,0)
             };
-            colShape0 = new ConvexHullShape(points0);
-            colShape1 = new ConvexHullShape(points1);
-            CollisionShapes.Add(colShape0);
-            CollisionShapes.Add(colShape1);
+            _staticShape = new ConvexHullShape(staticPoints);
 
-            body2 = LocalCreateRigidBody(0, body2Position, colShape1);
-
-            rotBody = LocalCreateRigidBody(0, rotBodyPosition, colShape0);
-            rotBody.CollisionFlags |= CollisionFlags.KinematicObject;
-            rotBody.ActivationState = ActivationState.DisableDeactivation;
+            _staticBody = LocalCreateRigidBody(0, _staticBodyPosition, _staticShape);
         }
 
         public override void OnUpdate()
         {
             base.OnUpdate();
 
-            rotation += FrameDelta;
-            rotBody.CenterOfMassTransform = Matrix.RotationX(rotation) * rotBodyPosition;
+            _rotation += FrameDelta;
+            SetRotation(_rotation);
 
+            if (IsDebugDrawEnabled)
+            {
+                DrawDistance();
+            }
+        }
+
+        private void CreateGround()
+        {
+            var groundShape = new BoxShape(50, 1, 50);
+            CollisionObject ground = LocalCreateRigidBody(0, Matrix.Identity, groundShape);
+            ground.UserObject = "Ground";
+        }
+
+        private void SetRotation(float rotation)
+        {
+            _rotatingBody.CenterOfMassTransform = Matrix.RotationX(rotation) * _rotBodyPosition;
+            _rotatingBody.WorldTransform = _rotatingBody.CenterOfMassTransform;
+        }
+
+        private void DrawDistance()
+        {
             var input = new DiscreteCollisionDetectorInterface.ClosestPointInput
             {
-                TransformA = rotBody.CenterOfMassTransform,
-                TransformB = body2Position
+                TransformA = _rotatingBody.CenterOfMassTransform,
+                TransformB = _staticBody.CenterOfMassTransform
             };
 
-            var result = new PointCollector();
-
-            using (var detector = new GjkPairDetector(colShape0, colShape1, sGjkSimplexSolver, null))
+            using (var result = new PointCollector())
             {
-                detector.CachedSeparatingAxis = new Vector3(0.00000000f, 0.059727669f, 0.29259586f);
-                detector.GetClosestPoints(input, result, null);
+                using (var detector = new GjkPairDetector(_rotatingShape, _staticShape, _gjkSimplexSolver, null))
+                {
+                    detector.CachedSeparatingAxis = new Vector3(0.00000000f, 0.059727669f, 0.29259586f);
+                    detector.GetClosestPoints(input, result, null);
+                }
+
+                if (result.HasResult)
+                {
+                    Vector3 distanceFrom = result.PointInWorld;
+                    Vector3 distanceTo = result.PointInWorld + result.NormalOnBInWorld * result.Distance;
+                    World.DebugDrawer.DrawLine(ref distanceFrom, ref distanceTo, Color.White);
+                }
             }
 
-            if (result.HasResult)
+            input.Dispose();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                distanceFrom = result.PointInWorld;
-                distanceTo = result.PointInWorld + result.NormalOnBInWorld * result.Distance;
-                distance = result.Distance;
-                World.DebugDrawer.DrawLine(ref distanceFrom, ref distanceTo, Color.White);
+                _gjkSimplexSolver.Dispose();
             }
-            result.Dispose();
+
+            base.Dispose(disposing);
         }
     }
 

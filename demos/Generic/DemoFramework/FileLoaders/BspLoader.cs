@@ -158,7 +158,7 @@ namespace DemoFramework.FileLoaders
         LeaflightHDR2
     }
 
-    public class BspLoader
+    public sealed class BspLoader
     {
         public BspBrush[] Brushes { get; set; }
         public BspBrushSide[] BrushSides { get; set; }

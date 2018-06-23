@@ -34,9 +34,9 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BulletSharp, Version=2.80.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="BulletSharp, Version=2.87.0.0, Culture=neutral, processorArchitecture=x86">
       <HintPath>..\..\..\Release Generic\BulletSharp.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -50,6 +50,7 @@
     <Compile Include="Controller\Input.cs" />
     <Compile Include="Controller\MouseController.cs" />
     <Compile Include="Demo.cs" />
+    <Compile Include="DemoCleaner.cs" />
     <Compile Include="FileLoaders\BspConverter.cs" />
     <Compile Include="FileLoaders\BspLoader.cs" />
     <Compile Include="FileLoaders\Wavefront.cs" />

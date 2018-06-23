@@ -4,11 +4,11 @@ using DemoFramework;
 
 namespace BasicDemo
 {
-    class BasicDemo : Demo
+    sealed class BasicDemo : Demo
     {
         // create 125 (5x5x5) dynamic objects
-        const int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
-        Vector3 startPosition = new Vector3(0, 2, 0);
+        private const int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
+        private Vector3 startPosition = new Vector3(0, 2, 0);
 
         protected override void OnInitialize()
         {
@@ -39,7 +39,6 @@ namespace BasicDemo
             //groundShape.InitializePolyhedralFeatures();
             //var groundShape = new StaticPlaneShape(Vector3.UnitY, 1);
 
-            CollisionShapes.Add(groundShape);
             CollisionObject ground = LocalCreateRigidBody(0, Matrix.Identity, groundShape);
             ground.UserObject = "Ground";
         }
@@ -48,7 +47,6 @@ namespace BasicDemo
         {
             const float mass = 1.0f;
             var colShape = new BoxShape(1);
-            CollisionShapes.Add(colShape);
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
             var rbInfo = new RigidBodyConstructionInfo(mass, null, colShape, localInertia);

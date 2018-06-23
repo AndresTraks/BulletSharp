@@ -5,9 +5,9 @@ using DemoFramework;
 
 namespace RagdollDemo
 {
-    class RagdollDemo : Demo
+    sealed class RagdollDemo : Demo
     {
-        List<Ragdoll> ragdolls = new List<Ragdoll>();
+        List<Ragdoll> _ragdolls = new List<Ragdoll>();
 
         protected override void OnInitialize()
         {
@@ -34,7 +34,6 @@ namespace RagdollDemo
 
             // Setup a big ground box
             CollisionShape groundShape = new BoxShape(100, 10, 100);
-            CollisionShapes.Add(groundShape);
             Matrix groundTransform = Matrix.Translation(0, -10, 0);
 
             RigidBody ground = LocalCreateRigidBody(0, groundTransform, groundShape);
@@ -45,10 +44,10 @@ namespace RagdollDemo
             SpawnRagdoll(new Vector3(-1, 0.5f, 0));
         }
 
-        void SpawnRagdoll(Vector3 startOffset)
+        private void SpawnRagdoll(Vector3 startOffset)
         {
             Ragdoll ragdoll = new Ragdoll(World, startOffset);
-            ragdolls.Add(ragdoll);
+            _ragdolls.Add(ragdoll);
         }
     }
 

@@ -5,12 +5,12 @@ using System;
 
 namespace BenchmarkDemo
 {
-    class BenchmarkDemo : Demo
+    sealed class BenchmarkDemo : Demo
     {
-        const float defaultContactProcessingThreshold = 0.0f;
+        private const float defaultContactProcessingThreshold = 0.0f;
 
-        int scene = 1;
-        Action[] _scenes;
+        private const int SceneIndex = 1;
+        private Action[] _scenes;
 
         public BenchmarkDemo()
         {
@@ -48,8 +48,7 @@ namespace BenchmarkDemo
             Vector3 worldAabbMin = new Vector3(-1000, -1000, -1000);
             Vector3 worldAabbMax = new Vector3(1000, 1000, 1000);
 
-            var pairCache = new HashedOverlappingPairCache();
-            Broadphase = new AxisSweep3(worldAabbMin, worldAabbMax, 3500, pairCache);
+            Broadphase = new AxisSweep3(worldAabbMin, worldAabbMax, 3500);
             //Broadphase = new DbvtBroadphase();
 
             Solver = new SequentialImpulseConstraintSolver();
@@ -59,13 +58,12 @@ namespace BenchmarkDemo
             World.SolverInfo.SolverMode |= SolverModes.EnableFrictionDirectionCaching;
             World.SolverInfo.NumIterations = 5;
 
-            _scenes[scene]();
+            _scenes[SceneIndex]();
         }
 
         private void CreateGround()
         {
             var groundShape = new BoxShape(250, 50, 250);
-            CollisionShapes.Add(groundShape);
             var ground = base.LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
             ground.UserObject = "Ground";
         }
@@ -225,8 +223,9 @@ namespace BenchmarkDemo
                     Taru.Vertices[i * 3],
                     Taru.Vertices[i * 3 + 1],
                     Taru.Vertices[i * 3 + 2]);
-                shape.AddPoint(vertex);
+                shape.AddPoint(vertex, false);
             }
+            shape.RecalcLocalAabb();
             return shape;
         }
 

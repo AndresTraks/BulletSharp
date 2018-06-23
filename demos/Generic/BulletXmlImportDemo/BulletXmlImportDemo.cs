@@ -6,9 +6,9 @@ using System.IO;
 
 namespace BulletXmlImportDemo
 {
-    class BulletXmlImportDemo : Demo
+    sealed class BulletXmlImportDemo : Demo
     {
-        BulletXmlWorldImporter importer;
+        private BulletXmlWorldImporter _importer;
 
         protected override void OnInitialize()
         {
@@ -30,8 +30,8 @@ namespace BulletXmlImportDemo
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, Solver, CollisionConf);
             World.Gravity = new Vector3(0, -10, 0);
 
-            importer = new BulletXmlWorldImporter(World);
-            if (!importer.LoadFile(Path.Combine("data", "bullet_basic.xml")))
+            _importer = new BulletXmlWorldImporter(World);
+            if (!_importer.LoadFile(Path.Combine("data", "bullet_basic.xml")))
             {
                 //throw new FileNotFoundException();
             }
@@ -39,8 +39,8 @@ namespace BulletXmlImportDemo
 
         public override void ExitPhysics()
         {
-            importer.DeleteAllData();
-            importer.Dispose();
+            _importer.DeleteAllData();
+            _importer.Dispose();
 
             base.ExitPhysics();
         }

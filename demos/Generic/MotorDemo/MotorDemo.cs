@@ -5,11 +5,11 @@ using DemoFramework;
 
 namespace MotorDemo
 {
-    class MotorDemo : Demo
+    sealed class MotorDemo : Demo
     {
         private const float CyclePeriod = 2000.0f;
         private const float MuscleStrength = 0.5f;
-        private float time;
+        private float _time;
 
         private List<TestRig> rigs = new List<TestRig>();
 
@@ -46,11 +46,10 @@ namespace MotorDemo
 
             // create the ground
             CollisionShape groundShape = new BoxShape(200, 10, 200);
-            CollisionShapes.Add(groundShape);
             CollisionObject ground = LocalCreateRigidBody(0, Matrix.Translation(0, -10, 0), groundShape);
             ground.UserObject = "Ground";
 
-            time = 0;
+            _time = 0;
 
             SpawnTestRig(new Vector3(1, 1, 0), false);
             SpawnTestRig(new Vector3(-2, 1, 0), true);
@@ -70,7 +69,7 @@ namespace MotorDemo
             if (ms > minFPS)
                 ms = minFPS;
 
-            time += ms;
+            _time += ms;
 
             //
             // set per-frame sinusoidal position targets using angular motor (hacky?)
@@ -81,7 +80,7 @@ namespace MotorDemo
                 {
                     float currentAngle = hinge.HingeAngle;
 
-                    float targetPercent = ((int)(time / 1000.0f) % (int)CyclePeriod) / CyclePeriod;
+                    float targetPercent = ((int)(_time / 1000.0f) % (int)CyclePeriod) / CyclePeriod;
                     float targetAngle = (float)(0.5 * (1 + Math.Sin(2.0f * Math.PI * targetPercent)));
                     float targetLimitAngle = hinge.LowerLimit + targetAngle * (hinge.UpperLimit - hinge.LowerLimit);
                     float angleError = targetLimitAngle - currentAngle;

@@ -36,14 +36,13 @@ namespace DemoFramework
         // Physics
         public DynamicsWorld World { get; protected set; }
 
-        protected CollisionConfiguration CollisionConf;
-        protected CollisionDispatcher Dispatcher;
-        protected BroadphaseInterface Broadphase;
-        protected ConstraintSolver Solver;
-        public List<CollisionShape> CollisionShapes { get; } = new List<CollisionShape>();
+        public CollisionConfiguration CollisionConf;
+        public CollisionDispatcher Dispatcher;
+        public BroadphaseInterface Broadphase;
+        public ConstraintSolver Solver;
 
-        protected BoxShape shootBoxShape;
-        protected float shootBoxInitialSpeed = 40;
+        protected BoxShape _shootBoxShape;
+        private const float ShootBoxInitialSpeed = 40;
         private BodyPicker _bodyPicker;
 
         // Debug drawing
@@ -175,7 +174,6 @@ namespace DemoFramework
 
         public virtual void ClientResetScene()
         {
-            _bodyPicker.RemovePickingConstraint();
             ExitPhysics();
             OnInitializePhysics();
             if (World != null && _debugDrawer != null)
@@ -186,53 +184,8 @@ namespace DemoFramework
 
         public virtual void ExitPhysics()
         {
-            if (World != null)
-            {
-                //remove/dispose constraints
-                int i;
-                for (i = World.NumConstraints - 1; i >= 0; i--)
-                {
-                    TypedConstraint constraint = World.GetConstraint(i);
-                    World.RemoveConstraint(constraint);
-                    constraint.Dispose();
-                }
-
-                //remove the rigidbodies from the dynamics world and delete them
-                for (i = World.NumCollisionObjects - 1; i >= 0; i--)
-                {
-                    CollisionObject obj = World.CollisionObjectArray[i];
-                    RigidBody body = obj as RigidBody;
-                    if (body != null && body.MotionState != null)
-                    {
-                        body.MotionState.Dispose();
-                    }
-                    World.RemoveCollisionObject(obj);
-                    obj.Dispose();
-                }
-
-                //delete collision shapes
-                foreach (CollisionShape shape in CollisionShapes)
-                    shape.Dispose();
-                CollisionShapes.Clear();
-
-                World.Dispose();
-                Broadphase.Dispose();
-                Dispatcher.Dispose();
-                CollisionConf.Dispose();
-            }
-
-            if (Broadphase != null)
-            {
-                Broadphase.Dispose();
-            }
-            if (Dispatcher != null)
-            {
-                Dispatcher.Dispose();
-            }
-            if (CollisionConf != null)
-            {
-                CollisionConf.Dispose();
-            }
+            _bodyPicker.RemovePickingConstraint();
+            this.StandardCleanup();
         }
 
         void SetInfoText()
@@ -404,20 +357,20 @@ namespace DemoFramework
 
             const float mass = 1.0f;
 
-            if (shootBoxShape == null)
+            if (_shootBoxShape == null)
             {
-                shootBoxShape = new BoxShape(1.0f);
+                _shootBoxShape = new BoxShape(1.0f);
                 //shootBoxShape.InitializePolyhedralFeatures();
             }
 
-            RigidBody body = LocalCreateRigidBody(mass, Matrix.Translation(camPos), shootBoxShape);
+            RigidBody body = LocalCreateRigidBody(mass, Matrix.Translation(camPos), _shootBoxShape);
             body.LinearFactor = new Vector3(1, 1, 1);
             //body.Restitution = 1;
 
             Vector3 linVel = destination - camPos;
             linVel.Normalize();
 
-            body.LinearVelocity = linVel * shootBoxInitialSpeed;
+            body.LinearVelocity = linVel * ShootBoxInitialSpeed;
             body.CcdMotionThreshold = 0.5f;
             body.CcdSweptSphereRadius = 0.9f;
         }

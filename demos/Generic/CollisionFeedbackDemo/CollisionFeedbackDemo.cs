@@ -4,9 +4,9 @@ using DemoFramework;
 
 namespace CollisionFeedbackDemo
 {
-    class CollisionFeedbackDemo : Demo
+    sealed class CollisionFeedbackDemo : Demo
     {
-        AudioEngine _audioEngine = new AudioEngine();
+        private AudioEngine _audioEngine = new AudioEngine();
 
         protected override void OnInitialize()
         {

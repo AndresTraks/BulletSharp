@@ -13,8 +13,6 @@ namespace DemoFramework.FileLoaders
 
             foreach (BspLeaf leaf in bspLoader.Leaves)
             {
-                bool isValidBrush = false;
-
                 for (int b = 0; b < leaf.NumLeafBrushes; b++)
                 {
                     int brushID = bspLoader.LeafBrushes[leaf.FirstLeafBrush + b];
@@ -35,12 +33,13 @@ namespace DemoFramework.FileLoaders
                     {
                         int sideId = brush.FirstSide + p;
 
-                        BspBrushSide brushside = bspLoader.BrushSides[sideId];
-                        BspPlane plane = bspLoader.Planes[brushside.PlaneNum];
+                        BspBrushSide brushSide = bspLoader.BrushSides[sideId];
+                        BspPlane plane = bspLoader.Planes[brushSide.PlaneNum];
                         Vector4 planeEquation = new Vector4(plane.Normal, scaling * -plane.Distance);
                         planeEquations.Add(planeEquation);
-                        isValidBrush = true;
                     }
+
+                    bool isValidBrush = planeEquations.Count > 0;
                     if (isValidBrush)
                     {
                         List<Vector3> vertices = GeometryUtil.GetVerticesFromPlaneEquations(planeEquations);

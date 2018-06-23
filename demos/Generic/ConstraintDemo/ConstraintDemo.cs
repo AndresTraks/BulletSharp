@@ -4,7 +4,7 @@ using System;
 
 namespace ConstraintDemo
 {
-    class ConstraintDemo : Demo
+    sealed class ConstraintDemo : Demo
     {
         const DebugDrawModes debugMode = DebugDrawModes.DrawConstraints | DebugDrawModes.DrawConstraintLimits;
 
@@ -29,7 +29,6 @@ namespace ConstraintDemo
             CreateGround();
 
             cubeShape = new BoxShape(CubeHalfExtent);
-            CollisionShapes.Add(cubeShape);
 
             CreateGears();
             CreateHingedBoxes();
@@ -60,7 +59,6 @@ namespace ConstraintDemo
         {
             var groundShape = new BoxShape(50, 1, 50);
             //var groundShape = new StaticPlaneShape(Vector3.UnitY, 1);
-            CollisionShapes.Add(groundShape);
             RigidBody body = LocalCreateRigidBody(0, Matrix.Translation(0, -16, 0), groundShape);
             body.UserObject = "Ground";
         }
@@ -103,9 +101,6 @@ namespace ConstraintDemo
             var wheel = new CylinderShape(radius, 0.025f, radius);
             shape.AddChildShape(Matrix.Identity, axle);
             shape.AddChildShape(Matrix.Identity, wheel);
-            CollisionShapes.Add(shape);
-            CollisionShapes.Add(axle);
-            CollisionShapes.Add(wheel);
 
             RigidBody body = LocalCreateRigidBody(mass, transform, shape);
             body.LinearFactor = Vector3.Zero;
@@ -249,7 +244,6 @@ namespace ConstraintDemo
             const float mass = 1.0f;
 
             var doorShape = new BoxShape(2.0f, 5.0f, 0.2f);
-            CollisionShapes.Add(doorShape);
             RigidBody doorBody = LocalCreateRigidBody(mass, Matrix.Translation(-5.0f, -2.0f, 0.0f), doorShape);
             doorBody.ActivationState = ActivationState.DisableDeactivation;
 

@@ -4,17 +4,17 @@ using DemoFramework;
 
 namespace FeatherStoneDemo
 {
-    class FeatherStoneDemo : Demo
+    sealed class FeatherStoneDemo : Demo
     {
         // create 125 (5x5x5) dynamic objects
-        const int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
+        private const int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
 
         // scaling of the objects (0.1 = 20 centimeter boxes )
-        const float StartPosX = -5;
-        const float StartPosY = 2;
-        const float StartPosZ = -3;
+        private const float StartPosX = -5;
+        private const float StartPosY = 2;
+        private const float StartPosZ = -3;
 
-        const float Friction = 1.0f;
+        private const float Friction = 1.0f;
 
         protected override void OnInitialize()
         {
@@ -41,7 +41,6 @@ namespace FeatherStoneDemo
             //groundShape.InitializePolyhedralFeatures();
             //CollisionShape groundShape = new StaticPlaneShape(new Vector3(0,1,0), 50);
 
-            CollisionShapes.Add(groundShape);
             CollisionObject ground = LocalCreateRigidBody(0, Matrix.Translation(0, -51.55f, 0), groundShape);
             ground.UserObject = "Ground";
 
@@ -92,7 +91,7 @@ namespace FeatherStoneDemo
             LocalCreateRigidBody(1, Matrix.Translation(0, -0.95f, 0), new BoxShape(0.5f, 0.5f, 0.5f));
         }
 
-        MultiBody CreateFeatherstoneMultiBody(MultiBodyDynamicsWorld world, int numLinks,
+        private MultiBody CreateFeatherstoneMultiBody(MultiBodyDynamicsWorld world, int numLinks,
             Vector3 basePosition, Vector3 baseHalfExtents, Vector3 linkHalfExtents, bool spherical, bool floating)
         {
             float mass = 1;
@@ -150,13 +149,12 @@ namespace FeatherStoneDemo
             return mb;
         }
 
-        void AddBoxes()
+        private void AddBoxes()
         {
             // create a few dynamic rigidbodies
             const float mass = 1.0f;
 
             BoxShape colShape = new BoxShape(1);
-            CollisionShapes.Add(colShape);
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
             const float startX = StartPosX - ArraySizeX / 2;
@@ -189,7 +187,7 @@ namespace FeatherStoneDemo
             }
         }
 
-        void AddColliders(MultiBody multiBody, Vector3 baseHalfExtents, Vector3 linkHalfExtents)
+        private void AddColliders(MultiBody multiBody, Vector3 baseHalfExtents, Vector3 linkHalfExtents)
         {
             // Add a collider for the base
             Quaternion[] worldToLocal = new Quaternion[multiBody.NumLinks + 1];

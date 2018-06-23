@@ -41,8 +41,6 @@ namespace CollisionInterfaceDemo
 
             var boxA = new BoxShape(1.0f) { Margin = 0 };
             var boxB = new BoxShape(0.5f) { Margin = 0 };
-            CollisionShapes.Add(boxA);
-            CollisionShapes.Add(boxB);
 
             Quaternion rotA = new Quaternion(0.739f, -0.204f, 0.587f, 0.257f);
             rotA.Normalize();

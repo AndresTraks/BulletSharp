@@ -62,7 +62,6 @@ namespace VehicleDemo
         protected override void OnInitializePhysics()
         {
             CollisionShape groundShape = new BoxShape(50, 3, 50);
-            CollisionShapes.Add(groundShape);
 
             CollisionConf = new DefaultCollisionConfiguration();
             Dispatcher = new CollisionDispatcher(CollisionConf);
@@ -254,8 +253,6 @@ namespace VehicleDemo
                 game.groundMesh.ComputeNormals();
             }*/
 
-            CollisionShapes.Add(groundShape);
-
 
             //create ground object
             RigidBody ground = LocalCreateRigidBody(0, tr, groundShape);
@@ -263,10 +260,8 @@ namespace VehicleDemo
 
 
             CollisionShape chassisShape = new BoxShape(1.0f, 0.5f, 2.0f);
-            CollisionShapes.Add(chassisShape);
 
             CompoundShape compound = new CompoundShape();
-            CollisionShapes.Add(compound);
 
             //localTrans effectively shifts the center of mass with respect to the chassis
             Matrix localTrans = Matrix.Translation(Vector3.UnitY);

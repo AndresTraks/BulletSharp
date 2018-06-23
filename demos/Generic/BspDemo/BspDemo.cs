@@ -7,7 +7,7 @@ using System.IO;
 
 namespace BspDemo
 {
-    class BspDemo : Demo
+    sealed class BspDemo : Demo
     {
         protected override void OnInitialize()
         {
@@ -65,7 +65,6 @@ namespace BspDemo
             //can use a shift
             Matrix startTransform = Matrix.Translation(0, 0, -10.0f);
             var shape = new ConvexHullShape(vertices);
-            _demo.CollisionShapes.Add(shape);
 
             _demo.LocalCreateRigidBody(mass, startTransform, shape);
         }

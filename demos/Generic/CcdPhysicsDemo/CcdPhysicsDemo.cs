@@ -5,18 +5,20 @@ using System.Windows.Forms;
 
 namespace CcdPhysicsDemo
 {
-    class CcdPhysicsDemo : Demo
+    sealed class CcdPhysicsDemo : Demo
     {
-        bool ccdMode = true;
+        private bool _ccdMode = true;
 
-        const float CubeHalfExtents = 1.0f;
-        const float ExtraHeight = 1.0f;
+        private const float CubeHalfExtents = 1.0f;
+        private const float ExtraHeight = 1.0f;
 
-        void ToggleCcdMode()
+        private const float ShootBoxInitialSpeed = 4000;
+
+        private void ToggleCcdMode()
         {
-            ccdMode = !ccdMode;
+            _ccdMode = !_ccdMode;
 
-            if (ccdMode)
+            if (_ccdMode)
             {
                 DemoText = "CCD enabled (P to disable)";
             }
@@ -49,8 +51,6 @@ namespace CcdPhysicsDemo
 
         protected override void OnInitializePhysics()
         {
-            shootBoxInitialSpeed = 4000;
-
             // collision configuration contains default setup for memory, collision setup
             CollisionConf = new DefaultCollisionConfiguration();
 
@@ -68,7 +68,7 @@ namespace CcdPhysicsDemo
             //World.SolverInfo.SplitImpulse = 0;
             World.SolverInfo.NumIterations = 20;
 
-            World.DispatchInfo.UseContinuous = ccdMode;
+            World.DispatchInfo.UseContinuous = _ccdMode;
 
             World.Gravity = new Vector3(0, -10, 0);
 
@@ -80,7 +80,6 @@ namespace CcdPhysicsDemo
         {
             BoxShape ground = new BoxShape(200, 1, 200);
             ground.InitializePolyhedralFeatures();
-            CollisionShapes.Add(ground);
             RigidBody body = LocalCreateRigidBody(0, Matrix.Identity, ground);
             body.Friction = 0.5f;
             //body.RollingFriction = 0.3f;
@@ -91,7 +90,6 @@ namespace CcdPhysicsDemo
         {
             //var shape = new CylinderShape(CubeHalfExtents, CubeHalfExtents, CubeHalfExtents);
             var shape = new BoxShape(CubeHalfExtents);
-            CollisionShapes.Add(shape);
 
             const int numObjects = 120;
             for (int i = 0; i < numObjects; i++)
@@ -116,7 +114,7 @@ namespace CcdPhysicsDemo
                 body.Friction = 0.5f;
                 //body.RollingFriction = 0.3f;
 
-                if (ccdMode)
+                if (_ccdMode)
                 {
                     body.CcdMotionThreshold = 1e-7f;
                     body.CcdSweptSphereRadius = 0.9f * CubeHalfExtents;
@@ -128,24 +126,24 @@ namespace CcdPhysicsDemo
         {
             const float mass = 1.0f;
 
-            if (shootBoxShape == null)
+            if (_shootBoxShape == null)
             {
-                shootBoxShape = new BoxShape(1.0f);
-                shootBoxShape.InitializePolyhedralFeatures();
+                _shootBoxShape = new BoxShape(1.0f);
+                _shootBoxShape.InitializePolyhedralFeatures();
             }
 
-            RigidBody body = LocalCreateRigidBody(mass, Matrix.Translation(camPos), shootBoxShape);
+            RigidBody body = LocalCreateRigidBody(mass, Matrix.Translation(camPos), _shootBoxShape);
             body.LinearFactor = new Vector3(1, 1, 1);
             //body.Restitution = 1;
 
             Vector3 linVel = destination - camPos;
             linVel.Normalize();
-            body.LinearVelocity = linVel * shootBoxInitialSpeed;
+            body.LinearVelocity = linVel * ShootBoxInitialSpeed;
             body.AngularVelocity = Vector3.Zero;
             body.ContactProcessingThreshold = 1e30f;
 
             // when using ccdMode, disable regular CCD
-            if (ccdMode)
+            if (_ccdMode)
             {
                 body.CcdMotionThreshold = 0.0001f;
                 body.CcdSweptSphereRadius = 0.4f;

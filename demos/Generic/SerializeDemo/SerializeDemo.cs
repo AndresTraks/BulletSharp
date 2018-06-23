@@ -3,6 +3,7 @@ using System.IO;
 using BulletSharp;
 using BulletSharp.Serialize;
 using DemoFramework;
+using System.Collections.Generic;
 
 namespace SerializeDemo
 {
@@ -27,17 +28,19 @@ namespace SerializeDemo
         }
     }
 
-    class SerializeDemo : Demo
+    sealed class SerializeDemo : Demo
     {
         ///create 125 (5x5x5) dynamic objects
-        int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
+        private const int ArraySizeX = 5, ArraySizeY = 5, ArraySizeZ = 5;
 
         ///scaling of the objects (0.1 = 20 centimeter boxes )
-        float StartPosX = -5;
-        float StartPosY = -5;
-        float StartPosZ = -3;
+        private float StartPosX = -5;
+        private float StartPosY = -5;
+        private float StartPosZ = -3;
 
-        BulletWorldImporter fileLoader;
+        private BulletWorldImporter _fileLoader;
+
+        private List<CollisionShape> _collisionShapes = new List<CollisionShape>();
 
         protected override void OnInitialize()
         {
@@ -71,11 +74,11 @@ namespace SerializeDemo
                 bulletFile = args[1];
             }
 
-            fileLoader = new CustomBulletWorldImporter(World);
-            if (!fileLoader.LoadFile(bulletFile))
+            _fileLoader = new CustomBulletWorldImporter(World);
+            if (!_fileLoader.LoadFile(bulletFile))
             {
                 CollisionShape groundShape = new BoxShape(50);
-                CollisionShapes.Add(groundShape);
+                _collisionShapes.Add(groundShape);
                 RigidBody ground = LocalCreateRigidBody(0, Matrix.Translation(0, -50, 0), groundShape);
                 ground.UserObject = "Ground";
 
@@ -91,7 +94,7 @@ namespace SerializeDemo
                 //CollisionShape colShape = new CylinderShapeZ(1, 1, 1);
                 //CollisionShape colShape = new BoxShape(1);
                 //CollisionShape colShape = new SphereShape(1);
-                CollisionShapes.Add(colShape);
+                _collisionShapes.Add(colShape);
 
                 Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
@@ -131,8 +134,8 @@ namespace SerializeDemo
 
                 serializer.RegisterNameForObject(ground, "GroundName");
 
-                for (int i = 0; i < CollisionShapes.Count; i++)
-                    serializer.RegisterNameForObject(CollisionShapes[i], $"name{i}");
+                for (int i = 0; i < _collisionShapes.Count; i++)
+                    serializer.RegisterNameForObject(_collisionShapes[i], $"name{i}");
 
                 Point2PointConstraint p2p = new Point2PointConstraint((RigidBody)World.CollisionObjectArray[2], new Vector3(0, 1, 0));
                 World.AddConstraint(p2p);
@@ -141,7 +144,7 @@ namespace SerializeDemo
 
                 World.Serialize(serializer);
 
-                BulletSharp.DataStream data = serializer.LockBuffer();
+                DataStream data = serializer.LockBuffer();
                 byte[] dataBytes = new byte[data.Length];
                 data.Read(dataBytes, 0, dataBytes.Length);
 
@@ -153,8 +156,8 @@ namespace SerializeDemo
 
         public override void ExitPhysics()
         {
-            fileLoader.DeleteAllData();
-            fileLoader.Dispose();
+            _fileLoader.DeleteAllData();
+            _fileLoader.Dispose();
             base.ExitPhysics();
         }
     }

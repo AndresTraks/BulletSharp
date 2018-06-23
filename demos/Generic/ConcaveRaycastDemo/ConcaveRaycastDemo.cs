@@ -95,7 +95,6 @@ namespace ConcaveRaycastDemo
 
             const bool useQuantizedAabbCompression = true;
             groundShape = new BvhTriangleMeshShape(indexVertexArrays, useQuantizedAabbCompression);
-            CollisionShapes.Add(groundShape);
 
             staticBody = LocalCreateRigidBody(0.0f, Matrix.Identity, groundShape);
             staticBody.CollisionFlags |= CollisionFlags.StaticObject;
@@ -105,7 +104,6 @@ namespace ConcaveRaycastDemo
         private void CreateBoxes()
         {
             var colShape = new BoxShape(1);
-            CollisionShapes.Add(colShape);
 
             for (int i = 0; i < 10; i++)
             {

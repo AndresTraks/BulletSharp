@@ -4,11 +4,16 @@ using System;
 
 namespace Box2DDemo
 {
-    class Box2DDemo : Demo
+    sealed class Box2DDemo : Demo
     {
         ///create 25 (5x5) dynamic objects
         const int ArraySizeX = 5, ArraySizeY = 5;
         public float Depth = 0.04f;
+
+        private VoronoiSimplexSolver _simplexSolver;
+        private ConvexPenetrationDepthSolver _penetrationDepthSolver;
+        private Convex2DConvex2DAlgorithm.CreateFunc _convexAlgorithm2D;
+        private Box2DBox2DCollisionAlgorithm.CreateFunc _boxAlgorithm2D;
 
         protected override void OnInitialize()
         {
@@ -25,16 +30,7 @@ namespace Box2DDemo
 
             // Use the default collision dispatcher. For parallel processing you can use a diffent dispatcher.
             Dispatcher = new CollisionDispatcher(CollisionConf);
-
-            var simplex = new VoronoiSimplexSolver();
-            var pdSolver = new MinkowskiPenetrationDepthSolver();
-
-            var convexAlgo2D = new Convex2DConvex2DAlgorithm.CreateFunc(simplex, pdSolver);
-
-            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2DShape, BroadphaseNativeType.Convex2DShape, convexAlgo2D);
-            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Box2DShape, BroadphaseNativeType.Convex2DShape, convexAlgo2D);
-            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2DShape, BroadphaseNativeType.Box2DShape, convexAlgo2D);
-            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Box2DShape, BroadphaseNativeType.Box2DShape, new Box2DBox2DCollisionAlgorithm.CreateFunc());
+            RegisterCollisionAlgorithms();
 
             Broadphase = new DbvtBroadphase();
 
@@ -48,10 +44,33 @@ namespace Box2DDemo
             Create2dBodies();
         }
 
+        public override void ExitPhysics()
+        {
+            _simplexSolver.Dispose();
+            _penetrationDepthSolver.Dispose();
+            _convexAlgorithm2D.Dispose();
+            _boxAlgorithm2D.Dispose();
+
+            base.ExitPhysics();
+        }
+
+        private void RegisterCollisionAlgorithms()
+        {
+            _simplexSolver = new VoronoiSimplexSolver();
+            _penetrationDepthSolver = new MinkowskiPenetrationDepthSolver();
+
+            _convexAlgorithm2D = new Convex2DConvex2DAlgorithm.CreateFunc(_simplexSolver, _penetrationDepthSolver);
+            _boxAlgorithm2D = new Box2DBox2DCollisionAlgorithm.CreateFunc();
+
+            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2DShape, BroadphaseNativeType.Convex2DShape, _convexAlgorithm2D);
+            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Box2DShape, BroadphaseNativeType.Convex2DShape, _convexAlgorithm2D);
+            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Convex2DShape, BroadphaseNativeType.Box2DShape, _convexAlgorithm2D);
+            Dispatcher.RegisterCollisionCreateFunc(BroadphaseNativeType.Box2DShape, BroadphaseNativeType.Box2DShape, _boxAlgorithm2D);
+        }
+
         private void CreateGround()
         {
             var groundShape = new BoxShape(150, 7, 150);
-            CollisionShapes.Add(groundShape);
             var ground = LocalCreateRigidBody(0, Matrix.Identity, groundShape);
             ground.UserObject = "Ground";
         }
@@ -68,23 +87,15 @@ namespace Box2DDemo
             var childShape2 = new CylinderShapeZ(1, 1, Depth);
             var colShape3 = new Convex2DShape(childShape2);
 
-            CollisionShapes.Add(colShape);
-            CollisionShapes.Add(colShape2);
-            CollisionShapes.Add(colShape3);
-
-            CollisionShapes.Add(childShape0);
-            CollisionShapes.Add(childShape1);
-            CollisionShapes.Add(childShape2);
-
             colShape.Margin = 0.03f;
 
             float mass = 1.0f;
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
-            var rbInfo = new RigidBodyConstructionInfo(mass, null, colShape, localInertia);
+            var rbInfo = new RigidBodyConstructionInfo(mass, null, null, localInertia);
 
             Vector3 x = new Vector3(-ArraySizeX, 8, -20);
-            Vector3 y = Vector3.Zero;
+            Vector3 y;
             Vector3 deltaX = new Vector3(1, 2, 0);
             Vector3 deltaY = new Vector3(2, 0, 0);
 
