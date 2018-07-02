@@ -61,9 +61,6 @@ DiscreteCollisionDetectorInterface::Result::~Result()
 
 DiscreteCollisionDetectorInterface::Result::!Result()
 {
-	if (this->IsDisposed)
-		return;
-
 	ALIGNED_DESTROY_FREE(_native, Result);
 	_native = NULL;
 }
@@ -86,9 +83,6 @@ DiscreteCollisionDetectorInterface::~DiscreteCollisionDetectorInterface()
 
 DiscreteCollisionDetectorInterface::!DiscreteCollisionDetectorInterface()
 {
-	if (this->IsDisposed)
-		return;
-
 	ALIGNED_DESTROY_FREE(_native, btDiscreteCollisionDetectorInterface);
 	_native = NULL;
 }

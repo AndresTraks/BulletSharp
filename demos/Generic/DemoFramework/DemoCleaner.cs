@@ -119,8 +119,18 @@ namespace DemoFramework
 
         private static void AssertAllocatedMemoryFreed()
         {
-            int numAllocs = AlignedAllocator.NumAlignedAllocs;
-            int numFrees = AlignedAllocator.NumAlignedFrees;
+            int numAllocs;
+            int numFrees;
+
+            try
+            {
+                numAllocs = AlignedAllocator.NumAlignedAllocs;
+                numFrees = AlignedAllocator.NumAlignedFrees;
+            }
+            catch (NotSupportedException)
+            {
+                return;
+            }
 
             if (numAllocs != numFrees)
             {

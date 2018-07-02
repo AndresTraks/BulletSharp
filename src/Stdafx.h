@@ -334,7 +334,7 @@ inline GCHandle VoidPtrToGCHandle(void* pointer)
 #ifdef BTSHARP_USE_SSE_ALIGNMENT
 #define ALIGNED_NEW(targetClass) ALIGNED_NEW_FORCE(targetClass)
 #define ALIGNED_FREE(target) ALIGNED_FREE_FORCE(target)
-#define ALIGNED_DESTROY_FREE(target, targetClass) target->~targetClass(); ALIGNED_FREE(target);
+#define ALIGNED_DESTROY_FREE(target, targetClass) if (target) { target->~targetClass(); ALIGNED_FREE(target); }
 #else
 #define ALIGNED_NEW(targetClass) new targetClass
 #define ALIGNED_FREE(target) delete target
