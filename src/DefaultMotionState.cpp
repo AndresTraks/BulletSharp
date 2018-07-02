@@ -18,7 +18,7 @@ DefaultMotionState::DefaultMotionState(Matrix startTrans)
 	: MotionState(0)
 {
 	TRANSFORM_CONV(startTrans);
-#ifdef BT_USE_SSE_IN_API
+#ifdef BTSHARP_USE_SSE_ALIGNMENT
 	btTransform* centerOfMassOffset = Math::MatrixToBtTransform(Matrix_Identity); // default optional parameters are not aligned
 	_native = ALIGNED_NEW(btDefaultMotionState) (TRANSFORM_USE(startTrans), *centerOfMassOffset);
 	ALIGNED_FREE(centerOfMassOffset);
@@ -31,7 +31,7 @@ DefaultMotionState::DefaultMotionState(Matrix startTrans)
 DefaultMotionState::DefaultMotionState()
 	: MotionState(0)
 {
-#ifdef BT_USE_SSE_IN_API
+#ifdef BTSHARP_USE_SSE_ALIGNMENT
 	btTransform* identityMatrix = Math::MatrixToBtTransform(Matrix_Identity); // default optional parameters are not aligned
 	_native = ALIGNED_NEW(btDefaultMotionState) (*identityMatrix, *identityMatrix);
 	ALIGNED_FREE(identityMatrix);

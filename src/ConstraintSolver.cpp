@@ -27,7 +27,7 @@ ConstraintSolver::!ConstraintSolver()
 	if (this->IsDisposed)
 		return;
 
-	ALIGNED_FREE(_native);
+	ALIGNED_DESTROY_FREE(_native, btConstraintSolver);
 	_native = NULL;
 }
 

@@ -20,7 +20,7 @@ RigidBodyConstructionInfo::!RigidBodyConstructionInfo()
 	_native = NULL;
 }
 
-#ifndef BT_USE_SSE_IN_API
+#ifndef BTSHARP_USE_SSE_ALIGNMENT
 #pragma managed(push, off)
 btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfo(
 	btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape)
@@ -38,7 +38,7 @@ btRigidBody::btRigidBodyConstructionInfo* RigidBody_GetUnmanagedConstructionInfo
 
 RigidBodyConstructionInfo::RigidBodyConstructionInfo(btScalar mass, BulletSharp::MotionState^ motionState, BulletSharp::CollisionShape^ collisionShape)
 {
-#ifdef BT_USE_SSE_IN_API
+#ifdef BTSHARP_USE_SSE_ALIGNMENT
 	btVector3* localInertia = ALIGNED_NEW(btVector3) (0,0,0); // default localInertia parameter is not aligned
 	_native = RigidBody_GetUnmanagedConstructionInfoLocalInertia(mass,
 		GetUnmanagedNullable(motionState), GetUnmanagedNullable(collisionShape), localInertia);

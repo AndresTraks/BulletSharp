@@ -176,7 +176,7 @@ RayResultCallback::~RayResultCallback()
 
 RayResultCallback::!RayResultCallback()
 {
-	ALIGNED_FREE(_native);
+	ALIGNED_DESTROY_FREE(_native, RayResultCallback);
 	_native = NULL;
 }
 

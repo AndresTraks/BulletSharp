@@ -296,7 +296,7 @@ Matrix HingeConstraint::FrameOffsetA::get()
 }
 void HingeConstraint::FrameOffsetA::set(Matrix value)
 {
-#if defined(BT_USE_SIMD_VECTOR3) && defined(BT_USE_SSE_IN_API) && defined(BT_USE_SSE)
+#ifdef BTSHARP_USE_SSE_ALIGNMENT
 	btScalar* m = (btScalar*)btAlignedAlloc(sizeof(btScalar) * 16, 16);
 	btTransform* a = Math::MatrixToBtTransform(value);
 	a->getOpenGLMatrix(m);
@@ -318,7 +318,7 @@ Matrix HingeConstraint::FrameOffsetB::get()
 }
 void HingeConstraint::FrameOffsetB::set(Matrix value)
 {
-#if defined(BT_USE_SIMD_VECTOR3) && defined(BT_USE_SSE_IN_API) && defined(BT_USE_SSE)
+#ifdef BTSHARP_USE_SSE_ALIGNMENT
 	btScalar* m = (btScalar*)btAlignedAlloc(sizeof(btScalar) * 16, 16);
 	btTransform* a = Math::MatrixToBtTransform(value);
 	a->getOpenGLMatrix(m);

@@ -12,7 +12,7 @@ DiscreteCollisionDetectorInterface::ClosestPointInput::~ClosestPointInput()
 
 DiscreteCollisionDetectorInterface::ClosestPointInput::!ClosestPointInput()
 {
-	ALIGNED_FREE(_native);
+	ALIGNED_DESTROY_FREE(_native, ClosestPointInput);
 	_native = NULL;
 }
 
@@ -64,7 +64,7 @@ DiscreteCollisionDetectorInterface::Result::!Result()
 	if (this->IsDisposed)
 		return;
 
-	ALIGNED_FREE(_native);
+	ALIGNED_DESTROY_FREE(_native, Result);
 	_native = NULL;
 }
 
@@ -89,7 +89,7 @@ DiscreteCollisionDetectorInterface::!DiscreteCollisionDetectorInterface()
 	if (this->IsDisposed)
 		return;
 
-	ALIGNED_FREE(_native);
+	ALIGNED_DESTROY_FREE(_native, btDiscreteCollisionDetectorInterface);
 	_native = NULL;
 }
 

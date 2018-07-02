@@ -688,7 +688,7 @@ void Body::Soft::set(Cluster^ value)
 Matrix Body::XForm::get()
 {
 	// Unaligned btTransform::getIdentity() in the inline xform() method causes problems.
-#ifdef BT_USE_SSE_IN_API
+#ifdef BTSHARP_USE_SSE_ALIGNMENT
 	if(_native->m_collisionObject) return Math::BtTransformToMatrix(&_native->m_collisionObject->getWorldTransform());
 	if(_native->m_soft) return Math::BtTransformToMatrix(&_native->m_soft->m_framexform);
 	return Matrix_Identity;

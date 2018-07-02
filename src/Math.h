@@ -25,8 +25,17 @@ using namespace Mogre;
 #include "Vector4.h"
 #endif
 
+// Still have no idea what this condition is supposed to be, definitions seem inconsistent.
+// Even if BT_USE_SSE is defined and BT_USE_SSE_IN_API is undefined, the localInertia parameter
+// of the RigidBodyConstructionInfo constructor fails since it's not aligned on the stack.
+// For now, always align memory for SSE operations.
+//#if defined(BT_USE_SIMD_VECTOR3) && defined(BT_USE_SSE_IN_API) && defined(BT_USE_SSE)
+#if 1
+#define BTSHARP_USE_SSE_ALIGNMENT
+#endif
+
 #if (defined(BT_USE_DOUBLE_PRECISION) && !defined(GRAPHICS_GENERIC) && !defined(GRAPHICS_OPENTK)) || \
-	(defined(BT_USE_SSE) )//&& defined (BT_USE_SIMD_VECTOR3) defined (BT_USE_SSE_IN_API))
+	(defined(BTSHARP_USE_SSE_ALIGNMENT) )
 #define GRAPHICS_NO_DIRECT_CAST
 #endif
 
@@ -48,7 +57,7 @@ using namespace Mogre;
 #else
 #define VECTOR3_PTR(vec) ((btVector3*) VECTOR3_NAME(vec))
 #define VECTOR4_PTR(vec) ((btVector4*) VECTOR3_NAME(vec))
-#ifdef BT_USE_SSE_IN_API
+#ifdef BTSHARP_USE_SSE_ALIGNMENT
 #define VECTOR3_CONV(vec) btVector3* VECTOR3_NAME(vec) = Math::Vector3ToBtVector3(vec)
 #define VECTOR3_DEL(vec) ALIGNED_FREE(VECTOR3_PTR(vec))
 #define VECTOR4_CONV(vec) btVector4* VECTOR4_NAME(vec) = Math::Vector4ToBtVector4(vec)

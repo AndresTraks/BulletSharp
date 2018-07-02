@@ -331,12 +331,14 @@ inline GCHandle VoidPtrToGCHandle(void* pointer)
 #define ALIGNED_NEW_FORCE(targetClass) new (btAlignedAlloc(sizeof(targetClass), 16)) targetClass
 #define ALIGNED_FREE_FORCE(target) btAlignedFree(target)
 
-#if 1//defined(BT_USE_SIMD_VECTOR3) && defined(BT_USE_SSE_IN_API) && defined(BT_USE_SSE)
+#ifdef BTSHARP_USE_SSE_ALIGNMENT
 #define ALIGNED_NEW(targetClass) ALIGNED_NEW_FORCE(targetClass)
 #define ALIGNED_FREE(target) ALIGNED_FREE_FORCE(target)
+#define ALIGNED_DESTROY_FREE(target, targetClass) target->~targetClass(); ALIGNED_FREE(target);
 #else
 #define ALIGNED_NEW(targetClass) new targetClass
 #define ALIGNED_FREE(target) delete target
+#define ALIGNED_DESTROY_FREE(target, targetClass) delete target
 #endif
 
 using namespace BulletSharp;
