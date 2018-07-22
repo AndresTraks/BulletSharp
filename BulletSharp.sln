@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletSharp", "BulletSharp.vcxproj", "{5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0}"
 EndProject
 Global
@@ -118,5 +120,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6840734E-3C8D-4BC7-B8D3-6B5889C957AD}
 	EndGlobalSection
 EndGlobal

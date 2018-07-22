@@ -26,7 +26,7 @@ namespace DemoFramework.OpenTK
         public int NormalBufferID;
         public int ElementBufferID;
         public DrawElementsType ElementsType;
-        public BeginMode PrimitiveType = BeginMode.Triangles;
+        public PrimitiveType PrimitiveType = PrimitiveType.Triangles;
 
         public List<InstanceData> Instances = new List<InstanceData>();
         public Vector3[] SoftBodyVertices;
@@ -474,7 +474,7 @@ namespace DemoFramework.OpenTK
             else
             {
                 shapeData.SetDynamicNormalBuffer(new Vector3[shapeData.VertexCount]); // hack, should use a different shader that doesn't process normals
-                shapeData.PrimitiveType = BeginMode.Lines;
+                shapeData.PrimitiveType = PrimitiveType.Lines;
             }
         }
     }

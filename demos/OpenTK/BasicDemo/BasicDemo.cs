@@ -10,7 +10,6 @@ namespace BasicDemo
     class BasicDemo : GameWindow
     {
         Physics physics;
-        float angle = 0.0f;
         float frameTime; int fps;
 
         public BasicDemo()
@@ -69,9 +68,6 @@ namespace BasicDemo
             Matrix4 lookat = Matrix4.LookAt(new Vector3(10, 20, 30), Vector3.Zero, Vector3.UnitY);
             GL.MatrixMode(MatrixMode.Modelview);
 
-            GL.Rotate(angle, 0.0f, 1.0f, 0.0f);
-            angle += (float)e.Time*100;
-
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             InitCube();
@@ -117,7 +113,7 @@ namespace BasicDemo
             GL.Vertex3(-size, -size, size);
             GL.Vertex3(-size, size, size);
             GL.Vertex3(-size, size, -size);
-            
+
             GL.Vertex3(-size, -size, size);
             GL.Vertex3(size, -size, size);
             GL.Vertex3(size, size, size);

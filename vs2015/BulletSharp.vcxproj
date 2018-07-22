@@ -962,28 +962,28 @@
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Debug OpenTK'">
     <Reference Include="OpenTK">
-      <HintPath>packages\OpenTK.1.1.2349.61993\lib\NET40\OpenTK.dll</HintPath>
+      <HintPath>packages\OpenTK.3.0.1\lib\net20\OpenTK.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Release OpenTK'">
     <Reference Include="OpenTK">
-      <HintPath>packages\OpenTK.1.1.2349.61993\lib\NET40\OpenTK.dll</HintPath>
+      <HintPath>packages\OpenTK.3.0.1\lib\net20\OpenTK.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Debug SharpDX'">
     <Reference Include="SharpDX">
-      <HintPath>packages\SharpDX.4.0.1\lib\net45\SharpDX.dll</HintPath>
+      <HintPath>packages\SharpDX.4.1.0\lib\net45\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>packages\SharpDX.Mathematics.4.0.1\lib\net45\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>packages\SharpDX.Mathematics.4.1.0\lib\net45\SharpDX.Mathematics.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Release SharpDX'">
     <Reference Include="SharpDX">
-      <HintPath>packages\SharpDX.4.0.1\lib\net45\SharpDX.dll</HintPath>
+      <HintPath>packages\SharpDX.4.1.0\lib\net45\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>packages\SharpDX.Mathematics.4.0.1\lib\net45\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>packages\SharpDX.Mathematics.4.1.0\lib\net45\SharpDX.Mathematics.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
