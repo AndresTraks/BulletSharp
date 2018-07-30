@@ -159,18 +159,18 @@ Matrix BulletSharp::Math::BtTransformToMatrix(const btTransform* transform)
 	Matrix t = Matrix();
 #ifdef GRAPHICS_NO_DIRECT_CAST
 	btScalar* m = (btScalar*)transform;
-	t.M11 = (float)m[0];
-	t.M12 = (float)m[4];
-	t.M13 = (float)m[8];
-	t.M21 = (float)m[1];
-	t.M22 = (float)m[5];
-	t.M23 = (float)m[9];
-	t.M31 = (float)m[2];
-	t.M32 = (float)m[6];
-	t.M33 = (float)m[10];
-	t.M41 = (float)m[12];
-	t.M42 = (float)m[13];
-	t.M43 = (float)m[14];
+	t.M11 = (GRAPHICS_SCALAR)m[0];
+	t.M12 = (GRAPHICS_SCALAR)m[4];
+	t.M13 = (GRAPHICS_SCALAR)m[8];
+	t.M21 = (GRAPHICS_SCALAR)m[1];
+	t.M22 = (GRAPHICS_SCALAR)m[5];
+	t.M23 = (GRAPHICS_SCALAR)m[9];
+	t.M31 = (GRAPHICS_SCALAR)m[2];
+	t.M32 = (GRAPHICS_SCALAR)m[6];
+	t.M33 = (GRAPHICS_SCALAR)m[10];
+	t.M41 = (GRAPHICS_SCALAR)m[12];
+	t.M42 = (GRAPHICS_SCALAR)m[13];
+	t.M43 = (GRAPHICS_SCALAR)m[14];
 	t.M44 = 1;
 #else
 	pin_ptr<Matrix> mPtr = &t;
@@ -208,18 +208,18 @@ void BulletSharp::Math::BtTransformToMatrix(const btTransform* transform, [Out] 
 	t = Matrix();
 #ifdef GRAPHICS_NO_DIRECT_CAST
 	btScalar* m = (btScalar*)transform;
-	t.M11 = (float)m[0];
-	t.M21 = (float)m[1];
-	t.M31 = (float)m[2];
-	t.M12 = (float)m[4];
-	t.M22 = (float)m[5];
-	t.M32 = (float)m[6];
-	t.M13 = (float)m[8];
-	t.M23 = (float)m[9];
-	t.M33 = (float)m[10];
-	t.M41 = (float)m[12];
-	t.M42 = (float)m[13];
-	t.M43 = (float)m[14];
+	t.M11 = (GRAPHICS_SCALAR)m[0];
+	t.M21 = (GRAPHICS_SCALAR)m[1];
+	t.M31 = (GRAPHICS_SCALAR)m[2];
+	t.M12 = (GRAPHICS_SCALAR)m[4];
+	t.M22 = (GRAPHICS_SCALAR)m[5];
+	t.M32 = (GRAPHICS_SCALAR)m[6];
+	t.M13 = (GRAPHICS_SCALAR)m[8];
+	t.M23 = (GRAPHICS_SCALAR)m[9];
+	t.M33 = (GRAPHICS_SCALAR)m[10];
+	t.M41 = (GRAPHICS_SCALAR)m[12];
+	t.M42 = (GRAPHICS_SCALAR)m[13];
+	t.M43 = (GRAPHICS_SCALAR)m[14];
 	t.M44 = 1;
 #else
 	pin_ptr<Matrix> mPtr = &t;
@@ -356,15 +356,15 @@ Matrix BulletSharp::Math::BtMatrix3x3ToMatrix(const btMatrix3x3* matrix)
 	Matrix t = Matrix();
 #ifdef GRAPHICS_NO_DIRECT_CAST
 	btScalar* m = (btScalar*)matrix;
-	t.M11 = (float)m[0];
-	t.M21 = (float)m[1];
-	t.M31 = (float)m[2];
-	t.M12 = (float)m[4];
-	t.M22 = (float)m[5];
-	t.M32 = (float)m[6];
-	t.M13 = (float)m[8];
-	t.M23 = (float)m[9];
-	t.M33 = (float)m[10];
+	t.M11 = (GRAPHICS_SCALAR)m[0];
+	t.M21 = (GRAPHICS_SCALAR)m[1];
+	t.M31 = (GRAPHICS_SCALAR)m[2];
+	t.M12 = (GRAPHICS_SCALAR)m[4];
+	t.M22 = (GRAPHICS_SCALAR)m[5];
+	t.M32 = (GRAPHICS_SCALAR)m[6];
+	t.M13 = (GRAPHICS_SCALAR)m[8];
+	t.M23 = (GRAPHICS_SCALAR)m[9];
+	t.M33 = (GRAPHICS_SCALAR)m[10];
 	t.M44 = 1;
 #else
 	pin_ptr<Matrix> mPtr = &t;

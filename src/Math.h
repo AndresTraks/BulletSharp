@@ -113,6 +113,12 @@ using namespace Mogre;
 #define Vector_SetW(v, s) (v).W = s
 #endif
 
+#if defined(GRAPHICS_OPENTK) && defined(BT_USE_DOUBLE_PRECISION)
+#define GRAPHICS_SCALAR double
+#else
+#define GRAPHICS_SCALAR float
+#endif
+
 namespace BulletSharp
 {
 	private ref class Math
@@ -191,18 +197,18 @@ namespace BulletSharp
 #ifdef GRAPHICS_NO_DIRECT_CAST
 #define BtTransformToMatrixFast(transform, out) \
 	btScalar* m = (btScalar*)&transform; \
-	out.M11 = (float)m[0]; \
-	out.M12 = (float)m[4]; \
-	out.M13 = (float)m[8]; \
-	out.M21 = (float)m[1]; \
-	out.M22 = (float)m[5]; \
-	out.M23 = (float)m[9]; \
-	out.M31 = (float)m[2]; \
-	out.M32 = (float)m[6]; \
-	out.M33 = (float)m[10]; \
-	out.M41 = (float)m[12]; \
-	out.M42 = (float)m[13]; \
-	out.M43 = (float)m[14]; \
+	out.M11 = (GRAPHICS_SCALAR)m[0]; \
+	out.M12 = (GRAPHICS_SCALAR)m[4]; \
+	out.M13 = (GRAPHICS_SCALAR)m[8]; \
+	out.M21 = (GRAPHICS_SCALAR)m[1]; \
+	out.M22 = (GRAPHICS_SCALAR)m[5]; \
+	out.M23 = (GRAPHICS_SCALAR)m[9]; \
+	out.M31 = (GRAPHICS_SCALAR)m[2]; \
+	out.M32 = (GRAPHICS_SCALAR)m[6]; \
+	out.M33 = (GRAPHICS_SCALAR)m[10]; \
+	out.M41 = (GRAPHICS_SCALAR)m[12]; \
+	out.M42 = (GRAPHICS_SCALAR)m[13]; \
+	out.M43 = (GRAPHICS_SCALAR)m[14]; \
 	out.M44 = 1;
 #else
 #define BtTransformToMatrixFast(transform, out) pin_ptr<Matrix> ptr = &out; \
