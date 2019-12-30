@@ -81,7 +81,7 @@ Vector3 GjkPairDetector::CachedSeparatingAxis::get()
 void GjkPairDetector::CachedSeparatingAxis::set(Vector3 value)
 {
 	VECTOR3_CONV(value);
-	Native->setCachedSeperatingAxis(VECTOR3_USE(value));
+	Native->setCachedSeparatingAxis(VECTOR3_USE(value));
 	VECTOR3_DEL(value);
 }
 
