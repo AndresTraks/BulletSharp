@@ -1912,11 +1912,6 @@ namespace BulletSharp
 				Dbvt^ get();
 			}
 #endif
-			property Matrix InitialWorldTransform
-			{
-				Matrix get();
-				void set(Matrix value);
-			}
 
 			property AlignedJointArray^ Joints
 			{

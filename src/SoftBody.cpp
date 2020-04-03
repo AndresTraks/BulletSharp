@@ -3704,15 +3704,6 @@ Dbvt^ BulletSharp::SoftBody::SoftBody::FaceDbvt::get()
 }
 #endif
 
-Matrix BulletSharp::SoftBody::SoftBody::InitialWorldTransform::get()
-{
-	return Math::BtTransformToMatrix(&Native->m_initialWorldTransform);
-}
-void BulletSharp::SoftBody::SoftBody::InitialWorldTransform::set(Matrix value)
-{
-	Math::MatrixToBtTransform(value, &Native->m_initialWorldTransform);
-}
-
 AlignedJointArray^ BulletSharp::SoftBody::SoftBody::Joints::get()
 {
 	if (_joints == nullptr)
