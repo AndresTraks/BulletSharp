@@ -588,21 +588,6 @@ void MultiBody::AngularDamping::set(btScalar damp)
 	_native->setAngularDamping(damp);
 }
 
-#pragma managed(push, off)
-void MultiBody_GetAngularMomentum(btMultiBody* body, btVector3* result)
-{
-	result = &body->getAngularMomentum();
-}
-#pragma managed(pop)
-Vector3 MultiBody::AngularMomentum::get()
-{
-	btVector3* valueTemp = ALIGNED_NEW(btVector3);
-	MultiBody_GetAngularMomentum(_native, valueTemp);
-	Vector3 value = Math::BtVector3ToVector3(valueTemp);
-	ALIGNED_FREE(valueTemp);
-	return value;
-}
-
 MultiBodyLinkCollider^ MultiBody::BaseCollider::get()
 {
 	return (MultiBodyLinkCollider^)CollisionObject::GetManaged(_native->getBaseCollider());
@@ -774,11 +759,6 @@ bool MultiBody::IsUsingRK4Integration::get()
 void MultiBody::IsUsingRK4Integration::set(bool use)
 {
 	_native->useRK4Integration(use);
-}
-
-btScalar MultiBody::KineticEnergy::get()
-{
-	return _native->getKineticEnergy();
 }
 
 btScalar MultiBody::LinearDamping::get()

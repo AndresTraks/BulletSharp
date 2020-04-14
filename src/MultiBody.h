@@ -121,11 +121,6 @@ namespace BulletSharp
 			void set(btScalar damp);
 		}
 
-		property Vector3 AngularMomentum
-		{
-			Vector3 get();
-		}
-
 		property MultiBodyLinkCollider^ BaseCollider
 		{
 			MultiBodyLinkCollider^ get();
@@ -227,11 +222,6 @@ namespace BulletSharp
 		{
 			bool get();
 			void set(bool use);
-		}
-
-		property btScalar KineticEnergy
-		{
-			btScalar get();
 		}
 
 		property btScalar LinearDamping
