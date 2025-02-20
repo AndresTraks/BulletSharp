@@ -153,7 +153,7 @@
     <TargetFrameworkVersion Condition="'$(Configuration)'=='Debug MonoGame' OR '$(Configuration)'=='MinSizeRel MonoGame' OR '$(Configuration)'=='Release MonoGame'">v4.5</TargetFrameworkVersion>
     <TargetFrameworkVersion Condition="'$(Configuration)'=='Debug Numerics' OR '$(Configuration)'=='MinSizeRel Numerics' OR '$(Configuration)'=='Release Numerics'">v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkVersion Condition="'$(Configuration)'=='Debug SharpDX' OR '$(Configuration)'=='MinSizeRel SharpDX' OR '$(Configuration)'=='Release SharpDX'">v4.6.1</TargetFrameworkVersion>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Generic|Win32'" Label="Configuration">

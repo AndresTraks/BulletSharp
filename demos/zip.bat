@@ -71,8 +71,4 @@ copy Generic\bin\Release\SharpDX.Mathematics.dll bin\
 copy Generic\bin\Release\sharpdx_direct3d11_1_effects_x64.dll bin\
 copy Generic\bin\Release\sharpdx_direct3d11_1_effects_x86.dll bin\
 
-cmd /C git clone https://github.com/AndresTraks/BulletSharp.git repo
-move repo\demos\Generic src
-rmdir /s /q repo
-
 "%PROGRAMFILES%\7-Zip\7z.exe" a bulletsharp-demos.zip bin src
