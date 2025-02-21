@@ -133,7 +133,15 @@ using namespace System::Drawing;
 #include <BulletCollision/CollisionShapes/btConvex2dShape.h>
 #include <BulletCollision/CollisionShapes/btConvexPointCloudShape.h>
 #include <BulletCollision/CollisionShapes/btConvexPolyhedron.h>
+#if defined(min) || defined(max)
+#undef min
+#undef max
 #include <BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h>
+#define max(a,b)            (((a) > (b)) ? (a) : (b))
+#define min(a,b)            (((a) < (b)) ? (a) : (b))
+#else
+#include <BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h>
+#endif
 #include <BulletCollision/CollisionShapes/btMaterial.h>
 #include <BulletCollision/CollisionShapes/btMinkowskiSumShape.h>
 #include <BulletCollision/CollisionShapes/btMultimaterialTriangleMeshShape.h>
