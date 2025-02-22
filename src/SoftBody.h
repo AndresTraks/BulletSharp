@@ -158,10 +158,15 @@ namespace BulletSharp
 			RvsMask = btSoftBody::fCollision::RVSmask,
 			SdfRS = btSoftBody::fCollision::SDF_RS,
 			CLRS = btSoftBody::fCollision::CL_RS,
+			SdfRD = btSoftBody::fCollision::SDF_RD,
 			SvsMask = btSoftBody::fCollision::SVSmask,
 			VFSS = btSoftBody::fCollision::VF_SS,
 			CLSS = btSoftBody::fCollision::CL_SS,
 			CLSelf = btSoftBody::fCollision::CL_SELF,
+			RvdfMask = btSoftBody::fCollision::RVDFmask,
+			SdfRdf = btSoftBody::fCollision::SDF_RDF,
+			SdfMdf = btSoftBody::fCollision::SDF_MDF,
+			SdfRdn = btSoftBody::fCollision::SDF_RDN,
 			Default = btSoftBody::fCollision::Default,
 			End = btSoftBody::fCollision::END
 		};
